@@ -214,14 +214,29 @@ services:
         source: /blogger/*
         destination: /blog/:splat
       - type: redirect
+        source: /interview
+        destination: /demo/smart-hiring-system/
+      - type: redirect
+        source: /interview/
+        destination: /demo/smart-hiring-system/
+      - type: redirect
+        source: /interview/index.html
+        destination: /demo/smart-hiring-system/
+      - type: redirect
         source: /interview/pages/supportAI
-        destination: /interview/pages/support-ai/
+        destination: /demo/smart-hiring-system/pages/support-ai/
       - type: redirect
         source: /interview/pages/supportAI/
-        destination: /interview/pages/support-ai/
+        destination: /demo/smart-hiring-system/pages/support-ai/
       - type: redirect
         source: /interview/pages/supportAI/index.html
-        destination: /interview/pages/support-ai/
+        destination: /demo/smart-hiring-system/pages/support-ai/
+      - type: redirect
+        source: /job.MAISco
+        destination: /demo/smart-hiring-system/
+      - type: redirect
+        source: /job.MAISco/
+        destination: /demo/smart-hiring-system/
 
       - type: redirect
         source: /index.html
@@ -800,12 +815,6 @@ services:
         destination: /:slug/
 
       - type: redirect
-        source: /job.MAISco
-        destination: /interview/
-      - type: redirect
-        source: /job.MAISco/
-        destination: /interview/
-      - type: redirect
         source: /our-products.html
         destination: /services/
       - type: redirect
@@ -910,6 +919,43 @@ services:
       - type: redirect
         source: "/Company%20performance%20monitoring%20tool.html"
         destination: /tools/
+
+      - type: redirect
+        source: /try
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /try/
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /try/index.html
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /try/data-analyzer
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /try/data-analyzer/
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /try/data-analyzer/index.html
+        destination: /demo/data-analyzer/
+      - type: redirect
+        source: /try/data-quality
+        destination: /demo/data-quality/
+      - type: redirect
+        source: /try/data-quality/
+        destination: /demo/data-quality/
+      - type: redirect
+        source: /try/data-quality/index.html
+        destination: /demo/data-quality/
+      - type: redirect
+        source: /try/text-analysis
+        destination: /demo/text-analysis/
+      - type: redirect
+        source: /try/text-analysis/
+        destination: /demo/text-analysis/
+      - type: redirect
+        source: /try/text-analysis/index.html
+        destination: /demo/text-analysis/
 
       - type: rewrite
         source: /blog/:section/:slug

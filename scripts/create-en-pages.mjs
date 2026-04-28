@@ -276,7 +276,7 @@ function transformHtml(html, page) {
   h = h.replace(/href="\/data-analysis\/"/g, 'href="/en/data-analysis/"');
   h = h.replace(/href="\/contact\/"/g, 'href="/en/contact/"');
   h = h.replace(/href="\/smart-medical-archive\/"/g, 'href="/en/smart-medical-archive/"');
-  h = h.replace(/href="\/interview\/"/g, 'href="/en/interview/"');
+  h = h.replace(/href="\/interview\/"/g, 'href="/en/demo/smart-hiring-system/"');
   h = h.replace(/href="\/health\/"/g, 'href="/en/health/"');
   h = h.replace(/href="\/docs\/"/g, 'href="/en/docs/docs.html"');
 

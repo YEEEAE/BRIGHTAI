@@ -129,7 +129,7 @@ function main() {
       }
     }
 
-    if (route.includes("/blog/") && !links.some((href) => ["/services/", "/ai-agent/", "/smart-automation/", "/data-analysis/", "/tenders/", "/consultation/", "/interview/", "/smart-medical-archive/"].includes(href))) {
+    if (route.includes("/blog/") && !links.some((href) => ["/services/", "/ai-agent/", "/smart-automation/", "/data-analysis/", "/tenders/", "/consultation/", "/demo/smart-hiring-system/", "/smart-medical-archive/"].includes(href))) {
       issues.push(["HIGH", fileRel, "مقال المدونة لا يربط إلى money page واضحة."]);
     }
 

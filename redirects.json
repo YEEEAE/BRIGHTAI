@@ -445,24 +445,24 @@
       "to": "/en/tenders/templates/"
     },
     {
-      "from": "/interview/index.html",
-      "to": "/interview/"
+      "from": "/demo/smart-hiring-system/index.html",
+      "to": "/demo/smart-hiring-system/"
     },
     {
-      "from": "/interview/pages/appointment/index.html",
-      "to": "/interview/pages/appointment/"
+      "from": "/demo/smart-hiring-system/pages/appointment/index.html",
+      "to": "/demo/smart-hiring-system/pages/appointment/"
     },
     {
-      "from": "/interview/pages/dashboard/index.html",
-      "to": "/interview/pages/dashboard/"
+      "from": "/demo/smart-hiring-system/pages/dashboard/index.html",
+      "to": "/demo/smart-hiring-system/pages/dashboard/"
     },
     {
-      "from": "/interview/pages/support-ai/index.html",
-      "to": "/interview/pages/support-ai/"
+      "from": "/demo/smart-hiring-system/pages/support-ai/index.html",
+      "to": "/demo/smart-hiring-system/pages/support-ai/"
     },
     {
-      "from": "/interview/pages/Visitor-registration/index.html",
-      "to": "/interview/pages/Visitor-registration/"
+      "from": "/demo/smart-hiring-system/pages/Visitor-registration/index.html",
+      "to": "/demo/smart-hiring-system/pages/Visitor-registration/"
     },
     {
       "from": "/en/docs/docs.html",
@@ -593,16 +593,16 @@
       "to": "/try/"
     },
     {
-      "from": "/interview/pages/supportAI",
-      "to": "/interview/pages/support-ai/"
+      "from": "/demo/smart-hiring-system/pages/supportAI",
+      "to": "/demo/smart-hiring-system/pages/support-ai/"
     },
     {
-      "from": "/interview/pages/supportAI/",
-      "to": "/interview/pages/support-ai/"
+      "from": "/demo/smart-hiring-system/pages/supportAI/",
+      "to": "/demo/smart-hiring-system/pages/support-ai/"
     },
     {
-      "from": "/interview/pages/supportAI/index.html",
-      "to": "/interview/pages/support-ai/"
+      "from": "/demo/smart-hiring-system/pages/supportAI/index.html",
+      "to": "/demo/smart-hiring-system/pages/support-ai/"
     },
     {
       "from": "/frontend/pages/blogger/nca-compliance",

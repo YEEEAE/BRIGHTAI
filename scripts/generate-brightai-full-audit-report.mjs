@@ -1316,7 +1316,7 @@ npm run seo:gate
 1) افحص كل ملفات HTML.
 2) قارن نتائج التقرير قبل/بعد.
 3) تحقق من robots.txt و_ headers وrender.yaml.
-4) تحقق من عدم وجود noindex على صفحات demo/try/tenders/interview/mais-OBM.
+4) تحقق من عدم وجود noindex على صفحات demo/try/tenders/demo/smart-hiring-system/mais-OBM.
 5) تحقق من canonical وhreflang.
 6) تحقق من sitemap.
 7) تحقق من schema.

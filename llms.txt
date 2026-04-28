@@ -64,8 +64,9 @@ BrightAI is a Saudi, Arabic-first AI company for enterprise and government teams
 ## Public Demo and Tool Pages
 - Demo hub: https://brightai.site/demo/
 - Pricing demo: https://brightai.site/demo/pricing/
-- AI tools hub: https://brightai.site/try/
-- Data analyzer: https://brightai.site/try/data-analyzer/
+- Data analyzer: https://brightai.site/demo/data-analyzer/
+- Data quality: https://brightai.site/demo/data-quality/
+- Text analysis: https://brightai.site/demo/text-analysis/
 - Interview solution: https://brightai.site/interview/
 - Support AI page: https://brightai.site/interview/pages/support-ai/
 - Customer assistant bot: https://brightai.site/bot/

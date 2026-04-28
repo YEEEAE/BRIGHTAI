@@ -82,9 +82,14 @@ const CHAT_ROUTE_ALIASES = new Set(['/api/gemini/chat']);
 const CHAT_STREAM_ROUTE_ALIASES = new Set(['/api/gemini/chat/stream']);
 const OPENAI_COMPAT_ROUTE_ALIASES = new Set(['/api/ai/openai-chat', '/api/ai/chat/completions']);
 const STATIC_ROUTE_REDIRECTS = new Map([
-  ['/interview/pages/supportAI', '/interview/pages/support-ai/'],
-  ['/interview/pages/supportAI/', '/interview/pages/support-ai/'],
-  ['/interview/pages/supportAI/index.html', '/interview/pages/support-ai/']
+  ['/interview', '/demo/smart-hiring-system/'],
+  ['/interview/', '/demo/smart-hiring-system/'],
+  ['/interview/index.html', '/demo/smart-hiring-system/'],
+  ['/interview/pages/supportAI', '/demo/smart-hiring-system/pages/support-ai/'],
+  ['/interview/pages/supportAI/', '/demo/smart-hiring-system/pages/support-ai/'],
+  ['/interview/pages/supportAI/index.html', '/demo/smart-hiring-system/pages/support-ai/'],
+  ['/job.MAISco', '/demo/smart-hiring-system/'],
+  ['/job.MAISco/', '/demo/smart-hiring-system/']
 ]);
 const BLOG_SLUG_REDIRECTS = new Map([
   [

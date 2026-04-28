@@ -44,7 +44,7 @@ const explicit = {
   "/machine-learning/": ["service_page", "commercial_investigation", "informational", "تطوير نماذج تعلم الآلة السعودية", "الاستكشاف التجاري"],
   "/what-is-ai/": ["blog_article", "informational", "commercial_support", "تعريف الذكاء الاصطناعي", "الوعي"],
   "/health/": ["sector_page", "sector_solution", "informational", "التحول الرقمي في الرعاية الصحية", "حل قطاعي"],
-  "/interview/": ["product_page", "product_demo", "commercial_investigation", "منصة توظيف بالذكاء الاصطناعي", "تجربة المنتج"],
+  "/demo/smart-hiring-system/": ["product_page", "product_demo", "commercial_investigation", "منصة توظيف بالذكاء الاصطناعي", "تجربة المنتج"],
   "/partners/": ["about_page", "commercial_investigation", "entity_trust", "شراكات الذكاء الاصطناعي في السعودية", "الثقة"],
   "/case-studies/": ["case_study_page", "commercial_investigation", "proof", "دراسات حالة الذكاء الاصطناعي في السعودية", "الثقة"],
   "/try/": ["tool_page", "product_demo", "lead_acquisition", "تجربة أدوات الذكاء الاصطناعي", "تجربة المنتج"],
@@ -67,7 +67,7 @@ const explicit = {
   "/en/consultation/": ["consultation_page", "transactional", "conversion", "AI consulting in Saudi Arabia", "Conversion"],
   "/en/contact/": ["contact_page", "transactional", "navigational", "contact an AI company in Saudi Arabia", "Conversion"],
   "/en/health/": ["sector_page", "sector_solution", "informational", "digital transformation in healthcare", "Sector"],
-  "/en/interview/": ["product_page", "product_demo", "commercial_investigation", "AI recruitment platform", "Demo"],
+  "/en/demo/smart-hiring-system/": ["product_page", "product_demo", "commercial_investigation", "AI recruitment platform", "Demo"],
   "/en/docs/": ["docs_page", "support_documentation", "navigational", "Bright AI documentation", "Support"],
 };
 
@@ -133,7 +133,7 @@ function pageTypeFor(route) {
   if (route.includes("/consultation/")) return "consultation_page";
   if (route.includes("/about/") || route.includes("/partners/")) return "about_page";
   if (route.includes("/case-studies/")) return "case_study_page";
-  if (route.includes("/interview/")) return "product_page";
+  if (route.includes("/demo/smart-hiring-system/")) return "product_page";
   if (["/404/", "/500/", "/error/"].includes(route)) return "error_page";
   return "service_page";
 }
@@ -333,7 +333,7 @@ function blogTarget(route) {
   if (/automation|process|rpa|أتمت/.test(route)) return "/smart-automation/";
   if (/agent|chatbot|bot|agint/.test(route)) return "/ai-agent/";
   if (/health|hospital|medical|صحة/.test(route)) return "/smart-medical-archive/";
-  if (/interview|hr|job|recruit/.test(route)) return "/interview/";
+  if (/interview|hr|job|recruit/.test(route)) return "/demo/smart-hiring-system/";
   return "/services/";
 }
 

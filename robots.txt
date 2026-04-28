@@ -9,7 +9,7 @@ Allow: /blog/
 Allow: /docs/
 Allow: /sectors/
 Allow: /tenders/
-Allow: /try/
+Allow: /demo/data-analyzer/
 Allow: /demo/
 Allow: /ai-bots/
 Allow: /llms.txt

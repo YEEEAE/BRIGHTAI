@@ -76,7 +76,7 @@ export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
   "en/consultation/index.html",
   "en/ai-workflows/index.html",
   "en/health/index.html",
-  "en/interview/index.html",
+  "en/demo/smart-hiring-system/index.html",
   "en/smart-medical-archive/index.html"
 ];
 

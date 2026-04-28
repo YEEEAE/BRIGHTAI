@@ -147,7 +147,7 @@ export function relPathToSitePath(relPath) {
     if (dir === "smart-medical-archive") return "/smart-medical-archive/";
     if (dir === "privacy-cookies") return "/privacy-cookies/";
     if (dir === "frontend/pages/job.MAISco") return "/job.MAISco/";
-    if (dir === "frontend/pages/interview") return "/interview/";
+    if (dir === "frontend/pages/interview") return "/demo/smart-hiring-system/";
     if (dir === "frontend/pages/terms") return "/terms/";
     if (dir === "frontend/pages/sitemap") return "/sitemap/";
     if (dir === "frontend/pages/offline") return "/offline/";
