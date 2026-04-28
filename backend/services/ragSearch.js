@@ -5,12 +5,32 @@ const { runGeminiCompletion } = require('./aiGateway');
 const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
 
 const SITE_ROOT = path.resolve(__dirname, '../..');
-const PAGES_ROOT = path.join(SITE_ROOT, 'frontend/pages');
-const DOCS_ROOT = path.join(SITE_ROOT, 'docs');
-const ROOT_HTML_FILES = ['index.html', 'docs.html'];
+const SKIPPED_INDEX_DIRS = new Set([
+  '.git',
+  '.next',
+  '.turbo',
+  '.vercel',
+  'build',
+  'coverage',
+  'dist',
+  'node_modules'
+]);
+const PRIORITY_PUBLIC_URLS = [
+  '/',
+  '/services/',
+  '/sectors/',
+  '/ai-agent/',
+  '/ai-bots/',
+  '/ai-workflows/',
+  '/smart-automation/',
+  '/data-analysis/',
+  '/blog/',
+  '/tools/',
+  '/docs/',
+  '/en/'
+];
 
 const INDEX_REFRESH_MS = clampNumber(process.env.RAG_INDEX_REFRESH_MS, 5 * 60 * 1000, 30 * 1000, 60 * 60 * 1000);
-const MAX_FILES = clampNumber(process.env.RAG_MAX_FILES, 180, 20, 2000);
 const MAX_FILE_BYTES = clampNumber(process.env.RAG_MAX_FILE_BYTES, 500 * 1024, 50 * 1024, 3 * 1024 * 1024);
 const CHUNK_SIZE = clampNumber(process.env.RAG_CHUNK_SIZE_CHARS, 900, 300, 1600);
 const CHUNK_OVERLAP = clampNumber(process.env.RAG_CHUNK_OVERLAP_CHARS, 180, 50, 500);
@@ -18,6 +38,29 @@ const MIN_CHUNK_CHARS = clampNumber(process.env.RAG_MIN_CHUNK_CHARS, 130, 80, 60
 const DEFAULT_RETRIEVAL_LIMIT = 10;
 const QUERY_CACHE_TTL_MS = clampNumber(process.env.RAG_QUERY_CACHE_TTL_MS, 45 * 1000, 5 * 1000, 10 * 60 * 1000);
 const QUERY_CACHE_MAX_ENTRIES = clampNumber(process.env.RAG_QUERY_CACHE_MAX_ENTRIES, 80, 10, 500);
+const QUERY_EXPANSIONS = new Map([
+  ['وكلاء', ['وكيل', 'agents', 'agent', 'ai', 'aiaas', 'الخدمات', 'services']],
+  ['وكيل', ['وكلاء', 'agents', 'agent', 'ai', 'aiaas', 'الخدمات', 'services']],
+  ['الشات', ['شات', 'بوت', 'chatbot', 'chatbots', 'bot', 'bots', 'ai-bots']],
+  ['شات', ['الشات', 'بوت', 'chatbot', 'chatbots', 'bot', 'bots', 'ai-bots']],
+  ['بوت', ['شات', 'روبوت', 'chatbot', 'chatbots', 'bot', 'bots', 'ai-bots']],
+  ['روبوت', ['بوت', 'bot', 'bots', 'chatbot', 'ai-bots']],
+  ['الرعايه', ['صحيه', 'الصحيه', 'healthcare', 'health', 'hospital', 'medical', 'sectors']],
+  ['صحيه', ['الرعايه', 'الصحيه', 'healthcare', 'health', 'hospital', 'medical', 'sectors']],
+  ['الصحيه', ['الرعايه', 'صحيه', 'healthcare', 'health', 'hospital', 'medical', 'sectors']],
+  ['تحليل', ['بيانات', 'data', 'analysis', 'analytics', 'analyst', 'services']],
+  ['البيانات', ['بيانات', 'data', 'analysis', 'analytics', 'analyst', 'services']],
+  ['بيانات', ['البيانات', 'data', 'analysis', 'analytics', 'analyst', 'services']],
+  ['agents', ['agent', 'ai', 'saudi', 'arabia', 'وكلاء', 'وكيل', 'الخدمات']],
+  ['agent', ['agents', 'ai', 'saudi', 'arabia', 'وكلاء', 'وكيل', 'الخدمات']],
+  ['saudi', ['arabia', 'السعوديه', 'السعودي', 'ksa']],
+  ['arabia', ['saudi', 'السعوديه', 'السعودي', 'ksa']],
+  ['chatbot', ['chatbots', 'bot', 'bots', 'شات', 'بوت', 'ai-bots']],
+  ['chatbots', ['chatbot', 'bot', 'bots', 'شات', 'بوت', 'ai-bots']],
+  ['healthcare', ['health', 'medical', 'hospital', 'الرعايه', 'الصحيه']],
+  ['data', ['analysis', 'analytics', 'تحليل', 'بيانات', 'البيانات']],
+  ['analysis', ['data', 'analytics', 'تحليل', 'بيانات', 'البيانات']]
+]);
 
 const SEARCH_SYSTEM_PROMPT = `
 أنت محرك بحث RAG لموقع BrightAI.
@@ -91,10 +134,26 @@ function tokenize(text) {
   const normalized = normalizeForSearch(text);
   if (!normalized) return [];
 
-  return normalized
+  const tokens = normalized
     .split(' ')
     .map(token => token.trim())
     .filter(token => token.length >= 2);
+
+  const expanded = [];
+  for (const token of tokens) {
+    expanded.push(token);
+
+    if (/^[\u0600-\u06ff]{4,}$/.test(token) && token.startsWith('ال')) {
+      expanded.push(token.slice(2));
+    }
+
+    const expansions = QUERY_EXPANSIONS.get(token);
+    if (Array.isArray(expansions)) {
+      expanded.push(...expansions);
+    }
+  }
+
+  return expanded.filter(token => token.length >= 2);
 }
 
 function decodeHtmlEntities(value) {
@@ -165,24 +224,45 @@ function trimSnippet(text, maxChars = 260) {
 function normalizeUrlFromPath(filePath) {
   const relative = path.relative(SITE_ROOT, filePath).replace(/\\/g, '/');
   if (!relative) return '/';
+
+  if (relative === 'index.html') return '/';
+  if (relative === 'docs.html') return '/docs/';
+  if (relative.endsWith('/index.html')) {
+    return `/${relative.slice(0, -'index.html'.length)}`;
+  }
+  if (relative.endsWith('.html')) {
+    return `/${relative.slice(0, -'.html'.length)}/`;
+  }
+
   return `/${relative}`;
 }
 
-function filePathPriority(filePath) {
-  const normalized = filePath.replace(/\\/g, '/');
+function routePriority(url, filePath = '') {
+  const normalizedFilePath = filePath.replace(/\\/g, '/');
   let score = 0;
 
-  if (normalized.includes('/sectors/')) score += 10;
-  if (normalized.includes('/docs/')) score += 8;
-  if (normalized.includes('/demo/smart-medical-archive/')) score += 9;
-  if (normalized.includes('/smart-automation/')) score += 8;
-  if (normalized.includes('/ai-agent/')) score += 8;
-  if (normalized.includes('/consultation/')) score += 7;
-  if (normalized.includes('/blog/')) score += 4;
-  if (normalized.includes('/blogger/')) score += 1;
-  if (normalized.endsWith('/index.html')) score += 2;
+  if (PRIORITY_PUBLIC_URLS.includes(url)) score += 35;
+  if (url.startsWith('/services/')) score += 18;
+  if (url.startsWith('/sectors/')) score += 17;
+  if (url.startsWith('/ai-agent/')) score += 17;
+  if (url.startsWith('/ai-bots/')) score += 17;
+  if (url.startsWith('/data-analysis/')) score += 16;
+  if (url.startsWith('/smart-automation/')) score += 16;
+  if (url.startsWith('/ai-workflows/')) score += 16;
+  if (url.startsWith('/docs/')) score += 12;
+  if (url.startsWith('/en/')) score += 10;
+  if (url.startsWith('/blog/')) score += 9;
+  if (url.startsWith('/tools/')) score += 8;
+  if (url.startsWith('/demo/')) score += 4;
+  if (url.startsWith('/reports/')) score -= 80;
+  if (url === '/404/' || url === '/500/' || url === '/error/') score -= 12;
+  if (normalizedFilePath.endsWith('/index.html')) score += 3;
 
   return score;
+}
+
+function shouldSkipDirectory(entryName) {
+  return entryName.startsWith('.') || SKIPPED_INDEX_DIRS.has(entryName);
 }
 
 function walkHtmlFiles(startDir) {
@@ -198,10 +278,11 @@ function walkHtmlFiles(startDir) {
     const entries = fs.readdirSync(current, { withFileTypes: true });
 
     for (const entry of entries) {
-      if (!entry || !entry.name || entry.name.startsWith('.')) continue;
+      if (!entry || !entry.name) continue;
 
       const absolutePath = path.join(current, entry.name);
       if (entry.isDirectory()) {
+        if (shouldSkipDirectory(entry.name)) continue;
         stack.push(absolutePath);
       } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.html')) {
         files.push(absolutePath);
@@ -213,38 +294,21 @@ function walkHtmlFiles(startDir) {
 }
 
 function collectCandidateFiles() {
-  const files = [];
-
-  for (const fileName of ROOT_HTML_FILES) {
-    const filePath = path.join(SITE_ROOT, fileName);
-    if (fs.existsSync(filePath)) files.push(filePath);
-  }
-
-  const pageFiles = walkHtmlFiles(PAGES_ROOT);
-  const docsFiles = walkHtmlFiles(DOCS_ROOT);
-  pageFiles.sort((a, b) => {
-    const byPriority = filePathPriority(b) - filePathPriority(a);
-    if (byPriority !== 0) return byPriority;
-    return a.localeCompare(b);
-  });
-  docsFiles.sort((a, b) => {
-    const byPriority = filePathPriority(b) - filePathPriority(a);
-    if (byPriority !== 0) return byPriority;
-    return a.localeCompare(b);
-  });
-
-  const combined = files.concat(docsFiles, pageFiles);
-  const deduped = [];
+  const discovered = walkHtmlFiles(SITE_ROOT);
   const seen = new Set();
+  const deduped = [];
 
-  for (const filePath of combined) {
+  for (const filePath of discovered) {
     if (seen.has(filePath)) continue;
     seen.add(filePath);
     deduped.push(filePath);
-    if (deduped.length >= MAX_FILES) break;
   }
 
-  return deduped;
+  return deduped.sort((a, b) => {
+    const byPriority = routePriority(normalizeUrlFromPath(b), b) - routePriority(normalizeUrlFromPath(a), a);
+    if (byPriority !== 0) return byPriority;
+    return normalizeUrlFromPath(a).localeCompare(normalizeUrlFromPath(b));
+  });
 }
 
 function buildTf(tokens) {
@@ -430,10 +494,16 @@ function retrieveRelevantChunks(query, options = {}) {
     const baseScore = dotProduct / (queryVector.norm * entry.norm);
     const coverage = matchedTokenCount / queryVector.weights.size;
 
-    let score = baseScore + (coverage * 0.12);
+    let score = baseScore + (coverage * 0.12) + (routePriority(entry.url) * 0.003);
     const normalizedTitle = normalizeForSearch(entry.title);
     if (normalizedTitle && normalizedQuery && normalizedTitle.includes(normalizedQuery)) {
       score += 0.2;
+    }
+
+    const normalizedUrl = normalizeForSearch(entry.url);
+    const urlTokenMatches = tokens.filter(token => normalizedUrl.includes(token)).length;
+    if (urlTokenMatches > 0) {
+      score += Math.min(0.18, urlTokenMatches * 0.045);
     }
 
     scored.push({

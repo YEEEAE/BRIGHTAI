@@ -106,6 +106,28 @@
     window.__brightAiLastReport = { config, result };
   }
 
+  function ensureStatus(form) {
+    let status = $("#demo-form-status", form);
+    if (!status) {
+      status = document.createElement("p");
+      status.id = "demo-form-status";
+      status.className = "privacy-note";
+      status.setAttribute("role", "status");
+      status.setAttribute("aria-live", "polite");
+      form.appendChild(status);
+    }
+    const describedBy = new Set((form.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean));
+    describedBy.add(status.id);
+    form.setAttribute("aria-describedby", Array.from(describedBy).join(" "));
+    return status;
+  }
+
+  function setStatus(form, message, state = "info") {
+    const status = ensureStatus(form);
+    status.dataset.state = state;
+    status.textContent = message;
+  }
+
   async function showLoading(box) {
     box.hidden = false;
     const stages = all("[data-stage]", box);
@@ -214,6 +236,8 @@
     const resultPanel = $("[data-result-panel]");
     const loadingBox = $("[data-loading-box]");
     if (!config || !form || !input || !resultPanel || !loadingBox) return;
+    let isSubmitting = false;
+    ensureStatus(form);
 
     function loadSample(index) {
       const sample = samples[index] || samples[0];
@@ -246,18 +270,38 @@
 
     if (form.dataset.demoPremiumBound !== "true") form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (isSubmitting) {
+        setStatus(form, "التحليل قيد التنفيذ بالفعل. انتظر اكتمال التقرير.", "info");
+        return;
+      }
       const submit = form.querySelector('button[type="submit"]');
-      submit.disabled = true;
+      const originalText = submit?.textContent || "";
+      isSubmitting = true;
+      form.setAttribute("aria-busy", "true");
+      if (submit) {
+        submit.disabled = true;
+        submit.setAttribute("aria-busy", "true");
+        submit.textContent = "جارٍ التحليل...";
+      }
+      setStatus(form, "جارٍ تجهيز التقرير. لا تغلق الصفحة أثناء المعالجة.", "info");
       await showLoading(loadingBox);
       try {
         const extra = `${$("#goal")?.value || ""} ${$("#systems")?.value || ""}`.trim();
         const raw = await requestAi(config, input.value.trim(), extra);
         renderResult(resultPanel, normalizeResult(raw, config.fallbackResult), config, false);
+        setStatus(form, "تم توليد التقرير بنجاح. راجع النتيجة أسفل النموذج.", "success");
       } catch {
         renderResult(resultPanel, normalizeResult(config.fallbackResult, config.fallbackResult), config, true);
+        setStatus(form, "تعذر الاتصال بالخدمة حالياً، لذلك عرضنا نتيجة توضيحية آمنة مع خيار إعادة المحاولة.", "error");
       } finally {
         loadingBox.hidden = true;
-        submit.disabled = false;
+        isSubmitting = false;
+        form.removeAttribute("aria-busy");
+        if (submit) {
+          submit.disabled = false;
+          submit.removeAttribute("aria-busy");
+          submit.textContent = originalText || "شغّل التحليل";
+        }
       }
     });
     form.dataset.demoPremiumBound = "true";

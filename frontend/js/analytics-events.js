@@ -22,9 +22,24 @@
     }, extra || {});
   }
 
+  function safeParams(params) {
+    var blocked = /(^|_)(email|phone|mobile|name|full_name|company|message|notes|input|search_term|query|id_number|national_id|identity|text|content|body)($|_)/i;
+    var source = params || {};
+    var clean = {};
+    Object.keys(source).forEach(function (key) {
+      if (blocked.test(key)) return;
+      if (key === "link_url" && typeof source[key] === "string") {
+        clean[key] = source[key].split("?")[0].split("#")[0];
+        return;
+      }
+      clean[key] = source[key];
+    });
+    return clean;
+  }
+
   function track(eventName, params) {
     if (!eventName || !/^[a-z][a-z0-9_]*$/.test(eventName)) return;
-    var payload = pageParams(params);
+    var payload = pageParams(safeParams(params));
     if (isReady()) {
       window.gtag("event", eventName, payload);
     }
@@ -155,10 +170,9 @@
     var form = event.target;
     if (!form || form.tagName !== "FORM") return;
     if (!/search|بحث/i.test(form.id + " " + form.getAttribute("role") + " " + form.getAttribute("aria-label"))) return;
-    var input = form.querySelector("input[type='search'], input[name='q'], input[name='search']");
     track("site_search", {
       form_id: form.id || "site_search",
-      search_term: input ? cleanText(input.value) : undefined
+      has_query: Boolean(form.querySelector("input[type='search'], input[name='q'], input[name='search']")?.value)
     });
   }
 

@@ -259,11 +259,12 @@
             <button type="button" data-mode="pro">${escapeHtml(config.proLabel)}</button>
           </div>
           <div class="bai-sample-row">${config.samples.map((sample, index) => `<button type="button" data-sample-index="${index}">${escapeHtml(sample.label)}</button>`).join("")}</div>
-          ${config.fields.map((field) => `<div class="bai-demo-field"><label for="bai-${field.name}">${escapeHtml(field.label)}</label><textarea id="bai-${field.name}" name="${escapeHtml(field.name)}" rows="7" placeholder="اكتب بيانات مختصرة أو اختر عينة جاهزة..."></textarea></div>`).join("")}
+          ${config.fields.map((field) => `<div class="bai-demo-field"><label for="bai-${field.name}">${escapeHtml(field.label)}</label><textarea id="bai-${field.name}" name="${escapeHtml(field.name)}" rows="7" required aria-describedby="bai-${field.name}-error" placeholder="اكتب بيانات مختصرة أو اختر عينة جاهزة..."></textarea><span id="bai-${field.name}-error" class="bai-field-error" role="alert" hidden></span></div>`).join("")}
           <div class="bai-trust-strip">
             <span>خصوصية الديمو</span><span>Audit Trail</span><span>صلاحيات وصول</span><span>API-ready</span>
           </div>
           <p class="bai-privacy-note">لا يتم استخدام بياناتك إلا لتوليد النتيجة التجريبية. لا ترفع بيانات حساسة حقيقية في النسخة التجريبية العامة.</p>
+          <p class="bai-privacy-note" data-demo-status role="status" aria-live="polite"></p>
           <div class="bai-demo-actions">
             <button class="bai-demo-btn bai-demo-btn-primary" type="submit">شغّل الذكاء الاصطناعي</button>
             <a class="bai-demo-btn bai-demo-btn-whatsapp" data-demo-cta href="${engine.createWhatsAppUrl(config.title)}" target="_blank" rel="noopener">أرسل النتيجة عبر واتساب</a>
@@ -340,7 +341,10 @@ ${values.input || ""}
     const output = section.querySelector("[data-demo-output]");
     const input = form.querySelector("textarea[name='input']");
     const limit = section.querySelector("[data-demo-limit]");
+    const status = section.querySelector("[data-demo-status]");
+    const submit = form.querySelector('button[type="submit"]');
     let mode = "quick";
+    let isSubmitting = false;
 
     section.querySelectorAll("[data-mode]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -361,6 +365,30 @@ ${values.input || ""}
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
+      if (isSubmitting) {
+        if (status) status.textContent = "التقرير قيد التوليد بالفعل. انتظر لحظة.";
+        return;
+      }
+      if (!input.value.trim()) {
+        const error = section.querySelector("#bai-input-error");
+        if (error) {
+          error.textContent = "يرجى إدخال وصف مختصر أو اختيار عينة جاهزة.";
+          error.hidden = false;
+        }
+        input.setAttribute("aria-invalid", "true");
+        input.focus();
+        if (status) status.textContent = "لم يتم التشغيل. أكمل حقل البيانات أولاً.";
+        return;
+      }
+      section.querySelector("#bai-input-error")?.setAttribute("hidden", "");
+      input.removeAttribute("aria-invalid");
+      isSubmitting = true;
+      if (submit) {
+        submit.disabled = true;
+        submit.setAttribute("aria-busy", "true");
+        submit.textContent = "جارٍ التوليد...";
+      }
+      if (status) status.textContent = "جارٍ توليد تقرير منظم...";
       output.innerHTML = loadingMarkup();
       try {
         const result = await engine.generate({
@@ -374,9 +402,18 @@ ${values.input || ""}
         limit.textContent = `متبقي ${engine.getRemainingUses()} من 3 محاولات`;
         const safe = withAudit(result, config);
         output.innerHTML = renderReport(safe, config, engine);
+        if (status) status.textContent = "تم توليد التقرير بنجاح.";
       } catch (error) {
         engine.trackUsage("demo_error", error?.message || "live_demo_failed");
         output.innerHTML = renderReport(withAudit({ ...config.fallback, __fallback: true }, config), config, engine);
+        if (status) status.textContent = "تعذر الاتصال بالخدمة، لذلك عرضنا نتيجة توضيحية آمنة.";
+      } finally {
+        isSubmitting = false;
+        if (submit) {
+          submit.disabled = false;
+          submit.removeAttribute("aria-busy");
+          submit.textContent = "شغّل الذكاء الاصطناعي";
+        }
       }
       output.querySelector("[data-print-report]")?.addEventListener("click", () => {
         engine.trackUsage("report_downloaded");

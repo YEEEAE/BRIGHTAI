@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "@id": "https://brightai.site/#organization",
       name: "Bright AI",
       url: "https://brightai.site/",
-      logo: "https://brightai.site/assets/images/logo.png",
+      logo: "https://brightai.site/assets/images/logo.PNG",
       telephone: "+966538229013",
       areaServed: {
         "@type": "Country",

@@ -180,6 +180,77 @@
     syncFilters(scope);
   };
 
+  const ensurePageLandmarks = () => {
+    const main = document.querySelector("main")
+      || document.querySelector('[role="main"]')
+      || document.querySelector("article")
+      || document.querySelector(".main-content, .page-content, .content, .hero-section, .hero, section");
+    if (main) {
+      if (!main.id) main.id = "main-content";
+      main.setAttribute("role", "main");
+    }
+
+    const hasSkipLink = document.querySelector(".skip-link, .brightai-skip-link, a[href='#main'], a[href='#main-content']");
+    if (main && !hasSkipLink) {
+      const skipLink = document.createElement("a");
+      skipLink.className = "brightai-skip-link";
+      skipLink.href = `#${main.id}`;
+      skipLink.textContent = document.documentElement.dir === "ltr" ? "Skip to main content" : "تخطي إلى المحتوى الرئيسي";
+      document.body.insertAdjacentElement("afterbegin", skipLink);
+    }
+
+    const skipLinks = Array.from(document.querySelectorAll(".skip-link, .brightai-skip-link, a[href='#main'], a[href='#main-content']"));
+    if (skipLinks.length > 1 && skipLinks.some((link) => !link.classList.contains("brightai-skip-link"))) {
+      skipLinks.forEach((link) => {
+        if (link.classList.contains("brightai-skip-link")) link.remove();
+      });
+    }
+
+    document.querySelectorAll("nav").forEach((nav, index) => {
+      if (!nav.getAttribute("aria-label") && !nav.getAttribute("aria-labelledby")) {
+        nav.setAttribute("aria-label", index === 0 ? (document.documentElement.dir === "ltr" ? "Primary navigation" : "التنقل الرئيسي") : (document.documentElement.dir === "ltr" ? "Navigation" : "تنقل"));
+      }
+    });
+
+    document.querySelectorAll("footer").forEach((footer) => {
+      if (!footer.getAttribute("role")) footer.setAttribute("role", "contentinfo");
+    });
+  };
+
+  const dedupeSkipLinks = () => {
+    const skipLinks = Array.from(document.querySelectorAll(".skip-link, .brightai-skip-link, a[href='#main'], a[href='#main-content']"));
+    if (skipLinks.length > 1 && skipLinks.some((link) => !link.classList.contains("brightai-skip-link"))) {
+      skipLinks.forEach((link) => {
+        if (link.classList.contains("brightai-skip-link")) link.remove();
+      });
+    }
+  };
+
+  const syncBidirectionalContent = (scope = document) => {
+    scope.querySelectorAll("a[href^='tel:'], a[href^='mailto:']").forEach((link) => {
+      link.setAttribute("dir", "ltr");
+      link.style.unicodeBidi = "isolate";
+    });
+
+    scope.querySelectorAll("input[type='tel'], input[type='email'], input[type='url'], input[type='number']").forEach((field) => {
+      field.setAttribute("dir", "ltr");
+    });
+  };
+
+  const syncPageDirection = () => {
+    const html = document.documentElement;
+    const path = window.location.pathname || "";
+
+    if (path === "/en" || path.startsWith("/en/")) {
+      if (!html.getAttribute("lang")) html.setAttribute("lang", "en-SA");
+      if (!html.getAttribute("dir")) html.setAttribute("dir", "ltr");
+      return;
+    }
+
+    if (!html.getAttribute("lang")) html.setAttribute("lang", "ar-SA");
+    if (!html.getAttribute("dir")) html.setAttribute("dir", "rtl");
+  };
+
   const initFontControls = () => {
     const root = document.documentElement;
     const increaseFontBtn = document.getElementById("increaseFontBtn");
@@ -285,14 +356,23 @@
   };
 
   const init = () => {
+    syncPageDirection();
+    ensurePageLandmarks();
     initFontControls();
     initReducedMotion();
     initThemeToggle();
     bindDelegatedInteractions();
     scanAccessibility();
+    syncBidirectionalContent();
 
     // فحص مؤجل خفيف يلتقط العناصر التي تضيفها السكربتات المؤجلة بدون MutationObserver دائم.
-    window.requestAnimationFrame(() => scanAccessibility());
+    window.requestAnimationFrame(() => {
+      ensurePageLandmarks();
+      dedupeSkipLinks();
+      scanAccessibility();
+      syncBidirectionalContent();
+    });
+    window.setTimeout(dedupeSkipLinks, 300);
   };
 
   if (document.readyState === "loading") {

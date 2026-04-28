@@ -16,6 +16,9 @@ html {
 body {
   min-width: 0;
   overflow-x: clip;
+  text-align: start;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 body.modal-open,
@@ -83,6 +86,40 @@ textarea {
   touch-action: manipulation;
 }
 
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+input,
+select,
+textarea {
+  max-inline-size: 100%;
+  text-align: start;
+}
+
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[inputmode="email"],
+input[inputmode="tel"],
+input[inputmode="url"],
+input[autocomplete="email"],
+input[autocomplete="tel"],
+a[href^="tel:"],
+a[href^="mailto:"],
+.phone,
+.email,
+.url,
+.ltr,
+[dir="ltr"] {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
 a,
 button,
 [role="button"] {
@@ -95,8 +132,36 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #22d3ee;
+  outline: 3px solid #67e8f9;
   outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(103, 232, 249, 0.22);
+}
+
+.skip-link,
+.brightai-skip-link {
+  position: fixed;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  z-index: calc(var(--brightai-layer-toast) + 10);
+  min-block-size: 44px;
+  padding-block: 12px;
+  padding-inline: 16px;
+  border: 2px solid #67e8f9;
+  border-radius: 8px;
+  background: #020617;
+  color: #ffffff;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 24px));
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible,
+.brightai-skip-link:focus,
+.brightai-skip-link:focus-visible {
+  transform: translateY(0);
 }
 
 h1,
@@ -117,6 +182,63 @@ blockquote,
 .btn-outline,
 .cta-button {
   overflow-wrap: anywhere;
+}
+
+[dir="rtl"] {
+  text-align: start;
+}
+
+[dir="rtl"] :where(ul, ol) {
+  padding-inline-start: 0;
+  padding-inline-end: 1.25em;
+}
+
+[dir="ltr"] :where(ul, ol) {
+  padding-inline-start: 1.25em;
+  padding-inline-end: 0;
+}
+
+[dir="rtl"] :where(.text-left) {
+  text-align: start;
+}
+
+[dir="ltr"] :where(.text-right) {
+  text-align: start;
+}
+
+[dir="rtl"] :where(.ml-1, .ml-2, .ml-3, .ml-4, .ml-5, .ml-6, .ml-8, .ml-10, .ml-12) {
+  margin-inline-start: 0;
+}
+
+[dir="rtl"] :where(.mr-1, .mr-2, .mr-3, .mr-4, .mr-5, .mr-6, .mr-8, .mr-10, .mr-12) {
+  margin-inline-end: 0;
+}
+
+:where(.unified-nav, .nav-container, .nav-links, .mobile-menu-drawer, .dropdown-menu, .breadcrumbs, .breadcrumb, form, .form-group, .card, .glass-card, .service-card, .feature-card, .demo-card, .modal, [role="dialog"]) {
+  text-align: start;
+}
+
+:where(.hero-actions, .cta-container, .action-row, .button-row, .form-actions, .modal-actions, .card-actions) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+:where(.hero-actions, .cta-container, .action-row, .button-row, .form-actions, .modal-actions, .card-actions) > :where(a, button) {
+  inline-size: auto;
+  max-inline-size: 100%;
+}
+
+:where(.btn, .btn-main, .btn-outline, .btn-sub, .cta-button, .nav-cta, button, [role="button"]) {
+  align-items: center;
+  justify-content: center;
+  line-height: 1.25;
+}
+
+:where(label, .form-label) {
+  display: inline-block;
+  margin-block-end: 0.4rem;
+  text-align: start;
 }
 
 [dir="rtl"] .mobile-menu,
@@ -252,7 +374,7 @@ code,
   .hero,
   .section,
   section {
-    padding-inline: max(12px, env(safe-area-inset-left));
+    padding-inline-start: max(12px, env(safe-area-inset-left));
     padding-inline-end: max(12px, env(safe-area-inset-right));
   }
 
@@ -271,14 +393,19 @@ code,
   .hero-actions,
   .cta-container,
   .action-row,
-  .button-row {
+  .button-row,
+  .form-actions,
+  .modal-actions {
     align-items: stretch;
   }
 
   .hero-actions > *,
   .cta-container > *,
   .action-row > *,
-  .button-row > * {
+  .button-row > *,
+  .form-actions > *,
+  .modal-actions > * {
+    inline-size: 100%;
     max-inline-size: 100%;
   }
 
@@ -286,11 +413,19 @@ code,
   .btn-main,
   .btn-outline,
   .btn-sub,
+  .nav-cta,
   .cta-button,
   button,
   [role="button"] {
     min-block-size: 44px;
     white-space: normal;
+  }
+
+  input,
+  select,
+  textarea {
+    min-block-size: 44px;
+    font-size: 16px;
   }
 
   .search-modal-content,

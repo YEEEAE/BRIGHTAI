@@ -1454,8 +1454,8 @@ function makeSchema(product, rels, faqs) {
         "name": "Bright AI",
         "alternateName": ["برايت AI", "مشرقة للذكاء الاصطناعي"],
         "url": `${SITE}/`,
-        "logo": `${SITE}/assets/images/logo.png`,
-        "image": `${SITE}/assets/images/logo.png`,
+        "logo": `${SITE}/assets/images/logo.PNG`,
+        "image": `${SITE}/assets/images/logo.PNG`,
         "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
         "contactPoint": {
           "@type": "ContactPoint",
@@ -1587,12 +1587,12 @@ function makePage(product) {
   <meta property="og:title" content="${esc(title)}" />
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${url}" />
-  <meta property="og:image" content="${SITE}/assets/images/logo.png" />
+  <meta property="og:image" content="${SITE}/assets/images/logo.PNG" />
   <meta property="og:image:alt" content="${esc(product.name)} من Bright AI" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(title)}" />
   <meta name="twitter:description" content="${esc(description)}" />
-  <meta name="twitter:image" content="${SITE}/assets/images/logo.png" />
+  <meta name="twitter:image" content="${SITE}/assets/images/logo.PNG" />
   <script type="application/ld+json">
 ${jsonLd(schema)}
   </script>
@@ -1691,11 +1691,7 @@ ${jsonLd(schema)}
   <header class="unified-nav" id="main-header" role="banner">
     <div class="nav-container">
       <a class="nav-logo" href="/" aria-label="Bright AI — الصفحة الرئيسية" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
-        <div class="logo-box"><img src="/assets/images/logo.png" alt="" width="36" height="36" decoding="async"></div>
-        <div class="logo-copy">
-          <strong>Bright<span>AI</span></strong>
-          <small>Saudi</small>
-        </div>
+        <div class="logo-box"><img src="/assets/images/logo.PNG" alt="" width="36" height="36" decoding="async"></div>
       </a>
       <nav class="nav-desktop" aria-label="التنقل الرئيسي">
         <ul class="nav-links">
@@ -1883,8 +1879,8 @@ function makeServicesSchema() {
         "name": "Bright AI",
         "alternateName": ["برايت AI", "مشرقة للذكاء الاصطناعي"],
         "url": `${SITE}/`,
-        "logo": `${SITE}/assets/images/logo.png`,
-        "image": `${SITE}/assets/images/logo.png`,
+        "logo": `${SITE}/assets/images/logo.PNG`,
+        "image": `${SITE}/assets/images/logo.PNG`,
         "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
         "contactPoint": { "@type": "ContactPoint", "telephone": "+966538229013", "contactType": "sales", "areaServed": "SA", "availableLanguage": ["ar", "en"] }
       },

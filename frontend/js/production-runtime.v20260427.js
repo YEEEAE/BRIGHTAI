@@ -106,6 +106,251 @@
     return String(value || "").replace(/\s+/g, " ").trim();
   }
 
+  function nextFrame(callback) {
+    if (typeof window.requestAnimationFrame === "function") return window.requestAnimationFrame(callback);
+    return window.setTimeout(callback, 0);
+  }
+
+  function ensureFormStyles() {
+    if (document.getElementById("brightai-form-ux-style")) return;
+    var style = document.createElement("style");
+    style.id = "brightai-form-ux-style";
+    style.textContent = [
+      ".brightai-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}",
+      ".brightai-field-error{display:block;margin-block-start:.4rem;color:#fecaca;font-size:.86rem;line-height:1.6}",
+      ".brightai-form-status{margin-block-start:.8rem;padding:.75rem .9rem;border-radius:.8rem;border:1px solid rgba(148,163,184,.24);background:rgba(15,23,42,.72);color:#dbeafe;line-height:1.7}",
+      ".brightai-form-status[data-state='success']{border-color:rgba(34,197,94,.45);background:rgba(22,101,52,.18);color:#dcfce7}",
+      ".brightai-form-status[data-state='error']{border-color:rgba(248,113,113,.45);background:rgba(127,29,29,.18);color:#fee2e2}",
+      ".brightai-is-loading{cursor:progress!important;opacity:.78}",
+      "form[aria-busy='true'] input,form[aria-busy='true'] select,form[aria-busy='true'] textarea{opacity:.82}"
+    ].join("\n");
+    document.head.appendChild(style);
+  }
+
+  function escapeSelector(value) {
+    if (window.CSS && typeof window.CSS.escape === "function") return window.CSS.escape(value);
+    return String(value || "").replace(/["\\]/g, "\\$&");
+  }
+
+  function fieldLabelText(field) {
+    var labelledBy = field.getAttribute("aria-labelledby");
+    if (labelledBy) {
+      var labelNode = document.getElementById(labelledBy);
+      if (labelNode) return normalizeText(labelNode.textContent);
+    }
+    if (field.labels && field.labels.length) return normalizeText(field.labels[0].textContent);
+    return normalizeText(field.getAttribute("aria-label") || field.getAttribute("placeholder") || field.getAttribute("name") || "هذا الحقل");
+  }
+
+  function ensureFieldLabel(field, index) {
+    if (!field || field.type === "hidden") return;
+    if (field.labels && field.labels.length) return;
+    var labelledBy = field.getAttribute("aria-labelledby");
+    if (labelledBy && document.getElementById(labelledBy)) return;
+    if (!field.id) field.id = "brightai-field-" + (Date.now() + index);
+    if (document.querySelector('label[for="' + escapeSelector(field.id) + '"]')) return;
+    var label = document.createElement("label");
+    label.className = "brightai-sr-only";
+    label.setAttribute("for", field.id);
+    label.textContent = fieldLabelText(field);
+    field.insertAdjacentElement("beforebegin", label);
+  }
+
+  function ensureFieldError(field, form, index) {
+    if (!field || field.type === "hidden") return null;
+    if (!field.id) field.id = "brightai-field-" + (Date.now() + index);
+    var errorId = field.id + "-error";
+    var error = document.getElementById(errorId);
+    if (!error) {
+      error = document.createElement("span");
+      error.id = errorId;
+      error.className = "brightai-field-error";
+      error.setAttribute("role", "alert");
+      error.hidden = true;
+      field.insertAdjacentElement("afterend", error);
+    }
+    var describedBy = (field.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+    if (describedBy.indexOf(errorId) === -1) {
+      describedBy.push(errorId);
+      field.setAttribute("aria-describedby", describedBy.join(" "));
+    }
+    field.addEventListener("input", function () {
+      if (field.checkValidity()) setFieldError(field, "");
+    });
+    field.addEventListener("invalid", function () {
+      setFieldError(field, validationMessage(field));
+    });
+    return error;
+  }
+
+  function validationMessage(field) {
+    var label = fieldLabelText(field);
+    if (field.validity.valueMissing) return "يرجى تعبئة " + label + ".";
+    if (field.validity.typeMismatch && field.type === "email") return "يرجى إدخال بريد إلكتروني صحيح.";
+    if (field.validity.typeMismatch && field.type === "url") return "يرجى إدخال رابط صحيح.";
+    if (field.validity.patternMismatch) return "صيغة " + label + " غير صحيحة. راجع المثال داخل الحقل.";
+    if (field.validity.tooShort) return "قيمة " + label + " قصيرة جداً.";
+    if (field.validity.tooLong) return "قيمة " + label + " أطول من الحد المسموح.";
+    return "راجع " + label + " قبل الإرسال.";
+  }
+
+  function setFieldError(field, message) {
+    var errorId = field.getAttribute("aria-describedby") || "";
+    var error = errorId.split(/\s+/).map(function (id) { return document.getElementById(id); }).find(function (node) {
+      return node && node.classList.contains("brightai-field-error");
+    });
+    if (!error) return;
+    error.textContent = message || "";
+    error.hidden = !message;
+    field.toggleAttribute("aria-invalid", Boolean(message));
+  }
+
+  function ensureFormStatus(form) {
+    var statusId = form.id ? form.id + "-status" : "brightai-form-status-" + Array.prototype.indexOf.call(document.forms, form);
+    var status = document.getElementById(statusId);
+    if (!status) {
+      status = document.createElement("p");
+      status.id = statusId;
+      status.className = "brightai-form-status";
+      status.setAttribute("role", "status");
+      status.setAttribute("aria-live", "polite");
+      status.hidden = true;
+      form.appendChild(status);
+    }
+    if (!form.getAttribute("aria-describedby")) form.setAttribute("aria-describedby", statusId);
+    return status;
+  }
+
+  function setFormStatus(form, state, message) {
+    var status = ensureFormStatus(form);
+    status.dataset.state = state || "info";
+    status.textContent = message || "";
+    status.hidden = !message;
+  }
+
+  function setSubmitBusy(form, busy, message) {
+    var submit = form.querySelector('button[type="submit"], input[type="submit"]');
+    if (!submit) return;
+    if (busy) {
+      if (!submit.dataset.brightaiOriginalText) submit.dataset.brightaiOriginalText = submit.tagName === "INPUT" ? submit.value : submit.innerHTML;
+      if (submit.tagName === "INPUT") submit.value = message || "جارٍ الإرسال...";
+      else submit.innerHTML = message || "جارٍ الإرسال...";
+    } else if (submit.dataset.brightaiOriginalText) {
+      if (submit.tagName === "INPUT") submit.value = submit.dataset.brightaiOriginalText;
+      else submit.innerHTML = submit.dataset.brightaiOriginalText;
+      delete submit.dataset.brightaiOriginalText;
+    }
+    submit.disabled = busy || Boolean(submit.dataset.brightaiKeepDisabled === "true");
+    submit.toggleAttribute("aria-busy", busy);
+    submit.classList.toggle("brightai-is-loading", busy);
+  }
+
+  function validateForm(form) {
+    var fields = Array.from(form.querySelectorAll("input, select, textarea")).filter(function (field) {
+      return field.type !== "hidden" && !field.disabled;
+    });
+    var firstInvalid = null;
+    fields.forEach(function (field) {
+      var message = field.checkValidity() ? "" : validationMessage(field);
+      setFieldError(field, message);
+      if (message && !firstInvalid) firstInvalid = field;
+    });
+    if (firstInvalid) firstInvalid.focus({ preventScroll: false });
+    return !firstInvalid;
+  }
+
+  function shouldHandleStaticSubmit(form) {
+    if (form.dataset.demoForm !== undefined) return false;
+    if (form.id === "appointmentForm") return false;
+    if (form.classList.contains("download-form")) return true;
+    if (form.id === "visitorForm") return true;
+    if (form.getAttribute("data-form-type")) return true;
+    return false;
+  }
+
+  function enhanceForms() {
+    ensureFormStyles();
+    document.querySelectorAll("form").forEach(function (form, formIndex) {
+      if (form.dataset.brightaiFormUx === "true") return;
+      form.dataset.brightaiFormUx = "true";
+      ensureFormStatus(form);
+      Array.from(form.querySelectorAll("input, select, textarea")).forEach(function (field, index) {
+        ensureFieldLabel(field, formIndex * 100 + index);
+        ensureFieldError(field, form, formIndex * 100 + index);
+      });
+    });
+
+    if (window.__brightaiFormSubmitUxReady) return;
+    window.__brightaiFormSubmitUxReady = true;
+    document.addEventListener("submit", function (event) {
+      var form = event.target;
+      if (!form || !form.matches || !form.matches("form")) return;
+      if (!validateForm(form)) {
+        event.preventDefault();
+        setFormStatus(form, "error", "لم يتم الإرسال. يرجى مراجعة الحقول المحددة بالأحمر.");
+        return;
+      }
+      if (form.dataset.demoForm !== undefined || form.id === "appointmentForm" || form.id === "bright-chat-form" || form.classList.contains("bright-newsletter-form")) {
+        return;
+      }
+      if (form.dataset.brightaiSubmitting === "true") {
+        event.preventDefault();
+        setFormStatus(form, "info", "طلبك قيد المعالجة بالفعل. انتظر لحظة.");
+        return;
+      }
+      form.dataset.brightaiSubmitting = "true";
+      form.setAttribute("aria-busy", "true");
+      setSubmitBusy(form, true, "جارٍ الإرسال...");
+
+      window.setTimeout(function () {
+        if (form.dataset.brightaiSubmitting === "true" && !form.dataset.brightaiHandledByStaticUx) {
+          delete form.dataset.brightaiSubmitting;
+          form.removeAttribute("aria-busy");
+          setSubmitBusy(form, false);
+        }
+      }, 12000);
+
+      if (!shouldHandleStaticSubmit(form)) return;
+
+      event.preventDefault();
+      form.dataset.brightaiHandledByStaticUx = "true";
+      setFormStatus(form, "info", "جارٍ معالجة الطلب...");
+      window.setTimeout(function () {
+        delete form.dataset.brightaiSubmitting;
+        delete form.dataset.brightaiHandledByStaticUx;
+        form.removeAttribute("aria-busy");
+        setSubmitBusy(form, false);
+        setFormStatus(form, "success", "تم استلام الطلب بنجاح. سنراجع البيانات ونتواصل معك عبر القناة المناسبة.");
+        if (window.BrightAIAnalytics && typeof window.BrightAIAnalytics.trackFormSuccess === "function") {
+          window.BrightAIAnalytics.trackFormSuccess(form.id || form.getAttribute("data-form-type") || "form");
+        }
+        if (form.classList.contains("download-form")) {
+          setFormStatus(form, "success", "تم تسجيل طلب التقرير. راجع بريدك خلال دقائق أو تواصل معنا إذا لم يصلك.");
+        }
+      }, 900);
+    }, true);
+  }
+
+  function observeDynamicForms() {
+    if (!("MutationObserver" in window) || window.__brightaiFormObserverReady) return;
+    window.__brightaiFormObserverReady = true;
+    var queued = false;
+    var observer = new MutationObserver(function (mutations) {
+      var hasFormChange = mutations.some(function (mutation) {
+        return Array.from(mutation.addedNodes || []).some(function (node) {
+          return node.nodeType === 1 && (node.matches && node.matches("form, input, select, textarea") || node.querySelector && node.querySelector("form, input, select, textarea"));
+        });
+      });
+      if (!hasFormChange || queued) return;
+      queued = true;
+      nextFrame(function () {
+        queued = false;
+        enhanceForms();
+      });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
   function humanizePath(value) {
     var clean = String(value || "")
       .replace(/^https?:\/\/[^/]+/i, "")
@@ -224,10 +469,13 @@
     document.documentElement.classList.add("brightai-production-ready");
     enhanceMedia();
     enhanceInteractiveLabels();
+    enhanceForms();
     wrapTables();
     bindLoadingStates();
     bindGlobalErrorState();
-    window.requestAnimationFrame(enhanceInteractiveLabels);
+    observeDynamicForms();
+    nextFrame(enhanceInteractiveLabels);
+    nextFrame(enhanceForms);
   }
 
   if (document.readyState === "loading") {

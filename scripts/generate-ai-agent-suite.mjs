@@ -175,7 +175,7 @@ function schema(agent, type) {
     ["هل الديمو يستخدم مفتاح API في المتصفح؟", "لا. صفحات الديمو تمر عبر Backend موحد ولا تعرض أي مفاتيح API في الواجهة."]
   ];
   const graph = [
-    { "@type": "Organization", "@id": `${site}/#organization`, name: "Bright AI", url: `${site}/`, logo: `${site}/assets/images/logo.png`, areaServed: { "@type": "Country", name: "Saudi Arabia" } },
+    { "@type": "Organization", "@id": `${site}/#organization`, name: "Bright AI", url: `${site}/`, logo: `${site}/assets/images/logo.PNG`, areaServed: { "@type": "Country", name: "Saudi Arabia" } },
     { "@type": "WebSite", "@id": `${site}/#website`, url: `${site}/`, name: "Bright AI", inLanguage: "ar-SA", publisher: { "@id": `${site}/#organization` } },
     { "@type": "WebPage", "@id": `${serviceUrl}#webpage`, url: serviceUrl, name: agent.title, description: agent.meta, inLanguage: "ar-SA", isPartOf: { "@id": `${site}/#website` }, about: { "@id": `${serviceUrl}#service` }, dateModified: today },
     { "@type": "BreadcrumbList", "@id": `${serviceUrl}#breadcrumb`, itemListElement: [{ "@type": "ListItem", position: 1, name: "الرئيسية", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "الخدمات", item: `${site}/services/` }, { "@type": "ListItem", position: 3, name: agent.name, item: serviceUrl }] },
@@ -214,7 +214,7 @@ function servicePage(agent) {
   <meta property="og:title" content="${esc(agent.title)}" />
   <meta property="og:description" content="${esc(agent.meta)}" />
   <meta property="og:url" content="${serviceUrl}" />
-  <meta property="og:image" content="${site}/assets/images/logo.png" />
+  <meta property="og:image" content="${site}/assets/images/logo.PNG" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(agent.title)}" />
   <meta name="twitter:description" content="${esc(agent.meta)}" />
@@ -336,7 +336,7 @@ function demoPage(agent) {
   <meta property="og:title" content="ديمو ${esc(agent.name)} من Bright AI" />
   <meta property="og:description" content="${esc(agent.meta)}" />
   <meta property="og:url" content="${demoUrl}" />
-  <meta property="og:image" content="${site}/assets/images/logo.png" />
+  <meta property="og:image" content="${site}/assets/images/logo.PNG" />
   <link rel="stylesheet" href="/assets/css/ai-agent-suite.css" />
   <script type="application/ld+json">${schema(agent, "demo")}</script>
 </head>

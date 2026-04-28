@@ -1,12 +1,200 @@
 {
-  "generatedAt": "2026-04-28T21:32:26.721Z",
+  "generatedAt": "2026-04-28T22:13:04.952Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
   "filesScanned": 386,
-  "referencesScanned": 23988,
-  "internalReferences": 18711,
-  "brokenReferences": 0,
-  "fixableBrokenReferences": 0,
+  "referencesScanned": 24269,
+  "internalReferences": 18978,
+  "brokenReferences": 18,
+  "fixableBrokenReferences": 18,
   "normalizationCandidates": 95,
-  "topBrokenFiles": [],
-  "brokenRows": []
+  "topBrokenFiles": [
+    {
+      "file": "sectors/ecommerce-en/index.html",
+      "count": 3
+    },
+    {
+      "file": "sectors/energy-en/index.html",
+      "count": 3
+    },
+    {
+      "file": "sectors/finance-en/index.html",
+      "count": 3
+    },
+    {
+      "file": "sectors/healthcare-en/index.html",
+      "count": 3
+    },
+    {
+      "file": "sectors/logistics-en/index.html",
+      "count": 3
+    },
+    {
+      "file": "sectors/manufacturing-en/index.html",
+      "count": 3
+    }
+  ],
+  "brokenRows": [
+    {
+      "file": "sectors/ecommerce-en/index.html",
+      "line": 214,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/ecommerce-en/index.html",
+      "line": 215,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/ecommerce-en/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/energy-en/index.html",
+      "line": 214,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/energy-en/index.html",
+      "line": 215,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/energy-en/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/finance-en/index.html",
+      "line": 214,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/finance-en/index.html",
+      "line": 215,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/finance-en/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/healthcare-en/index.html",
+      "line": 214,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/healthcare-en/index.html",
+      "line": 215,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/healthcare-en/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/logistics-en/index.html",
+      "line": 214,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/logistics-en/index.html",
+      "line": 215,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/logistics-en/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/manufacturing-en/index.html",
+      "line": 249,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/manufacturing-en/index.html",
+      "line": 250,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    },
+    {
+      "file": "sectors/manufacturing-en/index.html",
+      "line": 251,
+      "patternType": "attr",
+      "reference": "/assets/images/Gemini.png",
+      "normalizedReferencePath": "/assets/images/Gemini.png",
+      "reason": "المسار غير موجود",
+      "suggestion": "/blog/Gemini.png"
+    }
+  ]
 }

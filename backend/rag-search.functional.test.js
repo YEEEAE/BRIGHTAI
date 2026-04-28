@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 const TRACKED_ENV_KEYS = [
   "NODE_ENV",
+  "GEMINI_API_KEY",
+  "GOOGLE_API_KEY",
   "GROQ_API_KEY",
   "RAG_MAX_FILES",
   "RAG_INDEX_REFRESH_MS",
@@ -16,6 +18,8 @@ async function loadRagService(envOverrides = {}) {
   }
 
   process.env.NODE_ENV = "test";
+  process.env.GEMINI_API_KEY = envOverrides.GEMINI_API_KEY ?? "";
+  process.env.GOOGLE_API_KEY = envOverrides.GOOGLE_API_KEY ?? "";
   process.env.GROQ_API_KEY = envOverrides.GROQ_API_KEY ?? "";
   process.env.RAG_MAX_FILES = String(envOverrides.RAG_MAX_FILES ?? 80);
   process.env.RAG_INDEX_REFRESH_MS = String(envOverrides.RAG_INDEX_REFRESH_MS ?? 60000);
@@ -61,6 +65,50 @@ describe("RAG Search Service", () => {
       expect(output.results.length).toBeGreaterThan(0);
       expect(typeof output.answer).toBe("string");
       expect(output.answer.length).toBeGreaterThan(10);
+    } finally {
+      runtime.restoreEnv();
+    }
+  });
+
+  it("retrieves real public HTML pages for Arabic and English site-search queries", async () => {
+    const runtime = await loadRagService({ RAG_MAX_FILES: 80 });
+
+    try {
+      const cases = [
+        {
+          query: "وكلاء ذكاء اصطناعي",
+          expectedUrlPattern: /\/(ai-agent|services)\//
+        },
+        {
+          query: "الشات بوت",
+          expectedUrlPattern: /\/(ai-bots|services\/ai-chatbot-arabic)\//
+        },
+        {
+          query: "الرعاية الصحية",
+          expectedUrlPattern: /\/(sectors\/healthcare|docs\/solutions-healthcare|blog\/.*healthcare|services\/health-data-analysis)\//
+        },
+        {
+          query: "تحليل البيانات",
+          expectedUrlPattern: /\/(data-analysis|services)\//
+        },
+        {
+          query: "AI agents Saudi Arabia",
+          expectedUrlPattern: /\/(en\/ai-agent|docs\/ai-agent-en|services\/ai-agents-saudi|ai-agent)\//
+        }
+      ];
+
+      for (const testCase of cases) {
+        const matches = runtime.retrieveRelevantChunks(testCase.query, {
+          limit: 6,
+          maxPerUrl: 1
+        });
+
+        expect(matches.length, testCase.query).toBeGreaterThan(0);
+        expect(
+          matches.some(item => testCase.expectedUrlPattern.test(item.url)),
+          `${testCase.query}: ${matches.map(item => item.url).join(", ")}`
+        ).toBe(true);
+      }
     } finally {
       runtime.restoreEnv();
     }
