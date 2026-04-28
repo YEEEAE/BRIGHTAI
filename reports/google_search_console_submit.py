@@ -115,6 +115,21 @@ def get_access_token(args):
         if token:
             return token
 
+    # محاولة استخراج الرمز عبر مكتبة google-auth بشكل أصلي (يدعم GOOGLE_APPLICATION_CREDENTIALS)
+    try:
+        import google.auth
+        import google.auth.transport.requests
+        scopes = [WEBMASTERS_SCOPE, INDEXING_SCOPE]
+        credentials, _ = google.auth.default(scopes=scopes)
+        request = google.auth.transport.requests.Request()
+        credentials.refresh(request)
+        if credentials.token:
+            return credentials.token
+    except ImportError:
+        pass
+    except Exception as e:
+        print(f"تحذير: فشل استخراج الرمز عبر google-auth: {e}")
+
     raise SystemExit(
         "لم يتم توفير رمز وصول لجوجل.\n"
         "استخدم أحد الخيارات التالية:\n"

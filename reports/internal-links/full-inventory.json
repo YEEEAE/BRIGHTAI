@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-28T04:02:22.402Z",
-  "filesScanned": 268,
+  "generatedAt": "2026-04-28T17:10:26.433Z",
+  "filesScanned": 267,
   "pages": [
     {
       "relPath": "404.html",
@@ -36684,155 +36684,6 @@
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
-        "https://brightai.site/sitemap/"
-      ],
-      "isOrphan": false,
-      "problem": "",
-      "severity": "None"
-    },
-    {
-      "relPath": "docs/privacy-policy-en/index.html",
-      "url": "https://brightai.site/docs/privacy-policy-en/",
-      "expectedCanonical": "https://brightai.site/docs/privacy-policy-en/",
-      "canonical": "https://brightai.site/docs/privacy-policy-en/",
-      "title": "BrightAI Privacy Policy",
-      "routeType": "static-index-route",
-      "indexable": true,
-      "inSitemap": true,
-      "ownerDecisionNeeded": false,
-      "outgoing": [
-        "https://brightai.site/",
-        "https://brightai.site/ai-agent/",
-        "https://brightai.site/bot/",
-        "https://brightai.site/contact/",
-        "https://brightai.site/data-analysis/",
-        "https://brightai.site/docs/",
-        "https://brightai.site/docs/privacy-policy/",
-        "https://brightai.site/services/",
-        "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/smart-automation/"
-      ],
-      "outgoingAnchors": [
-        {
-          "href": "https://brightai.site/",
-          "text": "AI BrightAI Saudi"
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "Home"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "Services"
-        },
-        {
-          "href": "https://brightai.site/ai-agent/",
-          "text": "AI Agents"
-        },
-        {
-          "href": "https://brightai.site/smart-automation/",
-          "text": "Automation"
-        },
-        {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data Analytics"
-        },
-        {
-          "href": "https://brightai.site/docs/",
-          "text": "Docs"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "Contact"
-        },
-        {
-          "href": "https://brightai.site/docs/privacy-policy/",
-          "text": "العربية"
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "Home"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "Services"
-        },
-        {
-          "href": "https://brightai.site/ai-agent/",
-          "text": "AI Agents"
-        },
-        {
-          "href": "https://brightai.site/smart-automation/",
-          "text": "Automation"
-        },
-        {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data Analytics"
-        },
-        {
-          "href": "https://brightai.site/docs/",
-          "text": "Docs"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "Contact"
-        },
-        {
-          "href": "https://brightai.site/docs/privacy-policy/",
-          "text": "العربية"
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "Home"
-        },
-        {
-          "href": "https://brightai.site/docs/",
-          "text": "Docs"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "Discuss this use case with BrightAI"
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "شركة ذكاء اصطناعي في السعودية"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "خدمات الذكاء الاصطناعي للشركات"
-        },
-        {
-          "href": "https://brightai.site/ai-agent/",
-          "text": "وكلاء الذكاء الاصطناعي للأعمال"
-        },
-        {
-          "href": "https://brightai.site/smart-automation/",
-          "text": "أتمتة الأعمال بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات للشركات السعودية"
-        },
-        {
-          "href": "https://brightai.site/bot/",
-          "text": "مساعد Bright AI التجريبي"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل مع Bright AI لتنفيذ حلول AI"
-        },
-        {
-          "href": "https://brightai.site/services/ai-automation-saudi/",
-          "text": "أتمتة الذكاء الاصطناعي في السعودية"
-        }
-      ],
-      "incoming": [
-        "https://brightai.site/docs/",
-        "https://brightai.site/docs/privacy-policy/",
-        "https://brightai.site/docs/services-overview-en/",
-        "https://brightai.site/en/docs/",
-        "https://brightai.site/en/docs/docs/",
-        "https://brightai.site/en/services/",
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
@@ -75230,7 +75081,7 @@
       "title": "تجربة أدوات الذكاء الاصطناعي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -75498,8 +75349,8 @@
         "https://brightai.site/try/text-analysis/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "try/text-analysis/index.html",
@@ -75509,7 +75360,7 @@
       "title": "تحليل النصوص بالذكاء الاصطناعي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -75696,8 +75547,8 @@
         "https://brightai.site/try/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "what-is-ai/index.html",
@@ -76010,17 +75861,17 @@
     }
   ],
   "summary": {
-    "pagesDiscovered": 268,
-    "indexablePages": 263,
-    "internalLinksDiscovered": 6464,
+    "pagesDiscovered": 267,
+    "indexablePages": 262,
+    "internalLinksDiscovered": 6454,
     "orphanPages": 6,
     "brokenLinks": 0,
-    "pagesOutsideSitemap": 0,
+    "pagesOutsideSitemap": 2,
     "weakAnchors": 0,
     "noHrefLinks": 0,
     "canonicalIssues": 0,
     "hashIssues": 0,
-    "sitemapUrls": 256,
+    "sitemapUrls": 254,
     "sitemapMissingInternalLinks": 6
   },
   "weakAnchors": [],
@@ -76035,5 +75886,5 @@
     "https://brightai.site/en/health/",
     "https://brightai.site/en/tenders/"
   ],
-  "registrySize": 263
+  "registrySize": 262
 }

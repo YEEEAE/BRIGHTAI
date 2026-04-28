@@ -1541,13 +1541,25 @@
             // === API Configuration ===
             const API_URL = (() => {
                 if (window.BrightAIRuntimeConfig && typeof window.BrightAIRuntimeConfig.buildApiUrl === 'function') {
-                    return window.BrightAIRuntimeConfig.buildApiUrl('/api/ai/chat');
+                    return window.BrightAIRuntimeConfig.buildApiUrl('/api/ai/chat/completions');
                 }
                 if (window.BrightAIGateway && typeof window.BrightAIGateway.buildUrl === 'function') {
-                    return window.BrightAIGateway.buildUrl('/api/ai/chat');
+                    return window.BrightAIGateway.buildUrl('/api/ai/chat/completions');
                 }
                 throw new Error('تعذر تحديد عنوان BrightAI API. تأكد من تحميل runtime-config.js قبل هذا السكربت.');
             })();
+            const DEMO_META = {
+                demoType: 'smart_hiring_support_ai',
+                agentType: 'smart_hiring_support_ai',
+                schemaName: 'smart_hiring_demo_schema',
+                sourcePage: '/demo/smart-hiring-system/pages/support-ai/'
+            };
+            const fallbackResult = {
+                executive_summary_ar: 'تعذر الاتصال الكامل بالمساعد الآن. يمكنك متابعة التجربة بإعادة صياغة السؤال أو استخدام أحد الأسئلة السريعة.',
+                key_insights: ['اكتب سؤالك عن التوظيف أو الفرز أو المقابلات.', 'تجنب إدخال بيانات شخصية حساسة في النسخة العامة.'],
+                recommended_actions: ['جرّب سؤالاً أقصر وأكثر تحديداً.', 'راجع لوحة التوظيف الذكي عند الحاجة لتحليل المرشحين.'],
+                next_action_ar: 'أعد المحاولة بعد لحظات.'
+            };
             const CHAT_TOGGLE_DELAY_MS = 3000;
 
             if (chatToggle) {
@@ -1854,7 +1866,11 @@
                     }
                 } catch (error) {
                     removeTypingIndicator();
-                    appendMessage('عذراً، حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى.', 'ai');
+                    appendMessage([
+                        fallbackResult.executive_summary_ar,
+                        ...fallbackResult.recommended_actions,
+                        fallbackResult.next_action_ar
+                    ].join('\n'), 'ai');
                     console.error('API Error:', error);
                 }
             }
@@ -1865,8 +1881,21 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: text,
-                        sessionId: chatSessionId
+                        model: 'gemini-2.5-flash',
+                        demoType: DEMO_META.demoType,
+                        agentType: DEMO_META.agentType,
+                        schemaName: DEMO_META.schemaName,
+                        sourcePage: DEMO_META.sourcePage,
+                        messages: [
+                            { role: 'system', content: 'أنت مساعد توظيف داخل ديمو Bright AI. أجب بالعربية باختصار وبشكل عملي، وتجنب أي قرار توظيف نهائي.' },
+                            { role: 'user', content: text }
+                        ],
+                        response_format: {
+                            type: 'json_schema',
+                            json_schema: { name: DEMO_META.schemaName }
+                        },
+                        temperature: 0.25,
+                        metadata: { sessionId: chatSessionId }
                     })
                 });
 
@@ -1876,15 +1905,42 @@
                     throw new Error(data?.error || `Request failed: ${response.status}`);
                 }
 
-                if (data.sessionId) {
-                    chatSessionId = data.sessionId;
+                if (data.requestId) {
+                    chatSessionId = data.requestId;
                 }
 
                 if (typeof data.reply === 'string' && data.reply.trim()) {
                     return data.reply.trim();
                 }
 
-                return "لم أتمكن من معالجة طلبك. هل يمكنك إعادة صياغة السؤال؟";
+                const content = data?.data || data?.choices?.[0]?.message?.content || data;
+                const parsed = typeof content === 'string'
+                    ? (() => {
+                        try { return JSON.parse(content.replace(/^```json\s*/i, '').replace(/```$/i, '').trim()); }
+                        catch { return content; }
+                    })()
+                    : content;
+
+                if (typeof parsed === 'string' && parsed.trim()) {
+                    return parsed.trim();
+                }
+
+                if (parsed && typeof parsed === 'object') {
+                    const lines = [
+                        parsed.executive_summary_ar,
+                        ...(Array.isArray(parsed.key_insights) ? parsed.key_insights : []),
+                        ...(Array.isArray(parsed.recommended_actions) ? parsed.recommended_actions : []),
+                        parsed.next_action_ar
+                    ].filter(Boolean);
+                    if (lines.length) return lines.join('\n');
+                }
+
+                return [
+                    fallbackResult.executive_summary_ar,
+                    ...fallbackResult.key_insights,
+                    ...fallbackResult.recommended_actions,
+                    fallbackResult.next_action_ar
+                ].join('\n');
             }
 
             // === Speech Synthesis ===

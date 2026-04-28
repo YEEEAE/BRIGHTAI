@@ -1001,9 +1001,11 @@
             const faqSection = document.getElementById('report-faq');
             if (!faqSection) return;
 
-            const apiBase = (window.BRIGHTAI_API_BASE)
-                ? window.BRIGHTAI_API_BASE
-                : ((location && location.origin && location.origin !== 'null') ? location.origin : 'https://brightai.site');
+            const AI_COMPLETIONS_ENDPOINT = '/api/ai/chat/completions';
+            const fallbackResult = Array.from(faqSection.querySelectorAll('.faq-item')).map((item) => ({
+                question: item.querySelector('strong')?.textContent?.trim() || '',
+                answer: item.querySelector('p')?.textContent?.trim() || ''
+            })).filter((item) => item.question && item.answer);
 
             const context = `
 عنوان التقرير: تقرير الذكاء الاصطناعي السعودي 2026.
@@ -1012,36 +1014,64 @@
 القيمة: بيانات محلية، أمثلة سعودية، وخارطة فرص حسب القطاع.
 `;
 
-            fetch(`${apiBase}/api/ai/faq`, {
+            function renderFaqs(faqs) {
+                if (!Array.isArray(faqs) || faqs.length === 0) return;
+                faqSection.innerHTML = '';
+                faqs.slice(0, 6).forEach((item) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'faq-item';
+
+                    const question = document.createElement('strong');
+                    question.textContent = item.question;
+
+                    const answer = document.createElement('p');
+                    answer.style.color = '#94a3b8';
+                    answer.style.marginTop = '8px';
+                    answer.textContent = item.answer;
+
+                    wrapper.appendChild(question);
+                    wrapper.appendChild(answer);
+                    faqSection.appendChild(wrapper);
+                });
+            }
+
+            const request = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ context })
-            })
+                body: JSON.stringify({
+                    model: 'gemini-2.5-flash',
+                    demoType: 'report-ai-saudi-2026',
+                    agentType: 'report-ai-saudi-2026',
+                    schemaName: 'report_ai_saudi_faq_schema',
+                    sourcePage: '/demo/resources/report-ai-saudi-2026/',
+                    messages: [
+                        { role: 'system', content: 'أنت مساعد Bright AI. أعد أسئلة وأجوبة عربية موجزة فقط بصيغة JSON صالحة.' },
+                        { role: 'user', content: context }
+                    ],
+                    response_format: {
+                        type: 'json_schema',
+                        json_schema: { name: 'report_ai_saudi_faq_schema' }
+                    },
+                    temperature: 0.25
+                })
+            };
+
+            const apiUrl = window.BrightAIRuntimeConfig?.buildApiUrl
+                ? window.BrightAIRuntimeConfig.buildApiUrl(AI_COMPLETIONS_ENDPOINT)
+                : AI_COMPLETIONS_ENDPOINT;
+
+            fetch(apiUrl, request)
                 .then((response) => response.json().then((data) => ({ ok: response.ok, data })))
                 .then(({ ok, data }) => {
-                    if (!ok || !data || !Array.isArray(data.faqs) || data.faqs.length === 0) {
+                    const faqs = data?.data?.faqs || data?.faqs || [];
+                    if (!ok || !Array.isArray(faqs) || faqs.length === 0) {
                         return;
                     }
 
-                    faqSection.innerHTML = '';
-                    data.faqs.forEach((item) => {
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'faq-item';
-
-                        const question = document.createElement('strong');
-                        question.textContent = item.question;
-
-                        const answer = document.createElement('p');
-                        answer.style.color = '#94a3b8';
-                        answer.style.marginTop = '8px';
-                        answer.textContent = item.answer;
-
-                        wrapper.appendChild(question);
-                        wrapper.appendChild(answer);
-                        faqSection.appendChild(wrapper);
-                    });
+                    renderFaqs(faqs);
                 })
                 .catch(() => {
+                    renderFaqs(fallbackResult);
                     return;
                 });
         });

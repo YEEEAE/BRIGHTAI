@@ -155,6 +155,23 @@ const demoSchemas = {
     tender_fit: { type: 'number' },
     bid_requirements: { type: 'array', items: { type: 'string' } }
   }),
+  pricingEstimatorSchema: extendDemoSchema({
+    cost_factors: { type: 'array', items: { type: 'string' } },
+    scope_assumptions: { type: 'array', items: { type: 'string' } },
+    estimate_range_ar: { type: 'string' }
+  }),
+  reportFaqSchema: extendDemoSchema({
+    faqs: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          question: { type: 'string' },
+          answer: { type: 'string' }
+        }
+      }
+    }
+  }),
   genericDemoSchema: BASE_DEMO_SCHEMA
 };
 
@@ -206,7 +223,13 @@ const schemaAliases = {
   social_data_demo_schema: 'socialDataAnalysisSchema',
   brightproject_demo_schema: 'projectManagementSchema',
   brightsales_demo_schema: 'salesAgentSchema',
-  tenders_demo_schema: 'tenderAnalysisSchema'
+  tenders_demo_schema: 'tenderAnalysisSchema',
+  pricing: 'pricingEstimatorSchema',
+  pricing_demo_schema: 'pricingEstimatorSchema',
+  report_ai_saudi_2026: 'reportFaqSchema',
+  report_ai_saudi_faq_schema: 'reportFaqSchema',
+  demo_index: 'genericDemoSchema',
+  demo_index_schema: 'genericDemoSchema'
 };
 
 const safetyProfiles = {

@@ -1,6 +1,6 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-28T04:16:36.298Z
+- Date: 2026-04-28T17:10:38.308Z
 - Total URLs in generated sitemap: 254
 - Included core pages: 162
 - Included sector pages: 13
@@ -128,7 +128,7 @@
 | core | demo/ai-tenders-analysis/dashboard.html | 1015 | https://brightai.site/demo/ai-tenders-analysis/dashboard/ |
 | core | demo/ai-tenders-analysis/landing.html | 2324 | https://brightai.site/demo/ai-tenders-analysis/landing/ |
 | core | demo/ai-tenders-analysis/reports.html | 1029 | https://brightai.site/demo/ai-tenders-analysis/reports/ |
-| core | demo/ai-tenders-analysis/settings.html | 1021 | https://brightai.site/demo/ai-tenders-analysis/settings/ |
+| core | demo/ai-tenders-analysis/settings.html | 1024 | https://brightai.site/demo/ai-tenders-analysis/settings/ |
 | core | demo/ai-tenders-analysis/templates.html | 1870 | https://brightai.site/demo/ai-tenders-analysis/templates/ |
 | core | demo/approvals-automation/index.html | 806 | https://brightai.site/demo/approvals-automation/ |
 | core | demo/brightproject/index.html | 814 | https://brightai.site/demo/brightproject/ |
@@ -171,7 +171,7 @@
 | core | docs/faq-en.html | 1046 | https://brightai.site/docs/faq-en/ |
 | core | docs/faq.html | 1566 | https://brightai.site/docs/faq/ |
 | core | docs/openapi.html | 1656 | https://brightai.site/docs/openapi/ |
-| core | docs/privacy-policy-en/index.html | 631 | https://brightai.site/docs/privacy-policy-en/ |
+| core | docs/privacy-policy-en.html | 631 | https://brightai.site/docs/privacy-policy-en/ |
 | core | docs/privacy-policy.html | 1558 | https://brightai.site/docs/privacy-policy/ |
 | core | docs/services-overview-en.html | 999 | https://brightai.site/docs/services-overview-en/ |
 | core | docs/services-overview.html | 1615 | https://brightai.site/docs/services-overview/ |

@@ -1,13 +1,13 @@
 # Full Internal Links Inventory
 
-- Date: 2026-04-28T04:02:22.402Z
-- Files scanned: 268
-- Pages discovered: 268
-- Indexable pages: 263
-- Internal links discovered: 6464
+- Date: 2026-04-28T17:10:26.433Z
+- Files scanned: 267
+- Pages discovered: 267
+- Indexable pages: 262
+- Internal links discovered: 6454
 - Orphan pages: 6
 - Broken links: 0
-- Pages outside sitemap: 0
+- Pages outside sitemap: 2
 - Weak anchors: 0
 - Links without href: 0
 - Canonical issues: 0
@@ -157,7 +157,6 @@
 | BrightAI FAQ | https://brightai.site/docs/faq-en/ | docs/faq-en.html | static-html-route | 7 | 11 | No | Yes | https://brightai.site/docs/faq-en/ | Yes | None | None | None |
 | الأسئلة الشائعة عن BrightAI | https://brightai.site/docs/faq/ | docs/faq.html | static-html-route | 11 | 20 | No | Yes | https://brightai.site/docs/faq/ | Yes | None | None | None |
 | مرجع OpenAPI لمطوري BrightAI | https://brightai.site/docs/openapi/ | docs/openapi.html | static-html-route | 14 | 22 | No | Yes | https://brightai.site/docs/openapi/ | Yes | None | None | None |
-| BrightAI Privacy Policy | https://brightai.site/docs/privacy-policy-en/ | docs/privacy-policy-en/index.html | static-index-route | 7 | 10 | No | Yes | https://brightai.site/docs/privacy-policy-en/ | Yes | None | None | None |
 | BrightAI Privacy Policy | https://brightai.site/docs/privacy-policy-en/ | docs/privacy-policy-en.html | static-html-route | 7 | 10 | No | Yes | https://brightai.site/docs/privacy-policy-en/ | Yes | None | None | None |
 | سياسة الخصوصية في BrightAI | https://brightai.site/docs/privacy-policy/ | docs/privacy-policy.html | static-html-route | 7 | 18 | No | Yes | https://brightai.site/docs/privacy-policy/ | Yes | None | None | None |
 | BrightAI Services Overview | https://brightai.site/docs/services-overview-en/ | docs/services-overview-en.html | static-html-route | 13 | 22 | No | Yes | https://brightai.site/docs/services-overview-en/ | Yes | None | None | None |
@@ -236,6 +235,7 @@
 | الذكاء الاصطناعي في الرعاية الصحية في السعودية | https://brightai.site/sectors/healthcare/ | sectors/healthcare.html | static-html-route | 45 | 33 | No | Yes | https://brightai.site/sectors/healthcare/ | Yes | None | None | None |
 | حلول الذكاء الاصطناعي حسب القطاع للشركات والمؤسسات في السعودية | https://brightai.site/sectors/ | sectors/index.html | static-index-route | 18 | 24 | No | Yes | https://brightai.site/sectors/ | Yes | None | None | None |
 | AI Solutions For Saudi Logistics In Saudi Arabia | https://brightai.site/sectors/logistics-en/ | sectors/logistics-en/index.html | static-index-route | 3 | 35 | No | Yes | https://brightai.site/sectors/logistics-en/ | Yes | None | None | None |
+| AI Solutions For Saudi Logistics In Saudi Arabia | https://brightai.site/sectors/logistics-en/ | sectors/logistics-en.html | static-html-route | 3 | 35 | No | Yes | https://brightai.site/sectors/logistics-en/ | Yes | None | None | None |
 
 ## Problems
 
@@ -251,6 +251,8 @@
 | en/tenders/index.html | https://brightai.site/en/tenders/ | orphan_page | High |
 | error.html | https://brightai.site/error | owner_decision_needed | Medium |
 | mais-OBM/index.html | https://brightai.site/mais-OBM/ | owner_decision_needed | Medium |
+| try/index.html | https://brightai.site/try/ | missing_from_sitemap | Medium |
+| try/text-analysis/index.html | https://brightai.site/try/text-analysis/ | missing_from_sitemap | Medium |
 
 ## Weak Anchor Text
 
