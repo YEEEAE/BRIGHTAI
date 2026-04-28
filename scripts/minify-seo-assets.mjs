@@ -21,11 +21,7 @@ const targets = [
     outfile: "frontend/js/tovik-loader.min.js",
     type: "js"
   },
-  {
-    entry: "frontend/js/index-theme.js",
-    outfile: "frontend/js/index-theme.min.js",
-    type: "js"
-  },
+  // index-theme.min.js مُصغّر مسبقاً — الأصل محذوف
   {
     entry: "frontend/css/index-critical-overrides.css",
     outfile: "frontend/css/index-critical-overrides.min.css",

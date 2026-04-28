@@ -1,6 +1,6 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-28T03:04:07.398Z
+- Date: 2026-04-28T03:12:32.752Z
 - Total URLs in generated sitemap: 256
 - Included core pages: 164
 - Included sector pages: 13
@@ -170,7 +170,7 @@
 | core | docs/faq-en.html | 1046 | https://brightai.site/docs/faq-en/ |
 | core | docs/faq.html | 1566 | https://brightai.site/docs/faq/ |
 | core | docs/openapi.html | 1656 | https://brightai.site/docs/openapi/ |
-| core | docs/privacy-policy-en/index.html | 635 | https://brightai.site/docs/privacy-policy-en/ |
+| core | docs/privacy-policy-en/index.html | 631 | https://brightai.site/docs/privacy-policy-en/ |
 | core | docs/privacy-policy.html | 1558 | https://brightai.site/docs/privacy-policy/ |
 | core | docs/services-overview-en.html | 999 | https://brightai.site/docs/services-overview-en/ |
 | core | docs/services-overview.html | 1615 | https://brightai.site/docs/services-overview/ |
@@ -233,17 +233,17 @@
 | core | partners/index.html | 1197 | https://brightai.site/partners/ |
 | core | privacy-cookies/index.html | 998 | https://brightai.site/privacy-cookies/ |
 | sector | sectors/index.html | 1100 | https://brightai.site/sectors/ |
-| sector | sectors/ecommerce-en/index.html | 1232 | https://brightai.site/sectors/ecommerce-en/ |
+| sector | sectors/ecommerce-en/index.html | 1602 | https://brightai.site/sectors/ecommerce-en/ |
 | sector | sectors/ecommerce.html | 1755 | https://brightai.site/sectors/ecommerce/ |
-| sector | sectors/energy-en/index.html | 1341 | https://brightai.site/sectors/energy-en/ |
+| sector | sectors/energy-en/index.html | 1707 | https://brightai.site/sectors/energy-en/ |
 | sector | sectors/energy.html | 1772 | https://brightai.site/sectors/energy/ |
-| sector | sectors/finance-en/index.html | 1367 | https://brightai.site/sectors/finance-en/ |
+| sector | sectors/finance-en/index.html | 1733 | https://brightai.site/sectors/finance-en/ |
 | sector | sectors/finance.html | 1774 | https://brightai.site/sectors/finance/ |
-| sector | sectors/healthcare-en/index.html | 1419 | https://brightai.site/sectors/healthcare-en/ |
+| sector | sectors/healthcare-en/index.html | 1796 | https://brightai.site/sectors/healthcare-en/ |
 | sector | sectors/healthcare.html | 1763 | https://brightai.site/sectors/healthcare/ |
-| sector | sectors/logistics-en/index.html | 1323 | https://brightai.site/sectors/logistics-en/ |
+| sector | sectors/logistics-en/index.html | 1685 | https://brightai.site/sectors/logistics-en/ |
 | sector | sectors/logistics.html | 1763 | https://brightai.site/sectors/logistics/ |
-| sector | sectors/manufacturing-en/index.html | 1322 | https://brightai.site/sectors/manufacturing-en/ |
+| sector | sectors/manufacturing-en/index.html | 1688 | https://brightai.site/sectors/manufacturing-en/ |
 | sector | sectors/manufacturing.html | 1773 | https://brightai.site/sectors/manufacturing/ |
 | core | services/index.html | 2157 | https://brightai.site/services/ |
 | core | services/ai-agents-saudi.html | 864 | https://brightai.site/services/ai-agents-saudi/ |
