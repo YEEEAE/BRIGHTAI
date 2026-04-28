@@ -190,6 +190,90 @@
 .error-state .retry-btn{margin-block-start:12px;padding:8px 20px;border:1px solid rgba(239,68,68,.4);border-radius:8px;background:rgba(239,68,68,.1);color:#fca5a5;cursor:pointer;font-weight:700}
 </style>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/competitor-analysis-agent/#webpage",
+      "url": "https://brightai.site/demo/competitor-analysis-agent/",
+      "name": "حلّل منافسيك خلال دقيقة | ديمو وكيل تحليل المنافسين | Bright AI",
+      "description": "تجربة تفاعلية لتحليل المنافسين بالذكاء الاصطناعي. أدخل بياناتك وشاهد تحليلاً استراتيجياً لمنافسيك من مصادر عامة ومصرح بها عبر Backend موحد.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/competitor-analysis-agent/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "حلّل منافسيك خلال دقيقة | ديمو وكيل تحليل المنافسين",
+          "item": "https://brightai.site/demo/competitor-analysis-agent/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/competitor-analysis-agent/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "بيانات التحليل اسم شركتك القطاع عيادات طبية تقنية / SaaS تجارة إلكترونية مطاعم وكافيهات خدمات مهنية وكالات تسويق عقارات تعليم وتدريب أخرى المدينة / السوق المستهدف الرياض جدة الدمام مكة المكرمة المدينة المنورة السوق السعودي عامة أسماء المنافسين (سطر لكل منافس) مواقع المنافسين (اختياري - سطر لكل رابط) هدف التحليل المحتوى والعروض الأسعار والتسعير التقييمات والسمعة الحملات والإعلانات تحليل شامل مستوى التقرير سريع مفصّل تنفيذي حلّل المنافسين الآن ⬉ جرّب ببيانات نموذجية 🔍 أدخل بيانات شركتك ومنافسيك واضغط \"حلّل المنافسين الآن\" لمشاهدة تحليل استراتيجي من مصادر عامة ومصرح بها Bright AI وكيل تحليل المنافسين للشركات السعودية — مدعوم بـ Gemini عبر Backend آمن. يحلل البيانات العامة والمصرح بها فقط. صفحة الخدمة · تواصل معنا © 2026 Bright AI. جميع الحقوق محفوظة. /* ─── Sample Data ─── */ var SAMPLE = { companyName: \"عيادة النور الطبية\", sector: \"عيادات طبية\", city: \"الرياض\", competitors: \"عيادة الصحة\\nمركز الشفاء\\nعيادة الأمل\", competitorUrls: \"https://example-clinic.sa\\nhttps://example-shifa.sa\", analysisGoal: \"المحتوى والعروض\", reportLevel: \"مفصّل\" }; document.getElementById(\"fillSampleBtn\").addEventListener(\"click\", function() { document.getElementById(\"companyName\").value = SAMPLE.companyName; document.getElementById(\"sector\").value = SAMPLE.sector; document.getElementById(\"city\").value = SAMPLE.city; document.getElementById(\"competitors\").value = SAMPLE.competitors; document.getElementById(\"competitorUrls\").value = SAMPLE.competitorUrls; var goalRadio = document.querySelector('input[name=\"analysisGoal\"][value=\"' + SAMPLE.analysisGoal + '\"]'); if (goalRadio) goalRadio.checked = true; var levelRadio = document.querySelector('input[name=\"reportLevel\"][value=\"' + SAMPLE.reportLevel + '\"]'); if (levelRadio) levelRadio.checked = true; }); /* ─── Fallback Data ─── */ function getFallbackResult(inputs) { var compNames = inputs.competitors.split(\"\\n\").filter(function(c){return c.trim()}); var compUrls = inputs.competitorUrls.split(\"\\n\").filter(function(u){return u.trim()}); var competitors = compNames.map(function(name, i) { return { name: name.trim(), url: compUrls[i] ? compUrls[i].trim() : \"\", strengths_ar: [\"علامة تجارية معروفة\", \"موقع جيد\", \"تنوع الخدمات\"], weaknesses_ar: [\"ردود بطيئة\", \"أسعار مرتفعة\", \"تقييمات متفاوتة\"], messaging_angle_ar: \"يركز على الخبرة والتاريخ\", estimated_price_range_ar: \"متوسط إلى مرتفع\", review_sentiment_ar: \"مختلط — إيجابية مع شكاوى من الانتظار\", seo_visibility_ar: \"متوسطة\", opportunity_for_us_ar: \"تقديم سرعة استجابة أفضل وعروض أوضح\" }; }); return { competitive_advantage_score: 68, competitor_snapshots: competitors, comparison_matrix: { dimensions: [\"جودة المحتوى\", \"وضوح الأسعار\", \"تجربة العميل\", \"قوة العروض\", \"الظهور في البحث\"], rows: compNames.map(function(name) { return { competitor: name.trim(), scores: [Math.floor(Math.random()*30+50), Math.floor(Math.random()*30+40), Math.floor(Math.random()*30+45), Math.floor(Math.random()*30+35), Math.floor(Math.random()*30+40)] }; }) }, opportunity_gaps: [ { gap_ar: \"لا يعرض أي منافس أسعاراً واضحة\", implication_ar: \"فرصة لبناء ثقة فورية بعرض أسعار شفاف\", priority: \"عالية\" }, { gap_ar: \"شكاوى متكررة من وقت الانتظار\", implication_ar: \"فرصة للترويج لسرعة الخدمة والحجز الإلكتروني\", priority: \"عالية\" }, { gap_ar: \"محتوى تعليمي ضعيف لدى الجميع\", implication_ar: \"فرصة لبناء سلطة عبر محتوى طبي موثوق\", priority: \"متوسطة\" } ], campaign_recommendations: [ { campaign_ar: \"حملة \\\"شفافية الأسعار\\\"\", angle_ar: \"اعرض أسعارك بوضوح حيث يخفيها المنافسون\", channel_ar: \"Google Ads + صفحة هبوط مخصصة\", expected_impact_ar: \"زيادة معدل التحويل 20-35%\" }, { campaign_ar: \"حملة \\\"بدون انتظار\\\"\", angle_ar: \"احجز موعدك أونلاين وتجنب الانتظار\", channel_ar: \"Instagram + Snapchat\", expected_impact_ar: \"تحسين تجربة المريض وتقليل الشكاوى\" } ], pricing_insights: { market_range_ar: \"من 150 إلى 500 ريال للزيارة الأساسية\", your_positioning_ar: \"يمكن التموضع في المنتصف مع قيمة مضافة واضحة\", recommended_strategy_ar: \"باقات واضحة تبدأ من 200 ريال مع ضمان سرعة الخدمة\" }, review_intelligence: { common_complaints_ar: [\"بطء الاستقبال\", \"غياب وضوح الأسعار\", \"صعوبة الحجز\"], common_praises_ar: [\"جودة الأطباء\", \"نظافة العيادة\", \"موقع مركزي\"], action_ar: \"استهدف حل مشاكل الانتظار والأسعار وروّج لما يمدحونه فيك\" }, seo_gaps: { keywords_missed_ar: [\"أفضل عيادة في الرياض\", \"حجز موعد عيادة\", \"أسعار كشف طبي الرياض\"], content_opportunities_ar: [\"دليل أسعار الخدمات\", \"مقارنة بين العيادات\", \"أسئلة شائعة طبية\"], action_ar: \"أنشئ صفحات محتوى تستهدف هذه الكلمات المفقودة\" }, strategic_moves: [ { move_ar: \"أطلق صفحة أسعار شفافة\", timeline_ar: \"أسبوع واحد\", impact_ar: \"بناء ثقة فورية\" }, { move_ar: \"فعّل حجز المواعيد الإلكتروني\", timeline_ar: \"أسبوعان\", impact_ar: \"تقليل الشكاوى والانتظار\" }, { move_ar: \"أنشئ محتوى تعليمي طبي\", timeline_ar: \"شهر\", impact_ar: \"بناء سلطة وتحسين SEO\" } ], ethical_notice_ar: \"هذا التحليل مبني على بيانات عامة ومصرح بها فقط (مواقع عامة، إعلانات منشورة، تقييمات عامة). لا يستخدم اختراقاً أو بيانات خاصة أو scraping مخالف. النتائج تقديرية وليست ضماناً تجارياً.\", executive_summary_ar: \"تحليل \" + compNames.length + \" منافسين لـ \\\"\" + inputs.companyName + \"\\\" في \" + inputs.city + \" يكشف فجوات واضحة في شفافية الأسعار وسرعة الخدمة والمحتوى التعليمي. درجة الأفضلية التنافسية: 68%. أنت تملك فرصة حقيقية للتميز بعرض أسعار واضح وحجز إلكتروني ومحتوى طبي موثوق.\", competitive_advantage_score_explanation_ar: \"درجة 68% تعني أن لديك فرصة معقولة للتفوق على المنافسين بالتركيز على الفجوات المكتشفة. كلما حسّنت شفافية الأسعار وسرعة الخدمة ارتفعت درجتك.\", next_action_ar: \"جرّب الديمو ثم اطلب تقرير منافسين شهري مخصص لشركتك عبر واتساب أو صفحة الخدمة.\", whatsapp_summary_ar: \"تحليل منافسين لـ \" + inputs.companyName + \" | القطاع: \" + inputs.sector + \" | المدينة: \" + inputs.city + \" | المنافسون: \" + compNames.length + \" | الأفضلية: 68% | الفجوات: شفافية الأسعار، سرعة الخدمة، محتوى تعليمي\" }; } /* ─── Render Dashboard ─── */ function renderDashboard(data) { var html = \"\"; // Competitive Advantage Score html += ' '; html += ' ' + (data.competitive_advantage_score || 0) + '% '; html += ' درجة الأفضلية التنافسية '; html += ' '; if (data.competitive_advantage_score_explanation_ar) { html += ' ' + data.competitive_advantage_score_explanation_ar + ' '; } html += ' '; // Competitor Cards if (data.competitor_snapshots && data.competitor_snapshots.length) { html += ' 🏷 بطاقات المنافسين '; data.competitor_snapshots.forEach(function(comp) { html += ' '; html += ' ' + comp.name + ' '; if (comp.url) html += ' ' + comp.url + ' '; html += ' نقاط القوة: ' + (comp.strengths_ar || []).join(\" · \") + ' '; html += ' نقاط الضعف: ' + (comp.weaknesses_ar || []).join(\" · \") + ' '; html += ' الزاوية التسويقية: ' + (comp.messaging_angle_ar || \"\") + ' '; html += ' نطاق الأسعار التقديري: ' + (comp.estimated_price_range_ar || \"\") + ' '; html += ' مشاعر التقييمات: ' + (comp.review_sentiment_ar || \"\") + ' '; html += ' الظهور في البحث: ' + (comp.seo_visibility_ar || \"\") + ' '; html += ' الفرصة لنا: ' + (comp.opportunity_for_us_ar || \"\") + ' '; html += ' '; (comp.strengths_ar || []).forEach(function(s) { html += ' ' + s + ' '; }); (comp.weaknesses_ar || []).forEach(function(w) { html += ' ' + w + ' '; }); html += ' '; }); html += ' '; } // Comparison Matrix if (data.comparison_matrix && data.comparison_matrix.dimensions) { html += ' 📊 مصفوفة المقارنة '; html += ' '; html += ' البُعد '; data.comparison_matrix.rows.forEach(function(r) { html += ' ' + r.competitor + ' '; }); html += ' '; data.comparison_matrix.dimensions.forEach(function(dim, di) { html += ' ' + dim + ' '; data.comparison_matrix.rows.forEach(function(r) { var score = r.scores[di] || 0; var color = score >= 70 ? \"#86efac\" : score >= 50 ? \"#fde047\" : \"#fca5a5\"; html += ' ' + score + '% '; }); html += ' '; }); html += ' '; } // Opportunity Gaps if (data.opportunity_gaps && data.opportunity_gaps.length) { html += ' 🗺 خريطة الفرص '; data.opportunity_gaps.forEach(function(opp) { html += ' '; html += ' ' + opp.gap_ar + ' '; html += ' ' + opp.implication_ar + ' '; html += ' الأولوية: ' + opp.priority + ' '; html += ' '; }); html += ' '; } // Campaign Recommendations if (data.campaign_recommendations && data.campaign_recommendations.length) { html += ' 💡 أفكار حملات مضادة '; data.campaign_recommendations.forEach(function(camp) { html += ' '; html += ' ' + camp.campaign_ar + ' '; html += ' الزاوية: ' + camp.angle_ar + ' '; html += ' القناة: ' + camp.channel_ar + ' '; html += ' الأثر المتوقع: ' + camp.expected_impact_ar + ' '; html += ' '; }); html += ' '; } // Pricing Insights if (data.pricing_insights) { html += ' 💰 إشارات التسعير '; html += ' النطاق السوقي: ' + (data.pricing_insights.market_range_ar || \"\") + ' '; html += ' تموضعك: ' + (data.pricing_insights.your_positioning_ar || \"\") + ' '; html += ' الاستراتيجية المقترحة: ' + (data.pricing_insights.recommended_strategy_ar || \"\") + ' '; html += ' '; } // Review Intelligence if (data.review_intelligence) { html += ' ⭐ ذكاء التقييمات '; html += ' الشكاوى المتكررة: ' + (data.review_intelligence.common_complaints_ar || []).join(\" · \") + ' '; html += ' المدائح المتكررة: ' + (data.review_intelligence.common_praises_ar || []).join(\" · \") + ' '; html += ' الإجراء: ' + (data.review_intelligence.action_ar || \"\") + ' '; html += ' '; } // SEO Gaps if (data.seo_gaps) { html += ' 🔎 فجوات SEO '; html += ' كلمات مفقودة: ' + (data.seo_gaps.keywords_missed_ar || []).join(\" · \") + ' '; html += ' فرص محتوى: ' + (data.seo_gaps.content_opportunities_ar || []).join(\" · \") + ' '; html += ' الإجراء: ' + (data.seo_gaps.action_ar || \"\") + ' '; html += ' '; } // Strategic Moves (30-Day Plan) if (data.strategic_moves && data.strategic_moves.length) { html += ' 📅 خطة 30 يوم '; data.strategic_moves.forEach(function(move, i) { html += ' ' + (i+1) + ' '; html += ' ' + move.move_ar + ' '; html += ' المدة: ' + move.timeline_ar + ' · الأثر: ' + move.impact_ar + ' '; html += ' '; }); html += ' '; } // Ethical Notice if (data.ethical_notice_ar) { html += ' ⚠ ' + data.ethical_notice_ar + ' '; } // Executive Summary html += ' 📋 الملخص التنفيذي ' + (data.executive_summary_ar || \"\") + ' '; // CTA html += ' 🚀 الخطوة التالية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "' + (data.next_action_ar || \"اطلب تقرير منافسين شهري مخصص\") + '"
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body data-agent-demo="competitor-analysis-agent">
   <header class="site-header">

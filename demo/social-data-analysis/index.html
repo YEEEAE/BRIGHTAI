@@ -101,6 +101,76 @@
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/social-data-analysis/#webpage",
+      "url": "https://brightai.site/demo/social-data-analysis/",
+      "name": "ديمو تحليل بيانات التواصل الاجتماعي | تحليل ذكي | Bright AI",
+      "description": "جرّب كيف يحلل Bright AI بيانات منصات التواصل الاجتماعي: التفاعل، الأنماط، أداء الحملات، وتحسين الاستراتيجية.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/social-data-analysis/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ديمو تحليل بيانات التواصل الاجتماعي | تحليل ذكي",
+          "item": "https://brightai.site/demo/social-data-analysis/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body data-agent-demo="social-data-analysis">
   <header class="site-header">
@@ -259,5 +329,6 @@ document.getElementById("generateBtn").addEventListener("click", async function(
   finally { btn.disabled = false; btn.textContent = "حلّل البيانات"; }
 });
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

@@ -143,6 +143,90 @@
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/Gemini.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/hr-automation/#webpage",
+      "url": "https://brightai.site/demo/hr-automation/",
+      "name": "ديمو أتمتة الموارد البشرية | مقابلات وإجازات ورواتب | Bright AI",
+      "description": "جرّب كيف يؤتمت Bright AI إدارة الموارد البشرية: مقابلات أولية، طلبات إجازات، موافقات، رواتب، وتقييم أداء مع تكامل مع مقيم ومدد.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/hr-automation/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ديمو أتمتة الموارد البشرية | مقابلات وإجازات ورواتب",
+          "item": "https://brightai.site/demo/hr-automation/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/hr-automation/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "بيانات التجربة اسم الشركة عدد الموظفين أقل من 50 50-200 200-500 أكثر من 500 نوع العملية مقابلة وظيفية طلب إجازة رواتب تقييم أداء وصف السيناريو جرّب الأتمتة ⬉ جرّب ببيانات نموذجية 👥 اختر نوع العملية وأدخل السيناريو واضغط \"جرّب الأتمتة\" لمشاهدة كيف يؤتمم الذكاء الاصطناعي العملية Bright AI أتمتة الموارد البشرية للشركات السعودية — مدعوم بـ Gemini عبر Backend آمن. صفحة الخدمة · تواصل معنا © 2026 Bright AI. جميع الحقوق محفوظة. var SAMPLE = { companyName: \"شركة الأفق التقنية\", employeeCount: \"50-200\", processType: \"طلب إجازة\", scenario: \"موظف يطلب إجازة مرضية لمدة 3 أيام\\nيرفق تقرير طبي\" }; document.getElementById(\"fillSampleBtn\").addEventListener(\"click\", function() { document.getElementById(\"companyName\").value = SAMPLE.companyName; document.getElementById(\"employeeCount\").value = SAMPLE.employeeCount; document.getElementById(\"scenario\").value = SAMPLE.scenario; var ptRadio = document.querySelector('input[name=\"processType\"][value=\"' + SAMPLE.processType + '\"]'); if (ptRadio) ptRadio.checked = true; }); function getFallbackResult(inputs) { var processType = inputs.processType; var result = { process_type_ar: processType, company_ar: inputs.companyName, employee_count_ar: inputs.employeeCount, scenario_ar: inputs.scenario }; if (processType === \"طلب إجازة\") { result.workflow_steps_ar = [ { step: \"استقبال الطلب\", detail: \"الموظف يقدم طلب إجازة عبر البوابة الذاتية\" }, { step: \"التحقق الآلي\", detail: \"النظام يتحقق من رصيد الإجازات والتقارير الطبية\" }, { step: \"توجيه الموافقة\", detail: \"إحالة تلقائية للمدير المباشر + HR\" }, { step: \"إشعار الإجازة\", detail: \"إرسال تأكيد للموظف وتحديث جدول العمل\" } ]; result.metrics = { processing_time_ar: \"أقل من 30 ثانية\", approval_rate_ar: \"92%\", avg_leave_days_ar: \"4.2 يوم/شهر\", muqeem_sync_ar: \"مزامنة تلقائية\" }; result.ai_decision_ar = \"مقبول — رصيد الإجازات كافٍ والتقرير الطبي مرفق. يُحال للموافقة النهائية.\"; result.integration_ar = \"تكامل تلقائي مع مقيم (Muqeem) لتحديث بيانات الإقامة ومدد لتأكيد الإجازة\"; } else if (processType === \"مقابلة وظيفية\") { result.workflow_steps_ar = [ { step: \"فرز السير الذاتية\", detail: \"AI يصنّف المرشحين حسب المعايير المحددة\" }, { step: \"المقابلة الأولية\", detail: \"وكيل ذكي يطرح أسئلة تقنية وسلوكية\" }, { step: \"تقييم المرشح\", detail: \"تقرير تقييم تلقائي مع درجة توافق\" }, { step: \"التوصية\", detail: \"ترشيح أفضل 3 مرشحين للمقابلة النهائية\" } ]; result.metrics = { processing_time_ar: \"15 دقيقة لكل مرشح\", screening_accuracy_ar: \"89%\", interview_completion_ar: \"95%\", time_saved_ar: \"70%\" }; result.ai_decision_ar = \"مرشح مؤهل — درجة التوافق 82%. يُنصح بإجراء مقابلة نهائية.\"; result.integration_ar = \"تكامل مع نظام التوظيف الذكي لإنشاء ملف مرشح تلقائي\"; } else { result.workflow_steps_ar = [ { step: \"جمع البيانات\", detail: \"تجميع مؤشرات الأداء والرواتب والخصومات\" }, { step: \"الحساب الآلي\", detail: \"AI يحسب الرواتب مع البدلات والخصومات\" }, { step: \"المراجعة\", detail: \"كشف التناقضات والانحرافات تلقائياً\" }, { step: \"الاعتماد\", detail: \"إحالة للتوقيع الرقمي والصرف\" } ]; result.metrics = { processing_time_ar: \"5 دقائق لكل دورة\", accuracy_ar: \"99.7%\", error_reduction_ar: \"85%\", compliance_ar: \"100%\" }; result.ai_decision_ar = \"الرواتب محسوبة ومطابقة — لا انحرافات. جاهزة للاعتماد.\"; result.integration_ar = \"تكامل مع مدد (Mudad) للرواتب وGOSI للخصومات\"; } result.executive_summary_ar = \"تجربة أتمتة \" + processType + \" لـ \\\"\" + inputs.companyName + \"\\\" (\" + inputs.employeeCount + \" موظف). النظام يؤتمم العملية بالكامل من الاستقبال حتى الاعتماد مع تكامل مقيم ومدد. زمن المعالجة: \" + result.metrics.processing_time_ar + \".\"; result.whatsapp_summary_ar = \"ديمو أتمتة HR | الشركة: \" + inputs.companyName + \" | العملية: \" + processType + \" | القرار: \" + result.ai_decision_ar; return result; } function renderDashboard(data) { var html = \"\"; html += ' '; var metrics = data.metrics || {}; var metricEntries = Object.keys(metrics); metricEntries.forEach(function(key) { var labels = { processing_time_ar: \"زمن المعالجة\", approval_rate_ar: \"معدل الموافقة\", avg_leave_days_ar: \"متوسط الإجازات\", muqeem_sync_ar: \"مزامنة مقيم\", screening_accuracy_ar: \"دقة الفرز\", interview_completion_ar: \"إتمام المقابلات\", time_saved_ar: \"توفير الوقت\", accuracy_ar: \"الدقة\", error_reduction_ar: \"تقليل الأخطاء\", compliance_ar: \"الامتثال\" }; html += ' ' + metrics[key] + ' ' + (labels[key] || key) + ' '; }); html += ' '; html += ' 🤖 قرار الذكاء الاصطناعي '; html += ' ' + (data.ai_decision_ar || \"\") + ' '; html += ' '; if (data.integration_ar) { html += ' 🔗 التكامل",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "' + data.integration_ar + '"
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body data-agent-demo="hr-automation">
   <header class="site-header">
@@ -432,5 +516,6 @@ document.getElementById("generateBtn").addEventListener("click", async function(
   }
 });
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>
