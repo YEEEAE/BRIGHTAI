@@ -6,7 +6,7 @@
   const BUILD_VERSION = '20260427-ui-safety';
 
   const config = {
-    analytics: currentScript.dataset.analytics || 'interaction',
+    analytics: currentScript.dataset.analytics || 'content',
     clarity: currentScript.dataset.clarity || 'interaction',
     sentry: currentScript.dataset.sentry || 'idle',
     iconify: currentScript.dataset.iconify || 'off',
@@ -66,11 +66,20 @@
       if (attributes.crossorigin) script.crossOrigin = attributes.crossorigin;
       script.fetchPriority = attributes.fetchpriority || 'low';
       if (attributes.referrerpolicy) script.referrerPolicy = attributes.referrerpolicy;
+      const timeout = window.setTimeout(() => {
+        script.onload = null;
+        script.onerror = null;
+        reject(new Error(`Timed out loading ${versionedSrc}`));
+      }, attributes.timeout || 8000);
       script.onload = () => {
+        window.clearTimeout(timeout);
         loadedScripts.add(versionedSrc);
         resolve();
       };
-      script.onerror = reject;
+      script.onerror = (error) => {
+        window.clearTimeout(timeout);
+        reject(error);
+      };
       document.head.appendChild(script);
     });
 
@@ -120,9 +129,11 @@
 
     if (mode === 'interaction') {
       let started = false;
+      let fallbackTimer = null;
       const run = () => {
         if (started) return;
         started = true;
+        if (fallbackTimer) window.clearTimeout(fallbackTimer);
         interactionEvents.forEach((eventName) => {
           window.removeEventListener(eventName, run, interactionListenerOptions);
         });
@@ -132,7 +143,7 @@
       interactionEvents.forEach((eventName) => {
         window.addEventListener(eventName, run, interactionListenerOptions);
       });
-      setTimeout(run, isMobile ? 5000 : 3500);
+      fallbackTimer = window.setTimeout(run, isMobile ? 5000 : 3500);
       return;
     }
 

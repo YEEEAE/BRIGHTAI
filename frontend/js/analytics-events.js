@@ -4,6 +4,7 @@
   var EVENT_PREFIX = "brightai:";
   var startedFormsKey = "brightai_started_forms";
   var scrollMarks = { 50: false, 90: false };
+  var scrollTicking = false;
 
   function isReady() {
     return typeof window.gtag === "function";
@@ -177,6 +178,15 @@
   }
 
   function handleScroll() {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    window.requestAnimationFrame(function () {
+      scrollTicking = false;
+      measureScrollDepth();
+    });
+  }
+
+  function measureScrollDepth() {
     var doc = document.documentElement;
     var scrollable = Math.max(1, doc.scrollHeight - window.innerHeight);
     var depth = Math.round((window.scrollY / scrollable) * 100);

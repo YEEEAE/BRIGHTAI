@@ -15,7 +15,8 @@ for (const file of htmlFiles) {
   const content = await readFile(file, 'utf8');
   const hasClarityTag =
     content.includes('https://www.clarity.ms/tag/') ||
-    content.includes('(window, document, "clarity", "script"');
+    content.includes('(window, document, "clarity", "script"') ||
+    /performance-loader(?:\.min)?\.js[^>]*\bdata-clarity=(["'])(?!off\1)[^"']+\1/i.test(content);
 
   if (!hasClarityTag) {
     missing.push(file);

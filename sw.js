@@ -1,5 +1,5 @@
 /* BrightAI Service Worker - production cache routing for repeat visits */
-const CACHE_VERSION = '2026-04-29-1';
+const CACHE_VERSION = '2026-04-29-2';
 const CACHE_PREFIX = 'brightai';
 const STATIC_CACHE = `${CACHE_PREFIX}-static-${CACHE_VERSION}`;
 const HTML_CACHE = `${CACHE_PREFIX}-html-${CACHE_VERSION}`;
@@ -64,7 +64,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (req.destination === 'image') {
-    event.respondWith(cacheFirst(req, IMAGE_CACHE, MAX_IMAGE_ENTRIES));
+    event.respondWith(staleWhileRevalidate(req, IMAGE_CACHE, MAX_IMAGE_ENTRIES));
     return;
   }
 
