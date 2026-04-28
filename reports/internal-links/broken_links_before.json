@@ -1,23 +1,23 @@
 {
-  "generatedAt": "2026-04-28T02:10:21.971Z",
+  "generatedAt": "2026-04-28T03:02:15.657Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 382,
-  "referencesScanned": 24519,
-  "internalReferences": 19120,
-  "brokenReferences": 13,
-  "fixableBrokenReferences": 13,
-  "normalizationCandidates": 649,
+  "filesScanned": 386,
+  "referencesScanned": 24460,
+  "internalReferences": 19072,
+  "brokenReferences": 15,
+  "fixableBrokenReferences": 15,
+  "normalizationCandidates": 645,
   "topBrokenFiles": [
+    {
+      "file": "try/index.html",
+      "count": 5
+    },
     {
       "file": "demo/smart-hiring-system/pages/support-ai/index.html",
       "count": 3
     },
     {
       "file": "demo/smart-hiring-system/pages/Visitor-registration/index.html",
-      "count": 3
-    },
-    {
-      "file": "try/index.html",
       "count": 3
     },
     {
@@ -119,6 +119,24 @@
       "normalizedReferencePath": "/interview/",
       "reason": "المسار العام غير موجود",
       "suggestion": "/en/interview/"
+    },
+    {
+      "file": "try/index.html",
+      "line": 680,
+      "patternType": "attr",
+      "reference": "/try/data-analyzer/",
+      "normalizedReferencePath": "/try/data-analyzer/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/data-analyzer/"
+    },
+    {
+      "file": "try/index.html",
+      "line": 703,
+      "patternType": "attr",
+      "reference": "/try/data-quality/",
+      "normalizedReferencePath": "/try/data-quality/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/data-quality/"
     },
     {
       "file": "try/index.html",
