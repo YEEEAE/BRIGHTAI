@@ -1298,12 +1298,12 @@
         let allApplicantsData = [];
         let jobPostings = [];
         let currentViewedApplicantId = null;
-        const GEMINI_API_URL = (() => {
+        const AI_COMPLETIONS_URL = (() => {
             if (window.BrightAIRuntimeConfig && typeof window.BrightAIRuntimeConfig.buildApiUrl === 'function') {
-                return window.BrightAIRuntimeConfig.buildApiUrl('/api/ai/chat');
+                return window.BrightAIRuntimeConfig.buildApiUrl('/api/ai/chat/completions');
             }
             if (window.BrightAIGateway && typeof window.BrightAIGateway.buildUrl === 'function') {
-                return window.BrightAIGateway.buildUrl('/api/ai/chat');
+                return window.BrightAIGateway.buildUrl('/api/ai/chat/completions');
             }
             throw new Error('تعذر تحديد عنوان BrightAI API. تأكد من تحميل runtime-config.js قبل هذا السكربت.');
         })();
@@ -2004,8 +2004,8 @@
 
         async function callGeminiAPI(promptText, returnRaw = false) {
             if (window.__USE_INTERVIEW_MOCK_AI__ === true) {
-                console.warn("Gemini API Key not set. Using mock response.");
-                showNotification("تنبيه: مفتاح API للذكاء الاصطناعي غير مهيأ. يتم استخدام بيانات تجريبية.", "info", 6000);
+                console.warn("Backend AI provider is not configured. Using mock response.");
+                showNotification("تنبيه: مزود الذكاء الاصطناعي في الخادم غير مهيأ. يتم استخدام بيانات تجريبية.", "info", 6000);
 
                 if (promptText.includes("حلل نص السيرة الذاتية التالي.")) {
                     return JSON.stringify({
@@ -2050,12 +2050,21 @@
             }
 
             try {
-                const response = await fetch(GEMINI_API_URL, {
+                const response = await fetch(AI_COMPLETIONS_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: promptText,
-                        sessionId: geminiSessionId
+                        model: 'gemini-2.5-flash',
+                        demoType: 'smart_hiring_system',
+                        agentType: 'smart_hiring_system',
+                        schemaName: 'smartHiringSchema',
+                        sourcePage: '/demo/smart-hiring-system/pages/dashboard/',
+                        messages: [
+                            { role: 'system', content: 'أنت مساعد توظيف في Bright AI. أعد مخرجات عربية قابلة للعرض فقط.' },
+                            { role: 'user', content: promptText }
+                        ],
+                        temperature: 0.2,
+                        metadata: { sessionId: geminiSessionId }
                     })
                 });
 
@@ -2063,22 +2072,25 @@
                 if (returnRaw) return rawResponseText;
 
                 if (!response.ok) {
-                    console.error('Gemini API Error:', response.status, rawResponseText);
+                    console.error('Backend AI Error:', response.status, rawResponseText);
                     throw new Error(`فشل الاتصال بخدمة الذكاء الاصطناعي (كود: ${response.status}). التفاصيل: ${rawResponseText.substring(0, 200)}`);
                 }
 
                 const data = JSON.parse(rawResponseText);
 
-                if (data.sessionId) {
-                    geminiSessionId = data.sessionId;
+                if (data.requestId) {
+                    geminiSessionId = data.requestId;
                 }
 
+                if (data.choices && data.choices[0]?.message?.content) {
+                    return data.choices[0].message.content.trim();
+                }
                 if (typeof data.reply === 'string' && data.reply.trim()) {
                     return data.reply.trim();
                 }
                 throw new Error('لم يتم استلام رد صحيح أو بتنسيق متوقع من خدمة الذكاء الاصطناعي.');
             } catch (error) {
-                console.error('Gemini API Call Error or JSON Parsing Error:', error);
+                console.error('Backend AI Call Error or JSON Parsing Error:', error);
                 throw error;
             }
         }

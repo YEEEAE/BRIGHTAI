@@ -239,7 +239,78 @@
     win.document.close();
   }
 
+  async function generateDemoResult({
+    demoType,
+    agentType,
+    schemaName,
+    sourcePage,
+    userInputs,
+    systemPrompt,
+    taskPrompt,
+    fallbackResult,
+    responseSchema,
+    temperature = 0.2,
+    model = "gemini-2.5-flash",
+    timeoutMs = 45000
+  }) {
+    const payload = {
+      model,
+      demoType,
+      agentType: agentType || demoType,
+      schemaName,
+      locale: "ar-SA",
+      sourcePage: sourcePage || window.location.pathname,
+      messages: [
+        {
+          role: "system",
+          content: systemPrompt || "أنت محلل Bright AI. أعد نتيجة عربية منظمة قابلة للعرض في لوحة ديمو فقط."
+        },
+        {
+          role: "user",
+          content: [
+            taskPrompt || "حلل مدخلات الديمو وأعد تقريراً تنفيذياً منظماً.",
+            "المدخلات:",
+            typeof userInputs === "string" ? userInputs : JSON.stringify(userInputs || {}, null, 2)
+          ].join("\n")
+        }
+      ],
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: schemaName || `${demoType || "generic"}_schema`,
+          schema: responseSchema || undefined
+        }
+      },
+      temperature
+    };
+
+    const request = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    };
+
+    try {
+      const url = AI_COMPLETIONS_PATH;
+      const response = window.BrightAIGateway?.apiFetch
+        ? await window.BrightAIGateway.apiFetch(url, request, timeoutMs)
+        : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(url) : url, request);
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data?.ok === false) {
+        throw new Error(data?.error?.message_ar || data?.error || `AI request failed: ${response.status}`);
+      }
+      return data?.data || data?.choices?.[0]?.message?.content || data;
+    } catch (error) {
+      window.dispatchEvent(new CustomEvent("bai-demo-error", {
+        detail: { demoType, agentType, schemaName, message: error.message }
+      }));
+      return fallbackResult || null;
+    }
+  }
+
   window.GeminiDemoEngine = GeminiDemoEngine;
+  window.BrightAI = window.BrightAI || {};
+  window.BrightAI.generateDemoResult = generateDemoResult;
   window.BrightAIDemoUtils = {
     fileToInlineData,
     downloadText,

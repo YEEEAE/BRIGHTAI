@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { config } = require('../config');
+const { runGeminiCompletion } = require('./aiGateway');
 const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
 
 const SITE_ROOT = path.resolve(__dirname, '../..');
@@ -645,43 +646,30 @@ async function generateAnswerWithGemini(query, matches, options = {}) {
   }
 
   const activeModel = String(options.model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
-  const response = await fetch(`${config.gemini.endpoint}/${activeModel}:generateContent`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': config.gemini.apiKey
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: `${SEARCH_SYSTEM_PROMPT}\n\n${buildGenerationPrompt(query, matches)}`
-            }
-          ]
-        }
-      ],
-      generationConfig: {
-        temperature: 0.2,
-        maxOutputTokens: 950
-      }
-    })
+  const result = await runGeminiCompletion({
+    model: activeModel,
+    messages: [
+      { role: 'system', content: SEARCH_SYSTEM_PROMPT },
+      { role: 'user', content: buildGenerationPrompt(query, matches) }
+    ],
+    temperature: 0.2,
+    maxOutputTokens: 950,
+    responseFormat: { type: 'json_object' },
+    demoType: 'site_search',
+    agentType: 'rag_search',
+    sourcePage: '/api/ai/search'
   });
 
-  if (!response.ok) {
-    const errorText = await response.text().catch(() => response.statusText);
-    const error = new Error(errorText || 'GEMINI_RAG_ERROR');
-    error.statusCode = response.status;
+  if (!result.ok) {
+    const error = new Error(result.error?.message_ar || 'GEMINI_RAG_ERROR');
+    error.statusCode = result.statusCode || 503;
+    error.code = result.error?.code || 'GEMINI_RAG_ERROR';
     throw error;
   }
 
-  const data = await response.json();
-  const output = data?.candidates?.[0]?.content?.parts
-    ?.map(part => String(part?.text || ''))
-    .join('\n')
-    .trim() || '';
-  return parseJsonFromText(output);
+  return result.data && typeof result.data === 'object'
+    ? result.data
+    : parseJsonFromText(result.text || '');
 }
 
 async function searchSiteWithRag(query, options = {}) {

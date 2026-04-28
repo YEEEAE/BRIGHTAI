@@ -35,7 +35,7 @@ function readSecret(name, fallback = '') {
 const config = {
   // Gemini AI Configuration
   gemini: {
-    apiKey: readSecret('GEMINI_API_KEY'),
+    apiKey: readSecret('GEMINI_API_KEY') || readSecret('GOOGLE_API_KEY'),
     model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/models'
   },

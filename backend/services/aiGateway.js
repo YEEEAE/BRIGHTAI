@@ -11,6 +11,7 @@ const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
 const { retryWithBackoff } = require('../utils/errorHandler');
 const { createSessionId, getOrCreateSession, addToSession } = require('../utils/sessionStore');
 const { pickProvider, callOpenAiCompatibleProvider } = require('./openaiCompatProvider');
+const crypto = require('crypto');
 
 const REQUEST_TIMEOUT_MS = Math.max(3000, parseInt(process.env.AI_GATEWAY_TIMEOUT_MS, 10) || 30000);
 const MAX_SUGGESTIONS = 3;
@@ -19,6 +20,204 @@ const DEFAULT_SUGGESTIONS = [
   'أريد استشارة تقنية',
   'كيف أبدأ معكم؟'
 ];
+
+const BASE_DEMO_SCHEMA = {
+  type: 'object',
+  required: [
+    'executive_summary_ar',
+    'readiness_score',
+    'key_insights',
+    'risks',
+    'recommended_actions',
+    'business_impact_ar',
+    'integration_readiness',
+    'next_action_ar',
+    'whatsapp_summary_ar'
+  ],
+  properties: {
+    executive_summary_ar: { type: 'string' },
+    score: { type: 'number' },
+    readiness_score: { type: 'number' },
+    key_insights: { type: 'array', items: { type: 'string' } },
+    risks: { type: 'array', items: { type: 'string' } },
+    recommended_actions: { type: 'array', items: { type: 'string' } },
+    business_impact_ar: { type: 'string' },
+    integration_readiness: { type: 'array', items: { type: 'string' } },
+    next_action_ar: { type: 'string' },
+    whatsapp_summary_ar: { type: 'string' }
+  }
+};
+
+function extendDemoSchema(extraProperties = {}) {
+  return {
+    ...BASE_DEMO_SCHEMA,
+    properties: {
+      ...BASE_DEMO_SCHEMA.properties,
+      ...extraProperties
+    }
+  };
+}
+
+const demoSchemas = {
+  recruitmentSchema: extendDemoSchema({
+    candidate_fit: { type: 'number' },
+    interview_questions: { type: 'array', items: { type: 'string' } }
+  }),
+  smartHiringSchema: extendDemoSchema({
+    candidate_fit: { type: 'number' },
+    shortlist_notes: { type: 'array', items: { type: 'string' } }
+  }),
+  medicalArchiveSchema: extendDemoSchema({
+    extracted_record: { type: 'object' },
+    quality_flags: { type: 'array', items: { type: 'string' } }
+  }),
+  dataAnalyzerSchema: extendDemoSchema({
+    anomalies: { type: 'array', items: { type: 'string' } },
+    dashboard_recommendations: { type: 'array', items: { type: 'string' } }
+  }),
+  dataQualitySchema: extendDemoSchema({
+    data_quality_score: { type: 'number' },
+    validation_findings: { type: 'array', items: { type: 'string' } }
+  }),
+  textAnalysisSchema: extendDemoSchema({
+    sentiment: { type: 'string' },
+    topics: { type: 'array', items: { type: 'string' } }
+  }),
+  dataPlatformSchema: extendDemoSchema({
+    platform_modules: { type: 'array', items: { type: 'string' } }
+  }),
+  educationSchema: extendDemoSchema({
+    learning_plan: { type: 'array', items: { type: 'string' } },
+    assessment_items: { type: 'array', items: { type: 'string' } }
+  }),
+  hospitalOpsSchema: extendDemoSchema({
+    operational_kpis: { type: 'array', items: { type: 'object' } }
+  }),
+  documentAutomationSchema: extendDemoSchema({
+    extracted_fields: { type: 'array', items: { type: 'object' } },
+    validation_checks: { type: 'array', items: { type: 'string' } }
+  }),
+  customerSupportSchema: extendDemoSchema({
+    intent: { type: 'string' },
+    ticket_priority: { type: 'string' },
+    reply_templates: { type: 'array', items: { type: 'string' } }
+  }),
+  marketingAutomationSchema: extendDemoSchema({
+    campaign_plan: { type: 'array', items: { type: 'string' } },
+    channel_mix: { type: 'array', items: { type: 'object' } }
+  }),
+  supplyChainSchema: extendDemoSchema({
+    supply_actions: { type: 'array', items: { type: 'string' } },
+    stock_risks: { type: 'array', items: { type: 'string' } }
+  }),
+  customAiAgentSchema: extendDemoSchema({
+    agent_blueprint: { type: 'object' },
+    handoff_rules: { type: 'array', items: { type: 'string' } }
+  }),
+  competitorAnalysisAgentSchema: extendDemoSchema({
+    competitor_gaps: { type: 'array', items: { type: 'string' } },
+    positioning_moves: { type: 'array', items: { type: 'string' } }
+  }),
+  seoAgentSchema: extendDemoSchema({
+    technical_seo_actions: { type: 'array', items: { type: 'string' } },
+    content_opportunities: { type: 'array', items: { type: 'string' } }
+  }),
+  marketingAgentSchema: extendDemoSchema({
+    audience_segments: { type: 'array', items: { type: 'string' } },
+    message_angles: { type: 'array', items: { type: 'string' } }
+  }),
+  opportunityDiscoveryAgentSchema: extendDemoSchema({
+    lead_segments: { type: 'array', items: { type: 'string' } },
+    scoring_rules: { type: 'array', items: { type: 'string' } }
+  }),
+  aiConsultingSchema: extendDemoSchema({
+    roadmap: { type: 'array', items: { type: 'string' } }
+  }),
+  approvalsAutomationSchema: extendDemoSchema({
+    approval_flow: { type: 'array', items: { type: 'string' } }
+  }),
+  hrAutomationSchema: extendDemoSchema({
+    hr_workflows: { type: 'array', items: { type: 'string' } }
+  }),
+  operationalReportsSchema: extendDemoSchema({
+    report_blueprint: { type: 'array', items: { type: 'string' } }
+  }),
+  socialDataAnalysisSchema: extendDemoSchema({
+    social_signals: { type: 'array', items: { type: 'string' } }
+  }),
+  projectManagementSchema: extendDemoSchema({
+    project_risks: { type: 'array', items: { type: 'string' } }
+  }),
+  salesAgentSchema: extendDemoSchema({
+    pipeline_actions: { type: 'array', items: { type: 'string' } }
+  }),
+  tenderAnalysisSchema: extendDemoSchema({
+    tender_fit: { type: 'number' },
+    bid_requirements: { type: 'array', items: { type: 'string' } }
+  }),
+  genericDemoSchema: BASE_DEMO_SCHEMA
+};
+
+const schemaAliases = {
+  recruitment: 'recruitmentSchema',
+  smart_hiring_system: 'smartHiringSchema',
+  smart_hiring: 'smartHiringSchema',
+  smart_hiring_demo_schema: 'smartHiringSchema',
+  medical_archive: 'medicalArchiveSchema',
+  medical_archive_demo_schema: 'medicalArchiveSchema',
+  data_analyzer: 'dataAnalyzerSchema',
+  data_analyzer_demo_schema: 'dataAnalyzerSchema',
+  data_quality: 'dataQualitySchema',
+  data_quality_demo_schema: 'dataQualitySchema',
+  text_analysis: 'textAnalysisSchema',
+  text_analysis_demo_schema: 'textAnalysisSchema',
+  data_platform: 'dataPlatformSchema',
+  education: 'educationSchema',
+  education_demo_schema: 'educationSchema',
+  hospital_ops: 'hospitalOpsSchema',
+  hospital_management_demo_schema: 'hospitalOpsSchema',
+  document_automation: 'documentAutomationSchema',
+  ocr_document_demo_schema: 'documentAutomationSchema',
+  customer_support: 'customerSupportSchema',
+  customer_service_demo_schema: 'customerSupportSchema',
+  marketing_automation: 'marketingAutomationSchema',
+  marketing_automation_demo_schema: 'marketingAutomationSchema',
+  supply_chain: 'supplyChainSchema',
+  supply_chain_demo_schema: 'supplyChainSchema',
+  custom_ai_agent: 'customAiAgentSchema',
+  custom_agent_demo_schema: 'customAiAgentSchema',
+  competitor_analysis_agent: 'competitorAnalysisAgentSchema',
+  competitor_analysis_demo_schema: 'competitorAnalysisAgentSchema',
+  seo_agent: 'seoAgentSchema',
+  seo_agent_demo_schema: 'seoAgentSchema',
+  marketing_agent: 'marketingAgentSchema',
+  marketing_agent_demo_schema: 'marketingAgentSchema',
+  opportunity_discovery_agent: 'opportunityDiscoveryAgentSchema',
+  opportunity_agent_demo_schema: 'opportunityDiscoveryAgentSchema',
+  ai_consulting: 'aiConsultingSchema',
+  ai_consulting_demo_schema: 'aiConsultingSchema',
+  approvals_automation: 'approvalsAutomationSchema',
+  approvals_demo_schema: 'approvalsAutomationSchema',
+  hr_automation: 'hrAutomationSchema',
+  hr_automation_demo_schema: 'hrAutomationSchema',
+  operational_reports: 'operationalReportsSchema',
+  operational_reports_demo_schema: 'operationalReportsSchema',
+  social_data_analysis: 'socialDataAnalysisSchema',
+  social_data_demo_schema: 'socialDataAnalysisSchema',
+  brightproject_demo_schema: 'projectManagementSchema',
+  brightsales_demo_schema: 'salesAgentSchema',
+  tenders_demo_schema: 'tenderAnalysisSchema'
+};
+
+const safetyProfiles = {
+  healthcare: 'لا تقدم تشخيصاً طبياً نهائياً، ولا توصية علاجية فردية، واطلب مراجعة مختص مرخص عند وجود مخاطر صحية.',
+  recruitment: 'تجنب أي استنتاجات أو قرارات مبنية على العمر أو الجنس أو الجنسية أو الحالة الاجتماعية أو أي سمة محمية.',
+  education: 'احم بيانات الطلاب، واجعل المخرجات مساعدة للمعلم ولا تستبدل تقييمه المهني.',
+  marketing: 'لا تقدم وعود أداء مضمونة، واحترم موافقات الرسائل وسياسات المنصات والخصوصية.',
+  competitor_intelligence: 'استخدم المعلومات العامة أو المدخلة فقط، ولا تقترح scraping مخالفاً أو جمع بيانات غير مصرح بها.',
+  sales_leads: 'لا تولد بيانات شخصية وهمية، ولا تقترح تواصل مزعجاً، واجعل التأهيل مبنياً على إشارات مشروعة.',
+  general_business: 'اجعل المخرجات تقديرية ومناسبة لاتخاذ قرار أولي مع مراجعة بشرية قبل التنفيذ.'
+};
 
 const CHAT_SYSTEM_PROMPT = `
 أنت "BrightAI Assistant" — المساعد الذكي الرسمي لموقع Bright AI في السعودية.
@@ -81,12 +280,119 @@ function resolveApiKey() {
     : '';
   if (envValue && envValue !== 'YOUR_SECRET_HERE') return envValue;
 
+  const googleEnvValue = typeof process.env.GOOGLE_API_KEY === 'string'
+    ? process.env.GOOGLE_API_KEY.trim()
+    : '';
+  if (googleEnvValue && googleEnvValue !== 'YOUR_SECRET_HERE') return googleEnvValue;
+
   const configValue = typeof config.gemini.apiKey === 'string'
     ? config.gemini.apiKey.trim()
     : '';
   if (configValue && configValue !== 'YOUR_SECRET_HERE') return configValue;
 
   return '';
+}
+
+function createRequestId() {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID();
+  return `req_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function normalizeSchemaKey(value) {
+  return String(value || '')
+    .trim()
+    .replace(/-/g, '_')
+    .replace(/\s+/g, '_');
+}
+
+function resolveDemoSchema(schemaName, fallbackSchema) {
+  if (fallbackSchema && typeof fallbackSchema === 'object' && Object.keys(fallbackSchema).length > 0) return fallbackSchema;
+  const directName = String(schemaName || '').trim();
+  if (demoSchemas[directName]) return demoSchemas[directName];
+  const normalized = normalizeSchemaKey(directName);
+  const aliased = schemaAliases[normalized] || schemaAliases[normalized.replace(/_demo_report$/, '')];
+  return demoSchemas[aliased] || null;
+}
+
+function resolveSafetyProfileName({ safetyProfile, demoType, agentType, schemaName }) {
+  const candidates = [safetyProfile, demoType, agentType, schemaName]
+    .map(value => normalizeSchemaKey(value).toLowerCase())
+    .filter(Boolean);
+
+  if (candidates.some(value => /medical|health|hospital|archive/.test(value))) return 'healthcare';
+  if (candidates.some(value => /hiring|recruit|hr/.test(value))) return 'recruitment';
+  if (candidates.some(value => /education|school|scolecs/.test(value))) return 'education';
+  if (candidates.some(value => /marketing|seo|social/.test(value))) return 'marketing';
+  if (candidates.some(value => /competitor/.test(value))) return 'competitor_intelligence';
+  if (candidates.some(value => /sales|opportunity|lead/.test(value))) return 'sales_leads';
+  return 'general_business';
+}
+
+function createSafeAiError(code = 'AI_PROVIDER_UNAVAILABLE', statusCode = 503) {
+  return {
+    ok: false,
+    statusCode,
+    error: {
+      code,
+      message_ar: 'تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.'
+    }
+  };
+}
+
+function safeGatewayLog(event, fields) {
+  const safeFields = {
+    requestId: fields?.requestId,
+    demoType: fields?.demoType,
+    agentType: fields?.agentType,
+    schemaName: fields?.schemaName,
+    sourcePage: fields?.sourcePage,
+    latency: fields?.latency,
+    success: fields?.success
+  };
+  console.info(`[AIGateway] ${event}`, safeFields);
+}
+
+function normalizeResponseFormat(responseFormat, schemaName, schema) {
+  const directSchema = schema || responseFormat?.json_schema?.schema || responseFormat?.jsonSchema?.schema || responseFormat?.schema || null;
+  const resolvedName = responseFormat?.json_schema?.name || responseFormat?.jsonSchema?.name || schemaName || 'genericDemoSchema';
+  return {
+    wantsJson: responseFormat?.type === 'json_schema' || responseFormat?.type === 'json_object' || !!directSchema || !!schemaName,
+    schemaName: resolvedName,
+    schema: resolveDemoSchema(resolvedName, directSchema) || demoSchemas.genericDemoSchema
+  };
+}
+
+function parseJsonFromGeminiText(text) {
+  const raw = String(text || '').trim();
+  if (!raw) return null;
+  const cleaned = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```$/i, '').trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch (_error) {
+    const match = cleaned.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+    if (!match) return null;
+    try {
+      return JSON.parse(match[0]);
+    } catch (_nestedError) {
+      return null;
+    }
+  }
+}
+
+function normalizeStructuredData(parsed, rawText, schemaName) {
+  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+  return {
+    executive_summary_ar: rawText || 'تعذر تحليل الاستجابة المنظمة بالكامل.',
+    readiness_score: 70,
+    score: 70,
+    key_insights: ['الاستجابة احتاجت تطبيعاً بعد رجوعها من مزود الذكاء الاصطناعي.'],
+    risks: ['راجع النتيجة قبل استخدامها في قرار تشغيلي.'],
+    recommended_actions: ['أعد المحاولة أو استخدم المثال الجاهز إذا استمر الخطأ.'],
+    business_impact_ar: 'الأثر تقديري ويحتاج مراجعة بشرية.',
+    integration_readiness: ['Backend موحد', 'مراجعة بشرية مطلوبة'],
+    next_action_ar: 'راجع التقرير ثم أعد المحاولة عند الحاجة.',
+    whatsapp_summary_ar: `تقرير ${schemaName || 'الديمو'} يحتاج مراجعة.`
+  };
 }
 
 function resolveModel() {
@@ -193,6 +499,43 @@ function buildGeminiPartsFromContent(content) {
   return parts;
 }
 
+function buildGeminiContentsFromMessages(messages, systemPrompt) {
+  const contents = [];
+  const systemParts = [];
+
+  if (systemPrompt && String(systemPrompt).trim()) {
+    systemParts.push(String(systemPrompt).trim());
+  }
+
+  for (const msg of messages || []) {
+    if (!msg || typeof msg !== 'object') continue;
+    if (msg.role === 'system') {
+      const text = typeof msg.content === 'string' ? msg.content.trim() : '';
+      if (text) systemParts.push(text);
+      continue;
+    }
+    const parts = buildGeminiPartsFromContent(msg.content);
+    if (!parts.length) continue;
+    contents.push({
+      role: mapSessionRole(msg.role),
+      parts
+    });
+  }
+
+  if (systemParts.length) {
+    contents.unshift({
+      role: 'model',
+      parts: [{ text: 'تم استلام تعليمات النظام وسألتزم بها.' }]
+    });
+    contents.unshift({
+      role: 'user',
+      parts: [{ text: systemParts.join('\n\n') }]
+    });
+  }
+
+  return contents;
+}
+
 function splitReplyAndSuggestions(rawText) {
   const text = String(rawText || '').trim();
   if (!text) {
@@ -211,6 +554,138 @@ function splitReplyAndSuggestions(rawText) {
     .slice(0, MAX_SUGGESTIONS);
 
   return { reply, suggestions: suggestions.length ? suggestions : DEFAULT_SUGGESTIONS };
+}
+
+async function runGeminiCompletion({
+  model,
+  messages,
+  system,
+  temperature = 0.2,
+  maxOutputTokens,
+  responseFormat,
+  response_format,
+  schemaName,
+  schema,
+  demoType,
+  agentType,
+  locale = 'ar-SA',
+  sourcePage,
+  safetyProfile,
+  metadata
+} = {}) {
+  const requestId = createRequestId();
+  const startedAt = Date.now();
+  const activeSchemaName = schemaName
+    || responseFormat?.json_schema?.name
+    || response_format?.json_schema?.name
+    || 'genericDemoSchema';
+  const profileName = resolveSafetyProfileName({ safetyProfile, demoType, agentType, schemaName: activeSchemaName });
+  const normalizedResponse = normalizeResponseFormat(responseFormat || response_format || null, activeSchemaName, schema);
+
+  try {
+    if (!resolveApiKey()) {
+      const unavailable = createSafeAiError('AI_PROVIDER_UNAVAILABLE', 503);
+      safeGatewayLog('completion', {
+        requestId,
+        demoType,
+        agentType,
+        schemaName: activeSchemaName,
+        sourcePage,
+        latency: Date.now() - startedAt,
+        success: false
+      });
+      return { ...unavailable, requestId, provider: 'gemini', model: model || resolveModel() };
+    }
+
+    const requestMessages = Array.isArray(messages) && messages.length
+      ? messages
+      : [{ role: 'user', content: String(metadata?.prompt || '') }];
+
+    if (!requestMessages.length || requestMessages.every(item => !item?.content)) {
+      return {
+        ...createSafeAiError('INVALID_MESSAGES', 400),
+        requestId,
+        provider: 'gemini',
+        model: model || resolveModel()
+      };
+    }
+
+    const strictJsonInstruction = normalizedResponse.wantsJson
+      ? [
+          `أعد JSON صالحاً فقط باسم المخطط: ${normalizedResponse.schemaName}.`,
+          'لا تضف Markdown ولا شرحاً خارج JSON.',
+          'يجب أن يحتوي JSON على executive_summary_ar وkey_insights وrisks وrecommended_actions وbusiness_impact_ar وintegration_readiness وnext_action_ar وwhatsapp_summary_ar.'
+        ].join('\n')
+      : '';
+    const safetyInstruction = safetyProfiles[profileName] || safetyProfiles.general_business;
+    const systemPrompt = [
+      system,
+      `اللغة المطلوبة: ${locale}.`,
+      safetyInstruction,
+      strictJsonInstruction
+    ].filter(Boolean).join('\n\n');
+
+    const contents = buildGeminiContentsFromMessages(requestMessages, systemPrompt);
+    if (!contents.length) {
+      return {
+        ...createSafeAiError('INVALID_MESSAGES', 400),
+        requestId,
+        provider: 'gemini',
+        model: model || resolveModel()
+      };
+    }
+
+    const text = await callGemini(contents, {
+      model,
+      temperature,
+      maxOutputTokens: maxOutputTokens || metadata?.maxOutputTokens || 1600,
+      responseSchema: normalizedResponse.wantsJson ? normalizedResponse.schema : null,
+      responseMimeType: normalizedResponse.wantsJson ? 'application/json' : undefined,
+      safetySettings: resolveSafetySettings({ safetyProfile: profileName, demoType, agentType, schemaName: activeSchemaName })
+    });
+    const parsed = normalizedResponse.wantsJson ? parseJsonFromGeminiText(text) : null;
+    const data = normalizedResponse.wantsJson
+      ? normalizeStructuredData(parsed, text, normalizedResponse.schemaName)
+      : { text };
+
+    safeGatewayLog('completion', {
+      requestId,
+      demoType,
+      agentType,
+      schemaName: normalizedResponse.schemaName,
+      sourcePage,
+      latency: Date.now() - startedAt,
+      success: true
+    });
+
+    return {
+      ok: true,
+      provider: 'gemini',
+      model: String(model || resolveModel()).trim() || resolveModel(),
+      requestId,
+      data,
+      text,
+      schemaName: normalizedResponse.schemaName,
+      safetyProfile: profileName
+    };
+  } catch (error) {
+    const statusCode = normalizeStatusCode(error);
+    safeGatewayLog('completion', {
+      requestId,
+      demoType,
+      agentType,
+      schemaName: activeSchemaName,
+      sourcePage,
+      latency: Date.now() - startedAt,
+      success: false
+    });
+    return {
+      ...createSafeAiError(error?.code || 'AI_PROVIDER_UNAVAILABLE', statusCode >= 400 && statusCode < 600 ? statusCode : 503),
+      requestId,
+      provider: 'gemini',
+      model: String(model || resolveModel()).trim() || resolveModel()
+    };
+  }
 }
 
 function normalizeStatusCode(error) {
@@ -605,71 +1080,34 @@ async function openAiCompatChat(req) {
     return { ...result.data, provider: result.provider, activeModel: result.model };
   }
 
-  if (!isApiKeyConfigured()) {
-    const error = new Error('GEMINI_NOT_CONFIGURED');
-    error.statusCode = 503;
-    error.code = 'GEMINI_NOT_CONFIGURED';
-    throw error;
-  }
-
-  const contents = [];
-  for (const msg of messages) {
-    if (!msg || typeof msg !== 'object') continue;
-    const parts = buildGeminiPartsFromContent(msg.content);
-    if (!parts.length) continue;
-    contents.push({
-      role: mapSessionRole(msg.role),
-      parts
-    });
-  }
-
-  if (!contents.length) {
-    const error = new Error('يرجى إرسال messages أو prompt');
-    error.statusCode = 400;
-    error.code = 'INVALID_MESSAGES';
-    throw error;
-  }
-
-  const activeModel = String(model || resolveModel()).trim() || resolveModel();
-  const wantsJson = body.response_format?.type === 'json_object' || body.response_format?.type === 'json_schema' || body.responseFormat?.type === 'json_schema';
-  const responseSchema = resolveResponseSchema(body);
   const schemaName = resolveSchemaName(body);
-  const generationConfig = { temperature, maxOutputTokens: maxTokens };
-  if (responseSchema) {
-    generationConfig.responseMimeType = 'application/json';
-    generationConfig.responseSchema = responseSchema;
-  } else if (wantsJson) {
-    generationConfig.responseMimeType = 'application/json';
-  }
-
-  const response = await fetch(`${config.gemini.endpoint}/${activeModel}:generateContent`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': resolveApiKey()
-    },
-    body: JSON.stringify({
-      contents,
-      generationConfig,
-      safetySettings: resolveSafetySettings(body)
-    })
+  const result = await runGeminiCompletion({
+    model,
+    messages,
+    temperature,
+    maxOutputTokens: maxTokens,
+    responseFormat: body.response_format || body.responseFormat,
+    schemaName,
+    schema: resolveResponseSchema(body),
+    demoType: body.demoType,
+    agentType: body.agentType,
+    locale: body.locale || 'ar-SA',
+    sourcePage: body.sourcePage,
+    safetyProfile: body.safetyProfile,
+    metadata: { maxOutputTokens: maxTokens }
   });
 
-  const data = await response.json();
-  const text = parseGeminiText(data);
-
-  if (!response.ok) {
-    const error = new Error(data?.error?.message || `Gemini API Error (${response.status})`);
-    error.statusCode = response.status;
-    error.code = `GEMINI_API_${response.status}`;
-    throw error;
-  }
-
+  if (!result.ok) return result;
+  const content = typeof result.data === 'string' ? result.data : JSON.stringify(result.data);
   return {
-    choices: [{ message: { role: 'assistant', content: text }, finish_reason: 'stop' }],
+    ok: true,
     provider: 'gemini',
-    activeModel,
-    schemaName: responseSchema ? schemaName : undefined
+    model: result.model,
+    activeModel: result.model,
+    requestId: result.requestId,
+    data: result.data,
+    schemaName: result.schemaName,
+    choices: [{ message: { role: 'assistant', content }, finish_reason: 'stop' }]
   };
 }
 
@@ -706,6 +1144,7 @@ module.exports = {
   chat,
   chatStream,
   openAiCompatChat,
+  runGeminiCompletion,
   validateChatRequest,
   callGemini,
   callGeminiStream,
@@ -715,6 +1154,10 @@ module.exports = {
   resolveApiKey,
   resolveModel,
   resolveSchemaName,
+  resolveDemoSchema,
+  demoSchemas,
+  schemaAliases,
+  safetyProfiles,
   normalizeStatusCode,
   getProviderStatus,
   CHAT_SYSTEM_PROMPT,

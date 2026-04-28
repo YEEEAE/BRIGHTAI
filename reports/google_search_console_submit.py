@@ -41,6 +41,7 @@ URL_FILE = SCRIPT_DIR / "indexable-pages-final.txt"
 DEFAULT_REPORT_FILE = SCRIPT_DIR / "google-url-inspection-report.csv"
 
 WEBMASTERS_SCOPE = "https://www.googleapis.com/auth/webmasters"
+INDEXING_SCOPE = "https://www.googleapis.com/auth/indexing"
 DEFAULT_QUOTA_PROJECT = os.environ.get("GOOGLE_CLOUD_PROJECT", "bright-gsc-yazeed")
 
 
@@ -120,7 +121,7 @@ def get_access_token(args):
         "  GSC_ACCESS_TOKEN=... python3 reports/google_search_console_submit.py --submit-sitemap\n"
         "  python3 reports/google_search_console_submit.py --access-token TOKEN --submit-sitemap\n"
         "  python3 reports/google_search_console_submit.py --token-command \"gcloud auth application-default print-access-token\" --submit-sitemap\n\n"
-        f"يجب أن يكون الرمز مخولاً بنطاق: {WEBMASTERS_SCOPE}"
+        f"يجب أن يكون الرمز مخولاً بنطاق: {WEBMASTERS_SCOPE} أو {INDEXING_SCOPE}"
     )
 
 
@@ -193,6 +194,16 @@ def inspect_url(site_url, inspection_url, token, language_code, quota_project=No
     return status, response
 
 
+def request_indexing(url, token, quota_project=None):
+    endpoint = "https://indexing.googleapis.com/v3/urlNotifications:publish"
+    body = {
+        "url": url,
+        "type": "URL_UPDATED"
+    }
+    status, response = request_json("POST", endpoint, token, body=body, quota_project=quota_project)
+    return status, response
+
+
 def summarize_inspection(url, status, response):
     if status != 200:
         return {
@@ -252,6 +263,7 @@ def parse_args():
     parser.add_argument("--sitemap-url", default=DEFAULT_SITEMAP_URL, help="رابط sitemap.xml المنشور.")
     parser.add_argument("--submit-sitemap", action="store_true", help="إرسال خريطة الموقع إلى Google Search Console.")
     parser.add_argument("--inspect", action="store_true", help="فحص الروابط عبر URL Inspection API.")
+    parser.add_argument("--request-indexing", action="store_true", help="طلب فهرسة للروابط (URL_UPDATED) عبر Google Indexing API.")
     parser.add_argument("--limit", type=int, default=0, help="حد أقصى لعدد الروابط المفحوصة. صفر يعني الكل.")
     parser.add_argument("--offset", type=int, default=0, help="عدد الروابط التي يتم تخطيها من بداية القائمة.")
     parser.add_argument("--delay", type=float, default=0.2, help="تأخير بالثواني بين طلبات الفحص.")
@@ -281,9 +293,9 @@ def main():
     urls = load_urls(url_file)
     print(f"  الروابط القانونية الجاهزة: {len(urls)}")
 
-    if not args.submit_sitemap and not args.inspect:
+    if not args.submit_sitemap and not args.inspect and not args.request_indexing:
         print()
-        print("لم يتم تحديد عملية. استخدم --submit-sitemap أو --inspect.")
+        print("لم يتم تحديد عملية. استخدم --submit-sitemap أو --inspect أو --request-indexing.")
         print("مثال تحقق بدون إرسال:")
         print("  python3 reports/google_search_console_submit.py --submit-sitemap --dry-run")
         return
@@ -335,6 +347,38 @@ def main():
         write_inspection_report(rows, report_file)
         print()
         print(f"تم حفظ تقرير الفحص: {report_file}")
+
+    if args.request_indexing:
+        start = max(args.offset, 0)
+
+        if args.limit and args.limit > 0:
+            end = start + args.limit
+            selected_urls = urls[start:end]
+        else:
+            selected_urls = urls[start:]
+        print()
+        print(f"إرسال طلبات فهرسة عبر Indexing API: {len(selected_urls)} رابط")
+
+        if args.dry_run:
+            print("وضع التحقق فقط: لن يتم إرسال طلبات فهرسة فعلياً.")
+            print(f"  أول رابط: {selected_urls[0]}")
+            print(f"  آخر رابط: {selected_urls[-1]}")
+            return
+
+        for index, url in enumerate(selected_urls, start=1):
+            print(f"  [{index}/{len(selected_urls)}] {url}")
+            status, response = request_indexing(
+                url=url,
+                token=token,
+                quota_project=args.quota_project,
+            )
+            if status == 200:
+                print(f"    -> نجاح (200)")
+            else:
+                print(f"    -> فشل ({status}): {json.dumps(response, ensure_ascii=False)}")
+                
+            if args.delay > 0 and index < len(selected_urls):
+                time.sleep(args.delay)
 
 
 if __name__ == "__main__":

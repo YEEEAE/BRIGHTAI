@@ -10,6 +10,7 @@ const { sanitizeForAI, sanitizeUserInput } = require('../utils/sanitizer');
 const { retryWithBackoff } = require('../utils/errorHandler');
 const { createSessionId, getOrCreateSession, addToSession } = require('../utils/sessionStore');
 const { pickProvider, callOpenAiCompatibleProvider } = require('../services/openaiCompatProvider');
+const { runGeminiCompletion } = require('../services/aiGateway');
 
 const MAX_OCR_TEXT_CHARS = 6000;
 const MAX_MEDICAL_REPORT_CHARS = 12000;
@@ -732,13 +733,6 @@ async function callGroq({
   signal,
   timeoutMs = GROQ_STREAM_TIMEOUT_MS
 }) {
-  if (!isApiKeyConfigured()) {
-    const error = new Error('GEMINI_NOT_CONFIGURED');
-    error.statusCode = 503;
-    error.code = 'GEMINI_NOT_CONFIGURED';
-    throw error;
-  }
-
   const activeModel = String(model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
   const { signal: requestSignal, cleanup } = createUpstreamRequestSignal(signal, timeoutMs);
   const startedAt = Date.now();
@@ -749,37 +743,28 @@ async function callGroq({
   try {
     const response = await retryWithBackoff(
       async () => {
-        const upstreamResponse = await fetch(
-          `${config.gemini.endpoint}/${activeModel}:generateContent`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-goog-api-key': config.gemini.apiKey
-            },
-            body: JSON.stringify({
-              contents: toGeminiContents(messages),
-              generationConfig: {
-                temperature,
-                maxOutputTokens: maxTokens
-              }
-            }),
-            signal: requestSignal
-          });
-
-        if (!upstreamResponse.ok) {
-          const errText = await upstreamResponse.text().catch(() => upstreamResponse.statusText);
-          const error = new Error(errText || 'Gemini API Error');
-          error.statusCode = upstreamResponse.status;
-          error.code = upstreamResponse.status === 429 ? 'RATE_LIMIT_EXCEEDED' : 'GEMINI_API_ERROR';
+        if (requestSignal.aborted) {
+          const error = new Error('CLIENT_ABORTED');
+          error.statusCode = 499;
+          error.code = 'CLIENT_ABORTED';
           throw error;
         }
-
-        const data = await upstreamResponse.json();
-        const text = data?.candidates?.[0]?.content?.parts
-          ?.map(part => String(part?.text || ''))
-          .join('\n')
-          .trim() || '';
+        const result = await runGeminiCompletion({
+          model: activeModel,
+          messages,
+          temperature,
+          maxOutputTokens: maxTokens,
+          demoType: 'groq_compat',
+          agentType: stream ? 'stream' : 'chat',
+          sourcePage: '/api/groq/stream'
+        });
+        if (!result.ok) {
+          const error = new Error(result.error?.message_ar || 'Gemini API Error');
+          error.statusCode = result.statusCode || 503;
+          error.code = result.error?.code || 'GEMINI_API_ERROR';
+          throw error;
+        }
+        const text = result.text || result.data?.text || '';
 
         return stream
           ? toOpenAiLikeStreamResponse(text)
@@ -833,46 +818,27 @@ async function callGroq({
 }
 
 async function extractTextWithGemini({ base64Data, mimeType }) {
-  if (!isApiKeyConfigured()) {
-    const error = new Error('GEMINI_NOT_CONFIGURED');
-    error.statusCode = 503;
-    throw error;
-  }
-
-  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': config.gemini.apiKey
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            { text: 'استخرج النص الكامل من المستند التالي. أعد النص فقط بدون شرح.' },
-            { inlineData: { mimeType, data: base64Data } }
-          ]
-        }
-      ],
-      generationConfig: {
-        temperature: 0.1,
-        maxOutputTokens: 2048
-      }
-    })
+  const result = await runGeminiCompletion({
+    messages: [{
+      role: 'user',
+      content: [
+        { type: 'text', text: 'استخرج النص الكامل من المستند التالي. أعد النص فقط بدون شرح.' },
+        { inlineData: { mimeType, data: base64Data } }
+      ]
+    }],
+    temperature: 0.1,
+    maxOutputTokens: 2048,
+    demoType: 'document_automation',
+    agentType: 'ocr',
+    sourcePage: '/api/ai/extract-text'
   });
-
-  if (!response.ok) {
-    const errText = await response.text().catch(() => response.statusText);
-    const error = new Error(errText || 'Gemini OCR Error');
-    error.statusCode = response.status;
+  if (!result.ok) {
+    const error = new Error(result.error?.message_ar || 'Gemini OCR Error');
+    error.statusCode = result.statusCode || 503;
+    error.code = result.error?.code || 'AI_PROVIDER_UNAVAILABLE';
     throw error;
   }
-
-  const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join('\n') || '';
-  return text.trim();
+  return String(result.text || result.data?.text || '').trim();
 }
 
 async function extractTextWithGroqVision({ base64Data, mimeType, apiKey = '' }) {
@@ -881,89 +847,45 @@ async function extractTextWithGroqVision({ base64Data, mimeType, apiKey = '' }) 
 }
 
 async function callGeminiText({ prompt, maxOutputTokens = 1800, temperature = 0.2 }) {
-  if (!isApiKeyConfigured()) {
-    const error = new Error('GEMINI_NOT_CONFIGURED');
-    error.statusCode = 503;
-    throw error;
-  }
-
-  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': config.gemini.apiKey
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: prompt }]
-        }
-      ],
-      generationConfig: {
-        temperature,
-        maxOutputTokens
-      }
-    })
+  const result = await runGeminiCompletion({
+    messages: [{ role: 'user', content: prompt }],
+    temperature,
+    maxOutputTokens,
+    demoType: 'backend_agent',
+    agentType: 'text',
+    sourcePage: '/api/ai/medical-agent'
   });
-
-  if (!response.ok) {
-    const errText = await response.text().catch(() => response.statusText);
-    const error = new Error(errText || 'Gemini Agent Error');
-    error.statusCode = response.status;
+  if (!result.ok) {
+    const error = new Error(result.error?.message_ar || 'Gemini Agent Error');
+    error.statusCode = result.statusCode || 503;
+    error.code = result.error?.code || 'AI_PROVIDER_UNAVAILABLE';
     throw error;
   }
-
-  const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts?.map(p => p.text).join('\n') || '';
-  return text.trim();
+  return String(result.text || result.data?.text || '').trim();
 }
 
 async function transcribeAudioWithGemini({ base64Data, mimeType }) {
-  if (!isApiKeyConfigured()) {
-    const error = new Error('GEMINI_NOT_CONFIGURED');
-    error.statusCode = 503;
-    throw error;
-  }
-
-  const url = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-goog-api-key': config.gemini.apiKey
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            { text: 'حوّل الملف الصوتي التالي إلى نص عربي واضح. أعد النص فقط بدون أي شرح أو تنسيق إضافي.' },
-            { inlineData: { mimeType: mimeType || 'audio/wav', data: base64Data } }
-          ]
-        }
-      ],
-      generationConfig: {
-        temperature: 0.1,
-        maxOutputTokens: 2200
-      }
-    })
+  const result = await runGeminiCompletion({
+    messages: [{
+      role: 'user',
+      content: [
+        { type: 'text', text: 'حوّل الملف الصوتي التالي إلى نص عربي واضح. أعد النص فقط بدون أي شرح أو تنسيق إضافي.' },
+        { inlineData: { mimeType: mimeType || 'audio/wav', data: base64Data } }
+      ]
+    }],
+    temperature: 0.1,
+    maxOutputTokens: 2200,
+    demoType: 'transcription',
+    agentType: 'audio',
+    sourcePage: '/api/ai/transcribe'
   });
-
-  if (!response.ok) {
-    const errText = await response.text().catch(() => response.statusText);
-    const error = new Error(errText || 'GEMINI_TRANSCRIBE_ERROR');
-    error.statusCode = response.status;
+  if (!result.ok) {
+    const error = new Error(result.error?.message_ar || 'GEMINI_TRANSCRIBE_ERROR');
+    error.statusCode = result.statusCode || 503;
+    error.code = result.error?.code || 'AI_PROVIDER_UNAVAILABLE';
     throw error;
   }
-
-  const data = await response.json();
-  const text = data?.candidates?.[0]?.content?.parts
-    ?.map(part => String(part?.text || ''))
-    .join('\n')
-    .trim() || '';
-  return text;
+  return String(result.text || result.data?.text || '').trim();
 }
 
 function safeFileName(fileName) {

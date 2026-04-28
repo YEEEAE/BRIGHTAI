@@ -89,6 +89,18 @@ async function unifiedChatStreamHandler(req, res, rawRes) {
 async function unifiedOpenAiCompatHandler(req, res) {
   try {
     const result = await aiGateway.openAiCompatChat(req);
+    if (result && result.ok === false) {
+      return res.status(result.statusCode || 503).json({
+        ok: false,
+        provider: result.provider || 'gemini',
+        model: result.model,
+        requestId: result.requestId,
+        error: result.error || {
+          code: 'AI_PROVIDER_UNAVAILABLE',
+          message_ar: 'تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.'
+        }
+      });
+    }
     return res.status(200).json(result);
   } catch (error) {
     const statusCode = error.statusCode || 500;

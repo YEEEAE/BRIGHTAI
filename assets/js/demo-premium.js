@@ -115,38 +115,58 @@
     }
   }
 
-  async function requestAi(config, input, extra) {
+  async function unifiedDemoRequest(payload, options) {
+    if (window.BrightAI?.generateDemoResult && window.BrightAI.generateDemoResult !== unifiedDemoRequest) {
+      return window.BrightAI.generateDemoResult(payload);
+    }
+
     const body = {
-      model: "gemini-2.5-flash",
-      demoType: config.demoType,
-      agentType: config.agentType,
-      schemaName: config.schemaName,
+      model: payload.model || "gemini-2.5-flash",
+      demoType: payload.demoType,
+      agentType: payload.agentType || payload.demoType,
+      schemaName: payload.schemaName,
       locale: "ar-SA",
-      sourcePage: config.sourcePage,
-      fallbackResult: config.fallbackResult,
+      sourcePage: payload.sourcePage || window.location.pathname,
       messages: [
-        {
-          role: "system",
-          content: "أنت محلل أعمال من Bright AI. أعد نتيجة عربية منظمة للوحة ديمو فقط ولا تعرض JSON للمستخدم."
-        },
-        {
-          role: "user",
-          content: `اسم الديمو: ${config.title}\nالمشكلة: ${config.problem}\nالنتيجة المطلوبة: ${config.outcome}\nالمدخلات: ${input}\nتفاصيل إضافية: ${extra}`
-        }
+        { role: "system", content: payload.systemPrompt || "أنت محلل Bright AI. أعد نتيجة عربية منظمة قابلة للعرض فقط." },
+        { role: "user", content: payload.taskPrompt || JSON.stringify(payload.userInputs || {}, null, 2) }
       ],
-      temperature: 0.2
+      response_format: {
+        type: "json_schema",
+        json_schema: { name: payload.schemaName || "genericDemoSchema", schema: payload.responseSchema || undefined }
+      },
+      temperature: payload.temperature ?? 0.2
     };
-    const options = {
+
+    const request = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
     };
     const res = window.BrightAIGateway?.apiFetch
-      ? await window.BrightAIGateway.apiFetch(endpoint, options, 45000)
-      : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(endpoint) : endpoint, options);
-    if (!res.ok) throw new Error("AI_REQUEST_FAILED");
-    const data = await res.json();
-    return data?.choices?.[0]?.message?.content || data?.answer || data;
+      ? await window.BrightAIGateway.apiFetch(endpoint, request, options?.timeoutMs || 45000)
+      : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(endpoint) : endpoint, request);
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data?.ok === false) throw new Error(data?.error?.message_ar || "AI_REQUEST_FAILED");
+    return data?.data || data?.choices?.[0]?.message?.content || data;
+  }
+
+  window.BrightAI = window.BrightAI || {};
+  window.BrightAI.generateDemoResult = window.BrightAI.generateDemoResult || unifiedDemoRequest;
+
+  async function requestAi(config, input, extra) {
+    return unifiedDemoRequest({
+      model: "gemini-2.5-flash",
+      demoType: config.demoType,
+      agentType: config.agentType,
+      schemaName: config.schemaName,
+      sourcePage: config.sourcePage,
+      fallbackResult: config.fallbackResult,
+      systemPrompt: "أنت محلل أعمال من Bright AI. أعد نتيجة عربية منظمة للوحة ديمو فقط ولا تعرض JSON للمستخدم.",
+      taskPrompt: `اسم الديمو: ${config.title}\nالمشكلة: ${config.problem}\nالنتيجة المطلوبة: ${config.outcome}\nالمدخلات: ${input}\nتفاصيل إضافية: ${extra}`,
+      userInputs: { input, extra },
+      temperature: 0.2
+    }, { timeoutMs: 45000 });
   }
 
   function downloadReport() {

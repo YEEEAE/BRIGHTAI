@@ -787,12 +787,12 @@
 <h3 class="panel-title">API والتكامل</h3>
 <p style="color:var(--text-secondary);line-height:1.7;margin:0 0 16px;">ربط ContractAI مع أنظمتك الداخلية عبر واجهة API البرمجية. يمكنك إرسال العقود للتحليل آلياً واستقبال النتائج في نظام إدارة العقود أو ERP الخاص بشركتك. كما يدعم النظام إعداد Webhooks لاستلام تنبيهات فورية عند اكتمال التحليل أو رصد مخاطر عالية.</p>
 <div class="api-key">
-<strong>مفتاح API</strong>
-<code id="apiKeyValue">sk-xxxx...xxxx</code>
+<strong>تكامل Backend آمن</strong>
+<code id="apiKeyValue">managed-by-backend</code>
 <div class="api-actions">
-<button class="secondary-button" id="toggleApiKey" type="button">إظهار</button>
-<button class="secondary-button" id="copyApiKey" type="button">نسخ</button>
-<button class="secondary-button" id="regenerateApiKey" type="button">إعادة توليد</button>
+<button class="secondary-button" id="toggleApiKey" type="button">عرض الحالة</button>
+<button class="secondary-button" id="copyApiKey" type="button">نسخ المسار</button>
+<button class="secondary-button" id="regenerateApiKey" type="button">طلب تدوير</button>
 </div>
 </div>
 <p style="color:var(--text-secondary); margin:18px 0 8px;">1,247 طلب هذا الشهر من 10,000</p>
@@ -803,14 +803,14 @@
 <button class="code-tab" data-code="javascript" type="button">JavaScript</button>
 </div>
 <div class="code-pane is-visible" id="code-curl"><div class="code-actions"><button class="secondary-button copy-code" type="button">نسخ الكود</button></div><pre class="code-block">curl -X POST https://api.contractai.sa/v1/analyze \
-  -H "Authorization: Bearer sk-xxxx" \
+  -H "Authorization: Bearer <backend-managed-token>" \
   -F "file=@contract.pdf" \
   -F "type=supply"</pre></div>
 <div class="code-pane" id="code-python"><div class="code-actions"><button class="secondary-button copy-code" type="button">نسخ الكود</button></div><pre class="code-block">import requests
 
 requests.post(
     "https://api.contractai.sa/v1/analyze",
-    headers={"Authorization": "Bearer sk-xxxx"},
+    headers={"Authorization": "Bearer <backend-managed-token>"},
     files={"file": open("contract.pdf", "rb")},
     data={"type": "supply"},
 )</pre></div>
@@ -820,7 +820,7 @@ formData.append("type", "supply");
 
 fetch("https://api.contractai.sa/v1/analyze", {
   method: "POST",
-  headers: { Authorization: "Bearer sk-xxxx" },
+  headers: { Authorization: "Bearer <backend-managed-token>" },
   body: formData,
 });</pre></div>
 <div class="field-wrap" style="margin-top:20px;"><span>Webhooks</span><div class="field"><input id="webhookUrl" name="webhook_url" placeholder="https://company.sa/webhooks/contractai" aria-label="https://company.sa/webhooks/contractai"/></div></div>
@@ -1012,12 +1012,12 @@ fetch("https://api.contractai.sa/v1/analyze", {
           }
         });
         toggleApiKey.addEventListener("click", function () {
-          var hidden = apiKeyValue.textContent.indexOf("xxxx") !== -1;
-          apiKeyValue.textContent = hidden ? "sk-live-2f7d8b24e1ab90cd" : "sk-xxxx...xxxx";
-          toggleApiKey.textContent = hidden ? "إخفاء" : "إظهار";
+          apiKeyValue.textContent = "يُدار من الخادم فقط";
+          toggleApiKey.textContent = "آمن";
+          showToast("✅ لا يتم عرض مفاتيح في الواجهة");
         });
-        copyApiKey.addEventListener("click", function () { showToast("✅ تم نسخ مفتاح API"); });
-        regenerateApiKey.addEventListener("click", function () { apiKeyValue.textContent = "sk-live-71ac9e44d92f0be1"; showToast("✅ تم إعادة توليد المفتاح"); });
+        copyApiKey.addEventListener("click", function () { showToast("✅ استخدم المسار الخلفي الموحد للتكامل"); });
+        regenerateApiKey.addEventListener("click", function () { apiKeyValue.textContent = "managed-by-backend"; showToast("✅ يتم تدوير المفاتيح من بيئة الخادم فقط"); });
         codeTabs.forEach(function (tab) {
           tab.addEventListener("click", function () {
             codeTabs.forEach(function (item) { item.classList.remove("is-active"); });

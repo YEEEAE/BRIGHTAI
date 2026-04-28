@@ -3,8 +3,8 @@
  * Generates a summary of the provided text using Gemini API
  */
 
-const { config, isApiKeyConfigured } = require('../config');
 const { CacheManager } = require('../utils/cache');
+const { runGeminiCompletion } = require('../services/aiGateway');
 
 // Initialize cache manager
 // Cache enabled by default with 10 minutes TTL for summaries
@@ -20,14 +20,6 @@ const cache = new CacheManager({
  */
 async function summaryHandler(req, res) {
     try {
-        // Check if API key is configured
-        if (!isApiKeyConfigured()) {
-            return res.status(503).json({ 
-                error: 'خدمة الذكاء الاصطناعي غير متاحة حالياً',
-                errorCode: 'API_NOT_CONFIGURED'
-            });
-        }
-
         const { text } = req.body;
 
         if (!text) {
@@ -52,10 +44,6 @@ async function summaryHandler(req, res) {
             }
         }
 
-        // Use fetch-based API call like chat.js
-        const apiUrl = `${config.gemini.endpoint}/${config.gemini.model}:generateContent`;
-
-        // Construct prompt
         const prompt = `
 اقرأ النص التالي وقدم ملخصاً موجزاً وجذاباً باللغة العربية.
 يجب أن يكون الملخص مناسباً للجمهور السعودي ويبرز القيم الأساسية بما يتماشى مع رؤية المملكة 2030.
@@ -65,36 +53,24 @@ async function summaryHandler(req, res) {
 ${text ? text.substring(0, 5000) : 'لم يتم تقديم نص'}
     `;
 
-        // Generate content using fetch
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-goog-api-key': config.gemini.apiKey
-            },
-            body: JSON.stringify({
-                contents: [{
-                    role: 'user',
-                    parts: [{ text: prompt }]
-                }],
-                generationConfig: {
-                    temperature: 0.7,
-                    maxOutputTokens: 1024
-                }
-            })
+        const aiResult = await runGeminiCompletion({
+            messages: [{ role: 'user', content: prompt }],
+            temperature: 0.7,
+            maxOutputTokens: 1024,
+            demoType: 'summary',
+            agentType: 'summary',
+            sourcePage: '/api/ai/summary'
         });
 
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
+        if (!aiResult.ok) {
+            return res.status(aiResult.statusCode || 503).json({
+                error: aiResult.error?.message_ar || 'خدمة الذكاء الاصطناعي غير متاحة حالياً',
+                errorCode: aiResult.error?.code || 'AI_PROVIDER_UNAVAILABLE',
+                requestId: aiResult.requestId
+            });
         }
 
-        const data = await response.json();
-        
-        if (!data.candidates || !data.candidates[0]?.content?.parts?.[0]?.text) {
-            throw new Error('Invalid API response format');
-        }
-
-        const summary = data.candidates[0].content.parts[0].text;
+        const summary = aiResult.text || aiResult.data?.text || '';
 
         const result = {
             summary,
