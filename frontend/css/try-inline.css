@@ -36,8 +36,7 @@ body {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
+            inset-inline: 0;
             height: 3px;
             background: linear-gradient(90deg, var(--card-color-1), var(--card-color-2));
             opacity: 0;
@@ -192,8 +191,7 @@ body {
 .unified-nav {
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
+            inset-inline: 0;
             z-index: 1000;
             background: rgba(15, 15, 35, 0.8);
             backdrop-filter: blur(10px);

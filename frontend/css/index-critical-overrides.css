@@ -648,8 +648,7 @@ section#blog a.btn,
     content: '';
     position: absolute;
     top: 0;
-    right: 0;
-    left: 0;
+    inset-inline: 0;
     height: 3px;
     background: linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4);
     border-radius: 24px 24px 0 0;

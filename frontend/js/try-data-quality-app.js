@@ -9,6 +9,8 @@
 
         // Tabs
         document.querySelectorAll('.tab').forEach(tab => {
+            if (tab.dataset.dataQualityBound === 'true') return;
+            tab.dataset.dataQualityBound = 'true';
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -21,10 +23,16 @@
         const fileInput = document.getElementById('file-input');
         const uploadArea = document.getElementById('upload-area');
 
-        uploadArea?.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('highlight'); });
-        uploadArea?.addEventListener('dragleave', () => uploadArea.classList.remove('highlight'));
-        uploadArea?.addEventListener('drop', e => { e.preventDefault(); uploadArea.classList.remove('highlight'); handleFile(e.dataTransfer?.files?.[0]); });
-        fileInput?.addEventListener('change', e => handleFile(e.target.files?.[0]));
+        if (uploadArea && uploadArea.dataset.dataQualityBound !== 'true') {
+            uploadArea.dataset.dataQualityBound = 'true';
+            uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('highlight'); });
+            uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('highlight'));
+            uploadArea.addEventListener('drop', e => { e.preventDefault(); uploadArea.classList.remove('highlight'); handleFile(e.dataTransfer?.files?.[0]); });
+        }
+        if (fileInput && fileInput.dataset.dataQualityBound !== 'true') {
+            fileInput.dataset.dataQualityBound = 'true';
+            fileInput.addEventListener('change', e => handleFile(e.target.files?.[0]));
+        }
 
         async function handleFile(file) {
             if (!file) return;
@@ -53,7 +61,6 @@
                 }, 1500);
 
             } catch (e) {
-                console.error(e);
                 alert('خطأ في قراءة الملف');
                 setActive('loading', false);
             }

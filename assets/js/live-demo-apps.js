@@ -298,7 +298,11 @@ ${values.input || ""}
 
   function renderReport(data, config, engine) {
     const score = Math.max(0, Math.min(100, Number(data.readiness_index || data.candidate_fit || data.data_quality_score || 0)));
+    const fallbackNotice = data.__fallback
+      ? `<section class="bai-demo-report-section error-state"><h4>تعذر تشغيل التحليل الآن</h4><p>تعذر استرجاع نتيجة مباشرة من الخدمة. نعرض نموذجاً توضيحياً محفوظاً ويمكنك إعادة المحاولة أو التواصل معنا.</p></section>`
+      : "";
     return `<div class="bai-demo-report">
+      ${fallbackNotice}
       <div class="bai-result-top">
         <div><span class="bai-demo-eyebrow">تقرير تنفيذي قابل للمشاركة</span><h3>${escapeHtml(config.title)}</h3></div>
         <div class="bai-score"><strong>${score || 78}</strong><span>Readiness Index</span></div>
@@ -330,6 +334,8 @@ ${values.input || ""}
   }
 
   function attachHandlers(section, id, config, engine) {
+    if (section.dataset.liveDemoBound === "true") return;
+    section.dataset.liveDemoBound = "true";
     const form = section.querySelector("[data-demo-form]");
     const output = section.querySelector("[data-demo-output]");
     const input = form.querySelector("textarea[name='input']");
@@ -356,23 +362,28 @@ ${values.input || ""}
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       output.innerHTML = loadingMarkup();
-      const result = await engine.generate({
-        prompt: promptFor(config, { input: input.value }, mode),
-        schema: schemas[config.schemaName],
-        schemaName: config.schemaName,
-        domain: config.domain,
-        fallback: config.fallback,
-        temperature: 0.2
-      });
-      limit.textContent = `متبقي ${engine.getRemainingUses()} من 3 محاولات`;
-      const safe = withAudit(result, config);
-      output.innerHTML = renderReport(safe, config, engine);
+      try {
+        const result = await engine.generate({
+          prompt: promptFor(config, { input: input.value }, mode),
+          schema: schemas[config.schemaName],
+          schemaName: config.schemaName,
+          domain: config.domain,
+          fallback: config.fallback,
+          temperature: 0.2
+        });
+        limit.textContent = `متبقي ${engine.getRemainingUses()} من 3 محاولات`;
+        const safe = withAudit(result, config);
+        output.innerHTML = renderReport(safe, config, engine);
+      } catch (error) {
+        engine.trackUsage("demo_error", error?.message || "live_demo_failed");
+        output.innerHTML = renderReport(withAudit({ ...config.fallback, __fallback: true }, config), config, engine);
+      }
       output.querySelector("[data-print-report]")?.addEventListener("click", () => {
         engine.trackUsage("report_downloaded");
         window.BrightAIDemoUtils.printReport(`Bright AI Demo - ${id}`, output.querySelector(".bai-demo-report").innerHTML);
-      });
-      output.querySelector("[data-demo-whatsapp]")?.addEventListener("click", () => engine.trackUsage("whatsapp_clicked"));
-      output.querySelector("[data-lead-submit]")?.addEventListener("click", () => engine.trackUsage("lead_submitted"));
+      }, { once: true });
+      output.querySelector("[data-demo-whatsapp]")?.addEventListener("click", () => engine.trackUsage("whatsapp_clicked"), { once: true });
+      output.querySelector("[data-lead-submit]")?.addEventListener("click", () => engine.trackUsage("lead_submitted"), { once: true });
     });
   }
 
@@ -389,6 +400,6 @@ ${values.input || ""}
     attachHandlers(section, id, config, engine);
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount, { once: true });
   else mount();
 })();

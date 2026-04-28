@@ -140,7 +140,6 @@ class DataAnalyzerPage {
       const parsed = await this.parseFile(file);
       await this.processDataset(file.name, parsed.headers, parsed.rows, "ملف مرفوع");
     } catch (error) {
-      console.error(error);
       alert("حدث خطأ في معالجة الملف. تأكد من أن الصف الأول يحتوي على أسماء الأعمدة.");
       this.hideLoading();
       document.getElementById("upload-section")?.classList.remove("hidden");
@@ -383,7 +382,6 @@ class DataAnalyzerPage {
       this.geminiReport = normalizeGeminiReport(parseGeminiJson(response.text));
       this.renderGeminiReport();
     } catch (error) {
-      console.error(error);
       this.geminiReport = this.buildFallbackReport(error);
       this.renderGeminiReport(true);
     }
@@ -720,7 +718,10 @@ ${JSON.stringify(this.geminiReport, null, 2)}
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => new DataAnalyzerPage());
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.__brightDataAnalyzerPage) return;
+  window.__brightDataAnalyzerPage = new DataAnalyzerPage();
+}, { once: true });
 
 function parseGeminiJson(text) {
   const raw = String(text || "").trim();

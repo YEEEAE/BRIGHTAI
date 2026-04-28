@@ -3,6 +3,7 @@
 
   const AI_COMPLETIONS_PATH = "/api/ai/chat/completions";
   const WHATSAPP_NUMBER = "966538229013";
+  const NETWORK_FALLBACK_MESSAGE = "تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.";
 
   class GeminiDemoEngine {
     constructor(config) {
@@ -102,13 +103,13 @@
           ? await window.BrightAIGateway.apiFetch(this.endpoint, request, this.timeoutMs)
           : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(this.endpoint) : this.endpoint, request);
 
-        if (!res.ok) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
-        const data = await res.json();
+        if (!res.ok) throw new Error(NETWORK_FALLBACK_MESSAGE);
+        const data = await res.json().catch(() => ({}));
         const text = data?.choices?.[0]?.message?.content || data?.answer || "";
         this.trackUsage("agent_result_generated");
         return schema ? this.parseJson(text) : text;
       } catch (error) {
-        this.trackUsage("demo_error", error.message);
+        this.trackUsage("demo_error", error?.message || NETWORK_FALLBACK_MESSAGE);
         this.showErrorFallback();
         return fallback && typeof fallback === "object" ? { ...fallback, __fallback: true } : fallback || null;
       } finally {
@@ -136,6 +137,7 @@
     }
 
     showUpgradePrompt() {
+      document.querySelector(".bai-upgrade-modal")?.remove();
       const modal = document.createElement("div");
       modal.className = "bai-upgrade-modal";
       modal.innerHTML = `
@@ -148,8 +150,8 @@
           <button type="button" class="bai-btn-close">إغلاق</button>
         </div>
       `;
-      modal.querySelector(".bai-btn-close").addEventListener("click", () => modal.remove());
-      modal.querySelector("[data-demo-whatsapp]").addEventListener("click", () => this.trackUsage("demo_to_whatsapp"));
+      modal.querySelector(".bai-btn-close")?.addEventListener("click", () => modal.remove(), { once: true });
+      modal.querySelector("[data-demo-whatsapp]")?.addEventListener("click", () => this.trackUsage("demo_to_whatsapp"), { once: true });
       document.body.appendChild(modal);
     }
 
@@ -284,10 +286,13 @@
       temperature
     };
 
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
     const request = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     };
 
     try {
@@ -297,7 +302,7 @@
         : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(url) : url, request);
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data?.ok === false) {
-        throw new Error(data?.error?.message_ar || "تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
+        throw new Error(data?.error?.message_ar || NETWORK_FALLBACK_MESSAGE);
       }
       return data?.data || data?.choices?.[0]?.message?.content || data;
     } catch (error) {
@@ -305,6 +310,8 @@
         detail: { demoType, agentType, schemaName, message: error.message }
       }));
       return fallbackResult && typeof fallbackResult === "object" ? { ...fallbackResult, __fallback: true } : fallbackResult || null;
+    } finally {
+      window.clearTimeout(timer);
     }
   }
 

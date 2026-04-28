@@ -2,10 +2,10 @@
   --bg: #020617;
   --panel: #0f172a;
   --panel-soft: #111827;
-  --text: #f8fafc;
-  --muted: #cbd5e1;
+  --text: var(--ba-neutral-50, #f8fafc);
+  --muted: var(--ba-neutral-300, #cbd5e1);
   --subtle: #94a3b8;
-  --line: rgba(148, 163, 184, 0.22);
+  --line: var(--ba-border-muted, rgba(148, 163, 184, 0.22));
   --accent: #22c55e;
   --accent-2: #38bdf8;
   --accent-3: #818cf8;
@@ -75,7 +75,7 @@ a {
   height: 36px;
   display: grid;
   place-items: center;
-  border-radius: 8px;
+  border-radius: var(--ba-radius-control, 8px);
   background: linear-gradient(135deg, #4f46e5, #0ea5e9 48%, #22c55e);
   font-weight: 900;
 }
@@ -94,7 +94,7 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8px;
+  border-radius: var(--ba-radius-control, 8px);
 }
 
 .nav-links a {
@@ -188,7 +188,7 @@ h1 {
 .hero-media {
   margin: 0;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--ba-radius-control, 8px);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), rgba(17, 24, 39, 0.76));
   padding: 22px;
 }
@@ -232,7 +232,7 @@ section {
 .nap-box,
 .faq-item {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--ba-radius-control, 8px);
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(15, 23, 42, 0.68));
 }
 
@@ -293,7 +293,7 @@ section {
 .tldr li,
 .nap-box li {
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: var(--ba-radius-control, 8px);
   background: rgba(255, 255, 255, 0.045);
   color: var(--muted);
 }
@@ -301,7 +301,7 @@ section {
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--ba-radius-control, 8px);
 }
 
 table {
@@ -377,7 +377,7 @@ td {
 .cta-panel {
   text-align: center;
   border: 1px solid rgba(34, 197, 94, 0.28);
-  border-radius: 8px;
+  border-radius: var(--ba-radius-control, 8px);
   padding: 28px;
   background: linear-gradient(135deg, rgba(34, 197, 94, 0.14), rgba(56, 189, 248, 0.12));
 }

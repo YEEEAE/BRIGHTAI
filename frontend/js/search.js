@@ -255,7 +255,9 @@ class BrightSearch {
   debounceSearch(value) {
     window.clearTimeout(this.debounceTimer);
     this.debounceTimer = window.setTimeout(() => {
-      this.search(value);
+      this.search(value).catch(() => {
+        this.renderResults(this.getLocalResults(this.normalizeText(value).split(/\s+/).filter(Boolean), this.normalizeText(value)), this.normalizeText(value).split(/\s+/).filter(Boolean), "final");
+      });
     }, 180);
   }
 
@@ -277,11 +279,13 @@ class BrightSearch {
     this.lastSearchToken = searchToken;
     this.renderLoadingState(localResults.length);
 
-    const aiResult = await this.fetchAiSearch(normalizedQuery).catch(() => null);
+    const aiResult = await this.fetchAiSearch(normalizedQuery).catch(() => ({ __fallback: true }));
     if (this.lastSearchToken !== searchToken || !this.isOpen) return;
 
     if (aiResult && (aiResult.answer || aiResult.sources?.length || aiResult.results?.length)) {
       this.renderAiResults(aiResult, terms, localResults);
+    } else if (aiResult?.__fallback) {
+      this.renderSearchFallback(localResults, terms);
     } else {
       this.renderResults(localResults, terms, "final");
     }
@@ -343,6 +347,7 @@ class BrightSearch {
 
     this.abortActiveRequest();
     const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 8000);
     this.requestController = controller;
 
     try {
@@ -358,8 +363,10 @@ class BrightSearch {
       const payload = await response.json();
       return payload && typeof payload === "object" ? payload : null;
     } catch (error) {
-      return null;
+      if (error?.name === "AbortError") return { __fallback: true };
+      return { __fallback: true };
     } finally {
+      window.clearTimeout(timer);
       if (this.requestController === controller) {
         this.requestController = null;
       }
@@ -414,6 +421,20 @@ class BrightSearch {
     `;
 
     this.renderHtml(html, `ai:${answer}:${sources.length}:${relatedResults.length}`);
+  }
+
+  renderSearchFallback(localResults, terms) {
+    const resultsHtml = localResults.length
+      ? `<div class="search-category">
+          <div class="search-category-title">نتائج محلية متاحة الآن</div>
+          ${localResults.map((item) => this.renderResultItem(item, terms)).join("")}
+        </div>`
+      : `<div class="search-no-results"><h4>تعذر البحث الذكي مؤقتاً</h4><p>جرّب كلمات مختلفة أو افتح صفحة الأدوات والخدمات.</p></div>`;
+
+    this.renderHtml(`
+      <div class="search-api-note">تعذر استرجاع الإجابة الذكية الآن. نعرض نتائج الموقع المحلية بدلاً منها.</div>
+      ${resultsHtml}
+    `, `fallback:${terms.join("|")}:${localResults.length}`);
   }
 
   renderSourceItem(source, terms) {

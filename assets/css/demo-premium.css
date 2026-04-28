@@ -1,7 +1,7 @@
 @font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
 @font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");font-weight:700;font-display:swap}
 @font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-Bold.woff2") format("woff2");font-weight:800;font-display:swap}
-:root{--bg:#07111f;--surface:#0d1b2d;--surface-2:#13243a;--text:#f8fafc;--muted:#c7d2df;--soft:#8ea3b8;--line:rgba(203,213,225,.16);--brand:#2dd4bf;--brand-2:#f8c14a;--danger:#f97373;--ok:#34d399;--radius:18px;--shadow:0 24px 70px rgba(0,0,0,.28)}
+:root{--bg:#07111f;--surface:#0d1b2d;--surface-2:#13243a;--text:var(--ba-neutral-50,#f8fafc);--muted:#c7d2df;--soft:#8ea3b8;--line:rgba(203,213,225,.16);--brand:#2dd4bf;--brand-2:#f8c14a;--danger:#f97373;--ok:#34d399;--radius:18px;--shadow:0 24px 70px rgba(0,0,0,.28)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:radial-gradient(circle at 15% 0,rgba(45,212,191,.16),transparent 30rem),linear-gradient(180deg,#07111f 0,#0a1422 42%,#07111f 100%);color:var(--text);font-family:BrightArabic,system-ui,sans-serif;line-height:1.8;text-align:start}
@@ -28,7 +28,7 @@ h3{font-size:1.08rem;margin-block-end:8px}
 .hero-points{display:grid;gap:10px;margin-block-end:26px}
 .hero-points span,.trust-list span,.result-promises li{border:1px solid var(--line);background:rgba(255,255,255,.045);padding:.72rem .9rem;border-radius:14px;color:var(--muted)}
 .hero-actions,.form-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.btn{border:1px solid var(--line);border-radius:999px;padding:.86rem 1.15rem;font:inherit;font-weight:800;cursor:pointer;min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn{border:1px solid var(--line);border-radius:999px;padding:.86rem 1.15rem;font:inherit;font-weight:800;cursor:pointer;min-block-size:var(--ba-tap-target-comfortable,48px);display:inline-flex;align-items:center;justify-content:center;gap:8px}
 .btn-primary{background:linear-gradient(135deg,var(--brand),#7dd3fc);color:#06221f;border-color:transparent}
 .btn-secondary{background:rgba(248,193,74,.12);color:#ffe7a3;border-color:rgba(248,193,74,.28)}
 .btn-outline{background:rgba(255,255,255,.04);color:var(--text)}

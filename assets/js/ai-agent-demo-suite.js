@@ -323,7 +323,7 @@
   }
 
   function ready(fn) {
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true });
     else fn();
   }
 
@@ -479,6 +479,8 @@
   }
 
   function bindResultActions(panel, agentType, engine, rerun) {
+    if (panel.dataset.agentActionsBound === "true") return;
+    panel.dataset.agentActionsBound = "true";
     panel.querySelector("[data-agent-download]")?.addEventListener("click", () => downloadReport(agentType, panel, engine));
     panel.querySelector("[data-agent-whatsapp]")?.addEventListener("click", () => engine.trackUsage("agent_whatsapp_clicked"));
     panel.querySelector("[data-agent-lead]")?.addEventListener("click", () => engine.trackUsage("agent_lead_submitted"));
@@ -498,22 +500,31 @@
     panel.innerHTML = loadingMarkup(config);
 
     const messages = buildMessages(config, values);
-    const result = await engine.generate({
-      agentType: config.agentType,
-      domain: config.agentType,
-      locale,
-      sourcePage: window.location.pathname,
-      messages,
-      schema: resultSchema,
-      schemaName: config.schemaName,
-      fallback: config.fallbackResult,
-      temperature: 0.2
-    });
+    try {
+      const result = await engine.generate({
+        agentType: config.agentType,
+        domain: config.agentType,
+        locale,
+        sourcePage: window.location.pathname,
+        messages,
+        schema: resultSchema,
+        schemaName: config.schemaName,
+        fallback: config.fallbackResult,
+        temperature: 0.2
+      });
 
-    panel.innerHTML = renderReport(result, config, values, engine);
-    bindResultActions(panel, config.agentType, engine, () => runDemo(config, engine, button, panel));
-    button.disabled = false;
-    button.textContent = originalText;
+      panel.innerHTML = renderReport(result, config, values, engine);
+      delete panel.dataset.agentActionsBound;
+      bindResultActions(panel, config.agentType, engine, () => runDemo(config, engine, button, panel));
+    } catch (error) {
+      panel.innerHTML = renderReport({ ...config.fallbackResult, __fallback: true }, config, values, engine);
+      delete panel.dataset.agentActionsBound;
+      bindResultActions(panel, config.agentType, engine, () => runDemo(config, engine, button, panel));
+      engine.trackUsage("demo_error", error?.message || "agent_demo_failed");
+    } finally {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
   }
 
   function mount() {
@@ -523,21 +534,24 @@
     const sample = $("#fillSampleBtn");
     const panel = $("#resultsPanel") || $("#agentDemoApp [data-output]");
     if (!config || !button || !panel || !window.GeminiDemoEngine) return;
+    if (button.dataset.agentDemoBound === "true") return;
 
     document.body.dataset.agentDemo = agentType;
     const engine = new window.GeminiDemoEngine({ demoId: agentType, endpoint, timeoutMs: 60000 });
 
-    sample?.addEventListener("click", (event) => {
+    if (sample && sample.dataset.agentDemoBound !== "true") sample.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
       applySample(config, engine);
     }, true);
+    if (sample) sample.dataset.agentDemoBound = "true";
 
     button.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
       runDemo(config, engine, button, panel);
     }, true);
+    button.dataset.agentDemoBound = "true";
   }
 
   window.BrightAIAgentDemoSuite = {

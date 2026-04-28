@@ -2,6 +2,7 @@
   "use strict";
 
   const endpoint = "/api/ai/chat/completions";
+  const FALLBACK_MESSAGE = "تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.";
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   function $(selector, root = document) {
@@ -138,17 +139,34 @@
       temperature: payload.temperature ?? 0.2
     };
 
+    const timeoutMs = options?.timeoutMs || 45000;
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), timeoutMs);
     const request = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
+      signal: controller.signal
     };
-    const res = window.BrightAIGateway?.apiFetch
-      ? await window.BrightAIGateway.apiFetch(endpoint, request, options?.timeoutMs || 45000)
-      : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(endpoint) : endpoint, request);
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || data?.ok === false) throw new Error(data?.error?.message_ar || "AI_REQUEST_FAILED");
-    return data?.data || data?.choices?.[0]?.message?.content || data;
+    try {
+      const res = window.BrightAIGateway?.apiFetch
+        ? await window.BrightAIGateway.apiFetch(endpoint, request, timeoutMs)
+        : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(endpoint) : endpoint, request);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || data?.ok === false) throw new Error(data?.error?.message_ar || FALLBACK_MESSAGE);
+      return data?.data || data?.choices?.[0]?.message?.content || data;
+    } catch (error) {
+      window.dispatchEvent(new CustomEvent("bai-demo-error", {
+        detail: {
+          demoType: payload.demoType,
+          agentType: payload.agentType || payload.demoType,
+          message: error?.message || FALLBACK_MESSAGE
+        }
+      }));
+      throw error;
+    } finally {
+      window.clearTimeout(timer);
+    }
   }
 
   window.BrightAI = window.BrightAI || {};
@@ -186,6 +204,8 @@
   }
 
   function init() {
+    if (window.__brightDemoPremiumInitialized) return;
+    window.__brightDemoPremiumInitialized = true;
     const config = parseJsonScript("#demo-config", null);
     const samples = parseJsonScript("#demo-samples", []);
     const form = $("[data-demo-form]");
@@ -204,17 +224,27 @@
     }
 
     all("[data-sample]").forEach((button) => {
+      if (button.dataset.demoPremiumBound === "true") return;
+      button.dataset.demoPremiumBound = "true";
       button.addEventListener("click", () => loadSample(Number(button.getAttribute("data-sample")) || 0));
     });
 
-    $("[data-load-first-sample]")?.addEventListener("click", () => {
-      loadSample(0);
-      form.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    const firstSample = $("[data-load-first-sample]");
+    if (firstSample && firstSample.dataset.demoPremiumBound !== "true") {
+      firstSample.dataset.demoPremiumBound = "true";
+      firstSample.addEventListener("click", () => {
+        loadSample(0);
+        form.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
 
-    $("[data-reset-demo]")?.addEventListener("click", () => loadSample(0));
+    const resetDemo = $("[data-reset-demo]");
+    if (resetDemo && resetDemo.dataset.demoPremiumBound !== "true") {
+      resetDemo.dataset.demoPremiumBound = "true";
+      resetDemo.addEventListener("click", () => loadSample(0));
+    }
 
-    form.addEventListener("submit", async (event) => {
+    if (form.dataset.demoPremiumBound !== "true") form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const submit = form.querySelector('button[type="submit"]');
       submit.disabled = true;
@@ -230,15 +260,17 @@
         submit.disabled = false;
       }
     });
+    form.dataset.demoPremiumBound = "true";
 
-    document.addEventListener("click", (event) => {
+    if (!window.__brightDemoPremiumDocumentClickBound) document.addEventListener("click", (event) => {
       if (event.target.closest("[data-download-report]")) downloadReport();
       if (event.target.closest("[data-retry-demo]")) form.requestSubmit();
     });
+    window.__brightDemoPremiumDocumentClickBound = true;
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
     init();
   }

@@ -405,7 +405,6 @@ ${JSON.stringify(payload, null, 2)}`;
       setStatus(ui.status, "تم إنشاء لوحة الإدارة التنفيذية عبر Gemini Structured Output.", "ok");
       ui.output.textContent = renderExecutiveBoard(json);
     } catch (error) {
-      console.error(error);
       setStatus(ui.status, "تعذر الاتصال. تم عرض نموذج تشغيلي محلي.", "err");
       ui.output.textContent = renderExecutiveBoard(fallbackOutput(error, payload));
     } finally {
@@ -545,7 +544,9 @@ ${JSON.stringify(payload, null, 2)}`;
   }
 
   function boot() {
+    if (window.__brightHealthDemoBound) return;
     if (!document.querySelector(".tabs")) return;
+    window.__brightHealthDemoBound = true;
     initTabs();
     initScenarios();
     initOpsTab();
@@ -557,7 +558,7 @@ ${JSON.stringify(payload, null, 2)}`;
   }
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", boot);
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
   } else {
     boot();
   }

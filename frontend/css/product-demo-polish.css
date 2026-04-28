@@ -10,7 +10,7 @@
   --demo-surface-strong: rgba(15, 31, 36, 0.94);
   --demo-line: rgba(148, 163, 184, 0.2);
   --demo-line-strong: rgba(148, 163, 184, 0.34);
-  --demo-text: #f8fafc;
+  --demo-text: var(--ba-neutral-50, #f8fafc);
   --demo-muted: #a7b4c3;
   --demo-teal: #2dd4bf;
   --demo-gold: #f4c95d;
@@ -64,7 +64,7 @@
 }
 
 .brightai-product-demo :where(button, .btn, .cta-button, .primary-btn, .secondary-btn, input[type="button"], input[type="submit"], a[class*="btn"]) {
-  min-height: 48px;
+  min-block-size: var(--ba-tap-target-comfortable, 48px);
   border-radius: var(--demo-radius) !important;
   touch-action: manipulation;
 }

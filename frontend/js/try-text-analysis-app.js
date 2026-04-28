@@ -23,6 +23,8 @@
         let currentType = 'summary';
 
         document.addEventListener('DOMContentLoaded', () => {
+            if (window.__brightTextAnalysisBound) return;
+            window.__brightTextAnalysisBound = true;
             const textInput = document.getElementById('text-input');
             const analyzeBtn = document.getElementById('analyze-btn');
             const clearBtn = document.getElementById('clear-btn');
@@ -53,7 +55,7 @@
 
             // Analyze
             analyzeBtn.addEventListener('click', () => runAnalysis());
-        });
+        }, { once: true });
 
         async function runAnalysis() {
                 const textInput = document.getElementById('text-input');
@@ -104,7 +106,6 @@
                     }
 
                 } catch (error) {
-                    console.error(error);
                     const message = window.BrightAIGemini?.getErrorMessage(error) || 'حدث خطأ في التحليل. يرجى المحاولة مرة أخرى.';
                     resultBox.innerHTML = `
                         <div class="text-red-400 mb-3">${escapeHtml(message)}</div>

@@ -5,11 +5,11 @@
 
 :root {
   --bai-demo-bg: #061013;
-  --bai-demo-ink: #f8fafc;
+  --bai-demo-ink: var(--ba-neutral-50, #f8fafc);
   --bai-demo-muted: #9fb0c2;
   --bai-demo-soft: rgba(255, 255, 255, 0.065);
   --bai-demo-soft-strong: rgba(255, 255, 255, 0.105);
-  --bai-demo-line: rgba(148, 163, 184, 0.22);
+  --bai-demo-line: var(--ba-border-muted, rgba(148, 163, 184, 0.22));
   --bai-demo-line-strong: rgba(45, 212, 191, 0.42);
   --bai-demo-teal: #2dd4bf;
   --bai-demo-blue: #38bdf8;
@@ -90,7 +90,7 @@ html.bai-demo-experience {
 }
 
 .bai-demo-experience :where(button, .btn, .btn-main, .btn-sub, .btn-outline, .btn-primary, .btn-secondary, .cta-button, .primary-btn, .secondary-btn, input[type="submit"], input[type="button"], a[class*="btn"]) {
-  min-block-size: 48px;
+  min-block-size: var(--ba-tap-target-comfortable, 48px);
   border-radius: var(--bai-demo-radius) !important;
   font-weight: 800;
   touch-action: manipulation;
@@ -224,12 +224,12 @@ html.bai-demo-experience {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-block-size: 48px;
+  min-block-size: var(--ba-tap-target-comfortable, 48px);
   padding: 12px 16px;
   border: 1px solid rgba(148, 163, 184, 0.28);
   border-radius: var(--bai-demo-radius);
   background: rgba(255, 255, 255, 0.06);
-  color: #f8fafc;
+  color: var(--ba-neutral-50, #f8fafc);
   text-decoration: none;
   font-weight: 900;
   cursor: pointer;
@@ -381,7 +381,7 @@ html.bai-demo-experience {
 .bai-demo-output-card ul {
   margin: 0;
   padding-inline-start: 20px;
-  color: #cbd5e1;
+  color: var(--ba-neutral-300, #cbd5e1);
   line-height: 1.9;
 }
 
@@ -403,7 +403,7 @@ html.bai-demo-experience {
   border: 1px dashed rgba(148, 163, 184, 0.28);
   border-radius: var(--bai-demo-radius);
   background: rgba(15, 23, 42, 0.42);
-  color: #cbd5e1;
+  color: var(--ba-neutral-300, #cbd5e1);
 }
 
 .bai-demo-state strong {
@@ -592,7 +592,7 @@ html.bai-demo-experience {
   border: 1px solid rgba(45, 212, 191, 0.32);
   border-radius: var(--bai-demo-radius);
   background: rgba(7, 16, 19, 0.92);
-  color: #f8fafc;
+  color: var(--ba-neutral-50, #f8fafc);
   box-shadow: var(--bai-demo-shadow);
   opacity: 0;
   transform: translateY(10px);

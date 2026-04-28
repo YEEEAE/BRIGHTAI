@@ -141,8 +141,7 @@ body {
         .loading-overlay {
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
+            inset-inline: 0;
             bottom: 0;
             background: rgba(10, 15, 26, 0.95);
             backdrop-filter: blur(8px);
@@ -236,8 +235,7 @@ body {
 .unified-nav {
             position: fixed;
             top: 0;
-            left: 0;
-            right: 0;
+            inset-inline: 0;
             z-index: 1000;
             background: rgba(15, 15, 35, 0.8);
             backdrop-filter: blur(10px);
@@ -615,7 +613,7 @@ body {
             margin: 0;
             color: #c4b5fd;
             direction: ltr;
-            text-align: left;
+            text-align: start;
             white-space: pre-wrap;
             overflow-wrap: anywhere;
             font-size: 0.86rem;
