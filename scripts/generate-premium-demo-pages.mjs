@@ -533,7 +533,7 @@ function schemaGraph(demo, faqs) {
         "@id": `${site}/#organization`,
         "name": "Bright AI",
         "url": `${site}/`,
-        "logo": `${site}/assets/images/Gemini.png`,
+        "logo": `${site}/assets/images/logo.png`,
         "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
         "contactPoint": { "@type": "ContactPoint", "telephone": "+966538229013", "contactType": "sales", "areaServed": "SA", "availableLanguage": ["Arabic"] }
       },
@@ -659,14 +659,14 @@ function page(demo) {
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${attr(demo.description)}">
   <meta property="og:url" content="${url}">
-  <meta property="og:image" content="${site}/assets/images/Gemini.png">
+  <meta property="og:image" content="${site}/assets/images/logo.png">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(title)}">
   <meta name="twitter:description" content="${attr(demo.description)}">
-  <meta name="twitter:image" content="${site}/assets/images/Gemini.png">
-  <link rel="icon" href="/assets/images/Gemini.png" type="image/png">
+  <meta name="twitter:image" content="${site}/assets/images/logo.png">
+  <link rel="icon" href="/assets/images/logo.png" type="image/png">
   <link rel="stylesheet" href="/assets/css/design-tokens.css">
   <link rel="stylesheet" href="/assets/css/demo-premium.css">
   <script type="application/ld+json">${schemaGraph(demo, faqs)}</script>
@@ -675,7 +675,7 @@ function page(demo) {
   <a class="skip-link" href="#demo-form">تجاوز إلى التجربة</a>
   <header class="demo-nav" aria-label="تنقل الديمو">
     <a class="brand" href="/" aria-label="Bright AI الرئيسية">
-      <img src="/assets/images/Gemini.png" width="36" height="36" alt="شعار Bright AI">
+      <img src="/assets/images/logo.png" width="36" height="36" alt="شعار Bright AI">
       <span>Bright AI</span>
     </a>
     <nav class="nav-links" aria-label="روابط داخلية">
@@ -704,7 +704,7 @@ function page(demo) {
         </div>
       </div>
       <aside class="quick-answer" aria-label="إجابة سريعة">
-        <img src="/assets/images/Gemini.png" width="96" height="96" alt="رمز Bright AI" loading="eager">
+        <img src="/assets/images/logo.png" width="96" height="96" alt="رمز Bright AI" loading="eager">
         <h2>إجابة سريعة</h2>
         <dl>
           <div><dt>لمن هذه التجربة؟</dt><dd>${esc(demo.audience)}</dd></div>

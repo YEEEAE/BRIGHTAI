@@ -1454,8 +1454,8 @@ function makeSchema(product, rels, faqs) {
         "name": "Bright AI",
         "alternateName": ["برايت AI", "مشرقة للذكاء الاصطناعي"],
         "url": `${SITE}/`,
-        "logo": `${SITE}/assets/images/Gemini.png`,
-        "image": `${SITE}/assets/images/Gemini.png`,
+        "logo": `${SITE}/assets/images/logo.png`,
+        "image": `${SITE}/assets/images/logo.png`,
         "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
         "contactPoint": {
           "@type": "ContactPoint",
@@ -1587,12 +1587,12 @@ function makePage(product) {
   <meta property="og:title" content="${esc(title)}" />
   <meta property="og:description" content="${esc(description)}" />
   <meta property="og:url" content="${url}" />
-  <meta property="og:image" content="${SITE}/assets/images/Gemini.png" />
+  <meta property="og:image" content="${SITE}/assets/images/logo.png" />
   <meta property="og:image:alt" content="${esc(product.name)} من Bright AI" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(title)}" />
   <meta name="twitter:description" content="${esc(description)}" />
-  <meta name="twitter:image" content="${SITE}/assets/images/Gemini.png" />
+  <meta name="twitter:image" content="${SITE}/assets/images/logo.png" />
   <script type="application/ld+json">
 ${jsonLd(schema)}
   </script>
@@ -1608,7 +1608,7 @@ ${jsonLd(schema)}
     .nav-container { max-width:1400px; margin:0 auto; height:100%; display:flex; align-items:center; justify-content:space-between; padding:0 1.25rem; gap:.75rem; }
     .nav-logo { display:flex; align-items:center; gap:.625rem; text-decoration:none; flex-shrink:0; }
     .logo-box { width:36px; height:36px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(135deg,#4f46e5 0%, #8b5cf6 55%, #10b981 100%); box-shadow:0 8px 28px rgba(99,102,241,.28); }
-    .logo-box span { color:#fff; font-weight:900; font-size:1.05rem; letter-spacing:-.04em; }
+    .logo-box img { width:36px; height:36px; object-fit:contain; display:block; }
     .logo-copy { display:flex; flex-direction:column; line-height:1; }
     .logo-copy strong { font-size:1.05rem; font-weight:900; letter-spacing:-.02em; color:#fff; }
     .logo-copy strong span { color:#818cf8; }
@@ -1691,7 +1691,7 @@ ${jsonLd(schema)}
   <header class="unified-nav" id="main-header" role="banner">
     <div class="nav-container">
       <a class="nav-logo" href="/" aria-label="Bright AI — الصفحة الرئيسية" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
-        <div class="logo-box"><span>AI</span></div>
+        <div class="logo-box"><img src="/assets/images/logo.png" alt="" width="36" height="36" decoding="async"></div>
         <div class="logo-copy">
           <strong>Bright<span>AI</span></strong>
           <small>Saudi</small>
@@ -1883,8 +1883,8 @@ function makeServicesSchema() {
         "name": "Bright AI",
         "alternateName": ["برايت AI", "مشرقة للذكاء الاصطناعي"],
         "url": `${SITE}/`,
-        "logo": `${SITE}/assets/images/Gemini.png`,
-        "image": `${SITE}/assets/images/Gemini.png`,
+        "logo": `${SITE}/assets/images/logo.png`,
+        "image": `${SITE}/assets/images/logo.png`,
         "areaServed": { "@type": "Country", "name": "Saudi Arabia" },
         "contactPoint": { "@type": "ContactPoint", "telephone": "+966538229013", "contactType": "sales", "areaServed": "SA", "availableLanguage": ["ar", "en"] }
       },

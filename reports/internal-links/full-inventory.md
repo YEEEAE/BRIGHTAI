@@ -1,13 +1,13 @@
 # Full Internal Links Inventory
 
-- Date: 2026-04-28T19:48:16.739Z
-- Files scanned: 267
-- Pages discovered: 267
-- Indexable pages: 262
-- Internal links discovered: 6454
-- Orphan pages: 6
+- Date: 2026-04-28T21:32:27.831Z
+- Files scanned: 268
+- Pages discovered: 268
+- Indexable pages: 263
+- Internal links discovered: 6455
+- Orphan pages: 7
 - Broken links: 0
-- Pages outside sitemap: 2
+- Pages outside sitemap: 3
 - Weak anchors: 0
 - Links without href: 0
 - Canonical issues: 0
@@ -214,11 +214,12 @@
 | ContractAI | https://brightai.site/en/tenders/templates/ | en/tenders/templates.html | static-html-route | 6 | 23 | No | Yes | https://brightai.site/en/tenders/templates/ | Yes | None | None | None |
 | الشروط والأحكام | https://brightai.site/en/terms/ | en/terms/index.html | static-index-route | 27 | 20 | No | Yes | https://brightai.site/en/terms/ | Yes | None | None | None |
 | AI Data Analysis Tools | https://brightai.site/en/tools/ | en/tools/index.html | static-index-route | 5 | 44 | No | Yes | https://brightai.site/en/tools/ | Yes | None | None | None |
-| شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 254 | 58 | No | Yes | https://brightai.site/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 255 | 58 | No | Yes | https://brightai.site/ | Yes | None | None | None |
 | خدمات ذكاء اصطناعي في الدمام والمنطقة الشرقية | https://brightai.site/locations/dammam/ | locations/dammam/index.html | static-index-route | 20 | 14 | No | Yes | https://brightai.site/locations/dammam/ | Yes | None | None | None |
 | خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 25 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
 | شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 44 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |
 | تطوير نماذج تعلم الآلة السعودية | https://brightai.site/machine-learning/ | machine-learning/index.html | static-index-route | 8 | 27 | No | Yes | https://brightai.site/machine-learning/ | Yes | None | None | None |
+| الاتصال غير متاح حالياً | https://brightai.site/offline/ | offline/index.html | static-index-route | 0 | 1 | Yes | No | https://brightai.site/offline/ | Yes | orphan_page, missing_from_sitemap | High | Add contextual HTML links, sitemap regeneration, or canonical correction |
 | شراكات الذكاء الاصطناعي في السعودية | https://brightai.site/partners/ | partners/index.html | static-index-route | 8 | 16 | No | Yes | https://brightai.site/partners/ | Yes | None | None | None |
 | سياسة الخصوصية | https://brightai.site/privacy-cookies/ | privacy-cookies/index.html | static-index-route | 19 | 17 | No | Yes | https://brightai.site/privacy-cookies/ | Yes | None | None | None |
 | AI Solutions For Saudi E-Commerce In Saudi Arabia | https://brightai.site/sectors/ecommerce-en/ | sectors/ecommerce-en/index.html | static-index-route | 3 | 34 | No | Yes | https://brightai.site/sectors/ecommerce-en/ | Yes | None | None | None |
@@ -235,7 +236,6 @@
 | الذكاء الاصطناعي في الرعاية الصحية في السعودية | https://brightai.site/sectors/healthcare/ | sectors/healthcare.html | static-html-route | 45 | 33 | No | Yes | https://brightai.site/sectors/healthcare/ | Yes | None | None | None |
 | حلول الذكاء الاصطناعي حسب القطاع للشركات والمؤسسات في السعودية | https://brightai.site/sectors/ | sectors/index.html | static-index-route | 18 | 24 | No | Yes | https://brightai.site/sectors/ | Yes | None | None | None |
 | AI Solutions For Saudi Logistics In Saudi Arabia | https://brightai.site/sectors/logistics-en/ | sectors/logistics-en/index.html | static-index-route | 3 | 35 | No | Yes | https://brightai.site/sectors/logistics-en/ | Yes | None | None | None |
-| AI Solutions For Saudi Logistics In Saudi Arabia | https://brightai.site/sectors/logistics-en/ | sectors/logistics-en.html | static-html-route | 3 | 35 | No | Yes | https://brightai.site/sectors/logistics-en/ | Yes | None | None | None |
 
 ## Problems
 
@@ -251,6 +251,7 @@
 | en/tenders/index.html | https://brightai.site/en/tenders/ | orphan_page | High |
 | error.html | https://brightai.site/error | owner_decision_needed | Medium |
 | mais-OBM/index.html | https://brightai.site/mais-OBM/ | owner_decision_needed | Medium |
+| offline/index.html | https://brightai.site/offline/ | orphan_page, missing_from_sitemap | High |
 | try/index.html | https://brightai.site/try/ | missing_from_sitemap | Medium |
 | try/text-analysis/index.html | https://brightai.site/try/text-analysis/ | missing_from_sitemap | Medium |
 

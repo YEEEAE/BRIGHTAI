@@ -1,48 +1,47 @@
-/* Bright AI Service Worker - caching for repeat visits */
-const CACHE_VERSION = '2026-04-27-1';
-const STATIC_CACHE = `brightai-static-${CACHE_VERSION}`;
-const RUNTIME_CACHE = `brightai-runtime-${CACHE_VERSION}`;
-const RECENT_ARTICLES_CACHE = `brightai-recent-articles-${CACHE_VERSION}`;
-const MAX_RECENT_ARTICLES = 30;
+/* BrightAI Service Worker - production cache routing for repeat visits */
+const CACHE_VERSION = '2026-04-29-1';
+const CACHE_PREFIX = 'brightai';
+const STATIC_CACHE = `${CACHE_PREFIX}-static-${CACHE_VERSION}`;
+const HTML_CACHE = `${CACHE_PREFIX}-html-${CACHE_VERSION}`;
+const IMMUTABLE_CACHE = `${CACHE_PREFIX}-immutable-${CACHE_VERSION}`;
+const RUNTIME_CACHE = `${CACHE_PREFIX}-runtime-${CACHE_VERSION}`;
+const IMAGE_CACHE = `${CACHE_PREFIX}-images-${CACHE_VERSION}`;
+const FONT_CACHE = `${CACHE_PREFIX}-fonts-${CACHE_VERSION}`;
+const OFFLINE_URL = '/offline/';
+const MAX_IMAGE_ENTRIES = 80;
+const MAX_FONT_ENTRIES = 30;
+const MAX_RUNTIME_ENTRIES = 80;
 
-const STATIC_ASSETS = [
-  '/',
+const PRECACHE_URLS = [
+  OFFLINE_URL,
+  '/manifest.json',
   '/frontend/css/bundle-critical.css',
   '/frontend/css/main.bundle.min.css',
-  '/frontend/css/production-fixes.v20260427.css',
-  '/frontend/js/main.bundle.min.js',
   '/frontend/js/runtime-config.min.js',
-  '/frontend/js/production-runtime.v20260427.js',
   '/frontend/js/navigation.min.js',
-  '/frontend/js/article-ux-enhancements.min.js',
-  '/frontend/js/page-enhancements.min.js',
-  '/frontend/js/schema-loader.js?v=20260206',
-  '/frontend/js/search.min.js',
-  '/frontend/js/chat-widget.js?v=20260206',
-  '/assets/images/Gemini.png',
-  '/assets/images/hero-brain.svg',
-  '/manifest.json',
-  '/robots.txt',
-  '/sitemap.xml'
+  '/assets/images/logo.png',
+  '/assets/images/hero-brain.svg'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(STATIC_CACHE)
-      .then((cache) => cache.addAll(STATIC_ASSETS))
+      .then((cache) => Promise.all(
+        PRECACHE_URLS.map((url) => cache.add(new Request(url, { cache: 'reload' })).catch(() => null))
+      ))
       .then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
+    caches.keys()
+      .then((keys) => Promise.all(
         keys
-          .filter((key) => key.startsWith('brightai-') && ![STATIC_CACHE, RUNTIME_CACHE, RECENT_ARTICLES_CACHE].includes(key))
+          .filter((key) => key.startsWith(`${CACHE_PREFIX}-`) && !currentCaches().includes(key))
           .map((key) => caches.delete(key))
-      );
-    }).then(() => self.clients.claim())
+      ))
+      .then(() => self.clients.claim())
   );
 });
 
@@ -52,91 +51,115 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith('/api/')) return;
+  if (shouldBypass(req, url)) return;
 
-  if (req.mode === 'navigate' || req.destination === 'document') {
-    if (isArticleDocument(url.pathname)) {
-      event.respondWith(networkFirstArticle(req));
-      return;
-    }
-    event.respondWith(networkFirst(req));
+  if (isHtmlRequest(req, url)) {
+    event.respondWith(networkFirstHtml(req));
     return;
   }
 
-  if (['style', 'script', 'image', 'font'].includes(req.destination)) {
-    event.respondWith(cacheFirst(req));
+  if (isCssOrJsRequest(req)) {
+    event.respondWith(isHashedAsset(url) ? cacheFirst(req, IMMUTABLE_CACHE) : staleWhileRevalidate(req, RUNTIME_CACHE, MAX_RUNTIME_ENTRIES));
     return;
   }
 
-  event.respondWith(staleWhileRevalidate(req));
+  if (req.destination === 'image') {
+    event.respondWith(cacheFirst(req, IMAGE_CACHE, MAX_IMAGE_ENTRIES));
+    return;
+  }
+
+  if (req.destination === 'font') {
+    event.respondWith(cacheFirst(req, FONT_CACHE, MAX_FONT_ENTRIES));
+    return;
+  }
+
+  event.respondWith(staleWhileRevalidate(req, RUNTIME_CACHE, MAX_RUNTIME_ENTRIES));
 });
 
-async function cacheFirst(req) {
-  if (req.url.includes('/api/')) return fetch(req);
-  const cached = await caches.match(req);
-  if (cached) return cached;
-  const res = await fetch(req);
-  if (res && res.ok && res.type === 'basic') {
-    const cache = await caches.open(RUNTIME_CACHE);
-    cache.put(req, res.clone());
-  }
-  return res;
+function currentCaches() {
+  return [STATIC_CACHE, HTML_CACHE, IMMUTABLE_CACHE, RUNTIME_CACHE, IMAGE_CACHE, FONT_CACHE];
 }
 
-async function networkFirst(req) {
+function shouldBypass(req, url) {
+  if (url.pathname.startsWith('/api/')) return true;
+  if (url.pathname.startsWith('/backend/')) return true;
+  if (url.pathname === '/robots.txt' || url.pathname === '/sitemap.xml' || url.pathname.endsWith('.xml')) return true;
+  if (req.headers.get('accept')?.includes('text/event-stream')) return true;
+  return false;
+}
+
+function isHtmlRequest(req, url) {
+  if (req.mode === 'navigate' || req.destination === 'document') return true;
+  if (url.pathname.endsWith('.html')) return true;
+  return req.headers.get('accept')?.includes('text/html') || false;
+}
+
+function isCssOrJsRequest(req) {
+  return req.destination === 'style' || req.destination === 'script';
+}
+
+function isHashedAsset(url) {
+  const pathname = url.pathname;
+  if (!/\.(css|js)$/i.test(pathname)) return false;
+  if (url.searchParams.has('v') || url.searchParams.has('ver') || url.searchParams.has('hash')) return true;
+  return /(?:^|[./-])(?:v?\d{8,}|[a-f0-9]{8,})(?:[./-]|$)/i.test(pathname);
+}
+
+function fetchFresh(req) {
+  return fetch(new Request(req, { cache: 'reload' }));
+}
+
+async function networkFirstHtml(req) {
   try {
-    const res = await fetch(req);
-    if (res && res.ok && res.type === 'basic') {
-      const cache = await caches.open(RUNTIME_CACHE);
-      cache.put(req, res.clone());
+    const res = await fetchFresh(req);
+    if (isCacheableBasicResponse(res)) {
+      const cache = await caches.open(HTML_CACHE);
+      await cache.put(req, res.clone());
     }
     return res;
   } catch (err) {
     const cached = await caches.match(req);
-    const offlineFallback = await caches.match('/offline');
-    return cached || offlineFallback || caches.match('/');
+    if (cached) return cached;
+    const fallback = await caches.match(OFFLINE_URL);
+    return fallback || Response.error();
   }
 }
 
-function isArticleDocument(pathname) {
-  return (
-    (pathname.startsWith('/blog/') && pathname !== '/blog/') ||
-    (pathname.startsWith('/docs/') && pathname !== '/docs/')
-  );
+async function cacheFirst(req, cacheName, maxEntries) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(req);
+  if (cached) return cached;
+
+  const res = await fetch(req);
+  if (isCacheableBasicResponse(res)) {
+    await cache.put(req, res.clone());
+    if (maxEntries) await trimCache(cache, maxEntries);
+  }
+  return res;
 }
 
-async function trimRecentArticlesCache(cache) {
+async function staleWhileRevalidate(req, cacheName, maxEntries) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(req);
+  const networkUpdate = fetch(req)
+    .then(async (res) => {
+      if (isCacheableBasicResponse(res)) {
+        await cache.put(req, res.clone());
+        if (maxEntries) await trimCache(cache, maxEntries);
+      }
+      return res;
+    })
+    .catch(() => cached);
+
+  return cached || networkUpdate;
+}
+
+function isCacheableBasicResponse(res) {
+  return Boolean(res && res.ok && res.type === 'basic');
+}
+
+async function trimCache(cache, maxEntries) {
   const keys = await cache.keys();
-  if (keys.length <= MAX_RECENT_ARTICLES) return;
-  const redundant = keys.slice(0, keys.length - MAX_RECENT_ARTICLES);
-  await Promise.all(redundant.map((key) => cache.delete(key)));
-}
-
-async function networkFirstArticle(req) {
-  try {
-    const res = await fetch(req);
-    if (res && res.ok && res.type === 'basic') {
-      const recentCache = await caches.open(RECENT_ARTICLES_CACHE);
-      await recentCache.put(req, res.clone());
-      await trimRecentArticlesCache(recentCache);
-    }
-    return res;
-  } catch (err) {
-    const recent = await caches.open(RECENT_ARTICLES_CACHE);
-    const cached = await recent.match(req);
-    const offlineFallback = await caches.match('/offline');
-    return cached || offlineFallback || caches.match('/');
-  }
-}
-
-async function staleWhileRevalidate(req) {
-  const cached = await caches.match(req);
-  const fetchPromise = fetch(req).then(async (res) => {
-    if (res && res.ok && res.type === 'basic') {
-      const cache = await caches.open(RUNTIME_CACHE);
-      cache.put(req, res.clone());
-    }
-    return res;
-  }).catch(() => cached);
-  return cached || fetchPromise;
+  if (keys.length <= maxEntries) return;
+  await Promise.all(keys.slice(0, keys.length - maxEntries).map((key) => cache.delete(key)));
 }

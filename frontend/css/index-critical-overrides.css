@@ -102,7 +102,7 @@ a.btn {
 @font-face {
     font-family: 'Tajawal';
     src: local('Tajawal');
-    font-display: optional;
+    font-display: swap;
     size-adjust: 100%;
     ascent-override: 93%;
     descent-override: 26%;

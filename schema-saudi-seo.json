@@ -14,7 +14,7 @@
             "url": "https://brightai.site/",
             "logo": {
                 "@type": "ImageObject",
-                "url": "https://brightai.site/assets/images/Gemini.png",
+                "url": "https://brightai.site/assets/images/logo.png",
                 "width": 200,
                 "height": 55,
                 "caption": "شعار شركة مُشرقة AI السعودية الرائدة في الذكاء الاصطناعي"
@@ -166,7 +166,7 @@
             "@type": "LocalBusiness",
             "@id": "https://brightai.site/#localbusiness",
             "name": "مُشرقة AI",
-            "image": "https://brightai.site/assets/images/Gemini.png",
+            "image": "https://brightai.site/assets/images/logo.png",
             "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
@@ -210,7 +210,7 @@
             },
             "image": {
                 "@type": "ImageObject",
-                "url": "https://brightai.site/assets/images/Gemini.png",
+                "url": "https://brightai.site/assets/images/logo.png",
                 "width": 200,
                 "height": 55
             },
