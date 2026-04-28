@@ -1871,7 +1871,7 @@
                         ...fallbackResult.recommended_actions,
                         fallbackResult.next_action_ar
                     ].join('\n'), 'ai');
-                    console.error('API Error:', error);
+                    console.error('AI fallback used:', error);
                 }
             }
 
@@ -1902,7 +1902,7 @@
                 const data = await response.json().catch(() => ({}));
 
                 if (!response.ok) {
-                    throw new Error(data?.error || `Request failed: ${response.status}`);
+                    throw new Error('تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.');
                 }
 
                 if (data.requestId) {

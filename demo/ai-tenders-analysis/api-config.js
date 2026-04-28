@@ -111,7 +111,7 @@ async function callAI(provider, messages, options = {}) {
       window.clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
       }
 
       const data = await response.json();

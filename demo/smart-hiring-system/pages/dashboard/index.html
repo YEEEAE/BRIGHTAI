@@ -2072,8 +2072,7 @@
                 if (returnRaw) return rawResponseText;
 
                 if (!response.ok) {
-                    console.error('Backend AI Error:', response.status, rawResponseText);
-                    throw new Error(`فشل الاتصال بخدمة الذكاء الاصطناعي (كود: ${response.status}). التفاصيل: ${rawResponseText.substring(0, 200)}`);
+                    throw new Error('تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.');
                 }
 
                 const data = JSON.parse(rawResponseText);

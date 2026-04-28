@@ -467,7 +467,10 @@
 
   function renderReport(result, config, values, engine) {
     const safe = mergeResult(config, result);
-    return `<div class="agent-result-shell" dir="rtl">${config.resultSections.map((section) => renderers[section]?.(safe, config, values, engine) || "").join("")}</div>`;
+    const fallbackBanner = result?.__fallback
+      ? `<section class="result-card agent-result-wide error-state"><h3>تعذر تشغيل التحليل الآن</h3><p>تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.</p><div class="result-actions hero-actions"><button class="btn soft" type="button" data-agent-retry>إعادة المحاولة</button><a class="btn whatsapp" href="${esc(engine.createWhatsAppUrl(config.whatsappSummaryTemplate(values)))}" target="_blank" rel="noopener" data-agent-whatsapp>تواصل واتساب</a></div></section>`
+      : "";
+    return `<div class="agent-result-shell" dir="rtl">${fallbackBanner}${config.resultSections.map((section) => renderers[section]?.(safe, config, values, engine) || "").join("")}</div>`;
   }
 
   function downloadReport(agentType, panel, engine) {
@@ -475,10 +478,11 @@
     window.BrightAIDemoUtils?.downloadText(`${agentType}-report.txt`, panel.innerText, "text/plain;charset=utf-8");
   }
 
-  function bindResultActions(panel, agentType, engine) {
+  function bindResultActions(panel, agentType, engine, rerun) {
     panel.querySelector("[data-agent-download]")?.addEventListener("click", () => downloadReport(agentType, panel, engine));
     panel.querySelector("[data-agent-whatsapp]")?.addEventListener("click", () => engine.trackUsage("agent_whatsapp_clicked"));
     panel.querySelector("[data-agent-lead]")?.addEventListener("click", () => engine.trackUsage("agent_lead_submitted"));
+    panel.querySelector("[data-agent-retry]")?.addEventListener("click", rerun);
   }
 
   async function runDemo(config, engine, button, panel) {
@@ -507,7 +511,7 @@
     });
 
     panel.innerHTML = renderReport(result, config, values, engine);
-    bindResultActions(panel, config.agentType, engine);
+    bindResultActions(panel, config.agentType, engine, () => runDemo(config, engine, button, panel));
     button.disabled = false;
     button.textContent = originalText;
   }

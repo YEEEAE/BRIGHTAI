@@ -323,8 +323,8 @@ async function ce(e2) {
       try {
         u2 = await D(S, { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + t4.key }, body: JSON.stringify(d2) }, w);
       } catch (e4) {
-        if (e4 && "AbortError" === e4.name) throw new Error("انتهت مهلة الاتصال بـ Gateway. تحقق من اتصال الإنترنت وحاول مرة أخرى.");
-        throw new Error("تعذر الاتصال بـ Backend AI Gateway: " + (e4.message || "خطأ شبكة"));
+        if (e4 && "AbortError" === e4.name) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
+        throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
       }
       if (!u2.ok) {
         var g2 = {};
@@ -333,11 +333,11 @@ async function ce(e2) {
         } catch (e4) {
         }
         var m2 = g2 && g2.error && g2.error.message || "";
-        if (401 === u2.status) throw new Error("اعتماد Backend Gateway غير صالح. راجع إعدادات الخادم.");
-        if (429 === u2.status) throw new Error("تم تجاوز حد الطلبات المسموح من Gateway. انتظر قليلاً ثم حاول مرة أخرى.");
+        if (401 === u2.status) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
+        if (429 === u2.status) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
         if (413 === u2.status) throw new Error("النص طويل جداً لمعالجة Gateway. قلّل حجم التقرير وحاول مجدداً.");
-        if (u2.status >= 500) throw new Error("خلل مؤقت في خوادم Gateway (" + u2.status + "). حاول بعد قليل.");
-        throw new Error(m2 || "خطأ من Backend AI Gateway (حالة: " + u2.status + ")");
+        if (u2.status >= 500) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
+        throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
       }
       try {
         l2 = await u2.json();

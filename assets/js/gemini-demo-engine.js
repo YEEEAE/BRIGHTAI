@@ -102,7 +102,7 @@
           ? await window.BrightAIGateway.apiFetch(this.endpoint, request, this.timeoutMs)
           : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(this.endpoint) : this.endpoint, request);
 
-        if (!res.ok) throw new Error(`API Error: ${res.status}`);
+        if (!res.ok) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
         const data = await res.json();
         const text = data?.choices?.[0]?.message?.content || data?.answer || "";
         this.trackUsage("agent_result_generated");
@@ -110,7 +110,7 @@
       } catch (error) {
         this.trackUsage("demo_error", error.message);
         this.showErrorFallback();
-        return fallback || null;
+        return fallback && typeof fallback === "object" ? { ...fallback, __fallback: true } : fallback || null;
       } finally {
         window.clearTimeout(timer);
       }
@@ -297,14 +297,14 @@
         : await fetch(window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl(url) : url, request);
       const data = await response.json().catch(() => ({}));
       if (!response.ok || data?.ok === false) {
-        throw new Error(data?.error?.message_ar || data?.error || `AI request failed: ${response.status}`);
+        throw new Error(data?.error?.message_ar || "تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
       }
       return data?.data || data?.choices?.[0]?.message?.content || data;
     } catch (error) {
       window.dispatchEvent(new CustomEvent("bai-demo-error", {
         detail: { demoType, agentType, schemaName, message: error.message }
       }));
-      return fallbackResult || null;
+      return fallbackResult && typeof fallbackResult === "object" ? { ...fallbackResult, __fallback: true } : fallbackResult || null;
     }
   }
 

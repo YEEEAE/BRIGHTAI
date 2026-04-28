@@ -1,6 +1,6 @@
 # Sitemap Quality Report
 
-- Date: 2026-04-28T17:10:38.308Z
+- Date: 2026-04-28T19:48:26.901Z
 - Total URLs in generated sitemap: 254
 - Included core pages: 162
 - Included sector pages: 13

@@ -48,10 +48,10 @@ async function callGeminiAPI(messages, options = {}) {
 
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {
-      throw new Error(payload?.error?.message || `تعذر استدعاء Gemini API (${response.status}).`);
+      throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
     }
 
-    const content = payload?.choices?.[0]?.message?.content || payload?.text || "";
+    const content = payload?.choices?.[0]?.message?.content || payload?.text || (payload?.data ? JSON.stringify(payload.data) : "");
     if (!content) throw new Error("استجابة Gemini فارغة أو غير مكتملة.");
     return {
       content,

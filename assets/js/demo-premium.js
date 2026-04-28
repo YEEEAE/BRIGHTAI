@@ -77,7 +77,7 @@
     const summary = result.executiveSummary[0] || config.title;
     panel.innerHTML = `
       <div class="dashboard ${isFallback ? "error-state" : ""}" data-rendered-report>
-        ${isFallback ? `<section class="dash-section error-state"><h3>تعذر تشغيل التحليل الكامل</h3><p>عرضنا نتيجة بديلة آمنة بناءً على إعدادات الديمو. يمكنك إعادة المحاولة أو طلب نسخة مخصصة.</p><button class="btn btn-secondary" type="button" data-retry-demo>إعادة المحاولة</button></section>` : ""}
+        ${isFallback ? `<section class="dash-section error-state"><h3>تعذر تشغيل التحليل الآن</h3><p>تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.</p><div class="dash-cta"><button class="btn btn-secondary" type="button" data-retry-demo>إعادة المحاولة</button><a class="btn btn-primary" href="${whatsappUrl(config, summary)}" target="_blank" rel="noopener">تواصل واتساب</a></div></section>` : ""}
         <section class="score-card">
           <div class="score-ring" style="--score:${score}"><span>${score}</span></div>
           <div>

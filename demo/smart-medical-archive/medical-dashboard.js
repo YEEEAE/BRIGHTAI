@@ -375,9 +375,9 @@ async function Bt() {
             } catch (e4) {
             }
             var s2 = i2 && i2.error && i2.error.message || "";
-            if (401 === o2.status) throw new Error("اعتماد Backend Gemini غير صالح.");
+            if (401 === o2.status) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
             if (429 === o2.status) throw new Error("تم تجاوز حد الطلبات. انتظر قليلاً.");
-            throw new Error(s2 || "خطأ من Gemini API (" + o2.status + ")");
+            throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
           }
           var c2 = await o2.json();
           if (!c2 || !c2.choices || !c2.choices.length) throw new Error("استجابة فارغة من محرك التحليلات.");
@@ -459,9 +459,9 @@ async function Vt() {
           } catch (e4) {
           }
           var u2 = c2 && c2.error && c2.error.message || "";
-          if (401 === s2.status) throw new Error("اعتماد Backend Gemini غير صالح.");
+          if (401 === s2.status) throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
           if (429 === s2.status) throw new Error("تم تجاوز حد الطلبات. انتظر قليلاً.");
-          return buildGeminiDemoAgentResponse(e3, new Error(u2 || "خطأ من Gemini API (" + s2.status + ")"));
+          return buildGeminiDemoAgentResponse(e3, new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة."));
         }
         var l2 = await s2.json();
         if (!l2 || !l2.choices || !l2.choices.length) throw new Error("استجابة فارغة من الوكيل الذكي.");
