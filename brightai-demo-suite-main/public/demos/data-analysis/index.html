@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="description" content="تحليل ذكي للبيانات واستخلاص رؤى قابلة للتنفيذ — BrightAI">
+  <title>تحليل البيانات الذكي — BrightAI</title>
+  <link rel="stylesheet" href="/shared/demo-shared.css">
+  <link rel="stylesheet" href="data-analysis.css">
+</head>
+<body>
+
+<div class="demo-wrapper">
+  <header class="demo-header" role="banner">
+    <a href="/" class="demo-header__logo" aria-label="BrightAI الصفحة الرئيسية">Bright<span>AI</span></a>
+    <nav class="demo-header__nav" aria-label="التنقل الرئيسي">
+      <a href="#demo-section" class="demo-header__nav-link">حلل بياناتك</a>
+      <a href="#faq-section" class="demo-header__nav-link">الأسئلة الشائعة</a>
+    </nav>
+    <span class="demo-header__badge">تجريبي</span>
+  </header>
+
+  <main class="demo-main" id="main-content">
+
+    <section class="demo-hero" aria-labelledby="hero-title">
+      <div class="demo-hero__tag">
+        <span class="demo-hero__tag-dot" aria-hidden="true"></span>
+        رؤى بيانات فورية
+      </div>
+      <h1 class="demo-hero__title" id="hero-title">تحليل البيانات<br>الذكي</h1>
+      <p class="demo-hero__subtitle">
+        حوّل بياناتك الخام إلى رؤى قابلة للتنفيذ — اكتشف الأنماط، حدد الشذوذات،
+        وخذ قرارات مبنية على البيانات.
+      </p>
+    </section>
+
+    <div class="stats-row" role="region" aria-label="إحصاءات التحليل">
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-queries">0</div>
+        <div class="stat-card__label">تحليل في هذه الجلسة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">7+</div>
+        <div class="stat-card__label">أنواع تحليل مدعومة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">فوري</div>
+        <div class="stat-card__label">استخراج الرؤى</div>
+      </div>
+    </div>
+
+    <div class="capabilities-row" role="region" aria-label="أنواع التحليل">
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="capability-card__label">تحليل وصفي</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="capability-card__label">تحليل تنبؤي</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><line x1="6" y1="9" x2="6" y2="21"/></svg>
+        </div>
+        <div class="capability-card__label">تحليل ارتباطي</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="capability-card__label">تحليل الأسباب</div>
+      </div>
+    </div>
+
+    <!-- Visualization Panel -->
+    <div class="tenders-metrics" role="region" aria-label="مثال بصري">
+      <div class="metric-item">
+        <div class="metric-item__label">نمو الإيرادات</div>
+        <div class="metric-item__bar-wrap" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" aria-label="نمو الإيرادات 78%">
+          <div class="metric-item__bar metric-item__bar--high" style="width:78%"></div>
+        </div>
+        <div class="metric-item__value">78%</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-item__label">رضا العملاء</div>
+        <div class="metric-item__bar-wrap" role="progressbar" aria-valuenow="91" aria-valuemin="0" aria-valuemax="100" aria-label="رضا العملاء 91%">
+          <div class="metric-item__bar metric-item__bar--high" style="width:91%"></div>
+        </div>
+        <div class="metric-item__value">91%</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-item__label">كفاءة التشغيل</div>
+        <div class="metric-item__bar-wrap" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" aria-label="كفاءة التشغيل 65%">
+          <div class="metric-item__bar metric-item__bar--medium" style="width:65%"></div>
+        </div>
+        <div class="metric-item__value">65%</div>
+      </div>
+      <div class="metric-item">
+        <div class="metric-item__label">تذبذب الموظفين</div>
+        <div class="metric-item__bar-wrap" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" aria-label="تذبذب الموظفين 22%">
+          <div class="metric-item__bar metric-item__bar--low" style="width:22%"></div>
+        </div>
+        <div class="metric-item__value">22%</div>
+      </div>
+    </div>
+
+    <section class="demo-panel" id="demo-section" aria-labelledby="panel-title">
+      <div class="demo-panel__header">
+        <div class="demo-panel__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div>
+          <div class="demo-panel__title" id="panel-title">محلل البيانات الذكي</div>
+          <div class="demo-panel__subtitle">صف بياناتك أو انسخ نموذجاً منها وسيستخلص النظام الرؤى</div>
+        </div>
+        <button class="btn btn--ghost btn--sm" id="clear-btn" aria-label="مسح التحليل">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+
+      <div class="demo-panel__body">
+        <div class="messages-feed" id="messages-feed" role="log" aria-live="polite">
+          <div class="message message--ai" id="welcome-msg">
+            <div class="message__avatar" aria-hidden="true">AI</div>
+            <div class="message__bubble">
+              <p>مرحباً! أنا محللك الذكي للبيانات.</p>
+              <p>يمكنني تحليل مجموعات البيانات، استخراج الأنماط، وتقديم توصيات مبنية على الأدلة.</p>
+              <p>جرب أحد الأمثلة أو اكتب سؤالك التحليلي مباشرةً.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="examples-container"></div>
+
+        <details class="context-details" id="context-details">
+          <summary class="context-details__summary">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+            بيانات السياق (اختياري)
+            <svg class="context-details__chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="context-fields" id="context-fields">
+            <div class="input-area__context">
+              <div class="form-group">
+                <label class="form-label" for="ctx-datasource">مصدر البيانات</label>
+                <input class="form-input" id="ctx-datasource" type="text" placeholder="مثال: نظام CRM، تقارير Excel، قاعدة بيانات">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-period">الفترة الزمنية</label>
+                <input class="form-input" id="ctx-period" type="text" placeholder="مثال: Q1 2025، آخر 12 شهراً">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-goal">هدف التحليل</label>
+                <input class="form-input" id="ctx-goal" type="text" placeholder="مثال: فهم أسباب انخفاض المبيعات">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-industry-data">القطاع</label>
+                <select class="form-select" id="ctx-industry-data">
+                  <option value="">اختر القطاع</option>
+                  <option>التجزئة</option>
+                  <option>المالي</option>
+                  <option>الصحة</option>
+                  <option>التقنية</option>
+                  <option>التعليم</option>
+                  <option>أخرى</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <form class="input-row" id="chat-form" aria-label="نموذج تحليل البيانات">
+          <label class="sr-only" for="user-input">اكتب سؤالك التحليلي</label>
+          <input
+            class="form-input"
+            id="user-input"
+            type="text"
+            placeholder="اكتب سؤالك التحليلي أو صف بياناتك هنا..."
+            autocomplete="off"
+            maxlength="4000"
+          >
+          <button class="btn btn--primary" type="submit" id="send-btn" aria-label="تحليل">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            تحليل
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" class="sr-only">الأسئلة الشائعة</h2>
+      <div id="faq-container"></div>
+    </section>
+
+  </main>
+
+  <footer class="demo-footer" role="contentinfo">
+    <p>&copy; 2025 <a href="/">BrightAI</a> &mdash; تحليل البيانات الذكي &mdash; نسخة تجريبية</p>
+  </footer>
+</div>
+
+<script type="module" src="data-analysis.js"></script>
+</body>
+</html>

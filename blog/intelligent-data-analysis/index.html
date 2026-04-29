@@ -16,27 +16,11 @@
 <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
 <script src="https://js.sentry-cdn.com/655a2e73b738777ce12e3ec8eaa91e6c.min.js" crossorigin="anonymous" defer=""></script>
 
-<script type="text/javascript">
-    window.addEventListener('load', function() {
-        requestIdleCallback(function() {
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "voq2kb6voe");
-        });
-    });
-</script>
+<script src="/frontend/js/brightai-clarity-loader.js" defer></script>
 
 <script src="/frontend/js/sentry-init.js" defer=""></script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8LLESL207Q');
-</script>
+<script src="/frontend/js/brightai-analytics-init.js" defer></script>
 
 <meta charset="utf-8">
 
@@ -736,13 +720,13 @@
 
 
 <div class="floating-share">
-<a aria-label="Share on Twitter" class="share-btn twitter" href="#" onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&amp;url=' + encodeURIComponent(window.location.href), '_blank'); return false;">
+<a aria-label="Share on Twitter" class="share-btn twitter" href="https://twitter.com/intent/tweet" data-brightai-share="twitter">
 <iconify-icon icon="lucide:twitter" width="20"></iconify-icon>
 </a>
-<a aria-label="Share on LinkedIn" class="share-btn linkedin" href="#" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href), '_blank'); return false;">
+<a aria-label="Share on LinkedIn" class="share-btn linkedin" href="https://www.linkedin.com/sharing/share-offsite/" data-brightai-share="linkedin">
 <iconify-icon icon="lucide:linkedin" width="20"></iconify-icon>
 </a>
-<a aria-label="Share on WhatsApp" class="share-btn whatsapp" href="#" onclick="window.open('https://wa.me/?text=' + encodeURIComponent(document.title + ' ' + window.location.href), '_blank'); return false;">
+<a aria-label="Share on WhatsApp" class="share-btn whatsapp" href="https://wa.me/" data-brightai-whatsapp-share="true">
 <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
 </a>
 </div>
@@ -976,24 +960,8 @@
 <script defer="" src="/frontend/js/navigation.min.js"></script>
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer=""></script>
-<script>
-        AOS.init({
-            duration: 800,
-            once: true
-        });
-    </script>
-<script>
-        // Reading Progress Bar
-        window.addEventListener('scroll', () => {
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrollPercent = (scrollTop / scrollHeight) * 100;
-            const progressBar = document.getElementById('readingProgress');
-            if(progressBar) {
-                progressBar.style.width = scrollPercent + '%';
-            }
-        });
-    </script>
+<script src="/frontend/js/brightai-aos-init.js" defer></script>
+
 <script defer="" src="/frontend/js/article-ux-enhancements.min.js"></script>
 <script src="/frontend/js/clarity-events.js" defer=""></script>
 
@@ -1001,4 +969,5 @@
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 <script defer src="/frontend/js/accessibility.min.js?v=2026042904"></script>
   <script src="/frontend/js/brightai-logo-replace.js"></script>
+  <script src="/frontend/js/brightai-static-ui.js" defer></script>
 </body></html>

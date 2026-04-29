@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="description" content="دعم القرارات الإدارية والتشغيلية للمنشآت الصحية بالذكاء الاصطناعي — BrightAI">
+  <title>إدارة المستشفى الذكي — BrightAI</title>
+  <link rel="stylesheet" href="/shared/demo-shared.css">
+  <link rel="stylesheet" href="smart-hospital-management.css">
+</head>
+<body>
+
+<div class="demo-wrapper">
+  <header class="demo-header" role="banner">
+    <a href="/" class="demo-header__logo" aria-label="BrightAI الصفحة الرئيسية">Bright<span>AI</span></a>
+    <nav class="demo-header__nav" aria-label="التنقل الرئيسي">
+      <a href="#demo-section" class="demo-header__nav-link">اسأل المستشار</a>
+      <a href="#faq-section" class="demo-header__nav-link">الأسئلة الشائعة</a>
+    </nav>
+    <span class="demo-header__badge">تجريبي</span>
+  </header>
+
+  <main class="demo-main" id="main-content">
+
+    <section class="demo-hero" aria-labelledby="hero-title">
+      <div class="demo-hero__tag">
+        <span class="demo-hero__tag-dot" aria-hidden="true"></span>
+        إدارة صحية ذكية
+      </div>
+      <h1 class="demo-hero__title" id="hero-title">إدارة المستشفى<br>الذكي</h1>
+      <p class="demo-hero__subtitle">
+        دعم القرارات الإدارية والتشغيلية للمنشآت الصحية — تحسين الكفاءة،
+        إدارة الموارد، وضمان جودة الخدمة الصحية.
+      </p>
+    </section>
+
+    <!-- Notice banner -->
+    <div class="hospital-notice" role="note" aria-label="إشعار مهم">
+      <svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>هذا النظام مخصص للدعم الإداري فقط ولا يقدم أي توصيات طبية أو تشخيصية</span>
+    </div>
+
+    <div class="stats-row" role="region" aria-label="مؤشرات الأداء">
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-queries">0</div>
+        <div class="stat-card__label">استفسار إداري هذه الجلسة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">JCI</div>
+        <div class="stat-card__label">متوافق مع معايير الجودة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">24/7</div>
+        <div class="stat-card__label">دعم إداري مستمر</div>
+      </div>
+    </div>
+
+    <div class="capabilities-row" role="region" aria-label="قدرات النظام الإداري">
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="capability-card__label">إدارة الموارد</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="capability-card__label">مؤشرات الأداء</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="capability-card__label">ضمان الجودة</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="capability-card__label">إدارة الكوادر</div>
+      </div>
+    </div>
+
+    <!-- Hospital KPI Dashboard -->
+    <div class="hospital-kpi" role="region" aria-label="لوحة مؤشرات الأداء">
+      <div class="kpi-card">
+        <div class="kpi-card__value kpi-card__value--good">87%</div>
+        <div class="kpi-card__label">معدل إشغال الأسرة</div>
+        <div class="kpi-card__trend kpi-card__trend--up" aria-label="ارتفاع">&#9650; 3%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value kpi-card__value--warn">42 دق</div>
+        <div class="kpi-card__label">متوسط وقت الانتظار</div>
+        <div class="kpi-card__trend kpi-card__trend--down" aria-label="انخفاض">&#9660; 8%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value kpi-card__value--good">4.6</div>
+        <div class="kpi-card__label">تقييم رضا المرضى (5)</div>
+        <div class="kpi-card__trend kpi-card__trend--up" aria-label="ارتفاع">&#9650; 0.2</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-card__value kpi-card__value--good">96%</div>
+        <div class="kpi-card__label">نسبة تنفيذ البروتوكولات</div>
+        <div class="kpi-card__trend kpi-card__trend--up" aria-label="ارتفاع">&#9650; 2%</div>
+      </div>
+    </div>
+
+    <section class="demo-panel" id="demo-section" aria-labelledby="panel-title">
+      <div class="demo-panel__header">
+        <div class="demo-panel__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div>
+          <div class="demo-panel__title" id="panel-title">المستشار الإداري الذكي</div>
+          <div class="demo-panel__subtitle">اطرح استفسارك الإداري وستحصل على تحليل وتوصيات فورية</div>
+        </div>
+        <button class="btn btn--ghost btn--sm" id="clear-btn" aria-label="مسح المحادثة">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+
+      <div class="demo-panel__body">
+        <div class="messages-feed" id="messages-feed" role="log" aria-live="polite">
+          <div class="message message--ai" id="welcome-msg">
+            <div class="message__avatar" aria-hidden="true">AI</div>
+            <div class="message__bubble">
+              <p>مرحباً! أنا مستشارك الإداري الذكي للمنشآت الصحية.</p>
+              <p>يمكنني مساعدتك في تحسين الكفاءة التشغيلية، إدارة الموارد، وتحقيق معايير الجودة الدولية.</p>
+              <p><strong>ملاحظة:</strong> هذا النظام للدعم الإداري فقط ولا يقدم توصيات طبية.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="examples-container"></div>
+
+        <details class="context-details" id="context-details">
+          <summary class="context-details__summary">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/></svg>
+            بيانات المنشأة الصحية (اختياري)
+            <svg class="context-details__chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="context-fields" id="context-fields">
+            <div class="input-area__context">
+              <div class="form-group">
+                <label class="form-label" for="ctx-hospital-name">اسم المنشأة</label>
+                <input class="form-input" id="ctx-hospital-name" type="text" placeholder="مثال: مستشفى الملك فهد التخصصي">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-hospital-type">نوع المنشأة</label>
+                <select class="form-select" id="ctx-hospital-type">
+                  <option value="">اختر النوع</option>
+                  <option>مستشفى عام</option>
+                  <option>مستشفى تخصصي</option>
+                  <option>مركز صحي</option>
+                  <option>مستوصف خاص</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-beds">عدد الأسرة</label>
+                <input class="form-input" id="ctx-beds" type="text" placeholder="مثال: 300 سرير">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-accreditation">الاعتماد الحالي</label>
+                <select class="form-select" id="ctx-accreditation">
+                  <option value="">اختر</option>
+                  <option>JCI</option>
+                  <option>CBAHI</option>
+                  <option>كلاهما</option>
+                  <option>لا يوجد حتى الآن</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <form class="input-row" id="chat-form" aria-label="نموذج الاستفسار الإداري">
+          <label class="sr-only" for="user-input">اكتب استفسارك الإداري</label>
+          <input
+            class="form-input"
+            id="user-input"
+            type="text"
+            placeholder="اكتب استفسارك الإداري هنا..."
+            autocomplete="off"
+            maxlength="4000"
+          >
+          <button class="btn btn--primary" type="submit" id="send-btn" aria-label="إرسال">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+            تحليل
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" class="sr-only">الأسئلة الشائعة</h2>
+      <div id="faq-container"></div>
+    </section>
+
+  </main>
+
+  <footer class="demo-footer" role="contentinfo">
+    <p>&copy; 2025 <a href="/">BrightAI</a> &mdash; إدارة المستشفى الذكي &mdash; نسخة تجريبية</p>
+  </footer>
+</div>
+
+<script type="module" src="smart-hospital-management.js"></script>
+</body>
+</html>

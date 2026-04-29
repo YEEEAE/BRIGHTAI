@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="description" content="تخصيص مسارات التعلم وتطوير المناهج بالذكاء الاصطناعي — BrightAI">
+  <title>منصة التعليم الذكي — BrightAI</title>
+  <link rel="stylesheet" href="/shared/demo-shared.css">
+  <link rel="stylesheet" href="smart-education-platform.css">
+</head>
+<body>
+
+<div class="demo-wrapper">
+  <header class="demo-header" role="banner">
+    <a href="/" class="demo-header__logo" aria-label="BrightAI الصفحة الرئيسية">Bright<span>AI</span></a>
+    <nav class="demo-header__nav" aria-label="التنقل الرئيسي">
+      <a href="#demo-section" class="demo-header__nav-link">ابدأ التعلم</a>
+      <a href="#faq-section" class="demo-header__nav-link">الأسئلة الشائعة</a>
+    </nav>
+    <span class="demo-header__badge">تجريبي</span>
+  </header>
+
+  <main class="demo-main" id="main-content">
+
+    <section class="demo-hero" aria-labelledby="hero-title">
+      <div class="demo-hero__tag">
+        <span class="demo-hero__tag-dot" aria-hidden="true"></span>
+        تعلم مخصص وفوري
+      </div>
+      <h1 class="demo-hero__title" id="hero-title">منصة التعليم<br>الذكي</h1>
+      <p class="demo-hero__subtitle">
+        خطط تعلم مخصصة لكل فرد — مصممة بناءً على مستواك وأهدافك ووقتك المتاح
+        مع موارد موصى بها وأساليب تقييم فعّالة.
+      </p>
+    </section>
+
+    <div class="stats-row" role="region" aria-label="مؤشرات التعليم">
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-queries">0</div>
+        <div class="stat-card__label">خطة تعلم أُنشئت</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">100%</div>
+        <div class="stat-card__label">مخصصة لك شخصياً</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">∞</div>
+        <div class="stat-card__label">مجال تعلم مدعوم</div>
+      </div>
+    </div>
+
+    <div class="capabilities-row" role="region" aria-label="قدرات منصة التعليم">
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div class="capability-card__label">تصميم المناهج</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="capability-card__label">تخصيص المسار</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        </div>
+        <div class="capability-card__label">أساليب التقييم</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        </div>
+        <div class="capability-card__label">شهادات وإنجازات</div>
+      </div>
+    </div>
+
+    <!-- Learning path visualization -->
+    <div class="edu-path" role="region" aria-label="مثال مسار تعلم">
+      <div class="edu-level edu-level--active" aria-label="مستوى المبتدئ">
+        <div class="edu-level__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <span>مبتدئ</span>
+      </div>
+      <div class="edu-connector" aria-hidden="true"></div>
+      <div class="edu-level" aria-label="مستوى المتوسط">
+        <div class="edu-level__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span>متوسط</span>
+      </div>
+      <div class="edu-connector" aria-hidden="true"></div>
+      <div class="edu-level" aria-label="مستوى المتقدم">
+        <div class="edu-level__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <span>متقدم</span>
+      </div>
+      <div class="edu-connector" aria-hidden="true"></div>
+      <div class="edu-level" aria-label="مستوى الخبير">
+        <div class="edu-level__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        </div>
+        <span>خبير</span>
+      </div>
+    </div>
+
+    <section class="demo-panel" id="demo-section" aria-labelledby="panel-title">
+      <div class="demo-panel__header">
+        <div class="demo-panel__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <div>
+          <div class="demo-panel__title" id="panel-title">المستشار التعليمي الذكي</div>
+          <div class="demo-panel__subtitle">أخبرني بهدفك التعليمي وسأبني لك خطة مخصصة</div>
+        </div>
+        <button class="btn btn--ghost btn--sm" id="clear-btn" aria-label="مسح المحادثة">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+
+      <div class="demo-panel__body">
+        <div class="messages-feed" id="messages-feed" role="log" aria-live="polite">
+          <div class="message message--ai" id="welcome-msg">
+            <div class="message__avatar" aria-hidden="true">AI</div>
+            <div class="message__bubble">
+              <p>مرحباً! أنا مستشارك التعليمي الذكي.</p>
+              <p>أخبرني بما تريد تعلمه وسأبني لك خطة تعلم مخصصة تتناسب مع مستواك وأهدافك ووقتك.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="examples-container"></div>
+
+        <details class="context-details" id="context-details">
+          <summary class="context-details__summary">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            بيانات المتعلم (اختياري)
+            <svg class="context-details__chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="context-fields" id="context-fields">
+            <div class="input-area__context">
+              <div class="form-group">
+                <label class="form-label" for="ctx-learner-level">المستوى الحالي</label>
+                <select class="form-select" id="ctx-learner-level">
+                  <option value="">اختر مستواك</option>
+                  <option>مبتدئ تماماً</option>
+                  <option>مبتدئ مع خلفية بسيطة</option>
+                  <option>متوسط</option>
+                  <option>متقدم</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-weekly-hours">ساعات التعلم أسبوعياً</label>
+                <input class="form-input" id="ctx-weekly-hours" type="text" placeholder="مثال: 5 ساعات أسبوعياً">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-learning-style">أسلوب التعلم المفضل</label>
+                <select class="form-select" id="ctx-learning-style">
+                  <option value="">اختر الأسلوب</option>
+                  <option>مرئي (فيديوهات)</option>
+                  <option>قرائي (كتب ومقالات)</option>
+                  <option>تطبيقي (مشاريع)</option>
+                  <option>تفاعلي (دورات)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-deadline">الموعد النهائي</label>
+                <input class="form-input" id="ctx-deadline" type="text" placeholder="مثال: 3 أشهر، نهاية 2025">
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <form class="input-row" id="chat-form" aria-label="نموذج طلب الخطة التعليمية">
+          <label class="sr-only" for="user-input">اكتب هدفك التعليمي</label>
+          <input
+            class="form-input"
+            id="user-input"
+            type="text"
+            placeholder="اكتب ما تريد تعلمه أو سؤالك التعليمي..."
+            autocomplete="off"
+            maxlength="4000"
+          >
+          <button class="btn btn--primary" type="submit" id="send-btn" aria-label="ابن خطة التعلم">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            ابدأ
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" class="sr-only">الأسئلة الشائعة</h2>
+      <div id="faq-container"></div>
+    </section>
+
+  </main>
+
+  <footer class="demo-footer" role="contentinfo">
+    <p>&copy; 2025 <a href="/">BrightAI</a> &mdash; منصة التعليم الذكي &mdash; نسخة تجريبية</p>
+  </footer>
+</div>
+
+<script type="module" src="smart-education-platform.js"></script>
+</body>
+</html>

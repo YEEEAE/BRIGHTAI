@@ -4,15 +4,7 @@
   <meta charset="UTF-8" />
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag("js", new Date());
-    gtag("config", "G-8LLESL207Q", {
-      "anonymize_ip": true,
-      "send_page_view": true
-    });
-  </script>
+  <script src="/frontend/js/brightai-analytics-init.js" defer></script>
   <meta http-equiv="x-ua-compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <!--
@@ -652,25 +644,10 @@
 </section>
 <!-- BRIGHTAI_INTERNAL_LINKS_END -->
 <footer><div class="container">© Bright AI. صفحة BrightProject - إدارة المشاريع الذكي في السعودية ضمن خدمات Bright AI في السعودية.</div></footer>
-  <script>
-    (function () {
-      var header = document.getElementById("main-header");
-      if (!header) return;
-
-      function syncHeaderState() {
-        if (window.scrollY > 24) {
-          header.classList.add("nav-scrolled");
-        } else {
-          header.classList.remove("nav-scrolled");
-        }
-      }
-
-      syncHeaderState();
-      window.addEventListener("scroll", syncHeaderState, { passive: true });
-    })();
-  </script>
+  
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 <script defer src="/frontend/js/accessibility.min.js?v=2026042904"></script>
   <script src="/frontend/js/brightai-logo-replace.js"></script>
+  <script src="/frontend/js/brightai-static-ui.js" defer></script>
 </body>
 </html>

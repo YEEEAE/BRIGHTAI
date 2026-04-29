@@ -1,0 +1,83 @@
+/* BrightAI — Demo: إدارة المستشفى الذكي — accent: rose */
+
+.demo-hero__tag { background: rgba(225,29,72,0.10); color: #E11D48; }
+.demo-hero__tag-dot { background: #E11D48; }
+.demo-panel__icon { background: rgba(225,29,72,0.10); }
+.demo-panel__icon svg { stroke: #E11D48; }
+.btn--primary { background: #E11D48; border-color: #E11D48; }
+.btn--primary:hover { background: #BE123C; border-color: #BE123C; }
+
+/* Warning notice banner */
+.hospital-notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: rgba(245,158,11,0.10);
+  border: 1px solid rgba(245,158,11,0.35);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  font-size: var(--font-size-sm);
+  color: #92400E;
+}
+
+.hospital-notice svg {
+  fill: none;
+  stroke: #D97706;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* KPI dashboard */
+.hospital-kpi {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.kpi-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.kpi-card__value {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.kpi-card__value--good { color: var(--color-success); }
+.kpi-card__value--warn { color: #D97706; }
+.kpi-card__value--bad  { color: var(--color-error); }
+
+.kpi-card__label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.kpi-card__trend {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  margin-top: var(--space-1);
+}
+
+.kpi-card__trend--up   { color: var(--color-success); }
+.kpi-card__trend--down { color: var(--color-error); }
+
+@media (max-width: 768px) {
+  .hospital-kpi { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .hospital-kpi { grid-template-columns: 1fr 1fr; }
+  .kpi-card__value { font-size: var(--font-size-xl); }
+}

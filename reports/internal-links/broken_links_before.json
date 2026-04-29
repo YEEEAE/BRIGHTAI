@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-04-29T01:41:12.079Z",
+  "generatedAt": "2026-04-29T15:00:12.781Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 387,
-  "referencesScanned": 24539,
-  "internalReferences": 19246,
-  "brokenReferences": 871,
+  "filesScanned": 392,
+  "referencesScanned": 25132,
+  "internalReferences": 19938,
+  "brokenReferences": 820,
   "fixableBrokenReferences": 18,
   "normalizationCandidates": 95,
   "topBrokenFiles": [
@@ -613,19 +613,7 @@
       "count": 4
     },
     {
-      "file": "sectors/ecommerce-en.html",
-      "count": 4
-    },
-    {
       "file": "sectors/ecommerce-en/index.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/energy-en.html",
       "count": 4
     },
     {
@@ -633,23 +621,7 @@
       "count": 4
     },
     {
-      "file": "sectors/energy.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/finance-en.html",
-      "count": 4
-    },
-    {
       "file": "sectors/finance-en/index.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/finance.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/healthcare-en.html",
       "count": 4
     },
     {
@@ -657,31 +629,11 @@
       "count": 4
     },
     {
-      "file": "sectors/healthcare.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/logistics-en.html",
-      "count": 4
-    },
-    {
       "file": "sectors/logistics-en/index.html",
       "count": 4
     },
     {
-      "file": "sectors/logistics.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/manufacturing-en.html",
-      "count": 4
-    },
-    {
       "file": "sectors/manufacturing-en/index.html",
-      "count": 4
-    },
-    {
-      "file": "sectors/manufacturing.html",
       "count": 4
     },
     {
@@ -810,10 +762,6 @@
     },
     {
       "file": "en/consultation/index.html",
-      "count": 3
-    },
-    {
-      "file": "sectors/index.html",
       "count": 3
     },
     {
@@ -1068,7 +1016,7 @@
     },
     {
       "file": "ai-bots/BrightMath/index.html",
-      "line": 388,
+      "line": 372,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1077,7 +1025,7 @@
     },
     {
       "file": "ai-bots/BrightMath/index.html",
-      "line": 389,
+      "line": 373,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1086,7 +1034,7 @@
     },
     {
       "file": "ai-bots/BrightMath/index.html",
-      "line": 390,
+      "line": 374,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1095,7 +1043,7 @@
     },
     {
       "file": "ai-bots/BrightMath/index.html",
-      "line": 570,
+      "line": 554,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1104,7 +1052,7 @@
     },
     {
       "file": "ai-bots/BrightRecruiter/index.html",
-      "line": 330,
+      "line": 314,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1113,7 +1061,7 @@
     },
     {
       "file": "ai-bots/BrightRecruiter/index.html",
-      "line": 331,
+      "line": 315,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1122,7 +1070,7 @@
     },
     {
       "file": "ai-bots/BrightRecruiter/index.html",
-      "line": 332,
+      "line": 316,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1131,7 +1079,7 @@
     },
     {
       "file": "ai-bots/BrightRecruiter/index.html",
-      "line": 514,
+      "line": 498,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1140,7 +1088,7 @@
     },
     {
       "file": "ai-bots/BrightSupport/index.html",
-      "line": 710,
+      "line": 694,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1149,7 +1097,7 @@
     },
     {
       "file": "ai-bots/BrightSupport/index.html",
-      "line": 711,
+      "line": 695,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1158,7 +1106,7 @@
     },
     {
       "file": "ai-bots/BrightSupport/index.html",
-      "line": 712,
+      "line": 696,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1167,7 +1115,7 @@
     },
     {
       "file": "ai-bots/BrightSupport/index.html",
-      "line": 892,
+      "line": 876,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1212,7 +1160,7 @@
     },
     {
       "file": "blog/ai-agents-business-guide/index.html",
-      "line": 150,
+      "line": 134,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1221,7 +1169,7 @@
     },
     {
       "file": "blog/ai-agents-business-guide/index.html",
-      "line": 151,
+      "line": 135,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1230,7 +1178,7 @@
     },
     {
       "file": "blog/ai-agents-business-guide/index.html",
-      "line": 152,
+      "line": 136,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1239,7 +1187,7 @@
     },
     {
       "file": "blog/ai-agents-business-guide/index.html",
-      "line": 361,
+      "line": 409,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1248,7 +1196,7 @@
     },
     {
       "file": "blog/ai-agents-business-guide/index.html",
-      "line": 827,
+      "line": 887,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1257,7 +1205,7 @@
     },
     {
       "file": "blog/ai-automation-project-analysis/index.html",
-      "line": 151,
+      "line": 135,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1266,7 +1214,7 @@
     },
     {
       "file": "blog/ai-automation-project-analysis/index.html",
-      "line": 152,
+      "line": 136,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1275,7 +1223,7 @@
     },
     {
       "file": "blog/ai-automation-project-analysis/index.html",
-      "line": 153,
+      "line": 137,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1284,7 +1232,7 @@
     },
     {
       "file": "blog/ai-automation-project-analysis/index.html",
-      "line": 289,
+      "line": 337,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1293,7 +1241,7 @@
     },
     {
       "file": "blog/ai-automation-project-analysis/index.html",
-      "line": 874,
+      "line": 934,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1302,7 +1250,7 @@
     },
     {
       "file": "blog/ai-business-performance/index.html",
-      "line": 147,
+      "line": 131,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1311,7 +1259,7 @@
     },
     {
       "file": "blog/ai-business-performance/index.html",
-      "line": 148,
+      "line": 132,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1320,7 +1268,7 @@
     },
     {
       "file": "blog/ai-business-performance/index.html",
-      "line": 149,
+      "line": 133,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1329,7 +1277,7 @@
     },
     {
       "file": "blog/ai-business-performance/index.html",
-      "line": 319,
+      "line": 366,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1338,7 +1286,7 @@
     },
     {
       "file": "blog/ai-business-performance/index.html",
-      "line": 790,
+      "line": 849,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1347,7 +1295,7 @@
     },
     {
       "file": "blog/ai-data-analysis-tools/index.html",
-      "line": 148,
+      "line": 132,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1356,7 +1304,7 @@
     },
     {
       "file": "blog/ai-data-analysis-tools/index.html",
-      "line": 149,
+      "line": 133,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1365,7 +1313,7 @@
     },
     {
       "file": "blog/ai-data-analysis-tools/index.html",
-      "line": 150,
+      "line": 134,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1374,7 +1322,7 @@
     },
     {
       "file": "blog/ai-data-analysis-tools/index.html",
-      "line": 358,
+      "line": 405,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -1383,213 +1331,6 @@
     },
     {
       "file": "blog/ai-data-analysis-tools/index.html",
-      "line": 840,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-energy-saudi/index.html",
-      "line": 372,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-energy-saudi/index.html",
-      "line": 373,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-energy-saudi/index.html",
-      "line": 374,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-energy-saudi/index.html",
-      "line": 544,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-finance-saudi/index.html",
-      "line": 372,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-finance-saudi/index.html",
-      "line": 373,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-finance-saudi/index.html",
-      "line": 374,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-finance-saudi/index.html",
-      "line": 544,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
-      "line": 152,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
-      "line": 361,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
-      "line": 861,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-healthcare-saudi/index.html",
-      "line": 396,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-healthcare-saudi/index.html",
-      "line": 397,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-healthcare-saudi/index.html",
-      "line": 398,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-healthcare-saudi/index.html",
-      "line": 568,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-healthcare-saudi/index.html",
-      "line": 1279,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-innovation-saudi-arabia/index.html",
-      "line": 118,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-innovation-saudi-arabia/index.html",
-      "line": 119,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-innovation-saudi-arabia/index.html",
-      "line": 120,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-innovation-saudi-arabia/index.html",
-      "line": 290,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-innovation-saudi-arabia/index.html",
       "line": 899,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -1598,169 +1339,7 @@
       "suggestion": ""
     },
     {
-      "file": "blog/ai-manufacturing-digital-guide/index.html",
-      "line": 158,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-manufacturing-digital-guide/index.html",
-      "line": 159,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-manufacturing-digital-guide/index.html",
-      "line": 160,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-manufacturing-digital-guide/index.html",
-      "line": 324,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-manufacturing-digital-guide/index.html",
-      "line": 929,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-marketing-guide/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-marketing-guide/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-marketing-guide/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-marketing-guide/index.html",
-      "line": 360,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-marketing-guide/index.html",
-      "line": 815,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-transformation/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-transformation/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-transformation/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-transformation/index.html",
-      "line": 360,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ai-transformation/index.html",
-      "line": 833,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/big-data-analysis/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/big-data-analysis/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/big-data-analysis/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/big-data-analysis/index.html",
+      "file": "blog/ai-energy-saudi/index.html",
       "line": 321,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -1769,610 +1348,7 @@
       "suggestion": ""
     },
     {
-      "file": "blog/big-data-analysis/index.html",
-      "line": 807,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-guide/index.html",
-      "line": 158,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-guide/index.html",
-      "line": 159,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-guide/index.html",
-      "line": 160,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-guide/index.html",
-      "line": 324,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-guide/index.html",
-      "line": 910,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-practical-guide/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-practical-guide/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-practical-guide/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-practical-guide/index.html",
-      "line": 359,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/building-ai-agents-practical-guide/index.html",
-      "line": 881,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-data-analysis/index.html",
-      "line": 110,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-data-analysis/index.html",
-      "line": 111,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-data-analysis/index.html",
-      "line": 112,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-data-analysis/index.html",
-      "line": 319,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-data-analysis/index.html",
-      "line": 988,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-saudi/index.html",
-      "line": 186,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-saudi/index.html",
-      "line": 187,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-saudi/index.html",
-      "line": 188,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-saudi/index.html",
-      "line": 398,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/business-intelligence-saudi/index.html",
-      "line": 984,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
-      "line": 193,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
-      "line": 194,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
-      "line": 195,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
-      "line": 404,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
-      "line": 967,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/claude-opus-4-6-saudi-market/index.html",
-      "line": 369,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/claude-opus-4-6-saudi-market/index.html",
-      "line": 370,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/claude-opus-4-6-saudi-market/index.html",
-      "line": 371,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/claude-opus-4-6-saudi-market/index.html",
-      "line": 579,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/commerce-ministry-chatbot/index.html",
-      "line": 338,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/commerce-ministry-chatbot/index.html",
-      "line": 339,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/commerce-ministry-chatbot/index.html",
-      "line": 340,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/commerce-ministry-chatbot/index.html",
-      "line": 549,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-best-practices/index.html",
-      "line": 188,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-best-practices/index.html",
-      "line": 189,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-best-practices/index.html",
-      "line": 190,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-best-practices/index.html",
-      "line": 320,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-best-practices/index.html",
-      "line": 848,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-decision-making/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-decision-making/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-decision-making/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-decision-making/index.html",
-      "line": 360,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/data-analysis-decision-making/index.html",
-      "line": 815,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-banking-saudi/index.html",
-      "line": 186,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-banking-saudi/index.html",
-      "line": 187,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-banking-saudi/index.html",
-      "line": 188,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-banking-saudi/index.html",
-      "line": 398,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-banking-saudi/index.html",
-      "line": 1022,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-health-smart-archive/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-health-smart-archive/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-health-smart-archive/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-health-smart-archive/index.html",
-      "line": 360,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-health-smart-archive/index.html",
-      "line": 998,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-transformation-automation/index.html",
-      "line": 152,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-transformation-automation/index.html",
-      "line": 153,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-transformation-automation/index.html",
-      "line": 154,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-transformation-automation/index.html",
-      "line": 314,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/digital-transformation-automation/index.html",
-      "line": 922,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/financial-hr-automation/index.html",
-      "line": 152,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/financial-hr-automation/index.html",
-      "line": 153,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/financial-hr-automation/index.html",
-      "line": 154,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/financial-hr-automation/index.html",
-      "line": 314,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/financial-hr-automation/index.html",
-      "line": 880,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
-      "line": 152,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
+      "file": "blog/ai-energy-saudi/index.html",
       "line": 322,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -2381,8 +1357,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
-      "line": 1047,
+      "file": "blog/ai-energy-saudi/index.html",
+      "line": 323,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2390,8 +1366,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/generative-artificial-intelligence/index.html",
-      "line": 173,
+      "file": "blog/ai-energy-saudi/index.html",
+      "line": 556,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2399,8 +1375,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/generative-artificial-intelligence/index.html",
-      "line": 174,
+      "file": "blog/ai-finance-saudi/index.html",
+      "line": 321,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2408,8 +1384,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/generative-artificial-intelligence/index.html",
-      "line": 175,
+      "file": "blog/ai-finance-saudi/index.html",
+      "line": 322,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2417,8 +1393,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/generative-artificial-intelligence/index.html",
-      "line": 384,
+      "file": "blog/ai-finance-saudi/index.html",
+      "line": 323,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2426,8 +1402,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/generative-artificial-intelligence/index.html",
-      "line": 819,
+      "file": "blog/ai-finance-saudi/index.html",
+      "line": 556,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2435,8 +1411,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions-saudi/index.html",
-      "line": 358,
+      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
+      "line": 134,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2444,8 +1420,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions-saudi/index.html",
-      "line": 359,
+      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
+      "line": 135,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2453,8 +1429,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions-saudi/index.html",
-      "line": 360,
+      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
+      "line": 136,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2462,8 +1438,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions-saudi/index.html",
-      "line": 568,
+      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
+      "line": 408,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2471,8 +1447,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions/index.html",
-      "line": 367,
+      "file": "blog/ai-generative-content-industry-saudi-arabia/index.html",
+      "line": 920,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2480,8 +1456,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions/index.html",
-      "line": 368,
+      "file": "blog/ai-healthcare-saudi/index.html",
+      "line": 345,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2489,8 +1465,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions/index.html",
-      "line": 369,
+      "file": "blog/ai-healthcare-saudi/index.html",
+      "line": 346,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2498,8 +1474,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/government-ai-solutions/index.html",
-      "line": 533,
+      "file": "blog/ai-healthcare-saudi/index.html",
+      "line": 347,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2507,8 +1483,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/hr-automation-saudi/index.html",
-      "line": 196,
+      "file": "blog/ai-healthcare-saudi/index.html",
+      "line": 580,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2516,8 +1492,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/hr-automation-saudi/index.html",
-      "line": 197,
+      "file": "blog/ai-healthcare-saudi/index.html",
+      "line": 1303,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2525,8 +1501,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/hr-automation-saudi/index.html",
-      "line": 198,
+      "file": "blog/ai-innovation-saudi-arabia/index.html",
+      "line": 103,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2534,8 +1510,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/hr-automation-saudi/index.html",
-      "line": 413,
+      "file": "blog/ai-innovation-saudi-arabia/index.html",
+      "line": 104,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2543,8 +1519,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/hr-automation-saudi/index.html",
-      "line": 987,
+      "file": "blog/ai-innovation-saudi-arabia/index.html",
+      "line": 105,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2552,8 +1528,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/index.html",
-      "line": 226,
+      "file": "blog/ai-innovation-saudi-arabia/index.html",
+      "line": 339,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2561,8 +1537,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/index.html",
-      "line": 227,
+      "file": "blog/ai-innovation-saudi-arabia/index.html",
+      "line": 960,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2570,8 +1546,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/index.html",
-      "line": 228,
+      "file": "blog/ai-manufacturing-digital-guide/index.html",
+      "line": 142,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2579,8 +1555,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/index.html",
-      "line": 452,
+      "file": "blog/ai-manufacturing-digital-guide/index.html",
+      "line": 143,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2588,8 +1564,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-productivity/index.html",
-      "line": 152,
+      "file": "blog/ai-manufacturing-digital-guide/index.html",
+      "line": 144,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2597,8 +1573,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-productivity/index.html",
-      "line": 153,
+      "file": "blog/ai-manufacturing-digital-guide/index.html",
+      "line": 372,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2606,8 +1582,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-productivity/index.html",
-      "line": 154,
+      "file": "blog/ai-manufacturing-digital-guide/index.html",
+      "line": 989,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2615,8 +1591,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-productivity/index.html",
-      "line": 298,
+      "file": "blog/ai-marketing-guide/index.html",
+      "line": 133,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2624,7 +1600,34 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-productivity/index.html",
+      "file": "blog/ai-marketing-guide/index.html",
+      "line": 134,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/ai-marketing-guide/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/ai-marketing-guide/index.html",
+      "line": 408,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/ai-marketing-guide/index.html",
       "line": 875,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -2633,8 +1636,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-repetitive-tasks/index.html",
-      "line": 158,
+      "file": "blog/ai-transformation/index.html",
+      "line": 133,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2642,8 +1645,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-repetitive-tasks/index.html",
-      "line": 159,
+      "file": "blog/ai-transformation/index.html",
+      "line": 134,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2651,8 +1654,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-repetitive-tasks/index.html",
-      "line": 160,
+      "file": "blog/ai-transformation/index.html",
+      "line": 135,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -2660,340 +1663,7 @@
       "suggestion": ""
     },
     {
-      "file": "blog/industrial-automation-repetitive-tasks/index.html",
-      "line": 308,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/industrial-automation-repetitive-tasks/index.html",
-      "line": 877,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/intelligent-data-analysis/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/intelligent-data-analysis/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/intelligent-data-analysis/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/intelligent-data-analysis/index.html",
-      "line": 321,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/intelligent-data-analysis/index.html",
-      "line": 805,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kfshrc-breast-cancer-ai/index.html",
-      "line": 330,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kfshrc-breast-cancer-ai/index.html",
-      "line": 331,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kfshrc-breast-cancer-ai/index.html",
-      "line": 332,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kfshrc-breast-cancer-ai/index.html",
-      "line": 502,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kpi-dashboard-guide/index.html",
-      "line": 253,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kpi-dashboard-guide/index.html",
-      "line": 254,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kpi-dashboard-guide/index.html",
-      "line": 255,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kpi-dashboard-guide/index.html",
-      "line": 440,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/kpi-dashboard-guide/index.html",
-      "line": 1040,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ksu-adaptive-learning/index.html",
-      "line": 338,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ksu-adaptive-learning/index.html",
-      "line": 339,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ksu-adaptive-learning/index.html",
-      "line": 340,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/ksu-adaptive-learning/index.html",
-      "line": 549,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-business/index.html",
-      "line": 155,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-business/index.html",
-      "line": 156,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-business/index.html",
-      "line": 157,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-business/index.html",
-      "line": 282,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-business/index.html",
-      "line": 801,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-computer-vision/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-computer-vision/index.html",
-      "line": 152,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-computer-vision/index.html",
-      "line": 153,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-computer-vision/index.html",
-      "line": 289,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/machine-learning-computer-vision/index.html",
-      "line": 865,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/nca-compliance/index.html",
-      "line": 466,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/nca-compliance/index.html",
-      "line": 467,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/nca-compliance/index.html",
-      "line": 468,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/nca-compliance/index.html",
-      "line": 679,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/power-bi-saudi-guide/index.html",
-      "line": 189,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/power-bi-saudi-guide/index.html",
-      "line": 190,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/power-bi-saudi-guide/index.html",
-      "line": 191,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/power-bi-saudi-guide/index.html",
+      "file": "blog/ai-transformation/index.html",
       "line": 408,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -3002,8 +1672,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/power-bi-saudi-guide/index.html",
-      "line": 1037,
+      "file": "blog/ai-transformation/index.html",
+      "line": 893,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3011,8 +1681,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/private-hospital-scheduling-optimization/index.html",
-      "line": 338,
+      "file": "blog/big-data-analysis/index.html",
+      "line": 133,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3020,8 +1690,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/private-hospital-scheduling-optimization/index.html",
-      "line": 339,
+      "file": "blog/big-data-analysis/index.html",
+      "line": 134,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3029,8 +1699,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/private-hospital-scheduling-optimization/index.html",
-      "line": 340,
+      "file": "blog/big-data-analysis/index.html",
+      "line": 135,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3038,403 +1708,7 @@
       "suggestion": ""
     },
     {
-      "file": "blog/private-hospital-scheduling-optimization/index.html",
-      "line": 549,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation-ai-efficiency/index.html",
-      "line": 152,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation-ai-efficiency/index.html",
-      "line": 153,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation-ai-efficiency/index.html",
-      "line": 154,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation-ai-efficiency/index.html",
-      "line": 314,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation-ai-efficiency/index.html",
-      "line": 905,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation/index.html",
-      "line": 321,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/process-automation/index.html",
-      "line": 818,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/riyadh-municipality-ai-license/index.html",
-      "line": 338,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/riyadh-municipality-ai-license/index.html",
-      "line": 339,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/riyadh-municipality-ai-license/index.html",
-      "line": 340,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/riyadh-municipality-ai-license/index.html",
-      "line": 510,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-agritech-smart-farming/index.html",
-      "line": 378,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-agritech-smart-farming/index.html",
-      "line": 379,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-agritech-smart-farming/index.html",
-      "line": 380,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-agritech-smart-farming/index.html",
-      "line": 589,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-bank-fraud-detection/index.html",
-      "line": 338,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-bank-fraud-detection/index.html",
-      "line": 339,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-bank-fraud-detection/index.html",
-      "line": 340,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-bank-fraud-detection/index.html",
-      "line": 549,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-dates-quality-ai/index.html",
-      "line": 378,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-dates-quality-ai/index.html",
-      "line": 379,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-dates-quality-ai/index.html",
-      "line": 380,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-dates-quality-ai/index.html",
-      "line": 589,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-ecommerce-ai-growth/index.html",
-      "line": 378,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-ecommerce-ai-growth/index.html",
-      "line": 379,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-ecommerce-ai-growth/index.html",
-      "line": 380,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-ecommerce-ai-growth/index.html",
-      "line": 589,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-edtech-personalized-learning/index.html",
-      "line": 338,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-edtech-personalized-learning/index.html",
-      "line": 339,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-edtech-personalized-learning/index.html",
-      "line": 340,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-edtech-personalized-learning/index.html",
-      "line": 549,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-energy-predictive-maintenance/index.html",
-      "line": 338,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-energy-predictive-maintenance/index.html",
-      "line": 339,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-energy-predictive-maintenance/index.html",
-      "line": 340,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-energy-predictive-maintenance/index.html",
-      "line": 549,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-factory-ai-productivity/index.html",
-      "line": 338,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-factory-ai-productivity/index.html",
-      "line": 339,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-factory-ai-productivity/index.html",
-      "line": 340,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-factory-ai-productivity/index.html",
-      "line": 549,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
-      "line": 368,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
+      "file": "blog/big-data-analysis/index.html",
       "line": 369,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -3443,8 +1717,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
-      "line": 370,
+      "file": "blog/big-data-analysis/index.html",
+      "line": 867,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3452,8 +1726,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
-      "line": 553,
+      "file": "blog/building-ai-agents-guide/index.html",
+      "line": 142,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3461,8 +1735,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-insurance-claims-ai/index.html",
-      "line": 378,
+      "file": "blog/building-ai-agents-guide/index.html",
+      "line": 143,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3470,8 +1744,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-insurance-claims-ai/index.html",
-      "line": 379,
+      "file": "blog/building-ai-agents-guide/index.html",
+      "line": 144,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3479,8 +1753,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-insurance-claims-ai/index.html",
-      "line": 380,
+      "file": "blog/building-ai-agents-guide/index.html",
+      "line": 372,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3488,8 +1762,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-insurance-claims-ai/index.html",
-      "line": 589,
+      "file": "blog/building-ai-agents-guide/index.html",
+      "line": 970,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3497,8 +1771,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-logistics-route-optimization/index.html",
-      "line": 408,
+      "file": "blog/building-ai-agents-practical-guide/index.html",
+      "line": 133,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3506,8 +1780,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-logistics-route-optimization/index.html",
-      "line": 409,
+      "file": "blog/building-ai-agents-practical-guide/index.html",
+      "line": 134,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3515,8 +1789,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-logistics-route-optimization/index.html",
-      "line": 410,
+      "file": "blog/building-ai-agents-practical-guide/index.html",
+      "line": 135,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3524,8 +1798,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-logistics-route-optimization/index.html",
-      "line": 593,
+      "file": "blog/building-ai-agents-practical-guide/index.html",
+      "line": 407,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3533,8 +1807,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
-      "line": 378,
+      "file": "blog/building-ai-agents-practical-guide/index.html",
+      "line": 941,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3542,8 +1816,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
-      "line": 379,
+      "file": "blog/business-intelligence-data-analysis/index.html",
+      "line": 95,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3551,8 +1825,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
-      "line": 380,
+      "file": "blog/business-intelligence-data-analysis/index.html",
+      "line": 96,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3560,8 +1834,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
-      "line": 589,
+      "file": "blog/business-intelligence-data-analysis/index.html",
+      "line": 97,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3569,8 +1843,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-mining-ai-exploration/index.html",
-      "line": 378,
+      "file": "blog/business-intelligence-data-analysis/index.html",
+      "line": 368,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3578,8 +1852,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-mining-ai-exploration/index.html",
-      "line": 379,
+      "file": "blog/business-intelligence-data-analysis/index.html",
+      "line": 1049,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3587,8 +1861,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-mining-ai-exploration/index.html",
-      "line": 380,
+      "file": "blog/business-intelligence-saudi/index.html",
+      "line": 170,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3596,8 +1870,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-mining-ai-exploration/index.html",
-      "line": 589,
+      "file": "blog/business-intelligence-saudi/index.html",
+      "line": 171,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3605,8 +1879,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-petrochemical-ai-safety/index.html",
-      "line": 378,
+      "file": "blog/business-intelligence-saudi/index.html",
+      "line": 172,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3614,8 +1888,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-petrochemical-ai-safety/index.html",
-      "line": 379,
+      "file": "blog/business-intelligence-saudi/index.html",
+      "line": 446,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3623,8 +1897,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-petrochemical-ai-safety/index.html",
-      "line": 380,
+      "file": "blog/business-intelligence-saudi/index.html",
+      "line": 1044,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3632,8 +1906,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-petrochemical-ai-safety/index.html",
-      "line": 589,
+      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
+      "line": 177,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3641,8 +1915,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-real-estate-ai-valuation/index.html",
-      "line": 378,
+      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
+      "line": 178,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3650,8 +1924,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-real-estate-ai-valuation/index.html",
-      "line": 379,
+      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
+      "line": 179,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3659,8 +1933,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-real-estate-ai-valuation/index.html",
-      "line": 380,
+      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
+      "line": 451,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3668,8 +1942,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-real-estate-ai-valuation/index.html",
-      "line": 589,
+      "file": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
+      "line": 1026,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3677,8 +1951,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-renewable-energy-ai/index.html",
-      "line": 378,
+      "file": "blog/claude-opus-4-6-saudi-market/index.html",
+      "line": 318,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3686,8 +1960,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-renewable-energy-ai/index.html",
-      "line": 379,
+      "file": "blog/claude-opus-4-6-saudi-market/index.html",
+      "line": 319,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3695,8 +1969,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-renewable-energy-ai/index.html",
-      "line": 380,
+      "file": "blog/claude-opus-4-6-saudi-market/index.html",
+      "line": 320,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3704,8 +1978,8 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-renewable-energy-ai/index.html",
-      "line": 588,
+      "file": "blog/claude-opus-4-6-saudi-market/index.html",
+      "line": 591,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -3713,403 +1987,7 @@
       "suggestion": ""
     },
     {
-      "file": "blog/saudi-smart-city-traffic/index.html",
-      "line": 378,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-smart-city-traffic/index.html",
-      "line": 379,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-smart-city-traffic/index.html",
-      "line": 380,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-smart-city-traffic/index.html",
-      "line": 588,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-sports-analytics-ai/index.html",
-      "line": 408,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-sports-analytics-ai/index.html",
-      "line": 409,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-sports-analytics-ai/index.html",
-      "line": 410,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-sports-analytics-ai/index.html",
-      "line": 593,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-tourism-ai-guide/index.html",
-      "line": 408,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-tourism-ai-guide/index.html",
-      "line": 409,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-tourism-ai-guide/index.html",
-      "line": 410,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-tourism-ai-guide/index.html",
-      "line": 593,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-waste-management-ai/index.html",
-      "line": 408,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-waste-management-ai/index.html",
-      "line": 409,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-waste-management-ai/index.html",
-      "line": 410,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/saudi-waste-management-ai/index.html",
-      "line": 592,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-automation-benefits/index.html",
-      "line": 149,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-automation-benefits/index.html",
-      "line": 150,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-automation-benefits/index.html",
-      "line": 151,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-automation-benefits/index.html",
-      "line": 321,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-automation-benefits/index.html",
-      "line": 818,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-crm-system/index.html",
-      "line": 183,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-crm-system/index.html",
-      "line": 184,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-crm-system/index.html",
-      "line": 185,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-crm-system/index.html",
-      "line": 394,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-crm-system/index.html",
-      "line": 1038,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-document-processing/index.html",
-      "line": 186,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-document-processing/index.html",
-      "line": 187,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-document-processing/index.html",
-      "line": 188,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-document-processing/index.html",
-      "line": 359,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-document-processing/index.html",
-      "line": 1048,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-inventory-management/index.html",
-      "line": 186,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-inventory-management/index.html",
-      "line": 187,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-inventory-management/index.html",
-      "line": 188,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-inventory-management/index.html",
-      "line": 399,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/smart-inventory-management/index.html",
-      "line": 1037,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/transport-logistics-solutions/index.html",
-      "line": 186,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/transport-logistics-solutions/index.html",
-      "line": 187,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/transport-logistics-solutions/index.html",
-      "line": 188,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/transport-logistics-solutions/index.html",
-      "line": 398,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/transport-logistics-solutions/index.html",
-      "line": 977,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/workplace-automation-guide/index.html",
-      "line": 159,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/workplace-automation-guide/index.html",
-      "line": 160,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/workplace-automation-guide/index.html",
-      "line": 161,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "blog/workplace-automation-guide/index.html",
+      "file": "blog/commerce-ministry-chatbot/index.html",
       "line": 287,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -4118,8 +1996,2078 @@
       "suggestion": ""
     },
     {
+      "file": "blog/commerce-ministry-chatbot/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/commerce-ministry-chatbot/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/commerce-ministry-chatbot/index.html",
+      "line": 561,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-best-practices/index.html",
+      "line": 172,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-best-practices/index.html",
+      "line": 173,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-best-practices/index.html",
+      "line": 174,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-best-practices/index.html",
+      "line": 368,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-best-practices/index.html",
+      "line": 908,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-decision-making/index.html",
+      "line": 133,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-decision-making/index.html",
+      "line": 134,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-decision-making/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-decision-making/index.html",
+      "line": 408,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/data-analysis-decision-making/index.html",
+      "line": 875,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-banking-saudi/index.html",
+      "line": 170,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-banking-saudi/index.html",
+      "line": 171,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-banking-saudi/index.html",
+      "line": 172,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-banking-saudi/index.html",
+      "line": 446,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-banking-saudi/index.html",
+      "line": 1082,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-health-smart-archive/index.html",
+      "line": 133,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-health-smart-archive/index.html",
+      "line": 134,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-health-smart-archive/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-health-smart-archive/index.html",
+      "line": 407,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-health-smart-archive/index.html",
+      "line": 1057,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-transformation-automation/index.html",
+      "line": 136,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-transformation-automation/index.html",
+      "line": 137,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-transformation-automation/index.html",
+      "line": 138,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-transformation-automation/index.html",
+      "line": 362,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/digital-transformation-automation/index.html",
+      "line": 982,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/financial-hr-automation/index.html",
+      "line": 136,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/financial-hr-automation/index.html",
+      "line": 137,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/financial-hr-automation/index.html",
+      "line": 138,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/financial-hr-automation/index.html",
+      "line": 362,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/financial-hr-automation/index.html",
+      "line": 940,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
+      "line": 134,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
+      "line": 136,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
+      "line": 369,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
+      "line": 1106,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/generative-artificial-intelligence/index.html",
+      "line": 157,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/generative-artificial-intelligence/index.html",
+      "line": 158,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/generative-artificial-intelligence/index.html",
+      "line": 159,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/generative-artificial-intelligence/index.html",
+      "line": 431,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/generative-artificial-intelligence/index.html",
+      "line": 878,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions-saudi/index.html",
+      "line": 307,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions-saudi/index.html",
+      "line": 308,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions-saudi/index.html",
+      "line": 309,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions-saudi/index.html",
+      "line": 580,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions/index.html",
+      "line": 316,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions/index.html",
+      "line": 317,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions/index.html",
+      "line": 318,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/government-ai-solutions/index.html",
+      "line": 546,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/hr-automation-saudi/index.html",
+      "line": 180,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/hr-automation-saudi/index.html",
+      "line": 181,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/hr-automation-saudi/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/hr-automation-saudi/index.html",
+      "line": 460,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/hr-automation-saudi/index.html",
+      "line": 1046,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/index.html",
+      "line": 167,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/index.html",
+      "line": 168,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/index.html",
+      "line": 169,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/index.html",
+      "line": 431,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-productivity/index.html",
+      "line": 136,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-productivity/index.html",
+      "line": 137,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-productivity/index.html",
+      "line": 138,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-productivity/index.html",
+      "line": 346,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-productivity/index.html",
+      "line": 935,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-repetitive-tasks/index.html",
+      "line": 142,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-repetitive-tasks/index.html",
+      "line": 143,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-repetitive-tasks/index.html",
+      "line": 144,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-repetitive-tasks/index.html",
+      "line": 356,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/industrial-automation-repetitive-tasks/index.html",
+      "line": 937,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/intelligent-data-analysis/index.html",
+      "line": 133,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/intelligent-data-analysis/index.html",
+      "line": 134,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/intelligent-data-analysis/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/intelligent-data-analysis/index.html",
+      "line": 369,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/intelligent-data-analysis/index.html",
+      "line": 865,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kfshrc-breast-cancer-ai/index.html",
+      "line": 279,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kfshrc-breast-cancer-ai/index.html",
+      "line": 280,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kfshrc-breast-cancer-ai/index.html",
+      "line": 281,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kfshrc-breast-cancer-ai/index.html",
+      "line": 514,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kpi-dashboard-guide/index.html",
+      "line": 237,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kpi-dashboard-guide/index.html",
+      "line": 238,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kpi-dashboard-guide/index.html",
+      "line": 239,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kpi-dashboard-guide/index.html",
+      "line": 487,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/kpi-dashboard-guide/index.html",
+      "line": 1099,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/ksu-adaptive-learning/index.html",
+      "line": 287,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/ksu-adaptive-learning/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/ksu-adaptive-learning/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/ksu-adaptive-learning/index.html",
+      "line": 561,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-business/index.html",
+      "line": 139,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-business/index.html",
+      "line": 140,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-business/index.html",
+      "line": 141,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-business/index.html",
+      "line": 330,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-business/index.html",
+      "line": 861,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-computer-vision/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-computer-vision/index.html",
+      "line": 136,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-computer-vision/index.html",
+      "line": 137,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-computer-vision/index.html",
+      "line": 337,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/machine-learning-computer-vision/index.html",
+      "line": 925,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/nca-compliance/index.html",
+      "line": 415,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/nca-compliance/index.html",
+      "line": 416,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/nca-compliance/index.html",
+      "line": 417,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/nca-compliance/index.html",
+      "line": 691,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/power-bi-saudi-guide/index.html",
+      "line": 173,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/power-bi-saudi-guide/index.html",
+      "line": 174,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/power-bi-saudi-guide/index.html",
+      "line": 175,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/power-bi-saudi-guide/index.html",
+      "line": 455,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/power-bi-saudi-guide/index.html",
+      "line": 1096,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/private-hospital-scheduling-optimization/index.html",
+      "line": 287,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/private-hospital-scheduling-optimization/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/private-hospital-scheduling-optimization/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/private-hospital-scheduling-optimization/index.html",
+      "line": 561,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation-ai-efficiency/index.html",
+      "line": 136,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation-ai-efficiency/index.html",
+      "line": 137,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation-ai-efficiency/index.html",
+      "line": 138,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation-ai-efficiency/index.html",
+      "line": 362,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation-ai-efficiency/index.html",
+      "line": 965,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation/index.html",
+      "line": 133,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation/index.html",
+      "line": 134,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation/index.html",
+      "line": 369,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/process-automation/index.html",
+      "line": 878,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/riyadh-municipality-ai-license/index.html",
+      "line": 287,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/riyadh-municipality-ai-license/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/riyadh-municipality-ai-license/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/riyadh-municipality-ai-license/index.html",
+      "line": 522,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-agritech-smart-farming/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-agritech-smart-farming/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-agritech-smart-farming/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-agritech-smart-farming/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-bank-fraud-detection/index.html",
+      "line": 287,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-bank-fraud-detection/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-bank-fraud-detection/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-bank-fraud-detection/index.html",
+      "line": 561,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-dates-quality-ai/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-dates-quality-ai/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-dates-quality-ai/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-dates-quality-ai/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-ecommerce-ai-growth/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-ecommerce-ai-growth/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-ecommerce-ai-growth/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-ecommerce-ai-growth/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-edtech-personalized-learning/index.html",
+      "line": 287,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-edtech-personalized-learning/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-edtech-personalized-learning/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-edtech-personalized-learning/index.html",
+      "line": 561,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-energy-predictive-maintenance/index.html",
+      "line": 287,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-energy-predictive-maintenance/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-energy-predictive-maintenance/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-energy-predictive-maintenance/index.html",
+      "line": 561,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-factory-ai-productivity/index.html",
+      "line": 287,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-factory-ai-productivity/index.html",
+      "line": 288,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-factory-ai-productivity/index.html",
+      "line": 289,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-factory-ai-productivity/index.html",
+      "line": 561,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
+      "line": 317,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
+      "line": 318,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
+      "line": 319,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-hospitality-dynamic-pricing/index.html",
+      "line": 565,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-insurance-claims-ai/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-insurance-claims-ai/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-insurance-claims-ai/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-insurance-claims-ai/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-logistics-route-optimization/index.html",
+      "line": 357,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-logistics-route-optimization/index.html",
+      "line": 358,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-logistics-route-optimization/index.html",
+      "line": 359,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-logistics-route-optimization/index.html",
+      "line": 605,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-manufacturing-predictive-maintenance/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-mining-ai-exploration/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-mining-ai-exploration/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-mining-ai-exploration/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-mining-ai-exploration/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-petrochemical-ai-safety/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-petrochemical-ai-safety/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-petrochemical-ai-safety/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-petrochemical-ai-safety/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-real-estate-ai-valuation/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-real-estate-ai-valuation/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-real-estate-ai-valuation/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-real-estate-ai-valuation/index.html",
+      "line": 601,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-renewable-energy-ai/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-renewable-energy-ai/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-renewable-energy-ai/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-renewable-energy-ai/index.html",
+      "line": 600,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-smart-city-traffic/index.html",
+      "line": 327,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-smart-city-traffic/index.html",
+      "line": 328,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-smart-city-traffic/index.html",
+      "line": 329,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-smart-city-traffic/index.html",
+      "line": 600,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-sports-analytics-ai/index.html",
+      "line": 357,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-sports-analytics-ai/index.html",
+      "line": 358,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-sports-analytics-ai/index.html",
+      "line": 359,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-sports-analytics-ai/index.html",
+      "line": 605,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-tourism-ai-guide/index.html",
+      "line": 357,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-tourism-ai-guide/index.html",
+      "line": 358,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-tourism-ai-guide/index.html",
+      "line": 359,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-tourism-ai-guide/index.html",
+      "line": 605,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-waste-management-ai/index.html",
+      "line": 357,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-waste-management-ai/index.html",
+      "line": 358,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-waste-management-ai/index.html",
+      "line": 359,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/saudi-waste-management-ai/index.html",
+      "line": 604,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-automation-benefits/index.html",
+      "line": 133,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-automation-benefits/index.html",
+      "line": 134,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-automation-benefits/index.html",
+      "line": 135,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-automation-benefits/index.html",
+      "line": 369,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-automation-benefits/index.html",
+      "line": 878,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-crm-system/index.html",
+      "line": 167,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-crm-system/index.html",
+      "line": 168,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-crm-system/index.html",
+      "line": 169,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-crm-system/index.html",
+      "line": 442,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-crm-system/index.html",
+      "line": 1098,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-document-processing/index.html",
+      "line": 170,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-document-processing/index.html",
+      "line": 171,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-document-processing/index.html",
+      "line": 172,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-document-processing/index.html",
+      "line": 407,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-document-processing/index.html",
+      "line": 1108,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-inventory-management/index.html",
+      "line": 170,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-inventory-management/index.html",
+      "line": 171,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-inventory-management/index.html",
+      "line": 172,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-inventory-management/index.html",
+      "line": 447,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/smart-inventory-management/index.html",
+      "line": 1097,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/transport-logistics-solutions/index.html",
+      "line": 170,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/transport-logistics-solutions/index.html",
+      "line": 171,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/transport-logistics-solutions/index.html",
+      "line": 172,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/transport-logistics-solutions/index.html",
+      "line": 446,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/transport-logistics-solutions/index.html",
+      "line": 1036,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
       "file": "blog/workplace-automation-guide/index.html",
-      "line": 811,
+      "line": 143,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/workplace-automation-guide/index.html",
+      "line": 144,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/workplace-automation-guide/index.html",
+      "line": 145,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/workplace-automation-guide/index.html",
+      "line": 335,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "blog/workplace-automation-guide/index.html",
+      "line": 871,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7547,44 +7495,8 @@
       "suggestion": ""
     },
     {
-      "file": "sectors/ecommerce-en.html",
-      "line": 214,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/ecommerce-en.html",
-      "line": 215,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/ecommerce-en.html",
-      "line": 216,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/ecommerce-en.html",
-      "line": 396,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
       "file": "sectors/ecommerce-en/index.html",
-      "line": 214,
+      "line": 163,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7593,7 +7505,7 @@
     },
     {
       "file": "sectors/ecommerce-en/index.html",
-      "line": 215,
+      "line": 164,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7602,7 +7514,7 @@
     },
     {
       "file": "sectors/ecommerce-en/index.html",
-      "line": 216,
+      "line": 165,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7611,79 +7523,7 @@
     },
     {
       "file": "sectors/ecommerce-en/index.html",
-      "line": 396,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "line": 168,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "line": 169,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "line": 170,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/ecommerce.html",
-      "line": 352,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy-en.html",
-      "line": 214,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy-en.html",
-      "line": 215,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy-en.html",
-      "line": 216,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy-en.html",
-      "line": 396,
+      "line": 345,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7692,7 +7532,7 @@
     },
     {
       "file": "sectors/energy-en/index.html",
-      "line": 214,
+      "line": 163,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7701,7 +7541,7 @@
     },
     {
       "file": "sectors/energy-en/index.html",
-      "line": 215,
+      "line": 164,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7710,7 +7550,7 @@
     },
     {
       "file": "sectors/energy-en/index.html",
-      "line": 216,
+      "line": 165,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7719,79 +7559,7 @@
     },
     {
       "file": "sectors/energy-en/index.html",
-      "line": 396,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy.html",
-      "line": 168,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy.html",
-      "line": 169,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy.html",
-      "line": 170,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/energy.html",
-      "line": 350,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance-en.html",
-      "line": 214,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance-en.html",
-      "line": 215,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance-en.html",
-      "line": 216,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance-en.html",
-      "line": 430,
+      "line": 345,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7800,7 +7568,7 @@
     },
     {
       "file": "sectors/finance-en/index.html",
-      "line": 214,
+      "line": 163,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7809,7 +7577,7 @@
     },
     {
       "file": "sectors/finance-en/index.html",
-      "line": 215,
+      "line": 164,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7818,7 +7586,7 @@
     },
     {
       "file": "sectors/finance-en/index.html",
-      "line": 216,
+      "line": 165,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7827,79 +7595,7 @@
     },
     {
       "file": "sectors/finance-en/index.html",
-      "line": 430,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance.html",
-      "line": 168,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance.html",
-      "line": 169,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance.html",
-      "line": 170,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/finance.html",
-      "line": 357,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare-en.html",
-      "line": 214,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare-en.html",
-      "line": 215,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare-en.html",
-      "line": 216,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare-en.html",
-      "line": 430,
+      "line": 379,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7908,7 +7604,7 @@
     },
     {
       "file": "sectors/healthcare-en/index.html",
-      "line": 214,
+      "line": 163,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7917,7 +7613,7 @@
     },
     {
       "file": "sectors/healthcare-en/index.html",
-      "line": 215,
+      "line": 164,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7926,7 +7622,7 @@
     },
     {
       "file": "sectors/healthcare-en/index.html",
-      "line": 216,
+      "line": 165,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -7935,106 +7631,7 @@
     },
     {
       "file": "sectors/healthcare-en/index.html",
-      "line": 430,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare.html",
-      "line": 168,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare.html",
-      "line": 169,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare.html",
-      "line": 170,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/healthcare.html",
-      "line": 359,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/index.html",
-      "line": 47,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/index.html",
-      "line": 48,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/index.html",
-      "line": 49,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics-en.html",
-      "line": 214,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics-en.html",
-      "line": 215,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics-en.html",
-      "line": 216,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics-en.html",
-      "line": 430,
+      "line": 379,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8043,7 +7640,7 @@
     },
     {
       "file": "sectors/logistics-en/index.html",
-      "line": 214,
+      "line": 163,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -8052,7 +7649,7 @@
     },
     {
       "file": "sectors/logistics-en/index.html",
-      "line": 215,
+      "line": 164,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -8061,7 +7658,7 @@
     },
     {
       "file": "sectors/logistics-en/index.html",
-      "line": 216,
+      "line": 165,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -8070,79 +7667,7 @@
     },
     {
       "file": "sectors/logistics-en/index.html",
-      "line": 430,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics.html",
-      "line": 168,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics.html",
-      "line": 169,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics.html",
-      "line": 170,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/logistics.html",
-      "line": 359,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing-en.html",
-      "line": 249,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing-en.html",
-      "line": 250,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing-en.html",
-      "line": 251,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing-en.html",
-      "line": 465,
+      "line": 379,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8151,7 +7676,7 @@
     },
     {
       "file": "sectors/manufacturing-en/index.html",
-      "line": 249,
+      "line": 198,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -8160,7 +7685,7 @@
     },
     {
       "file": "sectors/manufacturing-en/index.html",
-      "line": 250,
+      "line": 199,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -8169,7 +7694,7 @@
     },
     {
       "file": "sectors/manufacturing-en/index.html",
-      "line": 251,
+      "line": 200,
       "patternType": "attr",
       "reference": "/assets/images/Gemini.png",
       "normalizedReferencePath": "/assets/images/Gemini.png",
@@ -8178,43 +7703,7 @@
     },
     {
       "file": "sectors/manufacturing-en/index.html",
-      "line": 465,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing.html",
-      "line": 203,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing.html",
-      "line": 204,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing.html",
-      "line": 205,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "sectors/manufacturing.html",
-      "line": 392,
+      "line": 414,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8223,7 +7712,7 @@
     },
     {
       "file": "services/ai-agents-saudi.html",
-      "line": 38,
+      "line": 33,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8232,7 +7721,7 @@
     },
     {
       "file": "services/ai-agents-saudi.html",
-      "line": 460,
+      "line": 455,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8241,7 +7730,7 @@
     },
     {
       "file": "services/ai-automation-saudi.html",
-      "line": 38,
+      "line": 33,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8250,7 +7739,7 @@
     },
     {
       "file": "services/ai-automation-saudi.html",
-      "line": 460,
+      "line": 455,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8259,7 +7748,7 @@
     },
     {
       "file": "services/ai-chatbot-arabic.html",
-      "line": 38,
+      "line": 33,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8268,7 +7757,7 @@
     },
     {
       "file": "services/ai-chatbot-arabic.html",
-      "line": 460,
+      "line": 455,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8331,7 +7820,7 @@
     },
     {
       "file": "services/competitor-analysis-agent.html",
-      "line": 244,
+      "line": 239,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8340,7 +7829,7 @@
     },
     {
       "file": "services/custom-ai-agent.html",
-      "line": 39,
+      "line": 34,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8349,7 +7838,7 @@
     },
     {
       "file": "services/custom-ai-agent.html",
-      "line": 395,
+      "line": 390,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8412,7 +7901,7 @@
     },
     {
       "file": "services/index.html",
-      "line": 3136,
+      "line": 3131,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8421,7 +7910,7 @@
     },
     {
       "file": "services/index.html",
-      "line": 3222,
+      "line": 3217,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8448,7 +7937,7 @@
     },
     {
       "file": "services/marketing-ai-agent.html",
-      "line": 39,
+      "line": 34,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8457,7 +7946,7 @@
     },
     {
       "file": "services/marketing-ai-agent.html",
-      "line": 261,
+      "line": 256,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8493,7 +7982,7 @@
     },
     {
       "file": "services/opportunity-discovery-agent.html",
-      "line": 39,
+      "line": 34,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8502,7 +7991,7 @@
     },
     {
       "file": "services/opportunity-discovery-agent.html",
-      "line": 253,
+      "line": 248,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8520,7 +8009,7 @@
     },
     {
       "file": "services/seo-ai-agent.html",
-      "line": 46,
+      "line": 41,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8529,7 +8018,7 @@
     },
     {
       "file": "services/seo-ai-agent.html",
-      "line": 322,
+      "line": 317,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",

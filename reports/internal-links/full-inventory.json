@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-29T01:41:13.138Z",
+  "generatedAt": "2026-04-29T15:00:13.808Z",
   "filesScanned": 268,
   "pages": [
     {
@@ -2819,7 +2819,9 @@
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
         "https://brightai.site/blog/building-ai-agents-guide/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
         "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+        "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -3002,6 +3004,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "استكشف وكلاء الذكاء الاصطناعي للأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-practical-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+          "text": "مقارنة ChatGPT vs Claude vs Gemini للشركات: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/building-ai-agents-guide/",
           "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي"
         },
@@ -3096,6 +3114,11 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-business-performance/",
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+        "https://brightai.site/blog/building-ai-agents-guide/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
+        "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+        "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
         "https://brightai.site/blog/generative-artificial-intelligence/",
         "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
@@ -3125,6 +3148,9 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/blog/workplace-automation-guide/",
@@ -3142,6 +3168,7 @@
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/seo-agent/",
         "https://brightai.site/smart-automation/"
       ],
@@ -3335,6 +3362,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
           "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
         },
@@ -3433,9 +3476,11 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/digital-transformation-automation/",
         "https://brightai.site/blog/generative-artificial-intelligence/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -3621,6 +3666,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/blog/digital-transformation-automation/",
           "text": "التحول الرقمي وأتمتة العمليات: كيف يمكن للذكاء الاصطناعي أن يقود الابتكار"
         },
@@ -3718,7 +3779,9 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/bot/",
@@ -3895,6 +3958,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/saudi-sports-analytics-ai/",
           "text": "دراسة حالة شاملة: الذكاء الاصطناعي في الرياضة السعودية | تحليل الأداء"
         },
@@ -4005,7 +4084,9 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
@@ -4018,6 +4099,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
@@ -4188,6 +4270,22 @@
           "text": "تكلفة تطبيق الذكاء الاصطناعي في شركتك — دليل شامل | Bright AI"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -4262,6 +4360,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/smart-automation/"
@@ -4468,6 +4567,22 @@
           "text": "مستقبل التحليل الذكي في القطاع المالي"
         },
         {
+          "href": "https://brightai.site/sectors/finance-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-banking-saudi/",
+          "text": "الخدمات المصرفية الرقمية في السعودية: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+          "text": "التحليل الذكي للقطاع المالي: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-bank-fraud-detection/",
+          "text": "دراسة حالة: بنك سعودي - كشف 95% من محاولات الاحتيال بالذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/sectors/finance/",
           "text": "حلول AI للقطاع المالي في السعودية"
         },
@@ -4534,7 +4649,10 @@
         "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-business-performance/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/generative-artificial-intelligence/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
@@ -4549,6 +4667,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/services/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
@@ -4719,6 +4838,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
           "text": "حلول الذكاء الاصطناعي للقطاع الحكومي في السعودية | دليل التحول الرقمي 2026"
         },
@@ -4820,10 +4955,13 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/commerce-ministry-chatbot/",
         "https://brightai.site/blog/generative-artificial-intelligence/",
         "https://brightai.site/blog/government-ai-solutions-saudi/",
         "https://brightai.site/blog/government-ai-solutions/",
         "https://brightai.site/blog/machine-learning-computer-vision/",
+        "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+        "https://brightai.site/blog/saudi-tourism-ai-guide/",
         "https://brightai.site/en/ai-agent/",
         "https://brightai.site/error",
         "https://brightai.site/sectors/ecommerce-en/",
@@ -4851,6 +4989,7 @@
         "https://brightai.site/blog/ai-implementation-cost-guide/",
         "https://brightai.site/blog/building-ai-agents-practical-guide/",
         "https://brightai.site/blog/choose-ai-company-saudi/",
+        "https://brightai.site/blog/top-ai-tools-saudi-2025/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
@@ -4900,6 +5039,22 @@
         {
           "href": "https://brightai.site/blog/choose-ai-company-saudi/",
           "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في السعودية؟ | Bright AI"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/top-ai-tools-saudi-2025/",
+          "text": "أفضل 10 أدوات ذكاء اصطناعي للشركات السعودية 2025: شرح عملي"
         },
         {
           "href": "https://brightai.site/",
@@ -5041,6 +5196,7 @@
         "https://brightai.site/docs/solutions-healthcare/",
         "https://brightai.site/docs/terms-and-conditions/",
         "https://brightai.site/privacy-cookies/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/medical-archive/",
@@ -5280,6 +5436,22 @@
           "text": "الصحة الرقمية والأرشفة الطبية الذكية"
         },
         {
+          "href": "https://brightai.site/sectors/healthcare-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للرعاية الصحية"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-health-smart-archive/",
+          "text": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+          "text": "دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+          "text": "دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/sectors/healthcare/",
           "text": "حلول الذكاء الاصطناعي للقطاع الصحي"
         },
@@ -5355,9 +5527,13 @@
       "incoming": [
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-finance-saudi/",
+        "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/digital-health-smart-archive/",
         "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+        "https://brightai.site/blog/machine-learning-computer-vision/",
         "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+        "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
         "https://brightai.site/docs/solutions-healthcare/",
         "https://brightai.site/en/health/",
         "https://brightai.site/sectors/healthcare-en/",
@@ -5383,12 +5559,16 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-healthcare-saudi/",
+        "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
@@ -5433,6 +5613,22 @@
         {
           "href": "https://brightai.site/blog/saudi-sports-analytics-ai/",
           "text": "دراسة حالة شاملة: الذكاء الاصطناعي في الرياضة السعودية | تحليل الأداء"
+        },
+        {
+          "href": "https://brightai.site/sectors/healthcare-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للرعاية الصحية"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-healthcare-saudi/",
+          "text": "الذكاء الاصطناعي في القطاع الصحي السعودي: تشخيص: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-health-smart-archive/",
+          "text": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+          "text": "دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي"
         },
         {
           "href": "https://brightai.site/",
@@ -5511,6 +5707,7 @@
         "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/blog/power-bi-saudi-guide/",
         "https://brightai.site/blog/transport-logistics-solutions/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -5736,6 +5933,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
           "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء | Bright AI"
         },
@@ -5840,9 +6053,12 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-healthcare-saudi/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
         "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/digital-health-smart-archive/",
         "https://brightai.site/blog/nca-compliance/",
+        "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -5854,6 +6070,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/data-platform/",
@@ -6056,6 +6273,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/healthcare-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للرعاية الصحية"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-healthcare-saudi/",
+          "text": "الذكاء الاصطناعي في القطاع الصحي السعودي: تشخيص: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-health-smart-archive/",
+          "text": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+          "text": "دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/ai-agent/",
           "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات | Bright AI"
         },
@@ -6126,7 +6359,15 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-energy-saudi/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+        "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-mining-ai-exploration/",
+        "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+        "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/en/smart-automation/",
         "https://brightai.site/services/",
@@ -6155,7 +6396,9 @@
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
+        "https://brightai.site/blog/saudi-tourism-ai-guide/",
         "https://brightai.site/blog/top-ai-tools-saudi-2025/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
@@ -6347,6 +6590,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للنمو التجاري"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+          "text": "دراسة حالة شاملة: الذكاء الاصطناعي في التجارة الإلكترونية: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+          "text": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-tourism-ai-guide/",
+          "text": "دراسة حالة شاملة: الذكاء الاصطناعي في السياحة السعودية -"
+        },
+        {
           "href": "https://brightai.site/blog/ai-implementation-cost-guide/",
           "text": "تكلفة تطبيق الذكاء الاصطناعي في شركتك — دليل شامل | Bright AI"
         },
@@ -6434,6 +6693,9 @@
       "incoming": [
         "https://brightai.site/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/commerce-ministry-chatbot/",
+        "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+        "https://brightai.site/blog/saudi-tourism-ai-guide/",
         "https://brightai.site/en/",
         "https://brightai.site/error",
         "https://brightai.site/services/competitor-analysis-agent/",
@@ -6462,8 +6724,10 @@
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
         "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/nca-compliance/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -6662,6 +6926,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/blog/ai-guide-saudi-business/",
           "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال السعوديين | Bright AI"
         },
@@ -6782,6 +7062,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/data-analysis-best-practices/",
         "https://brightai.site/blog/data-analysis-decision-making/",
@@ -6983,6 +7264,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/data-analysis-decision-making/",
           "text": "تحليل البيانات: المفتاح لاتخاذ قرارات أكثر ذكاءً"
         },
@@ -7070,9 +7367,11 @@
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/bot/",
@@ -7267,6 +7566,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "استكشف وكلاء الذكاء الاصطناعي للأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-agents-business-guide/",
+          "text": "دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-practical-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+          "text": "مقارنة ChatGPT vs Claude vs Gemini للشركات: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/ai-transformation/",
           "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
         },
@@ -7340,6 +7655,10 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-agents-business-guide/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
+        "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+        "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
         "https://brightai.site/docs/ai-agent/",
         "https://brightai.site/en/",
         "https://brightai.site/en/ai-agent/",
@@ -7364,9 +7683,11 @@
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/building-ai-agents-guide/",
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/bot/",
@@ -7574,6 +7895,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "استكشف وكلاء الذكاء الاصطناعي للأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-agents-business-guide/",
+          "text": "دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات"
+        },
+        {
+          "href": "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+          "text": "مقارنة ChatGPT vs Claude vs Gemini للشركات: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/ai-transformation/",
           "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
         },
@@ -7643,7 +7980,12 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/blog/ai-guide-saudi-business/"
+        "https://brightai.site/blog/ai-agents-business-guide/",
+        "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/building-ai-agents-guide/",
+        "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+        "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/claude-opus-4-6-saudi-market/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -7668,7 +8010,9 @@
         "https://brightai.site/blog/big-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/choose-ai-company-saudi/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/intelligent-data-analysis/",
+        "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -7846,6 +8190,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/kpi-dashboard-guide/",
+          "text": "كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة"
+        },
+        {
           "href": "https://brightai.site/blog/business-intelligence-saudi/",
           "text": "ذكاء الأعمال BI للشركات السعودية | Bright AI"
         },
@@ -7912,8 +8272,20 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-automation-project-analysis/",
+        "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
+        "https://brightai.site/blog/big-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
+        "https://brightai.site/blog/data-analysis-best-practices/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+        "https://brightai.site/blog/generative-artificial-intelligence/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
+        "https://brightai.site/blog/kpi-dashboard-guide/",
+        "https://brightai.site/blog/power-bi-saudi-guide/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
+        "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/services/",
         "https://brightai.site/sitemap/"
       ],
@@ -7940,6 +8312,7 @@
         "https://brightai.site/blog/big-data-analysis/",
         "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/data-analysis-best-practices/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/blog/power-bi-saudi-guide/",
@@ -8161,6 +8534,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/data-analysis-best-practices/",
           "text": "أفضل الممارسات لتحليل البيانات: تحويل البيانات إلى قرارات ذكية"
         },
@@ -8290,7 +8679,10 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/ai-bots/BrightSupport/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/building-ai-agents-guide/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
@@ -8492,6 +8884,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "استكشف وكلاء الذكاء الاصطناعي للأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-agents-business-guide/",
+          "text": "دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-practical-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/smart-automation/",
           "text": "(أتمت أعمالك مع حلول BrightAI)"
         },
@@ -8598,8 +9006,11 @@
         "https://brightai.site/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/building-ai-agents-guide/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
         "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
         "https://brightai.site/blog/financial-hr-automation/",
         "https://brightai.site/blog/top-ai-tools-saudi-2025/",
@@ -8665,6 +9076,22 @@
           "text": "دليل AI للأعمال السعودية إذا القرار لسا على مستوى الإدارة"
         },
         {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "استكشف وكلاء الذكاء الاصطناعي للأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-agents-business-guide/",
+          "text": "دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-practical-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -8701,6 +9128,7 @@
         "https://brightai.site/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/building-ai-agents-guide/",
         "https://brightai.site/blog/building-ai-agents-practical-guide/",
         "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
@@ -8731,6 +9159,8 @@
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/nca-ai-compliance-saudi/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
+        "https://brightai.site/blog/top-ai-tools-saudi-2025/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -8786,6 +9216,22 @@
           "text": "دراسة حالة شاملة: الذكاء الاصطناعي في الرياضة السعودية | تحليل الأداء"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/top-ai-tools-saudi-2025/",
+          "text": "أفضل 10 أدوات ذكاء اصطناعي للشركات السعودية 2025: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -8820,11 +9266,26 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-business-performance/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
+        "https://brightai.site/blog/ai-transformation/",
         "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/digital-banking-saudi/",
+        "https://brightai.site/blog/government-ai-solutions-saudi/",
+        "https://brightai.site/blog/government-ai-solutions/",
+        "https://brightai.site/blog/ksu-adaptive-learning/",
+        "https://brightai.site/blog/machine-learning-business/",
         "https://brightai.site/blog/nca-ai-compliance-saudi/",
+        "https://brightai.site/blog/nca-compliance/",
+        "https://brightai.site/blog/riyadh-municipality-ai-license/",
+        "https://brightai.site/blog/saudi-agritech-smart-farming/",
+        "https://brightai.site/blog/saudi-dates-quality-ai/",
+        "https://brightai.site/blog/saudi-edtech-personalized-learning/",
+        "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
+        "https://brightai.site/blog/saudi-smart-city-traffic/",
+        "https://brightai.site/blog/saudi-waste-management-ai/",
+        "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/blog/top-ai-tools-saudi-2025/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/docs/services-overview/",
@@ -8849,7 +9310,10 @@
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/building-ai-agents-guide/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/blog/top-ai-tools-saudi-2025/",
@@ -9053,6 +9517,22 @@
           "text": "أفضل أدوات AI للشركات السعودية"
         },
         {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "استكشف وكلاء الذكاء الاصطناعي للأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-agents-business-guide/",
+          "text": "دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-practical-guide/",
+          "text": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -9162,9 +9642,12 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/ai-bots/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
         "https://brightai.site/blog/government-ai-solutions/",
+        "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
@@ -9366,6 +9849,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للنمو التجاري"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-marketing-guide/",
+          "text": "الذكاء الاصطناعي في التسويق: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+          "text": "دراسة حالة شاملة: الذكاء الاصطناعي في التجارة الإلكترونية: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+          "text": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -9440,6 +9939,7 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/intelligent-data-analysis/",
@@ -9454,6 +9954,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -9614,6 +10115,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/intelligent-data-analysis/",
           "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات استراتيجية"
         },
@@ -9698,6 +10215,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/data-analysis-best-practices/",
         "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/kpi-dashboard-guide/",
@@ -9880,6 +10398,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/kpi-dashboard-guide/",
+          "text": "كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة"
+        },
+        {
           "href": "https://brightai.site/blog/data-analysis-best-practices/",
           "text": "أفضل الممارسات لتحليل البيانات: تحويل البيانات إلى قرارات ذكية - BrightAI"
         },
@@ -9978,11 +10512,20 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-automation-project-analysis/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/big-data-analysis/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
+        "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/data-analysis-best-practices/",
+        "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+        "https://brightai.site/blog/generative-artificial-intelligence/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/blog/machine-learning-business/",
+        "https://brightai.site/blog/power-bi-saudi-guide/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
+        "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
       ],
@@ -10023,6 +10566,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/smart-automation/"
@@ -10233,6 +10777,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/finance-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-finance-saudi/",
+          "text": "الذكاء الاصطناعي للقطاع المالي السعودي - مصرفية أذكى: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+          "text": "التحليل الذكي للقطاع المالي: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-bank-fraud-detection/",
+          "text": "دراسة حالة: بنك سعودي - كشف 95% من محاولات الاحتيال بالذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/nca-ai-compliance-saudi/",
           "text": "الامتثال لـ NCA ومتطلبات AI في السعودية | Bright AI"
         },
@@ -10365,6 +10925,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/medical-archive/",
@@ -10604,6 +11165,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/healthcare-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للرعاية الصحية"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-healthcare-saudi/",
+          "text": "الذكاء الاصطناعي في القطاع الصحي السعودي: تشخيص: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+          "text": "دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+          "text": "دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/transport-logistics-solutions/",
           "text": "حلول النقل واللوجستيات الذكية في السعودية | Bright AI"
         },
@@ -10691,9 +11268,13 @@
       "incoming": [
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-healthcare-saudi/",
+        "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/digital-banking-saudi/",
         "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+        "https://brightai.site/blog/machine-learning-computer-vision/",
         "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+        "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
         "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/blog/transport-logistics-solutions/",
         "https://brightai.site/docs/solutions-healthcare/",
@@ -10726,6 +11307,8 @@
         "https://brightai.site/blog/ai-business-performance/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
+        "https://brightai.site/blog/process-automation/",
+        "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/bot/",
@@ -10949,6 +11532,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "استكشف أتمتة العمليات بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation/",
+          "text": "أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
+          "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-automation-benefits/",
+          "text": "فوائد الأتمتة الذكية للشركات: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/ai-business-performance/",
           "text": "كيف يمكن للذكاء الاصطناعي تحسين أداء الشركات الصغيرة والمتوسطة؟ - BrightAI"
         },
@@ -11037,6 +11636,7 @@
         "https://brightai.site/blog/hr-automation-saudi/",
         "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/smart-automation-benefits/",
+        "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/bot/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
@@ -11238,6 +11838,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/hr-automation/",
+          "text": "استكشف أتمتة الموارد البشرية"
+        },
+        {
+          "href": "https://brightai.site/blog/hr-automation-saudi/",
+          "text": "أتمتة الموارد البشرية: وفر 60% من وقت فريقك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/hr-automation-case-study/",
+          "text": "الأتمتة الذكية للموارد البشرية: كيف وفّرت شركة"
+        },
+        {
+          "href": "https://brightai.site/blog/workplace-automation-guide/",
+          "text": "الأتمتة في مكان العمل: كيف تبدأ؟"
+        },
+        {
           "href": "https://brightai.site/blog/hr-automation-case-study/",
           "text": "الأتمتة الذكية للموارد البشرية: كيف وفّرت شركة سعودية 70% من وقتها | Bright AI"
         },
@@ -11311,6 +11927,7 @@
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
         "https://brightai.site/blog/hr-automation-case-study/",
         "https://brightai.site/blog/hr-automation-saudi/",
+        "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
         "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/sitemap/"
@@ -11335,8 +11952,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-finance-saudi/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/digital-banking-saudi/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/saudi-bank-fraud-detection/",
         "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
         "https://brightai.site/blog/saudi-tourism-ai-guide/",
@@ -11555,6 +12175,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/saudi-tourism-ai-guide/",
           "text": "دراسة حالة شاملة: الذكاء الاصطناعي في السياحة السعودية | تجربة زائر عالمية"
         },
@@ -11640,6 +12276,7 @@
         "https://brightai.site/blog/ai-finance-saudi/",
         "https://brightai.site/blog/digital-banking-saudi/",
         "https://brightai.site/blog/saudi-bank-fraud-detection/",
+        "https://brightai.site/blog/saudi-insurance-claims-ai/",
         "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/sitemap/"
@@ -11668,6 +12305,9 @@
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
@@ -11855,6 +12495,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
           "text": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في المملكة العربية السعودية"
         },
@@ -11970,6 +12626,7 @@
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
@@ -12158,6 +12815,22 @@
           "text": "خدمات Bright AI للجهات الحكومية والشركات"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -12268,7 +12941,9 @@
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -12464,6 +13139,22 @@
           "text": "الرقمنة"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -12566,8 +13257,10 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/financial-hr-automation/",
+        "https://brightai.site/blog/hr-automation-saudi/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/blog/smart-automation-benefits/",
+        "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/data-analysis/",
@@ -12642,6 +13335,22 @@
         },
         {
           "href": "https://brightai.site/services/hr-automation/",
+          "text": "استكشف أتمتة الموارد البشرية"
+        },
+        {
+          "href": "https://brightai.site/blog/hr-automation-saudi/",
+          "text": "أتمتة الموارد البشرية: وفر 60% من وقت فريقك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/financial-hr-automation/",
+          "text": "الأتمتة المالية وأتمتة الموارد البشرية: حلول مستقبلية للشركات الذكية"
+        },
+        {
+          "href": "https://brightai.site/blog/workplace-automation-guide/",
+          "text": "الأتمتة في مكان العمل: كيف تبدأ؟"
+        },
+        {
+          "href": "https://brightai.site/services/hr-automation/",
           "text": "أتمتة الموارد البشرية"
         },
         {
@@ -12677,6 +13386,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/financial-hr-automation/",
         "https://brightai.site/blog/hr-automation-saudi/",
+        "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
         "https://brightai.site/docs/solutions-hr/",
         "https://brightai.site/docs/solutions-interview/",
         "https://brightai.site/en/tools/",
@@ -12705,6 +13415,7 @@
         "https://brightai.site/blog/financial-hr-automation/",
         "https://brightai.site/blog/hr-automation-case-study/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
+        "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -12893,6 +13604,22 @@
           "text": "مسار المقابلات والتوظيف الذكي"
         },
         {
+          "href": "https://brightai.site/services/hr-automation/",
+          "text": "استكشف أتمتة الموارد البشرية"
+        },
+        {
+          "href": "https://brightai.site/blog/financial-hr-automation/",
+          "text": "الأتمتة المالية وأتمتة الموارد البشرية: حلول مستقبلية للشركات الذكية"
+        },
+        {
+          "href": "https://brightai.site/blog/hr-automation-case-study/",
+          "text": "الأتمتة الذكية للموارد البشرية: كيف وفّرت شركة"
+        },
+        {
+          "href": "https://brightai.site/blog/workplace-automation-guide/",
+          "text": "الأتمتة في مكان العمل: كيف تبدأ؟"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -12985,6 +13712,8 @@
         "https://brightai.site/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/financial-hr-automation/",
+        "https://brightai.site/blog/hr-automation-case-study/",
+        "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/docs/solutions-hr/",
         "https://brightai.site/docs/solutions-interview/",
@@ -14272,6 +15001,8 @@
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
+        "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
         "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/bot/",
         "https://brightai.site/contact/",
@@ -14284,6 +15015,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/sectors/energy/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/smart-automation/"
@@ -14462,6 +15194,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+          "text": "دراسة حالة شاملة: الذكاء الاصطناعي في الصناعة السعودية -: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/industrial-automation-productivity/",
           "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
         },
@@ -14533,10 +15281,15 @@
       "incoming": [
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-energy-saudi/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/financial-hr-automation/",
         "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+        "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
         "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-mining-ai-exploration/",
+        "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+        "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/error",
@@ -14565,7 +15318,9 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/bot/",
         "https://brightai.site/contact/",
@@ -14577,6 +15332,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/services/",
         "https://brightai.site/smart-automation/"
       ],
@@ -14738,6 +15494,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/industrial-automation-productivity/",
           "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
         },
@@ -14826,8 +15598,11 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/big-data-analysis/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/data-analysis-best-practices/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -15025,6 +15800,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/kpi-dashboard-guide/",
+          "text": "كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة"
+        },
+        {
           "href": "https://brightai.site/blog/data-analysis-best-practices/",
           "text": "أفضل الممارسات لتحليل البيانات: تحويل البيانات إلى قرارات ذكية - BrightAI"
         },
@@ -15095,14 +15886,20 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-automation-project-analysis/",
+        "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
         "https://brightai.site/blog/big-data-analysis/",
         "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/data-analysis-best-practices/",
         "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+        "https://brightai.site/blog/generative-artificial-intelligence/",
         "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/blog/power-bi-saudi-guide/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
+        "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/en/data-analysis/",
         "https://brightai.site/sitemap/"
@@ -15130,6 +15927,9 @@
         "https://brightai.site/blog/ai-healthcare-saudi/",
         "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
         "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/financial-hr-automation/",
+        "https://brightai.site/blog/hr-automation-case-study/",
+        "https://brightai.site/blog/hr-automation-saudi/",
         "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/bot/",
@@ -15356,6 +16156,22 @@
         },
         {
           "href": "https://brightai.site/services/hr-automation/",
+          "text": "استكشف أتمتة الموارد البشرية"
+        },
+        {
+          "href": "https://brightai.site/blog/hr-automation-saudi/",
+          "text": "أتمتة الموارد البشرية: وفر 60% من وقت فريقك: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/financial-hr-automation/",
+          "text": "الأتمتة المالية وأتمتة الموارد البشرية: حلول مستقبلية للشركات الذكية"
+        },
+        {
+          "href": "https://brightai.site/blog/hr-automation-case-study/",
+          "text": "الأتمتة الذكية للموارد البشرية: كيف وفّرت شركة"
+        },
+        {
+          "href": "https://brightai.site/services/hr-automation/",
           "text": "أتمتة الموارد البشرية"
         },
         {
@@ -15419,6 +16235,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/big-data-analysis/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/power-bi-saudi-guide/",
@@ -15612,6 +16429,22 @@
           "text": "دليل خدمة تحليل البيانات إذا وصلت لمرحلة التنفيذ"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -15665,8 +16498,10 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/power-bi-saudi-guide/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/docs/data-analysis/",
@@ -15694,9 +16529,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
         "https://brightai.site/blog/machine-learning-business/",
         "https://brightai.site/blog/saudi-edtech-personalized-learning/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -15888,6 +16725,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -15964,8 +16817,10 @@
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-transformation/",
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/ksu-adaptive-learning/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -16136,6 +16991,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/blog/ai-transformation/",
           "text": "كيف تُحدث حلول الذكاء الاصطناعي المبتكرة تحولًا في الأعمال الحديثة"
         },
@@ -16245,7 +17116,10 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-healthcare-saudi/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/bot/",
         "https://brightai.site/contact/",
@@ -16258,6 +17132,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/machine-learning/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/data-platform/",
@@ -16458,6 +17333,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/healthcare-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للرعاية الصحية"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-healthcare-saudi/",
+          "text": "الذكاء الاصطناعي في القطاع الصحي السعودي: تشخيص: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-health-smart-archive/",
+          "text": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+          "text": "دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
           "text": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في المملكة العربية السعودية"
         },
@@ -16648,6 +17539,22 @@
           "text": "احجز استشارة"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -16760,6 +17667,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/nca-ai-compliance-saudi/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
@@ -16961,6 +17869,22 @@
           "text": "./vision-2030-ai-opportunities"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -17073,6 +17997,8 @@
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/big-data-analysis/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/bot/",
@@ -17269,6 +18195,22 @@
           "text": "تعرف على خدمة تحليل البيانات"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -17384,6 +18326,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/medical-archive/",
@@ -17595,6 +18538,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/healthcare-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للرعاية الصحية"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-healthcare-saudi/",
+          "text": "الذكاء الاصطناعي في القطاع الصحي السعودي: تشخيص: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-health-smart-archive/",
+          "text": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+          "text": "دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -17646,8 +18605,11 @@
       "incoming": [
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-healthcare-saudi/",
+        "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/digital-health-smart-archive/",
         "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
+        "https://brightai.site/blog/machine-learning-computer-vision/",
         "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
         "https://brightai.site/docs/solutions-healthcare/",
         "https://brightai.site/error",
@@ -17678,6 +18640,7 @@
         "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/blog/process-automation/",
         "https://brightai.site/blog/smart-automation-benefits/",
+        "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -17896,6 +18859,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "استكشف أتمتة العمليات بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
+          "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-automation-benefits/",
+          "text": "فوائد الأتمتة الذكية للشركات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-document-processing/",
+          "text": "معالجة المستندات الذكية OCR في السعودية: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
           "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
         },
@@ -17967,9 +18946,12 @@
       "incoming": [
         "https://brightai.site/ai-workflows/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/digital-transformation-automation/",
         "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/smart-automation-benefits/",
+        "https://brightai.site/blog/smart-crm-system/",
+        "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/docs/smart-automation/",
         "https://brightai.site/en/smart-automation/",
@@ -17999,6 +18981,8 @@
         "https://brightai.site/blog/ai-automation-project-analysis/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/process-automation/",
+        "https://brightai.site/blog/smart-automation-benefits/",
+        "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -18226,6 +19210,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "استكشف أتمتة العمليات بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation/",
+          "text": "أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-automation-benefits/",
+          "text": "فوائد الأتمتة الذكية للشركات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-document-processing/",
+          "text": "معالجة المستندات الذكية OCR في السعودية: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/ai-agents-business-guide/",
           "text": "وكيل الذكاء الاصطناعي: تحسين الأداء وزيادة الكفاءة"
         },
@@ -18292,6 +19292,9 @@
         "https://brightai.site/blog/hr-automation-case-study/",
         "https://brightai.site/blog/hr-automation-saudi/",
         "https://brightai.site/blog/process-automation/",
+        "https://brightai.site/blog/smart-automation-benefits/",
+        "https://brightai.site/blog/smart-crm-system/",
+        "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/docs/smart-automation/",
         "https://brightai.site/error",
@@ -18318,9 +19321,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/saudi-smart-city-traffic/",
         "https://brightai.site/blog/saudi-waste-management-ai/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -18498,6 +19503,22 @@
           "text": "دراسة حالة شاملة: إدارة النفايات بالذكاء الاصطناعي في السعودية | نحو صفر مرادم"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -18555,9 +19576,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
         "https://brightai.site/blog/saudi-renewable-energy-ai/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -18753,6 +19776,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -18843,6 +19882,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/smart-automation/"
@@ -19061,6 +20101,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/finance-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-finance-saudi/",
+          "text": "الذكاء الاصطناعي للقطاع المالي السعودي - مصرفية أذكى: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-banking-saudi/",
+          "text": "الخدمات المصرفية الرقمية في السعودية: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+          "text": "التحليل الذكي للقطاع المالي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -19142,9 +20198,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/blog/saudi-tourism-ai-guide/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -19336,6 +20394,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -19417,10 +20491,13 @@
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
+        "https://brightai.site/blog/saudi-tourism-ai-guide/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -19616,6 +20693,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للنمو التجاري"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-marketing-guide/",
+          "text": "الذكاء الاصطناعي في التسويق: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+          "text": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-tourism-ai-guide/",
+          "text": "دراسة حالة شاملة: الذكاء الاصطناعي في السياحة السعودية -"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -19665,10 +20758,13 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-marketing-guide/",
+        "https://brightai.site/blog/commerce-ministry-chatbot/",
         "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
+        "https://brightai.site/blog/saudi-tourism-ai-guide/",
         "https://brightai.site/docs/solutions-retail/",
         "https://brightai.site/error",
         "https://brightai.site/sectors/ecommerce-en/",
@@ -19695,9 +20791,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/commerce-ministry-chatbot/",
         "https://brightai.site/blog/ksu-adaptive-learning/",
         "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -19889,6 +20987,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -19963,7 +21077,10 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/saudi-agritech-smart-farming/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/bot/",
@@ -19978,6 +21095,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -20169,6 +21287,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -20245,7 +21379,10 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/process-automation/",
         "https://brightai.site/blog/saudi-bank-fraud-detection/",
         "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
@@ -20266,6 +21403,7 @@
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -20478,6 +21616,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -20528,8 +21682,16 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-energy-saudi/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
         "https://brightai.site/blog/saudi-bank-fraud-detection/",
+        "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
         "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-mining-ai-exploration/",
+        "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+        "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/blog/saudi-smart-city-traffic/",
         "https://brightai.site/en/smart-automation/",
         "https://brightai.site/error",
@@ -20557,6 +21719,8 @@
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-healthcare-saudi/",
+        "https://brightai.site/blog/digital-health-smart-archive/",
         "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/blog/saudi-edtech-personalized-learning/",
         "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
@@ -20572,6 +21736,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/medical-archive/",
@@ -20751,6 +21916,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/healthcare-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للرعاية الصحية"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-healthcare-saudi/",
+          "text": "الذكاء الاصطناعي في القطاع الصحي السعودي: تشخيص: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-health-smart-archive/",
+          "text": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+          "text": "دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -20830,6 +22011,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-finance-saudi/",
         "https://brightai.site/blog/digital-banking-saudi/",
+        "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
         "https://brightai.site/blog/saudi-bank-fraud-detection/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
@@ -20845,6 +22027,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/smart-automation/"
@@ -21043,6 +22226,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/finance-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-finance-saudi/",
+          "text": "الذكاء الاصطناعي للقطاع المالي السعودي - مصرفية أذكى: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-banking-saudi/",
+          "text": "الخدمات المصرفية الرقمية في السعودية: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+          "text": "التحليل الذكي للقطاع المالي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -21122,6 +22321,8 @@
         "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
+        "https://brightai.site/blog/smart-inventory-management/",
+        "https://brightai.site/blog/transport-logistics-solutions/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -21134,6 +22335,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/logistics-en/",
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/supply-chain-optimization/",
@@ -21321,6 +22523,18 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/logistics-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للوجستيات"
+        },
+        {
+          "href": "https://brightai.site/blog/transport-logistics-solutions/",
+          "text": "حلول النقل واللوجستيات الذكية في السعودية: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-inventory-management/",
+          "text": "إدارة المخزون الذكية بالذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -21377,6 +22591,7 @@
         "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
         "https://brightai.site/blog/saudi-mining-ai-exploration/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+        "https://brightai.site/blog/transport-logistics-solutions/",
         "https://brightai.site/docs/solutions-logistics/",
         "https://brightai.site/docs/solutions-supply-chain/",
         "https://brightai.site/error",
@@ -21404,6 +22619,7 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
         "https://brightai.site/blog/saudi-factory-ai-productivity/",
@@ -21421,6 +22637,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -21624,6 +22841,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -21675,6 +22908,7 @@
       "incoming": [
         "https://brightai.site/blog/",
         "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/saudi-agritech-smart-farming/",
         "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-smart-city-traffic/",
@@ -21705,6 +22939,9 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
@@ -21720,6 +22957,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
@@ -21898,6 +23136,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -21973,7 +23227,10 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/bot/",
@@ -21988,6 +23245,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
@@ -22170,6 +23428,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -22254,9 +23528,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/blog/saudi-tourism-ai-guide/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -22456,6 +23732,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -22530,7 +23822,10 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/bot/",
@@ -22544,6 +23839,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
@@ -22718,6 +24014,22 @@
           "text": "دراسة حالة شاملة: الذكاء الاصطناعي في البتروكيماويات السعودية | صفر حوادث"
         },
         {
+          "href": "https://brightai.site/sectors/manufacturing-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للصناعة"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+          "text": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي"
+        },
+        {
+          "href": "https://brightai.site/blog/industrial-automation-productivity/",
+          "text": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
+          "text": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -22783,9 +24095,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/riyadh-municipality-ai-license/",
         "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -22963,6 +24277,22 @@
           "text": "دراسة حالة: مصنع سعودي | رفع الإنتاجية 30% بتحليلات الذكاء الاصطناعي"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -23020,6 +24350,9 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
         "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
         "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
@@ -23217,6 +24550,22 @@
           "text": "الاستشارة إذا كنت تحتاج مساراً تنفيذياً أو قطاعياً أوضح"
         },
         {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "استكشف منصة تحليل البيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/intelligent-data-analysis/",
+          "text": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/data-analysis-decision-making/",
+          "text": "تحليل البيانات لاتخاذ القرار: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
@@ -23315,8 +24664,11 @@
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
+        "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
         "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/bot/",
@@ -23514,6 +24866,22 @@
         },
         {
           "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للنمو التجاري"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-marketing-guide/",
+          "text": "الذكاء الاصطناعي في التسويق: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+          "text": "دراسة حالة شاملة: الذكاء الاصطناعي في التجارة الإلكترونية: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+          "text": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/services/",
           "text": "استعرض الخدمات المؤسسية"
         },
         {
@@ -23563,8 +24931,10 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
+        "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
         "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
         "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
         "https://brightai.site/error",
@@ -23590,9 +24960,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
         "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/blog/smart-crm-system/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -23774,6 +25146,22 @@
           "text": "دراسة حالة شاملة: الذكاء الاصطناعي في جودة التمور السعودية | من القصيم للعالمية"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -23838,7 +25226,9 @@
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/financial-hr-automation/",
         "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/blog/process-automation/",
+        "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -24057,6 +25447,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "استكشف أتمتة العمليات بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation/",
+          "text": "أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
+          "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-document-processing/",
+          "text": "معالجة المستندات الذكية OCR في السعودية: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/financial-hr-automation/",
           "text": "الأتمتة المالية وأتمتة الموارد البشرية: حلول مستقبلية للشركات الذكية"
         },
@@ -24127,11 +25533,15 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/digital-transformation-automation/",
         "https://brightai.site/blog/financial-hr-automation/",
         "https://brightai.site/blog/hr-automation-case-study/",
         "https://brightai.site/blog/industrial-automation-productivity/",
         "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+        "https://brightai.site/blog/process-automation-ai-efficiency/",
         "https://brightai.site/blog/process-automation/",
+        "https://brightai.site/blog/smart-crm-system/",
+        "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/en/smart-automation/",
         "https://brightai.site/sectors/manufacturing-en/",
@@ -24159,8 +25569,11 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/process-automation-ai-efficiency/",
+        "https://brightai.site/blog/process-automation/",
         "https://brightai.site/blog/saudi-dates-quality-ai/",
         "https://brightai.site/blog/saudi-waste-management-ai/",
+        "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
@@ -24361,6 +25774,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "استكشف أتمتة العمليات بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation/",
+          "text": "أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
+          "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-automation-benefits/",
+          "text": "فوائد الأتمتة الذكية للشركات: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/smart-inventory-management/",
           "text": "إدارة المخزون الذكية بالذكاء الاصطناعي | Bright AI"
         },
@@ -24459,7 +25888,10 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/process-automation-ai-efficiency/",
+        "https://brightai.site/blog/process-automation/",
         "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/blog/transport-logistics-solutions/",
         "https://brightai.site/bot/",
@@ -24662,6 +26094,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "استكشف أتمتة العمليات بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation/",
+          "text": "أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
+          "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-automation-benefits/",
+          "text": "فوائد الأتمتة الذكية للشركات: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/transport-logistics-solutions/",
           "text": "حلول النقل واللوجستيات الذكية في السعودية | Bright AI"
         },
@@ -24721,6 +26169,9 @@
       "incoming": [
         "https://brightai.site/blog/",
         "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/process-automation-ai-efficiency/",
+        "https://brightai.site/blog/process-automation/",
+        "https://brightai.site/blog/smart-automation-benefits/",
         "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/demo/ai-tenders-analysis/landing/",
         "https://brightai.site/docs/solutions-ocr/",
@@ -24748,11 +26199,13 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/blog/saudi-waste-management-ai/",
         "https://brightai.site/blog/smart-crm-system/",
         "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/blog/transport-logistics-solutions/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -24959,6 +26412,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/blog/smart-crm-system/",
           "text": "نظام CRM ذكي بالذكاء الاصطناعي في السعودية | Bright AI"
         },
@@ -25017,6 +26486,7 @@
       ],
       "incoming": [
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/smart-crm-system/",
         "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/blog/transport-logistics-solutions/",
@@ -25050,6 +26520,7 @@
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/nca-ai-compliance-saudi/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -25100,6 +26571,22 @@
           "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال السعوديين | Bright AI"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -25136,9 +26623,12 @@
         "https://brightai.site/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/en/ai-agent/",
         "https://brightai.site/en/data-analysis/",
@@ -25167,6 +26657,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
         "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/bot/",
@@ -25181,6 +26672,7 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
+        "https://brightai.site/sectors/logistics-en/",
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/supply-chain-optimization/",
@@ -25364,6 +26856,18 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/sectors/logistics-en/",
+          "text": "استكشف حلول الذكاء الاصطناعي للوجستيات"
+        },
+        {
+          "href": "https://brightai.site/blog/saudi-logistics-route-optimization/",
+          "text": "دراسة حالة شاملة: الذكاء الاصطناعي في اللوجستيات السعودية -: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-inventory-management/",
+          "text": "إدارة المخزون الذكية بالذكاء الاصطناعي: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
           "text": "دراسة حالة شاملة: الذكاء الاصطناعي في الصناعة السعودية | المصانع الذكية"
         },
@@ -25452,6 +26956,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
         "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/smart-document-processing/",
         "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/docs/solutions-logistics/",
@@ -25484,6 +26989,7 @@
         "https://brightai.site/blog/government-ai-solutions/",
         "https://brightai.site/blog/nca-ai-compliance-saudi/",
         "https://brightai.site/blog/nca-compliance/",
+        "https://brightai.site/blog/top-ai-tools-saudi-2025/",
         "https://brightai.site/bot/",
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
@@ -25546,6 +27052,22 @@
           "text": "خدمات الذكاء الاصطناعي للشركات والجهات الحكومية"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "استكشف خدمات الذكاء الاصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال"
+        },
+        {
+          "href": "https://brightai.site/blog/choose-ai-company-saudi/",
+          "text": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/top-ai-tools-saudi-2025/",
+          "text": "أفضل 10 أدوات ذكاء اصطناعي للشركات السعودية 2025: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -25582,16 +27104,32 @@
         "https://brightai.site/",
         "https://brightai.site/about/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-business-performance/",
         "https://brightai.site/blog/ai-finance-saudi/",
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-innovation-saudi-arabia/",
+        "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
         "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
         "https://brightai.site/blog/commerce-ministry-chatbot/",
         "https://brightai.site/blog/digital-transformation-automation/",
+        "https://brightai.site/blog/government-ai-solutions-saudi/",
         "https://brightai.site/blog/government-ai-solutions/",
+        "https://brightai.site/blog/ksu-adaptive-learning/",
+        "https://brightai.site/blog/machine-learning-business/",
         "https://brightai.site/blog/nca-ai-compliance-saudi/",
         "https://brightai.site/blog/nca-compliance/",
+        "https://brightai.site/blog/riyadh-municipality-ai-license/",
+        "https://brightai.site/blog/saudi-agritech-smart-farming/",
+        "https://brightai.site/blog/saudi-dates-quality-ai/",
+        "https://brightai.site/blog/saudi-edtech-personalized-learning/",
+        "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
+        "https://brightai.site/blog/saudi-smart-city-traffic/",
+        "https://brightai.site/blog/saudi-waste-management-ai/",
+        "https://brightai.site/blog/smart-inventory-management/",
+        "https://brightai.site/blog/top-ai-tools-saudi-2025/",
         "https://brightai.site/consultation/",
         "https://brightai.site/docs/services-overview/",
         "https://brightai.site/en/",
@@ -25796,6 +27334,22 @@
           "text": "استكشف خدماتنا الآن"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "استكشف أتمتة العمليات بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation/",
+          "text": "أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation-ai-efficiency/",
+          "text": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/blog/smart-automation-benefits/",
+          "text": "فوائد الأتمتة الذكية للشركات: شرح عملي"
+        },
+        {
           "href": "https://brightai.site/blog/financial-hr-automation/",
           "text": "الأتمتة المالية وأتمتة الموارد البشرية: حلول مستقبلية للشركات الذكية"
         },
@@ -25884,6 +27438,9 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-automation-project-analysis/",
         "https://brightai.site/blog/digital-transformation-automation/",
+        "https://brightai.site/blog/financial-hr-automation/",
+        "https://brightai.site/blog/hr-automation-case-study/",
+        "https://brightai.site/blog/hr-automation-saudi/",
         "https://brightai.site/docs/smart-automation/",
         "https://brightai.site/en/smart-automation/",
         "https://brightai.site/sitemap/",
@@ -57263,8 +58820,11 @@
         "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/brightsales/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-platform/",
+        "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/smart-automation/"
       ],
@@ -57398,16 +58958,24 @@
           "text": "Explore the platform"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "AI services"
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "Marketing automation"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data analysis"
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "Customer service automation"
+        },
+        {
+          "href": "https://brightai.site/services/brightsales/",
+          "text": "BrightSales AI sales agent"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "Data platform"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "Consultation"
+          "text": "Book a sector diagnosis session"
         },
         {
           "href": "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
@@ -57650,6 +59218,7 @@
         "https://brightai.site/services/",
         "https://brightai.site/services/brightsales/",
         "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/smart-automation/"
       ],
@@ -57783,16 +59352,24 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "خدمات الذكاء الاصطناعي"
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة العملاء"
+        },
+        {
+          "href": "https://brightai.site/services/brightsales/",
+          "text": "وكيل المبيعات الذكي"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة البيانات"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة"
+          "text": "احجز جلسة تشخيص قطاعية"
         },
         {
           "href": "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
@@ -57813,10 +59390,6 @@
         {
           "href": "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
           "text": "التسعير الديناميكي في السوق السعودي اقرأ المقال"
-        },
-        {
-          "href": "https://brightai.site/docs/solutions-retail/",
-          "text": ""
         },
         {
           "href": "https://brightai.site/docs/solutions-retail/",
@@ -58436,6 +60009,7 @@
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/smart-automation/"
@@ -58570,16 +60144,24 @@
           "text": "Explore the platform"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "AI services"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "Operational reports automation"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data analysis"
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "Operational data analyst agent"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent/",
+          "text": "Custom AI agent"
+        },
+        {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "Smart automation"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "Consultation"
+          "text": "Book a sector diagnosis session"
         },
         {
           "href": "https://brightai.site/blog/ai-energy-saudi/",
@@ -58818,6 +60400,7 @@
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/smart-automation/"
@@ -58952,16 +60535,24 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "خدمات الذكاء الاصطناعي"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "أتمتة التقارير التشغيلية"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل محلل بيانات التشغيل"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent/",
+          "text": "وكيل ذكاء اصطناعي مخصص"
+        },
+        {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "الأتمتة الذكية"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة"
+          "text": "احجز جلسة تشخيص قطاعية"
         },
         {
           "href": "https://brightai.site/blog/ai-energy-saudi/",
@@ -58982,10 +60573,6 @@
         {
           "href": "https://brightai.site/blog/saudi-mining-ai-exploration/",
           "text": "الذكاء الاصطناعي في التعدين السعودي اقرأ المقال"
-        },
-        {
-          "href": "https://brightai.site/docs/smart-automation/",
-          "text": ""
         },
         {
           "href": "https://brightai.site/docs/smart-automation/",
@@ -59578,6 +61165,10 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-finance-saudi/",
+        "https://brightai.site/blog/digital-banking-saudi/",
+        "https://brightai.site/blog/saudi-bank-fraud-detection/",
+        "https://brightai.site/blog/saudi-insurance-claims-ai/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -59630,6 +61221,8 @@
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/smart-automation/"
@@ -59764,16 +61357,24 @@
           "text": "Explore the platform"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "AI services"
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "Data analyst agent"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data analysis"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "Operational reports automation"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "Customer service automation"
+        },
+        {
+          "href": "https://brightai.site/docs/solutions-finance/",
+          "text": "Finance solutions guide"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "Consultation"
+          "text": "Book a sector diagnosis session"
         },
         {
           "href": "https://brightai.site/blog/ai-finance-saudi/",
@@ -60001,6 +61602,10 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-finance-saudi/",
+        "https://brightai.site/blog/digital-banking-saudi/",
+        "https://brightai.site/blog/saudi-bank-fraud-detection/",
+        "https://brightai.site/blog/saudi-insurance-claims-ai/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -60049,6 +61654,8 @@
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/smart-automation/"
@@ -60183,16 +61790,24 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "خدمات الذكاء الاصطناعي"
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل محلل البيانات"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "أتمتة التقارير التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة العملاء"
+        },
+        {
+          "href": "https://brightai.site/docs/solutions-finance/",
+          "text": "دليل الحلول المالية"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة"
+          "text": "احجز جلسة تشخيص قطاعية"
         },
         {
           "href": "https://brightai.site/blog/ai-finance-saudi/",
@@ -60213,10 +61828,6 @@
         {
           "href": "https://brightai.site/blog/saudi-insurance-claims-ai/",
           "text": "الذكاء الاصطناعي في التأمين السعودي اقرأ المقال"
-        },
-        {
-          "href": "https://brightai.site/docs/solutions-finance/",
-          "text": ""
         },
         {
           "href": "https://brightai.site/docs/solutions-finance/",
@@ -60900,6 +62511,13 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-healthcare-saudi/",
+        "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/machine-learning-computer-vision/",
+        "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+        "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -60950,8 +62568,12 @@
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-platform/",
+        "https://brightai.site/services/health-data-analysis/",
+        "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -61084,16 +62706,24 @@
           "text": "Explore the platform"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "AI services"
+          "href": "https://brightai.site/services/medical-archive/",
+          "text": "Smart medical archive"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data analysis"
+          "href": "https://brightai.site/services/smart-hospital-management/",
+          "text": "Smart hospital management"
+        },
+        {
+          "href": "https://brightai.site/services/health-data-analysis/",
+          "text": "Health data analysis"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "Patient service automation"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "Consultation"
+          "text": "Book a sector diagnosis session"
         },
         {
           "href": "https://brightai.site/blog/ai-healthcare-saudi/",
@@ -61321,6 +62951,13 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-healthcare-saudi/",
+        "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/digital-health-smart-archive/",
+        "https://brightai.site/blog/machine-learning-computer-vision/",
+        "https://brightai.site/blog/private-hospital-scheduling-optimization/",
+        "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -61366,6 +63003,7 @@
         "https://brightai.site/docs/solutions-ocr/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/health-data-analysis/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/smart-hospital-management/",
@@ -61501,16 +63139,24 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "خدمات الذكاء الاصطناعي"
+          "href": "https://brightai.site/services/medical-archive/",
+          "text": "الأرشيف الطبي الذكي"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
+          "href": "https://brightai.site/services/smart-hospital-management/",
+          "text": "إدارة المستشفيات الذكية"
+        },
+        {
+          "href": "https://brightai.site/services/health-data-analysis/",
+          "text": "تحليل البيانات الصحية"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة المرضى"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة"
+          "text": "احجز جلسة تشخيص قطاعية"
         },
         {
           "href": "https://brightai.site/blog/ai-healthcare-saudi/",
@@ -61527,10 +63173,6 @@
         {
           "href": "https://brightai.site/blog/kfshrc-breast-cancer-ai/",
           "text": "مستشفى الملك فيصل | كشف سرطان الثدي بالذكاء الاصطناعي اقرأ المقال"
-        },
-        {
-          "href": "https://brightai.site/docs/solutions-healthcare/",
-          "text": ""
         },
         {
           "href": "https://brightai.site/docs/solutions-healthcare/",
@@ -62364,6 +64006,8 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/saudi-logistics-route-optimization/",
+        "https://brightai.site/blog/transport-logistics-solutions/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -62417,6 +64061,7 @@
         "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -62549,16 +64194,24 @@
           "text": "Explore the platform"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "AI services"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "Supply chain optimization"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data analysis"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "Operational reports automation"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "Operational data platform"
+        },
+        {
+          "href": "https://brightai.site/docs/solutions-logistics/",
+          "text": "Logistics solutions guide"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "Consultation"
+          "text": "Book a sector diagnosis session"
         },
         {
           "href": "https://brightai.site/blog/transport-logistics-solutions/",
@@ -62758,6 +64411,8 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/saudi-logistics-route-optimization/",
+        "https://brightai.site/blog/transport-logistics-solutions/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -62939,16 +64594,24 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "خدمات الذكاء الاصطناعي"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "تحسين سلسلة الإمداد"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "أتمتة تقارير التشغيل"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة بيانات تشغيلية"
+        },
+        {
+          "href": "https://brightai.site/docs/solutions-logistics/",
+          "text": "دليل حلول اللوجستيات"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة"
+          "text": "احجز جلسة تشخيص قطاعية"
         },
         {
           "href": "https://brightai.site/blog/transport-logistics-solutions/",
@@ -62969,10 +64632,6 @@
         {
           "href": "https://brightai.site/blog/saudi-waste-management-ai/",
           "text": "إدارة النفايات بالذكاء الاصطناعي في السعودية اقرأ المقال"
-        },
-        {
-          "href": "https://brightai.site/docs/solutions-logistics/",
-          "text": ""
         },
         {
           "href": "https://brightai.site/docs/solutions-logistics/",
@@ -63610,6 +65269,15 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-energy-saudi/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+        "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-mining-ai-exploration/",
+        "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+        "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -63662,8 +65330,10 @@
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -63796,16 +65466,24 @@
           "text": "Explore the platform"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "AI services"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "Supply chain optimization"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "Data analysis"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "Production report automation"
+        },
+        {
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "Operations data analyst agent"
+        },
+        {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "Smart automation"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "Consultation"
+          "text": "Book a sector diagnosis session"
         },
         {
           "href": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
@@ -64021,6 +65699,15 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-energy-saudi/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+        "https://brightai.site/blog/industrial-automation-productivity/",
+        "https://brightai.site/blog/industrial-automation-repetitive-tasks/",
+        "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-mining-ai-exploration/",
+        "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+        "https://brightai.site/blog/saudi-renewable-energy-ai/",
         "https://brightai.site/en/tools/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/"
@@ -64203,16 +65890,24 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "خدمات الذكاء الاصطناعي"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "تحسين سلسلة الإمداد للمصانع"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
+          "href": "https://brightai.site/services/operational-reports-automation/",
+          "text": "أتمتة تقارير الإنتاج"
+        },
+        {
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل تحليل بيانات التشغيل"
+        },
+        {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "الأتمتة الذكية"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة"
+          "text": "احجز جلسة تشخيص قطاعية"
         },
         {
           "href": "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
@@ -64233,10 +65928,6 @@
         {
           "href": "https://brightai.site/blog/smart-automation-benefits/",
           "text": "فوائد الأتمتة الذكية في المصانع اقرأ المقال"
-        },
-        {
-          "href": "https://brightai.site/docs/smart-automation/",
-          "text": ""
         },
         {
           "href": "https://brightai.site/docs/smart-automation/",
@@ -66727,6 +68418,7 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/sectors/ecommerce-en/",
         "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -67378,7 +69070,12 @@
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/ecommerce-en/",
         "https://brightai.site/sectors/ecommerce/",
+        "https://brightai.site/sectors/finance-en/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/healthcare-en/",
+        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -67671,6 +69368,11 @@
       ],
       "incoming": [
         "https://brightai.site/blog/ai-automation-project-analysis/",
+        "https://brightai.site/sectors/energy-en/",
+        "https://brightai.site/sectors/energy/",
+        "https://brightai.site/sectors/finance-en/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -67964,6 +69666,7 @@
       ],
       "incoming": [
         "https://brightai.site/",
+        "https://brightai.site/blog/ai-automation-project-analysis/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
@@ -67972,6 +69675,7 @@
         "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/business-intelligence-saudi/",
         "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/data-analysis-best-practices/",
         "https://brightai.site/blog/data-analysis-decision-making/",
         "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
         "https://brightai.site/blog/generative-artificial-intelligence/",
@@ -67979,12 +69683,14 @@
         "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/blog/machine-learning-computer-vision/",
         "https://brightai.site/blog/power-bi-saudi-guide/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
         "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/sectors/ecommerce-en/",
+        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy-en/",
         "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance-en/",
@@ -68575,6 +70281,7 @@
       ],
       "incoming": [
         "https://brightai.site/blog/machine-learning-computer-vision/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -70631,6 +72338,7 @@
         "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
         "https://brightai.site/blog/smart-crm-system/",
+        "https://brightai.site/sectors/ecommerce-en/",
         "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -70931,6 +72639,7 @@
         "https://brightai.site/blog/digital-health-smart-archive/",
         "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -72402,6 +74111,7 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/sectors/healthcare-en/",
         "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -72979,7 +74689,9 @@
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
         "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/blog/transport-logistics-solutions/",
+        "https://brightai.site/sectors/logistics-en/",
         "https://brightai.site/sectors/logistics/",
+        "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -76011,7 +77723,7 @@
   "summary": {
     "pagesDiscovered": 268,
     "indexablePages": 263,
-    "internalLinksDiscovered": 6513,
+    "internalLinksDiscovered": 6702,
     "orphanPages": 0,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 2,

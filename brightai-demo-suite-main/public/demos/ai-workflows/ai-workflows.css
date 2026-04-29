@@ -1,0 +1,78 @@
+/* BrightAI — Demo: سير العمل الذكي — accent: indigo */
+
+.demo-hero__tag { background: rgba(99,102,241,0.12); color: #4F46E5; }
+.demo-hero__tag-dot { background: #4F46E5; }
+.demo-panel__icon { background: rgba(99,102,241,0.12); }
+.demo-panel__icon svg { stroke: #4F46E5; }
+.btn--primary { background: #4F46E5; border-color: #4F46E5; }
+.btn--primary:hover { background: #4338CA; border-color: #4338CA; }
+
+/* Workflow preview strip */
+.workflow-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-5) var(--space-6);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+  overflow-x: auto;
+}
+
+.wf-node {
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wf-node--start,
+.wf-node--end {
+  background: rgba(99,102,241,0.12);
+  color: #4F46E5;
+  border: 2px solid rgba(99,102,241,0.3);
+  border-radius: var(--radius-full);
+}
+
+.wf-node--task {
+  background: var(--color-brand-light);
+  color: var(--color-brand);
+  border: 2px solid rgba(15,111,236,0.25);
+}
+
+.wf-node--gate {
+  background: rgba(245,158,11,0.12);
+  color: #D97706;
+  border: 2px solid rgba(245,158,11,0.3);
+  border-radius: 4px;
+  transform: rotate(2deg);
+}
+
+.wf-arrow {
+  width: 24px;
+  height: 2px;
+  background: var(--color-border);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.wf-arrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -4px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 8px solid var(--color-border);
+}
+
+@media (max-width: 640px) {
+  .workflow-preview { gap: var(--space-1); padding: var(--space-4); }
+  .wf-node { padding: var(--space-1) var(--space-3); font-size: var(--font-size-xs); }
+  .wf-arrow { width: 16px; }
+}

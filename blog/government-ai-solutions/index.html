@@ -24,27 +24,11 @@
   crossorigin="anonymous"
  defer></script>
 
-<script type="text/javascript">
-    window.addEventListener('load', function() {
-        requestIdleCallback(function() {
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "voq2kb6voe");
-        });
-    });
-</script>
+<script src="/frontend/js/brightai-clarity-loader.js" defer></script>
 
 <script src="/frontend/js/sentry-init.js" defer></script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8LLESL207Q');
-</script>
+<script src="/frontend/js/brightai-analytics-init.js" defer></script>
 
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -83,42 +67,7 @@
 <link as="style" href="/frontend/css/main.bundle.min.css" onload="this.onload=null;this.rel='stylesheet'" rel="preload"/><noscript><link href="/frontend/css/main.bundle.min.css" rel="stylesheet"/></noscript>
 <link href="/frontend/css/bundle-pages.css" rel="stylesheet"/>
 
-<script>
-        (function () {
-            'use strict';
-            function loadCSS(href) {
-                var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = href;
-                document.head.appendChild(link);
-            }
-            function loadScript(src, callback) {
-                var script = document.createElement('script');
-                script.src = src;
-                script.async = true;
-                if (callback) script.onload = callback;
-                document.body.appendChild(script);
-            }
-            function loadDeferredResources() {
-loadCSS('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
-                loadCSS('/frontend/css/vendor/aos.css');
-}
-            function loadAnimations() {
-                loadScript('/frontend/js/vendor/aos.js', function () {
-                    if (typeof AOS !== 'undefined') AOS.init({ duration: 800, once: true, offset: 100 });
-                });
-            }
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', function () {
-                    setTimeout(loadDeferredResources, 50);
-                    setTimeout(loadAnimations, 300);
-                });
-            } else {
-                loadDeferredResources();
-                setTimeout(loadAnimations, 300);
-            }
-        })();
-    </script>
+<script src="/frontend/js/brightai-aos-loader.js" defer></script>
 
 <script type="application/ld+json">
 {

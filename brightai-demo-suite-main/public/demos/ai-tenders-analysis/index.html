@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <meta name="description" content="تحليل ذكي لوثائق المناقصات الحكومية والخاصة — BrightAI">
+  <title>تحليل المناقصات بالذكاء الاصطناعي — BrightAI</title>
+  <link rel="stylesheet" href="/shared/demo-shared.css">
+  <link rel="stylesheet" href="ai-tenders-analysis.css">
+</head>
+<body>
+
+<div class="demo-wrapper">
+  <header class="demo-header" role="banner">
+    <a href="/" class="demo-header__logo" aria-label="BrightAI الصفحة الرئيسية">Bright<span>AI</span></a>
+    <nav class="demo-header__nav" aria-label="التنقل الرئيسي">
+      <a href="#demo-section" class="demo-header__nav-link">حلل مناقصتك</a>
+      <a href="#faq-section" class="demo-header__nav-link">الأسئلة الشائعة</a>
+    </nav>
+    <span class="demo-header__badge">تجريبي</span>
+  </header>
+
+  <main class="demo-main" id="main-content">
+
+    <!-- Hero -->
+    <section class="demo-hero" aria-labelledby="hero-title">
+      <div class="demo-hero__tag">
+        <span class="demo-hero__tag-dot" aria-hidden="true"></span>
+        تحليل ذكي فوري
+      </div>
+      <h1 class="demo-hero__title" id="hero-title">تحليل المناقصات<br>بالذكاء الاصطناعي</h1>
+      <p class="demo-hero__subtitle">
+        حلل وثائق المناقصات الحكومية والخاصة بدقة عالية — تقييم الأهلية، رصد المخاطر،
+        وبناء استراتيجية العرض المناسبة.
+      </p>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-row" role="region" aria-label="إحصاءات التحليل">
+      <div class="stat-card">
+        <div class="stat-card__value" id="stat-queries">0</div>
+        <div class="stat-card__label">مناقصة حُللت هذه الجلسة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">95%</div>
+        <div class="stat-card__label">دقة تحليل الأهلية</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card__value">{'<'}5ث</div>
+        <div class="stat-card__label">وقت التحليل</div>
+      </div>
+    </div>
+
+    <!-- Capabilities -->
+    <div class="capabilities-row" role="region" aria-label="قدرات التحليل">
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <div class="capability-card__label">تحليل الوثائق</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="capability-card__label">رصد المخاطر</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="capability-card__label">فرص الفوز</div>
+      </div>
+      <div class="capability-card">
+        <div class="capability-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+        </div>
+        <div class="capability-card__label">استراتيجية العرض</div>
+      </div>
+    </div>
+
+    <!-- Demo Panel -->
+    <section class="demo-panel" id="demo-section" aria-labelledby="panel-title">
+      <div class="demo-panel__header">
+        <div class="demo-panel__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        </div>
+        <div>
+          <div class="demo-panel__title" id="panel-title">تحليل وثيقة المناقصة</div>
+          <div class="demo-panel__subtitle">أدخل بيانات المناقصة وستحصل على تحليل شامل فوري</div>
+        </div>
+        <button class="btn btn--ghost btn--sm" id="clear-btn" aria-label="مسح التحليل">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+
+      <div class="demo-panel__body">
+        <div class="messages-feed" id="messages-feed" role="log" aria-live="polite" aria-label="نتائج التحليل">
+          <div class="message message--ai" id="welcome-msg">
+            <div class="message__avatar" aria-hidden="true">AI</div>
+            <div class="message__bubble">
+              <p>مرحباً! أنا محللك الذكي المتخصص في المناقصات.</p>
+              <p>أدخل تفاصيل المناقصة وبيانات شركتك للحصول على تحليل شامل للأهلية والمخاطر وفرص الفوز.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="examples-container"></div>
+
+        <!-- Tender Context Fields -->
+        <details class="context-details" id="context-details">
+          <summary class="context-details__summary">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            بيانات المناقصة وبياناتك (اختياري)
+            <svg class="context-details__chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </summary>
+          <div class="context-fields" id="context-fields">
+            <div class="input-area__context">
+              <div class="form-group">
+                <label class="form-label" for="ctx-tender-name">اسم المناقصة / رقمها</label>
+                <input class="form-input" id="ctx-tender-name" type="text" placeholder="مثال: مناقصة توريد أجهزة حاسب 2025/44">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-entity">الجهة المُصدِرة</label>
+                <input class="form-input" id="ctx-entity" type="text" placeholder="مثال: وزارة الصحة — منطقة الرياض">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-value">القيمة التقديرية</label>
+                <input class="form-input" id="ctx-value" type="text" placeholder="مثال: 2,000,000 ريال">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="ctx-company-exp">خبرة شركتك في المجال</label>
+                <input class="form-input" id="ctx-company-exp" type="text" placeholder="مثال: 8 سنوات، 15 مشروعاً مماثلاً">
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <form class="input-row" id="chat-form" aria-label="نموذج تحليل المناقصة">
+          <label class="sr-only" for="user-input">اكتب استفسارك عن المناقصة</label>
+          <input
+            class="form-input"
+            id="user-input"
+            type="text"
+            placeholder="اكتب استفسارك عن المناقصة أو الصق تفاصيلها هنا..."
+            autocomplete="off"
+            maxlength="4000"
+          >
+          <button class="btn btn--primary" type="submit" id="send-btn" aria-label="تحليل">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            تحليل
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq-section" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" class="sr-only">الأسئلة الشائعة</h2>
+      <div id="faq-container"></div>
+    </section>
+
+  </main>
+
+  <footer class="demo-footer" role="contentinfo">
+    <p>&copy; 2025 <a href="/">BrightAI</a> &mdash; تحليل المناقصات بالذكاء الاصطناعي &mdash; نسخة تجريبية</p>
+  </footer>
+</div>
+
+<script type="module" src="ai-tenders-analysis.js"></script>
+</body>
+</html>
