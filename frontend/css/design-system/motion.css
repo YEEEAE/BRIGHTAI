@@ -1,0 +1,31 @@
+:root {
+  --bai-duration-fast: 140ms;
+  --bai-duration-base: 220ms;
+  --bai-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+.bai-reveal {
+  animation: bai-reveal var(--bai-duration-base) var(--bai-ease-standard) both;
+}
+
+@keyframes bai-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

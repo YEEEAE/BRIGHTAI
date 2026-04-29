@@ -5,7 +5,7 @@ export default defineConfig({
     name: 'backend',
     environment: 'node',
     globals: true,
-    include: ['**/*.functional.test.js', '**/*.e2e.test.js'],
+    include: ['**/*.functional.test.js', '**/*.e2e.test.js', 'tests/**/*.test.js'],
     exclude: ['**/node_modules/**', '**/dist/**', '**/coverage/**']
   }
 });

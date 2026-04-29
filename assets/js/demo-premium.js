@@ -2,7 +2,7 @@
   "use strict";
 
   const endpoint = "/api/ai/chat/completions";
-  const FALLBACK_MESSAGE = "تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.";
+  const FALLBACK_MESSAGE = "صار خلل بسيط، لا تشيل هم. نعرض لك نتيجة توضيحية آمنة الحين وتقدر تعيد المحاولة.";
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   function $(selector, root = document) {
@@ -69,7 +69,7 @@
   }
 
   function whatsappUrl(config, summary) {
-    const msg = `السلام عليكم، شاهدت تقرير ${config.title} وأرغب في نسخة مخصصة. الملخص: ${summary}`;
+    const msg = `هلا والله، شفت تقرير ${config.title} وأبغى نسخة مخصصة. الملخص: ${summary}`;
     return `https://wa.me/966538229013?text=${encodeURIComponent(msg)}`;
   }
 
@@ -78,26 +78,26 @@
     const summary = result.executiveSummary[0] || config.title;
     panel.innerHTML = `
       <div class="dashboard ${isFallback ? "error-state" : ""}" data-rendered-report>
-        ${isFallback ? `<section class="dash-section error-state"><h3>تعذر تشغيل التحليل الآن</h3><p>تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.</p><div class="dash-cta"><button class="btn btn-secondary" type="button" data-retry-demo>إعادة المحاولة</button><a class="btn btn-primary" href="${whatsappUrl(config, summary)}" target="_blank" rel="noopener">تواصل واتساب</a></div></section>` : ""}
+        ${isFallback ? `<section class="dash-section error-state"><h3>صار خلل بسيط</h3><p>لا تشيل هم. عرضنا لك نتيجة توضيحية آمنة، وتقدر تعيد المحاولة أو ترسل لنا السياق ونضبطها لك.</p><div class="dash-cta"><button class="btn btn-secondary" type="button" data-retry-demo>جرّب مرة ثانية</button><a class="btn btn-primary" href="${whatsappUrl(config, summary)}" target="_blank" rel="noopener">اطلبها عبر واتساب</a></div></section>` : ""}
         <section class="score-card">
           <div class="score-ring" style="--score:${score}"><span>${score}</span></div>
           <div>
             <h3>مؤشر الجاهزية</h3>
-            <p>قراءة تقديرية تساعد على ترتيب القرار، وليست ضماناً لنتيجة تجارية محددة.</p>
+            <p>قراءة تقديرية تساعدك ترتب الأولويات، وليست ضماناً لنتيجة تجارية محددة.</p>
           </div>
         </section>
-        <section class="dash-section"><h3>ملخص تنفيذي</h3>${list(result.executiveSummary)}</section>
+        <section class="dash-section"><h3>هذا الملخص اللي يهمّك بالضبط</h3>${list(result.executiveSummary)}</section>
         <section class="dash-section"><h3>رؤى رئيسية</h3>${list(result.keyInsights)}</section>
         <section class="dash-section"><h3>المخاطر</h3>${list(result.risks)}</section>
-        <section class="dash-section"><h3>الإجراءات الموصى بها</h3>${list(result.recommendedActions)}</section>
+        <section class="dash-section"><h3>قرارات قابلة للتنفيذ</h3>${list(result.recommendedActions)}</section>
         <section class="dash-section"><h3>الأثر التجاري أو العائد المتوقع</h3><p>${escapeHtml(result.businessImpact)}</p></section>
         <section class="dash-section"><h3>جاهزية التكامل</h3>${list(result.integrationReadiness)}</section>
         <section class="dash-section"><h3>الخطوات التالية</h3>${list(result.nextSteps)}</section>
         <section class="dash-section">
-          <h3>خطوة تجارية</h3>
+          <h3>الخطوة الجاية سهلة</h3>
           <div class="dash-cta">
-            <a class="btn btn-primary" href="/contact/">احجز ديمو مباشر</a>
-            <a class="btn btn-secondary" href="${whatsappUrl(config, summary)}" target="_blank" rel="noopener">أرسل التقرير عبر واتساب</a>
+            <a class="btn btn-primary" href="/contact/">احجز مكالمة 15 دقيقة</a>
+            <a class="btn btn-secondary" href="${whatsappUrl(config, summary)}" target="_blank" rel="noopener">اطلب نسخة مخصصة</a>
             <button class="btn btn-outline" type="button" data-download-report>حمّل التقرير</button>
           </div>
         </section>
@@ -196,13 +196,13 @@
 
   async function requestAi(config, input, extra) {
     return unifiedDemoRequest({
-      model: "gemini-2.5-flash",
+      model: config.model || "gemini-2.5-flash",
       demoType: config.demoType,
       agentType: config.agentType,
       schemaName: config.schemaName,
       sourcePage: config.sourcePage,
       fallbackResult: config.fallbackResult,
-      systemPrompt: "أنت محلل أعمال من Bright AI. أعد نتيجة عربية منظمة للوحة ديمو فقط ولا تعرض JSON للمستخدم.",
+      systemPrompt: "أنت محلل أعمال من Bright AI. أعد نتيجة عربية سعودية مهنية ومنظمة للوحة ديمو فقط ولا تعرض JSON للمستخدم. اجعل النبرة واضحة وودودة وغير مبالغ فيها، ولا تجعل AI يتخذ القرار بدلاً من البشر.",
       taskPrompt: `اسم الديمو: ${config.title}\nالمشكلة: ${config.problem}\nالنتيجة المطلوبة: ${config.outcome}\nالمدخلات: ${input}\nتفاصيل إضافية: ${extra}`,
       userInputs: { input, extra },
       temperature: 0.2
@@ -271,7 +271,7 @@
     if (form.dataset.demoPremiumBound !== "true") form.addEventListener("submit", async (event) => {
       event.preventDefault();
       if (isSubmitting) {
-        setStatus(form, "التحليل قيد التنفيذ بالفعل. انتظر اكتمال التقرير.", "info");
+        setStatus(form, "التحليل شغّال الحين. ثوانٍ بس وتجيك النتيجة.", "info");
         return;
       }
       const submit = form.querySelector('button[type="submit"]');
@@ -281,18 +281,18 @@
       if (submit) {
         submit.disabled = true;
         submit.setAttribute("aria-busy", "true");
-        submit.textContent = "جارٍ التحليل...";
+        submit.textContent = "قاعدين نحلّل...";
       }
-      setStatus(form, "جارٍ تجهيز التقرير. لا تغلق الصفحة أثناء المعالجة.", "info");
+      setStatus(form, "نقرأ الطلب الحين... نستخرج الكيانات... نجهّز التحليل.", "info");
       await showLoading(loadingBox);
       try {
         const extra = `${$("#goal")?.value || ""} ${$("#systems")?.value || ""}`.trim();
         const raw = await requestAi(config, input.value.trim(), extra);
         renderResult(resultPanel, normalizeResult(raw, config.fallbackResult), config, false);
-        setStatus(form, "تم توليد التقرير بنجاح. راجع النتيجة أسفل النموذج.", "success");
+        setStatus(form, "النتيجة قدامك، والخطوة الجاية سهلة.", "success");
       } catch {
         renderResult(resultPanel, normalizeResult(config.fallbackResult, config.fallbackResult), config, true);
-        setStatus(form, "تعذر الاتصال بالخدمة حالياً، لذلك عرضنا نتيجة توضيحية آمنة مع خيار إعادة المحاولة.", "error");
+        setStatus(form, "صار خلل بسيط، لا تشيل هم. عرضنا نتيجة توضيحية آمنة وتقدر تعيد المحاولة.", "error");
       } finally {
         loadingBox.hidden = true;
         isSubmitting = false;

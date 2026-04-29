@@ -33,6 +33,8 @@ const {
   unifiedChatStreamHandler,
   unifiedOpenAiCompatHandler
 } = require('./routes/aiGateway');
+const { canHandleDemoRoute, demoRouteHandler } = require('./routes/demo');
+const { demoGeminiApp, canHandleDemoGeminiRoute } = require('./demoGeminiApp');
 const { getProviderStatus, getSafeAiStatus } = require('./services/aiGateway');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
@@ -44,6 +46,15 @@ const HTML_SECURITY_HEADERS = {
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'SAMEORIGIN'
+};
+
+const API_SECURITY_HEADERS = {
+  'Content-Language': 'ar-SA',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
 };
 
 const MIME_TYPES = {
@@ -71,6 +82,7 @@ const DEVELOPMENT_ALLOWED_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', 
 
 // CORS headers for API responses
 const BASE_CORS_HEADERS = {
+  ...API_SECURITY_HEADERS,
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type, X-BrightAI-Analytics-Key, Authorization',
   Vary: 'Origin',
@@ -761,17 +773,22 @@ async function handleRequest(req, res) {
     return;
   }
 
+  if ((method === 'GET' || method === 'HEAD') && !url.startsWith('/api/')) {
+    if (tryServeStaticRequest(req, res, url)) {
+      return;
+    }
+  }
+
+  if (canHandleDemoGeminiRoute(method, url)) {
+    demoGeminiApp(req, res);
+    return;
+  }
+
   // Handle CORS preflight
   if (method === 'OPTIONS') {
     res.writeHead(204, buildCorsHeaders(req));
     res.end();
     return;
-  }
-
-  if ((method === 'GET' || method === 'HEAD') && !url.startsWith('/api/')) {
-    if (tryServeStaticRequest(req, res, url)) {
-      return;
-    }
   }
 
   // Create context
@@ -805,7 +822,9 @@ async function handleRequest(req, res) {
     }
 
     // Route requests — Unified AI Gateway (primary) + legacy aliases
-    if (method === 'POST' && url === '/api/ai/chat') {
+    if (canHandleDemoRoute(method, url)) {
+      await demoRouteHandler(ctx.req, ctx.res, method, url);
+    } else if (method === 'POST' && url === '/api/ai/chat') {
       await unifiedChatHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/chat/stream') {
       await unifiedChatStreamHandler(ctx.req, ctx.res, res);
@@ -958,6 +977,8 @@ function startServer() {
     console.log('Endpoints:');
     console.log('  POST /api/gemini/chat - Gemini chat gateway (session + suggestions)');
     console.log('  POST /api/gemini/chat/stream - Gemini chat streaming (SSE)');
+    console.log('  POST /api/demo/gemini - Unified seven-demo Gemini backend');
+    console.log('  POST /api/demo/gemini/stream - Unified seven-demo Gemini stream');
     console.log('  POST /api/ai/chat    - Chatbot conversations');
     console.log('  POST /api/ai/search  - Smart search');
     console.log('  POST /api/ai/medical - Medical image analysis');

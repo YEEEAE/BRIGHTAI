@@ -1030,6 +1030,10 @@ async function callGemini(contents, options = {}) {
     } finally {
       clearTimeout(timeout);
     }
+  }, {
+    maxRetries: config.server.nodeEnv === 'test' ? 0 : 3,
+    baseDelay: config.server.nodeEnv === 'test' ? 10 : 1000,
+    maxDelay: config.server.nodeEnv === 'test' ? 20 : 10000
   });
 }
 

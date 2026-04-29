@@ -111,7 +111,7 @@ async function callAI(provider, messages, options = {}) {
       window.clearTimeout(timeoutId);
 
       if (!response.ok) {
-        throw new Error("تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.");
+        throw new Error("صار خلل بسيط، لا تشيل هم. نعرض لك نتيجة توضيحية آمنة الحين وتقدر تعيد المحاولة.");
       }
 
       const data = await response.json();

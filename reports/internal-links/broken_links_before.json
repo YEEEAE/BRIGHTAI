@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-29T15:00:12.781Z",
+  "generatedAt": "2026-04-29T18:54:36.668Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 392,
-  "referencesScanned": 25132,
-  "internalReferences": 19938,
-  "brokenReferences": 820,
+  "filesScanned": 417,
+  "referencesScanned": 25014,
+  "internalReferences": 19788,
+  "brokenReferences": 828,
   "fixableBrokenReferences": 18,
-  "normalizationCandidates": 95,
+  "normalizationCandidates": 113,
   "topBrokenFiles": [
     {
       "file": "blog/ai-agents-business-guide/index.html",
@@ -169,10 +169,6 @@
       "count": 5
     },
     {
-      "file": "demo/index.html",
-      "count": 5
-    },
-    {
       "file": "demo/resources/report-ai-saudi-2026/index.html",
       "count": 5
     },
@@ -190,10 +186,6 @@
     },
     {
       "file": "about/index.html",
-      "count": 4
-    },
-    {
-      "file": "ai-agent/index.html",
       "count": 4
     },
     {
@@ -657,6 +649,10 @@
       "count": 4
     },
     {
+      "file": "ai-agent/index.html",
+      "count": 3
+    },
+    {
       "file": "consultation/index.html",
       "count": 3
     },
@@ -670,6 +666,10 @@
     },
     {
       "file": "demo/ai-tenders-analysis/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/ai-workflows/index.html",
       "count": 3
     },
     {
@@ -694,6 +694,10 @@
     },
     {
       "file": "demo/customer-service-automation/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/data-analysis/index.html",
       "count": 3
     },
     {
@@ -737,6 +741,14 @@
       "count": 3
     },
     {
+      "file": "demo/smart-automation/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/smart-education-platform/index.html",
+      "count": 3
+    },
+    {
       "file": "demo/smart-hiring-system/index.html",
       "count": 3
     },
@@ -763,6 +775,10 @@
     {
       "file": "en/consultation/index.html",
       "count": 3
+    },
+    {
+      "file": "demo/index.html",
+      "count": 2
     },
     {
       "file": "locations/dammam/index.html",
@@ -980,7 +996,7 @@
     },
     {
       "file": "ai-agent/index.html",
-      "line": 249,
+      "line": 30,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -989,7 +1005,7 @@
     },
     {
       "file": "ai-agent/index.html",
-      "line": 250,
+      "line": 39,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -998,16 +1014,7 @@
     },
     {
       "file": "ai-agent/index.html",
-      "line": 251,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "ai-agent/index.html",
-      "line": 489,
+      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4184,7 +4191,7 @@
     },
     {
       "file": "demo/ai-consulting/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4193,7 +4200,7 @@
     },
     {
       "file": "demo/ai-consulting/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4211,7 +4218,7 @@
     },
     {
       "file": "demo/ai-scolecs/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4220,7 +4227,7 @@
     },
     {
       "file": "demo/ai-scolecs/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4229,7 +4236,7 @@
     },
     {
       "file": "demo/ai-tenders-analysis/index.html",
-      "line": 36,
+      "line": 30,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4238,7 +4245,7 @@
     },
     {
       "file": "demo/ai-tenders-analysis/index.html",
-      "line": 291,
+      "line": 39,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4247,7 +4254,34 @@
     },
     {
       "file": "demo/ai-tenders-analysis/index.html",
-      "line": 319,
+      "line": 52,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/ai-workflows/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/ai-workflows/index.html",
+      "line": 39,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/ai-workflows/index.html",
+      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4265,7 +4299,7 @@
     },
     {
       "file": "demo/approvals-automation/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4274,7 +4308,7 @@
     },
     {
       "file": "demo/approvals-automation/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4292,7 +4326,7 @@
     },
     {
       "file": "demo/brightproject/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4301,7 +4335,7 @@
     },
     {
       "file": "demo/brightproject/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4319,7 +4353,7 @@
     },
     {
       "file": "demo/brightsales/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4328,7 +4362,7 @@
     },
     {
       "file": "demo/brightsales/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4346,7 +4380,7 @@
     },
     {
       "file": "demo/competitor-analysis-agent/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4355,7 +4389,7 @@
     },
     {
       "file": "demo/competitor-analysis-agent/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4373,7 +4407,7 @@
     },
     {
       "file": "demo/custom-ai-agent/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4382,7 +4416,7 @@
     },
     {
       "file": "demo/custom-ai-agent/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4400,7 +4434,7 @@
     },
     {
       "file": "demo/customer-service-automation/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4409,7 +4443,34 @@
     },
     {
       "file": "demo/customer-service-automation/index.html",
-      "line": 319,
+      "line": 210,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/data-analysis/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/data-analysis/index.html",
+      "line": 39,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/data-analysis/index.html",
+      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4427,7 +4488,7 @@
     },
     {
       "file": "demo/data-analyzer/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4436,7 +4497,7 @@
     },
     {
       "file": "demo/data-analyzer/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4454,7 +4515,7 @@
     },
     {
       "file": "demo/data-quality/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4463,7 +4524,7 @@
     },
     {
       "file": "demo/data-quality/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4481,7 +4542,7 @@
     },
     {
       "file": "demo/hr-automation/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4490,7 +4551,7 @@
     },
     {
       "file": "demo/hr-automation/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4499,7 +4560,7 @@
     },
     {
       "file": "demo/index.html",
-      "line": 59,
+      "line": 21,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4508,34 +4569,7 @@
     },
     {
       "file": "demo/index.html",
-      "line": 60,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/index.html",
-      "line": 61,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/index.html",
-      "line": 255,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/index.html",
-      "line": 774,
+      "line": 27,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4553,7 +4587,7 @@
     },
     {
       "file": "demo/marketing-ai-agent/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4562,7 +4596,7 @@
     },
     {
       "file": "demo/marketing-ai-agent/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4580,7 +4614,7 @@
     },
     {
       "file": "demo/marketing-automation/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4589,7 +4623,7 @@
     },
     {
       "file": "demo/marketing-automation/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4607,7 +4641,7 @@
     },
     {
       "file": "demo/ocr-demo/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4616,7 +4650,7 @@
     },
     {
       "file": "demo/ocr-demo/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4634,7 +4668,7 @@
     },
     {
       "file": "demo/operational-reports-automation/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4643,7 +4677,7 @@
     },
     {
       "file": "demo/operational-reports-automation/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4661,7 +4695,7 @@
     },
     {
       "file": "demo/opportunity-discovery-agent/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4670,7 +4704,7 @@
     },
     {
       "file": "demo/opportunity-discovery-agent/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4688,7 +4722,7 @@
     },
     {
       "file": "demo/pricing/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4697,7 +4731,7 @@
     },
     {
       "file": "demo/pricing/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4760,7 +4794,7 @@
     },
     {
       "file": "demo/seo-ai-agent/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4769,7 +4803,61 @@
     },
     {
       "file": "demo/seo-ai-agent/index.html",
-      "line": 319,
+      "line": 210,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/smart-automation/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/smart-automation/index.html",
+      "line": 39,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/smart-automation/index.html",
+      "line": 52,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/smart-education-platform/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/smart-education-platform/index.html",
+      "line": 39,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "demo/smart-education-platform/index.html",
+      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4787,7 +4875,7 @@
     },
     {
       "file": "demo/smart-hiring-system/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4796,7 +4884,7 @@
     },
     {
       "file": "demo/smart-hiring-system/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4877,7 +4965,7 @@
     },
     {
       "file": "demo/smart-hiring-system/pages/support-ai/index.html",
-      "line": 886,
+      "line": 889,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4886,7 +4974,7 @@
     },
     {
       "file": "demo/smart-hiring-system/pages/support-ai/index.html",
-      "line": 887,
+      "line": 890,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4895,7 +4983,7 @@
     },
     {
       "file": "demo/smart-hiring-system/pages/support-ai/index.html",
-      "line": 888,
+      "line": 891,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4904,7 +4992,7 @@
     },
     {
       "file": "demo/smart-hiring-system/pages/support-ai/index.html",
-      "line": 1020,
+      "line": 1023,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4949,7 +5037,7 @@
     },
     {
       "file": "demo/smart-hospital-management/index.html",
-      "line": 36,
+      "line": 30,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4958,7 +5046,7 @@
     },
     {
       "file": "demo/smart-hospital-management/index.html",
-      "line": 291,
+      "line": 39,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4967,7 +5055,7 @@
     },
     {
       "file": "demo/smart-hospital-management/index.html",
-      "line": 319,
+      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4985,7 +5073,7 @@
     },
     {
       "file": "demo/smart-medical-archive/index.html",
-      "line": 265,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4994,7 +5082,7 @@
     },
     {
       "file": "demo/smart-medical-archive/index.html",
-      "line": 298,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -5012,7 +5100,7 @@
     },
     {
       "file": "demo/social-data-analysis/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -5021,7 +5109,7 @@
     },
     {
       "file": "demo/social-data-analysis/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -5039,7 +5127,7 @@
     },
     {
       "file": "demo/supply-chain-optimization/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -5048,7 +5136,7 @@
     },
     {
       "file": "demo/supply-chain-optimization/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -5066,7 +5154,7 @@
     },
     {
       "file": "demo/text-analysis/index.html",
-      "line": 291,
+      "line": 182,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -5075,7 +5163,7 @@
     },
     {
       "file": "demo/text-analysis/index.html",
-      "line": 319,
+      "line": 210,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7316,6 +7404,24 @@
     },
     {
       "file": "index.html",
+      "line": 1256,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "index.html",
+      "line": 1257,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "index.html",
       "line": 1258,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -7325,25 +7431,7 @@
     },
     {
       "file": "index.html",
-      "line": 1259,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "index.html",
-      "line": 1260,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "index.html",
-      "line": 1429,
+      "line": 1427,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7766,7 +7854,7 @@
     },
     {
       "file": "services/ai-consulting.html",
-      "line": 406,
+      "line": 398,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7775,7 +7863,7 @@
     },
     {
       "file": "services/ai-scolecs.html",
-      "line": 416,
+      "line": 408,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7784,7 +7872,7 @@
     },
     {
       "file": "services/ai-tenders-analysis.html",
-      "line": 416,
+      "line": 408,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7793,7 +7881,7 @@
     },
     {
       "file": "services/approvals-automation.html",
-      "line": 407,
+      "line": 399,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7802,7 +7890,7 @@
     },
     {
       "file": "services/brightproject.html",
-      "line": 416,
+      "line": 408,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7811,7 +7899,7 @@
     },
     {
       "file": "services/brightsales.html",
-      "line": 416,
+      "line": 408,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7847,7 +7935,7 @@
     },
     {
       "file": "services/customer-service-automation.html",
-      "line": 424,
+      "line": 416,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7856,7 +7944,7 @@
     },
     {
       "file": "services/data-analyst-agent.html",
-      "line": 424,
+      "line": 416,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7865,7 +7953,7 @@
     },
     {
       "file": "services/data-platform.html",
-      "line": 424,
+      "line": 416,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7874,7 +7962,7 @@
     },
     {
       "file": "services/document-automation.html",
-      "line": 424,
+      "line": 416,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7883,7 +7971,7 @@
     },
     {
       "file": "services/health-data-analysis.html",
-      "line": 424,
+      "line": 416,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7892,7 +7980,7 @@
     },
     {
       "file": "services/hr-automation.html",
-      "line": 407,
+      "line": 399,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7919,7 +8007,7 @@
     },
     {
       "file": "services/lead-hunter.html",
-      "line": 407,
+      "line": 399,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7928,7 +8016,7 @@
     },
     {
       "file": "services/marketing-agent.html",
-      "line": 407,
+      "line": 399,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7955,7 +8043,7 @@
     },
     {
       "file": "services/marketing-automation.html",
-      "line": 860,
+      "line": 852,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7964,7 +8052,7 @@
     },
     {
       "file": "services/medical-archive.html",
-      "line": 426,
+      "line": 418,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7973,7 +8061,7 @@
     },
     {
       "file": "services/operational-reports-automation.html",
-      "line": 407,
+      "line": 399,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8000,7 +8088,7 @@
     },
     {
       "file": "services/seo-agent.html",
-      "line": 407,
+      "line": 399,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8027,7 +8115,7 @@
     },
     {
       "file": "services/smart-hiring-system.html",
-      "line": 426,
+      "line": 418,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8036,7 +8124,7 @@
     },
     {
       "file": "services/smart-hospital-management.html",
-      "line": 416,
+      "line": 408,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8045,7 +8133,7 @@
     },
     {
       "file": "services/social-data-analysis.html",
-      "line": 407,
+      "line": 399,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -8054,7 +8142,7 @@
     },
     {
       "file": "services/supply-chain-optimization.html",
-      "line": 478,
+      "line": 470,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",

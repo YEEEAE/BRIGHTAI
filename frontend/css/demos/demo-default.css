@@ -1,0 +1,37 @@
+.bai-demo-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: var(--bai-space-6);
+  align-items: start;
+}
+
+.bai-demo-card {
+  padding: var(--bai-space-5);
+}
+
+.bai-demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--bai-space-3);
+  align-items: center;
+}
+
+.bai-demo-loading[hidden] {
+  display: none;
+}
+
+.bai-demo-loading {
+  color: var(--bai-color-primary);
+  font-weight: 600;
+}
+
+.bai-demo-stream-output {
+  min-block-size: 180px;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 860px) {
+  .bai-demo-layout {
+    grid-template-columns: 1fr;
+  }
+}

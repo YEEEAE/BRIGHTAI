@@ -9,11 +9,11 @@ const site = "https://brightai.site";
 const wa = "https://wa.me/966538229013";
 
 const sharedFaq = [
-  ["هل التجربة مجانية؟", "نعم، التجربة العامة مجانية ومصممة لإظهار شكل التقرير وطريقة التفكير قبل طلب نسخة مخصصة."],
-  ["هل يمكن ربطها ببيانات الشركة؟", "نعم، النسخة المخصصة يمكن ربطها بمصادر الشركة مثل الأنظمة التشغيلية، ملفات البيانات، أو واجهات البرمجة بعد مراجعة الصلاحيات."],
-  ["هل يدعم العربية؟", "نعم، التجربة مهيأة للعربية والسوق السعودي مع إمكانية التعامل مع نصوص عربية وإنجليزية عند الحاجة."],
-  ["هل البيانات آمنة؟", "لا ترفع بيانات حساسة في النسخة العامة. النسخة المخصصة تُصمم بصلاحيات وصول، سجل تدقيق، وضوابط مشاركة مناسبة."],
-  ["ما الفرق بين الديمو والنسخة المخصصة؟", "الديمو يوضح الفكرة بعينات مبسطة، بينما النسخة المخصصة تُبنى على بياناتك وتكاملاتك ومؤشرات الأداء الفعلية."]
+  ["هل التجربة مجانية؟", "سؤال منطقي، والجواب الصريح: نعم. تقدر تجرّب براحتك ببيانات وهمية وتشوف شكل التقرير قبل ما تطلب نسخة مخصصة."],
+  ["هل نقدر نربطها ببيانات الشركة؟", "نعم، نقدر نضبط النسخة المخصصة على مصادر شركتك مثل الأنظمة التشغيلية، ملفات البيانات، أو API بعد مراجعة الصلاحيات."],
+  ["هل تدعم العربية؟", "أكيد. التجربة مبنية للعربية والسوق السعودي، وتتعامل مع النصوص المختلطة عربي وإنجليزي عند الحاجة."],
+  ["وش وضع البيانات؟", "بياناتك تبقى عندك. لا ترفع بيانات حساسة في النسخة العامة، والنسخة المخصصة تنبني بصلاحيات وصول وسجل تدقيق وضوابط مشاركة مناسبة."],
+  ["وش الفرق بين الديمو والنسخة المخصصة؟", "الديمو يوريك الفكرة بعينات مبسطة، والنسخة المخصصة نضبطها على بياناتك وتكاملاتك ومؤشرات الأداء اللي تهم فريقك."]
 ];
 
 const serviceMap = {
@@ -585,14 +585,14 @@ function schemaGraph(demo, faqs) {
 function fallback(demo) {
   return {
     executiveSummary: [
-      `توضح التجربة أن ${demo.name} مناسب لمعالجة مشكلة ${demo.problem} عند توفر بيانات أولية واضحة.`,
-      `النتيجة المتوقعة هي ${demo.outcome} مع مراجعة بشرية قبل أي قرار تشغيلي.`
+      `هذا اللي طلع معنا: ${demo.name} يقدر يساعد فريقك في التعامل مع ${demo.problem} إذا كانت البيانات الأولية واضحة.`,
+      `المخرجات المتوقعة هي ${demo.outcome}، وتبقى للمراجعة البشرية قبل أي قرار تشغيلي.`
     ],
     score: 82,
     keyInsights: [
-      `القطاع المستهدف هو ${demo.sector} داخل السوق السعودي.`,
-      "العينة كافية لإثبات الفكرة لكنها لا تمثل كل بيانات الشركة.",
-      "الربط مع أنظمة الشركة يرفع دقة المؤشرات ويقلل العمل اليدوي."
+      `السيناريو مناسب لفرق ${demo.sector} داخل السوق السعودي.`,
+      "العينة تكفي لتجربة الفكرة، لكنها ما تمثل كل بيانات الشركة.",
+      "ربط أنظمة الشركة يرفع دقة المؤشرات ويخفف العمل اليدوي."
     ],
     risks: [
       "لا ترفع بيانات حساسة في النسخة العامة.",
@@ -602,11 +602,11 @@ function fallback(demo) {
     recommendedActions: [
       "ابدأ بعينة بيانات غير حساسة.",
       "حدد مؤشر نجاح واحد قبل التوسع.",
-      "اطلب نسخة مخصصة عند الحاجة إلى ربط الأنظمة والصلاحيات."
+      "اطلب نسخة مخصصة إذا تبغى ربط الأنظمة والصلاحيات."
     ],
     businessImpact: "تقليل وقت التحليل اليدوي وتحويل التجربة إلى قرار قابل للقياس حسب حجم البيانات وتكرار العملية.",
-    integrationReadiness: ["جاهز لربط واجهات البرمجة", "يدعم صلاحيات الوصول", "يدعم سجل التدقيق", "قابل للتصدير كتقرير"],
-    nextSteps: ["راجع التقرير مع الفريق", "حدد الأنظمة المطلوب ربطها", "احجز ديمو مباشر مع Bright AI"]
+    integrationReadiness: ["جاهز لربط API", "يدعم صلاحيات الوصول", "يدعم سجل التدقيق", "قابل للتصدير كتقرير"],
+    nextSteps: ["راجع التقرير مع الفريق", "حدد الأنظمة المطلوب ربطها", "احجز مكالمة 15 دقيقة مع Bright AI"]
   };
 }
 
@@ -629,7 +629,7 @@ function page(demo) {
     outcome: demo.outcome,
     fallbackResult: fallback(demo)
   };
-  const whats = `${wa}?text=${encodeURIComponent(`السلام عليكم، أريد نسخة مخصصة من ${demo.name} عبر Bright AI`)}`;
+  const whats = `${wa}?text=${encodeURIComponent(`هلا والله، أبغى نسخة مخصصة من ${demo.name} عبر Bright AI`)}`;
 
   return `<!DOCTYPE html>
 <html lang="ar-SA" dir="rtl">
@@ -688,28 +688,28 @@ function page(demo) {
   <main>
     <section class="hero section">
       <div class="hero-copy">
-        <p class="eyebrow">تجربة ذكاء اصطناعي للسوق السعودي</p>
+        <p class="eyebrow">هلا والله، نوّرت 👋</p>
         <h1>${esc(demo.name)}</h1>
-        <p class="direct-answer">${esc(demo.answer)}</p>
+        <p class="direct-answer">خلّنا نوريك وش يقدر يسوّيه BrightAI لشركتك. ${esc(demo.answer)}</p>
         <div class="hero-points" aria-label="قيمة الديمو">
           <span>المشكلة: ${esc(demo.problem)}</span>
           <span>النتيجة: ${esc(demo.outcome)}</span>
           <span>الفئة: ${esc(demo.audience)}</span>
         </div>
         <div class="hero-actions">
-          <button class="btn btn-secondary" type="button" data-load-first-sample>استخدم مثال جاهز</button>
+          <button class="btn btn-secondary" type="button" data-load-first-sample>جرّب مثال جاهز</button>
           <a class="btn btn-primary" href="#demo-form">ابدأ التجربة</a>
           <a class="btn btn-outline" href="${whats}" target="_blank" rel="noopener">اطلب نسخة مخصصة</a>
         </div>
       </div>
       <aside class="quick-answer" aria-label="إجابة سريعة">
         <img src="/assets/images/logo.PNG" width="96" height="96" alt="رمز Bright AI" loading="eager">
-        <h2>إجابة سريعة</h2>
+        <h2>الزبدة بسرعة</h2>
         <dl>
           <div><dt>لمن هذه التجربة؟</dt><dd>${esc(demo.audience)}</dd></div>
           <div><dt>ماذا تحتاج لتجربتها؟</dt><dd>وصف مختصر أو عينة بيانات غير حساسة.</dd></div>
           <div><dt>ماذا ستحصل بعد التشغيل؟</dt><dd>${esc(demo.outcome)}.</dd></div>
-          <div><dt>هل يمكن تخصيصها؟</dt><dd>نعم، يمكن تخصيصها وربطها بأنظمة الشركة بعد مراجعة المتطلبات.</dd></div>
+          <div><dt>هل يمكن تخصيصها؟</dt><dd>نعم، نضبطها على بيانات شركتك وأنظمتك بعد مراجعة المتطلبات.</dd></div>
         </dl>
       </aside>
     </section>
@@ -718,16 +718,16 @@ function page(demo) {
       <h2 id="summary-heading">ملخص التجربة</h2>
       <ul>
         <li>Bright AI يقدم ${esc(demo.name)} كتجربة عملية موجهة للسوق السعودي.</li>
-        <li>الديمو يعالج ${esc(demo.problem)} من خلال مدخلات بسيطة وقابلة للمراجعة.</li>
-        <li>المخرجات تشمل ${esc(demo.outcome)} دون عرض بيانات خام للمستخدم النهائي.</li>
-        <li>النسخة العامة لا تتطلب رفع بيانات حساسة، والنسخة المخصصة تدعم الصلاحيات وسجل التدقيق.</li>
+        <li>الديمو يساعدك تتعامل مع ${esc(demo.problem)} من خلال مدخلات بسيطة وقابلة للمراجعة.</li>
+        <li>المخرجات تشمل ${esc(demo.outcome)} بدل ما تضيع بين بيانات خام كثيرة.</li>
+        <li>تقدر تجرّب براحتك، كل البيانات وهمية. والنسخة المخصصة تدعم الصلاحيات وسجل التدقيق.</li>
       </ul>
     </section>
 
     <section class="section" aria-labelledby="what-heading">
       <h2 id="what-heading">ما الذي يفعله الديمو؟</h2>
       <div class="two-col">
-        <p>${esc(demo.name)} يحوّل مدخلات قصيرة من قطاع ${esc(demo.sector)} إلى تقرير تنفيذي يساعد صاحب القرار السعودي على فهم المشكلة والنتيجة والخطوة التالية. المحتوى المهم مكتوب داخل الصفحة حتى يكون قابلاً للفهرسة والاقتباس من محركات الإجابة.</p>
+        <p>${esc(demo.name)} يحوّل مدخلات قصيرة من قطاع ${esc(demo.sector)} إلى تقرير تنفيذي واضح يساعدك تفهم المشكلة والنتيجة والخطوة الجاية بدون ما يعطي AI قرار نهائي بدالك. المحتوى المهم مكتوب داخل الصفحة حتى يكون قابلاً للفهرسة والاقتباس من محركات الإجابة.</p>
         <div class="trust-list" aria-label="مؤشرات ثقة">
           <span>يدعم العربية</span>
           <span>قابل للربط مع أنظمة الشركة</span>
@@ -741,17 +741,17 @@ function page(demo) {
     <section class="section steps" aria-labelledby="usage-heading">
       <h2 id="usage-heading">كيف تستخدم التجربة؟</h2>
       <ol>
-        <li><strong>اختر السيناريو</strong><span>ابدأ بعينة سعودية جاهزة أو اكتب سياقك.</span></li>
-        <li><strong>أدخل بيانات بسيطة</strong><span>استخدم وصفاً مختصراً ولا ترفع معلومات حساسة.</span></li>
-        <li><strong>شغّل الذكاء الاصطناعي</strong><span>الطلب يمر عبر المسار الخلفي الآمن فقط.</span></li>
-        <li><strong>شاهد التقرير واطلب النسخة المخصصة</strong><span>راجع المؤشرات ثم اختر خطوة تجارية واضحة.</span></li>
+        <li><strong>اختر السيناريو</strong><span>اختر السيناريو اللي يشبه شغلك، أو اكتب سياقك.</span></li>
+        <li><strong>أدخل بيانات بسيطة</strong><span>استخدم وصف مختصر ولا ترفع معلومات حساسة.</span></li>
+        <li><strong>شغّل AI</strong><span>الطلب يمر عبر المسار الخلفي الآمن فقط.</span></li>
+        <li><strong>شوف التقرير</strong><span>راجع المؤشرات واختر خطوة تجارية واضحة.</span></li>
       </ol>
     </section>
 
     <section class="section demo-workspace" aria-labelledby="samples-heading">
       <div class="workspace-copy">
-        <h2 id="samples-heading">جرّب بسيناريو جاهز</h2>
-        <p>اختر مثالاً مناسباً لقطاع سعودي، أو اكتب وصفاً قصيراً. الوضع السريع ظاهر أولاً، والتفاصيل المتقدمة مخفية لتقليل الاحتكاك.</p>
+        <h2 id="samples-heading">خلّنا نجرّبها سوا</h2>
+        <p>اختر السيناريو اللي يشبه شغلك، وخلّنا نبدأ. الوضع السريع قدامك، والتفاصيل المتقدمة موجودة إذا احتجتها.</p>
         <div class="sample-grid">
           ${demo.samples.map(([label, text], index) => `<button type="button" class="sample-card" data-sample="${index}"><strong>${esc(label)}</strong><span>${esc(text)}</span></button>`).join("\n          ")}
         </div>
@@ -759,30 +759,30 @@ function page(demo) {
       <form class="demo-form" id="demo-form" data-demo-form>
         <input type="hidden" name="demoType" value="${attr(demo.type)}">
         <label for="scenario">السيناريو</label>
-        <select id="scenario" name="scenario" aria-label="اختر السيناريو">
+        <select id="scenario" name="scenario" aria-label="اختر السيناريو اللي يشبه شغلك">
           ${demo.samples.map(([label]) => `<option>${esc(label)}</option>`).join("")}
         </select>
         <label for="demo-input">البيانات المختصرة</label>
-        <textarea id="demo-input" name="input" rows="7" required placeholder="اكتب وصفاً مختصراً أو استخدم مثالاً جاهزاً. لا تضع بيانات حساسة.">${esc(demo.samples[0][1])}</textarea>
+        <textarea id="demo-input" name="input" rows="7" required placeholder="اكتب وصف مختصر أو استخدم مثال جاهز. لا تضع بيانات حساسة.">${esc(demo.samples[0][1])}</textarea>
         <details class="advanced-settings">
           <summary>الإعدادات المتقدمة</summary>
           <label for="goal">هدف القرار</label>
           <input id="goal" name="goal" value="${attr(demo.outcome)}">
           <label for="systems">الأنظمة المحتملة للربط</label>
-          <input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو واجهة برمجة">
+          <input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API">
         </details>
         <div class="form-actions">
           <button class="btn btn-primary" type="submit">شغّل التحليل</button>
           <button class="btn btn-secondary" type="button" data-reset-demo>إعادة ضبط</button>
         </div>
-        <p class="privacy-note">استخدم بيانات افتراضية أو منزوعة الحساسية في هذه النسخة العامة.</p>
+        <p class="privacy-note">بياناتك تبقى عندك، لا تستخدم إلا بيانات وهمية أو منزوعة الحساسية في هذه النسخة العامة.</p>
       </form>
     </section>
 
     <section class="section result-zone" aria-labelledby="result-heading">
       <div>
-        <h2 id="result-heading">ماذا ستظهر النتيجة؟</h2>
-        <p>تظهر النتيجة كلوحة قرار، وليست ملفاً خاماً. عند تعذر الاتصال، تعرض الصفحة نتيجة بديلة آمنة مع زر إعادة المحاولة.</p>
+        <h2 id="result-heading">هذا اللي بيطلع معنا</h2>
+        <p>النتيجة قدامك كلوحة قرار واضحة، مو ملف خام. وإذا صار خلل بسيط، نعرض لك نتيجة توضيحية آمنة مع زر إعادة المحاولة.</p>
         <ul class="result-promises">
           <li>ملخص تنفيذي</li>
           <li>مؤشر جاهزية</li>
@@ -795,19 +795,19 @@ function page(demo) {
         </ul>
       </div>
       <div class="loading-box" data-loading-box hidden>
-        <p>جارٍ تجهيز التقرير</p>
+        <p>AI يفكّر الحين... خلّنا نشوف وش بيطلع</p>
         <ol>
-          <li data-stage="0">فهم السياق</li>
-          <li data-stage="1">تحليل البيانات</li>
-          <li data-stage="2">بناء المؤشرات</li>
-          <li data-stage="3">توليد التوصيات</li>
-          <li data-stage="4">تجهيز التقرير</li>
+          <li data-stage="0">نقرأ الطلب الحين</li>
+          <li data-stage="1">نستخرج الكيانات</li>
+          <li data-stage="2">نبني المؤشرات</li>
+          <li data-stage="3">نجهّز التحليل</li>
+          <li data-stage="4">نرتّب التقرير</li>
         </ol>
       </div>
       <div class="result-panel" data-result-panel aria-live="polite">
         <div class="empty-state">
-          <strong>ابدأ التجربة لعرض التقرير.</strong>
-          <p>ستظهر هنا لوحة تنفيذية قابلة للمشاركة مع روابط طلب نسخة مخصصة.</p>
+          <strong>تمام، جاهز نبدأ؟</strong>
+          <p>شغّل التجربة، وثوانٍ بس وتجيك النتيجة كلوحة تنفيذية قابلة للمشاركة.</p>
         </div>
       </div>
     </section>
@@ -815,21 +815,21 @@ function page(demo) {
     <section class="section comparison" aria-labelledby="compare-heading">
       <h2 id="compare-heading">قبل Bright AI / بعد Bright AI</h2>
       <div class="compare-grid">
-        <article><h3>قبل Bright AI</h3><p>العمل اليدوي يستهلك وقتاً، المخرجات غير موحدة، والقرار يعتمد على متابعة متفرقة بين الملفات والرسائل.</p></article>
-        <article><h3>بعد Bright AI</h3><p>تبدأ من تجربة واضحة، تحصل على تقرير منظم، ثم تنتقل إلى نسخة مخصصة مرتبطة بالأنظمة والصلاحيات.</p></article>
+        <article><h3>قبل Bright AI</h3><p>العمل اليدوي ياخذ وقت، والمخرجات تتفاوت، والقرار يتشتت بين الملفات والرسائل.</p></article>
+        <article><h3>بعد Bright AI</h3><p>تبدأ من تجربة واضحة، تشوف تقرير منظم، ثم تطلب نسخة مخصصة مرتبطة بالأنظمة والصلاحيات.</p></article>
       </div>
     </section>
 
     <section class="section use-cases" aria-labelledby="use-cases-heading">
       <h2 id="use-cases-heading">حالات استخدام منظمة</h2>
       <div class="case-grid">
-        ${demo.samples.map(([label, text]) => `<article><h3>${esc(label)}</h3><p><strong>الحالة:</strong> ${esc(demo.problem)}.</p><p><strong>المدخلات:</strong> ${esc(text)}</p><p><strong>مخرجات الديمو:</strong> ${esc(demo.outcome)}.</p><p><strong>الأثر التجاري:</strong> قرار أسرع وتجربة قابلة للتخصيص.</p></article>`).join("\n        ")}
+        ${demo.samples.map(([label, text]) => `<article><h3>${esc(label)}</h3><p><strong>الحالة:</strong> ${esc(demo.problem)}.</p><p><strong>المدخلات:</strong> ${esc(text)}</p><p><strong>مخرجات الديمو:</strong> ${esc(demo.outcome)}.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>`).join("\n        ")}
       </div>
     </section>
 
     <section class="section" aria-labelledby="why-heading">
       <h2 id="why-heading">لماذا Bright AI؟</h2>
-      <p>Bright AI يبني تجارب ذكاء اصطناعي عربية أولاً للشركات السعودية، مع تركيز على قابلية الزحف والفهرسة، وضوح القرار، وإمكانية الربط مع الأنظمة بدل الاكتفاء بعرض تجريبي منعزل.</p>
+      <p>Bright AI يبني تجارب AI عربية أولاً للشركات السعودية، مع تركيز على قابلية الزحف والفهرسة، وضوح القرار، وإمكانية الربط مع الأنظمة بدل الاكتفاء بعرض تجريبي منعزل.</p>
       <div class="internal-links">
         <a href="${service}">صفحة الخدمة الرسمية</a>
         <a href="/services/">كل خدمات Bright AI</a>
@@ -846,10 +846,10 @@ function page(demo) {
     </section>
 
     <section class="section final-cta" aria-label="خطوة تجارية">
-      <h2>حوّل الديمو إلى نسخة تعمل داخل شركتك</h2>
-      <p>جرّب، شاهد النتيجة، ثم اطلب نسخة مخصصة مرتبطة ببياناتك وصلاحياتك ومؤشراتك.</p>
+      <h2>خلّ BrightAI يضبطها لك بمقاسك</h2>
+      <p>عجبتك التجربة؟ خلّنا نضبطها على بيانات شركتك خلال 48 ساعة كبداية عمل واضحة، بعد ما نراجع المتطلبات معك.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="/contact/">احجز ديمو مباشر</a>
+        <a class="btn btn-primary" href="/contact/">احجز مكالمة 15 دقيقة</a>
         <a class="btn btn-secondary" href="${whats}" target="_blank" rel="noopener">اطلب عرض سعر</a>
         <button class="btn btn-outline" type="button" data-download-report>حمّل التقرير</button>
       </div>

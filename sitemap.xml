@@ -1873,4 +1873,36 @@
     <priority>0.9</priority>
   </url>
 
+  <url>
+    <loc>https://brightai.site/demo/data-analysis/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/data-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/data-analysis/" />
+    <lastmod>2026-04-29</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/smart-automation/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/smart-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/smart-automation/" />
+    <lastmod>2026-04-29</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-workflows/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-workflows/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-workflows/" />
+    <lastmod>2026-04-29</lastmod>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/smart-education-platform/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/smart-education-platform/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/smart-education-platform/" />
+    <lastmod>2026-04-29</lastmod>
+    <priority>0.9</priority>
+  </url>
+
 </urlset>

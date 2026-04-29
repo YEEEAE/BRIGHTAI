@@ -6,11 +6,14 @@
 <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/smart-hiring-system/pages/support-ai/" />
 <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/smart-hiring-system/pages/support-ai/" />
 <link href="https://www.googletagmanager.com" rel="dns-prefetch"/>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
 <meta name="robots" content="index, follow">
 <link href="https://brightai.site/sitemap.xml" rel="sitemap" type="application/xml"/>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-8LLESL207Q');
 </script>
 <script defer src="/frontend/js/performance-loader.min.js" data-analytics="content" data-clarity="interaction" data-sentry="idle"></script>
 <meta charset="utf-8"/>
@@ -1898,7 +1901,7 @@
                 const data = await response.json().catch(() => ({}));
 
                 if (!response.ok) {
-                    throw new Error('تعذر تشغيل التحليل الآن. يمكنك استخدام المثال الجاهز أو إعادة المحاولة.');
+                    throw new Error('صار خلل بسيط، لا تشيل هم. نعرض لك نتيجة توضيحية آمنة الحين وتقدر تعيد المحاولة.');
                 }
 
                 if (data.requestId) {

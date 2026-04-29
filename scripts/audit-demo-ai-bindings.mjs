@@ -68,7 +68,7 @@ function auditFile(file) {
   if (!config?.schemaName && !/data-schema|schemaName/i.test(html)) issues.push('لا يوجد schemaName واضح');
   if (!config?.demoType && !config?.agentType && !/data-demo-type|data-agent-demo/i.test(html)) issues.push('لا يوجد demoType أو agentType');
   if (!config?.fallbackResult && !/fallback/i.test(html)) issues.push('لا يوجد fallbackResult واضح');
-  if (!/تعذر|خطأ|error-state|Error State/i.test(html)) warnings.push('حالة الخطأ غير واضحة نصياً');
+  if (!/تعذر|خطأ|صار خلل بسيط|error-state|Error State/i.test(html)) warnings.push('حالة الخطأ غير واضحة نصياً');
   if (!/data-sample|استخدم مثال|عينة|Sample Data/i.test(html)) warnings.push('زر أو منطقة العينة غير واضحة');
   if (!/data-result-panel|result-panel|Result Dashboard|لوحة|النتيجة/i.test(html)) warnings.push('لوحة النتيجة غير واضحة');
 
