@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-28T22:30:47.917Z",
+  "generatedAt": "2026-04-29T01:41:13.138Z",
   "filesScanned": 268,
   "pages": [
     {
@@ -17,6 +17,7 @@
         "https://brightai.site/case-studies/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/ai-tenders-analysis/",
+        "https://brightai.site/offline/",
         "https://brightai.site/services/"
       ],
       "outgoingAnchors": [
@@ -35,6 +36,10 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/offline/",
+          "text": "صفحة المساعدة عند انقطاع الاتصال"
         },
         {
           "href": "https://brightai.site/services/",
@@ -232,6 +237,7 @@
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -482,6 +488,18 @@
         {
           "href": "https://brightai.site/locations/dammam/",
           "text": "خدمات ذكاء اصطناعي في الدمام"
+        },
+        {
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "الأتمتة الذكية"
+        },
+        {
+          "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
+          "text": "فرص الذكاء الاصطناعي ضمن رؤية 2030"
         },
         {
           "href": "https://brightai.site/",
@@ -847,6 +865,7 @@
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
+        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/smart-automation/",
         "https://brightai.site/tools/",
         "https://brightai.site/what-is-ai/"
@@ -1343,6 +1362,18 @@
         {
           "href": "https://brightai.site/what-is-ai/",
           "text": "شرح مبسط للذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent/",
+          "text": "وكيل ذكاء اصطناعي مخصص"
+        },
+        {
+          "href": "https://brightai.site/ai-workflows/",
+          "text": "سير العمل الذكي"
+        },
+        {
+          "href": "https://brightai.site/blog/building-ai-agents-guide/",
+          "text": "دليل بناء الوكلاء"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -2443,6 +2474,7 @@
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/digital-transformation-automation/",
         "https://brightai.site/blog/process-automation/",
         "https://brightai.site/bot/",
         "https://brightai.site/case-studies/",
@@ -2461,6 +2493,7 @@
         "https://brightai.site/en/ai-workflows/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-automation-saudi/",
+        "https://brightai.site/services/approvals-automation/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -2689,6 +2722,18 @@
           "text": "قيّم سير العمل الحالي"
         },
         {
+          "href": "https://brightai.site/smart-automation/",
+          "text": "الأتمتة الذكية"
+        },
+        {
+          "href": "https://brightai.site/services/approvals-automation/",
+          "text": "أتمتة الموافقات"
+        },
+        {
+          "href": "https://brightai.site/blog/digital-transformation-automation/",
+          "text": "الأتمتة والتحول الرقمي"
+        },
+        {
           "href": "https://brightai.site/",
           "text": "شركة ذكاء اصطناعي في السعودية"
         },
@@ -2788,6 +2833,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -2928,8 +2974,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/ai-agent/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -3045,6 +3091,7 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/",
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-business-performance/",
@@ -3401,6 +3448,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -3541,8 +3589,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -3686,6 +3734,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/docs/data-analysis/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -3826,8 +3875,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -3970,6 +4019,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -4102,8 +4152,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -4346,8 +4396,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول الذكاء الاصطناعي للقطاع المالي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -4500,6 +4550,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -4640,8 +4691,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -4806,6 +4857,7 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -4818,8 +4870,8 @@
           "text": "المدونة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -4947,6 +4999,7 @@
         "https://brightai.site/blog/top-ai-tools-saudi-2025/",
         "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/blog/workplace-automation-guide/",
+        "https://brightai.site/sectors/",
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
@@ -5123,8 +5176,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/medical-archive/",
+          "text": "الأرشيف الطبي الذكي للقطاع الصحي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -5337,6 +5390,7 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -5349,8 +5403,8 @@
           "text": "المدونة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -5469,6 +5523,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -5557,8 +5612,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -6115,6 +6170,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -6255,8 +6311,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق الرقمي بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -6421,6 +6477,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -6561,8 +6618,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -6741,6 +6798,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -6881,8 +6939,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -7323,6 +7381,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -7463,8 +7522,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/ai-agent/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -7622,6 +7681,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -7734,8 +7794,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -7854,6 +7914,7 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
         "https://brightai.site/blog/business-intelligence-saudi/",
+        "https://brightai.site/services/",
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
@@ -7895,6 +7956,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -8035,8 +8097,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -8245,6 +8307,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -8385,8 +8448,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/ai-agent/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -8545,6 +8608,7 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -8557,8 +8621,8 @@
           "text": "المدونة"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -8673,6 +8737,7 @@
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/smart-hiring-system/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -8685,8 +8750,8 @@
           "text": "المدونة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -8802,6 +8867,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/privacy-cookies/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/",
         "https://brightai.site/tools/"
       ],
@@ -8935,8 +9001,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -9114,6 +9180,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/docs/ai-bots/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -9246,8 +9313,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/ai-agent/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -9648,6 +9715,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -9788,8 +9856,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -10097,8 +10165,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول الذكاء الاصطناعي للقطاع المالي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -10440,8 +10508,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/medical-archive/",
+          "text": "الأرشيف الطبي الذكي للقطاع الصحي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -10938,6 +11006,7 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/ai-workflows/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-business-performance/",
         "https://brightai.site/en/smart-automation/",
@@ -11285,6 +11354,7 @@
         "https://brightai.site/machine-learning/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -11425,8 +11495,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -11612,6 +11682,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -11752,8 +11823,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -12211,6 +12282,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/privacy-cookies/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/",
         "https://brightai.site/tools/"
       ],
@@ -12344,8 +12416,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -12518,7 +12590,7 @@
         },
         {
           "href": "https://brightai.site/smart-automation/",
-          "text": "الحل التجاري المرتبط"
+          "text": "أتمتة العمليات بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -12786,7 +12858,7 @@
         },
         {
           "href": "https://brightai.site/smart-automation/",
-          "text": "الحل التجاري المرتبط"
+          "text": "أتمتة العمليات بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -14768,6 +14840,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -14908,8 +14981,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -15362,6 +15435,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/docs/data-analysis/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -15494,8 +15568,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -15636,6 +15710,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -15768,8 +15843,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -16479,6 +16554,7 @@
         "https://brightai.site/docs/terms-and-conditions/",
         "https://brightai.site/privacy-cookies/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/",
         "https://brightai.site/tools/"
       ],
@@ -16492,8 +16568,8 @@
           "text": "المدونة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -16699,6 +16775,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/privacy-cookies/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/",
         "https://brightai.site/tools/"
       ],
@@ -16832,8 +16909,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -17011,6 +17088,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -17143,8 +17221,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -17441,8 +17519,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/medical-archive/",
+          "text": "الأرشيف الطبي الذكي للقطاع الصحي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -17755,7 +17833,7 @@
         },
         {
           "href": "https://brightai.site/smart-automation/",
-          "text": "الحل التجاري المرتبط"
+          "text": "أتمتة العمليات بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -18255,6 +18333,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -18387,8 +18466,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -18492,6 +18571,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -18624,8 +18704,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -18897,8 +18977,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول الذكاء الاصطناعي للقطاع المالي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -19078,6 +19158,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -19210,8 +19291,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -19353,6 +19434,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -19485,8 +19567,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق الرقمي بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -19629,6 +19711,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -19761,8 +19844,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -19897,6 +19980,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -20029,8 +20113,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -20181,6 +20265,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -20313,8 +20398,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -20622,8 +20707,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/medical-archive/",
+          "text": "الأرشيف الطبي الذكي للقطاع الصحي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -20894,8 +20979,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول الذكاء الاصطناعي للقطاع المالي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -21184,8 +21269,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "تحسين سلسلة التوريد بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -21338,6 +21423,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -21470,8 +21556,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -21635,6 +21721,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -21767,8 +21854,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -21902,6 +21989,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -22034,8 +22122,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -22182,6 +22270,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -22314,8 +22403,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -22456,6 +22545,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -22588,8 +22678,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -22708,6 +22798,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -22840,8 +22931,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -22945,6 +23036,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -23077,8 +23169,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -23240,6 +23332,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -23372,8 +23465,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -23512,6 +23605,7 @@
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -23644,8 +23738,8 @@
           "text": "جرّب النظام مجاناً"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -23900,7 +23994,7 @@
         },
         {
           "href": "https://brightai.site/smart-automation/",
-          "text": "الحل التجاري المرتبط"
+          "text": "أتمتة العمليات بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -24082,6 +24176,7 @@
         "https://brightai.site/docs/ai-bots/",
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -24222,8 +24317,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق الرقمي بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -24520,7 +24615,7 @@
         },
         {
           "href": "https://brightai.site/smart-automation/",
-          "text": "الحل التجاري المرتبط"
+          "text": "أتمتة العمليات بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -24671,6 +24766,7 @@
         "https://brightai.site/docs/",
         "https://brightai.site/docs/ai-bots/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -24811,8 +24907,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "تحسين سلسلة التوريد بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -24959,6 +25055,7 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -24971,8 +25068,8 @@
           "text": "المدونة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -25227,8 +25324,8 @@
           "text": "المكتبة الذكية"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "تحسين سلسلة التوريد بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -25392,6 +25489,7 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -25404,8 +25502,8 @@
           "text": "المدونة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الحل التجاري المرتبط"
+          "href": "https://brightai.site/services/ai-consulting/",
+          "text": "استشارات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/consultation/",
@@ -25482,6 +25580,7 @@
       ],
       "incoming": [
         "https://brightai.site/",
+        "https://brightai.site/about/",
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-finance-saudi/",
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
@@ -26684,23 +26783,32 @@
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
+        "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
+        "https://brightai.site/services/ai-automation-saudi/",
+        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
+        "https://brightai.site/services/ai-tenders-analysis/",
         "https://brightai.site/services/approvals-automation/",
         "https://brightai.site/services/brightproject/",
         "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/document-automation/",
+        "https://brightai.site/services/health-data-analysis/",
         "https://brightai.site/services/hr-automation/",
         "https://brightai.site/services/lead-hunter/",
         "https://brightai.site/services/marketing-agent/",
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
+        "https://brightai.site/services/social-data-analysis/",
         "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/smart-automation/",
@@ -32390,10 +32498,12 @@
           "text": "جرّب النظام مجاناً"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/services/smart-hiring-system/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/smart-hiring-system/pages/appointment/index.html",
@@ -33461,10 +33571,12 @@
           "text": "سياسة الخصوصية"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/services/social-data-analysis/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/supply-chain-optimization/index.html",
@@ -46346,10 +46458,12 @@
           "text": "Bright AI terms and conditions"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/en/services/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "en/ai-bots/BrightRecruiter/index.html",
@@ -46752,10 +46866,12 @@
           "text": "Bright AI terms and conditions"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/en/services/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "en/ai-bots/BrightSupport/index.html",
@@ -49857,10 +49973,12 @@
           "text": "Bright AI terms and conditions"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/en/services/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "en/index.html",
@@ -51163,11 +51281,15 @@
         "https://brightai.site/docs/privacy-policy-en/",
         "https://brightai.site/en/",
         "https://brightai.site/en/ai-agent/",
+        "https://brightai.site/en/ai-bots/BrightProject/",
+        "https://brightai.site/en/ai-bots/BrightSales/",
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/contact/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/health/",
         "https://brightai.site/en/privacy-cookies/",
         "https://brightai.site/en/smart-automation/",
+        "https://brightai.site/en/tenders/",
         "https://brightai.site/en/terms/",
         "https://brightai.site/services/"
       ],
@@ -51235,6 +51357,22 @@
         {
           "href": "https://brightai.site/en/contact/",
           "text": "Contact Bright AI for AI implementation"
+        },
+        {
+          "href": "https://brightai.site/en/ai-bots/BrightSales/",
+          "text": "BrightSales AI sales assistant"
+        },
+        {
+          "href": "https://brightai.site/en/ai-bots/BrightProject/",
+          "text": "BrightProject AI project assistant"
+        },
+        {
+          "href": "https://brightai.site/en/health/",
+          "text": "AI healthcare transformation in Saudi Arabia"
+        },
+        {
+          "href": "https://brightai.site/en/tenders/",
+          "text": "AI tender analysis for Saudi procurement teams"
         },
         {
           "href": "https://brightai.site/en/privacy-cookies/",
@@ -52258,10 +52396,12 @@
           "text": "Bright AI terms and conditions"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/en/services/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "en/tenders/landing.html",
@@ -54399,6 +54539,7 @@
         "https://brightai.site/ai-bots/",
         "https://brightai.site/ai-workflows/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
         "https://brightai.site/blog/ai-innovation-saudi-arabia/",
         "https://brightai.site/blog/ai-marketing-guide/",
         "https://brightai.site/blog/building-ai-agents-guide/",
@@ -54449,6 +54590,7 @@
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/smart-automation/"
       ],
@@ -54602,8 +54744,20 @@
           "text": "احجز استشارة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الخدمات"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
+        },
+        {
+          "href": "https://brightai.site/services/ai-automation-saudi/",
+          "text": "أتمتة الذكاء الاصطناعي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
+        },
+        {
+          "href": "https://brightai.site/sectors/",
+          "text": "حلول الذكاء الاصطناعي حسب القطاع"
         },
         {
           "href": "https://brightai.site/contact/",
@@ -54631,35 +54785,35 @@
         },
         {
           "href": "https://brightai.site/smart-automation/",
-          "text": "اعرف المزيد"
+          "text": "استكشف أتمتة العمليات الذكية"
         },
         {
           "href": "https://brightai.site/data-analysis/",
-          "text": "اعرف المزيد"
+          "text": "استكشف تحليل البيانات بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/ai-agent/",
-          "text": "اعرف المزيد"
+          "text": "استكشف وكلاء الذكاء الاصطناعي للأعمال"
         },
         {
           "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "اعرف المزيد"
+          "text": "جرّب الأرشيف الطبي الذكي"
         },
         {
           "href": "https://brightai.site/ai-workflows/",
-          "text": "اعرف المزيد"
+          "text": "استكشف تطوير سير العمل الذكي"
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "اعرف المزيد"
+          "text": "احجز استشارة ذكاء اصطناعي"
         },
         {
           "href": "https://brightai.site/docs/ai-bots/",
-          "text": "اعرف المزيد"
+          "text": "استكشف الروبوتات الذكية"
         },
         {
           "href": "https://brightai.site/about/",
-          "text": "اعرف المزيد عن روشن"
+          "text": "تعرّف على Bright AI"
         },
         {
           "href": "https://brightai.site/demo/ai-tenders-analysis/landing/",
@@ -54868,6 +55022,18 @@
         {
           "href": "https://brightai.site/docs/services-overview/",
           "text": "اقرأ النظرة التنفيذية الشاملة"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "صفحة الخدمات"
+        },
+        {
+          "href": "https://brightai.site/sectors/",
+          "text": "صفحة القطاعات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-agents-business-guide/",
+          "text": "دليل وكلاء الذكاء الاصطناعي للأعمال"
         },
         {
           "href": "https://brightai.site/services/",
@@ -55567,19 +55733,12 @@
         "https://brightai.site/about/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
-        "https://brightai.site/sectors/",
         "https://brightai.site/sectors/ecommerce-en/",
-        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy-en/",
-        "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance-en/",
-        "https://brightai.site/sectors/finance/",
         "https://brightai.site/sectors/healthcare-en/",
-        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/sectors/logistics-en/",
-        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
-        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
@@ -55729,27 +55888,17 @@
         "https://brightai.site/about/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/riyadh/",
-        "https://brightai.site/sectors/",
         "https://brightai.site/sectors/ecommerce-en/",
-        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy-en/",
-        "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance-en/",
-        "https://brightai.site/sectors/finance/",
         "https://brightai.site/sectors/healthcare-en/",
-        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/sectors/logistics-en/",
-        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
-        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
-        "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/custom-ai-agent/",
-        "https://brightai.site/services/customer-service-automation/",
-        "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
@@ -55896,47 +56045,19 @@
         "https://brightai.site/about/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/sectors/",
         "https://brightai.site/sectors/ecommerce-en/",
-        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy-en/",
-        "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance-en/",
-        "https://brightai.site/sectors/finance/",
         "https://brightai.site/sectors/healthcare-en/",
-        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/sectors/logistics-en/",
-        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
-        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
-        "https://brightai.site/services/ai-consulting/",
-        "https://brightai.site/services/ai-scolecs/",
-        "https://brightai.site/services/ai-tenders-analysis/",
-        "https://brightai.site/services/approvals-automation/",
-        "https://brightai.site/services/brightproject/",
-        "https://brightai.site/services/brightsales/",
         "https://brightai.site/services/custom-ai-agent/",
-        "https://brightai.site/services/customer-service-automation/",
-        "https://brightai.site/services/data-analyst-agent/",
-        "https://brightai.site/services/data-platform/",
-        "https://brightai.site/services/document-automation/",
-        "https://brightai.site/services/health-data-analysis/",
-        "https://brightai.site/services/hr-automation/",
-        "https://brightai.site/services/lead-hunter/",
-        "https://brightai.site/services/marketing-agent/",
         "https://brightai.site/services/marketing-automation/",
-        "https://brightai.site/services/medical-archive/",
-        "https://brightai.site/services/operational-reports-automation/",
-        "https://brightai.site/services/seo-agent/",
-        "https://brightai.site/services/seo-ai-agent/",
-        "https://brightai.site/services/smart-hiring-system/",
-        "https://brightai.site/services/smart-hospital-management/",
-        "https://brightai.site/services/social-data-analysis/",
-        "https://brightai.site/services/supply-chain-optimization/"
+        "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -56318,7 +56439,7 @@
       "title": "الاتصال غير متاح حالياً",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/"
@@ -56329,10 +56450,12 @@
           "text": "العودة للرئيسية"
         }
       ],
-      "incoming": [],
-      "isOrphan": true,
-      "problem": "orphan_page, missing_from_sitemap",
-      "severity": "High"
+      "incoming": [
+        "https://brightai.site/404"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "partners/index.html",
@@ -57523,14 +57646,11 @@
         "https://brightai.site/docs/services-overview/",
         "https://brightai.site/docs/solutions-crm/",
         "https://brightai.site/docs/solutions-retail/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/custom-ai-agent/",
-        "https://brightai.site/services/data-platform/",
-        "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/marketing-automation/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -57840,31 +57960,27 @@
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "خدمات AI المرتبطة بالقطاعات"
+          "text": "كتالوج خدمات الذكاء الاصطناعي للشركات"
         },
         {
-          "href": "https://brightai.site/services/data-platform/",
-          "text": "منصة تحليل بيانات للقطاعات التشغيلية"
+          "href": "https://brightai.site/services/marketing-automation/",
+          "text": "أتمتة التسويق للمتاجر"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص للقطاع"
+          "href": "https://brightai.site/services/customer-service-automation/",
+          "text": "أتمتة خدمة عملاء التجارة الإلكترونية"
         },
         {
-          "href": "https://brightai.site/services/operational-reports-automation/",
-          "text": "أتمتة التقارير التشغيلية"
+          "href": "https://brightai.site/services/brightsales/",
+          "text": "وكيل مبيعات ذكي للمتاجر"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/ai-agent/",
+          "text": "وكلاء AI للأعمال حسب القطاع"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
-        },
-        {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "أتمتة وذكاء اصطناعي في الدمام"
+          "href": "https://brightai.site/consultation/",
+          "text": "ناقش حالة استخدام القطاع مع Bright AI"
         }
       ],
       "incoming": [
@@ -57879,6 +57995,11 @@
         "https://brightai.site/error",
         "https://brightai.site/partners/",
         "https://brightai.site/sectors/",
+        "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/lead-hunter/",
+        "https://brightai.site/services/marketing-agent/",
+        "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/tools/"
       ],
@@ -58694,9 +58815,6 @@
         "https://brightai.site/docs/data-analysis/",
         "https://brightai.site/docs/services-overview/",
         "https://brightai.site/docs/smart-automation/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
@@ -59007,31 +59125,27 @@
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "خدمات AI المرتبطة بالقطاعات"
+          "text": "كتالوج خدمات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/services/data-platform/",
-          "text": "منصة تحليل بيانات للقطاعات التشغيلية"
-        },
-        {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص للقطاع"
+          "text": "منصة بيانات للتشغيل والطاقة"
         },
         {
           "href": "https://brightai.site/services/operational-reports-automation/",
-          "text": "أتمتة التقارير التشغيلية"
+          "text": "أتمتة تقارير الصيانة والطاقة"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/services/custom-ai-agent/",
+          "text": "وكيل AI مخصص لفرق الطاقة"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/ai-agent/",
+          "text": "وكلاء AI للأعمال حسب القطاع"
         },
         {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "أتمتة وذكاء اصطناعي في الدمام"
+          "href": "https://brightai.site/consultation/",
+          "text": "ناقش حالة استخدام القطاع مع Bright AI"
         }
       ],
       "incoming": [
@@ -59932,9 +60046,6 @@
         "https://brightai.site/docs/openapi/",
         "https://brightai.site/docs/services-overview/",
         "https://brightai.site/docs/solutions-finance/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent/",
@@ -60277,31 +60388,27 @@
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "خدمات AI المرتبطة بالقطاعات"
+          "text": "كتالوج خدمات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/services/data-platform/",
-          "text": "منصة تحليل بيانات للقطاعات التشغيلية"
-        },
-        {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص للقطاع"
+          "text": "منصة تحليل البيانات المالية"
         },
         {
           "href": "https://brightai.site/services/operational-reports-automation/",
           "text": "أتمتة التقارير التشغيلية"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/services/custom-ai-agent/",
+          "text": "وكيل AI مخصص للامتثال المالي"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/ai-agent/",
+          "text": "وكلاء AI للأعمال حسب القطاع"
         },
         {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "أتمتة وذكاء اصطناعي في الدمام"
+          "href": "https://brightai.site/consultation/",
+          "text": "ناقش حالة استخدام القطاع مع Bright AI"
         }
       ],
       "incoming": [
@@ -60349,7 +60456,30 @@
         "https://brightai.site/error",
         "https://brightai.site/partners/",
         "https://brightai.site/sectors/",
+        "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
+        "https://brightai.site/services/ai-automation-saudi/",
+        "https://brightai.site/services/ai-chatbot-arabic/",
+        "https://brightai.site/services/ai-consulting/",
+        "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
+        "https://brightai.site/services/approvals-automation/",
+        "https://brightai.site/services/brightproject/",
+        "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/data-platform/",
+        "https://brightai.site/services/document-automation/",
+        "https://brightai.site/services/health-data-analysis/",
+        "https://brightai.site/services/lead-hunter/",
+        "https://brightai.site/services/marketing-agent/",
+        "https://brightai.site/services/medical-archive/",
+        "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
+        "https://brightai.site/services/smart-hospital-management/",
+        "https://brightai.site/services/social-data-analysis/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/tools/"
       ],
@@ -61234,14 +61364,11 @@
         "https://brightai.site/docs/services-overview/",
         "https://brightai.site/docs/solutions-healthcare/",
         "https://brightai.site/docs/solutions-ocr/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/custom-ai-agent/",
-        "https://brightai.site/services/data-platform/",
-        "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/health-data-analysis/",
+        "https://brightai.site/services/medical-archive/",
+        "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -61583,31 +61710,27 @@
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "خدمات AI المرتبطة بالقطاعات"
+          "text": "كتالوج خدمات الذكاء الاصطناعي للشركات"
         },
         {
-          "href": "https://brightai.site/services/data-platform/",
-          "text": "منصة تحليل بيانات للقطاعات التشغيلية"
+          "href": "https://brightai.site/services/medical-archive/",
+          "text": "الأرشيف الطبي الذكي"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص للقطاع"
+          "href": "https://brightai.site/services/smart-hospital-management/",
+          "text": "إدارة المستشفيات بالذكاء الاصطناعي"
         },
         {
-          "href": "https://brightai.site/services/operational-reports-automation/",
-          "text": "أتمتة التقارير التشغيلية"
+          "href": "https://brightai.site/services/health-data-analysis/",
+          "text": "تحليل بيانات القطاع الصحي"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/ai-agent/",
+          "text": "وكلاء AI للأعمال حسب القطاع"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
-        },
-        {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "أتمتة وذكاء اصطناعي في الدمام"
+          "href": "https://brightai.site/consultation/",
+          "text": "ناقش حالة استخدام القطاع مع Bright AI"
         }
       ],
       "incoming": [
@@ -61654,6 +61777,11 @@
         "https://brightai.site/error",
         "https://brightai.site/partners/",
         "https://brightai.site/sectors/",
+        "https://brightai.site/services/health-data-analysis/",
+        "https://brightai.site/services/hr-automation/",
+        "https://brightai.site/services/medical-archive/",
+        "https://brightai.site/services/smart-hiring-system/",
+        "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/tools/"
       ],
@@ -61674,6 +61802,7 @@
       "outgoing": [
         "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/",
+        "https://brightai.site/blog/ai-guide-saudi-business/",
         "https://brightai.site/blog/top-ai-tools-saudi-2025/",
         "https://brightai.site/case-studies/",
         "https://brightai.site/consultation/",
@@ -61682,9 +61811,6 @@
         "https://brightai.site/docs/",
         "https://brightai.site/docs/ai-bots/",
         "https://brightai.site/docs/services-overview/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance/",
@@ -61792,7 +61918,19 @@
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "خدمات AI المرتبطة بالقطاعات"
+          "text": "الخدمات"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة البيانات"
+        },
+        {
+          "href": "https://brightai.site/blog/ai-guide-saudi-business/",
+          "text": "دليل AI للأعمال السعودية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "كتالوج خدمات الذكاء الاصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/services/data-platform/",
@@ -61807,16 +61945,12 @@
           "text": "أتمتة التقارير التشغيلية"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/ai-agent/",
+          "text": "وكلاء AI للأعمال حسب القطاع"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
-        },
-        {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "أتمتة وذكاء اصطناعي في الدمام"
+          "href": "https://brightai.site/consultation/",
+          "text": "ناقش حالة استخدام القطاع مع Bright AI"
         }
       ],
       "incoming": [
@@ -61837,6 +61971,7 @@
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
         "https://brightai.site/sectors/manufacturing/",
+        "https://brightai.site/services/",
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
@@ -62667,14 +62802,11 @@
         "https://brightai.site/docs/smart-automation/",
         "https://brightai.site/docs/solutions-logistics/",
         "https://brightai.site/docs/solutions-supply-chain/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -62988,31 +63120,27 @@
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "خدمات AI المرتبطة بالقطاعات"
+          "text": "كتالوج خدمات الذكاء الاصطناعي للشركات"
         },
         {
-          "href": "https://brightai.site/services/data-platform/",
-          "text": "منصة تحليل بيانات للقطاعات التشغيلية"
-        },
-        {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص للقطاع"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "تحسين سلسلة التوريد بالذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/services/operational-reports-automation/",
-          "text": "أتمتة التقارير التشغيلية"
+          "text": "أتمتة تقارير التشغيل اللوجستي"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة بيانات للعمليات اللوجستية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/ai-agent/",
+          "text": "وكلاء AI للأعمال حسب القطاع"
         },
         {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "أتمتة وذكاء اصطناعي في الدمام"
+          "href": "https://brightai.site/consultation/",
+          "text": "ناقش حالة استخدام القطاع مع Bright AI"
         }
       ],
       "incoming": [
@@ -63055,6 +63183,23 @@
         "https://brightai.site/error",
         "https://brightai.site/partners/",
         "https://brightai.site/sectors/",
+        "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
+        "https://brightai.site/services/ai-automation-saudi/",
+        "https://brightai.site/services/ai-chatbot-arabic/",
+        "https://brightai.site/services/ai-consulting/",
+        "https://brightai.site/services/ai-scolecs/",
+        "https://brightai.site/services/ai-tenders-analysis/",
+        "https://brightai.site/services/approvals-automation/",
+        "https://brightai.site/services/brightproject/",
+        "https://brightai.site/services/custom-ai-agent/",
+        "https://brightai.site/services/customer-service-automation/",
+        "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/data-platform/",
+        "https://brightai.site/services/document-automation/",
+        "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/social-data-analysis/",
+        "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/smart-automation/"
       ],
@@ -63921,14 +64066,11 @@
         "https://brightai.site/docs/services-overview/",
         "https://brightai.site/docs/smart-automation/",
         "https://brightai.site/docs/solutions-supply-chain/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/custom-ai-agent/",
-        "https://brightai.site/services/data-platform/",
+        "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/operational-reports-automation/",
+        "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/smart-automation/"
       ],
       "outgoingAnchors": [
@@ -64258,31 +64400,27 @@
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "خدمات AI المرتبطة بالقطاعات"
+          "text": "كتالوج خدمات الذكاء الاصطناعي للشركات"
         },
         {
-          "href": "https://brightai.site/services/data-platform/",
-          "text": "منصة تحليل بيانات للقطاعات التشغيلية"
-        },
-        {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص للقطاع"
+          "href": "https://brightai.site/services/supply-chain-optimization/",
+          "text": "تحسين سلسلة الإمداد للمصانع"
         },
         {
           "href": "https://brightai.site/services/operational-reports-automation/",
-          "text": "أتمتة التقارير التشغيلية"
+          "text": "أتمتة تقارير الإنتاج"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/services/data-analyst-agent/",
+          "text": "وكيل تحليل بيانات التشغيل"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/ai-agent/",
+          "text": "وكلاء AI للأعمال حسب القطاع"
         },
         {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "أتمتة وذكاء اصطناعي في الدمام"
+          "href": "https://brightai.site/consultation/",
+          "text": "ناقش حالة استخدام القطاع مع Bright AI"
         }
       ],
       "incoming": [
@@ -64297,6 +64435,9 @@
         "https://brightai.site/en/smart-automation/",
         "https://brightai.site/error",
         "https://brightai.site/sectors/",
+        "https://brightai.site/services/hr-automation/",
+        "https://brightai.site/services/smart-hiring-system/",
+        "https://brightai.site/services/supply-chain-optimization/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/smart-automation/"
       ],
@@ -64317,17 +64458,18 @@
       "outgoing": [
         "https://brightai.site/",
         "https://brightai.site/about/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/llms.txt",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
-        "https://brightai.site/services/ai-consulting/",
-        "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-platform/"
       ],
       "outgoingAnchors": [
@@ -64408,28 +64550,24 @@
           "text": "أتمتة الذكاء الاصطناعي في السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/about/",
@@ -64448,6 +64586,10 @@
         "https://brightai.site/",
         "https://brightai.site/about/",
         "https://brightai.site/ai-agent/",
+        "https://brightai.site/blog/ai-agents-business-guide/",
+        "https://brightai.site/blog/building-ai-agents-practical-guide/",
+        "https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/",
+        "https://brightai.site/blog/commerce-ministry-chatbot/",
         "https://brightai.site/bot/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
@@ -64476,6 +64618,7 @@
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -64499,17 +64642,18 @@
       "outgoing": [
         "https://brightai.site/",
         "https://brightai.site/about/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/llms.txt",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
-        "https://brightai.site/services/ai-consulting/",
-        "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-platform/"
       ],
       "outgoingAnchors": [
@@ -64586,32 +64730,28 @@
           "text": "كل خدمات الذكاء الاصطناعي من Bright AI"
         },
         {
+          "href": "https://brightai.site/services/ai-automation-saudi/",
+          "text": "أتمتة الذكاء الاصطناعي في السعودية"
+        },
+        {
           "href": "https://brightai.site/services/ai-agents-saudi/",
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
-        },
-        {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
         },
         {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/about/",
@@ -64743,17 +64883,18 @@
       "outgoing": [
         "https://brightai.site/",
         "https://brightai.site/about/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/llms.txt",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
-        "https://brightai.site/services/ai-consulting/",
-        "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-platform/"
       ],
       "outgoingAnchors": [
@@ -64838,24 +64979,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/about/",
@@ -64878,29 +65015,8 @@
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-consulting/",
-        "https://brightai.site/services/ai-scolecs/",
-        "https://brightai.site/services/ai-tenders-analysis/",
-        "https://brightai.site/services/approvals-automation/",
-        "https://brightai.site/services/brightproject/",
-        "https://brightai.site/services/brightsales/",
         "https://brightai.site/services/custom-ai-agent/",
-        "https://brightai.site/services/customer-service-automation/",
-        "https://brightai.site/services/data-analyst-agent/",
-        "https://brightai.site/services/data-platform/",
-        "https://brightai.site/services/document-automation/",
-        "https://brightai.site/services/health-data-analysis/",
-        "https://brightai.site/services/hr-automation/",
-        "https://brightai.site/services/lead-hunter/",
-        "https://brightai.site/services/marketing-agent/",
-        "https://brightai.site/services/medical-archive/",
-        "https://brightai.site/services/operational-reports-automation/",
-        "https://brightai.site/services/seo-agent/",
-        "https://brightai.site/services/seo-ai-agent/",
-        "https://brightai.site/services/smart-hiring-system/",
-        "https://brightai.site/services/smart-hospital-management/",
-        "https://brightai.site/services/social-data-analysis/",
-        "https://brightai.site/services/supply-chain-optimization/"
+        "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -64922,12 +65038,11 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/docs/services-overview/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -65132,34 +65247,54 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-business-performance/",
+        "https://brightai.site/blog/ai-energy-saudi/",
+        "https://brightai.site/blog/ai-guide-saudi-business/",
+        "https://brightai.site/blog/ai-implementation-cost-guide/",
+        "https://brightai.site/blog/ai-transformation/",
+        "https://brightai.site/blog/choose-ai-company-saudi/",
+        "https://brightai.site/blog/claude-opus-4-6-saudi-market/",
+        "https://brightai.site/blog/government-ai-solutions-saudi/",
+        "https://brightai.site/blog/ksu-adaptive-learning/",
+        "https://brightai.site/blog/nca-ai-compliance-saudi/",
+        "https://brightai.site/blog/nca-compliance/",
+        "https://brightai.site/blog/riyadh-municipality-ai-license/",
+        "https://brightai.site/blog/saudi-agritech-smart-farming/",
+        "https://brightai.site/blog/saudi-dates-quality-ai/",
+        "https://brightai.site/blog/saudi-edtech-personalized-learning/",
+        "https://brightai.site/blog/saudi-energy-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-factory-ai-productivity/",
+        "https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/",
+        "https://brightai.site/blog/saudi-mining-ai-exploration/",
+        "https://brightai.site/blog/saudi-petrochemical-ai-safety/",
+        "https://brightai.site/blog/saudi-real-estate-ai-valuation/",
+        "https://brightai.site/blog/saudi-renewable-energy-ai/",
+        "https://brightai.site/blog/saudi-smart-city-traffic/",
+        "https://brightai.site/blog/saudi-tourism-ai-guide/",
+        "https://brightai.site/blog/saudi-waste-management-ai/",
+        "https://brightai.site/blog/top-ai-tools-saudi-2025/",
+        "https://brightai.site/blog/vision-2030-ai-opportunities/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/ai-agents-saudi/",
-        "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
         "https://brightai.site/services/approvals-automation/",
@@ -65203,11 +65338,11 @@
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/ai-scolecs/",
         "https://brightai.site/docs/services-overview/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -65432,24 +65567,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -65492,15 +65623,15 @@
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/ai-tenders-analysis/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -65721,24 +65852,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -65784,11 +65911,11 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -66001,27 +66128,24 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
+        "https://brightai.site/ai-workflows/",
         "https://brightai.site/blog/digital-transformation-automation/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
@@ -66067,11 +66191,11 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/brightproject/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -66296,24 +66420,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -66361,11 +66481,11 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/brightsales/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/ecommerce/",
+        "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -66590,27 +66710,24 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/ecommerce/",
+          "text": "حلول AI للتجارة الإلكترونية"
+        },
+        {
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "تحليل العملاء للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
+        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -66811,11 +66928,14 @@
       "outgoing": [
         "https://brightai.site/",
         "https://brightai.site/about/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/custom-ai-agent/",
         "https://brightai.site/llms.txt",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
@@ -66823,6 +66943,7 @@
         "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/document-automation/"
       ],
       "outgoingAnchors": [
@@ -66915,28 +67036,28 @@
           "text": "كل خدمات الذكاء الاصطناعي من Bright AI"
         },
         {
-          "href": "https://brightai.site/services/ai-agents-saudi/",
-          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
-        },
-        {
           "href": "https://brightai.site/services/ai-automation-saudi/",
           "text": "أتمتة الذكاء الاصطناعي في السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "ديمو وكيل ذكاء اصطناعي مخصص"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/about/",
@@ -66952,21 +67073,18 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/blog/ai-automation-project-analysis/",
         "https://brightai.site/blog/machine-learning-computer-vision/",
         "https://brightai.site/sectors/",
         "https://brightai.site/sectors/ecommerce-en/",
-        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy-en/",
         "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/sectors/healthcare-en/",
-        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/sectors/logistics-en/",
-        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
-        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -67015,12 +67133,11 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -67241,34 +67358,28 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/services/",
-        "https://brightai.site/services/ai-agents-saudi/",
-        "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -67317,11 +67428,11 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/data-analyzer/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -67542,28 +67653,25 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
         "https://brightai.site/blog/ai-automation-project-analysis/",
+        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -67613,12 +67721,11 @@
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/data-analyzer/",
         "https://brightai.site/docs/services-overview/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -67839,45 +67946,53 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
-        },
-        {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
+        "https://brightai.site/",
+        "https://brightai.site/blog/ai-data-analysis-tools/",
+        "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
+        "https://brightai.site/blog/ai-innovation-saudi-arabia/",
         "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/big-data-analysis/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
+        "https://brightai.site/blog/business-intelligence-saudi/",
+        "https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/",
+        "https://brightai.site/blog/data-analysis-decision-making/",
+        "https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/",
+        "https://brightai.site/blog/generative-artificial-intelligence/",
+        "https://brightai.site/blog/intelligent-data-analysis/",
+        "https://brightai.site/blog/kpi-dashboard-guide/",
         "https://brightai.site/blog/machine-learning-computer-vision/",
+        "https://brightai.site/blog/power-bi-saudi-guide/",
+        "https://brightai.site/blog/saudi-sports-analytics-ai/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
         "https://brightai.site/sectors/",
         "https://brightai.site/sectors/ecommerce-en/",
-        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy-en/",
         "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/sectors/healthcare-en/",
-        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/sectors/logistics-en/",
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
-        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
@@ -67888,6 +68003,7 @@
         "https://brightai.site/services/approvals-automation/",
         "https://brightai.site/services/brightproject/",
         "https://brightai.site/services/brightsales/",
+        "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-analyst-agent/",
         "https://brightai.site/services/document-automation/",
@@ -67899,6 +68015,7 @@
         "https://brightai.site/services/medical-archive/",
         "https://brightai.site/services/operational-reports-automation/",
         "https://brightai.site/services/seo-agent/",
+        "https://brightai.site/services/seo-ai-agent/",
         "https://brightai.site/services/smart-hiring-system/",
         "https://brightai.site/services/smart-hospital-management/",
         "https://brightai.site/services/social-data-analysis/",
@@ -67924,11 +68041,11 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/ocr-demo/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -68149,24 +68266,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -68214,15 +68327,16 @@
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/data-analyzer/",
         "https://brightai.site/demo/smart-hospital-management/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -68443,28 +68557,25 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/healthcare/",
+          "text": "تطبيقات الذكاء الاصطناعي في القطاع الصحي"
+        },
+        {
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حوكمة البيانات للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
         "https://brightai.site/blog/machine-learning-computer-vision/",
+        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -68507,11 +68618,11 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/healthcare/",
+        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -68724,24 +68835,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/healthcare/",
+          "text": "توظيف وتشغيل الكوادر الصحية"
+        },
+        {
+          "href": "https://brightai.site/sectors/manufacturing/",
+          "text": "إدارة فرق التشغيل في التصنيع"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -68793,8 +68900,10 @@
         "https://brightai.site/blog/",
         "https://brightai.site/blog/ai-automation-project-analysis/",
         "https://brightai.site/blog/ai-manufacturing-digital-guide/",
+        "https://brightai.site/blog/business-intelligence-data-analysis/",
         "https://brightai.site/blog/digital-transformation-automation/",
         "https://brightai.site/blog/machine-learning-computer-vision/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/ai-scolecs/",
@@ -68814,6 +68923,9 @@
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
@@ -69266,6 +69378,10 @@
           "text": "خدمات ذكاء اصطناعي في الدمامصفحة موجهة للدمام والمنطقة الشرقية وقطاعات التشغيل والطاقة واللوجستيات."
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "كل خدمات الذكاء الاصطناعي من Bright AI"
+        },
+        {
           "href": "https://brightai.site/services/ai-automation-saudi/",
           "text": "أتمتة الذكاء الاصطناعي في السعودية"
         },
@@ -69274,28 +69390,40 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
         },
         {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
+        },
+        {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "صفحة الوكلاء"
+        },
+        {
+          "href": "https://brightai.site/data-analysis/",
+          "text": "تحليل البيانات"
+        },
+        {
+          "href": "https://brightai.site/services/ai-automation-saudi/",
+          "text": "أتمتة الذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/sectors/",
+          "text": "حلول القطاعات"
+        },
+        {
+          "href": "https://brightai.site/blog/business-intelligence-data-analysis/",
+          "text": "مقال ذكاء الأعمال وتحليل البيانات"
         }
       ],
       "incoming": [
@@ -69574,11 +69702,11 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/ecommerce/",
+        "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -69791,24 +69919,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/ecommerce/",
+          "text": "حلول AI للتجارة الإلكترونية"
+        },
+        {
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "تحليل العملاء للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -69854,11 +69978,11 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/ecommerce/",
+        "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -70071,24 +70195,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/ecommerce/",
+          "text": "حلول AI للتجارة الإلكترونية"
+        },
+        {
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "تحليل العملاء للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -70508,6 +70628,10 @@
         }
       ],
       "incoming": [
+        "https://brightai.site/blog/ai-marketing-guide/",
+        "https://brightai.site/blog/saudi-ecommerce-ai-growth/",
+        "https://brightai.site/blog/smart-crm-system/",
+        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -70557,11 +70681,11 @@
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/services-overview/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -70786,24 +70910,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/healthcare/",
+          "text": "تطبيقات الذكاء الاصطناعي في القطاع الصحي"
+        },
+        {
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حوكمة البيانات للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -70811,6 +70931,7 @@
         "https://brightai.site/blog/digital-health-smart-archive/",
         "https://brightai.site/blog/private-hospital-scheduling-optimization/",
         "https://brightai.site/blog/saudi-hospitality-dynamic-pricing/",
+        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -70853,11 +70974,11 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -71070,24 +71191,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -71095,13 +71212,11 @@
         "https://brightai.site/blog/digital-transformation-automation/",
         "https://brightai.site/sectors/",
         "https://brightai.site/sectors/ecommerce-en/",
-        "https://brightai.site/sectors/ecommerce/",
         "https://brightai.site/sectors/energy-en/",
         "https://brightai.site/sectors/energy/",
         "https://brightai.site/sectors/finance-en/",
         "https://brightai.site/sectors/finance/",
         "https://brightai.site/sectors/healthcare-en/",
-        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/sectors/logistics-en/",
         "https://brightai.site/sectors/logistics/",
         "https://brightai.site/sectors/manufacturing-en/",
@@ -71289,11 +71404,11 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/ecommerce/",
+        "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -71506,24 +71621,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/ecommerce/",
+          "text": "حلول AI للتجارة الإلكترونية"
+        },
+        {
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "تحليل العملاء للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -71567,18 +71678,23 @@
       "outgoing": [
         "https://brightai.site/",
         "https://brightai.site/about/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/seo-ai-agent/",
         "https://brightai.site/llms.txt",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/ecommerce/",
+        "https://brightai.site/sectors/finance/",
         "https://brightai.site/services/",
+        "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
         "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/competitor-analysis-agent/",
         "https://brightai.site/services/custom-ai-agent/",
         "https://brightai.site/services/customer-service-automation/",
         "https://brightai.site/services/data-analyst-agent/",
+        "https://brightai.site/services/data-platform/",
         "https://brightai.site/services/document-automation/",
         "https://brightai.site/services/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/"
@@ -71681,28 +71797,24 @@
           "text": "أتمتة الذكاء الاصطناعي في السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
+          "href": "https://brightai.site/services/ai-agents-saudi/",
+          "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص"
+          "href": "https://brightai.site/services/data-platform/",
+          "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/services/competitor-analysis-agent/",
-          "text": "وكيل تحليل المنافسين"
+          "href": "https://brightai.site/sectors/ecommerce/",
+          "text": "حلول AI للتجارة الإلكترونية"
         },
         {
-          "href": "https://brightai.site/services/marketing-ai-agent/",
-          "text": "وكيل تسويق ذكي"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "تحليل العملاء للقطاع المالي"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
-        },
-        {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "حلول AI للشركات في جدة"
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         },
         {
           "href": "https://brightai.site/about/",
@@ -71744,12 +71856,13 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/smart-hiring-system/",
+        "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
         "https://brightai.site/docs/services-overview/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/healthcare/",
+        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -71910,6 +72023,10 @@
           "text": "جرّب نظام التوظيف الذكي"
         },
         {
+          "href": "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
+          "text": "جرّب تسجيل الزوار للمرشحين والضيوف"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "العودة إلى كل خدمات Bright AI"
         },
@@ -71974,24 +72091,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/healthcare/",
+          "text": "توظيف وتشغيل الكوادر الصحية"
+        },
+        {
+          "href": "https://brightai.site/sectors/manufacturing/",
+          "text": "إدارة فرق التشغيل في التصنيع"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -72043,11 +72156,11 @@
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/docs/services-overview/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -72272,27 +72385,24 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/healthcare/",
+          "text": "تطبيقات الذكاء الاصطناعي في القطاع الصحي"
+        },
+        {
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حوكمة البيانات للقطاع المالي"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
+        "https://brightai.site/sectors/healthcare/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -72332,14 +72442,16 @@
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/data-analyzer/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/demo/social-data-analysis/",
+        "https://brightai.site/sectors/finance/",
+        "https://brightai.site/sectors/logistics/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -72536,6 +72648,10 @@
           "text": "وكيل تحسين محركات البحث SEOمناسب للمواقع التي تريد رفع الزيارات العضوية من السعودية وتحسين ظهورها في Google ونتائج AI Search."
         },
         {
+          "href": "https://brightai.site/demo/social-data-analysis/",
+          "text": "جرّب تحليل بيانات التواصل الاجتماعينموذج عملي يوضح كيف تتحول مؤشرات القنوات والحملات إلى توصيات تنفيذية."
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "استكشف كل الحلول"
         },
@@ -72552,24 +72668,20 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/finance/",
+          "text": "حلول AI للقطاع المالي في السعودية"
+        },
+        {
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول AI للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
@@ -72617,11 +72729,11 @@
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/supply-chain-optimization/",
-        "https://brightai.site/locations/riyadh/",
+        "https://brightai.site/sectors/logistics/",
+        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
         "https://brightai.site/services/ai-tenders-analysis/",
@@ -72846,30 +72958,29 @@
           "text": "وكلاء الذكاء الاصطناعي للشركات السعودية"
         },
         {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء بالذكاء الاصطناعي"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات الذكاء الاصطناعي"
-        },
-        {
           "href": "https://brightai.site/services/data-platform/",
           "text": "منصة تحليل بيانات للشركات"
         },
         {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "خدمات الذكاء الاصطناعي في الرياض"
+          "href": "https://brightai.site/sectors/logistics/",
+          "text": "حلول الذكاء الاصطناعي للخدمات اللوجستية"
+        },
+        {
+          "href": "https://brightai.site/sectors/manufacturing/",
+          "text": "أتمتة التصنيع وسلاسل الإمداد"
+        },
+        {
+          "href": "https://brightai.site/consultation/",
+          "text": "احجز استشارة ذكاء اصطناعي للشركات"
         }
       ],
       "incoming": [
         "https://brightai.site/blog/ai-manufacturing-digital-guide/",
         "https://brightai.site/blog/saudi-logistics-route-optimization/",
+        "https://brightai.site/blog/smart-inventory-management/",
         "https://brightai.site/blog/transport-logistics-solutions/",
+        "https://brightai.site/sectors/logistics/",
+        "https://brightai.site/sectors/manufacturing/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-consulting/",
         "https://brightai.site/services/ai-scolecs/",
@@ -74069,6 +74180,18 @@
         {
           "href": "https://brightai.site/blog/saudi-factory-ai-productivity/",
           "text": "إنتاجية المصانع السعودية بالذكاء الاصطناعي"
+        },
+        {
+          "href": "https://brightai.site/services/ai-automation-saudi/",
+          "text": "أتمتة AI في السعودية"
+        },
+        {
+          "href": "https://brightai.site/ai-workflows/",
+          "text": "سير العمل الذكي"
+        },
+        {
+          "href": "https://brightai.site/blog/process-automation/",
+          "text": "مقال أتمتة العمليات"
         },
         {
           "href": "https://brightai.site/",
@@ -75888,28 +76011,21 @@
   "summary": {
     "pagesDiscovered": 268,
     "indexablePages": 263,
-    "internalLinksDiscovered": 6455,
-    "orphanPages": 7,
+    "internalLinksDiscovered": 6513,
+    "orphanPages": 0,
     "brokenLinks": 0,
-    "pagesOutsideSitemap": 3,
+    "pagesOutsideSitemap": 2,
     "weakAnchors": 0,
     "noHrefLinks": 0,
     "canonicalIssues": 0,
     "hashIssues": 0,
-    "sitemapUrls": 254,
-    "sitemapMissingInternalLinks": 6
+    "sitemapUrls": 255,
+    "sitemapMissingInternalLinks": 0
   },
   "weakAnchors": [],
   "noHrefLinks": [],
   "canonicalIssues": [],
   "hashIssues": [],
-  "sitemapMissingInternalLinks": [
-    "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
-    "https://brightai.site/demo/social-data-analysis/",
-    "https://brightai.site/en/ai-bots/BrightProject/",
-    "https://brightai.site/en/ai-bots/BrightSales/",
-    "https://brightai.site/en/health/",
-    "https://brightai.site/en/tenders/"
-  ],
+  "sitemapMissingInternalLinks": [],
   "registrySize": 263
 }

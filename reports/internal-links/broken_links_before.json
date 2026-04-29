@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-04-28T22:30:46.665Z",
+  "generatedAt": "2026-04-29T01:41:12.079Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
   "filesScanned": 387,
-  "referencesScanned": 24537,
+  "referencesScanned": 24539,
   "internalReferences": 19246,
   "brokenReferences": 871,
   "fixableBrokenReferences": 18,
@@ -7035,15 +7035,6 @@
     },
     {
       "file": "en/docs/docs.html",
-      "line": 360,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "en/docs/docs.html",
       "line": 361,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
@@ -7062,7 +7053,16 @@
     },
     {
       "file": "en/docs/docs.html",
-      "line": 537,
+      "line": 363,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": "en/docs/docs.html",
+      "line": 538,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7494,7 +7494,7 @@
     },
     {
       "file": "offline/index.html",
-      "line": 30,
+      "line": 33,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -7503,7 +7503,7 @@
     },
     {
       "file": "offline/index.html",
-      "line": 151,
+      "line": 154,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",

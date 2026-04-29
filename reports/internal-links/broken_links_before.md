@@ -1,8 +1,8 @@
 # تقرير الروابط والمسارات المكسورة قبل الإصلاح
 
-- تاريخ التقرير: 2026-04-28T22:30:46.665Z
+- تاريخ التقرير: 2026-04-29T01:41:12.079Z
 - عدد الملفات المفحوصة: 387
-- إجمالي المراجع المكتشفة: 24537
+- إجمالي المراجع المكتشفة: 24539
 - المراجع الداخلية المفحوصة: 19246
 - الروابط/المسارات المكسورة: 871
 - المكسور القابل للإصلاح التلقائي: 18
@@ -717,10 +717,10 @@
 | en/data-analysis/index.html | 272 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | en/data-analysis/index.html | 273 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | en/data-analysis/index.html | 488 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| en/docs/docs.html | 360 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | en/docs/docs.html | 361 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | en/docs/docs.html | 362 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| en/docs/docs.html | 537 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| en/docs/docs.html | 363 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| en/docs/docs.html | 538 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | en/docs/index.html | 356 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | en/docs/index.html | 357 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | en/docs/index.html | 358 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
@@ -768,8 +768,8 @@
 | machine-learning/index.html | 168 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | machine-learning/index.html | 169 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | machine-learning/index.html | 403 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| offline/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| offline/index.html | 151 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| offline/index.html | 33 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| offline/index.html | 154 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | privacy-cookies/index.html | 124 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | privacy-cookies/index.html | 125 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | privacy-cookies/index.html | 126 | attr | /assets/images/logo.PNG | — | المسار غير موجود |

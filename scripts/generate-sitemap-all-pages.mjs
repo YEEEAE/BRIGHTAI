@@ -148,7 +148,9 @@ function buildHreflangSet(entry, registry, lowerPathMap) {
     allowedRelPaths: registry.publicRelPaths,
   });
   const counterpartUrl = counterpart ? registry.canonicalByRelPath.get(counterpart) : null;
-  const isEnglish = entry.relPath.toLowerCase().startsWith("en/") || /-en\.html$/i.test(entry.relPath);
+  const isEnglish = entry.relPath.toLowerCase().startsWith("en/")
+    || /-en\.html$/i.test(entry.relPath)
+    || /-en\/index\.html$/i.test(entry.relPath);
 
   if (isEnglish) {
     if (counterpartUrl) {
