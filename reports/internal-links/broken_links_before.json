@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-04-29T18:54:36.668Z",
+  "generatedAt": "2026-04-29T20:37:26.697Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 417,
-  "referencesScanned": 25014,
-  "internalReferences": 19788,
-  "brokenReferences": 828,
+  "filesScanned": 423,
+  "referencesScanned": 25038,
+  "internalReferences": 19805,
+  "brokenReferences": 812,
   "fixableBrokenReferences": 18,
-  "normalizationCandidates": 113,
+  "normalizationCandidates": 114,
   "topBrokenFiles": [
     {
       "file": "blog/ai-agents-business-guide/index.html",
@@ -649,10 +649,6 @@
       "count": 4
     },
     {
-      "file": "ai-agent/index.html",
-      "count": 3
-    },
-    {
       "file": "consultation/index.html",
       "count": 3
     },
@@ -662,14 +658,6 @@
     },
     {
       "file": "demo/ai-scolecs/index.html",
-      "count": 3
-    },
-    {
-      "file": "demo/ai-tenders-analysis/index.html",
-      "count": 3
-    },
-    {
-      "file": "demo/ai-workflows/index.html",
       "count": 3
     },
     {
@@ -694,10 +682,6 @@
     },
     {
       "file": "demo/customer-service-automation/index.html",
-      "count": 3
-    },
-    {
-      "file": "demo/data-analysis/index.html",
       "count": 3
     },
     {
@@ -741,19 +725,7 @@
       "count": 3
     },
     {
-      "file": "demo/smart-automation/index.html",
-      "count": 3
-    },
-    {
-      "file": "demo/smart-education-platform/index.html",
-      "count": 3
-    },
-    {
       "file": "demo/smart-hiring-system/index.html",
-      "count": 3
-    },
-    {
-      "file": "demo/smart-hospital-management/index.html",
       "count": 3
     },
     {
@@ -775,6 +747,10 @@
     {
       "file": "en/consultation/index.html",
       "count": 3
+    },
+    {
+      "file": "demo/ai-tenders-analysis/index.html",
+      "count": 2
     },
     {
       "file": "demo/index.html",
@@ -827,6 +803,18 @@
     {
       "file": "services/seo-ai-agent.html",
       "count": 2
+    },
+    {
+      "file": "demo/smart-automation/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/smart-education-platform/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/smart-hospital-management/index.html",
+      "count": 1
     },
     {
       "file": "services/ai-consulting.html",
@@ -988,33 +976,6 @@
     {
       "file": "about/index.html",
       "line": 474,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "ai-agent/index.html",
-      "line": 30,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "ai-agent/index.html",
-      "line": 39,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "ai-agent/index.html",
-      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4236,7 +4197,7 @@
     },
     {
       "file": "demo/ai-tenders-analysis/index.html",
-      "line": 30,
+      "line": 25,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4245,43 +4206,7 @@
     },
     {
       "file": "demo/ai-tenders-analysis/index.html",
-      "line": 39,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/ai-tenders-analysis/index.html",
-      "line": 52,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/ai-workflows/index.html",
-      "line": 30,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/ai-workflows/index.html",
-      "line": 39,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/ai-workflows/index.html",
-      "line": 52,
+      "line": 55,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4444,33 +4369,6 @@
     {
       "file": "demo/customer-service-automation/index.html",
       "line": 210,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/data-analysis/index.html",
-      "line": 30,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/data-analysis/index.html",
-      "line": 39,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/data-analysis/index.html",
-      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4569,7 +4467,7 @@
     },
     {
       "file": "demo/index.html",
-      "line": 27,
+      "line": 31,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4812,25 +4710,7 @@
     },
     {
       "file": "demo/smart-automation/index.html",
-      "line": 30,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/smart-automation/index.html",
-      "line": 39,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/smart-automation/index.html",
-      "line": 52,
+      "line": 35,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -4840,24 +4720,6 @@
     {
       "file": "demo/smart-education-platform/index.html",
       "line": 30,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/smart-education-platform/index.html",
-      "line": 39,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/smart-education-platform/index.html",
-      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",
@@ -5038,24 +4900,6 @@
     {
       "file": "demo/smart-hospital-management/index.html",
       "line": 30,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/smart-hospital-management/index.html",
-      "line": 39,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": "demo/smart-hospital-management/index.html",
-      "line": 52,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",

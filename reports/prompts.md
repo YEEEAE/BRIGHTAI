@@ -1,262 +1,319 @@
-# 🌟 مكتبة أوامر وهندسة منصة BrightAI
 
-> مستند شامل مستوحى من أفضل ممارسات أدلة التصميم، يحتوي على مجموعة دقيقة من الأوامر الموجهة لوكلاء الذكاء الاصطناعي، تهدف إلى تحسين الأداء، تحسين محركات البحث، الأمان، وتجربة المستخدم بشكل منهجي وتدريجي.
+# MASTER PROMPT — BrightAI Demo Suite (World-Class Rebuild)
 
----
+## 🎯 الهدف الاستراتيجي
 
-## 📋 جدول المحتويات
+أنت Senior Full-Stack AI Engineer + Product Designer مكلّف ببناء **أفضل مجموعة صفحات Demo تفاعلية بالشرق الأوسط** لشركة Bright AI (brightai.site). الهدف: تحويل الزائر من فضولي → مشترٍ خلال أقل من 90 ثانية، عبر تجربة AI حقيقية مدعومة بـ **Google Gemini API** بالكامل.
 
-- [⚡ الأداء وتجربة المستخدم](#-الأداء-وتجربة-المستخدم)
-- [🔍 تحسين محركات البحث والذكاء الاصطناعي (SEO &amp; AI)](#-تحسين-محركات-البحث-والذكاء-الاصطناعي-seo--ai)
-- [🛡️ الأمان والتتبع](#-الأمان-والتتبع)
-- [♿ إمكانية الوصول والتصميم](#-إمكانية-الوصول-والتصميم)
-- [🤖 الاختبار الشامل وضمان الجودة](#-الاختبار-الشامل-وضمان-الجودة)
-- [🚀 حزمة البرومبتات الستة المحسّنة (الإصدار الصارم)](#-حزمة-البرومبتات-الستة-المحسّنة-الإصدار-الصارم)
+المرجع المعياري (Benchmark): مستوى ade.com, vercel.com/ai, anthropic.com/claude, openai.com/playground, runwayml.com.
 
 ---
 
-## ⚡ الأداء وتجربة المستخدم
+## 🧱 المسارات المطلوب إعادة بنائها (8 ديموهات)
+
+| # | المسار                                             | اسم النظام                          | المحرك (Gemini Use-case)                                                         |
+| - | -------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 1 | `/demo/smart-hiring-system/` (interview/)              | نظام التوظيف الذكي           | CV Parsing + Job Matching + Interview Q-Generation (Gemini 2.5 Pro + Function Calling) |
+| 2 | `/demo/smart-medical-archive/` (mart-medical-archive/) | الأرشيف الطبي الذكي         | OCR + Medical Entity Extraction + Semantic Search (Gemini Vision + Embeddings)         |
+| 3 | `/demo/data-analyzer/` (try/data-analyzer/)            | منصة البيانات الموحدة     | CSV/Excel Analysis + Auto-Charts + Insights (Gemini + Code Execution)                  |
+| 4 | `/demo/ai-scolecs/`                                    | المنصة التعليمية الذكية | Lesson Gen + Auto-Quiz + Performance Analysis (Gemini 2.5 + Structured Output)         |
+| 5 | `/demo/smart-hospital-management/` (health/)           | إدارة المستشفيات الذكية | KPI Dashboard + Decision Support + Predictive Alerts (Gemini Reasoning)                |
+| 6 | `/demo/ocr-demo/`                                      | أتمتة الوثائق (OCR)              | Document Classification + Field Extraction (Gemini Vision Multimodal)                  |
+| 7 | `/demo/ai-bots/BrightSupport/`                         | بوت دعم العملاء                 | Multi-channel Chat + Sentiment + Auto-escalation (Gemini Live API)                     |
+| 8 | `/demo/marketing-automation/`                          | أتمتة التسويق                    | Content Gen + Scheduler + Audience Targeting (Gemini + Imagen 3)                       |
+| 9 | `/demo/supply-chain/`                                  | تحسين سلسلة التوريد         | Demand Forecasting + Auto-reorder + Optimization (Gemini + Time-series)                |
 
 ---
 
+## 🏗️ الهيكل التقني الموحد (Tech Stack Standard)
+
+### Frontend
+
+- **Framework**: Next.js 15 (App Router) + React 19 + TypeScript strict
+- **Styling**: TailwindCSS 4 + shadcn/ui + Framer Motion
+- **RTL**: دعم كامل من البداية (`dir="rtl"`, خط IBM Plex Sans Arabic أو Tajawal)
+- **State**: Zustand + TanStack Query
+- **Charts**: Recharts + Tremor + ApexCharts (للوحات الطبية والمالية)
+- **Animations**: Framer Motion + GSAP للانتقالات السينمائية
+- **Streaming UI**: Vercel AI SDK (`useChat`, `useCompletion`, `streamText`)
+
+### Backend (Edge-first)
+
+- **Runtime**: Next.js Route Handlers على Vercel Edge / Cloudflare Workers
+- **AI Provider**: `@google/generative-ai` + `@ai-sdk/google` (Gemini 2.5 Pro / Flash / Flash-Lite)
+- **Models Routing**:
+  - `gemini-2.5-pro` → التحليل العميق (طبي، توظيف، عقود)
+  - `gemini-2.5-flash` → التفاعل السريع (شات، تلخيص)
+  - `gemini-2.5-flash-lite` → الـ classification الفوري
+  - `gemini-embedding-001` → البحث الدلالي
+  - `imagen-4` → التسويق البصري (اختياري)
+
+### Security & Governance (إلزامي)
+
+- **API Keys**: في Server-side فقط، عبر `process.env.GEMINI_API_KEY`
+- **Rate Limiting**: Upstash Redis (10 طلبات/دقيقة لكل IP)
+- **Input Sanitization**: Zod schemas + DOMPurify
+- **PII Guard**: regex middleware يمنع رفع أرقام هوية/بطاقات
+- **Audit Log**: تسجيل كل طلب (بدون محتوى) لـ Vercel Analytics
+- **Content Safety**: Gemini Safety Settings = BLOCK_MEDIUM_AND_ABOVE
+- **No Storage**: لا حفظ مدخلات المستخدم في الديمو العام
+
 ---
 
-## 🛡️ الأمان والتتبع
+## 🎨 معايير التصميم العالمي (Design DNA)
 
-### 18. إصلاح تدريجي لـ CSP وإزالة unsafe-inline
+### نظام بصري موحد
 
-**الهدف:** تعزيز الأمان دون الإضرار بوظائف الطرف الثالث أو التتبع.
+- **Palette**:
+  - Primary: `#0A2540` (Bright Navy)
+  - Accent: `#00D4AA` (Saudi Teal) + `#FFB800` (Vision Gold)
+  - Neutrals: Zinc scale من shadcn
+- **Dark Mode**: افتراضي + Toggle سلس
+- **Typography**:
+  - عناوين: Tajawal Bold (عربي) / Inter (إنجليزي)
+  - متن: IBM Plex Sans Arabic
+  - أرقام: tabular-nums + JetBrains Mono للكود
+- **Glassmorphism + Neon Grid backgrounds** للأقسام الـ "AI Live"
+- **Micro-interactions**: hover, focus rings, skeleton loaders, optimistic UI
+- **Sound Design** (اختياري): نغمة خفيفة عند انتهاء التحليل
 
-```text
-أنت مهندس أمن تطبيقات. حسّن CSP في BrightAI تدريجياً.
+### Layout قياسي لكل ديمو (Hero → Try → Convert)
 
-المطلوب:
-1. افحص جميع inline scripts في:
-   - index.html
-   - services/
-   - sectors/
-   - blog/
-   - ai-bots/
-2. اقترح خطة لإزالة unsafe-inline تدريجياً.
-3. انقل السكربتات inline إلى ملفات JS خارجية حيث يمكن.
-4. استخدم hash للسكربتات الصغيرة الثابتة.
-5. تأكد أن:
-   - Google Tag Manager يعمل.
-   - Clarity يعمل.
-   - Sentry يعمل.
-   - WhatsApp links تعمل.
-   - demo APIs تعمل.
-6. لا تغيّر CSP دفعة واحدة إن كان سيكسر الموقع.
-
-قيود:
-- لا تضف Disallow.
-- لا تحمِ أي مسار.
-- لا تمنع crawler أو AI bot.
-- لا تضف noindex.
-- لا توقف أدوات analytics بدون سبب.
-
-بعد التنفيذ:
-- اعرض CSP المقترح.
-- اعرض سكربتات inline التي تحتاج نقل.
-- اعرض خطة انتقال من مرحلتين.
+```
+┌─────────────────────────────────────────┐
+│ [Sticky Nav] BrightAI · Demos · WhatsApp│
+├─────────────────────────────────────────┤
+│ HERO (above fold)                       │
+│  • H1 + sub + لايف ميتركس عدّاد         │
+│  • زر "جرّب الآن" + فيديو 8 ثواني loop  │
+├─────────────────────────────────────────┤
+│ ⚡ THE PLAYGROUND (القلب — 70% الأهمية) │
+│  • Tabs: سيناريوهات جاهزة + رفع ملفك    │
+│  • Input panel (يسار) ← Output (يمين)   │
+│  • Streaming response + animated charts │
+│  • زر "تحميل التقرير PDF"               │
+├─────────────────────────────────────────┤
+│ 📊 BEFORE/AFTER + ROI CALCULATOR        │
+│  • سلايدر: عدد الموظفين/الملفات/العملاء │
+│  • نتيجة فورية: التوفير بالريال + الوقت │
+├─────────────────────────────────────────┤
+│ 🏆 SOCIAL PROOF (شعارات + أرقام)        │
+├─────────────────────────────────────────┤
+│ 🔌 INTEGRATIONS (HRMS/SAP/Oracle/...)   │
+├─────────────────────────────────────────┤
+│ ❓ FAQ (Schema.org markup)              │
+├─────────────────────────────────────────┤
+│ 🎯 STICKY CTA: واتساب + احجز عرض        │
+└─────────────────────────────────────────┘
 ```
 
 ---
 
-## ♿ إمكانية الوصول والتصميم
+## 🤖 مواصفات كل ديمو بالتفصيل
 
-### 19. تحسين إمكانية الوصول (Accessibility)
+### 1️⃣ نظام التوظيف الذكي (`/demo/smart-hiring-system/`)
 
-**الهدف:** التوافق الكامل مع معايير WCAG 2.1 AA.
+**التفاعل الحقيقي:**
 
-```text
-أنت مهندس Frontend Accessibility. حسّن توافق BrightAI مع WCAG 2.1 AA.
+- نموذج input: لصق وصف وظيفة + لصق/رفع PDF سيرة ذاتية
+- زر "جرّب بسيناريو جاهز" (3 سيناريوهات: مطور، مدير عمليات، محاسب)
+- **Gemini Call**: `gemini-2.5-pro` مع Function Calling + Structured Output (Zod schema)
+- **Output الحي (Streaming)**:
+  - مؤشر مطابقة دائري (0-100%) متحرك
+  - 5 مهارات مطابقة + 3 فجوات
+  - 7 أسئلة مقابلة مولّدة بناءً على الفجوات
+  - تقرير مخاطر (Bias check + سنوات خبرة + مصداقية)
+  - زر تصدير PDF عربي RTL (react-pdf + arabic font)
+- **Wow factor**: مقارنة جنباً إلى جنب لـ 3 مرشحين دفعة واحدة
 
-المطلوب:
-1. أضف Skip Navigation Link في الصفحات الرئيسية.
-2. تأكد من وجود focus-visible واضح.
-3. افحص aria-label للأزرار والأيقونات.
-4. تأكد أن button يستخدم للأفعال وa يستخدم للتنقل.
-5. تأكد أن النماذج تحتوي label مرتبط.
-6. راجع alt للصور.
-7. راجع ترتيب العناوين.
-8. راجع التباين اللوني.
-9. تأكد من التنقل بالكيبورد.
+### 2️⃣ الأرشيف الطبي الذكي (`/demo/smart-medical-archive/`)
 
-قيود:
-- لا تغيّر التصميم جذرياً.
-- لا تضف Disallow.
-- لا تحمِ أي مسار.
-- لا تضف noindex.
-- لا تخفِ محتوى SEO الأساسي عن المستخدمين.
+**التفاعل:**
 
-بعد التنفيذ:
-- اعرض قائمة مشاكل Accessibility التي تم إصلاحها.
-- اعرض أمثلة قبل/بعد.
-- اعرض مشاكل تحتاج اختبار يدوي.
-```
+- رفع صورة وصفة طبية / تقرير أشعة (يوجد عينات جاهزة)
+- **Gemini Vision Multimodal**: استخراج التشخيص + الأدوية + الجرعات
+- **Semantic Search Bar**: "ابحث عن مرضى السكري بضغط مرتفع آخر 30 يوم"
+- **Output**:
+  - بطاقة مريض مولّدة + Timeline سريري
+  - تنبيهات تفاعل دوائي (Drug-drug interaction)
+  - HL7/FHIR JSON preview قابل للنسخ
+- **Compliance Badge**: PDPL + HIPAA-ready (واضح جداً)
 
-### 20. تحسين التوافق مع الاتجاهين RTL/LTR
+### 3️⃣ منصة تحليل البيانات (`/demo/data-analyzer/`)
 
-**الهدف:** دعم اللغات بسلاسة وتحسين التصميم المنطقي دون كسر الجوال.
+**التفاعل:**
 
-```text
-أنت Senior UI/UX Designer وFrontend Architect متخصص في RTL/LTR.
+- رفع CSV/Excel (حتى 5MB) + Drag-drop + sample datasets (مبيعات، HR، شكاوى)
+- **Gemini + Code Execution Tool**: يولّد كود Python يحلل البيانات فعلياً
+- **Output Streaming**:
+  - 3-5 رسوم بيانية تفاعلية (Recharts) تظهر تباعاً
+  - Insights bullets بالعربي (5 رؤى رئيسية)
+  - Anomalies detection
+  - زر "اسأل بياناتك" → Chat-with-your-data
+- **Wow factor**: تحليل sentiment للنصوص العربية في عمود تعليقات
 
-المطلوب:
-1. افحص كل صفحات العربية والإنجليزية.
-2. تأكد من:
-   - html dir صحيح.
-   - html lang صحيح.
-   - text-align منطقي.
-   - الأيقونات الاتجاهية تنعكس في RTL.
-   - أرقام الهاتف لا تنعكس.
-   - القوائم والبطاقات لا تنكسر في الجوال.
-3. استبدل الخصائص الفيزيائية:
-   - left/right
-   - margin-left/right
-   - padding-left/right
-   - border-left/right
-4. استخدم خصائص منطقية:
-   - inline-start
-   - inline-end
-   - block-start
-   - block-end
-5. لا تكسر صفحات EN.
+### 4️⃣ المنصة التعليمية الذكية (`/demo/ai-scolecs/`)
 
-قيود:
-- لا تضف Disallow.
-- لا تحمِ أي مسار.
-- لا تغير URL.
-- لا تضف noindex.
+**التفاعل:**
 
-بعد التنفيذ:
-- اعرض الملفات المعدلة.
-- اعرض أهم مشاكل RTL التي تم حلها.
-- اعرض صفحات يجب اختبارها يدوياً.
+- 3 أوضاع: مدرس / طالب / مدير
+- **مدرس**: أدخل موضوع → يولّد خطة درس + presentation outline + 10 أسئلة (MCQ + open)
+- **طالب**: سؤال → شرح متدرج + أمثلة + اختبار قصير
+- **مدير**: لوحة أداء طلاب وهمية مع تنبؤ بالطلاب المعرضين للتعثر
+- **Gemini 2.5 Pro** مع structured output JSON Schema للأسئلة
+- متوافق مع المنهج السعودي (mention vision 2030)
+
+### 5️⃣ إدارة المستشفيات (`/demo/smart-hospital-management/`)
+
+**التفاعل:**
+
+- Live Dashboard فيه: إشغال أسرّة، طوابير الطوارئ، KPIs مالية
+- زر "اسأل المساعد التنفيذي" → Gemini يحلل اللوحة ويعطي توصيات
+- **Predictive widgets**: التنبؤ بالإشغال خلال 7 أيام
+- **Decision Support**: سيناريو "نقص أطباء قسم الطوارئ يوم الجمعة" → Gemini يقترح 3 حلول
+
+### 6️⃣ OCR & Document Automation (`/demo/ocr-demo/`)
+
+**التفاعل:**
+
+- Drag-drop فاتورة/عقد/هوية وطنية (عينات جاهزة + رفع المستخدم)
+- **Gemini Vision** يستخرج: رقم، تاريخ، مبلغ، أطراف، بنود
+- **Animated extraction**: bounding boxes تظهر على الصورة + الحقول تتعبأ animatedly
+- **Output**: JSON منظم + CSV download + ERP-ready format
+- **Multi-doc batch**: ارفع 5 وثائق وشاهد المعالجة المتوازية
+
+### 7️⃣ BrightSupport Bot (`/demo/ai-bots/BrightSupport/`)
+
+**التفاعل:**
+
+- Chat widget عربي يحاكي WhatsApp UI
+- **Gemini Live API / Streaming chat** بشخصية "نواف" خادم العملاء
+- 3 سيناريوهات جاهزة: استفسار منتج، شكوى، طلب استرجاع
+- **Sentiment meter** real-time (سعيد/محايد/غاضب)
+- **Auto-escalation demo**: لما sentiment يصير سلبي → "تم تحويلك لموظف بشري"
+- لوحة Admin مصغّرة تظهر بالـ split-view: تحليلات، CSAT score
+
+### 8️⃣ أتمتة التسويق (`/demo/marketing-automation/`)
+
+**التفاعل:**
+
+- أدخل: اسم منتج + جمهور مستهدف + قناة (X/IG/LinkedIn/TikTok)
+- **Gemini يولّد**: 5 منشورات بنبرة سعودية + hashtags + أوقات نشر مقترحة
+- **Imagen 4** يولّد صورة مرفقة (اختياري)
+- **Calendar view**: جدولة خلال 7 أيام + heatmap لأفضل أوقات
+- **A/B variant generator** + توقع CTR
+
+### 9️⃣ سلسلة التوريد (`/demo/supply-chain/`)
+
+**التفاعل:**
+
+- بيانات وهمية لـ 50 SKU + مخزون حالي + مبيعات 90 يوم
+- **Gemini Reasoning**: تحليل الطلب + توقع نفاد + اقتراحات إعادة طلب
+- Map view (مدن السعودية) للتوزيع الأمثل
+- **Optimizer**: قبل/بعد بنسبة توفير محسوبة
+- زر "محاكاة شهر رمضان" → يعدّل التوقعات تلقائياً
+
+---
+
+## 🧩 مكونات مشتركة (Shared Components Library)
+
+أنشئ `/components/demo/` يحتوي:
+
+- `<DemoHero />` — موحد لكل صفحة (props: title, kpis[], video)
+- `<PlaygroundShell />` — Split layout input/output مع streaming
+- `<GeminiStreamRenderer />` — يعرض tokens متدفقة بـ animation
+- `<ROICalculator />` — قابل للتخصيص بالمتغيرات
+- `<BeforeAfterSlider />` — مقارنة بصرية
+- `<ScenarioPicker />` — اختيار سيناريو جاهز
+- `<ExportPDFButton />` — تصدير عربي RTL
+- `<TrustBar />` — NCA/SDAIA/NDMO/PDPL badges
+- `<StickyMobileCTA />` — زر واتساب ثابت أسفل الجوال
+- `<RateLimitGuard />` — يعرض رسالة لطيفة عند تجاوز الحد
+
+---
+
+## 📡 معيار استدعاء Gemini API (Template موحد)
+
+```typescript
+// /app/api/demo/[slug]/route.ts
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { ratelimit } from "@/lib/ratelimit";
+import { z } from "zod";
+
+const InputSchema = z.object({ /* per-demo schema */ });
+
+export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for") ?? "anon";
+  const { success } = await ratelimit.limit(ip);
+  if (!success) return new Response("Rate limit", { status: 429 });
+
+  const body = InputSchema.parse(await req.json());
+  
+  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+  const model = genAI.getGenerativeModel({
+    model: "gemini-2.5-pro",
+    systemInstruction: `أنت محلل خبير لـ Bright AI. أجب بالعربية الفصحى المهنية. 
+                       المخرج JSON فقط حسب الـ schema المرفق. 
+                       لا تعطي قرارات نهائية، فقط توصيات قابلة للمراجعة البشرية.`,
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: outputSchema, // per-demo
+      temperature: 0.4,
+    },
+    safetySettings: [/* BLOCK_MEDIUM_AND_ABOVE all categories */],
+  });
+
+  const stream = await model.generateContentStream(body.prompt);
+  return new Response(stream.toReadableStream());
+}
 ```
 
 ---
 
-## 🤖 الاختبار الشامل وضمان الجودة
+## ✅ Acceptance Criteria (لكل ديمو)
 
-### 21. الاختبارات النهائية بعد الإصلاح
-
-**الهدف:** التحقق الدقيق من سلامة كافة التحسينات المنجزة.
-
-```text
-أنت QA Engineer وTechnical SEO Auditor. نفّذ فحص نهائي لمشروع BrightAI بعد الإصلاحات.
-
-المطلوب:
-1. شغّل فحص HTML للصفحات الرئيسية.
-2. شغّل فحص SEO:
-   - title
-   - meta description
-   - canonical
-   - hreflang
-   - robots meta
-   - schema
-3. شغّل فحص الأداء:
-   - حجم HTML
-   - حجم CSS
-   - حجم JS
-   - الصور
-   - الخطوط
-4. شغّل فحص الروابط الداخلية.
-5. شغّل فحص sitemap.
-6. شغّل فحص accessibility.
-7. افحص عدم وجود console.log في الإنتاج.
-8. افحص أن APIs لا تكشف مفاتيح.
-
-قيود:
-- لا تضف Disallow.
-- لا تحمِ أي مسار.
-- لا تضف noindex.
-- لا تغيّر robots.txt إلا إذا كان التغيير لا يمنع الزحف ولا يحظر مسارات.
-
-المخرجات:
-- تقرير قبل/بعد.
-- قائمة مشاكل متبقية.
-- قائمة ملفات معدلة.
-- توصيات نهائية للنشر.
-```
-
-### 22. الأمر التكاملي الشامل المتكامل
-
-**الهدف:** توجيه الوكيل الذكي لتنفيذ جميع الإصلاحات كدفعة متسقة في حال طلب التحديث دفعة واحدة.
-
-```text
-أنت وكيل هندسي متكامل لموقع BrightAI، تعمل كالتالي:
-- Senior Frontend Architect
-- Senior Software Engineer
-- Senior Technical SEO Engineer
-- Senior UI/UX Designer
-- AEO/GEO/HEI Specialist للسوق السعودي
-
-نفّذ إصلاحات شاملة على مشروع BrightAI بناءً على التدقيق السابق.
-
-الأهداف:
-1. تحسين أداء Core Web Vitals.
-2. تحسين SEO التقليدي.
-3. تحسين AI Search / AEO / GEO / HEI.
-4. تحسين Accessibility.
-5. تحسين RTL/LTR.
-6. تحسين JavaScript reliability.
-7. تحسين CSS وتنظيف التكرار.
-8. تحسين Schema وllms.txt.
-9. تحسين الروابط الداخلية.
-10. تحسين تجربة صفحات الخدمات والقطاعات والمدونة.
-
-قيود إلزامية جداً:
-- لا تضف أي Disallow.
-- لا تحمِ أي مسار.
-- لا تمنع الزحف لأي مجلد.
-- لا تضف noindex لأي صفحة.
-- لا تضف X-Robots-Tag.
-- لا تمنع AI crawlers.
-- لا تغيّر robots.txt بطريقة تمنع الفهرسة.
-- لا تخفي /backend/ أو /scripts/ أو /tmp/ أو أي مسار آخر في هذا الطلب.
-- لا تحذف صفحات مهمة.
-- لا تغيّر canonical إلا عند وجود خطأ واضح.
-- لا تضف ادعاءات أو أرقام غير مثبتة.
-
-منهجية التنفيذ:
-1. اقرأ المشروع كاملاً قبل التعديل.
-2. حدد الملفات المتأثرة.
-3. نفّذ الإصلاحات على دفعات صغيرة.
-4. بعد كل دفعة، شغّل فحص مناسب.
-5. لا تكسر RTL أو LTR.
-6. لا تكسر الديمو أو APIs.
-7. لا تكسر GTM أو Clarity أو Sentry.
-8. لا تستخدم حلول مؤقتة إذا كان الحل الجذري ممكن.
-
-المخرجات المطلوبة:
-1. قائمة الملفات المعدلة.
-2. ملخص كل تعديل.
-3. مشاكل تم حلها.
-4. مشاكل متبقية.
-5. قياسات قبل/بعد إن أمكن.
-6. خطة تحقق بعد النشر.
-```
+- [ ] Time-to-first-token < 1.2 ثانية
+- [ ] Lighthouse Performance ≥ 92, A11y = 100, SEO = 100
+- [ ] Core Web Vitals كلها خضراء (LCP < 2s, INP < 200ms, CLS < 0.05)
+- [ ] يعمل بلا JS للمحتوى الأساسي (SSR + Progressive Enhancement)
+- [ ] RTL مثالي + اختبار على Safari iOS
+- [ ] Schema.org markup: `SoftwareApplication` + `FAQPage` + `BreadcrumbList`
+- [ ] Open Graph + Twitter Cards مع صورة مولّدة لكل ديمو
+- [ ] يدعم Dark/Light + يحفظ تفضيل المستخدم
+- [ ] لا errors في Console، لا warnings في React strict mode
+- [ ] E2E test (Playwright) يغطي السيناريو الذهبي لكل ديمو
+- [ ] Loading skeleton لكل قسم async
+- [ ] Error boundary مع رسالة عربية ودودة + زر إعادة محاولة
+- [ ] Fallback ذكي إذا Gemini API فشل (cached sample response)
+- [ ] WhatsApp deep link مع رسالة prefilled مخصصة لكل ديمو
+- [ ] تتبع تحليلي: Vercel Analytics + PostHog events (demo_started, demo_completed, cta_clicked)
 
 ---
 
-## 🚀 حزمة البرومبتات الستة المحسّنة (الإصدار الصارم
+## 🚀 ترتيب التنفيذ المقترح (Sprints)
 
-## لا تمنع أي ملف أو صفحة من النشر. نظّف أي أسرار أو مفاتيح حقيقية من الملفات واجعلها آمنة للعرض العام.
+**Sprint 1 (أسبوع):** البنية التحتية المشتركة + Design System + ديمو OCR (الأسهل، الأكثر بصرية).
+
+**Sprint 2 (أسبوع):** ديمو التوظيف + ديمو تحليل البيانات.
+
+**Sprint 3 (أسبوع):** ديمو الطبي + ديمو المستشفى.
+
+**Sprint 4 (أسبوع):** ديمو التعليم + ديمو الدعم (BrightSupport).
+
+**Sprint 5 (أسبوع):** ديمو التسويق + ديمو سلسلة التوريد + QA شامل + Launch.
 
 ---
 
-## 🎯 الخلاصة والخطوات التالية
+## 🎬 طلبي النهائي
 
-هذه البرومبتات الستة متوافقة تماماً مع سياسة المنصة:
+ابدأ الآن بـ:
 
-- لا تمنع أي صفحة أو ملف.
-- لا تضيف `noindex` أو `Disallow`.
-- لا تحذف من `sitemap.xml`.
-- لا تستخدم `exclude` يمنع مجلدات من النشر.
-- تنظّف الأسرار بدل إخفاء الملفات.
-- تحسّن SEO والأداء والواجهة والبحث الداخلي بدون تعطيل أي جزء من المشروع.
+1. توليد بنية المجلدات الكاملة (tree).
+2. إنشاء `package.json` + `tsconfig.json` + `tailwind.config.ts` + `next.config.mjs`.
+3. تطبيق Design System (`globals.css` + `theme.ts` + ألوان + خطوط عربية).
+4. بناء `<PlaygroundShell />` و `<GeminiStreamRenderer />` كـ proof-of-concept.
+5. تنفيذ **ديمو OCR كاملاً** (drag-drop → Gemini Vision → animated extraction → PDF export) كنموذج مرجعي للبقية.
 
-**الخطوات للتنفيذ:**
-استخدم البرومبتات بالترتيب من 1 إلى 6، ثم شغّل **برومبت التحقق النهائي**. العمل المطلوب من حيث التوثيق قد اكتمل بالكامل.
+اكتب الكود **production-ready**, مع تعليقات عربية شارحة عند المنطق المعقد، والتزم بـ ESLint strict + Prettier. لا تختصر، لا placeholders، لا "TODO". الكود اللي تكتبه هو اللي بيشتغل في الإنتاج.
+
+**الجودة المستهدفة: لو قارنّاها بـ vercel.com/ai أو anthropic.com/claude، يجب أن تتفوق عليها في تجربة المستخدم العربي.**

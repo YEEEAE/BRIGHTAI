@@ -20,7 +20,7 @@ const API_CONFIG = {
       chat: "/api/ai/chat/completions",
       stream: "/api/ai/chat/completions"
     },
-    model: "gemini-2.5-flash",
+    model: "gemini-2.5-pro",
     provider: "gemini",
     proxyPath: "/api/ai/chat/completions"
   },

@@ -82,17 +82,19 @@
         <section class="score-card">
           <div class="score-ring" style="--score:${score}"><span>${score}</span></div>
           <div>
-            <h3>مؤشر الجاهزية</h3>
+            <h3>Confidence Score</h3>
             <p>قراءة تقديرية تساعدك ترتب الأولويات، وليست ضماناً لنتيجة تجارية محددة.</p>
           </div>
         </section>
-        <section class="dash-section"><h3>هذا الملخص اللي يهمّك بالضبط</h3>${list(result.executiveSummary)}</section>
-        <section class="dash-section"><h3>رؤى رئيسية</h3>${list(result.keyInsights)}</section>
-        <section class="dash-section"><h3>المخاطر</h3>${list(result.risks)}</section>
-        <section class="dash-section"><h3>قرارات قابلة للتنفيذ</h3>${list(result.recommendedActions)}</section>
-        <section class="dash-section"><h3>الأثر التجاري أو العائد المتوقع</h3><p>${escapeHtml(result.businessImpact)}</p></section>
+        <section class="dash-section"><h3>Executive Summary</h3>${list(result.executiveSummary)}</section>
+        <section class="dash-section"><h3>Metrics Grid</h3><div class="metrics-grid"><div class="metric-card"><span>الثقة</span><strong>${score}%</strong></div><div class="metric-card"><span>الجاهزية</span><strong>${score > 84 ? "عالية" : "متوسطة"}</strong></div><div class="metric-card"><span>زمن النتيجة</span><strong>8-12 ثانية</strong></div><div class="metric-card"><span>الربط</span><strong>Backend</strong></div></div></section>
+        <section class="dash-section"><h3>Key Findings</h3>${list(result.keyInsights)}</section>
+        <section class="dash-section"><h3>Risks & Considerations</h3>${list(result.risks)}</section>
+        <section class="dash-section"><h3>Recommendations</h3>${list(result.recommendedActions)}</section>
+        <section class="dash-section"><h3>Impact Preview</h3><p>${escapeHtml(result.businessImpact)}</p></section>
         <section class="dash-section"><h3>جاهزية التكامل</h3>${list(result.integrationReadiness)}</section>
-        <section class="dash-section"><h3>الخطوات التالية</h3>${list(result.nextSteps)}</section>
+        <section class="dash-section"><h3>Next Best Actions</h3>${list(result.nextSteps)}</section>
+        <section class="dash-section"><h3>Smart Report</h3><p>التقرير قابل للنسخ والتحميل من شريط الإجراءات أسفل مساحة النتائج.</p></section>
         <section class="dash-section">
           <h3>الخطوة الجاية سهلة</h3>
           <div class="dash-cta">

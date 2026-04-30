@@ -16,13 +16,19 @@
     return `<ul>${safeItems.map(item => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
   }
 
+  function optionalSection(title, items) {
+    if (!Array.isArray(items) || !items.filter(Boolean).length) return "";
+    return `<section><h4>${escapeHtml(title)}</h4>${list(items)}</section>`;
+  }
+
   function setLoading(root, isLoading) {
     const box = root.querySelector("[data-loading-box]");
     const submit = root.querySelector("[data-demo-form] button[type='submit']");
     if (box) box.hidden = !isLoading;
     if (submit) {
+      if (!submit.dataset.idleText) submit.dataset.idleText = submit.textContent;
       submit.disabled = isLoading;
-      submit.textContent = isLoading ? "جاري التحليل..." : "شغّل التحليل";
+      submit.textContent = isLoading ? "جاري التحليل..." : submit.dataset.idleText;
     }
   }
 
@@ -41,6 +47,11 @@
         recommendedActions: fallback.recommendedActions || [],
         businessImpact: fallback.businessImpact || "",
         integrationReadiness: fallback.integrationReadiness || [],
+        deadlines: fallback.deadlines || [],
+        legalReviewItems: fallback.legalReviewItems || [],
+        questions: fallback.questions || [],
+        metrics: fallback.metrics || [],
+        preliminaryRecommendation: fallback.preliminaryRecommendation || "",
         nextAction: Array.isArray(fallback.nextSteps) ? fallback.nextSteps[0] : fallback.nextSteps || "احجز جلسة تقييم تنفيذية.",
         whatsappSummary: fallback.whatsappSummary || ""
       }
@@ -63,7 +74,12 @@
           <section><h4>المخاطر قبل الشراء</h4>${list(report.risks)}</section>
           <section><h4>الإجراءات المقترحة</h4>${list(report.recommendedActions)}</section>
           <section><h4>جاهزية الربط</h4>${list(report.integrationReadiness)}</section>
+          ${optionalSection("مواعيد حرجة وتنبيهات", report.deadlines)}
+          ${optionalSection("بنود تحتاج مراجعة قانونية", report.legalReviewItems)}
+          ${optionalSection("أسئلة مقترحة للجهة المعلنة", report.questions)}
+          ${optionalSection("مؤشرات القرار", report.metrics)}
         </div>
+        ${report.preliminaryRecommendation ? `<div class="bai-impact-note"><strong>التوصية المبدئية</strong><p>${escapeHtml(report.preliminaryRecommendation)}. هذه توصية مساندة وغير نهائية، والقرار النهائي للفريق المختص.</p></div>` : ""}
         <div class="bai-impact-note">
           <strong>الأثر التجاري</strong>
           <p>${escapeHtml(report.businessImpact)}</p>
@@ -100,10 +116,12 @@
         if (textarea && sample[1]) textarea.value = sample[1];
       });
     });
-    root.querySelector("[data-load-first-sample]")?.addEventListener("click", () => {
-      const first = root.querySelector("[data-sample='0']");
-      first?.click();
-      root.querySelector("#demo-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    root.querySelectorAll("[data-load-first-sample]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const first = root.querySelector("[data-sample='0']");
+        first?.click();
+        root.querySelector("#demo-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
     });
   }
 

@@ -9,11 +9,14 @@ const wa = "https://wa.me/966538229013";
 const today = "2026-04-29";
 
 const sharedFaq = [
-  ["هل التجربة مجانية؟", "سؤال منطقي، والجواب الصريح: نعم. تقدر تجرّب براحتك ببيانات وهمية وتشوف شكل التقرير قبل ما تطلب نسخة مخصصة."],
-  ["هل نقدر نربطها بأنظمة الشركة؟", "نعم، النسخة المخصصة نقدر نربطها مع API أو قواعد البيانات أو ملفات العمل بعد مراجعة الصلاحيات."],
-  ["وش وضع البيانات؟", "بياناتك تبقى عندك. لا تستخدم بيانات حساسة في الديمو العام، والنسخة المخصصة تنبني بصلاحيات وصول وسجل تدقيق وضوابط مشاركة."],
-  ["هل تدعم العربية السعودية؟", "أكيد. التجربة مبنية بالعربية السعودية واتجاهها من اليمين لليسار ومهيأة لسياق الشركات السعودية."],
-  ["وش الخطوة بعد الديمو؟", "راجع التقرير، اختر حالة استخدام واحدة، ثم احجز مكالمة 15 دقيقة عشان نحولها لنسخة مرتبطة ببياناتك."]
+  ["ما هذا الديمو؟", "تجربة تفاعلية من Bright AI تعرض كيف يتحول سيناريو عمل سعودي إلى تقرير تنفيذي ومؤشرات وتوصيات قابلة للمراجعة."],
+  ["لمن يناسب؟", "يناسب فرق الإدارة والعمليات والتحول الرقمي التي تريد رؤية قيمة عملية قبل طلب نسخة مخصصة."],
+  ["ما المشكلة التي يحلها؟", "يساعد على تحويل المدخلات المتفرقة إلى قراءة منظمة تقلل العمل اليدوي وتوضح القرار التالي."],
+  ["ما المخرجات الفعلية؟", "يعرض ملخصاً تنفيذياً، مؤشرات أداء، نتائج رئيسية، مخاطر، توصيات، وخطوات تالية قابلة للنسخ أو التنزيل."],
+  ["هل يستخدم بيانات حقيقية؟", "لا. الديمو العام مصمم لاستخدام بيانات وهمية أو منزوعة الحساسية فقط، ولا تحتاج رفع بيانات شركة حقيقية."],
+  ["هل يمكن ربطه مع أنظمتنا؟", "نعم. النسخة المخصصة يمكن ربطها مع API أو قواعد البيانات أو ملفات العمل بعد مراجعة الصلاحيات والحوكمة."],
+  ["هل يمكن تخصيصه لشركتنا؟", "نعم. نخصص السيناريوهات والمخرجات ونبرة التقرير ومؤشرات القياس حسب قطاع شركتك وأنظمتها."],
+  ["ما الخطوة التالية بعد التجربة؟", "راجع التقرير، اختر سيناريو واحداً عالي الأثر، ثم احجز استشارة قصيرة لتحويله إلى نسخة مرتبطة ببياناتك."]
 ];
 
 const demos = [
@@ -35,7 +38,10 @@ const demos = [
       ["عمليات داخلية", "وكيل يتابع طلبات الإدارات، يلخص التعثرات، ويطلب المستندات الناقصة من أصحاب العلاقة."],
       ["مبيعات", "وكيل يؤهل العملاء المحتملين، يسأل أسئلة محددة، ويرسل ملخصاً لفريق المبيعات قبل الاتصال."]
     ],
-    faq: [["متى أحتاج وكيل ذكاء اصطناعي؟", "عندما تتكرر أسئلة أو مهام تشغيلية وتحتاج ربطها بسياسات الشركة وصلاحياتها بدل الاعتماد على أداة عامة."]]
+    faq: [
+      ["متى أحتاج وكيل ذكاء اصطناعي؟", "عندما تتكرر أسئلة أو مهام تشغيلية وتحتاج ربطها بسياسات الشركة وصلاحياتها بدل الاعتماد على أداة عامة."],
+      ["هل يمكن تحديد صلاحيات الوكيل؟", "نعم، النسخة المخصصة تضبط نطاق المعرفة والصلاحيات والتصعيد وسجل التدقيق حسب سياسات الشركة."]
+    ]
   },
   {
     slug: "ai-tenders-analysis",
@@ -55,7 +61,10 @@ const demos = [
       ["تقنية", "عقد منصة داخلية يتطلب تكاملات أمنية، تدريب مستخدمين، اتفاقية مستوى خدمة، ودعم سنة كاملة."],
       ["توريد", "مناقصة توريد أجهزة على دفعات مع جدول تسليم مرحلي، فحص قبول، وغرامات عند التأخير."]
     ],
-    faq: [["هل يحلل العقود أيضاً؟", "نعم، الديمو يقرأ ملخصات العقود والمناقصات غير الحساسة ويبرز الالتزامات والمخاطر التي تحتاج مراجعة بشرية."]]
+    faq: [
+      ["هل يحلل العقود أيضاً؟", "نعم، الديمو يقرأ ملخصات العقود والمناقصات غير الحساسة ويبرز الالتزامات والمخاطر التي تحتاج مراجعة بشرية."],
+      ["هل يغني عن المستشار القانوني؟", "لا. الديمو يساعد على الفرز الأولي وإبراز المخاطر، والقرار القانوني أو التجاري يحتاج مراجعة مختص."]
+    ]
   },
   {
     slug: "data-analysis",
@@ -75,7 +84,10 @@ const demos = [
       ["تشغيل", "توقفات يومية في وردية المساء، ارتفاع الهدر بنسبة ١٨٪، وتأخر تسليم الطلبات الكبرى في آخر أسبوعين."],
       ["تسويق", "قنوات العملاء: إعلانات، واتساب، توصيات. معدل التحويل ٤٪، ١٢٪، ١٨٪ مع تباين كبير في تكلفة العميل."]
     ],
-    faq: [["هل أحتاج ملف بيانات كامل؟", "لا، الديمو يعمل بوصف أو عينة صغيرة غير حساسة، والنسخة المخصصة يمكن ربطها بمصادر البيانات الفعلية."]]
+    faq: [
+      ["هل أحتاج ملف بيانات كامل؟", "لا، الديمو يعمل بوصف أو عينة صغيرة غير حساسة، والنسخة المخصصة يمكن ربطها بمصادر البيانات الفعلية."],
+      ["هل يكشف مشاكل جودة البيانات؟", "نعم، يعرض مؤشرات أولية عن النواقص والشذوذ والحقول التي تحتاج تنظيفاً قبل التحليل العميق."]
+    ]
   },
   {
     slug: "smart-automation",
@@ -95,7 +107,10 @@ const demos = [
       ["تقارير", "كل أسبوع يجمع الفريق أرقام المبيعات من ملفات متعددة ويرسل ملخصاً للإدارة مساء الخميس."],
       ["خدمة", "بلاغات العملاء تصل من واتساب والبريد وتحتاج تصنيفاً ثم توجيهاً للفريق المختص خلال ساعتين."]
     ],
-    faq: [["ما أفضل عملية أبدأ بها؟", "ابدأ بعملية متكررة، عالية الحجم، واضحة الخطوات، ولا تحتاج حكماً بشرياً معقداً في كل مرة."]]
+    faq: [
+      ["ما أفضل عملية أبدأ بها؟", "ابدأ بعملية متكررة، عالية الحجم، واضحة الخطوات، ولا تحتاج حكماً بشرياً معقداً في كل مرة."],
+      ["هل يناسب الموافقات الداخلية؟", "نعم، يناسب موافقات المشتريات والموارد البشرية والتقارير إذا كانت القواعد والمسؤوليات واضحة."]
+    ]
   },
   {
     slug: "ai-workflows",
@@ -115,7 +130,10 @@ const demos = [
       ["مراجعة مستند", "ملف عقد جديد يحتاج استخراج البنود المهمة، مقارنة سياسة الشركة، ثم إرسال نقاط مراجعة للإدارة."],
       ["إطلاق خدمة", "فريق المنتج يحتاج جمع ملاحظات العملاء، تلخيصها، ترتيب الأولويات، ثم إرسال خطة أسبوعية."]
     ],
-    faq: [["ما الفرق بين سير العمل والأتمتة؟", "سير العمل يحدد التسلسل والأدوار ونقاط القرار، بينما الأتمتة تنفذ أجزاء محددة من هذا التسلسل."]]
+    faq: [
+      ["ما الفرق بين سير العمل والأتمتة؟", "سير العمل يحدد التسلسل والأدوار ونقاط القرار، بينما الأتمتة تنفذ أجزاء محددة من هذا التسلسل."],
+      ["هل يدعم وجود مراجعة بشرية؟", "نعم، التصميم يحدد أين يعمل الذكاء الاصطناعي وأين يجب أن يتدخل الموظف أو المدير للاعتماد."]
+    ]
   },
   {
     slug: "smart-education-platform",
@@ -135,7 +153,10 @@ const demos = [
       ["مركز تدريب", "برنامج مهني مدته ٦ أسابيع، الحضور جيد لكن إنجاز المشاريع منخفض ويحتاج المدرب إنذارات مبكرة."],
       ["جامعة", "مقرر كبير بعدد ١٨٠ طالباً، تحتاج الإدارة ملخص أداء ومجموعات دعم للطلاب المتعثرين."]
     ],
-    faq: [["هل يناسب التعليم الأهلي؟", "نعم، يناسب المدارس ومراكز التدريب التي تحتاج متابعة تقدم وتدخلات مبكرة وتقارير واضحة للإدارة."]]
+    faq: [
+      ["هل يناسب التعليم الأهلي؟", "نعم، يناسب المدارس ومراكز التدريب التي تحتاج متابعة تقدم وتدخلات مبكرة وتقارير واضحة للإدارة."],
+      ["هل يستبدل المعلم؟", "لا. الديمو يساعد في التخطيط والمتابعة، وتبقى مراجعة المعلم أو المدرب أساس اعتماد المخرجات."]
+    ]
   },
   {
     slug: "smart-hospital-management",
@@ -155,7 +176,10 @@ const demos = [
       ["عيادات", "نسبة عدم الحضور ٢٢٪، ضغط على عيادة الجلدية، ومواعيد متابعة تتأخر أكثر من ١٤ يوماً."],
       ["جودة", "ارتفاع إعادة الجدولة، ملاحظات رضا منخفضة في الاستقبال، وتباين زمن الخدمة بين الفروع."]
     ],
-    faq: [["هل يستخدم بيانات مرضى؟", "الديمو العام لا يحتاج بيانات مرضى. استخدم مؤشرات تشغيلية منزوعة الحساسية فقط، والنسخة المخصصة تُصمم بضوابط صحية مناسبة."]]
+    faq: [
+      ["هل يستخدم بيانات مرضى؟", "الديمو العام لا يحتاج بيانات مرضى. استخدم مؤشرات تشغيلية منزوعة الحساسية فقط، والنسخة المخصصة تُصمم بضوابط صحية مناسبة."],
+      ["هل يقدم توصية طبية؟", "لا. المخرجات تشغيلية وإدارية فقط، ولا تقدم تشخيصاً أو قراراً طبياً بديلاً عن المختصين."]
+    ]
   }
 ];
 
@@ -169,6 +193,14 @@ function json(value) {
 
 function waLink(title) {
   return `${wa}?text=${encodeURIComponent(`هلا والله، شفت ديمو ${title} وأبغى نسخة مخصصة لشركتي عبر Bright AI`)}`;
+}
+
+function brandSvg() {
+  return `<svg class="brand-mark" width="42" height="42" viewBox="0 0 42 42" role="img" aria-label="شعار BrightAI">
+        <rect width="42" height="42" rx="12" fill="#07111f"></rect>
+        <path d="M10 28V10h11.2c4.1 0 6.6 2.1 6.6 5.2 0 1.9-.9 3.3-2.5 4.1 2.3.8 3.7 2.4 3.7 4.6 0 3.4-2.7 4.1-7.1 4.1H10Zm5.1-11h5.1c1.5 0 2.4-.7 2.4-2s-.9-2-2.4-2h-5.1v4Zm0 7.9h5.9c1.7 0 2.7-.8 2.7-2.2s-1-2.2-2.7-2.2h-5.9v4.4Z" fill="#2dd4bf"></path>
+        <path d="M31.5 10h.8v18h-.8z" fill="#f8c14a"></path>
+      </svg>`;
 }
 
 function fallback(demo) {
@@ -209,9 +241,7 @@ function schema(demo) {
     { "@type": "Service", "@id": `${site}${demo.service}#service`, name: demo.title, serviceType: demo.sector, url: `${site}${demo.service}`, description: demo.answer, provider: { "@id": `${site}/#organization` }, areaServed: { "@type": "Country", name: "Saudi Arabia" } },
     { "@type": "BreadcrumbList", "@id": `${url}#breadcrumb`, itemListElement: [{ "@type": "ListItem", position: 1, name: "الرئيسية", item: `${site}/` }, { "@type": "ListItem", position: 2, name: "الديموهات", item: `${site}/demo/` }, { "@type": "ListItem", position: 3, name: demo.title, item: url }] }
   ];
-  if (demo.path !== "ai-agent") {
-    graph.splice(4, 0, { "@type": "FAQPage", "@id": `${url}#faq`, mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
-  }
+  graph.splice(4, 0, { "@type": "FAQPage", "@id": `${url}#faq`, mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) });
   return {
     "@context": "https://schema.org",
     "@graph": graph
@@ -224,9 +254,19 @@ function page(demo) {
   const faq = [...sharedFaq, ...demo.faq];
   const sampleButtons = demo.samples.map(([name, body], i) => `<button type="button" class="sample-card" data-sample="${i}"><strong>${esc(name)}</strong><span>${esc(body)}</span></button>`).join("\n          ");
   const options = demo.samples.map(([name]) => `<option>${esc(name)}</option>`).join("");
-  const cases = demo.samples.map(([name, body]) => `<article><h3>${esc(name)}</h3><p><strong>الحالة:</strong> ${esc(demo.problem)}.</p><p><strong>المدخلات:</strong> ${esc(body)}</p><p><strong>مخرجات الديمو:</strong> ${esc(demo.outcome)}.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>`).join("\n        ");
+  const cases = `<article><h3>الجمهور المستهدف</h3><p>${esc(demo.audience)} داخل الشركات السعودية التي تحتاج تجربة عملية قبل الاستثمار في نسخة مخصصة.</p></article>
+        <article><h3>المشكلة التي يحلها</h3><p>${esc(demo.problem)} مع تقليل التشتت بين الملفات والرسائل والاجتهادات الفردية.</p></article>
+        <article><h3>المخرجات التي يحصل عليها المستخدم</h3><p>${esc(demo.outcome)} في تقرير قابل للمراجعة والنسخ والتنزيل.</p></article>`;
+  const scenarioCards = demo.samples.map(([name, body], i) => `<article class="scenario-card">
+          <span class="industry-badge">${esc(demo.sector)}</span>
+          <h3>${esc(name)}</h3>
+          <p>${esc(body)}</p>
+          <dl><div><dt>الإدارة</dt><dd>${esc(demo.audience.split(" و")[0])}</dd></div><div><dt>المدة</dt><dd>النتيجة خلال ${8 + i}-${12 + i} ثانية</dd></div></dl>
+          <div class="output-preview">${esc(demo.outcome)}</div>
+          <button type="button" class="btn btn-outline" data-sample="${i}" data-jump-demo>جرّب هذا السيناريو</button>
+        </article>`).join("\n        ");
   const faqHtml = faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join("\n      ");
-  const related = demos.filter((item) => item.slug !== demo.slug).slice(0, 4).map((item) => `<a href="/${item.path}/">${esc(item.title)}</a>`).join("");
+  const related = demos.filter((item) => item.slug !== demo.slug).slice(0, 3).map((item) => `<a href="/${item.path}/">${esc(item.title)}</a>`).join("");
   return `<!DOCTYPE html>
 <html lang="ar-SA" dir="rtl">
 <head>
@@ -260,41 +300,48 @@ function page(demo) {
   <link rel="stylesheet" href="/assets/css/design-tokens.css">
   <link rel="stylesheet" href="/assets/css/demo-premium.css">
   <link rel="stylesheet" href="/assets/css/demo-design-system.css">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+  <link rel="stylesheet" href="/assets/css/motion.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/seven-demo-standard.css">
   <script type="application/ld+json">${json(schema(demo))}</script>
 </head>
 <body class="premium-demo" data-demo-slug="${esc(demo.slug)}">
   <a class="skip-link" href="#demo-form">تجاوز إلى التجربة</a>
-  <header class="demo-nav" aria-label="تنقل الديمو">
-    <a class="brand" href="/" aria-label="Bright AI الرئيسية"><img src="/assets/images/logo.PNG" width="36" height="36" alt="شعار Bright AI" decoding="async"></a>
-    <nav class="nav-links" aria-label="روابط داخلية"><a href="/demo/">كل الديموهات</a><a href="/services/">الخدمات</a><a href="${esc(demo.service)}">صفحة الخدمة</a><a href="/contact/">تواصل معنا</a></nav>
+  <header class="demo-nav smart-header" aria-label="تنقل الديمو" data-smart-header>
+    <a class="brand" href="/" aria-label="BrightAI الرئيسية">${brandSvg()}<span>BrightAI</span></a>
+    <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="demo-mobile-menu" data-menu-toggle>القائمة</button>
+    <nav class="nav-links" id="demo-mobile-menu" aria-label="روابط داخلية" data-menu-panel><a href="/demo/">الديموهات</a><a href="/services/">الخدمات</a><a href="/contact/">تواصل</a><a class="nav-cta-pill" href="/contact/" data-scroll-cta>احجز استشارة</a></nav>
   </header>
   <main>
-    <section class="hero section">
+    <section class="hero section cinematic-hero">
       <div class="hero-copy">
-        <p class="eyebrow">هلا والله، نوّرت 👋</p>
+        <p class="eyebrow">🟢 ديمو حيّ — يشتغل على Gemini 2.5.</p>
         <h1>${esc(demo.h1)}</h1>
-        <p class="direct-answer">خلّنا نوريك وش يقدر يسوّيه BrightAI لشركتك. ${esc(demo.answer)}</p>
-        <div class="hero-points" aria-label="قيمة الديمو"><span>المشكلة: ${esc(demo.problem)}</span><span>النتيجة: ${esc(demo.outcome)}</span><span>الفئة: ${esc(demo.audience)}</span></div>
-        <div class="hero-actions"><button class="btn btn-secondary" type="button" data-load-first-sample>جرّب مثال جاهز</button><a class="btn btn-primary" href="#demo-form">ابدأ التجربة</a><a class="btn btn-outline" href="${waLink(demo.title)}" target="_blank" rel="noopener">اطلب نسخة مخصصة</a></div>
+        <p class="direct-answer">${esc(demo.answer)}<br>شغّل سيناريو وهمي وشاهد تقريراً تنفيذياً قابلاً للمراجعة بدون تخزين بيانات.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#demo-form">جرّب الديمو الحين 👇</a><a class="btn btn-outline" href="/contact/">احجز استشارة 15 دقيقة</a></div>
+        <div class="trust-strip">ديمو تفاعلي ببيانات وهمية · ربط آمن · لا تخزين.</div>
       </div>
-      <aside class="quick-answer" aria-label="إجابة سريعة">
-        <img src="/assets/images/logo.PNG" width="96" height="96" alt="رمز Bright AI" loading="eager" decoding="async">
-        <h2>الزبدة بسرعة</h2>
-        <dl><div><dt>لمن هذه التجربة؟</dt><dd>${esc(demo.audience)}</dd></div><div><dt>ماذا تحتاج؟</dt><dd>وصف مختصر أو عينة بيانات غير حساسة.</dd></div><div><dt>ماذا ستحصل؟</dt><dd>${esc(demo.outcome)}.</dd></div><div><dt>الموديل الافتراضي</dt><dd><span dir="ltr">${esc(demo.model)}</span> عبر الخلفية فقط.</dd></div></dl>
+      <aside class="quick-answer ai-visual" aria-label="تصور ذكاء اصطناعي متحرك">
+        <div class="ai-pulse" aria-hidden="true"><span></span><span></span><span></span></div>
+        <h2>محاكاة تحليل حي</h2>
+        <dl><div><dt>النموذج</dt><dd><span dir="ltr">${esc(demo.model)}</span></dd></div><div><dt>النطاق</dt><dd>${esc(demo.sector)}</dd></div><div><dt>الحماية</dt><dd>لا تخزين لبيانات الديمو.</dd></div></dl>
       </aside>
     </section>
-    <section class="section quote-summary" aria-labelledby="summary-heading"><h2 id="summary-heading">ملخص التجربة</h2><ul><li>${esc(demo.title)} تجربة عملية موجهة للسوق السعودي.</li><li>الديمو يساعدك تتعامل مع ${esc(demo.problem)} بمدخلات بسيطة وقابلة للمراجعة.</li><li>المخرجات تشمل ${esc(demo.outcome)} دون كشف بيانات حساسة.</li><li>كل طلب AI يمر عبر الخلفية ولا يوجد استدعاء مباشر من المتصفح إلى مزود النماذج.</li></ul></section>
-    <section class="section" aria-labelledby="what-heading"><h2 id="what-heading">ما الذي يفعله الديمو؟</h2><div class="two-col"><p>${esc(demo.title)} يحوّل سيناريو عمل قصير من قطاع ${esc(demo.sector)} إلى تقرير تنفيذي يساعدك تفهم الوضع الحالي والخطوة الجاية بدون ما يعطي AI قرار نهائي بدالك.</p><div class="trust-list" aria-label="مؤشرات ثقة"><span>عربي سعودي</span><span>اتجاه كامل من اليمين لليسار</span><span>قابل للتكامل</span><span>صلاحيات وسجل تدقيق</span><span>مناسب للشركات</span></div></div></section>
-    <section class="section steps" aria-labelledby="usage-heading"><h2 id="usage-heading">كيف تستخدم التجربة؟</h2><ol><li><strong>اختر السيناريو</strong><span>اختر السيناريو اللي يشبه شغلك، أو اكتب سياقك.</span></li><li><strong>أدخل بيانات بسيطة</strong><span>استخدم وصف مختصر وغير حساس.</span></li><li><strong>شغّل AI</strong><span>الطلب يمر عبر المسار الخلفي الآمن فقط.</span></li><li><strong>شوف التقرير</strong><span>راجع التقرير ثم اطلب نسخة مخصصة.</span></li></ol></section>
-    <section class="section demo-workspace" aria-labelledby="samples-heading"><div class="workspace-copy"><h2 id="samples-heading">خلّنا نجرّبها سوا</h2><p>اختر السيناريو اللي يشبه شغلك، وخلّنا نبدأ. لا تستخدم بيانات حساسة في هذه النسخة العامة.</p><div class="sample-grid">${sampleButtons}</div></div><form class="demo-form" id="demo-form" data-demo-form><input type="hidden" name="demoType" value="${esc(demo.demoType)}"><label for="scenario">السيناريو</label><select id="scenario" name="scenario">${options}</select><label for="demo-input">البيانات المختصرة</label><textarea id="demo-input" name="input" rows="7" required placeholder="اكتب وصف مختصر أو استخدم مثال جاهز. لا تضع بيانات حساسة.">${esc(demo.samples[0][1])}</textarea><details class="advanced-settings"><summary>الإعدادات المتقدمة</summary><label for="goal">هدف القرار</label><input id="goal" name="goal" value="${esc(demo.outcome)}"><label for="systems">الأنظمة المحتملة للربط</label><input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API"></details><div class="form-actions"><button class="btn btn-primary" type="submit">شغّل التحليل</button><button class="btn btn-secondary" type="button" data-reset-demo>إعادة ضبط</button></div><p class="privacy-note">بياناتك تبقى عندك، استخدم بيانات وهمية أو منزوعة الحساسية فقط.</p></form></section>
-    <section class="section result-zone" aria-labelledby="result-heading"><div><h2 id="result-heading">هذا اللي بيطلع معنا</h2><p>النتيجة قدامك كلوحة قرار واضحة، مو ملف خام. وإذا صار خلل بسيط، نعرض لك نتيجة توضيحية آمنة مع زر إعادة المحاولة.</p><ul class="result-promises"><li>ملخص تنفيذي</li><li>مؤشر جاهزية</li><li>رؤى رئيسية</li><li>مخاطر</li><li>قرارات قابلة للتنفيذ</li><li>أثر تجاري</li><li>جاهزية تكامل</li><li>خطوات تالية</li></ul></div><div class="loading-box" data-loading-box hidden><p>AI يفكّر الحين... خلّنا نشوف وش بيطلع</p><ol><li data-stage="0">نقرأ الطلب الحين</li><li data-stage="1">نستخرج الكيانات</li><li data-stage="2">نبني المؤشرات</li><li data-stage="3">نجهّز التحليل</li><li data-stage="4">نرتّب التقرير</li></ol></div><div class="result-panel" data-result-panel aria-live="polite"><div class="empty-state"><strong>تمام، جاهز نبدأ؟</strong><p>شغّل التجربة، وثوانٍ بس وتجيك النتيجة كلوحة تنفيذية قابلة للمشاركة.</p></div></div></section>
-    <section class="section comparison" aria-labelledby="compare-heading"><h2 id="compare-heading">قبل Bright AI / بعد Bright AI</h2><div class="compare-grid"><article><h3>قبل Bright AI</h3><p>العمل اليدوي ياخذ وقت، والمخرجات تتفاوت، والقرار يتشتت بين الملفات والرسائل.</p></article><article><h3>بعد Bright AI</h3><p>تبدأ من سيناريو واضح، تشوف تقرير منظم، ثم تطلب نسخة مخصصة مرتبطة بالأنظمة والصلاحيات.</p></article></div></section>
-    <section class="section use-cases" aria-labelledby="use-cases-heading"><h2 id="use-cases-heading">حالات استخدام منظمة</h2><div class="case-grid">${cases}</div></section>
-    <section class="section" aria-labelledby="why-heading"><h2 id="why-heading">الديموهات المرتبطة</h2><p>انتقل بين الديموهات السبعة فقط لمقارنة حالات الاستخدام قبل طلب نسخة مخصصة.</p><div class="internal-links">${related}</div></section>
+    <nav class="breadcrumb section" aria-label="مسار الصفحة" itemscope itemtype="https://schema.org/BreadcrumbList"><span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="/"><span itemprop="name">الرئيسية</span></a><meta itemprop="position" content="1"></span><span aria-hidden="true">›</span><span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="/demo/"><span itemprop="name">الديموهات</span></a><meta itemprop="position" content="2"></span><span aria-hidden="true">›</span><span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">${esc(demo.title)}</span><meta itemprop="position" content="3"></span></nav>
+    <section class="section use-cases" aria-labelledby="who-heading"><h2 id="who-heading">لمن هذا الديمو؟</h2><div class="case-grid">${cases}</div></section>
+    <section class="section scenario-simulator" aria-labelledby="scenario-heading"><h2 id="scenario-heading">محاكي السيناريوهات</h2><div class="case-grid">${scenarioCards}</div></section>
+    <section class="section demo-workspace" aria-labelledby="samples-heading"><div class="workspace-copy input-area"><h2 id="samples-heading">منطقة الإدخال</h2><p>اختر سيناريو أو اكتب وصفاً سعودياً غير حساس. التحقق والعداد يعملان فورياً قبل تشغيل التحليل.</p><div class="sample-grid">${sampleButtons}</div></div><form class="demo-form" id="demo-form" data-demo-form><input type="hidden" name="demoType" value="${esc(demo.demoType)}"><label for="scenario">السيناريو</label><select id="scenario" name="scenario">${options}</select><label for="demo-input">البيانات المختصرة</label><textarea id="demo-input" name="input" rows="7" required minlength="20" maxlength="1200" placeholder="مثال: شركة في الرياض لديها ضغط طلبات أسبوعي وتحتاج تقريراً تنفيذياً بدون استخدام بيانات حساسة.">${esc(demo.samples[0][1])}</textarea><p class="privacy-note" data-input-counter>٠ / ١٢٠٠ حرف</p><details class="advanced-settings"><summary>الإعدادات المتقدمة</summary><label for="goal">هدف القرار</label><input id="goal" name="goal" value="${esc(demo.outcome)}"><label for="systems">الأنظمة المحتملة للربط</label><input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API"></details><div class="form-actions"><button class="btn btn-primary" type="submit">شغّل التحليل</button><button class="btn btn-secondary" type="button" data-reset-demo>جرّب سيناريو آخر</button></div><p class="privacy-note">بياناتك تبقى عندك، استخدم بيانات وهمية أو منزوعة الحساسية فقط.</p></form></section>
+    <section class="section result-zone" aria-labelledby="result-heading"><div><h2 id="result-heading">مسرح تفكير الذكاء الاصطناعي</h2><p>إذا توفر البث اللحظي تظهر المراحل من الخلفية، وإذا تعذر الاتصال يعمل fallback آمن بنفس التسلسل.</p><ul class="result-promises"><li>Executive Summary</li><li>Metrics Grid</li><li>Key Findings</li><li>Risks & Considerations</li><li>Recommendations</li><li>Next Best Actions</li><li>Confidence Score</li><li>Impact Preview</li></ul></div><div class="loading-box" data-loading-box hidden><p>جاري التحليل عبر Backend BrightAI</p><ol><li data-stage="0">فهم الطلب.</li><li data-stage="1">استخراج البيانات.</li><li data-stage="2">تحليل المؤشرات.</li><li data-stage="3">توليد التوصيات.</li><li data-stage="4">تجهيز التقرير.</li></ol></div><div class="result-panel" data-result-panel aria-live="polite"><div class="empty-state"><strong>لوحة النتائج جاهزة</strong><p>شغّل الديمو لعرض التقرير الذكي القابل للنسخ والتنزيل.</p></div></div></section>
+    <section class="section action-bar" aria-label="إجراءات التقرير"><button class="btn btn-outline" type="button" data-copy-report>نسخ التقرير</button><button class="btn btn-outline" type="button" data-download-report>تحميل txt أو md</button><button class="btn btn-secondary" type="button" data-reset-demo>جرّب سيناريو آخر</button><a class="btn btn-primary" href="${waLink(demo.title)}" target="_blank" rel="noopener">طبّقها على بيانات شركتك</a></section>
+    <section class="section conversion-strip" aria-label="خيارات التحويل"><a class="btn btn-primary" href="/contact/">احجز استشارة مجانية</a><a class="btn btn-secondary" href="${waLink(demo.title)}" target="_blank" rel="noopener">واتساب فوري برسالة جاهزة</a><a class="btn btn-outline" href="/contact/">اطلب نسخة مخصصة</a><a class="btn btn-outline" href="${esc(demo.service)}">ربط مع أنظمتك</a></section>
+    <section class="section trust-layer" aria-labelledby="trust-heading"><h2 id="trust-heading">طبقة الثقة</h2><div class="case-grid"><article><h3>بياناتك ما تنحفظ</h3><p>المدخلات العامة مخصصة للتجربة فقط ولا تستخدم كبديل عن النسخة المؤسسية.</p></article><article><h3>بيانات الديمو وهمية</h3><p>استخدم أمثلة غير حساسة أو بيانات منزوعة التعريف أثناء التجربة.</p></article><article><h3>Backend خاص</h3><p>يشتغل على Google Gemini 2.5 عبر Backend خاص بـ BrightAI.</p></article><article><h3>التزام سعودي</h3><p>نلتزم بأنظمة حماية البيانات السعودية PDPL عند تصميم النسخ المخصصة.</p></article></div><p><a class="internal-linking-inline" href="/docs/privacy-policy.html">اقرأ كيف نحمي بياناتك</a></p></section>
+    <section class="section social-proof" aria-label="إثبات اجتماعي"><div class="trust-strip">مصمم للشركات السعودية · قابل للتخصيص حسب القطاع · جاهز للنقاش مع فريقك التقني</div></section>
     <section class="section faq" aria-labelledby="faq-heading"><h2 id="faq-heading">الأسئلة الشائعة</h2>${faqHtml}</section>
-    <section class="section final-cta" aria-label="خطوة تجارية"><h2>خلّ BrightAI يضبطها لك بمقاسك</h2><p>عجبتك التجربة؟ خلّنا نضبطها على بيانات شركتك خلال 48 ساعة كبداية عمل واضحة، بعد ما نراجع المتطلبات معك.</p><div class="hero-actions"><a class="btn btn-primary" href="/contact/">احجز مكالمة 15 دقيقة</a><a class="btn btn-secondary" href="${waLink(demo.title)}" target="_blank" rel="noopener">اطلب عرض سعر</a><button class="btn btn-outline" type="button" data-download-report>حمّل التقرير</button></div></section>
+    <section class="section" aria-labelledby="why-heading"><h2 id="why-heading">ديموهات ذات صلة</h2><p>ثلاثة ديموهات مرتبطة من المجموعة السباعية فقط.</p><div class="internal-links">${related}</div></section>
   </main>
-  <footer class="demo-footer"><p>© 2026 Bright AI. تجربة ${esc(demo.title)} مخصصة للمراجعة الأولية ولا تقدم ضمانات نتائج.</p><a href="/docs/privacy-policy.html">سياسة الخصوصية</a></footer>
+  <footer class="demo-footer"><p>© 2026 Bright AI. تجربة ${esc(demo.title)} مخصصة للمراجعة الأولية ولا تقدم ضمانات نتائج.</p><a href="/services/">خدمات</a><a href="/demo/">ديموهات</a><a href="/contact/">تواصل</a><a href="${waLink(demo.title)}" target="_blank" rel="noopener">واتساب</a><a href="/docs/privacy-policy.html">سياسات</a></footer>
   <script type="application/json" id="demo-config">${json(config)}</script>
   <script type="application/json" id="demo-samples">${json(demo.samples)}</script>
   <script defer src="/assets/js/demo-config.js"></script>
@@ -304,6 +351,7 @@ function page(demo) {
   <script defer src="/assets/js/demo-analytics.js"></script>
   <script defer src="/assets/js/demo-a11y.js"></script>
   <script defer src="/assets/js/demo-shared-app.js"></script>
+  <script defer src="/assets/js/seven-demo-standard.js"></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
   <script defer src="/frontend/js/accessibility.min.js?v=2026042904"></script>
   <script src="/frontend/js/brightai-logo-replace.js" defer></script>
@@ -352,6 +400,10 @@ function demoIndex() {
   <link rel="icon" href="/assets/images/logo.PNG" type="image/png">
   <link rel="stylesheet" href="/assets/css/design-tokens.css">
   <link rel="stylesheet" href="/assets/css/demo-premium.css">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+  <link rel="stylesheet" href="/assets/css/motion.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
   <script type="application/ld+json">${json(schemaIndex)}</script>
 </head>
 <body class="premium-demo" data-demo-slug="demo-index">

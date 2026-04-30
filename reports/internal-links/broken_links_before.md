@@ -1,12 +1,12 @@
 # تقرير الروابط والمسارات المكسورة قبل الإصلاح
 
-- تاريخ التقرير: 2026-04-29T18:54:36.668Z
-- عدد الملفات المفحوصة: 417
-- إجمالي المراجع المكتشفة: 25014
-- المراجع الداخلية المفحوصة: 19788
-- الروابط/المسارات المكسورة: 828
+- تاريخ التقرير: 2026-04-29T20:37:26.697Z
+- عدد الملفات المفحوصة: 423
+- إجمالي المراجع المكتشفة: 25038
+- المراجع الداخلية المفحوصة: 19805
+- الروابط/المسارات المكسورة: 812
 - المكسور القابل للإصلاح التلقائي: 18
-- فرص توحيد نمط الروابط: 113
+- فرص توحيد نمط الروابط: 114
 
 ## الملفات الأعلى أعطالًا
 
@@ -50,9 +50,6 @@
 | about/index.html | 156 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | about/index.html | 157 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | about/index.html | 474 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| ai-agent/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| ai-agent/index.html | 39 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| ai-agent/index.html | 52 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | ai-bots/BrightMath/index.html | 372 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | ai-bots/BrightMath/index.html | 373 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | ai-bots/BrightMath/index.html | 374 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
@@ -410,12 +407,8 @@
 | demo/ai-scolecs/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/ai-scolecs/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/ai-scolecs/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/ai-tenders-analysis/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/ai-tenders-analysis/index.html | 39 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/ai-tenders-analysis/index.html | 52 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/ai-workflows/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/ai-workflows/index.html | 39 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/ai-workflows/index.html | 52 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| demo/ai-tenders-analysis/index.html | 25 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| demo/ai-tenders-analysis/index.html | 55 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/approvals-automation/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/approvals-automation/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/approvals-automation/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
@@ -434,9 +427,6 @@
 | demo/customer-service-automation/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/customer-service-automation/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/customer-service-automation/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/data-analysis/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/data-analysis/index.html | 39 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/data-analysis/index.html | 52 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/data-analyzer/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/data-analyzer/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/data-analyzer/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
@@ -447,7 +437,7 @@
 | demo/hr-automation/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/hr-automation/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/index.html | 21 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/index.html | 27 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| demo/index.html | 31 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/marketing-ai-agent/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/marketing-ai-agent/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/marketing-ai-agent/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
@@ -474,12 +464,8 @@
 | demo/seo-ai-agent/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/seo-ai-agent/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/seo-ai-agent/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/smart-automation/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/smart-automation/index.html | 39 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/smart-automation/index.html | 52 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
+| demo/smart-automation/index.html | 35 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-education-platform/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/smart-education-platform/index.html | 39 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/smart-education-platform/index.html | 52 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-hiring-system/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-hiring-system/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-hiring-system/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
@@ -500,8 +486,6 @@
 | demo/smart-hiring-system/pages/Visitor-registration/index.html | 71 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-hiring-system/pages/Visitor-registration/index.html | 205 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-hospital-management/index.html | 30 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/smart-hospital-management/index.html | 39 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
-| demo/smart-hospital-management/index.html | 52 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-medical-archive/index.html | 36 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-medical-archive/index.html | 182 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
 | demo/smart-medical-archive/index.html | 210 | attr | /assets/images/logo.PNG | — | المسار غير موجود |
