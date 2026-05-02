@@ -59,6 +59,9 @@ function appendSafetyNotice(demoType, output) {
   if (demoType === 'smart-education-platform') {
     notices.push('تنبيه: استخدم بيانات طلاب مجهولة أو افتراضية فقط داخل الديمو.');
   }
+  if (demoType === 'smart-hiring-system') {
+    notices.push('تنبيه: تقييم التوظيف مساعد قرار فقط، ويجب تجاهل العوامل الشخصية ومراجعة النتيجة بشرياً قبل أي إجراء.');
+  }
   return { ...output, safetyNotices: [...new Set(notices)] };
 }
 

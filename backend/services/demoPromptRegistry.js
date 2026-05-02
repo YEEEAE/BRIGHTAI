@@ -30,6 +30,93 @@ const RESPONSE_SCHEMA_DESCRIPTION = `{
   "riskLevel": "low|medium|high|critical"
 }`;
 
+const SMART_HIRING_RESPONSE_SCHEMA = Object.freeze({
+  type: 'object',
+  required: [
+    'match_score',
+    'score_breakdown',
+    'skill_matrix',
+    'experience_summary',
+    'red_flags',
+    'interview_questions',
+    'bias_audit'
+  ],
+  properties: {
+    match_score: { type: 'integer', minimum: 0, maximum: 100 },
+    score_breakdown: {
+      type: 'object',
+      required: ['skills', 'experience', 'education', 'culture'],
+      properties: {
+        skills: { type: 'integer', minimum: 0, maximum: 40 },
+        experience: { type: 'integer', minimum: 0, maximum: 30 },
+        education: { type: 'integer', minimum: 0, maximum: 15 },
+        culture: { type: 'integer', minimum: 0, maximum: 15 }
+      }
+    },
+    skill_matrix: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['skill', 'required', 'evidence', 'level'],
+        properties: {
+          skill: { type: 'string' },
+          required: { type: 'boolean' },
+          evidence: { type: 'string' },
+          level: { type: 'string', enum: ['green', 'yellow', 'red'] }
+        }
+      }
+    },
+    experience_summary: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['company', 'role', 'years', 'relevance'],
+        properties: {
+          company: { type: 'string' },
+          role: { type: 'string' },
+          years: { type: 'number' },
+          relevance: { type: 'string' }
+        }
+      }
+    },
+    red_flags: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['type', 'severity', 'description'],
+        properties: {
+          type: { type: 'string' },
+          severity: { type: 'string', enum: ['low', 'medium', 'high'] },
+          description: { type: 'string' }
+        }
+      }
+    },
+    interview_questions: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['question', 'category', 'rationale', 'good_answer_signals'],
+        properties: {
+          question: { type: 'string' },
+          category: { type: 'string', enum: ['technical', 'behavioral', 'situational'] },
+          rationale: { type: 'string' },
+          good_answer_signals: { type: 'array', items: { type: 'string' } }
+        }
+      }
+    },
+    bias_audit: {
+      type: 'object',
+      required: ['factors_ignored', 'reasoning_transparency'],
+      properties: {
+        factors_ignored: { type: 'array', items: { type: 'string' } },
+        reasoning_transparency: { type: 'string' }
+      }
+    }
+  }
+});
+
+const SMART_HIRING_SCHEMA_DESCRIPTION = JSON.stringify(SMART_HIRING_RESPONSE_SCHEMA);
+
 const BASE_SYSTEM_INSTRUCTION = [
   'أنت BrightAI — مساعد ذكاء اصطناعي للشركات السعودية.',
   'نبرتك سعودية مرحّبة، شبابية، واثقة، واحترافية.',
@@ -50,7 +137,8 @@ const ALLOWED_DEMO_TYPES = Object.freeze([
   'smart-automation',
   'ai-workflows',
   'smart-education-platform',
-  'smart-hospital-management'
+  'smart-hospital-management',
+  'smart-hiring-system'
 ]);
 
 const DEMO_TYPE_ALIASES = Object.freeze({
@@ -456,6 +544,48 @@ const DEMO_BLUEPRINTS = Object.freeze({
         riskLevel: 'high'
       }
     ]
+  },
+  'smart-hiring-system': {
+    title: 'ملعب التوظيف الذكي',
+    schemaName: 'smart_hiring_evaluation_schema',
+    safetyProfile: 'hr',
+    sector: 'الموارد البشرية والتوظيف',
+    audience: 'مديرو الموارد البشرية ولجان التوظيف في الشركات السعودية',
+    problem: 'فرز السير الذاتية ببطء مع صعوبة توحيد المعايير وتوثيق أسباب القائمة المختصرة',
+    outcome: 'درجة مطابقة، مصفوفة مهارات، أسئلة مقابلة، وتدقيق انحياز قابل للمراجعة البشرية',
+    focus: 'قيّم المرشح بناءً على الأدلة الموجودة فقط، وراعِ نظام العمل السعودي، نطاقات والتوطين عند ذكره، ومبادئ عدم التمييز. لا تستخدم الجنس أو العمر أو الجنسية أو الحالة الاجتماعية أو الصورة أو الاسم في التقييم. لا تتخذ قرار توظيف نهائي. أعط درجة قابلة للمراجعة وأسئلة مقابلة مبنية على فجوات واضحة.',
+    disclaimer: 'هذا التقييم مساعد قرار فقط، ولا يستبدل مراجعة فريق الموارد البشرية أو الالتزام القانوني الداخلي.',
+    scenarios: ['project-manager', 'senior-accountant', 'nurse', 'devops-engineer', 'marketing-specialist', 'production-supervisor'],
+    variations: [
+      {
+        summary: 'المرشح مناسب مبدئياً إذا تم التحقق من المهارات الأساسية في مقابلة عملية موحدة.',
+        items: [
+          ['تطابق المهارات', 'يوجد دليل مباشر على أغلب المهارات المطلوبة مع فجوة تحتاج سؤال تحقق.', 'good'],
+          ['الخبرة', 'سنوات الخبرة ملائمة للمستوى المطلوب، لكن يلزم التأكد من حجم الفريق أو نطاق المسؤولية.', 'good'],
+          ['المخاطر', 'لا توجد مؤشرات حمراء عالية، مع ضرورة تجاهل أي عوامل شخصية غير مرتبطة بالوظيفة.', 'warning']
+        ],
+        metrics: [
+          ['درجة المطابقة', '86%', 'high', 'up'],
+          ['ثقة الدليل', 'جيدة', 'high', 'stable'],
+          ['حاجة المقابلة', 'متوسطة', 'medium', 'stable']
+        ],
+        riskLevel: 'medium'
+      },
+      {
+        summary: 'الملاءمة متوسطة بسبب فجوات في بعض المتطلبات الأساسية، والأفضل استخدام مقابلة تقنية قصيرة قبل الإدراج النهائي.',
+        items: [
+          ['الفجوة الأساسية', 'بعض المهارات المطلوبة تظهر كمؤشرات عامة لا كإنجازات مثبتة.', 'warning'],
+          ['الخبرة', 'المسار المهني قريب من الوظيفة لكنه يحتاج ربطاً أوضح بنتائج قابلة للقياس.', 'warning'],
+          ['الإنصاف', 'تم تجاهل العوامل الشخصية والتركيز على الخبرة والمهارات فقط.', 'good']
+        ],
+        metrics: [
+          ['درجة المطابقة', '72%', 'medium', 'stable'],
+          ['ثقة الدليل', 'متوسطة', 'medium', 'stable'],
+          ['حاجة التحقق', 'عالية', 'high', 'up']
+        ],
+        riskLevel: 'medium'
+      }
+    ]
   }
 });
 
@@ -589,6 +719,102 @@ function normalizeResponse(raw, blueprint, input = {}, scenarioData = {}) {
   return response;
 }
 
+function clampNumber(value, fallback, min, max) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return fallback;
+  return Math.min(max, Math.max(min, number));
+}
+
+function normalizeSmartHiringArray(value, fallback, limit) {
+  const source = Array.isArray(value) && value.length ? value : fallback;
+  return source.slice(0, limit);
+}
+
+function createSmartHiringFallbackResponse() {
+  return {
+    match_score: 84,
+    score_breakdown: {
+      skills: 34,
+      experience: 25,
+      education: 12,
+      culture: 13
+    },
+    skill_matrix: [
+      { skill: 'تحليل المتطلبات', required: true, evidence: 'ذكر مشاريع مرتبطة بتحويل متطلبات الأعمال إلى خطط تنفيذ.', level: 'green' },
+      { skill: 'إدارة أصحاب المصلحة', required: true, evidence: 'قاد تنسيقاً بين فرق تشغيل وتقنية وموردين خارجيين.', level: 'green' },
+      { skill: 'لوحات المؤشرات', required: true, evidence: 'توجد إشارة لاستخدام مؤشرات أداء دون تفصيل الأدوات.', level: 'yellow' },
+      { skill: 'اللغة الإنجليزية المهنية', required: false, evidence: 'وردت مراسلات وتقارير ثنائية اللغة ضمن الخبرة.', level: 'green' },
+      { skill: 'أتمتة سير العمل', required: false, evidence: 'لا يوجد دليل كافٍ على تنفيذ أتمتة فعلية.', level: 'red' }
+    ],
+    experience_summary: [
+      { company: 'شركة خدمات لوجستية', role: 'مدير مشروع', years: 3.5, relevance: 'خبرة مباشرة في التنسيق والتسليم ومتابعة مؤشرات الأداء.' },
+      { company: 'مزود تقني محلي', role: 'محلل أعمال', years: 2, relevance: 'خبرة داعمة في تحليل المتطلبات وتوثيق الإجراءات.' }
+    ],
+    red_flags: [
+      { type: 'فجوة دليل', severity: 'medium', description: 'السيرة تذكر أدوات تحليل عامة بدون أمثلة رقمية كافية.' },
+      { type: 'تنقل وظيفي', severity: 'low', description: 'يوجد انتقالان خلال خمس سنوات، لكنه لا يكفي وحده كمؤشر سلبي.' }
+    ],
+    interview_questions: [
+      { question: 'صف مشروعاً حوّلت فيه متطلبات غير واضحة إلى خطة تسليم قابلة للقياس.', category: 'technical', rationale: 'للتحقق من مهارة تحليل المتطلبات وربطها بالتنفيذ.', good_answer_signals: ['يذكر أصحاب المصلحة', 'يعرض مؤشرات نجاح', 'يوضح طريقة إدارة التغيير'] },
+      { question: 'كيف تبني لوحة متابعة أسبوعية لوظيفة فيها تأخير في التسليم؟', category: 'technical', rationale: 'لفحص فهمه للمؤشرات لا مجرد استخدام أداة.', good_answer_signals: ['يحدد مؤشرات قليلة', 'يفصل السبب عن العرض', 'يربط التقرير بقرار'] },
+      { question: 'كيف تتعامل مع تعارض بين مدير إدارة ومورد خارجي حول نطاق العمل؟', category: 'behavioral', rationale: 'لقياس إدارة أصحاب المصلحة والتصعيد.', good_answer_signals: ['يوثق القرار', 'يحافظ على العلاقة', 'يصعد عند الحاجة'] },
+      { question: 'اذكر موقفاً أخفقت فيه في تقدير مدة مهمة، وماذا غيّرت بعده؟', category: 'behavioral', rationale: 'لفحص التعلم الذاتي والشفافية.', good_answer_signals: ['يعترف بدوره', 'يذكر تغييراً عملياً', 'لا يلوم الآخرين فقط'] },
+      { question: 'كيف تضمن عدالة تقييم المرشحين عند بناء قائمة مختصرة؟', category: 'behavioral', rationale: 'لفحص الوعي بالإنصاف في بيئة سعودية مؤسسية.', good_answer_signals: ['يعتمد معايير مكتوبة', 'يتجاهل العوامل الشخصية', 'يوثق سبب القرار'] },
+      { question: 'لو طلبت الإدارة رفع نسبة التوطين في الدور، كيف توازن ذلك مع متطلبات الكفاءة؟', category: 'situational', rationale: 'لقياس فهم نطاقات دون تمييز أو قرار غير مهني.', good_answer_signals: ['يلتزم بالمعايير', 'يوسع مصادر الاستقطاب', 'لا يخفض متطلبات الدور الأساسية'] },
+      { question: 'لو اكتشفت فجوة ستة أشهر في السيرة، ما السؤال العادل الذي تطرحه؟', category: 'situational', rationale: 'للتحقق من التعامل العادل مع الفجوات.', good_answer_signals: ['يسأل عن السياق المهني', 'لا يفترض سبباً شخصياً', 'يربط الإجابة بأثر العمل'] },
+      { question: 'ما أول ثلاث خطوات عند استلامك مشروعاً متعثراً؟', category: 'technical', rationale: 'لفحص ترتيب الأولويات تحت الضغط.', good_answer_signals: ['يشخص الوضع', 'يثبت نطاقاً قصيراً', 'يتواصل بشفافية'] }
+    ],
+    bias_audit: {
+      factors_ignored: ['الجنس', 'العمر', 'الجنسية', 'الحالة الاجتماعية', 'الصورة الشخصية', 'الاسم'],
+      reasoning_transparency: 'تم احتساب الدرجة من المهارات والخبرة والتعليم وملاءمة بيئة العمل بناءً على أدلة مذكورة في السيرة والوصف الوظيفي فقط.'
+    }
+  };
+}
+
+function normalizeSmartHiringResponse(raw) {
+  const parsed = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : extractJsonObject(raw);
+  const fallback = createSmartHiringFallbackResponse();
+  if (!parsed) return fallback;
+
+  const scoreBreakdown = parsed.score_breakdown || {};
+  return {
+    match_score: Math.round(clampNumber(parsed.match_score, fallback.match_score, 0, 100)),
+    score_breakdown: {
+      skills: Math.round(clampNumber(scoreBreakdown.skills, fallback.score_breakdown.skills, 0, 40)),
+      experience: Math.round(clampNumber(scoreBreakdown.experience, fallback.score_breakdown.experience, 0, 30)),
+      education: Math.round(clampNumber(scoreBreakdown.education, fallback.score_breakdown.education, 0, 15)),
+      culture: Math.round(clampNumber(scoreBreakdown.culture, fallback.score_breakdown.culture, 0, 15))
+    },
+    skill_matrix: normalizeSmartHiringArray(parsed.skill_matrix, fallback.skill_matrix, 12).map(item => ({
+      skill: clampText(item?.skill, 'مهارة مطلوبة', 80),
+      required: Boolean(item?.required),
+      evidence: clampText(item?.evidence, 'لا يوجد دليل كافٍ.', 260),
+      level: ['green', 'yellow', 'red'].includes(item?.level) ? item.level : 'yellow'
+    })),
+    experience_summary: normalizeSmartHiringArray(parsed.experience_summary, fallback.experience_summary, 8).map(item => ({
+      company: clampText(item?.company, 'جهة غير مذكورة', 90),
+      role: clampText(item?.role, 'دور سابق', 90),
+      years: clampNumber(item?.years, 0, 0, 40),
+      relevance: clampText(item?.relevance, 'صلة عامة بالوظيفة.', 220)
+    })),
+    red_flags: normalizeSmartHiringArray(parsed.red_flags, fallback.red_flags, 8).map(item => ({
+      type: clampText(item?.type, 'ملاحظة تحقق', 80),
+      severity: ['low', 'medium', 'high'].includes(item?.severity) ? item.severity : 'medium',
+      description: clampText(item?.description, 'تحتاج هذه النقطة سؤال تحقق في المقابلة.', 240)
+    })),
+    interview_questions: normalizeSmartHiringArray(parsed.interview_questions, fallback.interview_questions, 8).map(item => ({
+      question: clampText(item?.question, 'ما المثال العملي الذي يثبت هذه المهارة؟', 220),
+      category: ['technical', 'behavioral', 'situational'].includes(item?.category) ? item.category : 'technical',
+      rationale: clampText(item?.rationale, 'للتحقق من دليل مذكور في السيرة.', 220),
+      good_answer_signals: normalizeSmartHiringArray(item?.good_answer_signals, ['إجابة محددة', 'دليل قابل للتحقق'], 5).map(signal => clampText(signal, '', 120)).filter(Boolean)
+    })),
+    bias_audit: {
+      factors_ignored: normalizeSmartHiringArray(parsed.bias_audit?.factors_ignored, fallback.bias_audit.factors_ignored, 8).map(item => clampText(item, '', 80)).filter(Boolean),
+      reasoning_transparency: clampText(parsed.bias_audit?.reasoning_transparency, fallback.bias_audit.reasoning_transparency, 600)
+    }
+  };
+}
+
 function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
   const scenario = scenarioData?.scenario || input?.scenarioId || blueprint.scenarios[0];
   const message = input?.message || scenarioData?.message || scenarioData?.sample || '';
@@ -613,6 +839,59 @@ function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
 
 function createDemoConfig(demoType, blueprint) {
   const model = PRO_MODEL_DEMOS.has(demoType) ? 'gemini-2.5-pro' : 'gemini-2.5-flash';
+  if (demoType === 'smart-hiring-system') {
+    const systemInstruction = [
+      BASE_SYSTEM_INSTRUCTION,
+      blueprint.focus,
+      'التزم بنظام العمل السعودي ومبادئ تكافؤ الفرص، واذكر نطاقات والتوطين فقط عندما تظهر في متطلبات الوظيفة.',
+      'قيّم الأدلة المهنية فقط: المهارات، سنوات الخبرة ذات الصلة، التعليم أو الشهادات، وملاءمة بيئة العمل من حيث السلوكيات المهنية.',
+      'تجاهل صراحة: الجنس، العمر، الجنسية، الحالة الاجتماعية، الصورة الشخصية، الاسم، والجامعة كعامل سمعة مستقل.',
+      `يجب أن يطابق الرد هذا المخطط فقط: ${SMART_HIRING_SCHEMA_DESCRIPTION}`
+    ].join('\n');
+    const config = {
+      demoType,
+      model: 'gemini-2.5-flash',
+      title: blueprint.title,
+      schemaName: blueprint.schemaName,
+      safetyProfile: blueprint.safetyProfile,
+      systemInstruction,
+      system: systemInstruction,
+      responseSchema: SMART_HIRING_RESPONSE_SCHEMA,
+      validationRules: {
+        locale: ['ar-SA', 'en-SA'],
+        maxInputLength: 3000,
+        requiresHumanReview: true,
+        prohibitSensitiveData: true,
+        outputSchema: SMART_HIRING_SCHEMA_DESCRIPTION,
+        forbiddenOutput: ['Markdown', 'code blocks', 'raw Gemini response', 'text outside JSON']
+      },
+      buildPrompt(input, scenarioData) {
+        return buildPromptForDemo(config, input, scenarioData);
+      },
+      generationConfig: {
+        temperature: 0.18,
+        topP: 0.9,
+        topK: 32,
+        maxOutputTokens: 3200,
+        responseMimeType: 'application/json',
+        responseSchema: SMART_HIRING_RESPONSE_SCHEMA
+      },
+      normalizeGeminiResponse(raw) {
+        return normalizeSmartHiringResponse(raw);
+      },
+      fallbackResponse() {
+        return createSmartHiringFallbackResponse();
+      },
+      disclaimer: blueprint.disclaimer,
+      sector: blueprint.sector,
+      audience: blueprint.audience,
+      problem: blueprint.problem,
+      outcome: blueprint.outcome,
+      scenarios: blueprint.scenarios,
+      variations: blueprint.variations
+    };
+    return Object.freeze(config);
+  }
   const config = {
     demoType,
     model,
@@ -683,6 +962,8 @@ module.exports = {
   DEMO_TYPE_ALIASES,
   BASE_SYSTEM_INSTRUCTION,
   RESPONSE_SCHEMA_DESCRIPTION,
+  SMART_HIRING_RESPONSE_SCHEMA,
+  SMART_HIRING_SCHEMA_DESCRIPTION,
   getDemoPrompt,
   getModelForDemo,
   isSupportedDemoType,
