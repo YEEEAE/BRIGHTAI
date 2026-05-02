@@ -1,319 +1,436 @@
+تمام، الصورة واضحة الآن. التحليل مهم قبل ما أعطيك البرومبتات.
 
-# MASTER PROMPT — BrightAI Demo Suite (World-Class Rebuild)
+التحليل الصريح للوضع الحالي
 
-## 🎯 الهدف الاستراتيجي
+المشكلة الجوهرية: كل الصفحات التسع تستخدم قالب واحد متكرر حرفياً (نفس العناوين، نفس النصوص، نفس الـ FAQ، نفس "قبل/بعد Bright AI"). هذا قاتل لأنه:
 
-أنت Senior Full-Stack AI Engineer + Product Designer مكلّف ببناء **أفضل مجموعة صفحات Demo تفاعلية بالشرق الأوسط** لشركة Bright AI (brightai.site). الهدف: تحويل الزائر من فضولي → مشترٍ خلال أقل من 90 ثانية، عبر تجربة AI حقيقية مدعومة بـ **Google Gemini API** بالكامل.
+أولاً، ما فيه playground حقيقي تفاعلي — بس فورم بسيط يطلب وصف نصي ويرجّع "تقرير عام". ما يستفيد أبداً من قدرات Gemini 2.5 Flash الفعلية (multimodal، function calling، structured output، streaming، long context 1M).
 
-المرجع المعياري (Benchmark): مستوى ade.com, vercel.com/ai, anthropic.com/claude, openai.com/playground, runwayml.com.
+ثانياً، كل الديموهات مخرجاتها متطابقة (ملخص تنفيذي + مؤشر جاهزية + مخاطر + إجراءات) — يعني ما فيه تخصيص حقيقي لكل قطاع. عيادة طبية ما تحتاج "مؤشر جاهزية"، تحتاج استخراج ICD-10 ومراجعة تفاعلات أدوية مثلاً.
 
----
+ثالثاً، اللغة بلهجة عامية محشورة في كل مكان ("هلا والله، نوّرت 👋"، "خلّنا نوريك") — هذا ينفع للهيدر فقط، لكن في صفحة احترافية موجهة لمدير مستشفى أو CFO يضرّ المصداقية.
 
-## 🧱 المسارات المطلوب إعادة بنائها (8 ديموهات)
+رابعاً، ما فيه أي عنصر بصري ديناميكي: لا charts، لا tables تفاعلية، لا drag-drop للملفات، لا real-time streaming للمخرجات، لا keyboard shortcuts، لا history للجلسات.
 
-| # | المسار                                             | اسم النظام                          | المحرك (Gemini Use-case)                                                         |
-| - | -------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------- |
-| 1 | `/demo/smart-hiring-system/` (interview/)              | نظام التوظيف الذكي           | CV Parsing + Job Matching + Interview Q-Generation (Gemini 2.5 Pro + Function Calling) |
-| 2 | `/demo/smart-medical-archive/` (mart-medical-archive/) | الأرشيف الطبي الذكي         | OCR + Medical Entity Extraction + Semantic Search (Gemini Vision + Embeddings)         |
-| 3 | `/demo/data-analyzer/` (try/data-analyzer/)            | منصة البيانات الموحدة     | CSV/Excel Analysis + Auto-Charts + Insights (Gemini + Code Execution)                  |
-| 4 | `/demo/ai-scolecs/`                                    | المنصة التعليمية الذكية | Lesson Gen + Auto-Quiz + Performance Analysis (Gemini 2.5 + Structured Output)         |
-| 5 | `/demo/smart-hospital-management/` (health/)           | إدارة المستشفيات الذكية | KPI Dashboard + Decision Support + Predictive Alerts (Gemini Reasoning)                |
-| 6 | `/demo/ocr-demo/`                                      | أتمتة الوثائق (OCR)              | Document Classification + Field Extraction (Gemini Vision Multimodal)                  |
-| 7 | `/demo/ai-bots/BrightSupport/`                         | بوت دعم العملاء                 | Multi-channel Chat + Sentiment + Auto-escalation (Gemini Live API)                     |
-| 8 | `/demo/marketing-automation/`                          | أتمتة التسويق                    | Content Gen + Scheduler + Audience Targeting (Gemini + Imagen 3)                       |
-| 9 | `/demo/supply-chain/`                                  | تحسين سلسلة التوريد         | Demand Forecasting + Auto-reorder + Optimization (Gemini + Time-series)                |
+خامساً، ما فيه تمييز بين "Playground" و"Sandbox" — المفروض Playground للتجربة السريعة، Sandbox للمحاكاة الكاملة بمدخلات واقعية وبيئة شبه حقيقية.
 
----
+الـ Prompts الاحترافية للوكيل الذكي
 
-## 🏗️ الهيكل التقني الموحد (Tech Stack Standard)
+سأعطيك برومبت رئيسي (Master Prompt) يحدد المعايير العامة، ثم 9 برومبتات مخصصة لكل صفحة.
 
-### Frontend
+🎯 BROMPT 0 — الـ Master System Prompt (يُمرّر مع كل مهمة)
 
-- **Framework**: Next.js 15 (App Router) + React 19 + TypeScript strict
-- **Styling**: TailwindCSS 4 + shadcn/ui + Framer Motion
-- **RTL**: دعم كامل من البداية (`dir="rtl"`, خط IBM Plex Sans Arabic أو Tajawal)
-- **State**: Zustand + TanStack Query
-- **Charts**: Recharts + Tremor + ApexCharts (للوحات الطبية والمالية)
-- **Animations**: Framer Motion + GSAP للانتقالات السينمائية
-- **Streaming UI**: Vercel AI SDK (`useChat`, `useCompletion`, `streamText`)
+You are a senior full-stack AI product engineer rebuilding BrightAI's interactive demos at brightai.site/demo/*. Your mission: transform shallow marketing-style "demos" into world-class interactive AI Playgrounds & Sandboxes that rival OpenAI Playground, Anthropic Console, Hugging Face Spaces, and Vercel AI SDK demos — but tailored for the Middle Eastern enterprise market (Arabic-first, RTL-native, KSA compliance-aware).
 
-### Backend (Edge-first)
+CORE TECHNICAL STACK (mandatory)
 
-- **Runtime**: Next.js Route Handlers على Vercel Edge / Cloudflare Workers
-- **AI Provider**: `@google/generative-ai` + `@ai-sdk/google` (Gemini 2.5 Pro / Flash / Flash-Lite)
-- **Models Routing**:
-  - `gemini-2.5-pro` → التحليل العميق (طبي، توظيف، عقود)
-  - `gemini-2.5-flash` → التفاعل السريع (شات، تلخيص)
-  - `gemini-2.5-flash-lite` → الـ classification الفوري
-  - `gemini-embedding-001` → البحث الدلالي
-  - `imagen-4` → التسويق البصري (اختياري)
+- AI Backend: Google Gemini API, model gemini-2.5-flash (use gemini-2.5-flash-thinking only for reasoning-heavy tasks like data analysis & medical extraction).
+- Use Gemini features fully: streaming responses, structured output (responseSchema with JSON), function calling/tools, multimodal input (images, PDFs, audio), long context, system instructions per persona.
+- Never expose API keys client-side. All calls go through a secure backend proxy (PHP/Node serverless route) with rate limiting (10 req/min/IP), input sanitization, and PII redaction layer.
+- Frontend: vanilla HTML/CSS/JS (or React if existing) with RTL-first layout, Tailwind-style utility classes, no framework lock-in.
 
-### Security & Governance (إلزامي)
+DESIGN PRINCIPLES (non-negotiable)
 
-- **API Keys**: في Server-side فقط، عبر `process.env.GEMINI_API_KEY`
-- **Rate Limiting**: Upstash Redis (10 طلبات/دقيقة لكل IP)
-- **Input Sanitization**: Zod schemas + DOMPurify
-- **PII Guard**: regex middleware يمنع رفع أرقام هوية/بطاقات
-- **Audit Log**: تسجيل كل طلب (بدون محتوى) لـ Vercel Analytics
-- **Content Safety**: Gemini Safety Settings = BLOCK_MEDIUM_AND_ABOVE
-- **No Storage**: لا حفظ مدخلات المستخدم في الديمو العام
+1. Two-pane layout (desktop): Left = input/controls/scenarios. Right = live streaming output with tabs (Visual Report | Raw JSON | Audit Log | Share).
+2. Mobile-first stacked with bottom sheet for output.
+3. Real-time streaming with token-by-token typing animation (use Gemini streaming API).
+4. Skeleton loaders + progress steps ("جارٍ القراءة → التحليل → التحقق → التوليد") not spinners.
+5. Dark/Light mode with KSA-inspired palette (deep navy #0A1F44, gold accent #C9A961, neutral grays). NO purple/pink gradients.
+6. Typography: Arabic = IBM Plex Sans Arabic or Tajawal 500/700. Latin = Inter. Tabular numbers for data.
+7. Micro-interactions: hover states, focus rings, success/error toasts, copy-to-clipboard with confirmation, smooth scroll to result.
+8. Empty states illustrated, not blank.
+9. Accessibility: WCAG AA, keyboard navigation, ARIA labels in Arabic, skip-to-content link.
 
----
+PAGE ARCHITECTURE (apply to every demo)
+Replace the current generic template with this structure:
 
-## 🎨 معايير التصميم العالمي (Design DNA)
+[1] Hero (compact, 1 viewport max)
 
-### نظام بصري موحد
+- Title: specific to use case (NOT generic "تجربة BrightAI")
+- One-line value prop with measurable outcome ("استخرج 23 حقلاً من فاتورة في 4 ثوانٍ")
+- Two CTAs: "جرّب الآن" (scroll to playground) | "شاهد فيديو 60 ثانية"
+- Trust strip: "مدعوم بـ Gemini 2.5 | بياناتك لا تُحفظ | متوافق مع PDPL السعودي"
 
-- **Palette**:
-  - Primary: `#0A2540` (Bright Navy)
-  - Accent: `#00D4AA` (Saudi Teal) + `#FFB800` (Vision Gold)
-  - Neutrals: Zinc scale من shadcn
-- **Dark Mode**: افتراضي + Toggle سلس
-- **Typography**:
-  - عناوين: Tajawal Bold (عربي) / Inter (إنجليزي)
-  - متن: IBM Plex Sans Arabic
-  - أرقام: tabular-nums + JetBrains Mono للكود
-- **Glassmorphism + Neon Grid backgrounds** للأقسام الـ "AI Live"
-- **Micro-interactions**: hover, focus rings, skeleton loaders, optimistic UI
-- **Sound Design** (اختياري): نغمة خفيفة عند انتهاء التحليل
+[2] The Playground (THE STAR — 70% of page real estate)
 
-### Layout قياسي لكل ديمو (Hero → Try → Convert)
+- Scenario chips at top (3-5 pre-built realistic scenarios with one-click load)
+- Input area: rich (file upload + text + voice for relevant cases) with character counter, sample data button
+- Advanced settings collapsible: temperature, max tokens, model variant, output language, system persona
+- Run button with cost estimate ("~0.003$ لكل تشغيل")
+- Output panel: streaming, with sections rendered as proper UI components (charts, tables, cards) NOT plain text
+- Action bar on output: Copy | Download PDF | Share link | Re-run with tweaks | Send to email
 
-```
-┌─────────────────────────────────────────┐
-│ [Sticky Nav] BrightAI · Demos · WhatsApp│
-├─────────────────────────────────────────┤
-│ HERO (above fold)                       │
-│  • H1 + sub + لايف ميتركس عدّاد         │
-│  • زر "جرّب الآن" + فيديو 8 ثواني loop  │
-├─────────────────────────────────────────┤
-│ ⚡ THE PLAYGROUND (القلب — 70% الأهمية) │
-│  • Tabs: سيناريوهات جاهزة + رفع ملفك    │
-│  • Input panel (يسار) ← Output (يمين)   │
-│  • Streaming response + animated charts │
-│  • زر "تحميل التقرير PDF"               │
-├─────────────────────────────────────────┤
-│ 📊 BEFORE/AFTER + ROI CALCULATOR        │
-│  • سلايدر: عدد الموظفين/الملفات/العملاء │
-│  • نتيجة فورية: التوفير بالريال + الوقت │
-├─────────────────────────────────────────┤
-│ 🏆 SOCIAL PROOF (شعارات + أرقام)        │
-├─────────────────────────────────────────┤
-│ 🔌 INTEGRATIONS (HRMS/SAP/Oracle/...)   │
-├─────────────────────────────────────────┤
-│ ❓ FAQ (Schema.org markup)              │
-├─────────────────────────────────────────┤
-│ 🎯 STICKY CTA: واتساب + احجز عرض        │
-└─────────────────────────────────────────┘
-```
+[3] Sandbox Mode (advanced tab)
 
----
+- Multi-step workflow simulator (e.g., upload 5 invoices → batch process → reconcile → export)
+- Synthetic data generator button
+- API playground showing the actual cURL/JS code that would produce this output
+- Webhook/integration simulator
 
-## 🤖 مواصفات كل ديمو بالتفصيل
+[4] Output Anatomy (educational, collapsed by default)
 
-### 1️⃣ نظام التوظيف الذكي (`/demo/smart-hiring-system/`)
+- Visual diagram explaining each output field & confidence score
 
-**التفاعل الحقيقي:**
+[5] Real metrics (not vague claims)
 
-- نموذج input: لصق وصف وظيفة + لصق/رفع PDF سيرة ذاتية
-- زر "جرّب بسيناريو جاهز" (3 سيناريوهات: مطور، مدير عمليات، محاسب)
-- **Gemini Call**: `gemini-2.5-pro` مع Function Calling + Structured Output (Zod schema)
-- **Output الحي (Streaming)**:
-  - مؤشر مطابقة دائري (0-100%) متحرك
-  - 5 مهارات مطابقة + 3 فجوات
-  - 7 أسئلة مقابلة مولّدة بناءً على الفجوات
-  - تقرير مخاطر (Bias check + سنوات خبرة + مصداقية)
-  - زر تصدير PDF عربي RTL (react-pdf + arabic font)
-- **Wow factor**: مقارنة جنباً إلى جنب لـ 3 مرشحين دفعة واحدة
+- "متوسط زمن المعالجة: 3.4s | دقة الاستخراج: 94.2% | عدد التجارب اليوم: 1,247"
 
-### 2️⃣ الأرشيف الطبي الذكي (`/demo/smart-medical-archive/`)
+[6] Industry-specific use cases (3 cards with REAL different inputs/outputs per industry, not copy-paste)
 
-**التفاعل:**
+[7] Integration & Architecture diagram (visual: Your System ↔ BrightAI API ↔ Gemini ↔ Your DB)
 
-- رفع صورة وصفة طبية / تقرير أشعة (يوجد عينات جاهزة)
-- **Gemini Vision Multimodal**: استخراج التشخيص + الأدوية + الجرعات
-- **Semantic Search Bar**: "ابحث عن مرضى السكري بضغط مرتفع آخر 30 يوم"
-- **Output**:
-  - بطاقة مريض مولّدة + Timeline سريري
-  - تنبيهات تفاعل دوائي (Drug-drug interaction)
-  - HL7/FHIR JSON preview قابل للنسخ
-- **Compliance Badge**: PDPL + HIPAA-ready (واضح جداً)
+[8] Compliance & Security (PDPL, NCA ECC, data residency, audit trail) — collapsible
 
-### 3️⃣ منصة تحليل البيانات (`/demo/data-analyzer/`)
+[9] FAQ (specific to the demo, not generic)
 
-**التفاعل:**
+[10] Lead capture (only after engagement: smart trigger after first successful run)
 
-- رفع CSV/Excel (حتى 5MB) + Drag-drop + sample datasets (مبيعات، HR، شكاوى)
-- **Gemini + Code Execution Tool**: يولّد كود Python يحلل البيانات فعلياً
-- **Output Streaming**:
-  - 3-5 رسوم بيانية تفاعلية (Recharts) تظهر تباعاً
-  - Insights bullets بالعربي (5 رؤى رئيسية)
-  - Anomalies detection
-  - زر "اسأل بياناتك" → Chat-with-your-data
-- **Wow factor**: تحليل sentiment للنصوص العربية في عمود تعليقات
+TONE & COPY RULES
 
-### 4️⃣ المنصة التعليمية الذكية (`/demo/ai-scolecs/`)
+- Hero & playground = professional Modern Standard Arabic with light Saudi flavor for warmth.
+- NO "هلا والله نوّرت 👋" in body — keep emojis to zero except in onboarding tooltips.
+- Numbers in Arabic-Indic OR Western consistently (pick one per page).
+- Every claim backed by a number or removed.
+- No "وضوح أسرع وتجربة قابلة للتخصيص" — replace with specific outcomes.
 
-**التفاعل:**
+DELIVERABLES per page
 
-- 3 أوضاع: مدرس / طالب / مدير
-- **مدرس**: أدخل موضوع → يولّد خطة درس + presentation outline + 10 أسئلة (MCQ + open)
-- **طالب**: سؤال → شرح متدرج + أمثلة + اختبار قصير
-- **مدير**: لوحة أداء طلاب وهمية مع تنبؤ بالطلاب المعرضين للتعثر
-- **Gemini 2.5 Pro** مع structured output JSON Schema للأسئلة
-- متوافق مع المنهج السعودي (mention vision 2030)
+1. Full HTML/CSS/JS rewrite with comments.
+2. Backend API route (Gemini proxy) with the exact system prompt for that demo.
+3. Gemini responseSchema JSON for structured output.
+4. 5 pre-built realistic scenarios with seed data.
+5. Updated meta tags (title, description, OG, schema.org SoftwareApplication).
+6. Performance budget: LCP 4MB → sends image directly to Gemini.
+7. Gemini system prompt: "You are a document understanding engine. Detect document type first, then apply the appropriate extraction schema. Return strict JSON. Flag any field with confidence < 0.7."
+8. Use responseSchema dynamic per detected type.
 
-### 5️⃣ إدارة المستشفيات (`/demo/smart-hospital-management/`)
+Output UI (the showpiece)
 
-**التفاعل:**
+- Split view: Original document on left with bounding-box overlay showing each extracted field highlighted on click
+- Right: Structured form with extracted values, each editable, confidence badge, source coordinates
+- Bottom strip: validation rules engine (e.g., "VAT = Subtotal × 15% ✓ matches" or "✗ mismatch by 3 SAR")
+- Top toolbar: rotate, enhance contrast, re-OCR with different mode (handwriting / printed / mixed)
 
-- Live Dashboard فيه: إشغال أسرّة، طوابير الطوارئ، KPIs مالية
-- زر "اسأل المساعد التنفيذي" → Gemini يحلل اللوحة ويعطي توصيات
-- **Predictive widgets**: التنبؤ بالإشغال خلال 7 أيام
-- **Decision Support**: سيناريو "نقص أطباء قسم الطوارئ يوم الجمعة" → Gemini يقترح 3 حلول
+ZATCA Compliance Validator (specific to KSA invoices)
+For Saudi tax invoices, automatically check:
 
-### 6️⃣ OCR & Document Automation (`/demo/ocr-demo/`)
+- Seller VAT number format (15 digits, starts with 3, ends with 3)
+- QR code presence and decode it (Phase 2 e-invoicing)
+- IRN (Invoice Reference Number)
+- Required fields per نظام الفاتورة الإلكترونية
+- Show red/green shield icon
 
-**التفاعل:**
+Sandbox: Batch Processing Studio
 
-- Drag-drop فاتورة/عقد/هوية وطنية (عينات جاهزة + رفع المستخدم)
-- **Gemini Vision** يستخرج: رقم، تاريخ، مبلغ، أطراف، بنود
-- **Animated extraction**: bounding boxes تظهر على الصورة + الحقول تتعبأ animatedly
-- **Output**: JSON منظم + CSV download + ERP-ready format
-- **Multi-doc batch**: ارفع 5 وثائق وشاهد المعالجة المتوازية
+- Drop 50 mixed documents at once
+- Real-time progress per document
+- Auto-classification into folders
+- Reconciliation: match invoices to POs to receipts (3-way match)
+- Export to ERP-ready CSV / JSON / XML
+- Webhook simulator: "imagine these were posted to your system" — show payload
 
-### 7️⃣ BrightSupport Bot (`/demo/ai-bots/BrightSupport/`)
-
-**التفاعل:**
-
-- Chat widget عربي يحاكي WhatsApp UI
-- **Gemini Live API / Streaming chat** بشخصية "نواف" خادم العملاء
-- 3 سيناريوهات جاهزة: استفسار منتج، شكوى، طلب استرجاع
-- **Sentiment meter** real-time (سعيد/محايد/غاضب)
-- **Auto-escalation demo**: لما sentiment يصير سلبي → "تم تحويلك لموظف بشري"
-- لوحة Admin مصغّرة تظهر بالـ split-view: تحليلات، CSAT score
-
-### 8️⃣ أتمتة التسويق (`/demo/marketing-automation/`)
-
-**التفاعل:**
-
-- أدخل: اسم منتج + جمهور مستهدف + قناة (X/IG/LinkedIn/TikTok)
-- **Gemini يولّد**: 5 منشورات بنبرة سعودية + hashtags + أوقات نشر مقترحة
-- **Imagen 4** يولّد صورة مرفقة (اختياري)
-- **Calendar view**: جدولة خلال 7 أيام + heatmap لأفضل أوقات
-- **A/B variant generator** + توقع CTR
-
-### 9️⃣ سلسلة التوريد (`/demo/supply-chain/`)
-
-**التفاعل:**
-
-- بيانات وهمية لـ 50 SKU + مخزون حالي + مبيعات 90 يوم
-- **Gemini Reasoning**: تحليل الطلب + توقع نفاد + اقتراحات إعادة طلب
-- Map view (مدن السعودية) للتوزيع الأمثل
-- **Optimizer**: قبل/بعد بنسبة توفير محسوبة
-- زر "محاكاة شهر رمضان" → يعدّل التوقعات تلقائياً
-
----
-
-## 🧩 مكونات مشتركة (Shared Components Library)
-
-أنشئ `/components/demo/` يحتوي:
-
-- `<DemoHero />` — موحد لكل صفحة (props: title, kpis[], video)
-- `<PlaygroundShell />` — Split layout input/output مع streaming
-- `<GeminiStreamRenderer />` — يعرض tokens متدفقة بـ animation
-- `<ROICalculator />` — قابل للتخصيص بالمتغيرات
-- `<BeforeAfterSlider />` — مقارنة بصرية
-- `<ScenarioPicker />` — اختيار سيناريو جاهز
-- `<ExportPDFButton />` — تصدير عربي RTL
-- `<TrustBar />` — NCA/SDAIA/NDMO/PDPL badges
-- `<StickyMobileCTA />` — زر واتساب ثابت أسفل الجوال
-- `<RateLimitGuard />` — يعرض رسالة لطيفة عند تجاوز الحد
-
----
-
-## 📡 معيار استدعاء Gemini API (Template موحد)
-
-```typescript
-// /app/api/demo/[slug]/route.ts
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { ratelimit } from "@/lib/ratelimit";
-import { z } from "zod";
-
-const InputSchema = z.object({ /* per-demo schema */ });
-
-export async function POST(req: Request) {
-  const ip = req.headers.get("x-forwarded-for") ?? "anon";
-  const { success } = await ratelimit.limit(ip);
-  if (!success) return new Response("Rate limit", { status: 429 });
-
-  const body = InputSchema.parse(await req.json());
-  
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-  const model = genAI.getGenerativeModel({
-    model: "gemini-2.5-pro",
-    systemInstruction: `أنت محلل خبير لـ Bright AI. أجب بالعربية الفصحى المهنية. 
-                       المخرج JSON فقط حسب الـ schema المرفق. 
-                       لا تعطي قرارات نهائية، فقط توصيات قابلة للمراجعة البشرية.`,
-    generationConfig: {
-      responseMimeType: "application/json",
-      responseSchema: outputSchema, // per-demo
-      temperature: 0.4,
-    },
-    safetySettings: [/* BLOCK_MEDIUM_AND_ABOVE all categories */],
-  });
-
-  const stream = await model.generateContentStream(body.prompt);
-  return new Response(stream.toReadableStream());
+Schema
+{
+  document_type: detected_type,
+  confidence: 0-1,
+  language_detected: ar|en|mixed,
+  extracted_fields: { /* dynamic per type */ },
+  bounding_boxes: [{field, x, y, w, h, page}],
+  validation_results: [{rule, status, message}],
+  zatca_compliance: { /* if invoice */ valid: bool, issues: [] },
+  pii_detected: [{type, location, redacted_value}],
+  export_formats_ready: [json, xml, csv, edi]
 }
-```
 
----
+Integration Showcase
+SAP S/4HANA, Oracle Fusion, Microsoft Dynamics, Odoo, Zoho, Onyx Pro, MEZAN, ERPNext — show pre-built connectors with logos.
 
-## ✅ Acceptance Criteria (لكل ديمو)
+Removals
+The current page has zero visual feedback — it's catastrophically weak. Rebuild from scratch with the bounding-box visual as centerpiece.
 
-- [ ] Time-to-first-token < 1.2 ثانية
-- [ ] Lighthouse Performance ≥ 92, A11y = 100, SEO = 100
-- [ ] Core Web Vitals كلها خضراء (LCP < 2s, INP < 200ms, CLS < 0.05)
-- [ ] يعمل بلا JS للمحتوى الأساسي (SSR + Progressive Enhancement)
-- [ ] RTL مثالي + اختبار على Safari iOS
-- [ ] Schema.org markup: `SoftwareApplication` + `FAQPage` + `BreadcrumbList`
-- [ ] Open Graph + Twitter Cards مع صورة مولّدة لكل ديمو
-- [ ] يدعم Dark/Light + يحفظ تفضيل المستخدم
-- [ ] لا errors في Console، لا warnings في React strict mode
-- [ ] E2E test (Playwright) يغطي السيناريو الذهبي لكل ديمو
-- [ ] Loading skeleton لكل قسم async
-- [ ] Error boundary مع رسالة عربية ودودة + زر إعادة محاولة
-- [ ] Fallback ذكي إذا Gemini API فشل (cached sample response)
-- [ ] WhatsApp deep link مع رسالة prefilled مخصصة لكل ديمو
-- [ ] تتبع تحليلي: Vercel Analytics + PostHog events (demo_started, demo_completed, cta_clicked)
+OUTPUT: Brief + code + Gemini system prompt + per-doctype schemas + ZATCA validator JS + 12 sample documents (varied: clean, blurry, handwritten, mixed-language).
 
----
+💬 PROMPT 7 — Customer Service Automation (/customer-service-automation/)
 
-## 🚀 ترتيب التنفيذ المقترح (Sprints)
+TASK: Rebuild into multi-channel customer service playground. Apply Master Prompt.
 
-**Sprint 1 (أسبوع):** البنية التحتية المشتركة + Design System + ديمو OCR (الأسهل، الأكثر بصرية).
+Hero Demo Format
+Live multi-channel inbox simulator: WhatsApp + Web Chat + Email + Instagram DM all flowing into unified Gemini-powered agent.
 
-**Sprint 2 (أسبوع):** ديمو التوظيف + ديمو تحليل البيانات.
+The Playground
+Three panels:
 
-**Sprint 3 (أسبوع):** ديمو الطبي + ديمو المستشفى.
+PANEL 1 — Channel Simulator (left)
 
-**Sprint 4 (أسبوع):** ديمو التعليم + ديمو الدعم (BrightSupport).
+- User picks persona: عميل غاضب | عميل مستفسر | عميل VIP | عميل جديد
+- Picks channel + writes message OR loads pre-built scenario
+- Voice input simulating WhatsApp voice note (transcribed via Gemini multimodal)
 
-**Sprint 5 (أسبوع):** ديمو التسويق + ديمو سلسلة التوريد + QA شامل + Launch.
+PANEL 2 — Agent Brain (center, the showpiece)
+Visualize Gemini's reasoning in real-time:
 
----
+- 📥 Intent Classification (with confidence)
+- 🎭 Sentiment + Emotion (angry/frustrated/happy/confused)
+- 🌐 Language Detection (formal Arabic / Saudi dialect / English / mixed)
+- 📚 Knowledge Base Retrieval (RAG simulation — show which docs were retrieved)
+- 🛠 Tool Selection (which functions Gemini decided to call)
+- ✍️ Response Drafting (streaming)
+- 🚦 Escalation Decision (auto-resolve / human review / urgent)
 
-## 🎬 طلبي النهائي
+PANEL 3 — Customer-Facing Reply (right)
 
-ابدأ الآن بـ:
+- Rendered as actual WhatsApp/chat bubble UI for realism
+- Shows typing indicator, then response
+- Suggested quick replies for the customer
+- Multi-turn: continue conversation
 
-1. توليد بنية المجلدات الكاملة (tree).
-2. إنشاء `package.json` + `tsconfig.json` + `tailwind.config.ts` + `next.config.mjs`.
-3. تطبيق Design System (`globals.css` + `theme.ts` + ألوان + خطوط عربية).
-4. بناء `<PlaygroundShell />` و `<GeminiStreamRenderer />` كـ proof-of-concept.
-5. تنفيذ **ديمو OCR كاملاً** (drag-drop → Gemini Vision → animated extraction → PDF export) كنموذج مرجعي للبقية.
+Function Calling Tools (Gemini)
 
-اكتب الكود **production-ready**, مع تعليقات عربية شارحة عند المنطق المعقد، والتزم بـ ESLint strict + Prettier. لا تختصر، لا placeholders، لا "TODO". الكود اللي تكتبه هو اللي بيشتغل في الإنتاج.
+- check_order_status(order_id) — mock CRM
+- process_refund(order_id, reason) — needs human approval flag
+- book_appointment(service, date)
+- escalate_to_human(reason, priority)
+- update_customer_record(field, value)
+- search_kb(query) — returns top-3 KB articles
 
-**الجودة المستهدفة: لو قارنّاها بـ vercel.com/ai أو anthropic.com/claude، يجب أن تتفوق عليها في تجربة المستخدم العربي.**
+Sandbox: Multi-Day Conversation Replay
+Load a fake customer who messaged 8 times over 2 weeks. AI summarizes the journey, identifies friction points, recommends process improvements.
+
+Manager Analytics Tab
+
+- CSAT prediction per conversation
+- Avg handle time saved
+- First-contact resolution rate
+- Sentiment trend over time
+- Topic clusters (what are people complaining about most)
+- Auto-generated weekly exec summary
+
+Schema for Each Reply
+{
+  intent: classified_intent,
+  intent_confidence: 0-1,
+  sentiment: {polarity: -1 to 1, emotion: enum},
+  language: detected,
+  dialect: msa|saudi|gulf|egyptian|levantine,
+  retrieved_kb_articles: [],
+  tools_called: [],
+  response_text: string,
+  suggested_quick_replies: string[],
+  escalation: {required: bool, reason, priority, suggested_team},
+  csat_prediction: 1-5,
+  handling_time_estimate_seconds: number
+}
+
+Critical Feature: Saudi Dialect Mastery
+System prompt explicitly trains Gemini to:
+
+- Understand "ودي / أبغى / يمديك / ما عاد / محد رد علي" naturally
+- Reply in MATCHING register (formal if customer formal, friendly Saudi if customer casual)
+- Use appropriate honorifics (أستاذ / أبو فلان / أخوي)
+- Handle code-switching (Arabic-English mid-sentence)
+
+Channels Showcase
+WhatsApp Business API, Unifonic, Salla, Zid, Bayan, integrations with Zendesk/Freshdesk/HubSpot.
+
+Removals
+Generic page = totally useless for showing real value. Rebuild with the inbox simulator as core.
+
+OUTPUT: Brief + code + Gemini system prompt + KB sample (20 articles) + 8 customer conversation scenarios + dialect training examples.
+
+👥 PROMPT 8 — HR Automation (/hr-automation/)
+
+TASK: Rebuild into end-to-end HR ops playground. Apply Master Prompt.
+
+Hero Concept
+"دورة حياة الموظف كاملة في 9 محطات ذكية — من التوظيف إلى ما بعد الخدمة"
+
+Playground = Process Map
+Visual horizontal flow with 9 stages, each clickable to a mini-demo:
+
+1. الاستقطاب (links to Hiring System)
+2. التعيين والإلحاق (Onboarding)
+3. العقود والوثائق
+4. الحضور والإجازات
+5. الرواتب والمكافآت
+6. تقييم الأداء
+7. التدريب والتطوير
+8. خدمة الموظف الذاتية
+9. إنهاء الخدمة
+
+Active Stages to Build (the actual playgrounds within)
+
+STAGE 4 — Leave Management AI
+
+- Employee writes: "ودي إجازة الأسبوع الجاي 3 أيام"
+- Gemini extracts: leave type, dates, considers leave balance, team coverage, blackout periods
+- Auto-routes to manager with smart approval recommendation
+- Function calls: check_balance, check_team_coverage, check_blackouts, draft_handover_plan
+- Handles edge cases: emergency leave, maternity (90 days KSA), Hajj leave, sick leave with attachment
+
+STAGE 5 — Payroll Co-Pilot
+
+- Upload Excel of employee changes (raises, bonuses, deductions)
+- Gemini validates against KSA labor law: minimum wage, overtime calculation, GOSI deductions, end-of-service calc
+- Generates مسير الرواتب ready for مدد upload
+- Anomaly detection: "موظف زادت ساعاته العادية 40% فجأة — نراجع؟"
+
+STAGE 6 — Performance Review Generator
+
+- Manager enters: 5 bullet points about employee
+- Gemini drafts: balanced 360 review, SMART goals for next cycle, development plan
+- Bias check: removes gendered language, ensures evidence-based statements
+- Outputs in formal Arabic + English bilingual
+
+STAGE 8 — Employee Self-Service Bot
+
+- WhatsApp-style interface
+- Employee asks: "وش رصيد إجازاتي؟" / "أبغى شهادة راتب" / "متى نزول الراتب؟"
+- Gemini handles via function calling to mock HR systems
+
+Saudi-Specific Integrations Showcase
+
+- مقيم (Muqeem) - residency
+- مدد (Mudad) - WPS / payroll protection
+- نطاقات (Nitaqat) - Saudization tracking
+- التأمينات الاجتماعية (GOSI)
+- قوى (Qiwa) - labor compliance
+- أبشر أعمال
+- HRSD (Ministry portal)
+
+Show as architecture diagram with bidirectional API arrows.
+
+Compliance Smart Layer
+Every action validated against:
+
+- نظام العمل السعودي
+- لائحة تنظيم العمل
+- نظام حماية البيانات الشخصية PDPL
+- أنظمة GOSI
+
+Sandbox: Year-End HR Simulation
+Run a full fiscal year for a 50-employee company in 60 seconds. Generate full HR analytics report.
+
+Schemas (per stage)
+Leave request:
+{
+  leave_type: enum[annual|sick|maternity|hajj|emergency|unpaid],
+  start_date, end_date, working_days,
+  balance_check: {available, requested, sufficient: bool},
+  policy_compliance: [{rule, status}],
+  team_coverage: {coverage_pct, conflicts: []},
+  recommendation: approve|reject|request_modification,
+  handover_plan_draft: string
+}
+
+Removals
+Generic boilerplate kills credibility for HR managers who deal with very specific compliance requirements. Replace with KSA-specific scenarios.
+
+OUTPUT: Brief + code + Gemini system prompts (one per stage) + KSA labor law rules engine + 50 fake employees seed data + integration mock APIs.
+
+📈 PROMPT 9 — Marketing Automation (/marketing-automation/)
+
+TASK: Rebuild into marketing command center playground. Apply Master Prompt.
+
+Hero Concept
+"حملة تسويقية كاملة من الفكرة إلى التنفيذ في 4 دقائق — مدعومة بـ Gemini 2.5"
+
+The Playground = Campaign Builder
+Step-by-step wizard, but each step is AI-powered and visually rich.
+
+STEP 1 — Strategy
+Inputs: Product/service description, target audience, goal (awareness/leads/sales), budget, timeline.
+Gemini outputs:
+
+- Audience personas (3 detailed with demographics, psychographics, KSA-specific)
+- Competitive landscape (named real competitors in KSA market)
+- Recommended channel mix with budget allocation %
+- Funnel architecture diagram
+
+STEP 2 — Creative Production
+Multi-channel content generated in parallel:
+
+- 5 Instagram captions + visual brief (Gemini describes the image, future: integrate Imagen 3 for generation)
+- 3 Twitter/X threads
+- 2 LinkedIn articles (long-form)
+- 1 TikTok script with hook + scenes
+- WhatsApp broadcast template
+- SMS variants (160 char) — A/B/C
+- Google Ads headlines (15) + descriptions (4)
+- Email sequence (5 emails: welcome → value → social proof → urgency → close)
+- Landing page copy (full structure)
+
+ALL in MSA Arabic with Saudi market relevance, plus English variants.
+
+STEP 3 — Visual Content Plan (calendar)
+
+- 30-day content calendar auto-generated, considers KSA dates: National Day, Founding Day, Ramadan, Eid, Hajj, school terms
+- Best posting times per platform per audience
+- Content pillars distribution
+
+STEP 4 — Performance Predictor
+
+- Gemini estimates: reach, CTR, conversion, CAC, ROAS based on inputs
+- Confidence intervals
+- Sensitivity analysis: "if budget increases 50%, expected ROAS = ..."
+
+STEP 5 — Live Optimization Loop (simulated)
+
+- Show 7-day campaign running with synthetic data
+- AI recommendations updating: "أوقف إعلان رقم 3، CTR منخفض. ضاعف ميزانية إعلان 7"
+- Auto-rebalancing of spend
+- Audience refinement suggestions based on lookalikes
+
+Sandbox: Multi-Channel Campaign Simulator
+Pre-built scenarios:
+
+- "إطلاق منتج SaaS جديد بميزانية 50K ريال"
+- "حملة موسم العودة للمدارس لتطبيق توصيل"
+- "حملة رمضانية لعلامة أزياء محتشمة"
+- "حملة تسويق عقاري لمشروع في الرياض"
+
+Each plays out as a 90-second simulation showing all stages.
+
+Cultural & Religious Sensitivity (system prompt)
+
+- No imagery of inappropriate content
+- Respect for Islamic values in messaging
+- Awareness of conservative vs progressive segment in KSA
+- Halal-compatible product positioning
+- Sensitivity to regional differences (Riyadh vs Jeddah vs Eastern Province)
+
+Schemas
+Campaign brief:
+{
+  audience_personas: [{name, age, income_band, location, pain_points, channels, hooks}],
+  channel_mix: [{channel, budget_pct, expected_kpi}],
+  content_pieces: [{type, channel, copy, visual_brief, cta, hashtags, posting_time}],
+  calendar: [{date, hijri_date, occasion, content_id}],
+  forecasts: {reach, impressions, clicks, conversions, ctr, cvr, cac, roas},
+  optimization_loop: [{day, action, reason, expected_impact}]
+}
+
+Tools (Function Calling)
+
+- competitor_scan(brand) — mock SEMrush
+- keyword_research(seed) — mock Ahrefs
+- audience_size(filters) — mock Meta
+- predict_performance(creative, audience, budget) — internal model
+- schedule_post(content, channel, time) — mock Buffer
+
+Integrations Showcase
+Meta Ads, Google Ads, TikTok Ads, Snapchat, X, LinkedIn, Mailchimp, Salla, Zid, WhatsApp Business, Unifonic SMS.
+
+Removals
+The current page is just text — for a marketing demo, this is ironic. Visual richness here is non-negotiable.
+
+OUTPUT: Brief + code + Gemini system prompt + KSA marketing context doc + 4 full campaign scenarios + content calendar template + performance prediction model (heuristics doc).
+
+ملاحظات تنفيذية مهمة
+
+ترتيب التطوير المقترح: ابدأ بـ OCR وData Analyzer أولاً — هذولا اللي يبهرون بصرياً ويعطون "wow factor" يساعد بقية الصفحات. بعدها Customer Service وHiring. أما Hospital وHR فأكثرها تعقيداً، خلّها أخيراً.
+
+تكلفة Gemini: بحساب تقريبي 1000 تشغيل/شهر/ديمو × 9 ديموهات ≈ 50-100$ شهرياً مع 2.5 Flash، معقول جداً. حط cap على البك إند: 10 طلبات/IP/دقيقة، 100/IP/يوم.
+
+تحذير: الـ 9 prompts اللي فوق طويلة عمداً لأن الوكيل يحتاج سياق كامل. لو تستخدم Claude Code أو Cursor، مرر Master Prompt كـ system، ثم كل Page Prompt كمهمة منفصلة.
+
+تبيني أكتب لك أيضاً الـ Master Prompt للباك إند (PHP/Node proxy لـ Gemini) أو wireframe ASCII لإحدى الصفحات كنموذج توضيحي قبل ما تبدأ التنفيذ؟
