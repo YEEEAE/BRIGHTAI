@@ -1,0 +1,21 @@
+Bright AI
+
+الموقع: https://brightai.site/
+اللغة: العربية السعودية
+السوق: المملكة العربية السعودية
+المدينة الأساسية: الرياض
+
+الفريق:
+تصميم وتطوير وتحسين تقني لموقع Bright AI.
+
+التواصل:
+https://brightai.site/contact/
+https://api.whatsapp.com/send?phone=966538229013
+
+التقنيات:
+HTML
+CSS
+JavaScript
+Schema.org
+Google Analytics
+Microsoft Clarity

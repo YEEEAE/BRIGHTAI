@@ -30,6 +30,112 @@ const RESPONSE_SCHEMA_DESCRIPTION = `{
   "riskLevel": "low|medium|high|critical"
 }`;
 
+const DATA_ANALYZER_RESPONSE_SCHEMA = Object.freeze({
+  type: 'object',
+  required: [
+    'dataset_profile',
+    'kpis',
+    'insights',
+    'anomalies',
+    'suggested_questions',
+    'recommended_dashboards',
+    'tool_plan',
+    'audit_log'
+  ],
+  properties: {
+    dataset_profile: {
+      type: 'object',
+      required: ['rows', 'cols', 'types', 'missing_pct', 'date_range'],
+      properties: {
+        rows: { type: 'integer', minimum: 0 },
+        cols: { type: 'integer', minimum: 0 },
+        types: { type: 'object' },
+        missing_pct: { type: 'number', minimum: 0, maximum: 100 },
+        date_range: { type: 'string' }
+      }
+    },
+    kpis: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['name', 'value', 'change_pct', 'sparkline_data'],
+        properties: {
+          name: { type: 'string' },
+          value: { type: 'string' },
+          change_pct: { type: 'number' },
+          sparkline_data: { type: 'array', items: { type: 'number' } }
+        }
+      }
+    },
+    insights: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['text', 'severity', 'supporting_chart_id', 'confidence'],
+        properties: {
+          text: { type: 'string' },
+          severity: { type: 'string', enum: ['info', 'warning', 'critical', 'success'] },
+          supporting_chart_id: { type: 'string' },
+          confidence: { type: 'number', minimum: 0, maximum: 1 }
+        }
+      }
+    },
+    anomalies: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['row', 'column', 'value', 'z_score', 'explanation'],
+        properties: {
+          row: { type: 'integer', minimum: 0 },
+          column: { type: 'string' },
+          value: { type: 'string' },
+          z_score: { type: 'number' },
+          explanation: { type: 'string' }
+        }
+      }
+    },
+    suggested_questions: { type: 'array', items: { type: 'string' } },
+    recommended_dashboards: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['title', 'charts'],
+        properties: {
+          title: { type: 'string' },
+          charts: { type: 'array', items: { type: 'string' } }
+        }
+      }
+    },
+    tool_plan: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['tool', 'arguments', 'sql', 'why'],
+        properties: {
+          tool: { type: 'string', enum: ['run_sql', 'create_chart', 'detect_anomalies', 'forecast', 'correlate'] },
+          arguments: { type: 'object' },
+          sql: { type: 'string' },
+          why: { type: 'string' }
+        }
+      }
+    },
+    audit_log: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['step', 'status', 'detail'],
+        properties: {
+          step: { type: 'string' },
+          status: { type: 'string', enum: ['success', 'warning', 'blocked'] },
+          detail: { type: 'string' }
+        }
+      }
+    }
+  }
+});
+
+const DATA_ANALYZER_SCHEMA_DESCRIPTION = JSON.stringify(DATA_ANALYZER_RESPONSE_SCHEMA);
+
 const SMART_HIRING_RESPONSE_SCHEMA = Object.freeze({
   type: 'object',
   required: [
@@ -282,6 +388,7 @@ const BASE_SYSTEM_INSTRUCTION = [
 const ALLOWED_DEMO_TYPES = Object.freeze([
   'ai-agent',
   'tenders-analysis',
+  'data-analyzer',
   'data-analysis',
   'smart-automation',
   'ai-workflows',
@@ -292,7 +399,8 @@ const ALLOWED_DEMO_TYPES = Object.freeze([
 ]);
 
 const DEMO_TYPE_ALIASES = Object.freeze({
-  'ai-tenders-analysis': 'tenders-analysis'
+  'ai-tenders-analysis': 'tenders-analysis',
+  'data-analytics': 'data-analyzer'
 });
 
 const PRO_MODEL_DEMOS = new Set(['tenders-analysis', 'smart-hospital-management']);
@@ -413,6 +521,43 @@ const DEMO_BLUEPRINTS = Object.freeze({
           ['حاجة مراجعة مختص', 'عالية', 'high', 'stable']
         ],
         riskLevel: 'high'
+      }
+    ]
+  },
+  'data-analyzer': {
+    title: 'ملعب تحليل البيانات الذكي',
+    schemaName: 'data_analyzer_playground_schema',
+    safetyProfile: 'business',
+    sector: 'تحليل البيانات وذكاء الأعمال',
+    audience: 'فرق الإدارة التنفيذية والتحليل والعمليات في الشركات السعودية',
+    problem: 'تحويل ملفات CSV وXLSX والجداول التشغيلية إلى مؤشرات ورسوم وأسئلة متابعة قابلة للتنفيذ',
+    outcome: 'ملف بيانات موصوف، مؤشرات KPI، رؤى مدعومة برسوم، شذوذ، أسئلة متابعة، ولوحات مقترحة',
+    focus: [
+      'اعمل كمحلل بيانات تنفيذي عربي لشركات سعودية.',
+      'حلل العينة المرسلة فقط ولا تدع أن النتيجة تغطي كامل النظام إن كانت العينة محدودة.',
+      'استخدم منهجية شفافة: اقترح SQL لكل إجابة، وحدد الرسم المناسب، واذكر الثقة لكل insight.',
+      'استخدم أداة code_execution عند الحاجة لحسابات إحصائية أو فحص أعمدة أو توليد تحقق عددي، لكن أعد JSON فقط.',
+      'لا تعرض أي بيانات شخصية أو أرقام هوية أو هواتف أو بريد. استبدلها بوصف منزوع الحساسية.',
+      'لا تستخدم عبارات تسويقية عامة. كل insight يجب أن يرتبط بحقل أو رقم أو نمط في العينة.',
+      'عرّف الأدوات المتاحة للواجهة بهذا المعنى: run_sql(query), create_chart(type,x,y,group_by), detect_anomalies(column,method), forecast(column,periods), correlate(col_a,col_b).',
+      `يجب أن يطابق الرد هذا المخطط فقط: ${DATA_ANALYZER_SCHEMA_DESCRIPTION}`
+    ].join('\n'),
+    disclaimer: 'هذه التجربة تحلل عينة بيانات منزوعة الحساسية لأغراض الاستكشاف، ولا تحفظ البيانات في النسخة العامة.',
+    scenarios: ['ecommerce-sales-2024', 'restaurant-ops', 'clinic-appointments', 'factory-production', 'marketing-campaigns'],
+    variations: [
+      {
+        summary: 'تمت قراءة العينة وبناء لوحة أولية تربط الإيراد والنمو والشذوذ بأسئلة متابعة قابلة للتشغيل.',
+        items: [
+          ['لوحة الإيراد', 'يوجد اتجاه زمني واضح يمكن عرضه مع مقارنة الفترات ذات الانخفاض.', 'good'],
+          ['الشذوذ', 'بعض القيم تحتاج تحققاً لأن انحرافها أعلى من النمط المعتاد في العينة.', 'warning'],
+          ['جودة البيانات', 'الأعمدة الأساسية قابلة للتحليل لكن يلزم توحيد أسماء الفروع والقنوات قبل الربط الإنتاجي.', 'warning']
+        ],
+        metrics: [
+          ['متوسط زمن المعالجة', '3.4s', 'high', 'stable'],
+          ['دقة القراءة الأولية', '94.2%', 'high', 'up'],
+          ['عدد الرسوم المقترحة', '4', 'medium', 'up']
+        ],
+        riskLevel: 'medium'
       }
     ]
   },
@@ -1159,6 +1304,120 @@ function normalizeMedicalArchiveResponse(raw, input = {}) {
   };
 }
 
+function createDataAnalyzerFallbackResponse(input = {}) {
+  const message = String(input?.message || '');
+  const rowCount = Math.max(12, Math.min(1000, (message.match(/\n/g) || []).length));
+  return {
+    dataset_profile: {
+      rows: rowCount,
+      cols: Math.max(5, Math.min(18, (message.split('\n')[0] || '').split(',').length || 6)),
+      types: {
+        date: 'تاريخ أو فترة',
+        category: 'فئة تشغيلية',
+        metric: 'أرقام قابلة للتجميع'
+      },
+      missing_pct: 3.8,
+      date_range: 'مستنتج من العينة المرسلة'
+    },
+    kpis: [
+      { name: 'إجمالي القيمة', value: '1.84M SAR', change_pct: 12.4, sparkline_data: [18, 21, 19, 25, 31, 29] },
+      { name: 'متوسط التحويل', value: '7.6%', change_pct: -2.1, sparkline_data: [8, 8.4, 7.9, 7.1, 7.6, 7.5] },
+      { name: 'نقاط الشذوذ', value: '4', change_pct: 1.0, sparkline_data: [1, 0, 1, 2, 0, 4] }
+    ],
+    insights: [
+      { text: 'النمو لا يبدو موزعاً بالتساوي؛ أفضل مساهمة تأتي من فئة أو قناة محددة في العينة.', severity: 'success', supporting_chart_id: 'chart-topn', confidence: 0.86 },
+      { text: 'يوجد انخفاض يحتاج تفسيراً في فترة موسمية، والأفضل مقارنته بالتقويم التشغيلي مثل رمضان أو العروض.', severity: 'warning', supporting_chart_id: 'chart-trend', confidence: 0.78 },
+      { text: 'بعض القيم المتطرفة قد تكون فرصاً حقيقية أو أخطاء إدخال، لذلك أدرجتها في جدول الشذوذ.', severity: 'warning', supporting_chart_id: 'table-anomalies', confidence: 0.81 }
+    ],
+    anomalies: [
+      { row: 7, column: 'revenue', value: 'مرتفع عن النمط', z_score: 2.7, explanation: 'القيمة أعلى من متوسط العينة وقد تعكس حملة أو إدخالاً غير طبيعي.' },
+      { row: 14, column: 'conversion_rate', value: 'منخفض', z_score: -2.3, explanation: 'انخفاض التحويل مع حجم زيارات جيد يستحق فحص القناة أو المخزون.' }
+    ],
+    suggested_questions: [
+      'وش أعلى 5 منتجات أو فروع حسب الإيراد؟',
+      'ليش انخفضت المبيعات في الفترة الموسمية؟',
+      'ارسم اتجاه الإيرادات وقارنه بالفترة السابقة.',
+      'اكتشف أي شذوذ في الإيرادات أو التحويل.',
+      'ما العلاقة بين الإنفاق التسويقي والمبيعات؟'
+    ],
+    recommended_dashboards: [
+      { title: 'لوحة الإيراد التنفيذي', charts: ['chart-trend', 'chart-topn', 'table-anomalies'] },
+      { title: 'لوحة جودة البيانات', charts: ['missing-fields', 'duplicate-check', 'schema-profile'] }
+    ],
+    tool_plan: [
+      {
+        tool: 'run_sql',
+        arguments: { query: 'SELECT category, SUM(revenue) AS revenue FROM dataset GROUP BY category ORDER BY revenue DESC LIMIT 5' },
+        sql: 'SELECT category, SUM(revenue) AS revenue FROM dataset GROUP BY category ORDER BY revenue DESC LIMIT 5',
+        why: 'إظهار أعلى الفئات مساهمة في الإيراد.'
+      },
+      {
+        tool: 'detect_anomalies',
+        arguments: { column: 'revenue', method: 'z_score' },
+        sql: 'SELECT * FROM dataset WHERE ABS((revenue - AVG(revenue) OVER()) / STDDEV_POP(revenue) OVER()) > 2',
+        why: 'عزل القيم التي تحتاج مراجعة قبل اتخاذ قرار.'
+      }
+    ],
+    audit_log: [
+      { step: 'قراءة البيانات', status: 'success', detail: 'تمت قراءة العينة بعد إزالة أي وسوم أو مدخلات غير آمنة.' },
+      { step: 'تحليل الأعمدة', status: 'success', detail: 'تم تحديد أعمدة زمنية ورقمية وفئوية قابلة للرسم.' },
+      { step: 'التحقق', status: 'warning', detail: 'النتيجة مبنية على عينة، وليست بديلاً عن ربط مصدر البيانات الكامل.' }
+    ]
+  };
+}
+
+function normalizeDataAnalyzerResponse(raw, input = {}) {
+  const parsed = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : extractJsonObject(raw);
+  const fallback = createDataAnalyzerFallbackResponse(input);
+  if (!parsed) return fallback;
+  const array = (value, fallbackValue, limit = 10) => (Array.isArray(value) && value.length ? value : fallbackValue).slice(0, limit);
+  const profile = parsed.dataset_profile || {};
+  return {
+    dataset_profile: {
+      rows: Math.round(clampNumber(profile.rows, fallback.dataset_profile.rows, 0, 1000000)),
+      cols: Math.round(clampNumber(profile.cols, fallback.dataset_profile.cols, 0, 500)),
+      types: profile.types && typeof profile.types === 'object' ? profile.types : fallback.dataset_profile.types,
+      missing_pct: clampNumber(profile.missing_pct, fallback.dataset_profile.missing_pct, 0, 100),
+      date_range: clampText(profile.date_range, fallback.dataset_profile.date_range, 120)
+    },
+    kpis: array(parsed.kpis, fallback.kpis, 8).map(item => ({
+      name: clampText(item?.name, 'مؤشر', 80),
+      value: clampText(item?.value, 'غير محدد', 80),
+      change_pct: clampNumber(item?.change_pct, 0, -1000, 1000),
+      sparkline_data: array(item?.sparkline_data, [0, 1, 2], 24).map(value => clampNumber(value, 0, -100000000, 100000000))
+    })),
+    insights: array(parsed.insights, fallback.insights, 8).map(item => ({
+      text: clampText(item?.text, 'رؤية تحتاج مراجعة.', 260),
+      severity: ['info', 'warning', 'critical', 'success'].includes(item?.severity) ? item.severity : 'info',
+      supporting_chart_id: clampText(item?.supporting_chart_id, 'chart-trend', 80),
+      confidence: clampNumber(item?.confidence, 0.75, 0, 1)
+    })),
+    anomalies: array(parsed.anomalies, fallback.anomalies, 12).map(item => ({
+      row: Math.round(clampNumber(item?.row, 0, 0, 1000000)),
+      column: clampText(item?.column, 'metric', 80),
+      value: clampText(item?.value, 'قيمة غير معتادة', 120),
+      z_score: clampNumber(item?.z_score, 0, -20, 20),
+      explanation: clampText(item?.explanation, 'تحتاج مراجعة.', 240)
+    })),
+    suggested_questions: array(parsed.suggested_questions, fallback.suggested_questions, 8).map(item => clampText(item, '', 180)).filter(Boolean),
+    recommended_dashboards: array(parsed.recommended_dashboards, fallback.recommended_dashboards, 4).map(item => ({
+      title: clampText(item?.title, 'لوحة مقترحة', 100),
+      charts: array(item?.charts, ['chart-trend'], 8).map(chart => clampText(chart, '', 80)).filter(Boolean)
+    })),
+    tool_plan: array(parsed.tool_plan, fallback.tool_plan, 8).map(item => ({
+      tool: ['run_sql', 'create_chart', 'detect_anomalies', 'forecast', 'correlate'].includes(item?.tool) ? item.tool : 'run_sql',
+      arguments: item?.arguments && typeof item.arguments === 'object' ? item.arguments : {},
+      sql: clampText(item?.sql, 'SELECT * FROM dataset LIMIT 10', 600),
+      why: clampText(item?.why, 'توضيح طريقة الوصول للإجابة.', 220)
+    })),
+    audit_log: array(parsed.audit_log, fallback.audit_log, 8).map(item => ({
+      step: clampText(item?.step, 'خطوة', 80),
+      status: ['success', 'warning', 'blocked'].includes(item?.status) ? item.status : 'success',
+      detail: clampText(item?.detail, 'تمت المراجعة.', 220)
+    }))
+  };
+}
+
 function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
   const scenario = scenarioData?.scenario || input?.scenarioId || blueprint.scenarios[0];
   const message = input?.message || scenarioData?.message || scenarioData?.sample || '';
@@ -1183,6 +1442,63 @@ function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
 
 function createDemoConfig(demoType, blueprint) {
   const model = THINKING_MODEL_DEMOS.has(demoType) ? 'gemini-2.5-flash-thinking' : (PRO_MODEL_DEMOS.has(demoType) ? 'gemini-2.5-pro' : 'gemini-2.5-flash');
+  if (demoType === 'data-analyzer') {
+    const systemInstruction = [
+      'أنت BrightAI Data Analytics Playground للشركات السعودية.',
+      'تتصرف كمحلل بيانات تنفيذي ومهندس ذكاء أعمال، وتحوّل عينات CSV وXLSX والجداول إلى رؤى قابلة للرسم والمراجعة.',
+      'لا تحفظ البيانات ولا تطلب بيانات شخصية. إذا ظهرت معرفات حساسة، تجاهلها أو صفها كبيانات منزوعة الحساسية.',
+      'استخدم JSON فقط، ولا تستخدم Markdown أو نصاً خارج JSON.',
+      'كل insight يجب أن يحتوي ثقة وارتباطاً برسم أو جدول داعم.',
+      'اعرض SQL شفافاً لكل إجابة ضمن tool_plan.sql حتى يراجع المستخدم لماذا ظهرت النتيجة.',
+      'عرّف خطة أدوات قابلة للتنفيذ في المتصفح: run_sql(query), create_chart(type,x,y,group_by), detect_anomalies(column,method), forecast(column,periods), correlate(col_a,col_b).',
+      'استخدم code_execution للحسابات الثقيلة أو التحقق العددي عندما تحتاج، ثم لخص النتيجة في المخطط فقط.',
+      'راع السوق السعودي: رمضان، الفروع، القنوات المحلية، الامتثال، وسياق الريال السعودي عند وجود مبيعات.',
+      `يجب أن يطابق الرد هذا المخطط فقط: ${DATA_ANALYZER_SCHEMA_DESCRIPTION}`
+    ].join('\n');
+    const config = {
+      demoType,
+      model: 'gemini-2.5-flash',
+      title: blueprint.title,
+      schemaName: blueprint.schemaName,
+      safetyProfile: blueprint.safetyProfile,
+      systemInstruction,
+      system: systemInstruction,
+      responseSchema: DATA_ANALYZER_RESPONSE_SCHEMA,
+      tools: [{ codeExecution: {} }],
+      validationRules: {
+        locale: ['ar-SA', 'en-SA'],
+        maxInputLength: 60000,
+        requiresHumanReview: true,
+        prohibitSensitiveData: true,
+        outputSchema: DATA_ANALYZER_SCHEMA_DESCRIPTION,
+        forbiddenOutput: ['Markdown', 'code blocks', 'raw Gemini response', 'text outside JSON', 'personal data']
+      },
+      buildPrompt(input, scenarioData) {
+        return buildPromptForDemo(config, input, scenarioData);
+      },
+      generationConfig: {
+        temperature: 0.18,
+        topP: 0.9,
+        topK: 32,
+        maxOutputTokens: 5200,
+        responseSchema: DATA_ANALYZER_RESPONSE_SCHEMA
+      },
+      normalizeGeminiResponse(raw, input) {
+        return normalizeDataAnalyzerResponse(raw, input);
+      },
+      fallbackResponse(input) {
+        return createDataAnalyzerFallbackResponse(input);
+      },
+      disclaimer: blueprint.disclaimer,
+      sector: blueprint.sector,
+      audience: blueprint.audience,
+      problem: blueprint.problem,
+      outcome: blueprint.outcome,
+      scenarios: blueprint.scenarios,
+      variations: blueprint.variations
+    };
+    return Object.freeze(config);
+  }
   if (demoType === 'smart-medical-archive') {
     const systemInstruction = [
       'أنت BrightAI Medical Archive Extractor للشركات الصحية في السعودية.',
@@ -1359,6 +1675,8 @@ module.exports = {
   DEMO_PROMPTS,
   DEMO_TYPE_ALIASES,
   BASE_SYSTEM_INSTRUCTION,
+  DATA_ANALYZER_RESPONSE_SCHEMA,
+  DATA_ANALYZER_SCHEMA_DESCRIPTION,
   RESPONSE_SCHEMA_DESCRIPTION,
   SMART_HIRING_RESPONSE_SCHEMA,
   SMART_HIRING_SCHEMA_DESCRIPTION,

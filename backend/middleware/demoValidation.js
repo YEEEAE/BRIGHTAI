@@ -6,8 +6,9 @@ const { assertSafeDemoInput } = require('../services/demoSafetyFilter');
 const SUPPORTED_LOCALES = new Set(['ar-SA', 'en-SA']);
 const SCENARIO_ID_PATTERN = /^[A-Za-z0-9-]+$/;
 const MAX_MESSAGE_LENGTH = 3000;
+const MAX_DATA_ANALYZER_MESSAGE_LENGTH = 60000;
 const MAX_MEDICAL_ARCHIVE_MESSAGE_LENGTH = 12000;
-const MAX_BODY_BYTES = Number(process.env.DEMO_API_MAX_BODY_SIZE || process.env.DEMO_MAX_BODY_BYTES) || 32 * 1024;
+const MAX_BODY_BYTES = Number(process.env.DEMO_API_MAX_BODY_SIZE || process.env.DEMO_MAX_BODY_BYTES) || 256 * 1024;
 const PROMPT_INJECTION_PATTERNS = [
   /ignore\s+(all\s+)?(previous|prior|above)\s+(instructions|prompts|rules)/i,
   /disregard\s+(all\s+)?(previous|prior|above)\s+(instructions|prompts|rules)/i,
@@ -47,14 +48,18 @@ function validateDemoRequest(req, _res, next) {
 
   const inputSource = body.input && typeof body.input === 'object' && !Array.isArray(body.input) ? body.input : null;
   if (!inputSource) return next(createHttpError('VALIDATION_ERROR'));
-  const maxMessageLength = demoType === 'smart-medical-archive' ? MAX_MEDICAL_ARCHIVE_MESSAGE_LENGTH : MAX_MESSAGE_LENGTH;
+  const maxMessageLength = demoType === 'smart-medical-archive'
+    ? MAX_MEDICAL_ARCHIVE_MESSAGE_LENGTH
+    : demoType === 'data-analyzer'
+      ? MAX_DATA_ANALYZER_MESSAGE_LENGTH
+      : MAX_MESSAGE_LENGTH;
   if (typeof inputSource.message === 'string' && inputSource.message.length > maxMessageLength) {
     return next(createHttpError('VALIDATION_ERROR'));
   }
 
   const input = sanitizeObject(inputSource);
   input.scenarioId = sanitizeText(input.scenarioId, 120);
-  input.message = sanitizeText(input.message || '', MAX_MESSAGE_LENGTH);
+  input.message = sanitizeText(inputSource.message || input.message || '', maxMessageLength);
   input.locale = sanitizeText(input.locale, 8);
 
   if (!input.scenarioId || !SCENARIO_ID_PATTERN.test(input.scenarioId) || !SUPPORTED_LOCALES.has(input.locale)) {
@@ -79,6 +84,7 @@ function validateDemoRequest(req, _res, next) {
 
 module.exports = {
   MAX_BODY_BYTES,
+  MAX_DATA_ANALYZER_MESSAGE_LENGTH,
   MAX_MESSAGE_LENGTH,
   MAX_MEDICAL_ARCHIVE_MESSAGE_LENGTH,
   SCENARIO_ID_PATTERN,

@@ -27,6 +27,7 @@ function buildGeminiRequestBody({ prompt, userText }) {
     contents: [{ role: 'user', parts: [{ text: userText }] }],
     generationConfig: prompt.generationConfig
   };
+  if (prompt.tools) body.tools = prompt.tools;
   if (!body.systemInstruction.parts[0].text) delete body.systemInstruction;
   return body;
 }

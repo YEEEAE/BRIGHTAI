@@ -1,18 +1,11 @@
-User-agent: *
+User-agent: Googlebot
 Allow: /
-Allow: /assets/
-Allow: /frontend/css/
-Allow: /frontend/js/
-Allow: /services/
-Allow: /locations/
-Allow: /blog/
-Allow: /docs/
-Allow: /sectors/
-Allow: /tenders/
-Allow: /demo/data-analyzer/
-Allow: /demo/
-Allow: /ai-bots/
-Allow: /llms.txt
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
 
 User-agent: GPTBot
 Allow: /
@@ -29,4 +22,25 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: Google-Extended
+Allow: /
+
+User-agent: *
+Allow: /
+Allow: /assets/
+Allow: /frontend/css/
+Allow: /frontend/js/
+Allow: /services/
+Allow: /locations/
+Allow: /blog/
+Allow: /docs/
+Allow: /sectors/
+Allow: /demo/
+Allow: /llms.txt
+Disallow: /backend/
+Disallow: /node_modules/
+Disallow: /scripts/
+
 Sitemap: https://brightai.site/sitemap.xml
+Sitemap: https://brightai.site/sitemap-services.xml
+Sitemap: https://brightai.site/sitemap-blog.xml
