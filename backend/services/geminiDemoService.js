@@ -31,6 +31,17 @@ function buildGeminiRequestBody({ prompt, userText }) {
   return body;
 }
 
+function buildGeminiFileRequestBody({ prompt, userText, file }) {
+  const body = buildGeminiRequestBody({ prompt, userText });
+  body.contents[0].parts.push({
+    inlineData: {
+      mimeType: file.mimeType,
+      data: file.base64
+    }
+  });
+  return body;
+}
+
 async function callGeminiJson({ demoType, input, model }) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw createHttpError('AI_PROVIDER_ERROR');
@@ -46,6 +57,58 @@ async function callGeminiJson({ demoType, input, model }) {
       body: JSON.stringify(buildGeminiRequestBody({
         prompt,
         userText: buildPrompt({ demoType, input })
+      }))
+    });
+
+    if (!response.ok) throw createHttpError('AI_PROVIDER_ERROR');
+    const payload = await response.json();
+    const text = payload?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('') || '';
+    return prompt.normalizeGeminiResponse(text, input, {
+      scenario: input?.scenarioId,
+      message: input?.message,
+      metadata: input?.metadata
+    });
+  } catch (error) {
+    if (error?.name === 'AbortError') throw createHttpError('TIMEOUT');
+    if (error?.code) throw error;
+    throw createHttpError('AI_PROVIDER_ERROR');
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function callGeminiFileJson({ demoType, input, file, model }) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw createHttpError('AI_PROVIDER_ERROR');
+  const prompt = getDemoPrompt(demoType);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const filePrompt = demoType === 'smart-medical-archive'
+      ? [
+        buildPrompt({ demoType, input }),
+        `اسم الملف: ${file.filename}`,
+        `نوع الملف: ${file.mimeType}`,
+        'استخرج النص السريري من الملف المرفق إن كان صورة أو PDF، ثم نظمه حسب مخطط الأرشيف الطبي فقط.',
+        'لا تعرض أي رقم ملف أو هوية أو اسم مريض حقيقي. اخف كل معرفات المرضى.',
+        'لا تقدم تشخيصاً ولا توصية علاجية.'
+      ].join('\n')
+      : [
+        buildPrompt({ demoType, input }),
+        `اسم الملف: ${file.filename}`,
+        `نوع الملف: ${file.mimeType}`,
+        'استخرج السيرة الذاتية من الملف المرفق، ثم قيّمها حسب الوصف الوظيفي في مدخل المستخدم.',
+        'لا تعرض أي بريد أو هاتف أو رقم هوية في المخرجات.'
+      ].join('\n');
+    const response = await fetch(`${GEMINI_ENDPOINT}/${model}:generateContent?key=${encodeURIComponent(apiKey)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify(buildGeminiFileRequestBody({
+        prompt,
+        userText: filePrompt,
+        file
       }))
     });
 
@@ -132,6 +195,26 @@ async function runGeminiDemo({ demoType, input }) {
   };
 }
 
+async function runGeminiFileDemo({ demoType, input, file }) {
+  const model = getModelForDemo(demoType);
+  const prompt = getDemoPrompt(demoType);
+  const result = shouldUseMock()
+    ? prompt.fallbackResponse(input)
+    : await callGeminiFileJson({ demoType, input, file, model });
+
+  return {
+    ok: true,
+    demoType,
+    model,
+    file: {
+      filename: file.filename,
+      mimeType: file.mimeType,
+      size: file.size
+    },
+    result: appendSafetyNotice(demoType, prompt.normalizeGeminiResponse(result, input))
+  };
+}
+
 async function* streamGeminiDemo({ demoType, input }) {
   const model = getModelForDemo(demoType);
   if (shouldUseMock()) {
@@ -157,5 +240,6 @@ async function* streamGeminiDemo({ demoType, input }) {
 module.exports = {
   buildPrompt,
   runGeminiDemo,
+  runGeminiFileDemo,
   streamGeminiDemo
 };

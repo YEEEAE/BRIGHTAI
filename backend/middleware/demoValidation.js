@@ -6,6 +6,7 @@ const { assertSafeDemoInput } = require('../services/demoSafetyFilter');
 const SUPPORTED_LOCALES = new Set(['ar-SA', 'en-SA']);
 const SCENARIO_ID_PATTERN = /^[A-Za-z0-9-]+$/;
 const MAX_MESSAGE_LENGTH = 3000;
+const MAX_MEDICAL_ARCHIVE_MESSAGE_LENGTH = 12000;
 const MAX_BODY_BYTES = Number(process.env.DEMO_API_MAX_BODY_SIZE || process.env.DEMO_MAX_BODY_BYTES) || 32 * 1024;
 const PROMPT_INJECTION_PATTERNS = [
   /ignore\s+(all\s+)?(previous|prior|above)\s+(instructions|prompts|rules)/i,
@@ -46,7 +47,8 @@ function validateDemoRequest(req, _res, next) {
 
   const inputSource = body.input && typeof body.input === 'object' && !Array.isArray(body.input) ? body.input : null;
   if (!inputSource) return next(createHttpError('VALIDATION_ERROR'));
-  if (typeof inputSource.message === 'string' && inputSource.message.length > MAX_MESSAGE_LENGTH) {
+  const maxMessageLength = demoType === 'smart-medical-archive' ? MAX_MEDICAL_ARCHIVE_MESSAGE_LENGTH : MAX_MESSAGE_LENGTH;
+  if (typeof inputSource.message === 'string' && inputSource.message.length > maxMessageLength) {
     return next(createHttpError('VALIDATION_ERROR'));
   }
 
@@ -78,6 +80,7 @@ function validateDemoRequest(req, _res, next) {
 module.exports = {
   MAX_BODY_BYTES,
   MAX_MESSAGE_LENGTH,
+  MAX_MEDICAL_ARCHIVE_MESSAGE_LENGTH,
   SCENARIO_ID_PATTERN,
   SUPPORTED_LOCALES,
   demoPayloadSizeGuard,

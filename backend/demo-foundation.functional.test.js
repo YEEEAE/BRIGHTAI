@@ -79,7 +79,7 @@ afterEach(() => {
 });
 
 describe('Demo backend foundation', () => {
-  it('lists the seven supported demo registry entries with security headers', async () => {
+  it('lists the supported demo registry entries with security headers', async () => {
     const runtime = await loadRuntime();
     try {
       const result = await invokeRoute(runtime.handleRequest, {
@@ -91,8 +91,9 @@ describe('Demo backend foundation', () => {
       expect(result.status).toBe(200);
       expect(result.headers['X-Content-Type-Options']).toBe('nosniff');
       expect(result.headers['Access-Control-Allow-Origin']).toBe('http://localhost:5173');
-      expect(payload.demos).toHaveLength(7);
+      expect(payload.demos).toHaveLength(9);
       expect(payload.demos.map(item => item.key)).toContain('smart-hospital-management');
+      expect(payload.demos.map(item => item.key)).toContain('smart-medical-archive');
     } finally {
       runtime.restoreEnv();
     }

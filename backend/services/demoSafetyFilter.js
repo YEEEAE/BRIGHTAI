@@ -56,6 +56,9 @@ function appendSafetyNotice(demoType, output) {
   if (demoType === 'smart-hospital-management') {
     notices.push('تنبيه: المخرجات تشغيلية فقط ولا تمثل تشخيصاً أو توصية علاجية فردية.');
   }
+  if (demoType === 'smart-medical-archive') {
+    notices.push('تنبيه: هذه التجربة تستخرج وتنظم البيانات السريرية لأغراض الأرشفة فقط، ولا تقدم تشخيصاً أو توصية علاجية.');
+  }
   if (demoType === 'smart-education-platform') {
     notices.push('تنبيه: استخدم بيانات طلاب مجهولة أو افتراضية فقط داخل الديمو.');
   }

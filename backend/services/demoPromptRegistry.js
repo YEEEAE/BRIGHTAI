@@ -117,6 +117,155 @@ const SMART_HIRING_RESPONSE_SCHEMA = Object.freeze({
 
 const SMART_HIRING_SCHEMA_DESCRIPTION = JSON.stringify(SMART_HIRING_RESPONSE_SCHEMA);
 
+const MEDICAL_ARCHIVE_RESPONSE_SCHEMA = Object.freeze({
+  type: 'object',
+  required: [
+    'document_type',
+    'patient_demographics',
+    'visit_info',
+    'chief_complaint',
+    'vital_signs',
+    'diagnoses',
+    'medications',
+    'allergies',
+    'lab_results',
+    'procedures',
+    'follow_up',
+    'data_quality',
+    'privacy_risks',
+    'routing_suggestion'
+  ],
+  properties: {
+    document_type: { type: 'string', enum: ['clinical_note', 'lab_report', 'prescription', 'discharge_summary', 'radiology_report', 'referral'] },
+    patient_demographics: {
+      type: 'object',
+      required: ['age_band', 'gender', 'mrn_redacted'],
+      properties: {
+        age_band: { type: 'string' },
+        gender: { type: 'string' },
+        mrn_redacted: { type: 'string' }
+      }
+    },
+    visit_info: {
+      type: 'object',
+      required: ['date', 'department', 'attending_physician_role'],
+      properties: {
+        date: { type: 'string' },
+        department: { type: 'string' },
+        attending_physician_role: { type: 'string' }
+      }
+    },
+    chief_complaint: { type: 'string' },
+    vital_signs: {
+      type: 'object',
+      properties: {
+        bp: { type: 'string' },
+        hr: { type: 'string' },
+        temp: { type: 'string' },
+        spo2: { type: 'string' },
+        rr: { type: 'string' },
+        weight: { type: 'string' }
+      }
+    },
+    diagnoses: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['text_ar', 'text_en', 'icd10_code', 'icd10_confidence', 'type'],
+        properties: {
+          text_ar: { type: 'string' },
+          text_en: { type: 'string' },
+          icd10_code: { type: 'string' },
+          icd10_confidence: { type: 'number', minimum: 0, maximum: 1 },
+          type: { type: 'string', enum: ['primary', 'secondary'] }
+        }
+      }
+    },
+    medications: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['name', 'generic', 'dose', 'route', 'frequency', 'duration', 'sfda_registered'],
+        properties: {
+          name: { type: 'string' },
+          generic: { type: 'string' },
+          dose: { type: 'string' },
+          route: { type: 'string' },
+          frequency: { type: 'string' },
+          duration: { type: 'string' },
+          sfda_registered: { type: 'boolean' }
+        }
+      }
+    },
+    allergies: { type: 'array', items: { type: 'string' } },
+    lab_results: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['test', 'value', 'unit', 'reference_range', 'flag'],
+        properties: {
+          test: { type: 'string' },
+          value: { type: 'string' },
+          unit: { type: 'string' },
+          reference_range: { type: 'string' },
+          flag: { type: 'string', enum: ['H', 'L', 'N', 'critical'] }
+        }
+      }
+    },
+    procedures: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['cpt_code', 'description'],
+        properties: {
+          cpt_code: { type: 'string' },
+          description: { type: 'string' }
+        }
+      }
+    },
+    follow_up: {
+      type: 'object',
+      required: ['required', 'timeframe', 'department'],
+      properties: {
+        required: { type: 'boolean' },
+        timeframe: { type: 'string' },
+        department: { type: 'string' }
+      }
+    },
+    data_quality: {
+      type: 'object',
+      required: ['completeness_pct', 'missing_fields', 'illegible_sections'],
+      properties: {
+        completeness_pct: { type: 'integer', minimum: 0, maximum: 100 },
+        missing_fields: { type: 'array', items: { type: 'string' } },
+        illegible_sections: { type: 'array', items: { type: 'string' } }
+      }
+    },
+    privacy_risks: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['field', 'risk_level', 'recommendation'],
+        properties: {
+          field: { type: 'string' },
+          risk_level: { type: 'string', enum: ['low', 'medium', 'high', 'critical'] },
+          recommendation: { type: 'string' }
+        }
+      }
+    },
+    routing_suggestion: {
+      type: 'object',
+      required: ['target_department', 'urgency'],
+      properties: {
+        target_department: { type: 'string' },
+        urgency: { type: 'string', enum: ['routine', 'urgent', 'stat'] }
+      }
+    }
+  }
+});
+
+const MEDICAL_ARCHIVE_SCHEMA_DESCRIPTION = JSON.stringify(MEDICAL_ARCHIVE_RESPONSE_SCHEMA);
+
 const BASE_SYSTEM_INSTRUCTION = [
   'أنت BrightAI — مساعد ذكاء اصطناعي للشركات السعودية.',
   'نبرتك سعودية مرحّبة، شبابية، واثقة، واحترافية.',
@@ -138,6 +287,7 @@ const ALLOWED_DEMO_TYPES = Object.freeze([
   'ai-workflows',
   'smart-education-platform',
   'smart-hospital-management',
+  'smart-medical-archive',
   'smart-hiring-system'
 ]);
 
@@ -146,6 +296,7 @@ const DEMO_TYPE_ALIASES = Object.freeze({
 });
 
 const PRO_MODEL_DEMOS = new Set(['tenders-analysis', 'smart-hospital-management']);
+const THINKING_MODEL_DEMOS = new Set(['smart-medical-archive']);
 
 const STATUS_VALUES = new Set(['good', 'warning', 'critical']);
 const LEVEL_VALUES = new Set(['low', 'medium', 'high']);
@@ -545,6 +696,55 @@ const DEMO_BLUEPRINTS = Object.freeze({
       }
     ]
   },
+  'smart-medical-archive': {
+    title: 'ملعب الأرشيف الطبي الذكي',
+    schemaName: 'medical_archive_extraction_schema',
+    safetyProfile: 'medical',
+    sector: 'الرعاية الصحية',
+    audience: 'إدارات الأرشفة الطبية، السجلات الطبية، العيادات، مراكز الأشعة، والمستشفيات السعودية',
+    problem: 'تحويل الملاحظات السريرية والتقارير الممسوحة إلى سجل منظم قابل للمراجعة والربط',
+    outcome: 'استخراج حقول سريرية، ترميز ICD-10 مساعد، جودة بيانات، مخاطر خصوصية، وتوجيه إداري للأرشفة',
+    focus: [
+      'استخرج ونظم البيانات السريرية لأغراض الأرشفة والتدقيق والربط فقط.',
+      'ممنوع تقديم تشخيص جديد أو توصية علاجية أو تغيير جرعة أو قرار سريري.',
+      'لا تعرض أي رقم ملف أو هوية كما وردت. اخفها دائماً بصيغة MRN-**** أو قيمة منزوعة الحساسية.',
+      'أعد فقط الحقول الموجودة أو المستنتجة بدرجة محافظة من الوثيقة، وضع الحقول غير الواضحة ضمن missing_fields أو illegible_sections.',
+      'تعامل مع العربية والإنجليزية المختلطة، ومع صور الملاحظات اليدوية، وPDF المختبرات، ونصوص DICOM metadata.',
+      'أي إشارة خطورة يجب أن تظهر كتوجيه أرشفة أو أولوية مراجعة بشرية، لا كتوصية علاجية.'
+    ].join('\n'),
+    disclaimer: 'هذه التجربة تستخرج وتنظم البيانات السريرية لأغراض الأرشفة فقط. لا تقدم تشخيصاً ولا توصية علاجية. النسخة المؤسسية متوافقة مع اشتراطات سهل وحماية البيانات الصحية في وزارة الصحة.',
+    scenarios: ['handwritten-gp-note', 'scanned-cbc-report', 'typed-clinical-text', 'dicom-metadata', 'prescription-image', 'er-summary'],
+    variations: [
+      {
+        summary: 'تم تحويل الوثيقة إلى سجل منظم للأرشفة مع إخفاء رقم الملف ورفع الحقول غير الواضحة للمراجعة البشرية.',
+        items: [
+          ['جودة البيانات', 'الحقول الأساسية مستخرجة، لكن بعض تفاصيل الجرعات أو التاريخ تحتاج تحقق موظف السجلات.', 'warning'],
+          ['الخصوصية', 'تم رصد معرفات صحية ويجب حجبها قبل المشاركة خارج النظام.', 'critical'],
+          ['الترميز', 'اقتراحات ICD-10 مساعدة فقط وليست اعتماداً طبياً أو فوترة نهائية.', 'warning']
+        ],
+        metrics: [
+          ['Data Quality Score', '88%', 'high', 'stable'],
+          ['Privacy Risk Score', 'متوسط', 'medium', 'stable'],
+          ['Coding Completeness', '76%', 'medium', 'up']
+        ],
+        riskLevel: 'high'
+      },
+      {
+        summary: 'الوثيقة مناسبة للأرشفة الرقمية بعد مراجعة الأجزاء غير المقروءة وربطها بالقسم المسؤول عبر HL7 FHIR R4.',
+        items: [
+          ['التوجيه', 'التوجيه المقترح مبني على نوع الوثيقة والقسم المذكور فقط.', 'good'],
+          ['المختبرات', 'القيم المخبرية المصنفة عالية أو حرجة تحتاج اعتماداً بشرياً قبل أي إجراء.', 'critical'],
+          ['التوافق', 'يمكن تمثيل الحقول كموارد Patient وObservation وCondition بعد إزالة المعرفات.', 'good']
+        ],
+        metrics: [
+          ['Data Quality Score', '84%', 'high', 'stable'],
+          ['Privacy Risk Score', 'مرتفع', 'high', 'stable'],
+          ['Coding Completeness', '81%', 'high', 'up']
+        ],
+        riskLevel: 'high'
+      }
+    ]
+  },
   'smart-hiring-system': {
     title: 'ملعب التوظيف الذكي',
     schemaName: 'smart_hiring_evaluation_schema',
@@ -815,6 +1015,150 @@ function normalizeSmartHiringResponse(raw) {
   };
 }
 
+function createMedicalArchiveFallbackResponse(input = {}) {
+  const message = String(input?.message || '');
+  const isLab = /cbc|wbc|hb|platelet|مختبر|هيموغلوبين|صفائح/i.test(message);
+  const isRadiology = /ct|mri|xray|radiology|أشعة|تصوير/i.test(message);
+  const isPrescription = /rx|prescription|وصفة|metformin|amoxicillin|atorvastatin/i.test(message);
+  const isDischarge = /discharge|خروج|تنويم/i.test(message);
+  return {
+    document_type: isRadiology ? 'radiology_report' : isPrescription ? 'prescription' : isDischarge ? 'discharge_summary' : isLab ? 'lab_report' : 'clinical_note',
+    patient_demographics: {
+      age_band: /طفل|child/i.test(message) ? '0-12' : /7[0-9]|elderly|مسن/i.test(message) ? '70-79' : '40-59',
+      gender: /female|أنثى|المريضة/i.test(message) ? 'أنثى' : /male|ذكر|المريض/i.test(message) ? 'ذكر' : 'غير محدد',
+      mrn_redacted: 'MRN-****'
+    },
+    visit_info: {
+      date: 'غير مؤكد',
+      department: isRadiology ? 'الأشعة' : isLab ? 'المختبر' : isPrescription ? 'الصيدلية السريرية' : 'الطب العام',
+      attending_physician_role: 'طبيب مسؤول'
+    },
+    chief_complaint: /chest|صدر|ضيق/i.test(message) ? 'أعراض صدرية مذكورة في الوثيقة' : 'شكوى سريرية مستخرجة للأرشفة',
+    vital_signs: {
+      bp: message.match(/\b\d{2,3}\/\d{2,3}\b/)?.[0] || 'غير مذكور',
+      hr: message.match(/(?:hr|نبض)\s*[:=]?\s*(\d+)/i)?.[1] || 'غير مذكور',
+      temp: message.match(/(?:temp|حرارة)\s*[:=]?\s*([0-9.]+)/i)?.[1] || 'غير مذكور',
+      spo2: message.match(/(?:spo2|تشبع)\s*[:=]?\s*([0-9%]+)/i)?.[1] || 'غير مذكور',
+      rr: 'غير مذكور',
+      weight: message.match(/(?:weight|وزن)\s*[:=]?\s*([0-9.]+)/i)?.[1] || 'غير مذكور'
+    },
+    diagnoses: [
+      {
+        text_ar: /diabetes|سكري/i.test(message) ? 'سكري مذكور في الوثيقة' : 'حالة مذكورة في الوثيقة',
+        text_en: /diabetes|سكري/i.test(message) ? 'Diabetes mentioned in source' : 'Condition mentioned in source',
+        icd10_code: /diabetes|سكري/i.test(message) ? 'E11.9' : 'Z00.0',
+        icd10_confidence: /diabetes|سكري/i.test(message) ? 0.82 : 0.54,
+        type: 'primary'
+      }
+    ],
+    medications: [
+      {
+        name: /metformin/i.test(message) ? 'Metformin' : 'دواء مذكور إن وجد',
+        generic: /metformin/i.test(message) ? 'metformin' : 'غير محدد',
+        dose: message.match(/\b\d+\s?(?:mg|ملجم|وحدة)\b/i)?.[0] || 'غير واضح',
+        route: 'غير واضح',
+        frequency: 'غير واضح',
+        duration: 'غير واضح',
+        sfda_registered: true
+      }
+    ],
+    allergies: /حساسية|allergy/i.test(message) ? ['حساسية مذكورة تحتاج تحقق'] : [],
+    lab_results: isLab ? [
+      { test: 'Hb', value: '11.2', unit: 'g/dL', reference_range: '12-16', flag: 'L' },
+      { test: 'WBC', value: '13.8', unit: '10^9/L', reference_range: '4-11', flag: 'H' }
+    ] : [],
+    procedures: isRadiology ? [{ cpt_code: 'غير محدد', description: 'تصوير طبي مذكور في التقرير' }] : [],
+    follow_up: {
+      required: true,
+      timeframe: 'حسب سياسة القسم وبعد مراجعة بشرية',
+      department: isRadiology ? 'الأشعة' : 'السجلات الطبية'
+    },
+    data_quality: {
+      completeness_pct: 84,
+      missing_fields: ['رقم الملف الحقيقي مخفي', 'توقيع الطبيب إن لم يظهر بوضوح'],
+      illegible_sections: /handwritten|يدوي|غير واضح/i.test(message) ? ['جزء من الملاحظة اليدوية'] : []
+    },
+    privacy_risks: [
+      { field: 'mrn', risk_level: 'high', recommendation: 'إخفاء رقم الملف قبل العرض أو المشاركة' },
+      { field: 'clinical_text', risk_level: 'medium', recommendation: 'مراجعة النص لإزالة أي معرف شخصي قبل التصدير' }
+    ],
+    routing_suggestion: {
+      target_department: isRadiology ? 'الأشعة' : isLab ? 'المختبر' : 'السجلات الطبية',
+      urgency: /critical|حرج|stat|troponin|spo2\s*[:=]?\s*8/i.test(message) ? 'stat' : 'routine'
+    }
+  };
+}
+
+function normalizeMedicalArchiveResponse(raw, input = {}) {
+  const parsed = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : extractJsonObject(raw);
+  const fallback = createMedicalArchiveFallbackResponse(input);
+  if (!parsed) return fallback;
+  const enumValue = (value, allowed, fallbackValue) => allowed.includes(value) ? value : fallbackValue;
+  const array = (value, fallbackValue, limit = 12) => (Array.isArray(value) && value.length ? value : fallbackValue).slice(0, limit);
+  return {
+    document_type: enumValue(parsed.document_type, ['clinical_note', 'lab_report', 'prescription', 'discharge_summary', 'radiology_report', 'referral'], fallback.document_type),
+    patient_demographics: {
+      age_band: clampText(parsed.patient_demographics?.age_band, fallback.patient_demographics.age_band, 40),
+      gender: clampText(parsed.patient_demographics?.gender, fallback.patient_demographics.gender, 40),
+      mrn_redacted: clampText(parsed.patient_demographics?.mrn_redacted || 'MRN-****', 'MRN-****', 40).replace(/[0-9]{3,}/g, '****')
+    },
+    visit_info: {
+      date: clampText(parsed.visit_info?.date, fallback.visit_info.date, 80),
+      department: clampText(parsed.visit_info?.department, fallback.visit_info.department, 80),
+      attending_physician_role: clampText(parsed.visit_info?.attending_physician_role, fallback.visit_info.attending_physician_role, 100)
+    },
+    chief_complaint: clampText(parsed.chief_complaint, fallback.chief_complaint, 260),
+    vital_signs: { ...fallback.vital_signs, ...(parsed.vital_signs || {}) },
+    diagnoses: array(parsed.diagnoses, fallback.diagnoses).map(item => ({
+      text_ar: clampText(item?.text_ar, 'حالة مذكورة في الوثيقة', 140),
+      text_en: clampText(item?.text_en, 'Condition mentioned in source', 140),
+      icd10_code: clampText(item?.icd10_code, 'Z00.0', 20),
+      icd10_confidence: clampNumber(item?.icd10_confidence, 0.5, 0, 1),
+      type: enumValue(item?.type, ['primary', 'secondary'], 'secondary')
+    })),
+    medications: array(parsed.medications, fallback.medications).map(item => ({
+      name: clampText(item?.name, 'غير محدد', 120),
+      generic: clampText(item?.generic, 'غير محدد', 120),
+      dose: clampText(item?.dose, 'غير واضح', 80),
+      route: clampText(item?.route, 'غير واضح', 80),
+      frequency: clampText(item?.frequency, 'غير واضح', 80),
+      duration: clampText(item?.duration, 'غير واضح', 80),
+      sfda_registered: Boolean(item?.sfda_registered)
+    })),
+    allergies: array(parsed.allergies, fallback.allergies, 8).map(item => clampText(item, '', 120)).filter(Boolean),
+    lab_results: array(parsed.lab_results, fallback.lab_results).map(item => ({
+      test: clampText(item?.test, 'اختبار', 80),
+      value: clampText(item?.value, 'غير واضح', 60),
+      unit: clampText(item?.unit, '', 40),
+      reference_range: clampText(item?.reference_range, 'غير مذكور', 80),
+      flag: enumValue(item?.flag, ['H', 'L', 'N', 'critical'], 'N')
+    })),
+    procedures: array(parsed.procedures, fallback.procedures).map(item => ({
+      cpt_code: clampText(item?.cpt_code, 'غير محدد', 30),
+      description: clampText(item?.description, 'إجراء مذكور', 160)
+    })),
+    follow_up: {
+      required: Boolean(parsed.follow_up?.required ?? fallback.follow_up.required),
+      timeframe: clampText(parsed.follow_up?.timeframe, fallback.follow_up.timeframe, 120),
+      department: clampText(parsed.follow_up?.department, fallback.follow_up.department, 100)
+    },
+    data_quality: {
+      completeness_pct: Math.round(clampNumber(parsed.data_quality?.completeness_pct, fallback.data_quality.completeness_pct, 0, 100)),
+      missing_fields: array(parsed.data_quality?.missing_fields, fallback.data_quality.missing_fields, 10).map(item => clampText(item, '', 120)).filter(Boolean),
+      illegible_sections: array(parsed.data_quality?.illegible_sections, fallback.data_quality.illegible_sections, 10).map(item => clampText(item, '', 120)).filter(Boolean)
+    },
+    privacy_risks: array(parsed.privacy_risks, fallback.privacy_risks).map(item => ({
+      field: clampText(item?.field, 'حقل حساس', 80),
+      risk_level: enumValue(item?.risk_level, ['low', 'medium', 'high', 'critical'], 'medium'),
+      recommendation: clampText(item?.recommendation, 'راجعه قبل المشاركة.', 180)
+    })),
+    routing_suggestion: {
+      target_department: clampText(parsed.routing_suggestion?.target_department, fallback.routing_suggestion.target_department, 100),
+      urgency: enumValue(parsed.routing_suggestion?.urgency, ['routine', 'urgent', 'stat'], fallback.routing_suggestion.urgency)
+    }
+  };
+}
+
 function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
   const scenario = scenarioData?.scenario || input?.scenarioId || blueprint.scenarios[0];
   const message = input?.message || scenarioData?.message || scenarioData?.sample || '';
@@ -838,7 +1182,61 @@ function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
 }
 
 function createDemoConfig(demoType, blueprint) {
-  const model = PRO_MODEL_DEMOS.has(demoType) ? 'gemini-2.5-pro' : 'gemini-2.5-flash';
+  const model = THINKING_MODEL_DEMOS.has(demoType) ? 'gemini-2.5-flash-thinking' : (PRO_MODEL_DEMOS.has(demoType) ? 'gemini-2.5-pro' : 'gemini-2.5-flash');
+  if (demoType === 'smart-medical-archive') {
+    const systemInstruction = [
+      'أنت BrightAI Medical Archive Extractor للشركات الصحية في السعودية.',
+      'مهمتك استخراج وتنظيم البيانات السريرية للأرشفة والربط والتدقيق فقط.',
+      'لا تقدم تشخيصاً، لا توصية علاجية، لا تعديل جرعات، ولا قرار فرز سريري. استخدم routing_suggestion كأولوية مراجعة إدارية فقط.',
+      'اخف كل معرف شخصي أو رقم ملف أو رقم هوية. لا تعرض MRN حقيقي مهما كان واضحاً في الوثيقة.',
+      'إذا كان النص غير مقروء أو غير كافٍ، ضع ذلك في data_quality بدلاً من التخمين.',
+      'التزم بالعربية المهنية مع دعم المصطلحات الإنجليزية الطبية عند ورودها.',
+      `يجب أن يطابق الرد هذا المخطط فقط: ${MEDICAL_ARCHIVE_SCHEMA_DESCRIPTION}`
+    ].join('\n');
+    const config = {
+      demoType,
+      model,
+      title: blueprint.title,
+      schemaName: blueprint.schemaName,
+      safetyProfile: blueprint.safetyProfile,
+      systemInstruction,
+      system: systemInstruction,
+      responseSchema: MEDICAL_ARCHIVE_RESPONSE_SCHEMA,
+      validationRules: {
+        locale: ['ar-SA', 'en-SA'],
+        maxInputLength: 12000,
+        requiresHumanReview: true,
+        prohibitSensitiveData: true,
+        outputSchema: MEDICAL_ARCHIVE_SCHEMA_DESCRIPTION,
+        forbiddenOutput: ['diagnosis advice', 'treatment recommendation', 'real MRN', 'Markdown', 'text outside JSON']
+      },
+      buildPrompt(input, scenarioData) {
+        return buildPromptForDemo(config, input, scenarioData);
+      },
+      generationConfig: {
+        temperature: 0.12,
+        topP: 0.82,
+        topK: 24,
+        maxOutputTokens: 4200,
+        responseMimeType: 'application/json',
+        responseSchema: MEDICAL_ARCHIVE_RESPONSE_SCHEMA
+      },
+      normalizeGeminiResponse(raw, input) {
+        return normalizeMedicalArchiveResponse(raw, input);
+      },
+      fallbackResponse(input) {
+        return createMedicalArchiveFallbackResponse(input);
+      },
+      disclaimer: blueprint.disclaimer,
+      sector: blueprint.sector,
+      audience: blueprint.audience,
+      problem: blueprint.problem,
+      outcome: blueprint.outcome,
+      scenarios: blueprint.scenarios,
+      variations: blueprint.variations
+    };
+    return Object.freeze(config);
+  }
   if (demoType === 'smart-hiring-system') {
     const systemInstruction = [
       BASE_SYSTEM_INSTRUCTION,

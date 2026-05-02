@@ -779,7 +779,7 @@
               <div class="dropzone" id="dropzone">
                 <strong>اسحب ملف PDF أو DOCX هنا</strong>
                 <p>في النسخة المؤسسية يرسل الملف مباشرة إلى جيمناي عبر الخادم. في هذا الديمو تُستخدم معاينة نصية آمنة.</p>
-                <input id="fileInput" type="file" accept=".pdf,.doc,.docx,text/plain">
+                <input id="fileInput" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
               </div>
             </div>
             <div class="tab-panel" data-cv-panel="linkedin" hidden>
@@ -1188,6 +1188,7 @@
       must: [...jobSamples[0].must],
       nice: [...jobSamples[0].nice],
       redacted: true,
+      selectedFile: null,
       lastResult: null,
       audit: []
     };
@@ -1232,6 +1233,7 @@
       state.currentJob = sample;
       state.must = [...sample.must];
       state.nice = [...sample.nice];
+      state.selectedFile = null;
       $("#jobTitle").value = sample.title;
       $("#department").value = sample.department;
       $("#seniority").value = sample.seniority;
@@ -1386,8 +1388,9 @@
             }
           }
         };
-        addAudit("أرسل الطلب إلى مسار الخادم الآمن دون كشف مفاتيح.");
-        const result = await requestGemini(payload);
+        const usingFile = state.selectedFile instanceof File;
+        addAudit(usingFile ? "أرسل الملف إلى مسار الرفع الموحد دون كشف مفاتيح." : "أرسل الطلب إلى مسار الخادم الآمن دون كشف مفاتيح.");
+        const result = usingFile ? await requestGeminiFile(payload, state.selectedFile) : await requestGemini(payload);
         addAudit("اكتمل التحليل المنظم وعُرض التقرير المرئي.");
         renderReport(normalizeResult(result));
         $("#todayCount").textContent = String(Number($("#todayCount").textContent) + 1);
@@ -1433,6 +1436,22 @@
       return finalResult || fallbackResult;
     }
 
+    async function requestGeminiFile(payload, file) {
+      const url = window.BrightAIRuntimeConfig?.buildApiUrl ? window.BrightAIRuntimeConfig.buildApiUrl("/api/demo/gemini/file") : "/api/demo/gemini/file";
+      const formData = new FormData();
+      formData.append("demoType", payload.demoType);
+      formData.append("input", JSON.stringify(payload.input));
+      formData.append("file", file, file.name);
+      const response = await fetch(url, {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || data?.ok === false) throw new Error(data?.message || "فشل رفع الملف");
+      addAudit(`اكتمل تحليل الملف عبر الباكند الموحد: ${file.name}`);
+      return data.result || fallbackResult;
+    }
+
     function renderLeaderboard() {
       const scores = seedCvs.map((cv, index) => ({
         name: (cv.match(/الاسم:\s*([^\n]+)/)?.[1] || `مرشح ${index + 1}`).trim(),
@@ -1466,13 +1485,17 @@
       $$("[data-output-tab]").forEach(button => button.addEventListener("click", () => setOutputTab(button.dataset.outputTab)));
       $("#outputHandle").addEventListener("click", () => $("#outputPane").classList.toggle("open"));
       $("#seniority").addEventListener("input", updateSeniority);
-      $("#cvText").addEventListener("input", syncPreview);
+      $("#cvText").addEventListener("input", () => {
+        state.selectedFile = null;
+        syncPreview();
+      });
       $("#toggleRedaction").addEventListener("click", () => {
         state.redacted = !state.redacted;
         syncPreview();
         toast(state.redacted ? "تم حجب البيانات" : "تم إظهار المعاينة");
       });
       $("#sampleCvButton").addEventListener("click", () => {
+        state.selectedFile = null;
         $("#cvText").value = seedCvs[jobSamples.indexOf(state.currentJob)] || seedCvs[0];
         syncPreview();
       });
@@ -1517,8 +1540,20 @@
       $("#fileInput").addEventListener("change", event => {
         const file = event.target.files?.[0];
         if (!file) return;
-        $("#cvText").value = `تم اختيار ملف: ${file.name}\nاستخدم هذه المعاينة النصية في الديمو العام. في النسخة المؤسسية يرسل الملف عبر الخادم إلى Gemini multimodal.`;
+        const allowed = [
+          "application/pdf",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ];
+        if (!allowed.includes(file.type)) {
+          event.target.value = "";
+          state.selectedFile = null;
+          toast("ارفع PDF أو DOCX فقط");
+          return;
+        }
+        state.selectedFile = file;
+        $("#cvText").value = `تم اختيار ملف: ${file.name}\nسيُرسل الملف عبر /api/demo/gemini/file في الباكند الموحد إلى Gemini multimodal.`;
         syncPreview();
+        addAudit(`تم تجهيز ملف للرفع: ${file.name}`);
       });
     }
 
