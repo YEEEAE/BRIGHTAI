@@ -983,6 +983,11 @@
   </footer>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script>
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+      window.BRIGHTAI_API_BASE = "http://localhost:3001";
+    }
+  </script>
   <script defer src="/frontend/js/runtime-config.min.js"></script>
   <script defer src="/frontend/js/api-gateway.min.js"></script>
   <script>
