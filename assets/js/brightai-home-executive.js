@@ -8,6 +8,7 @@
         "#top .hero-visual .glass-card",
         "#services .grid > *",
         "#try-tools .grid > *",
+        ".agents-home-grid > *",
         "#aiaas .price",
         "#saudi-use-cases .bento",
         "#blog .post",

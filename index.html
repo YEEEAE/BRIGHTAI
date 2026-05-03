@@ -904,7 +904,7 @@
                 loader.style.display = 'none';
                 loader.setAttribute('hidden', '');
             }
-        }, 2000);
+        }, 700);
     </script>
 
     <div aria-hidden="true" class="progress-wrap">
@@ -1045,7 +1045,7 @@
             </article>
         </section>
 
-        <section class="section pt-10" id="services">
+        <section class="section pt-10" id="services" style="content-visibility:auto;contain-intrinsic-size:auto 600px">
             <div class="container">
                 <div class="text-center mb-12">
                     <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:layers" width="20"
@@ -1249,7 +1249,7 @@
             </div>
         </section>
 
-        <section class="section tools-section-surface" id="try-tools">
+        <section class="section tools-section-surface" id="try-tools" style="content-visibility:auto;contain-intrinsic-size:auto 800px">
             <div class="container">
                 <div class="text-center mb-12">
                     <div class="badge tools-section-badge">
@@ -1460,125 +1460,129 @@
                     </div>
                 </div>
 
-                <h3 class="text-2xl font-bold text-white text-center mb-8 mt-8">
-                    <span class="gradient-label">🛠️
-                        أدوات تحليل البيانات المجانية</span>
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                    <div
-                        class="group relative bg-gradient-to-br from-purple-900/20 to-pink-900/20 border border-purple-500/20 rounded-3xl p-8 hover:border-purple-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-500/10">
-                        <div
-                            class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <iconify-icon aria-hidden="true" class="w-8 h-8 text-purple-400" icon="lucide:bar-chart-3"
-                                width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="flex gap-2 mb-4">
-                            <span
-                                class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-bold">مجاني</span>
-                            <span
-                                class="text-xs bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full font-bold">AI</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">محلل البيانات الذكي</h3>
-                        <p class="text-slate-400 mb-6 leading-relaxed">ارفع ملفات CSV أو Excel واحصل على تحليل شامل مع
-                            رسوم
-                            بيانية ورؤى ذكية من Groq AI.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">📊 Charts</span>
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">📈 إحصائيات</span>
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">💡 رؤى AI</span>
-                        </div>
-                        <a class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-purple-500/20"
-                            href="/demo/data-analyzer/" data-analytics-event="tool_start" data-cta-location="homepage">
-                            جرب الآن <iconify-icon aria-hidden="true" class="w-4 h-4" icon="lucide:arrow-left"
-                                width="20" height="20"></iconify-icon>
-                        </a>
+                <div class="agents-home-block" aria-labelledby="home-ai-agents-title" style="content-visibility:auto;contain-intrinsic-size:auto 500px">
+                    <div class="agents-home-head">
+                        <span class="badge tools-section-badge">
+                            <iconify-icon aria-hidden="true" icon="lucide:bot" width="20" height="20"></iconify-icon>
+                            وكلاء جاهزون للأعمال
+                        </span>
+                        <h3 id="home-ai-agents-title">وكلاء الذكاء الاصطناعي</h3>
+                        <p>وكلاء متخصصون من Bright AI لتنفيذ مهام تشغيلية واضحة: تحليل، تسويق، مبيعات، منافسة، وتحسين
+                            ظهورك في البحث. اختر الوكيل المناسب وابدأ من صفحة الخدمة.</p>
                     </div>
 
-                    <div
-                        class="group relative bg-gradient-to-br from-emerald-900/20 to-cyan-900/20 border border-emerald-500/20 rounded-3xl p-8 hover:border-emerald-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-emerald-500/10">
-                        <div
-                            class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-emerald-500 to-cyan-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div class="absolute top-4 left-4">
-                            <span
-                                class="text-xs bg-pink-500/20 text-pink-400 px-3 py-1 rounded-full font-bold animate-pulse">جديد</span>
-                        </div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <iconify-icon aria-hidden="true" class="w-8 h-8 text-emerald-400" icon="lucide:microscope"
-                                width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="flex gap-2 mb-4">
-                            <span
-                                class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-bold">مجاني</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">تحليل جودة البيانات</h3>
-                        <p class="text-slate-400 mb-6 leading-relaxed">افحص جودة بياناتك واكتشف التكرارات والقيم
-                            المفقودة مع
-                            تقييم شامل وتوصيات للتحسين.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">✅ فحص الجودة</span>
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">🔄 التكرارات</span>
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">📋 تقرير</span>
-                        </div>
-                        <a class="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-cyan-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-emerald-500/20"
-                            href="/demo/data-quality/" data-analytics-event="request_demo" data-cta-location="homepage">
-                            جرب الآن <iconify-icon aria-hidden="true" class="w-4 h-4" icon="lucide:arrow-left"
-                                width="20" height="20"></iconify-icon>
-                        </a>
+                    <div class="agents-home-grid">
+                        <article class="agent-home-card">
+                            <div class="agent-home-icon">
+                                <iconify-icon aria-hidden="true" icon="lucide:bar-chart-3" width="24"
+                                    height="24"></iconify-icon>
+                            </div>
+                            <span class="agent-home-chip">تحليل وتشغيل</span>
+                            <h4>وكيل محلل بيانات</h4>
+                            <p>يقرأ بياناتك لحظياً، يكشف الأنماط، ويحوّل الأرقام إلى مؤشرات وتنبيهات قابلة للتنفيذ.</p>
+                            <div class="agent-home-tags">
+                                <span>تقارير فورية</span>
+                                <span>تنبيهات أداء</span>
+                                <span>تنبؤات دقيقة</span>
+                            </div>
+                            <a href="/services/data-analyst-agent/" data-analytics-event="service_click"
+                                data-cta-location="homepage" data-service-name="data_analyst_agent">اعرف المزيد</a>
+                        </article>
+
+                        <article class="agent-home-card">
+                            <div class="agent-home-icon">
+                                <iconify-icon aria-hidden="true" icon="lucide:bot" width="24" height="24"></iconify-icon>
+                            </div>
+                            <span class="agent-home-chip">مخصص لشركتك</span>
+                            <h4>وكيل ذكاء اصطناعي مخصص</h4>
+                            <p>وكيل يتدرب على سياساتك وبياناتك وهويتك التشغيلية ليعمل كفريق رقمي داخل شركتك.</p>
+                            <div class="agent-home-tags">
+                                <span>هوية علامتك</span>
+                                <span>صلاحيات واضحة</span>
+                                <span>مهام تشغيلية</span>
+                            </div>
+                            <a href="/services/custom-ai-agent/" data-analytics-event="service_click"
+                                data-cta-location="homepage" data-service-name="custom_ai_agent">اعرف المزيد</a>
+                        </article>
+
+                        <article class="agent-home-card">
+                            <div class="agent-home-icon">
+                                <iconify-icon aria-hidden="true" icon="lucide:search-check" width="24"
+                                    height="24"></iconify-icon>
+                            </div>
+                            <span class="agent-home-chip">ذكاء السوق</span>
+                            <h4>وكيل تحليل المنافسين</h4>
+                            <p>يرصد البيانات العامة للمنافسين ويحوّلها إلى تقارير استراتيجية وفرص عملية لفريق النمو.</p>
+                            <div class="agent-home-tags">
+                                <span>رصد يومي</span>
+                                <span>نقاط ضعف</span>
+                                <span>توصيات سوقية</span>
+                            </div>
+                            <a href="/services/competitor-analysis-agent/" data-analytics-event="service_click"
+                                data-cta-location="homepage" data-service-name="competitor_analysis_agent">اعرف المزيد</a>
+                        </article>
+
+                        <article class="agent-home-card">
+                            <div class="agent-home-icon">
+                                <iconify-icon aria-hidden="true" icon="lucide:megaphone" width="24"
+                                    height="24"></iconify-icon>
+                            </div>
+                            <span class="agent-home-chip">نمو وتحويل</span>
+                            <h4>وكيل تسويق</h4>
+                            <p>يدير الحملات، يولد محتوى مناسباً، يحلل الأداء، ويساعد على تحسين الوصول والتحويلات.</p>
+                            <div class="agent-home-tags">
+                                <span>حملات ذكية</span>
+                                <span>محتوى تلقائي</span>
+                                <span>تحسين التحويل</span>
+                            </div>
+                            <a href="/services/marketing-agent/" data-analytics-event="service_click"
+                                data-cta-location="homepage" data-service-name="marketing_agent">اعرف المزيد</a>
+                        </article>
+
+                        <article class="agent-home-card">
+                            <div class="agent-home-icon">
+                                <iconify-icon aria-hidden="true" icon="lucide:target" width="24"
+                                    height="24"></iconify-icon>
+                            </div>
+                            <span class="agent-home-chip">مبيعات وفرص</span>
+                            <h4>وكيل اكتشاف الفرص والعملاء</h4>
+                            <p>يمسح السوق ويصنف العملاء المحتملين لتغذية فريق المبيعات بفرص جاهزة للمتابعة.</p>
+                            <div class="agent-home-tags">
+                                <span>جمع عملاء</span>
+                                <span>تقييم الجدية</span>
+                                <span>تدفق للمبيعات</span>
+                            </div>
+                            <a href="/services/lead-hunter/" data-analytics-event="service_click"
+                                data-cta-location="homepage" data-service-name="lead_hunter_agent">اعرف المزيد</a>
+                        </article>
+
+                        <article class="agent-home-card">
+                            <div class="agent-home-icon">
+                                <iconify-icon aria-hidden="true" icon="lucide:line-chart" width="24"
+                                    height="24"></iconify-icon>
+                            </div>
+                            <span class="agent-home-chip">بحث وظهور</span>
+                            <h4>وكيل تحسين محركات البحث</h4>
+                            <p>يرفع ترتيبك عبر محتوى محسن وكلمات بيعية عالية التأثير مع تقليل الاعتماد على الإعلانات.</p>
+                            <div class="agent-home-tags">
+                                <span>محتوى محسن</span>
+                                <span>زيارات عضوية</span>
+                                <span>ظهور في البحث</span>
+                            </div>
+                            <a href="/services/seo-agent/" data-analytics-event="service_click"
+                                data-cta-location="homepage" data-service-name="seo_agent">اعرف المزيد</a>
+                        </article>
                     </div>
 
-                    <div
-                        class="group relative bg-gradient-to-br from-amber-900/20 to-red-900/20 border border-amber-500/20 rounded-3xl p-8 hover:border-amber-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-500/10">
-                        <div
-                            class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-500 to-red-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div
-                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-red-500/20 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                            <iconify-icon aria-hidden="true" class="w-8 h-8 text-amber-400" icon="lucide:file-text"
-                                width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="flex gap-2 mb-4">
-                            <span
-                                class="text-xs bg-green-500/20 text-green-400 px-3 py-1 rounded-full font-bold">مجاني</span>
-                            <span class="text-xs bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full font-bold">Groq
-                                AI</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">التحليل النصي الذكي</h3>
-                        <p class="text-slate-400 mb-6 leading-relaxed">حلل النصوص العربية والإنجليزية. تلخيص، كلمات
-                            مفتاحية،
-                            تحليل مشاعر، وتوليد أسئلة.
-                        </p>
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">📝 تلخيص</span>
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">🔑 كلمات مفتاحية</span>
-                            <span class="text-xs bg-white/5 text-slate-300 px-3 py-1 rounded-lg">😊 مشاعر</span>
-                        </div>
-                        <a class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-red-600 text-white px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg shadow-amber-500/20"
-                            href="/demo/text-analysis/" data-analytics-event="request_demo"
-                            data-cta-location="homepage">
-                            جرب الآن <iconify-icon aria-hidden="true" class="w-4 h-4" icon="lucide:arrow-left"
-                                width="20" height="20"></iconify-icon>
+                    <div class="text-center mt-12">
+                        <a aria-label="استعراض كل وكلاء الذكاء الاصطناعي من Bright AI"
+                            class="agents-home-all-link"
+                            href="/services/?category=%D9%88%D9%83%D9%8A%D9%84" title="كل وكلاء Bright AI">
+                            استعرض كل الوكلاء
+                            <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
+                                height="20"></iconify-icon>
                         </a>
                     </div>
-                </div>
-
-                <div class="text-center mt-12">
-                    <a aria-label="عرض جميع أدوات الذكاء الاصطناعي المجانية"
-                        class="inline-flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white px-8 py-4 rounded-2xl font-bold transition-all group"
-                        href="/demo/" title="جميع الأدوات الذكية">
-                        <iconify-icon aria-hidden="true" class="w-5 h-5" icon="lucide:layout-grid" width="20"
-                            height="20"></iconify-icon>
-                        عرض جميع الأدوات
-                        <iconify-icon aria-hidden="true" class="w-4 h-4 group-hover:-translate-x-1 transition-transform"
-                            icon="lucide:arrow-left" width="20" height="20"></iconify-icon>
-                    </a>
                 </div>
             </div>
         </section>
@@ -1756,7 +1760,7 @@
             </div>
         </section>
 
-        <section class="section" id="aiaas">
+        <section class="section" id="aiaas" style="content-visibility:auto;contain-intrinsic-size:auto 600px">
             <div class="container">
                 <h2 class="title">ذكاء كخدمة</h2>
                 <p class="subtitle">
@@ -1848,7 +1852,7 @@
                 </div>
             </div>
         </section>
-        <section class="section pt-8" id="saudi-use-cases">
+        <section class="section pt-8" id="saudi-use-cases" style="content-visibility:auto;contain-intrinsic-size:auto 400px">
             <div class="container">
                 <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:target" width="20"
                         height="20"></iconify-icon> حالات استخدام سعودية جاهزة</div>
@@ -2632,7 +2636,7 @@
             </div>
         </section>
 
-        <section class="section" id="blog">
+        <section class="section" id="blog" style="content-visibility:auto;contain-intrinsic-size:auto 600px">
             <div class="container">
                 <h2 class="title">مقالات تساعدك على القرار</h2>
                 <p class="subtitle">محتوى تنفيذي وتقني عن الذكاء الاصطناعي في السعودية، الأتمتة، الامتثال، وتحليل
@@ -2845,7 +2849,7 @@
             </div>
         </section>
 
-        <section class="section" id="proof">
+        <section class="section" id="proof" style="content-visibility:auto;contain-intrinsic-size:auto 500px">
             <div class="container">
                 <div class="text-center mb-12">
                     <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:shield-check" width="20"
@@ -2854,11 +2858,11 @@
                     <p class="subtitle">نقيس نجاح مشاريع الذكاء الاصطناعي بأثر تشغيلي واضح، لا بعروض تقنية فقط.</p>
                 </div>
                 <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch">
-                    <article class="glass-card p-8 border border-white/10">
-                        <div class="flex items-center justify-between gap-4 mb-8">
+                    <article class="glass-card p-6 sm:p-8 border border-white/10">
+                        <div class="flex items-center justify-between gap-4 mb-6 sm:mb-8">
                             <div class="flex items-center gap-4">
                                 <div
-                                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-emerald-500 flex items-center justify-center text-white font-black">
+                                    class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-emerald-500 flex items-center justify-center text-white font-black">
                                     AI</div>
                                 <div>
                                     <h3 class="text-xl font-bold text-white">يزيد الشمري</h3>
@@ -2867,10 +2871,10 @@
                             </div>
                             <div class="text-sm font-black text-indigo-300">Bright AI</div>
                         </div>
-                        <blockquote class="text-2xl leading-10 text-white font-bold mb-6">
+                        <blockquote class="text-lg sm:text-2xl sm:leading-10 text-white font-bold mb-4 sm:mb-6">
                             “نبدأ كل مشروع بسؤال تنفيذي واحد: ما المؤشر الذي يجب أن يتحسن خلال أول 90 يوماً؟”
                         </blockquote>
-                        <p class="text-slate-400 leading-8">هذا يضمن أن الأتمتة، التحليل، والوكلاء الذكيين مرتبطون
+                        <p class="text-slate-400 text-sm sm:text-base leading-7 sm:leading-8">هذا يضمن أن الأتمتة، التحليل، والوكلاء الذكيين مرتبطون
                             بنتيجة أعمال واضحة قبل التوسع في التقنية.</p>
                     </article>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -2895,7 +2899,7 @@
             </div>
         </section>
 
-        <section class="section" id="faq">
+        <section class="section" id="faq" style="content-visibility:auto;contain-intrinsic-size:auto 500px">
             <div class="container">
                 <h2 class="title">أسئلة قبل التعاقد</h2>
                 <p class="subtitle">إجابات مختصرة عن التكلفة، الأمان، التكامل، وملاءمة حلول الذكاء الاصطناعي للشركات
@@ -3541,7 +3545,7 @@
     </button>
 
     <!-- Bright AI Inline Chatbot -->
-    <button id="bai-chat-fab" aria-label="تحدث معنا" aria-expanded="false" type="button">
+    <button id="bai-chat-fab" aria-label="تحدث معنا" aria-expanded="false" type="button" class="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/30 hover:bg-indigo-500 transition-colors cursor-pointer border-none">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             <path
                 d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"
@@ -3549,7 +3553,7 @@
         </svg>
     </button>
 
-    <div id="bai-chat-box" role="dialog" aria-label="مساعد برايت الذكي">
+    <div id="bai-chat-box" role="dialog" aria-label="مساعد برايت الذكي" class="fixed bottom-24 left-6 z-50 w-[calc(100%-3rem)] max-w-[380px]">
         <div id="bai-chat-header">
             <div class="ch-info">
                 <div class="ch-avatar">AI</div>

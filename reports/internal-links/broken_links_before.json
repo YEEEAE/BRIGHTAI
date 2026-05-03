@@ -1,33 +1,13 @@
 {
-  "generatedAt": "2026-05-03T00:49:24.592Z",
+  "generatedAt": "2026-05-03T20:34:47.243Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 482,
-  "referencesScanned": 25228,
-  "internalReferences": 19914,
-  "brokenReferences": 77,
-  "fixableBrokenReferences": 73,
-  "normalizationCandidates": 110,
+  "filesScanned": 472,
+  "referencesScanned": 25117,
+  "internalReferences": 19827,
+  "brokenReferences": 34,
+  "fixableBrokenReferences": 30,
+  "normalizationCandidates": 108,
   "topBrokenFiles": [
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "count": 11
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "count": 8
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "count": 8
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "count": 8
-    },
-    {
-      "file": ".next/server/app/index.html",
-      "count": 6
-    },
     {
       "file": "en/ai-bots/BrightProject/index 2.html",
       "count": 4
@@ -61,7 +41,7 @@
       "count": 3
     },
     {
-      "file": ".next/static/chunks/main-25a9c7f9e14fffe9.js",
+      "file": ".next/server/vendor-chunks/next.js",
       "count": 2
     },
     {
@@ -69,10 +49,6 @@
       "count": 2
     },
     {
-      "file": ".next/server/app/_not-found/page_client-reference-manifest.js",
-      "count": 1
-    },
-    {
       "file": ".next/server/app/api/demo/ocr/route_client-reference-manifest.js",
       "count": 1
     },
@@ -81,445 +57,36 @@
       "count": 1
     },
     {
-      "file": ".next/server/app/page_client-reference-manifest.js",
+      "file": ".next/static/chunks/app/demo/ocr-demo/page.js",
       "count": 1
     },
     {
-      "file": ".next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "count": 1
-    },
-    {
-      "file": ".next/static/chunks/framework-050c1f32293f7182.js",
+      "file": ".next/static/webpack/app/demo/ocr-demo/page.2d877259e829e650.hot-update.js",
       "count": 1
     }
   ],
   "brokenRows": [
     {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/css/3b946d74a3067e01.css",
-      "normalizedReferencePath": "/_next/static/css/3b946d74a3067e01.css",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/3b946d74a3067e01.css"
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "normalizedReferencePath": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/4bd1b696-c023c6e3521b1417.js"
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "normalizedReferencePath": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/255-881ba9d46d833261.js"
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "normalizedReferencePath": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/main-app-9c52704bca906afc.js"
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/app/layout-a694d942df85aa8c.js",
-      "normalizedReferencePath": "/_next/static/chunks/app/layout-a694d942df85aa8c.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/app/layout-a694d942df85aa8c.js"
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "normalizedReferencePath": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/polyfills-42372ed130431b0a.js"
-    },
-    {
-      "file": ".next/server/app/_not-found.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/app/_not-found/page_client-reference-manifest.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "static/css/3b946d74a3067e01.css",
-      "normalizedReferencePath": "static/css/3b946d74a3067e01.css",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/3b946d74a3067e01.css"
-    },
-    {
       "file": ".next/server/app/api/demo/ocr/route_client-reference-manifest.js",
       "line": 1,
       "patternType": "js-key",
-      "reference": "static/css/3b946d74a3067e01.css",
-      "normalizedReferencePath": "static/css/3b946d74a3067e01.css",
+      "reference": "static/css/app/layout.css",
+      "normalizedReferencePath": "static/css/app/layout.css",
       "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/3b946d74a3067e01.css"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/css/3b946d74a3067e01.css",
-      "normalizedReferencePath": "/_next/static/css/3b946d74a3067e01.css",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/3b946d74a3067e01.css"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "normalizedReferencePath": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/4bd1b696-c023c6e3521b1417.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "normalizedReferencePath": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/255-881ba9d46d833261.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "normalizedReferencePath": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/main-app-9c52704bca906afc.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/app/layout-a694d942df85aa8c.js",
-      "normalizedReferencePath": "/_next/static/chunks/app/layout-a694d942df85aa8c.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/app/layout-a694d942df85aa8c.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/app/demo/ocr-demo/error-014d961b94e60c41.js",
-      "normalizedReferencePath": "/_next/static/chunks/app/demo/ocr-demo/error-014d961b94e60c41.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/app/demo/ocr-demo/error-014d961b94e60c41.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/400-26d202553fe4f8f7.js",
-      "normalizedReferencePath": "/_next/static/chunks/400-26d202553fe4f8f7.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/400-26d202553fe4f8f7.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/app/demo/ocr-demo/page-74146651418da675.js",
-      "normalizedReferencePath": "/_next/static/chunks/app/demo/ocr-demo/page-74146651418da675.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/app/demo/ocr-demo/page-74146651418da675.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "normalizedReferencePath": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/polyfills-42372ed130431b0a.js"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo.html",
-      "line": 3,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
+      "suggestion": "/.next/static/css/app/layout.css"
     },
     {
       "file": ".next/server/app/demo/ocr-demo/page_client-reference-manifest.js",
       "line": 1,
       "patternType": "js-key",
-      "reference": "static/css/3b946d74a3067e01.css",
-      "normalizedReferencePath": "static/css/3b946d74a3067e01.css",
+      "reference": "static/css/app/layout.css",
+      "normalizedReferencePath": "static/css/app/layout.css",
       "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/3b946d74a3067e01.css"
+      "suggestion": "/.next/static/css/app/layout.css"
     },
     {
-      "file": ".next/server/app/index.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/app/index.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "normalizedReferencePath": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/4bd1b696-c023c6e3521b1417.js"
-    },
-    {
-      "file": ".next/server/app/index.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "normalizedReferencePath": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/255-881ba9d46d833261.js"
-    },
-    {
-      "file": ".next/server/app/index.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "normalizedReferencePath": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/main-app-9c52704bca906afc.js"
-    },
-    {
-      "file": ".next/server/app/index.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "normalizedReferencePath": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/polyfills-42372ed130431b0a.js"
-    },
-    {
-      "file": ".next/server/app/index.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/app/page_client-reference-manifest.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "static/css/3b946d74a3067e01.css",
-      "normalizedReferencePath": "static/css/3b946d74a3067e01.css",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/3b946d74a3067e01.css"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/css/3b946d74a3067e01.css",
-      "normalizedReferencePath": "/_next/static/css/3b946d74a3067e01.css",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/3b946d74a3067e01.css"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "normalizedReferencePath": "/_next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/4bd1b696-c023c6e3521b1417.js"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "normalizedReferencePath": "/_next/static/chunks/255-881ba9d46d833261.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/255-881ba9d46d833261.js"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "normalizedReferencePath": "/_next/static/chunks/main-app-9c52704bca906afc.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/main-app-9c52704bca906afc.js"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/app/layout-a694d942df85aa8c.js",
-      "normalizedReferencePath": "/_next/static/chunks/app/layout-a694d942df85aa8c.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/app/layout-a694d942df85aa8c.js"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "normalizedReferencePath": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/polyfills-42372ed130431b0a.js"
-    },
-    {
-      "file": ".next/server/pages/404.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "normalizedReferencePath": "/_next/static/chunks/polyfills-42372ed130431b0a.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/polyfills-42372ed130431b0a.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "normalizedReferencePath": "/_next/static/chunks/webpack-4a462cecab786e93.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/webpack-4a462cecab786e93.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/framework-050c1f32293f7182.js",
-      "normalizedReferencePath": "/_next/static/chunks/framework-050c1f32293f7182.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/framework-050c1f32293f7182.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/main-25a9c7f9e14fffe9.js",
-      "normalizedReferencePath": "/_next/static/chunks/main-25a9c7f9e14fffe9.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/main-25a9c7f9e14fffe9.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/pages/_app-7d307437aca18ad4.js",
-      "normalizedReferencePath": "/_next/static/chunks/pages/_app-7d307437aca18ad4.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/pages/_app-7d307437aca18ad4.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/chunks/pages/_error-cb2a52f75f2162e2.js",
-      "normalizedReferencePath": "/_next/static/chunks/pages/_error-cb2a52f75f2162e2.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/chunks/pages/_error-cb2a52f75f2162e2.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/uqHAgFzflcSiGGD2LS2gP/_buildManifest.js",
-      "normalizedReferencePath": "/_next/static/uqHAgFzflcSiGGD2LS2gP/_buildManifest.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/uqHAgFzflcSiGGD2LS2gP/_buildManifest.js"
-    },
-    {
-      "file": ".next/server/pages/500.html",
-      "line": 1,
-      "patternType": "attr",
-      "reference": "/_next/static/uqHAgFzflcSiGGD2LS2gP/_ssgManifest.js",
-      "normalizedReferencePath": "/_next/static/uqHAgFzflcSiGGD2LS2gP/_ssgManifest.js",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/uqHAgFzflcSiGGD2LS2gP/_ssgManifest.js"
-    },
-    {
-      "file": ".next/static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "image",
-      "normalizedReferencePath": "image",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": ".next/static/chunks/framework-050c1f32293f7182.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "image",
-      "normalizedReferencePath": "image",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": ".next/static/chunks/main-25a9c7f9e14fffe9.js",
-      "line": 1,
+      "file": ".next/server/vendor-chunks/next.js",
+      "line": 1704,
       "patternType": "js-key",
       "reference": "/_next/image",
       "normalizedReferencePath": "/_next/image",
@@ -527,11 +94,29 @@
       "suggestion": ""
     },
     {
-      "file": ".next/static/chunks/main-25a9c7f9e14fffe9.js",
-      "line": 1,
+      "file": ".next/server/vendor-chunks/next.js",
+      "line": 3714,
       "patternType": "js-key",
-      "reference": "/_next/image/",
-      "normalizedReferencePath": "/_next/image/",
+      "reference": "/_next/image",
+      "normalizedReferencePath": "/_next/image",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": ".next/static/chunks/app/demo/ocr-demo/page.js",
+      "line": 346,
+      "patternType": "js-key",
+      "reference": "/_next/image",
+      "normalizedReferencePath": "/_next/image",
+      "reason": "المسار غير موجود",
+      "suggestion": ""
+    },
+    {
+      "file": ".next/static/webpack/app/demo/ocr-demo/page.2d877259e829e650.hot-update.js",
+      "line": 126,
+      "patternType": "js-key",
+      "reference": "/_next/image",
+      "normalizedReferencePath": "/_next/image",
       "reason": "المسار غير موجود",
       "suggestion": ""
     },
