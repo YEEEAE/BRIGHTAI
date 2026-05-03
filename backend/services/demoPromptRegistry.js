@@ -372,6 +372,80 @@ const MEDICAL_ARCHIVE_RESPONSE_SCHEMA = Object.freeze({
 
 const MEDICAL_ARCHIVE_SCHEMA_DESCRIPTION = JSON.stringify(MEDICAL_ARCHIVE_RESPONSE_SCHEMA);
 
+const CUSTOMER_SERVICE_RESPONSE_SCHEMA = Object.freeze({
+  type: 'object',
+  required: [
+    'intent',
+    'intent_confidence',
+    'sentiment',
+    'language',
+    'dialect',
+    'retrieved_kb_articles',
+    'tools_called',
+    'response_text',
+    'suggested_quick_replies',
+    'escalation',
+    'csat_prediction',
+    'handling_time_estimate_seconds'
+  ],
+  properties: {
+    intent: { type: 'string' },
+    intent_confidence: { type: 'number', minimum: 0, maximum: 1 },
+    sentiment: {
+      type: 'object',
+      required: ['polarity', 'emotion'],
+      properties: {
+        polarity: { type: 'number', minimum: -1, maximum: 1 },
+        emotion: { type: 'string', enum: ['angry', 'frustrated', 'happy', 'confused', 'neutral', 'urgent'] }
+      }
+    },
+    language: { type: 'string' },
+    dialect: { type: 'string', enum: ['msa', 'saudi', 'gulf', 'egyptian', 'levantine', 'mixed'] },
+    retrieved_kb_articles: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['id', 'title', 'confidence', 'snippet'],
+        properties: {
+          id: { type: 'string' },
+          title: { type: 'string' },
+          confidence: { type: 'number', minimum: 0, maximum: 1 },
+          snippet: { type: 'string' }
+        }
+      }
+    },
+    tools_called: {
+      type: 'array',
+      items: {
+        type: 'object',
+        required: ['name', 'arguments', 'result', 'requires_human_approval'],
+        properties: {
+          name: { type: 'string', enum: ['check_order_status', 'process_refund', 'book_appointment', 'escalate_to_human', 'update_customer_record', 'search_kb'] },
+          arguments: { type: 'object' },
+          result: { type: 'string' },
+          requires_human_approval: { type: 'boolean' }
+        }
+      }
+    },
+    response_text: { type: 'string' },
+    suggested_quick_replies: { type: 'array', items: { type: 'string' } },
+    escalation: {
+      type: 'object',
+      required: ['required', 'reason', 'priority', 'suggested_team'],
+      properties: {
+        required: { type: 'boolean' },
+        reason: { type: 'string' },
+        priority: { type: 'string', enum: ['low', 'medium', 'high', 'urgent'] },
+        suggested_team: { type: 'string' }
+      }
+    },
+    csat_prediction: { type: 'number', minimum: 1, maximum: 5 },
+    handling_time_estimate_seconds: { type: 'number', minimum: 0 }
+  }
+});
+
+const CUSTOMER_SERVICE_SCHEMA_DESCRIPTION = JSON.stringify(CUSTOMER_SERVICE_RESPONSE_SCHEMA);
+
 const BASE_SYSTEM_INSTRUCTION = [
   'أنت BrightAI — مساعد ذكاء اصطناعي للشركات السعودية.',
   'نبرتك سعودية مرحّبة، شبابية، واثقة، واحترافية.',
@@ -395,7 +469,8 @@ const ALLOWED_DEMO_TYPES = Object.freeze([
   'smart-education-platform',
   'smart-hospital-management',
   'smart-medical-archive',
-  'smart-hiring-system'
+  'smart-hiring-system',
+  'customer-service-automation'
 ]);
 
 const DEMO_TYPE_ALIASES = Object.freeze({
@@ -931,6 +1006,45 @@ const DEMO_BLUEPRINTS = Object.freeze({
         riskLevel: 'medium'
       }
     ]
+  },
+  'customer-service-automation': {
+    title: 'ملعب خدمة العملاء متعدد القنوات',
+    schemaName: 'customer_service_reply_schema',
+    safetyProfile: 'business',
+    sector: 'خدمة العملاء وتجربة العميل',
+    audience: 'مديرو تجربة العميل، فرق مراكز الاتصال، المتاجر الإلكترونية، ومنصات الخدمات في السعودية',
+    problem: 'رسائل العملاء موزعة بين واتساب والدردشة والبريد وإنستغرام مع تفاوت في النبرة والتصعيد واسترجاع المعرفة',
+    outcome: 'تصنيف نية ومشاعر ولهجة، استرجاع معرفة، اختيار أدوات، رد مطابق للسياق، وتوصية تصعيد قابلة للمراجعة',
+    focus: [
+      'أنت BrightAI Customer Service Multichannel Agent للشركات السعودية.',
+      'افهم رسائل العملاء عبر واتساب، دردشة الويب، البريد، وإنستغرام، ثم أعد JSON فقط حسب المخطط.',
+      'أتقن اللهجة السعودية واللغة العربية الفصحى والكود سويتشنغ. افهم: ودي، أبغى، يمديك، ما عاد، محد رد علي، الطلب له أسبوع، أبي فلوسي، تكفى شوفوا لي حل.',
+      'طابق سجل العميل: إذا كان رسمياً فرد برسمية، وإذا كان سعودياً ودوداً فرد بلطف مهني محلي دون مبالغة. استخدم أستاذ أو أستاذة أو أخوي أو أبو فلان فقط إذا كان السياق يسمح.',
+      'لا تعد العميل بما لا تملكه الأداة. اذكر أن الاسترجاع أو التعويض أو التصعيد يحتاج اعتماداً بشرياً عندما يكون كذلك.',
+      'اخف أي هاتف أو بريد أو رقم هوية أو عنوان. لا تكرر بيانات شخصية في response_text.',
+      'استخدم الأدوات المتاحة بهذا المعنى: check_order_status(order_id), process_refund(order_id, reason), book_appointment(service, date), escalate_to_human(reason, priority), update_customer_record(field, value), search_kb(query).',
+      'يجب أن تكون retrieved_kb_articles أفضل ثلاث مواد معرفة مناسبة، وأن تكون tools_called شفافة وقابلة للتدقيق.',
+      'لا تذكر سلسلة التفكير الداخلية. اعرض خطوات تشغيلية موجزة فقط داخل الحقول المخصصة.',
+      `يجب أن يطابق الرد هذا المخطط فقط: ${CUSTOMER_SERVICE_SCHEMA_DESCRIPTION}`
+    ].join('\n'),
+    disclaimer: 'هذه التجربة تحاكي وكيل خدمة عملاء ولا تنفذ عمليات فعلية. أي استرجاع أو تعويض أو تصعيد عالي الحساسية يحتاج اعتماداً بشرياً وسجل تدقيق.',
+    scenarios: ['angry-whatsapp-delay', 'vip-refund-email', 'new-customer-webchat', 'instagram-size-change', 'mixed-language-complaint'],
+    variations: [
+      {
+        summary: 'تم فهم النية والمشاعر واللهجة، والرد المقترح يحافظ على نبرة العميل مع تصعيد واضح للحالات الحساسة.',
+        items: [
+          ['تصنيف النية', 'الرسالة تشير إلى متابعة طلب أو شكوى تأخير مع حاجة تحقق من النظام.', 'good'],
+          ['نبرة الرد', 'الرد يجب أن يبدأ باعتذار محدد ثم إجراء واضح بدون وعود زائدة.', 'good'],
+          ['التصعيد', 'أي طلب استرجاع أو عميل VIP يحتاج مراجعة بشرية قبل التنفيذ.', 'warning']
+        ],
+        metrics: [
+          ['توقع الرضا', '4.1/5', 'high', 'up'],
+          ['زمن المعالجة', '38 ثانية', 'high', 'down'],
+          ['دقة اللهجة', '92%', 'high', 'stable']
+        ],
+        riskLevel: 'medium'
+      }
+    ]
   }
 });
 
@@ -1418,6 +1532,110 @@ function normalizeDataAnalyzerResponse(raw, input = {}) {
   };
 }
 
+function createCustomerServiceFallbackResponse(input = {}) {
+  const message = String(input?.message || '');
+  const lower = message.toLowerCase();
+  const isRefund = /استرجاع|فلوسي|refund|تعويض/i.test(message);
+  const isAppointment = /موعد|حجز|appointment/i.test(message);
+  const isVip = /vip|مميز|ذهبي|مدير الحساب/i.test(message);
+  const isAngry = /زعلان|غاضب|محد رد|ما عاد|سيئ|تأخير|تأخر|أسبوع/i.test(message);
+  const orderMatch = message.match(/(?:ORD|طلب|order)[-\s#:]?([A-Za-z0-9-]{3,})/i);
+  const orderId = orderMatch ? orderMatch[1] : 'A2198';
+  const intent = isRefund ? 'refund_request' : isAppointment ? 'appointment_booking' : /وين|حالة|status|وصل/i.test(message) ? 'order_status' : 'support_question';
+  const emotion = isAngry ? 'frustrated' : isVip ? 'urgent' : 'neutral';
+  const dialect = /ودي|أبغى|يمديك|محد|تكفى|وش/i.test(message) ? 'saudi' : /english|please|refund|order|status/i.test(lower) ? 'mixed' : 'msa';
+  const tools = [
+    {
+      name: 'search_kb',
+      arguments: { query: isRefund ? 'سياسة الاسترجاع والتعويض' : isAppointment ? 'سياسة المواعيد' : 'متابعة الطلبات' },
+      result: 'تم العثور على ثلاث مواد معرفة مناسبة.',
+      requires_human_approval: false
+    },
+    {
+      name: isAppointment ? 'book_appointment' : 'check_order_status',
+      arguments: isAppointment ? { service: 'استشارة خدمة', date: 'أقرب موعد متاح' } : { order_id: orderId },
+      result: isAppointment ? 'يوجد موعد مبدئي قابل للتأكيد.' : 'الطلب قيد المعالجة مع تأخير متوقع 24 ساعة.',
+      requires_human_approval: false
+    }
+  ];
+  if (isRefund || isVip || isAngry) {
+    tools.push({
+      name: isRefund ? 'process_refund' : 'escalate_to_human',
+      arguments: isRefund ? { order_id: orderId, reason: 'طلب استرجاع بسبب تأخير أو عدم رضا' } : { reason: 'حالة حساسة تحتاج متابعة بشرية', priority: isVip ? 'urgent' : 'high' },
+      result: isRefund ? 'تم إنشاء طلب استرجاع بانتظار موافقة بشرية.' : 'تم إنشاء مسار تصعيد لمشرف خدمة العملاء.',
+      requires_human_approval: true
+    });
+  }
+  return {
+    intent,
+    intent_confidence: isRefund || isAppointment ? 0.93 : 0.88,
+    sentiment: {
+      polarity: isAngry ? -0.62 : isVip ? -0.24 : 0.12,
+      emotion
+    },
+    language: dialect === 'mixed' ? 'عربي وإنجليزي مختلط' : 'العربية',
+    dialect,
+    retrieved_kb_articles: [
+      { id: 'KB-003', title: 'سياسة التأخير والتعويض', confidence: 0.91, snippet: 'يحق للعميل تصعيد طلب التعويض إذا تجاوز التأخير المدة المعلنة.' },
+      { id: 'KB-007', title: 'قواعد التصعيد للعملاء المميزين', confidence: 0.86, snippet: 'حالات العملاء المميزين تُراجع خلال 30 دقيقة عمل.' },
+      { id: 'KB-012', title: 'الردود المعتمدة لقنوات واتساب والدردشة', confidence: 0.82, snippet: 'ابدأ باعتذار محدد ثم اذكر الخطوة التالية والوقت المتوقع.' }
+    ],
+    tools_called: tools,
+    response_text: isAngry
+      ? `أفهم عليك، ومعك حق تنزعج من التأخير. راجعت حالة الطلب ${orderId} وبيتم تحويلها الآن لمشرف الخدمة مع متابعة خلال 30 دقيقة. إذا رغبت، أقدر أفتح طلب تعويض للمراجعة البشرية بدون ما نعيد عليك نفس الأسئلة.`
+      : `تم استلام طلبك، وراجعت المعلومات المتاحة. الخطوة التالية هي تأكيد التفاصيل ثم تحديثك بالنتيجة من نفس القناة. إذا كان الطلب عاجلاً أقدر أرفعه لمشرف الخدمة للمراجعة.`,
+    suggested_quick_replies: ['أبغى تصعيد الطلب', 'أرسلوا لي الحالة الآن', 'أبغى تعويض', 'كلموني واتساب'],
+    escalation: {
+      required: isRefund || isVip || isAngry,
+      reason: isRefund ? 'طلب استرجاع يحتاج موافقة بشرية' : isVip || isAngry ? 'حالة حساسة أو عميل عالي الأولوية' : 'لا يوجد سبب تصعيد حالياً',
+      priority: isVip ? 'urgent' : isAngry || isRefund ? 'high' : 'low',
+      suggested_team: isRefund ? 'فريق الاسترجاع' : isVip ? 'مدير الحساب' : isAngry ? 'مشرف خدمة العملاء' : 'الدعم العام'
+    },
+    csat_prediction: isAngry ? 3.7 : 4.4,
+    handling_time_estimate_seconds: isAngry || isRefund ? 54 : 31
+  };
+}
+
+function normalizeCustomerServiceResponse(raw, input = {}) {
+  const parsed = raw && typeof raw === 'object' && !Array.isArray(raw) ? raw : extractJsonObject(raw);
+  const fallback = createCustomerServiceFallbackResponse(input);
+  if (!parsed) return fallback;
+  const array = (value, fallbackValue, limit = 8) => (Array.isArray(value) && value.length ? value : fallbackValue).slice(0, limit);
+  const enumValue = (value, allowed, fallbackValue) => allowed.includes(value) ? value : fallbackValue;
+  return {
+    intent: clampText(parsed.intent, fallback.intent, 80),
+    intent_confidence: clampNumber(parsed.intent_confidence, fallback.intent_confidence, 0, 1),
+    sentiment: {
+      polarity: clampNumber(parsed.sentiment?.polarity, fallback.sentiment.polarity, -1, 1),
+      emotion: enumValue(parsed.sentiment?.emotion, ['angry', 'frustrated', 'happy', 'confused', 'neutral', 'urgent'], fallback.sentiment.emotion)
+    },
+    language: clampText(parsed.language, fallback.language, 80),
+    dialect: enumValue(parsed.dialect, ['msa', 'saudi', 'gulf', 'egyptian', 'levantine', 'mixed'], fallback.dialect),
+    retrieved_kb_articles: array(parsed.retrieved_kb_articles, fallback.retrieved_kb_articles, 5).map(item => ({
+      id: clampText(item?.id, 'KB-000', 20),
+      title: clampText(item?.title, 'مادة معرفة', 120),
+      confidence: clampNumber(item?.confidence, 0.75, 0, 1),
+      snippet: clampText(item?.snippet, 'ملخص مادة معرفة مناسب للحالة.', 260)
+    })),
+    tools_called: array(parsed.tools_called, fallback.tools_called, 8).map(item => ({
+      name: enumValue(item?.name, ['check_order_status', 'process_refund', 'book_appointment', 'escalate_to_human', 'update_customer_record', 'search_kb'], 'search_kb'),
+      arguments: item?.arguments && typeof item.arguments === 'object' ? item.arguments : {},
+      result: clampText(item?.result, 'تم تنفيذ محاكاة الأداة.', 260),
+      requires_human_approval: Boolean(item?.requires_human_approval)
+    })),
+    response_text: clampText(parsed.response_text, fallback.response_text, 900),
+    suggested_quick_replies: array(parsed.suggested_quick_replies, fallback.suggested_quick_replies, 6).map(item => clampText(item, '', 80)).filter(Boolean),
+    escalation: {
+      required: Boolean(parsed.escalation?.required),
+      reason: clampText(parsed.escalation?.reason, fallback.escalation.reason, 180),
+      priority: enumValue(parsed.escalation?.priority, ['low', 'medium', 'high', 'urgent'], fallback.escalation.priority),
+      suggested_team: clampText(parsed.escalation?.suggested_team, fallback.escalation.suggested_team, 80)
+    },
+    csat_prediction: clampNumber(parsed.csat_prediction, fallback.csat_prediction, 1, 5),
+    handling_time_estimate_seconds: clampNumber(parsed.handling_time_estimate_seconds, fallback.handling_time_estimate_seconds, 0, 3600)
+  };
+}
+
 function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
   const scenario = scenarioData?.scenario || input?.scenarioId || blueprint.scenarios[0];
   const message = input?.message || scenarioData?.message || scenarioData?.sample || '';
@@ -1606,6 +1824,118 @@ function createDemoConfig(demoType, blueprint) {
     };
     return Object.freeze(config);
   }
+  if (demoType === 'customer-service-automation') {
+    const systemInstruction = [
+      blueprint.focus,
+      'قواعد اللهجة السعودية:',
+      'افهم العبارات المحلية طبيعياً: ودي تعني أريد، أبغى تعني أريد، يمديك تعني هل تستطيع، ما عاد تعني لم يعد، محد رد علي تعني غياب متابعة.',
+      'إذا قال العميل "تكفى" أو "يا أخوي" فاستجب بتعاطف مهني مختصر، وليس بمزاح أو عامية زائدة.',
+      'إذا كتب العميل عربي وإنجليزي في نفس الرسالة، حافظ على العربية أساساً واستخدم المصطلح الإنجليزي فقط عند الحاجة التشغيلية.',
+      'أمثلة مطابقة السجل: "أبغى فلوسي" تصبح رد سعودي واضح عن فتح طلب استرجاع للمراجعة، و"نرجو الإفادة" تصبح رد رسمي مهذب.',
+      `يجب أن يطابق الرد هذا المخطط فقط: ${CUSTOMER_SERVICE_SCHEMA_DESCRIPTION}`
+    ].join('\n');
+    const config = {
+      demoType,
+      model: 'gemini-2.5-flash',
+      title: blueprint.title,
+      schemaName: blueprint.schemaName,
+      safetyProfile: blueprint.safetyProfile,
+      systemInstruction,
+      system: systemInstruction,
+      responseSchema: CUSTOMER_SERVICE_RESPONSE_SCHEMA,
+      tools: [{
+        functionDeclarations: [
+          {
+            name: 'check_order_status',
+            description: 'يفحص حالة طلب في نظام إدارة الطلبات التجريبي.',
+            parameters: {
+              type: 'object',
+              properties: { order_id: { type: 'string' } },
+              required: ['order_id']
+            }
+          },
+          {
+            name: 'process_refund',
+            description: 'ينشئ طلب استرجاع تجريبي يحتاج موافقة بشرية.',
+            parameters: {
+              type: 'object',
+              properties: { order_id: { type: 'string' }, reason: { type: 'string' } },
+              required: ['order_id', 'reason']
+            }
+          },
+          {
+            name: 'book_appointment',
+            description: 'يحجز موعداً مبدئياً لخدمة أو متابعة.',
+            parameters: {
+              type: 'object',
+              properties: { service: { type: 'string' }, date: { type: 'string' } },
+              required: ['service', 'date']
+            }
+          },
+          {
+            name: 'escalate_to_human',
+            description: 'يصعد الحالة إلى موظف بشري حسب السبب والأولوية.',
+            parameters: {
+              type: 'object',
+              properties: { reason: { type: 'string' }, priority: { type: 'string' } },
+              required: ['reason', 'priority']
+            }
+          },
+          {
+            name: 'update_customer_record',
+            description: 'يحدث حقلاً غير حساس في سجل العميل التجريبي.',
+            parameters: {
+              type: 'object',
+              properties: { field: { type: 'string' }, value: { type: 'string' } },
+              required: ['field', 'value']
+            }
+          },
+          {
+            name: 'search_kb',
+            description: 'يبحث في قاعدة معرفة خدمة العملاء التجريبية ويعيد أفضل ثلاث مواد.',
+            parameters: {
+              type: 'object',
+              properties: { query: { type: 'string' } },
+              required: ['query']
+            }
+          }
+        ]
+      }],
+      validationRules: {
+        locale: ['ar-SA', 'en-SA'],
+        maxInputLength: 3000,
+        requiresHumanReview: true,
+        prohibitSensitiveData: true,
+        outputSchema: CUSTOMER_SERVICE_SCHEMA_DESCRIPTION,
+        forbiddenOutput: ['Markdown', 'code blocks', 'raw Gemini response', 'text outside JSON', 'personal data']
+      },
+      buildPrompt(input, scenarioData) {
+        return buildPromptForDemo(config, input, scenarioData);
+      },
+      generationConfig: {
+        temperature: 0.22,
+        topP: 0.9,
+        topK: 32,
+        maxOutputTokens: 3200,
+        responseMimeType: 'application/json',
+        responseSchema: CUSTOMER_SERVICE_RESPONSE_SCHEMA
+      },
+      normalizeGeminiResponse(raw, input) {
+        return normalizeCustomerServiceResponse(raw, input);
+      },
+      fallbackResponse(input) {
+        return createCustomerServiceFallbackResponse(input);
+      },
+      disclaimer: blueprint.disclaimer,
+      sector: blueprint.sector,
+      audience: blueprint.audience,
+      problem: blueprint.problem,
+      outcome: blueprint.outcome,
+      scenarios: blueprint.scenarios,
+      variations: blueprint.variations
+    };
+    return Object.freeze(config);
+  }
   const config = {
     demoType,
     model,
@@ -1677,6 +2007,8 @@ module.exports = {
   BASE_SYSTEM_INSTRUCTION,
   DATA_ANALYZER_RESPONSE_SCHEMA,
   DATA_ANALYZER_SCHEMA_DESCRIPTION,
+  CUSTOMER_SERVICE_RESPONSE_SCHEMA,
+  CUSTOMER_SERVICE_SCHEMA_DESCRIPTION,
   RESPONSE_SCHEMA_DESCRIPTION,
   SMART_HIRING_RESPONSE_SCHEMA,
   SMART_HIRING_SCHEMA_DESCRIPTION,

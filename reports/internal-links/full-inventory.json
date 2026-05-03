@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-03T00:01:28.793Z",
+  "generatedAt": "2026-05-03T00:05:10.293Z",
   "filesScanned": 279,
   "pages": [
     {
@@ -31148,8 +31148,7 @@
       ],
       "incoming": [
         "https://brightai.site/demo/brightproject/",
-        "https://brightai.site/demo/hr-automation/",
-        "https://brightai.site/demo/ocr-demo/"
+        "https://brightai.site/demo/hr-automation/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -31742,7 +31741,6 @@
         "https://brightai.site/demo/ai-consulting/",
         "https://brightai.site/demo/brightproject/",
         "https://brightai.site/demo/data-quality/",
-        "https://brightai.site/demo/ocr-demo/",
         "https://brightai.site/demo/operational-reports-automation/",
         "https://brightai.site/demo/pricing/",
         "https://brightai.site/demo/seo-ai-agent/",
@@ -32418,7 +32416,7 @@
       "url": "https://brightai.site/demo/ocr-demo/",
       "expectedCanonical": "https://brightai.site/demo/ocr-demo/",
       "canonical": "https://brightai.site/demo/ocr-demo/",
-      "title": "تجربة OCR للوثائق",
+      "title": "استخرج ٣١ حقلاً من فاتورة أو عقد خلال ٤ ثوانٍ مع تحقق زاتكا وصناديق تحديد مرئية",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -32427,9 +32425,6 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/demo/approvals-automation/",
-        "https://brightai.site/demo/data-analyzer/",
-        "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/document-automation.html/"
@@ -32437,55 +32432,27 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": ""
+          "text": "Bright AI Document Intelligence"
         },
         {
           "href": "https://brightai.site/demo/",
           "text": "كل الديموهات"
         },
         {
+          "href": "https://brightai.site/services/document-automation.html/",
+          "text": "أتمتة المستندات"
+        },
+        {
           "href": "https://brightai.site/services/",
           "text": "الخدمات"
         },
         {
-          "href": "https://brightai.site/services/document-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
         },
         {
-          "href": "https://brightai.site/services/document-automation.html/",
-          "text": "صفحة الخدمة الرسمية"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "كل خدمات Bright AI"
-        },
-        {
-          "href": "https://brightai.site/demo/",
-          "text": "مركز الديموهات"
-        },
-        {
           "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "الأرشيف الطبي الذكي"
-        },
-        {
-          "href": "https://brightai.site/demo/data-analyzer/",
-          "text": "منصة تحليل البيانات"
-        },
-        {
-          "href": "https://brightai.site/demo/approvals-automation/",
-          "text": "أتمتة الموافقات"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "احجز مكالمة 15 دقيقة"
+          "text": "احجز مكالمة ١٥ دقيقة"
         },
         {
           "href": "https://brightai.site/docs/privacy-policy.html/",
@@ -34527,7 +34494,6 @@
         "https://brightai.site/case-studies/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/ocr-demo/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
         "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
         "https://brightai.site/demo/smart-hiring-system/pages/appointment/",
@@ -77656,7 +77622,7 @@
   "summary": {
     "pagesDiscovered": 279,
     "indexablePages": 267,
-    "internalLinksDiscovered": 6705,
+    "internalLinksDiscovered": 6702,
     "orphanPages": 0,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 109,

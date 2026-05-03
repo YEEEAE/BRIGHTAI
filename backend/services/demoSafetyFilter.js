@@ -65,6 +65,9 @@ function appendSafetyNotice(demoType, output) {
   if (demoType === 'smart-hiring-system') {
     notices.push('تنبيه: تقييم التوظيف مساعد قرار فقط، ويجب تجاهل العوامل الشخصية ومراجعة النتيجة بشرياً قبل أي إجراء.');
   }
+  if (demoType === 'customer-service-automation') {
+    notices.push('تنبيه: تجربة خدمة العملاء تحاكي الأدوات ولا تنفذ استرجاعاً أو تصعيداً فعلياً بدون اعتماد بشري.');
+  }
   return { ...output, safetyNotices: [...new Set(notices)] };
 }
 

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-05-03T00:01:27.773Z",
+  "generatedAt": "2026-05-03T00:05:09.296Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
   "filesScanned": 481,
-  "referencesScanned": 25252,
-  "internalReferences": 19948,
+  "referencesScanned": 25242,
+  "internalReferences": 19935,
   "brokenReferences": 77,
   "fixableBrokenReferences": 73,
-  "normalizationCandidates": 114,
+  "normalizationCandidates": 113,
   "topBrokenFiles": [
     {
       "file": ".next/server/app/demo/ocr-demo.html",

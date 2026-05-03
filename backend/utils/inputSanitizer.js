@@ -3,6 +3,9 @@ const ZERO_WIDTH_PATTERN = /[\u200B-\u200D\uFEFF]/g;
 const BLOCKED_ELEMENT_PATTERN = /<(script|iframe|object)\b[^>]*>[\s\S]*?<\/\1>/gi;
 const HTML_TAG_PATTERN = /<[^>]+>/g;
 const WHITESPACE_PATTERN = /\s+/g;
+const EMAIL_PATTERN = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;
+const SA_PHONE_PATTERN = /(?:\+?966|0)?5\d{8}\b/g;
+const SA_ID_PATTERN = /\b[12]\d{9}\b/g;
 
 function sanitizeText(value, maxLength = MAX_TEXT_LENGTH) {
   if (typeof value !== 'string') return '';
@@ -15,6 +18,13 @@ function sanitizeText(value, maxLength = MAX_TEXT_LENGTH) {
     .replace(WHITESPACE_PATTERN, ' ')
     .trim()
     .slice(0, maxLength);
+}
+
+function redactPiiText(value, maxLength = MAX_TEXT_LENGTH) {
+  return sanitizeText(value, maxLength)
+    .replace(EMAIL_PATTERN, '[redacted-email]')
+    .replace(SA_PHONE_PATTERN, '[redacted-phone]')
+    .replace(SA_ID_PATTERN, '[redacted-id]');
 }
 
 function sanitizeObject(value, depth = 0) {
@@ -35,6 +45,7 @@ function sanitizeObject(value, depth = 0) {
 
 module.exports = {
   sanitizeText,
+  redactPiiText,
   sanitizeObject,
   MAX_TEXT_LENGTH,
   ZERO_WIDTH_PATTERN

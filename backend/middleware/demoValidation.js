@@ -1,5 +1,5 @@
 const { createHttpError } = require('../utils/httpErrors');
-const { sanitizeObject, sanitizeText } = require('../utils/inputSanitizer');
+const { redactPiiText, sanitizeObject, sanitizeText } = require('../utils/inputSanitizer');
 const { isSupportedDemoType } = require('../services/demoPromptRegistry');
 const { assertSafeDemoInput } = require('../services/demoSafetyFilter');
 
@@ -59,7 +59,7 @@ function validateDemoRequest(req, _res, next) {
 
   const input = sanitizeObject(inputSource);
   input.scenarioId = sanitizeText(input.scenarioId, 120);
-  input.message = sanitizeText(inputSource.message || input.message || '', maxMessageLength);
+  input.message = redactPiiText(inputSource.message || input.message || '', maxMessageLength);
   input.locale = sanitizeText(input.locale, 8);
 
   if (!input.scenarioId || !SCENARIO_ID_PATTERN.test(input.scenarioId) || !SUPPORTED_LOCALES.has(input.locale)) {

@@ -226,7 +226,7 @@ async function* streamGeminiDemo({ demoType, input }) {
   }
   const prompt = getDemoPrompt(demoType);
   yield { type: 'start', demoType, model };
-  if (demoType === 'smart-hiring-system') {
+  if (demoType === 'smart-hiring-system' || demoType === 'customer-service-automation') {
     for await (const event of streamGeminiJson({ demoType, input, model })) {
       yield event;
     }

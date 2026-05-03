@@ -91,9 +91,10 @@ describe('Demo backend foundation', () => {
       expect(result.status).toBe(200);
       expect(result.headers['X-Content-Type-Options']).toBe('nosniff');
       expect(result.headers['Access-Control-Allow-Origin']).toBe('http://localhost:5173');
-      expect(payload.demos).toHaveLength(9);
+      expect(payload.demos.length).toBeGreaterThanOrEqual(10);
       expect(payload.demos.map(item => item.key)).toContain('smart-hospital-management');
       expect(payload.demos.map(item => item.key)).toContain('smart-medical-archive');
+      expect(payload.demos.map(item => item.key)).toContain('customer-service-automation');
     } finally {
       runtime.restoreEnv();
     }
