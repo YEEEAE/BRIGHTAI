@@ -12,372 +12,1440 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Bright AI">
-  <meta name="theme-color" content="#07111f">
-  <title>جرّب تجربة OCR للوثائق بالذكاء الاصطناعي | Bright AI</title>
-  <meta name="description" content="جرّب OCR للوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود والمستندات وتجهيزها للمراجعة والربط.">
+  <meta name="theme-color" content="#0A1F44">
+  <title>ساحة ذكاء المستندات واستخراج فواتير زاتكا | Bright AI</title>
+  <meta name="description" content="جرّب ساحة ذكاء مستندات عربية تدعم الصور وملفات PDF والفواتير السعودية مع صناديق تحديد، تحقق زاتكا، حجب تلقائي للبيانات الشخصية، وتصدير جاهز لأنظمة ERP.">
   <link rel="canonical" href="https://brightai.site/demo/ocr-demo/">
   <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ocr-demo/">
   <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ocr-demo/">
   <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
   <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Bright AI">
-  <meta property="og:title" content="جرّب تجربة OCR للوثائق بالذكاء الاصطناعي | Bright AI">
-  <meta property="og:description" content="جرّب OCR للوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود والمستندات وتجهيزها للمراجعة والربط.">
+  <meta property="og:title" content="ساحة ذكاء المستندات واستخراج فواتير زاتكا | Bright AI">
+  <meta property="og:description" content="ارفع فاتورة أو عقداً أو إيصالاً وشاهد استخراج الحقول مع الثقة، المواضع، التحقق، وسجل التدقيق خلال ثوان.">
   <meta property="og:url" content="https://brightai.site/demo/ocr-demo/">
   <meta property="og:image" content="https://brightai.site/assets/images/logo-new.PNG">
   <meta property="og:image:width" content="512">
   <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="جرّب تجربة OCR للوثائق بالذكاء الاصطناعي | Bright AI">
-  <meta name="twitter:description" content="جرّب OCR للوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود والمستندات وتجهيزها للمراجعة والربط.">
+  <meta name="twitter:title" content="ساحة ذكاء المستندات واستخراج فواتير زاتكا | Bright AI">
+  <meta name="twitter:description" content="تجربة تفاعلية عربية لاستخراج حقول المستندات، التحقق من زاتكا، وحجب البيانات الشخصية قبل التكامل مع أنظمة المؤسسة.">
   <meta name="twitter:image" content="https://brightai.site/assets/images/logo-new.PNG">
   <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
-  <link rel="stylesheet" href="/assets/css/design-tokens.css">
-  <link rel="stylesheet" href="/assets/css/demo-premium.css">
-  <script type="application/ld+json">{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://brightai.site/#organization",
-      "name": "Bright AI",
-      "url": "https://brightai.site/",
-      "logo": "https://brightai.site/assets/images/logo-new.PNG",
-      "areaServed": {
-        "@type": "Country",
-        "name": "Saudi Arabia"
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://brightai.site/#organization",
+        "name": "Bright AI",
+        "url": "https://brightai.site/",
+        "logo": "https://brightai.site/assets/images/logo-new.PNG",
+        "areaServed": {"@type": "Country", "name": "Saudi Arabia"},
+        "contactPoint": {"@type": "ContactPoint", "telephone": "+966538229013", "contactType": "sales", "areaServed": "SA", "availableLanguage": ["Arabic"]}
       },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+966538229013",
-        "contactType": "sales",
-        "areaServed": "SA",
-        "availableLanguage": [
-          "Arabic"
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://brightai.site/demo/ocr-demo/#software",
+        "name": "ساحة ذكاء المستندات من Bright AI",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "url": "https://brightai.site/demo/ocr-demo/",
+        "inLanguage": "ar-SA",
+        "description": "ساحة تفاعلية لاستخراج حقول المستندات العربية والمختلطة، التحقق من فواتير زاتكا، وحجب البيانات الشخصية قبل التكامل مع أنظمة ERP.",
+        "provider": {"@id": "https://brightai.site/#organization"},
+        "featureList": ["استخراج متعدد الوسائط", "صناديق تحديد للحقول", "تحقق زاتكا", "حجب البيانات الشخصية", "تصدير JSON وCSV وXML وEDI"],
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "SAR", "description": "تجربة عامة مجانية ببيانات عينة ومن دون حفظ الملفات"}
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://brightai.site/demo/ocr-demo/#faq",
+        "mainEntity": [
+          {"@type": "Question", "name": "هل تحفظ Bright AI المستندات المرفوعة في هذه التجربة؟", "acceptedAnswer": {"@type": "Answer", "text": "لا تُحفظ ملفات التجربة العامة، ويُوصى باستخدام بيانات وهمية أو منزوعة الحساسية. النسخ المؤسسية تضبط حسب سياسة الاحتفاظ وسجل التدقيق."}},
+          {"@type": "Question", "name": "هل يدعم الديمو فواتير زاتكا السعودية؟", "acceptedAnswer": {"@type": "Answer", "text": "نعم، يفحص صيغة الرقم الضريبي، وجود رمز الاستجابة السريعة، رقم مرجع الفاتورة، والحقول المطلوبة للفاتورة الإلكترونية."}},
+          {"@type": "Question", "name": "هل يمكن ربط المخرجات مع SAP أو Oracle أو Odoo؟", "acceptedAnswer": {"@type": "Answer", "text": "نعم، تعرض التجربة نماذج تصدير وموصلات جاهزة للتهيئة مع أنظمة SAP S/4HANA وOracle Fusion وMicrosoft Dynamics وOdoo وغيرها."}},
+          {"@type": "Question", "name": "ماذا يحدث عند ضعف جودة الصورة؟", "acceptedAnswer": {"@type": "Answer", "text": "تُعرض درجة ثقة لكل حقل وقاعدة تحقق، وتظهر الحقول منخفضة الثقة للمراجعة البشرية قبل التصدير."}}
+        ]
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://brightai.site/demo/ocr-demo/#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/"},
+          {"@type": "ListItem", "position": 2, "name": "الديموهات", "item": "https://brightai.site/demo/"},
+          {"@type": "ListItem", "position": 3, "name": "ذكاء المستندات", "item": "https://brightai.site/demo/ocr-demo/"}
         ]
       }
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": "https://brightai.site/demo/ocr-demo/#software",
-      "name": "تجربة OCR للوثائق",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "url": "https://brightai.site/demo/ocr-demo/",
-      "inLanguage": "ar-SA",
-      "description": "جرّب OCR للوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود والمستندات وتجهيزها للمراجعة والربط.",
-      "provider": {
-        "@id": "https://brightai.site/#organization"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "SAR",
-        "description": "تجربة عامة مجانية قبل طلب نسخة مخصصة"
-      }
-    },
-    {
-      "@type": "Service",
-      "@id": "https://brightai.site/services/document-automation.html#service",
-      "name": "تجربة OCR للوثائق",
-      "serviceType": "الوثائق والأرشفة",
-      "url": "https://brightai.site/services/document-automation.html",
-      "description": "جرّب OCR للوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود والمستندات وتجهيزها للمراجعة والربط.",
-      "provider": {
-        "@id": "https://brightai.site/#organization"
-      },
-      "areaServed": {
-        "@type": "Country",
-        "name": "Saudi Arabia"
-      },
-      "mainEntityOfPage": "https://brightai.site/demo/ocr-demo/"
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://brightai.site/demo/ocr-demo/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "هل التجربة مجانية؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "سؤال منطقي، والجواب الصريح: نعم. تقدر تجرّب براحتك ببيانات وهمية وتشوف شكل التقرير قبل ما تطلب نسخة مخصصة."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "هل نقدر نربطها ببيانات الشركة؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "نعم، نقدر نضبط النسخة المخصصة على مصادر شركتك مثل الأنظمة التشغيلية، ملفات البيانات، أو API بعد مراجعة الصلاحيات."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "هل تدعم العربية؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "أكيد. التجربة مبنية للعربية والسوق السعودي، وتتعامل مع النصوص المختلطة عربي وإنجليزي عند الحاجة."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "وش وضع البيانات؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "بياناتك تبقى عندك. لا ترفع بيانات حساسة في النسخة العامة، والنسخة المخصصة تنبني بصلاحيات وصول وسجل تدقيق وضوابط مشاركة مناسبة."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "وش الفرق بين الديمو والنسخة المخصصة؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "الديمو يوريك الفكرة بعينات مبسطة، والنسخة المخصصة نضبطها على بياناتك وتكاملاتك ومؤشرات الأداء اللي تهم فريقك."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "هل يعرض الديمو JSON خام؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "لا، النتيجة تظهر كلوحة منظمة للحقول والمخاطر والإجراءات، ويمكن تنزيل التقرير بصيغة نصية قابلة للمشاركة."
-          }
-        }
-      ]
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/demo/ocr-demo/#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "الرئيسية",
-          "item": "https://brightai.site/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "الديموهات",
-          "item": "https://brightai.site/demo/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "تجربة OCR للوثائق",
-          "item": "https://brightai.site/demo/ocr-demo/"
-        }
-      ]
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --navy-950: #061329;
+      --navy-900: #0A1F44;
+      --navy-800: #102B59;
+      --gold: #C9A961;
+      --gold-strong: #E0C77E;
+      --ink: #F8FAFC;
+      --muted: #AAB6C8;
+      --line: rgba(226, 232, 240, .14);
+      --surface: rgba(255, 255, 255, .06);
+      --surface-strong: rgba(255, 255, 255, .1);
+      --success: #2DD4BF;
+      --danger: #F87171;
+      --warning: #FBBF24;
+      --shadow: 0 24px 80px rgba(0, 0, 0, .28);
+      --radius: 8px;
+      --font-ar: "IBM Plex Sans Arabic", "Tajawal", system-ui, sans-serif;
+      --font-en: "Inter", system-ui, sans-serif;
     }
-  ]
-}</script>
+    [data-theme="light"] {
+      color-scheme: light;
+      --navy-950: #F7F9FC;
+      --navy-900: #FFFFFF;
+      --navy-800: #E8EEF7;
+      --ink: #0A1F44;
+      --muted: #526173;
+      --line: rgba(10, 31, 68, .13);
+      --surface: rgba(10, 31, 68, .045);
+      --surface-strong: rgba(10, 31, 68, .08);
+      --shadow: 0 24px 60px rgba(10, 31, 68, .12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(201, 169, 97, .13), transparent 26rem),
+        linear-gradient(135deg, var(--navy-950), var(--navy-900) 42%, #08182f);
+      color: var(--ink);
+      font-family: var(--font-ar);
+      line-height: 1.7;
+      text-align: start;
+      letter-spacing: 0;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, #000, transparent 70%);
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+    .skip-link {
+      position: fixed;
+      inset-block-start: 12px;
+      inset-inline-start: 12px;
+      z-index: 1000;
+      transform: translateY(-160%);
+      background: var(--gold);
+      color: #08111f;
+      padding: .7rem 1rem;
+      border-radius: var(--radius);
+      font-weight: 700;
+    }
+    .skip-link:focus { transform: translateY(0); outline: 3px solid #fff; }
+    .shell { width: min(1440px, calc(100% - 32px)); margin-inline: auto; }
+    .topbar {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: color-mix(in srgb, var(--navy-950) 84%, transparent);
+      border-block-end: 1px solid var(--line);
+    }
+    .nav {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand { display: inline-flex; align-items: center; gap: .75rem; font-weight: 800; }
+    .brand img { border-radius: 8px; }
+    .nav-links { display: flex; align-items: center; gap: .35rem; flex-wrap: wrap; color: var(--muted); font-size: .92rem; }
+    .nav-links a, .theme-toggle {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: .55rem .82rem;
+      color: var(--muted);
+      background: transparent;
+    }
+    .nav-links a:hover, .theme-toggle:hover { border-color: var(--line); color: var(--ink); background: var(--surface); }
+    .hero { padding-block: clamp(2rem, 6vw, 5rem) 1.5rem; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.03fr) minmax(360px, .97fr);
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+    .eyebrow {
+      color: var(--gold-strong);
+      font-weight: 700;
+      margin: 0 0 .75rem;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+    }
+    .eyebrow::before { content: ""; inline-size: 34px; block-size: 2px; background: var(--gold); }
+    h1, h2, h3, p { margin-block-start: 0; }
+    h1 {
+      font-size: clamp(2.15rem, 5vw, 5rem);
+      line-height: 1.04;
+      max-width: 920px;
+      margin-block-end: 1rem;
+      letter-spacing: 0;
+    }
+    h2 { font-size: clamp(1.45rem, 3vw, 2.35rem); line-height: 1.25; margin-block-end: .75rem; }
+    h3 { font-size: 1.08rem; line-height: 1.35; margin-block-end: .5rem; }
+    .lead { color: var(--muted); font-size: clamp(1rem, 1.8vw, 1.24rem); max-width: 760px; }
+    .hero-actions, .action-row { display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; }
+    .btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .45rem;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: .72rem 1rem;
+      color: var(--ink);
+      background: var(--surface);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+      font-weight: 700;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: color-mix(in srgb, var(--gold) 54%, var(--line)); }
+    .btn:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--gold) 72%, transparent);
+      outline-offset: 2px;
+    }
+    .btn-primary { background: linear-gradient(180deg, var(--gold-strong), var(--gold)); color: #08111f; border-color: transparent; }
+    .btn-ghost { background: transparent; }
+    .btn-danger { background: rgba(248, 113, 113, .14); border-color: rgba(248, 113, 113, .3); }
+    .trust-strip {
+      margin-block-start: 1.25rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .pill {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 999px;
+      padding: .45rem .7rem;
+      color: var(--muted);
+      font-size: .88rem;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .hero-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--surface-strong), var(--surface));
+      box-shadow: var(--shadow);
+      padding: 1rem;
+      min-height: 420px;
+    }
+    .mini-doc {
+      position: relative;
+      background: #f8fafc;
+      color: #0f172a;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow: hidden;
+      min-height: 330px;
+      direction: rtl;
+    }
+    .mini-doc .mark { border: 2px solid #C9A961; background: rgba(201,169,97,.18); border-radius: 4px; padding: .1rem .25rem; }
+    .mini-doc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-block: 1rem; }
+    .mini-doc-row { border-block-end: 1px dashed #cbd5e1; padding-block: .35rem; display: flex; justify-content: space-between; gap: .75rem; }
+    .section { padding-block: clamp(2.2rem, 6vw, 5rem); }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-block-end: 1rem; }
+    .section-head p { color: var(--muted); max-width: 720px; margin: 0; }
+    .playground {
+      display: grid;
+      grid-template-columns: minmax(390px, .82fr) minmax(0, 1.18fr);
+      gap: 1rem;
+      align-items: start;
+    }
+    .pane {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--navy-900) 82%, transparent);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .pane-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .9rem 1rem;
+      border-block-end: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .pane-body { padding: 1rem; }
+    .chips { display: flex; gap: .55rem; overflow-x: auto; padding-block-end: .3rem; scrollbar-width: thin; }
+    .chip {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      padding: .55rem .8rem;
+      white-space: nowrap;
+    }
+    .chip[aria-pressed="true"] { border-color: var(--gold); color: var(--ink); background: rgba(201,169,97,.13); }
+    .drop-zone {
+      margin-block: 1rem;
+      min-height: 184px;
+      border: 1px dashed color-mix(in srgb, var(--gold) 52%, var(--line));
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 1.25rem;
+      background:
+        linear-gradient(135deg, rgba(201,169,97,.12), transparent 42%),
+        var(--surface);
+    }
+    .drop-zone.is-drag { border-color: var(--gold-strong); background: rgba(201,169,97,.17); }
+    .drop-zone strong { display: block; font-size: 1.1rem; margin-block-end: .25rem; }
+    .muted { color: var(--muted); }
+    .form-grid { display: grid; gap: .85rem; }
+    label { display: grid; gap: .38rem; color: var(--muted); font-size: .92rem; }
+    input, textarea, select {
+      inline-size: 100%;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--ink);
+      min-height: 44px;
+      padding: .75rem .85rem;
+    }
+    textarea { resize: vertical; min-height: 96px; }
+    .advanced { margin-block: 1rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+    .advanced summary { padding: .8rem 1rem; cursor: pointer; font-weight: 700; }
+    .advanced-content { padding: 0 1rem 1rem; display: grid; gap: .8rem; }
+    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .cost { font-family: var(--font-en); direction: ltr; unicode-bidi: isolate; color: var(--gold-strong); }
+    .viewer-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, .94fr) minmax(320px, 1.06fr);
+      gap: 1rem;
+      min-height: 680px;
+    }
+    .doc-tools { display: flex; gap: .45rem; flex-wrap: wrap; }
+    .icon-btn {
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--ink);
+      border-radius: 8px;
+      min-inline-size: 42px;
+      min-block-size: 38px;
+    }
+    .doc-stage {
+      position: relative;
+      min-height: 620px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: auto;
+      background: #0b1628;
+      padding: 1rem;
+    }
+    .document-canvas {
+      position: relative;
+      margin-inline: auto;
+      inline-size: min(100%, 520px);
+      aspect-ratio: 0.72;
+      background: #f9fafb;
+      color: #0f172a;
+      border-radius: 8px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.35);
+      transform-origin: center;
+      transition: filter .2s ease, transform .2s ease;
+      overflow: hidden;
+      direction: rtl;
+    }
+    .document-canvas.enhanced { filter: contrast(1.18) saturate(.92); }
+    .paper { position: absolute; inset: 6%; font-size: clamp(.62rem, 1.1vw, .86rem); }
+    .paper h3 { color: #0A1F44; margin-block-end: .65rem; }
+    .paper-line { display: flex; justify-content: space-between; gap: .6rem; border-block-end: 1px solid #e2e8f0; padding-block: .32rem; }
+    .paper-table { margin-block-start: .9rem; border: 1px solid #cbd5e1; border-radius: 6px; overflow: hidden; }
+    .paper-table div { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: .4rem; padding: .32rem .45rem; border-block-end: 1px solid #e2e8f0; }
+    .paper-table div:first-child { background: #eef2f7; font-weight: 700; }
+    .paper-seal { position: absolute; inset-block-end: 7%; inset-inline-start: 6%; inline-size: 72px; block-size: 72px; border: 9px solid #0A1F44; opacity: .16; border-radius: 18px; }
+    .bbox {
+      position: absolute;
+      border: 2px solid var(--gold);
+      background: rgba(201,169,97,.2);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .bbox:hover, .bbox.active { transform: scale(1.02); background: rgba(45,212,191,.22); border-color: var(--success); }
+    .bbox.low { border-color: var(--warning); background: rgba(251,191,36,.18); }
+    .bbox.pii { border-color: var(--danger); background: rgba(248,113,113,.2); }
+    .progress-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: .5rem; margin-block-end: .9rem; }
+    .step {
+      position: relative;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: .65rem;
+      color: var(--muted);
+      font-size: .86rem;
+    }
+    .step.active { border-color: var(--gold); color: var(--ink); }
+    .step.done { border-color: rgba(45,212,191,.42); color: var(--success); }
+    .tabs { display: flex; gap: .35rem; padding: .55rem; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow-x: auto; }
+    .tab {
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 7px;
+      padding: .55rem .75rem;
+      color: var(--muted);
+      background: transparent;
+      font-weight: 700;
+    }
+    .tab[aria-selected="true"] { background: var(--gold); color: #08111f; }
+    .tab-panel { display: none; padding-block-start: 1rem; }
+    .tab-panel.active { display: block; }
+    .field-list { display: grid; gap: .62rem; }
+    .field-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: .72rem;
+      background: var(--surface);
+      display: grid;
+      gap: .55rem;
+    }
+    .field-top { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
+    .confidence {
+      font-family: var(--font-en);
+      direction: ltr;
+      unicode-bidi: isolate;
+      border-radius: 999px;
+      padding: .22rem .5rem;
+      font-size: .78rem;
+      font-weight: 800;
+      background: rgba(45,212,191,.15);
+      color: var(--success);
+    }
+    .confidence.low { background: rgba(251,191,36,.14); color: var(--warning); }
+    .field-card input { min-height: 38px; padding: .55rem .7rem; }
+    .validation-strip {
+      margin-block-start: 1rem;
+      display: grid;
+      gap: .55rem;
+      position: sticky;
+      inset-block-end: 0;
+      background: color-mix(in srgb, var(--navy-900) 94%, transparent);
+      padding-block-start: .75rem;
+    }
+    .rule {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: .65rem .75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      background: var(--surface);
+    }
+    .rule.ok { border-color: rgba(45,212,191,.34); }
+    .rule.fail { border-color: rgba(248,113,113,.34); }
+    .shield { font-size: 1.45rem; }
+    .json-box, .code-box {
+      direction: ltr;
+      text-align: left;
+      unicode-bidi: isolate;
+      white-space: pre-wrap;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1rem;
+      background: #07111f;
+      color: #dbeafe;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: .82rem;
+      max-block-size: 520px;
+    }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; }
+    .metric, .case-card, .connector, .compliance-card, .faq details, .batch-card, .anatomy-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+      padding: 1rem;
+    }
+    .metric strong { display: block; font-family: var(--font-en); direction: ltr; unicode-bidi: isolate; font-size: 1.45rem; color: var(--gold-strong); }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; }
+    .batch-studio { display: grid; grid-template-columns: .9fr 1.1fr; gap: 1rem; }
+    .batch-list { display: grid; gap: .55rem; }
+    .batch-row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr auto;
+      gap: .75rem;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: .65rem;
+      background: var(--surface);
+    }
+    .bar { block-size: 8px; background: var(--surface-strong); border-radius: 99px; overflow: hidden; }
+    .bar span { display: block; block-size: 100%; background: var(--gold); inline-size: var(--value, 0%); }
+    .architecture {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: .5rem;
+      align-items: center;
+    }
+    .arch-node {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1rem .7rem;
+      text-align: center;
+      background: var(--surface);
+      min-height: 86px;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+    }
+    .arch-arrow { text-align: center; color: var(--gold); font-weight: 900; }
+    .lead-capture {
+      display: none;
+      border: 1px solid rgba(201,169,97,.38);
+      background: linear-gradient(135deg, rgba(201,169,97,.14), var(--surface));
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-block-start: 1rem;
+    }
+    .lead-capture.visible { display: block; }
+    .toast {
+      position: fixed;
+      inset-block-end: 18px;
+      inset-inline-start: 18px;
+      z-index: 70;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--navy-900);
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      padding: .75rem 1rem;
+      transform: translateY(160%);
+      transition: transform .2s ease;
+    }
+    .toast.show { transform: translateY(0); }
+    .footer { border-block-start: 1px solid var(--line); padding-block: 1.5rem; color: var(--muted); }
+    .footer .shell { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+    .latin { font-family: var(--font-en); direction: ltr; unicode-bidi: isolate; }
+    .sr-only { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 1180px) {
+      .hero-grid, .playground, .viewer-layout, .batch-studio { grid-template-columns: 1fr; }
+      .metrics, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+      .architecture { grid-template-columns: 1fr; }
+      .arch-arrow { transform: rotate(90deg); }
+    }
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 20px, 1440px); }
+      .nav { align-items: flex-start; flex-direction: column; padding-block: .75rem; }
+      .nav-links { font-size: .84rem; }
+      .hero { padding-block-start: 1.4rem; }
+      .hero-panel { min-height: auto; }
+      .settings-grid, .grid-3, .metrics, .grid-4 { grid-template-columns: 1fr; }
+      .progress-steps { grid-template-columns: 1fr 1fr; }
+      .doc-stage { min-height: 520px; }
+      .pane.output-pane {
+        position: sticky;
+        inset-block-end: 0;
+        z-index: 30;
+        max-block-size: 82vh;
+        overflow: auto;
+        border-end-start-radius: 0;
+        border-end-end-radius: 0;
+      }
+      .batch-row { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+    }
+  </style>
 </head>
-<body class="premium-demo" data-demo-slug="ocr-demo">
-  <a class="skip-link" href="#demo-form">تجاوز إلى التجربة</a>
-  <header class="demo-nav" aria-label="تنقل الديمو">
-    <a class="brand" href="/" aria-label="Bright AI الرئيسية">
-      <img src="/assets/images/logo-new.PNG" width="36" height="36" alt="شعار Bright AI">
-    </a>
-    <nav class="nav-links" aria-label="روابط داخلية">
-      <a href="/demo/">كل الديموهات</a>
-      <a href="/services/">الخدمات</a>
-      <a href="/services/document-automation.html">صفحة الخدمة</a>
-      <a href="/contact/">تواصل معنا</a>
-    </nav>
+<body>
+  <a class="skip-link" href="#playground">تجاوز إلى ساحة التجربة</a>
+  <header class="topbar" aria-label="رأس الصفحة">
+    <div class="shell nav">
+      <a class="brand" href="/" aria-label="العودة إلى الصفحة الرئيسية">
+        <img src="/assets/images/logo-new.PNG" width="40" height="40" alt="شعار Bright AI">
+        <span>Bright AI Document Intelligence</span>
+      </a>
+      <nav class="nav-links" aria-label="روابط داخلية">
+        <a href="/demo/">كل الديموهات</a>
+        <a href="/services/document-automation.html">أتمتة المستندات</a>
+        <a href="/services/">الخدمات</a>
+        <a href="/contact/">تواصل معنا</a>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="تبديل الوضع الداكن والفاتح">وضع فاتح</button>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section class="hero section">
-      <div class="hero-copy">
-        <p class="eyebrow">هلا والله، نوّرت 👋</p>
-        <h1>تجربة OCR للوثائق</h1>
-        <p class="direct-answer">خلّنا نوريك وش يقدر يسوّيه BrightAI لشركتك. هذا الديمو يساعدك على تحويل نص مستند أو وصف فاتورة إلى حقول منظمة خلال دقائق مع إظهار النواقص وقواعد التحقق قبل الربط مع الأنظمة.</p>
-        <div class="hero-points" aria-label="قيمة الديمو">
-          <span>المشكلة: الإدخال اليدوي للوثائق وما ينتج عنه من أخطاء وتأخير</span>
-          <span>النتيجة: حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط</span>
-          <span>الفئة: المالية، المشتريات، والأرشفة في الشركات السعودية</span>
+    <section class="hero shell">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">ساحة ذكاء مستندات عربية للمؤسسات السعودية</p>
+          <h1>استخرج ٣١ حقلاً من فاتورة أو عقد خلال ٤ ثوانٍ مع تحقق زاتكا وصناديق تحديد مرئية</h1>
+          <p class="lead">ارفع صورة أو ملف PDF أو اختر عينة جاهزة. تشاهد المستند الأصلي، الحقول المستخرجة، درجة الثقة، موضع كل حقل، وسجل تدقيق قابل للتصدير قبل أي ربط مع أنظمة الشركة.</p>
+          <div class="hero-actions" aria-label="إجراءات البداية">
+            <a class="btn btn-primary" href="#playground">جرّب الآن</a>
+            <button class="btn btn-ghost" type="button" data-video>شاهد فيديو ٦٠ ثانية</button>
+          </div>
+          <div class="trust-strip" aria-label="مؤشرات ثقة">
+            <span class="pill">مدعوم بـ <span class="latin">Gemini 2.5 Flash</span></span>
+            <span class="pill">بياناتك لا تُحفظ في التجربة العامة</span>
+            <span class="pill">حجب تلقائي للهوية والإقامة</span>
+            <span class="pill">مراعاة نظام حماية البيانات الشخصية السعودي</span>
+          </div>
         </div>
+        <aside class="hero-panel" aria-label="معاينة استخراج مرئية">
+          <div class="mini-doc" aria-hidden="true">
+            <h2>فاتورة ضريبية</h2>
+            <div class="mini-doc-grid">
+              <span>شركة المورد الوطني</span>
+              <span class="mark">٣١٠١٢٣٤٥٦٧٠٠٠٠٣</span>
+              <span>رقم الفاتورة</span>
+              <span class="mark">INV-2026-0418</span>
+            </div>
+            <div class="mini-doc-row"><span>الإجمالي قبل الضريبة</span><strong>١٢٬٠٠٠ ريال</strong></div>
+            <div class="mini-doc-row"><span>ضريبة القيمة المضافة</span><strong class="mark">١٬٨٠٠ ريال</strong></div>
+            <div class="mini-doc-row"><span>الإجمالي</span><strong>١٣٬٨٠٠ ريال</strong></div>
+            <div class="mini-doc-row"><span>رمز الاستجابة السريعة</span><strong class="mark">موجود</strong></div>
+            <p style="margin-block-start:1rem;color:#334155">نتيجة التحقق: الرقم الضريبي مطابق، الضريبة تساوي ١٥٪، ومرجع الفاتورة موجود.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="shell section" id="playground" aria-labelledby="playground-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">المركز الرئيسي للتجربة</p>
+          <h2 id="playground-title">ساحة الاستخراج والتحقق</h2>
+          <p>تعمل العيّنات فوراً محلياً، وعند ضبط مفتاح جيميناي على الخادم ينتقل التشغيل إلى المسار الخلفي الآمن مع بث مباشر.</p>
+        </div>
+      </div>
+
+      <div class="playground">
+        <section class="pane" aria-label="المدخلات والتحكم">
+          <div class="pane-header">
+            <strong>المدخلات والسيناريوهات</strong>
+            <span class="pill"><span class="cost">~0.003$</span> لكل تشغيل</span>
+          </div>
+          <div class="pane-body">
+            <div class="chips" id="scenario-chips" aria-label="سيناريوهات جاهزة"></div>
+            <label class="drop-zone" id="drop-zone">
+              <input class="sr-only" type="file" id="doc-file" accept="image/*,.pdf" aria-label="رفع مستند أو صورة">
+              <span>
+                <strong>اسحب أي مستند هنا</strong>
+                <span class="muted">يدعم الصور، ملفات PDF، المسح الضوئي، وصور الهاتف. يتم ضغط الملفات الكبيرة قبل الإرسال.</span>
+              </span>
+            </label>
+            <div class="form-grid">
+              <label>وصف اختياري أو تعليمات للفريق
+                <textarea id="doc-notes" maxlength="1200" placeholder="مثال: راجع مطابقة الفاتورة مع أمر الشراء وعلّم الحقول منخفضة الثقة."></textarea>
+              </label>
+              <div class="muted"><span id="char-count">٠</span> / ١٢٠٠ حرف</div>
+              <div class="settings-grid">
+                <label>نوع الاستخراج
+                  <select id="extract-mode">
+                    <option value="mixed">مختلط</option>
+                    <option value="printed">مطبوع</option>
+                    <option value="handwriting">يدوي</option>
+                  </select>
+                </label>
+                <label>لغة المخرج
+                  <select id="output-lang">
+                    <option value="ar">العربية</option>
+                    <option value="mixed">عربي وإنجليزي</option>
+                    <option value="en">الإنجليزية</option>
+                  </select>
+                </label>
+              </div>
+              <details class="advanced">
+                <summary>إعدادات متقدمة</summary>
+                <div class="advanced-content">
+                  <div class="settings-grid">
+                    <label>النموذج
+                      <select id="model">
+                        <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+                        <option value="gemini-2.5-flash-thinking">Gemini 2.5 Flash Thinking</option>
+                      </select>
+                    </label>
+                    <label>الحد الأعلى للرموز
+                      <input id="max-tokens" type="number" min="1024" max="8192" value="4096">
+                    </label>
+                  </div>
+                  <label>درجة الإبداع
+                    <input id="temperature" type="range" min="0" max="0.8" step="0.05" value="0.15">
+                  </label>
+                  <label>شخصية النظام
+                    <textarea id="persona" rows="3">أنت محرك فهم مستندات مؤسسي للسوق السعودي. اكتشف نوع المستند أولاً، ثم استخرج الحقول، وعلّم أي حقل تقل ثقته عن ٠٫٧، وراع نظام حماية البيانات الشخصية.</textarea>
+                  </label>
+                </div>
+              </details>
+              <div class="action-row">
+                <button class="btn btn-primary" type="button" id="run-btn">تشغيل التحليل</button>
+                <button class="btn" type="button" id="sample-btn">توليد عينة صناعية</button>
+                <button class="btn btn-ghost" type="button" id="reset-btn">إعادة ضبط</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane output-pane" aria-label="المخرجات المباشرة">
+          <div class="pane-header">
+            <strong>المستند والنتيجة المباشرة</strong>
+            <div class="doc-tools" aria-label="أدوات المستند">
+              <button class="icon-btn" type="button" id="rotate-btn" aria-label="تدوير المستند">↻</button>
+              <button class="icon-btn" type="button" id="enhance-btn" aria-label="تحسين التباين">◐</button>
+              <button class="icon-btn" type="button" id="reocr-btn" aria-label="إعادة التعرف">⟳</button>
+            </div>
+          </div>
+          <div class="pane-body">
+            <div class="progress-steps" aria-label="خطوات المعالجة">
+              <div class="step" data-step="0">جارٍ القراءة</div>
+              <div class="step" data-step="1">التحليل</div>
+              <div class="step" data-step="2">التحقق</div>
+              <div class="step" data-step="3">التوليد</div>
+            </div>
+            <div class="viewer-layout">
+              <div class="doc-stage" aria-label="المستند الأصلي مع صناديق تحديد">
+                <div class="document-canvas" id="document-canvas" tabindex="0" aria-label="معاينة المستند">
+                  <div class="paper" id="paper-content"></div>
+                  <div class="paper-seal"></div>
+                </div>
+              </div>
+              <div>
+                <div class="tabs" role="tablist" aria-label="تبويبات النتيجة">
+                  <button class="tab" role="tab" aria-selected="true" data-tab="visual">التقرير المرئي</button>
+                  <button class="tab" role="tab" aria-selected="false" data-tab="json">البيانات الخام</button>
+                  <button class="tab" role="tab" aria-selected="false" data-tab="audit">سجل التدقيق</button>
+                  <button class="tab" role="tab" aria-selected="false" data-tab="share">المشاركة</button>
+                </div>
+                <div class="tab-panel active" id="tab-visual" role="tabpanel">
+                  <div id="visual-report" class="field-list"></div>
+                  <div class="validation-strip" id="validation-strip"></div>
+                  <div class="action-row" style="margin-block-start:1rem">
+                    <button class="btn" type="button" data-copy="json">نسخ</button>
+                    <button class="btn" type="button" id="download-btn">تنزيل تقرير</button>
+                    <button class="btn" type="button" id="share-btn">رابط مشاركة</button>
+                    <button class="btn" type="button" id="rerun-btn">إعادة تشغيل بتعديل</button>
+                  </div>
+                  <div class="lead-capture" id="lead-capture">
+                    <h3>حوّل هذه التجربة إلى ربط فعلي</h3>
+                    <p class="muted">ظهر هذا النموذج بعد أول تشغيل ناجح. اترك بريد العمل وسنرسل تصور ربط خلال يوم عمل.</p>
+                    <div class="settings-grid">
+                      <input type="email" aria-label="بريد العمل" placeholder="name@company.sa">
+                      <button class="btn btn-primary" type="button">إرسال طلب الربط</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-panel" id="tab-json" role="tabpanel"><pre class="json-box" id="raw-json"></pre></div>
+                <div class="tab-panel" id="tab-audit" role="tabpanel"><div id="audit-log" class="field-list"></div></div>
+                <div class="tab-panel" id="tab-share" role="tabpanel">
+                  <div class="code-box" id="share-box">سيظهر رابط مشاركة مؤقت بعد التشغيل.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="shell section" aria-labelledby="sandbox-title">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">وضع المختبر المتقدم</p>
+          <h2 id="sandbox-title">استوديو معالجة الدفعات والمطابقة الثلاثية</h2>
+          <p>يحاكي رفع ٥٠ مستنداً مختلطاً، التصنيف التلقائي، مطابقة الفاتورة مع أمر الشراء والإيصال، ثم التصدير لنظام المؤسسة.</p>
+        </div>
+      </div>
+      <div class="batch-studio">
+        <div class="batch-card">
+          <h3>تشغيل دفعة صناعية</h3>
+          <p class="muted">الدفعة تحتوي فواتير، أوامر شراء، إيصالات، عقود، وهويات محجوبة لاختبار مسار المراجعة.</p>
+          <div class="action-row">
+            <button class="btn btn-primary" type="button" id="batch-btn">تشغيل ٥٠ مستنداً</button>
+            <button class="btn" type="button" id="webhook-btn">محاكاة Webhook</button>
+          </div>
+          <pre class="code-box" id="webhook-box">لم يتم إرسال أي حمولة بعد.</pre>
+        </div>
+        <div class="batch-list" id="batch-list"></div>
+      </div>
+      <div class="tabs" style="margin-block-start:1rem" role="tablist" aria-label="أكواد التكامل">
+        <button class="tab" role="tab" aria-selected="true" data-code="curl">cURL</button>
+        <button class="tab" role="tab" aria-selected="false" data-code="js">JavaScript</button>
+      </div>
+      <pre class="code-box" id="api-code"></pre>
+    </section>
+
+    <section class="shell section" aria-labelledby="anatomy-title">
+      <details class="anatomy-card">
+        <summary><strong id="anatomy-title">تشريح المخرج: كيف تُقرأ الحقول والثقة؟</strong></summary>
+        <div class="grid-3" style="margin-block-start:1rem">
+          <article><h3>الحقل</h3><p class="muted">اسم منطقي ثابت يصلح للتصدير مثل رقم الفاتورة أو الرقم الضريبي.</p></article>
+          <article><h3>الثقة</h3><p class="muted">نسبة بين ٠ و١. أي قيمة أقل من ٠٫٧ تُعلّم للمراجعة البشرية.</p></article>
+          <article><h3>المصدر</h3><p class="muted">إحداثيات الصفحة التي سمحت باستخراج القيمة وتظهر كصندوق تحديد.</p></article>
+        </div>
+      </details>
+    </section>
+
+    <section class="shell section" aria-labelledby="metrics-title">
+      <div class="section-head">
+        <div>
+          <h2 id="metrics-title">مؤشرات تشغيل قابلة للقياس</h2>
+          <p>الأرقام التالية محاكاة واقعية لبيئة تجربة عامة، وليست وعداً تعاقدياً. النسخة المؤسسية تقيسها على بياناتكم.</p>
+        </div>
+      </div>
+      <div class="metrics">
+        <div class="metric"><span>متوسط زمن المعالجة</span><strong>3.4s</strong></div>
+        <div class="metric"><span>دقة الاستخراج في العينات النظيفة</span><strong>94.2%</strong></div>
+        <div class="metric"><span>عدد التجارب اليوم</span><strong>1,247</strong></div>
+        <div class="metric"><span>نسبة الحقول المحجوبة تلقائياً</span><strong>18%</strong></div>
+      </div>
+    </section>
+
+    <section class="shell section" aria-labelledby="usecases-title">
+      <div class="section-head">
+        <div>
+          <h2 id="usecases-title">حالات استخدام حسب القطاع</h2>
+          <p>كل بطاقة تعرض مدخلاً ومخرجاً مختلفين لتوضيح أثر الاستخراج داخل فرق تشغيل حقيقية.</p>
+        </div>
+      </div>
+      <div class="grid-3">
+        <article class="case-card"><h3>المالية والمحاسبة</h3><p class="muted">مدخل: فاتورة زاتكا مع أمر شراء ناقص. مخرج: ضريبة مطابقة، رقم ضريبي صحيح، وتنبيه لغياب رقم الاستلام.</p></article>
+        <article class="case-card"><h3>المشتريات وسلاسل الإمداد</h3><p class="muted">مدخل: أمر شراء وبوليصة شحن. مخرج: مطابقة كمية، كشف فرق تاريخ التسليم، وتجهيز ملف CSV للمخزون.</p></article>
+        <article class="case-card"><h3>الموارد البشرية والامتثال</h3><p class="muted">مدخل: هوية أو إقامة. مخرج: حجب رقم الهوية تلقائياً، استخراج تاريخ الانتهاء، وتنبيه مراجعة الصلاحية.</p></article>
+      </div>
+    </section>
+
+    <section class="shell section" aria-labelledby="integration-title">
+      <div class="section-head">
+        <div>
+          <h2 id="integration-title">التكاملات والمعمارية</h2>
+          <p>التجربة مصممة كطبقة فهم مستندات بين أنظمتكم ونموذج جيميناي، مع سجل تدقيق وتصدير منظم.</p>
+        </div>
+      </div>
+      <div class="architecture" aria-label="مخطط المعمارية">
+        <div class="arch-node">نظامكم</div><div class="arch-arrow">←</div>
+        <div class="arch-node">واجهة Bright AI الآمنة</div><div class="arch-arrow">←</div>
+        <div class="arch-node">Gemini 2.5</div><div class="arch-arrow">←</div>
+        <div class="arch-node">قاعدة بياناتكم</div>
+      </div>
+      <div class="grid-4" style="margin-block-start:1rem">
+        <div class="connector">SAP S/4HANA</div>
+        <div class="connector">Oracle Fusion</div>
+        <div class="connector">Microsoft Dynamics</div>
+        <div class="connector">Odoo</div>
+        <div class="connector">Zoho</div>
+        <div class="connector">Onyx Pro</div>
+        <div class="connector">MEZAN</div>
+        <div class="connector">ERPNext</div>
+      </div>
+    </section>
+
+    <section class="shell section" aria-labelledby="security-title">
+      <details class="compliance-card" open>
+        <summary><strong id="security-title">الامتثال والأمان</strong></summary>
+        <div class="grid-3" style="margin-block-start:1rem">
+          <article><h3>نظام حماية البيانات الشخصية</h3><p class="muted">حجب افتراضي للهوية، الهاتف، البريد، وأرقام الحسابات قبل إرسال النصوص الحساسة.</p></article>
+          <article><h3>ضوابط الأمن السيبراني</h3><p class="muted">مسار خلفي فقط، تحديد معدل لكل عنوان، منع التخزين المؤقت، ورؤوس أمان أساسية.</p></article>
+          <article><h3>سجل التدقيق</h3><p class="muted">كل تشغيل ينتج معرف طلب، نوع مستند، قواعد تحقق، وتنبيهات مراجعة دون حفظ الملف في الصفحة.</p></article>
+        </div>
+      </details>
+    </section>
+
+    <section class="shell section faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">أسئلة خاصة بذكاء المستندات</h2>
+      <details><summary>هل يمكن قراءة ملفات PDF متعددة الصفحات؟</summary><p class="muted">نعم، المسار الخلفي يرسل الصفحات أو الصور إلى جيميناي، والواجهة تعرض رقم الصفحة في كل صندوق تحديد.</p></details>
+      <details><summary>كيف يتم التعامل مع الحقول منخفضة الثقة؟</summary><p class="muted">أي حقل أقل من ٠٫٧ يظهر بلون تحذيري ويُضاف إلى قائمة المراجعة قبل التصدير.</p></details>
+      <details><summary>هل يفك الديمو رمز الاستجابة السريعة للفاتورة؟</summary><p class="muted">المسار يحاول كشف وجود الرمز وتطلب النسخة المؤسسية قارئ رمز مخصصاً عند الحاجة لفك TLV بدقة.</p></details>
+      <details><summary>هل يمكن تشغيله داخل بيئة الشركة؟</summary><p class="muted">نعم، يمكن تشغيله كوكيل خلفي مرتبط بسياسات الشبكة والتخزين وسجلات التدقيق لديكم.</p></details>
+    </section>
+
+    <section class="shell section" aria-label="دعوة إجراء">
+      <div class="compliance-card">
+        <h2>ابدأ بنسخة تجريبية على ٢٠٠ مستند منزوعة الحساسية</h2>
+        <p class="muted">نقيس زمن المعالجة، دقة الحقول، قواعد زاتكا، ونسبة المراجعة البشرية ثم نحدد خريطة الربط مع أنظمتكم.</p>
         <div class="hero-actions">
-          <button class="btn btn-secondary" type="button" data-load-first-sample>جرّب مثال جاهز</button>
-          <a class="btn btn-primary" href="#demo-form">ابدأ التجربة</a>
-          <a class="btn btn-outline" href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%85%D9%86%20%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9%20OCR%20%D9%84%D9%84%D9%88%D8%AB%D8%A7%D8%A6%D9%82%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">اطلب نسخة مخصصة</a>
+          <a class="btn btn-primary" href="/contact/">احجز مكالمة ١٥ دقيقة</a>
+          <a class="btn" href="https://wa.me/966538229013?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%86%D8%B3%D8%AE%D8%A9%20%D8%B0%D9%83%D8%A7%D8%A1%20%D9%85%D8%B3%D8%AA%D9%86%D8%AF%D8%A7%D8%AA%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%85%D9%86%20Bright%20AI" target="_blank" rel="noopener">اطلب عرض واتساب</a>
         </div>
-      </div>
-      <aside class="quick-answer" aria-label="إجابة سريعة">
-        <img src="/assets/images/logo-new.PNG" width="96" height="96" alt="رمز Bright AI" loading="eager">
-        <h2>الزبدة بسرعة</h2>
-        <dl>
-          <div><dt>لمن هذه التجربة؟</dt><dd>المالية، المشتريات، والأرشفة في الشركات السعودية</dd></div>
-          <div><dt>ماذا تحتاج لتجربتها؟</dt><dd>وصف مختصر أو عينة بيانات غير حساسة.</dd></div>
-          <div><dt>ماذا ستحصل بعد التشغيل؟</dt><dd>حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط.</dd></div>
-          <div><dt>هل يمكن تخصيصها؟</dt><dd>نعم، نضبطها على بيانات شركتك وأنظمتك بعد مراجعة المتطلبات.</dd></div>
-        </dl>
-      </aside>
-    </section>
-
-    <section class="section quote-summary" aria-labelledby="summary-heading">
-      <h2 id="summary-heading">ملخص التجربة</h2>
-      <ul>
-        <li>Bright AI يقدم تجربة OCR للوثائق كتجربة عملية موجهة للسوق السعودي.</li>
-        <li>الديمو يساعدك تتعامل مع الإدخال اليدوي للوثائق وما ينتج عنه من أخطاء وتأخير من خلال مدخلات بسيطة وقابلة للمراجعة.</li>
-        <li>المخرجات تشمل حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط بدل ما تضيع بين بيانات خام كثيرة.</li>
-        <li>تقدر تجرّب براحتك، كل البيانات وهمية. والنسخة المخصصة تدعم الصلاحيات وسجل التدقيق.</li>
-      </ul>
-    </section>
-
-    <section class="section" aria-labelledby="what-heading">
-      <h2 id="what-heading">ما الذي يفعله الديمو؟</h2>
-      <div class="two-col">
-        <p>تجربة OCR للوثائق يحوّل مدخلات قصيرة من قطاع الوثائق والأرشفة إلى تقرير تنفيذي واضح يساعدك تفهم المشكلة والنتيجة والخطوة الجاية بدون ما يعطي AI قرار نهائي بدالك. المحتوى المهم مكتوب داخل الصفحة حتى يكون قابلاً للفهرسة والاقتباس من محركات الإجابة.</p>
-        <div class="trust-list" aria-label="مؤشرات ثقة">
-          <span>يدعم العربية</span>
-          <span>قابل للربط مع أنظمة الشركة</span>
-          <span>صلاحيات وصول</span>
-          <span>سجل تدقيق</span>
-          <span>لا ترفع بيانات حساسة في النسخة العامة</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section steps" aria-labelledby="usage-heading">
-      <h2 id="usage-heading">كيف تستخدم التجربة؟</h2>
-      <ol>
-        <li><strong>اختر السيناريو</strong><span>اختر السيناريو اللي يشبه شغلك، أو اكتب سياقك.</span></li>
-        <li><strong>أدخل بيانات بسيطة</strong><span>استخدم وصف مختصر ولا ترفع معلومات حساسة.</span></li>
-        <li><strong>شغّل AI</strong><span>الطلب يمر عبر المسار الخلفي الآمن فقط.</span></li>
-        <li><strong>شوف التقرير</strong><span>راجع المؤشرات واختر خطوة تجارية واضحة.</span></li>
-      </ol>
-    </section>
-
-    <section class="section demo-workspace" aria-labelledby="samples-heading">
-      <div class="workspace-copy">
-        <h2 id="samples-heading">خلّنا نجرّبها سوا</h2>
-        <p>اختر السيناريو اللي يشبه شغلك، وخلّنا نبدأ. الوضع السريع قدامك، والتفاصيل المتقدمة موجودة إذا احتجتها.</p>
-        <div class="sample-grid">
-          <button type="button" class="sample-card" data-sample="0"><strong>فاتورة</strong><span>فاتورة ضريبية: المورد شركة النور، الإجمالي ١٨٤٠٠ ريال، الضريبة ١٥٪، رقم أمر الشراء غير مذكور.</span></button>
-          <button type="button" class="sample-card" data-sample="1"><strong>عقد</strong><span>عقد توريد لمدة ١٢ شهراً، دفعات ربع سنوية، غرامة تأخير ٢٪.</span></button>
-          <button type="button" class="sample-card" data-sample="2"><strong>إيصال</strong><span>إيصال دفع نقدي باسم عميل ورقم مرجعي وتاريخ غير واضح.</span></button>
-        </div>
-      </div>
-      <form class="demo-form" id="demo-form" data-demo-form>
-        <input type="hidden" name="demoType" value="ocr-demo">
-        <label for="scenario">السيناريو</label>
-        <select id="scenario" name="scenario" aria-label="اختر السيناريو اللي يشبه شغلك">
-          <option>فاتورة</option><option>عقد</option><option>إيصال</option>
-        </select>
-        <label for="demo-input">البيانات المختصرة</label>
-        <textarea id="demo-input" name="input" rows="7" required placeholder="اكتب وصف مختصر أو استخدم مثال جاهز. لا تضع بيانات حساسة.">فاتورة ضريبية: المورد شركة النور، الإجمالي ١٨٤٠٠ ريال، الضريبة ١٥٪، رقم أمر الشراء غير مذكور.</textarea>
-        <details class="advanced-settings">
-          <summary>الإعدادات المتقدمة</summary>
-          <label for="goal">هدف القرار</label>
-          <input id="goal" name="goal" value="حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط">
-          <label for="systems">الأنظمة المحتملة للربط</label>
-          <input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API">
-        </details>
-        <div class="form-actions">
-          <button class="btn btn-primary" type="submit">شغّل التحليل</button>
-          <button class="btn btn-secondary" type="button" data-reset-demo>إعادة ضبط</button>
-        </div>
-        <p class="privacy-note">بياناتك تبقى عندك، لا تستخدم إلا بيانات وهمية أو منزوعة الحساسية في هذه النسخة العامة.</p>
-      </form>
-    </section>
-
-    <section class="section result-zone" aria-labelledby="result-heading">
-      <div>
-        <h2 id="result-heading">هذا اللي بيطلع معنا</h2>
-        <p>النتيجة قدامك كلوحة قرار واضحة، مو ملف خام. وإذا صار خلل بسيط، نعرض لك نتيجة توضيحية آمنة مع زر إعادة المحاولة.</p>
-        <ul class="result-promises">
-          <li>ملخص تنفيذي</li>
-          <li>مؤشر جاهزية</li>
-          <li>رؤى رئيسية</li>
-          <li>مخاطر</li>
-          <li>إجراءات موصى بها</li>
-          <li>أثر تجاري أو عائد متوقع</li>
-          <li>جاهزية تكامل</li>
-          <li>خطوات تالية ودعوة إجراء</li>
-        </ul>
-      </div>
-      <div class="loading-box" data-loading-box hidden>
-        <p>AI يفكّر الحين... خلّنا نشوف وش بيطلع</p>
-        <ol>
-          <li data-stage="0">نقرأ الطلب الحين</li>
-          <li data-stage="1">نستخرج الكيانات</li>
-          <li data-stage="2">نبني المؤشرات</li>
-          <li data-stage="3">نجهّز التحليل</li>
-          <li data-stage="4">نرتّب التقرير</li>
-        </ol>
-      </div>
-      <div class="result-panel" data-result-panel aria-live="polite">
-        <div class="empty-state">
-          <strong>تمام، جاهز نبدأ؟</strong>
-          <p>شغّل التجربة، وثوانٍ بس وتجيك النتيجة كلوحة تنفيذية قابلة للمشاركة.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section comparison" aria-labelledby="compare-heading">
-      <h2 id="compare-heading">قبل Bright AI / بعد Bright AI</h2>
-      <div class="compare-grid">
-        <article><h3>قبل Bright AI</h3><p>العمل اليدوي ياخذ وقت، والمخرجات تتفاوت، والقرار يتشتت بين الملفات والرسائل.</p></article>
-        <article><h3>بعد Bright AI</h3><p>تبدأ من تجربة واضحة، تشوف تقرير منظم، ثم تطلب نسخة مخصصة مرتبطة بالأنظمة والصلاحيات.</p></article>
-      </div>
-    </section>
-
-    <section class="section use-cases" aria-labelledby="use-cases-heading">
-      <h2 id="use-cases-heading">حالات استخدام منظمة</h2>
-      <div class="case-grid">
-        <article><h3>فاتورة</h3><p><strong>الحالة:</strong> الإدخال اليدوي للوثائق وما ينتج عنه من أخطاء وتأخير.</p><p><strong>المدخلات:</strong> فاتورة ضريبية: المورد شركة النور، الإجمالي ١٨٤٠٠ ريال، الضريبة ١٥٪، رقم أمر الشراء غير مذكور.</p><p><strong>مخرجات الديمو:</strong> حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>
-        <article><h3>عقد</h3><p><strong>الحالة:</strong> الإدخال اليدوي للوثائق وما ينتج عنه من أخطاء وتأخير.</p><p><strong>المدخلات:</strong> عقد توريد لمدة ١٢ شهراً، دفعات ربع سنوية، غرامة تأخير ٢٪.</p><p><strong>مخرجات الديمو:</strong> حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>
-        <article><h3>إيصال</h3><p><strong>الحالة:</strong> الإدخال اليدوي للوثائق وما ينتج عنه من أخطاء وتأخير.</p><p><strong>المدخلات:</strong> إيصال دفع نقدي باسم عميل ورقم مرجعي وتاريخ غير واضح.</p><p><strong>مخرجات الديمو:</strong> حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="why-heading">
-      <h2 id="why-heading">لماذا Bright AI؟</h2>
-      <p>Bright AI يبني تجارب AI عربية أولاً للشركات السعودية، مع تركيز على قابلية الزحف والفهرسة، وضوح القرار، وإمكانية الربط مع الأنظمة بدل الاكتفاء بعرض تجريبي منعزل.</p>
-      <div class="internal-links">
-        <a href="/services/document-automation.html">صفحة الخدمة الرسمية</a>
-        <a href="/services/">كل خدمات Bright AI</a>
-        <a href="/demo/">مركز الديموهات</a>
-        <a href="/contact/">تواصل معنا</a>
-        <a href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%85%D9%86%20%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9%20OCR%20%D9%84%D9%84%D9%88%D8%AB%D8%A7%D8%A6%D9%82%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">واتساب</a>
-        <a href="/demo/smart-medical-archive/">الأرشيف الطبي الذكي</a><a href="/demo/data-analyzer/">منصة تحليل البيانات</a><a href="/demo/approvals-automation/">أتمتة الموافقات</a>
-      </div>
-    </section>
-
-    <section class="section faq" aria-labelledby="faq-heading">
-      <h2 id="faq-heading">الأسئلة الشائعة</h2>
-      <details><summary>هل التجربة مجانية؟</summary><p>سؤال منطقي، والجواب الصريح: نعم. تقدر تجرّب براحتك ببيانات وهمية وتشوف شكل التقرير قبل ما تطلب نسخة مخصصة.</p></details>
-      <details><summary>هل نقدر نربطها ببيانات الشركة؟</summary><p>نعم، نقدر نضبط النسخة المخصصة على مصادر شركتك مثل الأنظمة التشغيلية، ملفات البيانات، أو API بعد مراجعة الصلاحيات.</p></details>
-      <details><summary>هل تدعم العربية؟</summary><p>أكيد. التجربة مبنية للعربية والسوق السعودي، وتتعامل مع النصوص المختلطة عربي وإنجليزي عند الحاجة.</p></details>
-      <details><summary>وش وضع البيانات؟</summary><p>بياناتك تبقى عندك. لا ترفع بيانات حساسة في النسخة العامة، والنسخة المخصصة تنبني بصلاحيات وصول وسجل تدقيق وضوابط مشاركة مناسبة.</p></details>
-      <details><summary>وش الفرق بين الديمو والنسخة المخصصة؟</summary><p>الديمو يوريك الفكرة بعينات مبسطة، والنسخة المخصصة نضبطها على بياناتك وتكاملاتك ومؤشرات الأداء اللي تهم فريقك.</p></details>
-      <details><summary>هل يعرض الديمو JSON خام؟</summary><p>لا، النتيجة تظهر كلوحة منظمة للحقول والمخاطر والإجراءات، ويمكن تنزيل التقرير بصيغة نصية قابلة للمشاركة.</p></details>
-    </section>
-
-    <section class="section final-cta" aria-label="خطوة تجارية">
-      <h2>خلّ BrightAI يضبطها لك بمقاسك</h2>
-      <p>عجبتك التجربة؟ خلّنا نضبطها على بيانات شركتك خلال 48 ساعة كبداية عمل واضحة، بعد ما نراجع المتطلبات معك.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="/contact/">احجز مكالمة 15 دقيقة</a>
-        <a class="btn btn-secondary" href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%85%D9%86%20%D8%AA%D8%AC%D8%B1%D8%A8%D8%A9%20OCR%20%D9%84%D9%84%D9%88%D8%AB%D8%A7%D8%A6%D9%82%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">اطلب عرض سعر</a>
-        <button class="btn btn-outline" type="button" data-download-report>حمّل التقرير</button>
       </div>
     </section>
   </main>
 
-  <footer class="demo-footer">
-    <p>© 2026 Bright AI. تجربة تجربة OCR للوثائق مخصصة للمراجعة الأولية ولا تقدم ضمانات نتائج.</p>
-    <a href="/docs/privacy-policy.html">سياسة الخصوصية</a>
+  <footer class="footer">
+    <div class="shell">
+      <span>© 2026 Bright AI. النتائج مساعدة للمراجعة ولا تستبدل الاعتماد البشري.</span>
+      <a href="/docs/privacy-policy.html">سياسة الخصوصية</a>
+    </div>
   </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script type="application/json" id="demo-config">{"slug":"ocr-demo","demoType":"ocr-demo","agentType":"ocr-demo","schemaName":"ocr_document_demo_schema","locale":"ar-SA","sourcePage":"/demo/ocr-demo/","title":"تجربة OCR للوثائق","problem":"الإدخال اليدوي للوثائق وما ينتج عنه من أخطاء وتأخير","outcome":"حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط","fallbackResult":{"executiveSummary":["هذا اللي طلع معنا: تجربة OCR للوثائق يقدر يساعد فريقك في التعامل مع الإدخال اليدوي للوثائق وما ينتج عنه من أخطاء وتأخير إذا كانت البيانات الأولية واضحة.","المخرجات المتوقعة هي حقول مستخرجة، نواقص، قواعد تحقق، وجاهزية ربط، وتبقى للمراجعة البشرية قبل أي قرار تشغيلي."],"score":82,"keyInsights":["السيناريو مناسب لفرق الوثائق والأرشفة داخل السوق السعودي.","العينة تكفي لتجربة الفكرة، لكنها ما تمثل كل بيانات الشركة.","ربط أنظمة الشركة يرفع دقة المؤشرات ويخفف العمل اليدوي."],"risks":["لا ترفع بيانات حساسة في النسخة العامة.","النتائج تقديرية وتحتاج اعتماد صاحب القرار.","ضعف جودة البيانات قد يغير التوصيات."],"recommendedActions":["ابدأ بعينة بيانات غير حساسة.","حدد مؤشر نجاح واحد قبل التوسع.","اطلب نسخة مخصصة إذا تبغى ربط الأنظمة والصلاحيات."],"businessImpact":"تقليل وقت التحليل اليدوي وتحويل التجربة إلى قرار قابل للقياس حسب حجم البيانات وتكرار العملية.","integrationReadiness":["جاهز لربط API","يدعم صلاحيات الوصول","يدعم سجل التدقيق","قابل للتصدير كتقرير"],"nextSteps":["راجع التقرير مع الفريق","حدد الأنظمة المطلوب ربطها","احجز مكالمة 15 دقيقة مع Bright AI"]}}</script>
-  <script type="application/json" id="demo-samples">[["فاتورة","فاتورة ضريبية: المورد شركة النور، الإجمالي ١٨٤٠٠ ريال، الضريبة ١٥٪، رقم أمر الشراء غير مذكور."],["عقد","عقد توريد لمدة ١٢ شهراً، دفعات ربع سنوية، غرامة تأخير ٢٪."],["إيصال","إيصال دفع نقدي باسم عميل ورقم مرجعي وتاريخ غير واضح."]]</script>
-  <script defer src="/frontend/js/runtime-config.min.js"></script>
-  <script defer src="/frontend/js/api-gateway.min.js"></script>
-  <script defer src="/assets/js/demo-premium.js"></script>
+  <script>
+    const FIELD_LABELS = {
+      invoice_number: "رقم الفاتورة",
+      invoice_date: "تاريخ الفاتورة",
+      seller_name: "اسم البائع",
+      buyer_name: "اسم المشتري",
+      seller_vat_number: "الرقم الضريبي للبائع",
+      subtotal: "الإجمالي قبل الضريبة",
+      vat_amount: "قيمة الضريبة",
+      total_amount: "الإجمالي",
+      qr_code_present: "وجود رمز الاستجابة",
+      irn: "مرجع الفاتورة",
+      po_number: "رقم أمر الشراء",
+      contract_number: "رقم العقد",
+      contract_value: "قيمة العقد",
+      expiry_date: "تاريخ الانتهاء",
+      id_number: "رقم الهوية",
+      full_name: "الاسم الكامل",
+      bank_account: "الحساب البنكي"
+    };
+
+    const SAMPLE_DOCUMENTS = [
+      {
+        id: "zatca-clean",
+        title: "فاتورة ضريبية سعودية نظيفة",
+        type: "فاتورة ضريبية سعودية",
+        quality: "نظيف",
+        description: "فاتورة زاتكا مكتملة من مورد وطني مع رقم ضريبي صحيح ورمز استجابة.",
+        fields: {
+          invoice_number: "INV-2026-0418",
+          invoice_date: "2026-04-18",
+          seller_name: "شركة المورد الوطني للتقنية",
+          buyer_name: "شركة مسار الخليج",
+          seller_vat_number: "310123456700003",
+          subtotal: "12000.00 SAR",
+          vat_amount: "1800.00 SAR",
+          total_amount: "13800.00 SAR",
+          qr_code_present: "نعم",
+          irn: "IRN-KSA-7782-2026"
+        },
+        boxes: [
+          ["invoice_number", 54, 16, 28, 5, .96],
+          ["seller_vat_number", 8, 28, 32, 5, .94],
+          ["subtotal", 54, 56, 26, 5, .93],
+          ["vat_amount", 54, 62, 26, 5, .95],
+          ["total_amount", 54, 68, 26, 5, .96],
+          ["qr_code_present", 9, 73, 18, 13, .91],
+          ["irn", 10, 20, 34, 5, .9]
+        ],
+        pii: [],
+        validations: [
+          ["صيغة الرقم الضريبي", "ok", "١٥ رقماً ويبدأ بـ ٣ وينتهي بـ ٣"],
+          ["مطابقة الضريبة", "ok", "١٢٬٠٠٠ × ١٥٪ = ١٬٨٠٠ ريال"],
+          ["رمز الاستجابة السريعة", "ok", "موجود ومعلّم في المستند"],
+          ["مرجع الفاتورة", "ok", "IRN موجود"]
+        ]
+      },
+      {
+        id: "zatca-blurry",
+        title: "فاتورة ضبابية من صورة هاتف",
+        type: "فاتورة ضريبية سعودية",
+        quality: "ضبابي",
+        description: "صورة هاتف بزاوية مائلة، الضريبة واضحة والرقم المرجعي منخفض الثقة.",
+        fields: {
+          invoice_number: "INV-7710",
+          invoice_date: "2026-03-09",
+          seller_name: "مؤسسة الرياض للمستلزمات",
+          seller_vat_number: "300987654300003",
+          subtotal: "4500.00 SAR",
+          vat_amount: "675.00 SAR",
+          total_amount: "5175.00 SAR",
+          qr_code_present: "نعم",
+          irn: "IRN غير واضح"
+        },
+        boxes: [
+          ["invoice_number", 50, 18, 25, 5, .82],
+          ["seller_vat_number", 10, 30, 32, 5, .74],
+          ["vat_amount", 56, 62, 22, 5, .88],
+          ["irn", 8, 22, 28, 5, .58]
+        ],
+        pii: [],
+        validations: [
+          ["صيغة الرقم الضريبي", "ok", "الصيغة صحيحة"],
+          ["مطابقة الضريبة", "ok", "الضريبة تساوي ١٥٪"],
+          ["مرجع الفاتورة", "fail", "الثقة أقل من ٠٫٧ وتحتاج مراجعة"]
+        ]
+      },
+      {
+        id: "contract-service",
+        title: "عقد خدمات تقنية",
+        type: "عقد توريد / خدمات",
+        quality: "مختلط",
+        description: "عقد خدمات عربي مع بنود دفع وغرامة تأخير.",
+        fields: {
+          contract_number: "CON-2026-118",
+          seller_name: "Bright AI",
+          buyer_name: "شركة اليمامة القابضة",
+          contract_value: "240000 SAR",
+          expiry_date: "2027-05-01"
+        },
+        boxes: [
+          ["contract_number", 51, 15, 27, 5, .93],
+          ["contract_value", 50, 54, 28, 5, .9],
+          ["expiry_date", 12, 60, 24, 5, .89]
+        ],
+        pii: [],
+        validations: [
+          ["مدة العقد", "ok", "١٢ شهراً"],
+          ["غرامة التأخير", "ok", "مذكورة بنسبة ٢٪"]
+        ]
+      },
+      {
+        id: "pos-receipt",
+        title: "إيصال نقطة بيع",
+        type: "إيصال POS",
+        quality: "حراري باهت",
+        description: "إيصال حراري قصير يحتوي طريقة دفع ومبلغ ضريبة.",
+        fields: {
+          invoice_number: "POS-88421",
+          invoice_date: "2026-02-21",
+          seller_name: "متجر النخبة",
+          subtotal: "86.96 SAR",
+          vat_amount: "13.04 SAR",
+          total_amount: "100.00 SAR"
+        },
+        boxes: [
+          ["invoice_number", 44, 18, 28, 5, .86],
+          ["total_amount", 40, 70, 28, 6, .91],
+          ["vat_amount", 42, 62, 24, 5, .79]
+        ],
+        pii: [],
+        validations: [["مطابقة الضريبة", "ok", "الضريبة تقارب ١٥٪ بسبب التقريب"]]
+      },
+      {
+        id: "purchase-order",
+        title: "أمر شراء",
+        type: "أمر شراء",
+        quality: "نظيف",
+        description: "أمر شراء بالإنجليزية والعربية لمطابقة الفواتير.",
+        fields: { po_number: "PO-54019", buyer_name: "شركة مسار الخليج", seller_name: "شركة المورد الوطني", total_amount: "13800 SAR" },
+        boxes: [["po_number", 53, 16, 25, 5, .95], ["total_amount", 54, 68, 26, 5, .92]],
+        pii: [],
+        validations: [["مطابقة الفاتورة", "ok", "المبلغ يطابق فاتورة المورد الوطني"]]
+      },
+      {
+        id: "bill-of-lading",
+        title: "بوليصة شحن",
+        type: "بوليصة شحن",
+        quality: "مختلط",
+        description: "بوليصة شحن فيها رقم حاوية ووزن ووجهة.",
+        fields: { invoice_number: "BL-77892", seller_name: "ميناء الملك عبدالعزيز", buyer_name: "شركة مسار الخليج", total_amount: "18 pallets" },
+        boxes: [["invoice_number", 50, 18, 26, 5, .9], ["total_amount", 52, 58, 25, 5, .86]],
+        pii: [],
+        validations: [["مطابقة الكمية", "fail", "الفاتورة تشير إلى ٢٠ منصة والبوليصة إلى ١٨"]]
+      },
+      {
+        id: "municipal-license",
+        title: "شهادة بلدية",
+        type: "شهادة بلدية / تراخيص",
+        quality: "نظيف",
+        description: "ترخيص بلدي يحتاج متابعة تاريخ انتهاء.",
+        fields: { invoice_number: "LIC-2206", seller_name: "أمانة منطقة الرياض", buyer_name: "شركة مطاعم النخبة", expiry_date: "2026-11-30" },
+        boxes: [["invoice_number", 50, 18, 26, 5, .91], ["expiry_date", 15, 58, 25, 5, .94]],
+        pii: [],
+        validations: [["صلاحية الترخيص", "ok", "متبقٍ أكثر من ١٨٠ يوماً"]]
+      },
+      {
+        id: "bank-statement",
+        title: "كشف حساب بنكي",
+        type: "مستندات بنكية",
+        quality: "مختلط",
+        description: "كشف حساب يحتوي رقم حساب محجوب وحركة مطابقة.",
+        fields: { bank_account: "SA** **** **** 1122", full_name: "شركة مسار الخليج", total_amount: "53200 SAR" },
+        boxes: [["bank_account", 44, 20, 34, 5, .88], ["total_amount", 54, 64, 25, 5, .9]],
+        pii: [["bank_account", "SA12 3456 7890 1122"]],
+        validations: [["حجب الحساب", "ok", "تم إخفاء رقم الحساب قبل العرض"]]
+      },
+      {
+        id: "national-id",
+        title: "هوية وطنية محجوبة",
+        type: "هوية وطنية / إقامة",
+        quality: "صورة هاتف",
+        description: "هوية وطنية مع حجب الرقم تلقائياً.",
+        fields: { full_name: "مستخدم تجريبي", id_number: "1********3", expiry_date: "2028-01-12" },
+        boxes: [["full_name", 48, 31, 31, 5, .88], ["id_number", 46, 42, 31, 5, .9], ["expiry_date", 47, 53, 27, 5, .86]],
+        pii: [["id_number", "1023456783"]],
+        validations: [["حجب الهوية", "ok", "الرقم ظاهر بصيغة منزوعة الحساسية"]]
+      },
+      {
+        id: "iqama",
+        title: "إقامة عامل",
+        type: "هوية وطنية / إقامة",
+        quality: "منخفض الإضاءة",
+        description: "إقامة تتطلب قراءة تاريخ الانتهاء وحجب الرقم.",
+        fields: { full_name: "عامل تجريبي", id_number: "2********8", expiry_date: "2026-07-04" },
+        boxes: [["id_number", 46, 42, 31, 5, .76], ["expiry_date", 47, 53, 27, 5, .68]],
+        pii: [["id_number", "2345678908"]],
+        validations: [["صلاحية الإقامة", "fail", "الثقة في تاريخ الانتهاء أقل من ٠٫٧"]]
+      },
+      {
+        id: "education-certificate",
+        title: "شهادة تعليمية",
+        type: "شهادات تعليمية",
+        quality: "ممسوحة",
+        description: "شهادة تخرج مع اسم وجهة وتاريخ.",
+        fields: { full_name: "طالب تجريبي", seller_name: "جامعة الملك سعود", invoice_date: "2025-06-18" },
+        boxes: [["full_name", 40, 38, 36, 5, .87], ["seller_name", 34, 18, 40, 6, .91], ["invoice_date", 46, 58, 26, 5, .88]],
+        pii: [["full_name", "اسم طالب حقيقي محتمل"]],
+        validations: [["حجب الاسم", "ok", "يمكن تفعيل الحجب الكامل في النسخة المؤسسية"]]
+      },
+      {
+        id: "handwritten-delivery",
+        title: "إيصال تسليم بخط اليد",
+        type: "إيصال POS",
+        quality: "يدوي",
+        description: "إيصال يدوي مختلط يحتاج مراجعة بشرية.",
+        fields: { invoice_number: "REC-19?", seller_name: "مستودع جدة", total_amount: "غير مؤكد" },
+        boxes: [["invoice_number", 50, 18, 26, 5, .61], ["total_amount", 48, 66, 27, 5, .55]],
+        pii: [],
+        validations: [["جودة القراءة", "fail", "يوصى بإعادة المسح بوضع اليدوي"]]
+      }
+    ];
+
+    const RESPONSE_SCHEMA = {
+      document_type: "detected_type",
+      confidence: "0-1",
+      language_detected: "ar|en|mixed",
+      extracted_fields: {},
+      bounding_boxes: [{ field: "string", x: 0, y: 0, w: 0, h: 0, page: 1 }],
+      validation_results: [{ rule: "string", status: "ok|fail|warning", message: "string" }],
+      zatca_compliance: { valid: true, issues: [] },
+      pii_detected: [{ type: "string", location: "string", redacted_value: "string" }],
+      export_formats_ready: ["json", "xml", "csv", "edi"]
+    };
+
+    const state = {
+      sample: SAMPLE_DOCUMENTS[0],
+      result: null,
+      rotation: 0,
+      requestId: null
+    };
+
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+    const formatter = new Intl.NumberFormat("ar-SA");
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[char]);
+    }
+
+    function toast(message) {
+      const node = $("#toast");
+      node.textContent = message;
+      node.classList.add("show");
+      window.setTimeout(() => node.classList.remove("show"), 2200);
+    }
+
+    function buildResult(sample) {
+      const validation = validateZatca(sample);
+      return {
+        document_type: sample.type,
+        confidence: Math.max(...sample.boxes.map((box) => box[5])),
+        language_detected: "mixed",
+        extracted_fields: sample.fields,
+        bounding_boxes: sample.boxes.map(([field, x, y, w, h, confidence]) => ({ field, x, y, w, h, page: 1, confidence })),
+        validation_results: sample.validations.map(([rule, status, message]) => ({ rule, status, message })),
+        zatca_compliance: validation,
+        pii_detected: sample.pii.map(([type, redacted_value]) => ({ type, location: "page:1", redacted_value })),
+        export_formats_ready: ["json", "xml", "csv", "edi"],
+        scenario: sample.title,
+        quality: sample.quality,
+        responseSchema: RESPONSE_SCHEMA
+      };
+    }
+
+    function validateZatca(sample) {
+      if (!sample.type.includes("فاتورة")) return { valid: true, issues: [] };
+      const vat = String(sample.fields.seller_vat_number || "");
+      const issues = [];
+      if (!/^3\d{13}3$/.test(vat)) issues.push("الرقم الضريبي يجب أن يتكون من ١٥ رقماً ويبدأ وينتهي بالرقم ٣.");
+      if (sample.fields.qr_code_present !== "نعم") issues.push("رمز الاستجابة السريعة غير مؤكد.");
+      if (!sample.fields.irn || String(sample.fields.irn).includes("غير واضح")) issues.push("رقم مرجع الفاتورة يحتاج مراجعة.");
+      const subtotal = parseFloat(String(sample.fields.subtotal || "0").replace(/[^\d.]/g, ""));
+      const vatAmount = parseFloat(String(sample.fields.vat_amount || "0").replace(/[^\d.]/g, ""));
+      if (subtotal && Math.abs(subtotal * 0.15 - vatAmount) > 1) issues.push("قيمة الضريبة لا تطابق ١٥٪ من الإجمالي قبل الضريبة.");
+      return { valid: issues.length === 0, issues };
+    }
+
+    function renderScenarioChips() {
+      const container = $("#scenario-chips");
+      container.innerHTML = SAMPLE_DOCUMENTS.slice(0, 12).map((sample, index) => `
+        <button class="chip" type="button" aria-pressed="${index === 0}" data-sample-index="${index}">
+          ${escapeHtml(sample.title)}
+        </button>
+      `).join("");
+      container.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-sample-index]");
+        if (!button) return;
+        selectSample(Number(button.dataset.sampleIndex));
+      });
+    }
+
+    function renderDocument(sample) {
+      const paper = $("#paper-content");
+      paper.innerHTML = `
+        <h3>${escapeHtml(sample.title)}</h3>
+        <p>${escapeHtml(sample.description)}</p>
+        ${Object.entries(sample.fields).map(([key, value]) => `
+          <div class="paper-line"><span>${escapeHtml(FIELD_LABELS[key] || key)}</span><strong>${escapeHtml(value)}</strong></div>
+        `).join("")}
+        <div class="paper-table">
+          <div><span>البند</span><span>القيمة</span><span>الثقة</span></div>
+          ${sample.boxes.slice(0, 4).map(([field,, , , , confidence]) => `<div><span>${escapeHtml(FIELD_LABELS[field] || field)}</span><span>${escapeHtml(sample.fields[field] || "")}</span><span>${Math.round(confidence * 100)}٪</span></div>`).join("")}
+        </div>
+      `;
+      $$(".bbox").forEach((box) => box.remove());
+      sample.boxes.forEach(([field, x, y, w, h, confidence]) => {
+        const box = document.createElement("button");
+        box.type = "button";
+        box.className = `bbox ${confidence < .7 ? "low" : ""} ${sample.pii.some((item) => item[0] === field) ? "pii" : ""}`;
+        box.style.cssText = `inset-inline-start:${x}%;inset-block-start:${y}%;inline-size:${w}%;block-size:${h}%;`;
+        box.setAttribute("aria-label", `تحديد ${FIELD_LABELS[field] || field}`);
+        box.dataset.field = field;
+        box.addEventListener("click", () => focusField(field));
+        $("#document-canvas").appendChild(box);
+      });
+    }
+
+    function renderResult(result) {
+      state.result = result;
+      $("#visual-report").innerHTML = Object.entries(result.extracted_fields).map(([key, value]) => {
+        const box = result.bounding_boxes.find((item) => item.field === key);
+        const confidence = box?.confidence ?? result.confidence;
+        return `
+          <article class="field-card" data-field-card="${escapeHtml(key)}">
+            <div class="field-top">
+              <strong>${escapeHtml(FIELD_LABELS[key] || key)}</strong>
+              <span class="confidence ${confidence < .7 ? "low" : ""}">${Math.round(confidence * 100)}%</span>
+            </div>
+            <input value="${escapeHtml(value)}" aria-label="${escapeHtml(FIELD_LABELS[key] || key)}">
+            <span class="muted">المصدر: صفحة ${box?.page || 1}، الإحداثيات ${Math.round(box?.x || 0)} / ${Math.round(box?.y || 0)}</span>
+          </article>
+        `;
+      }).join("");
+      const zatca = result.zatca_compliance;
+      const allRules = [
+        ...result.validation_results,
+        ...(result.document_type.includes("فاتورة") ? [{ rule: "حالة زاتكا", status: zatca.valid ? "ok" : "fail", message: zatca.valid ? "متوافق في قواعد التجربة" : zatca.issues.join(" ") }] : [])
+      ];
+      $("#validation-strip").innerHTML = allRules.map((rule) => `
+        <div class="rule ${rule.status === "ok" ? "ok" : "fail"}">
+          <span><strong>${escapeHtml(rule.rule)}</strong><br><span class="muted">${escapeHtml(rule.message)}</span></span>
+          <span class="shield" aria-hidden="true">${rule.status === "ok" ? "✓" : "✕"}</span>
+        </div>
+      `).join("");
+      $("#raw-json").textContent = JSON.stringify(result, null, 2);
+      $("#audit-log").innerHTML = [
+        `معرّف الطلب: ${state.requestId || "local-" + Date.now()}`,
+        `نوع المستند: ${result.document_type}`,
+        `الثقة العامة: ${Math.round(result.confidence * 100)}٪`,
+        `البيانات الشخصية المكتشفة: ${formatter.format(result.pii_detected.length)}`,
+        `صيغ التصدير: ${result.export_formats_ready.join(", ")}`
+      ].map((item) => `<div class="field-card">${escapeHtml(item)}</div>`).join("");
+      $("#share-box").textContent = `https://brightai.site/demo/ocr-demo/?sample=${encodeURIComponent(result.scenario || "document")}&request=${state.requestId || "local"}`;
+      $("#lead-capture").classList.add("visible");
+    }
+
+    function focusField(field) {
+      $$(".bbox").forEach((box) => box.classList.toggle("active", box.dataset.field === field));
+      $$("[data-field-card]").forEach((card) => {
+        const active = card.dataset.fieldCard === field;
+        card.style.borderColor = active ? "var(--gold)" : "";
+        if (active) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+    }
+
+    function selectSample(index) {
+      state.sample = SAMPLE_DOCUMENTS[index] || SAMPLE_DOCUMENTS[0];
+      $$(".chip").forEach((chip, chipIndex) => chip.setAttribute("aria-pressed", String(chipIndex === index)));
+      $("#doc-notes").value = state.sample.description;
+      updateCount();
+      renderDocument(state.sample);
+      renderResult(buildResult(state.sample));
+      toast("تم تحميل سيناريو العينة");
+    }
+
+    function updateCount() {
+      $("#char-count").textContent = formatter.format($("#doc-notes").value.length);
+    }
+
+    function setProgress(active) {
+      $$(".step").forEach((step, index) => {
+        step.classList.toggle("active", index === active);
+        step.classList.toggle("done", index < active);
+      });
+    }
+
+    async function runAnalysis() {
+      const button = $("#run-btn");
+      button.disabled = true;
+      button.textContent = "جارٍ التحليل...";
+      for (let i = 0; i < 4; i += 1) {
+        setProgress(i);
+        await new Promise((resolve) => setTimeout(resolve, 260));
+      }
+      const fallback = buildResult(state.sample);
+      try {
+        const file = $("#doc-file").files[0];
+        const payload = {
+          sample: state.sample,
+          notes: $("#doc-notes").value,
+          settings: {
+            model: $("#model").value,
+            maxTokens: Number($("#max-tokens").value),
+            temperature: Number($("#temperature").value),
+            mode: $("#extract-mode").value,
+            outputLanguage: $("#output-lang").value,
+            persona: $("#persona").value
+          }
+        };
+        if (file && file.size < 4_500_000) payload.fileName = file.name;
+        const response = await fetch("./api.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) throw new Error("api_unavailable");
+        const text = await response.text();
+        const parsed = safeJson(text) || fallback;
+        state.requestId = parsed.request_id || crypto.randomUUID?.() || String(Date.now());
+        renderResult({ ...fallback, ...parsed, responseSchema: RESPONSE_SCHEMA });
+        toast("اكتمل التحليل عبر المسار الخلفي");
+      } catch {
+        state.requestId = "local-" + Date.now();
+        renderResult(fallback);
+        toast("تم عرض نتيجة محلية لأن المسار الخلفي غير متاح حالياً");
+      } finally {
+        setProgress(4);
+        button.disabled = false;
+        button.textContent = "تشغيل التحليل";
+      }
+    }
+
+    function safeJson(text) {
+      try { return JSON.parse(text); } catch { return null; }
+    }
+
+    function renderBatch() {
+      const docs = SAMPLE_DOCUMENTS.slice(0, 8);
+      $("#batch-list").innerHTML = docs.map((doc, index) => `
+        <div class="batch-row">
+          <strong>${escapeHtml(doc.title)}</strong>
+          <div class="bar" aria-label="تقدم المعالجة"><span style="--value:${Math.min(100, 28 + index * 9)}%"></span></div>
+          <span class="pill">${index < 6 ? "مصنف" : "مراجعة"}</span>
+        </div>
+      `).join("");
+    }
+
+    function renderCode(kind = "curl") {
+      const curl = `curl -X POST https://brightai.site/demo/ocr-demo/api.php \\
+  -H "Content-Type: application/json" \\
+  -d '{"document_mode":"mixed","model":"gemini-2.5-flash","response_schema":"document_intelligence"}'`;
+      const js = `const response = await fetch("/demo/ocr-demo/api.php", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ document_mode: "mixed", model: "gemini-2.5-flash" })
+});
+const result = await response.json();`;
+      $("#api-code").textContent = kind === "curl" ? curl : js;
+    }
+
+    function bindEvents() {
+      $("#doc-notes").addEventListener("input", updateCount);
+      $("#run-btn").addEventListener("click", runAnalysis);
+      $("#sample-btn").addEventListener("click", () => selectSample(Math.floor(Math.random() * SAMPLE_DOCUMENTS.length)));
+      $("#reset-btn").addEventListener("click", () => selectSample(0));
+      $("#rerun-btn").addEventListener("click", runAnalysis);
+      $("#rotate-btn").addEventListener("click", () => {
+        state.rotation = (state.rotation + 90) % 360;
+        $("#document-canvas").style.transform = `rotate(${state.rotation}deg)`;
+      });
+      $("#enhance-btn").addEventListener("click", () => $("#document-canvas").classList.toggle("enhanced"));
+      $("#reocr-btn").addEventListener("click", runAnalysis);
+      $("#download-btn").addEventListener("click", () => {
+        const blob = new Blob([JSON.stringify(state.result || {}, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "brightai-document-report.json";
+        link.click();
+        URL.revokeObjectURL(url);
+      });
+      $("#share-btn").addEventListener("click", async () => {
+        await navigator.clipboard?.writeText($("#share-box").textContent);
+        toast("تم نسخ رابط المشاركة");
+      });
+      $$("[data-copy]").forEach((button) => button.addEventListener("click", async () => {
+        await navigator.clipboard?.writeText($("#raw-json").textContent);
+        toast("تم نسخ البيانات");
+      }));
+      $$(".tab").forEach((tab) => tab.addEventListener("click", () => {
+        if (tab.dataset.tab) {
+          $$(".tab[data-tab]").forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+          $$(".tab-panel").forEach((panel) => panel.classList.toggle("active", panel.id === `tab-${tab.dataset.tab}`));
+        }
+        if (tab.dataset.code) {
+          $$(".tab[data-code]").forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+          renderCode(tab.dataset.code);
+        }
+      }));
+      $("#batch-btn").addEventListener("click", () => { renderBatch(); toast("تمت محاكاة دفعة من ٥٠ مستنداً"); });
+      $("#webhook-btn").addEventListener("click", () => {
+        $("#webhook-box").textContent = JSON.stringify({ event: "document.batch.completed", documents: 50, matched: 43, needs_review: 7, destination: "ERP webhook" }, null, 2);
+      });
+      $("#theme-toggle").addEventListener("click", () => {
+        const light = document.documentElement.dataset.theme !== "light";
+        document.documentElement.dataset.theme = light ? "light" : "dark";
+        $("#theme-toggle").textContent = light ? "وضع داكن" : "وضع فاتح";
+      });
+      const dropZone = $("#drop-zone");
+      ["dragenter", "dragover"].forEach((eventName) => dropZone.addEventListener(eventName, (event) => { event.preventDefault(); dropZone.classList.add("is-drag"); }));
+      ["dragleave", "drop"].forEach((eventName) => dropZone.addEventListener(eventName, (event) => { event.preventDefault(); dropZone.classList.remove("is-drag"); }));
+      dropZone.addEventListener("drop", (event) => {
+        const file = event.dataTransfer.files[0];
+        if (!file) return;
+        $("#doc-file").files = event.dataTransfer.files;
+        toast(file.size > 4_000_000 ? "سيتم ضغط الملف الكبير قبل الإرسال في النسخة الخلفية" : "تم تجهيز الملف للتحليل");
+      });
+      $("[data-video]").addEventListener("click", () => toast("الفيديو التعريفي غير مرفق في هذه النسخة، وواجهة التجربة تعمل مباشرة."));
+    }
+
+    renderScenarioChips();
+    renderDocument(state.sample);
+    renderResult(buildResult(state.sample));
+    renderBatch();
+    renderCode();
+    bindEvents();
+    updateCount();
+  </script>
 </body>
 </html>

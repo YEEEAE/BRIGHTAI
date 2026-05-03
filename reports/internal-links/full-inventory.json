@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-02T23:53:34.074Z",
+  "generatedAt": "2026-05-03T00:01:28.793Z",
   "filesScanned": 279,
   "pages": [
     {
@@ -56112,9 +56112,6 @@
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-agents-saudi/",
         "https://brightai.site/services/ai-automation-saudi/",
-        "https://brightai.site/services/ai-chatbot-arabic/",
-        "https://brightai.site/services/ai-consulting/",
-        "https://brightai.site/services/data-platform/",
         "https://brightai.site/sitemap/",
         "https://brightai.site/smart-automation/"
       ],
@@ -56265,55 +56262,7 @@
         },
         {
           "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة تنفيذية"
-        },
-        {
-          "href": "https://brightai.site/consultation/",
-          "text": "احجز استشارة تنفيذية لمشروع AI"
-        },
-        {
-          "href": "https://brightai.site/services/ai-agents-saudi/",
-          "text": "وكلاء AI للشركات السعودية"
-        },
-        {
-          "href": "https://brightai.site/services/ai-automation-saudi/",
-          "text": "أتمتة العمليات في السعودية"
-        },
-        {
-          "href": "https://brightai.site/services/data-platform/",
-          "text": "منصة تحليل بيانات للشركات"
-        },
-        {
-          "href": "https://brightai.site/services/ai-chatbot-arabic/",
-          "text": "شات بوت عربي لخدمة العملاء"
-        },
-        {
-          "href": "https://brightai.site/services/ai-consulting/",
-          "text": "استشارات AI تنفيذية"
-        },
-        {
-          "href": "https://brightai.site/sectors/",
-          "text": "حلول حسب القطاع"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل مع الفريق"
-        },
-        {
-          "href": "https://brightai.site/consultation/",
-          "text": "استشارة مجانية"
-        },
-        {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
-        },
-        {
-          "href": "https://brightai.site/smart-automation/",
-          "text": "أتمتة العمليات"
-        },
-        {
-          "href": "https://brightai.site/sectors/",
-          "text": "حلول حسب القطاع"
+          "text": "احجز استشارة"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -66688,7 +66637,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/",
         "https://brightai.site/about/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
@@ -66945,7 +66893,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/",
         "https://brightai.site/blog/ai-business-performance/",
         "https://brightai.site/blog/ai-energy-saudi/",
         "https://brightai.site/blog/ai-guide-saudi-business/",
@@ -69655,7 +69602,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/",
         "https://brightai.site/blog/ai-automation-project-analysis/",
         "https://brightai.site/blog/ai-data-analysis-tools/",
         "https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/",
@@ -77710,7 +77656,7 @@
   "summary": {
     "pagesDiscovered": 279,
     "indexablePages": 267,
-    "internalLinksDiscovered": 6708,
+    "internalLinksDiscovered": 6705,
     "orphanPages": 0,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 109,

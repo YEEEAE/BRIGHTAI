@@ -28,6 +28,23 @@ Security action items
 - `frontend/`: ملفات الواجهة والصفحات الثابتة.
 - `backend/`: خادم Node المسؤول عن `Gemini/Groq` وبقية مسارات `/api`.
 
+## بنية الصفحة الرئيسية
+
+تم فصل الصفحة الرئيسية الثابتة إلى أصول أوضح:
+
+- `assets/css/home-design-tokens.css`: رموز تصميم الصفحة الرئيسية فقط، من دون التأثير على رموز التصميم العامة.
+- `assets/css/critical.css`: أنماط العرض الأول الحرجة، وحجمها أقل من 14 كيلوبايت.
+- `assets/css/main.css`: تحسينات عامة للقراءة والتركيز والتجاوب.
+- `assets/css/components.css`: أنماط مكونات الصفحة الرئيسية المستخرجة من الصفحة.
+- `assets/js/main.bundle.js`: مصدر حزمة تفاعلات الصفحة الرئيسية.
+- `assets/js/main.bundle.min.js`: النسخة المصغرة مع خريطة مصدر.
+
+لإعادة بناء حزمة الصفحة الرئيسية:
+
+```bash
+npx esbuild assets/js/main.bundle.js --bundle --minify --sourcemap --target=es2019 --outfile=assets/js/main.bundle.min.js
+```
+
 ## مهارات الوكلاء داخل المشروع
 
 - `frontend-design`: لتصميم وتحسين الواجهات.
