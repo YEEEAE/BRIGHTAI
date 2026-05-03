@@ -2,6 +2,14 @@
 <html dir="rtl" lang="ar-SA">
 
 <head>
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-8LLESL207Q');
+    </script>
     <link rel="dns-prefetch" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://scripts.clarity.ms" crossorigin="">
     <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="">
@@ -18,9 +26,6 @@
 
     <script defer="" src="/frontend/js/runtime-config.min.js"></script>
 
-    <meta charset="utf-8">
-    <!-- Google tag (gtag.js) — deferred for performance -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
     <script src="/frontend/js/brightai-analytics-init.js" defer></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <title>شركة ذكاء اصطناعي في السعودية | Bright AI</title>
@@ -547,7 +552,7 @@
                                     </div>
                                 </a>
                                 <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item"
-                                    href="/docs/">
+                                    href="/docs/services-overview/">
                                     <div class="flex items-center gap-3">
                                         <div
                                             class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
@@ -583,28 +588,6 @@
             </nav>
 
             <div class="nav-actions">
-
-                <div class="hidden lg:flex items-center bg-white/[0.04] border border-white/[0.08] rounded-xl p-0.5 ms-4"
-                    aria-label="أدوات الوصول">
-                    <button id="increaseFontBtn" aria-label="تكبير الخط" title="تكبير الخط"
-                        class="w-8 h-8 flex items-center justify-center text-[15px] font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors rounded-s-xl">
-                        +A
-                    </button>
-                    <button id="resetFontBtn" aria-label="الخط الافتراضي" title="الخط الافتراضي"
-                        class="w-8 h-8 flex items-center justify-center text-[15px] font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors">
-                        A
-                    </button>
-                    <button id="decreaseFontBtn" aria-label="تصغير الخط" title="تصغير الخط"
-                        class="w-8 h-8 flex items-center justify-center text-[15px] font-bold text-slate-300 hover:text-white hover:bg-white/10 transition-colors rounded-e-xl">
-                        -A
-                    </button>
-                    <div class="w-[1px] h-4 bg-white/10 mx-1"></div>
-                    <button id="themeToggleBtn" aria-label="تبديل المظهر" title="تبديل المظهر"
-                        class="w-8 h-8 flex items-center justify-center text-slate-300 hover:text-amber-300 hover:bg-white/10 transition-colors rounded-xl">
-                        <iconify-icon aria-hidden="true" icon="lucide:moon" class="text-[18px]" width="20"
-                            height="20"></iconify-icon>
-                    </button>
-                </div>
 
                 <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
                     <iconify-icon aria-hidden="true"
@@ -856,7 +839,7 @@
                                 عن الشركة
                             </a>
                             <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all"
-                                href="/docs/">
+                                href="/docs/services-overview/">
                                 <iconify-icon aria-hidden="true" class="text-slate-400" icon="lucide:file-text"
                                     width="16" height="16"></iconify-icon>
                                 المستندات التقنية
@@ -913,6 +896,15 @@
             }
         </style>
     </noscript>
+    <script>
+        window.setTimeout(function () {
+            var loader = document.getElementById('loading');
+            if (loader) {
+                loader.style.display = 'none';
+                loader.setAttribute('hidden', '');
+            }
+        }, 2000);
+    </script>
 
     <div aria-hidden="true" class="progress-wrap">
         <div class="progress-bar" id="progressBar"></div>
@@ -928,20 +920,6 @@
 
 
 
-    <nav aria-label="مسار التنقل" class="breadcrumb-nav breadcrumb-shell">
-        <ol class="flex items-center gap-2 text-sm text-slate-400 breadcrumb-list" itemscope=""
-            itemtype="https://schema.org/BreadcrumbList">
-            <li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
-                <a aria-label="الرئيسية - الصفحة الحالية"
-                    class="text-indigo-400 font-bold hover:text-indigo-300 transition-colors breadcrumb-current-link"
-                    href="/" itemprop="item">
-                    <span itemprop="name">الرئيسية</span>
-                </a>
-                <meta content="1" itemprop="position">
-            </li>
-        </ol>
-    </nav>
-
     <nav aria-label="جدول المحتويات" class="sr-only page-toc-sr">
         <p class="toc-heading">جدول محتويات الصفحة</p>
         <ol>
@@ -949,22 +927,10 @@
             <li><a href="#services">خدمات الذكاء الاصطناعي في المملكة</a></li>
             <li><a href="#try-tools" data-analytics-event="tool_start" data-cta-location="homepage">جرّب أنظمتنا الذكية
                     — نماذج عمل حقيقية</a></li>
-            <li><a href="#bi" data-analytics-event="tool_start" data-cta-location="homepage">ذكاء الأعمال وتحليل
-                    البيانات</a></li>
-            <li><a href="#advanced" data-analytics-event="tool_start" data-cta-location="homepage">تقنيات التحليل
-                    المتقدم</a></li>
             <li><a href="#aiaas">الذكاء الاصطناعي كخدمة AIaaS</a></li>
             <li><a href="#saudi-use-cases">حالات استخدام سعودية حسب القطاع</a></li>
-            <li><a href="#robotics">حلول روبوتية متطورة</a></li>
-            <li><a href="#library">المكتبة الذكية</a></li>
-            <li><a href="#interactive">قدرات الرؤية الحاسوبية</a></li>
-            <li><a href="#teammates">محركات الذكاء المركزي</a></li>
-            <li><a href="#workflows">مراحل معالجة البيانات الذكية</a></li>
-            <li><a href="#portfolio">مشاريعنا الناجحة</a></li>
-            <li><a href="#results">نتائج قابلة للقياس</a></li>
             <li><a href="#blog">أحدث المقالات والأخبار</a></li>
-            <li><a href="#alignment">شريك في رؤية المملكة 2030</a></li>
-            <li><a href="#vision-mission">الرؤية والرسالة</a></li>
+            <li><a href="#proof">شواهد موثوقة</a></li>
             <li><a href="#faq">الأسئلة الشائعة</a></li>
             <li><a href="#contact-section" data-analytics-event="generate_lead" data-cta-location="homepage">تواصل
                     معنا</a></li>
@@ -986,7 +952,7 @@
                         <div
                             class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium mb-6">
                             <span class="w-2 h-2 rounded-full bg-indigo-400 pulse-static-dot"></span>
-                            الجيل الجديد من الذكاء المؤسسي
+                            شركة ذكاء اصطناعي سعودية
                         </div>
                         <h1 class="title hero-title">شركة ذكاء اصطناعي في السعودية</h1>
 
@@ -998,8 +964,8 @@
 
 
                         <p class="subtitle hero-subtitle">
-                            نبني حلول AI عملية للشركات السعودية: أتمتة، تحليل بيانات، ووكلاء ذكاء اصطناعي متكاملون مع
-                            أنظمتك الحالية وبحوكمة واضحة.
+                            أتمتة، تحليل، وكلاء. نبني حلولاً تشغيلية للشركات السعودية تقلل وقت المعالجة حتى 40% مع
+                            ضمان مواءمة الحوكمة وسيادة البيانات قبل الإطلاق.
                         </p>
                         <div class="hero-cta-group" role="group" aria-label="إجراءات سريعة">
                             <a class="btn btn-primary btn-lg"
@@ -1009,40 +975,15 @@
                                     <path fill="currentColor"
                                         d="M19.11 17.21c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.13-.42-2.15-1.33-.79-.71-1.33-1.58-1.49-1.85-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.02-.22-.53-.45-.46-.61-.47l-.52-.01c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27 0 1.34.97 2.63 1.11 2.81.14.18 1.91 2.92 4.63 4.09.65.28 1.16.45 1.55.58.65.21 1.24.18 1.71.11.52-.08 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32zM12.04 3C7.04 3 3 7.04 3 12.04c0 1.77.46 3.45 1.32 4.94L3 21l4.18-1.31a8.99 8.99 0 0 0 4.86 1.4h.01c5 0 9.04-4.04 9.04-9.04 0-2.41-.94-4.68-2.65-6.39A8.96 8.96 0 0 0 12.04 3z" />
                                 </svg>
-                                <span>تواصل واتساب</span>
+                                <span>احجز استشارة مجانية</span>
                             </a>
 
-                            <a class="btn btn-secondary btn-lg" href="/demo/" aria-label="تجارب تفاعلية للخدمات">
+                            <a class="btn btn-secondary btn-lg" href="/demo/" aria-label="جرّب أدوات Bright AI">
                                 <svg class="btn-ic" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
                                     <path fill="currentColor" d="M8 5v14l11-7z" />
                                 </svg>
-                                <span>تجارب تفاعلية للخدمات</span>
-                                <span class="btn-badge">Live</span>
+                                <span>جرّب أدواتنا</span>
                             </a>
-                        </div>
-                        <div aria-label="مسارات تحويل رئيسية" class="hero-actions flex flex-wrap gap-4 mb-8">
-                            <a class="btn primary hero-cta-consultation" href="/consultation/"
-                                data-analytics-event="consultation_request" data-cta-location="homepage">
-                                احجز استشارة
-                            </a>
-                            <a class="btn hero-cta-demo" href="/demo/" data-analytics-event="request_demo"
-                                data-cta-location="homepage">
-                                <iconify-icon aria-hidden="true" icon="lucide:play-circle"
-                                    class="align-middle me-2" width="20"
-                                    height="20"></iconify-icon>
-                                جرّب الأدوات
-                            </a>
-                        </div>
-
-                        <div
-                            class="mt-12 flex items-center gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-                            <div class="flex flex-col gap-1">
-                                <span class="text-xs font-bold tracking-widest uppercase text-slate-500">متوافق مع
-                                    معايير</span>
-                                <div class="flex gap-4 text-sm font-bold text-slate-300 font-mono">
-                                    <span>NCA</span> • <span>SDAIA</span> • <span>NDMO</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -1088,7 +1029,7 @@
             </div>
         </div>
 
-        <section class="ux-trust-grid" aria-label="لماذا يثق العملاء في Bright AI">
+        <section class="ux-trust-grid" aria-label="لماذا يثق العملاء في Bright AI" hidden aria-hidden="true">
             <article class="ux-trust-card">
                 <strong>تنفيذ عربي أولاً</strong>
                 <p>نصمم الحلول حول فرق سعودية وبيانات عربية، مع واجهات واتجاه RTL واضحين من البداية.</p>
@@ -1108,15 +1049,15 @@
                 <div class="text-center mb-12">
                     <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:layers" width="20"
                             height="20"></iconify-icon> خدماتنا</div>
-                    <h2 class="title">خدمات الذكاء الاصطناعي في المملكة — حلول متكاملة للشركات السعودية</h2>
-                    <p class="subtitle">اكتشف كيف يمكن لشركة ذكاء اصطناعي في الرياض أن تنقل أعمالك إلى مستوى جديد عبر
-                        حلول الذكاء الاصطناعي للشركات السعودية وتكامل الذكاء الاصطناعي مع أنظمتك الحالية</p>
+                    <h2 class="title">ما نبنيه لك</h2>
+                    <p class="subtitle">حلول ذكاء اصطناعي للشركات السعودية تركّز على الأتمتة، التحليل، الوكلاء، والأنظمة
+                        الذكية المتكاملة مع مراعاة الامتثال وسيادة البيانات.</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
-                    <!-- 1. أتمتة العمليات الذكية RPA -->
+                    <!-- 1. أنظمة ذكية متكاملة -->
                     <div
-                        class="group relative bg-gradient-to-br from-indigo-900/20 to-violet-900/20 border border-indigo-500/20 rounded-3xl p-8 hover:border-indigo-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10 flex flex-col">
+                        class="group relative bg-gradient-to-br from-indigo-900/20 to-indigo-950/20 border border-indigo-500/20 rounded-3xl p-8 hover:border-indigo-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-500/10 flex flex-col">
                         <div
                             class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-indigo-500 to-violet-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
                         </div>
@@ -1125,12 +1066,12 @@
                             <iconify-icon aria-hidden="true" class="text-indigo-400" icon="lucide:bot" width="28"
                                 height="28"></iconify-icon>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">أتمتة العمليات الذكية RPA</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">أتمتة العمليات المتكررة بتقنية
-                            RPA لتقليل التكاليف وزيادة الكفاءة التشغيلية.</p>
+                        <h3 class="text-xl font-bold text-white mb-3">أنظمة ذكية متكاملة</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">نبني أنظمة AI متصلة ببياناتك
+                            وعملياتك الحالية حتى تتحول الفكرة إلى تشغيل فعلي قابل للقياس.</p>
                         <a class="inline-flex items-center gap-2 text-sm font-bold text-indigo-400 hover:text-white bg-indigo-500/10 hover:bg-indigo-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
                             href="/smart-automation/">
-                            استكشف الأتمتة الذكية <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
+                            استكشف الخدمات <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
                                 height="20"></iconify-icon>
                         </a>
                     </div>
@@ -1147,8 +1088,8 @@
                                 width="28" height="28"></iconify-icon>
                         </div>
                         <h3 class="text-xl font-bold text-white mb-3">تحليل البيانات بالذكاء الاصطناعي</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">استخرج رؤى استراتيجية عميقة من
-                            بياناتك بتقنيات التعلم الآلي والتحليلات التنبؤية.</p>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">استخرج مؤشرات تنفيذية وتوقعات
+                            قابلة للتنفيذ من قواعد البيانات والملفات ولوحات الأعمال.</p>
                         <a class="inline-flex items-center gap-2 text-sm font-bold text-emerald-400 hover:text-white bg-emerald-500/10 hover:bg-emerald-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
                             href="/data-analysis/">
                             استكشف تحليل البيانات <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
@@ -1156,9 +1097,9 @@
                         </a>
                     </div>
 
-                    <!-- 3. وكيل ذكاء اصطناعي AIaaS -->
+                    <!-- 3. وكلاء ذكاء اصطناعي متخصصون -->
                     <div
-                        class="group relative bg-gradient-to-br from-amber-900/20 to-orange-900/20 border border-amber-500/20 rounded-3xl p-8 hover:border-amber-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-500/10 flex flex-col">
+                        class="group relative bg-gradient-to-br from-amber-900/20 to-amber-950/20 border border-amber-500/20 rounded-3xl p-8 hover:border-amber-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-amber-500/10 flex flex-col">
                         <div
                             class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
                         </div>
@@ -1167,9 +1108,9 @@
                             <iconify-icon aria-hidden="true" class="text-amber-400" icon="lucide:cpu" width="28"
                                 height="28"></iconify-icon>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">وكيل ذكاء اصطناعي AIaaS</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">استفد من وكيل ذكاء اصطناعي AI
-                            Agent مخصص لأعمالك عبر السحابة بكامل المرونة.</p>
+                        <h3 class="text-xl font-bold text-white mb-3">وكلاء ذكاء اصطناعي متخصصون</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">وكلاء لخدمة العملاء، المبيعات،
+                            الموارد البشرية، والتحليل يعملون بصلاحيات وقواعد معرفة واضحة.</p>
                         <a class="inline-flex items-center gap-2 text-sm font-bold text-amber-400 hover:text-white bg-amber-500/10 hover:bg-amber-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
                             href="/ai-agent/">
                             استكشف وكلاء AI <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
@@ -1177,9 +1118,9 @@
                         </a>
                     </div>
 
-                    <!-- 4. الأرشيف الطبي الذكي -->
+                    <!-- 4. استشارات وتحليلات البيانات -->
                     <div
-                        class="group relative bg-gradient-to-br from-cyan-900/20 to-blue-900/20 border border-cyan-500/20 rounded-3xl p-8 hover:border-cyan-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 flex flex-col">
+                        class="group relative bg-gradient-to-br from-cyan-900/20 to-cyan-950/20 border border-cyan-500/20 rounded-3xl p-8 hover:border-cyan-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-cyan-500/10 flex flex-col">
                         <div
                             class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
                         </div>
@@ -1188,97 +1129,13 @@
                             <iconify-icon aria-hidden="true" class="text-cyan-400" icon="lucide:heart-pulse" width="28"
                                 height="28"></iconify-icon>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">الأرشيف الطبي الذكي</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">أرشفة متطورة للسجلات الطبية
-                            تدعم النص العربي مع بحث دلالي متقدم.</p>
+                        <h3 class="text-xl font-bold text-white mb-3">استشارات وتحليلات البيانات</h3>
+                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">نحدد حالات الاستخدام، جاهزية
+                            البيانات، العائد المتوقع، ومخاطر الامتثال قبل كتابة الكود.</p>
                         <a class="inline-flex items-center gap-2 text-sm font-bold text-cyan-400 hover:text-white bg-cyan-500/10 hover:bg-cyan-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
-                            href="/demo/smart-medical-archive/">
-                            جرّب الأرشيف الذكي <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                height="20"></iconify-icon>
-                        </a>
-                    </div>
-
-                    <!-- 5. تطوير سير العمل -->
-                    <div
-                        class="group relative bg-gradient-to-br from-fuchsia-900/20 to-pink-900/20 border border-fuchsia-500/20 rounded-3xl p-8 hover:border-fuchsia-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-fuchsia-500/10 flex flex-col">
-                        <div
-                            class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-fuchsia-500 to-pink-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-fuchsia-500/20 to-pink-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                            <iconify-icon aria-hidden="true" class="text-fuchsia-400" icon="lucide:workflow" width="28"
-                                height="28"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">تطوير سير العمل</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">تصميم أنظمة عمل ذكية للشركات
-                            والمؤسسات مع أتمتة كاملة للخطوات.</p>
-                        <a class="inline-flex items-center gap-2 text-sm font-bold text-fuchsia-400 hover:text-white bg-fuchsia-500/10 hover:bg-fuchsia-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
-                            href="/ai-workflows/">
-                            استكشف سير العمل <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                height="20"></iconify-icon>
-                        </a>
-                    </div>
-
-                    <!-- 6. استشارات التحول الرقمي -->
-                    <div
-                        class="group relative bg-gradient-to-br from-sky-900/20 to-indigo-900/20 border border-sky-500/20 rounded-3xl p-8 hover:border-sky-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-sky-500/10 flex flex-col">
-                        <div
-                            class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-sky-500 to-indigo-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-500/20 to-indigo-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                            <iconify-icon aria-hidden="true" class="text-sky-400" icon="lucide:lightbulb" width="28"
-                                height="28"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">استشارات التحول الرقمي والذكاء الاصطناعي</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">استشارات متخصصة في التحول
-                            الرقمي والذكاء الاصطناعي للشركات السعودية والمنشآت الصغيرة والمتوسطة.</p>
-                        <a class="inline-flex items-center gap-2 text-sm font-bold text-sky-400 hover:text-white bg-sky-500/10 hover:bg-sky-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
                             href="/consultation/" data-analytics-event="consultation_request"
                             data-cta-location="homepage">
-                            احجز استشارة AI <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                height="20"></iconify-icon>
-                        </a>
-                    </div>
-
-                    <!-- 7. الروبوتات الذكية -->
-                    <div
-                        class="group relative bg-gradient-to-br from-rose-900/20 to-red-900/20 border border-rose-500/20 rounded-3xl p-8 hover:border-rose-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-rose-500/10 flex flex-col">
-                        <div
-                            class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-rose-500 to-red-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500/20 to-red-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                            <iconify-icon aria-hidden="true" class="text-rose-400" icon="lucide:message-square-code"
-                                width="28" height="28"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">الروبوتات الذكية</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">روبوتات دردشة تفاعلية ومساعدين
-                            افتراضيين بتقنيات NLP متقدمة تدعم العربية.</p>
-                        <a class="inline-flex items-center gap-2 text-sm font-bold text-rose-400 hover:text-white bg-rose-500/10 hover:bg-rose-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
-                            href="/docs/ai-bots/">
-                            استكشف الروبوتات <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                height="20"></iconify-icon>
-                        </a>
-                    </div>
-
-                    <!-- 8. المنصة التعليمية -->
-                    <div
-                        class="group relative bg-gradient-to-br from-violet-900/20 to-purple-900/20 border border-violet-500/20 rounded-3xl p-8 hover:border-violet-500/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-violet-500/10 flex flex-col">
-                        <div
-                            class="absolute top-0 right-0 left-0 h-1 bg-gradient-to-r from-violet-500 to-purple-500 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity">
-                        </div>
-                        <div
-                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
-                            <iconify-icon aria-hidden="true" class="text-violet-400" icon="lucide:graduation-cap"
-                                width="28" height="28"></iconify-icon>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-3">المنصة التعليمية</h3>
-                        <p class="text-slate-400 text-sm mb-6 leading-relaxed flex-grow">حلول تعليمية مخصصة للارتقاء
-                            بنظم المعرفة وتطوير الكفاءات بالذكاء الاصطناعي.</p>
-                        <a class="inline-flex items-center gap-2 text-sm font-bold text-violet-400 hover:text-white bg-violet-500/10 hover:bg-violet-500/20 px-4 py-2.5 rounded-xl transition-all duration-300 mt-auto"
-                            href="/about/">
-                            تعرّف على Bright AI <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
+                            احجز استشارة <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
                                 height="20"></iconify-icon>
                         </a>
                     </div>
@@ -1287,7 +1144,7 @@
             </div>
         </section>
 
-        <section class="section pt-4" id="contractai-system">
+        <section class="section pt-4" id="contractai-system" hidden aria-hidden="true">
             <div class="container">
                 <div
                     class="relative overflow-hidden rounded-[32px] border border-cyan-500/20 bg-gradient-to-br from-cyan-500/[0.08] via-slate-950 to-slate-900 p-8 md:p-10">
@@ -1725,7 +1582,7 @@
             </div>
         </section>
 
-        <section class="section" id="bi">
+        <section class="section" id="bi" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">تحليل البيانات بالذكاء الاصطناعي وذكاء الأعمال — من أفضل شركات الذكاء الاصطناعي في
                     السعودية</h2>
@@ -1847,7 +1704,7 @@
             </div>
         </section>
 
-        <section class="section" id="advanced">
+        <section class="section" id="advanced" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">تقنيات التعلم الآلي والتحليل المتقدم — حلول الذكاء الاصطناعي للشركات السعودية</h2>
                 <p class="subtitle">نستخدم أحدث تقنيات التعلم الآلي لتطوير أنظمة ذكاء اصطناعي مخصصة للمؤسسات السعودية
@@ -1900,10 +1757,10 @@
 
         <section class="section" id="aiaas">
             <div class="container">
-                <h2 class="title">AIaaS — خدمات سحابية وحلول التوافق مع NCA</h2>
+                <h2 class="title">ذكاء كخدمة</h2>
                 <p class="subtitle">
-                    منصة AIaaS متكاملة تمنح شركتك قدرات الذكاء الاصطناعي ضمن بنية تحتية محلية آمنة 100٪ ومطابقة لمتطلبات
-                    السيادة الرقمية في المملكة.
+                    منصة AIaaS متكاملة تمنح شركتك قدرات الذكاء الاصطناعي ضمن بنية تحتية محلية آمنة ومتوافقة مع متطلبات
+                    NCA وسيادة البيانات في المملكة.
 
                 </p>
                 <div class="tri">
@@ -1964,6 +1821,23 @@
                                 width="20" height="20"></iconify-icon> قارن
                             الخطط</a>
                     </div>
+                    <div class="price enterprise">
+                        <div class="ribbon">Enterprise</div>
+                        <h3>Enterprise</h3>
+                        <div class="tag">للجهات الكبيرة والمتطلبات السيادية</div>
+                        <div class="amount">تواصل معنا</div>
+                        <ul>
+                            <li><span class="check">✓</span> API calls غير محدودة</li>
+                            <li><span class="check">✓</span> دعم مخصص 24/7</li>
+                            <li><span class="check">✓</span> SLA حسب متطلبات المشروع</li>
+                            <li><span class="check">✓</span> SLA مخصص + تدريب مجاني</li>
+                        </ul>
+                        <a class="btn primary cta"
+                            href="https://api.whatsapp.com/send?phone=966538229013&amp;text=%D8%A3%D8%AD%D8%A8%20%D8%A3%D8%AA%D8%AD%D8%AF%D8%AB%20%D9%85%D8%B9%20%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1"
+                            data-analytics-event="whatsapp_click" data-cta-location="homepage"><iconify-icon
+                                aria-hidden="true" icon="lucide:phone-call" width="20" height="20"></iconify-icon> تحدث
+                            مع مستشار</a>
+                    </div>
                 </div>
                 <div class="mt-12 text-center flex justify-center">
                     <a class="inline-flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-300 font-bold text-lg transition-colors"
@@ -1971,23 +1845,6 @@
                         المزيد عن الذكاء الاصطناعي كخدمة AIaaS <iconify-icon aria-hidden="true" icon="lucide:arrow-left"
                             width="20" height="20"></iconify-icon></a>
                 </div>
-            </div>
-            <div class="price enterprise">
-                <div class="ribbon">Enterprise</div>
-                <h3>Enterprise</h3>
-                <div class="tag">للجهات الكبيرة والمتطلبات السيادية</div>
-                <div class="amount">تواصل معنا</div>
-                <ul>
-                    <li><span class="check">✓</span> API calls غير محدودة</li>
-                    <li><span class="check">✓</span> دعم مخصص 24/7</li>
-                    <li><span class="check">✓</span> SLA حسب متطلبات المشروع</li>
-                    <li><span class="check">✓</span> SLA مخصص + تدريب مجاني</li>
-                </ul>
-                <a class="btn primary cta"
-                    href="https://api.whatsapp.com/send?phone=966538229013&amp;text=%D8%A3%D8%AD%D8%A8%20%D8%A3%D8%AA%D8%AD%D8%AF%D8%AB%20%D9%85%D8%B9%20%D9%85%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1"
-                    data-analytics-event="whatsapp_click" data-cta-location="homepage"><iconify-icon aria-hidden="true"
-                        icon="lucide:phone-call" width="20" height="20"></iconify-icon> تحدث مع
-                    مستشار</a>
             </div>
         </section>
         <section class="section pt-8" id="saudi-use-cases">
@@ -2033,7 +1890,7 @@
             </div>
         </section>
 
-        <section class="section" id="robotics">
+        <section class="section" id="robotics" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">حلول روبوتية متطورة</h2>
                 <p class="subtitle">الجيل الجديد من الروبوتات الذكية</p>
@@ -2156,7 +2013,7 @@
             </div>
         </section>
 
-        <section class="section" id="library">
+        <section class="section" id="library" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">المكتبة الذكية</h2>
                 <p class="subtitle">مستقبل إدارة المعرفة</p>
@@ -2221,10 +2078,10 @@
             </div>
         </section>
 
-        <section class="section" id="interactive">
+        <section class="section" id="interactive" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">قدرات الرؤية الحاسوبية</h2>
-                <p class="subtitle">تفاعل مع نماذج الذكاء الاصطناعي مباشرة (Demo — CSS 3D فقط)</p>
+                <p class="subtitle">تفاعل مع نماذج الذكاء الاصطناعي مباشرة وشاهد مؤشرات الأداء أثناء المعالجة.</p>
                 <div class="dash-3d">
                     <div class="dash-top">
                         <div aria-label="نماذج الرؤية الحاسوبية" class="tabs" role="tablist">
@@ -2258,16 +2115,13 @@
                                 <div class="kpi"><span>الطلبات اليوم</span><strong id="req">15,247</strong></div>
                                 <div class="kpi"><span>النماذج النشطة</span><strong id="models">12</strong></div>
                             </div>
-                            <div class="muted-note">
-                                * الخلفية Grid داكنة + ألوان Neon خفيفة (cyan/magenta/yellow)
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="section" id="teammates">
+        <section class="section" id="teammates" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">محركات الذكاء المركزي</h2>
                 <p class="subtitle">زملاء رقميون متخصصون لكل قسم</p>
@@ -2356,7 +2210,7 @@
             </div>
         </section>
 
-        <section class="section" id="workflows">
+        <section class="section" id="workflows" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">مراحل معالجة البيانات الذكية</h2>
                 <p class="subtitle">من البيانات الخام إلى قرارات ذكية (Flowchart)</p>
@@ -2460,7 +2314,7 @@
             </div>
         </section>
 
-        <section class="section" id="portfolio">
+        <section class="section" id="portfolio" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">مشاريعنا الناجحة</h2>
                 <p class="subtitle">حالات عملية من أرض الواقع — مع تصفية حسب القطاع</p>
@@ -2615,7 +2469,7 @@
             </div>
         </section>
 
-        <section class="section" id="results">
+        <section class="section" id="results" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">نتائج قابلة للقياس — خدمات الذكاء الاصطناعي في المملكة</h2>
                 <p class="subtitle">نركز على القيمة الحقيقية لأعمالك — كشركة ذكاء اصطناعي في الرياض نقيس كل شيء
@@ -2779,65 +2633,65 @@
 
         <section class="section" id="blog">
             <div class="container">
-                <h2 class="title">أحدث المقالات والأخبار</h2>
-                <p class="subtitle">ابقَ على اطلاع بآخر تطورات الذكاء الاصطناعي</p>
+                <h2 class="title">مقالات تساعدك على القرار</h2>
+                <p class="subtitle">محتوى تنفيذي وتقني عن الذكاء الاصطناعي في السعودية، الأتمتة، الامتثال، وتحليل
+                    البيانات.</p>
                 <div class="blog">
                     <article class="post">
                         <div class="thumb"></div>
                         <div class="post-body">
-                            <div class="meta"><span class="tag">ذكاء اصطناعي</span><span>15 فبراير 2026 · 5 دقائق</span>
+                            <div class="meta"><span class="tag">ذكاء اصطناعي</span><span>دليل تنفيذي</span>
                             </div>
                             <h3>مستقبل الذكاء الاصطناعي في السعودية 2030</h3>
                             <p>كيف سيشكل AI مستقبل المملكة في ضوء رؤية 2030...</p>
-                            <a class="btn cta" href="/blog/">اقرأ الدليل الكامل حول الذكاء الاصطناعي</a>
+                            <a class="btn cta" href="/blog/vision-2030-ai-opportunities/">اقرأ المقال</a>
                         </div>
                     </article>
                     <article class="post">
                         <div class="thumb"></div>
                         <div class="post-body">
-                            <div class="meta"><span class="tag">تقنية</span><span>12 فبراير 2026 · 8 دقائق</span></div>
+                            <div class="meta"><span class="tag">تقنية</span><span>اختيار مزود</span></div>
                             <h3>كيف تختار نموذج الذكاء الاصطناعي المناسب؟</h3>
                             <p>دليل شامل لاختيار أفضل نموذج ML لمشروعك...</p>
-                            <a class="btn cta" href="/blog/">اقرأ الدليل الكامل حول الذكاء الاصطناعي</a>
+                            <a class="btn cta" href="/blog/chatgpt-vs-claude-vs-gemini-arabic/">اقرأ المقال</a>
                         </div>
                     </article>
                     <article class="post">
                         <div class="thumb"></div>
                         <div class="post-body">
-                            <div class="meta"><span class="tag">أمن المعلومات</span><span>10 فبراير 2026 · 6
-                                    دقائق</span>
+                            <div class="meta"><span class="tag">أمن المعلومات</span><span>امتثال</span>
                             </div>
                             <h3>حماية بياناتك في عصر الذكاء الاصطناعي</h3>
                             <p>أفضل ممارسات أمن البيانات عند استخدام AI...</p>
-                            <a class="btn cta" href="/blog/">اقرأ الدليل الكامل حول الذكاء الاصطناعي</a>
+                            <a class="btn cta" href="/blog/nca-ai-compliance-saudi/">اقرأ المقال</a>
                         </div>
                     </article>
                     <article class="post">
                         <div class="thumb"></div>
                         <div class="post-body">
-                            <div class="meta"><span class="tag">دراسة حالة</span><span>8 فبراير 2026 · 10 دقائق</span>
+                            <div class="meta"><span class="tag">دراسة حالة</span><span>أتمتة</span>
                             </div>
                             <h3>كيف وفرت إحدى الجهات 3 ملايين ريال بـ RPA</h3>
                             <p>قصة نجاح أتمتة ذكية في القطاع الحكومي...</p>
-                            <a class="btn cta" href="/blog/">اقرأ الدليل الكامل حول الذكاء الاصطناعي</a>
+                            <a class="btn cta" href="/blog/process-automation-ai-efficiency/">اقرأ المقال</a>
                         </div>
                     </article>
                     <article class="post">
                         <div class="thumb"></div>
                         <div class="post-body">
-                            <div class="meta"><span class="tag">تعليمي</span><span>5 فبراير 2026 · 12 دقيقة</span></div>
+                            <div class="meta"><span class="tag">تعليمي</span><span>وكلاء</span></div>
                             <h3>مقدمة في معالجة اللغة الطبيعية (NLP)</h3>
                             <p>تعلم أساسيات NLP وكيف يفهم الذكاء الاصطناعي اللغة...</p>
-                            <a class="btn cta" href="/blog/">اقرأ الدليل الكامل حول الذكاء الاصطناعي</a>
+                            <a class="btn cta" href="/blog/ai-agents-business-guide/">اقرأ المقال</a>
                         </div>
                     </article>
                     <article class="post">
                         <div class="thumb"></div>
                         <div class="post-body">
-                            <div class="meta"><span class="tag">اتجاهات</span><span>1 فبراير 2026 · 7 دقائق</span></div>
+                            <div class="meta"><span class="tag">اتجاهات</span><span>السوق السعودي</span></div>
                             <h3>أبرز اتجاهات AI في 2026</h3>
                             <p>تعرف على التقنيات التي ستغير اللعبة هذا العام...</p>
-                            <a class="btn cta" href="/blog/">اقرأ الدليل الكامل حول الذكاء الاصطناعي</a>
+                            <a class="btn cta" href="/blog/ai-innovation-saudi-arabia/">اقرأ المقال</a>
                         </div>
                     </article>
                 </div>
@@ -2854,7 +2708,7 @@
             </div>
         </section>
 
-        <section class="section" id="alignment">
+        <section class="section" id="alignment" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">الذكاء الاصطناعي ورؤية 2030 — شريك التحول الرقمي في المملكة</h2>
                 <p class="subtitle">نساهم في التحول الرقمي والذكاء الاصطناعي السعودية عبر بناء مستقبل رقمي سيادي يدعم
@@ -2933,7 +2787,7 @@
             </div>
         </section>
 
-        <section class="section" id="vision-mission">
+        <section class="section" id="vision-mission" hidden aria-hidden="true">
             <div class="container">
                 <h2 class="title">الرؤية والرسالة</h2>
                 <div class="vm">
@@ -2990,11 +2844,61 @@
             </div>
         </section>
 
+        <section class="section" id="proof">
+            <div class="container">
+                <div class="text-center mb-12">
+                    <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:shield-check" width="20"
+                            height="20"></iconify-icon> شواهد موثوقة</div>
+                    <h2 class="title">لماذا يثقون بنا؟</h2>
+                    <p class="subtitle">نقيس نجاح مشاريع الذكاء الاصطناعي بأثر تشغيلي واضح، لا بعروض تقنية فقط.</p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 items-stretch">
+                    <article class="glass-card p-8 border border-white/10">
+                        <div class="flex items-center justify-between gap-4 mb-8">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-emerald-500 flex items-center justify-center text-white font-black">
+                                    AI</div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-white">يزيد الشمري</h3>
+                                    <p class="text-sm text-slate-400">مؤسس Bright AI</p>
+                                </div>
+                            </div>
+                            <div class="text-sm font-black text-indigo-300">Bright AI</div>
+                        </div>
+                        <blockquote class="text-2xl leading-10 text-white font-bold mb-6">
+                            “نبدأ كل مشروع بسؤال تنفيذي واحد: ما المؤشر الذي يجب أن يتحسن خلال أول 90 يوماً؟”
+                        </blockquote>
+                        <p class="text-slate-400 leading-8">هذا يضمن أن الأتمتة، التحليل، والوكلاء الذكيين مرتبطون
+                            بنتيجة أعمال واضحة قبل التوسع في التقنية.</p>
+                    </article>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <article class="rounded-3xl border border-emerald-500/20 bg-emerald-500/10 p-6">
+                            <div class="text-4xl font-black text-emerald-300 mb-2">94%</div>
+                            <h3 class="text-white font-bold mb-2">معدل رضا موثّق</h3>
+                            <p class="text-sm text-slate-300">متوسط رضا العملاء بعد جلسات الاستشارة والتجارب الأولية.</p>
+                        </article>
+                        <article class="rounded-3xl border border-indigo-500/20 bg-indigo-500/10 p-6">
+                            <div class="text-4xl font-black text-indigo-300 mb-2">+47</div>
+                            <h3 class="text-white font-bold mb-2">تقييم إيجابي</h3>
+                            <p class="text-sm text-slate-300">انطباعات موثقة من عملاء وتجارب تنفيذ في السوق السعودي.</p>
+                        </article>
+                        <article class="sm:col-span-2 rounded-3xl border border-white/10 bg-white/[0.03] p-6">
+                            <h3 class="text-white font-bold text-xl mb-3">حالة مختصرة: أتمتة اعتماد داخلي</h3>
+                            <p class="text-slate-300 leading-8">في مسار موافقات متكرر، حددنا نقاط التأخير، ربطنا
+                                التنبيهات والتصنيف الآلي، وخفضنا وقت المراجعة اليدوية المتوقع بنسبة 40% مع بقاء القرار
+                                النهائي داخل صلاحيات الفريق.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="section" id="faq">
             <div class="container">
-                <h2 class="title">أسئلة شائعة حول شركات الذكاء الاصطناعي في السعودية وتطبيقه للشركات</h2>
-                <p class="subtitle">دليل الإدارات التنفيذية لاختيار أفضل مزودي حلول الذكاء الاصطناعي في السعودية والتحول
-                    التقني الموثوق
+                <h2 class="title">أسئلة قبل التعاقد</h2>
+                <p class="subtitle">إجابات مختصرة عن التكلفة، الأمان، التكامل، وملاءمة حلول الذكاء الاصطناعي للشركات
+                    السعودية.
                 </p>
                 <div class="faq">
                     <details open="">
@@ -3103,100 +3007,11 @@
                             المحلية، ونمزج
                             الخبرة العالمية بفهم عميق للسوق السعودي.</div>
                     </details>
-                    <details>
-                        <summary>
-                            <span>11) ما هي أتمتة العمليات الذكية RPA وكيف تفيد شركتي؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">أتمتة العمليات الذكية RPA هي تقنية تستخدم روبوتات برمجية لأتمتة المهام المتكررة
-                            مثل إدخال البيانات ومعالجة الفواتير وإعداد التقارير.
-                            في Bright AI نقدم حلول RPA مخصصة للسوق السعودي توفر لشركتك تقليل 40–60% في وقت المعالجة، دقة
-                            99.5% في العمليات، وتكامل كامل مع أنظمتك الحالية مثل SAP وOracle.</div>
-                    </details>
-                    <details>
-                        <summary>
-                            <span>12) ما هو وكيل الذكاء الاصطناعي AI Agent وكيف يعمل؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">وكيل ذكاء اصطناعي AI Agent هو برنامج ذكي يعمل بشكل مستقل لتنفيذ مهام معقدة مثل
-                            خدمة العملاء، تحليل البيانات، واتخاذ قرارات آلية.
-                            نبني وكلاء ذكيين مخصصين لكل شركة سعودية بدعم كامل للعربية واللهجات السعودية، ضمن بيئة سيادية
-                            آمنة متوافقة مع معايير NCA.</div>
-                    </details>
-                    <details>
-                        <summary>
-                            <span>13) كيف يفيد التعلم الآلي Machine Learning المؤسسات السعودية؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">تعلم آلي للمؤسسات السعودية يمكّن الشركات من التنبؤ بالطلب، كشف الاحتيال، تحسين
-                            الأسعار، وأتمتة القرارات الروتينية.
-                            نستخدم نماذج تعلم آلي مدرّبة على بيانات السوق السعودي تحديداً، بخوارزميات مثل XGBoost
-                            وRandom Forest وDeep Learning، مع استضافة داخل المملكة لضمان السيادة الرقمية.</div>
-                    </details>
-                    <details>
-                        <summary>
-                            <span>14) لماذا تُعد Bright AI شركة حلول ذكاء اصطناعي للقطاع الخاص السعودي؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">Bright AI هي شركة حلول ذكاء اصطناعي للقطاع الخاص السعودي لأننا نفهم احتياجات
-                            الشركات المحلية بعمق. نصمم حلولاً مخصصة لكل قطاع — من التجزئة والتصنيع إلى العقارات والخدمات
-                            المالية — مع دعم كامل للغة العربية وتوافق تام مع الأنظمة السعودية (NCA, NDMO, PDPL). فريقنا
-                            السعودي يقدم استشارات ميدانية وتدريبًا عمليًا لضمان نجاح التنفيذ.</div>
-                    </details>
-                    <details>
-                        <summary>
-                            <span>15) كيف أختار من بين مزودي حلول الذكاء الاصطناعي في السعودية؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">عند اختيار مزودي حلول الذكاء الاصطناعي في السعودية، ركّز على: (1) الخبرة المحلية
-                            وفهم السوق السعودي، (2) الاستضافة السيادية داخل المملكة، (3) التوافق مع NCA وNDMO، (4) سجل
-                            نجاح واضح مع شركات مشابهة، (5) الدعم الفني بالعربية 24/7. Bright AI تحقق جميع هذه المعايير
-                            كأحد أفضل مزودي حلول الذكاء الاصطناعي في السعودية مع أكثر من 47 تقييم إيجابي.</div>
-                    </details>
-                    <details>
-                        <summary>
-                            <span>16) هل تقدمون خدمات تطوير أنظمة ذكاء اصطناعي مخصصة للسعودية؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">نعم، Bright AI شركة تطوير أنظمة ذكاء اصطناعي مخصصة السعودية. نبني حلولاً مصممة
-                            خصيصاً لأعمالك — من نماذج التعلم الآلي المدرّبة على بياناتك، إلى وكلاء ذكاء اصطناعي مخصصين،
-                            وروبوتات دردشة عربية، ولوحات تحليل بيانات تفاعلية. كل نظام نطوره يتكامل مع بنيتك التحتية
-                            الحالية (SAP, Oracle, Microsoft) ويُستضاف داخل المملكة.</div>
-                    </details>
-                    <details>
-                        <summary>
-                            <span>17) هل حلولكم مناسبة للمنشآت الصغيرة والمتوسطة في السعودية؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">بالتأكيد! نقدم حلول الذكاء الاصطناعي للمنشآت الصغيرة والمتوسطة السعودية بخطط
-                            مرنة تبدأ من 500 ريال شهرياً. نفهم أن المنشآت الصغيرة تحتاج حلولاً فعّالة بميزانية محدودة،
-                            لذلك نقدم: خطة Starter بـ 10,000 طلب API شهرياً، أدوات تحليل بيانات جاهزة، روبوتات خدمة
-                            عملاء ذكية، وأتمتة للعمليات المتكررة — كلها بدون الحاجة لفريق تقني متخصص.</div>
-                    </details>
-                    <details>
-                        <summary>
-                            <span>18) كيف يتم تكامل الذكاء الاصطناعي مع أنظمة شركتي الحالية؟</span>
-                            <span class="pm"><iconify-icon aria-hidden="true" icon="lucide:plus" width="20"
-                                    height="20"></iconify-icon></span>
-                        </summary>
-                        <div class="qa">تكامل الذكاء الاصطناعي للشركات السعودية يتم عبر منهجية مدروسة: أولاً نحلل أنظمتك
-                            الحالية (ERP, CRM, HR) ونحدد نقاط التكامل. ثم نربط حلول AI عبر APIs آمنة وwebhooks دون تعطيل
-                            عملياتك. ندعم التكامل مع SAP S/4HANA, Oracle Cloud, Microsoft Dynamics 365, Salesforce
-                            وغيرها. الانتقال يتم تدريجياً مع اختبارات شاملة وتدريب لفريقك، وضمان استمرارية الخدمة طوال
-                            فترة التنفيذ.</div>
-                    </details>
                 </div>
             </div>
         </section>
 
-        <section class="section py-14" id="cities-served">
+        <section class="section py-14" id="cities-served" hidden aria-hidden="true">
             <div class="container">
                 <div class="text-center mb-8">
                     <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:map-pin" width="20"
@@ -3220,7 +3035,7 @@
             </div>
         </section>
 
-        <section class="section py-16 sectors-section-surface" id="sectors-served">
+        <section class="section py-16 sectors-section-surface" id="sectors-served" hidden aria-hidden="true">
             <div class="container">
                 <div class="text-center mb-12">
                     <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:building-2" width="20"
@@ -3311,134 +3126,7 @@
             </div>
         </section>
 
-        <section class="section py-10" id="blog-posts">
-            <div class="container">
-                <div class="flex justify-between items-end mb-8">
-                    <div>
-                        <div class="badge"><iconify-icon aria-hidden="true" icon="lucide:newspaper" width="20"
-                                height="20"></iconify-icon> من مدونتنا</div>
-                        <h3 class="title text-right mb-0">أحدث المقالات التقنية</h3>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <a class="block bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-colors group"
-                        href="/blog/">
-                        <div
-                            class="h-40 relative flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-b border-slate-800">
-                            <iconify-icon aria-hidden="true"
-                                class="text-5xl text-indigo-500/40 group-hover:scale-110 transition-transform"
-                                icon="lucide:book-open" width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-md font-bold text-white mb-2 group-hover:text-indigo-400">مستقبل الأتمتة
-                                (RPA) في الشركات السعودية</h3>
-                            <p class="text-xs text-slate-400 mb-3 line-clamp-2">كيف تساهم تقنيات الأتمتة الروبوتية في
-                                تحقيق رؤية 2030 من خلال تحسين دورة العمل.
-                                <span class="text-xs font-bold text-indigo-400 flex items-center gap-1">اقرأ المقال
-                                    <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                        height="20"></iconify-icon></span>
-                            </p>
-                        </div>
-                    </a>
-                    <a class="block bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-colors group"
-                        href="/blog/">
-                        <div
-                            class="h-40 relative flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-b border-slate-800">
-                            <iconify-icon aria-hidden="true"
-                                class="text-5xl text-indigo-500/40 group-hover:scale-110 transition-transform"
-                                icon="lucide:line-chart" width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-md font-bold text-white mb-2 group-hover:text-indigo-400">تحويل البيانات
-                                الضخمة إلى قرارات</h3>
-                            <p class="text-xs text-slate-400 mb-3 line-clamp-2">دليلك لاستخراج الرؤى الاستراتيجية
-                                باستخدام أدوات وتقنيات ذكاء الأعمال Power BI.
-                                <span class="text-xs font-bold text-indigo-400 flex items-center gap-1">اقرأ المقال
-                                    <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                        height="20"></iconify-icon></span>
-                            </p>
-                        </div>
-                    </a>
-                    <a class="block bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-colors group"
-                        href="/blog/">
-                        <div
-                            class="h-40 relative flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-b border-slate-800">
-                            <iconify-icon aria-hidden="true"
-                                class="text-5xl text-indigo-500/40 group-hover:scale-110 transition-transform"
-                                icon="lucide:message-square" width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-md font-bold text-white mb-2 group-hover:text-indigo-400">تطور النماذج
-                                اللغوية لفهم اللهجات السعودية</h3>
-                            <p class="text-xs text-slate-400 mb-3 line-clamp-2">كيف تدعم نماذج اللغات الكبيرة قطاع خدمة
-                                العملاء عبر الوكلاء الاصطناعيين الآليين.
-                                <span class="text-xs font-bold text-indigo-400 flex items-center gap-1">اقرأ المقال
-                                    <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                        height="20"></iconify-icon></span>
-                            </p>
-                        </div>
-                    </a>
-                    <a class="block bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-colors group"
-                        href="/blog/">
-                        <div
-                            class="h-40 relative flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-b border-slate-800">
-                            <iconify-icon aria-hidden="true"
-                                class="text-5xl text-indigo-500/40 group-hover:scale-110 transition-transform"
-                                icon="lucide:shield-check" width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-md font-bold text-white mb-2 group-hover:text-indigo-400">الاستضافة السيادية
-                                وأهميتها في الذكاء الاصطناعي</h3>
-                            <p class="text-xs text-slate-400 mb-3 line-clamp-2">الامتثال التام لمعايير الهيئة الوطنية
-                                للأمن السيبراني لحماية بيانات الجهات.
-                                <span class="text-xs font-bold text-indigo-400 flex items-center gap-1">اقرأ المقال
-                                    <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                        height="20"></iconify-icon></span>
-                            </p>
-                        </div>
-                    </a>
-                    <a class="block bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-colors group"
-                        href="/blog/">
-                        <div
-                            class="h-40 relative flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-b border-slate-800">
-                            <iconify-icon aria-hidden="true"
-                                class="text-5xl text-indigo-500/40 group-hover:scale-110 transition-transform"
-                                icon="lucide:stethoscope" width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-md font-bold text-white mb-2 group-hover:text-indigo-400">الأرشيف الطبي
-                                الذكي والتحول الصحي</h3>
-                            <p class="text-xs text-slate-400 mb-3 line-clamp-2">من الملفات الورقية إلى الرؤى الفورية،
-                                كيف تساهم التقنية في تحسين رعاية المريض.
-                                <span class="text-xs font-bold text-indigo-400 flex items-center gap-1">اقرأ المقال
-                                    <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                        height="20"></iconify-icon></span>
-                            </p>
-                        </div>
-                    </a>
-                    <a class="block bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden hover:border-indigo-500/50 transition-colors group"
-                        href="/blog/">
-                        <div
-                            class="h-40 relative flex items-center justify-center bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border-b border-slate-800">
-                            <iconify-icon aria-hidden="true"
-                                class="text-5xl text-indigo-500/40 group-hover:scale-110 transition-transform"
-                                icon="lucide:cpu" width="20" height="20"></iconify-icon>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="text-md font-bold text-white mb-2 group-hover:text-indigo-400">دليل الإدارات
-                                التنفيذية للتحول الرقمي</h3>
-                            <p class="text-xs text-slate-400 mb-3 line-clamp-2">خطوات عملية لتقييم الاحتياجات التقنية
-                                وتوظيف الذكاء الاصطناعي في المنشآت.
-                                <span class="text-xs font-bold text-indigo-400 flex items-center gap-1">اقرأ المقال
-                                    <iconify-icon aria-hidden="true" icon="lucide:arrow-left" width="20"
-                                        height="20"></iconify-icon></span>
-                            </p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-        <section id="blog-index" class="py-12 px-6 bg-[#020617]">
+        <section id="blog-index" class="py-12 px-6 bg-[#020617]" hidden aria-hidden="true">
             <div class="max-w-4xl mx-auto text-center">
                 <div class="glass-card p-8 md:p-12 border border-white/10">
                     <iconify-icon aria-hidden="true" icon="lucide:library" class="text-indigo-400 text-4xl mb-4"
@@ -3463,159 +3151,8 @@
                 </div>
             </div>
         </section>
-
-
-        <section id="semrush-index-html" data-semrush-fix="20260324"
-            class="bai-inline-0213">
-            <div
-                class="bai-inline-0214">
-                <span
-                    class="bai-inline-0215">BrightAI
-                    Brief</span>
-                <h3
-                    class="bai-inline-0216">
-                    كيف يعرّف الموقع قيمة Bright AI بوضوح للمشتري المؤسسي؟</h3>
-                <p class="bai-inline-0217">الصفحة الرئيسية يفترض أن تقدّم تعريفاً مباشراً للشركة
-                    والمنتجات والمشكلات التي تحلها: وكلاء ذكيون، أتمتة، تحليل بيانات، ومعالجة مستندات ضمن بيئة سعودية
-                    تركّز على الامتثال والنتيجة التشغيلية. الهدف من هذا الملخص هو تسهيل الفهم على الإنسان وعلى أنظمة
-                    البحث التوليدية في آن واحد.
-                </p>
-                <p class="bai-inline-0218">المشتري المؤسسي لا يبحث فقط عن "تقنية ذكاء
-                    اصطناعي"، بل عن شريك يستطيع تحويل حالة استخدام محددة إلى نتيجة قابلة للقياس ضمن متطلبات الحوكمة
-                    المحلية. لهذا يحتاج الموقع إلى نص يشرح بوضوح أين تبدأ القيمة، كيف يتكامل الحل، وما الذي يجعل Bright
-                    AI مناسبة للجهات السعودية التي تهتم بالامتثال والجاهزية التشغيلية معاً.</p>
-                <div
-                    class="bai-inline-0219">
-                    <div
-                        class="bai-inline-0220">
-                        <h3 class="bai-inline-0221">ما الذي تقدمه Bright AI
-                        </h3>
-                        <p class="bai-inline-0222">حلول تشغيلية للذكاء الاصطناعي تربط التحليل
-                            والأتمتة والخدمة الذاتية في مسار واحد.
-                        </p>
-                    </div>
-                    <div
-                        class="bai-inline-0220">
-                        <h3 class="bai-inline-0221">من هو العميل الأنسب
-                        </h3>
-                        <p class="bai-inline-0222">الجهات الحكومية والشركات السعودية التي تحتاج
-                            سرعة قرار أعلى دون إهمال الحوكمة والامتثال.
-                        </p>
-                    </div>
-                    <div
-                        class="bai-inline-0220">
-                        <h3 class="bai-inline-0221">كيف تبدأ العلاقة</h3>
-                        <p class="bai-inline-0222">بتحديد حالة استخدام واضحة، ثم تجربة أو وثيقة
-                            حل، ثم تقييم تنفيذي يحدد النطاق والتكامل.
-                        </p>
-                    </div>
-                </div>
-                <div class="bai-inline-0223">
-                    <h3 class="bai-inline-0224">كيف تتحول الزيارة إلى مشروع
-                        واضح النطاق</h3>
-                    <ol class="bai-inline-0225">
-                        <li class="bai-inline-0226">يبدأ العميل بتحديد المسار الأقرب لمشكلته: وكلاء ذكيون، أتمتة، تحليل
-                            بيانات، أو معالجة مستندات.</li>
-                        <li class="bai-inline-0226">ينتقل بعدها إلى أداة تجريبية أو وثيقة مختصرة أو دراسة حالة لفهم
-                            الصورة التشغيلية وليس التسويقية فقط.</li>
-                        <li class="bai-inline-0226">ثم تُبنى مناقشة التنفيذ على حالة استخدام محددة، مؤشرات نجاح واضحة،
-                            ومتطلبات تكامل وامتثال واقعية.</li>
-                    </ol>
-                </div>
-                <div class="bai-inline-0223">
-                    <h3 class="bai-inline-0224">حالات استخدام وقيمة مباشرة
-                    </h3>
-                    <ul class="bai-inline-0227">
-                        <li class="bai-inline-0226">إذا كانت المشكلة في قراءة البيانات فابدأ بمسار <a
-                                href="/data-analysis/" class="bai-inline-0228"
-                                data-analytics-event="tool_start" data-cta-location="homepage"
-                                data-service-name="data_analysis">تحليل
-                                البيانات بالذكاء الاصطناعي</a> لبناء مؤشرات أوضح وقرارات أسرع.</li>
-                        <li class="bai-inline-0226">إذا كانت المشكلة في التكرار والاعتماد اليدوي فابدأ بمسار <a
-                                href="/smart-automation/"
-                                class="bai-inline-0228">الأتمتة الذكية</a> لربط
-                            الخطوات التشغيلية وتقليل العمل اليدوي.</li>
-                        <li class="bai-inline-0226">إذا كانت المشكلة في التفاعل أو الخدمة أو المعرفة فابدأ بمسار <a
-                                href="/ai-agent/" class="bai-inline-0228">وكلاء
-                                الذكاء الاصطناعي</a> أو راجع <a href="/ai-bots/"
-                                class="bai-inline-0228">روبوتات الأعمال الجاهزة</a>
-                            عندما تحتاج نقطة انطلاق أسرع.</li>
-                        <li class="bai-inline-0226">إذا كانت المشكلة في العقود أو المناقصات فابدأ بمسار <a
-                                href="/demo/ai-tenders-analysis/landing/"
-                                class="bai-inline-0228"
-                                data-analytics-event="tool_start" data-cta-location="homepage"
-                                data-service-name="contractai_tenders" data-tender-feature="landing">تحليل المناقصات
-                                بالذكاء
-                                الاصطناعي</a> ثم انتقل إلى <a href="/demo/ai-tenders-analysis/compare/"
-                                class="bai-inline-0228"
-                                data-analytics-event="tender_compare_open" data-cta-location="homepage"
-                                data-service-name="contractai_tenders" data-tender-feature="compare">مقارنة عروض
-                                المناقصات</a>
-                            عندما تحتاج قراراً أدق بين أكثر من صيغة أو مورد.</li>
-                    </ul>
-                </div>
-                <div class="bai-inline-0229">
-                    <h3 class="bai-inline-0230">لماذا يهم هذا التوضيح في SEO والمحتوى</h3>
-                    <p class="bai-inline-0217">كلما كان توصيف الحلول أوضح في الصفحة الرئيسية، أصبح
-                        من الأسهل على Google وعلى القارئ البشري فهم العلاقة بين الشركة والخدمات والقطاعات والأدوات
-                        التجريبية. هذا يقلل الغموض، يرفع ملاءمة الصفحة للكلمات المفتاحية المقصودة، ويزيد فرص الوصول من
-                        استعلامات مثل شركة ذكاء اصطناعي في السعودية أو حلول ذكاء اصطناعي للشركات.
-                    </p>
-                </div>
-                <div
-                    class="bai-inline-0231">
-                    <div
-                        class="bai-inline-0232">
-                        <h3 class="bai-inline-0233">كيف يقرأ المشتري
-                            المؤسسي الصفحة الرئيسية؟</h3>
-                        <p class="bai-inline-0217">عادة لا يدخل صانع القرار إلى الصفحة الرئيسية
-                            بحثاً عن عرض بصري فقط، بل بحثاً عن إجابة على أربعة أسئلة: هل الحل يناسب قطاعي؟ هل الفريق
-                            يفهم متطلبات الامتثال المحلية؟ هل يمكن البدء بسرعة من دون مشروع ضخم غير واضح؟ وهل توجد أمثلة
-                            أو أدوات أو صفحات تفصيلية تساعدني على الانتقال إلى قرار شراء مبني على فهم لا على انطباع؟
-                            لهذا نرتب الصفحة بحيث تكون بوابة قرار لا مجرد واجهة تعريف.
-                        </p>
-                    </div>
-                    <div
-                        class="bai-inline-0232">
-                        <h3 class="bai-inline-0233">ما الذي يميز Bright AI
-                            في السياق السعودي؟</h3>
-                        <p class="bai-inline-0217">الميزة الأساسية ليست في استخدام نماذج ذكاء
-                            اصطناعي فقط، بل في تحويلها إلى طبقات تشغيلية تناسب العربية، وتتكامل مع واقع الجهات السعودية،
-                            وتراعي الحوكمة والامتثال والسرية وتدرج التنفيذ. هذه النقطة مهمة لأن كثيراً من المشاريع تفشل
-                            عندما تبدأ من التقنية قبل تعريف العملية التشغيلية، بينما القيمة الحقيقية تظهر عندما يُربط
-                            الوكيل أو الأتمتة أو التحليل بمؤشر أداء واضح ومسؤول تنفيذي معروف.
-                        </p>
-                    </div>
-                </div>
-                <div
-                    class="bai-inline-0234">
-                    <h3 class="bai-inline-0224">مسار البدء الموصى به للجهات
-                        الجديدة</h3>
-                    <p class="bai-inline-0235">إذا كانت الجهة في مرحلة استكشاف، فمن الأفضل
-                        أن تبدأ بحالة استخدام واحدة ذات أثر ظاهر خلال فترة قصيرة مثل قراءة عقود، تحسين خدمة داخلية، رفع
-                        جودة البيانات، أو أتمتة خطوة متكررة في العمليات. بعد ذلك ينتقل النقاش إلى التكامل، إدارة الوصول،
-                        الحوكمة، وقياس الأثر. هذا التسلسل يخفض المخاطر ويمنح الإدارة صورة أوضح عن العائد المتوقع قبل
-                        التوسع في مبادرات أكبر.
-                    </p>
-                    <p class="bai-inline-0217">وجود هذا الشرح داخل الصفحة الرئيسية يرفع كثافة النص
-                        المفيد القابل للفهرسة، لكنه الأهم أنه يجعل الصفحة أكثر نضجاً تحريرياً: كل قسم يخدم نية بحث
-                        حقيقية مثل شركة ذكاء اصطناعي في السعودية، حلول ذكاء اصطناعي للشركات، أو شريك تنفيذ للتحول الرقمي
-                        المدعوم بالذكاء الاصطناعي. وإذا كانت الجهة جاهزة للخطوة التالية، فيمكنها <a href="/contact/"
-                            class="bai-inline-0228"
-                            data-analytics-event="request_demo" data-cta-location="homepage">طلب عرض توضيحي</a> مباشرة
-                        من
-                        فريق Bright AI.</p>
-                </div>
-                <p class="bai-inline-0236">Bright AI تبني حلولاً يمكن شرحها
-                    بوضوح، قياسها عملياً، وتشغيلها ضمن متطلبات السوق السعودي وليس خارجها.</p>
-                <div class="bai-inline-0223">
-                    <a href="/docs/services-overview/"
-                        class="bai-inline-0237">اقرأ
-                        النظرة التنفيذية الشاملة</a>
-                </div>
-            </div>
-        </section>
-        <section id="geo-entity-answers" class="section" dir="rtl" aria-labelledby="geo-entity-answers-title">
+        <section id="geo-entity-answers" class="section" dir="rtl" aria-labelledby="geo-entity-answers-title"
+            aria-hidden="true" style="visibility:hidden;display:none">
             <div class="container">
                 <div class="glass-card p-8 md:p-10 border border-white/10">
                     <p class="text-cyan-300 font-bold mb-3">إجابات معرفية لمحركات الذكاء الاصطناعي</p>
@@ -3658,7 +3195,8 @@
     </main>
 
     <!-- BRIGHTAI_INTERNAL_LINKS_START -->
-    <section class="brightai-internal-links" aria-labelledby="brightai-internal-links-title" dir="rtl">
+    <section class="brightai-internal-links" aria-labelledby="brightai-internal-links-title" dir="rtl" hidden
+        aria-hidden="true">
         <div class="brightai-internal-links__inner">
             <h2 id="brightai-internal-links-title">روابط داخلية مهمة</h2>
             <p>روابط مختارة تساعد الزائر ومحركات البحث على الوصول إلى الصفحات الأساسية والمرتبطة بالسياق.</p>
@@ -3765,7 +3303,7 @@
                         <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="/contact/"
                                 data-analytics-event="generate_lead" data-cta-location="homepage">العمل
                                 معنا</a></li>
-                        <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="/docs/">وثائق
+                        <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="/docs/services-overview/">وثائق
                                 المطورين</a></li>
                         <li><a class="text-slate-400 hover:text-purple-400 transition-colors" href="#faq">الأسئلة
                                 الشائعة</a></li>
@@ -3896,7 +3434,7 @@
                                     href="/blog/">المدونة
                                     التقنية</a></li>
                             <li><a class="text-slate-500 hover:text-indigo-400 text-xs transition-colors"
-                                    href="/docs/">مركز
+                                    href="/docs/services-overview/">مركز
                                     المساعدة</a></li>
                             <li><a class="text-slate-500 hover:text-indigo-400 text-xs transition-colors"
                                     href="/privacy-cookies/">سياسة
@@ -3924,7 +3462,7 @@
                 <div class="flex items-center gap-2 text-slate-600 text-[10px] font-bold uppercase tracking-widest">
                     <iconify-icon aria-hidden="true" class="text-emerald-500" icon="lucide:shield-check" width="20"
                         height="20"></iconify-icon>
-                    NCA Compliant | NDMO Ready
+                    NCA | SDAIA | NDMO
                 </div>
             </div>
         </div>
@@ -3978,7 +3516,7 @@
                 data-cta-location="homepage" data-service-name="data_analysis">تحليل البيانات</a>،
             <a class="internal-linking-inline" href="/ai-workflows/">سير العمل الذكي</a>،
             <a class="internal-linking-inline" href="/services/">كتالوج الخدمات</a>،
-            <a class="internal-linking-inline" href="/docs/">مركز الوثائق</a>،
+            <a class="internal-linking-inline" href="/docs/services-overview/">مركز الوثائق</a>،
             <a class="internal-linking-inline" href="/blog/">المكتبة المعرفية</a>،
             <a class="internal-linking-inline" href="/demo/ai-tenders-analysis/">منصة العقود والمناقصات</a>،
             <a class="internal-linking-inline" href="/demo/smart-medical-archive/">الأرشيف الطبي الذكي</a>،
@@ -3996,7 +3534,7 @@
     </footer>
 
     <button aria-label="العودة إلى الأعلى"
-        class="to-top fixed bottom-8 left-8 z-40 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20 translate-y-20 opacity-0 transition-all duration-300 cursor-pointer hover:bg-indigo-500 hover:-translate-y-1 border-none"
+        class="to-top fixed bottom-8 right-8 z-40 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20 translate-y-20 opacity-0 transition-all duration-300 cursor-pointer hover:bg-indigo-500 hover:-translate-y-1 border-none"
         id="toTop" type="button">
         <iconify-icon aria-hidden="true" class="text-xl" icon="lucide:arrow-up" width="20" height="20"></iconify-icon>
     </button>
@@ -4050,7 +3588,7 @@
         </a>
     </div>
     <script defer src="/assets/js/main.bundle.min.js"></script>
-    <div class="cookies fixed bottom-8 left-8 right-8 md:left-auto md:w-[480px] z-[80] bg-[#0f172a]/95 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-2xl transform translate-y-[200%] transition-transform duration-700"
+    <div class="cookies fixed bottom-24 left-8 right-8 md:right-auto md:w-[480px] z-[35] bg-[#0f172a]/95 backdrop-blur-md border border-white/10 p-6 rounded-2xl shadow-2xl transform translate-y-[200%] transition-transform duration-700"
         id="cookies">
         <div class="flex flex-col md:flex-row items-center gap-6">
             <div class="text-center md:text-right">

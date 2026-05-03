@@ -9,6 +9,8 @@ const { WebSocketServer } = require('ws');
 const fs = require('fs');
 const path = require('path');
 const { config, validateConfig } = require('./config');
+const { getRedirectTarget } = require('./services/redirects');
+const { HTML_SECURITY_HEADERS, tryServeStaticRequest } = require('./services/staticFiles');
 const { rateLimiterMiddleware } = require('./middleware/rateLimiter');
 const { chatHandler } = require('./routes/chat');
 const { geminiChatHandler, geminiChatStreamHandler } = require('./routes/gemini');
@@ -37,17 +39,6 @@ const { canHandleDemoRoute, demoRouteHandler } = require('./routes/demo');
 const { demoGeminiApp, canHandleDemoGeminiRoute } = require('./demoGeminiApp');
 const { getProviderStatus, getSafeAiStatus } = require('./services/aiGateway');
 
-const PROJECT_ROOT = path.resolve(__dirname, '..');
-const ONE_HOUR_SECONDS = 60 * 60;
-const ONE_DAY_SECONDS = 24 * ONE_HOUR_SECONDS;
-
-const HTML_SECURITY_HEADERS = {
-  'Content-Language': 'ar-SA',
-  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-  'X-Content-Type-Options': 'nosniff',
-  'X-Frame-Options': 'SAMEORIGIN'
-};
-
 const API_SECURITY_HEADERS = {
   'Content-Language': 'ar-SA',
   'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
@@ -55,23 +46,6 @@ const API_SECURITY_HEADERS = {
   'X-Frame-Options': 'SAMEORIGIN',
   'Referrer-Policy': 'strict-origin-when-cross-origin',
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
-};
-
-const MIME_TYPES = {
-  '.css': 'text/css; charset=utf-8',
-  '.html': 'text/html; charset=utf-8',
-  '.ico': 'image/x-icon',
-  '.jpeg': 'image/jpeg',
-  '.jpg': 'image/jpeg',
-  '.js': 'text/javascript; charset=utf-8',
-  '.json': 'application/json; charset=utf-8',
-  '.png': 'image/png',
-  '.svg': 'image/svg+xml',
-  '.txt': 'text/plain; charset=utf-8',
-  '.webp': 'image/webp',
-  '.woff': 'font/woff',
-  '.woff2': 'font/woff2',
-  '.xml': 'application/xml; charset=utf-8'
 };
 
 const PRODUCTION_ALLOWED_ORIGINS = new Set([
@@ -93,162 +67,6 @@ const STREAM_ROUTE_ALIASES = new Set(['/api/ai/stream', '/api/groq/stream']);
 const CHAT_ROUTE_ALIASES = new Set(['/api/gemini/chat']);
 const CHAT_STREAM_ROUTE_ALIASES = new Set(['/api/gemini/chat/stream']);
 const OPENAI_COMPAT_ROUTE_ALIASES = new Set(['/api/ai/openai-chat', '/api/ai/chat/completions']);
-const STATIC_ROUTE_REDIRECTS = new Map([
-  ['/interview', '/demo/smart-hiring-system/'],
-  ['/interview/', '/demo/smart-hiring-system/'],
-  ['/interview/index.html', '/demo/smart-hiring-system/'],
-  ['/interview/pages/supportAI', '/demo/smart-hiring-system/pages/support-ai/'],
-  ['/interview/pages/supportAI/', '/demo/smart-hiring-system/pages/support-ai/'],
-  ['/interview/pages/supportAI/index.html', '/demo/smart-hiring-system/pages/support-ai/'],
-  ['/job.MAISco', '/demo/smart-hiring-system/'],
-  ['/job.MAISco/', '/demo/smart-hiring-system/']
-]);
-const BLOG_SLUG_REDIRECTS = new Map([
-  [
-    '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1',
-    '/blog/ai-automation-project-analysis/'
-  ],
-  [
-    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية',
-    '/blog/process-automation-ai-efficiency/'
-  ],
-  [
-    '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية',
-    '/blog/industrial-automation-productivity/'
-  ],
-  [
-    '/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية',
-    '/blog/financial-hr-automation/'
-  ],
-  [
-    '/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار',
-    '/blog/digital-transformation-automation/'
-  ],
-  [
-    '/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور',
-    '/blog/machine-learning-computer-vision/'
-  ],
-  [
-    '/blog/الذكاء-الاصطناعي-و-التسويق',
-    '/blog/ai-marketing-guide/'
-  ],
-  [
-    '/blog/تحليل-البيانات',
-    '/blog/data-analysis-decision-making/'
-  ],
-  [
-    '/blog/تعلم-الآلة-و-الأعمال',
-    '/blog/machine-learning-business/'
-  ],
-  [
-    '/blog/مقال-تحليل',
-    '/blog/ai-data-analysis-tools/'
-  ],
-  [
-    '/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)',
-    '/blog/ai-automation-project-analysis/'
-  ],
-  [
-    '/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية',
-    '/blog/process-automation-ai-efficiency/'
-  ],
-  [
-    '/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات',
-    '/blog/choose-ai-company-saudi/'
-  ],
-  [
-    '/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية',
-    '/blog/industrial-automation-productivity/'
-  ],
-  [
-    '/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية',
-    '/blog/financial-hr-automation/'
-  ],
-  [
-    '/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار',
-    '/blog/digital-transformation-automation/'
-  ],
-  [
-    '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور',
-    '/blog/machine-learning-computer-vision/'
-  ],
-  [
-    '/blog/atou.doc',
-    '/blog/process-automation-ai-efficiency/'
-  ],
-  [
-    '/blog/astr.doc',
-    '/blog/'
-  ]
-]);
-const FOLDER_BLOG_SLUGS = new Set([
-  'ai-automation-project-analysis',
-  'process-automation-ai-efficiency',
-  'industrial-automation-productivity',
-  'financial-hr-automation',
-  'digital-transformation-automation',
-  'machine-learning-computer-vision',
-  'ai-marketing-guide',
-  'data-analysis-decision-making',
-  'machine-learning-business',
-  'ai-data-analysis-tools'
-]);
-
-function normalizeStaticRedirectSource(pathname) {
-  if (!pathname || pathname === '/') {
-    return pathname;
-  }
-
-  let normalized = pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
-  if (normalized.endsWith('.html')) {
-    normalized = normalized.slice(0, -5);
-  }
-  return normalized;
-}
-
-function getStaticRedirectTarget(pathname) {
-  if (!pathname || !pathname.startsWith('/blog/')) {
-    return null;
-  }
-
-  const folderSlug = pathname.match(/^\/blog\/([A-Za-z0-9-]+)\/?$/);
-  if (folderSlug && FOLDER_BLOG_SLUGS.has(folderSlug[1])) {
-    return pathname.endsWith('/') ? null : `/blog/${folderSlug[1]}/`;
-  }
-
-  const folderSlugHtml = pathname.match(/^\/blog\/([A-Za-z0-9-]+)\.html$/);
-  if (folderSlugHtml && FOLDER_BLOG_SLUGS.has(folderSlugHtml[1])) {
-    return `/blog/${folderSlugHtml[1]}/`;
-  }
-
-  if (pathname === '/blog/production-line' || pathname === '/blog/production-line/' || pathname === '/blog/production-line.html') {
-    return '/blog/industrial-automation-productivity/';
-  }
-
-  if (
-    pathname === '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات' ||
-    pathname === '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/' ||
-    pathname === '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html'
-  ) {
-    return '/blog/choose-ai-company-saudi/';
-  }
-
-  const candidates = new Set([pathname]);
-  try {
-    candidates.add(decodeURIComponent(pathname));
-  } catch (_error) {
-    // نتجاهل المسارات غير القابلة للفك ونكتفي بالقيمة الأصلية.
-  }
-
-  for (const candidate of candidates) {
-    const normalized = normalizeStaticRedirectSource(candidate);
-    if (BLOG_SLUG_REDIRECTS.has(normalized)) {
-      return BLOG_SLUG_REDIRECTS.get(normalized);
-    }
-  }
-
-  return null;
-}
 
 function createLivePayload() {
   const levels = ['info', 'success', 'warning', 'critical'];
@@ -478,224 +296,6 @@ function createContext(req, res, corsHeaders = buildCorsHeaders(req)) {
   return { req: enhancedReq, res: enhancedRes };
 }
 
-function getContentType(filePath) {
-  const extension = path.extname(filePath).toLowerCase();
-  return MIME_TYPES[extension] || 'application/octet-stream';
-}
-
-function isHtmlPath(filePath) {
-  return path.extname(filePath).toLowerCase() === '.html';
-}
-
-function isSensitiveStaticPath(pathname) {
-  const lowerPath = pathname.toLowerCase();
-  const basename = path.posix.basename(lowerPath);
-
-  return (
-    lowerPath.endsWith('.map') ||
-    lowerPath.endsWith('.log') ||
-    lowerPath.endsWith('.sql') ||
-    basename === '.env' ||
-    basename.startsWith('.env.')
-  );
-}
-
-function normalizeStaticPathname(pathname) {
-  let decodedPathname = pathname;
-
-  try {
-    decodedPathname = decodeURIComponent(pathname);
-  } catch (_error) {
-    decodedPathname = pathname;
-  }
-
-  const normalized = path.posix.normalize(decodedPathname);
-  if (!normalized.startsWith('/')) {
-    return `/${normalized}`;
-  }
-
-  return normalized;
-}
-
-function resolveStaticFilePath(pathname) {
-  const normalizedPathname = normalizeStaticPathname(pathname);
-  const trimmedPathname = normalizedPathname === '/'
-    ? '/'
-    : normalizedPathname.replace(/\/+$/, '');
-  const hasExtension = path.posix.extname(trimmedPathname) !== '';
-  const candidates = trimmedPathname === '/'
-    ? ['/index.html']
-    : hasExtension
-      ? [trimmedPathname]
-      : [`${trimmedPathname}/index.html`, `${trimmedPathname}.html`];
-
-  for (const candidate of candidates) {
-    const absolutePath = path.resolve(PROJECT_ROOT, `.${candidate}`);
-    if (!absolutePath.startsWith(`${PROJECT_ROOT}${path.sep}`) && absolutePath !== PROJECT_ROOT) {
-      continue;
-    }
-
-    try {
-      const stats = fs.statSync(absolutePath);
-      if (stats.isFile()) {
-        return absolutePath;
-      }
-    } catch (_error) {
-      // نكمل على المرشح التالي إذا لم يوجد الملف.
-    }
-  }
-
-  return null;
-}
-
-function buildStaticHeaders(filePath, extraHeaders = {}) {
-  const headers = {
-    'Content-Type': getContentType(filePath),
-    ...extraHeaders
-  };
-
-  if (isHtmlPath(filePath)) {
-    Object.assign(headers, HTML_SECURITY_HEADERS);
-  }
-
-  return headers;
-}
-
-function getStaticCacheControl(filePath) {
-  const extension = path.extname(filePath).toLowerCase();
-  const basename = path.basename(filePath).toLowerCase();
-
-  if (basename === 'index.html' || extension === '.html') {
-    return 'public, max-age=0, must-revalidate';
-  }
-
-  if (['.woff', '.woff2', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico'].includes(extension)) {
-    return 'public, max-age=31536000, immutable';
-  }
-
-  if (['.js', '.css'].includes(extension)) {
-    return `public, max-age=${ONE_DAY_SECONDS}, stale-while-revalidate=${7 * ONE_DAY_SECONDS}`;
-  }
-
-  if (extension === '.xml') return `public, max-age=${ONE_HOUR_SECONDS}`;
-  if (extension === '.txt' || extension === '.json') return `public, max-age=${ONE_DAY_SECONDS}`;
-  return `public, max-age=${ONE_HOUR_SECONDS}`;
-}
-
-function buildEntityTag(stats) {
-  return `"${stats.size.toString(16)}-${Math.floor(stats.mtimeMs).toString(16)}"`;
-}
-
-function clientHasFreshStaticCopy(req, etag, lastModified) {
-  const noneMatch = req.headers['if-none-match'];
-  if (noneMatch && noneMatch.split(',').map(value => value.trim()).includes(etag)) {
-    return true;
-  }
-
-  const modifiedSince = req.headers['if-modified-since'];
-  if (!modifiedSince) return false;
-
-  const modifiedSinceMs = Date.parse(modifiedSince);
-  const lastModifiedMs = Date.parse(lastModified);
-  return Number.isFinite(modifiedSinceMs) && Number.isFinite(lastModifiedMs) && lastModifiedMs <= modifiedSinceMs;
-}
-
-function sendStaticFile(req, res, filePath, statusCode = 200, extraHeaders = {}) {
-  const stats = fs.statSync(filePath);
-  const lastModified = stats.mtime.toUTCString();
-  const etag = buildEntityTag(stats);
-  const headers = buildStaticHeaders(filePath, {
-    'Cache-Control': getStaticCacheControl(filePath),
-    'Last-Modified': lastModified,
-    ETag: etag,
-    ...extraHeaders
-  });
-
-  if (statusCode === 200 && clientHasFreshStaticCopy(req, etag, lastModified)) {
-    res.writeHead(304, headers);
-    res.end();
-    return;
-  }
-
-  res.writeHead(statusCode, headers);
-
-  if (req.method === 'HEAD') {
-    res.end();
-    return;
-  }
-
-  const stream = fs.createReadStream(filePath);
-  stream.on('error', error => {
-    console.error('Static file stream error:', error);
-    if (!res.headersSent) {
-      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-    }
-    res.end('حدث خطأ أثناء تحميل الملف.');
-  });
-  stream.pipe(res);
-}
-
-function sendStatic404(req, res) {
-  const notFoundPath = path.join(PROJECT_ROOT, '404.html');
-  const extraHeaders = { 'X-Robots-Tag': 'noindex' };
-
-  try {
-    const stats = fs.statSync(notFoundPath);
-    if (stats.isFile()) {
-      sendStaticFile(req, res, notFoundPath, 404, extraHeaders);
-      return;
-    }
-  } catch (_error) {
-    // نرجع إلى الاستجابة الاحتياطية إذا لم تتوفر صفحة 404.
-  }
-
-  res.writeHead(404, {
-    'Content-Type': 'text/html; charset=utf-8',
-    ...HTML_SECURITY_HEADERS,
-    ...extraHeaders
-  });
-
-  if (req.method === 'HEAD') {
-    res.end();
-    return;
-  }
-
-  res.end('<!DOCTYPE html><html lang="ar-SA" dir="rtl"><head><meta charset="utf-8"><title>404</title></head><body><h1>404</h1></body></html>');
-}
-
-function tryServeStaticRequest(req, res, pathname) {
-  const normalizedPathname = normalizeStaticPathname(pathname);
-
-  if (isSensitiveStaticPath(normalizedPathname)) {
-    res.writeHead(403, {
-      'Content-Type': 'text/plain; charset=utf-8',
-      'X-Robots-Tag': 'noindex, nofollow'
-    });
-    res.end(req.method === 'HEAD' ? undefined : '403 Forbidden');
-    return true;
-  }
-
-  const filePath = resolveStaticFilePath(normalizedPathname);
-  if (!filePath) {
-    sendStatic404(req, res);
-    return true;
-  }
-
-  const extraHeaders = {};
-  const lowerPathname = normalizedPathname.toLowerCase();
-
-  if (lowerPathname === '/sitemap.xml') {
-    extraHeaders['Content-Type'] = 'application/xml; charset=utf-8';
-    extraHeaders['Cache-Control'] = 'public, max-age=3600';
-  } else if (lowerPathname === '/robots.txt') {
-    extraHeaders['Content-Type'] = 'text/plain; charset=utf-8';
-    extraHeaders['Cache-Control'] = 'public, max-age=86400';
-  }
-
-  sendStaticFile(req, res, filePath, 200, extraHeaders);
-  return true;
-}
-
 /**
  * Generate Swagger UI HTML
  */
@@ -763,7 +363,7 @@ async function handleRequest(req, res) {
   }
 
   const redirectTarget = (method === 'GET' || method === 'HEAD')
-    ? (STATIC_ROUTE_REDIRECTS.get(url) || getStaticRedirectTarget(url))
+    ? getRedirectTarget(url)
     : null;
   if (redirectTarget) {
     res.writeHead(301, {
