@@ -37,9 +37,7 @@ Allow: /docs/
 Allow: /sectors/
 Allow: /demo/
 Allow: /llms.txt
-Disallow: /backend/
-Disallow: /node_modules/
-Disallow: /scripts/
+
 
 Sitemap: https://brightai.site/sitemap.xml
 Sitemap: https://brightai.site/sitemap-services.xml

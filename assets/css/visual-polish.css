@@ -1185,3 +1185,507 @@ tbody tr:hover {
     transition: none !important;
   }
 }
+
+/* Final homepage redesign layer: scoped, Arabic-first, content-preserving. */
+body:has(#top) {
+  --home-bg: #05070d;
+  --home-bg-2: #080c16;
+  --home-panel: rgba(13, 18, 31, 0.78);
+  --home-panel-strong: rgba(18, 25, 42, 0.92);
+  --home-border: rgba(212, 220, 235, 0.14);
+  --home-border-strong: rgba(125, 211, 252, 0.34);
+  --home-text: #f7fbff;
+  --home-text-soft: #d7e2f2;
+  --home-text-muted: #a9b6ca;
+  --home-blue: #5eead4;
+  --home-sky: #38bdf8;
+  --home-purple: #a78bfa;
+  --home-green: #22c55e;
+  --home-gold: #fbbf24;
+  --home-radius: 18px;
+  --home-radius-lg: 24px;
+  --home-shadow: 0 18px 60px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background:
+    radial-gradient(900px 420px at 82% 8%, rgba(56, 189, 248, 0.13), transparent 62%),
+    radial-gradient(680px 380px at 8% 20%, rgba(34, 197, 94, 0.08), transparent 64%),
+    linear-gradient(180deg, var(--home-bg) 0%, #070a12 42%, #05070d 100%) !important;
+  color: var(--home-text-soft) !important;
+}
+
+body:has(#top) main {
+  overflow: clip;
+}
+
+body:has(#top) .container {
+  inline-size: min(100% - clamp(1.25rem, 4vw, 3rem), 1180px) !important;
+}
+
+body:has(#top) .unified-nav {
+  background: rgba(5, 7, 13, 0.84) !important;
+  border-block-end: 1px solid rgba(212, 220, 235, 0.11) !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28) !important;
+}
+
+body:has(#top) .nav-link,
+body:has(#top) .search-trigger,
+body:has(#top) .lang-switcher-btn {
+  min-block-size: 42px;
+  border-radius: 12px !important;
+}
+
+body:has(#top) .nav-link:hover,
+body:has(#top) .search-trigger:hover,
+body:has(#top) .lang-switcher-btn:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+
+body:has(#top) .breadcrumb-shell {
+  inline-size: min(100% - clamp(1.25rem, 4vw, 3rem), 1180px);
+  margin-inline: auto !important;
+  padding: 0.85rem 0 !important;
+}
+
+body:has(#top) .hero-shell {
+  min-block-size: auto !important;
+  padding-block: clamp(4.8rem, 8vw, 7rem) clamp(4rem, 7vw, 6rem) !important;
+  background:
+    radial-gradient(900px 520px at 75% 4%, rgba(94, 234, 212, 0.14), transparent 64%),
+    radial-gradient(720px 460px at 18% 18%, rgba(167, 139, 250, 0.14), transparent 62%),
+    linear-gradient(180deg, #070a12 0%, #0a0f1b 52%, #05070d 100%) !important;
+}
+
+body:has(#top) .hero-shell::after {
+  content: "";
+  position: absolute;
+  inset-inline: min(3vw, 3rem);
+  inset-block-end: 0;
+  block-size: 1px;
+  background: linear-gradient(90deg, transparent, rgba(94, 234, 212, 0.42), transparent);
+  pointer-events: none;
+}
+
+body:has(#top) .hero-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(22rem, 0.74fr) !important;
+}
+
+body:has(#top) .hero-content {
+  max-inline-size: 45rem !important;
+}
+
+body:has(#top) .hero-title,
+body:has(#top) #top h1 {
+  max-inline-size: 12ch !important;
+  color: var(--home-text) !important;
+  text-shadow: 0 10px 38px rgba(0, 0, 0, 0.38);
+}
+
+body:has(#top) .hero-subtitle {
+  max-inline-size: 44rem !important;
+  color: var(--home-text-soft) !important;
+}
+
+body:has(#top) .hero-cta-group,
+body:has(#top) .hero-actions,
+body:has(#top) .action-row {
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0.9rem !important;
+}
+
+body:has(#top) .btn,
+body:has(#top) a.btn,
+body:has(#top) .inline-flex[href] {
+  min-block-size: 46px;
+  border-radius: 14px !important;
+  text-decoration: none !important;
+}
+
+body:has(#top) .btn.primary,
+body:has(#top) .btn-primary,
+body:has(#top) .hero-cta-consultation,
+body:has(#top) a.bg-cyan-400 {
+  border: 1px solid rgba(94, 234, 212, 0.35) !important;
+  background: linear-gradient(135deg, #67e8f9 0%, #34d399 100%) !important;
+  color: #041018 !important;
+  box-shadow: 0 18px 42px rgba(45, 212, 191, 0.22) !important;
+}
+
+body:has(#top) .btn:not(.primary):not(.btn-primary),
+body:has(#top) .btn-secondary,
+body:has(#top) .btn.ghost,
+body:has(#top) .hero-cta-demo {
+  border: 1px solid var(--home-border) !important;
+  background: rgba(255, 255, 255, 0.055) !important;
+  color: var(--home-text) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+body:has(#top) .btn:hover,
+body:has(#top) .inline-flex[href]:hover {
+  transform: translateY(-2px);
+}
+
+body:has(#top) section,
+body:has(#top) .section {
+  padding-block: clamp(4.8rem, 8.5vw, 7.6rem) !important;
+}
+
+body:has(#top) main > section {
+  background:
+    radial-gradient(620px 300px at 84% 0%, rgba(56, 189, 248, 0.055), transparent 68%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.012), rgba(255, 255, 255, 0)) !important;
+}
+
+body:has(#top) main > section:nth-of-type(even) {
+  background:
+    radial-gradient(620px 320px at 14% 10%, rgba(167, 139, 250, 0.06), transparent 70%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.028), rgba(255, 255, 255, 0.006)) !important;
+}
+
+body:has(#top) #contractai-system > .container > .relative,
+body:has(#top) #try-tools,
+body:has(#top) #interactive .dash-3d,
+body:has(#top) #semrush-index-html,
+body:has(#top) #geo-entity-answers,
+body:has(#top) .brightai-internal-links {
+  border: 1px solid var(--home-border) !important;
+  background:
+    linear-gradient(145deg, rgba(13, 18, 31, 0.84), rgba(8, 12, 22, 0.7)) !important;
+  box-shadow: var(--home-shadow) !important;
+}
+
+body:has(#top) #try-tools {
+  margin-inline: auto;
+}
+
+body:has(#top) .text-center,
+body:has(#top) .section .title,
+body:has(#top) .section .subtitle {
+  text-align: center !important;
+}
+
+body:has(#top) .section .title,
+body:has(#top) main > section h2.title {
+  max-inline-size: 21ch !important;
+  color: var(--home-text) !important;
+  font-weight: 850 !important;
+}
+
+body:has(#top) .section .subtitle,
+body:has(#top) main > section p.subtitle {
+  max-inline-size: 58rem !important;
+  color: var(--home-text-soft) !important;
+}
+
+body:has(#top) main > section h2.title::before {
+  display: none !important;
+}
+
+body:has(#top) .badge,
+body:has(#top) .tag,
+body:has(#top) .chip,
+body:has(#top) [class*="badge"],
+body:has(#top) .tool-chip {
+  border: 1px solid rgba(125, 211, 252, 0.24) !important;
+  background: rgba(14, 165, 233, 0.09) !important;
+  color: #c7f9ff !important;
+}
+
+body:has(#top) .grid > .group,
+body:has(#top) .ux-trust-card,
+body:has(#top) .tech-card,
+body:has(#top) .panel,
+body:has(#top) .bento,
+body:has(#top) .robot,
+body:has(#top) .engine,
+body:has(#top) .bot,
+body:has(#top) .step,
+body:has(#top) .project,
+body:has(#top) .kpi-card,
+body:has(#top) .post,
+body:has(#top) .align-card,
+body:has(#top) .vm-card,
+body:has(#top) .price,
+body:has(#top) .seo-answer-block,
+body:has(#top) .seo-intent-group,
+body:has(#top) .seo-intent-links,
+body:has(#top) #cities-served li,
+body:has(#top) #sectors-served a {
+  border: 1px solid var(--home-border) !important;
+  border-radius: var(--home-radius-lg) !important;
+  background:
+    linear-gradient(155deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018)),
+    var(--home-panel) !important;
+  box-shadow: var(--home-shadow) !important;
+}
+
+body:has(#top) .grid > .group,
+body:has(#top) .tech-card,
+body:has(#top) .panel,
+body:has(#top) .bento,
+body:has(#top) .robot,
+body:has(#top) .engine,
+body:has(#top) .bot,
+body:has(#top) .step,
+body:has(#top) .project,
+body:has(#top) .post,
+body:has(#top) .price {
+  padding: clamp(1.25rem, 2.3vw, 1.9rem) !important;
+}
+
+body:has(#top) .grid > .group:hover,
+body:has(#top) .tech-card:hover,
+body:has(#top) .panel:hover,
+body:has(#top) .bento:hover,
+body:has(#top) .robot:hover,
+body:has(#top) .engine:hover,
+body:has(#top) .bot:hover,
+body:has(#top) .step:hover,
+body:has(#top) .project:hover,
+body:has(#top) .post:hover,
+body:has(#top) .price:hover {
+  border-color: var(--home-border-strong) !important;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.46), 0 0 0 1px rgba(56, 189, 248, 0.08) !important;
+}
+
+body:has(#top) .grid > .group p,
+body:has(#top) .tech-card p,
+body:has(#top) .panel p,
+body:has(#top) .bento p,
+body:has(#top) .robot p,
+body:has(#top) .engine p,
+body:has(#top) .bot p,
+body:has(#top) .step p,
+body:has(#top) .project p,
+body:has(#top) .post p,
+body:has(#top) .price p,
+body:has(#top) .muted-note,
+body:has(#top) .meta {
+  color: var(--home-text-muted) !important;
+}
+
+body:has(#top) .grid > .group h3,
+body:has(#top) .tech-card h3,
+body:has(#top) .panel h3,
+body:has(#top) .bento h3,
+body:has(#top) .robot h3,
+body:has(#top) .engine h3,
+body:has(#top) .bot h4,
+body:has(#top) .step h3,
+body:has(#top) .project h3,
+body:has(#top) .post h3,
+body:has(#top) .price h3 {
+  color: var(--home-text) !important;
+}
+
+body:has(#top) .robot img {
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  filter: saturate(1.08) contrast(1.02);
+}
+
+body:has(#top) .compare-wrap,
+body:has(#top) table {
+  border-radius: var(--home-radius-lg) !important;
+  border: 1px solid var(--home-border) !important;
+  background: var(--home-panel-strong) !important;
+  box-shadow: var(--home-shadow) !important;
+}
+
+body:has(#top) .compare th,
+body:has(#top) table th {
+  background: rgba(125, 211, 252, 0.09) !important;
+  color: var(--home-text) !important;
+}
+
+body:has(#top) .compare td,
+body:has(#top) table td {
+  color: var(--home-text-soft) !important;
+}
+
+body:has(#top) .tools-row,
+body:has(#top) .tri,
+body:has(#top) .robotics,
+body:has(#top) .engines,
+body:has(#top) .bots,
+body:has(#top) .steps,
+body:has(#top) .projects,
+body:has(#top) .blog,
+body:has(#top) .align,
+body:has(#top) .vm,
+body:has(#top) .pricing,
+body:has(#top) .kpi-grid,
+body:has(#top) .grid-bento {
+  gap: clamp(1rem, 2vw, 1.5rem) !important;
+}
+
+body:has(#top) .price.enterprise {
+  inline-size: min(100% - clamp(1.25rem, 4vw, 3rem), 1180px) !important;
+  margin: 1.5rem auto 0 !important;
+}
+
+body:has(#top) #interactive .dash-body {
+  gap: clamp(1rem, 3vw, 2rem) !important;
+}
+
+body:has(#top) .screen3d,
+body:has(#top) .dash-3d .stats {
+  border-color: rgba(125, 211, 252, 0.24) !important;
+}
+
+body:has(#top) .workflow-stage-label,
+body:has(#top) .kpi strong,
+body:has(#top) .amount {
+  color: #06111b !important;
+  background: linear-gradient(135deg, #67e8f9, #34d399) !important;
+}
+
+body:has(#top) #faq details,
+body:has(#top) #faq .faq-item {
+  border: 1px solid var(--home-border) !important;
+  border-radius: var(--home-radius) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+body:has(#top) footer {
+  background:
+    radial-gradient(620px 300px at 18% 0%, rgba(56, 189, 248, 0.08), transparent 70%),
+    #05070d !important;
+  border-block-start: 1px solid var(--home-border) !important;
+}
+
+body:has(#top) .mobile-dropdown {
+  margin-inline-start: 0 !important;
+  margin-inline-end: 3rem !important;
+  padding-inline-start: 0 !important;
+  padding-inline-end: 1rem !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 1.5px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body:has(#top) .dropdown-menu {
+  inset-inline-start: auto !important;
+  inset-inline-end: 0 !important;
+  transform-origin: top right !important;
+}
+
+body:has(#top) .to-top,
+body:has(#top) #toTop,
+body:has(#top) .cookies {
+  inset-inline-start: 1.25rem !important;
+  inset-inline-end: auto !important;
+}
+
+body:has(#top) #bai-chat-fab,
+body:has(#top) .ch-widget {
+  inset-inline-end: 1.25rem !important;
+  inset-inline-start: auto !important;
+}
+
+@media (min-width: 1024px) {
+  body:has(#top) .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  body:has(#top) .robotics,
+  body:has(#top) .projects,
+  body:has(#top) .blog,
+  body:has(#top) .kpi-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  body:has(#top) .hero-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body:has(#top) .hero-content,
+  body:has(#top) .hero-actions,
+  body:has(#top) .hero-cta-group,
+  body:has(#top) .action-row {
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  body:has(#top) .hero-title,
+  body:has(#top) .hero-subtitle {
+    margin-inline: auto !important;
+  }
+
+  body:has(#top) .hero-content > .mt-12 {
+    margin-inline: auto !important;
+  }
+
+  body:has(#top) .hero-visual {
+    display: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  body:has(#top) {
+    --fs-body: 1rem;
+  }
+
+  body:has(#top) .hero-shell {
+    padding-block-start: calc(var(--nav-height, 64px) + 2.25rem) !important;
+  }
+
+  body:has(#top) .hero-title,
+  body:has(#top) #top h1 {
+    font-size: clamp(2.35rem, 13vw, 3.5rem) !important;
+    line-height: 1.12 !important;
+  }
+
+  body:has(#top) .hero-cta-group,
+  body:has(#top) .hero-actions,
+  body:has(#top) .action-row,
+  body:has(#top) .flex.flex-wrap.gap-4 {
+    inline-size: 100%;
+  }
+
+  body:has(#top) .hero-cta-group > *,
+  body:has(#top) .hero-actions > *,
+  body:has(#top) .action-row > *,
+  body:has(#top) .btn,
+  body:has(#top) a.btn {
+    inline-size: 100%;
+    justify-content: center !important;
+  }
+
+  body:has(#top) .section .title,
+  body:has(#top) main > section h2.title {
+    max-inline-size: 100% !important;
+    font-size: clamp(1.8rem, 8vw, 2.55rem) !important;
+  }
+
+  body:has(#top) .grid,
+  body:has(#top) .tri,
+  body:has(#top) .robotics,
+  body:has(#top) .engines,
+  body:has(#top) .bots,
+  body:has(#top) .steps,
+  body:has(#top) .projects,
+  body:has(#top) .blog,
+  body:has(#top) .align,
+  body:has(#top) .vm,
+  body:has(#top) .pricing,
+  body:has(#top) .kpi-grid,
+  body:has(#top) .grid-bento {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body:has(#top) .compare-wrap {
+    overflow-x: auto;
+  }
+
+  body:has(#top) .compare {
+    min-inline-size: 42rem;
+  }
+
+  body:has(#top) .cookies {
+    inset-inline: 0.75rem !important;
+    inline-size: auto !important;
+  }
+}
