@@ -275,24 +275,11 @@
 }
 </script>
     <link rel="preload" href="/assets/css/critical.css" as="style">
+    <link rel="preload" href="/frontend/css/main.bundle.min.css" as="style">
     <link rel="stylesheet" href="/assets/css/critical.css">
-    <link rel="stylesheet" href="/assets/css/main.css" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="/assets/css/components.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="/assets/css/components.css">
-    </noscript>
-    <link rel="stylesheet" href="/frontend/css/index-critical-overrides.min.css">
     <link rel="stylesheet" href="/frontend/css/main.bundle.min.css" media="print" onload="this.media='all'">
     <noscript>
-        <link rel="stylesheet" href="/frontend/css/main.bundle.min.css" />
-    </noscript>
-    <link rel="stylesheet" href="/frontend/css/index-theme.min.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="/frontend/css/index-theme.min.css" />
-    </noscript>
-    <link rel="stylesheet" href="/assets/css/ux-audit-fixes.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="/assets/css/ux-audit-fixes.css" />
+        <link rel="stylesheet" href="/frontend/css/main.bundle.min.css">
     </noscript>
 
 
@@ -306,23 +293,11 @@
     <link href="/assets/images/apple-touch-icon.png" rel="apple-touch-icon" sizes="180x180">
     <link href="/manifest.json" rel="manifest">
     <meta name="msapplication-config" content="/browserconfig.xml">
-    <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript>
-        <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" />
-    </noscript>
     <script defer="" src="/frontend/js/vendor/iconify-icon.min.js" fetchpriority="low"></script>
-
-
-    <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" media="print" onload="this.media='all'">
-    <noscript>
-        <link rel="stylesheet" href="/assets/css/extracted-inline-styles.css" />
-    </noscript>
-    <script defer="" src="/frontend/js/performance-loader.min.js" data-analytics="content" data-clarity="interaction"
-        data-sentry="idle"
-        data-local-scripts="/frontend/js/main.bundle.min.js,/frontend/js/index-theme.min.js,/frontend/js/api-gateway.min.js,/frontend/js/api-preflight.min.js"
-        data-local-scripts-on="idle"
-        data-mobile-remove=".hero-visual,.mobile-menu-drawer > div > .absolute.top-0.right-0,.mobile-menu-drawer > div > .absolute.bottom-10.left-0"></script>
-    <script defer="" src="/frontend/js/analytics-events.js"></script>
+    <script defer="" src="/frontend/js/performance-loader.min.js" data-analytics="consent" data-clarity="interaction"
+        data-sentry="idle" data-local-scripts="/frontend/js/api-gateway.min.js,/frontend/js/api-preflight.min.js"
+        data-local-scripts-on="idle"></script>
+    <script defer="" src="/frontend/js/analytics-events.js" fetchpriority="low"></script>
 
     <meta name="seo:intent" content="commercial_investigation">
     <meta name="seo:secondary_intent" content="entity_trust">
@@ -330,9 +305,6 @@
 
 
 
-    <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
-
-    <link rel="stylesheet" href="/assets/css/visual-polish.css">
 </head>
 
 <body>
@@ -355,7 +327,7 @@
                 </a>
             </div>
 
-            <nav class="nav-desktop" style="contain:layout">
+            <nav class="nav-desktop">
                 <ul class="nav-links">
                     <li class="nav-item">
                         <a class="nav-link" href="/">الرئيسية</a>
@@ -718,7 +690,7 @@
 
             <!-- Drawer Navigation Menu -->
             <div class="flex-1 overflow-y-auto px-5 py-6 pb-40 space-y-2 relative z-10 w-full">
-                <ul class="mobile-nav-list space-y-1" style="list-style:none;padding:0;margin:0">
+                <ul class="mobile-nav-list space-y-1 ba-clean-list">
                     <li>
                         <a class="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.04] active:bg-white/[0.06] transition-all group"
                             href="/">
@@ -924,7 +896,7 @@
     <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
 
 
-    <div aria-hidden="true" class="loading" id="loading" style="display:none!important">
+    <div aria-hidden="true" class="loading ba-hidden-loader" id="loading">
         <div>
             <div class="loader-brand-row">
                 <div aria-hidden="true" class="bai-loading-logo-mark"></div>
@@ -999,8 +971,7 @@
         </ol>
     </nav>
 
-    <main id="main" itemscope="" itemtype="https://schema.org/WebPage"
-        style="padding-top:var(--nav-height);contain:layout style">
+    <main id="main" class="ba-page-main" itemscope="" itemtype="https://schema.org/WebPage">
 
 
 
@@ -2073,8 +2044,8 @@
                             <source srcset="assets/3d-icons/smart-drones-inspection-0.webp" type="image/webp"><img
                                 alt="استخدام الدرونز الذكية في مشاريع البنية التحتية السعودية ضمن رؤية المملكة"
                                 class="w-full h-48 object-cover rounded-xl mb-4 shadow-lg" decoding="async"
-                                height="1024" loading="lazy" src="/assets/3d-icons/smart-drones-inspection-0.webp"
-                                width="1024">
+                                height="1024" loading="lazy" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+                                src="/assets/3d-icons/smart-drones-inspection-0.webp" width="1024">
                         </picture>
                         <h3><iconify-icon aria-hidden="true" icon="lucide:drone" class="heading-inline-icon" width="20"
                                 height="20"></iconify-icon>
@@ -2101,8 +2072,8 @@
                             <source srcset="assets/3d-icons/warehouse-automation-0.webp" type="image/webp"><img
                                 alt="أتمتة المستودعات باستخدام قدرات AI وأتمتة العمليات الروبوتية RPA لدعم القطاع اللوجستي"
                                 class="w-full h-48 object-cover rounded-xl mb-4 shadow-lg" decoding="async"
-                                height="1024" loading="lazy" src="/assets/3d-icons/warehouse-automation-0.webp"
-                                width="1024">
+                                height="1024" loading="lazy" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+                                src="/assets/3d-icons/warehouse-automation-0.webp" width="1024">
                         </picture>
                         <h3><iconify-icon aria-hidden="true" icon="lucide:package" class="heading-inline-icon"
                                 width="20" height="20"></iconify-icon>
@@ -2127,8 +2098,8 @@
                             <source srcset="assets/3d-icons/digital-twins-simulation-0.webp" type="image/webp"><img
                                 alt="التوائم الرقمية لمحاكاة المشاريع الكبرى للمدن الذكية في نيوم والرياض"
                                 class="w-full h-48 object-cover rounded-xl mb-4 shadow-lg" decoding="async"
-                                height="1024" loading="lazy" src="/assets/3d-icons/digital-twins-simulation-0.webp"
-                                width="1024">
+                                height="1024" loading="lazy" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+                                src="/assets/3d-icons/digital-twins-simulation-0.webp" width="1024">
                         </picture>
                         <h3><iconify-icon aria-hidden="true" icon="lucide:copy" class="heading-inline-icon" width="20"
                                 height="20"></iconify-icon>
@@ -2154,7 +2125,8 @@
                             <source srcset="assets/3d-icons/customer-robots-0.webp" type="image/webp"><img
                                 alt="روبوتات الاستقبال الذكية لخدمة العملاء في الشركات السعودية والقطاع الحكومي"
                                 class="w-full h-48 object-cover rounded-xl mb-4 shadow-lg" decoding="async"
-                                height="1024" loading="lazy" src="/assets/3d-icons/customer-robots-0.webp" width="1024">
+                                height="1024" loading="lazy" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 300px"
+                                src="/assets/3d-icons/customer-robots-0.webp" width="1024">
                         </picture>
                         <h3><iconify-icon aria-hidden="true" icon="lucide:bot" class="heading-inline-icon" width="20"
                                 height="20"></iconify-icon>
@@ -4099,8 +4071,6 @@
     </div>
 
     <script defer="" src="/frontend/js/navigation.min.js" fetchpriority="low"></script>
-
-    <script defer="" src="/frontend/js/search.min.js" fetchpriority="low"></script>
 
     <script defer="" src="/frontend/js/accessibility.min.js?v=2026042904" fetchpriority="low"></script>
 

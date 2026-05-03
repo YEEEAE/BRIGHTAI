@@ -12,7 +12,8 @@ export function containsSensitivePII(value: string): boolean {
 export function sanitizeText(value: string): string {
   return value
     .replace(/[<>]/g, "")
-    .replace(/\u0000/g, "")
+    .split("\u0000")
+    .join("")
     .trim()
     .slice(0, 12000);
 }

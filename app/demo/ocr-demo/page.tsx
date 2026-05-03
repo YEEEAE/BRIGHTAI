@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import { BeforeAfterSlider } from "@/components/demo/BeforeAfterSlider";
 import { DemoHero } from "@/components/demo/DemoHero";
 import { OcrDemoClient } from "@/components/demo/OcrDemoClient";
@@ -82,14 +84,14 @@ export default function OcrDemoPage() {
     <main className="demo-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <nav className="top-nav demo-container" aria-label="التنقل الرئيسي">
-        <a href="/" aria-label="Bright AI الرئيسية">
-          <img src="/assets/images/logo-new.PNG" width="42" height="42" alt="شعار Bright AI" />
+        <Link href="/" aria-label="Bright AI الرئيسية">
+          <Image src="/assets/images/logo-new.PNG" width={42} height={42} alt="شعار Bright AI" />
           <span>Bright AI</span>
-        </a>
+        </Link>
         <div>
-          <a href="/demo/">الديموهات</a>
+          <Link href="/demo/">الديموهات</Link>
           <a href="/services/document-automation.html">الخدمة</a>
-          <a href="/contact/">تواصل</a>
+          <Link href="/contact/">تواصل</Link>
         </div>
       </nav>
 

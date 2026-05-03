@@ -328,18 +328,75 @@
     }, 100), { passive: true });
   }
 
-  function initLazyEnhancements() {
-    if (!("IntersectionObserver" in window)) {
-      initChatbot();
-      return;
-    }
-    var chat = document.getElementById("bai-chat-box");
-    if (!chat) return initChatbot();
-    var observer = new IntersectionObserver(function () {
-      initChatbot();
-      observer.disconnect();
+  function initMobileFooterAccordions() {
+    var footer = document.getElementById("contact-section");
+    if (!footer) return;
+    var media = window.matchMedia("(max-width: 640px)");
+    var groups = Array.prototype.slice.call(footer.querySelectorAll(".container > .grid > div")).slice(1);
+    groups.forEach(function (group, index) {
+      var heading = group.querySelector("h3");
+      var panel = group.querySelector("ul");
+      if (!heading || !panel || heading.querySelector("button")) return;
+      var panelId = panel.id || "footer-links-panel-" + (index + 1);
+      var button = document.createElement("button");
+      panel.id = panelId;
+      button.type = "button";
+      button.className = "ba-footer-accordion-trigger";
+      button.setAttribute("aria-controls", panelId);
+      while (heading.firstChild) button.appendChild(heading.firstChild);
+      heading.appendChild(button);
+      group.classList.add("ba-footer-accordion");
+      panel.classList.add("ba-footer-accordion-panel");
+
+      function setOpen(open) {
+        button.setAttribute("aria-expanded", open ? "true" : "false");
+        panel.hidden = !open;
+      }
+
+      function sync() {
+        var isMobile = media.matches;
+        group.classList.toggle("ba-footer-accordion-enabled", isMobile);
+        if (!isMobile) {
+          setOpen(true);
+          return;
+        }
+        if (!group.dataset.userToggled) setOpen(index === 0);
+      }
+
+      on(button, "click", function () {
+        if (!media.matches) return;
+        group.dataset.userToggled = "true";
+        setOpen(button.getAttribute("aria-expanded") !== "true");
+      });
+      if (typeof media.addEventListener === "function") {
+        media.addEventListener("change", sync);
+      } else if (typeof media.addListener === "function") {
+        media.addListener(sync);
+      }
+      sync();
     });
-    observer.observe(document.getElementById("bai-chat-fab") || chat);
+  }
+
+  function initLazyEnhancements() {
+    var fab = document.getElementById("bai-chat-fab");
+    var chat = document.getElementById("bai-chat-box");
+    if (!fab && !chat) return;
+    var initialized = false;
+    function boot(event) {
+      if (initialized) return;
+      initialized = true;
+      initChatbot();
+      if (event && event.type === "click") {
+        window.setTimeout(function () {
+          fab && fab.click();
+        }, 0);
+      }
+    }
+    if (fab) {
+      on(fab, "click", boot, { once: true });
+      on(fab, "pointerenter", boot, { once: true, passive: true });
+      on(fab, "focus", boot, { once: true });
+    }
   }
 
   ready(function () {
@@ -349,6 +406,7 @@
     initCookieConsent();
     initSearchHint();
     initScrollProgressThrottle();
+    initMobileFooterAccordions();
     initLazyEnhancements();
   });
 }());

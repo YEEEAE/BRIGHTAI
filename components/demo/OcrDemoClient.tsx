@@ -1,9 +1,10 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useMemo, useRef, useState } from "react";
 import { CheckCircle2, FileText, Loader2, UploadCloud, XCircle } from "lucide-react";
 import type { OcrResult } from "@/lib/demo/ocr";
-import { OCR_SAMPLE_INPUT } from "@/lib/demo/ocr";
+import { OCR_SAMPLE_INPUT, SUPPORTED_OCR_FILE_MIME_TYPES } from "@/lib/demo/ocr";
 import { ExportPDFButton } from "./ExportPDFButton";
 import { GeminiStreamRenderer } from "./GeminiStreamRenderer";
 import { PlaygroundShell } from "./PlaygroundShell";
@@ -40,6 +41,9 @@ const scenarios = [
   }
 ];
 
+const MAX_FILE_BYTES = 5 * 1024 * 1024;
+const SUPPORTED_FILE_MIME_TYPES = new Set<string>(SUPPORTED_OCR_FILE_MIME_TYPES);
+
 function readFileAsBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -55,7 +59,7 @@ function readFileAsBase64(file: File): Promise<string> {
 function ConfidenceRing({ value }: { value: number }) {
   const percentage = Math.round(value * 100);
   return (
-    <div className="confidence-ring" style={{ "--score": `${percentage * 3.6}deg` } as React.CSSProperties}>
+    <div className="confidence-ring" style={{ "--score": `${percentage * 3.6}deg` } as CSSProperties}>
       <strong>{percentage}%</strong>
       <span>ثقة الاستخراج</span>
     </div>
@@ -76,8 +80,14 @@ export function OcrDemoClient() {
 
   async function handleFileChange(nextFile: File | null) {
     if (!nextFile) return;
-    if (nextFile.size > 5 * 1024 * 1024) {
+    if (!SUPPORTED_FILE_MIME_TYPES.has(nextFile.type)) {
+      setError("نوع الملف غير مدعوم في الديمو العام. ارفع صورة PNG أو JPG أو WEBP أو ملف PDF.");
+      setFile(null);
+      return;
+    }
+    if (nextFile.size > MAX_FILE_BYTES) {
       setError("حجم الملف يتجاوز 5 ميجابايت. استخدم عينة أصغر للديمو العام.");
+      setFile(null);
       return;
     }
     setFile(nextFile);
@@ -89,7 +99,7 @@ export function OcrDemoClient() {
     setError(null);
     setResult(null);
     try {
-      const fileBase64 = file && file.type.startsWith("image/") ? await readFileAsBase64(file) : undefined;
+      const fileBase64 = file ? await readFileAsBase64(file) : undefined;
       const response = await fetch("/api/demo/ocr/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -148,14 +158,14 @@ export function OcrDemoClient() {
         }}
       >
         <UploadCloud aria-hidden="true" />
-        <span>{file ? file.name : "اسحب صورة فاتورة أو عقد هنا"}</span>
-        <small>يدعم الصور حتى 5 ميجابايت. لا ترفع بيانات حساسة في الديمو العام.</small>
+        <span>{file ? file.name : "اسحب صورة أو PDF لفاتورة أو عقد هنا"}</span>
+        <small>يدعم صور PNG وJPG وWEBP وملفات PDF حتى 5 ميجابايت. لا ترفع بيانات حساسة في الديمو العام.</small>
       </button>
       <input
         ref={inputRef}
         className="sr-only"
         type="file"
-        accept="image/png,image/jpeg,image/webp,application/pdf"
+        accept={SUPPORTED_OCR_FILE_MIME_TYPES.join(",")}
         onChange={(event) => void handleFileChange(event.target.files?.item(0) ?? null)}
       />
 
@@ -182,7 +192,7 @@ export function OcrDemoClient() {
 
       {isLoading ? (
         <div className="processing-steps" aria-live="polite">
-          {["قراءة الصورة", "تصنيف المستند", "استخراج الحقول", "تجهيز ERP payload"].map((step) => (
+          {["قراءة الملف", "تصنيف المستند", "استخراج الحقول", "تجهيز ERP payload"].map((step) => (
             <span key={step}>
               <Loader2 className="spin" aria-hidden="true" />
               {step}

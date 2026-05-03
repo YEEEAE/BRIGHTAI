@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+export const SUPPORTED_OCR_FILE_MIME_TYPES = ["image/png", "image/jpeg", "image/webp", "application/pdf"] as const;
+
 export const OcrInputSchema = z.object({
   documentKind: z.enum(["invoice", "contract", "receipt", "identity", "medical"]).default("invoice"),
   prompt: z.string().min(8).max(12000),
@@ -119,6 +121,7 @@ export function buildOcrPrompt(input: OcrInput): string {
   return `حلل المستند التالي لصالح ديمو Bright AI لأتمتة الوثائق في السوق السعودي.
 نوع المستند المتوقع: ${input.documentKind}
 اسم الملف: ${input.fileName ?? "لا يوجد"}
+نوع الملف: ${input.fileMime ?? "لا يوجد"}
 
 المطلوب:
 1. صنف نوع المستند.

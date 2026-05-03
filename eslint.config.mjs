@@ -49,6 +49,7 @@ export default [
       ...nextPlugin.configs["core-web-vitals"].rules,
       ...reactHooks.configs.recommended.rules,
       "no-console": "off",
+      "no-undef": "off",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
     }
   }

@@ -478,12 +478,12 @@
     }
 
     if (file.size > MAX_BYTES) {
-      setError('حجم الملف يتجاوز 4 ميجابايت. يرجى اختيار ملف أصغر.');
+      setError('حجم الملف يتجاوز 4 ميجابايت في التجربة العامة. يرجى اختيار ملف أصغر.');
       return;
     }
 
     if (!ALLOWED_TYPES.includes(file.type)) {
-      setError('نوع الملف غير مدعوم. المقبول: PDF, PNG, JPG, WEBP.');
+      setError('نوع الملف غير مدعوم. المقبول: PDF وPNG وJPG وWEBP.');
       return;
     }
 

@@ -37,7 +37,7 @@ $hits[] = $now;
 file_put_contents($rateFile, json_encode($hits));
 
 $raw = file_get_contents('php://input') ?: '';
-if (strlen($raw) > 5500000) {
+if (strlen($raw) > 6500000) {
     http_response_code(413);
     echo json_encode(['error' => 'payload_too_large', 'message' => 'حجم الطلب أكبر من الحد المسموح للتجربة العامة.'], JSON_UNESCAPED_UNICODE);
     exit;
@@ -47,6 +47,21 @@ $payload = json_decode($raw, true);
 if (!is_array($payload)) {
     http_response_code(400);
     echo json_encode(['error' => 'invalid_json'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+$allowedFileMimes = ['image/png', 'image/jpeg', 'image/webp', 'application/pdf'];
+$fileMime = isset($payload['fileMime']) ? clean_text((string) $payload['fileMime'], 80) : '';
+$fileName = isset($payload['fileName']) ? clean_text((string) $payload['fileName'], 180) : '';
+$fileBase64 = isset($payload['fileBase64']) ? clean_text((string) $payload['fileBase64'], 7000000) : '';
+unset($payload['fileBase64']);
+
+if ($fileBase64 !== '' && ($fileMime === '' || !in_array($fileMime, $allowedFileMimes, true))) {
+    http_response_code(400);
+    echo json_encode([
+        'error' => 'unsupported_file_type',
+        'message' => 'نوع الملف غير مدعوم. المقبول: صور PNG وJPG وWEBP أو PDF.'
+    ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -245,10 +260,25 @@ $userInstruction = [
     'document_mode' => $mode,
     'output_language' => $outputLanguage,
     'notes' => $payload['notes'] ?? '',
+    'file_name' => $fileName ?: null,
+    'file_mime' => $fileMime ?: null,
     'sample_context' => $payload['sample'] ?? null,
     'dynamic_doctype_schemas' => $dynamicSchemas,
-    'instruction' => 'حلل المستند أو سياق العينة وأعد JSON مطابقاً للمخطط. إذا لم تصل صورة فعلية، استخدم sample_context لتوليد نتيجة مماثلة لأغراض العرض.'
+    'instruction' => 'حلل المستند أو سياق العينة وأعد JSON مطابقاً للمخطط. إذا لم يصل ملف فعلي، استخدم sample_context لتوليد نتيجة مماثلة لأغراض العرض.'
 ];
+
+$parts = [[
+    'text' => json_encode($userInstruction, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+]];
+
+if ($fileBase64 !== '') {
+    $parts[] = [
+        'inline_data' => [
+            'mime_type' => $fileMime,
+            'data' => $fileBase64
+        ]
+    ];
+}
 
 $request = [
     'systemInstruction' => [
@@ -256,9 +286,7 @@ $request = [
     ],
     'contents' => [[
         'role' => 'user',
-        'parts' => [[
-            'text' => json_encode($userInstruction, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
-        ]]
+        'parts' => $parts
     ]],
     'generationConfig' => [
         'temperature' => $temperature,

@@ -14,7 +14,7 @@
   <meta name="author" content="Bright AI">
   <meta name="theme-color" content="#0A1F44">
   <title>ساحة ذكاء المستندات واستخراج فواتير زاتكا | Bright AI</title>
-  <meta name="description" content="جرّب ساحة ذكاء مستندات عربية تدعم الصور وملفات PDF والفواتير السعودية مع صناديق تحديد، تحقق زاتكا، حجب تلقائي للبيانات الشخصية، وتصدير جاهز لأنظمة ERP.">
+  <meta name="description" content="جرّب ساحة ذكاء مستندات عربية تدعم صور PNG وJPG وWEBP وملفات PDF والفواتير السعودية مع صناديق تحديد، تحقق زاتكا، حجب تلقائي للبيانات الشخصية، وتصدير جاهز لأنظمة ERP.">
   <link rel="canonical" href="https://brightai.site/demo/ocr-demo/">
   <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ocr-demo/">
   <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ocr-demo/">
@@ -614,7 +614,7 @@
         <div>
           <p class="eyebrow">ساحة ذكاء مستندات عربية للمؤسسات السعودية</p>
           <h1>استخرج ٣١ حقلاً من فاتورة أو عقد خلال ٤ ثوانٍ مع تحقق زاتكا وصناديق تحديد مرئية</h1>
-          <p class="lead">ارفع صورة أو ملف PDF أو اختر عينة جاهزة. تشاهد المستند الأصلي، الحقول المستخرجة، درجة الثقة، موضع كل حقل، وسجل تدقيق قابل للتصدير قبل أي ربط مع أنظمة الشركة.</p>
+          <p class="lead">ارفع صورة أو ملف PDF صغيراً أو اختر عينة جاهزة. تشاهد المستند الأصلي، الحقول المستخرجة، درجة الثقة، موضع كل حقل، وسجل تدقيق قابل للتصدير قبل أي ربط مع أنظمة الشركة.</p>
           <div class="hero-actions" aria-label="إجراءات البداية">
             <a class="btn btn-primary" href="#playground">جرّب الآن</a>
             <button class="btn btn-ghost" type="button" data-video>شاهد فيديو ٦٠ ثانية</button>
@@ -663,10 +663,10 @@
           <div class="pane-body">
             <div class="chips" id="scenario-chips" aria-label="سيناريوهات جاهزة"></div>
             <label class="drop-zone" id="drop-zone">
-              <input class="sr-only" type="file" id="doc-file" accept="image/*,.pdf" aria-label="رفع مستند أو صورة">
+              <input class="sr-only" type="file" id="doc-file" accept="image/png,image/jpeg,image/webp,application/pdf" aria-label="رفع مستند أو صورة">
               <span>
                 <strong>اسحب أي مستند هنا</strong>
-                <span class="muted">يدعم الصور، ملفات PDF، المسح الضوئي، وصور الهاتف. يتم ضغط الملفات الكبيرة قبل الإرسال.</span>
+                <span class="muted">يدعم صور PNG وJPG وWEBP وملفات PDF حتى ٤ ميجابايت في التجربة العامة.</span>
               </span>
             </label>
             <div class="form-grid">
@@ -886,7 +886,7 @@
 
     <section class="shell section faq" aria-labelledby="faq-title">
       <h2 id="faq-title">أسئلة خاصة بذكاء المستندات</h2>
-      <details><summary>هل يمكن قراءة ملفات PDF متعددة الصفحات؟</summary><p class="muted">نعم، المسار الخلفي يرسل الصفحات أو الصور إلى جيميناي، والواجهة تعرض رقم الصفحة في كل صندوق تحديد.</p></details>
+      <details><summary>هل يمكن قراءة ملفات PDF متعددة الصفحات؟</summary><p class="muted">نعم للملفات الصغيرة ضمن حد التجربة العامة. في النسخة المؤسسية يمكن رفع حدود الحجم ومعالجة دفعات أكبر حسب سياسة العميل.</p></details>
       <details><summary>كيف يتم التعامل مع الحقول منخفضة الثقة؟</summary><p class="muted">أي حقل أقل من ٠٫٧ يظهر بلون تحذيري ويُضاف إلى قائمة المراجعة قبل التصدير.</p></details>
       <details><summary>هل يفك الديمو رمز الاستجابة السريعة للفاتورة؟</summary><p class="muted">المسار يحاول كشف وجود الرمز وتطلب النسخة المؤسسية قارئ رمز مخصصاً عند الحاجة لفك TLV بدقة.</p></details>
       <details><summary>هل يمكن تشغيله داخل بيئة الشركة؟</summary><p class="muted">نعم، يمكن تشغيله كوكيل خلفي مرتبط بسياسات الشبكة والتخزين وسجلات التدقيق لديكم.</p></details>
@@ -1148,6 +1148,9 @@
       export_formats_ready: ["json", "xml", "csv", "edi"]
     };
 
+    const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+    const ALLOWED_UPLOAD_TYPES = ["image/png", "image/jpeg", "image/webp", "application/pdf"];
+
     const state = {
       sample: SAMPLE_DOCUMENTS[0],
       result: null,
@@ -1168,6 +1171,32 @@
       node.textContent = message;
       node.classList.add("show");
       window.setTimeout(() => node.classList.remove("show"), 2200);
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const value = String(reader.result || "");
+          const comma = value.indexOf(",");
+          resolve(comma >= 0 ? value.slice(comma + 1) : value);
+        };
+        reader.onerror = () => reject(new Error("تعذر قراءة الملف"));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function validateUpload(file) {
+      if (!file) return false;
+      if (!ALLOWED_UPLOAD_TYPES.includes(file.type)) {
+        toast("نوع الملف غير مدعوم. المقبول: صور PNG وJPG وWEBP أو PDF.");
+        return false;
+      }
+      if (file.size > MAX_UPLOAD_BYTES) {
+        toast("حجم الملف يتجاوز ٤ ميجابايت في التجربة العامة.");
+        return false;
+      }
+      return true;
     }
 
     function buildResult(sample) {
@@ -1312,6 +1341,8 @@
 
     async function runAnalysis() {
       const button = $("#run-btn");
+      const file = $("#doc-file").files[0];
+      if (file && !validateUpload(file)) return;
       button.disabled = true;
       button.textContent = "جارٍ التحليل...";
       for (let i = 0; i < 4; i += 1) {
@@ -1320,7 +1351,6 @@
       }
       const fallback = buildResult(state.sample);
       try {
-        const file = $("#doc-file").files[0];
         const payload = {
           sample: state.sample,
           notes: $("#doc-notes").value,
@@ -1333,7 +1363,11 @@
             persona: $("#persona").value
           }
         };
-        if (file && file.size < 4_500_000) payload.fileName = file.name;
+        if (file) {
+          payload.fileName = file.name;
+          payload.fileMime = file.type;
+          payload.fileBase64 = await fileToBase64(file);
+        }
         const response = await fetch("./api.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -1386,6 +1420,11 @@ const result = await response.json();`;
 
     function bindEvents() {
       $("#doc-notes").addEventListener("input", updateCount);
+      $("#doc-file").addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        if (validateUpload(file)) toast("تم تجهيز الملف للتحليل");
+      });
       $("#run-btn").addEventListener("click", runAnalysis);
       $("#sample-btn").addEventListener("click", () => selectSample(Math.floor(Math.random() * SAMPLE_DOCUMENTS.length)));
       $("#reset-btn").addEventListener("click", () => selectSample(0));
@@ -1438,8 +1477,9 @@ const result = await response.json();`;
       dropZone.addEventListener("drop", (event) => {
         const file = event.dataTransfer.files[0];
         if (!file) return;
+        if (!validateUpload(file)) return;
         $("#doc-file").files = event.dataTransfer.files;
-        toast(file.size > 4_000_000 ? "سيتم ضغط الملف الكبير قبل الإرسال في النسخة الخلفية" : "تم تجهيز الملف للتحليل");
+        toast("تم تجهيز الملف للتحليل");
       });
       $("[data-video]").addEventListener("click", () => toast("الفيديو التعريفي غير مرفق في هذه النسخة، وواجهة التجربة تعمل مباشرة."));
     }
