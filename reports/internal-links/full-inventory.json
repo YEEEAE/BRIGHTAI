@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-03T00:05:10.293Z",
+  "generatedAt": "2026-05-03T00:37:35.866Z",
   "filesScanned": 279,
   "pages": [
     {
@@ -31329,7 +31329,6 @@
       ],
       "incoming": [
         "https://brightai.site/ai-bots/",
-        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/marketing-ai-agent/",
         "https://brightai.site/demo/marketing-automation/",
         "https://brightai.site/demo/opportunity-discovery-agent/",
@@ -31518,7 +31517,6 @@
       ],
       "incoming": [
         "https://brightai.site/demo/ai-consulting/",
-        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/data-quality/",
         "https://brightai.site/demo/pricing/",
         "https://brightai.site/services/",
@@ -31533,7 +31531,7 @@
       "url": "https://brightai.site/demo/customer-service-automation/",
       "expectedCanonical": "https://brightai.site/demo/customer-service-automation/",
       "canonical": "https://brightai.site/demo/customer-service-automation/",
-      "title": "أتمتة خدمة العملاء",
+      "title": "صندوق وارد موحد يفهم عميلك قبل ما يرد عليه",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -31542,69 +31540,33 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/demo/brightsales/",
-        "https://brightai.site/demo/custom-ai-agent/",
-        "https://brightai.site/demo/marketing-automation/",
-        "https://brightai.site/docs/privacy-policy.html/",
-        "https://brightai.site/services/",
+        "https://brightai.site/docs/openapi/",
         "https://brightai.site/services/customer-service-automation.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": ""
+          "text": "برايت اي آي"
         },
         {
           "href": "https://brightai.site/demo/",
           "text": "كل الديموهات"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "الخدمات"
-        },
-        {
           "href": "https://brightai.site/services/customer-service-automation.html/",
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation.html/",
-          "text": "صفحة الخدمة الرسمية"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "كل خدمات Bright AI"
-        },
-        {
-          "href": "https://brightai.site/demo/",
-          "text": "مركز الديموهات"
+          "href": "https://brightai.site/docs/openapi/",
+          "text": "وثائق الواجهة"
         },
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
         },
         {
-          "href": "https://brightai.site/demo/brightsales/",
-          "text": "BrightSales للمبيعات الذكية"
-        },
-        {
-          "href": "https://brightai.site/demo/marketing-automation/",
-          "text": "نظام التسويق الذكي"
-        },
-        {
-          "href": "https://brightai.site/demo/custom-ai-agent/",
-          "text": "وكيل ذكاء اصطناعي مخصص"
-        },
-        {
           "href": "https://brightai.site/contact/",
-          "text": "احجز مكالمة 15 دقيقة"
-        },
-        {
-          "href": "https://brightai.site/docs/privacy-policy.html/",
-          "text": "سياسة الخصوصية"
+          "text": "احجز مكالمة ١٥ دقيقة"
         }
       ],
       "incoming": [
@@ -32326,7 +32288,7 @@
       "url": "https://brightai.site/demo/marketing-automation/",
       "expectedCanonical": "https://brightai.site/demo/marketing-automation/",
       "canonical": "https://brightai.site/demo/marketing-automation/",
-      "title": "نظام التسويق الذكي",
+      "title": "حملة تسويقية كاملة من الفكرة إلى التنفيذ في 4 دقائق — مدعومة بـ Gemini 2.5",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -32345,65 +32307,48 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": ""
+          "text": "Bright AI"
         },
         {
           "href": "https://brightai.site/demo/",
-          "text": "كل الديموهات"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "الخدمات"
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/marketing-automation.html/",
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
-        },
-        {
-          "href": "https://brightai.site/services/marketing-automation.html/",
-          "text": "صفحة الخدمة الرسمية"
-        },
-        {
           "href": "https://brightai.site/services/",
-          "text": "كل خدمات Bright AI"
-        },
-        {
-          "href": "https://brightai.site/demo/",
-          "text": "مركز الديموهات"
+          "text": "الخدمات"
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
-        },
-        {
-          "href": "https://brightai.site/demo/marketing-ai-agent/",
-          "text": "وكيل تسويق"
-        },
-        {
-          "href": "https://brightai.site/demo/brightsales/",
-          "text": "BrightSales للمبيعات الذكية"
-        },
-        {
-          "href": "https://brightai.site/demo/customer-service-automation/",
-          "text": "أتمتة خدمة العملاء"
+          "text": "تواصل"
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "احجز مكالمة 15 دقيقة"
+          "text": "احجز مراجعة تنفيذ"
         },
         {
           "href": "https://brightai.site/docs/privacy-policy.html/",
           "text": "سياسة الخصوصية"
+        },
+        {
+          "href": "https://brightai.site/demo/marketing-ai-agent/",
+          "text": "وكيل التسويق"
+        },
+        {
+          "href": "https://brightai.site/demo/brightsales/",
+          "text": "BrightSales"
+        },
+        {
+          "href": "https://brightai.site/demo/customer-service-automation/",
+          "text": "أتمتة خدمة العملاء"
         }
       ],
       "incoming": [
         "https://brightai.site/demo/ai-consulting/",
         "https://brightai.site/demo/brightsales/",
-        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/"
       ],
@@ -37860,6 +37805,7 @@
         "https://brightai.site/",
         "https://brightai.site/ai-workflows/",
         "https://brightai.site/data-analysis/",
+        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/docs/",
         "https://brightai.site/en/",
         "https://brightai.site/en/ai-agent/",
@@ -71145,7 +71091,6 @@
         "https://brightai.site/demo/brightsales/",
         "https://brightai.site/demo/competitor-analysis-agent/",
         "https://brightai.site/demo/custom-ai-agent/",
-        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/data-analysis/",
         "https://brightai.site/demo/data-analyzer/",
         "https://brightai.site/demo/data-quality/",
@@ -77622,7 +77567,7 @@
   "summary": {
     "pagesDiscovered": 279,
     "indexablePages": 267,
-    "internalLinksDiscovered": 6702,
+    "internalLinksDiscovered": 6698,
     "orphanPages": 0,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 109,
