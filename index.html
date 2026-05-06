@@ -854,89 +854,77 @@
                 <div class="loader-brand-name">Bright AI</div>
             </div>
             <div aria-hidden="true" class="spinner"></div>
-            <div class="txt">جاري تحميل التجربة…</div>
-        </div>
-    </div>
-    <noscript>
-        <style>
-            .loading {
-                display: none !important;
-            }
-        </style>
-    </noscript>
-    <script>
-        window.setTimeout(function () {
-            var loader = document.getElementById('loading');
-            if (loader) {
-                loader.style.display = 'none';
-                loader.setAttribute('hidden', '');
-            }
-        }, 700);
-    </script>
+            <div class="txt">جاري تحميل ال�        <div class="hero section tight hero-shell" id="top">
+            <!-- ═══ Animated Hero Background ═══ -->
+            <div class="hero-bg-layer" aria-hidden="true">
+                <div class="hero-gradient-orb hero-orb-1"></div>
+                <div class="hero-gradient-orb hero-orb-2"></div>
+                <div class="hero-gradient-orb hero-orb-3"></div>
+                <div class="hero-grid-pattern"></div>
+                <div class="hero-radial-glow"></div>
+            </div>
 
-    <div aria-hidden="true" class="progress-wrap">
-        <div class="progress-bar" id="progressBar"></div>
-    </div>
-
-    <a class="skip-link" href="#main">انتقل إلى المحتوى الرئيسي</a>
-    <a class="skip-link" href="#services">انتقل إلى الخدمات</a>
-    <a class="skip-link" href="#try-tools" data-analytics-event="tool_start" data-cta-location="homepage">انتقل إلى
-        الأدوات الذكية</a>
-    <a class="skip-link" href="#faq">انتقل إلى الأسئلة الشائعة</a>
-    <a class="skip-link" href="#contact-section" data-analytics-event="generate_lead" data-cta-location="homepage">انتقل
-        إلى التواصل</a>
-
-
-
-    <nav aria-label="جدول المحتويات" class="sr-only page-toc-sr">
-        <p class="toc-heading">جدول محتويات الصفحة</p>
-        <ol>
-            <li><a href="#top">المقدمة — حلول الذكاء الاصطناعي للشركات السعودية</a></li>
-            <li><a href="#services">خدمات الذكاء الاصطناعي في المملكة</a></li>
-            <li><a href="#try-tools" data-analytics-event="tool_start" data-cta-location="homepage">جرّب أنظمتنا الذكية
-                    — نماذج عمل حقيقية</a></li>
-            <li><a href="#aiaas">الذكاء الاصطناعي كخدمة AIaaS</a></li>
-            <li><a href="#saudi-use-cases">حالات استخدام سعودية حسب القطاع</a></li>
-            <li><a href="#blog">أحدث المقالات والأخبار</a></li>
-            <li><a href="#proof">شواهد موثوقة</a></li>
-            <li><a href="#faq">الأسئلة الشائعة</a></li>
-            <li><a href="#contact-section" data-analytics-event="generate_lead" data-cta-location="homepage">تواصل
-                    معنا</a></li>
-        </ol>
-    </nav>
-
-    <main id="main" class="ba-page-main" itemscope="" itemtype="https://schema.org/WebPage">
-
-
-
-
-        <div class="hero section tight hero-shell" id="top">
-
+            <!-- ═══ Floating Icon Orbs ═══ -->
+            <div class="hero-floating-icons" aria-hidden="true">
+                <div class="hero-icon-orb hero-icon-orb--1">
+                    <iconify-icon icon="lucide:brain-circuit" width="22" height="22"></iconify-icon>
+                </div>
+                <div class="hero-icon-orb hero-icon-orb--2">
+                    <iconify-icon icon="lucide:workflow" width="20" height="20"></iconify-icon>
+                </div>
+                <div class="hero-icon-orb hero-icon-orb--3">
+                    <iconify-icon icon="lucide:shield-check" width="20" height="20"></iconify-icon>
+                </div>
+                <div class="hero-icon-orb hero-icon-orb--4">
+                    <iconify-icon icon="lucide:database" width="18" height="18"></iconify-icon>
+                </div>
+                <div class="hero-icon-orb hero-icon-orb--5">
+                    <iconify-icon icon="lucide:sparkles" width="20" height="20"></iconify-icon>
+                </div>
+                <div class="hero-icon-orb hero-icon-orb--6">
+                    <iconify-icon icon="lucide:bar-chart-3" width="18" height="18"></iconify-icon>
+                </div>
+            </div>
 
             <div class="container relative z-[2]">
                 <div class="hero-grid items-center gap-16">
 
                     <div class="hero-content">
                         <div
-                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium mb-6">
-                            <span class="w-2 h-2 rounded-full bg-indigo-400 pulse-static-dot"></span>
+                            class="hero-badge-animated inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-sm font-medium mb-6">
+                            <span class="hero-pulse-dot"></span>
                             شركة ذكاء اصطناعي سعودية
                         </div>
                         <h1 class="title hero-title">شركة ذكاء اصطناعي في السعودية</h1>
-
-
-
-
-
-
-
 
                         <p class="subtitle hero-subtitle">
                             أتمتة، تحليل، وكلاء. نبني حلولاً تشغيلية للشركات السعودية تقلل وقت المعالجة حتى 40% مع
                             ضمان مواءمة الحوكمة وسيادة البيانات قبل الإطلاق.
                         </p>
+
+                        <!-- Stats Bar -->
+                        <div class="hero-stats-bar" aria-label="إحصائيات سريعة">
+                            <div class="hero-stat-pill">
+                                <iconify-icon aria-hidden="true" icon="lucide:trending-up" width="16" height="16" class="text-emerald-400"></iconify-icon>
+                                <span class="stat-number" data-target="40" data-suffix="%">40%</span>
+                                <span class="hero-stat-label">توفير زمن المعالجة</span>
+                            </div>
+                            <div class="hero-stat-divider"></div>
+                            <div class="hero-stat-pill">
+                                <iconify-icon aria-hidden="true" icon="lucide:shield-check" width="16" height="16" class="text-cyan-400"></iconify-icon>
+                                <span>NCA</span>
+                                <span class="hero-stat-label">متوافق</span>
+                            </div>
+                            <div class="hero-stat-divider"></div>
+                            <div class="hero-stat-pill">
+                                <iconify-icon aria-hidden="true" icon="lucide:map-pin" width="16" height="16" class="text-indigo-400"></iconify-icon>
+                                <span>الرياض</span>
+                                <span class="hero-stat-label">سعودي 100%</span>
+                            </div>
+                        </div>
+
                         <div class="hero-cta-group" role="group" aria-label="إجراءات سريعة">
-                            <a class="btn btn-primary btn-lg"
+                            <a class="btn btn-primary btn-lg hero-cta-glow"
                                 href="https://wa.me/966538229013?text=%D8%A3%D9%87%D9%84%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A"
                                 target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
                                 <svg class="btn-ic" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
@@ -949,6 +937,69 @@
                             <a class="btn btn-secondary btn-lg" href="/demo/" aria-label="جرّب أدوات Bright AI">
                                 <svg class="btn-ic" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
                                     <path fill="currentColor" d="M8 5v14l11-7z" />
+                                </svg>
+                                <span>جرّب أدواتنا</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="hero-visual relative hidden lg:block h-[500px]">
+
+                        <!-- Card 1: Analytics Dashboard -->
+                        <div class="glass-card hero-card-animated hero-card-1 absolute w-80 p-6 z-[2]">
+                            <div class="flex justify-between items-center mb-4">
+                                <div class="hero-card-icon hero-card-icon--indigo">
+                                    <iconify-icon aria-hidden="true" icon="lucide:bar-chart-2" width="20" height="20"></iconify-icon>
+                                </div>
+                                <span class="hero-metric-badge">
+                                    <iconify-icon aria-hidden="true" icon="lucide:trending-up" width="14" height="14"></iconify-icon>
+                                    +24.5% نمو
+                                </span>
+                            </div>
+                            <div class="hero-progress-track">
+                                <div class="hero-progress-fill" style="--fill-width: 75%"></div>
+                            </div>
+                            <div class="mt-4 flex justify-between text-sm text-slate-300">
+                                <span>كفاءة التشغيل</span>
+                                <span class="text-emerald-400 font-bold">98.2%</span>
+                            </div>
+                        </div>
+
+                        <!-- Card 2: AI Processing -->
+                        <div class="glass-card hero-card-animated hero-card-2 absolute w-72 p-5">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="hero-card-icon hero-card-icon--cyan" style="width:32px;height:32px">
+                                    <iconify-icon aria-hidden="true" icon="lucide:cpu" width="16" height="16"></iconify-icon>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-white">معالجة ذكية</div>
+                                    <div class="text-xs text-slate-400">Gemini 2.5 Flash</div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="hero-skeleton-line w-full"></div>
+                                <div class="hero-skeleton-line w-2/3"></div>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-white/5 flex items-center gap-2 text-xs text-emerald-400 font-bold">
+                                <span class="hero-pulse-dot hero-pulse-dot--sm"></span>
+                                تم تحليل البيانات بنجاح
+                            </div>
+                        </div>
+
+                        <!-- Card 3: Mini notification -->
+                        <div class="glass-card hero-card-animated hero-card-3 absolute p-3 z-[3]">
+                            <div class="flex items-center gap-2">
+                                <div class="hero-card-icon hero-card-icon--emerald" style="width:28px;height:28px">
+                                    <iconify-icon aria-hidden="true" icon="lucide:check-circle" width="14" height="14"></iconify-icon>
+                                </div>
+                                <span class="text-xs font-bold text-white">3 مهام مكتملة</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div> 5v14l11-7z" />
                                 </svg>
                                 <span>جرّب أدواتنا</span>
                             </a>
