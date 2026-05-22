@@ -1,12 +1,12 @@
 {
   "assets": [
     {
-      "path": "frontend/js/main.bundle.js",
+      "path": "frontend/js/main.bundle.min.js",
       "maxBytes": 60000,
       "label": "الحزمة الرئيسية للواجهة"
     },
     {
-      "path": "frontend/css/main.bundle.css",
+      "path": "frontend/css/main.bundle.min.css",
       "maxBytes": 200000,
       "label": "أنماط الواجهة الرئيسية"
     },
@@ -21,7 +21,7 @@
       "label": "أنماط المسار الحرج"
     },
     {
-      "path": "frontend/js/navigation.js",
+      "path": "frontend/js/navigation.min.js",
       "maxBytes": 52000,
       "label": "سكربت التنقل"
     },
@@ -50,7 +50,7 @@
       "label": "حمولة CSS الأولية",
       "paths": [
         "frontend/css/bundle-critical.css",
-        "frontend/css/main.bundle.css"
+        "frontend/css/main.bundle.min.css"
       ],
       "maxBytes": 250000
     }

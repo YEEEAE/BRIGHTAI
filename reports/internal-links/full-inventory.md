@@ -1,16 +1,16 @@
 # Full Internal Links Inventory
 
-- Date: 2026-05-21T23:23:04.511Z
-- Files scanned: 274
-- Pages discovered: 274
+- Date: 2026-05-22T00:45:05.715Z
+- Files scanned: 272
+- Pages discovered: 272
 - Indexable pages: 267
-- Internal links discovered: 6693
+- Internal links discovered: 6653
 - Orphan pages: 0
 - Broken links: 0
 - Pages outside sitemap: 110
 - Weak anchors: 0
 - Links without href: 0
-- Canonical issues: 2
+- Canonical issues: 0
 
 ## Page / URL / Source File / Route Type / Incoming Internal Links / Outgoing Internal Links / Is Orphan? / In Sitemap? / Canonical / Indexable? / Problem / Severity / Fix
 
@@ -322,8 +322,6 @@
 | blog/transport-logistics-solutions/index.html | https://brightai.site/blog/transport-logistics-solutions/ | missing_from_sitemap | Medium |
 | blog/vision-2030-ai-opportunities/index.html | https://brightai.site/blog/vision-2030-ai-opportunities/ | missing_from_sitemap | Medium |
 | blog/workplace-automation-guide/index.html | https://brightai.site/blog/workplace-automation-guide/ | missing_from_sitemap | Medium |
-| en/ai-bots/BrightProject/index 2.html | https://brightai.site/en/ai-bots/BrightProject/ | canonical_mismatch | High |
-| en/ai-bots/BrightSales/index 2.html | https://brightai.site/en/ai-bots/BrightSales/ | canonical_mismatch | High |
 | error.html | https://brightai.site/error | owner_decision_needed | Medium |
 | mais-OBM/index.html | https://brightai.site/mais-OBM/ | owner_decision_needed | Medium |
 | offline/index.html | https://brightai.site/offline/ | missing_from_sitemap | Medium |

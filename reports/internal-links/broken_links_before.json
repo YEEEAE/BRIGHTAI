@@ -1,21 +1,13 @@
 {
-  "generatedAt": "2026-05-21T23:23:03.711Z",
+  "generatedAt": "2026-05-22T00:45:04.814Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 440,
-  "referencesScanned": 25057,
-  "internalReferences": 19793,
-  "brokenReferences": 28,
-  "fixableBrokenReferences": 28,
+  "filesScanned": 426,
+  "referencesScanned": 24756,
+  "internalReferences": 19573,
+  "brokenReferences": 20,
+  "fixableBrokenReferences": 20,
   "normalizationCandidates": 108,
   "topBrokenFiles": [
-    {
-      "file": "en/ai-bots/BrightProject/index 2.html",
-      "count": 4
-    },
-    {
-      "file": "en/ai-bots/BrightSales/index 2.html",
-      "count": 4
-    },
     {
       "file": "sectors/ecommerce-en/index.html",
       "count": 3
@@ -58,78 +50,6 @@
     {
       "file": "demo/smart-hiring-system/index.html",
       "line": 634,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightProject/index 2.html",
-      "line": 302,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightProject/index 2.html",
-      "line": 303,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightProject/index 2.html",
-      "line": 304,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightProject/index 2.html",
-      "line": 444,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightSales/index 2.html",
-      "line": 349,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightSales/index 2.html",
-      "line": 350,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightSales/index 2.html",
-      "line": 351,
-      "patternType": "attr",
-      "reference": "/assets/images/logo.PNG",
-      "normalizedReferencePath": "/assets/images/logo.PNG",
-      "reason": "المسار غير موجود",
-      "suggestion": "/assets/images/logo.png"
-    },
-    {
-      "file": "en/ai-bots/BrightSales/index 2.html",
-      "line": 491,
       "patternType": "attr",
       "reference": "/assets/images/logo.PNG",
       "normalizedReferencePath": "/assets/images/logo.PNG",

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-21T23:23:04.511Z",
-  "filesScanned": 274,
+  "generatedAt": "2026-05-22T00:45:05.715Z",
+  "filesScanned": 272,
   "pages": [
     {
       "relPath": "404.html",
@@ -47145,220 +47145,6 @@
       "severity": "None"
     },
     {
-      "relPath": "en/ai-bots/BrightProject/index 2.html",
-      "url": "https://brightai.site/en/ai-bots/BrightProject/",
-      "expectedCanonical": "https://brightai.site/en/ai-bots/BrightProject/index%202/",
-      "canonical": "https://brightai.site/en/ai-bots/BrightProject/",
-      "title": "BrightProject - روبوت إدارة المشاريع الذكي",
-      "routeType": "static-html-route",
-      "indexable": false,
-      "inSitemap": true,
-      "ownerDecisionNeeded": false,
-      "outgoing": [
-        "https://brightai.site/",
-        "https://brightai.site/ai-bots/BrightMath/",
-        "https://brightai.site/blog/",
-        "https://brightai.site/demo/",
-        "https://brightai.site/demo/ai-scolecs/",
-        "https://brightai.site/demo/ai-tenders-analysis/landing/",
-        "https://brightai.site/demo/smart-hiring-system/",
-        "https://brightai.site/demo/smart-hospital-management/",
-        "https://brightai.site/demo/smart-medical-archive/",
-        "https://brightai.site/docs/ai-bots/",
-        "https://brightai.site/en/",
-        "https://brightai.site/en/about/",
-        "https://brightai.site/en/ai-agent/",
-        "https://brightai.site/en/contact/",
-        "https://brightai.site/en/data-analysis/",
-        "https://brightai.site/en/docs/",
-        "https://brightai.site/en/privacy-cookies/",
-        "https://brightai.site/en/services/",
-        "https://brightai.site/en/smart-automation/",
-        "https://brightai.site/en/terms/",
-        "https://brightai.site/services/"
-      ],
-      "outgoingAnchors": [
-        {
-          "href": "https://brightai.site/",
-          "text": ""
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "الرئيسية"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/landing/",
-          "text": "Contract & Tender Analysis System ContractAI for Docs & Approvals"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "Bright AI Agents Platform Build & Manage Smart Agents"
-        },
-        {
-          "href": "https://brightai.site/en/smart-automation/",
-          "text": "Smart Automation Next-Gen Workflows"
-        },
-        {
-          "href": "https://brightai.site/en/ai-agent/",
-          "text": "AIaaS AI as a Service"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "Consultation Custom Solutions for Your Biz"
-        },
-        {
-          "href": "https://brightai.site/en/data-analysis/",
-          "text": "Data Analysis Spot-On Insights & Smart Moves"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "Smart Medical Archive"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hiring-system/",
-          "text": "Smart Hiring Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-scolecs/",
-          "text": "Smart Ed Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hospital-management/",
-          "text": "Advanced Health AI Solutions"
-        },
-        {
-          "href": "https://brightai.site/en/about/",
-          "text": "About Bright"
-        },
-        {
-          "href": "https://brightai.site/en/docs/",
-          "text": "Docs"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "Smart Library"
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "الرئيسية"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/landing/",
-          "text": "Contract & Tender Analysis System"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "Bright AI Agents Platform"
-        },
-        {
-          "href": "https://brightai.site/en/smart-automation/",
-          "text": "Smart Automation"
-        },
-        {
-          "href": "https://brightai.site/en/ai-agent/",
-          "text": "AIaaS — AI as a Service"
-        },
-        {
-          "href": "https://brightai.site/en/data-analysis/",
-          "text": "Data Analysis"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "Consultation"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "Smart Medical Archive"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hiring-system/",
-          "text": "Smart Hiring Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-scolecs/",
-          "text": "Smart Ed Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hospital-management/",
-          "text": "Advanced Health AI Solutions"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "المدونة التقنية"
-        },
-        {
-          "href": "https://brightai.site/en/about/",
-          "text": "من نحن"
-        },
-        {
-          "href": "https://brightai.site/en/docs/",
-          "text": "Docs"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "Smart Library"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "تواصل معنا"
-        },
-        {
-          "href": "https://brightai.site/demo/",
-          "text": "جرّب النظام مجاناً"
-        },
-        {
-          "href": "https://brightai.site/ai-bots/BrightMath/",
-          "text": "BrightMath"
-        },
-        {
-          "href": "https://brightai.site/docs/ai-bots/",
-          "text": "فهرس الروبوتات"
-        },
-        {
-          "href": "https://brightai.site/en/smart-automation/",
-          "text": "المزيد عن أتمتة العمليات"
-        },
-        {
-          "href": "https://brightai.site/en/",
-          "text": "Bright AI Saudi enterprise AI"
-        },
-        {
-          "href": "https://brightai.site/en/services/",
-          "text": "AI services for Saudi companies"
-        },
-        {
-          "href": "https://brightai.site/en/ai-agent/",
-          "text": "AI agents for business teams"
-        },
-        {
-          "href": "https://brightai.site/en/smart-automation/",
-          "text": "AI workflow automation"
-        },
-        {
-          "href": "https://brightai.site/en/data-analysis/",
-          "text": "Data analytics for Saudi teams"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "Contact Bright AI for AI implementation"
-        },
-        {
-          "href": "https://brightai.site/en/privacy-cookies/",
-          "text": "Bright AI privacy and cookies policy"
-        },
-        {
-          "href": "https://brightai.site/en/terms/",
-          "text": "Bright AI terms and conditions"
-        }
-      ],
-      "incoming": [
-        "https://brightai.site/en/services/"
-      ],
-      "isOrphan": false,
-      "problem": "canonical_mismatch",
-      "severity": "High"
-    },
-    {
       "relPath": "en/ai-bots/BrightProject/index.html",
       "url": "https://brightai.site/en/ai-bots/BrightProject/",
       "expectedCanonical": "https://brightai.site/en/ai-bots/BrightProject/",
@@ -47775,210 +47561,6 @@
       "isOrphan": false,
       "problem": "",
       "severity": "None"
-    },
-    {
-      "relPath": "en/ai-bots/BrightSales/index 2.html",
-      "url": "https://brightai.site/en/ai-bots/BrightSales/",
-      "expectedCanonical": "https://brightai.site/en/ai-bots/BrightSales/index%202/",
-      "canonical": "https://brightai.site/en/ai-bots/BrightSales/",
-      "title": "BrightSales - روبوت المبيعات الذكي",
-      "routeType": "static-html-route",
-      "indexable": false,
-      "inSitemap": true,
-      "ownerDecisionNeeded": false,
-      "outgoing": [
-        "https://brightai.site/",
-        "https://brightai.site/blog/",
-        "https://brightai.site/demo/",
-        "https://brightai.site/demo/ai-scolecs/",
-        "https://brightai.site/demo/ai-tenders-analysis/landing/",
-        "https://brightai.site/demo/smart-hiring-system/",
-        "https://brightai.site/demo/smart-hospital-management/",
-        "https://brightai.site/demo/smart-medical-archive/",
-        "https://brightai.site/en/",
-        "https://brightai.site/en/about/",
-        "https://brightai.site/en/ai-agent/",
-        "https://brightai.site/en/contact/",
-        "https://brightai.site/en/data-analysis/",
-        "https://brightai.site/en/docs/",
-        "https://brightai.site/en/privacy-cookies/",
-        "https://brightai.site/en/services/",
-        "https://brightai.site/en/smart-automation/",
-        "https://brightai.site/en/terms/",
-        "https://brightai.site/services/"
-      ],
-      "outgoingAnchors": [
-        {
-          "href": "https://brightai.site/",
-          "text": ""
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "الرئيسية"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/landing/",
-          "text": "Contract & Tender Analysis System ContractAI for Docs & Approvals"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "Bright AI Agents Platform Build & Manage Smart Agents"
-        },
-        {
-          "href": "https://brightai.site/en/smart-automation/",
-          "text": "Smart Automation Next-Gen Workflows"
-        },
-        {
-          "href": "https://brightai.site/en/ai-agent/",
-          "text": "AIaaS AI as a Service"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "Consultation Custom Solutions for Your Biz"
-        },
-        {
-          "href": "https://brightai.site/en/data-analysis/",
-          "text": "Data Analysis Spot-On Insights & Smart Moves"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "Smart Medical Archive"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hiring-system/",
-          "text": "Smart Hiring Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-scolecs/",
-          "text": "Smart Ed Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hospital-management/",
-          "text": "Advanced Health AI Solutions"
-        },
-        {
-          "href": "https://brightai.site/en/about/",
-          "text": "About Bright"
-        },
-        {
-          "href": "https://brightai.site/en/docs/",
-          "text": "Docs"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "Smart Library"
-        },
-        {
-          "href": "https://brightai.site/",
-          "text": "الرئيسية"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/landing/",
-          "text": "Contract & Tender Analysis System"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "Bright AI Agents Platform"
-        },
-        {
-          "href": "https://brightai.site/en/smart-automation/",
-          "text": "Smart Automation"
-        },
-        {
-          "href": "https://brightai.site/en/ai-agent/",
-          "text": "AIaaS — AI as a Service"
-        },
-        {
-          "href": "https://brightai.site/en/data-analysis/",
-          "text": "Data Analysis"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "Consultation"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "Smart Medical Archive"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hiring-system/",
-          "text": "Smart Hiring Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-scolecs/",
-          "text": "Smart Ed Platform"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-hospital-management/",
-          "text": "Advanced Health AI Solutions"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "المدونة التقنية"
-        },
-        {
-          "href": "https://brightai.site/en/about/",
-          "text": "من نحن"
-        },
-        {
-          "href": "https://brightai.site/en/docs/",
-          "text": "Docs"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "Smart Library"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "تواصل معنا"
-        },
-        {
-          "href": "https://brightai.site/demo/",
-          "text": "جرّب النظام مجاناً"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "اكتشف خدماتنا لوكلاء الذكاء"
-        },
-        {
-          "href": "https://brightai.site/en/",
-          "text": "Bright AI Saudi enterprise AI"
-        },
-        {
-          "href": "https://brightai.site/en/services/",
-          "text": "AI services for Saudi companies"
-        },
-        {
-          "href": "https://brightai.site/en/ai-agent/",
-          "text": "AI agents for business teams"
-        },
-        {
-          "href": "https://brightai.site/en/smart-automation/",
-          "text": "AI workflow automation"
-        },
-        {
-          "href": "https://brightai.site/en/data-analysis/",
-          "text": "Data analytics for Saudi teams"
-        },
-        {
-          "href": "https://brightai.site/en/contact/",
-          "text": "Contact Bright AI for AI implementation"
-        },
-        {
-          "href": "https://brightai.site/en/privacy-cookies/",
-          "text": "Bright AI privacy and cookies policy"
-        },
-        {
-          "href": "https://brightai.site/en/terms/",
-          "text": "Bright AI terms and conditions"
-        }
-      ],
-      "incoming": [
-        "https://brightai.site/en/services/"
-      ],
-      "isOrphan": false,
-      "problem": "canonical_mismatch",
-      "severity": "High"
     },
     {
       "relPath": "en/ai-bots/BrightSales/index.html",
@@ -77303,33 +76885,22 @@
     }
   ],
   "summary": {
-    "pagesDiscovered": 274,
+    "pagesDiscovered": 272,
     "indexablePages": 267,
-    "internalLinksDiscovered": 6693,
+    "internalLinksDiscovered": 6653,
     "orphanPages": 0,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 110,
     "weakAnchors": 0,
     "noHrefLinks": 0,
-    "canonicalIssues": 2,
+    "canonicalIssues": 0,
     "hashIssues": 4,
     "sitemapUrls": 196,
     "sitemapMissingInternalLinks": 1
   },
   "weakAnchors": [],
   "noHrefLinks": [],
-  "canonicalIssues": [
-    {
-      "relPath": "en/ai-bots/BrightProject/index 2.html",
-      "expectedCanonical": "https://brightai.site/en/ai-bots/BrightProject/index%202/",
-      "canonical": "https://brightai.site/en/ai-bots/BrightProject/"
-    },
-    {
-      "relPath": "en/ai-bots/BrightSales/index 2.html",
-      "expectedCanonical": "https://brightai.site/en/ai-bots/BrightSales/index%202/",
-      "canonical": "https://brightai.site/en/ai-bots/BrightSales/"
-    }
-  ],
+  "canonicalIssues": [],
   "hashIssues": [
     {
       "relPath": "index.html",
@@ -77359,5 +76930,5 @@
   "sitemapMissingInternalLinks": [
     "https://brightai.site/mais-OBM/"
   ],
-  "registrySize": 269
+  "registrySize": 267
 }
