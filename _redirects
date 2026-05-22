@@ -203,6 +203,12 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/data-analytics/power-bi-saudi-guide /blog/power-bi-saudi-guide/ 301
 /blog/data-analytics/power-bi-saudi-guide/ /blog/power-bi-saudi-guide/ 301
 
+# 301 redirects for removed "index 2.html" duplicates (BrightProject / BrightSales)
+/en/ai-bots/BrightProject/index%202.html  /en/ai-bots/BrightProject/  301
+/en/ai-bots/BrightProject/index%202/      /en/ai-bots/BrightProject/  301
+/en/ai-bots/BrightSales/index%202.html    /en/ai-bots/BrightSales/    301
+/en/ai-bots/BrightSales/index%202/        /en/ai-bots/BrightSales/    301
+
 /blog/:section/:slug.html /blog/:section/:slug/ 301
 /blog/:section/:slug/index.html /blog/:section/:slug/ 301
 /blog/:slug.html /blog/:slug/ 301
