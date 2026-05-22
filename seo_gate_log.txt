@@ -1,0 +1,21 @@
+
+> seo:gate
+> node scripts/seo-ci-check.mjs
+
+SEO CI CHECK
+- Hreflang pages checked: 71
+- Hreflang pages passed: 65
+- Service pages checked: 14
+- Service pages passed: 0
+- Sitemap URLs: 260
+- Files scanned for broken links: 409
+- References scanned for broken links: 25116
+- Broken links: 93
+- HTML files checked for policy: 277
+- HTML onrender refs: 0
+- HTML noindex+hrelang pages: 0
+- HTML redirect-like pages: 0
+- HTML canonical issues: 0
+- HTML bad public slugs: 0
+- Errors: 149
+- Warnings: 0

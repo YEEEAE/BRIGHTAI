@@ -101,3 +101,60 @@ h3{font-size:1.08rem;margin-block-end:8px}
 .breadcrumbs a:hover { text-decoration: underline; }
 .breadcrumbs [aria-current] { color: var(--color-text-secondary, #94a3b8); }
 
+/* Trust Section CSS - Bright AI Premium Trust Elements */
+.trust-section {
+  text-align: center;
+  margin-block-start: 40px;
+}
+.trust-section h2 {
+  color: var(--text);
+  font-weight: 800;
+  margin-block-end: 24px;
+}
+.trust-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-block-start: 24px;
+}
+.trust-item {
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(19, 36, 58, 0.88), rgba(13, 27, 45, 0.72));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  text-align: center;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.trust-item:hover {
+  transform: translateY(-4px);
+  border-color: var(--brand);
+  box-shadow: 0 12px 40px rgba(45, 212, 191, 0.18);
+}
+.trust-item strong {
+  display: block;
+  font-size: 1.15rem;
+  color: var(--brand-2);
+  margin-block-end: 12px;
+}
+.trust-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 920px) {
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 620px) {
+  .trust-grid {
+    grid-template-columns: 1fr;
+  }
+  .trust-item {
+    padding: 20px;
+  }
+}
+

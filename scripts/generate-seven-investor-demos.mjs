@@ -346,6 +346,27 @@ function page(demo) {
       </ol>
     </nav>
     <section class="section use-cases" aria-labelledby="who-heading"><h2 id="who-heading">لمن هذا الديمو؟</h2><div class="case-grid">${cases}</div></section>
+    <section class="section trust-section" aria-labelledby="trust-heading">
+      <h2 id="trust-heading">لماذا تثق بـ Bright AI</h2>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <strong>🇸🇦 سعودي 100%</strong>
+          <p>مبنية للسوق السعودي، تدعم العربية بالكامل.</p>
+        </div>
+        <div class="trust-item">
+          <strong>🔒 خصوصية البيانات</strong>
+          <p>بياناتك تبقى عندك. لا نشاركها مع أي طرف.</p>
+        </div>
+        <div class="trust-item">
+          <strong>⚡ جاهز خلال 48 ساعة</strong>
+          <p>النسخة المخصصة جاهزة خلال 48 ساعة من المراجعة.</p>
+        </div>
+        <div class="trust-item">
+          <strong>🏢 +50 شركة سعودية</strong>
+          <p>نخدم شركات في الرياض وجدة والدمام.</p>
+        </div>
+      </div>
+    </section>
     <section class="section scenario-simulator" aria-labelledby="scenario-heading"><h2 id="scenario-heading">محاكي السيناريوهات</h2><div class="case-grid">${scenarioCards}</div></section>
     <section class="section demo-workspace" aria-labelledby="samples-heading"><div class="workspace-copy input-area"><h2 id="samples-heading">منطقة الإدخال</h2><p>اختر سيناريو أو اكتب وصفاً سعودياً غير حساس. التحقق والعداد يعملان فورياً قبل تشغيل التحليل.</p><div class="sample-grid">${sampleButtons}</div></div><form class="demo-form" id="demo-form" data-demo-form><input type="hidden" name="demoType" value="${esc(demo.demoType)}"><label for="scenario">السيناريو</label><select id="scenario" name="scenario">${options}</select><label for="demo-input">البيانات المختصرة</label><textarea id="demo-input" name="input" rows="7" required minlength="20" maxlength="1200" placeholder="مثال: شركة في الرياض لديها ضغط طلبات أسبوعي وتحتاج تقريراً تنفيذياً بدون استخدام بيانات حساسة.">${esc(demo.samples[0][1])}</textarea><p class="privacy-note" data-input-counter>٠ / ١٢٠٠ حرف</p><details class="advanced-settings"><summary>الإعدادات المتقدمة</summary><label for="goal">هدف القرار</label><input id="goal" name="goal" value="${esc(demo.outcome)}"><label for="systems">الأنظمة المحتملة للربط</label><input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API"></details><div class="form-actions"><button class="btn btn-primary" type="submit">شغّل التحليل</button><button class="btn btn-secondary" type="button" data-reset-demo>جرّب سيناريو آخر</button></div><p class="privacy-note">بياناتك تبقى عندك، استخدم بيانات وهمية أو منزوعة الحساسية فقط.</p></form></section>
     <section class="section result-zone" aria-labelledby="result-heading"><div><h2 id="result-heading">مسرح تفكير الذكاء الاصطناعي</h2><p>إذا توفر البث اللحظي تظهر المراحل من الخلفية، وإذا تعذر الاتصال يعمل fallback آمن بنفس التسلسل.</p><ul class="result-promises"><li>Executive Summary</li><li>Metrics Grid</li><li>Key Findings</li><li>Risks & Considerations</li><li>Recommendations</li><li>Next Best Actions</li><li>Confidence Score</li><li>Impact Preview</li></ul></div><div class="loading-box" data-loading-box hidden><p>جاري التحليل عبر Backend BrightAI</p><ol><li data-stage="0">فهم الطلب.</li><li data-stage="1">استخراج البيانات.</li><li data-stage="2">تحليل المؤشرات.</li><li data-stage="3">توليد التوصيات.</li><li data-stage="4">تجهيز التقرير.</li></ol></div><div class="result-panel" data-result-panel aria-live="polite"><div class="empty-state"><strong>لوحة النتائج جاهزة</strong><p>شغّل الديمو لعرض التقرير الذكي القابل للنسخ والتنزيل.</p></div></div></section>

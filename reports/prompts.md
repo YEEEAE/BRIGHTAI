@@ -39,44 +39,6 @@
 ### البرومبت 14: فحص شامل نهائي وتحقق
 
 ```
-أنت وكيل QA + Technical SEO لمشروع Bright AI.
-
-المهمة: فحص شامل نهائي بعد تطبيق كل الإصلاحات.
-
-شغّل كل هذه الأوامر بالترتيب وسجّل نتائج كل واحد:
-
-1. npm run sitemap:all
-2. npm run seo:gate
-3. npm run seo:check
-4. npm run seo:qa
-5. npm run seo:html:check
-6. npm run internal-links:audit
-7. npm run resource:audit:before
-8. npm run ui:audit
-9. npm run performance:budget
-
-لكل أمر:
-- إذا نجح: ✅ سجّل "ناجح"
-- إذا فشل: ❌ سجّل سبب الفشل وعدد المشاكل المتبقية
-
-بعد تشغيل كل الأوامر، اكتب تقرير ملخص يحتوي:
-1. جدول بنتائج كل أمر
-2. المشاكل المتبقية (إن وجدت)
-3. مقارنة بين الحالة قبل وبعد الإصلاحات
-4. الخطوات التالية المتبقية (إن وجدت)
-
-معايير القبول النهائية (يجب أن تتحقق كلها):
-- [ ] sitemap.xml لا يحتوي /reports/keywords/
-- [ ] sitemap.xml لا يحتوي index 2
-- [ ] لا توجد صفحات demo عليها noindex
-- [ ] لا توجد صفحات demo محجوبة من robots.txt
-- [ ] كل صفحة demo لها canonical ذاتي
-- [ ] كل صفحة demo لها title/meta/H1
-- [ ] npm run seo:gate يمر بدون Critical Errors
-- [ ] npm run resource:audit:before → Broken paths: 0
-- [ ] npm run internal-links:audit → brokenLinks: 0
-- [ ] npm run performance:budget → ناجحة
-```
 
 ---
 

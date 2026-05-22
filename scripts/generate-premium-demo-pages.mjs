@@ -833,6 +833,28 @@ function page(demo) {
       </div>
     </section>
 
+    <section class="section trust-section" aria-labelledby="trust-heading">
+      <h2 id="trust-heading">لماذا تثق بـ Bright AI</h2>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <strong>🇸🇦 سعودي 100%</strong>
+          <p>مبنية للسوق السعودي، تدعم العربية بالكامل.</p>
+        </div>
+        <div class="trust-item">
+          <strong>🔒 خصوصية البيانات</strong>
+          <p>بياناتك تبقى عندك. لا نشاركها مع أي طرف.</p>
+        </div>
+        <div class="trust-item">
+          <strong>⚡ جاهز خلال 48 ساعة</strong>
+          <p>النسخة المخصصة جاهزة خلال 48 ساعة من المراجعة.</p>
+        </div>
+        <div class="trust-item">
+          <strong>🏢 +50 شركة سعودية</strong>
+          <p>نخدم شركات في الرياض وجدة والدمام.</p>
+        </div>
+      </div>
+    </section>
+
     <section class="section" aria-labelledby="why-heading">
       <h2 id="why-heading">لماذا Bright AI؟</h2>
       <p>Bright AI يبني تجارب AI عربية أولاً للشركات السعودية، مع تركيز على قابلية الزحف والفهرسة، وضوح القرار، وإمكانية الربط مع الأنظمة بدل الاكتفاء بعرض تجريبي منعزل.</p>

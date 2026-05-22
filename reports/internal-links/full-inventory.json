@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-05-22T04:54:28.867Z",
-  "filesScanned": 272,
+  "generatedAt": "2026-05-22T05:53:59.477Z",
+  "filesScanned": 277,
   "pages": [
     {
       "relPath": "404.html",
@@ -810,7 +810,7 @@
       "url": "https://brightai.site/ai-agent/",
       "expectedCanonical": "https://brightai.site/ai-agent/",
       "canonical": "https://brightai.site/ai-agent/",
-      "title": "وكيل ذكاء اصطناعي ينفّذ مهام أعمالك من أول طلب",
+      "title": "وكيل ذكاء اصطناعي للشركات السعودية",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -819,20 +819,25 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/ai-tenders-analysis/",
+        "https://brightai.site/demo/data-analysis/",
+        "https://brightai.site/demo/smart-automation/",
+        "https://brightai.site/docs/privacy-policy.html/",
+        "https://brightai.site/services/",
         "https://brightai.site/services/custom-ai-agent.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "برBright AI"
+          "text": "BrightAI"
         },
         {
           "href": "https://brightai.site/demo/",
           "text": "الديموهات"
         },
         {
-          "href": "https://brightai.site/services/custom-ai-agent.html/",
-          "text": "الخدمة"
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
         },
         {
           "href": "https://brightai.site/contact/",
@@ -840,7 +845,63 @@
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "اطلب بناء وكيل لشركتك"
+          "text": "احجز استشارة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة 15 دقيقة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة مجانية"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب نسخة مخصصة"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
+          "text": "ربط مع أنظمتك"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "اقرأ كيف نحمي بياناتك"
+        },
+        {
+          "href": "https://brightai.site/demo/ai-tenders-analysis/",
+          "text": "تحليل المناقصات والعقود"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analysis/",
+          "text": "تحليل البيانات"
+        },
+        {
+          "href": "https://brightai.site/demo/smart-automation/",
+          "text": "أتمتة الأعمال الذكية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "خدمات"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "ديموهات"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسات"
         }
       ],
       "incoming": [
@@ -936,6 +997,8 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
+        "https://brightai.site/demo/",
+        "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-tenders-analysis/compare/",
         "https://brightai.site/demo/ai-tenders-analysis/dashboard/",
         "https://brightai.site/demo/ai-tenders-analysis/landing/",
@@ -943,12 +1006,15 @@
         "https://brightai.site/demo/ai-tenders-analysis/settings/",
         "https://brightai.site/demo/ai-tenders-analysis/templates/",
         "https://brightai.site/demo/ai-workflows/",
+        "https://brightai.site/demo/data-analysis/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
+        "https://brightai.site/demo/smart-automation/",
         "https://brightai.site/demo/smart-education-platform/",
         "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
         "https://brightai.site/demo/smart-hiring-system/pages/appointment/",
         "https://brightai.site/demo/smart-hiring-system/pages/dashboard/",
         "https://brightai.site/demo/smart-hiring-system/pages/support-ai/",
+        "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/docs/",
         "https://brightai.site/docs/ai-agent-en/",
         "https://brightai.site/docs/ai-agent/",
@@ -28370,6 +28436,8 @@
         "https://brightai.site/en/ai-workflows/",
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/custom-ai-agent/",
+        "https://brightai.site/en/demo/customer-service-automation/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/en/health/",
@@ -28999,7 +29067,6 @@
         "https://brightai.site/demo/ai-tenders-analysis/reports/",
         "https://brightai.site/demo/ai-tenders-analysis/settings/",
         "https://brightai.site/demo/ai-tenders-analysis/templates/",
-        "https://brightai.site/demo/data-analysis/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
         "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
         "https://brightai.site/demo/smart-hiring-system/pages/appointment/",
@@ -29146,8 +29213,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/ai-consulting.html/",
@@ -29187,7 +29258,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/pricing/",
         "https://brightai.site/services/ai-consulting/"
       ],
@@ -29200,7 +29270,7 @@
       "url": "https://brightai.site/demo/ai-scolecs/",
       "expectedCanonical": "https://brightai.site/demo/ai-scolecs/",
       "canonical": "https://brightai.site/demo/ai-scolecs/",
-      "title": "مختبر تعليم ذكي بثلاث واجهات: طالب، معلم، وإدارة مدرسة",
+      "title": "منصة التعليم الذكي",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -29209,6 +29279,9 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/custom-ai-agent/",
+        "https://brightai.site/demo/data-analyzer/",
+        "https://brightai.site/demo/operational-reports-automation/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-scolecs.html/"
@@ -29216,7 +29289,23 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "Bright AI"
+          "text": ""
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "كل الديموهات"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
+          "href": "https://brightai.site/services/ai-scolecs.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -29224,27 +29313,39 @@
         },
         {
           "href": "https://brightai.site/services/ai-scolecs.html/",
-          "text": "خدمة التعليم الذكي"
+          "text": "صفحة الخدمة الرسمية"
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "الخدمات"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
-        },
-        {
-          "href": "https://brightai.site/docs/privacy-policy.html/",
-          "text": "سياسة الخصوصية"
+          "text": "كل خدمات Bright AI"
         },
         {
           "href": "https://brightai.site/demo/",
           "text": "مركز الديموهات"
         },
         {
-          "href": "https://brightai.site/services/ai-scolecs.html/",
-          "text": "خدمة التعليم الذكي"
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analyzer/",
+          "text": "منصة تحليل البيانات"
+        },
+        {
+          "href": "https://brightai.site/demo/custom-ai-agent/",
+          "text": "وكيل ذكاء اصطناعي مخصص"
+        },
+        {
+          "href": "https://brightai.site/demo/operational-reports-automation/",
+          "text": "أتمتة التقارير التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز مكالمة 15 دقيقة"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسة الخصوصية"
         }
       ],
       "incoming": [
@@ -29328,7 +29429,6 @@
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
         "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
         "https://brightai.site/demo/smart-hiring-system/pages/appointment/",
@@ -29639,7 +29739,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-tenders-analysis/dashboard/",
         "https://brightai.site/demo/ai-tenders-analysis/landing/",
         "https://brightai.site/demo/ai-tenders-analysis/reports/",
@@ -29825,7 +29924,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-tenders-analysis/compare/",
         "https://brightai.site/demo/ai-tenders-analysis/landing/",
         "https://brightai.site/demo/ai-tenders-analysis/reports/",
@@ -29842,21 +29940,18 @@
       "url": "https://brightai.site/demo/ai-tenders-analysis/",
       "expectedCanonical": "https://brightai.site/demo/ai-tenders-analysis/",
       "canonical": "https://brightai.site/demo/ai-tenders-analysis/",
-      "title": "حلّل المناقصات والعقود خلال دقائق بدل أيام",
+      "title": "تحليل المناقصات والعقود بالذكاء الاصطناعي",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/demo/ai-tenders-analysis/",
-        "https://brightai.site/demo/ai-tenders-analysis/compare/",
-        "https://brightai.site/demo/ai-tenders-analysis/dashboard/",
-        "https://brightai.site/demo/ai-tenders-analysis/landing/",
-        "https://brightai.site/demo/ai-tenders-analysis/settings/",
-        "https://brightai.site/demo/ai-tenders-analysis/templates/",
+        "https://brightai.site/demo/data-analysis/",
+        "https://brightai.site/demo/smart-automation/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-tenders-analysis.html/"
@@ -29864,7 +29959,7 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "برايت اي آي"
+          "text": "BrightAI"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -29880,7 +29975,11 @@
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "اطلب تحليل عقدك الحقيقي"
+          "text": "احجز استشارة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة 15 دقيقة"
         },
         {
           "href": "https://brightai.site/",
@@ -29892,39 +29991,39 @@
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "اطلب تحليل عقدك الحقيقي"
+          "text": "احجز استشارة مجانية"
         },
         {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/",
-          "text": "التحليل"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/landing/",
-          "text": "صفحة الهبوط"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/compare/",
-          "text": "مقارنة العروض"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/dashboard/",
-          "text": "لوحة التحكم"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/templates/",
-          "text": "قوالب التحليل"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/settings/",
-          "text": "الإعدادات"
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب نسخة مخصصة"
         },
         {
           "href": "https://brightai.site/services/ai-tenders-analysis.html/",
-          "text": "صفحة خدمة تحليل المناقصات"
+          "text": "ربط مع أنظمتك"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "اقرأ كيف نحمي بياناتك"
+        },
+        {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "AI Agent للشركات"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analysis/",
+          "text": "تحليل البيانات"
+        },
+        {
+          "href": "https://brightai.site/demo/smart-automation/",
+          "text": "أتمتة الأعمال الذكية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "خدمات"
         },
         {
           "href": "https://brightai.site/demo/",
-          "text": "الديموهات"
+          "text": "ديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
@@ -29932,12 +30031,13 @@
         },
         {
           "href": "https://brightai.site/docs/privacy-policy.html/",
-          "text": "الخصوصية"
+          "text": "سياسات"
         }
       ],
       "incoming": [
         "https://brightai.site/",
         "https://brightai.site/404",
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/ai-workflows/",
         "https://brightai.site/blog/",
         "https://brightai.site/case-studies/",
@@ -29949,7 +30049,10 @@
         "https://brightai.site/demo/ai-tenders-analysis/settings/",
         "https://brightai.site/demo/ai-tenders-analysis/templates/",
         "https://brightai.site/demo/ai-workflows/",
+        "https://brightai.site/demo/data-analysis/",
+        "https://brightai.site/demo/smart-automation/",
         "https://brightai.site/demo/smart-education-platform/",
+        "https://brightai.site/demo/smart-hospital-management/",
         "https://brightai.site/demo/supply-chain-optimization/",
         "https://brightai.site/docs/",
         "https://brightai.site/en/",
@@ -30292,7 +30395,6 @@
         "https://brightai.site/blog/workplace-automation-guide/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-tenders-analysis/compare/",
         "https://brightai.site/demo/ai-tenders-analysis/dashboard/",
         "https://brightai.site/demo/ai-tenders-analysis/reports/",
@@ -30693,7 +30795,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-tenders-analysis/compare/",
         "https://brightai.site/demo/ai-tenders-analysis/dashboard/",
         "https://brightai.site/demo/ai-tenders-analysis/landing/",
@@ -30898,7 +30999,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-tenders-analysis/compare/",
         "https://brightai.site/demo/ai-tenders-analysis/dashboard/",
         "https://brightai.site/demo/ai-tenders-analysis/landing/",
@@ -30917,7 +31017,7 @@
       "url": "https://brightai.site/demo/ai-workflows/",
       "expectedCanonical": "https://brightai.site/demo/ai-workflows/",
       "canonical": "https://brightai.site/demo/ai-workflows/",
-      "title": "صمّم سير عمل ذكي يربط أدواتك وقراراتك بدون كود",
+      "title": "سير عمل AI من الفكرة إلى التنفيذ",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -30956,7 +31056,7 @@
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "اطلب تصميم Workflow لشركتك"
+          "text": "احجز استشارة 15 دقيقة"
         },
         {
           "href": "https://brightai.site/",
@@ -31012,8 +31112,7 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
-        "https://brightai.site/demo/smart-automation/"
+        "https://brightai.site/demo/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -31058,8 +31157,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/approvals-automation.html/",
@@ -31099,9 +31202,9 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/brightproject/",
         "https://brightai.site/demo/hr-automation/",
+        "https://brightai.site/demo/ocr-demo/",
         "https://brightai.site/services/approvals-automation/"
       ],
       "isOrphan": false,
@@ -31147,8 +31250,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/brightproject.html/",
@@ -31190,7 +31297,6 @@
       "incoming": [
         "https://brightai.site/ai-bots/",
         "https://brightai.site/ai-bots/BrightMath/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/approvals-automation/",
         "https://brightai.site/demo/operational-reports-automation/",
         "https://brightai.site/en/ai-bots/",
@@ -31242,8 +31348,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/brightsales.html/",
@@ -31284,7 +31394,7 @@
       ],
       "incoming": [
         "https://brightai.site/ai-bots/",
-        "https://brightai.site/demo/",
+        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/marketing-ai-agent/",
         "https://brightai.site/demo/marketing-automation/",
         "https://brightai.site/demo/opportunity-discovery-agent/",
@@ -31341,8 +31451,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/competitor-analysis-agent.html/",
@@ -31382,7 +31496,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/opportunity-discovery-agent/",
         "https://brightai.site/demo/seo-ai-agent/",
         "https://brightai.site/demo/social-data-analysis/",
@@ -31432,8 +31545,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/custom-ai-agent.html/",
@@ -31474,8 +31591,9 @@
       ],
       "incoming": [
         "https://brightai.site/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/ai-consulting/",
+        "https://brightai.site/demo/ai-scolecs/",
+        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/data-quality/",
         "https://brightai.site/demo/pricing/",
         "https://brightai.site/services/",
@@ -31491,7 +31609,7 @@
       "url": "https://brightai.site/demo/customer-service-automation/",
       "expectedCanonical": "https://brightai.site/demo/customer-service-automation/",
       "canonical": "https://brightai.site/demo/customer-service-automation/",
-      "title": "صندوق وارد موحد يفهم عميلك قبل ما يرد عليه",
+      "title": "أتمتة خدمة العملاء",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -31500,38 +31618,77 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/docs/openapi/",
+        "https://brightai.site/demo/brightsales/",
+        "https://brightai.site/demo/custom-ai-agent/",
+        "https://brightai.site/demo/marketing-automation/",
+        "https://brightai.site/docs/privacy-policy.html/",
+        "https://brightai.site/services/",
         "https://brightai.site/services/customer-service-automation.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "برايت اي آي"
+          "text": ""
         },
         {
           "href": "https://brightai.site/demo/",
           "text": "كل الديموهات"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
           "href": "https://brightai.site/services/customer-service-automation.html/",
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/docs/openapi/",
-          "text": "وثائق الواجهة"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation.html/",
+          "text": "صفحة الخدمة الرسمية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "كل خدمات Bright AI"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "مركز الديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
         },
         {
+          "href": "https://brightai.site/demo/brightsales/",
+          "text": "BrightSales للمبيعات الذكية"
+        },
+        {
+          "href": "https://brightai.site/demo/marketing-automation/",
+          "text": "نظام التسويق الذكي"
+        },
+        {
+          "href": "https://brightai.site/demo/custom-ai-agent/",
+          "text": "وكيل ذكاء اصطناعي مخصص"
+        },
+        {
           "href": "https://brightai.site/contact/",
-          "text": "احجز مكالمة ١٥ دقيقة"
+          "text": "احجز مكالمة 15 دقيقة"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسة الخصوصية"
         }
       ],
       "incoming": [
         "https://brightai.site/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/brightsales/",
         "https://brightai.site/demo/custom-ai-agent/",
         "https://brightai.site/demo/marketing-automation/",
@@ -31549,43 +31706,26 @@
       "url": "https://brightai.site/demo/data-analysis/",
       "expectedCanonical": "https://brightai.site/demo/data-analysis/",
       "canonical": "https://brightai.site/demo/data-analysis/",
-      "title": "حلّل بيانات شركتك خلال دقائق وطلّع تقرير تنفيذي",
+      "title": "تحليل بيانات تنفيذي للشركات السعودية",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/contact/",
-        "https://brightai.site/data-analysis/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/ai-tenders-analysis/",
+        "https://brightai.site/demo/smart-automation/",
+        "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/data-platform.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "Bright AI"
-        },
-        {
-          "href": "https://brightai.site/demo/",
-          "text": "الديموهات"
-        },
-        {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "تحليل البيانات"
-        },
-        {
-          "href": "https://brightai.site/services/data-platform.html/",
-          "text": "منصة البيانات"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "احجز جلسة تحليل بيانات شركتك"
+          "text": "BrightAI"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -31598,12 +31738,76 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة 15 دقيقة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة مجانية"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب نسخة مخصصة"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform.html/",
+          "text": "ربط مع أنظمتك"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "اقرأ كيف نحمي بياناتك"
+        },
+        {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "AI Agent للشركات"
+        },
+        {
+          "href": "https://brightai.site/demo/ai-tenders-analysis/",
+          "text": "تحليل المناقصات والعقود"
+        },
+        {
+          "href": "https://brightai.site/demo/smart-automation/",
+          "text": "أتمتة الأعمال الذكية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "خدمات"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "ديموهات"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "تواصل"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسات"
         }
       ],
       "incoming": [
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-workflows/",
-        "https://brightai.site/demo/smart-education-platform/"
+        "https://brightai.site/demo/smart-automation/",
+        "https://brightai.site/demo/smart-education-platform/",
+        "https://brightai.site/demo/smart-hospital-management/"
       ],
       "isOrphan": false,
       "problem": "",
@@ -31614,7 +31818,7 @@
       "url": "https://brightai.site/demo/data-analyzer/",
       "expectedCanonical": "https://brightai.site/demo/data-analyzer/",
       "canonical": "https://brightai.site/demo/data-analyzer/",
-      "title": "تحدث مع بياناتك وارسم لوحة تنفيذية خلال 4 ثوان.",
+      "title": "منصة تحليل البيانات",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -31623,6 +31827,9 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/data-quality/",
+        "https://brightai.site/demo/marketing-ai-agent/",
+        "https://brightai.site/demo/operational-reports-automation/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/data-platform.html/"
@@ -31630,7 +31837,23 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "Bright AI"
+          "text": ""
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "كل الديموهات"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
+          "href": "https://brightai.site/services/data-platform.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -31638,38 +31861,53 @@
         },
         {
           "href": "https://brightai.site/services/data-platform.html/",
-          "text": "منصة البيانات"
+          "text": "صفحة الخدمة الرسمية"
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "الخدمات"
+          "text": "كل خدمات Bright AI"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "مركز الديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/demo/operational-reports-automation/",
+          "text": "أتمتة التقارير التشغيلية"
+        },
+        {
+          "href": "https://brightai.site/demo/data-quality/",
+          "text": "فحص جودة البيانات"
+        },
+        {
+          "href": "https://brightai.site/demo/marketing-ai-agent/",
+          "text": "وكيل تسويق"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز مكالمة 15 دقيقة"
         },
         {
           "href": "https://brightai.site/docs/privacy-policy.html/",
           "text": "سياسة الخصوصية"
-        },
-        {
-          "href": "https://brightai.site/services/data-platform.html/",
-          "text": "منصة البيانات"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
         }
       ],
       "incoming": [
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/ai-consulting/",
+        "https://brightai.site/demo/ai-scolecs/",
         "https://brightai.site/demo/brightproject/",
         "https://brightai.site/demo/data-quality/",
+        "https://brightai.site/demo/ocr-demo/",
         "https://brightai.site/demo/operational-reports-automation/",
         "https://brightai.site/demo/pricing/",
         "https://brightai.site/demo/seo-ai-agent/",
+        "https://brightai.site/demo/smart-hiring-system/",
+        "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/demo/supply-chain-optimization/",
         "https://brightai.site/en/",
         "https://brightai.site/en/data-analysis/",
@@ -31723,8 +31961,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/data-platform.html/",
@@ -31764,7 +32006,7 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
+        "https://brightai.site/demo/data-analyzer/",
         "https://brightai.site/en/",
         "https://brightai.site/error",
         "https://brightai.site/sitemap/",
@@ -31813,8 +32055,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/hr-automation.html/",
@@ -31854,8 +32100,8 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/approvals-automation/",
+        "https://brightai.site/demo/smart-hiring-system/",
         "https://brightai.site/services/hr-automation/"
       ],
       "isOrphan": false,
@@ -31874,61 +32120,23 @@
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/contact/",
-        "https://brightai.site/demo/ai-consulting/",
-        "https://brightai.site/demo/ai-scolecs/",
         "https://brightai.site/demo/ai-tenders-analysis/",
         "https://brightai.site/demo/ai-workflows/",
-        "https://brightai.site/demo/approvals-automation/",
-        "https://brightai.site/demo/brightproject/",
-        "https://brightai.site/demo/brightsales/",
-        "https://brightai.site/demo/competitor-analysis-agent/",
-        "https://brightai.site/demo/custom-ai-agent/",
-        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/data-analysis/",
-        "https://brightai.site/demo/data-analyzer/",
-        "https://brightai.site/demo/data-quality/",
-        "https://brightai.site/demo/hr-automation/",
-        "https://brightai.site/demo/marketing-ai-agent/",
-        "https://brightai.site/demo/marketing-automation/",
-        "https://brightai.site/demo/ocr-demo/",
-        "https://brightai.site/demo/operational-reports-automation/",
-        "https://brightai.site/demo/opportunity-discovery-agent/",
-        "https://brightai.site/demo/pricing/",
-        "https://brightai.site/demo/seo-ai-agent/",
         "https://brightai.site/demo/smart-automation/",
         "https://brightai.site/demo/smart-education-platform/",
-        "https://brightai.site/demo/smart-hiring-system/",
         "https://brightai.site/demo/smart-hospital-management/",
-        "https://brightai.site/demo/smart-medical-archive/",
-        "https://brightai.site/demo/social-data-analysis/",
-        "https://brightai.site/demo/supply-chain-optimization/",
-        "https://brightai.site/demo/text-analysis/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-automation-saudi.html/",
-        "https://brightai.site/services/ai-consulting.html/",
         "https://brightai.site/services/ai-scolecs.html/",
         "https://brightai.site/services/ai-tenders-analysis.html/",
         "https://brightai.site/services/approvals-automation.html/",
-        "https://brightai.site/services/brightproject.html/",
-        "https://brightai.site/services/brightsales.html/",
-        "https://brightai.site/services/competitor-analysis-agent.html/",
         "https://brightai.site/services/custom-ai-agent.html/",
-        "https://brightai.site/services/customer-service-automation.html/",
         "https://brightai.site/services/data-platform.html/",
-        "https://brightai.site/services/document-automation.html/",
-        "https://brightai.site/services/hr-automation.html/",
-        "https://brightai.site/services/lead-hunter.html/",
-        "https://brightai.site/services/marketing-ai-agent.html/",
-        "https://brightai.site/services/marketing-automation.html/",
-        "https://brightai.site/services/medical-archive.html/",
-        "https://brightai.site/services/operational-reports-automation.html/",
-        "https://brightai.site/services/seo-ai-agent.html/",
-        "https://brightai.site/services/smart-hiring-system.html/",
-        "https://brightai.site/services/smart-hospital-management.html/",
-        "https://brightai.site/services/social-data-analysis.html/",
-        "https://brightai.site/services/supply-chain-optimization.html/"
+        "https://brightai.site/services/smart-hospital-management.html/"
       ],
       "outgoingAnchors": [
         {
@@ -31944,19 +32152,11 @@
           "text": "تواصل معنا"
         },
         {
-          "href": "https://brightai.site/demo/ai-consulting/",
+          "href": "https://brightai.site/ai-agent/",
           "text": "افتح الديمو"
         },
         {
-          "href": "https://brightai.site/services/ai-consulting.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-scolecs/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/ai-scolecs.html/",
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
           "text": "صفحة الخدمة"
         },
         {
@@ -31968,147 +32168,11 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/demo/ai-workflows/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/approvals-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/approvals-automation/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/approvals-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/brightproject/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/brightproject.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/brightsales/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/brightsales.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/competitor-analysis-agent/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/competitor-analysis-agent.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/custom-ai-agent/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/custom-ai-agent.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/customer-service-automation/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/customer-service-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
           "href": "https://brightai.site/demo/data-analysis/",
           "text": "افتح الديمو"
         },
         {
           "href": "https://brightai.site/services/data-platform.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/data-analyzer/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/data-platform.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/data-quality/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/data-platform.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/hr-automation/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/hr-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/marketing-ai-agent/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/marketing-ai-agent.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/marketing-automation/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/marketing-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/ocr-demo/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/document-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/operational-reports-automation/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/operational-reports-automation.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/opportunity-discovery-agent/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/lead-hunter.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/pricing/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/",
-          "text": "الخدمات"
-        },
-        {
-          "href": "https://brightai.site/demo/seo-ai-agent/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/seo-ai-agent.html/",
           "text": "صفحة الخدمة"
         },
         {
@@ -32120,6 +32184,14 @@
           "text": "صفحة الخدمة"
         },
         {
+          "href": "https://brightai.site/demo/ai-workflows/",
+          "text": "افتح الديمو"
+        },
+        {
+          "href": "https://brightai.site/services/approvals-automation.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
           "href": "https://brightai.site/demo/smart-education-platform/",
           "text": "افتح الديمو"
         },
@@ -32128,51 +32200,11 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/demo/smart-hiring-system/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/smart-hiring-system.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
           "href": "https://brightai.site/demo/smart-hospital-management/",
           "text": "افتح الديمو"
         },
         {
           "href": "https://brightai.site/services/smart-hospital-management.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/medical-archive.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/social-data-analysis/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/social-data-analysis.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/supply-chain-optimization/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/supply-chain-optimization.html/",
-          "text": "صفحة الخدمة"
-        },
-        {
-          "href": "https://brightai.site/demo/text-analysis/",
-          "text": "افتح الديمو"
-        },
-        {
-          "href": "https://brightai.site/services/ai-automation-saudi.html/",
           "text": "صفحة الخدمة"
         },
         {
@@ -32337,6 +32369,8 @@
         "https://brightai.site/en/ai-workflows/",
         "https://brightai.site/en/contact/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/custom-ai-agent/",
+        "https://brightai.site/en/demo/customer-service-automation/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/en/health/",
@@ -32409,8 +32443,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/marketing-ai-agent.html/",
@@ -32450,8 +32488,8 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/competitor-analysis-agent/",
+        "https://brightai.site/demo/data-analyzer/",
         "https://brightai.site/demo/marketing-automation/",
         "https://brightai.site/demo/opportunity-discovery-agent/",
         "https://brightai.site/demo/seo-ai-agent/",
@@ -32470,7 +32508,7 @@
       "url": "https://brightai.site/demo/marketing-automation/",
       "expectedCanonical": "https://brightai.site/demo/marketing-automation/",
       "canonical": "https://brightai.site/demo/marketing-automation/",
-      "title": "حملة تسويقية كاملة من الفكرة إلى التنفيذ في 4 دقائق — مدعومة بـ Gemini 2.5",
+      "title": "نظام التسويق الذكي",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -32489,7 +32527,23 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "Bright AI"
+          "text": ""
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "كل الديموهات"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
+          "href": "https://brightai.site/services/marketing-automation.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -32497,41 +32551,45 @@
         },
         {
           "href": "https://brightai.site/services/marketing-automation.html/",
-          "text": "صفحة الخدمة"
+          "text": "صفحة الخدمة الرسمية"
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "الخدمات"
+          "text": "كل خدمات Bright AI"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "مركز الديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "تواصل"
-        },
-        {
-          "href": "https://brightai.site/contact/",
-          "text": "احجز مراجعة تنفيذ"
-        },
-        {
-          "href": "https://brightai.site/docs/privacy-policy.html/",
-          "text": "سياسة الخصوصية"
+          "text": "تواصل معنا"
         },
         {
           "href": "https://brightai.site/demo/marketing-ai-agent/",
-          "text": "وكيل التسويق"
+          "text": "وكيل تسويق"
         },
         {
           "href": "https://brightai.site/demo/brightsales/",
-          "text": "BrightSales"
+          "text": "BrightSales للمبيعات الذكية"
         },
         {
           "href": "https://brightai.site/demo/customer-service-automation/",
           "text": "أتمتة خدمة العملاء"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز مكالمة 15 دقيقة"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسة الخصوصية"
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/ai-consulting/",
         "https://brightai.site/demo/brightsales/",
+        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/marketing-ai-agent/",
         "https://brightai.site/services/marketing-automation/"
       ],
@@ -32544,7 +32602,7 @@
       "url": "https://brightai.site/demo/ocr-demo/",
       "expectedCanonical": "https://brightai.site/demo/ocr-demo/",
       "canonical": "https://brightai.site/demo/ocr-demo/",
-      "title": "استخرج ٣١ حقلاً من فاتورة أو عقد خلال ٤ ثوانٍ مع تحقق زاتكا وصناديق تحديد مرئية",
+      "title": "تجربة OCR للوثائق",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -32553,6 +32611,9 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/approvals-automation/",
+        "https://brightai.site/demo/data-analyzer/",
+        "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/document-automation.html/"
@@ -32560,27 +32621,59 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "Bright AI Document Intelligence"
+          "text": ""
         },
         {
           "href": "https://brightai.site/demo/",
           "text": "كل الديموهات"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
           "href": "https://brightai.site/services/document-automation.html/",
-          "text": "أتمتة المستندات"
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
+        },
+        {
+          "href": "https://brightai.site/services/document-automation.html/",
+          "text": "صفحة الخدمة الرسمية"
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "الخدمات"
+          "text": "كل خدمات Bright AI"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "مركز الديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل معنا"
         },
         {
+          "href": "https://brightai.site/demo/smart-medical-archive/",
+          "text": "الأرشيف الطبي الذكي"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analyzer/",
+          "text": "منصة تحليل البيانات"
+        },
+        {
+          "href": "https://brightai.site/demo/approvals-automation/",
+          "text": "أتمتة الموافقات"
+        },
+        {
           "href": "https://brightai.site/contact/",
-          "text": "احجز مكالمة ١٥ دقيقة"
+          "text": "احجز مكالمة 15 دقيقة"
         },
         {
           "href": "https://brightai.site/docs/privacy-policy.html/",
@@ -32589,8 +32682,8 @@
       ],
       "incoming": [
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/approvals-automation/",
+        "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/solutions-ocr/",
         "https://brightai.site/en/data-analysis/",
         "https://brightai.site/en/tools/",
@@ -32641,8 +32734,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/operational-reports-automation.html/",
@@ -32682,10 +32779,12 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
+        "https://brightai.site/demo/ai-scolecs/",
         "https://brightai.site/demo/brightproject/",
+        "https://brightai.site/demo/data-analyzer/",
         "https://brightai.site/demo/data-quality/",
         "https://brightai.site/demo/hr-automation/",
+        "https://brightai.site/demo/smart-hiring-system/",
         "https://brightai.site/demo/supply-chain-optimization/",
         "https://brightai.site/demo/text-analysis/",
         "https://brightai.site/services/operational-reports-automation/"
@@ -32733,8 +32832,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/lead-hunter.html/",
@@ -32774,7 +32877,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/brightsales/",
         "https://brightai.site/demo/competitor-analysis-agent/",
         "https://brightai.site/demo/custom-ai-agent/",
@@ -32824,8 +32926,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/",
@@ -32860,10 +32966,6 @@
           "text": "احجز مكالمة 15 دقيقة"
         },
         {
-          "href": "https://brightai.site/services/",
-          "text": "صفحة خدمات Bright AI"
-        },
-        {
           "href": "https://brightai.site/docs/privacy-policy.html/",
           "text": "سياسة الخصوصية"
         }
@@ -32872,7 +32974,6 @@
         "https://brightai.site/",
         "https://brightai.site/consultation/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
         "https://brightai.site/en/",
         "https://brightai.site/en/ai-agent/",
@@ -33174,8 +33275,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/seo-ai-agent.html/",
@@ -33215,7 +33320,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/competitor-analysis-agent/",
         "https://brightai.site/demo/custom-ai-agent/",
         "https://brightai.site/demo/marketing-ai-agent/",
@@ -33232,16 +33336,18 @@
       "url": "https://brightai.site/demo/smart-automation/",
       "expectedCanonical": "https://brightai.site/demo/smart-automation/",
       "canonical": "https://brightai.site/demo/smart-automation/",
-      "title": "أتمتة أعمالك من الطلب إلى التنفيذ بدون تدخل يدوي",
+      "title": "أتمتة الأعمال الذكية للفرق السعودية",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
-        "https://brightai.site/demo/ai-workflows/",
+        "https://brightai.site/demo/ai-tenders-analysis/",
+        "https://brightai.site/demo/data-analysis/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/ai-automation-saudi.html/"
@@ -33256,8 +33362,8 @@
           "text": "الديموهات"
         },
         {
-          "href": "https://brightai.site/services/ai-automation-saudi.html/",
-          "text": "الخدمة"
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
         },
         {
           "href": "https://brightai.site/contact/",
@@ -33265,7 +33371,11 @@
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "اطلب بناء أتمتة لعمليتك"
+          "text": "احجز استشارة"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة 15 دقيقة"
         },
         {
           "href": "https://brightai.site/",
@@ -33277,19 +33387,31 @@
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "اطلب بناء أتمتة لعمليتك"
+          "text": "احجز استشارة مجانية"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب نسخة مخصصة"
         },
         {
           "href": "https://brightai.site/services/ai-automation-saudi.html/",
-          "text": "خدمة أتمتة الأعمال"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-workflows/",
-          "text": "ديمو سير العمل"
+          "text": "ربط مع أنظمتك"
         },
         {
           "href": "https://brightai.site/docs/privacy-policy.html/",
-          "text": "سياسة الخصوصية"
+          "text": "اقرأ كيف نحمي بياناتك"
+        },
+        {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "AI Agent للشركات"
+        },
+        {
+          "href": "https://brightai.site/demo/ai-tenders-analysis/",
+          "text": "تحليل المناقصات والعقود"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analysis/",
+          "text": "تحليل البيانات"
         },
         {
           "href": "https://brightai.site/services/",
@@ -33302,10 +33424,17 @@
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسات"
         }
       ],
       "incoming": [
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/ai-tenders-analysis/",
+        "https://brightai.site/demo/data-analysis/",
         "https://brightai.site/services/ai-automation-saudi/"
       ],
       "isOrphan": false,
@@ -33423,7 +33552,7 @@
       "url": "https://brightai.site/demo/smart-hiring-system/",
       "expectedCanonical": "https://brightai.site/demo/smart-hiring-system/",
       "canonical": "https://brightai.site/demo/smart-hiring-system/",
-      "title": "قيّم ملاءمة المرشح في أربع ثوانٍ مع دليل قابل للمراجعة",
+      "title": "نظام التوظيف الذكي",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -33432,6 +33561,9 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/data-analyzer/",
+        "https://brightai.site/demo/hr-automation/",
+        "https://brightai.site/demo/operational-reports-automation/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/smart-hiring-system.html/"
@@ -33439,7 +33571,23 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "Bright AI"
+          "text": ""
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "كل الديموهات"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
+          "href": "https://brightai.site/services/smart-hiring-system.html/",
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -33447,15 +33595,31 @@
         },
         {
           "href": "https://brightai.site/services/smart-hiring-system.html/",
-          "text": "صفحة الخدمة"
+          "text": "صفحة الخدمة الرسمية"
         },
         {
           "href": "https://brightai.site/services/",
-          "text": "الخدمات"
+          "text": "كل خدمات Bright AI"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "مركز الديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "تواصل"
+          "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analyzer/",
+          "text": "منصة تحليل البيانات"
+        },
+        {
+          "href": "https://brightai.site/demo/hr-automation/",
+          "text": "أتمتة الموارد البشرية"
+        },
+        {
+          "href": "https://brightai.site/demo/operational-reports-automation/",
+          "text": "أتمتة التقارير التشغيلية"
         },
         {
           "href": "https://brightai.site/contact/",
@@ -33550,7 +33714,6 @@
         "https://brightai.site/consultation/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/",
         "https://brightai.site/demo/hr-automation/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
         "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
@@ -34310,15 +34473,18 @@
       "url": "https://brightai.site/demo/smart-hospital-management/",
       "expectedCanonical": "https://brightai.site/demo/smart-hospital-management/",
       "canonical": "https://brightai.site/demo/smart-hospital-management/",
-      "title": "جرّب اتخاذ قرارات تشغيلية مدعومة بالذكاء الاصطناعي",
+      "title": "إدارة المستشفى الذكية بالذكاء الاصطناعي",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/ai-tenders-analysis/",
+        "https://brightai.site/demo/data-analysis/",
         "https://brightai.site/docs/privacy-policy.html/",
         "https://brightai.site/services/",
         "https://brightai.site/services/smart-hospital-management.html/"
@@ -34326,7 +34492,7 @@
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "B BrightAI"
+          "text": "BrightAI"
         },
         {
           "href": "https://brightai.site/demo/",
@@ -34342,23 +34508,63 @@
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "طلب نسخة مؤسسية"
+          "text": "احجز استشارة"
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "احجز جلسة تصميم تشغيلي"
+          "text": "احجز استشارة 15 دقيقة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "احجز استشارة مجانية"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "اطلب نسخة مخصصة"
         },
         {
           "href": "https://brightai.site/services/smart-hospital-management.html/",
-          "text": "صفحة خدمة إدارة المستشفيات"
+          "text": "ربط مع أنظمتك"
         },
         {
           "href": "https://brightai.site/docs/privacy-policy.html/",
-          "text": "سياسة الخصوصية"
+          "text": "اقرأ كيف نحمي بياناتك"
+        },
+        {
+          "href": "https://brightai.site/ai-agent/",
+          "text": "AI Agent للشركات"
+        },
+        {
+          "href": "https://brightai.site/demo/ai-tenders-analysis/",
+          "text": "تحليل المناقصات والعقود"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analysis/",
+          "text": "تحليل البيانات"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "خدمات"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "ديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
           "text": "تواصل"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسات"
         }
       ],
       "incoming": [
@@ -34449,6 +34655,7 @@
         "https://brightai.site/demo/smart-hiring-system/pages/appointment/",
         "https://brightai.site/demo/smart-hiring-system/pages/dashboard/",
         "https://brightai.site/demo/smart-hiring-system/pages/support-ai/",
+        "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/docs/",
         "https://brightai.site/docs/ai-agent/",
         "https://brightai.site/docs/ai-bots/",
@@ -34526,7 +34733,7 @@
       "url": "https://brightai.site/demo/smart-medical-archive/",
       "expectedCanonical": "https://brightai.site/demo/smart-medical-archive/",
       "canonical": "https://brightai.site/demo/smart-medical-archive/",
-      "title": "استخرج الحقول السريرية من وثيقة طبية في أقل من 4 ثوان",
+      "title": "الأرشيف الطبي الذكي",
       "routeType": "static-index-route",
       "indexable": true,
       "inSitemap": true,
@@ -34535,28 +34742,73 @@
         "https://brightai.site/",
         "https://brightai.site/contact/",
         "https://brightai.site/demo/",
+        "https://brightai.site/demo/data-analyzer/",
+        "https://brightai.site/demo/ocr-demo/",
+        "https://brightai.site/demo/smart-hospital-management/",
+        "https://brightai.site/docs/privacy-policy.html/",
+        "https://brightai.site/services/",
         "https://brightai.site/services/medical-archive.html/"
       ],
       "outgoingAnchors": [
         {
           "href": "https://brightai.site/",
-          "text": "Bright AI"
+          "text": ""
         },
         {
           "href": "https://brightai.site/demo/",
           "text": "كل الديموهات"
         },
         {
+          "href": "https://brightai.site/services/",
+          "text": "الخدمات"
+        },
+        {
           "href": "https://brightai.site/services/medical-archive.html/",
-          "text": "الخدمة الطبية"
+          "text": "صفحة الخدمة"
+        },
+        {
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
+        },
+        {
+          "href": "https://brightai.site/services/medical-archive.html/",
+          "text": "صفحة الخدمة الرسمية"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "كل خدمات Bright AI"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "مركز الديموهات"
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "تواصل"
+          "text": "تواصل معنا"
+        },
+        {
+          "href": "https://brightai.site/demo/smart-hospital-management/",
+          "text": "إدارة المستشفى الذكية"
+        },
+        {
+          "href": "https://brightai.site/demo/ocr-demo/",
+          "text": "تجربة OCR للوثائق"
+        },
+        {
+          "href": "https://brightai.site/demo/data-analyzer/",
+          "text": "منصة تحليل البيانات"
         },
         {
           "href": "https://brightai.site/contact/",
-          "text": "احجز مراجعة تقنية"
+          "text": "احجز مكالمة 15 دقيقة"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "سياسة الخصوصية"
         }
       ],
       "incoming": [
@@ -34641,7 +34893,7 @@
         "https://brightai.site/case-studies/",
         "https://brightai.site/contact/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/",
+        "https://brightai.site/demo/ocr-demo/",
         "https://brightai.site/demo/resources/report-ai-saudi-2026/",
         "https://brightai.site/demo/smart-hiring-system/pages/Visitor-registration/",
         "https://brightai.site/demo/smart-hiring-system/pages/appointment/",
@@ -34759,8 +35011,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/social-data-analysis.html/",
@@ -34800,7 +35056,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/services/social-data-analysis/"
       ],
       "isOrphan": false,
@@ -34846,8 +35101,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/supply-chain-optimization.html/",
@@ -34887,7 +35146,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
@@ -34933,8 +35191,12 @@
           "text": "صفحة الخدمة"
         },
         {
-          "href": "https://brightai.site/contact/",
-          "text": "تواصل معنا"
+          "href": "https://brightai.site/",
+          "text": "الرئيسية"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "الديموهات"
         },
         {
           "href": "https://brightai.site/services/ai-automation-saudi.html/",
@@ -34974,7 +35236,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/demo/",
         "https://brightai.site/en/",
         "https://brightai.site/sitemap/"
       ],
@@ -38010,12 +38271,12 @@
         "https://brightai.site/",
         "https://brightai.site/ai-workflows/",
         "https://brightai.site/data-analysis/",
-        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/docs/",
         "https://brightai.site/en/",
         "https://brightai.site/en/ai-agent/",
         "https://brightai.site/en/ai-workflows/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/customer-service-automation/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/sectors/finance-en/",
@@ -48934,6 +49195,7 @@
         "https://brightai.site/en/ai-agent/",
         "https://brightai.site/en/ai-workflows/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/smart-hiring-system/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/en/health/",
@@ -49304,6 +49566,9 @@
         "https://brightai.site/en/ai-workflows/",
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/",
+        "https://brightai.site/en/demo/data-analyzer/",
+        "https://brightai.site/en/demo/smart-hiring-system/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/health/",
         "https://brightai.site/en/interview/",
@@ -49808,6 +50073,343 @@
       "isOrphan": false,
       "problem": "",
       "severity": "None"
+    },
+    {
+      "relPath": "en/demo/ai-tenders-analysis/index.html",
+      "url": "https://brightai.site/en/demo/ai-tenders-analysis/",
+      "expectedCanonical": "https://brightai.site/en/demo/ai-tenders-analysis/",
+      "canonical": "https://brightai.site/en/demo/ai-tenders-analysis/",
+      "title": "Analyze Tenders & Contracts in Minutes, Not Days",
+      "routeType": "static-index-route",
+      "indexable": true,
+      "inSitemap": true,
+      "ownerDecisionNeeded": false,
+      "outgoing": [
+        "https://brightai.site/en/",
+        "https://brightai.site/en/contact/",
+        "https://brightai.site/en/demo/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/compare/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/dashboard/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/landing/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/settings/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/templates/",
+        "https://brightai.site/en/docs/privacy-policy.html/",
+        "https://brightai.site/en/services/",
+        "https://brightai.site/en/services/ai-tenders-analysis.html/"
+      ],
+      "outgoingAnchors": [
+        {
+          "href": "https://brightai.site/en/",
+          "text": "Bright AI"
+        },
+        {
+          "href": "https://brightai.site/en/demo/",
+          "text": "Demos"
+        },
+        {
+          "href": "https://brightai.site/en/services/",
+          "text": "Services"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Contact"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Request Real Analysis"
+        },
+        {
+          "href": "https://brightai.site/en/",
+          "text": "Home"
+        },
+        {
+          "href": "https://brightai.site/en/demo/",
+          "text": "Demos"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Request Enterprise Contract Analysis"
+        },
+        {
+          "href": "https://brightai.site/en/demo/ai-tenders-analysis/",
+          "text": "Analyzer"
+        },
+        {
+          "href": "https://brightai.site/en/demo/ai-tenders-analysis/landing/",
+          "text": "Landing"
+        },
+        {
+          "href": "https://brightai.site/en/demo/ai-tenders-analysis/compare/",
+          "text": "Compare"
+        },
+        {
+          "href": "https://brightai.site/en/demo/ai-tenders-analysis/dashboard/",
+          "text": "Dashboard"
+        },
+        {
+          "href": "https://brightai.site/en/demo/ai-tenders-analysis/templates/",
+          "text": "Templates"
+        },
+        {
+          "href": "https://brightai.site/en/demo/ai-tenders-analysis/settings/",
+          "text": "Settings"
+        },
+        {
+          "href": "https://brightai.site/en/services/ai-tenders-analysis.html/",
+          "text": "Tenders Analysis Service Page"
+        },
+        {
+          "href": "https://brightai.site/en/demo/",
+          "text": "Demos"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Contact"
+        },
+        {
+          "href": "https://brightai.site/en/docs/privacy-policy.html/",
+          "text": "Privacy"
+        }
+      ],
+      "incoming": [],
+      "isOrphan": true,
+      "problem": "orphan_page",
+      "severity": "High"
+    },
+    {
+      "relPath": "en/demo/custom-ai-agent/index.html",
+      "url": "https://brightai.site/en/demo/custom-ai-agent/",
+      "expectedCanonical": "https://brightai.site/en/demo/custom-ai-agent/",
+      "canonical": "https://brightai.site/en/demo/custom-ai-agent/",
+      "title": "Custom AI Agent Builder",
+      "routeType": "static-index-route",
+      "indexable": true,
+      "inSitemap": true,
+      "ownerDecisionNeeded": false,
+      "outgoing": [
+        "https://brightai.site/",
+        "https://brightai.site/contact/",
+        "https://brightai.site/demo/",
+        "https://brightai.site/docs/privacy-policy.html/",
+        "https://brightai.site/en/demo/customer-service-automation/",
+        "https://brightai.site/services/",
+        "https://brightai.site/services/custom-ai-agent.html/"
+      ],
+      "outgoingAnchors": [
+        {
+          "href": "https://brightai.site/",
+          "text": ""
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "All Demos"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "Services"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
+          "text": "Service Details"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "Contact Us"
+        },
+        {
+          "href": "https://brightai.site/services/custom-ai-agent.html/",
+          "text": "Official Service Page"
+        },
+        {
+          "href": "https://brightai.site/services/",
+          "text": "All Services"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "Demos Hub"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "Contact Us"
+        },
+        {
+          "href": "https://brightai.site/en/demo/customer-service-automation/",
+          "text": "Customer Service Automation Demo"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "Book a 15-Minute Consultation"
+        },
+        {
+          "href": "https://brightai.site/docs/privacy-policy.html/",
+          "text": "Privacy Policy"
+        }
+      ],
+      "incoming": [],
+      "isOrphan": true,
+      "problem": "orphan_page",
+      "severity": "High"
+    },
+    {
+      "relPath": "en/demo/customer-service-automation/index.html",
+      "url": "https://brightai.site/en/demo/customer-service-automation/",
+      "expectedCanonical": "https://brightai.site/en/demo/customer-service-automation/",
+      "canonical": "https://brightai.site/en/demo/customer-service-automation/",
+      "title": "A unified inbox that understands your customer before drafting replies",
+      "routeType": "static-index-route",
+      "indexable": true,
+      "inSitemap": true,
+      "ownerDecisionNeeded": false,
+      "outgoing": [
+        "https://brightai.site/",
+        "https://brightai.site/contact/",
+        "https://brightai.site/demo/",
+        "https://brightai.site/docs/openapi/",
+        "https://brightai.site/services/customer-service-automation.html/"
+      ],
+      "outgoingAnchors": [
+        {
+          "href": "https://brightai.site/",
+          "text": "Bright AI"
+        },
+        {
+          "href": "https://brightai.site/demo/",
+          "text": "All Demos"
+        },
+        {
+          "href": "https://brightai.site/services/customer-service-automation.html/",
+          "text": "Service Details"
+        },
+        {
+          "href": "https://brightai.site/docs/openapi/",
+          "text": "API Docs"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "Contact Us"
+        },
+        {
+          "href": "https://brightai.site/contact/",
+          "text": "Book a 15-Minute Consultation"
+        }
+      ],
+      "incoming": [
+        "https://brightai.site/en/demo/custom-ai-agent/"
+      ],
+      "isOrphan": false,
+      "problem": "",
+      "severity": "None"
+    },
+    {
+      "relPath": "en/demo/data-analyzer/index.html",
+      "url": "https://brightai.site/en/demo/data-analyzer/",
+      "expectedCanonical": "https://brightai.site/en/demo/data-analyzer/",
+      "canonical": "https://brightai.site/en/demo/data-analyzer/",
+      "title": "Chat with your data & generate dashboards in 4 seconds.",
+      "routeType": "static-index-route",
+      "indexable": true,
+      "inSitemap": true,
+      "ownerDecisionNeeded": false,
+      "outgoing": [
+        "https://brightai.site/en/",
+        "https://brightai.site/en/contact/",
+        "https://brightai.site/en/demo/",
+        "https://brightai.site/en/docs/privacy-policy.html/",
+        "https://brightai.site/en/services/",
+        "https://brightai.site/en/services/data-platform.html/"
+      ],
+      "outgoingAnchors": [
+        {
+          "href": "https://brightai.site/en/",
+          "text": "Bright AI"
+        },
+        {
+          "href": "https://brightai.site/en/demo/",
+          "text": "Demos"
+        },
+        {
+          "href": "https://brightai.site/en/services/data-platform.html/",
+          "text": "Data Platform"
+        },
+        {
+          "href": "https://brightai.site/en/services/",
+          "text": "Services"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Contact Us"
+        },
+        {
+          "href": "https://brightai.site/en/docs/privacy-policy.html/",
+          "text": "Privacy Policy"
+        },
+        {
+          "href": "https://brightai.site/en/services/data-platform.html/",
+          "text": "Data Platform"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Contact Us"
+        }
+      ],
+      "incoming": [],
+      "isOrphan": true,
+      "problem": "orphan_page",
+      "severity": "High"
+    },
+    {
+      "relPath": "en/demo/smart-hiring-system/index.html",
+      "url": "https://brightai.site/en/demo/smart-hiring-system/",
+      "expectedCanonical": "https://brightai.site/en/demo/smart-hiring-system/",
+      "canonical": "https://brightai.site/en/demo/smart-hiring-system/",
+      "title": "Evaluate Candidate Fit in 4 Seconds with Verifiable Evidence",
+      "routeType": "static-index-route",
+      "indexable": true,
+      "inSitemap": true,
+      "ownerDecisionNeeded": false,
+      "outgoing": [
+        "https://brightai.site/en/",
+        "https://brightai.site/en/consultation/",
+        "https://brightai.site/en/contact/",
+        "https://brightai.site/en/demo/",
+        "https://brightai.site/en/privacy-cookies/",
+        "https://brightai.site/en/services/"
+      ],
+      "outgoingAnchors": [
+        {
+          "href": "https://brightai.site/en/",
+          "text": "Bright AI"
+        },
+        {
+          "href": "https://brightai.site/en/demo/",
+          "text": "Demos"
+        },
+        {
+          "href": "https://brightai.site/en/services/",
+          "text": "Services"
+        },
+        {
+          "href": "https://brightai.site/en/consultation/",
+          "text": "Consultation"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Contact"
+        },
+        {
+          "href": "https://brightai.site/en/contact/",
+          "text": "Book a 15-Minute Briefing"
+        },
+        {
+          "href": "https://brightai.site/en/privacy-cookies/",
+          "text": "Privacy Policy"
+        }
+      ],
+      "incoming": [],
+      "isOrphan": true,
+      "problem": "orphan_page",
+      "severity": "High"
     },
     {
       "relPath": "en/docs/docs.html",
@@ -51970,6 +52572,9 @@
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/contact/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/",
+        "https://brightai.site/en/demo/data-analyzer/",
+        "https://brightai.site/en/demo/smart-hiring-system/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/health/",
         "https://brightai.site/en/interview/",
@@ -52463,6 +53068,7 @@
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/contact/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/smart-hiring-system/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/health/",
         "https://brightai.site/en/interview/",
@@ -52638,6 +53244,9 @@
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/contact/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/ai-tenders-analysis/",
+        "https://brightai.site/en/demo/data-analyzer/",
+        "https://brightai.site/en/demo/smart-hiring-system/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/en/health/",
@@ -56678,6 +57287,8 @@
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/contact/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/custom-ai-agent/",
+        "https://brightai.site/en/demo/customer-service-automation/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/en/health/",
@@ -70769,6 +71380,7 @@
         "https://brightai.site/404",
         "https://brightai.site/500",
         "https://brightai.site/about/",
+        "https://brightai.site/ai-agent/",
         "https://brightai.site/ai-bots/",
         "https://brightai.site/ai-bots/BrightMath/",
         "https://brightai.site/ai-bots/BrightRecruiter/",
@@ -70874,6 +71486,7 @@
         "https://brightai.site/demo/brightsales/",
         "https://brightai.site/demo/competitor-analysis-agent/",
         "https://brightai.site/demo/custom-ai-agent/",
+        "https://brightai.site/demo/customer-service-automation/",
         "https://brightai.site/demo/data-analysis/",
         "https://brightai.site/demo/data-analyzer/",
         "https://brightai.site/demo/data-quality/",
@@ -70894,6 +71507,7 @@
         "https://brightai.site/demo/smart-hiring-system/pages/dashboard/",
         "https://brightai.site/demo/smart-hiring-system/pages/support-ai/",
         "https://brightai.site/demo/smart-hospital-management/",
+        "https://brightai.site/demo/smart-medical-archive/",
         "https://brightai.site/demo/social-data-analysis/",
         "https://brightai.site/demo/supply-chain-optimization/",
         "https://brightai.site/demo/text-analysis/",
@@ -70951,6 +71565,7 @@
         "https://brightai.site/en/consultation/",
         "https://brightai.site/en/contact/",
         "https://brightai.site/en/data-analysis/",
+        "https://brightai.site/en/demo/custom-ai-agent/",
         "https://brightai.site/en/docs/",
         "https://brightai.site/en/docs/docs/",
         "https://brightai.site/en/health/",
@@ -77375,18 +77990,18 @@
     }
   ],
   "summary": {
-    "pagesDiscovered": 272,
-    "indexablePages": 267,
-    "internalLinksDiscovered": 6719,
-    "orphanPages": 0,
+    "pagesDiscovered": 277,
+    "indexablePages": 272,
+    "internalLinksDiscovered": 6748,
+    "orphanPages": 4,
     "brokenLinks": 0,
     "pagesOutsideSitemap": 6,
     "weakAnchors": 0,
     "noHrefLinks": 0,
     "canonicalIssues": 0,
     "hashIssues": 4,
-    "sitemapUrls": 255,
-    "sitemapMissingInternalLinks": 0
+    "sitemapUrls": 260,
+    "sitemapMissingInternalLinks": 4
   },
   "weakAnchors": [],
   "noHrefLinks": [],
@@ -77417,6 +78032,11 @@
       "issue": "missing_section_target"
     }
   ],
-  "sitemapMissingInternalLinks": [],
-  "registrySize": 267
+  "sitemapMissingInternalLinks": [
+    "https://brightai.site/en/demo/ai-tenders-analysis/",
+    "https://brightai.site/en/demo/custom-ai-agent/",
+    "https://brightai.site/en/demo/data-analyzer/",
+    "https://brightai.site/en/demo/smart-hiring-system/"
+  ],
+  "registrySize": 272
 }

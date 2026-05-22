@@ -1,12 +1,987 @@
 {
-  "generatedAt": "2026-05-22T04:54:27.703Z",
+  "generatedAt": "2026-05-22T05:53:58.584Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 404,
-  "referencesScanned": 24881,
-  "internalReferences": 19713,
-  "brokenReferences": 0,
-  "fixableBrokenReferences": 0,
-  "normalizationCandidates": 138,
-  "topBrokenFiles": [],
-  "brokenRows": []
+  "filesScanned": 409,
+  "referencesScanned": 25116,
+  "internalReferences": 19907,
+  "brokenReferences": 93,
+  "fixableBrokenReferences": 93,
+  "normalizationCandidates": 131,
+  "topBrokenFiles": [
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "count": 10
+    },
+    {
+      "file": "en/demo/data-analyzer/index.html",
+      "count": 4
+    },
+    {
+      "file": "demo/ai-consulting/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/ai-scolecs/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/approvals-automation/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/brightproject/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/brightsales/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/competitor-analysis-agent/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/custom-ai-agent/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/customer-service-automation/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/data-analyzer/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/data-quality/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/hr-automation/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/marketing-ai-agent/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/marketing-automation/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/ocr-demo/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/operational-reports-automation/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/opportunity-discovery-agent/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/pricing/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/seo-ai-agent/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/smart-hiring-system/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/smart-medical-archive/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/social-data-analysis/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/supply-chain-optimization/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/text-analysis/index.html",
+      "count": 3
+    },
+    {
+      "file": "demo/index.html",
+      "count": 2
+    },
+    {
+      "file": "ai-agent/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/ai-tenders-analysis/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/ai-workflows/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/data-analysis/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/smart-automation/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/smart-education-platform/index.html",
+      "count": 1
+    },
+    {
+      "file": "demo/smart-hospital-management/index.html",
+      "count": 1
+    },
+    {
+      "file": "en/demo/smart-hiring-system/index.html",
+      "count": 1
+    }
+  ],
+  "brokenRows": [
+    {
+      "file": "ai-agent/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-consulting/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-consulting/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-consulting/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-scolecs/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-scolecs/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-scolecs/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-tenders-analysis/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ai-workflows/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/approvals-automation/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/approvals-automation/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/approvals-automation/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/brightproject/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/brightproject/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/brightproject/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/brightsales/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/brightsales/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/brightsales/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/competitor-analysis-agent/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/competitor-analysis-agent/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/competitor-analysis-agent/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/custom-ai-agent/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/custom-ai-agent/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/custom-ai-agent/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/customer-service-automation/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/customer-service-automation/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/customer-service-automation/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/data-analysis/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/data-analyzer/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/data-analyzer/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/data-analyzer/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/data-quality/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/data-quality/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/data-quality/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/hr-automation/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/hr-automation/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/hr-automation/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/index.html",
+      "line": 21,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/index.html",
+      "line": 31,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/marketing-ai-agent/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/marketing-ai-agent/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/marketing-ai-agent/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/marketing-automation/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/marketing-automation/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/marketing-automation/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ocr-demo/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ocr-demo/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/ocr-demo/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/operational-reports-automation/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/operational-reports-automation/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/operational-reports-automation/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/opportunity-discovery-agent/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/opportunity-discovery-agent/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/opportunity-discovery-agent/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/pricing/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/pricing/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/pricing/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/seo-ai-agent/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/seo-ai-agent/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/seo-ai-agent/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-automation/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-education-platform/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-hiring-system/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-hiring-system/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-hiring-system/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-hospital-management/index.html",
+      "line": 30,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-medical-archive/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-medical-archive/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/smart-medical-archive/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/social-data-analysis/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/social-data-analysis/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/social-data-analysis/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/supply-chain-optimization/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/supply-chain-optimization/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/supply-chain-optimization/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/text-analysis/index.html",
+      "line": 36,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/text-analysis/index.html",
+      "line": 182,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "demo/text-analysis/index.html",
+      "line": 216,
+      "patternType": "attr",
+      "reference": "/assets/images/logo.PNG",
+      "normalizedReferencePath": "/assets/images/logo.PNG",
+      "reason": "المسار غير موجود",
+      "suggestion": "/assets/images/logo.png"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 159,
+      "patternType": "attr",
+      "reference": "/en/demo/",
+      "normalizedReferencePath": "/en/demo/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 179,
+      "patternType": "attr",
+      "reference": "/en/demo/",
+      "normalizedReferencePath": "/en/demo/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/demo/ai-tenders-analysis/landing/",
+      "normalizedReferencePath": "/en/demo/ai-tenders-analysis/landing/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/ai-tenders-analysis/landing/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/demo/ai-tenders-analysis/compare/",
+      "normalizedReferencePath": "/en/demo/ai-tenders-analysis/compare/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/ai-tenders-analysis/compare/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/demo/ai-tenders-analysis/dashboard/",
+      "normalizedReferencePath": "/en/demo/ai-tenders-analysis/dashboard/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/ai-tenders-analysis/dashboard/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/demo/ai-tenders-analysis/templates/",
+      "normalizedReferencePath": "/en/demo/ai-tenders-analysis/templates/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/ai-tenders-analysis/templates/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/demo/ai-tenders-analysis/settings/",
+      "normalizedReferencePath": "/en/demo/ai-tenders-analysis/settings/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/ai-tenders-analysis/settings/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/services/ai-tenders-analysis.html",
+      "normalizedReferencePath": "/en/services/ai-tenders-analysis.html",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/services/ai-tenders-analysis/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/demo/",
+      "normalizedReferencePath": "/en/demo/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/"
+    },
+    {
+      "file": "en/demo/ai-tenders-analysis/index.html",
+      "line": 197,
+      "patternType": "attr",
+      "reference": "/en/docs/privacy-policy.html",
+      "normalizedReferencePath": "/en/docs/privacy-policy.html",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/privacy-policy/"
+    },
+    {
+      "file": "en/demo/data-analyzer/index.html",
+      "line": 504,
+      "patternType": "attr",
+      "reference": "/en/demo/",
+      "normalizedReferencePath": "/en/demo/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/"
+    },
+    {
+      "file": "en/demo/data-analyzer/index.html",
+      "line": 505,
+      "patternType": "attr",
+      "reference": "/en/services/data-platform.html",
+      "normalizedReferencePath": "/en/services/data-platform.html",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/services/data-platform/"
+    },
+    {
+      "file": "en/demo/data-analyzer/index.html",
+      "line": 820,
+      "patternType": "attr",
+      "reference": "/en/docs/privacy-policy.html",
+      "normalizedReferencePath": "/en/docs/privacy-policy.html",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/docs/privacy-policy/"
+    },
+    {
+      "file": "en/demo/data-analyzer/index.html",
+      "line": 820,
+      "patternType": "attr",
+      "reference": "/en/services/data-platform.html",
+      "normalizedReferencePath": "/en/services/data-platform.html",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/services/data-platform/"
+    },
+    {
+      "file": "en/demo/smart-hiring-system/index.html",
+      "line": 641,
+      "patternType": "attr",
+      "reference": "/en/demo/",
+      "normalizedReferencePath": "/en/demo/",
+      "reason": "المسار العام غير موجود",
+      "suggestion": "/demo/"
+    }
+  ]
 }
