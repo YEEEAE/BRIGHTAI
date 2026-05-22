@@ -47,10 +47,13 @@ const ALLOWED_REL_PATH_PATTERNS = [
   /^smart-automation\/index\.html$/i,                  // smart automation
   /^data-analysis\/index\.html$/i,                     // data analysis
   /^machine-learning\/index\.html$/i,                  // machine learning
+  /^ai-workflows\/index\.html$/i,                      // ai workflows
   /^health\/index\.html$/i,                            // health
   /^smart-medical-archive\/index\.html$/i,             // smart medical archive
+  /^terms\/index\.html$/i,                             // terms page
   /^demo\/[^/]+(?:\/[^/]+)*\/index\.html$/i,           // demo sub-pages (public demos)
   /^demo\/[^/]+\.html$/i,                              // demo HTML pages (dashboard.html, compare.html, etc.)
+  /^demo\/[^/]+(?:\/[^/]+)+\.html$/i,                  // nested demo HTML pages (landing.html, compare.html, etc.)
   /^services\/[^/]+\.html$/i,                          // services HTML pages
   /^services\/index\.html$/i,                          // services index
   /^sectors\/[^/]+\.html$/i,                           // sector HTML pages

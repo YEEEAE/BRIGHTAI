@@ -39,6 +39,23 @@ const REL_PATH_ALIASES = new Map([
   ["blog/digital.html", "blog/ai-manufacturing-digital-guide/index.html"],
   ["blog/gov.html", "blog/government-ai-solutions-saudi/index.html"],
 ]);
+
+const TENDERS_DEMO_COUNTERPARTS = new Map([
+  ["demo/ai-tenders-analysis/index.html", "en/tenders/index.html"],
+  ["demo/ai-tenders-analysis/compare.html", "en/tenders/compare.html"],
+  ["demo/ai-tenders-analysis/dashboard.html", "en/tenders/dashboard.html"],
+  ["demo/ai-tenders-analysis/landing.html", "en/tenders/landing.html"],
+  ["demo/ai-tenders-analysis/reports.html", "en/tenders/reports.html"],
+  ["demo/ai-tenders-analysis/settings.html", "en/tenders/settings.html"],
+  ["demo/ai-tenders-analysis/templates.html", "en/tenders/templates.html"],
+  ["en/tenders/index.html", "demo/ai-tenders-analysis/index.html"],
+  ["en/tenders/compare.html", "demo/ai-tenders-analysis/compare.html"],
+  ["en/tenders/dashboard.html", "demo/ai-tenders-analysis/dashboard.html"],
+  ["en/tenders/landing.html", "demo/ai-tenders-analysis/landing.html"],
+  ["en/tenders/reports.html", "demo/ai-tenders-analysis/reports.html"],
+  ["en/tenders/settings.html", "demo/ai-tenders-analysis/settings.html"],
+  ["en/tenders/templates.html", "demo/ai-tenders-analysis/templates.html"],
+]);
 const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^(404|500)\.html$/i,
   /^error\.html$/i,
@@ -321,6 +338,11 @@ export function findCounterpartRelPath(relPath, lowerPathMap, options = DEFAULT_
 
   if (lower === "en/index.html") {
     return pickAllowedPath("index.html", lowerPathMap, allowedRelPaths);
+  }
+
+  const mappedCounterpart = TENDERS_DEMO_COUNTERPARTS.get(lower);
+  if (mappedCounterpart) {
+    return pickAllowedPath(mappedCounterpart, lowerPathMap, allowedRelPaths);
   }
 
   if (lower.startsWith("en/")) {

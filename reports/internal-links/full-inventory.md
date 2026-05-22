@@ -1,13 +1,13 @@
 # Full Internal Links Inventory
 
-- Date: 2026-05-22T02:08:00.659Z
+- Date: 2026-05-22T02:31:09.864Z
 - Files scanned: 272
 - Pages discovered: 272
 - Indexable pages: 267
 - Internal links discovered: 6653
 - Orphan pages: 0
 - Broken links: 0
-- Pages outside sitemap: 14
+- Pages outside sitemap: 7
 - Weak anchors: 0
 - Links without href: 0
 - Canonical issues: 0
@@ -22,7 +22,7 @@
 | BrightRecruiter - روبوت التوظيف الذكي في السعودية | https://brightai.site/ai-bots/BrightRecruiter/ | ai-bots/BrightRecruiter/index.html | static-index-route | 5 | 18 | No | Yes | https://brightai.site/ai-bots/BrightRecruiter/ | Yes | None | None | None |
 | ردود فورية، تصعيد ذكي، وتقارير رضا عملاء من واتساب والموقع والبريد. | https://brightai.site/ai-bots/BrightSupport/ | ai-bots/BrightSupport/index.html | static-index-route | 9 | 18 | No | Yes | https://brightai.site/ai-bots/BrightSupport/ | Yes | None | None | None |
 | روبوتات ذكاء اصطناعي جاهزة لفرقك التشغيلية | https://brightai.site/ai-bots/ | ai-bots/index.html | static-index-route | 5 | 19 | No | Yes | https://brightai.site/ai-bots/ | Yes | None | None | None |
-| أتمتة سير العمل في السعودية | https://brightai.site/ai-workflows/ | ai-workflows/index.html | static-index-route | 8 | 25 | No | No | https://brightai.site/ai-workflows/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| أتمتة سير العمل في السعودية | https://brightai.site/ai-workflows/ | ai-workflows/index.html | static-index-route | 8 | 25 | No | Yes | https://brightai.site/ai-workflows/ | Yes | None | None | None |
 | دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي | https://brightai.site/blog/ai-agents-business-guide/ | blog/ai-agents-business-guide/index.html | static-index-route | 16 | 25 | No | Yes | https://brightai.site/blog/ai-agents-business-guide/ | Yes | None | None | None |
 | أتمتة الذكاء الاصطناعي: حلول مخصصة لتحليل المشاريع وتحسين محركات البحث | https://brightai.site/blog/ai-automation-project-analysis/ | blog/ai-automation-project-analysis/index.html | static-index-route | 7 | 29 | No | Yes | https://brightai.site/blog/ai-automation-project-analysis/ | Yes | None | None | None |
 | كيف يمكن للذكاء الاصطناعي تحسين أداء الشركات: شرح عملي | https://brightai.site/blog/ai-business-performance/ | blog/ai-business-performance/index.html | static-index-route | 5 | 25 | No | Yes | https://brightai.site/blog/ai-business-performance/ | Yes | None | None | None |
@@ -109,13 +109,13 @@
 | تحليل البيانات للشركات السعودية | https://brightai.site/data-analysis/ | data-analysis/index.html | static-index-route | 200 | 41 | No | Yes | https://brightai.site/data-analysis/ | Yes | None | None | None |
 | استشارة ذكاء اصطناعي | https://brightai.site/demo/ai-consulting/ | demo/ai-consulting/index.html | static-index-route | 1 | 9 | No | Yes | https://brightai.site/demo/ai-consulting/ | Yes | None | None | None |
 | مختبر تعليم ذكي بثلاث واجهات: طالب، معلم، وإدارة مدرسة | https://brightai.site/demo/ai-scolecs/ | demo/ai-scolecs/index.html | static-index-route | 150 | 6 | No | Yes | https://brightai.site/demo/ai-scolecs/ | Yes | None | None | None |
-| ContractAI | https://brightai.site/demo/ai-tenders-analysis/compare/ | demo/ai-tenders-analysis/compare.html | static-html-route | 9 | 19 | No | No | https://brightai.site/demo/ai-tenders-analysis/compare/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
-| ContractAI | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | demo/ai-tenders-analysis/dashboard.html | static-html-route | 6 | 16 | No | No | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/compare/ | demo/ai-tenders-analysis/compare.html | static-html-route | 9 | 19 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/compare/ | Yes | None | None | None |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | demo/ai-tenders-analysis/dashboard.html | static-html-route | 6 | 16 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | Yes | None | None | None |
 | حلّل المناقصات والعقود خلال دقائق بدل أيام | https://brightai.site/demo/ai-tenders-analysis/ | demo/ai-tenders-analysis/index.html | static-index-route | 31 | 5 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/ | Yes | None | None | None |
-| محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية | https://brightai.site/demo/ai-tenders-analysis/landing/ | demo/ai-tenders-analysis/landing.html | static-html-route | 154 | 20 | No | No | https://brightai.site/demo/ai-tenders-analysis/landing/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية | https://brightai.site/demo/ai-tenders-analysis/landing/ | demo/ai-tenders-analysis/landing.html | static-html-route | 154 | 20 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/landing/ | Yes | None | None | None |
 | ContractAI | https://brightai.site/demo/ai-tenders-analysis/reports/ | demo/ai-tenders-analysis/reports.html | static-html-route | 6 | 16 | No | No | https://brightai.site/demo/ai-tenders-analysis/reports/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
-| ContractAI | https://brightai.site/demo/ai-tenders-analysis/settings/ | demo/ai-tenders-analysis/settings.html | static-html-route | 6 | 16 | No | No | https://brightai.site/demo/ai-tenders-analysis/settings/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
-| ContractAI | https://brightai.site/demo/ai-tenders-analysis/templates/ | demo/ai-tenders-analysis/templates.html | static-html-route | 8 | 18 | No | No | https://brightai.site/demo/ai-tenders-analysis/templates/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/settings/ | demo/ai-tenders-analysis/settings.html | static-html-route | 6 | 16 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/settings/ | Yes | None | None | None |
+| ContractAI | https://brightai.site/demo/ai-tenders-analysis/templates/ | demo/ai-tenders-analysis/templates.html | static-html-route | 8 | 18 | No | Yes | https://brightai.site/demo/ai-tenders-analysis/templates/ | Yes | None | None | None |
 | صمّم سير عمل ذكي يربط أدواتك وقراراتك بدون كود | https://brightai.site/demo/ai-workflows/ | demo/ai-workflows/index.html | static-index-route | 2 | 9 | No | Yes | https://brightai.site/demo/ai-workflows/ | Yes | None | None | None |
 | أتمتة الموافقات | https://brightai.site/demo/approvals-automation/ | demo/approvals-automation/index.html | static-index-route | 2 | 9 | No | Yes | https://brightai.site/demo/approvals-automation/ | Yes | None | None | None |
 | BrightProject لإدارة المشاريع | https://brightai.site/demo/brightproject/ | demo/brightproject/index.html | static-index-route | 9 | 9 | No | Yes | https://brightai.site/demo/brightproject/ | Yes | None | None | None |
@@ -243,20 +243,13 @@
 | --- | --- | --- | --- |
 | 404.html | https://brightai.site/404 | owner_decision_needed | Medium |
 | 500.html | https://brightai.site/500 | owner_decision_needed | Medium |
-| ai-workflows/index.html | https://brightai.site/ai-workflows/ | missing_from_sitemap | Medium |
 | bot/index.html | https://brightai.site/bot/ | missing_from_sitemap | Medium |
-| demo/ai-tenders-analysis/compare.html | https://brightai.site/demo/ai-tenders-analysis/compare/ | missing_from_sitemap | Medium |
-| demo/ai-tenders-analysis/dashboard.html | https://brightai.site/demo/ai-tenders-analysis/dashboard/ | missing_from_sitemap | Medium |
-| demo/ai-tenders-analysis/landing.html | https://brightai.site/demo/ai-tenders-analysis/landing/ | missing_from_sitemap | Medium |
 | demo/ai-tenders-analysis/reports.html | https://brightai.site/demo/ai-tenders-analysis/reports/ | missing_from_sitemap | Medium |
-| demo/ai-tenders-analysis/settings.html | https://brightai.site/demo/ai-tenders-analysis/settings/ | missing_from_sitemap | Medium |
-| demo/ai-tenders-analysis/templates.html | https://brightai.site/demo/ai-tenders-analysis/templates/ | missing_from_sitemap | Medium |
 | en/tenders/reports.html | https://brightai.site/en/tenders/reports/ | missing_from_sitemap | Medium |
 | error.html | https://brightai.site/error | owner_decision_needed | Medium |
 | mais-OBM/index.html | https://brightai.site/mais-OBM/ | owner_decision_needed | Medium |
 | offline/index.html | https://brightai.site/offline/ | missing_from_sitemap | Medium |
 | sitemap/index.html | https://brightai.site/sitemap/ | missing_from_sitemap | Medium |
-| terms/index.html | https://brightai.site/terms/ | missing_from_sitemap | Medium |
 | try/index.html | https://brightai.site/try/ | missing_from_sitemap | Medium |
 | try/text-analysis/index.html | https://brightai.site/try/text-analysis/ | missing_from_sitemap | Medium |
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-22T02:08:00.659Z",
+  "generatedAt": "2026-05-22T02:31:09.864Z",
   "filesScanned": 272,
   "pages": [
     {
@@ -1894,7 +1894,7 @@
       "title": "أتمتة سير العمل في السعودية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -2224,8 +2224,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-agents-business-guide/index.html",
@@ -29410,7 +29410,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -29639,8 +29639,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/ai-tenders-analysis/dashboard.html",
@@ -29650,7 +29650,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -29821,8 +29821,8 @@
         "https://brightai.site/error"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/ai-tenders-analysis/index.html",
@@ -29932,7 +29932,7 @@
       "title": "محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -30303,8 +30303,8 @@
         "https://brightai.site/what-is-ai/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/ai-tenders-analysis/reports.html",
@@ -30480,7 +30480,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -30635,8 +30635,8 @@
         "https://brightai.site/error"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/ai-tenders-analysis/templates.html",
@@ -30646,7 +30646,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -30841,8 +30841,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "demo/ai-workflows/index.html",
@@ -75483,7 +75483,7 @@
       "title": "الشروط والأحكام",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -75691,8 +75691,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "tools/index.html",
@@ -76890,12 +76890,12 @@
     "internalLinksDiscovered": 6653,
     "orphanPages": 0,
     "brokenLinks": 0,
-    "pagesOutsideSitemap": 14,
+    "pagesOutsideSitemap": 7,
     "weakAnchors": 0,
     "noHrefLinks": 0,
     "canonicalIssues": 0,
     "hashIssues": 4,
-    "sitemapUrls": 247,
+    "sitemapUrls": 254,
     "sitemapMissingInternalLinks": 0
   },
   "weakAnchors": [],

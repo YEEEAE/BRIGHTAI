@@ -60,6 +60,13 @@ const DOCS_PUBLIC_FILES = [
   "docs/solutions-supply-chain-en.html",
 ];
 
+const CANONICAL_DEMO_TARGET_FILES = [
+  "demo/smart-medical-archive/index.html",
+  "demo/ai-tenders-analysis/index.html",
+  "demo/ai-tenders-analysis/landing.html",
+  "demo/ai-tenders-analysis/compare.html",
+];
+
 export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
   "smart-automation/index.html",
   "data-analysis/index.html",
@@ -68,15 +75,13 @@ export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
   "machine-learning/index.html",
   "ai-workflows/index.html",
   "health/index.html",
-  "smart-medical-archive/index.html",
   "en/smart-automation/index.html",
   "en/data-analysis/index.html",
   "en/ai-agent/index.html",
   "en/consultation/index.html",
   "en/ai-workflows/index.html",
   "en/health/index.html",
-  "en/demo/smart-hiring-system/index.html",
-  "en/smart-medical-archive/index.html"
+  "en/demo/smart-hiring-system/index.html"
 ];
 
 export const HIGH_CONFIDENCE_SECTOR_FILES = [
@@ -118,6 +123,7 @@ export const HIGH_CONFIDENCE_BLOG_FILES = [
 export const HIGH_CONFIDENCE_CORE_FILES = [
   ...CORE_MARKETING_FILES,
   ...EN_CORE_MARKETING_FILES,
+  ...CANONICAL_DEMO_TARGET_FILES,
   ...SITEMAP_REQUIRED_SERVICE_PAGE_FILES,
   ...DOCS_PUBLIC_FILES,
 ];

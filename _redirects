@@ -97,6 +97,12 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /ai-workflows /ai-workflows/ 301
 /docs /docs/ 301
 
+# Public product aliases that now resolve to the canonical demo pages.
+/smart-medical-archive/ /demo/smart-medical-archive/ 301
+/tenders/ /demo/ai-tenders-analysis/ 301
+/tenders/landing/ /demo/ai-tenders-analysis/landing/ 301
+/tenders/compare/ /demo/ai-tenders-analysis/compare/ 301
+
 /ai-bots /docs/ai-bots/ 301
 /ai-bots/ /docs/ai-bots/ 301
 
