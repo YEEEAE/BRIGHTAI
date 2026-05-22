@@ -15,11 +15,11 @@
   <meta name="theme-color" content="#0A1F44">
   <title>Smart Hiring Sandbox for Candidate Evaluation | Bright AI</title>
   <meta name="description" content="Try Bright AI's interactive Smart Hiring Playground. Structured match scoring, skills matrix, dynamic interview questions, and bias-free evaluation for Saudi and global enterprises.">
-  <link rel="canonical" href="https://brightai.site/en/demo/smart-hiring-system/">
-  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/smart-hiring-system/">
-  <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/demo/smart-hiring-system/">
-  <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/smart-hiring-system/">
-  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
+  <link rel="canonical" href="https://brightai.site/en/demo/smart-hiring-system/" />
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/smart-hiring-system/" />
+<link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/demo/smart-hiring-system/" />
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/smart-hiring-system/" />
+<link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
   <link rel="preconnect" href="https://www.googletagmanager.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,7 +29,7 @@
   <meta property="og:site_name" content="Bright AI">
   <meta property="og:title" content="Smart Hiring Sandbox for Candidate Evaluation | Bright AI">
   <meta property="og:description" content="Interactive candidate evaluation for modern enterprises: match scores, skills matrix, interview questions, and bias auditing.">
-  <meta property="og:url" content="https://brightai.site/en/demo/smart-hiring-system/">
+  <meta property="og:url" content="https://brightai.site/en/demo/smart-hiring-system/" />
   <meta property="og:image" content="https://brightai.site/assets/images/og/demo-smart-hiring-system.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -629,6 +629,112 @@
     }
   </style>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/en/demo/smart-hiring-system/#webpage",
+      "url": "https://brightai.site/en/demo/smart-hiring-system/",
+      "name": "Smart Hiring Sandbox for Candidate Evaluation | Bright AI",
+      "description": "Try Bright AI",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "en-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/en/demo/smart-hiring-system/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "en",
+          "item": "https://brightai.site/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "demo",
+          "item": "https://brightai.site/en/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Smart Hiring Sandbox for Candidate Evaluation",
+          "item": "https://brightai.site/en/demo/smart-hiring-system/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/en/demo/smart-hiring-system/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "API Playground (cURL) Output Schema Structure Overall Match Score Weighted scoring of parsed skills, professional experience depth, education alignment, and culture metrics. Skills Matrix Granular must-have and nice-to-have mapping showing evidence extracted directly from the CV text (Strong / Moderate / Gap). Interview Script Intelligent, gap-based question generation mapping rationale and positive indicators instead of generic CV summaries. Bias Audit Log Audit logging of excluded demographic parameters to guarantee objective criteria matching. Vertical Use Cases Healthcare & Medical",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Input: ICU nurse CV with shift experience and ACLS certifications. Output: Verification indicators for Saudi commission licensing, stress tolerance evidence, and safety logs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ready to deploy Smart Hiring in your organization?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Configure customized competency benchmarks, direct integration hooks, and secure private cloud configurations with our engineering team."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Overall Match Score ${bar(\"Skills Alignment\", breakdown.skills, 40)} ${bar(\"Experience Depth\", breakdown.experience, 30)} ${bar(\"Education Track\", breakdown.education, 15)} ${bar(\"Organizational Fit\", breakdown.culture, 15)} Skills Competency Matrix Skill Parameter Required Extracted Evidence Competency Level ${result.skill_matrix.map(item => ` ${escapeHtml(item.skill)} ${item.required ? \"Yes\" : \"Additional\"} ${escapeHtml(item.evidence)} ${levelLabel(item.level)} `).join(\"\")} Career Timeline Summary ${result.experience_summary.map(item => ` ${escapeHtml(item.years)} Years ${escapeHtml(item.role)} ${escapeHtml(item.company)} - ${escapeHtml(item.relevance)} `).join(\"\")} Hiring Flags & Verification Triggers ${result.red_flags.length ? result.red_flags.map(item => ` ${severityLabel(item.severity)} ${escapeHtml(item.type)}: ${escapeHtml(item.description)} `).join(\"\") : \" No critical flags or verification triggers identified. \"} Gap-Focused Custom Interview Script ${result.interview_questions.map(question => ` ${categoryLabel(question.category)} ? ${escapeHtml(question.rationale)} Positive indicators: ${escapeHtml((question.good_answer_signals || []).join(\", \"))} ${escapeHtml(question.question)} `).join(\"\")} Bias Exclusion Ledger",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "System Scrubbed Parameters: ${escapeHtml(result.bias_audit.factors_ignored.join(\", \"))}"
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#playground">Skip to Playground</a>
@@ -1590,5 +1696,6 @@
 
     window.addEventListener("DOMContentLoaded", init);
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

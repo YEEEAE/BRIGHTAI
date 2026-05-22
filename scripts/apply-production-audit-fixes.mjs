@@ -72,7 +72,7 @@ function orgGraph() {
     "@id": `${BASE_URL}/#organization`,
     name: "Bright AI",
     url: BASE_URL,
-    logo: `${BASE_URL}/assets/images/logo.PNG`,
+    logo: `${BASE_URL}/assets/images/logo.png`,
     areaServed: "SA",
     sameAs: []
   };

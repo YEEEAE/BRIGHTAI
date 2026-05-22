@@ -65,6 +65,9 @@ const CANONICAL_DEMO_TARGET_FILES = [
   "demo/ai-tenders-analysis/index.html",
   "demo/ai-tenders-analysis/landing.html",
   "demo/ai-tenders-analysis/compare.html",
+  "en/demo/ai-tenders-analysis/index.html",
+  "demo/smart-hiring-system/index.html",
+  "en/demo/smart-hiring-system/index.html",
 ];
 
 export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
@@ -81,6 +84,7 @@ export const SITEMAP_REQUIRED_SERVICE_PAGE_FILES = [
   "en/consultation/index.html",
   "en/ai-workflows/index.html",
   "en/health/index.html",
+  "demo/smart-hiring-system/index.html",
   "en/demo/smart-hiring-system/index.html"
 ];
 

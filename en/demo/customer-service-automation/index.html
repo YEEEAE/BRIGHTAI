@@ -15,18 +15,18 @@
   <meta name="theme-color" content="#0A1F44">
   <title>Omnichannel Customer Service Playground | Bright AI</title>
   <meta name="description" content="Test a live customer service inbox unifying WhatsApp, Webchat, Email, and Instagram with a Gemini-powered agent that detects intent, sentiment, and automates support.">
-  <link rel="canonical" href="https://brightai.site/en/demo/customer-service-automation/">
-  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/customer-service-automation/">
-  <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/demo/customer-service-automation/">
-  <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/customer-service-automation/">
-  <link rel="preconnect" href="https://www.googletagmanager.com">
+  <link rel="canonical" href="https://brightai.site/en/demo/customer-service-automation/" />
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/customer-service-automation/" />
+<link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/demo/customer-service-automation/" />
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/customer-service-automation/" />
+<link rel="preconnect" href="https://www.googletagmanager.com">
   <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Bright AI">
   <meta property="og:title" content="Omnichannel Customer Service Playground | Bright AI">
   <meta property="og:description" content="A live customer service inbox unifying WhatsApp, Webchat, Email, and Instagram with a Gemini-powered agent that analyzes sentiment, intent, and automates replies.">
-  <meta property="og:url" content="https://brightai.site/en/demo/customer-service-automation/">
+  <meta property="og:url" content="https://brightai.site/en/demo/customer-service-automation/" />
   <meta property="og:image" content="https://brightai.site/assets/images/og/demo-customer-service-automation.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -529,6 +529,113 @@
       .phone { min-height: 430px; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/en/demo/customer-service-automation/#webpage",
+      "url": "https://brightai.site/en/demo/customer-service-automation/",
+      "name": "Omnichannel Customer Service Playground | Bright AI",
+      "description": "Test a live customer service inbox unifying WhatsApp, Webchat, Email, and Instagram with a Gemini-powered agent that detects intent, sentiment, and automates support.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "en-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/en/demo/customer-service-automation/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "en",
+          "item": "https://brightai.site/en/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "demo",
+          "item": "https://brightai.site/en/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Omnichannel Customer Service Playground",
+          "item": "https://brightai.site/en/demo/customer-service-automation/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/en/demo/customer-service-automation/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Channels Simulator INPUT Customer Persona Channel Customer Message 0 / 3000 Load Next Preset WhatsApp Voice Note File In production, media files are processed securely via backend APIs. Here we simulate safe transcription. Advanced Configurations Creativity (Temperature) Max Output Limit AI Model gemini-2.5-flash System Instructions Run AI Agent (~$0.003) Generate Synthetic Data Agent Mind Gemini 2.5 Flash 1 Ingestion Reading input stream 2 Analysis Intent & sentiment 3 Validation Knowledge & tools 4 Drafting Reviewable response Intent Classification Ready Select a scenario or run the agent to view semantic analysis. Sentiment & Dialect Ready Frustration, satisfaction, or mixed language will be mapped here. Knowledge Retrieval 3 Articles Used knowledge base articles will appear here. Tool Selection Review Simulated API calls and tools will execute here. Final Customer View × WhatsApp Bright Agent I need to know where my order ORD-2198 is, no one answered since yesterday. Copy Draft Download Report Re-analyze Setup Send via Email Auditable Decision Hub",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Analyze visual reports, view clean JSON responses, inspect granular audit logs, or simulate agent workflows."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Secure API Code curl -X POST https://brightai.site/api/demo/gemini/stream \\ -H \"Content-Type: application/json\" \\ -d '{\"demoType\":\"customer-service-automation\",\"input\":{\"scenarioId\":\"angry-whatsapp-delay\",\"locale\":\"en\",\"message\":\"I need to know where my order is, no one replied since yesterday.\"}}' Webhook Notification Mockup { \"event\": \"ticket.escalated\", \"channel\": \"whatsapp\", \"priority\": \"high\", \"team\": \"Customer Support Supervisor\" } Simulated Real-World Metrics Average Handling Time 3.4s Classification Accuracy 94.2% Daily Runs 1247 True Escalation Rate 89% Industry-Specific Use Cases E-Commerce & Retail",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Input: Where is my order? Stuck 4 days and I want compensation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Integration & Architectural Layout Your CRM / ERP Source data ← Bright AI Gateway Rate limit & PII scrub ← Gemini Engine Structured JSON format ← Secure Audit Log Compliance storage WhatsApp Unifonic Salla Zid Bayan Zendesk Freshdesk HubSpot Output Schema Anatomy & JSON Layout Every response is modeled in a predictable structured schema containing intents, confidence intervals, dialect scores, retrieved references, simulated tool executions, suggested quick replies, and predicted satisfaction indices. { \"intent\": \"classified_intent\", \"intent_confidence\": 0.92, \"sentiment\": { \"polarity\": -0.62, \"emotion\": \"frustrated\" }, \"language\": \"Mixed Arabic and English\", \"dialect\": \"saudi\", \"retrieved_kb_articles\": [], \"tools_called\": [], \"response_text\": \"Agent reply draft text\", \"suggested_quick_replies\": [], \"escalation\": { \"required\": true, \"reason\": \"delay\", \"priority\": \"high\", \"suggested_team\": \"Support Team\" }, \"csat_prediction\": 3.7, \"handling_time_estimate_seconds\": 54 } Compliance, Privacy & Security Protocols Secure backend layer protecting proprietary API keys from client browsers. Strict rate limiting of 10 requests per minute per IP address. Real-time PII scrubbing and data anonymization prior to LLM processing. Detailed audit logging for every tool execution, API fetch, and booking action. Designed to adhere to Saudi PDPL, NCA ECC guidelines, and localized data residency. Simulated Knowledge Base References Frequently Asked Questions Does it understand Arabic and Saudi dialects without losing professionalism? Yes. The agent is strictly instruction-aligned to map slang, determine underlying intent, and maintain a highly professional tone without dry responses. When does the agent decide to escalate to a human supervisor? Escalation is triggered by high user frustration, refunds requiring human validation, VIP account priorities, or when low classification confidence indicates boundary ambiguity. Does the system support audio recordings? Yes. Custom enterprise versions support transcribing voice notes securely, applying the same PII filter mechanisms prior to semantic mapping. Can we sync it with Salla or Zid stores? Absolutely. Production integrations connect Salla or Zid webhooks, updating shipping logs, product catalogs, and ticket priorities automatically. Ready to Deploy a Compliant Omnichannel AI Inbox?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Integrate our secure customer support systems into your workflows. We can launch custom configurations tailored to your datasets within a few days."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body data-theme="light">
   <a class="skip-link" href="#playground">Skip to Workspace</a>
@@ -540,7 +647,7 @@
       </a>
       <nav class="nav-links" aria-label="Internal Links">
         <a href="/demo/">All Demos</a>
-        <a href="/services/customer-service-automation.html">Service Details</a>
+        <a href="/services/customer-service-automation/">Service Details</a>
         <a href="/docs/openapi/">API Docs</a>
         <a href="/contact/">Contact Us</a>
       </nav>
