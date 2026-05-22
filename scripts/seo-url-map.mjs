@@ -41,14 +41,12 @@ const REL_PATH_ALIASES = new Map([
 ]);
 
 const TENDERS_DEMO_COUNTERPARTS = new Map([
-  ["demo/ai-tenders-analysis/index.html", "en/tenders/index.html"],
   ["demo/ai-tenders-analysis/compare.html", "en/tenders/compare.html"],
   ["demo/ai-tenders-analysis/dashboard.html", "en/tenders/dashboard.html"],
   ["demo/ai-tenders-analysis/landing.html", "en/tenders/landing.html"],
   ["demo/ai-tenders-analysis/reports.html", "en/tenders/reports.html"],
   ["demo/ai-tenders-analysis/settings.html", "en/tenders/settings.html"],
   ["demo/ai-tenders-analysis/templates.html", "en/tenders/templates.html"],
-  ["en/tenders/index.html", "demo/ai-tenders-analysis/index.html"],
   ["en/tenders/compare.html", "demo/ai-tenders-analysis/compare.html"],
   ["en/tenders/dashboard.html", "demo/ai-tenders-analysis/dashboard.html"],
   ["en/tenders/landing.html", "demo/ai-tenders-analysis/landing.html"],
