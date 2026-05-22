@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-03T20:34:48.207Z",
+  "generatedAt": "2026-05-21T23:23:04.511Z",
   "filesScanned": 274,
   "pages": [
     {
@@ -10,7 +10,7 @@
       "title": "الصفحة غير موجودة",
       "routeType": "static-html-route",
       "indexable": false,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": true,
       "outgoing": [
         "https://brightai.site/",
@@ -63,7 +63,7 @@
       "title": "500",
       "routeType": "static-html-route",
       "indexable": false,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": true,
       "outgoing": [
         "https://brightai.site/",
@@ -55160,7 +55160,7 @@
       "title": "تقرير أخطاء صحة الموقع",
       "routeType": "static-html-route",
       "indexable": false,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": true,
       "outgoing": [
         "https://brightai.site/",
@@ -55885,9 +55885,6 @@
         "https://brightai.site/docs/solutions-healthcare-en/",
         "https://brightai.site/docs/terms-and-conditions/",
         "https://brightai.site/en/",
-        "https://brightai.site/locations/dammam/",
-        "https://brightai.site/locations/jeddah/",
-        "https://brightai.site/locations/riyadh/",
         "https://brightai.site/partners/",
         "https://brightai.site/privacy-cookies/",
         "https://brightai.site/sectors/",
@@ -56071,14 +56068,6 @@
           "text": "احجز استشارة"
         },
         {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/landing/",
-          "text": "زيارة صفحة النظام"
-        },
-        {
-          "href": "https://brightai.site/demo/ai-tenders-analysis/",
-          "text": "استعراض المميزات"
-        },
-        {
           "href": "https://brightai.site/services/",
           "text": "جرب المنصة"
         },
@@ -56127,10 +56116,6 @@
           "text": "استعرض كل الوكلاء"
         },
         {
-          "href": "https://brightai.site/data-analysis/",
-          "text": "اعرف المزيد عن خدمات تحليل البيانات وذكاء الأعمال"
-        },
-        {
           "href": "https://brightai.site/demo/",
           "text": "ابدأ تجربة مجانية"
         },
@@ -56153,22 +56138,6 @@
         {
           "href": "https://brightai.site/consultation/",
           "text": "خطة تنفيذ خلال 30 يومًا جلسة تشخيص + أولويات تنفيذ + خارطة طريق واضحة للنتائج."
-        },
-        {
-          "href": "https://brightai.site/docs/ai-bots/",
-          "text": "اعرف المزيد عن حلول الروبوتات الذكية"
-        },
-        {
-          "href": "https://brightai.site/demo/smart-medical-archive/",
-          "text": "اعرف المزيد عن نظام الأرشيف الطبي والمكتبات الذكية"
-        },
-        {
-          "href": "https://brightai.site/demo/",
-          "text": "Try it yourself"
-        },
-        {
-          "href": "https://brightai.site/ai-workflows/",
-          "text": "اعرف المزيد عن معالجة البيانات وتطوير سير العمل الدقيق"
         },
         {
           "href": "https://brightai.site/blog/vision-2030-ai-opportunities/",
@@ -56197,54 +56166,6 @@
         {
           "href": "https://brightai.site/blog/",
           "text": "عرض جميع المقالات"
-        },
-        {
-          "href": "https://brightai.site/about/",
-          "text": "اعرف المزيد عن شركة Bright AI الوطنية"
-        },
-        {
-          "href": "https://brightai.site/locations/riyadh/",
-          "text": "الرياض"
-        },
-        {
-          "href": "https://brightai.site/locations/jeddah/",
-          "text": "جدة"
-        },
-        {
-          "href": "https://brightai.site/locations/dammam/",
-          "text": "الدمام"
-        },
-        {
-          "href": "https://brightai.site/sectors/healthcare/",
-          "text": "القطاع الصحي تحليل طبي ومراقبة ذكية"
-        },
-        {
-          "href": "https://brightai.site/sectors/finance/",
-          "text": "القطاع المالي توقع المخاطر وكشف الاحتيال"
-        },
-        {
-          "href": "https://brightai.site/sectors/logistics/",
-          "text": "اللوجستيات أتمتة سلاسل الإمداد"
-        },
-        {
-          "href": "https://brightai.site/sectors/manufacturing/",
-          "text": "الصناعة الصيانة التنبؤية الذكية"
-        },
-        {
-          "href": "https://brightai.site/sectors/ecommerce/",
-          "text": "التجارة الإلكترونية تحليل المبيعات والتوصيات"
-        },
-        {
-          "href": "https://brightai.site/sectors/energy/",
-          "text": "الطاقة كفاءة استهلاك وإدارة ذكية"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "تصفّح المكتبة الكاملة"
-        },
-        {
-          "href": "https://brightai.site/blog/",
-          "text": "ابحث في المقالات"
         },
         {
           "href": "https://brightai.site/services/",
@@ -56957,7 +56878,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/",
         "https://brightai.site/about/",
         "https://brightai.site/locations/jeddah/",
         "https://brightai.site/locations/riyadh/",
@@ -57113,7 +57033,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/",
         "https://brightai.site/about/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/riyadh/",
@@ -57271,7 +57190,6 @@
         }
       ],
       "incoming": [
-        "https://brightai.site/",
         "https://brightai.site/about/",
         "https://brightai.site/locations/dammam/",
         "https://brightai.site/locations/jeddah/",
@@ -57669,7 +57587,7 @@
       "title": "الاتصال غير متاح حالياً",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/"
@@ -57684,8 +57602,8 @@
         "https://brightai.site/404"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "partners/index.html",
@@ -77387,16 +77305,16 @@
   "summary": {
     "pagesDiscovered": 274,
     "indexablePages": 267,
-    "internalLinksDiscovered": 6696,
+    "internalLinksDiscovered": 6693,
     "orphanPages": 0,
     "brokenLinks": 0,
-    "pagesOutsideSitemap": 109,
+    "pagesOutsideSitemap": 110,
     "weakAnchors": 0,
     "noHrefLinks": 0,
     "canonicalIssues": 2,
-    "hashIssues": 0,
-    "sitemapUrls": 200,
-    "sitemapMissingInternalLinks": 4
+    "hashIssues": 4,
+    "sitemapUrls": 196,
+    "sitemapMissingInternalLinks": 1
   },
   "weakAnchors": [],
   "noHrefLinks": [],
@@ -77412,11 +77330,33 @@
       "canonical": "https://brightai.site/en/ai-bots/BrightSales/"
     }
   ],
-  "hashIssues": [],
+  "hashIssues": [
+    {
+      "relPath": "index.html",
+      "href": "#workflows",
+      "text": "أتمتة العمليات الذكية RPA",
+      "issue": "missing_section_target"
+    },
+    {
+      "relPath": "index.html",
+      "href": "#bi",
+      "text": "تحليل البيانات بالذكاء الاصطناعي",
+      "issue": "missing_section_target"
+    },
+    {
+      "relPath": "index.html",
+      "href": "#robotics",
+      "text": "حلول الروبوتات الذكية",
+      "issue": "missing_section_target"
+    },
+    {
+      "relPath": "index.html",
+      "href": "#interactive",
+      "text": "الرؤية الحاسوبية",
+      "issue": "missing_section_target"
+    }
+  ],
   "sitemapMissingInternalLinks": [
-    "https://brightai.site/404",
-    "https://brightai.site/500",
-    "https://brightai.site/error",
     "https://brightai.site/mais-OBM/"
   ],
   "registrySize": 269

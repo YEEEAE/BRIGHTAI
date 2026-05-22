@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-05-03T20:34:47.243Z",
+  "generatedAt": "2026-05-21T23:23:03.711Z",
   "root": "/Users/yzydalshmry/Desktop/BRIGHTAI",
-  "filesScanned": 472,
-  "referencesScanned": 25117,
-  "internalReferences": 19827,
-  "brokenReferences": 34,
-  "fixableBrokenReferences": 30,
+  "filesScanned": 440,
+  "referencesScanned": 25057,
+  "internalReferences": 19793,
+  "brokenReferences": 28,
+  "fixableBrokenReferences": 28,
   "normalizationCandidates": 108,
   "topBrokenFiles": [
     {
@@ -41,85 +41,11 @@
       "count": 3
     },
     {
-      "file": ".next/server/vendor-chunks/next.js",
-      "count": 2
-    },
-    {
       "file": "demo/smart-hiring-system/index.html",
       "count": 2
-    },
-    {
-      "file": ".next/server/app/api/demo/ocr/route_client-reference-manifest.js",
-      "count": 1
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo/page_client-reference-manifest.js",
-      "count": 1
-    },
-    {
-      "file": ".next/static/chunks/app/demo/ocr-demo/page.js",
-      "count": 1
-    },
-    {
-      "file": ".next/static/webpack/app/demo/ocr-demo/page.2d877259e829e650.hot-update.js",
-      "count": 1
     }
   ],
   "brokenRows": [
-    {
-      "file": ".next/server/app/api/demo/ocr/route_client-reference-manifest.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "static/css/app/layout.css",
-      "normalizedReferencePath": "static/css/app/layout.css",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/app/layout.css"
-    },
-    {
-      "file": ".next/server/app/demo/ocr-demo/page_client-reference-manifest.js",
-      "line": 1,
-      "patternType": "js-key",
-      "reference": "static/css/app/layout.css",
-      "normalizedReferencePath": "static/css/app/layout.css",
-      "reason": "المسار غير موجود",
-      "suggestion": "/.next/static/css/app/layout.css"
-    },
-    {
-      "file": ".next/server/vendor-chunks/next.js",
-      "line": 1704,
-      "patternType": "js-key",
-      "reference": "/_next/image",
-      "normalizedReferencePath": "/_next/image",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": ".next/server/vendor-chunks/next.js",
-      "line": 3714,
-      "patternType": "js-key",
-      "reference": "/_next/image",
-      "normalizedReferencePath": "/_next/image",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": ".next/static/chunks/app/demo/ocr-demo/page.js",
-      "line": 346,
-      "patternType": "js-key",
-      "reference": "/_next/image",
-      "normalizedReferencePath": "/_next/image",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
-    {
-      "file": ".next/static/webpack/app/demo/ocr-demo/page.2d877259e829e650.hot-update.js",
-      "line": 126,
-      "patternType": "js-key",
-      "reference": "/_next/image",
-      "normalizedReferencePath": "/_next/image",
-      "reason": "المسار غير موجود",
-      "suggestion": ""
-    },
     {
       "file": "demo/smart-hiring-system/index.html",
       "line": 39,

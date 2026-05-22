@@ -1,13 +1,13 @@
 # Full Internal Links Inventory
 
-- Date: 2026-05-03T20:34:48.207Z
+- Date: 2026-05-21T23:23:04.511Z
 - Files scanned: 274
 - Pages discovered: 274
 - Indexable pages: 267
-- Internal links discovered: 6696
+- Internal links discovered: 6693
 - Orphan pages: 0
 - Broken links: 0
-- Pages outside sitemap: 109
+- Pages outside sitemap: 110
 - Weak anchors: 0
 - Links without href: 0
 - Canonical issues: 2
@@ -218,12 +218,12 @@
 | ContractAI | https://brightai.site/en/tenders/templates/ | en/tenders/templates.html | static-html-route | 6 | 23 | No | Yes | https://brightai.site/en/tenders/templates/ | Yes | None | None | None |
 | الشروط والأحكام | https://brightai.site/en/terms/ | en/terms/index.html | static-index-route | 27 | 20 | No | Yes | https://brightai.site/en/terms/ | Yes | None | None | None |
 | AI Data Analysis Tools | https://brightai.site/en/tools/ | en/tools/index.html | static-index-route | 5 | 44 | No | Yes | https://brightai.site/en/tools/ | Yes | None | None | None |
-| شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 259 | 64 | No | Yes | https://brightai.site/ | Yes | None | None | None |
-| خدمات ذكاء اصطناعي في الدمام والمنطقة الشرقية | https://brightai.site/locations/dammam/ | locations/dammam/index.html | static-index-route | 14 | 14 | No | Yes | https://brightai.site/locations/dammam/ | Yes | None | None | None |
-| خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 16 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
-| شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 17 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي في السعودية | https://brightai.site/ | index.html | static-html-route | 259 | 61 | No | Yes | https://brightai.site/ | Yes | None | None | None |
+| خدمات ذكاء اصطناعي في الدمام والمنطقة الشرقية | https://brightai.site/locations/dammam/ | locations/dammam/index.html | static-index-route | 13 | 14 | No | Yes | https://brightai.site/locations/dammam/ | Yes | None | None | None |
+| خدمات ذكاء اصطناعي في جدة للشركات السعودية | https://brightai.site/locations/jeddah/ | locations/jeddah/index.html | static-index-route | 15 | 14 | No | Yes | https://brightai.site/locations/jeddah/ | Yes | None | None | None |
+| شركة ذكاء اصطناعي في الرياض للشركات والجهات | https://brightai.site/locations/riyadh/ | locations/riyadh/index.html | static-index-route | 16 | 14 | No | Yes | https://brightai.site/locations/riyadh/ | Yes | None | None | None |
 | تطوير نماذج تعلم الآلة السعودية | https://brightai.site/machine-learning/ | machine-learning/index.html | static-index-route | 8 | 27 | No | Yes | https://brightai.site/machine-learning/ | Yes | None | None | None |
-| الاتصال غير متاح حالياً | https://brightai.site/offline/ | offline/index.html | static-index-route | 1 | 1 | No | Yes | https://brightai.site/offline/ | Yes | None | None | None |
+| الاتصال غير متاح حالياً | https://brightai.site/offline/ | offline/index.html | static-index-route | 1 | 1 | No | No | https://brightai.site/offline/ | Yes | missing_from_sitemap | Medium | Add contextual HTML links, sitemap regeneration, or canonical correction |
 | شراكات الذكاء الاصطناعي في السعودية | https://brightai.site/partners/ | partners/index.html | static-index-route | 7 | 16 | No | Yes | https://brightai.site/partners/ | Yes | None | None | None |
 | سياسة الخصوصية | https://brightai.site/privacy-cookies/ | privacy-cookies/index.html | static-index-route | 18 | 17 | No | Yes | https://brightai.site/privacy-cookies/ | Yes | None | None | None |
 | AI Solutions For Saudi E-Commerce In Saudi Arabia | https://brightai.site/sectors/ecommerce-en/ | sectors/ecommerce-en/index.html | static-index-route | 3 | 34 | No | Yes | https://brightai.site/sectors/ecommerce-en/ | Yes | None | None | None |
@@ -326,6 +326,7 @@
 | en/ai-bots/BrightSales/index 2.html | https://brightai.site/en/ai-bots/BrightSales/ | canonical_mismatch | High |
 | error.html | https://brightai.site/error | owner_decision_needed | Medium |
 | mais-OBM/index.html | https://brightai.site/mais-OBM/ | owner_decision_needed | Medium |
+| offline/index.html | https://brightai.site/offline/ | missing_from_sitemap | Medium |
 | services/ai-agents-saudi.html | https://brightai.site/services/ai-agents-saudi/ | missing_from_sitemap | Medium |
 | services/ai-automation-saudi.html | https://brightai.site/services/ai-automation-saudi/ | missing_from_sitemap | Medium |
 | services/ai-chatbot-arabic.html | https://brightai.site/services/ai-chatbot-arabic/ | missing_from_sitemap | Medium |

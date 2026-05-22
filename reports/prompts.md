@@ -1,1275 +1,604 @@
-تمام أ.يزيد، هذه مجموعة برومبتات جاهزة تنسخها في Codex **واحد واحد بالترتيب**. خلي Codex يشتغل على كل مهمة مستقلة، وبعد كل برومبت راجع الـ diff قبل الانتقال للي بعده.
+# 🎯 برومبتات Codex لتنفيذ تقرير SEO الشامل — Bright AI
+
+> **طريقة الاستخدام:** نفّذ كل برومبت بالترتيب. كل برومبت مستقل ويمكن تنفيذه في جلسة Codex منفصلة.
+> بعد كل برومبت، شغّل أوامر التحقق المذكورة في نهايته للتأكد من نجاح التنفيذ.
 
 ---
 
-## Prompt 0 — تهيئة المشروع وفهم البنية
+## 🔴 المرحلة 1: إصلاحات حرجة (Critical)
 
-```text
-You are a senior SEO engineer and full-stack code auditor.
+---
 
-Analyze this repository before making changes. The project appears to mix a static HTML marketing site with a Next.js app. Your first task is to inspect the deployment structure and produce a concise implementation plan.
+### البرومبت 1: تنظيف السايت ماب من الروابط غير العامة
 
-Focus on:
-- render.yaml
-- package.json scripts
-- app/page.tsx
-- index.html
-- sitemap.xml and related sitemap files
-- robots.txt
-- _redirects
-- _headers if present
-- public/static output behavior
-- folders that should never be deployed publicly: .next, app, backend, scripts, tests, reports, tmp, mais-OBM, node_modules
+```
+أنت وكيل Technical SEO لمشروع Bright AI.
 
-Do not modify files yet.
+المهمة: تنظيف sitemap.xml من الروابط غير العامة.
 
-Output:
-1. Current deployment model.
-2. Files/folders being published.
-3. SEO/security risks.
-4. Exact files you recommend changing.
-5. Commands to validate after changes.
+المشاكل المكتشفة:
+1. يوجد 41 رابط من /reports/keywords/ داخل sitemap.xml — هذه تقارير كلمات مفتاحية داخلية وليست صفحات عامة. الـ canonical الخاص بها يشير إلى صفحات /docs/ مما يثبت أنها نسخ ثانوية.
+2. يوجد رابطين يحتويان "index 2" (بمسافة):
+   - https://brightai.site/en/ai-bots/BrightProject/index 2/
+   - https://brightai.site/en/ai-bots/BrightSales/index 2/
+
+المطلوب:
+1. افتح sitemap.xml واحذف كل <url> يحتوي /reports/keywords/ في <loc>.
+2. احذف كل <url> يحتوي "index 2" أو "index%202" في <loc>.
+3. تأكد أن عدد الروابط بعد التنظيف حوالي 153 بدلاً من 196.
+4. تأكد أن بنية XML سليمة بعد التعديل.
+
+التحقق:
+- npm run seo:check
+- grep -c "reports/keywords" sitemap.xml → يجب أن يكون 0
+- grep -c "index 2" sitemap.xml → يجب أن يكون 0
+- grep -c "<loc>" sitemap.xml → يجب أن يكون حوالي 153-155
 ```
 
 ---
 
-## Prompt 1 — إصلاح خطر `app/page.tsx` وعدم تحويل الرئيسية إلى Demo
+### البرومبت 2: تحديث سكربت توليد السايت ماب
 
-```text
-Fix the Next.js root page risk.
+```
+أنت وكيل Technical SEO لمشروع Bright AI.
 
-Current issue:
-app/page.tsx redirects "/" to "/demo/ocr-demo/". This is dangerous if the site is ever deployed as a Next.js app because the homepage would become a demo page instead of the marketing homepage.
+المهمة: تحديث منطق سكربت توليد السايت ماب scripts/generate-sitemap-all-pages.mjs لمنع إضافة روابط غير عامة مستقبلاً.
 
-Tasks:
-1. Replace the redirect behavior in app/page.tsx with a proper marketing homepage.
-2. Use Arabic RTL content targeting Saudi companies.
-3. Keep the page lightweight and accessible.
-4. Add correct Next.js metadata:
-   - Arabic title
-   - Arabic meta description
-   - canonical https://brightai.site/
-   - hreflang ar-SA, en-SA, x-default
-   - Open Graph
-   - Twitter card
-   - robots index/follow
-5. The H1 must target: "حلول الذكاء الاصطناعي للشركات في السعودية".
-6. Primary CTA: "احجز جلسة تشخيص AI"
-7. Secondary CTA: "استعرض الخدمات المؤسسية"
-8. Link CTAs to:
-   - /consultation/
-   - /services/
-9. Do not introduce new dependencies.
-10. Ensure the file is complete and production-ready.
+اقرأ الملف أولاً وافهم المنطق الحالي، ثم عدّل قواعد التضمين والاستبعاد:
 
-After changes:
-- Show the full updated app/page.tsx.
-- Run typecheck/build if available.
-- Report any failing command clearly.
+قواعد الإضافة (Include):
+- كل /demo/**/*.html العامة (بما فيها dashboard.html, compare.html إذا كانت صفحات عملاء)
+- كل /services/*.html
+- كل /sectors/**/*.html و /sectors/*.html
+- كل /locations/*/index.html
+- كل /blog/*/index.html
+- كل /docs/*.html
+- كل /en/**/*.html العامة
+- الصفحات الجذرية: index.html, about/, contact/, consultation/, ai-agent/, etc.
+
+قواعد الاستبعاد (Exclude):
+- أي مسار يحتوي /reports/ أو /backend/ أو /.next/ أو /node_modules/ أو /.agents/ أو /tmp/
+- أي ملف اسمه يحتوي مسافة (مثل "index 2.html")
+- أي ملف 404.html أو 500.html أو error.html
+- أي ملف API مثل api.php
+- أي ملف JS/CSS/JSON مباشر
+- أي صفحة canonical الخاص بها يشير إلى صفحة مختلفة عن نفسها
+- أي صفحة redirect فقط
+
+قاعدة التحويل:
+- حوّل مسارات .html إلى canonical نظيفة: /services/ai-consulting.html → /services/ai-consulting/
+- تأكد أن كل رابط ينتهي بـ /
+
+التحقق:
+- npm run sitemap:all
+- npm run seo:check
+- grep -c "reports/keywords" sitemap.xml → 0
+- grep -c "index 2" sitemap.xml → 0
 ```
 
 ---
 
-## Prompt 2 — تنظيف النشر في `render.yaml`
+### البرومبت 3: حذف ملفات index 2.html المكررة
 
-```text
-Harden the static deployment configuration.
+```
+أنت وكيل Technical SEO لمشروع Bright AI.
 
-Current issue:
-render.yaml appears to copy too much of the repository into .render-static. It may accidentally publish development/build/internal folders such as .next, app, backend, scripts, tests, reports, tmp, and mais-OBM.
+المهمة: التعامل مع ملفات index 2.html المكررة ذات الأسماء الضعيفة.
 
-Tasks:
-1. Update render.yaml buildCommand so the static output excludes:
-   - .git
-   - node_modules
-   - .render-static
-   - .agents
-   - .next
-   - app
-   - backend
-   - scripts
-   - tests
-   - telegram-devto-bot
-   - reports
-   - tmp
-   - mais-OBM
-   - *.md
-   - package-lock.json if not needed in static output
-   - package.json if not needed in static output
-   - tsconfig files
-   - config/dev files
-2. Keep only files needed for the static website:
-   - HTML pages
-   - assets
-   - CSS
-   - JS needed by pages
-   - images
-   - robots.txt
-   - sitemap files
-   - _redirects
-   - _headers
-   - manifest/service worker files if intentionally used
-3. Do not break current static HTML deployment.
-4. Add comments in render.yaml explaining why sensitive/dev folders are excluded.
-5. Keep existing build scripts if they are required:
-   - assets:minify
-   - assets:replace-refs
-   - production:fixes
-   - sitemap:all
-   - seo:gate
-   - seo-hreflang-dirs.sh
+الملفات المشكلة:
+1. en/ai-bots/BrightProject/index 2.html
+2. en/ai-bots/BrightSales/index 2.html
 
-After changes:
-- Show the updated render.yaml.
-- Explain exactly which folders are now excluded.
-- Provide a command to inspect .render-static after build.
+هذه ملفات مكررة من النسخ الرسمية (index.html) في نفس المجلد.
+
+المطلوب:
+1. قارن محتوى "index 2.html" مع "index.html" في كل مجلد. إذا كانا متطابقين أو متشابهين جداً، احذف "index 2.html".
+2. إذا كان فيهما محتوى فريد مهم، ادمجه في index.html ثم احذف "index 2.html".
+3. أضف redirect 301 في ملف _redirects:
+   /en/ai-bots/BrightProject/index%202.html  /en/ai-bots/BrightProject/  301
+   /en/ai-bots/BrightProject/index%202/      /en/ai-bots/BrightProject/  301
+   /en/ai-bots/BrightSales/index%202.html    /en/ai-bots/BrightSales/    301
+   /en/ai-bots/BrightSales/index%202/        /en/ai-bots/BrightSales/    301
+4. تأكد أن الملفين محذوفان.
+5. تأكد أن sitemap.xml لا يحتوي أي إشارة لـ "index 2".
+
+التحقق:
+- ls "en/ai-bots/BrightProject/index 2.html" → يجب أن لا يوجد
+- ls "en/ai-bots/BrightSales/index 2.html" → يجب أن لا يوجد
+- npm run seo:check → يجب أن يمر بدون خطأ الـ slugs الضعيفة
+- npm run seo:gate
 ```
 
 ---
 
-## Prompt 3 — إزالة أو حماية `/mais-OBM/` وملف Excel
+## 🟠 المرحلة 2: إصلاحات عالية الأولوية (High)
 
-```text
-Remove sensitive/internal pages and data from public deployment.
+---
 
-Current issue:
-The repository contains mais-OBM/index.html and mais-OBM/OBM-DATA .xlsx. This appears to be an internal operational dashboard/data file and must not be publicly deployed or indexed.
+### البرومبت 4: إصلاح الأصول المكسورة
 
-Tasks:
-1. Remove mais-OBM from static deployment.
-2. If the folder is needed for internal use, move it to a non-public location such as private/mais-OBM or internal/mais-OBM and ensure it is excluded from deployment.
-3. Ensure sitemap files do not include /mais-OBM/.
-4. Ensure internal links do not point to /mais-OBM/.
-5. Add a security note file if helpful, e.g. docs/internal-data-policy.md, explaining that Excel/data files must not be committed to public static paths.
-6. If deletion is risky, do not permanently delete data. Move it and update .gitignore or deployment exclusions.
-7. Add .gitignore rules for:
-   - mais-OBM/
-   - *.xlsx in public/static paths
-   - internal data dumps
+```
+أنت وكيل Technical SEO لمشروع Bright AI.
 
-After changes:
-- Show all file moves/deletions.
-- Show .gitignore changes.
-- Confirm no sitemap or HTML page references /mais-OBM/.
-- Provide grep commands used for validation.
+المهمة: إصلاح 28 مرجع أصل مكسور في الموقع.
+
+المشكلة 1: /assets/images/logo.PNG (10 مراجع)
+الملف logo.PNG غير موجود. الملفات المتاحة:
+- assets/images/logo-new.PNG (57 KB) ← الرسمي
+- assets/images/logo.png (57 KB)
+- assets/images/logo.webp (7 KB)
+- assets/images/logo.avif (9 KB)
+
+الملفات المتأثرة:
+- demo/smart-hiring-system/index.html (سطر 39 و 634)
+
+الحل: استبدل /assets/images/logo.PNG بـ /assets/images/logo-new.PNG في هذا الملف فقط.
+ملاحظة: ملفات index 2.html ستُحذف في البرومبت 3، فلا تعدّلها.
+
+المشكلة 2: /assets/images/Gemini.png (18 مرجع)
+الملف غير موجود في assets/images/ لكنه موجود في blog/Gemini.png
+
+الملفات المتأثرة (6 ملفات):
+- sectors/ecommerce-en/index.html (سطر 163-165)
+- sectors/energy-en/index.html (سطر 163-165)
+- sectors/finance-en/index.html (سطر 163-165)
+- sectors/healthcare-en/index.html (سطر 163-165)
+- sectors/logistics-en/index.html (سطر 163-165)
+- sectors/manufacturing-en/index.html (سطر 198-200)
+
+الحل: انسخ blog/Gemini.png إلى assets/images/Gemini.png حتى تعمل كل المراجع.
+
+التحقق:
+- npm run resource:audit:before → يجب أن يكون Broken paths: 0
+- npm run internal-links:audit → يجب أن تنخفض الأعطال
 ```
 
 ---
 
-## Prompt 4 — توليد Sitemap نظيف
+### البرومبت 5: إضافة الصفحات العامة المفقودة للسايت ماب
 
-```text
-Rebuild all sitemap files correctly.
+```
+أنت وكيل Technical SEO لمشروع Bright AI.
 
-Current issue:
-Sitemap files contain URLs that do not match final published pages, including /reports/keywords/docs/ and duplicate paths from files like "index 2.html".
+المهمة: إضافة الصفحات العامة المفقودة إلى sitemap.xml
 
-Tasks:
-1. Inspect sitemap.xml, sitemap-services.xml, sitemap-blog.xml, and any sitemap index files.
-2. Remove:
-   - /reports/
-   - /reports/keywords/docs/
-   - /mais-OBM/
-   - /offline/
-   - /404.html
-   - /500.html
-   - /error.html
-   - any URL generated from "index 2.html"
-   - demo settings/report/template subpages that should not be indexed
-3. Include only canonical public pages intended to rank.
-4. Prefer clean trailing-slash URLs, not .html URLs, if _redirects canonicalizes them.
-5. Make sitemap URLs match canonical tags.
-6. Ensure each URL is absolute and uses https://brightai.site.
-7. Add lastmod only if reliable. If not reliable, omit it.
-8. Update or create the sitemap generation script so future generation does not re-add bad URLs.
-9. Add validation script or npm script:
-   - checks sitemap URLs are not forbidden
-   - checks no /reports/
-   - checks no /mais-OBM/
-   - checks no "index 2"
-   - checks no .html canonical URLs if clean URLs are the canonical standard
+فحص seo:qa أظهر 4 صفحات مطلوبة مفقودة:
+1. /smart-medical-archive/ → الديمو موجود في /demo/smart-medical-archive/ لكن لا يوجد صفحة في المسار الجذري
+2. /tenders/ → المحتوى موجود في /demo/ai-tenders-analysis/
+3. /tenders/landing/ → المحتوى في /demo/ai-tenders-analysis/landing/
+4. /tenders/compare/ → المحتوى في /demo/ai-tenders-analysis/compare/
 
-After changes:
-- Show updated sitemap files or generation script.
-- Run validation.
-- Print a summary: total URLs before/after and removed categories.
+أيضاً، فحص internal-links:audit أظهر أن 110 صفحة عامة خارج السايت ماب.
+
+المطلوب:
+1. افحص scripts/high-confidence-sitemap-config.mjs وafهم الصفحات المطلوبة.
+2. أضف redirects في _redirects:
+   /smart-medical-archive/  /demo/smart-medical-archive/  301
+   /tenders/                 /demo/ai-tenders-analysis/    301
+   /tenders/landing/         /demo/ai-tenders-analysis/landing/  301
+   /tenders/compare/         /demo/ai-tenders-analysis/compare/  301
+3. حدّث high-confidence-sitemap-config.mjs ليعكس الروابط الصحيحة بعد الـ redirects.
+4. أو بدلاً من ذلك، أنشئ صفحات landing مبسطة في المسارات المطلوبة تشير للديمو.
+5. شغّل npm run sitemap:all لتحديث السايت ماب.
+
+التحقق:
+- npm run seo:qa → يجب أن يمر بدون أخطاء IMPORTANT_URL_MISSING
+- npm run seo:check
 ```
 
 ---
 
-## Prompt 5 — تحديث `robots.txt` و`_headers`
+### البرومبت 6: إصلاح مشاكل Hreflang (45 صفحة)
 
-```text
-Improve robots.txt and HTTP indexing headers safely.
+```
+أنت وكيل Technical SEO + International SEO لمشروع Bright AI.
 
-Important:
-Do not rely on robots.txt to hide sensitive pages. Sensitive pages must be removed or protected first. robots.txt is only a crawl guidance file.
+المهمة: إصلاح 45 مشكلة hreflang اكتشفها فحص html-seo-governor.
 
-Tasks:
-1. Update robots.txt to:
-   - Allow public site crawling.
-   - Disallow development/internal folders if accidentally present:
-     /.next/
-     /app/
-     /backend/
-     /scripts/
-     /tests/
-     /tmp/
-     /reports/
-   - Reference the correct sitemap files.
-2. Create or update _headers to add X-Robots-Tag noindex for non-search pages:
-   - /404.html
-   - /500.html
-   - /error.html
-   - /offline/*
-   - /demo/ai-tenders-analysis/settings/*
-   - /demo/ai-tenders-analysis/reports/*
-   - /demo/ai-tenders-analysis/templates/*
-3. Do not noindex commercial pages, service pages, blog pages, location pages, or the homepage.
-4. If the platform does not support _headers, create an equivalent headers configuration and document it.
+الوضع الحالي:
+- 44 صفحة تفتقر لـ canonical
+- 45 صفحة بمشاكل hreflang (مفقود أو غير متطابق)
+- صفحات الديمو العربية: 29 منها لديها hreflang ar-SA لكن فقط 1 لديها hreflang en-SA
 
-After changes:
-- Show robots.txt.
-- Show _headers.
-- Explain which paths are noindex and why.
-- Provide curl commands to validate headers after deployment.
+القواعد:
+لكل صفحة لها نسخة إنجليزية مقابلة يجب أن تحتوي:
+```html
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/PAGE_AR/">
+<link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/PAGE_EN/">
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/PAGE_AR/">
+```
+
+والنسخة الإنجليزية يجب أن تحتوي نفس الثلاثة بشكل reciprocal:
+```html
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/PAGE_AR/">
+<link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/PAGE_EN/">
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/PAGE_AR/">
+```
+
+لصفحة ديمو عربية بدون نسخة إنجليزية، يكفي:
+```html
+<link rel="alternate" hreflang="ar-SA" href="SELF_URL">
+<link rel="alternate" hreflang="x-default" href="SELF_URL">
+```
+
+المطلوب:
+1. شغّل npm run seo:html:check لمعرفة الصفحات المتأثرة بالتفصيل.
+2. شغّل npm run seo:html:fix لتطبيق الإصلاحات التلقائية.
+3. بعد الإصلاح التلقائي، تحقق يدوياً من الصفحات المتبقية.
+4. تأكد أن كل hreflang reciprocal (كل نسخة تشير للأخرى).
+5. لا تُضف hreflang لصفحة مقابلة غير موجودة فعلياً.
+
+التحقق:
+- npm run seo:html:check → Missing/mismatched hreflang: 0
+- npm run seo:html:check → Missing canonical: 0
 ```
 
 ---
 
-## Prompt 6 — توحيد بيانات التواصل NAP
+### البرومبت 7: تعزيز الربط الداخلي
 
-```text
-Unify Bright AI local business identity across the website.
+```
+أنت وكيل Technical SEO + Internal Linking لمشروع Bright AI.
 
-Current issue:
-The homepage and contact page show inconsistent contact identity:
-- Homepage uses info@brightai.site and one Riyadh address.
-- Contact page uses yazeed1job@gmail.com and a different Riyadh address.
-This harms trust and Local SEO.
+المهمة: تعزيز الربط الداخلي لتحقيق الفهرسة الكاملة.
 
-Tasks:
-1. Choose the official NAP as:
-   Name: Bright AI
-   Phone: +966 53 822 9013
-   Email: info@brightai.site
-   Address: 6913 المبارك بن فضالة، حي الفيحاء، الرياض 14254، المملكة العربية السعودية
-2. Replace inconsistent Gmail email on public pages with info@brightai.site.
-3. Replace inconsistent address on contact page and schema with the official address above.
-4. Update LocalBusiness and Organization JSON-LD sitewide.
-5. Ensure same NAP appears in:
-   - homepage footer
-   - contact page
-   - consultation page if present
-   - location pages
-   - schema JSON-LD
-   - Open Graph if contact info appears there
-6. Do not invent social links. If social links are not verified in the repository, omit sameAs or leave only verified links.
-7. Add a shared data source if possible, e.g. data/business-profile.json or a JS module, to prevent future inconsistencies.
+الوضع الحالي:
+- 6,693 رابط داخلي عبر 274 صفحة
+- 0 صفحة يتيمة ← ممتاز
+- 4 صفحات بروابط داخلية = 0 (معزولة)
+- 1 صفحة في السايت ماب بدون روابط داخلية كافية
 
-After changes:
-- Show files changed.
-- Show the shared NAP source if created.
-- Run grep to verify yazeed1job@gmail.com no longer appears in public HTML.
-- Run grep to verify all old address variants are removed.
+الصفحات المعزولة:
+- /smart-medical-archive/ → 0 روابط
+- /tenders/ → 0 روابط
+- /tenders/landing/ → 0 روابط
+- /tenders/compare/ → 0 روابط
+
+المطلوب:
+1. في الصفحة الرئيسية (index.html):
+   - تأكد من وجود رابط واضح لـ /demo/ في قسم Hero أو Navigation
+   - أضف قسم "جرّب حلولنا" يعرض أهم 4-6 ديموهات
+
+2. في صفحة /demo/index.html:
+   - تأكد أن كل الديموهات الـ 29 مذكورة ومربوطة
+
+3. في كل صفحة خدمة (/services/*.html):
+   - تأكد من وجود رابط CTA يشير للديمو المقابل
+   - مثال: في services/smart-hiring-system.html → رابط لـ /demo/smart-hiring-system/
+   - النص: "جرّب النموذج التجريبي" أو "شاهد الديمو"
+
+4. في كل صفحة ديمو:
+   - تأكد من وجود رابط يعود لصفحة الخدمة المقابلة
+   - هذا موجود حالياً ← فقط تحقق
+
+5. في الـ Footer المشترك (إذا وجد):
+   - أضف روابط لأهم 5 ديموهات وأهم 5 خدمات
+
+التحقق:
+- npm run internal-links:audit → pagesOutsideSitemap أقل
+- npm run internal-links:audit → sitemapMissingInternalLinks: 0
+- npm run seo:qa → LOW_INTERNAL_LINKS: 0
 ```
 
 ---
 
-## Prompt 7 — إصلاح صفحات الخطأ والصفحات غير المناسبة للفهرسة
+## 🟡 المرحلة 3: إصلاحات متوسطة الأولوية (Medium)
 
-```text
-Fix indexability for error and utility pages.
+---
 
-Current issue:
-404.html, 500.html, error.html, offline/index.html and some demo utility pages may be indexable and may have canonical/hreflang inconsistencies.
+### البرومبت 8: إنشاء صور og:image مخصصة لكل ديمو
 
-Tasks:
-1. For 404.html, 500.html, error.html:
-   - Add meta robots noindex,nofollow,noarchive,nosnippet.
-   - Remove or neutralize canonical if misleading.
-   - Ensure the page content is helpful to users.
-   - Link back to homepage and contact page.
-2. For offline/index.html:
-   - Add noindex,nofollow,noarchive,nosnippet.
-3. For demo settings/report/template pages:
-   - Add noindex unless they are intentionally public landing pages.
-4. Remove these pages from sitemap files.
-5. Ensure no commercial page links unnecessarily to error pages.
-6. If _headers is present, add X-Robots-Tag noindex as a stronger fallback.
+```
+أنت وكيل Frontend + SEO لمشروع Bright AI.
 
-After changes:
-- Show changed files.
-- Show final meta robots for each utility page.
-- Confirm sitemap no longer includes them.
+المهمة: تحسين صور og:image لصفحات الديمو.
+
+الوضع الحالي: كل صفحات الديمو تستخدم /assets/images/logo-new.PNG كصورة og:image. هذا يعني أن كل الصفحات تظهر بنفس الصورة عند المشاركة على وسائل التواصل — ضعيف جداً للـ CTR.
+
+المطلوب:
+1. أنشئ سكربت Node.js في scripts/generate-og-images.mjs يولّد صور OG بحجم 1200×630 لكل ديمو.
+2. كل صورة تحتوي:
+   - خلفية gradient بألوان Bright AI (الأزرق الغامق #07111f → #1a3a5c)
+   - شعار Bright AI في الزاوية
+   - عنوان الديمو بالعربي بخط كبير
+   - وصف مختصر بخط أصغر
+   - badge "جرّب مجاناً"
+3. احفظ الصور في: assets/images/og/demo-{slug}.png
+4. حدّث og:image و twitter:image في كل صفحة ديمو للإشارة للصورة المخصصة.
+
+البديل السريع (إذا كان توليد الصور معقداً):
+- أنشئ صورة SVG template واحدة وحوّلها لـ PNG لكل ديمو.
+- أو استخدم أداة مثل @vercel/og أو puppeteer لتوليد الصور.
+
+التحقق:
+- ls assets/images/og/ → يجب أن يحتوي صورة لكل ديمو
+- grep "og:image" demo/*/index.html → يجب أن يشير لصور مخصصة
 ```
 
 ---
 
-## Prompt 8 — إصلاح اللغة المختلطة في صفحات `en/*`
+### البرومبت 9: تحويل CSS إلى Logical Properties لدعم RTL
 
-```text
-Fix mixed Arabic content in English pages.
+```
+أنت وكيل Frontend + RTL لمشروع Bright AI.
 
-Current issue:
-Several English pages under /en/ contain Arabic text in metadata, body, schema, FAQ, or reviews. This weakens hreflang clarity and English targeting.
+المهمة: تحويل CSS من physical properties إلى logical properties لدعم RTL بشكل كامل.
 
-Tasks:
-1. Scan all /en/ HTML files for Arabic Unicode characters.
-2. Categorize findings:
-   - acceptable brand names or Arabic examples
-   - problematic Arabic metadata
-   - problematic Arabic schema
-   - problematic Arabic body content
-   - problematic Arabic FAQ/reviews
-3. Fix problematic English pages so they are fully English:
-   - /en/contact/
-   - /en/terms/
-   - /en/privacy-cookies/
-   - /en/ai-bots/*
-   - any other affected /en/ pages
-4. Ensure English metadata targets:
-   - AI company in Saudi Arabia
-   - AI automation Saudi Arabia
-   - Artificial Intelligence Saudi Arabia
-   - enterprise AI Saudi Arabia
-5. Ensure hreflang points correctly between Arabic and English equivalents.
-6. Do not remove Arabic pages. Only fix English pages.
-7. Keep schema language consistent with page language.
+اقرأ مهارة rtl-ui-guardian من:
+@/Users/yzydalshmry/Desktop/BRIGHTAI/.agents/skills/rtl-ui-guardian/SKILL.md
 
-After changes:
-- Show list of files fixed.
-- Show before/after examples.
-- Run a script or grep command to report remaining Arabic characters in /en/.
-- If some Arabic remains intentionally, list why.
+الوضع الحالي: تقرير ui:audit اكتشف 28 مشكلة عالية الخطورة متعلقة بـ RTL في ملفات CSS:
+- استخدام left/right بدل margin-inline-start/end
+- استخدام padding-left/right بدل padding-inline-start/end
+- أحجام ثابتة (min-height: 50px) قد تقص النصوص العربية
+
+الملفات المتأثرة الرئيسية:
+- assets/css/components.css
+- assets/css/brightai-home-executive.css
+- assets/css/demo-premium.css (إذا وجد مشاكل)
+
+المطلوب:
+1. ابحث عن كل استخدامات margin-left/right, padding-left/right, left, right في CSS.
+2. حوّلها إلى:
+   - margin-left → margin-inline-start
+   - margin-right → margin-inline-end
+   - padding-left → padding-inline-start
+   - padding-right → padding-inline-end
+   - left → inset-inline-start
+   - right → inset-inline-end
+   - text-align: left → text-align: start
+   - text-align: right → text-align: end
+3. لا تغيّر القيم التي تستخدم في سياق position: fixed/absolute حيث الموضع مقصود بالتحديد (مثل شريط التنقل الثابت).
+4. استبدل min-height الثابتة بـ min-height مع clamp() أو rem بدل px.
+
+التحقق:
+- npm run ui:audit → يجب أن تنخفض المشاكل العالية من 28
+- افتح الموقع محلياً وتأكد أن التصميم لم يتغير بصرياً
 ```
 
 ---
 
-## Prompt 9 — تقصير وتحسين Titles وDescriptions
+### البرومبت 10: إنشاء نسخ إنجليزية لأهم الديموهات
 
-```text
-Optimize meta titles and descriptions.
+```
+أنت وكيل Frontend + International SEO لمشروع Bright AI.
 
-Current issue:
-Many pages have titles longer than 65 characters and descriptions longer than 170 characters. This can reduce SERP clarity and CTR.
+المهمة: إنشاء نسخ إنجليزية لأهم 5 صفحات ديمو تجارية.
 
-Tasks:
-1. Write a script to audit all HTML files:
-   - title length
-   - meta description length
-   - canonical
-   - H1
-2. Export report to reports/seo-meta-audit.json but do not deploy reports publicly.
-3. Fix priority pages first:
-   - /
-   - /services/
-   - /contact/
-   - /consultation/
-   - /locations/riyadh/
-   - /locations/jeddah/
-   - /locations/dammam/
-   - main service pages
-   - top blog pages if obvious
-4. Rules:
-   - Arabic title target: 45–62 characters.
-   - English title target: 45–60 characters.
-   - Description target: 135–160 characters.
-   - Include primary keyword naturally.
-   - Include Saudi intent where relevant.
-   - Avoid keyword stuffing.
-5. Preserve existing canonical URLs unless they are wrong.
-6. Ensure each page has a unique title and description.
+الديموهات المطلوب ترجمتها (حسب الأولوية التجارية):
+1. /demo/smart-hiring-system/ → /en/demo/smart-hiring-system/
+2. /demo/ai-tenders-analysis/ → /en/demo/ai-tenders-analysis/
+3. /demo/data-analyzer/ → /en/demo/data-analyzer/
+4. /demo/custom-ai-agent/ → /en/demo/custom-ai-agent/
+5. /demo/customer-service-automation/ → /en/demo/customer-service-automation/
 
-Recommended Arabic examples:
-Homepage title:
-"حلول الذكاء الاصطناعي للشركات في السعودية | Bright AI"
+لكل صفحة:
+1. انسخ هيكل صفحة الديمو العربية.
+2. غيّر lang="ar-SA" dir="rtl" إلى lang="en" dir="ltr".
+3. ترجم كل المحتوى للإنجليزي (titles, descriptions, H1, FAQ, CTA, use cases).
+4. حدّث canonical ليشير للنسخة الإنجليزية.
+5. أضف hreflang متبادل بين النسختين:
+   ```html
+   <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/SLUG/">
+   <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/demo/SLUG/">
+   <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/SLUG/">
+   ```
+6. حدّث Schema JSON-LD: inLanguage: "en", النصوص بالإنجليزي.
+7. حدّث og:locale إلى en_US.
+8. حدّث النصوص داخل demo-config JSON.
+9. CSS يبقى نفسه (demo-premium.css يدعم LTR و RTL).
+10. أضف كل صفحة جديدة في sitemap.xml.
 
-Homepage description:
-"وكلاء AI، أتمتة أعمال، وتحليل بيانات للشركات السعودية مع تنفيذ عملي قابل للقياس وحوكمة مناسبة للسوق المحلي."
-
-Services title:
-"خدمات الذكاء الاصطناعي للشركات | Bright AI"
-
-Services description:
-"استكشف حلول AI للأتمتة، الوكلاء الذكيين، الشات بوت، وتحليل البيانات للشركات في السعودية."
-
-After changes:
-- Show changed titles/descriptions.
-- Run the audit script again.
-- Print remaining titles >65 and descriptions >170.
+التحقق:
+- npm run seo:html:check → لا أخطاء جديدة
+- npm run seo:check
+- افتح كل صفحة إنجليزية وتأكد أن المحتوى مترجم بالكامل
 ```
 
 ---
 
-## Prompt 10 — إصلاح الروابط الداخلية `.html` إلى روابط Canonical
+### البرومبت 11: تحسين السيو السعودي (Saudi Keywords)
 
-```text
-Clean internal links to avoid unnecessary 301 redirects.
+```
+أنت وكيل SEO Content + Saudi Market لمشروع Bright AI.
 
-Current issue:
-Some internal links point to .html URLs that redirect to clean trailing-slash canonical URLs.
+المهمة: تحسين عناوين ووصف صفحات الديمو بكلمات مفتاحية سعودية.
 
-Tasks:
-1. Scan all HTML files for internal links ending in .html.
-2. Convert internal links to clean canonical paths:
-   - /services.html -> /services/
-   - /contact.html -> /contact/
-   - /consultation.html -> /consultation/
-   - /blog/example/index.html -> /blog/example/
-   - apply similar patterns safely
-3. Do not modify external links.
-4. Do not modify asset links such as .css, .js, .png, .svg, .webp.
-5. Do not modify file downloads unless they are public intentional downloads.
-6. Ensure _redirects can remain as backward compatibility but internal links should not rely on redirects.
-7. Re-run link scan after changes.
+اقرأ كل ملف demo/*/index.html وحدّث <title> و <meta name="description"> و <h1> حسب الجدول التالي:
 
-After changes:
-- Report number of links changed.
-- Show sample before/after.
-- Confirm no internal navigation links still point to .html except valid static assets/downloads.
+| الديمو | العنوان الحالي | العنوان المحسّن (title) | H1 المحسّن | Meta Description المحسّن |
+|--------|--------------|----------------------|-----------|------------------------|
+| smart-hiring-system | نظام التوظيف الذكي | نظام توظيف ذكي بالذكاء الاصطناعي للشركات السعودية \| Bright AI | نظام توظيف ذكي بالذكاء الاصطناعي | جرّب نظام التوظيف الذكي من Bright AI — فلترة سير ذاتية، تقييم مرشحين، وجدولة مقابلات بالذكاء الاصطناعي للشركات السعودية. |
+| ai-tenders-analysis | تحليل المناقصات | تحليل المناقصات بالذكاء الاصطناعي \| Bright AI | تحليل المناقصات الذكي | جرّب تحليل المناقصات الذكي — مقارنة عروض، تقييم مخاطر، وتقارير تنفيذية للمناقصات الحكومية والخاصة في السعودية. |
+| data-analyzer | منصة تحليل البيانات | تحليل بيانات ذكي للشركات السعودية \| Bright AI | منصة تحليل البيانات الذكية | حلّل بياناتك بالذكاء الاصطناعي — لوحات تحكم تفاعلية، رؤى تنفيذية، وتقارير مخصصة للشركات السعودية من Bright AI. |
+| customer-service-automation | أتمتة خدمة العملاء | شات بوت عربي ذكي لأتمتة خدمة العملاء \| Bright AI | أتمتة خدمة العملاء بالذكاء الاصطناعي | جرّب شات بوت عربي ذكي — رد تلقائي، تذاكر دعم، وتحليل رضا العملاء بالذكاء الاصطناعي للشركات السعودية. |
+| custom-ai-agent | وكيل ذكاء اصطناعي مخصص | وكيل ذكاء اصطناعي مخصص لشركتك \| Bright AI | وكيل ذكاء اصطناعي مخصص | صمّم وكيل AI مخصص لعمليات شركتك — أتمتة مهام، تحليل بيانات، وتكامل مع أنظمتك. حلول ذكاء اصطناعي سعودية من Bright AI. |
+| smart-medical-archive | أرشفة طبية ذكية | نظام أرشفة طبية ذكية بالذكاء الاصطناعي \| Bright AI | أرشفة طبية ذكية | جرّب نظام الأرشفة الطبية الذكية — إدارة سجلات المرضى، استخراج بيانات طبية، وأتمتة التوثيق للمستشفيات السعودية. |
+| ocr-demo | استخراج نصوص ذكي | استخراج نصوص من مستندات بالذكاء الاصطناعي \| Bright AI | استخراج نصوص ذكي من المستندات | حوّل مستنداتك الورقية والمسحوضة إلى نصوص رقمية قابلة للبحث — OCR عربي ذكي للشركات السعودية من Bright AI. |
+| seo-ai-agent | وكيل SEO ذكي | وكيل سيو بالذكاء الاصطناعي لتحسين موقعك \| Bright AI | وكيل SEO ذكي | حسّن ترتيب موقعك في Google — وكيل SEO ذكي يحلل الصفحات، يقترح تحسينات، ويراقب الأداء. جرّبه مجاناً من Bright AI. |
+
+المطلوب:
+1. حدّث <title> في كل ملف (بحد أقصى 60 حرف).
+2. حدّث <meta name="description"> (بحد أقصى 155 حرف).
+3. لا تغيّر H1 إلا إذا كان يفتقر للكلمة المفتاحية الرئيسية.
+4. حدّث og:title و twitter:title ليطابق title.
+5. حدّث og:description و twitter:description ليطابق meta description.
+6. حدّث Schema JSON-LD > name و description ليتسق مع العناوين الجديدة.
+
+التحقق:
+- npm run seo:html:check
+- npm run seo:headings (إذا متاح)
 ```
 
 ---
 
-## Prompt 11 — تحسين الصفحة الرئيسية UX/SEO
+## 🟢 المرحلة 4: تحسينات إضافية (Low)
 
-```text
-Improve the homepage UX and conversion structure without changing the visual identity drastically.
+---
 
-Current issue:
-The homepage has a decent Arabic SEO hero, but the page has too many navigation paths and the trust/conversion journey is not focused enough.
+### البرومبت 12: إضافة Breadcrumbs مرئية لصفحات الديمو
 
-Tasks:
-1. Keep Arabic RTL.
-2. Keep primary keyword:
-   "شركة ذكاء اصطناعي في السعودية"
-   and support:
-   "حلول الذكاء الاصطناعي للشركات"
-   "أتمتة الأعمال"
-   "وكلاء الذكاء الاصطناعي"
-3. Restructure homepage sections in this order:
-   - Hero with one clear promise
-   - 3 core benefits
-   - Trust strip: Saudi focus, Arabic-first, measurable pilots
-   - Services overview: AI agents, automation, chatbot, data analytics
-   - Use cases by sector: government, healthcare, retail, logistics, real estate
-   - How we work: diagnose, pilot, integrate, measure
-   - Case study placeholders if real case studies are not available
-   - FAQ
-   - Final CTA
-4. Primary CTA:
-   "احجز جلسة تشخيص AI"
-5. Secondary CTA:
-   "استعرض حلول الشركات"
-6. Add stronger copy for the hero:
-   H1:
-   "شركة ذكاء اصطناعي في السعودية لتنفيذ حلول AI قابلة للقياس"
-   Subtext:
-   "نساعد الشركات السعودية على بناء وكلاء ذكاء اصطناعي، أتمتة أعمال، شات بوت عربي، وتحليلات بيانات ترتبط بأنظمتها الحالية وتخدم أهداف التشغيل والنمو."
-7. Improve accessibility:
-   - one H1 only
-   - logical H2/H3
-   - descriptive alt attributes
-   - buttons/links have accessible names
-8. Do not break current CSS/JS.
-9. Keep page static-friendly.
+```
+أنت وكيل Frontend + UX لمشروع Bright AI.
 
-After changes:
-- Show changed homepage sections.
-- Confirm H1 count.
-- Confirm CTA links.
-- Run build or HTML validation if available.
+المهمة: إضافة breadcrumbs مرئية في أعلى كل صفحة ديمو.
+
+الوضع الحالي: صفحات الديمو تحتوي BreadcrumbList Schema لكن لا يوجد breadcrumbs مرئي في HTML.
+
+المطلوب:
+1. أضف عنصر breadcrumbs مرئي بعد <header> مباشرة في كل صفحة ديمو:
+   ```html
+   <nav class="breadcrumbs" aria-label="مسار التنقل">
+     <ol>
+       <li><a href="/">الرئيسية</a></li>
+       <li><a href="/demo/">الديموهات</a></li>
+       <li aria-current="page">اسم الديمو</li>
+     </ol>
+   </nav>
+   ```
+2. أضف CSS في demo-premium.css:
+   ```css
+   .breadcrumbs { padding: 0.75rem 1.5rem; font-size: 0.85rem; }
+   .breadcrumbs ol { display: flex; gap: 0.5rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+   .breadcrumbs li + li::before { content: "›"; margin-inline-end: 0.5rem; opacity: 0.5; }
+   .breadcrumbs a { color: var(--color-accent, #60a5fa); text-decoration: none; }
+   .breadcrumbs a:hover { text-decoration: underline; }
+   .breadcrumbs [aria-current] { color: var(--color-text-secondary, #94a3b8); }
+   ```
+3. تأكد أن الاسم في breadcrumbs يطابق H1 أو عنوان الديمو.
+
+التحقق:
+- افتح أي صفحة ديمو وتأكد أن breadcrumbs يظهر بشكل صحيح
+- npm run seo:html:check
 ```
 
 ---
 
-## Prompt 12 — تحويل صفحة الخدمات من “كتالوج” إلى صفحة قرار B2B
+### البرومبت 13: تعزيز عناصر الثقة في صفحات الديمو
 
-```text
-Improve /services/ from a catalog/cart-style page into a B2B decision page.
+```
+أنت وكيل UX + Conversion Optimization لمشروع Bright AI.
 
-Current issue:
-The services page currently feels like a product catalog with prices, cart, WhatsApp order, and bank transfer. This may hurt enterprise trust for high-value AI services.
+المهمة: إضافة عناصر ثقة في صفحات الديمو لتحسين معدل التحويل.
 
-Tasks:
-1. Keep service cards if useful, but reduce the e-commerce feel on the main /services/ page.
-2. Move direct pricing/cart emphasis lower or to separate offer/demo pages if possible.
-3. New structure:
-   - Hero: "خدمات الذكاء الاصطناعي للشركات في السعودية"
-   - Problem selector: "أريد تقليل العمل اليدوي / تحسين خدمة العملاء / تحليل البيانات / بناء وكيل AI"
-   - Core services:
-     a. وكلاء الذكاء الاصطناعي
-     b. أتمتة الأعمال
-     c. شات بوت عربي ذكي
-     d. تحليل البيانات ولوحات القياس
-     e. تكامل الأنظمة
-   - Industries served
-   - Implementation methodology
-   - FAQ
-   - CTA to consultation
-4. Primary CTA:
-   "اطلب توصية بالخدمة المناسبة"
-5. Secondary CTA:
-   "احجز جلسة تشخيص AI"
-6. Keep SEO metadata optimized.
-7. Add Service schema for the main service categories.
-8. Do not remove WhatsApp contact entirely; keep it as a secondary fast-contact option.
-9. Preserve any existing links that are important for navigation.
+المطلوب:
+1. أضف قسم "لماذا تثق بـ Bright AI" بعد قسم حالات الاستخدام في كل صفحة ديمو:
+   ```html
+   <section class="section trust-section" aria-labelledby="trust-heading">
+     <h2 id="trust-heading">لماذا تثق بـ Bright AI</h2>
+     <div class="trust-grid">
+       <div class="trust-item">
+         <strong>🇸🇦 سعودي 100%</strong>
+         <p>مبنية للسوق السعودي، تدعم العربية بالكامل.</p>
+       </div>
+       <div class="trust-item">
+         <strong>🔒 خصوصية البيانات</strong>
+         <p>بياناتك تبقى عندك. لا نشاركها مع أي طرف.</p>
+       </div>
+       <div class="trust-item">
+         <strong>⚡ جاهز خلال 48 ساعة</strong>
+         <p>النسخة المخصصة جاهزة خلال 48 ساعة من المراجعة.</p>
+       </div>
+       <div class="trust-item">
+         <strong>🏢 +50 شركة سعودية</strong>
+         <p>نخدم شركات في الرياض وجدة والدمام.</p>
+       </div>
+     </div>
+   </section>
+   ```
+2. أضف CSS مناسب في demo-premium.css للـ trust-grid.
+3. تأكد أن القسم يظهر قبل الـ CTA النهائي.
 
-After changes:
-- Show updated /services/ content structure.
-- Confirm metadata.
-- Confirm schema.
-- Confirm CTAs.
+التحقق:
+- افتح أي صفحة ديمو وتأكد أن قسم الثقة يظهر بشكل صحيح
 ```
 
 ---
 
-## Prompt 13 — تحسين صفحة التواصل
+### البرومبت 14: فحص شامل نهائي وتحقق
 
-```text
-Improve /contact/ for trust, Local SEO, and conversion.
+```
+أنت وكيل QA + Technical SEO لمشروع Bright AI.
 
-Current issue:
-The contact page has inconsistent email/address and needs clearer B2B conversion messaging.
+المهمة: فحص شامل نهائي بعد تطبيق كل الإصلاحات.
 
-Tasks:
-1. Use official NAP:
-   - Bright AI
-   - +966 53 822 9013
-   - info@brightai.site
-   - 6913 المبارك بن فضالة، حي الفيحاء، الرياض 14254، السعودية
-2. Remove yazeed1job@gmail.com from public contact page.
-3. Add a short trust intro:
-   "تواصل معنا لمناقشة مشروع ذكاء اصطناعي، أتمتة أعمال، أو وكيل AI مناسب لشركتك في السعودية."
-4. Add contact options:
-   - WhatsApp
-   - Phone
-   - Email
-   - Consultation booking
-5. Add expected response note:
-   "نراجع الطلبات خلال يوم عمل."
-6. Improve form labels and accessibility:
-   - name
-   - company
-   - email
-   - phone
-   - service interest
-   - message
-7. Add LocalBusiness schema with unified NAP.
-8. Ensure CTA is clear:
-   "أرسل طلبك"
-   "احجز جلسة تشخيص AI"
-9. Keep page lightweight.
+شغّل كل هذه الأوامر بالترتيب وسجّل نتائج كل واحد:
 
-After changes:
-- Show updated contact page.
-- Confirm no Gmail remains.
-- Confirm schema uses official NAP.
+1. npm run sitemap:all
+2. npm run seo:gate
+3. npm run seo:check
+4. npm run seo:qa
+5. npm run seo:html:check
+6. npm run internal-links:audit
+7. npm run resource:audit:before
+8. npm run ui:audit
+9. npm run performance:budget
+
+لكل أمر:
+- إذا نجح: ✅ سجّل "ناجح"
+- إذا فشل: ❌ سجّل سبب الفشل وعدد المشاكل المتبقية
+
+بعد تشغيل كل الأوامر، اكتب تقرير ملخص يحتوي:
+1. جدول بنتائج كل أمر
+2. المشاكل المتبقية (إن وجدت)
+3. مقارنة بين الحالة قبل وبعد الإصلاحات
+4. الخطوات التالية المتبقية (إن وجدت)
+
+معايير القبول النهائية (يجب أن تتحقق كلها):
+- [ ] sitemap.xml لا يحتوي /reports/keywords/
+- [ ] sitemap.xml لا يحتوي index 2
+- [ ] لا توجد صفحات demo عليها noindex
+- [ ] لا توجد صفحات demo محجوبة من robots.txt
+- [ ] كل صفحة demo لها canonical ذاتي
+- [ ] كل صفحة demo لها title/meta/H1
+- [ ] npm run seo:gate يمر بدون Critical Errors
+- [ ] npm run resource:audit:before → Broken paths: 0
+- [ ] npm run internal-links:audit → brokenLinks: 0
+- [ ] npm run performance:budget → ناجحة
 ```
 
 ---
 
-## Prompt 14 — تحسين صفحة الاستشارة
+### البرومبت 15: توليد تقرير DOCX محدّث بعد الإصلاحات
 
-```text
-Improve /consultation/ as the primary conversion page.
+```
+أنت وكيل SEO Reporting لمشروع Bright AI.
 
-Current issue:
-The page is good but needs clearer deliverables and stronger B2B trust.
+المهمة: توليد تقرير DOCX محدّث بعد تطبيق كل الإصلاحات.
 
-Tasks:
-1. Keep Arabic RTL.
-2. Hero H1:
-   "احجز جلسة تشخيص AI لشركتك"
-3. Subtext:
-   "خلال 30 دقيقة نحدد فرص الأتمتة والذكاء الاصطناعي الأعلى أثرًا، ونقترح مسار Pilot قابل للقياس."
-4. Add section: "ماذا تحصل بعد الجلسة؟"
-   Include:
-   - قائمة أولويات لحالات الاستخدام
-   - تقييم جاهزية البيانات والأنظمة
-   - توصية بأول Pilot
-   - تقدير أولي للجهد والمخاطر
-5. Add section: "لمن تناسب الجلسة؟"
-   - الإدارات التنفيذية
-   - العمليات
-   - خدمة العملاء
-   - المبيعات
-   - التحول الرقمي
-6. Add FAQ:
-   - هل الجلسة مجانية؟
-   - هل نحتاج بيانات قبل الاجتماع؟
-   - هل تناسب الشركات الصغيرة؟
-   - هل تقدمون حلولًا داخل السعودية؟
-7. Improve form accessibility.
-8. Primary CTA:
-   "احجز الجلسة الآن"
-9. Add Consultation/Service schema if appropriate.
-10. Ensure metadata is optimized.
+شغّل الأمر التالي:
+node scripts/generate-seo-report-docx.mjs
 
-After changes:
-- Show updated page sections.
-- Confirm CTA and form fields.
-- Confirm metadata and schema.
+ثم قارن النتائج الجديدة مع التقرير السابق:
+- الدرجة الإجمالية: كانت ~62% → يجب أن تكون >85%
+- روابط /reports/ في السايت ماب: كانت 41 → يجب أن تكون 0
+- روابط index 2: كانت 2 → يجب أن تكون 0
+- أصول مكسورة: كانت 28 → يجب أن تكون 0
+- مشاكل hreflang: كانت 45 → يجب أن تنخفض كثيراً
+
+إذا كانت النتائج أقل من المتوقع، حدد المشاكل المتبقية واقترح حلولها.
 ```
 
 ---
 
-## Prompt 15 — بناء صفحات المدن الجديدة وتحسين الحالية
-
-```text
-Improve Local SEO location pages and create missing Saudi city pages.
-
-Current issue:
-Existing city pages for Riyadh, Jeddah, and Dammam are too template-like and similar. Missing local pages include Khobar, Makkah, Madinah, NEOM, and Eastern Province.
-
-Tasks:
-1. Improve existing:
-   - /locations/riyadh/
-   - /locations/jeddah/
-   - /locations/dammam/
-2. Create new:
-   - /locations/khobar/
-   - /locations/makkah/
-   - /locations/madinah/
-   - /locations/neom/
-   - /locations/eastern-province/
-3. Each page must have unique localized copy, not duplicated boilerplate.
-4. Each city page structure:
-   - H1 with city keyword
-   - Local business/service intro
-   - Relevant industries in that city
-   - AI use cases specific to city/region
-   - Services offered
-   - FAQ unique to the city
-   - CTA
-5. Example titles:
-   Riyadh:
-   "شركة ذكاء اصطناعي في الرياض | Bright AI"
-   Jeddah:
-   "حلول الذكاء الاصطناعي للشركات في جدة | Bright AI"
-   Dammam:
-   "أتمتة وذكاء اصطناعي للشركات في الدمام | Bright AI"
-   Khobar:
-   "حلول الذكاء الاصطناعي في الخبر | Bright AI"
-6. Add LocalBusiness/Service schema with areaServed.
-7. Add all new pages to sitemap.
-8. Add internal links from:
-   - homepage
-   - footer
-   - services page
-   - locations hub if present
-9. Avoid fake claims. If no office exists in each city, phrase as "نخدم الشركات في..." not "مكتبنا في...".
-
-After changes:
-- Show new files created.
-- Show sitemap updates.
-- Show internal links added.
-- Run duplicate similarity check if a script exists or create a simple one.
-```
-
----
-
-## Prompt 16 — إنشاء صفحات خدمات ناقصة للسوق السعودي
-
-```text
-Create or improve Saudi-focused service landing pages.
-
-Target pages:
-1. /services/ai-solutions-saudi/
-2. /services/business-automation-saudi/
-3. /services/ai-agents-saudi/
-4. /services/ai-chatbot-arabic/
-5. /services/data-analytics-ai-saudi/
-6. /services/enterprise-ai-consulting-saudi/
-
-Tasks:
-1. If a page already exists, improve it instead of duplicating.
-2. Each page must have:
-   - unique title
-   - meta description
-   - canonical
-   - hreflang if English equivalent exists
-   - one H1
-   - clear CTA
-   - Service schema
-   - FAQ schema
-3. Use Saudi B2B search intent.
-4. Avoid generic repeated copy.
-5. Structure each page:
-   - Hero
-   - Who this is for
-   - Business problems solved
-   - What we implement
-   - Integration/governance notes
-   - Deliverables
-   - Timeline/Pilot approach
-   - FAQ
-   - CTA
-6. Add internal links between services.
-7. Add these pages to sitemap if indexable.
-
-Primary CTA:
-"احجز جلسة تشخيص AI"
-
-Secondary CTA:
-"تواصل عبر واتساب"
-
-After changes:
-- List pages created/updated.
-- Show metadata for each.
-- Show sitemap additions.
-```
-
----
-
-## Prompt 17 — إنشاء صفحات قطاعات Sector Pages
-
-```text
-Create sector-focused AI landing pages for Saudi Arabia.
-
-New pages:
-1. /sectors/government-ai-saudi/
-2. /sectors/healthcare-ai-saudi/
-3. /sectors/retail-ai-saudi/
-4. /sectors/logistics-ai-saudi/
-5. /sectors/real-estate-ai-saudi/
-
-Tasks:
-1. Create unique Arabic content for each sector.
-2. Do not make legal/compliance claims unless already supported by the site.
-3. Include:
-   - H1
-   - sector-specific pain points
-   - AI use cases
-   - implementation approach
-   - risks/governance section
-   - FAQ
-   - CTA
-4. Add metadata and schema.
-5. Add links from homepage, services page, and relevant blog articles.
-6. Add to sitemap.
-7. Keep copy practical and Saudi-market focused.
-
-Example H1s:
-- "حلول الذكاء الاصطناعي للقطاع الحكومي في السعودية"
-- "حلول AI للقطاع الصحي في السعودية"
-- "أتمتة وذكاء اصطناعي لقطاع التجزئة في السعودية"
-
-After changes:
-- Show files created.
-- Show internal links added.
-- Show sitemap update.
-```
-
----
-
-## Prompt 18 — تنظيف تكرار محتوى المدونة Boilerplate
-
-```text
-Reduce duplicate boilerplate content across blog pages.
-
-Current issue:
-Many Arabic and English blog pages contain repeated generic paragraphs. This weakens topical uniqueness.
-
-Tasks:
-1. Scan blog pages for repeated paragraphs.
-2. Identify repeated blocks occurring in more than 5 pages.
-3. For repeated blocks:
-   - Remove if low value.
-   - Replace with article-specific paragraphs.
-   - Keep only a short reusable CTA if needed.
-4. Prioritize Arabic AI/Saudi articles and English AI/Saudi articles.
-5. For each updated article:
-   - Keep unique intro
-   - Add specific examples
-   - Add internal links to related service pages
-   - Add FAQ if relevant
-6. Do not mass-generate thin content.
-7. Produce a report:
-   - repeated block
-   - count
-   - pages affected
-   - action taken
-
-After changes:
-- Show report.
-- Show sample before/after.
-- Confirm no repeated paragraph appears in more than 5 pages unless intentionally part of footer/navigation.
-```
-
----
-
-## Prompt 19 — إضافة FAQ عملي للصفحات التجارية
-
-```text
-Add conversion-focused FAQ sections to key commercial pages.
-
-Target pages:
-- /
-- /services/
-- /services/ai-solutions-saudi/
-- /services/business-automation-saudi/
-- /services/ai-agents-saudi/
-- /services/ai-chatbot-arabic/
-- /consultation/
-- /locations/riyadh/
-- /locations/jeddah/
-- /locations/dammam/
-
-FAQ themes:
-1. مدة تنفيذ أول Pilot.
-2. هل الحل يناسب الأنظمة الحالية؟
-3. هل الحل يدعم العربية؟
-4. هل يمكن ربطه مع CRM/ERP/WhatsApp؟
-5. كيف يتم قياس العائد؟
-6. كيف تتعاملون مع خصوصية البيانات؟
-7. هل تخدمون الشركات خارج الرياض؟
-8. متى أختار وكيل AI ومتى أختار أتمتة workflow؟
-
-Tasks:
-1. Add human-readable FAQ HTML.
-2. Add matching FAQPage JSON-LD.
-3. Ensure each page has unique questions where possible.
-4. Avoid exaggerated claims.
-5. Keep answers concise and practical.
-6. Add CTA after FAQ.
-
-After changes:
-- Show pages updated.
-- Validate JSON-LD syntax.
-- Confirm FAQ content appears visibly on page, not schema-only.
-```
-
----
-
-## Prompt 20 — تحسين الصور والـ Alt والتحميل الكسول
-
-```text
-Audit and improve images for SEO, accessibility, and performance.
-
-Tasks:
-1. Scan all HTML files for img tags.
-2. Identify:
-   - missing alt
-   - empty alt where image is not decorative
-   - large images
-   - missing width/height
-   - missing loading="lazy" for below-the-fold images
-   - hero images that should not be lazy-loaded
-3. Fix:
-   - Add descriptive Arabic/English alt based on page language.
-   - Add width/height where known.
-   - Add loading="lazy" to below-the-fold images.
-   - Keep hero/LCP image eager or high priority where applicable.
-4. Do not add keyword-stuffed alt text.
-5. If images are very large, convert or recommend WebP/AVIF if tooling exists.
-
-After changes:
-- Show image audit summary.
-- Report number of missing alt fixed.
-- Report images still needing manual review.
-```
-
----
-
-## Prompt 21 — تحسين Accessibility للأزرار والنماذج
-
-```text
-Fix accessibility issues in buttons, icon buttons, forms, and navigation.
-
-Tasks:
-1. Scan HTML and React/TSX files for:
-   - buttons without accessible names
-   - icon-only buttons without aria-label
-   - inputs without labels
-   - selects without labels
-   - textareas without labels
-   - duplicate IDs
-   - invalid heading hierarchy
-2. Focus especially on:
-   - demo pages
-   - contact page
-   - consultation page
-   - services page
-   - navigation/menu
-3. Add:
-   - aria-label where needed
-   - visible labels for forms
-   - aria-expanded for menus if interactive
-   - descriptive link text
-4. Do not hide labels unless visually necessary.
-5. Keep design unchanged unless accessibility requires small markup changes.
-
-After changes:
-- Show files changed.
-- Show issues fixed by category.
-- Run accessibility lint if available.
-```
-
----
-
-## Prompt 22 — تحسين Performance وتقليل CSS/JS غير الضروري
-
-```text
-Improve front-end performance safely.
-
-Known issue:
-Some key pages load heavy CSS/JS and large icon libraries. Contact and services appear heavier than necessary.
-
-Tasks:
-1. Audit assets loaded by:
-   - /
-   - /services/
-   - /contact/
-   - /consultation/
-   - /locations/riyadh/
-2. Identify:
-   - unused CSS
-   - large JS bundles
-   - large icon libraries such as Iconify if loaded globally
-   - render-blocking CSS/JS
-   - fonts loading inefficiently
-3. Make safe improvements:
-   - Defer non-critical JS.
-   - Load icon libraries only where needed.
-   - Inline or preload critical CSS only if already supported.
-   - Use font-display: swap.
-   - Remove unused CSS only if safe.
-4. Do not break layout.
-5. Add npm script if helpful:
-   "perf:audit": runs Lighthouse or asset-size checks if available.
-
-After changes:
-- Show asset size before/after if measurable.
-- Show pages tested.
-- Report remaining performance risks.
-```
-
----
-
-## Prompt 23 — إنشاء SEO Gate يمنع رجوع الأخطاء
-
-```text
-Create an automated SEO gate to prevent regressions.
-
-Tasks:
-Create or update a Node.js script, for example scripts/seo-gate.js, that validates public HTML and sitemap files.
-
-Checks:
-1. No sitemap URL contains:
-   - /reports/
-   - /mais-OBM/
-   - /offline/
-   - /404.html
-   - /500.html
-   - /error.html
-   - "index 2"
-2. Every indexable HTML page has:
-   - title
-   - meta description
-   - canonical
-   - exactly one H1
-3. No public HTML page references yazeed1job@gmail.com.
-4. No public HTML page references /mais-OBM/.
-5. No internal navigation link uses .html when clean URL exists.
-6. No /en/ page contains Arabic text in title, description, schema, or main body unless explicitly whitelisted.
-7. Error pages must include noindex.
-8. Title length warning >65.
-9. Description length warning >170.
-10. Fail build for critical issues, warn for length issues.
-
-Add npm script:
-"seo:gate": "node scripts/seo-gate.js"
-
-After changes:
-- Show the complete script.
-- Run npm run seo:gate.
-- Fix critical failures if they appear.
-```
-
----
-
-## Prompt 24 — تحديث JSON-LD موحد لكل الموقع
-
-```text
-Normalize schema markup across the website.
-
-Tasks:
-1. Audit all JSON-LD blocks.
-2. Fix:
-   - inconsistent Organization data
-   - inconsistent LocalBusiness NAP
-   - Arabic schema inside English pages
-   - invalid JSON-LD
-   - duplicate conflicting schema on same page
-3. Create reusable schema data source if possible:
-   - organization
-   - local business
-   - service
-   - breadcrumb
-   - FAQ
-4. Use official NAP:
-   Bright AI
-   +966538229013
-   info@brightai.site
-   6913 المبارك بن فضالة، حي الفيحاء، الرياض 14254، السعودية
-5. Do not include unverified social profiles.
-6. Each commercial page should have relevant schema:
-   - Organization
-   - LocalBusiness where relevant
-   - Service
-   - BreadcrumbList
-   - FAQPage if visible FAQ exists
-7. English pages must have English schema content.
-
-After changes:
-- Validate JSON syntax.
-- Show pages updated.
-- Show one Arabic example and one English example.
-```
-
----
-
-## Prompt 25 — ضبط `hreflang` وCanonical
-
-```text
-Audit and fix canonical and hreflang implementation.
-
-Tasks:
-1. Scan all HTML files for canonical and hreflang.
-2. Ensure canonical points to the final clean URL.
-3. Ensure Arabic pages link to English equivalents where available.
-4. Ensure English pages link back to Arabic equivalents.
-5. Add x-default where appropriate.
-6. Avoid hreflang pointing to non-existing pages.
-7. Remove hreflang from noindex utility/error pages if not useful.
-8. Ensure canonical and sitemap URL match.
-9. Generate a report:
-   - missing hreflang pairs
-   - broken hreflang targets
-   - canonical mismatch
-   - pages with self-canonical OK
-
-After changes:
-- Show fixed examples.
-- Show final report.
-```
-
----
-
-## Prompt 26 — إضافة صفحة Locations Hub
-
-```text
-Create a Saudi locations hub page.
-
-New page:
-/locations/
-
-Purpose:
-A hub page linking to Saudi city/location pages for Local SEO.
-
-Tasks:
-1. Create /locations/index.html or equivalent based on project structure.
-2. Arabic RTL page.
-3. H1:
-   "حلول الذكاء الاصطناعي للشركات في مدن السعودية"
-4. Include intro:
-   Bright AI serves companies across Riyadh, Jeddah, Dammam, Khobar, Makkah, Madinah, NEOM, and Eastern Province.
-5. Add cards linking to:
-   - /locations/riyadh/
-   - /locations/jeddah/
-   - /locations/dammam/
-   - /locations/khobar/
-   - /locations/makkah/
-   - /locations/madinah/
-   - /locations/neom/
-   - /locations/eastern-province/
-6. Add LocalBusiness/Organization schema and BreadcrumbList.
-7. Add metadata.
-8. Add link to this hub from header/footer if appropriate.
-9. Add to sitemap.
-
-After changes:
-- Show page created.
-- Show sitemap addition.
-- Confirm links work.
-```
-
----
-
-## Prompt 27 — ربط المقالات بالخدمات والصفحات المحلية
-
-```text
-Improve internal linking from blog content to commercial pages.
-
-Tasks:
-1. Identify blog pages about:
-   - AI in Saudi Arabia
-   - business automation
-   - AI agents
-   - chatbots
-   - digital transformation
-   - data analytics
-2. Add contextual internal links to:
-   - /services/ai-solutions-saudi/
-   - /services/business-automation-saudi/
-   - /services/ai-agents-saudi/
-   - /services/ai-chatbot-arabic/
-   - /consultation/
-   - /locations/riyadh/
-   - /locations/jeddah/
-   - /locations/dammam/
-3. Use natural Arabic anchor text, not repeated exact-match spam.
-4. Limit to 3–6 useful links per article.
-5. Add "next step" CTA at the end of high-intent articles:
-   "إذا كنت تخطط لتطبيق AI داخل شركتك، احجز جلسة تشخيص AI."
-6. Do not add links to noindex/demo/settings pages.
-
-After changes:
-- Report pages updated.
-- Report internal links added.
-- Show sample anchors.
-```
-
----
-
-## Prompt 28 — تحسين صفحة English AI Landing
-
-```text
-Create or improve English commercial landing pages for Saudi AI searches.
-
-Target:
-- /en/enterprise-ai-saudi/
-- /en/services/ai-automation-saudi/
-- /en/services/enterprise-ai-saudi/
-
-Tasks:
-1. If these pages do not exist, create them.
-2. Target keywords:
-   - AI company in Saudi Arabia
-   - AI automation Saudi Arabia
-   - Artificial Intelligence Saudi Arabia
-   - enterprise AI Saudi Arabia
-3. Content must be fully English.
-4. Structure:
-   - Hero
-   - Problems solved
-   - Solutions
-   - Saudi market fit
-   - Implementation process
-   - FAQ
-   - CTA
-5. CTA:
-   "Book an AI diagnosis session"
-6. Add metadata, canonical, hreflang, Open Graph, Twitter.
-7. Add Organization, Service, FAQ, Breadcrumb schema.
-8. Link from /en/ homepage and relevant English pages.
-9. Add to sitemap.
-
-After changes:
-- Show pages created/updated.
-- Confirm no Arabic text remains except brand/context if intentional.
-- Show metadata.
-```
-
----
-
-## Prompt 29 — فحص نهائي شامل قبل الإطلاق
-
-```text
-Run a final pre-deployment SEO and quality audit.
-
-Tasks:
-1. Run build.
-2. Run seo gate.
-3. Run sitemap validation.
-4. Run link scan.
-5. Run grep checks:
-   - no /mais-OBM/ in public output
-   - no OBM-DATA .xlsx in public output
-   - no yazeed1job@gmail.com in public output
-   - no /reports/ in sitemap
-   - no "index 2" in sitemap
-6. Validate:
-   - homepage is not redirecting to demo
-   - robots.txt exists
-   - sitemap.xml exists
-   - _headers exists if supported
-   - error pages have noindex
-   - commercial pages are indexable
-7. Produce final report:
-   - changed files
-   - issues fixed
-   - remaining warnings
-   - commands run
-   - next manual checks after deployment
-
-Do not make new feature changes in this prompt unless needed to fix a failing critical check.
-```
-
----
-
-## Prompt 30 — برومبت إصلاح شامل لو تبي Codex ينفذ كل شيء دفعة واحدة
-
-استخدمه فقط لو تبي Codex يمسك المشروع كـ “Epic” كامل:
-
-```text
-You are a senior technical SEO engineer, full-stack developer, and UX conversion specialist.
-
-Implement the Bright AI SEO remediation plan based on these priorities:
-
-Critical:
-1. Remove or protect /mais-OBM/ and OBM-DATA .xlsx from public deployment.
-2. Fix deployment exclusions in render.yaml so dev/internal folders are never published.
-3. Remove app/page.tsx redirect to /demo/ocr-demo/ and replace with a proper marketing homepage.
-4. Clean sitemap files to include only canonical indexable public pages.
-5. Add robots.txt and _headers protections correctly.
-6. Unify NAP across homepage, contact page, schema, and footer:
-   Bright AI
-   +966 53 822 9013
-   info@brightai.site
-   6913 المبارك بن فضالة، حي الفيحاء، الرياض 14254، السعودية
-7. Remove public Gmail references.
-8. Add noindex to error, offline, and utility/demo settings/report pages.
-9. Fix mixed Arabic content in /en/ pages.
-10. Add an automated SEO gate script.
-
-High priority:
-11. Optimize titles/descriptions for core pages.
-12. Convert .html internal links to clean canonical URLs.
-13. Improve homepage UX and CTA flow.
-14. Improve services page from catalog/cart style to B2B decision page.
-15. Improve contact and consultation pages.
-16. Improve/create Saudi location pages.
-17. Improve/create Saudi service pages.
-18. Normalize schema JSON-LD.
-19. Fix hreflang/canonical consistency.
-20. Improve accessibility for forms/buttons/images.
-
-Constraints:
-- Do not invent fake clients, fake case studies, or fake social links.
-- Do not remove useful public pages without replacing or redirecting them.
-- Keep the site static-friendly.
-- Preserve Arabic RTL quality.
-- Use English only for /en/ pages.
-- Keep commercial pages indexable.
-- Keep internal/demo/utility pages noindex or excluded.
-- Show all changed files.
-- Run available tests/build scripts.
-- If a command fails, explain why and fix if possible.
-
-Final output:
-1. Summary of changes.
-2. Files changed.
-3. Commands run.
-4. Remaining warnings.
-5. Manual deployment verification checklist.
-```
-
----
-
-أنصحك تبدأ بهذا الترتيب بالضبط:
-**Prompt 0 → 2 → 3 → 4 → 5 → 6 → 1 → 23 → 29**
-بعدها ادخل تحسينات المحتوى والصفحات: **11 إلى 19**.
+## 📋 ملخص ترتيب التنفيذ
+
+| # | البرومبت | الأولوية | الوقت التقديري |
+|---|---------|---------|---------------|
+| 1 | تنظيف السايت ماب | 🔴 حرجة | 5 دقائق |
+| 2 | تحديث سكربت السايت ماب | 🔴 حرجة | 15 دقيقة |
+| 3 | حذف ملفات index 2 | 🔴 حرجة | 5 دقائق |
+| 4 | إصلاح الأصول المكسورة | 🟠 عالية | 10 دقائق |
+| 5 | إضافة صفحات مفقودة | 🟠 عالية | 15 دقيقة |
+| 6 | إصلاح Hreflang | 🟠 عالية | 20 دقيقة |
+| 7 | تعزيز الربط الداخلي | 🟠 عالية | 20 دقيقة |
+| 8 | صور og:image مخصصة | 🟡 متوسطة | 30 دقيقة |
+| 9 | تحويل CSS لـ RTL | 🟡 متوسطة | 25 دقيقة |
+| 10 | نسخ إنجليزية للديمو | 🟡 متوسطة | 45 دقيقة |
+| 11 | السيو السعودي | 🟡 متوسطة | 15 دقيقة |
+| 12 | Breadcrumbs مرئية | 🟢 منخفضة | 15 دقيقة |
+| 13 | عناصر الثقة | 🟢 منخفضة | 15 دقيقة |
+| 14 | فحص نهائي | ✅ تحقق | 10 دقائق |
+| 15 | تقرير محدّث | 📄 توثيق | 5 دقائق |
+
+**الإجمالي التقديري: ~4 ساعات**

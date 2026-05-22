@@ -1,11 +1,11 @@
 # تقرير الروابط والمسارات المكسورة قبل الإصلاح
 
-- تاريخ التقرير: 2026-05-03T20:34:47.243Z
-- عدد الملفات المفحوصة: 472
-- إجمالي المراجع المكتشفة: 25117
-- المراجع الداخلية المفحوصة: 19827
-- الروابط/المسارات المكسورة: 34
-- المكسور القابل للإصلاح التلقائي: 30
+- تاريخ التقرير: 2026-05-21T23:23:03.711Z
+- عدد الملفات المفحوصة: 440
+- إجمالي المراجع المكتشفة: 25057
+- المراجع الداخلية المفحوصة: 19793
+- الروابط/المسارات المكسورة: 28
+- المكسور القابل للإصلاح التلقائي: 28
 - فرص توحيد نمط الروابط: 108
 
 ## الملفات الأعلى أعطالًا
@@ -20,23 +20,12 @@
 | sectors/healthcare-en/index.html | 3 |
 | sectors/logistics-en/index.html | 3 |
 | sectors/manufacturing-en/index.html | 3 |
-| .next/server/vendor-chunks/next.js | 2 |
 | demo/smart-hiring-system/index.html | 2 |
-| .next/server/app/api/demo/ocr/route_client-reference-manifest.js | 1 |
-| .next/server/app/demo/ocr-demo/page_client-reference-manifest.js | 1 |
-| .next/static/chunks/app/demo/ocr-demo/page.js | 1 |
-| .next/static/webpack/app/demo/ocr-demo/page.2d877259e829e650.hot-update.js | 1 |
 
 ## تفاصيل الأعطال
 
 | الملف | السطر | النوع | المرجع | الاقتراح | السبب |
 | --- | ---: | --- | --- | --- | --- |
-| .next/server/app/api/demo/ocr/route_client-reference-manifest.js | 1 | js-key | static/css/app/layout.css | /.next/static/css/app/layout.css | المسار غير موجود |
-| .next/server/app/demo/ocr-demo/page_client-reference-manifest.js | 1 | js-key | static/css/app/layout.css | /.next/static/css/app/layout.css | المسار غير موجود |
-| .next/server/vendor-chunks/next.js | 1704 | js-key | /_next/image | — | المسار غير موجود |
-| .next/server/vendor-chunks/next.js | 3714 | js-key | /_next/image | — | المسار غير موجود |
-| .next/static/chunks/app/demo/ocr-demo/page.js | 346 | js-key | /_next/image | — | المسار غير موجود |
-| .next/static/webpack/app/demo/ocr-demo/page.2d877259e829e650.hot-update.js | 126 | js-key | /_next/image | — | المسار غير موجود |
 | demo/smart-hiring-system/index.html | 39 | attr | /assets/images/logo.PNG | /assets/images/logo.png | المسار غير موجود |
 | demo/smart-hiring-system/index.html | 634 | attr | /assets/images/logo.PNG | /assets/images/logo.png | المسار غير موجود |
 | en/ai-bots/BrightProject/index 2.html | 302 | attr | /assets/images/logo.PNG | /assets/images/logo.png | المسار غير موجود |
