@@ -210,8 +210,8 @@
         .dropdown-menu {
             position: absolute;
             top: calc(100% + 0.5rem);
-            right: 0;
-            left: auto;
+            inset-inline-end: 0;
+            inset-inline-start: auto;
             width: max-content;
             min-width: 260px;
             background: var(--dropdown-bg);
@@ -417,14 +417,14 @@
         .mobile-menu-drawer {
             position: fixed;
             top: 0;
-            right: 0;
+            inset-inline-end: 0;
             bottom: 0;
             width: min(85vw, 360px);
             z-index: 1050;
             background: rgba(2, 6, 23, 0.98);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
-            border-left: 1px solid rgba(255, 255, 255, 0.06);
+            border-inline-start: 1px solid rgba(255, 255, 255, 0.06);
             transform: translateX(100%);
             transition: transform 0.45s var(--transition-smooth);
             overflow-y: auto;
@@ -432,10 +432,8 @@
         }
 
         [dir="rtl"] .mobile-menu-drawer {
-            right: auto;
-            left: 0;
-            border-left: none;
-            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            border-inline-start: none;
+            border-inline-end: 1px solid rgba(255, 255, 255, 0.06);
             transform: translateX(-100%);
         }
 
@@ -450,10 +448,8 @@
         /* Layout & Container — CLS FIX: removed contain:layout (was causing 0.040 CLS shift) */
         .container {
             width: 100%;
-            margin-right: auto;
-            margin-left: auto;
-            padding-right: 1rem;
-            padding-left: 1rem;
+            margin-inline: auto;
+            padding-inline: 1rem;
             max-width: 1280px;
         }
 
@@ -467,7 +463,7 @@
             border: none;
             font: inherit;
             color: inherit;
-            text-align: right;
+            text-align: start;
         }
 
         button.filter {
@@ -504,12 +500,12 @@
         /* === MOBILE TOUCH TARGET FIXES === */
         @media (max-width: 1023px) {
             input[type="range"] {
-                height: 44px;
-                min-height: 44px;
+                height: 2.75rem;
+                min-height: 2.75rem;
             }
 
             a.btn.cta {
-                min-height: 44px;
+                min-height: 2.75rem;
                 display: inline-flex;
                 align-items: center;
                 padding-top: 0.75rem;
@@ -517,7 +513,7 @@
             }
 
             .slider label {
-                min-height: 44px;
+                min-height: 2.75rem;
                 display: flex;
                 align-items: center;
             }
@@ -830,12 +826,12 @@
 
             .tab {
                 justify-content: center;
-                min-height: 44px;
+                min-height: 2.75rem;
             }
 
             .screen3d {
                 transform: none;
-                min-height: 280px;
+                min-height: 17.5rem;
             }
 
             .demo .hint {
@@ -864,7 +860,7 @@
         }
 
         @media (max-width: 767px) {
-            #matrixBackground,.code-wall{display:none!important}.hero-visual{display:block!important;min-height:260px;opacity:.9}
+            #matrixBackground,.code-wall{display:none!important}.hero-visual{display:block!important;min-height:16.25rem;opacity:.9}
 
             .breadcrumb-nav {
                 display: none;
@@ -880,11 +876,12 @@
             }
 
             .bots {
+                display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .bot {
-                min-height: 150px;
+                min-height: 9.375rem;
             }
 
             #bai-chat-fab {

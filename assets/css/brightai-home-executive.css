@@ -109,7 +109,7 @@ a[href*="wa.me"] {
 }
 
 .nav-cta {
-    min-height: 44px !important;
+    min-height: 2.75rem !important;
     padding: 0 18px !important;
     border-radius: 16px !important;
     font-weight: 800 !important;
@@ -196,7 +196,7 @@ a[href*="wa.me"] {
 .hero-cta-group .btn,
 .hero-cta-primary,
 .hero-cta-secondary {
-    min-height: 52px !important;
+    min-height: 3.25rem !important;
     border-radius: 16px !important;
     padding: 0 22px !important;
     font-weight: 800 !important;
@@ -391,7 +391,7 @@ details,
 #blog a {
     inline-size: 100%;
     justify-content: center;
-    min-height: 46px;
+    min-height: 2.875rem;
     margin-block-start: 18px;
     border-radius: 14px !important;
 }
@@ -403,7 +403,7 @@ details,
 }
 
 #try-tools .grid > * {
-    min-height: 330px !important;
+    min-height: clamp(300px, 40vh, 360px) !important;
 }
 
 #try-tools .tag,
@@ -510,7 +510,7 @@ details,
 }
 
 #faq summary {
-    min-height: 64px;
+    min-height: 4rem;
     padding: 18px 22px !important;
     color: #f8fafc !important;
     cursor: pointer;
@@ -573,7 +573,7 @@ footer {
     inset-inline-end: auto !important;
     bottom: 18px !important;
     transform: scale(0.92);
-    transform-origin: bottom left;
+    transform-origin: bottom start;
     z-index: 72 !important;
 }
 
@@ -677,7 +677,7 @@ footer {
     align-items: center;
     width: max-content;
     max-width: 100%;
-    min-height: 32px;
+    min-height: 2rem;
     padding: 6px 11px;
     color: #bbf7d0;
     background: rgba(16, 185, 129, 0.12);
@@ -711,7 +711,7 @@ footer {
 .agent-home-tags span {
     display: inline-flex;
     align-items: center;
-    min-height: 30px;
+    min-height: 1.875rem;
     padding: 5px 10px;
     color: #cbd5e1;
     background: rgba(148, 163, 184, 0.08);
@@ -726,7 +726,7 @@ footer {
     align-items: center;
     justify-content: center;
     inline-size: 100%;
-    min-height: 46px;
+    min-height: 2.875rem;
     margin-block-start: auto;
     color: #03111f;
     background: linear-gradient(135deg, var(--accent-emerald), #67e8f9);
@@ -740,7 +740,7 @@ footer {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    min-height: 52px;
+    min-height: 3.25rem;
     padding-inline: 24px;
     color: #f8fafc;
     background: rgba(15, 23, 42, 0.72);
@@ -813,7 +813,7 @@ footer {
     }
 
     .hero-visual {
-        min-height: 340px !important;
+        min-height: clamp(300px, 35vw, 360px) !important;
         order: 2;
     }
 }
@@ -863,7 +863,7 @@ footer {
     .hero-cta-primary,
     .hero-cta-secondary {
         flex: 1 1 100%;
-        min-height: 48px !important;
+        min-height: 3rem !important;
         font-size: 0.95rem !important;
     }
 
@@ -948,7 +948,7 @@ footer {
     }
 
     #faq summary {
-        min-height: 56px;
+        min-height: 3.5rem;
         padding: 14px 18px !important;
         font-size: 0.95rem !important;
     }
@@ -1027,7 +1027,7 @@ footer {
     .hero-cta-group .btn,
     .hero-cta-primary,
     .hero-cta-secondary {
-        min-height: 46px !important;
+        min-height: 2.875rem !important;
         padding: 0 16px !important;
         font-size: 0.9rem !important;
         border-radius: 14px !important;
@@ -1095,7 +1095,7 @@ footer {
     #aiaas a,
     #blog a,
     .agent-home-card a {
-        min-height: 44px !important;
+        min-height: 2.75rem !important;
         font-size: 0.88rem !important;
     }
 
@@ -1110,7 +1110,7 @@ footer {
     }
 
     #faq summary {
-        min-height: 50px;
+        min-height: 3.125rem;
         padding: 12px 14px !important;
         font-size: 0.9rem !important;
     }
@@ -1128,7 +1128,7 @@ footer {
     }
 
     .agents-home-all-link {
-        min-height: 46px !important;
+        min-height: 2.875rem !important;
         padding-inline: 18px !important;
         font-size: 0.9rem !important;
     }

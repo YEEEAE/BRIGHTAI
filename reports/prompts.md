@@ -9,80 +9,10 @@
 
 ### البرومبت 9: تحويل CSS إلى Logical Properties لدعم RTL
 
-```
-أنت وكيل Frontend + RTL لمشروع Bright AI.
-
-المهمة: تحويل CSS من physical properties إلى logical properties لدعم RTL بشكل كامل.
-
-اقرأ مهارة rtl-ui-guardian من:
-@/Users/yzydalshmry/Desktop/BRIGHTAI/.agents/skills/rtl-ui-guardian/SKILL.md
-
-الوضع الحالي: تقرير ui:audit اكتشف 28 مشكلة عالية الخطورة متعلقة بـ RTL في ملفات CSS:
-- استخدام left/right بدل margin-inline-start/end
-- استخدام padding-left/right بدل padding-inline-start/end
-- أحجام ثابتة (min-height: 50px) قد تقص النصوص العربية
-
-الملفات المتأثرة الرئيسية:
-- assets/css/components.css
-- assets/css/brightai-home-executive.css
-- assets/css/demo-premium.css (إذا وجد مشاكل)
-
-المطلوب:
-1. ابحث عن كل استخدامات margin-left/right, padding-left/right, left, right في CSS.
-2. حوّلها إلى:
-   - margin-left → margin-inline-start
-   - margin-right → margin-inline-end
-   - padding-left → padding-inline-start
-   - padding-right → padding-inline-end
-   - left → inset-inline-start
-   - right → inset-inline-end
-   - text-align: left → text-align: start
-   - text-align: right → text-align: end
-3. لا تغيّر القيم التي تستخدم في سياق position: fixed/absolute حيث الموضع مقصود بالتحديد (مثل شريط التنقل الثابت).
-4. استبدل min-height الثابتة بـ min-height مع clamp() أو rem بدل px.
-
-التحقق:
-- npm run ui:audit → يجب أن تنخفض المشاكل العالية من 28
-- افتح الموقع محلياً وتأكد أن التصميم لم يتغير بصرياً
-```
-
 ---
 
 ### البرومبت 10: إنشاء نسخ إنجليزية لأهم الديموهات
 
-```
-أنت وكيل Frontend + International SEO لمشروع Bright AI.
-
-المهمة: إنشاء نسخ إنجليزية لأهم 5 صفحات ديمو تجارية.
-
-الديموهات المطلوب ترجمتها (حسب الأولوية التجارية):
-1. /demo/smart-hiring-system/ → /en/demo/smart-hiring-system/
-2. /demo/ai-tenders-analysis/ → /en/demo/ai-tenders-analysis/
-3. /demo/data-analyzer/ → /en/demo/data-analyzer/
-4. /demo/custom-ai-agent/ → /en/demo/custom-ai-agent/
-5. /demo/customer-service-automation/ → /en/demo/customer-service-automation/
-
-لكل صفحة:
-1. انسخ هيكل صفحة الديمو العربية.
-2. غيّر lang="ar-SA" dir="rtl" إلى lang="en" dir="ltr".
-3. ترجم كل المحتوى للإنجليزي (titles, descriptions, H1, FAQ, CTA, use cases).
-4. حدّث canonical ليشير للنسخة الإنجليزية.
-5. أضف hreflang متبادل بين النسختين:
-   ```html
-   <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/SLUG/">
-   <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/demo/SLUG/">
-   <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/SLUG/">
-   ```
-6. حدّث Schema JSON-LD: inLanguage: "en", النصوص بالإنجليزي.
-7. حدّث og:locale إلى en_US.
-8. حدّث النصوص داخل demo-config JSON.
-9. CSS يبقى نفسه (demo-premium.css يدعم LTR و RTL).
-10. أضف كل صفحة جديدة في sitemap.xml.
-
-التحقق:
-- npm run seo:html:check → لا أخطاء جديدة
-- npm run seo:check
-- افتح كل صفحة إنجليزية وتأكد أن المحتوى مترجم بالكامل
 ```
 
 ---
