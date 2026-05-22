@@ -20,16 +20,76 @@ const OUTPUT = path.join(ROOT, "sitemap.xml");
 const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
 const IGNORED_SCAN_DIRS = new Set([
   ".git",
+  ".next",
+  ".agents",
   "node_modules",
   "aimais",
+  "backend",
   "coverage",
   "dist",
   "build",
   "reports",
   "tmp",
 ]);
+
+/* ── Whitelist: only paths matching at least one pattern are candidates ── */
+const ALLOWED_REL_PATH_PATTERNS = [
+  /^index\.html$/i,                                    // root homepage
+  /^about\/index\.html$/i,                             // about page
+  /^contact\/index\.html$/i,                           // contact page
+  /^consultation\/index\.html$/i,                      // consultation page
+  /^ai-agent\/index\.html$/i,                          // ai-agent page
+  /^ai-bots\/(?:[^/]+\/)?index\.html$/i,               // ai-bots pages
+  /^case-studies\/index\.html$/i,                      // case studies
+  /^partners\/index\.html$/i,                          // partners
+  /^what-is-ai\/index\.html$/i,                        // what-is-ai
+  /^tools\/index\.html$/i,                             // tools
+  /^smart-automation\/index\.html$/i,                  // smart automation
+  /^data-analysis\/index\.html$/i,                     // data analysis
+  /^machine-learning\/index\.html$/i,                  // machine learning
+  /^health\/index\.html$/i,                            // health
+  /^smart-medical-archive\/index\.html$/i,             // smart medical archive
+  /^demo\/[^/]+(?:\/[^/]+)*\/index\.html$/i,           // demo sub-pages (public demos)
+  /^demo\/[^/]+\.html$/i,                              // demo HTML pages (dashboard.html, compare.html, etc.)
+  /^services\/[^/]+\.html$/i,                          // services HTML pages
+  /^services\/index\.html$/i,                          // services index
+  /^sectors\/[^/]+\.html$/i,                           // sector HTML pages
+  /^sectors\/[^/]+\/index\.html$/i,                    // sector sub-dirs
+  /^sectors\/index\.html$/i,                           // sectors index
+  /^locations\/[^/]+\/index\.html$/i,                  // location pages
+  /^blog\/[^/]+\/index\.html$/i,                       // blog articles (dir/index.html)
+  /^blog\/[^/]+\.html$/i,                              // blog articles (.html)
+  /^blog\/index\.html$/i,                              // blog index
+  /^docs\/[^/]+\.html$/i,                              // docs pages
+  /^docs\/index\.html$/i,                              // docs index
+  /^docs\.html$/i,                                     // docs.html root
+  /^en\/(?:[^/]+\/)*[^/]+\.html$/i,                    // english pages (.html)
+  /^en\/(?:[^/]+\/)*index\.html$/i,                    // english pages (index.html)
+  /^tenders\/index\.html$/i,                           // tenders index
+  /^tenders\/[^/]+\.html$/i,                           // tenders sub-pages
+  /^privacy-cookies\/index\.html$/i,                   // privacy cookies
+];
+
+/* ── Blacklist: any match here forces exclusion regardless of whitelist ── */
 const EXCLUDED_REL_PATH_PATTERNS = [
+  // ── Error / system pages ──
   /^(404|500)\.html$/i,
+  /error\.html$/i,
+  // ── Paths containing non-public segments ──
+  /(?:^|\/)reports(?:\/|\.html$)/i,
+  /(?:^|\/)backend(?:\/|$)/i,
+  /(?:^|\/)\.next(?:\/|$)/i,
+  /(?:^|\/)node_modules(?:\/|$)/i,
+  /(?:^|\/)\.agents(?:\/|$)/i,
+  /(?:^|\/)tmp(?:\/|$)/i,
+  // ── Files with spaces in the name (e.g. "index 2.html") ──
+  / /,
+  // ── API / non-HTML assets ──
+  /\.php$/i,
+  /\.json$/i,
+  /\.js$/i,
+  /\.css$/i,
+  // ── Legacy / internal routes ──
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
   /^frontend\/pages\//i,
@@ -37,7 +97,6 @@ const EXCLUDED_REL_PATH_PATTERNS = [
   /^interview\/pages\//i,
   /^mais-OBM\/index\.html$/i,
   /^interview\/pages\/supportAI\/index\.html$/i,
-  /^tenders\/index 2\.html$/i,
   /^try(?:\/.*)?\/index\.html$/i,
 ];
 const MIN_WORDS_BY_GROUP = {};
@@ -101,6 +160,14 @@ function detectExplicitExclusionFamily(relPath) {
 
 function isExplicitlyExcluded(relPath) {
   return EXCLUDED_REL_PATH_PATTERNS.some((pattern) => pattern.test(normalizeRelPath(relPath)));
+}
+
+function isAllowedPublicPath(relPath) {
+  const normalized = normalizeRelPath(relPath);
+  // Blacklist always wins
+  if (isExplicitlyExcluded(normalized)) return false;
+  // Must match at least one whitelist pattern
+  return ALLOWED_REL_PATH_PATTERNS.some((pattern) => pattern.test(normalized));
 }
 
 function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref, canonicalTagNormalized, wordCount, group) {
@@ -202,6 +269,9 @@ async function analyzePage(relPath) {
     );
     if (isExplicitlyExcluded(relPath)) {
       reasons.push("explicit_scope_exclusion");
+    }
+    if (!isAllowedPublicPath(relPath)) {
+      reasons.push("not_in_public_whitelist");
     }
     const stat = await fs.stat(fullPath);
 
