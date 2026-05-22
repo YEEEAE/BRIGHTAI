@@ -1,6 +1,0 @@
-@import url('/assets/css/home-design-tokens.css');
-html{scroll-padding-top:var(--nav-height)}
-body{line-height:1.9}
-:where(a,button,input,textarea,select,[tabindex]):focus-visible{outline:2px solid rgba(129,140,248,.95);outline-offset:2px}
-.text-slate-400,.text-slate-500{color:#cbd5e1}
-@media (max-width:767px){.hero-subtitle{max-width:42rem}.cookies{inset-inline:.75rem!important;inset-block-end:.75rem!important}}
