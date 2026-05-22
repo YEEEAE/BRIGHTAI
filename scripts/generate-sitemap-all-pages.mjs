@@ -60,6 +60,7 @@ const ALLOWED_REL_PATH_PATTERNS = [
   /^sectors\/[^/]+\/index\.html$/i,                    // sector sub-dirs
   /^sectors\/index\.html$/i,                           // sectors index
   /^locations\/[^/]+\/index\.html$/i,                  // location pages
+  /^sitemap\/index\.html$/i,                            // public HTML sitemap
   /^blog\/[^/]+\/index\.html$/i,                       // blog articles (dir/index.html)
   /^blog\/[^/]+\.html$/i,                              // blog articles (.html)
   /^blog\/index\.html$/i,                              // blog index

@@ -428,13 +428,114 @@
       .pane.output-pane { position: sticky; inset-block-end: 0; z-index: 10; max-height: 78vh; overflow: auto; border-end-start-radius: 0; border-end-end-radius: 0; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/data-analyzer/#webpage",
+      "url": "https://brightai.site/demo/data-analyzer/",
+      "name": "ملعب تحليل البيانات بالذكاء الاصطناعي | Bright AI",
+      "description": "حلل ملفات CSV وXLSX وتحدث مع بياناتك بالعربية عبر ملعب Bright AI لتحليل البيانات، مع رسوم حية وSQL شفاف ومؤشرات تنفيذية للشركات السعودية.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/data-analyzer/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ملعب تحليل البيانات بالذكاء الاصطناعي",
+          "item": "https://brightai.site/demo/data-analyzer/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/data-analyzer/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "استخدامات حسب القطاع التجارة الإلكترونية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "المدخل: مبيعات يومية، قناة، منتج، مرتجعات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "معمارية التكامل نظامك ↔ BrightAI API ↔ Gemini ↔ قاعدة بياناتك الامتثال والأمان PDPL",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تنقية PII قبل الإرسال، وعدم حفظ بيانات النسخة العامة، ودعم موافقات معالجة في النسخة المؤسسية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "أسئلة متخصصة هل يمكن سؤال البيانات بالعربية العامية؟ نعم. المحادثة تقبل أسئلة مثل: وش أعلى 5 منتجات؟ ثم تحول السؤال إلى SQL أو تحليل إحصائي مبسط. هل DuckDB يعمل في المتصفح؟ نعم عند توفر المكتبة، وتوجد دوال بديلة محلية إذا تعذر تحميلها. هل يمكن تصدير الرسوم؟ كل رسم يحتوي تنزيل PNG، وكود تضمين، وزر شرح يضيف سرداً تحليلياً. هل تستخدمون نموذج التفكير؟ الافتراضي هو gemini-2.5-flash، ويمكن اختيار gemini-2.5-flash-thinking للتحليلات الثقيلة أو البيانات المعقدة. تبغى نسخة مربوطة ببيانات شركتك؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ظهر هذا النموذج بعد أول تحليل ناجح فقط. اترك البريد أو افتح واتساب لنسخة مؤسسية مع صلاحيات وسجل تدقيق."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body data-theme="light">
   <a class="skip-link" href="#playground">تجاوز إلى ملعب التحليل</a>
   <header class="nav" aria-label="التنقل الرئيسي">
     <div class="container nav-inner">
       <a class="brand" href="/" aria-label="العودة إلى الرئيسية">
-        <img src="/assets/images/logo-new.PNG" width="38" height="38" alt="شعار Bright AI">
+        <img src="/assets/images/logo-new.PNG" width="38" height="38" alt="شعار Bright AI" decoding="async" loading="lazy">
         <span>Bright AI</span>
       </a>
       <nav class="nav-links" aria-label="روابط داخلية">
@@ -1196,5 +1297,6 @@
       else init();
     })();
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

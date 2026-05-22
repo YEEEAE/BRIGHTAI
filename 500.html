@@ -33,7 +33,7 @@
 <title>خطأ في الخادم | Bright AI</title>
 <meta content="حدث خطأ مؤقت في الخادم أثناء تحميل الصفحة. يمكنك المحاولة لاحقاً أو العودة إلى الصفحة الرئيسية في موقع Bright AI." name="description">
 <meta content="Bright AI" name="author"/>
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, follow">
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="/frontend/css/fonts.css?v=20260206" rel="stylesheet"/>
@@ -289,7 +289,7 @@
       "@id": "https://brightai.site/#organization",
       "name": "Bright AI",
       "url": "https://brightai.site",
-      "logo": "https://brightai.site/assets/images/logo-512.png",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
       "areaServed": "SA",
       "sameAs": []
     },
@@ -352,7 +352,7 @@
 <picture>
 <source srcset="/assets/images/logo.avif" type="image/avif">
 <source srcset="/assets/images/logo.webp" type="image/webp">
-<img src="/assets/images/logo.png" alt="شعار Bright AI" width="36" height="36" class="h-full w-full object-contain" decoding="async">
+<img src="/assets/images/logo.png" alt="شعار Bright AI" width="36" height="36" class="h-full w-full object-contain" decoding="async" loading="lazy">
 </picture>
 </div>
 </a>
@@ -739,6 +739,6 @@
 <script defer="" src="/frontend/js/clarity-events.js"></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 <script defer src="/frontend/js/accessibility.min.js?v=2026042904"></script>
-  <script src="/frontend/js/brightai-logo-replace.js"></script>
+  <script src="/frontend/js/brightai-logo-replace.js" defer></script>
 </body>
 </html>

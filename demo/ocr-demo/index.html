@@ -589,13 +589,122 @@
       *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/ocr-demo/#webpage",
+      "url": "https://brightai.site/demo/ocr-demo/",
+      "name": "ساحة ذكاء المستندات واستخراج فواتير زاتكا | Bright AI",
+      "description": "جرّب ساحة ذكاء مستندات عربية تدعم صور PNG وJPG وWEBP وملفات PDF والفواتير السعودية مع صناديق تحديد، تحقق زاتكا، حجب تلقائي للبيانات الشخصية، وتصدير جاهز لأنظمة ERP.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/ocr-demo/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ساحة ذكاء المستندات واستخراج فواتير زاتكا",
+          "item": "https://brightai.site/demo/ocr-demo/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/ocr-demo/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "فاتورة ضريبية شركة المورد الوطني ٣١٠١٢٣٤٥٦٧٠٠٠٠٣ رقم الفاتورة INV-2026-0418 الإجمالي قبل الضريبة ١٢٬٠٠٠ ريال ضريبة القيمة المضافة ١٬٨٠٠ ريال الإجمالي ١٣٬٨٠٠ ريال رمز الاستجابة السريعة موجود نتيجة التحقق: الرقم الضريبي مطابق، الضريبة تساوي ١٥٪، ومرجع الفاتورة موجود. المركز الرئيسي للتجربة ساحة الاستخراج والتحقق",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تعمل العيّنات فوراً محلياً، وعند ضبط مفتاح جيميناي على الخادم ينتقل التشغيل إلى المسار الخلفي الآمن مع بث مباشر."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "المالية والمحاسبة",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "مدخل: فاتورة زاتكا مع أمر شراء ناقص. مخرج: ضريبة مطابقة، رقم ضريبي صحيح، وتنبيه لغياب رقم الاستلام."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "التكاملات والمعمارية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "التجربة مصممة كطبقة فهم مستندات بين أنظمتكم ونموذج جيميناي، مع سجل تدقيق وتصدير منظم."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "نظام حماية البيانات الشخصية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "حجب افتراضي للهوية، الهاتف، البريد، وأرقام الحسابات قبل إرسال النصوص الحساسة."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body>
   <a class="skip-link" href="#playground">تجاوز إلى ساحة التجربة</a>
   <header class="topbar" aria-label="رأس الصفحة">
     <div class="shell nav">
       <a class="brand" href="/" aria-label="العودة إلى الصفحة الرئيسية">
-        <img src="/assets/images/logo-new.PNG" width="40" height="40" alt="شعار Bright AI">
+        <img src="/assets/images/logo-new.PNG" width="40" height="40" alt="شعار Bright AI" decoding="async" loading="lazy">
         <span>Bright AI Document Intelligence</span>
       </a>
       <nav class="nav-links" aria-label="روابط داخلية">
@@ -1492,5 +1601,6 @@ const result = await response.json();`;
     bindEvents();
     updateCount();
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

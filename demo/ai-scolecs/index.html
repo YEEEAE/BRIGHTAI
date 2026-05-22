@@ -649,6 +649,115 @@
       .diagram div:not(:last-child)::after { display: none; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/ai-scolecs/#webpage",
+      "url": "https://brightai.site/demo/ai-scolecs/",
+      "name": "مختبر التعليم الذكي متعدد الأدوار | Bright AI",
+      "description": "جرّب مختبر تعليم ذكي عربي للطلاب والمعلمين وإدارة المدارس، مع توليد أسئلة وخطط دروس وتحليلات صفية مرتبطة بمخرجات تعلم سعودية.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/ai-scolecs/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "مختبر التعليم الذكي متعدد الأدوار",
+          "item": "https://brightai.site/demo/ai-scolecs/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/ai-scolecs/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "محاكاة صف كامل مع سيناريو ماذا لو",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "حمّل 25 طالباً اصطناعياً، غيّر صيغة الاختبار، ثم شاهد توزيع الأثر المتوقع والتكاملات الممكنة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "صف اصطناعي سيناريو ماذا لو التغيير المقترح ماذا لو نغير الاختبار النهائي من اختيار متعدد إلى أسئلة تحريرية قصيرة مع Rubric واضح؟ لم تبدأ المحاكاة بعد اضغط تشغيل المحاكاة لرؤية التوزيع المتوقع. واجهة API curl -X POST https://brightai.site/demo/ai-scolecs/api.php \\ -H \"Content-Type: application/json\" \\ -d '{\"persona\":\"admin\",\"mode\":\"class_simulation\",\"question\":\"what_if_exam_format\"}' تشريح المخرج التعليمي والثقة رمز تعلم يربط كل نشاط بمخرج مثل MATH-G6-LO-2.1 . استراتيجية تربوية توضح لماذا اختار النموذج سؤالاً إرشادياً أو تدريباً متدرجاً. درجة ثقة تظهر كمؤشر رقمي يحتاج مراجعة بشرية عند الانخفاض. خطوة تالية توصية قابلة للتنفيذ للطالب أو المعلم أو الإدارة. مؤشرات حقيقية قابلة للقياس",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "أرقام تشغيلية للنسخة التجريبية، وليست وعوداً عامة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "التكامل والمعمارية نظام المدرسة نظام معلومات الطلاب أو منصة التعلم. BrightAI API تنقية مدخلات، تحديد معدل، وسجل تدقيق. Gemini مخرجات منظمة، بث، أدوات، ووسائط متعددة. قاعدة بياناتكم حفظ نتائج معتمدة فقط وفق الصلاحيات. الامتثال والأمن PDPL تنقية أولية للهواتف والبريد وأرقام الهوية، مع منع حفظ بيانات النسخة العامة. NCA ECC تصميم قابل لربط صلاحيات الوصول وسجلات التدقيق في النسخة المؤسسية. الإقامة والاحتفاظ لا توجد إقامة بيانات مضمونة في الديمو العام؛ تحدد النسخة الإنتاجية حسب عقد الجهة. أسئلة خاصة بالمختبر هل يعطي الطالب الإجابة مباشرة؟ وضع الطالب مبني على أسلوب سقراطي، فيسأل أسئلة قائدة ويزيد التلميح تدريجياً بدل تسليم الحل فوراً. هل يدعم التصحيح من صورة؟ نعم عبر وكيل خلفي يدعم الملفات، مع إرجاع ملاحظات بنمط تصحيح واضح يحتاج اعتماد المعلم. هل تعرض الإدارة أسماء الطلاب؟ التقرير الإداري يعرض مؤشرات مجمعة، ويمكن للنسخة المؤسسية فرض إخفاء الهوية افتراضياً. هل يمكن ربطه بمنصة تعلم؟ نعم عبر API أو Webhook بعد تحديد الصلاحيات وخريطة الحقول وسجل التدقيق. هل المحتوى مناسب ثقافياً؟ تعليمات النظام تفرض أمثلة متوافقة مع القيم السعودية، مع سياقات إسلامية مناسبة عند الحاجة. ما حدود الديمو؟ الديمو يستخدم بيانات اصطناعية ومخرجات استرشادية؛ القرارات التعليمية الرسمية تحتاج مراجعة بشرية. حوّل المختبر إلى نسخة مدرسية خاصة",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ظهر هذا النموذج بعد أول تشغيل ناجح. يمكن ربطه بأنظمتكم وسجلاتكم وصلاحياتكم."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ملخص الفوج مرتفع ${summary.high_risk || 0} متوسط ${summary.medium_risk || 0} منخفض ${summary.low_risk || 0} ثقة ${confidence}% إنذار مبكر ${(result.early_warning || []).map(item => ` ${item} `).join('')} خريطة تغطية المنهج المادة التغطية الخطر ${(result.heatmap || []).map(row => ` ${row.subject} ${row.coverage}% ${row.risk} `).join('')} مؤشرات معلمين تجميعية ${(result.teacher_insights || []).map(item => ` ${item} `).join('')} `; } panels.report.innerHTML = ` رمز التعلم والثقة ${code} ثقة ${confidence}% مراجعة بشرية مطلوبة ${body} `; panels.json.textContent = JSON.stringify(result, null, 2); panels.audit.innerHTML = ` سجل التدقيق تم اختيار الدور: ${state.persona} تم تطبيق تنبيه عدم إدخال بيانات حساسة. المخرج مرتبط برمز تعلم: ${code} النموذج المستهدف عبر الخادم: gemini-2.5-flash `; panels.share.innerHTML = ` رابط مشاركة تجريبي",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "https://brightai.site/demo/ai-scolecs/?persona=${state.persona}&sample=latest"
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body>
   <a class="skip-link" href="#playground">تجاوز إلى المختبر</a>
@@ -656,7 +765,7 @@
   <header class="topbar" aria-label="تنقل الصفحة">
     <div class="shell nav">
       <a class="brand" href="/" aria-label="العودة إلى الرئيسية">
-        <img src="/assets/images/logo-new.PNG" width="38" height="38" alt="شعار Bright AI">
+        <img src="/assets/images/logo-new.PNG" width="38" height="38" alt="شعار Bright AI" decoding="async" loading="lazy">
         <span>Bright AI</span>
       </a>
       <nav class="nav-links" aria-label="روابط داخلية">
@@ -1343,5 +1452,6 @@
     renderEmpty();
     renderClassList();
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

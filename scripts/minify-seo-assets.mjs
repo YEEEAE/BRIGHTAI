@@ -1,4 +1,14 @@
 import { build } from "esbuild";
+import { access } from "node:fs/promises";
+
+async function fileExists(path) {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 const targets = [
   {
@@ -48,6 +58,16 @@ const targets = [
 ];
 
 async function minifyTarget(target) {
+  const hasEntry = await fileExists(target.entry);
+  if (!hasEntry) {
+    if (await fileExists(target.outfile)) {
+      console.log(`Skipped ${target.entry}; existing minified asset found at ${target.outfile}`);
+      return;
+    }
+
+    throw new Error(`Missing source asset ${target.entry} and minified output ${target.outfile}`);
+  }
+
   await build({
     entryPoints: [target.entry],
     outfile: target.outfile,
@@ -58,12 +78,12 @@ async function minifyTarget(target) {
     target: target.type === "js" ? ["es2019"] : undefined,
     loader: target.type === "css" ? { ".css": "css" } : undefined
   });
+  console.log(`Minified ${target.entry} -> ${target.outfile}`);
 }
 
 async function main() {
   for (const target of targets) {
     await minifyTarget(target);
-    console.log(`Minified ${target.entry} -> ${target.outfile}`);
   }
 }
 

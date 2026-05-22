@@ -717,6 +717,107 @@
       .arch-node::after { display: none; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/smart-hospital-management/#webpage",
+      "url": "https://brightai.site/demo/smart-hospital-management/",
+      "name": "غرفة عمليات المستشفى الذكية | ديمو BrightAI التشغيلي",
+      "description": "جرّب غرفة عمليات افتراضية لمستشفى 200 سرير: توقع إشغال الأسرة، ضغط الطوارئ، فجوات الكادر، وتنبيهات الإمداد مع توصيات Gemini منظمة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/smart-hospital-management/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "غرفة عمليات المستشفى الذكية | ديمو BrightAI التشغيلي",
+          "item": "https://brightai.site/demo/smart-hospital-management/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/smart-hospital-management/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "لوحة المستشفى الحية آخر تحديث الآن خريطة إشغال الأسرة انتظار الطوارئ محسن جدول العمليات فجوات الكادر تنبيهات الإمداد قرار داعم فقط التوصيات قرارات داعمة فقط، وكل قرار سريري أو إداري يبقى مسؤولية الكوادر المؤهلة. المنظومة لا تستبدل الحكم البشري. مخرجات Gemini جاهز التقرير المرئي JSON الخام سجل التدقيق المشاركة جارٍ القراءة التحليل التحقق التوليد ابدأ بتشغيل تحليل أو سيناريو جاهز {} انسخ ملخصاً تنفيذياً أو أنشئ رابطاً داخلياً للمراجعة. الروابط العامة لا تحتوي بيانات حساسة. نسخ التقرير تنزيل JSON إنشاء رابط مشاركة وضع المختبر تشغيل محاكاة 30 ثانية يشغّل السيناريو المختار كتدفق زمني: ضغط، إعادة توزيع، قرار، أثر، ثم ملخص تنفيذي. واجهة API التي تنتج هذا التحليل curl -X POST https://brightai.site/demo/smart-hospital-management/api.php \\ -H \"Content-Type: application/json\" \\ -d '{\"question\":\"اقترح إعادة توزيع الكوادر\",\"scenario\":\"hajj_surge\"}' تشريح المخرجات مطوي تعليمياً كيف تُقرأ التوصية والثقة والأثر؟ ملخص القرار جملة تنفيذية لا تتجاوز 280 حرفاً. الأثر المتوقع تغير رقمي على الأسرة أو الانتظار أو الكادر. المخاطر مفاضلة واضحة قبل التنفيذ. الاعتماد البشري إشارة إلزامية عند وجود أثر سريري أو مالي. مقاييس تجربة حقيقية بيانات ديمو اصطناعية متوسط زمن المعالجة 3.4s على عينة 1,247 تجربة اليوم دقة الاستخراج التشغيلي 94.2% حقول KPI غير سريرية تجارب اليوم 1,247 طلبات اصطناعية ومعزولة زمن أول مخرجات 0.8s مع البث اللحظي حالات استخدام حسب المنشأة مستشفى تخصصي",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "توقع ضغط العمليات المعقدة وربط الأسر الحرجة بالكادر والاستشاريين."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "معمارية التكامل أنظمتكم السجل الصحي، المستودع، الجداول، الإمداد. وكيل BrightAI تنقية مدخلات، حجب معلومات، تحديد معدل. Gemini بث لحظي، أدوات، ومخرجات منظمة. قاعدة بياناتكم تدقيق، اعتماد، وتكامل مؤسسي. الامتثال والأمن طبقة الامتثال الظاهرة في الديمو سباهي CBAHI",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تحليل فجوات تشغيلية وجودة وسلامة مرضى على مستوى المؤشرات لا القرارات السريرية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "أسئلة خاصة بالديمو هل يمكن استخدامه أثناء المناوبة؟ الديمو للتجربة فقط. النسخة المؤسسية تحتاج ربطاً محكوماً، صلاحيات، وسجل اعتماد قبل الاستخدام التشغيلي. هل يحفظ بيانات المرضى؟ لا في هذه الصفحة. الوكيل الخلفي مصمم لتنقية المدخلات وحجب الأنماط الحساسة، ويجب ضبط الحوكمة حسب بيئة المستشفى. هل يدعم ملفات وصور وتقارير؟ البنية مهيأة للمدخلات متعددة الوسائط، لكن التفعيل المؤسسي يحتاج سياسات رفع وحفظ ومعالجة منفصلة. متى نستخدم النموذج التفكير؟ استخدمه لتحليل بيانات تشغيلية معقدة أو استخراج طبي إداري ثقيل، بينما النموذج السريع مناسب للمحادثة والتوصيات اليومية. حوّل السيناريو إلى نسخة مرتبطة ببيانات مستشفاك",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ظهر هذا النموذج بعد أول تشغيل ناجح لأن أفضل نقاش يبدأ من سيناريو واضح ومؤشرات محددة."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body>
   <a class="skip-link" href="#playground">تجاوز إلى غرفة العمليات</a>
@@ -1035,7 +1136,7 @@
 
   <footer class="site-footer">
     <span>© 2026 BrightAI. ديمو تشغيلي داعم للقرار وليس بديلاً عن الكوادر المؤهلة.</span>
-    <span><a href="/docs/privacy-policy.html">سياسة الخصوصية</a> · <a href="/contact/">تواصل</a></span>
+    <span><a href="/services/smart-hospital-management.html">صفحة خدمة إدارة المستشفيات</a> · <a href="/docs/privacy-policy.html">سياسة الخصوصية</a> · <a href="/contact/">تواصل</a></span>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>

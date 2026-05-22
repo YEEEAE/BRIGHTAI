@@ -147,11 +147,75 @@
       color: var(--text);
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/offline/#webpage",
+      "url": "https://brightai.site/offline/",
+      "name": "الاتصال غير متاح حالياً | BrightAI",
+      "description": "صفحة احتياطية من BrightAI تظهر عند انقطاع الاتصال وتساعد الزائر على إعادة المحاولة أو العودة إلى الصفحة الرئيسية دون إخفاء صفحات الموقع عن محركات البحث.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/offline/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الاتصال غير متاح حالياً | BrightAI",
+          "item": "https://brightai.site/offline/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <main>
     <div class="brand" aria-label="BrightAI">
-      <img class="brand-mark" src="/assets/images/logo-new.PNG" alt="" width="36" height="36" decoding="async" aria-hidden="true">
+      <img class="brand-mark" src="/assets/images/logo-new.PNG" alt="" width="36" height="36" decoding="async" aria-hidden="true" loading="lazy">
     </div>
     <h1>الاتصال غير متاح حالياً</h1>
     <p>تعذر تحميل الصفحة عبر الشبكة. يمكنك إعادة المحاولة عند عودة الاتصال، أو الرجوع إلى الصفحة الرئيسية للمتابعة عندما تصبح الشبكة متاحة.</p>
@@ -161,6 +225,7 @@
     </div>
   </main>
 <script defer src="/frontend/js/accessibility.min.js?v=2026042904"></script>
-  <script src="/frontend/js/brightai-logo-replace.js"></script>
+  <script src="/frontend/js/brightai-logo-replace.js" defer></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

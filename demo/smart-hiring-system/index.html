@@ -626,12 +626,121 @@
       .footer { padding-block-end: 96px; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/smart-hiring-system/#webpage",
+      "url": "https://brightai.site/demo/smart-hiring-system/",
+      "name": "ملعب التوظيف الذكي لتقييم المرشحين | Bright AI",
+      "description": "جرّب ملعب التوظيف الذكي من Bright AI لتقييم السير الذاتية عربياً بدرجة مطابقة، مصفوفة مهارات، أسئلة مقابلة، وتدقيق انحياز مناسب للشركات السعودية.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/smart-hiring-system/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ملعب التوظيف الذكي لتقييم المرشحين",
+          "item": "https://brightai.site/demo/smart-hiring-system/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/smart-hiring-system/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ملعب الواجهة البرمجية تشريح المخرجات درجة المطابقة مجموع موزون من المهارات والخبرة والتعليم والملاءمة المهنية. مصفوفة المهارات كل مهارة تقابل دليلاً من السيرة مع مستوى أخضر أو أصفر أو أحمر. أسئلة المقابلة أسئلة مصممة لسد فجوات الدليل لا لإعادة قراءة السيرة. تدقيق الانحياز يوضح العوامل التي تم تجاهلها لضمان تقييم مهني عادل. حالات استخدام حسب القطاع الرعاية الصحية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "مدخل: ممرضة عناية مركزة بخبرة مناوبات وشهادات إنعاش. مخرج: تحقق من الترخيص، السلامة، والعمل تحت الضغط."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "نظام حماية البيانات الشخصية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تنقيح بيانات الاتصال في المعاينة، وعدم حفظ بيانات الديمو في المتصفح إلا أثناء الجلسة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "جاهز لتشغيلها على بيانات شركتك؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "بعد أول تقييم ناجح، يمكن لفريقنا ضبط السيناريو على أدواركم وأنظمة التوظيف خلال جلسة قصيرة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "درجة المطابقة ${bar(\"المهارات\", breakdown.skills, 40)} ${bar(\"الخبرة\", breakdown.experience, 30)} ${bar(\"التعليم\", breakdown.education, 15)} ${bar(\"الملاءمة\", breakdown.culture, 15)} مصفوفة المهارات المهارة مطلوبة الدليل المستوى ${result.skill_matrix.map(item => ` ${escapeHtml(item.skill)} ${item.required ? \"نعم\" : \"إضافية\"} ${escapeHtml(item.evidence)} ${levelLabel(item.level)} `).join(\"\")} خط الخبرة ${result.experience_summary.map(item => ` ${escapeHtml(item.years)} سنة ${escapeHtml(item.role)} ${escapeHtml(item.company)} - ${escapeHtml(item.relevance)} `).join(\"\")} إشارات تحتاج تحقق ${result.red_flags.length ? result.red_flags.map(item => ` ${severityLabel(item.severity)} ${escapeHtml(item.type)}: ${escapeHtml(item.description)} `).join(\"\") : \" لا توجد إشارات عالية بناءً على البيانات المتاحة. \"} أسئلة مقابلة مخصصة ${result.interview_questions.map(question => ` ${categoryLabel(question.category)} ؟ ${escapeHtml(question.rationale)} إشارات جيدة: ${escapeHtml((question.good_answer_signals || []).join(\"، \"))} ${escapeHtml(question.question)} `).join(\"\")} تدقيق الانحياز",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "عوامل تم تجاهلها: ${escapeHtml(result.bias_audit.factors_ignored.join(\"، \"))}"
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body>
   <a class="skip-link" href="#playground">تجاوز إلى الملعب</a>
   <header class="topbar" aria-label="التنقل الرئيسي">
     <a class="brand" href="/" aria-label="الرئيسية">
-      <img src="/assets/images/logo-new.PNG" width="36" height="36" alt="شعار Bright AI">
+      <img src="/assets/images/logo-new.PNG" width="36" height="36" alt="شعار Bright AI" decoding="async" loading="lazy">
       <span>Bright AI</span>
     </a>
     <nav class="nav-links" aria-label="روابط داخلية">
@@ -1560,5 +1669,6 @@
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
     else init();
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

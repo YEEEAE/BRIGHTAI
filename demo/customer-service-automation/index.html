@@ -529,13 +529,122 @@
       .phone { min-height: 430px; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/customer-service-automation/#webpage",
+      "url": "https://brightai.site/demo/customer-service-automation/",
+      "name": "ملعب خدمة العملاء متعدد القنوات | Bright AI",
+      "description": "جرّب صندوق وارد حي لخدمة العملاء يوحد واتساب والدردشة والبريد وإنستغرام مع وكيل جيميناي يفهم اللهجة السعودية ويصنف النية والمشاعر ويقترح التصعيد.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/customer-service-automation/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ملعب خدمة العملاء متعدد القنوات",
+          "item": "https://brightai.site/demo/customer-service-automation/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/customer-service-automation/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "محاكي القنوات الإدخال شخصية العميل القناة رسالة العميل ٠ / ٣٠٠٠ حمّل عينة ملاحظة صوت واتساب في النسخة الحية تُرسل الملفات عبر المسار الخلفي فقط. هنا نحاكي التفريغ بنص آمن. إعدادات متقدمة درجة الإبداع الحد الأعلى للمخرجات النموذج gemini-2.5-flash تعليمات الوكيل تشغيل الوكيل ~٠.٠٠٣$ توليد بيانات صناعية عقل الوكيل Gemini 2.5 Flash ١ جارٍ القراءة استلام الرسالة ٢ التحليل نية ومشاعر ولهجة ٣ التحقق معرفة وأدوات ٤ التوليد رد قابل للمراجعة تصنيف النية جاهز اختر سيناريو أو شغّل الوكيل لعرض التحليل. المشاعر واللهجة جاهز سيتم رصد الغضب أو الحيرة أو الرضا مع نوع اللغة. استرجاع المعرفة ٣ مواد سيظهر أي مقال معرفة استُخدم قبل الرد. قرار التصعيد مراجعة يعرض هل الحالة تُحل آلياً أو تحتاج فريقاً بشرياً. رد العميل النهائي × واتساب وكيل برايت أبغى أعرف وين طلبي، محد رد علي من أمس. نسخ تحميل تقرير إعادة مع تعديلات إرسال بالبريد النتيجة القابلة للتدقيق",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "اعرض التقرير المرئي أو JSON الخام أو سجل التدقيق أو وضع المدير."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "واجهة برمجة التطبيقات curl -X POST https://brightai.site/api/demo/gemini/stream \\ -H \"Content-Type: application/json\" \\ -d '{\"demoType\":\"customer-service-automation\",\"input\":{\"scenarioId\":\"angry-whatsapp-delay\",\"locale\":\"ar-SA\",\"message\":\"أبغى أعرف وين طلبي، محد رد علي\"}}' محاكي Webhook { \"event\": \"ticket.escalated\", \"channel\": \"whatsapp\", \"priority\": \"high\", \"team\": \"مشرف خدمة العملاء\" } مؤشرات حقيقية للنسخة التجريبية متوسط زمن المعالجة ٣.٤ث دقة التصنيف ٩٤.٢٪ عدد التجارب اليوم ١٢٤٧ نسبة التصعيد الصحيح ٨٩٪ حالات استخدام حسب القطاع التجارة الإلكترونية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الإدخال: أين طلبي؟ تأخر ٤ أيام وأبغى تعويض."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "الخدمات المنزلية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الإدخال: أحتاج تغيير موعد الفني للخميس."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "القطاع المالي",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الإدخال: العملية معلقة ولم يصلني رد رسمي."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body data-theme="light">
   <a class="skip-link" href="#playground">تجاوز إلى الملعب</a>
   <header class="nav" aria-label="تنقل تجربة خدمة العملاء">
     <div class="shell nav-inner">
       <a class="brand" href="/" aria-label="العودة إلى الرئيسية">
-        <img src="/assets/images/logo-new.PNG" width="36" height="36" alt="شعار برايت اي آي">
+        <img src="/assets/images/logo-new.PNG" width="36" height="36" alt="شعار برايت اي آي" decoding="async" loading="lazy">
         <span>برايت اي آي</span>
       </a>
       <nav class="nav-links" aria-label="روابط داخلية">
@@ -1099,5 +1208,6 @@
       else init();
     })();
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

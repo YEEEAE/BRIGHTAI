@@ -587,13 +587,96 @@
       .kv div { grid-template-columns: 1fr; }
     }
   </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/smart-medical-archive/#webpage",
+      "url": "https://brightai.site/demo/smart-medical-archive/",
+      "name": "ملعب الأرشيف الطبي الذكي للسجلات السريرية | Bright AI",
+      "description": "جرّب ملعب الأرشيف الطبي الذكي لاستخراج وتنظيم التقارير السريرية بالصور وPDF والنصوص عبر Gemini 2.5 مع إخفاء معرفات المرضى ونتائج منظمة للأرشفة فقط.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/smart-medical-archive/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ملعب الأرشيف الطبي الذكي للسجلات السريرية",
+          "item": "https://brightai.site/demo/smart-medical-archive/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "@id": "https://brightai.site/demo/smart-medical-archive/#service",
+      "name": "ملعب الأرشيف الطبي الذكي للسجلات السريرية",
+      "description": "جرّب ملعب الأرشيف الطبي الذكي لاستخراج وتنظيم التقارير السريرية بالصور وPDF والنصوص عبر Gemini 2.5 مع إخفاء معرفات المرضى ونتائج منظمة للأرشفة فقط.",
+      "provider": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "areaServed": "Saudi Arabia",
+      "serviceType": "AI SaaS and automation services",
+      "url": "https://brightai.site/demo/smart-medical-archive/"
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body>
   <a class="skip-link" href="#playground">تجاوز إلى الملعب</a>
   <header class="topbar" aria-label="التنقل الرئيسي">
     <div class="shell topbar-inner">
       <a class="brand" href="/" aria-label="Bright AI الرئيسية">
-        <img src="/assets/images/logo-new.PNG" alt="شعار Bright AI" width="36" height="36">
+        <img src="/assets/images/logo-new.PNG" alt="شعار Bright AI" width="36" height="36" decoding="async" loading="lazy">
         <span>Bright AI</span>
       </a>
       <nav class="nav-links" aria-label="روابط الديمو">
@@ -610,6 +693,11 @@
       <div>
         <p class="eyebrow">ملعب طبي تفاعلي مخصص للأرشفة</p>
         <h1 id="hero-title">استخرج الحقول السريرية من وثيقة طبية في أقل من 4 ثوان</h1>
+<section class="answer-block" aria-labelledby="answer-title-demo-smart-medical-archive-index-html">
+    <h2 id="answer-title-demo-smart-medical-archive-index-html">إجابة مختصرة</h2>
+    <p>تساعد Bright AI الجهات والشركات في السعودية على تحويل استخرج الحقول السريرية من وثيقة طبية في أقل من 4 ثوان إلى سير عمل قابل للقياس عبر الأتمتة الذكية، جاهزية البيانات، التكامل الآمن، ولوحات متابعة تشغيلية. توضّح الصفحة متى يناسب الحل، وما البيانات المطلوبة، وكيف يبدأ الفريق بأمان.</p>
+  </section>
+
         <p class="hero-lede">جرّب تحويل صورة ملاحظة طبيب، تقرير مختبر ممسوح، نص سريري، أو بيانات DICOM metadata إلى سجل منظم قابل للمراجعة البشرية مع إخفاء معرفات المرضى ومؤشرات جودة وخصوصية واضحة.</p>
         <div class="hero-actions">
           <a class="btn btn-gold" href="#playground">جرّب الآن</a>
@@ -1290,5 +1378,6 @@
     initEmpty();
     renderTimeline();
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>
