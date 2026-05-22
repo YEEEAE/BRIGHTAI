@@ -1,0 +1,29 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": {
+    "paths": [
+      ".agents/skills/awesome-design-md",
+      ".agents/skills/design-md",
+      ".agents/skills/frontend-design",
+      ".agents/skills/google-indexing-seo-guardian",
+      ".agents/skills/intelligent-content-reviewer-validator",
+      ".agents/skills/internal-links-guardian",
+      ".agents/skills/karpathy-guidelines",
+      ".agents/skills/render-deploy",
+      ".agents/skills/rtl-ui-guardian",
+      ".agents/skills/seo",
+      ".agents/skills/seo-audit",
+      ".agents/skills/seo-content",
+      ".agents/skills/seo-geo",
+      ".agents/skills/seo-hreflang",
+      ".agents/skills/seo-images",
+      ".agents/skills/seo-local",
+      ".agents/skills/seo-page",
+      ".agents/skills/seo-plan",
+      ".agents/skills/seo-schema",
+      ".agents/skills/seo-sitemap",
+      ".agents/skills/seo-technical",
+      ".agents/skills/vercel-react-best-practices"
+    ]
+  }
+}
