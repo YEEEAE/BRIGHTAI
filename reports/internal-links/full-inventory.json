@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-22T01:03:59.315Z",
+  "generatedAt": "2026-05-22T02:08:00.659Z",
   "filesScanned": 272,
   "pages": [
     {
@@ -1894,7 +1894,7 @@
       "title": "أتمتة سير العمل في السعودية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -2224,8 +2224,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "blog/ai-agents-business-guide/index.html",
@@ -2235,7 +2235,7 @@
       "title": "دليل وكلاء الذكاء الاصطناعي: كيف تستخدمها لشركتك: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -2553,8 +2553,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-automation-project-analysis/index.html",
@@ -2564,7 +2564,7 @@
       "title": "أتمتة الذكاء الاصطناعي: حلول مخصصة لتحليل المشاريع وتحسين محركات البحث",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -2881,8 +2881,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-business-performance/index.html",
@@ -2892,7 +2892,7 @@
       "title": "كيف يمكن للذكاء الاصطناعي تحسين أداء الشركات: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -3183,8 +3183,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-data-analysis-tools/index.html",
@@ -3194,7 +3194,7 @@
       "title": "كيف تغيّر الذكاء الاصطناعي مستقبل تحليل البيانات: الأدوات: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -3488,8 +3488,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-energy-saudi/index.html",
@@ -3499,7 +3499,7 @@
       "title": "الذكاء الاصطناعي في قطاع الطاقة السعودي - كفاءة أعلى: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -3749,8 +3749,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-finance-saudi/index.html",
@@ -3760,7 +3760,7 @@
       "title": "الذكاء الاصطناعي للقطاع المالي السعودي - مصرفية أذكى: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -4052,8 +4052,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-generative-content-industry-saudi-arabia/index.html",
@@ -4063,7 +4063,7 @@
       "title": "تأثير الذكاء الاصطناعي التوليدي على صناعة المحتوى في: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -4392,8 +4392,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-guide-saudi-business/index.html",
@@ -4403,7 +4403,7 @@
       "title": "دليل الذكاء الاصطناعي للمبتدئين لرجال الأعمال",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -4581,8 +4581,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-healthcare-saudi/index.html",
@@ -4592,7 +4592,7 @@
       "title": "الذكاء الاصطناعي في القطاع الصحي السعودي: تشخيص: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -4964,8 +4964,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-implementation-cost-guide/index.html",
@@ -4975,7 +4975,7 @@
       "title": "تكلفة تطبيق الذكاء الاصطناعي في شركتك — دليل",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -5103,8 +5103,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-innovation-saudi-arabia/index.html",
@@ -5114,7 +5114,7 @@
       "title": "5 طرق لتعزيز الابتكار من خلال الذكاء الاصطناعي في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -5457,8 +5457,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-manufacturing-digital-guide/index.html",
@@ -5468,7 +5468,7 @@
       "title": "الدليل الشامل لتطبيق الذكاء الاصطناعي في المصانع: خطة عملية للتحول الرقمي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -5798,8 +5798,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-marketing-guide/index.html",
@@ -5809,7 +5809,7 @@
       "title": "الذكاء الاصطناعي في التسويق: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -6126,8 +6126,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ai-transformation/index.html",
@@ -6137,7 +6137,7 @@
       "title": "كيف تُحدث حلول الذكاء الاصطناعي المبتكرة تحولًا في الأعمال: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -6465,8 +6465,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/big-data-analysis/index.html",
@@ -6476,7 +6476,7 @@
       "title": "تحليل البيانات الضخمة للأعمال: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -6772,8 +6772,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/building-ai-agents-guide/index.html",
@@ -6783,7 +6783,7 @@
       "title": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي باستخدام أحدث الأدوات",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -7087,8 +7087,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/building-ai-agents-practical-guide/index.html",
@@ -7098,7 +7098,7 @@
       "title": "الدليل الشامل لبناء وكلاء الذكاء الاصطناعي: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -7410,8 +7410,8 @@
         "https://brightai.site/blog/claude-opus-4-6-saudi-market/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/business-intelligence-data-analysis/index.html",
@@ -7421,7 +7421,7 @@
       "title": "ذكاء الاعمال: قوة تحليل البيانات لتحسين الأداء: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -7712,8 +7712,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/business-intelligence-saudi/index.html",
@@ -7723,7 +7723,7 @@
       "title": "ذكاء الأعمال BI في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -8082,8 +8082,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/case-study-saudi-companies-ai-agents-customer-service/index.html",
@@ -8093,7 +8093,7 @@
       "title": "دراسة حالة: كيف تستخدم الشركات السعودية وكلاء الذكاء",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -8410,8 +8410,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/chatgpt-vs-claude-vs-gemini-arabic/index.html",
@@ -8421,7 +8421,7 @@
       "title": "مقارنة ChatGPT vs Claude vs Gemini للشركات: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -8559,8 +8559,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/choose-ai-company-saudi/index.html",
@@ -8570,7 +8570,7 @@
       "title": "كيف تختار شركة الذكاء الاصطناعي المناسبة في: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -8712,8 +8712,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/claude-opus-4-6-saudi-market/index.html",
@@ -8723,7 +8723,7 @@
       "title": "Cloud Opus 4.6 في السوق السعودي: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -9042,8 +9042,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/commerce-ministry-chatbot/index.html",
@@ -9053,7 +9053,7 @@
       "title": "دراسة حالة: وزارة التجارة - شات بوت ذكي يخدم 50,000 تاجر: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -9339,8 +9339,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/data-analysis-best-practices/index.html",
@@ -9350,7 +9350,7 @@
       "title": "أفضل الممارسات لتحليل البيانات: تحويل البيانات إلى قرارات ذكية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -9614,8 +9614,8 @@
         "https://brightai.site/data-analysis/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/data-analysis-decision-making/index.html",
@@ -9625,7 +9625,7 @@
       "title": "تحليل البيانات لاتخاذ القرار: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -9949,8 +9949,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/digital-banking-saudi/index.html",
@@ -9960,7 +9960,7 @@
       "title": "الخدمات المصرفية الرقمية في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -10308,8 +10308,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/digital-health-smart-archive/index.html",
@@ -10319,7 +10319,7 @@
       "title": "تطبيقات الصحة الرقمية والأرشفة الطبية الذكية في: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -10705,8 +10705,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/digital-transformation-automation/index.html",
@@ -10716,7 +10716,7 @@
       "title": "التحول الرقمي وأتمتة العمليات: كيف يمكن للذكاء الاصطناعي أن يقود الابتكار",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -11033,8 +11033,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/financial-hr-automation/index.html",
@@ -11044,7 +11044,7 @@
       "title": "الأتمتة المالية وأتمتة الموارد البشرية: حلول مستقبلية للشركات الذكية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -11352,8 +11352,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/future-of-intelligent-data-analysis-finance-sector/index.html",
@@ -11363,7 +11363,7 @@
       "title": "التحليل الذكي للقطاع المالي: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -11701,8 +11701,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/generative-artificial-intelligence/index.html",
@@ -11712,7 +11712,7 @@
       "title": "الذكاء الاصطناعي التوليدي: ثورة في عالم الإبداع: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -12023,8 +12023,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/government-ai-solutions/index.html",
@@ -12034,7 +12034,7 @@
       "title": "حلول الذكاء الاصطناعي للقطاع الحكومي في المملكة العربية السعودية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -12338,8 +12338,8 @@
         "https://brightai.site/en/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/government-ai-solutions-saudi/index.html",
@@ -12349,7 +12349,7 @@
       "title": "حلول الذكاء الاصطناعي للقطاع الحكومي في السعودية - دليل: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -12657,8 +12657,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/hr-automation-case-study/index.html",
@@ -12668,7 +12668,7 @@
       "title": "الأتمتة الذكية للموارد البشرية: كيف وفّرت شركة",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -12812,8 +12812,8 @@
         "https://brightai.site/tools/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/hr-automation-saudi/index.html",
@@ -12823,7 +12823,7 @@
       "title": "أتمتة الموارد البشرية: وفر 60% من وقت فريقك: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -13142,8 +13142,8 @@
         "https://brightai.site/tools/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/index.html",
@@ -13153,7 +13153,7 @@
       "title": "مدونة الذكاء الاصطناعي والأتمتة في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -14395,8 +14395,8 @@
         "https://brightai.site/what-is-ai/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/industrial-automation-productivity/index.html",
@@ -14406,7 +14406,7 @@
       "title": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -14714,8 +14714,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/industrial-automation-repetitive-tasks/index.html",
@@ -14725,7 +14725,7 @@
       "title": "الأتمتة الصناعية وأتمتة المهام المتكررة: كيفية تحسين الكفاءة الإنتاجية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -14994,8 +14994,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/intelligent-data-analysis/index.html",
@@ -15005,7 +15005,7 @@
       "title": "دليل شامل لتحليل البيانات الذكي: تحويل المعلومات إلى قرارات: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -15321,8 +15321,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/kfshrc-breast-cancer-ai/index.html",
@@ -15332,7 +15332,7 @@
       "title": "دراسة حالة: مستشفى الملك فيصل التخصصي - الذكاء الاصطناعي: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -15631,8 +15631,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/kpi-dashboard-guide/index.html",
@@ -15642,7 +15642,7 @@
       "title": "كيف تبني لوحة معلومات KPIs لمنشأتك خطوة بخطوة",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -15926,8 +15926,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/ksu-adaptive-learning/index.html",
@@ -15937,7 +15937,7 @@
       "title": "دراسة حالة: جامعة الملك سعود - منصة تعلم تكيفي ترفع معدلات: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -16212,8 +16212,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/machine-learning-business/index.html",
@@ -16223,7 +16223,7 @@
       "title": "تعلم الآلة: المفتاح لتحقيق النجاح في الأعمال الحديثة",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -16512,8 +16512,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/machine-learning-computer-vision/index.html",
@@ -16523,7 +16523,7 @@
       "title": "التعلم الآلي والرؤية الحاسوبية: مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -16830,8 +16830,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/nca-ai-compliance-saudi/index.html",
@@ -16841,7 +16841,7 @@
       "title": "الامتثال لـ NCA ومتطلبات AI في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -17064,8 +17064,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/nca-compliance/index.html",
@@ -17075,7 +17075,7 @@
       "title": "الامتثال لمعايير الأمن السيبراني (NCA) في السعودية - الدليل: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -17393,8 +17393,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/power-bi-saudi-guide/index.html",
@@ -17404,7 +17404,7 @@
       "title": "Power BI للشركات السعودية: دليل البداية الشامل",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -17707,8 +17707,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/private-hospital-scheduling-optimization/index.html",
@@ -17718,7 +17718,7 @@
       "title": "دراسة حالة: مجموعة صحية خاصة - تقليل أوقات الانتظار بنسبة: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -18035,8 +18035,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/process-automation/index.html",
@@ -18046,7 +18046,7 @@
       "title": "أتمتة العمليات: تحويل المهام الروتينية إلى عمليات مؤتمتة: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -18376,8 +18376,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/process-automation-ai-efficiency/index.html",
@@ -18387,7 +18387,7 @@
       "title": "أتمتة العمليات باستخدام الذكاء الاصطناعي: الطريق إلى تحسين الكفاءة التشغيلية",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -18720,8 +18720,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/riyadh-municipality-ai-license/index.html",
@@ -18731,7 +18731,7 @@
       "title": "دراسة حالة: كيف خفّضت بلدية الرياض وقت التراخيص 70% بالذكاء: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -18975,8 +18975,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-agritech-smart-farming/index.html",
@@ -18986,7 +18986,7 @@
       "title": "دراسة حالة شاملة: الزراعة الذكية في السعودية - توفير المياه: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -19264,8 +19264,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-bank-fraud-detection/index.html",
@@ -19275,7 +19275,7 @@
       "title": "دراسة حالة: بنك سعودي - كشف 95% من محاولات الاحتيال بالذكاء: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -19597,8 +19597,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-dates-quality-ai/index.html",
@@ -19608,7 +19608,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في جودة التمور السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -19891,8 +19891,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-ecommerce-ai-growth/index.html",
@@ -19902,7 +19902,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التجارة الإلكترونية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -20190,8 +20190,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-edtech-personalized-learning/index.html",
@@ -20201,7 +20201,7 @@
       "title": "دراسة حالة: منصة تعليمية سعودية - تخصيص مسارات التعلم لـ: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -20476,8 +20476,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-energy-predictive-maintenance/index.html",
@@ -20487,7 +20487,7 @@
       "title": "دراسة حالة: شركة طاقة سعودية - توفير 40 مليون ريال سنوياً: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -20778,8 +20778,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-factory-ai-productivity/index.html",
@@ -20789,7 +20789,7 @@
       "title": "دراسة حالة: مصنع سعودي - رفع الإنتاجية 30% بتحليلات الذكاء: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -21119,8 +21119,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-hospitality-dynamic-pricing/index.html",
@@ -21130,7 +21130,7 @@
       "title": "دراسة حالة: مجموعة فنادق سعودية - زيادة الإشغال 20%: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -21409,8 +21409,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-insurance-claims-ai/index.html",
@@ -21420,7 +21420,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التأمين السعودي - كشف: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -21718,8 +21718,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-logistics-route-optimization/index.html",
@@ -21729,7 +21729,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في اللوجستيات السعودية -: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -22018,8 +22018,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-manufacturing-predictive-maintenance/index.html",
@@ -22029,7 +22029,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في الصناعة السعودية -: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -22338,8 +22338,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-mining-ai-exploration/index.html",
@@ -22349,7 +22349,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في التعدين السعودي - كنز: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -22626,8 +22626,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-petrochemical-ai-safety/index.html",
@@ -22637,7 +22637,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في البتروكيماويات: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -22927,8 +22927,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-real-estate-ai-valuation/index.html",
@@ -22938,7 +22938,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في العقارات السعودية -: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -23221,8 +23221,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-renewable-energy-ai/index.html",
@@ -23232,7 +23232,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في الطاقة المتجددة: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -23494,8 +23494,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-smart-city-traffic/index.html",
@@ -23505,7 +23505,7 @@
       "title": "دراسة حالة شاملة: الرياض تقلل الازدحام 30%: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -23749,8 +23749,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-sports-analytics-ai/index.html",
@@ -23760,7 +23760,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في الرياضة السعودية -: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -24064,8 +24064,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-tourism-ai-guide/index.html",
@@ -24075,7 +24075,7 @@
       "title": "دراسة حالة شاملة: الذكاء الاصطناعي في السياحة السعودية -",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -24359,8 +24359,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/saudi-waste-management-ai/index.html",
@@ -24370,7 +24370,7 @@
       "title": "دراسة حالة شاملة: إدارة النفايات بالذكاء الاصطناعي في: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -24623,8 +24623,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/smart-automation-benefits/index.html",
@@ -24634,7 +24634,7 @@
       "title": "فوائد الأتمتة الذكية للشركات: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -24968,8 +24968,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/smart-crm-system/index.html",
@@ -24979,7 +24979,7 @@
       "title": "نظام CRM ذكي بالذكاء الاصطناعي في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -25286,8 +25286,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/smart-document-processing/index.html",
@@ -25297,7 +25297,7 @@
       "title": "معالجة المستندات الذكية OCR في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -25598,8 +25598,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/smart-inventory-management/index.html",
@@ -25609,7 +25609,7 @@
       "title": "إدارة المخزون الذكية بالذكاء الاصطناعي: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -25918,8 +25918,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/top-ai-tools-saudi-2025/index.html",
@@ -25929,7 +25929,7 @@
       "title": "أفضل 10 أدوات ذكاء اصطناعي للشركات السعودية 2025: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -26054,8 +26054,8 @@
         "https://brightai.site/what-is-ai/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/transport-logistics-solutions/index.html",
@@ -26065,7 +26065,7 @@
       "title": "حلول النقل واللوجستيات الذكية في السعودية: شرح عملي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -26384,8 +26384,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/vision-2030-ai-opportunities/index.html",
@@ -26395,7 +26395,7 @@
       "title": "رؤية 2030 والذكاء الاصطناعي: فرص الشركات",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -26555,8 +26555,8 @@
         "https://brightai.site/what-is-ai/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "blog/workplace-automation-guide/index.html",
@@ -26566,7 +26566,7 @@
       "title": "الأتمتة في مكان العمل: كيف تبدأ؟",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -26864,8 +26864,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "bot/index.html",
@@ -26875,7 +26875,7 @@
       "title": "✦ Bright AI",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -27069,8 +27069,8 @@
         "https://brightai.site/what-is-ai/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "case-studies/index.html",
@@ -29410,7 +29410,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -29639,8 +29639,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "demo/ai-tenders-analysis/dashboard.html",
@@ -29650,7 +29650,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -29821,8 +29821,8 @@
         "https://brightai.site/error"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "demo/ai-tenders-analysis/index.html",
@@ -29932,7 +29932,7 @@
       "title": "محلل العقود والمناقصات بالذكاء الاصطناعي في السعودية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -30303,8 +30303,8 @@
         "https://brightai.site/what-is-ai/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "demo/ai-tenders-analysis/reports.html",
@@ -30314,7 +30314,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -30469,8 +30469,8 @@
         "https://brightai.site/error"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "demo/ai-tenders-analysis/settings.html",
@@ -30480,7 +30480,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -30635,8 +30635,8 @@
         "https://brightai.site/error"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "demo/ai-tenders-analysis/templates.html",
@@ -30646,7 +30646,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -30841,8 +30841,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "demo/ai-workflows/index.html",
@@ -49493,7 +49493,7 @@
       "title": "Bright AI Docs Hub",
       "routeType": "static-html-route",
       "indexable": false,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -53511,7 +53511,7 @@
       "title": "ContractAI",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -53665,8 +53665,8 @@
         "https://brightai.site/en/tenders/templates/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "en/tenders/settings.html",
@@ -57152,7 +57152,7 @@
       "title": "OBM Rejects Control Dashboard",
       "routeType": "static-index-route",
       "indexable": false,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": true,
       "outgoing": [],
       "outgoingAnchors": [],
@@ -65310,7 +65310,7 @@
       "title": "وكلاء ذكاء اصطناعي للشركات السعودية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -65482,8 +65482,8 @@
         "https://brightai.site/smart-automation/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/ai-automation-saudi.html",
@@ -65493,7 +65493,7 @@
       "title": "أتمتة الذكاء الاصطناعي للشركات في السعودية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -65722,8 +65722,8 @@
         "https://brightai.site/what-is-ai/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/ai-chatbot-arabic.html",
@@ -65733,7 +65733,7 @@
       "title": "شات بوت عربي يفهم العملاء والعمليات في السعودية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -65874,8 +65874,8 @@
         "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/ai-consulting.html",
@@ -65885,7 +65885,7 @@
       "title": "استشارة ذكاء اصطناعي لتحديد أفضل حل يناسب عملك",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -66173,8 +66173,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/ai-scolecs.html",
@@ -66184,7 +66184,7 @@
       "title": "منصة تعليمية ذكية متكاملة بالذكاء الاصطناعي",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -66463,8 +66463,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/ai-tenders-analysis.html",
@@ -66474,7 +66474,7 @@
       "title": "نظام تحليل المناقصات بالذكاء الاصطناعي للقطاع المالي والمشتريات",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -66748,8 +66748,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/approvals-automation.html",
@@ -66759,7 +66759,7 @@
       "title": "نظام موافقات ذكي | أتمتة كاملة للإجراءات الإدارية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -67026,8 +67026,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/brightproject.html",
@@ -67037,7 +67037,7 @@
       "title": "BrightProject لإدارة المشاريع الذكية في السعودية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -67316,8 +67316,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/brightsales.html",
@@ -67327,7 +67327,7 @@
       "title": "BrightSales روبوت المبيعات الذكي للشركات في السعودية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -67608,8 +67608,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/competitor-analysis-agent.html",
@@ -67619,7 +67619,7 @@
       "title": "وكيل تحليل المنافسين بالذكاء الاصطناعي للسوق السعودي",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -67769,8 +67769,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/custom-ai-agent.html",
@@ -67780,7 +67780,7 @@
       "title": "وكيل ذكاء اصطناعي مخصص يعمل بهوية شركتك",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -67971,8 +67971,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/customer-service-automation.html",
@@ -67982,7 +67982,7 @@
       "title": "أتمتة خدمة العملاء الذكية لرفع الرضا وتسريع الحلول",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -68270,8 +68270,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/data-analyst-agent.html",
@@ -68281,7 +68281,7 @@
       "title": "وكيل تحليل بيانات يحوّل أرقامك إلى قرارات دقيقة وفورية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -68569,8 +68569,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/data-platform.html",
@@ -68580,7 +68580,7 @@
       "title": "منصة بيانات موحّدة | تحكم كامل في بيانات شركتك",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -68893,8 +68893,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/document-automation.html",
@@ -68904,7 +68904,7 @@
       "title": "حوّل مستنداتك إلى بيانات ذكية | أتمتة كاملة لإدارة الوثائق",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -69183,8 +69183,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/health-data-analysis.html",
@@ -69194,7 +69194,7 @@
       "title": "وكيل تحليل البيانات الصحية لتحسين الرعاية واتخاذ قرارات دقيقة",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -69472,8 +69472,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/hr-automation.html",
@@ -69483,7 +69483,7 @@
       "title": "حلّ شامل لأتمتة إدارة الموارد البشرية وتسريع عمليات الـ HR بدون تعقيد",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -69752,8 +69752,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/index.html",
@@ -70567,7 +70567,7 @@
       "title": "وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -70833,8 +70833,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/marketing-agent.html",
@@ -70844,7 +70844,7 @@
       "title": "وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -71110,8 +71110,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/marketing-ai-agent.html",
@@ -71121,7 +71121,7 @@
       "title": "وكيل تسويق ذكي يخطط وينفذ ويحلل حملاتك الرقمية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -71251,8 +71251,8 @@
         "https://brightai.site/services/seo-ai-agent/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/marketing-automation.html",
@@ -71262,7 +71262,7 @@
       "title": "نظام تسويق ذكي يخطط الحملات، يكتب المحتوى، ويتوقع العائد.",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -71536,8 +71536,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/medical-archive.html",
@@ -71547,7 +71547,7 @@
       "title": "نظام أرشفة السجلات الطبية | تنظيم ذكي وحماية عالية للبيانات",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -71833,8 +71833,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/operational-reports-automation.html",
@@ -71844,7 +71844,7 @@
       "title": "تقارير تشغيلية تلقائية 100% | أتمتة وتحليل فوري لبيانات شركتك",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -72122,8 +72122,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/opportunity-discovery-agent.html",
@@ -72133,7 +72133,7 @@
       "title": "وكيل اكتشاف فرص ومبيعات يزوّد فريقك بعملاء أكثر جاهزية",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -72262,8 +72262,8 @@
         "https://brightai.site/services/marketing-ai-agent/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/seo-agent.html",
@@ -72273,7 +72273,7 @@
       "title": "وكيل SEO ذكي يرفع ترتيبك ويقلّل تكلفة الإعلانات",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -72540,8 +72540,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/seo-ai-agent.html",
@@ -72551,7 +72551,7 @@
       "title": "وكيل SEO ذكي يحوّل موقعك إلى قناة جذب عملاء مستمرة",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -72714,8 +72714,8 @@
         "https://brightai.site/services/opportunity-discovery-agent/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/smart-hiring-system.html",
@@ -72725,7 +72725,7 @@
       "title": "نظام توظيف ذكي | اختَر أفضل المرشحين بسرعة ودقة",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -73014,8 +73014,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/smart-hospital-management.html",
@@ -73025,7 +73025,7 @@
       "title": "نظام إدارة المستشفيات الذكية بالذكاء الاصطناعي",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -73306,8 +73306,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/social-data-analysis.html",
@@ -73317,7 +73317,7 @@
       "title": "وكيل تحليل وسائل التواصل الاجتماعي — رؤى عميقة لزيادة التفاعل والمبيعات",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -73589,8 +73589,8 @@
         "https://brightai.site/services/supply-chain-optimization/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "services/supply-chain-optimization.html",
@@ -73600,7 +73600,7 @@
       "title": "تحسين سلسلة الإمداد في السعودية | أتمتة Supply Chain بالذكاء الاصطناعي",
       "routeType": "static-html-route",
       "indexable": true,
-      "inSitemap": false,
+      "inSitemap": true,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -73886,8 +73886,8 @@
         "https://brightai.site/services/social-data-analysis/"
       ],
       "isOrphan": false,
-      "problem": "missing_from_sitemap",
-      "severity": "Medium"
+      "problem": "",
+      "severity": "None"
     },
     {
       "relPath": "sitemap/index.html",
@@ -73897,7 +73897,7 @@
       "title": "خريطة موقع Bright AI — دليلك الشامل لجميع الصفحات والخدمات",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -74798,8 +74798,8 @@
         "https://brightai.site/error"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "smart-automation/index.html",
@@ -75483,7 +75483,7 @@
       "title": "الشروط والأحكام",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -75691,8 +75691,8 @@
         "https://brightai.site/sitemap/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "tools/index.html",
@@ -76106,7 +76106,7 @@
       "title": "تجربة أدوات الذكاء الاصطناعي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -76374,8 +76374,8 @@
         "https://brightai.site/try/text-analysis/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "try/text-analysis/index.html",
@@ -76385,7 +76385,7 @@
       "title": "تحليل النصوص بالذكاء الاصطناعي",
       "routeType": "static-index-route",
       "indexable": true,
-      "inSitemap": true,
+      "inSitemap": false,
       "ownerDecisionNeeded": false,
       "outgoing": [
         "https://brightai.site/",
@@ -76572,8 +76572,8 @@
         "https://brightai.site/try/"
       ],
       "isOrphan": false,
-      "problem": "",
-      "severity": "None"
+      "problem": "missing_from_sitemap",
+      "severity": "Medium"
     },
     {
       "relPath": "what-is-ai/index.html",
@@ -76890,13 +76890,13 @@
     "internalLinksDiscovered": 6653,
     "orphanPages": 0,
     "brokenLinks": 0,
-    "pagesOutsideSitemap": 110,
+    "pagesOutsideSitemap": 14,
     "weakAnchors": 0,
     "noHrefLinks": 0,
     "canonicalIssues": 0,
     "hashIssues": 4,
-    "sitemapUrls": 196,
-    "sitemapMissingInternalLinks": 1
+    "sitemapUrls": 247,
+    "sitemapMissingInternalLinks": 0
   },
   "weakAnchors": [],
   "noHrefLinks": [],
@@ -76927,8 +76927,6 @@
       "issue": "missing_section_target"
     }
   ],
-  "sitemapMissingInternalLinks": [
-    "https://brightai.site/mais-OBM/"
-  ],
+  "sitemapMissingInternalLinks": [],
   "registrySize": 267
 }
