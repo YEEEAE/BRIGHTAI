@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","G-8LLESL207Q");</script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-8LLESL207Q');</script>
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Bright AI">
   <meta name="theme-color" content="#07111f">
-  <title>ديمو تحليل البيانات التنفيذي | Bright AI</title>
-  <meta name="description" content="جرّب ديمو تحليل البيانات من Bright AI لتحويل بيانات وهمية إلى لوحة مؤشرات وملخص تنفيذي وتوصيات جاهزة للعرض على الإدارة.">
+  <title>تحليل البيانات | ديمو ذكاء اصطناعي للشركات السعودية</title>
+  <meta name="description" content="أدخل عينة جدولية أو وصف أعمدة، وسيحوّلها الديمو إلى ملخص تنفيذي ورؤى قابلة للتنفيذ.">
   <link rel="canonical" href="https://brightai.site/demo/data-analysis/">
   <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/data-analysis/">
   <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/data-analysis/">
@@ -17,398 +17,129 @@
   <meta property="og:locale" content="ar_SA">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Bright AI">
-  <meta property="og:title" content="ديمو تحليل البيانات التنفيذي | Bright AI">
-  <meta property="og:description" content="اختر نوع بياناتك، وشاهد تقريراً تنفيذياً ذكياً ببيانات وهمية جاهزاً للنسخ والتحميل.">
+  <meta property="og:title" content="تحليل البيانات | Bright AI">
+  <meta property="og:description" content="أدخل عينة جدولية أو وصف أعمدة، وسيحوّلها الديمو إلى ملخص تنفيذي ورؤى قابلة للتنفيذ.">
   <meta property="og:url" content="https://brightai.site/demo/data-analysis/">
-  <meta property="og:image" content="https://brightai.site/assets/images/og/demo-data-analysis.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ديمو تحليل البيانات التنفيذي | Bright AI">
-  <meta name="twitter:description" content="لوحة تحليل بيانات تفاعلية بملخص تنفيذي ومخاطر وتوصيات قابلة للتنفيذ.">
-  <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
-  <link rel="stylesheet" href="/assets/css/design-tokens.css">
-  <link rel="stylesheet" href="/assets/css/typography.css">
-  <style>
-    @font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
-    @font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-Bold.woff2") format("woff2");font-weight:800;font-display:swap}
-    :root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2d;--panel-2:#13243a;--text:#f7fbff;--muted:#b8c6d8;--line:rgba(190,214,244,.16);--teal:#2dd4bf;--blue:#7dd3fc;--gold:#f8c14a;--rose:#fb7185;--green:#22c55e;--shadow:0 24px 70px rgba(0,0,0,.32);--radius:8px}
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;font-family:BrightArabic,"IBM Plex Sans Arabic",system-ui,sans-serif;background:radial-gradient(circle at 78% 0,rgba(45,212,191,.2),transparent 32%),radial-gradient(circle at 6% 18%,rgba(248,193,74,.14),transparent 26%),var(--bg);color:var(--text);line-height:1.75;text-align:start}
-    a{color:inherit;text-decoration:none}
-    button,input,select,textarea{font:inherit}
-    .skip-link{position:absolute;inset-block-start:10px;inset-inline-start:10px;z-index:100;background:#fff;color:#07111f;padding:10px 14px;border-radius:var(--radius);transform:translateY(-160%)}.skip-link:focus{transform:none}
-    .demo-nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px clamp(16px,4vw,56px);background:rgba(7,17,31,.82);backdrop-filter:blur(18px);border-block-end:1px solid var(--line)}
-    .brand{display:inline-flex;align-items:center;gap:10px;font-weight:900}.brand img{inline-size:38px;block-size:38px;border-radius:8px}.nav-links{display:flex;gap:18px;align-items:center;color:var(--muted);font-weight:800}.nav-links a:hover{color:var(--text)}
-    .section{inline-size:min(1180px,calc(100% - 32px));margin-inline:auto;padding-block:54px}
-    .hero{display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:34px;align-items:center;min-height:calc(100vh - 76px);padding-block:48px}
-    .eyebrow,.badge{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(45,212,191,.32);background:rgba(45,212,191,.09);color:#d9fffa;border-radius:999px;padding:7px 12px;font-weight:900;font-size:.88rem}
-    h1,h2,h3,p{margin-block-start:0}h1{font-size:clamp(2.25rem,5vw,5.2rem);line-height:1.08;letter-spacing:0;margin-block:18px 16px}h2{font-size:clamp(1.55rem,2.5vw,2.6rem);line-height:1.22}h3{font-size:1.05rem}.lead{font-size:clamp(1.05rem,1.8vw,1.3rem);color:var(--muted);max-inline-size:720px}
-    .hero-actions,.toolbar,.report-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.btn{border:1px solid var(--line);border-radius:var(--radius);padding:12px 18px;min-block-size:48px;color:var(--text);background:rgba(255,255,255,.05);cursor:pointer;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px}.btn-primary{background:linear-gradient(135deg,var(--teal),#38bdf8);color:#04111d;border-color:transparent}.btn-secondary{background:rgba(248,193,74,.14);border-color:rgba(248,193,74,.34)}.btn:hover{filter:brightness(1.08)}
-    .feature-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-block-start:24px}.feature-strip span,.privacy-note{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:var(--radius);padding:10px 12px;color:var(--muted);font-weight:800}
-    .reveal-panel{position:relative;min-height:560px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,rgba(19,36,58,.92),rgba(8,18,31,.88));box-shadow:var(--shadow);overflow:hidden;padding:22px}
-    .reveal-panel:before{content:"";position:absolute;inset:-30%;background:conic-gradient(from 90deg,transparent,rgba(45,212,191,.22),transparent,rgba(248,193,74,.18),transparent);animation:spin 8s linear infinite}.reveal-inner{position:relative;display:grid;gap:18px}.scan-card{border:1px solid var(--line);background:rgba(7,17,31,.72);border-radius:var(--radius);padding:18px}.before-after{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mini-chart{display:flex;align-items:end;gap:8px;block-size:116px}.mini-chart i{flex:1;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--teal),rgba(45,212,191,.2));min-block-size:20px;animation:rise 1.4s ease both}.impact-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.impact-row strong{display:block;font-size:1.6rem;color:var(--gold)}
-    .workspace{display:grid;grid-template-columns:330px minmax(0,1fr);gap:22px;align-items:start}.data-types,.panel{border:1px solid var(--line);background:rgba(13,27,45,.78);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}.type-list{display:grid;gap:10px}.type-card{width:100%;text-align:start;border:1px solid var(--line);background:rgba(255,255,255,.045);color:var(--text);border-radius:var(--radius);padding:12px;cursor:pointer}.type-card[aria-pressed="true"]{border-color:rgba(45,212,191,.72);background:rgba(45,212,191,.12)}.type-card strong{display:block}.type-card span{display:block;color:var(--muted);font-size:.9rem}
-    .metrics-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.metric{border:1px solid var(--line);background:rgba(255,255,255,.045);border-radius:var(--radius);padding:14px;min-block-size:118px}.metric span{display:block;color:var(--muted);font-weight:800;font-size:.88rem}.metric strong{display:block;font-size:1.65rem;line-height:1.25;margin-block:8px 4px}.delta{color:#b7ffe8;font-weight:900}.risk-high{color:#fecdd3}.risk-mid{color:#fde68a}.risk-low{color:#bbf7d0}
-    .trend{display:grid;grid-template-columns:minmax(0,1fr) 180px;gap:18px;align-items:center}.confidence-ring{inline-size:150px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;margin-inline:auto;background:conic-gradient(var(--teal) 0 86%,rgba(255,255,255,.1) 86% 100%);position:relative}.confidence-ring:after{content:"";position:absolute;inset:12px;border-radius:50%;background:var(--panel)}.confidence-ring strong{position:relative;z-index:1;font-size:1.8rem}.columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.list{display:grid;gap:10px;padding:0;margin:0;list-style:none}.list li{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:var(--radius);padding:12px;color:var(--muted)}
-    .report{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px}.report-output{white-space:pre-wrap;min-block-size:360px;border:1px solid var(--line);background:#08121f;border-radius:var(--radius);padding:18px;color:#e8f4ff}.executive-side{display:grid;gap:12px}.kpi-note{border:1px solid rgba(248,193,74,.28);background:rgba(248,193,74,.1);border-radius:var(--radius);padding:14px;color:#fff4ce}.disclaimer{border:1px dashed rgba(248,193,74,.42);background:rgba(248,193,74,.08);color:#fff1c5;border-radius:var(--radius);padding:14px;font-weight:900}.footer{border-block-start:1px solid var(--line);padding:28px clamp(16px,4vw,56px);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;color:var(--muted)}
-    [dir="ltr"]{unicode-bidi:isolate;direction:ltr}.toast{position:fixed;inset-block-end:18px;inset-inline-start:18px;background:#effffb;color:#04111d;border-radius:var(--radius);padding:12px 14px;font-weight:900;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);transition:.2s}.toast.is-visible{opacity:1;transform:none}
-    @keyframes spin{to{transform:rotate(1turn)}}@keyframes rise{from{transform:scaleY(.25);opacity:.45}to{transform:scaleY(1);opacity:1}}
-    @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
-    @media (max-width:980px){.hero,.workspace,.report{grid-template-columns:1fr}.feature-strip{grid-template-columns:repeat(2,1fr)}.reveal-panel{min-height:auto}.trend{grid-template-columns:1fr}.columns{grid-template-columns:1fr}.metrics-grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:640px){.nav-links{display:none}.section{inline-size:min(100% - 24px,1180px);padding-block:36px}h1{font-size:2.3rem}.feature-strip,.before-after,.impact-row,.metrics-grid{grid-template-columns:1fr}.hero-actions .btn,.toolbar .btn,.report-actions .btn{width:100%}.report-output{font-size:.94rem}}
-  </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://brightai.site/#organization","name":"Bright AI","url":"https://brightai.site/","logo":"https://brightai.site/assets/images/logo-new.PNG","areaServed":{"@type":"Country","name":"Saudi Arabia"}},{"@type":"WebPage","@id":"https://brightai.site/demo/data-analysis/#webpage","url":"https://brightai.site/demo/data-analysis/","name":"ديمو تحليل البيانات التنفيذي | Bright AI","description":"ديمو عربي لتحويل بيانات وهمية إلى لوحة مؤشرات وملخص تنفيذي وتوصيات جاهزة للعرض على الإدارة.","inLanguage":"ar-SA","about":{"@id":"https://brightai.site/demo/data-analysis/#software"}},{"@type":"SoftwareApplication","@id":"https://brightai.site/demo/data-analysis/#software","name":"ديمو تحليل البيانات التنفيذي","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://brightai.site/demo/data-analysis/","inLanguage":"ar-SA","description":"تجربة تحليل بيانات تستخدم بيانات وهمية لإنتاج تقرير تنفيذي ومؤشرات ورؤى ومخاطر وتوصيات.","provider":{"@id":"https://brightai.site/#organization"},"offers":{"@type":"Offer","price":"0","priceCurrency":"SAR"}},{"@type":"BreadcrumbList","@id":"https://brightai.site/demo/data-analysis/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://brightai.site/"},{"@type":"ListItem","position":2,"name":"الديموهات","item":"https://brightai.site/demo/"},{"@type":"ListItem","position":3,"name":"تحليل البيانات","item":"https://brightai.site/demo/data-analysis/"}]}]}</script>
-  <script id="brightai-production-schema" type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": [
-        "Organization",
-        "LocalBusiness"
-      ],
-      "@id": "https://brightai.site/#organization",
-      "name": "Bright AI",
-      "url": "https://brightai.site",
-      "logo": "https://brightai.site/assets/images/logo.PNG",
-      "areaServed": "SA",
-      "sameAs": []
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://brightai.site/#website",
-      "url": "https://brightai.site",
-      "name": "Bright AI",
-      "publisher": {
-        "@id": "https://brightai.site/#organization"
-      },
-      "inLanguage": [
-        "ar-SA",
-        "en-SA"
-      ]
-    },
-    {
-      "@type": "WebPage",
-      "@id": "https://brightai.site/demo/data-analysis/#webpage",
-      "url": "https://brightai.site/demo/data-analysis/",
-      "name": "ديمو تحليل البيانات التنفيذي | Bright AI",
-      "description": "جرّب ديمو تحليل البيانات من Bright AI لتحويل بيانات وهمية إلى لوحة مؤشرات وملخص تنفيذي وتوصيات جاهزة للعرض على الإدارة.",
-      "isPartOf": {
-        "@id": "https://brightai.site/#website"
-      },
-      "about": {
-        "@id": "https://brightai.site/#organization"
-      },
-      "inLanguage": "ar-SA"
-    },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/demo/data-analysis/#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Bright AI",
-          "item": "https://brightai.site/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "demo",
-          "item": "https://brightai.site/demo/"
-        },
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": "ديمو تحليل البيانات التنفيذي",
-          "item": "https://brightai.site/demo/data-analysis/"
-        }
-      ]
-    },
-    {
-      "@type": "Service",
-      "@id": "https://brightai.site/demo/data-analysis/#service",
-      "name": "ديمو تحليل البيانات التنفيذي",
-      "description": "جرّب ديمو تحليل البيانات من Bright AI لتحويل بيانات وهمية إلى لوحة مؤشرات وملخص تنفيذي وتوصيات جاهزة للعرض على الإدارة.",
-      "provider": {
-        "@id": "https://brightai.site/#organization"
-      },
-      "areaServed": "Saudi Arabia",
-      "serviceType": "AI SaaS and automation services",
-      "url": "https://brightai.site/demo/data-analysis/"
-    }
-  ]
-}
-  </script>
-  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <meta property="og:image" content="https://brightai.site/assets/images/og/demos/data-analysis.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://brightai.site/assets/images/og/demo-data-analysis.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="تحليل البيانات | Bright AI">
+  <meta name="twitter:description" content="أدخل عينة جدولية أو وصف أعمدة، وسيحوّلها الديمو إلى ملخص تنفيذي ورؤى قابلة للتنفيذ.">
+  <meta name="twitter:image" content="https://brightai.site/assets/images/og/demos/data-analysis.png">
+  <link rel="icon" href="/assets/images/logo.PNG" type="image/png">
+  <link rel="stylesheet" href="/assets/css/design-tokens.css">
+  <link rel="stylesheet" href="/assets/css/demo-premium.css">
+  <link rel="stylesheet" href="/assets/css/demo-design-system.css">
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/typography.css">
+  <link rel="stylesheet" href="/assets/css/motion.css">
+  <link rel="stylesheet" href="/assets/css/components.css">
+  <link rel="stylesheet" href="/assets/css/seven-demo-standard.css">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://brightai.site/#organization","name":"Bright AI","url":"https://brightai.site/","logo":"https://brightai.site/assets/images/logo.PNG","areaServed":{"@type":"Country","name":"Saudi Arabia"},"contactPoint":{"@type":"ContactPoint","telephone":"+966538229013","contactType":"sales","areaServed":"SA","availableLanguage":["Arabic"]}},{"@type":"WebPage","@id":"https://brightai.site/demo/data-analysis/#webpage","url":"https://brightai.site/demo/data-analysis/","name":"تحليل البيانات | Bright AI","description":"أدخل عينة جدولية أو وصف أعمدة، وسيحوّلها الديمو إلى ملخص تنفيذي ورؤى قابلة للتنفيذ.","inLanguage":"ar-SA","isPartOf":{"@id":"https://brightai.site/#website"},"about":{"@id":"https://brightai.site/demo/data-analysis/#software"}},{"@type":"SoftwareApplication","@id":"https://brightai.site/demo/data-analysis/#software","name":"تحليل البيانات","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://brightai.site/demo/data-analysis/","inLanguage":"ar-SA","description":"أدخل عينة جدولية أو وصف أعمدة، وسيحوّلها الديمو إلى ملخص تنفيذي ورؤى قابلة للتنفيذ.","provider":{"@id":"https://brightai.site/#organization"},"offers":{"@type":"Offer","price":"0","priceCurrency":"SAR","description":"تجربة عامة مجانية قبل طلب نسخة مخصصة"}},{"@type":"Service","@id":"https://brightai.site/services/data-platform.html#service","name":"تحليل البيانات","serviceType":"البيانات والقرار","url":"https://brightai.site/services/data-platform.html","description":"أدخل عينة جدولية أو وصف أعمدة، وسيحوّلها الديمو إلى ملخص تنفيذي ورؤى قابلة للتنفيذ.","provider":{"@id":"https://brightai.site/#organization"},"areaServed":{"@type":"Country","name":"Saudi Arabia"}},{"@type":"FAQPage","@id":"https://brightai.site/demo/data-analysis/#faq","mainEntity":[{"@type":"Question","name":"ما هذا الديمو؟","acceptedAnswer":{"@type":"Answer","text":"تجربة تفاعلية من Bright AI تعرض كيف يتحول سيناريو عمل سعودي إلى تقرير تنفيذي ومؤشرات وتوصيات قابلة للمراجعة."}},{"@type":"Question","name":"لمن يناسب؟","acceptedAnswer":{"@type":"Answer","text":"يناسب فرق الإدارة والعمليات والتحول الرقمي التي تريد رؤية قيمة عملية قبل طلب نسخة مخصصة."}},{"@type":"Question","name":"ما المشكلة التي يحلها؟","acceptedAnswer":{"@type":"Answer","text":"يساعد على تحويل المدخلات المتفرقة إلى قراءة منظمة تقلل العمل اليدوي وتوضح القرار التالي."}},{"@type":"Question","name":"ما المخرجات الفعلية؟","acceptedAnswer":{"@type":"Answer","text":"يعرض ملخصاً تنفيذياً، مؤشرات أداء، نتائج رئيسية، مخاطر، توصيات، وخطوات تالية قابلة للنسخ أو التنزيل."}},{"@type":"Question","name":"هل يستخدم بيانات حقيقية؟","acceptedAnswer":{"@type":"Answer","text":"لا. الديمو العام مصمم لاستخدام بيانات وهمية أو منزوعة الحساسية فقط، ولا تحتاج رفع بيانات شركة حقيقية."}},{"@type":"Question","name":"هل يمكن ربطه مع أنظمتنا؟","acceptedAnswer":{"@type":"Answer","text":"نعم. النسخة المخصصة يمكن ربطها مع API أو قواعد البيانات أو ملفات العمل بعد مراجعة الصلاحيات والحوكمة."}},{"@type":"Question","name":"هل يمكن تخصيصه لشركتنا؟","acceptedAnswer":{"@type":"Answer","text":"نعم. نخصص السيناريوهات والمخرجات ونبرة التقرير ومؤشرات القياس حسب قطاع شركتك وأنظمتها."}},{"@type":"Question","name":"ما الخطوة التالية بعد التجربة؟","acceptedAnswer":{"@type":"Answer","text":"راجع التقرير، اختر سيناريو واحداً عالي الأثر، ثم احجز استشارة قصيرة لتحويله إلى نسخة مرتبطة ببياناتك."}},{"@type":"Question","name":"هل أحتاج ملف بيانات كامل؟","acceptedAnswer":{"@type":"Answer","text":"لا، الديمو يعمل بوصف أو عينة صغيرة غير حساسة، والنسخة المخصصة يمكن ربطها بمصادر البيانات الفعلية."}},{"@type":"Question","name":"هل يكشف مشاكل جودة البيانات؟","acceptedAnswer":{"@type":"Answer","text":"نعم، يعرض مؤشرات أولية عن النواقص والشذوذ والحقول التي تحتاج تنظيفاً قبل التحليل العميق."}}]},{"@type":"BreadcrumbList","@id":"https://brightai.site/demo/data-analysis/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://brightai.site/"},{"@type":"ListItem","position":2,"name":"الديموهات","item":"https://brightai.site/demo/"},{"@type":"ListItem","position":3,"name":"تحليل البيانات","item":"https://brightai.site/demo/data-analysis/"}]}]}</script>
 </head>
-<body data-demo-type="data-analysis" data-model="gemini-2.5-flash">
-  <a class="skip-link" href="#workspace">تجاوز إلى مساحة العمل</a>
-  <header class="demo-nav" aria-label="تنقل الديمو">
-    <a class="brand" href="/" aria-label="Bright AI الرئيسية"><img src="/assets/images/logo-new.PNG" alt="" width="38" height="38" decoding="async" loading="lazy"><span>Bright AI</span></a>
-    <nav class="nav-links" aria-label="روابط داخلية">
-      <a href="/demo/">الديموهات</a>
-      <a href="/data-analysis/">تحليل البيانات</a>
-      <a href="/services/data-platform.html">منصة البيانات</a>
-      <a href="/contact/">تواصل</a>
-    </nav>
+<body class="premium-demo" data-demo-slug="data-analysis">
+  <a class="skip-link" href="#demo-form">تجاوز إلى التجربة</a>
+  <header class="demo-nav smart-header" aria-label="تنقل الديمو" data-smart-header>
+    <a class="brand" href="/" aria-label="BrightAI الرئيسية"><svg class="brand-mark" width="42" height="42" viewBox="0 0 42 42" role="img" aria-label="شعار BrightAI">
+        <rect width="42" height="42" rx="12" fill="#07111f"></rect>
+        <path d="M10 28V10h11.2c4.1 0 6.6 2.1 6.6 5.2 0 1.9-.9 3.3-2.5 4.1 2.3.8 3.7 2.4 3.7 4.6 0 3.4-2.7 4.1-7.1 4.1H10Zm5.1-11h5.1c1.5 0 2.4-.7 2.4-2s-.9-2-2.4-2h-5.1v4Zm0 7.9h5.9c1.7 0 2.7-.8 2.7-2.2s-1-2.2-2.7-2.2h-5.9v4.4Z" fill="#2dd4bf"></path>
+        <path d="M31.5 10h.8v18h-.8z" fill="#f8c14a"></path>
+      </svg><span>BrightAI</span></a>
+    <button class="mobile-menu-toggle" type="button" aria-expanded="false" aria-controls="demo-mobile-menu" data-menu-toggle>القائمة</button>
+    <nav class="nav-links" id="demo-mobile-menu" aria-label="روابط داخلية" data-menu-panel><a href="/demo/">الديموهات</a><a href="/services/">الخدمات</a><a href="/contact/">تواصل</a><a class="nav-cta-pill" href="/contact/" data-scroll-cta>احجز استشارة</a></nav>
   </header>
-
   <main>
-    <section class="section hero" aria-labelledby="main-title">
-      <div>
-        <span class="eyebrow">وضع الديمو · <span dir="ltr">gemini-2.5-flash</span></span>
-        <h1 id="main-title">حلّل بيانات شركتك خلال دقائق وطلّع تقرير تنفيذي</h1>
-<section class="answer-block" aria-labelledby="answer-title-demo-data-analysis-index-html">
-    <h2 id="answer-title-demo-data-analysis-index-html">إجابة مختصرة</h2>
-    <p>تساعد Bright AI الجهات والشركات في السعودية على تحويل حلّل بيانات شركتك خلال دقائق وطلّع تقرير تنفيذي إلى سير عمل قابل للقياس عبر الأتمتة الذكية، جاهزية البيانات، التكامل الآمن، ولوحات متابعة تشغيلية. توضّح الصفحة متى يناسب الحل، وما البيانات المطلوبة، وكيف يبدأ الفريق بأمان.</p>
-  </section>
-
-        <p class="lead">اختر نوع بياناتك، وخلّ التحليل يجيك جاهز للعرض على الإدارة 📈</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#workspace">تحليل</a>
-          <button class="btn btn-secondary" type="button" data-copy-report>نسخ</button>
-          <a class="btn" href="/contact/">احجز جلسة تحليل بيانات شركتك</a>
-        </div>
-        <div class="feature-strip" aria-label="مزايا الهيرو">
-          <span>كشف ذكي سينمائي</span><span>قبل وبعد</span><span>معاينة الأثر</span><span>درجة الثقة</span>
-          <span>مستوى الخطر</span><span>أفضل إجراء تالٍ</span><span>تقرير ذكي</span><span>ملاحظة الخصوصية</span>
-        </div>
-        <p class="disclaimer">بيانات الديمو وهمية بالكامل لأغراض التجربة فقط.</p>
+    <section class="hero section cinematic-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">🟢 ديمو حيّ — يشتغل على Gemini 2.5.</p>
+        <h1>تحليل بيانات تنفيذي للشركات السعودية</h1>
+        <p class="direct-answer">أدخل عينة جدولية أو وصف أعمدة، وسيحوّلها الديمو إلى ملخص تنفيذي ورؤى قابلة للتنفيذ.<br>شغّل سيناريو وهمي وشاهد تقريراً تنفيذياً قابلاً للمراجعة بدون تخزين بيانات.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#demo-form">جرّب الديمو الحين 👇</a><a class="btn btn-outline" href="/contact/">احجز استشارة 15 دقيقة</a></div>
+        <div class="trust-strip">ديمو تفاعلي ببيانات وهمية · ربط آمن · لا تخزين.</div>
       </div>
-      <aside class="reveal-panel" aria-label="معاينة تحليل الذكاء الاصطناعي">
-        <div class="reveal-inner">
-          <span class="badge">شارة وضع الديمو</span>
-          <div class="scan-card before-after">
-            <div><h3>قبل</h3><p>جداول متفرقة، مؤشرات غير موحدة، ومخاطر لا تظهر إلا بعد اجتماع طويل.</p></div>
-            <div><h3>بعد</h3><p>ملخص تنفيذي، فرص واضحة، وأولوية قرار يمكن عرضها على الرئيس التنفيذي.</p></div>
-          </div>
-          <div class="scan-card">
-            <h3>معاينة الأثر</h3>
-            <div class="mini-chart" aria-hidden="true"><i style="height:46%"></i><i style="height:62%"></i><i style="height:38%"></i><i style="height:84%"></i><i style="height:72%"></i></div>
-          </div>
-          <div class="impact-row">
-            <div class="scan-card"><span>درجة الثقة</span><strong data-hero-confidence>86%</strong></div>
-            <div class="scan-card"><span>مستوى الخطر</span><strong data-hero-risk>متوسط</strong></div>
-            <div class="scan-card"><span>الإجراء التالي</span><strong data-hero-action>رفع كفاءة القناة الأعلى عائداً</strong></div>
-          </div>
-        </div>
+      <aside class="quick-answer ai-visual" aria-label="تصور ذكاء اصطناعي متحرك">
+        <div class="ai-pulse" aria-hidden="true"><span></span><span></span><span></span></div>
+        <h2>محاكاة تحليل حي</h2>
+        <dl><div><dt>النموذج</dt><dd><span dir="ltr">gemini-2.5-flash</span></dd></div><div><dt>النطاق</dt><dd>البيانات والقرار</dd></div><div><dt>الحماية</dt><dd>لا تخزين لبيانات الديمو.</dd></div></dl>
       </aside>
     </section>
-
-    <section class="section workspace" id="workspace" aria-labelledby="workspace-title">
-      <aside class="data-types">
-        <h2 id="workspace-title">نوع البيانات</h2>
-        <p>اختيار النوع يغيّر المؤشرات والتقرير التنفيذي فوراً.</p>
-        <div class="type-list" role="list" data-type-list></div>
-        <div class="toolbar" style="margin-block-start:14px">
-          <button class="btn btn-secondary" type="button" data-next-type>نوع بيانات آخر</button>
-        </div>
-      </aside>
-
-      <div class="panel" aria-live="polite">
-        <div class="toolbar" style="justify-content:space-between;margin-block-end:16px">
-          <div>
-            <span class="badge">لوحة المؤشرات</span>
-            <h2 style="margin-block:10px 0" data-current-title>مبيعات شهرية أو ربع سنوية</h2>
-          </div>
-          <button class="btn btn-primary" type="button" data-run-analysis>تحليل</button>
-        </div>
-        <div class="metrics-grid" data-metrics></div>
-      </div>
-    </section>
-
-    <section class="section panel" aria-labelledby="trend-title">
-      <div class="trend">
-        <div>
-          <span class="badge">قراءة ذكية للاتجاه</span>
-          <h2 id="trend-title">ملخص الاتجاه</h2>
-          <p class="lead" data-trend-summary></p>
-        </div>
-        <div class="confidence-ring" aria-label="درجة الثقة"><strong data-confidence>86%</strong></div>
-      </div>
-    </section>
-
-    <section class="section columns" aria-label="الرؤى والمخاطر والتوصيات">
-      <article class="panel"><h2>الرؤى</h2><ul class="list" data-insights></ul></article>
-      <article class="panel"><h2>المخاطر</h2><ul class="list" data-risks></ul></article>
-      <article class="panel"><h2>التوصيات</h2><ul class="list" data-recommendations></ul></article>
-    </section>
-
-    <section class="section report" aria-labelledby="report-title">
-      <div class="panel">
-        <span class="badge">مولّد تقرير تنفيذي</span>
-        <h2 id="report-title">تقرير جاهز للعرض على الرئيس التنفيذي</h2>
-        <div class="report-output" data-report-output></div>
-        <div class="report-actions" style="margin-block-start:14px">
-          <button class="btn btn-primary" type="button" data-copy-report>نسخ</button>
-          <button class="btn btn-secondary" type="button" data-download-report>تحميل</button>
-          <button class="btn" type="button" data-next-type>نوع بيانات آخر</button>
-        </div>
-      </div>
-      <aside class="executive-side">
-        <div class="kpi-note"><strong>الأداء العام</strong><p data-overall></p></div>
-        <div class="kpi-note"><strong>أعلى فرصة</strong><p data-opportunity></p></div>
-        <div class="kpi-note"><strong>أعلى خطر</strong><p data-top-risk></p></div>
-        <a class="btn btn-primary" href="https://wa.me/966538229013?text=%D8%A3%D8%B1%D8%BA%D8%A8%20%D8%A8%D8%AD%D8%AC%D8%B2%20%D8%AC%D9%84%D8%B3%D8%A9%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%20%D8%B4%D8%B1%D9%83%D8%AA%D9%8A%20%D9%85%D8%B9%20Bright%20AI" target="_blank" rel="noopener">احجز جلسة تحليل بيانات شركتك</a>
-        <p class="privacy-note">ملاحظة الخصوصية: لا تستخدم بيانات حقيقية أو حساسة داخل هذا الديمو العام.</p>
-      </aside>
-    </section>
+    <nav class="breadcrumbs" aria-label="مسار التنقل" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <ol>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/"><span itemprop="name">الرئيسية</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/demo/"><span itemprop="name">الديموهات</span></a>
+          <meta itemprop="position" content="2">
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+          <span itemprop="name">تحليل البيانات</span>
+          <meta itemprop="position" content="3">
+        </li>
+      </ol>
+    </nav>
+    <section class="section use-cases" aria-labelledby="who-heading"><h2 id="who-heading">لمن هذا الديمو؟</h2><div class="case-grid"><article><h3>الجمهور المستهدف</h3><p>الإدارة التنفيذية وفرق التحليل والعمليات داخل الشركات السعودية التي تحتاج تجربة عملية قبل الاستثمار في نسخة مخصصة.</p></article>
+        <article><h3>المشكلة التي يحلها</h3><p>وجود أرقام كثيرة لا تتحول إلى قرار واضح أو مؤشر قابل للمتابعة مع تقليل التشتت بين الملفات والرسائل والاجتهادات الفردية.</p></article>
+        <article><h3>المخرجات التي يحصل عليها المستخدم</h3><p>رؤى، شذوذ، مؤشرات مقترحة، وخطوات تحسين جودة البيانات في تقرير قابل للمراجعة والنسخ والتنزيل.</p></article></div></section>
+    <section class="section scenario-simulator" aria-labelledby="scenario-heading"><h2 id="scenario-heading">محاكي السيناريوهات</h2><div class="case-grid"><article class="scenario-card">
+          <span class="industry-badge">البيانات والقرار</span>
+          <h3>مبيعات</h3>
+          <p>يناير: زيارات ٩٢٠٠، طلبات ٤٢٠، مرتجعات ٢٨، إيراد ٣٢٠٠٠٠. فبراير: زيارات ١١٠٠٠، طلبات ٥١٠، مرتجعات ٥٧، إيراد ٣٨٠٠٠٠.</p>
+          <dl><div><dt>الإدارة</dt><dd>الإدارة التنفيذية</dd></div><div><dt>المدة</dt><dd>النتيجة خلال 8-12 ثانية</dd></div></dl>
+          <div class="output-preview">رؤى، شذوذ، مؤشرات مقترحة، وخطوات تحسين جودة البيانات</div>
+          <button type="button" class="btn btn-outline" data-sample="0" data-jump-demo>جرّب هذا السيناريو</button>
+        </article>
+        <article class="scenario-card">
+          <span class="industry-badge">البيانات والقرار</span>
+          <h3>تشغيل</h3>
+          <p>توقفات يومية في وردية المساء، ارتفاع الهدر بنسبة ١٨٪، وتأخر تسليم الطلبات الكبرى في آخر أسبوعين.</p>
+          <dl><div><dt>الإدارة</dt><dd>الإدارة التنفيذية</dd></div><div><dt>المدة</dt><dd>النتيجة خلال 9-13 ثانية</dd></div></dl>
+          <div class="output-preview">رؤى، شذوذ، مؤشرات مقترحة، وخطوات تحسين جودة البيانات</div>
+          <button type="button" class="btn btn-outline" data-sample="1" data-jump-demo>جرّب هذا السيناريو</button>
+        </article>
+        <article class="scenario-card">
+          <span class="industry-badge">البيانات والقرار</span>
+          <h3>تسويق</h3>
+          <p>قنوات العملاء: إعلانات، واتساب، توصيات. معدل التحويل ٤٪، ١٢٪، ١٨٪ مع تباين كبير في تكلفة العميل.</p>
+          <dl><div><dt>الإدارة</dt><dd>الإدارة التنفيذية</dd></div><div><dt>المدة</dt><dd>النتيجة خلال 10-14 ثانية</dd></div></dl>
+          <div class="output-preview">رؤى، شذوذ، مؤشرات مقترحة، وخطوات تحسين جودة البيانات</div>
+          <button type="button" class="btn btn-outline" data-sample="2" data-jump-demo>جرّب هذا السيناريو</button>
+        </article></div></section>
+    <section class="section demo-workspace" aria-labelledby="samples-heading"><div class="workspace-copy input-area"><h2 id="samples-heading">منطقة الإدخال</h2><p>اختر سيناريو أو اكتب وصفاً سعودياً غير حساس. التحقق والعداد يعملان فورياً قبل تشغيل التحليل.</p><div class="sample-grid"><button type="button" class="sample-card" data-sample="0"><strong>مبيعات</strong><span>يناير: زيارات ٩٢٠٠، طلبات ٤٢٠، مرتجعات ٢٨، إيراد ٣٢٠٠٠٠. فبراير: زيارات ١١٠٠٠، طلبات ٥١٠، مرتجعات ٥٧، إيراد ٣٨٠٠٠٠.</span></button>
+          <button type="button" class="sample-card" data-sample="1"><strong>تشغيل</strong><span>توقفات يومية في وردية المساء، ارتفاع الهدر بنسبة ١٨٪، وتأخر تسليم الطلبات الكبرى في آخر أسبوعين.</span></button>
+          <button type="button" class="sample-card" data-sample="2"><strong>تسويق</strong><span>قنوات العملاء: إعلانات، واتساب، توصيات. معدل التحويل ٤٪، ١٢٪، ١٨٪ مع تباين كبير في تكلفة العميل.</span></button></div></div><form class="demo-form" id="demo-form" data-demo-form><input type="hidden" name="demoType" value="data-analysis"><label for="scenario">السيناريو</label><select id="scenario" name="scenario"><option>مبيعات</option><option>تشغيل</option><option>تسويق</option></select><label for="demo-input">البيانات المختصرة</label><textarea id="demo-input" name="input" rows="7" required minlength="20" maxlength="1200" placeholder="مثال: شركة في الرياض لديها ضغط طلبات أسبوعي وتحتاج تقريراً تنفيذياً بدون استخدام بيانات حساسة.">يناير: زيارات ٩٢٠٠، طلبات ٤٢٠، مرتجعات ٢٨، إيراد ٣٢٠٠٠٠. فبراير: زيارات ١١٠٠٠، طلبات ٥١٠، مرتجعات ٥٧، إيراد ٣٨٠٠٠٠.</textarea><p class="privacy-note" data-input-counter>٠ / ١٢٠٠ حرف</p><details class="advanced-settings"><summary>الإعدادات المتقدمة</summary><label for="goal">هدف القرار</label><input id="goal" name="goal" value="رؤى، شذوذ، مؤشرات مقترحة، وخطوات تحسين جودة البيانات"><label for="systems">الأنظمة المحتملة للربط</label><input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API"></details><div class="form-actions"><button class="btn btn-primary" type="submit">شغّل التحليل</button><button class="btn btn-secondary" type="button" data-reset-demo>جرّب سيناريو آخر</button></div><p class="privacy-note">بياناتك تبقى عندك، استخدم بيانات وهمية أو منزوعة الحساسية فقط.</p></form></section>
+    <section class="section result-zone" aria-labelledby="result-heading"><div><h2 id="result-heading">مسرح تفكير الذكاء الاصطناعي</h2><p>إذا توفر البث اللحظي تظهر المراحل من الخلفية، وإذا تعذر الاتصال يعمل fallback آمن بنفس التسلسل.</p><ul class="result-promises"><li>Executive Summary</li><li>Metrics Grid</li><li>Key Findings</li><li>Risks & Considerations</li><li>Recommendations</li><li>Next Best Actions</li><li>Confidence Score</li><li>Impact Preview</li></ul></div><div class="loading-box" data-loading-box hidden><p>جاري التحليل عبر Backend BrightAI</p><ol><li data-stage="0">فهم الطلب.</li><li data-stage="1">استخراج البيانات.</li><li data-stage="2">تحليل المؤشرات.</li><li data-stage="3">توليد التوصيات.</li><li data-stage="4">تجهيز التقرير.</li></ol></div><div class="result-panel" data-result-panel aria-live="polite"><div class="empty-state"><strong>لوحة النتائج جاهزة</strong><p>شغّل الديمو لعرض التقرير الذكي القابل للنسخ والتنزيل.</p></div></div></section>
+    <section class="section action-bar" aria-label="إجراءات التقرير"><button class="btn btn-outline" type="button" data-copy-report>نسخ التقرير</button><button class="btn btn-outline" type="button" data-download-report>تحميل txt أو md</button><button class="btn btn-secondary" type="button" data-reset-demo>جرّب سيناريو آخر</button><a class="btn btn-primary" href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%B4%D9%81%D8%AA%20%D8%AF%D9%8A%D9%85%D9%88%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%20%D9%88%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%B4%D8%B1%D9%83%D8%AA%D9%8A%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">طبّقها على بيانات شركتك</a></section>
+    <section class="section conversion-strip" aria-label="خيارات التحويل"><a class="btn btn-primary" href="/contact/">احجز استشارة مجانية</a><a class="btn btn-secondary" href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%B4%D9%81%D8%AA%20%D8%AF%D9%8A%D9%85%D9%88%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%20%D9%88%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%B4%D8%B1%D9%83%D8%AA%D9%8A%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">واتساب فوري برسالة جاهزة</a><a class="btn btn-outline" href="/contact/">اطلب نسخة مخصصة</a><a class="btn btn-outline" href="/services/data-platform.html">ربط مع أنظمتك</a></section>
+    <section class="section trust-layer" aria-labelledby="trust-heading"><h2 id="trust-heading">طبقة الثقة</h2><div class="case-grid"><article><h3>بياناتك ما تنحفظ</h3><p>المدخلات العامة مخصصة للتجربة فقط ولا تستخدم كبديل عن النسخة المؤسسية.</p></article><article><h3>بيانات الديمو وهمية</h3><p>استخدم أمثلة غير حساسة أو بيانات منزوعة التعريف أثناء التجربة.</p></article><article><h3>Backend خاص</h3><p>يشتغل على Google Gemini 2.5 عبر Backend خاص بـ BrightAI.</p></article><article><h3>التزام سعودي</h3><p>نلتزم بأنظمة حماية البيانات السعودية PDPL عند تصميم النسخ المخصصة.</p></article></div><p><a class="internal-linking-inline" href="/docs/privacy-policy.html">اقرأ كيف نحمي بياناتك</a></p></section>
+    <section class="section social-proof" aria-label="إثبات اجتماعي"><div class="trust-strip">مصمم للشركات السعودية · قابل للتخصيص حسب القطاع · جاهز للنقاش مع فريقك التقني</div></section>
+    <section class="section faq" aria-labelledby="faq-heading"><h2 id="faq-heading">الأسئلة الشائعة</h2><details><summary>ما هذا الديمو؟</summary><p>تجربة تفاعلية من Bright AI تعرض كيف يتحول سيناريو عمل سعودي إلى تقرير تنفيذي ومؤشرات وتوصيات قابلة للمراجعة.</p></details>
+      <details><summary>لمن يناسب؟</summary><p>يناسب فرق الإدارة والعمليات والتحول الرقمي التي تريد رؤية قيمة عملية قبل طلب نسخة مخصصة.</p></details>
+      <details><summary>ما المشكلة التي يحلها؟</summary><p>يساعد على تحويل المدخلات المتفرقة إلى قراءة منظمة تقلل العمل اليدوي وتوضح القرار التالي.</p></details>
+      <details><summary>ما المخرجات الفعلية؟</summary><p>يعرض ملخصاً تنفيذياً، مؤشرات أداء، نتائج رئيسية، مخاطر، توصيات، وخطوات تالية قابلة للنسخ أو التنزيل.</p></details>
+      <details><summary>هل يستخدم بيانات حقيقية؟</summary><p>لا. الديمو العام مصمم لاستخدام بيانات وهمية أو منزوعة الحساسية فقط، ولا تحتاج رفع بيانات شركة حقيقية.</p></details>
+      <details><summary>هل يمكن ربطه مع أنظمتنا؟</summary><p>نعم. النسخة المخصصة يمكن ربطها مع API أو قواعد البيانات أو ملفات العمل بعد مراجعة الصلاحيات والحوكمة.</p></details>
+      <details><summary>هل يمكن تخصيصه لشركتنا؟</summary><p>نعم. نخصص السيناريوهات والمخرجات ونبرة التقرير ومؤشرات القياس حسب قطاع شركتك وأنظمتها.</p></details>
+      <details><summary>ما الخطوة التالية بعد التجربة؟</summary><p>راجع التقرير، اختر سيناريو واحداً عالي الأثر، ثم احجز استشارة قصيرة لتحويله إلى نسخة مرتبطة ببياناتك.</p></details>
+      <details><summary>هل أحتاج ملف بيانات كامل؟</summary><p>لا، الديمو يعمل بوصف أو عينة صغيرة غير حساسة، والنسخة المخصصة يمكن ربطها بمصادر البيانات الفعلية.</p></details>
+      <details><summary>هل يكشف مشاكل جودة البيانات؟</summary><p>نعم، يعرض مؤشرات أولية عن النواقص والشذوذ والحقول التي تحتاج تنظيفاً قبل التحليل العميق.</p></details></section>
+    <section class="section" aria-labelledby="why-heading"><h2 id="why-heading">ديموهات ذات صلة</h2><p>ثلاثة ديموهات مرتبطة من المجموعة السباعية فقط.</p><div class="internal-links"><a href="/ai-agent/">AI Agent للشركات</a><a href="/demo/ai-tenders-analysis/">تحليل المناقصات والعقود</a><a href="/demo/smart-automation/">أتمتة الأعمال الذكية</a></div></section>
   </main>
-
-  <footer class="footer">
-    <span>© 2026 Bright AI. ديمو تحليل البيانات يستخدم بيانات وهمية فقط.</span>
-    <span><a href="/demo/">الديموهات</a> · <a href="/services/">الخدمات</a> · <a href="/contact/">تواصل</a></span>
-  </footer>
-  <div class="toast" role="status" aria-live="polite" data-toast>تم</div>
-
-  <script>
-    (() => {
-      "use strict";
-      const dataTypes = [
-        { title: "مبيعات شهرية أو ربع سنوية", subtitle: "إيراد، طلبات، متوسط السلة، مرتجعات", score: "82%", growth: "+14%", decline: "فرع الدمام", opportunity: "رفع باقات العملاء المتكررين", risk: "تذبذب هامش الربح", confidence: "86%", change: "+9%", riskLevel: "متوسط", next: "اختبار عرض مخصص للعملاء الأعلى قيمة", trend: "الاتجاه العام إيجابي مع نمو واضح في الإيرادات، لكن التراجع في فرع واحد يضغط على الهامش ويحتاج فصل الأسباب بين التسعير والمخزون.", insights: ["النمو مدفوع بزيادة الطلبات وليس فقط بارتفاع السعر.", "العملاء المتكررون يحققون عائداً أعلى من الحملات العامة.", "فرع الدمام يحتاج مقارنة أسبوعية مع الفروع الأعلى أداء."], risks: ["ارتفاع المرتجعات قد يلتهم جزءاً من النمو.", "الاعتماد على قناة واحدة يرفع حساسية الإيرادات.", "تأخر معالجة التراجع قد يحوله إلى نمط ربع سنوي."], recommendations: ["قسّم المبيعات حسب الفرع والقناة والمنتج.", "فعّل تنبيه مبكر عند تجاوز المرتجعات حدها الطبيعي.", "حوّل أفضل عرض إلى تجربة مضبوطة لمدة أسبوعين."] },
-        { title: "خدمة عملاء: تذاكر، رضا، SLA", subtitle: "زمن استجابة، إغلاق، رضا، التزام", score: "76%", growth: "+8%", decline: "الطلبات المتأخرة", opportunity: "أتمتة تصنيف التذاكر", risk: "انخفاض الرضا في الحالات الحرجة", confidence: "84%", change: "+5%", riskLevel: "مرتفع", next: "فرز التذاكر الحرجة خلال أول عشر دقائق", trend: "التحسن موجود في سرعة الإغلاق، لكن جودة التجربة لا تتحسن بنفس السرعة بسبب تراكم الحالات الحرجة خارج اتفاقية الخدمة.", insights: ["أغلب التأخير يأتي من فئتين متكررتين.", "الرد الأول تحسن، لكن الحل النهائي يحتاج تصعيد أسرع.", "رضا العملاء يرتبط مباشرة بزمن الإغلاق لا بعدد الردود."], risks: ["اختراق اتفاقية الخدمة للحسابات الكبيرة.", "زيادة التذاكر المعاد فتحها.", "ضغط تشغيلي على فريق الدعم في ساعات الذروة."], recommendations: ["ابنِ تصنيفاً تلقائياً حسب الخطورة.", "اربط التنبيه بحجم العميل ونوع المشكلة.", "راجع أسباب إعادة فتح التذاكر أسبوعياً."] },
-        { title: "عمليات: إنتاجية، كفاءة، توقفات", subtitle: "هدر، توقف، إنتاجية، طاقة تشغيلية", score: "79%", growth: "+11%", decline: "وردية المساء", opportunity: "تقليل التوقفات المتكررة", risk: "تأخر التسليمات الكبرى", confidence: "88%", change: "+7%", riskLevel: "متوسط", next: "تحليل أسباب التوقف حسب الوردية والمعدة", trend: "الكفاءة تتحسن في المتوسط، لكن وردية المساء تصنع فجوة تشغيلية واضحة تؤثر على الالتزام ومواعيد التسليم.", insights: ["التوقفات مركزة زمنياً وليست عشوائية.", "الهدر يرتفع بعد فترات التوقف الطويلة.", "الطاقة المتاحة تكفي إذا عولجت نقاط الاختناق."], risks: ["تراكم أوامر العمل عالية القيمة.", "زيادة تكلفة التشغيل الإضافي.", "تراجع الثقة في مواعيد التسليم."], recommendations: ["اربط سجل التوقفات بالمعدة والوردية.", "اعتمد لوحة يومية للتأخير والهدر.", "ابدأ بصيانة موجهة للأصول الأعلى تكراراً في الأعطال."] },
-        { title: "موارد بشرية: دوران، حضور، أداء", subtitle: "دوران، غياب، إنتاجية، تقييم", score: "74%", growth: "+6%", decline: "حضور فريق المبيعات", opportunity: "توقع مخاطر الدوران", risk: "فقدان موظفين عالي الأداء", confidence: "81%", change: "-3%", riskLevel: "مرتفع", next: "مراجعة فرق المخاطر العالية مع المديرين", trend: "الأداء مستقر إجمالاً، لكن إشارات الحضور والدوران في فرق محددة تستدعي تدخلاً مبكراً قبل خسارة الكفاءات.", insights: ["نمط الغياب يسبق انخفاض الأداء في فريقين.", "الموظفون الأعلى أداء يحتاجون متابعة احتفاظ مختلفة.", "التقييم السنوي وحده لا يكفي لفهم الخطر."], risks: ["خسارة معرفة تشغيلية يصعب تعويضها.", "ارتفاع تكلفة التوظيف المفاجئ.", "انخفاض معنويات الفرق المتأثرة."], recommendations: ["أنشئ مؤشر إنذار مبكر للدوران.", "قارن الحضور مع ضغط العمل والمكافآت.", "صمم خطة احتفاظ للشرائح الأعلى تأثيراً."] },
-        { title: "تسويق: حملات، CPL، ROAS", subtitle: "تكلفة العميل، عائد الإنفاق، تحويل", score: "80%", growth: "+18%", decline: "حملة البحث العامة", opportunity: "إعادة توزيع الميزانية", risk: "ارتفاع تكلفة العميل المحتمل", confidence: "87%", change: "+12%", riskLevel: "متوسط", next: "نقل عشرين بالمئة من الميزانية للقناة الأعلى عائداً", trend: "العائد يتحسن عند القنوات الدقيقة، بينما الحملات العامة تستهلك ميزانية دون مساهمة كافية في العملاء المؤهلين.", insights: ["قناة واحدة تحقق معظم العائد بتكلفة أقل.", "ارتفاع الإنفاق لا يعني ارتفاع العملاء المؤهلين.", "الرسائل الموجهة تتفوق على الرسائل العامة."], risks: ["استنزاف الميزانية في حملات منخفضة النية.", "صعوبة تفسير النتائج إذا لم توحد التعريفات.", "انخفاض جودة العملاء مع التوسع السريع."], recommendations: ["وحّد تعريف العميل المؤهل بين التسويق والمبيعات.", "أوقف الشرائح منخفضة العائد مؤقتاً.", "اختبر ثلاث رسائل حسب القطاع لا حسب المنتج فقط."] },
-        { title: "أداء فروع: مقارنة جغرافية", subtitle: "فروع، مناطق، إيراد، خدمة", score: "78%", growth: "+10%", decline: "المنطقة الغربية", opportunity: "نقل ممارسات الفرع الأعلى أداء", risk: "تفاوت تجربة العميل", confidence: "83%", change: "+4%", riskLevel: "متوسط", next: "مقارنة الفروع حسب الطلب والموارد لا الإيراد فقط", trend: "الفروع لا تتحرك بنفس الإيقاع؛ هناك فرع يصنع معياراً تشغيلياً جيداً وفرع يحتاج تدخلاً إدارياً واضحاً.", insights: ["الفروق الجغرافية مرتبطة بمزيج الطلب والموارد.", "أفضل فرع يملك قابلية نقل ممارسات تشغيلية.", "القياس بالإيراد فقط يخفي مشاكل الخدمة."], risks: ["تفاوت جودة التجربة بين المدن.", "قرارات توسع مبنية على قراءة ناقصة.", "ضعف استغلال الموارد في الفروع الأقل أداء."], recommendations: ["ابنِ معيار أداء موحد لكل فرع.", "انقل ممارسات الفرع الأفضل إلى فرعين تجريبيين.", "اعرض مقارنة أسبوعية للإيراد والرضا والالتزام."] },
-        { title: "أداء حملات Performance Marketing", subtitle: "تحويل، تكلفة اكتساب، شرائح، قنوات", score: "84%", growth: "+21%", decline: "إعلانات الاهتمام الواسع", opportunity: "توسيع الشرائح عالية النية", risk: "تشبع الجمهور", confidence: "89%", change: "+15%", riskLevel: "منخفض", next: "توسيع الجمهور المشابه مع سقف تكلفة واضح", trend: "الأداء قوي في الشرائح عالية النية، لكن التوسع يجب أن يتم بسقف تكلفة واضح حتى لا يتآكل العائد مع تشبع الجمهور.", insights: ["الحملات عالية النية تتجاوز المتوسط بوضوح.", "التوسع الأفقي أفضل من زيادة الإنفاق على نفس الجمهور.", "مؤشر التشبع بدأ يظهر في بعض الشرائح."], risks: ["ارتفاع تكلفة الاكتساب عند التوسع غير المنضبط.", "تداخل الجماهير بين الحملات.", "تراجع جودة التحويل إذا غاب تتبع ما بعد البيع."], recommendations: ["ضع سقف تكلفة اكتساب لكل شريحة.", "افصل حملات الاختبار عن حملات التوسع.", "اربط التحويل بجودة العميل بعد الشراء."] }
-      ];
-
-      const typeList = document.querySelector("[data-type-list]");
-      const metrics = document.querySelector("[data-metrics]");
-      const reportOutput = document.querySelector("[data-report-output]");
-      const toast = document.querySelector("[data-toast]");
-      let activeIndex = 0;
-
-      function showToast(message) {
-        toast.textContent = message;
-        toast.classList.add("is-visible");
-        window.setTimeout(() => toast.classList.remove("is-visible"), 1800);
-      }
-
-      async function copyText(text) {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text);
-          return;
-        }
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.setAttribute("readonly", "");
-        textarea.style.position = "fixed";
-        textarea.style.insetInlineStart = "-9999px";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-      }
-
-      function metric(label, value, note, className = "") {
-        return `<article class="metric"><span>${label}</span><strong class="${className}">${value}</strong><p>${note}</p></article>`;
-      }
-
-      function renderList(selector, items) {
-        document.querySelector(selector).innerHTML = items.map((item) => `<li>${item}</li>`).join("");
-      }
-
-      function buildReport(data) {
-        return `ملخص تنفيذي
-نوع البيانات: ${data.title}
-النموذج المستخدم: gemini-2.5-flash
-
-الأداء العام عند ${data.score} مع تغير ${data.change} عن الفترة السابقة. القراءة الأولية تشير إلى أن ${data.trend}
-
-قراءة ذكية للاتجاه
-${data.trend}
-
-فرص تحسين
-- ${data.opportunity}
-- ${data.insights[0]}
-- ${data.insights[1]}
-
-مخاطر
-- ${data.risk}
-- ${data.risks[0]}
-- ${data.risks[1]}
-
-توصيات قابلة للتنفيذ
-- ${data.recommendations[0]}
-- ${data.recommendations[1]}
-- ${data.recommendations[2]}
-
-إجراءات تالية
-1. ${data.next}
-2. تثبيت تعريف المؤشرات قبل ربط البيانات الحقيقية.
-3. حجز جلسة تحليل بيانات لتخصيص اللوحة على بيانات الشركة.
-
-تنبيه: بيانات الديمو وهمية بالكامل لأغراض التجربة فقط.`;
-      }
-
-      function render(index) {
-        activeIndex = (index + dataTypes.length) % dataTypes.length;
-        const data = dataTypes[activeIndex];
-        document.querySelectorAll(".type-card").forEach((button, buttonIndex) => {
-          button.setAttribute("aria-pressed", String(buttonIndex === activeIndex));
-        });
-        document.querySelector("[data-current-title]").textContent = data.title;
-        document.querySelector("[data-trend-summary]").textContent = data.trend;
-        document.querySelector("[data-confidence]").textContent = data.confidence;
-        document.querySelector("[data-hero-confidence]").textContent = data.confidence;
-        document.querySelector("[data-hero-risk]").textContent = data.riskLevel;
-        document.querySelector("[data-hero-action]").textContent = data.next;
-        document.querySelector("[data-overall]").textContent = `الأداء العام ${data.score} والتغير عن الفترة السابقة ${data.change}.`;
-        document.querySelector("[data-opportunity]").textContent = data.opportunity;
-        document.querySelector("[data-top-risk]").textContent = data.risk;
-        metrics.innerHTML = [
-          metric("الأداء العام", data.score, "مؤشر مركّب من النمو والجودة والمخاطر."),
-          metric("معدل النمو", data.growth, "نمو مقارنة بالفترة السابقة.", "delta"),
-          metric("مناطق التراجع", data.decline, "نقطة تحتاج مراجعة تفصيلية.", "risk-mid"),
-          metric("أعلى فرصة", data.opportunity, "أكبر أثر متوقع عند التنفيذ."),
-          metric("أعلى خطر", data.risk, "عامل قد يضغط على القرار.", data.riskLevel === "مرتفع" ? "risk-high" : "risk-mid"),
-          metric("درجة الثقة", data.confidence, "ثقة الديمو بناء على اكتمال العينة.")
-        ].join("");
-        renderList("[data-insights]", data.insights);
-        renderList("[data-risks]", data.risks);
-        renderList("[data-recommendations]", data.recommendations);
-        reportOutput.textContent = buildReport(data);
-      }
-
-      typeList.innerHTML = dataTypes.map((item, index) => `<button class="type-card" type="button" data-type="${index}" aria-pressed="false"><strong>${index + 1}. ${item.title}</strong><span>${item.subtitle}</span></button>`).join("");
-      typeList.addEventListener("click", (event) => {
-        const button = event.target.closest("[data-type]");
-        if (!button) return;
-        render(Number(button.dataset.type));
-      });
-      document.querySelectorAll("[data-next-type]").forEach((button) => button.addEventListener("click", () => {
-        render(activeIndex + 1);
-        document.querySelector("#workspace").scrollIntoView({ behavior: "smooth", block: "start" });
-      }));
-      document.querySelector("[data-run-analysis]").addEventListener("click", () => {
-        render(activeIndex);
-        showToast("تم تحديث التحليل");
-      });
-      document.querySelectorAll("[data-copy-report]").forEach((button) => button.addEventListener("click", async () => {
-        await copyText(reportOutput.textContent.trim());
-        showToast("تم نسخ التقرير");
-      }));
-      document.querySelector("[data-download-report]").addEventListener("click", () => {
-        const blob = new Blob([reportOutput.textContent.trim()], { type: "text/markdown;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = "brightai-data-analysis-executive-report.md";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(url);
-        showToast("تم تجهيز التحميل");
-      });
-      render(0);
-    })();
-  </script>
+  <footer class="demo-footer"><p>© 2026 Bright AI. تجربة تحليل البيانات مخصصة للمراجعة الأولية ولا تقدم ضمانات نتائج.</p><a href="/services/">خدمات</a><a href="/demo/">ديموهات</a><a href="/contact/">تواصل</a><a href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%B4%D9%81%D8%AA%20%D8%AF%D9%8A%D9%85%D9%88%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%20%D9%88%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%84%D8%B4%D8%B1%D9%83%D8%AA%D9%8A%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">واتساب</a><a href="/docs/privacy-policy.html">سياسات</a></footer>
+  <script type="application/json" id="demo-config">{"slug":"data-analysis","demoKey":"data-analysis","demoType":"data-analysis","agentType":"data-analysis","locale":"ar-SA","sourcePage":"/demo/data-analysis/","title":"تحليل البيانات","model":"gemini-2.5-flash","problem":"وجود أرقام كثيرة لا تتحول إلى قرار واضح أو مؤشر قابل للمتابعة","outcome":"رؤى، شذوذ، مؤشرات مقترحة، وخطوات تحسين جودة البيانات","fallbackResult":{"executiveSummary":["هذا اللي طلع معنا: تحليل البيانات يقدر يساعد فريقك في التعامل مع وجود أرقام كثيرة لا تتحول إلى قرار واضح أو مؤشر قابل للمتابعة إذا كانت المدخلات واضحة وغير حساسة.","المخرجات المتوقعة هي رؤى، شذوذ، مؤشرات مقترحة، وخطوات تحسين جودة البيانات، وتبقى للمراجعة البشرية قبل أي قرار تشغيلي."],"score":82,"keyInsights":["السيناريو مناسب لـ الإدارة التنفيذية وفرق التحليل والعمليات.","العينة تكفي لتجربة الفكرة، لكنها ما تمثل كل بيانات الشركة.","ربط الأنظمة الداخلية يرفع جودة التقرير ويخفف العمل اليدوي."],"risks":["لا ترفع بيانات حساسة في النسخة العامة.","النتائج تقديرية وتحتاج اعتماد صاحب القرار.","ضعف جودة البيانات قد يغيّر التوصيات."],"recommendedActions":["ابدأ بسيناريو واحد عالي الأثر.","حدد مؤشر نجاح واضح قبل التوسع.","اطلب نسخة مخصصة إذا تبغى ربط الأنظمة والصلاحيات."],"businessImpact":"تقليل وقت التحليل اليدوي وتحويل التجربة إلى قرار قابل للقياس حسب حجم البيانات وتكرار العملية.","integrationReadiness":["API","صلاحيات وصول","سجل تدقيق","تصدير تقرير"],"nextSteps":["راجع التقرير مع الفريق","حدد الأنظمة المطلوب ربطها","احجز مكالمة 15 دقيقة مع Bright AI"]}}</script>
+  <script type="application/json" id="demo-samples">[["مبيعات","يناير: زيارات ٩٢٠٠، طلبات ٤٢٠، مرتجعات ٢٨، إيراد ٣٢٠٠٠٠. فبراير: زيارات ١١٠٠٠، طلبات ٥١٠، مرتجعات ٥٧، إيراد ٣٨٠٠٠٠."],["تشغيل","توقفات يومية في وردية المساء، ارتفاع الهدر بنسبة ١٨٪، وتأخر تسليم الطلبات الكبرى في آخر أسبوعين."],["تسويق","قنوات العملاء: إعلانات، واتساب، توصيات. معدل التحويل ٤٪، ١٢٪، ١٨٪ مع تباين كبير في تكلفة العميل."]]</script>
+  <script defer src="/assets/js/demo-config.js"></script>
+  <script defer src="/assets/js/demo-api-client.js"></script>
+  <script defer src="/assets/js/demo-ui-kit.js"></script>
+  <script defer src="/assets/js/demo-streaming.js"></script>
+  <script defer src="/assets/js/demo-analytics.js"></script>
+  <script defer src="/assets/js/demo-a11y.js"></script>
+  <script defer src="/assets/js/demo-shared-app.js"></script>
+  <script defer src="/assets/js/seven-demo-standard.js"></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+  <script defer src="/frontend/js/accessibility.min.js?v=2026042904"></script>
+  <script src="/frontend/js/brightai-logo-replace.js" defer></script>
 </body>
 </html>

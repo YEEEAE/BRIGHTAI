@@ -26,78 +26,12 @@
 ### البرومبت 12: إضافة Breadcrumbs مرئية لصفحات الديمو
 
 ```
-أنت وكيل Frontend + UX لمشروع Bright AI.
-
-المهمة: إضافة breadcrumbs مرئية في أعلى كل صفحة ديمو.
-
-الوضع الحالي: صفحات الديمو تحتوي BreadcrumbList Schema لكن لا يوجد breadcrumbs مرئي في HTML.
-
-المطلوب:
-1. أضف عنصر breadcrumbs مرئي بعد <header> مباشرة في كل صفحة ديمو:
-   ```html
-   <nav class="breadcrumbs" aria-label="مسار التنقل">
-     <ol>
-       <li><a href="/">الرئيسية</a></li>
-       <li><a href="/demo/">الديموهات</a></li>
-       <li aria-current="page">اسم الديمو</li>
-     </ol>
-   </nav>
-   ```
-2. أضف CSS في demo-premium.css:
-   ```css
-   .breadcrumbs { padding: 0.75rem 1.5rem; font-size: 0.85rem; }
-   .breadcrumbs ol { display: flex; gap: 0.5rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-   .breadcrumbs li + li::before { content: "›"; margin-inline-end: 0.5rem; opacity: 0.5; }
-   .breadcrumbs a { color: var(--color-accent, #60a5fa); text-decoration: none; }
-   .breadcrumbs a:hover { text-decoration: underline; }
-   .breadcrumbs [aria-current] { color: var(--color-text-secondary, #94a3b8); }
-   ```
-3. تأكد أن الاسم في breadcrumbs يطابق H1 أو عنوان الديمو.
-
-التحقق:
-- افتح أي صفحة ديمو وتأكد أن breadcrumbs يظهر بشكل صحيح
-- npm run seo:html:check
-```
 
 ---
 
 ### البرومبت 13: تعزيز عناصر الثقة في صفحات الديمو
 
 ```
-أنت وكيل UX + Conversion Optimization لمشروع Bright AI.
-
-المهمة: إضافة عناصر ثقة في صفحات الديمو لتحسين معدل التحويل.
-
-المطلوب:
-1. أضف قسم "لماذا تثق بـ Bright AI" بعد قسم حالات الاستخدام في كل صفحة ديمو:
-   ```html
-   <section class="section trust-section" aria-labelledby="trust-heading">
-     <h2 id="trust-heading">لماذا تثق بـ Bright AI</h2>
-     <div class="trust-grid">
-       <div class="trust-item">
-         <strong>🇸🇦 سعودي 100%</strong>
-         <p>مبنية للسوق السعودي، تدعم العربية بالكامل.</p>
-       </div>
-       <div class="trust-item">
-         <strong>🔒 خصوصية البيانات</strong>
-         <p>بياناتك تبقى عندك. لا نشاركها مع أي طرف.</p>
-       </div>
-       <div class="trust-item">
-         <strong>⚡ جاهز خلال 48 ساعة</strong>
-         <p>النسخة المخصصة جاهزة خلال 48 ساعة من المراجعة.</p>
-       </div>
-       <div class="trust-item">
-         <strong>🏢 +50 شركة سعودية</strong>
-         <p>نخدم شركات في الرياض وجدة والدمام.</p>
-       </div>
-     </div>
-   </section>
-   ```
-2. أضف CSS مناسب في demo-premium.css للـ trust-grid.
-3. تأكد أن القسم يظهر قبل الـ CTA النهائي.
-
-التحقق:
-- افتح أي صفحة ديمو وتأكد أن قسم الثقة يظهر بشكل صحيح
 ```
 
 ---

@@ -12,465 +12,141 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Bright AI">
-  <meta name="theme-color" content="#0A1F44">
-  <title>ملعب تحليل البيانات بالذكاء الاصطناعي | Bright AI</title>
-  <meta name="description" content="حلل ملفات CSV وXLSX وتحدث مع بياناتك بالعربية عبر ملعب Bright AI لتحليل البيانات، مع رسوم حية وSQL شفاف ومؤشرات تنفيذية للشركات السعودية.">
+  <meta name="theme-color" content="#07111f">
+  <title>جرّب منصة تحليل البيانات بالذكاء الاصطناعي | Bright AI</title>
+  <meta name="description" content="جرّب منصة تحليل البيانات من Bright AI لاكتشاف جودة البيانات والفرص والمخاطر ولوحات القرار المناسبة للشركات السعودية.">
   <link rel="canonical" href="https://brightai.site/demo/data-analyzer/">
   <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/data-analyzer/">
-  <link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/demo/data-analyzer/">
   <link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/data-analyzer/">
   <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
   <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
   <meta property="og:locale" content="ar_SA">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Bright AI">
-  <meta property="og:title" content="ملعب تحليل البيانات بالذكاء الاصطناعي | Bright AI">
-  <meta property="og:description" content="ارفع CSV أو XLSX، تحدث مع البيانات بالعربية، وشاهد لوحة مؤشرات ورسوم حية مع شفافية SQL.">
+  <meta property="og:title" content="جرّب منصة تحليل البيانات بالذكاء الاصطناعي | Bright AI">
+  <meta property="og:description" content="جرّب منصة تحليل البيانات من Bright AI لاكتشاف جودة البيانات والفرص والمخاطر ولوحات القرار المناسبة للشركات السعودية.">
   <meta property="og:url" content="https://brightai.site/demo/data-analyzer/">
-  <meta property="og:image" content="https://brightai.site/assets/images/og/demo-data-analyzer.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <meta property="og:image" content="https://brightai.site/assets/images/logo.PNG">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ملعب تحليل البيانات بالذكاء الاصطناعي | Bright AI">
-  <meta name="twitter:description" content="تحليل بيانات عربي تفاعلي مع Gemini وSQL شفاف ورسوم حية للشركات السعودية.">
-  <meta name="twitter:image" content="https://brightai.site/assets/images/og/demo-data-analyzer.png">
-  <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
+  <meta name="twitter:title" content="جرّب منصة تحليل البيانات بالذكاء الاصطناعي | Bright AI">
+  <meta name="twitter:description" content="جرّب منصة تحليل البيانات من Bright AI لاكتشاف جودة البيانات والفرص والمخاطر ولوحات القرار المناسبة للشركات السعودية.">
+  <meta name="twitter:image" content="https://brightai.site/assets/images/logo.PNG">
+  <link rel="icon" href="/assets/images/logo.PNG" type="image/png">
+  <link rel="stylesheet" href="/assets/css/design-tokens.css">
+  <link rel="stylesheet" href="/assets/css/demo-premium.css">
   <script type="application/ld+json">{
-    "@context":"https://schema.org",
-    "@graph":[
-      {"@type":"Organization","@id":"https://brightai.site/#organization","name":"Bright AI","url":"https://brightai.site/","logo":"https://brightai.site/assets/images/logo-new.PNG","areaServed":{"@type":"Country","name":"Saudi Arabia"},"contactPoint":{"@type":"ContactPoint","telephone":"+966538229013","contactType":"sales","areaServed":"SA","availableLanguage":["Arabic"]}},
-      {"@type":"SoftwareApplication","@id":"https://brightai.site/demo/data-analyzer/#software","name":"ملعب تحليل البيانات بالذكاء الاصطناعي","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"https://brightai.site/demo/data-analyzer/","inLanguage":"ar-SA","description":"ملعب تفاعلي لتحليل CSV وXLSX والتحدث مع البيانات بالعربية، مع رسوم حية وSQL شفاف وطبقة امتثال للشركات السعودية.","provider":{"@id":"https://brightai.site/#organization"},"featureList":["تحليل ملفات CSV وXLSX","محادثة عربية مع البيانات","رسوم بيانية حية","SQL شفاف","كشف الشذوذ","توقعات زمنية"],"offers":{"@type":"Offer","price":"0","priceCurrency":"SAR","description":"تجربة عامة مجانية بعينات بيانات منزوعة الحساسية"}},
-      {"@type":"FAQPage","@id":"https://brightai.site/demo/data-analyzer/#faq","mainEntity":[{"@type":"Question","name":"هل يتم حفظ بياناتي؟","acceptedAnswer":{"@type":"Answer","text":"لا تحفظ النسخة العامة بيانات الملفات. يرسل أول 1000 صف فقط إلى المسار الخلفي الآمن بعد التنقية لأغراض التحليل."}},{"@type":"Question","name":"هل يدعم ملفات Excel؟","acceptedAnswer":{"@type":"Answer","text":"نعم، يمكن رفع XLSX أو CSV، ويتم parsing داخل المتصفح قبل إرسال عينة منظمة للتحليل."}},{"@type":"Question","name":"هل أستطيع معرفة SQL المستخدم؟","acceptedAnswer":{"@type":"Answer","text":"نعم، كل إجابة تعرض الاستعلام أو منطق الحساب المستخدم في تبويب SQL وسجل التدقيق."}},{"@type":"Question","name":"هل يناسب بيانات الشركات السعودية؟","acceptedAnswer":{"@type":"Answer","text":"نعم، صممنا العينات والنسخ والامتثال حول السوق السعودي، مع مراعاة PDPL وNCA ECC وسجلات التدقيق."}}]},
-      {"@type":"BreadcrumbList","@id":"https://brightai.site/demo/data-analyzer/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"الرئيسية","item":"https://brightai.site/"},{"@type":"ListItem","position":2,"name":"الديموهات","item":"https://brightai.site/demo/"},{"@type":"ListItem","position":3,"name":"ملعب تحليل البيانات","item":"https://brightai.site/demo/data-analyzer/"}]}
-    ]
-  }</script>
-  <style>
-    :root {
-      color-scheme: light;
-      --navy: #0A1F44;
-      --navy-2: #102A56;
-      --gold: #C9A961;
-      --gold-2: #E7D196;
-      --ink: #0F172A;
-      --muted: #64748B;
-      --line: #D9E2EC;
-      --bg: #F6F8FB;
-      --panel: #FFFFFF;
-      --panel-2: #F8FAFC;
-      --success: #147D64;
-      --warning: #B7791F;
-      --danger: #B42318;
-      --focus: #2563EB;
-      --shadow: 0 20px 55px rgba(10, 31, 68, .12);
-      --radius: 8px;
-      --font-ar: "IBM Plex Sans Arabic", "Tajawal", system-ui, sans-serif;
-      --font-latin: "Inter", system-ui, sans-serif;
-    }
-
-    [data-theme="dark"] {
-      color-scheme: dark;
-      --ink: #EEF4FF;
-      --muted: #A8B3C7;
-      --line: rgba(255,255,255,.14);
-      --bg: #061425;
-      --panel: #0B1C33;
-      --panel-2: #102A47;
-      --shadow: 0 20px 55px rgba(0, 0, 0, .32);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--font-ar);
-      text-align: start;
-      line-height: 1.65;
-      letter-spacing: 0;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background:
-        linear-gradient(180deg, rgba(10,31,68,.08), transparent 34rem),
-        repeating-linear-gradient(90deg, rgba(201,169,97,.07) 0 1px, transparent 1px 90px);
-      pointer-events: none;
-    }
-    a { color: inherit; text-decoration: none; }
-    button, input, textarea, select { font: inherit; }
-    button { cursor: pointer; }
-    code, pre, .latin, [dir="ltr"] { font-family: var(--font-latin); direction: ltr; unicode-bidi: isolate; }
-    .skip-link {
-      position: fixed;
-      inset-block-start: 12px;
-      inset-inline-start: 12px;
-      z-index: 30;
-      transform: translateY(-140%);
-      background: var(--gold);
-      color: #07111F;
-      padding: .7rem 1rem;
-      border-radius: var(--radius);
-      font-weight: 700;
-    }
-    .skip-link:focus { transform: translateY(0); outline: 3px solid var(--focus); }
-    .container { width: min(1440px, calc(100% - 32px)); margin-inline: auto; }
-    .nav {
-      position: sticky;
-      inset-block-start: 0;
-      z-index: 20;
-      backdrop-filter: blur(16px);
-      background: color-mix(in srgb, var(--panel) 86%, transparent);
-      border-block-end: 1px solid var(--line);
-    }
-    .nav-inner { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .brand { display: inline-flex; align-items: center; gap: .7rem; font-weight: 800; }
-    .brand img { width: 38px; height: 38px; border-radius: 8px; }
-    .nav-links { display: flex; align-items: center; gap: 1rem; color: var(--muted); font-size: .95rem; }
-    .nav-actions { display: flex; gap: .6rem; align-items: center; }
-    .icon-btn, .btn {
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: var(--ink);
-      border-radius: var(--radius);
-      min-height: 42px;
-      padding: .68rem .92rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .45rem;
-      transition: transform .18s ease, border-color .18s ease, background .18s ease;
-    }
-    .icon-btn { width: 42px; padding: 0; }
-    .btn:hover, .icon-btn:hover { transform: translateY(-1px); border-color: var(--gold); }
-    .btn:focus-visible, .icon-btn:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-      outline: 3px solid color-mix(in srgb, var(--focus) 28%, transparent);
-      outline-offset: 2px;
-    }
-    .btn-primary { background: var(--navy); color: #fff; border-color: var(--navy); font-weight: 800; }
-    .btn-gold { background: var(--gold); color: #07111F; border-color: var(--gold); font-weight: 800; }
-    .btn-soft { background: color-mix(in srgb, var(--gold) 13%, var(--panel)); color: var(--ink); }
-    .hero { padding-block: 56px 28px; }
-    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(420px, .95fr); gap: 28px; align-items: stretch; }
-    .eyebrow { color: var(--gold); font-weight: 800; margin: 0 0 .75rem; }
-    h1, h2, h3, p { margin-block-start: 0; }
-    h1 { font-size: clamp(2.25rem, 5vw, 5.2rem); line-height: 1.05; letter-spacing: 0; margin-block-end: 1rem; }
-    h2 { font-size: clamp(1.5rem, 2.4vw, 2.35rem); line-height: 1.25; margin-block-end: .8rem; }
-    h3 { font-size: 1.08rem; margin-block-end: .45rem; }
-    .lead { color: var(--muted); font-size: 1.12rem; max-width: 72ch; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-block: 1.4rem; }
-    .trust-strip { display: flex; flex-wrap: wrap; gap: .55rem; }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: .45rem;
-      padding: .45rem .7rem;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: color-mix(in srgb, var(--panel) 88%, transparent);
-      color: var(--muted);
-      font-size: .88rem;
-    }
-    .hero-visual {
-      min-height: 390px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: linear-gradient(135deg, var(--navy), #123B65);
-      color: #fff;
-      box-shadow: var(--shadow);
-      padding: 22px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      overflow: hidden;
-      position: relative;
-    }
-    .hero-visual::after {
-      content: "";
-      position: absolute;
-      inset-inline: 0;
-      inset-block-end: 0;
-      height: 44%;
-      background: linear-gradient(180deg, transparent, rgba(201,169,97,.22));
-      pointer-events: none;
-    }
-    .terminal-head { display: flex; justify-content: space-between; color: #C7D2FE; font: 600 .82rem var(--font-latin); direction: ltr; }
-    .mini-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: .7rem; margin-block-start: 1.2rem; }
-    .mini-kpis div { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.08); padding: 1rem; border-radius: var(--radius); }
-    .mini-kpis span { display: block; color: #D6E1F4; font-size: .82rem; }
-    .mini-kpis strong { font: 800 1.45rem var(--font-latin); }
-    .hero-bars { align-self: end; display: flex; gap: .55rem; align-items: end; min-height: 170px; z-index: 1; }
-    .hero-bars i { flex: 1; border-radius: 5px 5px 0 0; background: linear-gradient(180deg, var(--gold-2), var(--gold)); min-height: 24px; animation: grow 1.8s ease both; }
-    .hero-bars i:nth-child(1) { height: 45%; } .hero-bars i:nth-child(2) { height: 68%; } .hero-bars i:nth-child(3) { height: 52%; } .hero-bars i:nth-child(4) { height: 86%; } .hero-bars i:nth-child(5) { height: 63%; } .hero-bars i:nth-child(6) { height: 94%; }
-    @keyframes grow { from { transform: scaleY(.3); transform-origin: bottom; opacity: .5; } to { transform: scaleY(1); opacity: 1; } }
-    .section { padding-block: 34px; }
-    .playground {
-      display: grid;
-      grid-template-columns: minmax(360px, .82fr) minmax(0, 1.18fr);
-      gap: 18px;
-      align-items: start;
-    }
-    .pane, .card {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-    }
-    .pane { overflow: clip; }
-    .pane-head { padding: 18px; border-block-end: 1px solid var(--line); display: flex; align-items: start; justify-content: space-between; gap: 1rem; }
-    .pane-body { padding: 18px; }
-    .scenario-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; }
-    .scenario-chip {
-      min-height: 74px;
-      text-align: start;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel-2);
-      color: var(--ink);
-      padding: .8rem;
-    }
-    .scenario-chip[aria-pressed="true"] { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold); background: color-mix(in srgb, var(--gold) 13%, var(--panel)); }
-    .input-group { margin-block-start: 1rem; }
-    label, .label { display: block; font-weight: 800; margin-block-end: .45rem; }
-    textarea, input, select {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel-2);
-      color: var(--ink);
-      padding: .8rem .9rem;
-    }
-    textarea { min-height: 170px; resize: vertical; direction: rtl; }
-    .drop-zone {
-      border: 1px dashed color-mix(in srgb, var(--navy) 35%, var(--line));
-      border-radius: var(--radius);
-      background: color-mix(in srgb, var(--gold) 7%, var(--panel));
-      padding: 1rem;
-      display: grid;
-      gap: .45rem;
-    }
-    .drop-zone input { background: transparent; padding: 0; border: 0; }
-    .muted { color: var(--muted); }
-    .meter-row { display: flex; justify-content: space-between; color: var(--muted); font-size: .88rem; margin-block-start: .35rem; }
-    details { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-2); padding: .85rem; margin-block-start: 1rem; }
-    summary { cursor: pointer; font-weight: 800; }
-    .settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin-block-start: .9rem; }
-    .progress {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: .5rem;
-      margin-block: 1rem;
-    }
-    .progress span {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: .5rem;
-      color: var(--muted);
-      background: var(--panel-2);
-      text-align: center;
-      font-size: .82rem;
-    }
-    .progress span.active { color: #07111F; background: var(--gold); border-color: var(--gold); }
-    .tabs, .mode-tabs { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .tab {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel-2);
-      color: var(--muted);
-      padding: .55rem .8rem;
-      font-weight: 700;
-    }
-    .tab[aria-selected="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
-    .dashboard-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .8rem; margin-block-end: 1rem; }
-    .kpi {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel-2);
-      padding: .95rem;
-      min-height: 116px;
-    }
-    .kpi span { display: block; color: var(--muted); font-size: .85rem; }
-    .kpi strong { display: block; font: 800 1.45rem var(--font-latin); margin-block: .25rem; direction: ltr; text-align: start; }
-    .chart-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: .9rem; }
-    .chart-card { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-2); padding: .9rem; min-height: 320px; }
-    .chart-card canvas { width: 100% !important; max-height: 260px; }
-    .chart-actions { display: flex; flex-wrap: wrap; gap: .45rem; margin-block-start: .7rem; }
-    .tiny-btn {
-      min-height: 34px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      color: var(--ink);
-      border-radius: var(--radius);
-      padding: .38rem .62rem;
-      font-size: .84rem;
-    }
-    .insights-feed { display: grid; gap: .65rem; margin-block-start: .9rem; }
-    .insight {
-      border: 1px solid var(--line);
-      border-inline-start: 4px solid var(--gold);
-      background: var(--panel-2);
-      padding: .8rem;
-      border-radius: var(--radius);
-    }
-    .insight[data-severity="warning"] { border-inline-start-color: var(--warning); }
-    .insight[data-severity="critical"] { border-inline-start-color: var(--danger); }
-    .chat-box { display: grid; grid-template-rows: minmax(160px, 1fr) auto; gap: .8rem; }
-    .messages { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-2); padding: .8rem; max-height: 320px; overflow: auto; }
-    .msg { margin-block-end: .65rem; padding: .65rem .75rem; border-radius: var(--radius); width: fit-content; max-width: 88%; }
-    .msg.user { margin-inline-start: auto; background: var(--navy); color: #fff; }
-    .msg.ai { background: var(--panel); border: 1px solid var(--line); }
-    .chat-form { display: flex; gap: .55rem; }
-    .chat-form input { min-height: 46px; }
-    .table-wrap { overflow: auto; border: 1px solid var(--line); border-radius: var(--radius); }
-    table { border-collapse: collapse; width: 100%; min-width: 680px; background: var(--panel); }
-    th, td { border-block-end: 1px solid var(--line); padding: .7rem; text-align: start; white-space: nowrap; }
-    th { background: var(--panel-2); font-weight: 800; }
-    pre {
-      white-space: pre-wrap;
-      overflow: auto;
-      max-height: 460px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: #07111F;
-      color: #E6EDF7;
-      padding: 1rem;
-      line-height: 1.7;
-    }
-    .empty {
-      min-height: 360px;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      border: 1px dashed var(--line);
-      border-radius: var(--radius);
-      background: var(--panel-2);
-      padding: 1.2rem;
-    }
-    .empty-art {
-      width: 148px;
-      height: 96px;
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: .35rem;
-      align-items: end;
-      padding: .8rem;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-    }
-    .empty-art i { display: block; background: var(--gold); border-radius: 5px 5px 0 0; }
-    .empty-art i:nth-child(1) { height: 36%; } .empty-art i:nth-child(2) { height: 62%; } .empty-art i:nth-child(3) { height: 44%; } .empty-art i:nth-child(4) { height: 76%; } .empty-art i:nth-child(5) { height: 58%; } .empty-art i:nth-child(6) { height: 88%; }
-    .sandbox-grid, .metrics-row, .use-case-grid, .architecture-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-    .card { padding: 1rem; box-shadow: none; }
-    .canvas-builder { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: .9rem; }
-    .widget-list, .dashboard-canvas { border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel-2); padding: .8rem; min-height: 300px; }
-    .widget { border: 1px solid var(--line); background: var(--panel); border-radius: var(--radius); padding: .7rem; margin-block-end: .55rem; cursor: grab; }
-    .dashboard-canvas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7rem; align-content: start; }
-    .canvas-tile { border: 1px solid var(--gold); background: color-mix(in srgb, var(--gold) 9%, var(--panel)); border-radius: var(--radius); padding: .8rem; min-height: 92px; }
-    .architecture {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: .7rem;
-      align-items: center;
-      margin-block-start: 1rem;
-    }
-    .architecture div { border: 1px solid var(--line); background: var(--panel); border-radius: var(--radius); padding: .9rem; text-align: center; font-weight: 800; }
-    .architecture span { color: var(--gold); text-align: center; font-weight: 900; }
-    .lead-capture {
-      position: fixed;
-      inset-inline: 16px;
-      inset-block-end: 16px;
-      z-index: 40;
-      margin-inline: auto;
-      max-width: 560px;
-      border: 1px solid var(--line);
-      background: var(--panel);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 1rem;
-      display: none;
-    }
-    .lead-capture.visible { display: block; }
-    .toast {
-      position: fixed;
-      inset-inline-start: 16px;
-      inset-block-end: 16px;
-      z-index: 50;
-      background: var(--navy);
-      color: #fff;
-      border-radius: var(--radius);
-      padding: .75rem 1rem;
-      box-shadow: var(--shadow);
-      transform: translateY(140%);
-      transition: transform .2s ease;
-    }
-    .toast.visible { transform: translateY(0); }
-    .footer { padding-block: 34px; color: var(--muted); border-block-start: 1px solid var(--line); margin-block-start: 32px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-
-    @media (max-width: 1100px) {
-      .hero-grid, .playground, .chart-grid, .sandbox-grid, .metrics-row, .use-case-grid, .architecture-grid, .canvas-builder { grid-template-columns: 1fr; }
-      .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .nav-links { display: none; }
-    }
-    @media (max-width: 700px) {
-      .container { width: min(100% - 22px, 1440px); }
-      .hero { padding-block-start: 34px; }
-      .hero-visual { min-height: 310px; }
-      .scenario-grid, .settings-grid, .dashboard-grid, .architecture { grid-template-columns: 1fr; }
-      .progress { grid-template-columns: repeat(2, 1fr); }
-      .chat-form { flex-direction: column; }
-      .pane.output-pane { position: sticky; inset-block-end: 0; z-index: 10; max-height: 78vh; overflow: auto; border-end-start-radius: 0; border-end-end-radius: 0; }
-    }
-  </style>
-  <script id="brightai-production-schema" type="application/ld+json">
-{
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": [
-        "Organization",
-        "LocalBusiness"
-      ],
+      "@type": "Organization",
       "@id": "https://brightai.site/#organization",
       "name": "Bright AI",
-      "url": "https://brightai.site",
+      "url": "https://brightai.site/",
       "logo": "https://brightai.site/assets/images/logo.PNG",
-      "areaServed": "SA",
-      "sameAs": []
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://brightai.site/#website",
-      "url": "https://brightai.site",
-      "name": "Bright AI",
-      "publisher": {
-        "@id": "https://brightai.site/#organization"
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
       },
-      "inLanguage": [
-        "ar-SA",
-        "en-SA"
-      ]
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+966538229013",
+        "contactType": "sales",
+        "areaServed": "SA",
+        "availableLanguage": [
+          "Arabic"
+        ]
+      }
     },
     {
-      "@type": "WebPage",
-      "@id": "https://brightai.site/demo/data-analyzer/#webpage",
+      "@type": "SoftwareApplication",
+      "@id": "https://brightai.site/demo/data-analyzer/#software",
+      "name": "منصة تحليل البيانات",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
       "url": "https://brightai.site/demo/data-analyzer/",
-      "name": "ملعب تحليل البيانات بالذكاء الاصطناعي | Bright AI",
-      "description": "حلل ملفات CSV وXLSX وتحدث مع بياناتك بالعربية عبر ملعب Bright AI لتحليل البيانات، مع رسوم حية وSQL شفاف ومؤشرات تنفيذية للشركات السعودية.",
-      "isPartOf": {
-        "@id": "https://brightai.site/#website"
-      },
-      "about": {
+      "inLanguage": "ar-SA",
+      "description": "جرّب منصة تحليل البيانات من Bright AI لاكتشاف جودة البيانات والفرص والمخاطر ولوحات القرار المناسبة للشركات السعودية.",
+      "provider": {
         "@id": "https://brightai.site/#organization"
       },
-      "inLanguage": "ar-SA"
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "SAR",
+        "description": "تجربة عامة مجانية قبل طلب نسخة مخصصة"
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://brightai.site/services/data-platform.html#service",
+      "name": "منصة تحليل البيانات",
+      "serviceType": "الإدارة والبيانات",
+      "url": "https://brightai.site/services/data-platform.html",
+      "description": "جرّب منصة تحليل البيانات من Bright AI لاكتشاف جودة البيانات والفرص والمخاطر ولوحات القرار المناسبة للشركات السعودية.",
+      "provider": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      },
+      "mainEntityOfPage": "https://brightai.site/demo/data-analyzer/"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/data-analyzer/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل التجربة مجانية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "سؤال منطقي، والجواب الصريح: نعم. تقدر تجرّب براحتك ببيانات وهمية وتشوف شكل التقرير قبل ما تطلب نسخة مخصصة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل نقدر نربطها ببيانات الشركة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نعم، نقدر نضبط النسخة المخصصة على مصادر شركتك مثل الأنظمة التشغيلية، ملفات البيانات، أو API بعد مراجعة الصلاحيات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل تدعم العربية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "أكيد. التجربة مبنية للعربية والسوق السعودي، وتتعامل مع النصوص المختلطة عربي وإنجليزي عند الحاجة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "وش وضع البيانات؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "بياناتك تبقى عندك. لا ترفع بيانات حساسة في النسخة العامة، والنسخة المخصصة تنبني بصلاحيات وصول وسجل تدقيق وضوابط مشاركة مناسبة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "وش الفرق بين الديمو والنسخة المخصصة؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الديمو يوريك الفكرة بعينات مبسطة، والنسخة المخصصة نضبطها على بياناتك وتكاملاتك ومؤشرات الأداء اللي تهم فريقك."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف أحلل بيانات شركتي؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ابدأ بعينة صغيرة من الأعمدة المهمة، ثم استخدم النتيجة لتحديد مؤشرات القرار والبيانات الناقصة قبل الربط الكامل."
+          }
+        }
+      ]
     },
     {
       "@type": "BreadcrumbList",
@@ -479,825 +155,235 @@
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "Bright AI",
+          "name": "الرئيسية",
           "item": "https://brightai.site/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "demo",
+          "name": "الديموهات",
           "item": "https://brightai.site/demo/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "ملعب تحليل البيانات بالذكاء الاصطناعي",
+          "name": "منصة تحليل البيانات",
           "item": "https://brightai.site/demo/data-analyzer/"
-        }
-      ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://brightai.site/demo/data-analyzer/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "استخدامات حسب القطاع التجارة الإلكترونية",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "المدخل: مبيعات يومية، قناة، منتج، مرتجعات."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "معمارية التكامل نظامك ↔ BrightAI API ↔ Gemini ↔ قاعدة بياناتك الامتثال والأمان PDPL",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "تنقية PII قبل الإرسال، وعدم حفظ بيانات النسخة العامة، ودعم موافقات معالجة في النسخة المؤسسية."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "أسئلة متخصصة هل يمكن سؤال البيانات بالعربية العامية؟ نعم. المحادثة تقبل أسئلة مثل: وش أعلى 5 منتجات؟ ثم تحول السؤال إلى SQL أو تحليل إحصائي مبسط. هل DuckDB يعمل في المتصفح؟ نعم عند توفر المكتبة، وتوجد دوال بديلة محلية إذا تعذر تحميلها. هل يمكن تصدير الرسوم؟ كل رسم يحتوي تنزيل PNG، وكود تضمين، وزر شرح يضيف سرداً تحليلياً. هل تستخدمون نموذج التفكير؟ الافتراضي هو gemini-2.5-flash، ويمكن اختيار gemini-2.5-flash-thinking للتحليلات الثقيلة أو البيانات المعقدة. تبغى نسخة مربوطة ببيانات شركتك؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "ظهر هذا النموذج بعد أول تحليل ناجح فقط. اترك البريد أو افتح واتساب لنسخة مؤسسية مع صلاحيات وسجل تدقيق."
-          }
         }
       ]
     }
   ]
-}
-  </script>
-  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+}</script>
 </head>
-<body data-theme="light">
-  <a class="skip-link" href="#playground">تجاوز إلى ملعب التحليل</a>
-  <header class="nav" aria-label="التنقل الرئيسي">
-    <div class="container nav-inner">
-      <a class="brand" href="/" aria-label="العودة إلى الرئيسية">
-        <img src="/assets/images/logo-new.PNG" width="38" height="38" alt="شعار Bright AI" decoding="async" loading="lazy">
-        <span>Bright AI</span>
-      </a>
-      <nav class="nav-links" aria-label="روابط داخلية">
-        <a href="/demo/">الديموهات</a>
-        <a href="/services/data-platform.html">منصة البيانات</a>
-        <a href="/services/">الخدمات</a>
-        <a href="/contact/">تواصل معنا</a>
-      </nav>
-      <div class="nav-actions">
-        <button class="icon-btn" type="button" id="themeToggle" aria-label="تبديل الوضع الليلي">◐</button>
-        <a class="btn btn-gold" href="#playground">جرّب الآن</a>
-      </div>
-    </div>
+<body class="premium-demo" data-demo-slug="data-analyzer">
+  <a class="skip-link" href="#demo-form">تجاوز إلى التجربة</a>
+  <header class="demo-nav" aria-label="تنقل الديمو">
+    <a class="brand" href="/" aria-label="Bright AI الرئيسية">
+      <img src="/assets/images/logo.PNG" width="36" height="36" alt="شعار Bright AI">
+    </a>
+    <nav class="nav-links" aria-label="روابط داخلية">
+      <a href="/demo/">كل الديموهات</a>
+      <a href="/services/">الخدمات</a>
+      <a href="/services/data-platform.html">صفحة الخدمة</a>
   </header>
 
+  <nav class="breadcrumbs" aria-label="مسار التنقل">
+    <ol>
+      <li><a href="/">الرئيسية</a></li>
+      <li><a href="/demo/">الديموهات</a></li>
+      <li aria-current="page">منصة تحليل البيانات</li>
+    </ol>
+  </nav>
+
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div>
-          <p class="eyebrow">ملعب تحليل بيانات للشركات السعودية</p>
-          <h1>تحدث مع بياناتك وارسم لوحة تنفيذية خلال 4 ثوان.</h1>
-          <p class="lead">ارفع ملف CSV أو XLSX، أو الصق جدولاً، أو استخدم عينات أعمال سعودية. Bright AI يحول العينة إلى مؤشرات ورسوم وشذوذ وSQL قابل للمراجعة، مع Gemini 2.5 Flash عبر خلفية آمنة.</p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#playground">جرّب الآن</a>
-            <button class="btn btn-soft" type="button" id="watchVideo">شاهد فيديو 60 ثانية</button>
-          </div>
-          <div class="trust-strip" aria-label="مؤشرات الثقة">
-            <span class="pill">مدعوم بـ <span dir="ltr">gemini-2.5-flash</span></span>
-            <span class="pill">بياناتك لا تُحفظ</span>
-            <span class="pill">معدل آمن: 10 طلبات لكل دقيقة</span>
-            <span class="pill">متوافق مع PDPL السعودي</span>
-          </div>
+    <section class="hero section">
+      <div class="hero-copy">
+        <p class="eyebrow">هلا والله، نوّرت 👋</p>
+        <h1>منصة تحليل البيانات</h1>
+        <p class="direct-answer">خلّنا نوريك وش يقدر يسوّيه BrightAI لشركتك. هذا الديمو يساعدك على تحليل عينة بيانات خلال دقائق عبر وصف الأعمدة أو لصق عينة جدولية، ثم يحولها إلى مؤشرات ومخاطر وخطوات عمل بدل عرض أرقام خام فقط.</p>
+        <div class="hero-points" aria-label="قيمة الديمو">
+          <span>المشكلة: تشتت البيانات بين ملفات وتقارير لا تقود إلى قرار واضح</span>
+          <span>النتيجة: ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة</span>
+          <span>الفئة: الإدارة التنفيذية وفرق التحليل في الشركات السعودية</span>
         </div>
-        <aside class="hero-visual" aria-label="معاينة لوحة التحليل">
-          <div class="terminal-head"><span>BrightAI/DataConsole</span><span>streaming</span></div>
-          <div class="mini-kpis">
-            <div><span>زمن التحليل</span><strong>3.4s</strong></div>
-            <div><span>دقة القراءة</span><strong>94.2%</strong></div>
-            <div><span>تجارب اليوم</span><strong>1,247</strong></div>
-          </div>
-          <div class="hero-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-        </aside>
+        <div class="hero-actions">
+          <button class="btn btn-secondary" type="button" data-load-first-sample>جرّب مثال جاهز</button>
+          <a class="btn btn-primary" href="#demo-form">ابدأ التجربة</a>
+          <a class="btn btn-outline" href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%85%D9%86%20%D9%85%D9%86%D8%B5%D8%A9%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">اطلب نسخة مخصصة</a>
+        </div>
       </div>
+      <aside class="quick-answer" aria-label="إجابة سريعة">
+        <img src="/assets/images/logo.PNG" width="96" height="96" alt="رمز Bright AI" loading="eager">
+        <h2>الزبدة بسرعة</h2>
+        <dl>
+          <div><dt>لمن هذه التجربة؟</dt><dd>الإدارة التنفيذية وفرق التحليل في الشركات السعودية</dd></div>
+          <div><dt>ماذا تحتاج لتجربتها؟</dt><dd>وصف مختصر أو عينة بيانات غير حساسة.</dd></div>
+          <div><dt>ماذا ستحصل بعد التشغيل؟</dt><dd>ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة.</dd></div>
+          <div><dt>هل يمكن تخصيصها؟</dt><dd>نعم، نضبطها على بيانات شركتك وأنظمتك بعد مراجعة المتطلبات.</dd></div>
+        </dl>
+      </aside>
     </section>
 
-    <section class="section" id="playground" aria-labelledby="playgroundTitle">
-      <div class="container">
-        <div class="pane-head" style="padding-inline:0;border:0;box-shadow:none;background:transparent">
-          <div>
-            <p class="eyebrow">المساحة الأساسية</p>
-            <h2 id="playgroundTitle">ملعب تحليل بيانات يشبه Tableau مصغر مع محادثة عربية.</h2>
-          </div>
-          <span class="pill">تكلفة تقديرية: <span dir="ltr">~0.003$</span> لكل تشغيل</span>
-        </div>
+    <section class="section quote-summary" aria-labelledby="summary-heading">
+      <h2 id="summary-heading">ملخص التجربة</h2>
+      <ul>
+        <li>Bright AI يقدم منصة تحليل البيانات كتجربة عملية موجهة للسوق السعودي.</li>
+        <li>الديمو يساعدك تتعامل مع تشتت البيانات بين ملفات وتقارير لا تقود إلى قرار واضح من خلال مدخلات بسيطة وقابلة للمراجعة.</li>
+        <li>المخرجات تشمل ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة بدل ما تضيع بين بيانات خام كثيرة.</li>
+        <li>تقدر تجرّب براحتك، كل البيانات وهمية. والنسخة المخصصة تدعم الصلاحيات وسجل التدقيق.</li>
+      </ul>
+    </section>
 
-        <div class="playground">
-          <section class="pane input-pane" aria-label="المدخلات والتحكم">
-            <div class="pane-head">
-              <div>
-                <h3>البيانات والسيناريو</h3>
-                <p class="muted">اختر عينة أو ارفع ملفاً أو الصق جدولاً.</p>
-              </div>
-            </div>
-            <div class="pane-body">
-              <div class="scenario-grid" id="scenarioGrid" aria-label="سيناريوهات جاهزة"></div>
-
-              <div class="input-group drop-zone" id="dropZone">
-                <label for="fileInput">رفع CSV أو XLSX</label>
-                <input id="fileInput" type="file" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-describedby="fileHelp">
-                <small class="muted" id="fileHelp">يتم التحليل في المتصفح ثم يرسل أول 1000 صف فقط عبر الخلفية.</small>
-              </div>
-
-              <div class="input-group">
-                <label for="pasteInput">لصق جدول أو أمر توليد بيانات</label>
-                <textarea id="pasteInput" placeholder="مثال: ولّد بيانات مبيعات 6 أشهر لشركة B2B في الرياض، أو الصق CSV هنا."></textarea>
-                <div class="meter-row"><span id="rowCount">0 صف</span><span id="charCount">0 حرف</span></div>
-              </div>
-
-              <div class="hero-actions" style="margin-block:1rem 0">
-                <button class="btn btn-primary" type="button" id="runAnalysis">حلل البيانات</button>
-                <button class="btn btn-soft" type="button" id="generateSynthetic">ولّد بيانات طبيعية</button>
-                <button class="btn" type="button" id="clearData">إعادة ضبط</button>
-              </div>
-
-              <details>
-                <summary>الإعدادات المتقدمة</summary>
-                <div class="settings-grid">
-                  <label>النموذج
-                    <select id="modelVariant"><option value="gemini-2.5-flash">gemini-2.5-flash</option><option value="gemini-2.5-flash-thinking">gemini-2.5-flash-thinking للمهام الثقيلة</option></select>
-                  </label>
-                  <label>لغة المخرج
-                    <select id="outputLanguage"><option>العربية</option><option>العربية مع مصطلحات إنجليزية</option></select>
-                  </label>
-                  <label>درجة الإبداع
-                    <input id="temperature" type="range" min="0" max="0.7" step="0.05" value="0.18">
-                  </label>
-                  <label>أقصى مخرجات
-                    <input id="maxTokens" type="number" min="1200" max="5200" value="4200">
-                  </label>
-                </div>
-                <label class="input-group" for="persona">تعليمات الشخصية التحليلية</label>
-                <textarea id="persona" rows="3">أنت محلل بيانات تنفيذي سعودي. أعط إجابات رقمية قابلة للرسم، واكتب SQL المستخدم، وارفع التحذيرات عند ضعف العينة أو ظهور بيانات حساسة.</textarea>
-              </details>
-
-              <div class="progress" aria-label="خطوات التقدم">
-                <span data-step="read">جارٍ القراءة</span>
-                <span data-step="analyze">التحليل</span>
-                <span data-step="verify">التحقق</span>
-                <span data-step="render">التوليد</span>
-              </div>
-            </div>
-          </section>
-
-          <section class="pane output-pane" aria-label="المخرجات الحية">
-            <div class="pane-head">
-              <div>
-                <h3>لوحة النتائج الحية</h3>
-                <p class="muted" id="statusText">اختر عينة لتبدأ.</p>
-              </div>
-              <div class="tabs" role="tablist" aria-label="تبويبات المخرجات">
-                <button class="tab" role="tab" aria-selected="true" data-tab="visual">التقرير المرئي</button>
-                <button class="tab" role="tab" aria-selected="false" data-tab="json">JSON الخام</button>
-                <button class="tab" role="tab" aria-selected="false" data-tab="audit">سجل التدقيق</button>
-                <button class="tab" role="tab" aria-selected="false" data-tab="share">المشاركة</button>
-              </div>
-            </div>
-            <div class="pane-body">
-              <div id="visualPanel" data-panel="visual">
-                <div class="empty" id="emptyState">
-                  <div>
-                    <div class="empty-art" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-                    <h3>ارفع ملفاً أو اختر عينة سعودية.</h3>
-                    <p class="muted">ستظهر هنا مؤشرات KPI ورسوم تفاعلية ومحادثة مع البيانات.</p>
-                  </div>
-                </div>
-                <div id="dashboard" hidden>
-                  <div class="dashboard-grid" id="kpiGrid"></div>
-                  <div class="chart-grid">
-                    <article class="chart-card">
-                      <h3>اتجاه الإيرادات أو المؤشر الزمني</h3>
-                      <canvas id="trendChart" aria-label="رسم زمني"></canvas>
-                      <div class="chart-actions"><button class="tiny-btn" data-download-chart="trendChart">تحميل PNG</button><button class="tiny-btn" data-explain="trend">اشرح الرسم</button><button class="tiny-btn" data-embed="trendChart">كود التضمين</button></div>
-                    </article>
-                    <article class="chart-card">
-                      <h3>أعلى 5 فئات</h3>
-                      <canvas id="barChart" aria-label="رسم أعلى الفئات"></canvas>
-                      <div class="chart-actions"><button class="tiny-btn" data-download-chart="barChart">تحميل PNG</button><button class="tiny-btn" data-explain="bar">اشرح الرسم</button><button class="tiny-btn" data-embed="barChart">كود التضمين</button></div>
-                    </article>
-                  </div>
-                  <div class="chart-grid" style="margin-block-start:.9rem">
-                    <article class="chart-card">
-                      <h3>خريطة حرارية للفئات</h3>
-                      <canvas id="heatChart" aria-label="خريطة حرارية"></canvas>
-                      <div class="chart-actions"><button class="tiny-btn" data-download-chart="heatChart">تحميل PNG</button><button class="tiny-btn" data-explain="heat">اشرح الرسم</button></div>
-                    </article>
-                    <article class="chart-card chat-box">
-                      <div>
-                        <h3>تحدث مع البيانات</h3>
-                        <div class="messages" id="messages" aria-live="polite"></div>
-                      </div>
-                      <form class="chat-form" id="chatForm">
-                        <input id="chatInput" placeholder="وش أعلى 5 منتجات مبيعاً؟" aria-label="اكتب سؤالاً عن البيانات">
-                        <button class="btn btn-primary" type="submit">اسأل</button>
-                      </form>
-                    </article>
-                  </div>
-                  <section class="insights-feed" id="insightsFeed" aria-label="موجز الرؤى"></section>
-                  <section style="margin-block-start:1rem">
-                    <h3>الشذوذ في البيانات</h3>
-                    <div class="table-wrap"><table id="anomalyTable"><thead><tr><th>الصف</th><th>العمود</th><th>القيمة</th><th>درجة Z</th><th>التفسير</th></tr></thead><tbody></tbody></table></div>
-                  </section>
-                </div>
-              </div>
-              <pre id="jsonPanel" data-panel="json" hidden dir="ltr">{}</pre>
-              <pre id="auditPanel" data-panel="audit" hidden></pre>
-              <div id="sharePanel" data-panel="share" hidden>
-                <h3>إجراءات على المخرج</h3>
-                <div class="hero-actions">
-                  <button class="btn btn-soft" type="button" id="copyReport">نسخ التقرير</button>
-                  <button class="btn btn-soft" type="button" id="downloadPdf">تنزيل PDF</button>
-                  <button class="btn btn-soft" type="button" id="shareLink">نسخ رابط مشاركة</button>
-                  <button class="btn btn-soft" type="button" id="rerunTweaks">إعادة تشغيل مع تعديلات</button>
-                  <a class="btn btn-primary" href="mailto:?subject=تقرير تحليل بيانات Bright AI">إرساله بالبريد</a>
-                </div>
-                <p class="muted">روابط المشاركة في النسخة العامة لا تحفظ البيانات. النسخة المؤسسية تدعم روابط حية بصلاحيات.</p>
-              </div>
-            </div>
-          </section>
+    <section class="section" aria-labelledby="what-heading">
+      <h2 id="what-heading">ما الذي يفعله الديمو؟</h2>
+      <div class="two-col">
+        <p>منصة تحليل البيانات يحوّل مدخلات قصيرة من قطاع الإدارة والبيانات إلى تقرير تنفيذي واضح يساعدك تفهم المشكلة والنتيجة والخطوة الجاية بدون ما يعطي AI قرار نهائي بدالك. المحتوى المهم مكتوب داخل الصفحة حتى يكون قابلاً للفهرسة والاقتباس من محركات الإجابة.</p>
+        <div class="trust-list" aria-label="مؤشرات ثقة">
+          <span>يدعم العربية</span>
+          <span>قابل للربط مع أنظمة الشركة</span>
+          <span>صلاحيات وصول</span>
+          <span>سجل تدقيق</span>
+          <span>لا ترفع بيانات حساسة في النسخة العامة</span>
         </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="sandboxTitle">
-      <div class="container">
-        <p class="eyebrow">Sandbox Mode</p>
-        <h2 id="sandboxTitle">بناء لوحة تنفيذية قابلة للتجميع والتنبيه.</h2>
-        <div class="sandbox-grid">
-          <article class="card">
-            <h3>محاكي سير عمل دفعي</h3>
-            <p class="muted">رفع 5 ملفات، معالجة دفعات، مطابقة، ثم تصدير.</p>
-            <button class="btn btn-soft" type="button" id="batchSim">تشغيل المحاكاة</button>
-            <pre id="batchLog">جاهز للمحاكاة.</pre>
-          </article>
-          <article class="card">
-            <h3>API Playground</h3>
-            <pre dir="ltr">curl -X POST https://brightai.site/api/demo/gemini/stream \
-  -H "Content-Type: application/json" \
-  -d '{"demoType":"data-analyzer","input":{"scenarioId":"ecommerce-sales-2024","locale":"ar-SA","message":"CSV rows..."}}'</pre>
-          </article>
-          <article class="card">
-            <h3>محاكي Webhook</h3>
-            <label for="webhookUrl">رابط الاستقبال</label>
-            <input id="webhookUrl" dir="ltr" placeholder="https://example.com/webhook">
-            <button class="btn btn-soft" type="button" id="testWebhook">اختبار webhook</button>
-          </article>
-        </div>
-
-        <div class="card" style="margin-block-start:1rem">
-          <h3>Executive Dashboard Builder</h3>
-          <div class="canvas-builder">
-            <div class="widget-list" aria-label="العناصر القابلة للسحب">
-              <div class="widget" draggable="true" data-widget="مؤشر الإيراد">مؤشر الإيراد</div>
-              <div class="widget" draggable="true" data-widget="اتجاه شهري">اتجاه شهري</div>
-              <div class="widget" draggable="true" data-widget="أعلى المنتجات">أعلى المنتجات</div>
-              <div class="widget" draggable="true" data-widget="تنبيه انخفاض 10%">تنبيه انخفاض 10%</div>
-              <label for="refreshSchedule">جدولة التحديث</label>
-              <select id="refreshSchedule"><option>كل ساعة</option><option>يومياً 8 صباحاً</option><option>أسبوعياً</option></select>
-            </div>
-            <div class="dashboard-canvas" id="dashboardCanvas" aria-label="لوحة السحب والإفلات">
-              <div class="canvas-tile">اسحب عناصر اللوحة هنا</div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <section class="section steps" aria-labelledby="usage-heading">
+      <h2 id="usage-heading">كيف تستخدم التجربة؟</h2>
+      <ol>
+        <li><strong>اختر السيناريو</strong><span>اختر السيناريو اللي يشبه شغلك، أو اكتب سياقك.</span></li>
+        <li><strong>أدخل بيانات بسيطة</strong><span>استخدم وصف مختصر ولا ترفع معلومات حساسة.</span></li>
+        <li><strong>شغّل AI</strong><span>الطلب يمر عبر المسار الخلفي الآمن فقط.</span></li>
+        <li><strong>شوف التقرير</strong><span>راجع المؤشرات واختر خطوة تجارية واضحة.</span></li>
+      </ol>
     </section>
 
-    <section class="section" aria-labelledby="anatomyTitle">
-      <div class="container">
-        <details>
-          <summary><strong id="anatomyTitle">تشريح المخرج: الحقول والثقة</strong></summary>
-          <div class="architecture">
-            <div>dataset_profile<br><small class="muted">حجم ونوع وجودة البيانات</small></div><span>←</span>
-            <div>kpis<br><small class="muted">مؤشرات قابلة للرسم</small></div><span>←</span>
-            <div>insights<br><small class="muted">رؤية وثقة ورسم داعم</small></div><span>←</span>
-            <div>tool_plan<br><small class="muted">SQL وسبب الإجابة</small></div>
-          </div>
+    <section class="section demo-workspace" aria-labelledby="samples-heading">
+      <div class="workspace-copy">
+        <h2 id="samples-heading">خلّنا نجرّبها سوا</h2>
+        <p>اختر السيناريو اللي يشبه شغلك، وخلّنا نبدأ. الوضع السريع قدامك، والتفاصيل المتقدمة موجودة إذا احتجتها.</p>
+        <div class="sample-grid">
+          <button type="button" class="sample-card" data-sample="0"><strong>متجر إلكتروني</strong><span>الشهر، الزيارات، الطلبات، المرتجعات، الإيراد: يناير ٩٢٠٠، ٤٢٠، ٢٨، ٣٢٠٠٠٠. فبراير ١١٠٠٠، ٥١٠، ٥٧، ٣٨٠٠٠٠.</span></button>
+          <button type="button" class="sample-card" data-sample="1"><strong>شركة خدمات</strong><span>مصدر العملاء: إعلانات، واتساب، توصيات. معدل التحويل ٤٪، ١٢٪، ١٨٪. تكلفة العميل متفاوتة بين القنوات.</span></button>
+          <button type="button" class="sample-card" data-sample="2"><strong>مصنع</strong><span>إنتاج يومي، هدر، توقفات، طلبات متأخرة. ارتفاع التوقفات في وردية المساء.</span></button>
+        </div>
+      </div>
+      <form class="demo-form" id="demo-form" data-demo-form>
+        <input type="hidden" name="demoType" value="data-analyzer">
+        <label for="scenario">السيناريو</label>
+        <select id="scenario" name="scenario" aria-label="اختر السيناريو اللي يشبه شغلك">
+          <option>متجر إلكتروني</option><option>شركة خدمات</option><option>مصنع</option>
+        </select>
+        <label for="demo-input">البيانات المختصرة</label>
+        <textarea id="demo-input" name="input" rows="7" required placeholder="اكتب وصف مختصر أو استخدم مثال جاهز. لا تضع بيانات حساسة.">الشهر، الزيارات، الطلبات، المرتجعات، الإيراد: يناير ٩٢٠٠، ٤٢٠، ٢٨، ٣٢٠٠٠٠. فبراير ١١٠٠٠، ٥١٠، ٥٧، ٣٨٠٠٠٠.</textarea>
+        <details class="advanced-settings">
+          <summary>الإعدادات المتقدمة</summary>
+          <label for="goal">هدف القرار</label>
+          <input id="goal" name="goal" value="ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة">
+          <label for="systems">الأنظمة المحتملة للربط</label>
+          <input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API">
         </details>
-      </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">شغّل التحليل</button>
+          <button class="btn btn-secondary" type="button" data-reset-demo>إعادة ضبط</button>
+        </div>
+        <p class="privacy-note">بياناتك تبقى عندك، لا تستخدم إلا بيانات وهمية أو منزوعة الحساسية في هذه النسخة العامة.</p>
+      </form>
     </section>
 
-    <section class="section" aria-labelledby="metricsTitle">
-      <div class="container">
-        <h2 id="metricsTitle">مقاييس تشغيل حقيقية للتجربة</h2>
-        <div class="metrics-row">
-          <article class="card"><h3>متوسط زمن المعالجة</h3><p class="latin" dir="ltr">3.4s</p><p class="muted">من قراءة العينة حتى عرض الرسوم.</p></article>
-          <article class="card"><h3>دقة الاستخراج الأولية</h3><p class="latin" dir="ltr">94.2%</p><p class="muted">على عينات الأعمال الداخلية المنزوعة الحساسية.</p></article>
-          <article class="card"><h3>عدد التجارب اليوم</h3><p class="latin" dir="ltr">1,247</p><p class="muted">تشغيلات عامة لا تتضمن بيانات محفوظة.</p></article>
+    <section class="section result-zone" aria-labelledby="result-heading">
+      <div>
+        <h2 id="result-heading">هذا اللي بيطلع معنا</h2>
+        <p>النتيجة قدامك كلوحة قرار واضحة، مو ملف خام. وإذا صار خلل بسيط، نعرض لك نتيجة توضيحية آمنة مع زر إعادة المحاولة.</p>
+        <ul class="result-promises">
+          <li>ملخص تنفيذي</li>
+          <li>مؤشر جاهزية</li>
+          <li>رؤى رئيسية</li>
+          <li>مخاطر</li>
+          <li>إجراءات موصى بها</li>
+          <li>أثر تجاري أو عائد متوقع</li>
+          <li>جاهزية تكامل</li>
+          <li>خطوات تالية ودعوة إجراء</li>
+        </ul>
+      </div>
+      <div class="loading-box" data-loading-box hidden>
+        <p>AI يفكّر الحين... خلّنا نشوف وش بيطلع</p>
+        <ol>
+          <li data-stage="0">نقرأ الطلب الحين</li>
+          <li data-stage="1">نستخرج الكيانات</li>
+          <li data-stage="2">نبني المؤشرات</li>
+          <li data-stage="3">نجهّز التحليل</li>
+          <li data-stage="4">نرتّب التقرير</li>
+        </ol>
+      </div>
+      <div class="result-panel" data-result-panel aria-live="polite">
+        <div class="empty-state">
+          <strong>تمام، جاهز نبدأ؟</strong>
+          <p>شغّل التجربة، وثوانٍ بس وتجيك النتيجة كلوحة تنفيذية قابلة للمشاركة.</p>
         </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="casesTitle">
-      <div class="container">
-        <h2 id="casesTitle">استخدامات حسب القطاع</h2>
-        <div class="use-case-grid">
-          <article class="card"><h3>التجارة الإلكترونية</h3><p><strong>المدخل:</strong> مبيعات يومية، قناة، منتج، مرتجعات.</p><p><strong>المخرج:</strong> أعلى المنتجات، أثر المرتجعات، وانخفاض رمضان مقارنة بما قبل الحملة.</p></article>
-          <article class="card"><h3>العيادات</h3><p><strong>المدخل:</strong> مواعيد، حضور، طبيب، مدة انتظار.</p><p><strong>المخرج:</strong> عدم حضور حسب العيادة، ساعات اختناق، وتنبيه طاقة تشغيلية.</p></article>
-          <article class="card"><h3>المصانع</h3><p><strong>المدخل:</strong> خط إنتاج، وردية، توقفات، هدر.</p><p><strong>المخرج:</strong> علاقة التوقف بالهدر، كشف ورديات شاذة، وتوقع إنتاج الأسبوع القادم.</p></article>
-        </div>
+    <section class="section comparison" aria-labelledby="compare-heading">
+      <h2 id="compare-heading">قبل Bright AI / بعد Bright AI</h2>
+      <div class="compare-grid">
+        <article><h3>قبل Bright AI</h3><p>العمل اليدوي ياخذ وقت، والمخرجات تتفاوت، والقرار يتشتت بين الملفات والرسائل.</p></article>
+        <article><h3>بعد Bright AI</h3><p>تبدأ من تجربة واضحة، تشوف تقرير منظم، ثم تطلب نسخة مخصصة مرتبطة بالأنظمة والصلاحيات.</p></article>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="archTitle">
-      <div class="container">
-        <h2 id="archTitle">معمارية التكامل</h2>
-        <div class="architecture" aria-label="مخطط المعمارية">
-          <div>نظامك</div><span>↔</span><div>BrightAI API</div><span>↔</span><div>Gemini</div><span>↔</span><div>قاعدة بياناتك</div>
-        </div>
+    <section class="section use-cases" aria-labelledby="use-cases-heading">
+      <h2 id="use-cases-heading">حالات استخدام منظمة</h2>
+      <div class="case-grid">
+        <article><h3>متجر إلكتروني</h3><p><strong>الحالة:</strong> تشتت البيانات بين ملفات وتقارير لا تقود إلى قرار واضح.</p><p><strong>المدخلات:</strong> الشهر، الزيارات، الطلبات، المرتجعات، الإيراد: يناير ٩٢٠٠، ٤٢٠، ٢٨، ٣٢٠٠٠٠. فبراير ١١٠٠٠، ٥١٠، ٥٧، ٣٨٠٠٠٠.</p><p><strong>مخرجات الديمو:</strong> ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>
+        <article><h3>شركة خدمات</h3><p><strong>الحالة:</strong> تشتت البيانات بين ملفات وتقارير لا تقود إلى قرار واضح.</p><p><strong>المدخلات:</strong> مصدر العملاء: إعلانات، واتساب، توصيات. معدل التحويل ٤٪، ١٢٪، ١٨٪. تكلفة العميل متفاوتة بين القنوات.</p><p><strong>مخرجات الديمو:</strong> ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>
+        <article><h3>مصنع</h3><p><strong>الحالة:</strong> تشتت البيانات بين ملفات وتقارير لا تقود إلى قرار واضح.</p><p><strong>المدخلات:</strong> إنتاج يومي، هدر، توقفات، طلبات متأخرة. ارتفاع التوقفات في وردية المساء.</p><p><strong>مخرجات الديمو:</strong> ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة.</p><p><strong>الأثر التجاري:</strong> وضوح أسرع وتجربة قابلة للتخصيص.</p></article>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="complianceTitle">
-      <div class="container">
-        <details>
-          <summary><strong id="complianceTitle">الامتثال والأمان</strong></summary>
-          <div class="use-case-grid" style="margin-block-start:1rem">
-            <article class="card"><h3>PDPL</h3><p>تنقية PII قبل الإرسال، وعدم حفظ بيانات النسخة العامة، ودعم موافقات معالجة في النسخة المؤسسية.</p></article>
-            <article class="card"><h3>NCA ECC</h3><p>معدل طلبات، سجلات تدقيق، ترويسات أمنية، وقابلية ربط مع ضوابط الوصول المؤسسية.</p></article>
-            <article class="card"><h3>إقامة البيانات</h3><p>النسخة المؤسسية تضبط الاستضافة وسجلات التدقيق حسب متطلبات العميل داخل السعودية.</p></article>
-          </div>
-        </details>
+    <section class="section" aria-labelledby="why-heading">
+      <h2 id="why-heading">لماذا Bright AI؟</h2>
+      <p>Bright AI يبني تجارب AI عربية أولاً للشركات السعودية، مع تركيز على قابلية الزحف والفهرسة، وضوح القرار، وإمكانية الربط مع الأنظمة بدل الاكتفاء بعرض تجريبي منعزل.</p>
+      <div class="internal-links">
+        <a href="/services/data-platform.html">صفحة الخدمة الرسمية</a>
+        <a href="/services/">كل خدمات Bright AI</a>
+        <a href="/demo/">مركز الديموهات</a>
+        <a href="/contact/">تواصل معنا</a>
+        <a href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%85%D9%86%20%D9%85%D9%86%D8%B5%D8%A9%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">واتساب</a>
+        <a href="/demo/operational-reports-automation/">أتمتة التقارير التشغيلية</a><a href="/demo/data-quality/">فحص جودة البيانات</a><a href="/demo/marketing-ai-agent/">وكيل تسويق</a>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="faqTitle">
-      <div class="container">
-        <h2 id="faqTitle">أسئلة متخصصة</h2>
-        <details><summary>هل يمكن سؤال البيانات بالعربية العامية؟</summary><p>نعم. المحادثة تقبل أسئلة مثل: وش أعلى 5 منتجات؟ ثم تحول السؤال إلى SQL أو تحليل إحصائي مبسط.</p></details>
-        <details><summary>هل DuckDB يعمل في المتصفح؟</summary><p>نعم عند توفر المكتبة، وتوجد دوال بديلة محلية إذا تعذر تحميلها.</p></details>
-        <details><summary>هل يمكن تصدير الرسوم؟</summary><p>كل رسم يحتوي تنزيل PNG، وكود تضمين، وزر شرح يضيف سرداً تحليلياً.</p></details>
-        <details><summary>هل تستخدمون نموذج التفكير؟</summary><p>الافتراضي هو gemini-2.5-flash، ويمكن اختيار gemini-2.5-flash-thinking للتحليلات الثقيلة أو البيانات المعقدة.</p></details>
+    <section class="section faq" aria-labelledby="faq-heading">
+      <h2 id="faq-heading">الأسئلة الشائعة</h2>
+      <details><summary>هل التجربة مجانية؟</summary><p>سؤال منطقي، والجواب الصريح: نعم. تقدر تجرّب براحتك ببيانات وهمية وتشوف شكل التقرير قبل ما تطلب نسخة مخصصة.</p></details>
+      <details><summary>هل نقدر نربطها ببيانات الشركة؟</summary><p>نعم، نقدر نضبط النسخة المخصصة على مصادر شركتك مثل الأنظمة التشغيلية، ملفات البيانات، أو API بعد مراجعة الصلاحيات.</p></details>
+      <details><summary>هل تدعم العربية؟</summary><p>أكيد. التجربة مبنية للعربية والسوق السعودي، وتتعامل مع النصوص المختلطة عربي وإنجليزي عند الحاجة.</p></details>
+      <details><summary>وش وضع البيانات؟</summary><p>بياناتك تبقى عندك. لا ترفع بيانات حساسة في النسخة العامة، والنسخة المخصصة تنبني بصلاحيات وصول وسجل تدقيق وضوابط مشاركة مناسبة.</p></details>
+      <details><summary>وش الفرق بين الديمو والنسخة المخصصة؟</summary><p>الديمو يوريك الفكرة بعينات مبسطة، والنسخة المخصصة نضبطها على بياناتك وتكاملاتك ومؤشرات الأداء اللي تهم فريقك.</p></details>
+      <details><summary>كيف أحلل بيانات شركتي؟</summary><p>ابدأ بعينة صغيرة من الأعمدة المهمة، ثم استخدم النتيجة لتحديد مؤشرات القرار والبيانات الناقصة قبل الربط الكامل.</p></details>
+    </section>
+
+    <section class="section final-cta" aria-label="خطوة تجارية">
+      <h2>خلّ BrightAI يضبطها لك بمقاسك</h2>
+      <p>عجبتك التجربة؟ خلّنا نضبطها على بيانات شركتك خلال 48 ساعة كبداية عمل واضحة، بعد ما نراجع المتطلبات معك.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/contact/">احجز مكالمة 15 دقيقة</a>
+        <a class="btn btn-secondary" href="https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%AE%D8%B5%D8%B5%D8%A9%20%D9%85%D9%86%20%D9%85%D9%86%D8%B5%D8%A9%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA%20%D8%B9%D8%A8%D8%B1%20Bright%20AI" target="_blank" rel="noopener">اطلب عرض سعر</a>
+        <button class="btn btn-outline" type="button" data-download-report>حمّل التقرير</button>
       </div>
     </section>
   </main>
 
-  <aside class="lead-capture" id="leadCapture" aria-live="polite">
-    <h3>تبغى نسخة مربوطة ببيانات شركتك؟</h3>
-    <p class="muted">ظهر هذا النموذج بعد أول تحليل ناجح فقط. اترك البريد أو افتح واتساب لنسخة مؤسسية مع صلاحيات وسجل تدقيق.</p>
-    <div class="hero-actions">
-      <input id="leadEmail" type="email" placeholder="name@company.sa" aria-label="البريد الإلكتروني">
-      <a class="btn btn-primary" href="https://wa.me/966538229013?text=%D8%A3%D8%A8%D8%BA%D9%89%20%D9%86%D8%B3%D8%AE%D8%A9%20%D9%85%D8%A4%D8%B3%D8%B3%D9%8A%D8%A9%20%D9%85%D9%86%20%D9%85%D9%84%D8%B9%D8%A8%20%D8%AA%D8%AD%D9%84%D9%8A%D9%84%20%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA" target="_blank" rel="noopener">واتساب</a>
-      <button class="btn" type="button" id="closeLead">إغلاق</button>
-    </div>
-  </aside>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <footer class="footer">
-    <div class="container">
-      <p>© 2026 Bright AI. ملعب تحليل البيانات تجربة عامة لا تحفظ البيانات، والنتائج تحتاج مراجعة بشرية قبل أي قرار تشغيلي.</p>
-      <p><a href="/docs/privacy-policy.html">سياسة الخصوصية</a> · <a href="/services/data-platform.html">منصة البيانات</a> · <a href="/contact/">تواصل معنا</a></p>
-    </div>
+  <footer class="demo-footer">
+    <p>© 2026 Bright AI. تجربة منصة تحليل البيانات مخصصة للمراجعة الأولية ولا تقدم ضمانات نتائج.</p>
+    <a href="/docs/privacy-policy.html">سياسة الخصوصية</a>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.1/dist/duckdb-browser.js" defer></script>
-  <script type="application/json" id="seedCsvs">{
-    "ecommerce-sales-2024":{"name":"مبيعات متجر إلكتروني 2024","csv":"date,region,category,product,channel,revenue,orders,returns,ad_spend\\n2024-01-01,Riyadh,Electronics,Laptop A,Search,184000,214,8,22000\\n2024-02-01,Jeddah,Beauty,Serum B,Social,96000,332,18,31000\\n2024-03-01,Riyadh,Home,Coffee C,Social,74000,188,11,18000\\n2024-04-01,Dammam,Electronics,Phone D,Search,142000,170,9,26000\\n2024-05-01,Riyadh,Beauty,Serum B,Influencer,121000,390,33,44000\\n2024-06-01,Jeddah,Home,Coffee C,Search,88000,210,14,17000\\n2024-07-01,Dammam,Electronics,Laptop A,Email,136000,150,7,9000\\n2024-08-01,Riyadh,Beauty,Perfume E,Social,158000,430,21,38000\\n2024-09-01,Jeddah,Home,Chair F,Search,69000,92,4,12000\\n2024-10-01,Riyadh,Electronics,Phone D,Social,196000,231,13,42000\\n2024-11-01,Dammam,Beauty,Serum B,Influencer,112000,355,29,36000\\n2024-12-01,Riyadh,Electronics,Laptop A,Search,242000,272,10,52000"},
-    "restaurant-ops":{"name":"تشغيل سلسلة مطاعم","csv":"date,branch,meal_period,orders,avg_ticket,wait_minutes,waste_kg,rating\\n2024-01-07,Riyadh-North,Dinner,620,54,18,42,4.4\\n2024-01-14,Jeddah-Corniche,Lunch,410,49,22,37,4.1\\n2024-01-21,Dammam-Mall,Dinner,505,52,28,61,3.8\\n2024-02-07,Riyadh-North,Lunch,455,51,16,33,4.5\\n2024-02-14,Jeddah-Corniche,Dinner,720,57,31,70,3.7\\n2024-02-21,Dammam-Mall,Lunch,360,47,19,29,4.0\\n2024-03-07,Riyadh-North,Dinner,690,56,35,76,3.6\\n2024-03-14,Jeddah-Corniche,Lunch,390,48,21,41,4.0\\n2024-03-21,Dammam-Mall,Dinner,540,53,27,58,3.9"},
-    "clinic-appointments":{"name":"مواعيد عيادة","csv":"date,clinic,doctor,appointments,attended,no_show,avg_wait,patient_satisfaction\\n2024-01-01,Dermatology,Dr A,92,81,11,18,4.5\\n2024-01-08,Dental,Dr B,76,61,15,24,4.1\\n2024-01-15,Family,Dr C,118,104,14,31,3.9\\n2024-02-01,Dermatology,Dr A,88,78,10,16,4.6\\n2024-02-08,Dental,Dr B,83,65,18,28,3.8\\n2024-02-15,Family,Dr C,124,108,16,35,3.7\\n2024-03-01,Dermatology,Dr A,79,70,9,14,4.7\\n2024-03-08,Dental,Dr B,91,69,22,33,3.6"},
-    "factory-production":{"name":"إنتاج مصنع","csv":"date,line,shift,units,defects,downtime_minutes,energy_kwh,scrap_kg\\n2024-01-01,L1,Morning,1240,22,18,740,31\\n2024-01-01,L2,Evening,980,41,46,710,58\\n2024-01-08,L1,Morning,1305,19,15,752,28\\n2024-01-08,L2,Evening,910,55,74,735,71\\n2024-01-15,L1,Night,1110,28,24,690,44\\n2024-01-15,L2,Morning,1190,24,21,705,35\\n2024-02-01,L1,Evening,1035,39,52,720,60\\n2024-02-01,L2,Night,970,48,64,733,68"},
-    "marketing-campaigns":{"name":"حملات تسويقية","csv":"date,campaign,channel,spend,impressions,clicks,leads,revenue\\n2024-01-01,Launch Search,Search,45000,620000,18400,760,238000\\n2024-01-15,Ramadan Prep,Social,52000,880000,22100,690,201000\\n2024-02-01,Retargeting,Display,18000,310000,5200,210,93000\\n2024-02-15,Influencer A,Influencer,62000,740000,18600,540,168000\\n2024-03-01,Ramadan Offer,Social,78000,1220000,38800,1180,352000\\n2024-03-15,Email Winback,Email,9000,140000,9700,430,129000\\n2024-04-01,Eid Search,Search,57000,690000,20400,830,287000"}
-  }</script>
-  <script type="application/json" id="responseSchema">{"dataset_profile":{"rows":"number","cols":"number","types":"object","missing_pct":"number","date_range":"string"},"kpis":[{"name":"string","value":"string","change_pct":"number","sparkline_data":["number"]}],"insights":[{"text":"string","severity":"info|warning|critical|success","supporting_chart_id":"string","confidence":"number"}],"anomalies":[{"row":"number","column":"string","value":"string","z_score":"number","explanation":"string"}],"suggested_questions":["string"],"recommended_dashboards":[{"title":"string","charts":["string"]}]}</script>
-  <script type="application/json" id="functionDefinitions">[{"name":"run_sql","description":"تشغيل SQL على جدول dataset داخل DuckDB-WASM","parameters":{"query":"string"}},{"name":"create_chart","description":"رسم مخطط Chart.js من أعمدة محددة","parameters":{"type":"line|bar|heatmap","x":"string","y":"string","group_by":"string"}},{"name":"detect_anomalies","description":"كشف القيم المتطرفة بطريقة z_score أو iqr","parameters":{"column":"string","method":"z_score|iqr"}},{"name":"forecast","description":"توقع بسيط لسلسلة زمنية","parameters":{"column":"string","periods":"number"}},{"name":"correlate","description":"حساب ارتباط Pearson بين عمودين","parameters":{"col_a":"string","col_b":"string"}}]</script>
-  <script type="text/plain" id="geminiSystemPrompt">أنت BrightAI Data Analytics Playground للشركات السعودية. حلل عينات CSV/XLSX والجداول المنسوخة، واستخدم gemini-2.5-flash مع responseSchema JSON. أعد dataset_profile وkpis وinsights وanomalies وsuggested_questions وrecommended_dashboards وtool_plan وaudit_log فقط. استخدم code_execution للحسابات الثقيلة. لا تعرض بيانات شخصية. اعرض SQL شفافاً لكل إجابة. اربط كل insight بثقة ورسم داعم. راع سياق السوق السعودي مثل رمضان والفروع والقنوات المحلية والريال السعودي.</script>
-  <script>
-    (function () {
-      "use strict";
-
-      const $ = (selector, root = document) => root.querySelector(selector);
-      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
-      const state = {
-        rows: [],
-        columns: [],
-        scenario: "ecommerce-sales-2024",
-        charts: {},
-        aiResult: null,
-        audit: [],
-        generatedSql: [],
-        duckdb: null,
-        duckdbReady: false
-      };
-      const seeds = JSON.parse($("#seedCsvs").textContent);
-      const scenarioLabels = {
-        "ecommerce-sales-2024": "مبيعات التجارة الإلكترونية 2024",
-        "restaurant-ops": "تشغيل سلسلة مطاعم",
-        "clinic-appointments": "مواعيد عيادة",
-        "factory-production": "إنتاج مصنع",
-        "marketing-campaigns": "حملات تسويقية"
-      };
-
-      function toast(message) {
-        const node = $("#toast");
-        node.textContent = message;
-        node.classList.add("visible");
-        setTimeout(() => node.classList.remove("visible"), 2600);
-      }
-
-      function escapeHtml(value) {
-        return String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
-      }
-
-      function parseCsv(text) {
-        const lines = String(text || "").trim().split(/\r?\n/).filter(Boolean);
-        if (!lines.length) return [];
-        const delimiter = [",", ";", "\t", "|"].sort((a, b) => (lines[0].split(b).length - lines[0].split(a).length))[0];
-        const headers = lines[0].split(delimiter).map((item) => item.trim());
-        return lines.slice(1).map((line) => {
-          const cells = line.split(delimiter).map((item) => item.trim());
-          return Object.fromEntries(headers.map((head, index) => [head, coerce(cells[index])]));
-        });
-      }
-
-      function coerce(value) {
-        const clean = String(value ?? "").trim();
-        if (clean === "") return null;
-        const number = Number(clean.replace(/,/g, ""));
-        if (Number.isFinite(number)) return number;
-        return clean;
-      }
-
-      function rowsToCsv(rows) {
-        const cols = Object.keys(rows[0] || {});
-        return [cols.join(","), ...rows.map((row) => cols.map((col) => row[col] ?? "").join(","))].join("\n");
-      }
-
-      function profileRows(rows) {
-        const columns = Object.keys(rows[0] || {});
-        const numeric = columns.filter((col) => rows.some((row) => typeof row[col] === "number"));
-        const date = columns.find((col) => /date|month|day|التاريخ|الشهر/i.test(col)) || columns[0];
-        const category = columns.find((col) => !numeric.includes(col) && col !== date) || columns[0];
-        const metric = numeric.find((col) => /revenue|sales|orders|units|spend|appointments|الإيراد|المبيعات/i.test(col)) || numeric[0];
-        return { columns, numeric, date, category, metric };
-      }
-
-      function groupSum(rows, category, metric, limit = 5) {
-        const map = new Map();
-        rows.forEach((row) => map.set(row[category], (map.get(row[category]) || 0) + (Number(row[metric]) || 0)));
-        return Array.from(map, ([label, value]) => ({ label, value })).sort((a, b) => b.value - a.value).slice(0, limit);
-      }
-
-      function byDate(rows, date, metric) {
-        return rows.map((row, index) => ({ label: row[date] || `صف ${index + 1}`, value: Number(row[metric]) || 0 })).slice(0, 24);
-      }
-
-      function detectAnomalies(column, method = "z_score") {
-        const values = state.rows.map((row, index) => ({ index, value: Number(row[column]) })).filter((item) => Number.isFinite(item.value));
-        const mean = values.reduce((sum, item) => sum + item.value, 0) / Math.max(values.length, 1);
-        const variance = values.reduce((sum, item) => sum + Math.pow(item.value - mean, 2), 0) / Math.max(values.length, 1);
-        const stdev = Math.sqrt(variance) || 1;
-        return values.map((item) => ({ ...item, z: (item.value - mean) / stdev })).filter((item) => Math.abs(item.z) > 1.6).slice(0, 8).map((item) => ({
-          row: item.index + 1,
-          column,
-          value: String(item.value),
-          z_score: Number(item.z.toFixed(2)),
-          explanation: method === "iqr" ? "قيمة خارج النطاق الربعي المتوقع." : "قيمة بعيدة عن متوسط العينة وتحتاج تحققاً."
-        }));
-      }
-
-      function correlate(colA, colB) {
-        const pairs = state.rows.map((row) => [Number(row[colA]), Number(row[colB])]).filter(([a, b]) => Number.isFinite(a) && Number.isFinite(b));
-        const n = pairs.length || 1;
-        const avgA = pairs.reduce((s, [a]) => s + a, 0) / n;
-        const avgB = pairs.reduce((s, [, b]) => s + b, 0) / n;
-        const numerator = pairs.reduce((s, [a, b]) => s + ((a - avgA) * (b - avgB)), 0);
-        const denomA = Math.sqrt(pairs.reduce((s, [a]) => s + Math.pow(a - avgA, 2), 0));
-        const denomB = Math.sqrt(pairs.reduce((s, [, b]) => s + Math.pow(b - avgB, 2), 0));
-        return Number((numerator / ((denomA * denomB) || 1)).toFixed(3));
-      }
-
-      function forecast(column, periods = 3) {
-        const values = state.rows.map((row) => Number(row[column])).filter(Number.isFinite);
-        const last = values.at(-1) || 0;
-        const prev = values.at(-2) || last;
-        const slope = last - prev;
-        return Array.from({ length: periods }, (_, index) => Math.round(last + slope * (index + 1)));
-      }
-
-      function runSql(query) {
-        state.generatedSql.push(query);
-        const profile = profileRows(state.rows);
-        if (/group by/i.test(query)) return groupSum(state.rows, profile.category, profile.metric);
-        return state.rows.slice(0, 10);
-      }
-
-      async function initDuckDb() {
-        if (!window.duckdb || state.duckdbReady) return;
-        try {
-          const bundles = duckdb.getJsDelivrBundles();
-          const bundle = await duckdb.selectBundle(bundles);
-          const worker = new Worker(bundle.mainWorker);
-          const logger = new duckdb.ConsoleLogger(duckdb.LogLevel.WARNING);
-          state.duckdb = new duckdb.AsyncDuckDB(logger, worker);
-          await state.duckdb.instantiate(bundle.mainModule, bundle.pthreadWorker);
-          state.duckdbReady = true;
-          state.audit.push("DuckDB-WASM جاهز للاستعلامات داخل المتصفح.");
-        } catch (error) {
-          state.audit.push(`تعذر تفعيل DuckDB-WASM واستخدمت دوال JavaScript المحلية: ${error.message}`);
-        }
-      }
-
-      function createChart(canvasId, type, labels, values, label) {
-        if (!window.Chart) return;
-        state.charts[canvasId]?.destroy();
-        const ctx = document.getElementById(canvasId);
-        state.charts[canvasId] = new Chart(ctx, {
-          type: type === "heatmap" ? "bar" : type,
-          data: { labels, datasets: [{ label, data: values, backgroundColor: type === "line" ? "rgba(201,169,97,.18)" : "#C9A961", borderColor: "#0A1F44", borderWidth: 2, tension: .32, fill: type === "line" }] },
-          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: getComputedStyle(document.body).getPropertyValue("--ink") } } }, scales: { x: { ticks: { color: "#64748B" } }, y: { ticks: { color: "#64748B" } } } }
-        });
-      }
-
-      function buildLocalResult() {
-        const p = profileRows(state.rows);
-        const total = state.rows.reduce((sum, row) => sum + (Number(row[p.metric]) || 0), 0);
-        const trend = byDate(state.rows, p.date, p.metric);
-        const top = groupSum(state.rows, p.category, p.metric);
-        const anomalies = detectAnomalies(p.metric);
-        const secondMetric = p.numeric.find((col) => col !== p.metric) || p.metric;
-        return {
-          dataset_profile: {
-            rows: state.rows.length,
-            cols: p.columns.length,
-            types: { date: p.date, category: p.category, metrics: p.numeric.join(", ") },
-            missing_pct: Number(((state.rows.flatMap((row) => p.columns.map((col) => row[col])).filter((value) => value == null || value === "").length / Math.max(1, state.rows.length * p.columns.length)) * 100).toFixed(1)),
-            date_range: `${trend[0]?.label || "غير محدد"} إلى ${trend.at(-1)?.label || "غير محدد"}`
-          },
-          kpis: [
-            { name: "إجمالي المؤشر", value: total.toLocaleString("en-US"), change_pct: 12.4, sparkline_data: trend.map((item) => item.value) },
-            { name: "عدد الصفوف", value: String(state.rows.length), change_pct: 0, sparkline_data: [state.rows.length] },
-            { name: "الشذوذ", value: String(anomalies.length), change_pct: anomalies.length, sparkline_data: anomalies.map((item) => Math.abs(item.z_score)) },
-            { name: "ارتباط أولي", value: String(correlate(p.metric, secondMetric)), change_pct: 0, sparkline_data: forecast(p.metric, 4) }
-          ],
-          insights: [
-            { text: `أعلى مساهمة تأتي من ${top[0]?.label || "فئة غير محددة"} بقيمة ${Math.round(top[0]?.value || 0).toLocaleString("en-US")}.`, severity: "success", supporting_chart_id: "barChart", confidence: .88 },
-            { text: `تم تحديد ${anomalies.length} نقاط شذوذ في عمود ${p.metric}.`, severity: anomalies.length ? "warning" : "info", supporting_chart_id: "anomalyTable", confidence: .82 },
-            { text: `نسبة القيم الناقصة ${state.rows.length ? "منخفضة" : "غير معروفة"} وتحتاج مراجعة قبل الربط الإنتاجي.`, severity: "info", supporting_chart_id: "jsonPanel", confidence: .76 }
-          ],
-          anomalies,
-          suggested_questions: ["وش أعلى 5 منتجات مبيعاً؟", "ليش انخفضت المبيعات في رمضان؟", "ارسم لي trend الإيرادات وقارنه بالسنة الماضية", "اكتشف أي شذوذ في البيانات", "احسب العلاقة بين الإنفاق والإيراد"],
-          recommended_dashboards: [{ title: "لوحة الإيراد التنفيذي", charts: ["trendChart", "barChart", "anomalyTable"] }],
-          tool_plan: [
-            { tool: "run_sql", arguments: { query: `SELECT ${p.category}, SUM(${p.metric}) FROM dataset GROUP BY ${p.category} ORDER BY 2 DESC LIMIT 5` }, sql: `SELECT ${p.category}, SUM(${p.metric}) AS total FROM dataset GROUP BY ${p.category} ORDER BY total DESC LIMIT 5`, why: "حساب أعلى الفئات حسب المؤشر الرئيسي." },
-            { tool: "detect_anomalies", arguments: { column: p.metric, method: "z_score" }, sql: `SELECT * FROM dataset WHERE ABS((${p.metric} - AVG(${p.metric}) OVER()) / STDDEV_POP(${p.metric}) OVER()) > 1.6`, why: "كشف الصفوف التي تحتاج مراجعة." }
-          ],
-          audit_log: [
-            { step: "قراءة البيانات", status: "success", detail: `تم تحميل ${state.rows.length} صف و${p.columns.length} أعمدة.` },
-            { step: "اختيار الرسوم", status: "success", detail: `تم اختيار ${p.date} للمحور الزمني و${p.metric} للمؤشر.` },
-            { step: "الخصوصية", status: "success", detail: "لم يتم حفظ البيانات في المتصفح خارج الجلسة الحالية." }
-          ]
-        };
-      }
-
-      function render(result) {
-        state.aiResult = result;
-        $("#emptyState").hidden = true;
-        $("#dashboard").hidden = false;
-        $("#kpiGrid").innerHTML = result.kpis.map((kpi) => `<article class="kpi"><span>${escapeHtml(kpi.name)}</span><strong>${escapeHtml(kpi.value)}</strong><small class="muted">تغير ${Number(kpi.change_pct || 0).toFixed(1)}%</small></article>`).join("");
-        const p = profileRows(state.rows);
-        const trend = byDate(state.rows, p.date, p.metric);
-        const top = groupSum(state.rows, p.category, p.metric);
-        createChart("trendChart", "line", trend.map((item) => item.label), trend.map((item) => item.value), p.metric);
-        createChart("barChart", "bar", top.map((item) => item.label), top.map((item) => item.value), p.metric);
-        createChart("heatChart", "bar", state.rows.slice(0, 10).map((_, index) => `صف ${index + 1}`), state.rows.slice(0, 10).map((row) => Number(row[p.metric]) || 0), "كثافة المؤشر");
-        $("#insightsFeed").innerHTML = result.insights.map((item) => `<article class="insight" data-severity="${escapeHtml(item.severity)}"><strong>${Math.round((item.confidence || 0) * 100)}% ثقة</strong><p>${escapeHtml(item.text)}</p><small class="muted">الرسم الداعم: ${escapeHtml(item.supporting_chart_id)}</small></article>`).join("");
-        $("#anomalyTable tbody").innerHTML = result.anomalies.map((item) => `<tr><td>${item.row}</td><td>${escapeHtml(item.column)}</td><td>${escapeHtml(item.value)}</td><td dir="ltr">${item.z_score}</td><td>${escapeHtml(item.explanation)}</td></tr>`).join("") || `<tr><td colspan="5">لا توجد نقاط شذوذ قوية في العينة.</td></tr>`;
-        $("#jsonPanel").textContent = JSON.stringify(result, null, 2);
-        $("#auditPanel").textContent = result.audit_log.map((item) => `${item.step}: ${item.status}\n${item.detail}`).join("\n\n") + "\n\nSQL:\n" + result.tool_plan.map((item) => item.sql).join("\n\n");
-        $("#messages").innerHTML = `<div class="msg ai">جاهز. اسألني عن أعلى المنتجات، الانخفاضات، الشذوذ، التوقعات، أو العلاقات بين الأعمدة.</div>`;
-        $("#statusText").textContent = "اكتمل التحليل وعرضت الرسوم.";
-        $("#leadCapture").classList.add("visible");
-      }
-
-      async function callGemini(localResult) {
-        const payload = {
-          demoType: "data-analyzer",
-          input: {
-            scenarioId: state.scenario,
-            locale: "ar-SA",
-            message: [
-              $("#geminiSystemPrompt").textContent.trim(),
-              `إعدادات: model=${$("#modelVariant").value}, temperature=${$("#temperature").value}, maxTokens=${$("#maxTokens").value}`,
-              `تعليمات الشخصية: ${$("#persona").value}`,
-              "عينة CSV:",
-              rowsToCsv(state.rows.slice(0, 1000)),
-              "تحليل محلي أولي:",
-              JSON.stringify(localResult)
-            ].join("\n")
-          }
-        };
-        const response = await fetch("/api/demo/gemini/stream", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-        if (!response.ok || !response.body) throw new Error("تعذر الاتصال بالخلفية");
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = "";
-        let result = null;
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          buffer += decoder.decode(value, { stream: true });
-          for (const chunk of buffer.split("\n\n")) {
-            if (!chunk.startsWith("data: ")) continue;
-            const event = JSON.parse(chunk.slice(6));
-            if (event.type === "delta") $("#statusText").textContent = `يكتب Gemini الآن: ${event.text.slice(0, 42)}`;
-            if (event.type === "result") result = event.data;
-          }
-          buffer = buffer.split("\n\n").at(-1) || "";
-        }
-        return result;
-      }
-
-      async function runAnalysis() {
-        if (!state.rows.length) {
-          const text = $("#pasteInput").value.trim();
-          if (/ولّد|generate/i.test(text)) loadSynthetic();
-          else state.rows = parseCsv(text);
-        }
-        if (!state.rows.length) {
-          toast("أدخل بيانات أو اختر عينة أولاً.");
-          return;
-        }
-        state.columns = Object.keys(state.rows[0] || {});
-        setProgress("read");
-        $("#statusText").textContent = "جارٍ قراءة العينة.";
-        await wait(220);
-        setProgress("analyze");
-        const localResult = buildLocalResult();
-        render(localResult);
-        await wait(220);
-        setProgress("verify");
-        try {
-          const ai = await callGemini(localResult);
-          if (ai) render({ ...localResult, ...ai });
-          toast("اكتمل تحليل Gemini وعُرضت النتائج.");
-        } catch (error) {
-          state.audit.push(error.message);
-          toast("استخدمت التحليل المحلي لأن اتصال Gemini غير متاح حالياً.");
-        } finally {
-          setProgress("render");
-        }
-      }
-
-      function setProgress(step) {
-        const order = ["read", "analyze", "verify", "render"];
-        $$("[data-step]").forEach((node) => node.classList.toggle("active", order.indexOf(node.dataset.step) <= order.indexOf(step)));
-      }
-
-      function wait(ms) { return new Promise((resolve) => setTimeout(resolve, ms)); }
-
-      function loadScenario(id) {
-        state.scenario = id;
-        const seed = seeds[id];
-        $("#pasteInput").value = seed.csv;
-        state.rows = parseCsv(seed.csv);
-        updateCounters();
-        $$(".scenario-chip").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.scenario === id)));
-        toast(`تم تحميل ${seed.name}.`);
-      }
-
-      function loadSynthetic() {
-        const months = ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01", "2024-05-01", "2024-06-01"];
-        const rows = months.flatMap((date, month) => ["Riyadh", "Jeddah", "Dammam"].map((region, index) => ({
-          date,
-          region,
-          segment: ["Enterprise", "SMB", "Government"][index],
-          revenue: Math.round(120000 + month * 18000 + index * 22000 + Math.random() * 18000),
-          deals: Math.round(18 + month * 2 + index * 3),
-          churn_rate: Number((4.5 + Math.random() * 3 - month * .15).toFixed(2))
-        })));
-        state.rows = rows;
-        $("#pasteInput").value = rowsToCsv(rows);
-        updateCounters();
-        toast("تم توليد بيانات B2B لمدة 6 أشهر.");
-      }
-
-      function updateCounters() {
-        const text = $("#pasteInput").value;
-        $("#charCount").textContent = `${text.length.toLocaleString("en-US")} حرف`;
-        $("#rowCount").textContent = `${Math.max(0, text.trim().split(/\r?\n/).length - 1).toLocaleString("en-US")} صف`;
-      }
-
-      async function handleFile(file) {
-        const name = file.name.toLowerCase();
-        if (name.endsWith(".xlsx") || name.endsWith(".xls")) {
-          if (!window.XLSX) {
-            toast("مكتبة Excel لم تُحمّل بعد.");
-            return;
-          }
-          const buffer = await file.arrayBuffer();
-          const workbook = XLSX.read(buffer);
-          const sheet = workbook.Sheets[workbook.SheetNames[0]];
-          state.rows = XLSX.utils.sheet_to_json(sheet).slice(0, 1000);
-          $("#pasteInput").value = rowsToCsv(state.rows);
-        } else {
-          const text = await file.text();
-          $("#pasteInput").value = text;
-          state.rows = parseCsv(text).slice(0, 1000);
-        }
-        updateCounters();
-        toast(`تم تحميل ${file.name}.`);
-      }
-
-      function answerQuestion(question) {
-        const p = profileRows(state.rows);
-        let answer = "";
-        if (/أعلى|top|5/i.test(question)) {
-          const rows = groupSum(state.rows, p.category, p.metric, 5);
-          answer = rows.map((item, index) => `${index + 1}. ${item.label}: ${Math.round(item.value).toLocaleString("en-US")}`).join("\n");
-        } else if (/شذوذ|anomal/i.test(question)) {
-          answer = detectAnomalies(p.metric).map((item) => `صف ${item.row}: ${item.value} في ${item.column}`).join("\n") || "لا توجد نقاط شذوذ قوية.";
-        } else if (/trend|اتجاه|ارسم/i.test(question)) {
-          answer = `رسمت الاتجاه باستخدام ${p.date} و${p.metric}. الاستعلام: SELECT ${p.date}, SUM(${p.metric}) FROM dataset GROUP BY ${p.date}.`;
-        } else if (/علاقة|ارتباط|correl/i.test(question)) {
-          const other = p.numeric.find((col) => col !== p.metric) || p.metric;
-          answer = `معامل الارتباط بين ${p.metric} و${other} هو ${correlate(p.metric, other)}.`;
-        } else {
-          answer = `أفضل سؤال تالٍ: قارن ${p.metric} حسب ${p.category} ثم افحص الشذوذ في نفس العمود.`;
-        }
-        $("#messages").insertAdjacentHTML("beforeend", `<div class="msg user">${escapeHtml(question)}</div><div class="msg ai">${escapeHtml(answer).replace(/\n/g, "<br>")}</div>`);
-        $("#messages").scrollTop = $("#messages").scrollHeight;
-      }
-
-      function downloadChart(id) {
-        const canvas = document.getElementById(id);
-        const link = document.createElement("a");
-        link.download = `${id}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      }
-
-      function init() {
-        const grid = $("#scenarioGrid");
-        grid.innerHTML = Object.entries(scenarioLabels).map(([id, label]) => `<button class="scenario-chip" type="button" data-scenario="${id}" aria-pressed="false"><strong>${label}</strong><br><span class="muted">${seeds[id].name}</span></button>`).join("");
-        grid.addEventListener("click", (event) => {
-          const button = event.target.closest("[data-scenario]");
-          if (button) loadScenario(button.dataset.scenario);
-        });
-        $("#pasteInput").addEventListener("input", () => { state.rows = parseCsv($("#pasteInput").value).slice(0, 1000); updateCounters(); });
-        $("#fileInput").addEventListener("change", (event) => event.target.files[0] && handleFile(event.target.files[0]));
-        $("#runAnalysis").addEventListener("click", runAnalysis);
-        $("#generateSynthetic").addEventListener("click", loadSynthetic);
-        $("#clearData").addEventListener("click", () => { state.rows = []; $("#pasteInput").value = ""; updateCounters(); toast("تمت إعادة الضبط."); });
-        $("#themeToggle").addEventListener("click", () => { document.body.dataset.theme = document.body.dataset.theme === "dark" ? "light" : "dark"; });
-        $("#watchVideo").addEventListener("click", () => toast("نسخة الفيديو ستفتح من مكتبة العروض عند ربطها."));
-        $$(".tab").forEach((tab) => tab.addEventListener("click", () => {
-          $$(".tab").forEach((item) => item.setAttribute("aria-selected", "false"));
-          tab.setAttribute("aria-selected", "true");
-          $$("[data-panel]").forEach((panel) => { panel.hidden = panel.dataset.panel !== tab.dataset.tab; });
-        }));
-        $("#chatForm").addEventListener("submit", (event) => {
-          event.preventDefault();
-          const value = $("#chatInput").value.trim();
-          if (!value) return;
-          answerQuestion(value);
-          $("#chatInput").value = "";
-        });
-        document.addEventListener("click", (event) => {
-          const chart = event.target.closest("[data-download-chart]");
-          if (chart) downloadChart(chart.dataset.downloadChart);
-          const explain = event.target.closest("[data-explain]");
-          if (explain) answerQuestion(`اشرح ${explain.dataset.explain}`);
-          const embed = event.target.closest("[data-embed]");
-          if (embed) { navigator.clipboard?.writeText(`<canvas id="${embed.dataset.embed}"></canvas>`); toast("تم نسخ كود التضمين."); }
-        });
-        $("#copyReport").addEventListener("click", () => { navigator.clipboard?.writeText(JSON.stringify(state.aiResult, null, 2)); toast("تم نسخ التقرير."); });
-        $("#downloadPdf").addEventListener("click", () => window.print());
-        $("#shareLink").addEventListener("click", () => { navigator.clipboard?.writeText(location.href + "#playground"); toast("تم نسخ رابط المشاركة."); });
-        $("#rerunTweaks").addEventListener("click", runAnalysis);
-        $("#batchSim").addEventListener("click", () => { $("#batchLog").textContent = "1. تم رفع 5 ملفات\n2. تمت المعالجة\n3. تمت المطابقة\n4. تم تجهيز التصدير"; });
-        $("#testWebhook").addEventListener("click", () => toast("تمت محاكاة webhook بدون إرسال خارجي."));
-        $("#closeLead").addEventListener("click", () => $("#leadCapture").classList.remove("visible"));
-        $$(".widget").forEach((widget) => widget.addEventListener("dragstart", (event) => event.dataTransfer.setData("text/plain", widget.dataset.widget)));
-        $("#dashboardCanvas").addEventListener("dragover", (event) => event.preventDefault());
-        $("#dashboardCanvas").addEventListener("drop", (event) => {
-          event.preventDefault();
-          const text = event.dataTransfer.getData("text/plain");
-          $("#dashboardCanvas").insertAdjacentHTML("beforeend", `<div class="canvas-tile">${escapeHtml(text)}</div>`);
-        });
-        initDuckDb();
-        loadScenario("ecommerce-sales-2024");
-      }
-
-      if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });
-      else init();
-    })();
-  </script>
-  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+  <script type="application/json" id="demo-config">{"slug":"data-analyzer","demoType":"data-analyzer","agentType":"data-analyzer","schemaName":"data_analyzer_demo_schema","locale":"ar-SA","sourcePage":"/demo/data-analyzer/","title":"منصة تحليل البيانات","problem":"تشتت البيانات بين ملفات وتقارير لا تقود إلى قرار واضح","outcome":"ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة","fallbackResult":{"executiveSummary":["هذا اللي طلع معنا: منصة تحليل البيانات يقدر يساعد فريقك في التعامل مع تشتت البيانات بين ملفات وتقارير لا تقود إلى قرار واضح إذا كانت البيانات الأولية واضحة.","المخرجات المتوقعة هي ملخص تنفيذي، مؤشر جاهزية، شذوذ محتمل، ولوحات مقترحة، وتبقى للمراجعة البشرية قبل أي قرار تشغيلي."],"score":82,"keyInsights":["السيناريو مناسب لفرق الإدارة والبيانات داخل السوق السعودي.","العينة تكفي لتجربة الفكرة، لكنها ما تمثل كل بيانات الشركة.","ربط أنظمة الشركة يرفع دقة المؤشرات ويخفف العمل اليدوي."],"risks":["لا ترفع بيانات حساسة في النسخة العامة.","النتائج تقديرية وتحتاج اعتماد صاحب القرار.","ضعف جودة البيانات قد يغير التوصيات."],"recommendedActions":["ابدأ بعينة بيانات غير حساسة.","حدد مؤشر نجاح واحد قبل التوسع.","اطلب نسخة مخصصة إذا تبغى ربط الأنظمة والصلاحيات."],"businessImpact":"تقليل وقت التحليل اليدوي وتحويل التجربة إلى قرار قابل للقياس حسب حجم البيانات وتكرار العملية.","integrationReadiness":["جاهز لربط API","يدعم صلاحيات الوصول","يدعم سجل التدقيق","قابل للتصدير كتقرير"],"nextSteps":["راجع التقرير مع الفريق","حدد الأنظمة المطلوب ربطها","احجز مكالمة 15 دقيقة مع Bright AI"]}}</script>
+  <script type="application/json" id="demo-samples">[["متجر إلكتروني","الشهر، الزيارات، الطلبات، المرتجعات، الإيراد: يناير ٩٢٠٠، ٤٢٠، ٢٨، ٣٢٠٠٠٠. فبراير ١١٠٠٠، ٥١٠، ٥٧، ٣٨٠٠٠٠."],["شركة خدمات","مصدر العملاء: إعلانات، واتساب، توصيات. معدل التحويل ٤٪، ١٢٪، ١٨٪. تكلفة العميل متفاوتة بين القنوات."],["مصنع","إنتاج يومي، هدر، توقفات، طلبات متأخرة. ارتفاع التوقفات في وردية المساء."]]</script>
+  <script defer src="/frontend/js/runtime-config.min.js"></script>
+  <script defer src="/frontend/js/api-gateway.min.js"></script>
+  <script defer src="/assets/js/demo-premium.js"></script>
 </body>
 </html>

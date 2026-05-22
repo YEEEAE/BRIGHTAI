@@ -681,9 +681,15 @@ function page(demo) {
       <a href="/demo/">كل الديموهات</a>
       <a href="/services/">الخدمات</a>
       <a href="${service}">صفحة الخدمة</a>
-      <a href="/contact/">تواصل معنا</a>
-    </nav>
   </header>
+
+  <nav class="breadcrumbs" aria-label="مسار التنقل">
+    <ol>
+      <li><a href="/">الرئيسية</a></li>
+      <li><a href="/demo/">الديموهات</a></li>
+      <li aria-current="page">${esc(demo.name)}</li>
+    </ol>
+  </nav>
 
   <main>
     <section class="hero section">

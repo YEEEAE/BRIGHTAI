@@ -329,7 +329,22 @@ function page(demo) {
         <dl><div><dt>النموذج</dt><dd><span dir="ltr">${esc(demo.model)}</span></dd></div><div><dt>النطاق</dt><dd>${esc(demo.sector)}</dd></div><div><dt>الحماية</dt><dd>لا تخزين لبيانات الديمو.</dd></div></dl>
       </aside>
     </section>
-    <nav class="breadcrumb section" aria-label="مسار الصفحة" itemscope itemtype="https://schema.org/BreadcrumbList"><span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="/"><span itemprop="name">الرئيسية</span></a><meta itemprop="position" content="1"></span><span aria-hidden="true">›</span><span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><a itemprop="item" href="/demo/"><span itemprop="name">الديموهات</span></a><meta itemprop="position" content="2"></span><span aria-hidden="true">›</span><span itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem"><span itemprop="name">${esc(demo.title)}</span><meta itemprop="position" content="3"></span></nav>
+    <nav class="breadcrumbs" aria-label="مسار التنقل" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <ol>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/"><span itemprop="name">الرئيسية</span></a>
+          <meta itemprop="position" content="1">
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a itemprop="item" href="/demo/"><span itemprop="name">الديموهات</span></a>
+          <meta itemprop="position" content="2">
+        </li>
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+          <span itemprop="name">${esc(demo.title)}</span>
+          <meta itemprop="position" content="3">
+        </li>
+      </ol>
+    </nav>
     <section class="section use-cases" aria-labelledby="who-heading"><h2 id="who-heading">لمن هذا الديمو؟</h2><div class="case-grid">${cases}</div></section>
     <section class="section scenario-simulator" aria-labelledby="scenario-heading"><h2 id="scenario-heading">محاكي السيناريوهات</h2><div class="case-grid">${scenarioCards}</div></section>
     <section class="section demo-workspace" aria-labelledby="samples-heading"><div class="workspace-copy input-area"><h2 id="samples-heading">منطقة الإدخال</h2><p>اختر سيناريو أو اكتب وصفاً سعودياً غير حساس. التحقق والعداد يعملان فورياً قبل تشغيل التحليل.</p><div class="sample-grid">${sampleButtons}</div></div><form class="demo-form" id="demo-form" data-demo-form><input type="hidden" name="demoType" value="${esc(demo.demoType)}"><label for="scenario">السيناريو</label><select id="scenario" name="scenario">${options}</select><label for="demo-input">البيانات المختصرة</label><textarea id="demo-input" name="input" rows="7" required minlength="20" maxlength="1200" placeholder="مثال: شركة في الرياض لديها ضغط طلبات أسبوعي وتحتاج تقريراً تنفيذياً بدون استخدام بيانات حساسة.">${esc(demo.samples[0][1])}</textarea><p class="privacy-note" data-input-counter>٠ / ١٢٠٠ حرف</p><details class="advanced-settings"><summary>الإعدادات المتقدمة</summary><label for="goal">هدف القرار</label><input id="goal" name="goal" value="${esc(demo.outcome)}"><label for="systems">الأنظمة المحتملة للربط</label><input id="systems" name="systems" value="نظام داخلي، ملفات بيانات، واتساب، أو API"></details><div class="form-actions"><button class="btn btn-primary" type="submit">شغّل التحليل</button><button class="btn btn-secondary" type="button" data-reset-demo>جرّب سيناريو آخر</button></div><p class="privacy-note">بياناتك تبقى عندك، استخدم بيانات وهمية أو منزوعة الحساسية فقط.</p></form></section>
