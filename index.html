@@ -983,20 +983,19 @@
 
                         <div class="hero-cta-group" role="group" aria-label="إجراءات سريعة">
                             <a class="btn btn-primary btn-lg hero-cta-glow"
-                                href="https://wa.me/966538229013?text=%D8%A3%D9%87%D9%84%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A"
-                                target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+                                href="/consultation/"
+                                data-analytics-event="consultation_request" data-cta-location="homepage" aria-label="احجز جلسة تشخيص AI">
                                 <svg class="btn-ic" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
-                                    <path fill="currentColor"
-                                        d="M19.11 17.21c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.13-.42-2.15-1.33-.79-.71-1.33-1.58-1.49-1.85-.16-.27-.02-.42.12-.55.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.02-.22-.53-.45-.46-.61-.47l-.52-.01c-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27 0 1.34.97 2.63 1.11 2.81.14.18 1.91 2.92 4.63 4.09.65.28 1.16.45 1.55.58.65.21 1.24.18 1.71.11.52-.08 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32zM12.04 3C7.04 3 3 7.04 3 12.04c0 1.77.46 3.45 1.32 4.94L3 21l4.18-1.31a8.99 8.99 0 0 0 4.86 1.4h.01c5 0 9.04-4.04 9.04-9.04 0-2.41-.94-4.68-2.65-6.39A8.96 8.96 0 0 0 12.04 3z" />
+                                    <path fill="currentColor" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                                 </svg>
-                                <span>احجز استشارة مجانية</span>
+                                <span>احجز جلسة تشخيص AI</span>
                             </a>
 
-                            <a class="btn btn-secondary btn-lg" href="/demo/" aria-label="جرّب أدوات Bright AI">
+                            <a class="btn btn-secondary btn-lg" href="/demo/" data-analytics-event="request_demo" data-cta-location="homepage" aria-label="جرّب نماذج Bright AI">
                                 <svg class="btn-ic" viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
                                     <path fill="currentColor" d="M8 5v14l11-7z" />
                                 </svg>
-                                <span>جرّب أدواتنا</span>
+                                <span>جرّب نماذج Bright AI</span>
                             </a>
                         </div>
                     </div>
@@ -2455,7 +2454,14 @@
                 data-cta-location="homepage">مقال يدعم قرار التبني</a>،
             <a class="internal-linking-inline" href="/sectors/">ابدأ من القطاع المناسب</a>
         </div>
-    </footer>
+    
+<div class="sitewide-cta" data-cta-section="footer">
+<p>اتخذ الخطوة الأولى نحو التحول الرقمي</p>
+<a href="/consultation/" class="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">احجز جلسة تشخيص AI</a>
+<a href="/demo/" class="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">جرّب نماذج Bright AI</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013&text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D8%AD%D9%88%D9%84%20%D8%AD%D9%84%D9%88%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">تواصل عبر واتساب</a>
+</div>
+</footer>
 
     <button aria-label="العودة إلى الأعلى"
         class="to-top fixed bottom-8 right-8 z-40 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20 translate-y-20 opacity-0 transition-all duration-300 cursor-pointer hover:bg-indigo-500 hover:-translate-y-1 border-none"
@@ -2499,7 +2505,7 @@
             </button>
         </div>
         <a id="bai-chat-wa" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank"
-            rel="noopener noreferrer">
+            rel="noopener noreferrer" data-analytics-event="whatsapp_click" data-cta-location="in-content">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                 <path
                     d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z">

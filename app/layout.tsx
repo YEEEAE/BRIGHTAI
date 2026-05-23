@@ -44,7 +44,20 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
           `}
         </Script>
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <footer className="border-t border-white/10 bg-black/40 pt-12 pb-8 px-6" style={{ marginTop: '3rem' }}>
+          <div style={{ maxWidth: '1120px', margin: '0 auto', textAlign: 'center' }}>
+            <div className="sitewide-cta" data-cta-section="nextjs-footer" style={{ marginBottom: '2rem' }}>
+              <p>اتخذ الخطوة الأولى نحو التحول الرقمي</p>
+              <a href="/consultation/" className="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">احجز جلسة تشخيص AI</a>
+              <a href="/demo/" className="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">جرّب نماذج Bright AI</a>
+              <a href="https://api.whatsapp.com/send?phone=966538229013" className="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">تواصل عبر واتساب</a>
+            </div>
+            <p style={{ color: '#64748b', fontSize: '0.85rem' }}>© {new Date().getFullYear()} Bright AI. جميع الحقوق محفوظة.</p>
+          </div>
+        </footer>
+      </body>
     </html>
   );
 }

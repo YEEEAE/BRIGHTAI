@@ -651,11 +651,11 @@
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
 
-                <a aria-label="التبديل للعربية" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/ai-workflows/" title="النسخة العربية">
+                <a aria-label="Switch to Arabic" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/ai-workflows/" title="Arabic version">
                     <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
                     <span class="tracking-wide">AR</span>
                 </a>
-                <a aria-label="Start your transformation journey on WhatsApp" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Hit us up on WhatsApp">
+                <a aria-label="Start your transformation journey on WhatsApp" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Hit us up on WhatsApp" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     Start Your Journey
                 </a>
@@ -791,7 +791,7 @@
             </ul>
 
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     Start Your Journey
                 </a>
@@ -1171,7 +1171,7 @@
                 <a href="/demo/" class="px-8 py-4 bg-gradient-to-r from-indigo-600 to-emerald-600 hover:from-indigo-500 hover:to-emerald-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-indigo-500/25 transition-all transform hover:scale-105">
                     Check Out the Demos (Free AI Trial)
                 </a>
-                <a href="https://api.whatsapp.com/send?phone=966538229013" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-xl font-bold text-lg transition-all flex items-center gap-2">
+                <a href="https://api.whatsapp.com/send?phone=966538229013" class="px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-xl font-bold text-lg transition-all flex items-center gap-2" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle"></iconify-icon>
                     Hit Us Up for a Consultation
                 </a>
@@ -1211,7 +1211,14 @@
                 <li><a href="/contact/" style="color:#94a3b8; text-decoration:none;">Contact Us</a></li>
             </ul>
         </div>
-    </footer>
+    
+<div class="sitewide-cta" data-cta-section="footer">
+<p>Take the first step toward digital transformation</p>
+<a href="/en/consultation/" class="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">Book AI Diagnosis Session</a>
+<a href="/en/demo/" class="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">Try Bright AI Models</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013&text=I%27d%20like%20an%20AI%20consultation" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">Chat on WhatsApp</a>
+</div>
+</footer>
     <script src="/frontend/js/clarity-events.js" defer=""></script>
 
 

@@ -654,16 +654,16 @@
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
 
-                <a aria-label="التبديل إلى العربية" class="flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-1 sm:mx-2 shadow-sm font-['Tajawal']" href="/tools/" title="النسخة العربية">
+                <a aria-label="Switch to Arabic" class="flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-1 sm:mx-2 shadow-sm font-['Tajawal']" href="/tools/" title="Arabic version">
                     <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
-                    <span class="hidden sm:inline-block tracking-wide">العربية</span>
+                    <span class="hidden sm:inline-block tracking-wide">AR</span>
                 </a>
 
-                <a aria-label="التبديل للعربية" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/tools/" title="النسخة العربية">
+                <a aria-label="Switch to Arabic" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/tools/" title="Arabic version">
                     <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
                     <span class="tracking-wide">AR</span>
                 </a>
-                <a aria-label="Start transformation on WhatsApp" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Chat with us">
+                <a aria-label="Start transformation on WhatsApp" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Chat with us" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     Start Journey
                 </a>
@@ -800,7 +800,7 @@
             </ul>
 
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     Chat With Us
                 </a>
@@ -1171,7 +1171,14 @@
                 <li><a href="/contact/" style="color:#94a3b8; text-decoration:none;">Contact</a></li>
             </ul>
         </div>
-    </footer>
+    
+<div class="sitewide-cta" data-cta-section="footer">
+<p>Take the first step toward digital transformation</p>
+<a href="/en/consultation/" class="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">Book AI Diagnosis Session</a>
+<a href="/en/demo/" class="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">Try Bright AI Models</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013&text=I%27d%20like%20an%20AI%20consultation" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">Chat on WhatsApp</a>
+</div>
+</footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js" defer=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer=""></script>
@@ -1203,8 +1210,8 @@
             <li><a href="/blog/hr-automation-case-study/" style="color:#e2e8f0;text-decoration:none;">HR Automation Case
                     Study</a></li>
         </ul>
-        <div class="internal-linking-cta-wrap"><strong style="color:#fff">Tools by Industry:</strong> <a class="internal-linking-inline" href="/sectors/ecommerce/">Retail &amp; Ecom</a>، <a class="internal-linking-inline" href="/sectors/healthcare/">Healthcare AI</a>، <a class="internal-linking-inline" href="/sectors/finance/">Fintech &amp; Finance</a></div>
-        <div class="internal-linking-cta-wrap"><strong style="color:#fff">Done experimenting?</strong> <a class="internal-linking-inline" href="/services/">Explore Enterprise Gear</a>، <a class="internal-linking-inline" href="/docs/ai-bots/">Launch a Bot</a>، <a class="internal-linking-inline" href="/en/ai-agent/">Deploy an AI Agent</a>، <a class="internal-linking-inline" href="/en/consultation/">Book
+        <div class="internal-linking-cta-wrap"><strong style="color:#fff">Tools by Industry:</strong> <a class="internal-linking-inline" href="/sectors/ecommerce/">Retail &amp; Ecom</a>, <a class="internal-linking-inline" href="/sectors/healthcare/">Healthcare AI</a>, <a class="internal-linking-inline" href="/sectors/finance/">Fintech &amp; Finance</a></div>
+        <div class="internal-linking-cta-wrap"><strong style="color:#fff">Done experimenting?</strong> <a class="internal-linking-inline" href="/services/">Explore Enterprise Gear</a>, <a class="internal-linking-inline" href="/docs/ai-bots/">Launch a Bot</a>, <a class="internal-linking-inline" href="/en/ai-agent/">Deploy an AI Agent</a>, <a class="internal-linking-inline" href="/en/consultation/">Book
                 a Consultation</a></div>
     </section>
     <script src="/frontend/js/clarity-events.js" defer=""></script>

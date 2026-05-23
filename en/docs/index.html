@@ -788,11 +788,11 @@
                 <button aria-label="Search site" class="mobile-search-btn search-mobile">
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
-                <a aria-label="التبديل للعربية" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/docs/" title="النسخة العربية">
+                <a aria-label="Switch to Arabic" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/docs/" title="Arabic version">
                     <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
                     <span class="tracking-wide">AR</span>
                 </a>
-                <a aria-label="Start your transformation on WhatsApp" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Chat with us">
+                <a aria-label="Start your transformation on WhatsApp" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Chat with us" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     Start Transformation
                 </a>
@@ -923,7 +923,7 @@
                 </li>
             </ul>
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     Get Started Now
                 </a>
@@ -1399,7 +1399,7 @@
                     <p class="text-slate-300 mb-6">Our team is ready to help you with any questions or deep tech setup.
                     
                     </p><div class="flex flex-wrap justify-center gap-4">
-                        <a class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105" href="https://api.whatsapp.com/send?phone=966538229013" style="background:linear-gradient(135deg,#25D366,#128C7E)">
+                        <a class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all hover:scale-105" href="https://api.whatsapp.com/send?phone=966538229013" style="background:linear-gradient(135deg,#25D366,#128C7E)" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                             <iconify-icon icon="logos:whatsapp-icon" width="20"></iconify-icon>
                             Chat on WhatsApp
                         </a>
@@ -1422,19 +1422,19 @@
                 Arabia</a></div>
         <div class="internal-linking-cta-wrap">
             <strong style="color:#fff">High Velocity Links:</strong>
-            <a class="internal-linking-inline" href="/en/services/">All Services</a>،
-            <a class="internal-linking-inline" href="/en/ai-agent/">AI Agent Hub</a>،
-            <a class="internal-linking-inline" href="/en/smart-automation/">Smart Automation</a>،
-            <a class="internal-linking-inline" href="/en/data-analysis/">Data Analysis</a>،
-            <a class="internal-linking-inline" href="/demo/ai-tenders-analysis/">Contract AI</a>،
-            <a class="internal-linking-inline" href="/demo/smart-medical-archive/">Medical Archive</a>،
-            <a class="internal-linking-inline" href="/blog/">Tech Articles</a>،
+            <a class="internal-linking-inline" href="/en/services/">All Services</a>,
+            <a class="internal-linking-inline" href="/en/ai-agent/">AI Agent Hub</a>,
+            <a class="internal-linking-inline" href="/en/smart-automation/">Smart Automation</a>,
+            <a class="internal-linking-inline" href="/en/data-analysis/">Data Analysis</a>,
+            <a class="internal-linking-inline" href="/demo/ai-tenders-analysis/">Contract AI</a>,
+            <a class="internal-linking-inline" href="/demo/smart-medical-archive/">Medical Archive</a>,
+            <a class="internal-linking-inline" href="/blog/">Tech Articles</a>,
             <a class="internal-linking-inline" href="/docs/">Docs in Arabic</a>
         </div>
         <div class="internal-linking-cta-wrap">
             <strong style="color:#fff">Tender Ops:</strong>
-            <a class="internal-linking-inline" href="/demo/ai-tenders-analysis/">Contract AI Overview</a>،
-            <a class="internal-linking-inline" href="/en/services/">Implementation Paths</a>،
+            <a class="internal-linking-inline" href="/demo/ai-tenders-analysis/">Contract AI Overview</a>,
+            <a class="internal-linking-inline" href="/en/services/">Implementation Paths</a>,
             <a class="internal-linking-inline" href="/en/consultation/">Request a Consultation</a>
         </div>
     </main>
@@ -1465,7 +1465,14 @@
                 <a class="hover:text-indigo-400" href="/en/consultation/">Contact</a>
             </div>
         </div>
-    </footer>
+    
+<div class="sitewide-cta" data-cta-section="footer">
+<p>Take the first step toward digital transformation</p>
+<a href="/en/consultation/" class="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">Book AI Diagnosis Session</a>
+<a href="/en/demo/" class="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">Try Bright AI Models</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013&text=I%27d%20like%20an%20AI%20consultation" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">Chat on WhatsApp</a>
+</div>
+</footer>
     <script defer="" src="/frontend/js/runtime-config.min.js"></script>
 <script defer="" src="/frontend/js/navigation.min.js"></script>
     <script>

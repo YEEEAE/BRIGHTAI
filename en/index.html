@@ -1241,7 +1241,7 @@
                     <span class="tracking-wide">AR</span>
                 </a>
 
-                <a aria-label="Start your digital transformation via WhatsApp" class="nav-cta nav-cta-desktop hidden lg:flex" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Hit us up on WhatsApp">
+                <a aria-label="Start your digital transformation via WhatsApp" class="nav-cta nav-cta-desktop hidden lg:flex" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="Hit us up on WhatsApp" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     Start the Journey
                 </a>
@@ -1413,7 +1413,7 @@
 
             <div class="absolute bottom-0 left-0 right-0 p-6 pt-10 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-20 pointer-events-none w-full">
                 <div class="pointer-events-auto flex flex-col gap-3">
-                    <a class="flex items-center justify-center gap-3 w-full px-4 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 text-white font-bold text-[15px] shadow-[0_8px_20px_-6px_rgba(99,102,241,0.5)] hover:shadow-[0_12px_24px_-8px_rgba(99,102,241,0.7)] active:scale-[0.98] transition-all" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" rel="noopener noreferrer">
+                    <a class="flex items-center justify-center gap-3 w-full px-4 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 text-white font-bold text-[15px] shadow-[0_8px_20px_-6px_rgba(99,102,241,0.5)] hover:shadow-[0_12px_24px_-8px_rgba(99,102,241,0.7)] active:scale-[0.98] transition-all" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" rel="noopener noreferrer" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                         <iconify-icon icon="lucide:message-circle" width="20"></iconify-icon>
                         Start Your Tech Transformation
                     </a>
@@ -1539,23 +1539,27 @@
                             in the right place.
                         </p>
                         <div aria-label="Main conversion paths" class="flex flex-wrap gap-3 mb-8">
-                            <a class="btn bai-inline-0197" href="/consultation/">
-                                Free AI Consultation for Saudi Enterprises
+                            <a class="btn bai-inline-0197" href="/en/consultation/" data-analytics-event="consultation_request" data-cta-location="homepage">
+                                Book AI Diagnosis Session
                             </a>
-                            <a class="btn bai-inline-0198" href="/data-analysis/">
-                                Data Analysis &amp; Business Intelligence
+                            <a class="btn bai-inline-0198" href="/en/demo/" data-analytics-event="request_demo" data-cta-location="homepage">
+                                Try Bright AI Models
                             </a>
-                            <a class="btn bai-inline-0199" href="/smart-automation/">
-                                Smart RPA Automation Solutions
+                            <a class="btn bai-inline-0199" href="/en/services/">
+                                Browse Enterprise Services
                             </a>
                         </div>
                         <div class="hero-actions flex flex-wrap gap-4">
-                            <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" style="padding: 1rem 2.5rem;" target="_blank">
-                                Start the Journey
+                            <a class="btn primary" href="/en/consultation/" data-analytics-event="consultation_request" data-cta-location="homepage" style="padding: 1rem 2.5rem;">
+                                Book AI Diagnosis Session
                             </a>
-                            <a class="btn bai-inline-0200" href="/demo/">
+                            <a class="btn bai-inline-0200" href="/en/demo/" data-analytics-event="request_demo" data-cta-location="homepage">
                                 <iconify-icon icon="lucide:play-circle" style="vertical-align: middle; margin-left: 8px;"></iconify-icon>
-                                Try the system for free
+                                Try Bright AI Models
+                            </a>
+                            <a class="btn bai-inline-0200" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="homepage">
+                                <iconify-icon icon="lucide:message-circle" style="vertical-align: middle; margin-left: 8px;"></iconify-icon>
+                                Chat on WhatsApp
                             </a>
                         </div>
 
@@ -1652,7 +1656,7 @@
                         <h3 class="text-lg font-bold text-white mb-2">Digital Transformation &amp; AI Consultation</h3>
                         <p class="text-slate-400 text-sm mb-4">Expert consultation in digital transformation and
                             artificial intelligence for Saudi enterprises and SMEs.
-                        <a class="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 font-bold text-sm transition-colors mt-auto" href="/consultation/">تواصل مع Bright AI للاستشارة</a>
+                        <a class="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 font-bold text-sm transition-colors mt-auto" href="/consultation/">Contact Bright AI for Consultation</a>
                     </p></div>
                     <div class="group relative bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-indigo-500/50 transition-all flex flex-col">
                         <h3 class="text-lg font-bold text-white mb-2">Smart Robotics</h3>
@@ -2103,9 +2107,9 @@
                     </div>
                 </div>
                 <div class="bai-inline-0206">
-                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20book%20a%20BI%20demo"><iconify-icon icon="lucide:calendar-check"></iconify-icon> Book a BI Demo</a>
-                    <a class="btn" href="https://api.whatsapp.com/send?phone=966538229013"><iconify-icon icon="lucide:life-buoy"></iconify-icon> 24/7 Support</a>
-                    <a class="btn ghost" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Team%20Training"><iconify-icon icon="lucide:graduation-cap"></iconify-icon> Train the Squad</a>
+                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20book%20a%20BI%20demo" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:calendar-check"></iconify-icon> Book a BI Demo</a>
+                    <a class="btn" href="https://api.whatsapp.com/send?phone=966538229013" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:life-buoy"></iconify-icon> 24/7 Support</a>
+                    <a class="btn ghost" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Team%20Training" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:graduation-cap"></iconify-icon> Train the Squad</a>
                 </div>
                 <div class="mt-8 text-center flex justify-center">
                     <a class="inline-flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-300 font-bold transition-colors" href="/data-analysis/">Learn more about data analysis &amp; BI services <iconify-icon icon="lucide:arrow-right"></iconify-icon></a>
@@ -2236,7 +2240,7 @@
                     <li><span class="check">✓</span> 99.99% Uptime SLA</li>
                     <li><span class="check">✓</span> Custom SLA + free training</li>
                 </ul>
-                <a class="btn primary cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20talk%20to%20a%20consultant"><iconify-icon icon="lucide:phone-call"></iconify-icon> Talk to an expert</a>
+                <a class="btn primary cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20talk%20to%20a%20consultant" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:phone-call"></iconify-icon> Talk to an expert</a>
             </div>
         </section>
         <section class="section pt-8" id="saudi-use-cases">
@@ -2294,7 +2298,7 @@
                             <li>Real-time data analysis</li>
                             <li>Up to 50 km flight range</li>
                         </ul>
-                        <a class="btn primary cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20a%20drone%20demo"><iconify-icon icon="lucide:play"></iconify-icon> Request a Demo</a>
+                        <a class="btn primary cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20a%20drone%20demo" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:play"></iconify-icon> Request a Demo</a>
                     </div>
                     <div class="robot">
                         <picture>
@@ -2310,7 +2314,7 @@
                             <li>WMS integration</li>
                             <li>Collision avoidance (totally safe)</li>
                         </ul>
-                        <a class="btn cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20calculate%20ROI"><iconify-icon icon="lucide:calculator"></iconify-icon> Calculate ROI</a>
+                        <a class="btn cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20calculate%20ROI" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:calculator"></iconify-icon> Calculate ROI</a>
                     </div>
                     <div class="robot">
                         <picture>
@@ -2327,7 +2331,7 @@
                             <li>Performance optimization</li>
                             <li>Smart cities/buildings/energy</li>
                         </ul>
-                        <a class="btn ghost cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Watch%20digital%20twins%20demo"><iconify-icon icon="lucide:monitor-play"></iconify-icon> Watch Demo</a>
+                        <a class="btn ghost cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Watch%20digital%20twins%20demo" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:monitor-play"></iconify-icon> Watch Demo</a>
                     </div>
                     <div class="robot">
                         <picture>
@@ -2343,7 +2347,7 @@
                             <li>Interactive screens</li>
                             <li>For hotels/airports/malls/hospitals</li>
                         </ul>
-                        <a class="btn primary cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Rent%20a%20robot"><iconify-icon icon="lucide:shopping-bag"></iconify-icon> Rent a Bot</a>
+                        <a class="btn primary cta" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Rent%20a%20robot" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:shopping-bag"></iconify-icon> Rent a Bot</a>
                     </div>
                 </div>
                 <div class="mt-12 text-center flex justify-center">
@@ -2392,8 +2396,8 @@
                     </div>
                 </div>
                 <div class="bai-inline-0206">
-                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Schedule%20a%20demo"><iconify-icon icon="lucide:calendar"></iconify-icon> Schedule a Demo</a>
-                    <a class="btn" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Download%20case%20study"><iconify-icon icon="lucide:download"></iconify-icon> Download Case Study</a>
+                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Schedule%20a%20demo" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:calendar"></iconify-icon> Schedule a Demo</a>
+                    <a class="btn" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Download%20case%20study" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:download"></iconify-icon> Download Case Study</a>
                 </div>
                 <div class="mt-8 text-center flex justify-center">
                     <a class="inline-flex items-center justify-center gap-2 text-indigo-400 hover:text-indigo-300 font-bold transition-colors" href="/demo/smart-medical-archive/">Learn more about the smart medical archive and library
@@ -2517,7 +2521,7 @@
                     </div>
                 </div>
                 <div style="margin-top:16px">
-                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Build%20a%20custom%20bot"><iconify-icon icon="lucide:wand-2"></iconify-icon> Build your custom ai bot</a>
+                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Build%20a%20custom%20bot" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:wand-2"></iconify-icon> Build your custom ai bot</a>
                 </div>
             </div>
         </section>
@@ -2878,7 +2882,7 @@
                         <span>Expected Savings:</span>
                         <strong id="roiOut" style="font-family:var(--mono)">~2.5M SAR/year</strong>
                     </div>
-                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20calculate%20savings" style="margin-top:10px;width:100%"><iconify-icon icon="lucide:calculator"></iconify-icon>
+                    <a class="btn primary" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=I'd%20like%20to%20calculate%20savings" style="margin-top:10px;width:100%" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:calculator"></iconify-icon>
                         Calculate Expected Savings</a>
                 </div>
             </div>
@@ -2957,7 +2961,7 @@
                 <div class="bai-inline-0206">
                     <a class="btn primary" href="/blog/"><iconify-icon icon="lucide:grid-3x3"></iconify-icon> View All
                         Articles</a>
-                    <a class="btn" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Subscribe%20to%20newsletter"><iconify-icon icon="lucide:mail"></iconify-icon> Subscribe to Newsletter</a>
+                    <a class="btn" href="https://api.whatsapp.com/send?phone=966538229013&amp;text=Subscribe%20to%20newsletter" data-analytics-event="whatsapp_click" data-cta-location="in-content"><iconify-icon icon="lucide:mail"></iconify-icon> Subscribe to Newsletter</a>
                 </div>
             </div>
         </section>
@@ -3792,7 +3796,14 @@
             <a class="internal-linking-inline" href="/demo/smart-medical-archive/">Smart Medical Archive</a>,
             <a class="internal-linking-inline" href="/sitemap/">Sitemap</a>
         </div>
-    </footer>
+    
+<div class="sitewide-cta" data-cta-section="footer">
+<p>Take the first step toward digital transformation</p>
+<a href="/en/consultation/" class="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">Book AI Diagnosis Session</a>
+<a href="/en/demo/" class="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">Try Bright AI Models</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013&text=I%27d%20like%20an%20AI%20consultation" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">Chat on WhatsApp</a>
+</div>
+</footer>
 
     <button aria-label="Back to Top" class="to-top fixed bottom-8 left-8 z-40 w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center shadow-lg shadow-indigo-500/20 translate-y-20 opacity-0 transition-all duration-300 cursor-pointer hover:bg-indigo-500 hover:-translate-y-1 border-none" id="toTop" type="button">
         <iconify-icon class="text-xl" icon="lucide:arrow-up"></iconify-icon>

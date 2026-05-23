@@ -18,7 +18,8 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "**/prisma/generated/**",
   "scripts/**",
   "reports/**",
-  "brightai_orchestrator_output/**"
+  "brightai_orchestrator_output/**",
+  "ai-reject-dashboard/**"
 ];
 
 const ATTR_REFERENCE_REGEX = /\b(href|src|action|poster|data-href|data-src)\s*=\s*(['"])([^"'<>]+)\2/gi;

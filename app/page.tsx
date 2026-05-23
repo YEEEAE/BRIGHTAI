@@ -78,10 +78,10 @@ export default function HomePage() {
           </p>
 
           <div className="hero__actions" aria-label="إجراءات رئيسية">
-            <Link className="button button--primary" href="/consultation/">
+            <Link className="button button--primary" href="/consultation/" data-analytics-event="consultation_request" data-cta-location="homepage">
               احجز جلسة تشخيص AI
             </Link>
-            <Link className="button button--secondary" href="/services/">
+            <Link className="button button--secondary" href="/services/" data-analytics-event="services_view" data-cta-location="homepage">
               استعرض الخدمات المؤسسية
             </Link>
           </div>

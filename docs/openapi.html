@@ -716,7 +716,7 @@
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
                 
-                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب">
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -853,7 +853,7 @@
             </ul>
             
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -1563,7 +1563,7 @@ curl -X POST https://brightai.site/api/ai/summary \
             </p><ul style="margin-inline-start: 20px; margin-top: 10px;">
                 <li><strong>الموقع:</strong> <a href="/" style="color: #667eea;"><span class="latin-term">https://brightai.site</span></a></li>
                 <li><strong>البريد الإلكتروني:</strong> <span class="latin-term">yazeed1job@gmail.com</span></li>
-                <li><strong>واتساب:</strong> <a href="https://api.whatsapp.com/send?phone=966538229013" style="color: #667eea;"><span class="latin-term">+966538229013</span></a></li>
+                <li><strong>واتساب:</strong> <a href="https://api.whatsapp.com/send?phone=966538229013" style="color: #667eea;" data-analytics-event="whatsapp_click" data-cta-location="in-content"><span class="latin-term">+966538229013</span></a></li>
             </ul>
             
             <h3 style="margin-top: 20px;">التحديثات</h3>
@@ -1594,7 +1594,14 @@ curl -X POST https://brightai.site/api/ai/summary \
 <footer>
         <p>© 2024 BrightAI - جميع الحقوق محفوظة</p>
         <p style="margin-top: 10px;">منصة الذكاء الاصطناعي للسوق السعودي</p>
-    </footer>
+    
+<div class="sitewide-cta" data-cta-section="footer">
+<p>اتخذ الخطوة الأولى نحو التحول الرقمي</p>
+<a href="/consultation/" class="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">احجز جلسة تشخيص AI</a>
+<a href="/demo/" class="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">جرّب نماذج Bright AI</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013&text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D8%AD%D9%88%D9%84%20%D8%AD%D9%84%D9%88%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">تواصل عبر واتساب</a>
+</div>
+</footer>
 <script src="/frontend/js/clarity-events.js" defer=""></script>
 
 

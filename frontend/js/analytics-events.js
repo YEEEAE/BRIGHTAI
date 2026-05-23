@@ -5,6 +5,7 @@
   var startedFormsKey = "brightai_started_forms";
   var scrollMarks = { 50: false, 90: false };
   var scrollTicking = false;
+  var viewedPricingKey = "brightai_viewed_pricing";
 
   function isReady() {
     return typeof window.gtag === "function";
@@ -97,7 +98,10 @@
     if (href.indexOf("/consultation/") === 0 || /استشارة|جلسة/.test(lowerText)) return "consultation_request";
     if (href.indexOf("/contact/") === 0 || /تواصل|اتصل|مبيعات/.test(lowerText)) return "generate_lead";
     if (/^https?:\/\//i.test(href) && !href.includes("brightai.site")) return "outbound_click";
-    if (/\.(pdf|docx?|xlsx?|csv|zip)(\?|#|$)/i.test(href)) return "file_download";
+    if (/\.(pdf|docx?|xlsx?|csv|zip)(\?|#|$)/i.test(href)) {
+      if (/guide|دليل|ebook|كتاب|whitepaper|تقرير|report/i.test(lowerText + " " + href)) return "lead_magnet_submit";
+      return "file_download";
+    }
     return null;
   }
 
@@ -154,12 +158,12 @@
       });
       return;
     }
-    var eventName = form.getAttribute("data-analytics-submit-event") || (formId.indexOf("consultation") !== -1 ? "consultation_request" : "contact_form_submit");
+    var eventName = form.getAttribute("data-analytics-submit-event") || (formId.indexOf("consultation") !== -1 ? "consultation_request" : (formId.indexOf("lead") !== -1 || formId.indexOf("magnet") !== -1 ? "lead_magnet_submit" : "contact_form_submit"));
     track(eventName, {
       form_id: formId,
       cta_location: nearestSection(form)
     });
-    if (eventName !== "contact_form_submit") {
+    if (eventName !== "contact_form_submit" && eventName !== "lead_magnet_submit") {
       track("contact_form_submit", {
         form_id: formId,
         cta_location: nearestSection(form)
@@ -206,6 +210,18 @@
     });
   }
 
+  function trackPricingView() {
+    var path = window.location.pathname;
+    if (path.indexOf("/pricing/") !== -1 || path.indexOf("/demo/pricing/") !== -1) {
+      if (sessionStorage.getItem(viewedPricingKey)) return;
+      try { sessionStorage.setItem(viewedPricingKey, "1"); } catch (e) {}
+      track("pricing_view", {
+        page_path: path,
+        pricing_type: path.indexOf("/demo/pricing/") !== -1 ? "estimator" : "pricing_page"
+      });
+    }
+  }
+
   window.BrightAIAnalytics = {
     track: track,
     trackFormSuccess: function (formId, eventName) {
@@ -222,8 +238,12 @@
   document.addEventListener("submit", handleFormSubmit, true);
   window.addEventListener("scroll", handleScroll, { passive: true });
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", track404);
+    document.addEventListener("DOMContentLoaded", function () {
+      track404();
+      trackPricingView();
+    });
   } else {
     track404();
+    trackPricingView();
   }
 })();

@@ -1034,15 +1034,6 @@ services:
         destination: /demo/brightsales/
 
       - type: redirect
-        source: /health
-        destination: /demo/smart-hospital-management/
-      - type: redirect
-        source: /health/
-        destination: /demo/smart-hospital-management/
-      - type: redirect
-        source: /health/index.html
-        destination: /demo/smart-hospital-management/
-      - type: redirect
         source: "/Company%20performance%20monitoring%20tool.html"
         destination: /tools/
 
@@ -1161,15 +1152,6 @@ services:
       - type: redirect
         source: /en/tenders/templates.html
         destination: /en/tenders/templates/
-      - type: redirect
-        source: /en/health
-        destination: /demo/smart-hospital-management/
-      - type: redirect
-        source: /en/health/
-        destination: /demo/smart-hospital-management/
-      - type: redirect
-        source: /en/health/index.html
-        destination: /demo/smart-hospital-management/
       - type: redirect
         source: /en/smart-medical-archive
         destination: /demo/smart-medical-archive/

@@ -19,10 +19,10 @@ export function DemoHero({ eyebrow, title, description, kpis, primaryHref, whats
         <h1 id="demo-title">{title}</h1>
         <p>{description}</p>
         <div className="demo-hero__actions">
-          <Link className="demo-button demo-button--primary focus-ring" href={primaryHref}>
+          <Link className="demo-button demo-button--primary focus-ring" href={primaryHref} data-analytics-event="request_demo" data-cta-location="demo-hero">
             جرّب الآن
           </Link>
-          <a className="demo-button demo-button--ghost focus-ring" href={whatsappUrl} target="_blank" rel="noreferrer">
+          <a className="demo-button demo-button--ghost focus-ring" href={whatsappUrl} target="_blank" rel="noreferrer" data-analytics-event="whatsapp_click" data-cta-location="demo-hero">
             احجز عرض واتساب
           </a>
         </div>

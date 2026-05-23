@@ -697,7 +697,7 @@
                     <iconify-icon icon="lucide:search" width="18"></iconify-icon>
                 </button>
 
-                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب">
+                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -835,7 +835,7 @@
             </ul>
 
             <div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank">
+                <a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="in-content">
                     <iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
                     ابدأ رحلة التحول
                 </a>
@@ -1130,7 +1130,7 @@
         <div style="text-align: center; margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 30px;">
             <p style="font-weight: bold; font-size: 18px; margin-bottom: 20px; color: #1e293b;">انتقل بتجربة استقطاب
                 المواهب إلى المستوى الاستراتيجي</p>
-            <a href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" style="display: inline-block; background: #2196F3; color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; margin: 0 10px; transition: background 0.3s;">احجز
+            <a href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" style="display: inline-block; background: #2196F3; color: white; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; margin: 0 10px; transition: background 0.3s;" data-analytics-event="whatsapp_click" data-cta-location="in-content">احجز
                 جلسة استشارية لوكلاء الموارد البشرية</a>
             <a href="/services/" style="display: inline-block; background: white; color: #2196F3; text-decoration: none; padding: 12px 30px; border-radius: 8px; font-weight: bold; border: 2px solid #2196F3; margin: 0 10px; transition: background 0.3s;">المزيد
                 عن الوكلاء الأذكياء</a>
@@ -1165,7 +1165,14 @@
   </div>
 </section>
 <!-- BRIGHTAI_INTERNAL_LINKS_END -->
-<footer class="sr-only" aria-label="معلومات الموقع"><p>Bright AI</p></footer>
+<footer class="sr-only" aria-label="معلومات الموقع"><p>Bright AI</p>
+<div class="sitewide-cta" data-cta-section="footer">
+<p>اتخذ الخطوة الأولى نحو التحول الرقمي</p>
+<a href="/consultation/" class="sitewide-cta-primary" data-analytics-event="consultation_request" data-cta-location="footer">احجز جلسة تشخيص AI</a>
+<a href="/demo/" class="sitewide-cta-secondary" data-analytics-event="request_demo" data-cta-location="footer">جرّب نماذج Bright AI</a>
+<a href="https://api.whatsapp.com/send?phone=966538229013&text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D8%AD%D9%88%D9%84%20%D8%AD%D9%84%D9%88%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">تواصل عبر واتساب</a>
+</div>
+</footer>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 <script defer src="/frontend/js/accessibility.min.js?v=2026042904"></script>
   <script src="/frontend/js/brightai-logo-replace.js" defer></script>
