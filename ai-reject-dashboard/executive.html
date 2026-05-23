@@ -51,6 +51,8 @@
 
         <p id="source-info" class="text-muted text-sm mb-16"></p>
 
+        <div id="filter-bar" class="filter-bar"></div>
+
         <div id="cards-grid" class="cards-grid">
           <div class="loading"><div class="spinner"></div></div>
         </div>
@@ -96,16 +98,21 @@
           </div>
         </div>
 
-        <div class="section">
-          <div class="section-header">
-            <h3>&#x1F3AF; Top 5 Reject Risks</h3>
-            <span class="badge">Priority Ranked</span>
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x26A0; Anomaly Detection</h3>
+              <span class="badge">AI Flagged</span>
+            </div>
+            <div id="anomalies"></div>
           </div>
-          <div id="top-risks"></div>
-          <p class="text-muted text-xs mt-8">
-            Risks are ranked by AI risk score (0–100). Critical and High items require
-            immediate management attention and CAPA assignment.
-          </p>
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x1F4C8; Predictive Cost Projection</h3>
+              <span class="badge">30-Day Forecast</span>
+            </div>
+            <div id="predictive-cost"></div>
+          </div>
         </div>
 
         <div class="section">

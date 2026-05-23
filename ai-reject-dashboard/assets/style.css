@@ -872,7 +872,6 @@ tr:last-child td {
 }
 
 /* === Utility === */
-.mt-4 { margin-top: 4px; }
 .mt-8 { margin-top: 8px; }
 .mt-12 { margin-top: 12px; }
 .mt-16 { margin-top: 16px; }
@@ -893,6 +892,67 @@ tr:last-child td {
 .font-bold { font-weight: 700; }
 .font-semibold { font-weight: 600; }
 .w-full { width: 100%; }
+
+/* === Filter Bar === */
+.filter-bar {
+  margin-bottom: 16px;
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filter-select,
+.filter-date,
+.filter-search {
+  padding: 6px 10px;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius);
+  font-size: 0.7rem;
+  font-family: var(--font);
+  background: var(--white);
+  color: var(--gray-700);
+  min-width: 0;
+}
+
+.filter-select { max-width: 140px; }
+.filter-date { max-width: 140px; }
+.filter-search { max-width: 180px; flex: 1; min-width: 120px; }
+
+.filter-select:focus,
+.filter-date:focus,
+.filter-search:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.1);
+}
+
+/* === Anomaly List === */
+.anomaly-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.anomaly-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  font-size: 0.73rem;
+  line-height: 1.5;
+  background: var(--red-light);
+  border-right: 3px solid var(--red);
+  color: var(--red-dark);
+}
+
+.anomaly-item strong {
+  font-weight: 600;
+}
 
 /* === Print === */
 @media print {

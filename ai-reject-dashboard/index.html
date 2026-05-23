@@ -52,28 +52,18 @@
 
         <p id="source-info" class="text-muted text-sm mb-16"></p>
 
+        <div id="filter-bar" class="filter-bar"></div>
+
         <div id="cards-grid" class="cards-grid">
           <div class="loading"><div class="spinner"></div></div>
         </div>
 
         <div id="ai-summary"></div>
 
-        <div class="section">
-          <div class="section-header">
-            <h3>&#x1F514; AI Anomaly Detection — Unusual Pattern Alerts</h3>
-            <span class="badge">AI Detected</span>
-          </div>
-          <div id="anomaly-detection"></div>
-          <p class="text-muted text-xs mt-8">
-            Anomalies are detected based on sudden increases in rejection frequency, cost spikes,
-            abnormal approval delays, and concentration risks. These alerts require management investigation.
-          </p>
-        </div>
-
         <div class="mb-16">
-          <button id="run-analysis-btn" class="btn btn-primary">&#x1F504; Run AI Analysis</button>
+          <button id="run-analysis-btn" class="btn btn-primary">&#x1F504; Refresh Analysis</button>
           <span class="text-muted text-sm" style="margin-right:10px;">
-            Runs local simulated analysis when Gemini API is not configured.
+            Re-runs AI or simulated analysis with latest data. Results are cached for 5 minutes.
           </span>
         </div>
 
@@ -100,6 +90,23 @@
             <span class="badge">Advisory Only — Requires QCM Review</span>
           </div>
           <div id="capa-suggestions"></div>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x26A0; Anomaly Detection</h3>
+              <span class="badge">AI Flagged</span>
+            </div>
+            <div id="anomalies"></div>
+          </div>
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x1F4C8; Predictive Cost Projection</h3>
+              <span class="badge">30-Day Forecast</span>
+            </div>
+            <div id="predictive-cost"></div>
+          </div>
         </div>
 
         <div class="col-2">

@@ -50,6 +50,8 @@
 
         <p id="source-info" class="text-muted text-sm mb-16"></p>
 
+        <div id="filter-bar" class="filter-bar"></div>
+
         <div id="cards-grid" class="cards-grid">
           <div class="loading"><div class="spinner"></div></div>
         </div>
@@ -63,24 +65,6 @@
               <span class="badge">SAR</span>
             </div>
             <div id="cost-by-dept"></div>
-          </div>
-
-          <div class="section">
-            <div class="section-header">
-              <h3>Reject Cost by Month</h3>
-              <span class="badge">Trend</span>
-            </div>
-            <div id="cost-by-month"></div>
-          </div>
-        </div>
-
-        <div class="col-2">
-          <div class="section">
-            <div class="section-header">
-              <h3>Reject Cost by Product</h3>
-              <span class="badge">Top 10</span>
-            </div>
-            <div id="cost-by-product"></div>
           </div>
 
           <div class="section">
@@ -119,12 +103,21 @@
           </p>
         </div>
 
-        <div class="section">
-          <div class="section-header">
-            <h3>Financially Sensitive Cases</h3>
-            <span class="badge">Requires Finance Review</span>
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>Financially Sensitive Cases</h3>
+              <span class="badge">Requires Finance Review</span>
+            </div>
+            <div id="finance-alerts"></div>
           </div>
-          <div id="finance-alerts"></div>
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x26A0; Anomaly Detection</h3>
+              <span class="badge">Unusual Patterns</span>
+            </div>
+            <div id="anomalies"></div>
+          </div>
         </div>
 
         <div class="section">

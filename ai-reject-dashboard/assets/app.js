@@ -5,7 +5,10 @@
     dataSource: 'loading',
     aiRunning: false,
     errors: [],
-    analysisSource: null
+    analysisSource: null,
+    token: null,
+    authRequired: false,
+    filters: {}
   };
 
   var API_BASE = 'http://localhost:3000/api';
@@ -50,6 +53,43 @@
     return '<div class="loading"><div class="spinner"></div><p class="mt-12">Loading data...</p></div>';
   }
 
+  /* ===== AUTH ===== */
+  function getToken() {
+    if (state.token) return state.token;
+    state.token = sessionStorage.getItem('dashboard_token');
+    return state.token;
+  }
+
+  function storeToken(token) {
+    state.token = token;
+    sessionStorage.setItem('dashboard_token', token);
+  }
+
+  function clearToken() {
+    state.token = null;
+    sessionStorage.removeItem('dashboard_token');
+  }
+
+  function authHeaders() {
+    var t = getToken();
+    return t ? { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+  }
+
+  async function apiFetch(url, options) {
+    options = options || {};
+    options.headers = Object.assign(authHeaders(), options.headers || {});
+    var res = await fetch(url, options);
+    if (res.status === 401) {
+      clearToken();
+      var target = window.location.pathname;
+      if (target.indexOf('login.html') === -1) {
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(target);
+      }
+      throw new Error('Unauthorized — redirecting to login');
+    }
+    return res;
+  }
+
   /* ===== DATA LOADING ===== */
   function loadData() {
     state.dataSource = 'loading';
@@ -63,8 +103,29 @@
       if (!healthRes.ok) throw new Error('Health check failed');
       var health = await healthRes.json();
 
+      state.authRequired = health.auth_required === true;
+
+      if (state.authRequired && !getToken()) {
+        var target = window.location.pathname;
+        if (target.indexOf('login.html') === -1 && target.indexOf('technical.html') === -1) {
+          window.location.href = 'login.html?redirect=' + encodeURIComponent(target);
+          return;
+        }
+      }
+
       var sourceParam = health.excel_exists ? '' : '?source=demo';
-      var rejectsRes = await fetch(API_BASE + '/rejects' + sourceParam, { signal: AbortSignal.timeout(5000) });
+      if (state.filters) {
+        var filterParams = [];
+        if (state.filters.department) filterParams.push('department=' + encodeURIComponent(state.filters.department));
+        if (state.filters.risk_level) filterParams.push('risk_level=' + encodeURIComponent(state.filters.risk_level));
+        if (state.filters.status) filterParams.push('status=' + encodeURIComponent(state.filters.status));
+        if (state.filters.from_date) filterParams.push('from_date=' + encodeURIComponent(state.filters.from_date));
+        if (state.filters.to_date) filterParams.push('to_date=' + encodeURIComponent(state.filters.to_date));
+        if (state.filters.search) filterParams.push('search=' + encodeURIComponent(state.filters.search));
+        if (filterParams.length) sourceParam = (sourceParam ? sourceParam + '&' : '?') + filterParams.join('&');
+      }
+
+      var rejectsRes = await apiFetch(API_BASE + '/rejects' + sourceParam, { signal: AbortSignal.timeout(5000) });
       if (!rejectsRes.ok) throw new Error('Rejects endpoint failed');
       var json = await rejectsRes.json();
       var rejects = json.rejects || json.data || [];
@@ -75,7 +136,7 @@
       state.analysisSource = 'backend';
 
       try {
-        var summaryRes = await fetch(API_BASE + '/summary', { signal: AbortSignal.timeout(3000) });
+        var summaryRes = await apiFetch(API_BASE + '/summary' + (sourceParam || ''), { signal: AbortSignal.timeout(3000) });
         if (summaryRes.ok) {
           var s = await summaryRes.json();
           state.analysis = s.analysis || s;
@@ -88,6 +149,7 @@
 
       renderAll();
     } catch (e) {
+      if (e.message.indexOf('Unauthorized') !== -1) return;
       loadStaticData();
     }
   }
@@ -98,6 +160,7 @@
       state.analysis = window.DEMO_DATA.analysis;
       state.dataSource = 'static';
       state.analysisSource = 'demo';
+      state.authRequired = false;
       renderAll();
     } else {
       showError('No data source available. Please ensure assets/data.js is loaded.');
@@ -111,6 +174,7 @@
     var highRisk = 0;
     var rcMap = {};
     var deptCost = {};
+    var itemCostMap = {};
     var pendingApprovals = [];
     var pendingDestruction = [];
 
@@ -122,6 +186,8 @@
       rcMap[rc] = (rcMap[rc] || 0) + 1;
       var dept = r.department || 'Unknown';
       deptCost[dept] = (deptCost[dept] || 0) + cost;
+      var itemName = r.item_name || 'Unknown';
+      itemCostMap[itemName] = (itemCostMap[itemName] || 0) + cost;
       if (r.approval_status === 'Pending' && n(r.days_pending) > 0) pendingApprovals.push(r);
       if (r.destruction_status === 'Pending' && r.approval_status !== 'Approved') pendingDestruction.push(r);
     });
@@ -135,41 +201,51 @@
       return { department: d, cost: deptCost[d], percentage: totalCost > 0 ? Math.round((deptCost[d] / totalCost) * 1000) / 10 : 0 };
     }).sort(function (a, b) { return b.cost - a.cost; });
 
+    var avgItemCost = totalCost / Math.max(1, Object.keys(itemCostMap).length);
+    var anomalies = Object.keys(itemCostMap).filter(function (item) {
+      return itemCostMap[item] > avgItemCost * 3 && itemCostMap[item] >= 10000;
+    }).map(function (item) {
+      var items = rejects.filter(function (r) { return r.item_name === item; });
+      var totalRejCost = items.reduce(function (s, r) { return s + n(r.cost); }, 0);
+      var pctOfTotal = totalCost > 0 ? Math.round((totalRejCost / totalCost) * 100) : 0;
+      return {
+        item: item, total_cost: totalRejCost, case_count: items.length,
+        percentage_of_total: pctOfTotal,
+        alert: item + ' represents ' + pctOfTotal + '% of total reject cost (SAR ' + totalRejCost.toLocaleString() + '). Immediate investigation recommended.'
+      };
+    }).sort(function (a, b) { return b.total_cost - a.total_cost; });
+
+    var dateRange = rejects.reduce(function (acc, r) {
+      if (r.date) { if (!acc.min || r.date < acc.min) acc.min = r.date; if (!acc.max || r.date > acc.max) acc.max = r.date; }
+      return acc;
+    }, { min: null, max: null });
+    var daysSpan = 30;
+    if (dateRange.min && dateRange.max) { var d1 = new Date(dateRange.min); var d2 = new Date(dateRange.max); daysSpan = Math.max(1, Math.round((d2 - d1) / (1000 * 60 * 60 * 24))); }
+    var dailyAvgCost = totalCost / daysSpan;
+    var projectedNextMonth = Math.round(dailyAvgCost * 30);
+
     var financeAlerts = rejects.filter(function (r) {
       return r.finance_review_required && n(r.cost) >= 5000;
     }).map(function (r) {
-      return {
-        item: r.item_name,
-        cost: n(r.cost),
-        risk: r.risk_level || 'Medium',
-        recommendation: n(r.cost) >= 20000 ? 'Requires Finance Director review before destruction' : 'Review financial impact before destruction approval'
-      };
+      return { item: r.item_name, cost: n(r.cost), risk: r.risk_level || 'Medium', recommendation: n(r.cost) >= 20000 ? 'Requires Finance Director review before destruction' : 'Review financial impact before destruction approval' };
     }).sort(function (a, b) { return b.cost - a.cost; });
 
     var capaList = rejects.filter(function (r) { return r.capa_required; }).slice(0, 6).map(function (r) {
-      return {
-        title: (r.root_cause || 'Investigation required'),
-        description: 'Root cause identified for ' + r.item_name + ' (Lot: ' + (r.lot_no || '\u2014') + ') requires corrective and preventive action. ' + r.reason,
-        priority: r.risk_level || 'Medium',
-        department: r.department || '\u2014'
-      };
+      return { title: (r.root_cause || 'Investigation required'), description: 'Root cause identified for ' + r.item_name + ' (Lot: ' + (r.lot_no || '\u2014') + ') requires corrective and preventive action. ' + r.reason, priority: r.risk_level || 'Medium', department: r.department || '\u2014' };
     });
 
     var destroyBacklog = pendingDestruction.map(function (r) {
       return { item: r.item_name, days_pending: n(r.days_pending), quantity: n(r.quantity), cost: n(r.cost) };
     }).sort(function (a, b) { return b.days_pending - a.days_pending; });
 
-    var delayAlerts = rejects.filter(function (r) {
-      return n(r.days_pending) >= 15;
-    }).map(function (r) {
+    var delayAlerts = rejects.filter(function (r) { return n(r.days_pending) >= 15; }).map(function (r) {
       return { item: r.item_name, days_pending: n(r.days_pending), department: r.department || '\u2014' };
     }).sort(function (a, b) { return b.days_pending - a.days_pending; });
 
     var topRC = rootCauses.length > 0 ? rootCauses[0].cause : 'None identified';
     var topDept = deptCostArr.length > 0 ? deptCostArr[0] : null;
-    var avgDelay = pendingApprovals.length > 0
-      ? Math.round(pendingApprovals.reduce(function (s, r) { return s + n(r.days_pending); }, 0) / pendingApprovals.length)
-      : 0;
+    var avgDelay = pendingApprovals.length > 0 ? Math.round(pendingApprovals.reduce(function (s, r) { return s + n(r.days_pending); }, 0) / pendingApprovals.length) : 0;
+    var totalDestCost = pendingDestruction.reduce(function (s, r) { return s + n(r.cost); }, 0);
 
     var execSummary = 'Local analysis of ' + total + ' reject cases shows a total estimated cost of SAR ' +
       totalCost.toLocaleString() + '. There are ' + highRisk + ' high or critical risk cases requiring attention. ' +
@@ -177,6 +253,8 @@
       (topDept ? 'The ' + topDept.department + ' department accounts for the highest cost at SAR ' + topDept.cost.toLocaleString() + '. ' : '') +
       'Average approval delay is ' + avgDelay + ' days. ' +
       (destroyBacklog.length > 0 ? destroyBacklog.length + ' cases are pending destruction. ' : '') +
+      'Projected reject cost for next month: SAR ' + projectedNextMonth.toLocaleString() + '. ' +
+      (anomalies.length > 0 ? anomalies.length + ' anomaly pattern(s) detected. ' : '') +
       'Focus ERP remains the source of truth. This analysis is advisory only and requires QCM/QAM review.';
 
     return {
@@ -191,6 +269,9 @@
       capa_suggestions: capaList,
       destruction_backlog_alerts: destroyBacklog.slice(0, 5),
       approval_delay_alerts: delayAlerts.slice(0, 5),
+      anomalies: anomalies,
+      projected_next_month_cost: projectedNextMonth,
+      predictive_confidence: daysSpan >= 20 ? 'Medium' : 'Low',
       management_actions: [
         { action: 'Review ' + highRisk + ' high/critical risk cases requiring immediate attention', priority: 'Critical' },
         { action: 'Process ' + pendingDestruction.length + ' pending destruction cases with total cost impact of SAR ' + pendingDestruction.reduce(function (s, r) { return s + n(r.cost); }, 0).toLocaleString(), priority: 'Critical' },
@@ -201,72 +282,53 @@
     };
   }
 
-  /* ===== NEW: Anomaly Detection ===== */
-  function renderAnomalyDetection() {
-    var el = $('#anomaly-detection');
-    if (!el) return;
-    var alerts = (window.DEMO_DATA && window.DEMO_DATA.anomalyAlerts) || [];
-    if (!alerts.length) { el.innerHTML = '<p class="text-muted">No anomaly alerts at this time.</p>'; return; }
-    el.innerHTML = alerts.map(function (a) {
-      var pri = (a.priority || 'medium').toLowerCase();
-      return '<div class="alert-item ' + pri + '">' +
-        '<span class="alert-icon">\u26A0</span>' +
-        '<div style="flex:1"><strong>' + (a.title || '') + '</strong>' +
-        '<div class="text-sm mt-4">' + (a.details || '') + '</div>' +
-        '<div class="text-xs text-muted mt-4">Impact: ' + (a.impact || '') + '</div></div>' +
-        '<span class="risk-badge ' + pri + '">' + (a.priority || '') + '</span></div>';
-    }).join('');
-  }
+  /* ===== FILTERS ===== */
+  function buildFilterUI() {
+    var container = $('#filter-bar');
+    if (!container || state.dataSource === 'static' || state.dataSource === 'loading') return;
+    var depts = {};
+    var levels = {};
+    var statuses = {};
+    (state.rejects || []).forEach(function (r) {
+      if (r.department) depts[r.department] = true;
+      if (r.risk_level) levels[r.risk_level] = true;
+      if (r.approval_status) statuses[r.approval_status] = true;
+    });
+    var deptOpts = Object.keys(depts).sort();
+    var levelOpts = ['Critical', 'High', 'Medium', 'Low'];
+    var statusOpts = ['Pending', 'Approved', 'Review'];
 
-  /* ===== NEW: Monthly Cost Trend ===== */
-  function renderMonthlyCost() {
-    var el = $('#cost-by-month');
-    if (!el) return;
-    var months = (window.DEMO_DATA && window.DEMO_DATA.monthlyCostByMonth) || [];
-    if (!months.length) { el.innerHTML = '<p class="text-muted">No monthly cost data available.</p>'; return; }
-    var maxCost = months.reduce(function (m, x) { return Math.max(m, x.cost); }, 1);
-    el.innerHTML = '<div class="bar-chart">' +
-      months.map(function (m) {
-        var pct = Math.round((m.cost / maxCost) * 100);
-        return '<div class="bar-row"><span class="bar-label">' + m.month + '</span>' +
-          '<div class="bar-track"><div class="bar-fill red" style="width:' + pct + '%"></div></div>' +
-          '<span class="bar-value">' + formatCurrency(m.cost) + '</span></div>';
-      }).join('') +
+    container.innerHTML =
+      '<div class="filter-row">' +
+      '<select id="filter-dept" class="filter-select"><option value="">All Departments</option>' +
+      deptOpts.map(function (d) { return '<option value="' + d + '"' + (state.filters.department === d ? ' selected' : '') + '>' + d + '</option>'; }).join('') +
+      '</select>' +
+      '<select id="filter-risk" class="filter-select"><option value="">All Risk Levels</option>' +
+      levelOpts.map(function (l) { return '<option value="' + l + '"' + (state.filters.risk_level === l ? ' selected' : '') + '>' + l + '</option>'; }).join('') +
+      '</select>' +
+      '<select id="filter-status" class="filter-select"><option value="">All Statuses</option>' +
+      statusOpts.map(function (s) { return '<option value="' + s + '"' + (state.filters.status === s ? ' selected' : '') + '>' + s + '</option>'; }).join('') +
+      '</select>' +
+      '<input type="date" id="filter-from" class="filter-date" value="' + (state.filters.from_date || '') + '" title="From date">' +
+      '<input type="date" id="filter-to" class="filter-date" value="' + (state.filters.to_date || '') + '" title="To date">' +
+      '<input type="text" id="filter-search" class="filter-search" placeholder="Search item, doc, reason..." value="' + (state.filters.search || '') + '">' +
+      '<button id="filter-apply" class="btn btn-primary btn-sm">Apply</button>' +
+      '<button id="filter-reset" class="btn btn-outline btn-sm">Reset</button>' +
       '</div>';
-  }
 
-  /* ===== NEW: Cost by Product ===== */
-  function renderCostByProduct() {
-    var el = $('#cost-by-product');
-    if (!el) return;
-    var products = (window.DEMO_DATA && window.DEMO_DATA.costByProduct) || [];
-    if (!products.length) { el.innerHTML = '<p class="text-muted">No product cost data available.</p>'; return; }
-    var maxCost = products.reduce(function (m, x) { return Math.max(m, x.cost); }, 1);
-    el.innerHTML = '<div class="bar-chart">' +
-      products.map(function (p) {
-        var pct = Math.round((p.cost / maxCost) * 100);
-        return '<div class="bar-row"><span class="bar-label">' + (p.product || '') + '</span>' +
-          '<div class="bar-track"><div class="bar-fill teal" style="width:' + pct + '%"></div></div>' +
-          '<span class="bar-value">' + formatCurrency(p.cost) + '</span></div>';
-      }).join('') +
-      '</div>';
-  }
-
-  /* ===== NEW: Top 5 Risks ===== */
-  function renderTop5Risks() {
-    var el = $('#top-risks');
-    if (!el) return;
-    var risks = (window.DEMO_DATA && window.DEMO_DATA.top5Risks) || [];
-    if (!risks.length) { el.innerHTML = '<p class="text-muted">No top risks identified.</p>'; return; }
-    el.innerHTML = '<div class="table-wrap"><table><thead><tr>' +
-      '<th>#</th><th>Risk Description</th><th>Score</th><th>Department</th><th>Required Action</th></tr></thead><tbody>' +
-      risks.map(function (x) {
-        return '<tr><td>' + (x.rank || '') + '</td><td>' + (x.risk || '') + '</td>' +
-          '<td>' + (x.score ? '<span class="risk-badge ' + riskLevel(x.score).toLowerCase() + '">' + x.score + '</span>' : '—') + '</td>' +
-          '<td>' + (x.department || '—') + '</td>' +
-          '<td>' + (x.action || '—') + '</td></tr>';
-      }).join('') +
-      '</tbody></table></div>';
+    $('#filter-apply').onclick = function () {
+      state.filters.department = $('#filter-dept').value;
+      state.filters.risk_level = $('#filter-risk').value;
+      state.filters.status = $('#filter-status').value;
+      state.filters.from_date = $('#filter-from').value;
+      state.filters.to_date = $('#filter-to').value;
+      state.filters.search = $('#filter-search').value;
+      loadData();
+    };
+    $('#filter-reset').onclick = function () {
+      state.filters = {};
+      loadData();
+    };
   }
 
   /* ===== RENDER ===== */
@@ -274,23 +336,20 @@
     showSourceInfo();
     renderCards();
     renderSummary();
-    renderAnomalyDetection();
-    renderMonthlyCost();
-    renderCostByProduct();
-    renderTop5Risks();
     renderRootCauses();
     renderCostByDept();
     renderRejectTable();
     renderFinanceAlerts();
     renderCAPA();
     renderAlerts();
+    renderAnomalies();
+    renderPredictiveCost();
     renderActions();
     updateRecordCount();
+    buildFilterUI();
 
     var btn = $('#run-analysis-btn');
-    if (btn) {
-      btn.onclick = onRunAnalysis;
-    }
+    if (btn) { btn.onclick = onRunAnalysis; }
 
     if (typeof renderPageSpecific === 'function') {
       renderPageSpecific();
@@ -300,13 +359,7 @@
   function updateSourceBadge() {
     var el = $('#data-source-badge');
     if (!el) return;
-    var labels = {
-      static: 'Static Demo Data',
-      excel: 'Excel + Local Backend',
-      gemini: 'Gemini AI Analysis',
-      simulated: 'Simulated AI Analysis',
-      loading: 'Loading...'
-    };
+    var labels = { static: 'Static Demo Data', excel: 'Excel + Local Backend', gemini: 'Gemini AI Analysis', simulated: 'Simulated AI Analysis', loading: 'Loading...' };
     el.textContent = labels[state.dataSource] || 'Unknown';
     var clsMap = { static: 'static', excel: 'excel', gemini: 'gemini', simulated: 'simulated', loading: 'loading' };
     el.className = 'data-source-badge ' + (clsMap[state.dataSource] || 'static');
@@ -338,13 +391,13 @@
     var topRC = (a.repeated_root_causes && a.repeated_root_causes.length > 0) ? a.repeated_root_causes[0].cause : '\u2014';
 
     var cards = [];
-
     cards.push(renderCard('Total Reject Cases', r.length.toString(), '', 'good', 'KPI'));
     cards.push(renderCard('Total Reject Cost', formatCurrency(a.total_estimated_cost), 'Estimated total across all cases', 'red', 'SAR'));
     cards.push(renderCard('Pending Approvals', pendingApprovals.toString(), 'Awaiting QCM sign-off', 'amber', 'P'));
     cards.push(renderCard('Pending Destruction', pendingDestruction.toString(), 'Awaiting disposal decision', 'amber', 'D'));
     cards.push(renderCard('High Risk Cases', highRiskCount.toString(), 'Score 70+ (High/Critical)', 'red', '!'));
     cards.push(renderCard('Highest Risk Item', highestRiskItem ? highestRiskItem.item_name : '\u2014', 'Score: ' + (highestRiskItem ? highestRiskItem.risk_score : '\u2014'), 'red', 'H'));
+    cards.push(renderCard('Projected Next Month', formatCurrency(a.projected_next_month_cost), 'Based on current trend, confidence: ' + (a.predictive_confidence || 'Low'), 'blue', 'P'));
     cards.push(renderCard('Top Root Cause', topRC, 'Most frequent cause', 'blue', 'R'));
 
     grid.innerHTML = cards.join('');
@@ -352,7 +405,7 @@
 
   function renderCard(label, value, sub, color, icon) {
     var cls = color === 'red' ? 'critical' : color === 'amber' ? 'warning' : 'good';
-    var valCls = (label === 'Highest Risk Item' || label === 'Top Root Cause') ? 'card-value small' : 'card-value';
+    var valCls = (label === 'Highest Risk Item' || label === 'Top Root Cause' || label === 'Projected Next Month') ? 'card-value small' : 'card-value';
     return '<div class="card ' + cls + '">' +
       '<div class="card-icon ' + color + '">' + icon + '</div>' +
       '<div class="card-label">' + label + '</div>' +
@@ -365,11 +418,10 @@
     var el = $('#ai-summary');
     if (!el) return;
     var a = state.analysis || {};
-    var text = a.executive_summary || 'No analysis available. Click "Run AI Analysis" to generate insights.';
+    var text = a.executive_summary || 'No analysis available. Click "Refresh Analysis" to generate insights.';
     var srcLabel = state.dataSource === 'static' ? 'Static Demo Data' :
                    state.dataSource === 'gemini' ? 'Gemini AI Analysis' :
                    state.dataSource === 'simulated' ? 'Simulated AI Analysis' : 'Backend Data';
-
     el.innerHTML =
       '<div class="ai-summary">' +
       '<div class="summary-label">\u2699 AI Executive Summary</div>' +
@@ -378,6 +430,7 @@
       'Overall Risk Level: ' + riskBadge(a.overall_risk_level || '') +
       ' <span style="color:var(--gray-500)">|</span> Last updated: ' + new Date().toLocaleDateString('en-GB') +
       ' <span style="color:var(--gray-500)">|</span> Source: ' + srcLabel +
+      ' <span style="color:var(--gray-500)">|</span> Projected next month: ' + formatCurrency(a.projected_next_month_cost) +
       '</div></div>';
   }
 
@@ -402,20 +455,13 @@
     var el = $('#cost-by-dept');
     if (!el) return;
     var data = (state.analysis && state.analysis.cost_by_department) || [];
-
     if (!data.length && state.rejects) {
       var deptMap = {};
-      state.rejects.forEach(function (x) {
-        var d = x.department || 'Unknown';
-        deptMap[d] = (deptMap[d] || 0) + n(x.cost);
-      });
+      state.rejects.forEach(function (x) { var d = x.department || 'Unknown'; deptMap[d] = (deptMap[d] || 0) + n(x.cost); });
       var depts = Object.keys(deptMap);
       var totalC = depts.reduce(function (s, d) { return s + deptMap[d]; }, 0);
-      data = depts.map(function (d) {
-        return { department: d, cost: deptMap[d], percentage: totalC > 0 ? Math.round((deptMap[d] / totalC) * 1000) / 10 : 0 };
-      }).sort(function (a, b) { return b.cost - a.cost; });
+      data = depts.map(function (d) { return { department: d, cost: deptMap[d], percentage: totalC > 0 ? Math.round((deptMap[d] / totalC) * 1000) / 10 : 0 }; }).sort(function (a, b) { return b.cost - a.cost; });
     }
-
     if (!data.length) { el.innerHTML = '<p class="text-muted">No cost data available.</p>'; return; }
     var maxCost = data.reduce(function (m, d) { return Math.max(m, d.cost); }, 1);
     el.innerHTML = '<div class="bar-chart">' +
@@ -496,6 +542,39 @@
     }).join('');
   }
 
+  function renderAnomalies() {
+    var el = $('#anomalies');
+    if (!el) return;
+    var a = state.analysis || {};
+    var items = a.anomalies || [];
+    if (!items.length) { el.innerHTML = '<p class="text-muted">No anomaly patterns detected.</p>'; return; }
+    el.innerHTML = '<div class="anomaly-list">' +
+      items.map(function (x) {
+        return '<div class="anomaly-item critical"><span class="alert-icon">\u26A0</span>' +
+          '<div><strong>' + (x.item || '\u2014') + '</strong> \u2014 ' + (x.alert || '') +
+          ' <span class="text-muted">(' + (x.case_count || 0) + ' case(s), ' + formatCurrency(x.total_cost) + ')</span></div></div>';
+      }).join('') +
+      '</div>';
+  }
+
+  function renderPredictiveCost() {
+    var el = $('#predictive-cost');
+    if (!el) return;
+    var a = state.analysis || {};
+    var projected = a.projected_next_month_cost;
+    if (!projected) { el.innerHTML = '<p class="text-muted">Insufficient data for projection.</p>'; return; }
+    var confidence = a.predictive_confidence || 'Low';
+    var confClass = confidence.toLowerCase();
+    el.innerHTML = '<div class="card" style="padding:20px;">' +
+      '<div class="card-label">Projected Reject Cost \u2014 Next 30 Days</div>' +
+      '<div class="card-value" style="font-size:1.4rem;color:var(--red-dark);">' + formatCurrency(projected) + '</div>' +
+      '<div class="card-sub mt-8">Confidence: <span class="risk-badge ' + confClass + '">' + confidence + '</span></div>' +
+      '<div class="mt-12 text-muted text-sm" style="line-height:1.6;">' +
+      'Based on current daily average of ' + formatCurrency(Math.round(projected / 30)) + ' per day. ' +
+      'Actual cost may vary significantly based on pending approvals, CAPA effectiveness, and production volume changes.' +
+      '</div></div>';
+  }
+
   function renderActions() {
     var el = $('#management-actions');
     if (!el) return;
@@ -536,32 +615,31 @@
     if (state.dataSource === 'static') {
       state.analysis = window.DEMO_DATA.analysis;
       renderAll();
-      if (btn) { btn.disabled = false; btn.innerHTML = '\uD83D\uDD04 Run AI Analysis'; }
+      if (btn) { btn.disabled = false; btn.innerHTML = '\uD83D\uDD04 Refresh Analysis'; }
       state.aiRunning = false;
       return;
     }
 
     try {
-      var res = await fetch(API_BASE + '/run-analysis', { method: 'POST', signal: AbortSignal.timeout(30000) });
+      var res = await apiFetch(API_BASE + '/run-analysis', { method: 'POST', signal: AbortSignal.timeout(30000) });
       if (res.ok) {
         var json = await res.json();
         state.analysis = json.analysis || json;
-        if (json.gemini_used) {
-          state.dataSource = 'gemini';
-        } else {
-          state.dataSource = state.dataSource === 'excel' ? 'excel' : 'simulated';
-        }
+        if (json.gemini_used) { state.dataSource = 'gemini'; }
+        else { state.dataSource = state.dataSource === 'excel' ? 'excel' : 'simulated'; }
         renderAll();
       } else {
         state.analysis = computeLocalAnalysis(state.rejects);
         renderAll();
       }
     } catch (e) {
-      state.analysis = computeLocalAnalysis(state.rejects);
-      renderAll();
+      if (e.message.indexOf('Unauthorized') === -1) {
+        state.analysis = computeLocalAnalysis(state.rejects);
+        renderAll();
+      }
     }
 
-    if (btn) { btn.disabled = false; btn.innerHTML = '\uD83D\uDD04 Run AI Analysis'; }
+    if (btn) { btn.disabled = false; btn.innerHTML = '\uD83D\uDD04 Refresh Analysis'; }
     state.aiRunning = false;
   }
 
@@ -569,26 +647,26 @@
   function init() {
     setupSidebar();
     loadData();
+
+    var searchInput = $('#filter-search');
+    if (searchInput) {
+      searchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { var btn = $('#filter-apply'); if (btn) btn.click(); }
+      });
+    }
   }
 
   function setupSidebar() {
     var hamburger = $('.hamburger');
     var sidebar = $('.sidebar');
     if (hamburger && sidebar) {
-      hamburger.addEventListener('click', function () {
-        sidebar.classList.toggle('open');
-      });
+      hamburger.addEventListener('click', function () { sidebar.classList.toggle('open'); });
       document.addEventListener('click', function (e) {
-        if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-          sidebar.classList.remove('open');
-        }
+        if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) { sidebar.classList.remove('open'); }
       });
     }
-
     $$('.sidebar-nav a').forEach(function (a) {
-      if (a.href === window.location.href || a.href === window.location.pathname) {
-        a.classList.add('active');
-      }
+      if (a.href === window.location.href || a.href === window.location.pathname) { a.classList.add('active'); }
     });
   }
 

@@ -111,44 +111,5 @@ window.DEMO_DATA = {
     { item: "Plasticizer DOP", risk: "High", issue: "Viscosity specification failure", gmp_impact: "Yes", docs_complete: true },
     { item: "Accelerated Stability Sample", risk: "Medium", issue: "Shelf life projection below minimum", gmp_impact: "Yes", docs_complete: false },
     { item: "PVC Compound Granules", risk: "High", issue: "Contamination during incoming inspection", gmp_impact: "Yes", docs_complete: false }
-  ],
-
-  monthlyCostByMonth: [
-    { month: "Nov 2025", cost: 98000 },
-    { month: "Dec 2025", cost: 112000 },
-    { month: "Jan 2026", cost: 135000 },
-    { month: "Feb 2026", cost: 121000 },
-    { month: "Mar 2026", cost: 168000 },
-    { month: "Apr 2026", cost: 196000 },
-    { month: "May 2026", cost: 221000 }
-  ],
-
-  costByProduct: [
-    { product: "Resin B – Base Polymer", cost: 96000, percentage: 35.0 },
-    { product: "Resin A – Raw Material", cost: 45000, percentage: 16.4 },
-    { product: "PVC Compound Granules", cost: 32500, percentage: 11.8 },
-    { product: "Semi-Finished Tubing Roll", cost: 22000, percentage: 8.0 },
-    { product: "Surgical Gloves Box 100", cost: 18000, percentage: 6.6 },
-    { product: "Sponge Tape – Color Change", cost: 12500, percentage: 4.6 },
-    { product: "IV Set Tubing 1.8m", cost: 11250, percentage: 4.1 },
-    { product: "Syringe Barrel 5ml (Injection Defect)", cost: 8400, percentage: 3.1 },
-    { product: "Plasticizer DOP", cost: 7800, percentage: 2.8 },
-    { product: "Double-sided Tape 12mm", cost: 5250, percentage: 1.9 }
-  ],
-
-  top5Risks: [
-    { rank: 1, risk: "Resin B inventory aging (SAR 96,000) pending destruction for 22 days", score: 92, department: "Warehouse", action: "Expedite QCM approval and evaluate rework feasibility" },
-    { rank: 2, risk: "HVAC filter overdue — clean room particle count exceeded Class B limit", score: 90, department: "QC / Engineering", action: "Replace HEPA filters and re-certify clean room within 7 days" },
-    { rank: 3, risk: "Raw material expiry — Resin A (SAR 45,000) expired before use", score: 88, department: "Warehouse", action: "Review FIFO/FEFO compliance and implement automated shelf-life alert" },
-    { rank: 4, risk: "Adhesive tape — repeated raw material formulation defect (SAR 5,250, 28 days pending)", score: 85, department: "Warehouse", action: "Issue supplier deviation report and require formulation certification" },
-    { rank: 5, risk: "PVC compound — contamination detected during incoming inspection (SAR 32,500)", score: 80, department: "Warehouse", action: "Request supplier batch investigation and tighten acceptance sampling" }
-  ],
-
-  anomalyAlerts: [
-    { title: "Rejection of Sponge Tape increased by 240% during the last 30 days", details: "Most cases are linked to old stock and color change. Immediate investigation is recommended.", priority: "Critical", impact: "High financial exposure (SAR 96,000 at risk)" },
-    { title: "Clean room particle count exceeded Class B limit — GMP risk", details: "HVAC filter replacement overdue. Risk of regulatory non-compliance and potential batch recall if root cause is not contained.", priority: "Critical", impact: "GMP audit risk — possible regulatory action" },
-    { title: "Approval delay exceeds 25 days for 3 critical cases", details: "Plasticizer DOP (25 days), Adhesive Tape (28 days), Resin B (22 days) still pending approval. Accumulating destruction backlog increases value loss.", priority: "High", impact: "Total SAR 49,250 at additional risk" },
-    { title: "Warehouse accounts for 78.9% of total reject cost", details: "Concentration risk: 3 departments account for all rejects. Warehouse is the dominant contributor with storage-related root causes.", priority: "High", impact: "Requires cross-departmental CAPA coordination" },
-    { title: "Monthly reject cost trend increasing for 4 consecutive months", details: "From SAR 98,000 in Nov 2025 to SAR 221,000 in May 2026 (125% increase). If trend continues, projected monthly cost may exceed SAR 300,000 by Q3 2026.", priority: "Medium", impact: "Budget overrun risk — projected annual loss exceeds SAR 2M" }
   ]
 };

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — AI Reject Analytics Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    body { background: var(--navy); display: flex; align-items: center; justify-content: center; min-height: 100vh; direction: rtl; }
+    .login-box { background: var(--white); border-radius: var(--radius-lg); padding: 40px; width: 100%; max-width: 400px; box-shadow: var(--shadow-lg); }
+    .login-box h1 { font-size: 1.1rem; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
+    .login-box .sub { font-size: 0.7rem; color: var(--gray-500); margin-bottom: 24px; }
+    .login-box label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--gray-600); margin-bottom: 6px; }
+    .login-box input[type="text"], .login-box input[type="password"] { width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.85rem; font-family: var(--font); direction: ltr; text-align: left; }
+    .login-box input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
+    .login-box .btn { width: 100%; margin-top: 16px; padding: 12px; font-size: 0.85rem; }
+    .login-box .error { font-size: 0.72rem; color: var(--red); margin-top: 8px; display: none; }
+    .login-box .info { font-size: 0.68rem; color: var(--gray-400); margin-top: 16px; line-height: 1.6; }
+    .brand-icon { font-size: 2rem; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <div class="brand-icon">&#x1F6AB;</div>
+    <h1>AI Reject Analytics Dashboard</h1>
+    <div class="sub">Mais for Medical Products — Management Access</div>
+
+    <form id="login-form" onsubmit="return false;">
+      <label for="token-input">Access Token</label>
+      <input type="password" id="token-input" placeholder="Enter dashboard access token" autocomplete="off" autofocus>
+      <div id="login-error" class="error"></div>
+      <button type="submit" class="btn btn-primary" id="login-btn">Sign In</button>
+    </form>
+
+    <div class="info">
+      &#x26A0; This dashboard is for authorised management only.<br>
+      Contact IT or the system administrator for access.<br>
+      Focus ERP remains the official source of truth.
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('login-form');
+      var input = document.getElementById('token-input');
+      var btn = document.getElementById('login-btn');
+      var errEl = document.getElementById('login-error');
+      var redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+
+      async function handleLogin() {
+        var token = input.value.trim();
+        if (!token) { errEl.textContent = 'Please enter an access token.'; errEl.style.display = 'block'; return; }
+
+        btn.disabled = true;
+        btn.textContent = 'Signing in...';
+        errEl.style.display = 'none';
+
+        try {
+          var res = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: token })
+          });
+
+          if (!res.ok) {
+            var errData = await res.json().catch(function () { return {}; });
+            throw new Error(errData.message || 'Invalid access token');
+          }
+
+          sessionStorage.setItem('dashboard_token', token);
+          window.location.href = redirect;
+        } catch (e) {
+          errEl.textContent = e.message || 'Login failed. Please check your token and try again.';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Sign In';
+          input.focus();
+        }
+      }
+
+      form.addEventListener('submit', handleLogin);
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') handleLogin(); });
+    })();
+  </script>
+</body>
+</html>
