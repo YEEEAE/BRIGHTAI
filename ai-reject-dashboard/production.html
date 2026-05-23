@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — Production & Operations</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .prod-section { margin-bottom:28px; }
+    .prod-section h3 { font-size:0.85rem; font-weight:600; color:var(--gray-800); margin-bottom:10px; }
+
+    .machine-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:10px; }
+    .machine-card { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:14px; text-align:center; }
+    .machine-card .machine-name { font-size:0.72rem; color:var(--gray-500); }
+    .machine-card .machine-value { font-size:1.1rem; font-weight:700; margin:4px 0; }
+    .machine-card .machine-status { font-size:0.6rem; padding:2px 8px; border-radius:10px; display:inline-block; }
+    .machine-status.good { background:var(--green-light); color:var(--green-dark); }
+    .machine-status.warn { background:var(--amber-light); color:var(--amber-dark); }
+    .machine-status.bad { background:var(--red-light); color:var(--red-dark); }
+
+    .stat-row { display:flex; gap:12px; flex-wrap:wrap; }
+    .stat-box { flex:1; min-width:140px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); padding:14px 16px; }
+    .stat-box .stat-label { font-size:0.65rem; color:var(--gray-500); font-weight:500; }
+    .stat-box .stat-value { font-size:1rem; font-weight:700; color:var(--gray-800); margin-top:2px; }
+    .stat-box .stat-sub { font-size:0.62rem; color:var(--gray-400); margin-top:2px; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated Prototype</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> Executive View</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> Finance View</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
+        <a href="production.html" class="active"><span class="icon">&#x1F3ED;</span> Production / Ops</a>
+        <a href="workflow.html"><span class="icon">&#x1F504;</span> Workflow &amp; Governance</a>
+        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+      </nav>
+      <div class="sidebar-footer">
+        Focus ERP remains the official source of truth.<br>
+        AI analysis is advisory only.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>Production &amp; Operations View</h2>
+            <div class="breadcrumb">Line-level reject tracking — Machine quality — Warehouse alerts — Input deadlines</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span id="data-source-badge" class="data-source-badge loading">Loading...</span>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; Operational View:</strong> This page is designed for Production Managers,
+          Line Supervisors, and Warehouse Operators. It shows line-level and machine-level
+          reject data relevant to each production area. Focus ERP remains the source of truth.
+        </div>
+
+        <p id="source-info" class="text-muted text-sm mb-16"></p>
+
+        <div id="cards-grid" class="cards-grid">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <div id="ai-summary"></div>
+
+        <div class="col-2">
+          <div class="prod-section">
+            <h3>&#x1F527; Machine Quality Indicators (Injection Molding)</h3>
+            <div id="machine-stats" class="machine-grid">
+              <div class="machine-card">
+                <div class="machine-name">Injection Machine #1</div>
+                <div class="machine-value">2.4%</div>
+                <div class="machine-status good">Within limit</div>
+              </div>
+              <div class="machine-card">
+                <div class="machine-name">Injection Machine #2</div>
+                <div class="machine-value">4.8%</div>
+                <div class="machine-status warn">Monitor</div>
+              </div>
+              <div class="machine-card">
+                <div class="machine-name">Injection Machine #3</div>
+                <div class="machine-value">1.2%</div>
+                <div class="machine-status good">Within limit</div>
+              </div>
+              <div class="machine-card">
+                <div class="machine-name">Injection Machine #4</div>
+                <div class="machine-value">7.1%</div>
+                <div class="machine-status bad">Above limit</div>
+              </div>
+              <div class="machine-card">
+                <div class="machine-name">Blow Molder #1</div>
+                <div class="machine-value">3.0%</div>
+                <div class="machine-status good">Within limit</div>
+              </div>
+              <div class="machine-card">
+                <div class="machine-name">Extruder #1</div>
+                <div class="machine-value">5.5%</div>
+                <div class="machine-status warn">Monitor</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="prod-section">
+            <h3>&#x1F4E6; Raw Material Efficiency</h3>
+            <div id="material-stats" class="stat-row" style="flex-direction:column;">
+              <div class="stat-box">
+                <div class="stat-label">PVC Compound Granules</div>
+                <div class="stat-value" style="color:var(--red-dark);">SAR 32,500</div>
+                <div class="stat-sub">Contamination — Supplier deviation pending</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Resin B — Base Polymer</div>
+                <div class="stat-value" style="color:var(--red-dark);">SAR 96,000</div>
+                <div class="stat-sub">Degradation — Storage temp exceeded limit</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Resin A — Raw Material</div>
+                <div class="stat-value" style="color:var(--amber-dark);">SAR 45,000</div>
+                <div class="stat-sub">Expired — FIFO compliance gap</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-label">Plasticizer DOP</div>
+                <div class="stat-value" style="color:var(--amber-dark);">SAR 7,800</div>
+                <div class="stat-sub">Viscosity failure — Supplier batch deviation</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="prod-section">
+            <h3>&#x23F3; Pending Input &amp; Approval Alerts</h3>
+            <div id="alerts"></div>
+          </div>
+          <div class="prod-section">
+            <h3>&#x1F4C8; Production Reject Trends</h3>
+            <div id="root-causes"></div>
+          </div>
+        </div>
+
+        <div class="prod-section">
+          <h3>&#x1F4CB; Daily Action Items for Production Supervisors</h3>
+          <div id="management-actions"></div>
+        </div>
+
+        <div class="prod-section">
+          <h3>&#x1F4DC; Focus ERP: M.Prod Rejected Stock Views</h3>
+          <div class="card" style="padding:16px;">
+            <div class="text-sm" style="line-height:1.8;color:var(--gray-600);">
+              <p class="mb-12">The following reject views are configured in Focus ERP for production and warehouse use:</p>
+              <div class="col-2" style="font-size:0.72rem;">
+                <ul>
+                  <li><strong>Rejection of Semi-Finished</strong> — In-process production rejects</li>
+                  <li><strong>Rejection of Finished Goods</strong> — Final product quality failures</li>
+                  <li><strong>Rejection of Injection</strong> — Injection molding defects</li>
+                  <li><strong>Injection Operational Waste</strong> — Startup/scrap from injection machines</li>
+                </ul>
+                <ul>
+                  <li><strong>Rejection of Raw Materials</strong> — Incoming material failures</li>
+                  <li><strong>Sponge / Foam Rejects</strong> — Color change and degradation</li>
+                  <li><strong>Packaging Rejects</strong> — Label misprints, damaged packaging</li>
+                  <li><strong>QC Sample Hold</strong> — Samples pending lab results</li>
+                </ul>
+              </div>
+              <p class="mt-12 text-muted text-xs">
+                <strong>Responsibility:</strong> Production supervisors and warehouse operators enter reject data
+                directly into Focus ERP at the time of detection. QC Compliance verifies and controls.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; Advisory:</strong> Machine quality indicators are simulated for demonstration.
+          Actual machine data must be integrated from Focus ERP or the production monitoring system.
+          AI recommendations are advisory and require formal review.
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

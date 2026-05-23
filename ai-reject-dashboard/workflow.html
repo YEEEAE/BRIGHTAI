@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — Workflow & Governance</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .wf-section { margin-bottom:32px; }
+    .wf-section h3 { font-size:0.9rem; font-weight:600; color:var(--navy); margin-bottom:12px; }
+    .wf-section h4 { font-size:0.78rem; font-weight:600; color:var(--gray-700); margin-bottom:8px; margin-top:20px; }
+    .wf-section p, .wf-section li { font-size:0.75rem; line-height:1.7; color:var(--gray-600); }
+    .wf-section ul, .wf-section ol { padding-right:20px; }
+    .wf-section li { margin-bottom:4px; }
+
+    .workflow-steps { display:flex; flex-direction:column; gap:6px; }
+    .wf-step { display:flex; align-items:center; gap:14px; padding:14px 18px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); border-right:4px solid var(--gray-300); position:relative; }
+    .wf-step .step-num { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.75rem; flex-shrink:0; color:var(--white); }
+    .wf-step .step-num.s1 { background:var(--navy); }
+    .wf-step .step-num.s2 { background:var(--teal); }
+    .wf-step .step-num.s3 { background:var(--blue); }
+    .wf-step .step-num.s4 { background:#7c3aed; }
+    .wf-step .step-num.s5 { background:var(--amber); }
+    .wf-step .step-num.s6 { background:var(--red); }
+    .wf-step .step-num.s7 { background:var(--green); }
+    .wf-step .step-content { flex:1; }
+    .wf-step .step-title { font-weight:600; color:var(--gray-800); font-size:0.78rem; }
+    .wf-step .step-desc { font-size:0.7rem; color:var(--gray-500); margin-top:2px; }
+    .wf-step .step-owner { font-size:0.62rem; color:var(--teal-dark); font-weight:600; }
+    .wf-step::after { content:"\25BC"; position:absolute; bottom:-10px; right:50%; transform:translateX(50%); color:var(--gray-400); font-size:0.6rem; }
+    .wf-step:last-child::after { display:none; }
+
+    .gate-table { width:100%; border-collapse:collapse; font-size:0.73rem; }
+    .gate-table th { background:var(--navy); color:var(--white); padding:10px 14px; text-align:right; font-weight:600; font-size:0.65rem; }
+    .gate-table td { padding:10px 14px; border-bottom:1px solid var(--gray-200); }
+    .gate-table .level-1 { border-right:4px solid var(--green); }
+    .gate-table .level-2 { border-right:4px solid var(--amber); }
+    .gate-table .level-3 { border-right:4px solid var(--red); }
+
+    .committee-table { width:100%; border-collapse:collapse; font-size:0.73rem; margin-top:8px; }
+    .committee-table th { background:var(--gray-100); padding:8px 12px; text-align:right; font-weight:600; font-size:0.65rem; color:var(--gray-600); border-bottom:1px solid var(--gray-200); }
+    .committee-table td { padding:8px 12px; border-bottom:1px solid var(--gray-100); }
+
+    .rule-card { padding:16px; background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius); margin-bottom:8px; }
+    .rule-card .rule-icon { font-size:1.1rem; margin-bottom:4px; }
+    .rule-card .rule-title { font-weight:600; font-size:0.78rem; color:var(--gray-700); }
+    .rule-card .rule-desc { font-size:0.7rem; color:var(--gray-500); margin-top:4px; line-height:1.6; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated Prototype</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> Executive View</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> Finance View</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
+        <a href="production.html"><span class="icon">&#x1F3ED;</span> Production / Ops</a>
+        <a href="workflow.html" class="active"><span class="icon">&#x1F504;</span> Workflow &amp; Governance</a>
+        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+      </nav>
+      <div class="sidebar-footer">
+        Focus ERP remains the official source of truth.<br>
+        AI analysis is advisory only.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>Workflow &amp; Governance</h2>
+            <div class="breadcrumb">Reject Lifecycle — Approval Chain — Financial Gates — Governance Rules</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span class="text-xs" style="color:var(--gray-400);">SOP Reference</span>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; Process Reference:</strong> This page documents the complete reject and destruction
+          workflow as defined in the project proposal. Focus ERP is the official system of record.
+          All human approvals remain mandatory.
+        </div>
+
+        <!-- 1. 7-Step Approval Chain -->
+        <div class="wf-section">
+          <h3>1. &#x1F4CB; Reject &amp; Destruction Approval Chain</h3>
+          <p class="text-muted text-sm mb-12">Seven sequential steps. No step can be skipped. Each step requires a formal digital signature in Focus ERP.</p>
+          <div class="workflow-steps">
+            <div class="wf-step">
+              <div class="step-num s1">1</div>
+              <div class="step-content">
+                <div class="step-title">Create &amp; Save Reject Request</div>
+                <div class="step-desc">Field supervisor of the detecting department enters reject details in Focus ERP. Batch is automatically placed on hold.</div>
+                <div class="step-owner">&#x1F464; Origin Department Supervisor</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="step-num s2">2</div>
+              <div class="step-content">
+                <div class="step-title">Department Head Review &amp; Approval</div>
+                <div class="step-desc">Department head confirms operational data accuracy. Can return for correction with comments.</div>
+                <div class="step-owner">&#x1F464; Department Head</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="step-num s3">3</div>
+              <div class="step-content">
+                <div class="step-title">QC Compliance Technical Verification</div>
+                <div class="step-desc">QC team performs physical inspection, matches lab reports, verifies documentation, and recommends disposition.</div>
+                <div class="step-owner">&#x1F464; QC Compliance Team</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="step-num s4">4</div>
+              <div class="step-content">
+                <div class="step-title">Financial Control Gate</div>
+                <div class="step-desc">Based on the 3-tier financial gate system (see section below). Finance reviews cost impact and recovery options.</div>
+                <div class="step-owner">&#x1F464; Finance Department</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="step-num s5">5</div>
+              <div class="step-content">
+                <div class="step-title">QCM / QAM Final Quality Approval</div>
+                <div class="step-desc">Quality Manager reviews the complete digital package and authorizes disposition (destroy, rework, return).</div>
+                <div class="step-owner">&#x1F464; Quality Control / Assurance Manager</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="step-num s6">6</div>
+              <div class="step-content">
+                <div class="step-title">Physical Destruction with Witness Committee</div>
+                <div class="step-desc">Designated committee witnesses the destruction by the approved environmental contractor. Time-stamped photos uploaded.</div>
+                <div class="step-owner">&#x1F464; Witness Committee</div>
+              </div>
+            </div>
+            <div class="wf-step">
+              <div class="step-num s7">7</div>
+              <div class="step-content">
+                <div class="step-title">Automatic Record Lock &amp; Audit Archive</div>
+                <div class="step-desc">All fields are locked permanently. Record stored as unalterable audit trail for minimum 7 years.</div>
+                <div class="step-owner">&#x2699; System (Automatic)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Financial Gates -->
+        <div class="wf-section">
+          <h3>2. &#x1F4B0; 3-Tier Financial Control Gates</h3>
+          <p class="text-muted text-sm mb-12">Reject transactions are routed dynamically based on estimated cost. This protects company assets and ensures proper financial review before destruction.</p>
+          <table class="gate-table">
+            <thead><tr><th>Tier</th><th>Cost Threshold</th><th>Required Action</th><th>Approver</th></tr></thead>
+            <tbody>
+              <tr class="level-1">
+                <td><span class="risk-badge low">Level 1 — Minor</span></td>
+                <td>&lt; SAR 5,000</td>
+                <td>No active finance approval required. Proceeds directly from QC to QCM approval.</td>
+                <td>QCM only</td>
+              </tr>
+              <tr class="level-2">
+                <td><span class="risk-badge medium">Level 2 — Medium</span></td>
+                <td>SAR 5,000 – 50,000</td>
+                <td>Finance Controller reviews cost impact and confirms asset write-off in Focus ERP before destruction.</td>
+                <td>Finance Controller + QCM</td>
+              </tr>
+              <tr class="level-3">
+                <td><span class="risk-badge critical">Level 3 — High</span></td>
+                <td>&gt; SAR 50,000</td>
+                <td>Full hold. Finance Director / Factory Director reviews recovery options (supplier credit, insurance) before any destruction.</td>
+                <td>Finance Director + Factory Director</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="mt-12 text-muted text-sm">
+            <strong>Logic:</strong> Items &ge; SAR 5,000 are flagged <code>finance_review_required</code>.
+            Items &ge; SAR 20,000 require Finance Director sign-off.
+            Items &ge; SAR 50,000 trigger full executive review.
+          </div>
+        </div>
+
+        <!-- 3. Witness Committee -->
+        <div class="wf-section">
+          <h3>3. &#x1F46B; Witness Committee Composition</h3>
+          <p class="text-muted text-sm mb-12">The physical destruction must be witnessed by a formally designated committee. Composition varies by financial tier.</p>
+          <table class="committee-table">
+            <thead><tr><th>Tier</th><th>Committee Members</th><th>Documentation Required</th></tr></thead>
+            <tbody>
+              <tr><td><span class="risk-badge low">Level 1 (&lt; SAR 5K)</span></td><td>Single QC Compliance representative</td><td>Signed destruction certificate + photo</td></tr>
+              <tr><td><span class="risk-badge medium">Level 2 (SAR 5K–50K)</span></td><td>QC Compliance rep + Origin Department Head</td><td>Signed certificate + time-stamped photos</td></tr>
+              <tr><td><span class="risk-badge critical">Level 3 (&gt; SAR 50K)</span></td><td>QC Compliance + QA Manager + Finance Rep + Factory Management Rep</td><td>Signed certificate + time-stamped photos + video evidence + environmental disposal certificate</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 4. Inventory Hold Logic -->
+        <div class="wf-section">
+          <h3>4. &#x1F512; Inventory Hold &amp; Record Lock Logic</h3>
+          <div class="col-2">
+            <div class="rule-card">
+              <div class="rule-icon">&#x1F6AB</div>
+              <div class="rule-title">Automatic Batch Hold</div>
+              <div class="rule-desc">When a reject entry is saved in Focus ERP, the batch status is automatically changed to "Quarantine". The batch is excluded from all available stock, MRP calculations, and shipment modules.</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-icon">&#x1F4CD</div>
+              <div class="rule-title">Physical Red-Tagging</div>
+              <div class="rule-desc">The originating department must physically transfer the material to the designated quarantine area and attach a red hold tag printed from Focus ERP with the transaction barcode.</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-icon">&#x26D4</div>
+              <div class="rule-title">No Manual Release</div>
+              <div class="rule-desc">The system strictly prevents any manual release of quarantined stock. Only completion of the full approval chain can authorise release for destruction or alternative disposition.</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-icon">&#x1F4C4</div>
+              <div class="rule-title">Permanent Record Lock</div>
+              <div class="rule-desc">After destruction is completed and witnessed, the record is permanently locked. No edits, deletions, or historical modifications are permitted. Retained minimum 7 years per Saudi regulatory requirements.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Governance Rules -->
+        <div class="wf-section">
+          <h3>5. &#x2696; Governance &amp; Control Rules</h3>
+          <div class="col-2">
+            <div class="rule-card">
+              <div class="rule-icon">&#x26A0</div>
+              <div class="rule-title">No Electronic Bypass</div>
+              <div class="rule-desc">The system strictly prevents advancing to the next approval step before all prior signatures are completed in Focus ERP's Authorize History.</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-icon">&#x1F464</div>
+              <div class="rule-title">No Self-Approval</div>
+              <div class="rule-desc">The employee who created the reject entry cannot approve it as Department Head or QCM. This ensures complete segregation of duties.</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-icon">&#x23F1</div>
+              <div class="rule-title">SLA Time Limits</div>
+              <div class="rule-desc">Standard approvals: 48 hours max. Biological/hazardous materials: 24 hours max. Automatic escalation to higher management if SLA is exceeded.</div>
+            </div>
+            <div class="rule-card">
+              <div class="rule-icon">&#x1F504</div>
+              <div class="rule-title">Justified Return for Correction</div>
+              <div class="rule-desc">Any approver can return the transaction to a previous step for correction, but must provide a written reason for the return.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. SOP Flowchart -->
+        <div class="wf-section">
+          <h3>6. &#x1F4D6; SOP Flowchart Reference</h3>
+          <div class="card" style="padding:20px;">
+            <div style="display:flex;flex-direction:column;gap:2px;font-size:0.72rem;line-height:1.6;font-family:'Courier New',monospace;direction:ltr;text-align:left;">
+              <div style="background:var(--navy);color:white;padding:6px 12px;border-radius:4px;margin-bottom:4px;">START: Detect &amp; physically isolate reject</div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="background:var(--teal);color:white;padding:6px 12px;border-radius:4px;margin-bottom:4px;">Enter reject in Focus ERP (Origin Dept)</div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="background:var(--blue);color:white;padding:6px 12px;border-radius:4px;margin-bottom:4px;">Department Head approves data accuracy</div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="background:#7c3aed;color:white;padding:6px 12px;border-radius:4px;margin-bottom:4px;">QC Compliance verifies &amp; attaches reports</div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="display:flex;gap:4px;">
+                <div style="background:var(--gray-600);color:white;padding:6px 12px;border-radius:4px;">Cost &lt; 5K SAR &#x2192; Skip Finance</div>
+                <div style="background:var(--amber);color:white;padding:6px 12px;border-radius:4px;">Cost 5K–50K SAR &#x2192; Controller Review</div>
+                <div style="background:var(--red);color:white;padding:6px 12px;border-radius:4px;">Cost &gt; 50K SAR &#x2192; Director Review</div>
+              </div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="background:var(--teal-dark);color:white;padding:6px 12px;border-radius:4px;margin-bottom:4px;">QCM/QAM final quality approval</div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="background:var(--red-dark);color:white;padding:6px 12px;border-radius:4px;margin-bottom:4px;">Digital Destruction Permit generated</div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="background:var(--gray-700);color:white;padding:6px 12px;border-radius:4px;margin-bottom:4px;">Witnessed physical destruction + evidence upload</div>
+              <div style="padding:6px 20px;">&#x2193;</div>
+              <div style="background:var(--green);color:white;padding:6px 12px;border-radius:4px;">END: Record locked, stock deducted, audit trail saved</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; Important:</strong> This workflow is defined in the project proposal documents.
+          All approvals, holds, and record locks are enforced within Focus ERP.
+          The AI dashboard is read-only and does not participate in any transactional workflow.
+          Human approval remains mandatory at every step.
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

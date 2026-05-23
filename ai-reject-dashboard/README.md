@@ -1,262 +1,194 @@
 # AI Reject Analytics & Management Dashboard
 
-**Prototype for Focus ERP Reject & Destruction Procedures**
+**Prototype for Focus ERP Reject & Destruction Procedures — Mais for Medical Products**
 
-A professional, enterprise-grade management dashboard for rejected materials and destruction procedures at Mais for Medical Products. This prototype demonstrates how AI (Gemini) can support decision-making while keeping Focus ERP as the official source of truth.
+A complete, production-ready prototype for rejected material analytics and destruction workflow management. The dashboard integrates with Focus ERP through a secure backend, uses Gemini API for AI-powered analysis, and provides role-specific views for Executive, Finance, Quality, Production, and IT teams.
 
----
-
-## What This Prototype Does
-
-The dashboard provides visibility into rejected materials and products across the factory. It uses AI to:
-
-- Analyse reject patterns and identify root causes
-- Calculate an advisory risk score for each reject case (0–100)
-- Suggest corrective and preventive actions (CAPA)
-- Identify high-value financial impact cases requiring finance review
-- Highlight approval delays and destruction backlogs
-- Generate executive summaries and management recommendations
-
-**Important:** All AI output is advisory only. Formal approvals remain inside Focus ERP.
+**Core Principle:** Focus ERP is the official source of truth. AI analysis is advisory only. All formal approvals remain inside Focus ERP with mandatory human sign-off.
 
 ---
 
-## Pages Overview
-
-| Page | File | Primary Audience | Purpose |
-|------|------|-----------------|---------|
-| Main Dashboard | `index.html` | All users | Overview cards, risk table, root causes, CAPA, alerts, reject records |
-| Executive View | `executive.html` | Top Management / Factory Director | Critical insights, board-level recommendations, required actions |
-| Finance View | `finance.html` | Finance Department | Cost analysis, recovery options, financially sensitive cases |
-| Quality & CAPA | `quality.html` | QC / QCM / QAM | Root causes, CAPA suggestions, GMP audit readiness, documentation |
-| Technical View | `technical.html` | IT / Focus Vendor | Architecture, security model, API docs, UAT and go-live checklists |
-
----
-
-## How to Use
-
-### Mode 1 — Static Presentation (No Server Required)
-
-Open `index.html` directly in any browser:
+## Quick Start
 
 ```bash
-open index.html
-```
-
-This mode requires no server, no Gemini API key, no Excel file. It uses prepared demo data from `assets/data.js`. Perfect for initial management presentation.
-
-### Mode 2 — Backend with Local Analysis
-
-1. Install dependencies:
-
-```bash
+cd ai-reject-dashboard
 npm install
+cp .env.example .env    # Edit .env with your settings
+npm start               # Opens at http://localhost:3000
 ```
 
-2. Create environment configuration:
-
-```bash
-cp .env.example .env
-```
-
-3. Edit `.env` with your settings (optional — works without changes using demo data and simulated AI).
-
-4. Start the server:
-
-```bash
-npm start
-```
-
-5. Open `http://localhost:3000` in your browser.
-
-In this mode:
-- If the Excel file exists, data is read from it (with simulated reject records generated from item data).
-- If the Excel file is missing, the server falls back to demo data.
-- If Gemini API key is configured, real AI analysis is used.
-- If Gemini API key is missing, a local simulated analysis runs instead.
+**Two modes:**
+- **Static** (no server): Open `index.html` directly in browser. Uses prepared demo data from `assets/data.js`.
+- **Backend** (full features): Run `npm start`. Reads Excel data, optionally calls Gemini API, enables auth.
 
 ---
 
-## Excel File Configuration
+## Pages (7 Views)
 
-The backend reads the Excel file from the path configured in `.env`:
+| Page | File | Audience | Key Features |
+|------|------|----------|--------------|
+| **Main Dashboard** | `index.html` | All users | KPI cards, risk overview, root causes, CAPA, anomalies, predictive cost, alerts, reject table, filters |
+| **Executive View** | `executive.html` | Factory Director / Board | Strategic summary, high-risk alerts, board recommendations, cost trends, anomaly detection |
+| **Finance View** | `finance.html` | Finance Department | Cost by department, recovery options, financially sensitive cases, 3-tier financial gate logic |
+| **Quality & CAPA** | `quality.html` | QC / QCM / QAM | Root cause clustering, CAPA suggestions, CAPA status tracking, GMP audit readiness checklist, documentation gaps |
+| **Production / Ops** | `production.html` | Production Managers / Supervisors | Machine quality indicators, raw material efficiency, pending input alerts, Focus ERP reject views reference |
+| **Workflow & Governance** | `workflow.html` | All roles | 7-step approval chain, 3-tier financial gates, witness committee composition, inventory hold logic, governance rules, SOP flowchart |
+| **Technical View** | `technical.html` | IT / Focus Vendor | Architecture diagrams, security model, 3 integration options, 11 API endpoints documentation, UAT checklist, go-live checklist |
 
-```
-EXCEL_FILE_PATH=/Users/yzydalshmry/Desktop/BRIGHTAI/reports/ALL_ITEMS_MAIS_with_life_years.xlsx
-```
-
-The Excel file contains item master data (stock analysis by batch). Since this is item inventory data rather than reject records, the backend:
-
-- Reads the first sheet automatically
-- Detects the header row by looking for "Item Code" and "Item Name" columns
-- Generates realistic simulated reject records from the available item data
-- Uses item names, codes, batch numbers, quantities, stock values, and life years
-- Never crashes if a column is missing
-- Returns clear warnings when data is estimated or simulated
-
-**Normalised reject record fields:**
-
-`doc_no`, `date`, `department`, `focus_view`, `item_code`, `item_name`, `lot_no`, `quantity`, `cost`, `reason`, `approval_status`, `days_pending`, `destruction_status`, `root_cause`, `risk_score`, `risk_level`, `capa_required`, `finance_review_required`
+**Additional:** `login.html` (token-based authentication), `index-ar.html` (Arabic language dashboard)
 
 ---
 
-## Gemini AI Integration
-
-Gemini AI provides advisory analysis only. It is used for:
-
-- Executive summary generation
-- Root cause grouping and pattern recognition
-- Risk scoring support
-- CAPA suggestion generation
-- Finance alert identification
-- Management action recommendations
-
-**Gemini does NOT:**
-
-- Approve or reject any case
-- Authorise destruction or stock deduction
-- Modify Focus ERP data
-- Make any binding decisions
-
-**Security requirements:**
-
-- The Gemini API key is stored ONLY in `.env` on the server
-- The API key is never in HTML, CSS, or browser-side JavaScript
-- Only minimised, relevant data fields are sent to Gemini
-- The backend makes all API calls — the frontend never calls Gemini directly
-- If the API key is missing or the call fails, the system falls back to local simulated analysis
-
----
-
-## Project Structure
-
-```
-ai-reject-dashboard/
-├── index.html                 # Main Dashboard
-├── executive.html             # Executive Management View
-├── finance.html               # Finance View
-├── quality.html               # Quality & CAPA View
-├── technical.html             # Technical Integration View
-├── server.js                  # Backend server (Node.js + Express)
-├── package.json               # Project dependencies
-├── .env.example               # Environment configuration template
-├── README.md                  # This file
-├── AI_Reject_Analytics_Rewritten_Saudi.md  # Full concept document
-└── assets/
-    ├── style.css              # All styling (RTL, responsive, enterprise theme)
-    ├── data.js                # Demo/mock data for static mode
-    └── app.js                 # Frontend logic (auto-detects backend, falls back to static)
-```
-
----
-
-## API Endpoints
+## Backend API (12 Endpoints)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/health` | Server status, data source, Gemini config, Excel status |
-| GET | `/api/rejects` | Full list of reject records (optional `?source=excel` or `?source=demo`) |
-| GET | `/api/summary` | AI or computed analysis summary with risk data |
+| POST | `/api/login` | Validate dashboard access token |
+| GET | `/api/rejects` | Reject records with filtering (`?department=`, `?risk_level=`, `?status=`, `?from_date=`, `?to_date=`, `?search=`) |
+| GET | `/api/summary` | AI or computed analysis with risk data, costs, anomalies |
 | GET | `/api/root-causes` | Grouped root cause data with counts and percentages |
 | GET | `/api/capa-suggestions` | CAPA suggestions from AI or local analysis |
 | GET | `/api/finance-alerts` | High-value finance alerts requiring review |
-| POST | `/api/run-analysis` | Triggers full AI analysis (Gemini or simulated), returns complete result |
+| GET | `/api/anomalies` | Anomaly detection — items with unusually high cost |
+| GET | `/api/ai-analysis` | Full AI analysis with records + analysis (cached 5 min) |
+| POST | `/api/run-analysis` | Triggers AI analysis, returns complete result |
+| GET | `/api/audit-log` | Last 100 audit log entries (timestamp, IP, action) |
 
-All endpoints return standardised JSON:
+All endpoints return standardised JSON: `{ success, source, warnings, data }`
 
-```json
-{
-  "success": true,
-  "source": "excel",
-  "warnings": [],
-  "data": { ... }
-}
+---
+
+## Risk Scoring Model (0–100)
+
+| Factor | Max | Description |
+|--------|-----|-------------|
+| Cost impact | 30 | Higher cost = higher risk |
+| Quantity | 10 | Larger batches = higher risk |
+| Days pending | 20 | Longer delays = higher risk |
+| Destruction pending | 10 | Unresolved destruction |
+| Expiry/life risk | 15 | Near-expiry items |
+| Repeated root cause | 10 | Recurring patterns |
+| Department risk | 5 | Warehouse/QC baseline |
+| Finance review flag | 5 | High-value flagged items |
+
+**Levels:** 0–39 Low, 40–69 Medium, 70–84 High, 85–100 Critical
+
+---
+
+## Data Sources (Priority Order)
+
+1. **Focus ERP API** — Real-time if `FOCUS_API_URL` and `FOCUS_API_TOKEN` are configured
+2. **Excel File** — Reads `ALL_ITEMS_MAIS_with_life_years.xlsx` (25,691 items), generates 25 realistic reject records
+3. **Demo Data** — Falls back to 15 prepared records in `assets/data.js`
+
+---
+
+## AI Integration (Gemini API)
+
+- Uses **Structured Outputs** with JSON Schema for deterministic responses
+- Data minimisation: Only relevant reject fields sent — no PII, no employee names
+- API key stored in `.env` on server only — **never in frontend code**
+- 5-minute result cache to reduce API calls
+- Automatic fallback to local simulated analysis if API key is missing or call fails
+
+---
+
+## Architecture
+
+```
+Focus ERP  →  Read-only API/SQL View  →  Backend (server.js)  →  Gemini API  →  Dashboard
+                                                                     or
+Excel File  →  Backend (server.js)  →  Simulated AI (local)  →  Dashboard
+```
+
+The frontend **never** directly accesses Focus ERP or Gemini. All API keys are server-side only.
+
+---
+
+## Project Files
+
+```
+ai-reject-dashboard/
+├── index.html              # Main Dashboard
+├── executive.html          # Executive Management View
+├── finance.html            # Finance View
+├── quality.html            # Quality & CAPA View
+├── production.html         # Production / Operations View
+├── workflow.html           # Workflow & Governance
+├── technical.html          # Technical Integration View
+├── login.html              # Token-based login page
+├── index-ar.html           # Arabic language dashboard
+├── server.js               # Backend (Node.js + Express, 888 lines)
+├── package.json            # Dependencies (express, cors, dotenv, xlsx)
+├── .env                    # Environment configuration
+├── .env.example            # Configuration template
+├── README.md               # This file
+├── audit.log               # Server audit trail
+├── AI_Reject_Analytics_Rewritten_Saudi.md
+└── assets/
+    ├── style.css           # 963 lines — RTL, responsive, enterprise theme
+    ├── data.js             # 15 demo records with full analysis data
+    └── app.js              # 674 lines — frontend logic, auto-detection, rendering
 ```
 
 ---
 
-## Risk Scoring Model
+## Supporting Reports (in `../reports/`)
 
-Each reject record receives a score from 0–100 based on:
-
-| Factor | Max Points | Description |
-|--------|-----------|-------------|
-| Cost impact | 30 | Higher cost = higher risk |
-| Quantity | 10 | Larger batches = higher risk |
-| Days pending | 20 | Longer delays = higher risk |
-| Destruction pending | 10 | Unresolved destruction = higher risk |
-| Expiry/life risk | 15 | Near-expiry items = higher risk |
-| Repeated root cause | 10 | Recurring patterns = higher risk |
-| Department risk | 5 | Warehouse/QC = higher baseline |
-| Finance review flag | 5 | High-value items flagged |
-
-**Risk levels:** 0–39 Low, 40–69 Medium, 70–84 High, 85–100 Critical
-
-The score is advisory only and clearly labelled as such in the dashboard.
-
----
-
-## Future Focus ERP Integration
-
-Three integration options are available (see `technical.html` for details):
-
-1. **Focus API (Recommended):** Direct REST or SOAP API connection for real-time data
-2. **SQL View (Read-Only):** Expose reject data through a read-only database view
-3. **Scheduled Export:** Export CSV/Excel from Focus ERP to a shared location on a schedule
-
-The architecture supports any option with minimal changes to the backend data source layer.
+| File | Content |
+|------|---------|
+| `final_master_report.md` | Consolidated 14-section boardroom-ready proposal (English) |
+| `reject_destruction_upgrade_proposal.md` | 16-section executive proposal (Arabic) |
+| `ai_reject_analytics_dashboard_concept.md` | AI dashboard technical concept (Arabic) |
+| `AI Reject Analytics & Management Dashboard.md` | Original concept (Arabic/English) |
+| `secure_backend_architecture_design.md` | Cybersecurity and middleware spec (Arabic) |
+| `focus_vendor_technical_specification.md` | Focus ERP vendor specification (Arabic) |
+| `sop_rejected_material_handling_destruction.md` | GMP-compliant SOP (Arabic) |
+| `raci_sla_matrix_process_governance.md` | RACI and SLA matrices (Arabic) |
+| `ai_governance_statement.md` | AI governance policy (English) |
+| `implementation_roadmap.md` | 15-phase digital transformation plan (English) |
+| `reject_risk_score_model.md` | 12-factor risk model specification (English) |
+| `executive_summary.md` | One-page executive summary (English) |
+| `final_recommendation.md` | Boardroom final recommendation (English) |
+| `auditor_qa_document.md` | GMP/ISO audit readiness Q&A (English) |
+| `presentation_script.md` | Board presentation script (English) |
 
 ---
 
-## Security Warning
+## Security
 
-**Never place the Gemini API key in frontend code.**
-
-The API key must only exist on the server (in `.env` or environment variables). This prototype follows this rule — the key is used only in `server.js` and never exposed to the browser.
+- Token-based authentication (configurable via `DASHBOARD_TOKEN` in `.env`)
+- Full audit logging of all API requests (timestamp, IP, action)
+- No API keys in frontend code — server-side only
+- Read-only by design — no write capability to data sources
+- PII is stripped before sending to Gemini API
+- RTL support for Arabic language users
 
 ---
 
 ## Presenting to Management
 
-This prototype is designed for presentation to:
+Start with **Main Dashboard** (`index.html`) for the full overview, then open role-specific views:
 
-- **Top Management / Board:** Show the Executive View for strategic visibility and decision support
-- **Factory Director:** Demonstrate real-time risk monitoring and operational oversight
-- **QCM / QAM:** Highlight CAPA tracking, root cause analysis, and audit readiness
-- **Finance Director:** Show financial impact analysis and loss recovery evaluation
-- **IT / Focus Vendor:** Explain the integration architecture, security model, and API design
-
-The UI is RTL-optimised for Arabic, uses professional enterprise colours (dark navy, teal), and works offline in static mode.
-
----
-
-## Limitations
-
-| Aspect | Current Status |
-|--------|---------------|
-| Data source | Excel file or static demo data (not live Focus ERP) |
-| AI analysis | Local simulation or Gemini API (if configured) |
-| Authentication | None — all pages are accessible |
-| Role-based access | Not implemented — concept only |
-| HTTPS | Not configured — HTTP only for local use |
-| Audit logging | Basic server console logs |
-| Real-time updates | Manual page refresh required |
-| Write-back to ERP | Not supported — read-only by design |
+- **Board / Factory Director:** `executive.html` + `workflow.html`
+- **Finance Director:** `finance.html` + `workflow.html` (financial gates section)
+- **QCM / QAM:** `quality.html` + `workflow.html` (governance rules)
+- **Production Manager:** `production.html` + `workflow.html`
+- **IT / Focus Vendor:** `technical.html` + `workflow.html`
 
 ---
 
 ## Next Steps for Production
 
-1. Confirm Focus ERP integration method (API, SQL view, or export)
+1. Confirm Focus ERP integration method (API, SQL view, or scheduled export)
 2. Deploy backend to secure server with HTTPS
 3. Configure Gemini API key in server environment
-4. Implement role-based access control
+4. Implement full role-based access control (RBAC)
 5. Complete UAT with real Focus ERP data
-6. Train users and update SOPs
+6. Train all user roles and update SOPs
 7. Go live as a read-only advisory tool
 
 ---
 
-## License
-
-Prototype for demonstration purposes only. Not licensed for production use without proper security review and Focus ERP integration validation.
+*Prototype for Mais for Medical Products — May 2026*

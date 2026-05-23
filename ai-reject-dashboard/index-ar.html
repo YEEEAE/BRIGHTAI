@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحليلات المرفوضات بالذكاء الاصطناعي — لوحة التحكم الرئيسية</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .lang-toggle { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px; font-size:0.6rem; font-weight:600; background:var(--teal); color:var(--white); text-decoration:none; }
+    .lang-toggle:hover { background:var(--teal-dark); }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>تحليلات المرفوضات<br>باستخدام الذكاء الاصطناعي</h1>
+        <div class="sub">نظام فوكس — نموذج أولي متكامل</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index-ar.html" class="active"><span class="icon">&#x1F4CA;</span> الرئيسية</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> الإدارة التنفيذية</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> الإدارة المالية</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> الجودة وCAPA</a>
+        <a href="production.html"><span class="icon">&#x1F3ED;</span> الإنتاج والتشغيل</a>
+        <a href="workflow.html"><span class="icon">&#x1F504;</span> مسار العمل والحوكمة</a>
+      </nav>
+      <div class="sidebar-footer">
+        نظام فوكس هو المصدر الرسمي للبيانات.<br>
+        تحليلات الذكاء الاصطناعي استشارية فقط.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="القائمة">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>لوحة التحكم الرئيسية</h2>
+            <div class="breadcrumb">تحليلات المرفوضات بالذكاء الاصطناعي — نظام فوكس</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <a href="index.html" class="lang-toggle">English</a>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; تنبيه مهم:</strong> نظام فوكس يبقى المصدر الرسمي والحقيقي للبيانات.
+          هذه اللوحة للقراءة فقط وتقدم تحليلات استشارية.
+          الموافقات الرسمية تتم داخل نظام فوكس.
+          توصيات الذكاء الاصطناعي استشارية وتتطلب مراجعة مدير الجودة.
+        </div>
+
+        <div id="cards-grid" class="cards-grid">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <div id="ai-summary"></div>
+
+        <div class="mb-16">
+          <button id="run-analysis-btn" class="btn btn-primary">&#x1F504; تحديث التحليل</button>
+          <span class="text-muted text-sm" style="margin-right:10px;">
+            إعادة تشغيل التحليل بالذكاء الاصطناعي أو المحاكاة. النتائج مخزنة مؤقتاً لمدة 5 دقائق.
+          </span>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>تصنيف الأسباب الجذرية</h3>
+              <span class="badge">مجموعة بالذكاء الاصطناعي</span>
+            </div>
+            <div id="root-causes"></div>
+          </div>
+          <div class="section">
+            <div class="section-header">
+              <h3>تكلفة المرفوضات حسب القسم</h3>
+              <span class="badge">ريال سعودي</span>
+            </div>
+            <div id="cost-by-dept"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>مقترحات الإجراءات التصحيحية والوقائية (CAPA)</h3>
+            <span class="badge">استشاري — يتطلب مراجعة مدير الجودة</span>
+          </div>
+          <div id="capa-suggestions"></div>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x26A0; اكتشاف الأنشطة غير الطبيعية</h3>
+              <span class="badge">تم اكتشافها بالذكاء الاصطناعي</span>
+            </div>
+            <div id="anomalies"></div>
+          </div>
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x1F4C8; توقع التكلفة المستقبلية</h3>
+              <span class="badge">توقعات 30 يوماً</span>
+            </div>
+            <div id="predictive-cost"></div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>تنبيهات الطلبات المتراكمة</h3>
+            </div>
+            <div id="alerts"></div>
+          </div>
+          <div class="section">
+            <div class="section-header">
+              <h3>الإجراءات الإدارية المطلوبة</h3>
+            </div>
+            <div id="management-actions"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>تنبيهات مالية — حالات الرفض عالية القيمة</h3>
+            <span class="badge">تتطلب مراجعة مالية</span>
+          </div>
+          <div id="finance-alerts"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>سجل المرفوضات (عرض شبيه بنظام فوكس)</h3>
+            <span class="badge" id="record-count">البيانات الخام</span>
+          </div>
+          <div id="reject-table"></div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; إشعار استشاري:</strong> هذه لوحة نموذجية لأغراض العرض والتوضيح.
+          جميع مخرجات الذكاء الاصطناعي استشارية. القرارات الرسمية والتحديثات
+          تتم داخل نظام فوكس. لا يتصل النموذج الأولي بنظام فوكس مباشرة.
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
