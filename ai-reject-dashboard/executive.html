@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — Executive View</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated Prototype</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
+        <a href="executive.html" class="active"><span class="icon">&#x1F3E2;</span> Executive View</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> Finance View</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
+        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+      </nav>
+      <div class="sidebar-footer">
+        Focus ERP remains the official source of truth.<br>
+        AI analysis is advisory only.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>Executive Management View</h2>
+            <div class="breadcrumb">Critical insights for top management — read-only advisory</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span id="data-source-badge" class="data-source-badge loading">Loading...</span>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; Important:</strong> This view is designed for top management.
+          It shows only critical information requiring attention.
+          Focus ERP remains the official source of truth.
+          All AI insights are advisory.
+        </div>
+
+        <p id="source-info" class="text-muted text-sm mb-16"></p>
+
+        <div id="cards-grid" class="cards-grid">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <div id="ai-summary"></div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x1F4A1; This Week&rsquo;s Key Risk</h3>
+            </div>
+            <div class="card" style="padding:16px;">
+              <p class="text-muted text-sm" style="line-height:1.7;">
+                The highest priority risk is the accumulation of high-value raw material rejects
+                in the warehouse. Resin B (SAR 96,000) and Raw Material A (SAR 45,000)
+                have been pending approval for over 18 days, increasing the risk of further
+                value loss and potential regulatory non-compliance.
+                The warehouse department accounts for nearly 80% of total reject cost.
+              </p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x1F3ED; Highest Cost Department</h3>
+            </div>
+            <div id="cost-by-dept"></div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x26A0; High-Value Reject Alerts</h3>
+            </div>
+            <div id="finance-alerts"></div>
+          </div>
+          <div class="section">
+            <div class="section-header">
+              <h3>&#x23F3; Delayed Approvals &amp; Destruction</h3>
+            </div>
+            <div id="alerts"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>&#x1F3AF; Top 5 Reject Risks</h3>
+            <span class="badge">Priority Ranked</span>
+          </div>
+          <div id="top-risks"></div>
+          <p class="text-muted text-xs mt-8">
+            Risks are ranked by AI risk score (0–100). Critical and High items require
+            immediate management attention and CAPA assignment.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>&#x1F4CB; Required Management Actions</h3>
+            <span class="badge">Decision Needed</span>
+          </div>
+          <div id="management-actions"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>&#x1F4DC; Board-Level Recommendation</h3>
+          </div>
+          <div class="card" style="padding:20px;">
+            <p style="font-size:0.85rem;line-height:1.8;color:var(--gray-700);">
+              Based on the current reject data, the board is recommended to:
+            </p>
+            <ol style="font-size:0.8rem;line-height:2;color:var(--gray-600);padding-right:20px;margin-top:8px;">
+              <li>Authorise the QCM to expedite approval decisions on all pending cases exceeding 15 days.</li>
+              <li>Direct the Warehouse Manager to implement immediate FIFO/FEFO compliance review.</li>
+              <li>Instruct Procurement to enforce supplier quality agreements for repeated raw material deviations.</li>
+              <li>Assign Finance to evaluate recovery options for high-value rejects before destruction approval.</li>
+              <li>Request a CAPA status update from QCM within 14 days covering all open corrective actions.</li>
+              <li>Schedule a quarterly management review of reject trends and CAPA effectiveness.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; Advisory:</strong> This dashboard is a prototype. All AI-generated recommendations
+          are advisory and require formal review and approval by authorised personnel.
+          Focus ERP is the official system of record.
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

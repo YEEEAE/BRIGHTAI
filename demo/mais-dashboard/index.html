@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحليلات وإدارة المرفوضات بالذكاء الاصطناعي - ميس للمنتجات الطبية</title>
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <h2 class="sidebar-logo">ميس للمنتجات الطبية</h2>
+                    <p class="sidebar-subtitle">نظام الرقابة الذكي للمرفوضات</p>
+                </div>
+                <nav>
+                    <ul class="sidebar-menu">
+                        <li class="menu-item active">
+                            <a href="index.html">
+                                <span class="icon">📊</span>
+                                <span>لوحة التحكم الرئيسية</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="executive.html">
+                                <span class="icon">👑</span>
+                                <span>عرض الإدارة التنفيذية</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="finance.html">
+                                <span class="icon">💰</span>
+                                <span>بوابات الرقابة المالية</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="quality.html">
+                                <span class="icon">🛡️</span>
+                                <span>إجراءات الامتثال (كابا)</span>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="technical.html">
+                                <span class="icon">⚙️</span>
+                                <span>البنية المعمارية للربط</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="sidebar-footer">
+                <p>إعداد: يزيد الشمري</p>
+                <p>قسم امتثال مراقبة الجودة</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="main-header">
+                <div class="header-title-wrapper">
+                    <h1>لوحة تحليلات وإدارة المرفوضات بالذكاء الاصطناعي</h1>
+                    <p>مركز التحليلات الاستشاري العام لمراقبة وتتبع حركة المخزون المرفوض من نظام فوكس التقني</p>
+                </div>
+                <div class="header-actions" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <div id="data-source-badge" class="badge-live" style="background: rgba(26, 188, 156, 0.15); border: 1px solid rgba(26, 188, 156, 0.3); color: #1abc9c;">
+                        <span class="pulse-dot" style="background: #1abc9c;" id="data-source-pulse"></span>
+                        <span id="data-source-text">مصدر البيانات: Static Demo Data</span>
+                    </div>
+                    <button id="run-ai-btn" style="background: linear-gradient(135deg, #1abc9c, #16a085); border: none; padding: 8px 16px; border-radius: 6px; color: #fff; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(26,188,156,0.25); transition: all 0.3s ease;">
+                        <span class="icon">✦</span>
+                        <span>تشغيل تحليل الذكاء الاصطناعي</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Security Truth Banner -->
+            <div class="system-truth-banner">
+                <span class="icon">ℹ️</span>
+                <p><strong>تنبيه حوكمة أمني هام:</strong> نظام فوكس التقني هو المصدر الرسمي والوحيد للحقيقة التشغيلية والمالية. تعتبر لوحة البيانات أداة قراءة استشارية للتحليل والتوقع فقط، وتظل كامل الموافقات وإجازات الإتلاف خاضعة للتواقيع البشرية والمسارات المعتمدة داخل نظام فوكس حصرياً.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <section class="cards-grid">
+                <div class="stat-card emerald">
+                    <div class="stat-header">
+                        <span class="stat-title">إجمالي قيود المرفوضات</span>
+                        <span class="stat-icon">📦</span>
+                    </div>
+                    <div class="stat-value" id="stat-total-cases">0</div>
+                    <div class="stat-desc">حركة مسجلة في نظام فوكس</div>
+                </div>
+                <div class="stat-card red">
+                    <div class="stat-header">
+                        <span class="stat-title">الكلفة الكلية للمرفوضات</span>
+                        <span class="stat-icon">💸</span>
+                    </div>
+                    <div class="stat-value" id="stat-total-cost">0</div>
+                    <div class="stat-desc font-ar">ريال سعودي تراكمي</div>
+                </div>
+                <div class="stat-card amber">
+                    <div class="stat-header">
+                        <span class="stat-title">معاملات معلقة للموافقة</span>
+                        <span class="stat-icon">⏳</span>
+                    </div>
+                    <div class="stat-value" id="stat-pending-approvals">0</div>
+                    <div class="stat-desc">بانتظار اعتماد الجودة والمالية</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-header">
+                        <span class="stat-title">عمليات إتلاف معلقة</span>
+                        <span class="stat-icon">🔥</span>
+                    </div>
+                    <div class="stat-value" id="stat-pending-destruction">0</div>
+                    <div class="stat-desc">بانتظار جدولة الشهود ميدانياً</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-header">
+                        <span class="stat-title">حالات خطورة حرجة</span>
+                        <span class="stat-icon">⚠️</span>
+                    </div>
+                    <div class="stat-value" id="stat-high-risk">0</div>
+                    <div class="stat-desc">تتجاوز خطورتها معدل 75 درجة</div>
+                </div>
+            </section>
+
+            <!-- AI Summary Section -->
+            <section class="panel-card">
+                <div class="panel-header">
+                    <h2>
+                        <span class="icon">✦</span>
+                        <span>الملخص التنفيذي الاستشاري آلياً (جمناي)</span>
+                    </h2>
+                </div>
+                <div class="ai-summary-container">
+                    <div class="ai-summary-badge">تحليلات جمناي الذكية</div>
+                    <p class="ai-summary-text">
+                        خلال شهر مايو 2026، تم رصد وتسجيل ما مجموعه 12 حالة رفض في نظام فوكس بتكلفة تراكمية تبلغ 1,051,400 ريال سعودي. يتركز 55% من الهدر في فئات مرفوضات قسم الحقن، وتحديداً وصلات محاقن بلاستيكية معيبة. يوضح تحليل البيانات الإحصائية ارتباطاً بنسبة 92% بين تلوث الدفعة الأخيرة لحبيبات البلاستيك وتغير المورد. نوصي بتطبيق الحظر المخزني الآمن وتفعيل بوابات المالية الكبرى لشحنات المواد الخام فئة الراتنج.
+                    </p>
+                    <div class="ai-summary-tips">
+                        <div class="ai-tip-item">رصد سلوك شاذ: ارتفاع بنسبة 35% في معدلات الهدر لقسم الحقن خلال الـ 48 ساعة الماضية مقارنة بالمعدل الطبيعي.</div>
+                        <div class="ai-tip-item">توصية: يرجى تفعيل بوابات المراجعة الفنية الفورية لشحنات المورد الحالي لمادة الراتنج البلاستيكية قبل دخولها لخطوط التشغيل.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Table View Section -->
+            <section class="panel-card">
+                <div class="panel-header">
+                    <h2>
+                        <span class="icon">📋</span>
+                        <span>سجلات وقيود المرفوضات الحالية في نظام فوكس</span>
+                    </h2>
+                    <div class="table-search-wrapper">
+                        <input type="text" id="reject-search" placeholder="ابحث برقم المستند، الصنف، الباتش..." style="padding: 8px 16px; background: var(--bg-surface-card); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: #fff; outline: none; font-family: inherit; font-size: 13px; width: 260px;">
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>رقم المستند</th>
+                                <th>التاريخ</th>
+                                <th>القسم التشغيلي</th>
+                                <th>اسم الصنف</th>
+                                <th>الكمية المرفوضة</th>
+                                <th>التكلفة الإجمالية</th>
+                                <th>حالة الموافقات</th>
+                                <th>حالة الإتلاف الفعلي</th>
+                                <th>تقييم الخطورة والامتثال</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reject-table-body">
+                            <!-- Rows populated by app.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Chat Assistant Widget -->
+    <div class="chat-widget">
+        <div class="chat-widget-header">
+            <div class="chat-widget-title">
+                <span style="font-size: 20px;">🤖</span>
+                <h3>مساعد دردشة الجودة الذكي</h3>
+            </div>
+            <div class="chat-widget-status">
+                <span style="width: 8px; height: 8px; background: var(--accent-emerald); border-radius: 50%; display: inline-block;"></span>
+                <span>نشط استشارياً</span>
+            </div>
+        </div>
+        <div class="chat-messages" id="chat-messages-container">
+            <div class="message bot">
+                مرحباً بك! أنا مساعد دردشة الجودة الذكي والمخصص لتحليل سجلات المرفوضات في مصنع ميس للمنتجات الطبية. يمكنك طرح أسئلة تحليلية مثل:
+                <br><br>
+                • "أعطني تحليل المرفوضات لشهر مايو"<br>
+                • "ما هي الخسائر المتوقعة بنهاية العام؟"<br>
+                • "ما هي خطة كابا المقترحة لماكينات الحقن؟"<br>
+                • "ما هي التنبيهات المالية العاجلة المعلقة؟"
+            </div>
+        </div>
+        <div class="chat-input-wrapper">
+            <input type="text" id="chat-input-field" placeholder="اكتب سؤالك التحليلي هنا (تحليل، خسائر، كابا، مالية)...">
+            <button class="chat-submit-btn" id="chat-send-btn">إرسال</button>
+        </div>
+    </div>
+
+    <script src="assets/data.js"></script>
+    <script src="assets/app.js"></script>
+</body>
+</html>

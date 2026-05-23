@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — Main Dashboard</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated Prototype</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html" class="active"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> Executive View</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> Finance View</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
+        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+      </nav>
+      <div class="sidebar-footer">
+        Focus ERP remains the official source of truth.<br>
+        AI analysis is advisory only.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>Main Dashboard</h2>
+            <div class="breadcrumb">AI Reject Analytics &amp; Management Dashboard — Focus ERP Prototype</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span id="data-source-badge" class="data-source-badge loading">Loading...</span>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; Important Notice:</strong> Focus ERP remains the official source of truth.
+          This dashboard is read-only and provides advisory analysis only.
+          Formal approvals remain inside Focus ERP.
+          AI recommendations are advisory and require QCM/QAM review.
+        </div>
+
+        <p id="source-info" class="text-muted text-sm mb-16"></p>
+
+        <div id="cards-grid" class="cards-grid">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <div id="ai-summary"></div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>&#x1F514; AI Anomaly Detection — Unusual Pattern Alerts</h3>
+            <span class="badge">AI Detected</span>
+          </div>
+          <div id="anomaly-detection"></div>
+          <p class="text-muted text-xs mt-8">
+            Anomalies are detected based on sudden increases in rejection frequency, cost spikes,
+            abnormal approval delays, and concentration risks. These alerts require management investigation.
+          </p>
+        </div>
+
+        <div class="mb-16">
+          <button id="run-analysis-btn" class="btn btn-primary">&#x1F504; Run AI Analysis</button>
+          <span class="text-muted text-sm" style="margin-right:10px;">
+            Runs local simulated analysis when Gemini API is not configured.
+          </span>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>Root Cause Clustering</h3>
+              <span class="badge">AI Grouped</span>
+            </div>
+            <div id="root-causes"></div>
+          </div>
+          <div class="section">
+            <div class="section-header">
+              <h3>Reject Cost by Department</h3>
+              <span class="badge">SAR</span>
+            </div>
+            <div id="cost-by-dept"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>AI CAPA Suggestions</h3>
+            <span class="badge">Advisory Only — Requires QCM Review</span>
+          </div>
+          <div id="capa-suggestions"></div>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>Alerts &amp; Backlog</h3>
+            </div>
+            <div id="alerts"></div>
+          </div>
+          <div class="section">
+            <div class="section-header">
+              <h3>Required Management Actions</h3>
+            </div>
+            <div id="management-actions"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Finance Alerts — High Value Rejects</h3>
+            <span class="badge">Requires Finance Review</span>
+          </div>
+          <div id="finance-alerts"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Reject Records (Focus-like View)</h3>
+            <span class="badge" id="record-count">Raw Data</span>
+          </div>
+          <div id="reject-table"></div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; Advisory Notice:</strong> This is a prototype dashboard for demonstration purposes.
+          All AI-generated insights are advisory. Formal decisions, approvals, and record updates must be made
+          inside Focus ERP. The prototype does not connect to Focus ERP directly.
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

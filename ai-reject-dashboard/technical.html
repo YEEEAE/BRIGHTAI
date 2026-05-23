@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — Technical Integration View</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .tech-section { margin-bottom:32px; }
+    .tech-section h3 { font-size:0.9rem; font-weight:600; color:var(--navy); margin-bottom:8px; }
+    .tech-section h4 { font-size:0.78rem; font-weight:600; color:var(--gray-700); margin-bottom:6px; margin-top:16px; }
+    .tech-section p, .tech-section li { font-size:0.75rem; line-height:1.7; color:var(--gray-600); }
+    .tech-section ul, .tech-section ol { padding-right:20px; }
+    .tech-section li { margin-bottom:4px; }
+    .code-block {
+      background:var(--navy); color:#e2e8f0; border-radius:6px; padding:12px 16px;
+      font-family:'Courier New',monospace; font-size:0.7rem; direction:ltr; text-align:left;
+      overflow-x:auto; margin:8px 0; line-height:1.6;
+    }
+    .endpoint { font-family:'Courier New',monospace; font-size:0.72rem; color:var(--teal-dark); font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated Prototype</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> Executive View</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> Finance View</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
+        <a href="technical.html" class="active"><span class="icon">&#x2699;</span> Technical View</a>
+      </nav>
+      <div class="sidebar-footer">
+        Focus ERP remains the official source of truth.<br>
+        AI analysis is advisory only.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>Technical Integration View</h2>
+            <div class="breadcrumb">Architecture — Security — Integration Guide for IT &amp; Focus Vendor</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span class="text-xs" style="color:var(--gray-400);">Technical Documentation</span>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; Architecture Notice:</strong> This page describes the technical architecture
+          for both the current prototype and the future production integration with Focus ERP.
+          The prototype does not connect to Focus ERP directly.
+        </div>
+
+        <!-- Production Architecture -->
+        <div class="tech-section">
+          <h3>1. Production Architecture (Future — Focus ERP Integration)</h3>
+          <div class="arch-diagram">
+            <div class="arch-box focus">Focus ERP</div>
+            <span class="arch-arrow">&larr;</span>
+            <div class="arch-box api">Read-only<br>API / SQL View</div>
+            <span class="arch-arrow">&larr;</span>
+            <div class="arch-box backend">Backend Server<br>(Node.js)</div>
+            <span class="arch-arrow">&larr;</span>
+            <div class="arch-box gemini">Gemini API</div>
+            <span class="arch-arrow">&larr;</span>
+            <div class="arch-box dashboard">Dashboard<br>(Frontend)</div>
+          </div>
+          <p>Data flows in one direction only: Focus ERP &rarr; API/SQL View &rarr; Backend &rarr; Gemini &rarr; Dashboard.
+          The backend is the only component that communicates with both the data source and Gemini API.
+          The frontend never directly accesses Focus ERP or Gemini.</p>
+
+          <h4>Why a Backend Is Required</h4>
+          <ul>
+            <li><strong>API key protection:</strong> The Gemini API key must never be exposed to the browser.</li>
+            <li><strong>Data transformation:</strong> Data from Focus ERP must be cleaned, transformed, and minimised before being sent to Gemini.</li>
+            <li><strong>Audit trail:</strong> All AI analysis requests must be logged and auditable.</li>
+            <li><strong>Access control:</strong> The backend enforces role-based access control in production.</li>
+          </ul>
+
+          <h4>Data Minimisation Rules</h4>
+          <ul>
+            <li>Only relevant reject fields are sent to Gemini — no PII, no financial codes.</li>
+            <li>Batch-level details are aggregated to case level before AI processing.</li>
+            <li>Gemini receives no inventory quantity or location data beyond what is needed for risk scoring.</li>
+          </ul>
+        </div>
+
+        <!-- Current Prototype -->
+        <div class="tech-section">
+          <h3>2. Current Prototype Architecture</h3>
+          <div class="arch-diagram">
+            <div class="arch-box excel">Excel File</div>
+            <span class="arch-arrow">&larr;</span>
+            <div class="arch-box backend">Local Backend<br>(server.js)</div>
+            <span class="arch-arrow">&larr;</span>
+            <div class="arch-box gemini">Gemini API<br>or</div>
+            <div class="arch-box sim">Simulated AI</div>
+            <span class="arch-arrow">&larr;</span>
+            <div class="arch-box dashboard">Dashboard<br>(Frontend)</div>
+          </div>
+          <p>The prototype has two operating modes:</p>
+          <ul>
+            <li><strong>Static Mode:</strong> Open index.html directly in the browser. Uses <code>assets/data.js</code> for demo data. No server required. No Gemini required. No Excel required.</li>
+            <li><strong>Backend Mode:</strong> Run <code>npm start</code> to start the server on port 3000. Reads the Excel file, optionally calls Gemini API, returns data to the frontend.</li>
+          </ul>
+        </div>
+
+        <!-- Security -->
+        <div class="tech-section">
+          <h3>3. Security Model</h3>
+          <ul>
+            <li><strong>API Key Protection:</strong> The Gemini API key is stored in <code>.env</code> on the server only. It is never in HTML, CSS, or browser-side JavaScript. Even if someone inspects the page source, the API key cannot be found.</li>
+            <li><strong>No Direct Database Access:</strong> The frontend never connects to Focus ERP or the Excel file directly. All data passes through the backend.</li>
+            <li><strong>Read-Only Access:</strong> The prototype has no write capability to Focus ERP or any data source. This is intentional and prevents accidental data changes.</li>
+            <li><strong>Role-Based Access (Future):</strong> In production, access to specific views will be controlled by user roles (Executive, Finance, QC, IT).</li>
+            <li><strong>HTTPS Required (Future):</strong> All communication between the dashboard and backend must use HTTPS in production.</li>
+          </ul>
+        </div>
+
+        <!-- Roles & Access Control -->
+        <div class="tech-section">
+          <h3>4. Roles &amp; Access Control</h3>
+          <p>Access to the dashboard is restricted to authorised management roles only.
+          Each role has a specific scope of visibility based on their responsibility in the reject and destruction workflow.</p>
+          <div class="table-wrap mt-8">
+            <table>
+              <thead>
+                <tr><th>Role</th><th>Access Scope</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Factory Director</td><td>Full dashboard — all views and data</td></tr>
+                <tr><td>QCM / QAM</td><td>Quality + CAPA + full reject details (approval authority)</td></tr>
+                <tr><td>Finance Manager</td><td>Cost analysis + high-value rejects + loss recovery options</td></tr>
+                <tr><td>Production Manager</td><td>Production-related rejects only</td></tr>
+                <tr><td>Warehouse Manager</td><td>RM / FG rejects only — storage and inventory related</td></tr>
+                <tr><td>QC Compliance</td><td>Full operational tracking + audit readiness view</td></tr>
+                <tr><td>Normal Users</td><td>No access — dashboard is management-only</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-xs text-muted mt-8">Authentication: Username/password or SSO. Multi-factor authentication recommended.
+          Audit log: All access and AI analysis requests are logged. Read-only: No modification of Focus records allowed from this dashboard.</p>
+        </div>
+
+        <!-- Integration Options -->
+        <div class="tech-section">
+          <h3>5. Future Focus ERP Integration Options</h3>
+
+          <h4>Option 1 — Focus API (Recommended)</h4>
+          <p>If Focus ERP provides a REST or SOAP API, the backend can pull reject data directly.
+          This is the cleanest approach and supports real-time or near-real-time updates.
+          The backend would call the Focus API on a schedule (e.g., every 5 minutes) or on-demand.</p>
+
+          <h4>Option 2 — Read-Only SQL View</h4>
+          <p>If Focus uses a SQL database, create a read-only SQL view that exposes only the required
+          reject and destruction fields. The backend connects to this view with a read-only database account.
+          This is secure and does not risk modifying Focus data.</p>
+
+          <h4>Option 3 — Scheduled Excel/CSV Export</h4>
+          <p>The simplest integration: schedule Focus ERP to export reject data to a shared location
+          (e.g., network folder or SFTP server) as CSV or Excel. The backend reads the latest file on a schedule.
+          This is the least real-time option but the easiest to implement initially.</p>
+        </div>
+
+        <!-- API Endpoints -->
+        <div class="tech-section">
+          <h3>6. API Endpoints (Current Prototype)</h3>
+          <div class="code-block">
+<span class="endpoint">GET /api/health</span>
+Returns server status, data source, whether Gemini is configured, and Excel file status.
+
+<span class="endpoint">GET /api/rejects</span>
+Returns the full list of reject records.
+Optional query param: ?source=excel (force Excel load) or ?source=demo (force demo data)
+
+<span class="endpoint">GET /api/summary</span>
+Returns AI-generated or locally computed analysis summary including risk level, costs, root causes.
+
+<span class="endpoint">GET /api/root-causes</span>
+Returns grouped root cause data with counts and percentages.
+
+<span class="endpoint">GET /api/capa-suggestions</span>
+Returns CAPA suggestions generated by AI or local analysis.
+
+<span class="endpoint">GET /api/finance-alerts</span>
+Returns finance-sensitive high-value reject alerts requiring finance review.
+
+<span class="endpoint">POST /api/run-analysis</span>
+Triggers a full AI analysis (Gemini if configured, otherwise simulated).
+Returns executive summary, risk data, CAPA suggestions, and management actions.
+          </div>
+        </div>
+
+        <!-- UAT Checklist -->
+        <div class="tech-section">
+          <h3>7. UAT Checklist</h3>
+          <div class="card" style="padding:16px;">
+            <ul class="checklist">
+              <li><span class="check">&#x2713;</span> Static mode: Open index.html directly — all data renders correctly</li>
+              <li><span class="check">&#x2713;</span> Backend mode: npm install &amp;&amp; npm start — server starts without errors</li>
+              <li><span class="check">&#x2713;</span> API health check: GET /api/health returns 200 with valid JSON</li>
+              <li><span class="cross">&#x2717;</span> Excel file loaded: Verify Excel data maps to reject records correctly</li>
+              <li><span class="cross">&#x2717;</span> Gemini integration: Test with valid API key — analysis returns expected JSON structure</li>
+              <li><span class="check">&#x2713;</span> Graceful fallback: Remove Excel file — verify demo data loads automatically</li>
+              <li><span class="check">&#x2713;</span> Graceful fallback: Remove API key from .env — verify simulated AI runs</li>
+              <li><span class="check">&#x2713;</span> All 5 pages render with correct navigation and no broken links</li>
+              <li><span class="check">&#x2713;</span> RTL layout verified across all pages on desktop and mobile</li>
+              <li><span class="check">&#x2713;</span> No API keys exposed in frontend code or browser developer tools</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Go-Live Checklist -->
+        <div class="tech-section">
+          <h3>8. Go-Live Readiness Checklist</h3>
+          <div class="card" style="padding:16px;">
+            <ul class="checklist">
+              <li><span class="cross">&#x2717;</span> Focus ERP integration confirmed (API, SQL view, or scheduled export)</li>
+              <li><span class="cross">&#x2717;</span> Backend deployed to secure server with HTTPS enabled</li>
+              <li><span class="cross">&#x2717;</span> Gemini API key configured in server environment (not in code)</li>
+              <li><span class="cross">&#x2717;</span> Role-based access control implemented and tested</li>
+              <li><span class="cross">&#x2717;</span> Data minimisation rules verified and documented</li>
+              <li><span class="cross">&#x2717;</span> Audit logging enabled for all AI analysis requests</li>
+              <li><span class="cross">&#x2717;</span> User acceptance testing completed with real Focus data</li>
+              <li><span class="cross">&#x2717;</span> Disaster recovery and backup plan documented</li>
+              <li><span class="cross">&#x2717;</span> Training completed for all user roles (Executive, Finance, QC, IT)</li>
+              <li><span class="cross">&#x2717;</span> SOP updated to include dashboard in reject and destruction workflow</li>
+              <li><span class="cross">&#x2717;</span> Performance tested with full Focus ERP data volume</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; Important:</strong> This prototype is for demonstration and concept validation only.
+          Production deployment requires proper security review, load testing, and Focus ERP integration validation.
+          The architecture described here is subject to change based on Focus ERP capabilities and IT infrastructure.
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

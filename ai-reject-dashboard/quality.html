@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — Quality &amp; CAPA View</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated Prototype</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> Executive View</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> Finance View</a>
+        <a href="quality.html" class="active"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
+        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+      </nav>
+      <div class="sidebar-footer">
+        Focus ERP remains the official source of truth.<br>
+        AI analysis is advisory only.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>Quality &amp; CAPA View</h2>
+            <div class="breadcrumb">QC Compliance — Audit Readiness — CAPA Management</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span id="data-source-badge" class="data-source-badge loading">Loading...</span>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; Important:</strong> AI CAPA suggestions are advisory only and require QCM/QAM review.
+          Formal CAPA records must be created and tracked in Focus ERP or the approved QMS.
+          This view supports audit readiness but does not replace the official Quality Management System.
+        </div>
+
+        <p id="source-info" class="text-muted text-sm mb-16"></p>
+
+        <div id="cards-grid" class="cards-grid">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <div id="ai-summary"></div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>Repeated Root Causes</h3>
+              <span class="badge">AI Grouped</span>
+            </div>
+            <div id="root-causes"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <h3>AI CAPA Suggestions</h3>
+              <span class="badge">Advisory — Requires QCM/QAM Review</span>
+            </div>
+            <div id="capa-suggestions"></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Quality Risk Cases</h3>
+            <span class="badge">GMP/ISO Sensitive</span>
+          </div>
+          <div id="quality-risk-cases"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>CAPA Status Overview</h3>
+            <span class="badge">Tracking</span>
+          </div>
+          <div id="capa-status-table"></div>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>GMP / ISO Audit Readiness</h3>
+            </div>
+            <div class="card" style="padding:16px;">
+              <ul class="checklist">
+                <li><span class="check">&#x2713;</span> Reject documentation complete for all cases</li>
+                <li><span class="cross">&#x2717;</span> Root cause investigation records attached to all cases</li>
+                <li><span class="cross">&#x2717;</span> CAPA records linked to reject cases</li>
+                <li><span class="check">&#x2713;</span> Destruction records maintained</li>
+                <li><span class="cross">&#x2717;</span> Temperature excursion logs available for storage areas</li>
+                <li><span class="check">&#x2713;</span> Approval workflow documented in SOP</li>
+                <li><span class="cross">&#x2717;</span> Supplier deviation reports filed for all external causes</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <h3>Required Attachments Checklist</h3>
+            </div>
+            <div class="card" style="padding:16px;">
+              <ul class="checklist">
+                <li><span class="cross">&#x2717;</span> NCR report (Not yet generated for all cases)</li>
+                <li><span class="cross">&#x2717;</span> OOS investigation form (where applicable)</li>
+                <li><span class="cross">&#x2717;</span> OOT trending report (monthly required)</li>
+                <li><span class="check">&#x2713;</span> QC test results (partial coverage)</li>
+                <li><span class="cross">&#x2717;</span> Supplier deviation report (outstanding)</li>
+                <li><span class="check">&#x2713;</span> Batch record review completed</li>
+                <li><span class="cross">&#x2717;</span> Stability study data (where applicable)</li>
+              </ul>
+              <p class="text-muted text-xs mt-12">
+                NCR = Non-Conformance Report &bull; OOS = Out of Specification &bull; OOT = Out of Trend
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Traceability &amp; Documentation Summary</h3>
+          </div>
+          <div class="card" style="padding:16px;">
+            <p class="text-muted text-sm" style="line-height:1.7;">
+              Overall documentation completeness is estimated at 55%. The following gaps
+              require attention before the next audit:
+            </p>
+            <ul class="mt-8 text-sm" style="padding-right:20px;color:var(--gray-600);line-height:1.8;">
+              <li>Root cause investigation records are missing for 6 out of 15 reject cases.</li>
+              <li>CAPA records are not yet linked to individual reject cases in the QMS.</li>
+              <li>Supplier deviation reports have not been filed for the PVC compound and resin contamination cases.</li>
+              <li>NCR generation is pending for all cases — this is a prerequisite for CAPA initiation.</li>
+            </ul>
+            <p class="text-xs text-muted mt-8">
+              These gaps are identified based on the reject data. Formal verification should be done in the QMS.
+            </p>
+          </div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; Advisory:</strong> This dashboard supports QC compliance visibility but does not
+          replace the official Quality Management System. All CAPA suggestions must be formally reviewed
+          and approved by QCM/QAM before implementation. Focus ERP remains the system of record.
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+  <script>
+    function renderPageSpecific() {
+      var r = window.DEMO_DATA && window.DEMO_DATA.qualityRiskCases;
+      var el1 = document.getElementById('quality-risk-cases');
+      if (el1 && r && r.length) {
+        el1.innerHTML = '<div class="table-wrap"><table><thead><tr>' +
+          '<th>Item</th><th>Risk</th><th>Issue</th><th>GMP Impact</th><th>Docs Complete</th></tr></thead><tbody>' +
+          r.map(function (x) {
+            return '<tr><td>' + (x.item || '\u2014') + '</td><td>' +
+              (x.risk ? '<span class="risk-badge ' + x.risk.toLowerCase() + '">' + x.risk + '</span>' : '\u2014') + '</td>' +
+              '<td>' + (x.issue || '\u2014') + '</td>' +
+              '<td>' + (x.gmp_impact || '\u2014') + '</td>' +
+              '<td>' + (x.docs_complete ? '<span class="check">\u2713</span>' : '<span class="cross">\u2717</span>') + '</td></tr>';
+          }).join('') +
+          '</tbody></table></div>';
+      } else if (el1) {
+        el1.innerHTML = '<p class="text-muted">No quality risk cases identified.</p>';
+      }
+
+      var capa = window.DEMO_DATA && window.DEMO_DATA.capaStatus;
+      var el2 = document.getElementById('capa-status-table');
+      if (el2 && capa && capa.length) {
+        el2.innerHTML = '<div class="table-wrap"><table><thead><tr>' +
+          '<th>CAPA ID</th><th>Title</th><th>Status</th><th>Owner</th><th>Target Date</th><th>Priority</th></tr></thead><tbody>' +
+          capa.map(function (x) {
+            var st = (x.status || '').toLowerCase().replace(/\s+/g, '-');
+            return '<tr><td>' + (x.capa_id || '\u2014') + '</td><td>' + (x.title || '\u2014') + '</td>' +
+              '<td><span class="status-tag ' + st + '">' + (x.status || '\u2014') + '</span></td>' +
+              '<td>' + (x.owner || '\u2014') + '</td>' +
+              '<td>' + (x.target_date || '\u2014') + '</td>' +
+              '<td>' + (x.priority ? '<span class="risk-badge ' + x.priority.toLowerCase() + '">' + x.priority + '</span>' : '\u2014') + '</td></tr>';
+          }).join('') +
+          '</tbody></table></div>';
+      } else if (el2) {
+        el2.innerHTML = '<p class="text-muted">No CAPA records available.</p>';
+      }
+    }
+  </script>
+</body>
+</html>

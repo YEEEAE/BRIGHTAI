@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — Finance View</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated Prototype</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> Executive View</a>
+        <a href="finance.html" class="active"><span class="icon">&#x1F4B0;</span> Finance View</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
+        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+      </nav>
+      <div class="sidebar-footer">
+        Focus ERP remains the official source of truth.<br>
+        AI analysis is advisory only.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>Finance View</h2>
+            <div class="breadcrumb">Financial impact analysis and loss recovery options</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span id="data-source-badge" class="data-source-badge loading">Loading...</span>
+        </div>
+      </header>
+
+      <div class="page-content">
+
+        <div class="disclaimer">
+          <strong>&#x26A0; Important:</strong> Finance reviews the financial impact and potential loss reduction
+          before destruction. Finance does not approve quality decisions.
+          Formal quality approval remains within QC/QCM authority in Focus ERP.
+        </div>
+
+        <p id="source-info" class="text-muted text-sm mb-16"></p>
+
+        <div id="cards-grid" class="cards-grid">
+          <div class="loading"><div class="spinner"></div></div>
+        </div>
+
+        <div id="ai-summary"></div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>Reject Cost by Department</h3>
+              <span class="badge">SAR</span>
+            </div>
+            <div id="cost-by-dept"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <h3>Reject Cost by Month</h3>
+              <span class="badge">Trend</span>
+            </div>
+            <div id="cost-by-month"></div>
+          </div>
+        </div>
+
+        <div class="col-2">
+          <div class="section">
+            <div class="section-header">
+              <h3>Reject Cost by Product</h3>
+              <span class="badge">Top 10</span>
+            </div>
+            <div id="cost-by-product"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-header">
+              <h3>Estimated Next-Month Reject Cost</h3>
+            </div>
+            <div class="card" style="padding:20px;">
+              <div class="card-label">Projected Range</div>
+              <div class="card-value" style="font-size:1.2rem;">SAR 180,000 – 250,000</div>
+              <div class="card-sub mt-8">Based on current monthly trend</div>
+              <div class="mt-12 text-muted text-sm" style="line-height:1.6;">
+                This estimate is calculated using the running 30-day average of reject costs.
+                If pending approvals are resolved and root causes addressed, the projected
+                cost could reduce by 25–35%. Finance should prioritise high-value cases
+                for recovery evaluation.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Potential Loss Recovery Options</h3>
+            <span class="badge">Finance Decision</span>
+          </div>
+          <div class="option-list" style="margin-bottom:8px;">
+            <span class="option-tag">&#x1F527; Rework</span>
+            <span class="option-tag">&#x1F4E6; Return to Supplier</span>
+            <span class="option-tag">&#x1F4C9; Downgrade / Sell as Second Grade</span>
+            <span class="option-tag">&#x1F504; Transfer to Alternative Use</span>
+            <span class="option-tag">&#x1F5D1; Dispose (No Recovery)</span>
+          </div>
+          <p class="text-muted text-sm mb-12">
+            Each option must be evaluated based on material type, regulatory requirements,
+            and cost feasibility. Finance review is required before destruction approval.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Financially Sensitive Cases</h3>
+            <span class="badge">Requires Finance Review</span>
+          </div>
+          <div id="finance-alerts"></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header">
+            <h3>Finance Review Logic</h3>
+          </div>
+          <div class="card" style="padding:20px;">
+            <div class="text-sm" style="line-height:1.8;color:var(--gray-700);">
+              <p><strong>Cost Threshold Concept:</strong> Items with reject cost exceeding SAR 5,000
+              are flagged for finance review. Critical-risk items above SAR 20,000 require
+              Finance Director sign-off before destruction.</p>
+              <p class="mt-12"><strong>Recovery Evaluation Workflow:</strong></p>
+              <ol style="padding-right:20px;margin-top:4px;">
+                <li>QC confirms the rejection reason and quality status.</li>
+                <li>Finance evaluates potential recovery options (rework, return, downgrade).</li>
+                <li>If no recovery is feasible, Finance recommends destruction.</li>
+                <li>QCM approves the quality decision in Focus ERP.</li>
+                <li>Finance records the loss and initiates destruction workflow.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="disclaimer mt-20">
+          <strong>&#x26A0; Advisory:</strong> All financial estimates are based on the current prototype data.
+          Actual financial impact must be verified in Focus ERP.
+          AI recommendations are advisory and do not constitute financial or legal advice.
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
