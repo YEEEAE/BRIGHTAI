@@ -11,9 +11,9 @@ import { TrustBar } from "@/components/demo/TrustBar";
 const canonicalUrl = "https://brightai.site/demo/ocr-demo/";
 
 export const metadata: Metadata = {
-  title: "ديمو أتمتة الوثائق OCR",
+  title: "جرّب تجربة OCR للوثائق بالذكاء الاصطناعي | Bright AI",
   description:
-    "جرّب ديمو أتمتة الوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود وتجهيزها للربط مع أنظمة ERP باستخدام Gemini Vision.",
+    "جرّب OCR للوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود والمستندات وتجهيزها للمراجعة والربط.",
   alternates: {
     canonical: canonicalUrl,
     languages: {
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: "ديمو أتمتة الوثائق OCR من Bright AI",
-    description: "تحويل الوثائق إلى حقول منظمة وقواعد تحقق وبيانات جاهزة للربط.",
+    title: "جرّب تجربة OCR للوثائق بالذكاء الاصطناعي | Bright AI",
+    description: "جرّب OCR للوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود والمستندات وتجهيزها للمراجعة والربط.",
     url: canonicalUrl,
     images: [{ url: "https://brightai.site/assets/images/logo-new.PNG", width: 512, height: 512 }]
   }

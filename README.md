@@ -85,8 +85,14 @@ npm test
 ## النشر الحالي
 
 - GitHub هو مصدر الحقيقة للكود.
-- `backend` يُنشر على Render.
-- الواجهة تعتمد الآن على `/api` من نفس الدومين، وRender يعيد توجيهه داخلياً إلى خدمة `brightai-api`.
+- الموقع العام يُنشر كخدمة Render Static باسم `brightai-site`.
+- مصدر الحقيقة للصفحات العامة هو ملفات HTML الثابتة، وليس `app/page.tsx` أو Next.js.
+- مخرجات النشر النهائية هي `.render-static`، ويتم استبعاد `app/` و`components/` و`lib/` و`backend/` من مخرجات الموقع الثابت.
+- `backend` يُنشر كخدمة Render منفصلة باسم `brightai-api`.
+- الواجهة تعتمد على `/api` من نفس الدومين، وRender يعيد توجيهه داخلياً إلى خدمة `brightai-api`.
+- يتم توليد `sitemap.xml` عبر `npm run sitemap:all` قبل إنشاء `.render-static`، ثم يفشل `npm run seo:gate` البناء إذا ظهر canonical mismatch أو noindex داخل sitemap.
+
+تفاصيل مصدر الحقيقة وأوامر البناء وتوقيت توليد الـ sitemap موثقة في [docs/deployment-source-of-truth.md](docs/deployment-source-of-truth.md).
 
 ## فحص صحة الـ API
 

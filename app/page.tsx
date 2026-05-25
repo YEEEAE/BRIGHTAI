@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 const siteUrl = "https://brightai.site/";
-const pageTitle = "حلول الذكاء الاصطناعي للشركات في السعودية | Bright AI";
+const pageTitle = "شركة ذكاء اصطناعي في السعودية | Bright AI";
 const pageDescription =
-  "Bright AI تساعد الشركات السعودية على بناء حلول ذكاء اصطناعي عملية تشمل الأتمتة، وكلاء AI، تحليل البيانات، وتجارب العملاء الذكية مع جاهزية مؤسسية وقياس واضح للأثر.";
+  "Bright AI شركة ذكاء اصطناعي سعودية في الرياض تقدم حلول أتمتة ذكية RPA، وكلاء AI، تحليل بيانات تنبؤي، وشات بوت عربي للشركات والجهات الحكومية — متوافقة مع NCA وNDMO ورؤية 2030.";
 
 export const metadata: Metadata = {
   title: pageTitle,

@@ -1,27 +1,22 @@
 import fs from "node:fs";
 import path from "node:path";
 import * as cheerio from "cheerio";
+import { RECOVERY_SITEMAP_REQUIRED_FILES } from "./high-confidence-sitemap-config.mjs";
+import { relPathToCanonical } from "./seo-url-map.mjs";
 
 const ROOT = process.cwd();
 const SITE = "https://brightai.site";
 const IMPORTANT_URLS = [
-  "/",
-  "/services/",
-  "/ai-agent/",
-  "/smart-automation/",
-  "/data-analysis/",
-  "/ai-bots/",
-  "/ai-workflows/",
-  "/demo/smart-medical-archive/",
-  "/tools/",
-  "/demo/ai-tenders-analysis/",
-  "/demo/ai-tenders-analysis/landing/",
-  "/demo/ai-tenders-analysis/compare/",
-  "/consultation/",
-  "/contact/",
+  ...new Set(
+    RECOVERY_SITEMAP_REQUIRED_FILES
+      .map((file) => relPathToCanonical(file, SITE))
+      .filter(Boolean)
+      .map((url) => new URL(url).pathname)
+  ),
 ];
 const COMMERCIAL_PREFIXES = ["/", "/services/", "/ai-agent/", "/smart-automation/", "/data-analysis/", "/ai-bots/", "/ai-workflows/", "/smart-medical-archive/", "/tools/", "/tenders/", "/consultation/", "/contact/"];
 const IGNORE_DIRS = new Set([".git", "node_modules", "venv", "tmp", "reports", "render-public"]);
+const NON_PUBLIC_PATH_PREFIXES = ["ai-reject-dashboard/", "demo/mais-dashboard/"];
 const issues = [];
 const routeToFile = new Map();
 const inbound = new Map(IMPORTANT_URLS.map((url) => [url, 0]));
@@ -83,7 +78,9 @@ function normalizeHref(href) {
 
 const htmlFiles = walk(ROOT).filter((file) => {
   const relPath = rel(file);
-  return !relPath.startsWith("frontend/pages/") && !relPath.startsWith("mais-OBM/");
+  return !relPath.startsWith("frontend/pages/") &&
+    !relPath.startsWith("mais-OBM/") &&
+    !NON_PUBLIC_PATH_PREFIXES.some((prefix) => relPath.startsWith(prefix));
 });
 
 for (const file of htmlFiles) {
