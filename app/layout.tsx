@@ -3,6 +3,8 @@ import Script from "next/script";
 import type { ReactNode } from "react";
 import "./globals.css";
 
+const defaultOgImage = "https://brightai.site/assets/images/logo-new.PNG";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://brightai.site"),
   title: {
@@ -15,11 +17,11 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ar_SA",
     siteName: "Bright AI",
-    images: [{ url: "/assets/images/logo-new.PNG", width: 512, height: 512 }]
+    images: [{ url: defaultOgImage, width: 512, height: 512 }]
   },
   twitter: {
     card: "summary_large_image",
-    images: ["/assets/images/logo-new.PNG"]
+    images: [defaultOgImage]
   }
 };
 
