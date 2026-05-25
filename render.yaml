@@ -46,7 +46,7 @@ services:
       bash scripts/seo-hreflang-dirs.sh
       rm -rf .render-static
       mkdir -p .render-static
-      rsync -a --delete --exclude='.git' --exclude='node_modules' --exclude='.render-static' --exclude='.agents' --exclude='plugins' --exclude='reports' --exclude='tmp' --exclude='*.md' ./ .render-static/
+      rsync -a --delete --exclude='.git' --exclude='node_modules' --exclude='.render-static' --exclude='.agents' --exclude='plugins' --exclude='reports' --exclude='tmp' --exclude='backend' --exclude='app' --exclude='components' --exclude='lib' --exclude='scripts' --exclude='next.config.*' --exclude='next-env.d.ts' --exclude='tsconfig*.json' --exclude='package*.json' --exclude='render.yaml' --exclude='*.md' ./ .render-static/
       node <<'NODE'
       const fs = require("fs");
       const path = require("path");
