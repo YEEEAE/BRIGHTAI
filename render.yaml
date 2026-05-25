@@ -41,7 +41,6 @@ services:
       npm run assets:replace-refs
       npm run production:fixes
       npm run sitemap:all
-      npm run seo:gate
       rm -f frontend/js/index-theme.js frontend/js/services-page.js frontend/js/vendor/gsap.min.js
       bash scripts/seo-hreflang-dirs.sh
       rm -rf .render-static
@@ -113,6 +112,7 @@ services:
         moveHtmlToIndex(path.join(root, `${page}.html`));
       }
       NODE
+      SEO_ROOT=.render-static npm run seo:production-guard
     staticPublishPath: .render-static
     headers:
       - path: /*

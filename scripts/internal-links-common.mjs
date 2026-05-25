@@ -19,7 +19,9 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "scripts/**",
   "reports/**",
   "brightai_orchestrator_output/**",
-  "ai-reject-dashboard/**"
+  "ai-reject-dashboard/**",
+  ".render-static/**",
+  "**/.render-static/**"
 ];
 
 const ATTR_REFERENCE_REGEX = /\b(href|src|action|poster|data-href|data-src)\s*=\s*(['"])([^"'<>]+)\2/gi;

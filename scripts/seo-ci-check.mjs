@@ -11,6 +11,8 @@ import {
   HIGH_CONFIDENCE_CORE_FILES,
   RECOVERY_SITEMAP_REQUIRED_FILES,
   SITEMAP_REQUIRED_SERVICE_PAGE_FILES,
+  HIGH_CONFIDENCE_SECTOR_FILES,
+  HIGH_CONFIDENCE_BLOG_FILES,
 } from "./high-confidence-sitemap-config.mjs";
 import {
   buildLocalFileCandidates,
@@ -27,7 +29,7 @@ const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const SITEMAP_PATH = path.join(ROOT, "sitemap.xml");
 const OG_IMAGE_URL = `${BASE_URL}/assets/images/logo-new.PNG`;
-const HTML_IGNORE_DIRS = new Set([".git", "node_modules", "dist", "build", "coverage", ".next", ".nuxt"]);
+const HTML_IGNORE_DIRS = new Set([".git", "node_modules", "dist", "build", "coverage", ".next", ".nuxt", ".render-static"]);
 const INTERNAL_PAGE_PATTERN =
   /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^frontend\/pages\/interview\/|^mais-OBM\/index\.html$|(^|\/)(admin|settings|analytics|reports|operations|scorecard|copilot|executive)(\/|\.|$)/i;
 const PUBLIC_TENDERS_DEMO_PATTERN = /^(?:en\/)?tenders\/(?:dashboard|reports|settings|compare|templates)\.html$/i;
@@ -68,12 +70,29 @@ function buildRequiredHreflangForFile(file, lowerPathMap) {
 }
 
 const SERVICE_PAGE_MAP = new Map(SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
-const HREFLANG_PAGE_FILES = [...new Set(HIGH_CONFIDENCE_CORE_FILES)];
-const HREFLANG_PAGE_MAP = new Map(HREFLANG_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
+
+// ==========================================
+// [RECOVERY MODE] وضع التعافي المؤقت
+// ==========================================
+// تم قصر فحص hreflang في بوابة الـ SEO على نطاق التعافي الحالي فقط (RECOVERY_SITEMAP_REQUIRED_FILES)
+// لتفادي فشل البوابة بسبب أي صفحات خارج هذا النطاق.
+// - RECOVERY_SITEMAP_REQUIRED_FILES = نطاق التعافي الحالي المطلوب لفحص خريطة الموقع وبوابة الـ SEO.
+// - HIGH_CONFIDENCE_CORE_FILES = نطاق توسع لاحق وليس بوابة التعافي الحالية.
+// للحصول على روابط hreflang المقابلة (counterparts) الصحيحة، نستخدم خريطة شاملة لجميع ملفات النظام الممكنة.
+const ALL_SYSTEM_FILES = [
+  ...HIGH_CONFIDENCE_CORE_FILES,
+  ...HIGH_CONFIDENCE_SECTOR_FILES,
+  ...HIGH_CONFIDENCE_BLOG_FILES,
+  ...RECOVERY_SITEMAP_REQUIRED_FILES,
+  ...SITEMAP_REQUIRED_SERVICE_PAGE_FILES
+];
+const ALL_CORE_FILES_MAP = new Map(ALL_SYSTEM_FILES.map((file) => [file.toLowerCase(), file]));
+
+const HREFLANG_PAGE_FILES = [...new Set(RECOVERY_SITEMAP_REQUIRED_FILES)];
 const HREFLANG_PAGES = HREFLANG_PAGE_FILES.map((file) => ({
   file,
   canonical: relPathToCanonical(file, BASE_URL),
-  hreflang: buildRequiredHreflangForFile(file, HREFLANG_PAGE_MAP),
+  hreflang: buildRequiredHreflangForFile(file, ALL_CORE_FILES_MAP),
 }));
 const SERVICE_PAGES = SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => ({
   file,

@@ -14,7 +14,7 @@ import { SITEMAP_REQUIRED_SERVICE_PAGE_FILES } from "./high-confidence-sitemap-c
 import { relPathToCanonical, normalizeSiteUrl } from "./seo-url-map.mjs";
 
 const BASE_URL = "https://brightai.site";
-const ROOT = process.cwd();
+const ROOT = process.env.SEO_ROOT ? path.join(process.cwd(), process.env.SEO_ROOT) : process.cwd();
 const errors = [];
 const warnings = [];
 
@@ -162,7 +162,7 @@ async function runProductionGuard() {
   // 3. التحقق من عدم وجود أي روابط داخلية مكسورة
   console.log("\n3. فحص وتدقيق الروابط الداخلية في كامل المشروع...");
   try {
-    const linkReport = await runInternalLinksAudit();
+    const linkReport = await runInternalLinksAudit({ root: ROOT });
     console.log(`- الملفات المفحوصة: ${linkReport.filesScanned}`);
     console.log(`- المراجع المفحوصة: ${linkReport.referencesScanned}`);
     console.log(`- الروابط الداخلية المكسورة: ${linkReport.brokenReferences}`);

@@ -3,19 +3,21 @@
 > node scripts/seo-ci-check.mjs
 
 SEO CI CHECK
-- Hreflang pages checked: 71
-- Hreflang pages passed: 65
-- Service pages checked: 14
-- Service pages passed: 0
-- Sitemap URLs: 260
-- Files scanned for broken links: 409
-- References scanned for broken links: 25116
-- Broken links: 93
-- HTML files checked for policy: 277
+- Hreflang pages checked: 29
+- Hreflang pages passed: 29
+- Service pages checked: 15
+- Service pages passed: 15
+- Sitemap URLs: 29
+- Files scanned for broken links: 457
+- References scanned for broken links: 28903
+- Broken links: 0
+- HTML files checked for policy: 329
 - HTML onrender refs: 0
 - HTML noindex+hrelang pages: 0
 - HTML redirect-like pages: 0
 - HTML canonical issues: 0
 - HTML bad public slugs: 0
-- Errors: 149
+- Errors: 0
 - Warnings: 0
+
+SEO CI check passed.
