@@ -1,7 +1,9 @@
 # BrightAI Monorepo
 
 مستودع BrightAI الآن يعمل على فصل واضح بين الواجهة الثابتة وواجهة الـ API الخادمية.
-
+git add .
+git commit -m "وصف التعديل"
+git push
 ## **الموقع فعلت فيه :**
 
 ## من cloudflare  :

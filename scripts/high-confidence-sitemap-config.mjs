@@ -133,6 +133,7 @@ export const RECOVERY_SITEMAP_CORE_FILES = [
   "contact/index.html",
   "consultation/index.html",
   "ai-agent/index.html",
+  "ai-bots/index.html",
   "smart-automation/index.html",
   "data-analysis/index.html",
   "ai-workflows/index.html",
