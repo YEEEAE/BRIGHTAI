@@ -69,7 +69,7 @@ class Like4LikeBot:
         options.add_argument("--disable-gpu")
         options.add_argument("--disable-software-rasterizer")
 
-        self.driver = uc.Chrome(options=options, use_sandbox=False, version_main=146)
+        self.driver = uc.Chrome(options=options, use_sandbox=False, version_main=148)
         time.sleep(1.5)
 
         # نحرك النافذة برا الشاشة بطريقة آمنة لتفادي الكراش
