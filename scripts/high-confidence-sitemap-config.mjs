@@ -126,6 +126,49 @@ export const HIGH_CONFIDENCE_BLOG_FILES = [
   "blog/data-analytics/power-bi-saudi-guide/index.html"
 ];
 
+export const RECOVERY_SITEMAP_CORE_FILES = [
+  "index.html",
+  "about/index.html",
+  "services/index.html",
+  "contact/index.html",
+  "consultation/index.html",
+  "ai-agent/index.html",
+  "smart-automation/index.html",
+  "data-analysis/index.html",
+  "ai-workflows/index.html",
+  "machine-learning/index.html",
+  "health/index.html",
+  "blog/index.html"
+];
+
+export const RECOVERY_SITEMAP_BLOG_FILES = [
+  "blog/ai-guide-saudi-business/index.html",
+  "blog/choose-ai-company-saudi/index.html",
+  "blog/vision-2030-ai-opportunities/index.html",
+  "blog/top-ai-tools-saudi-2025/index.html",
+  "blog/ai-implementation-cost-guide/index.html",
+  "blog/hr-automation-case-study/index.html",
+  "blog/chatgpt-vs-claude-vs-gemini-arabic/index.html",
+  "blog/nca-ai-compliance-saudi/index.html",
+  "blog/ai-healthcare-saudi/index.html",
+  "blog/ai-innovation-saudi-arabia/index.html"
+];
+
+export const RECOVERY_SITEMAP_SECTOR_FILES = [
+  "sectors/ecommerce.html",
+  "sectors/energy.html",
+  "sectors/finance.html",
+  "sectors/healthcare.html",
+  "sectors/logistics.html",
+  "sectors/manufacturing.html"
+];
+
+export const RECOVERY_SITEMAP_REQUIRED_FILES = [
+  ...RECOVERY_SITEMAP_CORE_FILES,
+  ...RECOVERY_SITEMAP_BLOG_FILES,
+  ...RECOVERY_SITEMAP_SECTOR_FILES
+];
+
 export const HIGH_CONFIDENCE_CORE_FILES = [
   ...CORE_MARKETING_FILES,
   ...EN_CORE_MARKETING_FILES,

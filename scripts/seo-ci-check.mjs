@@ -9,6 +9,7 @@ import {
 } from "./seo-url-map.mjs";
 import {
   HIGH_CONFIDENCE_CORE_FILES,
+  RECOVERY_SITEMAP_REQUIRED_FILES,
   SITEMAP_REQUIRED_SERVICE_PAGE_FILES,
 } from "./high-confidence-sitemap-config.mjs";
 import {
@@ -512,9 +513,14 @@ async function checkSitemap() {
     }
   }
 
-  for (const page of SERVICE_PAGES) {
-    if (!seen.has(page.canonical)) {
-      result.errors.push(`Missing service page in sitemap: ${page.canonical}`);
+  for (const file of RECOVERY_SITEMAP_REQUIRED_FILES) {
+    const requiredCanonical = relPathToCanonical(file, BASE_URL);
+    if (!requiredCanonical) {
+      result.errors.push(`Recovery sitemap required file has no canonical: ${file}`);
+      continue;
+    }
+    if (!seen.has(requiredCanonical)) {
+      result.errors.push(`Missing recovery page in sitemap: ${requiredCanonical}`);
     }
   }
 

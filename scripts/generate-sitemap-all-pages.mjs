@@ -9,6 +9,9 @@ import {
   relPathToCanonical,
 } from "./seo-url-map.mjs";
 import {
+  RECOVERY_SITEMAP_REQUIRED_FILES,
+} from "./high-confidence-sitemap-config.mjs";
+import {
   extractCanonicalHref,
   hasMetaRefresh,
   hasNoindexDirective,
@@ -17,6 +20,7 @@ import {
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const OUTPUT = path.join(ROOT, "sitemap.xml");
+const PRIORITY_OUTPUT = path.join(ROOT, "sitemap-priority.xml");
 const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
 const IGNORED_SCAN_DIRS = new Set([
   ".git",
@@ -31,48 +35,7 @@ const IGNORED_SCAN_DIRS = new Set([
   "reports",
   "tmp",
 ]);
-
-/* ── Whitelist: only paths matching at least one pattern are candidates ── */
-const ALLOWED_REL_PATH_PATTERNS = [
-  /^index\.html$/i,                                    // root homepage
-  /^about\/index\.html$/i,                             // about page
-  /^contact\/index\.html$/i,                           // contact page
-  /^consultation\/index\.html$/i,                      // consultation page
-  /^ai-agent\/index\.html$/i,                          // ai-agent page
-  /^ai-bots\/(?:[^/]+\/)?index\.html$/i,               // ai-bots pages
-  /^case-studies\/index\.html$/i,                      // case studies
-  /^partners\/index\.html$/i,                          // partners
-  /^what-is-ai\/index\.html$/i,                        // what-is-ai
-  /^tools\/index\.html$/i,                             // tools
-  /^smart-automation\/index\.html$/i,                  // smart automation
-  /^data-analysis\/index\.html$/i,                     // data analysis
-  /^machine-learning\/index\.html$/i,                  // machine learning
-  /^ai-workflows\/index\.html$/i,                      // ai workflows
-  /^health\/index\.html$/i,                            // health
-  /^smart-medical-archive\/index\.html$/i,             // smart medical archive
-  /^terms\/index\.html$/i,                             // terms page
-  /^demo\/[^/]+(?:\/[^/]+)*\/index\.html$/i,           // demo sub-pages (public demos)
-  /^demo\/[^/]+\.html$/i,                              // demo HTML pages (dashboard.html, compare.html, etc.)
-  /^demo\/[^/]+(?:\/[^/]+)+\.html$/i,                  // nested demo HTML pages (landing.html, compare.html, etc.)
-  /^services\/[^/]+\.html$/i,                          // services HTML pages
-  /^services\/index\.html$/i,                          // services index
-  /^sectors\/[^/]+\.html$/i,                           // sector HTML pages
-  /^sectors\/[^/]+\/index\.html$/i,                    // sector sub-dirs
-  /^sectors\/index\.html$/i,                           // sectors index
-  /^locations\/[^/]+\/index\.html$/i,                  // location pages
-  /^sitemap\/index\.html$/i,                            // public HTML sitemap
-  /^blog\/[^/]+\/index\.html$/i,                       // blog articles (dir/index.html)
-  /^blog\/[^/]+\.html$/i,                              // blog articles (.html)
-  /^blog\/index\.html$/i,                              // blog index
-  /^docs\/[^/]+\.html$/i,                              // docs pages
-  /^docs\/index\.html$/i,                              // docs index
-  /^docs\.html$/i,                                     // docs.html root
-  /^en\/(?:[^/]+\/)*[^/]+\.html$/i,                    // english pages (.html)
-  /^en\/(?:[^/]+\/)*index\.html$/i,                    // english pages (index.html)
-  /^tenders\/index\.html$/i,                           // tenders index
-  /^tenders\/[^/]+\.html$/i,                           // tenders sub-pages
-  /^privacy-cookies\/index\.html$/i,                   // privacy cookies
-];
+const RECOVERY_REL_PATHS = new Set(RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath));
 
 /* ── Blacklist: any match here forces exclusion regardless of whitelist ── */
 const EXCLUDED_REL_PATH_PATTERNS = [
@@ -170,11 +133,102 @@ function isAllowedPublicPath(relPath) {
   const normalized = normalizeRelPath(relPath);
   // Blacklist always wins
   if (isExplicitlyExcluded(normalized)) return false;
-  // Must match at least one whitelist pattern
-  return ALLOWED_REL_PATH_PATTERNS.some((pattern) => pattern.test(normalized));
+  // Recovery sitemap is intentionally limited to hand-picked, high-confidence pages.
+  return RECOVERY_REL_PATHS.has(normalized);
 }
 
-function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref, canonicalTagNormalized, wordCount, group) {
+function hasUppercaseUrlPath(url) {
+  try {
+    const parsed = new URL(url);
+    return /[A-Z]/.test(decodeURIComponent(parsed.pathname));
+  } catch {
+    return true;
+  }
+}
+
+function hasHtmlUrlPath(url) {
+  try {
+    const parsed = new URL(url);
+    return /\.html(?:\/)?$/i.test(decodeURIComponent(parsed.pathname));
+  } catch {
+    return true;
+  }
+}
+
+function publicPathFromRelPath(relPath) {
+  const normalized = normalizeRelPath(relPath);
+  if (normalized === "index.html") return "/";
+  if (normalized.endsWith("/index.html")) {
+    return `/${normalized.replace(/\/index\.html$/i, "")}/`;
+  }
+  if (normalized.endsWith(".html")) {
+    return `/${normalized.replace(/\.html$/i, "")}/`;
+  }
+  return null;
+}
+
+function normalizeInternalHref(href) {
+  if (!href || typeof href !== "string") return null;
+  const value = href.trim();
+  if (
+    !value ||
+    value.startsWith("#") ||
+    /^(?:mailto|tel|javascript):/i.test(value)
+  ) {
+    return null;
+  }
+
+  let parsed;
+  try {
+    parsed = new URL(value, BASE_URL);
+  } catch {
+    return null;
+  }
+
+  if (parsed.origin !== BASE_URL) return null;
+  if (parsed.pathname.startsWith("/api/") || parsed.pathname.startsWith("/ws/")) return null;
+
+  let pathname;
+  try {
+    pathname = decodeURIComponent(parsed.pathname);
+  } catch {
+    pathname = parsed.pathname;
+  }
+
+  if (/\.[a-z0-9]+$/i.test(pathname) && !/\.html$/i.test(pathname)) {
+    return null;
+  }
+
+  if (pathname.endsWith(".html")) pathname = pathname.replace(/\.html$/i, "/");
+  if (pathname !== "/" && !pathname.endsWith("/")) pathname += "/";
+  return pathname;
+}
+
+function extractInternalHrefs(html) {
+  const hrefs = [];
+  const regex = /<a\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/gi;
+  let match;
+  while ((match = regex.exec(html))) {
+    const normalized = normalizeInternalHref(match[1]);
+    if (normalized) hrefs.push(normalized);
+  }
+  return hrefs;
+}
+
+function buildRouteRegistry(relPaths) {
+  const routes = new Set();
+  for (const relPath of relPaths) {
+    const route = publicPathFromRelPath(relPath);
+    if (route) routes.add(route);
+  }
+  return routes;
+}
+
+function findBrokenInternalLinks(html, routeRegistry) {
+  return [...new Set(extractInternalHrefs(html).filter((href) => !routeRegistry.has(href)))];
+}
+
+function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref, canonicalTagNormalized, wordCount, group, routeRegistry) {
   const reasons = [];
 
   if (hasMetaRefresh(html)) {
@@ -187,6 +241,13 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
 
   if (!canonicalTagHref || canonicalTagHref !== expectedCanonical || canonicalTagNormalized !== expectedCanonical) {
     reasons.push("canonical_mismatch");
+  }
+
+  if (!expectedCanonical) {
+    reasons.push("missing_expected_canonical");
+  } else {
+    if (hasUppercaseUrlPath(expectedCanonical)) reasons.push("uppercase_url");
+    if (hasHtmlUrlPath(expectedCanonical)) reasons.push("html_url");
   }
 
   if (/brightai\.com\.sa/i.test(html)) {
@@ -204,6 +265,11 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
 
   if (/\s/.test(path.basename(relPath)) || path.basename(relPath).includes("_")) {
     reasons.push("unstable_slug_shape");
+  }
+
+  const brokenInternalLinks = findBrokenInternalLinks(html, routeRegistry);
+  if (brokenInternalLinks.length > 0) {
+    reasons.push(`broken_internal_links:${brokenInternalLinks.slice(0, 5).join("|")}`);
   }
 
   return reasons;
@@ -252,7 +318,7 @@ function buildHreflangSet(entry, registry, lowerPathMap) {
   ];
 }
 
-async function analyzePage(relPath) {
+async function analyzePage(relPath, routeRegistry) {
   const fullPath = path.join(ROOT, relPath);
   const group = detectGroup(relPath);
   const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
@@ -269,7 +335,8 @@ async function analyzePage(relPath) {
       canonicalTagHref,
       canonicalTagNormalized,
       wordCount,
-      group
+      group,
+      routeRegistry
     );
     if (isExplicitlyExcluded(relPath)) {
       reasons.push("explicit_scope_exclusion");
@@ -366,10 +433,12 @@ function sourcePriority(relPath) {
 async function buildEntries() {
   const allFiles = await walkHtmlFiles(ROOT);
   const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath)));
+  const candidateRelPaths = RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath);
   const lowerPathMap = new Map(normalizedRelPaths.map((relPath) => [relPath.toLowerCase(), relPath]));
-  const registry = buildPublicUrlRegistry(normalizedRelPaths, BASE_URL);
+  const routeRegistry = buildRouteRegistry(normalizedRelPaths);
+  const registry = buildPublicUrlRegistry(candidateRelPaths, BASE_URL);
   const analyses = await Promise.all(
-    normalizedRelPaths.map((relPath) => analyzePage(relPath))
+    candidateRelPaths.map((relPath) => analyzePage(relPath, routeRegistry))
   );
   const included = analyses.filter((analysis) => analysis.include && analysis.loc);
   const byLoc = new Map();
@@ -402,11 +471,12 @@ async function buildEntries() {
 
 async function buildExcludedInventory() {
   const allFiles = await walkHtmlFiles(ROOT);
+  const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath)));
+  const routeRegistry = buildRouteRegistry(normalizedRelPaths);
   const rows = [];
 
-  for (const fullPath of allFiles) {
-    const relPath = normalizeRelPath(path.relative(ROOT, fullPath));
-    const analysis = await analyzePage(relPath);
+  for (const relPath of RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath)) {
+    const analysis = await analyzePage(relPath, routeRegistry);
     if (analysis.include) {
       continue;
     }
@@ -434,12 +504,14 @@ function renderXml(entries) {
     lines.push("  <url>");
     lines.push(`    <loc>${xmlEscape(entry.loc)}</loc>`);
     for (const alt of entry.alternates) {
+      if (hasUppercaseUrlPath(alt.href) || hasHtmlUrlPath(alt.href)) {
+        continue;
+      }
       lines.push(
         `    <xhtml:link rel="alternate" hreflang="${xmlEscape(alt.code)}" href="${xmlEscape(alt.href)}" />`
       );
     }
     lines.push(`    <lastmod>${xmlEscape(entry.lastmod)}</lastmod>`);
-    lines.push(`    <priority>${xmlEscape(entry.priority)}</priority>`);
     lines.push("  </url>");
   }
 
@@ -475,8 +547,9 @@ function renderReport({ entries, analyses, excludedInventory }) {
     `- Excluded inventory rows: ${excludedInventory.length}`,
     "",
     "## Inclusion Policy",
-    "- نضم كل صفحة عامة قابلة للفهرسة داخل الموقع إذا كان canonical النهائي صحيحًا ولا تحتوي `noindex` أو redirect/meta refresh أو إشارات legacy أو مسارات تقنية مستبعدة.",
-    "- نستبعد تلقائياً الصفحات القانونية منخفضة القيمة، صفحات الخطأ، الصفحات الداخلية للتطبيقات، الملفات الجزئية، والنسخ المكررة أو القديمة.",
+    "- هذه خريطة تعافي مؤقتة عالية الثقة فقط، وليست جرداً كاملاً لكل صفحات الموقع.",
+    "- نضم الصفحة فقط إذا كانت ضمن allowlist التعافي، موجودة محلياً، self-canonical، لا تحتوي `noindex`، لا تحتوي redirect/meta refresh، ولا تملك روابط داخلية مكسورة.",
+    "- نستبعد مؤقتاً صفحات demo الضعيفة، docs التقنية أو المتكررة، الصفحات ذات uppercase URL، روابط `.html`، وأي canonical mismatch.",
     "- لم يتم تعديل أي `<title>` ضمن هذه المرحلة.",
     "",
     "## Top Exclusion Reasons",
@@ -539,9 +612,11 @@ async function main() {
   const report = renderReport({ entries, analyses, excludedInventory });
 
   await fs.writeFile(OUTPUT, xml, "utf8");
+  await fs.writeFile(PRIORITY_OUTPUT, xml, "utf8");
   await fs.writeFile(REPORT_OUTPUT, report, "utf8");
 
   process.stdout.write(`Generated sitemap.xml with ${entries.length} high-confidence URLs\n`);
+  process.stdout.write(`Generated sitemap-priority.xml with ${entries.length} matching high-confidence URLs\n`);
   process.stdout.write(
     `Generated reports/sitemap-quality-report.md with ${excludedInventory.length + analyses.length} analyzed rows\n`
   );
