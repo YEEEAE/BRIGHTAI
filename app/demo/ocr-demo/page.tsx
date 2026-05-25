@@ -8,18 +8,24 @@ import { ROICalculator } from "@/components/demo/ROICalculator";
 import { StickyMobileCTA } from "@/components/demo/StickyMobileCTA";
 import { TrustBar } from "@/components/demo/TrustBar";
 
+const canonicalUrl = "https://brightai.site/demo/ocr-demo/";
+
 export const metadata: Metadata = {
   title: "ديمو أتمتة الوثائق OCR",
   description:
     "جرّب ديمو أتمتة الوثائق من Bright AI لاستخراج الحقول من الفواتير والعقود وتجهيزها للربط مع أنظمة ERP باستخدام Gemini Vision.",
   alternates: {
-    canonical: "/demo/ocr-demo/"
+    canonical: canonicalUrl,
+    languages: {
+      "ar-SA": canonicalUrl,
+      "x-default": canonicalUrl
+    }
   },
   openGraph: {
     title: "ديمو أتمتة الوثائق OCR من Bright AI",
     description: "تحويل الوثائق إلى حقول منظمة وقواعد تحقق وبيانات جاهزة للربط.",
-    url: "/demo/ocr-demo/",
-    images: [{ url: "/assets/images/logo-new.PNG", width: 512, height: 512 }]
+    url: canonicalUrl,
+    images: [{ url: "https://brightai.site/assets/images/logo-new.PNG", width: 512, height: 512 }]
   }
 };
 
@@ -90,7 +96,7 @@ export default function OcrDemoPage() {
         </Link>
         <div>
           <Link href="/demo/">الديموهات</Link>
-          <a href="/services/document-automation.html">الخدمة</a>
+          <Link href="/services/document-automation/">الخدمة</Link>
           <Link href="/contact/">تواصل</Link>
         </div>
       </nav>
