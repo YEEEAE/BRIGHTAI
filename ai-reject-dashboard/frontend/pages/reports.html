@@ -502,22 +502,22 @@
 
                     <div x-show="sec === 'summary'" style="font-size: 0.68rem; color: var(--gray-600); line-height: 1.6;">
                       <p style="font-weight: 700; color: var(--teal); margin-bottom: 4px;" x-text="lang === 'ar' ? '🤖 إيجاز استشاري مولد بالذكاء الاصطناعي:' : '🤖 AI Quality Brief Summary:'"></p>
-                      <p x-text="lang === 'ar' ? 'تم تسجيل انخفاض ملحوظ في تكلفة المرفوضات لهذا الربع بنسبة 12.5% بفضل تفعيل نظام كانبان CAPA للمواد الخام. نوصي باستمرار تفعيل معايرة الموازين الأسبوعية.' : 'Reject rates decreased by 12.5% this period after implementing FEFO materials rotation control in Warehouses. Recommend continuous weekly scale calibrations.'"></p>
+                      <p x-text="reportSummaryText()"></p>
                     </div>
 
                     <div x-show="sec === 'kpis'">
                       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 6px;">
                         <div style="background: var(--white); padding: 8px; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
                           <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'إجمالي الخسائر' : 'Total Cost'"></div>
-                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">SAR 142,500</div>
+                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy);" x-text="money(reportStats.total_cost)"></div>
                         </div>
                         <div style="background: var(--white); padding: 8px; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
-                          <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'مؤشر كفاءة المعدات OEE' : 'OEE Index'"></div>
-                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--green);">84.5%</div>
+                          <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'مؤشر كفاءة الجودة' : 'Quality Efficiency'"></div>
+                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--green);" x-text="reportStats.quality_efficiency + '%'"></div>
                         </div>
                         <div style="background: var(--white); padding: 8px; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
-                          <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'المطابقات المغلقة' : 'CAPA Closure'"></div>
-                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--teal);">92.0%</div>
+                          <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'عدد السجلات' : 'Records'"></div>
+                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--teal);" x-text="reportStats.record_count"></div>
                         </div>
                       </div>
                     </div>
@@ -532,21 +532,32 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr><td style="padding: 4px;">Warehouse</td><td style="padding: 4px;">42</td><td style="padding: 4px;">SAR 84,200</td></tr>
-                          <tr><td style="padding: 4px;">Production</td><td style="padding: 4px;">28</td><td style="padding: 4px;">SAR 58,300</td></tr>
+                          <template x-for="dept in reportStats.top_departments" :key="dept.label">
+                            <tr>
+                              <td style="padding: 4px;" x-text="dept.label"></td>
+                              <td style="padding: 4px;" x-text="dept.count"></td>
+                              <td style="padding: 4px;" x-text="money(dept.total_cost)"></td>
+                            </tr>
+                          </template>
+                          <tr x-show="reportStats.top_departments.length === 0">
+                            <td colspan="3" style="padding: 4px;" x-text="lang === 'ar' ? 'لا توجد بيانات أقسام من API حالياً' : 'No department data from API yet'"></td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
 
                     <div x-show="sec === 'pareto'" style="text-align: center; padding: 10px 0; color: var(--gray-400); font-size: 0.65rem;">
-                      📊 [مخطط باريتو لأسباب الرفض عيوب اللون، والتلف، والصلاحية]
+                      <template x-for="cause in reportStats.top_causes" :key="cause.label">
+                        <div x-text="cause.label + ': ' + cause.count"></div>
+                      </template>
+                      <div x-show="reportStats.top_causes.length === 0" x-text="lang === 'ar' ? 'لا توجد أسباب جذرية من API حالياً' : 'No API root causes yet'"></div>
                     </div>
 
                     <div x-show="sec === 'capa'" style="font-size: 0.65rem;">
                       <div style="display: flex; gap: 8px;">
-                        <span class="badge info" x-text="lang === 'ar' ? 'قيد الدراسة: 12' : 'Analysis: 12'"></span>
-                        <span class="badge success" x-text="lang === 'ar' ? 'تم الحل: 24' : 'Resolved: 24'"></span>
-                        <span class="badge danger" x-text="lang === 'ar' ? 'متأخر: 2' : 'Overdue: 2'"></span>
+                        <span class="badge info" x-text="(lang === 'ar' ? 'مفتوحة: ' : 'Open: ') + reportStats.pending_capa"></span>
+                        <span class="badge success" x-text="(lang === 'ar' ? 'مغلقة: ' : 'Closed: ') + reportStats.closed_capa"></span>
+                        <span class="badge danger" x-text="(lang === 'ar' ? 'متأخرة: ' : 'Overdue: ') + reportStats.overdue_capa"></span>
                       </div>
                     </div>
 
@@ -570,7 +581,8 @@
                 <div x-show="droppedSections.length === 0" style="text-align: center; padding: 80px 0; color: var(--gray-300);" x-text="lang === 'ar' ? 'لا توجد أقسام مضافة للمعاينة' : 'No sections added to preview'"></div>
 
                 <div class="preview-footer">
-                  <span x-text="'بصمة الأمان الرقمية: MAIS-AUDIT-SHA256-' + conversationId.substring(5)"></span>
+                  <span x-text="'source: ' + reportStats.source + ' | record_count: ' + reportStats.record_count"></span>
+                  <span x-text="'hash_short: ' + (reportStats.hash_short || 'pending')"></span>
                   <span>الصفحة 1 من 1</span>
                 </div>
 

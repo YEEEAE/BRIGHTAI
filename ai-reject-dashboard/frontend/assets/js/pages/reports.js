@@ -37,6 +37,21 @@ function reportsApp() {
     
     // Mock lists and names
     historyList: [],
+    reportStats: {
+      loaded: false,
+      source: 'unknown',
+      record_count: 0,
+      total_cost: 0,
+      quality_efficiency: 0,
+      average_cost: 0,
+      pending_capa: 0,
+      closed_capa: 0,
+      overdue_capa: 0,
+      top_departments: [],
+      top_causes: [],
+      file_modified_at: '',
+      hash_short: ''
+    },
 
     init() {
       // Sync theme
@@ -44,12 +59,77 @@ function reportsApp() {
       if (this.theme === 'dark') document.body.classList.add('dark-mode');
       
       this.loadHistory();
+      this.loadReportStats();
       this.loadDefaultTemplate();
       this.setupRealtimeListeners();
     },
 
     setupRealtimeListeners() {
-      window.addEventListener('data:updated', () => this.loadHistory());
+      window.addEventListener('data:updated', () => {
+        this.loadHistory();
+        this.loadReportStats();
+      });
+    },
+
+    async loadReportStats() {
+      try {
+        const res = await fetch('/api/rejects');
+        if (!res.ok) throw new Error('rejects fetch failed');
+        const response = await res.json();
+        const payload = response.data || {};
+        const records = payload.rejects || [];
+        const totalCost = records.reduce((sum, record) => sum + (Number(record.cost) || 0), 0);
+        const approvedOrReviewed = records.filter((record) => ['Approved', 'Review'].includes(record.approval_status)).length;
+        const groupByDepartment = {};
+        const groupByCause = {};
+
+        records.forEach((record) => {
+          const dept = record.department || 'غير محدد';
+          const cause = record.root_cause || record.reason || 'غير محدد';
+          groupByDepartment[dept] = groupByDepartment[dept] || { label: dept, count: 0, total_cost: 0 };
+          groupByDepartment[dept].count += 1;
+          groupByDepartment[dept].total_cost += Number(record.cost) || 0;
+          groupByCause[cause] = (groupByCause[cause] || 0) + 1;
+        });
+
+        const hash = response.hash || payload.hash || '';
+        this.reportStats = {
+          loaded: true,
+          source: response.source || 'unknown',
+          record_count: records.length,
+          total_cost: Math.round(totalCost * 100) / 100,
+          quality_efficiency: records.length ? Math.round((approvedOrReviewed / records.length) * 1000) / 10 : 0,
+          average_cost: records.length ? Math.round((totalCost / records.length) * 100) / 100 : 0,
+          pending_capa: records.filter((record) => record.capa_required && record.approval_status !== 'Approved').length,
+          closed_capa: records.filter((record) => record.capa_required && record.approval_status === 'Approved').length,
+          overdue_capa: records.filter((record) => record.capa_required && Number(record.days_pending) >= 15).length,
+          top_departments: Object.values(groupByDepartment).sort((a, b) => b.total_cost - a.total_cost).slice(0, 3),
+          top_causes: Object.keys(groupByCause).sort((a, b) => groupByCause[b] - groupByCause[a]).slice(0, 3).map((label) => ({ label, count: groupByCause[label] })),
+          file_modified_at: payload.file_modified_at || '',
+          hash_short: hash ? hash.substring(0, 12) : ''
+        };
+      } catch (e) {
+        this.reportStats = { ...this.reportStats, loaded: false };
+      }
+    },
+
+    money(value) {
+      return 'SAR ' + (Number(value) || 0).toLocaleString(this.lang === 'ar' ? 'ar-SA' : 'en-US');
+    },
+
+    reportSummaryText() {
+      if (!this.reportStats.loaded) {
+        return this.lang === 'ar'
+          ? 'المعاينة تنتظر بيانات API الحقيقية. سيتم توليد التقرير النهائي من سجلات النظام عند التصدير.'
+          : 'Preview is waiting for live API data. Final exports are generated from system records.';
+      }
+      const topCause = this.reportStats.top_causes[0];
+      const causeText = topCause
+        ? (this.lang === 'ar' ? `أكثر سبب متكرر هو ${topCause.label} بعدد ${topCause.count} حالة.` : `Top cause is ${topCause.label} with ${topCause.count} cases.`)
+        : (this.lang === 'ar' ? 'لا توجد أسباب جذرية متاحة في البيانات.' : 'No root causes are available in the data.');
+      return this.lang === 'ar'
+        ? `تم تحليل ${this.reportStats.record_count} سجل من API بإجمالي تكلفة ${this.money(this.reportStats.total_cost)}. ${causeText}`
+        : `${this.reportStats.record_count} API records analyzed with total cost ${this.money(this.reportStats.total_cost)}. ${causeText}`;
     },
     
     toggleTheme() {
@@ -191,11 +271,7 @@ function reportsApp() {
           this.historyList = data.data || data;
         }
       } catch (e) {
-        // Mock history if backend is offline
-        this.historyList = [
-          { id: 'rep-mock-01', name: 'Q1 Quality Audit Brief', format: 'pdf', createdBy: 'Quality Manager', createdAt: new Date() - 36000000 },
-          { id: 'rep-mock-02', name: 'Financial Quality Loss Analysis', format: 'excel', createdBy: 'CFO', createdAt: new Date() - 86400000 }
-        ];
+        this.historyList = [];
       }
     },
 

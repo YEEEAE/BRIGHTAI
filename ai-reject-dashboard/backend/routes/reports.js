@@ -69,11 +69,14 @@ router.post('/reports/schedule', requireAuth, validate(scheduleSchema), (req, re
 });
 
 // GET /api/reports/download/:id
-router.get('/reports/download/:id', async (req, res, next) => {
+router.get('/reports/download/:id', requireAuth, async (req, res, next) => {
   try {
     const history = getHistory();
     const item = history.find(h => h.id === req.params.id);
-    if (!item || !fs.existsSync(item.filePath)) {
+    const reportsRoot = path.resolve(__dirname, '..', '..', 'data', 'reports');
+    const reportPath = item ? path.resolve(item.filePath) : null;
+
+    if (!item || !reportPath || !reportPath.startsWith(reportsRoot + path.sep) || !fs.existsSync(reportPath)) {
       return res.status(404).json(fail('Document not found or expired', 404));
     }
     
@@ -88,7 +91,8 @@ router.get('/reports/download/:id', async (req, res, next) => {
     res.setHeader('Content-Disposition', `attachment; filename="${item.fileName}"`);
     res.setHeader('Content-Type', item.mimeType);
     
-    const fileStream = fs.createReadStream(item.filePath);
+    audit('REPORT_DOWNLOAD', req, item.id);
+    const fileStream = fs.createReadStream(reportPath);
     fileStream.pipe(res);
   } catch (err) {
     return next(err);

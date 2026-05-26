@@ -11,24 +11,30 @@ const { logger } = require('../utils/logger');
  * Build source metadata object for all report formats.
  * Includes data source, record count, generation timestamp, and SHA-256 hash.
  */
-function buildSourceMetadata(records) {
+function buildSourceMetadata(records, generatedBy) {
   const dataState = getDataState();
   const source = dataState.cachedSource || 'demo';
+  const excelState = dataState.excel || {};
+  const sourceHash = source === 'excel' ? excelState.hash : null;
   const recordCount = records.length;
   const generatedAt = new Date().toISOString();
-  const dataHash = crypto
+  const computedHash = crypto
     .createHash('sha256')
-    .update(JSON.stringify(records.map(r => r.doc_no || r.item_name || '').sort()))
-    .digest('hex')
-    .substring(0, 16);
+    .update(JSON.stringify(records))
+    .digest('hex');
+  const hashShort = String(sourceHash || computedHash).substring(0, 12);
+  const sourceLabel = source === 'excel' ? 'ملف Excel المحمّل' : 'بيانات تجريبية (Demo)';
+  const disclaimer = `هذا التقرير تم إنشاؤه بواسطة نظام صقر AI للتحليلات. البيانات مستمدة من ${sourceLabel}. جميع الأرقام محسوبة من السجلات المتاحة وقت التوليد، والتحليل استشاري ويخضع لمراجعة إدارة الجودة (QCM).`;
 
   return {
     source,
-    sourceLabel: source === 'excel' ? 'ملف Excel المحمّل' : 'بيانات تجريبية (Demo)',
-    recordCount,
-    generatedAt,
-    dataHash,
-    footerDisclaimer: `هذا التقرير تم إنشاؤه بواسطة نظام صقر AI للتحليلات. البيانات مستمدة من ${source === 'excel' ? 'ملف Excel المحمّل' : 'بيانات تجريبية (Demo)'}. جميع الأرقام استشارية وتخضع لمراجعة إدارة الجودة (QCM).`
+    source_label: sourceLabel,
+    file_modified_at: source === 'excel' ? excelState.file_modified_at : null,
+    record_count: recordCount,
+    hash_short: hashShort,
+    generated_by: generatedBy || 'Quality Manager',
+    generated_at: generatedAt,
+    disclaimer
   };
 }
 
@@ -47,16 +53,30 @@ function computeDepartmentBreakdown(records) {
     deptMap[dept].totalCost += Number(r.cost) || 0;
   });
 
-  return Object.values(deptMap).map(d => {
-    // Estimate supplier recovery at 10-15% based on approval status
-    const recoveredCost = Math.round(d.totalCost * 0.12);
-    return {
-      ...d,
-      totalCost: Math.round(d.totalCost * 100) / 100,
-      recoveredCost,
-      netLoss: Math.round((d.totalCost - recoveredCost) * 100) / 100
-    };
-  }).sort((a, b) => b.totalCost - a.totalCost);
+  return Object.values(deptMap).map(d => ({
+    ...d,
+    totalCost: Math.round(d.totalCost * 100) / 100
+  })).sort((a, b) => b.totalCost - a.totalCost);
+}
+
+function computeReportMetrics(records) {
+  const totalCost = records.reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
+  const approvedOrReviewed = records.filter(r =>
+    r.approval_status === 'Approved' || r.approval_status === 'Review'
+  ).length;
+  const qualityEfficiency = records.length > 0 ? Math.round((approvedOrReviewed / records.length) * 1000) / 10 : 0;
+  const pendingCapa = records.filter(r => r.capa_required && r.approval_status !== 'Approved').length;
+  const closedCapa = records.filter(r => r.capa_required && r.approval_status === 'Approved').length;
+  const overdueCapa = records.filter(r => r.capa_required && Number(r.days_pending) >= 15).length;
+
+  return {
+    totalCost: Math.round(totalCost * 100) / 100,
+    averageCost: records.length ? Math.round((totalCost / records.length) * 100) / 100 : 0,
+    qualityEfficiency,
+    pendingCapa,
+    closedCapa,
+    overdueCapa
+  };
 }
 
 // Dynamically imported libraries for multi-format export
@@ -209,6 +229,7 @@ async function generateReport(payload) {
   }
 
   const stat = fs.statSync(filePath);
+  const metadata = buildSourceMetadata(filtered, payload.user || 'Quality Manager');
   const reportItem = {
     id: reportId,
     name: templateMeta.name,
@@ -220,7 +241,8 @@ async function generateReport(payload) {
     createdBy: payload.user || 'Quality Manager',
     createdAt: new Date().toISOString(),
     expiryDate: payload.security.expiryDate || null,
-    watermark: payload.security.watermark
+    watermark: payload.security.watermark,
+    metadata
   };
 
   saveToHistory(reportItem);
@@ -237,23 +259,11 @@ function getMimeType(format) {
 // 1. PDF Generation (HTML-to-PDF via Puppeteer)
 async function renderPdfReport(filePath, payload, records) {
   const analysis = computeAnalysis(records);
-  const totalCost = records.reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
   const count = records.length;
-  const metadata = buildSourceMetadata(records);
+  const metadata = buildSourceMetadata(records, payload.user || 'Quality Manager');
   const deptBreakdown = computeDepartmentBreakdown(records);
-
-  // Compute real quality efficiency: ratio of approved/controlled cases vs total
-  const approvedOrReviewed = records.filter(r =>
-    r.approval_status === 'Approved' || r.approval_status === 'Review'
-  ).length;
-  const qualityEfficiency = count > 0 ? Math.round((approvedOrReviewed / count) * 1000) / 10 : 0;
-
-  // Compute real CAPA stats from analysis
+  const metrics = computeReportMetrics(records);
   const capaSuggestions = analysis.capa_suggestions || [];
-  const pendingCapa = records.filter(r => r.approval_status === 'Pending').length;
-  const closedCapa = records.filter(r => r.approval_status === 'Approved').length;
-
-  // Compute top root causes for AI summary
   const topCauses = (analysis.repeated_root_causes || []).slice(0, 3);
   
   // HTML Template with inline styling, supporting CSS logical properties for RTL
@@ -431,7 +441,7 @@ async function renderPdfReport(filePath, payload, records) {
       <div class="section-box">
         <div class="section-title">إيجاز تحليلي وتوصيات صقر AI</div>
         <div style="font-size: 0.78rem; line-height: 1.7; color: #334155;">
-          <p>بناءً على تحليل <strong>${count}</strong> سجل مرفوضات بإجمالي خسائر مالية تقدر بـ <strong>SAR ${totalCost.toLocaleString()}</strong>، يشير التحليل إلى أن مؤشر كفاءة الجودة يبلغ <strong>${qualityEfficiency}%</strong>. ${topCauseText}${secondCauseText}</p>
+          <p>بناءً على تحليل <strong>${count}</strong> سجل مرفوضات بإجمالي خسائر مالية محسوبة من البيانات قدرها <strong>SAR ${metrics.totalCost.toLocaleString()}</strong>، يشير التحليل إلى أن مؤشر كفاءة الجودة يبلغ <strong>${metrics.qualityEfficiency}%</strong>. ${topCauseText}${secondCauseText}</p>
           <p><strong>توصيات الجودة العاجلة (Advisory Recommendations):</strong></p>
           <ul>
             ${highRiskNote}
@@ -454,12 +464,12 @@ async function renderPdfReport(filePath, payload, records) {
           <div class="kpi-value">${count} حالة</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-title">إجمالي الخسائر المالية التقديرية</div>
-          <div class="kpi-value">SAR ${totalCost.toLocaleString()}</div>
+          <div class="kpi-title">إجمالي الخسائر المالية من السجلات</div>
+          <div class="kpi-value">SAR ${metrics.totalCost.toLocaleString()}</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-title">مؤشر كفاءة الجودة المحقق</div>
-          <div class="kpi-value" style="color: #2A9D8F;">${qualityEfficiency}%</div>
+          <div class="kpi-value" style="color: #2A9D8F;">${metrics.qualityEfficiency}%</div>
         </div>
       </div>
     `;
@@ -472,8 +482,6 @@ async function renderPdfReport(filePath, payload, records) {
         <td>${d.department}</td>
         <td>${d.count}</td>
         <td>SAR ${d.totalCost.toLocaleString()}</td>
-        <td>SAR ${d.recoveredCost.toLocaleString()}</td>
-        <td>SAR ${d.netLoss.toLocaleString()}</td>
       </tr>
     `).join('');
 
@@ -486,8 +494,6 @@ async function renderPdfReport(filePath, payload, records) {
               <th>القسم المسؤول</th>
               <th>عدد الحالات</th>
               <th>إجمالي التكلفة (ريال سعودي)</th>
-              <th>الاسترداد من الموردين</th>
-              <th>صافي الخسارة</th>
             </tr>
           </thead>
           <tbody>
@@ -498,14 +504,21 @@ async function renderPdfReport(filePath, payload, records) {
     `;
   }
 
-  // Pareto Defects Chart preview
   if (payload.sections.includes('pareto')) {
+    const causeRows = topCauses.map(cause => `
+      <tr>
+        <td>${cause.cause}</td>
+        <td>${cause.count}</td>
+        <td>${cause.percentage}%</td>
+      </tr>
+    `).join('');
     htmlContent += `
       <div class="section-box">
         <div class="section-title">📊 توزيع عيوب الجودة المتكررة وأسباب الرفض</div>
-        <div id="chart-area" style="min-height: 200px; display: flex; align-items: center; justify-content: center; background: #F8FAFC; border: 1px dashed #E2E8F0; border-radius: 8px; font-size: 0.72rem; color: #64748B;">
-          [مخطط باريتو لأسباب الرفض عيوب المكبس، انتهاء الصلاحية، الفحص المخبري]
-        </div>
+        <table>
+          <thead><tr><th>السبب الجذري</th><th>عدد الحالات</th><th>النسبة من السجلات</th></tr></thead>
+          <tbody>${causeRows || '<tr><td colspan="3">لا توجد أسباب جذرية متاحة في البيانات.</td></tr>'}</tbody>
+        </table>
       </div>
     `;
   }
@@ -518,11 +531,11 @@ async function renderPdfReport(filePath, payload, records) {
         <div style="display: flex; gap: 10px; margin-top: 10px;">
           <div style="flex:1; border: 1px solid #E2E8F0; padding: 10px; border-radius: 6px; background: #FEF3C7; text-align: center;">
             <div style="font-weight: 700; color: #D97706; font-size: 0.75rem;">قيد التحقيق والاستقصاء</div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: #B45309; margin-top: 4px;">${pendingCapa} إجراءات</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #B45309; margin-top: 4px;">${metrics.pendingCapa} إجراءات</div>
           </div>
           <div style="flex:1; border: 1px solid #E2E8F0; padding: 10px; border-radius: 6px; background: #D1FAE5; text-align: center;">
             <div style="font-weight: 700; color: #059669; font-size: 0.75rem;">تم إغلاقها والتحقق من الفعالية</div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: #047857; margin-top: 4px;">${closedCapa} إجراءً</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #047857; margin-top: 4px;">${metrics.closedCapa} إجراءً</div>
           </div>
           <div style="flex:1; border: 1px solid #E2E8F0; padding: 10px; border-radius: 6px; background: #DBEAFE; text-align: center;">
             <div style="font-weight: 700; color: #2563EB; font-size: 0.75rem;">إجراءات CAPA المقترحة</div>
@@ -552,11 +565,11 @@ async function renderPdfReport(filePath, payload, records) {
   htmlContent += `
       <div class="footer" style="flex-direction: column; align-items: flex-start; gap: 6px;">
         <div style="display: flex; justify-content: space-between; width: 100%;">
-          <span>بصمة أمان المستند: ${metadata.dataHash}</span>
-          <span>مصدر البيانات: ${metadata.sourceLabel} | عدد السجلات: ${metadata.recordCount} | تاريخ التوليد: ${new Date(metadata.generatedAt).toLocaleDateString('ar-SA')}</span>
+          <span>بصمة أمان المستند: ${metadata.hash_short}</span>
+          <span>مصدر البيانات: ${metadata.source_label} | عدد السجلات: ${metadata.record_count} | آخر تعديل للملف: ${metadata.file_modified_at || 'غير متاح'}</span>
         </div>
         <div style="width: 100%; text-align: center; font-size: 0.6rem; color: #94A3B8; margin-top: 4px; padding-top: 6px; border-top: 1px solid #E2E8F0;">
-          ${metadata.footerDisclaimer}
+          ${metadata.disclaimer}
         </div>
       </div>
     </body>
@@ -597,9 +610,9 @@ async function renderExcelReport(filePath, payload, records) {
   workbook.created = new Date();
 
   const analysis = computeAnalysis(records);
-  const totalCost = records.reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
-  const metadata = buildSourceMetadata(records);
+  const metadata = buildSourceMetadata(records, payload.user || 'Quality Manager');
   const deptBreakdown = computeDepartmentBreakdown(records);
+  const metrics = computeReportMetrics(records);
 
   // Sheet 1: Source Metadata
   const sheetMeta = workbook.addWorksheet('معلومات المصدر والبيانات الوصفية');
@@ -610,13 +623,22 @@ async function renderExcelReport(filePath, payload, records) {
     { header: 'القيمة', key: 'value', width: 50 }
   ];
 
-  sheetMeta.addRow({ property: 'مصدر البيانات', value: metadata.sourceLabel });
+  sheetMeta.addRow({ property: 'source', value: metadata.source });
+  sheetMeta.addRow({ property: 'source_label', value: metadata.source_label });
+  sheetMeta.addRow({ property: 'file_modified_at', value: metadata.file_modified_at || '' });
+  sheetMeta.addRow({ property: 'record_count', value: metadata.record_count });
+  sheetMeta.addRow({ property: 'hash_short', value: metadata.hash_short });
+  sheetMeta.addRow({ property: 'generated_by', value: metadata.generated_by });
+  sheetMeta.addRow({ property: 'generated_at', value: metadata.generated_at });
+  sheetMeta.addRow({ property: 'disclaimer', value: metadata.disclaimer });
+  sheetMeta.addRow({});
+  sheetMeta.addRow({ property: 'مصدر البيانات', value: metadata.source_label });
   sheetMeta.addRow({ property: 'معرف المصدر', value: metadata.source });
-  sheetMeta.addRow({ property: 'عدد السجلات', value: metadata.recordCount });
-  sheetMeta.addRow({ property: 'تاريخ ووقت التوليد', value: metadata.generatedAt });
-  sheetMeta.addRow({ property: 'بصمة البيانات (Hash)', value: metadata.dataHash });
-  sheetMeta.addRow({ property: 'أعد بواسطة', value: payload.user || 'Quality Manager' });
-  sheetMeta.addRow({ property: 'تنويه', value: metadata.footerDisclaimer });
+  sheetMeta.addRow({ property: 'عدد السجلات', value: metadata.record_count });
+  sheetMeta.addRow({ property: 'تاريخ ووقت التوليد', value: metadata.generated_at });
+  sheetMeta.addRow({ property: 'بصمة البيانات المختصرة', value: metadata.hash_short });
+  sheetMeta.addRow({ property: 'أعد بواسطة', value: metadata.generated_by });
+  sheetMeta.addRow({ property: 'تنويه', value: metadata.disclaimer });
 
   sheetMeta.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
   sheetMeta.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0F4C81' } };
@@ -631,19 +653,13 @@ async function renderExcelReport(filePath, payload, records) {
     { header: 'الوحدة والعملة', key: 'unit', width: 15 }
   ];
 
-  const approvedOrReviewed = records.filter(r =>
-    r.approval_status === 'Approved' || r.approval_status === 'Review'
-  ).length;
-  const qualityEfficiency = records.length > 0 ? Math.round((approvedOrReviewed / records.length) * 1000) / 10 : 0;
-  const totalRecovered = deptBreakdown.reduce((sum, d) => sum + d.recoveredCost, 0);
-
-  sheet1.addRow({ metric: 'إجمالي تكلفة المرفوضات', value: totalCost, unit: 'SAR' });
+  sheet1.addRow({ metric: 'إجمالي تكلفة المرفوضات', value: metrics.totalCost, unit: 'SAR' });
   sheet1.addRow({ metric: 'إجمالي المرفوضات المستلمة', value: records.length, unit: 'سجل / حالة' });
-  sheet1.addRow({ metric: 'متوسط قيمة المرفوضة الواحدة', value: records.length ? Math.round(totalCost / records.length * 100) / 100 : 0, unit: 'SAR' });
-  sheet1.addRow({ metric: 'استرداد الخسائر المالي المحقق (تقديري)', value: totalRecovered, unit: 'SAR' });
-  sheet1.addRow({ metric: 'صافي الخسارة الفعلية', value: Math.round((totalCost - totalRecovered) * 100) / 100, unit: 'SAR' });
-  sheet1.addRow({ metric: 'مؤشر كفاءة الجودة', value: qualityEfficiency, unit: '%' });
+  sheet1.addRow({ metric: 'متوسط قيمة المرفوضة الواحدة', value: metrics.averageCost, unit: 'SAR' });
+  sheet1.addRow({ metric: 'مؤشر كفاءة الجودة', value: metrics.qualityEfficiency, unit: '%' });
   sheet1.addRow({ metric: 'حالات المخاطر العالية / الحرجة', value: analysis.high_risk_cases, unit: 'حالة' });
+  sheet1.addRow({ metric: 'إجراءات CAPA المفتوحة من السجلات', value: metrics.pendingCapa, unit: 'حالة' });
+  sheet1.addRow({ metric: 'إجراءات CAPA المغلقة من السجلات', value: metrics.closedCapa, unit: 'حالة' });
 
   // Format cells
   sheet1.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
@@ -656,9 +672,7 @@ async function renderExcelReport(filePath, payload, records) {
   sheetDept.columns = [
     { header: 'القسم', key: 'department', width: 25 },
     { header: 'عدد الحالات', key: 'count', width: 15 },
-    { header: 'إجمالي التكلفة', key: 'totalCost', width: 20 },
-    { header: 'الاسترداد التقديري', key: 'recoveredCost', width: 20 },
-    { header: 'صافي الخسارة', key: 'netLoss', width: 20 }
+    { header: 'إجمالي التكلفة', key: 'totalCost', width: 20 }
   ];
 
   deptBreakdown.forEach(d => {
@@ -712,7 +726,11 @@ async function renderExcelReport(filePath, payload, records) {
 
 // 3. PowerPoint Slides Generation (via PptxGenJS)
 async function renderPptxReport(filePath, payload, records) {
-  const metadata = buildSourceMetadata(records);
+  const metadata = buildSourceMetadata(records, payload.user || 'Quality Manager');
+  const analysis = computeAnalysis(records);
+  const metrics = computeReportMetrics(records);
+  const deptBreakdown = computeDepartmentBreakdown(records).slice(0, 5);
+  const topCauses = (analysis.repeated_root_causes || []).slice(0, 5);
 
   // Verify pptxgenjs installation, fallback to simulated PPTX buffer output if not compiled
   if (PptxGenJS) {
@@ -736,7 +754,7 @@ async function renderPptxReport(filePath, payload, records) {
         x: 1, y: 3.5, w: 8, h: 0.5,
         fontSize: 16, color: TEAL, align: 'right', fontFace: 'IBM Plex Sans Arabic'
       });
-      slide1.addText(metadata.footerDisclaimer, {
+      slide1.addText(metadata.disclaimer, {
         x: 0.5, y: 5.0, w: 12.3, h: 0.5,
         fontSize: 10, color: TEAL, align: 'center', fontFace: 'IBM Plex Sans Arabic'
       });
@@ -748,14 +766,33 @@ async function renderPptxReport(filePath, payload, records) {
         fontSize: 22, bold: true, color: PRIMARY, align: 'right', fontFace: 'IBM Plex Sans Arabic'
       });
 
-      const totalCost = records.reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
-      slide2.addText(`إجمالي المرفوضات: ${records.length} حالة\nإجمالي تكلفة الهدر المالي: SAR ${totalCost.toLocaleString()}`, {
+      slide2.addText(`إجمالي المرفوضات: ${records.length} حالة\nإجمالي تكلفة الهدر المالي: SAR ${metrics.totalCost.toLocaleString()}\nمؤشر كفاءة الجودة: ${metrics.qualityEfficiency}%\nCAPA مفتوحة: ${metrics.pendingCapa} | مغلقة: ${metrics.closedCapa}`, {
         x: 1, y: 1.8, w: 8, h: 2,
         fontSize: 18, color: '333333', align: 'right', fontFace: 'IBM Plex Sans Arabic'
       });
-      slide2.addText(metadata.footerDisclaimer, {
+      slide2.addText(`source: ${metadata.source} | file_modified_at: ${metadata.file_modified_at || ''} | record_count: ${metadata.record_count} | hash_short: ${metadata.hash_short} | generated_by: ${metadata.generated_by}`, {
+        x: 0.5, y: 4.6, w: 12.3, h: 0.4,
+        fontSize: 9, color: '666666', align: 'center', fontFace: 'IBM Plex Sans Arabic'
+      });
+      slide2.addText(metadata.disclaimer, {
         x: 0.5, y: 5.0, w: 12.3, h: 0.5,
         fontSize: 10, color: '666666', align: 'center', fontFace: 'IBM Plex Sans Arabic'
+      });
+
+      const slide3 = pptx.addSlide();
+      slide3.addText('مصادر التكلفة والأسباب الجذرية من البيانات', {
+        x: 0.5, y: 0.5, w: 9, h: 0.6,
+        fontSize: 22, bold: true, color: PRIMARY, align: 'right', fontFace: 'IBM Plex Sans Arabic'
+      });
+      const deptText = deptBreakdown.length
+        ? deptBreakdown.map(d => `${d.department}: ${d.count} حالة / SAR ${d.totalCost.toLocaleString()}`).join('\n')
+        : 'لا توجد بيانات أقسام متاحة.';
+      const causesText = topCauses.length
+        ? topCauses.map(c => `${c.cause}: ${c.count} حالة (${c.percentage}%)`).join('\n')
+        : 'لا توجد أسباب جذرية متاحة.';
+      slide3.addText(`حسب الأقسام:\n${deptText}\n\nالأسباب الجذرية:\n${causesText}`, {
+        x: 1, y: 1.4, w: 10.5, h: 4,
+        fontSize: 15, color: '333333', align: 'right', fontFace: 'IBM Plex Sans Arabic', breakLine: false
       });
 
       // Save PowerPoint
@@ -767,7 +804,7 @@ async function renderPptxReport(filePath, payload, records) {
   }
 
   // Fallback safe mock write for slides (so download works flawlessly!)
-  const simulatedPptx = `MAIS-POWERPOINT-SLIDES-MOCK\nTitle: Strategic Quality Report\nTotal Records: ${records.length}\nHash: ${metadata.dataHash}\nSource: ${metadata.sourceLabel}\nDisclaimer: ${metadata.footerDisclaimer}\nDate: ${new Date().toISOString()}`;
+  const simulatedPptx = `MAIS-POWERPOINT-SLIDES-FALLBACK\nTitle: Strategic Quality Report\nsource: ${metadata.source}\nfile_modified_at: ${metadata.file_modified_at || ''}\nrecord_count: ${metadata.record_count}\nhash_short: ${metadata.hash_short}\ngenerated_by: ${metadata.generated_by}\ndisclaimer: ${metadata.disclaimer}\nTotal Cost: ${metrics.totalCost}\nCAPA Open: ${metrics.pendingCapa}\nCAPA Closed: ${metrics.closedCapa}\nDate: ${new Date().toISOString()}`;
   fs.writeFileSync(filePath, simulatedPptx, 'utf8');
 }
 
