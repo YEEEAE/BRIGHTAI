@@ -232,6 +232,12 @@ services:
         source: /frontend/pages/about-us/index.html
         destination: /about/
       - type: redirect
+        source: /ai-reject-dashboard/frontend/pages
+        destination: /ai-reject-dashboard/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/
+        destination: /ai-reject-dashboard/
+      - type: redirect
         source: /ai-reject-dashboard/frontend/pages/index.html
         destination: /ai-reject-dashboard/
       - type: redirect
