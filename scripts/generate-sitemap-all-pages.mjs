@@ -613,6 +613,7 @@ async function main() {
 
   await fs.writeFile(OUTPUT, xml, "utf8");
   await fs.writeFile(PRIORITY_OUTPUT, xml, "utf8");
+  await fs.mkdir(path.dirname(REPORT_OUTPUT), { recursive: true });
   await fs.writeFile(REPORT_OUTPUT, report, "utf8");
 
   process.stdout.write(`Generated sitemap.xml with ${entries.length} high-confidence URLs\n`);

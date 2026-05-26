@@ -6,12 +6,11 @@
     aiRunning: false,
     errors: [],
     analysisSource: null,
-    token: null,
     authRequired: false,
     filters: {}
   };
 
-  var API_BASE = 'http://localhost:3000/api';
+  var API_BASE = '/api';
 
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return (ctx || document).querySelectorAll(sel); }
@@ -54,31 +53,26 @@
   }
 
   /* ===== AUTH ===== */
-  function getToken() {
-    if (state.token) return state.token;
-    state.token = sessionStorage.getItem('dashboard_token');
-    return state.token;
-  }
-
-  function storeToken(token) {
-    state.token = token;
-    sessionStorage.setItem('dashboard_token', token);
-  }
-
   function clearToken() {
-    state.token = null;
-    sessionStorage.removeItem('dashboard_token');
+    // AR: التوكن محفوظ في HttpOnly cookie، لذلك لا يوجد شيء نحذفه من JavaScript.
+    // EN: Tokens live in HttpOnly cookies, so JavaScript has no token storage to clear.
   }
 
   function authHeaders() {
-    var t = getToken();
-    return t ? { 'Authorization': 'Bearer ' + t, 'Content-Type': 'application/json' } : { 'Content-Type': 'application/json' };
+    return { 'Content-Type': 'application/json' };
   }
 
   async function apiFetch(url, options) {
     options = options || {};
     options.headers = Object.assign(authHeaders(), options.headers || {});
+    options.credentials = 'include';
     var res = await fetch(url, options);
+    if (res.status === 401 && url.indexOf('/refresh') === -1) {
+      var refreshed = await fetch(API_BASE + '/refresh', { method: 'POST', credentials: 'include' });
+      if (refreshed.ok) {
+        res = await fetch(url, options);
+      }
+    }
     if (res.status === 401) {
       clearToken();
       var target = window.location.pathname;
@@ -99,21 +93,14 @@
 
   async function checkBackend() {
     try {
-      var healthRes = await fetch(API_BASE + '/health', { signal: AbortSignal.timeout(2000) });
+      var healthRes = await fetch(API_BASE + '/health', { credentials: 'include', signal: AbortSignal.timeout(2000) });
       if (!healthRes.ok) throw new Error('Health check failed');
       var health = await healthRes.json();
+      var healthData = health.data || health;
 
-      state.authRequired = health.auth_required === true;
+      state.authRequired = healthData.auth_required === true;
 
-      if (state.authRequired && !getToken()) {
-        var target = window.location.pathname;
-        if (target.indexOf('login.html') === -1 && target.indexOf('technical.html') === -1) {
-          window.location.href = 'login.html?redirect=' + encodeURIComponent(target);
-          return;
-        }
-      }
-
-      var sourceParam = health.excel_exists ? '' : '?source=demo';
+      var sourceParam = healthData.excel_exists ? '' : '?source=demo';
       if (state.filters) {
         var filterParams = [];
         if (state.filters.department) filterParams.push('department=' + encodeURIComponent(state.filters.department));
@@ -128,7 +115,8 @@
       var rejectsRes = await apiFetch(API_BASE + '/rejects' + sourceParam, { signal: AbortSignal.timeout(5000) });
       if (!rejectsRes.ok) throw new Error('Rejects endpoint failed');
       var json = await rejectsRes.json();
-      var rejects = json.rejects || json.data || [];
+      var payload = json.data || json;
+      var rejects = payload.rejects || [];
       if (!rejects.length) throw new Error('No rejects data');
 
       state.rejects = rejects;
@@ -139,7 +127,8 @@
         var summaryRes = await apiFetch(API_BASE + '/summary' + (sourceParam || ''), { signal: AbortSignal.timeout(3000) });
         if (summaryRes.ok) {
           var s = await summaryRes.json();
-          state.analysis = s.analysis || s;
+          var summaryPayload = s.data || s;
+          state.analysis = summaryPayload.analysis || summaryPayload;
         } else {
           state.analysis = computeLocalAnalysis(rejects);
         }
@@ -163,7 +152,7 @@
       state.authRequired = false;
       renderAll();
     } else {
-      showError('No data source available. Please ensure assets/data.js is loaded.');
+      showError('No data source available. Please ensure /assets/js/data.js is loaded.');
     }
   }
 
@@ -370,7 +359,7 @@
     var el = $('#source-info');
     if (!el) return;
     var descriptions = {
-      static: 'Displaying prepared demo data from assets/data.js. Start the backend server and configure the Excel file for live data.',
+      static: 'Displaying prepared demo data from /assets/js/data.js. Configure the Excel file for live data.',
       excel: 'Reading data from Excel file via local backend server. AI analysis is advisory only.',
       gemini: 'Data processed through Gemini AI analysis. Focus ERP remains the source of truth.',
       simulated: 'Backend is running but Gemini API key is not configured. Using local simulated AI analysis.',

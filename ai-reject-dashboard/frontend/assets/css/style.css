@@ -1,0 +1,3 @@
+/* AR: نقطة دخول CSS للواجهة، مقسمة ليسهل عزل التصميم لاحقاً. */
+/* EN: Frontend CSS entrypoint, split so design layers can evolve safely. */
+@import url("./dashboard.css");

@@ -2,18 +2,9 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-8LLESL207Q');
-</script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Reject Analytics — Technical Integration View</title>
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
   <style>
     .tech-section { margin-bottom:32px; }
     .tech-section h3 { font-size:0.9rem; font-weight:600; color:var(--navy); margin-bottom:8px; }
@@ -113,17 +104,17 @@
           <div class="arch-diagram">
             <div class="arch-box excel">Excel File</div>
             <span class="arch-arrow">&larr;</span>
-            <div class="arch-box backend">Local Backend<br>(server.js)</div>
+            <div class="arch-box backend">Local Backend<br>(backend/server.js)</div>
             <span class="arch-arrow">&larr;</span>
             <div class="arch-box gemini">Gemini API<br>or</div>
             <div class="arch-box sim">Simulated AI</div>
             <span class="arch-arrow">&larr;</span>
             <div class="arch-box dashboard">Dashboard<br>(Frontend)</div>
           </div>
-          <p>The prototype has two operating modes:</p>
+          <p>The prototype now runs as a secure backend-served dashboard:</p>
           <ul>
-            <li><strong>Static Mode:</strong> Open index.html directly in the browser. Uses <code>assets/data.js</code> for demo data. No server required. No Gemini required. No Excel required.</li>
-            <li><strong>Backend Mode:</strong> Run <code>npm start</code> to start the server on port 3000. Reads the Excel file, optionally calls Gemini API, returns data to the frontend.</li>
+            <li><strong>Backend Mode:</strong> Run <code>npm start</code> to start <code>backend/server.js</code> on port 3000. It reads the Excel file, optionally calls Gemini API, and returns data to the frontend.</li>
+            <li><strong>Demo Fallback:</strong> If the Excel file is missing or unreadable, the backend serves safe demo records from the data service.</li>
           </ul>
         </div>
 
@@ -274,7 +265,7 @@ Each entry contains: timestamp, IP address, action, and optional details.
     </main>
   </div>
 
-  <script src="assets/data.js"></script>
-  <script src="assets/app.js"></script>
+  <script src="/assets/js/data.js"></script>
+  <script src="/assets/js/app.js"></script>
 </body>
 </html>
