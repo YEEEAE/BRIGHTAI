@@ -1,0 +1,214 @@
+/* ==========================================================================
+   BrightAI Design System - Forms Component
+   ========================================================================== */
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+  width: 100%;
+}
+
+.form-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.form-label-required::after {
+  content: "*";
+  color: var(--color-danger);
+  margin-inline-start: var(--spacing-xs);
+}
+
+/* --- FORM CONTROLS (Inputs, Textareas, Selects) --- */
+
+.form-control {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--spacing-md);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: var(--transition-fast);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.form-control:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+}
+
+.form-control:focus {
+  border-color: var(--color-primary);
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+.form-control:disabled {
+  background-color: var(--gray-100);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 100px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  resize: vertical;
+}
+
+/* --- CUSTOM SELECT --- */
+select.form-control {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-md) center;
+  background-size: 16px;
+  padding-inline-end: var(--spacing-xl);
+}
+
+[dir="rtl"] select.form-control {
+  background-position: left var(--spacing-md) center;
+}
+
+/* --- STATE VALIDATIONS --- */
+
+.form-control.is-invalid {
+  border-color: var(--color-danger);
+}
+.form-control.is-invalid:focus {
+  box-shadow: 0 0 0 3px var(--color-danger-light);
+}
+
+.form-control.is-valid {
+  border-color: var(--color-success);
+}
+.form-control.is-valid:focus {
+  box-shadow: 0 0 0 3px var(--color-success-light);
+}
+
+.form-feedback {
+  font-size: var(--font-size-xs);
+  margin-top: var(--spacing-xs);
+}
+
+.form-feedback.invalid {
+  color: var(--color-danger);
+}
+
+.form-feedback.valid {
+  color: var(--color-success);
+}
+
+/* --- CHECKBOX & RADIO (Premium custom designed) --- */
+
+.form-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--font-size-sm);
+}
+
+.form-check-input {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.form-check-input:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+}
+
+.form-check-input:checked {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.form-check-input:checked::before {
+  content: "";
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.form-check-input[type="radio"] {
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type="radio"]:checked::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background-color: white;
+  border: none;
+  border-radius: var(--radius-full);
+  transform: none;
+}
+
+/* --- PREMIUM PILL TOGGLE SWITCH --- */
+
+.form-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+
+.form-switch-input {
+  appearance: none;
+  width: 44px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background-color: var(--gray-300);
+  position: relative;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.form-switch-input::before {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background-color: white;
+  top: 3px;
+  left: 3px;
+  transition: var(--transition-normal);
+}
+
+.form-switch-input:checked {
+  background-color: var(--color-primary);
+}
+
+.form-switch-input:checked::before {
+  transform: translateX(20px);
+}
+
+[dir="rtl"] .form-switch-input:checked::before {
+  transform: translateX(-20px);
+}

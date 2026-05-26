@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* --- BrightAI Component Library Imports --- */
+@import url('./components/buttons.css');
+@import url('./components/cards.css');
+@import url('./components/forms.css');
+@import url('./components/tables.css');
+@import url('./components/modals.css');
+@import url('./components/notifications.css');
+@import url('./components/badges.css');
+@import url('./components/tabs.css');
+@import url('./components/tooltips.css');
+@import url('./components/charts.css');
+@import url('./components/sidebar.css');
+@import url('./components/topbar.css');
+@import url('./components/breadcrumbs.css');
+@import url('./components/pagination.css');
+@import url('./components/skeletons.css');
+@import url('./components/empty-states.css');
+
+/* ==========================================================================
+   BrightAI Enterprise Design System - Central Configuration
+   Designed for Medical/Pharmaceutical Domains (Stripe & Linear Aesthetics)
+   ========================================================================== */
+
+:root {
+  /* Color Palette - Light Mode (Medical & Pharmaceutical) */
+  --color-primary: #0F4C81;          /* Deep Medical Blue */
+  --color-primary-hover: #0b375e;
+  --color-primary-light: rgba(15, 76, 129, 0.08);
+  
+  --color-secondary: #00A6A6;        /* Medical Teal */
+  --color-secondary-hover: #008585;
+  --color-secondary-light: rgba(0, 166, 166, 0.08);
+  
+  --color-accent: #F4A261;           /* Warm Pharmaceutical Orange */
+  --color-accent-hover: #e78e47;
+  --color-accent-light: rgba(244, 162, 97, 0.08);
+
+  /* Functional Status Colors */
+  --color-success: #2A9D8F;          /* Dynamic Safe Green */
+  --color-success-hover: #217d72;
+  --color-success-light: rgba(42, 157, 143, 0.08);
+
+  --color-warning: #E9C46A;          /* Balanced Caution Yellow */
+  --color-warning-hover: #d1ab4e;
+  --color-warning-light: rgba(233, 196, 106, 0.08);
+
+  --color-danger: #E76F51;           /* Critical Reject Red */
+  --color-danger-hover: #cf5537;
+  --color-danger-light: rgba(231, 111, 81, 0.08);
+
+  /* 10 Shades of Gray / Neutrals (Light Mode) */
+  --gray-50: #F8FAFC;
+  --gray-100: #F1F5F9;
+  --gray-200: #E2E8F0;
+  --gray-300: #CBD5E1;
+  --gray-400: #94A3B8;
+  --gray-500: #64748B;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1E293B;
+  --gray-900: #0F172A;
+
+  /* Backgrounds & Surfaces */
+  --color-background: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-hover: #F1F5F9;
+  --color-border: #E2E8F0;
+  --color-border-hover: #CBD5E1;
+  
+  /* Text Colors */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --text-on-primary: #FFFFFF;
+
+  /* Typography Scale */
+  --font-arabic: 'IBM Plex Sans Arabic', sans-serif;
+  --font-english: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Font Sizes (8 sizes) */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 32px;
+  --font-size-3xl: 40px;
+  --font-size-4xl: 48px;
+
+  /* Spacing System (8px base) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  /* Border Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Elevation Shadows (Linear/Stripe-like extremely subtle) */
+  --shadow-1: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.01);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-5: 0 25px 50px -12px rgba(0, 0, 0, 0.12);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.03);
+
+  /* Transitions (Smooth Cubic-Bezier) */
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Focus Indicator Ring */
+  --focus-ring: 0 0 0 3px rgba(15, 76, 129, 0.25);
+  
+  /* Global Page Direction Helpers */
+  --direction: ltr;
+}
+
+/* RTL Override Variables */
+[dir="rtl"], :root[dir="rtl"] {
+  --direction: rtl;
+}
+
+/* ==========================================================================
+   Dark Mode Variants Configuration
+   ========================================================================== */
+
+[data-theme="dark"], :root[data-theme="dark"] {
+  /* Color Palette - Dark Mode */
+  --color-primary: #3b82f6;          /* Slightly brighter medical blue for dark context */
+  --color-primary-hover: #60a5fa;
+  --color-primary-light: rgba(59, 130, 246, 0.15);
+  
+  --color-secondary: #00D2D2;        /* Vibrant teal */
+  --color-secondary-hover: #33e0e0;
+  --color-secondary-light: rgba(0, 210, 210, 0.15);
+  
+  --color-accent: #f5b075;           /* Bright amber orange */
+  --color-accent-hover: #f7c093;
+  --color-accent-light: rgba(245, 176, 117, 0.15);
+
+  /* Status Dark Variants */
+  --color-success: #34d399;
+  --color-success-hover: #6ee7b7;
+  --color-success-light: rgba(52, 211, 153, 0.12);
+
+  --color-warning: #fbbf24;
+  --color-warning-hover: #fcd34d;
+  --color-warning-light: rgba(251, 191, 36, 0.12);
+
+  --color-danger: #f87171;
+  --color-danger-hover: #fca5a5;
+  --color-danger-light: rgba(248, 113, 113, 0.12);
+
+  /* 10 Shades of Gray / Neutrals (Dark Mode) */
+  --gray-50: #0f172a;
+  --gray-100: #1e293b;
+  --gray-200: #334155;
+  --gray-300: #475569;
+  --gray-400: #64748B;
+  --gray-500: #94A3B8;
+  --gray-600: #CBD5E1;
+  --gray-700: #E2E8F0;
+  --gray-800: #F1F5F9;
+  --gray-900: #F8FAFC;
+
+  /* Backgrounds & Surfaces (Premium Deep Charcoal & Navy tones) */
+  --color-background: #0B0F19;       /* Deep obsidian navy */
+  --color-surface: #131A26;          /* Deep slate blue */
+  --color-surface-hover: #1C2534;
+  --color-border: #1E293B;
+  --color-border-hover: #334155;
+  
+  /* Text Colors */
+  --text-primary: #F8FAFC;
+  --text-secondary: #CBD5E1;
+  --text-muted: #64748B;
+  --text-on-primary: #0F172A;
+
+  /* Shadows (Dark Mode has heavier shadow borders and lower contrast glow) */
+  --shadow-1: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.45), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  --shadow-5: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.35);
+
+  --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.45);
+}
+
+/* ==========================================================================
+   Core CSS Resets & Accessibility Enhancements
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-english);
+  font-size: var(--font-size-md);
+  color: var(--text-secondary);
+  background-color: var(--color-background);
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Set Arabic Font Stack globally when document is in dir="rtl" */
+[dir="rtl"] body, [dir="rtl"] button, [dir="rtl"] input, [dir="rtl"] select, [dir="rtl"] textarea {
+  font-family: var(--font-arabic), var(--font-english), sans-serif;
+}
+
+/* Focus Indicator Ring Styling for all focusable items */
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Keyboard Navigation focus rings helper */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
+
+/* Accessibility: High-contrast focus state compliance for readers & keyboards */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hide Sidebar/Topbar for professional printing options */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt;
+  }
+  
+  .print-hidden,
+  sidebar,
+  .sidebar,
+  .topbar,
+  header,
+  footer,
+  .btn,
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-page-break {
+    page-break-before: always;
+  }
+  
+  .card, table {
+    box-shadow: none !important;
+    border: 1px solid #000000 !important;
+    page-break-inside: avoid;
+  }
+}

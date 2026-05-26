@@ -1,0 +1,73 @@
+/* ==========================================================================
+   BrightAI Design System - Pagination Component
+   ========================================================================== */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md) 0;
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--spacing-lg);
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.pagination-info {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.pagination-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  list-style: none;
+}
+
+.pagination-item {
+  display: inline-flex;
+}
+
+.pagination-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 var(--spacing-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  gap: var(--spacing-xs);
+}
+
+.pagination-link:hover:not(.is-disabled):not(.is-active) {
+  border-color: var(--color-border-hover);
+  background-color: var(--color-surface-hover);
+  color: var(--text-primary);
+}
+
+.pagination-link.is-active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--text-on-primary);
+  cursor: default;
+}
+
+.pagination-link.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--gray-50);
+}
+
+/* Arrow controls mirroring in RTL */
+[dir="rtl"] .pagination-arrow-icon {
+  transform: scaleX(-1);
+}

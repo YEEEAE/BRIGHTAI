@@ -1,0 +1,138 @@
+/* ==========================================================================
+   BrightAI Design System - Cards Component
+   ========================================================================== */
+
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card Header, Body, Footer structures */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.card-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.card-subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: var(--spacing-xs);
+}
+
+.card-body {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--color-border);
+  gap: var(--spacing-sm);
+}
+
+/* --- CARD VARIANTS --- */
+
+/* Elevated (Subtle shadow, sleek premium vibe like Stripe) */
+.card-elevated {
+  box-shadow: var(--shadow-2);
+  border-color: var(--color-border);
+}
+.card-elevated:hover {
+  box-shadow: var(--shadow-3);
+  transform: translateY(-2px);
+}
+
+/* Outlined (Linear/Notion style flat border, elegant) */
+.card-outlined {
+  border-color: var(--color-border);
+  box-shadow: none;
+}
+.card-outlined:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-1);
+}
+
+/* Flat (Secondary background fill, no shadow) */
+.card-flat {
+  background-color: var(--gray-50);
+  border-color: transparent;
+}
+.card-flat:hover {
+  background-color: var(--gray-100);
+}
+
+/* --- STATS CARD (Specifically for Dashboard Metrics) --- */
+.card-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.card-stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: var(--spacing-sm) 0;
+}
+
+.card-stat-trend {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  gap: var(--spacing-xs);
+}
+
+.card-stat-trend-up {
+  color: var(--color-success);
+}
+.card-stat-trend-down {
+  color: var(--color-danger);
+}
+
+/* --- RESPONSIVE CARD GRID UTILITIES --- */
+.grid {
+  display: grid;
+  gap: var(--spacing-lg);
+  width: 100%;
+}
+
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* Tablet & Mobile responsive override rules */
+@media (max-width: 1024px) {
+  .grid-cols-3, .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--spacing-md);
+  }
+}

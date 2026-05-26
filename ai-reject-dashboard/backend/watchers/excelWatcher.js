@@ -2,6 +2,7 @@ const chokidar = require('chokidar');
 const config = require('../config/env');
 const { getRejects, invalidateCache, getDataState } = require('../services/dataService');
 const { loadExcelData, getDataHash, recordChange } = require('../services/excelService');
+const { invalidateAiCache } = require('../services/aiService');
 const { logger } = require('../utils/logger');
 
 function startExcelWatcher(io) {
@@ -17,6 +18,7 @@ function startExcelWatcher(io) {
       }
 
       invalidateCache(`excel ${eventName}`);
+      invalidateAiCache(`excel ${eventName}`);
       const excelPayload = await loadExcelData({ force: true });
       await getRejects('excel');
       const state = getDataState();

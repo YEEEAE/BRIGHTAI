@@ -4,12 +4,14 @@ const { audit } = require('../utils/logger');
 const { success } = require('../utils/response');
 const { getRejects, getDataState, getMetrics } = require('../services/dataService');
 const { loadExcelData, getDataStatus, getRecentChanges } = require('../services/excelService');
+const { invalidateAiCache } = require('../services/aiService');
 
 const router = express.Router();
 
 router.get('/data/refresh', requireAuth, async (req, res, next) => {
   try {
     const excel = await loadExcelData({ force: true });
+    invalidateAiCache('manual data refresh');
     const rejects = await getRejects('excel');
     audit('DATA_REFRESH', req, `${rejects.length} records`);
     return res.json(success({

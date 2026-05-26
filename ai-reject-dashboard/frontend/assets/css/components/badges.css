@@ -1,0 +1,103 @@
+/* ==========================================================================
+   BrightAI Design System - Badges Component
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  padding: 3px var(--spacing-sm);
+  font-size: var(--font-size-xs);
+  gap: var(--spacing-xs);
+}
+
+/* Badge shapes */
+.badge-pill {
+  border-radius: var(--radius-full);
+}
+
+.badge-dot::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: currentColor;
+}
+
+/* --- BADGE VARIANTS (Subtle Light Backgrounds - Modern SaaS style) --- */
+
+.badge-primary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.badge-secondary {
+  background-color: var(--color-secondary-light);
+  color: var(--color-secondary-hover);
+}
+
+.badge-success {
+  background-color: var(--color-success-light);
+  color: var(--color-success-hover);
+}
+
+.badge-warning {
+  background-color: var(--color-warning-light);
+  color: var(--color-warning-hover);
+}
+
+.badge-danger {
+  background-color: var(--color-danger-light);
+  color: var(--color-danger-hover);
+}
+
+.badge-neutral {
+  background-color: var(--gray-100);
+  color: var(--gray-700);
+}
+
+/* --- SOLID BADGES --- */
+
+.badge-solid {
+  color: var(--text-on-primary) !important;
+}
+
+.badge-solid.badge-primary { background-color: var(--color-primary); }
+.badge-solid.badge-secondary { background-color: var(--color-secondary); }
+.badge-solid.badge-success { background-color: var(--color-success); }
+.badge-solid.badge-danger { background-color: var(--color-danger); }
+.badge-solid.badge-neutral { background-color: var(--gray-700); }
+.badge-solid.badge-warning {
+  background-color: var(--color-warning);
+  color: var(--text-primary) !important;
+}
+
+/* Pulse animation for highly critical badges (e.g. Critical Reject Alert) */
+.badge-pulse::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background-color: currentColor;
+  animation: badge-pulse-scale 1.2s infinite ease-in-out;
+}
+
+@keyframes badge-pulse-scale {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}

@@ -83,6 +83,11 @@ DASHBOARD_PASSWORD_HASH=...
 - `GET /api/data/refresh`
 - `GET /api/data/status`
 - `GET /api/data/changes`
+- `GET /api/ai/enterprise-analysis`
+- `POST /api/ai/query`
+- `POST /api/ai/generate-capa`
+- `GET /api/ai/anomalies`
+- `GET /api/ai/audit-trail`
 
 ## Excel Data Shape
 
@@ -127,4 +132,27 @@ Computed metrics include:
   "monthly_trends": {},
   "year_over_year_comparison": []
 }
+```
+
+## Gemini Prompt Examples
+
+The AI service uses `gemini-2.5-flash` with task-specific prompts, few-shot examples, JSON schema output, and tuned temperatures.
+
+Natural language query example:
+
+```text
+You answer natural language analytics questions in Arabic or English.
+First interpret the question into a data query, then answer from the provided context only.
+Include a suggested chart and source fields.
+Few-shot example:
+Question: كم تكلفة مرفوضات قسم الإنتاج هذا الشهر؟
+{"answer":"تكلفة مرفوضات قسم الإنتاج هذا الشهر 50,000 SAR.","query_interpretation":{"metric":"cost","filters":{"department":"Production","period":"current_month"}},"suggested_chart":{"type":"bar","x":"department","y":"cost"},"sources":["department","cost","date"],"confidence":"Medium"}
+```
+
+CAPA prompt example:
+
+```text
+Generate a complete CAPA for a medical manufacturing reject case.
+Use 5 Whys, immediate action, corrective action, preventive action, owner, timeline, success criteria, and ISO/GMP references.
+Return JSON only matching the schema.
 ```

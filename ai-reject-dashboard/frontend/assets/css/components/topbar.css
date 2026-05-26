@@ -1,0 +1,189 @@
+/* ==========================================================================
+   BrightAI Design System - Topbar Component (Premium Glassmorphism)
+   ========================================================================== */
+
+.topbar {
+  height: 70px;
+  position: sticky;
+  top: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-xl);
+  z-index: 800;
+  transition: var(--transition-normal);
+}
+
+/* Align Topbar content with Sidebar offset dynamically */
+.has-sidebar .topbar {
+  padding-inline-start: calc(260px + var(--spacing-xl));
+}
+
+.sidebar-collapsed + .has-sidebar .topbar {
+  padding-inline-start: calc(72px + var(--spacing-xl));
+}
+
+/* Topbar Left (Search Bar - Stripe like) */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-grow: 1;
+  max-width: 480px;
+}
+
+.topbar-search-container {
+  position: relative;
+  width: 100%;
+}
+
+.topbar-search-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 var(--spacing-xl) 0 var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background-color: var(--gray-50);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  color: var(--text-primary);
+  transition: var(--transition-fast);
+}
+
+[dir="rtl"] .topbar-search-input {
+  padding: 0 var(--spacing-md) 0 var(--spacing-xl);
+}
+
+.topbar-search-input:focus {
+  background-color: var(--color-surface);
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.topbar-search-icon {
+  position: absolute;
+  top: 50%;
+  inset-inline-start: var(--spacing-sm);
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Topbar Right Actions (Notifications, User Profile, Language switch) */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.topbar-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+  position: relative;
+}
+
+.topbar-btn:hover {
+  background-color: var(--color-surface-hover);
+  color: var(--text-primary);
+}
+
+.topbar-btn-badge {
+  position: absolute;
+  top: 2px;
+  inset-inline-end: 2px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-danger);
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-full);
+}
+
+/* User Profile Trigger */
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  user-select: none;
+}
+
+.topbar-user:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.topbar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--color-border);
+}
+
+.topbar-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar-user-name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.topbar-user-role {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Dark Mode Glassmorphism adjustments */
+[data-theme="dark"] .topbar {
+  background-color: rgba(19, 26, 38, 0.8);
+}
+
+/* Responsive topbar */
+@media (max-width: 1024px) {
+  .has-sidebar .topbar {
+    padding-inline-start: var(--spacing-xl) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0 var(--spacing-md);
+  }
+  
+  .topbar-left {
+    display: none; /* Hide search bar on small mobile screens */
+  }
+  
+  .topbar-user-info {
+    display: none; /* Only show avatar on phone screen */
+  }
+}
