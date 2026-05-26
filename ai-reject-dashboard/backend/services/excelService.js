@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/02-data/excel-data-source.md
+ * - docs/02-data/excel-schema.md
+ * - docs/02-data/data-processing.md
+ */
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');

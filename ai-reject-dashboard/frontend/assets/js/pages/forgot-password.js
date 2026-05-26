@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/04-api/auth-api.md
+ * - docs/05-security/auth-rbac.md
+ */
 document.getElementById('forgot-form').addEventListener('submit', async () => {
   const email = document.getElementById('email-input').value.trim();
   const btn = document.getElementById('submit-btn');

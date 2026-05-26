@@ -6,6 +6,9 @@
   <title>AI Reject Analytics — Workflow & Governance</title>
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/style.css">
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <style>
     .wf-section { margin-bottom:32px; }
     .wf-section h3 { font-size:0.9rem; font-weight:600; color:var(--navy); margin-bottom:12px; }
@@ -47,7 +50,6 @@
     .rule-card .rule-title { font-weight:600; font-size:0.78rem; color:var(--gray-700); }
     .rule-card .rule-desc { font-size:0.7rem; color:var(--gray-500); margin-top:4px; line-height:1.6; }
   </style>
-    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
 <body class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -58,15 +60,17 @@
         <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
         <div class="sub">Focus ERP Integrated Prototype</div>
       </div>
-      <nav class="sidebar-nav">
-        <a href="/ai-reject-dashboard/"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
-        <a href="executive"><span class="icon">&#x1F3E2;</span> Executive View</a>
-        <a href="finance"><span class="icon">&#x1F4B0;</span> Finance View</a>
-        <a href="quality"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
-        <a href="production"><span class="icon">&#x1F3ED;</span> Production / Ops</a>
-        <a href="workflow" class="active"><span class="icon">&#x1F504;</span> Workflow &amp; Governance</a>
-        <a href="technical"><span class="icon">&#x2699;</span> Technical View</a>
-        <a href="reports"><span class="icon">&#x1F4C4;</span> مركز التقارير الفاخر</a>
+      <nav class="sidebar-nav" aria-label="التنقل الرئيسي للوحة BrightAI">
+        <a href="../../index.html" class="sidebar-link"><span class="sidebar-icon">📊</span><span>لوحة القيادة الرئيسية</span></a>
+        <a href="executive.html" class="sidebar-link"><span class="sidebar-icon">🏢</span><span>المنظور التنفيذي</span></a>
+        <a href="finance.html" class="sidebar-link"><span class="sidebar-icon">💰</span><span>المنظور المالي</span></a>
+        <a href="quality.html" class="sidebar-link"><span class="sidebar-icon">🔬</span><span>الجودة وإجراءات CAPA</span></a>
+        <a href="production.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span><span>الإنتاج والعمليات</span></a>
+        <a href="workflow.html" class="sidebar-link is-active"><span class="sidebar-icon">🔄</span><span>حوكمة الموافقات</span></a>
+        <a href="technical.html" class="sidebar-link"><span class="sidebar-icon">🛠️</span><span>المنظور الفني والربط</span></a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📄</span><span>مركز التقارير الفاخر</span></a>
+        <div class="sidebar-title">تغيير اللغة / Lang</div>
+        <button class="sidebar-link" type="button" data-dashboard-language-toggle><span class="sidebar-icon">🌐</span><span>English (EN)</span></button>
       </nav>
       <div class="sidebar-footer">
         Focus ERP remains the official source of truth.<br>
@@ -311,6 +315,6 @@
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="../assets/js/notifications.js"></script>
-    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
+  <script defer src="../assets/js/dashboard.js"></script>
 </body>
 </html>

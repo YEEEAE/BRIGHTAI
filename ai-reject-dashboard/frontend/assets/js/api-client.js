@@ -1,4 +1,10 @@
 /**
+ * Documentation:
+ * - docs/04-api/api-overview.md
+ * - docs/04-api/data-api.md
+ * - docs/04-api/ai-api.md
+ */
+/**
  * BrightAI — Centralized API Client
  * AR: عميل API مركزي لكافة اتصالات الواجهة الأمامية مع الخادم.
  * EN: Single-source API client for all frontend-to-backend communication.

@@ -274,418 +274,199 @@
 </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
     <link rel="stylesheet" href="./assets/css/sitewide-modernization.css">
-</head>
 
-<body class="bright-page--home" data-bright-page-type="home">
-<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
-<header class="unified-nav" id="main-header" role="banner">
-        <div class="nav-container">
+  <style>
+  /* ===== BrightAI Nav ===== */
+  .top-nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    backdrop-filter:blur(14px);
+    background:rgba(11,16,32,0.72);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .nav-wrap{
+    max-width:1280px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+  }
+  .top-nav .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;}
+  .top-nav .logo-mark{
+    width:38px;height:38px;border-radius:11px;
+    background:linear-gradient(135deg,#22d3ee 0%,#6366f1 55%,#a855f7 100%);
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;
+    box-shadow:0 6px 20px rgba(99,102,241,0.35);
+    font-family:'BrightBold',sans-serif;
+  }
+  .top-nav .logo-text{font-weight:800;font-size:18px;letter-spacing:.2px;font-family:'BrightBold',sans-serif;}
+  .top-nav .logo-text span{color:#22d3ee;}
+  .top-nav .nav-links{display:flex;gap:6px;list-style:none;padding:0;margin:0;}
+  .top-nav .nav-links>li{position:relative;}
+  .top-nav .nav-links>li>a,
+  .top-nav .dropdown-trigger{
+    color:#cbd5e1;text-decoration:none;font-weight:500;font-size:15px;
+    padding:8px 14px;border-radius:8px;transition:all .25s ease;
+    display:inline-flex;align-items:center;gap:4px;cursor:pointer;
+    font-family:'BrightThin',sans-serif;
+  }
+  .top-nav .nav-links>li>a:hover,
+  .top-nav .dropdown-trigger:hover{color:#fff;background:rgba(255,255,255,0.05);}
+  .top-nav .dropdown-trigger::after{content:'▾';font-size:10px;opacity:.6;margin-right:2px;}
 
-            <div class="flex-shrink-0">
-                <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
-                    <div class="logo-box relative w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center transition-all duration-500">
-                        <picture>
-                            <source srcset="/assets/images/logo.avif" type="image/avif">
-                            <source srcset="/assets/images/logo.webp" type="image/webp">
-                            <img src="/assets/images/logo.png" alt="شعار Bright AI" width="36" height="36" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
-                        </picture>
-                    </div>
-                </a>
-            </div>
+  /* Dropdown */
+  .top-nav .dropdown-menu{
+    position:absolute;top:100%;right:0;min-width:260px;
+    background:rgba(15,23,42,0.95);backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.08);border-radius:12px;
+    padding:8px;margin-top:8px;
+    opacity:0;visibility:hidden;transform:translateY(-8px);
+    transition:all .25s ease;z-index:100;
+    list-style:none;
+    box-shadow:0 20px 60px rgba(0,0,0,0.4);
+  }
+  .top-nav .has-dropdown:hover>.dropdown-menu,
+  .top-nav .has-dropdown:focus-within>.dropdown-menu,
+  .top-nav .has-dropdown.active>.dropdown-menu{
+    opacity:1;visibility:visible;transform:translateY(0);
+  }
+  .top-nav .dropdown-menu a{
+    display:block;padding:10px 16px;color:#cbd5e1;font-size:14px;
+    border-radius:8px;transition:all .2s;text-decoration:none;
+    font-family:'BrightThin',sans-serif;
+  }
+  .top-nav .dropdown-menu a:hover{background:rgba(255,255,255,0.05);color:#fff;}
 
-            <nav class="nav-desktop">
+  .top-nav .nav-cta{
+    background:linear-gradient(135deg,#06b6d4,#6366f1);
+    color:#fff;padding:9px 18px;border-radius:10px;font-weight:700;
+    text-decoration:none;font-size:14px;transition:transform .2s;
+    font-family:'BrightBold',sans-serif;
+  }
+  .top-nav .nav-cta:hover{transform:translateY(-1px);}
+  .nav-actions-wrap{display:flex;align-items:center;gap:12px;}
+
+  /* Mobile toggle */
+  .top-nav .mobile-toggle{
+    display:none;background:none;border:none;cursor:pointer;
+    flex-direction:column;gap:5px;padding:8px;
+  }
+  .top-nav .mobile-toggle span{
+    width:22px;height:2px;background:#fff;border-radius:2px;transition:all .3s;
+  }
+  .top-nav .mobile-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px);}
+  .top-nav .mobile-toggle.open span:nth-child(2){opacity:0;}
+  .top-nav .mobile-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px);}
+
+  /* Mobile overlay */
+  .mobile-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);
+    z-index:49;opacity:0;visibility:hidden;transition:all .3s;
+  }
+  .mobile-overlay.show{opacity:1;visibility:visible;}
+
+  /* Mobile slide panel */
+  .mobile-panel{
+    position:fixed;top:0;right:0;bottom:0;width:85%;max-width:360px;
+    background:linear-gradient(180deg,#0b1020,#020617);
+    z-index:60;transform:translateX(100%);transition:transform .35s ease;
+    overflow-y:auto;padding:24px 20px 40px;
+    border-left:1px solid rgba(255,255,255,0.06);
+  }
+  .mobile-panel.open{transform:translateX(0);}
+  .mobile-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .mobile-panel-close{background:none;border:none;color:#94a3b8;font-size:24px;cursor:pointer;padding:8px;border-radius:8px;transition:all .2s;}
+  .mobile-panel-close:hover{color:#fff;background:rgba(255,255,255,0.05);}
+  .mobile-panel nav a,.mobile-panel .m-section-title{display:block;padding:12px 16px;color:#e2e8f0;text-decoration:none;font-size:15px;font-weight:500;border-radius:10px;transition:all .2s;font-family:'BrightThin',sans-serif;}
+  .mobile-panel nav a:hover{background:rgba(255,255,255,0.04);}
+  .m-section-title{color:#64748b;font-size:12px;font-weight:700;padding:20px 16px 8px;letter-spacing:1px;font-family:'BrightBold',sans-serif;}
+  .mobile-panel .m-link{display:block;padding:10px 16px 10px 28px;color:#94a3b8;text-decoration:none;font-size:14px;border-radius:8px;transition:all .2s;font-family:'BrightThin',sans-serif;}
+  .mobile-panel .m-link:hover{color:#fff;background:rgba(255,255,255,0.04);}
+  .mobile-panel .m-cta{display:block;margin-top:24px;padding:14px;text-align:center;background:linear-gradient(135deg,#06b6d4,#6366f1);color:#fff;border-radius:12px;font-weight:700;text-decoration:none;font-size:15px;font-family:'BrightBold',sans-serif;}
+
+  /* Responsive */
+  @media(max-width:768px){
+    .top-nav .nav-links{display:none;}
+    .top-nav .mobile-toggle{display:flex;}
+    .top-nav .nav-wrap{padding:12px 16px;}
+    .top-nav .nav-cta{padding:8px 14px;font-size:13px;}
+    .logo-mark{width:34px;height:34px;font-size:16px;}
+    .top-nav .logo-text{font-size:16px;}
+  }
+  </style>
+
+    <header class="top-nav" id="main-header" role="banner">
+        <div class="nav-wrap">
+            <a href="/" class="logo">
+                <div class="logo-mark">B</div>
+                <div class="logo-text">Bright<span>AI</span></div>
+            </a>
+            <nav>
                 <ul class="nav-links">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">الرئيسية</a>
+                    <li><a href="/">الرئيسية</a></li>
+                    <li class="has-dropdown">
+                        <a href="#" class="dropdown-trigger">الأنظمة الذكية</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/demo/smart-hospital-management/">إدارة المستشفيات الذكية</a></li>
+                            <li><a href="/demo/smart-medical-archive/">الأرشيف الطبي الذكي</a></li>
+                            <li><a href="/demo/education/">التعليم والتدريب</a></li>
+                            <li><a href="/demo/hr-automation/">أتمتة الموارد البشرية</a></li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/services/">خدماتنا</a>
+                    <li class="has-dropdown">
+                        <a href="#" class="dropdown-trigger">الوكلاء والخدمات</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/demo/custom-ai-agent/">وكيل ذكاء اصطناعي مخصص</a></li>
+                            <li><a href="/demo/competitor-analysis-agent/">وكيل تحليل المنافسين</a></li>
+                            <li><a href="/demo/operational-reports-automation/">أتمتة التقارير التشغيلية</a></li>
+                            <li><a href="/demo/opportunity-discovery-agent/">وكيل اكتشاف الفرص</a></li>
+                            <li><a href="/demo/data-analysis/">تحليل البيانات</a></li>
+                        </ul>
                     </li>
-
-                    <li class="nav-item group/dropdown relative">
-                        <button aria-controls="desktop-solutions-menu" aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
-                            الحلول الذكية
-                            <iconify-icon aria-hidden="true" class="chevron-down text-xs opacity-60" icon="lucide:chevron-down" width="20" height="20"></iconify-icon>
-                        </button>
-                        <div id="desktop-solutions-menu" class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-                            <div class="p-2 space-y-1">
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/ai-tenders-analysis/landing/" data-analytics-event="tool_start" data-cta-location="homepage" data-service-name="contractai_tenders" data-tender-feature="landing">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:file-search" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
-                                                نظام تحليل العقود والمناقصات</div>
-                                            <div class="text-xs text-slate-400">ContractAI للعقود والاعتمادات</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/services/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:cpu" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
-                                                منصة Bright AI Agents</div>
-                                            <div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/smart-automation/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:workflow" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
-                                                الأتمتة الذكية</div>
-                                            <div class="text-xs text-slate-400">وسير العمل المتقدم</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/ai-agent/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:bot" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
-                                                AIaaS</div>
-                                            <div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/contact/" data-analytics-event="generate_lead" data-cta-location="homepage">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:users" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
-                                                استشارات</div>
-                                            <div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="homepage" data-service-name="data_analysis">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:bar-chart-3" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
-                                                تحليل البيانات</div>
-                                            <div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item group/dropdown relative">
-                        <button aria-controls="desktop-models-menu" aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
-                            النماذج الذكية
-                            <iconify-icon aria-hidden="true" class="chevron-down text-xs opacity-60" icon="lucide:chevron-down" width="20" height="20"></iconify-icon>
-                        </button>
-                        <div id="desktop-models-menu" class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-                            <div class="p-2 space-y-1">
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/smart-medical-archive/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:hospital" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
-                                                الأرشيف الطبي الذكي</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/smart-hiring-system/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:briefcase" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
-                                                منصة التوظيف الذكي</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/ai-scolecs/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:graduation-cap" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
-                                                المنصة التعليمية الذكية</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/smart-hospital-management/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:heart-pulse" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
-                                                حلول AI الطبية المتقدمة</div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item group/dropdown relative">
-                        <button aria-controls="desktop-guide-menu" aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
-                            عن برايت
-                            <iconify-icon aria-hidden="true" class="chevron-down text-xs opacity-60" icon="lucide:chevron-down" width="20" height="20"></iconify-icon>
-                        </button>
-                        <div id="desktop-guide-menu" class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-                            <div class="p-2 space-y-1">
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/#about">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:info" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
-                                            عن برايت</div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/docs/services-overview/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:file-text" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
-                                            المستندات</div>
-                                    </div>
-                                </a>
-                                <a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/blog/">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
-                                            <iconify-icon aria-hidden="true" icon="lucide:library" width="18" height="18"></iconify-icon>
-                                        </div>
-                                        <div class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
-                                            المكتبة الذكية</div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/demo/pricing/" data-analytics-event="pricing_click" data-cta-location="homepage">الأسعار</a>
+                    <li class="has-dropdown">
+                        <a href="#" class="dropdown-trigger">المستندات</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/docs/">المستندات</a></li>
+                            <li><a href="/blog/">المدونة</a></li>
+                        </ul>
                     </li>
                 </ul>
             </nav>
-
-            <div class="nav-actions">
-
-                <button aria-label="البحث في الموقع" class="search-trigger search-desktop">
-                    <iconify-icon aria-hidden="true" class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors" icon="lucide:search" width="20" height="20"></iconify-icon>
-                    <span class="text-[13px] font-medium">بحث...</span>
-                    <kbd class="search-kbd">⌘K</kbd>
+            <div class="nav-actions-wrap">
+                <a href="/consultation/" class="nav-cta">احجز استشارة</a>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="فتح القائمة" aria-expanded="false">
+                    <span></span><span></span><span></span>
                 </button>
-
-                <a aria-label="Switch to English" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/en/" title="English Version">
-                    <iconify-icon aria-hidden="true" icon="lucide:globe" width="16" height="16"></iconify-icon>
-                    <span class="tracking-wide">EN</span>
-                </a>
-
-                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop hidden lg:flex" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="homepage" rel="noopener noreferrer">
-                    <iconify-icon aria-hidden="true" icon="lucide:message-circle" width="16" height="16"></iconify-icon>
-                    ابدأ رحلة التحول
-                </a>
-
-                <!-- Mobile Header Pill Container -->
-                <div class="flex lg:hidden items-center bg-white/[0.03] border border-white/[0.08] backdrop-blur-md rounded-full px-1.5 py-1.5 mx-1 shadow-inner shadow-white/[0.02]">
-                    <button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile w-9 h-9 flex items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] active:scale-95 transition-all outline-none">
-                        <iconify-icon aria-hidden="true" icon="lucide:search" width="18" height="18"></iconify-icon>
-                    </button>
-
-                    <div class="w-[1px] h-4 bg-white/[0.1] mx-1"></div>
-
-                    <a aria-label="Switch to English" class="w-9 h-9 flex items-center justify-center rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] active:scale-95 transition-all outline-none lang-switcher-btn-mobile" href="/en/" title="English">
-                        <span class="text-[11px] font-bold">EN</span>
-                    </a>
-                    <div class="w-[1px] h-4 bg-white/[0.1] mx-1 separator-mobile"></div>
-
-                    <button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle w-9 h-9 flex flex-col items-center justify-center gap-[4px] rounded-full text-slate-300 hover:text-white hover:bg-white/[0.1] active:scale-95 transition-all outline-none">
-                        <span class="bar w-[18px] h-[2px] bg-current rounded-full transition-all duration-300"></span>
-                        <span class="bar w-[18px] h-[2px] bg-current rounded-full transition-all duration-300"></span>
-                        <span class="bar w-[18px] h-[2px] bg-current rounded-full transition-all duration-300"></span>
-                    </button>
-                </div>
             </div>
         </div>
     </header>
 
-    <div class="mobile-menu-drawer" id="mobileDrawer">
-        <div class="flex flex-col h-full relative overflow-hidden bg-gradient-to-br from-[#020617] via-[#0b1021] to-[#020617]">
-            <!-- Decorative Glow Background Effects -->
-            <div class="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px] pointer-events-none">
-            </div>
-            <div class="absolute bottom-10 left-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-[60px] pointer-events-none">
-            </div>
-
-            <!-- Drawer Header -->
-            <div class="flex items-center justify-between px-6 py-6 border-b border-white/[0.04] bg-[#020617]/40 backdrop-blur-xl relative z-20 shrink-0 w-full">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                        <span class="text-white font-black text-sm tracking-tight text-[15px]">AI</span>
-                    </div>
-                    <div class="flex flex-col leading-none">
-                        <span class="text-base font-black tracking-tight text-white">Bright<span class="text-indigo-400">AI</span></span>
-                        <span class="text-[10px] font-bold text-slate-500 tracking-[0.2em] uppercase mt-1">القائمة
-                            الذكية</span>
-                    </div>
-                </div>
-                <button aria-label="إغلاق القائمة" class="mobile-toggle shrink-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/[0.03] hover:bg-white/[0.08] transition-all border border-white/[0.05] text-slate-400 hover:text-white">
-                    <iconify-icon aria-hidden="true" icon="lucide:x" width="22" height="22"></iconify-icon>
-                </button>
-            </div>
-
-            <!-- Drawer Navigation Menu -->
-            <div class="flex-1 overflow-y-auto px-5 py-6 pb-40 space-y-2 relative z-10 w-full">
-                <ul class="mobile-nav-list space-y-1 ba-clean-list">
-                    <li>
-                        <a class="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.04] active:bg-white/[0.06] transition-all group" href="/">
-                            <div class="w-8 h-8 rounded-full bg-white/[0.03] group-hover:bg-indigo-500/20 flex items-center justify-center transition-colors">
-                                <iconify-icon aria-hidden="true" class="text-slate-400 group-hover:text-indigo-400 transition-colors" icon="lucide:home" width="18" height="18"></iconify-icon>
-                            </div>
-                            <span class="flex-1">الرئيسية</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.04] active:bg-white/[0.06] transition-all group" href="/services/">
-                            <div class="w-8 h-8 rounded-full bg-white/[0.03] group-hover:bg-emerald-500/20 flex items-center justify-center transition-colors">
-                                <iconify-icon aria-hidden="true" class="text-slate-400 group-hover:text-emerald-400 transition-colors" icon="lucide:briefcase-business" width="18" height="18"></iconify-icon>
-                            </div>
-                            <span class="flex-1">الخدمات المؤسسية</span>
-                        </a>
-                    </li>
-
-                    <li class="relative">
-                        <button aria-controls="mobile-solutions-menu" aria-expanded="false" aria-haspopup="true" class="mobile-nav-link w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.04] active:bg-white/[0.06] transition-all cursor-pointer group" type="button">
-                            <span class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-white/[0.03] group-hover:bg-purple-500/20 flex items-center justify-center transition-colors">
-                                    <iconify-icon aria-hidden="true" class="text-slate-400 group-hover:text-purple-400 transition-colors" icon="lucide:layers" width="18" height="18"></iconify-icon>
-                                </div>
-                                <span class="flex-1">الحلول والأنظمة</span>
-                            </span>
-                            <iconify-icon aria-hidden="true" class="text-slate-500 text-sm transition-transform duration-300 transform group-[[aria-expanded='true']]:rotate-180" icon="lucide:chevron-down" width="20" height="20"></iconify-icon>
-                        </button>
-                        <div id="mobile-solutions-menu" class="mobile-dropdown ms-0 me-12 ps-0 pe-4 mt-1 mb-2 border-s-[1.5px] border-white/[0.04] flex-col gap-1">
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/ai-tenders-analysis/landing/" data-analytics-event="tool_start" data-cta-location="homepage" data-service-name="contractai_tenders" data-tender-feature="landing">
-                                <iconify-icon aria-hidden="true" class="text-cyan-500" icon="lucide:file-search" width="16" height="16"></iconify-icon>
-                                نظام تحليل العقود والمناقصات
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/services/">
-                                <iconify-icon aria-hidden="true" class="text-indigo-400" icon="lucide:cpu" width="16" height="16"></iconify-icon>
-                                منصة Bright AI Agents
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/smart-automation/">
-                                <iconify-icon aria-hidden="true" class="text-purple-400" icon="lucide:workflow" width="16" height="16"></iconify-icon>
-                                الأتمتة الذكية RPA
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/ai-agent/">
-                                <iconify-icon aria-hidden="true" class="text-amber-400" icon="lucide:bot" width="16" height="16"></iconify-icon>
-                                الذكاء كخدمة AIaaS
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/data-analysis/" data-analytics-event="tool_start" data-cta-location="homepage" data-service-name="data_analysis">
-                                <iconify-icon aria-hidden="true" class="text-emerald-400" icon="lucide:bar-chart-3" width="16" height="16"></iconify-icon>
-                                تحليل البيانات BI
-                            </a>
-                        </div>
-                    </li>
-
-                    <li class="relative">
-                        <button aria-controls="mobile-models-menu" aria-expanded="false" aria-haspopup="true" class="mobile-nav-link w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.04] active:bg-white/[0.06] transition-all cursor-pointer group" type="button">
-                            <span class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-white/[0.03] group-hover:bg-cyan-500/20 flex items-center justify-center transition-colors">
-                                    <iconify-icon aria-hidden="true" class="text-slate-400 group-hover:text-cyan-400 transition-colors" icon="lucide:sparkles" width="18" height="18"></iconify-icon>
-                                </div>
-                                <span class="flex-1">النماذج الذكية</span>
-                            </span>
-                            <iconify-icon aria-hidden="true" class="text-slate-500 text-sm transition-transform duration-300 transform group-[[aria-expanded='true']]:rotate-180" icon="lucide:chevron-down" width="20" height="20"></iconify-icon>
-                        </button>
-                        <div id="mobile-models-menu" class="mobile-dropdown ms-0 me-12 ps-0 pe-4 mt-1 mb-2 border-s-[1.5px] border-white/[0.04] flex-col gap-1">
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/smart-medical-archive/">
-                                <iconify-icon aria-hidden="true" class="text-teal-400" icon="lucide:hospital" width="16" height="16"></iconify-icon>
-                                الأرشيف الطبي الذكي
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/smart-hiring-system/">
-                                <iconify-icon aria-hidden="true" class="text-green-400" icon="lucide:briefcase" width="16" height="16"></iconify-icon>
-                                منصة التوظيف الذكي
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/ai-scolecs/">
-                                <iconify-icon aria-hidden="true" class="text-violet-400" icon="lucide:graduation-cap" width="16" height="16"></iconify-icon>
-                                المنصة التعليمية
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/smart-hospital-management/">
-                                <iconify-icon aria-hidden="true" class="text-cyan-400" icon="lucide:heart-pulse" width="16" height="16"></iconify-icon>
-                                حلول AI الطبية المتقدمة
-                            </a>
-                        </div>
-                    </li>
-
-                    <li>
-                        <a class="flex items-center gap-4 px-4 py-3.5 rounded-2xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.04] active:bg-white/[0.06] transition-all group" href="/blog/">
-                            <div class="w-8 h-8 rounded-full bg-white/[0.03] group-hover:bg-rose-500/20 flex items-center justify-center transition-colors">
-                                <iconify-icon aria-hidden="true" class="text-slate-400 group-hover:text-rose-400 transition-colors" icon="lucide:library" width="18" height="18"></iconify-icon>
-                            </div>
-                            <span class="flex-1">المكتبة الذكية</span>
-                        </a>
-                    </li>
-
-                    <li class="relative">
-                        <button aria-controls="mobile-guide-menu" aria-expanded="false" aria-haspopup="true" class="mobile-nav-link w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.04] active:bg-white/[0.06] transition-all cursor-pointer group" type="button">
-                            <span class="flex items-center gap-4">
-                                <div class="w-8 h-8 rounded-full bg-white/[0.03] group-hover:bg-blue-500/20 flex items-center justify-center transition-colors">
-                                    <iconify-icon aria-hidden="true" class="text-slate-400 group-hover:text-blue-400 transition-colors" icon="lucide:info" width="18" height="18"></iconify-icon>
-                                </div>
-                                <span class="flex-1">دليل برايت</span>
-                            </span>
-                            <iconify-icon aria-hidden="true" class="text-slate-500 text-sm transition-transform duration-300 transform group-[[aria-expanded='true']]:rotate-180" icon="lucide:chevron-down" width="20" height="20"></iconify-icon>
-                        </button>
-                        <div id="mobile-guide-menu" class="mobile-dropdown ms-0 me-12 ps-0 pe-4 mt-1 mb-2 border-s-[1.5px] border-white/[0.04] flex-col gap-1">
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/#about">
-                                <iconify-icon aria-hidden="true" class="text-blue-400" icon="lucide:info" width="16" height="16"></iconify-icon>
-                                عن الشركة
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/docs/services-overview/">
-                                <iconify-icon aria-hidden="true" class="text-slate-400" icon="lucide:file-text" width="16" height="16"></iconify-icon>
-                                المستندات التقنية
-                            </a>
-                            <a class="flex items-center gap-3 py-2.5 px-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/pricing/" data-analytics-event="pricing_click" data-cta-location="homepage">
-                                <iconify-icon aria-hidden="true" class="text-amber-400" icon="lucide:badge-dollar-sign" width="16" height="16"></iconify-icon>
-                                الباقات والأسعار
-                            </a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Sticky Fixed CTA Footer -->
-            <div class="absolute bottom-0 left-0 right-0 p-6 pt-10 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent z-20 pointer-events-none w-full">
-                <div class="pointer-events-auto flex flex-col gap-3">
-                    <a class="flex items-center justify-center gap-3 w-full px-4 py-4 rounded-full bg-gradient-to-r from-indigo-600 to-emerald-500 text-white font-bold text-[15px] shadow-[0_8px_20px_-6px_rgba(99,102,241,0.5)] hover:shadow-[0_12px_24px_-8px_rgba(99,102,241,0.7)] active:scale-[0.98] transition-all" href="https://api.whatsapp.com/send?phone=966538229013" target="_blank" rel="noopener noreferrer" data-analytics-event="whatsapp_click" data-cta-location="homepage">
-                        <iconify-icon aria-hidden="true" icon="lucide:message-circle" width="20" height="20"></iconify-icon>
-                        ابدأ رحلة التحول التقني
-                    </a>
-                    <a class="flex items-center justify-center gap-2 w-full px-4 py-3.5 rounded-full border border-white/10 text-slate-300 font-medium text-[14px] hover:text-white hover:bg-white/[0.05] active:bg-white/[0.1] transition-all backdrop-blur-md" href="/demo/" data-analytics-event="request_demo" data-cta-location="homepage">
-                        <iconify-icon aria-hidden="true" icon="lucide:play-circle" width="18" height="18"></iconify-icon>
-                        جرّب منصة الذكاء مجاناً
-                    </a>
-                </div>
-            </div>
+    <!-- Mobile slide-out panel -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    <div class="mobile-panel" id="mobilePanel">
+        <div class="mobile-panel-header">
+            <a href="/" class="logo" style="text-decoration:none;color:#fff;">
+                <div class="logo-mark">B</div>
+                <div class="logo-text">Bright<span>AI</span></div>
+            </a>
+            <button class="mobile-panel-close" id="mobileClose" aria-label="إغلاق القائمة">&times;</button>
         </div>
+        <nav>
+            <a href="/">الرئيسية</a>
+            <div class="m-section-title">الأنظمة الذكية</div>
+            <a class="m-link" href="/demo/smart-hospital-management/">إدارة المستشفيات الذكية</a>
+            <a class="m-link" href="/demo/smart-medical-archive/">الأرشيف الطبي الذكي</a>
+            <a class="m-link" href="/demo/education/">التعليم والتدريب</a>
+            <a class="m-link" href="/demo/hr-automation/">أتمتة الموارد البشرية</a>
+            <div class="m-section-title">الوكلاء والخدمات</div>
+            <a class="m-link" href="/demo/custom-ai-agent/">وكيل ذكاء اصطناعي مخصص</a>
+            <a class="m-link" href="/demo/competitor-analysis-agent/">وكيل تحليل المنافسين</a>
+            <a class="m-link" href="/demo/operational-reports-automation/">أتمتة التقارير التشغيلية</a>
+            <a class="m-link" href="/demo/opportunity-discovery-agent/">وكيل اكتشاف الفرص</a>
+            <a class="m-link" href="/demo/data-analysis/">تحليل البيانات</a>
+            <div class="m-section-title">المستندات</div>
+            <a class="m-link" href="/docs/">المستندات</a>
+            <a class="m-link" href="/blog/">المدونة</a>
+        </nav>
+        <a href="/consultation/" class="m-cta">احجز استشارة</a>
     </div>
-    <div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+
 
 
     <div aria-hidden="true" class="loading ba-hidden-loader" id="loading">
@@ -2113,4 +1894,56 @@
 
 
     <script defer src="./assets/js/sitewide-modernization.js"></script>
+
+<script>
+// Dropdown toggle for mobile/click
+document.querySelectorAll('.has-dropdown > .dropdown-trigger').forEach(function(trigger){
+  trigger.addEventListener('click', function(e){
+    e.preventDefault();
+    var parent = this.parentElement;
+    parent.classList.toggle('active');
+    document.querySelectorAll('.has-dropdown').forEach(function(other){
+      if(other !== parent) other.classList.remove('active');
+    });
+  });
+});
+// Close dropdowns on outside click
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.has-dropdown')){
+    document.querySelectorAll('.has-dropdown.active').forEach(function(el){
+      el.classList.remove('active');
+    });
+  }
+});
+
+// Mobile panel toggle
+(function(){
+  var toggle = document.getElementById('mobile-toggle');
+  var panel = document.getElementById('mobilePanel');
+  var overlay = document.getElementById('mobileOverlay');
+  var closeBtn = document.getElementById('mobileClose');
+  if(!toggle || !panel || !overlay) return;
+
+  function openPanel(){
+    panel.classList.add('open');
+    overlay.classList.add('show');
+    toggle.classList.add('open');
+    toggle.setAttribute('aria-expanded','true');
+    document.body.style.overflow='hidden';
+  }
+  function closePanel(){
+    panel.classList.remove('open');
+    overlay.classList.remove('show');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false');
+    document.body.style.overflow='';
+  }
+  toggle.addEventListener('click', function(){
+    panel.classList.contains('open') ? closePanel() : openPanel();
+  });
+  closeBtn.addEventListener('click', closePanel);
+  overlay.addEventListener('click', closePanel);
+})();
+</script>
+
 </body></html>

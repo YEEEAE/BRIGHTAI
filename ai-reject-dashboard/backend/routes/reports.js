@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/04-api/reports-api.md
+ * - docs/01-pages/reports-page.md
+ */
 const path = require('path');
 const fs = require('fs');
 const express = require('express');

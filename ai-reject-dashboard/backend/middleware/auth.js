@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const config = require('../config/env');
 const { get, run } = require('../config/database');
 const { isSessionActive, revokeSession, createSession } = require('../services/authService');
-const { getUserPermissions } = require('../services/rbacService');
+const { getUserPermissions, getUserRoles } = require('../services/rbacService');
 const { requirePermission, requireRole } = require('./rbac');
 
 const ACCESS_COOKIE = 'access_token';
@@ -36,10 +36,12 @@ function signRefreshToken(payload) {
 
 async function setAuthCookies(res, user, context = {}) {
   const permissions = await getUserPermissions(user.id);
-  const payload = { sub: user.id, name: user.name, email: user.email, role: user.role || 'admin', permissions };
+  const roles = await getUserRoles(user.id);
+  const roleNames = roles.map((role) => role.name);
+  const payload = { sub: user.id, name: user.name, email: user.email, roles: roleNames, permissions };
   
   const accessToken = signAccessToken(payload);
-  const { token: refreshToken, jti } = signRefreshToken({ sub: user.id, role: user.role || 'admin' });
+  const { token: refreshToken, jti } = signRefreshToken({ sub: user.id, roles: roleNames });
 
   // حفظ الجلسة في SQLite
   const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
@@ -86,6 +88,7 @@ async function requireAuth(req, res, next) {
     req.user = payload;
     
     // جلب وحفظ الصلاحيات الحية لـ req.user لضمان الفحص الأحدث
+    req.user.roles = (await getUserRoles(payload.sub)).map((role) => role.name);
     req.user.permissions = await getUserPermissions(payload.sub);
     return next();
   } catch (err) {
@@ -143,7 +146,8 @@ async function handleTokenRefresh(req, res) {
   
   // إعادة تعيين req.user
   const permissions = await getUserPermissions(user.id);
-  req.user = { sub: user.id, name: user.name, email: user.email, role: user.role || 'admin', permissions };
+  const roles = (await getUserRoles(user.id)).map((role) => role.name);
+  req.user = { sub: user.id, name: user.name, email: user.email, roles, permissions };
 }
 
 module.exports = {

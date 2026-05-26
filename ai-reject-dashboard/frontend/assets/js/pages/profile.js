@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/01-pages/profile-page.md
+ * - docs/04-api/auth-api.md
+ * - docs/05-security/auth-rbac.md
+ */
 function profileConsole() {
   return {
     activeTab: 'info',

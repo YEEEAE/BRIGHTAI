@@ -2,7 +2,6 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
 const config = require('./env');
 
 // AR: مسار قاعدة البيانات - سيتم إنشاؤه في backend/data/reject_dashboard.sqlite
@@ -188,16 +187,21 @@ async function seedDatabase() {
     }
   }
 
-  // 4. إدراج المشرف الفائق الافتراضي
-  // EN: Insert default Super Admin user
+  // 4. إدراج المشرف الفائق الأولي من متغيرات البيئة فقط
+  // EN: Insert bootstrap Super Admin from environment variables only
   const adminEmail = config.bootstrapAdminEmail;
+  const adminPassword = config.bootstrapAdminPassword;
+
+  if (!adminEmail || !adminPassword) {
+    console.log('ℹ️  Bootstrap admin seeding skipped. Set BOOTSTRAP_ADMIN_EMAIL and BOOTSTRAP_ADMIN_PASSWORD to create one.');
+    return;
+  }
+
   const existingAdmin = await get('SELECT id FROM users WHERE email = ?', [adminEmail]);
 
   if (!existingAdmin) {
     const adminId = 'usr_super_yazeed';
-    const rawPass = config.bootstrapAdminPassword || crypto.randomBytes(24).toString('base64url').slice(0, 20);
-    const isGenerated = !config.bootstrapAdminPassword;
-    const passwordHash = await bcrypt.hash(rawPass, 12);
+    const passwordHash = await bcrypt.hash(adminPassword, 12);
     
     // إدراج المستخدم الفائق
     await run(
@@ -219,13 +223,7 @@ async function seedDatabase() {
       [adminId, 'ar', 'dark', 1, now]
     );
 
-    if (isGenerated) {
-      console.log('👤 Seeding default Super Admin user (%s) completed.', adminEmail);
-      console.log('🔑 BOOTSTRAP_ADMIN_PASSWORD was not set. Generated admin password: %s', rawPass);
-      console.log('⚠️  Save this password now — it will NOT be shown again.');
-    } else {
-      console.log('👤 Seeding default Super Admin user (%s) completed.', adminEmail);
-    }
+    console.log('👤 Bootstrap Super Admin user (%s) created from environment variables.', adminEmail);
   }
 }
 

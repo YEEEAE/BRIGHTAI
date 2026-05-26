@@ -1,4 +1,10 @@
 /**
+ * Documentation:
+ * - docs/01-pages/index-page.md
+ * - docs/04-api/data-api.md
+ * - docs/03-ai/saqr-ai-overview.md
+ */
+/**
  * BrightAI — Main Dashboard Application (index.js)
  * ────────────────────────────────────────────────
  * ⛔ Zero hardcoded data — all metrics come from BrightAPI + ChartsAdapter.

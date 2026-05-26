@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/01-pages/finance-page.md
+ * - docs/04-api/rejects-api.md
+ */
 function financeApp() {
   return {
     // UI Layout

@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/04-api/rejects-api.md
+ * - docs/02-data/data-processing.md
+ */
 const express = require('express');
 const Joi = require('joi');
 const validate = require('../middleware/validate');

@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>وصول مرفوض — BrightAI Protection</title>
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <style>
     body {
       background: var(--color-background);
@@ -70,10 +73,19 @@
       100% { transform: scale(1); }
     }
   </style>
-    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
-<body class="bright-page--error" data-bright-page-type="error">
+<body class="bright-page--error has-quick-dashboard-nav" data-bright-page-type="error">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+<nav class="dashboard-quick-nav" aria-label="التنقل الرئيسي للوحة BrightAI">
+    <a href="../../index.html">📊 لوحة القيادة الرئيسية</a>
+    <a href="executive.html">🏢 المنظور التنفيذي</a>
+    <a href="finance.html">💰 المنظور المالي</a>
+    <a href="quality.html">🔬 الجودة وإجراءات CAPA</a>
+    <a href="production.html">⚙️ الإنتاج والعمليات</a>
+    <a href="workflow.html">🔄 حوكمة الموافقات</a>
+    <a href="technical.html">🛠️ المنظور الفني والربط</a>
+    <a href="reports.html">📄 مركز التقارير الفاخر</a>
+  </nav>
 
   <div id="main-content" tabindex="-1" aria-hidden="true"></div>
 <div class="denied-card">
@@ -89,6 +101,6 @@
       <button onclick="window.history.back()" class="btn btn-outline">⬅️ عودة للخلف</button>
     </div>
   </div>
-    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
+  <script defer src="../assets/js/dashboard.js"></script>
 </body>
 </html>

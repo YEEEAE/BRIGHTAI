@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/01-pages/quality-page.md
+ * - docs/04-api/ai-api.md
+ */
 function qualityApp() {
   return {
     // UI Layout

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ar" dir="rtl" class="js-focus-visible"><head>
+<!DOCTYPE html><html class="js-focus-visible" lang="ar" dir="rtl"><head>
   <meta charset="UTF-8">
   <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
   <script>
@@ -16,6 +16,7 @@
   <!-- Central Design System and Components Bundle -->
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/design-system.css">
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/notifications.css">
+  <link rel="stylesheet" href="frontend/assets/css/dashboard.css">
   
   <!-- Bespoke Page Styling for Amplitude/Mixpanel Premium Aesthetics -->
   <style>
@@ -172,7 +173,6 @@
   <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
   <script defer="" src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
-    <link rel="stylesheet" href="../assets/css/sitewide-modernization.css">
 </head>
 <body x-data="dashboardApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -191,45 +191,17 @@
           <span style="white-space: nowrap;">BrightAI Analytics</span>
         </a>
       </div>
-      <nav class="sidebar-nav">
-        <a href="/ai-reject-dashboard/" class="sidebar-link is-active">
-          <span class="sidebar-icon">📊</span>
-          <span>لوحة القيادة الرئيسية</span>
-        </a>
-        <a href="/ai-reject-dashboard/frontend/pages/executive" class="sidebar-link">
-          <span class="sidebar-icon">🏢</span>
-          <span>المنظور التنفيذي</span>
-        </a>
-        <a href="/ai-reject-dashboard/frontend/pages/finance" class="sidebar-link">
-          <span class="sidebar-icon">💰</span>
-          <span>المنظور المالي</span>
-        </a>
-        <a href="/ai-reject-dashboard/frontend/pages/quality" class="sidebar-link">
-          <span class="sidebar-icon">🔬</span>
-          <span>الجودة وإجراءات CAPA</span>
-        </a>
-        <a href="/ai-reject-dashboard/frontend/pages/production" class="sidebar-link">
-          <span class="sidebar-icon">⚙️</span>
-          <span>الإنتاج والعمليات</span>
-        </a>
-        <a href="/ai-reject-dashboard/frontend/pages/workflow" class="sidebar-link">
-          <span class="sidebar-icon">🔄</span>
-          <span>حوكمة الموافقات</span>
-        </a>
-        <a href="/ai-reject-dashboard/frontend/pages/technical" class="sidebar-link">
-          <span class="sidebar-icon">🛠️</span>
-          <span>المنظور الفني والربط</span>
-        </a>
-        <a href="/ai-reject-dashboard/frontend/pages/reports" class="sidebar-link">
-          <span class="sidebar-icon">📄</span>
-          <span>مركز التقارير الفاخر</span>
-        </a>
-        
+      <nav class="sidebar-nav" aria-label="التنقل الرئيسي للوحة BrightAI">
+        <a href="./" class="sidebar-link is-active"><span class="sidebar-icon">📊</span><span>لوحة القيادة الرئيسية</span></a>
+        <a href="frontend/pages/executive.html" class="sidebar-link"><span class="sidebar-icon">🏢</span><span>المنظور التنفيذي</span></a>
+        <a href="frontend/pages/finance.html" class="sidebar-link"><span class="sidebar-icon">💰</span><span>المنظور المالي</span></a>
+        <a href="frontend/pages/quality.html" class="sidebar-link"><span class="sidebar-icon">🔬</span><span>الجودة وإجراءات CAPA</span></a>
+        <a href="frontend/pages/production.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span><span>الإنتاج والعمليات</span></a>
+        <a href="frontend/pages/workflow.html" class="sidebar-link"><span class="sidebar-icon">🔄</span><span>حوكمة الموافقات</span></a>
+        <a href="frontend/pages/technical.html" class="sidebar-link"><span class="sidebar-icon">🛠️</span><span>المنظور الفني والربط</span></a>
+        <a href="frontend/pages/reports.html" class="sidebar-link"><span class="sidebar-icon">📄</span><span>مركز التقارير الفاخر</span></a>
         <div class="sidebar-title">تغيير اللغة / Lang</div>
-        <button class="sidebar-link" @click="toggleLanguage()" style="width:100%; border:none; background:none;">
-          <span class="sidebar-icon">🌐</span>
-          <span x-text="lang === 'ar' ? 'English (EN)' : 'العربية (AR)'"></span>
-        </button>
+        <button class="sidebar-link" type="button" data-dashboard-language-toggle><span class="sidebar-icon">🌐</span><span>English (EN)</span></button>
       </nav>
     </aside>
 
@@ -780,7 +752,5 @@
   <script src="/ai-reject-dashboard/frontend/assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>
-    <script defer="" src="../assets/js/sitewide-modernization.js"></script>
-
-
+  <script defer src="frontend/assets/js/dashboard.js"></script>
 </body></html>

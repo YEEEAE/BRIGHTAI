@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/02-data/excel-data-source.md
+ * - docs/04-api/data-api.md
+ * - docs/07-deployment/troubleshooting.md
+ */
 const express = require('express');
 const fs = require('fs');
 const config = require('../config/env');

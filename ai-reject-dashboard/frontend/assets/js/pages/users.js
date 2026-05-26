@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/01-pages/admin-users-page.md
+ * - docs/05-security/auth-rbac.md
+ */
 function adminApp() {
   return {
     activeView: 'users',

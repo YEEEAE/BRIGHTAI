@@ -339,11 +339,13 @@ describe('GET /api/auth/me', () => {
     const user = res.body.data.user;
     expect(user).toHaveProperty('id');
     expect(user).toHaveProperty('email');
-    expect(user).toHaveProperty('roles');
-    expect(user).toHaveProperty('permissions');
-    expect(Array.isArray(user.roles)).toBe(true);
-    expect(Array.isArray(user.permissions)).toBe(true);
-    expect(user.permissions.length).toBeGreaterThan(0);
+    expect(res.body.data).toHaveProperty('roles');
+    expect(res.body.data).toHaveProperty('permissions');
+    expect(Array.isArray(res.body.data.roles)).toBe(true);
+    expect(Array.isArray(res.body.data.permissions)).toBe(true);
+    expect(res.body.data.permissions.length).toBeGreaterThan(0);
+    expect(res.body.data).toHaveProperty('preferences');
+    expect(res.body.data).toHaveProperty('activeSessions');
   });
 });
 

@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/02-data/realtime-updates.md
+ * - docs/06-testing/excel-update-test.md
+ */
 const chokidar = require('chokidar');
 const fs = require('fs');
 const config = require('../config/env');

@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/01-pages/production-page.md
+ * - docs/04-api/rejects-api.md
+ */
 function productionApp() {
   return {
     // UI Layout

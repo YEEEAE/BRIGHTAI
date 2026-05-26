@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/03-ai/saqr-ai-overview.md
+ * - docs/03-ai/session-memory.md
+ * - docs/04-api/ai-api.md
+ */
 /* ===== AI ASSISTANT GLOBAL WIDGET (Self-Injecting) ===== */
 
 (function () {

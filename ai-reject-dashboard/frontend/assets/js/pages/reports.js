@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/01-pages/reports-page.md
+ * - docs/04-api/reports-api.md
+ */
 function reportsApp() {
   return {
     // Theme & Language Settings

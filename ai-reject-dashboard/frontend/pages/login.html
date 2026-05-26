@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول — BrightAI Login</title>
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <style>
     body {
       background: var(--color-background);
@@ -131,10 +134,19 @@
       display: none;
     }
   </style>
-    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
-<body class="bright-page--dashboard" data-bright-page-type="dashboard">
+<body class="bright-page--dashboard has-quick-dashboard-nav" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+<nav class="dashboard-quick-nav" aria-label="التنقل الرئيسي للوحة BrightAI">
+    <a href="../../index.html">📊 لوحة القيادة الرئيسية</a>
+    <a href="executive.html">🏢 المنظور التنفيذي</a>
+    <a href="finance.html">💰 المنظور المالي</a>
+    <a href="quality.html">🔬 الجودة وإجراءات CAPA</a>
+    <a href="production.html">⚙️ الإنتاج والعمليات</a>
+    <a href="workflow.html">🔄 حوكمة الموافقات</a>
+    <a href="technical.html">🛠️ المنظور الفني والربط</a>
+    <a href="reports.html">📄 مركز التقارير الفاخر</a>
+  </nav>
 
   <div id="main-content" tabindex="-1" aria-hidden="true"></div>
 <div class="login-box">
@@ -156,7 +168,7 @@
           <input type="password" id="password-input" class="form-input" placeholder="••••••••••••" required>
         </div>
         
-        <a href="/pages/forgot-password.html" class="forgot-link">هل نسيت كلمة المرور؟</a>
+        <a href="forgot-password.html" class="forgot-link">هل نسيت كلمة المرور؟</a>
       </div>
 
       <!-- dynamic 2FA input area -->
@@ -178,6 +190,6 @@
   </div>
 
   <script src="/ai-reject-dashboard/frontend/assets/js/login.js"></script>
-    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
+  <script defer src="../assets/js/dashboard.js"></script>
 </body>
 </html>

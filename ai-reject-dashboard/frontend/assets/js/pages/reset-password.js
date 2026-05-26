@@ -1,3 +1,8 @@
+/**
+ * Documentation:
+ * - docs/04-api/auth-api.md
+ * - docs/05-security/auth-rbac.md
+ */
 const token = new URLSearchParams(window.location.search).get('token');
 
 document.getElementById('reset-form').addEventListener('submit', async () => {

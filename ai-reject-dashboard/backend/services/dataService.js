@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/02-data/data-processing.md
+ * - docs/04-api/data-api.md
+ * - docs/04-api/rejects-api.md
+ */
 const fs = require('fs');
 const config = require('../config/env');
 const { logger } = require('../utils/logger');

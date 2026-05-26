@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تحليلات المرفوضات بالذكاء الاصطناعي — لوحة التحكم الرئيسية</title>
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/notifications.css">
+  <link rel="stylesheet" href="../assets/css/dashboard.css">
   <style>
     .lang-toggle { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px; font-size:0.6rem; font-weight:600; background:var(--teal); color:var(--white); text-decoration:none; }
     .lang-toggle:hover { background:var(--teal-dark); }
   </style>
-    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
 <body class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -20,14 +22,17 @@
         <h1>تحليلات المرفوضات<br>باستخدام الذكاء الاصطناعي</h1>
         <div class="sub">نظام فوكس — نموذج أولي متكامل</div>
       </div>
-      <nav class="sidebar-nav">
-        <a href="index-ar" class="active"><span class="icon">&#x1F4CA;</span> الرئيسية</a>
-        <a href="executive"><span class="icon">&#x1F3E2;</span> الإدارة التنفيذية</a>
-        <a href="finance"><span class="icon">&#x1F4B0;</span> الإدارة المالية</a>
-        <a href="quality"><span class="icon">&#x1F3EB;</span> الجودة وCAPA</a>
-        <a href="production"><span class="icon">&#x1F3ED;</span> الإنتاج والتشغيل</a>
-        <a href="workflow"><span class="icon">&#x1F504;</span> مسار العمل والحوكمة</a>
-        <a href="reports"><span class="icon">&#x1F4C4;</span> مركز التقارير الفاخر</a>
+      <nav class="sidebar-nav" aria-label="التنقل الرئيسي للوحة BrightAI">
+        <a href="../../index.html" class="sidebar-link is-active"><span class="sidebar-icon">📊</span><span>لوحة القيادة الرئيسية</span></a>
+        <a href="executive.html" class="sidebar-link"><span class="sidebar-icon">🏢</span><span>المنظور التنفيذي</span></a>
+        <a href="finance.html" class="sidebar-link"><span class="sidebar-icon">💰</span><span>المنظور المالي</span></a>
+        <a href="quality.html" class="sidebar-link"><span class="sidebar-icon">🔬</span><span>الجودة وإجراءات CAPA</span></a>
+        <a href="production.html" class="sidebar-link"><span class="sidebar-icon">⚙️</span><span>الإنتاج والعمليات</span></a>
+        <a href="workflow.html" class="sidebar-link"><span class="sidebar-icon">🔄</span><span>حوكمة الموافقات</span></a>
+        <a href="technical.html" class="sidebar-link"><span class="sidebar-icon">🛠️</span><span>المنظور الفني والربط</span></a>
+        <a href="reports.html" class="sidebar-link"><span class="sidebar-icon">📄</span><span>مركز التقارير الفاخر</span></a>
+        <div class="sidebar-title">تغيير اللغة / Lang</div>
+        <button class="sidebar-link" type="button" data-dashboard-language-toggle><span class="sidebar-icon">🌐</span><span>English (EN)</span></button>
       </nav>
       <div class="sidebar-footer">
         نظام فوكس هو المصدر الرسمي للبيانات.<br>
@@ -159,6 +164,6 @@
   <script src="/ai-reject-dashboard/frontend/assets/js/app.js"></script>
   <!-- Global AI Assistant Chatbot -->
   <script src="../assets/js/ai-assistant.js"></script>
-    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
+  <script defer src="../assets/js/dashboard.js"></script>
 </body>
 </html>

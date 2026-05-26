@@ -4,6 +4,23 @@
   polish without replacing the existing brand, header, footer, logo, or fonts.
 */
 
+/* ===== BrightAI Custom Fonts ===== */
+@font-face {
+  font-family: 'BrightThin';
+  src: url('/assets/fonts/Thin-Font.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BrightBold';
+  src: url('/assets/fonts/Bold-font.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bright-modern-brand: var(--bai-brand, var(--brand-cyan, #38bdf8));
   --bright-modern-brand-strong: var(--bai-brand-strong, var(--brand-cyan-2, #06b6d4));
@@ -62,6 +79,18 @@ body {
   overflow-x: clip;
   font-size: var(--bright-modern-fluid-body);
   text-rendering: optimizeLegibility;
+  font-family: 'BrightThin', 'Tajawal', sans-serif;
+}
+
+/* Bold font for headings and main text */
+h1, h2, h3, h4, h5, h6,
+.title, .subtitle,
+strong, b,
+.btn, button,
+.nav-cta, .logo-text, .logo-mark,
+.font-bold, [class*="font-weight-bold"],
+th, label, legend {
+  font-family: 'BrightBold', 'Tajawal', sans-serif;
 }
 
 main,

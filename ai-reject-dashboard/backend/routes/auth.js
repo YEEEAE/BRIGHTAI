@@ -86,6 +86,13 @@ router.post('/auth/login', async (req, res) => {
     });
 
   } catch (err) {
+    await logAction({
+      ...context,
+      action: 'login',
+      resource: 'users',
+      status: 'failure',
+      details: `فشل تسجيل الدخول للبريد: ${email}`
+    });
     return res.status(400).json({ success: false, message: err.message || 'Login failed' });
   }
 });
@@ -189,7 +196,9 @@ router.get('/auth/me', requireAuth, async (req, res) => {
     return res.json({
       success: true,
       data: {
-        user: { ...user, role: roles.map(r => r.name).join(', ') || 'Viewer', roles, permissions },
+        user,
+        roles,
+        permissions,
         preferences: prefs,
         activeSessions: sessions,
         apiTokens: tokens

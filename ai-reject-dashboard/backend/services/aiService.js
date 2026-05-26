@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/03-ai/saqr-ai-overview.md
+ * - docs/03-ai/gemini-integration.md
+ * - docs/04-api/ai-api.md
+ */
 const crypto = require('crypto');
 const config = require('../config/env');
 const { logger } = require('../utils/logger');

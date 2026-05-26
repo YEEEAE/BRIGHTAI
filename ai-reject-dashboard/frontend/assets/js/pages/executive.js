@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/01-pages/executive-page.md
+ * - docs/04-api/data-api.md
+ * - docs/03-ai/saqr-ai-overview.md
+ */
 function executiveApp() {
   return {
     // UI Layout

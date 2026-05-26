@@ -1,4 +1,9 @@
 /**
+ * Documentation:
+ * - docs/02-data/realtime-updates.md
+ * - docs/06-testing/excel-update-test.md
+ */
+/**
  * BrightAI Realtime Client Service (realtime.js)
  * ───────────────────────────────────────────
  * - Dynamically loads Socket.io client library.

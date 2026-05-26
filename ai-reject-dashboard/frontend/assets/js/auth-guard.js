@@ -25,6 +25,29 @@
     return path.substring(path.lastIndexOf('/') + 1) || 'index.html';
   };
 
+  const toNameArray = (items) => {
+    if (!Array.isArray(items)) return [];
+    return items.map((item) => typeof item === 'string' ? item : item && item.name).filter(Boolean);
+  };
+
+  const normalizeAuthPayload = (payload) => {
+    const data = payload && payload.data ? payload.data : {};
+    const user = data.user || {};
+    const roles = toNameArray(data.roles || user.roles);
+    const permissions = toNameArray(data.permissions || user.permissions);
+
+    return {
+      user: {
+        ...user,
+        roles,
+        permissions,
+        role: roles.join(', ') || user.role || 'Viewer'
+      },
+      roles,
+      permissions
+    };
+  };
+
   const checkAuth = async () => {
     const currentPage = getPageName();
     
@@ -41,27 +64,26 @@
         throw new Error('Unauthorized');
       }
 
-      const data = await res.json();
-      const user = data.data.user;
-      const permissions = user ? user.permissions || [] : [];
+      const { user, roles, permissions } = normalizeAuthPayload(await res.json());
 
       // تخزين بيانات المستخدم بالذاكرة المؤقتة للفرونتند
       window.currentUser = user;
+      window.userRoles = roles;
       window.userPermissions = permissions;
 
       // فحص ترخيص الصفحة
       const requiredPermission = PAGES_PROTECTED[currentPage];
       if (requiredPermission) {
         // الحساب الفائق يمر دائماً
-        if (user.role === 'Super yazeed QC') return;
+        if (roles.includes('Super yazeed QC')) return;
 
         // التحقق من الصلاحيات المحفوظة محلياً (بدون استدعاء إضافي للـ API)
         if (!permissions.includes(requiredPermission)) {
-          window.location.href = '/pages/permission-denied.html';
+          window.location.href = '/ai-reject-dashboard/frontend/pages/permission-denied.html';
         }
       }
     } catch (err) {
-      window.location.href = `/pages/login.html?redirect=${encodeURIComponent(window.location.pathname)}`;
+      window.location.href = `/ai-reject-dashboard/frontend/pages/login.html?redirect=${encodeURIComponent(window.location.pathname)}`;
     }
   };
 

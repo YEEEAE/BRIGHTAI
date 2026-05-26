@@ -1,3 +1,9 @@
+/**
+ * Documentation:
+ * - docs/03-ai/saqr-ai-overview.md
+ * - docs/04-api/ai-api.md
+ * - docs/05-security/security-overview.md
+ */
 const express = require('express');
 const Joi = require('joi');
 const validate = require('../middleware/validate');
