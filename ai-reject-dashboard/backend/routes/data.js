@@ -24,6 +24,25 @@ const DOMAIN_MAPPINGS = {
   machine: ['machine', 'machine_id', 'line', 'production_line']
 };
 
+const COLUMN_TYPES = {
+  item_code: 'string (SKU / Code)',
+  item_name: 'string (Full Name)',
+  batch_number: 'string (Lot / Batch)',
+  uom: 'string (Unit of Measure)',
+  quantity: 'number (Integer)',
+  rate: 'number (Decimal)',
+  stock_value: 'number (Currency)',
+  manufacturing_date: 'date (yyyy-mm-dd / Serial)',
+  life_years: 'number (Shelf Life)',
+  expiry_date: 'date (yyyy-mm-dd / Serial)',
+  rpt_date: 'date (yyyy-mm-dd / Serial)',
+  age_percent: 'number (Percentage)',
+  remaining_percent: 'number (Percentage)',
+  total_life: 'number (Shelf Life)',
+  pass_status: 'string (Control Status)',
+  report_date: 'date (yyyy-mm-dd / Serial)'
+};
+
 function getMappingConfidence(columnName) {
   const norm = String(columnName || '')
     .trim()
@@ -32,20 +51,20 @@ function getMappingConfidence(columnName) {
     .replace(/^_+|_+$/g, '');
 
   if (!norm) {
-    return { field: null, confidence: 0.0 };
+    return { field: null, confidence: 0.0, type: 'unknown' };
   }
 
   // Exact match with domain field name
   for (const [field, candidates] of Object.entries(DOMAIN_MAPPINGS)) {
     if (norm === field) {
-      return { field, confidence: 1.0 };
+      return { field, confidence: 1.0, type: COLUMN_TYPES[field] || 'string' };
     }
   }
 
   // Exact match with any candidate alias
   for (const [field, candidates] of Object.entries(DOMAIN_MAPPINGS)) {
     if (candidates.includes(norm)) {
-      return { field, confidence: 0.9 };
+      return { field, confidence: 0.9, type: COLUMN_TYPES[field] || 'string' };
     }
   }
 
@@ -53,11 +72,11 @@ function getMappingConfidence(columnName) {
   for (const [field, candidates] of Object.entries(DOMAIN_MAPPINGS)) {
     const isPartial = candidates.some(c => norm.includes(c) || c.includes(norm));
     if (isPartial) {
-      return { field, confidence: 0.5 };
+      return { field, confidence: 0.5, type: COLUMN_TYPES[field] || 'string' };
     }
   }
 
-  return { field: null, confidence: 0.0 };
+  return { field: null, confidence: 0.0, type: 'unknown' };
 }
 
 router.get('/data/refresh', requireAuth, async (req, res, next) => {
@@ -103,16 +122,17 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
 
     let recordCount = 0;
     let sheetCount = 0;
+    let sheetNames = [];
     let lastSuccessfulLoadAt = null;
     let hash = null;
     let warnings = [];
 
     if (fileExists) {
       try {
-        // Load excel data (caching will prevent performance hit if unchanged)
         const excel = await loadExcelData({ force: false });
         recordCount = excel.records ? excel.records.length : 0;
         sheetCount = excel.sheet_names ? excel.sheet_names.length : 0;
+        sheetNames = excel.sheet_names || [];
         lastSuccessfulLoadAt = excel.loaded_at || null;
         hash = excel.hash || null;
         warnings = (excel.validation && excel.validation.warnings) ? excel.validation.warnings : [];
@@ -122,6 +142,7 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
         if (state.excel && state.excel.record_count) {
           recordCount = state.excel.record_count;
           sheetCount = state.excel.sheet_names ? state.excel.sheet_names.length : 0;
+          sheetNames = state.excel.sheet_names || [];
           lastSuccessfulLoadAt = state.excel.cache_loaded_at;
           hash = state.excel.hash;
         }
@@ -154,6 +175,7 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
       record_count: recordCount,
       new_records_count: newRecordsCount,
       sheet_count: sheetCount,
+      sheet_names: sheetNames,
       last_successful_load_at: lastSuccessfulLoadAt,
       warnings
     }, fileExists ? 'excel' : 'demo', warnings));
@@ -173,16 +195,16 @@ router.get('/data/schema', requireAuth, async (req, res, next) => {
           'Demo Sheet': {
             columns: ['doc_no', 'date', 'department', 'item_code', 'item_name', 'quantity', 'cost', 'approval_status', 'defect_type', 'machine'],
             mappings: {
-              doc_no: { field: 'doc_no', confidence: 1.0 },
-              date: { field: 'date', confidence: 1.0 },
-              department: { field: 'department', confidence: 1.0 },
-              item_code: { field: 'item_code', confidence: 1.0 },
-              item_name: { field: 'item_name', confidence: 1.0 },
-              quantity: { field: 'quantity', confidence: 1.0 },
-              cost: { field: 'cost', confidence: 1.0 },
-              approval_status: { field: 'approval_status', confidence: 1.0 },
-              defect_type: { field: 'defect_type', confidence: 1.0 },
-              machine: { field: 'machine', confidence: 1.0 }
+              doc_no: { field: 'doc_no', confidence: 1.0, type: 'string' },
+              date: { field: 'date', confidence: 1.0, type: 'date (yyyy-mm-dd)' },
+              department: { field: 'department', confidence: 1.0, type: 'string' },
+              item_code: { field: 'item_code', confidence: 1.0, type: 'string' },
+              item_name: { field: 'item_name', confidence: 1.0, type: 'string' },
+              quantity: { field: 'quantity', confidence: 1.0, type: 'number' },
+              cost: { field: 'cost', confidence: 1.0, type: 'number' },
+              approval_status: { field: 'approval_status', confidence: 1.0, type: 'string' },
+              defect_type: { field: 'defect_type', confidence: 1.0, type: 'string' },
+              machine: { field: 'machine', confidence: 1.0, type: 'string' }
             }
           }
         },

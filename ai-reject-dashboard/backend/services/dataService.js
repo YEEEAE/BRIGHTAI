@@ -19,10 +19,10 @@ function enrichRecord(record) {
   const risk = computeRiskScore(record);
   return {
     ...safeRecord,
-    risk_score: risk.score,
-    risk_level: riskLevel(risk.score),
-    risk_factors: risk.reasons,
-    capa_required: risk.score >= 70,
+    risk_score: record.risk_score !== undefined ? record.risk_score : risk.score,
+    risk_level: record.risk_level !== undefined ? record.risk_level : riskLevel(risk.score),
+    risk_factors: record.risk_factors !== undefined ? record.risk_factors : risk.reasons,
+    capa_required: (record.risk_score !== undefined ? record.risk_score : risk.score) >= 70,
     data_classification: 'Stock/Life Risk'
   };
 }
@@ -37,25 +37,25 @@ function sanitizeRecord(record) {
 
 function toDashboardRecords(records) {
   return records.map((row, index) => {
-    const quantity = Number(row.quantity) || ((index + 1) * 25);
-    const cost = Math.max(Number(row.total_cost) || Number(row.cost) || Number(row.stock_value) || 0, 500 + (index * 250));
-    const lifeYears = Number(row.life_years) || 3;
+    const quantity = Number(row.quantity) || 0;
+    const cost = Number(row.cost) || Number(row.stock_value) || 0;
+    const lifeYears = Number(row.life_years) || 0;
     const daysPending = (index * 2) % 30;
     const approvalStatus = row.approval_status && row.approval_status !== 'Unknown'
       ? row.approval_status
       : (daysPending > 20 ? 'Pending' : ['Pending', 'Approved', 'Review'][index % 3]);
 
     const record = {
-      ...row.raw,
+      ...row,
       doc_no: row.doc_no || generateId(index),
       date: row.date || row.rpt_date || '',
-      department: row.department || 'Warehouse',
-      category: row.category,
+      department: row.department || 'Not Available',
+      category: row.category || 'Not Available',
       focus_view: String(row.item_name || row.item_code || '').substring(0, 30),
-      item_code: String(row.item_code || '').trim(),
-      item_name: String(row.item_name || row.item_code || '').trim(),
-      batch_number: String(row.batch_number || '').trim(),
-      uom: String(row.uom || '').trim(),
+      item_code: String(row.item_code || '').trim() || 'Not Available',
+      item_name: String(row.item_name || row.item_code || '').trim() || 'Not Available',
+      batch_number: String(row.batch_number || '').trim() || 'Not Available',
+      uom: String(row.uom || '').trim() || 'Not Available',
       lot_no: String(row.batch_number || '').trim() || `LOT-${index + 1}`,
       quantity: Math.round(quantity),
       rate: Number(row.rate) || 0,
@@ -68,18 +68,20 @@ function toDashboardRecords(records) {
       age_percent: Number(row.age_percent) || 0,
       remaining_percent: Number(row.remaining_percent) || 0,
       total_life: Number(row.total_life) || 0,
-      pass: String(row.pass || '').trim(),
-      reason: row.defect_type || 'Stock aging analysis',
+      pass: String(row.pass_status || row.pass || '').trim() || 'Not Available',
+      reason: row.defect_type && row.defect_type !== 'Not Available' ? row.defect_type : 'Not Available',
       approval_status: approvalStatus,
       days_pending: daysPending,
       destruction_status: approvalStatus === 'Approved' ? 'Scheduled' : 'Pending',
-      root_cause: row.defect_type || (lifeYears < 2 ? 'Inventory rotation failure' : 'Stock lifecycle analysis'),
-      has_life_risk: lifeYears < 2 || Number(row.remaining_percent) <= 0,
+      root_cause: row.defect_type && row.defect_type !== 'Not Available' ? row.defect_type : 'Not Available',
+      has_life_risk: lifeYears < 2 || Number(row.remaining_percent) <= 0 || row.shelf_life_status === 'Expired',
       finance_review_required: cost >= 5000,
       data_note: 'Stock/Life Risk analysis from Excel item master data',
       data_classification: 'Stock/Life Risk',
       source_sheet: row.__sheet,
       source_row: row.__row_number,
+      shelf_life_status: row.shelf_life_status || 'Safe',
+      validation_warnings: row.validation_warnings || [],
       raw: row.raw
     };
 
@@ -118,6 +120,8 @@ function getDemoData() {
       root_cause: 'Raw material pigment inconsistency',
       has_life_risk: true,
       finance_review_required: true,
+      shelf_life_status: 'Expired',
+      validation_warnings: ['Item is Expired'],
       data_classification: 'Stock/Life Risk'
     },
     {
@@ -149,6 +153,8 @@ function getDemoData() {
       root_cause: 'Inventory rotation failure',
       has_life_risk: true,
       finance_review_required: true,
+      shelf_life_status: 'Expired',
+      validation_warnings: ['Item is Expired'],
       data_classification: 'Stock/Life Risk'
     },
     {
@@ -178,7 +184,10 @@ function getDemoData() {
       days_pending: 8,
       destruction_status: 'Pending',
       root_cause: 'Mold temperature deviation',
+      has_life_risk: false,
       finance_review_required: false,
+      shelf_life_status: 'Safe',
+      validation_warnings: [],
       data_classification: 'Stock/Life Risk'
     }
   ].map(enrichRecord);

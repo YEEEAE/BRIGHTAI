@@ -14,25 +14,38 @@ function getNotificationService() {
   return notificationService;
 }
 
+function makeCompositeKey(r) {
+  const code = String(r.item_code || '').trim();
+  const batch = String(r.batch_number || '').trim();
+  const mfg = String(r.manufacturing_date || '').trim();
+  const exp = String(r.expiry_date || '').trim();
+  return `${code}||${batch}||${mfg}||${exp}`;
+}
+
 function diffRecordCounts(oldRecords, newRecords) {
-  const oldKeys = new Set(oldRecords.map(r => `${r.item_code}||${r.batch_number}`));
-  const newKeys = new Set(newRecords.map(r => `${r.item_code}||${r.batch_number}`));
+  const oldKeys = new Set(oldRecords.map(r => makeCompositeKey(r)));
+  const newKeys = new Set(newRecords.map(r => makeCompositeKey(r)));
 
   let added = 0;
   let removed = 0;
   let changed = 0;
 
   newKeys.forEach(key => {
-    if (!oldKeys.has(key)) added++;
-    else {
-      const oldRec = oldRecords.find(r => `${r.item_code}||${r.batch_number}` === key);
-      const newRec = newRecords.find(r => `${r.item_code}||${r.batch_number}` === key);
-      if (oldRec && newRec && JSON.stringify(oldRec) !== JSON.stringify(newRec)) changed++;
+    if (!oldKeys.has(key)) {
+      added++;
+    } else {
+      const oldRec = oldRecords.find(r => makeCompositeKey(r) === key);
+      const newRec = newRecords.find(r => makeCompositeKey(r) === key);
+      if (oldRec && newRec && JSON.stringify(oldRec) !== JSON.stringify(newRec)) {
+        changed++;
+      }
     }
   });
 
   oldKeys.forEach(key => {
-    if (!newKeys.has(key)) removed++;
+    if (!newKeys.has(key)) {
+      removed++;
+    }
   });
 
   return { added, changed, removed };
@@ -99,10 +112,13 @@ function startExcelWatcher(io) {
 
       if (io) {
         io.emit('data:updated', {
-          ...change,
-          hash: lastHash,
+          old_hash: change.old_hash,
+          new_hash: change.new_hash,
+          record_count: change.record_count,
+          added_count: diff.added,
+          removed_count: diff.removed,
+          changed_count: diff.changed,
           file_modified_at: fileModifiedAt,
-          record_count: excelPayload.records.length,
           sheet_count: excelPayload.sheet_names.length,
           metrics: excelPayload.metrics,
           status: state.excel

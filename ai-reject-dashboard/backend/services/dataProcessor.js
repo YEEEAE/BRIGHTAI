@@ -1,3 +1,5 @@
+const { computeRiskScore, riskLevel } = require('./riskService');
+
 const DEPARTMENT_ALIASES = {
   wh: 'Warehouse',
   warehouse: 'Warehouse',
@@ -57,13 +59,13 @@ function normalizeKey(key) {
 
 function normalizeDepartment(value) {
   const clean = String(value || '').trim();
-  if (!clean) return 'Unknown';
+  if (!clean) return 'Not Available';
   return DEPARTMENT_ALIASES[clean.toLowerCase()] || clean;
 }
 
 function normalizeCategory(value) {
   const clean = String(value || '').trim();
-  if (!clean) return 'Uncategorized';
+  if (!clean) return 'Not Available';
   return CATEGORY_ALIASES[clean.toLowerCase()] || clean;
 }
 
@@ -73,14 +75,52 @@ function toNumber(value) {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
-function toDate(value) {
+function parseDate(value) {
+  if (!value) return null;
   if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
-  if (typeof value === 'number') {
+  
+  // If it is an Excel serial number
+  if (typeof value === 'number' || (!Number.isNaN(Number(value)) && !String(value).includes('-') && !String(value).includes('/'))) {
+    const serial = Number(value);
     const epoch = new Date(Date.UTC(1899, 11, 30));
-    return new Date(epoch.getTime() + value * 86400000);
+    return new Date(epoch.getTime() + serial * 86400000);
   }
-  const date = new Date(value);
+
+  const str = String(value).trim();
+  
+  // Format dd-mm-yyyy or dd/mm/yyyy
+  const dmyRegex = /^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/;
+  const matchDmy = str.match(dmyRegex);
+  if (matchDmy) {
+    const day = parseInt(matchDmy[1], 10);
+    const month = parseInt(matchDmy[2], 10) - 1; // 0-indexed month
+    const year = parseInt(matchDmy[3], 10);
+    const date = new Date(Date.UTC(year, month, day));
+    if (!Number.isNaN(date.getTime())) return date;
+  }
+
+  // Format yyyy-mm-dd or yyyy/mm/dd
+  const ymdRegex = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/;
+  const matchYmd = str.match(ymdRegex);
+  if (matchYmd) {
+    const year = parseInt(matchYmd[1], 10);
+    const month = parseInt(matchYmd[2], 10) - 1;
+    const day = parseInt(matchYmd[3], 10);
+    const date = new Date(Date.UTC(year, month, day));
+    if (!Number.isNaN(date.getTime())) return date;
+  }
+
+  // Fallback to default parsing
+  const date = new Date(str);
   return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function getShelfLifeStatus(remainingPercent) {
+  const pct = Number(remainingPercent) || 0;
+  if (pct <= 0) return 'Expired';
+  if (pct <= 20) return 'Near Expiry';
+  if (pct <= 50) return 'Warning';
+  return 'Safe';
 }
 
 function findField(record, candidates) {
@@ -105,7 +145,6 @@ function cleanRecord(record) {
 }
 
 function isGrandTotalRow(record) {
-  // Check dedicated name/code fields first
   const check = String(record.item_name || record.item_code || record.Item_Name || record.Item_Code || '').trim().toLowerCase();
   if (/^grand\s*total$/i.test(check)) return true;
   if (/^إجمالي/i.test(check)) return true;
@@ -116,24 +155,17 @@ function isGrandTotalRow(record) {
   if (/^total/i.test(check)) return true;
   if (/^إجمالي\s*العام$/i.test(check)) return true;
 
-  // Scan every cell in the row for total/summary indicators
   for (const key of Object.keys(record)) {
     const val = String(record[key] || '').trim().toLowerCase();
     if (!val) continue;
 
-    // Exact-ish matches for Grand Total
     if (/^grand\s*total$/i.test(val)) return true;
-
-    // Arabic total indicators (إجمالي or المجموع anywhere in the cell)
     if (/إجمالي/.test(val)) return true;
     if (/المجموع/.test(val)) return true;
     if (/مجموع/.test(val)) return true;
-
-    // Standalone "total" or "sum" (not part of a normal word like "total_life")
     if (/^(total|sum|totals|subtotal)$/i.test(val)) return true;
   }
 
-  // Detect rows where item_name looks like a summary label
   if (/\b(total|sum|subtotal|summary|totals)\b/i.test(check)) return true;
 
   return false;
@@ -163,10 +195,10 @@ function normalizeRecord(record, index, sheetName) {
 
   // --- Identity fields ---
   const itemName = readField(cleaned, [
-    'item_name', 'item', 'description', 'product', 'material', 'item_name'
+    'item_name', 'item', 'description', 'product', 'material'
   ], '');
   const itemCode = readField(cleaned, [
-    'item_code', 'code', 'sku', 'material_code', 'item_code'
+    'item_code', 'code', 'sku', 'material_code'
   ], '');
 
   // --- Batch / unit fields ---
@@ -181,20 +213,20 @@ function normalizeRecord(record, index, sheetName) {
   ], 0));
 
   // --- Life / expiry fields ---
-  const manufacturingDate = toDate(readField(cleaned, [
+  const manufacturingDate = parseDate(readField(cleaned, [
     'manufacturing_date', 'mfg_date', 'prod_date'
-  ], ''));
+  ], null));
   const lifeYears = toNumber(readField(cleaned, [
     'life_years', 'life', 'shelf_life_years'
   ], 0));
-  const expiryDate = toDate(readField(cleaned, [
+  const expiryDate = parseDate(readField(cleaned, [
     'expiry_date', 'exp_date', 'expiration'
-  ], ''));
+  ], null));
 
   // --- Report / age fields ---
-  const rptDate = toDate(readField(cleaned, [
+  const rptDate = parseDate(readField(cleaned, [
     'rpt_date', 'report_date', 'rpt_date_alt'
-  ], ''));
+  ], null));
   const agePercent = toNumber(readField(cleaned, [
     'age_percent', 'age_%', 'age_pct', 'age'
   ], 0));
@@ -207,28 +239,46 @@ function normalizeRecord(record, index, sheetName) {
   const passStatus = readField(cleaned, [
     'pass_status', 'pass', 'pass_fail', 'status'
   ], '');
-  const reportDate = toDate(readField(cleaned, [
+  const reportDate = parseDate(readField(cleaned, [
     'report_date', 'rpt_date', 'rpt_date_alt'
-  ], ''));
+  ], null));
 
-  // --- Optional contextual fields ---
+  // --- Contextual fields ---
   const dateValue = readField(cleaned, ['date', 'doc_date', 'transaction_date', 'created_at', 'month'], '');
-  const parsedDate = toDate(dateValue);
-  const department = normalizeDepartment(readField(cleaned, ['department', 'dept', 'section', 'area'], 'Unknown'));
-  const category = normalizeCategory(readField(cleaned, ['category', 'item_category', 'type', 'class', 'group'], 'Uncategorized'));
-  const approvalStatus = String(readField(cleaned, ['approval_status', 'status', 'approval', 'workflow_status'], '') || '');
-  const defectType = String(readField(cleaned, ['defect', 'defect_type', 'machine_defect', 'reason', 'root_cause'], '') || '');
-  const machine = String(readField(cleaned, ['machine', 'machine_id', 'line', 'production_line'], '') || '');
+  const parsedDate = parseDate(dateValue);
 
-  return {
+  // AR: استخدام Unknown أو Not Available بوضوح وعدم توليد قيم وهمية
+  const department = normalizeDepartment(readField(cleaned, ['department', 'dept', 'section', 'area'], 'Not Available'));
+  const category = normalizeCategory(readField(cleaned, ['category', 'item_category', 'type', 'class', 'group'], 'Not Available'));
+  const approvalStatus = String(readField(cleaned, ['approval_status', 'status', 'approval', 'workflow_status'], '') || '').trim() || 'Unknown';
+  const defectType = String(readField(cleaned, ['defect', 'defect_type', 'machine_defect', 'reason', 'root_cause'], '') || '').trim() || 'Not Available';
+  const machine = String(readField(cleaned, ['machine', 'machine_id', 'line', 'production_line'], '') || '').trim() || 'Not Available';
+
+  // --- Validation Warnings ---
+  const validationWarnings = [];
+  if (!itemCode) validationWarnings.push('Missing Item Code');
+  if (!itemName) validationWarnings.push('Missing Item Name');
+  if (!batchNumber) validationWarnings.push('Missing Batch Number');
+  if (cost <= 0) validationWarnings.push('Zero or negative stock value');
+  if (expiryDate && expiryDate.getTime() < Date.now()) {
+    validationWarnings.push('Item is Expired');
+  }
+  if (manufacturingDate && expiryDate && manufacturingDate.getTime() > expiryDate.getTime()) {
+    validationWarnings.push('Manufacturing date after Expiry date');
+  }
+
+  // --- Shelf Life Status ---
+  const shelfLifeStatus = getShelfLifeStatus(remainingPercent);
+
+  const baseRecord = {
     ...cleaned,
     __sheet: sheetName,
     __row_number: cleaned.__row_number,
-    doc_no: String(readField(cleaned, ['doc_no', 'document_no', 'reference', 'reject_no'], '') || `STK-${new Date().getFullYear()}-${String(index + 1).padStart(4, '0')}`),
-    item_code: String(itemCode || '').trim(),
-    item_name: String(itemName || itemCode || `Row ${index + 1}`).trim(),
-    batch_number: String(batchNumber).trim(),
-    uom: String(uom).trim(),
+    doc_no: String(readField(cleaned, ['doc_no', 'document_no', 'reference', 'reject_no'], '') || '').trim() || `STK-${new Date().getFullYear()}-${String(index + 1).padStart(4, '0')}`,
+    item_code: String(itemCode || '').trim() || 'Not Available',
+    item_name: String(itemName || itemCode || '').trim() || 'Not Available',
+    batch_number: String(batchNumber).trim() || 'Not Available',
+    uom: String(uom).trim() || 'Not Available',
     quantity,
     rate,
     stock_value: cost,
@@ -241,17 +291,32 @@ function normalizeRecord(record, index, sheetName) {
     age_percent: agePercent,
     remaining_percent: remainingPercent,
     total_life: totalLife,
-    pass_status: String(passStatus).trim(),
+    pass_status: String(passStatus).trim() || 'Not Available',
     report_date: reportDate ? reportDate.toISOString().split('T')[0] : '',
     department,
     category,
-    approval_status: approvalStatus || 'Unknown',
-    date: parsedDate ? parsedDate.toISOString().split('T')[0] : '',
+    approval_status: approvalStatus,
+    date: parsedDate ? parsedDate.toISOString().split('T')[0] : (reportDate ? reportDate.toISOString().split('T')[0] : ''),
     machine,
     defect_type: defectType,
+    shelf_life_status: shelfLifeStatus,
+    validation_warnings: validationWarnings,
     analysis_type: 'stock_life_risk',
     data_classification: 'Stock/Life Risk',
     raw: cleaned
+  };
+
+  // --- Risk Score ---
+  const riskResult = computeRiskScore({
+    ...baseRecord,
+    has_life_risk: shelfLifeStatus === 'Expired' || shelfLifeStatus === 'Near Expiry'
+  });
+  
+  return {
+    ...baseRecord,
+    risk_score: riskResult.score,
+    risk_level: riskLevel(riskResult.score),
+    risk_factors: riskResult.reasons
   };
 }
 
@@ -333,7 +398,7 @@ function machineDefectRates(records) {
     const machine = record.machine || 'Unknown';
     if (!grouped[machine]) grouped[machine] = { total_records: 0, defect_records: 0, defect_rate: 0 };
     grouped[machine].total_records += 1;
-    if (record.defect_type) grouped[machine].defect_records += 1;
+    if (record.defect_type && record.defect_type !== 'Not Available') grouped[machine].defect_records += 1;
     grouped[machine].defect_rate = round((grouped[machine].defect_records / grouped[machine].total_records) * 100);
   });
   return grouped;
@@ -342,7 +407,7 @@ function machineDefectRates(records) {
 function monthlyTrends(records) {
   const grouped = {};
   records.forEach((record) => {
-    const date = toDate(record.date);
+    const date = parseDate(record.date);
     const key = date ? `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}` : 'Unknown';
     if (!grouped[key]) grouped[key] = { count: 0, total_cost: 0 };
     grouped[key].count += 1;
@@ -354,7 +419,7 @@ function monthlyTrends(records) {
 function yearOverYear(records) {
   const byYear = {};
   records.forEach((record) => {
-    const date = toDate(record.date);
+    const date = parseDate(record.date);
     const year = date ? String(date.getUTCFullYear()) : 'Unknown';
     if (!byYear[year]) byYear[year] = { count: 0, total_cost: 0 };
     byYear[year].count += 1;
@@ -386,6 +451,7 @@ module.exports = {
   processRows,
   calculateMetrics,
   toNumber,
+  parseDate,
   findField,
   isGrandTotalRow,
   EXCEL_COLUMN_MAP

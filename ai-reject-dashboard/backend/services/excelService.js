@@ -168,6 +168,16 @@ function validateData(parsedData) {
     : 1;
   if (emptyCostRatio > 0.8) warnings.push('More than 80% of rows have no detectable cost/value field.');
 
+  // Aggregate record-level validation warnings
+  parsedData.records.forEach(r => {
+    if (r.validation_warnings && r.validation_warnings.length) {
+      r.validation_warnings.forEach(w => {
+        const msg = `Record ${r.item_code} (Row ${r.__row_number}): ${w}`;
+        if (!warnings.includes(msg)) warnings.push(msg);
+      });
+    }
+  });
+
   return {
     valid: errors.length === 0,
     errors,
