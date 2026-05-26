@@ -12,6 +12,23 @@ const FORECAST_TTL_MS = 60 * 60 * 1000;
 const cache = new Map();
 const auditTrail = [];
 
+function isOutOfScope(question) {
+  const q = String(question || '').toLowerCase().trim();
+  if (!q) return false;
+  
+  const allowedKeywords = [
+    'mais', 'ميس', 'جودة', 'quality', 'reject', 'مرفوض', 'تكلفة', 'cost', 'عطل', 'defect', 
+    'ماكينة', 'machine', 'مستودع', 'warehouse', 'إنتاج', 'production', 'capa', 'ncr', 
+    'لوت', 'lot', 'صلاحية', 'expiry', 'شحنة', 'batch', 'مرفوضات', 'تحليل', 'summary', 
+    'توقع', 'forecast', 'صيانة', 'maintenance', 'خسارة', 'loss', 'شطب', 'write-off',
+    'تقرير', 'report', 'صقر', 'saqr', 'أهلاً', 'hello', 'hi', 'مرحبا', 'شكرا', 'thank',
+    'من أنت', 'who are you', 'اسمك', 'your name'
+  ];
+  
+  const hasKeyword = allowedKeywords.some(keyword => q.includes(keyword));
+  return !hasKeyword;
+}
+
 function cacheKey(prefix, payload) {
   return `${prefix}:${crypto.createHash('sha256').update(JSON.stringify(payload)).digest('hex')}`;
 }
@@ -54,34 +71,41 @@ function auditAiRequest(entry) {
   logger.info('ai_audit', entry);
 }
 
-function compactDataset(records, limit = 250) {
-  return records.slice(0, limit).map((record) => ({
-    doc_no: record.doc_no,
-    date: record.date,
-    department: record.department,
-    category: record.category,
-    item_code: record.item_code,
-    item_name: record.item_name,
-    machine: record.machine,
-    reason: record.reason || record.defect_type,
-    root_cause: record.root_cause,
-    status: record.approval_status,
-    days_pending: record.days_pending,
-    quantity: record.quantity,
-    cost: record.cost || record.total_cost,
-    risk_score: record.risk_score,
-    risk_level: record.risk_level
-  }));
-}
-
 function buildContext(records) {
   const local = computeAnalysis(records);
   const state = getDataState();
+  
+  // استخلاص أعلى 10 سجلات خطورة
+  const top_risk_records = records
+    .slice()
+    .sort((a, b) => (Number(b.risk_score) || 0) - (Number(a.risk_score) || 0))
+    .slice(0, 10)
+    .map((r) => ({
+      doc_no: r.doc_no,
+      item_code: r.item_code,
+      item_name: r.item_name,
+      department: r.department,
+      cost: r.cost,
+      risk_score: r.risk_score,
+      risk_level: r.risk_level,
+      expiry_date: r.expiry_date,
+      remaining_percent: r.remaining_percent
+    }));
+
   return {
     data_status: state.excel || {},
     metrics: state.metrics || {},
-    local_analysis: local,
-    sample_records: compactDataset(records)
+    dataset_summary: {
+      total_cases: local.total_cases,
+      total_estimated_cost: local.total_estimated_cost,
+      high_risk_cases: local.high_risk_cases,
+      cost_by_department: local.cost_by_department,
+      repeated_root_causes: local.repeated_root_causes,
+      monthly_trends: state.metrics?.monthly_trends || {},
+      machine_defect_rates: state.metrics?.machine_defect_rates || {}
+    },
+    top_risk_records,
+    current_page_context: { page: 'enterprise-analysis', filters: {} }
   };
 }
 
@@ -296,8 +320,28 @@ async function runEnterpriseAnalysis(records) {
 }
 
 async function answerNaturalLanguageQuery(records, question) {
+  // 1. Refusal Policy Guard for out of scope queries
+  if (isOutOfScope(question)) {
+    const refusalReply = {
+      answer: "يزيد معلمني بأن ما أخرج عن إطار شركة ميس والعمل المؤكل له",
+      query_interpretation: { metric: 'none', filters: {} },
+      suggested_chart: { type: 'none', x: '', y: '' },
+      sources: [],
+      confidence: 'High'
+    };
+    return {
+      layer: 'query',
+      model: 'local-refusal',
+      source: 'local',
+      result: refusalReply,
+      cached: false
+    };
+  }
+
   const localAnswer = localQuery(records, question);
-  return runLayer('query', records, ANALYSIS_TTL_MS, () => localAnswer, { question });
+  const context = buildContext(records);
+
+  return runLayer('query', records, ANALYSIS_TTL_MS, () => localAnswer, { question, context });
 }
 
 async function generateCapa(records, rejectCase) {
@@ -305,26 +349,28 @@ async function generateCapa(records, rejectCase) {
 }
 
 function localDescriptive(records, context) {
-  const a = context.local_analysis;
+  const a = context.dataset_summary || computeAnalysis(records);
+  const totalCost = a.total_estimated_cost || 0;
   return {
-    headline: a.executive_summary,
+    headline: a.executive_summary || 'تحليل وافي للمرفوضات والعمليات لمصانع ميس',
     key_statistics: [
-      { label: 'Total cases', value: a.total_cases, unit: 'count' },
-      { label: 'Total cost', value: a.total_estimated_cost, unit: 'SAR' },
-      { label: 'High risk cases', value: a.high_risk_cases, unit: 'count' }
+      { label: 'Total cases', value: a.total_cases || 0, unit: 'count' },
+      { label: 'Total cost', value: totalCost, unit: 'SAR' },
+      { label: 'High risk cases', value: a.high_risk_cases || 0, unit: 'count' }
     ],
     time_comparisons: Object.entries(context.metrics.monthly_trends || {}).map(([period, value]) => ({ period, ...value })),
     observations: [
-      `Top root cause: ${a.repeated_root_causes[0]?.cause || 'Unknown'}`,
-      `Highest cost department: ${a.cost_by_department[0]?.department || 'Unknown'}`
+      `Top root cause: ${a.repeated_root_causes?.[0]?.cause || 'Unknown'}`,
+      `Highest cost department: ${a.cost_by_department?.[0]?.department || 'Unknown'}`
     ]
   };
 }
 
 function localDiagnostic(records, context) {
-  const a = context.local_analysis;
+  const a = context.dataset_summary || computeAnalysis(records);
+  const rootCauses = a.repeated_root_causes || [];
   return {
-    root_causes: a.repeated_root_causes.map((cause) => ({
+    root_causes: rootCauses.map((cause) => ({
       cause: cause.cause,
       evidence: [`${cause.count} cases`, `${cause.percentage}% of analyzed cases`],
       impact: 'Cost, delay, and CAPA exposure',
@@ -338,10 +384,10 @@ function localDiagnostic(records, context) {
 }
 
 function localPredictive(records, context) {
-  const a = context.local_analysis;
+  const a = context.dataset_summary || computeAnalysis(records);
   const monthly = Object.values(context.metrics.monthly_trends || {});
   const avgCount = average(monthly.map((m) => m.count)) || Math.ceil(records.length / 12);
-  const avgCost = average(monthly.map((m) => m.total_cost)) || a.projected_next_month_cost;
+  const avgCost = average(monthly.map((m) => m.total_cost)) || (a.projected_next_month_cost || 0);
   return {
     next_month: { reject_count: Math.round(avgCount), cost: Math.round(avgCost), confidence: records.length >= 30 ? 'Medium' : 'Low' },
     next_quarter: { reject_count: Math.round(avgCount * 3), cost: Math.round(avgCost * 3), confidence: 'Low' },
@@ -349,14 +395,15 @@ function localPredictive(records, context) {
       .sort((aEntry, bEntry) => bEntry[1].defect_rate - aEntry[1].defect_rate)
       .slice(0, 5)
       .map(([machine, stats]) => ({ machine, risk: stats.defect_rate >= 50 ? 'High' : 'Medium', reason: `${stats.defect_rate}% defect rate` })),
-    cost_forecast: { method: 'moving-average-local', projected_next_month_cost: a.projected_next_month_cost }
+    cost_forecast: { method: 'moving-average-local', projected_next_month_cost: a.projected_next_month_cost || 0 }
   };
 }
 
 function localPrescriptive(records, context) {
-  const a = context.local_analysis;
+  const a = context.dataset_summary || computeAnalysis(records);
+  const actions = a.management_actions || [];
   return {
-    recommendations: a.management_actions.map((action) => ({
+    recommendations: actions.map((action) => ({
       priority: action.priority,
       action: action.action,
       owner: action.priority === 'Critical' ? 'QCM / Operations Manager' : 'Department Owner',
@@ -608,30 +655,45 @@ function chatSchema() {
 
 async function chatWithGemini(records, message, conversationId, chatContext, history) {
   const started = Date.now();
-  const context = buildContext(records);
   const type = 'chat';
 
   // Use provided history (from session memory) or fall back to loading from sessionMemory service
   const conversationHistory = Array.isArray(history) ? history : sessionMemory.getHistory(conversationId);
 
+  // 1. Refusal Policy Guard for out of scope questions
+  if (isOutOfScope(message)) {
+    const refusalReply = {
+      reply: "يزيد معلمني بأن ما أخرج عن إطار شركة ميس والعمل المؤكل له",
+      charts: [],
+      actions: [],
+      sources: []
+    };
+    sessionMemory.appendMessage(conversationId, 'user', message);
+    sessionMemory.appendMessage(conversationId, 'assistant', refusalReply.reply);
+    return {
+      layer: 'chat',
+      model: 'local-refusal',
+      source: 'local',
+      result: refusalReply,
+      cached: false
+    };
+  }
+
+  const context = buildContext(records);
+
   const fullContext = {
-    dataset_summary: {
-      total_cost: context.metrics.total_cost,
-      cost_by_department: context.metrics.cost_by_department,
-      cost_by_category: context.metrics.cost_by_category,
-      pending_approvals_count: context.metrics.pending_approvals_count,
-      repeated_root_causes: context.local_analysis.repeated_root_causes,
-      monthly_trends: context.metrics.monthly_trends,
-      machine_defect_rates: context.metrics.machine_defect_rates,
-      year_over_year: context.metrics.year_over_year_comparison
-    },
-    user_context: chatContext || {},
-    current_time: new Date().toISOString(),
-    sample_records: context.sample_records.slice(0, 100)
+    dataset_summary: context.dataset_summary,
+    top_risk_records: context.top_risk_records,
+    current_page_context: chatContext || { page: 'unknown', filters: {} },
+    recent_messages: conversationHistory.slice(-6).map(h => ({
+      role: h.sender === 'user' ? 'user' : 'model',
+      text: h.text
+    })),
+    current_time: new Date().toISOString()
   };
 
   const systemInstruction = [
-    `اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات.`,
+    `اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات لمصانع ميس (MAIS) بالسعودية.`,
     `Always refer to yourself as "صقر AI" in all responses. Never use any other name, title, or alias. When asked about your name, always say your name is "صقر AI".`,
     `You are a world-class, highly professional enterprise AI quality & operations assistant for a pharmaceutical and medical products manufacturing company in Saudi Arabia (MAIS - Middle East Medical Adhesive Industry).`,
     'Your goal is to answer quality, financial, operational, and audit questions based on the provided dataset summary and user context.',
@@ -639,28 +701,24 @@ async function chatWithGemini(records, message, conversationId, chatContext, his
     '1. Language: Automatically detect the language of the user message (Arabic or English) and reply in the same language.',
     '2. Focus ERP and the provided dataset summary are the official source of truth. Use exact numbers and statistics when answering.',
     '3. Tone: Professional, polite, data-driven, and highly administrative.',
-    '4. Safety: NEVER give patient medical or clinical advice. Always emphasize that your quality insights and recommendations are advisory only and must be reviewed and approved by the Quality Control Manager (QCM) or Quality Assurance Manager (QAM).',
-    '5. Compliance: Ground recommendations in ISO 13485:2016 and GMP (Good Manufacturing Practice) guidelines when appropriate.',
-    '6. Return a valid JSON object matching the provided response schema.',
+    '4. Refusal Policy: If the user asks about anything outside Middle East Medical Adhesive Industry (MAIS), Saudi medical manufacturing, quality controls, rejects, costs, CAPAs, or direct operations, you MUST refuse strictly and answer EXACTLY with: "يزيد معلمني بأن ما أخرج عن إطار شركة ميس والعمل المؤكل له". Never say anything else.',
+    '5. Safety: NEVER give patient medical or clinical advice. Always emphasize that your quality insights and recommendations are advisory only and must be reviewed and approved by the Quality Control Manager (QCM) or Quality Assurance Manager (QAM).',
+    '6. Compliance: Ground recommendations in ISO 13485:2016 and GMP (Good Manufacturing Practice) guidelines when appropriate.',
+    '7. Return a valid JSON object matching the provided response schema.',
     '   - reply: Your main answer in Markdown format. Use tables, bold text, lists, and highlight key metrics. Include a clear GMP advisory disclaimer at the end.',
     '   - charts: An optional array of chart objects to render (type: "bar"|"line"|"donut", title, series: [{ name, data }], categories). Only include if the user requested trends, costs, comparisons, or analysis that is best visualized. Limit categories to maximum 10 elements.',
     '   - actions: An array of quick actions the user can take based on your recommendations (e.g. {"label": "إنشاء إجراء تصحيحي (CAPA)", "command": "create_capa", "payload": { "reason": "..." }}).',
     '   - sources: An array of column or field names from the dataset used to build the answer.'
   ].join('\n');
 
-  // Build conversation history context for Gemini
-  const historyContext = conversationHistory.length > 0
-    ? `Recent conversation history (session-scoped, expires after 2 hours of inactivity):\n${JSON.stringify(conversationHistory.slice(-10))}`
-    : 'No prior conversation history.';
-
   const promptText = [
     systemInstruction,
     `Conversation ID: ${conversationId || 'global'}`,
-    historyContext,
-    `User Context (Page, Filters, Role): ${JSON.stringify(fullContext.user_context)}`,
+    `Recent Messages (Memory): ${JSON.stringify(fullContext.recent_messages)}`,
+    `Current Page Context: ${JSON.stringify(fullContext.current_page_context)}`,
     `Current Time: ${fullContext.current_time}`,
     `Dataset Summary: ${JSON.stringify(fullContext.dataset_summary)}`,
-    `Sample Records: ${JSON.stringify(fullContext.sample_records)}`,
+    `Top Risk Records: ${JSON.stringify(fullContext.top_risk_records)}`,
     `User Message: "${message}"`
   ].join('\n');
 
@@ -834,6 +892,115 @@ function localChatResponse(message, fullContext) {
   };
 }
 
+function analysisSchema() {
+  return {
+    type: 'object',
+    properties: {
+      executive_summary: { type: 'string' },
+      risk: { type: 'string' },
+      finance: { type: 'string' },
+      CAPA: { type: 'string' },
+      backlog: { type: 'string' },
+      anomaly: { type: 'string' },
+      management_action: { type: 'string' }
+    },
+    required: ['executive_summary', 'risk', 'finance', 'CAPA', 'backlog', 'anomaly', 'management_action']
+  };
+}
+
+let cachedAnalysis = null;
+let cachedAt = 0;
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
+async function getGeminiAnalysis(records) {
+  const now = Date.now();
+  if (cachedAnalysis && now - cachedAt < CACHE_TTL_MS) {
+    return { analysis: cachedAnalysis, cached: true };
+  }
+
+  if (!config.geminiApiKey) {
+    return { analysis: null, cached: false };
+  }
+
+  const context = buildContext(records);
+  const top_risk_records = records
+    .slice()
+    .sort((a, b) => (Number(b.risk_score) || 0) - (Number(a.risk_score) || 0))
+    .slice(0, 10)
+    .map(r => ({
+      doc_no: r.doc_no,
+      item_code: r.item_code,
+      item_name: r.item_name,
+      cost: r.cost,
+      risk_score: r.risk_score,
+      expiry_date: r.expiry_date,
+      remaining_percent: r.remaining_percent
+    }));
+
+  const fullContext = {
+    dataset_summary: {
+      total_cost: context.metrics.total_cost,
+      cost_by_department: context.metrics.cost_by_department,
+      cost_by_category: context.metrics.cost_by_category,
+      pending_approvals_count: context.metrics.pending_approvals_count,
+      repeated_root_causes: context.dataset_summary.repeated_root_causes,
+      monthly_trends: context.metrics.monthly_trends,
+      machine_defect_rates: context.metrics.machine_defect_rates,
+      year_over_year: context.metrics.year_over_year_comparison
+    },
+    top_risk_records,
+    current_page_context: { page: 'ai-analysis', filters: {} }
+  };
+
+  const systemInstruction = [
+    `اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات لمصانع ميس (MAIS) بالسعودية. Always refer to yourself as "صقر AI".`,
+    `Focus ERP is the official source of truth. AI output is advisory only.`,
+    `Return a valid JSON object matching the provided response schema.`,
+    `Ensure all statistical insights strictly map to Middle East Medical Adhesive Industry (MAIS).`
+  ].join('\n');
+
+  const promptText = [
+    systemInstruction,
+    `Dataset Summary: ${JSON.stringify(fullContext.dataset_summary)}`,
+    `Top Risk Records: ${JSON.stringify(fullContext.top_risk_records)}`,
+    `Current Page Context: ${JSON.stringify(fullContext.current_page_context)}`,
+    `Generate the comprehensive quality & operational executive analysis matching the response schema.`
+  ].join('\n');
+
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': config.geminiApiKey
+      },
+      body: JSON.stringify({
+        contents: [{ role: 'user', parts: [{ text: promptText }] }],
+        generationConfig: {
+          responseMimeType: 'application/json',
+          responseSchema: analysisSchema(),
+          temperature: 0.2
+        }
+      })
+    });
+
+    if (!response.ok) throw new Error(`Gemini API error: ${response.status}`);
+    const data = await response.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const parsed = text ? JSON.parse(text) : null;
+
+    if (parsed) {
+      cachedAnalysis = parsed;
+      cachedAt = now;
+      return { analysis: parsed, cached: false };
+    }
+    return { analysis: null, cached: false };
+  } catch (err) {
+    logger.warn('gemini_analysis_service_failed', { message: err.message });
+    return { analysis: null, cached: false };
+  }
+}
+
 function getSystemPrompt() {
   return `اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات.`;
 }
@@ -852,5 +1019,6 @@ module.exports = {
   buildPrompt,
   chatWithGemini,
   getSystemPrompt,
-  getSessionsMap
+  getSessionsMap,
+  getGeminiAnalysis
 };

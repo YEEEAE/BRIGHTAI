@@ -40,6 +40,11 @@ function reportsApp() {
       
       this.loadHistory();
       this.loadDefaultTemplate();
+      this.setupRealtimeListeners();
+    },
+
+    setupRealtimeListeners() {
+      window.addEventListener('data:updated', () => this.loadHistory());
     },
     
     toggleTheme() {

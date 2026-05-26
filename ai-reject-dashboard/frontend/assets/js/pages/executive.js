@@ -51,6 +51,11 @@ function executiveApp() {
       this.initThemeAndLang();
       this.fetchExecutiveBrief();
       this.initExecutiveCharts();
+      this.setupRealtimeListeners();
+    },
+
+    setupRealtimeListeners() {
+      window.addEventListener('data:updated', () => this.fetchExecutiveBrief());
     },
 
     initThemeAndLang() {

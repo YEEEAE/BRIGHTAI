@@ -34,6 +34,11 @@ function productionApp() {
     init() {
       this.initThemeAndLang();
       this.fetchProductionScrapCosts();
+      this.setupRealtimeListeners();
+    },
+
+    setupRealtimeListeners() {
+      window.addEventListener('data:updated', () => this.fetchProductionScrapCosts());
     },
 
     initThemeAndLang() {

@@ -53,6 +53,13 @@ function qualityApp() {
       
       // Watch for checklist changes to dynamically recalculate audit score
       this.$watch('checklist', () => this.calculateReadiness());
+      this.setupRealtimeListeners();
+    },
+
+    setupRealtimeListeners() {
+      window.addEventListener('data:updated', () => {
+        console.log('🔄 [BrightAI QMS] Realtime Excel update event processed.');
+      });
     },
 
     initThemeAndLang() {

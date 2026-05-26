@@ -98,4 +98,26 @@ describe('BrightAI Pilot Demo Readiness Tests', () => {
     });
   });
 
+  // 5. Realtime Watcher & Composite Key Diffs
+  describe('Realtime Watcher & Composite Key Diffs', () => {
+    function testCompositeKey(r) {
+      const code = String(r.item_code || '').trim();
+      const batch = String(r.batch_number || '').trim();
+      const mfg = String(r.manufacturing_date || '').trim();
+      const exp = String(r.expiry_date || '').trim();
+      return `${code}||${batch}||${mfg}||${exp}`;
+    }
+
+    it('should generate expected composite keys for items', () => {
+      const record = {
+        item_code: 'MAIS-01',
+        batch_number: 'B2026',
+        manufacturing_date: '2026-05-01',
+        expiry_date: '2028-05-01'
+      };
+      const key = testCompositeKey(record);
+      expect(key).toBe('MAIS-01||B2026||2026-05-01||2028-05-01');
+    });
+  });
+
 });

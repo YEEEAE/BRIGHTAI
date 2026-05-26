@@ -4,7 +4,7 @@ const { audit } = require('../utils/logger');
 const { success } = require('../utils/response');
 const { getRejects, filterRejects, getDataState } = require('../services/dataService');
 const { computeAnalysis } = require('../services/analysisService');
-const { getGeminiAnalysis } = require('../services/geminiService');
+const { getGeminiAnalysis } = require('../services/aiService');
 
 const router = express.Router();
 
