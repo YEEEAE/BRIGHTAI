@@ -750,7 +750,7 @@
       const senderClass = msg.sender === 'user' ? 'user' : 'assistant';
       htmlContent += `
         <div class="bubble ${senderClass}">
-          <strong>${msg.sender === 'user' ? (isEn ? 'User' : 'المستخدم') : (isEn ? 'AI Quality Hub' : 'مساعد العمليات الذكي')}</strong>
+          <strong>${msg.sender === 'user' ? (isEn ? 'User' : 'المستخدم') : 'صقر AI'}</strong>
           <div>${parseMarkdown(msg.text)}</div>
         </div>
       `;

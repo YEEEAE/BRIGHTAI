@@ -1,7 +1,5 @@
 /**
- * Documentation:
- * - docs/01-pages/production-page.md
- * - docs/04-api/rejects-api.md
+ * Production Dashboard — API-driven, zero hardcoded numbers.
  */
 function productionApp() {
   return {
@@ -11,6 +9,9 @@ function productionApp() {
     isLoading: true,
     error: null,
     insufficientLabel: 'بيانات غير كافية',
+
+    dataSource: 'unknown',
+    lastExcelUpdate: null,
 
     kpis: {
       oee: null,
@@ -70,6 +71,10 @@ function productionApp() {
       this.error = null;
       try {
         const pageData = await BrightAPI.loadAllPageData('production');
+        if (pageData.status) {
+          this.lastExcelUpdate = pageData.status.file_modified_at || pageData.status.last_load || null;
+          this.dataSource = pageData.status.file_exists ? 'excel_live' : (pageData.status.warnings?.some(w => w.includes('Demo')) ? 'demo_fallback' : 'cache');
+        }
         const rejects = Array.isArray(pageData.rejectPayload?.rejects) ? pageData.rejectPayload.rejects : [];
         const metrics = pageData.rejectPayload?.metrics || pageData.analysis?.analysis?.metrics || pageData.analysis?.metrics || {};
         this.applyProductionMetrics(rejects, metrics);
@@ -168,13 +173,33 @@ function productionApp() {
     },
 
     exportMESReport() {
-      if (window.BrightNotifications) {
-        window.BrightNotifications.toast({
-          type: 'info',
-          title: this.lang === 'ar' ? 'تصدير تقرير الإنتاج' : 'MES Report Export',
-          message: this.lang === 'ar' ? 'جاري تجهيز تقرير الإنتاج من بيانات API الحالية.' : 'Generating MES report from current API data.'
-        });
-      }
+      ReportActions.generatePagePdfReport('production', 'production');
+    },
+
+    refreshData() { this.loadProductionData(); },
+
+    getDataSourceBadge() {
+      const map = {
+        excel_live: { label: this.lang === 'ar' ? '🟢 Excel مباشر' : '🟢 Excel Live', cls: 'success' },
+        cache: { label: this.lang === 'ar' ? '🟡 بيانات مؤقتة' : '🟡 Cached', cls: 'warning' },
+        demo_fallback: { label: this.lang === 'ar' ? '🔴 بيانات تجريبية' : '🔴 Demo Fallback', cls: 'danger' },
+        error: { label: this.lang === 'ar' ? '⚫ خطأ' : '⚫ Error', cls: 'danger' },
+        unknown: { label: this.lang === 'ar' ? '⏳ تحميل...' : '⏳ Loading...', cls: 'secondary' }
+      };
+      return map[this.dataSource] || map.unknown;
+    },
+
+    formatLastUpdate() {
+      if (!this.lastExcelUpdate) return this.lang === 'ar' ? 'غير متوفر' : 'Unavailable';
+      try {
+        const diff = Date.now() - new Date(this.lastExcelUpdate).getTime();
+        if (diff < 60000) return this.lang === 'ar' ? 'الآن' : 'now';
+        const min = Math.floor(diff / 60000);
+        if (min < 60) return this.lang === 'ar' ? `${min} دقيقة` : `${min} min`;
+        const hr = Math.floor(min / 60);
+        if (hr < 24) return this.lang === 'ar' ? `${hr} ساعة` : `${hr} hr`;
+        return this.lang === 'ar' ? `${Math.floor(hr / 24)} يوم` : `${Math.floor(hr / 24)} d`;
+      } catch { return '—'; }
     },
 
     formatCurrency(val) {

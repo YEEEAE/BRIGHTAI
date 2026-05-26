@@ -190,6 +190,36 @@ const BrightAPI = (() => {
         quality: {
           rejects: () => this.getRejects({ source: 'excel' }),
           summary: () => this.getSummary()
+        },
+        executive: {
+          status: () => this.getDataStatus(),
+          rejects: () => this.getRejects({ source: 'excel' }),
+          summary: () => this.getSummary()
+        },
+        finance: {
+          status: () => this.getDataStatus(),
+          rejects: () => this.getRejects({ source: 'excel' }),
+          summary: () => this.getSummary()
+        },
+        workflow: {
+          status: () => this.getDataStatus(),
+          rejects: () => this.getRejects({ source: 'excel' }),
+          summary: () => this.getSummary()
+        },
+        technical: {
+          status: () => this.getDataStatus(),
+          schema: () => this.getDataSchema()
+        },
+        reports: {
+          status: () => this.getDataStatus(),
+          rejects: () => this.getRejects({ source: 'excel' }),
+          summary: () => this.getSummary()
+        },
+        profile: {
+          status: () => this.getDataStatus()
+        },
+        users: {
+          status: () => this.getDataStatus()
         }
       };
 

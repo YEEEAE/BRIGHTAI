@@ -1,17 +1,15 @@
 /**
- * Documentation:
- * - docs/01-pages/reports-page.md
- * - docs/04-api/reports-api.md
+ * Reports Dashboard — API-driven, zero hardcoded numbers.
  */
 function reportsApp() {
   return {
-    // Theme & Language Settings
     theme: localStorage.getItem('theme') || 'light',
     lang: document.documentElement.lang || 'ar',
     userRole: 'Quality Manager (QAM)',
-    conversationId: 'conv_' + Math.random().toString(36).substring(2, 11),
-    
-    // State
+
+    dataSource: 'unknown',
+    lastExcelUpdate: null,
+
     activeTemplate: 'custom',
     dragOver: false,
     exportLoading: false,
@@ -73,11 +71,14 @@ function reportsApp() {
 
     async loadReportStats() {
       try {
-        const res = await fetch('/api/rejects');
-        if (!res.ok) throw new Error('rejects fetch failed');
-        const response = await res.json();
-        const payload = response.data || {};
-        const records = payload.rejects || [];
+        const pageData = await BrightAPI.loadAllPageData('reports');
+        if (pageData.status) {
+          this.lastExcelUpdate = pageData.status.file_modified_at || pageData.status.last_load || null;
+          this.dataSource = pageData.status.file_exists ? 'excel_live' : (pageData.status.warnings?.some(w => w.includes('Demo')) ? 'demo_fallback' : 'cache');
+        }
+        const response = pageData.rejectPayload || pageData;
+        const payload = response.data || response;
+        const records = Array.isArray(payload.rejects) ? payload.rejects : [];
         const totalCost = records.reduce((sum, record) => sum + (Number(record.cost) || 0), 0);
         const approvedOrReviewed = records.filter((record) => ['Approved', 'Review'].includes(record.approval_status)).length;
         const groupByDepartment = {};
@@ -93,9 +94,10 @@ function reportsApp() {
         });
 
         const hash = payload.hash_short || response.hash || payload.hash || '';
+        this.dataSource = BrightAPI.getDataSource();
         this.reportStats = {
           loaded: true,
-          source: response.source || 'unknown',
+          source: this.dataSource,
           record_count: records.length,
           total_cost: Math.round(totalCost * 100) / 100,
           quality_efficiency: records.length ? Math.round((approvedOrReviewed / records.length) * 1000) / 10 : 0,
@@ -213,9 +215,10 @@ function reportsApp() {
 
     // Trigger Report Generation
     async triggerExport(format) {
+      if (format === 'print') { ReportActions.printCurrentPage(); return; }
       this.exportLoading = true;
       this.formatType = format;
-      
+
       try {
         const response = await fetch('/api/reports/generate', {
           method: 'POST',
@@ -273,6 +276,32 @@ function reportsApp() {
       } catch (e) {
         this.historyList = [];
       }
+    },
+
+    refreshData() { this.loadReportStats(); this.loadHistory(); },
+
+    getDataSourceBadge() {
+      const map = {
+        excel_live: { label: this.lang === 'ar' ? '🟢 Excel مباشر' : '🟢 Excel Live', cls: 'success' },
+        cache: { label: this.lang === 'ar' ? '🟡 بيانات مؤقتة' : '🟡 Cached', cls: 'warning' },
+        demo_fallback: { label: this.lang === 'ar' ? '🔴 بيانات تجريبية' : '🔴 Demo Fallback', cls: 'danger' },
+        error: { label: this.lang === 'ar' ? '⚫ خطأ' : '⚫ Error', cls: 'danger' },
+        unknown: { label: this.lang === 'ar' ? '⏳ تحميل...' : '⏳ Loading...', cls: 'secondary' }
+      };
+      return map[this.dataSource] || map.unknown;
+    },
+
+    formatLastUpdate() {
+      if (!this.lastExcelUpdate) return this.lang === 'ar' ? 'غير متوفر' : 'Unavailable';
+      try {
+        const diff = Date.now() - new Date(this.lastExcelUpdate).getTime();
+        if (diff < 60000) return this.lang === 'ar' ? 'الآن' : 'now';
+        const min = Math.floor(diff / 60000);
+        if (min < 60) return this.lang === 'ar' ? `${min} دقيقة` : `${min} min`;
+        const hr = Math.floor(min / 60);
+        if (hr < 24) return this.lang === 'ar' ? `${hr} ساعة` : `${hr} hr`;
+        return this.lang === 'ar' ? `${Math.floor(hr / 24)} يوم` : `${Math.floor(hr / 24)} d`;
+      } catch { return '—'; }
     },
 
     // Save Schedule

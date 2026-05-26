@@ -14,6 +14,9 @@ function qualityApp() {
     capaModalOpen: false,
     capaMarkdown: '',
 
+    dataSource: 'unknown',
+    lastExcelUpdate: null,
+
     kpis: {
       qualityScore: null,
       ncrRate: null,
@@ -70,7 +73,12 @@ function qualityApp() {
       this.error = null;
       try {
         const pageData = await BrightAPI.loadAllPageData('quality');
+        if (pageData.status) {
+          this.lastExcelUpdate = pageData.status.file_modified_at || pageData.status.last_load || null;
+          this.dataSource = pageData.status.file_exists ? 'excel_live' : (pageData.status.warnings?.some(w => w.includes('Demo')) ? 'demo_fallback' : 'cache');
+        }
         const rejects = Array.isArray(pageData.rejects) ? pageData.rejects : [];
+        this.dataSource = BrightAPI.getDataSource();
         this.applyQualityData(rejects);
       } catch (e) {
         console.error('loadQualityData:', e);
