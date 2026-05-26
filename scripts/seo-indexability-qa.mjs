@@ -16,7 +16,7 @@ const IMPORTANT_URLS = [
 ];
 const COMMERCIAL_PREFIXES = ["/", "/services/", "/ai-agent/", "/smart-automation/", "/data-analysis/", "/ai-bots/", "/ai-workflows/", "/smart-medical-archive/", "/tools/", "/tenders/", "/consultation/", "/contact/"];
 const IGNORE_DIRS = new Set([".git", "node_modules", "venv", "tmp", "reports", "render-public", ".render-static"]);
-const NON_PUBLIC_PATH_PREFIXES = ["ai-reject-dashboard/", "demo/mais-dashboard/"];
+const NON_PUBLIC_PATH_PREFIXES = ["ai-reject-dashboard/frontend/", "demo/mais-dashboard/"];
 const issues = [];
 const routeToFile = new Map();
 const inbound = new Map(IMPORTANT_URLS.map((url) => [url, 0]));

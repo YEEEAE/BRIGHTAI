@@ -45,7 +45,7 @@ services:
       bash scripts/seo-hreflang-dirs.sh
       rm -rf .render-static
       mkdir -p .render-static
-      rsync -a --delete --exclude='.git' --exclude='node_modules' --exclude='.render-static' --exclude='.agents' --exclude='plugins' --exclude='reports' --exclude='tmp' --exclude='backend' --exclude='app' --exclude='components' --exclude='lib' --exclude='scripts' --exclude='next.config.*' --exclude='next-env.d.ts' --exclude='tsconfig*.json' --exclude='package*.json' --exclude='render.yaml' --exclude='*.md' ./ .render-static/
+      rsync -a --delete --exclude='.git' --exclude='node_modules' --exclude='.render-static' --exclude='.agents' --exclude='plugins' --exclude='reports' --exclude='tmp' --exclude='backend' --exclude='app' --exclude='components' --exclude='lib' --exclude='scripts' --exclude='ai-reject-dashboard' --exclude='next.config.*' --exclude='next-env.d.ts' --exclude='tsconfig*.json' --exclude='package*.json' --exclude='render.yaml' --exclude='*.md' ./ .render-static/
       node <<'NODE'
       const fs = require("fs");
       const path = require("path");
@@ -110,6 +110,21 @@ services:
 
       for (const page of ["ai-agent", "ai-workflows", "consultation", "data-analysis", "docs", "smart-automation", "tools"]) {
         moveHtmlToIndex(path.join(root, `${page}.html`));
+      }
+
+      const aiRejectSource = path.join(process.cwd(), "ai-reject-dashboard");
+      const aiRejectPublic = path.join(root, "ai-reject-dashboard");
+      copyIfMissing(path.join(aiRejectSource, "index.html"), path.join(aiRejectPublic, "index.html"));
+      if (fs.existsSync(path.join(aiRejectSource, "frontend"))) {
+        fs.cpSync(
+          path.join(aiRejectSource, "frontend"),
+          path.join(aiRejectPublic, "frontend"),
+          {
+            recursive: true,
+            force: true,
+            filter: (source) => !source.split(path.sep).some((part) => part === "docs"),
+          }
+        );
       }
       NODE
       SEO_ROOT=.render-static npm run seo:production-guard
@@ -216,6 +231,9 @@ services:
       - type: redirect
         source: /frontend/pages/about-us/index.html
         destination: /about/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/index.html
+        destination: /ai-reject-dashboard/
       - type: redirect
         source: /frontend/pages/ai-agent
         destination: /ai-agent/

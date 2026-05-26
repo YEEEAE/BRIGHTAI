@@ -5,7 +5,7 @@
     <loc>https://brightai.site/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/" />
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-05-26</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/about/</loc>
@@ -23,7 +23,13 @@
     <loc>https://brightai.site/ai-bots/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-bots/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-bots/" />
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-05-26</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/ai-reject-dashboard/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/ai-reject-dashboard/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/ai-reject-dashboard/" />
+    <lastmod>2026-05-26</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/ai-workflows/</loc>
@@ -167,7 +173,7 @@
     <loc>https://brightai.site/services/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/" />
-    <lastmod>2026-05-25</lastmod>
+    <lastmod>2026-05-26</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/smart-automation/</loc>

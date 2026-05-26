@@ -1,6 +1,7 @@
 const CORE_MARKETING_FILES = [
   "index.html",
   "about/index.html",
+  "ai-reject-dashboard/index.html",
   "services/index.html",
   "contact/index.html",
   "blog/index.html",
@@ -129,6 +130,7 @@ export const HIGH_CONFIDENCE_BLOG_FILES = [
 export const RECOVERY_SITEMAP_CORE_FILES = [
   "index.html",
   "about/index.html",
+  "ai-reject-dashboard/index.html",
   "services/index.html",
   "contact/index.html",
   "consultation/index.html",
