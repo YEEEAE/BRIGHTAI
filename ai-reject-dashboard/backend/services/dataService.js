@@ -1,5 +1,5 @@
 const fs = require('fs');
-const XLSX = require('xlsx');
+const ExcelJS = require('exceljs');
 const config = require('../config/env');
 const { logger } = require('../utils/logger');
 const { computeRiskScore, riskLevel } = require('./riskService');
@@ -38,16 +38,27 @@ function sanitizeRecord(record) {
   }, {});
 }
 
-function readExcelData() {
+async function readExcelData() {
   if (!fs.existsSync(config.excelFilePath)) {
     logger.warn('excel_file_missing', { path: config.excelFilePath });
     return null;
   }
 
-  const workbook = XLSX.readFile(config.excelFilePath);
-  const sheetName = workbook.SheetNames[0];
-  const worksheet = workbook.Sheets[sheetName];
-  const raw = XLSX.utils.sheet_to_json(worksheet, { defval: '', header: 1 });
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.readFile(config.excelFilePath);
+  const worksheet = workbook.worksheets[0] || workbook.getWorksheet(1);
+  if (!worksheet) {
+    logger.warn('excel_sheet_missing', { path: config.excelFilePath });
+    return null;
+  }
+  const raw = [];
+  worksheet.eachRow({ includeEmpty: true }, (row) => {
+    raw.push(row.values.slice(1).map((value) => {
+      if (value && typeof value === 'object' && value.text) return value.text;
+      if (value && typeof value === 'object' && value.result) return value.result;
+      return value || '';
+    }));
+  });
   const headerRow = raw.findIndex((row) => row && row[0] === 'Item Code' && row[1] === 'Item Name');
 
   if (headerRow === -1) {
@@ -166,7 +177,7 @@ function getDemoData() {
   ].map(enrichRecord);
 }
 
-function getRejects(sourceOverride) {
+async function getRejects(sourceOverride) {
   if (sourceOverride === 'demo') {
     cachedRejects = getDemoData();
     cachedSource = 'demo';
@@ -175,7 +186,7 @@ function getRejects(sourceOverride) {
   }
 
   if (!cachedRejects || sourceOverride === 'excel') {
-    const excelData = readExcelData();
+    const excelData = await readExcelData();
     if (excelData && excelData.length) {
       cachedRejects = excelData;
       cachedSource = 'excel';

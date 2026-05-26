@@ -30,8 +30,8 @@
         throw new Error(errData.message || 'Invalid access token');
       }
 
-      // AR: لا نخزن التوكن في sessionStorage؛ السيرفر يضعه في HttpOnly cookie.
-      // EN: Do not store tokens in sessionStorage; the server sets HttpOnly cookies.
+      // AR: لا نخزن التوكن في تخزين المتصفح؛ السيرفر يضعه في HttpOnly cookie.
+      // EN: Do not store tokens in browser storage; the server sets HttpOnly cookies.
       window.location.href = redirect;
     } catch (e) {
       errEl.textContent = e.message || 'Login failed. Please check your token and try again.';

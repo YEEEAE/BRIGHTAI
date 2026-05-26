@@ -30,7 +30,7 @@ function createHelmetMiddleware() {
         baseUri: ["'self'"],
         frameAncestors: ["'none'"],
         formAction: ["'self'"],
-        ...(config.isProduction ? { upgradeInsecureRequests: [] } : {})
+        upgradeInsecureRequests: config.isProduction ? [] : null
       }
     },
     crossOriginEmbedderPolicy: false,
