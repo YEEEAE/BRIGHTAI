@@ -40,6 +40,7 @@
     "seo:production-guard": "node scripts/seo-production-guard.mjs",
     "seo:html:check": "node scripts/html-seo-governor.mjs",
     "seo:html:fix": "node scripts/html-seo-governor.mjs --fix",
+    "content:score": "node scripts/content-score.cjs",
     "seo:headings": "node scripts/seo-intent-headings-qa.mjs",
     "clarity:check": "node scripts/verify-clarity.mjs",
     "blog:related:auto": "node scripts/generate-related-articles.mjs",

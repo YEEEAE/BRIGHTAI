@@ -55,11 +55,20 @@ Bright AI هي شركة ذكاء اصطناعي سعودية مقرها الري
 
 ## النماذج التجريبية (Demos)
 
-- نظام تحليل العقود والمناقصات (ContractAI): https://brightai.site/demo/ai-tenders-analysis/landing/
+كل النماذج التجريبية تستخدم Gemini 2.5 Flash/Pro عبر backend فقط مع mock fallback عند الحاجة:
+
+- وكيل AI مخصص: https://brightai.site/demo/custom-ai-agent/
+- تحليل المناقصات (ContractAI): https://brightai.site/demo/ai-tenders-analysis/
+- محلل البيانات الذكي: https://brightai.site/demo/data-analyzer/
+- تحليل البيانات: https://brightai.site/demo/data-analysis/
+- أتمتة العمليات الذكية: https://brightai.site/demo/smart-automation/
+- سير عمل AI: https://brightai.site/demo/ai-workflows/
+- منصة التعليم الذكي: https://brightai.site/demo/smart-education-platform/
+- إدارة المستشفيات: https://brightai.site/demo/smart-hospital-management/
 - الأرشيف الطبي الذكي: https://brightai.site/demo/smart-medical-archive/
-- منصة التوظيف الذكي: https://brightai.site/demo/smart-hiring-system/
-- المنصة التعليمية الذكية: https://brightai.site/demo/ai-scolecs/
-- نظام إدارة المستشفيات: https://brightai.site/demo/smart-hospital-management/
+- نظام التوظيف الذكي: https://brightai.site/demo/smart-hiring-system/
+- أتمتة خدمة العملاء: https://brightai.site/demo/customer-service-automation/
+- مركز الديموهات: https://brightai.site/demo/
 
 ## القطاعات المستهدفة
 

@@ -459,6 +459,100 @@ const BASE_SYSTEM_INSTRUCTION = [
   `يجب أن يطابق الرد هذا المخطط فقط: ${RESPONSE_SCHEMA_DESCRIPTION}`
 ].join('\n');
 
+const GENERIC_DEMO_SYSTEM_INSTRUCTIONS = Object.freeze({
+  'ai-agent': [
+    BASE_SYSTEM_INSTRUCTION,
+    '',
+    '=== تخصص الديمو: وكيل ذكاء اصطناعي مؤسسي ===',
+    'أنت خبير تصميم وكلاء ذكاء اصطناعي للشركات السعودية.',
+    'ركز على: تحديد نطاق الوكيل، حدود صلاحياته، نقاط التصعيد البشري، وتكاملات CRM وأنظمة التذاكر.',
+    'قيّم جاهزية المؤسسة: هل البيانات كافية؟ هل العمليات موثقة؟ هل الحوكمة واضحة؟',
+    'اقترح خطة تنفيذ مرحلية تبدأ بسيناريو واحد عالي التكرار ومنخفض المخاطر.',
+    'وضح دائماً أن الوكيل يدعم القرار البشري ولا يستبدله.',
+    'نوّه لضرورة اختبار الوكيل في بيئة تجريبية قبل الإنتاج.',
+    'اذكر المخاطر: الاعتماد المفرط على الأتمتة، جودة البيانات، وغياب المراجعة البشرية.'
+  ].join('\n'),
+
+  'tenders-analysis': [
+    BASE_SYSTEM_INSTRUCTION,
+    '',
+    '=== تخصص الديمو: تحليل المناقصات والمشتريات ===',
+    'أنت خبير تحليل مناقصات ومشتريات حكومية وخاصة في السوق السعودي.',
+    'ركز على: تحليل متطلبات كراس الشروط، المخاطر التعاقدية، جاهزية التقديم، والامتثال.',
+    'قيّم: ملاءمة الفرصة للقدرات، المخاطر المالية والقانونية، الجدول الزمني، وشروط الضمان.',
+    'حلل الشروط الخاصة والغرامات وضمانات الدخول والخروج.',
+    'لا تقدم نصيحة قانونية نهائية. كل بند قانوني يحتاج مراجعة مختص.',
+    'اذكر دائماً أن التحليل أولي ولا يغني عن المراجعة القانونية والمالية.',
+    'راع سياق المنافسة السعودية: النطاقات، التوطين، الأولوية المحلية، واشتراطات هيئة الحكومة الرقمية.'
+  ].join('\n'),
+
+  'data-analysis': [
+    BASE_SYSTEM_INSTRUCTION,
+    '',
+    '=== تخصص الديمو: تحليل البيانات والقرار ===',
+    'أنت محلل بيانات تنفيذي للشركات السعودية، تحوّل الأرقام إلى رؤى قابلة للتنفيذ.',
+    'ركز على: اكتشاف الأنماط، الشذوذ، فرص التحسين، ومؤشرات الأداء القابلة للقياس.',
+    'كل insight يجب أن يرتبط بحقل أو رقم أو نمط محدد في البيانات، وليس عبارة عامة.',
+    'اقترح لوحة متابعة تنفيذية تربط المؤشرات بقرار واضح.',
+    'نوّه إذا كانت العينة محدودة وأن النتائج تحتاج تحقق قبل الاعتماد.',
+    'لا تربط السبب بالنتيجة بدون دليل إحصائي أو بيانات إضافية.',
+    'راع السياق السعودي: رمضان، المواسم، العطلات الرسمية، وأوقات الذروة.'
+  ].join('\n'),
+
+  'smart-automation': [
+    BASE_SYSTEM_INSTRUCTION,
+    '',
+    '=== تخصص الديمو: الأتمتة الذكية ===',
+    'أنت خبير أتمتة العمليات للشركات السعودية.',
+    'ركز على: تحليل العمليات اليدوية، تحديد نقاط الأتمتة، مخاطر الصلاحيات، وخطوات التنفيذ.',
+    'قيّم كل خطوة: هل يمكن أتمتتها بالكامل؟ تحتاج تأكيد بشري؟ أو تبقى يدوية؟',
+    'الموافقات المالية والقرارات الحساسة يجب أن تبقى بتأكيد بشري وسجل تدقيق.',
+    'اقترح خريطة سير عمل واضحة: مدخل موحد → معالجة → مراجعة → إجراء.',
+    'حدد مؤشرات نجاح: زمن الدورة، نسبة الأخطاء، وحجم العمل اليدوي المتبقي.',
+    'لا تعد بتوفير وقت أو تكلفة بدون تحليل واقعي للتعقيد والربط المطلوب.'
+  ].join('\n'),
+
+  'ai-workflows': [
+    BASE_SYSTEM_INSTRUCTION,
+    '',
+    '=== تخصص الديمو: تدفقات عمل الذكاء الاصطناعي ===',
+    'أنت مصمم سير عمل ذكاء اصطناعي متعدد الخطوات للشركات السعودية.',
+    'ركز على: فصل المسؤوليات بين البشر والأنظمة والذكاء الاصطناعي، ونقاط القرار، والمخرجات القابلة للقياس.',
+    'وضح دور كل طرف: الذكاء الاصطناعي يلخص ويصنف ويقترح، والإنسان يعتمد ويراجع.',
+    'صمم تدفقاً خفيفاً يبدأ بالتلخيص والتصنيف ثم يرسل قراراً مقترحاً للمسؤول.',
+    'حدد نقاط التصعيد: متى يُرفع للمشرف؟ متى يتوقف التدفق؟',
+    'اقترح تكاملات واقعية: CRM، أنظمة المهام، البريد، قنوات التواصل.',
+    'لا تصمم تدفقاً يعتمد بالكامل على الذكاء الاصطناعي بدون نقاط مراجعة بشرية.'
+  ].join('\n'),
+
+  'smart-education-platform': [
+    BASE_SYSTEM_INSTRUCTION,
+    '',
+    '=== تخصص الديمو: منصة تعليم ذكية ===',
+    'أنت خبير تصميم تجارب تعليمية ذكية للمدارس والمراكز التدريبية والجامعات السعودية.',
+    'ركز على: مؤشرات متابعة المتعلمين، التدخل المبكر، تقارير الإدارة، وخطط الدعم.',
+    'القرار التربوي يبقى دائماً للمعلم أو المشرف. النظام يقترح ولا يقرر.',
+    'لا تستخدم بيانات طلاب حقيقية أو أسماء أو هويات. استخدم بيانات افتراضية فقط.',
+    'تابع: الالتزام، الإنجاز، الفجوات، والحضور بدلاً من درجة واحدة.',
+    'اقترح تقسيم المتعلمين حسب مستوى التقدم وليس حسب الترتيب.',
+    'راع الخصوصية: أي تقرير يجب أن يكون منزوع الهوية قبل المشاركة.'
+  ].join('\n'),
+
+  'smart-hospital-management': [
+    BASE_SYSTEM_INSTRUCTION,
+    '',
+    '=== تخصص الديمو: إدارة المستشفيات الذكية ===',
+    'أنت خبير تحليل العمليات التشغيلية للمستشفيات والعيادات في السعودية.',
+    'ركز على: مؤشرات الانتظار، إشغال الأسرة، الجدولة، جودة الخدمة، والرضا.',
+    'لا تقدم تشخيصاً أو علاجاً أو نصيحة طبية فردية أبداً.',
+    'أي قرار يؤثر على رعاية مريض يجب أن يبقى بيد مختص مرخص.',
+    'استخدم بيانات مجمعة فقط. لا تعرض بيانات مرضى فردية في الديمو.',
+    'اقترح خطة تحسين أسبوعية تعتمدها إدارة المستشفى: مؤشرات قليلة وواضحة.',
+    'راع معايير الجودة السعودية: CBAHI، مقاييس المركز الوطني لقياس أداء الأجهزة الصحية.',
+    'التصعيد ضروري لأي مؤشر حرج: زمن انتظار الطوارئ، إشغال العناية المركزة، أو الشكاوى المتكررة.'
+  ].join('\n')
+});
+
 const ALLOWED_DEMO_TYPES = Object.freeze([
   'ai-agent',
   'tenders-analysis',
@@ -1114,14 +1208,32 @@ function buildArabicReport({ blueprint, input, scenarioData, response }) {
     blueprint.scenarios[0],
     120
   );
+  const sectionSep = '\n---\n';
+  const itemsList = response.items.map((item, i) =>
+    `${i + 1}. [${item.status === 'good' ? '✓' : item.status === 'critical' ? '⚠' : '◉'}] ${item.title}: ${item.description}`
+  ).join('\n');
+  const metricsList = response.metrics.map(m =>
+    `- ${m.label}: ${m.value} (${m.level} | ${m.trend === 'up' ? '↑' : m.trend === 'down' ? '↓' : '→'})`
+  ).join('\n');
+  const recsList = response.recommendations.map((r, i) =>
+    `${i + 1}. [${r.priority}] ${r.text} (جهد: ${r.effort})`
+  ).join('\n');
   const lines = [
     `تقرير ${blueprint.title}`,
     `السيناريو: ${scenario}`,
-    `الملخص: ${response.summary}`,
-    `أهم الملاحظات: ${response.items.map(item => `${item.title}: ${item.description}`).join(' | ')}`,
-    `المؤشرات: ${response.metrics.map(metric => `${metric.label}: ${metric.value}`).join(' | ')}`,
-    `التوصيات: ${response.recommendations.map(item => item.text).join(' | ')}`,
-    `الخطوة التالية: ${response.nextActions[0] || 'راجع التقرير مع الفريق وحدد تجربة محدودة.'}`,
+    sectionSep,
+    `الملخص:\n${response.summary}`,
+    sectionSep,
+    `الملاحظات:\n${itemsList}`,
+    sectionSep,
+    `المؤشرات:\n${metricsList}`,
+    sectionSep,
+    `التوصيات:\n${recsList}`,
+    sectionSep,
+    `الخطوات التالية:\n${response.nextActions.map((a, i) => `${i + 1}. ${a}`).join('\n')}`,
+    sectionSep,
+    `مستوى الثقة: ${Math.round(response.confidence * 100)}% | مستوى المخاطر: ${response.riskLevel}`,
+    sectionSep,
     `تنبيه: ${blueprint.disclaimer}`
   ];
   return lines.join('\n');
@@ -1640,6 +1752,7 @@ function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
   const scenario = scenarioData?.scenario || input?.scenarioId || blueprint.scenarios[0];
   const message = input?.message || scenarioData?.message || scenarioData?.sample || '';
   const metadata = input?.metadata || scenarioData?.metadata || {};
+  const userContext = input?.context || '';
   return [
     blueprint.systemInstruction,
     `نوع الديمو: ${blueprint.demoType}`,
@@ -1650,11 +1763,15 @@ function buildPromptForDemo(blueprint, input = {}, scenarioData = {}) {
     `المخرج المطلوب: ${blueprint.outcome}`,
     `السيناريو: ${scenario}`,
     message ? `مدخل المستخدم: ${message}` : '',
-    Object.keys(metadata).length ? `سياق إضافي: ${JSON.stringify(metadata)}` : '',
+    userContext ? `سياق إضافي من المستخدم: ${userContext}` : '',
+    Object.keys(metadata).length ? `بيانات إضافية: ${JSON.stringify(metadata)}` : '',
     `تنبيه إلزامي داخل التقرير: ${blueprint.disclaimer}`,
     'أعد JSON صالحاً فقط، بدون Markdown وبدون أي نص خارجي.',
     'لا تذكر أنك استخدمت fallback أو مزود وهمي.',
-    'اجعل report تقريراً عربياً منسقاً بأسطر نصية عادية لا Markdown.'
+    'اجعل report تقريراً عربياً منسقاً بأسطر نصية عادية لا Markdown.',
+    'تأكد أن summary بين 50 و300 حرف، وأن items وmetrics تحتوي 2-6 عناصر واقعية.',
+    'اجعل confidence بين 0.7 و0.95، و riskLevel منطقياً مع محتوى التحليل.',
+    'كل توصية يجب أن تكون عملية وقابلة للتنفيذ وليست عامة.'
   ].filter(Boolean).join('\n');
 }
 
@@ -1936,14 +2053,16 @@ function createDemoConfig(demoType, blueprint) {
     };
     return Object.freeze(config);
   }
+  const uniqueInstruction = GENERIC_DEMO_SYSTEM_INSTRUCTIONS[demoType]
+    || `${BASE_SYSTEM_INSTRUCTION}\n\n${blueprint.focus}`;
   const config = {
     demoType,
     model,
     title: blueprint.title,
     schemaName: blueprint.schemaName,
     safetyProfile: blueprint.safetyProfile,
-    systemInstruction: `${BASE_SYSTEM_INSTRUCTION}\n\n${blueprint.focus}`,
-    system: `${BASE_SYSTEM_INSTRUCTION}\n\n${blueprint.focus}`,
+    systemInstruction: uniqueInstruction,
+    system: uniqueInstruction,
     validationRules: {
       locale: ['ar-SA', 'en-SA'],
       maxInputLength: 3000,
@@ -2005,6 +2124,7 @@ module.exports = {
   DEMO_PROMPTS,
   DEMO_TYPE_ALIASES,
   BASE_SYSTEM_INSTRUCTION,
+  GENERIC_DEMO_SYSTEM_INSTRUCTIONS,
   DATA_ANALYZER_RESPONSE_SCHEMA,
   DATA_ANALYZER_SCHEMA_DESCRIPTION,
   CUSTOMER_SERVICE_RESPONSE_SCHEMA,

@@ -38,6 +38,7 @@ const {
 const { canHandleDemoRoute, demoRouteHandler } = require('./routes/demo');
 const { demoGeminiApp, canHandleDemoGeminiRoute } = require('./demoGeminiApp');
 const { getProviderStatus, getSafeAiStatus } = require('./services/aiGateway');
+const { getSkills, getSkillsSummary } = require('./services/skillsRegistry');
 
 const API_SECURITY_HEADERS = {
   'Content-Language': 'ar-SA',
@@ -515,6 +516,34 @@ async function handleRequest(req, res) {
         environment: config.server.nodeEnv,
         providers
       });
+    } else if (method === 'GET' && url === '/api/gateway-status') {
+      const providers = getProviderStatus();
+      const skillsSummary = getSkillsSummary();
+      const overallOk = Object.values(providers).some(p => p.configured);
+
+      ctx.res.status(200).json({
+        status: overallOk ? 'ok' : 'degraded',
+        timestamp: Date.now(),
+        environment: config.server.nodeEnv,
+        version: '1.0.0',
+        services: {
+          ai_gateway: overallOk,
+          skills: skillsSummary,
+          websocket: true,
+          static_files: true
+        },
+        providers
+      });
+    } else if (method === 'GET' && url === '/api/skills') {
+      const refresh = search.includes('refresh=true');
+      const { skills, scannedAt } = getSkills(refresh);
+
+      ctx.res.status(200).json({
+        object: 'list',
+        total: skills.length,
+        scannedAt,
+        skills
+      });
     } else {
       ctx.res.setHeader('X-Robots-Tag', 'noindex');
       ctx.res.status(404).json({
@@ -598,6 +627,8 @@ function startServer() {
     console.log('  POST /api/analytics/ga4/conversion - Forward conversion events to GA4');
     console.log('  GET  /api/docs       - API Documentation (Swagger UI)');
     console.log('  GET  /api/health     - Health check');
+    console.log('  GET  /api/gateway-status - Gateway status + skills summary');
+    console.log('  GET  /api/skills     - Full skills registry');
     console.log('  WS   /ws/live        - Real-time dashboard updates');
   });
 

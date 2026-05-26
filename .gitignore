@@ -46,6 +46,12 @@ build/
 .render-static/
 # Note: .min.js and .min.css files are now included in git (needed for production)
 
+# Publish surface protection - these should never be published
+.ai-reject-dashboard/.env
+.telegram-devto-bot/.env
+private/
+.next/
+
 # Cache
 .cache/
 .parcel-cache/
