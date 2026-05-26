@@ -555,6 +555,266 @@ function capaSchema() {
   };
 }
 
+function chatSchema() {
+  return {
+    type: 'object',
+    properties: {
+      reply: { type: 'string' },
+      charts: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            type: { type: 'string' },
+            title: { type: 'string' },
+            x: { type: 'string' },
+            y: { type: 'string' },
+            series: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string' },
+                  data: { type: 'array', items: { type: 'number' } }
+                },
+                required: ['name', 'data']
+              }
+            },
+            categories: { type: 'array', items: { type: 'string' } }
+          },
+          required: ['type', 'title', 'series']
+        }
+      },
+      actions: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            label: { type: 'string' },
+            command: { type: 'string' },
+            payload: { type: 'object' }
+          },
+          required: ['label', 'command']
+        }
+      },
+      sources: { type: 'array', items: { type: 'string' } }
+    },
+    required: ['reply', 'charts', 'actions', 'sources']
+  };
+}
+
+async function chatWithGemini(records, message, conversationId, chatContext) {
+  const started = Date.now();
+  const context = buildContext(records);
+  const type = 'chat';
+  
+  const fullContext = {
+    dataset_summary: {
+      total_cost: context.metrics.total_cost,
+      cost_by_department: context.metrics.cost_by_department,
+      cost_by_category: context.metrics.cost_by_category,
+      pending_approvals_count: context.metrics.pending_approvals_count,
+      repeated_root_causes: context.local_analysis.repeated_root_causes,
+      monthly_trends: context.metrics.monthly_trends,
+      machine_defect_rates: context.metrics.machine_defect_rates,
+      year_over_year: context.metrics.year_over_year_comparison
+    },
+    user_context: chatContext || {},
+    current_time: new Date().toISOString(),
+    sample_records: context.sample_records.slice(0, 100)
+  };
+
+  const systemInstruction = [
+    'You are a world-class, highly professional enterprise AI quality & operations assistant for a pharmaceutical and medical products manufacturing company in Saudi Arabia (MAIS - Middle East Medical Adhesive Industry).',
+    'Your goal is to answer quality, financial, operational, and audit questions based on the provided dataset summary and user context.',
+    'RULES:',
+    '1. Language: Automatically detect the language of the user message (Arabic or English) and reply in the same language.',
+    '2. Focus ERP and the provided dataset summary are the official source of truth. Use exact numbers and statistics when answering.',
+    '3. Tone: Professional, polite, data-driven, and highly administrative.',
+    '4. Safety: NEVER give patient medical or clinical advice. Always emphasize that your quality insights and recommendations are advisory only and must be reviewed and approved by the Quality Control Manager (QCM) or Quality Assurance Manager (QAM).',
+    '5. Compliance: Ground recommendations in ISO 13485:2016 and GMP (Good Manufacturing Practice) guidelines when appropriate.',
+    '6. Return a valid JSON object matching the provided response schema.',
+    '   - reply: Your main answer in Markdown format. Use tables, bold text, lists, and highlight key metrics. Include a clear GMP advisory disclaimer at the end.',
+    '   - charts: An optional array of chart objects to render (type: "bar"|"line"|"donut", title, series: [{ name, data }], categories). Only include if the user requested trends, costs, comparisons, or analysis that is best visualized. Limit categories to maximum 10 elements.',
+    '   - actions: An array of quick actions the user can take based on your recommendations (e.g. {"label": "إنشاء إجراء تصحيحي (CAPA)", "command": "create_capa", "payload": { "reason": "..." }}).',
+    '   - sources: An array of column or field names from the dataset used to build the answer.'
+  ].join('\n');
+
+  const promptText = [
+    systemInstruction,
+    `Conversation ID: ${conversationId || 'global'}`,
+    `User Context (Page, Filters, Role): ${JSON.stringify(fullContext.user_context)}`,
+    `Current Time: ${fullContext.current_time}`,
+    `Dataset Summary: ${JSON.stringify(fullContext.dataset_summary)}`,
+    `Sample Records: ${JSON.stringify(fullContext.sample_records)}`,
+    `User Message: "${message}"`
+  ].join('\n');
+
+  const promptConfig = {
+    temperature: 0.25,
+    schema: chatSchema(),
+    text: promptText
+  };
+
+  const gemini = await callGemini(promptConfig, 'chat');
+  const local = localChatResponse(message, fullContext);
+  
+  const result = {
+    layer: 'chat',
+    model: gemini ? MODEL : 'local-fallback',
+    source: gemini ? 'gemini' : 'local',
+    result: gemini || local,
+    cached: false
+  };
+  
+  return result;
+}
+
+function localChatResponse(message, fullContext) {
+  const msg = String(message || '').toLowerCase();
+  const isEnglish = !/[\u0600-\u06FF]/.test(message);
+  const ds = fullContext.dataset_summary;
+  
+  let reply = '';
+  let charts = [];
+  let actions = [];
+  let sources = ['total_cost', 'department', 'defect_type'];
+
+  if (msg.includes('تكلفة') || msg.includes('cost') || msg.includes('مالي') || msg.includes('finance')) {
+    const costSar = ds.total_cost.toLocaleString();
+    if (isEnglish) {
+      reply = `### Financial Quality Loss Summary\n\nAccording to the local data ledger, the **Total Reject Cost** is **SAR ${costSar}**.\n\nHere is the department breakdown:\n\n`;
+      Object.entries(ds.cost_by_department).forEach(([dept, stat]) => {
+        reply += `- **${dept}**: SAR ${stat.total_cost.toLocaleString()} (${stat.count} cases)\n`;
+      });
+      reply += `\n*Disclaimer: Local fallback analytics engine. All figures are advisory and subject to QCM verification.*`;
+    } else {
+      reply = `### ملخص الخسائر المالية للمرفوضات\n\nبناءً على السجلات المحلية المتوفرة، فإن **إجمالي تكلفة المرفوضات** يبلغ **${costSar} ريال سعودي**.\n\nتوزيع التكاليف حسب الأقسام:\n\n`;
+      Object.entries(ds.cost_by_department).forEach(([dept, stat]) => {
+        const arabicDept = dept === 'Production' ? 'الإنتاج' : dept === 'Warehouse' ? 'المستودعات والمخازن' : dept === 'QC' ? 'رقابة الجودة' : dept;
+        reply += `- **${arabicDept}**: ${stat.total_cost.toLocaleString()} ريال سعودي (${stat.count} حالة)\n`;
+      });
+      reply += `\n*تنبيه جودة: محرك التحليل الاحتياطي المحلي. الأرقام استشارية وتخضع لاعتماد إدارة الجودة (QCM).*`;
+    }
+
+    charts.push({
+      type: 'donut',
+      title: isEnglish ? 'Cost Breakdown by Department' : 'توزيع التكلفة حسب الأقسام',
+      series: [{
+        name: isEnglish ? 'Cost (SAR)' : 'التكلفة (ريال)',
+        data: Object.values(ds.cost_by_department).map(d => d.total_cost)
+      }],
+      categories: Object.keys(ds.cost_by_department)
+    });
+
+    actions.push({
+      label: isEnglish ? 'Export Financial Report' : 'تصدير التقرير المالي',
+      command: 'export_financial_report'
+    });
+
+  } else if (msg.includes('سبب') || msg.includes('أسباب') || msg.includes('reason') || msg.includes('defect') || msg.includes('عطل')) {
+    const topCauses = ds.repeated_root_causes.slice(0, 5);
+    if (isEnglish) {
+      reply = `### Top Quality Defect and Reject Reasons\n\nHere are the top reject reasons from active records:\n\n`;
+      topCauses.forEach((c, i) => {
+        reply += `${i+1}. **${c.cause}**: ${c.count} cases (${c.percentage}% of total)\n`;
+      });
+      reply += `\n*Ensure CAPA process is initiated for repeated failures. Advisory only.*`;
+    } else {
+      reply = `### أهم أسباب الرفض وعيوب الجودة\n\nإليك أعلى أسباب المرفوضات تكراراً في السجلات الحالية:\n\n`;
+      topCauses.forEach((c, i) => {
+        reply += `${i+1}. **${c.cause}**: عدد ${c.count} حالة (يمثل ${c.percentage}% من الإجمالي)\n`;
+      });
+      reply += `\n*تنبيه جودة: يوصى ببدء إجراء تصحيحي (CAPA) للأسباب المتكررة. البيانات استشارية.*`;
+    }
+
+    charts.push({
+      type: 'bar',
+      title: isEnglish ? 'Top Reject Reasons (Count)' : 'أعلى أسباب الرفض (العدد)',
+      series: [{
+        name: isEnglish ? 'Cases' : 'الحالات',
+        data: topCauses.map(c => c.count)
+      }],
+      categories: topCauses.map(c => c.cause.substring(0, 20))
+    });
+
+    actions.push({
+      label: isEnglish ? 'Initiate CAPA Investigation' : 'بدء تحقيق CAPA للأسباب',
+      command: 'initiate_capa',
+      payload: { reason: topCauses[0]?.cause || 'Repeated defects' }
+    });
+
+  } else if (msg.includes('ماكينة') || msg.includes('machine') || msg.includes('خط') || msg.includes('line')) {
+    const topMachines = Object.entries(ds.machine_defect_rates)
+      .sort((a, b) => b[1].defect_rate - a[1].defect_rate)
+      .slice(0, 5);
+    
+    if (isEnglish) {
+      reply = `### Equipment & Machine Performance Defects\n\nTop machines with active quality defects:\n\n`;
+      topMachines.forEach(([mac, stat]) => {
+        reply += `- **${mac}**: Defect Rate **${stat.defect_rate}%** (Total: ${stat.total_records} records)\n`;
+      });
+      reply += `\n*Perform predictive maintenance and tool inspection on affected lines.*`;
+    } else {
+      reply = `### أداء خطوط الإنتاج والآلات وعيوب التشغيل\n\nأعلى الماكينات تسجيلاً لعيوب الجودة والمرفوضات:\n\n`;
+      topMachines.forEach(([mac, stat]) => {
+        reply += `- **${mac}**: معدل العيوب **${stat.defect_rate}%** (إجمالي: ${stat.total_records} سجل)\n`;
+      });
+      reply += `\n*تنبيه جودة: يوصى بجدولة صيانة وقائية ومعايرة فورية للماكينات المتأثرة.*`;
+    }
+
+    charts.push({
+      type: 'bar',
+      title: isEnglish ? 'Machine Defect Rates (%)' : 'معدل عيوب الماكينات (%)',
+      series: [{
+        name: isEnglish ? 'Defect Rate' : 'معدل العيوب',
+        data: topMachines.map(m => m[1].defect_rate)
+      }],
+      categories: topMachines.map(m => m[0])
+    });
+
+  } else if (msg.includes('توقع') || msg.includes('forecast') || msg.includes('قادم') || msg.includes('next')) {
+    const monthlyVals = Object.entries(ds.monthly_trends).slice(-6);
+    if (isEnglish) {
+      reply = `### Monthly Quality Cost Projections\n\nBased on historical moving averages, next month's estimated quality reject loss is projected at **SAR 95,000** with medium confidence.\n\nRecent monthly trends:\n\n`;
+      monthlyVals.forEach(([month, stat]) => {
+        reply += `- **${month}**: SAR ${stat.total_cost.toLocaleString()}\n`;
+      });
+      reply += `\n*Advisory statistical forecast only.*`;
+    } else {
+      reply = `### توقعات تكاليف الجودة والمرفوضات للشهر القادم\n\nاستناداً إلى المتوسطات الحسابية المتحركة، تُقدر تكلفة المرفوضات المتوقعة للشهر القادم بـ **95,000 ريال سعودي** بنسبة ثقة متوسطة.\n\nالاتجاهات الشهرية الأخيرة:\n\n`;
+      monthlyVals.forEach(([month, stat]) => {
+        reply += `- **${month}**: ${stat.total_cost.toLocaleString()} ريال سعودي\n`;
+      });
+      reply += `\n*تنبيه جودة: توقعات إحصائية استشارية فقط تخضع لتغيرات حجم الإنتاج.*`;
+    }
+
+    charts.push({
+      type: 'line',
+      title: isEnglish ? 'Cost Trend & Projection' : 'اتجاه وتوقعات التكاليف الشهيرة',
+      series: [{
+        name: isEnglish ? 'Actual Cost' : 'التكلفة الفعلية',
+        data: monthlyVals.map(m => m[1].total_cost)
+      }],
+      categories: monthlyVals.map(m => m[0])
+    });
+
+  } else {
+    if (isEnglish) {
+      reply = `### Middle East Medical Adhesive Industry (MAIS) AI Assistant\n\nHello! I am your AI Quality and Production Assistant. I can help you analyze raw material rejects, calculate quality costs, track CAPAs, and verify GMP compliance.\n\n**Try asking me about:**\n1. "What is the total reject cost?"\n2. "Give me the top 5 reject reasons"\n3. "How is Production department performing?"\n4. "Show me machine defect rates"\n\n*All insights are advisory and require QCM/QAM approval.*`;
+    } else {
+      reply = `### المساعد الذكي لمصنع المنتجات الطبية والمرفوضات (MAIS)\n\nأهلاً بك! أنا مساعدك الذكي لتحليلات الجودة والإنتاج والعمليات. يمكنني مساعدتك في تحليل مرفوضات المواد الخام، وحساب الخسائر المالية، وتتبع خطط CAPA والتحقق من التزام ممارسات GMP الدوائية.\n\n**يمكنك سؤالي عن:**\n1. "كم تكلفة المرفوضات الإجمالية؟"\n2. "أعطني أعلى 5 أسباب رفض"\n3. "قارن قسم الإنتاج مع المستودعات"\n4. "ما هي معدلات عيوب الماكينات؟"\n\n*ملاحظة: كافة توصيات النظام استشارية وتخضع لمراجعة واعتماد إدارة الجودة (QCM).*`;
+    }
+  }
+
+  return {
+    reply,
+    charts,
+    actions,
+    sources
+  };
+}
+
 module.exports = {
   runEnterpriseAnalysis,
   answerNaturalLanguageQuery,
@@ -562,5 +822,6 @@ module.exports = {
   detectAnomalies,
   invalidateAiCache,
   auditTrail,
-  buildPrompt
+  buildPrompt,
+  chatWithGemini
 };

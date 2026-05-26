@@ -10,7 +10,8 @@ const {
   answerNaturalLanguageQuery,
   generateCapa,
   detectAnomalies,
-  auditTrail
+  auditTrail,
+  chatWithGemini
 } = require('../services/aiService');
 
 const router = express.Router();
@@ -21,6 +22,16 @@ const querySchema = Joi.object({
 
 const capaSchema = Joi.object({
   reject_case: Joi.object().unknown(true).required()
+});
+
+const chatSchema = Joi.object({
+  message: Joi.string().trim().min(1).max(5000).required(),
+  conversation_id: Joi.string().trim().allow('').max(100).optional(),
+  context: Joi.object({
+    page: Joi.string().trim().allow('').max(200).optional(),
+    filters: Joi.object().unknown(true).optional(),
+    user_role: Joi.string().trim().allow('').max(100).optional()
+  }).optional()
 });
 
 router.get('/ai/enterprise-analysis', requireAuth, async (req, res, next) => {
@@ -51,6 +62,28 @@ router.post('/ai/generate-capa', requireAuth, validate(capaSchema), async (req, 
     const capa = await generateCapa(records, req.body.reject_case);
     audit('AI_GENERATE_CAPA', req, req.body.reject_case.doc_no || req.body.reject_case.item_code || 'unknown');
     return res.json(success(capa, 'ai'));
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post('/ai/chat', requireAuth, validate(chatSchema), async (req, res, next) => {
+  try {
+    const records = await getRejects();
+    const result = await chatWithGemini(
+      records,
+      req.body.message,
+      req.body.conversation_id,
+      req.body.context
+    );
+    audit('AI_CHAT', req, req.body.message);
+    
+    return res.json({
+      success: true,
+      source: result.source,
+      data: result.result,
+      ...result.result
+    });
   } catch (err) {
     return next(err);
   }

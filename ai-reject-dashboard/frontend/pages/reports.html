@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>باني التقارير الذكي — BrightAI Reports Hub</title>
+  
+  <!-- Font and Core Design System Stylesheets -->
+  <link rel="stylesheet" href="../assets/css/design-system.css">
+  <link rel="stylesheet" href="../assets/css/components/sidebar.css">
+  <link rel="stylesheet" href="../assets/css/components/topbar.css">
+  <link rel="stylesheet" href="../assets/css/components/cards.css">
+  <link rel="stylesheet" href="../assets/css/components/buttons.css">
+  <link rel="stylesheet" href="../assets/css/components/forms.css">
+  <link rel="stylesheet" href="../assets/css/components/tables.css">
+  <link rel="stylesheet" href="../assets/css/components/breadcrumbs.css">
+  <link rel="stylesheet" href="../assets/css/components/badges.css">
+  <link rel="stylesheet" href="../assets/css/components/modals.css">
+  <link rel="stylesheet" href="../assets/css/components/skeletons.css">
+
+  <style>
+    /* Custom styles for Drag-and-Drop and Preview Grid */
+    .reports-layout {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      margin-top: 20px;
+    }
+    
+    .builder-sidebar {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    [data-theme="dark"] .builder-sidebar {
+      background: var(--gray-900);
+      border-color: var(--gray-800);
+    }
+    
+    .draggable-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .draggable-item {
+      padding: 10px 14px;
+      background: var(--gray-50);
+      border: 1px dashed var(--gray-300);
+      border-radius: var(--radius-md);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray-700);
+      cursor: grab;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    [data-theme="dark"] .draggable-item {
+      background: var(--gray-800);
+      border-color: var(--gray-700);
+      color: var(--gray-300);
+    }
+    
+    .draggable-item:hover {
+      background: var(--teal-50);
+      border-color: var(--teal);
+      color: var(--teal-dark);
+    }
+
+    [data-theme="dark"] .draggable-item:hover {
+      background: rgba(0, 166, 166, 0.1);
+      color: var(--teal);
+    }
+    
+    .drop-zone {
+      border: 2px dashed var(--gray-300);
+      border-radius: var(--radius-lg);
+      background: rgba(var(--primary-rgb), 0.01);
+      padding: 24px;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.3s;
+    }
+    
+    .drop-zone.dragover {
+      border-color: var(--teal);
+      background: rgba(0, 166, 166, 0.05);
+    }
+    
+    .dropped-section {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      cursor: move;
+    }
+
+    [data-theme="dark"] .dropped-section {
+      background: var(--gray-800);
+      border-color: var(--gray-700);
+    }
+    
+    .dropped-section .drag-handle {
+      color: var(--gray-400);
+      cursor: move;
+    }
+    
+    /* Live Preview Paper Layout */
+    .preview-paper {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-lg);
+      border-radius: var(--radius-md);
+      padding: 40px;
+      min-height: 700px;
+      position: relative;
+      overflow: hidden;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+    }
+
+    [data-theme="dark"] .preview-paper {
+      background: var(--gray-900);
+      border-color: var(--gray-800);
+    }
+    
+    .preview-watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      font-size: 5rem;
+      font-weight: 800;
+      color: rgba(231, 111, 81, 0.06);
+      pointer-events: none;
+      text-transform: uppercase;
+      letter-spacing: 10px;
+      white-space: nowrap;
+      z-index: 1;
+    }
+    
+    .preview-header {
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    [data-theme="dark"] .preview-header {
+      border-color: var(--gray-800);
+    }
+    
+    .preview-logo {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    
+    .preview-section-box {
+      border: 1px solid var(--gray-100);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-bottom: 16px;
+      background: var(--gray-50);
+      position: relative;
+      z-index: 2;
+    }
+
+    [data-theme="dark"] .preview-section-box {
+      border-color: var(--gray-800);
+      background: var(--gray-800);
+    }
+    
+    .preview-footer {
+      border-top: 1px solid var(--gray-200);
+      padding-top: 12px;
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: var(--gray-400);
+    }
+
+    [data-theme="dark"] .preview-footer {
+      border-color: var(--gray-800);
+    }
+
+    /* Template Cards hover animations */
+    .template-card {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    
+    .template-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--teal);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .template-card.active {
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.02);
+    }
+  </style>
+
+  <!-- Alpine.js library for fast and scalable UI operations -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <div class="app-layout" x-data="reportsApp()">
+    
+    <!-- Sidebar navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated System</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">&#x1F4CA;</span> لوحة التحكم الرئيسية</a>
+        <a href="executive.html"><span class="icon">&#x1F3E2;</span> الرؤية التنفيذية</a>
+        <a href="finance.html"><span class="icon">&#x1F4B0;</span> التحليلات المالية</a>
+        <a href="quality.html"><span class="icon">&#x1F3EB;</span> الجودة والـ CAPA</a>
+        <a href="production.html"><span class="icon">&#x1F3ED;</span> الإنتاج والعمليات</a>
+        <a href="workflow.html"><span class="icon">&#x1F504;</span> الحوكمة ومسار العمل</a>
+        <a href="technical.html"><span class="icon">&#x2699;</span> الرؤية التقنية</a>
+        <a href="reports.html" class="active"><span class="icon">&#x1F4C4;</span> مركز التقارير الفاخر</a>
+      </nav>
+      <div class="sidebar-footer">
+        نظام فوكس هو المصدر الرسمي للبيانات.<br>
+        تحليلات الذكاء الاصطناعي استشارية فقط.
+      </div>
+    </aside>
+
+    <main class="main-content">
+      
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <div class="page-title-area">
+            <h2>باني التقارير الذكي</h2>
+            <div class="breadcrumb">التقارير — التصدير متعدد الصيغ — جدولة آلية للعمليات</div>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <!-- Multi-language Toggle -->
+          <button class="btn btn-secondary text-xs" @click="toggleLanguage()">
+            <span x-text="lang === 'ar' ? 'English' : 'العربية'"></span>
+          </button>
+          
+          <!-- Dark Mode Toggle -->
+          <button class="btn btn-secondary text-xs" @click="toggleTheme()">
+            <span x-text="theme === 'light' ? '🌙' : '☀️'"></span>
+          </button>
+          
+          <!-- User info -->
+          <div class="user-badge">
+            <span class="avatar">QA</span>
+            <span class="username" x-text="userRole"></span>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        
+        <!-- Safety/Advisory notice -->
+        <div class="disclaimer">
+          <strong>⚠️ تنبيه سرية وأمان:</strong> جميع التقارير المصدرة من النظام تحتوي على بصمة أمان رقمية وعلامة مائية لاسم المولد.
+          البيانات المنشأة استشارية وتخضع لضوابط الجودة `GMP` ومراجعة إدارة تأكيد الجودة `QAM`.
+        </div>
+
+        <!-- 1. Report Templates Selector Grid -->
+        <div class="section mt-20">
+          <h3 x-text="lang === 'ar' ? '1. اختر نموذج تقرير جاهز أو ابدأ من الصفر' : '1. Select a report template or build custom'"></h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 12px;">
+            
+            <div class="card template-card" :class="activeTemplate === 'executive' ? 'active' : ''" @click="selectTemplate('executive')">
+              <div style="font-size: 1.5rem; margin-bottom: 8px;">📊</div>
+              <h4 style="font-weight: 700; font-size: 0.82rem; color: var(--primary);" x-text="lang === 'ar' ? 'الإيجاز التنفيذي (PDF)' : 'Executive Brief (PDF)'"></h4>
+              <p style="font-size: 0.68rem; color: var(--gray-500); margin-top: 4px;" x-text="lang === 'ar' ? 'تقرير C-Level موجز ومبسط يحتوي على ملخص الذكاء الاصطناعي والمخاطر.' : 'Summary report containing AI-generated brief, risk bubbles, and strategy.'"></p>
+              <span class="badge success" style="margin-top: 8px;" x-text="lang === 'ar' ? 'تقرير إداري' : 'Management'"></span>
+            </div>
+
+            <div class="card template-card" :class="activeTemplate === 'financial' ? 'active' : ''" @click="selectTemplate('financial')">
+              <div style="font-size: 1.5rem; margin-bottom: 8px;">💵</div>
+              <h4 style="font-weight: 700; font-size: 0.82rem; color: var(--primary);" x-text="lang === 'ar' ? 'التقرير المالي (Excel)' : 'Financial Report (Excel)'"></h4>
+              <p style="font-size: 0.68rem; color: var(--gray-500); margin-top: 4px;" x-text="lang === 'ar' ? 'تحليل التكلفة، الوفورات، حيود الميزانية، وتتبع استرداد الخسائر المالي.' : 'Multi-sheet ledger with costs, variance formulas, and recovery tracking.'"></p>
+              <span class="badge warning" style="margin-top: 8px;" x-text="lang === 'ar' ? 'محاسبي' : 'Excel ledger'"></span>
+            </div>
+
+            <div class="card template-card" :class="activeTemplate === 'quality' ? 'active' : ''" @click="selectTemplate('quality')">
+              <div style="font-size: 1.5rem; margin-bottom: 8px;">🧪</div>
+              <h4 style="font-weight: 700; font-size: 0.82rem; color: var(--primary);" x-text="lang === 'ar' ? 'تقرير الجودة والـ CAPA' : 'Quality & CAPA (PDF)'"></h4>
+              <p style="font-size: 0.68rem; color: var(--gray-500); margin-top: 4px;" x-text="lang === 'ar' ? 'مؤشرات NCR، أداء كانبان لـ CAPA، ومخطط إيشيكاوا وتحليلات الأسباب.' : 'Quality metrics, CAPA Board status, and Ishikawa root causes.'"></p>
+              <span class="badge info" style="margin-top: 8px;" x-text="lang === 'ar' ? 'إدارة الجودة QMS' : 'Quality QMS'"></span>
+            </div>
+
+            <div class="card template-card" :class="activeTemplate === 'production' ? 'active' : ''" @click="selectTemplate('production')">
+              <div style="font-size: 1.5rem; margin-bottom: 8px;">⚙️</div>
+              <h4 style="font-weight: 700; font-size: 0.82rem; color: var(--primary);" x-text="lang === 'ar' ? 'التقرير التشغيلي والإنتاج' : 'Production Report (PDF)'"></h4>
+              <p style="font-size: 0.68rem; color: var(--gray-500); margin-top: 4px;" x-text="lang === 'ar' ? 'كفاءة الآلات OEE، الورديات، وتنبيهات صلاحية المواد FEFO/FIFO.' : 'OEE effectiveness, shift variance, and FEFO expiry notifications.'"></p>
+              <span class="badge secondary" style="margin-top: 8px;" x-text="lang === 'ar' ? 'MES تشغيلي' : 'Production MES'"></span>
+            </div>
+
+            <div class="card template-card" :class="activeTemplate === 'custom' ? 'active' : ''" @click="selectTemplate('custom')">
+              <div style="font-size: 1.5rem; margin-bottom: 8px;">✏️</div>
+              <h4 style="font-weight: 700; font-size: 0.82rem; color: var(--primary);" x-text="lang === 'ar' ? 'تقرير مخصص بالكامل' : 'Custom Report'"></h4>
+              <p style="font-size: 0.68rem; color: var(--gray-500); margin-top: 4px;" x-text="lang === 'ar' ? 'ابنِ تقريرك بنفسك باستخدام ميزة السحب والإفلات التفاعلية للأقسام.' : 'Build custom layouts using dynamic drag-and-drop elements.'"></p>
+              <span class="badge danger" style="margin-top: 8px;" x-text="lang === 'ar' ? 'مرن' : 'Flexible'"></span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2. Main Builder Workspace -->
+        <div class="reports-layout">
+          
+          <!-- Side Controller / Filters & Sections -->
+          <div class="builder-sidebar">
+            
+            <!-- Filters Panel -->
+            <div>
+              <h4 style="font-size: 0.8rem; font-weight: 700; margin-bottom: 12px; color: var(--navy);" x-text="lang === 'ar' ? 'فلاتر نطاق البيانات' : 'Data Range Filters'"></h4>
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div>
+                  <label class="form-label" x-text="lang === 'ar' ? 'تاريخ التقرير' : 'Date Range'"></label>
+                  <select class="form-control text-xs" x-model="filters.dateRange">
+                    <option value="last_month" x-text="lang === 'ar' ? 'الشهر الماضي' : 'Last Month'"></option>
+                    <option value="last_quarter" x-text="lang === 'ar' ? 'الربع السنوي الأخير' : 'Last Quarter'"></option>
+                    <option value="ytd" x-text="lang === 'ar' ? 'العام الحالي YTD' : 'Year to Date'"></option>
+                    <option value="custom" x-text="lang === 'ar' ? 'تحديد فترة مخصصة' : 'Custom Range'"></option>
+                  </select>
+                </div>
+                
+                <div x-show="filters.dateRange === 'custom'">
+                  <div style="display: flex; gap: 8px;">
+                    <div>
+                      <label class="form-label text-xxs" x-text="lang === 'ar' ? 'من' : 'From'"></label>
+                      <input type="date" class="form-control text-xs" x-model="filters.fromDate">
+                    </div>
+                    <div>
+                      <label class="form-label text-xxs" x-text="lang === 'ar' ? 'إلى' : 'To'"></label>
+                      <input type="date" class="form-control text-xs" x-model="filters.toDate">
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="form-label" x-text="lang === 'ar' ? 'تصفية حسب الأقسام' : 'Filter by Department'"></label>
+                  <select class="form-control text-xs" x-model="filters.department">
+                    <option value="all" x-text="lang === 'ar' ? 'جميع الأقسام' : 'All Departments'"></option>
+                    <option value="Warehouse" x-text="lang === 'ar' ? 'المستودعات والخدمات' : 'Warehouse'"></option>
+                    <option value="Production" x-text="lang === 'ar' ? 'الإنتاج والتشغيل' : 'Production'"></option>
+                    <option value="QC" x-text="lang === 'ar' ? 'رقابة الجودة' : 'QC'"></option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label" x-text="lang === 'ar' ? 'مستوى الحماية المائي' : 'Security Watermark'"></label>
+                  <select class="form-control text-xs" x-model="security.watermark">
+                    <option value="NONE" x-text="lang === 'ar' ? 'بدون ختم' : 'None'"></option>
+                    <option value="CONFIDENTIAL" x-text="lang === 'ar' ? 'سري للغابة (CONFIDENTIAL)' : 'Confidential'"></option>
+                    <option value="DRAFT" x-text="lang === 'ar' ? 'مسودة عمل (DRAFT)' : 'Draft'"></option>
+                    <option value="INTERNAL" x-text="lang === 'ar' ? 'للاستخدام الداخلي فقط' : 'Internal Use Only'"></option>
+                  </select>
+                </div>
+
+                <div x-show="security.watermark !== 'NONE'">
+                  <label class="form-label" x-text="lang === 'ar' ? 'تاريخ انتهاء صلاحية المستند' : 'Document Expiry Date'"></label>
+                  <input type="date" class="form-control text-xs" x-model="security.expiryDate">
+                </div>
+              </div>
+            </div>
+
+            <hr style="border: none; border-top: 1px solid var(--gray-200);">
+
+            <!-- Available Sections to drag -->
+            <div>
+              <h4 style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; color: var(--navy);" x-text="lang === 'ar' ? 'أقسام التقارير المتاحة' : 'Available Sections'"></h4 >
+              <p style="font-size: 0.65rem; color: var(--gray-500); margin-bottom: 12px;" x-text="lang === 'ar' ? 'قم بسحب الأقسام وتنزيلها في منطقة باني التقرير المجاورة:' : 'Drag elements into the dropping builder area:'"></p>
+              
+              <div class="draggable-list">
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'cover')" x-text="lang === 'ar' ? '📖 صفحة الغلاف والترويسة' : '📖 Cover Page'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'summary')" x-text="lang === 'ar' ? '🤖 إيجاز الذكاء الاصطناعي' : '🤖 AI Summary Brief'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'kpis')" x-text="lang === 'ar' ? '📈 بطاقات مؤشرات الأداء' : '📈 KPIs Summary Cards'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'financials')" x-text="lang === 'ar' ? '💵 مصفوفة الخسائر والتحليل المالي' : '💵 Loss & Finance Analysis'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'pareto')" x-text="lang === 'ar' ? '📊 عيوب المرفوضات (Pareto)' : '📊 Reject Defect Pareto'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'capa')" x-text="lang === 'ar' ? '🧪 جدول وإجراءات كانبان CAPA' : '🧪 CAPA Quality Board'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'audit')" x-text="lang === 'ar' ? '🏛️ سجل الموافقات وقائمة التدقيق' : '🏛️ Approvals & Checklist'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'signatures')" x-text="lang === 'ar' ? '✍️ توقيعات الاعتماد الرقمي' : '✍️ Digital Signatures'"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Drop Area and Live Preview -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            
+            <!-- Target Builder (Drag over area) -->
+            <div class="card" style="padding: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary);" x-text="lang === 'ar' ? '2. منطقة باني التقرير المخصص (اسحب الأقسام هنا)' : '2. Drag & Drop Builder Workspace'"></h4>
+                <button class="btn btn-secondary text-xxs" @click="clearDroppedSections()" x-text="lang === 'ar' ? 'إعادة تعيين الأقسام' : 'Reset Workspace'"></button>
+              </div>
+
+              <!-- Drop Target Zone -->
+              <div class="drop-zone" :class="dragOver ? 'dragover' : ''"
+                   @dragover.prevent="dragOver = true"
+                   @dragleave="dragOver = false"
+                   @drop="handleDrop($event)">
+                
+                <template x-for="(sec, idx) in droppedSections" :key="idx">
+                  <div class="dropped-section">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                      <span class="drag-handle">☰</span>
+                      <span style="font-size: 0.78rem; font-weight: 700; color: var(--navy);" x-text="getSectionTitle(sec)"></span>
+                    </div>
+                    <button class="btn btn-secondary text-xxs" style="color: var(--danger); padding: 2px 8px;" @click="removeDroppedSection(idx)" x-text="lang === 'ar' ? 'إزالة' : 'Remove'"></button>
+                  </div>
+                </template>
+
+                <div x-show="droppedSections.length === 0" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--gray-400); padding: 40px 0;">
+                  <span style="font-size: 3rem; margin-bottom: 12px;">📥</span>
+                  <span style="font-size: 0.8rem;" x-text="lang === 'ar' ? 'قم بسحب الأقسام من القائمة الجانبية وإسقاطها هنا لتوليد تقرير مخصص' : 'Workspace is empty. Drag elements from the sidebar here.'"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Export Buttons Panel -->
+            <div class="card" style="padding: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.02), rgba(0, 166, 166, 0.02));">
+              <div>
+                <h4 style="font-size: 0.82rem; font-weight: 700; color: var(--primary);" x-text="lang === 'ar' ? '3. جاهز للتصدير؟' : '3. Export Report Now'"></h4>
+                <p style="font-size: 0.68rem; color: var(--gray-500); margin-top: 2px;" x-text="lang === 'ar' ? 'توليد المستند فوتوغرافياً ومحاسبياً مع توثيق الأمان بالبصمة الرقمية.' : 'Generate live documents with secure digital tracking signatures.'"></p>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-primary" :disabled="droppedSections.length === 0 || exportLoading" @click="triggerExport('pdf')">
+                  <span x-show="!exportLoading">📄 PDF</span>
+                  <span x-show="exportLoading && formatType === 'pdf'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
+                  <span x-show="exportLoading && formatType === 'pdf'" x-text="lang === 'ar' ? 'جاري الرندرة...' : 'Rendering...'"></span>
+                </button>
+                <button class="btn btn-secondary" style="border-color: var(--green); color: var(--green);" :disabled="droppedSections.length === 0 || exportLoading" @click="triggerExport('excel')">
+                  <span x-show="!exportLoading">🟢 Excel</span>
+                  <span x-show="exportLoading && formatType === 'excel'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
+                  <span x-show="exportLoading && formatType === 'excel'" x-text="lang === 'ar' ? 'جاري التصدير...' : 'Exporting...'"></span>
+                </button>
+                <button class="btn btn-secondary" style="border-color: var(--accent); color: var(--accent);" :disabled="droppedSections.length === 0 || exportLoading" @click="triggerExport('pptx')">
+                  <span x-show="!exportLoading">🟠 PPTX</span>
+                  <span x-show="exportLoading && formatType === 'pptx'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
+                  <span x-show="exportLoading && formatType === 'pptx'" x-text="lang === 'ar' ? 'جاري التوليد...' : 'Generating...'"></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Live Preview Area -->
+            <div class="card" style="padding: 20px;">
+              <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;" x-text="lang === 'ar' ? 'معاينة حية للمستند قبل الطباعة والتصدير' : 'Live Document Preview'"></h4>
+              
+              <!-- Simulating Paper Document layout -->
+              <div class="preview-paper">
+                
+                <!-- Expiry banner if selected -->
+                <div x-show="security.expiryDate" style="background: rgba(231, 111, 81, 0.1); border: 1px solid var(--danger); padding: 8px 12px; border-radius: 6px; font-size: 0.65rem; color: var(--danger); margin-bottom: 20px; display: flex; justify-content: space-between; font-weight: 700;">
+                  <span x-text="lang === 'ar' ? '⚠️ مستند ذو صلاحية مؤقتة سرية' : '⚠️ Temporary Sensitive Document'"></span>
+                  <span><span x-text="lang === 'ar' ? 'ينتهي في:' : 'Expires:'"></span> <span x-text="security.expiryDate"></span></span>
+                </div>
+
+                <!-- Watermark -->
+                <div class="preview-watermark" x-show="security.watermark !== 'NONE'" x-text="security.watermark"></div>
+
+                <div class="preview-header">
+                  <div class="preview-logo">MAIS Medical Co.</div>
+                  <div style="font-size: 0.65rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'تاريخ التوليد: ' + new Date().toLocaleDateString('ar-SA') : 'Generated: ' + new Date().toLocaleDateString()"></div>
+                </div>
+
+                <!-- Render Mock previews for dropped sections -->
+                <template x-for="(sec, idx) in droppedSections" :key="idx">
+                  <div class="preview-section-box">
+                    <h5 style="font-weight: 700; font-size: 0.76rem; color: var(--primary); margin-bottom: 6px;" x-text="getSectionTitle(sec)"></h5>
+                    
+                    <!-- Previews contents by type -->
+                    <div x-show="sec === 'cover'" style="text-align: center; padding: 30px 0;">
+                      <h2 style="font-weight: 800; font-size: 1.4rem; color: var(--navy);" x-text="lang === 'ar' ? 'تقرير المرفوضات والامتثال الفني' : 'Quality Reject & Compliance Report'"></h2>
+                      <p style="font-size: 0.72rem; color: var(--gray-500); margin-top: 8px;" x-text="lang === 'ar' ? 'صادر لشركة الشرق الأوسط للمنتجات الطبية والمرفوضات (MAIS)' : 'Published for Middle East Medical Adhesive Industry (MAIS)'"></p>
+                    </div>
+
+                    <div x-show="sec === 'summary'" style="font-size: 0.68rem; color: var(--gray-600); line-height: 1.6;">
+                      <p style="font-weight: 700; color: var(--teal); margin-bottom: 4px;" x-text="lang === 'ar' ? '🤖 إيجاز استشاري مولد بالذكاء الاصطناعي:' : '🤖 AI Quality Brief Summary:'"></p>
+                      <p x-text="lang === 'ar' ? 'تم تسجيل انخفاض ملحوظ في تكلفة المرفوضات لهذا الربع بنسبة 12.5% بفضل تفعيل نظام كانبان CAPA للمواد الخام. نوصي باستمرار تفعيل معايرة الموازين الأسبوعية.' : 'Reject rates decreased by 12.5% this period after implementing FEFO materials rotation control in Warehouses. Recommend continuous weekly scale calibrations.'"></p>
+                    </div>
+
+                    <div x-show="sec === 'kpis'">
+                      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 6px;">
+                        <div style="background: var(--white); padding: 8px; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
+                          <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'إجمالي الخسائر' : 'Total Cost'"></div>
+                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--navy);">SAR 142,500</div>
+                        </div>
+                        <div style="background: var(--white); padding: 8px; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
+                          <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'مؤشر كفاءة المعدات OEE' : 'OEE Index'"></div>
+                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--green);">84.5%</div>
+                        </div>
+                        <div style="background: var(--white); padding: 8px; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
+                          <div style="font-size: 0.6rem; color: var(--gray-400);" x-text="lang === 'ar' ? 'المطابقات المغلقة' : 'CAPA Closure'"></div>
+                          <div style="font-size: 0.85rem; font-weight: 700; color: var(--teal);">92.0%</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div x-show="sec === 'financials'" style="font-size: 0.68rem; color: var(--gray-600);">
+                      <table style="width: 100%; border-collapse: collapse; font-size: 0.6rem;">
+                        <thead>
+                          <tr style="background: rgba(var(--primary-rgb), 0.05);">
+                            <th style="padding: 4px; text-align: start;" x-text="lang === 'ar' ? 'القسم' : 'Dept'"></th>
+                            <th style="padding: 4px; text-align: start;" x-text="lang === 'ar' ? 'إجمالي الحالات' : 'Cases'"></th>
+                            <th style="padding: 4px; text-align: start;" x-text="lang === 'ar' ? 'التكلفة SAR' : 'Cost SAR'"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr><td style="padding: 4px;">Warehouse</td><td style="padding: 4px;">42</td><td style="padding: 4px;">SAR 84,200</td></tr>
+                          <tr><td style="padding: 4px;">Production</td><td style="padding: 4px;">28</td><td style="padding: 4px;">SAR 58,300</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div x-show="sec === 'pareto'" style="text-align: center; padding: 10px 0; color: var(--gray-400); font-size: 0.65rem;">
+                      📊 [مخطط باريتو لأسباب الرفض عيوب اللون، والتلف، والصلاحية]
+                    </div>
+
+                    <div x-show="sec === 'capa'" style="font-size: 0.65rem;">
+                      <div style="display: flex; gap: 8px;">
+                        <span class="badge info" x-text="lang === 'ar' ? 'قيد الدراسة: 12' : 'Analysis: 12'"></span>
+                        <span class="badge success" x-text="lang === 'ar' ? 'تم الحل: 24' : 'Resolved: 24'"></span>
+                        <span class="badge danger" x-text="lang === 'ar' ? 'متأخر: 2' : 'Overdue: 2'"></span>
+                      </div>
+                    </div>
+
+                    <div x-show="sec === 'audit'" style="font-size: 0.65rem; color: var(--gray-600);">
+                      <p>✔️ Calibration Records check — Completed successfully</p>
+                      <p>✔️ Expiry batch FEFO check — Completed successfully</p>
+                    </div>
+
+                    <div x-show="sec === 'signatures'" style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 0.62rem;">
+                      <div style="border-top: 1px solid var(--gray-300); width: 120px; text-align: center; padding-top: 4px;">
+                        <span x-text="lang === 'ar' ? 'مدير الجودة (QAM)' : 'QA Manager Sign'"></span>
+                      </div>
+                      <div style="border-top: 1px solid var(--gray-300); width: 120px; text-align: center; padding-top: 4px;">
+                        <span x-text="lang === 'ar' ? 'المدير المالي (CFO)' : 'CFO Sign'"></span>
+                      </div>
+                    </div>
+
+                  </div>
+                </template>
+
+                <div x-show="droppedSections.length === 0" style="text-align: center; padding: 80px 0; color: var(--gray-300);" x-text="lang === 'ar' ? 'لا توجد أقسام مضافة للمعاينة' : 'No sections added to preview'"></div>
+
+                <div class="preview-footer">
+                  <span x-text="'بصمة الأمان الرقمية: MAIS-AUDIT-SHA256-' + conversationId.substring(5)"></span>
+                  <span>الصفحة 1 من 1</span>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- 3. Scheduled Reports Section -->
+        <div class="section mt-20">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            
+            <!-- Schedule Form -->
+            <div class="card" style="padding: 20px;">
+              <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;" x-text="lang === 'ar' ? '📅 إعداد جدولة آلية للتقارير (Scheduled Reports)' : '📅 Schedule Automated Reports'"></h4>
+              
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div>
+                  <label class="form-label" x-text="lang === 'ar' ? 'معدل التكرار الدوري' : 'Frequency'"></label>
+                  <select class="form-control text-xs" x-model="schedule.frequency">
+                    <option value="daily" x-text="lang === 'ar' ? 'يومياً (Daily)' : 'Daily'"></option>
+                    <option value="weekly" x-text="lang === 'ar' ? 'أسبوعياً (Weekly)' : 'Weekly'"></option>
+                    <option value="monthly" x-text="lang === 'ar' ? 'شهرياً (Monthly)' : 'Monthly'"></option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label" x-text="lang === 'ar' ? 'البريد الإلكتروني للمستلم' : 'Target Email'"></label>
+                  <input type="email" class="form-control text-xs" x-model="schedule.email" placeholder="example@mais-medical.com">
+                </div>
+
+                <div>
+                  <label class="form-label" x-text="lang === 'ar' ? 'نموذج التقرير المجدول' : 'Template Type'"></label>
+                  <select class="form-control text-xs" x-model="schedule.template">
+                    <option value="executive" x-text="lang === 'ar' ? 'الإيجاز التنفيذي (PDF)' : 'Executive Brief (PDF)'"></option>
+                    <option value="financial" x-text="lang === 'ar' ? 'التقرير المالي (Excel)' : 'Financial Report (Excel)'"></option>
+                    <option value="quality" x-text="lang === 'ar' ? 'تقرير الجودة والـ CAPA' : 'Quality & CAPA'"></option>
+                  </select>
+                </div>
+
+                <button class="btn btn-primary" style="margin-top: 8px;" @click="saveSchedule()" x-text="lang === 'ar' ? 'حفظ وضبط الجدولة' : 'Save & Schedule Report'"></button>
+              </div>
+            </div>
+
+            <!-- History List -->
+            <div class="card" style="padding: 20px;">
+              <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;" x-text="lang === 'ar' ? '📜 السجل التاريخي للتقارير المصدرة' : '📜 Generated Reports History'"></h4 >
+              
+              <div style="max-height: 250px; overflow-y: auto;">
+                <table class="table" style="font-size: 0.65rem;">
+                  <thead>
+                    <tr>
+                      <th x-text="lang === 'ar' ? 'التقرير' : 'Report'"></th>
+                      <th x-text="lang === 'ar' ? 'الصيغة' : 'Format'"></th>
+                      <th x-text="lang === 'ar' ? 'المنشئ' : 'Created By'"></th>
+                      <th x-text="lang === 'ar' ? 'التاريخ' : 'Date'"></th>
+                      <th x-text="lang === 'ar' ? 'الإجراء' : 'Action'"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template x-for="item in historyList" :key="item.id">
+                      <tr>
+                        <td style="font-weight: 600;" x-text="item.name"></td>
+                        <td><span class="badge" :class="item.format === 'pdf' ? 'success' : item.format === 'excel' ? 'warning' : 'info'" x-text="item.format.toUpperCase()"></span></td>
+                        <td x-text="item.createdBy"></td>
+                        <td x-text="new Date(item.createdAt).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US')"></td>
+                        <td>
+                          <a class="btn btn-secondary text-xxs" style="padding: 2px 8px;" :href="'/api/reports/download/' + item.id" download x-text="lang === 'ar' ? 'تحميل' : 'Download'"></a>
+                        </td>
+                      </tr>
+                    </template>
+                    <tr x-show="historyList.length === 0">
+                      <td colspan="5" style="text-align: center; color: var(--gray-400);" x-text="lang === 'ar' ? 'سجل التقارير فارغ حالياً' : 'Report history is empty'"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    function reportsApp() {
+      return {
+        // Theme & Language Settings
+        theme: localStorage.getItem('theme') || 'light',
+        lang: document.documentElement.lang || 'ar',
+        userRole: 'Quality Manager (QAM)',
+        conversationId: 'conv_' + Math.random().toString(36).substring(2, 11),
+        
+        // State
+        activeTemplate: 'custom',
+        dragOver: false,
+        exportLoading: false,
+        formatType: '',
+        
+        // Report builder configuration
+        droppedSections: [],
+        filters: {
+          dateRange: 'last_month',
+          fromDate: '',
+          toDate: '',
+          department: 'all'
+        },
+        security: {
+          watermark: 'CONFIDENTIAL',
+          expiryDate: ''
+        },
+        schedule: {
+          frequency: 'weekly',
+          email: '',
+          template: 'executive'
+        },
+        
+        // Mock lists and names
+        historyList: [],
+
+        init() {
+          // Sync theme
+          document.documentElement.setAttribute('data-theme', this.theme);
+          if (this.theme === 'dark') document.body.classList.add('dark-mode');
+          
+          this.loadHistory();
+          this.loadDefaultTemplate();
+        },
+        
+        toggleTheme() {
+          this.theme = this.theme === 'light' ? 'dark' : 'light';
+          localStorage.setItem('theme', this.theme);
+          document.documentElement.setAttribute('data-theme', this.theme);
+          if (this.theme === 'dark') {
+            document.body.classList.add('dark-mode');
+          } else {
+            document.body.classList.remove('dark-mode');
+          }
+        },
+
+        toggleLanguage() {
+          this.lang = this.lang === 'ar' ? 'en' : 'ar';
+          document.documentElement.lang = this.lang;
+          document.documentElement.dir = this.lang === 'ar' ? 'rtl' : 'ltr';
+          this.init();
+        },
+
+        loadDefaultTemplate() {
+          this.droppedSections = ['cover', 'summary', 'kpis', 'signatures'];
+        },
+
+        selectTemplate(type) {
+          this.activeTemplate = type;
+          if (type === 'executive') {
+            this.droppedSections = ['cover', 'summary', 'kpis', 'pareto', 'signatures'];
+            this.security.watermark = 'CONFIDENTIAL';
+          } else if (type === 'financial') {
+            this.droppedSections = ['cover', 'kpis', 'financials', 'pareto', 'signatures'];
+            this.security.watermark = 'NONE';
+          } else if (type === 'quality') {
+            this.droppedSections = ['cover', 'summary', 'kpis', 'capa', 'audit', 'signatures'];
+            this.security.watermark = 'INTERNAL';
+          } else if (type === 'production') {
+            this.droppedSections = ['cover', 'kpis', 'pareto', 'audit', 'signatures'];
+            this.security.watermark = 'NONE';
+          } else if (type === 'custom') {
+            this.droppedSections = [];
+          }
+        },
+
+        // Drag & Drop Handlers
+        dragStart(e, section) {
+          e.dataTransfer.setData('text/plain', section);
+        },
+
+        handleDrop(e) {
+          this.dragOver = false;
+          const section = e.dataTransfer.getData('text/plain');
+          if (section && !this.droppedSections.includes(section)) {
+            this.droppedSections.push(section);
+            this.activeTemplate = 'custom';
+          }
+        },
+
+        removeDroppedSection(idx) {
+          this.droppedSections.splice(idx, 1);
+          this.activeTemplate = 'custom';
+        },
+
+        clearDroppedSections() {
+          this.droppedSections = [];
+          this.activeTemplate = 'custom';
+        },
+
+        getSectionTitle(sec) {
+          const titles = {
+            'cover': this.lang === 'ar' ? '📖 صفحة الغلاف والترويسة' : '📖 Cover Page',
+            'summary': this.lang === 'ar' ? '🤖 إيجاز الذكاء الاصطناعي للمدير' : '🤖 AI Summary Brief',
+            'kpis': this.lang === 'ar' ? '📈 بطاقات مؤشرات الأداء' : '📈 KPIs Summary Cards',
+            'financials': this.lang === 'ar' ? '💵 مصفوفة الخسائر والتحليل المالي' : '💵 Loss & Finance Analysis',
+            'pareto': this.lang === 'ar' ? '📊 عيوب المرفوضات (Pareto)' : '📊 Reject Defect Pareto',
+            'capa': this.lang === 'ar' ? '🧪 جدول وإجراءات كانبان CAPA' : '🧪 CAPA Quality Board',
+            'audit': this.lang === 'ar' ? '🏛️ سجل الموافقات وقائمة التدقيق' : '🏛️ Approvals & Checklist',
+            'signatures': this.lang === 'ar' ? '✍️ توقيعات الاعتماد الرقمي' : '✍️ Digital Signatures'
+          };
+          return titles[sec] || sec;
+        },
+
+        // Trigger Report Generation
+        async triggerExport(format) {
+          this.exportLoading = true;
+          this.formatType = format;
+          
+          try {
+            const response = await fetch('/api/reports/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                template: this.activeTemplate,
+                format: format,
+                sections: this.droppedSections,
+                filters: this.filters,
+                security: this.security,
+                user: this.userRole
+              })
+            });
+
+            if (!response.ok) throw new Error('Generation failed');
+            
+            const data = await response.json();
+            const payload = data.data || data;
+            
+            // Proactively download file
+            window.location.href = '/api/reports/download/' + payload.id;
+            
+            // Reload history
+            this.loadHistory();
+            
+            alert(this.lang === 'ar' ? 'تم توليد التقرير وتنزيله بنجاح!' : 'Report generated and downloaded successfully!');
+          } catch (err) {
+            alert(this.lang === 'ar' ? 'خطأ في توليد التقرير. تأكد من تشغيل خادم الواجهة الخلفية.' : 'Failed to generate report. Make sure backend is running.');
+          } finally {
+            this.exportLoading = false;
+            this.formatType = '';
+          }
+        },
+
+        // Load History list
+        async loadHistory() {
+          try {
+            const res = await fetch('/api/reports/history');
+            if (res.ok) {
+              const data = await res.json();
+              this.historyList = data.data || data;
+            }
+          } catch (e) {
+            // Mock history if backend is offline
+            this.historyList = [
+              { id: 'rep-mock-01', name: 'Q1 Quality Audit Brief', format: 'pdf', createdBy: 'Quality Manager', createdAt: new Date() - 36000000 },
+              { id: 'rep-mock-02', name: 'Financial Quality Loss Analysis', format: 'excel', createdBy: 'CFO', createdAt: new Date() - 86400000 }
+            ];
+          }
+        },
+
+        // Save Schedule
+        async saveSchedule() {
+          try {
+            const response = await fetch('/api/reports/schedule', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.schedule)
+            });
+            if (response.ok) {
+              alert(this.lang === 'ar' ? 'تم تفعيل جدولة التقرير الدوري بنجاح!' : 'Automated report schedule saved successfully!');
+            } else {
+              throw new Error('Schedule failed');
+            }
+          } catch (e) {
+            alert(this.lang === 'ar' ? 'تم محاكاة حفظ جدولة التقرير الدوري بنجاح!' : 'Simulated report schedule saved successfully!');
+          }
+        }
+      };
+    }
+  </script>
+</body>
+</html>
