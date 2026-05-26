@@ -91,8 +91,8 @@
     if (state.history.length === 0) {
       addAssistantMessage(
         document.documentElement.lang === 'en'
-          ? 'Hello! I am صقر AI 🦅, your intelligent assistant from BrightAI for MAIS analytics. I can help with rejects, quality, finance, production, CAPA tracking, and GMP compliance. How can I help you today?'
-          : 'مرحباً! أنا صقر AI 🦅، مساعدك الذكي من BrightAI لتحليلات ميس. أقدر أساعدك في المرفوضات، الجودة، المالية، الإنتاج، تتبع CAPA، والالتزام بـ GMP. كيف أقدر أساعدك اليوم؟'
+          ? 'مرحباً! أنا صقر AI، مساعدك الذكي لتحليلات ميس من BrightAI. كيف يمكنني مساعدتك اليوم؟'
+          : 'مرحباً! أنا صقر AI، مساعدك الذكي لتحليلات ميس من BrightAI. كيف يمكنني مساعدتك اليوم؟'
       );
     } else {
       state.history.forEach(msg => appendMessageToDOM(msg.sender, msg.text, msg.charts, msg.actions, false));

@@ -49,6 +49,19 @@
   cursor: pointer;
   z-index: 9999;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: goldPulse 3s infinite;
+}
+
+@keyframes goldPulse {
+  0% {
+    box-shadow: 0 10px 15px -3px rgba(30, 58, 95, 0.3), 0 0 0 0 rgba(212, 175, 55, 0.5);
+  }
+  70% {
+    box-shadow: 0 10px 15px -3px rgba(30, 58, 95, 0.3), 0 0 0 15px rgba(212, 175, 55, 0);
+  }
+  100% {
+    box-shadow: 0 10px 15px -3px rgba(30, 58, 95, 0.3), 0 0 0 0 rgba(212, 175, 55, 0);
+  }
 }
 
 .ai-fab::before {

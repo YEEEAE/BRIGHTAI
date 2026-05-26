@@ -223,6 +223,10 @@ services:
         destination: https://brightai-api.onrender.com/ws/*
 
       - type: redirect
+        source: /login
+        destination: /ai-reject-dashboard/frontend/pages/login
+
+      - type: redirect
         source: /frontend/pages/about-us
         destination: /about/
       - type: redirect

@@ -61,7 +61,8 @@ function verifyToken(token) {
 }
 
 function sendUnauthorized(req, res, message) {
-  if (req.accepts(['html', 'json']) === 'html') {
+  const isApiRequest = req.originalUrl && req.originalUrl.startsWith('/api/');
+  if (!isApiRequest && req.accepts(['html', 'json']) === 'html') {
     return res.redirect('/login');
   }
   return res.status(401).json({ success: false, message });

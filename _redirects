@@ -14,6 +14,7 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /en/:slug/index.html /en/:slug/ 301
 /en/docs/docs.html /en/docs/ 301
 /ai-reject-dashboard/index.html /ai-reject-dashboard/ 301
+/login /ai-reject-dashboard/frontend/pages/login 302
 
 # Explicit 301 redirects for hreflang self-referencing (SEMrush)
 /en/tools/index.html /en/tools/ 301

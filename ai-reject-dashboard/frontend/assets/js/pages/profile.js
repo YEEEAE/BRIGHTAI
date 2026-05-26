@@ -240,18 +240,12 @@ function profileConsole() {
     async revokeAllSessions() {
       if (!confirm('هل أنت متأكد من فرض تسجيل الخروج لكافة الأجهزة والاتصالات النشطة حالياً؟')) return;
       try {
+        localStorage.removeItem('isLoggedIn');
         const res = await fetch('/api/auth/logout', { method: 'POST' });
-        if (res.ok) {
-          window.location.href = '/pages/login.html';
-        }
+        window.location.href = '/pages/login.html';
       } catch (e) {
-        if (window.BrightNotifications) {
-          window.BrightNotifications.toast({
-            type: 'error',
-            title: 'خطأ',
-            message: 'Failed to logout'
-          });
-        }
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/pages/login.html';
       }
     },
 

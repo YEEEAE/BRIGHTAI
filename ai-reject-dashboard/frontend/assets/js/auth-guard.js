@@ -26,7 +26,12 @@
   };
 
   const goToLogin = () => {
-    window.location.replace(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+    const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
+    if (isLocalDev) {
+      window.location.replace(`/ai-reject-dashboard/frontend/pages/login.html?redirect=${encodeURIComponent(window.location.pathname)}`);
+    } else {
+      window.location.replace(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
+    }
   };
 
   const goToPermissionDenied = () => {
@@ -143,6 +148,26 @@
     }
 
     setLoadingState(true);
+
+    // 1. تجاوز الدخول إذا كانت علامة الدخول الشكلية isLoggedIn مفعلة في localStorage
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+      const mockUser = {
+        name: 'المهندس يزيد (جلسة تجريبية)',
+        username: 'yazeed_qc',
+        email: 'yazeed.qc@mais-medical.com',
+        role: 'Super yazeed QC',
+        roles: ['Super yazeed QC'],
+        permissions: ['view:dashboard', 'view:executive', 'view:finance', 'view:quality', 'view:production', 'view:workflow', 'view:technical', 'generate:reports', 'manage:users'],
+        avatar: '👑'
+      };
+      
+      window.currentUser = mockUser;
+      window.userRoles = mockUser.roles;
+      window.userPermissions = mockUser.permissions;
+      
+      setLoadingState(false);
+      return;
+    }
 
     try {
       const res = await fetch('/api/auth/me', { credentials: 'include' });

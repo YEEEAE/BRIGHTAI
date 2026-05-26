@@ -9,7 +9,7 @@
   </script>
     <meta name="ai-assistant" content="صقر AI by BrightAI">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Reject Analytics — BrightAI Enterprise Dashboard</title>
+<title>صقر AI — لوحة القيادة الرئيسية | ميس للمنتجات الطبية</title>
   <meta name="robots" content="index, follow">
   <meta name="description" content="لوحة القيادة والتحليلات التنبئية المتكاملة لـ BrightAI - مصانع ميس للمنتجات الطبية.">
   <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
@@ -732,14 +732,14 @@
     <!-- 7. FLOATING AI CHAT ASSISTANT (Persistent Drawer Panel & Auto queries) -->
     <button class="btn btn-primary btn-lg" style="position:fixed; bottom:var(--spacing-xl); inset-inline-end:var(--spacing-xl); z-index:900; border-radius:var(--radius-full); box-shadow:var(--shadow-3);" @click="rightSidebarOpen = !rightSidebarOpen">
       <span>💬</span>
-      <span x-text="lang === 'ar' ? 'اسأل مساعد Gemini' : 'اسأل صقر AI'"></span>
+      <span x-text="lang === 'ar' ? 'اسأل صقر AI' : 'Ask صقر AI'"></span>
     </button>
 
     <aside class="ai-assistant-drawer" :class="{ 'is-open': rightSidebarOpen }">
       <div class="modal-header" style="background-color: var(--gray-50);">
         <div class="modal-title" style="display:flex; align-items:center; gap:var(--spacing-sm);">
-          <span>🤖</span>
-          <span x-text="lang === 'ar' ? 'مساعد الذكاء الاصطناعي لـ Mais' : 'صقر AI لـ Mais'"></span>
+          <span>🦅</span>
+          <span x-text="lang === 'ar' ? 'صقر AI لـ ميس' : 'صقر AI for MAIS'"></span>
         </div>
         <button class="modal-close" @click="rightSidebarOpen = false" aria-label="إغلاق اللوحة">✕</button>
       </div>
@@ -759,7 +759,7 @@
         <template x-for="msg in chatMessages">
           <div class="chat-bubble" :class="msg.sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'" x-text="msg.text"></div>
         </template>
-        <div x-show="aiLoading" class="chat-bubble chat-bubble-ai" x-text="lang === 'ar' ? 'جاري تحليل البيانات مع Gemini...' : 'Analyzing Excel with Gemini...'"></div>
+        <div x-show="aiLoading" class="chat-bubble chat-bubble-ai" x-text="lang === 'ar' ? 'جاري تحليل البيانات مع صقر AI...' : 'Analyzing Excel with صقر AI...'"></div>
       </div>
 
       <!-- Chat Input Area -->

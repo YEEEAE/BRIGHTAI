@@ -21,6 +21,9 @@ function wantsHtml(req) {
 function checkAuth(req, res, next) {
   return requireAuth(req, res, (err) => {
     if (err || !req.user) {
+      if (req.originalUrl && req.originalUrl.startsWith('/api/')) {
+        return res.status(401).json({ success: false, message: 'Authentication required. Please sign in.' });
+      }
       if (wantsHtml(req)) {
         return res.redirect('/login');
       }
