@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="js-focus-visible">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المنصة وسجل التدقيق — System Admin Panel</title>
+  
+  <!-- Central Design System Stylesheet -->
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/notifications.css">
+  
+  <style>
+    body {
+      display: flex;
+      background-color: var(--color-background);
+      overflow-x: hidden;
+      min-height: 100vh;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+    }
+    
+    .app-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    .main-viewport {
+      flex-grow: 1;
+      margin-inline-start: 260px;
+      transition: var(--transition-normal);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .content-container {
+      padding: var(--spacing-xl);
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+      flex-grow: 1;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-xl);
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: var(--spacing-md);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: var(--spacing-sm);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .state-diff-box {
+      font-family: monospace;
+      font-size: 10.5px;
+      background: #0f172a;
+      color: #38bdf8;
+      padding: 10px;
+      border-radius: 6px;
+      overflow-x: auto;
+      max-height: 140px;
+      margin-top: 6px;
+      border: 1px solid #1e293b;
+    }
+    
+    .state-diff-title {
+      font-size: 10px;
+      color: var(--color-text-secondary);
+      font-weight: 700;
+      margin-top: 6px;
+    }
+  </style>
+
+  <!-- Alpine.js library -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <div class="app-wrapper" x-data="adminApp()">
+    
+    <!-- Sidebar navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated System</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="../index.html"><span class="icon">📊</span> لوحة التحكم الرئيسية</a>
+        <a href="../executive.html"><span class="icon">🏢</span> الرؤية التنفيذية</a>
+        <a href="../finance.html"><span class="icon">💰</span> التحليلات المالية</a>
+        <a href="../quality.html"><span class="icon">🔬</span> الجودة والـ CAPA</a>
+        <a href="../production.html"><span class="icon">⚙️</span> الإنتاج والعمليات</a>
+        <a href="../workflow.html"><span class="icon">🔄</span> الحوكمة ومسار العمل</a>
+        <a href="../technical.html"><span class="icon">🛠️</span> الرؤية التقنية</a>
+        <a href="../reports.html"><span class="icon">📄</span> مركز التقارير الفاخر</a>
+      </nav>
+      <div class="sidebar-footer">
+        نظام فوكس هو المصدر الرسمي للبيانات.<br>
+        تحليلات الذكاء الاصطناعي استشارية فقط.
+      </div>
+    </aside>
+
+    <main class="main-viewport">
+      
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="page-title-area">
+            <h2>إدارة المنصة والرقابة</h2>
+            <div class="breadcrumb">لوحة التحكم الإدارية — سجل المراجعة والتدقيق — صلاحيات الأدوار الـ 9</div>
+          </div>
+        </div>
+        <div class="topbar-right" id="topbar-right">
+          <!-- Bell will be auto-injected here -->
+          <div class="topbar-user" @click="window.location.href = '/pages/profile.html'">
+            <div class="topbar-avatar">👑</div>
+            <div class="topbar-user-info">
+              <span class="topbar-user-name">Super yazeed QC</span>
+              <span class="topbar-user-role">منشئ النظام الفائق</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-container">
+        
+        <!-- Tab selector -->
+        <div style="display:flex;gap:12px;margin-bottom:12px;border-bottom:1px solid var(--color-border);padding-bottom:10px;">
+          <button class="btn" :class="activeView === 'users' ? 'btn-primary' : 'btn-outline'" @click="activeView = 'users'">👥 إدارة حسابات الموظفين</button>
+          <button class="btn" :class="activeView === 'audit' ? 'btn-primary' : 'btn-outline'" @click="activeView = 'audit'">📜 سجل الرقابة والتدقيق العام (Audit Trail)</button>
+        </div>
+
+        <!-- SECTION 1: Users Management -->
+        <div x-show="activeView === 'users'">
+          <div class="toolbar">
+            <div class="filter-group">
+              <input type="text" class="form-control text-xs" x-model="filters.search" placeholder="ابحث بالاسم أو البريد..." style="width:200px;" @input="loadUsers()">
+              <select class="form-control text-xs" x-model="filters.status" style="width:120px;" @change="loadUsers()">
+                <option value="">جميع الحالات</option>
+                <option value="active">نشط</option>
+                <option value="inactive">معطل</option>
+                <option value="locked">مقفل مؤقتاً</option>
+              </select>
+              <select class="form-control text-xs" x-model="filters.role" style="width:140px;" @change="loadUsers()">
+                <option value="">جميع الأدوار</option>
+                <template x-for="r in rolesList" :key="r.id">
+                  <option :value="r.name" x-text="r.name"></option>
+                </template>
+              </select>
+            </div>
+            
+            <button class="btn btn-primary text-xs" @click="openAddModal()">➕ إضافة موظف جديد</button>
+          </div>
+
+          <!-- Users Table Card -->
+          <div class="card card-elevated" style="margin-top:20px;padding:20px;">
+            <table class="table text-xs">
+              <thead>
+                <tr>
+                  <th>الاسم</th>
+                  <th>البريد الإلكتروني</th>
+                  <th>الدور الوظيفي</th>
+                  <th>الحالة الأمنية</th>
+                  <th>تاريخ الإنشاء</th>
+                  <th>الإجراءات الاستثنائية</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template x-for="u in usersList" :key="u.id">
+                  <tr>
+                    <td style="font-weight:700;">
+                      <span style="margin-inline-end:6px;" x-text="u.avatar || '👤'"></span>
+                      <span x-text="u.name"></span>
+                    </td>
+                    <td x-text="u.email"></td>
+                    <td>
+                      <span class="badge secondary" x-text="u.role_name"></span>
+                    </td>
+                    <td>
+                      <span class="badge" 
+                            :class="u.status === 'active' ? 'success' : u.status === 'locked' ? 'danger' : 'warning'"
+                            x-text="u.status === 'active' ? 'نشط' : u.status === 'locked' ? 'مقفل مؤقتاً' : 'معطل'"></span>
+                    </td>
+                    <td x-text="new Date(u.created_at).toLocaleDateString('ar-SA')"></td>
+                    <td>
+                      <div style="display:flex;gap:6px;">
+                        <button class="btn btn-secondary text-xxs" style="padding:2px 8px;" @click="openEditModal(u)">⚙️ تعديل</button>
+                        <button class="btn btn-secondary text-xxs" style="color:var(--color-danger);padding:2px 8px;" @click="deactivateUser(u.id)">🚫 حظر</button>
+                        <button class="btn btn-secondary text-xxs" style="color:var(--color-warning);padding:2px 8px;" @click="resetUserPassword(u.id)">🔑 تصفير كلمة المرور</button>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- SECTION 2: General Audit Trail -->
+        <div x-show="activeView === 'audit'">
+          <div class="toolbar">
+            <div class="filter-group">
+              <input type="text" class="form-control text-xs" x-model="auditFilters.search" placeholder="ابحث بالاسم أو التفاصيل..." style="width:220px;" @input="loadAuditLogs()">
+              <select class="form-control text-xs" x-model="auditFilters.action" style="width:130px;" @change="loadAuditLogs()">
+                <option value="">جميع العمليات</option>
+                <option value="login">تسجيل دخول</option>
+                <option value="logout">تسجيل خروج</option>
+                <option value="create-user">إضافة موظف</option>
+                <option value="update-user">تعديل موظف</option>
+                <option value="lockout">قفل حساب</option>
+                <option value="change-password">تغيير الكلمة</option>
+                <option value="generate-api-token">مفتاح API جديد</option>
+              </select>
+              <select class="form-control text-xs" x-model="auditFilters.status" style="width:120px;" @change="loadAuditLogs()">
+                <option value="">جميع الحالات</option>
+                <option value="success">عملية ناجحة</option>
+                <option value="failure">عملية فاشلة / حظر</option>
+              </select>
+            </div>
+            <button class="btn btn-outline text-xs" @click="loadAuditLogs()">🔄 تحديث السجل</button>
+          </div>
+
+          <!-- Audit Logs List Card -->
+          <div class="card card-elevated" style="margin-top:20px;padding:20px;">
+            <table class="table text-xxs">
+              <thead>
+                <tr>
+                  <th>تاريخ وتوقيت العملية</th>
+                  <th>الموظف</th>
+                  <th>العملية</th>
+                  <th>المورد المستهدف</th>
+                  <th>الحالة</th>
+                  <th>عنوان الـ IP والأجهزة</th>
+                  <th>التفاصيل ومقارنة الحالات (State Diff)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template x-for="log in auditLogsList" :key="log.id">
+                  <tr>
+                    <td x-text="new Date(log.timestamp).toLocaleString('ar-SA')"></td>
+                    <td style="font-weight:700;" x-text="log.user_name || 'زائر مجهول'"></td>
+                    <td>
+                      <span class="badge secondary" x-text="log.action"></span>
+                    </td>
+                    <td x-text="log.resource"></td>
+                    <td>
+                      <span class="badge" 
+                            :class="log.status === 'success' ? 'success' : 'danger'"
+                            x-text="log.status === 'success' ? 'ناجحة' : 'فاشلة / حظر'"></span>
+                    </td>
+                    <td>
+                      <span x-text="log.ip_address"></span><br>
+                      <span style="color:var(--color-text-secondary);font-size:8px;" x-text="log.user_agent"></span>
+                    </td>
+                    <td>
+                      <span x-text="log.details"></span>
+                      
+                      <!-- Display State Diff comparison -->
+                      <div x-show="log.before_state || log.after_state">
+                        <div class="state-diff-title">مقارنة الحالات قبل وبعد التعديل (State comparison):</div>
+                        <template x-if="log.before_state">
+                          <div class="state-diff-box">
+                            <span>الحالة السابقة (Before):</span><br>
+                            <span x-text="log.before_state"></span>
+                          </div>
+                        </template>
+                        <template x-if="log.after_state">
+                          <div class="state-diff-box" style="color:#2a9d8f;border-color:#2a9d8f;margin-top:4px;">
+                            <span>الحالة المحدثة (After):</span><br>
+                            <span x-text="log.after_state"></span>
+                          </div>
+                        </template>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Modal: Add / Edit User -->
+    <div x-show="modalOpen" class="modal-overlay" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);position:fixed;inset:0;z-index:9999;">
+      <div class="card card-elevated" style="width:100%;max-width:480px;padding:24px;">
+        <h4 style="font-weight:800;color:var(--color-primary);margin-bottom:16px;" x-text="isEdit ? '⚙️ تعديل صلاحيات وحالة الموظف' : '➕ إضافة موظف وحساب جديد'"></h4>
+        
+        <form @submit.prevent="saveUser()">
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label">الاسم الكامل</label>
+            <input type="text" class="form-control" x-model="userForm.name" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label">البريد الإلكتروني المؤسسي</label>
+            <input type="email" class="form-control" x-model="userForm.email" :disabled="isEdit" required>
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;" x-show="!isEdit">
+            <label class="form-label">كلمة المرور المؤقتة</label>
+            <input type="password" class="form-control" x-model="userForm.password" :required="!isEdit">
+            <p style="font-size:9px;color:var(--color-text-secondary);margin-top:2px;">يجب ألا تقل عن 12 حرفاً، وتحتوي على أحرف كبيرة وصغيرة وأرقام ورموز.</p>
+          </div>
+
+          <div class="form-group" style="margin-bottom:12px;">
+            <label class="form-label">الدور والرتبة (Role)</label>
+            <select class="form-control" x-model="userForm.roleName" required>
+              <template x-for="r in rolesList" :key="r.id">
+                <option :value="r.name" x-text="r.name"></option>
+              </template>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:16px;" x-show="isEdit">
+            <label class="form-label">الحالة التشغيلية للحساب</label>
+            <select class="form-control" x-model="userForm.status">
+              <option value="active">نشط (Active)</option>
+              <option value="inactive">معطل ومحظور (Inactive)</option>
+              <option value="locked">مقفل مؤقتاً للتأمين (Locked)</option>
+            </select>
+          </div>
+
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px;">
+            <button type="submit" class="btn btn-primary" :disabled="loading" x-text="loading ? 'جاري الحفظ...' : 'حفظ البيانات'"></button>
+            <button type="button" class="btn btn-outline" @click="modalOpen = false">إلغاء</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/assets/js/auth-guard.js"></script>
+  <!-- Notifications Library -->
+  <script src="/assets/js/notifications.js"></script>
+  
+  <script>
+    function adminApp() {
+      return {
+        activeView: 'users',
+        modalOpen: false,
+        isEdit: false,
+        loading: false,
+        
+        usersList: [],
+        auditLogsList: [],
+        rolesList: [],
+        
+        filters: { search: '', status: '', role: '' },
+        auditFilters: { search: '', action: '', status: '' },
+        
+        userForm: { id: '', name: '', email: '', password: '', roleName: 'Viewer', status: 'active' },
+
+        init() {
+          this.loadUsers();
+          this.loadAuditLogs();
+          this.loadRoles();
+        },
+
+        async loadUsers() {
+          try {
+            const query = new URLSearchParams(this.filters).toString();
+            const res = await fetch(`/api/admin/users?${query}`);
+            const data = await res.json();
+            if (data.success) {
+              this.usersList = data.data;
+            }
+          } catch (e) {
+            console.error('Failed to load users:', e);
+          }
+        },
+
+        async loadAuditLogs() {
+          try {
+            const query = new URLSearchParams(this.auditFilters).toString();
+            const res = await fetch(`/api/admin/audit-log?${query}`);
+            const data = await res.json();
+            if (data.success) {
+              this.auditLogsList = data.data;
+            }
+          } catch (e) {
+            console.error('Failed to load audit logs:', e);
+          }
+        },
+
+        async loadRoles() {
+          try {
+            const res = await fetch('/api/admin/roles');
+            const data = await res.json();
+            if (data.success) {
+              this.rolesList = data.data;
+            }
+          } catch (e) {
+            console.error('Failed to load roles:', e);
+          }
+        },
+
+        openAddModal() {
+          this.isEdit = false;
+          this.userForm = { id: '', name: '', email: '', password: '', roleName: 'Viewer', status: 'active' };
+          this.modalOpen = true;
+        },
+
+        openEditModal(u) {
+          this.isEdit = true;
+          this.userForm = { 
+            id: u.id, 
+            name: u.name, 
+            email: u.email, 
+            password: '', 
+            roleName: u.role_name || 'Viewer', 
+            status: u.status 
+          };
+          this.modalOpen = true;
+        },
+
+        async saveUser() {
+          this.loading = true;
+          const url = this.isEdit ? `/api/admin/users/${this.userForm.id}` : '/api/admin/users';
+          const method = this.isEdit ? 'PUT' : 'POST';
+
+          try {
+            const res = await fetch(url, {
+              method: method,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.userForm)
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              this.modalOpen = false;
+              this.loadUsers();
+              this.loadAuditLogs();
+              alert(this.isEdit ? 'تم تحديث بيانات الموظف وصلاحياته بنجاح!' : 'تمت إضافة الموظف بنجاح وتوليد وتأمين الحساب!');
+            } else {
+              throw new Error(data.message || 'Failed to save user');
+            }
+          } catch (err) {
+            alert(err.message);
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async deactivateUser(userId) {
+          if (!confirm('هل أنت متأكد من حظر وتعطيل حساب هذا الموظف؟ سيتم إنهاء كافة جلساته النشطة فوراً ومنعه من تسجيل الدخول.')) return;
+          
+          try {
+            const res = await fetch(`/api/admin/users/${userId}`, { method: 'DELETE' });
+            if (res.ok) {
+              this.loadUsers();
+              this.loadAuditLogs();
+              alert('تم حظر الموظف وتعطيل الحساب بنجاح.');
+            }
+          } catch (e) {
+            alert('Failed to deactivate user');
+          }
+        },
+
+        async resetUserPassword(userId) {
+          if (!confirm('هل أنت متأكد من تصفير كلمة مرور هذا الموظف ووضع كلمة مرور عشوائية جديدة؟')) return;
+          
+          try {
+            const res = await fetch(`/api/admin/users/${userId}/reset-password`, { method: 'POST' });
+            const data = await res.json();
+            
+            if (res.ok && data.tempPassword) {
+              this.loadAuditLogs();
+              alert(`تم تصفير كلمة المرور بنجاح!\n\nكلمة المرور المؤقتة الجديدة هي:\n${data.tempPassword}\n\nيرجى نسخها وتزويد الموظف بها الآن.`);
+            } else {
+              throw new Error(data.message);
+            }
+          } catch (e) {
+            alert(e.message || 'Failed to reset password');
+          }
+        }
+      };
+    }
+  </script>
+</body>
+</html>

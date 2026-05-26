@@ -1,12 +1,14 @@
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const config = require('../config/env');
+const { get, run } = require('../config/database');
+const { isSessionActive, revokeSession, createSession } = require('../services/authService');
+const { getUserPermissions } = require('../services/rbacService');
 
 const ACCESS_COOKIE = 'access_token';
 const REFRESH_COOKIE = 'refresh_token';
 const ACCESS_TTL = '15m';
 const REFRESH_TTL = '7d';
-const refreshTokenStore = new Map();
 
 function cookieOptions(maxAge) {
   return {
@@ -28,17 +30,20 @@ function signRefreshToken(payload) {
     expiresIn: REFRESH_TTL,
     issuer: 'ai-reject-dashboard'
   });
-  refreshTokenStore.set(jti, { sub: payload.sub, createdAt: Date.now() });
-  return token;
+  return { token, jti };
 }
 
-function setAuthCookies(res, user) {
-  const payload = { sub: user.id, role: user.role || 'admin' };
+async function setAuthCookies(res, user, context = {}) {
+  const permissions = await getUserPermissions(user.id);
+  const payload = { sub: user.id, name: user.name, email: user.email, role: user.role || 'admin', permissions };
+  
   const accessToken = signAccessToken(payload);
-  const refreshToken = signRefreshToken(payload);
+  const { token: refreshToken, jti } = signRefreshToken({ sub: user.id, role: user.role || 'admin' });
 
-  // AR: الكوكي HttpOnly لا يقرأها JavaScript، وهذا يحمي التوكن من XSS.
-  // EN: HttpOnly cookies are not readable by JavaScript, reducing XSS token theft.
+  // حفظ الجلسة في SQLite
+  const expiresAt = Date.now() + 7 * 24 * 60 * 60 * 1000;
+  await createSession(user.id, jti, context, expiresAt);
+
   res.cookie(ACCESS_COOKIE, accessToken, cookieOptions(15 * 60 * 1000));
   res.cookie(REFRESH_COOKIE, refreshToken, cookieOptions(7 * 24 * 60 * 60 * 1000));
 }
@@ -52,49 +57,92 @@ function verifyToken(token) {
   return jwt.verify(token, config.jwtSecret, { issuer: 'ai-reject-dashboard' });
 }
 
-function requireAuth(req, res, next) {
-  if (!config.dashboardToken && !config.dashboardPasswordHash) return next();
+/**
+ * AR: برمجية وسيطة للتحقق من هوية المستخدم وجلسته النشطة في SQLite
+ * EN: Middleware to verify user authentication and active DB session
+ */
+async function requireAuth(req, res, next) {
+  const accessToken = req.cookies[ACCESS_COOKIE];
 
-  const token = req.cookies[ACCESS_COOKIE];
-  if (!token) return res.status(401).json({ success: false, message: 'Authentication required' });
+  if (!accessToken) {
+    // AR: محاولة تجديد التوكن تلقائياً إذا كان الـ Access انتهى والـ Refresh موجود
+    // EN: Attempt auto-refresh if Access token is missing but Refresh is present
+    const refreshToken = req.cookies[REFRESH_COOKIE];
+    if (refreshToken) {
+      try {
+        await handleTokenRefresh(req, res);
+        return next();
+      } catch (err) {
+        clearAuthCookies(res);
+        return res.status(401).json({ success: false, message: 'Authentication session expired. Please sign in again.' });
+      }
+    }
+    return res.status(401).json({ success: false, message: 'Authentication required' });
+  }
 
   try {
-    req.user = verifyToken(token);
+    const payload = verifyToken(accessToken);
+    req.user = payload;
+    
+    // جلب وحفظ الصلاحيات الحية لـ req.user لضمان الفحص الأحدث
+    req.user.permissions = await getUserPermissions(payload.sub);
     return next();
   } catch (err) {
+    // Access token expired, attempt auto-refresh
+    const refreshToken = req.cookies[REFRESH_COOKIE];
+    if (refreshToken) {
+      try {
+        await handleTokenRefresh(req, res);
+        return next();
+      } catch (refreshErr) {
+        clearAuthCookies(res);
+        return res.status(401).json({ success: false, message: 'Your session has expired. Please sign in again.' });
+      }
+    }
+    clearAuthCookies(res);
     return res.status(401).json({ success: false, message: 'Invalid or expired access token' });
   }
 }
 
-function refreshAccessToken(req, res) {
+/**
+ * AR: معالجة تدوير توكن التجديد (Token Rotation) للحماية المطلقة
+ * EN: Handle Refresh Token Rotation for absolute security
+ */
+async function handleTokenRefresh(req, res) {
   const token = req.cookies[REFRESH_COOKIE];
-  if (!token) return res.status(401).json({ success: false, message: 'Refresh token is missing' });
+  if (!token) throw new Error('Refresh token is missing');
 
-  try {
-    const payload = verifyToken(token);
-    if (!payload.jti || !refreshTokenStore.has(payload.jti)) {
-      return res.status(401).json({ success: false, message: 'Refresh token has been revoked' });
-    }
-
-    const accessToken = signAccessToken({ sub: payload.sub, role: payload.role });
-    res.cookie(ACCESS_COOKIE, accessToken, cookieOptions(15 * 60 * 1000));
-    return res.json({ success: true, message: 'Access token refreshed' });
-  } catch (err) {
-    return res.status(401).json({ success: false, message: 'Invalid refresh token' });
+  const payload = verifyToken(token);
+  
+  // التحقق من أن الجلسة نشطة في SQLite
+  const active = await isSessionActive(payload.jti);
+  if (!active) {
+    // AR: كشف خرق أمني محتمل! إبطال كافة جلسات المستخدم
+    // EN: Detect potential breach! Revoke all sessions for this user
+    await run('UPDATE sessions SET is_active = 0 WHERE user_id = ?', [payload.sub]);
+    throw new Error('Refresh token has been compromised');
   }
-}
 
-function revokeRefreshToken(req) {
-  const token = req.cookies[REFRESH_COOKIE];
-  if (!token) return;
+  // إبطال الجلسة القديمة (تدوير)
+  await revokeSession(payload.jti);
 
-  try {
-    const payload = verifyToken(token);
-    if (payload.jti) refreshTokenStore.delete(payload.jti);
-  } catch (err) {
-    // AR: لا نكشف تفاصيل التوكن للعميل أثناء تسجيل الخروج.
-    // EN: Do not expose token details during logout.
+  // جلب المستخدم من قاعدة البيانات
+  const user = await get('SELECT * FROM users WHERE id = ?', [payload.sub]);
+  if (!user || user.status !== 'active') {
+    throw new Error('User account is locked or suspended');
   }
+
+  // تعيين الكوكيز وتدوير التوكن
+  const context = {
+    ipAddress: req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+    userAgent: req.headers['user-agent']
+  };
+  
+  await setAuthCookies(res, user, context);
+  
+  // إعادة تعيين req.user
+  const permissions = await getUserPermissions(user.id);
+  req.user = { sub: user.id, name: user.name, email: user.email, role: user.role || 'admin', permissions };
 }
 
 module.exports = {
@@ -103,6 +151,5 @@ module.exports = {
   requireAuth,
   setAuthCookies,
   clearAuthCookies,
-  refreshAccessToken,
-  revokeRefreshToken
+  verifyToken
 };

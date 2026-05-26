@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>وصول مرفوض — BrightAI Protection</title>
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <style>
+    body {
+      background: var(--color-background);
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      margin: 0;
+      padding: var(--spacing-md);
+    }
+    
+    .denied-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-lg);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-2xl);
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      animation: deniedShake 0.6s ease-in-out;
+    }
+    
+    .denied-icon {
+      font-size: 3.5rem;
+      color: var(--color-danger);
+      margin-bottom: var(--spacing-md);
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    
+    .denied-title {
+      font-size: var(--font-size-lg);
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .denied-desc {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: var(--spacing-sm);
+      justify-content: center;
+    }
+
+    @keyframes deniedShake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-6px); }
+      20%, 40%, 60%, 80% { transform: translateX(6px); }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="denied-card">
+    <div class="denied-icon">🚨</div>
+    <h1 class="denied-title">عذراً، الوصول محظور!</h1>
+    <p class="denied-desc">
+      لا تمتلك حسابك الحالي الصلاحيات الكافية لاستعراض هذه الصفحة. 
+      هذا القسم مخصص لفئات وظيفية محددة ويخضع لسياسة الحماية والتدقيق الصارمة لشركة MAIS للمنتجات الطبية.
+    </p>
+    
+    <div class="btn-group">
+      <a href="/pages/index.html" class="btn btn-primary">🏠 الرئيسية</a>
+      <button onclick="window.history.back()" class="btn btn-outline">⬅️ عودة للخلف</button>
+    </div>
+  </div>
+</body>
+</html>

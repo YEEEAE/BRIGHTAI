@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="js-focus-visible">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الملف الشخصي والأمان — BrightAI Enterprise Console</title>
+  
+  <!-- Central Design System Stylesheet -->
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/notifications.css">
+  
+  <style>
+    body {
+      display: flex;
+      background-color: var(--color-background);
+      overflow-x: hidden;
+      min-height: 100vh;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+    }
+    
+    .app-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
+    
+    .main-viewport {
+      flex-grow: 1;
+      margin-inline-start: 260px;
+      transition: var(--transition-normal);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .content-container {
+      padding: var(--spacing-xl);
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+      flex-grow: 1;
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-lg);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-avatar-large {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .profile-info-block {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: var(--font-size-md);
+      font-weight: 800;
+      color: var(--color-primary);
+    }
+
+    .profile-role {
+      font-size: var(--font-size-xs);
+      color: var(--color-secondary);
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .profile-email {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      margin-top: 4px;
+    }
+
+    .console-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    .console-tabs {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .console-tab-btn {
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-md);
+      text-align: right;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .console-tab-btn:hover {
+      background: rgba(0, 166, 166, 0.05);
+      color: var(--color-secondary);
+    }
+
+    .console-tab-btn.active {
+      background: rgba(15, 76, 129, 0.08);
+      color: var(--color-primary);
+      border-right: 4px solid var(--color-primary);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+
+    .console-pane {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .session-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-background);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .session-details {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .session-device {
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .session-meta {
+      font-size: 10px;
+      color: var(--color-text-secondary);
+    }
+  </style>
+
+  <!-- Alpine.js library -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body>
+  <div class="app-wrapper" x-data="profileConsole()">
+    
+    <!-- Sidebar navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
+        <div class="sub">Focus ERP Integrated System</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="index.html"><span class="icon">📊</span> لوحة التحكم الرئيسية</a>
+        <a href="executive.html"><span class="icon">🏢</span> الرؤية التنفيذية</a>
+        <a href="finance.html"><span class="icon">💰</span> التحليلات المالية</a>
+        <a href="quality.html"><span class="icon">🔬</span> الجودة والـ CAPA</a>
+        <a href="production.html"><span class="icon">⚙️</span> الإنتاج والعمليات</a>
+        <a href="workflow.html"><span class="icon">🔄</span> الحوكمة ومسار العمل</a>
+        <a href="technical.html"><span class="icon">🛠️</span> الرؤية التقنية</a>
+        <a href="reports.html"><span class="icon">📄</span> مركز التقارير الفاخر</a>
+      </nav>
+      <div class="sidebar-footer">
+        نظام فوكس هو المصدر الرسمي للبيانات.<br>
+        تحليلات الذكاء الاصطناعي استشارية فقط.
+      </div>
+    </aside>
+
+    <main class="main-viewport">
+      
+      <!-- Topbar Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="page-title-area">
+            <h2>الملف الشخصي والأمان</h2>
+            <div class="breadcrumb">حسابك — حماية 2FA — إدارة الأجهزة النشطة والـ APIs</div>
+          </div>
+        </div>
+        <div class="topbar-right" id="topbar-right">
+          <!-- Bell will be auto-injected here -->
+          <div class="topbar-user" @click="window.location.href = '/pages/profile.html'">
+            <div class="topbar-avatar" x-text="user.avatar || '👤'"></div>
+            <div class="topbar-user-info">
+              <span class="topbar-user-name" x-text="user.name"></span>
+              <span class="topbar-user-role" x-text="user.role"></span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content-container">
+        
+        <!-- Profile Header -->
+        <div class="profile-header">
+          <div class="profile-avatar-large" x-text="user.avatar || '👤'"></div>
+          <div class="profile-info-block">
+            <h3 class="profile-name" x-text="user.name"></h3>
+            <div class="profile-role" x-text="user.role"></div>
+            <div class="profile-email" x-text="user.email"></div>
+          </div>
+        </div>
+
+        <!-- Console Grid -->
+        <div class="console-layout">
+          
+          <!-- Side Tabs -->
+          <div class="console-tabs">
+            <button class="console-tab-btn" :class="activeTab === 'info' ? 'active' : ''" @click="activeTab = 'info'">👤 معلومات الموظف</button>
+            <button class="console-tab-btn" :class="activeTab === 'security' ? 'active' : ''" @click="activeTab = 'security'">🔒 الأمان وكلمة المرور</button>
+            <button class="console-tab-btn" :class="activeTab === 'twofa' ? 'active' : ''" @click="activeTab = 'twofa'">🛡️ التوثيق الثنائي (2FA)</button>
+            <button class="console-tab-btn" :class="activeTab === 'sessions' ? 'active' : ''" @click="activeTab = 'sessions'">📱 الأجهزة والاتصالات</button>
+            <button class="console-tab-btn" :class="activeTab === 'api' ? 'active' : ''" @click="activeTab = 'api'">🔑 مفاتيح الـ API والتكامل</button>
+          </div>
+
+          <!-- Console Panels -->
+          <div>
+            
+            <!-- Pane 1: User Info -->
+            <div class="console-pane" x-show="activeTab === 'info'">
+              <h4 style="font-weight:800;color:var(--color-primary);margin-bottom:16px;">👤 معلومات الموظف الشخصية</h4>
+              
+              <form @submit.prevent="updateProfile()">
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label class="form-label">الاسم الكامل</label>
+                  <input type="text" class="form-control" x-model="profileForm.name" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label class="form-label">الرمز الرمزي (Avatar/Emoji)</label>
+                  <select class="form-control" x-model="profileForm.avatar">
+                    <option value="👤">👤 موظف افتراضي</option>
+                    <option value="👑">👑 مشرف عام</option>
+                    <option value="🧪">🧪 مفتش جودة</option>
+                    <option value="💰">💰 خبير مالي</option>
+                    <option value="⚙️">⚙️ تشغيلي إنتاج</option>
+                  </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" :disabled="loading" x-text="loading ? 'جاري الحفظ...' : 'حفظ التغييرات'"></button>
+              </form>
+            </div>
+
+            <!-- Pane 2: Change Password -->
+            <div class="console-pane" x-show="activeTab === 'security'">
+              <h4 style="font-weight:800;color:var(--color-primary);margin-bottom:16px;">🔒 تغيير كلمة المرور بأمان</h4>
+              
+              <form @submit.prevent="changePassword()">
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label class="form-label">كلمة المرور الحالية</label>
+                  <input type="password" class="form-control" x-model="passwordForm.current" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label class="form-label">كلمة المرور الجديدة</label>
+                  <input type="password" class="form-control" x-model="passwordForm.newPassword" required>
+                  <p style="font-size:10px;color:var(--color-text-secondary);margin-top:4px;">يجب ألا تقل عن 12 حرفاً، وتحتوي على أحرف كبيرة وصغيرة وأرقام ورموز.</p>
+                </div>
+
+                <div class="form-group" style="margin-bottom:16px;">
+                  <label class="form-label">تأكيد كلمة المرور الجديدة</label>
+                  <input type="password" class="form-control" x-model="passwordForm.confirm" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" :disabled="loading" x-text="loading ? 'جاري الحفظ...' : 'تحديث كلمة المرور'"></button>
+              </form>
+            </div>
+
+            <!-- Pane 3: 2FA Setup -->
+            <div class="console-pane" x-show="activeTab === 'twofa'">
+              <h4 style="font-weight:800;color:var(--color-primary);margin-bottom:16px;">🛡️ التحقق والتوثيق الثنائي (2FA)</h4>
+              
+              <div x-show="!user.two_factor_enabled">
+                <p style="font-size:0.75rem;color:var(--color-text-secondary);line-height:1.6;margin-bottom:16px;">
+                  حماية حسابك بالتحقق الثنائي تمنع الوصول غير المصرح به حتى لو تمت سرقة كلمة المرور الخاصة بك. 
+                  سيطلب النظام رمز توثيق إضافي من هاتفك عند تسجيل الدخول.
+                </p>
+                
+                <div x-show="!twofaSetup.qrCodeUrl">
+                  <button class="btn btn-primary" @click="setup2FA()">⚙️ إعداد وتفعيل التحقق الثنائي</button>
+                </div>
+                
+                <!-- 2FA QR Display and verification -->
+                <div x-show="twofaSetup.qrCodeUrl" style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:16px;background:rgba(0,166,166,0.02);border:1px dashed var(--color-border);padding:20px;border-radius:12px;">
+                  <p style="font-size:0.75rem;font-weight:700;color:var(--color-secondary);">1. امسح كود الـ QR التالي باستخدام Google Authenticator في هاتفك:</p>
+                  <img :src="twofaSetup.qrCodeUrl" alt="2FA QR Code" style="width:180px;height:180px;border:4px solid white;box-shadow:var(--shadow-sm);">
+                  <div style="font-size:11px;color:var(--color-text-secondary);">أو أدخل الكود السري يدوياً: <strong x-text="twofaSetup.secret" style="color:var(--color-primary);"></strong></div>
+                  
+                  <div class="form-group" style="width:100%;max-width:240px;margin-top:12px;">
+                    <label class="form-label" style="text-align:center;display:block;">2. أدخل الرمز المكون من 6 أرقام للتأكيد:</label>
+                    <input type="text" class="form-control text-xs" x-model="twofaSetup.token" placeholder="000000" style="text-align:center;font-weight:700;letter-spacing:4px;" maxlength="6">
+                  </div>
+                  <button class="btn btn-primary" @click="confirm2FA()" :disabled="!twofaSetup.token || loading">✔️ تأكيد وتفعيل الآن</button>
+                </div>
+              </div>
+
+              <div x-show="user.two_factor_enabled" style="background:rgba(42, 157, 143, 0.05);border:1px solid var(--color-success);padding:20px;border-radius:12px;text-align:center;">
+                <div style="font-size:2.5rem;margin-bottom:8px;">✅</div>
+                <h5 style="font-weight:800;color:var(--color-success);font-size:0.85rem;margin-bottom:6px;">التحقق الثنائي (2FA) نشط ومفعّل لحماية حسابك!</h5>
+                <p style="font-size:0.7rem;color:var(--color-text-secondary);margin-bottom:16px;">حسابك محمي بأعلى معايير الأمان المعتمدة.</p>
+                
+                <!-- Disable 2FA with password check -->
+                <div x-data="{ open: false, password: '' }">
+                  <button class="btn btn-outline" style="border-color:var(--color-danger);color:var(--color-danger);" @click="open = !open">❌ إلغاء تفعيل التحقق الثنائي</button>
+                  
+                  <div x-show="open" style="margin-top:12px;max-width:280px;margin-left:auto;margin-right:auto;">
+                    <input type="password" class="form-control text-xs" x-model="password" placeholder="أدخل كلمة المرور للتأكيد" style="margin-bottom:8px;">
+                    <button class="btn btn-primary btn-sm" style="background:var(--color-danger);border-color:var(--color-danger);" @click="disable2FA(password)" :disabled="!password || loading">تأكيد الإلغاء</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pane 4: Session List -->
+            <div class="console-pane" x-show="activeTab === 'sessions'">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h4 style="font-weight:800;color:var(--color-primary);">📱 الأجهزة والجلسات النشطة المتصلة</h4>
+                <button class="btn btn-outline btn-sm" style="color:var(--color-danger);border-color:var(--color-danger);" @click="revokeAllSessions()">❌ تسجيل خروج كافة الأجهزة</button>
+              </div>
+              
+              <div style="max-height: 400px; overflow-y: auto;">
+                <template x-for="sess in activeSessions" :key="sess.id">
+                  <div class="session-item">
+                    <div class="session-details">
+                      <div class="session-device" x-text="sess.user_agent"></div>
+                      <div class="session-meta">
+                        <span>IP: <strong x-text="sess.ip_address"></strong></span> • 
+                        <span>تاريخ الاتصال: <strong x-text="new Date(sess.created_at).toLocaleString('ar-SA')"></strong></span>
+                      </div>
+                    </div>
+                    <button class="btn btn-secondary text-xxs" style="color:var(--color-danger);padding:4px 10px;" @click="revokeSession(sess.id)">إنهاء الجلسة</button>
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <!-- Pane 5: API Integration Keys -->
+            <div class="console-pane" x-show="activeTab === 'api'">
+              <h4 style="font-weight:800;color:var(--color-primary);margin-bottom:12px;">🔑 مفاتيح وتكاملات الـ API للأجهزة الخارجية</h4>
+              <p style="font-size:0.75rem;color:var(--color-text-secondary);line-height:1.6;margin-bottom:16px;">
+                أصدر مفاتيح أمنية مشفرة لدمج منصة BrightAI مع الأنظمة الخارجية وتحديداً نظام **فوكس ERP** لسحب بيانات المرفوضات وعمليات الهدر الطبي بشكل آمن وتلقائي.
+              </p>
+              
+              <div style="background:rgba(15, 76, 129, 0.03);border:1px dashed var(--color-border);padding:16px;border-radius:12px;margin-bottom:20px;">
+                <h5 style="font-weight:700;font-size:0.78rem;color:var(--color-primary);margin-bottom:8px;">إصدار مفتاح API جديد</h5>
+                <div style="display:flex;gap:8px;align-items:flex-end;">
+                  <div style="flex:1;">
+                    <label class="form-label text-xxs">اسم المفتاح (لأي نظام أو تكامل؟)</label>
+                    <input type="text" class="form-control text-xs" x-model="apiTokenForm.name" placeholder="Focus ERP Sync Service">
+                  </div>
+                  <div>
+                    <label class="form-label text-xxs">صلاحية المفتاح</label>
+                    <select class="form-control text-xs" x-model="apiTokenForm.expiresDays" style="width:100px;">
+                      <option value="30">30 يوم</option>
+                      <option value="90">90 يوم</option>
+                      <option value="365">سنة كاملة</option>
+                      <option value="">دائم</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary text-xs" style="padding:10px 14px;" @click="generateApiToken()" :disabled="!apiTokenForm.name || loading">⚡ توليد المفتاح</button>
+                </div>
+
+                <!-- Display generated raw token (shown once) -->
+                <div x-show="generatedToken" style="margin-top:16px;background:white;border:1px solid var(--color-success);padding:12px;border-radius:8px;color:var(--color-success);text-align:center;">
+                  <div style="font-weight:700;font-size:0.7rem;margin-bottom:4px;">⚠️ احفظ هذا المفتاح الآن! لن يظهر مجدداً لأسباب أمنية:</div>
+                  <code style="font-size:1rem;font-weight:800;letter-spacing:1px;background:var(--gray-50);padding:6px 12px;border-radius:4px;display:block;margin:6px 0;" x-text="generatedToken"></code>
+                  <button class="btn btn-secondary text-xxs" style="padding:2px 10px;" @click="navigator.clipboard.writeText(generatedToken)">📋 نسخ المفتاح للذاكرة</button>
+                </div>
+              </div>
+
+              <!-- List active API Tokens -->
+              <h5 style="font-weight:700;font-size:0.78rem;color:var(--color-primary);margin-bottom:8px;">مفاتيح التكامل النشطة حالياً:</h5>
+              <table class="table text-xs">
+                <thead>
+                  <tr>
+                    <th>اسم المفتاح</th>
+                    <th>تاريخ الإصدار</th>
+                    <th>تاريخ الانتهاء</th>
+                    <th>الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="tok in apiTokens" :key="tok.id">
+                    <tr>
+                      <td style="font-weight:700;" x-text="tok.name"></td>
+                      <td x-text="new Date(tok.created_at).toLocaleDateString('ar-SA')"></td>
+                      <td x-text="tok.expires_at ? new Date(tok.expires_at).toLocaleDateString('ar-SA') : 'دائم'"></td>
+                      <td>
+                        <button class="btn btn-secondary text-xxs" style="color:var(--color-danger);padding:2px 8px;" @click="revokeApiToken(tok.id)">إلغاء المفتاح</button>
+                      </td>
+                    </tr>
+                  </template>
+                  <tr x-show="apiTokens.length === 0">
+                    <td colspan="4" style="text-align:center;color:var(--color-text-secondary);">لا توجد مفاتيح تكامل نشطة حالياً.</td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script src="/assets/js/auth-guard.js"></script>
+  <!-- Notifications Library -->
+  <script src="/assets/js/notifications.js"></script>
+  
+  <script>
+    function profileConsole() {
+      return {
+        activeTab: 'info',
+        loading: false,
+        
+        user: { name: 'الموظف', role: '...', avatar: '👤', email: '' },
+        profileForm: { name: '', avatar: '👤' },
+        passwordForm: { current: '', newPassword: '', confirm: '' },
+        twofaSetup: { qrCodeUrl: '', secret: '', token: '' },
+        apiTokenForm: { name: '', expiresDays: '30' },
+        generatedToken: '',
+        
+        activeSessions: [],
+        apiTokens: [],
+
+        init() {
+          this.loadProfile();
+        },
+
+        async loadProfile() {
+          try {
+            const res = await fetch('/api/auth/me');
+            const data = await res.json();
+            if (data.success && data.data) {
+              const d = data.data;
+              this.user = d.user;
+              this.profileForm.name = d.user.name;
+              this.profileForm.avatar = d.user.avatar || '👤';
+              this.activeSessions = d.activeSessions || [];
+              this.apiTokens = d.apiTokens || [];
+            }
+          } catch (e) {
+            console.error('Failed to load profile:', e);
+          }
+        },
+
+        async updateProfile() {
+          this.loading = true;
+          try {
+            const res = await fetch('/api/auth/me', {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.profileForm)
+            });
+            const data = await res.json();
+            if (res.ok) {
+              this.loadProfile();
+              alert(this.user.language === 'en' ? 'Profile updated successfully!' : 'تم تحديث البيانات الشخصية بنجاح!');
+            } else {
+              throw new Error(data.message);
+            }
+          } catch (err) {
+            alert(err.message || 'Failed to update profile');
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async changePassword() {
+          if (this.passwordForm.newPassword !== this.passwordForm.confirm) {
+            alert('كلمتا المرور الجديدتان غير متطابقتين.');
+            return;
+          }
+          this.loading = true;
+          try {
+            const res = await fetch('/api/auth/change-password', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                currentPassword: this.passwordForm.current,
+                newPassword: this.passwordForm.newPassword
+              })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              alert('تم تحديث كلمة المرور بنجاح!');
+              this.passwordForm = { current: '', newPassword: '', confirm: '' };
+            } else {
+              throw new Error(data.message);
+            }
+          } catch (e) {
+            alert(e.message || 'Failed to change password');
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async setup2FA() {
+          this.loading = true;
+          try {
+            const res = await fetch('/api/auth/2fa/setup', { method: 'POST' });
+            const data = await res.json();
+            if (res.ok && data.data) {
+              this.twofaSetup.qrCodeUrl = data.data.qrCodeUrl;
+              this.twofaSetup.secret = data.data.secret;
+            }
+          } catch (e) {
+            alert('Failed to setup 2FA');
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async confirm2FA() {
+          this.loading = true;
+          try {
+            const res = await fetch('/api/auth/2fa/enable', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token: this.twofaSetup.token })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              this.user.two_factor_enabled = 1;
+              this.twofaSetup = { qrCodeUrl: '', secret: '', token: '' };
+              alert('تم تفعيل التحقق الثنائي (2FA) بنجاح!');
+            } else {
+              throw new Error(data.message);
+            }
+          } catch (e) {
+            alert(e.message || 'Failed to confirm 2FA');
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async disable2FA(password) {
+          this.loading = true;
+          try {
+            const res = await fetch('/api/auth/2fa/disable', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+              this.user.two_factor_enabled = 0;
+              alert('تم إلغاء تفعيل التحقق الثنائي (2FA) لحسابك.');
+            } else {
+              throw new Error(data.message);
+            }
+          } catch (e) {
+            alert(e.message || 'Failed to disable 2FA');
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async revokeSession(sessionId) {
+          if (!confirm('هل أنت متأكد من إنهاء جلسة هذا الجهاز؟')) return;
+          try {
+            const res = await fetch(`/api/auth/sessions/${sessionId}`, { method: 'DELETE' });
+            if (res.ok) {
+              this.loadProfile();
+            }
+          } catch (e) {
+            alert('Failed to revoke session');
+          }
+        },
+
+        async revokeAllSessions() {
+          if (!confirm('هل أنت متأكد من فرض تسجيل الخروج لكافة الأجهزة والاتصالات النشطة حالياً؟')) return;
+          try {
+            // مسح وتوجيه للـ Login
+            const res = await fetch('/api/auth/logout', { method: 'POST' });
+            if (res.ok) {
+              window.location.href = '/pages/login.html';
+            }
+          } catch (e) {
+            alert('Failed to logout');
+          }
+        },
+
+        async generateApiToken() {
+          this.loading = true;
+          this.generatedToken = '';
+          try {
+            const res = await fetch('/api/auth/api-tokens', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                name: this.apiTokenForm.name,
+                expiresDays: this.apiTokenForm.expiresDays ? Number(this.apiTokenForm.expiresDays) : null
+              })
+            });
+            const data = await res.json();
+            if (res.ok && data.token) {
+              this.generatedToken = data.token;
+              this.apiTokenForm = { name: '', expiresDays: '30' };
+              this.loadProfile();
+            } else {
+              throw new Error(data.message);
+            }
+          } catch (e) {
+            alert(e.message || 'Failed to generate API token');
+          } finally {
+            this.loading = false;
+          }
+        },
+
+        async revokeApiToken(tokenId) {
+          if (!confirm('هل أنت متأكد من إبطال مفتاح التكامل هذا بشكل نهائي؟ سيتوقف أي ربط خارجي يستعمله فوراً.')) return;
+          try {
+            const res = await fetch(`/api/auth/sessions/${tokenId}`, { method: 'DELETE' }); // دمجنا الجلسات والتوكنز للإبطال بمرونة
+            if (res.ok) {
+              this.loadProfile();
+            }
+          } catch (e) {
+            alert('Failed to revoke API Token');
+          }
+        }
+      };
+    }
+  </script>
+</body>
+</html>

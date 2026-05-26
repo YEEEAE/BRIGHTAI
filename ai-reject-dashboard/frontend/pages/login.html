@@ -2,42 +2,177 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — AI Reject Analytics Dashboard</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول — BrightAI Login</title>
+  <link rel="stylesheet" href="/assets/css/design-system.css">
   <style>
-    body { background: var(--navy); display: flex; align-items: center; justify-content: center; min-height: 100vh; direction: rtl; }
-    .login-box { background: var(--white); border-radius: var(--radius-lg); padding: 40px; width: 100%; max-width: 400px; box-shadow: var(--shadow-lg); }
-    .login-box h1 { font-size: 1.1rem; font-weight: 700; color: var(--gray-800); margin-bottom: 4px; }
-    .login-box .sub { font-size: 0.7rem; color: var(--gray-500); margin-bottom: 24px; }
-    .login-box label { display: block; font-size: 0.72rem; font-weight: 600; color: var(--gray-600); margin-bottom: 6px; }
-    .login-box input[type="text"], .login-box input[type="password"] { width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: var(--radius); font-size: 0.85rem; font-family: var(--font); direction: ltr; text-align: left; }
-    .login-box input:focus { outline: none; border-color: var(--teal); box-shadow: 0 0 0 3px rgba(13,148,136,0.1); }
-    .login-box .btn { width: 100%; margin-top: 16px; padding: 12px; font-size: 0.85rem; }
-    .login-box .error { font-size: 0.72rem; color: var(--red); margin-top: 8px; display: none; }
-    .login-box .info { font-size: 0.68rem; color: var(--gray-400); margin-top: 16px; line-height: 1.6; }
-    .brand-icon { font-size: 2rem; margin-bottom: 12px; }
+    body {
+      background: var(--color-background);
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      margin: 0;
+      padding: var(--spacing-md);
+    }
+    
+    .login-box {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-2xl);
+      max-width: 420px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      transition: all 0.3s;
+    }
+    
+    .login-box h1 {
+      font-size: var(--font-size-md);
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .login-box .sub {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-secondary);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .form-group label {
+      font-size: var(--font-size-xs);
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      background: var(--color-background);
+      color: var(--color-text);
+      transition: all 0.2s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--color-secondary);
+      box-shadow: 0 0 0 3px rgba(0, 166, 166, 0.15);
+    }
+    
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      margin-top: var(--spacing-sm);
+    }
+    
+    .error {
+      font-size: var(--font-size-xs);
+      color: var(--color-danger);
+      background: rgba(231, 111, 81, 0.08);
+      border: 1px solid var(--color-danger);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-md);
+      display: none;
+      line-height: 1.5;
+    }
+    
+    .info {
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-xl);
+      line-height: 1.6;
+      border-top: 1px solid var(--color-border);
+      padding-top: var(--spacing-md);
+    }
+    
+    .brand-icon {
+      font-size: 2.2rem;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .forgot-link {
+      font-size: 11px;
+      color: var(--color-secondary);
+      text-decoration: none;
+      text-align: end;
+      display: block;
+      margin-top: -8px;
+      margin-bottom: var(--spacing-sm);
+      font-weight: 600;
+    }
+    
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    /* 2FA input box style */
+    .two-fa-group {
+      background: rgba(0, 166, 166, 0.04);
+      border: 1px dashed var(--color-secondary);
+      padding: var(--spacing-md);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--spacing-md);
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <div class="brand-icon">&#x1F6AB;</div>
-    <h1>AI Reject Analytics Dashboard</h1>
-    <div class="sub">Mais for Medical Products — Management Access</div>
+    <div class="brand-icon">🛡️</div>
+    <h1>تسجيل الدخول للمنظومة</h1>
+    <div class="sub">Mais for Medical Products — BrightAI Platform</div>
+
+    <div id="login-error" class="error"></div>
 
     <form id="login-form" onsubmit="return false;">
-      <label for="token-input">Access Token</label>
-      <input type="password" id="token-input" placeholder="Enter dashboard access token" autocomplete="off" autofocus>
-      <div id="login-error" class="error"></div>
-      <button type="submit" class="btn btn-primary" id="login-btn">Sign In</button>
+      <div id="credentials-area">
+        <div class="form-group">
+          <label for="email-input">البريد الإلكتروني المؤسسي</label>
+          <input type="email" id="email-input" class="form-input" placeholder="example@mais-medical.com" required autofocus>
+        </div>
+
+        <div class="form-group">
+          <label for="password-input">كلمة المرور</label>
+          <input type="password" id="password-input" class="form-input" placeholder="••••••••••••" required>
+        </div>
+        
+        <a href="/pages/forgot-password.html" class="forgot-link">هل نسيت كلمة المرور؟</a>
+      </div>
+
+      <!-- dynamic 2FA input area -->
+      <div id="two-fa-area" class="two-fa-group">
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="twofa-input">رمز التحقق الثنائي (2FA)</label>
+          <p style="font-size:10px;color:var(--color-text-secondary);margin:2px 0 6px;">الحساب مؤمن بـ 2FA. أدخل الرمز المكون من 6 أرقام من تطبيق Authenticator بالهاتف:</p>
+          <input type="text" id="twofa-input" class="form-input" placeholder="000 000" maxlength="6" pattern="[0-9]*" inputmode="numeric" style="text-align:center;letter-spacing:6px;font-size:1.1rem;font-weight:700;">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-submit" id="login-btn">تسجيل الدخول</button>
     </form>
 
     <div class="info">
-      &#x26A0; This dashboard is for authorised management only.<br>
-      Contact IT or the system administrator for access.<br>
-      Focus ERP remains the official source of truth.
+      ⚠️ يقتصر استخدام هذه المنصة على منسوبي إدارة الجودة ومجلس الإدارة المرخص لهم فقط.
+      جميع المحاولات وتدفق العمليات خاضعة لرقابة محرك سجل المراجعة والتدقيق الفني الصارم لمصنع MAIS.
     </div>
   </div>
+
   <script src="/assets/js/login.js"></script>
 </body>
 </html>

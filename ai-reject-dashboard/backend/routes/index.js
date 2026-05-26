@@ -8,6 +8,7 @@ const dataRoutes = require('./data');
 const aiRoutes = require('./ai');
 const reportsRoutes = require('./reports');
 const notificationsRoutes = require('./notifications');
+const adminRoutes = require('./admin');
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use(dataRoutes);
 router.use(aiRoutes);
 router.use(reportsRoutes);
 router.use(notificationsRoutes);
+router.use(adminRoutes);
 
 module.exports = router;

@@ -2,8 +2,8 @@
 
 مستودع BrightAI الآن يعمل على فصل واضح بين الواجهة الثابتة وواجهة الـ API الخادمية.
 git add .
-git commit -m "وصف التعديل"
-git push
+git commit -m "update site"
+git push origin main
 ## **الموقع فعلت فيه :**
 
 

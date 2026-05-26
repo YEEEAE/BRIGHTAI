@@ -15,9 +15,15 @@ const { logger } = require('./utils/logger');
 const { notFound, errorHandler } = require('./middleware/error-handler');
 const apiRoutes = require('./routes');
 const { startExcelWatcher } = require('./watchers/excelWatcher');
+const { initializeDatabase } = require('./config/database');
 
 const app = express();
 const server = http.createServer(app);
+
+// تهيئة قاعدة البيانات SQLite
+initializeDatabase()
+  .then(() => logger.info('Database initialized successfully.'))
+  .catch((err) => logger.error('Database initialization failed:', err));
 const io = new Server(server, {
   cors: {
     origin: config.allowedOrigins,
