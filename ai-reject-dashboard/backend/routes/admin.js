@@ -2,8 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { get, run, all } = require('../config/database');
-const { requireAuth } = require('../middleware/auth');
-const { requireRole, requirePermission } = require('../middleware/rbac');
+const { requireAuth, requireRole, requirePermission } = require('../middleware/auth');
 const { logAction, getAuditLogs } = require('../services/auditService');
 
 const router = express.Router();

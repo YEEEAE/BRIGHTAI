@@ -230,10 +230,97 @@
     });
   }
 
+  function isEnglishPage() {
+    return /^en/i.test(document.documentElement.getAttribute("lang") || "") || window.location.pathname.indexOf("/en/") === 0;
+  }
+
+  function pageGuidanceCopy(pageType) {
+    var english = isEnglishPage();
+    var copy = {
+      home: english
+        ? ["You are on Bright AI's main page.", "Start with a consultation or explore live demos.", "/consultation/", "Request consultation"]
+        : ["أنت في الصفحة الرئيسية لـ Bright AI.", "ابدأ باستشارة تشخيصية أو استكشف نماذج الديمو العملية.", "/consultation/", "طلب استشارة"],
+      "services-index": english
+        ? ["You are browsing Bright AI services.", "Compare solutions by need, then open the service closest to your goal.", "/services/", "Explore services"]
+        : ["أنت في فهرس خدمات Bright AI.", "قارن الحلول حسب احتياجك ثم افتح الخدمة الأقرب لهدفك.", "/services/", "استكشاف الخدمات"],
+      "service-detail": english
+        ? ["You are viewing a service page.", "Review the problem, value, implementation steps, then request a consultation.", "/consultation/", "Request consultation"]
+        : ["أنت في صفحة خدمة تفصيلية.", "راجع المشكلة والقيمة وخطوات التنفيذ ثم اطلب استشارة مناسبة.", "/consultation/", "طلب استشارة"],
+      "blog-index": english
+        ? ["You are in the Bright AI knowledge hub.", "Choose a topic, read the guide, then move to the related service when ready.", "/blog/", "Read more"]
+        : ["أنت في مركز معرفة Bright AI.", "اختر موضوعًا، اقرأ الدليل، ثم انتقل للخدمة المرتبطة عند الجاهزية.", "/blog/", "قراءة المزيد"],
+      "blog-post": english
+        ? ["You are reading a practical article.", "Use it to understand the idea, then explore the related service or demo.", "/blog/", "More articles"]
+        : ["أنت تقرأ مقالًا عمليًا.", "استخدمه لفهم الفكرة ثم انتقل للخدمة أو الديمو المرتبط.", "/blog/", "مقالات أكثر"],
+      demo: english
+        ? ["You are in a demo experience.", "Try the inputs, review the result, then request a tailored version.", "/consultation/", "Request a tailored demo"]
+        : ["أنت في تجربة ديمو.", "جرّب المدخلات، راجع النتيجة، ثم اطلب نسخة مخصصة لجهتك.", "/consultation/", "طلب ديمو مخصص"],
+      tool: english
+        ? ["You are using a practical tool.", "Enter the required data, review the output, then discuss implementation.", "/consultation/", "Discuss implementation"]
+        : ["أنت تستخدم أداة عملية.", "أدخل البيانات المطلوبة، راجع المخرجات، ثم ناقش طريقة التنفيذ.", "/consultation/", "مناقشة التنفيذ"],
+      dashboard: english
+        ? ["You are in a dashboard view.", "Review the indicators, filters, and tables before taking action.", "#main-content", "Review indicators"]
+        : ["أنت في لوحة تحكم.", "راجع المؤشرات والفلاتر والجداول قبل اتخاذ الإجراء التالي.", "#main-content", "مراجعة المؤشرات"],
+      contact: english
+        ? ["You are on the contact page.", "Choose the fastest channel or send a clear request to the team.", "/contact/", "Contact Bright AI"]
+        : ["أنت في صفحة التواصل.", "اختر أسرع قناة أو أرسل طلبًا واضحًا لفريق Bright AI.", "/contact/", "تواصل معنا"],
+      about: english
+        ? ["You are reading about Bright AI.", "Review our story, values, and approach before starting a conversation.", "/consultation/", "Start a conversation"]
+        : ["أنت تتعرف على Bright AI.", "راجع القصة والقيم وطريقة العمل قبل بدء الحوار.", "/consultation/", "ابدأ الحوار"],
+      legal: english
+        ? ["You are reading a legal page.", "Review the terms carefully, then contact us if anything needs clarification.", "/contact/", "Ask a question"]
+        : ["أنت تقرأ صفحة قانونية.", "راجع البنود بهدوء، وتواصل معنا إذا احتجت توضيحًا.", "/contact/", "طلب توضيح"],
+      error: english
+        ? ["This page is not available.", "Return to the homepage or explore services and demos.", "/", "Back to homepage"]
+        : ["هذه الصفحة غير متاحة.", "ارجع للرئيسية أو استكشف الخدمات والديموهات.", "/", "العودة للرئيسية"],
+      "ai-bots": english
+        ? ["You are browsing Bright AI bots.", "Compare ready bots, then request the one closest to your workflow.", "/consultation/", "Request a bot"]
+        : ["أنت تستعرض روبوتات Bright AI.", "قارن الروبوتات الجاهزة ثم اطلب الأقرب لسير عملك.", "/consultation/", "طلب روبوت"],
+      "ai-agent": english
+        ? ["You are exploring AI agents.", "Review the use cases, then discuss the agent your team needs.", "/consultation/", "Discuss an agent"]
+        : ["أنت تستكشف وكلاء الذكاء الاصطناعي.", "راجع حالات الاستخدام ثم ناقش الوكيل المناسب لفريقك.", "/consultation/", "مناقشة وكيل"],
+      sector: english
+        ? ["You are viewing a sector page.", "Read the sector context, then explore the matching service.", "/services/", "Explore matching services"]
+        : ["أنت في صفحة قطاع.", "اقرأ سياق القطاع ثم استكشف الخدمة المناسبة.", "/services/", "استكشاف الخدمات المناسبة"],
+      location: english
+        ? ["You are viewing a location page.", "Review local use cases, then contact the team for next steps.", "/contact/", "Contact the team"]
+        : ["أنت في صفحة مدينة أو منطقة.", "راجع حالات الاستخدام المحلية ثم تواصل مع الفريق.", "/contact/", "تواصل مع الفريق"],
+      pricing: english
+        ? ["You are reviewing pricing context.", "Compare the options, then request a fit assessment.", "/consultation/", "Assess fit"]
+        : ["أنت تراجع سياق الأسعار.", "قارن الخيارات ثم اطلب تقييم الملاءمة.", "/consultation/", "تقييم الملاءمة"],
+      docs: english
+        ? ["You are reading documentation.", "Use this page to understand scope, behavior, and integration details.", "/contact/", "Ask about integration"]
+        : ["أنت تقرأ صفحة توثيق.", "استخدمها لفهم النطاق والسلوك وتفاصيل الربط.", "/contact/", "اسأل عن الربط"]
+    };
+
+    return copy[pageType] || copy.home;
+  }
+
+  function addPageGuidance(body) {
+    if (body.querySelector(".bright-page-guidance")) {
+      return;
+    }
+
+    var pageType = normalizePageType(body.getAttribute("data-bright-page-type")) || "home";
+    var h1 = body.querySelector("main h1, #main-content h1, h1");
+
+    if (!h1) {
+      return;
+    }
+
+    var data = pageGuidanceCopy(pageType);
+    var aside = document.createElement("aside");
+    aside.className = "bright-page-guidance";
+    aside.setAttribute("aria-label", isEnglishPage() ? "Page context and next action" : "سياق الصفحة والخطوة التالية");
+    aside.innerHTML = '<p><strong>' + data[0] + '</strong> ' + data[1] + '</p> <a href="' + data[2] + '">' + data[3] + '</a>';
+    h1.insertAdjacentElement("afterend", aside);
+  }
+
   function markPagePatterns(body) {
     var pageType = normalizePageType(body.getAttribute("data-bright-page-type"));
 
     enhanceForms(body);
+    addPageGuidance(body);
 
     if (pageType === "service-detail") {
       markSectionByHeading(body, "bright-section--problem", ["المشكلة", "problem", "التحدي", "challenge"]);

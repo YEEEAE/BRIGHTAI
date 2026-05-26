@@ -362,10 +362,13 @@ describe('Socket data:updated event structure', () => {
     };
 
     // Verify the shape matches
-    expect(typeof expectedPayload.records_count).toBe('number');
-    expect(typeof expectedPayload.source).toBe('string');
-    expect(typeof expectedPayload.loaded_at).toBe('string');
-    expect(Array.isArray(expectedPayload.sheet_names)).toBe(true);
+    const dummyPayload = {
+      records_count: 10,
+      source: 'excel',
+      loaded_at: new Date().toISOString(),
+      sheet_names: ['Sheet1']
+    };
+    expect(dummyPayload).toEqual(expectedPayload);
   });
 
   it('dataService getState should return fields needed for the socket event', () => {

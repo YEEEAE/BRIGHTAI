@@ -43,6 +43,19 @@ function startExcelWatcher(io) {
   let lastHash = getDataHash(config.excelFilePath);
   let previousRecordCount = 0;
   let previousRecords = [];
+  
+  // تعبئة اللقطة الافتتاحية للمخزون فور تشغيل الخدمة
+  (async () => {
+    try {
+      const excelPayload = await loadExcelData({ force: false });
+      const newRecords = await getRejects('excel');
+      previousRecordCount = excelPayload.records.length;
+      previousRecords = newRecords.slice();
+      logger.info('excel_watcher_initial_snapshot_loaded', { record_count: previousRecordCount });
+    } catch (err) {
+      logger.warn('excel_watcher_initial_snapshot_failed', { message: err.message });
+    }
+  })();
 
   async function handleExcelChange(eventName) {
     try {

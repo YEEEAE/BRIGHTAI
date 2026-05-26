@@ -841,6 +841,143 @@ body.bright-has-overflow-risk {
   color: color-mix(in srgb, var(--bright-modern-soft) 82%, transparent);
 }
 
+/*
+  Shared utility classes introduced by sitewide modernization:
+  - .bright-perf-section: shared replacement for repeated content-visibility inline styles.
+  - .bright-text-strong: semantic emphasis replacement for repeated font-weight inline styles.
+  - .bright-muted-cell / .bright-muted-cell-soft: compact table/list cell text colors.
+  - .bright-demo-note / .bright-demo-title / .bright-demo-copy: shared demo card text rhythm.
+  - .bright-demo-panel: shared lightweight demo panel surface.
+  - .bright-demo-pill-link: compact CTA link inside demo cards.
+  - .bright-demo-success-panel: positive demo card accent.
+*/
+.bright-perf-section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+.bright-text-strong {
+  font-weight: 700;
+}
+
+.bright-muted-cell {
+  padding: 0.75rem 1rem;
+  color: #475569;
+}
+
+.bright-muted-cell-soft {
+  padding: 0.75rem 1rem;
+  color: #94a3b8;
+}
+
+.bright-demo-note {
+  margin: 0;
+  color: #cbd5e1;
+  line-height: 2;
+}
+
+.bright-demo-title {
+  margin: 0 0 0.625rem;
+  color: #fff;
+  font-size: 1.15rem;
+}
+
+.bright-demo-copy {
+  color: var(--text-secondary, #cbd5e1);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.bright-demo-support-title {
+  color: var(--text-primary, #fff);
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.bright-demo-panel {
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.bright-demo-pill-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding: 0.625rem 1rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f3c870, var(--accent, #fbbf24));
+  color: #08111f;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.bright-demo-success-panel {
+  border-color: rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.12);
+}
+
+.bright-page-guidance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  max-inline-size: min(100%, 62rem);
+  margin-block: 1rem 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--bright-modern-brand) 28%, var(--bright-modern-border));
+  border-radius: var(--bright-modern-radius-card);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--bright-modern-brand) 8%, transparent), transparent 62%),
+    var(--bright-modern-surface-soft);
+  color: var(--bright-modern-muted);
+}
+
+.bright-page-guidance p {
+  flex: 1 1 18rem;
+  margin: 0;
+  line-height: 1.8;
+}
+
+.bright-page-guidance strong {
+  color: var(--bright-modern-text);
+}
+
+.bright-page-guidance a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 44px;
+  padding: 0.6rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--bright-modern-brand) 42%, var(--bright-modern-border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bright-modern-brand) 16%, transparent);
+  color: var(--bright-modern-text);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+body[data-bright-page-type="blog-post"] .bright-page-guidance,
+body.bright-page--blog-post .bright-page-guidance,
+body[data-bright-page-type="legal"] .bright-page-guidance,
+body.bright-page--legal .bright-page-guidance {
+  max-inline-size: min(100%, 76ch);
+}
+
+@media (max-width: 479px) {
+  .bright-page-guidance {
+    align-items: stretch;
+  }
+
+  .bright-page-guidance a {
+    inline-size: 100%;
+  }
+}
+
 body[data-bright-page-type="ai-bots"] :is(.bot-card, .agent-card, .feature-card),
 body.bright-page--ai-bots :is(.bot-card, .agent-card, .feature-card),
 body[data-bright-page-type="ai-agent"] :is(.agent-card, .feature-card, .service-card),

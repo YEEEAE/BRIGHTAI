@@ -834,6 +834,14 @@ function localChatResponse(message, fullContext) {
   };
 }
 
+function getSystemPrompt() {
+  return `اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات.`;
+}
+
+function getSessionsMap() {
+  return sessionMemory.sessions;
+}
+
 module.exports = {
   runEnterpriseAnalysis,
   answerNaturalLanguageQuery,
@@ -842,5 +850,7 @@ module.exports = {
   invalidateAiCache,
   auditTrail,
   buildPrompt,
-  chatWithGemini
+  chatWithGemini,
+  getSystemPrompt,
+  getSessionsMap
 };

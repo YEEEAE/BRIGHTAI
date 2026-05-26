@@ -712,6 +712,8 @@ async function renderExcelReport(filePath, payload, records) {
 
 // 3. PowerPoint Slides Generation (via PptxGenJS)
 async function renderPptxReport(filePath, payload, records) {
+  const metadata = buildSourceMetadata(records);
+
   // Verify pptxgenjs installation, fallback to simulated PPTX buffer output if not compiled
   if (PptxGenJS) {
     try {
@@ -734,6 +736,10 @@ async function renderPptxReport(filePath, payload, records) {
         x: 1, y: 3.5, w: 8, h: 0.5,
         fontSize: 16, color: TEAL, align: 'right', fontFace: 'IBM Plex Sans Arabic'
       });
+      slide1.addText(metadata.footerDisclaimer, {
+        x: 0.5, y: 5.0, w: 12.3, h: 0.5,
+        fontSize: 10, color: TEAL, align: 'center', fontFace: 'IBM Plex Sans Arabic'
+      });
 
       // Slide 2: KPIs & Key Metrics
       const slide2 = pptx.addSlide();
@@ -747,6 +753,10 @@ async function renderPptxReport(filePath, payload, records) {
         x: 1, y: 1.8, w: 8, h: 2,
         fontSize: 18, color: '333333', align: 'right', fontFace: 'IBM Plex Sans Arabic'
       });
+      slide2.addText(metadata.footerDisclaimer, {
+        x: 0.5, y: 5.0, w: 12.3, h: 0.5,
+        fontSize: 10, color: '666666', align: 'center', fontFace: 'IBM Plex Sans Arabic'
+      });
 
       // Save PowerPoint
       await pptx.writeFile({ fileName: filePath });
@@ -757,7 +767,7 @@ async function renderPptxReport(filePath, payload, records) {
   }
 
   // Fallback safe mock write for slides (so download works flawlessly!)
-  const simulatedPptx = `MAIS-POWERPOINT-SLIDES-MOCK\nTitle: Strategic Quality Report\nTotal Records: ${records.length}\nDate: ${new Date().toISOString()}`;
+  const simulatedPptx = `MAIS-POWERPOINT-SLIDES-MOCK\nTitle: Strategic Quality Report\nTotal Records: ${records.length}\nHash: ${metadata.dataHash}\nSource: ${metadata.sourceLabel}\nDisclaimer: ${metadata.footerDisclaimer}\nDate: ${new Date().toISOString()}`;
   fs.writeFileSync(filePath, simulatedPptx, 'utf8');
 }
 
