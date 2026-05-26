@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "node backend/server.js",
-    "check": "node --check backend/server.js"
+    "check": "node --check backend/server.js",
+    "check:csp": "node scripts/check-csp-compat.js"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

@@ -162,11 +162,11 @@
     }
   </style>
 
-  <!-- Libraries CDNs -->
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/ar.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <!-- Libraries — local vendor (CSP-safe, no CDN) -->
+  <script src="/assets/vendor/apexcharts.js"></script>
+  <script src="/assets/vendor/dayjs.min.js"></script>
+  <script src="/assets/vendor/ar.js"></script>
+  <script defer src="/assets/vendor/alpine.min.js"></script>
 </head>
 <body x-data="dashboardApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'">
 
@@ -763,9 +763,9 @@
 
   </div>
 
-  <!-- Embedded Script to Coordinate Local State, ApexCharts & APIs -->
-  <script>
-    function dashboardApp() {
+  <!-- Page logic — extracted to external file (CSP-compliant) -->
+  <script src="/assets/js/pages/index.js"></script>
+  <script src="/assets/js/auth-guard.js"></script><!-- dummy marker index start
       return {
         // Structural UI State
         sidebarCollapsed: false,
