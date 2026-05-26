@@ -3,8 +3,10 @@ const config = require('../config/env');
 const { logger } = require('../utils/logger');
 const { computeAnalysis } = require('./analysisService');
 const { getDataState } = require('./dataService');
+const sessionMemory = require('./sessionMemory');
 
-const MODEL = 'gemini-2.5-flash';
+const MODEL = config.geminiModel || 'gemini-2.5-flash';
+const AI_NAME = 'صقر AI';
 const ANALYSIS_TTL_MS = 5 * 60 * 1000;
 const FORECAST_TTL_MS = 60 * 60 * 1000;
 const cache = new Map();
@@ -84,12 +86,13 @@ function buildContext(records) {
 }
 
 function buildPrompt(type, context, extra = {}) {
+  const aiIdentity = `اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات. Always refer to yourself as "صقر AI" in all responses. Never use any other name.`;
   const prompts = {
     descriptive: {
       temperature: 0.15,
       schema: descriptiveSchema(),
       text: [
-        'You are an enterprise quality analytics assistant for a Saudi medical manufacturing company.',
+        `${aiIdentity} You are an enterprise quality analytics assistant for a Saudi medical manufacturing company.`,
         'Layer 1 - Descriptive Analytics: answer What happened?',
         'Use exact numbers from context. Do not invent missing columns.',
         'Few-shot example:',
@@ -603,11 +606,14 @@ function chatSchema() {
   };
 }
 
-async function chatWithGemini(records, message, conversationId, chatContext) {
+async function chatWithGemini(records, message, conversationId, chatContext, history) {
   const started = Date.now();
   const context = buildContext(records);
   const type = 'chat';
-  
+
+  // Use provided history (from session memory) or fall back to loading from sessionMemory service
+  const conversationHistory = Array.isArray(history) ? history : sessionMemory.getHistory(conversationId);
+
   const fullContext = {
     dataset_summary: {
       total_cost: context.metrics.total_cost,
@@ -625,7 +631,9 @@ async function chatWithGemini(records, message, conversationId, chatContext) {
   };
 
   const systemInstruction = [
-    'You are a world-class, highly professional enterprise AI quality & operations assistant for a pharmaceutical and medical products manufacturing company in Saudi Arabia (MAIS - Middle East Medical Adhesive Industry).',
+    `اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات.`,
+    `Always refer to yourself as "صقر AI" in all responses. Never use any other name, title, or alias. When asked about your name, always say your name is "صقر AI".`,
+    `You are a world-class, highly professional enterprise AI quality & operations assistant for a pharmaceutical and medical products manufacturing company in Saudi Arabia (MAIS - Middle East Medical Adhesive Industry).`,
     'Your goal is to answer quality, financial, operational, and audit questions based on the provided dataset summary and user context.',
     'RULES:',
     '1. Language: Automatically detect the language of the user message (Arabic or English) and reply in the same language.',
@@ -640,9 +648,15 @@ async function chatWithGemini(records, message, conversationId, chatContext) {
     '   - sources: An array of column or field names from the dataset used to build the answer.'
   ].join('\n');
 
+  // Build conversation history context for Gemini
+  const historyContext = conversationHistory.length > 0
+    ? `Recent conversation history (session-scoped, expires after 2 hours of inactivity):\n${JSON.stringify(conversationHistory.slice(-10))}`
+    : 'No prior conversation history.';
+
   const promptText = [
     systemInstruction,
     `Conversation ID: ${conversationId || 'global'}`,
+    historyContext,
     `User Context (Page, Filters, Role): ${JSON.stringify(fullContext.user_context)}`,
     `Current Time: ${fullContext.current_time}`,
     `Dataset Summary: ${JSON.stringify(fullContext.dataset_summary)}`,
@@ -658,7 +672,12 @@ async function chatWithGemini(records, message, conversationId, chatContext) {
 
   const gemini = await callGemini(promptConfig, 'chat');
   const local = localChatResponse(message, fullContext);
-  
+
+  // Session memory: store user message and assistant reply
+  sessionMemory.appendMessage(conversationId, 'user', message);
+  const replyText = gemini ? (gemini.reply || JSON.stringify(gemini)) : (local.reply || JSON.stringify(local));
+  sessionMemory.appendMessage(conversationId, 'assistant', replyText);
+
   const result = {
     layer: 'chat',
     model: gemini ? MODEL : 'local-fallback',
@@ -666,7 +685,7 @@ async function chatWithGemini(records, message, conversationId, chatContext) {
     result: gemini || local,
     cached: false
   };
-  
+
   return result;
 }
 
@@ -801,9 +820,9 @@ function localChatResponse(message, fullContext) {
 
   } else {
     if (isEnglish) {
-      reply = `### Middle East Medical Adhesive Industry (MAIS) AI Assistant\n\nHello! I am your AI Quality and Production Assistant. I can help you analyze raw material rejects, calculate quality costs, track CAPAs, and verify GMP compliance.\n\n**Try asking me about:**\n1. "What is the total reject cost?"\n2. "Give me the top 5 reject reasons"\n3. "How is Production department performing?"\n4. "Show me machine defect rates"\n\n*All insights are advisory and require QCM/QAM approval.*`;
+      reply = `### صقر AI — MAIS Quality & Production Assistant\n\nHello! I am صقر AI, your intelligent quality and production assistant. I can help you analyze raw material rejects, calculate quality costs, track CAPAs, and verify GMP compliance.\n\n**Try asking me about:**\n1. "What is the total reject cost?"\n2. "Give me the top 5 reject reasons"\n3. "How is Production department performing?"\n4. "Show me machine defect rates"\n\n*All insights are advisory and require QCM/QAM approval.*`;
     } else {
-      reply = `### المساعد الذكي لمصنع المنتجات الطبية والمرفوضات (MAIS)\n\nأهلاً بك! أنا مساعدك الذكي لتحليلات الجودة والإنتاج والعمليات. يمكنني مساعدتك في تحليل مرفوضات المواد الخام، وحساب الخسائر المالية، وتتبع خطط CAPA والتحقق من التزام ممارسات GMP الدوائية.\n\n**يمكنك سؤالي عن:**\n1. "كم تكلفة المرفوضات الإجمالية؟"\n2. "أعطني أعلى 5 أسباب رفض"\n3. "قارن قسم الإنتاج مع المستودعات"\n4. "ما هي معدلات عيوب الماكينات؟"\n\n*ملاحظة: كافة توصيات النظام استشارية وتخضع لمراجعة واعتماد إدارة الجودة (QCM).*`;
+      reply = `### صقر AI — مساعد الجودة والإنتاج\n\nأهلاً بك! أنا صقر AI، مساعدك الذكي لتحليلات الجودة والإنتاج. يمكنني مساعدتك في تحليل مرفوضات المواد الخام، وحساب الخسائر المالية، وتتبع خطط CAPA والتحقق من التزام ممارسات GMP الدوائية.\n\n**يمكنك سؤالي عن:**\n1. "كم تكلفة المرفوضات الإجمالية؟"\n2. "أعطني أعلى 5 أسباب رفض"\n3. "قارن قسم الإنتاج مع المستودعات"\n4. "ما هي معدلات عيوب الماكينات؟"\n\n*ملاحظة: كافة توصيات النظام استشارية وتخضع لمراجعة واعتماد إدارة الجودة (QCM).*`;
     }
   }
 

@@ -95,8 +95,11 @@
 
   <!-- Alpine.js library — local vendor (CSP-safe, no CDN) -->
   <script defer src="/assets/vendor/alpine.min.js"></script>
+    <link rel="stylesheet" href="../../../../assets/css/sitewide-modernization.css">
 </head>
-<body>
+<body class="bright-page--dashboard" data-bright-page-type="dashboard">
+<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
   <div class="app-wrapper" x-data="adminApp()">
     
     <!-- Sidebar navigation -->
@@ -121,7 +124,7 @@
       </div>
     </aside>
 
-    <main class="main-viewport">
+    <main class="main-viewport" id="main-content">
       
       <!-- Topbar Header -->
       <header class="topbar">
@@ -503,5 +506,6 @@
       };
     }
   </script>
+    <script defer src="../../../../assets/js/sitewide-modernization.js"></script>
 </body>
 </html>

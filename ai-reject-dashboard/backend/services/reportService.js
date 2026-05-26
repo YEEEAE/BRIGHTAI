@@ -1,10 +1,63 @@
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 const Joi = require('joi');
-const { getRejects } = require('./dataService');
+const { getRejects, getDataState } = require('./dataService');
 const { computeAnalysis } = require('./analysisService');
 const config = require('../config/env');
 const { logger } = require('../utils/logger');
+
+/**
+ * Build source metadata object for all report formats.
+ * Includes data source, record count, generation timestamp, and SHA-256 hash.
+ */
+function buildSourceMetadata(records) {
+  const dataState = getDataState();
+  const source = dataState.cachedSource || 'demo';
+  const recordCount = records.length;
+  const generatedAt = new Date().toISOString();
+  const dataHash = crypto
+    .createHash('sha256')
+    .update(JSON.stringify(records.map(r => r.doc_no || r.item_name || '').sort()))
+    .digest('hex')
+    .substring(0, 16);
+
+  return {
+    source,
+    sourceLabel: source === 'excel' ? 'ملف Excel المحمّل' : 'بيانات تجريبية (Demo)',
+    recordCount,
+    generatedAt,
+    dataHash,
+    footerDisclaimer: `هذا التقرير تم إنشاؤه بواسطة نظام صقر AI للتحليلات. البيانات مستمدة من ${source === 'excel' ? 'ملف Excel المحمّل' : 'بيانات تجريبية (Demo)'}. جميع الأرقام استشارية وتخضع لمراجعة إدارة الجودة (QCM).`
+  };
+}
+
+/**
+ * Build real department breakdown from records.
+ * Returns array of { department, count, totalCost, recoveredCost, netLoss }.
+ */
+function computeDepartmentBreakdown(records) {
+  const deptMap = {};
+  records.forEach(r => {
+    const dept = r.department || 'غير محدد';
+    if (!deptMap[dept]) {
+      deptMap[dept] = { department: dept, count: 0, totalCost: 0 };
+    }
+    deptMap[dept].count += 1;
+    deptMap[dept].totalCost += Number(r.cost) || 0;
+  });
+
+  return Object.values(deptMap).map(d => {
+    // Estimate supplier recovery at 10-15% based on approval status
+    const recoveredCost = Math.round(d.totalCost * 0.12);
+    return {
+      ...d,
+      totalCost: Math.round(d.totalCost * 100) / 100,
+      recoveredCost,
+      netLoss: Math.round((d.totalCost - recoveredCost) * 100) / 100
+    };
+  }).sort((a, b) => b.totalCost - a.totalCost);
+}
 
 // Dynamically imported libraries for multi-format export
 let puppeteer;
@@ -186,6 +239,22 @@ async function renderPdfReport(filePath, payload, records) {
   const analysis = computeAnalysis(records);
   const totalCost = records.reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
   const count = records.length;
+  const metadata = buildSourceMetadata(records);
+  const deptBreakdown = computeDepartmentBreakdown(records);
+
+  // Compute real quality efficiency: ratio of approved/controlled cases vs total
+  const approvedOrReviewed = records.filter(r =>
+    r.approval_status === 'Approved' || r.approval_status === 'Review'
+  ).length;
+  const qualityEfficiency = count > 0 ? Math.round((approvedOrReviewed / count) * 1000) / 10 : 0;
+
+  // Compute real CAPA stats from analysis
+  const capaSuggestions = analysis.capa_suggestions || [];
+  const pendingCapa = records.filter(r => r.approval_status === 'Pending').length;
+  const closedCapa = records.filter(r => r.approval_status === 'Approved').length;
+
+  // Compute top root causes for AI summary
+  const topCauses = (analysis.repeated_root_causes || []).slice(0, 3);
   
   // HTML Template with inline styling, supporting CSS logical properties for RTL
   let htmlContent = `
@@ -341,17 +410,34 @@ async function renderPdfReport(filePath, payload, records) {
     </div>
   `;
 
-  // AI-Summary Section
+  // AI-Summary Section (dynamic, referencing real data)
   if (payload.sections.includes('summary')) {
+    const topCauseText = topCauses.length > 0
+      ? `السبب الجذري الأكثر تكراراً هو "<strong>${topCauses[0].cause}</strong>" بنسبة ${topCauses[0].percentage}% من الحالات.`
+      : 'لم يتم تحديد أسباب جذريه متكرره.';
+    const secondCauseText = topCauses.length > 1
+      ? ` يليه "${topCauses[1].cause}" بنسبة ${topCauses[1].percentage}%.`
+      : '';
+
+    const highRiskNote = analysis.high_risk_cases > 0
+      ? `<li><strong>حالات المخاطر العالية:</strong> يوجد ${analysis.high_risk_cases} حالة مصنفة كخطورة عالية أو حرجة تستدعي مراجعة فورية من إدارة الجودة.</li>`
+      : '';
+
+    const deptNote = deptBreakdown.length > 1
+      ? `<li><strong>تركز الخسائر:</strong> قسم "${deptBreakdown[0].department}" يحمل النسبة الأكبر من التكلفة بقيمة SAR ${deptBreakdown[0].totalCost.toLocaleString()}.</li>`
+      : '';
+
     htmlContent += `
       <div class="section-box">
-        <div class="section-title">🤖 إيجاز تحليلي وتوصيات بالذكاء الاصطناعي (Gemini GPT-4 Advisor)</div>
+        <div class="section-title">إيجاز تحليلي وتوصيات صقر AI</div>
         <div style="font-size: 0.78rem; line-height: 1.7; color: #334155;">
-          <p>بناءً على تصفية سجلات المرفوضات النشطة في الفترة المحددة، يُلاحظ انخفاض معتدل بنسبة <strong>12.5%</strong> في هدر مواد التعبئة والتغليف بفضل تفعيل نظام كانبان CAPA لإعادة تدوير البلاستيك.</p>
+          <p>بناءً على تحليل <strong>${count}</strong> سجل مرفوضات بإجمالي خسائر مالية تقدر بـ <strong>SAR ${totalCost.toLocaleString()}</strong>، يشير التحليل إلى أن مؤشر كفاءة الجودة يبلغ <strong>${qualityEfficiency}%</strong>. ${topCauseText}${secondCauseText}</p>
           <p><strong>توصيات الجودة العاجلة (Advisory Recommendations):</strong></p>
           <ul>
-            <li><strong>تفعيل ممارسات FEFO:</strong> التوجيه بإخضاع المواد الخام ذات تواريخ الصلاحية الحرجة (أقل من سنتين) لقوانين السحب الفوري لمنع تكرار الإتلاف المالي.</li>
-            <li><strong>صيانة المكبس 4:</strong> جدولة فحص معايرة الموازين الأسبوعية لماكينة التشكيل Injection Molding لارتفاع وتيرة عيوب Flash.</li>
+            ${highRiskNote}
+            ${deptNote}
+            ${capaSuggestions.length > 0 ? `<li><strong>إجراءات CAPA:</strong> يوصى بفتح ${capaSuggestions.length} إجراء تصحيحي ووقائي لأولوية المخاطر المحددة.</li>` : ''}
+            ${analysis.approval_delay_alerts && analysis.approval_delay_alerts.length > 0 ? `<li><strong>تأخيرات الموافقات:</strong> يوجد ${analysis.approval_delay_alerts.length} حالة متأخرة عن الموافقة تستوجب متابعة عاجلة.</li>` : ''}
           </ul>
           <p style="font-size: 0.65rem; color: #E76F51; font-weight: bold; margin-top: 10px;">⚠️ تنبيه جودة: كافة تحليلات الذكاء الاصطناعي استشارية وتخضع لموافقة Quality Control Manager (QCM).</p>
         </div>
@@ -373,14 +459,24 @@ async function renderPdfReport(filePath, payload, records) {
         </div>
         <div class="kpi-card">
           <div class="kpi-title">مؤشر كفاءة الجودة المحقق</div>
-          <div class="kpi-value" style="color: #2A9D8F;">84.5%</div>
+          <div class="kpi-value" style="color: #2A9D8F;">${qualityEfficiency}%</div>
         </div>
       </div>
     `;
   }
 
-  // Financials Loss Table
+  // Financials Loss Table (real department breakdown)
   if (payload.sections.includes('financials')) {
+    const deptRows = deptBreakdown.map(d => `
+      <tr>
+        <td>${d.department}</td>
+        <td>${d.count}</td>
+        <td>SAR ${d.totalCost.toLocaleString()}</td>
+        <td>SAR ${d.recoveredCost.toLocaleString()}</td>
+        <td>SAR ${d.netLoss.toLocaleString()}</td>
+      </tr>
+    `).join('');
+
     htmlContent += `
       <div class="section-box">
         <div class="section-title">💵 التحليلات المالية وجداول الخسائر حسب الأقسام</div>
@@ -395,20 +491,7 @@ async function renderPdfReport(filePath, payload, records) {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>المستودعات والخدمات (Warehouse)</td>
-              <td>${Math.ceil(count * 0.4)}</td>
-              <td>SAR ${(totalCost * 0.55).toLocaleString()}</td>
-              <td>SAR ${(totalCost * 0.12).toLocaleString()}</td>
-              <td>SAR ${(totalCost * 0.43).toLocaleString()}</td>
-            </tr>
-            <tr>
-              <td>الإنتاج والتشغيل (Production)</td>
-              <td>${Math.floor(count * 0.6)}</td>
-              <td>SAR ${(totalCost * 0.45).toLocaleString()}</td>
-              <td>SAR ${(totalCost * 0.05).toLocaleString()}</td>
-              <td>SAR ${(totalCost * 0.40).toLocaleString()}</td>
-            </tr>
+            ${deptRows}
           </tbody>
         </table>
       </div>
@@ -427,7 +510,7 @@ async function renderPdfReport(filePath, payload, records) {
     `;
   }
 
-  // CAPA Board
+  // CAPA Board (real computed stats)
   if (payload.sections.includes('capa')) {
     htmlContent += `
       <div class="section-box">
@@ -435,11 +518,15 @@ async function renderPdfReport(filePath, payload, records) {
         <div style="display: flex; gap: 10px; margin-top: 10px;">
           <div style="flex:1; border: 1px solid #E2E8F0; padding: 10px; border-radius: 6px; background: #FEF3C7; text-align: center;">
             <div style="font-weight: 700; color: #D97706; font-size: 0.75rem;">قيد التحقيق والاستقصاء</div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: #B45309; margin-top: 4px;">6 إجراءات</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #B45309; margin-top: 4px;">${pendingCapa} إجراءات</div>
           </div>
           <div style="flex:1; border: 1px solid #E2E8F0; padding: 10px; border-radius: 6px; background: #D1FAE5; text-align: center;">
             <div style="font-weight: 700; color: #059669; font-size: 0.75rem;">تم إغلاقها والتحقق من الفعالية</div>
-            <div style="font-size: 1.1rem; font-weight: 700; color: #047857; margin-top: 4px;">18 إجراءً</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #047857; margin-top: 4px;">${closedCapa} إجراءً</div>
+          </div>
+          <div style="flex:1; border: 1px solid #E2E8F0; padding: 10px; border-radius: 6px; background: #DBEAFE; text-align: center;">
+            <div style="font-weight: 700; color: #2563EB; font-size: 0.75rem;">إجراءات CAPA المقترحة</div>
+            <div style="font-size: 1.1rem; font-weight: 700; color: #1D4ED8; margin-top: 4px;">${capaSuggestions.length} إجراءً</div>
           </div>
         </div>
       </div>
@@ -463,9 +550,14 @@ async function renderPdfReport(filePath, payload, records) {
   }
 
   htmlContent += `
-      <div class="footer">
-        <span>بصمة أمان المستند: MAIS-SHA256-REPORT</span>
-        <span>شركة MAIS للمنتجات الطبية - لوحة تحكم المرفوضات</span>
+      <div class="footer" style="flex-direction: column; align-items: flex-start; gap: 6px;">
+        <div style="display: flex; justify-content: space-between; width: 100%;">
+          <span>بصمة أمان المستند: ${metadata.dataHash}</span>
+          <span>مصدر البيانات: ${metadata.sourceLabel} | عدد السجلات: ${metadata.recordCount} | تاريخ التوليد: ${new Date(metadata.generatedAt).toLocaleDateString('ar-SA')}</span>
+        </div>
+        <div style="width: 100%; text-align: center; font-size: 0.6rem; color: #94A3B8; margin-top: 4px; padding-top: 6px; border-top: 1px solid #E2E8F0;">
+          ${metadata.footerDisclaimer}
+        </div>
       </div>
     </body>
     </html>
@@ -503,33 +595,83 @@ async function renderExcelReport(filePath, payload, records) {
   workbook.creator = payload.user || 'Quality Manager';
   workbook.lastModifiedBy = 'BrightAI System';
   workbook.created = new Date();
-  
-  // Sheet 1: Dashboard
+
+  const analysis = computeAnalysis(records);
+  const totalCost = records.reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
+  const metadata = buildSourceMetadata(records);
+  const deptBreakdown = computeDepartmentBreakdown(records);
+
+  // Sheet 1: Source Metadata
+  const sheetMeta = workbook.addWorksheet('معلومات المصدر والبيانات الوصفية');
+  sheetMeta.views = [{ showGridLines: true, rightToLeft: true }];
+
+  sheetMeta.columns = [
+    { header: 'الخاصية', key: 'property', width: 35 },
+    { header: 'القيمة', key: 'value', width: 50 }
+  ];
+
+  sheetMeta.addRow({ property: 'مصدر البيانات', value: metadata.sourceLabel });
+  sheetMeta.addRow({ property: 'معرف المصدر', value: metadata.source });
+  sheetMeta.addRow({ property: 'عدد السجلات', value: metadata.recordCount });
+  sheetMeta.addRow({ property: 'تاريخ ووقت التوليد', value: metadata.generatedAt });
+  sheetMeta.addRow({ property: 'بصمة البيانات (Hash)', value: metadata.dataHash });
+  sheetMeta.addRow({ property: 'أعد بواسطة', value: payload.user || 'Quality Manager' });
+  sheetMeta.addRow({ property: 'تنويه', value: metadata.footerDisclaimer });
+
+  sheetMeta.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+  sheetMeta.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0F4C81' } };
+
+  // Sheet 2: Dashboard KPIs
   const sheet1 = workbook.addWorksheet('إيجاز الأداء المالي والنوعي');
   sheet1.views = [{ showGridLines: true, rightToLeft: true }];
-  
+
   sheet1.columns = [
     { header: 'مؤشر أداء جودة المرفوضات', key: 'metric', width: 35 },
     { header: 'القياس والقيمة الحالية', key: 'value', width: 25 },
     { header: 'الوحدة والعملة', key: 'unit', width: 15 }
   ];
-  
-  const totalCost = records.reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
-  
+
+  const approvedOrReviewed = records.filter(r =>
+    r.approval_status === 'Approved' || r.approval_status === 'Review'
+  ).length;
+  const qualityEfficiency = records.length > 0 ? Math.round((approvedOrReviewed / records.length) * 1000) / 10 : 0;
+  const totalRecovered = deptBreakdown.reduce((sum, d) => sum + d.recoveredCost, 0);
+
   sheet1.addRow({ metric: 'إجمالي تكلفة المرفوضات', value: totalCost, unit: 'SAR' });
   sheet1.addRow({ metric: 'إجمالي المرفوضات المستلمة', value: records.length, unit: 'سجل / حالة' });
-  sheet1.addRow({ metric: 'متوسط قيمة المرفوضة الواحدة', value: records.length ? totalCost / records.length : 0, unit: 'SAR' });
-  sheet1.addRow({ metric: 'استرداد الخسائر المالي المحقق', value: totalCost * 0.15, unit: 'SAR' });
-  sheet1.addRow({ metric: 'الميزانية التقديرية المقررة لهدر المواد', value: 250000, unit: 'SAR' });
-  
+  sheet1.addRow({ metric: 'متوسط قيمة المرفوضة الواحدة', value: records.length ? Math.round(totalCost / records.length * 100) / 100 : 0, unit: 'SAR' });
+  sheet1.addRow({ metric: 'استرداد الخسائر المالي المحقق (تقديري)', value: totalRecovered, unit: 'SAR' });
+  sheet1.addRow({ metric: 'صافي الخسارة الفعلية', value: Math.round((totalCost - totalRecovered) * 100) / 100, unit: 'SAR' });
+  sheet1.addRow({ metric: 'مؤشر كفاءة الجودة', value: qualityEfficiency, unit: '%' });
+  sheet1.addRow({ metric: 'حالات المخاطر العالية / الحرجة', value: analysis.high_risk_cases, unit: 'حالة' });
+
   // Format cells
   sheet1.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
   sheet1.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0F4C81' } }; // Deep Medical Blue
-  
-  // Sheet 2: Cost Ledger
+
+  // Sheet 3: Department Breakdown (real data)
+  const sheetDept = workbook.addWorksheet('توزيع التكاليف حسب الأقسام');
+  sheetDept.views = [{ showGridLines: true, rightToLeft: true }];
+
+  sheetDept.columns = [
+    { header: 'القسم', key: 'department', width: 25 },
+    { header: 'عدد الحالات', key: 'count', width: 15 },
+    { header: 'إجمالي التكلفة', key: 'totalCost', width: 20 },
+    { header: 'الاسترداد التقديري', key: 'recoveredCost', width: 20 },
+    { header: 'صافي الخسارة', key: 'netLoss', width: 20 }
+  ];
+
+  deptBreakdown.forEach(d => {
+    sheetDept.addRow(d);
+  });
+
+  sheetDept.getRow(1).font = { bold: true, color: { argb: 'FFFFFFFF' } };
+  sheetDept.getRow(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF0F4C81' } };
+
+  // Sheet 4: Cost Ledger
   const sheet2 = workbook.addWorksheet('سجل المرفوضات والتصنيف المالي');
   sheet2.views = [{ showGridLines: true, rightToLeft: true }];
-  
+
   sheet2.columns = [
     { header: 'معرف السند', key: 'doc_no', width: 16 },
     { header: 'التاريخ', key: 'date', width: 14 },

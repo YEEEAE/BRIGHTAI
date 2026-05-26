@@ -22,6 +22,7 @@ async function callGemini(rejects) {
   }));
 
   const prompt = [
+    'اسمك هو «صقر AI» — مساعد ذكي متخصص في تحليلات الجودة والعمليات. Always refer to yourself as "صقر AI" in all responses.',
     'You are an AI quality analytics assistant for a medical products factory in Saudi Arabia.',
     'Focus ERP is the official source of truth. AI output is advisory only.',
     'Return JSON with executive_summary, risk, finance, CAPA, backlog, anomaly, and management action insights.',

@@ -188,13 +188,15 @@ async function seedDatabase() {
     }
   }
 
-  // 4. إدراج المشرف الفائق الافتراضي (yazeed@brightai.site)
-  const adminEmail = 'yazeed@brightai.site';
+  // 4. إدراج المشرف الفائق الافتراضي
+  // EN: Insert default Super Admin user
+  const adminEmail = config.bootstrapAdminEmail;
   const existingAdmin = await get('SELECT id FROM users WHERE email = ?', [adminEmail]);
 
   if (!existingAdmin) {
     const adminId = 'usr_super_yazeed';
-    const rawPass = 'BrightAI@2026!';
+    const rawPass = config.bootstrapAdminPassword || crypto.randomBytes(24).toString('base64url').slice(0, 20);
+    const isGenerated = !config.bootstrapAdminPassword;
     const passwordHash = await bcrypt.hash(rawPass, 12);
     
     // إدراج المستخدم الفائق
@@ -217,7 +219,13 @@ async function seedDatabase() {
       [adminId, 'ar', 'dark', 1, now]
     );
 
-    console.log('👤 Seeding default Super Admin user (yazeed@brightai.site) completed.');
+    if (isGenerated) {
+      console.log('👤 Seeding default Super Admin user (%s) completed.', adminEmail);
+      console.log('🔑 BOOTSTRAP_ADMIN_PASSWORD was not set. Generated admin password: %s', rawPass);
+      console.log('⚠️  Save this password now — it will NOT be shown again.');
+    } else {
+      console.log('👤 Seeding default Super Admin user (%s) completed.', adminEmail);
+    }
   }
 }
 

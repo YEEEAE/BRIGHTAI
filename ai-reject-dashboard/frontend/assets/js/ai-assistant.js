@@ -6,15 +6,16 @@
   window.__AiAssistantInitialized = true;
 
   // Configuration constants
+  const AI_NAME = 'صقر AI';
   const API_CHAT = '/api/ai/chat';
-  const STORAGE_KEY = 'ai_chat_history_v2';
+  const STORAGE_KEY = 'ai_chat_history_session'; // sessionStorage — cleared on tab close
   const SOUND_TOGGLE_KEY = 'ai_chat_sound_enabled';
 
   // State Management
   const state = {
     isOpen: false,
     isRecording: false,
-    isSoundEnabled: localStorage.getItem(SOUND_TOGGLE_KEY) === 'true',
+    isSoundEnabled: localStorage.getItem(SOUND_TOGGLE_KEY) === 'true', // Sound pref stays across sessions
     history: [],
     conversationId: 'conv_' + Math.random().toString(36).substring(2, 11),
     userRole: 'Quality Auditor (Auditor)',
@@ -78,9 +79,9 @@
     // Welcome message if history is empty
     if (state.history.length === 0) {
       addAssistantMessage(
-        document.documentElement.lang === 'en' 
-          ? 'Hello! I am your AI Quality and Production Assistant. I can help you analyze rejects, calculate financial costs, track CAPAs, and ensure GMP compliance. How can I help you today?'
-          : 'مرحباً بك! أنا مساعدك الذكي لتحليلات الجودة والإنتاج والعمليات. يمكنني مساعدتك في تحليل مرفوضات المواد، وحساب الخسائر المالية، وتتبع خطط CAPA والتحقق من التزام ممارسات GMP الدوائية. كيف يمكنني مساعدتك اليوم؟'
+        document.documentElement.lang === 'en'
+          ? 'Hello! I am صقر AI, your AI Quality and Production Assistant. I can help you analyze stock/life risk data, calculate financial costs, track CAPAs, and ensure GMP compliance. How can I help you today?'
+          : 'مرحباً بك! أنا صقر AI، مساعدك الذكي لتحليلات الجودة والإنتاج والعمليات. يمكنني مساعدتك في تحليل بيانات المخزون والعمر الافتراضي، وحساب الخسائر المالية، وتتبع خطط CAPA والتحقق من التزام ممارسات GMP الدوائية. كيف يمكنني مساعدتك اليوم؟'
       );
     } else {
       state.history.forEach(msg => appendMessageToDOM(msg.sender, msg.text, msg.charts, msg.actions, false));
@@ -106,7 +107,7 @@
     const fab = document.createElement('div');
     fab.className = 'ai-fab';
     fab.id = 'ai-fab';
-    fab.setAttribute('title', isEn ? 'AI Quality Assistant' : 'المساعد الذكي للجودة');
+    fab.setAttribute('title', isEn ? 'صقر AI Quality Assistant' : 'صقر AI - المساعد الذكي للجودة');
     fab.innerHTML = `
       <svg viewBox="0 0 24 24">
         <path d="M12 2C6.477 2 2 6.477 2 12c0 1.879.516 3.639 1.414 5.161l-1.378 4.133a1 1 0 001.264 1.264l4.133-1.378A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
@@ -125,8 +126,8 @@
             <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
           </div>
           <div class="ai-header-titles">
-            <h4>${isEn ? 'AI Auditor Assistant' : 'المساعد الذكي للجودة والامتثال'}</h4>
-            <span>${isEn ? 'MAIS Operations Hub' : 'مركز عمليات الجودة والإنتاج'}</span>
+            <h4>${isEn ? 'صقر AI — Quality Assistant' : 'صقر AI — المساعد الذكي للجودة'}</h4>
+            <span>${isEn ? 'MAIS Stock/Life Risk Hub' : 'مركز تحليل المخزون والعمر الافتراضي'}</span>
           </div>
         </div>
         <div class="ai-header-controls">
@@ -615,7 +616,7 @@
   // History Management
   function loadHistory() {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = sessionStorage.getItem(STORAGE_KEY);
       if (stored) state.history = JSON.parse(stored);
     } catch (err) {
       state.history = [];
@@ -624,16 +625,16 @@
 
   function saveMessage(sender, text, charts, actions) {
     state.history.push({ sender, text, charts, actions });
-    if (state.history.length > 50) state.history.shift(); // Keep last 50 bubbles
+    if (state.history.length > 50) state.history.shift();
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state.history));
     } catch (err) {}
   }
 
   function clearHistory() {
     if (confirm(document.documentElement.lang === 'en' ? 'Are you sure you want to clear chat history?' : 'هل أنت متأكد من مسح سجل المحادثة بالكامل؟')) {
       state.history = [];
-      localStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(STORAGE_KEY);
       document.getElementById('ai-chat-body').innerHTML = '';
       if (state.speechSynth) state.speechSynth.cancel();
       init();

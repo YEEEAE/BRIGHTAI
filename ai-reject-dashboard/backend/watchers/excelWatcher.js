@@ -6,8 +6,6 @@ const { loadExcelData, getDataHash, recordChange } = require('../services/excelS
 const { invalidateAiCache } = require('../services/aiService');
 const { logger } = require('../utils/logger');
 
-// AR: محرك الإشعارات — يُستورد بشكل كسول لتجنب الاعتماد الدائري.
-// EN: Notification engine — lazy-loaded to avoid circular dependency.
 let notificationService = null;
 function getNotificationService() {
   if (!notificationService) {
@@ -16,10 +14,35 @@ function getNotificationService() {
   return notificationService;
 }
 
+function diffRecordCounts(oldRecords, newRecords) {
+  const oldKeys = new Set(oldRecords.map(r => `${r.item_code}||${r.batch_number}`));
+  const newKeys = new Set(newRecords.map(r => `${r.item_code}||${r.batch_number}`));
+
+  let added = 0;
+  let removed = 0;
+  let changed = 0;
+
+  newKeys.forEach(key => {
+    if (!oldKeys.has(key)) added++;
+    else {
+      const oldRec = oldRecords.find(r => `${r.item_code}||${r.batch_number}` === key);
+      const newRec = newRecords.find(r => `${r.item_code}||${r.batch_number}` === key);
+      if (oldRec && newRec && JSON.stringify(oldRec) !== JSON.stringify(newRec)) changed++;
+    }
+  });
+
+  oldKeys.forEach(key => {
+    if (!newKeys.has(key)) removed++;
+  });
+
+  return { added, changed, removed };
+}
+
 function startExcelWatcher(io) {
   let debounceTimer = null;
   let lastHash = getDataHash(config.excelFilePath);
   let previousRecordCount = 0;
+  let previousRecords = [];
 
   async function handleExcelChange(eventName) {
     try {
@@ -32,12 +55,16 @@ function startExcelWatcher(io) {
       invalidateCache(`excel ${eventName}`);
       invalidateAiCache(`excel ${eventName}`);
       const excelPayload = await loadExcelData({ force: true });
-      await getRejects('excel');
+      const newRecords = await getRejects('excel');
       const state = getDataState();
-      
+
       const fileModifiedAt = fs.existsSync(config.excelFilePath)
         ? fs.statSync(config.excelFilePath).mtime.toISOString()
         : new Date().toISOString();
+
+      const diff = previousRecords.length
+        ? diffRecordCounts(previousRecords, newRecords)
+        : { added: newRecords.length, changed: 0, removed: 0 };
 
       const change = {
         event: 'data:updated',
@@ -47,6 +74,9 @@ function startExcelWatcher(io) {
         record_count: excelPayload.records.length,
         sheet_count: excelPayload.sheet_names.length,
         file_size: excelPayload.file_size,
+        added: diff.added,
+        changed: diff.changed,
+        removed: diff.removed,
         timestamp: new Date().toISOString()
       };
 
@@ -66,42 +96,41 @@ function startExcelWatcher(io) {
         });
       }
 
-      // AR: إنشاء إشعار تحديث البيانات عبر محرك الإشعارات.
-      // EN: Create data update notification via notification engine.
+      /* Always update the snapshot so diffs remain correct even when
+         notificationService is unavailable. */
+      previousRecordCount = excelPayload.records.length;
+      previousRecords = newRecords.slice();
+
       const ns = getNotificationService();
       if (ns) {
-        const newRecords = excelPayload.records.length - previousRecordCount;
-
         ns.create({
           event: 'data:updated',
           type: 'success',
           priority: 'medium',
           title: 'تم تحديث بيانات Excel',
-          message: `تم تحميل ${excelPayload.records.length} سجل من ${excelPayload.sheet_names.length} ورقة عمل.${newRecords > 0 ? ' (' + newRecords + ' سجل جديد)' : ''}`,
+          message: `تم اكتشاف ${diff.added} سجل جديد، ${diff.changed} معدّل، ${diff.removed} محذوف`,
           target: 'broadcast',
           metadata: {
             record_count: excelPayload.records.length,
             sheet_count: excelPayload.sheet_names.length,
-            new_records: newRecords > 0 ? newRecords : 0,
+            added: diff.added,
+            changed: diff.changed,
+            removed: diff.removed,
             file_size: excelPayload.file_size
           }
         });
 
-        // AR: إنشاء إشعارات للمرفوضات الجديدة إذا زاد العدد.
-        // EN: Create notifications for new rejects if count increased.
-        if (newRecords > 0 && previousRecordCount > 0) {
+        if (diff.added > 0 && previousRecordCount > 0) {
           ns.create({
-            event: 'reject:new',
+            event: 'stock:new',
             type: 'warning',
-            priority: newRecords >= 5 ? 'high' : 'medium',
-            title: `${newRecords} مرفوض جديد`,
-            message: `تم اكتشاف ${newRecords} حالة رفض جديدة في آخر تحديث للبيانات. يرجى المراجعة.`,
+            priority: diff.added >= 5 ? 'high' : 'medium',
+            title: `${diff.added} سجل مخزون جديد`,
+            message: `تم اكتشاف ${diff.added} سجل جديد في آخر تحديث لبيانات المخزون. يرجى المراجعة.`,
             target: 'broadcast',
-            metadata: { new_count: newRecords }
+            metadata: { added: diff.added, changed: diff.changed, removed: diff.removed }
           });
         }
-
-        previousRecordCount = excelPayload.records.length;
       }
     } catch (err) {
       logger.error('excel_watcher_reload_failed', {
@@ -117,8 +146,6 @@ function startExcelWatcher(io) {
         });
       }
 
-      // AR: إشعار فشل التحديث.
-      // EN: Notify about update failure.
       const ns = getNotificationService();
       if (ns) {
         ns.create({
@@ -140,6 +167,11 @@ function startExcelWatcher(io) {
     debounceTimer = setTimeout(() => {
       handleExcelChange(eventName);
     }, 1500);
+  }
+
+  if (!config.excelFilePath || !fs.existsSync(config.excelFilePath)) {
+    logger.warn('excel_watcher_skipped', { reason: 'Excel file path not set or file not found', path: config.excelFilePath });
+    return null;
   }
 
   const watcher = chokidar.watch(config.excelFilePath, {

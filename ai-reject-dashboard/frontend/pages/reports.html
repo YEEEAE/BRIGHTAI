@@ -222,8 +222,11 @@
 
   <!-- Alpine.js library — local vendor (CSP-safe, no CDN) -->
   <script defer src="/assets/vendor/alpine.min.js"></script>
+    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
-<body>
+<body class="bright-page--dashboard" data-bright-page-type="dashboard">
+<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
   <div class="app-layout" x-data="reportsApp()">
     
     <!-- Sidebar navigation -->
@@ -248,7 +251,7 @@
       </div>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content" id="main-content">
       
       <!-- Topbar Header -->
       <header class="topbar">
@@ -868,5 +871,6 @@
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="../assets/js/notifications.js"></script>
+    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
 </body>
 </html>

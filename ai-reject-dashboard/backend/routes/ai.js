@@ -5,6 +5,7 @@ const { requireAuth } = require('../middleware/auth');
 const { success } = require('../utils/response');
 const { audit } = require('../utils/logger');
 const { getRejects } = require('../services/dataService');
+const sessionMemory = require('../services/sessionMemory');
 const {
   runEnterpriseAnalysis,
   answerNaturalLanguageQuery,
@@ -70,14 +71,24 @@ router.post('/ai/generate-capa', requireAuth, validate(capaSchema), async (req, 
 router.post('/ai/chat', requireAuth, validate(chatSchema), async (req, res, next) => {
   try {
     const records = await getRejects();
+    const conversationId = req.body.conversation_id;
+
+    // Retrieve conversation history from session memory
+    const history = sessionMemory.getHistory(conversationId);
+
     const result = await chatWithGemini(
       records,
       req.body.message,
-      req.body.conversation_id,
-      req.body.context
+      conversationId,
+      req.body.context,
+      history
     );
+
+    // chatWithGemini internally saves messages via sessionMemory.appendMessage,
+    // so no additional save is needed here.
+
     audit('AI_CHAT', req, req.body.message);
-    
+
     return res.json({
       success: true,
       source: result.source,

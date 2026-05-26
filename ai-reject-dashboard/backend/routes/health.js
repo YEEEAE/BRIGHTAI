@@ -1,21 +1,22 @@
 const express = require('express');
 const config = require('../config/env');
 const { success } = require('../utils/response');
-const { getDataState } = require('../services/dataService');
+const { getRejects, getDataState } = require('../services/dataService');
 
 const router = express.Router();
 
-router.get('/health', (req, res) => {
+router.get('/health', async (req, res) => {
   const state = getDataState();
+  const rejects = await getRejects();
   res.json(success({
     status: 'ok',
     source: state.cachedSource,
-    gemini_configured: Boolean(config.geminiApiKey),
     gemini_model: config.geminiModel,
-    auth_required: Boolean(config.dashboardToken || config.dashboardPasswordHash),
-    excel_path: config.excelFilePath,
+    gemini_configured: Boolean(config.geminiApiKey),
     excel_exists: state.excelExists,
-    focus_api_configured: Boolean(config.focusApiUrl && config.focusApiToken),
+    excel_path: config.excelFilePath,
+    record_count: rejects.length,
+    auth_required: Boolean(config.dashboardToken || config.dashboardPasswordHash),
     timestamp: new Date().toISOString()
   }, state.cachedSource, state.cachedWarnings));
 });

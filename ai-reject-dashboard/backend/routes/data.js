@@ -130,11 +130,29 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
       warnings.push('Excel file not found. Demo fallback active.');
     }
 
+    // Calculate new records added since last load
+    let previousRecordCount = 0;
+    try {
+      const changes = getRecentChanges();
+      if (changes.length > 0) {
+        previousRecordCount = changes[0].record_count || 0;
+      } else {
+        const state = getDataState();
+        if (state.excel && state.excel.record_count) {
+          previousRecordCount = state.excel.record_count;
+        }
+      }
+    } catch (_) {
+      // Ignore — treat as no previous count available
+    }
+    const newRecordsCount = Math.max(recordCount - previousRecordCount, 0);
+
     res.json(success({
       file_exists: fileExists,
       file_modified_at: stat ? stat.mtime.toISOString() : null,
       hash,
       record_count: recordCount,
+      new_records_count: newRecordsCount,
       sheet_count: sheetCount,
       last_successful_load_at: lastSuccessfulLoadAt,
       warnings

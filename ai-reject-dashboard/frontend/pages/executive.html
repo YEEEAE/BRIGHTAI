@@ -127,8 +127,11 @@
   <script src="/assets/vendor/dayjs.min.js"></script>
   <script src="/assets/vendor/ar.js"></script>
   <script defer src="/assets/vendor/alpine.min.js"></script>
+    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
-<body x-data="executiveApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'">
+<body x-data="executiveApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
+<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
 
   <div class="app-wrapper">
 
@@ -240,7 +243,7 @@
       </header>
 
       <!-- MAIN PAGE CONTENT CONTAINER -->
-      <main class="content-container">
+      <main class="content-container" id="main-content">
 
         <!-- BREADCRUMBS -->
         <nav class="breadcrumb">
@@ -720,5 +723,6 @@
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/assets/js/notifications.js"></script>
+    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
 </body>
 </html>

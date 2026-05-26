@@ -20,8 +20,11 @@
     }
     .endpoint { font-family:'Courier New',monospace; font-size:0.72rem; color:var(--teal-dark); font-weight:600; }
   </style>
+    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
-<body>
+<body class="bright-page--dashboard" data-bright-page-type="dashboard">
+<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
   <div class="app-layout">
     <aside class="sidebar">
       <div class="sidebar-brand">
@@ -44,7 +47,7 @@
       </div>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content" id="main-content">
       <header class="topbar">
         <div class="topbar-left">
           <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
@@ -275,5 +278,6 @@ Each entry contains: timestamp, IP address, action, and optional details.
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="../assets/js/notifications.js"></script>
+    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
 </body>
 </html>

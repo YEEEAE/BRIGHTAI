@@ -21,6 +21,26 @@ const CATEGORY_ALIASES = {
   pack: 'Packaging'
 };
 
+// Official column mapping for ALL_ITEMS_MAIS_with_life_years.xlsx
+const EXCEL_COLUMN_MAP = {
+  'Item Code': 'item_code',
+  'Item Name': 'item_name',
+  'Batch Number': 'batch_number',
+  'UOM': 'uom',
+  'Quantity': 'quantity',
+  'Rate': 'rate',
+  'Stock Value': 'stock_value',
+  'Manufacturing Date': 'manufacturing_date',
+  'Life Years': 'life_years',
+  'Expiry Date': 'expiry_date',
+  'Rpt Date': 'rpt_date',
+  'Age %': 'age_percent',
+  'Remaining %': 'remaining_percent',
+  'Total Life': 'total_life',
+  'Pass': 'pass_status',
+  'Rpt-Date': 'report_date'
+};
+
 function cleanNulls(value) {
   if (value === null || value === undefined) return '';
   if (typeof value === 'string') return value.trim().replace(/\s+/g, ' ');
@@ -56,8 +76,6 @@ function toNumber(value) {
 function toDate(value) {
   if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
   if (typeof value === 'number') {
-    // AR: Excel serial date تقريبية، تكفي للتحليل الزمني.
-    // EN: Approximate Excel serial date conversion for trend analytics.
     const epoch = new Date(Date.UTC(1899, 11, 30));
     return new Date(epoch.getTime() + value * 86400000);
   }
@@ -86,14 +104,111 @@ function cleanRecord(record) {
   return cleaned;
 }
 
+function isGrandTotalRow(record) {
+  // Check dedicated name/code fields first
+  const check = String(record.item_name || record.item_code || record.Item_Name || record.Item_Code || '').trim().toLowerCase();
+  if (/^grand\s*total$/i.test(check)) return true;
+  if (/^إجمالي/i.test(check)) return true;
+  if (/المجموع/.test(check)) return true;
+  if (/^total$/i.test(check)) return true;
+  if (/^sum$/i.test(check)) return true;
+  if (/合计/.test(check)) return true;
+
+  // Scan every cell in the row for total/summary indicators
+  for (const key of Object.keys(record)) {
+    const val = String(record[key] || '').trim().toLowerCase();
+    if (!val) continue;
+
+    // Exact-ish matches for Grand Total
+    if (/^grand\s*total$/i.test(val)) return true;
+
+    // Arabic total indicators (إجمالي or المجموع anywhere in the cell)
+    if (/إجمالي/.test(val)) return true;
+    if (/المجموع/.test(val)) return true;
+
+    // Standalone "total" or "sum" (not part of a normal word like "total_life")
+    if (/^(total|sum)$/i.test(val)) return true;
+  }
+
+  // Detect rows where item_name looks like a summary label
+  if (/\b(total|sum|subtotal|summary)\b/i.test(check)) return true;
+
+  return false;
+}
+
+function mapExcelColumns(record) {
+  const mapped = { ...record };
+  for (const [excelCol, field] of Object.entries(EXCEL_COLUMN_MAP)) {
+    if (record[excelCol] !== undefined) {
+      mapped[field] = record[excelCol];
+    }
+  }
+  return mapped;
+}
+
 function normalizeRecord(record, index, sheetName) {
-  const cleaned = cleanRecord(record);
+  const mapped = mapExcelColumns(record);
+  const cleaned = cleanRecord(mapped);
+
+  // --- Core numeric fields ---
   const cost = readNumericByCandidates(cleaned, [
-    'total_cost', 'cost', 'stock_value', 'value', 'amount', 'estimated_cost', 'reject_cost', 'price'
+    'stock_value', 'total_cost', 'cost', 'value', 'amount', 'estimated_cost', 'reject_cost', 'price'
   ]);
-  const quantity = readNumericByCandidates(cleaned, ['quantity', 'qty', 'stock_qty', 'rejected_qty', 'total_qty']);
-  const itemName = readField(cleaned, ['item_name', 'item', 'description', 'product', 'material'], '');
-  const itemCode = readField(cleaned, ['item_code', 'code', 'sku', 'material_code'], '');
+  const quantity = readNumericByCandidates(cleaned, [
+    'quantity', 'qty', 'stock_qty', 'rejected_qty', 'total_qty'
+  ]);
+
+  // --- Identity fields ---
+  const itemName = readField(cleaned, [
+    'item_name', 'item', 'description', 'product', 'material', 'item_name'
+  ], '');
+  const itemCode = readField(cleaned, [
+    'item_code', 'code', 'sku', 'material_code', 'item_code'
+  ], '');
+
+  // --- Batch / unit fields ---
+  const batchNumber = readField(cleaned, [
+    'batch_number', 'batch_no', 'batch', 'lot_no', 'lot'
+  ], '');
+  const uom = readField(cleaned, [
+    'uom', 'unit', 'unit_of_measure'
+  ], '');
+  const rate = toNumber(readField(cleaned, [
+    'rate', 'unit_cost', 'price'
+  ], 0));
+
+  // --- Life / expiry fields ---
+  const manufacturingDate = toDate(readField(cleaned, [
+    'manufacturing_date', 'mfg_date', 'prod_date'
+  ], ''));
+  const lifeYears = toNumber(readField(cleaned, [
+    'life_years', 'life', 'shelf_life_years'
+  ], 0));
+  const expiryDate = toDate(readField(cleaned, [
+    'expiry_date', 'exp_date', 'expiration'
+  ], ''));
+
+  // --- Report / age fields ---
+  const rptDate = toDate(readField(cleaned, [
+    'rpt_date', 'report_date', 'rpt_date_alt'
+  ], ''));
+  const agePercent = toNumber(readField(cleaned, [
+    'age_percent', 'age_%', 'age_pct', 'age'
+  ], 0));
+  const remainingPercent = toNumber(readField(cleaned, [
+    'remaining_percent', 'remaining_%', 'remaining_pct', 'remaining'
+  ], 0));
+  const totalLife = toNumber(readField(cleaned, [
+    'total_life', 'total_life_years'
+  ], 0));
+  const passStatus = readField(cleaned, [
+    'pass_status', 'pass', 'pass_fail', 'status'
+  ], '');
+  const reportDate = toDate(readField(cleaned, [
+    'report_date', 'rpt_date', 'rpt_date_alt'
+  ], ''));
+
+  // --- Optional contextual fields ---
   const dateValue = readField(cleaned, ['date', 'doc_date', 'transaction_date', 'created_at', 'month'], '');
   const parsedDate = toDate(dateValue);
   const department = normalizeDepartment(readField(cleaned, ['department', 'dept', 'section', 'area'], 'Unknown'));
@@ -106,18 +221,33 @@ function normalizeRecord(record, index, sheetName) {
     ...cleaned,
     __sheet: sheetName,
     __row_number: cleaned.__row_number,
-    doc_no: String(readField(cleaned, ['doc_no', 'document_no', 'reference', 'reject_no'], '') || `RJT-${new Date().getFullYear()}-${String(index + 1).padStart(4, '0')}`),
+    doc_no: String(readField(cleaned, ['doc_no', 'document_no', 'reference', 'reject_no'], '') || `STK-${new Date().getFullYear()}-${String(index + 1).padStart(4, '0')}`),
     item_code: String(itemCode || '').trim(),
     item_name: String(itemName || itemCode || `Row ${index + 1}`).trim(),
-    department,
-    category,
+    batch_number: String(batchNumber).trim(),
+    uom: String(uom).trim(),
     quantity,
+    rate,
+    stock_value: cost,
     cost,
     total_cost: cost,
+    manufacturing_date: manufacturingDate ? manufacturingDate.toISOString().split('T')[0] : '',
+    life_years: lifeYears,
+    expiry_date: expiryDate ? expiryDate.toISOString().split('T')[0] : '',
+    rpt_date: rptDate ? rptDate.toISOString().split('T')[0] : '',
+    age_percent: agePercent,
+    remaining_percent: remainingPercent,
+    total_life: totalLife,
+    pass_status: String(passStatus).trim(),
+    report_date: reportDate ? reportDate.toISOString().split('T')[0] : '',
+    department,
+    category,
     approval_status: approvalStatus || 'Unknown',
     date: parsedDate ? parsedDate.toISOString().split('T')[0] : '',
     machine,
     defect_type: defectType,
+    analysis_type: 'stock_life_risk',
+    data_classification: 'Stock/Life Risk',
     raw: cleaned
   };
 }
@@ -132,9 +262,12 @@ function readNumericByCandidates(record, candidates) {
 }
 
 function processRows(rows) {
-  const records = rows.map((row, index) => normalizeRecord(row, index, row.__sheet)).filter((record) => {
-    return Object.keys(record.raw || {}).some((key) => key !== '__row_number' && key !== '__sheet' && cleanNulls(record.raw[key]) !== '');
-  });
+  const records = rows
+    .map((row, index) => normalizeRecord(row, index, row.__sheet))
+    .filter((record) => {
+      if (isGrandTotalRow(record)) return false;
+      return Object.keys(record.raw || {}).some((key) => key !== '__row_number' && key !== '__sheet' && cleanNulls(record.raw[key]) !== '');
+    });
 
   return {
     records,
@@ -158,7 +291,21 @@ function calculateMetrics(records) {
     critical_items: criticalItems,
     machine_defect_rates: machineDefectRates(records),
     monthly_trends: monthlyTrends(records),
-    year_over_year_comparison: yearOverYear(records)
+    year_over_year_comparison: yearOverYear(records),
+    life_risk_summary: lifeRiskSummary(records)
+  };
+}
+
+function lifeRiskSummary(records) {
+  const withLife = records.filter(r => r.life_years > 0);
+  const expired = withLife.filter(r => r.remaining_percent <= 0);
+  const nearExpiry = withLife.filter(r => r.remaining_percent > 0 && r.remaining_percent <= 20);
+  return {
+    total_with_life_data: withLife.length,
+    expired_count: expired.length,
+    near_expiry_count: nearExpiry.length,
+    avg_age_percent: withLife.length ? round(withLife.reduce((s, r) => s + r.age_percent, 0) / withLife.length) : 0,
+    avg_remaining_percent: withLife.length ? round(withLife.reduce((s, r) => s + r.remaining_percent, 0) / withLife.length) : 0
   };
 }
 
@@ -236,5 +383,7 @@ module.exports = {
   processRows,
   calculateMetrics,
   toNumber,
-  findField
+  findField,
+  isGrandTotalRow,
+  EXCEL_COLUMN_MAP
 };

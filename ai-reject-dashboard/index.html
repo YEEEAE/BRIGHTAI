@@ -174,8 +174,11 @@
   <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
   <script defer src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
+    <link rel="stylesheet" href="../assets/css/sitewide-modernization.css">
 </head>
-<body x-data="dashboardApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'">
+<body x-data="dashboardApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
+<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
   <h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;">AI Reject Analytics Dashboard</h1>
 
   <div class="app-wrapper">
@@ -271,7 +274,7 @@
       </header>
 
       <!-- MAIN PAGE CONTENT CONTAINER -->
-      <main class="content-container">
+      <main class="content-container" id="main-content">
 
         <!-- BREADCRUMBS ROW -->
         <nav class="breadcrumb">
@@ -1386,5 +1389,6 @@
   <script src="/ai-reject-dashboard/frontend/assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>
+    <script defer src="../assets/js/sitewide-modernization.js"></script>
 </body>
 </html>

@@ -9,8 +9,11 @@
     .lang-toggle { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px; font-size:0.6rem; font-weight:600; background:var(--teal); color:var(--white); text-decoration:none; }
     .lang-toggle:hover { background:var(--teal-dark); }
   </style>
+    <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
-<body>
+<body class="bright-page--dashboard" data-bright-page-type="dashboard">
+<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+
   <div class="app-layout">
     <aside class="sidebar">
       <div class="sidebar-brand">
@@ -32,7 +35,7 @@
       </div>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content" id="main-content">
       <header class="topbar">
         <div class="topbar-left">
           <button class="hamburger" aria-label="القائمة">&#x2630;</button>
@@ -156,5 +159,6 @@
   <script src="/assets/js/app.js"></script>
   <!-- Global AI Assistant Chatbot -->
   <script src="../assets/js/ai-assistant.js"></script>
+    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
 </body>
 </html>

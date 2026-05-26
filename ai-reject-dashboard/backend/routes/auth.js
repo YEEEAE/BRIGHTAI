@@ -1,10 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const { get, run } = require('../config/database');
+const { get, run, all } = require('../config/database');
 const { requireAuth, setAuthCookies, clearAuthCookies, REFRESH_COOKIE } = require('../middleware/auth');
 const authService = require('../services/authService');
 const twoFactorService = require('../services/twoFactorService');
+const rbacService = require('../services/rbacService');
 const { logAction } = require('../services/auditService');
 
 const router = express.Router();
@@ -182,11 +183,13 @@ router.get('/auth/me', requireAuth, async (req, res) => {
     const prefs = await get('SELECT * FROM user_preferences WHERE user_id = ?', [req.user.sub]);
     const sessions = await authService.getUserActiveSessions(req.user.sub);
     const tokens = await all('SELECT id, name, created_at, expires_at, is_active FROM user_api_tokens WHERE user_id = ? AND is_active = 1', [req.user.sub]);
+    const roles = await rbacService.getUserRoles(req.user.sub);
+    const permissions = await rbacService.getUserPermissions(req.user.sub);
 
     return res.json({
       success: true,
       data: {
-        user,
+        user: { ...user, role: roles.map(r => r.name).join(', ') || 'Viewer', roles, permissions },
         preferences: prefs,
         activeSessions: sessions,
         apiTokens: tokens
