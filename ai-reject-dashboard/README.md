@@ -80,3 +80,51 @@ DASHBOARD_PASSWORD_HASH=...
 - `GET /api/ai-analysis`
 - `POST /api/run-analysis`
 - `GET /api/audit-log`
+- `GET /api/data/refresh`
+- `GET /api/data/status`
+- `GET /api/data/changes`
+
+## Excel Data Shape
+
+The Excel reader is dynamic. It reads every sheet, chooses the strongest header row per sheet, keeps all original columns under `raw`, then maps recognizable fields when available.
+
+Example parsed record:
+
+```json
+{
+  "__sheet": "Stock_analysis_by_Batch",
+  "__row_number": 7,
+  "doc_no": "RJT-2026-0001",
+  "item_code": "G-011-1919",
+  "item_name": "Detected item name or row label",
+  "department": "Warehouse",
+  "category": "Raw Material",
+  "quantity": 120,
+  "cost": 4500,
+  "total_cost": 4500,
+  "approval_status": "Pending",
+  "date": "2026-05-01",
+  "machine": "Line 1",
+  "defect_type": "Material expired before use",
+  "raw": {
+    "Any Excel Column": "Original cell value"
+  }
+}
+```
+
+Computed metrics include:
+
+```json
+{
+  "total_cost": 158329773.03,
+  "cost_by_department": {
+    "Warehouse": { "count": 120, "total_cost": 500000 }
+  },
+  "cost_by_category": {},
+  "pending_approvals_count": 42,
+  "critical_items": [],
+  "machine_defect_rates": {},
+  "monthly_trends": {},
+  "year_over_year_comparison": []
+}
+```

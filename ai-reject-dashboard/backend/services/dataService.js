@@ -1,12 +1,14 @@
 const fs = require('fs');
-const ExcelJS = require('exceljs');
 const config = require('../config/env');
 const { logger } = require('../utils/logger');
 const { computeRiskScore, riskLevel } = require('./riskService');
+const { loadExcelData, clearExcelCache, getDataStatus: getExcelDataStatus } = require('./excelService');
 
 let cachedRejects = null;
 let cachedSource = 'demo';
 let cachedWarnings = [];
+let cachedMetrics = {};
+let cachedExcelPayload = null;
 
 function generateId(index) {
   return `RJT-${new Date().getFullYear()}-${String(index + 1).padStart(3, '0')}`;
@@ -38,39 +40,7 @@ function sanitizeRecord(record) {
   }, {});
 }
 
-async function readExcelData() {
-  if (!fs.existsSync(config.excelFilePath)) {
-    logger.warn('excel_file_missing', { path: config.excelFilePath });
-    return null;
-  }
-
-  const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.readFile(config.excelFilePath);
-  const worksheet = workbook.worksheets[0] || workbook.getWorksheet(1);
-  if (!worksheet) {
-    logger.warn('excel_sheet_missing', { path: config.excelFilePath });
-    return null;
-  }
-  const raw = [];
-  worksheet.eachRow({ includeEmpty: true }, (row) => {
-    raw.push(row.values.slice(1).map((value) => {
-      if (value && typeof value === 'object' && value.text) return value.text;
-      if (value && typeof value === 'object' && value.result) return value.result;
-      return value || '';
-    }));
-  });
-  const headerRow = raw.findIndex((row) => row && row[0] === 'Item Code' && row[1] === 'Item Name');
-
-  if (headerRow === -1) {
-    logger.warn('excel_header_missing', { path: config.excelFilePath });
-    return null;
-  }
-
-  const rows = raw
-    .slice(headerRow + 1)
-    .filter((row) => String(row[0] || '').trim() && String(row[1] || '').trim())
-    .slice(0, 25);
-
+function toDashboardRejects(records) {
   const departments = ['Warehouse', 'Production', 'QC'];
   const reasons = [
     'Material expired before use',
@@ -88,32 +58,37 @@ async function readExcelData() {
     'Storage condition non-compliance'
   ];
 
-  return rows.map((row, index) => {
-    const quantity = Number(row[4]) || ((index + 1) * 25);
-    const rate = Number(row[5]) || 12;
-    const stockValue = Number(row[6]) || quantity * rate;
-    const lifeYears = Number(row[8]) || 3;
-    const cost = Math.max(stockValue, 500 + (index * 250));
+  return records.map((row, index) => {
+    const quantity = Number(row.quantity) || ((index + 1) * 25);
+    const cost = Math.max(Number(row.total_cost) || Number(row.cost) || 0, 500 + (index * 250));
+    const lifeYears = Number(row.raw && (row.raw.Life || row.raw.life || row.raw.life_years)) || 3;
     const daysPending = (index * 2) % 30;
-    const approvalStatus = daysPending > 20 ? 'Pending' : ['Pending', 'Approved', 'Review'][index % 3];
+    const approvalStatus = row.approval_status && row.approval_status !== 'Unknown'
+      ? row.approval_status
+      : (daysPending > 20 ? 'Pending' : ['Pending', 'Approved', 'Review'][index % 3]);
     const record = {
-      doc_no: generateId(index),
-      date: randomDate(index),
-      department: departments[index % departments.length],
-      focus_view: String(row[1] || '').substring(0, 30),
-      item_code: String(row[0] || '').trim(),
-      item_name: String(row[1] || '').trim(),
-      lot_no: String(row[2] || '').trim() || `LOT-${index + 1}`,
+      ...row.raw,
+      doc_no: row.doc_no || generateId(index),
+      date: row.date || randomDate(index),
+      department: row.department || departments[index % departments.length],
+      category: row.category,
+      focus_view: String(row.item_name || row.item_code || '').substring(0, 30),
+      item_code: String(row.item_code || '').trim(),
+      item_name: String(row.item_name || row.item_code || '').trim(),
+      lot_no: String(row.lot_no || (row.raw && (row.raw['Batch No'] || row.raw.batch || row.raw.lot_no)) || '').trim() || `LOT-${index + 1}`,
       quantity: Math.round(quantity),
       cost: Math.round(cost * 100) / 100,
-      reason: reasons[index % reasons.length],
+      reason: row.defect_type || reasons[index % reasons.length],
       approval_status: approvalStatus,
       days_pending: daysPending,
       destruction_status: approvalStatus === 'Approved' ? 'Scheduled' : 'Pending',
-      root_cause: lifeYears < 2 ? 'Inventory rotation failure' : rootCauses[index % rootCauses.length],
+      root_cause: row.defect_type || (lifeYears < 2 ? 'Inventory rotation failure' : rootCauses[index % rootCauses.length]),
       has_life_risk: lifeYears < 2,
       finance_review_required: cost >= 5000,
-      data_note: 'Generated from Excel item master data'
+      data_note: 'Generated from dynamic Excel workbook data',
+      source_sheet: row.__sheet,
+      source_row: row.__row_number,
+      raw: row.raw
     };
 
     return enrichRecord(record);
@@ -186,11 +161,26 @@ async function getRejects(sourceOverride) {
   }
 
   if (!cachedRejects || sourceOverride === 'excel') {
-    const excelData = await readExcelData();
-    if (excelData && excelData.length) {
-      cachedRejects = excelData;
+    try {
+      const excelData = await loadExcelData({ force: sourceOverride === 'excel' });
+      if (excelData.records && excelData.records.length) {
+        cachedRejects = toDashboardRejects(excelData.records);
+        cachedMetrics = excelData.metrics || {};
+        cachedExcelPayload = excelData;
+        cachedSource = 'excel';
+        cachedWarnings = excelData.validation && excelData.validation.warnings.length
+          ? excelData.validation.warnings
+          : ['Data generated from dynamic Excel workbook data'];
+        return cachedRejects;
+      }
+    } catch (err) {
+      logger.warn('excel_dynamic_load_failed', { message: err.message, code: err.code });
+    }
+
+    if (cachedExcelPayload && cachedExcelPayload.records && cachedExcelPayload.records.length) {
+      cachedRejects = toDashboardRejects(cachedExcelPayload.records);
       cachedSource = 'excel';
-      cachedWarnings = ['Data generated from Excel item master - reject records are estimated from available item fields'];
+      cachedWarnings = ['Using last known valid Excel cache after read failure'];
       return cachedRejects;
     }
 
@@ -204,6 +194,9 @@ async function getRejects(sourceOverride) {
 
 function invalidateCache(reason) {
   cachedRejects = null;
+  cachedMetrics = {};
+  cachedExcelPayload = null;
+  clearExcelCache(reason);
   logger.info('data_cache_invalidated', { reason });
 }
 
@@ -225,11 +218,18 @@ function filterRejects(rejects, query) {
 }
 
 function getDataState() {
+  const excelStatus = getExcelDataStatus();
   return {
     cachedSource,
     cachedWarnings,
-    excelExists: fs.existsSync(config.excelFilePath)
+    excelExists: fs.existsSync(config.excelFilePath),
+    metrics: cachedMetrics,
+    excel: excelStatus
   };
 }
 
-module.exports = { getRejects, filterRejects, invalidateCache, getDataState };
+function getMetrics() {
+  return cachedMetrics;
+}
+
+module.exports = { getRejects, filterRejects, invalidateCache, getDataState, getMetrics };

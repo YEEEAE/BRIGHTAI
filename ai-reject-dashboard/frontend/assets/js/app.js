@@ -11,6 +11,7 @@
   };
 
   var API_BASE = '/api';
+  var socketConnected = false;
 
   function $(sel, ctx) { return (ctx || document).querySelector(sel); }
   function $$(sel, ctx) { return (ctx || document).querySelectorAll(sel); }
@@ -594,6 +595,54 @@
     }
   }
 
+  function showNotification(message, type) {
+    var el = $('#live-notification');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'live-notification';
+      el.className = 'live-notification';
+      document.body.appendChild(el);
+    }
+
+    el.className = 'live-notification ' + (type || 'info') + ' show';
+    el.textContent = message;
+    window.clearTimeout(el._hideTimer);
+    el._hideTimer = window.setTimeout(function () {
+      el.classList.remove('show');
+    }, 4500);
+  }
+
+  function setupRealtimeUpdates() {
+    if (socketConnected) return;
+
+    function connectSocket() {
+      if (typeof window.io !== 'function') return;
+      var socket = window.io({ withCredentials: true });
+      socketConnected = true;
+
+      socket.on('data:updated', function (payload) {
+        var count = payload && payload.record_count ? payload.record_count : 'new';
+        showNotification('Excel data updated. Reloading ' + count + ' records...', 'success');
+        loadData();
+      });
+
+      socket.on('data:update_failed', function (payload) {
+        showNotification((payload && payload.message) || 'Excel reload failed.', 'error');
+      });
+    }
+
+    if (typeof window.io === 'function') {
+      connectSocket();
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.src = '/socket.io/socket.io.js';
+    script.async = true;
+    script.onload = connectSocket;
+    document.head.appendChild(script);
+  }
+
   /* ===== RUN ANALYSIS ===== */
   async function onRunAnalysis() {
     if (state.aiRunning) return;
@@ -635,6 +684,7 @@
   /* ===== INIT ===== */
   function init() {
     setupSidebar();
+    setupRealtimeUpdates();
     loadData();
 
     var searchInput = $('#filter-search');
