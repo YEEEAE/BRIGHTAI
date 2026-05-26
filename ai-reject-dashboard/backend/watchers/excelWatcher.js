@@ -5,9 +5,20 @@ const { loadExcelData, getDataHash, recordChange } = require('../services/excelS
 const { invalidateAiCache } = require('../services/aiService');
 const { logger } = require('../utils/logger');
 
+// AR: محرك الإشعارات — يُستورد بشكل كسول لتجنب الاعتماد الدائري.
+// EN: Notification engine — lazy-loaded to avoid circular dependency.
+let notificationService = null;
+function getNotificationService() {
+  if (!notificationService) {
+    try { notificationService = require('../services/notificationService'); } catch (e) { /* silent */ }
+  }
+  return notificationService;
+}
+
 function startExcelWatcher(io) {
   let debounceTimer = null;
   let lastHash = getDataHash(config.excelFilePath);
+  let previousRecordCount = 0;
 
   async function handleExcelChange(eventName) {
     try {
@@ -44,6 +55,44 @@ function startExcelWatcher(io) {
           status: state.excel
         });
       }
+
+      // AR: إنشاء إشعار تحديث البيانات عبر محرك الإشعارات.
+      // EN: Create data update notification via notification engine.
+      const ns = getNotificationService();
+      if (ns) {
+        const newRecords = excelPayload.records.length - previousRecordCount;
+
+        ns.create({
+          event: 'data:updated',
+          type: 'success',
+          priority: 'medium',
+          title: 'تم تحديث بيانات Excel',
+          message: `تم تحميل ${excelPayload.records.length} سجل من ${excelPayload.sheet_names.length} ورقة عمل.${newRecords > 0 ? ' (' + newRecords + ' سجل جديد)' : ''}`,
+          target: 'broadcast',
+          metadata: {
+            record_count: excelPayload.records.length,
+            sheet_count: excelPayload.sheet_names.length,
+            new_records: newRecords > 0 ? newRecords : 0,
+            file_size: excelPayload.file_size
+          }
+        });
+
+        // AR: إنشاء إشعارات للمرفوضات الجديدة إذا زاد العدد.
+        // EN: Create notifications for new rejects if count increased.
+        if (newRecords > 0 && previousRecordCount > 0) {
+          ns.create({
+            event: 'reject:new',
+            type: 'warning',
+            priority: newRecords >= 5 ? 'high' : 'medium',
+            title: `${newRecords} مرفوض جديد`,
+            message: `تم اكتشاف ${newRecords} حالة رفض جديدة في آخر تحديث للبيانات. يرجى المراجعة.`,
+            target: 'broadcast',
+            metadata: { new_count: newRecords }
+          });
+        }
+
+        previousRecordCount = excelPayload.records.length;
+      }
     } catch (err) {
       logger.error('excel_watcher_reload_failed', {
         eventName,
@@ -55,6 +104,22 @@ function startExcelWatcher(io) {
           source: 'excel',
           message: 'Excel reload failed. Last valid cache remains active.',
           timestamp: new Date().toISOString()
+        });
+      }
+
+      // AR: إشعار فشل التحديث.
+      // EN: Notify about update failure.
+      const ns = getNotificationService();
+      if (ns) {
+        ns.create({
+          event: 'alert:critical',
+          type: 'critical',
+          priority: 'critical',
+          title: 'فشل تحديث بيانات Excel',
+          message: `فشل تحميل ملف Excel: ${err.message}. يتم استخدام آخر نسخة صالحة من البيانات.`,
+          target: 'broadcast',
+          persistent: true,
+          metadata: { error: err.message, event_name: eventName }
         });
       }
     }
@@ -85,3 +150,4 @@ function startExcelWatcher(io) {
 }
 
 module.exports = { startExcelWatcher };
+

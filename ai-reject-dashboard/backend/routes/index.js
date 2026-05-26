@@ -7,6 +7,7 @@ const auditRoutes = require('./audit');
 const dataRoutes = require('./data');
 const aiRoutes = require('./ai');
 const reportsRoutes = require('./reports');
+const notificationsRoutes = require('./notifications');
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.use(auditRoutes);
 router.use(dataRoutes);
 router.use(aiRoutes);
 router.use(reportsRoutes);
+router.use(notificationsRoutes);
 
 module.exports = router;

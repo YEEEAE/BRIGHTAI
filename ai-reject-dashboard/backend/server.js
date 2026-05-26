@@ -5,6 +5,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
 const { Server } = require('socket.io');
+const { socketAuthMiddleware, joinRoleRooms } = require('./middleware/socketAuth');
+const notificationService = require('./services/notificationService');
 const config = require('./config/env');
 const { createCorsMiddleware, createHelmetMiddleware } = require('./config/security');
 const apiRateLimit = require('./middleware/rate-limit');
@@ -54,11 +56,82 @@ app.use('/components', express.static(path.join(frontendRoot, 'components'), { i
 app.use('/pages', express.static(path.join(frontendRoot, 'pages'), { index: false, maxAge: '10m' }));
 app.get('/', (req, res) => res.redirect('/pages/index.html'));
 
+// AR: تمرير مرجع io للمسارات التي تحتاجه.
+// EN: Make io accessible from routes via app.get('io').
+app.set('io', io);
+
 app.use('/api', notFound);
 app.use(errorHandler);
 
+// AR: تهيئة محرك الإشعارات مع مرجع Socket.io.
+// EN: Initialize notification service with Socket.io reference.
+notificationService.init(io);
+
+// AR: مصادقة Socket.io عبر JWT وتوزيع الغرف.
+// EN: Socket.io JWT authentication and room assignment.
+io.use(socketAuthMiddleware);
+
+// AR: تتبع المستخدمين المتصلين.
+// EN: Track connected users for presence.
+const connectedUsers = new Map();
+
 io.on('connection', (socket) => {
-  logger.info('socket_connected', { socketId: socket.id });
+  const userId = socket.user ? socket.user.sub : 'anonymous';
+  const role = socket.user ? socket.user.role : 'viewer';
+
+  // AR: الانضمام للغرف حسب الدور.
+  joinRoleRooms(socket);
+
+  // AR: تسجيل التواجد.
+  if (!connectedUsers.has(userId)) connectedUsers.set(userId, new Set());
+  connectedUsers.get(userId).add(socket.id);
+
+  // AR: بث قائمة المستخدمين النشطين.
+  io.to('broadcast').emit('presence:update', {
+    active_users: connectedUsers.size,
+    users: Array.from(connectedUsers.keys())
+  });
+
+  logger.info('socket_connected', { socketId: socket.id, userId, role });
+
+  // AR: إرسال عدد الإشعارات غير المقروءة فور الاتصال.
+  const unreadCount = notificationService.getUnreadCount(userId);
+  socket.emit('notification:count', { count: unreadCount });
+
+  // AR: إرسال الأنشطة الأخيرة.
+  const recentActivity = notificationService.getActivityFeed(10);
+  socket.emit('activity:init', { activities: recentActivity });
+
+  // AR: الاستماع لتأكيد التنبيهات الحرجة.
+  socket.on('notification:acknowledge', (data) => {
+    if (data && data.id) {
+      notificationService.acknowledge(userId, data.id);
+      logger.info('notification_acknowledged', { userId, notificationId: data.id });
+    }
+  });
+
+  // AR: الاستماع لتعليم القراءة.
+  socket.on('notification:mark-read', (data) => {
+    if (data && data.id) {
+      notificationService.markRead(userId, data.id);
+    }
+  });
+
+  // AR: عند قطع الاتصال.
+  socket.on('disconnect', (reason) => {
+    const userSockets = connectedUsers.get(userId);
+    if (userSockets) {
+      userSockets.delete(socket.id);
+      if (userSockets.size === 0) connectedUsers.delete(userId);
+    }
+
+    io.to('broadcast').emit('presence:update', {
+      active_users: connectedUsers.size,
+      users: Array.from(connectedUsers.keys())
+    });
+
+    logger.info('socket_disconnected', { socketId: socket.id, userId, reason });
+  });
 });
 
 startExcelWatcher(io);

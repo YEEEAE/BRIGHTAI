@@ -10,6 +10,7 @@
   
   <!-- Central Design System and Components Bundle -->
   <link rel="stylesheet" href="/assets/css/design-system.css">
+  <link rel="stylesheet" href="/assets/css/notifications.css">
   
   <!-- Bespoke Page Styling for Amplitude/Mixpanel Premium Aesthetics -->
   <style>
@@ -250,27 +251,7 @@
             <span x-show="darkMode">☀️</span>
           </button>
 
-          <!-- Notifications Dropdown Trigger -->
-          <div style="position: relative;" x-data="{ open: false }">
-            <button class="topbar-btn" @click="open = !open">
-              <span>🔔</span>
-              <span class="topbar-btn-badge" x-show="notificationCount > 0"></span>
-            </button>
-            <div x-show="open" @click.outside="open = false" class="card card-elevated" style="position: absolute; inset-inline-end: 0; top: 100%; width: 320px; z-index: 1000; padding: var(--spacing-md); margin-top: var(--spacing-sm);">
-              <div class="card-header" style="padding-bottom:var(--spacing-xs); margin-bottom:var(--spacing-xs);">
-                <div class="card-title" x-text="lang === 'ar' ? 'الإشعارات العاجلة' : 'Critical Notifications'"></div>
-                <span class="badge badge-danger" x-text="notificationCount"></span>
-              </div>
-              <div style="display:flex; flex-direction:column; gap:var(--spacing-sm);">
-                <template x-for="item in notifications">
-                  <div style="font-size:var(--font-size-xs); padding:var(--spacing-sm); border-radius:var(--radius-sm); background-color:var(--gray-50); border:1px solid var(--color-border);">
-                    <div style="font-weight:600; color:var(--text-primary);" x-text="item.title"></div>
-                    <div style="color:var(--text-secondary); margin-top:2px;" x-text="item.desc"></div>
-                  </div>
-                </template>
-              </div>
-            </div>
-          </div>
+
 
           <!-- User Menu Dropdown Trigger -->
           <div class="topbar-user" @click="rightSidebarOpen = !rightSidebarOpen">
@@ -1344,5 +1325,7 @@
   </script>
   <!-- Global AI Assistant Chatbot -->
   <script src="../assets/js/ai-assistant.js"></script>
+  <!-- Enterprise Notifications System -->
+  <script src="/assets/js/notifications.js"></script>
 </body>
 </html>
