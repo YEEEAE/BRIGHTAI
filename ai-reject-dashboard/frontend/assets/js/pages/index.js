@@ -62,6 +62,16 @@ function dashboardApp() {
       file_exists: false, record_count: 0, sheet_count: 0,
       hash: null, file_modified_at: null, warnings: []
     },
+    liveStats: {
+      file_exists: false,
+      file_modified_at: null,
+      hash: null,
+      record_count: 0,
+      sheet_count: 0,
+      last_load: null,
+      warnings: [],
+      justUpdated: false
+    },
 
     // ── KPIs (from API, never hardcoded) ─────────────────────────────
     kpis: {
@@ -96,6 +106,7 @@ function dashboardApp() {
       this.chatMessages = [{ sender: 'ai', text: this.getAiGreetingText() }];
       this.fetchDashboardData();
       this.setupRealtimeListeners();
+      this.startLiveStatusPolling();
     },
 
     // ═════════════════════════════════════════════════════════════════
@@ -167,29 +178,108 @@ function dashboardApp() {
     //  MAIN DATA FETCH (all from BrightAPI)
     // ═════════════════════════════════════════════════════════════════
     async fetchDashboardData() {
-      // 1. Fetch Excel status
-      await this.fetchExcelStatus();
+      this.loading.kpis = true;
+      this.loading.table = true;
+      this.loading.charts = true;
+      this.loading.ai = true;
+      this.errors = { kpis: null, table: null, charts: null, ai: null };
 
-      // 2. Fetch rejects (table + KPIs + charts)
-      await this.fetchRejects();
+      try {
+        const data = await BrightAPI.loadAllPageData('index');
+        this.applyExcelStatusPayload(data.status);
+        this.rootCausesData = data.rootCauses?.root_causes
+          ? { causes: data.rootCauses.root_causes }
+          : data.rootCauses;
+        this.applySummaryPayload(data.summary);
+        this.applyRejectsPayload(data.rejects);
+      } catch (e) {
+        console.error('fetchDashboardData:', e);
+        const msg = this.lang === 'ar'
+          ? 'فشل تحميل البيانات من الخادم. تأكد من تشغيل الخادم.'
+          : 'Failed to load data from server. Please ensure the backend is running.';
+        this.errors.kpis = msg;
+        this.errors.table = msg;
+        this.errors.charts = msg;
+        this.errors.ai = msg;
+        this.rejects = [];
+      } finally {
+        this.loading.kpis = false;
+        this.loading.table = false;
+        this.loading.charts = false;
+        this.loading.ai = false;
+      }
+    },
 
-      // 3. Fetch AI summary + root causes in parallel
-      this.fetchAISummary();
-      this.fetchRootCauses();
+    applyExcelStatusPayload(data) {
+      if (!data) return;
+      this.excelStatus = {
+        file_exists: data.file_exists ?? false,
+        record_count: data.record_count ?? 0,
+        sheet_count: data.sheet_count ?? 0,
+        hash: data.hash ?? null,
+        file_modified_at: data.file_modified_at ?? null,
+        warnings: data.warnings ?? []
+      };
+      this.liveStats = {
+        ...this.liveStats,
+        file_exists: this.excelStatus.file_exists,
+        file_modified_at: this.excelStatus.file_modified_at,
+        hash: this.excelStatus.hash,
+        record_count: this.excelStatus.record_count,
+        sheet_count: this.excelStatus.sheet_count,
+        warnings: this.excelStatus.warnings
+      };
+    },
+
+    applySummaryPayload(data) {
+      const summary = data?.analysis || data || {};
+      this.aiSummary = summary.executive_summary ?? '';
+      this.aiFindings = summary.findings ?? summary.ai_findings ?? [];
+      const kpis = summary.kpis || data?.kpis || {};
+      if (summary.avg_approval_delay !== undefined) this.kpis.avgApprovalTime = `${summary.avg_approval_delay} يوم`;
+      if (kpis.avg_approval_time) this.kpis.avgApprovalTime = kpis.avg_approval_time;
+      if (kpis.capa_effectiveness !== undefined) this.kpis.capaEffectiveness = kpis.capa_effectiveness;
+      if (!this.aiSummary) {
+        this.aiSummary = this.lang === 'ar'
+          ? 'لم يتم استلام ملخص تحليلي من الخادم.'
+          : 'No AI summary received from server.';
+      }
+    },
+
+    applyRejectsPayload(rejects) {
+      this.dataSource = BrightAPI.getDataSource();
+      if (!rejects || !Array.isArray(rejects) || rejects.length === 0) {
+        this.rejects = [];
+        this.errors.table = this.lang === 'ar'
+          ? 'لا توجد بيانات مرفوضات متاحة حالياً.'
+          : 'No reject records available.';
+        this.errors.kpis = this.errors.table;
+        this.errors.charts = this.errors.table;
+        return;
+      }
+
+      this.rejects = rejects.map((r, idx) => ({
+        ...r,
+        id: r.id ?? idx,
+        doc_no: r.doc_no ?? '',
+        date: r.date ?? r.created_at ?? '',
+        item_name: r.item_name ?? '',
+        department: r.department ?? '',
+        cost: Number(r.cost) || 0,
+        status: r.approval_status ?? r.status ?? '',
+        category: r.category ?? '',
+        risk: r.risk_level ?? ''
+      }));
+
+      this.applyFilters();
+      this.initCharts();
     },
 
     async fetchExcelStatus() {
       try {
         const data = await BrightAPI.getDataStatus();
         if (data) {
-          this.excelStatus = {
-            file_exists: data.file_exists ?? false,
-            record_count: data.record_count ?? 0,
-            sheet_count: data.sheet_count ?? 0,
-            hash: data.hash ?? null,
-            file_modified_at: data.file_modified_at ?? null,
-            warnings: data.warnings ?? []
-          };
+          this.applyExcelStatusPayload(data);
         }
       } catch (e) {
         console.error('fetchExcelStatus:', e);
@@ -219,21 +309,7 @@ function dashboardApp() {
           return;
         }
 
-        // Map API payload to consistent shape
-        this.rejects = rejects.map((r, idx) => ({
-          id: r.id ?? idx,
-          doc_no: r.doc_no ?? '',
-          date: r.date ?? r.created_at ?? '',
-          item_name: r.item_name ?? '',
-          department: r.department ?? '',
-          cost: Number(r.cost) || 0,
-          status: r.approval_status ?? r.status ?? '',
-          category: r.category ?? '',
-          risk: r.risk_level ?? ''
-        }));
-
-        this.applyFilters();
-        this.initCharts();
+        this.applyRejectsPayload(rejects);
       } catch (e) {
         console.error('fetchRejects:', e);
         this.dataSource = 'error';
@@ -256,20 +332,7 @@ function dashboardApp() {
       this.errors.ai = null;
       try {
         const data = await BrightAPI.getSummary();
-        if (data) {
-          this.aiSummary = data.executive_summary ?? '';
-          this.aiFindings = data.findings ?? data.ai_findings ?? [];
-          if (data.kpis) {
-            // Merge any server-side KPI enrichment
-            if (data.kpis.avg_approval_time) this.kpis.avgApprovalTime = data.kpis.avg_approval_time;
-            if (data.kpis.capa_effectiveness) this.kpis.capaEffectiveness = data.kpis.capa_effectiveness;
-          }
-        }
-        if (!this.aiSummary) {
-          this.aiSummary = this.lang === 'ar'
-            ? 'لم يتم استلام ملخص تحليلي من الخادم.'
-            : 'No AI summary received from server.';
-        }
+        this.applySummaryPayload(data);
       } catch (e) {
         console.error('fetchAISummary:', e);
         this.errors.ai = this.lang === 'ar'
@@ -299,6 +362,13 @@ function dashboardApp() {
       this.kpis.totalCost = data.reduce((sum, r) => sum + r.cost, 0);
       this.kpis.pendingApprovals = data.filter(r => r.status === 'Pending').length;
       this.kpis.criticalItems = data.filter(r => r.risk === 'Critical' || r.risk === 'High').length;
+      const pending = data.filter(r => r.status === 'Pending' && Number(r.days_pending) > 0);
+      this.kpis.avgApprovalTime = pending.length
+        ? `${Math.round(pending.reduce((sum, r) => sum + Number(r.days_pending), 0) / pending.length)} يوم`
+        : (this.lang === 'ar' ? 'بيانات غير كافية' : 'Insufficient data');
+      const closed = data.filter(r => r.capa_required && r.status === 'Approved').length;
+      const capa = data.filter(r => r.capa_required).length;
+      this.kpis.capaEffectiveness = capa ? Math.round((closed / capa) * 1000) / 10 : 0;
     },
 
     // ═════════════════════════════════════════════════════════════════
@@ -578,17 +648,65 @@ function dashboardApp() {
     },
 
     refreshChartsData() {
-      if (this.charts.deptCost && this.filteredRejects.length > 0) {
-        const donut = ChartsAdapter.buildDeptDonut(this.filteredRejects);
-        this.charts.deptCost.updateSeries(donut.series);
-      }
+      this.initCharts();
     },
 
     // ═════════════════════════════════════════════════════════════════
     //  REALTIME
     // ═════════════════════════════════════════════════════════════════
     setupRealtimeListeners() {
-      window.addEventListener('data:updated', () => this.fetchDashboardData());
+      window.addEventListener('data:updated', (event) => {
+        const data = event.detail || {};
+        if (data.record_count !== undefined) {
+          this.liveStats = {
+            ...this.liveStats,
+            record_count: Number(data.record_count) || 0,
+            sheet_count: Number(data.sheet_count || this.liveStats.sheet_count || 0),
+            file_modified_at: data.file_modified_at || this.liveStats.file_modified_at,
+            hash: data.new_hash || data.hash || this.liveStats.hash,
+            last_load: data.timestamp || new Date().toISOString(),
+            justUpdated: true
+          };
+          window.setTimeout(() => { this.liveStats.justUpdated = false; }, 750);
+        }
+        this.fetchDashboardData();
+      });
+    },
+
+    startLiveStatusPolling() {
+      this.fetchLiveStatus();
+      window.setInterval(() => this.fetchLiveStatus(), 30000);
+    },
+
+    async fetchLiveStatus() {
+      try {
+        const data = await BrightAPI.getDataStatus();
+        if (!data) return;
+        this.liveStats = {
+          ...this.liveStats,
+          file_exists: data.file_exists ?? false,
+          file_modified_at: data.file_modified_at ?? null,
+          hash: data.hash ?? null,
+          record_count: data.record_count ?? 0,
+          sheet_count: data.sheet_count ?? 0,
+          last_load: data.last_load ?? data.last_successful_load_at ?? null,
+          warnings: data.warnings ?? []
+        };
+      } catch (e) {
+        console.error('fetchLiveStatus:', e);
+      }
+    },
+
+    formatLiveStatusAge(value) {
+      if (!value) return this.lang === 'ar' ? 'غير متاح' : 'Unavailable';
+      const diff = Date.now() - new Date(value).getTime();
+      if (!Number.isFinite(diff) || diff < 60000) return this.lang === 'ar' ? 'الآن' : 'now';
+      const minutes = Math.floor(diff / 60000);
+      if (minutes < 60) return this.lang === 'ar' ? `${minutes} دقائق` : `${minutes} min`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return this.lang === 'ar' ? `${hours} ساعات` : `${hours} hr`;
+      const days = Math.floor(hours / 24);
+      return this.lang === 'ar' ? `${days} أيام` : `${days} d`;
     },
 
     async refreshAIAnalysis() {

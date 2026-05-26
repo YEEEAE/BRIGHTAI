@@ -9,7 +9,8 @@
 const { config, isApiKeyConfigured, isGroqConfigured, isNvidiaConfigured, isDeepSeekConfigured } = require('../config');
 const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
 const { retryWithBackoff } = require('../utils/errorHandler');
-const { createSessionId, getOrCreateSession, addToSession } = require('../utils/sessionStore');
+const { createSessionId } = require('../utils/sessionStore');
+const { getSessionHistory, addToHistory } = require('./sessionStore');
 const { pickProvider, callOpenAiCompatibleProvider } = require('./openaiCompatProvider');
 const crypto = require('crypto');
 
@@ -562,17 +563,21 @@ function mapSessionRole(role) {
 }
 
 function buildGeminiContents(history, message, systemPrompt) {
-  const prompt = systemPrompt || CHAT_SYSTEM_PROMPT;
-  const contents = [
-    { role: 'user', parts: [{ text: prompt }] },
-    { role: 'model', parts: [{ text: 'تم استلام التعليمات وسألتزم بها بالكامل.' }] }
-  ];
+  const contents = [];
 
   for (const item of history) {
-    if (!item || typeof item.content !== 'string') continue;
-    const text = item.content.trim();
-    if (!text) continue;
-    contents.push({ role: mapSessionRole(item.role), parts: [{ text }] });
+    if (!item || typeof item !== 'object') continue;
+    if (Array.isArray(item.parts)) {
+      const parts = item.parts
+        .map(part => (part && typeof part.text === 'string' ? { text: part.text.trim() } : null))
+        .filter(part => part && part.text);
+      if (parts.length) contents.push({ role: mapSessionRole(item.role), parts });
+      continue;
+    }
+    if (typeof item.content === 'string') {
+      const text = item.content.trim();
+      if (text) contents.push({ role: mapSessionRole(item.role), parts: [{ text }] });
+    }
   }
 
   contents.push({ role: 'user', parts: [{ text: message }] });
@@ -897,12 +902,12 @@ function validateChatRequest(req) {
     throw createInputError(400, `الرسالة طويلة جداً. الحد الأقصى ${config.validation.maxInputLength} حرف`, 'MESSAGE_TOO_LONG');
   }
 
-  const providedSessionId = typeof req.body.sessionId === 'string'
-    ? sanitizeUserInput(req.body.sessionId).slice(0, 120)
+  const rawConversationId = req.body.conversation_id || req.body.conversationId || req.body.sessionId;
+  const providedSessionId = typeof rawConversationId === 'string'
+    ? sanitizeUserInput(rawConversationId).slice(0, 160)
     : '';
-  const session = getOrCreateSession(providedSessionId || createSessionId());
-  const activeSessionId = session.id;
-  const history = Array.isArray(session.history) ? session.history.slice(-12) : [];
+  const activeSessionId = providedSessionId || createSessionId();
+  const history = getSessionHistory(activeSessionId);
 
   return { sanitizedMessage, activeSessionId, history };
 }
@@ -987,6 +992,7 @@ async function callGemini(contents, options = {}) {
         generationConfig.responseMimeType = options.responseMimeType;
       }
 
+      const systemPrompt = typeof options.systemPrompt === 'string' ? options.systemPrompt.trim() : '';
       const response = await fetch(buildGeminiGenerateUrl(options.model), {
         method: 'POST',
         headers: {
@@ -995,6 +1001,9 @@ async function callGemini(contents, options = {}) {
         },
         body: JSON.stringify({
           contents,
+          system_instruction: systemPrompt
+            ? { parts: [{ text: systemPrompt }] }
+            : undefined,
           generationConfig,
           safetySettings: Array.isArray(options.safetySettings) ? options.safetySettings : undefined
         }),
@@ -1060,6 +1069,7 @@ async function callGeminiStream(contents, { signal, onToken } = {}) {
       },
       body: JSON.stringify({
         contents,
+        system_instruction: { parts: [{ text: STREAM_SYSTEM_PROMPT }] },
         generationConfig: { temperature: 0.55, maxOutputTokens: 900 }
       }),
       signal: controller.signal
@@ -1149,12 +1159,11 @@ function writeSse(streamRes, payload) {
 
 async function chat(req) {
   const { sanitizedMessage, activeSessionId, history } = validateChatRequest(req);
-  const contents = buildGeminiContents(history, sanitizedMessage, CHAT_SYSTEM_PROMPT);
-  const rawReply = await callGemini(contents);
+  const contents = buildGeminiContents(history, sanitizedMessage);
+  const rawReply = await callGemini(contents, { systemPrompt: CHAT_SYSTEM_PROMPT });
   const { reply, suggestions } = splitReplyAndSuggestions(rawReply);
 
-  addToSession(activeSessionId, 'user', sanitizedMessage);
-  addToSession(activeSessionId, 'assistant', reply);
+  addToHistory(activeSessionId, sanitizedMessage, reply);
 
   return { reply, sessionId: activeSessionId, suggestions };
 }
@@ -1190,8 +1199,7 @@ async function chatStream(req, rawRes) {
   let assistantText = '';
 
   try {
-    const contents = buildGeminiContents(history, sanitizedMessage, STREAM_SYSTEM_PROMPT);
-    addToSession(activeSessionId, 'user', sanitizedMessage);
+    const contents = buildGeminiContents(history, sanitizedMessage);
 
     assistantText = await callGeminiStream(contents, {
       signal: controller.signal,
@@ -1204,7 +1212,7 @@ async function chatStream(req, rawRes) {
     const { reply, suggestions } = splitReplyAndSuggestions(assistantText);
     const safeReply = reply || 'أهلاً بك، كيف أقدر أخدمك اليوم؟';
 
-    addToSession(activeSessionId, 'assistant', safeReply);
+    addToHistory(activeSessionId, sanitizedMessage, safeReply);
     writeSse(streamRes, { type: 'done', reply: safeReply, sessionId: activeSessionId, suggestions });
     streamRes.write('data: [DONE]\n\n');
   } catch (error) {

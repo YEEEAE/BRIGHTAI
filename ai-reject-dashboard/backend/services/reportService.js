@@ -40,7 +40,7 @@ function buildSourceMetadata(records, generatedBy) {
 
 /**
  * Build real department breakdown from records.
- * Returns array of { department, count, totalCost, recoveredCost, netLoss }.
+ * Returns array of { department, count, totalCost } from actual records.
  */
 function computeDepartmentBreakdown(records) {
   const deptMap = {};

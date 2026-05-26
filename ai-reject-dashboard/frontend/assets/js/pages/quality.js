@@ -5,83 +5,52 @@
  */
 function qualityApp() {
   return {
-    // UI Layout
     sidebarCollapsed: false,
     darkMode: false,
     lang: 'ar',
-    
-    // QMS metrics
+    isLoading: true,
+    error: null,
+    capaLoading: false,
+    capaModalOpen: false,
+    capaMarkdown: '',
+
     kpis: {
-      qualityScore: 88.5,
-      ncrRate: 2.4,
-      isoScore: 92,
-      auditReadiness: 75
+      qualityScore: null,
+      ncrRate: null,
+      isoScore: null,
+      auditReadiness: 0
     },
 
-    // Checklist states
     checklist: {
-      ncr: true,
+      ncr: false,
       oos: false,
-      calibration: true,
+      calibration: false,
       sop: false
     },
 
-    // CAPA Kanban Columns
-    kanban: {
-      open: [
-        { id: 1, title: 'عزل رطوبة المستودع الثاني لـ Sponge Tape', owner: 'إبراهيم علوان', priority: 'Critical', age: 'منذ 3 أيام' },
-        { id: 2, title: 'إرسال مطالبة مالية لمورد الكرتون Mais', owner: 'رائد الشهري', priority: 'High', age: 'منذ 5 أيام' }
-      ],
-      progress: [
-        { id: 3, title: 'معايرة وإصلاح الملقب لـ Extruder-4', owner: 'محمد العتيبي', priority: 'High', age: 'قيد العمل' }
-      ],
-      verify: [
-        { id: 4, title: 'فحص حبيبات الـ PVC الدوائية الملوثة', owner: 'أحمد القرني', priority: 'Medium', age: 'انتظار التحقق' }
-      ],
-      closed: [
-        { id: 5, title: 'أرشفة وثائق إتلاف Lot C10 مع البلدية', owner: 'خالد السديري', priority: 'Low', age: 'تم الإغلاق' }
-      ]
-    },
+    kanban: { open: [], progress: [], verify: [], closed: [] },
+    whysSteps: [],
 
-    // Whys investigation steps
-    whysSteps: [
-      { id: 1, text: 'لماذا حدث تلف في شريط إسفنجي Lot 2026-98؟' },
-      { id: 2, text: 'بسبب تدهور الصمغ والتصاق المواد ببعضها.' },
-      { id: 3, text: 'لماذا تدهور الصمغ والتصق؟' },
-      { id: 4, text: 'بسبب ارتفاع مستويات الرطوبة في المستودع الثاني لـ 68%.' }
-    ],
-
-    // Core Functions
     init() {
       this.initThemeAndLang();
-      this.calculateReadiness();
-      
-      // Watch for checklist changes to dynamically recalculate audit score
+      this.loadQualityData();
       this.$watch('checklist', () => this.calculateReadiness());
       this.setupRealtimeListeners();
     },
 
     setupRealtimeListeners() {
-      window.addEventListener('data:updated', () => {
-        console.log('🔄 [BrightAI QMS] Realtime Excel update event processed.');
-      });
+      window.addEventListener('data:updated', () => this.loadQualityData());
     },
 
     initThemeAndLang() {
       this.darkMode = localStorage.getItem('darkMode') === 'true';
       this.lang = localStorage.getItem('lang') || 'ar';
-      
       document.documentElement.setAttribute('data-theme', this.darkMode ? 'dark' : 'light');
       document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
-      
-      if (this.darkMode) {
-        document.body.classList.add('dark');
-      }
+      if (this.darkMode) document.body.classList.add('dark');
     },
 
-    toggleSidebar() {
-      this.sidebarCollapsed = !this.sidebarCollapsed;
-    },
+    toggleSidebar() { this.sidebarCollapsed = !this.sidebarCollapsed; },
 
     toggleDarkMode() {
       this.darkMode = !this.darkMode;
@@ -93,35 +62,64 @@ function qualityApp() {
       this.lang = this.lang === 'ar' ? 'en' : 'ar';
       localStorage.setItem('lang', this.lang);
       document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
-      
-      if (this.lang === 'ar') {
-        this.whysSteps = [
-          { id: 1, text: 'لماذا حدث تلف في شريط إسفنجي Lot 2026-98؟' },
-          { id: 2, text: 'بسبب تدهور الصمغ والتصاق المواد ببعضها.' },
-          { id: 3, text: 'لماذا تدهور الصمغ والتصق؟' },
-          { id: 4, text: 'بسبب ارتفاع مستويات الرطوبة في المستودع الثاني لـ 68%.' }
-        ];
-      } else {
-        this.whysSteps = [
-          { id: 1, text: 'Why did Sponge Tape Lot 2026-98 fail?' },
-          { id: 2, text: 'Because of adhesive degradation and fusion.' },
-          { id: 3, text: 'Why did the adhesive degrade?' },
-          { id: 4, text: 'Because humidity levels in Warehouse 2 exceeded 68%.' }
-        ];
+      this.setWhysFromRecord(this.kanban.open[0]);
+    },
+
+    async loadQualityData() {
+      this.isLoading = true;
+      this.error = null;
+      try {
+        const pageData = await BrightAPI.loadAllPageData('quality');
+        const rejects = Array.isArray(pageData.rejects) ? pageData.rejects : [];
+        this.applyQualityData(rejects);
+      } catch (e) {
+        console.error('loadQualityData:', e);
+        this.error = this.lang === 'ar' ? 'تعذر تحميل بيانات الجودة من API.' : 'Unable to load quality API data.';
+        this.applyQualityData([]);
+      } finally {
+        this.isLoading = false;
       }
+    },
+
+    applyQualityData(rejects) {
+      const records = rejects.map((record, index) => ({ ...record, id: record.id ?? record.doc_no ?? index }));
+      const riskRecords = records.filter((record) => Number(record.risk_score) >= 70);
+      const approved = records.filter((record) => ['Approved', 'Review'].includes(record.approval_status || record.status)).length;
+      this.kpis.qualityScore = records.length ? Math.round((approved / records.length) * 1000) / 10 : null;
+      this.kpis.ncrRate = records.length ? Math.round((riskRecords.length / records.length) * 1000) / 10 : null;
+      this.kpis.isoScore = records.length ? Math.max(0, Math.round((100 - this.kpis.ncrRate) * 10) / 10) : null;
+
+      this.kanban = {
+        open: riskRecords.filter((record) => !['Approved', 'Closed'].includes(record.approval_status || record.status)).map((record) => this.toCapaCard(record)),
+        progress: [],
+        verify: riskRecords.filter((record) => (record.approval_status || record.status) === 'Review').map((record) => this.toCapaCard(record)),
+        closed: riskRecords.filter((record) => (record.approval_status || record.status) === 'Approved').map((record) => this.toCapaCard(record))
+      };
+      this.checklist.ncr = riskRecords.length > 0;
+      this.checklist.sop = this.kanban.open.length === 0 && riskRecords.length > 0;
+      this.calculateReadiness();
+      this.setWhysFromRecord(this.kanban.open[0] || this.kanban.verify[0] || this.kanban.closed[0]);
+    },
+
+    toCapaCard(record) {
+      return {
+        id: record.id,
+        title: record.root_cause || record.reason || record.item_name || 'CAPA',
+        owner: record.department || 'QCM',
+        priority: record.risk_level || (Number(record.risk_score) >= 85 ? 'Critical' : 'High'),
+        age: Number(record.days_pending) ? `${record.days_pending} يوم` : (this.lang === 'ar' ? 'من بيانات API' : 'From API'),
+        record
+      };
     },
 
     calculateReadiness() {
       const totalChecks = Object.keys(this.checklist).length;
-      const checkedCount = Object.values(this.checklist).filter(v => v === true).length;
-      this.kpis.auditReadiness = Math.round((checkedCount / totalChecks) * 100);
+      const checkedCount = Object.values(this.checklist).filter(Boolean).length;
+      this.kpis.auditReadiness = totalChecks ? Math.round((checkedCount / totalChecks) * 100) : 0;
     },
 
-    // Kanban Card Mover (Simple reactive states)
     moveKanbanCard(cardId, nextStage) {
       let cardToMove = null;
-      
-      // Locate and isolate card
       Object.keys(this.kanban).forEach(col => {
         const found = this.kanban[col].find(c => c.id === cardId);
         if (found) {
@@ -129,66 +127,91 @@ function qualityApp() {
           this.kanban[col] = this.kanban[col].filter(c => c.id !== cardId);
         }
       });
+      if (!cardToMove) return;
+      cardToMove.age = this.lang === 'ar' ? 'تم النقل الآن' : 'Just moved';
+      this.kanban[nextStage].push(cardToMove);
+    },
 
-      if (cardToMove) {
-        cardToMove.age = this.lang === 'ar' ? 'تم النقل الآن' : 'Just moved';
-        this.kanban[nextStage].push(cardToMove);
-        
-        // Dispatch dynamic socket notifications or alerts
-        if (window.BrightNotifications) {
-          window.BrightNotifications.toast({
-            type: 'success',
-            title: this.lang === 'ar' ? 'تحديث كانبان' : 'Kanban Update',
-            message: this.lang === 'ar' ? `تم نقل بطاقة CAPA بنجاح للحالة التالية: ${nextStage}` : `CAPA card dispatched to: ${nextStage}`
-          });
-        }
+    async generateCapa(card) {
+      if (!card?.record) return;
+      this.capaLoading = true;
+      this.capaModalOpen = true;
+      this.capaMarkdown = this.lang === 'ar' ? 'جاري توليد CAPA من الخادم...' : 'Generating CAPA from API...';
+      try {
+        const result = await BrightAPI.generateCapa(card.record);
+        this.capaMarkdown = this.formatCapaMarkdown(result);
+      } catch (e) {
+        console.error('generateCapa:', e);
+        this.capaMarkdown = this.lang === 'ar' ? 'تعذر توليد CAPA من API.' : 'Unable to generate CAPA from API.';
+      } finally {
+        this.capaLoading = false;
       }
     },
 
-    triggerIshikawaInfo(category) {
-      const info = {
-        people: this.lang === 'ar' ? 'توصية الأفراد: إعادة تأهيل وتدريب فني لمشغلي ماكينات البثق لـ Extruder-4.' : 'People Recommendation: Implement formal mechanical training for extruder operators.',
-        machinery: this.lang === 'ar' ? 'توصية الآلات: جدولة صيانة ومعايرة ميكانيكية عاجلة لمكبس التبريد رقم 2.' : 'Machinery Recommendation: Schedule urgent press calibration for mold press 2.',
-        materials: this.lang === 'ar' ? 'توصية المواد: رفض شحنات PVC الملوثة ومطالبة المورد بالتعويض المالي.' : 'Materials Recommendation: Reject contaminated polymers and request supplier credit.',
-        methods: this.lang === 'ar' ? 'توصية الأساليب: تفعيل مستشعرات الرطوبة والإنذارات الفورية في المستودعات.' : 'Methods Recommendation: Enforce digital tracking and humidity limits.',
-        environment: this.lang === 'ar' ? 'توصية البيئة: عزل غرف المستودع لـ Sponge Tape لدرجة حرارة 20 ورطوبة < 45%.' : 'Environment Recommendation: Isolate Storage room 2 for sensitive tapes.',
-        measurements: this.lang === 'ar' ? 'توصية القياسات: ربط مقاييس الجودة مخبرياً بنظام المعايرة الآلي الأسبوعي.' : 'Measurements Recommendation: Connect lab scales to automated calibration logs.'
-      };
+    formatCapaMarkdown(result) {
+      if (typeof result === 'string') return result;
+      const capa = result?.capa || result || {};
+      return [
+        `### ${capa.title || 'CAPA Recommendation'}`,
+        '',
+        `**Root cause:** ${capa.root_cause || capa.rootCause || '-'}`,
+        `**Corrective action:** ${capa.corrective_action || capa.correctiveAction || '-'}`,
+        `**Preventive action:** ${capa.preventive_action || capa.preventiveAction || '-'}`,
+        `**Owner:** ${capa.owner_suggestion || capa.owner || '-'}`,
+        `**Due date:** ${capa.due_date || capa.dueDate || '-'}`
+      ].join('\n');
+    },
 
-      if (window.BrightNotifications) {
-        window.BrightNotifications.toast({
-          type: 'info',
-          title: this.lang === 'ar' ? 'توصية مخطط إيشيكاوا' : 'Ishikawa Suggestion',
-          message: info[category] || ''
-        });
+    renderMarkdown(markdown) {
+      return String(markdown || '')
+        .replace(/[&<>]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]))
+        .replace(/^### (.*)$/gm, '<h3>$1</h3>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n/g, '<br>');
+    },
+
+    metricText(value, suffix = '%') {
+      return Number.isFinite(value) ? `${value}${suffix}` : (this.lang === 'ar' ? 'بيانات غير كافية' : 'Insufficient data');
+    },
+
+    setWhysFromRecord(card) {
+      if (!card) {
+        this.whysSteps = [{ id: 1, text: this.lang === 'ar' ? 'لا توجد حالة عالية الخطورة كافية للتحقيق.' : 'No high-risk case is available for investigation.' }];
+        return;
       }
+      const item = card.record.item_name || card.title;
+      const reason = card.record.reason || card.record.root_cause || card.title;
+      this.whysSteps = this.lang === 'ar'
+        ? [
+          { id: 1, text: `لماذا ظهرت حالة رفض في ${item}؟` },
+          { id: 2, text: reason },
+          { id: 3, text: 'لماذا لم يتم اكتشاف الانحراف قبل تسجيل الرفض؟' }
+        ]
+        : [
+          { id: 1, text: `Why did ${item} reach reject status?` },
+          { id: 2, text: reason },
+          { id: 3, text: 'Why was the deviation not detected earlier?' }
+        ];
     },
 
     generateNextWhy() {
-      if (this.whysSteps.length >= 5) {
-        if (window.BrightNotifications) {
-          window.BrightNotifications.toast({
-            type: 'warning',
-            title: this.lang === 'ar' ? 'تحقيق مكتمل' : 'Investigation Complete',
-            message: this.lang === 'ar' ? 'تم اكتمال الخطوات الخمس الاستقصائية (5 Whys) للتحقيق بنجاح.' : 'Five Whys audit path is fully generated.'
-          });
-        }
-        return;
-      }
+      const nextId = this.whysSteps.length + 1;
+      if (nextId > 5) return;
+      this.whysSteps.push({
+        id: nextId,
+        text: this.lang === 'ar'
+          ? 'يتطلب استكمال التحقيق مراجعة سجلات العملية والوردية من API.'
+          : 'Completing the investigation requires reviewing process and shift records from the API.'
+      });
+    },
 
-      if (this.whysSteps.length === 4) {
-        const step5 = this.lang === 'ar' 
-          ? { id: 5, text: 'بسبب عدم تفعيل مستشعر الرطوبة الذكي في المستودع لـ SOP (السبب الجذري النهائي).' }
-          : { id: 5, text: 'Due to missing digital humidity alarms in storage according to SOP (Root Cause).' };
-        
-        this.whysSteps.push(step5);
-        if (window.BrightNotifications) {
-          window.BrightNotifications.toast({
-            type: 'success',
-            title: this.lang === 'ar' ? 'السبب الخامس' : 'Why #5 Generated',
-            message: step5.text
-          });
-        }
+    triggerIshikawaInfo(category) {
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'info',
+          title: this.lang === 'ar' ? 'تحليل سبب جذري' : 'Root Cause Signal',
+          message: category
+        });
       }
     },
 
@@ -197,7 +220,7 @@ function qualityApp() {
         window.BrightNotifications.toast({
           type: 'success',
           title: this.lang === 'ar' ? 'حفظ التحقيق' : 'Investigation Saved',
-          message: this.lang === 'ar' ? 'تم حفظ وإرسال التحقيق الفني لـ QCM وإرفاقه بالوثيقة NCR بنجاح!' : 'Root cause 5 Whys investigation filed and dispatched to Quality Manager!'
+          message: this.lang === 'ar' ? 'تم حفظ التحقيق محلياً في حالة الواجهة.' : 'Investigation saved in the current UI state.'
         });
       }
     },
@@ -206,8 +229,8 @@ function qualityApp() {
       if (window.BrightNotifications) {
         window.BrightNotifications.toast({
           type: 'info',
-          title: this.lang === 'ar' ? 'جاهزية SFDA' : 'SFDA Audit Export',
-          message: this.lang === 'ar' ? 'جاري تصدير وثيقة الجودة والجاهزية لتدقيق الغذاء والدواء SFDA بصيغة PDF...' : 'Generating and downloading SFDA / ISO 13485 audit readiness document...'
+          title: this.lang === 'ar' ? 'تقرير الجودة' : 'QMS Report',
+          message: this.lang === 'ar' ? 'جاري تجهيز تقرير الجودة من بيانات API الحالية.' : 'Generating QMS report from current API data.'
         });
       }
     }

@@ -1,7 +1,8 @@
 <!DOCTYPE html><html class="js-focus-visible" lang="ar" dir="rtl"><head>
   <meta charset="UTF-8">
+    <meta name="ai-assistant" content="صقر AI by BrightAI">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Reject Analytics — MES Production &amp; Operations Dashboard</title>
+<title>AI Reject Analytics — MES Production &amp; Operations Dashboard</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="نظام إدارة وتتبع التصنيع والعمليات لـ BrightAI - ممتثل لمعايير ممارسات التصنيع الجيد GMP وكفاءة الماكينات.">
   <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
@@ -138,6 +139,7 @@
   <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
   <script defer="" src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/fonts.css">
 </head>
 <body x-data="productionApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -221,8 +223,9 @@
           <!-- Radial Gauge for OEE -->
           <div class="card card-outlined" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:180px; padding:var(--spacing-md);">
             <div style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-secondary);" x-text="lang === 'ar' ? 'الفعالية الإجمالية للمعدات (OEE)' : 'Overall Equipment Effectiveness (OEE)'"></div>
-            <div style="font-weight:700; font-size:var(--font-size-2xl); color:var(--color-success); margin-top:var(--spacing-sm);" x-text="kpis.oee + '%'"></div>
-            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;" x-text="lang === 'ar' ? 'الحد المستهدف للمصنع: 85%' : 'Planned target limit: 85%'"></div>
+            <div class="skeleton-card" x-show="isLoading"></div>
+            <div x-show="!isLoading" style="font-weight:700; font-size:var(--font-size-2xl); color:var(--color-success); margin-top:var(--spacing-sm);" x-text="metricText(kpis.oee)"></div>
+            <div style="font-size:11px; color:var(--text-muted); margin-top:2px;" x-text="lang === 'ar' ? 'محسوبة من machine_defect_rates' : 'Calculated from machine_defect_rates'"></div>
           </div>
 
           <!-- OEE Breakdown (Availability & Performance) -->
@@ -230,25 +233,26 @@
             <div class="oee-progress-row">
               <div style="display:flex; justify-content:space-between; font-size:var(--font-size-xs); font-weight:600;">
                 <span x-text="lang === 'ar' ? 'الإتاحة وتشغيل الماكينات:' : 'Availability %:'"></span>
-                <span x-text="kpis.availability + '%'"></span>
+                <span x-text="metricText(kpis.availability)"></span>
               </div>
-              <div class="oee-progress-bar"><div class="oee-progress-fill" style="background-color:var(--color-primary);" :style="'width: ' + kpis.availability + '%'"></div></div>
+              <div class="skeleton-card" x-show="isLoading"></div>
+              <div class="oee-progress-bar" x-show="!isLoading"><div class="oee-progress-fill" style="background-color:var(--color-primary);" :style="'width: ' + (kpis.availability || 0) + '%'"></div></div>
             </div>
 
             <div class="oee-progress-row">
               <div style="display:flex; justify-content:space-between; font-size:var(--font-size-xs); font-weight:600;">
                 <span x-text="lang === 'ar' ? 'أداء وسرعة التشكيل:' : 'Performance %:'"></span>
-                <span x-text="kpis.performance + '%'"></span>
+                <span x-text="metricText(kpis.performance)"></span>
               </div>
-              <div class="oee-progress-bar"><div class="oee-progress-fill" style="background-color:var(--color-secondary-hover);" :style="'width: ' + kpis.performance + '%'"></div></div>
+              <div class="oee-progress-bar"><div class="oee-progress-fill" style="background-color:var(--color-secondary-hover);" :style="'width: ' + (kpis.performance || 0) + '%'"></div></div>
             </div>
 
             <div class="oee-progress-row">
               <div style="display:flex; justify-content:space-between; font-size:var(--font-size-xs); font-weight:600;">
                 <span x-text="lang === 'ar' ? 'معدل جودة المنتجات الطبية:' : 'Quality %:'"></span>
-                <span x-text="kpis.quality + '%'"></span>
+                <span x-text="metricText(kpis.quality)"></span>
               </div>
-              <div class="oee-progress-bar"><div class="oee-progress-fill" style="background-color:var(--color-success);" :style="'width: ' + kpis.quality + '%'"></div></div>
+              <div class="oee-progress-bar"><div class="oee-progress-fill" style="background-color:var(--color-success);" :style="'width: ' + (kpis.quality || 0) + '%'"></div></div>
             </div>
           </div>
 
@@ -258,7 +262,8 @@
               <span class="card-title" x-text="lang === 'ar' ? 'الإنتاج الأولي الصحيح (FPY)' : 'First Pass Yield (FPY)'"></span>
               <span class="badge badge-success">FPY</span>
             </div>
-            <div class="card-stat-value" style="color:var(--color-success);" x-text="kpis.fpy + '%'"></div>
+            <div class="skeleton-card" x-show="isLoading"></div>
+            <div class="card-stat-value" x-show="!isLoading" style="color:var(--color-success);" x-text="metricText(kpis.fpy)"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span class="card-subtitle" x-text="lang === 'ar' ? 'نسبة تصنيع خالي من العيوب لأول مرة' : 'First-time-right standard rate'"></span>
             </div>
@@ -273,6 +278,8 @@
           </div>
 
           <div class="machine-status-grid">
+            <div class="skeleton-card" x-show="isLoading"></div>
+            <div x-show="!isLoading && machines.length === 0" class="alert alert-warning" x-text="insufficientLabel"></div>
             <template x-for="machine in machines" :key="machine.id">
               <div class="machine-monitor-card">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -313,29 +320,20 @@
             </div>
 
             <div class="shift-compare-container" style="flex-grow:1; align-items:center;">
-              <!-- Morning -->
-              <div class="shift-card">
-                <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="lang === 'ar' ? 'الوردية الصباحية (Morning)' : 'Morning Shift'"></span>
-                <span style="font-weight:700; font-size:var(--font-size-sm); color:var(--color-success); margin:4px 0;">1.2% Scrap</span>
-                <span style="font-size:9px; color:var(--text-muted);" x-text="lang === 'ar' ? 'الإنتاج: 42,000 قطعة' : 'Total Yield: 42k pcs'"></span>
+              <div class="skeleton-card" x-show="isLoading"></div>
+              <div x-show="!isLoading && shifts.length === 0" class="shift-card">
+                <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="insufficientLabel"></span>
               </div>
-
-              <!-- Evening -->
-              <div class="shift-card" style="border-inline-start: 3px solid var(--color-primary);">
-                <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="lang === 'ar' ? 'الوردية المسائية (Evening)' : 'Evening Shift'"></span>
-                <span style="font-weight:700; font-size:var(--font-size-sm); color:var(--color-secondary-hover); margin:4px 0;">2.8% Scrap</span>
-                <span style="font-size:9px; color:var(--text-muted);" x-text="lang === 'ar' ? 'الإنتاج: 38,000 قطعة' : 'Total Yield: 38k pcs'"></span>
-              </div>
-
-              <!-- Night -->
-              <div class="shift-card" style="border-inline-start: 3px solid var(--color-danger);">
-                <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="lang === 'ar' ? 'الوردية الليلية (Night)' : 'Night Shift'"></span>
-                <span style="font-weight:700; font-size:var(--font-size-sm); color:var(--color-danger); margin:4px 0;">5.4% Scrap</span>
-                <span style="font-size:9px; color:var(--text-muted);" x-text="lang === 'ar' ? 'الإنتاج: 25,000 قطعة' : 'Total Yield: 25k pcs'"></span>
-              </div>
+              <template x-for="shift in shifts" :key="shift.name">
+                <div class="shift-card">
+                  <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="shift.name"></span>
+                  <span style="font-weight:700; font-size:var(--font-size-sm); color:var(--color-success); margin:4px 0;" x-text="metricText(shift.scrapRate) + ' Scrap'"></span>
+                  <span style="font-size:9px; color:var(--text-muted);" x-text="(lang === 'ar' ? 'الإنتاج: ' : 'Total Yield: ') + shift.quantity.toLocaleString()"></span>
+                </div>
+              </template>
             </div>
 
-            <p style="font-size:10px; color:var(--text-muted); line-height:1.5;" x-text="lang === 'ar' ? 'ملاحظة: تظهر التحليلات أن ارتفاع معدلات التلف بالوردية الليلية يعود لانحراف معايرةExtruder-4 وتأخر الاستجابة الميكانيكية.' : 'Notice: Higher night shift scrap corresponds to Extruder M4 calibration issues and delayed maintenance response.'"></p>
+            <p style="font-size:10px; color:var(--text-muted); line-height:1.5;" x-text="shifts.length ? (lang === 'ar' ? 'تم حساب الورديات من عمود Shift في Excel.' : 'Shifts are calculated from the Excel Shift column.') : insufficientLabel"></p>
           </div>
 
           <!-- Raw Material & WIP Tracking -->
@@ -346,21 +344,16 @@
             </div>
 
             <div style="display:flex; flex-direction:column; gap:var(--spacing-sm); flex-grow:1; justify-content:center;">
+              <template x-for="alert in materialAlerts" :key="alert.title">
               <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:var(--spacing-sm); border-bottom:1px solid var(--color-border);">
                 <div>
-                  <div style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="lang === 'ar' ? 'حبيبات Resin A - شحنة منتهية الصلاحية' : 'Resin A Base Polymers (Lot Expiry)'"></div>
-                  <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" x-text="lang === 'ar' ? 'تجاوز حدود FEFO الطبية بالمخزن' : 'FEFO inventory compliance deviation'"></div>
+                  <div style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="alert.title"></div>
+                  <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" x-text="alert.detail"></div>
                 </div>
-                <span class="badge badge-solid badge-danger" x-text="formatCurrency(45000)"></span>
+                <span class="badge badge-solid badge-danger" x-text="formatCurrency(alert.cost)"></span>
               </div>
-
-              <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:var(--spacing-sm); border-bottom:1px solid var(--color-border);">
-                <div>
-                  <div style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="lang === 'ar' ? 'قيمة مخزون الـ WIP المعلق بالحجر' : 'WIP Inventory Locked in Quarantine'"></div>
-                  <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" x-text="lang === 'ar' ? 'انتظار مراجعة OOS للمختبر' : 'Awaiting OOS validation reports'"></div>
-                </div>
-                <span class="badge badge-solid badge-warning" x-text="formatCurrency(96000)"></span>
-              </div>
+              </template>
+              <div x-show="!isLoading && materialAlerts.length === 0" class="alert alert-warning" x-text="insufficientLabel"></div>
             </div>
 
             <div style="background-color:var(--gray-50); padding:var(--spacing-sm); border-radius:var(--radius-md); border:1px solid var(--color-border); font-size:11px; color:var(--text-secondary); line-height:1.6;" x-text="lang === 'ar' ? 'تنبيه FEFO: يرجى فحص شحنات Resin B المستلمة مؤخراً وتأكيد عدم تجاوز فترات الحرارة المسموحة لتجنب تدهور البوليمرات.' : 'FEFO Alert: Audit recently received Resin B batches to confirm temperature compliance and avoid value write-downs.'"></div>
@@ -433,112 +426,11 @@
   </div>
 
   <!-- Page logic — extracted to external file (CSP-compliant) -->
+  <script src="/ai-reject-dashboard/frontend/assets/js/api-client.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/js/pages/production.js"></script>
-  <!-- dummy marker start
-      return {
-        // UI Layout
-        sidebarCollapsed: false,
-        darkMode: false,
-        lang: 'ar',
-        
-        // MES kpi metrics
-        kpis: {
-          oee: 84.8,
-          availability: 88,
-          performance: 92,
-          quality: 98,
-          fpy: 94.2
-        },
-
-        // Daily Checklist
-        checklist: {
-          calibration: true,
-          moisture: false,
-          handover: true,
-          safety: false
-        },
-
-        // Dynamic Machine States populated from active Excel scrap cost analysis
-        machines: [
-          { id: 1, name: 'Injection molding machine 1', status: 'Running', cost: 24500, rejectRate: '2.4%', nextMaintenance: '2026-06-12' },
-          { id: 2, name: 'Injection molding machine 2', status: 'Running', cost: 48000, rejectRate: '4.8%', nextMaintenance: '2026-06-05' },
-          { id: 3, name: 'Extrusion machine Extruder-4', status: 'Maintenance', cost: 145000, rejectRate: '7.1%', nextMaintenance: '2026-06-01' },
-          { id: 4, name: 'Blow Molding machine B1', status: 'Running', cost: 92000, rejectRate: '3.0%', nextMaintenance: '2026-06-20' }
-        ],
-
-        // Core Functions
-        init() {
-          this.initThemeAndLang();
-          this.fetchProductionScrapCosts();
-        },
-
-        initThemeAndLang() {
-          this.darkMode = localStorage.getItem('darkMode') === 'true';
-          this.lang = localStorage.getItem('lang') || 'ar';
-          
-          document.documentElement.setAttribute('data-theme', this.darkMode ? 'dark' : 'light');
-          document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
-          
-          if (this.darkMode) {
-            document.body.classList.add('dark');
-          }
-        },
-
-        toggleSidebar() {
-          this.sidebarCollapsed = !this.sidebarCollapsed;
-        },
-
-        toggleDarkMode() {
-          this.darkMode = !this.darkMode;
-          localStorage.setItem('darkMode', this.darkMode);
-          document.documentElement.setAttribute('data-theme', this.darkMode ? 'dark' : 'light');
-        },
-
-        toggleLanguage() {
-          this.lang = this.lang === 'ar' ? 'en' : 'ar';
-          localStorage.setItem('lang', this.lang);
-          document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
-        },
-
-        async fetchProductionScrapCosts() {
-          try {
-            const res = await fetch('/api/rejects?source=excel', { credentials: 'include' });
-            if (!res.ok) throw new Error('Failed to load rejects');
-            const data = await res.json();
-            const payload = data.data || data;
-            const rejects = payload.rejects || data;
-
-            // Map and calculate dynamic machine scrap values based on current Excel data
-            if (rejects && rejects.length > 0) {
-              const WHCost = rejects.filter(r => r.department === 'Warehouse').reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
-              const ProdCost = rejects.filter(r => r.department === 'Production').reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
-              const QCCost = rejects.filter(r => r.department === 'QC').reduce((sum, r) => sum + (Number(r.cost) || 0), 0);
-              
-              // Dynamically allocate cost from excel
-              this.machines[0].cost = QCCost * 0.4;
-              this.machines[1].cost = ProdCost * 0.3;
-              this.machines[2].cost = WHCost * 0.8;
-              this.machines[3].cost = ProdCost * 0.5;
-            }
-          } catch(e) {
-            console.error('Error fetching production costs:', e);
-          }
-        },
-
-        exportMESReport() {
-          alert(this.lang === 'ar' ? 'جاري تصدير تقرير خطوط الإنتاج والـ OEE بصيغة PDF للوردية الحالية...' : 'Generating and downloading full MES shift report & OEE audits...');
-        },
-
-        formatCurrency(val) {
-          if (!val && val !== 0) return 'SAR 0.00';
-          return 'SAR ' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-        }
-      };
-    }
-  </script>
   <!-- Frontend Auth Guard Shield -->
   <script src="/ai-reject-dashboard/frontend/assets/js/auth-guard.js"></script>
-  <!-- Global AI Assistant Chatbot -->
+  <!-- Global صقر AI Chatbot -->
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>

@@ -33,7 +33,8 @@ const { getProviderHealthSnapshot } = require('./services/openaiCompatProvider')
 const {
   unifiedChatHandler,
   unifiedChatStreamHandler,
-  unifiedOpenAiCompatHandler
+  unifiedOpenAiCompatHandler,
+  unifiedChatCloseHandler
 } = require('./routes/aiGateway');
 const { canHandleDemoRoute, demoRouteHandler } = require('./routes/demo');
 const { demoGeminiApp, canHandleDemoGeminiRoute } = require('./demoGeminiApp');
@@ -427,6 +428,8 @@ async function handleRequest(req, res) {
       await demoRouteHandler(ctx.req, ctx.res, method, url);
     } else if (method === 'POST' && url === '/api/ai/chat') {
       await unifiedChatHandler(ctx.req, ctx.res);
+    } else if (method === 'POST' && (url === '/api/ai/chat/close' || url === '/api/ai/chat/clear')) {
+      await unifiedChatCloseHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/chat/stream') {
       await unifiedChatStreamHandler(ctx.req, ctx.res, res);
     } else if (method === 'POST' && CHAT_ROUTE_ALIASES.has(url)) {

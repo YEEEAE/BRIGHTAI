@@ -14,6 +14,7 @@
   // Configuration constants
   const AI_NAME = 'صقر AI';
   const API_CHAT = '/api/ai/chat';
+  const API_CHAT_CLOSE = '/api/ai/chat/close';
   const STORAGE_KEY = 'ai_chat_history_session'; // sessionStorage — cleared on tab close
   const SOUND_TOGGLE_KEY = 'ai_chat_sound_enabled';
 
@@ -90,8 +91,8 @@
     if (state.history.length === 0) {
       addAssistantMessage(
         document.documentElement.lang === 'en'
-          ? 'Hello! I am صقر AI, your AI Quality and Production Assistant. I can help you analyze stock/life risk data, calculate financial costs, track CAPAs, and ensure GMP compliance. How can I help you today?'
-          : 'مرحباً بك! أنا صقر AI، مساعدك الذكي لتحليلات الجودة والإنتاج والعمليات. يمكنني مساعدتك في تحليل بيانات المخزون والعمر الافتراضي، وحساب الخسائر المالية، وتتبع خطط CAPA والتحقق من التزام ممارسات GMP الدوائية. كيف يمكنني مساعدتك اليوم؟'
+          ? 'Hello! I am صقر AI 🦅, your intelligent assistant from BrightAI for MAIS analytics. I can help with rejects, quality, finance, production, CAPA tracking, and GMP compliance. How can I help you today?'
+          : 'مرحباً! أنا صقر AI 🦅، مساعدك الذكي من BrightAI لتحليلات ميس. أقدر أساعدك في المرفوضات، الجودة، المالية، الإنتاج، تتبع CAPA، والالتزام بـ GMP. كيف أقدر أساعدك اليوم؟'
       );
     } else {
       state.history.forEach(msg => appendMessageToDOM(msg.sender, msg.text, msg.charts, msg.actions, false));
@@ -119,8 +120,9 @@
     fab.id = 'ai-fab';
     fab.setAttribute('title', isEn ? 'صقر AI Quality Assistant' : 'صقر AI - المساعد الذكي للجودة');
     fab.innerHTML = `
-      <svg viewBox="0 0 24 24">
-        <path d="M12 2C6.477 2 2 6.477 2 12c0 1.879.516 3.639 1.414 5.161l-1.378 4.133a1 1 0 001.264 1.264l4.133-1.378A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
+      <svg class="ai-falcon-icon" viewBox="0 0 64 64" aria-hidden="true">
+        <path d="M55.8 8.4c-8.7 1.4-17.2 4.9-25.4 10.4L20 25.8 7.3 24.1c-1.1-.1-1.7 1.2-.9 2l8.9 8.2-6.2 11.8c-.5 1 .5 2.1 1.5 1.7l13.7-5.3 9.8 9.7c.8.8 2.1.1 1.9-1l-1.8-12.1 5.2-4.5c4.6-4 8.2-8.7 10.7-14.1l6.8-10.4c.6-.9-.1-1.9-1.1-1.7ZM29.2 33.6l-7.8 3 3.5-6.7 8.8-6c5.1-3.5 10.3-6.1 15.6-7.8-2 3.1-4.5 6.3-7.5 9.5l-12.6 8Z"/>
+        <path d="M42.4 20.1c-2.4.9-4.9 2.1-7.3 3.6l8.2.5c2-2.2 3.7-4.3 5.2-6.4-1.9.6-4 1.4-6.1 2.3Z"/>
       </svg>
     `;
     document.body.appendChild(fab);
@@ -133,7 +135,7 @@
       <div class="ai-chat-header" id="ai-chat-header">
         <div class="ai-header-info">
           <div class="ai-header-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg class="ai-falcon-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M55.8 8.4c-8.7 1.4-17.2 4.9-25.4 10.4L20 25.8 7.3 24.1c-1.1-.1-1.7 1.2-.9 2l8.9 8.2-6.2 11.8c-.5 1 .5 2.1 1.5 1.7l13.7-5.3 9.8 9.7c.8.8 2.1.1 1.9-1l-1.8-12.1 5.2-4.5c4.6-4 8.2-8.7 10.7-14.1l6.8-10.4c.6-.9-.1-1.9-1.1-1.7ZM29.2 33.6l-7.8 3 3.5-6.7 8.8-6c5.1-3.5 10.3-6.1 15.6-7.8-2 3.1-4.5 6.3-7.5 9.5l-12.6 8Z"/><path d="M42.4 20.1c-2.4.9-4.9 2.1-7.3 3.6l8.2.5c2-2.2 3.7-4.3 5.2-6.4-1.9.6-4 1.4-6.1 2.3Z"/></svg>
           </div>
           <div class="ai-header-titles">
             <h4>${isEn ? 'صقر AI — Quality Assistant' : 'صقر AI — المساعد الذكي للجودة'}</h4>
@@ -194,6 +196,7 @@
     // Toggle Chat visibility
     fab.addEventListener('click', toggleChat);
     minimizeBtn.addEventListener('click', toggleChat);
+    window.addEventListener('pagehide', closeConversation);
 
     // Send messages
     sendBtn.addEventListener('click', handleSendMessage);
@@ -242,7 +245,26 @@
       if (state.speechSynth) {
         state.speechSynth.cancel();
       }
+      closeConversation();
     }
+  }
+
+  function closeConversation() {
+    if (!state.conversationId) return;
+
+    const payload = JSON.stringify({ conversation_id: state.conversationId });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(API_CHAT_CLOSE, new Blob([payload], { type: 'application/json' }));
+      return;
+    }
+
+    fetch(API_CHAT_CLOSE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload,
+      credentials: 'include',
+      keepalive: true
+    }).catch(function () {});
   }
 
   // Dynamic drag-to-move implementation
@@ -316,6 +338,7 @@
 
     // Show typing indicator
     const typing = showTypingIndicator();
+    document.getElementById('ai-fab')?.classList.add('analyzing');
     scrollChatToBottom();
 
     // Context preparation
@@ -374,6 +397,7 @@
       appendMessageToDOM('assistant', errorMsg);
       saveMessage('assistant', errorMsg);
     } finally {
+      document.getElementById('ai-fab')?.classList.remove('analyzing');
       scrollChatToBottom();
     }
   }
@@ -655,7 +679,7 @@
 
       // Clear backend memory
       try {
-        await fetch('/api/ai/chat/clear', {
+        await fetch(API_CHAT_CLOSE, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ conversation_id: state.conversationId }),

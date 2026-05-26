@@ -67,6 +67,19 @@ const BrightAPI = (() => {
       return data.rejects ?? data;
     },
 
+    async getRejectsPayload(filters = {}) {
+      const params = new URLSearchParams();
+      if (filters.department) params.set('department', filters.department);
+      if (filters.category) params.set('category', filters.category);
+      if (filters.risk_level) params.set('risk_level', filters.risk_level);
+      if (filters.status) params.set('status', filters.status);
+      params.set('source', filters.source || 'excel');
+      const qs = params.toString();
+      const data = await _get(`/api/rejects${qs ? '?' + qs : ''}`);
+      _detectSource(data);
+      return data;
+    },
+
     /**
      * GET /api/summary
      * @returns {Promise<Object>} executive_summary, kpis, …
@@ -124,6 +137,14 @@ const BrightAPI = (() => {
     },
 
     /**
+     * GET /api/ai-analysis
+     * Includes records, analysis, and Excel-derived metrics when available.
+     */
+    async getAIAnalysis() {
+      return _get('/api/ai-analysis');
+    },
+
+    /**
      * GET /api/data/refresh
      * @returns {Promise<Object>} triggers re-parse of Excel file
      */
@@ -138,6 +159,57 @@ const BrightAPI = (() => {
      */
     async askAI(question) {
       return _post('/api/ai/query', { question });
+    },
+
+    /**
+     * POST /api/ai/generate-capa
+     * @param {Object} rejectCase
+     * @returns {Promise<Object>} generated CAPA recommendation
+     */
+    async generateCapa(rejectCase) {
+      return _post('/api/ai/generate-capa', { reject_case: rejectCase });
+    },
+
+    /**
+     * Load the API set needed by each page in parallel.
+     * @param {'index'|'production'|'quality'} page
+     */
+    async loadAllPageData(page) {
+      const loaders = {
+        index: {
+          status: () => this.getDataStatus(),
+          rejects: () => this.getRejects({ source: 'excel' }),
+          summary: () => this.getSummary(),
+          rootCauses: () => this.getRootCauses()
+        },
+        production: {
+          rejectPayload: () => this.getRejectsPayload({ source: 'excel' }),
+          analysis: () => this.getAIAnalysis(),
+          status: () => this.getDataStatus()
+        },
+        quality: {
+          rejects: () => this.getRejects({ source: 'excel' }),
+          summary: () => this.getSummary()
+        }
+      };
+
+      const pageLoaders = loaders[page];
+      if (!pageLoaders) throw new Error(`Unknown page data profile: ${page}`);
+
+      const entries = Object.entries(pageLoaders);
+      const settled = await Promise.allSettled(entries.map(([, load]) => load()));
+      return settled.reduce((acc, result, index) => {
+        const key = entries[index][0];
+        if (result.status === 'fulfilled') {
+          acc[key] = result.value;
+        } else {
+          acc[key] = null;
+          acc.errors[key] = result.reason;
+        }
+        return acc;
+      }, { errors: {} });
     }
   };
 })();
+
+window.BrightAPI = BrightAPI;

@@ -33,7 +33,10 @@ router.get('/rejects', requireAuth, validate(filterSchema, 'query'), async (req,
     return res.json(success({
       count: filtered.length,
       total_count: records.length,
+      file_modified_at: state.excel && state.excel.file_modified_at,
+      hash_short: state.excel && state.excel.hash ? String(state.excel.hash).substring(0, 12) : null,
       data_note: state.cachedSource === 'excel' ? 'Reject records generated from Excel item master data' : 'Prepared demo reject records',
+      metrics: state.metrics || {},
       rejects: filtered,
       filters_applied: Boolean(req.query.department || req.query.risk_level || req.query.status || req.query.from_date || req.query.to_date || req.query.search),
       warnings: state.cachedWarnings

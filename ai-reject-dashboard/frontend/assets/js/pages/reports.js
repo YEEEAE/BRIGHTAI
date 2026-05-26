@@ -92,7 +92,7 @@ function reportsApp() {
           groupByCause[cause] = (groupByCause[cause] || 0) + 1;
         });
 
-        const hash = response.hash || payload.hash || '';
+        const hash = payload.hash_short || response.hash || payload.hash || '';
         this.reportStats = {
           loaded: true,
           source: response.source || 'unknown',

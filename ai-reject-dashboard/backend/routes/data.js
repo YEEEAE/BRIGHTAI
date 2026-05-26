@@ -13,6 +13,7 @@ const { success } = require('../utils/response');
 const { getRejects, getDataState, getMetrics } = require('../services/dataService');
 const { loadExcelData, getDataStatus, getRecentChanges } = require('../services/excelService');
 const { invalidateAiCache } = require('../services/aiService');
+const { getLiveStatus } = require('../watchers/excelWatcher');
 
 const router = express.Router();
 
@@ -128,7 +129,6 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
 
     let recordCount = 0;
     let sheetCount = 0;
-    let sheetNames = [];
     let lastSuccessfulLoadAt = null;
     let hash = null;
     let warnings = [];
@@ -138,7 +138,6 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
         const excel = await loadExcelData({ force: false });
         recordCount = excel.records ? excel.records.length : 0;
         sheetCount = excel.sheet_names ? excel.sheet_names.length : 0;
-        sheetNames = excel.sheet_names || [];
         lastSuccessfulLoadAt = excel.loaded_at || null;
         hash = excel.hash || null;
         warnings = (excel.validation && excel.validation.warnings) ? excel.validation.warnings : [];
@@ -148,7 +147,6 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
         if (state.excel && state.excel.record_count) {
           recordCount = state.excel.record_count;
           sheetCount = state.excel.sheet_names ? state.excel.sheet_names.length : 0;
-          sheetNames = state.excel.sheet_names || [];
           lastSuccessfulLoadAt = state.excel.cache_loaded_at;
           hash = state.excel.hash;
         }
@@ -157,34 +155,17 @@ router.get('/data/live-status', requireAuth, async (req, res, next) => {
       warnings.push('Excel file not found. Demo fallback active.');
     }
 
-    // Calculate new records added since last load
-    let previousRecordCount = 0;
-    try {
-      const changes = getRecentChanges();
-      if (changes.length > 0) {
-        previousRecordCount = changes[0].record_count || 0;
-      } else {
-        const state = getDataState();
-        if (state.excel && state.excel.record_count) {
-          previousRecordCount = state.excel.record_count;
-        }
-      }
-    } catch (_) {
-      // Ignore — treat as no previous count available
-    }
-    const newRecordsCount = Math.max(recordCount - previousRecordCount, 0);
+    const watcherStatus = getLiveStatus();
 
-    res.json(success({
+    res.json({
       file_exists: fileExists,
       file_modified_at: stat ? stat.mtime.toISOString() : null,
       hash,
       record_count: recordCount,
-      new_records_count: newRecordsCount,
       sheet_count: sheetCount,
-      sheet_names: sheetNames,
-      last_successful_load_at: lastSuccessfulLoadAt,
-      warnings
-    }, fileExists ? 'excel' : 'demo', warnings));
+      last_load: lastSuccessfulLoadAt || watcherStatus.last_load,
+      warnings: Array.from(new Set([...(warnings || []), ...(watcherStatus.warnings || [])]))
+    });
   } catch (err) {
     next(err);
   }

@@ -12,11 +12,45 @@ const { invalidateAiCache } = require('../services/aiService');
 const { logger } = require('../utils/logger');
 
 let notificationService = null;
+const watcherWarnings = [];
+
 function getNotificationService() {
   if (!notificationService) {
     try { notificationService = require('../services/notificationService'); } catch (e) { /* silent */ }
   }
   return notificationService;
+}
+
+function addWatcherWarning(message) {
+  if (!watcherWarnings.includes(message)) {
+    watcherWarnings.push(message);
+  }
+}
+
+function getLiveStatus() {
+  const fileExists = Boolean(config.excelFilePath && fs.existsSync(config.excelFilePath));
+  const stat = fileExists ? fs.statSync(config.excelFilePath) : null;
+  const state = getDataState();
+  const excelState = state.excel || {};
+
+  if (!fileExists) {
+    addWatcherWarning(`Excel file not found at startup path: ${config.excelFilePath || 'not configured'}`);
+  }
+
+  const warnings = [
+    ...watcherWarnings,
+    ...(state.cachedWarnings || [])
+  ];
+
+  return {
+    file_exists: fileExists,
+    file_modified_at: stat ? stat.mtime.toISOString() : null,
+    hash: excelState.hash || null,
+    record_count: excelState.record_count || 0,
+    sheet_count: excelState.sheet_names ? excelState.sheet_names.length : 0,
+    last_load: excelState.cache_loaded_at || null,
+    warnings: Array.from(new Set(warnings))
+  };
 }
 
 function makeCompositeKey(r) {
@@ -203,9 +237,16 @@ function startExcelWatcher(io) {
     }, 1500);
   }
 
-  if (!config.excelFilePath || !fs.existsSync(config.excelFilePath)) {
-    logger.warn('excel_watcher_skipped', { reason: 'Excel file path not set or file not found', path: config.excelFilePath });
+  if (!config.excelFilePath) {
+    addWatcherWarning('Excel file path not configured. Watcher not started.');
+    logger.warn('excel_watcher_skipped', { reason: 'Excel file path not set', path: config.excelFilePath });
     return null;
+  }
+
+  if (!fs.existsSync(config.excelFilePath)) {
+    const message = `Excel file not found at startup path: ${config.excelFilePath}`;
+    addWatcherWarning(message);
+    logger.warn('excel_watcher_file_missing_at_startup', { path: config.excelFilePath, warning: message });
   }
 
   const watcher = chokidar.watch(config.excelFilePath, {
@@ -225,4 +266,4 @@ function startExcelWatcher(io) {
   return watcher;
 }
 
-module.exports = { startExcelWatcher };
+module.exports = { startExcelWatcher, getLiveStatus };

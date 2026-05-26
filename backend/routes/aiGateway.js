@@ -10,6 +10,7 @@
 
 const aiGateway = require('../services/aiGateway');
 const { normalizeStatusCode } = require('../services/aiGateway');
+const { clearSession } = require('../services/sessionStore');
 const { getArabicErrorMessage } = require('../utils/errorHandler');
 const { searchSiteWithRag } = require('../services/ragSearch');
 
@@ -125,9 +126,16 @@ async function unifiedOpenAiCompatHandler(req, res) {
   }
 }
 
+async function unifiedChatCloseHandler(req, res) {
+  const conversationId = req?.body?.conversation_id || req?.body?.conversationId || req?.body?.sessionId;
+  clearSession(conversationId);
+  return res.status(200).json({ ok: true });
+}
+
 module.exports = {
   unifiedChatHandler,
   unifiedChatStreamHandler,
   unifiedOpenAiCompatHandler,
+  unifiedChatCloseHandler,
   buildLocalSupportReply
 };

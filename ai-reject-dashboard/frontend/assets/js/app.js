@@ -7,7 +7,16 @@
     errors: [],
     analysisSource: null,
     authRequired: false,
-    filters: {}
+    filters: {},
+    liveStats: {
+      file_exists: false,
+      file_modified_at: null,
+      hash: null,
+      record_count: 0,
+      sheet_count: 0,
+      last_load: null,
+      warnings: []
+    }
   };
 
   var API_BASE = '/api';
@@ -27,6 +36,76 @@
     if (!d) return '\u2014';
     try { return new Date(d).toLocaleDateString('en-GB'); }
     catch (e) { return d; }
+  }
+
+  function formatRelativeTime(value) {
+    if (!value) return 'غير متاح';
+    var diff = Date.now() - new Date(value).getTime();
+    if (!Number.isFinite(diff) || diff < 0) return 'الآن';
+    var minutes = Math.floor(diff / 60000);
+    if (minutes < 1) return 'الآن';
+    if (minutes < 60) return minutes + ' دقائق';
+    var hours = Math.floor(minutes / 60);
+    if (hours < 24) return hours + ' ساعات';
+    return Math.floor(hours / 24) + ' أيام';
+  }
+
+  function ensureLiveStatusBar() {
+    var el = $('#live-status-bar');
+    if (el) return el;
+
+    var main = $('#main-content') || $('.content-container') || document.body;
+    el = document.createElement('div');
+    el.id = 'live-status-bar';
+    el.className = 'live-status-bar';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.style.cssText = 'display:flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid rgba(42,157,143,.22);border-radius:8px;background:rgba(42,157,143,.08);color:var(--text-primary,#0f172a);font-weight:700;font-size:14px;';
+    if (main.firstChild) main.insertBefore(el, main.firstChild);
+    else main.appendChild(el);
+    return el;
+  }
+
+  function renderLiveStatus(animate) {
+    var bar = ensureLiveStatusBar();
+    var count = Number(state.liveStats.record_count || 0);
+    var countText = count.toLocaleString('en-US');
+    var statusText = state.liveStats.file_exists ? '\uD83D\uDFE2 بيانات حية' : '\uD83D\uDFE1 بانتظار ملف Excel';
+    var last = formatRelativeTime(state.liveStats.last_load || state.liveStats.file_modified_at);
+    bar.textContent = statusText + ' | آخر تحديث: ' + last + ' | ' + countText + ' سجل';
+
+    var recordCount = $('#live-record-count');
+    if (recordCount) recordCount.textContent = countText;
+
+    if (animate) {
+      bar.animate([
+        { transform: 'scale(1)', boxShadow: '0 0 0 rgba(42,157,143,0)' },
+        { transform: 'scale(1.015)', boxShadow: '0 0 0 6px rgba(42,157,143,.14)' },
+        { transform: 'scale(1)', boxShadow: '0 0 0 rgba(42,157,143,0)' }
+      ], { duration: 700, easing: 'ease-out' });
+    }
+  }
+
+  async function refreshLiveStatus(animate) {
+    try {
+      var res = await apiFetch(API_BASE + '/data/live-status', { signal: AbortSignal.timeout(4000) });
+      if (!res.ok) throw new Error('Live status endpoint failed');
+      var json = await res.json();
+      var payload = json.data || json;
+      state.liveStats = {
+        file_exists: payload.file_exists === true,
+        file_modified_at: payload.file_modified_at || null,
+        hash: payload.hash || null,
+        record_count: Number(payload.record_count || 0),
+        sheet_count: Number(payload.sheet_count || 0),
+        last_load: payload.last_load || payload.last_successful_load_at || null,
+        warnings: payload.warnings || []
+      };
+      renderLiveStatus(animate);
+    } catch (e) {
+      state.liveStats.warnings = ['Live status unavailable'];
+      renderLiveStatus(false);
+    }
   }
 
   function riskLevel(val) {
@@ -89,6 +168,7 @@
   function loadData() {
     state.dataSource = 'loading';
     updateSourceBadge();
+    refreshLiveStatus(false);
     checkBackend();
   }
 
@@ -622,6 +702,14 @@
 
       socket.on('data:updated', function (payload) {
         var count = payload && payload.record_count ? payload.record_count : 'new';
+        if (payload && payload.record_count !== undefined) {
+          state.liveStats.record_count = Number(payload.record_count) || 0;
+          state.liveStats.file_modified_at = payload.file_modified_at || state.liveStats.file_modified_at;
+          state.liveStats.sheet_count = Number(payload.sheet_count || state.liveStats.sheet_count || 0);
+          state.liveStats.hash = payload.new_hash || payload.hash || state.liveStats.hash;
+          state.liveStats.last_load = payload.timestamp || new Date().toISOString();
+          renderLiveStatus(true);
+        }
         showNotification('Excel data updated. Reloading ' + count + ' records...', 'success');
         loadData();
       });
@@ -685,6 +773,8 @@
   function init() {
     setupSidebar();
     setupRealtimeUpdates();
+    refreshLiveStatus(false);
+    window.setInterval(function () { refreshLiveStatus(false); }, 30000);
     loadData();
 
     var searchInput = $('#filter-search');

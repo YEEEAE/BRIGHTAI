@@ -37,6 +37,16 @@
   --color-accent-hover: #e78e47;
   --color-accent-light: rgba(244, 162, 97, 0.08);
 
+  /* Saqr AI Brand Identity */
+  --brand-primary: #1E3A5F;          /* Dark Corporate Blue */
+  --brand-gold: #D4AF37;             /* Falcon Gold */
+  --brand-accent: #0066CC;           /* Action Blue */
+  --brand-gold-rgb: 212, 175, 55;
+  --brand-primary-rgb: 30, 58, 95;
+  --ai-saqr-gradient: linear-gradient(135deg, #1E3A5F 0%, #D4AF37 100%);
+  --ai-saqr-gradient-reverse: linear-gradient(135deg, #D4AF37 0%, #1E3A5F 100%);
+  --brand-gold-glow: 0 0 20px rgba(212, 175, 55, 0.3);
+
   /* Functional Status Colors */
   --color-success: #2A9D8F;          /* Dynamic Safe Green */
   --color-success-hover: #217d72;

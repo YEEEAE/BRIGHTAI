@@ -7,8 +7,9 @@
     gtag('js', new Date());
     gtag('config', 'G-8LLESL207Q');
   </script>
+    <meta name="ai-assistant" content="صقر AI by BrightAI">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Reject Analytics — Quality QMS Dashboard</title>
+<title>AI Reject Analytics — Quality QMS Dashboard</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="نظام إدارة الجودة الاستراتيجي لـ BrightAI - ممتثل لمعايير هيئة الغذاء والدواء السعودية ومتطلبات ISO 13485.">
   <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
@@ -203,6 +204,7 @@
   <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
   <script defer="" src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/fonts.css">
 </head>
 <body x-data="qualityApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -286,7 +288,8 @@
           <!-- Radial Gauge for Quality Score -->
           <div class="card card-outlined" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:180px; padding:var(--spacing-md);">
             <div style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-secondary);" x-text="lang === 'ar' ? 'مؤشر جودة الجودة الإجمالي' : 'Overall Quality Compliance'"></div>
-            <div style="font-weight:700; font-size:var(--font-size-2xl); color:var(--color-success); margin-top:var(--spacing-sm);" x-text="kpis.qualityScore + '%'"></div>
+            <div class="skeleton-card" x-show="isLoading"></div>
+            <div x-show="!isLoading" style="font-weight:700; font-size:var(--font-size-2xl); color:var(--color-success); margin-top:var(--spacing-sm);" x-text="metricText(kpis.qualityScore)"></div>
             <div style="font-size:11px; color:var(--text-muted); margin-top:2px;" x-text="lang === 'ar' ? 'الحد المعتمد GMP: 85%' : 'GMP limit cap: 85%'"></div>
           </div>
 
@@ -296,7 +299,8 @@
               <span class="card-title" x-text="lang === 'ar' ? 'معدل عدم المطابقة (NCR Rate)' : 'Non-Conformance Rate (NCR)'"></span>
               <span class="badge badge-warning">NCR</span>
             </div>
-            <div class="card-stat-value" style="color:var(--color-warning);" x-text="kpis.ncrRate + '%'"></div>
+            <div class="skeleton-card" x-show="isLoading"></div>
+            <div class="card-stat-value" x-show="!isLoading" style="color:var(--color-warning);" x-text="metricText(kpis.ncrRate)"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span class="card-subtitle" x-text="lang === 'ar' ? 'نسبة الانحراف عن المعايير' : 'SOP standard deviation rate'"></span>
             </div>
@@ -308,7 +312,8 @@
               <span class="card-title" x-text="lang === 'ar' ? 'مؤشر جاهزية تدقيق ISO 13485' : 'ISO 13485 Readiness Index'"></span>
               <span class="badge badge-success">ISO</span>
             </div>
-            <div class="card-stat-value" style="color:var(--color-success);" x-text="kpis.isoScore + '%'"></div>
+            <div class="skeleton-card" x-show="isLoading"></div>
+            <div class="card-stat-value" x-show="!isLoading" style="color:var(--color-success);" x-text="metricText(kpis.isoScore)"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span class="card-subtitle" x-text="lang === 'ar' ? 'تطابق معايير الأجهزة الطبية' : 'Medical device specification compliance'"></span>
             </div>
@@ -330,12 +335,16 @@
                 <span class="badge badge-neutral" x-text="kanban.open.length"></span>
               </div>
               <template x-for="card in kanban.open" :key="card.id">
-                <div class="kanban-card" @click="moveKanbanCard(card.id, 'progress')">
+                <div class="kanban-card">
                   <div style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="card.title"></div>
                   <div style="font-size:10px; color:var(--text-secondary);" x-text="card.owner"></div>
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
                     <span class="badge badge-danger" style="font-size:8px; padding:2px 4px;" x-text="card.priority"></span>
                     <span style="font-size:9px; color:var(--text-muted);" x-text="card.age"></span>
+                  </div>
+                  <div style="display:flex; gap:var(--spacing-xs); margin-top:var(--spacing-xs);">
+                    <button class="btn btn-sm btn-primary" type="button" @click.stop="generateCapa(card)">Generate CAPA</button>
+                    <button class="btn btn-sm btn-outline" type="button" @click.stop="moveKanbanCard(card.id, 'progress')" x-text="lang === 'ar' ? 'نقل' : 'Move'"></button>
                   </div>
                 </div>
               </template>
@@ -396,6 +405,16 @@
             </div>
           </div>
         </section>
+
+        <div x-show="capaModalOpen" class="modal-overlay" style="display:none;" :style="{ display: capaModalOpen ? 'flex' : 'none' }">
+          <div class="modal" style="max-width:720px; width:min(720px, 92vw);">
+            <div class="modal-header">
+              <h3 class="modal-title">Generated CAPA</h3>
+              <button class="modal-close" type="button" @click="capaModalOpen = false">✕</button>
+            </div>
+            <div class="modal-body" style="line-height:1.8; color:var(--text-primary);" x-html="renderMarkdown(capaMarkdown)"></div>
+          </div>
+        </div>
 
         <!-- 3. ROOT CAUSE ANALYSIS TOOL (Fishbone Ishikawa & 5 Whys interactive Tool) -->
         <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
@@ -522,10 +541,11 @@
   </div>
 
   <!-- Page logic — extracted to external file (CSP-compliant) -->
+  <script src="/ai-reject-dashboard/frontend/assets/js/api-client.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/js/pages/quality.js"></script>
   <!-- Frontend Auth Guard Shield -->
   <script src="/ai-reject-dashboard/frontend/assets/js/auth-guard.js"></script>
-  <!-- Global AI Assistant Chatbot -->
+  <!-- Global صقر AI Chatbot -->
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>

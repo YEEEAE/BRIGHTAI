@@ -7,8 +7,9 @@
     gtag('js', new Date());
     gtag('config', 'G-8LLESL207Q');
   </script>
+    <meta name="ai-assistant" content="صقر AI by BrightAI">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Reject Analytics — BrightAI Enterprise Dashboard</title>
+<title>AI Reject Analytics — BrightAI Enterprise Dashboard</title>
   <meta name="robots" content="index, follow">
   <meta name="description" content="لوحة القيادة والتحليلات التنبئية المتكاملة لـ BrightAI - مصانع ميس للمنتجات الطبية.">
   <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
@@ -74,7 +75,17 @@
       flex-wrap: wrap;
     }
 
-    /* AI Assistant Drawer Panel */
+    .live-status-pulse {
+      animation: liveStatusPulse 700ms ease-out;
+    }
+
+    @keyframes liveStatusPulse {
+      0% { transform: scale(1); box-shadow: 0 0 0 rgba(42, 157, 143, 0); }
+      45% { transform: scale(1.015); box-shadow: 0 0 0 6px rgba(42, 157, 143, 0.14); }
+      100% { transform: scale(1); box-shadow: 0 0 0 rgba(42, 157, 143, 0); }
+    }
+
+    /* صقر AI Drawer Panel */
     .ai-assistant-drawer {
       width: 380px;
       position: fixed;
@@ -173,6 +184,7 @@
   <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
   <script defer="" src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/fonts.css">
 </head>
 <body x-data="dashboardApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -271,6 +283,18 @@
           </div>
         </div>
 
+        <!-- LIVE STATUS BAR -->
+        <div id="live-status-bar" class="alert alert-info" :class="{ 'live-status-pulse': liveStats.justUpdated }" style="display:flex; align-items:center; gap:var(--spacing-sm);">
+          <span x-text="liveStats.file_exists ? '🟢' : '🟡'"></span>
+          <strong x-text="lang === 'ar' ? (liveStats.file_exists ? 'بيانات حية' : 'بانتظار ملف Excel') : (liveStats.file_exists ? 'Live data' : 'Waiting for Excel file')"></strong>
+          <span>|</span>
+          <span x-text="lang === 'ar' ? 'آخر تحديث:' : 'Last update:'"></span>
+          <span x-text="formatLiveStatusAge(liveStats.last_load || liveStats.file_modified_at)"></span>
+          <span>|</span>
+          <span id="live-record-count" x-text="liveStats.record_count"></span>
+          <span x-text="lang === 'ar' ? 'سجل' : 'records'"></span>
+        </div>
+
         <!-- 3. SMART FILTERS BAR (Preset, Search & Multiple Option selectors) -->
         <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--spacing-md);">
@@ -352,10 +376,10 @@
               <span class="card-title" x-text="lang === 'ar' ? 'إجمالي حالات المرفوضات' : 'Total Reject Cases'"></span>
               <span class="badge badge-primary">Case</span>
             </div>
-            <div class="card-stat-value" x-text="kpis.totalRejects"></div>
+            <div class="skeleton-card" x-show="loading.kpis"></div>
+            <div class="card-stat-value" x-show="!loading.kpis" x-text="kpis.totalRejects"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span class="card-stat-trend card-stat-trend-up">↑ 12% +</span>
-              <span class="card-subtitle" x-text="lang === 'ar' ? 'مقارنة بالربع السابق' : 'vs previous quarter'"></span>
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'محسوبة من سجلات API' : 'Calculated from API records'"></span>
             </div>
           </div>
 
@@ -365,7 +389,8 @@
               <span class="card-title" x-text="lang === 'ar' ? 'تكلفة المرفوضات التقديرية' : 'Estimated Reject Cost'"></span>
               <span class="badge badge-danger">SAR</span>
             </div>
-            <div class="card-stat-value" style="color:var(--color-danger);" x-text="formatCurrency(kpis.totalCost)"></div>
+            <div class="skeleton-card" x-show="loading.kpis"></div>
+            <div class="card-stat-value" x-show="!loading.kpis" style="color:var(--color-danger);" x-text="formatCurrency(kpis.totalCost)"></div>
             <div id="sparkline-cost" class="kpi-sparkline"></div>
           </div>
 
@@ -375,10 +400,10 @@
               <span class="card-title" x-text="lang === 'ar' ? 'الموافقات المعلقة بالخادم' : 'Pending Approvals'"></span>
               <span class="badge badge-warning" x-text="lang === 'ar' ? 'مراجعة عاجلة' : 'Action Required'"></span>
             </div>
-            <div class="card-stat-value" x-text="kpis.pendingApprovals"></div>
+            <div class="skeleton-card" x-show="loading.kpis"></div>
+            <div class="card-stat-value" x-show="!loading.kpis" x-text="kpis.pendingApprovals"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span class="card-stat-trend card-stat-trend-down">↓ 8% -</span>
-              <span class="card-subtitle" x-text="lang === 'ar' ? 'متوسط الانتظار: 4 أيام' : 'Avg Delay: 4 days'"></span>
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'حسب حالة الموافقة في Excel' : 'From Excel approval status'"></span>
             </div>
           </div>
 
@@ -388,7 +413,8 @@
               <span class="card-title" x-text="lang === 'ar' ? 'العناصر عالية الخطورة' : 'Critical Items'"></span>
               <span class="badge badge-solid badge-danger badge-pulse" x-text="lang === 'ar' ? 'نشط' : 'Active'"></span>
             </div>
-            <div class="card-stat-value" style="color:var(--color-danger);" x-text="kpis.criticalItems"></div>
+            <div class="skeleton-card" x-show="loading.kpis"></div>
+            <div class="card-stat-value" x-show="!loading.kpis" style="color:var(--color-danger);" x-text="kpis.criticalItems"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span class="card-subtitle" x-text="lang === 'ar' ? 'تحتاج اتخاذ إجراء وقائي فوري' : 'Requires CAPA immediately'"></span>
             </div>
@@ -400,10 +426,10 @@
               <span class="card-title" x-text="lang === 'ar' ? 'متوسط وقت الموافقات' : 'Avg Approval Time'"></span>
               <span class="badge badge-success">Target</span>
             </div>
-            <div class="card-stat-value" x-text="lang === 'ar' ? '4.2 يوم' : '4.2 Days'"></div>
+            <div class="skeleton-card" x-show="loading.kpis"></div>
+            <div class="card-stat-value" x-show="!loading.kpis" x-text="kpis.avgApprovalTime"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span class="card-stat-trend card-stat-trend-up">↑ Target Met</span>
-              <span class="card-subtitle" x-text="lang === 'ar' ? 'الحد الأقصى المستهدف: 5 أيام' : 'Target SLA limit: 5d'"></span>
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'من متوسط الأيام المعلقة' : 'From pending-days average'"></span>
             </div>
           </div>
 
@@ -413,7 +439,8 @@
               <span class="card-title" x-text="lang === 'ar' ? 'فعالية إجراءات CAPA' : 'CAPA Effectiveness'"></span>
               <span class="badge badge-success">ISO/GMP</span>
             </div>
-            <div class="card-stat-value" style="color:var(--color-success);" x-text="kpis.capaEffectiveness + '%'"></div>
+            <div class="skeleton-card" x-show="loading.kpis"></div>
+            <div class="card-stat-value" x-show="!loading.kpis" style="color:var(--color-success);" x-text="kpis.capaEffectiveness + '%'"></div>
             <div style="display:flex; justify-content:space-between; align-items:center;">
               <span class="card-subtitle" x-text="lang === 'ar' ? 'معدل الحد من العيوب المتكررة' : 'Recurrent defect reduction rate'"></span>
             </div>
@@ -705,14 +732,14 @@
     <!-- 7. FLOATING AI CHAT ASSISTANT (Persistent Drawer Panel & Auto queries) -->
     <button class="btn btn-primary btn-lg" style="position:fixed; bottom:var(--spacing-xl); inset-inline-end:var(--spacing-xl); z-index:900; border-radius:var(--radius-full); box-shadow:var(--shadow-3);" @click="rightSidebarOpen = !rightSidebarOpen">
       <span>💬</span>
-      <span x-text="lang === 'ar' ? 'اسأل مساعد Gemini' : 'Ask AI Assistant'"></span>
+      <span x-text="lang === 'ar' ? 'اسأل مساعد Gemini' : 'اسأل صقر AI'"></span>
     </button>
 
     <aside class="ai-assistant-drawer" :class="{ 'is-open': rightSidebarOpen }">
       <div class="modal-header" style="background-color: var(--gray-50);">
         <div class="modal-title" style="display:flex; align-items:center; gap:var(--spacing-sm);">
           <span>🤖</span>
-          <span x-text="lang === 'ar' ? 'مساعد الذكاء الاصطناعي لـ Mais' : 'Mais AI Assistant'"></span>
+          <span x-text="lang === 'ar' ? 'مساعد الذكاء الاصطناعي لـ Mais' : 'صقر AI لـ Mais'"></span>
         </div>
         <button class="modal-close" @click="rightSidebarOpen = false" aria-label="إغلاق اللوحة">✕</button>
       </div>
@@ -745,10 +772,12 @@
   </div>
 
   <!-- Page logic — extracted to external file (CSP-compliant) -->
+  <script src="/ai-reject-dashboard/frontend/assets/js/api-client.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/charts-adapter.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/js/pages/index.js"></script>
   <!-- Frontend Auth Guard Shield -->
   <script src="/ai-reject-dashboard/frontend/assets/js/auth-guard.js"></script>
-  <!-- Global AI Assistant Chatbot -->
+  <!-- Global صقر AI Chatbot -->
   <script src="/ai-reject-dashboard/frontend/assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>
