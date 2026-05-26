@@ -130,7 +130,13 @@ function qualityApp() {
         this.kanban[nextStage].push(cardToMove);
         
         // Dispatch dynamic socket notifications or alerts
-        alert(this.lang === 'ar' ? `تم نقل بطاقة CAPA بنجاح للحالة التالية: ${nextStage}` : `CAPA card dispatched to: ${nextStage}`);
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'success',
+            title: this.lang === 'ar' ? 'تحديث كانبان' : 'Kanban Update',
+            message: this.lang === 'ar' ? `تم نقل بطاقة CAPA بنجاح للحالة التالية: ${nextStage}` : `CAPA card dispatched to: ${nextStage}`
+          });
+        }
       }
     },
 
@@ -144,12 +150,24 @@ function qualityApp() {
         measurements: this.lang === 'ar' ? 'توصية القياسات: ربط مقاييس الجودة مخبرياً بنظام المعايرة الآلي الأسبوعي.' : 'Measurements Recommendation: Connect lab scales to automated calibration logs.'
       };
 
-      alert(info[category]);
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'info',
+          title: this.lang === 'ar' ? 'توصية مخطط إيشيكاوا' : 'Ishikawa Suggestion',
+          message: info[category] || ''
+        });
+      }
     },
 
     generateNextWhy() {
       if (this.whysSteps.length >= 5) {
-        alert(this.lang === 'ar' ? 'تم اكتمال الخطوات الخمس الاستقصائية (5 Whys) للتحقيق بنجاح.' : 'Five Whys audit path is fully generated.');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'warning',
+            title: this.lang === 'ar' ? 'تحقيق مكتمل' : 'Investigation Complete',
+            message: this.lang === 'ar' ? 'تم اكتمال الخطوات الخمس الاستقصائية (5 Whys) للتحقيق بنجاح.' : 'Five Whys audit path is fully generated.'
+          });
+        }
         return;
       }
 
@@ -159,15 +177,34 @@ function qualityApp() {
           : { id: 5, text: 'Due to missing digital humidity alarms in storage according to SOP (Root Cause).' };
         
         this.whysSteps.push(step5);
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'success',
+            title: this.lang === 'ar' ? 'السبب الخامس' : 'Why #5 Generated',
+            message: step5.text
+          });
+        }
       }
     },
 
     saveWhysInvestigation() {
-      alert(this.lang === 'ar' ? 'تم حفظ وإرسال التحقيق الفني لـ QCM وإرفاقه بالوثيقة NCR بنجاح!' : 'Root cause 5 Whys investigation filed and dispatched to Quality Manager!');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'success',
+          title: this.lang === 'ar' ? 'حفظ التحقيق' : 'Investigation Saved',
+          message: this.lang === 'ar' ? 'تم حفظ وإرسال التحقيق الفني لـ QCM وإرفاقه بالوثيقة NCR بنجاح!' : 'Root cause 5 Whys investigation filed and dispatched to Quality Manager!'
+        });
+      }
     },
 
     exportQMSReport() {
-      alert(this.lang === 'ar' ? 'جاري تصدير وثيقة الجودة والجاهزية لتدقيق الغذاء والدواء SFDA بصيغة PDF...' : 'Generating and downloading SFDA / ISO 13485 audit readiness document...');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'info',
+          title: this.lang === 'ar' ? 'جاهزية SFDA' : 'SFDA Audit Export',
+          message: this.lang === 'ar' ? 'جاري تصدير وثيقة الجودة والجاهزية لتدقيق الغذاء والدواء SFDA بصيغة PDF...' : 'Generating and downloading SFDA / ISO 13485 audit readiness document...'
+        });
+      }
     }
   };
 }

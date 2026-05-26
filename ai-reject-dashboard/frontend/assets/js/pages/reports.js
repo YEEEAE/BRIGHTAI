@@ -156,9 +156,21 @@ function reportsApp() {
         // Reload history
         this.loadHistory();
         
-        alert(this.lang === 'ar' ? 'تم توليد التقرير وتنزيله بنجاح!' : 'Report generated and downloaded successfully!');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'success',
+            title: this.lang === 'ar' ? 'توليد التقرير' : 'Report Generated',
+            message: this.lang === 'ar' ? 'تم توليد التقرير وتنزيله بنجاح!' : 'Report generated and downloaded successfully!'
+          });
+        }
       } catch (err) {
-        alert(this.lang === 'ar' ? 'خطأ في توليد التقرير. تأكد من تشغيل خادم الواجهة الخلفية.' : 'Failed to generate report. Make sure backend is running.');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: this.lang === 'ar' ? 'فشل التوليد' : 'Generation Failed',
+            message: this.lang === 'ar' ? 'خطأ في توليد التقرير. تأكد من تشغيل خادم الواجهة الخلفية.' : 'Failed to generate report. Make sure backend is running.'
+          });
+        }
       } finally {
         this.exportLoading = false;
         this.formatType = '';
@@ -191,12 +203,24 @@ function reportsApp() {
           body: JSON.stringify(this.schedule)
         });
         if (response.ok) {
-          alert(this.lang === 'ar' ? 'تم تفعيل جدولة التقرير الدوري بنجاح!' : 'Automated report schedule saved successfully!');
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: this.lang === 'ar' ? 'حفظ الجدولة' : 'Schedule Saved',
+              message: this.lang === 'ar' ? 'تم تفعيل جدولة التقرير الدوري بنجاح!' : 'Automated report schedule saved successfully!'
+            });
+          }
         } else {
           throw new Error('Schedule failed');
         }
       } catch (e) {
-        alert(this.lang === 'ar' ? 'تم محاكاة حفظ جدولة التقرير الدوري بنجاح!' : 'Simulated report schedule saved successfully!');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'success',
+            title: this.lang === 'ar' ? 'جدولة تجريبية' : 'Simulated Schedule',
+            message: this.lang === 'ar' ? 'تم محاكاة حفظ جدولة التقرير الدوري بنجاح!' : 'Simulated report schedule saved successfully!'
+          });
+        }
       }
     }
   };

@@ -45,12 +45,24 @@ function profileConsole() {
         const data = await res.json();
         if (res.ok) {
           this.loadProfile();
-          alert(this.user.language === 'en' ? 'Profile updated successfully!' : 'تم تحديث البيانات الشخصية بنجاح!');
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: this.user.language === 'en' ? 'Profile Updated' : 'تحديث الحساب',
+              message: this.user.language === 'en' ? 'Profile updated successfully!' : 'تم تحديث البيانات الشخصية بنجاح!'
+            });
+          }
         } else {
           throw new Error(data.message);
         }
       } catch (err) {
-        alert(err.message || 'Failed to update profile');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: this.user.language === 'en' ? 'Update Failed' : 'فشل التحديث',
+            message: err.message || 'Failed to update profile'
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -58,7 +70,13 @@ function profileConsole() {
 
     async changePassword() {
       if (this.passwordForm.newPassword !== this.passwordForm.confirm) {
-        alert('كلمتا المرور الجديدتان غير متطابقتين.');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'warning',
+            title: 'خطأ في التأكيد',
+            message: 'كلمتا المرور الجديدتان غير متطابقتين.'
+          });
+        }
         return;
       }
       this.loading = true;
@@ -73,13 +91,25 @@ function profileConsole() {
         });
         const data = await res.json();
         if (res.ok) {
-          alert('تم تحديث كلمة المرور بنجاح!');
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: 'تحديث كلمة المرور',
+              message: 'تم تحديث كلمة المرور بنجاح!'
+            });
+          }
           this.passwordForm = { current: '', newPassword: '', confirm: '' };
         } else {
           throw new Error(data.message);
         }
       } catch (e) {
-        alert(e.message || 'Failed to change password');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'فشل التغيير',
+            message: e.message || 'Failed to change password'
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -95,7 +125,13 @@ function profileConsole() {
           this.twofaSetup.secret = data.data.secret;
         }
       } catch (e) {
-        alert('Failed to setup 2FA');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: '2FA Setup',
+            message: 'Failed to setup 2FA'
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -113,12 +149,24 @@ function profileConsole() {
         if (res.ok) {
           this.user.two_factor_enabled = 1;
           this.twofaSetup = { qrCodeUrl: '', secret: '', token: '' };
-          alert('تم تفعيل التحقق الثنائي (2FA) بنجاح!');
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: 'تفعيل 2FA',
+              message: 'تم تفعيل التحقق الثنائي (2FA) بنجاح!'
+            });
+          }
         } else {
           throw new Error(data.message);
         }
       } catch (e) {
-        alert(e.message || 'Failed to confirm 2FA');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'فشل تفعيل 2FA',
+            message: e.message || 'Failed to confirm 2FA'
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -135,12 +183,24 @@ function profileConsole() {
         const data = await res.json();
         if (res.ok) {
           this.user.two_factor_enabled = 0;
-          alert('تم إلغاء تفعيل التحقق الثنائي (2FA) لحسابك.');
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: 'إلغاء 2FA',
+              message: 'تم إلغاء تفعيل التحقق الثنائي (2FA) لحسابك.'
+            });
+          }
         } else {
           throw new Error(data.message);
         }
       } catch (e) {
-        alert(e.message || 'Failed to disable 2FA');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'فشل إلغاء 2FA',
+            message: e.message || 'Failed to disable 2FA'
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -152,9 +212,22 @@ function profileConsole() {
         const res = await fetch(`/api/auth/sessions/${sessionId}`, { method: 'DELETE' });
         if (res.ok) {
           this.loadProfile();
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: 'إنهاء الجلسة',
+              message: 'تم إنهاء الجلسة بنجاح.'
+            });
+          }
         }
       } catch (e) {
-        alert('Failed to revoke session');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'خطأ',
+            message: 'Failed to revoke session'
+          });
+        }
       }
     },
 
@@ -166,7 +239,13 @@ function profileConsole() {
           window.location.href = '/pages/login.html';
         }
       } catch (e) {
-        alert('Failed to logout');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'خطأ',
+            message: 'Failed to logout'
+          });
+        }
       }
     },
 
@@ -187,11 +266,24 @@ function profileConsole() {
           this.generatedToken = data.token;
           this.apiTokenForm = { name: '', expiresDays: '30' };
           this.loadProfile();
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: 'مفتاح API',
+              message: 'تم توليد مفتاح API بنجاح.'
+            });
+          }
         } else {
           throw new Error(data.message);
         }
       } catch (e) {
-        alert(e.message || 'Failed to generate API token');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'خطأ مفتاح API',
+            message: e.message || 'Failed to generate API token'
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -203,9 +295,22 @@ function profileConsole() {
         const res = await fetch(`/api/auth/sessions/${tokenId}`, { method: 'DELETE' });
         if (res.ok) {
           this.loadProfile();
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: 'إبطال المفتاح',
+              message: 'تم إبطال مفتاح التكامل بنجاح.'
+            });
+          }
         }
       } catch (e) {
-        alert('Failed to revoke API Token');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'خطأ',
+            message: 'Failed to revoke API Token'
+          });
+        }
       }
     }
   };

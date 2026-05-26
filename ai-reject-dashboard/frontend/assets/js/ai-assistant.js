@@ -332,6 +332,10 @@
         body: JSON.stringify({
           message: message,
           conversation_id: state.conversationId,
+          recent_messages: state.history.slice(-15).map(h => ({
+            sender: h.sender,
+            text: h.text
+          })),
           context: {
             page: state.currentPage,
             filters: filters,
@@ -635,12 +639,26 @@
     } catch (err) {}
   }
 
-  function clearHistory() {
-    if (confirm(document.documentElement.lang === 'en' ? 'Are you sure you want to clear chat history?' : 'هل أنت متأكد من مسح سجل المحادثة بالكامل؟')) {
+  async function clearHistory() {
+    const isEn = document.documentElement.lang === 'en';
+    if (confirm(isEn ? 'Are you sure you want to clear chat history?' : 'هل أنت متأكد من مسح سجل المحادثة بالكامل؟')) {
       state.history = [];
       sessionStorage.removeItem(STORAGE_KEY);
       document.getElementById('ai-chat-body').innerHTML = '';
       if (state.speechSynth) state.speechSynth.cancel();
+
+      // Clear backend memory
+      try {
+        await fetch('/api/ai/chat/clear', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ conversation_id: state.conversationId }),
+          credentials: 'include'
+        });
+      } catch (err) {
+        console.warn('Failed to clear backend memory:', err);
+      }
+
       init();
     }
   }

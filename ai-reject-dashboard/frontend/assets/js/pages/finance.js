@@ -90,7 +90,13 @@ function financeApp() {
 
     approveRecovery(id) {
       this.recoveryMatrix = this.recoveryMatrix.filter(r => r.id !== id);
-      alert(this.lang === 'ar' ? 'تم اعتماد بديل الاسترداد المالي المالي وإرسال قيد المطالبة الفوري للمورد!' : 'Supplier claim approved, financial voucher posted to ERP!');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'success',
+          title: this.lang === 'ar' ? 'الاسترداد المالي' : 'Financial Recovery',
+          message: this.lang === 'ar' ? 'تم اعتماد بديل الاسترداد المالي المالي وإرسال قيد المطالبة الفوري للمورد!' : 'Supplier claim approved, financial voucher posted to ERP!'
+        });
+      }
     },
 
     calculateRoi() {
@@ -107,12 +113,27 @@ function financeApp() {
     },
 
     downloadAttachment(id) {
-      alert(this.lang === 'ar' ? `جاري تحميل السند المالي وملفات الجودة المرفقة للمعاملة رقم ${id}...` : `Downloading quality sheets and invoice for voucher: ${id}`);
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'info',
+          title: this.lang === 'ar' ? 'تحميل المرفقات' : 'Downloading Attachment',
+          message: this.lang === 'ar' ? `جاري تحميل السند المالي وملفات الجودة المرفقة للمعاملة رقم ${id}...` : `Downloading quality sheets and invoice for voucher: ${id}`
+        });
+      }
     },
 
     exportReport(type) {
-      if (type === 'excel') alert(this.lang === 'ar' ? 'جاري تصدير دفتر الأستاذ والمطالبات المالية بصيغة Excel الحقيقية...' : 'Exporting complete YTD financial ledger to Excel workbook...');
-      else if (type === 'pdf') alert(this.lang === 'ar' ? 'جاري تصدير تقرير الربع المالي للـ CFO بصيغة PDF...' : 'Generating premium PDF CFO financial audit report...');
+      const msgs = {
+        excel: this.lang === 'ar' ? 'جاري تصدير دفتر الأستاذ والمطالبات المالية بصيغة Excel الحقيقية...' : 'Exporting complete YTD financial ledger to Excel workbook...',
+        pdf: this.lang === 'ar' ? 'جاري تصدير تقرير الربع المالي للـ CFO بصيغة PDF...' : 'Generating premium PDF CFO financial audit report...'
+      };
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'success',
+          title: this.lang === 'ar' ? 'تصدير البيانات المالية' : 'Export Financials',
+          message: msgs[type] || ''
+        });
+      }
     },
 
     // Advanced charts

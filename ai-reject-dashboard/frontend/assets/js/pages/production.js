@@ -95,7 +95,13 @@ function productionApp() {
     },
 
     exportMESReport() {
-      alert(this.lang === 'ar' ? 'جاري تصدير تقرير خطوط الإنتاج والـ OEE بصيغة PDF للوردية الحالية...' : 'Generating and downloading full MES shift report & OEE audits...');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'info',
+          title: this.lang === 'ar' ? 'تصدير تقرير الإنتاج' : 'MES Report Export',
+          message: this.lang === 'ar' ? 'جاري تصدير تقرير خطوط الإنتاج والـ OEE بصيغة PDF للوردية الحالية...' : 'Generating and downloading full MES shift report & OEE audits...'
+        });
+      }
     },
 
     formatCurrency(val) {

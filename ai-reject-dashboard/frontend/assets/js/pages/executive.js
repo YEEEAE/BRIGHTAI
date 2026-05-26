@@ -131,8 +131,15 @@ function executiveApp() {
 
     async refreshBrief() {
       try {
-        alert(this.lang === 'ar' ? 'جاري محاكاة واستشارة Gemini لإعادة توليد التقرير التنفيذي لمجلس الإدارة...' : 'Re-running Gemini advisory parameters, updating C-Level brief...');
-        this.briefText = 'تحليل تنفيذي محدث: انخفض معدل المرفوضات بنسبة 3.5% عقب تفعيل الإجراءات الاستباقية لتخزين حبيبات PVC. تم إخطار صاحب العمل رائد الشهري لمتابعة التعويض المالي لعقود تعبئة وتغليف الكرتون مع المورد المعتمد.';
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'info',
+            title: this.lang === 'ar' ? 'استشارة صقر AI' : 'Consulting صقر AI',
+            message: this.lang === 'ar' ? 'جاري استشارة صقر AI وإعادة توليد الإيجاز الاستراتيجي التنفيذي لمجلس الإدارة...' : 'Re-running Gemini advisory parameters, updating C-Level brief...'
+          });
+        }
+        // Fetch fresh executive brief
+        await this.fetchExecutiveBrief();
       } catch(e) {
         console.error('Error refreshing brief:', e);
       }
@@ -140,13 +147,28 @@ function executiveApp() {
 
     approveDecision(id) {
       this.pendingDecisions = this.pendingDecisions.filter(d => d.id !== id);
-      alert(this.lang === 'ar' ? 'تم توقيع واعتماد القرار وإرسال إشعار فوري لـ Focus ERP بنجاح!' : 'Decision signed, approved, and dispatched to Focus ERP connector!');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'success',
+          title: this.lang === 'ar' ? 'اعتماد القرار' : 'Decision Approved',
+          message: this.lang === 'ar' ? 'تم توقيع واعتماد القرار وإرسال إشعار فوري لـ Focus ERP بنجاح!' : 'Decision signed, approved, and dispatched to Focus ERP connector!'
+        });
+      }
     },
 
     exportReport(type) {
-      if (type === 'pdf') alert(this.lang === 'ar' ? 'جاري تصدير التقرير التنفيذي الاستشاري الفاخر بصيغة PDF لطباعته وعرضه لمجلس الإدارة...' : 'Generating premium PDF consulting report matching McKinsey templates...');
-      else if (type === 'ppt') alert(this.lang === 'ar' ? 'جاري توليد شرائح العرض التقديمي لمجلس الإدارة بصيغة PowerPoint...' : 'Generating Board-level PPT presentation decks...');
-      else if (type === 'email') alert(this.lang === 'ar' ? 'تم إرسال بريد إلكتروني رسمي يحتوي الإيجاز التنفيذي والمؤشرات لكافة أعضاء مجلس الإدارة.' : 'Official email containing Executive Brief dispatched to Board members.');
+      const msgs = {
+        pdf: this.lang === 'ar' ? 'جاري تصدير التقرير التنفيذي الاستشاري الفاخر بصيغة PDF لطباعته وعرضه لمجلس الإدارة...' : 'Generating premium PDF consulting report matching McKinsey templates...',
+        ppt: this.lang === 'ar' ? 'جاري توليد شرائح العرض التقديمي لمجلس الإدارة بصيغة PowerPoint...' : 'Generating Board-level PPT presentation decks...',
+        email: this.lang === 'ar' ? 'تم إرسال بريد إلكتروني رسمي يحتوي الإيجاز التنفيذي والمؤشرات لكافة أعضاء مجلس الإدارة.' : 'Official email containing Executive Brief dispatched to Board members.'
+      };
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'success',
+          title: this.lang === 'ar' ? 'تصدير التقرير' : 'Export Report',
+          message: msgs[type] || ''
+        });
+      }
     },
 
     // Advanced charts

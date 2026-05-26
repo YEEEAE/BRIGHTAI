@@ -3,7 +3,7 @@ const config = require('../config/env');
 const { logger } = require('../utils/logger');
 const { computeAnalysis } = require('./analysisService');
 const { getDataState } = require('./dataService');
-const sessionMemory = require('./sessionMemory');
+const conversationMemoryService = require('./conversationMemoryService');
 
 const MODEL = config.geminiModel || 'gemini-2.5-flash';
 const AI_NAME = 'صقر AI';
@@ -658,7 +658,7 @@ async function chatWithGemini(records, message, conversationId, chatContext, his
   const type = 'chat';
 
   // Use provided history (from session memory) or fall back to loading from sessionMemory service
-  const conversationHistory = Array.isArray(history) ? history : sessionMemory.getHistory(conversationId);
+  const conversationHistory = Array.isArray(history) ? history : conversationMemoryService.getHistory(conversationId);
 
   // 1. Refusal Policy Guard for out of scope questions
   if (isOutOfScope(message)) {
@@ -668,8 +668,8 @@ async function chatWithGemini(records, message, conversationId, chatContext, his
       actions: [],
       sources: []
     };
-    sessionMemory.appendMessage(conversationId, 'user', message);
-    sessionMemory.appendMessage(conversationId, 'assistant', refusalReply.reply);
+    conversationMemoryService.appendMessage(conversationId, 'user', message);
+    conversationMemoryService.appendMessage(conversationId, 'assistant', refusalReply.reply);
     return {
       layer: 'chat',
       model: 'local-refusal',
@@ -732,9 +732,9 @@ async function chatWithGemini(records, message, conversationId, chatContext, his
   const local = localChatResponse(message, fullContext);
 
   // Session memory: store user message and assistant reply
-  sessionMemory.appendMessage(conversationId, 'user', message);
+  conversationMemoryService.appendMessage(conversationId, 'user', message);
   const replyText = gemini ? (gemini.reply || JSON.stringify(gemini)) : (local.reply || JSON.stringify(local));
-  sessionMemory.appendMessage(conversationId, 'assistant', replyText);
+  conversationMemoryService.appendMessage(conversationId, 'assistant', replyText);
 
   const result = {
     layer: 'chat',
@@ -1006,7 +1006,7 @@ function getSystemPrompt() {
 }
 
 function getSessionsMap() {
-  return sessionMemory.sessions;
+  return conversationMemoryService.sessions;
 }
 
 module.exports = {

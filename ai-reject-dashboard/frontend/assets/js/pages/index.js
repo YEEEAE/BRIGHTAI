@@ -347,11 +347,23 @@ function dashboardApp() {
     },
 
     saveFilterPreset() {
-      alert(this.lang === 'ar' ? 'تم حفظ التفضيل الحالي للفلترة بنجاح!' : 'Current filter preset saved successfully!');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'success',
+          title: this.lang === 'ar' ? 'حفظ التصفية' : 'Save Filter',
+          message: this.lang === 'ar' ? 'تم حفظ التفضيل الحالي للفلترة بنجاح!' : 'Current filter preset saved successfully!'
+        });
+      }
     },
 
     exportFilteredData() {
-      alert(this.lang === 'ar' ? 'جاري تصدير تقرير المرفوضات بصيغة Excel...' : 'Exporting rejects report to Excel workbook...');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'info',
+          title: this.lang === 'ar' ? 'تصدير البيانات' : 'Exporting Data',
+          message: this.lang === 'ar' ? 'جاري تصدير تقرير المرفوضات بصيغة Excel...' : 'Exporting rejects report to Excel workbook...'
+        });
+      }
     },
 
     triggerQuickAction(type) {
@@ -361,7 +373,13 @@ function dashboardApp() {
         alert:    this.lang === 'ar' ? 'تم إرسال تنبيه عاجل لمدير الجودة.' : 'Urgent alert dispatched to QCM.',
         audit:    this.lang === 'ar' ? 'جاري عرض سجل التدقيق الكامل...' : 'Loading system audit logs...'
       };
-      alert(msgs[type] || '');
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: type === 'alert' ? 'warning' : 'success',
+          title: this.lang === 'ar' ? 'إجراء سريع' : 'Quick Action',
+          message: msgs[type] || ''
+        });
+      }
     },
 
     // ═════════════════════════════════════════════════════════════════
@@ -397,12 +415,24 @@ function dashboardApp() {
     },
 
     bulkScrapSelected() {
-      alert(this.lang === 'ar' ? `تم اعتماد الإتلاف المجمع لـ ${this.selectedRows.length} عنصر.` : `Bulk scrap approved for ${this.selectedRows.length} items.`);
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'success',
+          title: this.lang === 'ar' ? 'اعتماد إتلاف مجمع' : 'Bulk Scrap Approved',
+          message: this.lang === 'ar' ? `تم اعتماد الإتلاف المجمع لـ ${this.selectedRows.length} عنصر وإرسالها لـ Focus ERP.` : `Bulk scrap approved for ${this.selectedRows.length} items.`
+        });
+      }
       this.selectedRows = [];
     },
 
     drillDown(metric) {
-      alert(this.lang === 'ar' ? `تفاصيل المؤشر: ${metric}` : `Filtering for: ${metric}`);
+      if (window.BrightNotifications) {
+        window.BrightNotifications.toast({
+          type: 'info',
+          title: this.lang === 'ar' ? 'تفاصيل الفلترة' : 'Drilldown Details',
+          message: this.lang === 'ar' ? `جاري فلترة لوحة التحكم لعرض: ${metric}` : `Filtering for: ${metric}`
+        });
+      }
     },
 
     // ═════════════════════════════════════════════════════════════════

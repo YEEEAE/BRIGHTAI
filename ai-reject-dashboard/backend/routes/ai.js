@@ -5,7 +5,7 @@ const { requireAuth } = require('../middleware/auth');
 const { success } = require('../utils/response');
 const { audit } = require('../utils/logger');
 const { getRejects } = require('../services/dataService');
-const sessionMemory = require('../services/sessionMemory');
+const conversationMemoryService = require('../services/conversationMemoryService');
 const {
   runEnterpriseAnalysis,
   answerNaturalLanguageQuery,
@@ -74,7 +74,7 @@ router.post('/ai/chat', requireAuth, validate(chatSchema), async (req, res, next
     const conversationId = req.body.conversation_id;
 
     // Retrieve conversation history from session memory
-    const history = sessionMemory.getHistory(conversationId);
+    const history = conversationMemoryService.getHistory(conversationId);
 
     const result = await chatWithGemini(
       records,
@@ -84,7 +84,7 @@ router.post('/ai/chat', requireAuth, validate(chatSchema), async (req, res, next
       history
     );
 
-    // chatWithGemini internally saves messages via sessionMemory.appendMessage,
+    // chatWithGemini internally saves messages via conversationMemoryService.appendMessage,
     // so no additional save is needed here.
 
     audit('AI_CHAT', req, req.body.message);
@@ -95,6 +95,17 @@ router.post('/ai/chat', requireAuth, validate(chatSchema), async (req, res, next
       data: result.result,
       ...result.result
     });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post('/ai/chat/clear', requireAuth, async (req, res, next) => {
+  try {
+    const conversationId = req.body.conversation_id;
+    const cleared = conversationMemoryService.clearSession(conversationId);
+    audit('AI_CHAT_CLEAR', req, conversationId || 'global');
+    return res.json(success({ cleared, conversation_id: conversationId }, 'ai'));
   } catch (err) {
     return next(err);
   }

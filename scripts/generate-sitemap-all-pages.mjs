@@ -248,7 +248,14 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
     reasons.push("legacy_domain_signal");
   }
 
-  if (/https:\/\/brightai\.site\/(?:\.\.\/)+assets\//i.test(html) || /"(?:\.\.\/)+assets\//i.test(html)) {
+  const depth = relPath.split('/').length - 1;
+  if (/https:\/\/brightai\.site\/(?:\.\.\/)+assets\//i.test(html)) {
+    reasons.push("broken_schema_asset_path");
+  } else if (depth === 0 && /"(?:\.\.\/)+assets\//i.test(html)) {
+    reasons.push("broken_schema_asset_path");
+  } else if (depth === 1 && /"(?:\.\.\/){2,}assets\//i.test(html)) {
+    reasons.push("broken_schema_asset_path");
+  } else if (depth >= 2 && new RegExp(`"(?:\\.\\.\\/){${depth + 1},}assets\\/`, "i").test(html)) {
     reasons.push("broken_schema_asset_path");
   }
 

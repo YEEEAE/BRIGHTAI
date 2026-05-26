@@ -95,12 +95,24 @@ function adminApp() {
           this.modalOpen = false;
           this.loadUsers();
           this.loadAuditLogs();
-          alert(this.isEdit ? 'تم تحديث بيانات الموظف وصلاحياته بنجاح!' : 'تمت إضافة الموظف بنجاح وتوليد وتأمين الحساب!');
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: this.isEdit ? 'تحديث الموظف' : 'إضافة موظف',
+              message: this.isEdit ? 'تم تحديث بيانات الموظف وصلاحياته بنجاح!' : 'تمت إضافة الموظف بنجاح وتوليد وتأمين الحساب!'
+            });
+          }
         } else {
           throw new Error(data.message || 'Failed to save user');
         }
       } catch (err) {
-        alert(err.message);
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'خطأ في العملية',
+            message: err.message
+          });
+        }
       } finally {
         this.loading = false;
       }
@@ -114,10 +126,22 @@ function adminApp() {
         if (res.ok) {
           this.loadUsers();
           this.loadAuditLogs();
-          alert('تم حظر الموظف وتعطيل الحساب بنجاح.');
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'success',
+              title: 'حظر موظف',
+              message: 'تم حظر الموظف وتعطيل الحساب بنجاح.'
+            });
+          }
         }
       } catch (e) {
-        alert('Failed to deactivate user');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'خطأ في العملية',
+            message: 'Failed to deactivate user'
+          });
+        }
       }
     },
 
@@ -130,12 +154,26 @@ function adminApp() {
         
         if (res.ok && data.tempPassword) {
           this.loadAuditLogs();
-          alert(`تم تصفير كلمة المرور بنجاح!\n\nكلمة المرور المؤقتة الجديدة هي:\n${data.tempPassword}\n\nيرجى نسخها وتزويد الموظف بها الآن.`);
+          // We can show the temp password in a custom toast with long duration
+          if (window.BrightNotifications) {
+            window.BrightNotifications.toast({
+              type: 'warning',
+              title: 'تم تصفير كلمة المرور',
+              message: `كلمة المرور المؤقتة الجديدة هي: ${data.tempPassword} (يرجى تزويد الموظف بها الآن).`,
+              duration: 15000
+            });
+          }
         } else {
           throw new Error(data.message);
         }
       } catch (e) {
-        alert(e.message || 'Failed to reset password');
+        if (window.BrightNotifications) {
+          window.BrightNotifications.toast({
+            type: 'error',
+            title: 'خطأ في العملية',
+            message: e.message || 'Failed to reset password'
+          });
+        }
       }
     }
   };

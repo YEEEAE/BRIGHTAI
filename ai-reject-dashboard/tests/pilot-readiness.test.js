@@ -120,4 +120,43 @@ describe('BrightAI Pilot Demo Readiness Tests', () => {
     });
   });
 
+  // 6. AI Agent (صقر AI) Refusal Policy Shield
+  describe('AI Agent (صقر AI) Refusal Policy Shield', () => {
+    it('should strictly refuse any query outside Middle East Medical Adhesive Industry (MAIS) or operations', async () => {
+      const outOfScopeQuestion = 'من هو كريستيانو رونالدو؟';
+      const result = await aiService.answerNaturalLanguageQuery([], outOfScopeQuestion);
+      expect(result.result.answer).toBe('يزيد معلمني بأن ما أخرج عن إطار شركة ميس والعمل المؤكل له');
+    });
+
+    it('should strictly refuse out of scope chat messages with the exact designated Arabic reply', async () => {
+      const outOfScopeMessage = 'اكتب لي كود برمجي بلغة بايثون لحساب الأرقام الزوجية';
+      const result = await aiService.chatWithGemini([], outOfScopeMessage, 'test-session', {}, []);
+      expect(result.result.reply).toBe('يزيد معلمني بأن ما أخرج عن إطار شركة ميس والعمل المؤكل له');
+    });
+  });
+
+  // 7. Conversation Memory Service Limits
+  describe('Conversation Memory Service Limits', () => {
+    const memoryService = require('../backend/services/conversationMemoryService');
+
+    it('should strictly limit session history to a maximum of 20 messages', () => {
+      const convId = 'test_limit_conv';
+      // Append 25 messages
+      for (let i = 0; i < 25; i++) {
+        memoryService.appendMessage(convId, 'user', `Message ${i}`);
+      }
+      const history = memoryService.getHistory(convId);
+      expect(history.length).toBe(20);
+      expect(history[0].text).toBe('Message 5'); // Slide window drops first 5
+    });
+
+    it('should successfully clear session memory upon clear request', () => {
+      const convId = 'test_clear_conv';
+      memoryService.appendMessage(convId, 'user', 'Hello Saqr');
+      const cleared = memoryService.clearSession(convId);
+      expect(cleared).toBe(true);
+      expect(memoryService.getHistory(convId).length).toBe(0);
+    });
+  });
+
 });

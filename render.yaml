@@ -241,6 +241,9 @@ services:
         source: /ai-reject-dashboard/frontend/pages/index.html
         destination: /ai-reject-dashboard/
       - type: redirect
+        source: /ai-reject-dashboard/index.html
+        destination: /ai-reject-dashboard/
+      - type: redirect
         source: /frontend/pages/ai-agent
         destination: /ai-agent/
       - type: redirect
