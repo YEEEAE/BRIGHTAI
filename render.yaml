@@ -224,7 +224,7 @@ services:
 
       - type: redirect
         source: /login
-        destination: /ai-reject-dashboard/frontend/pages/login
+        destination: /ai-reject-dashboard/frontend/pages/login.html
 
       - type: redirect
         source: /frontend/pages/about-us
@@ -249,49 +249,6 @@ services:
         destination: /ai-reject-dashboard/
 
       # --- AI Reject Dashboard: clean URLs for sub-pages ---
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/executive.html
-        destination: /ai-reject-dashboard/frontend/pages/executive
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/finance.html
-        destination: /ai-reject-dashboard/frontend/pages/finance
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/quality.html
-        destination: /ai-reject-dashboard/frontend/pages/quality
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/production.html
-        destination: /ai-reject-dashboard/frontend/pages/production
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/workflow.html
-        destination: /ai-reject-dashboard/frontend/pages/workflow
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/technical.html
-        destination: /ai-reject-dashboard/frontend/pages/technical
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/reports.html
-        destination: /ai-reject-dashboard/frontend/pages/reports
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/index-ar.html
-        destination: /ai-reject-dashboard/frontend/pages/index-ar
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/login.html
-        destination: /ai-reject-dashboard/frontend/pages/login
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/forgot-password.html
-        destination: /ai-reject-dashboard/frontend/pages/forgot-password
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/reset-password.html
-        destination: /ai-reject-dashboard/frontend/pages/reset-password
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/profile.html
-        destination: /ai-reject-dashboard/frontend/pages/profile
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/permission-denied.html
-        destination: /ai-reject-dashboard/frontend/pages/permission-denied
-      - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/admin/users.html
-        destination: /ai-reject-dashboard/frontend/pages/admin/users
-
       - type: rewrite
         source: /ai-reject-dashboard/frontend/pages/:page
         destination: /ai-reject-dashboard/frontend/pages/:page.html
@@ -1262,6 +1219,18 @@ services:
         destination: /demo/brightsales/
       - type: redirect
         source: /en/ai-bots/BrightSales/index.html
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /en/ai-bots/BrightProject/index%202.html
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /en/ai-bots/BrightProject/index%202/
+        destination: /demo/brightproject/
+      - type: redirect
+        source: /en/ai-bots/BrightSales/index%202.html
+        destination: /demo/brightsales/
+      - type: redirect
+        source: /en/ai-bots/BrightSales/index%202/
         destination: /demo/brightsales/
       - type: redirect
         source: /en/tenders/:slug

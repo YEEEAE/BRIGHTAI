@@ -1,5 +1,5 @@
-# مرآة مختصرة لقواعد canonical الأساسية. Render يعتمد فعلياً على render.yaml،
-# لكن هذا الملف يبقي التحويلات الجوهرية واضحة وقابلة للنقل إذا تغيّرت طبقة الاستضافة لاحقاً.
+# مرآة مختصرة لقواعد canonical الأساسية. Render يعتمد فعلياً على render.yaml.
+# هذا الملف يبقى مرجعاً داخلياً فقط حتى لا تنحرف التحويلات عن قواعد Render.
 
 http://brightai.site/* https://brightai.site/:splat 301
 https://www.brightai.site/* https://brightai.site/:splat 301
@@ -14,11 +14,11 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /en/:slug/index.html /en/:slug/ 301
 /en/docs/docs.html /en/docs/ 301
 /ai-reject-dashboard/index.html /ai-reject-dashboard/ 301
-/login /ai-reject-dashboard/frontend/pages/login 302
+/login /ai-reject-dashboard/frontend/pages/login.html 302
 
 # Explicit 301 redirects for hreflang self-referencing (SEMrush)
 /en/tools/index.html /en/tools/ 301
-/en/smart-medical-archive/index.html /en/smart-medical-archive/ 301
+/en/smart-medical-archive/index.html /demo/smart-medical-archive/ 301
 /en/ai-workflows/index.html /en/ai-workflows/ 301
 /sectors/ecommerce-en.html /sectors/ecommerce-en/ 301
 /sectors/energy-en.html /sectors/energy-en/ 301
@@ -87,14 +87,14 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /frontend/pages/about-us/index.html /about/ 301
 /frontend/pages/ai-agent/index.html /ai-agent/ 301
 /frontend/pages/ai-bots/index.html /ai-bots/ 301
-/frontend/pages/ai-bots/BrightProject/index.html /ai-bots/BrightProject/ 301
-/frontend/pages/ai-bots/BrightSales/index.html /ai-bots/BrightSales/ 301
+/frontend/pages/ai-bots/BrightProject/index.html /demo/brightproject/ 301
+/frontend/pages/ai-bots/BrightSales/index.html /demo/brightsales/ 301
 /frontend/pages/ai-bots/BrightRecruiter/index.html /ai-bots/BrightRecruiter/ 301
 /frontend/pages/consultation/index.html /consultation/ 301
 /frontend/pages/contact/index.html /contact/ 301
 /frontend/pages/data-analysis/index.html /data-analysis/ 301
 /frontend/pages/our-products/index.html /services/ 301
-/frontend/pages/smart-medical-archive/index.html /smart-medical-archive/ 301
+/frontend/pages/smart-medical-archive/index.html /demo/smart-medical-archive/ 301
 /frontend/pages/smart-automation/index.html /smart-automation/ 301
 /ai-workflows /ai-workflows/ 301
 /docs /docs/ 301
@@ -160,8 +160,8 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/ai-data-analysis-tools/ /blog/ai-data-analysis-tools/index.html 200
 
 # 301 redirects for removed blog pages
-/blog/astr.doc /blog/ 301
-/blog/astr.doc/ /blog/ 301
+/blog/astr.doc /blog/choose-ai-company-saudi/ 301
+/blog/astr.doc/ /blog/choose-ai-company-saudi/ 301
 /blog/atou.doc /blog/process-automation-ai-efficiency/ 301
 /blog/atou.doc/ /blog/process-automation-ai-efficiency/ 301
 /blog/production-line /blog/industrial-automation-productivity/ 301
@@ -209,10 +209,10 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/data-analytics/power-bi-saudi-guide/ /blog/power-bi-saudi-guide/ 301
 
 # 301 redirects for removed "index 2.html" duplicates (BrightProject / BrightSales)
-/en/ai-bots/BrightProject/index%202.html  /en/ai-bots/BrightProject/  301
-/en/ai-bots/BrightProject/index%202/      /en/ai-bots/BrightProject/  301
-/en/ai-bots/BrightSales/index%202.html    /en/ai-bots/BrightSales/    301
-/en/ai-bots/BrightSales/index%202/        /en/ai-bots/BrightSales/    301
+/en/ai-bots/BrightProject/index%202.html  /demo/brightproject/  301
+/en/ai-bots/BrightProject/index%202/      /demo/brightproject/  301
+/en/ai-bots/BrightSales/index%202.html    /demo/brightsales/    301
+/en/ai-bots/BrightSales/index%202/        /demo/brightsales/    301
 
 /blog/:section/:slug.html /blog/:section/:slug/ 301
 /blog/:section/:slug/index.html /blog/:section/:slug/ 301
@@ -220,5 +220,5 @@ https://www.brightai.site/* https://brightai.site/:splat 301
 /blog/:slug/index.html /blog/:slug/ 301
 /:section/:slug.html /:section/:slug/ 301
 /:slug.html /:slug/ 301
-/interview/pages/supportAI/ /interview/pages/support-ai/ 301
-/interview/pages/supportAI/index.html /interview/pages/support-ai/ 301
+/interview/pages/supportAI/ /demo/smart-hiring-system/pages/support-ai/ 301
+/interview/pages/supportAI/index.html /demo/smart-hiring-system/pages/support-ai/ 301
