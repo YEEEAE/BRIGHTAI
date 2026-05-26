@@ -61,6 +61,8 @@ app.use('/assets', express.static(path.join(frontendRoot, 'assets'), { index: fa
 app.use('/components', express.static(path.join(frontendRoot, 'components'), { index: false, maxAge: '1h' }));
 app.use('/pages', express.static(path.join(frontendRoot, 'pages'), { index: false, maxAge: '10m' }));
 app.get('/', (req, res) => res.redirect('/pages/index.html'));
+app.get('/login', (req, res) => res.redirect('/pages/login.html'));
+app.get('/permission-denied', (req, res) => res.redirect('/pages/permission-denied.html'));
 
 // AR: تمرير مرجع io للمسارات التي تحتاجه.
 // EN: Make io accessible from routes via app.get('io').

@@ -354,6 +354,46 @@ async function generateCapa(records, rejectCase) {
   return runLayer('capa', records, ANALYSIS_TTL_MS, () => localCapa(rejectCase), { rejectCase });
 }
 
+async function generateDataQualityReport(records, qualityContext = {}) {
+  const rows = records.slice(0, 100).map((record) => ({
+    item_code: record.item_code,
+    item_name: record.item_name,
+    batch_number: record.batch_number,
+    quantity: record.quantity,
+    stock_value: record.stock_value || record.cost,
+    life_years: record.life_years,
+    manufacturing_date: record.manufacturing_date,
+    expiry_date: record.expiry_date,
+    remaining_percent: record.remaining_percent,
+    validation_warnings: record.validation_warnings || []
+  }));
+
+  const promptConfig = {
+    temperature: 0.15,
+    schema: dataQualitySchema(),
+    text: [
+      'اسمك «صقر AI». افحص هذه البيانات وأبلغ عن أي تناقضات أو مشاكل جودة.',
+      'ركز على بنية ملف Excel، الأعمدة المفقودة، القيم الناقصة، تنسيقات التاريخ/الأرقام، التناقضات بين تاريخ التصنيع والانتهاء، ومخاطر صلاحية المخزون.',
+      'لا تخترع أعمدة أو أرقام غير موجودة. أعد JSON فقط مطابقاً للـ schema.',
+      JSON.stringify({
+        quality_context: qualityContext,
+        sample_rows: rows,
+        total_records: records.length
+      })
+    ].join('\n')
+  };
+
+  const gemini = await callGemini(promptConfig, 'data-quality');
+  const local = localDataQualityReport(records, qualityContext);
+  return {
+    layer: 'data-quality',
+    model: gemini ? MODEL : 'local-fallback',
+    source: gemini ? 'gemini' : 'local',
+    result: gemini || local,
+    cached: false
+  };
+}
+
 function localDescriptive(records, context) {
   const a = context.dataset_summary || computeAnalysis(records);
   const totalCost = a.total_estimated_cost || 0;
@@ -486,6 +526,49 @@ function localCapa(rejectCase) {
   };
 }
 
+function localDataQualityReport(records, qualityContext = {}) {
+  const warningRows = records.filter((record) => (record.validation_warnings || []).length);
+  const missingItemCode = records.filter((record) => !record.item_code || record.item_code === 'Not Available').length;
+  const missingExpiry = records.filter((record) => !record.expiry_date).length;
+  const expired = records.filter((record) => Number(record.remaining_percent) <= 0 || record.shelf_life_status === 'Expired').length;
+  const invalidDateOrder = records.filter((record) => {
+    if (!record.manufacturing_date || !record.expiry_date) return false;
+    return new Date(record.manufacturing_date).getTime() > new Date(record.expiry_date).getTime();
+  }).length;
+
+  const issues = [
+    ...((qualityContext.errors || []).map((message) => ({ severity: 'High', issue: message, recommendation: 'راجع قالب Excel قبل اعتماد التحديث الأسبوعي.' }))),
+    ...((qualityContext.warnings || []).map((message) => ({ severity: 'Medium', issue: message, recommendation: 'صحح القيم أو ثبت أسماء الأعمدة في المصدر.' })))
+  ];
+
+  if (missingItemCode) issues.push({ severity: 'High', issue: `${missingItemCode} سجل بدون Item Code صالح.`, recommendation: 'اجعل Item Code إلزامياً قبل الاستيراد.' });
+  if (missingExpiry) issues.push({ severity: 'Medium', issue: `${missingExpiry} سجل بدون Expiry Date.`, recommendation: 'أكمل تاريخ الانتهاء للمواد ذات الصلاحية.' });
+  if (invalidDateOrder) issues.push({ severity: 'High', issue: `${invalidDateOrder} سجل تاريخ تصنيعه بعد تاريخ الانتهاء.`, recommendation: 'راجع تنسيق التواريخ ومصدر الإدخال.' });
+  if (expired) issues.push({ severity: 'Medium', issue: `${expired} سجل منتهي أو متبقيه 0%.`, recommendation: 'صعدها لمراجعة الجودة والمستودع.' });
+
+  return {
+    summary: issues.length
+      ? `صقر AI وجد ${issues.length} ملاحظة جودة تحتاج مراجعة قبل اعتماد ملف Excel.`
+      : 'صقر AI لم يجد مشاكل جودة بارزة في العينة الحالية.',
+    status: issues.some((issue) => issue.severity === 'High') ? 'Needs Review' : (issues.length ? 'Warning' : 'Clean'),
+    issues: issues.slice(0, 25),
+    missing_columns: qualityContext.missingColumns || [],
+    row_quality: {
+      total_records: records.length,
+      records_with_warnings: warningRows.length,
+      missing_item_code: missingItemCode,
+      missing_expiry_date: missingExpiry,
+      expired_or_zero_remaining: expired,
+      invalid_date_order: invalidDateOrder
+    },
+    recommendations: [
+      'ثبت قالب الأعمدة الأسبوعي قبل رفع الملف.',
+      'اجعل Item Code وDescription وLife Years وExpiry Date حقولاً إلزامية.',
+      'راجع الصفوف ذات التحذيرات قبل تحديث لوحة المؤشرات.'
+    ]
+  };
+}
+
 function inferDepartment(question) {
   if (/production|الإنتاج|انتاج/.test(question)) return 'Production';
   if (/warehouse|المستودع|مستودع|المخزن/.test(question)) return 'Warehouse';
@@ -608,6 +691,32 @@ function capaSchema() {
       iso_gmp_references: { type: 'array', items: { type: 'string' } }
     },
     required: ['problem_statement', 'five_whys', 'immediate_action', 'corrective_action', 'preventive_action', 'owner_suggestion', 'timeline', 'success_criteria', 'iso_gmp_references']
+  };
+}
+
+function dataQualitySchema() {
+  return {
+    type: 'object',
+    properties: {
+      summary: { type: 'string' },
+      status: { type: 'string' },
+      issues: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            severity: { type: 'string' },
+            issue: { type: 'string' },
+            recommendation: { type: 'string' }
+          },
+          required: ['severity', 'issue', 'recommendation']
+        }
+      },
+      missing_columns: { type: 'array', items: { type: 'object' } },
+      row_quality: { type: 'object' },
+      recommendations: { type: 'array', items: { type: 'string' } }
+    },
+    required: ['summary', 'status', 'issues', 'missing_columns', 'row_quality', 'recommendations']
   };
 }
 
@@ -1030,6 +1139,7 @@ module.exports = {
   runEnterpriseAnalysis,
   answerNaturalLanguageQuery,
   generateCapa,
+  generateDataQualityReport,
   detectAnomalies,
   invalidateAiCache,
   auditTrail,

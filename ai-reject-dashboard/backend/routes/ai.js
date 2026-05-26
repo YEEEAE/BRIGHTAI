@@ -16,6 +16,7 @@ const {
   runEnterpriseAnalysis,
   answerNaturalLanguageQuery,
   generateCapa,
+  generateDataQualityReport,
   detectAnomalies,
   auditTrail,
   chatWithGemini
@@ -69,6 +70,17 @@ router.post('/ai/generate-capa', requireAuth, validate(capaSchema), async (req, 
     const capa = await generateCapa(records, req.body.reject_case);
     audit('AI_GENERATE_CAPA', req, req.body.reject_case.doc_no || req.body.reject_case.item_code || 'unknown');
     return res.json(success(capa, 'ai'));
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.post('/ai/data-quality', requireAuth, async (req, res, next) => {
+  try {
+    const records = await getRejects();
+    const report = await generateDataQualityReport(records, req.body || {});
+    audit('AI_DATA_QUALITY', req, `${records.length} records`);
+    return res.json(success(report, 'ai'));
   } catch (err) {
     return next(err);
   }

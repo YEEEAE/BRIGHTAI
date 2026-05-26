@@ -15,6 +15,25 @@ const { processRows } = require('./dataProcessor');
 const CACHE_DIR = path.join(config.projectRoot, 'data', '.cache');
 const CACHE_FILE = path.join(CACHE_DIR, 'excel-cache.json');
 const CHANGE_LOG_FILE = path.join(CACHE_DIR, 'excel-changes.json');
+const CORE_COLUMNS = [
+  'Item Code',
+  'Item Name',
+  'Description',
+  'Life Years',
+  'Expiry Date',
+  'Manufacturing Date',
+  'Quantity',
+  'Stock Value'
+];
+const CRITICAL_COLUMNS = [
+  'Item Code',
+  'Item Name',
+  'Description',
+  'Life Years',
+  'Expiry Date'
+];
+const NUMERIC_COLUMNS = ['Life Years', 'Quantity', 'Rate', 'Stock Value', 'Age %', 'Remaining %', 'Total Life'];
+const DATE_COLUMNS = ['Manufacturing Date', 'Expiry Date', 'Rpt Date', 'Rpt-Date'];
 const inMemoryCache = {
   hash: null,
   payload: null,
@@ -61,6 +80,73 @@ function normalizeCell(value) {
 function makeHeaderName(value, index) {
   const clean = String(value || '').trim();
   return clean || `column_${index + 1}`;
+}
+
+function normalizeHeader(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[%]/g, ' percent ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function headerMatches(header, expected) {
+  const normalizedHeader = normalizeHeader(header);
+  const normalizedExpected = normalizeHeader(expected);
+  if (normalizedHeader === normalizedExpected) return true;
+
+  const aliases = {
+    'item name': ['description', 'item description', 'material description'],
+    description: ['item name', 'item description', 'material description'],
+    'rpt date': ['rpt-date', 'report date'],
+    'stock value': ['total cost', 'cost', 'value', 'amount'],
+    quantity: ['qty', 'stock qty'],
+    'expiry date': ['exp date', 'expiration date'],
+    'manufacturing date': ['mfg date', 'production date']
+  };
+
+  return (aliases[normalizedExpected] || []).includes(normalizedHeader);
+}
+
+function findHeader(headers, expected) {
+  return (headers || []).find((header) => headerMatches(header, expected));
+}
+
+function isBlank(value) {
+  return String(value === null || value === undefined ? '' : value).trim() === '';
+}
+
+function isNumericLike(value) {
+  if (isBlank(value)) return true;
+  if (typeof value === 'number') return Number.isFinite(value);
+  const parsed = Number(String(value).replace(/,/g, '').replace(/[^\d.-]/g, ''));
+  return Number.isFinite(parsed);
+}
+
+function isDateLike(value) {
+  if (isBlank(value)) return true;
+  if (value instanceof Date) return !Number.isNaN(value.getTime());
+  if (typeof value === 'number') return value > 0 && value < 1000000;
+  const clean = String(value).trim();
+  if (/^\d{1,2}[-/]\d{1,2}[-/]\d{4}$/.test(clean)) return true;
+  if (/^\d{4}[-/]\d{1,2}[-/]\d{1,2}$/.test(clean)) return true;
+  return !Number.isNaN(new Date(clean).getTime());
+}
+
+function extractSchema(parsedData) {
+  const sheets = {};
+  Object.entries(parsedData?.sheets || {}).forEach(([sheetName, sheet]) => {
+    sheets[sheetName] = {
+      headers: sheet.headers || [],
+      column_count: (sheet.headers || []).length
+    };
+  });
+  return {
+    sheets,
+    total_column_count: Object.values(sheets).reduce((sum, sheet) => sum + sheet.column_count, 0)
+  };
 }
 
 function findHeaderRow(rows) {
@@ -193,6 +279,90 @@ function validateData(parsedData) {
   };
 }
 
+function validateExcelSchema(newData, previousSchema = null) {
+  const parsedData = newData?.sheets ? newData : parseRejectData(newData);
+  const warnings = [];
+  const errors = [];
+  const missingColumns = [];
+  const schema = extractSchema(parsedData);
+  const sheetEntries = Object.entries(parsedData.sheets || {});
+
+  if (!sheetEntries.length) {
+    errors.push('Workbook has no readable sheets to validate.');
+  }
+
+  sheetEntries.forEach(([sheetName, sheet]) => {
+    const headers = sheet.headers || [];
+    const rows = sheet.rows || [];
+    const sheetLabel = `Sheet "${sheetName}"`;
+
+    CORE_COLUMNS.forEach((column) => {
+      if (!findHeader(headers, column)) {
+        const message = `${sheetLabel} missing core column: ${column}`;
+        missingColumns.push({ sheet: sheetName, column });
+        if (CRITICAL_COLUMNS.includes(column)) errors.push(message);
+        else warnings.push(message);
+      }
+    });
+
+    CRITICAL_COLUMNS.forEach((column) => {
+      const actualHeader = findHeader(headers, column);
+      if (!actualHeader) return;
+      const missingRows = rows
+        .filter((row) => isBlank(row[actualHeader]))
+        .map((row) => row.__row_number)
+        .filter(Boolean)
+        .slice(0, 20);
+      if (missingRows.length) {
+        errors.push(`${sheetLabel} has ${missingRows.length} row(s) missing "${actualHeader}" values. Sample rows: ${missingRows.join(', ')}`);
+      }
+    });
+
+    NUMERIC_COLUMNS.forEach((column) => {
+      const actualHeader = findHeader(headers, column);
+      if (!actualHeader) return;
+      const badRows = rows
+        .filter((row) => !isNumericLike(row[actualHeader]))
+        .map((row) => row.__row_number)
+        .filter(Boolean)
+        .slice(0, 20);
+      if (badRows.length) {
+        warnings.push(`${sheetLabel} has ${badRows.length} invalid numeric value(s) in "${actualHeader}". Sample rows: ${badRows.join(', ')}`);
+      }
+    });
+
+    DATE_COLUMNS.forEach((column) => {
+      const actualHeader = findHeader(headers, column);
+      if (!actualHeader) return;
+      const badRows = rows
+        .filter((row) => !isDateLike(row[actualHeader]))
+        .map((row) => row.__row_number)
+        .filter(Boolean)
+        .slice(0, 20);
+      if (badRows.length) {
+        warnings.push(`${sheetLabel} has ${badRows.length} invalid date value(s) in "${actualHeader}". Sample rows: ${badRows.join(', ')}`);
+      }
+    });
+
+    const previousSheet = previousSchema?.sheets?.[sheetName];
+    if (previousSheet && previousSheet.column_count !== headers.length) {
+      warnings.push(`${sheetLabel} column count changed from ${previousSheet.column_count} to ${headers.length}.`);
+    }
+  });
+
+  if (previousSchema && previousSchema.total_column_count !== undefined && previousSchema.total_column_count !== schema.total_column_count) {
+    warnings.push(`Workbook total column count changed from ${previousSchema.total_column_count} to ${schema.total_column_count}.`);
+  }
+
+  return {
+    isValid: errors.length === 0,
+    warnings: Array.from(new Set(warnings)),
+    errors: Array.from(new Set(errors)),
+    missingColumns,
+    schema
+  };
+}
+
 function loadFileCache(hash) {
   const cache = readJsonFile(CACHE_FILE, null);
   if (cache && cache.hash === hash && cache.payload) return cache.payload;
@@ -233,9 +403,12 @@ async function loadExcelData(options = {}) {
   }
 
   const previousHash = inMemoryCache.hash || readJsonFile(CACHE_FILE, {})?.hash || null;
+  const previousPayload = inMemoryCache.payload || readJsonFile(CACHE_FILE, {})?.payload || null;
+  const previousSchema = previousPayload?.quality?.schema || (previousPayload ? extractSchema(previousPayload) : null);
   const workbook = await readExcelFile(filePath);
   const parsed = parseRejectData(workbook);
   const validation = validateData(parsed);
+  const quality = validateExcelSchema(parsed, previousSchema);
   const payload = {
     source: 'excel',
     hash,
@@ -246,6 +419,7 @@ async function loadExcelData(options = {}) {
     records: parsed.records,
     metrics: parsed.metrics,
     validation,
+    quality,
     loaded_at: new Date().toISOString()
   };
 
@@ -297,6 +471,7 @@ module.exports = {
   readExcelFile,
   parseRejectData,
   validateData,
+  validateExcelSchema,
   getDataHash,
   loadExcelData,
   getDataStatus,

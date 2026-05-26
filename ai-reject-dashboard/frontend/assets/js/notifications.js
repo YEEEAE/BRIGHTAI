@@ -75,6 +75,15 @@
     return fetch(url, options);
   }
 
+  function escapeHtml(value) {
+    return String(value === null || value === undefined ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   /* ======================================================================
      DOM Injection — inject all notification UI elements
      ====================================================================== */
@@ -461,6 +470,78 @@
   }
 
   /* ======================================================================
+     Data Quality Alert Banner
+     ====================================================================== */
+  function showDataQualityBanner(payload) {
+    var existing = $('#data-quality-banner');
+    if (existing) existing.remove();
+
+    var banner = document.createElement('div');
+    banner.id = 'data-quality-banner';
+    banner.className = 'data-quality-banner';
+    banner.innerHTML =
+      '<div class="dqb-content">' +
+        '<strong>⚠️ صقر AI: اكتُشفت تغييرات في بنية ملف Excel</strong>' +
+        '<span>' + escapeHtml((payload.errors || []).length + ' خطأ، ' + (payload.warnings || []).length + ' تحذير') + '</span>' +
+      '</div>' +
+      '<div class="dqb-actions">' +
+        '<button class="dqb-details" type="button">عرض التفاصيل</button>' +
+        '<button class="dqb-close" type="button" aria-label="إغلاق">' + ICONS.close + '</button>' +
+      '</div>';
+
+    document.body.appendChild(banner);
+
+    banner.querySelector('.dqb-details').addEventListener('click', function () {
+      showDataQualityModal(payload);
+    });
+    banner.querySelector('.dqb-close').addEventListener('click', function () {
+      banner.remove();
+    });
+  }
+
+  function showDataQualityModal(payload) {
+    var existing = $('.data-quality-modal-overlay');
+    if (existing) existing.remove();
+
+    function renderList(title, items, emptyText) {
+      var safeItems = items || [];
+      return '<section class="dqm-section">' +
+        '<h4>' + escapeHtml(title) + '</h4>' +
+        (safeItems.length
+          ? '<ul>' + safeItems.map(function (item) {
+              var text = typeof item === 'string' ? item : ((item.sheet ? item.sheet + ': ' : '') + (item.column || JSON.stringify(item)));
+              return '<li>' + escapeHtml(text) + '</li>';
+            }).join('') + '</ul>'
+          : '<p>' + escapeHtml(emptyText) + '</p>') +
+      '</section>';
+    }
+
+    var overlay = document.createElement('div');
+    overlay.className = 'data-quality-modal-overlay';
+    overlay.innerHTML =
+      '<div class="data-quality-modal" role="dialog" aria-modal="true" aria-label="تفاصيل جودة ملف Excel">' +
+        '<div class="dqm-header">' +
+          '<div>' +
+            '<h3>صقر AI Data Quality Report</h3>' +
+            '<p>' + escapeHtml(payload.message || 'تم رصد تغييرات في جودة ملف Excel الأسبوعي.') + '</p>' +
+          '</div>' +
+          '<button class="dqm-close" type="button" aria-label="إغلاق">' + ICONS.close + '</button>' +
+        '</div>' +
+        '<div class="dqm-body">' +
+          renderList('الأخطاء', payload.errors, 'لا توجد أخطاء حرجة.') +
+          renderList('التحذيرات', payload.warnings, 'لا توجد تحذيرات.') +
+          renderList('الأعمدة المفقودة', payload.missingColumns, 'لا توجد أعمدة مفقودة.') +
+        '</div>' +
+      '</div>';
+
+    document.body.appendChild(overlay);
+    overlay.querySelector('.dqm-close').addEventListener('click', function () { overlay.remove(); });
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) overlay.remove();
+    });
+  }
+
+  /* ======================================================================
      Critical Sound — صوت التنبيه الحرج
      ====================================================================== */
   function playCriticalSound() {
@@ -738,6 +819,33 @@
         message: 'تم تحميل ' + count + ' سجل من ملف Excel. جاري تحديث اللوحة...',
         duration: 4000
       });
+    });
+
+    socket.on('data:quality-alert', function (payload) {
+      payload = payload || {};
+      var notification = {
+        id: 'dq_' + Date.now(),
+        event: 'data:quality-alert',
+        type: (payload.errors && payload.errors.length) ? 'error' : 'warning',
+        title: payload.title || 'صقر AI: اكتُشفت تغييرات في بنية ملف Excel',
+        message: payload.message || 'تم رصد أخطاء أو تحذيرات في جودة ملف Excel الأسبوعي.',
+        metadata: payload,
+        read: false,
+        created_at: Date.now()
+      };
+
+      notifications.unshift(notification);
+      unreadCount++;
+      updateBadge(unreadCount);
+      if (isNCOpen) renderNCList();
+
+      showToast({
+        type: notification.type,
+        title: notification.title,
+        message: (payload.errors || []).length + ' خطأ، ' + (payload.warnings || []).length + ' تحذير',
+        duration: 7000
+      });
+      showDataQualityBanner(payload);
     });
 
     socket.on('data:update_failed', function (payload) {

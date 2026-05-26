@@ -189,11 +189,16 @@ async function seedDatabase() {
 
   // 4. إدراج المشرف الفائق الأولي من متغيرات البيئة فقط
   // EN: Insert bootstrap Super Admin from environment variables only
-  const adminEmail = config.bootstrapAdminEmail;
-  const adminPassword = config.bootstrapAdminPassword;
+  const adminEmail = process.env.BOOTSTRAP_ADMIN_EMAIL || 'yazeed@brightai.com';
+  const adminPassword = process.env.ADMIN_PASSWORD;
 
-  if (!adminEmail || !adminPassword) {
-    console.log('ℹ️  Bootstrap admin seeding skipped. Set BOOTSTRAP_ADMIN_EMAIL and BOOTSTRAP_ADMIN_PASSWORD to create one.');
+  if (!adminPassword) {
+    console.error('⚠️ [SECURITY WARNING] Admin seeding aborted! ADMIN_PASSWORD is not defined in the .env file. Please set ADMIN_PASSWORD to enable the bootstrap administrator.');
+    return;
+  }
+
+  if (!adminEmail) {
+    console.warn('⚠️  Admin seed skipped. Set BOOTSTRAP_ADMIN_EMAIL in .env before creating the bootstrap admin user.');
     return;
   }
 

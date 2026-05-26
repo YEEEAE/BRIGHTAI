@@ -14,6 +14,22 @@ const router = express.Router();
 // EN: Temporary memory store for password reset tokens
 const passwordResetStore = new Map();
 
+function wantsHtml(req) {
+  return req.accepts(['html', 'json']) === 'html';
+}
+
+function checkAuth(req, res, next) {
+  return requireAuth(req, res, (err) => {
+    if (err || !req.user) {
+      if (wantsHtml(req)) {
+        return res.redirect('/login');
+      }
+      return res.status(401).json({ success: false, message: 'Authentication required. Please sign in.' });
+    }
+    return next();
+  });
+}
+
 /**
  * POST /api/auth/login
  * AR: تسجيل الدخول والتحقق من كلمة المرور والـ 2FA
@@ -184,19 +200,37 @@ router.post('/auth/refresh', async (req, res) => {
  * GET /api/auth/me
  * AR: جلب تفاصيل الموظف الحالي وتفضيلاته وجلساته
  */
-router.get('/auth/me', requireAuth, async (req, res) => {
+router.get('/auth/me', checkAuth, async (req, res) => {
   try {
     const user = await get('SELECT id, email, name, avatar, status, two_factor_enabled FROM users WHERE id = ?', [req.user.sub]);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
     const prefs = await get('SELECT * FROM user_preferences WHERE user_id = ?', [req.user.sub]);
     const sessions = await authService.getUserActiveSessions(req.user.sub);
     const tokens = await all('SELECT id, name, created_at, expires_at, is_active FROM user_api_tokens WHERE user_id = ? AND is_active = 1', [req.user.sub]);
     const roles = await rbacService.getUserRoles(req.user.sub);
     const permissions = await rbacService.getUserPermissions(req.user.sub);
+    const roleNames = roles.map((role) => role.name);
+    
+    const userRole = roleNames[0] || 'Viewer';
+    const userDept = roleNames[0] || 'General';
 
     return res.json({
       success: true,
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: userRole,
+      permissions: permissions,
+      department: userDept,
       data: {
-        user,
+        user: {
+          ...user,
+          role: userRole,
+          permissions: permissions,
+          department: userDept
+        },
         roles,
         permissions,
         preferences: prefs,

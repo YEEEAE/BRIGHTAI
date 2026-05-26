@@ -7,7 +7,7 @@ const chokidar = require('chokidar');
 const fs = require('fs');
 const config = require('../config/env');
 const { getRejects, invalidateCache, getDataState } = require('../services/dataService');
-const { loadExcelData, getDataHash, recordChange } = require('../services/excelService');
+const { loadExcelData, getDataHash, recordChange, validateExcelSchema } = require('../services/excelService');
 const { invalidateAiCache } = require('../services/aiService');
 const { logger } = require('../utils/logger');
 
@@ -120,6 +120,7 @@ function startExcelWatcher(io) {
       invalidateCache(`excel ${eventName}`);
       invalidateAiCache(`excel ${eventName}`);
       const excelPayload = await loadExcelData({ force: true });
+      const quality = excelPayload.quality || validateExcelSchema(excelPayload);
       const newRecords = await getRejects('excel');
       const state = getDataState();
 
@@ -148,6 +149,47 @@ function startExcelWatcher(io) {
       lastHash = newHash || excelPayload.hash;
       recordChange(change);
       logger.info('excel_data_updated', change);
+
+      if (quality.errors.length || quality.warnings.length) {
+        const alertPayload = {
+          event: 'data:quality-alert',
+          source: 'excel',
+          title: 'صقر AI: اكتُشفت تغييرات في بنية ملف Excel',
+          message: 'تم رصد أخطاء أو تحذيرات في جودة ملف Excel الأسبوعي.',
+          isValid: quality.isValid,
+          errors: quality.errors,
+          warnings: quality.warnings,
+          missingColumns: quality.missingColumns,
+          schema: quality.schema,
+          hash: newHash || excelPayload.hash,
+          timestamp: new Date().toISOString()
+        };
+
+        logger.warn('excel_data_quality_alert', alertPayload);
+
+        if (io) {
+          io.emit('data:quality-alert', alertPayload);
+        }
+
+        const ns = getNotificationService();
+        if (ns) {
+          ns.create({
+            event: 'data:quality-alert',
+            type: quality.errors.length ? 'error' : 'warning',
+            priority: quality.errors.length ? 'high' : 'medium',
+            title: alertPayload.title,
+            message: `${quality.errors.length} خطأ، ${quality.warnings.length} تحذير في جودة ملف Excel.`,
+            target: 'broadcast',
+            persistent: quality.errors.length > 0,
+            metadata: {
+              errors: quality.errors,
+              warnings: quality.warnings,
+              missingColumns: quality.missingColumns,
+              hash: alertPayload.hash
+            }
+          });
+        }
+      }
 
       if (io) {
         io.emit('data:updated', {

@@ -111,6 +111,50 @@
   color: var(--color-danger);
 }
 
+/* --- EXECUTIVE DASHBOARD KPI CARDS --- */
+.executive-card-grid .card-stat,
+.card-executive-kpi {
+  border-color: rgba(30, 58, 95, 0.08);
+  box-shadow:
+    0 18px 34px -20px rgba(15, 23, 42, 0.34),
+    0 8px 18px -14px rgba(30, 58, 95, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+  animation: executive-card-enter 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.executive-card-grid .card-stat:hover,
+.card-executive-kpi:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+  box-shadow:
+    0 24px 42px -22px rgba(15, 23, 42, 0.38),
+    0 14px 28px -18px rgba(212, 175, 55, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.executive-card-grid .card-stat:first-child,
+.card-executive-kpi-primary {
+  border-inline-start: 4px solid var(--brand-gold, #D4AF37);
+}
+
+.executive-card-grid .card-stat:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.executive-card-grid .card-stat:nth-child(3) {
+  animation-delay: 0.16s;
+}
+
+@keyframes executive-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* --- RESPONSIVE CARD GRID UTILITIES --- */
 .grid {
   display: grid;

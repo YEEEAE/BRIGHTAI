@@ -138,7 +138,7 @@
             <svg class="ai-falcon-icon" viewBox="0 0 64 64" aria-hidden="true"><path d="M55.8 8.4c-8.7 1.4-17.2 4.9-25.4 10.4L20 25.8 7.3 24.1c-1.1-.1-1.7 1.2-.9 2l8.9 8.2-6.2 11.8c-.5 1 .5 2.1 1.5 1.7l13.7-5.3 9.8 9.7c.8.8 2.1.1 1.9-1l-1.8-12.1 5.2-4.5c4.6-4 8.2-8.7 10.7-14.1l6.8-10.4c.6-.9-.1-1.9-1.1-1.7ZM29.2 33.6l-7.8 3 3.5-6.7 8.8-6c5.1-3.5 10.3-6.1 15.6-7.8-2 3.1-4.5 6.3-7.5 9.5l-12.6 8Z"/><path d="M42.4 20.1c-2.4.9-4.9 2.1-7.3 3.6l8.2.5c2-2.2 3.7-4.3 5.2-6.4-1.9.6-4 1.4-6.1 2.3Z"/></svg>
           </div>
           <div class="ai-header-titles">
-            <h4>${isEn ? 'صقر AI — Quality Assistant' : 'صقر AI — المساعد الذكي للجودة'}</h4>
+            <h4>🦅 صقر AI</h4>
             <span>${isEn ? 'MAIS Stock/Life Risk Hub' : 'مركز تحليل المخزون والعمر الافتراضي'}</span>
           </div>
         </div>
@@ -554,10 +554,29 @@
   function showTypingIndicator() {
     const body = document.getElementById('ai-chat-body');
     const indicator = document.createElement('div');
+    let thinkingStep = 0;
+    const thinkingStates = ['hm', 'hmm', 'hmmm', 'hmmmm'];
+
     indicator.className = 'ai-typing-indicator';
     indicator.id = 'ai-typing';
-    indicator.innerHTML = '<span></span><span></span><span></span>';
+    indicator.innerHTML = `
+      <span class="ai-typing-label">${thinkingStates[thinkingStep]}</span>
+      <span class="ai-typing-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+    `;
     body.appendChild(indicator);
+
+    const label = indicator.querySelector('.ai-typing-label');
+    const thinkingTimer = window.setInterval(() => {
+      thinkingStep = (thinkingStep + 1) % thinkingStates.length;
+      label.textContent = thinkingStates[thinkingStep];
+    }, 2000);
+
+    const removeIndicator = indicator.remove.bind(indicator);
+    indicator.remove = () => {
+      window.clearInterval(thinkingTimer);
+      removeIndicator();
+    };
+
     return indicator;
   }
 

@@ -60,51 +60,59 @@ function verifyToken(token) {
   return jwt.verify(token, config.jwtSecret, { issuer: 'ai-reject-dashboard' });
 }
 
+function sendUnauthorized(req, res, message) {
+  if (req.accepts(['html', 'json']) === 'html') {
+    return res.redirect('/login');
+  }
+  return res.status(401).json({ success: false, message });
+}
+
 /**
  * AR: برمجية وسيطة للتحقق من هوية المستخدم وجلسته النشطة في SQLite
  * EN: Middleware to verify user authentication and active DB session
  */
 async function requireAuth(req, res, next) {
   const accessToken = req.cookies[ACCESS_COOKIE];
+  const refreshToken = req.cookies[REFRESH_COOKIE];
 
+  // 1. إذا كان توكن الوصول (Access Token) مفقوداً تماماً من المتصفح
   if (!accessToken) {
-    // AR: محاولة تجديد التوكن تلقائياً إذا كان الـ Access انتهى والـ Refresh موجود
-    // EN: Attempt auto-refresh if Access token is missing but Refresh is present
-    const refreshToken = req.cookies[REFRESH_COOKIE];
+    // محاولة التجديد التلقائي الصامت فوراً إذا كان توكن التجديد (Refresh Token) موجوداً وصالحاً
     if (refreshToken) {
       try {
         await handleTokenRefresh(req, res);
         return next();
       } catch (err) {
         clearAuthCookies(res);
-        return res.status(401).json({ success: false, message: 'Authentication session expired. Please sign in again.' });
+        return sendUnauthorized(req, res, 'انتهت صلاحية جلسة العمل الفعالة. يرجى تسجيل الدخول مجدداً.');
       }
     }
-    return res.status(401).json({ success: false, message: 'Authentication required' });
+    return sendUnauthorized(req, res, 'المصادقة مطلوبة للوصول لهذا المورد.');
   }
 
   try {
     const payload = verifyToken(accessToken);
     req.user = payload;
     
-    // جلب وحفظ الصلاحيات الحية لـ req.user لضمان الفحص الأحدث
+    // جلب الصلاحيات والأدوار الفورية والمحدثة لضمان الدقة الكاملة
     req.user.roles = (await getUserRoles(payload.sub)).map((role) => role.name);
     req.user.permissions = await getUserPermissions(payload.sub);
     return next();
   } catch (err) {
-    // Access token expired, attempt auto-refresh
-    const refreshToken = req.cookies[REFRESH_COOKIE];
-    if (refreshToken) {
+    // 2. إذا انتهت صلاحية توكن الوصول (TokenExpiredError) وكان توكن التجديد متاحاً
+    if (err.name === 'TokenExpiredError' && refreshToken) {
       try {
         await handleTokenRefresh(req, res);
         return next();
       } catch (refreshErr) {
         clearAuthCookies(res);
-        return res.status(401).json({ success: false, message: 'Your session has expired. Please sign in again.' });
+        return sendUnauthorized(req, res, 'انتهت جلستك الحالية تماماً. يرجى إعادة تسجيل الدخول.');
       }
     }
+    
+    // إبطال الكوكيز في حال وجود أي خطأ فني أو تلاعب بالتوكن
     clearAuthCookies(res);
-    return res.status(401).json({ success: false, message: 'Invalid or expired access token' });
+    return sendUnauthorized(req, res, 'توكن الوصول غير صالح أو منتهي الصلاحية.');
   }
 }
 
