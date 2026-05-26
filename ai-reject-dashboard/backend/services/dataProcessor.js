@@ -113,6 +113,8 @@ function isGrandTotalRow(record) {
   if (/^total$/i.test(check)) return true;
   if (/^sum$/i.test(check)) return true;
   if (/合计/.test(check)) return true;
+  if (/^total/i.test(check)) return true;
+  if (/^إجمالي\s*العام$/i.test(check)) return true;
 
   // Scan every cell in the row for total/summary indicators
   for (const key of Object.keys(record)) {
@@ -125,13 +127,14 @@ function isGrandTotalRow(record) {
     // Arabic total indicators (إجمالي or المجموع anywhere in the cell)
     if (/إجمالي/.test(val)) return true;
     if (/المجموع/.test(val)) return true;
+    if (/مجموع/.test(val)) return true;
 
     // Standalone "total" or "sum" (not part of a normal word like "total_life")
-    if (/^(total|sum)$/i.test(val)) return true;
+    if (/^(total|sum|totals|subtotal)$/i.test(val)) return true;
   }
 
   // Detect rows where item_name looks like a summary label
-  if (/\b(total|sum|subtotal|summary)\b/i.test(check)) return true;
+  if (/\b(total|sum|subtotal|summary|totals)\b/i.test(check)) return true;
 
   return false;
 }

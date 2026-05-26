@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl" class="js-focus-visible">
-<head>
+<!DOCTYPE html><html lang="ar" dir="rtl" class="js-focus-visible"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Reject Analytics — MES Production & Operations Dashboard</title>
+  <title>AI Reject Analytics — MES Production &amp; Operations Dashboard</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="نظام إدارة وتتبع التصنيع والعمليات لـ BrightAI - ممتثل لمعايير ممارسات التصنيع الجيد GMP وكفاءة الماكينات.">
   <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
@@ -136,7 +134,7 @@
   <script src="/assets/vendor/apexcharts.js"></script>
   <script src="/assets/vendor/dayjs.min.js"></script>
   <script src="/assets/vendor/ar.js"></script>
-  <script defer src="/assets/vendor/alpine.min.js"></script>
+  <script defer="" src="/assets/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
 <body x-data="productionApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
@@ -150,7 +148,7 @@
       <div class="sidebar-header">
         <a href="index.html" class="sidebar-logo">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
           <span style="white-space: nowrap;">BrightAI Analytics</span>
         </a>
@@ -212,8 +210,8 @@
           </button>
           
           <div class="page-title-area">
-            <h2 x-text="lang === 'ar' ? 'منظور الإنتاج والعمليات (MES Dashboard)' : 'MES Production & Operations View'"></h2>
-            <div class="breadcrumb" style="margin-bottom:0;" x-text="lang === 'ar' ? 'متابعة كفاءة الآلات OEE، حالة خطوط الإنتاج والورديات من واقع Excel' : 'Overall Equipment Effectiveness, active line monitoring & shift handover logs'"></div>
+            <h2 x-text="lang === 'ar' ? 'منظور الإنتاج والعمليات (MES Dashboard)' : 'MES Production &amp; Operations View'"></h2>
+            <div class="breadcrumb" style="margin-bottom:0;" x-text="lang === 'ar' ? 'متابعة كفاءة الآلات OEE، حالة خطوط الإنتاج والورديات من واقع Excel' : 'Overall Equipment Effectiveness, active line monitoring &amp; shift handover logs'"></div>
           </div>
         </div>
 
@@ -234,6 +232,8 @@
 
       <!-- MAIN PAGE CONTENT CONTAINER -->
       <main class="content-container" id="main-content">
+<h1 class="sr-only bright-a11y-h1">لوحة الإنتاج والعمليات لتحليلات الرفض بالذكاء الاصطناعي</h1>
+
 
         <!-- BREADCRUMBS -->
         <nav class="breadcrumb">
@@ -294,7 +294,7 @@
         <!-- 2. MACHINE PERFORMANCE DASHBOARD (Live status from Excel) -->
         <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
           <div class="card-header">
-            <h3 class="card-title" x-text="lang === 'ar' ? 'رصد الحالة والإنتاج الفعلي لماكينات المصنع' : 'Active Machine Performance & Defect Tracking'"></h3>
+            <h2 class="card-title" x-text="lang === 'ar' ? 'رصد الحالة والإنتاج الفعلي لماكينات المصنع' : 'Active Machine Performance &amp; Defect Tracking'"></h2>
             <span class="badge badge-solid badge-primary" x-text="lang === 'ar' ? 'قراءة حية من Excel' : 'Live Excel Connection'"></span>
           </div>
 
@@ -367,7 +367,7 @@
           <!-- Raw Material & WIP Tracking -->
           <div class="card card-outlined" style="display:flex; flex-direction:column; justify-content:space-between; height:390px; padding:var(--spacing-lg);">
             <div class="card-header" style="padding-bottom:var(--spacing-xs); margin-bottom:var(--spacing-xs);">
-              <div class="card-title" x-text="lang === 'ar' ? 'تتبع المواد الخام وفعالية المخزون قيد التشغيل (WIP)' : 'Raw Materials Efficiency & WIP Tracking'"></div>
+              <div class="card-title" x-text="lang === 'ar' ? 'تتبع المواد الخام وفعالية المخزون قيد التشغيل (WIP)' : 'Raw Materials Efficiency &amp; WIP Tracking'"></div>
               <span class="badge badge-warning" x-text="lang === 'ar' ? 'تنبيهات صلاحية' : 'Expiry Alerts'"></span>
             </div>
 
@@ -429,7 +429,7 @@
             <div class="card-header">
               <div class="card-title" style="display:flex; align-items:center; gap:var(--spacing-sm);">
                 <span>🚨</span>
-                <span x-text="lang === 'ar' ? 'سجل السلامة المهنية والحوادث الوشيكة (Safety Logs)' : 'Safety Incidents & Near Misses Audit'"></span>
+                <span x-text="lang === 'ar' ? 'سجل السلامة المهنية والحوادث الوشيكة (Safety Logs)' : 'Safety Incidents &amp; Near Misses Audit'"></span>
               </div>
               <span class="badge badge-danger" x-text="lang === 'ar' ? 'صفر حوادث' : 'Target: Zero'"></span>
             </div>
@@ -460,7 +460,7 @@
 
   <!-- Page logic — extracted to external file (CSP-compliant) -->
   <script src="/assets/js/pages/production.js"></script>
-  <script src="/assets/js/auth-guard.js"></script><!-- dummy marker start
+  <!-- dummy marker start
       return {
         // UI Layout
         sidebarCollapsed: false,
@@ -568,6 +568,7 @@
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/assets/js/notifications.js"></script>
-    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
-</body>
-</html>
+    <script defer="" src="../../../assets/js/sitewide-modernization.js"></script>
+
+
+</body></html>

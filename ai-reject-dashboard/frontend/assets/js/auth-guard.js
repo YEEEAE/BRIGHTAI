@@ -5,6 +5,9 @@
 (function () {
   'use strict';
 
+  if (window.__AuthGuardInitialized) return;
+  window.__AuthGuardInitialized = true;
+
   const PAGES_PROTECTED = {
     'index.html': 'view:dashboard',
     'executive.html': 'view:executive',
@@ -40,7 +43,7 @@
 
       const data = await res.json();
       const user = data.data.user;
-      const permissions = data.data.preferences ? data.data.user.permissions || [] : [];
+      const permissions = user ? user.permissions || [] : [];
 
       // تخزين بيانات المستخدم بالذاكرة المؤقتة للفرونتند
       window.currentUser = user;

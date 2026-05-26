@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl" class="js-focus-visible">
-<head>
+<!DOCTYPE html><html lang="ar" dir="rtl" class="js-focus-visible"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Reject Analytics — C-Level Executive Dashboard</title>
@@ -126,7 +124,7 @@
   <script src="/assets/vendor/apexcharts.js"></script>
   <script src="/assets/vendor/dayjs.min.js"></script>
   <script src="/assets/vendor/ar.js"></script>
-  <script defer src="/assets/vendor/alpine.min.js"></script>
+  <script defer="" src="/assets/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
 <body x-data="executiveApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
@@ -140,7 +138,7 @@
       <div class="sidebar-header">
         <a href="index.html" class="sidebar-logo">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
           <span style="white-space: nowrap;">BrightAI Analytics</span>
         </a>
@@ -203,7 +201,7 @@
           
           <div class="page-title-area">
             <h2 x-text="lang === 'ar' ? 'منظور الإدارة التنفيذية الاستراتيجية' : 'Executive Management View'"></h2>
-            <div class="breadcrumb" style="margin-bottom:0;" x-text="lang === 'ar' ? 'إيجاز القرارات والمخاطر والمؤشرات الكبرى لمجلس الإدارة' : 'Board-level critical decision audit & mitigation summary'"></div>
+            <div class="breadcrumb" style="margin-bottom:0;" x-text="lang === 'ar' ? 'إيجاز القرارات والمخاطر والمؤشرات الكبرى لمجلس الإدارة' : 'Board-level critical decision audit &amp; mitigation summary'"></div>
           </div>
         </div>
 
@@ -244,6 +242,8 @@
 
       <!-- MAIN PAGE CONTENT CONTAINER -->
       <main class="content-container" id="main-content">
+<h1 class="sr-only bright-a11y-h1">لوحة الإدارة التنفيذية لتحليلات الرفض بالذكاء الاصطناعي</h1>
+
 
         <!-- BREADCRUMBS -->
         <nav class="breadcrumb">
@@ -257,18 +257,18 @@
           <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--spacing-md); margin-bottom:var(--spacing-md);">
             <div style="display:flex; align-items:center; gap:var(--spacing-sm);">
               <span style="font-size:var(--font-size-lg);">🤖</span>
-              <h3 style="font-weight:700; font-size:var(--font-size-md); color:var(--color-primary);" x-text="lang === 'ar' ? 'الإيجاز الاستراتيجي لمجلس الإدارة (مولد بـ Gemini)' : 'AI-Generated Board Brief'"></h3>
+              <h2 style="font-weight:700; font-size:var(--font-size-md); color:var(--color-primary);" x-text="lang === 'ar' ? 'الإيجاز الاستراتيجي لمجلس الإدارة (مولد بـ Gemini)' : 'AI-Generated Board Brief'"></h2>
             </div>
             
             <div style="display:flex; gap:var(--spacing-xs);">
-              <button class="btn btn-sm btn-outline" @click="refreshBrief()" x-text="lang === 'ar' ? 'تحديث الإيجاز الذكي' : 'Refresh Brief'"></button>
-              <button class="btn btn-sm btn-primary" @click="exportReport('pdf')" x-text="lang === 'ar' ? 'تصدير التقرير التنفيذي' : 'Export Brief PDF'"></button>
+              <button class="btn btn-sm btn-outline" @click="refreshBrief()" x-text="lang === 'ar' ? 'تحديث الإيجاز الذكي' : 'Refresh Brief'" aria-label="زر تفاعلي"></button>
+              <button class="btn btn-sm btn-primary" @click="exportReport('pdf')" x-text="lang === 'ar' ? 'تصدير التقرير التنفيذي' : 'Export Brief PDF'" aria-label="زر تفاعلي"></button>
             </div>
           </div>
 
           <p style="font-size:var(--font-size-sm); line-height:1.7; color:var(--text-secondary); margin-bottom:var(--spacing-lg);" x-text="briefText"></p>
 
-          <h4 style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary); margin-bottom:var(--spacing-sm);" x-text="lang === 'ar' ? 'أهم 3 مؤشرات عاجلة لهذا الأسبوع:' : 'Top 3 Strategic Highlights this Week:'"></h4>
+          <h3 style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary); margin-bottom:var(--spacing-sm);" x-text="lang === 'ar' ? 'أهم 3 مؤشرات عاجلة لهذا الأسبوع:' : 'Top 3 Strategic Highlights this Week:'"></h3>
           <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:var(--spacing-md);">
             <template x-for="item in highlights">
               <div style="display:flex; align-items:flex-start; gap:var(--spacing-sm); padding:var(--spacing-md); border-radius:var(--radius-md); background-color:var(--gray-50); border:1px solid var(--color-border);">
@@ -392,7 +392,7 @@
           <!-- Waterfall Financial Impact -->
           <div class="chart-container-exec" style="height:380px;">
             <div class="card-header" style="margin-bottom: var(--spacing-sm);">
-              <div class="card-title" x-text="lang === 'ar' ? 'هيكلة الأثر المالي وسيناريوهات الوفر المحقق' : 'Waste Stream Waterfall & Savings Forecast'"></div>
+              <div class="card-title" x-text="lang === 'ar' ? 'هيكلة الأثر المالي وسيناريوهات الوفر المحقق' : 'Waste Stream Waterfall &amp; Savings Forecast'"></div>
             </div>
             <div id="chart-exec-waterfall" style="height:300px;"></div>
           </div>
@@ -422,7 +422,7 @@
               </div>
             </div>
             
-            <p style="font-size:11px; color:var(--text-muted); line-height:1.5; margin-top:var(--spacing-sm);" x-text="lang === 'ar' ? 'تم تقدير البيانات باستخدام خوارزميات Moving Averages و Seasonal Signals الإحصائية المحلية بناءً على سجل ملف Excel المعتمد.' : 'Data calculated using local Seasonal Signal & Moving Average projections based on live Excel feed.'"></p>
+            <p style="font-size:11px; color:var(--text-muted); line-height:1.5; margin-top:var(--spacing-sm);" x-text="lang === 'ar' ? 'تم تقدير البيانات باستخدام خوارزميات Moving Averages و Seasonal Signals الإحصائية المحلية بناءً على سجل ملف Excel المعتمد.' : 'Data calculated using local Seasonal Signal &amp; Moving Average projections based on live Excel feed.'"></p>
           </div>
         </section>
 
@@ -468,7 +468,7 @@
                     <div style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="decision.title"></div>
                     <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" x-text="decision.meta"></div>
                   </div>
-                  <button class="btn btn-sm btn-primary" style="font-size:10px; height:28px;" @click="approveDecision(decision.id)" x-text="lang === 'ar' ? 'موافق واعتماد' : 'Approve'"></button>
+                  <button class="btn btn-sm btn-primary" style="font-size:10px; height:28px;" @click="approveDecision(decision.id)" x-text="lang === 'ar' ? 'موافق واعتماد' : 'Approve'" aria-label="زر تفاعلي"></button>
                 </div>
               </template>
             </div>
@@ -482,7 +482,7 @@
 
   <!-- Page logic — extracted to external file (CSP-compliant) -->
   <script src="/assets/js/pages/executive.js"></script>
-  <script src="/assets/js/auth-guard.js"></script><!-- dummy marker executive start
+  <!-- dummy marker executive start
       return {
         // UI Layout
         sidebarCollapsed: false,
@@ -723,6 +723,7 @@
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/assets/js/notifications.js"></script>
-    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
-</body>
-</html>
+    <script defer="" src="../../../assets/js/sitewide-modernization.js"></script>
+
+
+</body></html>

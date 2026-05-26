@@ -1368,12 +1368,12 @@
                                 <h3 class="panel-title">Notifications</h3>
                                 <p style="color:var(--text-secondary);line-height:1.7;margin:0 0 16px;">Control which alerts you receive from ContractAI. Enable or disable deadline alerts, analysis completion notifications, and weekly email summaries based on your priorities and workflow preferences.</p>
                                 <div class="toggle-list">
-                                    <div class="toggle-row"><span>☑ Upcoming deadline alerts (7 days out)</span><button class="toggle is-on" type="button"></button></div>
+                                    <div class="toggle-row"><span>☑ Upcoming deadline alerts (7 days out)</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
                                     <div class="toggle-row"><span>☑ Scan completed alerts (powered by data
-                                            analysis)</span><button class="toggle is-on" type="button"></button></div>
-                                    <div class="toggle-row"><span>☑ Weekly email rundown</span><button class="toggle is-on" type="button"></button></div>
-                                    <div class="toggle-row"><span>☐ Promos and updates</span><button class="toggle" type="button"></button></div>
-                                    <div class="toggle-row"><span>☑ Warning when hitting the monthly limit</span><button class="toggle is-on" type="button"></button></div>
+                                            analysis)</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
+                                    <div class="toggle-row"><span>☑ Weekly email rundown</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
+                                    <div class="toggle-row"><span>☐ Promos and updates</span><button class="toggle" type="button" aria-label="فتح القائمة"></button></div>
+                                    <div class="toggle-row"><span>☑ Warning when hitting the monthly limit</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
                                 </div>
                                 <div class="field-wrap" style="margin-top:20px;"><span>Notification Email</span>
                                     <div class="field"><input id="notificationEmail" name="notification_email" value="ahmed@company.sa" aria-label="notification_email"></div>
@@ -1448,7 +1448,7 @@
                                 </div>
                                 <div class="field-grid" style="margin-top:24px;">
                                     <div class="field-wrap"><span>Two-Factor Authentication (2FA)</span>
-                                        <div class="header-actions-inline"><button class="toggle is-on" type="button"></button><span class="status-badge">✅ Enabled</span></div>
+                                        <div class="header-actions-inline"><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button><span class="status-badge">✅ Enabled</span></div>
                                         <div class="qr-placeholder">QR</div>
                                         <div class="field"><input id="twoFactorCode" name="two_factor_code" placeholder="Enter auth code" aria-label="Enter auth code"></div>
                                     </div>
@@ -1776,5 +1776,5 @@ fetch("https://api.contractai.sa/v1/analyze", {
 
 
 
-    <script defer src="../../assets/js/sitewide-modernization.js"></script>
+    <script defer="" src="../../assets/js/sitewide-modernization.js"></script>
 </body></html>

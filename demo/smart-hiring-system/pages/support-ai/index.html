@@ -947,7 +947,7 @@
 <div class="flex-shrink-0">
 <a aria-label="Bright AI — الصفحة الرئيسية" class="nav-logo group" href="/" title="الرئيسية — Bright AI حلول ذكاء اصطناعي">
 <div class="logo-box relative w-9 h-9 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
-<img src="/assets/images/logo-new.PNG" alt="" width="36" height="36" class="h-full w-full object-contain" decoding="async" loading="lazy">
+<img src="/assets/images/logo-new.PNG" alt="شعار Bright AI" width="36" height="36" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
 </div>
 </a>
 </div>
@@ -1397,12 +1397,12 @@
 </div>
 </div>
 <div class="header-actions">
-<button class="header-btn" id="soundToggle" title="إيقاف/تشغيل الصوت">
+<button class="header-btn" id="soundToggle" title="إيقاف/تشغيل الصوت" aria-label="إيقاف/تشغيل الصوت">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </button>
-<button class="header-btn" id="minimizeChat" title="تصغير">
+<button class="header-btn" id="minimizeChat" title="تصغير" aria-label="تصغير">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
@@ -1429,12 +1429,12 @@
 <div class="input-container">
 <input aria-label="أدخل رسالتك" autocomplete="off" id="userInput" placeholder="اكتب رسالتك هنا..." type="text">
 <div class="input-actions">
-<button class="input-btn mic-btn" id="micButton" title="التحدث صوتياً">
+<button class="input-btn mic-btn" id="micButton" title="التحدث صوتياً" aria-label="التحدث صوتياً">
 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
 </svg>
 </button>
-<button class="input-btn send-btn" disabled="" id="sendButton" title="إرسال">
+<button class="input-btn send-btn" disabled="" id="sendButton" title="إرسال" aria-label="إرسال">
 <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 <path d="M3.478 2.405a.75.75 0 0 0-.926.94l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.405Z"></path>
 </svg>
@@ -1930,5 +1930,5 @@
   <script src="/frontend/js/brightai-logo-replace.js" defer=""></script>
 
 
-    <script defer src="../../../../assets/js/sitewide-modernization.js"></script>
+    <script defer="" src="../../../../assets/js/sitewide-modernization.js"></script>
 </body></html>

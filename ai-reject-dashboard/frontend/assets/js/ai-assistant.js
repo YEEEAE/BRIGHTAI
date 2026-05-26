@@ -17,7 +17,11 @@
     isRecording: false,
     isSoundEnabled: localStorage.getItem(SOUND_TOGGLE_KEY) === 'true', // Sound pref stays across sessions
     history: [],
-    conversationId: 'conv_' + Math.random().toString(36).substring(2, 11),
+    conversationId: sessionStorage.getItem('ai_conversation_id') || (function() {
+      const newId = 'conv_' + Math.random().toString(36).substring(2, 11);
+      sessionStorage.setItem('ai_conversation_id', newId);
+      return newId;
+    })(),
     userRole: 'Quality Auditor (Auditor)',
     currentPage: getPageName(),
     recognition: null,

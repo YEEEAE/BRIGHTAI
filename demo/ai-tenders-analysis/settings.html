@@ -531,11 +531,11 @@
 <h3 class="panel-title">التنبيهات</h3>
 <p style="color:var(--text-secondary);line-height:1.7;margin:0 0 16px;">تحكم في أنواع التنبيهات التي تتلقاها من ContractAI. يمكنك تفعيل أو تعطيل إشعارات المواعيد الحرجة والتحليلات المكتملة والتحديثات الأسبوعية حسب أولوياتك.</p>
 <div class="toggle-list">
-<div class="toggle-row"><span>☑ إشعارات المواعيد القادمة (قبل 7 أيام)</span><button class="toggle is-on" type="button"></button></div>
-<div class="toggle-row"><span>☑ إشعارات اكتمال التحليل</span><button class="toggle is-on" type="button"></button></div>
-<div class="toggle-row"><span>☑ ملخص أسبوعي بالبريد</span><button class="toggle is-on" type="button"></button></div>
-<div class="toggle-row"><span>☐ إشعارات العروض والتحديثات</span><button class="toggle" type="button"></button></div>
-<div class="toggle-row"><span>☑ تنبيه عند اقتراب حد الاستخدام الشهري</span><button class="toggle is-on" type="button"></button></div>
+<div class="toggle-row"><span>☑ إشعارات المواعيد القادمة (قبل 7 أيام)</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
+<div class="toggle-row"><span>☑ إشعارات اكتمال التحليل</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
+<div class="toggle-row"><span>☑ ملخص أسبوعي بالبريد</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
+<div class="toggle-row"><span>☐ إشعارات العروض والتحديثات</span><button class="toggle" type="button" aria-label="فتح القائمة"></button></div>
+<div class="toggle-row"><span>☑ تنبيه عند اقتراب حد الاستخدام الشهري</span><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button></div>
 </div>
 <div class="field-wrap" style="margin-top:20px;"><span>البريد الإلكتروني للإشعارات</span><div class="field"><input id="notificationEmail" name="notification_email" value="ahmed@company.sa" aria-label="notification_email"></div></div>
 <div class="header-actions-inline" style="margin-top:20px;"><button class="primary-button" data-save="notifications" type="button">حفظ</button></div>
@@ -572,7 +572,7 @@
 </div>
 <div class="password-strength"><span id="passwordStrengthLabel">ضعيفة</span><div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div></div>
 <div class="field-grid" style="margin-top:24px;">
-<div class="field-wrap"><span>المصادقة الثنائية</span><div class="header-actions-inline"><button class="toggle is-on" type="button"></button><span class="status-badge">✅ مفعّلة</span></div><div class="qr-placeholder">QR</div><div class="field"><input id="twoFactorCode" name="two_factor_code" placeholder="أدخل رمز التحقق" aria-label="أدخل رمز التحقق"></div></div>
+<div class="field-wrap"><span>المصادقة الثنائية</span><div class="header-actions-inline"><button class="toggle is-on" type="button" aria-label="فتح القائمة"></button><span class="status-badge">✅ مفعّلة</span></div><div class="qr-placeholder">QR</div><div class="field"><input id="twoFactorCode" name="two_factor_code" placeholder="أدخل رمز التحقق" aria-label="أدخل رمز التحقق"></div></div>
 </div>
 <table aria-label="سجل الجلسات" class="session-table">
 <thead><tr><th>الجهاز</th><th>الموقع</th><th>آخر نشاط</th><th>الحالة</th></tr></thead>
@@ -865,5 +865,5 @@ fetch("https://api.contractai.sa/v1/analyze", {
   <script src="/frontend/js/brightai-logo-replace.js" defer=""></script>
 
 
-    <script defer src="../../assets/js/sitewide-modernization.js"></script>
+    <script defer="" src="../../assets/js/sitewide-modernization.js"></script>
 </body></html>

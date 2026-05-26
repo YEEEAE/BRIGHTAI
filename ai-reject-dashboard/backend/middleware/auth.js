@@ -4,6 +4,7 @@ const config = require('../config/env');
 const { get, run } = require('../config/database');
 const { isSessionActive, revokeSession, createSession } = require('../services/authService');
 const { getUserPermissions } = require('../services/rbacService');
+const { requirePermission, requireRole } = require('./rbac');
 
 const ACCESS_COOKIE = 'access_token';
 const REFRESH_COOKIE = 'refresh_token';
@@ -149,6 +150,8 @@ module.exports = {
   ACCESS_COOKIE,
   REFRESH_COOKIE,
   requireAuth,
+  requirePermission,
+  requireRole,
   setAuthCookies,
   clearAuthCookies,
   verifyToken

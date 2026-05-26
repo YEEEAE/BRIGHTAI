@@ -135,14 +135,157 @@
       wrapper.className = "bright-table-scroll";
       wrapper.setAttribute("tabindex", "0");
       wrapper.setAttribute("role", "region");
+      wrapper.setAttribute("data-scroll-hint", "true");
       wrapper.setAttribute("aria-label", table.getAttribute("aria-label") || "جدول قابل للتمرير");
       table.parentNode.insertBefore(wrapper, table);
       wrapper.appendChild(table);
     });
   }
 
+  function protectEmbeds(body) {
+    Array.prototype.slice.call(body.querySelectorAll("iframe, video, embed, object")).forEach(function (embed) {
+      if (!embed.closest(".bright-media-frame")) {
+        embed.classList.add("bright-responsive-media");
+      }
+
+      if (embed.tagName.toLowerCase() === "iframe" && !embed.getAttribute("loading")) {
+        embed.setAttribute("loading", "lazy");
+      }
+    });
+  }
+
+  function flagOverflowRisk(body) {
+    var root = document.documentElement;
+
+    window.setTimeout(function () {
+      if (root.scrollWidth > root.clientWidth + 2) {
+        body.classList.add("bright-has-overflow-risk");
+      } else {
+        body.classList.remove("bright-has-overflow-risk");
+      }
+    }, 120);
+  }
+
+  function textOf(element) {
+    return (element && element.textContent ? element.textContent : "").replace(/\s+/g, " ").trim();
+  }
+
+  function matchesAny(text, words) {
+    var value = String(text || "").toLowerCase();
+    return words.some(function (word) {
+      return value.indexOf(word.toLowerCase()) !== -1;
+    });
+  }
+
+  function closestSection(element) {
+    return element.closest("section, article, .card, .feature-card, .service-card, .answer-list-card, .glass, .panel");
+  }
+
+  function markSectionByHeading(body, className, words) {
+    var headings = Array.prototype.slice.call(body.querySelectorAll("h1, h2, h3"));
+
+    headings.forEach(function (heading) {
+      if (!matchesAny(textOf(heading), words)) {
+        return;
+      }
+
+      var section = closestSection(heading);
+
+      if (section) {
+        section.classList.add(className);
+      }
+    });
+  }
+
+  function markCards(body, selector, className) {
+    var main = body.querySelector("main");
+    var mainContent = body.querySelector("#main-content");
+    var scope = main || (mainContent && mainContent.children.length ? mainContent : body);
+
+    Array.prototype.slice.call(scope.querySelectorAll(selector)).forEach(function (element) {
+      if (element.closest("header, footer, nav, .unified-nav, .mobile-menu, .site-footer")) {
+        return;
+      }
+
+      element.classList.add(className);
+    });
+  }
+
+  function enhanceForms(body) {
+    Array.prototype.slice.call(body.querySelectorAll("form")).forEach(function (form) {
+      form.classList.add("bright-modern-form");
+
+      Array.prototype.slice.call(form.querySelectorAll("input, select, textarea")).forEach(function (field) {
+        if (!field.getAttribute("aria-label") && !field.getAttribute("aria-labelledby")) {
+          var label = field.closest("label");
+          var placeholder = field.getAttribute("placeholder");
+
+          if (label && textOf(label)) {
+            field.setAttribute("aria-label", textOf(label));
+          } else if (placeholder) {
+            field.setAttribute("aria-label", placeholder);
+          }
+        }
+      });
+    });
+  }
+
+  function markPagePatterns(body) {
+    var pageType = normalizePageType(body.getAttribute("data-bright-page-type"));
+
+    enhanceForms(body);
+
+    if (pageType === "service-detail") {
+      markSectionByHeading(body, "bright-section--problem", ["المشكلة", "problem", "التحدي", "challenge"]);
+      markSectionByHeading(body, "bright-section--value", ["القيمة", "حل bright", "الحل", "value", "why"]);
+      markSectionByHeading(body, "bright-section--steps", ["خطوات", "طريقة التنفيذ", "كيف", "steps", "implementation"]);
+      markSectionByHeading(body, "bright-section--benefits", ["الفوائد", "benefits", "مخرجات", "النتائج"]);
+      markSectionByHeading(body, "bright-section--related", ["خدمات مكملة", "ذات صلة", "related", "قارن"]);
+      markCards(body, ".related-card, .hub-link, .service-demo-cta, .sitewide-cta", "bright-modern-cta-card");
+    }
+
+    if (pageType === "services-index") {
+      markCards(body, "a[href^='/services/'], .ai-agent-card, .answer-list-card, .service-card", "bright-service-index-card");
+    }
+
+    if (pageType === "blog-post") {
+      markCards(body, "blockquote, .quote, .callout", "bright-reading-callout");
+    }
+
+    if (pageType === "blog-index") {
+      markCards(body, "article, .post, .blog-card, a[href^='/blog/']", "bright-blog-index-card");
+    }
+
+    if (pageType === "demo" || pageType === "tool") {
+      markCards(body, ".demo-panel, .demo-card, .tool-panel, .result, .results, output, form", "bright-interactive-panel");
+    }
+
+    if (pageType === "dashboard") {
+      markCards(body, ".metric, .metrics-card, .stat-card, .kpi-card, .card", "bright-dashboard-card");
+      markCards(body, "form, .filters, .filter-bar, .toolbar", "bright-dashboard-filter");
+    }
+
+    if (pageType === "contact") {
+      markCards(body, "form, .contact-card, .sitewide-cta, [data-cta-section]", "bright-contact-panel");
+    }
+
+    if (pageType === "about") {
+      markCards(body, ".timeline, .value-card, .card, article", "bright-about-story-card");
+    }
+
+    if (pageType === "legal") {
+      markCards(body, "article, .doc-content, .prose", "bright-legal-reader");
+    }
+
+    if (pageType === "error") {
+      markCards(body, "main a, main button", "bright-error-action");
+    }
+  }
+
   function markRevealTargets(body) {
-    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!("IntersectionObserver" in window) || reduceMotion) {
       return;
     }
 
@@ -197,7 +340,10 @@
     body.dataset.brightModernized = "true";
     setPageType(body);
     protectWideTables(body);
+    protectEmbeds(body);
+    markPagePatterns(body);
     markRevealTargets(body);
+    flagOverflowRisk(body);
   }
 
   function scheduleBoot() {

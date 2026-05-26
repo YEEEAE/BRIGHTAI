@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl" class="js-focus-visible">
-<head>
+<!DOCTYPE html><html lang="ar" dir="rtl" class="js-focus-visible"><head>
   <meta charset="UTF-8">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
@@ -173,7 +171,7 @@
   <script src="/ai-reject-dashboard/frontend/assets/vendor/apexcharts.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js"></script>
   <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
-  <script defer src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
+  <script defer="" src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="../assets/css/sitewide-modernization.css">
 </head>
 <body x-data="dashboardApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
@@ -188,7 +186,7 @@
       <div class="sidebar-header">
         <a href="/ai-reject-dashboard/" class="sidebar-logo">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
           <span style="white-space: nowrap;">BrightAI Analytics</span>
         </a>
@@ -280,20 +278,20 @@
         <nav class="breadcrumb">
           <li class="breadcrumb-item"><a href="/ai-reject-dashboard/" class="breadcrumb-link" x-text="lang === 'ar' ? 'الرئيسية' : 'Home'"></a></li>
           <span class="breadcrumb-separator">/</span>
-          <li class="breadcrumb-item is-active" x-text="lang === 'ar' ? 'تحليلات المرفوضات والتشغيل' : 'Reject Analytics & Ops'"></li>
+          <li class="breadcrumb-item is-active" x-text="lang === 'ar' ? 'تحليلات المرفوضات والتشغيل' : 'Reject Analytics &amp; Ops'"></li>
         </nav>
 
         <!-- DEMO FALLBACK BANNER -->
-        <div x-show="!excelStatus.file_exists" class="alert alert-danger" style="border-inline-start: 4px solid var(--color-danger); background-color: rgba(231, 111, 81, 0.1); margin-bottom: var(--spacing-md); display: none;" :style="{ display: !excelStatus.file_exists ? 'flex' : 'none' }">
+        <div x-show="excelStatus.source === 'demo'" class="alert alert-danger" style="border-inline-start: 4px solid var(--color-danger); background-color: rgba(231, 111, 81, 0.1); margin-bottom: var(--spacing-md); display: none;" :style="{ display: excelStatus.source === 'demo' ? 'flex' : 'none' }">
           <span class="alert-icon" style="font-size: 20px;">⚠️</span>
           <div class="alert-content">
             <div class="alert-title" style="color: var(--color-danger); font-weight: 700;" x-text="lang === 'ar' ? 'تنبيه: تم تفعيل البيانات البديلة' : 'Notice: Demo Fallback Active'"></div>
-            <div class="alert-message" style="color: var(--text-primary);" x-text="lang === 'ar' ? 'ملف إكسل الحقيقي غير متوفر في المسار المحدد. يتم حالياً تشغيل وضع المحاكاة والبيانات البديلة (Demo fallback active).' : 'The active Excel workbook is missing at the configured path. The dashboard is running on mock simulation data (Demo fallback active).'"></div>
+            <div class="alert-message" style="color: var(--text-primary);" x-text="lang === 'ar' ? 'ملف إكسل الحقيقي غير متوفر في المسار المحدد أو حدث خطأ أثناء قراءته. يتم حالياً تشغيل وضع المحاكاة والبيانات البديلة (Demo fallback active).' : 'The active Excel workbook is missing or unreadable at the configured path. The dashboard is running on mock simulation data (Demo fallback active).'"></div>
           </div>
         </div>
 
         <!-- LIVE DATA SOURCE DISCLAIMER -->
-        <div x-show="excelStatus.file_exists" class="alert alert-info" style="display: none;" :style="{ display: excelStatus.file_exists ? 'flex' : 'none' }">
+        <div x-show="excelStatus.source === 'excel'" class="alert alert-info" style="display: none;" :style="{ display: excelStatus.source === 'excel' ? 'flex' : 'none' }">
           <span class="alert-icon">💡</span>
           <div class="alert-content">
             <div class="alert-title" x-text="lang === 'ar' ? 'بيان البيانات ومصدر الحقيقة' : 'Data Integrity Announcement'"></div>
@@ -307,17 +305,17 @@
             <div style="display:flex; align-items:center; gap:var(--spacing-sm); flex-wrap:wrap;">
               <span style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary);" x-text="lang === 'ar' ? 'الفترات الزمنية المجهزة:' : 'Time Presets:'"></span>
               <div class="preset-filters">
-                <button class="btn btn-sm" :class="activePreset === 'today' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('today')" x-text="lang === 'ar' ? 'اليوم' : 'Today'"></button>
-                <button class="btn btn-sm" :class="activePreset === 'week' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('week')" x-text="lang === 'ar' ? 'هذا الأسبوع' : 'Week'"></button>
-                <button class="btn btn-sm" :class="activePreset === 'month' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('month')" x-text="lang === 'ar' ? 'هذا الشهر' : 'Month'"></button>
-                <button class="btn btn-sm" :class="activePreset === 'quarter' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('quarter')" x-text="lang === 'ar' ? 'هذا الربع' : 'Quarter'"></button>
-                <button class="btn btn-sm" :class="activePreset === 'year' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('year')" x-text="lang === 'ar' ? 'هذا العام' : 'Year'"></button>
+                <button class="btn btn-sm" :class="activePreset === 'today' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('today')" x-text="lang === 'ar' ? 'اليوم' : 'Today'" aria-label="زر تفاعلي"></button>
+                <button class="btn btn-sm" :class="activePreset === 'week' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('week')" x-text="lang === 'ar' ? 'هذا الأسبوع' : 'Week'" aria-label="زر تفاعلي"></button>
+                <button class="btn btn-sm" :class="activePreset === 'month' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('month')" x-text="lang === 'ar' ? 'هذا الشهر' : 'Month'" aria-label="زر تفاعلي"></button>
+                <button class="btn btn-sm" :class="activePreset === 'quarter' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('quarter')" x-text="lang === 'ar' ? 'هذا الربع' : 'Quarter'" aria-label="زر تفاعلي"></button>
+                <button class="btn btn-sm" :class="activePreset === 'year' ? 'btn-primary' : 'btn-outline'" @click="setPresetDate('year')" x-text="lang === 'ar' ? 'هذا العام' : 'Year'" aria-label="زر تفاعلي"></button>
               </div>
             </div>
             
             <div style="display:flex; gap:var(--spacing-sm);">
-              <button class="btn btn-sm btn-outline" @click="saveFilterPreset()" x-text="lang === 'ar' ? 'حفظ الفلترة الحالية' : 'Save Filter Preset'"></button>
-              <button class="btn btn-sm btn-ghost" @click="clearAllFilters()" x-text="lang === 'ar' ? 'مسح الفلاتر' : 'Clear All'"></button>
+              <button class="btn btn-sm btn-outline" @click="saveFilterPreset()" x-text="lang === 'ar' ? 'حفظ الفلترة الحالية' : 'Save Filter Preset'" aria-label="زر تفاعلي"></button>
+              <button class="btn btn-sm btn-ghost" @click="clearAllFilters()" x-text="lang === 'ar' ? 'مسح الفلاتر' : 'Clear All'" aria-label="زر تفاعلي"></button>
             </div>
           </div>
 
@@ -455,7 +453,7 @@
           <!-- Line Chart: Reject trends -->
           <div class="card card-outlined" style="grid-column: span 2;">
             <div class="card-header">
-              <div class="card-title" x-text="lang === 'ar' ? 'منحنى التطور التنبئي للمرفوضات (آخر 12 شهراً)' : '12-Month Reject Trend & Forecast'"></div>
+              <div class="card-title" x-text="lang === 'ar' ? 'منحنى التطور التنبئي للمرفوضات (آخر 12 شهراً)' : '12-Month Reject Trend &amp; Forecast'"></div>
             </div>
             <div id="chart-trends" style="height:320px;"></div>
           </div>
@@ -495,7 +493,7 @@
           <!-- Gauge Chart: Overall Quality Score -->
           <div class="card card-outlined">
             <div class="card-header">
-              <div class="card-title" x-text="lang === 'ar' ? 'مؤشر الامتثال والجودة الإجمالي للمصنع' : 'Overall Quality & Compliance Score'"></div>
+              <div class="card-title" x-text="lang === 'ar' ? 'مؤشر الامتثال والجودة الإجمالي للمصنع' : 'Overall Quality &amp; Compliance Score'"></div>
             </div>
             <div id="chart-quality-score" style="height:320px;"></div>
           </div>
@@ -513,12 +511,12 @@
                   <span>🤖</span>
                   <span x-text="lang === 'ar' ? 'نبض الذكاء الاصطناعي - AI Pulse Insights' : 'AI Pulse Insights'"></span>
                 </div>
-                <button class="btn btn-sm btn-ghost" @click="refreshAIAnalysis()" x-text="lang === 'ar' ? 'تحديث التحليل' : 'Refresh'"></button>
+                <button class="btn btn-sm btn-ghost" @click="refreshAIAnalysis()" x-text="lang === 'ar' ? 'تحديث التحليل' : 'Refresh'" aria-label="زر تفاعلي"></button>
               </div>
               <div class="card-body">
                 <p style="font-size:var(--font-size-sm); line-height:1.6; color:var(--text-secondary); margin-bottom:var(--spacing-md);" x-text="aiSummary"></p>
                 
-                <h4 style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary); margin-bottom:var(--spacing-sm);" x-text="lang === 'ar' ? 'أهم 3 نتائج وتوصيات حرجة:' : 'Top 3 Critical Insights:'"></h4>
+                <h2 style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary); margin-bottom:var(--spacing-sm);" x-text="lang === 'ar' ? 'أهم 3 نتائج وتوصيات حرجة:' : 'Top 3 Critical Insights:'"></h2>
                 <div style="display:flex; flex-direction:column; gap:var(--spacing-sm);">
                   <template x-for="finding in aiFindings">
                     <div style="display:flex; align-items:flex-start; gap:var(--spacing-sm); padding:var(--spacing-sm); border-radius:var(--radius-md); background-color:var(--gray-50);">
@@ -585,7 +583,7 @@
 
             <!-- Focus ERP Reference Card -->
             <div class="card card-flat" style="padding:var(--spacing-lg);">
-              <h4 style="font-weight:600; color:var(--text-primary); margin-bottom:var(--spacing-sm);" x-text="lang === 'ar' ? 'حوكمة الجودة ومراجعة QCM' : 'QCM/QAM Governance Audit'"></h4>
+              <h3 style="font-weight:600; color:var(--text-primary); margin-bottom:var(--spacing-sm);" x-text="lang === 'ar' ? 'حوكمة الجودة ومراجعة QCM' : 'QCM/QAM Governance Audit'"></h3>
               <p style="font-size:var(--font-size-xs); color:var(--text-secondary); line-height:1.6;" x-text="lang === 'ar' ? 'تتوافق تحليلات BrightAI مع متطلبات كفاءة المصنع وتقدم اقتراحات تصحيحية (CAPA) استشارية. يلزم مراجعة التوصيات واعتمادها يدوياً داخل نظام Focus ERP من قِبل إدارة تأكيد الجودة.' : 'BrightAI advisory tools map current plant efficiencies and output preventive CAPAs. QAM review is legally required in Focus ERP prior to physical scrap execution.'"></p>
             </div>
           </div>
@@ -603,7 +601,7 @@
               <!-- Bulk Actions Bar (Visible when rows selected) -->
               <div x-show="selectedRows.length > 0" style="display:flex; align-items:center; gap:var(--spacing-sm); background-color:var(--color-primary-light); padding:4px var(--spacing-sm); border-radius:var(--radius-md); border:1px solid var(--color-primary);">
                 <span style="font-size:var(--font-size-xs); font-weight:600; color:var(--color-primary);" x-text="selectedRows.length + (lang === 'ar' ? ' عناصر محددة' : ' rows selected')"></span>
-                <button class="btn btn-sm btn-danger" @click="bulkScrapSelected()" x-text="lang === 'ar' ? 'اعتماد إتلاف مجمع' : 'Bulk Scrap'"></button>
+                <button class="btn btn-sm btn-danger" @click="bulkScrapSelected()" x-text="lang === 'ar' ? 'اعتماد إتلاف مجمع' : 'Bulk Scrap'" aria-label="زر تفاعلي"></button>
               </div>
 
               <!-- Column Visibility Selector -->
@@ -648,7 +646,7 @@
               <thead style="position: sticky; top: 0; z-index: 10; background-color: var(--gray-50);">
                 <tr>
                   <th style="width: 40px; text-align: center;">
-                    <input type="checkbox" class="form-check-input" @change="toggleAllSelection()" :checked="selectedRows.length === paginatedRejects.length && paginatedRejects.length > 0">
+                    <input type="checkbox" class="form-check-input" @change="toggleAllSelection()" :checked="selectedRows.length === paginatedRejects.length &amp;&amp; paginatedRejects.length > 0">
                   </th>
                   <th x-show="visibleColumns.doc_no" class="th-sortable" @click="sortBy('doc_no')">
                     <span x-text="lang === 'ar' ? 'رقم الوثيقة' : 'Doc No'"></span>
@@ -714,14 +712,14 @@
             <span class="pagination-info" x-text="lang === 'ar' ? `عرض سجلات من ${pagination.start} إلى ${pagination.end} من أصل ${filteredRejects.length}` : `Showing ${pagination.start} - ${pagination.end} of ${filteredRejects.length} records`"></span>
             
             <div class="pagination-nav">
-              <button class="pagination-link" :class="{ 'is-disabled': pagination.page === 1 }" @click="setPage(pagination.page - 1)">
+              <button class="pagination-link" :class="{ 'is-disabled': pagination.page === 1 }" @click="setPage(pagination.page - 1)" aria-label="الصفحة السابقة">
                 <span class="pagination-arrow-icon">←</span>
                 <span x-text="lang === 'ar' ? 'السابق' : 'Prev'"></span>
               </button>
               
-              <button class="pagination-link is-active" x-text="pagination.page"></button>
+              <button class="pagination-link is-active" x-text="pagination.page" aria-label="زر تفاعلي"></button>
               
-              <button class="pagination-link" :class="{ 'is-disabled': pagination.page === pagination.totalPages }" @click="setPage(pagination.page + 1)">
+              <button class="pagination-link" :class="{ 'is-disabled': pagination.page === pagination.totalPages }" @click="setPage(pagination.page + 1)" aria-label="الصفحة التالية">
                 <span x-text="lang === 'ar' ? 'التالي' : 'Next'"></span>
                 <span class="pagination-arrow-icon">→</span>
               </button>
@@ -744,7 +742,7 @@
           <span>🤖</span>
           <span x-text="lang === 'ar' ? 'مساعد الذكاء الاصطناعي لـ Mais' : 'Mais AI Assistant'"></span>
         </div>
-        <button class="modal-close" @click="rightSidebarOpen = false">✕</button>
+        <button class="modal-close" @click="rightSidebarOpen = false" aria-label="إغلاق اللوحة">✕</button>
       </div>
 
       <!-- Suggested Questions for Quick Analysis -->
@@ -752,7 +750,7 @@
         <div style="font-size:var(--font-size-xs); font-weight:600; color:var(--text-secondary); margin-bottom:var(--spacing-xs);" x-text="lang === 'ar' ? 'أسئلة مقترحة سريعة:' : 'Suggested Analysis:'"></div>
         <div style="display:flex; gap:var(--spacing-xs); overflow-x:auto; padding-bottom:2px;">
           <template x-for="q in suggestedQueries">
-            <button class="btn btn-sm btn-outline" style="font-size:10px; white-space:nowrap; padding:2px 8px; height:auto;" @click="askAI(q)" x-text="q"></button>
+            <button class="btn btn-sm btn-outline" style="font-size:10px; white-space:nowrap; padding:2px 8px; height:auto;" @click="askAI(q)" x-text="q" aria-label="زر تفاعلي"></button>
           </template>
         </div>
       </div>
@@ -768,7 +766,7 @@
       <!-- Chat Input Area -->
       <div style="padding:var(--spacing-md); border-top:1px solid var(--color-border); display:flex; gap:var(--spacing-sm);">
         <input type="text" class="form-control" :placeholder="lang === 'ar' ? 'اسأل عن تكلفة، عيب، أو توصية CAPA...' : 'Ask about cost, scrap, or CAPA...'" x-model="chatInput" @keydown.enter="sendChatMessage()">
-        <button class="btn btn-primary" @click="sendChatMessage()" x-text="lang === 'ar' ? 'إرسال' : 'Send'"></button>
+        <button class="btn btn-primary" @click="sendChatMessage()" x-text="lang === 'ar' ? 'إرسال' : 'Send'" aria-label="زر تفاعلي"></button>
       </div>
     </aside>
 
@@ -920,9 +918,11 @@
             if (res.ok) {
               const responseData = await res.json();
               this.excelStatus = responseData.data || responseData;
+              this.excelStatus.source = responseData.source || (this.excelStatus.file_exists ? 'excel' : 'demo');
             }
           } catch (e) {
             console.error('Error fetching excel status:', e);
+            this.excelStatus.source = 'demo';
           }
         },
 
@@ -1389,6 +1389,7 @@
   <script src="/ai-reject-dashboard/frontend/assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>
-    <script defer src="../assets/js/sitewide-modernization.js"></script>
-</body>
-</html>
+    <script defer="" src="../assets/js/sitewide-modernization.js"></script>
+
+
+</body></html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl" data-theme="light">
-<head>
+<!DOCTYPE html><html lang="ar" dir="rtl" data-theme="light"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>باني التقارير الذكي — BrightAI Reports Hub</title>
@@ -221,7 +219,7 @@
   </style>
 
   <!-- Alpine.js library — local vendor (CSP-safe, no CDN) -->
-  <script defer src="/assets/vendor/alpine.min.js"></script>
+  <script defer="" src="/assets/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="../../../assets/css/sitewide-modernization.css">
 </head>
 <body class="bright-page--dashboard" data-bright-page-type="dashboard">
@@ -236,14 +234,14 @@
         <div class="sub">Focus ERP Integrated System</div>
       </div>
       <nav class="sidebar-nav">
-        <a href="index.html"><span class="icon">&#x1F4CA;</span> لوحة التحكم الرئيسية</a>
-        <a href="executive.html"><span class="icon">&#x1F3E2;</span> الرؤية التنفيذية</a>
-        <a href="finance.html"><span class="icon">&#x1F4B0;</span> التحليلات المالية</a>
-        <a href="quality.html"><span class="icon">&#x1F3EB;</span> الجودة والـ CAPA</a>
-        <a href="production.html"><span class="icon">&#x1F3ED;</span> الإنتاج والعمليات</a>
-        <a href="workflow.html"><span class="icon">&#x1F504;</span> الحوكمة ومسار العمل</a>
-        <a href="technical.html"><span class="icon">&#x2699;</span> الرؤية التقنية</a>
-        <a href="reports.html" class="active"><span class="icon">&#x1F4C4;</span> مركز التقارير الفاخر</a>
+        <a href="index.html"><span class="icon">📊</span> لوحة التحكم الرئيسية</a>
+        <a href="executive.html"><span class="icon">🏢</span> الرؤية التنفيذية</a>
+        <a href="finance.html"><span class="icon">💰</span> التحليلات المالية</a>
+        <a href="quality.html"><span class="icon">🏫</span> الجودة والـ CAPA</a>
+        <a href="production.html"><span class="icon">🏭</span> الإنتاج والعمليات</a>
+        <a href="workflow.html"><span class="icon">🔄</span> الحوكمة ومسار العمل</a>
+        <a href="technical.html"><span class="icon">⚙</span> الرؤية التقنية</a>
+        <a href="reports.html" class="active"><span class="icon">📄</span> مركز التقارير الفاخر</a>
       </nav>
       <div class="sidebar-footer">
         نظام فوكس هو المصدر الرسمي للبيانات.<br>
@@ -256,7 +254,7 @@
       <!-- Topbar Header -->
       <header class="topbar">
         <div class="topbar-left">
-          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <button class="hamburger" aria-label="Toggle sidebar">☰</button>
           <div class="page-title-area">
             <h2>باني التقارير الذكي</h2>
             <div class="breadcrumb">التقارير — التصدير متعدد الصيغ — جدولة آلية للعمليات</div>
@@ -264,12 +262,12 @@
         </div>
         <div class="topbar-right">
           <!-- Multi-language Toggle -->
-          <button class="btn btn-secondary text-xs" @click="toggleLanguage()">
+          <button class="btn btn-secondary text-xs" @click="toggleLanguage()" aria-label="زر تفاعلي">
             <span x-text="lang === 'ar' ? 'English' : 'العربية'"></span>
           </button>
           
           <!-- Dark Mode Toggle -->
-          <button class="btn btn-secondary text-xs" @click="toggleTheme()">
+          <button class="btn btn-secondary text-xs" @click="toggleTheme()" aria-label="زر تفاعلي">
             <span x-text="theme === 'light' ? '🌙' : '☀️'"></span>
           </button>
           
@@ -310,7 +308,7 @@
 
             <div class="card template-card" :class="activeTemplate === 'quality' ? 'active' : ''" @click="selectTemplate('quality')">
               <div style="font-size: 1.5rem; margin-bottom: 8px;">🧪</div>
-              <h4 style="font-weight: 700; font-size: 0.82rem; color: var(--primary);" x-text="lang === 'ar' ? 'تقرير الجودة والـ CAPA' : 'Quality & CAPA (PDF)'"></h4>
+              <h4 style="font-weight: 700; font-size: 0.82rem; color: var(--primary);" x-text="lang === 'ar' ? 'تقرير الجودة والـ CAPA' : 'Quality &amp; CAPA (PDF)'"></h4>
               <p style="font-size: 0.68rem; color: var(--gray-500); margin-top: 4px;" x-text="lang === 'ar' ? 'مؤشرات NCR، أداء كانبان لـ CAPA، ومخطط إيشيكاوا وتحليلات الأسباب.' : 'Quality metrics, CAPA Board status, and Ishikawa root causes.'"></p>
               <span class="badge info" style="margin-top: 8px;" x-text="lang === 'ar' ? 'إدارة الجودة QMS' : 'Quality QMS'"></span>
             </div>
@@ -396,17 +394,17 @@
 
             <!-- Available Sections to drag -->
             <div>
-              <h4 style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; color: var(--navy);" x-text="lang === 'ar' ? 'أقسام التقارير المتاحة' : 'Available Sections'"></h4 >
+              <h4 style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; color: var(--navy);" x-text="lang === 'ar' ? 'أقسام التقارير المتاحة' : 'Available Sections'"></h4>
               <p style="font-size: 0.65rem; color: var(--gray-500); margin-bottom: 12px;" x-text="lang === 'ar' ? 'قم بسحب الأقسام وتنزيلها في منطقة باني التقرير المجاورة:' : 'Drag elements into the dropping builder area:'"></p>
               
               <div class="draggable-list">
                 <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'cover')" x-text="lang === 'ar' ? '📖 صفحة الغلاف والترويسة' : '📖 Cover Page'"></div>
                 <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'summary')" x-text="lang === 'ar' ? '🤖 إيجاز الذكاء الاصطناعي' : '🤖 AI Summary Brief'"></div>
                 <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'kpis')" x-text="lang === 'ar' ? '📈 بطاقات مؤشرات الأداء' : '📈 KPIs Summary Cards'"></div>
-                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'financials')" x-text="lang === 'ar' ? '💵 مصفوفة الخسائر والتحليل المالي' : '💵 Loss & Finance Analysis'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'financials')" x-text="lang === 'ar' ? '💵 مصفوفة الخسائر والتحليل المالي' : '💵 Loss &amp; Finance Analysis'"></div>
                 <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'pareto')" x-text="lang === 'ar' ? '📊 عيوب المرفوضات (Pareto)' : '📊 Reject Defect Pareto'"></div>
                 <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'capa')" x-text="lang === 'ar' ? '🧪 جدول وإجراءات كانبان CAPA' : '🧪 CAPA Quality Board'"></div>
-                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'audit')" x-text="lang === 'ar' ? '🏛️ سجل الموافقات وقائمة التدقيق' : '🏛️ Approvals & Checklist'"></div>
+                <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'audit')" x-text="lang === 'ar' ? '🏛️ سجل الموافقات وقائمة التدقيق' : '🏛️ Approvals &amp; Checklist'"></div>
                 <div class="draggable-item" draggable="true" @dragstart="dragStart($event, 'signatures')" x-text="lang === 'ar' ? '✍️ توقيعات الاعتماد الرقمي' : '✍️ Digital Signatures'"></div>
               </div>
             </div>
@@ -419,15 +417,12 @@
             <!-- Target Builder (Drag over area) -->
             <div class="card" style="padding: 20px;">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary);" x-text="lang === 'ar' ? '2. منطقة باني التقرير المخصص (اسحب الأقسام هنا)' : '2. Drag & Drop Builder Workspace'"></h4>
-                <button class="btn btn-secondary text-xxs" @click="clearDroppedSections()" x-text="lang === 'ar' ? 'إعادة تعيين الأقسام' : 'Reset Workspace'"></button>
+                <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary);" x-text="lang === 'ar' ? '2. منطقة باني التقرير المخصص (اسحب الأقسام هنا)' : '2. Drag &amp; Drop Builder Workspace'"></h4>
+                <button class="btn btn-secondary text-xxs" @click="clearDroppedSections()" x-text="lang === 'ar' ? 'إعادة تعيين الأقسام' : 'Reset Workspace'" aria-label="زر تفاعلي"></button>
               </div>
 
               <!-- Drop Target Zone -->
-              <div class="drop-zone" :class="dragOver ? 'dragover' : ''"
-                   @dragover.prevent="dragOver = true"
-                   @dragleave="dragOver = false"
-                   @drop="handleDrop($event)">
+              <div class="drop-zone" :class="dragOver ? 'dragover' : ''" @dragover.prevent="dragOver = true" @dragleave="dragOver = false" @drop="handleDrop($event)">
                 
                 <template x-for="(sec, idx) in droppedSections" :key="idx">
                   <div class="dropped-section">
@@ -435,7 +430,7 @@
                       <span class="drag-handle">☰</span>
                       <span style="font-size: 0.78rem; font-weight: 700; color: var(--navy);" x-text="getSectionTitle(sec)"></span>
                     </div>
-                    <button class="btn btn-secondary text-xxs" style="color: var(--danger); padding: 2px 8px;" @click="removeDroppedSection(idx)" x-text="lang === 'ar' ? 'إزالة' : 'Remove'"></button>
+                    <button class="btn btn-secondary text-xxs" style="color: var(--danger); padding: 2px 8px;" @click="removeDroppedSection(idx)" x-text="lang === 'ar' ? 'إزالة' : 'Remove'" aria-label="زر تفاعلي"></button>
                   </div>
                 </template>
 
@@ -455,18 +450,18 @@
               <div style="display: flex; gap: 8px;">
                 <button class="btn btn-primary" :disabled="droppedSections.length === 0 || exportLoading" @click="triggerExport('pdf')">
                   <span x-show="!exportLoading">📄 PDF</span>
-                  <span x-show="exportLoading && formatType === 'pdf'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
-                  <span x-show="exportLoading && formatType === 'pdf'" x-text="lang === 'ar' ? 'جاري الرندرة...' : 'Rendering...'"></span>
+                  <span x-show="exportLoading &amp;&amp; formatType === 'pdf'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
+                  <span x-show="exportLoading &amp;&amp; formatType === 'pdf'" x-text="lang === 'ar' ? 'جاري الرندرة...' : 'Rendering...'"></span>
                 </button>
                 <button class="btn btn-secondary" style="border-color: var(--green); color: var(--green);" :disabled="droppedSections.length === 0 || exportLoading" @click="triggerExport('excel')">
                   <span x-show="!exportLoading">🟢 Excel</span>
-                  <span x-show="exportLoading && formatType === 'excel'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
-                  <span x-show="exportLoading && formatType === 'excel'" x-text="lang === 'ar' ? 'جاري التصدير...' : 'Exporting...'"></span>
+                  <span x-show="exportLoading &amp;&amp; formatType === 'excel'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
+                  <span x-show="exportLoading &amp;&amp; formatType === 'excel'" x-text="lang === 'ar' ? 'جاري التصدير...' : 'Exporting...'"></span>
                 </button>
                 <button class="btn btn-secondary" style="border-color: var(--accent); color: var(--accent);" :disabled="droppedSections.length === 0 || exportLoading" @click="triggerExport('pptx')">
                   <span x-show="!exportLoading">🟠 PPTX</span>
-                  <span x-show="exportLoading && formatType === 'pptx'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
-                  <span x-show="exportLoading && formatType === 'pptx'" x-text="lang === 'ar' ? 'جاري التوليد...' : 'Generating...'"></span>
+                  <span x-show="exportLoading &amp;&amp; formatType === 'pptx'" class="spinner" style="width:12px;height:12px;border-width:2px;display:inline-block;margin-left:6px;"></span>
+                  <span x-show="exportLoading &amp;&amp; formatType === 'pptx'" x-text="lang === 'ar' ? 'جاري التوليد...' : 'Generating...'"></span>
                 </button>
               </div>
             </div>
@@ -499,7 +494,7 @@
                     
                     <!-- Previews contents by type -->
                     <div x-show="sec === 'cover'" style="text-align: center; padding: 30px 0;">
-                      <h2 style="font-weight: 800; font-size: 1.4rem; color: var(--navy);" x-text="lang === 'ar' ? 'تقرير المرفوضات والامتثال الفني' : 'Quality Reject & Compliance Report'"></h2>
+                      <h2 style="font-weight: 800; font-size: 1.4rem; color: var(--navy);" x-text="lang === 'ar' ? 'تقرير المرفوضات والامتثال الفني' : 'Quality Reject &amp; Compliance Report'"></h2>
                       <p style="font-size: 0.72rem; color: var(--gray-500); margin-top: 8px;" x-text="lang === 'ar' ? 'صادر لشركة الشرق الأوسط للمنتجات الطبية والمرفوضات (MAIS)' : 'Published for Middle East Medical Adhesive Industry (MAIS)'"></p>
                     </div>
 
@@ -590,7 +585,7 @@
             
             <!-- Schedule Form -->
             <div class="card" style="padding: 20px;">
-              <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;" x-text="lang === 'ar' ? '📅 إعداد جدولة آلية للتقارير (Scheduled Reports)' : '📅 Schedule Automated Reports'"></h4>
+              <h3 style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;" x-text="lang === 'ar' ? '📅 إعداد جدولة آلية للتقارير (Scheduled Reports)' : '📅 Schedule Automated Reports'"></h3>
               
               <div style="display: flex; flex-direction: column; gap: 12px;">
                 <div>
@@ -612,17 +607,17 @@
                   <select class="form-control text-xs" x-model="schedule.template">
                     <option value="executive" x-text="lang === 'ar' ? 'الإيجاز التنفيذي (PDF)' : 'Executive Brief (PDF)'"></option>
                     <option value="financial" x-text="lang === 'ar' ? 'التقرير المالي (Excel)' : 'Financial Report (Excel)'"></option>
-                    <option value="quality" x-text="lang === 'ar' ? 'تقرير الجودة والـ CAPA' : 'Quality & CAPA'"></option>
+                    <option value="quality" x-text="lang === 'ar' ? 'تقرير الجودة والـ CAPA' : 'Quality &amp; CAPA'"></option>
                   </select>
                 </div>
 
-                <button class="btn btn-primary" style="margin-top: 8px;" @click="saveSchedule()" x-text="lang === 'ar' ? 'حفظ وضبط الجدولة' : 'Save & Schedule Report'"></button>
+                <button class="btn btn-primary" style="margin-top: 8px;" @click="saveSchedule()" x-text="lang === 'ar' ? 'حفظ وضبط الجدولة' : 'Save &amp; Schedule Report'" aria-label="زر تفاعلي"></button>
               </div>
             </div>
 
             <!-- History List -->
             <div class="card" style="padding: 20px;">
-              <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;" x-text="lang === 'ar' ? '📜 السجل التاريخي للتقارير المصدرة' : '📜 Generated Reports History'"></h4 >
+              <h4 style="font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 12px;" x-text="lang === 'ar' ? '📜 السجل التاريخي للتقارير المصدرة' : '📜 Generated Reports History'"></h4>
               
               <div style="max-height: 250px; overflow-y: auto;">
                 <table class="table" style="font-size: 0.65rem;">
@@ -643,7 +638,7 @@
                         <td x-text="item.createdBy"></td>
                         <td x-text="new Date(item.createdAt).toLocaleDateString(lang === 'ar' ? 'ar-SA' : 'en-US')"></td>
                         <td>
-                          <a class="btn btn-secondary text-xxs" style="padding: 2px 8px;" :href="'/api/reports/download/' + item.id" download x-text="lang === 'ar' ? 'تحميل' : 'Download'"></a>
+                          <a class="btn btn-secondary text-xxs" style="padding: 2px 8px;" :href="'/api/reports/download/' + item.id" download="" x-text="lang === 'ar' ? 'تحميل' : 'Download'"></a>
                         </td>
                       </tr>
                     </template>
@@ -871,6 +866,7 @@
   <script src="../assets/js/ai-assistant.js"></script>
   <!-- Enterprise Notifications System -->
   <script src="../assets/js/notifications.js"></script>
-    <script defer src="../../../assets/js/sitewide-modernization.js"></script>
-</body>
-</html>
+    <script defer="" src="../../../assets/js/sitewide-modernization.js"></script>
+
+
+</body></html>

@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl" class="js-focus-visible">
-<head>
+<!DOCTYPE html><html lang="ar" dir="rtl" class="js-focus-visible"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إدارة المنصة وسجل التدقيق — System Admin Panel</title>
@@ -94,7 +92,7 @@
   </style>
 
   <!-- Alpine.js library — local vendor (CSP-safe, no CDN) -->
-  <script defer src="/assets/vendor/alpine.min.js"></script>
+  <script defer="" src="/assets/vendor/alpine.min.js"></script>
     <link rel="stylesheet" href="../../../../assets/css/sitewide-modernization.css">
 </head>
 <body class="bright-page--dashboard" data-bright-page-type="dashboard">
@@ -201,9 +199,7 @@
                       <span class="badge secondary" x-text="u.role_name"></span>
                     </td>
                     <td>
-                      <span class="badge" 
-                            :class="u.status === 'active' ? 'success' : u.status === 'locked' ? 'danger' : 'warning'"
-                            x-text="u.status === 'active' ? 'نشط' : u.status === 'locked' ? 'مقفل مؤقتاً' : 'معطل'"></span>
+                      <span class="badge" :class="u.status === 'active' ? 'success' : u.status === 'locked' ? 'danger' : 'warning'" x-text="u.status === 'active' ? 'نشط' : u.status === 'locked' ? 'مقفل مؤقتاً' : 'معطل'"></span>
                     </td>
                     <td x-text="new Date(u.created_at).toLocaleDateString('ar-SA')"></td>
                     <td>
@@ -268,9 +264,7 @@
                     </td>
                     <td x-text="log.resource"></td>
                     <td>
-                      <span class="badge" 
-                            :class="log.status === 'success' ? 'success' : 'danger'"
-                            x-text="log.status === 'success' ? 'ناجحة' : 'فاشلة / حظر'"></span>
+                      <span class="badge" :class="log.status === 'success' ? 'success' : 'danger'" x-text="log.status === 'success' ? 'ناجحة' : 'فاشلة / حظر'"></span>
                     </td>
                     <td>
                       <span x-text="log.ip_address"></span><br>
@@ -309,17 +303,17 @@
     <!-- Modal: Add / Edit User -->
     <div x-show="modalOpen" class="modal-overlay" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);position:fixed;inset:0;z-index:9999;">
       <div class="card card-elevated" style="width:100%;max-width:480px;padding:24px;">
-        <h4 style="font-weight:800;color:var(--color-primary);margin-bottom:16px;" x-text="isEdit ? '⚙️ تعديل صلاحيات وحالة الموظف' : '➕ إضافة موظف وحساب جديد'"></h4>
+        <h3 style="font-weight:800;color:var(--color-primary);margin-bottom:16px;" x-text="isEdit ? '⚙️ تعديل صلاحيات وحالة الموظف' : '➕ إضافة موظف وحساب جديد'"></h3>
         
         <form @submit.prevent="saveUser()">
           <div class="form-group" style="margin-bottom:12px;">
             <label class="form-label">الاسم الكامل</label>
-            <input type="text" class="form-control" x-model="userForm.name" required>
+            <input type="text" class="form-control" x-model="userForm.name" required="">
           </div>
 
           <div class="form-group" style="margin-bottom:12px;">
             <label class="form-label">البريد الإلكتروني المؤسسي</label>
-            <input type="email" class="form-control" x-model="userForm.email" :disabled="isEdit" required>
+            <input type="email" class="form-control" x-model="userForm.email" :disabled="isEdit" required="">
           </div>
 
           <div class="form-group" style="margin-bottom:12px;" x-show="!isEdit">
@@ -330,7 +324,7 @@
 
           <div class="form-group" style="margin-bottom:12px;">
             <label class="form-label">الدور والرتبة (Role)</label>
-            <select class="form-control" x-model="userForm.roleName" required>
+            <select class="form-control" x-model="userForm.roleName" required="">
               <template x-for="r in rolesList" :key="r.id">
                 <option :value="r.name" x-text="r.name"></option>
               </template>
@@ -347,7 +341,7 @@
           </div>
 
           <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px;">
-            <button type="submit" class="btn btn-primary" :disabled="loading" x-text="loading ? 'جاري الحفظ...' : 'حفظ البيانات'"></button>
+            <button type="submit" class="btn btn-primary" :disabled="loading" x-text="loading ? 'جاري الحفظ...' : 'حفظ البيانات'" aria-label="زر تفاعلي"></button>
             <button type="button" class="btn btn-outline" @click="modalOpen = false">إلغاء</button>
           </div>
         </form>
@@ -362,7 +356,7 @@
   
   <!-- Page logic — extracted to external file (CSP-compliant) -->
   <script src="/assets/js/pages/users.js"></script>
-  <script src="/assets/js/auth-guard.js"></script><!-- dummy marker users start
+  <!-- dummy marker users start
     function adminApp() {
       return {
         activeView: 'users',
@@ -509,3 +503,4 @@
     <script defer src="../../../../assets/js/sitewide-modernization.js"></script>
 </body>
 </html>
+--></body></html>
