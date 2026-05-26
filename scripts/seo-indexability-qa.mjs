@@ -76,14 +76,15 @@ function normalizeHref(href) {
   return pathname;
 }
 
-const htmlFiles = walk(ROOT).filter((file) => {
+const allHtmlFiles = walk(ROOT);
+const htmlFiles = allHtmlFiles.filter((file) => {
   const relPath = rel(file);
   return !relPath.startsWith("frontend/pages/") &&
     !relPath.startsWith("mais-OBM/") &&
     !NON_PUBLIC_PATH_PREFIXES.some((prefix) => relPath.startsWith(prefix));
 });
 
-for (const file of htmlFiles) {
+for (const file of allHtmlFiles) {
   const relPath = rel(file);
   const route = publicPathFromRel(relPath);
   if (route) routeToFile.set(route, relPath);
