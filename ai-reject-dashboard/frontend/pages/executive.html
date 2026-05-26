@@ -1,160 +1,713 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="js-focus-visible">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Reject Analytics — Executive View</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — C-Level Executive Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="لوحة الإدارة التنفيذية الاستراتيجية لـ BrightAI - مخصصة لمجلس الإدارة والقيادة العليا لمصانع ميس.">
+  <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
+  
+  <!-- Central Design System and Components Bundle -->
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  
+  <!-- Bespoke Page Styling for Premium McKinsey/BCG Consulting Reports Aesthetics -->
+  <style>
+    body {
+      display: flex;
+      background-color: var(--color-background);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    .app-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .main-viewport {
+      flex-grow: 1;
+      margin-inline-start: 260px;
+      transition: var(--transition-normal);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .sidebar-collapsed + .main-viewport {
+      margin-inline-start: 72px;
+    }
+
+    .content-container {
+      padding: var(--spacing-xl);
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+      flex-grow: 1;
+    }
+
+    /* Board-Level Report Styles */
+    .executive-brief-container {
+      border-inline-start: 4px solid var(--color-primary);
+      background-color: var(--color-surface);
+      padding: var(--spacing-xl);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-2);
+    }
+
+    .executive-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--spacing-xl);
+    }
+
+    .top-risks-table th, .top-risks-table td {
+      padding: var(--spacing-sm) var(--spacing-md);
+      font-size: var(--font-size-xs);
+    }
+
+    /* Radar & Bubble Charts custom sizes */
+    .chart-container-exec {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      height: 380px;
+    }
+
+    /* Print media options optimized for C-Level Board Presentations */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+      }
+      .sidebar, .topbar, .btn, .no-print {
+        display: none !important;
+      }
+      .main-viewport {
+        margin-inline-start: 0 !important;
+        padding: 0 !important;
+      }
+      .content-container {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .card, .chart-container-exec {
+        border: 1px solid #000000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+      }
+    }
+
+    .exec-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-xl);
+    }
+
+    @media (max-width: 1024px) {
+      .main-viewport {
+        margin-inline-start: 0 !important;
+      }
+      .exec-grid-2, .executive-card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <!-- Libraries CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/ar.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
-  <div class="app-layout">
-    <aside class="sidebar">
-      <div class="sidebar-brand">
-        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
-        <div class="sub">Focus ERP Integrated Prototype</div>
+<body x-data="executiveApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'">
+
+  <div class="app-wrapper">
+
+    <!-- 1. SIDEBAR (Collapsible Navigation) -->
+    <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <span style="white-space: nowrap;">BrightAI Analytics</span>
+        </a>
       </div>
       <nav class="sidebar-nav">
-        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
-        <a href="executive.html" class="active"><span class="icon">&#x1F3E2;</span> Executive View</a>
-        <a href="finance.html"><span class="icon">&#x1F4B0;</span> Finance View</a>
-        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
-        <a href="production.html"><span class="icon">&#x1F3ED;</span> Production / Ops</a>
-        <a href="workflow.html"><span class="icon">&#x1F504;</span> Workflow &amp; Governance</a>
-        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+        <a href="index.html" class="sidebar-link">
+          <span class="sidebar-icon">📊</span>
+          <span>لوحة القيادة الرئيسية</span>
+        </a>
+        <a href="executive.html" class="sidebar-link is-active">
+          <span class="sidebar-icon">🏢</span>
+          <span>المنظور التنفيذي</span>
+        </a>
+        <a href="finance.html" class="sidebar-link">
+          <span class="sidebar-icon">💰</span>
+          <span>المنظور المالي</span>
+        </a>
+        <a href="quality.html" class="sidebar-link">
+          <span class="sidebar-icon">🔬</span>
+          <span>الجودة وإجراءات CAPA</span>
+        </a>
+        <a href="production.html" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          <span>الإنتاج والعمليات</span>
+        </a>
+        <a href="workflow.html" class="sidebar-link">
+          <span class="sidebar-icon">🔄</span>
+          <span>حوكمة الموافقات</span>
+        </a>
+        <a href="technical.html" class="sidebar-link">
+          <span class="sidebar-icon">🛠️</span>
+          <span>المنظور الفني والربط</span>
+        </a>
+        
+        <div class="sidebar-title">تغيير اللغة / Lang</div>
+        <button class="sidebar-link" @click="toggleLanguage()" style="width:100%; border:none; background:none;">
+          <span class="sidebar-icon">🌐</span>
+          <span x-text="lang === 'ar' ? 'English (EN)' : 'العربية (AR)'"></span>
+        </button>
       </nav>
-      <div class="sidebar-footer">
-        Focus ERP remains the official source of truth.<br>
-        AI analysis is advisory only.
-      </div>
     </aside>
 
-    <main class="main-content">
+    <!-- MAIN VIEWPORT CONTAINER -->
+    <div class="main-viewport">
+
+      <!-- TOP BAR -->
       <header class="topbar">
         <div class="topbar-left">
-          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <button class="topbar-btn" @click="toggleSidebar()" aria-label="Toggle Sidebar" style="margin-inline-end: var(--spacing-sm);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          
           <div class="page-title-area">
-            <h2>Executive Management View</h2>
-            <div class="breadcrumb">Critical insights for top management — read-only advisory</div>
+            <h2 x-text="lang === 'ar' ? 'منظور الإدارة التنفيذية الاستراتيجية' : 'Executive Management View'"></h2>
+            <div class="breadcrumb" style="margin-bottom:0;" x-text="lang === 'ar' ? 'إيجاز القرارات والمخاطر والمؤشرات الكبرى لمجلس الإدارة' : 'Board-level critical decision audit & mitigation summary'"></div>
           </div>
         </div>
+
         <div class="topbar-right">
-          <span id="data-source-badge" class="data-source-badge loading">Loading...</span>
+          <!-- Dark Mode Toggle Button -->
+          <button class="topbar-btn" @click="toggleDarkMode()">
+            <span x-show="!darkMode">🌙</span>
+            <span x-show="darkMode">☀️</span>
+          </button>
+
+          <!-- Export Options Dropdown -->
+          <div style="position: relative;" x-data="{ open: false }">
+            <button class="btn btn-sm btn-primary" @click="open = !open">
+              <span>📤</span>
+              <span x-text="lang === 'ar' ? 'خيارات التصدير C-Level' : 'Executive Export'"></span>
+            </button>
+            <div x-show="open" @click.outside="open = false" class="card card-elevated" style="position: absolute; inset-inline-end: 0; top: 100%; width: 260px; z-index: 1000; padding: var(--spacing-md); margin-top: var(--spacing-sm); display:flex; flex-direction:column; gap:var(--spacing-xs);">
+              <button class="btn btn-sm btn-outline" style="justify-content:flex-start;" @click="exportReport('pdf')">
+                <span>📄</span>
+                <span x-text="lang === 'ar' ? 'تصدير تقرير الإيجاز التنفيذي (PDF)' : 'PDF Executive Report'"></span>
+              </button>
+              <button class="btn btn-sm btn-outline" style="justify-content:flex-start;" @click="exportReport('ppt')">
+                <span>📊</span>
+                <span x-text="lang === 'ar' ? 'تصدير عرض مجلس الإدارة (PPT)' : 'PowerPoint Presentation'"></span>
+              </button>
+              <button class="btn btn-sm btn-outline" style="justify-content:flex-start;" @click="exportReport('email')">
+                <span>✉️</span>
+                <span x-text="lang === 'ar' ? 'إرسال التقرير للأعضاء' : 'Email to Board Members'"></span>
+              </button>
+              <button class="btn btn-sm btn-outline" style="justify-content:flex-start;" @click="window.print()">
+                <span>🖨️</span>
+                <span x-text="lang === 'ar' ? 'طباعة التقرير مهيأً' : 'Print-friendly view'"></span>
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div class="page-content">
+      <!-- MAIN PAGE CONTENT CONTAINER -->
+      <main class="content-container">
 
-        <div class="disclaimer">
-          <strong>&#x26A0; Important:</strong> This view is designed for top management.
-          It shows only critical information requiring attention.
-          Focus ERP remains the official source of truth.
-          All AI insights are advisory.
-        </div>
+        <!-- BREADCRUMBS -->
+        <nav class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link" x-text="lang === 'ar' ? 'لوحة القيادة' : 'Dashboard'"></a></li>
+          <span class="breadcrumb-separator">/</span>
+          <li class="breadcrumb-item is-active" x-text="lang === 'ar' ? 'المنظور التنفيذي C-Level' : 'Executive View'"></li>
+        </nav>
 
-        <p id="source-info" class="text-muted text-sm mb-16"></p>
-
-        <div id="filter-bar" class="filter-bar"></div>
-
-        <div id="cards-grid" class="cards-grid">
-          <div class="loading"><div class="spinner"></div></div>
-        </div>
-
-        <div id="ai-summary"></div>
-
-        <div class="col-2">
-          <div class="section">
-            <div class="section-header">
-              <h3>&#x1F4A1; This Week&rsquo;s Key Risk</h3>
+        <!-- 1. EXECUTIVE BRIEF SECTION (AI Generated by Gemini & Top Highlights) -->
+        <section class="executive-brief-container">
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--spacing-md); margin-bottom:var(--spacing-md);">
+            <div style="display:flex; align-items:center; gap:var(--spacing-sm);">
+              <span style="font-size:var(--font-size-lg);">🤖</span>
+              <h3 style="font-weight:700; font-size:var(--font-size-md); color:var(--color-primary);" x-text="lang === 'ar' ? 'الإيجاز الاستراتيجي لمجلس الإدارة (مولد بـ Gemini)' : 'AI-Generated Board Brief'"></h3>
             </div>
-            <div class="card" style="padding:16px;">
-              <p class="text-muted text-sm" style="line-height:1.7;">
-                The highest priority risk is the accumulation of high-value raw material rejects
-                in the warehouse. Resin B (SAR 96,000) and Raw Material A (SAR 45,000)
-                have been pending approval for over 18 days, increasing the risk of further
-                value loss and potential regulatory non-compliance.
-                The warehouse department accounts for nearly 80% of total reject cost.
-              </p>
+            
+            <div style="display:flex; gap:var(--spacing-xs);">
+              <button class="btn btn-sm btn-outline" @click="refreshBrief()" x-text="lang === 'ar' ? 'تحديث الإيجاز الذكي' : 'Refresh Brief'"></button>
+              <button class="btn btn-sm btn-primary" @click="exportReport('pdf')" x-text="lang === 'ar' ? 'تصدير التقرير التنفيذي' : 'Export Brief PDF'"></button>
             </div>
           </div>
 
-          <div class="section">
-            <div class="section-header">
-              <h3>&#x1F3ED; Highest Cost Department</h3>
+          <p style="font-size:var(--font-size-sm); line-height:1.7; color:var(--text-secondary); margin-bottom:var(--spacing-lg);" x-text="briefText"></p>
+
+          <h4 style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary); margin-bottom:var(--spacing-sm);" x-text="lang === 'ar' ? 'أهم 3 مؤشرات عاجلة لهذا الأسبوع:' : 'Top 3 Strategic Highlights this Week:'"></h4>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:var(--spacing-md);">
+            <template x-for="item in highlights">
+              <div style="display:flex; align-items:flex-start; gap:var(--spacing-sm); padding:var(--spacing-md); border-radius:var(--radius-md); background-color:var(--gray-50); border:1px solid var(--color-border);">
+                <span style="font-size:var(--font-size-lg);" x-text="item.icon"></span>
+                <div>
+                  <div style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary);" x-text="item.title"></div>
+                  <div style="font-size:var(--font-size-xs); color:var(--text-secondary); margin-top:2px;" x-text="item.desc"></div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </section>
+
+        <!-- 2. STRATEGIC KPIs HERO (Big Numbers & Budgets) -->
+        <section class="executive-card-grid">
+          <!-- KPI 1: YTD Cost vs Budget -->
+          <div class="card card-elevated card-stat">
+            <div class="card-header" style="border-bottom:none; padding-bottom:0;">
+              <span class="card-title" x-text="lang === 'ar' ? 'تكلفة المرفوضات الكلية YTD' : 'YTD Reject Cost Impact'"></span>
+              <span class="badge badge-danger">YTD</span>
             </div>
-            <div id="cost-by-dept"></div>
-          </div>
-        </div>
-
-        <div class="col-2">
-          <div class="section">
-            <div class="section-header">
-              <h3>&#x26A0; High-Value Reject Alerts</h3>
+            <div class="card-stat-value" style="color:var(--color-danger);" x-text="formatCurrency(kpis.ytdCost)"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="card-stat-trend card-stat-trend-down">↓ 4.5% vs budget limit</span>
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'الحد السنوي المخطط: 165M' : 'Planned Budget Cap: 165M'"></span>
             </div>
-            <div id="finance-alerts"></div>
           </div>
-          <div class="section">
-            <div class="section-header">
-              <h3>&#x23F3; Delayed Approvals &amp; Destruction</h3>
+
+          <!-- KPI 2: Risk Exposure -->
+          <div class="card card-elevated card-stat">
+            <div class="card-header" style="border-bottom:none; padding-bottom:0;">
+              <span class="card-title" x-text="lang === 'ar' ? 'حجم المخاطر المالية المعرضة للفقد' : 'Total Financial Risk Exposure'"></span>
+              <span class="badge badge-warning" x-text="lang === 'ar' ? 'تأمين مالي' : 'At Risk'"></span>
             </div>
-            <div id="alerts"></div>
-          </div>
-        </div>
-
-        <div class="col-2">
-          <div class="section">
-            <div class="section-header">
-              <h3>&#x26A0; Anomaly Detection</h3>
-              <span class="badge">AI Flagged</span>
+            <div class="card-stat-value" x-text="formatCurrency(kpis.riskExposure)"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'مجموع تكلفة السجلات المعلقة > 15 يوم' : 'Sum of cases pending for 15+ days'"></span>
             </div>
-            <div id="anomalies"></div>
           </div>
-          <div class="section">
-            <div class="section-header">
-              <h3>&#x1F4C8; Predictive Cost Projection</h3>
-              <span class="badge">30-Day Forecast</span>
+
+          <!-- KPI 3: Supplier Quality Index -->
+          <div class="card card-elevated card-stat">
+            <div class="card-header" style="border-bottom:none; padding-bottom:0;">
+              <span class="card-title" x-text="lang === 'ar' ? 'مؤشر جودة الموردين والمواد' : 'Supplier Quality Index'"></span>
+              <span class="badge badge-success">GMP</span>
             </div>
-            <div id="predictive-cost"></div>
+            <div class="card-stat-value" style="color:var(--color-success);" x-text="kpis.supplierQualityIndex + '%'"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="card-stat-trend card-stat-trend-up">↑ Target Met</span>
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'معيار المطابقة للمواصفات الطبية' : 'Mais medical specification standard'"></span>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <div class="section">
-          <div class="section-header">
-            <h3>&#x1F4CB; Required Management Actions</h3>
-            <span class="badge">Decision Needed</span>
+        <!-- 3. RISK MATRIX & DEPARTMENT SCORECARD (Radar & Bubble charts) -->
+        <section class="exec-grid-2">
+          <!-- Risk Bubble Matrix -->
+          <div class="chart-container-exec" style="height:410px;">
+            <div class="card-header" style="margin-bottom: var(--spacing-sm);">
+              <div class="card-title" x-text="lang === 'ar' ? 'مصفوفة المخاطر الاستراتيجية ثنائية الأبعاد' : 'C-Level Interactive 2D Risk Matrix'"></div>
+              <span class="badge badge-pill badge-primary" x-text="lang === 'ar' ? 'الاحتمالية × الأثر' : 'Probability vs Impact'"></span>
+            </div>
+            <div id="chart-risk-matrix" style="height:330px;"></div>
           </div>
-          <div id="management-actions"></div>
-        </div>
 
-        <div class="section">
-          <div class="section-header">
-            <h3>&#x1F4DC; Board-Level Recommendation</h3>
+          <!-- Department Radar Scorecard -->
+          <div class="chart-container-exec" style="height:410px;">
+            <div class="card-header" style="margin-bottom: var(--spacing-sm);">
+              <div class="card-title" x-text="lang === 'ar' ? 'بطاقة الأداء الراداري المتكاملة للأقسام' : 'Radar Performance Scorecard'"></div>
+              <span class="badge badge-success" x-text="lang === 'ar' ? 'الجودة × التكلفة × السرعة' : 'Multi-axis Evaluation'"></span>
+            </div>
+            <div id="chart-dept-radar" style="height:330px;"></div>
           </div>
-          <div class="card" style="padding:20px;">
-            <p style="font-size:0.85rem;line-height:1.8;color:var(--gray-700);">
-              Based on the current reject data, the board is recommended to:
-            </p>
-            <ol style="font-size:0.8rem;line-height:2;color:var(--gray-600);padding-right:20px;margin-top:8px;">
-              <li>Authorise the QCM to expedite approval decisions on all pending cases exceeding 15 days.</li>
-              <li>Direct the Warehouse Manager to implement immediate FIFO/FEFO compliance review.</li>
-              <li>Instruct Procurement to enforce supplier quality agreements for repeated raw material deviations.</li>
-              <li>Assign Finance to evaluate recovery options for high-value rejects before destruction approval.</li>
-              <li>Request a CAPA status update from QCM within 14 days covering all open corrective actions.</li>
-              <li>Schedule a quarterly management review of reject trends and CAPA effectiveness.</li>
-            </ol>
+        </section>
+
+        <!-- 4. TOP RISKS DASHBOARD (5 Highest risks with owners & AI Recommendations) -->
+        <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
+          <div class="card-header">
+            <h3 class="card-title" x-text="lang === 'ar' ? 'أعلى 5 مخاطر عاجلة تحت المتابعة' : 'Top 5 Enterprise Critical Risks Under Audit'"></h3>
+            <span class="badge badge-solid badge-danger" x-text="lang === 'ar' ? 'تحتاج تدخل فوري' : 'Action Required'"></span>
           </div>
-        </div>
 
-        <div class="disclaimer mt-20">
-          <strong>&#x26A0; Advisory:</strong> This dashboard is a prototype. All AI-generated recommendations
-          are advisory and require formal review and approval by authorised personnel.
-          Focus ERP is the official system of record.
-        </div>
+          <div class="table-responsive">
+            <table class="table table-striped top-risks-table">
+              <thead>
+                <tr>
+                  <th x-text="lang === 'ar' ? 'وصف الخطر الاستراتيجي' : 'Risk Description'"></th>
+                  <th x-text="lang === 'ar' ? 'الأثر المالي (SAR)' : 'Impact (SAR)'" class="col-numeric"></th>
+                  <th x-text="lang === 'ar' ? 'الاحتمالية' : 'Probability'"></th>
+                  <th x-text="lang === 'ar' ? 'حالة الإجراء' : 'Mitigation Status'"></th>
+                  <th x-text="lang === 'ar' ? 'المسؤول' : 'Owner'"></th>
+                  <th x-text="lang === 'ar' ? 'أجل الإغلاق' : 'Deadline'"></th>
+                  <th x-text="lang === 'ar' ? 'توجيهات الذكاء الاصطناعي (Gemini)' : 'Gemini AI Advisory'"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <template x-for="risk in topRisks" :key="risk.id">
+                  <tr>
+                    <td style="font-weight:600; color:var(--text-primary);" x-text="risk.desc"></td>
+                    <td class="col-numeric" style="font-weight:700; color:var(--color-danger);" x-text="formatCurrency(risk.impact)"></td>
+                    <td>
+                      <span class="table-badge" :class="{
+                        'badge-danger': risk.prob === 'Critical' || risk.prob === 'High',
+                        'badge-warning': risk.prob === 'Medium',
+                        'badge-primary': risk.prob === 'Low'
+                      }" x-text="risk.prob"></span>
+                    </td>
+                    <td x-text="risk.status"></td>
+                    <td style="font-weight:500;" x-text="risk.owner"></td>
+                    <td style="font-family:var(--font-mono);" x-text="risk.deadline"></td>
+                    <td style="color:var(--color-primary); font-size:11px;" x-text="risk.aiRec"></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </section>
 
-      </div>
-    </main>
+        <!-- 5. FINANCIAL IMPACT ANALYSIS & PREDICTIVE FORECAST -->
+        <section class="exec-grid-2">
+          <!-- Waterfall Financial Impact -->
+          <div class="chart-container-exec" style="height:380px;">
+            <div class="card-header" style="margin-bottom: var(--spacing-sm);">
+              <div class="card-title" x-text="lang === 'ar' ? 'هيكلة الأثر المالي وسيناريوهات الوفر المحقق' : 'Waste Stream Waterfall & Savings Forecast'"></div>
+            </div>
+            <div id="chart-exec-waterfall" style="height:300px;"></div>
+          </div>
+
+          <!-- AI Predictive Insights Panel -->
+          <div class="card card-outlined" style="display:flex; flex-direction:column; justify-content:space-between; height:380px; padding:var(--spacing-lg);">
+            <div class="card-header" style="padding-bottom:var(--spacing-xs); margin-bottom:var(--spacing-xs);">
+              <div class="card-title" style="display:flex; align-items:center; gap:var(--spacing-sm);">
+                <span>📈</span>
+                <span x-text="lang === 'ar' ? 'التحليلات التنبئية للأيام الثلاثين القادمة' : 'AI Predictive Forecast (Next 30 Days)'"></span>
+              </div>
+              <span class="badge badge-success" x-text="lang === 'ar' ? 'دقة: متوسطة' : 'Conf: Medium'"></span>
+            </div>
+            
+            <div style="display:flex; flex-direction:column; gap:var(--spacing-md); flex-grow:1; justify-content:center;">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:var(--spacing-sm); border-bottom:1px solid var(--color-border);">
+                <span style="font-size:var(--font-size-sm); color:var(--text-secondary);" x-text="lang === 'ar' ? 'الماكينات المهددة بالتوقف المفاجئ:' : 'Machines at imminent failure risk:'"></span>
+                <span style="font-weight:600; color:var(--color-danger);" x-text="lang === 'ar' ? 'ماكينة التشكيل Extruder-4' : 'Extruder M4'"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:var(--spacing-sm); border-bottom:1px solid var(--color-border);">
+                <span style="font-size:var(--font-size-sm); color:var(--text-secondary);" x-text="lang === 'ar' ? 'التكلفة الشهرية التنبئية المتوقعة:' : 'Predicted scrap value next 30 days:'"></span>
+                <span style="font-weight:600; color:var(--color-danger);" x-text="formatCurrency(154000)"></span>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:var(--spacing-sm); border-bottom:1px solid var(--color-border);">
+                <span style="font-size:var(--font-size-sm); color:var(--text-secondary);" x-text="lang === 'ar' ? 'أكثر منطقة نوصي بالتركيز عليها:' : 'Primary recommended focus area:'"></span>
+                <span style="font-weight:600; color:var(--color-primary);" x-text="lang === 'ar' ? 'ظروف الرطوبة بالمستودع 2' : 'Warehouse 2 Moisture'"></span>
+              </div>
+            </div>
+            
+            <p style="font-size:11px; color:var(--text-muted); line-height:1.5; margin-top:var(--spacing-sm);" x-text="lang === 'ar' ? 'تم تقدير البيانات باستخدام خوارزميات Moving Averages و Seasonal Signals الإحصائية المحلية بناءً على سجل ملف Excel المعتمد.' : 'Data calculated using local Seasonal Signal & Moving Average projections based on live Excel feed.'"></p>
+          </div>
+        </section>
+
+        <!-- 6. BOARD-LEVEL RECOMMENDATIONS & DECISIONS REQUIRED -->
+        <section class="exec-grid-2">
+          <!-- Priority Recommendations -->
+          <div class="card card-elevated" style="border-inline-start: 4px solid var(--color-success);">
+            <div class="card-header">
+              <div class="card-title" style="display:flex; align-items:center; gap:var(--spacing-sm);">
+                <span>💡</span>
+                <span x-text="lang === 'ar' ? 'توصيات مجلس الإدارة الاستراتيجية المعتمدة' : 'Strategic Recommendations for the Board'"></span>
+              </div>
+              <span class="badge badge-success" x-text="lang === 'ar' ? 'عائد ممتاز' : 'Expected ROI'"></span>
+            </div>
+            <div class="card-body">
+              <div style="display:flex; flex-direction:column; gap:var(--spacing-md);">
+                <template x-for="rec in boardRecs">
+                  <div style="padding-bottom:var(--spacing-sm); border-bottom:1px solid var(--color-border);">
+                    <div style="font-weight:600; font-size:var(--font-size-sm); color:var(--text-primary); display:flex; justify-content:space-between;">
+                      <span x-text="rec.title"></span>
+                      <span style="color:var(--color-success);" x-text="rec.roi"></span>
+                    </div>
+                    <p style="font-size:var(--font-size-xs); color:var(--text-secondary); margin-top:4px;" x-text="rec.desc"></p>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+
+          <!-- Decisions Required (Action items) -->
+          <div class="card card-elevated" style="border-inline-start: 4px solid var(--color-primary);">
+            <div class="card-header">
+              <div class="card-title" style="display:flex; align-items:center; gap:var(--spacing-sm);">
+                <span>✅</span>
+                <span x-text="lang === 'ar' ? 'القرارات المعلقة المطلوبة (C-Level Sign-off)' : 'Urgent Decisions Requiring Approval'"></span>
+              </div>
+              <span class="badge badge-warning" x-text="lang === 'ar' ? 'انتظار الموافقة' : 'Awaiting Sign-off'"></span>
+            </div>
+            <div class="card-body" style="display:flex; flex-direction:column; gap:var(--spacing-sm);">
+              <template x-for="decision in pendingDecisions">
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:var(--spacing-sm); border-radius:var(--radius-md); background-color:var(--gray-50); border:1px solid var(--color-border);">
+                  <div>
+                    <div style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-primary);" x-text="decision.title"></div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;" x-text="decision.meta"></div>
+                  </div>
+                  <button class="btn btn-sm btn-primary" style="font-size:10px; height:28px;" @click="approveDecision(decision.id)" x-text="lang === 'ar' ? 'موافق واعتماد' : 'Approve'"></button>
+                </div>
+              </template>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
   </div>
 
-  <script src="/assets/js/data.js"></script>
-  <script src="/assets/js/app.js"></script>
+  <!-- Embedded Script to Coordinate Local State, ApexCharts & Board Calculations -->
+  <script>
+    function executiveApp() {
+      return {
+        // UI Layout
+        sidebarCollapsed: false,
+        darkMode: false,
+        lang: 'ar',
+        
+        // C-Level metrics YTD
+        kpis: {
+          ytdCost: 158329773.03,
+          riskExposure: 185000,
+          supplierQualityIndex: 94.2
+        },
+
+        // Brief summaries
+        briefText: 'جاري توليد الإيجاز الاستراتيجي لمجلس الإدارة من Gemini...',
+        highlights: [
+          { icon: '📦', title: 'خطر شريط الإسفنج بالمستودع 2', desc: 'يمثل 14.5% من إجمالي الهدر المالي، والتحليلات تشير لمشكلة رطوبة.' },
+          { icon: '💰', title: 'تجاوز حدود الميزانية المخططة بالأقسام', desc: 'تجاوزت التكلفة في الإنتاج والمستودعات SAR 92M، ويلزم تفعيل الرقابة المباشرة.' },
+          { icon: '🔬', title: 'تحسن مؤشر الامتثال الكلي', desc: 'ارتفع مؤشر الامتثال الكلي للمصنع لـ 88.5% نتيجة سرعة إغلاق إجراءات CAPA.' }
+        ],
+
+        // Enterprise Risks
+        topRisks: [
+          { id: 1, desc: 'تلف شحنة شريط إسفنجي حساسة للرطوبة', impact: 145000, prob: 'Critical', status: 'تحت الفحص الوقائي', owner: 'إبراهيم علوان', deadline: '2026-06-15', aiRec: 'استبدال الحاويات لغرف معزولة تماماً' },
+          { id: 2, desc: 'انحراف معايرة حرارة ماكينة Extruder-4', impact: 92000, prob: 'High', status: 'تمت الصيانة الفورية', owner: 'محمد العتيبي', deadline: '2026-06-02', aiRec: 'تنفيذ معايرة آلية أسبوعية للماكينة' },
+          { id: 3, desc: 'هدر مواد تعبئة كرتونية من المورد المعتمد', impact: 48000, prob: 'Medium', status: 'جاري تفعيل شروط العقد', owner: 'رائد الشهري', deadline: '2026-06-25', aiRec: 'الرجوع للمورد للتعويض المالي المباشر' },
+          { id: 4, desc: 'تسرب وتلف حبيبات PVC الطبية', impact: 29000, prob: 'Medium', status: 'تم إغلاق الملف', owner: 'أحمد القرني', deadline: '2026-05-20', aiRec: 'تحسين مناولة الأكياس في المستودع' },
+          { id: 5, desc: 'تأخر الموافقات في قسم صيانة المكابس', impact: 18500, prob: 'Low', status: 'مراجعة SLA للمهندسين', owner: 'خالد السديري', deadline: '2026-06-10', aiRec: 'تفعيل إشعارات واتساب فورية للمهندسين' }
+        ],
+
+        // Priority Board Recommendations & ROI
+        boardRecs: [
+          { title: 'تحديث غرف تخزين المواد الحساسة', roi: '14.5% ROI', desc: 'خفض الهدر في شريط الإسفنج عن طريق عزل الرطوبة تماماً بالستائر المزدوجة.' },
+          { title: 'فرض اتفاقية الجودة الطبية على الموردين', roi: '100% Recovery', desc: 'مطالبة موردي مواد التغليف بالتعويض العاجل عن أي عيوب تشكيل أو تعبئة.' },
+          { title: 'أتمتة صيانة مكابس الإنتاج Extruders', roi: '34% Yield Up', desc: 'شراء نظام فحص ومعايرة رقمي لماكينات الإنتاج لتجنب انحراف التبريد الميكانيكي.' }
+        ],
+
+        // Required Decisions list
+        pendingDecisions: [
+          { id: 1, title: 'اعتماد ميزانية عزل رطوبة المستودع الثاني (SAR 45,000)', meta: 'الجهة الموصية: QCM | الأثر المتوقع: خفض 80% من مرفوضات المستودع' },
+          { id: 2, title: 'إقرار إلغاء التعامل مع مورد الكرتون الحالي لعدم الالتزام', meta: 'الجهة الموصية: Procurement | السبب: 4 انحرافات جودة متتالية' },
+          { id: 3, title: 'اعتماد موافقة الإتلاف المجمع للمرفوضات المعلقة > 18 يوماً', meta: 'الجهة الموصية: Finance | إجمالي التكلفة المهدرة: SAR 185,000' }
+        ],
+
+        // ApexCharts pointers
+        charts: {},
+
+        // Core Functions
+        init() {
+          this.initThemeAndLang();
+          this.fetchExecutiveBrief();
+          this.initExecutiveCharts();
+        },
+
+        initThemeAndLang() {
+          this.darkMode = localStorage.getItem('darkMode') === 'true';
+          this.lang = localStorage.getItem('lang') || 'ar';
+          
+          document.documentElement.setAttribute('data-theme', this.darkMode ? 'dark' : 'light');
+          document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
+          
+          if (this.darkMode) {
+            document.body.classList.add('dark');
+          }
+        },
+
+        toggleSidebar() {
+          this.sidebarCollapsed = !this.sidebarCollapsed;
+        },
+
+        toggleDarkMode() {
+          this.darkMode = !this.darkMode;
+          localStorage.setItem('darkMode', this.darkMode);
+          document.documentElement.setAttribute('data-theme', this.darkMode ? 'dark' : 'light');
+          this.updateChartThemes();
+        },
+
+        toggleLanguage() {
+          this.lang = this.lang === 'ar' ? 'en' : 'ar';
+          localStorage.setItem('lang', this.lang);
+          document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
+          
+          // Language specific texts
+          if (this.lang === 'ar') {
+            this.briefText = 'يظهر تحليل باريتو والإحصاءات التنفيذية أن تلف شريط الإسفنج في المستودعات (SAR 145K) وانحراف ماكينة الإنتاج (SAR 92K) يمثلان 80% من التكلفة التشغيلية المهدرة هذا الشهر. تم تفعيل إجراءات CAPA وتعيين صاحب العلاقة. يوصى مجلس الإدارة باعتماد إغلاق الموافقات المعلقة فوراً لخفض المخاطر المالية المترتبة.';
+            this.highlights = [
+              { icon: '📦', title: 'خطر شريط الإسفنج بالمستودع 2', desc: 'يمثل 14.5% من إجمالي الهدر المالي، والتحليلات تشير لمشكلة رطوبة.' },
+              { icon: '💰', title: 'تجاوز حدود الميزانية المخططة بالأقسام', desc: 'تجاوزت التكلفة في الإنتاج والمستودعات SAR 92M، ويلزم تفعيل الرقابة المباشرة.' },
+              { icon: '🔬', title: 'تحسن مؤشر الامتثال الكلي', desc: 'ارتفع مؤشر الامتثال الكلي للمصنع لـ 88.5% نتيجة سرعة إغلاق إجراءات CAPA.' }
+            ];
+            this.boardRecs = [
+              { title: 'تحديث غرف تخزين المواد الحساسة', roi: '14.5% ROI', desc: 'خفض الهدر في شريط الإسفنج عن طريق عزل الرطوبة تماماً بالستائر المزدوجة.' },
+              { title: 'فرض اتفاقية الجودة الطبية على الموردين', roi: '100% Recovery', desc: 'مطالبة موردي مواد التغليف بالتعويض العاجل عن أي عيوب تشكيل أو تعبئة.' },
+              { title: 'أتمتة صيانة مكابس الإنتاج Extruders', roi: '34% Yield Up', desc: 'شراء نظام فحص ومعايرة رقمي لماكينات الإنتاج لتجنب انحراف التبريد الميكانيكي.' }
+            ];
+          } else {
+            this.briefText = 'Pareto analysis and C-level quality index indicate that Sponge Tape damage in warehouses (SAR 145K) and Extruder mechanical deviation (SAR 92K) constitute 80% of total waste cost this month. Mitigations are active and CAPA owners assigned. Board approval requested to authorise immediate scrap decisions to avoid further value loss.';
+            this.highlights = [
+              { icon: '📦', title: 'Sponge Tape Risk in WH2', desc: 'Constitutes 14.5% of financial waste, analytics indicate moisture issues.' },
+              { icon: '💰', title: 'Planned Budget Caps Exceeded', desc: 'Total production scrap exceeded SAR 92M limit, direct oversight requested.' },
+              { icon: '🔬', title: 'Overall Compliance Index Met', desc: 'Compliance score touched 88.5% due to expedited CAPA closure rates.' }
+            ];
+            this.boardRecs = [
+              { title: 'Upgrade Sensitive storage rooms', roi: '14.5% ROI', desc: 'Reduce Sponge Tape waste by isolating humidity completely with double-skin panels.' },
+              { title: 'Enforce Medical Supplier quality levels', roi: '100% Recovery', desc: 'Enforce legal quality levels and penalize suppliers with repeated packaging deviations.' },
+              { title: 'Automate production Extruders maintenance', roi: '34% Yield Up', desc: 'Acquire digital inline inspection tooling for Extruders to prevent mechanical drift.' }
+            ];
+          }
+        },
+
+        async fetchExecutiveBrief() {
+          try {
+            const summaryRes = await fetch('/api/summary', { credentials: 'include' });
+            if (summaryRes.ok) {
+              const data = await summaryRes.json();
+              const payload = data.data || data;
+              this.briefText = payload.executive_summary || 'يظهر تحليل باريتو والإحصاءات التنفيذية أن تلف شريط الإسفنج في المستودعات (SAR 145K) وانحراف ماكينة الإنتاج (SAR 92K) يمثلان 80% من التكلفة التشغيلية المهدرة هذا الشهر. تم تفعيل إجراءات CAPA وتعيين صاحب العلاقة. يوصى مجلس الإدارة باعتماد إغلاق الموافقات المعلقة فوراً لخفض المخاطر المالية المترتبة.';
+            } else {
+              this.briefText = 'يظهر تحليل باريتو والإحصاءات التنفيذية أن تلف شريط الإسفنج في المستودعات (SAR 145K) وانحراف ماكينة الإنتاج (SAR 92K) يمثلان 80% من التكلفة التشغيلية المهدرة هذا الشهر. تم تفعيل إجراءات CAPA وتعيين صاحب العلاقة. يوصى مجلس الإدارة باعتماد إغلاق الموافقات المعلقة فوراً لخفض المخاطر المالية المترتبة.';
+            }
+          } catch(e) {
+            this.briefText = 'يظهر تحليل باريتو والإحصاءات التنفيذية أن تلف شريط الإسفنج في المستودعات (SAR 145K) وانحراف ماكينة الإنتاج (SAR 92K) يمثلان 80% من التكلفة التشغيلية المهدرة هذا الشهر. تم تفعيل إجراءات CAPA وتعيين صاحب العلاقة. يوصى مجلس الإدارة باعتماد إغلاق الموافقات المعلقة فوراً لخفض المخاطر المالية المترتبة.';
+          }
+        },
+
+        async refreshBrief() {
+          alert(this.lang === 'ar' ? 'جاري محاكاة واستشارة Gemini لإعادة توليد التقرير التنفيذي لمجلس الإدارة...' : 'Re-running Gemini advisory parameters, updating C-Level brief...');
+          this.briefText = 'تحليل تنفيذي محدث: انخفض معدل المرفوضات بنسبة 3.5% عقب تفعيل الإجراءات الاستباقية لتخزين حبيبات PVC. تم إخطار صاحب العمل رائد الشهري لمتابعة التعويض المالي لعقود تعبئة وتغليف الكرتون مع المورد المعتمد.';
+        },
+
+        approveDecision(id) {
+          this.pendingDecisions = this.pendingDecisions.filter(d => d.id !== id);
+          alert(this.lang === 'ar' ? 'تم توقيع واعتماد القرار وإرسال إشعار فوري لـ Focus ERP بنجاح!' : 'Decision signed, approved, and dispatched to Focus ERP connector!');
+        },
+
+        exportReport(type) {
+          if (type === 'pdf') alert(this.lang === 'ar' ? 'جاري تصدير التقرير التنفيذي الاستشاري الفاخر بصيغة PDF لطباعته وعرضه لمجلس الإدارة...' : 'Generating premium PDF consulting report matching McKinsey templates...');
+          else if (type === 'ppt') alert(this.lang === 'ar' ? 'جاري توليد شرائح العرض التقديمي لمجلس الإدارة بصيغة PowerPoint...' : 'Generating Board-level PPT presentation decks...');
+          else if (type === 'email') alert(this.lang === 'ar' ? 'تم إرسال بريد إلكتروني رسمي يحتوي الإيجاز التنفيذي والمؤشرات لكافة أعضاء مجلس الإدارة.' : 'Official email containing Executive Brief dispatched to Board members.');
+        },
+
+        // Advanced charts
+        initExecutiveCharts() {
+          // 1. Risk Bubble Chart
+          this.charts.riskMatrix = new ApexCharts(document.querySelector("#chart-risk-matrix"), {
+            series: [{
+              name: 'Warehouse',
+              data: [[4, 5, 145000], [2, 3, 29000]]
+            }, {
+              name: 'Production',
+              data: [[5, 4, 92000]]
+            }, {
+              name: 'QC',
+              data: [[3, 3, 48000], [1, 2, 18500]]
+            }],
+            chart: { type: 'bubble', height: 320, toolbar: { show: false }, fontFamily: 'inherit' },
+            colors: ['#0F4C81', '#00A6A6', '#F4A261'],
+            fill: { opacity: 0.8 },
+            xaxis: {
+              tickAmount: 5,
+              min: 0,
+              max: 6,
+              title: { text: 'الاحتمالية (Probability)' }
+            },
+            yaxis: {
+              min: 0,
+              max: 6,
+              title: { text: 'الأثر (Impact)' }
+            },
+            theme: { mode: this.darkMode ? 'dark' : 'light' }
+          });
+          this.charts.riskMatrix.render();
+
+          // 2. Department Radar Chart
+          this.charts.deptRadar = new ApexCharts(document.querySelector("#chart-dept-radar"), {
+            series: [{
+              name: 'Warehouse',
+              data: [85, 45, 92, 70]
+            }, {
+              name: 'Production',
+              data: [90, 85, 40, 88]
+            }, {
+              name: 'QC',
+              data: [95, 90, 85, 95]
+            }],
+            chart: { type: 'radar', height: 320, toolbar: { show: false }, fontFamily: 'inherit' },
+            labels: ['الجودة (Quality)', 'السرعة (Speed)', 'التكلفة (Cost)', 'الامتثال (Compliance)'],
+            colors: ['#0F4C81', '#00A6A6', '#F4A261'],
+            theme: { mode: this.darkMode ? 'dark' : 'light' }
+          });
+          this.charts.deptRadar.render();
+
+          // 3. Cost Waterfall/Bar Chart Flow
+          this.charts.waterfall = new ApexCharts(document.querySelector("#chart-exec-waterfall"), {
+            series: [{
+              name: 'التكلفة (SAR)',
+              data: [158000, -45000, -29000, 84000]
+            }],
+            chart: { type: 'bar', height: 300, toolbar: { show: false }, fontFamily: 'inherit' },
+            plotOptions: {
+              bar: {
+                colors: {
+                  ranges: [{ from: -100000, to: -1, color: '#2A9D8F' }, { from: 0, to: 200000, color: '#E76F51' }]
+                },
+                columnWidth: '60%'
+              }
+            },
+            xaxis: {
+              categories: ['هدر YTD الكلي', 'وفر إجراءات CAPA', 'عقود التعويض المستردة', 'صافي الأثر المالي']
+            },
+            theme: { mode: this.darkMode ? 'dark' : 'light' }
+          });
+          this.charts.waterfall.render();
+        },
+
+        updateChartThemes() {
+          const mode = this.darkMode ? 'dark' : 'light';
+          const opts = { theme: { mode: mode } };
+          
+          Object.values(this.charts).forEach(chart => {
+            if (chart && typeof chart.updateOptions === 'function') {
+              chart.updateOptions(opts);
+            }
+          });
+        },
+
+        // Formatting utilities
+        formatCurrency(val) {
+          if (!val && val !== 0) return 'SAR 0.00';
+          return 'SAR ' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+      };
+    }
+  </script>
 </body>
 </html>

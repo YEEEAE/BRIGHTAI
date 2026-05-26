@@ -1,159 +1,683 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="js-focus-visible">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Reject Analytics — Finance View</title>
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Reject Analytics — CFO Financial Dashboard</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="لوحة تحليلات المدير المالي الاستراتيجية لـ BrightAI - مخصصة لإدارة الهدر التشغيلي لمصانع ميس.">
+  <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
+  
+  <!-- Central Design System and Components Bundle -->
+  <link rel="stylesheet" href="/assets/css/design-system.css">
+  
+  <!-- Bespoke Page Styling for Premium SAP/Oracle Fusion Financial Analytics Aesthetics -->
+  <style>
+    body {
+      display: flex;
+      background-color: var(--color-background);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    .app-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .main-viewport {
+      flex-grow: 1;
+      margin-inline-start: 260px;
+      transition: var(--transition-normal);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .sidebar-collapsed + .main-viewport {
+      margin-inline-start: 72px;
+    }
+
+    .content-container {
+      padding: var(--spacing-xl);
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+      flex-grow: 1;
+    }
+
+    /* Financial Pipeline Tracker */
+    .pipeline-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--spacing-md);
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-lg);
+    }
+
+    .pipeline-stage {
+      display: flex;
+      flex-direction: column;
+      padding: var(--spacing-md);
+      background-color: var(--gray-50);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      position: relative;
+    }
+
+    .pipeline-stage::after {
+      content: "➔";
+      position: absolute;
+      inset-inline-end: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-primary);
+      font-size: var(--font-size-md);
+      z-index: 10;
+    }
+    
+    [dir="rtl"] .pipeline-stage::after {
+      content: "➔";
+      transform: translateY(-50%) scaleX(-1);
+    }
+
+    .pipeline-stage:last-child::after {
+      display: none;
+    }
+
+    .financial-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--spacing-xl);
+    }
+
+    .chart-container-fin {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-lg);
+      height: 380px;
+    }
+
+    .finance-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-xl);
+    }
+
+    /* Custom styles for interactive sliders */
+    .slider-control {
+      width: 100%;
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: var(--radius-full);
+      outline: none;
+      appearance: none;
+    }
+
+    .slider-control::-webkit-slider-thumb {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .slider-control::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 1024px) {
+      .main-viewport {
+        margin-inline-start: 0 !important;
+      }
+      .finance-grid-2, .financial-card-grid, .pipeline-container {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-stage::after {
+        display: none;
+      }
+    }
+  </style>
+
+  <!-- Libraries CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/ar.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
-  <div class="app-layout">
-    <aside class="sidebar">
-      <div class="sidebar-brand">
-        <h1>AI Reject Analytics<br>&amp; Management Dashboard</h1>
-        <div class="sub">Focus ERP Integrated Prototype</div>
+<body x-data="financeApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'">
+
+  <div class="app-wrapper">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
+      <div class="sidebar-header">
+        <a href="index.html" class="sidebar-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <span style="white-space: nowrap;">BrightAI Analytics</span>
+        </a>
       </div>
       <nav class="sidebar-nav">
-        <a href="index.html"><span class="icon">&#x1F4CA;</span> Main Dashboard</a>
-        <a href="executive.html"><span class="icon">&#x1F3E2;</span> Executive View</a>
-        <a href="finance.html" class="active"><span class="icon">&#x1F4B0;</span> Finance View</a>
-        <a href="quality.html"><span class="icon">&#x1F3EB;</span> Quality &amp; CAPA</a>
-        <a href="production.html"><span class="icon">&#x1F3ED;</span> Production / Ops</a>
-        <a href="workflow.html"><span class="icon">&#x1F504;</span> Workflow &amp; Governance</a>
-        <a href="technical.html"><span class="icon">&#x2699;</span> Technical View</a>
+        <a href="index.html" class="sidebar-link">
+          <span class="sidebar-icon">📊</span>
+          <span>لوحة القيادة الرئيسية</span>
+        </a>
+        <a href="executive.html" class="sidebar-link">
+          <span class="sidebar-icon">🏢</span>
+          <span>المنظور التنفيذي</span>
+        </a>
+        <a href="finance.html" class="sidebar-link is-active">
+          <span class="sidebar-icon">💰</span>
+          <span>المنظور المالي</span>
+        </a>
+        <a href="quality.html" class="sidebar-link">
+          <span class="sidebar-icon">🔬</span>
+          <span>الجودة وإجراءات CAPA</span>
+        </a>
+        <a href="production.html" class="sidebar-link">
+          <span class="sidebar-icon">⚙️</span>
+          <span>الإنتاج والعمليات</span>
+        </a>
+        <a href="workflow.html" class="sidebar-link">
+          <span class="sidebar-icon">🔄</span>
+          <span>حوكمة الموافقات</span>
+        </a>
+        <a href="technical.html" class="sidebar-link">
+          <span class="sidebar-icon">🛠️</span>
+          <span>المنظور الفني والربط</span>
+        </a>
+        
+        <div class="sidebar-title">تغيير اللغة / Lang</div>
+        <button class="sidebar-link" @click="toggleLanguage()" style="width:100%; border:none; background:none;">
+          <span class="sidebar-icon">🌐</span>
+          <span x-text="lang === 'ar' ? 'English (EN)' : 'العربية (AR)'"></span>
+        </button>
       </nav>
-      <div class="sidebar-footer">
-        Focus ERP remains the official source of truth.<br>
-        AI analysis is advisory only.
-      </div>
     </aside>
 
-    <main class="main-content">
+    <!-- MAIN VIEWPORT CONTAINER -->
+    <div class="main-viewport">
+
+      <!-- TOP BAR -->
       <header class="topbar">
         <div class="topbar-left">
-          <button class="hamburger" aria-label="Toggle sidebar">&#x2630;</button>
+          <button class="topbar-btn" @click="toggleSidebar()" aria-label="Toggle Sidebar" style="margin-inline-end: var(--spacing-sm);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          
           <div class="page-title-area">
-            <h2>Finance View</h2>
-            <div class="breadcrumb">Financial impact analysis and loss recovery options</div>
+            <h2 x-text="lang === 'ar' ? 'منظور الرقابة والتحليلات المالية (CFO Dashboard)' : 'CFO Financial Analytics View'"></h2>
+            <div class="breadcrumb" style="margin-bottom:0;" x-text="lang === 'ar' ? 'تحليل تكاليف المرفوضات، بدائل الاسترداد، وحساب العائد ROI' : 'Scrap waste stream budgeting, recovery options & ROI calculations'"></div>
           </div>
         </div>
+
         <div class="topbar-right">
-          <span id="data-source-badge" class="data-source-badge loading">Loading...</span>
+          <!-- Dark Mode Toggle Button -->
+          <button class="topbar-btn" @click="toggleDarkMode()">
+            <span x-show="!darkMode">🌙</span>
+            <span x-show="darkMode">☀️</span>
+          </button>
+
+          <!-- Export Options Dropdown -->
+          <div style="position: relative;" x-data="{ open: false }">
+            <button class="btn btn-sm btn-primary" @click="open = !open">
+              <span>📤</span>
+              <span x-text="lang === 'ar' ? 'تصدير البيانات المالية' : 'Financial Export'"></span>
+            </button>
+            <div x-show="open" @click.outside="open = false" class="card card-elevated" style="position: absolute; inset-inline-end: 0; top: 100%; width: 260px; z-index: 1000; padding: var(--spacing-md); margin-top: var(--spacing-sm); display:flex; flex-direction:column; gap:var(--spacing-xs);">
+              <button class="btn btn-sm btn-outline" style="justify-content:flex-start;" @click="exportReport('excel')">
+                <span>📊</span>
+                <span x-text="lang === 'ar' ? 'تصدير دفتر الأستاذ Excel' : 'Excel Ledger Export'"></span>
+              </button>
+              <button class="btn btn-sm btn-outline" style="justify-content:flex-start;" @click="exportReport('pdf')">
+                <span>📄</span>
+                <span x-text="lang === 'ar' ? 'تصدير تقرير الربع المالي (PDF)' : 'PDF Financial Report'"></span>
+              </button>
+              <button class="btn btn-sm btn-outline" style="justify-content:flex-start;" @click="window.print()">
+                <span>🖨️</span>
+                <span x-text="lang === 'ar' ? 'طباعة التقرير المالي' : 'Print Financial Summary'"></span>
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
-      <div class="page-content">
+      <!-- MAIN PAGE CONTENT CONTAINER -->
+      <main class="content-container">
 
-        <div class="disclaimer">
-          <strong>&#x26A0; Important:</strong> Finance reviews the financial impact and potential loss reduction
-          before destruction. Finance does not approve quality decisions.
-          Formal quality approval remains within QC/QCM authority in Focus ERP.
-        </div>
+        <!-- BREADCRUMBS -->
+        <nav class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link" x-text="lang === 'ar' ? 'لوحة القيادة' : 'Dashboard'"></a></li>
+          <span class="breadcrumb-separator">/</span>
+          <li class="breadcrumb-item is-active" x-text="lang === 'ar' ? 'المنظور المالي CFO' : 'Finance View'"></li>
+        </nav>
 
-        <p id="source-info" class="text-muted text-sm mb-16"></p>
-
-        <div id="filter-bar" class="filter-bar"></div>
-
-        <div id="cards-grid" class="cards-grid">
-          <div class="loading"><div class="spinner"></div></div>
-        </div>
-
-        <div id="ai-summary"></div>
-
-        <div class="col-2">
-          <div class="section">
-            <div class="section-header">
-              <h3>Reject Cost by Department</h3>
-              <span class="badge">SAR</span>
+        <!-- 1. FINANCIAL HEALTH CARES (6 big numbers & Budget Variance) -->
+        <section class="financial-card-grid">
+          <!-- KPI 1: YTD Cost -->
+          <div class="card card-elevated card-stat">
+            <div class="card-header" style="border-bottom:none; padding-bottom:0;">
+              <span class="card-title" x-text="lang === 'ar' ? 'إجمالي الخسائر المالية YTD' : 'Total Scrap Loss YTD'"></span>
+              <span class="badge badge-danger">YTD</span>
             </div>
-            <div id="cost-by-dept"></div>
+            <div class="card-stat-value" style="color:var(--color-danger);" x-text="formatCurrency(kpis.ytdCost)"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="card-stat-trend card-stat-trend-down">↑ 14% vs last year</span>
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'إجمالي تكلفة المرفوضات' : 'Sum of scrap value'"></span>
+            </div>
           </div>
 
-          <div class="section">
-            <div class="section-header">
-              <h3>Estimated Next-Month Reject Cost</h3>
+          <!-- KPI 2: Recovery Achieved -->
+          <div class="card card-elevated card-stat">
+            <div class="card-header" style="border-bottom:none; padding-bottom:0;">
+              <span class="card-title" x-text="lang === 'ar' ? 'الاسترداد المالي الفعلي المحقق' : 'Recovery Achieved'"></span>
+              <span class="badge badge-success">Recovered</span>
             </div>
-            <div class="card" style="padding:20px;">
-              <div class="card-label">Projected Range</div>
-              <div class="card-value" style="font-size:1.2rem;">SAR 180,000 – 250,000</div>
-              <div class="card-sub mt-8">Based on current monthly trend</div>
-              <div class="mt-12 text-muted text-sm" style="line-height:1.6;">
-                This estimate is calculated using the running 30-day average of reject costs.
-                If pending approvals are resolved and root causes addressed, the projected
-                cost could reduce by 25–35%. Finance should prioritise high-value cases
-                for recovery evaluation.
+            <div class="card-stat-value" style="color:var(--color-success);" x-text="formatCurrency(kpis.recoveryAchieved)"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="card-stat-trend card-stat-trend-up">↑ 24% Conversion</span>
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'مطالبات الموردين المقبولة' : 'Supplier claims accepted'"></span>
+            </div>
+          </div>
+
+          <!-- KPI 3: ROI on CAPA -->
+          <div class="card card-elevated card-stat">
+            <div class="card-header" style="border-bottom:none; padding-bottom:0;">
+              <span class="card-title" x-text="lang === 'ar' ? 'العائد الاستثماري لإجراءات CAPA' : 'ROI on CAPA Actions'"></span>
+              <span class="badge badge-primary">ROI</span>
+            </div>
+            <div class="card-stat-value" style="color:var(--color-primary);" x-text="kpis.roiOnCapa + '%'"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="card-subtitle" x-text="lang === 'ar' ? 'الوفورات التقديرية للوقاية' : 'Estimated prevention savings'"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. LOSS RECOVERY PIPELINE TRACKER -->
+        <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
+          <div class="card-header">
+            <h3 class="card-title" x-text="lang === 'ar' ? 'متتبع مسار استرداد الخسائر المالي (Loss Recovery Pipeline)' : 'Loss Recovery Pipeline Tracker'"></h3>
+            <span class="badge badge-pill badge-primary" x-text="lang === 'ar' ? 'تحديث تلقائي' : 'Real-time Forecast'"></span>
+          </div>
+
+          <div class="pipeline-container">
+            <!-- Stage 1: Identified -->
+            <div class="pipeline-stage">
+              <span style="font-size:var(--font-size-xs); color:var(--text-secondary);" x-text="lang === 'ar' ? 'المكتشف والمثبت' : 'Identified Rejects'"></span>
+              <span style="font-weight:700; font-size:var(--font-size-md); color:var(--text-primary); margin:6px 0;" x-text="formatCurrency(pipeline.identified)"></span>
+              <span style="font-size:10px; color:var(--text-muted);" x-text="lang === 'ar' ? 'معدل التحويل: 100%' : 'Conversion: 100%'"></span>
+            </div>
+
+            <!-- Stage 2: Under Review -->
+            <div class="pipeline-stage">
+              <span style="font-size:var(--font-size-xs); color:var(--text-secondary);" x-text="lang === 'ar' ? 'تحت الدراسة والتقييم' : 'Under Finance Review'"></span>
+              <span style="font-weight:700; font-size:var(--font-size-md); color:var(--color-primary); margin:6px 0;" x-text="formatCurrency(pipeline.underReview)"></span>
+              <span style="font-size:10px; color:var(--text-muted);" x-text="lang === 'ar' ? 'متوسط الزمن: 3 أيام' : 'Avg duration: 3 days'"></span>
+            </div>
+
+            <!-- Stage 3: Approved -->
+            <div class="pipeline-stage">
+              <span style="font-size:var(--font-size-xs); color:var(--text-secondary);" x-text="lang === 'ar' ? 'المطالبات المالية المعتمدة' : 'Supplier Claims Approved'"></span>
+              <span style="font-weight:700; font-size:var(--font-size-md); color:var(--color-secondary-hover); margin:6px 0;" x-text="formatCurrency(pipeline.approved)"></span>
+              <span style="font-size:10px; color:var(--text-muted);" x-text="lang === 'ar' ? 'معدل القبول: 78%' : 'Acceptance rate: 78%'"></span>
+            </div>
+
+            <!-- Stage 4: Recovered -->
+            <div class="pipeline-stage">
+              <span style="font-size:var(--font-size-xs); color:var(--text-secondary);" x-text="lang === 'ar' ? 'المسترد الفعلي' : 'Losses Recovered'"></span>
+              <span style="font-weight:700; font-size:var(--font-size-md); color:var(--color-success); margin:6px 0;" x-text="formatCurrency(pipeline.recovered)"></span>
+              <span style="font-size:10px; color:var(--text-muted);" x-text="lang === 'ar' ? 'تم تحصيلها وإغلاقها' : 'Credited & closed'"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. FINANCIAL TIERS DASHBOARD (Level 1 / Level 2 / Level 3) -->
+        <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
+          <div class="card-header">
+            <h3 class="card-title" x-text="lang === 'ar' ? 'تصنيف السجلات حسب المستويات المالية وموافقة C-Level' : 'Financial Tiers & Authorization Limits'"></h3>
+            <span class="badge badge-success" x-text="lang === 'ar' ? 'حد الصلاحيات: Focus ERP' : 'SLA limits: Focus ERP'"></span>
+          </div>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:var(--spacing-xl);">
+            <!-- Tier 1: Low-value -->
+            <div style="padding:var(--spacing-md); border-radius:var(--radius-md); background-color:var(--gray-50); border:1px solid var(--color-border); display:flex; flex-direction:column; gap:var(--spacing-xs);">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-secondary);" x-text="lang === 'ar' ? 'المستوى 1: السجلات الصغيرة' : 'Tier 1: Low Value'"></span>
+                <span class="badge badge-primary">&lt; 5K SAR</span>
+              </div>
+              <div style="font-weight:700; font-size:var(--font-size-md); color:var(--text-primary);" x-text="tiers.t1.total + ' SAR'"></div>
+              <div style="font-size:11px; color:var(--text-muted);" x-text="lang === 'ar' ? `عدد السجلات: ${tiers.t1.count} | صلاحية الاعتماد: QCM` : `Count: ${tiers.t1.count} | Auth: Quality Manager`"></div>
+            </div>
+
+            <!-- Tier 2: Medium-value -->
+            <div style="padding:var(--spacing-md); border-radius:var(--radius-md); background-color:var(--gray-50); border:1px solid var(--color-border); display:flex; flex-direction:column; gap:var(--spacing-xs);">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-secondary);" x-text="lang === 'ar' ? 'المستوى 2: السجلات المتوسطة' : 'Tier 2: Medium Value'"></span>
+                <span class="badge badge-warning">5K - 50K SAR</span>
+              </div>
+              <div style="font-weight:700; font-size:var(--font-size-md); color:var(--color-primary);" x-text="tiers.t2.total + ' SAR'"></div>
+              <div style="font-size:11px; color:var(--text-muted);" x-text="lang === 'ar' ? `المعلقات: ${tiers.t2.pending} | صلاحية الاعتماد: Finance Director` : `Pending: ${tiers.t2.pending} | Auth: Finance Director`"></div>
+            </div>
+
+            <!-- Tier 3: High-value -->
+            <div style="padding:var(--spacing-md); border-radius:var(--radius-md); background-color:var(--gray-50); border:1px solid var(--color-border); display:flex; flex-direction:column; gap:var(--spacing-xs);">
+              <div style="display:flex; justify-content:space-between;">
+                <span style="font-weight:600; font-size:var(--font-size-xs); color:var(--text-secondary);" x-text="lang === 'ar' ? 'المستوى 3: السجلات الضخمة والحرجة' : 'Tier 3: Critical High Value'"></span>
+                <span class="badge badge-danger">&gt; 50K SAR</span>
+              </div>
+              <div style="font-weight:700; font-size:var(--font-size-md); color:var(--color-danger);" x-text="tiers.t3.total + ' SAR'"></div>
+              <div style="font-size:11px; color:var(--text-muted);" x-text="lang === 'ar' ? `الحالات الحرجة: ${tiers.t3.critical} | صلاحية الاعتماد: C-Level / Board` : `Critical: ${tiers.t3.critical} | Auth: C-Level / Board`"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. RECOVERY OPTIONS MATRIX (Interactive decisions for High-value rejects) -->
+        <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
+          <div class="card-header">
+            <h3 class="card-title" x-text="lang === 'ar' ? 'مصفوفة بدائل الاسترداد ودراسة الجدوى للشحنات الضخمة' : 'Supplier Claims & Recovery Options Feasibility Matrix'"></h3>
+            <span class="badge badge-solid badge-danger" x-text="lang === 'ar' ? 'توصيات الجدوى المالية' : 'CFO Recommendation'"></span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th x-text="lang === 'ar' ? 'اسم الشحنة الطبية المعلقة' : 'Scrap/Reject Item'"></th>
+                  <th x-text="lang === 'ar' ? 'تكلفة الهدر' : 'Waste cost'" class="col-numeric"></th>
+                  <th x-text="lang === 'ar' ? 'جدوى إعادة التشغيل' : 'Rework Feasibility'"></th>
+                  <th x-text="lang === 'ar' ? 'الاسترداد من المورد' : 'Return to Supplier'"></th>
+                  <th x-text="lang === 'ar' ? 'قيمة خفض الجودة' : 'Downgrade Value'"></th>
+                  <th x-text="lang === 'ar' ? 'توجيهات الـ CFO' : 'Advisory Recommendation'"></th>
+                  <th x-text="lang === 'ar' ? 'إقرار الخيار' : 'Decision Support'"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <template x-for="item in recoveryMatrix" :key="item.id">
+                  <tr>
+                    <td style="font-weight:600; color:var(--text-primary);" x-text="item.item"></td>
+                    <td class="col-numeric" style="font-weight:700;" x-text="formatCurrency(item.cost)"></td>
+                    <td x-text="item.rework"></td>
+                    <td x-text="item.supplier"></td>
+                    <td class="col-numeric" x-text="formatCurrency(item.downgrade)"></td>
+                    <td style="color:var(--color-primary); font-size:11px;" x-text="item.aiRec"></td>
+                    <td>
+                      <button class="btn btn-sm btn-outline" style="font-size:10px; height:28px;" @click="approveRecovery(item.id)" x-text="lang === 'ar' ? 'اعتماد بديل الاسترداد' : 'Approve claim'"></button>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 5. BUDGET VS ACTUAL & CASH FLOW IMPACT (Waterfall & Sparklines) -->
+        <section class="finance-grid-2">
+          <!-- Budget vs Actual Chart -->
+          <div class="chart-container-fin">
+            <div class="card-header" style="margin-bottom: var(--spacing-sm);">
+              <div class="card-title" x-text="lang === 'ar' ? 'مقارنة الميزانية التقديرية بالفعلي شهرياً' : 'Monthly Reject Budget vs Actual Variance'"></div>
+            </div>
+            <div id="chart-budget-actual" style="height:300px;"></div>
+          </div>
+
+          <!-- Interactive ROI Calculator (AlpineJS Dynamic inputs) -->
+          <div class="card card-outlined" style="display:flex; flex-direction:column; justify-content:space-between; height:380px; padding:var(--spacing-lg);">
+            <div class="card-header" style="padding-bottom:var(--spacing-xs); margin-bottom:var(--spacing-xs);">
+              <div class="card-title" style="display:flex; align-items:center; gap:var(--spacing-sm);">
+                <span>📊</span>
+                <span x-text="lang === 'ar' ? 'حاسبة العائد الاستثماري لإجراءات CAPA الوقائية' : 'Interactive CAPA Savings ROI Calculator'"></span>
+              </div>
+            </div>
+            
+            <div style="display:flex; flex-direction:column; gap:var(--spacing-md); flex-grow:1; justify-content:center;">
+              <div class="form-group">
+                <div style="display:flex; justify-content:space-between;">
+                  <label class="form-label" x-text="lang === 'ar' ? 'حجم الاستثمار في إجراءات CAPA (SAR):' : 'CAPA Capital Investment (SAR):'"></label>
+                  <span style="font-weight:700;" x-text="formatCurrency(roiCalculator.investment)"></span>
+                </div>
+                <input type="range" class="slider-control" min="10000" max="150000" step="5000" x-model="roiCalculator.investment" @input="calculateRoi()">
+              </div>
+
+              <div class="form-group">
+                <div style="display:flex; justify-content:space-between;">
+                  <label class="form-label" x-text="lang === 'ar' ? 'نسبة خفض عيوب المرفوضات المتوقعة:' : 'Expected Reject Defect Reduction %:'"></label>
+                  <span style="font-weight:700;" x-text="roiCalculator.reduction + '%'"></span>
+                </div>
+                <input type="range" class="slider-control" min="10" max="95" step="5" x-model="roiCalculator.reduction" @input="calculateRoi()">
+              </div>
+            </div>
+            
+            <!-- Result Output -->
+            <div style="background-color:var(--color-primary-light); padding:var(--spacing-sm) var(--spacing-md); border-radius:var(--radius-md); border:1px solid var(--color-primary); display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:10px; color:var(--color-primary); font-weight:600;" x-text="lang === 'ar' ? 'الوفر المالي السنوي المتوقع:' : 'Expected Annual Savings:'"></div>
+                <div style="font-weight:700; font-size:var(--font-size-md); color:var(--text-primary);" x-text="formatCurrency(roiCalculator.savings)"></div>
+              </div>
+              <div style="text-align:end;">
+                <div style="font-size:10px; color:var(--color-primary); font-weight:600;" x-text="lang === 'ar' ? 'العائد الاستثماري المحقق (ROI):' : 'Yield / ROI Achieved:'"></div>
+                <div style="font-weight:700; font-size:var(--font-size-md); color:var(--color-success);" x-text="roiCalculator.roi + '%'"></div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div class="section">
-          <div class="section-header">
-            <h3>Potential Loss Recovery Options</h3>
-            <span class="badge">Finance Decision</span>
+        <!-- 6. FINANCIAL AUDIT TRAIL ( Approval Chain, Logs & Document Attachments) -->
+        <section class="card card-outlined" style="display:flex; flex-direction:column; gap:var(--spacing-md);">
+          <div class="card-header">
+            <h3 class="card-title" x-text="lang === 'ar' ? 'سجل التدقيق والمتابعة المالية (Financial Audit Trail)' : 'Financial Audit Trail & Document Attachments'"></h3>
+            <span class="badge badge-success" x-text="lang === 'ar' ? 'سجلات آمنة' : 'Secure Audit Logs'"></span>
           </div>
-          <div class="option-list" style="margin-bottom:8px;">
-            <span class="option-tag">&#x1F527; Rework</span>
-            <span class="option-tag">&#x1F4E6; Return to Supplier</span>
-            <span class="option-tag">&#x1F4C9; Downgrade / Sell as Second Grade</span>
-            <span class="option-tag">&#x1F504; Transfer to Alternative Use</span>
-            <span class="option-tag">&#x1F5D1; Dispose (No Recovery)</span>
-          </div>
-          <p class="text-muted text-sm mb-12">
-            Each option must be evaluated based on material type, regulatory requirements,
-            and cost feasibility. Finance review is required before destruction approval.
-          </p>
-        </div>
 
-        <div class="col-2">
-          <div class="section">
-            <div class="section-header">
-              <h3>Financially Sensitive Cases</h3>
-              <span class="badge">Requires Finance Review</span>
-            </div>
-            <div id="finance-alerts"></div>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th x-text="lang === 'ar' ? 'رقم السند المالي' : 'Audit Voucher'"></th>
+                  <th x-text="lang === 'ar' ? 'تاريخ المعاملة' : 'Transaction Date'"></th>
+                  <th x-text="lang === 'ar' ? 'وصف العملية والمستندات' : 'Operation Description'"></th>
+                  <th x-text="lang === 'ar' ? 'سلسلة الاعتماد والاعتمادات' : 'Approval Chain Sequence'"></th>
+                  <th x-text="lang === 'ar' ? 'المبلغ الإجمالي' : 'Voucher Amount'" class="col-numeric"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <template x-for="log in auditTrail" :key="log.id">
+                  <tr>
+                    <td style="font-family:var(--font-mono); font-weight:600;" x-text="log.voucher"></td>
+                    <td x-text="log.date"></td>
+                    <td>
+                      <span x-text="log.desc"></span>
+                      <span style="margin-inline-start:var(--spacing-xs); font-size:10px; color:var(--color-primary); cursor:pointer;" x-text="lang === 'ar' ? '(تنزيل المرفق 📎)' : '(Download Attachment 📎)'" @click="downloadAttachment(log.id)"></span>
+                    </td>
+                    <td x-text="log.chain"></td>
+                    <td class="col-numeric" style="font-weight:700;" x-text="formatCurrency(log.amount)"></td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
           </div>
-          <div class="section">
-            <div class="section-header">
-              <h3>&#x26A0; Anomaly Detection</h3>
-              <span class="badge">Unusual Patterns</span>
-            </div>
-            <div id="anomalies"></div>
-          </div>
-        </div>
+        </section>
 
-        <div class="section">
-          <div class="section-header">
-            <h3>Finance Review Logic</h3>
-          </div>
-          <div class="card" style="padding:20px;">
-            <div class="text-sm" style="line-height:1.8;color:var(--gray-700);">
-              <p><strong>Cost Threshold Concept:</strong> Items with reject cost exceeding SAR 5,000
-              are flagged for finance review. Critical-risk items above SAR 20,000 require
-              Finance Director sign-off before destruction.</p>
-              <p class="mt-12"><strong>Recovery Evaluation Workflow:</strong></p>
-              <ol style="padding-right:20px;margin-top:4px;">
-                <li>QC confirms the rejection reason and quality status.</li>
-                <li>Finance evaluates potential recovery options (rework, return, downgrade).</li>
-                <li>If no recovery is feasible, Finance recommends destruction.</li>
-                <li>QCM approves the quality decision in Focus ERP.</li>
-                <li>Finance records the loss and initiates destruction workflow.</li>
-              </ol>
-            </div>
-          </div>
-        </div>
+      </main>
+    </div>
 
-        <div class="disclaimer mt-20">
-          <strong>&#x26A0; Advisory:</strong> All financial estimates are based on the current prototype data.
-          Actual financial impact must be verified in Focus ERP.
-          AI recommendations are advisory and do not constitute financial or legal advice.
-        </div>
-
-      </div>
-    </main>
   </div>
 
-  <script src="/assets/js/data.js"></script>
-  <script src="/assets/js/app.js"></script>
+  <!-- Embedded Script to Coordinate Local State, ApexCharts & Board Calculations -->
+  <script>
+    function financeApp() {
+      return {
+        // UI Layout
+        sidebarCollapsed: false,
+        darkMode: false,
+        lang: 'ar',
+        
+        // CFO metrics YTD
+        kpis: {
+          ytdCost: 158329773.03,
+          recoveryAchieved: 38200,
+          roiOnCapa: 245
+        },
+
+        // Loss Recovery stages
+        pipeline: {
+          identified: 158300,
+          underReview: 92000,
+          approved: 48000,
+          recovered: 38200
+        },
+
+        // Financial Tiers
+        tiers: {
+          t1: { count: 85, total: '24,500' },
+          t2: { count: 42, total: '145,000', pending: 8 },
+          t3: { count: 23, total: '290,000', critical: 4 }
+        },
+
+        // Supplier Recovery feasibility matrix
+        recoveryMatrix: [
+          { id: 1, item: 'Sponge Tape 20mm (Lot: 2026-98)', cost: 145000, rework: 'مستحيل لتلف الصمغ', supplier: 'ممكن لاستلام بضاعة رطبة', downgrade: 0, aiRec: 'الرجوع للمورد بالمطالبة المالية الفورية بقيمة SAR 145K' },
+          { id: 2, item: 'PVC Granules Medical grade (Lot: 401)', cost: 92000, rework: 'ممكن عبر إعادة صهر معقدة', supplier: 'غير ممكن لانحراف الاستخدام', downgrade: 22000, aiRec: 'بيعها كبضاعة درجة ثانية لمنتجات بلاستيكية غير طبية بقيمة SAR 22K' },
+          { id: 3, item: 'Packaging Carton Mais (Lot: C10)', cost: 48000, rework: 'غير ممكن لخطأ الطباعة المورد', supplier: 'ممكن لاستلام نموذج خاطئ', downgrade: 0, aiRec: 'تحميل التكلفة الإجمالية للمورد المعتمد' }
+        ],
+
+        // Interactive ROI sliders state
+        roiCalculator: {
+          investment: 45000,
+          reduction: 40,
+          savings: 180000,
+          roi: 300
+        },
+
+        // Audit Trail data
+        auditTrail: [
+          { id: 1, voucher: 'FIN-VOU-2026-101', date: '2026-05-24', desc: 'اعتماد شطب شحنة إبر تالفة بعد فحص الجودة المرفق', chain: 'QC Inspector ➔ QC Director ➔ CFO Sign-off', amount: 14500 },
+          { id: 2, voucher: 'FIN-VOU-2026-102', date: '2026-05-20', desc: 'إقرار المطالبة المالية لمورد البوليمرات الطبية', chain: 'Procurement ➔ Finance Auditor ➔ CFO Approved', amount: 92000 },
+          { id: 3, voucher: 'FIN-VOU-2026-103', date: '2026-05-18', desc: 'إرسال فاتورة إتلاف بيئي معتمدة للبلدية', chain: 'HSE Officer ➔ Finance Auditor', amount: 4800 }
+        ],
+
+        // ApexCharts pointers
+        charts: {},
+
+        // Core Functions
+        init() {
+          this.initThemeAndLang();
+          this.initFinanceCharts();
+          this.calculateRoi();
+        },
+
+        initThemeAndLang() {
+          this.darkMode = localStorage.getItem('darkMode') === 'true';
+          this.lang = localStorage.getItem('lang') || 'ar';
+          
+          document.documentElement.setAttribute('data-theme', this.darkMode ? 'dark' : 'light');
+          document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
+          
+          if (this.darkMode) {
+            document.body.classList.add('dark');
+          }
+        },
+
+        toggleSidebar() {
+          this.sidebarCollapsed = !this.sidebarCollapsed;
+        },
+
+        toggleDarkMode() {
+          this.darkMode = !this.darkMode;
+          localStorage.setItem('darkMode', this.darkMode);
+          document.documentElement.setAttribute('data-theme', this.darkMode ? 'dark' : 'light');
+          this.updateChartThemes();
+        },
+
+        toggleLanguage() {
+          this.lang = this.lang === 'ar' ? 'en' : 'ar';
+          localStorage.setItem('lang', this.lang);
+          document.documentElement.setAttribute('dir', this.lang === 'ar' ? 'rtl' : 'ltr');
+        },
+
+        approveRecovery(id) {
+          this.recoveryMatrix = this.recoveryMatrix.filter(r => r.id !== id);
+          alert(this.lang === 'ar' ? 'تم اعتماد بديل الاسترداد المالي المالي وإرسال قيد المطالبة الفوري للمورد!' : 'Supplier claim approved, financial voucher posted to ERP!');
+        },
+
+        calculateRoi() {
+          // Dynamic calculation based on current plant parameters (Total YTD Loss scrap base)
+          const scrapBase = 450000; 
+          const reductionFraction = Number(this.roiCalculator.reduction) / 100;
+          const investment = Number(this.roiCalculator.investment);
+          
+          const savings = scrapBase * reductionFraction;
+          const roi = Math.round(((savings - investment) / investment) * 100);
+
+          this.roiCalculator.savings = savings;
+          this.roiCalculator.roi = roi;
+        },
+
+        downloadAttachment(id) {
+          alert(this.lang === 'ar' ? `جاري تحميل السند المالي وملفات الجودة المرفقة للمعاملة رقم ${id}...` : `Downloading quality sheets and invoice for voucher: ${id}`);
+        },
+
+        exportReport(type) {
+          if (type === 'excel') alert(this.lang === 'ar' ? 'جاري تصدير دفتر الأستاذ والمطالبات المالية بصيغة Excel الحقيقية...' : 'Exporting complete YTD financial ledger to Excel workbook...');
+          else if (type === 'pdf') alert(this.lang === 'ar' ? 'جاري تصدير تقرير الربع المالي للـ CFO بصيغة PDF...' : 'Generating premium PDF CFO financial audit report...');
+        },
+
+        // Advanced charts
+        initFinanceCharts() {
+          // Budget vs Actual comparative Column/Line Chart
+          this.charts.budgetVsActual = new ApexCharts(document.querySelector("#chart-budget-actual"), {
+            series: [{
+              name: 'التكلفة الفعلية للمرفوضات (SAR)',
+              type: 'column',
+              data: [120000, 145000, 110000, 165000, 158000]
+            }, {
+              name: 'الموازنة التقديرية المحددة (SAR)',
+              type: 'line',
+              data: [150000, 150000, 150000, 150000, 150000]
+            }],
+            chart: { height: 300, type: 'line', toolbar: { show: false }, fontFamily: 'inherit' },
+            colors: ['#E76F51', '#0F4C81'],
+            stroke: { width: [0, 3] },
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            theme: { mode: this.darkMode ? 'dark' : 'light' }
+          });
+          this.charts.budgetVsActual.render();
+        },
+
+        updateChartThemes() {
+          const mode = this.darkMode ? 'dark' : 'light';
+          const opts = { theme: { mode: mode } };
+          
+          Object.values(this.charts).forEach(chart => {
+            if (chart && typeof chart.updateOptions === 'function') {
+              chart.updateOptions(opts);
+            }
+          });
+        },
+
+        // Formatting utilities
+        formatCurrency(val) {
+          if (!val && val !== 0) return 'SAR 0.00';
+          return 'SAR ' + Number(val).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+      };
+    }
+  </script>
 </body>
 </html>
