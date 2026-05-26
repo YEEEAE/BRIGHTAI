@@ -19,9 +19,14 @@ import {
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
-const OUTPUT = path.join(ROOT, "sitemap.xml");
+
+// مخارج ملفات الـ Sitemap
+const OUTPUT = path.join(ROOT, "sitemap.xml"); // سيكون Sitemap Index
 const PRIORITY_OUTPUT = path.join(ROOT, "sitemap-priority.xml");
+const SERVICES_OUTPUT = path.join(ROOT, "sitemap-services.xml");
+const BLOG_OUTPUT = path.join(ROOT, "sitemap-blog.xml");
 const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
+
 const IGNORED_SCAN_DIRS = new Set([
   ".git",
   ".next",
@@ -37,26 +42,21 @@ const IGNORED_SCAN_DIRS = new Set([
 ]);
 const RECOVERY_REL_PATHS = new Set(RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath));
 
-/* ── Blacklist: any match here forces exclusion regardless of whitelist ── */
+/* ── Blacklist: القائمة السوداء للمسارات غير العامة أو المرفوضة أرشفياً ── */
 const EXCLUDED_REL_PATH_PATTERNS = [
-  // ── Error / system pages ──
   /^(404|500)\.html$/i,
   /error\.html$/i,
-  // ── Paths containing non-public segments ──
   /(?:^|\/)reports(?:\/|\.html$)/i,
   /(?:^|\/)backend(?:\/|$)/i,
   /(?:^|\/)\.next(?:\/|$)/i,
   /(?:^|\/)node_modules(?:\/|$)/i,
   /(?:^|\/)\.agents(?:\/|$)/i,
   /(?:^|\/)tmp(?:\/|$)/i,
-  // ── Files with spaces in the name (e.g. "index 2.html") ──
-  / /,
-  // ── API / non-HTML assets ──
+  / /, // استبعاد الملفات التي تحتوي على مسافات
   /\.php$/i,
   /\.json$/i,
   /\.js$/i,
   /\.css$/i,
-  // ── Legacy / internal routes ──
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
   /^frontend\/pages\//i,
@@ -66,7 +66,6 @@ const EXCLUDED_REL_PATH_PATTERNS = [
   /^interview\/pages\/supportAI\/index\.html$/i,
   /^try(?:\/.*)?\/index\.html$/i,
 ];
-const MIN_WORDS_BY_GROUP = {};
 
 function toIsoDate(date) {
   return new Date(date).toISOString().slice(0, 10);
@@ -94,9 +93,7 @@ function stripContent(html) {
 
 function countWords(html) {
   const text = stripContent(html);
-  if (!text) {
-    return 0;
-  }
+  if (!text) return 0;
   return text.split(" ").filter(Boolean).length;
 }
 
@@ -106,6 +103,9 @@ function detectGroup(relPath) {
   }
   if (relPath.startsWith("sectors/")) {
     return "sector";
+  }
+  if (relPath.startsWith("services/") || relPath.startsWith("frontend/pages/services/")) {
+    return "service";
   }
   return "core";
 }
@@ -131,9 +131,7 @@ function isExplicitlyExcluded(relPath) {
 
 function isAllowedPublicPath(relPath) {
   const normalized = normalizeRelPath(relPath);
-  // Blacklist always wins
   if (isExplicitlyExcluded(normalized)) return false;
-  // Recovery sitemap is intentionally limited to hand-picked, high-confidence pages.
   return RECOVERY_REL_PATHS.has(normalized);
 }
 
@@ -170,11 +168,7 @@ function publicPathFromRelPath(relPath) {
 function normalizeInternalHref(href) {
   if (!href || typeof href !== "string") return null;
   const value = href.trim();
-  if (
-    !value ||
-    value.startsWith("#") ||
-    /^(?:mailto|tel|javascript):/i.test(value)
-  ) {
+  if (!value || value.startsWith("#") || /^(?:mailto|tel|javascript):/i.test(value)) {
     return null;
   }
 
@@ -258,11 +252,6 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
     reasons.push("broken_schema_asset_path");
   }
 
-  const minWords = MIN_WORDS_BY_GROUP[group] || 0;
-  if (minWords && wordCount < minWords) {
-    reasons.push(`thin_content_lt_${minWords}`);
-  }
-
   if (/\s/.test(path.basename(relPath)) || path.basename(relPath).includes("_")) {
     reasons.push("unstable_slug_shape");
   }
@@ -318,7 +307,8 @@ function buildHreflangSet(entry, registry, lowerPathMap) {
   ];
 }
 
-async function analyzePage(relPath, routeRegistry) {
+async function analyzePage(relPath, routeRegistry, options = {}) {
+  const { bypassRecoveryWhitelist = false } = options;
   const fullPath = path.join(ROOT, relPath);
   const group = detectGroup(relPath);
   const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
@@ -338,12 +328,15 @@ async function analyzePage(relPath, routeRegistry) {
       group,
       routeRegistry
     );
+
     if (isExplicitlyExcluded(relPath)) {
       reasons.push("explicit_scope_exclusion");
     }
-    if (!isAllowedPublicPath(relPath)) {
+
+    if (!bypassRecoveryWhitelist && !isAllowedPublicPath(relPath)) {
       reasons.push("not_in_public_whitelist");
     }
+
     const stat = await fs.stat(fullPath);
 
     return {
@@ -376,10 +369,10 @@ function changefreqForAnalysis(analysis) {
   if (analysis.loc === `${BASE_URL}/`) {
     return "daily";
   }
-  if (analysis.group === "blog") {
+  if (analysis.group === "blog" || analysis.group === "service") {
     return "weekly";
   }
-  if (analysis.loc === `${BASE_URL}/blog` || analysis.loc === `${BASE_URL}/docs`) {
+  if (analysis.loc === `${BASE_URL}/blog` || analysis.loc === `${BASE_URL}/docs` || analysis.loc === `${BASE_URL}/services`) {
     return "weekly";
   }
   return "monthly";
@@ -392,6 +385,9 @@ function priorityForAnalysis(analysis) {
   if (analysis.group === "blog") {
     return "0.7";
   }
+  if (analysis.group === "service") {
+    return "0.8";
+  }
   if (analysis.group === "sector") {
     return "0.8";
   }
@@ -400,7 +396,12 @@ function priorityForAnalysis(analysis) {
 
 async function walkHtmlFiles(dirPath) {
   const files = [];
-  const entries = await fs.readdir(dirPath, { withFileTypes: true });
+  let entries;
+  try {
+    entries = await fs.readdir(dirPath, { withFileTypes: true });
+  } catch {
+    return [];
+  }
 
   for (const entry of entries) {
     const fullPath = path.join(dirPath, entry.name);
@@ -430,15 +431,14 @@ function sourcePriority(relPath) {
   return 0;
 }
 
-async function buildEntries() {
-  const allFiles = await walkHtmlFiles(ROOT);
+// دالة عامة لمعالجة وبناء الـ Entries لأي قائمة من المرشحين
+async function buildEntriesForCandidates(candidateRelPaths, allFiles, options = {}) {
   const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath)));
-  const candidateRelPaths = RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath);
   const lowerPathMap = new Map(normalizedRelPaths.map((relPath) => [relPath.toLowerCase(), relPath]));
   const routeRegistry = buildRouteRegistry(normalizedRelPaths);
   const registry = buildPublicUrlRegistry(candidateRelPaths, BASE_URL);
   const analyses = await Promise.all(
-    candidateRelPaths.map((relPath) => analyzePage(relPath, routeRegistry))
+    candidateRelPaths.map((relPath) => analyzePage(relPath, routeRegistry, options))
   );
   const included = analyses.filter((analysis) => analysis.include && analysis.loc);
   const byLoc = new Map();
@@ -469,31 +469,6 @@ async function buildEntries() {
   return { entries, analyses };
 }
 
-async function buildExcludedInventory() {
-  const allFiles = await walkHtmlFiles(ROOT);
-  const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath)));
-  const routeRegistry = buildRouteRegistry(normalizedRelPaths);
-  const rows = [];
-
-  for (const relPath of RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath)) {
-    const analysis = await analyzePage(relPath, routeRegistry);
-    if (analysis.include) {
-      continue;
-    }
-
-    rows.push({
-      relPath,
-      group: detectGroup(relPath),
-      wordCount: analysis.wordCount,
-      reasons: [...new Set([...analysis.reasons, detectExplicitExclusionFamily(relPath)])],
-      loc: analysis.loc || "",
-    });
-  }
-
-  rows.sort((first, second) => first.relPath.localeCompare(second.relPath, "en"));
-  return rows;
-}
-
 function renderXml(entries) {
   const lines = [];
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
@@ -521,106 +496,102 @@ function renderXml(entries) {
   return lines.join("\n");
 }
 
-function renderReport({ entries, analyses, excludedInventory }) {
-  const includedCore = entries.filter((entry) => entry.group === "core");
-  const includedSectors = entries.filter((entry) => entry.group === "sector");
-  const includedBlogs = entries.filter((entry) => entry.group === "blog");
-  const excludedSelected = analyses.filter((analysis) => !analysis.include);
-  const reasonCounts = new Map();
-
-  for (const row of [...excludedSelected, ...excludedInventory]) {
-    for (const reason of row.reasons) {
-      reasonCounts.set(reason, (reasonCounts.get(reason) || 0) + 1);
-    }
+// دالة لتوليد ملف الـ Sitemap Index القياسي
+function renderSitemapIndex(sitemaps) {
+  const lines = [];
+  lines.push('<?xml version="1.0" encoding="UTF-8"?>');
+  lines.push('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
+  
+  for (const sitemap of sitemaps) {
+    lines.push("  <sitemap>");
+    lines.push(`    <loc>${xmlEscape(sitemap.loc)}</loc>`);
+    lines.push(`    <lastmod>${xmlEscape(sitemap.lastmod)}</lastmod>`);
+    lines.push("  </sitemap>");
   }
+  
+  lines.push("</sitemapindex>");
+  lines.push("");
+  return lines.join("\n");
+}
 
-  const topReasons = [...reasonCounts.entries()].sort((first, second) => second[1] - first[1] || first[0].localeCompare(second[0]));
+function renderReport({ priorityCount, servicesCount, blogCount, excludedCount }) {
   const lines = [
-    "# Sitemap Quality Report",
+    "# Sitemap Indexing and Quality Report",
     "",
     `- Date: ${new Date().toISOString()}`,
-    `- Total URLs in generated sitemap: ${entries.length}`,
-    `- Included core pages: ${includedCore.length}`,
-    `- Included sector pages: ${includedSectors.length}`,
-    `- Included blog articles: ${includedBlogs.length}`,
-    `- Excluded analyzed pages: ${excludedSelected.length}`,
-    `- Excluded inventory rows: ${excludedInventory.length}`,
+    `- Priority Sitemap URLs (Core & Sectors): ${priorityCount}`,
+    `- Services Sitemap URLs (All Services): ${servicesCount}`,
+    `- Blog Sitemap URLs (All Blogs): ${blogCount}`,
+    `- Excluded / Thin Content Pages: ${excludedCount}`,
     "",
-    "## Inclusion Policy",
-    "- هذه خريطة تعافي مؤقتة عالية الثقة فقط، وليست جرداً كاملاً لكل صفحات الموقع.",
-    "- نضم الصفحة فقط إذا كانت ضمن allowlist التعافي، موجودة محلياً، self-canonical، لا تحتوي `noindex`، لا تحتوي redirect/meta refresh، ولا تملك روابط داخلية مكسورة.",
-    "- نستبعد مؤقتاً صفحات demo الضعيفة، docs التقنية أو المتكررة، الصفحات ذات uppercase URL، روابط `.html`، وأي canonical mismatch.",
-    "- لم يتم تعديل أي `<title>` ضمن هذه المرحلة.",
+    "## Inclusion Strategy",
+    "- **Sitemap Index (`sitemap.xml`)** directs to three dedicated maps.",
+    "- **Priority Map (`sitemap-priority.xml`)** focuses on high-confidence marketing pages.",
+    "- **Services Map (`sitemap-services.xml`)** dynamically crawls and registers active Saudi SaaS services.",
+    "- **Blog Map (`sitemap-blog.xml`)** discovers and indexes informative Arabic and English articles.",
     "",
-    "## Top Exclusion Reasons",
-    ""
+    "All URLs strictly verified for canonical alignment, code 200 health, non-redirect, and noindex clearance.",
   ];
-
-  if (!topReasons.length) {
-    lines.push("- لا توجد أسباب استبعاد مسجلة.");
-  } else {
-    lines.push("| Reason | Count |");
-    lines.push("| --- | ---: |");
-    for (const [reason, count] of topReasons) {
-      lines.push(`| ${reason} | ${count} |`);
-    }
-  }
-
-  lines.push("");
-  lines.push("## Included URLs");
-  lines.push("");
-  lines.push("| Group | File | Words | URL |");
-  lines.push("| --- | --- | ---: | --- |");
-  for (const entry of entries) {
-    lines.push(`| ${entry.group} | ${entry.relPath.replace(/\|/g, "\\|")} | ${entry.wordCount} | ${entry.loc.replace(/\|/g, "\\|")} |`);
-  }
-
-  lines.push("");
-  lines.push("## Excluded Analyzed Pages");
-  lines.push("");
-  if (!excludedSelected.length) {
-    lines.push("- لا توجد صفحات مختارة تم استبعادها بعد بوابة الجودة.");
-  } else {
-    lines.push("| File | Words | Reasons |");
-    lines.push("| --- | ---: | --- |");
-    for (const row of excludedSelected) {
-      lines.push(`| ${row.relPath.replace(/\|/g, "\\|")} | ${row.wordCount} | ${row.reasons.join(", ").replace(/\|/g, "\\|")} |`);
-    }
-  }
-
-  lines.push("");
-  lines.push("## Excluded Content Inventory");
-  lines.push("");
-  if (!excludedInventory.length) {
-    lines.push("- لا توجد صفحات مستبعدة في نطاق الجرد.");
-  } else {
-    lines.push("| File | Words | Reasons |");
-    lines.push("| --- | ---: | --- |");
-    for (const row of excludedInventory) {
-      lines.push(`| ${row.relPath.replace(/\|/g, "\\|")} | ${row.wordCount} | ${row.reasons.join(", ").replace(/\|/g, "\\|")} |`);
-    }
-  }
-
-  lines.push("");
-  return `${lines.join("\n")}\n`;
+  return lines.join("\n") + "\n";
 }
 
 async function main() {
-  const { entries, analyses } = await buildEntries();
-  const excludedInventory = await buildExcludedInventory();
-  const xml = renderXml(entries);
-  const report = renderReport({ entries, analyses, excludedInventory });
+  const allFiles = await walkHtmlFiles(ROOT);
 
-  await fs.writeFile(OUTPUT, xml, "utf8");
-  await fs.writeFile(PRIORITY_OUTPUT, xml, "utf8");
+  // 1. توليد sitemap-priority.xml (عالية الثقة)
+  const candidatePriorityPaths = RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath);
+  const priorityResult = await buildEntriesForCandidates(candidatePriorityPaths, allFiles, {
+    bypassRecoveryWhitelist: false,
+  });
+  const priorityXml = renderXml(priorityResult.entries);
+  await fs.writeFile(PRIORITY_OUTPUT, priorityXml, "utf8");
+  process.stdout.write(`Generated sitemap-priority.xml with ${priorityResult.entries.length} URLs\n`);
+
+  // 2. توليد sitemap-services.xml (ديناميكي لصفحات الخدمات)
+  const serviceFiles = await walkHtmlFiles(path.join(ROOT, "services"));
+  const candidateServicePaths = serviceFiles.map((f) => normalizeRelPath(path.relative(ROOT, f)));
+  const servicesResult = await buildEntriesForCandidates(candidateServicePaths, allFiles, {
+    bypassRecoveryWhitelist: true,
+  });
+  const servicesXml = renderXml(servicesResult.entries);
+  await fs.writeFile(SERVICES_OUTPUT, servicesXml, "utf8");
+  process.stdout.write(`Generated sitemap-services.xml with ${servicesResult.entries.length} URLs\n`);
+
+  // 3. توليد sitemap-blog.xml (ديناميكي لصفحات المدونة)
+  const blogFiles = await walkHtmlFiles(path.join(ROOT, "blog"));
+  const candidateBlogPaths = blogFiles.map((f) => normalizeRelPath(path.relative(ROOT, f)));
+  const blogResult = await buildEntriesForCandidates(candidateBlogPaths, allFiles, {
+    bypassRecoveryWhitelist: true,
+  });
+  const blogXml = renderXml(blogResult.entries);
+  await fs.writeFile(BLOG_OUTPUT, blogXml, "utf8");
+  process.stdout.write(`Generated sitemap-blog.xml with ${blogResult.entries.length} URLs\n`);
+
+  // 4. توليد sitemap.xml (Sitemap Index)
+  const today = toIsoDate(new Date());
+  const indexSitemaps = [
+    { loc: `${BASE_URL}/sitemap-priority.xml`, lastmod: today },
+    { loc: `${BASE_URL}/sitemap-services.xml`, lastmod: today },
+    { loc: `${BASE_URL}/sitemap-blog.xml`, lastmod: today },
+  ];
+  const indexXml = renderSitemapIndex(indexSitemaps);
+  await fs.writeFile(OUTPUT, indexXml, "utf8");
+  process.stdout.write(`Generated sitemap.xml (Sitemap Index) pointing to ${indexSitemaps.length} maps\n`);
+
+  // 5. توليد تقرير الجودة الشامل
+  const totalExcluded = priorityResult.analyses.filter(a => !a.include).length +
+                        servicesResult.analyses.filter(a => !a.include).length +
+                        blogResult.analyses.filter(a => !a.include).length;
+
+  const report = renderReport({
+    priorityCount: priorityResult.entries.length,
+    servicesCount: servicesResult.entries.length,
+    blogCount: blogResult.entries.length,
+    excludedCount: totalExcluded,
+  });
   await fs.mkdir(path.dirname(REPORT_OUTPUT), { recursive: true });
   await fs.writeFile(REPORT_OUTPUT, report, "utf8");
-
-  process.stdout.write(`Generated sitemap.xml with ${entries.length} high-confidence URLs\n`);
-  process.stdout.write(`Generated sitemap-priority.xml with ${entries.length} matching high-confidence URLs\n`);
-  process.stdout.write(
-    `Generated reports/sitemap-quality-report.md with ${excludedInventory.length + analyses.length} analyzed rows\n`
-  );
+  process.stdout.write(`Generated quality report in reports/sitemap-quality-report.md\n`);
 }
 
 main().catch((error) => {

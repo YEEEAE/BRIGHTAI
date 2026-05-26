@@ -47,8 +47,19 @@ async function checkLocalFile(localPath) {
   const altPath = path.join(ROOT, "frontend/pages", localPath);
   if (existsSync(fullPath)) return fullPath;
   if (existsSync(altPath)) return altPath;
+
+  // دعم كنسي للملفات الفردية المنتهية بـ .html كبديل لـ index.html
+  if (localPath.endsWith("/index.html")) {
+    const fallbackPath = localPath.replace(/\/index\.html$/, ".html");
+    const fullFallback = path.join(ROOT, fallbackPath);
+    const altFallback = path.join(ROOT, "frontend/pages", fallbackPath);
+    if (existsSync(fullFallback)) return fullFallback;
+    if (existsSync(altFallback)) return altFallback;
+  }
+
   return null;
 }
+
 
 async function run() {
   let exitCode = 0;

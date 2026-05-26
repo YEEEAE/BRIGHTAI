@@ -1,4 +1,5 @@
 const chokidar = require('chokidar');
+const fs = require('fs');
 const config = require('../config/env');
 const { getRejects, invalidateCache, getDataState } = require('../services/dataService');
 const { loadExcelData, getDataHash, recordChange } = require('../services/excelService');
@@ -33,6 +34,11 @@ function startExcelWatcher(io) {
       const excelPayload = await loadExcelData({ force: true });
       await getRejects('excel');
       const state = getDataState();
+      
+      const fileModifiedAt = fs.existsSync(config.excelFilePath)
+        ? fs.statSync(config.excelFilePath).mtime.toISOString()
+        : new Date().toISOString();
+
       const change = {
         event: 'data:updated',
         source: 'excel',
@@ -51,6 +57,10 @@ function startExcelWatcher(io) {
       if (io) {
         io.emit('data:updated', {
           ...change,
+          hash: lastHash,
+          file_modified_at: fileModifiedAt,
+          record_count: excelPayload.records.length,
+          sheet_count: excelPayload.sheet_names.length,
           metrics: excelPayload.metrics,
           status: state.excel
         });
@@ -150,4 +160,3 @@ function startExcelWatcher(io) {
 }
 
 module.exports = { startExcelWatcher };
-

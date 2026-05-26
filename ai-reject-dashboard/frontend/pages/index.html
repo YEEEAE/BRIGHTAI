@@ -251,8 +251,6 @@
             <span x-show="darkMode">☀️</span>
           </button>
 
-
-
           <!-- User Menu Dropdown Trigger -->
           <div class="topbar-user" @click="rightSidebarOpen = !rightSidebarOpen">
             <div class="topbar-avatar">M</div>
@@ -274,12 +272,21 @@
           <li class="breadcrumb-item is-active" x-text="lang === 'ar' ? 'تحليلات المرفوضات والتشغيل' : 'Reject Analytics & Ops'"></li>
         </nav>
 
+        <!-- DEMO FALLBACK BANNER -->
+        <div x-show="!excelStatus.file_exists" class="alert alert-danger" style="border-inline-start: 4px solid var(--color-danger); background-color: rgba(231, 111, 81, 0.1); margin-bottom: var(--spacing-md); display: none;" :style="{ display: !excelStatus.file_exists ? 'flex' : 'none' }">
+          <span class="alert-icon" style="font-size: 20px;">⚠️</span>
+          <div class="alert-content">
+            <div class="alert-title" style="color: var(--color-danger); font-weight: 700;" x-text="lang === 'ar' ? 'تنبيه: تم تفعيل البيانات البديلة' : 'Notice: Demo Fallback Active'"></div>
+            <div class="alert-message" style="color: var(--text-primary);" x-text="lang === 'ar' ? 'ملف إكسل الحقيقي غير متوفر في المسار المحدد. يتم حالياً تشغيل وضع المحاكاة والبيانات البديلة (Demo fallback active).' : 'The active Excel workbook is missing at the configured path. The dashboard is running on mock simulation data (Demo fallback active).'"></div>
+          </div>
+        </div>
+
         <!-- LIVE DATA SOURCE DISCLAIMER -->
-        <div class="alert alert-info">
+        <div x-show="excelStatus.file_exists" class="alert alert-info" style="display: none;" :style="{ display: excelStatus.file_exists ? 'flex' : 'none' }">
           <span class="alert-icon">💡</span>
           <div class="alert-content">
             <div class="alert-title" x-text="lang === 'ar' ? 'بيان البيانات ومصدر الحقيقة' : 'Data Integrity Announcement'"></div>
-            <div class="alert-message" x-text="lang === 'ar' ? 'نظام تحليلات BrightAI يقرأ حالياً من ملف Excel الحقيقي (25,691 سجلاً). يرجى ملاحظة أن نظام Focus ERP يظل هو المصدر الرسمي والوحيد للموافقات التشغيلية.' : 'BrightAI Analytics reads from the active Excel system (25,691 records). Focus ERP remains the formal source of truth for approvals.'"></div>
+            <div class="alert-message" x-text="getDisclaimerText()"></div>
           </div>
         </div>
 
@@ -799,6 +806,16 @@
           end: 0
         },
 
+        // Live Excel status
+        excelStatus: {
+          file_exists: false,
+          record_count: 0,
+          sheet_count: 0,
+          hash: null,
+          file_modified_at: null,
+          warnings: []
+        },
+
         // KPI metrics
         kpis: {
           totalRejects: 0,
@@ -824,9 +841,7 @@
           'توصيات CAPA لشريط الإسفنج؟',
           'تحليل تكلفة المرفوضات للأقسام؟'
         ],
-        chatMessages: [
-          { sender: 'ai', text: 'أهلاً بك! أنا مساعد الذكاء الاصطناعي لـ BrightAI. تم ربط ملف Excel الحقيقي (25,691 سجلاً). كيف يمكنني مساعدتك في تحليل الجودة والتكاليف اليوم؟' }
-        ],
+        chatMessages: [],
         chatInput: '',
         aiLoading: false,
 
@@ -845,6 +860,7 @@
           this.initThemeAndLang();
           this.fetchDashboardData();
           this.setupRealtimeListeners();
+          this.chatMessages = [{ sender: 'ai', text: this.getAiGreetingText() }];
         },
 
         initThemeAndLang() {
@@ -879,16 +895,48 @@
           // Refresh suggested queries based on language selection
           if (this.lang === 'ar') {
             this.suggestedQueries = ['كم تكلفة المرفوضات هذا الشهر؟', 'ما هي أهم 3 أسباب للعيوب؟', 'توصيات CAPA لشريط الإسفنج؟', 'تحليل تكلفة المرفوضات للأقسام؟'];
-            this.chatMessages = [{ sender: 'ai', text: 'أهلاً بك! أنا مساعد الذكاء الاصطناعي لـ BrightAI. تم ربط ملف Excel الحقيقي (25,691 سجلاً). كيف يمكنني مساعدتك في تحليل الجودة والتكاليف اليوم؟' }];
+            this.chatMessages = [{ sender: 'ai', text: this.getAiGreetingText() }];
           } else {
             this.suggestedQueries = ['What is the reject cost this month?', 'Top 3 defects reasons?', 'CAPA recommendation for Sponge Tape?', 'Department scrap cost analysis?'];
-            this.chatMessages = [{ sender: 'ai', text: 'Hello! I am your BrightAI analytical assistant. The active Excel workbook has been connected. How can I help you audit quality and costs today?' }];
+            this.chatMessages = [{ sender: 'ai', text: this.getAiGreetingText() }];
           }
         },
 
         // API Data Fetching
+        async fetchExcelStatus() {
+          try {
+            const res = await fetch('/api/data/live-status', { credentials: 'include' });
+            if (res.ok) {
+              const responseData = await res.json();
+              this.excelStatus = responseData.data || responseData;
+            }
+          } catch (e) {
+            console.error('Error fetching excel status:', e);
+          }
+        },
+
+        getDisclaimerText() {
+          const count = this.excelStatus.record_count ? this.excelStatus.record_count.toLocaleString() : '...';
+          if (this.lang === 'ar') {
+            return `نظام تحليلات BrightAI يقرأ حالياً من ملف Excel الحقيقي (${count} سجلاً). يرجى ملاحظة أن نظام Focus ERP يظل هو المصدر الرسمي والوحيد للموافقات التشغيلية.`;
+          } else {
+            return `BrightAI Analytics reads from the active Excel system (${count} records). Focus ERP remains the formal source of truth for approvals.`;
+          }
+        },
+
+        getAiGreetingText() {
+          const count = this.excelStatus.record_count ? this.excelStatus.record_count.toLocaleString() : '...';
+          if (this.lang === 'ar') {
+            return `أهلاً بك! أنا مساعد الذكاء الاصطناعي لـ BrightAI. تم ربط ملف Excel الحقيقي (${count} سجلاً). كيف يمكنني مساعدتك في تحليل الجودة والتكاليف اليوم؟`;
+          } else {
+            return `Hello! I am your BrightAI analytical assistant. The active Excel workbook has been connected (${count} records). How can I help you audit quality and costs today?`;
+          }
+        },
+
         async fetchDashboardData() {
           try {
+            await this.fetchExcelStatus();
+
             const res = await fetch('/api/rejects?source=excel', { credentials: 'include' });
             if (!res.ok) throw new Error('Failed to fetch rejects');
             const responseData = await res.json();
@@ -952,7 +1000,8 @@
             if (summaryRes.ok) {
               const summaryData = await summaryRes.json();
               const payload = summaryData.data || summaryData;
-              this.aiSummary = payload.executive_summary || 'لوحة تحليلات الذكاء الاصطناعي جاهزة. تم فحص 25,691 سجلاً من ملف Excel المعتمد بنجاح.';
+              const count = this.excelStatus.record_count ? this.excelStatus.record_count.toLocaleString() : '...';
+              this.aiSummary = payload.executive_summary || `لوحة تحليلات الذكاء الاصطناعي جاهزة. تم فحص ${count} سجلاً من ملف Excel المعتمد بنجاح.`;
             } else {
               this.aiSummary = 'تحليلات الذكاء الاصطناعي استشارية: يظهر التحليل المالي والإحصائي للمستودع والإنتاج تكلفة إجمالية متوقعة تبلغ SAR 158.3M. هناك 25 حالة عالية الخطورة تتطلب المراجعة الفورية لإجراءات CAPA.';
             }
@@ -1237,7 +1286,7 @@
           }
         },
 
-        // Live WebSockets/Realtime handlers Mock
+        // Live WebSockets/Realtime handlers
         setupRealtimeListeners() {
           // Listen for data refresh notices
           window.addEventListener('data:updated', () => {

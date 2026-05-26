@@ -40,3 +40,7 @@ Allow: /llms.txt
 
 
 Sitemap: https://brightai.site/sitemap.xml
+Sitemap: https://brightai.site/sitemap-priority.xml
+Sitemap: https://brightai.site/sitemap-services.xml
+Sitemap: https://brightai.site/sitemap-blog.xml
+

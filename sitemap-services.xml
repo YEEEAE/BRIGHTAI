@@ -1,127 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
   <url>
     <loc>https://brightai.site/services/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/ai-agents-saudi/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-agents-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-agents-saudi/" />
+    <lastmod>2026-05-26</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/ai-automation-saudi/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-automation-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-automation-saudi/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/ai-chatbot-arabic/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-chatbot-arabic/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-chatbot-arabic/" />
+    <lastmod>2026-05-25</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/ai-consulting-saudi/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-consulting-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-consulting-saudi/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/ai-consulting/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-consulting/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-consulting/" />
+    <lastmod>2026-05-26</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/ai-scolecs/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-scolecs/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-scolecs/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/ai-tenders-analysis/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/ai-tenders-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/ai-tenders-analysis/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/approvals-automation/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/approvals-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/approvals-automation/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/brightproject/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/brightproject/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/brightproject/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/brightsales/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/brightsales/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/brightsales/" />
+    <lastmod>2026-05-25</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/business-automation-saudi/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/business-automation-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/business-automation-saudi/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/competitor-analysis-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/competitor-analysis-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/competitor-analysis-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/custom-ai-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/custom-ai-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/custom-ai-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/customer-service-automation/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/customer-service-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/customer-service-automation/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/data-analyst-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/data-analyst-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/data-analyst-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/data-platform/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/data-platform/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/data-platform/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/document-automation/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/document-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/document-automation/" />
+    <lastmod>2026-05-25</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/enterprise-ai-agents-saudi/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/enterprise-ai-agents-saudi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/enterprise-ai-agents-saudi/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/health-data-analysis/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/health-data-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/health-data-analysis/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/hr-automation/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/hr-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/hr-automation/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/lead-hunter/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/lead-hunter/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/lead-hunter/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/marketing-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/marketing-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/marketing-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/marketing-ai-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/marketing-ai-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/marketing-ai-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/marketing-automation/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/marketing-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/marketing-automation/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/medical-archive/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/medical-archive/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/medical-archive/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/operational-reports-automation/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/operational-reports-automation/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/operational-reports-automation/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/opportunity-discovery-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/opportunity-discovery-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/opportunity-discovery-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/seo-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/seo-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/seo-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/seo-ai-agent/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/seo-ai-agent/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/seo-ai-agent/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/smart-hiring-system/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/smart-hiring-system/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/smart-hiring-system/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/smart-hospital-management/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/smart-hospital-management/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/smart-hospital-management/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/social-data-analysis/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/social-data-analysis/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/social-data-analysis/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/services/supply-chain-optimization/</loc>
-    <lastmod>2026-05-03</lastmod>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/supply-chain-optimization/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/supply-chain-optimization/" />
+    <lastmod>2026-05-25</lastmod>
   </url>
+
 </urlset>
