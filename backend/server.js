@@ -40,6 +40,8 @@ const { canHandleDemoRoute, demoRouteHandler } = require('./routes/demo');
 const { demoGeminiApp, canHandleDemoGeminiRoute } = require('./demoGeminiApp');
 const { getProviderStatus, getSafeAiStatus } = require('./services/aiGateway');
 const { getSkills, getSkillsSummary } = require('./services/skillsRegistry');
+const { kernelRouteHandler } = require('./routes/kernel');
+const { initializeDatabase } = require('./db/init');
 
 const API_SECURITY_HEADERS = {
   'Content-Language': 'ar-SA',
@@ -547,6 +549,9 @@ async function handleRequest(req, res) {
         scannedAt,
         skills
       });
+    } else if (url.startsWith('/api/kernel/')) {
+      // BrightTrust Kernel — AI Safety & Governance
+      await kernelRouteHandler(ctx.req, ctx.res, method, url);
     } else {
       ctx.res.setHeader('X-Robots-Tag', 'noindex');
       ctx.res.status(404).json({
@@ -603,6 +608,13 @@ function startServer() {
   const server = http.createServer(handleRequest);
   setupLiveWebSocket(server);
 
+  // Initialize BrightTrust Kernel database
+  try {
+    initializeDatabase();
+  } catch (dbError) {
+    console.error('Failed to initialize BrightTrust Kernel database:', dbError.message);
+  }
+
   server.listen(config.server.port, () => {
     console.log(`BrightAI Server running on port ${config.server.port}`);
     console.log(`Environment: ${config.server.nodeEnv}`);
@@ -632,6 +644,16 @@ function startServer() {
     console.log('  GET  /api/health     - Health check');
     console.log('  GET  /api/gateway-status - Gateway status + skills summary');
     console.log('  GET  /api/skills     - Full skills registry');
+    console.log('  --- BrightTrust Kernel (AI Safety & Governance) ---');
+    console.log('  POST /api/kernel/chat            - Process AI request through all security layers');
+    console.log('  GET  /api/kernel/audit           - Query audit trail');
+    console.log('  GET  /api/kernel/audit/:id       - Get specific audit entry');
+    console.log('  POST /api/kernel/approve/:id     - Approve pending request');
+    console.log('  POST /api/kernel/reject/:id      - Reject pending request');
+    console.log('  GET  /api/kernel/pending         - List pending approvals');
+    console.log('  GET  /api/kernel/stats           - Dashboard statistics');
+    console.log('  POST /api/kernel/evidence/:id    - Generate Evidence File');
+    console.log('  GET  /api/kernel/compliance/check - Compliance status');
     console.log('  WS   /ws/live        - Real-time dashboard updates');
   });
 

@@ -8,7 +8,7 @@
     gtag('config', 'G-8LLESL207Q');
   </script>
     <meta name="ai-assistant" content="صقر AI by BrightAI">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>صقر AI — لوحة الإدارة التنفيذية | ميس للمنتجات الطبية</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="لوحة الإدارة التنفيذية الاستراتيجية لـ BrightAI - مخصصة لمجلس الإدارة والقيادة العليا لمصانع ميس.">
@@ -17,9 +17,7 @@
   <!-- Central Design System and Components Bundle -->
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/design-system.css">
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/notifications.css">
-  <link rel="stylesheet" href="../assets/css/design-system.css">
-  <link rel="stylesheet" href="../assets/css/notifications.css">
-  <link rel="stylesheet" href="../assets/css/dashboard.css">
+<link rel="stylesheet" href="../assets/css/dashboard.css">
   
   <!-- Bespoke Page Styling for Premium McKinsey/BCG Consulting Reports Aesthetics -->
   <style>
@@ -137,6 +135,10 @@
   <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
   <script defer="" src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
   <link rel="stylesheet" href="/assets/css/fonts.css">
+  <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
+<link rel="apple-touch-icon" href="/assets/images/logo-new.PNG">
+  <link rel="preload" as="image" href="/assets/images/logo-new.PNG" fetchpriority="high">
+  <link rel="stylesheet" href="/assets/css/sitewide-modernization.css">
 </head>
 <body x-data="executiveApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -148,9 +150,7 @@
     <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <div class="sidebar-header">
         <a href="/ai-reject-dashboard/" class="sidebar-logo">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
-          </svg>
+          <img class="sidebar-logo-mark brightai-brand-image" src="/assets/images/logo-new.PNG" alt="شعار Bright AI" width="32" height="32" decoding="async" fetchpriority="high">
           <span style="white-space: nowrap;">BrightAI Analytics</span>
         </a>
       </div>
@@ -708,4 +708,5 @@
   <!-- Enterprise Notifications System -->
   <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>
   <script defer src="../assets/js/dashboard.js"></script>
+  <script defer src="/assets/js/sitewide-modernization.js"></script>
 </body></html>

@@ -34,20 +34,27 @@
     style.id = STYLE_ID;
     style.textContent = [
       "." + LOGO_CLASS + " {",
-      "  width: 180px !important;",
-      "  max-width: 180px !important;",
-      "  height: auto !important;",
+      "  width: auto !important;",
+      "  max-width: min(160px, 34vw) !important;",
+      "  max-height: 52px !important;",
+      "  aspect-ratio: 1 / 1;",
       "  object-fit: contain !important;",
       "  filter: drop-shadow(0 0 6px rgba(205, 103, 73, 0.35)) !important;",
       "  transition: filter 0.3s ease !important;",
+      "}",
+      ".logo-box > ." + LOGO_CLASS + ", .brand-mark." + LOGO_CLASS + ", .brand-logo." + LOGO_CLASS + " {",
+      "  width: 100% !important;",
+      "  height: 100% !important;",
+      "  max-width: 52px !important;",
+      "  max-height: 52px !important;",
       "}",
       "." + LOGO_CLASS + ":hover {",
       "  filter: drop-shadow(0 0 14px rgba(205, 103, 73, 0.6)) !important;",
       "}",
       "@media (max-width: 768px) {",
       "  ." + LOGO_CLASS + " {",
-      "    width: 130px !important;",
-      "    max-width: 130px !important;",
+      "    max-width: 44px !important;",
+      "    max-height: 44px !important;",
       "  }",
       "}"
     ].join("\n");
@@ -102,7 +109,9 @@
     }
 
     img.classList.add(LOGO_CLASS);
-    img.style.height = "auto";
+    if (!img.closest(".logo-box, .brand, .nav-logo, .sidebar-logo")) {
+      img.style.height = "auto";
+    }
     img.style.objectFit = "contain";
     img.decoding = img.decoding || "async";
 
