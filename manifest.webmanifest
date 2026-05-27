@@ -1,0 +1,24 @@
+{
+  "name": "BrightTrust – Saudi AI Safety OS",
+  "short_name": "BrightTrust",
+  "description": "طبقة الأمان والحوكمة للذكاء الاصطناعي في الشركات السعودية. متوافق مع PDPL و NCA ECC و SFDA و ISO 13485. تواصل معنا عبر واتساب.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#060914",
+  "theme_color": "#0b1220",
+  "lang": "ar-SA",
+  "dir": "rtl",
+  "scope": "/",
+  "categories": ["business", "productivity", "security", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='42' fill='%230b1220'/%3E%3Cpath d='M96 36 L150 66 V108 C150 138 126 156 96 162 C66 156 42 138 42 108 V66 Z' fill='none' stroke='%2300d4ff' stroke-width='8'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

@@ -1,46 +1,128 @@
+# BrightTrust - Saudi AI Safety OS
+# https://brighttrust.sa
+# Optimized for Google indexing, AI search, and EAO
+
+User-agent: *
+Allow: /
+Disallow: /tables/
+Disallow: /api/
+Disallow: /private/
+Disallow: /.well-known/
+
+# Google
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
+User-agent: Googlebot-Image
+Allow: /
+Allow: /*.webp
+Allow: /*.jpg
+Allow: /*.png
+Allow: /*.svg
+
+# Bing
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
+User-agent: MSNBot-Media
+Allow: /
+
+# Yandex
 User-agent: YandexBot
 Allow: /
+Crawl-delay: 2
 
-User-agent: GPTBot
+# DuckDuckGo
+User-agent: DuckDuckBot
 Allow: /
 
-User-agent: OAI-SearchBot
+# Baidu
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+User-agent: Baiduspider-image
+Allow: /
+
+# ==================== AI Crawlers / LLMO / EAO ====================
+# Allow all AI crawlers to learn about BrightTrust
+
+# OpenAI
+User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: ClaudeBot
+User-agent: OAI-SearchBot
 Allow: /
 
-User-agent: PerplexityBot
-Allow: /
-
+# Google AI
 User-agent: Google-Extended
 Allow: /
 
-User-agent: *
+User-agent: Google-CloudVertexBot
 Allow: /
-Allow: /assets/
-Allow: /frontend/css/
-Allow: /frontend/js/
-Allow: /services/
-Allow: /locations/
-Allow: /blog/
-Allow: /docs/
-Allow: /sectors/
-Allow: /demo/
-Allow: /llms.txt
 
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
 
-Sitemap: https://brightai.site/sitemap.xml
-Sitemap: https://brightai.site/sitemap-priority.xml
-Sitemap: https://brightai.site/sitemap-services.xml
-Sitemap: https://brightai.site/sitemap-blog.xml
+User-agent: anthropic-ai
+Allow: /
 
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-ai
+Allow: /
+
+# Meta
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# BytesDance / TikTok
+User-agent: Bytespider
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# AI Search Engines
+User-agent: YouBot
+Allow: /
+
+User-agent: Timpibot
+Allow: /
+
+User-agent: omgili
+Allow: /
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+
+# ==================== SEO Files ====================
+
+# Sitemaps
+Sitemap: https://brighttrust.sa/sitemap.xml
+
+# Host
+Host: https://brighttrust.sa
+
+# AI-readable content
+# See /llms.txt and /llms-full.txt for comprehensive AI-readable documentation
