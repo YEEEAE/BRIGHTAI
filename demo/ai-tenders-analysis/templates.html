@@ -1,0 +1,2250 @@
+<!DOCTYPE html><html dir="rtl" lang="ar-SA"><head>
+<meta charset="utf-8">
+<link rel="canonical" href="https://brightai.site/demo/ai-tenders-analysis/templates/">
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/templates/">
+<link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/tenders/templates/">
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/templates/">
+<link href="https://www.googletagmanager.com" rel="preconnect">
+<link href="https://www.googletagmanager.com" rel="dns-prefetch">
+<link crossorigin="" href="https://js.sentry-cdn.com" rel="preconnect">
+<link href="https://js.sentry-cdn.com" rel="dns-prefetch">
+<meta name="robots" content="index, follow">
+<meta property="og:url" content="https://brightai.site/demo/ai-tenders-analysis/templates/">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="theme-color" content="#0b1020">
+<title>قوالب عقود ومناقصات سعودية للتحليل الذكي | ContractAI</title>
+<meta name="keywords" content="قوالب العقود الجاهزة, ContractAI من Bright AI للعقود السعودية, Bright AI, الذكاء الاصطناعي, السعودية">
+<meta name="description" content="مكتبة قوالب ContractAI تساعد فرق السعودية على بدء مراجعة عقود التوريد والخدمات والمناقصات ثم نقلها للتحليل والمقارنة.">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&amp;family=Tajawal:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+      :root {
+        color-scheme: dark;
+        --bg-primary: #080c14;
+        --bg-secondary: #0d1117;
+        --bg-card: #111827;
+        --bg-card-hover: #1a2332;
+        --accent: #00e5b4;
+        --accent-hover: #00c49a;
+        --accent-glow: rgba(0, 229, 180, 0.15);
+        --danger: #ff4757;
+        --warning: #ffa502;
+        --info: #3b82f6;
+        --success: #22c55e;
+        --text-primary: #e2e8f0;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border: rgba(255, 255, 255, 0.06);
+        --border-hover: rgba(0, 229, 180, 0.3);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+        --radius-xl: 24px;
+        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+        --shadow-glow: 0 0 30px rgba(0, 229, 180, 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --sidebar-width: 270px;
+        --header-height: 92px;
+      }
+
+      [data-theme="light"] {
+        color-scheme: light;
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --bg-card: #ffffff;
+        --bg-card-hover: #f1f5f9;
+        --text-primary: #1e293b;
+        --text-secondary: #475569;
+        --text-muted: #94a3b8;
+        --border: rgba(0, 0, 0, 0.08);
+        --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Tajawal", sans-serif;
+        color: var(--text-primary);
+        background:
+          radial-gradient(circle at top right, rgba(0, 229, 180, 0.12), transparent 24%),
+          radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1), transparent 22%),
+          linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 120px 120px;
+        mask-image: radial-gradient(circle at center, black 45%, transparent 92%);
+        opacity: 0.5;
+      }
+
+      body.menu-open,
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      a,
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
+      }
+
+      ::selection {
+        color: #031b16;
+        background: var(--accent);
+      }
+
+      :focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      .glass {
+        background: rgba(17, 24, 39, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-card);
+      }
+
+      [data-theme="light"] .glass {
+        background: rgba(255, 255, 255, 0.78);
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 1000;
+        padding: 12px 16px;
+        color: #031b16;
+        background: var(--accent);
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transform: translateY(-150%);
+      }
+
+      .skip-link:focus-visible {
+        transform: translateY(0);
+      }
+
+      .sidebar-backdrop,
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 140;
+        background: rgba(3, 7, 18, 0.58);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+      }
+
+      .sidebar-backdrop.is-visible,
+      .modal-overlay.is-visible {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 180;
+        width: var(--sidebar-width);
+        height: 100vh;
+        padding: 24px 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        background:
+          linear-gradient(180deg, rgba(13, 17, 23, 0.96), rgba(8, 12, 20, 0.94)),
+          rgba(17, 24, 39, 0.6);
+        border-left: 1px solid var(--border);
+        box-shadow: -24px 0 80px rgba(0, 0, 0, 0.28);
+      }
+
+      .sidebar-header,
+      .brand,
+      .brand-title-row,
+      .header-side,
+      .header-actions,
+      .nav-main,
+      .filters-row,
+      .filters-inline,
+      .template-meta,
+      .template-actions,
+      .preview-layout,
+      .modal-actions,
+      .toolbar,
+      .editor-actions,
+      .toast,
+      .template-preview-header {
+        display: flex;
+        align-items: center;
+      }
+
+      .sidebar-header {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand {
+        gap: 14px;
+      }
+
+      .brand-logo {
+        width: 52px;
+        height: 52px;
+        padding: 12px;
+        border-radius: 18px;
+        color: var(--accent);
+        background: linear-gradient(135deg, var(--accent-glow), rgba(59, 130, 246, 0.08));
+        border: 1px solid rgba(0, 229, 180, 0.18);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .brand-title-row {
+        gap: 10px;
+      }
+
+      .brand-name {
+        margin: 0;
+        color: var(--accent);
+        font-size: 1.35rem;
+        font-weight: 700;
+      }
+
+      .brand-subtitle {
+        margin: 6px 0 0;
+        color: var(--text-secondary);
+        font-size: 0.92rem;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: rgba(59, 130, 246, 0.16);
+        border: 1px solid rgba(59, 130, 246, 0.24);
+      }
+
+      .sidebar-nav {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .nav-list {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .nav-link {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        border: 1px solid transparent;
+        overflow: hidden;
+      }
+
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        bottom: 10px;
+        right: 0;
+        width: 3px;
+        border-radius: 999px;
+        background: transparent;
+      }
+
+      .nav-link:hover {
+        color: var(--text-primary);
+        border-color: var(--border-hover);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .nav-link[aria-current="page"] {
+        color: var(--accent);
+        background: rgba(0, 229, 180, 0.1);
+        border-color: rgba(0, 229, 180, 0.2);
+      }
+
+      .nav-link[aria-current="page"]::after {
+        background: var(--accent);
+      }
+
+      .nav-icon {
+        width: 20px;
+        height: 20px;
+      }
+
+      .nav-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 26px;
+        height: 26px;
+        padding-inline: 8px;
+        border-radius: 999px;
+        color: #fff;
+        background: rgba(255, 71, 87, 0.2);
+        border: 1px solid rgba(255, 71, 87, 0.3);
+      }
+
+      .user-card {
+        padding: 16px;
+        border-radius: var(--radius-lg);
+      }
+
+      .user-summary {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .avatar {
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        font-weight: 700;
+        color: #031b16;
+        background: linear-gradient(135deg, #7ef6dd, var(--accent));
+      }
+
+      .user-name {
+        margin: 0;
+        font-weight: 700;
+      }
+
+      .user-plan {
+        margin: 4px 0 0;
+        color: var(--text-secondary);
+      }
+
+      .logout-button,
+      .primary-button,
+      .icon-button,
+      .secondary-button,
+      .template-button,
+      .sort-select,
+      .search-input,
+      .filter-search {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        transition: var(--transition);
+      }
+
+      .logout-button,
+      .secondary-button,
+      .icon-button,
+      .template-button,
+      .sort-select,
+      .search-input,
+      .filter-search {
+        color: var(--text-primary);
+        background: rgba(17, 24, 39, 0.58);
+      }
+
+      .primary-button {
+        color: #031b16;
+        background: linear-gradient(135deg, var(--accent), #67f5d8);
+        border-color: transparent;
+        font-weight: 700;
+        box-shadow: 0 14px 34px rgba(0, 229, 180, 0.2);
+        text-decoration: none;
+      }
+
+      .primary-button:hover,
+      .secondary-button:hover,
+      .template-button:hover,
+      .icon-button:hover {
+        transform: translateY(-2px);
+      }
+
+      .main-content {
+        min-height: 100vh;
+        margin-right: var(--sidebar-width);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-header {
+        position: sticky;
+        top: 0;
+        z-index: 120;
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) minmax(280px, 1.4fr) auto;
+        align-items: center;
+        gap: 20px;
+        min-height: var(--header-height);
+        padding: 20px 28px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(8, 12, 20, 0.68);
+        backdrop-filter: blur(16px);
+      }
+
+      .menu-toggle,
+      .close-sidebar {
+        display: none;
+      }
+
+      .breadcrumb {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-secondary);
+      }
+
+      .breadcrumb a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .breadcrumb .current {
+        color: var(--text-primary);
+        font-weight: 700;
+      }
+
+      .search-shell {
+        position: relative;
+      }
+
+      .search-shell svg {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        width: 18px;
+        height: 18px;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+      }
+
+      .search-input {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 14px 122px 14px 48px;
+      }
+
+      .search-shortcut {
+        position: absolute;
+        top: 50%;
+        left: 14px;
+        transform: translateY(-50%);
+        padding: 6px 10px;
+        color: var(--text-secondary);
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.72rem;
+      }
+
+      .icon-button {
+        min-width: 48px;
+        height: 48px;
+        cursor: pointer;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        min-width: 18px;
+        height: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        color: #fff;
+        background: var(--danger);
+        font-size: 0.68rem;
+      }
+
+      .api-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        color: var(--text-secondary);
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        font-size: 0.8rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .api-status .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--text-muted);
+        animation: pulse 2s infinite;
+      }
+
+      .api-status[data-status="connected"] .status-dot {
+        background: var(--accent);
+        animation: none;
+      }
+
+      .api-status[data-status="error"] .status-dot {
+        background: var(--danger);
+        animation: none;
+      }
+
+      .api-status:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-hover);
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      .page-content {
+        flex: 1;
+        padding: 28px;
+      }
+
+      .templates-layout {
+        display: grid;
+        gap: 24px;
+      }
+
+      .section-fade {
+        animation: fade-view 0.2s ease;
+      }
+
+      .page-hero,
+      .filters-shell,
+      .editor-shell {
+        padding: 24px;
+        border-radius: var(--radius-xl);
+      }
+
+      .page-hero {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(135deg, rgba(0, 229, 180, 0.06), transparent 60%),
+          radial-gradient(circle at top left, rgba(59, 130, 246, 0.12), transparent 30%);
+        pointer-events: none;
+      }
+
+      .page-hero > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .page-title {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 2.4rem);
+      }
+
+      .page-subtitle {
+        margin: 12px 0 0;
+        max-width: 720px;
+        color: var(--text-secondary);
+        line-height: 1.9;
+      }
+
+      .filters-shell {
+        display: grid;
+        gap: 18px;
+      }
+
+      .filters-row {
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .filter-search {
+        flex: 1 1 320px;
+        justify-content: flex-start;
+        width: 100%;
+        max-width: 420px;
+      }
+
+      .filter-search input,
+      .search-input input,
+      .sort-select,
+      .sort-select select {
+        width: 100%;
+        color: inherit;
+        background: transparent;
+        border: 0;
+        outline: 0;
+      }
+
+      .filters-inline {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .filter-tab {
+        padding: 10px 16px;
+        color: var(--text-secondary);
+        background: rgba(148, 163, 184, 0.06);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+
+      .filter-tab.is-active {
+        color: var(--accent);
+        border-color: rgba(0, 229, 180, 0.24);
+        background: rgba(0, 229, 180, 0.08);
+      }
+
+      .sort-select {
+        min-width: 180px;
+      }
+
+      .templates-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .template-card {
+        position: relative;
+        display: grid;
+        gap: 16px;
+        padding: 22px;
+        border-radius: var(--radius-xl);
+        transition: var(--transition);
+      }
+
+      .template-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 52px rgba(0, 0, 0, 0.24);
+      }
+
+      .template-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .template-icon {
+        width: 58px;
+        height: 58px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid currentColor;
+      }
+
+      .template-icon svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .template-title {
+        margin: 0;
+        font-size: 1.15rem;
+      }
+
+      .template-description {
+        margin: 0;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .category-badge,
+      .card-highlight,
+      .rating-badge,
+      .token-chip,
+      .template-preview-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .card-highlight {
+        color: #031b16;
+        background: linear-gradient(135deg, var(--accent), #72f4da);
+      }
+
+      .template-meta {
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+      }
+
+      .template-actions {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .template-button {
+        width: 100%;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .template-button.is-primary {
+        color: #031b16;
+        background: linear-gradient(135deg, var(--accent), #67f5d8);
+        border-color: transparent;
+        font-weight: 700;
+      }
+
+      .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 220;
+        width: min(80vw, 1120px);
+        height: min(85vh, 860px);
+        display: grid;
+        grid-template-rows: auto 1fr;
+        transform: translate(-50%, -46%);
+        opacity: 0;
+        visibility: hidden;
+        transition: var(--transition);
+      }
+
+      .modal.is-visible {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .modal-title {
+        margin: 0;
+        font-size: 1.25rem;
+      }
+
+      .modal-content {
+        padding: 20px;
+        overflow: auto;
+      }
+
+      .preview-layout {
+        align-items: flex-start;
+        gap: 20px;
+      }
+
+      .preview-info {
+        width: 34%;
+        display: grid;
+        gap: 16px;
+      }
+
+      .preview-document-wrap {
+        flex: 1;
+      }
+
+      .preview-document {
+        min-height: 100%;
+        padding: 26px;
+        border-radius: var(--radius-xl);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), #ffffff);
+        color: #0f172a;
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+      }
+
+      .preview-page {
+        width: min(100%, 640px);
+        margin: 0 auto 20px;
+        padding: 38px 42px;
+        border-radius: 20px;
+        background: #fff;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: 0 10px 32px rgba(15, 23, 42, 0.08);
+        line-height: 1.95;
+      }
+
+      .preview-page:last-child {
+        margin-bottom: 0;
+      }
+
+      .preview-page h4,
+      .preview-page h5,
+      .preview-info h4,
+      .editor-title {
+        margin: 0 0 12px;
+      }
+
+      .preview-page p,
+      .preview-page li,
+      .preview-info p {
+        margin: 0 0 12px;
+      }
+
+      .preview-info-card {
+        padding: 18px;
+        border-radius: var(--radius-lg);
+      }
+
+      .preview-list {
+        margin: 0;
+        padding-right: 18px;
+        color: var(--text-secondary);
+        line-height: 1.9;
+      }
+
+      .modal-actions {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .editor-shell {
+        display: none;
+        gap: 18px;
+      }
+
+      .editor-shell.is-visible {
+        display: grid;
+      }
+
+      .editor-head {
+        display: grid;
+        gap: 8px;
+      }
+
+      .editor-kicker {
+        color: var(--accent);
+        font-weight: 700;
+      }
+
+      .toolbar {
+        gap: 10px;
+        flex-wrap: wrap;
+        padding: 14px;
+        border-radius: var(--radius-lg);
+      }
+
+      .toolbar button {
+        min-width: 44px;
+        padding: 10px 12px;
+        color: var(--text-primary);
+        background: rgba(148, 163, 184, 0.08);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        cursor: pointer;
+      }
+
+      .editor-surface {
+        min-height: 420px;
+        padding: 24px;
+        border-radius: var(--radius-xl);
+        line-height: 2;
+      }
+
+      .editor-surface[contenteditable="true"]:empty::before {
+        content: "ابدأ بتعديل القالب هنا...";
+        color: var(--text-muted);
+      }
+
+      .editor-surface h3 {
+        margin-top: 0;
+      }
+
+      .token-chip {
+        color: #6b5200;
+        background: rgba(250, 204, 21, 0.3);
+        border: 1px dashed rgba(202, 138, 4, 0.56);
+        cursor: pointer;
+      }
+
+      .inline-token-input {
+        min-width: 150px;
+        padding: 7px 10px;
+        border: 1px solid rgba(250, 204, 21, 0.65);
+        border-radius: 10px;
+        background: rgba(255, 248, 220, 0.96);
+        color: #4b3a00;
+      }
+
+      .editor-actions {
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .template-preview-header {
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .template-preview-badge {
+        color: #031b16;
+        background: rgba(0, 229, 180, 0.16);
+        border: 1px solid rgba(0, 229, 180, 0.22);
+      }
+
+      .toast-stack {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 260;
+        display: grid;
+        gap: 12px;
+      }
+
+      .toast {
+        min-width: 280px;
+        max-width: 360px;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        animation: toast-in 0.28s ease;
+      }
+
+      .toast-success {
+        border-color: rgba(34, 197, 94, 0.34);
+      }
+
+      .toast-info {
+        border-color: rgba(59, 130, 246, 0.34);
+      }
+
+      .toast-close {
+        color: inherit;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+      }
+
+      .empty-state {
+        padding: 34px 20px;
+        text-align: center;
+        color: var(--text-secondary);
+      }
+
+      @keyframes fade-view {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes toast-in {
+        from {
+          opacity: 0;
+          transform: translateX(-14px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @media (max-width: 1180px) {
+        .templates-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .preview-layout {
+          flex-direction: column;
+        }
+
+        .preview-info {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 1023px) {
+        .sidebar {
+          transform: translateX(110%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.is-open {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-right: 0;
+        }
+
+        .close-sidebar,
+        .menu-toggle {
+          display: inline-flex;
+        }
+
+        .top-header {
+          grid-template-columns: 1fr;
+        }
+
+        .modal {
+          width: min(92vw, 1120px);
+        }
+      }
+
+      @media (max-width: 767px) {
+        .page-content,
+        .top-header {
+          padding-right: 18px;
+          padding-left: 18px;
+        }
+
+        .header-actions {
+          flex-wrap: wrap;
+          justify-content: flex-start;
+        }
+
+        .templates-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .filters-row,
+        .template-actions,
+        .modal-header,
+        .editor-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .modal {
+          width: 96vw;
+          height: 88vh;
+        }
+
+        .preview-page {
+          padding: 26px 22px;
+        }
+      }
+    </style>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8LLESL207Q');
+</script>
+<meta content="website" property="og:type">
+<meta content="Bright AI - مُشرقة للذكاء الاصطناعي" property="og:site_name">
+<meta property="og:title" content="قوالب عقود ومناقصات سعودية للتحليل الذكي | ContractAI">
+<meta property="og:description" content="مكتبة قوالب ContractAI تساعد فرق السعودية على بدء مراجعة عقود التوريد والخدمات والمناقصات ثم نقلها للتحليل والمقارنة.">
+<meta content="https://brightai.site/assets/images/logo-new.PNG" property="og:image">
+<meta content="1200" property="og:image:width">
+<meta content="630" property="og:image:height">
+<meta content="ar_SA" property="og:locale">
+<meta content="en_SA" property="og:locale:alternate">
+<meta content="summary_large_image" name="twitter:card">
+<meta content="@BrightAI_SA" name="twitter:site">
+<meta name="twitter:title" content="قوالب عقود ومناقصات سعودية للتحليل الذكي | ContractAI">
+<meta name="twitter:description" content="مكتبة قوالب ContractAI تساعد فرق السعودية على بدء مراجعة عقود التوريد والخدمات والمناقصات ثم نقلها للتحليل والمقارنة.">
+<meta content="https://brightai.site/assets/images/logo-new.PNG" name="twitter:image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "الرئيسية",
+      "item": "https://brightai.site/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "إدارة المناقصات",
+      "item": "https://brightai.site/demo/ai-tenders-analysis/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "قوالب العقود الجاهزة | ContractAI من Bright AI للعقود السعودية",
+      "item": "https://brightai.site/demo/ai-tenders-analysis/templates/"
+    }
+  ],
+  "@id": "https://brightai.site/demo/ai-tenders-analysis/templates/#breadcrumb"
+}
+</script>
+  <link rel="stylesheet" href="/assets/css/text-ratio-fix.min.css">
+
+<script defer="" src="/frontend/js/analytics-events.js"></script>
+<style data-tenders-seo-styles="true">
+  .tenders-seo-answer,
+  .tenders-seo-section {
+    margin-block: 24px;
+    padding: clamp(20px, 3vw, 34px);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.82), rgba(8, 47, 73, 0.46));
+    color: #e5edf7;
+  }
+  .tenders-seo-answer {
+    margin-inline: auto;
+    max-width: 1120px;
+  }
+  .tenders-seo-answer p,
+  .tenders-seo-section p,
+  .tenders-seo-section li {
+    color: #cbd5e1;
+    line-height: 1.9;
+  }
+  .tenders-seo-answer h2,
+  .tenders-seo-section h2,
+  .tenders-seo-section h3 {
+    margin-block: 0 12px;
+    color: #f8fafc;
+    letter-spacing: 0;
+  }
+  .tenders-seo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-block-start: 20px;
+  }
+  .tenders-seo-card {
+    padding: 18px;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 8px;
+    background: rgba(15, 23, 42, 0.62);
+  }
+  .tenders-seo-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-block-start: 20px;
+  }
+  .tenders-seo-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(34, 211, 238, 0.34);
+    color: #bae6fd;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .tenders-seo-links a[data-analytics-event="tender_demo_start"] {
+    background: #22d3ee;
+    color: #04111f;
+    border-color: transparent;
+  }
+  @media (max-width: 760px) {
+    .tenders-seo-grid { grid-template-columns: 1fr; }
+    .tenders-seo-links a { width: 100%; justify-content: center; }
+  }
+</style>
+
+<link rel="stylesheet" href="/frontend/css/product-demo-polish.min.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo.png",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/demo/ai-tenders-analysis/templates/#webpage",
+      "url": "https://brightai.site/demo/ai-tenders-analysis/templates/",
+      "name": "قوالب عقود ومناقصات سعودية للتحليل الذكي | ContractAI",
+      "description": "مكتبة قوالب ContractAI تساعد فرق السعودية على بدء مراجعة عقود التوريد والخدمات والمناقصات ثم نقلها للتحليل والمقارنة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/demo/ai-tenders-analysis/templates/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "demo",
+          "item": "https://brightai.site/demo/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ai tenders analysis",
+          "item": "https://brightai.site/demo/ai-tenders-analysis/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "قوالب عقود ومناقصات سعودية للتحليل الذكي | ContractAI",
+          "item": "https://brightai.site/demo/ai-tenders-analysis/templates/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/demo/ai-tenders-analysis/templates/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "إجابة مباشرة: كيف يساعد ContractAI في تحليل المناقصات؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "قوالب ContractAI تمنح فرق المشتريات نقطة بداية منظمة لعقود التوريد والخدمات والمناقصات، ثم يمكن نقلها إلى التحليل الذكي والمقارنة. القوالب إرشادية وتحتاج مراجعة داخلية وقانونية قبل استخدامها رسمياً."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "قوالب عقود سعودية جاهزة — عقود توريد وخدمات ومقاولات متوافقة مع نظام المنافسات والمشتريات الحكومية الأكثر استخداماً الأحدث أبجدي الكل حكومي تجاري عقاري تقني خدمي منطقة التعديل تعديل القالب",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "حرّر البنود الأساسية ثم انتقل مباشرة للتحليل الذكي."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف تختار قالب العقد المناسب قبل التعديل أو التحليل؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "قوالب العقود ليست مجرد ملفات جاهزة للنسخ؛ بل نقطة بداية تساعد الفريق على تقليل وقت الصياغة، توحيد البنود الأساسية، وتجنب سقوط شروط تشغيلية أو نظامية مهمة. في ContractAI يمكن للزائر قراءة نوع القالب، فهم حالته المناسبة، ثم الانتقال إلى التخصيص أو التحليل الذكي بدل البدء من صفحة فارغة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "متى تستخدم القوالب",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "عند الحاجة إلى نقطة انطلاق سريعة لعقد توريد أو خدمات أو مقاولة أو منافسة قبل المراجعة القانونية النهائية."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+<style>
+.brightai-internal-links{background:#020617;color:#e5e7eb;border-top:1px solid rgba(148,163,184,.18);padding:32px 20px}
+.brightai-internal-links__inner{max-width:1120px;margin:0 auto}
+.brightai-internal-links h2{font-size:clamp(1.25rem,2vw,1.75rem);margin:0 0 8px;color:#fff;letter-spacing:0}
+.brightai-internal-links p{margin:0 0 18px;color:#94a3b8;line-height:1.8}
+.brightai-internal-links ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px 18px;list-style:none;padding:0;margin:0}
+.brightai-internal-links a{display:block;color:#c7d2fe;text-decoration:none;padding:10px 0;line-height:1.6}
+.brightai-internal-links a:hover{color:#fff;text-decoration:underline}
+</style>
+    <link rel="stylesheet" href="../../assets/css/sitewide-modernization.css">
+</head>
+<body class="bright-page--demo" data-bright-page-type="demo">
+<a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
+<div class="sidebar-backdrop" hidden="" id="sidebarBackdrop"></div>
+<div class="modal-overlay" id="modalOverlay"></div>
+<div aria-atomic="true" aria-live="polite" class="toast-stack" id="toastStack"></div>
+<aside aria-label="الشريط الجانبي" class="sidebar" id="sidebar" role="complementary">
+<div class="sidebar-header">
+<div class="brand">
+<svg aria-label="شعار ContractAI" class="brand-logo" fill="none" viewBox="0 0 24 24">
+<path d="M12 2 4.5 5v5.4c0 5.1 3.2 9.8 7.5 11.6 4.3-1.8 7.5-6.5 7.5-11.6V5L12 2Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.6"></path>
+<path d="M9 8.5h6M9 11.5h6M9 14.5h4.2" stroke="currentColor" stroke-linecap="round" stroke-width="1.6"></path>
+</svg>
+<div>
+<div class="brand-title-row">
+<h1 class="brand-name">ContractAI — قوالب العقود</h1>
+<section class="answer-block" aria-labelledby="answer-title-tenders-templates-html">
+    <h2 id="answer-title-tenders-templates-html">إجابة مختصرة</h2>
+    <p>تساعد Bright AI الجهات والشركات في السعودية على تحويل ContractAI إلى سير عمل قابل للقياس عبر الأتمتة الذكية، جاهزية البيانات، التكامل الآمن، ولوحات متابعة تشغيلية. توضّح الصفحة متى يناسب الحل، وما البيانات المطلوبة، وكيف يبدأ الفريق بأمان.</p>
+  </section>
+
+<span class="badge">BETA</span>
+</div>
+<p class="brand-subtitle">محلل العقود والمناقصات الذكي بالسعودية</p>
+</div>
+</div>
+<button aria-label="إغلاق القائمة" class="icon-button close-sidebar" id="closeSidebar" type="button">✕</button>
+</div>
+<nav aria-label="التنقل الرئيسي" class="sidebar-nav" role="navigation">
+<ul class="nav-list">
+<li>
+<a class="nav-link" href="/demo/ai-tenders-analysis/">
+<span class="nav-main">
+<svg aria-hidden="true" class="nav-icon" fill="none" viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10v7H4V5.5ZM14 4h4.5A1.5 1.5 0 0 1 20 5.5V9h-6V4ZM4 15h6v5H5.5A1.5 1.5 0 0 1 4 18.5V15Zm10 0h6v3.5a1.5 1.5 0 0 1-1.5 1.5H14v-5Zm0-2V4h6v9h-6Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+<span>نظرة عامة</span>
+</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="/">
+<span class="nav-main">
+<svg aria-hidden="true" class="nav-icon" fill="none" viewBox="0 0 24 24"><path d="M12 16V4m0 0-4 4m4-4 4 4M5 16.5V18a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"></path></svg>
+<span>رفع عقد جديد</span>
+</span>
+</a>
+</li>
+<li>
+<a class="nav-link" href="/">
+<span class="nav-main">
+<svg aria-hidden="true" class="nav-icon" fill="none" viewBox="0 0 24 24"><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H10l2 2h5.5A2.5 2.5 0 0 1 20 9.5v7A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5v-9Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+<span>عقودي</span>
+</span>
+<span class="nav-badge">3</span>
+</a>
+</li>
+<li>
+<a aria-current="page" class="nav-link" href="/demo/ai-tenders-analysis/templates/">
+<span class="nav-main">
+<svg aria-hidden="true" class="nav-icon" fill="none" viewBox="0 0 24 24"><path d="M5 5h14v14H5V5Zm4 0v14M5 10h14" stroke="currentColor" stroke-width="1.5"></path></svg>
+<span>القوالب</span>
+</span>
+</a>
+</li>
+<li><a class="nav-link" href="/demo/ai-tenders-analysis/compare/"><span class="nav-main"><svg class="nav-icon" fill="none" viewBox="0 0 24 24"><path d="M5 18V9m7 9V5m7 13v-7" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path><path d="M3.5 19.5h17" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"></path></svg><span>مقارنة العقود</span></span></a></li>
+<li><a class="nav-link" href="/demo/ai-tenders-analysis/compare/"><span class="nav-main"><svg class="nav-icon" fill="none" viewBox="0 0 24 24"><path d="M7 5h4v14H7V5Zm6 4h4v10h-4V9ZM4 19.5h16" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg><span>مقارنة عقود</span></span></a></li>
+<li><a class="nav-link" href="/consultation/"><span class="nav-main"><svg class="nav-icon" fill="none" viewBox="0 0 24 24"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5Z" stroke="currentColor" stroke-width="1.5"></path><path d="M19 12a7 7 0 0 0-.08-1l2.03-1.58-2-3.46-2.45.57a7.6 7.6 0 0 0-1.73-1L14.5 3h-5l-.27 2.53a7.6 7.6 0 0 0-1.73 1l-2.45-.57-2 3.46L5.08 11a7 7 0 0 0 0 2l-2.03 1.58 2 3.46 2.45-.57c.53.42 1.11.76 1.73 1L9.5 21h5l.27-2.53c.62-.24 1.2-.58 1.73-1l2.45.57 2-3.46L18.92 13c.05-.33.08-.66.08-1Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"></path></svg><span>اطلب التفعيل</span></span></a></li>
+</ul>
+</nav>
+<div class="user-card glass">
+<div class="user-summary">
+<div class="avatar">أم</div>
+<div>
+<p class="user-name">أحمد المطيري</p>
+<p class="user-plan">الخطة: احترافية</p>
+</div>
+</div>
+<button class="logout-button" type="button">خروج</button>
+</div>
+</aside>
+<main class="main-content" id="main-content" role="main">
+<section class="tenders-seo-answer" aria-labelledby="tenders-seo-answer-templates" data-tenders-seo-answer="true">
+  <h2 id="tenders-seo-answer-templates">إجابة مباشرة: كيف يساعد ContractAI في تحليل المناقصات؟</h2>
+  <p>قوالب ContractAI تمنح فرق المشتريات نقطة بداية منظمة لعقود التوريد والخدمات والمناقصات، ثم يمكن نقلها إلى التحليل الذكي والمقارنة. القوالب إرشادية وتحتاج مراجعة داخلية وقانونية قبل استخدامها رسمياً.</p>
+</section>
+<header class="top-header">
+<div class="header-side">
+<button aria-label="فتح القائمة" class="icon-button menu-toggle" id="menuToggle" type="button">☰</button>
+<nav aria-label="مسار التنقل" class="breadcrumb">
+<a href="/demo/ai-tenders-analysis/">الرئيسية</a>
+<span aria-hidden="true">›</span>
+<span class="current">القوالب</span>
+</nav>
+</div>
+<label aria-label="ابحث في العقود والبنود" class="search-shell">
+<svg aria-hidden="true" fill="none" viewBox="0 0 24 24"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>
+<div class="search-input"><input id="globalSearch" name="global_search" placeholder="ابحث في العقود والبنود..." type="search" aria-label="ابحث في العقود والبنود"></div>
+<span class="search-shortcut">Ctrl+K</span>
+</label>
+<div class="header-actions">
+<div class="api-status" id="apiStatus" title="حالة اتصال الذكاء الاصطناعي">
+<span class="status-dot"></span>
+<span class="status-text">جارٍ الاتصال...</span>
+</div>
+<a aria-label="الانتقال إلى النسخة الإنجليزية" class="secondary-button" href="/demo/ai-tenders-analysis/templates/">EN</a>
+<button aria-label="تبديل الوضع" class="icon-button" id="themeToggle" type="button">
+<svg aria-hidden="true" fill="none" id="themeIcon" viewBox="0 0 24 24">
+<path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-linecap="round" stroke-width="1.6"></path>
+</svg>
+</button>
+<button aria-label="الإشعارات" class="icon-button" type="button">
+<span class="notification-badge">3</span>
+<svg aria-hidden="true" fill="none" viewBox="0 0 24 24"><path d="M14 20a2 2 0 1 1-4 0m8-2H6c1.2-1.14 2-2.7 2-4.5V10a4 4 0 1 1 8 0v3.5c0 1.8.8 3.36 2 4.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></path></svg>
+</button>
+<a class="primary-button" href="/">رفع عقد جديد ←</a>
+</div>
+</header>
+<div class="page-content">
+<div class="templates-layout section-fade">
+<section class="page-hero glass" id="templatesSection">
+<h2 class="page-title">📋 قوالب العقود الجاهزة</h2>
+<p class="page-subtitle">قوالب عقود احترافية متوافقة مع الأنظمة السعودية — جاهزة للتعديل والاستخدام</p>
+<h2 class="sr-only">قوالب عقود سعودية جاهزة — عقود توريد وخدمات ومقاولات متوافقة مع نظام المنافسات والمشتريات الحكومية</h2>
+</section>
+<section aria-label="فلاتر القوالب" class="filters-shell glass">
+<div class="filters-row">
+<label aria-label="ابحث في القوالب" class="filter-search">
+<svg aria-hidden="true" fill="none" height="18" viewBox="0 0 24 24" width="18"><path d="m21 21-4.35-4.35M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"></path></svg>
+<input id="templateSearch" name="template_search" placeholder="ابحث في القوالب..." type="search" aria-label="ابحث في القوالب...">
+</label>
+<label aria-label="ترتيب القوالب" class="sort-select">
+<select id="sortSelect" name="template_sort" aria-label="الأكثر استخداماً">
+<option value="popular">الأكثر استخداماً</option>
+<option value="latest">الأحدث</option>
+<option value="alpha">أبجدي</option>
+</select>
+</label>
+</div>
+<div aria-label="تصنيفات القوالب" class="filters-inline" id="categoryTabs">
+<button class="filter-tab is-active" data-category="all" type="button">الكل</button>
+<button class="filter-tab" data-category="حكومي" type="button">حكومي</button>
+<button class="filter-tab" data-category="تجاري" type="button">تجاري</button>
+<button class="filter-tab" data-category="عقاري" type="button">عقاري</button>
+<button class="filter-tab" data-category="تقني" type="button">تقني</button>
+<button class="filter-tab" data-category="خدمي" type="button">خدمي</button>
+</div>
+</section>
+<section aria-label="شبكة القوالب" class="templates-grid" id="templatesGrid"></section>
+<section aria-label="منطقة تعديل القالب" class="editor-shell glass" id="editorShell">
+<div class="editor-head">
+<span class="editor-kicker">منطقة التعديل</span>
+<h3 class="editor-title" id="editorTitle">تعديل القالب</h3>
+<p class="page-subtitle" id="editorSubtitle">حرّر البنود الأساسية ثم انتقل مباشرة للتحليل الذكي.</p>
+</div>
+<div aria-label="أدوات التنسيق" class="toolbar glass" role="toolbar">
+<button aria-label="عريض" data-command="bold" type="button"><strong>ع</strong></button>
+<button aria-label="مائل" data-command="italic" type="button"><em>م</em></button>
+<button aria-label="تسطير" data-command="underline" type="button"><u>ت</u></button>
+<button aria-label="عنوان" data-command="formatBlock" data-value="h3" type="button">H</button>
+<button aria-label="قائمة" data-command="insertUnorderedList" type="button">•</button>
+</div>
+<div aria-label="محرر نص القالب" class="editor-surface glass" contenteditable="true" id="editorSurface"></div>
+<div class="editor-actions">
+<button class="secondary-button" id="saveDraftButton" type="button">حفظ المسودة</button>
+<a class="primary-button" href="/">تحليل القالب المعدّل</a>
+<button class="secondary-button" id="downloadTemplateButton" type="button">تحميل</button>
+</div>
+</section>
+</div>
+</div>
+<section data-semrush-fix="20260324" id="semrush-templates-rich-content" style="content-visibility:auto;max-width:1120px;margin:48px auto 0;padding:0 24px;">
+<div style="border:1px solid rgba(255,255,255,.12);border-radius:24px;padding:32px;background:rgba(15,23,42,.52);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 18px 60px rgba(2,6,23,.22);">
+<span style="display:inline-block;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:#94a3b8;font-weight:800;">ContractAI</span>
+<h2 style="margin:14px 0 14px;color:#fff;font-size:clamp(1.7rem,3vw,2.3rem);font-weight:900;line-height:1.35;">كيف تختار قالب العقد المناسب قبل التعديل أو التحليل؟</h2>
+<p class="bright-demo-note">قوالب العقود ليست مجرد ملفات جاهزة للنسخ؛ بل نقطة بداية تساعد الفريق على تقليل وقت الصياغة، توحيد البنود الأساسية، وتجنب سقوط شروط تشغيلية أو نظامية مهمة. في ContractAI يمكن للزائر قراءة نوع القالب، فهم حالته المناسبة، ثم الانتقال إلى التخصيص أو التحليل الذكي بدل البدء من صفحة فارغة.</p>
+<p style="margin:18px 0 0;color:#cbd5e1;line-height:2;">اختيار القالب الصحيح يختصر العمل قبل أن يبدأ التحرير. عندما يختار الفريق قالب توريد وهو في الحقيقة بحاجة إلى عقد خدمات مستمرة أو عقد مشروع بمسؤوليات تنفيذية أوسع، تبدأ الأخطاء من أول نسخة. لذلك صُممت الصفحة لتساعد المشتريات والشؤون القانونية وإدارات المشاريع على فهم الفرق بين الأنواع قبل المراجعة التفصيلية، مع توضيح متى يكفي القالب كنقطة بداية ومتى يجب الانتقال مباشرة إلى تخصيص أعمق.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:24px;">
+<div style="padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 8px;color:#fff;font-size:1.05rem;font-weight:800;">متى تستخدم القوالب</h3>
+<p style="margin:0;color:#cbd5e1;line-height:1.9;">عند الحاجة إلى نقطة انطلاق سريعة لعقد توريد أو خدمات أو مقاولة أو منافسة قبل المراجعة القانونية النهائية.</p>
+</div>
+<div style="padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 8px;color:#fff;font-size:1.05rem;font-weight:800;">ما الذي يجب مراجعته</h3>
+<p style="margin:0;color:#cbd5e1;line-height:1.9;">نطاق العمل، الغرامات، الضمانات، تواريخ السريان، وآلية التسليم أو الدفع أو إنهاء العقد.</p>
+</div>
+<div style="padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 8px;color:#fff;font-size:1.05rem;font-weight:800;">القيمة للفريق</h3>
+<p style="margin:0;color:#cbd5e1;line-height:1.9;">تقليل زمن الإعداد الأولي ورفع اتساق الوثائق بين الفرق أو المشاريع أو العملاء.</p>
+</div>
+<div style="padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 8px;color:#fff;font-size:1.05rem;font-weight:800;">المستفيدون</h3>
+<p style="margin:0;color:#cbd5e1;line-height:1.9;">المشتريات، الإدارة القانونية، ومديرو المشاريع الذين يحتاجون مرجعاً سريعاً قبل الدخول في الصياغة التفصيلية.</p>
+</div>
+</div>
+<div style="margin-top:24px;">
+<h3 style="margin:0 0 12px;color:#fff;font-size:1.1rem;font-weight:800;">خريطة اختيار سريعة</h3>
+<ul style="margin:0;padding:0 1.1rem 0 0;color:#cbd5e1;line-height:2;">
+<li style="margin:0 0 10px;">اختر قالب التوريد عندما يكون التركيز على الكميات والمواصفات ومواعيد التسليم والفحص والاستلام.</li>
+<li style="margin:0 0 10px;">اختر قالب الخدمات عندما تكون القيمة في مستوى الخدمة والالتزامات المستمرة ومؤشرات الأداء وساعات الدعم.</li>
+<li style="margin:0 0 10px;">اختر قالب المقاولات أو التنفيذ عندما ترتبط الالتزامات بالبرنامج الزمني والمراحل والاعتمادات والتغييرات الميدانية.</li>
+</ul>
+</div>
+<div style="margin-top:24px;">
+<h3 style="margin:0 0 12px;color:#fff;font-size:1.1rem;font-weight:800;">حالات استخدام وقيمة مباشرة</h3>
+<ul style="margin:0;padding:0 1.1rem 0 0;color:#cbd5e1;line-height:2;">
+<li style="margin:0 0 10px;">القالب الجيد يختصر الصياغة لكنه لا يلغي ضرورة التخصيص حسب المشروع والمخاطر والالتزامات الفعلية.</li>
+<li style="margin:0 0 10px;">قوالب العقود الحكومية تختلف عن التجارية في مستوى الضبط المرجعي والاشتراطات، ولذلك من المهم قراءة وصف كل قالب قبل استخدامه.</li>
+<li style="margin:0 0 10px;">أفضل ممارسة هي استخدام القالب كبداية، ثم تشغيل التحليل الذكي عليه، ثم إحالة النسخة النهائية للمراجعة المختصة.</li>
+<li style="margin:0 0 10px;">وجود مكتبة قوالب موحدة يسهّل تدريب الفرق الجديدة ويحسن اتساق المصطلحات والبنود بين المشاريع والقطاعات.</li>
+</ul>
+</div>
+<div style="margin-top:24px;padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 12px;color:#fff;font-size:1.1rem;font-weight:800;">لماذا وجود هذا المحتوى مهم داخل صفحة القوالب؟</h3>
+<p style="margin:0 0 14px;color:#cbd5e1;line-height:2;">صفحات القوالب غالباً تعتمد بصرياً على البطاقات والتصنيفات والفلاتر، لكن ذلك لا يشرح بما يكفي الفرق بين أنواع العقود أو حدود استخدام كل نموذج. لهذا أضفنا هذا الشرح حتى يفهم الزائر أن الصفحة ليست مكتبة تحميل فقط، بل مرجع سريع لاختيار نقطة البداية الصحيحة قبل التحرير أو التحليل أو الإحالة للمراجعة القانونية.</p>
+<p class="bright-demo-note">هذا يساعد محركات البحث أيضاً على فهم أن الصفحة تتناول قوالب العقود السعودية وعلاقتها بالتوريد والخدمات والمنافسات، وليس مجرد أسماء قوالب داخل واجهة تفاعلية. بهذه الطريقة يبقى النص مفيداً وقابلاً للفهرسة دون أن يتحول إلى حشو.</p>
+</div>
+<div style="margin-top:24px;padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 12px;color:#fff;font-size:1.1rem;font-weight:800;">الأسئلة الشائعة</h3>
+<p style="margin:0 0 10px;color:#e2e8f0;font-weight:700;">هل القالب الجاهز يكفي للتوقيع مباشرة؟</p>
+<p style="margin:0 0 16px;color:#cbd5e1;line-height:1.95;">غالباً لا. القالب يساعد على البدء بشكل أسرع، لكنه يحتاج مراجعة بحسب الأطراف، القيم، والالتزامات التشغيلية والنظامية الخاصة بالحالة.</p>
+<p style="margin:0 0 10px;color:#e2e8f0;font-weight:700;">ما الفرق بين استخدام القالب والتحليل الذكي؟</p>
+<p style="margin:0 0 16px;color:#cbd5e1;line-height:1.95;">القالب يختصر الصياغة الأولية، أما التحليل الذكي فيقرأ المخاطر والفروقات ويكشف البنود الحساسة داخل النص بعد إعداده أو استلامه.</p>
+<p style="margin:0 0 10px;color:#e2e8f0;font-weight:700;">متى أبدأ من الصفر بدل القالب؟</p>
+<p style="margin:0;color:#cbd5e1;line-height:1.95;">إذا كان المشروع معقداً جداً أو متعدد الأطراف أو يتضمن ترتيبات تجارية غير معتادة، فالأفضل التعامل مع القالب كمرجع لا كنص نهائي.</p>
+</div>
+<div style="margin-top:24px;padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 10px;color:#fff;font-size:1.05rem;font-weight:800;">ما الذي يراجَع قبل اعتماد أي قالب</h3>
+<p style="margin:0 0 14px;color:#cbd5e1;line-height:2;">قبل اعتماد القالب داخلياً، راجع الجهة المالكة للالتزام، تعريف نطاق العمل، بنود التغيير، آلية إثبات التسليم، حدود المسؤولية، والمرفقات المرجعية. هذه النقاط غالباً هي ما يصنع الفارق بين قالب مفيد وقالب يضيف عملاً قانونياً لاحقاً بدلاً من أن يختصره.</p>
+<p class="bright-demo-note">وكلما كانت هذه العناصر موحدة بين الفرق، أصبحت المكتبة نفسها أداة حوكمة داخلية لا مجرد مصدر نصوص جاهزة.</p>
+</div>
+<div style="margin-top:24px;padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);">
+<h3 style="margin:0 0 10px;color:#fff;font-size:1.05rem;font-weight:800;">إلى أين تنتقل بعد اختيار القالب؟</h3>
+<p style="margin:0 0 14px;color:#cbd5e1;line-height:2;">بعد اختيار نقطة البداية الصحيحة، تكون الخطوة التالية عادة واحدة من ثلاث: مقارنة النسخ في <a href="/demo/ai-tenders-analysis/compare/" style="color:#60a5fa;">مقارنة العقود</a>، متابعة الفروقات والملخصات في <a href="/demo/ai-tenders-analysis/reports/" style="color:#60a5fa;">التقارير</a>، أو تحويل الاحتياج إلى مسار أوسع عبر <a href="/consultation/" style="color:#60a5fa;">الاستشارة</a> إذا كانت الجهة تحتاج ضبطاً قطاعياً أو حوكمة تشغيلية أوضح.</p>
+<p class="bright-demo-note">بهذا الشكل لا تبقى صفحة القوالب مكتبة ثابتة فقط، بل تصبح بداية فعلية لمسار عمل متكامل داخل فرق العقود والمشتريات.</p>
+</div>
+<p style="margin:24px 0 0;color:#e2e8f0;line-height:2;font-weight:600;">اختيار القالب الصحيح مبكراً يقلل كثيراً من إعادة الصياغة لاحقاً، ويرفع جودة التفاوض والمراجعة الداخلية من أول نسخة.</p>
+<div style="margin-top:24px;">
+<a href="/demo/ai-tenders-analysis/compare/" style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#0ea5e9);color:#fff;text-decoration:none;font-weight:800;">قارن بين أكثر من صيغة عقدية</a>
+</div>
+</div>
+</section>
+<section class="tenders-seo-section" aria-labelledby="tenders-seo-guide-templates" data-tenders-seo-section="true">
+  <h2 id="tenders-seo-guide-templates">دليل SEO لمنصة تحليل المناقصات والذكاء التعاقدي</h2>
+  <p>يغطي هذا القسم الكلمات المحورية مثل تحليل مناقصات بالذكاء الاصطناعي، نظام مناقصات ذكي، أتمتة المناقصات الحكومية، مقارنة عروض المناقصات، وتحليل العقود بالذكاء الاصطناعي داخل السوق السعودي.</p>
+  <div class="tenders-seo-grid">
+    <article class="tenders-seo-card">
+      <h3>ما هي منصة تحليل المناقصات؟</h3>
+      <p>منصة تحليل المناقصات هي مساحة عمل تجمع كراسات الشروط، العروض، العقود، والملاحق في قراءة واحدة قابلة للمراجعة. في ContractAI يتم استخدام الذكاء الاصطناعي لتلخيص المتطلبات، استخراج الالتزامات، تحديد البنود الحساسة، وربط النتائج بسياق فرق المشتريات السعودية. النتيجة ليست قراراً آلياً، بل مسار أوضح يساعد الفريق على فهم الوثائق قبل الاعتماد أو التفاوض.</p>
+    </article>
+    <article class="tenders-seo-card">
+      <h3>كيف تساعد فرق المشتريات؟</h3>
+      <p>تساعد المنصة فرق المشتريات على ترتيب الأولويات: ما الملفات التي تحتاج مراجعة عاجلة، ما الشروط التي تحمل مخاطرة، وما الأسئلة التي يجب رفعها للجهة المالكة أو المورد. كما تدعم أتمتة المناقصات الحكومية من زاوية تنظيم القراءة والتذكير بالمواعيد وإعداد ملخصات قابلة للمشاركة داخلياً.</p>
+    </article>
+    <article class="tenders-seo-card">
+      <h3>مقارنة العروض والمخاطر</h3>
+      <p>يعرض ContractAI مقارنة عروض المناقصات عبر السعر، نطاق العمل، الجزاءات، الضمانات، شروط الدفع، والالتزامات التشغيلية. المقارنة تساعد على كشف الفروقات التي لا تظهر في الملخص المالي وحده، وتمنح الفرق أساساً أفضل للنقاش مع الشؤون القانونية والمالية والإدارة.</p>
+    </article>
+    <article class="tenders-seo-card">
+      <h3>حالات استخدام في السعودية</h3>
+      <p>تشمل حالات الاستخدام مراجعة منافسات التوريد والخدمات، تحليل العقود بالذكاء الاصطناعي قبل التوقيع، مقارنة نسخ العقود، وتحضير ملاحظات قبل اجتماعات الترسية أو التفاوض. صُمم المحتوى لفرق سعودية تعمل مع وثائق عربية وإنجليزية وتحتاج مساراً واضحاً يحترم الحوكمة الداخلية.</p>
+    </article>
+    <article class="tenders-seo-card">
+      <h3>التقارير التنفيذية</h3>
+      <p>تحول التقارير التنفيذية نتائج التحليل إلى ملخص عملي يوضح المخاطر الأعلى، البنود التي تحتاج قراراً، والروابط بين العروض والالتزامات. يمكن استخدام هذه التقارير في اجتماعات الإدارة أو لجان المشتريات كمدخل منظم، مع بقاء الاعتماد النهائي داخل إجراءات الجهة.</p>
+    </article>
+    <article class="tenders-seo-card">
+      <h3>التكامل مع أنظمة المشتريات</h3>
+      <p>يمكن ربط ContractAI مع أنظمة المشتريات أو التقارير عبر تكاملات مخططة حسب بيئة العميل، مثل تمرير حالة الوثيقة، حفظ ملخصات المخاطر، أو إرسال تنبيهات للفرق المعنية. يتم تحديد التكامل بعد فهم النظام الحالي والصلاحيات المطلوبة.</p>
+    </article>
+    <article class="tenders-seo-card">
+      <h3>الحوكمة والمراجعة</h3>
+      <p>يركز المسار على قابلية المراجعة: من رفع الوثيقة، إلى استخراج المخاطر، إلى مشاركة التقرير. لا يقدم ContractAI وعداً بالامتثال الحكومي التلقائي ولا يستبدل المستشارين، لكنه يساعد على توثيق القراءة الأولية وتسهيل التدقيق الداخلي.</p>
+    </article>
+    <article class="tenders-seo-card">
+      <h3>CTA لطلب ديمو</h3>
+      <p>اطلب ديمو مخصصاً لعرض كيف يمكن لمنصة تحليل مناقصات من Bright AI أن تدعم فريقك في مقارنة العروض، تحليل العقود، وتجهيز تقارير تنفيذية مناسبة لسير العمل الحالي.</p>
+    </article>
+  </div>
+  <div class="tenders-seo-links" aria-label="روابط داخلية لقسم المناقصات">
+    <a href="/demo/ai-tenders-analysis/">منصة تحليل المناقصات</a>
+    <a href="/demo/ai-tenders-analysis/landing/">طلب ديمو ContractAI</a>
+    <a href="/demo/ai-tenders-analysis/compare/">مقارنة عروض المناقصات</a>
+    <a href="/demo/ai-tenders-analysis/dashboard/">لوحة تحليل المناقصات</a>
+    <a href="/demo/ai-tenders-analysis/reports/">التقارير التنفيذية</a>
+    <a href="/demo/ai-tenders-analysis/settings/">الحوكمة والتكامل</a>
+    <a href="/demo/ai-tenders-analysis/templates/">قوالب العقود والمناقصات</a>
+  </div>
+  <div class="tenders-seo-links" aria-label="روابط خدمات Bright AI ذات الصلة">
+    <a href="/consultation/">تواصل مع Bright AI</a>
+    <a href="/consultation/">استشارة تنفيذية</a>
+    <a href="/data-analysis/">تحليل البيانات</a>
+    <a href="/smart-automation/">الأتمتة الذكية</a>
+  </div>
+  <div class="tenders-seo-links" aria-label="طلب ديمو">
+    <a href="/consultation/" data-analytics-event="tender_demo_start" data-cta-location="tenders_seo_section" data-service-name="tender-intelligence">اطلب ديمو لمنصة تحليل المناقصات</a>
+    <a href="/consultation/" data-analytics-event="tender_demo_start" data-cta-location="tenders_consultation_section" data-service-name="tender-intelligence">ناقش حالة الاستخدام مع الفريق</a>
+  </div>
+</section>
+</main>
+<div aria-labelledby="previewModalTitle" aria-modal="true" class="modal glass" id="previewModal" role="dialog">
+<div class="modal-header">
+<div>
+<h3 class="modal-title" id="previewModalTitle">معاينة القالب</h3>
+<p id="previewModalSubtitle" style="margin:8px 0 0; color: var(--text-secondary);">نظرة سريعة على القالب قبل الاستخدام</p>
+</div>
+<div class="modal-actions">
+<button class="secondary-button" id="previewUseButton" type="button">استخدام القالب</button>
+<button class="secondary-button" id="previewDownloadButton" type="button">تحميل PDF</button>
+<button aria-label="إغلاق المعاينة" class="icon-button" id="closePreviewModal" type="button">✕</button>
+</div>
+</div>
+<div class="modal-content">
+<div class="preview-layout">
+<aside class="preview-info">
+<article class="preview-info-card glass">
+<div class="template-preview-header">
+<h4 id="previewName">اسم القالب</h4>
+<span class="template-preview-badge" id="previewCategory">حكومي</span>
+</div>
+<p id="previewDescription"></p>
+</article>
+<article class="preview-info-card glass">
+<h4>البنود الرئيسية</h4>
+<ul class="preview-list" id="previewClauses"></ul>
+</article>
+<article class="preview-info-card glass">
+<h4>ملاحظات الاستخدام</h4>
+<p id="previewNotes" style="color: var(--text-secondary); line-height: 1.9;"></p>
+</article>
+</aside>
+<div class="preview-document-wrap">
+<div class="preview-document">
+<div class="preview-page" id="previewDocumentPage"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script defer="" src="/frontend/js/runtime-config.min.js"></script>
+<script defer="" src="/demo/ai-tenders-analysis/api-config.min.js"></script>
+<script>
+      (function () {
+        var authKey = "contractai-authenticated";
+        var toastKey = "contractai-auth-toast";
+        if (window.localStorage.getItem(authKey) !== "true") {
+          window.location.href = "/demo/ai-tenders-analysis/landing/";
+          return;
+        }
+        var root = document.documentElement;
+        var body = document.body;
+        var storageKey = "contractai-theme";
+        var logoutButton = document.querySelector(".logout-button");
+        var menuToggle = document.getElementById("menuToggle");
+        var closeSidebar = document.getElementById("closeSidebar");
+        var sidebar = document.getElementById("sidebar");
+        var sidebarBackdrop = document.getElementById("sidebarBackdrop");
+        var themeToggle = document.getElementById("themeToggle");
+        var themeIcon = document.getElementById("themeIcon");
+        var searchInput = document.getElementById("templateSearch");
+        var sortSelect = document.getElementById("sortSelect");
+        var categoryTabs = Array.prototype.slice.call(document.querySelectorAll(".filter-tab"));
+        var templatesGrid = document.getElementById("templatesGrid");
+        var modal = document.getElementById("previewModal");
+        var modalOverlay = document.getElementById("modalOverlay");
+        var closePreviewModal = document.getElementById("closePreviewModal");
+        var previewUseButton = document.getElementById("previewUseButton");
+        var previewDownloadButton = document.getElementById("previewDownloadButton");
+        var previewName = document.getElementById("previewName");
+        var previewCategory = document.getElementById("previewCategory");
+        var previewDescription = document.getElementById("previewDescription");
+        var previewClauses = document.getElementById("previewClauses");
+        var previewNotes = document.getElementById("previewNotes");
+        var previewPage = document.getElementById("previewDocumentPage");
+        var previewModalTitle = document.getElementById("previewModalTitle");
+        var previewModalSubtitle = document.getElementById("previewModalSubtitle");
+        var editorShell = document.getElementById("editorShell");
+        var editorTitle = document.getElementById("editorTitle");
+        var editorSubtitle = document.getElementById("editorSubtitle");
+        var editorSurface = document.getElementById("editorSurface");
+        var saveDraftButton = document.getElementById("saveDraftButton");
+        var downloadTemplateButton = document.getElementById("downloadTemplateButton");
+        var toastStack = document.getElementById("toastStack");
+        var toolbarButtons = Array.prototype.slice.call(document.querySelectorAll(".toolbar button"));
+
+        var currentCategory = "all";
+        var activeTemplate = null;
+
+        var categoryColors = {
+          "حكومي": "#22c55e",
+          "تجاري": "#00e5b4",
+          "عقاري": "#f59e0b",
+          "تقني": "#3b82f6",
+          "خدمي": "#a78bfa"
+        };
+
+        var templates = [
+          {
+            id: 1,
+            title: "عقد توريد مواد",
+            category: "حكومي",
+            description: "قالب عقد توريد متوافق مع نظام المنافسات والمشتريات الحكومية. يشمل بنود التسليم والضمانات والغرامات.",
+            pages: 12,
+            usage: 1247,
+            rating: 4.8,
+            badge: "الأكثر استخداماً",
+            latestOrder: 2,
+            clauses: ["بيانات الأطراف", "نطاق التوريد والمواصفات", "جدول التسليم", "الضمان البنكي والغرامات"],
+            notes: "مناسب لعقود التوريد الحكومية وشبه الحكومية، ويحتاج فقط تعبئة بيانات المشروع والكميات والمبالغ.",
+            preview: "<h4>عقد توريد مواد بناء</p><p>تم بعون الله الاتفاق في يوم <strong>9 مارس 2026</strong> بين <span class='token-chip'>[أدخل اسم الجهة]</span> بصفتها الطرف الأول، و<span class='token-chip'>[أدخل اسم المورد]</span> بصفتها الطرف الثاني، على توريد مواد بناء بالمواصفات المعتمدة وفق وثائق المنافسة.</p><p><strong>البند الأول:</strong> يلتزم المورد بتسليم المواد خلال المدد المحددة في جدول الكميات، مع المحافظة على مطابقة المواصفات الفنية والاعتمادات النظامية.</p><p><strong>البند الثاني:</strong> في حال التأخر يطبق نظام الغرامات بنسبة لا تتجاوز السقف النظامي، مع إعطاء مهلة إشعار ومعالجة قبل تفعيل الجزاءات.</p><p><strong>البند الثالث:</strong> يقدم المورد ضماناً بنكياً ابتدائياً ونهائياً وفق اللوائح، ويعد هذا الضمان جزءاً لا يتجزأ من التزاماته التعاقدية.</p>"
+          },
+          {
+            id: 2,
+            title: "مناقصة حكومية (اعتماد)",
+            category: "حكومي",
+            description: "قالب مناقصة متوافق مع منصة اعتماد. يشمل كراسة الشروط والمواصفات ونموذج العرض الفني والمالي.",
+            pages: 18,
+            usage: 892,
+            rating: 4.7,
+            badge: "",
+            latestOrder: 1,
+            clauses: ["كراسة الشروط", "المتطلبات الفنية", "معايير التقييم", "نموذج العرض المالي"],
+            notes: "مفيد للفرق القانونية والمشتريات عند تجهيز وثائق الطرح الرسمية على اعتماد.",
+            preview: "<h4>مناقصة حكومية عبر اعتماد</p><p>تُطرح هذه المنافسة لتأمين <span class='token-chip'>[أدخل وصف المشروع]</span> لصالح <span class='token-chip'>[أدخل اسم الجهة الحكومية]</span> وفق أحكام نظام المنافسات والمشتريات الحكومية.</p><p><strong>الفصل الأول:</strong> يتضمن نطاق العمل، المواصفات، والمعايير الفنية الملزمة لجميع المتنافسين.</p><p><strong>الفصل الثاني:</strong> يقدم المتنافس عرضه المالي خلال الفترة المحددة مع خطاب ضمان ابتدائي ساري المفعول.</p><p><strong>الفصل الثالث:</strong> تخضع جميع العروض للتقييم الفني أولاً ثم المالي وفق الأوزان المعتمدة في وثائق المنافسة.</p>"
+          },
+          {
+            id: 3,
+            title: "عقد خدمات استشارية",
+            category: "تجاري",
+            description: "عقد خدمات استشارية يشمل نطاق العمل ومؤشرات الأداء وشروط الدفع والسرية.",
+            pages: 8,
+            usage: 634,
+            rating: 4.6,
+            badge: "",
+            latestOrder: 5,
+            clauses: ["نطاق العمل", "مؤشرات الأداء", "السرية وعدم الإفصاح", "آلية السداد"],
+            notes: "يناسب المشاريع الاستشارية والتشغيلية القصيرة والمتوسطة، مع إمكانية إضافة مخرجات تفصيلية.",
+            preview: "<h4>عقد خدمات استشارية</p><p>اتفق الطرفان على تقديم خدمات استشارية متخصصة في مجال <span class='token-chip'>[أدخل المجال]</span> لمدة <span class='token-chip'>[أدخل المدة]</span>.</p><p><strong>البند الأول:</strong> يشمل نطاق العمل التقارير، ورش العمل، والاجتماعات الدورية ومتابعة التنفيذ حسب الخطة المعتمدة.</p><p><strong>البند الثاني:</strong> يتم قياس الأداء عبر مؤشرات واضحة تشمل جودة المخرجات، زمن التسليم، ورضا أصحاب المصلحة.</p><p><strong>البند الثالث:</strong> يلتزم الطرفان بالمحافظة على سرية المعلومات وعدم الإفصاح إلا بعد موافقة مكتوبة.</p>"
+          },
+          {
+            id: 4,
+            title: "عقد إيجار تجاري",
+            category: "عقاري",
+            description: "عقد إيجار متوافق مع منصة إيجار. يشمل بنود الإيجار والتجديد والإخلاء والصيانة.",
+            pages: 6,
+            usage: 1105,
+            rating: 4.9,
+            badge: "الأعلى تقييماً",
+            latestOrder: 4,
+            clauses: ["الوحدة المؤجرة", "المدة والقيمة", "التجديد والإخلاء", "الصيانة والتأمين"],
+            notes: "معد ليتوافق مع الممارسات الشائعة في السوق السعودي العقاري التجاري.",
+            preview: "<h4>عقد إيجار تجاري</p><p>استأجر الطرف الثاني العقار الواقع في <span class='token-chip'>[أدخل الموقع]</span> لمدة <span class='token-chip'>[أدخل المدة]</span> مقابل أجرة قدرها <span class='token-chip'>[أدخل المبلغ]</span>.</p><p><strong>البند الأول:</strong> يلتزم المستأجر باستخدام العين المؤجرة للنشاط المحدد فقط، مع الالتزام بالاشتراطات البلدية والتنظيمية.</p><p><strong>البند الثاني:</strong> يكون التجديد باتفاق مكتوب بين الطرفين قبل انتهاء العقد بمدة لا تقل عن 60 يوماً.</p><p><strong>البند الثالث:</strong> يتولى المؤجر الصيانة الأساسية، بينما يتحمل المستأجر الصيانة التشغيلية اليومية.</p>"
+          },
+          {
+            id: 5,
+            title: "عقد تطوير برمجيات",
+            category: "تقني",
+            description: "عقد تطوير برمجيات يشمل المراحل والتسليمات والملكية الفكرية واتفاقية مستوى الخدمة SLA.",
+            pages: 10,
+            usage: 421,
+            rating: 4.5,
+            badge: "",
+            latestOrder: 3,
+            clauses: ["المراحل والتسليمات", "SLA", "الملكية الفكرية", "الصيانة والدعم"],
+            notes: "مفيد للشركات التقنية والجهات التي تعمل على منتجات برمجية أو منصات رقمية.",
+            preview: "<h4>عقد تطوير برمجيات</p><p>يقدم الطرف الثاني خدمات تطوير نظام <span class='token-chip'>[أدخل اسم النظام]</span> وفق المتطلبات الفنية المعتمدة والجدول الزمني للمشروع.</p><p><strong>البند الأول:</strong> يقسم المشروع إلى مراحل واضحة تشمل التحليل، التصميم، التطوير، الاختبار، والتسليم النهائي.</p><p><strong>البند الثاني:</strong> تنتقل ملكية المخرجات النهائية للطرف الأول بعد سداد جميع المستحقات، مع احتفاظ المطور بأدواته ومنهجياته العامة.</p><p><strong>البند الثالث:</strong> يلتزم مقدم الخدمة باتفاقية مستوى خدمة توضح أزمنة الاستجابة والمعالجة والدعم بعد الإطلاق.</p>"
+          },
+          {
+            id: 6,
+            title: "عقد مقاولات إنشائية",
+            category: "حكومي",
+            description: "عقد مقاولات يشمل جداول الكميات والمخططات والجدول الزمني وشروط التسليم والضمانات.",
+            pages: 22,
+            usage: 756,
+            rating: 4.7,
+            badge: "",
+            latestOrder: 6,
+            clauses: ["جداول الكميات", "البرنامج الزمني", "التسليم الابتدائي والنهائي", "الضمانات والصيانة"],
+            notes: "مصمم للعقود الإنشائية ذات المتطلبات العالية ويحتاج فقط إرفاق الجداول والمخططات.",
+            preview: "<h4>عقد مقاولات إنشائية</p><p>تم الاتفاق على تنفيذ أعمال <span class='token-chip'>[أدخل نوع المشروع]</span> وفق المخططات المعتمدة وجداول الكميات الملحقة بهذا العقد.</p><p><strong>البند الأول:</strong> يلتزم المقاول بتنفيذ الأعمال خلال المدة التعاقدية وتقديم خطة تفصيلية للتنفيذ والموارد.</p><p><strong>البند الثاني:</strong> ترتبط الدفعات بالمستخلصات المعتمدة ونسب الإنجاز الفعلية بعد التحقق من الجودة.</p><p><strong>البند الثالث:</strong> يلتزم المقاول بضمان الأعمال لمدة الصيانة المحددة ومعالجة العيوب خلال مدد الاستجابة المتفق عليها.</p>"
+          },
+          {
+            id: 7,
+            title: "اتفاقية سرية (NDA)",
+            category: "تجاري",
+            description: "اتفاقية عدم إفصاح ثنائية تحمي المعلومات السرية والملكية الفكرية.",
+            pages: 4,
+            usage: 2341,
+            rating: 4.8,
+            badge: "",
+            latestOrder: 7,
+            clauses: ["تعريف المعلومات السرية", "قيود الاستخدام", "مدة الالتزام", "الاستثناءات النظامية"],
+            notes: "سريعة ومناسبة لمراحل التفاوض المبدئي أو تبادل المعلومات الحساسة بين الأطراف.",
+            preview: "<h4>اتفاقية عدم إفصاح</p><p>يقر الطرفان بأنهما قد يطلّعان على معلومات سرية تخص مشاريع أو بيانات أو خطط تشغيلية، ويلتزمان بعدم إفشائها أو استخدامها خارج غرض العلاقة التعاقدية.</p><p><strong>البند الأول:</strong> تشمل المعلومات السرية كافة البيانات المكتوبة أو الشفهية أو الرقمية التي يحددها أي طرف باعتبارها سرية.</p><p><strong>البند الثاني:</strong> يمتنع الطرف المتلقي عن نسخ أو مشاركة المعلومات مع أي طرف ثالث دون موافقة خطية مسبقة.</p><p><strong>البند الثالث:</strong> تستمر السرية لمدة <span class='token-chip'>[أدخل عدد السنوات]</span> من تاريخ انتهاء العلاقة بين الطرفين.</p>"
+          },
+          {
+            id: 8,
+            title: "عقد تشغيل وصيانة",
+            category: "خدمي",
+            description: "عقد تشغيل وصيانة يشمل نطاق الأعمال وجداول الصيانة الوقائية وقطع الغيار واتفاقية مستوى الخدمة.",
+            pages: 14,
+            usage: 503,
+            rating: 4.6,
+            badge: "",
+            latestOrder: 8,
+            clauses: ["نطاق التشغيل", "الصيانة الوقائية", "قطع الغيار", "SLA والتقارير"],
+            notes: "مناسب لعقود التشغيل والصيانة طويلة المدى مع احتساب KPIs ومصفوفة الاستجابة.",
+            preview: "<h4>عقد تشغيل وصيانة</p><p>يلتزم مقدم الخدمة بتشغيل وصيانة <span class='token-chip'>[أدخل الأصل أو الموقع]</span> وفق الجداول الوقائية والتصحيحية المرفقة بالعقد.</p><p><strong>البند الأول:</strong> يشمل نطاق الأعمال الزيارات الدورية، أعمال الطوارئ، وإدارة الأعطال ورفع التقارير الشهرية.</p><p><strong>البند الثاني:</strong> يوفر المورد قطع الغيار الأساسية حسب قوائم الاعتماد، وتتم الموافقة على التبديل وفق الإجراءات المحددة.</p><p><strong>البند الثالث:</strong> تراقب الخدمة عبر مؤشرات أداء تشمل التوافر، سرعة الاستجابة، وجودة المعالجة.</p>"
+          },
+          {
+            id: 9,
+            title: "اتفاقية إطارية",
+            category: "حكومي",
+            description: "اتفاقية إطارية للتوريد المتعدد تشمل الحدود الدنيا والقصوى وآلية أوامر الشراء.",
+            pages: 10,
+            usage: 289,
+            rating: 4.4,
+            badge: "",
+            latestOrder: 9,
+            clauses: ["فترة الاتفاقية", "أوامر الشراء", "الحدود الدنيا والقصوى", "آلية التسعير"],
+            notes: "مناسبة للتعاقدات المتكررة متعددة الدفعات أو أوامر الشراء حسب الاحتياج.",
+            preview: "<h4>اتفاقية إطارية للتوريد</p><p>تحدد هذه الاتفاقية الإطارية الشروط العامة التي تنظم إصدار أوامر الشراء المتعددة بين <span class='token-chip'>[أدخل اسم الجهة]</span> و<span class='token-chip'>[أدخل اسم المورد]</span>.</p><p><strong>البند الأول:</strong> لا تنشئ الاتفاقية التزاماً بالشراء إلا بموجب أوامر شراء مستقلة تصدر خلال سريانها.</p><p><strong>البند الثاني:</strong> تحدد الحدود الدنيا والقصوى للكميات والقيم حسب الاحتياج التشغيلي والاعتمادات المتاحة.</p><p><strong>البند الثالث:</strong> تخضع الأسعار وآلية التعديل للضوابط المحددة في الملحق المالي المعتمد.</p>"
+          }
+        ];
+
+        function setTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          themeIcon.innerHTML =
+            theme === "light"
+              ? '<path d="M20 12.5A8.5 8.5 0 1 1 11.5 4 6.5 6.5 0 0 0 20 12.5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>'
+              : '<path d="M12 3v2.25M12 18.75V21M5.64 5.64l1.59 1.59M16.77 16.77l1.59 1.59M3 12h2.25M18.75 12H21M5.64 18.36l1.59-1.59M16.77 7.23l1.59-1.59M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>';
+          window.localStorage.setItem(storageKey, theme);
+        }
+
+        function getPreferredTheme() {
+          var saved = window.localStorage.getItem(storageKey);
+          if (saved === "light" || saved === "dark") return saved;
+          return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+        }
+
+        function toggleSidebar(open) {
+          sidebar.classList.toggle("is-open", open);
+          sidebarBackdrop.classList.toggle("is-visible", open);
+          sidebarBackdrop.hidden = !open;
+          body.classList.toggle("menu-open", open);
+        }
+
+        function showToast(message, type) {
+          var toast = document.createElement("div");
+          toast.className = "toast glass toast-" + (type || "info");
+          toast.innerHTML =
+            '<span>' +
+            message +
+            '</span><button class="toast-close" type="button" aria-label="إغلاق الإشعار">✕</button>';
+
+          toast.querySelector(".toast-close").addEventListener("click", function () {
+            toast.remove();
+          });
+
+          toastStack.appendChild(toast);
+          window.setTimeout(function () {
+            toast.remove();
+          }, 4000);
+        }
+
+        function categoryBadge(category) {
+          var color = categoryColors[category] || "#00e5b4";
+          return '<span class="category-badge" style="color:' + color + "; background:" + color + '18; border:1px solid ' + color + '38;">' + category + "</span>";
+        }
+
+        function createDocIcon(color) {
+          return '<span class="template-icon" style="color:' + color + ';"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 3.5h6l4 4V20a1 1 0 0 1-1 1H8a2 2 0 0 1-2-2V5.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M14 3.5V8h4M9 11.5h6M9 15h6M9 18.5h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>';
+        }
+
+        function getFilteredTemplates() {
+          var query = (searchInput.value || "").trim().toLowerCase();
+          var filtered = templates.filter(function (item) {
+            var matchCategory = currentCategory === "all" || item.category === currentCategory;
+            var matchQuery =
+              !query ||
+              item.title.toLowerCase().indexOf(query) !== -1 ||
+              item.description.toLowerCase().indexOf(query) !== -1;
+            return matchCategory && matchQuery;
+          });
+
+          if (sortSelect.value === "alpha") {
+            filtered.sort(function (a, b) {
+              return a.title.localeCompare(b.title, "ar");
+            });
+          } else if (sortSelect.value === "latest") {
+            filtered.sort(function (a, b) {
+              return a.latestOrder - b.latestOrder;
+            });
+          } else {
+            filtered.sort(function (a, b) {
+              return b.usage - a.usage;
+            });
+          }
+
+          return filtered;
+        }
+
+        function renderTemplates() {
+          var items = getFilteredTemplates();
+
+          if (!items.length) {
+            templatesGrid.innerHTML = '<div class="empty-state glass">ما لقينا قوالب تطابق البحث أو الفلاتر الحالية.</div>';
+            return;
+          }
+
+          templatesGrid.innerHTML = items
+            .map(function (item) {
+              var color = categoryColors[item.category] || "#00e5b4";
+              return (
+                '<article class="template-card glass" style="border-color:' +
+                color +
+                '22;">' +
+                '<div class="template-top"><div>' +
+                createDocIcon(color) +
+                '</div>' +
+                (item.badge ? '<span class="card-highlight">' + item.badge + "</span>" : "") +
+                "</div>" +
+                '<div style="display:grid; gap:10px;">' +
+                categoryBadge(item.category) +
+                '<h3 class="template-title">' +
+                item.title +
+                "</h3>" +
+                '<p class="template-description">' +
+                item.description +
+                "</h3>" +
+                "</div>" +
+                '<div class="template-meta"><span>' +
+                item.pages +
+                ' صفحة</span><span>' +
+                item.usage.toLocaleString("en-US") +
+                ' استخدام</span><span class="rating-badge">⭐ ' +
+                item.rating +
+                "</span></div>" +
+                '<div class="template-actions"><button class="template-button" type="button" data-action="preview" data-id="' +
+                item.id +
+                '">معاينة</button><button class="template-button is-primary" type="button" data-action="use" data-id="' +
+                item.id +
+                '">استخدام القالب</button></div>' +
+                "</article>"
+              );
+            })
+            .join("");
+        }
+
+        function openModal(template) {
+          activeTemplate = template;
+          previewModalTitle.textContent = "معاينة القالب";
+          previewModalSubtitle.textContent = template.title;
+          previewName.textContent = template.title;
+          previewCategory.textContent = template.category;
+          previewCategory.style.color = categoryColors[template.category] || "#00e5b4";
+          previewDescription.textContent = template.description;
+          previewNotes.textContent = template.notes;
+          previewClauses.innerHTML = template.clauses.map(function (clause) { return "<li>" + clause + "</li>"; }).join("");
+          previewPage.innerHTML = template.preview;
+          modal.classList.add("is-visible");
+          modalOverlay.classList.add("is-visible");
+          body.classList.add("modal-open");
+        }
+
+        function closeModal() {
+          modal.classList.remove("is-visible");
+          modalOverlay.classList.remove("is-visible");
+          body.classList.remove("modal-open");
+        }
+
+        function placeholderMarkup(text) {
+          return '<button class="token-chip" type="button" contenteditable="false">' + text + "</button>";
+        }
+
+        function buildEditorContent(template) {
+          var content = template.preview
+            .replace(/\[أدخل اسم الجهة\]/g, placeholderMarkup("[أدخل اسم الجهة]"))
+            .replace(/\[أدخل اسم المورد\]/g, placeholderMarkup("[أدخل اسم المورد]"))
+            .replace(/\[أدخل وصف المشروع\]/g, placeholderMarkup("[أدخل وصف المشروع]"))
+            .replace(/\[أدخل اسم الجهة الحكومية\]/g, placeholderMarkup("[أدخل اسم الجهة الحكومية]"))
+            .replace(/\[أدخل المجال\]/g, placeholderMarkup("[أدخل المجال]"))
+            .replace(/\[أدخل المدة\]/g, placeholderMarkup("[أدخل المدة]"))
+            .replace(/\[أدخل الموقع\]/g, placeholderMarkup("[أدخل الموقع]"))
+            .replace(/\[أدخل المبلغ\]/g, placeholderMarkup("[أدخل المبلغ]"))
+            .replace(/\[أدخل اسم النظام\]/g, placeholderMarkup("[أدخل اسم النظام]"))
+            .replace(/\[أدخل نوع المشروع\]/g, placeholderMarkup("[أدخل نوع المشروع]"))
+            .replace(/\[أدخل عدد السنوات\]/g, placeholderMarkup("[أدخل عدد السنوات]"))
+            .replace(/class='token-chip'/g, 'class="token-chip"');
+
+          return content;
+        }
+
+        function openEditor(template) {
+          activeTemplate = template;
+          editorTitle.textContent = "تعديل القالب: " + template.title;
+          editorSubtitle.textContent = template.description;
+          editorSurface.innerHTML = buildEditorContent(template);
+          editorShell.classList.add("is-visible");
+          closeModal();
+          editorShell.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function replaceTokenWithInput(token) {
+          var input = document.createElement("input");
+          input.type = "text";
+          input.className = "inline-token-input";
+          input.value = token.textContent.replace(/[\[\]]/g, "");
+          token.replaceWith(input);
+          input.focus();
+          input.select();
+
+          function finalize() {
+            var span = document.createElement("span");
+            span.className = "token-chip";
+            span.textContent = input.value.trim() || "قيمة مطلوبة";
+            span.setAttribute("role", "button");
+            span.setAttribute("tabindex", "0");
+            input.replaceWith(span);
+          }
+
+          input.addEventListener("blur", finalize, { once: true });
+          input.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              input.blur();
+            }
+          });
+        }
+
+        if (logoutButton) {
+          logoutButton.addEventListener("click", function () {
+            window.localStorage.removeItem(authKey);
+            window.localStorage.removeItem("contractai-user-name");
+            window.localStorage.setItem(toastKey, "👋 تم تسجيل الخروج");
+            window.location.href = "/demo/ai-tenders-analysis/landing/";
+          });
+        }
+
+        themeToggle.addEventListener("click", function () {
+          setTheme(root.getAttribute("data-theme") === "dark" ? "light" : "dark");
+        });
+
+        menuToggle.addEventListener("click", function () {
+          toggleSidebar(true);
+        });
+
+        closeSidebar.addEventListener("click", function () {
+          toggleSidebar(false);
+        });
+
+        sidebarBackdrop.addEventListener("click", function () {
+          toggleSidebar(false);
+        });
+
+        categoryTabs.forEach(function (tab) {
+          tab.addEventListener("click", function () {
+            categoryTabs.forEach(function (item) {
+              item.classList.remove("is-active");
+            });
+            tab.classList.add("is-active");
+            currentCategory = tab.getAttribute("data-category");
+            renderTemplates();
+          });
+        });
+
+        searchInput.addEventListener("input", renderTemplates);
+        sortSelect.addEventListener("change", renderTemplates);
+
+        templatesGrid.addEventListener("click", function (event) {
+          var button = event.target.closest("[data-action]");
+          if (!button) return;
+          var id = Number(button.getAttribute("data-id"));
+          var template = templates.find(function (item) {
+            return item.id === id;
+          });
+          if (!template) return;
+          if (button.getAttribute("data-action") === "preview") {
+            openModal(template);
+          } else {
+            openEditor(template);
+          }
+        });
+
+        closePreviewModal.addEventListener("click", closeModal);
+        modalOverlay.addEventListener("click", closeModal);
+
+        previewUseButton.addEventListener("click", function () {
+          if (activeTemplate) openEditor(activeTemplate);
+        });
+
+        previewDownloadButton.addEventListener("click", function () {
+          showToast("✅ تم تجهيز نسخة PDF للقالب", "success");
+        });
+
+        saveDraftButton.addEventListener("click", function () {
+          showToast("✅ تم حفظ المسودة", "success");
+        });
+
+        downloadTemplateButton.addEventListener("click", function () {
+          showToast("✅ تم تجهيز ملف التحميل", "info");
+        });
+
+        toolbarButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var command = button.getAttribute("data-command");
+            var value = button.getAttribute("data-value") || null;
+            editorSurface.focus();
+            document.execCommand(command, false, value);
+          });
+        });
+
+        editorSurface.addEventListener("click", function (event) {
+          var token = event.target.closest(".token-chip");
+          if (token) replaceTokenWithInput(token);
+        });
+
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape") {
+            closeModal();
+            toggleSidebar(false);
+          }
+
+          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+            event.preventDefault();
+            searchInput.focus();
+          }
+        });
+
+        setTheme(getPreferredTheme());
+        renderTemplates();
+      })();
+    </script>
+
+  <section class="text-ratio-fix-section" data-text-ratio-fix="20260401">
+    <div class="text-ratio-fix-shell">
+      <span class="text-ratio-fix-kicker">Decision Guide</span>
+      <h2 class="text-ratio-fix-title">كيف تساعد هذه الصفحة في اتخاذ قرار أوضح؟</h2>
+      <p class="text-ratio-fix-intro">صفحة "قوالب العقود الجاهزة | ContractAI من Bright AI للعقود السعودية" لا ينبغي أن تكون مجرد واجهة تعريفية، بل مرجعاً عملياً يشرح لمن تخدم هذه الخدمة، متى تُستخدم، وكيف يمكن تقييمها داخل بيئة عمل سعودية تحتاج وضوحاً في العائد والحوكمة والتنفيذ.</p>
+      <div class="text-ratio-fix-grid">
+        <div class="text-ratio-fix-card"><h3>القيمة المتوقعة<p></p><p>تسريع القرار أو التنفيذ أو الخدمة بشكل يمكن قياسه، وليس وعوداً عامة يصعب ربطها بنتيجة تشغيلية.</p></h3></div>
+        <div class="text-ratio-fix-card"><h3>شروط الجاهزية<p></p><p>وجود مالك للمبادرة، بيانات أو إجراءات واضحة، ونطاق أولي يمكن تنفيذه بدون تعقيد زائد.</p></h3></div>
+        <div class="text-ratio-fix-card"><h3>معيار النجاح<p></p><p>تحسن ظاهر في الوقت أو الدقة أو الامتثال أو رضا المستخدم ضمن فترة قصيرة نسبياً.</p></h3></div>
+      </div>
+      <div class="text-ratio-fix-copy">
+        <p>عند تقييم أي صفحة خدمة أو وثائق أو قطاع، الزائر غالباً لا يبحث عن وصف تجميلي فقط. هو يريد أن يفهم سريعاً: هل هذا الحل يناسب حجم الجهة، وطبيعة العمليات، ومستوى النضج الرقمي الموجود اليوم؟ لهذا يجب أن تحتوي الصفحة على شرح يساعده على المقارنة بين "الحاجة الفعلية" و"القدرة التنفيذية". عندما يتحقق ذلك، تصبح الصفحة جزءاً من رحلة قرار ناضجة، لا مجرد محطة تعريفية.</p>
+        <p>في المشاريع المؤسسية، أكثر ما يربك الفرق هو الخلط بين الحلول المتشابهة ظاهرياً. قد تبدو الأتمتة، الوكلاء، التحليلات، أو المعالجة الذكية للمستندات متقاربة في اللغة التسويقية، لكن أثر كل واحد منها يختلف بحسب موضعه داخل سير العمل. لذلك من المفيد أن توضح الصفحة أين يبدأ الحل، ما الأنظمة التي يتكامل معها، وما الذي يبقى بيد الإنسان. هذا الوضوح يقلل سوء الفهم مبكراً ويجعل النقاش مع الإدارة أكثر مهنية.</p>
+        <p>ومن منظور سعودي، تظهر قيمة الصفحات الجيدة عندما تربط التقنية بلغة الأعمال المحلية: تقليل زمن المعاملة، تحسين جودة الخدمة، ضبط الامتثال، ورفع موثوقية القرار. الجهات لا تشتري "ذكاء اصطناعياً" كفكرة مجردة؛ هي تعتمد مساراً تشغيلياً جديداً يفترض أن يخفف عبئاً قائماً أو يفتح فرصة واضحة. لهذا صغنا هذا القسم ليشرح المعنى العملي للصفحة وليس فقط عنوانها الرئيسي.</p>
+        <p>هناك جانب آخر مهم يتعلق بالحوكمة. أي خدمة ذكية أو صفحة قطاعية يجب أن تساعد القارئ على تصور من يراجع المخرجات، كيف تُدار الصلاحيات، وما الحالات التي تحتاج تصعيداً بشرياً. هذه النقاط لا تُذكر أحياناً في الصفحات التسويقية، لكنها أساسية في الجهات الكبيرة. وجودها كنص واضح يرفع الثقة ويجعل المحتوى أكثر فائدة لمحركات البحث أيضاً، لأن الصفحة تبدأ بالإجابة عن الأسئلة التي يبحث عنها المستخدم فعلاً.</p>
+        <p>إذا كنت تقرأ هذه الصفحة لتهيئة مشروع داخلي، فالفائدة الأكبر هي استخدامها كقائمة أسئلة: ما البيانات المطلوبة؟ من مالك القرار؟ ما التكاملات الأساسية؟ ما المخرجات التي يجب أن تظهر في أول مرحلة؟ وهل هذا المسار يحتاج صفحة قطاعية، وثيقة حل، أم استشارة مباشرة؟ بهذه القراءة تصبح الصفحة أداة فرز وتوجيه، لا مجرد مادة عرض.</p>
+        <p>أضفنا هذا الشرح لأن الجودة النصية لا تعني الإطالة لمجرد الإطالة، بل تعني توفير سياق يشرح الهدف، حدود الاستخدام، طريقة التقييم، والخطوة التالية المناسبة. وهذا بالضبط ما يجعل الصفحة أقوى للمستخدم وأوضح لمحركات البحث في آن واحد.</p>
+      </div>
+      <div class="text-ratio-fix-faq">
+        <h3>أسئلة شائعة قبل البدء</h3>
+        <div class="text-ratio-fix-faq-list">
+          <div class="text-ratio-fix-faq-item"><p class="text-ratio-fix-faq-question">هل هذه الصفحة مناسبة لاتخاذ قرار نهائي؟</p><p class="text-ratio-fix-faq-answer">هي مناسبة لتضييق الخيارات وبناء تصور أولي. القرار النهائي يحتاج عادة مراجعة نطاق التنفيذ، البيانات، والتكاملات الفعلية.</p></div>
+          <div class="text-ratio-fix-faq-item"><p class="text-ratio-fix-faq-question">ما أفضل نقطة بداية داخل المؤسسة؟</p><p class="text-ratio-fix-faq-answer">ابدأ بحالة استخدام واحدة ذات أثر واضح وزمن تنفيذ معقول، ثم وسّع النطاق بعد إثبات النتيجة.</p></div>
+          <div class="text-ratio-fix-faq-item"><p class="text-ratio-fix-faq-question">ما الذي يسرّع الاعتماد الداخلي؟</p><p class="text-ratio-fix-faq-answer">وجود لغة أعمال واضحة، عائد قابل للقياس، ومسؤولية تشغيل معروفة منذ اليوم الأول.</p></div>
+        </div>
+      </div>
+
+      <div class="text-ratio-fix-links">
+        <h3>روابط تكمل المسار</h3>
+        <ul>
+          <li><a href="/services/">استعرض الخدمات المؤسسية</a> إذا كنت تقارن بين الحلول قبل الاجتماع التنفيذي.</li>
+          <li><a href="/consultation/">احجز استشارة</a> عندما تكون عندك حالة استخدام محددة وتحتاج تصور تطبيق واقعي.</li>
+          <li><a href="/docs/">مركز الوثائق</a> مناسب للفِرق التقنية أو التشغيلية التي تريد تفاصيل أعمق.</li>
+          <li><a href="/case-studies/">قصص النجاح</a> مفيدة إذا كان قرار الشراء مرتبطاً بعائد واضح أو benchmark داخلي.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+<script defer="" src="/frontend/js/product-demo-enhancements.min.js"></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer=""></script>
+<!-- BRIGHTAI_INTERNAL_LINKS_START -->
+<section class="brightai-internal-links" aria-labelledby="brightai-internal-links-title" dir="rtl">
+  <div class="brightai-internal-links__inner">
+    <h2 id="brightai-internal-links-title">روابط داخلية مهمة</h2>
+    <p>روابط مختارة تساعد الزائر ومحركات البحث على الوصول إلى الصفحات الأساسية والمرتبطة بالسياق.</p>
+    <ul>
+        <li><a href="/">شركة ذكاء اصطناعي في السعودية</a></li>
+        <li><a href="/services/">خدمات الذكاء الاصطناعي للشركات</a></li>
+        <li><a href="/ai-agent/">وكلاء الذكاء الاصطناعي للأعمال</a></li>
+        <li><a href="/smart-automation/">أتمتة الأعمال بالذكاء الاصطناعي</a></li>
+        <li><a href="/data-analysis/">تحليل البيانات للشركات السعودية</a></li>
+        <li><a href="/bot/">مساعد Bright AI التجريبي</a></li>
+        <li><a href="/consultation/">تواصل مع Bright AI لتنفيذ حلول AI</a></li>
+        <li><a href="/services/ai-automation-saudi/">أتمتة الذكاء الاصطناعي في السعودية</a></li>
+    </ul>
+  </div>
+</section>
+<!-- BRIGHTAI_INTERNAL_LINKS_END -->
+<script defer="" src="/frontend/js/accessibility.min.js?v=2026042904"></script>
+  <script src="/frontend/js/brightai-logo-replace.js" defer=""></script>
+
+
+    <script defer="" src="../../assets/js/sitewide-modernization.js"></script>
+</body></html>
