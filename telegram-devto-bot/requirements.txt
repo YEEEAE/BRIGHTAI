@@ -1,4 +1,0 @@
-python-telegram-bot==22.5
-google-genai
-python-dotenv
-requests
