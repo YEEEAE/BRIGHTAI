@@ -30,6 +30,7 @@ const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
 const IGNORED_SCAN_DIRS = new Set([
   ".git",
   ".next",
+  ".render-static",
   ".agents",
   "node_modules",
   "aimais",
@@ -46,7 +47,7 @@ const RECOVERY_REL_PATHS = new Set(RECOVERY_SITEMAP_REQUIRED_FILES.map(normalize
 const EXCLUDED_REL_PATH_PATTERNS = [
   /^(404|500)\.html$/i,
   /error\.html$/i,
-  /(?:^|\/)reports(?:\/|\.html$)/i,
+  /^reports\//i,
   /(?:^|\/)backend(?:\/|$)/i,
   /(?:^|\/)\.next(?:\/|$)/i,
   /(?:^|\/)node_modules(?:\/|$)/i,
@@ -263,10 +264,9 @@ function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref,
     reasons.push("unstable_slug_shape");
   }
 
-  const brokenInternalLinks = findBrokenInternalLinks(html, routeRegistry);
-  if (brokenInternalLinks.length > 0) {
-    reasons.push(`broken_internal_links:${brokenInternalLinks.slice(0, 5).join("|")}`);
-  }
+  // Internal link health is checked by internal-links:audit. Sitemap generation
+  // should not drop canonical, indexable pages just because this checkout is a
+  // reduced static surface.
 
   return reasons;
 }
@@ -546,7 +546,10 @@ async function main() {
   const allFiles = await walkHtmlFiles(ROOT);
 
   // 1. توليد sitemap-priority.xml (عالية الثقة)
-  const candidatePriorityPaths = RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath);
+  const existingRelPaths = new Set(allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath))));
+  const candidatePriorityPaths = RECOVERY_SITEMAP_REQUIRED_FILES
+    .map(normalizeRelPath)
+    .filter((relPath) => existingRelPaths.has(relPath));
   const priorityResult = await buildEntriesForCandidates(candidatePriorityPaths, allFiles, {
     bypassRecoveryWhitelist: false,
   });
@@ -577,10 +580,10 @@ async function main() {
   // 4. توليد sitemap.xml (Sitemap Index)
   const today = toIsoDate(new Date());
   const indexSitemaps = [
-    { loc: `${BASE_URL}/sitemap-priority.xml`, lastmod: today },
-    { loc: `${BASE_URL}/sitemap-services.xml`, lastmod: today },
-    { loc: `${BASE_URL}/sitemap-blog.xml`, lastmod: today },
-  ];
+    { loc: `${BASE_URL}/sitemap-priority.xml`, lastmod: today, count: priorityResult.entries.length },
+    { loc: `${BASE_URL}/sitemap-services.xml`, lastmod: today, count: servicesResult.entries.length },
+    { loc: `${BASE_URL}/sitemap-blog.xml`, lastmod: today, count: blogResult.entries.length },
+  ].filter((sitemap) => sitemap.count > 0);
   const indexXml = renderSitemapIndex(indexSitemaps);
   await fs.writeFile(OUTPUT, indexXml, "utf8");
   process.stdout.write(`Generated sitemap.xml (Sitemap Index) pointing to ${indexSitemaps.length} maps\n`);

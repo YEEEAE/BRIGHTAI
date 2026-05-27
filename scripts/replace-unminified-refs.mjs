@@ -171,6 +171,8 @@ const REPLACEMENTS = [
 const IGNORE_DIRS = [
   "node_modules/**",
   ".git/**",
+  ".render-static/**",
+  ".next/**",
   "venv/**",
   ".agents/**",
   "tmp/**",
