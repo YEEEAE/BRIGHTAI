@@ -27,7 +27,7 @@ function checkFileExists(relativePath, description) {
 // 1. فحص ملفات الإعدادات والتحضير للـ Render
 checkFileExists('render.yaml', 'ملف تكوين النشر على Render');
 checkFileExists('sitemap.xml', 'خريطة الموقع الأساسية');
-checkFileExists('backend/server.js', 'ملف تشغيل خادم الواجهة الخلفية الرئيسي');
+checkFileExists('frontend/server.js', 'ملف تشغيل خادم الواجهة الخلفية الرئيسي');
 
 // 2. فحص صفحات Kernel الحيوية
 const kernelPages = [
@@ -62,9 +62,9 @@ function verifyPackageScripts(packagePath) {
     let match;
     while ((match = nodeScriptRegex.exec(command)) !== null) {
       const scriptRelativePath = match[1];
-      // في حال كان package.json في backend، يكون المسار نسبياً لـ backend
-      const checkPath = packagePath.startsWith('backend/')
-        ? path.join('backend', scriptRelativePath)
+      // في حال كان package.json في frontend، يكون المسار نسبياً لـ frontend
+      const checkPath = packagePath.startsWith('frontend/')
+        ? path.join('frontend', scriptRelativePath)
         : scriptRelativePath;
 
       // نتجاهل السكربتات المضمنة في node_modules أو الأوامر العامة
@@ -76,7 +76,7 @@ function verifyPackageScripts(packagePath) {
 }
 
 verifyPackageScripts('package.json');
-verifyPackageScripts('backend/package.json');
+verifyPackageScripts('frontend/package.json');
 
 console.log('\n======================================================');
 if (failed) {

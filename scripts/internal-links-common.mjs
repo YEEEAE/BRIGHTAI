@@ -15,6 +15,7 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "**/node_modules/**",
   "aimais/**",
   "backend/**",
+  "frontend/{server.js,config,controllers,data,db,kernel,middleware,routes,services,utils,tests}/**",
   "**/prisma/generated/**",
   "scripts/**",
   "reports/**",

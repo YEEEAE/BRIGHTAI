@@ -12,8 +12,8 @@ let failed = false;
 
 // 1. التحقق من وجود الملفات الأساسية لـ Render والواجهة الخلفية
 const renderYamlPath = path.join(repoRoot, 'render.yaml');
-const backendPkgPath = path.join(repoRoot, 'backend/package.json');
-const backendLockPath = path.join(repoRoot, 'backend/package-lock.json');
+const backendPkgPath = path.join(repoRoot, 'frontend/package.json');
+const backendLockPath = path.join(repoRoot, 'frontend/package-lock.json');
 
 if (!fs.existsSync(renderYamlPath)) {
   console.error('✗ [render.yaml] ملف التكوين render.yaml غير موجود في جذر المشروع!');
@@ -23,27 +23,27 @@ if (!fs.existsSync(renderYamlPath)) {
 console.log('✓ [الملفات] ملف render.yaml موجود.');
 
 if (!fs.existsSync(backendPkgPath)) {
-  console.error('✗ [backend] ملف backend/package.json غير موجود!');
+  console.error('✗ [frontend] ملف frontend/package.json غير موجود!');
   failed = true;
 } else {
-  console.log('✓ [الملفات] ملف backend/package.json موجود.');
+  console.log('✓ [الملفات] ملف frontend/package.json موجود.');
 }
 
 if (!fs.existsSync(backendLockPath)) {
-  console.warn('⚠️ [backend] ملف backend/package-lock.json غير موجود! يوصى بوجوده لضمان استقرار البناء.');
+  console.warn('⚠️ [frontend] ملف frontend/package-lock.json غير موجود! يوصى بوجوده لضمان استقرار البناء.');
 } else {
-  console.log('✓ [الملفات] ملف backend/package-lock.json موجود.');
+  console.log('✓ [الملفات] ملف frontend/package-lock.json موجود.');
 }
 
 // 2. قراءة وتحليل render.yaml بأسلوب معالجة خطوط النصوص لتقليل الاعتمادية على الحزم الخارجية
 const renderYamlContent = fs.readFileSync(renderYamlPath, 'utf8');
 
-// فحص وجود rootDir: backend
-const hasRootDirBackend = /rootDir:\s*backend/i.test(renderYamlContent);
+// فحص وجود rootDir: frontend
+const hasRootDirBackend = /rootDir:\s*frontend/i.test(renderYamlContent);
 if (hasRootDirBackend) {
-  console.log('✓ [render.yaml] الخاصية rootDir مضبوطة إلى backend بشكل صحيح لخدمة الـ API.');
+  console.log('✓ [render.yaml] الخاصية rootDir مضبوطة إلى frontend بشكل صحيح لخدمة الـ API.');
 } else {
-  console.warn('⚠️ [render.yaml] لم يتم العثور على rootDir: backend لخدمات الـ API في render.yaml. يرجى التأكد من التكوين.');
+  console.warn('⚠️ [render.yaml] لم يتم العثور على rootDir: frontend لخدمات الـ API في render.yaml. يرجى التأكد من التكوين.');
 }
 
 // فحص وجود DATABASE_URL

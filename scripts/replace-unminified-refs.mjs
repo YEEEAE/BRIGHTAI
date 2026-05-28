@@ -176,7 +176,8 @@ const IGNORE_DIRS = [
   "venv/**",
   ".agents/**",
   "tmp/**",
-  "backend/**"
+  "backend/**",
+  "frontend/{server.js,config,controllers,data,db,kernel,middleware,routes,services,utils,tests}/**"
 ];
 
 async function main() {

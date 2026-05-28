@@ -44,7 +44,7 @@ let server;
 async function ensureServer() {
   if (process.env.AI_GATEWAY_TEST_BASE_URL) return;
   process.env.PORT = String(port);
-  const mod = await import('../backend/server.js');
+  const mod = await import('../frontend/server.js');
   const api = mod.default || mod;
   server = api.startServer();
   await once(server, 'listening');

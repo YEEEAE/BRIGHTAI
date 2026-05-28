@@ -6,21 +6,20 @@
     "node": ">=22 <23"
   },
   "workspaces": [
-    "frontend",
-    "backend"
+    "frontend"
   ],
   "scripts": {
     "dev": "echo 'Static site - open index.html in browser'",
-    "dev:frontend": "npm run start --workspace frontend",
-    "dev:backend": "npm run dev --workspace backend",
+    "dev:frontend": "npm run dev:frontend --workspace brightai-frontend",
+    "dev:backend": "npm run dev --workspace brightai-frontend",
     "build": "npm run build:assets && npm run build:sitemap",
     "build:frontend": "echo 'Static HTML site - no build needed'",
     "build:assets": "node scripts/build-tailwind-purged.mjs && node scripts/minify-seo-assets.mjs && node scripts/replace-unminified-refs.mjs && node scripts/apply-production-audit-fixes.mjs",
     "build:sitemap": "node scripts/update-sitemap-from-current-files.mjs",
     "build:verify": "npm run verify:all",
     "test": "node scripts/run-monorepo-tests.mjs",
-    "test:frontend": "npm run test --workspace frontend",
-    "test:backend": "npm run test --workspace backend",
+    "test:frontend": "npm run test --workspace brightai-frontend",
+    "test:backend": "npm run test --workspace brightai-frontend",
     "test:all": "node scripts/run-monorepo-tests.mjs",
     "lint": "echo 'Linting skipped for static site'",
     "lint:fix": "echo 'Linting skipped for static site'",
@@ -41,7 +40,7 @@
     "assets:replace-refs": "node scripts/replace-unminified-refs.mjs",
     "production:fixes": "node scripts/apply-production-audit-fixes.mjs",
     "build:minify-all": "node scripts/minify-seo-assets.mjs && node scripts/replace-unminified-refs.mjs",
-    "test:setup:backend": "npm --prefix backend ci --include=dev --no-audit --no-fund",
+    "test:setup:backend": "npm --prefix frontend ci --include=dev --no-audit --no-fund",
     "test:ai-gateway": "node scripts/test-gemini-unified-api.mjs",
     "audit:demo-ai": "node scripts/audit-demo-ai-bindings.mjs",
     "performance:budget": "node scripts/check-performance-budget.js",

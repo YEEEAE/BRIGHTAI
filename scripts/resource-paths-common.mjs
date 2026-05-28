@@ -11,6 +11,7 @@ export const DEFAULT_IGNORE_PATTERNS = [
   "**/.git/**",
   "**/node_modules/**",
   "backend/**",
+  "frontend/{server.js,config,controllers,data,db,kernel,middleware,routes,services,utils,tests}/**",
   "scripts/**",
   "brightai_orchestrator_output/**"
 ];
