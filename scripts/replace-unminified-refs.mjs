@@ -71,7 +71,7 @@ const REPLACEMENTS = [
   // text-ratio-fix.css → text-ratio-fix.min.css
   {
     pattern: /\/assets\/css\/text-ratio-fix\.css/g,
-    replacement: "/frontend/css/assets/text-ratio-fix.min.css",
+    replacement: "/frontend/css/text-ratio-fix.min.css",
     label: "text-ratio-fix.css"
   },
   // --- Demo / Interview / Sectors / Try ---

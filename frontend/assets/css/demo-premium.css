@@ -1,6 +1,6 @@
-@font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
-@font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");font-weight:700;font-display:swap}
-@font-face{font-family:BrightArabic;src:url("/assets/fonts/IBMPlexSansArabic-Bold.woff2") format("woff2");font-weight:800;font-display:swap}
+@font-face{font-family:BrightArabic;src:url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:BrightArabic;src:url("/frontend/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");font-weight:700;font-display:swap}
+@font-face{font-family:BrightArabic;src:url("/frontend/fonts/IBMPlexSansArabic-Bold.woff2") format("woff2");font-weight:800;font-display:swap}
 :root{--bg:#07111f;--surface:#0d1b2d;--surface-2:#13243a;--text:var(--ba-neutral-50,#f8fafc);--muted:#c7d2df;--soft:#8ea3b8;--line:rgba(203,213,225,.16);--brand:#2dd4bf;--brand-2:#f8c14a;--danger:#f97373;--ok:#34d399;--radius:18px;--shadow:0 24px 70px rgba(0,0,0,.28)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}

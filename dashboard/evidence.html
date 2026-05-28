@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ملفات الدليل والإثبات — BrightTrust Kernel</title>
   <meta name="theme-color" content="#0b1220">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com" defer></script>
   <script>
     tailwind.config = {
       theme: {
@@ -38,6 +38,79 @@
     ::-webkit-scrollbar-track { background:#0b1220; }
     ::-webkit-scrollbar-thumb { background:#1e3048; border-radius:3px; }
   </style>
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://brightai.site/dashboard/evidence/">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/dashboard/evidence/#webpage",
+      "url": "https://brightai.site/dashboard/evidence/",
+      "name": "ملفات الدليل والإثبات — BrightTrust Kernel",
+      "description": "إنشاء وعرض ملف الدليل الرسمي لأي تفاعل مسجل في نواة BrightTrust",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/dashboard/evidence/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "dashboard",
+          "item": "https://brightai.site/dashboard/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ملفات الدليل والإثبات — BrightTrust Kernel",
+          "item": "https://brightai.site/dashboard/evidence/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body class="bg-bg text-gray-200 min-h-screen flex flex-col">
 
@@ -331,5 +404,6 @@
     // --- Init ---
     loadRecent();
   </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

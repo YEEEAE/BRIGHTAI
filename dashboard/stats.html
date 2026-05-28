@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#0b1220" />
 <title>الإحصائيات والتحليلات | BrightTrust Kernel</title>
 <meta name="description" content="إحصائيات وتحليلات نواة BrightTrust – لوحة متابعة الأداء والامتثال وحالات الطلب" />
-<link rel="icon" href="/assets/images/logo-new.PNG" type="image/png" />
+<link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -59,6 +59,79 @@
   @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
   .fade-in { animation: fadeInUp .5s ease forwards; }
 </style>
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://brightai.site/dashboard/stats/">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/dashboard/stats/#webpage",
+      "url": "https://brightai.site/dashboard/stats/",
+      "name": "الإحصائيات والتحليلات | BrightTrust Kernel",
+      "description": "إحصائيات وتحليلات نواة BrightTrust – لوحة متابعة الأداء والامتثال وحالات الطلب",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/dashboard/stats/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "dashboard",
+          "item": "https://brightai.site/dashboard/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "الإحصائيات والتحليلات | BrightTrust Kernel",
+          "item": "https://brightai.site/dashboard/stats/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body class="min-h-screen">
 
@@ -407,5 +480,6 @@ function renderStats(data) {
 fetchStats();
 setInterval(fetchStats, 60000);
 </script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

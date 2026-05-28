@@ -9,8 +9,8 @@
    * Arabic: إعدادات مركزية للمسارات والأسماء القديمة والجديدة.
    * English: Central settings for legacy and new logo paths.
    */
-  var NEW_LOGO_PATH = "/assets/images/logo-new.PNG?v=20260430";
-  var NEW_LOGO_BASE_PATH = "/assets/images/logo-new.PNG";
+  var NEW_LOGO_PATH = "/frontend/images/logo-new.PNG?v=20260430";
+  var NEW_LOGO_BASE_PATH = "/frontend/images/logo-new.PNG";
   var LOGO_CLASS = "brightai-injected-logo";
   var STYLE_ID = "brightai-injected-logo-styles";
   var PROCESSED_ATTR = "data-brightai-logo-replaced";

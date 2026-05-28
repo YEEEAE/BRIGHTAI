@@ -1,6 +1,6 @@
 @font-face {
   font-family: "BrightAI Arabic";
-  src: url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+  src: url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -8,14 +8,14 @@
 
 @font-face {
   font-family: "BrightAI Arabic";
-  src: url("/assets/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");
+  src: url("/frontend/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 :root {
-  --brightai-logo: url("/assets/images/logo-new.PNG");
+  --brightai-logo: url("/frontend/images/logo-new.PNG");
   --brightai-ink: #08111f;
   --brightai-panel: rgba(15, 23, 42, 0.82);
   --brightai-panel-soft: rgba(255, 255, 255, 0.055);

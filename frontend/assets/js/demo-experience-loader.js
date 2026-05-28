@@ -44,9 +44,9 @@
 
   function scheduleDemoLoad() {
     const run = () => {
-      loadCss("/frontend/css/assets/demo-experience.css");
-      loadScript("/frontend/js/assets/gemini-demo-engine.js")
-        .then(() => loadScript("/frontend/js/assets/live-demo-apps.js"))
+      loadCss("/frontend/css/asset-demo-experience.css");
+      loadScript("/frontend/js/gemini-demo-engine.js")
+        .then(() => loadScript("/frontend/js/live-demo-apps.js"))
         .catch(reportLoaderError);
     };
 

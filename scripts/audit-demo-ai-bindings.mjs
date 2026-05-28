@@ -48,10 +48,10 @@ function parseConfig(html) {
 
 function hasUnifiedEngine(html) {
   return html.includes('/api/ai/chat/completions')
-    || html.includes('/frontend/js/assets/demo-premium.js')
-    || html.includes('/frontend/js/assets/gemini-demo-engine.js')
-    || html.includes('/frontend/js/assets/ai-agent-demo-suite.js')
-    || html.includes('/frontend/js/ocr-demo.js');
+    || html.includes('/frontend/js/demo-premium.js')
+    || html.includes('/frontend/js/gemini-demo-engine.js')
+    || html.includes('/frontend/js/ai-agent-demo-suite.js')
+    || html.includes('/frontend/js/ocr-demo.min.js');
 }
 
 function auditFile(file) {

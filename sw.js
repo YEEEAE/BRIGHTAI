@@ -19,8 +19,8 @@ const PRECACHE_URLS = [
   '/frontend/css/main.bundle.min.css',
   '/frontend/js/runtime-config.min.js',
   '/frontend/js/navigation.min.js',
-  '/assets/images/logo-new.PNG',
-  '/assets/images/hero-brain.svg'
+  '/frontend/images/logo-new.PNG',
+  '/frontend/images/hero-brain.svg'
 ];
 
 self.addEventListener('install', (event) => {
