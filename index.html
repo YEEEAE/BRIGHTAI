@@ -527,7 +527,165 @@
 
 <!-- ================= HERO ================= -->
 <section id="hero-section" aria-labelledby="hero-title" class="relative">
-  <div class="max-w-7xl mx-auto px-5 lg:px-8 pt-14 pb-20 lg:pt-24 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center">
+  <!-- ============== BrightTrust Hero Animated Background ============== -->
+  <!-- ضع هذا داخل قسم الهيرو مع position:relative على الـ section الأب -->
+
+  <style>
+    .bt-hero-bg{
+      position:absolute; inset:0; overflow:hidden; z-index:0;
+      background:
+        radial-gradient(1200px 600px at 80% -10%, rgba(0,212,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 10% 110%, rgba(0,168,212,.15), transparent 60%),
+        linear-gradient(180deg,#0b1220 0%, #0a1020 60%, #070c19 100%);
+    }
+    .bt-hero-bg canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+
+    /* شبكة نقاط CSS خفيفة (تعمل حتى لو فشل JS) */
+    .bt-hero-bg::before{
+      content:""; position:absolute; inset:0;
+      background-image:
+        radial-gradient(rgba(0,212,255,.18) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse at center, #000 40%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 80%);
+      opacity:.5;
+      animation: btGridMove 22s linear infinite;
+    }
+    @keyframes btGridMove{ to { background-position: 28px 28px; } }
+
+    /* خطوط Audit Trail المتدفقة */
+    .bt-hero-bg::after{
+      content:""; position:absolute; inset:0;
+      background:
+        linear-gradient(90deg, transparent 0%, rgba(0,212,255,.06) 50%, transparent 100%);
+      transform: translateX(-100%);
+      animation: btScan 7s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes btScan{
+      0%{ transform: translateX(-100%);}
+      60%{ transform: translateX(100%);}
+      100%{ transform: translateX(100%);}
+    }
+
+    /* احترام تفضيل تقليل الحركة */
+    @media (prefers-reduced-motion: reduce){
+      .bt-hero-bg::before,
+      .bt-hero-bg::after{ animation:none; }
+      .bt-hero-bg canvas{ display:none; }
+    }
+  </style>
+
+  <div class="bt-hero-bg" aria-hidden="true">
+    <canvas id="btNeuralCanvas"></canvas>
+  </div>
+
+  <script>
+  (function(){
+    const canvas = document.getElementById('btNeuralCanvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha:true });
+
+    // كشف الجهاز الضعيف والموبايل لتقليل الأداء
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const lowPower = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduceMotion){ return; }
+
+    let DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+    let W=0, H=0;
+    let nodes = [];
+    const NODE_COUNT = isMobile ? 22 : (lowPower ? 32 : 55);
+    const LINK_DIST  = isMobile ? 110 : 150;
+    const SPEED      = isMobile ? 0.25 : 0.35;
+
+    function resize(){
+      const rect = canvas.getBoundingClientRect();
+      W = rect.width; H = rect.height;
+      canvas.width  = Math.floor(W * DPR);
+      canvas.height = Math.floor(H * DPR);
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+    }
+
+    function initNodes(){
+      nodes = [];
+      for(let i=0;i<NODE_COUNT;i++){
+        nodes.push({
+          x: Math.random()*W,
+          y: Math.random()*H,
+          vx: (Math.random()-.5)*SPEED,
+          vy: (Math.random()-.5)*SPEED,
+          r: Math.random()*1.6 + 0.6,
+          pulse: Math.random()*Math.PI*2
+        });
+      }
+    }
+
+    let running = true, lastTime = 0;
+    const FPS_CAP = isMobile ? 30 : 45;
+    const FRAME_MIN = 1000 / FPS_CAP;
+
+    function tick(t){
+      if(!running) return;
+      requestAnimationFrame(tick);
+      if(t - lastTime < FRAME_MIN) return;
+      lastTime = t;
+
+      ctx.clearRect(0,0,W,H);
+
+      // الروابط بين العقد
+      for(let i=0;i<nodes.length;i++){
+        const a = nodes[i];
+        a.x += a.vx; a.y += a.vy;
+        if(a.x<0||a.x>W) a.vx*=-1;
+        if(a.y<0||a.y>H) a.vy*=-1;
+        a.pulse += 0.02;
+
+        for(let j=i+1;j<nodes.length;j++){
+          const b = nodes[j];
+          const dx=a.x-b.x, dy=a.y-b.y;
+          const d2 = dx*dx+dy*dy;
+          if(d2 < LINK_DIST*LINK_DIST){
+            const alpha = 1 - Math.sqrt(d2)/LINK_DIST;
+            ctx.strokeStyle = `rgba(0,212,255,${alpha*0.35})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(a.x,a.y);
+            ctx.lineTo(b.x,b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // العقد + توهج خفيف
+      for(const n of nodes){
+        const glow = 0.6 + Math.sin(n.pulse)*0.4;
+        ctx.fillStyle = `rgba(95,220,255,${0.55*glow})`;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+    }
+
+    // إيقاف الأنيميشن لما الموقع مخفي (يوفّر بطارية + CPU)
+    document.addEventListener('visibilitychange', ()=>{
+      running = !document.hidden;
+      if(running) requestAnimationFrame(tick);
+    });
+
+    // إعادة الضبط عند تغيير الحجم (Debounce)
+    let rt;
+    window.addEventListener('resize', ()=>{
+      clearTimeout(rt);
+      rt = setTimeout(()=>{ resize(); initNodes(); }, 150);
+    }, { passive:true });
+
+    resize(); initNodes();
+    requestAnimationFrame(tick);
+  })();
+  </script>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 pt-14 pb-20 lg:pt-24 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center">
     <div class="lg:col-span-7">
       <span class="chip inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold">
         <span class="w-2 h-2 rounded-full bg-brand-500 pulse-dot"></span>
