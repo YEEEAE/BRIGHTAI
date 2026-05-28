@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'YearOfTheCamel';
+  src: url('/frontend/fonts/alfont_com_TheYearofTheCamel-ExtraLight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+h1, h2, h3, .camel-font {
+  font-family: 'YearOfTheCamel', 'BrightAI Arabic', 'Tajawal', sans-serif !important;
+}
 @font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
 @font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
 @font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}

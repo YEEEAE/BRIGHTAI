@@ -213,6 +213,10 @@ function ensureRobots(html, relPath) {
 }
 
 function ensureAssetTags(html) {
+  const fontPreload = '<link rel="preload" href="/frontend/fonts/alfont_com_TheYearofTheCamel-ExtraLight.otf" as="font" type="font/otf" crossorigin />';
+  if (!html.includes('/frontend/fonts/alfont_com_TheYearofTheCamel-ExtraLight.otf')) {
+    html = html.replace(/<\/head>/i, `  ${fontPreload}\n</head>`);
+  }
   if (!html.includes(CSS_HREF)) {
     html = html.replace(/<\/head>/i, `  <link rel="stylesheet" href="${CSS_HREF}">\n</head>`);
   }
