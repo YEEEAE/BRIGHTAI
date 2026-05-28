@@ -1,5 +1,5 @@
 # BrightTrust - Saudi AI Safety OS
-# https://brighttrust.sa
+# https://brightai.site
 # Optimized for Google indexing, AI search, and EAO
 
 User-agent: *
@@ -119,10 +119,10 @@ Allow: /
 # ==================== SEO Files ====================
 
 # Sitemaps
-Sitemap: https://brighttrust.sa/sitemap.xml
+Sitemap: https://brightai.site/sitemap.xml
 
 # Host
-Host: https://brighttrust.sa
+Host: https://brightai.site
 
 # AI-readable content
 # See /llms.txt and /llms-full.txt for comprehensive AI-readable documentation

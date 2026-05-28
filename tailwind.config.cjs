@@ -1,59 +1,50 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './index.html',
     './docs.html',
     './404.html',
     './500.html',
+    './about/**/*.html',
+    './blog/**/*.html',
+    './contact/**/*.html',
+    './dashboard/**/*.html',
+    './demo/**/*.html',
+    './docs/**/*.html',
     './frontend/**/*.html',
     './frontend/**/*.js',
+    './kernel/**/*.html',
+    './offline/**/*.html',
+    './pricing/**/*.html',
+    './privacy-cookies/**/*.html',
     './services/**/*.html',
-    './docs/**/*.html',
-    './ai-agent/**/*.html',
-    './data-analysis/**/*.html',
-    './machine-learning/**/*.html',
-    './smart-automation/**/*.html',
-    './ai-bots/**/*.html',
-    './smart-medical-archive/**/*.html',
-    './aimais/**/*.html'
   ],
   theme: {
     extend: {
       colors: {
-        gold: {
-          300: '#fcd34d',
-          400: '#fbbf24',
-          500: '#f59e0b'
-        },
         brand: {
-          50: '#f5f3ff',
-          100: '#ede9fe',
-          200: '#ddd6fe',
-          300: '#c4b5fd',
-          400: '#a78bfa',
-          500: '#8b5cf6',
-          600: '#7c3aed',
-          700: '#6d28d9',
-          800: '#5b21b6',
-          900: '#4c1d95',
-          950: '#2e1065'
+          50: '#e6fbff',
+          100: '#b3f0ff',
+          300: '#5fdcff',
+          500: '#00d4ff',
+          600: '#00a8d4',
+          700: '#0086ad'
         },
-        dark: {
-          bg: '#030014',
-          card: '#0f0728',
-          surface: '#1a103c'
+        ink: {
+          900: '#0b1220',
+          800: '#111a2e',
+          700: '#1a2340'
         },
-        navy: {
-          900: '#0a192f'
-        }
+        whatsapp: '#25D366'
       },
       fontFamily: {
-        sans: ['IBM Plex Sans Arabic', 'Tajawal', 'Cairo', 'sans-serif']
+        sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif']
+      },
+      boxShadow: {
+        glow: '0 0 60px -10px rgba(0,212,255,.55)',
+        waGlow: '0 0 40px -8px rgba(37,211,102,.5)'
       }
     }
   },
-  safelist: [
-    {
-      pattern: /(text|bg|border)-(indigo|purple|green|gold)-(300|400|500)(\/\d+)?/
-    }
-  ]
+  plugins: []
 };

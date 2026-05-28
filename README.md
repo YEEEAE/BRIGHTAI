@@ -27,7 +27,7 @@ Every AI request passes through 4 security layers before reaching the AI model a
 
 ```
 BRIGHTAI/
-├── index.html                    # Main landing page (brighttrust.sa)
+├── index.html                    # Main landing page (brightai.site)
 ├── about/                        # About page
 ├── blog/                         # Blog pages
 ├── contact/                      # Contact page
@@ -258,7 +258,7 @@ npm run dev               # Starts on port 3000
 ## Deployment (Render.com)
 
 Configured via `render.yaml`:
-- Static site for frontend (brighttrust.sa / brightai.site)
+- Static site for frontend (brightai.site)
 - Backend API service for `/api/*` routes
 - PostgreSQL database via `DATABASE_URL` env var
 
@@ -271,7 +271,7 @@ Configured via `render.yaml`:
 - **AI**: Google Gemini 2.5 Flash (primary), Groq, NVIDIA NIM, DeepSeek
 - **Frontend**: Static HTML, Tailwind CSS (CDN), vanilla JavaScript
 - **Deployment**: Render.com, Cloudflare DNS/CDN
-- **Domain**: brighttrust.sa, brightai.site
+- **Domain**: brightai.site
 
 ---
 

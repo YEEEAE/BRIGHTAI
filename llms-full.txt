@@ -5,8 +5,8 @@ BrightTrust (برايت ترست) is an AI safety and governance platform design
 
 Founded: 2025
 Headquarters: Riyadh, Saudi Arabia
-Website: https://brighttrust.sa
-Contact: +966-538-229-013 (WhatsApp) | hello@brighttrust.sa
+Website: https://brightai.site
+Contact: +966-538-229-013 (WhatsApp) | hello@brightai.site
 Twitter: @BrightTrustSA
 
 ## Core Product: BrightTrust Kernel
@@ -94,7 +94,7 @@ Custom pricing based on company size, number of users, and compliance packs requ
 
 ## Contact
 - WhatsApp: https://wa.me/966538229013
-- Email: hello@brighttrust.sa
+- Email: hello@brightai.site
 - Location: Riyadh, Saudi Arabia
 - Twitter: @BrightTrustSA
 - LinkedIn: https://www.linkedin.com/company/brighttrust
