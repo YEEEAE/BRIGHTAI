@@ -1,0 +1,309 @@
+@font-face {
+  font-family: "BrightAI Arabic";
+  src: url("/assets/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BrightAI Arabic";
+  src: url("/assets/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --brightai-logo: url("/assets/images/logo-new.PNG");
+  --brightai-ink: #08111f;
+  --brightai-panel: rgba(15, 23, 42, 0.82);
+  --brightai-panel-soft: rgba(255, 255, 255, 0.055);
+  --brightai-line: rgba(148, 163, 184, 0.22);
+  --brightai-line-strong: rgba(45, 212, 191, 0.38);
+  --brightai-text: #f8fafc;
+  --brightai-muted: #cbd5e1;
+  --brightai-accent: #2dd4bf;
+  --brightai-warm: #f7c948;
+  --brightai-radius: 8px;
+  --brightai-control: 44px;
+  --brightai-container: 1180px;
+  color-scheme: dark light;
+}
+
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: 0;
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html[dir="rtl"] body,
+html[lang^="ar"] body,
+[dir="rtl"] :where(button, input, select, textarea) {
+  font-family: "BrightAI Arabic", "IBM Plex Sans Arabic", "Tajawal", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:where(img, svg, video, canvas, iframe) {
+  max-inline-size: 100%;
+}
+
+:where(img, video, canvas) {
+  block-size: auto;
+}
+
+:where(a, button, input, select, textarea, summary, [role="button"]) {
+  touch-action: manipulation;
+}
+
+:where(button, input, select, textarea) {
+  font: inherit;
+}
+
+:where(input, select, textarea) {
+  max-inline-size: 100%;
+}
+
+@media (max-width: 700px) {
+  :where(input, select, textarea) {
+    font-size: 16px;
+  }
+}
+
+:where(a, button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"], summary) {
+  min-block-size: var(--brightai-control);
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 3px solid var(--brightai-accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(45, 212, 191, 0.18);
+}
+
+:where(h1, h2, h3) {
+  text-wrap: balance;
+}
+
+:where(p, li, dd, figcaption, label, a, button) {
+  overflow-wrap: anywhere;
+}
+
+:where(main, section, article, aside, header, footer, nav, form, .container, .section, .hero, .content-container, .page-content, .main-viewport) {
+  min-inline-size: 0;
+}
+
+:where(section, article, aside):not(:has(:focus-visible)) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 540px;
+}
+
+:where(.hero, .hero-section, [class*="hero"]) {
+  content-visibility: visible;
+}
+
+.brightai-brand-image,
+.brightai-injected-logo,
+:where(.brand, .nav-logo, .sidebar-logo, .footer-brand, .auth-brand, .logo-box, .brand-icon) img {
+  inline-size: clamp(2.25rem, 6vw, 3.25rem);
+  block-size: clamp(2.25rem, 6vw, 3.25rem);
+  object-fit: contain;
+  border-radius: 8px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 8px 18px rgba(45, 212, 191, 0.18));
+}
+
+:where(.nav-logo, .brand, .sidebar-logo, .footer-brand, .auth-brand) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-inline-size: 0;
+}
+
+.sidebar-brand {
+  position: relative;
+}
+
+.sidebar-brand:not(:has(img))::before {
+  content: "";
+  display: block;
+  inline-size: 42px;
+  block-size: 42px;
+  margin-block-end: 0.65rem;
+  border-radius: 8px;
+  background: center / contain no-repeat var(--brightai-logo);
+  filter: drop-shadow(0 10px 18px rgba(45, 212, 191, 0.2));
+}
+
+.brand-icon.brightai-brand-image {
+  display: block;
+  margin-block-end: 0.75rem;
+}
+
+:where(.unified-nav, .demo-nav, .site-header, .top-nav, header[role="banner"], .topbar) {
+  isolation: isolate;
+}
+
+:where(.unified-nav, .demo-nav, .site-header, .top-nav, header[role="banner"]) :where(nav, .nav-links, .nav-desktop, .header-actions) {
+  min-inline-size: 0;
+}
+
+:where(.nav-links, .nav-desktop, .header-actions, .hero-actions, .form-actions, .dash-cta) {
+  align-items: center;
+  gap: 0.65rem;
+}
+
+:where(.btn, .btn-primary, .btn-secondary, .btn-outline, .nav-cta, .nav-cta-pill, .primary-button, .secondary-button, .logout-button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-block-size: var(--brightai-control);
+  min-inline-size: var(--brightai-control);
+  max-inline-size: 100%;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  white-space: normal;
+}
+
+:where(.card, .dash-section, .feature-card, .summary-card, .metric-card, .pricing-card, .quick-answer, .login-box, .result-panel) {
+  overflow: hidden;
+}
+
+:where(.case-grid, .cards-grid, .summary-grid, .trust-grid, .pricing-grid, .features-grid, .stats-grid, .dashboard-layout-grid) {
+  min-inline-size: 0;
+}
+
+:where(table) {
+  inline-size: 100%;
+  border-collapse: collapse;
+}
+
+:where(.table-shell, .table-wrapper, .table-container, .data-table, .comparison-table, .bai-inline-0155) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-inline-size: 100%;
+}
+
+.brightai-responsive-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-inline-size: 100%;
+}
+
+.brightai-responsive-table > table {
+  min-inline-size: 640px;
+}
+
+.skip-link {
+  position: fixed;
+  inset-block-start: max(0.75rem, env(safe-area-inset-top));
+  inset-inline-start: max(0.75rem, env(safe-area-inset-left));
+  z-index: 10000;
+  transform: translateY(calc(-100% - 1.5rem));
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+body.bright-page--dashboard {
+  overflow-x: hidden;
+}
+
+body.bright-page--dashboard :where(.content-container, .page-content, .main-viewport) {
+  min-inline-size: 0;
+}
+
+body.bright-page--dashboard :where(.sidebar-logo, .sidebar-brand) {
+  min-inline-size: 0;
+}
+
+body.bright-page--dashboard .sidebar-logo img {
+  inline-size: 32px;
+  block-size: 32px;
+}
+
+body.bright-page--dashboard :where(.chart-card, .card, .dashboard-panel) {
+  min-inline-size: 0;
+}
+
+@media (max-width: 1024px) {
+  body.bright-page--dashboard :where(.main-viewport, .main-content) {
+    margin-inline: 0 !important;
+  }
+
+  body.bright-page--dashboard .sidebar {
+    transform: translateX(100%);
+  }
+
+  html[dir="rtl"] body.bright-page--dashboard .sidebar,
+  body.bright-page--dashboard[dir="rtl"] .sidebar {
+    transform: translateX(-100%);
+  }
+
+  body.bright-page--dashboard .sidebar.is-mobile-active,
+  body.bright-page--dashboard.sidebar-open .sidebar {
+    transform: translateX(0) !important;
+  }
+}
+
+@media (max-width: 780px) {
+  :where(.unified-nav, .demo-nav, .site-header, .top-nav, header[role="banner"] > nav, .topbar) {
+    gap: 0.75rem;
+  }
+
+  :where(.nav-links, .nav-desktop) {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: none;
+    max-inline-size: 100%;
+  }
+
+  :where(.nav-links, .nav-desktop)::-webkit-scrollbar {
+    display: none;
+  }
+
+  :where(.nav-links, .nav-desktop) a {
+    flex: 0 0 auto;
+  }
+
+  :where(.hero, .hero-section, .section, .content-container, .page-content) {
+    padding-inline: max(1rem, env(safe-area-inset-left));
+  }
+
+  :where(.hero-copy, .quick-answer, .demo-form, .result-panel, .login-box) {
+    padding: clamp(1rem, 5vw, 1.35rem);
+  }
+
+  :where(.btn, .btn-primary, .btn-secondary, .btn-outline, .nav-cta, .nav-cta-pill) {
+    inline-size: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

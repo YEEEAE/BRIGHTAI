@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ملفات الدليل والإثبات — BrightTrust Kernel</title>
+  <meta name="theme-color" content="#0b1220">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0b1220',
+            surface: '#111b2e',
+            card: '#162035',
+            border: '#1e3048',
+            accent: '#10b981',
+            'accent-dim': '#065f46',
+            muted: '#64748b',
+          },
+          fontFamily: {
+            mono: ['Courier New', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #0b1220; }
+    .hash-field { font-family: 'Courier New', monospace; direction: ltr; text-align: left; word-break: break-all; }
+    .code-badge { font-family: 'Courier New', monospace; direction: ltr; }
+    .fade-in { animation: fadeIn .4s ease-out; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+    .pulse-glow { animation: pulseGlow 2s infinite; }
+    @keyframes pulseGlow { 0%,100% { box-shadow:0 0 6px rgba(16,185,129,.3); } 50% { box-shadow:0 0 18px rgba(16,185,129,.6); } }
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:#0b1220; }
+    ::-webkit-scrollbar-thumb { background:#1e3048; border-radius:3px; }
+  </style>
+</head>
+<body class="bg-bg text-gray-200 min-h-screen flex flex-col">
+
+  <!-- Nav -->
+  <nav class="bg-surface border-b border-border sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-14">
+      <div class="flex items-center gap-2">
+        <span class="text-accent font-bold text-lg">BrightTrust</span>
+        <span class="text-muted text-xs">Kernel</span>
+      </div>
+      <div class="flex items-center gap-1 overflow-x-auto text-sm">
+        <a href="index.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">لوحة التحكم</a>
+        <a href="audit.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">المراقبة</a>
+        <a href="approvals.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">الموافقات</a>
+        <a href="compliance.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">الامتثال</a>
+        <a href="evidence.html" class="px-3 py-1.5 rounded-lg bg-accent/10 text-accent font-semibold transition">ملفات الدليل</a>
+        <a href="stats.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">الإحصائيات</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-8">
+
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold text-gray-100 mb-1">ملفات الدليل والإثبات</h1>
+      <p class="text-muted text-sm">إنشاء وعرض ملف الدليل الرسمي لأي تفاعل مسجل في نواة BrightTrust</p>
+    </div>
+
+    <!-- Input + Recent -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Input -->
+      <div class="lg:col-span-2 bg-card border border-border rounded-xl p-6">
+        <label class="block text-sm font-semibold text-gray-300 mb-2">معرّف التفاعل (Interaction ID)</label>
+        <div class="flex gap-3">
+          <input id="interactionId" type="text" placeholder="أدخل معرّف التفاعل..." class="flex-1 bg-surface border border-border rounded-lg px-4 py-2.5 text-gray-100 placeholder:text-muted focus:outline-none focus:border-accent transition hash-field">
+          <button onclick="generateEvidence()" id="genBtn" class="bg-accent hover:bg-emerald-400 text-bg font-bold px-5 py-2.5 rounded-lg transition flex items-center gap-2 whitespace-nowrap">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            إنشاء ملف الدليل
+          </button>
+        </div>
+        <p id="inputError" class="text-red-400 text-xs mt-2 hidden"></p>
+      </div>
+
+      <!-- Recent -->
+      <div class="bg-card border border-border rounded-xl p-6">
+        <h3 class="text-sm font-semibold text-gray-300 mb-3">آخر التفاعلات</h3>
+        <div id="recentList" class="space-y-2">
+          <p class="text-muted text-xs">جارٍ التحميل...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evidence Output -->
+    <div id="evidenceOutput" class="hidden fade-in"></div>
+
+  </main>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/966538229013" target="_blank" rel="noopener" class="fixed bottom-6 left-6 z-50 bg-[#25D366] hover:bg-[#20bd5a] w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-[#25D366]/30 transition-transform hover:scale-110" aria-label="تواصل واتساب">
+    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.019-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.682-1.423A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.186 0-4.224-.658-5.923-1.785l-.414-.276-3.15.958.852-3.04-.303-.465A9.954 9.954 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  </a>
+
+  <script>
+    // --- Recent Interactions ---
+    async function loadRecent() {
+      const el = document.getElementById('recentList');
+      try {
+        const res = await fetch('/api/kernel/audit?limit=5');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const items = data.audit || data.records || data.interactions || data.data || data;
+        if (!Array.isArray(items) || items.length === 0) {
+          el.innerHTML = '<p class="text-muted text-xs">لا توجد تفاعلات حديثة</p>';
+          return;
+        }
+        el.innerHTML = items.map(r => {
+          const id = r.interactionId || r.id || r._id || '';
+          const label = id.length > 12 ? id.substring(0,12) + '...' : id;
+          return `<button onclick="document.getElementById('interactionId').value='${id}';generateEvidence()" class="w-full text-right bg-surface hover:bg-border border border-border rounded-lg px-3 py-2 text-xs hash-field text-accent hover:text-emerald-300 transition">${label}</button>`;
+        }).join('');
+      } catch {
+        el.innerHTML = '<p class="text-muted text-xs">تعذّر تحميل التفاعلات الحديثة</p>';
+      }
+    }
+
+    // --- Generate Evidence ---
+    let rawEvidence = null;
+
+    async function generateEvidence() {
+      const id = document.getElementById('interactionId').value.trim();
+      const errEl = document.getElementById('inputError');
+      const outEl = document.getElementById('evidenceOutput');
+      const btn = document.getElementById('genBtn');
+
+      errEl.classList.add('hidden');
+      outEl.classList.add('hidden');
+
+      if (!id) {
+        errEl.textContent = 'يرجى إدخال معرّف التفاعل';
+        errEl.classList.remove('hidden');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg> جارٍ الإنشاء...';
+
+      try {
+        const res = await fetch(`/api/kernel/evidence/${encodeURIComponent(id)}`, { method: 'POST' });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || err.message || `خطأ ${res.status}`);
+        }
+        rawEvidence = await res.json();
+        renderEvidence(rawEvidence);
+      } catch (e) {
+        errEl.textContent = e.message || 'تعذّر إنشاء ملف الدليل';
+        errEl.classList.remove('hidden');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg> إنشاء ملف الدليل';
+      }
+    }
+
+    // --- Helpers ---
+    function hashHtml(val) {
+      if (!val) return '<span class="text-muted">—</span>';
+      return `<span class="hash-field text-xs text-emerald-300">${esc(val)}</span>`;
+    }
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    function badge(label, color='accent') {
+      const c = color === 'red' ? 'bg-red-500/10 text-red-400' : color === 'yellow' ? 'bg-yellow-500/10 text-yellow-400' : color === 'blue' ? 'bg-blue-500/10 text-blue-400' : 'bg-accent/10 text-accent';
+      return `<span class="inline-block px-2 py-0.5 rounded text-xs font-semibold ${c}">${esc(label)}</span>`;
+    }
+    function sectionCard(title, icon, bodyHtml) {
+      return `<div class="bg-card border border-border rounded-xl overflow-hidden">
+        <div class="px-5 py-3 bg-surface border-b border-border flex items-center gap-2">
+          <span class="text-accent">${icon}</span>
+          <h3 class="text-sm font-bold text-gray-200">${esc(title)}</h3>
+        </div>
+        <div class="p-5">${bodyHtml}</div>
+      </div>`;
+    }
+    function kvRow(key, val, mono=false) {
+      const cls = mono ? 'hash-field' : '';
+      return `<div class="flex flex-col sm:flex-row sm:items-center gap-1 py-2 border-b border-border/50 last:border-0">
+        <span class="text-muted text-xs w-40 shrink-0">${esc(key)}</span>
+        <span class="${cls} text-sm text-gray-100">${val}</span>
+      </div>`;
+    }
+
+    // --- Render ---
+    function renderEvidence(ev) {
+      const out = document.getElementById('evidenceOutput');
+      const e = ev.evidence || ev;
+      let html = '';
+
+      // Action buttons
+      html += `<div class="flex items-center gap-3 mb-6">
+        <button onclick="copyJson()" class="bg-surface border border-border hover:border-accent text-gray-300 hover:text-accent px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          نسخ JSON
+        </button>
+        <button onclick="downloadJson()" class="bg-surface border border-border hover:border-accent text-gray-300 hover:text-accent px-4 py-2 rounded-lg text-sm font-semibold transition flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          تحميل JSON
+        </button>
+        <span id="copyMsg" class="text-accent text-xs hidden">تم النسخ!</span>
+      </div>`;
+
+      // 1 - Evidence ID + Timestamp
+      html += sectionCard('معرّف الدليل والطابع الزمني', '&#x1F4C4;',
+        kvRow('معرّف الدليل', hashHtml(e.evidenceId), true) +
+        kvRow('الطابع الزمني', e.timestamp ? new Date(e.timestamp).toLocaleString('ar-SA') : '—')
+      );
+
+      // 2 - Summary
+      const s = e.summary || e;
+      html += sectionCard('الملخص', '&#x1F4CB;',
+        kvRow('الطلب', esc(s.request || s.userPrompt || '—')) +
+        kvRow('الرد', esc(s.response || s.aiResponse || '—')) +
+        kvRow('درجة المخاطر', (s.riskScore ?? s.risk?.score ?? '—') + ' / 100') +
+        kvRow('مستوى المخاطر', badge(s.riskLevel || s.risk?.level || '—', (s.riskLevel || s.risk?.level) === 'high' ? 'red' : (s.riskLevel || s.risk?.level) === 'medium' ? 'yellow' : 'accent')) +
+        kvRow('حالة الموافقة', badge(s.approvalStatus || s.approval || '—')) +
+        kvRow('النموذج', esc(s.model || '—')) +
+        kvRow('التوكنات', esc(s.tokens || s.tokenUsage ? JSON.stringify(s.tokens || s.tokenUsage) : '—')) +
+        kvRow('زمن الاستجابة', esc((s.responseTime || s.duration || '—') + (s.responseTime || s.duration ? ' مللي ثانية' : '')))
+      );
+
+      // 3 - Firewall
+      const fw = e.firewall || e.firewallResult || e.piiDetection || {};
+      const piiDetected = fw.piiDetected ?? fw.detected ?? false;
+      html += sectionCard('جدار الحماية', '&#x1F6E1;',
+        kvRow('PII مكتشف', piiDetected ? badge('نعم — تم الكشف', 'red') : badge('لا — نظيف', 'accent')) +
+        kvRow('الأنواع', esc(fw.types ? fw.types.join(', ') : (fw.piiTypes || '—'))) +
+        kvRow('العناصر', esc(fw.items ? fw.items.join(', ') : (fw.piiItems || '—'))) +
+        kvRow('التصنيفات الحساسة', esc(fw.sensitiveCategories ? fw.sensitiveCategories.join(', ') : '—')) +
+        kvRow('الإجراء', esc(fw.action || '—'))
+      );
+
+      // 4 - Risk Assessment
+      const risk = e.riskAssessment || e.risk || {};
+      const reasons = risk.reasons || risk.factors || [];
+      html += sectionCard('تقييم المخاطر', '&#x26A0;',
+        kvRow('الدرجة', (risk.score ?? '—') + ' / 100') +
+        kvRow('المستوى', badge(risk.level || '—', risk.level === 'high' ? 'red' : risk.level === 'medium' ? 'yellow' : 'accent')) +
+        kvRow('الأسباب', reasons.length > 0 ? `<ul class="list-disc list-inside text-xs text-gray-300 space-y-1">${reasons.map(r=>`<li>${esc(typeof r === 'string' ? r : JSON.stringify(r))}</li>`).join('')}</ul>` : '<span class="text-muted">—</span>')
+      );
+
+      // 5 - Compliance
+      const comp = e.compliance || e.complianceResult || {};
+      html += sectionCard('الامتثال', '&#x2705;',
+        kvRow('حزمة الامتثال', esc(comp.pack || comp.compliancePack || '—')) +
+        kvRow('العلامات (Flags)', comp.flags && comp.flags.length > 0
+          ? comp.flags.map(f => badge(typeof f === 'string' ? f : f.rule || f.name || JSON.stringify(f), 'yellow')).join(' ')
+          : '<span class="text-accent text-xs">لا توجد علامات</span>')
+      );
+
+      // 6 - Audit / Integrity
+      const aud = e.audit || e.integrity || {};
+      const verified = aud.integrityVerified ?? aud.verified ?? true;
+      html += sectionCard('التدقيق والسلامة', '&#x1F50F;',
+        kvRow('هاش الطلب', hashHtml(aud.requestHash), true) +
+        kvRow('هاش الرد', hashHtml(aud.responseHash), true) +
+        kvRow('هاش السابق', hashHtml(aud.previousHash), true) +
+        kvRow('هاش السجل', hashHtml(aud.recordHash), true) +
+        kvRow('السلامة', verified ? '<span class="inline-flex items-center gap-1">' + badge('تم التحقق — سليم', 'accent') + '<span class="pulse-glow inline-block w-2 h-2 rounded-full bg-accent"></span></span>' : badge('غير متطابق', 'red'))
+      );
+
+      // 7 - User
+      const usr = e.user || {};
+      html += sectionCard('المستخدم', '&#x1F464;',
+        kvRow('المعرّف', hashHtml(usr.id || usr.userId || '—'), true) +
+        kvRow('الاسم', esc(usr.name || usr.userName || '—')) +
+        kvRow('عنوان IP', `<span class="hash-field text-xs">${esc(usr.ip || usr.ipAddress || '—')}</span>`)
+      );
+
+      // 8 - Regulatory References
+      const refs = e.regulatoryReferences || e.references || [];
+      if (refs.length > 0) {
+        let refRows = refs.map(r => `<tr class="border-b border-border/50">
+          <td class="py-2 px-3 text-xs text-gray-300">${esc(r.framework || r.standard || '—')}</td>
+          <td class="py-2 px-3 text-xs text-accent font-semibold">${esc(r.article || r.section || r.clause || '—')}</td>
+          <td class="py-2 px-3 text-xs text-gray-400">${esc(r.description || '—')}</td>
+        </tr>`).join('');
+        html += sectionCard('المراجع التنظيمية', '&#x1F4DA;',
+          `<div class="overflow-x-auto"><table class="w-full text-right">
+            <thead><tr class="border-b border-border text-muted text-xs">
+              <th class="py-2 px-3">الإطار</th><th class="py-2 px-3">المادة</th><th class="py-2 px-3">الوصف</th>
+            </tr></thead>
+            <tbody>${refRows}</tbody>
+          </table></div>`
+        );
+      }
+
+      // 9 - Evidence Hash
+      html += `<div class="bg-card border border-border rounded-xl p-5 text-center">
+        <span class="text-muted text-xs block mb-2">هاش ملف الدليل</span>
+        <span class="hash-field text-xs text-accent break-all">${hashHtml(e.evidenceHash || e.hash || e.sha256 || '—')}</span>
+      </div>`;
+
+      out.innerHTML = html;
+      out.classList.remove('hidden');
+      out.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // --- Copy / Download ---
+    function copyJson() {
+      if (!rawEvidence) return;
+      navigator.clipboard.writeText(JSON.stringify(rawEvidence, null, 2)).then(() => {
+        const msg = document.getElementById('copyMsg');
+        msg.classList.remove('hidden');
+        setTimeout(() => msg.classList.add('hidden'), 2000);
+      });
+    }
+    function downloadJson() {
+      if (!rawEvidence) return;
+      const id = rawEvidence.evidenceId || rawEvidence.interactionId || rawEvidence.id || 'evidence';
+      const blob = new Blob([JSON.stringify(rawEvidence, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `evidence-${id}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // --- Init ---
+    loadRecent();
+  </script>
+</body>
+</html>

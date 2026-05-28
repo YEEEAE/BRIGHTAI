@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم BrightTrust Kernel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            dark: { 900: '#0b1220', 800: '#0f1a2e', 700: '#162038', 600: '#1c2a48' },
+            accent: { DEFAULT: '#10b981', light: '#34d399', dark: '#059669' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Tahoma, Arial, sans-serif; background: #0b1220; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f1a2e; }
+    ::-webkit-scrollbar-thumb { background: #1c2a48; border-radius: 3px; }
+    .sidebar-link { transition: all 0.2s; }
+    .sidebar-link:hover, .sidebar-link.active { background: rgba(16,185,129,0.1); border-right-color: #10b981; color: #10b981; }
+    @keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .pulse-dot { animation: pulse-dot 2s ease-in-out infinite; }
+  </style>
+</head>
+<body class="text-gray-200 min-h-screen">
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed top-0 right-0 h-full w-64 bg-dark-800 border-l border-dark-600 z-40 transition-transform duration-300">
+    <div class="p-5 border-b border-dark-600">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center text-white font-bold text-lg">BT</div>
+        <div>
+          <h1 class="text-white font-bold text-sm">BrightTrust</h1>
+          <p class="text-gray-400 text-xs">برايت ترست — Kernel</p>
+        </div>
+      </div>
+    </div>
+    <nav class="p-3 space-y-1">
+      <a href="index.html" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        لوحة التحكم
+      </a>
+      <a href="audit.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent text-gray-400">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        المراقبة
+      </a>
+      <a href="approvals.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent text-gray-400">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        الموافقات
+      </a>
+      <a href="compliance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent text-gray-400">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        الامتثال
+      </a>
+      <a href="evidence.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent text-gray-400">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/></svg>
+        ملفات الدليل
+      </a>
+      <a href="stats.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent text-gray-400">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        الإحصائيات
+      </a>
+    </nav>
+    <div class="absolute bottom-0 right-0 left-0 p-4 border-t border-dark-600">
+      <p class="text-xs text-gray-500 text-center">BrightTrust برايت ترست</p>
+      <p class="text-xs text-gray-600 text-center">Saudi AI Safety OS</p>
+    </div>
+  </aside>
+
+  <!-- Mobile sidebar toggle -->
+  <button id="sidebarToggle" class="fixed top-4 right-4 z-50 lg:hidden bg-dark-700 p-2 rounded-lg border border-dark-600">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+
+  <!-- Main content -->
+  <main class="lg:mr-64 min-h-screen p-4 md:p-6 lg:p-8">
+    <!-- Header -->
+    <header class="mb-8">
+      <h2 class="text-2xl font-bold text-white">لوحة تحكم BrightTrust Kernel</h2>
+      <p class="text-gray-400 mt-1 text-sm">نظام السلامة الذكي للذكاء الاصطناعي — المملكة العربية السعودية</p>
+    </header>
+
+    <!-- Stats Cards -->
+    <div id="statsCards" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+      <div class="bg-dark-800 rounded-xl p-4 border border-dark-600">
+        <p class="text-gray-400 text-xs mb-1">إجمالي التفاعلات</p>
+        <p id="statTotal" class="text-2xl font-bold text-white">—</p>
+      </div>
+      <div class="bg-dark-800 rounded-xl p-4 border border-dark-600">
+        <p class="text-gray-400 text-xs mb-1">محظورة</p>
+        <p id="statBlocked" class="text-2xl font-bold text-red-400">—</p>
+      </div>
+      <div class="bg-dark-800 rounded-xl p-4 border border-dark-600">
+        <p class="text-gray-400 text-xs mb-1">معلقة</p>
+        <p id="statPending" class="text-2xl font-bold text-yellow-400">—</p>
+      </div>
+      <div class="bg-dark-800 rounded-xl p-4 border border-dark-600">
+        <p class="text-gray-400 text-xs mb-1">معتمدة</p>
+        <p id="statApproved" class="text-2xl font-bold text-accent">—</p>
+      </div>
+      <div class="bg-dark-800 rounded-xl p-4 border border-dark-600">
+        <p class="text-gray-400 text-xs mb-1">بيانات شخصية مكتشفة</p>
+        <p id="statPII" class="text-2xl font-bold text-orange-400">—</p>
+      </div>
+      <div class="bg-dark-800 rounded-xl p-4 border border-dark-600">
+        <p class="text-gray-400 text-xs mb-1">متوسط درجة المخاطر</p>
+        <p id="statRisk" class="text-2xl font-bold text-blue-400">—</p>
+      </div>
+    </div>
+
+    <!-- Chain Integrity + Recent Interactions -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Recent Interactions Table -->
+      <div class="lg:col-span-2 bg-dark-800 rounded-xl border border-dark-600 overflow-hidden">
+        <div class="px-5 py-4 border-b border-dark-600 flex items-center justify-between">
+          <h3 class="text-white font-semibold">آخر التفاعلات</h3>
+          <a href="audit.html" class="text-accent text-xs hover:underline">عرض الكل</a>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="text-gray-400 text-xs border-b border-dark-600">
+                <th class="px-5 py-3 text-right">المعرف</th>
+                <th class="px-5 py-3 text-right">الوقت</th>
+                <th class="px-5 py-3 text-right">الحالة</th>
+                <th class="px-5 py-3 text-right">نقاط المخاطر</th>
+                <th class="px-5 py-3 text-right">حزمة الامتثال</th>
+              </tr>
+            </thead>
+            <tbody id="auditTableBody">
+              <tr><td colspan="5" class="px-5 py-8 text-center text-gray-500">جارٍ التحميل...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Chain Integrity -->
+      <div class="bg-dark-800 rounded-xl border border-dark-600 p-5">
+        <h3 class="text-white font-semibold mb-4">سلامة السلسلة</h3>
+        <div id="chainStatus" class="flex flex-col items-center justify-center py-6">
+          <div class="w-16 h-16 rounded-full bg-dark-700 flex items-center justify-center mb-4">
+            <div id="chainDot" class="w-8 h-8 rounded-full bg-gray-600 pulse-dot"></div>
+          </div>
+          <p id="chainLabel" class="text-gray-400 text-sm">جارٍ التحقق...</p>
+          <p id="chainDetail" class="text-gray-500 text-xs mt-1"></p>
+        </div>
+        <div class="mt-4 space-y-3">
+          <div class="flex justify-between text-xs">
+            <span class="text-gray-400">آخر تدقيق</span>
+            <span id="chainLastAudit" class="text-gray-300">—</span>
+          </div>
+          <div class="flex justify-between text-xs">
+            <span class="text-gray-400">كتل مسجلة</span>
+            <span id="chainBlocks" class="text-gray-300">—</span>
+          </div>
+          <div class="flex justify-between text-xs">
+            <span class="text-gray-400">التجزئة الأخيرة</span>
+            <span id="chainHash" class="text-gray-300 font-mono text-[10px] max-w-[140px] truncate">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Widget -->
+    <div class="bg-dark-800 rounded-xl border border-dark-600 overflow-hidden">
+      <div class="px-5 py-4 border-b border-dark-600">
+        <h3 class="text-white font-semibold">اختبار الامتثال السريع</h3>
+        <p class="text-gray-500 text-xs mt-1">أرسل رسالة لاختبار حزمة الامتثال المحددة</p>
+      </div>
+      <div id="chatMessages" class="px-5 py-4 max-h-72 overflow-y-auto space-y-3">
+        <div class="text-center text-gray-500 text-xs py-4">ابدأ محادثة لاختبار Kernel</div>
+      </div>
+      <div class="px-5 py-4 border-t border-dark-600">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <select id="compliancePack" class="bg-dark-700 border border-dark-600 rounded-lg px-4 py-2.5 text-sm text-gray-300 focus:outline-none focus:border-accent sm:w-48 shrink-0">
+            <option value="general">عام — General</option>
+            <option value="pdpl">نظام حماية البيانات — PDPL</option>
+            <option value="nca_ecc">الهيئة الوطنية — NCA ECC</option>
+            <option value="sfda">هيئة الغذاء — SFDA</option>
+            <option value="procurement">المشتريات — Procurement</option>
+            <option value="healthcare">الصحة — Healthcare</option>
+          </select>
+          <input id="chatInput" type="text" placeholder="اكتب رسالتك هنا..." class="flex-1 bg-dark-700 border border-dark-600 rounded-lg px-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-accent" />
+          <button id="chatSend" class="bg-accent hover:bg-accent-dark text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors shrink-0 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            إرسال
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- WhatsApp Floating Button -->
+  <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 left-6 z-50 w-14 h-14 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center shadow-lg transition-colors" aria-label="تواصل عبر واتساب">
+    <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+    // Sidebar toggle (mobile)
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('sidebarToggle');
+    let sidebarOpen = false;
+    toggle.addEventListener('click', () => {
+      sidebarOpen = !sidebarOpen;
+      sidebar.style.transform = sidebarOpen ? 'translateX(0)' : 'translateX(100%)';
+    });
+    // Close sidebar by default on mobile
+    if (window.innerWidth < 1024) sidebar.style.transform = 'translateX(100%)';
+
+    // Format number with Arabic locale
+    function fmtNum(n) {
+      if (n === null || n === undefined) return '—';
+      return Number(n).toLocaleString('ar-SA');
+    }
+
+    // Fetch stats
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/kernel/stats');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        document.getElementById('statTotal').textContent = fmtNum(data.totalInteractions ?? data.total ?? 0);
+        document.getElementById('statBlocked').textContent = fmtNum(data.blocked ?? 0);
+        document.getElementById('statPending').textContent = fmtNum(data.pending ?? 0);
+        document.getElementById('statApproved').textContent = fmtNum(data.approved ?? 0);
+        document.getElementById('statPII').textContent = fmtNum(data.piiDetected ?? data.pii ?? 0);
+        document.getElementById('statRisk').textContent = fmtNum(data.avgRiskScore ?? data.avgRisk ?? 0);
+      } catch {
+        ['statTotal','statBlocked','statPending','statApproved','statPII','statRisk'].forEach(id => {
+          document.getElementById(id).textContent = 'خطأ';
+          document.getElementById(id).classList.add('text-red-400');
+        });
+      }
+    }
+
+    // Fetch audit
+    async function loadAudit() {
+      const tbody = document.getElementById('auditTableBody');
+      try {
+        const res = await fetch('/api/kernel/audit?limit=10');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const items = Array.isArray(data) ? data : (data.items ?? data.records ?? []);
+        if (items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="px-5 py-8 text-center text-gray-500">لا توجد تفاعلات بعد</td></tr>';
+          return;
+        }
+        tbody.innerHTML = items.map(r => {
+          const statusColors = {
+            approved: 'text-green-400', blocked: 'text-red-400', pending: 'text-yellow-400',
+            flagged: 'text-orange-400', allowed: 'text-green-400'
+          };
+          const statusLabels = {
+            approved: 'معتمد', blocked: 'محظور', pending: 'معلق',
+            flagged: 'مُعلّم', allowed: 'مسموح'
+          };
+          const st = r.status ?? r.decision ?? 'unknown';
+          const color = statusColors[st] ?? 'text-gray-400';
+          const label = statusLabels[st] ?? st;
+          return `<tr class="border-b border-dark-600 hover:bg-dark-700 transition-colors">
+            <td class="px-5 py-3 font-mono text-xs text-gray-400">${r.id ?? r._id ?? '—'}</td>
+            <td class="px-5 py-3 text-xs text-gray-300">${r.timestamp ? new Date(r.timestamp).toLocaleString('ar-SA') : (r.createdAt ? new Date(r.createdAt).toLocaleString('ar-SA') : '—')}</td>
+            <td class="px-5 py-3 text-xs ${color} font-semibold">${label}</td>
+            <td class="px-5 py-3 text-xs text-gray-300">${r.riskScore ?? r.risk ?? '—'}</td>
+            <td class="px-5 py-3 text-xs text-gray-400">${r.compliancePack ?? r.pack ?? '—'}</td>
+          </tr>`;
+        }).join('');
+      } catch {
+        tbody.innerHTML = '<tr><td colspan="5" class="px-5 py-8 text-center text-red-400 text-sm">تعذر تحميل البيانات. يرجى المحاولة لاحقاً.</td></tr>';
+      }
+    }
+
+    // Chain integrity
+    async function loadChain() {
+      try {
+        const res = await fetch('/api/kernel/stats');
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const chain = data.chain ?? data.chainIntegrity ?? {};
+        const valid = chain.valid ?? chain.integrity ?? true;
+        const dot = document.getElementById('chainDot');
+        const lbl = document.getElementById('chainLabel');
+        if (valid) {
+          dot.className = 'w-8 h-8 rounded-full bg-green-500 pulse-dot';
+          lbl.textContent = 'السلسلة سليمة';
+          lbl.className = 'text-green-400 text-sm';
+        } else {
+          dot.className = 'w-8 h-8 rounded-full bg-red-500 pulse-dot';
+          lbl.textContent = 'تنبيه: خلل في السلسلة';
+          lbl.className = 'text-red-400 text-sm';
+        }
+        document.getElementById('chainLastAudit').textContent = chain.lastAudit ? new Date(chain.lastAudit).toLocaleString('ar-SA') : '—';
+        document.getElementById('chainBlocks').textContent = fmtNum(chain.blocks ?? chain.blockCount ?? 0);
+        document.getElementById('chainHash').textContent = chain.lastHash ?? '—';
+      } catch {
+        document.getElementById('chainDot').className = 'w-8 h-8 rounded-full bg-gray-600';
+        document.getElementById('chainLabel').textContent = 'تعذر التحقق';
+        document.getElementById('chainLabel').className = 'text-red-400 text-sm';
+      }
+    }
+
+    // Chat widget
+    const chatInput = document.getElementById('chatInput');
+    const chatSend = document.getElementById('chatSend');
+    const chatMessages = document.getElementById('chatMessages');
+    const compliancePack = document.getElementById('compliancePack');
+
+    chatInput.addEventListener('input', () => {
+      chatSend.disabled = !chatInput.value.trim();
+    });
+
+    chatSend.addEventListener('click', sendChat);
+    chatInput.addEventListener('keydown', e => { if (e.key === 'Enter' && chatInput.value.trim()) sendChat(); });
+
+    async function sendChat() {
+      const msg = chatInput.value.trim();
+      if (!msg) return;
+      const pack = compliancePack.value;
+
+      // Add user message
+      chatMessages.innerHTML += `<div class="flex justify-start"><div class="bg-dark-700 rounded-lg px-4 py-2 max-w-[80%] text-sm text-gray-200">${escHtml(msg)}</div></div>`;
+      chatInput.value = '';
+      chatSend.disabled = true;
+
+      // Add loading indicator
+      const loadingId = 'loading-' + Date.now();
+      chatMessages.innerHTML += `<div id="${loadingId}" class="flex justify-end"><div class="bg-accent/10 rounded-lg px-4 py-2 text-sm text-gray-400">جارٍ التحليل...</div></div>`;
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const res = await fetch('/api/kernel/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, compliancePack: pack })
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        const reply = data.reply ?? data.message ?? data.response ?? 'لا يوجد رد';
+        const el = document.getElementById(loadingId);
+        if (el) {
+          el.innerHTML = `<div class="bg-accent/10 rounded-lg px-4 py-2 max-w-[80%] text-sm text-gray-200">${escHtml(reply)}</div>`;
+        }
+      } catch {
+        const el = document.getElementById(loadingId);
+        if (el) {
+          el.innerHTML = `<div class="bg-red-500/10 rounded-lg px-4 py-2 text-sm text-red-400">حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.</div>`;
+        }
+      }
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function escHtml(s) {
+      const d = document.createElement('div');
+      d.textContent = s;
+      return d.innerHTML;
+    }
+
+    // Init
+    loadStats();
+    loadAudit();
+    loadChain();
+  </script>
+</body>
+</html>

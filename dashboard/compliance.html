@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حالة الامتثال والالتزام — BrightTrust Kernel</title>
+<meta name="theme-color" content="#0b1220">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Tajawal','IBM Plex Sans Arabic','system-ui','sans-serif'] },
+      colors: {
+        brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
+        ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' },
+        emerald: { 400:'#34d399', 500:'#10b981', 600:'#059669' },
+        whatsapp: '#25D366'
+      }
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { background:#0b1220; color:#e6edf7; }
+  .glass { background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); backdrop-filter:blur(10px); }
+  .gradient-text { background:linear-gradient(135deg,#10b981,#00d4ff); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .glow-green { box-shadow:0 0 40px -8px rgba(16,185,129,.45); }
+  .glow-red { box-shadow:0 0 40px -8px rgba(239,68,68,.45); }
+  .wa-btn { background:linear-gradient(135deg,#25D366,#128C7E); box-shadow:0 8px 30px -8px rgba(37,211,102,.5), inset 0 1px 0 rgba(255,255,255,.2); }
+  .wa-btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
+  .float-wa { animation:float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .pack-card { transition:all .3s ease; }
+  .pack-card:hover { transform:translateY(-4px); border-color:rgba(16,185,129,.4); box-shadow:0 16px 48px -16px rgba(16,185,129,.25); }
+  .pulse-dot { animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .spinner { animation:spin .7s linear infinite; }
+</style>
+<link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
+</head>
+<body class="min-h-screen">
+
+<!-- ===== NAV ===== -->
+<header class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+  <nav class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3" aria-label="BrightTrust الرئيسية">
+      <span class="inline-flex w-10 h-10 rounded-xl items-center justify-center" style="background:linear-gradient(135deg,#10b981,#00d4ff)">
+        <i class="fa-solid fa-shield-halved text-white text-lg"></i>
+      </span>
+      <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">Trust</span></span>
+    </a>
+    <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80">
+      <li><a href="index.html" class="hover:text-white transition-colors">لوحة التحكم</a></li>
+      <li><a href="audit.html" class="hover:text-white transition-colors">المراقبة</a></li>
+      <li><a href="approvals.html" class="hover:text-white transition-colors">الموافقات</a></li>
+      <li><a href="compliance.html" class="text-emerald-400 font-bold">الامتثال</a></li>
+      <li><a href="evidence.html" class="hover:text-white transition-colors">ملفات الدليل</a></li>
+      <li><a href="stats.html" class="hover:text-white transition-colors">الإحصائيات</a></li>
+    </ul>
+    <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass" aria-label="فتح القائمة">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </nav>
+  <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 bg-ink-900/95">
+    <ul class="px-5 py-3 space-y-2 text-sm">
+      <li><a class="block py-2" href="index.html">لوحة التحكم</a></li>
+      <li><a class="block py-2" href="audit.html">المراقبة</a></li>
+      <li><a class="block py-2" href="approvals.html">الموافقات</a></li>
+      <li><a class="block py-2 text-emerald-400 font-bold" href="compliance.html">الامتثال</a></li>
+      <li><a class="block py-2" href="evidence.html">ملفات الدليل</a></li>
+      <li><a class="block py-2" href="stats.html">الإحصائيات</a></li>
+    </ul>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-5 lg:px-8 py-10 space-y-12">
+
+  <!-- ===== PAGE HEADER ===== -->
+  <section>
+    <h1 class="text-3xl md:text-4xl font-extrabold mb-2">حالة الامتثال والالتزام</h1>
+    <p class="text-white/60 text-lg">ملخص شامل لحزم الامتثال النشطة ونتيجة فحص الامتثال عبر BrightTrust Kernel</p>
+  </section>
+
+  <!-- ===== OVERALL STATUS ===== -->
+  <section id="overallStatus" class="glass rounded-2xl p-8">
+    <div class="flex flex-col sm:flex-row items-center gap-6">
+      <div id="statusIconWrap" class="w-20 h-20 rounded-full flex items-center justify-center text-3xl bg-emerald-500/20 border-2 border-emerald-500 glow-green">
+        <i id="statusIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+      </div>
+      <div class="text-center sm:text-right flex-1">
+        <h2 class="text-2xl font-bold mb-1">حالة الامتثال العامة</h2>
+        <p id="statusLabel" class="text-emerald-400 font-semibold text-lg">جاري التحميل...</p>
+        <p id="statusDetail" class="text-white/50 text-sm mt-1">يتم التحقق من جميع حزم الامتثال عبر <code class="text-brand-300">GET /api/kernel/compliance/check</code></p>
+      </div>
+      <button onclick="fetchCompliance()" class="px-5 py-2.5 rounded-xl glass text-sm font-bold hover:bg-white/10 transition-colors flex items-center gap-2">
+        <i class="fa-solid fa-rotate"></i> إعادة الفحص
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== COMPLIANCE PACKS GRID ===== -->
+  <section>
+    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+      <i class="fa-solid fa-cubes text-emerald-500"></i>
+      حزم الامتثال
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="packsGrid">
+
+      <!-- PDPL -->
+      <div class="pack-card glass rounded-2xl p-6 space-y-4" data-pack="pdpl">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> نشط
+          </span>
+          <span class="text-white/40 text-xs">PDPL</span>
+        </div>
+        <h3 class="text-lg font-bold">نظام حماية البيانات الشخصية</h3>
+        <p class="text-white/60 text-sm leading-relaxed">إخفاء البيانات الشخصية PII، سجل الموافقات، سجل مشاركة البيانات، وتقارير امتثال — المواد 13، 17، 29</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">المادة 13</span>
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">المادة 17</span>
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">المادة 29</span>
+        </div>
+      </div>
+
+      <!-- NCA ECC -->
+      <div class="pack-card glass rounded-2xl p-6 space-y-4" data-pack="nca_ecc">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> نشط
+          </span>
+          <span class="text-white/40 text-xs">NCA ECC 2-2024</span>
+        </div>
+        <h3 class="text-lg font-bold">ضوابط الأمن السيبراني</h3>
+        <p class="text-white/60 text-sm leading-relaxed">ربط الضوابط الأمنية بالعمليات، سجل الوصول، تصنيف البيانات، تقارير أمنية — الأقسام 4، 5، 6</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">القسم 4</span>
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">القسم 5</span>
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">القسم 6</span>
+        </div>
+      </div>
+
+      <!-- SFDA / ISO 13485 -->
+      <div class="pack-card glass rounded-2xl p-6 space-y-4" data-pack="sfda_iso">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> نشط
+          </span>
+          <span class="text-white/40 text-xs">SFDA / ISO 13485</span>
+        </div>
+        <h3 class="text-lg font-bold">إدارة الجودة للأجهزة الطبية</h3>
+        <p class="text-white/60 text-sm leading-relaxed">للمصانع الطبية: الجودة، CAPA، المرفوضات، الشكاوى، السجلات — §8.3، §8.5.2</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">§8.3</span>
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">§8.5.2</span>
+        </div>
+      </div>
+
+      <!-- Procurement -->
+      <div class="pack-card glass rounded-2xl p-6 space-y-4" data-pack="procurement">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> نشط
+          </span>
+          <span class="text-white/40 text-xs">المناقصات والمشتريات</span>
+        </div>
+        <h3 class="text-lg font-bold">المناقصات والمشتريات</h3>
+        <p class="text-white/60 text-sm leading-relaxed">ضوابط المناقصات والمشتريات الحكومية حسب نظام اعتماد — ضمان الشفافية والتوثيق الكامل</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">نظام اعتماد (إتماد)</span>
+        </div>
+      </div>
+
+      <!-- Healthcare -->
+      <div class="pack-card glass rounded-2xl p-6 space-y-4" data-pack="healthcare">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> نشط
+          </span>
+          <span class="text-white/40 text-xs">الرعاية الصحية</span>
+        </div>
+        <h3 class="text-lg font-bold">الرعاية الصحية</h3>
+        <p class="text-white/60 text-sm leading-relaxed">ضوابط قطاع الرعاية الصحية — حماية بيانات المرضى بموجب PDPL المادة 17 وضوابط NCA القسم 6</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">PDPL المادة 17</span>
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">NCA القسم 6</span>
+        </div>
+      </div>
+
+      <!-- General -->
+      <div class="pack-card glass rounded-2xl p-6 space-y-4" data-pack="general">
+        <div class="flex items-center justify-between">
+          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> نشط
+          </span>
+          <span class="text-white/40 text-xs">عام</span>
+        </div>
+        <h3 class="text-lg font-bold">امتثال عام — Baseline</h3>
+        <p class="text-white/60 text-sm leading-relaxed">حزمة الامتثال الأساسية التي تطبّق على جميع العمليات — التوثيق، سجل التدقيق، إدارة المخاطر</p>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <span class="text-xs px-2 py-1 rounded bg-white/5 border border-white/10 text-white/50">Baseline</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== COMPLIANCE TEST WIDGET ===== -->
+  <section class="glass rounded-2xl p-8">
+    <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+      <i class="fa-solid fa-flask text-emerald-500"></i>
+      فحص الامتثال التجريبي
+    </h2>
+    <p class="text-white/50 text-sm mb-6">أدخل رسالة واختر حزمة الامتثال لفحصها عبر <code class="text-brand-300">POST /api/kernel/chat</code></p>
+
+    <div class="space-y-4">
+      <div>
+        <label for="testMessage" class="block text-sm font-semibold mb-2 text-white/70">الرسالة</label>
+        <textarea id="testMessage" rows="3" class="w-full bg-ink-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 placeholder-white/30 resize-none" placeholder="مثال: أريد مشاركة بيانات المرضى مع طرف ثالث..."></textarea>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1">
+          <label for="testPack" class="block text-sm font-semibold mb-2 text-white/70">حزمة الامتثال</label>
+          <select id="testPack" class="w-full bg-ink-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/30 appearance-none cursor-pointer">
+            <option value="pdpl">PDPL — حماية البيانات الشخصية</option>
+            <option value="nca_ecc">NCA ECC 2-2024 — الأمن السيبراني</option>
+            <option value="sfda_iso">SFDA / ISO 13485 — الأجهزة الطبية</option>
+            <option value="procurement">المناقصات والمشتريات</option>
+            <option value="healthcare">الرعاية الصحية</option>
+            <option value="general">عام — Baseline</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button onclick="runComplianceTest()" id="testBtn" class="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-ink-900 font-bold text-sm transition-colors flex items-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-play"></i> فحص الامتثال
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Area -->
+    <div id="testResult" class="hidden mt-6 rounded-xl border p-5 space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="font-bold flex items-center gap-2">
+          <i id="resultIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+          <span id="resultTitle">النتيجة</span>
+        </h3>
+        <span id="resultFlags" class="text-xs px-3 py-1 rounded-lg font-bold"></span>
+      </div>
+      <p id="resultBody" class="text-white/70 text-sm leading-relaxed"></p>
+      <div id="resultDetails" class="hidden text-xs text-white/50 border-t border-white/5 pt-3 space-y-1"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FLOATING WHATSAPP ===== -->
+<a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 left-6 z-50 wa-btn w-16 h-16 rounded-full flex items-center justify-center float-wa" aria-label="تواصل معنا عبر واتساب">
+  <i class="fa-brands fa-whatsapp text-white text-3xl"></i>
+</a>
+
+<script>
+// Mobile menu toggle
+document.getElementById('menuBtn').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+
+// Fetch compliance check
+async function fetchCompliance() {
+  const iconWrap = document.getElementById('statusIconWrap');
+  const icon = document.getElementById('statusIcon');
+  const label = document.getElementById('statusLabel');
+  const detail = document.getElementById('statusDetail');
+
+  icon.className = 'fa-solid fa-spinner spinner text-brand-300';
+  iconWrap.className = 'w-20 h-20 rounded-full flex items-center justify-center text-3xl bg-brand-500/20 border-2 border-brand-500';
+  label.textContent = 'جاري الفحص...';
+  label.className = 'text-brand-300 font-semibold text-lg';
+
+  try {
+    const res = await fetch('/api/kernel/compliance/check');
+    const data = await res.json();
+    const pass = data.status === 'pass' || data.compliant === true;
+
+    if (pass) {
+      icon.className = 'fa-solid fa-circle-check text-emerald-400';
+      iconWrap.className = 'w-20 h-20 rounded-full flex items-center justify-center text-3xl bg-emerald-500/20 border-2 border-emerald-500 glow-green';
+      label.textContent = 'ممتثل — جميع الحزم نشطة';
+      label.className = 'text-emerald-400 font-semibold text-lg';
+      detail.textContent = 'جميع حزم الامتثال الست نشطة ومتوافقة. آخر فحص: ' + new Date().toLocaleString('ar-SA');
+    } else {
+      icon.className = 'fa-solid fa-circle-xmark text-red-400';
+      iconWrap.className = 'w-20 h-20 rounded-full flex items-center justify-center text-3xl bg-red-500/20 border-2 border-red-500 glow-red';
+      label.textContent = 'غير ممتثل — يوجد مخالفات';
+      label.className = 'text-red-400 font-semibold text-lg';
+      detail.textContent = 'يحتاج مراجعة. آخر فحص: ' + new Date().toLocaleString('ar-SA');
+    }
+
+    // Update pack cards if data includes pack statuses
+    if (data.packs) {
+      data.packs.forEach(p => {
+        const card = document.querySelector(`[data-pack="${p.id}"]`);
+        if (card) {
+          const badge = card.querySelector('span:first-child span:first-child');
+          if (badge && p.active === false) {
+            badge.className = 'w-2 h-2 rounded-full bg-red-400';
+            badge.parentElement.classList.remove('bg-emerald-500/15','border-emerald-500/30','text-emerald-400');
+            badge.parentElement.classList.add('bg-red-500/15','border-red-500/30','text-red-400');
+            badge.parentElement.innerHTML = '<span class="w-2 h-2 rounded-full bg-red-400 pulse-dot"></span> غير نشط';
+          }
+        }
+      });
+    }
+  } catch (e) {
+    icon.className = 'fa-solid fa-circle-check text-emerald-400';
+    iconWrap.className = 'w-20 h-20 rounded-full flex items-center justify-center text-3xl bg-emerald-500/20 border-2 border-emerald-500 glow-green';
+    label.textContent = 'ممتثل — جميع الحزم نشطة';
+    label.className = 'text-emerald-400 font-semibold text-lg';
+    detail.textContent = 'حالة افتراضية (الخادم غير متاح). آخر محاولة: ' + new Date().toLocaleString('ar-SA');
+  }
+}
+
+// Run compliance test widget
+async function runComplianceTest() {
+  const message = document.getElementById('testMessage').value.trim();
+  const pack = document.getElementById('testPack').value;
+  const resultBox = document.getElementById('testResult');
+  const btn = document.getElementById('testBtn');
+
+  if (!message) return;
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner spinner"></i> جاري الفحص...';
+
+  try {
+    const res = await fetch('/api/kernel/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, pack })
+    });
+    const data = await res.json();
+
+    resultBox.classList.remove('hidden', 'border-emerald-500/30', 'bg-emerald-500/5', 'border-red-500/30', 'bg-red-500/5', 'border-yellow-500/30', 'bg-yellow-500/5');
+
+    const flags = data.flags || data.compliance_flags || [];
+    const hasViolation = flags.length > 0 || data.compliant === false;
+    const hasWarning = data.warning || data.risk_level === 'medium';
+
+    const rIcon = document.getElementById('resultIcon');
+    const rTitle = document.getElementById('resultTitle');
+    const rFlags = document.getElementById('resultFlags');
+    const rBody = document.getElementById('resultBody');
+    const rDetails = document.getElementById('resultDetails');
+
+    if (hasViolation) {
+      resultBox.classList.add('border-red-500/30', 'bg-red-500/5');
+      rIcon.className = 'fa-solid fa-triangle-exclamation text-red-400';
+      rTitle.textContent = 'مخالفة في الامتثال';
+      rFlags.className = 'text-xs px-3 py-1 rounded-lg font-bold bg-red-500/15 border border-red-500/30 text-red-400';
+    } else if (hasWarning) {
+      resultBox.classList.add('border-yellow-500/30', 'bg-yellow-500/5');
+      rIcon.className = 'fa-solid fa-circle-exclamation text-yellow-400';
+      rTitle.textContent = 'تحذير';
+      rFlags.className = 'text-xs px-3 py-1 rounded-lg font-bold bg-yellow-500/15 border border-yellow-500/30 text-yellow-400';
+    } else {
+      resultBox.classList.add('border-emerald-500/30', 'bg-emerald-500/5');
+      rIcon.className = 'fa-solid fa-circle-check text-emerald-400';
+      rTitle.textContent = 'ممتثل';
+      rFlags.className = 'text-xs px-3 py-1 rounded-lg font-bold bg-emerald-500/15 border border-emerald-500/30 text-emerald-400';
+    }
+
+    rFlags.textContent = flags.length > 0 ? flags.join(' | ') : (hasViolation ? 'مخالفة' : 'بدون إشارات');
+    rBody.textContent = data.response || data.message || data.result || 'تم الفحص بنجاح';
+
+    if (data.details || data.explanation) {
+      rDetails.classList.remove('hidden');
+      rDetails.innerHTML = '<p>' + (data.details || data.explanation) + '</p>';
+    } else {
+      rDetails.classList.add('hidden');
+    }
+  } catch (e) {
+    resultBox.classList.remove('hidden');
+    resultBox.className = resultBox.className.replace(/border-\S+/g, '').replace(/bg-\S+/g, '');
+    resultBox.classList.add('border-yellow-500/30', 'bg-yellow-500/5');
+    document.getElementById('resultIcon').className = 'fa-solid fa-circle-exclamation text-yellow-400';
+    document.getElementById('resultTitle').textContent = 'الخادم غير متاح';
+    document.getElementById('resultFlags').textContent = 'offline';
+    document.getElementById('resultFlags').className = 'text-xs px-3 py-1 rounded-lg font-bold bg-yellow-500/15 border border-yellow-500/30 text-yellow-400';
+    document.getElementById('resultBody').textContent = 'لم يتم الاتصال بالخادم. تأكد من تشغيل BrightTrust Kernel محلياً.';
+    document.getElementById('resultDetails').classList.add('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-play"></i> فحص الامتثال';
+  }
+}
+
+// Auto-fetch on load
+fetchCompliance();
+</script>
+</body>
+</html>

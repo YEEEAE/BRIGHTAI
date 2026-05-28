@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0b1220" />
+<title>قائمة الموافقات المعلقة | BrightTrust Kernel</title>
+<link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Tajawal','IBM Plex Sans Arabic','system-ui','sans-serif'] },
+        colors: {
+          brand: { 50:'#e6fbff',100:'#b3f0ff',300:'#5fdcff',500:'#00d4ff',600:'#00a8d4',700:'#0086ad' },
+          ink: { 900:'#0b1220',800:'#111a2e',700:'#1a2340' },
+          whatsapp: '#25D366'
+        },
+        boxShadow: { glow:'0 0 60px -10px rgba(0,212,255,.55)', waGlow:'0 0 40px -8px rgba(37,211,102,.5)' }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family:'Tajawal','IBM Plex Sans Arabic',system-ui,sans-serif; background:#0b1220; color:#e6edf7; }
+  .glass { background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01)); border:1px solid rgba(255,255,255,.08); backdrop-filter:blur(10px); }
+  .gradient-text { background:linear-gradient(135deg,#00d4ff 0%,#7c5cff 50%,#ff5ca7 100%); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .wa-btn { background:linear-gradient(135deg,#25D366,#128C7E); box-shadow:0 8px 30px -8px rgba(37,211,102,.5),inset 0 1px 0 rgba(255,255,255,.2); }
+  .wa-btn:hover { filter:brightness(1.1); transform:translateY(-1px); }
+  .float-wa { animation:float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .card-hover { transition:all .3s ease; }
+  .card-hover:hover { transform:translateY(-3px); border-color:rgba(16,185,129,.35); box-shadow:0 16px 48px -16px rgba(16,185,129,.2); }
+  .pulse-dot { animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .modal-overlay { background:rgba(0,0,0,.6); backdrop-filter:blur(4px); }
+  .risk-low { background:rgba(16,185,129,.15); border:1px solid rgba(16,185,129,.4); color:#6ee7b7; }
+  .risk-medium { background:rgba(234,179,8,.15); border:1px solid rgba(234,179,8,.4); color:#fde047; }
+  .risk-high { background:rgba(249,115,22,.15); border:1px solid rgba(249,115,22,.4); color:#fdba74; }
+  .risk-critical { background:rgba(239,68,68,.15); border:1px solid rgba(239,68,68,.4); color:#fca5a5; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ================= HEADER / NAV ================= -->
+<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+  <nav role="navigation" aria-label="القائمة الرئيسية" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
+    <a href="/index.html" class="flex items-center gap-3" aria-label="BrightTrust الرئيسية">
+      <span class="inline-flex w-10 h-10 rounded-xl items-center justify-center" style="background:linear-gradient(135deg,#00d4ff,#7c5cff)">
+        <i class="fa-solid fa-shield-halved text-white text-lg" aria-hidden="true"></i>
+      </span>
+      <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">Trust</span></span>
+      <span class="hidden md:inline text-xs text-white/50 border-r border-white/10 pr-3 mr-1">Saudi AI Safety OS</span>
+    </a>
+
+    <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80">
+      <li><a href="/index.html" class="hover:text-white transition-colors">لوحة التحكم</a></li>
+      <li><a href="/dashboard/audit.html" class="hover:text-white transition-colors">المراقبة</a></li>
+      <li><a href="/dashboard/approvals.html" class="text-emerald-400 font-bold transition-colors">الموافقات</a></li>
+      <li><a href="/dashboard/compliance.html" class="hover:text-white transition-colors">الامتثال</a></li>
+      <li><a href="/dashboard/evidence.html" class="hover:text-white transition-colors">ملفات الدليل</a></li>
+      <li><a href="/dashboard/stats.html" class="hover:text-white transition-colors">الإحصائيات</a></li>
+    </ul>
+
+    <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass" aria-label="فتح القائمة">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </nav>
+  <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 bg-ink-900/95">
+    <ul class="px-5 py-3 space-y-2 text-sm">
+      <li><a class="block py-2" href="/index.html">لوحة التحكم</a></li>
+      <li><a class="block py-2" href="/dashboard/audit.html">المراقبة</a></li>
+      <li><a class="block py-2 text-emerald-400 font-bold" href="/dashboard/approvals.html">الموافقات</a></li>
+      <li><a class="block py-2" href="/dashboard/compliance.html">الامتثال</a></li>
+      <li><a class="block py-2" href="/dashboard/evidence.html">ملفات الدليل</a></li>
+      <li><a class="block py-2" href="/dashboard/stats.html">الإحصائيات</a></li>
+    </ul>
+  </div>
+</header>
+
+<!-- ================= MAIN ================= -->
+<main id="main" role="main" class="max-w-7xl mx-auto px-5 lg:px-8 py-8">
+
+  <!-- Header -->
+  <div class="flex items-center gap-4 mb-8">
+    <span class="inline-flex w-12 h-12 rounded-2xl items-center justify-center" style="background:linear-gradient(135deg,#10b981,#059669)">
+      <i class="fa-solid fa-clipboard-check text-white text-xl" aria-hidden="true"></i>
+    </span>
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-black">قائمة الموافقات المعلقة</h1>
+      <p class="text-white/50 text-sm mt-1">الموافقات التي تنتظر مراجعتك واعتمادك</p>
+    </div>
+    <div class="mr-auto flex items-center gap-2">
+      <span class="pulse-dot w-2 h-2 rounded-full bg-emerald-500 inline-block"></span>
+      <span id="refreshTimer" class="text-xs text-white/40">تحديث تلقائي كل 30 ثانية</span>
+    </div>
+  </div>
+
+  <!-- Stats Bar -->
+  <div id="statsBar" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+    <div class="glass rounded-2xl p-4 text-center">
+      <div class="text-2xl font-black text-emerald-400" id="statTotal">-</div>
+      <div class="text-xs text-white/50 mt-1">معلقة</div>
+    </div>
+    <div class="glass rounded-2xl p-4 text-center">
+      <div class="text-2xl font-black text-red-400" id="statCritical">-</div>
+      <div class="text-xs text-white/50 mt-1">حرجة</div>
+    </div>
+    <div class="glass rounded-2xl p-4 text-center">
+      <div class="text-2xl font-black text-orange-400" id="statHigh">-</div>
+      <div class="text-xs text-white/50 mt-1">عالية</div>
+    </div>
+    <div class="glass rounded-2xl p-4 text-center">
+      <div class="text-2xl font-black text-yellow-400" id="statMedium">-</div>
+      <div class="text-xs text-white/50 mt-1">متوسطة</div>
+    </div>
+  </div>
+
+  <!-- Approvals List -->
+  <div id="approvalsList" class="space-y-4">
+    <!-- Cards injected here -->
+  </div>
+
+  <!-- Empty State -->
+  <div id="emptyState" class="hidden text-center py-20">
+    <div class="inline-flex w-20 h-20 rounded-full items-center justify-center bg-emerald-500/10 mb-6">
+      <i class="fa-solid fa-check-double text-emerald-400 text-3xl" aria-hidden="true"></i>
+    </div>
+    <h2 class="text-xl font-bold text-white/80">لا توجد موافقات معلقة</h2>
+    <p class="text-white/50 mt-2 text-sm">جميع الطلبات تمت مراجعتها. سيتم تحديث القائمة تلقائياً عند وجود طلبات جديدة.</p>
+  </div>
+
+  <!-- Loading State -->
+  <div id="loadingState" class="text-center py-20">
+    <div class="inline-flex w-16 h-16 rounded-full items-center justify-center mb-4">
+      <i class="fa-solid fa-spinner fa-spin text-emerald-400 text-2xl" aria-hidden="true"></i>
+    </div>
+    <p class="text-white/50 text-sm">جارٍ تحميل الموافقات المعلقة...</p>
+  </div>
+
+</main>
+
+<!-- ================= APPROVE MODAL ================= -->
+<div id="approveModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 modal-overlay">
+  <div class="bg-ink-800 border border-white/10 rounded-3xl w-full max-w-md p-6 shadow-2xl">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+        <i class="fa-solid fa-check text-emerald-400"></i>
+      </span>
+      <div>
+        <h3 class="font-bold text-lg">تأكيد الموافقة</h3>
+        <p class="text-xs text-white/50" id="approveModalId"></p>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm text-white/70 mb-2">تعليق الموافقة</label>
+      <textarea id="approveComment" rows="3" class="w-full bg-ink-900 border border-white/10 rounded-xl p-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-emerald-500/50 resize-none" placeholder="أضف تعليقاً (اختياري)..."></textarea>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="submitApprove()" class="flex-1 py-3 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-500 transition-colors text-sm">
+        <i class="fa-solid fa-check ml-1"></i> تأكيد الموافقة
+      </button>
+      <button onclick="closeApproveModal()" class="flex-1 py-3 rounded-xl font-bold text-white/70 glass hover:text-white transition-colors text-sm">
+        إلغاء
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= REJECT MODAL ================= -->
+<div id="rejectModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 modal-overlay">
+  <div class="bg-ink-800 border border-white/10 rounded-3xl w-full max-w-md p-6 shadow-2xl">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-red-400"></i>
+      </span>
+      <div>
+        <h3 class="font-bold text-lg">تأكيد الرفض</h3>
+        <p class="text-xs text-white/50" id="rejectModalId"></p>
+      </div>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm text-white/70 mb-2">سبب الرفض <span class="text-red-400">*</span></label>
+      <textarea id="rejectComment" rows="3" class="w-full bg-ink-900 border border-white/10 rounded-xl p-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-red-500/50 resize-none" placeholder="حدد سبب الرفض (مطلوب)..."></textarea>
+    </div>
+    <div class="flex items-center gap-3">
+      <button onclick="submitReject()" class="flex-1 py-3 rounded-xl font-bold text-white bg-red-600 hover:bg-red-500 transition-colors text-sm">
+        <i class="fa-solid fa-xmark ml-1"></i> تأكيد الرفض
+      </button>
+      <button onclick="closeRejectModal()" class="flex-1 py-3 rounded-xl font-bold text-white/70 glass hover:text-white transition-colors text-sm">
+        إلغاء
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= WHATSAPP FLOATING BUTTON ================= -->
+<a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" aria-label="تواصل معنا عبر واتساب"
+   class="fixed bottom-6 left-6 z-50 w-14 h-14 rounded-full wa-btn flex items-center justify-center float-wa">
+  <i class="fa-brands fa-whatsapp text-white text-2xl"></i>
+</a>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+(function(){
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function(){
+    mobileMenu.classList.toggle('hidden');
+  });
+
+  // State
+  let pendingItems = [];
+  let currentActionId = null;
+  let countdown = 30;
+  let countdownInterval = null;
+
+  // DOM refs
+  const approvalsList = document.getElementById('approvalsList');
+  const emptyState = document.getElementById('emptyState');
+  const loadingState = document.getElementById('loadingState');
+
+  // Risk helpers
+  function riskClass(level) {
+    const map = { low:'risk-low', medium:'risk-medium', high:'risk-high', critical:'risk-critical' };
+    return map[level] || 'risk-low';
+  }
+  function riskLabel(level) {
+    const map = { low:'منخفض', medium:'متوسط', high:'عالي', critical:'حرج' };
+    return map[level] || level;
+  }
+  function riskScoreColor(level) {
+    const map = { low:'text-emerald-400', medium:'text-yellow-400', high:'text-orange-400', critical:'text-red-400' };
+    return map[level] || 'text-white';
+  }
+
+  // Truncate text
+  function truncate(str, len) {
+    if (!str) return '';
+    return str.length > len ? str.substring(0, len) + '...' : str;
+  }
+
+  // Format time
+  function formatTime(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    const now = new Date();
+    const diffMs = now - d;
+    const diffMin = Math.floor(diffMs / 60000);
+    if (diffMin < 1) return 'الآن';
+    if (diffMin < 60) return 'منذ ' + diffMin + ' دقيقة';
+    const diffHr = Math.floor(diffMin / 60);
+    if (diffHr < 24) return 'منذ ' + diffHr + ' ساعة';
+    const diffDay = Math.floor(diffHr / 24);
+    return 'منذ ' + diffDay + ' يوم';
+  }
+
+  // Update stats
+  function updateStats(items) {
+    document.getElementById('statTotal').textContent = items.length;
+    document.getElementById('statCritical').textContent = items.filter(i => i.riskLevel === 'critical').length;
+    document.getElementById('statHigh').textContent = items.filter(i => i.riskLevel === 'high').length;
+    document.getElementById('statMedium').textContent = items.filter(i => i.riskLevel === 'medium').length;
+  }
+
+  // Render cards
+  function renderCards(items) {
+    pendingItems = items;
+    updateStats(items);
+
+    if (items.length === 0) {
+      approvalsList.innerHTML = '';
+      approvalsList.classList.add('hidden');
+      emptyState.classList.remove('hidden');
+      loadingState.classList.add('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    loadingState.classList.add('hidden');
+    approvalsList.classList.remove('hidden');
+
+    // Sort: critical first, then high, medium, low
+    const order = { critical:0, high:1, medium:2, low:3 };
+    items.sort((a,b) => (order[a.riskLevel] || 9) - (order[b.riskLevel] || 9));
+
+    approvalsList.innerHTML = items.map(function(item) {
+      return '<div class="glass rounded-2xl p-5 card-hover">' +
+        '<div class="flex flex-col sm:flex-row sm:items-start gap-4">' +
+          '<div class="flex-1 min-w-0">' +
+            '<div class="flex flex-wrap items-center gap-2 mb-3">' +
+              '<span class="text-xs font-mono text-white/40 bg-ink-900 px-2 py-0.5 rounded">' + (item.interactionId || item.id || '-') + '</span>' +
+              '<span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-bold ' + riskClass(item.riskLevel) + '">' +
+                riskLabel(item.riskLevel) + (item.riskScore !== undefined ? ' (' + item.riskScore + ')' : '') +
+              '</span>' +
+              '<span class="text-xs text-white/30"><i class="fa-solid fa-layer-group ml-1"></i>' + (item.compliancePack || '-') + '</span>' +
+            '</div>' +
+            '<h3 class="font-bold text-white mb-1"><i class="fa-solid fa-user text-emerald-400/60 ml-2 text-sm"></i>' + (item.userName || 'مستخدم غير معروف') + '</h3>' +
+            '<p class="text-sm text-white/60 leading-relaxed">' + truncate(item.requestMessage || item.message || '', 150) + '</p>' +
+            '<div class="mt-3 text-xs text-white/30"><i class="fa-regular fa-clock ml-1"></i>' + formatTime(item.createdAt || item.created) + '</div>' +
+          '</div>' +
+          '<div class="flex sm:flex-col gap-2 sm:gap-3 sm:min-w-[120px]">' +
+            '<button onclick="window._openApprove(\'' + item._id + '\')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-600 hover:bg-emerald-500 text-white transition-colors">' +
+              '<i class="fa-solid fa-check ml-1"></i> موافقة' +
+            '</button>' +
+            '<button onclick="window._openReject(\'' + item._id + '\')" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl text-sm font-bold bg-red-600/80 hover:bg-red-500 text-white transition-colors">' +
+              '<i class="fa-solid fa-xmark ml-1"></i> رفض' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  // Fetch pending approvals
+  async function fetchPending() {
+    try {
+      const resp = await fetch('/api/kernel/pending');
+      if (!resp.ok) throw new Error('API error ' + resp.status);
+      const data = await resp.json();
+      const items = Array.isArray(data) ? data : (data.items || data.pending || []);
+      items.forEach(function(item) {
+        if (!item._id && item.id) item._id = item.id;
+      });
+      renderCards(items);
+    } catch (err) {
+      console.error('Failed to fetch pending approvals:', err);
+      // Show empty state on error if no items loaded yet
+      if (pendingItems.length === 0) {
+        loadingState.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        emptyState.querySelector('h2').textContent = 'تعذر تحميل الموافقات';
+        emptyState.querySelector('p').textContent = 'تحقق من الاتصال بالخادم وحاول مرة أخرى.';
+      }
+    }
+  }
+
+  // Approve
+  window._openApprove = function(id) {
+    currentActionId = id;
+    document.getElementById('approveModalId').textContent = '#' + id;
+    document.getElementById('approveComment').value = '';
+    document.getElementById('approveModal').classList.remove('hidden');
+    document.getElementById('approveModal').classList.add('flex');
+  };
+  window.closeApproveModal = function() {
+    document.getElementById('approveModal').classList.add('hidden');
+    document.getElementById('approveModal').classList.remove('flex');
+    currentActionId = null;
+  };
+  window.submitApprove = async function() {
+    if (!currentActionId) return;
+    const comment = document.getElementById('approveComment').value.trim();
+    const approvedBy = 'currentUser'; // Replace with actual user session
+    try {
+      const resp = await fetch('/api/kernel/approve/' + currentActionId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ approvedBy: approvedBy, comment: comment })
+      });
+      if (!resp.ok) throw new Error('Approve failed');
+      closeApproveModal();
+      await fetchPending();
+    } catch (err) {
+      console.error('Approve error:', err);
+      alert('حدث خطأ أثناء الموافقة. حاول مرة أخرى.');
+    }
+  };
+
+  // Reject
+  window._openReject = function(id) {
+    currentActionId = id;
+    document.getElementById('rejectModalId').textContent = '#' + id;
+    document.getElementById('rejectComment').value = '';
+    document.getElementById('rejectModal').classList.remove('hidden');
+    document.getElementById('rejectModal').classList.add('flex');
+  };
+  window.closeRejectModal = function() {
+    document.getElementById('rejectModal').classList.add('hidden');
+    document.getElementById('rejectModal').classList.remove('flex');
+    currentActionId = null;
+  };
+  window.submitReject = async function() {
+    if (!currentActionId) return;
+    const comment = document.getElementById('rejectComment').value.trim();
+    if (!comment) {
+      document.getElementById('rejectComment').classList.add('border-red-500/50');
+      document.getElementById('rejectComment').focus();
+      return;
+    }
+    document.getElementById('rejectComment').classList.remove('border-red-500/50');
+    const rejectedBy = 'currentUser'; // Replace with actual user session
+    try {
+      const resp = await fetch('/api/kernel/reject/' + currentActionId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rejectedBy: rejectedBy, comment: comment })
+      });
+      if (!resp.ok) throw new Error('Reject failed');
+      closeRejectModal();
+      await fetchPending();
+    } catch (err) {
+      console.error('Reject error:', err);
+      alert('حدث خطأ أثناء الرفض. حاول مرة أخرى.');
+    }
+  };
+
+  // Close modals on overlay click
+  document.getElementById('approveModal').addEventListener('click', function(e) {
+    if (e.target === this) closeApproveModal();
+  });
+  document.getElementById('rejectModal').addEventListener('click', function(e) {
+    if (e.target === this) closeRejectModal();
+  });
+
+  // Auto-refresh countdown
+  function startCountdown() {
+    countdown = 30;
+    const timerEl = document.getElementById('refreshTimer');
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = setInterval(function() {
+      countdown--;
+      timerEl.textContent = 'تحديث بعد ' + countdown + ' ثانية';
+      if (countdown <= 0) {
+        fetchPending();
+        countdown = 30;
+      }
+    }, 1000);
+  }
+
+  // Init
+  fetchPending();
+  startCountdown();
+})();
+</script>
+
+</body>
+</html>

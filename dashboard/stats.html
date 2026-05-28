@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0b1220" />
+<title>الإحصائيات والتحليلات | BrightTrust Kernel</title>
+<meta name="description" content="إحصائيات وتحليلات نواة BrightTrust – لوحة متابعة الأداء والامتثال وحالات الطلب" />
+<link rel="icon" href="/assets/images/logo-new.PNG" type="image/png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
+<script src="https://cdn.tailwindcss.com" defer></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Tajawal','IBM Plex Sans Arabic','system-ui','sans-serif'] },
+        colors: {
+          brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
+          ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' },
+          whatsapp: '#25D366'
+        },
+        boxShadow: { glow:'0 0 60px -10px rgba(0,212,255,.55)', waGlow:'0 0 40px -8px rgba(37,211,102,.5)' }
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Tajawal','IBM Plex Sans Arabic',system-ui,sans-serif;
+    background: #0b1220;
+    color: #e6edf7;
+    overflow-x: hidden;
+  }
+  .glass {
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+  }
+  .stat-card { transition: all .3s ease; }
+  .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px -12px rgba(16,185,129,.3); }
+  .nav-link { transition: all .2s ease; }
+  .nav-link:hover, .nav-link.active { color: #10b981; border-color: #10b981; }
+  .bar-track { background: rgba(255,255,255,.06); border-radius: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width .8s ease; }
+  .pulse-dot { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
+  .float-wa { animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .wa-btn {
+    background: linear-gradient(135deg,#25D366,#128C7E);
+    box-shadow: 0 8px 30px -8px rgba(37,211,102,.5), inset 0 1px 0 rgba(255,255,255,.2);
+  }
+  .wa-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  @keyframes fadeInUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .fade-in { animation: fadeInUp .5s ease forwards; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ===== NAV ===== -->
+<nav class="sticky top-0 z-50 border-b border-white/10" style="background:rgba(11,18,32,.92);backdrop-filter:blur(12px);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <div class="flex items-center gap-3">
+        <a href="/dashboard/" class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-emerald-500"></i>
+          <span>BrightTrust</span>
+        </a>
+      </div>
+      <div class="hidden md:flex items-center gap-1 text-sm overflow-x-auto">
+        <a href="index.html" class="nav-link px-3 py-2 rounded-lg border border-transparent text-gray-400 hover:text-emerald-400">لوحة التحكم</a>
+        <a href="audit.html" class="nav-link px-3 py-2 rounded-lg border border-transparent text-gray-400 hover:text-emerald-400">المراقبة</a>
+        <a href="approvals.html" class="nav-link px-3 py-2 rounded-lg border border-transparent text-gray-400 hover:text-emerald-400">الموافقات</a>
+        <a href="compliance.html" class="nav-link px-3 py-2 rounded-lg border border-transparent text-gray-400 hover:text-emerald-400">الامتثال</a>
+        <a href="evidence.html" class="nav-link px-3 py-2 rounded-lg border border-transparent text-gray-400 hover:text-emerald-400">ملفات الدليل</a>
+        <a href="stats.html" class="nav-link active px-3 py-2 rounded-lg border border-emerald-500 text-emerald-400">الإحصائيات</a>
+      </div>
+      <!-- mobile menu toggle -->
+      <button id="mobileMenuBtn" class="md:hidden text-gray-400 hover:text-white p-2">
+        <i class="fa-solid fa-bars text-xl"></i>
+      </button>
+    </div>
+  </div>
+  <!-- mobile menu -->
+  <div id="mobileMenu" class="md:hidden hidden border-t border-white/10 px-4 py-3 space-y-1">
+    <a href="index.html" class="block px-3 py-2 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-white/5">لوحة التحكم</a>
+    <a href="audit.html" class="block px-3 py-2 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-white/5">المراقبة</a>
+    <a href="approvals.html" class="block px-3 py-2 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-white/5">الموافقات</a>
+    <a href="compliance.html" class="block px-3 py-2 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-white/5">الامتثال</a>
+    <a href="evidence.html" class="block px-3 py-2 rounded-lg text-gray-400 hover:text-emerald-400 hover:bg-white/5">ملفات الدليل</a>
+    <a href="stats.html" class="block px-3 py-2 rounded-lg text-emerald-400 bg-emerald-500/10">الإحصائيات</a>
+  </div>
+</nav>
+
+<!-- ===== HEADER ===== -->
+<header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-3">
+        <i class="fa-solid fa-chart-line text-emerald-500"></i>
+        الإحصائيات والتحليلات
+      </h1>
+      <p class="text-gray-400 mt-1 text-sm">نظرة شاملة على أداء نواة BrightTrust</p>
+    </div>
+    <div class="flex items-center gap-3 text-xs text-gray-500">
+      <span class="pulse-dot inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+      <span>تحديث تلقائي كل 60 ثانية</span>
+      <span class="text-gray-600">|</span>
+      <span id="lastUpdated">--</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-8">
+
+  <!-- ===== TOP STATS ROW ===== -->
+  <section id="topStats" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-9 gap-3">
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">إجمالي الطلبات</div>
+      <div id="statTotal" class="text-2xl font-bold text-white">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">محظورة</div>
+      <div id="statBlocked" class="text-2xl font-bold text-red-400">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">قيد الانتظار</div>
+      <div id="statPending" class="text-2xl font-bold text-yellow-400">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">معتمدة</div>
+      <div id="statApproved" class="text-2xl font-bold text-emerald-400">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">معتمدة تلقائياً</div>
+      <div id="statAutoApproved" class="text-2xl font-bold text-cyan-400">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">مرفوضة</div>
+      <div id="statRejected" class="text-2xl font-bold text-orange-400">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">PII مكتشف</div>
+      <div id="statPII" class="text-2xl font-bold text-purple-400">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center">
+      <div class="text-xs text-gray-400 mb-1">متوسط نقاط المخاطر</div>
+      <div id="statAvgRisk" class="text-2xl font-bold text-amber-400">--</div>
+    </div>
+    <div class="stat-card glass rounded-xl p-4 text-center col-span-2 sm:col-span-1">
+      <div class="text-xs text-gray-400 mb-1">نسبة الامتثال</div>
+      <div id="statComplianceRate" class="text-2xl font-bold text-emerald-500">--</div>
+    </div>
+  </section>
+
+  <!-- ===== BY COMPLIANCE PACK ===== -->
+  <section class="glass rounded-xl p-6">
+    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <i class="fa-solid fa-layer-group text-emerald-500"></i>
+      حسب حزمة الامتثال
+    </h2>
+    <div id="packCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <!-- ===== BY RISK LEVEL ===== -->
+  <section class="glass rounded-xl p-6">
+    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <i class="fa-solid fa-triangle-exclamation text-amber-500"></i>
+      حسب مستوى المخاطر
+    </h2>
+    <div id="riskCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <!-- ===== CHAIN INTEGRITY ===== -->
+  <section class="glass rounded-xl p-6">
+    <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+      <i class="fa-solid fa-link text-emerald-500"></i>
+      سلامة السلسلة
+    </h2>
+    <div id="chainSection" class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div id="chainStatus">
+        <span class="text-gray-500 text-sm">جاري التحميل...</span>
+      </div>
+      <div id="chainRecords" class="text-gray-400 text-sm"></div>
+    </div>
+  </section>
+
+  <!-- ===== DISTRIBUTION CHARTS ===== -->
+  <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Compliance Pack Distribution -->
+    <div class="glass rounded-xl p-6">
+      <h2 class="text-lg font-bold text-white mb-5 flex items-center gap-2">
+        <i class="fa-solid fa-chart-bar text-emerald-500"></i>
+        توزيع حزم الامتثال
+      </h2>
+      <div id="packChart" class="space-y-3">
+        <!-- filled by JS -->
+      </div>
+    </div>
+    <!-- Risk Level Distribution -->
+    <div class="glass rounded-xl p-6">
+      <h2 class="text-lg font-bold text-white mb-5 flex items-center gap-2">
+        <i class="fa-solid fa-chart-bar text-amber-500"></i>
+        توزيع مستويات المخاطر
+      </h2>
+      <div id="riskChart" class="space-y-3">
+        <!-- filled by JS -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== WHATSAPP FLOATING ===== -->
+<a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+   class="fixed bottom-6 left-6 z-50 wa-btn float-wa flex items-center justify-center w-14 h-14 rounded-full text-white text-2xl shadow-lg"
+   aria-label="تواصل عبر واتساب">
+  <i class="fa-brands fa-whatsapp"></i>
+</a>
+
+<script>
+// ===== Mobile Menu Toggle =====
+document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+  document.getElementById('mobileMenu').classList.toggle('hidden');
+});
+
+// ===== Pack Labels & Colors =====
+const PACK_META = {
+  pdpl:       { label: 'PDPL',             color: '#10b981', icon: 'fa-shield-halved' },
+  nca_ecc:    { label: 'NCA ECC',          color: '#3b82f6', icon: 'fa-lock' },
+  sfda:       { label: 'SFDA / ISO 13485', color: '#8b5cf6', icon: 'fa-capsules' },
+  procurement:{ label: 'المشتريات والمناقصات', color: '#f59e0b', icon: 'fa-gavel' },
+  healthcare: { label: 'الرعاية الصحية',    color: '#ec4899', icon: 'fa-heart-pulse' },
+  general:    { label: 'عام',              color: '#6b7280', icon: 'fa-cube' }
+};
+
+const RISK_META = {
+  low:      { label: 'منخفض', color: '#10b981' },
+  medium:   { label: 'متوسط', color: '#f59e0b' },
+  high:     { label: 'مرتفع', color: '#f97316' },
+  critical: { label: 'حرج',   color: '#ef4444' }
+};
+
+// ===== Fetch Stats =====
+async function fetchStats() {
+  try {
+    const res = await fetch('/api/kernel/stats');
+    if (!res.ok) throw new Error('API error ' + res.status);
+    const data = await res.json();
+    renderStats(data);
+  } catch (err) {
+    console.error('Failed to fetch stats:', err);
+    // render placeholder error
+    document.getElementById('lastUpdated').textContent = 'خطأ في الاتصال';
+  }
+}
+
+function renderStats(data) {
+  // ----- Top Stats -----
+  const summary = data.summary || data.overall || {};
+  const setOrDash = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val !== undefined && val !== null ? val : '--';
+  };
+
+  setOrDash('statTotal',           summary.total);
+  setOrDash('statBlocked',         summary.blocked);
+  setOrDash('statPending',         summary.pending);
+  setOrDash('statApproved',        summary.approved);
+  setOrDash('statAutoApproved',    summary.auto_approved || summary.autoApproved);
+  setOrDash('statRejected',        summary.rejected);
+  setOrDash('statPII',             summary.pii_detected || summary.piiDetected);
+  setOrDash('statAvgRisk',         summary.avg_risk_score != null ? Number(summary.avg_risk_score || summary.avgRiskScore).toFixed(1) : '--');
+  setOrDash('statComplianceRate',  summary.compliance_rate != null ? (Number(summary.compliance_rate || summary.complianceRate)).toFixed(1) + '%' : '--');
+
+  // ----- By Compliance Pack -----
+  const packs = data.by_compliance_pack || data.byCompliancePack || data.packs || {};
+  const packKeys = Object.keys(PACK_META);
+  const packCardsEl = document.getElementById('packCards');
+  const packChartEl = document.getElementById('packChart');
+  let packCardsHTML = '';
+  let packChartHTML = '';
+  const packTotal = Object.values(packs).reduce((s, v) => s + (typeof v === 'object' ? (v.count || 0) : (v || 0)), 0) || 1;
+
+  packKeys.forEach(key => {
+    const meta = PACK_META[key];
+    const raw = packs[key];
+    const count = typeof raw === 'object' ? (raw.count || 0) : (raw || 0);
+    const pct = ((count / packTotal) * 100).toFixed(1);
+
+    packCardsHTML += `
+      <div class="glass rounded-lg p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:${meta.color}22;">
+          <i class="fa-solid ${meta.icon}" style="color:${meta.color};"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-semibold text-white truncate">${meta.label}</div>
+          <div class="text-xs text-gray-400">${count} طلب</div>
+        </div>
+        <div class="text-lg font-bold" style="color:${meta.color};">${count}</div>
+      </div>`;
+
+    packChartHTML += `
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span class="text-gray-300">${meta.label}</span>
+          <span class="text-gray-400">${count} (${pct}%)</span>
+        </div>
+        <div class="bar-track h-5">
+          <div class="bar-fill" style="width:${pct}%;background:${meta.color};"></div>
+        </div>
+      </div>`;
+  });
+
+  packCardsEl.innerHTML = packCardsHTML;
+  packChartEl.innerHTML = packChartHTML;
+
+  // ----- By Risk Level -----
+  const risks = data.by_risk_level || data.byRiskLevel || data.risks || {};
+  const riskKeys = ['low', 'medium', 'high', 'critical'];
+  const riskCardsEl = document.getElementById('riskCards');
+  const riskChartEl = document.getElementById('riskChart');
+  let riskCardsHTML = '';
+  let riskChartHTML = '';
+  const riskTotal = riskKeys.reduce((s, k) => {
+    const v = risks[k];
+    return s + (typeof v === 'object' ? (v.count || 0) : (v || 0));
+  }, 0) || 1;
+
+  riskKeys.forEach(key => {
+    const meta = RISK_META[key];
+    const raw = risks[key];
+    const count = typeof raw === 'object' ? (raw.count || 0) : (raw || 0);
+    const pct = ((count / riskTotal) * 100).toFixed(1);
+
+    riskCardsHTML += `
+      <div class="glass rounded-lg p-4 text-center border-t-4" style="border-color:${meta.color};">
+        <div class="text-xs text-gray-400 mb-1">${meta.label}</div>
+        <div class="text-3xl font-bold" style="color:${meta.color};">${count}</div>
+        <div class="text-xs text-gray-500 mt-1">${pct}% من الإجمالي</div>
+      </div>`;
+
+    riskChartHTML += `
+      <div>
+        <div class="flex justify-between text-xs mb-1">
+          <span style="color:${meta.color};">${meta.label}</span>
+          <span class="text-gray-400">${count} (${pct}%)</span>
+        </div>
+        <div class="bar-track h-6">
+          <div class="bar-fill" style="width:${pct}%;background:${meta.color};"></div>
+        </div>
+      </div>`;
+  });
+
+  riskCardsEl.innerHTML = riskCardsHTML;
+  riskChartEl.innerHTML = riskChartHTML;
+
+  // ----- Chain Integrity -----
+  const chain = data.chain_integrity || data.chainIntegrity || data.chain || {};
+  const chainValid = chain.valid !== undefined ? chain.valid : chain.is_valid;
+  const chainStatusEl = document.getElementById('chainStatus');
+  const chainRecordsEl = document.getElementById('chainRecords');
+
+  if (chainValid === true || chainValid === 'valid') {
+    chainStatusEl.innerHTML = `
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+        <i class="fa-solid fa-circle-check"></i>
+        السلسلة سليمة
+      </span>`;
+  } else if (chainValid === false || chainValid === 'invalid') {
+    chainStatusEl.innerHTML = `
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-red-500/15 text-red-400 border border-red-500/30">
+        <i class="fa-solid fa-circle-xmark"></i>
+        السلسلة غير سليمة
+      </span>`;
+  } else {
+    chainStatusEl.innerHTML = `
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold bg-gray-500/15 text-gray-400 border border-gray-500/30">
+        <i class="fa-solid fa-circle-question"></i>
+        غير متاح
+      </span>`;
+  }
+
+  const totalRecords = chain.total_records || chain.totalRecords || chain.records;
+  chainRecordsEl.innerHTML = totalRecords !== undefined
+    ? `<i class="fa-solid fa-database ml-1 text-gray-500"></i> إجمالي السجلات: <strong class="text-white">${totalRecords}</strong>`
+    : '';
+
+  // ----- Last Updated -----
+  const now = new Date();
+  document.getElementById('lastUpdated').textContent =
+    'آخر تحديث: ' + now.toLocaleString('ar-SA', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }) +
+    ' - ' + now.toLocaleDateString('ar-SA');
+}
+
+// ===== Initial Load + Auto-Refresh =====
+fetchStats();
+setInterval(fetchStats, 60000);
+</script>
+</body>
+</html>
