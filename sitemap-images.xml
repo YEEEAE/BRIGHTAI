@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://brightai.site/about/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/contact/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/cookie-policy/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/data-processing-agreement/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/components/nav/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/executive/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/finance/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/login/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/profile/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/twofaSetup.qrCodeUrl</image:loc>
+      <image:title>2FA QR Code</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/quality/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/compare/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/dashboard/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/landing/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/reports/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/settings/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/templates/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/demo/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/docs/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/cookie-policy/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>Bright AI Logo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/data-processing-agreement/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>Bright AI Logo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/pdpl-statement/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>Bright AI Logo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/privacy-policy/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>Bright AI Logo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/en/terms/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>Bright AI Logo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/offline/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/pdpl-statement/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/pricing/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/privacy-cookies/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/privacy-policy/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/services/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/terms/</loc>
+    <image:image>
+      <image:loc>https://brightai.site/frontend/images/logo-new.PNG</image:loc>
+      <image:title>شعار Bright AI</image:title>
+    </image:image>
+  </url>
+</urlset>
