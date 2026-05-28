@@ -23,6 +23,11 @@ const ROOT_INDEX_DIRS = new Set([
   "smart-automation",
   "tools",
   "what-is-ai",
+  "privacy-policy",
+  "terms",
+  "cookie-policy",
+  "pdpl-statement",
+  "data-processing-agreement",
 ]);
 
 const REL_PATH_ALIASES = new Map([

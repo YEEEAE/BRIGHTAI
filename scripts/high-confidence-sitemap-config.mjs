@@ -5,7 +5,17 @@ const CORE_MARKETING_FILES = [
   "contact/index.html",
   "pricing/index.html",
   "privacy-cookies/index.html",
-  "demo/index.html"
+  "demo/index.html",
+  "privacy-policy/index.html",
+  "en/privacy-policy/index.html",
+  "terms/index.html",
+  "en/terms/index.html",
+  "cookie-policy/index.html",
+  "en/cookie-policy/index.html",
+  "pdpl-statement/index.html",
+  "en/pdpl-statement/index.html",
+  "data-processing-agreement/index.html",
+  "en/data-processing-agreement/index.html"
 ];
 
 const CANONICAL_DEMO_TARGET_FILES = [
