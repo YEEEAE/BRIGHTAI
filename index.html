@@ -370,8 +370,40 @@
   }
   .wa-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
   .chip { background: rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.25); color:#9be5ff; }
-  .feature-card { transition: all .35s ease; }
-  .feature-card:hover { transform: translateY(-6px); border-color: rgba(0,212,255,.35); box-shadow: 0 20px 60px -20px rgba(0,212,255,.35); }
+  
+  /* ترقية تصميم البطاقات المتوهجة الفاخرة */
+  .feature-card {
+    position: relative;
+    background: linear-gradient(180deg, rgba(11, 18, 32, 0.45) 0%, rgba(6, 10, 20, 0.45) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01) 40%, rgba(0, 212, 255, 0) 50%, rgba(0, 212, 255, 0.15) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    transition: all 0.4s ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 212, 255, 0.25);
+    box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.5), 0 0 30px -5px rgba(0, 212, 255, 0.18);
+  }
+  .feature-card:hover::before {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.4) 0%, rgba(124, 92, 255, 0.3) 50%, rgba(255, 92, 167, 0.2) 100%);
+  }
+
   .marquee { mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
   .marquee-track { animation: scroll 28s linear infinite; }
   @keyframes scroll { from { transform: translateX(0) } to { transform: translateX(-50%) } }
@@ -389,6 +421,223 @@
   /* counter animation */
   .counter { opacity: 0; transform: translateY(20px); transition: all .6s ease; }
   .counter.visible { opacity: 1; transform: translateY(0); }
+
+  /* 1. قائمة لوحة النواة المنسدلة */
+  .dropdown-container {
+    position: relative;
+  }
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 50%;
+    transform: translateX(50%) translateY(10px);
+    opacity: 0;
+    visibility: hidden;
+    min-width: 240px;
+    background: rgba(8, 14, 28, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 10px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.5), 0 0 30px 2px rgba(0, 212, 255, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+  }
+  .dropdown-container:hover .dropdown-menu,
+  .dropdown-container:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(50%) translateY(0);
+  }
+  .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 50%;
+    transform: translateX(50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: rgba(8, 14, 28, 0.96);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.75);
+    transition: all 0.25s ease;
+  }
+  .dropdown-item:hover {
+    background: linear-gradient(90deg, rgba(0, 212, 255, 0.1) 0%, rgba(124, 92, 255, 0.1) 100%);
+    color: #00d4ff;
+    padding-right: 18px;
+    transform: translateZ(0);
+  }
+  
+  /* 2. درج الجوال الجانبي الفاخر (Mobile Drawer) */
+  .mobile-drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4, 7, 16, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 900;
+  }
+  .mobile-drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  .mobile-drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -100%;
+    width: 85%;
+    max-width: 380px;
+    background: rgba(6, 10, 20, 0.98);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -20px 0 60px rgba(0, 0, 0, 0.7);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+  }
+  .mobile-drawer.active {
+    right: 0;
+  }
+  .mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+    border-b: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .mobile-drawer-close {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    transition: all 0.25s ease;
+  }
+  .mobile-drawer-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ff5ca7;
+  }
+  .mobile-drawer-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+  }
+  .mobile-drawer-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 15px;
+    transition: all 0.25s ease;
+  }
+  .mobile-drawer-link:hover, .mobile-drawer-link.active {
+    background: rgba(255, 255, 255, 0.03);
+    color: #00d4ff;
+    padding-right: 18px;
+  }
+  .mobile-drawer-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.35);
+    margin: 18px 14px 8px 14px;
+  }
+  .mobile-drawer-footer {
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* 3. الفواصل البصرية المضيئة المبتكرة */
+  .ambient-separator {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.03) 10%, rgba(0, 212, 255, 0.18) 50%, rgba(255, 255, 255, 0.03) 90%, transparent 100%);
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ambient-separator::after {
+    content: '';
+    position: absolute;
+    width: 120px;
+    height: 12px;
+    background: radial-gradient(circle, rgba(0, 212, 255, 0.15) 0%, transparent 80%);
+    filter: blur(4px);
+    pointer-events: none;
+  }
+  .ambient-separator-node {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00d4ff;
+    box-shadow: 0 0 10px 2px rgba(0, 212, 255, 0.6);
+  }
+
+  /* 4. ترقية التذييل الجمالية والوظيفية */
+  footer.premium-footer {
+    position: relative;
+    background: linear-gradient(180deg, rgba(6, 9, 20, 0.9) 0%, rgba(4, 6, 12, 0.98) 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  footer.premium-footer::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 255, 0.3) 50%, transparent 100%);
+  }
+  .footer-glow-bg {
+    position: absolute;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    height: 250px;
+    background: radial-gradient(ellipse at bottom, rgba(124, 92, 255, 0.06) 0%, rgba(0, 212, 255, 0.03) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .footer-social-btn {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .footer-social-btn:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15) 0%, rgba(124, 92, 255, 0.15) 100%);
+    border-color: rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px -10px rgba(0, 212, 255, 0.4);
+  }
 
 </style>
   <link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png">
@@ -460,7 +709,7 @@
 <a href="#main" class="skip-link">تخطّى للمحتوى الرئيسي</a>
 
 <!-- ================= HEADER / NAV ================= -->
-<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-[#080e1c]/80 border-b border-white/5">
   <nav role="navigation" aria-label="القائمة الرئيسية" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
     <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
       <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
@@ -470,17 +719,44 @@
       <span class="hidden md:inline text-xs text-white/50 border-r border-white/10 pr-3 mr-1">Saudi AI Safety</span>
     </a>
 
-    <ul class="hidden lg:flex items-center gap-5 text-sm text-white/80">
+    <ul class="hidden lg:flex items-center gap-6 text-sm text-white/80">
       <li><a href="#product" class="hover:text-white transition-colors">المنتج</a></li>
       <li><a href="#layers" class="hover:text-white transition-colors">طبقات الأمان</a></li>
       <li><a href="#compliance" class="hover:text-white transition-colors">حزم الامتثال</a></li>
       <li><a href="#sectors" class="hover:text-white transition-colors">القطاعات</a></li>
-      <li><a href="/kernel/" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-gauge-high ml-1"></i>لوحة التحكم</a></li>
-      <li><a href="/kernel/chat.html" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-comments ml-1"></i>المحادثات</a></li>
-      <li><a href="/kernel/audit.html" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-file-shield ml-1"></i>التدقيق</a></li>
-      <li><a href="/kernel/approvals.html" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-user-check ml-1"></i>الموافقات</a></li>
-      <li><a href="/kernel/stats.html" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-chart-line ml-1"></i>الإحصائيات</a></li>
-      <li><a href="/blog/" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-book ml-1"></i>الوثائق</a></li>
+      
+      <!-- قائمة النواة المنسدلة الفاخرة للأجهزة المكتبية -->
+      <li class="dropdown-container">
+        <a href="#" class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2">
+          <i class="fa-solid fa-layer-group text-xs"></i>
+          <span>لوحة النواة</span>
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-60"></i>
+        </a>
+        <div class="dropdown-menu">
+          <a href="/kernel/" class="dropdown-item">
+            <i class="fa-solid fa-gauge-high text-brand-500"></i>
+            <span>لوحة التحكم</span>
+          </a>
+          <a href="/kernel/chat.html" class="dropdown-item">
+            <i class="fa-solid fa-comments text-brand-500"></i>
+            <span>المحادثات الموثوقة</span>
+          </a>
+          <a href="/kernel/audit.html" class="dropdown-item">
+            <i class="fa-solid fa-file-shield text-brand-500"></i>
+            <span>سجل التدقيق (Audit)</span>
+          </a>
+          <a href="/kernel/approvals.html" class="dropdown-item">
+            <i class="fa-solid fa-user-check text-brand-500"></i>
+            <span>الموافقات البشرية</span>
+          </a>
+          <a href="/kernel/stats.html" class="dropdown-item">
+            <i class="fa-solid fa-chart-line text-brand-500"></i>
+            <span>الإحصائيات والامتثال</span>
+          </a>
+        </div>
+      </li>
+
+      <li><a href="/blog/" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-book ml-1 text-xs opacity-75"></i>الوثائق</a></li>
       <li><a href="#faq" class="hover:text-white transition-colors">أسئلة شائعة</a></li>
     </ul>
 
@@ -491,27 +767,54 @@
       <a href="mailto:yazeed1job@gmail.com" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold glow-btn text-white" aria-label="راسلنا عبر البريد الإلكتروني">
         <i class="fa-solid fa-envelope"></i> yazeed1job@gmail.com
       </a>
-      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass" aria-label="فتح القائمة">
+      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass flex items-center justify-center text-white" aria-label="فتح القائمة">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
   </nav>
-  <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 bg-ink-900/95">
-    <ul class="px-5 py-3 space-y-2 text-sm">
-      <li class="border-t border-white/5 pt-2 mt-2">
-        <div class="text-white/50 text-xs font-bold mb-2 px-2">لوحة النواة</div>
-        <a class="block py-2 pr-4" href="/kernel/"><i class="fa-solid fa-gauge-high ml-2 text-brand-500"></i>لوحة التحكم</a>
-        <a class="block py-2 pr-4" href="/kernel/chat.html"><i class="fa-solid fa-comments ml-2 text-brand-500"></i>المحادثات</a>
-        <a class="block py-2 pr-4" href="/kernel/audit.html"><i class="fa-solid fa-file-shield ml-2 text-brand-500"></i>سجل التدقيق</a>
-        <a class="block py-2 pr-4" href="/kernel/approvals.html"><i class="fa-solid fa-user-check ml-2 text-brand-500"></i>الموافقات</a>
-        <a class="block py-2 pr-4" href="/kernel/stats.html"><i class="fa-solid fa-chart-line ml-2 text-brand-500"></i>الإحصائيات</a>
-      </li>
-      <li><a class="block py-2 text-brand-300 font-bold" href="/docs/docs.html"><i class="fa-solid fa-book ml-1"></i>الوثائق</a></li>
-      <li><a class="block py-2" href="#faq">أسئلة شائعة</a></li>
-      <li><a class="block py-2 text-green-400 font-bold" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> تواصل واتساب</a></li>
-    </ul>
-  </div>
 </header>
+
+<!-- درج الجوال الجانبي الفاخر (Mobile Drawer) -->
+<div id="drawerOverlay" class="mobile-drawer-overlay" aria-hidden="true"></div>
+<aside id="mobileDrawer" class="mobile-drawer" role="complementary" aria-label="قائمة الجوال الجانبية">
+  <div class="mobile-drawer-header">
+    <a href="/" class="flex items-center gap-2" aria-label="BrightAI الرئيسية">
+      <span class="font-extrabold text-lg tracking-tight">Bright<span class="gradient-text">AI</span></span>
+    </a>
+    <button id="drawerCloseBtn" class="mobile-drawer-close" aria-label="إغلاق القائمة">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <div class="mobile-drawer-content">
+    <nav aria-label="روابط التنقل السريع للجوال">
+      <ul class="space-y-1">
+        <li><a href="#product" class="mobile-drawer-link"><i class="fa-solid fa-cube text-brand-500"></i> المنتج</a></li>
+        <li><a href="#layers" class="mobile-drawer-link"><i class="fa-solid fa-shield-halved text-brand-500"></i> طبقات الأمان</a></li>
+        <li><a href="#compliance" class="mobile-drawer-link"><i class="fa-solid fa-lock text-brand-500"></i> حزم الامتثال</a></li>
+        <li><a href="#sectors" class="mobile-drawer-link"><i class="fa-solid fa-industry text-brand-500"></i> القطاعات</a></li>
+        
+        <div class="mobile-drawer-section-title">لوحة النواة (Kernel)</div>
+        <li><a href="/kernel/" class="mobile-drawer-link"><i class="fa-solid fa-gauge-high text-brand-500"></i> لوحة التحكم</a></li>
+        <li><a href="/kernel/chat.html" class="mobile-drawer-link"><i class="fa-solid fa-comments text-brand-500"></i> المحادثات</a></li>
+        <li><a href="/kernel/audit.html" class="mobile-drawer-link"><i class="fa-solid fa-file-shield text-brand-500"></i> سجل التدقيق</a></li>
+        <li><a href="/kernel/approvals.html" class="mobile-drawer-link"><i class="fa-solid fa-user-check text-brand-500"></i> الموافقات البشرية</a></li>
+        <li><a href="/kernel/stats.html" class="mobile-drawer-link"><i class="fa-solid fa-chart-line text-brand-500"></i> الإحصائيات</a></li>
+        
+        <div class="mobile-drawer-section-title">المصادر والمعلومات</div>
+        <li><a href="/blog/" class="mobile-drawer-link"><i class="fa-solid fa-book text-brand-500"></i> الوثائق والمعارف</a></li>
+        <li><a href="#faq" class="mobile-drawer-link"><i class="fa-solid fa-question-circle text-brand-500"></i> الأسئلة الشائعة</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="mobile-drawer-footer">
+    <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="wa-btn flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm">
+      <i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب
+    </a>
+    <a href="mailto:yazeed1job@gmail.com" class="glow-btn flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm">
+      <i class="fa-solid fa-envelope"></i> yazeed1job@gmail.com
+    </a>
+  </div>
+</aside>
 
 <main id="main" role="main">
 
@@ -528,7 +831,7 @@
         radial-gradient(900px 500px at 10% 110%, rgba(0,168,212,.15), transparent 60%),
         linear-gradient(180deg,#0b1220 0%, #0a1020 60%, #070c19 100%);
     }
-    .bt-hero-bg canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
+    .bt-hero-bg canvas{ position:absolute; inset:0; width:100%; height:100%; display:block; will-change: transform; transform: translateZ(0); -webkit-transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 
     /* شبكة نقاط CSS خفيفة (تعمل حتى لو فشل JS) */
     .bt-hero-bg::before{
@@ -767,6 +1070,9 @@
   </div>
 </section>
 
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
+
 <!-- ================= PROBLEM ================= -->
 <section id="problem" aria-labelledby="problem-title" class="py-20 lg:py-28">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
@@ -810,6 +1116,9 @@
     </ul>
   </div>
 </section>
+
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
 
 <!-- ================= PRODUCT ================= -->
 <section id="product" aria-labelledby="product-title" class="py-20 lg:py-28 bg-gradient-to-b from-transparent via-brand-500/[.04] to-transparent">
@@ -857,6 +1166,9 @@
     </div>
   </div>
 </section>
+
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
 
 <!-- ================= 4 LAYERS ================= -->
 <section id="layers" aria-labelledby="layers-title" class="py-20 lg:py-28">
@@ -933,6 +1245,9 @@
   </div>
 </section>
 
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
+
 <!-- ================= COMPLIANCE PACKS ================= -->
 <section id="compliance" aria-labelledby="compliance-title" class="py-20 lg:py-28 bg-gradient-to-b from-transparent via-purple-500/[.04] to-transparent">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
@@ -982,6 +1297,9 @@
   </div>
 </section>
 
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
+
 <!-- ================= SECTORS ================= -->
 <section id="sectors" aria-labelledby="sectors-title" class="py-20 lg:py-28">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
@@ -1027,6 +1345,9 @@
     </div>
   </div>
 </section>
+
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
 
 <!-- ================= EVIDENCE FILE SHOWCASE ================= -->
 <section id="evidence" aria-labelledby="evidence-title" class="py-20 lg:py-28 bg-gradient-to-b from-transparent via-brand-500/[.05] to-transparent">
@@ -1077,6 +1398,9 @@
   </div>
 </section>
 
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
+
 <!-- ================= COMPARISON ================= -->
 <section id="why" aria-labelledby="why-title" class="py-20 lg:py-28">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
@@ -1110,6 +1434,9 @@
   </div>
 </section>
 
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
+
 <!-- ================= STATS ================= -->
 <section aria-label="إحصائيات سوق الذكاء الاصطناعي السعودي" class="py-16">
   <div class="max-w-7xl mx-auto px-5 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -1131,6 +1458,9 @@
     </div>
   </div>
 </section>
+
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
 
 <!-- ================= FAQ ================= -->
 <section id="faq" aria-labelledby="faq-title" class="py-20 lg:py-28">
@@ -1208,6 +1538,9 @@
   </div>
 </section>
 
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
+
 <!-- ================= CTA / CONTACT ================= -->
 <section id="demo" aria-labelledby="cta-title" class="py-20 lg:py-28">
   <div class="max-w-5xl mx-auto px-5 lg:px-8">
@@ -1269,64 +1602,85 @@
 </a>
 
 <!-- ================= FOOTER ================= -->
-<footer role="contentinfo" class="border-t border-white/5 bg-ink-900/60 mt-10">
-  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14 grid md:grid-cols-2 lg:grid-cols-4 gap-10">
+<footer role="contentinfo" class="premium-footer mt-10">
+  <div class="footer-glow-bg" aria-hidden="true"></div>
+  <div class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 py-14 grid md:grid-cols-2 lg:grid-cols-4 gap-10">
     <div>
       <a href="/" class="flex items-center gap-3" aria-label="BrightAI">
-        <span class="inline-flex w-10 h-10 rounded-xl items-center justify-center" style="background:linear-gradient(135deg,#00d4ff,#7c5cff)">
+        <span class="inline-flex w-10 h-10 rounded-xl items-center justify-center shadow-lg shadow-indigo-500/20" style="background:linear-gradient(135deg,#00d4ff,#7c5cff)">
           <i class="fa-solid fa-shield-halved text-white"></i>
         </span>
-        <span class="font-extrabold text-xl">Bright<span class="gradient-text">Trust</span></span>
+        <span class="font-extrabold text-xl">Bright<span class="gradient-text">AI</span></span>
       </a>
       <p class="mt-4 text-sm text-white/60 leading-loose">طبقة الأمان والحوكمة للذكاء الاصطناعي في الشركات السعودية. صُنع في الرياض 🇸🇦.</p>
     </div>
 
     <nav aria-label="روابط المنتج">
-      <h3 class="font-bold mb-3">المنتج</h3>
-      <ul class="space-y-2 text-sm text-white/60">
-        <li><a href="#layers" class="hover:text-white">AI Firewall</a></li>
-        <li><a href="#layers" class="hover:text-white">AI Audit Trail</a></li>
-        <li><a href="#layers" class="hover:text-white">Human Approval</a></li>
-        <li><a href="#evidence" class="hover:text-white">Evidence File</a></li>
+      <h3 class="font-bold mb-4 text-white text-base">المنتج</h3>
+      <ul class="space-y-3 text-sm text-white/65">
+        <li><a href="#layers" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">AI Firewall</a></li>
+        <li><a href="#layers" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">AI Audit Trail</a></li>
+        <li><a href="#layers" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">Human Approval</a></li>
+        <li><a href="#evidence" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">Evidence File</a></li>
       </ul>
     </nav>
 
     <nav aria-label="روابط الامتثال">
-      <h3 class="font-bold mb-3">الامتثال</h3>
-      <ul class="space-y-2 text-sm text-white/60">
-        <li><a href="#compliance" class="hover:text-white">PDPL Pack</a></li>
-        <li><a href="#compliance" class="hover:text-white">NCA ECC Pack</a></li>
-        <li><a href="#compliance" class="hover:text-white">SFDA / ISO 13485</a></li>
-        <li><a href="#compliance" class="hover:text-white">Finance Pack</a></li>
+      <h3 class="font-bold mb-4 text-white text-base">الامتثال</h3>
+      <ul class="space-y-3 text-sm text-white/65">
+        <li><a href="#compliance" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">PDPL Pack</a></li>
+        <li><a href="#compliance" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">NCA ECC Pack</a></li>
+        <li><a href="#compliance" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">SFDA / ISO 13485</a></li>
+        <li><a href="#compliance" class="hover:text-[#00d4ff] hover:pr-1 transition-all duration-250">Finance Pack</a></li>
       </ul>
     </nav>
 
     <div>
-      <h3 class="font-bold mb-3">تواصل</h3>
-      <ul class="space-y-2 text-sm text-white/60">
-        <li><a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hover:text-green-400"><i class="fa-brands fa-whatsapp text-green-400"></i> واتساب: 053-822-9013</a></li>
-        <li><a href="mailto:yazeed1job@gmail.com" class="hover:text-brand-300"><i class="fa-solid fa-envelope text-brand-500"></i> yazeed1job@gmail.com</a></li>
-        <li><i class="fa-solid fa-location-dot text-brand-500"></i> الرياض، المملكة العربية السعودية</li>
-        <li class="flex gap-3 mt-4">
-          <a href="#" aria-label="X" class="w-9 h-9 glass rounded-lg inline-flex items-center justify-center hover:text-brand-500"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" aria-label="LinkedIn" class="w-9 h-9 glass rounded-lg inline-flex items-center justify-center hover:text-brand-500"><i class="fa-brands fa-linkedin-in"></i></a>
-          <a href="#" aria-label="YouTube" class="w-9 h-9 glass rounded-lg inline-flex items-center justify-center hover:text-brand-500"><i class="fa-brands fa-youtube"></i></a>
+      <h3 class="font-bold mb-4 text-white text-base">تواصل</h3>
+      <ul class="space-y-3 text-sm text-white/65">
+        <li><a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hover:text-green-400 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-400 text-base"></i> <span>واتساب: 053-822-9013</span></a></li>
+        <li><a href="mailto:yazeed1job@gmail.com" class="hover:text-brand-300 flex items-center gap-2"><i class="fa-solid fa-envelope text-brand-500"></i> <span>yazeed1job@gmail.com</span></a></li>
+        <li class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-500"></i> <span>الرياض، المملكة العربية السعودية</span></li>
+        <li class="flex gap-3 mt-5">
+          <a href="#" aria-label="X" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-x-twitter text-base"></i></a>
+          <a href="#" aria-label="LinkedIn" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-linkedin-in text-base"></i></a>
+          <a href="#" aria-label="YouTube" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-youtube text-base"></i></a>
         </li>
       </ul>
     </div>
   </div>
 
-  <div class="border-t border-white/5 py-5 text-center text-xs text-white/40">
+  <div class="border-t border-white/5 py-6 text-center text-xs text-white/40 relative z-10">
     © 2026 BrightAI · Saudi AI Safety OS · جميع الحقوق محفوظة · صُنع في المملكة العربية السعودية 🇸🇦
   </div>
 </footer>
 
 <script>
-  // Mobile menu
+  // Mobile drawer interaction
   const menuBtn = document.getElementById('menuBtn');
-  const mobileMenu = document.getElementById('mobileMenu');
-  menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-  mobileMenu?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.add('hidden')));
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+
+  function openDrawer() {
+    mobileDrawer?.classList.add('active');
+    drawerOverlay?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    mobileDrawer?.classList.remove('active');
+    drawerOverlay?.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  menuBtn?.addEventListener('click', openDrawer);
+  drawerCloseBtn?.addEventListener('click', closeDrawer);
+  drawerOverlay?.addEventListener('click', closeDrawer);
+
+  mobileDrawer?.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeDrawer);
+  });
 
   // Lead form (client-side only)
   const form = document.getElementById('leadForm');
