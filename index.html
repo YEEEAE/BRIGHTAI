@@ -22,7 +22,7 @@
 <meta name="keywords" content="BrightTrust, برايت ترست, Saudi AI Safety, أمان الذكاء الاصطناعي السعودية, حوكمة الذكاء الاصطناعي, نظام أمان AI للشركات السعودية, AI Firewall, AI Audit Trail, PDPL Compliance, NCA ECC, SFDA ISO 13485, AI Compliance Saudi Arabia, نظام تشغيل ذكاء اصطناعي, QNX للذكاء الاصطناعي, MAIS, CAPA, ذكاء اصطناعي للمصانع السعودية, ذكاء اصطناعي للمستشفيات السعودية, ذكاء اصطناعي للمناقصات, ذكاء اصطناعي لإدارة الجودة, SDAIA, رؤية 2030, نظام حماية البيانات السعودي, AI Governance Platform KSA, برايت ترست السعودية, حوكمة الذكاء الاصطناعي السعودية, نظام أمان AI, AI safety platform, enterprise AI governance" />
 <meta name="author" content="BrightTrust – Saudi AI Safety OS" />
 <meta name="publisher" content="BrightTrust" />
-<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+<meta name="robots" content="index, follow">
 <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1" />
 <meta name="bingbot" content="index, follow" />
 <meta name="language" content="Arabic" />
@@ -43,7 +43,7 @@
 <meta property="ai:founding_date" content="2025" />
 <meta property="ai:headquarters" content="Riyadh, Saudi Arabia" />
 
-<link rel="canonical" href="https://brighttrust.sa/" />
+<link rel="canonical" href="https://brightai.site/">
 <link rel="alternate" hreflang="ar-SA" href="https://brighttrust.sa/" />
 <link rel="alternate" hreflang="ar" href="https://brighttrust.sa/" />
 <link rel="alternate" hreflang="en" href="https://brighttrust.sa/en/" />
@@ -84,7 +84,7 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com" defer></script>
 <script>
   tailwind.config = {
     theme: {
@@ -412,6 +412,65 @@
 <link rel="apple-touch-icon" href="/assets/images/logo-new.PNG">
   <link rel="preload" as="image" href="/assets/images/logo-new.PNG" fetchpriority="high">
   <link rel="stylesheet" href="/assets/css/sitewide-modernization.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/#webpage",
+      "url": "https://brightai.site/",
+      "name": "BrightTrust | نظام أمان وحوكمة الذكاء الاصطناعي للشركات السعودية – Saudi AI Safety OS",
+      "description": "BrightTrust برايت ترست – طبقة الأمان والحوكمة اللي تخلي الذكاء الاصطناعي قابل للاستخدام داخل الشركات السعودية، متوافق مع PDPL و NCA ECC و SFDA و ISO 13485، مع AI Firewall و Audit Trail و Human Approval و Evidence File. ن",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body class="bg-grid">
 
@@ -1145,5 +1204,6 @@
 </script>
 
   <script defer src="/assets/js/sitewide-modernization.js"></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

@@ -2045,13 +2045,43 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "LocalBusiness",
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
       "@id": "https://brightai.site/#organization",
       "name": "Bright AI",
-      "url": "https://brightai.site/services/",
+      "url": "https://brightai.site",
       "logo": "https://brightai.site/assets/images/logo-new.PNG",
       "areaServed": "SA",
       "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/services/#webpage",
+      "url": "https://brightai.site/services/",
+      "name": "خدمات ذكاء اصطناعي للشركات في السعودية | Bright AI",
+      "description": "اكتشف خدمات Bright AI في السعودية: وكلاء ذكاء اصطناعي، أتمتة عمليات، تحليل بيانات، واستشارات تنفيذ تساعد فريقك يبدأ بمسار واضح قابل للقياس والنمو.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
     },
     {
       "@type": "BreadcrumbList",
@@ -2066,7 +2096,7 @@
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "خدمات ذكاء اصطناعي وأتمتة أعمال تساعد فريقك يشتغل أسرع",
+          "name": "خدمات ذكاء اصطناعي للشركات في السعودية",
           "item": "https://brightai.site/services/"
         }
       ]
@@ -2085,7 +2115,7 @@
     }
   ]
 }
-</script>
+  </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 <style>
 .brightai-internal-links{background:#020617;color:#e5e7eb;border-top:1px solid rgba(148,163,184,.18);padding:32px 20px}
@@ -2181,7 +2211,7 @@
     <aside class="mobile-menu-drawer" id="mobileDrawer" aria-label="القائمة الجانبية">
         <div class="mobile-head">
             <div class="nav-logo">
-                <div class="logo-box"><img src="/assets/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" decoding="async"></div>
+                <div class="logo-box"><img src="/assets/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" decoding="async" loading="lazy"></div>
             </div>
             <button class="mobile-toggle" type="button" aria-label="إغلاق القائمة" onclick="closeMobileMenu()">×</button>
         </div>

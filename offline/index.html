@@ -134,24 +134,67 @@
   <script id="brightai-production-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": "https://brightai.site/offline/#breadcrumb",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
       "name": "Bright AI",
-      "item": "https://brightai.site/"
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
     },
     {
-      "@type": "ListItem",
-      "position": 2,
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/offline/#webpage",
+      "url": "https://brightai.site/offline/",
       "name": "الاتصال غير متاح حالياً | BrightAI",
-      "item": "https://brightai.site/offline/"
+      "description": "صفحة احتياطية من BrightAI تظهر عند انقطاع الاتصال وتساعد الزائر على إعادة المحاولة أو العودة إلى الصفحة الرئيسية دون إخفاء صفحات الموقع عن محركات البحث.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/offline/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الاتصال غير متاح حالياً | BrightAI",
+          "item": "https://brightai.site/offline/"
+        }
+      ]
     }
   ]
 }
-</script>
+  </script>
     <link rel="stylesheet" href="/assets/css/sitewide-modernization.css">
   <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
 <link rel="apple-touch-icon" href="/assets/images/logo-new.PNG">

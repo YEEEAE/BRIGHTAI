@@ -100,6 +100,97 @@
 <link rel="apple-touch-icon" href="/assets/images/logo-new.PNG">
   <link rel="preload" as="image" href="/assets/images/logo-new.PNG" fetchpriority="high">
   <link rel="stylesheet" href="/assets/css/sitewide-modernization.css">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/frontend/pages/admin/users/">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/ai-reject-dashboard/frontend/pages/admin/users/#webpage",
+      "url": "https://brightai.site/ai-reject-dashboard/frontend/pages/admin/users/",
+      "name": "صقر AI — إدارة المنصة وسجل التدقيق | ميس للمنتجات الطبية",
+      "description": "يجب ألا تقل عن 12 حرفاً، وتحتوي على أحرف كبيرة وصغيرة وأرقام ورموز.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/ai-reject-dashboard/frontend/pages/admin/users/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "ai reject dashboard",
+          "item": "https://brightai.site/ai-reject-dashboard/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "frontend",
+          "item": "https://brightai.site/ai-reject-dashboard/frontend/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "pages",
+          "item": "https://brightai.site/ai-reject-dashboard/frontend/pages/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "admin",
+          "item": "https://brightai.site/ai-reject-dashboard/frontend/pages/admin/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "صقر AI — إدارة المنصة وسجل التدقيق | ميس للمنتجات الطبية",
+          "item": "https://brightai.site/ai-reject-dashboard/frontend/pages/admin/users/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -358,13 +449,14 @@
 
   </div>
 
-  <script src="/ai-reject-dashboard/frontend/assets/js/auth-guard.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/auth-guard.js" defer></script>
   <!-- Notifications Library -->
-  <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js" defer></script>
   
   <!-- Page logic — extracted to external file (CSP-compliant) -->
-  <script src="/ai-reject-dashboard/frontend/assets/js/pages/users.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/pages/users.js" defer></script>
   <script defer src="../../assets/js/dashboard.js"></script>
   <script defer src="/assets/js/sitewide-modernization.js"></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

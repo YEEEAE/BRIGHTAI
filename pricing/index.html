@@ -65,30 +65,89 @@
   <script id="brightai-production-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": "https://brightai.site/pricing/#breadcrumb",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
       "name": "Bright AI",
-      "item": "https://brightai.site/"
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "pricing",
-      "item": "https://brightai.site/pricing/"
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
     },
     {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "تسعير حلول الذكاء الاصطناعي للشركات السعودية",
-      "item": "https://brightai.site/pricing/"
+      "@type": "WebPage",
+      "@id": "https://brightai.site/pricing/#webpage",
+      "url": "https://brightai.site/pricing/",
+      "name": "تسعير حلول الذكاء الاصطناعي للشركات في السعودية | Bright AI",
+      "description": "تعرف على تسعير حلول الذكاء الاصطناعي من Bright AI. نماذج تسعير مرنة تبدأ من 99 ريال للاستشارة وحلول مخصصة حسب نطاق المشروع.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/pricing/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "تسعير حلول الذكاء الاصطناعي للشركات في السعودية",
+          "item": "https://brightai.site/pricing/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/pricing/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "كيف يعمل التسعير في Bright AI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تسعير حلول الذكاء الاصطناعي للشركات في السعودية : نماذج تسعير شفافة ومرنة من Bright AI تناسب الشركات الصغيرة والمتوسطة والمؤسسات الكبرى في السعودية. نبدأ بفهم احتياجك الفعلي، ثم نقدم عرض سعر واضح يعتمد على النطاق والتعقيد والمدة. تشمل نماذجنا: استشارات تبدأ من 99 ريال، مشاريع تطوير حسب النطاق، واشتراكات شهرية للخدمات المستمرة. نركز دائماً على القيمة المقدمة والعائد على الاستثمار، مع مرونة في شروط الدفع."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "الخلاصة السريعة للتسعير استشارات تبدأ من 99 ريال سعودي لجلسة تشخيصية. حلول مخصصة حسب حجم المشروع والتعقيد والتكاملات. مرونة في الدفع: دفعات مرحلية أو اشتراكات شهرية. شفافية تامة في العروض ووضوح في ماذا تشمل الخدمة. حزم التسعير الرئيسية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نقدم حزم مرنة تناسب الشركات من جميع الأحجام. كل حزمة يمكن تخصيصها حسب احتياجك الفعلي."
+          }
+        }
+      ]
     }
   ]
 }
-</script>
+  </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
     <link rel="stylesheet" href="/assets/css/sitewide-modernization.css">
   <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">

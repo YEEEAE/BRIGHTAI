@@ -3,9 +3,9 @@
     <meta name="ai-assistant" content="صقر AI by BrightAI">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>صقر AI — الإنتاج والتشغيل | ميس للمنتجات الطبية</title>
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="index, follow">
   <meta name="description" content="نظام إدارة وتتبع التصنيع والعمليات لـ BrightAI - ممتثل لمعايير ممارسات التصنيع الجيد GMP وكفاءة الماكينات.">
-  <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/">
+  <link rel="canonical" href="https://brightai.site/ai-reject-dashboard/frontend/pages/production/">
   
   <!-- Central Design System and Components Bundle -->
   <link rel="stylesheet" href="/ai-reject-dashboard/frontend/assets/css/design-system.css">
@@ -133,15 +133,98 @@
   </style>
 
   <!-- Libraries — local vendor (CSP-safe, no CDN) -->
-  <script src="/ai-reject-dashboard/frontend/assets/vendor/apexcharts.js"></script>
-  <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js"></script>
-  <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/vendor/apexcharts.js" defer></script>
+  <script src="/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js" defer></script>
+  <script src="/ai-reject-dashboard/frontend/assets/vendor/ar.js" defer></script>
   <script defer="" src="/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
   <link rel="stylesheet" href="/assets/css/fonts.css">
   <link rel="icon" href="/assets/images/logo-new.PNG" type="image/png">
 <link rel="apple-touch-icon" href="/assets/images/logo-new.PNG">
   <link rel="preload" as="image" href="/assets/images/logo-new.PNG" fetchpriority="high">
   <link rel="stylesheet" href="/assets/css/sitewide-modernization.css">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/ai-reject-dashboard/frontend/pages/production/#webpage",
+      "url": "https://brightai.site/ai-reject-dashboard/frontend/pages/production/",
+      "name": "صقر AI — الإنتاج والتشغيل | ميس للمنتجات الطبية",
+      "description": "نظام إدارة وتتبع التصنيع والعمليات لـ BrightAI - ممتثل لمعايير ممارسات التصنيع الجيد GMP وكفاءة الماكينات.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/ai-reject-dashboard/frontend/pages/production/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "ai reject dashboard",
+          "item": "https://brightai.site/ai-reject-dashboard/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "frontend",
+          "item": "https://brightai.site/ai-reject-dashboard/frontend/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "pages",
+          "item": "https://brightai.site/ai-reject-dashboard/frontend/pages/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "صقر AI — الإنتاج والتشغيل | ميس للمنتجات الطبية",
+          "item": "https://brightai.site/ai-reject-dashboard/frontend/pages/production/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 </head>
 <body x-data="productionApp()" :class="{ 'sidebar-collapsed': sidebarCollapsed }" :dir="lang === 'ar' ? 'rtl' : 'ltr'" class="bright-page--dashboard" data-bright-page-type="dashboard">
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
@@ -426,15 +509,16 @@
   </div>
 
   <!-- Page logic — extracted to external file (CSP-compliant) -->
-  <script src="/ai-reject-dashboard/frontend/assets/js/api-client.js"></script>
-  <script src="/ai-reject-dashboard/frontend/assets/js/report-actions.js"></script>
-  <script src="/ai-reject-dashboard/frontend/assets/js/pages/production.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/api-client.js" defer></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/report-actions.js" defer></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/pages/production.js" defer></script>
   <!-- Frontend Auth Guard Shield -->
-  <script src="/ai-reject-dashboard/frontend/assets/js/auth-guard.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/auth-guard.js" defer></script>
   <!-- Global صقر AI Chatbot -->
-  <script src="../assets/js/ai-assistant.js"></script>
+  <script src="../assets/js/ai-assistant.js" defer></script>
   <!-- Enterprise Notifications System -->
-  <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js"></script>
+  <script src="/ai-reject-dashboard/frontend/assets/js/notifications.js" defer></script>
   <script defer src="../assets/js/dashboard.js"></script>
   <script defer src="/assets/js/sitewide-modernization.js"></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body></html>

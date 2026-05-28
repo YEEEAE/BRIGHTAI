@@ -162,24 +162,81 @@
   <script id="brightai-production-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "@id": "https://brightai.site/sitemap/#breadcrumb",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
       "name": "Bright AI",
-      "item": "https://brightai.site/"
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/assets/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
     },
     {
-      "@type": "ListItem",
-      "position": 2,
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/sitemap/#webpage",
+      "url": "https://brightai.site/sitemap/",
       "name": "خريطة موقع Bright AI | صفحات الموقع العامة",
-      "item": "https://brightai.site/sitemap/"
+      "description": "خريطة HTML لصفحات Bright AI العامة لتسهيل الوصول والزحف الداخلي إلى أهم المسارات والخدمات والمحتوى.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/sitemap/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "خريطة موقع Bright AI | صفحات الموقع العامة",
+          "item": "https://brightai.site/sitemap/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/sitemap/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "الخدمات والحلول الرئيسية h2&gt; أبرز خدمات Bright AI في مجال الذكاء الاصطناعي والأتمتة الذكية للشركات والمؤسسات في السعودية والمنطقة العربية. الرئيسية — Bright AI وكيل الذكاء الاصطناعي (AIaaS) الأتمتة الذكية استشارات متخصصة تحليل البيانات مسارات العمل الذكية جميع الخدمات تحليل المناقصات مقارنة المناقصات نظام ContractAI قوالب المناقصات حلول AI الطبية ما هو الذكاء الاصطناعي؟ تعلم الآلة أدوات AI مجانية سياسة الخصوصية النماذج والمنتجات الذكية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "منتجات Bright AI الجاهزة في مجالات التعليم والأرشفة الطبية والتوظيف، مصممة خصيصاً لسوق السعودية."
+          }
+        }
+      ]
     }
   ]
 }
-</script>
+  </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
 <style>
 .brightai-internal-links{background:#020617;color:#e5e7eb;border-top:1px solid rgba(148,163,184,.18);padding:32px 20px}
