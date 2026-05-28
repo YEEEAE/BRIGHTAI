@@ -10,37 +10,37 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://brightai.site/about//</loc>
+    <loc>https://brightai.site/about/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/contact//</loc>
+    <loc>https://brightai.site/contact/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/cookie-policy//</loc>
+    <loc>https://brightai.site/cookie-policy/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/data-processing-agreement//</loc>
+    <loc>https://brightai.site/data-processing-agreement/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/demo//</loc>
+    <loc>https://brightai.site/demo/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard//</loc>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -100,7 +100,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/demo/ai-tenders-analysis//</loc>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -142,37 +142,19 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/en/cookie-policy//</loc>
+    <loc>https://brightai.site/en/privacy-policy/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/en/data-processing-agreement//</loc>
+    <loc>https://brightai.site/en/terms/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/en/pdpl-statement//</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/en/privacy-policy//</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/en/terms//</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/kernel//</loc>
+    <loc>https://brightai.site/kernel/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -202,43 +184,43 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/pdpl-statement//</loc>
+    <loc>https://brightai.site/pdpl-statement/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/pricing//</loc>
+    <loc>https://brightai.site/pricing/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/privacy-cookies//</loc>
+    <loc>https://brightai.site/privacy-cookies/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/privacy-policy//</loc>
+    <loc>https://brightai.site/privacy-policy/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/services//</loc>
+    <loc>https://brightai.site/services/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/sitemap//</loc>
+    <loc>https://brightai.site/sitemap/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://brightai.site/terms//</loc>
+    <loc>https://brightai.site/terms/</loc>
     <lastmod>2026-05-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
