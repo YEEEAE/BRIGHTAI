@@ -1,15 +1,363 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap>
-    <loc>https://brightai.site/sitemap-priority.xml</loc>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://brightai.site/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/"/>
     <lastmod>2026-05-28</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://brightai.site/sitemap-services.xml</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.00</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/about/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/about/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/about/"/>
     <lastmod>2026-05-28</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://brightai.site/sitemap-blog.xml</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/services/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/services/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/services/"/>
     <lastmod>2026-05-28</lastmod>
-  </sitemap>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/pricing/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/pricing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/pricing/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/contact/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.80</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/docs/docs/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/docs/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/docs/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/privacy-policy/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/privacy-policy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/privacy-policy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/privacy-policy/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/en/privacy-policy/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/privacy-policy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/privacy-policy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/privacy-policy/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/terms/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/en/terms/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/terms/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/terms/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/terms/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/cookie-policy/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/cookie-policy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/cookie-policy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/cookie-policy/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/en/cookie-policy/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/cookie-policy/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/cookie-policy/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/cookie-policy/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/privacy-cookies/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/privacy-cookies/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/privacy-cookies/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.40</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/pdpl-statement/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/pdpl-statement/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/pdpl-statement/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/pdpl-statement/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/en/pdpl-statement/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/pdpl-statement/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/pdpl-statement/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/pdpl-statement/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/data-processing-agreement/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/data-processing-agreement/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/data-processing-agreement/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/data-processing-agreement/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/en/data-processing-agreement/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/data-processing-agreement/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://brightai.site/en/data-processing-agreement/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/data-processing-agreement/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.45</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/kernel/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/kernel/approvals/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/approvals/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/approvals/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/kernel/audit/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/audit/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/audit/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/kernel/chat/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/chat/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/chat/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/kernel/stats/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/stats/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/stats/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.55</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/landing/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/landing/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/landing/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/dashboard/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/dashboard/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/dashboard/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/compare/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/compare/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/compare/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/reports/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/reports/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/reports/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/settings/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/settings/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/settings/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-tenders-analysis/templates/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-tenders-analysis/templates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-tenders-analysis/templates/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/index-ar/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/index-ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/index-ar/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/executive/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/executive/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/executive/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/finance/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/finance/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/finance/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/quality/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/quality/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/quality/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/reports/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/reports/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/reports/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/technical/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/technical/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/technical/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <url>
+    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/workflow/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/workflow/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/workflow/"/>
+    <lastmod>2026-05-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+</urlset>
 </sitemapindex>

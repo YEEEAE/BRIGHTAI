@@ -149,15 +149,12 @@ services:
         }
       }
 
-      // Keep only publish-safe files from bundled demo dashboards.
       removeIfExists("demo/ai-reject-dashboard/backend");
       removeIfExists("demo/ai-reject-dashboard/node_modules");
       removeIfExists("demo/ai-reject-dashboard/docs");
       removeIfExists("demo/ai-reject-dashboard/tests");
       removeIfExists("demo/ai-reject-dashboard/scripts");
 
-      // Convert real .html application pages to clean canonical /path/ URLs.
-      // Components such as frontend/components/nav.html are intentionally left unchanged because the app fetches them directly.
       for (const dir of [
         "docs",
         "dashboard",
@@ -309,7 +306,6 @@ services:
         name: Content-Type
         value: application/manifest+json; charset=utf-8
     routes:
-      # API proxy routes
       - type: rewrite
         source: /api/*
         destination: https://brightai-api.onrender.com/api/*
@@ -317,7 +313,6 @@ services:
         source: /ws/*
         destination: https://brightai-api.onrender.com/ws/*
 
-      # Canonical root and high-confidence existing pages
       - type: redirect
         source: /index.html
         destination: /
@@ -400,7 +395,6 @@ services:
         source: /sitemap/index.html
         destination: /sitemap/
 
-      # English legal pages that exist in the repository
       - type: redirect
         source: /en/privacy-policy
         destination: /en/privacy-policy/
@@ -432,7 +426,6 @@ services:
         source: /en/data-processing-agreement/index.html
         destination: /en/data-processing-agreement/
 
-      # Docs: the only docs HTML page currently present is docs/docs.html, canonical /docs/docs/
       - type: redirect
         source: /docs
         destination: /docs/docs/
@@ -452,7 +445,6 @@ services:
         source: /en/docs/
         destination: /docs/docs/
 
-      # BrightAI Kernel dashboard pages that exist and are normalized to /path/
       - type: redirect
         source: /dashboard/:page.html
         destination: /dashboard/:page/
@@ -460,7 +452,6 @@ services:
         source: /kernel/:page.html
         destination: /kernel/:page/
 
-      # AI tenders demo pages that exist and are normalized to /path/
       - type: redirect
         source: /demo/ai-tenders-analysis/:page.html
         destination: /demo/ai-tenders-analysis/:page/
@@ -522,7 +513,6 @@ services:
         source: /en/tenders/:page.html
         destination: /demo/ai-tenders-analysis/:page/
 
-      # AI Reject dashboard pages that exist under /demo/ai-reject-dashboard/
       - type: redirect
         source: /login
         destination: /demo/ai-reject-dashboard/frontend/pages/login/
@@ -563,7 +553,6 @@ services:
         source: /pages/profile
         destination: /demo/ai-reject-dashboard/frontend/pages/profile/
 
-      # Legacy frontend page aliases mapped only to pages that currently exist
       - type: redirect
         source: /frontend/pages/about-us
         destination: /about/
@@ -592,7 +581,6 @@ services:
         source: /frontend/pages/our-products/index.html
         destination: /services/
 
-      # Removed missing page targets from the previous file and route them to real sections instead.
       - type: redirect
         source: /consultation
         destination: /contact/
@@ -768,7 +756,6 @@ services:
         source: /demo/data-analyzer/
         destination: /demo/
 
-      # Clean URL support for real generated pages
       - type: redirect
         source: /dashboard/:page
         destination: /dashboard/:page/
@@ -803,7 +790,6 @@ services:
         source: /demo/ai-reject-dashboard/frontend/pages/admin/:page/
         destination: /demo/ai-reject-dashboard/frontend/pages/admin/:page/index.html
 
-      # Safe generic clean URL support for index.html folders that actually exist.
       - type: redirect
         source: /:slug/index.html
         destination: /:slug/
