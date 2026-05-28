@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b1220" />
+  
+  <title>الوثائق والأدلة | BrightAI – Saudi AI Safety OS</title>
+  <meta name="description" content="وثائق BrightAI الشاملة - أدلة التركيب، الاستخدام، الامتثال، وأفضل الممارسات لنظام أمان وحوكمة الذكاء الاصطناعي السعودي" />
+  
+  <link rel="canonical" href="https://brightai.site/blog/" />
+  <link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png">
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
+  
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Tajawal','IBM Plex Sans Arabic',system-ui,sans-serif;
+      background: #060914;
+      color: #e6edf7;
+      overflow-x: hidden;
+    }
+    .bg-grid {
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,212,255,.18), transparent 60%),
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: auto, 42px 42px, 42px 42px;
+      background-color: #060914;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #00d4ff 0%, #7c5cff 50%, #ff5ca7 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+      border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(10px);
+    }
+    .glow-btn {
+      background: linear-gradient(135deg,#00d4ff,#7c5cff);
+      box-shadow: 0 10px 40px -10px rgba(0,212,255,.6), inset 0 1px 0 rgba(255,255,255,.25);
+    }
+    .glow-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .doc-card { transition: all .3s ease; }
+    .doc-card:hover { transform: translateY(-4px); border-color: rgba(0,212,255,.35); }
+    .chip { background: rgba(0,212,255,.08); border:1px solid rgba(0,212,255,.25); color:#9be5ff; }
+    .group:hover .group-hover\:opacity-100 { opacity: 1; }
+    .group:hover .group-hover\:visible { visibility: visible; }
+  </style>
+</head>
+<body class="bg-grid">
+
+<!-- ================= HEADER / NAV ================= -->
+<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
+  <nav role="navigation" aria-label="القائمة الرئيسية" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
+      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <img src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" class="h-full w-full object-contain">
+      </div>
+      <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">AI</span></span>
+      <span class="hidden md:inline text-xs text-white/50 border-r border-white/10 pr-3 mr-1">Saudi AI Safety</span>
+    </a>
+
+    <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80">
+      <li><a href="/#product" class="hover:text-white transition-colors">المنتج</a></li>
+      <li><a href="/#layers" class="hover:text-white transition-colors">طبقات الأمان</a></li>
+      <li><a href="/#compliance" class="hover:text-white transition-colors">حزم الامتثال</a></li>
+      <li><a href="/#sectors" class="hover:text-white transition-colors">القطاعات</a></li>
+      <li class="relative group">
+        <button class="hover:text-white transition-colors flex items-center gap-1">
+          <i class="fa-solid fa-microchip ml-1"></i>لوحة النواة
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </button>
+        <div class="absolute top-full right-0 mt-2 w-48 glass rounded-xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl">
+          <a href="/kernel/" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-gauge-high ml-2 text-brand-500"></i>لوحة التحكم</a>
+          <a href="/kernel/chat.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-comments ml-2 text-brand-500"></i>المحادثات</a>
+          <a href="/kernel/audit.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-file-shield ml-2 text-brand-500"></i>سجل التدقيق</a>
+          <a href="/kernel/approvals.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-user-check ml-2 text-brand-500"></i>الموافقات</a>
+          <a href="/kernel/stats.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-chart-line ml-2 text-brand-500"></i>الإحصائيات</a>
+        </div>
+      </li>
+      <li><a href="/blog/" class="text-brand-300 font-bold transition-colors"><i class="fa-solid fa-book ml-1"></i>الوثائق</a></li>
+      <li><a href="/#faq" class="hover:text-white transition-colors">أسئلة شائعة</a></li>
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
+        <i class="fa-brands fa-whatsapp text-lg"></i> تواصل معنا
+      </a>
+      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass" aria-label="فتح القائمة">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main role="main">
+
+<!-- ================= HERO ================= -->
+<section class="py-20 lg:py-28">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto">
+      <span class="chip inline-block px-3 py-1 rounded-full text-xs font-bold">
+        <i class="fa-solid fa-book-open ml-1"></i> مركز الوثائق والمعرفة
+      </span>
+      <h1 class="mt-5 text-4xl sm:text-5xl lg:text-6xl font-black leading-tight">
+        كل ما تحتاجه لـ<span class="gradient-text">إتقان BrightAI</span>
+      </h1>
+      <p class="mt-5 text-lg text-white/75 leading-loose">
+        أدلة شاملة، أمثلة عملية، وأفضل الممارسات لتركيب واستخدام نظام أمان وحوكمة الذكاء الاصطناعي
+      </p>
+      
+      <div class="mt-8 glass rounded-2xl p-4 max-w-xl mx-auto">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-search text-white/40"></i>
+          <input type="search" placeholder="ابحث في الوثائق..." class="flex-1 bg-transparent border-none outline-none text-white placeholder:text-white/40" />
+          <button class="glow-btn px-4 py-2 rounded-xl text-sm font-bold">بحث</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DOCUMENTATION CATEGORIES ================= -->
+<section class="py-10">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    
+    <!-- Getting Started -->
+    <div class="mb-16">
+      <h2 class="text-2xl font-black mb-6 flex items-center gap-3">
+        <i class="fa-solid fa-rocket text-brand-500"></i>
+        البداية السريعة
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <article class="doc-card glass rounded-2xl p-6">
+          <div class="flex items-start justify-between">
+            <i class="fa-solid fa-play-circle text-3xl text-brand-500"></i>
+            <span class="chip text-[10px] px-2 py-0.5 rounded">5 دقائق</span>
+          </div>
+          <h3 class="mt-4 text-xl font-bold">مقدمة سريعة</h3>
+          <p class="mt-2 text-sm text-white/60">تعرف على BrightAI وكيف يعمل في 5 دقائق</p>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold hover:gap-3 transition-all">
+            اقرأ المزيد <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <div class="flex items-start justify-between">
+            <i class="fa-solid fa-download text-3xl text-brand-500"></i>
+            <span class="chip text-[10px] px-2 py-0.5 rounded">15 دقيقة</span>
+          </div>
+          <h3 class="mt-4 text-xl font-bold">دليل التركيب</h3>
+          <p class="mt-2 text-sm text-white/60">خطوات تركيب BrightAI في بيئتك</p>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold hover:gap-3 transition-all">
+            اقرأ المزيد <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <div class="flex items-start justify-between">
+            <i class="fa-solid fa-cog text-3xl text-brand-500"></i>
+            <span class="chip text-[10px] px-2 py-0.5 rounded">10 دقائق</span>
+          </div>
+          <h3 class="mt-4 text-xl font-bold">الإعدادات الأساسية</h3>
+          <p class="mt-2 text-sm text-white/60">ضبط الإعدادات الأولية والتكاملات</p>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold hover:gap-3 transition-all">
+            اقرأ المزيد <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+      </div>
+    </div>
+
+    <!-- Core Features -->
+    <div class="mb-16">
+      <h2 class="text-2xl font-black mb-6 flex items-center gap-3">
+        <i class="fa-solid fa-shield-halved text-brand-500"></i>
+        الميزات الأساسية
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-shield-virus text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">AI Firewall</h3>
+          <p class="mt-2 text-xs text-white/60">حماية البيانات وفلترة الطلبات</p>
+          <a href="#" class="mt-3 text-brand-300 text-xs font-bold">المزيد →</a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-file-shield text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">Audit Trail</h3>
+          <p class="mt-2 text-xs text-white/60">سجل تدقيق شامل لكل عملية</p>
+          <a href="#" class="mt-3 text-brand-300 text-xs font-bold">المزيد →</a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-user-check text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">Human Approval</h3>
+          <p class="mt-2 text-xs text-white/60">نظام الموافقات البشرية</p>
+          <a href="#" class="mt-3 text-brand-300 text-xs font-bold">المزيد →</a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-folder-tree text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">Evidence File</h3>
+          <p class="mt-2 text-xs text-white/60">ملفات التدقيق التلقائية</p>
+          <a href="#" class="mt-3 text-brand-300 text-xs font-bold">المزيد →</a>
+        </article>
+      </div>
+    </div>
+
+    <!-- Compliance -->
+    <div class="mb-16">
+      <h2 class="text-2xl font-black mb-6 flex items-center gap-3">
+        <i class="fa-solid fa-scale-balanced text-brand-500"></i>
+        أدلة الامتثال
+      </h2>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <article class="doc-card glass rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <i class="fa-solid fa-lock text-2xl text-brand-500"></i>
+            <span class="chip text-[10px] px-2 py-0.5 rounded">PDPL</span>
+          </div>
+          <h3 class="font-bold">دليل الامتثال PDPL</h3>
+          <p class="mt-2 text-sm text-white/60">كيفية تحقيق التوافق مع نظام حماية البيانات الشخصية السعودي</p>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold">
+            اقرأ الدليل <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <i class="fa-solid fa-shield text-2xl text-brand-500"></i>
+            <span class="chip text-[10px] px-2 py-0.5 rounded">NCA ECC</span>
+          </div>
+          <h3 class="font-bold">دليل الامتثال NCA ECC</h3>
+          <p class="mt-2 text-sm text-white/60">تطبيق الضوابط الأمنية الأساسية 2-2024</p>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold">
+            اقرأ الدليل <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <i class="fa-solid fa-industry text-2xl text-brand-500"></i>
+            <span class="chip text-[10px] px-2 py-0.5 rounded">SFDA</span>
+          </div>
+          <h3 class="font-bold">دليل ISO 13485 & SFDA</h3>
+          <p class="mt-2 text-sm text-white/60">متطلبات المصانع الطبية ونظام الجودة</p>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold">
+            اقرأ الدليل <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+      </div>
+    </div>
+
+    <!-- Integration Guides -->
+    <div class="mb-16">
+      <h2 class="text-2xl font-black mb-6 flex items-center gap-3">
+        <i class="fa-solid fa-plug text-brand-500"></i>
+        أدلة التكامل
+      </h2>
+      <div class="grid md:grid-cols-2 gap-5">
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-database text-2xl text-brand-500"></i>
+          <h3 class="mt-3 text-lg font-bold">التكامل مع ERP</h3>
+          <p class="mt-2 text-sm text-white/60">ربط BrightAI مع أنظمة SAP، Oracle، Odoo وغيرها</p>
+          <ul class="mt-3 space-y-1 text-xs text-white/50">
+            <li>• SAP S/4HANA</li>
+            <li>• Oracle ERP Cloud</li>
+            <li>• Microsoft Dynamics 365</li>
+            <li>• Odoo</li>
+          </ul>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold">
+            شاهد الأمثلة <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-hospital text-2xl text-brand-500"></i>
+          <h3 class="mt-3 text-lg font-bold">التكامل مع HIS</h3>
+          <p class="mt-2 text-sm text-white/60">ربط مع أنظمة المعلومات الصحية</p>
+          <ul class="mt-3 space-y-1 text-xs text-white/50">
+            <li>• Epic Systems</li>
+            <li>• Cerner</li>
+            <li>• Meditech</li>
+            <li>• أنظمة محلية</li>
+          </ul>
+          <a href="#" class="mt-4 inline-flex items-center gap-2 text-brand-300 text-sm font-bold">
+            شاهد الأمثلة <i class="fa-solid fa-arrow-left"></i>
+          </a>
+        </article>
+      </div>
+    </div>
+
+    <!-- API Reference -->
+    <div class="mb-16">
+      <h2 class="text-2xl font-black mb-6 flex items-center gap-3">
+        <i class="fa-solid fa-code text-brand-500"></i>
+        مرجع API
+      </h2>
+      <div class="glass rounded-2xl p-8">
+        <div class="grid md:grid-cols-3 gap-6">
+          <div>
+            <h3 class="font-bold mb-3">REST API</h3>
+            <ul class="space-y-2 text-sm text-white/70">
+              <li><a href="#" class="hover:text-brand-300">Authentication</a></li>
+              <li><a href="#" class="hover:text-brand-300">Requests</a></li>
+              <li><a href="#" class="hover:text-brand-300">Approvals</a></li>
+              <li><a href="#" class="hover:text-brand-300">Audit Logs</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold mb-3">Webhooks</h3>
+            <ul class="space-y-2 text-sm text-white/70">
+              <li><a href="#" class="hover:text-brand-300">Setup</a></li>
+              <li><a href="#" class="hover:text-brand-300">Events</a></li>
+              <li><a href="#" class="hover:text-brand-300">Security</a></li>
+              <li><a href="#" class="hover:text-brand-300">Testing</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="font-bold mb-3">SDKs</h3>
+            <ul class="space-y-2 text-sm text-white/70">
+              <li><a href="#" class="hover:text-brand-300">Python SDK</a></li>
+              <li><a href="#" class="hover:text-brand-300">Node.js SDK</a></li>
+              <li><a href="#" class="hover:text-brand-300">Java SDK</a></li>
+              <li><a href="#" class="hover:text-brand-300">.NET SDK</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Best Practices -->
+    <div class="mb-16">
+      <h2 class="text-2xl font-black mb-6 flex items-center gap-3">
+        <i class="fa-solid fa-lightbulb text-brand-500"></i>
+        أفضل الممارسات
+      </h2>
+      <div class="grid md:grid-cols-2 gap-5">
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-shield-check text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">أمان البيانات</h3>
+          <p class="mt-2 text-sm text-white/60">أفضل الممارسات لحماية البيانات الحساسة</p>
+          <a href="#" class="mt-3 text-brand-300 text-sm font-bold">اقرأ المزيد →</a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-users-gear text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">إدارة المستخدمين</h3>
+          <p class="mt-2 text-sm text-white/60">تنظيم الصلاحيات والأدوار بفعالية</p>
+          <a href="#" class="mt-3 text-brand-300 text-sm font-bold">اقرأ المزيد →</a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-gauge-high text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">تحسين الأداء</h3>
+          <p class="mt-2 text-sm text-white/60">نصائح لتحسين سرعة الاستجابة</p>
+          <a href="#" class="mt-3 text-brand-300 text-sm font-bold">اقرأ المزيد →</a>
+        </article>
+
+        <article class="doc-card glass rounded-2xl p-6">
+          <i class="fa-solid fa-bug text-2xl text-brand-500"></i>
+          <h3 class="mt-3 font-bold">استكشاف الأخطاء</h3>
+          <p class="mt-2 text-sm text-white/60">حل المشاكل الشائعة بسرعة</p>
+          <a href="#" class="mt-3 text-brand-300 text-sm font-bold">اقرأ المزيد →</a>
+        </article>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= SUPPORT CTA ================= -->
+<section class="py-16">
+  <div class="max-w-4xl mx-auto px-5 lg:px-8">
+    <div class="glass rounded-3xl p-8 lg:p-12 text-center">
+      <i class="fa-solid fa-headset text-5xl text-brand-500"></i>
+      <h2 class="mt-5 text-3xl font-black">محتاج مساعدة إضافية؟</h2>
+      <p class="mt-3 text-white/70">فريق الدعم الفني متاح 24/7 لمساعدتك</p>
+      <div class="mt-6 flex flex-wrap justify-center gap-3">
+        <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background: linear-gradient(135deg,#25D366,#128C7E);">
+          <i class="fa-brands fa-whatsapp text-xl"></i> تواصل عبر واتساب
+        </a>
+        <a href="mailto:yazeed1job@gmail.com" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white">
+          <i class="fa-solid fa-envelope"></i> راسلنا
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer role="contentinfo" class="border-t border-white/5 bg-ink-900/60 mt-10">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-10 text-center">
+    <p class="text-sm text-white/60">© 2026 BrightAI · Saudi AI Safety OS · جميع الحقوق محفوظة</p>
+    <div class="mt-4 flex justify-center gap-4">
+      <a href="/" class="text-white/60 hover:text-brand-300">الرئيسية</a>
+      <a href="/#product" class="text-white/60 hover:text-brand-300">المنتج</a>
+      <a href="/kernel/" class="text-white/60 hover:text-brand-300">لوحة النواة</a>
+      <a href="/#faq" class="text-white/60 hover:text-brand-300">أسئلة شائعة</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if(menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  }
+</script>
+
+</body>
+</html>

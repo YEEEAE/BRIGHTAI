@@ -217,7 +217,7 @@
       "name": "كيف أتواصل مع فريق BrightAI؟",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "تقدر تتواصل معنا عبر الواتساب مباشرة على الرقم 966538229013 أو عبر البريد الإلكتروني hello@brightai.site. فريقنا يرد خلال 24 ساعة."
+        "text": "تقدر تتواصل معنا عبر الواتساب مباشرة على الرقم 966538229013 أو عبر البريد الإلكتروني yazeed1job@gmail.com. فريقنا يرد خلال 24 ساعة."
       }
     }
   ]
@@ -389,6 +389,10 @@
   /* counter animation */
   .counter { opacity: 0; transform: translateY(20px); transition: all .6s ease; }
   .counter.visible { opacity: 1; transform: translateY(0); }
+  /* dropdown menu */
+  .group:hover .group-hover\:opacity-100 { opacity: 1; }
+  .group:hover .group-hover\:visible { visibility: visible; }
+
 </style>
   <link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png">
 <link rel="apple-touch-icon" href="/frontend/images/logo-new.PNG">
@@ -474,17 +478,29 @@
       <li><a href="#layers" class="hover:text-white transition-colors">طبقات الأمان</a></li>
       <li><a href="#compliance" class="hover:text-white transition-colors">حزم الامتثال</a></li>
       <li><a href="#sectors" class="hover:text-white transition-colors">القطاعات</a></li>
-      <li><a href="#evidence" class="hover:text-white transition-colors">Evidence File</a></li>
+      <li class="relative group">
+        <button class="hover:text-white transition-colors flex items-center gap-1">
+          <i class="fa-solid fa-microchip ml-1"></i>لوحة النواة
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </button>
+        <div class="absolute top-full right-0 mt-2 w-48 glass rounded-xl p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl">
+          <a href="/kernel/" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-gauge-high ml-2 text-brand-500"></i>لوحة التحكم</a>
+          <a href="/kernel/chat.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-comments ml-2 text-brand-500"></i>المحادثات</a>
+          <a href="/kernel/audit.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-file-shield ml-2 text-brand-500"></i>سجل التدقيق</a>
+          <a href="/kernel/approvals.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-user-check ml-2 text-brand-500"></i>الموافقات</a>
+          <a href="/kernel/stats.html" class="block px-4 py-2 rounded-lg hover:bg-white/5 transition-colors"><i class="fa-solid fa-chart-line ml-2 text-brand-500"></i>الإحصائيات</a>
+        </div>
+      </li>
+      <li><a href="/blog/" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-book ml-1"></i>الوثائق</a></li>
       <li><a href="#faq" class="hover:text-white transition-colors">أسئلة شائعة</a></li>
-      <li><a href="/kernel/" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-microchip ml-1"></i>لوحة النواة</a></li>
     </ul>
 
     <div class="flex items-center gap-2">
       <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold wa-btn text-white" aria-label="تواصل معنا عبر واتساب">
         <i class="fa-brands fa-whatsapp text-lg"></i> تواصل معنا
       </a>
-      <a href="#demo" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold glow-btn text-white">
-        <i class="fa-solid fa-play"></i> اطلب ديمو
+      <a href="mailto:yazeed1job@gmail.com" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold glow-btn text-white" aria-label="راسلنا عبر البريد الإلكتروني">
+        <i class="fa-solid fa-envelope"></i> yazeed1job@gmail.com
       </a>
       <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass" aria-label="فتح القائمة">
         <i class="fa-solid fa-bars"></i>
@@ -493,11 +509,15 @@
   </nav>
   <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 bg-ink-900/95">
     <ul class="px-5 py-3 space-y-2 text-sm">
-      <li><a class="block py-2" href="#product">المنتج</a></li>
-      <li><a class="block py-2" href="#layers">طبقات الأمان</a></li>
-      <li><a class="block py-2" href="#compliance">حزم الامتثال</a></li>
-      <li><a class="block py-2" href="#sectors">القطاعات</a></li>
-      <li><a class="block py-2" href="#evidence">Evidence File</a></li>
+      <li class="border-t border-white/5 pt-2 mt-2">
+        <div class="text-white/50 text-xs font-bold mb-2 px-2">لوحة النواة</div>
+        <a class="block py-2 pr-4" href="/kernel/"><i class="fa-solid fa-gauge-high ml-2 text-brand-500"></i>لوحة التحكم</a>
+        <a class="block py-2 pr-4" href="/kernel/chat.html"><i class="fa-solid fa-comments ml-2 text-brand-500"></i>المحادثات</a>
+        <a class="block py-2 pr-4" href="/kernel/audit.html"><i class="fa-solid fa-file-shield ml-2 text-brand-500"></i>سجل التدقيق</a>
+        <a class="block py-2 pr-4" href="/kernel/approvals.html"><i class="fa-solid fa-user-check ml-2 text-brand-500"></i>الموافقات</a>
+        <a class="block py-2 pr-4" href="/kernel/stats.html"><i class="fa-solid fa-chart-line ml-2 text-brand-500"></i>الإحصائيات</a>
+      </li>
+      <li><a class="block py-2 text-brand-300 font-bold" href="/docs/docs.html"><i class="fa-solid fa-book ml-1"></i>الوثائق</a></li>
       <li><a class="block py-2" href="#faq">أسئلة شائعة</a></li>
       <li><a class="block py-2 text-green-400 font-bold" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> تواصل واتساب</a></li>
     </ul>
@@ -1296,7 +1316,7 @@
       <h3 class="font-bold mb-3">تواصل</h3>
       <ul class="space-y-2 text-sm text-white/60">
         <li><a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hover:text-green-400"><i class="fa-brands fa-whatsapp text-green-400"></i> واتساب: 053-822-9013</a></li>
-        <li><i class="fa-solid fa-envelope text-brand-500"></i> hello@brightai.site</li>
+        <li><a href="mailto:yazeed1job@gmail.com" class="hover:text-brand-300"><i class="fa-solid fa-envelope text-brand-500"></i> yazeed1job@gmail.com</a></li>
         <li><i class="fa-solid fa-location-dot text-brand-500"></i> الرياض، المملكة العربية السعودية</li>
         <li class="flex gap-3 mt-4">
           <a href="#" aria-label="X" class="w-9 h-9 glass rounded-lg inline-flex items-center justify-center hover:text-brand-500"><i class="fa-brands fa-x-twitter"></i></a>
