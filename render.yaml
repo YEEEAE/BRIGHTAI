@@ -149,12 +149,15 @@ services:
         }
       }
 
+      // Keep only publish-safe files from bundled demo dashboards.
       removeIfExists("demo/ai-reject-dashboard/backend");
       removeIfExists("demo/ai-reject-dashboard/node_modules");
       removeIfExists("demo/ai-reject-dashboard/docs");
       removeIfExists("demo/ai-reject-dashboard/tests");
       removeIfExists("demo/ai-reject-dashboard/scripts");
 
+      // Convert real .html application pages to clean canonical /path/ URLs.
+      // Components such as frontend/components/nav.html are intentionally left unchanged because the app fetches them directly.
       for (const dir of [
         "docs",
         "dashboard",
@@ -303,6 +306,7 @@ services:
         name: Content-Type
         value: application/manifest+json; charset=utf-8
     routes:
+      # API proxy routes
       - type: rewrite
         source: /api/*
         destination: https://brightai-api.onrender.com/api/*
@@ -433,6 +437,7 @@ services:
         destination: /sitemap/
 
       # ── English Legal Redirects ─────────────────────────────────────────────
+      # English legal pages that exist in the repository
       - type: redirect
         source: /en/privacy-policy
         destination: /en/privacy-policy/
@@ -480,6 +485,7 @@ services:
         destination: /en/data-processing-agreement/
 
       # ── Docs Module Redirects ───────────────────────────────────────────────
+      # Docs: the only docs HTML page currently present is docs/docs.html, canonical /docs/docs/
       - type: redirect
         source: /docs
         destination: /docs/docs/
@@ -500,6 +506,7 @@ services:
         destination: /docs/docs/
 
       # ── Kernel Module Redirects ─────────────────────────────────────────────
+      # BrightAI Kernel dashboard pages that exist and are normalized to /path/
       - type: redirect
         source: /kernel
         destination: /kernel/
@@ -532,6 +539,7 @@ services:
         destination: /kernel/chat/
 
       # ── Tenders AI Demo Module Redirects ────────────────────────────────────
+      # AI tenders demo pages that exist and are normalized to /path/
       - type: redirect
         source: /tenders
         destination: /demo/ai-tenders-analysis/
@@ -675,6 +683,7 @@ services:
         destination: /demo/ai-tenders-analysis/templates/
 
       # ── AI Reject Dashboard Module Redirects ───────────────────────────────
+      # AI Reject dashboard pages that exist under /demo/ai-reject-dashboard/
       - type: redirect
         source: /login
         destination: /demo/ai-reject-dashboard/frontend/pages/login/
