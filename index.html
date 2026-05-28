@@ -411,9 +411,13 @@
   .chev { transition: transform .25s ease; }
   /* skip link */
   .skip-link {
-    position:absolute; right:-9999px; top:0; background:#00d4ff; color:#000; padding:8px 14px; z-index:9999;
+    background: var(--brightai-accent, #2dd4bf);
+    color: #060914 !important;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(45, 212, 191, 0.4);
+    padding: 10px 18px;
   }
-  .skip-link:focus { right: 8px; top:8px; }
   /* counter animation */
   .counter { opacity: 0; transform: translateY(20px); transition: all .6s ease; }
   .counter.visible { opacity: 1; transform: translateY(0); }
@@ -723,11 +727,11 @@
       
       <!-- قائمة النواة المنسدلة الفاخرة للأجهزة المكتبية -->
       <li class="dropdown-container">
-        <a href="#" class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2">
-          <i class="fa-solid fa-layer-group text-xs"></i>
+        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="kernelDropdownBtn">
+          <i class="fa-solid fa-layer-group text-xs" aria-hidden="true"></i>
           <span>لوحة النواة</span>
-          <i class="fa-solid fa-chevron-down text-[10px] opacity-60"></i>
-        </a>
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
+        </button>
         <div class="dropdown-menu">
           <a href="/kernel/" class="dropdown-item">
             <i class="fa-solid fa-gauge-high text-brand-500"></i>
@@ -812,7 +816,7 @@
   </div>
 </aside>
 
-<main id="main" role="main">
+<main id="main" role="main" tabindex="-1" class="focus:outline-none">
 
 <!-- ================= HERO ================= -->
 <section id="hero-section" aria-labelledby="hero-title" class="relative">
@@ -1559,24 +1563,24 @@
         </div>
 
         <form id="leadForm" class="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl mx-auto text-right">
-          <input required name="name" placeholder="الاسم الكامل" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
-          <input required name="company" placeholder="اسم الشركة" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
-          <input required type="email" name="email" placeholder="البريد الإلكتروني" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
-          <input required type="tel" name="phone" placeholder="رقم الجوال" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
-          <select name="sector" class="sm:col-span-2 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500">
+          <input required name="name" aria-label="الاسم الكامل" placeholder="الاسم الكامل" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
+          <input required name="company" aria-label="اسم الشركة" placeholder="اسم الشركة" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
+          <input required type="email" name="email" aria-label="البريد الإلكتروني" placeholder="البريد الإلكتروني" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
+          <input required type="tel" name="phone" aria-label="رقم الجوال" placeholder="رقم الجوال" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500" />
+          <select name="sector" aria-label="اختر القطاع" class="sm:col-span-2 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-brand-500">
             <option value="">القطاع</option>
             <option>مصانع طبية</option>
             <option>رعاية صحية</option>
             <option>جهة حكومية</option>
             <option>مشتريات ومناقصات</option>
-            <option>مالي / بنوك</option>
+            <option>مالي / بنوع</option>
             <option>تعليم</option>
             <option>غيره</option>
           </select>
-          <button type="submit" class="sm:col-span-2 glow-btn rounded-xl py-3.5 font-bold text-white inline-flex items-center justify-center gap-2">
-            <i class="fa-solid fa-paper-plane"></i> اطلب ديمو الآن
+          <button type="submit" class="sm:col-span-2 glow-btn rounded-xl py-3.5 font-bold text-white inline-flex items-center justify-center gap-2" aria-label="اطلب عرض ديمو الآن">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> اطلب ديمو الآن
           </button>
-          <p id="leadMsg" class="sm:col-span-2 text-sm text-emerald-300 hidden text-center">✓ تم استلام طلبك بنجاح! نتواصل معك خلال 24 ساعة.</p>
+          <p id="leadMsg" class="sm:col-span-2 text-sm text-emerald-300 hidden text-center" aria-live="polite">✓ تم استلام طلبك بنجاح! نتواصل معك خلال 24 ساعة.</p>
         </form>
 
         <div class="mt-8 flex flex-wrap justify-center gap-4 text-xs text-white/60">
@@ -1634,13 +1638,13 @@
     <div>
       <h3 class="font-bold mb-4 text-white text-base">تواصل</h3>
       <ul class="space-y-3 text-sm text-white/65">
-        <li><a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hover:text-green-400 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-400 text-base"></i> <span>واتساب: 053-822-9013</span></a></li>
-        <li><a href="mailto:yazeed1job@gmail.com" class="hover:text-brand-300 flex items-center gap-2"><i class="fa-solid fa-envelope text-brand-500"></i> <span>yazeed1job@gmail.com</span></a></li>
-        <li class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-500"></i> <span>الرياض، المملكة العربية السعودية</span></li>
+        <li><a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hover:text-green-400 flex items-center gap-2"><i class="fa-brands fa-whatsapp text-green-400 text-base" aria-hidden="true"></i> <span>واتساب: 053-822-9013</span></a></li>
+        <li><a href="mailto:yazeed1job@gmail.com" class="hover:text-brand-300 flex items-center gap-2"><i class="fa-solid fa-envelope text-brand-500" aria-hidden="true"></i> <span>yazeed1job@gmail.com</span></a></li>
+        <li class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-brand-500" aria-hidden="true"></i> <span>الرياض، المملكة العربية السعودية</span></li>
         <li class="flex gap-3 mt-5">
-          <a href="#" aria-label="X" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-x-twitter text-base"></i></a>
-          <a href="#" aria-label="LinkedIn" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-linkedin-in text-base"></i></a>
-          <a href="#" aria-label="YouTube" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-youtube text-base"></i></a>
+          <a href="#" aria-label="X" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-x-twitter text-base" aria-hidden="true"></i></a>
+          <a href="#" aria-label="LinkedIn" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-linkedin-in text-base" aria-hidden="true"></i></a>
+          <a href="#" aria-label="YouTube" class="w-10 h-10 glass rounded-xl inline-flex items-center justify-center footer-social-btn text-white/70 hover:text-white"><i class="fa-brands fa-youtube text-base" aria-hidden="true"></i></a>
         </li>
       </ul>
     </div>
@@ -1661,13 +1665,23 @@
   function openDrawer() {
     mobileDrawer?.classList.add('active');
     drawerOverlay?.classList.add('active');
+    mobileDrawer?.setAttribute('aria-hidden', 'false');
+    drawerOverlay?.setAttribute('aria-hidden', 'false');
+    menuBtn?.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    // Shift focus to close button
+    setTimeout(() => drawerCloseBtn?.focus(), 50);
   }
 
   function closeDrawer() {
     mobileDrawer?.classList.remove('active');
     drawerOverlay?.classList.remove('active');
+    mobileDrawer?.setAttribute('aria-hidden', 'true');
+    drawerOverlay?.setAttribute('aria-hidden', 'true');
+    menuBtn?.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    // Restore focus to menu button
+    menuBtn?.focus();
   }
 
   menuBtn?.addEventListener('click', openDrawer);
@@ -1676,6 +1690,35 @@
 
   mobileDrawer?.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', closeDrawer);
+  });
+
+  // Keyboard navigation for desktop dropdown
+  const dropdownBtn = document.getElementById('kernelDropdownBtn');
+  const dropdownContainer = document.querySelector('.dropdown-container');
+  
+  if (dropdownBtn && dropdownContainer) {
+    dropdownBtn.addEventListener('focus', () => {
+      dropdownBtn.setAttribute('aria-expanded', 'true');
+    });
+    dropdownContainer.addEventListener('focusout', (e) => {
+      if (!dropdownContainer.contains(e.relatedTarget)) {
+        dropdownBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+    dropdownBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        dropdownContainer.querySelector('.dropdown-menu a')?.focus();
+      }
+    });
+  }
+
+  // Escape key support sitewide for drawers/dropdowns
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeDrawer();
+      dropdownBtn?.setAttribute('aria-expanded', 'false');
+    }
   });
 
   // Lead form (client-side only)

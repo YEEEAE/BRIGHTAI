@@ -87,21 +87,25 @@
 </head>
 <body class="bg-[#060914] text-white font-sans min-h-screen flex flex-col bright-page--kernel" data-bright-page-type="kernel">
 
+  <a href="#main-content" class="skip-link">تخطي إلى المحتوى الرئيسي</a>
+
   <!-- Header -->
-  <header class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header role="banner" class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
+    <nav role="navigation" aria-label="تنقل النواة" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightAI</span>
         <span class="text-sm text-white/50 hidden sm:inline">|</span>
         <span class="text-sm text-white/60 hidden sm:inline">لوحة تحكم النواة</span>
       </div>
       <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
-         class="flex items-center gap-2 bg-whatsapp/10 hover:bg-whatsapp/20 text-whatsapp border border-whatsapp/20 rounded-xl px-4 py-2 text-sm transition-colors">
-        <i class="fa-brands fa-whatsapp text-lg"></i>
+         class="flex items-center gap-2 bg-whatsapp/10 hover:bg-whatsapp/20 text-whatsapp border border-whatsapp/20 rounded-xl px-4 py-2 text-sm transition-colors" aria-label="تواصل معنا عبر واتساب">
+        <i class="fa-brands fa-whatsapp text-lg" aria-hidden="true"></i>
         <span class="hidden sm:inline">تواصل معنا</span>
       </a>
-    </div>
+    </nav>
   </header>
+
+  <main id="main-content" role="main" tabindex="-1" class="focus:outline-none flex-1">
 
   <!-- Hero -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10 text-center">
@@ -205,10 +209,10 @@
         <p id="stat-pending" class="text-3xl font-bold text-amber-400">—</p>
       </div>
     </div>
-  </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
+  <footer role="contentinfo" class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
     &copy; 2026 BrightAI Kernel
   </footer>
 

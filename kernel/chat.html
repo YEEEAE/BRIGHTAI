@@ -106,10 +106,12 @@
 </head>
 <body class="h-screen flex flex-col font-sans text-white overflow-hidden bright-page--kernel" data-bright-page-type="kernel">
 
+  <a href="#chat-main" class="skip-link">تخطي إلى المحادثة</a>
+
   <!-- Header -->
-  <header class="flex items-center justify-between px-4 py-3 bg-ink-900/60 backdrop-blur-xl border-b border-white/10 shrink-0 z-30">
+  <header role="banner" class="flex items-center justify-between px-4 py-3 bg-ink-900/60 backdrop-blur-xl border-b border-white/10 shrink-0 z-30">
     <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-l from-brand-500 to-purple-500 flex items-center justify-center">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-l from-brand-500 to-purple-500 flex items-center justify-center" aria-hidden="true">
         <i class="fas fa-shield-halved text-white text-sm"></i>
       </div>
       <div>
@@ -118,20 +120,20 @@
       </div>
     </div>
     <div class="flex items-center gap-2">
-      <a href="/kernel/" class="w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-brand-500 transition-colors" title="رجوع">
-        <i class="fas fa-arrow-right text-sm"></i>
+      <a href="/kernel/" class="w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-brand-500 transition-colors" title="رجوع" aria-label="العودة للرئيسية">
+        <i class="fas fa-arrow-right text-sm" aria-hidden="true"></i>
       </a>
-      <a href="https://wa.me/" target="_blank" class="w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-whatsapp transition-colors" title="WhatsApp">
-        <i class="fab fa-whatsapp text-sm"></i>
+      <a href="https://wa.me/966538229013" target="_blank" class="w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-whatsapp transition-colors" title="WhatsApp" aria-label="تواصل معنا عبر واتساب">
+        <i class="fab fa-whatsapp text-sm" aria-hidden="true"></i>
       </a>
       <button id="sidebar-toggle" class="lg:hidden w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-brand-500 transition-colors" title="الإعدادات" aria-label="فتح إعدادات المحادثة" aria-controls="sidebar" aria-expanded="false">
-        <i class="fas fa-sliders text-sm"></i>
+        <i class="fas fa-sliders text-sm" aria-hidden="true"></i>
       </button>
     </div>
   </header>
 
   <!-- Main layout -->
-  <div class="flex flex-1 overflow-hidden relative">
+  <main id="chat-main" role="main" tabindex="-1" class="flex flex-1 overflow-hidden relative focus:outline-none">
 
     <!-- Chat column -->
     <div class="flex-1 flex flex-col min-w-0">
@@ -149,19 +151,19 @@
       <!-- Input area -->
       <div class="shrink-0 border-t border-white/10 bg-ink-900/60 backdrop-blur-xl p-4">
         <!-- Pack pills -->
-        <div class="flex flex-wrap gap-2 mb-3">
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-brand-500 text-white" data-pack="general" onclick="setPack('general')">عام</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="pdpl" onclick="setPack('pdpl')">PDPL</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="nca_ecc" onclick="setPack('nca_ecc')">NCA ECC</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="sfda" onclick="setPack('sfda')">SFDA</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="procurement" onclick="setPack('procurement')">المشتريات</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="healthcare" onclick="setPack('healthcare')">الرعاية الصحية</button>
+        <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="اختر حزمة الامتثال">
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-brand-500 text-white" data-pack="general" aria-pressed="true" onclick="setPack('general')">عام</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="pdpl" aria-pressed="false" onclick="setPack('pdpl')">PDPL</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="nca_ecc" aria-pressed="false" onclick="setPack('nca_ecc')">NCA ECC</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="sfda" aria-pressed="false" onclick="setPack('sfda')">SFDA</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="procurement" aria-pressed="false" onclick="setPack('procurement')">المشتريات</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="healthcare" aria-pressed="false" onclick="setPack('healthcare')">الرعاية الصحية</button>
         </div>
         <!-- Input row -->
         <div class="flex gap-2">
-          <input id="message-input" type="text" placeholder="اكتب رسالتك هنا..." class="flex-1 bg-ink-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30 transition-colors text-sm">
-          <button onclick="sendMessage()" class="px-5 py-3 rounded-xl bg-gradient-to-l from-brand-500 to-purple-500 text-white font-medium text-sm hover:opacity-90 transition-opacity shrink-0">
-            <i class="fas fa-paper-plane ml-1"></i>
+          <input id="message-input" type="text" placeholder="اكتب رسالتك هنا..." aria-label="رسالتك للنواة" class="flex-1 bg-ink-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30 transition-colors text-sm">
+          <button onclick="sendMessage()" class="px-5 py-3 rounded-xl bg-gradient-to-l from-brand-500 to-purple-500 text-white font-medium text-sm hover:opacity-90 transition-opacity shrink-0" aria-label="إرسال الرسالة">
+            <i class="fas fa-paper-plane ml-1" aria-hidden="true"></i>
             إرسال
           </button>
         </div>
@@ -192,7 +194,7 @@
       <!-- Compliance pack -->
       <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
         <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">حزمة الامتثال</h3>
-        <select id="sidebar-pack-select" onchange="setPack(this.value)" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50">
+        <select id="sidebar-pack-select" aria-label="اختر حزمة الامتثال" onchange="setPack(this.value)" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50">
           <option value="general">عام — General</option>
           <option value="pdpl">PDPL — حماية البيانات</option>
           <option value="nca_ecc">NCA ECC — الأمن السيبراني</option>
@@ -205,7 +207,7 @@
       <!-- User ID -->
       <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
         <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">معرّف المستخدم</h3>
-        <input id="user-id-input" type="text" value="demo-user" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50" oninput="userId = this.value">
+        <input id="user-id-input" aria-label="معرّف المستخدم" type="text" value="demo-user" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50" oninput="userId = this.value">
       </div>
 
       <!-- Session info -->
@@ -217,9 +219,10 @@
           <div class="flex justify-between"><span>بانتظار الموافقة</span><span id="pending-count" class="text-yellow-400">0</span></div>
           <div class="flex justify-between"><span>الحزمة الحالية</span><span id="current-pack-label" class="text-brand-400">عام</span></div>
         </div>
-      </div>
     </aside>
-  </div>
+  </main>
+
+  <div id="chat-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
 
   <script>
     // State
@@ -257,6 +260,14 @@
       sidebarOverlay.classList.add('hidden');
     }
 
+    function announceToScreenReader(msg) {
+      const region = document.getElementById('chat-live-region');
+      if (region) {
+        region.textContent = '';
+        setTimeout(() => { region.textContent = msg; }, 50);
+      }
+    }
+
     // Send message
     async function sendMessage() {
       const msg = messageInput.value.trim();
@@ -266,6 +277,7 @@
       messageInput.value = '';
       msgCount++;
       updateStats();
+      announceToScreenReader("تم إرسال رسالتك، جاري التحليل من قبل النواة...");
 
       const loadingEl = addMessage('جاري التحليل...', 'loading');
 
@@ -283,16 +295,20 @@
           blockedCount++;
           updateStats();
           addMessage('\u{1F6AB} ' + data.reason, 'blocked', data);
+          announceToScreenReader("تنبيه: تم حظر الرسالة من قبل النواة. السبب: " + data.reason);
         } else if (data.status === 'pending_approval') {
           pendingCount++;
           updateStats();
           addMessage('⏳ بانتظار الموافقة (مخاطر: ' + data.riskScore + ')', 'pending', data);
+          announceToScreenReader("تنبيه: الرسالة قيد المراجعة البشرية لوجود مخاطر بدرجة: " + data.riskScore);
         } else {
           addMessage(data.response, 'ai', data);
+          announceToScreenReader("استجابة جديدة من النواة: " + data.response);
         }
       } catch(e) {
         loadingEl.remove();
         addMessage('خطأ في الاتصال بالنواة', 'error');
+        announceToScreenReader("خطأ: تعذر الاتصال بنواة BrightAI حالياً.");
       }
     }
 
@@ -346,9 +362,11 @@
         p.classList.toggle('text-gray-400', !isActive);
         p.classList.toggle('border', !isActive);
         p.classList.toggle('border-white/10', !isActive);
+        p.setAttribute('aria-pressed', isActive ? 'true' : 'false');
       });
       document.getElementById('sidebar-pack-select').value = pack;
       document.getElementById('current-pack-label').textContent = packLabels[pack] || pack;
+      announceToScreenReader("تم تغيير حزمة الامتثال النشطة إلى " + (packLabels[pack] || pack));
     }
 
     function updateStats() {

@@ -180,25 +180,27 @@
 </head>
 <body class="text-white font-sans min-h-screen flex flex-col bright-page--kernel" data-bright-page-type="kernel">
 
+  <a href="#stats-main" class="skip-link">تخطي إلى الإحصائيات</a>
+
   <!-- Header -->
-  <header class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header role="banner" class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
+    <nav role="navigation" aria-label="تنقل الإحصائيات" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-500 transition-colors text-sm">
-          <i class="fa-solid fa-arrow-right text-xs"></i>
+        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-500 transition-colors text-sm" aria-label="العودة للرئيسية">
+          <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
           <span>الرئيسية</span>
         </a>
         <span class="text-white/20">|</span>
         <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightAI Kernel</span>
       </div>
       <h1 class="text-sm sm:text-base text-white/60">
-        <i class="fa-solid fa-chart-line text-brand-500 ml-2"></i>
+        <i class="fa-solid fa-chart-line text-brand-500 ml-2" aria-hidden="true"></i>
         لوحة الإحصائيات
       </h1>
-    </div>
+    </nav>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+  <main id="stats-main" role="main" tabindex="-1" class="focus:outline-none max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
 
     <!-- Top Metrics Row -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
@@ -304,11 +306,11 @@
   </main>
 
   <!-- Footer -->
-  <footer class="mt-auto border-t border-white/10 py-6">
+  <footer role="contentinfo" class="mt-auto border-t border-white/10 py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-white/30 text-sm">
       <span>&copy; 2026 BrightAI Kernel</span>
       <span class="flex items-center gap-2">
-        <span class="pulse-dot"></span>
+        <span class="pulse-dot" aria-hidden="true"></span>
         تحديث تلقائي كل ٣٠ ثانية
       </span>
     </div>

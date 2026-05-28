@@ -93,20 +93,24 @@
 </head>
 <body class="bg-[#060914] text-white font-sans min-h-screen flex flex-col bright-page--kernel" data-bright-page-type="kernel">
 
+  <a href="#approvals-main" class="skip-link">تخطي إلى الموافقات المعلقة</a>
+
   <!-- Header -->
-  <header class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <header role="banner" class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
+    <nav role="navigation" aria-label="تنقل الموافقات" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-500 transition-colors text-sm">
-          <i class="fa-solid fa-arrow-right"></i>
+        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-500 transition-colors text-sm" aria-label="العودة للرئيسية">
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
           <span>العودة</span>
         </a>
         <span class="text-white/20">|</span>
         <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightAI Kernel</span>
       </div>
       <h1 class="text-sm sm:text-base text-white/70 font-medium">الموافقات المعلقة</h1>
-    </div>
+    </nav>
   </header>
+
+  <main id="approvals-main" role="main" tabindex="-1" class="focus:outline-none flex-1">
 
   <!-- Summary Bar -->
   <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
@@ -134,10 +138,10 @@
         <p class="text-gray-400 text-lg">جاري التحميل...</p>
       </div>
     </div>
-  </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
+  <footer role="contentinfo" class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
     &copy; 2026 BrightAI Kernel
   </footer>
 
@@ -185,14 +189,14 @@
             <span class="text-xs px-2 py-1 bg-brand-500/20 text-brand-300 rounded">${item.compliance_pack || 'general'}</span>
           </div>
           <div class="flex gap-3" id="actions-${item.interaction_id}">
-            <button onclick="showApprovalForm('${item.interaction_id}', 'approve')" class="flex-1 py-2 bg-green-500/20 text-green-300 border border-green-500/30 rounded-xl hover:bg-green-500/30 transition"><i class="fas fa-check ml-2"></i>موافقة</button>
-            <button onclick="showApprovalForm('${item.interaction_id}', 'reject')" class="flex-1 py-2 bg-red-500/20 text-red-300 border border-red-500/30 rounded-xl hover:bg-red-500/30 transition"><i class="fas fa-times ml-2"></i>رفض</button>
+            <button id="btn-approve-${item.interaction_id}" onclick="showApprovalForm('${item.interaction_id}', 'approve')" class="flex-1 py-2 bg-green-500/20 text-green-300 border border-green-500/30 rounded-xl hover:bg-green-500/30 transition" aria-expanded="false" aria-controls="form-${item.interaction_id}" aria-label="موافقة على الطلب ${item.interaction_id}"><i class="fas fa-check ml-2" aria-hidden="true"></i>موافقة</button>
+            <button id="btn-reject-${item.interaction_id}" onclick="showApprovalForm('${item.interaction_id}', 'reject')" class="flex-1 py-2 bg-red-500/20 text-red-300 border border-red-500/30 rounded-xl hover:bg-red-500/30 transition" aria-expanded="false" aria-controls="form-${item.interaction_id}" aria-label="رفض الطلب ${item.interaction_id}"><i class="fas fa-times ml-2" aria-hidden="true"></i>رفض</button>
           </div>
-          <div id="form-${item.interaction_id}" class="hidden mt-4">
-            <textarea id="comment-${item.interaction_id}" class="w-full bg-ink-800 border border-white/10 rounded-xl p-3 text-white text-sm mb-3" rows="2" placeholder="تعليق (اختياري)"></textarea>
+          <div id="form-${item.interaction_id}" class="hidden mt-4" role="region" aria-label="نموذج القرار للطلب ${item.interaction_id}">
+            <textarea id="comment-${item.interaction_id}" aria-label="تعليق القرار (اختياري)" class="w-full bg-ink-800 border border-white/10 rounded-xl p-3 text-white text-sm mb-3" rows="2" placeholder="تعليق (اختياري)"></textarea>
             <div class="flex gap-2">
-              <button id="confirm-${item.interaction_id}" class="flex-1 py-2 rounded-xl text-white font-bold">تأكيد</button>
-              <button onclick="hideApprovalForm('${item.interaction_id}')" class="px-4 py-2 bg-ink-800 text-gray-400 rounded-xl hover:bg-ink-700">إلغاء</button>
+              <button id="confirm-${item.interaction_id}" class="flex-1 py-2 rounded-xl text-white font-bold" aria-label="تأكيد القرار">تأكيد</button>
+              <button onclick="hideApprovalForm('${item.interaction_id}')" class="px-4 py-2 bg-ink-800 text-gray-400 rounded-xl hover:bg-ink-700" aria-label="إلغاء">إلغاء</button>
             </div>
           </div>
         </div>
@@ -207,17 +211,35 @@
     function showApprovalForm(id, action) {
       document.getElementById('form-' + id).classList.remove('hidden');
       const btn = document.getElementById('confirm-' + id);
+      const approveBtn = document.getElementById('btn-approve-' + id);
+      const rejectBtn = document.getElementById('btn-reject-' + id);
+      
       if (action === 'approve') {
         btn.className = 'flex-1 py-2 bg-green-500 rounded-xl text-white font-bold hover:bg-green-600';
         btn.onclick = () => approveItem(id);
+        approveBtn?.setAttribute('aria-expanded', 'true');
+        rejectBtn?.setAttribute('aria-expanded', 'false');
       } else {
         btn.className = 'flex-1 py-2 bg-red-500 rounded-xl text-white font-bold hover:bg-red-600';
         btn.onclick = () => rejectItem(id);
+        approveBtn?.setAttribute('aria-expanded', 'false');
+        rejectBtn?.setAttribute('aria-expanded', 'true');
       }
+      
+      // Focus comment textarea
+      setTimeout(() => document.getElementById('comment-' + id)?.focus(), 50);
     }
 
     function hideApprovalForm(id) {
       document.getElementById('form-' + id).classList.add('hidden');
+      const approveBtn = document.getElementById('btn-approve-' + id);
+      const rejectBtn = document.getElementById('btn-reject-' + id);
+      
+      approveBtn?.setAttribute('aria-expanded', 'false');
+      rejectBtn?.setAttribute('aria-expanded', 'false');
+      
+      // Restore focus to approve button
+      approveBtn?.focus();
     }
 
     async function approveItem(id) {
