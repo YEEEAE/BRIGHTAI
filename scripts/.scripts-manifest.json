@@ -1,0 +1,285 @@
+{
+  "version": "2.0.0",
+  "lastUpdated": "2026-05-28",
+  "description": "BrightAI Scripts Manifest - تسجيل شامل لجميع السكريبتات المستخدمة في المشروع",
+  "categories": {
+    "build": {
+      "description": "سكريبتات البناء والتجميع",
+      "scripts": [
+        {
+          "name": "build-tailwind-purged.mjs",
+          "command": "npm run tailwind:build",
+          "description": "بناء وتصفية وتصغير Tailwind CSS",
+          "status": "active",
+          "dependencies": ["tailwindcss", "purgecss", "esbuild"]
+        },
+        {
+          "name": "minify-seo-assets.mjs",
+          "command": "npm run assets:minify",
+          "description": "تصغير ملفات CSS و JavaScript",
+          "status": "active",
+          "dependencies": ["esbuild"]
+        },
+        {
+          "name": "replace-unminified-refs.mjs",
+          "command": "npm run assets:replace-refs",
+          "description": "استبدال المراجع بالملفات المصغرة",
+          "status": "active",
+          "dependencies": ["cheerio"]
+        },
+        {
+          "name": "apply-production-audit-fixes.mjs",
+          "command": "npm run production:fixes",
+          "description": "تطبيق إصلاحات التدقيق للإنتاج",
+          "status": "active",
+          "dependencies": []
+        }
+      ]
+    },
+    "verification": {
+      "description": "سكريبتات الفحص والتحقق",
+      "scripts": [
+        {
+          "name": "verify-all.mjs",
+          "command": "npm run verify:all",
+          "description": "فحص شامل لجودة المشروع",
+          "status": "active",
+          "updated": "2026-05-28",
+          "checks": [
+            "internal-links",
+            "canonical-tags",
+            "sitemap",
+            "noindex",
+            "page-structure"
+          ]
+        },
+        {
+          "name": "check-render-readiness.mjs",
+          "command": "node scripts/check-render-readiness.mjs",
+          "description": "التحقق من جاهزية النشر على Render",
+          "status": "active",
+          "dependencies": []
+        },
+        {
+          "name": "check-performance-budget.js",
+          "command": "npm run performance:budget",
+          "description": "فحص ميزانية الأداء",
+          "status": "active",
+          "config": "performance-budget.config.json"
+        }
+      ]
+    },
+    "seo": {
+      "description": "سكريبتات SEO والروابط",
+      "scripts": [
+        {
+          "name": "seo-health-check.mjs",
+          "command": "npm run seo:check",
+          "description": "فحص صحة SEO الشامل",
+          "status": "active",
+          "dependencies": ["sitemap-audit-utils.mjs", "seo-url-map.mjs"]
+        },
+        {
+          "name": "seo-ci-check.mjs",
+          "command": "npm run seo:gate",
+          "description": "فحص SEO للتكامل المستمر",
+          "status": "active",
+          "dependencies": []
+        },
+        {
+          "name": "generate-sitemap-all-pages.mjs",
+          "command": "npm run sitemap:generate",
+          "description": "توليد sitemap.xml شامل",
+          "status": "active",
+          "outputs": [
+            "sitemap.xml",
+            "sitemap-pages.xml",
+            "sitemap-kernel.xml",
+            "sitemap-demo.xml",
+            "sitemap-legal.xml"
+          ],
+          "dependencies": ["seo-url-map.mjs", "sitemap-audit-utils.mjs"]
+        }
+      ]
+    },
+    "internal-links": {
+      "description": "سكريبتات الروابط الداخلية",
+      "scripts": [
+        {
+          "name": "internal-links-audit.mjs",
+          "command": "npm run internal-links:audit",
+          "description": "تدقيق الروابط الداخلية المكسورة",
+          "status": "active",
+          "dependencies": ["internal-links-common.mjs"]
+        },
+        {
+          "name": "internal-linking-architecture.mjs",
+          "command": "npm run internal-links:inventory",
+          "description": "تحليل بنية الروابط الداخلية",
+          "status": "active",
+          "dependencies": []
+        },
+        {
+          "name": "fix-internal-links.mjs",
+          "command": "npm run internal-links:fix",
+          "description": "إصلاح الروابط الداخلية المكسورة",
+          "status": "active",
+          "dependencies": ["internal-links-common.mjs"]
+        },
+        {
+          "name": "internal-links-common.mjs",
+          "command": "N/A (module)",
+          "description": "وحدة مشتركة لوظائف الروابط الداخلية",
+          "status": "active",
+          "type": "utility-module"
+        }
+      ]
+    },
+    "resources": {
+      "description": "سكريبتات المسارات والموارد",
+      "scripts": [
+        {
+          "name": "resource-paths-audit.mjs",
+          "command": "npm run resource:audit:before",
+          "description": "تدقيق مسارات الموارد",
+          "status": "active",
+          "dependencies": ["resource-paths-common.mjs"]
+        },
+        {
+          "name": "fix-resource-paths.mjs",
+          "command": "npm run resource:fix",
+          "description": "إصلاح مسارات الموارد المكسورة",
+          "status": "active",
+          "dependencies": ["resource-paths-common.mjs"]
+        },
+        {
+          "name": "resource-paths-common.mjs",
+          "command": "N/A (module)",
+          "description": "وحدة مشتركة لوظائف مسارات الموارد",
+          "status": "active",
+          "type": "utility-module"
+        }
+      ]
+    },
+    "utilities": {
+      "description": "الوحدات المساعدة",
+      "scripts": [
+        {
+          "name": "sitemap-audit-utils.mjs",
+          "command": "N/A (module)",
+          "description": "وحدة مساعدة لفحص sitemap",
+          "status": "active",
+          "type": "utility-module",
+          "exports": [
+            "extractCanonicalHref",
+            "extractAlternateHreflangLinks",
+            "hasNoindexDirective",
+            "hasMetaRefresh",
+            "findOnrenderReferences"
+          ]
+        },
+        {
+          "name": "seo-url-map.mjs",
+          "command": "N/A (module)",
+          "description": "وحدة لإدارة خريطة URLs",
+          "status": "active",
+          "type": "utility-module",
+          "exports": [
+            "buildPublicUrlRegistry",
+            "normalizeRelPath",
+            "normalizeSiteUrl",
+            "relPathToCanonical",
+            "findCounterpartRelPath"
+          ]
+        }
+      ]
+    }
+  },
+  "workflows": {
+    "pre-deployment": {
+      "description": "سير العمل قبل النشر",
+      "steps": [
+        "npm run build:assets",
+        "npm run sitemap:generate",
+        "npm run verify:all",
+        "npm run seo:all"
+      ]
+    },
+    "maintenance": {
+      "description": "الصيانة الدورية",
+      "steps": [
+        "npm run internal-links:audit",
+        "npm run internal-links:fix",
+        "npm run resource:audit:before",
+        "npm run resource:fix",
+        "npm run resource:audit:after",
+        "npm run performance:budget"
+      ]
+    }
+  },
+  "reports": {
+    "directory": "reports/",
+    "files": [
+      {
+        "name": "verify-report.json",
+        "description": "تقرير الفحص الشامل",
+        "generatedBy": "verify-all.mjs"
+      },
+      {
+        "name": "sitemap-quality-report.md",
+        "description": "تقرير جودة sitemap",
+        "generatedBy": "generate-sitemap-all-pages.mjs"
+      },
+      {
+        "name": "internal-links/broken_links_before.json",
+        "description": "تقرير الروابط المكسورة قبل الإصلاح",
+        "generatedBy": "internal-links-audit.mjs"
+      },
+      {
+        "name": "internal-links/broken_links_before.md",
+        "description": "تقرير الروابط المكسورة (Markdown)",
+        "generatedBy": "internal-links-audit.mjs"
+      }
+    ]
+  },
+  "configuration": {
+    "files": [
+      {
+        "name": "performance-budget.config.json",
+        "description": "تكوين حدود الأداء",
+        "usedBy": ["check-performance-budget.js"]
+      }
+    ]
+  },
+  "statistics": {
+    "totalScripts": 20,
+    "activeScripts": 20,
+    "utilityModules": 4,
+    "configFiles": 1,
+    "documentationFiles": 3,
+    "deletedScripts": 26,
+    "reductionPercentage": 56.5
+  },
+  "requirements": {
+    "node": ">=22 <23",
+    "npm": ">=10",
+    "moduleSystem": "ES Modules",
+    "encoding": "UTF-8"
+  },
+  "documentation": {
+    "files": [
+      {
+        "name": "README.md",
+        "description": "توثيق شامل لجميع السكريبتات"
+      },
+      {
+        "name": "CHANGELOG.md",
+        "description": "سجل التغييرات والتحديثات"
+      },
+      {
+        "name": ".scripts-manifest.json",
+        "description": "تسجيل شامل للسكريبتات (هذا الملف)"
+      }
+    ]
+  }
+}

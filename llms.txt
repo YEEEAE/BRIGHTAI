@@ -1,103 +1,103 @@
-# BrightAI — Saudi AI Safety OS
+# برايت آي — نظام أمان الذكاء الاصطناعي السعودي
 
-## Overview
-BrightAI (برايت آي) is an AI safety and governance platform designed specifically for Saudi Arabian enterprises. It acts as a middleware layer between employees and AI models, ensuring every AI request is secure, documented, auditable, and compliant with Saudi regulations.
+## نظرة عامة
+برايت آي (BrightAI) هي منصة أمان وحوكمة للذكاء الاصطناعي مصممة خصيصاً للمؤسسات السعودية. تعمل كطبقة وسيطة بين الموظفين ونماذج الذكاء الاصطناعي، لضمان أن كل طلب للذكاء الاصطناعي آمن وموثق وقابل للمراجعة ومتوافق مع الأنظمة السعودية.
 
-Founded: 2025
-Headquarters: Riyadh, Saudi Arabia
-Website: https://brightai.site
-Contact: +966-538-229-013 (WhatsApp) | hello@brightai.site
-Twitter: @BrightAISite
+التأسيس: 2025
+المقر الرئيسي: الرياض، المملكة العربية السعودية
+الموقع الإلكتروني: https://brightai.site
+التواصل: +966538229013 (واتساب) | yazeed1job@gmail.com 
+تويتر: @BrightAISite
 
-## Core Product: BrightAI Kernel
-The BrightAI Kernel is the core engine — similar to QNX in embedded systems — that sits between users and AI models in enterprise environments.
+## المنتج الأساسي: نواة برايت آي (BrightAI Kernel)
+نواة برايت آي هي المحرك الأساسي — مشابه لـ QNX في الأنظمة المدمجة — الذي يقع بين المستخدمين ونماذج الذكاء الاصطناعي في البيئات المؤسسية.
 
-Architecture: Employee → BrightAI Kernel → AI Models (Gemini/GPT/Claude/Local)
-Connected Systems: ERP, CRM, HIS, SharePoint, Excel
+البنية المعمارية: الموظف ← نواة برايت آي ← نماذج الذكاء الاصطناعي (Gemini/GPT/Claude/محلي)
+الأنظمة المتصلة: ERP، CRM، HIS، SharePoint، Excel
 
-## 4 Security Layers
+## 4 طبقات أمنية
 
-### Layer 1: AI Firewall
-- Scans every AI request before it reaches the model
-- Automatic PII Redaction (ID numbers, phone, IBAN, patient IDs)
-- Data sensitivity classification
-- Policy-as-Code customizable per department
-- Blocks or sanitizes sensitive data before AI processing
+### الطبقة 1: جدار حماية الذكاء الاصطناعي
+- فحص كل طلب للذكاء الاصطناعي قبل وصوله للنموذج
+- إخفاء تلقائي للبيانات الشخصية (أرقام الهوية، الهاتف، الآيبان، معرفات المرضى)
+- تصنيف حساسية البيانات
+- سياسات قابلة للتخصيص لكل قسم
+- حظر أو تنقية البيانات الحساسة قبل معالجة الذكاء الاصطناعي
 
-### Layer 2: AI Audit Trail
-- Complete logging of every AI interaction (who asked, what was asked, what data was used, which model responded, sources cited)
-- Append-only immutable ledger
-- SIEM integration for NCA ECC compliance
-- Time-stamped with digital signatures
-- Supports NCA ECC 2-2024 requirements
+### الطبقة 2: سجل تدقيق الذكاء الاصطناعي
+- تسجيل كامل لكل تفاعل مع الذكاء الاصطناعي (من سأل، ماذا سُئل، ما البيانات المستخدمة، أي نموذج أجاب، المصادر المذكورة)
+- سجل غير قابل للتعديل
+- تكامل مع SIEM للامتثال لضوابط الأمن السيبراني الأساسية
+- ختم زمني مع توقيعات رقمية
+- يدعم متطلبات ضوابط الأمن السيبراني الأساسية 2-2024
 
-### Layer 3: Human Approval Layer
-- AI suggests, never decides autonomously
-- Risk-based approval workflow (higher risk = more approvals needed)
-- Mobile approvals via WhatsApp, Email, SMS
-- Smart delegation for out-of-office scenarios
-- Critical actions (destruction, inventory deduction, contract approval) require human sign-off
+### الطبقة 3: طبقة الموافقة البشرية
+- الذكاء الاصطناعي يقترح، لا يقرر بشكل مستقل أبداً
+- سير عمل موافقة قائم على المخاطر (مخاطر أعلى = موافقات أكثر)
+- موافقات عبر الجوال من خلال واتساب، البريد الإلكتروني، الرسائل النصية
+- تفويض ذكي لحالات الغياب
+- الإجراءات الحرجة (الإتلاف، خصم المخزون، الموافقة على العقود) تتطلب موافقة بشرية
 
-### Layer 4: AI Evidence File
-- Automatic PDF audit file for every AI case
-- Includes: case summary, data used, sources, risk score, actions taken, approvals, regulatory references
-- Digitally signed with SHA-256 hash
-- Linked to PDPL/NCA/SFDA/ISO 13485 requirements
-- Exportable in auditor-approved format
+### الطبقة 4: ملف أدلة الذكاء الاصطناعي
+- ملف تدقيق PDF تلقائي لكل حالة ذكاء اصطناعي
+- يتضمن: ملخص الحالة، البيانات المستخدمة، المصادر، درجة المخاطر، الإجراءات المتخذة، الموافقات، المراجع التنظيمية
+- موقع رقمياً بتشفير SHA-256
+- مرتبط بمتطلبات نظام حماية البيانات الشخصية/الهيئة الوطنية للأمن السيبراني/هيئة الغذاء والدواء/ISO 13485
+- قابل للتصدير بصيغة معتمدة من المدققين
 
-## Compliance Packs
+## حزم الامتثال
 
-### PDPL Pack
-Personal Data Protection Law compliance. Includes PII masking, consent management, data sharing logs, data subject notifications, compliance reports ready for SDAIA auditors.
+### حزمة نظام حماية البيانات الشخصية
+الامتثال لنظام حماية البيانات الشخصية. تتضمن إخفاء البيانات الشخصية، إدارة الموافقات، سجلات مشاركة البيانات، إشعارات أصحاب البيانات، تقارير امتثال جاهزة لمدققي سدايا.
 
-### NCA ECC 2-2024 Pack
-National Cybersecurity Authority Essential Cybersecurity Controls. Security controls mapped to operations, access logging, data classification, security reports for national authorities.
+### حزمة ضوابط الأمن السيبراني الأساسية 2-2024
+ضوابط الأمن السيبراني الأساسية للهيئة الوطنية للأمن السيبراني. ضوابط أمنية مرتبطة بالعمليات، تسجيل الوصول، تصنيف البيانات، تقارير أمنية للجهات الوطنية.
 
-### SFDA / ISO 13485 Pack
-Saudi Food and Drug Authority + ISO 13485 for medical device manufacturers. Quality management, CAPA, rejections, complaints, internal audit tracking.
+### حزمة هيئة الغذاء والدواء / ISO 13485
+هيئة الغذاء والدواء السعودية + ISO 13485 لمصنعي الأجهزة الطبية. إدارة الجودة، الإجراءات التصحيحية والوقائية، الرفض، الشكاوى، تتبع التدقيق الداخلي.
 
-### Procurement & Tenders Pack (Etimad)
-Tender analysis, contract risk assessment, penalty clause detection, conflict of interest checks, supplier compliance.
+### حزمة المشتريات والمناقصات (اعتماد)
+تحليل المناقصات، تقييم مخاطر العقود، كشف بنود الغرامات، فحص تضارب المصالح، امتثال الموردين.
 
-### Healthcare Pack
-Medical archiving, OCR, file summarization with patient data protection and medical approval workflows.
+### حزمة الرعاية الصحية
+الأرشفة الطبية، التعرف الضوئي على الحروف، تلخيص الملفات مع حماية بيانات المرضى وسير عمل الموافقات الطبية.
 
-### Finance Pack (SAMA / ZATCA)
-Financial controls, Saudi Central Bank and Zakat/Tax compliance, contract analysis, fraud detection, AML compliance.
+### حزمة المالية (ساما / زاتكا)
+الضوابط المالية، الامتثال للبنك المركزي السعودي وهيئة الزكاة والضريبة والجمارك، تحليل العقود، كشف الاحتيال، الامتثال لمكافحة غسل الأموال.
 
-## Target Sectors
-1. Medical Device Manufacturing — QMS AI for rejections, CAPA, auditing per SFDA/ISO 13485
-2. Healthcare — Medical archiving, OCR, patient data protection
-3. Government — AI compliant with SDAIA and NCA for faster services
-4. Procurement & Tenders — Supplier analysis, risk detection, penalty clauses
-5. Financial Sector — SAMA/ZATCA compliance, fraud detection, AML
-6. Human Resources — Bias-free CV screening with applicant data protection
-7. Supply Chain — Risk monitoring, inventory optimization, demand forecasting
-8. Education — AI tools for Saudi universities with student data protection
+## القطاعات المستهدفة
+1. تصنيع الأجهزة الطبية — ذكاء اصطناعي لنظام إدارة الجودة للرفض، الإجراءات التصحيحية والوقائية، التدقيق وفق هيئة الغذاء والدواء/ISO 13485
+2. الرعاية الصحية — الأرشفة الطبية، التعرف الضوئي على الحروف، حماية بيانات المرضى
+3. الحكومة — ذكاء اصطناعي متوافق مع سدايا والهيئة الوطنية للأمن السيبراني لخدمات أسرع
+4. المشتريات والمناقصات — تحليل الموردين، كشف المخاطر، بنود الغرامات
+5. القطاع المالي — الامتثال لساما/زاتكا، كشف الاحتيال، مكافحة غسل الأموال
+6. الموارد البشرية — فحص السير الذاتية خالٍ من التحيز مع حماية بيانات المتقدمين
+7. سلسلة التوريد — مراقبة المخاطر، تحسين المخزون، التنبؤ بالطلب
+8. التعليم — أدوات ذكاء اصطناعي للجامعات السعودية مع حماية بيانات الطلاب
 
-## Deployment Options
-- Cloud: Hosted in Saudi Arabia
-- Hybrid: Kernel on-premise, AI in cloud
-- Air-Gapped: Fully isolated, no external connections — ideal for government and sensitive manufacturing
+## خيارات النشر
+- السحابة: مستضاف في المملكة العربية السعودية
+- هجين: النواة داخل المؤسسة، الذكاء الاصطناعي في السحابة
+- معزول تماماً: معزول بالكامل، بدون اتصالات خارجية — مثالي للحكومة والتصنيع الحساس
 
-## Pricing
-Custom pricing based on company size, number of users, and compliance packs required. Contact for personalized quote within 24 hours. Special discount for first 10 Saudi companies in the founding program.
+## التسعير
+تسعير مخصص بناءً على حجم الشركة، عدد المستخدمين، وحزم الامتثال المطلوبة. تواصل معنا للحصول على عرض سعر مخصص خلال 24 ساعة. خصم خاص لأول 10 شركات سعودية في برنامج المؤسسين.
 
-## Key Differentiators vs Competitors
-- PDPL/NCA compliant from day one (vs generic chatbots: no compliance)
-- AI Firewall + PII Redaction built-in (vs foreign platforms: add-on at best)
-- Human Approval on decisions (unique to BrightAI)
-- Evidence File PDF with digital signature (unique to BrightAI)
-- Works under any model (Gemini, GPT, Claude, local models)
-- On-Premise + Air-Gapped deployment
-- Saudi team, 24/7 Arabic support
+## المميزات الرئيسية مقارنة بالمنافسين
+- متوافق مع نظام حماية البيانات الشخصية/الهيئة الوطنية للأمن السيبراني من اليوم الأول (مقابل روبوتات الدردشة العامة: بدون امتثال)
+- جدار حماية الذكاء الاصطناعي + إخفاء البيانات الشخصية مدمج (مقابل المنصات الأجنبية: إضافة في أحسن الأحوال)
+- موافقة بشرية على القرارات (فريد لبرايت آي)
+- ملف أدلة PDF مع توقيع رقمي (فريد لبرايت آي)
+- يعمل مع أي نموذج (Gemini، GPT، Claude، نماذج محلية)
+- نشر داخل المؤسسة + معزول تماماً
+- فريق سعودي، دعم عربي على مدار الساعة
 
-## Contact
-- WhatsApp: https://wa.me/966538229013
-- Email: hello@brightai.site
-- Location: Riyadh, Saudi Arabia
-- Twitter: @BrightAISite
-- LinkedIn: https://www.linkedin.com/company/brightai
+## التواصل
+- واتساب: https://wa.me/966538229013
+- البريد الإلكتروني: hello@brightai.site
+- الموقع: الرياض، المملكة العربية السعودية
+- تويتر: @BrightAISite
+- لينكد إن: https://www.linkedin.com/company/brightai
 
-## AI Crawlers
-All AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, etc.) are allowed to crawl and index this site. See robots.txt for details.
+## زواحف الذكاء الاصطناعي
+جميع زواحف الذكاء الاصطناعي (GPTBot، ClaudeBot، PerplexityBot، Google-Extended، إلخ) مسموح لها بالزحف وفهرسة هذا الموقع. راجع robots.txt للتفاصيل.

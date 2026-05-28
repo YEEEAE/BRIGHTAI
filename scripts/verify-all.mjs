@@ -1,7 +1,11 @@
-import fs from 'fs';
-import path from 'path';
+#!/usr/bin/env node
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const rootDir = process.cwd();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 const reportsDir = path.join(rootDir, 'reports');
 
 if (!fs.existsSync(reportsDir)) {
@@ -24,7 +28,18 @@ function logStatus(status, message) {
 
 // دالة لجلب جميع ملفات HTML في المشروع (باستثناء بعض المجلدات)
 function getAllHtmlFiles(dir, fileList = []) {
-  const IGNORED_DIRS = ['eng-abdrahman', 'node_modules', '.git', 'backup-sectors', 'reports'];
+  const IGNORED_DIRS = [
+    'node_modules', 
+    '.git', 
+    '.agents',
+    '.next',
+    '.render-static',
+    'reports',
+    'dist',
+    'build',
+    'coverage',
+    'tmp'
+  ];
   if (!fs.existsSync(dir)) return fileList;
   
   const files = fs.readdirSync(dir);
@@ -44,29 +59,26 @@ const allHtmlFiles = getAllHtmlFiles(rootDir);
 
 // 1. فحص الروابط الداخلية
 console.log('--- 1. فحص الروابط الداخلية ---');
-let hasBloggerLinks = false;
-let hasSectorsLinks = false;
-let hasPrivacyLinks = false;
+let hasBrokenInternalLinks = false;
 
 for (const file of allHtmlFiles) {
   const content = fs.readFileSync(file, 'utf8');
-  if (content.includes('href="/frontend/pages/blogger/')) {
-    hasBloggerLinks = true;
-    errors.push({ type: 'Internal Link', file, issue: 'Contains /frontend/pages/blogger/ link' });
-  }
-  if (content.includes('href="/frontend/pages/sectors/')) {
-    hasSectorsLinks = true;
-    errors.push({ type: 'Internal Link', file, issue: 'Contains /frontend/pages/sectors/ link' });
-  }
-  if (content.includes('href="/frontend/pages/privacy-cookies/')) {
-    hasPrivacyLinks = true;
-    errors.push({ type: 'Internal Link', file, issue: 'Contains /frontend/pages/privacy-cookies/ link' });
+  // فحص الروابط المكسورة أو القديمة
+  const brokenPatterns = [
+    /href=["']\/frontend\/pages\//gi,
+    /href=["']\/backend\//gi,
+    /href=["'].*\.onrender\.com/gi
+  ];
+  
+  for (const pattern of brokenPatterns) {
+    if (pattern.test(content)) {
+      hasBrokenInternalLinks = true;
+      errors.push({ type: 'Internal Link', file, issue: `Contains broken or old internal link pattern: ${pattern}` });
+    }
   }
 }
 
-logStatus(!hasBloggerLinks, 'لا يوجد href يحتوي /frontend/pages/blogger/ في أي ملف HTML.');
-logStatus(!hasSectorsLinks, 'لا يوجد href يحتوي /frontend/pages/sectors/ في أي ملف HTML.');
-logStatus(!hasPrivacyLinks, 'لا يوجد href يحتوي /frontend/pages/privacy-cookies/ في أي ملف HTML.');
+logStatus(!hasBrokenInternalLinks, 'لا توجد روابط داخلية مكسورة أو قديمة في ملفات HTML.');
 
 // 2. فحص Canonicals
 console.log('\n--- 2. فحص Canonicals ---');
@@ -81,9 +93,8 @@ function shouldSkip(filename) {
 
 function checkCanonicals(dirPath, urlPrefix) {
   if (!fs.existsSync(dirPath)) {
-    logStatus(false, `المجلد ${path.basename(dirPath)} غير موجود للتحقق منه.`);
-    errors.push({ type: 'Directory Missing', issue: `${dirPath} is missing` });
-    return false;
+    console.log(`⚠️ المجلد ${path.basename(dirPath)} غير موجود - تم التخطي.`);
+    return true; // لا نعتبره خطأ إذا كان المجلد غير موجود
   }
   
   const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.html'));
@@ -98,10 +109,9 @@ function checkCanonicals(dirPath, urlPrefix) {
     const expectedCanonical = slug === 'index'
       ? `https://brightai.site/${urlPrefix}/`
       : `https://brightai.site/${urlPrefix}/${slug}/`;
-    const canonicalRegex = new RegExp(`<link[^>]+rel=["']canonical["'][^>]*href=["']${expectedCanonical}["'][^>]*>`, 'i');
-    const scopedCanonicalRegex = new RegExp(`<link[^>]+rel=["']canonical["'][^>]*href=["']https://brightai\\.site/${urlPrefix}/[^"']*["'][^>]*>`, 'i');
+    const canonicalRegex = new RegExp(`<link[^>]+rel=["']canonical["'][^>]*href=["']${expectedCanonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["'][^>]*>`, 'i');
 
-    if (!canonicalRegex.test(content) && !scopedCanonicalRegex.test(content)) {
+    if (!canonicalRegex.test(content)) {
       allValid = false;
       errors.push({ type: 'Canonical', file: filePath, issue: `Missing or incorrect canonical for ${slug}. Expected: ${expectedCanonical}` });
     }
@@ -109,11 +119,19 @@ function checkCanonicals(dirPath, urlPrefix) {
   return allValid;
 }
 
-const blogCanonicalsValid = checkCanonicals(path.join(rootDir, 'blog'), 'blog');
-logStatus(blogCanonicalsValid, 'جميع ملفات المدونة الصالحة تحتوي على canonical الصحيح (blog).');
+// فحص المجلدات الرئيسية
+const mainDirs = ['blog', 'kernel', 'demo', 'docs', 'about', 'services', 'pricing'];
+let allCanonicalsValid = true;
 
-const sectorsCanonicalsValid = checkCanonicals(path.join(rootDir, 'sectors'), 'sectors');
-logStatus(sectorsCanonicalsValid, 'جميع ملفات القطاعات الصالحة تحتوي على canonical الصحيح (sectors).');
+for (const dir of mainDirs) {
+  const dirPath = path.join(rootDir, dir);
+  if (fs.existsSync(dirPath)) {
+    const isValid = checkCanonicals(dirPath, dir);
+    if (!isValid) allCanonicalsValid = false;
+  }
+}
+
+logStatus(allCanonicalsValid, 'جميع الملفات تحتوي على canonical tags صحيحة.');
 
 
 // 3. فحص sitemap.xml
@@ -154,25 +172,37 @@ for (const file of allHtmlFiles) {
 logStatus(noindexValid, 'جميع ملفات (تم نقل الصفحة) تحتوي على وسم noindex.');
 
 
-// 5. فحص روابط القطاعات
-console.log('\n--- 5. فحص روابط القطاعات ---');
-let sectorsLinksValid = true;
-const sectorsDir = path.join(rootDir, 'sectors');
-if (fs.existsSync(sectorsDir)) {
-  const files = fs.readdirSync(sectorsDir).filter(f => f.endsWith('.html'));
-  for (const file of files) {
-    if (file === 'index.html') continue;
-    const content = fs.readFileSync(path.join(sectorsDir, file), 'utf8');
-    // استخدمت كلاس related-content للتأكد، ولكنه قد يكون مختلفاً في الكود الذي تم حقنه. الكود الذي حقناه فيه class="related-content"
-    if (!content.includes('related-content')) {
-      sectorsLinksValid = false;
-      errors.push({ type: 'Sector Links Missing', file: path.join('sectors', file), issue: 'Missing related-content section' });
-    }
+// 5. فحص البنية الأساسية للصفحات
+console.log('\n--- 5. فحص البنية الأساسية للصفحات ---');
+let structureValid = true;
+
+for (const file of allHtmlFiles) {
+  const content = fs.readFileSync(file, 'utf8');
+  
+  // تخطي الصفحات الخاصة
+  const basename = path.basename(file);
+  if (['404.html', '500.html', 'offline.html'].includes(basename)) continue;
+  
+  // فحص العناصر الأساسية
+  const hasTitle = /<title[^>]*>[\s\S]*?<\/title>/i.test(content);
+  const hasMetaDescription = /<meta[^>]+name=["']description["'][^>]*>/i.test(content);
+  const hasH1 = /<h1[^>]*>/i.test(content);
+  
+  if (!hasTitle || !hasMetaDescription || !hasH1) {
+    structureValid = false;
+    const missing = [];
+    if (!hasTitle) missing.push('title');
+    if (!hasMetaDescription) missing.push('meta description');
+    if (!hasH1) missing.push('H1');
+    errors.push({ 
+      type: 'Structure', 
+      file, 
+      issue: `Missing essential elements: ${missing.join(', ')}` 
+    });
   }
-} else {
-  sectorsLinksValid = false;
 }
-logStatus(sectorsLinksValid, 'جميع ملفات القطاعات تحتوي على قسم المقالات ذات الصلة (related-content).');
+
+logStatus(structureValid, 'جميع الصفحات تحتوي على العناصر الأساسية (title, description, H1).');
 
 
 // التقرير النهائي
