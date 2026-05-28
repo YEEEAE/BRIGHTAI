@@ -1,7 +1,163 @@
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Bold.woff2") format("woff2");font-weight:800;font-style:normal;font-display:swap}
-@font-face{font-family:"Scheherazade New";src:url("/frontend/fonts/ScheherazadeNew-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
-:root{--brightai-font-arabic:"BrightAI Arabic","IBM Plex Sans Arabic","Tajawal",system-ui,-apple-system,"Segoe UI",sans-serif}
-html[dir="rtl"] body,html[lang^="ar"] body{font-family:var(--brightai-font-arabic)}
+/* ===================================
+   تعريف الخطوط المخصصة
+   =================================== */
+
+@font-face {
+    font-family: 'YearOfCamel-Thin';
+    src: url('../fonts/Thin-Font.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YearOfCamel-Bold';
+    src: url('../fonts/Bold-font.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ===================================
+   تطبيق الخطوط على العناصر
+   =================================== */
+
+/* الخط الرفيع للمحتوى العام */
+body,
+p,
+span,
+div,
+li,
+td,
+th,
+input,
+textarea,
+select,
+button,
+.content,
+.text,
+.description,
+.paragraph {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100;
+}
+
+/* الخط العريض للعناوين */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.heading,
+.title,
+.header,
+.headline,
+strong,
+b,
+.bold,
+.font-bold,
+.fw-bold {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700;
+}
+
+/* تحسينات إضافية للنصوص العربية */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* تحسين عرض النصوص العربية */
+[dir="rtl"],
+.rtl,
+.arabic {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6,
+.rtl h1,
+.rtl h2,
+.rtl h3,
+.rtl h4,
+.rtl h5,
+.rtl h6 {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+}
+
+/* أزرار وعناصر تفاعلية */
+.btn,
+.button,
+a.btn,
+button.btn {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+}
+
+/* قوائم التنقل */
+nav,
+.nav,
+.navbar,
+.menu {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+nav a,
+.nav a,
+.navbar a,
+.menu a {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+/* بطاقات وعناصر UI */
+.card-title,
+.modal-title,
+.alert-heading {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+}
+
+.card-text,
+.modal-body,
+.alert {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+/* جداول */
+table thead th {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+}
+
+table tbody td {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+/* نماذج */
+label,
+.form-label {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+}
+
+.form-control,
+.form-select,
+.form-check-label {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+/* تذييل الصفحة */
+footer {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+footer h1,
+footer h2,
+footer h3,
+footer h4,
+footer h5,
+footer h6 {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+}

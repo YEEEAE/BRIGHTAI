@@ -1,0 +1,335 @@
+/* ===================================
+   BrightAI - نظام الخطوط العالمي
+   تطبيق الخطوط المخصصة على كامل الموقع
+   =================================== */
+
+/* تعريف الخطوط */
+@font-face {
+    font-family: 'YearOfCamel-Thin';
+    src: url('../fonts/Thin-Font.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'YearOfCamel-Bold';
+    src: url('../fonts/Bold-font.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ===================================
+   تطبيق الخطوط - المحتوى العام
+   =================================== */
+
+* {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+body,
+html,
+p,
+span,
+div,
+li,
+ul,
+ol,
+td,
+th,
+a,
+input,
+textarea,
+select,
+button,
+label,
+.text,
+.content,
+.description,
+.paragraph,
+.body-text {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+/* ===================================
+   تطبيق الخطوط - العناوين
+   =================================== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+.heading,
+.title,
+.header,
+.headline,
+strong,
+b,
+.bold,
+.font-bold,
+.fw-bold,
+.font-weight-bold,
+.text-bold {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* ===================================
+   عناصر UI محددة
+   =================================== */
+
+/* الأزرار */
+.btn,
+.button,
+button[type="submit"],
+button[type="button"],
+a.btn,
+.glow-btn,
+.primary-btn,
+.secondary-btn {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* القوائم والتنقل */
+nav,
+.nav,
+.navbar,
+.menu,
+.navigation,
+nav a,
+.nav-link,
+.menu-item {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+/* البطاقات */
+.card,
+.card-body,
+.card-text {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+.card-title,
+.card-header {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* النماذج */
+.form-control,
+.form-select,
+.form-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+.form-label,
+label {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* الجداول */
+table {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+table thead th,
+table th,
+.table-header {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+table tbody td,
+table td {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+/* التنبيهات والرسائل */
+.alert,
+.notification,
+.message {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+.alert-heading,
+.notification-title {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* النوافذ المنبثقة */
+.modal,
+.modal-body {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+.modal-title,
+.modal-header {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* التذييل */
+footer,
+.footer {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+footer h1,
+footer h2,
+footer h3,
+footer h4,
+footer h5,
+footer h6 {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* ===================================
+   تحسينات النصوص العربية
+   =================================== */
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1;
+}
+
+[dir="rtl"],
+.rtl,
+.arabic,
+html[lang="ar"],
+html[lang="ar-SA"] {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+}
+
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6,
+.rtl h1,
+.rtl h2,
+.rtl h3,
+.rtl h4,
+.rtl h5,
+.rtl h6 {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* ===================================
+   فئات مساعدة
+   =================================== */
+
+.font-thin {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+.font-bold,
+.font-heavy {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* Tailwind overrides */
+.font-normal {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+.font-semibold,
+.font-bold,
+.font-extrabold,
+.font-black {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* ===================================
+   عناصر خاصة بـ BrightAI
+   =================================== */
+
+.gradient-text,
+.brand-text {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+.chip,
+.badge,
+.tag {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+.doc-card h3,
+.feature-title,
+.section-title {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* لوحة التحكم */
+.dashboard-title,
+.stat-value,
+.metric-label {
+    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-weight: 700 !important;
+}
+
+.dashboard-text,
+.stat-description {
+    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-weight: 100 !important;
+}
+
+/* ===================================
+   تحسينات الأداء
+   =================================== */
+
+/* تحميل الخطوط بشكل أسرع */
+@supports (font-display: optional) {
+    @font-face {
+        font-family: 'YearOfCamel-Thin';
+        src: url('../fonts/Thin-Font.otf') format('opentype');
+        font-weight: 100;
+        font-style: normal;
+        font-display: optional;
+    }
+    
+    @font-face {
+        font-family: 'YearOfCamel-Bold';
+        src: url('../fonts/Bold-font.otf') format('opentype');
+        font-weight: 700;
+        font-style: normal;
+        font-display: optional;
+    }
+}
