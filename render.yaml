@@ -94,7 +94,6 @@ services:
         --exclude='reports' \
         --exclude='tmp' \
         --exclude='backend' \
-        --exclude='frontend' \
         --exclude='app' \
         --exclude='components' \
         --exclude='lib' \
