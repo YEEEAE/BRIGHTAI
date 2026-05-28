@@ -45,60 +45,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/components/nav/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/admin/users/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/executive/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/finance/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/index-ar/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/quality/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/technical/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/demo/ai-reject-dashboard/frontend/pages/workflow/</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
+
   <url>
     <loc>https://brightai.site/demo/ai-tenders-analysis/</loc>
     <lastmod>2026-05-28</lastmod>

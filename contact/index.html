@@ -476,6 +476,16 @@
             <textarea required id="message" name="message" rows="5" placeholder="أخبرنا عن احتياجاتك أو استفسارك..." class="form-input w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none transition-all resize-y"></textarea>
           </div>
 
+          <div class="flex items-start gap-3 mt-4 mb-2">
+            <input required id="pdpl_consent" name="pdpl_consent" type="checkbox" class="w-5 h-5 rounded border-white/10 bg-white/5 text-brand-500 focus:ring-brand-500 focus:ring-2 focus:ring-offset-0 transition-all cursor-pointer accent-indigo-500 shrink-0 mt-0.5" />
+            <label for="pdpl_consent" class="text-xs text-white/60 leading-relaxed cursor-pointer select-none">
+              أوافق على معالجة بياناتي الشخصية المدخلة وفقاً لـ 
+              <a href="/privacy-policy/" target="_blank" class="text-brand-300 hover:text-white underline decoration-brand-300/50">سياسة الخصوصية</a> 
+              و
+              <a href="/pdpl-statement/" target="_blank" class="text-brand-300 hover:text-white underline decoration-brand-300/50">بيان الامتثال لنظام PDPL السعودي</a>. <span class="text-red-400">*</span>
+            </label>
+          </div>
+
           <button type="submit" class="w-full glow-btn rounded-xl py-4 font-bold text-white inline-flex items-center justify-center gap-2 text-lg">
             <i class="fa-solid fa-paper-plane"></i> أرسل الرسالة
           </button>
