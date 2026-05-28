@@ -550,7 +550,7 @@ async function handleRequest(req, res) {
         skills
       });
     } else if (url.startsWith('/api/kernel/')) {
-      // BrightTrust Kernel — AI Safety & Governance
+      // BrightAI Kernel — AI Safety & Governance
       await kernelRouteHandler(ctx.req, ctx.res, method, url);
     } else {
       ctx.res.setHeader('X-Robots-Tag', 'noindex');
@@ -608,11 +608,11 @@ function startServer() {
   const server = http.createServer(handleRequest);
   setupLiveWebSocket(server);
 
-  // Initialize BrightTrust Kernel database (PostgreSQL)
+  // Initialize BrightAI Kernel database (PostgreSQL)
   initializeDatabase().then(() => {
-    console.log('[BrightTrust Kernel] Database ready');
+    console.log('[BrightAI Kernel] Database ready');
   }).catch(dbError => {
-    console.error('Failed to initialize BrightTrust Kernel database:', dbError.message);
+    console.error('Failed to initialize BrightAI Kernel database:', dbError.message);
   });
 
   server.listen(config.server.port, () => {
@@ -644,7 +644,7 @@ function startServer() {
     console.log('  GET  /api/health     - Health check');
     console.log('  GET  /api/gateway-status - Gateway status + skills summary');
     console.log('  GET  /api/skills     - Full skills registry');
-    console.log('  --- BrightTrust Kernel (AI Safety & Governance) ---');
+    console.log('  --- BrightAI Kernel (AI Safety & Governance) ---');
     console.log('  POST /api/kernel/chat            - Process AI request through all security layers');
     console.log('  GET  /api/kernel/audit           - Query audit trail');
     console.log('  GET  /api/kernel/audit/:id       - Get specific audit entry');
@@ -654,7 +654,7 @@ function startServer() {
     console.log('  GET  /api/kernel/stats           - Dashboard statistics');
     console.log('  POST /api/kernel/evidence/:id    - Generate Evidence File');
     console.log('  GET  /api/kernel/compliance/check - Compliance status');
-    console.log('  GET  /dashboard/     - BrightTrust Kernel Dashboard UI');
+    console.log('  GET  /dashboard/     - BrightAI Kernel Dashboard UI');
     console.log('  WS   /ws/live        - Real-time dashboard updates');
   });
 

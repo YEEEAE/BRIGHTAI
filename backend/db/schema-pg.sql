@@ -1,4 +1,4 @@
--- BrightTrust Kernel — PostgreSQL Schema
+-- BrightAI Kernel — PostgreSQL Schema
 -- Audit trail, approvals, compliance, policies, users
 
 CREATE TABLE IF NOT EXISTS kernel_interactions (

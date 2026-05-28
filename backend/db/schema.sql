@@ -1,4 +1,4 @@
--- BrightTrust Kernel — SQLite Schema
+-- BrightAI Kernel — SQLite Schema
 -- Audit trail, approvals, compliance, policies, users
 
 CREATE TABLE IF NOT EXISTS kernel_interactions (

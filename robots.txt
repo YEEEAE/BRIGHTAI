@@ -1,4 +1,4 @@
-# BrightTrust - Saudi AI Safety OS
+# BrightAI - Saudi AI Safety OS
 # https://brightai.site
 # Optimized for Google indexing, AI search, and EAO
 
@@ -47,7 +47,7 @@ User-agent: Baiduspider-image
 Allow: /
 
 # ==================== AI Crawlers / LLMO / EAO ====================
-# Allow all AI crawlers to learn about BrightTrust
+# Allow all AI crawlers to learn about BrightAI
 
 # OpenAI
 User-agent: GPTBot

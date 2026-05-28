@@ -9,7 +9,7 @@ const { generateEvidenceFile, generateComplianceReport } = require('./evidence')
 const { generateId } = require('../db/init');
 
 function buildSystemInstruction(compliancePack) {
-  const base = 'You are BrightTrust Saqr AI, a secure AI assistant for Saudi enterprises. Respond in Arabic unless the user writes in English. Be professional, concise, and compliant with Saudi regulations.';
+  const base = 'You are BrightAI Saqr AI, a secure AI assistant for Saudi enterprises. Respond in Arabic unless the user writes in English. Be professional, concise, and compliant with Saudi regulations.';
   const packInstructions = {
     pdpl: base + ' You are operating under PDPL (Personal Data Protection Law) compliance. Never request or output personal data. Warn if the user shares sensitive information.',
     nca_ecc: base + ' You are operating under NCA ECC 2-2024 cybersecurity controls. Prioritize security best practices. Log-relevant responses.',
@@ -28,7 +28,7 @@ async function callGemini(maskedMessage, compliancePack) {
 
   if (!apiKey) {
     return {
-      response: '[BrightTrust Kernel] Error: GEMINI_API_KEY not configured. Please set it in environment variables.',
+      response: '[BrightAI Kernel] Error: GEMINI_API_KEY not configured. Please set it in environment variables.',
       model,
       inputTokens: 0,
       outputTokens: 0,
@@ -57,7 +57,7 @@ async function callGemini(maskedMessage, compliancePack) {
 
     if (data.error) {
       return {
-        response: `[BrightTrust Kernel] Gemini API error: ${data.error.message}`,
+        response: `[BrightAI Kernel] Gemini API error: ${data.error.message}`,
         model,
         inputTokens: 0,
         outputTokens: 0,
@@ -79,7 +79,7 @@ async function callGemini(maskedMessage, compliancePack) {
     };
   } catch (err) {
     return {
-      response: `[BrightTrust Kernel] Network error: ${err.message}`,
+      response: `[BrightAI Kernel] Network error: ${err.message}`,
       model,
       inputTokens: 0,
       outputTokens: 0,

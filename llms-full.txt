@@ -1,18 +1,18 @@
-# BrightTrust — Saudi AI Safety OS
+# BrightAI — Saudi AI Safety OS
 
 ## Overview
-BrightTrust (برايت ترست) is an AI safety and governance platform designed specifically for Saudi Arabian enterprises. It acts as a middleware layer between employees and AI models, ensuring every AI request is secure, documented, auditable, and compliant with Saudi regulations.
+BrightAI (برايت آي) is an AI safety and governance platform designed specifically for Saudi Arabian enterprises. It acts as a middleware layer between employees and AI models, ensuring every AI request is secure, documented, auditable, and compliant with Saudi regulations.
 
 Founded: 2025
 Headquarters: Riyadh, Saudi Arabia
 Website: https://brightai.site
 Contact: +966-538-229-013 (WhatsApp) | hello@brightai.site
-Twitter: @BrightTrustSA
+Twitter: @BrightAISite
 
-## Core Product: BrightTrust Kernel
-The BrightTrust Kernel is the core engine — similar to QNX in embedded systems — that sits between users and AI models in enterprise environments.
+## Core Product: BrightAI Kernel
+The BrightAI Kernel is the core engine — similar to QNX in embedded systems — that sits between users and AI models in enterprise environments.
 
-Architecture: Employee → BrightTrust Kernel → AI Models (Gemini/GPT/Claude/Local)
+Architecture: Employee → BrightAI Kernel → AI Models (Gemini/GPT/Claude/Local)
 Connected Systems: ERP, CRM, HIS, SharePoint, Excel
 
 ## 4 Security Layers
@@ -86,8 +86,8 @@ Custom pricing based on company size, number of users, and compliance packs requ
 ## Key Differentiators vs Competitors
 - PDPL/NCA compliant from day one (vs generic chatbots: no compliance)
 - AI Firewall + PII Redaction built-in (vs foreign platforms: add-on at best)
-- Human Approval on decisions (unique to BrightTrust)
-- Evidence File PDF with digital signature (unique to BrightTrust)
+- Human Approval on decisions (unique to BrightAI)
+- Evidence File PDF with digital signature (unique to BrightAI)
 - Works under any model (Gemini, GPT, Claude, local models)
 - On-Premise + Air-Gapped deployment
 - Saudi team, 24/7 Arabic support
@@ -96,8 +96,8 @@ Custom pricing based on company size, number of users, and compliance packs requ
 - WhatsApp: https://wa.me/966538229013
 - Email: hello@brightai.site
 - Location: Riyadh, Saudi Arabia
-- Twitter: @BrightTrustSA
-- LinkedIn: https://www.linkedin.com/company/brighttrust
+- Twitter: @BrightAISite
+- LinkedIn: https://www.linkedin.com/company/brightai
 
 ## AI Crawlers
 All AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, etc.) are allowed to crawl and index this site. See robots.txt for details.

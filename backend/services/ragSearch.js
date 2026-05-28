@@ -1,0 +1,835 @@
+const fs = require('fs');
+const path = require('path');
+const { config } = require('../config');
+const { runGeminiCompletion } = require('./aiGateway');
+const { sanitizeUserInput, filterAIResponse } = require('../utils/sanitizer');
+
+const SITE_ROOT = path.resolve(__dirname, '../..');
+const SKIPPED_INDEX_DIRS = new Set([
+  '.git',
+  '.next',
+  '.turbo',
+  '.vercel',
+  'build',
+  'coverage',
+  'dist',
+  'node_modules'
+]);
+const PRIORITY_PUBLIC_URLS = [
+  '/',
+  '/services/',
+  '/sectors/',
+  '/ai-agent/',
+  '/ai-bots/',
+  '/ai-workflows/',
+  '/smart-automation/',
+  '/data-analysis/',
+  '/blog/',
+  '/tools/',
+  '/docs/',
+  '/en/'
+];
+
+const INDEX_REFRESH_MS = clampNumber(process.env.RAG_INDEX_REFRESH_MS, 5 * 60 * 1000, 30 * 1000, 60 * 60 * 1000);
+const MAX_FILE_BYTES = clampNumber(process.env.RAG_MAX_FILE_BYTES, 500 * 1024, 50 * 1024, 3 * 1024 * 1024);
+const CHUNK_SIZE = clampNumber(process.env.RAG_CHUNK_SIZE_CHARS, 900, 300, 1600);
+const CHUNK_OVERLAP = clampNumber(process.env.RAG_CHUNK_OVERLAP_CHARS, 180, 50, 500);
+const MIN_CHUNK_CHARS = clampNumber(process.env.RAG_MIN_CHUNK_CHARS, 130, 80, 600);
+const DEFAULT_RETRIEVAL_LIMIT = 10;
+const QUERY_CACHE_TTL_MS = clampNumber(process.env.RAG_QUERY_CACHE_TTL_MS, 45 * 1000, 5 * 1000, 10 * 60 * 1000);
+const QUERY_CACHE_MAX_ENTRIES = clampNumber(process.env.RAG_QUERY_CACHE_MAX_ENTRIES, 80, 10, 500);
+const QUERY_EXPANSIONS = new Map([
+  ['وكلاء', ['وكيل', 'agents', 'agent', 'ai', 'aiaas', 'الخدمات', 'services']],
+  ['وكيل', ['وكلاء', 'agents', 'agent', 'ai', 'aiaas', 'الخدمات', 'services']],
+  ['الشات', ['شات', 'بوت', 'chatbot', 'chatbots', 'bot', 'bots', 'ai-bots']],
+  ['شات', ['الشات', 'بوت', 'chatbot', 'chatbots', 'bot', 'bots', 'ai-bots']],
+  ['بوت', ['شات', 'روبوت', 'chatbot', 'chatbots', 'bot', 'bots', 'ai-bots']],
+  ['روبوت', ['بوت', 'bot', 'bots', 'chatbot', 'ai-bots']],
+  ['الرعايه', ['صحيه', 'الصحيه', 'healthcare', 'health', 'hospital', 'medical', 'sectors']],
+  ['صحيه', ['الرعايه', 'الصحيه', 'healthcare', 'health', 'hospital', 'medical', 'sectors']],
+  ['الصحيه', ['الرعايه', 'صحيه', 'healthcare', 'health', 'hospital', 'medical', 'sectors']],
+  ['تحليل', ['بيانات', 'data', 'analysis', 'analytics', 'analyst', 'services']],
+  ['البيانات', ['بيانات', 'data', 'analysis', 'analytics', 'analyst', 'services']],
+  ['بيانات', ['البيانات', 'data', 'analysis', 'analytics', 'analyst', 'services']],
+  ['agents', ['agent', 'ai', 'saudi', 'arabia', 'وكلاء', 'وكيل', 'الخدمات']],
+  ['agent', ['agents', 'ai', 'saudi', 'arabia', 'وكلاء', 'وكيل', 'الخدمات']],
+  ['saudi', ['arabia', 'السعوديه', 'السعودي', 'ksa']],
+  ['arabia', ['saudi', 'السعوديه', 'السعودي', 'ksa']],
+  ['chatbot', ['chatbots', 'bot', 'bots', 'شات', 'بوت', 'ai-bots']],
+  ['chatbots', ['chatbot', 'bot', 'bots', 'شات', 'بوت', 'ai-bots']],
+  ['healthcare', ['health', 'medical', 'hospital', 'الرعايه', 'الصحيه']],
+  ['data', ['analysis', 'analytics', 'تحليل', 'بيانات', 'البيانات']],
+  ['analysis', ['data', 'analytics', 'تحليل', 'بيانات', 'البيانات']]
+]);
+
+const SEARCH_SYSTEM_PROMPT = `
+أنت محرك بحث RAG لموقع BrightAI.
+أجب اعتماداً فقط على المقاطع المسترجعة.
+
+أعد JSON فقط بهذا الشكل:
+{
+  "answer": "إجابة عربية مباشرة",
+  "sources": [
+    {
+      "sourceId": "S1",
+      "title": "عنوان المصدر",
+      "url": "/path",
+      "quote": "مقتطف قصير داعم"
+    }
+  ],
+  "relatedResults": [
+    {
+      "title": "عنوان صفحة",
+      "url": "/path",
+      "description": "وصف مختصر"
+    }
+  ]
+}
+
+قواعد مهمة:
+- استخدم sourceId من المقاطع المعطاة فقط.
+- لا تضف روابط خارجية.
+- إذا المعلومات ناقصة، صرّح بذلك بوضوح.
+- answer من 2 إلى 4 جمل كحد أقصى.
+- sources من 2 إلى 5 عناصر عند توفرها.
+`;
+
+let indexCache = {
+  builtAt: 0,
+  entries: [],
+  idf: new Map(),
+  invertedIndex: new Map()
+};
+const queryCache = new Map();
+
+function isGeminiConfigured() {
+  return !!config.gemini.apiKey && config.gemini.apiKey !== 'YOUR_KEY_HERE';
+}
+
+function clampNumber(rawValue, defaultValue, min, max) {
+  const value = Number(rawValue);
+  if (!Number.isFinite(value)) return defaultValue;
+  return Math.max(min, Math.min(max, Math.round(value)));
+}
+
+function normalizeArabic(text) {
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[أإآٱ]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/[\u064B-\u065F\u0670]/g, '');
+}
+
+function normalizeForSearch(text) {
+  return normalizeArabic(text)
+    .replace(/[^0-9a-z\u0600-\u06ff\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function tokenize(text) {
+  const normalized = normalizeForSearch(text);
+  if (!normalized) return [];
+
+  const tokens = normalized
+    .split(' ')
+    .map(token => token.trim())
+    .filter(token => token.length >= 2);
+
+  const expanded = [];
+  for (const token of tokens) {
+    expanded.push(token);
+
+    if (/^[\u0600-\u06ff]{4,}$/.test(token) && token.startsWith('ال')) {
+      expanded.push(token.slice(2));
+    }
+
+    const expansions = QUERY_EXPANSIONS.get(token);
+    if (Array.isArray(expansions)) {
+      expanded.push(...expansions);
+    }
+  }
+
+  return expanded.filter(token => token.length >= 2);
+}
+
+function decodeHtmlEntities(value) {
+  if (!value) return '';
+
+  return String(value)
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/&lt;/gi, '<')
+    .replace(/&gt;/gi, '>')
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&#(\d+);/g, (_, dec) => {
+      const code = Number(dec);
+      return Number.isFinite(code) ? String.fromCharCode(code) : _;
+    });
+}
+
+function extractTagContent(html, regex) {
+  const match = html.match(regex);
+  return decodeHtmlEntities(match?.[1] || '').replace(/\s+/g, ' ').trim();
+}
+
+function extractMetaDescription(html) {
+  const metaRegex = /<meta[^>]+(?:name|property)=["']description["'][^>]+content=["']([^"']+)["'][^>]*>/i;
+  return extractTagContent(html, metaRegex);
+}
+
+function cleanHtmlToText(html) {
+  if (!html) return '';
+
+  const cleaned = String(html)
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
+    .replace(/<noscript\b[^<]*(?:(?!<\/noscript>)<[^<]*)*<\/noscript>/gi, ' ')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ');
+
+  return decodeHtmlEntities(cleaned).replace(/\s+/g, ' ').trim();
+}
+
+function chunkText(text) {
+  if (!text) return [];
+
+  const chunks = [];
+  const safeStep = Math.max(100, CHUNK_SIZE - CHUNK_OVERLAP);
+  let cursor = 0;
+
+  while (cursor < text.length) {
+    const fragment = text.slice(cursor, cursor + CHUNK_SIZE).trim();
+    if (fragment.length >= MIN_CHUNK_CHARS) {
+      chunks.push(fragment);
+    }
+
+    if (cursor + CHUNK_SIZE >= text.length) break;
+    cursor += safeStep;
+  }
+
+  return chunks;
+}
+
+function trimSnippet(text, maxChars = 260) {
+  const cleaned = String(text || '').replace(/\s+/g, ' ').trim();
+  if (cleaned.length <= maxChars) return cleaned;
+  return `${cleaned.slice(0, maxChars).trim()}...`;
+}
+
+function normalizeUrlFromPath(filePath) {
+  const relative = path.relative(SITE_ROOT, filePath).replace(/\\/g, '/');
+  if (!relative) return '/';
+
+  if (relative === 'index.html') return '/';
+  if (relative === 'docs.html') return '/docs/';
+  if (relative.endsWith('/index.html')) {
+    return `/${relative.slice(0, -'index.html'.length)}`;
+  }
+  if (relative.endsWith('.html')) {
+    return `/${relative.slice(0, -'.html'.length)}/`;
+  }
+
+  return `/${relative}`;
+}
+
+function routePriority(url, filePath = '') {
+  const normalizedFilePath = filePath.replace(/\\/g, '/');
+  let score = 0;
+
+  if (PRIORITY_PUBLIC_URLS.includes(url)) score += 35;
+  if (url.startsWith('/services/')) score += 18;
+  if (url.startsWith('/sectors/')) score += 17;
+  if (url.startsWith('/ai-agent/')) score += 17;
+  if (url.startsWith('/ai-bots/')) score += 17;
+  if (url.startsWith('/data-analysis/')) score += 16;
+  if (url.startsWith('/smart-automation/')) score += 16;
+  if (url.startsWith('/ai-workflows/')) score += 16;
+  if (url.startsWith('/docs/')) score += 12;
+  if (url.startsWith('/en/')) score += 10;
+  if (url.startsWith('/blog/')) score += 9;
+  if (url.startsWith('/tools/')) score += 8;
+  if (url.startsWith('/demo/')) score += 4;
+  if (url.startsWith('/reports/')) score -= 80;
+  if (url === '/404/' || url === '/500/' || url === '/error/') score -= 12;
+  if (normalizedFilePath.endsWith('/index.html')) score += 3;
+
+  return score;
+}
+
+function shouldSkipDirectory(entryName) {
+  return entryName.startsWith('.') || SKIPPED_INDEX_DIRS.has(entryName);
+}
+
+function walkHtmlFiles(startDir) {
+  const files = [];
+
+  if (!fs.existsSync(startDir)) {
+    return files;
+  }
+
+  const stack = [startDir];
+  while (stack.length > 0) {
+    const current = stack.pop();
+    const entries = fs.readdirSync(current, { withFileTypes: true });
+
+    for (const entry of entries) {
+      if (!entry || !entry.name) continue;
+
+      const absolutePath = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (shouldSkipDirectory(entry.name)) continue;
+        stack.push(absolutePath);
+      } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.html')) {
+        files.push(absolutePath);
+      }
+    }
+  }
+
+  return files;
+}
+
+function collectCandidateFiles() {
+  const discovered = walkHtmlFiles(SITE_ROOT);
+  const seen = new Set();
+  const deduped = [];
+
+  for (const filePath of discovered) {
+    if (seen.has(filePath)) continue;
+    seen.add(filePath);
+    deduped.push(filePath);
+  }
+
+  return deduped.sort((a, b) => {
+    const byPriority = routePriority(normalizeUrlFromPath(b), b) - routePriority(normalizeUrlFromPath(a), a);
+    if (byPriority !== 0) return byPriority;
+    return normalizeUrlFromPath(a).localeCompare(normalizeUrlFromPath(b));
+  });
+}
+
+function buildTf(tokens) {
+  const tf = new Map();
+  for (const token of tokens) {
+    tf.set(token, (tf.get(token) || 0) + 1);
+  }
+  return tf;
+}
+
+function buildIndex() {
+  const entries = [];
+  const candidateFiles = collectCandidateFiles();
+  let docCounter = 0;
+
+  for (const filePath of candidateFiles) {
+    try {
+      const stats = fs.statSync(filePath);
+      if (!stats.isFile() || stats.size <= 0 || stats.size > MAX_FILE_BYTES) {
+        continue;
+      }
+
+      const html = fs.readFileSync(filePath, 'utf8');
+      const title = extractTagContent(html, /<title[^>]*>([\s\S]*?)<\/title>/i) || 'صفحة BrightAI';
+      const h1 = extractTagContent(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i);
+      const description = extractMetaDescription(html);
+      const plainText = cleanHtmlToText(html);
+
+      if (!plainText || plainText.length < MIN_CHUNK_CHARS) continue;
+
+      const combinedText = [title, h1, description, plainText].filter(Boolean).join('. ');
+      const chunks = chunkText(combinedText);
+      const url = normalizeUrlFromPath(filePath);
+
+      for (const chunk of chunks) {
+        const tokens = tokenize(`${title} ${description} ${chunk}`);
+        if (tokens.length < 3) continue;
+
+        docCounter += 1;
+        entries.push({
+          id: `doc-${docCounter}`,
+          title,
+          description: description || trimSnippet(chunk, 140),
+          url,
+          chunk,
+          snippet: trimSnippet(chunk, 260),
+          tokens,
+          tf: buildTf(tokens),
+          tokenSet: new Set(tokens),
+          weights: new Map(),
+          norm: 1
+        });
+      }
+    } catch (error) {
+      continue;
+    }
+  }
+
+  const idf = new Map();
+  const invertedIndex = new Map();
+  if (!entries.length) {
+    return {
+      builtAt: Date.now(),
+      entries: [],
+      idf,
+      invertedIndex
+    };
+  }
+
+  const df = new Map();
+  for (const entry of entries) {
+    for (const term of entry.tokenSet) {
+      df.set(term, (df.get(term) || 0) + 1);
+    }
+  }
+
+  const totalDocs = entries.length;
+  for (const [term, docFreq] of df.entries()) {
+    const value = Math.log((totalDocs + 1) / (docFreq + 1)) + 1;
+    idf.set(term, value);
+  }
+
+  for (const entry of entries) {
+    let normSq = 0;
+    for (const [term, count] of entry.tf.entries()) {
+      const idfValue = idf.get(term) || 0;
+      if (!idfValue) continue;
+      const weight = (1 + Math.log(count)) * idfValue;
+      entry.weights.set(term, weight);
+      normSq += weight * weight;
+    }
+    entry.norm = Math.sqrt(normSq) || 1;
+  }
+
+  entries.forEach((entry, index) => {
+    for (const term of entry.weights.keys()) {
+      if (!invertedIndex.has(term)) invertedIndex.set(term, []);
+      invertedIndex.get(term).push(index);
+    }
+  });
+
+  return {
+    builtAt: Date.now(),
+    entries,
+    idf,
+    invertedIndex
+  };
+}
+
+function getIndex() {
+  const isFresh = (
+    Array.isArray(indexCache.entries) &&
+    indexCache.entries.length > 0 &&
+    Date.now() - indexCache.builtAt < INDEX_REFRESH_MS
+  );
+
+  if (isFresh) return indexCache;
+
+  indexCache = buildIndex();
+  return indexCache;
+}
+
+function buildQueryWeights(tokens, idf) {
+  const tf = buildTf(tokens);
+  const weights = new Map();
+  let normSq = 0;
+
+  for (const [term, count] of tf.entries()) {
+    const idfValue = idf.get(term) || 0;
+    if (!idfValue) continue;
+    const weight = (1 + Math.log(count)) * idfValue;
+    weights.set(term, weight);
+    normSq += weight * weight;
+  }
+
+  return {
+    weights,
+    norm: Math.sqrt(normSq) || 1
+  };
+}
+
+function retrieveRelevantChunks(query, options = {}) {
+  const safeQuery = sanitizeUserInput(query || '');
+  const tokens = tokenize(safeQuery);
+  if (!tokens.length) return [];
+
+  const { entries, idf, invertedIndex } = getIndex();
+  if (!entries.length) return [];
+
+  const queryVector = buildQueryWeights(tokens, idf);
+  if (!queryVector.weights.size) return [];
+
+  const normalizedQuery = normalizeForSearch(safeQuery);
+  const candidateIndexes = new Set();
+  for (const term of queryVector.weights.keys()) {
+    const postings = invertedIndex.get(term);
+    if (!postings) continue;
+    for (const index of postings) {
+      candidateIndexes.add(index);
+    }
+  }
+
+  if (!candidateIndexes.size) return [];
+
+  const scored = [];
+
+  for (const entryIndex of candidateIndexes) {
+    const entry = entries[entryIndex];
+    if (!entry) continue;
+
+    let dotProduct = 0;
+    let matchedTokenCount = 0;
+
+    for (const [term, queryWeight] of queryVector.weights.entries()) {
+      const entryWeight = entry.weights.get(term);
+      if (!entryWeight) continue;
+      dotProduct += queryWeight * entryWeight;
+      matchedTokenCount += 1;
+    }
+
+    if (dotProduct <= 0) continue;
+
+    const baseScore = dotProduct / (queryVector.norm * entry.norm);
+    const coverage = matchedTokenCount / queryVector.weights.size;
+
+    let score = baseScore + (coverage * 0.12) + (routePriority(entry.url) * 0.003);
+    const normalizedTitle = normalizeForSearch(entry.title);
+    if (normalizedTitle && normalizedQuery && normalizedTitle.includes(normalizedQuery)) {
+      score += 0.2;
+    }
+
+    const normalizedUrl = normalizeForSearch(entry.url);
+    const urlTokenMatches = tokens.filter(token => normalizedUrl.includes(token)).length;
+    if (urlTokenMatches > 0) {
+      score += Math.min(0.18, urlTokenMatches * 0.045);
+    }
+
+    scored.push({
+      ...entry,
+      score
+    });
+  }
+
+  scored.sort((a, b) => b.score - a.score);
+
+  const limit = clampNumber(options.limit, DEFAULT_RETRIEVAL_LIMIT, 1, 20);
+  const maxPerUrl = clampNumber(options.maxPerUrl, 2, 1, 4);
+  const selected = [];
+  const perUrlCounter = new Map();
+
+  for (const item of scored) {
+    const currentCount = perUrlCounter.get(item.url) || 0;
+    if (currentCount >= maxPerUrl) continue;
+
+    perUrlCounter.set(item.url, currentCount + 1);
+    selected.push(item);
+    if (selected.length >= limit) break;
+  }
+
+  return selected.map((item, index) => ({
+    sourceId: `S${index + 1}`,
+    title: item.title,
+    url: item.url,
+    description: item.description,
+    snippet: item.snippet,
+    score: Number(item.score.toFixed(5))
+  }));
+}
+
+function getQueryCacheKey(query, options = {}) {
+  return JSON.stringify({
+    q: normalizeForSearch(query),
+    maxSources: options.maxSources || 5,
+    retrievalLimit: options.retrievalLimit || DEFAULT_RETRIEVAL_LIMIT,
+    model: options.model || config.gemini.model || '',
+    disableGeneration: options.disableGeneration === true,
+    generationAvailable: isGeminiConfigured()
+  });
+}
+
+function getCachedQueryResult(cacheKey) {
+  const cached = queryCache.get(cacheKey);
+  if (!cached) return null;
+
+  if (Date.now() - cached.createdAt > QUERY_CACHE_TTL_MS) {
+    queryCache.delete(cacheKey);
+    return null;
+  }
+
+  queryCache.delete(cacheKey);
+  queryCache.set(cacheKey, cached);
+  return JSON.parse(JSON.stringify(cached.value));
+}
+
+function setCachedQueryResult(cacheKey, value) {
+  queryCache.set(cacheKey, {
+    createdAt: Date.now(),
+    value
+  });
+
+  while (queryCache.size > QUERY_CACHE_MAX_ENTRIES) {
+    queryCache.delete(queryCache.keys().next().value);
+  }
+}
+
+function parseJsonFromText(text) {
+  if (!text || typeof text !== 'string') return null;
+
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    const objectStart = text.indexOf('{');
+    const objectEnd = text.lastIndexOf('}');
+    if (objectStart !== -1 && objectEnd !== -1 && objectEnd > objectStart) {
+      const fragment = text.slice(objectStart, objectEnd + 1);
+      try {
+        return JSON.parse(fragment);
+      } catch (innerError) {
+        return null;
+      }
+    }
+  }
+
+  return null;
+}
+
+function normalizeUrl(url) {
+  return String(url || '').replace(/[<>"'`]/g, '').trim();
+}
+
+function fallbackAnswer(query, matches) {
+  if (!matches.length) {
+    return 'ما لقيت صفحات كافية للإجابة بدقة. جرّب صياغة السؤال بشكل أوضح أو أضف تفاصيل أكثر.';
+  }
+
+  const topTitles = matches
+    .slice(0, 2)
+    .map(item => item.title)
+    .filter(Boolean)
+    .join('، ');
+
+  return `بناءً على محتوى الموقع، أقرب إجابة لسؤالك "${query}" موجودة في صفحات: ${topTitles}. افتح المصادر بالأسفل للتفاصيل التنفيذية.`;
+}
+
+function fallbackResultsFromMatches(matches, maxItems = 5) {
+  const deduped = [];
+  const seen = new Set();
+
+  for (const item of matches) {
+    if (!item.url || seen.has(item.url)) continue;
+    seen.add(item.url);
+    deduped.push({
+      title: filterAIResponse(item.title || 'صفحة ذات صلة'),
+      url: normalizeUrl(item.url),
+      description: filterAIResponse(item.description || item.snippet || '')
+    });
+    if (deduped.length >= maxItems) break;
+  }
+
+  return deduped;
+}
+
+function sanitizeGeneratedPayload(rawPayload, matches, query) {
+  const payload = rawPayload && typeof rawPayload === 'object' ? rawPayload : {};
+  const bySourceId = new Map(matches.map(item => [item.sourceId, item]));
+  const byUrl = new Map(matches.map(item => [item.url, item]));
+
+  const answer = filterAIResponse(String(payload.answer || '').trim()).slice(0, 1400)
+    || fallbackAnswer(query, matches);
+
+  const sourceCandidates = Array.isArray(payload.sources) ? payload.sources : [];
+  const sources = [];
+  const seenSourceUrls = new Set();
+
+  for (const candidate of sourceCandidates) {
+    if (!candidate || typeof candidate !== 'object') continue;
+
+    const sourceId = String(candidate.sourceId || '').trim();
+    const candidateUrl = normalizeUrl(candidate.url);
+    const matched = bySourceId.get(sourceId) || byUrl.get(candidateUrl);
+
+    if (!matched) continue;
+    if (seenSourceUrls.has(matched.url)) continue;
+    seenSourceUrls.add(matched.url);
+
+    sources.push({
+      sourceId: matched.sourceId,
+      title: filterAIResponse(String(candidate.title || matched.title || '').trim()).slice(0, 160),
+      url: matched.url,
+      quote: filterAIResponse(String(candidate.quote || matched.snippet || '').trim()).slice(0, 320)
+    });
+  }
+
+  if (!sources.length) {
+    for (const matched of matches.slice(0, 4)) {
+      sources.push({
+        sourceId: matched.sourceId,
+        title: matched.title,
+        url: matched.url,
+        quote: matched.snippet
+      });
+    }
+  }
+
+  const generatedResults = Array.isArray(payload.relatedResults) ? payload.relatedResults : [];
+  const relatedResults = generatedResults
+    .filter(item => item && typeof item === 'object')
+    .map(item => ({
+      title: filterAIResponse(String(item.title || '').trim()).slice(0, 160),
+      url: normalizeUrl(item.url),
+      description: filterAIResponse(String(item.description || '').trim()).slice(0, 260)
+    }))
+    .filter(item => item.title && item.url)
+    .slice(0, 5);
+
+  const fallbackResults = fallbackResultsFromMatches(matches, 5);
+  const results = relatedResults.length ? relatedResults : fallbackResults;
+
+  return {
+    answer,
+    sources: sources.slice(0, 5),
+    results
+  };
+}
+
+function buildGenerationPrompt(query, matches) {
+  const context = matches
+    .map(item => (
+      `[${item.sourceId}]
+العنوان: ${item.title}
+الرابط: ${item.url}
+الوصف: ${item.description}
+المقتطف: ${item.snippet}`
+    ))
+    .join('\n\n');
+
+  return `سؤال المستخدم:\n${query}\n\nمقاطع السياق:\n${context}\n\nأعد JSON فقط حسب القواعد.`;
+}
+
+async function generateAnswerWithGemini(query, matches, options = {}) {
+  if (!isGeminiConfigured()) {
+    const error = new Error('GEMINI_NOT_CONFIGURED');
+    error.statusCode = 503;
+    throw error;
+  }
+
+  const activeModel = String(options.model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
+  const result = await runGeminiCompletion({
+    model: activeModel,
+    messages: [
+      { role: 'system', content: SEARCH_SYSTEM_PROMPT },
+      { role: 'user', content: buildGenerationPrompt(query, matches) }
+    ],
+    temperature: 0.2,
+    maxOutputTokens: 950,
+    responseFormat: { type: 'json_object' },
+    demoType: 'site_search',
+    agentType: 'rag_search',
+    sourcePage: '/api/ai/search'
+  });
+
+  if (!result.ok) {
+    const error = new Error(result.error?.message_ar || 'GEMINI_RAG_ERROR');
+    error.statusCode = result.statusCode || 503;
+    error.code = result.error?.code || 'GEMINI_RAG_ERROR';
+    throw error;
+  }
+
+  return result.data && typeof result.data === 'object'
+    ? result.data
+    : parseJsonFromText(result.text || '');
+}
+
+async function searchSiteWithRag(query, options = {}) {
+  const safeQuery = sanitizeUserInput(query || '').slice(0, 700);
+  const cacheKey = getQueryCacheKey(safeQuery, options);
+  const cached = getCachedQueryResult(cacheKey);
+  if (cached) return cached;
+
+  const activeGeminiModel = String(options.model || config.gemini.model || '').trim() || 'gemini-2.5-flash';
+  const retrievalLimit = clampNumber(
+    options.retrievalLimit,
+    Math.max(DEFAULT_RETRIEVAL_LIMIT, options.maxSources || 5),
+    4,
+    20
+  );
+
+  const matches = retrieveRelevantChunks(safeQuery, { limit: retrievalLimit, maxPerUrl: 2 });
+
+  if (!matches.length) {
+    const result = {
+      answer: 'ما ظهرت نتائج كافية داخل المحتوى الحالي. جرّب سؤال أدق أو كلمات مرتبطة بالخدمة المطلوبة.',
+      sources: [],
+      results: [],
+      mode: 'no_matches',
+      retrievalCount: 0
+    };
+    setCachedQueryResult(cacheKey, result);
+    return result;
+  }
+
+  if (options.disableGeneration === true || !isGeminiConfigured()) {
+    const result = {
+      answer: fallbackAnswer(safeQuery, matches),
+      sources: matches.slice(0, 4).map(item => ({
+        sourceId: item.sourceId,
+        title: item.title,
+        url: item.url,
+        quote: item.snippet
+      })),
+      results: fallbackResultsFromMatches(matches, 5),
+      mode: 'retrieval_only',
+      retrievalCount: matches.length
+    };
+    setCachedQueryResult(cacheKey, result);
+    return result;
+  }
+
+  try {
+    const generated = await generateAnswerWithGemini(safeQuery, matches, {
+      model: activeGeminiModel
+    });
+    const normalized = sanitizeGeneratedPayload(generated, matches, safeQuery);
+    const result = {
+      ...normalized,
+      mode: 'rag_gemini',
+      retrievalCount: matches.length
+    };
+    setCachedQueryResult(cacheKey, result);
+    return result;
+  } catch (error) {
+    const result = {
+      answer: fallbackAnswer(safeQuery, matches),
+      sources: matches.slice(0, 4).map(item => ({
+        sourceId: item.sourceId,
+        title: item.title,
+        url: item.url,
+        quote: item.snippet
+      })),
+      results: fallbackResultsFromMatches(matches, 5),
+      mode: 'retrieval_fallback',
+      retrievalCount: matches.length,
+      warning: error?.statusCode === 429 ? 'RATE_LIMIT_EXCEEDED' : 'GENERATION_FAILED'
+    };
+    setCachedQueryResult(cacheKey, result);
+    return result;
+  }
+}
+
+function invalidateRagIndex() {
+  indexCache = {
+    builtAt: 0,
+    entries: [],
+    idf: new Map(),
+    invertedIndex: new Map()
+  };
+  queryCache.clear();
+}
+
+module.exports = {
+  searchSiteWithRag,
+  retrieveRelevantChunks,
+  invalidateRagIndex
+};

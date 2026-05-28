@@ -140,7 +140,7 @@ async function kernelRouteHandler(req, res, method, url) {
 
     res.status(404).json({ error: 'Kernel endpoint not found', errorCode: 'KERNEL_NOT_FOUND' });
   } catch (err) {
-    console.error('[BrightTrust Kernel] Route error:', err);
+    console.error('[BrightAI Kernel] Route error:', err);
     res.status(500).json({ error: 'Kernel processing error', errorCode: 'KERNEL_ERROR', details: err.message });
   }
 }

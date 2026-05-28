@@ -1,8 +1,8 @@
-# BrightTrust — Saudi AI Safety OS
+# BrightAI — Saudi AI Safety OS
 
-**برايت ترست — نظام أمان وحوكمة الذكاء الاصطناعي للشركات السعودية**
+**برايت آي — نظام أمان وحوكمة الذكاء الاصطناعي للشركات السعودية**
 
-BrightTrust Kernel is the safety layer for enterprise AI in Saudi Arabia. It lets organizations adopt AI without losing control over data, decisions, compliance, or audit readiness.
+BrightAI Kernel is the safety layer for enterprise AI in Saudi Arabia. It lets organizations adopt AI without losing control over data, decisions, compliance, or audit readiness.
 
 ---
 
@@ -37,7 +37,7 @@ BRIGHTAI/
 ├── privacy-cookies/              # Privacy policy
 ├── services/                     # Services pages
 ├── reports/                      # Reports pages
-├── dashboard/                    # BrightTrust Kernel Dashboard UI
+├── dashboard/                    # BrightAI Kernel Dashboard UI
 │   ├── index.html                #   Main dashboard (stats + quick chat)
 │   ├── audit.html                #   Audit trail viewer with filters
 │   ├── approvals.html            #   Approval queue (approve/reject)
@@ -92,13 +92,13 @@ BRIGHTAI/
 
 ### Connection
 
-Set `DATABASE_URL` or `POSTGRES_URL` environment variable. Default: `postgresql://brighttrust:brighttrust@localhost:5432/brighttrust`
+Set `DATABASE_URL` or `POSTGRES_URL` environment variable. Default: `postgresql://brightai:brightai@localhost:5432/brightai`
 
 ---
 
 ## API Endpoints
 
-### BrightTrust Kernel (`/api/kernel/*`)
+### BrightAI Kernel (`/api/kernel/*`)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|

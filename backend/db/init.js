@@ -19,7 +19,7 @@ function generateId(prefix) {
 async function initializeDatabase() {
   const connectionString = process.env.DATABASE_URL ||
     process.env.POSTGRES_URL ||
-    `postgresql://brighttrust:brighttrust@localhost:5432/brighttrust`;
+    `postgresql://brightai:brightai@localhost:5432/brightai`;
 
   pool = new Pool({
     connectionString,
@@ -29,14 +29,14 @@ async function initializeDatabase() {
   });
 
   pool.on('error', (err) => {
-    console.error('[BrightTrust Kernel] Unexpected PG pool error:', err.message);
+    console.error('[BrightAI Kernel] Unexpected PG pool error:', err.message);
   });
 
   // Test connection
   const client = await pool.connect();
   try {
     await client.query('SELECT NOW()');
-    console.log('[BrightTrust Kernel] PostgreSQL connected');
+    console.log('[BrightAI Kernel] PostgreSQL connected');
   } finally {
     client.release();
   }
@@ -48,7 +48,7 @@ async function initializeDatabase() {
 
   await seedDefaultPolicies();
 
-  console.log('[BrightTrust Kernel] PostgreSQL schema initialized');
+  console.log('[BrightAI Kernel] PostgreSQL schema initialized');
   return pool;
 }
 
@@ -79,7 +79,7 @@ async function seedDefaultPolicies() {
       [row[0], row[1], row[2], row[3], row[4], row[5], row[6], now, now]
     );
   }
-  console.log(`[BrightTrust Kernel] Seeded ${defaults.length} default policy rules`);
+  console.log(`[BrightAI Kernel] Seeded ${defaults.length} default policy rules`);
 }
 
 module.exports = { getDb, initializeDatabase, generateId };

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>حالة الامتثال والالتزام — BrightTrust Kernel</title>
+<title>حالة الامتثال والالتزام — BrightAI Kernel</title>
 <meta name="theme-color" content="#0b1220">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,8 +80,8 @@
       "@type": "WebPage",
       "@id": "https://brightai.site/dashboard/compliance/#webpage",
       "url": "https://brightai.site/dashboard/compliance/",
-      "name": "حالة الامتثال والالتزام — BrightTrust Kernel",
-      "description": "ملخص شامل لحزم الامتثال النشطة ونتيجة فحص الامتثال عبر BrightTrust Kernel",
+      "name": "حالة الامتثال والالتزام — BrightAI Kernel",
+      "description": "ملخص شامل لحزم الامتثال النشطة ونتيجة فحص الامتثال عبر BrightAI Kernel",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -109,7 +109,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "حالة الامتثال والالتزام — BrightTrust Kernel",
+          "name": "حالة الامتثال والالتزام — BrightAI Kernel",
           "item": "https://brightai.site/dashboard/compliance/"
         }
       ]
@@ -125,7 +125,7 @@
 <!-- ===== NAV ===== -->
 <header class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
   <nav class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-3" aria-label="BrightTrust الرئيسية">
+    <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
       <span class="inline-flex w-10 h-10 rounded-xl items-center justify-center" style="background:linear-gradient(135deg,#10b981,#00d4ff)">
         <i class="fa-solid fa-shield-halved text-white text-lg"></i>
       </span>
@@ -160,7 +160,7 @@
   <!-- ===== PAGE HEADER ===== -->
   <section>
     <h1 class="text-3xl md:text-4xl font-extrabold mb-2">حالة الامتثال والالتزام</h1>
-    <p class="text-white/60 text-lg">ملخص شامل لحزم الامتثال النشطة ونتيجة فحص الامتثال عبر BrightTrust Kernel</p>
+    <p class="text-white/60 text-lg">ملخص شامل لحزم الامتثال النشطة ونتيجة فحص الامتثال عبر BrightAI Kernel</p>
   </section>
 
   <!-- ===== OVERALL STATUS ===== -->
@@ -468,7 +468,7 @@ async function runComplianceTest() {
     document.getElementById('resultTitle').textContent = 'الخادم غير متاح';
     document.getElementById('resultFlags').textContent = 'offline';
     document.getElementById('resultFlags').className = 'text-xs px-3 py-1 rounded-lg font-bold bg-yellow-500/15 border border-yellow-500/30 text-yellow-400';
-    document.getElementById('resultBody').textContent = 'لم يتم الاتصال بالخادم. تأكد من تشغيل BrightTrust Kernel محلياً.';
+    document.getElementById('resultBody').textContent = 'لم يتم الاتصال بالخادم. تأكد من تشغيل BrightAI Kernel محلياً.';
     document.getElementById('resultDetails').classList.add('hidden');
   } finally {
     btn.disabled = false;
