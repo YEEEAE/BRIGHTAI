@@ -197,9 +197,6 @@ services:
       - path: /*.html
         name: Cache-Control
         value: public, max-age=0, must-revalidate
-      - path: /**/*.html
-        name: Cache-Control
-        value: public, max-age=0, must-revalidate
       - path: /*.css
         name: Cache-Control
         value: public, max-age=86400, stale-while-revalidate=604800
@@ -313,11 +310,15 @@ services:
         source: /ws/*
         destination: https://brightai-api.onrender.com/ws/*
 
+      # ── Standard Redirects for Clean Trailing Slashes ───────────────────────
       - type: redirect
         source: /index.html
         destination: /
       - type: redirect
         source: /about
+        destination: /about/
+      - type: redirect
+        source: /about.html
         destination: /about/
       - type: redirect
         source: /about/index.html
@@ -326,10 +327,16 @@ services:
         source: /contact
         destination: /contact/
       - type: redirect
+        source: /contact.html
+        destination: /contact/
+      - type: redirect
         source: /contact/index.html
         destination: /contact/
       - type: redirect
         source: /services
+        destination: /services/
+      - type: redirect
+        source: /services.html
         destination: /services/
       - type: redirect
         source: /services/index.html
@@ -338,10 +345,16 @@ services:
         source: /pricing
         destination: /pricing/
       - type: redirect
+        source: /pricing.html
+        destination: /pricing/
+      - type: redirect
         source: /pricing/index.html
         destination: /pricing/
       - type: redirect
         source: /demo
+        destination: /demo/
+      - type: redirect
+        source: /demo.html
         destination: /demo/
       - type: redirect
         source: /demo/index.html
@@ -350,10 +363,16 @@ services:
         source: /privacy-policy
         destination: /privacy-policy/
       - type: redirect
+        source: /privacy-policy.html
+        destination: /privacy-policy/
+      - type: redirect
         source: /privacy-policy/index.html
         destination: /privacy-policy/
       - type: redirect
         source: /privacy-cookies
+        destination: /privacy-cookies/
+      - type: redirect
+        source: /privacy-cookies.html
         destination: /privacy-cookies/
       - type: redirect
         source: /privacy-cookies/index.html
@@ -362,10 +381,16 @@ services:
         source: /cookie-policy
         destination: /cookie-policy/
       - type: redirect
+        source: /cookie-policy.html
+        destination: /cookie-policy/
+      - type: redirect
         source: /cookie-policy/index.html
         destination: /cookie-policy/
       - type: redirect
         source: /terms
+        destination: /terms/
+      - type: redirect
+        source: /terms.html
         destination: /terms/
       - type: redirect
         source: /terms/index.html
@@ -374,10 +399,16 @@ services:
         source: /pdpl-statement
         destination: /pdpl-statement/
       - type: redirect
+        source: /pdpl-statement.html
+        destination: /pdpl-statement/
+      - type: redirect
         source: /pdpl-statement/index.html
         destination: /pdpl-statement/
       - type: redirect
         source: /data-processing-agreement
+        destination: /data-processing-agreement/
+      - type: redirect
+        source: /data-processing-agreement.html
         destination: /data-processing-agreement/
       - type: redirect
         source: /data-processing-agreement/index.html
@@ -386,17 +417,27 @@ services:
         source: /offline
         destination: /offline/
       - type: redirect
+        source: /offline.html
+        destination: /offline/
+      - type: redirect
         source: /offline/index.html
         destination: /offline/
       - type: redirect
         source: /sitemap
         destination: /sitemap/
       - type: redirect
+        source: /sitemap.html
+        destination: /sitemap/
+      - type: redirect
         source: /sitemap/index.html
         destination: /sitemap/
 
+      # ── English Legal Redirects ─────────────────────────────────────────────
       - type: redirect
         source: /en/privacy-policy
+        destination: /en/privacy-policy/
+      - type: redirect
+        source: /en/privacy-policy.html
         destination: /en/privacy-policy/
       - type: redirect
         source: /en/privacy-policy/index.html
@@ -405,10 +446,16 @@ services:
         source: /en/terms
         destination: /en/terms/
       - type: redirect
+        source: /en/terms.html
+        destination: /en/terms/
+      - type: redirect
         source: /en/terms/index.html
         destination: /en/terms/
       - type: redirect
         source: /en/cookie-policy
+        destination: /en/cookie-policy/
+      - type: redirect
+        source: /en/cookie-policy.html
         destination: /en/cookie-policy/
       - type: redirect
         source: /en/cookie-policy/index.html
@@ -417,15 +464,22 @@ services:
         source: /en/pdpl-statement
         destination: /en/pdpl-statement/
       - type: redirect
+        source: /en/pdpl-statement.html
+        destination: /en/pdpl-statement/
+      - type: redirect
         source: /en/pdpl-statement/index.html
         destination: /en/pdpl-statement/
       - type: redirect
         source: /en/data-processing-agreement
         destination: /en/data-processing-agreement/
       - type: redirect
+        source: /en/data-processing-agreement.html
+        destination: /en/data-processing-agreement/
+      - type: redirect
         source: /en/data-processing-agreement/index.html
         destination: /en/data-processing-agreement/
 
+      # ── Docs Module Redirects ───────────────────────────────────────────────
       - type: redirect
         source: /docs
         destination: /docs/docs/
@@ -445,16 +499,39 @@ services:
         source: /en/docs/
         destination: /docs/docs/
 
+      # ── Kernel Module Redirects ─────────────────────────────────────────────
       - type: redirect
-        source: /dashboard/:page.html
-        destination: /dashboard/:page/
+        source: /kernel
+        destination: /kernel/
       - type: redirect
-        source: /kernel/:page.html
-        destination: /kernel/:page/
+        source: /kernel/index.html
+        destination: /kernel/
+      - type: redirect
+        source: /kernel/stats
+        destination: /kernel/stats/
+      - type: redirect
+        source: /kernel/stats.html
+        destination: /kernel/stats/
+      - type: redirect
+        source: /kernel/approvals
+        destination: /kernel/approvals/
+      - type: redirect
+        source: /kernel/approvals.html
+        destination: /kernel/approvals/
+      - type: redirect
+        source: /kernel/audit
+        destination: /kernel/audit/
+      - type: redirect
+        source: /kernel/audit.html
+        destination: /kernel/audit/
+      - type: redirect
+        source: /kernel/chat
+        destination: /kernel/chat/
+      - type: redirect
+        source: /kernel/chat.html
+        destination: /kernel/chat/
 
-      - type: redirect
-        source: /demo/ai-tenders-analysis/:page.html
-        destination: /demo/ai-tenders-analysis/:page/
+      # ── Tenders AI Demo Module Redirects ────────────────────────────────────
       - type: redirect
         source: /tenders
         destination: /demo/ai-tenders-analysis/
@@ -465,17 +542,19 @@ services:
         source: /tenders/index.html
         destination: /demo/ai-tenders-analysis/
       - type: redirect
-        source: /tenders/dashboard
-        destination: /demo/ai-tenders-analysis/dashboard/
+        source: /en/tenders
+        destination: /demo/ai-tenders-analysis/
       - type: redirect
-        source: /tenders/dashboard.html
-        destination: /demo/ai-tenders-analysis/dashboard/
+        source: /en/tenders/
+        destination: /demo/ai-tenders-analysis/
       - type: redirect
-        source: /tenders/compare
-        destination: /demo/ai-tenders-analysis/compare/
+        source: /demo/ai-tenders-analysis
+        destination: /demo/ai-tenders-analysis/
       - type: redirect
-        source: /tenders/compare.html
-        destination: /demo/ai-tenders-analysis/compare/
+        source: /demo/ai-tenders-analysis/index.html
+        destination: /demo/ai-tenders-analysis/
+
+      # Tenders Landing
       - type: redirect
         source: /tenders/landing
         destination: /demo/ai-tenders-analysis/landing/
@@ -483,11 +562,79 @@ services:
         source: /tenders/landing.html
         destination: /demo/ai-tenders-analysis/landing/
       - type: redirect
+        source: /en/tenders/landing
+        destination: /demo/ai-tenders-analysis/landing/
+      - type: redirect
+        source: /en/tenders/landing.html
+        destination: /demo/ai-tenders-analysis/landing/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/landing
+        destination: /demo/ai-tenders-analysis/landing/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/landing.html
+        destination: /demo/ai-tenders-analysis/landing/
+
+      # Tenders Compare
+      - type: redirect
+        source: /tenders/compare
+        destination: /demo/ai-tenders-analysis/compare/
+      - type: redirect
+        source: /tenders/compare.html
+        destination: /demo/ai-tenders-analysis/compare/
+      - type: redirect
+        source: /en/tenders/compare
+        destination: /demo/ai-tenders-analysis/compare/
+      - type: redirect
+        source: /en/tenders/compare.html
+        destination: /demo/ai-tenders-analysis/compare/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/compare
+        destination: /demo/ai-tenders-analysis/compare/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/compare.html
+        destination: /demo/ai-tenders-analysis/compare/
+
+      # Tenders Dashboard
+      - type: redirect
+        source: /tenders/dashboard
+        destination: /demo/ai-tenders-analysis/dashboard/
+      - type: redirect
+        source: /tenders/dashboard.html
+        destination: /demo/ai-tenders-analysis/dashboard/
+      - type: redirect
+        source: /en/tenders/dashboard
+        destination: /demo/ai-tenders-analysis/dashboard/
+      - type: redirect
+        source: /en/tenders/dashboard.html
+        destination: /demo/ai-tenders-analysis/dashboard/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/dashboard
+        destination: /demo/ai-tenders-analysis/dashboard/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/dashboard.html
+        destination: /demo/ai-tenders-analysis/dashboard/
+
+      # Tenders Reports
+      - type: redirect
         source: /tenders/reports
         destination: /demo/ai-tenders-analysis/reports/
       - type: redirect
         source: /tenders/reports.html
         destination: /demo/ai-tenders-analysis/reports/
+      - type: redirect
+        source: /en/tenders/reports
+        destination: /demo/ai-tenders-analysis/reports/
+      - type: redirect
+        source: /en/tenders/reports.html
+        destination: /demo/ai-tenders-analysis/reports/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/reports
+        destination: /demo/ai-tenders-analysis/reports/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/reports.html
+        destination: /demo/ai-tenders-analysis/reports/
+
+      # Tenders Settings
       - type: redirect
         source: /tenders/settings
         destination: /demo/ai-tenders-analysis/settings/
@@ -495,27 +642,45 @@ services:
         source: /tenders/settings.html
         destination: /demo/ai-tenders-analysis/settings/
       - type: redirect
+        source: /en/tenders/settings
+        destination: /demo/ai-tenders-analysis/settings/
+      - type: redirect
+        source: /en/tenders/settings.html
+        destination: /demo/ai-tenders-analysis/settings/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/settings
+        destination: /demo/ai-tenders-analysis/settings/
+      - type: redirect
+        source: /demo/ai-tenders-analysis/settings.html
+        destination: /demo/ai-tenders-analysis/settings/
+
+      # Tenders Templates
+      - type: redirect
         source: /tenders/templates
         destination: /demo/ai-tenders-analysis/templates/
       - type: redirect
         source: /tenders/templates.html
         destination: /demo/ai-tenders-analysis/templates/
       - type: redirect
-        source: /en/tenders
-        destination: /demo/ai-tenders-analysis/
+        source: /en/tenders/templates
+        destination: /demo/ai-tenders-analysis/templates/
       - type: redirect
-        source: /en/tenders/
-        destination: /demo/ai-tenders-analysis/
+        source: /en/tenders/templates.html
+        destination: /demo/ai-tenders-analysis/templates/
       - type: redirect
-        source: /en/tenders/:page
-        destination: /demo/ai-tenders-analysis/:page/
+        source: /demo/ai-tenders-analysis/templates
+        destination: /demo/ai-tenders-analysis/templates/
       - type: redirect
-        source: /en/tenders/:page.html
-        destination: /demo/ai-tenders-analysis/:page/
+        source: /demo/ai-tenders-analysis/templates.html
+        destination: /demo/ai-tenders-analysis/templates/
 
+      # ── AI Reject Dashboard Module Redirects ───────────────────────────────
       - type: redirect
         source: /login
         destination: /demo/ai-reject-dashboard/frontend/pages/login/
+      - type: redirect
+        source: /pages/profile
+        destination: /demo/ai-reject-dashboard/frontend/pages/profile/
       - type: redirect
         source: /ai-reject-dashboard
         destination: /demo/ai-reject-dashboard/
@@ -526,288 +691,219 @@ services:
         source: /ai-reject-dashboard/index.html
         destination: /demo/ai-reject-dashboard/
       - type: redirect
+        source: /demo/ai-reject-dashboard
+        destination: /demo/ai-reject-dashboard/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/index.html
+        destination: /demo/ai-reject-dashboard/
+
+      # index-ar
+      - type: redirect
         source: /ai-reject-dashboard/frontend/pages
         destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
       - type: redirect
         source: /ai-reject-dashboard/frontend/pages/
         destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
       - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/:page
-        destination: /demo/ai-reject-dashboard/frontend/pages/:page/
+        source: /ai-reject-dashboard/frontend/pages/index-ar
+        destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
       - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/:page.html
-        destination: /demo/ai-reject-dashboard/frontend/pages/:page/
+        source: /ai-reject-dashboard/frontend/pages/index-ar.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
       - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/admin/:page
-        destination: /demo/ai-reject-dashboard/frontend/pages/admin/:page/
+        source: /demo/ai-reject-dashboard/frontend/pages
+        destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
       - type: redirect
-        source: /ai-reject-dashboard/frontend/pages/admin/:page.html
-        destination: /demo/ai-reject-dashboard/frontend/pages/admin/:page/
+        source: /demo/ai-reject-dashboard/frontend/pages/
+        destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
       - type: redirect
-        source: /demo/ai-reject-dashboard/frontend/pages/:page.html
-        destination: /demo/ai-reject-dashboard/frontend/pages/:page/
+        source: /demo/ai-reject-dashboard/frontend/pages/index-ar
+        destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
       - type: redirect
-        source: /demo/ai-reject-dashboard/frontend/pages/admin/:page.html
-        destination: /demo/ai-reject-dashboard/frontend/pages/admin/:page/
+        source: /demo/ai-reject-dashboard/frontend/pages/index-ar.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/index-ar/
+
+      # profile
       - type: redirect
-        source: /pages/profile
+        source: /ai-reject-dashboard/frontend/pages/profile
+        destination: /demo/ai-reject-dashboard/frontend/pages/profile/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/profile.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/profile/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/profile
+        destination: /demo/ai-reject-dashboard/frontend/pages/profile/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/profile.html
         destination: /demo/ai-reject-dashboard/frontend/pages/profile/
 
+      # finance
       - type: redirect
-        source: /frontend/pages/about-us
-        destination: /about/
+        source: /ai-reject-dashboard/frontend/pages/finance
+        destination: /demo/ai-reject-dashboard/frontend/pages/finance/
       - type: redirect
-        source: /frontend/pages/about-us/
-        destination: /about/
+        source: /ai-reject-dashboard/frontend/pages/finance.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/finance/
       - type: redirect
-        source: /frontend/pages/about-us/index.html
-        destination: /about/
+        source: /demo/ai-reject-dashboard/frontend/pages/finance
+        destination: /demo/ai-reject-dashboard/frontend/pages/finance/
       - type: redirect
-        source: /frontend/pages/contact
-        destination: /contact/
-      - type: redirect
-        source: /frontend/pages/contact/
-        destination: /contact/
-      - type: redirect
-        source: /frontend/pages/contact/index.html
-        destination: /contact/
-      - type: redirect
-        source: /frontend/pages/our-products
-        destination: /services/
-      - type: redirect
-        source: /frontend/pages/our-products/
-        destination: /services/
-      - type: redirect
-        source: /frontend/pages/our-products/index.html
-        destination: /services/
+        source: /demo/ai-reject-dashboard/frontend/pages/finance.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/finance/
 
+      # technical
       - type: redirect
-        source: /consultation
-        destination: /contact/
+        source: /ai-reject-dashboard/frontend/pages/technical
+        destination: /demo/ai-reject-dashboard/frontend/pages/technical/
       - type: redirect
-        source: /consultation/
-        destination: /contact/
+        source: /ai-reject-dashboard/frontend/pages/technical.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/technical/
       - type: redirect
-        source: /frontend/pages/consultation
-        destination: /contact/
+        source: /demo/ai-reject-dashboard/frontend/pages/technical
+        destination: /demo/ai-reject-dashboard/frontend/pages/technical/
       - type: redirect
-        source: /data-analysis
-        destination: /services/
-      - type: redirect
-        source: /data-analysis/
-        destination: /services/
-      - type: redirect
-        source: /frontend/pages/data-analysis
-        destination: /services/
-      - type: redirect
-        source: /smart-automation
-        destination: /services/
-      - type: redirect
-        source: /smart-automation/
-        destination: /services/
-      - type: redirect
-        source: /frontend/pages/smart-automation
-        destination: /services/
-      - type: redirect
-        source: /ai-agent
-        destination: /services/
-      - type: redirect
-        source: /ai-agent/
-        destination: /services/
-      - type: redirect
-        source: /frontend/pages/ai-agent
-        destination: /services/
-      - type: redirect
-        source: /ai-workflows
-        destination: /services/
-      - type: redirect
-        source: /ai-workflows/
-        destination: /services/
-      - type: redirect
-        source: /frontend/pages/ai-workflows
-        destination: /services/
-      - type: redirect
-        source: /tools
-        destination: /services/
-      - type: redirect
-        source: /tools/
-        destination: /services/
-      - type: redirect
-        source: /Company%20performance%20monitoring%20tool.html
-        destination: /services/
-      - type: redirect
-        source: /blog
-        destination: /services/
-      - type: redirect
-        source: /blog/
-        destination: /services/
-      - type: redirect
-        source: /blog/*
-        destination: /services/
-      - type: redirect
-        source: /sectors
-        destination: /services/
-      - type: redirect
-        source: /sectors/
-        destination: /services/
-      - type: redirect
-        source: /sectors/*
-        destination: /services/
-      - type: redirect
-        source: /case-studies
-        destination: /services/
-      - type: redirect
-        source: /case-studies/
-        destination: /services/
-      - type: redirect
-        source: /case-studies/*
-        destination: /services/
-      - type: redirect
-        source: /locations
-        destination: /contact/
-      - type: redirect
-        source: /locations/
-        destination: /contact/
-      - type: redirect
-        source: /locations/*
-        destination: /contact/
-      - type: redirect
-        source: /bot
-        destination: /demo/
-      - type: redirect
-        source: /bot/
-        destination: /demo/
-      - type: redirect
-        source: /machine-learning
-        destination: /services/
-      - type: redirect
-        source: /machine-learning/
-        destination: /services/
-      - type: redirect
-        source: /health
-        destination: /services/
-      - type: redirect
-        source: /health/
-        destination: /services/
-      - type: redirect
-        source: /try
-        destination: /demo/
-      - type: redirect
-        source: /try/
-        destination: /demo/
-      - type: redirect
-        source: /try/*
-        destination: /demo/
-      - type: redirect
-        source: /interview
-        destination: /demo/
-      - type: redirect
-        source: /interview/
-        destination: /demo/
-      - type: redirect
-        source: /interview/*
-        destination: /demo/
-      - type: redirect
-        source: /job.MAISco
-        destination: /demo/
-      - type: redirect
-        source: /job.MAISco/
-        destination: /demo/
-      - type: redirect
-        source: /demo/smart-medical-archive
-        destination: /demo/
-      - type: redirect
-        source: /demo/smart-medical-archive/
-        destination: /demo/
-      - type: redirect
-        source: /demo/smart-hospital-management
-        destination: /demo/
-      - type: redirect
-        source: /demo/smart-hospital-management/
-        destination: /demo/
-      - type: redirect
-        source: /demo/smart-hiring-system
-        destination: /demo/
-      - type: redirect
-        source: /demo/smart-hiring-system/
-        destination: /demo/
-      - type: redirect
-        source: /demo/ai-scolecs
-        destination: /demo/
-      - type: redirect
-        source: /demo/ai-scolecs/
-        destination: /demo/
-      - type: redirect
-        source: /demo/brightsales
-        destination: /demo/
-      - type: redirect
-        source: /demo/brightsales/
-        destination: /demo/
-      - type: redirect
-        source: /demo/brightproject
-        destination: /demo/
-      - type: redirect
-        source: /demo/brightproject/
-        destination: /demo/
-      - type: redirect
-        source: /demo/data-analyzer
-        destination: /demo/
-      - type: redirect
-        source: /demo/data-analyzer/
-        destination: /demo/
+        source: /demo/ai-reject-dashboard/frontend/pages/technical.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/technical/
 
+      # forgot-password
       - type: redirect
-        source: /dashboard/:page
-        destination: /dashboard/:page/
-      - type: rewrite
-        source: /dashboard/:page/
-        destination: /dashboard/:page/index.html
+        source: /ai-reject-dashboard/frontend/pages/forgot-password
+        destination: /demo/ai-reject-dashboard/frontend/pages/forgot-password/
       - type: redirect
-        source: /kernel/:page
-        destination: /kernel/:page/
-      - type: rewrite
-        source: /kernel/:page/
-        destination: /kernel/:page/index.html
-      - type: rewrite
-        source: /docs/docs/
-        destination: /docs/docs/index.html
+        source: /ai-reject-dashboard/frontend/pages/forgot-password.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/forgot-password/
       - type: redirect
-        source: /demo/ai-tenders-analysis/:page
-        destination: /demo/ai-tenders-analysis/:page/
-      - type: rewrite
-        source: /demo/ai-tenders-analysis/:page/
-        destination: /demo/ai-tenders-analysis/:page/index.html
+        source: /demo/ai-reject-dashboard/frontend/pages/forgot-password
+        destination: /demo/ai-reject-dashboard/frontend/pages/forgot-password/
       - type: redirect
-        source: /demo/ai-reject-dashboard/frontend/pages/:page
-        destination: /demo/ai-reject-dashboard/frontend/pages/:page/
-      - type: rewrite
-        source: /demo/ai-reject-dashboard/frontend/pages/:page/
-        destination: /demo/ai-reject-dashboard/frontend/pages/:page/index.html
-      - type: redirect
-        source: /demo/ai-reject-dashboard/frontend/pages/admin/:page
-        destination: /demo/ai-reject-dashboard/frontend/pages/admin/:page/
-      - type: rewrite
-        source: /demo/ai-reject-dashboard/frontend/pages/admin/:page/
-        destination: /demo/ai-reject-dashboard/frontend/pages/admin/:page/index.html
+        source: /demo/ai-reject-dashboard/frontend/pages/forgot-password.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/forgot-password/
 
+      # reset-password
       - type: redirect
-        source: /:slug/index.html
-        destination: /:slug/
+        source: /ai-reject-dashboard/frontend/pages/reset-password
+        destination: /demo/ai-reject-dashboard/frontend/pages/reset-password/
       - type: redirect
-        source: /:section/:slug/index.html
-        destination: /:section/:slug/
+        source: /ai-reject-dashboard/frontend/pages/reset-password.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/reset-password/
       - type: redirect
-        source: /:section/:subsection/:slug/index.html
-        destination: /:section/:subsection/:slug/
-      - type: rewrite
-        source: /:slug/
-        destination: /:slug/index.html
-      - type: rewrite
-        source: /:section/:slug/
-        destination: /:section/:slug/index.html
-      - type: rewrite
-        source: /:section/:subsection/:slug/
-        destination: /:section/:subsection/:slug/index.html
+        source: /demo/ai-reject-dashboard/frontend/pages/reset-password
+        destination: /demo/ai-reject-dashboard/frontend/pages/reset-password/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/reset-password.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/reset-password/
+
+      # login
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/login
+        destination: /demo/ai-reject-dashboard/frontend/pages/login/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/login.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/login/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/login
+        destination: /demo/ai-reject-dashboard/frontend/pages/login/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/login.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/login/
+
+      # executive
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/executive
+        destination: /demo/ai-reject-dashboard/frontend/pages/executive/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/executive.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/executive/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/executive
+        destination: /demo/ai-reject-dashboard/frontend/pages/executive/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/executive.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/executive/
+
+      # quality
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/quality
+        destination: /demo/ai-reject-dashboard/frontend/pages/quality/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/quality.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/quality/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/quality
+        destination: /demo/ai-reject-dashboard/frontend/pages/quality/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/quality.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/quality/
+
+      # production
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/production
+        destination: /demo/ai-reject-dashboard/frontend/pages/production/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/production.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/production/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/production
+        destination: /demo/ai-reject-dashboard/frontend/pages/production/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/production.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/production/
+
+      # permission-denied
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/permission-denied
+        destination: /demo/ai-reject-dashboard/frontend/pages/permission-denied/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/permission-denied.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/permission-denied/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/permission-denied
+        destination: /demo/ai-reject-dashboard/frontend/pages/permission-denied/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/permission-denied.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/permission-denied/
+
+      # workflow
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/workflow
+        destination: /demo/ai-reject-dashboard/frontend/pages/workflow/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/workflow.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/workflow/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/workflow
+        destination: /demo/ai-reject-dashboard/frontend/pages/workflow/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/workflow.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/workflow/
+
+      # reports
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/reports
+        destination: /demo/ai-reject-dashboard/frontend/pages/reports/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/reports.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/reports/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/reports
+        destination: /demo/ai-reject-dashboard/frontend/pages/reports/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/reports.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/reports/
+
+      # admin/users
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/admin/users
+        destination: /demo/ai-reject-dashboard/frontend/pages/admin/users/
+      - type: redirect
+        source: /ai-reject-dashboard/frontend/pages/admin/users.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/admin/users/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/admin/users
+        destination: /demo/ai-reject-dashboard/frontend/pages/admin/users/
+      - type: redirect
+        source: /demo/ai-reject-dashboard/frontend/pages/admin/users.html
+        destination: /demo/ai-reject-dashboard/frontend/pages/admin/users/
 
 databases:
   - name: brightai-db
