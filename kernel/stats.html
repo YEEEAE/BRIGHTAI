@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الإحصائيات — BrightTrust Kernel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
+            ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' }
+          },
+          boxShadow: {
+            glow: '0 0 60px -10px rgba(0,212,255,.55)',
+            'glow-green': '0 0 40px -8px rgba(34,197,94,.4)',
+            'glow-red': '0 0 40px -8px rgba(239,68,68,.4)',
+            'glow-yellow': '0 0 40px -8px rgba(234,179,8,.4)'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #060914; }
+
+    .metric-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0,212,255,.06) 0%, transparent 70%);
+      pointer-events: none;
+      transition: opacity .4s;
+      opacity: 0;
+    }
+    .metric-card:hover::before { opacity: 1; }
+
+    .metric-card:hover {
+      border-color: rgba(255,255,255,.15);
+      transform: translateY(-2px);
+    }
+
+    .glow-blue { filter: drop-shadow(0 0 8px rgba(0,212,255,.5)); }
+    .glow-red { filter: drop-shadow(0 0 8px rgba(239,68,68,.5)); }
+    .glow-yellow { filter: drop-shadow(0 0 8px rgba(234,179,8,.5)); }
+    .glow-green { filter: drop-shadow(0 0 8px rgba(34,197,94,.5)); }
+
+    .risk-circle-outer {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: conic-gradient(#00d4ff 0deg, #111a2e 0deg);
+      transition: background .8s ease;
+      position: relative;
+    }
+    .risk-circle-inner {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: #0b1220;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      box-shadow: inset 0 0 20px rgba(0,0,0,.4);
+    }
+
+    .bar-fill {
+      transition: width .8s cubic-bezier(.4,0,.2,1);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      animation: pulse-ring 2s ease-in-out infinite;
+    }
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,.6); }
+      50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+      animation: fade-up .5s ease-out both;
+    }
+    .delay-1 { animation-delay: .08s; }
+    .delay-2 { animation-delay: .16s; }
+    .delay-3 { animation-delay: .24s; }
+    .delay-4 { animation-delay: .32s; }
+    .delay-5 { animation-delay: .40s; }
+    .delay-6 { animation-delay: .48s; }
+    .delay-7 { animation-delay: .56s; }
+    .delay-8 { animation-delay: .64s; }
+    .delay-9 { animation-delay: .72s; }
+  </style>
+</head>
+<body class="text-white font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-500 transition-colors text-sm">
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+          <span>الرئيسية</span>
+        </a>
+        <span class="text-white/20">|</span>
+        <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightTrust Kernel</span>
+      </div>
+      <h1 class="text-sm sm:text-base text-white/60">
+        <i class="fa-solid fa-chart-line text-brand-500 ml-2"></i>
+        لوحة الإحصائيات
+      </h1>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+
+    <!-- Top Metrics Row -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+      <!-- Total -->
+      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-1">
+        <div class="w-12 h-12 mx-auto rounded-xl bg-brand-500/10 flex items-center justify-center mb-3">
+          <i class="fa-solid fa-comments text-xl text-brand-500 glow-blue"></i>
+        </div>
+        <p id="metric-total" class="text-3xl font-extrabold text-brand-500 mb-1">—</p>
+        <p class="text-sm text-white/50">إجمالي التفاعلات</p>
+      </div>
+
+      <!-- Blocked -->
+      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-2">
+        <div class="w-12 h-12 mx-auto rounded-xl bg-red-500/10 flex items-center justify-center mb-3">
+          <i class="fa-solid fa-shield text-xl text-red-400 glow-red"></i>
+        </div>
+        <p id="metric-blocked" class="text-3xl font-extrabold text-red-400 mb-1">—</p>
+        <p class="text-sm text-white/50">محظورة</p>
+      </div>
+
+      <!-- Pending -->
+      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-3">
+        <div class="w-12 h-12 mx-auto rounded-xl bg-yellow-500/10 flex items-center justify-center mb-3">
+          <i class="fa-solid fa-clock text-xl text-yellow-400 glow-yellow"></i>
+        </div>
+        <p id="metric-pending" class="text-3xl font-extrabold text-yellow-400 mb-1">—</p>
+        <p class="text-sm text-white/50">معلقة</p>
+      </div>
+
+      <!-- Compliance -->
+      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-4">
+        <div class="w-12 h-12 mx-auto rounded-xl bg-green-500/10 flex items-center justify-center mb-3">
+          <i class="fa-solid fa-check-double text-xl text-green-400 glow-green"></i>
+        </div>
+        <p id="metric-compliance" class="text-3xl font-extrabold text-green-400 mb-1">—</p>
+        <p class="text-sm text-white/50">معدل الامتثال</p>
+      </div>
+
+    </div>
+
+    <!-- Middle Row -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+
+      <!-- Risk Distribution -->
+      <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:border-white/15 animate-fade-up delay-5">
+        <h3 class="text-lg font-bold text-white/90 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-chart-bar text-brand-500 text-sm"></i>
+          توزيع مستوى المخاطر
+        </h3>
+        <div id="risk-chart">
+          <div class="text-white/30 text-sm py-8 text-center">جاري التحميل...</div>
+        </div>
+      </div>
+
+      <!-- Compliance Pack Distribution -->
+      <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:border-white/15 animate-fade-up delay-6">
+        <h3 class="text-lg font-bold text-white/90 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-brand-500 text-sm"></i>
+          توزيع حزم الامتثال
+        </h3>
+        <div id="pack-chart">
+          <div class="text-white/30 text-sm py-8 text-center">جاري التحميل...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+
+      <!-- PII Detected -->
+      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 text-center transition-all duration-300 animate-fade-up delay-7">
+        <div class="w-12 h-12 mx-auto rounded-xl bg-amber-500/10 flex items-center justify-center mb-3">
+          <i class="fa-solid fa-user-shield text-xl text-amber-400"></i>
+        </div>
+        <p id="metric-pii" class="text-3xl font-extrabold text-amber-400 mb-1">—</p>
+        <p class="text-sm text-white/50">بيانات شخصية مكتشفة</p>
+      </div>
+
+      <!-- Avg Risk Score -->
+      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 flex flex-col items-center justify-center transition-all duration-300 animate-fade-up delay-8">
+        <h4 class="text-sm text-white/50 mb-3">متوسط درجة المخاطر</h4>
+        <div id="risk-circle" class="risk-circle-outer">
+          <div class="risk-circle-inner">
+            <span id="metric-avg-risk" class="text-2xl font-extrabold text-brand-500">—</span>
+            <span class="text-xs text-white/40">من 100</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chain Integrity -->
+      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 flex flex-col items-center justify-center transition-all duration-300 animate-fade-up delay-9">
+        <h4 class="text-sm text-white/50 mb-3">سلامة سلسلة التدقيق</h4>
+        <div id="chain-status" class="flex flex-col items-center justify-center">
+          <div class="text-white/30 text-sm py-4 text-center">جاري التحقق...</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-white/10 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-white/30 text-sm">
+      <span>&copy; 2026 BrightTrust Kernel</span>
+      <span class="flex items-center gap-2">
+        <span class="pulse-dot"></span>
+        تحديث تلقائي كل ٣٠ ثانية
+      </span>
+    </div>
+  </footer>
+
+  <script>
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/kernel/stats');
+        const data = await res.json();
+
+        // Top metrics
+        document.getElementById('metric-total').textContent = data.total || 0;
+        document.getElementById('metric-blocked').textContent = data.blocked || 0;
+        document.getElementById('metric-pending').textContent = data.pending || 0;
+        document.getElementById('metric-compliance').textContent = data.complianceRate || '100%';
+
+        // Risk distribution
+        const riskContainer = document.getElementById('risk-chart');
+        const total = data.total || 1;
+        const riskColors = { low: '#22c55e', medium: '#eab308', high: '#f97316', critical: '#ef4444' };
+        const riskLabels = { low: 'منخفض', medium: 'متوسط', high: 'عالي', critical: 'حرج' };
+        riskContainer.innerHTML = (data.byRiskLevel || []).map(r => `
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-sm text-gray-300 w-16">${riskLabels[r.risk_level] || r.risk_level}</span>
+            <div class="flex-1 bg-ink-800 rounded-full h-6 overflow-hidden">
+              <div class="bar-fill h-full rounded-full" style="width:${(r.count/total*100).toFixed(1)}%; background:${riskColors[r.risk_level] || '#6b7280'}"></div>
+            </div>
+            <span class="text-sm text-gray-400 w-12 text-left">${r.count}</span>
+          </div>
+        `).join('') || '<div class="text-white/30 text-sm py-4 text-center">لا توجد بيانات</div>';
+
+        // Pack distribution
+        const packContainer = document.getElementById('pack-chart');
+        packContainer.innerHTML = (data.byCompliancePack || []).map(p => `
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-sm text-brand-300 w-24">${p.compliance_pack}</span>
+            <div class="flex-1 bg-ink-800 rounded-full h-6 overflow-hidden">
+              <div class="bar-fill h-full rounded-full bg-brand-500" style="width:${(p.count/total*100).toFixed(1)}%"></div>
+            </div>
+            <span class="text-sm text-gray-400 w-12 text-left">${p.count}</span>
+          </div>
+        `).join('') || '<div class="text-white/30 text-sm py-4 text-center">لا توجد بيانات</div>';
+
+        // Bottom metrics
+        document.getElementById('metric-pii').textContent = data.piiDetected || 0;
+        document.getElementById('metric-avg-risk').textContent = data.avgRiskScore || 0;
+
+        // Avg risk circle
+        const avgPct = Math.min((data.avgRiskScore || 0), 100);
+        document.getElementById('risk-circle').style.background = `conic-gradient(#00d4ff ${avgPct * 3.6}deg, #111a2e ${avgPct * 3.6}deg)`;
+
+        // Chain integrity
+        const chainEl = document.getElementById('chain-status');
+        if (data.chainIntegrity?.valid) {
+          chainEl.innerHTML = '<i class="fas fa-link text-4xl text-green-400 mb-2"></i><p class="text-green-300 text-sm">سلسلة التدقيق سليمة</p>';
+        } else {
+          chainEl.innerHTML = '<i class="fas fa-link-slash text-4xl text-red-400 mb-2"></i><p class="text-red-300 text-sm">تحذير: خلل في سلسلة التدقيق</p>';
+        }
+
+      } catch(e) {
+        console.error('Stats load error:', e);
+      }
+    }
+
+    loadStats();
+    setInterval(loadStats, 30000);
+  </script>
+</body>
+</html>

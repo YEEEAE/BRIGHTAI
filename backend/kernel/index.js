@@ -94,10 +94,10 @@ async function processChat(params) {
   const pack = compliancePack || 'general';
 
   // Layer 1: AI Firewall
-  const firewallResult = scan(message, pack);
+  const firewallResult = await scan(message, pack);
 
   if (firewallResult.firewallAction === 'block') {
-    const blockedInteraction = logInteraction({
+    const blockedInteraction = await logInteraction({
       user_id: userId,
       user_name: userName,
       ip_address: ipAddress,
@@ -151,7 +151,7 @@ async function processChat(params) {
 
   // Layer 3: Approval gate
   if (riskResult.requiresApproval) {
-    const pendingInteraction = logInteraction({
+    const pendingInteraction = await logInteraction({
       user_id: userId,
       user_name: userName,
       ip_address: ipAddress,
@@ -178,8 +178,8 @@ async function processChat(params) {
       compliance_flags: JSON.stringify(complianceResult.flags)
     });
 
-    saveComplianceChecks(pendingInteraction.id, complianceResult);
-    queueForApproval(pendingInteraction.id, riskResult.score, riskResult.level);
+    await saveComplianceChecks(pendingInteraction.id, complianceResult);
+    await queueForApproval(pendingInteraction.id, riskResult.score, riskResult.level);
 
     return {
       status: 'pending_approval',
@@ -195,7 +195,7 @@ async function processChat(params) {
   const geminiResult = await callGemini(firewallResult.maskedText, pack);
 
   // Audit trail
-  const interaction = logInteraction({
+  const interaction = await logInteraction({
     user_id: userId,
     user_name: userName,
     ip_address: ipAddress,
@@ -222,7 +222,7 @@ async function processChat(params) {
     compliance_flags: JSON.stringify(complianceResult.flags)
   });
 
-  saveComplianceChecks(interaction.id, complianceResult);
+  await saveComplianceChecks(interaction.id, complianceResult);
 
   return {
     status: 'completed',
@@ -239,26 +239,26 @@ async function processChat(params) {
   };
 }
 
-function getStats() {
+async function getStats() {
   const { getDb } = require('../db/init');
-  const db = getDb();
+  const pool = getDb();
 
-  const total = db.prepare('SELECT COUNT(*) as c FROM kernel_interactions').get().c;
-  const blocked = db.prepare("SELECT COUNT(*) as c FROM kernel_interactions WHERE firewall_action = 'block'").get().c;
-  const pending = db.prepare("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'pending'").get().c;
-  const approved = db.prepare("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'approved'").get().c;
-  const autoApproved = db.prepare("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'auto_approved'").get().c;
-  const rejected = db.prepare("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'rejected'").get().c;
-  const piiDetected = db.prepare('SELECT COUNT(*) as c FROM kernel_interactions WHERE pii_detected = 1').get().c;
-  const avgRisk = db.prepare('SELECT AVG(risk_score) as avg FROM kernel_interactions').get().avg || 0;
-  const chain = verifyChainIntegrity();
+  const { rows: [{ c: total }] } = await pool.query('SELECT COUNT(*) as c FROM kernel_interactions');
+  const { rows: [{ c: blocked }] } = await pool.query("SELECT COUNT(*) as c FROM kernel_interactions WHERE firewall_action = 'block'");
+  const { rows: [{ c: pending }] } = await pool.query("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'pending'");
+  const { rows: [{ c: approved }] } = await pool.query("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'approved'");
+  const { rows: [{ c: autoApproved }] } = await pool.query("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'auto_approved'");
+  const { rows: [{ c: rejected }] } = await pool.query("SELECT COUNT(*) as c FROM kernel_interactions WHERE approval_status = 'rejected'");
+  const { rows: [{ c: piiDetected }] } = await pool.query('SELECT COUNT(*) as c FROM kernel_interactions WHERE pii_detected = 1');
+  const { rows: [{ avg }] } = await pool.query('SELECT AVG(risk_score)::numeric as avg FROM kernel_interactions');
+  const chain = await verifyChainIntegrity();
 
-  const byPack = db.prepare('SELECT compliance_pack, COUNT(*) as count FROM kernel_interactions GROUP BY compliance_pack').all();
-  const byRiskLevel = db.prepare('SELECT risk_level, COUNT(*) as count FROM kernel_interactions GROUP BY risk_level').all();
+  const { rows: byPack } = await pool.query('SELECT compliance_pack, COUNT(*) as count FROM kernel_interactions GROUP BY compliance_pack');
+  const { rows: byRiskLevel } = await pool.query('SELECT risk_level, COUNT(*) as count FROM kernel_interactions GROUP BY risk_level');
 
   return {
     total, blocked, pending, approved, autoApproved, rejected, piiDetected,
-    avgRiskScore: Math.round(avgRisk * 10) / 10,
+    avgRiskScore: Math.round(parseFloat(avg || 0) * 10) / 10,
     complianceRate: total > 0 ? (((total - blocked - rejected) / total) * 100).toFixed(1) + '%' : '100%',
     byCompliancePack: byPack,
     byRiskLevel,

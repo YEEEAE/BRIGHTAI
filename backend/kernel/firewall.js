@@ -10,18 +10,20 @@ function maskValue(value, detector) {
   return masked + visibleEnd;
 }
 
-function lookupPolicy(piiType, compliancePack) {
+async function lookupPolicy(piiType, compliancePack) {
   try {
     const { getDb } = require('../db/init');
-    const db = getDb();
-    const row = db.prepare(
-      'SELECT action, risk_score_modifier FROM kernel_policy_rules WHERE pii_type = ? AND compliance_pack = ? AND is_active = 1'
-    ).get(piiType, compliancePack);
-    if (row) return { action: row.action, riskModifier: row.risk_score_modifier };
-    const general = db.prepare(
-      'SELECT action, risk_score_modifier FROM kernel_policy_rules WHERE pii_type = ? AND compliance_pack = \'general\' AND is_active = 1'
-    ).get(piiType);
-    if (general) return { action: general.action, riskModifier: general.risk_score_modifier };
+    const pool = getDb();
+    const { rows } = await pool.query(
+      'SELECT action, risk_score_modifier FROM kernel_policy_rules WHERE pii_type = $1 AND compliance_pack = $2 AND is_active = 1',
+      [piiType, compliancePack]
+    );
+    if (rows.length > 0) return { action: rows[0].action, riskModifier: rows[0].risk_score_modifier };
+    const { rows: generalRows } = await pool.query(
+      'SELECT action, risk_score_modifier FROM kernel_policy_rules WHERE pii_type = $1 AND compliance_pack = \'general\' AND is_active = 1',
+      [piiType]
+    );
+    if (generalRows.length > 0) return { action: generalRows[0].action, riskModifier: generalRows[0].risk_score_modifier };
   } catch (_) { }
   const pattern = piiPatterns.find(p => p.type === piiType);
   return { action: 'mask', riskModifier: pattern ? pattern.riskModifier : 10 };
@@ -41,7 +43,7 @@ function classifySensitiveData(text) {
   return categories;
 }
 
-function scan(text, compliancePack) {
+async function scan(text, compliancePack) {
   compliancePack = compliancePack || 'general';
   const piiItems = [];
   const piiTypes = [];
@@ -56,7 +58,7 @@ function scan(text, compliancePack) {
       const original = match[0];
       if (!piiTypes.includes(detector.type)) piiTypes.push(detector.type);
 
-      const policy = lookupPolicy(detector.type, compliancePack);
+      const policy = await lookupPolicy(detector.type, compliancePack);
       totalRiskModifier += policy.riskModifier;
 
       const action = policy.action;

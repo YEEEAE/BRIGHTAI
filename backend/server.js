@@ -608,12 +608,12 @@ function startServer() {
   const server = http.createServer(handleRequest);
   setupLiveWebSocket(server);
 
-  // Initialize BrightTrust Kernel database
-  try {
-    initializeDatabase();
-  } catch (dbError) {
+  // Initialize BrightTrust Kernel database (PostgreSQL)
+  initializeDatabase().then(() => {
+    console.log('[BrightTrust Kernel] Database ready');
+  }).catch(dbError => {
     console.error('Failed to initialize BrightTrust Kernel database:', dbError.message);
-  }
+  });
 
   server.listen(config.server.port, () => {
     console.log(`BrightAI Server running on port ${config.server.port}`);
@@ -654,6 +654,7 @@ function startServer() {
     console.log('  GET  /api/kernel/stats           - Dashboard statistics');
     console.log('  POST /api/kernel/evidence/:id    - Generate Evidence File');
     console.log('  GET  /api/kernel/compliance/check - Compliance status');
+    console.log('  GET  /dashboard/     - BrightTrust Kernel Dashboard UI');
     console.log('  WS   /ws/live        - Real-time dashboard updates');
   });
 

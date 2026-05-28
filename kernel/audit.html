@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سجل التدقيق — BrightTrust Kernel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
+            ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#060914] text-white font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-300 transition-colors text-sm">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span class="hidden sm:inline">رجوع</span>
+        </a>
+        <span class="text-white/20">|</span>
+        <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightTrust Kernel</span>
+        <span class="text-white/20 hidden sm:inline">|</span>
+        <span class="text-sm text-white/60 hidden sm:inline">سجل التدقيق</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Title -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6">
+    <h1 class="text-3xl sm:text-4xl font-extrabold mb-2">
+      <span class="bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">سجل التدقيق</span>
+    </h1>
+    <p class="text-white/50 text-sm">تتبع جميع تفاعلات النواة مع تفاصيل المخاطر والحالات والامتثال</p>
+  </section>
+
+  <!-- Filters -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+    <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-4 sm:p-6">
+      <div class="flex flex-wrap gap-3 items-end">
+        <!-- Search -->
+        <div class="flex-1 min-w-[200px]">
+          <label class="block text-white/40 text-xs mb-1">بحث</label>
+          <input id="filter-search" type="text" placeholder="بحث في السجلات..."
+            class="w-full bg-ink-800 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-brand-500/50 transition-colors">
+        </div>
+        <!-- Risk Level -->
+        <div class="min-w-[140px]">
+          <label class="block text-white/40 text-xs mb-1">مستوى المخاطر</label>
+          <select id="filter-risk"
+            class="w-full bg-ink-800 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500/50 transition-colors">
+            <option value="">الكل</option>
+            <option value="low">منخفض</option>
+            <option value="medium">متوسط</option>
+            <option value="high">مرتفع</option>
+            <option value="critical">حرج</option>
+          </select>
+        </div>
+        <!-- Compliance Pack -->
+        <div class="min-w-[160px]">
+          <label class="block text-white/40 text-xs mb-1">حزمة الامتثال</label>
+          <select id="filter-pack"
+            class="w-full bg-ink-800 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500/50 transition-colors">
+            <option value="">الكل</option>
+            <option value="pdpl">pdpl</option>
+            <option value="nca_ecc">nca_ecc</option>
+            <option value="sfda">sfda</option>
+            <option value="procurement">procurement</option>
+            <option value="healthcare">healthcare</option>
+            <option value="general">general</option>
+          </select>
+        </div>
+        <!-- Approval Status -->
+        <div class="min-w-[150px]">
+          <label class="block text-white/40 text-xs mb-1">حالة الموافقة</label>
+          <select id="filter-status"
+            class="w-full bg-ink-800 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-500/50 transition-colors">
+            <option value="">الكل</option>
+            <option value="auto_approved">مقبول تلقائي</option>
+            <option value="approved">مقبول</option>
+            <option value="pending">معلق</option>
+            <option value="blocked">محظور</option>
+            <option value="rejected">مرفوض</option>
+          </select>
+        </div>
+        <!-- Search Button -->
+        <div>
+          <button onclick="applyFilters()"
+            class="bg-brand-500 hover:bg-brand-600 text-ink-900 font-bold rounded-xl px-6 py-2.5 text-sm transition-colors flex items-center gap-2">
+            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+            بحث
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Table -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-6 flex-1">
+    <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-right">
+          <thead>
+            <tr class="border-b border-white/10 text-white/50 text-xs">
+              <th class="p-3 font-medium">#</th>
+              <th class="p-3 font-medium">التاريخ</th>
+              <th class="p-3 font-medium">المخاطر</th>
+              <th class="p-3 font-medium">الحالة</th>
+              <th class="p-3 font-medium">الحزمة</th>
+              <th class="p-3 font-medium">الرسالة</th>
+              <th class="p-3 font-medium">الإجراءات</th>
+            </tr>
+          </thead>
+          <tbody id="audit-table-body">
+            <tr>
+              <td colspan="7" class="text-center text-white/30 py-12">
+                <i class="fa-solid fa-spinner fa-spin text-2xl mb-3 block text-brand-500"></i>
+                جارٍ التحميل...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pagination -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
+    <div id="pagination" class="flex items-center justify-between gap-4"></div>
+  </section>
+
+  <!-- Detail Modal -->
+  <div id="detail-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <!-- Backdrop -->
+    <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="document.getElementById('detail-modal').classList.add('hidden')"></div>
+    <!-- Modal Content -->
+    <div class="relative w-full max-w-3xl max-h-[90vh] rounded-2xl bg-ink-900 border border-white/10 overflow-hidden flex flex-col">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between p-5 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-shield-halved text-brand-500"></i>
+          <h2 class="text-lg font-bold">تفاصيل السجل</h2>
+          <span id="detail-id" class="text-xs text-white/30 font-mono"></span>
+        </div>
+        <button onclick="document.getElementById('detail-modal').classList.add('hidden')"
+          class="text-white/40 hover:text-white transition-colors">
+          <i class="fa-solid fa-xmark text-xl"></i>
+        </button>
+      </div>
+      <!-- Modal Body -->
+      <div id="detail-content" class="p-5 overflow-auto flex-1">
+      </div>
+      <!-- Modal Footer -->
+      <div class="p-5 border-t border-white/10 flex items-center justify-between">
+        <button onclick="document.getElementById('detail-modal').classList.add('hidden')"
+          class="bg-ink-800 hover:bg-ink-700 text-white/60 rounded-xl px-5 py-2.5 text-sm transition-colors">
+          إغلاق
+        </button>
+        <button id="evidence-btn"
+          class="bg-brand-500 hover:bg-brand-600 text-ink-900 font-bold rounded-xl px-5 py-2.5 text-sm transition-colors flex items-center gap-2">
+          <i class="fa-solid fa-file-shield text-xs"></i>
+          إنشاء ملف دليل
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
+    &copy; 2026 BrightTrust Kernel
+  </footer>
+
+  <script>
+    let filters = { limit: 20, offset: 0 };
+    let currentEntries = [];
+
+    async function loadAudit() {
+      const params = new URLSearchParams();
+      if (filters.search) params.set('search', filters.search);
+      if (filters.riskLevel) params.set('riskLevel', filters.riskLevel);
+      if (filters.compliancePack) params.set('compliancePack', filters.compliancePack);
+      if (filters.approvalStatus) params.set('approvalStatus', filters.approvalStatus);
+      params.set('limit', filters.limit);
+      params.set('offset', filters.offset);
+
+      try {
+        const res = await fetch('/api/kernel/audit?' + params.toString());
+        const data = await res.json();
+        currentEntries = data.entries || [];
+        renderTable();
+        renderPagination(data.total || 0);
+      } catch(e) {
+        document.getElementById('audit-table-body').innerHTML = `<tr><td colspan="7" class="text-center text-red-400 py-8">خطأ في تحميل البيانات</td></tr>`;
+      }
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('audit-table-body');
+      if (currentEntries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-gray-500 py-8">لا توجد سجلات</td></tr>`;
+        return;
+      }
+      tbody.innerHTML = currentEntries.map((e, i) => `
+        <tr class="border-b border-white/5 hover:bg-white/5 cursor-pointer" onclick="showDetail('${e.id}')">
+          <td class="p-3 text-gray-400">${filters.offset + i + 1}</td>
+          <td class="p-3 text-gray-300 text-sm">${new Date(e.created_at).toLocaleString('ar-SA')}</td>
+          <td class="p-3"><span class="px-2 py-1 rounded-full text-xs font-bold ${riskBadgeClass(e.risk_level)}">${e.risk_score} - ${e.risk_level}</span></td>
+          <td class="p-3"><span class="px-2 py-1 rounded-full text-xs ${statusBadgeClass(e.approval_status)}">${statusLabel(e.approval_status)}</span></td>
+          <td class="p-3 text-brand-300 text-sm">${e.compliance_pack}</td>
+          <td class="p-3 text-gray-400 text-sm max-w-[200px] truncate">${(e.masked_message || e.request_message || '').substring(0, 60)}...</td>
+          <td class="p-3"><button class="text-brand-300 hover:text-brand-100 text-sm" onclick="event.stopPropagation(); showDetail('${e.id}')"><i class="fas fa-eye"></i></button></td>
+        </tr>
+      `).join('');
+    }
+
+    function riskBadgeClass(level) {
+      const m = { low:'bg-green-500/20 text-green-300', medium:'bg-yellow-500/20 text-yellow-300', high:'bg-orange-500/20 text-orange-300', critical:'bg-red-500/20 text-red-300' };
+      return m[level] || 'bg-gray-500/20 text-gray-300';
+    }
+
+    function statusBadgeClass(status) {
+      const m = { auto_approved:'bg-green-500/20 text-green-300', approved:'bg-blue-500/20 text-blue-300', pending:'bg-yellow-500/20 text-yellow-300', blocked:'bg-red-500/20 text-red-300', rejected:'bg-gray-500/20 text-gray-300' };
+      return m[status] || 'bg-gray-500/20 text-gray-300';
+    }
+
+    function statusLabel(s) {
+      const m = { auto_approved:'مقبول تلقائي', approved:'مقبول', pending:'معلق', blocked:'محظور', rejected:'مرفوض' };
+      return m[s] || s;
+    }
+
+    async function showDetail(id) {
+      try {
+        const res = await fetch('/api/kernel/audit/' + id);
+        const entry = await res.json();
+        document.getElementById('detail-modal').classList.remove('hidden');
+        document.getElementById('detail-content').innerHTML = `<pre class="text-xs text-gray-300 overflow-auto max-h-[60vh] whitespace-pre-wrap">${JSON.stringify(entry, null, 2)}</pre>`;
+        document.getElementById('detail-id').textContent = id;
+        document.getElementById('evidence-btn').onclick = () => generateEvidence(id);
+      } catch(e) { alert('خطأ في تحميل التفاصيل'); }
+    }
+
+    async function generateEvidence(id) {
+      try {
+        const res = await fetch('/api/kernel/evidence/' + id, { method: 'POST' });
+        const evidence = await res.json();
+        document.getElementById('detail-content').innerHTML = `<pre class="text-xs text-brand-300 overflow-auto max-h-[60vh] whitespace-pre-wrap">${JSON.stringify(evidence, null, 2)}</pre>`;
+      } catch(e) { alert('خطأ في إنشاء ملف الدليل'); }
+    }
+
+    function applyFilters() {
+      filters.search = document.getElementById('filter-search').value;
+      filters.riskLevel = document.getElementById('filter-risk').value;
+      filters.compliancePack = document.getElementById('filter-pack').value;
+      filters.approvalStatus = document.getElementById('filter-status').value;
+      filters.offset = 0;
+      loadAudit();
+    }
+
+    function renderPagination(total) {
+      const el = document.getElementById('pagination');
+      const from = filters.offset + 1;
+      const to = Math.min(filters.offset + filters.limit, total);
+      el.innerHTML = `<span class="text-gray-400 text-sm">${from}-${to} من ${total}</span>
+        <div class="flex gap-2">
+          <button onclick="filters.offset=Math.max(0,filters.offset-filters.limit);loadAudit()" class="px-4 py-2 bg-ink-800 rounded-lg text-brand-300 hover:bg-ink-700 transition-colors" ${filters.offset===0?'disabled':''}>السابق</button>
+          <button onclick="filters.offset+=filters.limit;loadAudit()" class="px-4 py-2 bg-ink-800 rounded-lg text-brand-300 hover:bg-ink-700 transition-colors" ${to>=total?'disabled':''}>التالي</button>
+        </div>`;
+    }
+
+    loadAudit();
+  </script>
+</body>
+</html>

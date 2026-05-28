@@ -1,5 +1,5 @@
 
-        @import url("/assets/css/home-design-tokens.css");
+        @import url("/frontend/css/assets/home-design-tokens.css");
 
         /* High Contrast Fixes */
         .kpi-card .unit {

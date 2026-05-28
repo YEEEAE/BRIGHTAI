@@ -190,27 +190,25 @@ function runComplianceChecks(packName, context) {
   return { pack: packName, checks, overallResult, flags };
 }
 
-function saveComplianceChecks(interactionId, complianceResult) {
-  const db = getDb();
+async function saveComplianceChecks(interactionId, complianceResult) {
+  const pool = getDb();
   const now = Date.now();
-  const insert = db.prepare(
-    'INSERT INTO kernel_compliance_checks (id, interaction_id, compliance_pack, check_type, check_result, details, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
-  );
   for (const check of complianceResult.checks) {
-    insert.run(generateId('cc'), interactionId, complianceResult.pack, check.checkType, check.result, check.details, now);
+    await pool.query(
+      'INSERT INTO kernel_compliance_checks (id, interaction_id, compliance_pack, check_type, check_result, details, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [generateId('cc'), interactionId, complianceResult.pack, check.checkType, check.result, check.details, now]
+    );
   }
 }
 
-function getComplianceStatus() {
-  const db = getDb();
-  const total = db.prepare('SELECT COUNT(*) as count FROM kernel_interactions').get().count;
-  const byResult = db.prepare(
-    "SELECT compliance_pack, json_each.value as flag FROM kernel_interactions, json_each(compliance_flags) WHERE compliance_flags IS NOT NULL"
-  ).all().length;
+async function getComplianceStatus() {
+  const pool = getDb();
+  const { rows: countRows } = await pool.query('SELECT COUNT(*) as count FROM kernel_interactions');
+  const total = parseInt(countRows[0].count);
 
-  const recent = db.prepare(
+  const { rows: recent } = await pool.query(
     'SELECT compliance_pack, approval_status, risk_level, created_at FROM kernel_interactions ORDER BY created_at DESC LIMIT 100'
-  ).all();
+  );
 
   return { totalInteractions: total, recentInteractions: recent };
 }

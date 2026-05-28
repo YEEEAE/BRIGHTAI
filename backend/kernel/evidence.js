@@ -3,8 +3,8 @@
 const { getAuditEntry, computeHash } = require('./audit');
 const { generateId } = require('../db/init');
 
-function generateEvidenceFile(interactionId) {
-  const entry = getAuditEntry(interactionId);
+async function generateEvidenceFile(interactionId) {
+  const entry = await getAuditEntry(interactionId);
   if (!entry) throw new Error('Interaction not found: ' + interactionId);
 
   let piiItems = [];
@@ -96,24 +96,26 @@ function getRegulatoryReferences(entry) {
   return refs;
 }
 
-function generateComplianceReport(filters) {
+async function generateComplianceReport(filters) {
   const { getDb } = require('../db/init');
-  const db = getDb();
+  const pool = getDb();
 
-  let where = [];
-  let params = {};
-  if (filters.compliancePack) { where.push('compliance_pack = @compliancePack'); params.compliancePack = filters.compliancePack; }
-  if (filters.dateFrom) { where.push('created_at >= @dateFrom'); params.dateFrom = filters.dateFrom; }
-  if (filters.dateTo) { where.push('created_at <= @dateTo'); params.dateTo = filters.dateTo; }
+  const conditions = [];
+  const values = [];
+  let paramIdx = 1;
 
-  const whereClause = where.length > 0 ? 'WHERE ' + where.join(' AND ') : '';
+  if (filters.compliancePack) { conditions.push(`compliance_pack = $${paramIdx++}`); values.push(filters.compliancePack); }
+  if (filters.dateFrom) { conditions.push(`created_at >= $${paramIdx++}`); values.push(filters.dateFrom); }
+  if (filters.dateTo) { conditions.push(`created_at <= $${paramIdx++}`); values.push(filters.dateTo); }
 
-  const total = db.prepare(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause}`).get(params).count;
-  const blocked = db.prepare(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND firewall_action = 'block'`).get(params).count;
-  const pending = db.prepare(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND approval_status = 'pending'`).get(params).count;
-  const approved = db.prepare(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND approval_status = 'approved'`).get(params).count;
-  const rejected = db.prepare(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND approval_status = 'rejected'`).get(params).count;
-  const piiDetected = db.prepare(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND pii_detected = 1`).get(params).count;
+  const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';
+
+  const { rows: [{ count: total }] } = await pool.query(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause}`, values);
+  const { rows: [{ count: blocked }] } = await pool.query(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND firewall_action = 'block'`, values);
+  const { rows: [{ count: pending }] } = await pool.query(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND approval_status = 'pending'`, values);
+  const { rows: [{ count: approved }] } = await pool.query(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND approval_status = 'approved'`, values);
+  const { rows: [{ count: rejected }] } = await pool.query(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND approval_status = 'rejected'`, values);
+  const { rows: [{ count: piiDetected }] } = await pool.query(`SELECT COUNT(*) as count FROM kernel_interactions ${whereClause} AND pii_detected = 1`, values);
 
   return {
     generatedAt: new Date().toISOString(),

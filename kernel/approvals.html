@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الموافقات المعلقة — BrightTrust Kernel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
+            ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' }
+          },
+          boxShadow: { glow: '0 0 60px -10px rgba(0,212,255,.55)' }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#060914] text-white font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-500 transition-colors text-sm">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>العودة</span>
+        </a>
+        <span class="text-white/20">|</span>
+        <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightTrust Kernel</span>
+      </div>
+      <h1 class="text-sm sm:text-base text-white/70 font-medium">الموافقات المعلقة</h1>
+    </div>
+  </header>
+
+  <!-- Summary Bar -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
+    <div class="grid grid-cols-3 gap-4">
+      <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
+        <p class="text-white/50 text-sm mb-1">إجمالي المعلقة</p>
+        <p id="summary-total" class="text-3xl font-bold text-brand-500">—</p>
+      </div>
+      <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
+        <p class="text-white/50 text-sm mb-1">مخاطر عالية</p>
+        <p id="summary-high" class="text-3xl font-bold text-orange-400">—</p>
+      </div>
+      <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
+        <p class="text-white/50 text-sm mb-1">حرجة</p>
+        <p id="summary-critical" class="text-3xl font-bold text-red-400">—</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pending Items -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 flex-1">
+    <div id="pending-list">
+      <div class="text-center py-16">
+        <i class="fas fa-spinner fa-spin text-4xl text-brand-500 mb-4"></i>
+        <p class="text-gray-400 text-lg">جاري التحميل...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
+    &copy; 2026 BrightTrust Kernel
+  </footer>
+
+  <script>
+    let pendingItems = [];
+
+    async function loadPending() {
+      try {
+        const res = await fetch('/api/kernel/pending');
+        const data = await res.json();
+        pendingItems = data.pending || [];
+        renderPending();
+        updateSummary();
+      } catch(e) {
+        document.getElementById('pending-list').innerHTML = '<p class="text-red-400 text-center py-8">خطأ في تحميل الموافقات</p>';
+      }
+    }
+
+    function updateSummary() {
+      const total = pendingItems.length;
+      const highRisk = pendingItems.filter(p => p.risk_level === 'high' || p.risk_level === 'critical').length;
+      const critical = pendingItems.filter(p => p.risk_level === 'critical').length;
+      document.getElementById('summary-total').textContent = total;
+      document.getElementById('summary-high').textContent = highRisk;
+      document.getElementById('summary-critical').textContent = critical;
+    }
+
+    function renderPending() {
+      const container = document.getElementById('pending-list');
+      if (pendingItems.length === 0) {
+        container.innerHTML = '<div class="text-center py-16"><i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i><p class="text-gray-400 text-xl">لا توجد طلبات معلقة</p></div>';
+        return;
+      }
+      container.innerHTML = pendingItems.map(item => `
+        <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-4" id="item-${item.interaction_id}">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="text-xs text-gray-500">${item.interaction_id}</span>
+              <div class="text-sm text-gray-400 mt-1">${new Date(item.created_at).toLocaleString('ar-SA')}</div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold ${riskBadgeClass(item.risk_level)}">${item.risk_score} - ${item.risk_level}</span>
+          </div>
+          <p class="text-white mb-2 text-sm">${(item.request_message || '').substring(0, 200)}${(item.request_message || '').length > 200 ? '...' : ''}</p>
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-xs px-2 py-1 bg-brand-500/20 text-brand-300 rounded">${item.compliance_pack || 'general'}</span>
+          </div>
+          <div class="flex gap-3" id="actions-${item.interaction_id}">
+            <button onclick="showApprovalForm('${item.interaction_id}', 'approve')" class="flex-1 py-2 bg-green-500/20 text-green-300 border border-green-500/30 rounded-xl hover:bg-green-500/30 transition"><i class="fas fa-check ml-2"></i>موافقة</button>
+            <button onclick="showApprovalForm('${item.interaction_id}', 'reject')" class="flex-1 py-2 bg-red-500/20 text-red-300 border border-red-500/30 rounded-xl hover:bg-red-500/30 transition"><i class="fas fa-times ml-2"></i>رفض</button>
+          </div>
+          <div id="form-${item.interaction_id}" class="hidden mt-4">
+            <textarea id="comment-${item.interaction_id}" class="w-full bg-ink-800 border border-white/10 rounded-xl p-3 text-white text-sm mb-3" rows="2" placeholder="تعليق (اختياري)"></textarea>
+            <div class="flex gap-2">
+              <button id="confirm-${item.interaction_id}" class="flex-1 py-2 rounded-xl text-white font-bold">تأكيد</button>
+              <button onclick="hideApprovalForm('${item.interaction_id}')" class="px-4 py-2 bg-ink-800 text-gray-400 rounded-xl hover:bg-ink-700">إلغاء</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function riskBadgeClass(level) {
+      const m = { low:'bg-green-500/20 text-green-300', medium:'bg-yellow-500/20 text-yellow-300', high:'bg-orange-500/20 text-orange-300', critical:'bg-red-500/20 text-red-300' };
+      return m[level] || 'bg-gray-500/20 text-gray-300';
+    }
+
+    function showApprovalForm(id, action) {
+      document.getElementById('form-' + id).classList.remove('hidden');
+      const btn = document.getElementById('confirm-' + id);
+      if (action === 'approve') {
+        btn.className = 'flex-1 py-2 bg-green-500 rounded-xl text-white font-bold hover:bg-green-600';
+        btn.onclick = () => approveItem(id);
+      } else {
+        btn.className = 'flex-1 py-2 bg-red-500 rounded-xl text-white font-bold hover:bg-red-600';
+        btn.onclick = () => rejectItem(id);
+      }
+    }
+
+    function hideApprovalForm(id) {
+      document.getElementById('form-' + id).classList.add('hidden');
+    }
+
+    async function approveItem(id) {
+      const comment = document.getElementById('comment-' + id).value;
+      try {
+        const res = await fetch('/api/kernel/approve/' + id, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Kernel-User-Id': 'dashboard-admin' },
+          body: JSON.stringify({ comment })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('item-' + id).innerHTML = '<div class="text-center py-4 text-green-400"><i class="fas fa-check-circle text-3xl mb-2"></i><p>تمت الموافقة بنجاح</p></div>';
+          setTimeout(loadPending, 1000);
+        } else { alert(data.error || 'خطأ'); }
+      } catch(e) { alert('خطأ في الاتصال'); }
+    }
+
+    async function rejectItem(id) {
+      const comment = document.getElementById('comment-' + id).value;
+      try {
+        const res = await fetch('/api/kernel/reject/' + id, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Kernel-User-Id': 'dashboard-admin' },
+          body: JSON.stringify({ comment })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          document.getElementById('item-' + id).innerHTML = '<div class="text-center py-4 text-red-400"><i class="fas fa-times-circle text-3xl mb-2"></i><p>تم الرفض</p></div>';
+          setTimeout(loadPending, 1000);
+        } else { alert(data.error || 'خطأ'); }
+      } catch(e) { alert('خطأ في الاتصال'); }
+    }
+
+    loadPending();
+  </script>
+</body>
+</html>

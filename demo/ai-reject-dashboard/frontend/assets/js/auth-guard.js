@@ -28,7 +28,7 @@
   const goToLogin = () => {
     const isLocalDev = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:';
     if (isLocalDev) {
-      window.location.replace(`/ai-reject-dashboard/frontend/pages/login.html?redirect=${encodeURIComponent(window.location.pathname)}`);
+      window.location.replace(`/demo/ai-reject-dashboard/frontend/pages/login.html?redirect=${encodeURIComponent(window.location.pathname)}`);
     } else {
       window.location.replace(`/login?redirect=${encodeURIComponent(window.location.pathname)}`);
     }

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نواة BrightTrust — لوحة التحكم</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
+            ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' },
+            whatsapp: '#25D366'
+          },
+          boxShadow: { glow: '0 0 60px -10px rgba(0,212,255,.55)' }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#060914] text-white font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightTrust</span>
+        <span class="text-sm text-white/50 hidden sm:inline">|</span>
+        <span class="text-sm text-white/60 hidden sm:inline">لوحة تحكم النواة</span>
+      </div>
+      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-2 bg-whatsapp/10 hover:bg-whatsapp/20 text-whatsapp border border-whatsapp/20 rounded-xl px-4 py-2 text-sm transition-colors">
+        <i class="fa-brands fa-whatsapp text-lg"></i>
+        <span class="hidden sm:inline">تواصل معنا</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10 text-center">
+    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4">
+      <span class="bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">نواة BrightTrust</span>
+    </h1>
+    <p class="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+      لوحة تحكم شاملة لأمان وحوكمة الذكاء الاصطناعي
+    </p>
+  </section>
+
+  <!-- Navigation Cards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Chat Demo -->
+      <a href="/kernel/chat.html" class="group block rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:shadow-glow hover:border-brand-500/30">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-500 text-2xl group-hover:bg-brand-500/20 transition-colors">
+            <i class="fa-solid fa-robot"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-xl font-bold text-white mb-1">تجربة المحادثة</h3>
+            <p class="text-white/50 text-sm leading-relaxed mb-4">اختبر ردود النواة الذكية في بيئة تفاعلية مباشرة</p>
+            <span class="inline-flex items-center gap-2 bg-brand-500/10 hover:bg-brand-500/20 text-brand-500 rounded-lg px-4 py-2 text-sm font-medium transition-colors">
+              فتح
+              <i class="fa-solid fa-arrow-left text-xs"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Audit Trail -->
+      <a href="/kernel/audit.html" class="group block rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:shadow-glow hover:border-brand-500/30">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-500 text-2xl group-hover:bg-brand-500/20 transition-colors">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-xl font-bold text-white mb-1">سجل التدقيق</h3>
+            <p class="text-white/50 text-sm leading-relaxed mb-4">تتبع كل طلب واستجابة مع تفاصيل كاملة للقرارات</p>
+            <span class="inline-flex items-center gap-2 bg-brand-500/10 hover:bg-brand-500/20 text-brand-500 rounded-lg px-4 py-2 text-sm font-medium transition-colors">
+              فتح
+              <i class="fa-solid fa-arrow-left text-xs"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Pending Approvals -->
+      <a href="/kernel/approvals.html" class="group block rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:shadow-glow hover:border-brand-500/30">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-500 text-2xl group-hover:bg-brand-500/20 transition-colors">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-xl font-bold text-white mb-1">الموافقات المعلقة</h3>
+            <p class="text-white/50 text-sm leading-relaxed mb-4">إدارة الطلبات التي تحتاج مراجعة وموافقة يدوية</p>
+            <span class="inline-flex items-center gap-2 bg-brand-500/10 hover:bg-brand-500/20 text-brand-500 rounded-lg px-4 py-2 text-sm font-medium transition-colors">
+              فتح
+              <i class="fa-solid fa-arrow-left text-xs"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Stats Dashboard -->
+      <a href="/kernel/stats.html" class="group block rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:shadow-glow hover:border-brand-500/30">
+        <div class="flex items-start gap-4">
+          <div class="flex-shrink-0 w-14 h-14 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-500 text-2xl group-hover:bg-brand-500/20 transition-colors">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-xl font-bold text-white mb-1">لوحة الإحصائيات</h3>
+            <p class="text-white/50 text-sm leading-relaxed mb-4">عرض شامل للمقاييس والأداء والاتجاهات الزمنية</p>
+            <span class="inline-flex items-center gap-2 bg-brand-500/10 hover:bg-brand-500/20 text-brand-500 rounded-lg px-4 py-2 text-sm font-medium transition-colors">
+              فتح
+              <i class="fa-solid fa-arrow-left text-xs"></i>
+            </span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Quick Stats -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+    <h2 class="text-lg font-bold text-white/80 mb-4">نظرة سريعة</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center">
+        <p class="text-white/50 text-sm mb-1">إجمالي التفاعلات</p>
+        <p id="stat-total" class="text-3xl font-bold text-brand-500">—</p>
+      </div>
+      <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center">
+        <p class="text-white/50 text-sm mb-1">مقيدة بالجدار</p>
+        <p id="stat-blocked" class="text-3xl font-bold text-red-400">—</p>
+      </div>
+      <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center">
+        <p class="text-white/50 text-sm mb-1">بانتظار الموافقة</p>
+        <p id="stat-pending" class="text-3xl font-bold text-amber-400">—</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
+    &copy; 2026 BrightTrust Kernel
+  </footer>
+
+  <script>
+    async function loadQuickStats() {
+      try {
+        const res = await fetch('/api/kernel/stats');
+        const data = await res.json();
+        document.getElementById('stat-total').textContent = data.total || 0;
+        document.getElementById('stat-blocked').textContent = data.blocked || 0;
+        document.getElementById('stat-pending').textContent = data.pending || 0;
+      } catch(e) { console.error(e); }
+    }
+    loadQuickStats();
+  </script>
+</body>
+</html>

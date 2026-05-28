@@ -242,10 +242,10 @@ function profileConsole() {
       try {
         localStorage.removeItem('isLoggedIn');
         const res = await fetch('/api/auth/logout', { method: 'POST' });
-        window.location.href = '/pages/login.html';
+        window.location.href = '/demo/ai-reject-dashboard/frontend/pages/login.html';
       } catch (e) {
         localStorage.removeItem('isLoggedIn');
-        window.location.href = '/pages/login.html';
+        window.location.href = '/demo/ai-reject-dashboard/frontend/pages/login.html';
       }
     },
 

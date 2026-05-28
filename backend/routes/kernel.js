@@ -28,7 +28,7 @@ async function kernelChatHandler(req, res) {
   res.status(statusCode).json(result);
 }
 
-function kernelAuditListHandler(req, res) {
+async function kernelAuditListHandler(req, res) {
   const url = req.url || req.originalUrl || '';
   let params = {};
   try {
@@ -46,15 +46,15 @@ function kernelAuditListHandler(req, res) {
     search: params.search
   };
 
-  const result = kernel.queryAuditTrail(filters, parseInt(params.limit) || 50, parseInt(params.offset) || 0);
+  const result = await kernel.queryAuditTrail(filters, parseInt(params.limit) || 50, parseInt(params.offset) || 0);
   res.status(200).json(result);
 }
 
-function kernelAuditDetailHandler(req, res, url) {
+async function kernelAuditDetailHandler(req, res, url) {
   const id = url.split('/api/kernel/audit/')[1]?.split('?')[0];
   if (!id) return res.status(400).json({ error: 'Missing audit ID' });
 
-  const entry = kernel.getAuditEntry(id);
+  const entry = await kernel.getAuditEntry(id);
   if (!entry) return res.status(404).json({ error: 'Audit entry not found' });
 
   res.status(200).json(entry);
@@ -68,21 +68,14 @@ async function kernelApproveHandler(req, res, url) {
   const approver = approvedBy || req.headers['x-kernel-user-id'] || 'unknown';
 
   try {
-    const result = kernel.approve(id, approver, comment);
-    // After approval, call Gemini for the pending request
-    const entry = kernel.getAuditEntry(id);
-    if (entry) {
-      const { callGemini } = require('../kernel');
-      // Re-import processChat won't work here, so we call Gemini directly
-      // and update the interaction
-    }
+    const result = await kernel.approve(id, approver, comment);
     res.status(200).json(result);
   } catch (err) {
     res.status(404).json({ error: err.message });
   }
 }
 
-function kernelRejectHandler(req, res, url) {
+async function kernelRejectHandler(req, res, url) {
   const id = url.split('/api/kernel/reject/')[1]?.split('?')[0];
   if (!id) return res.status(400).json({ error: 'Missing interaction ID' });
 
@@ -90,14 +83,14 @@ function kernelRejectHandler(req, res, url) {
   const rejector = rejectedBy || req.headers['x-kernel-user-id'] || 'unknown';
 
   try {
-    const result = kernel.reject(id, rejector, comment || 'Rejected');
+    const result = await kernel.reject(id, rejector, comment || 'Rejected');
     res.status(200).json(result);
   } catch (err) {
     res.status(404).json({ error: err.message });
   }
 }
 
-function kernelPendingHandler(req, res) {
+async function kernelPendingHandler(req, res) {
   const url = req.url || '';
   let limit = 50, offset = 0;
   try {
@@ -107,43 +100,43 @@ function kernelPendingHandler(req, res) {
     offset = parseInt(params.offset) || 0;
   } catch (_) {}
 
-  const result = kernel.getPendingApprovals(null, limit, offset);
+  const result = await kernel.getPendingApprovals(null, limit, offset);
   res.status(200).json({ pending: result, total: result.length });
 }
 
-function kernelStatsHandler(req, res) {
-  const stats = kernel.getStats();
+async function kernelStatsHandler(req, res) {
+  const stats = await kernel.getStats();
   res.status(200).json(stats);
 }
 
-function kernelEvidenceHandler(req, res, url) {
+async function kernelEvidenceHandler(req, res, url) {
   const id = url.split('/api/kernel/evidence/')[1]?.split('?')[0];
   if (!id) return res.status(400).json({ error: 'Missing interaction ID' });
 
   try {
-    const evidence = kernel.generateEvidenceFile(id);
+    const evidence = await kernel.generateEvidenceFile(id);
     res.status(200).json(evidence);
   } catch (err) {
     res.status(404).json({ error: err.message });
   }
 }
 
-function kernelComplianceCheckHandler(req, res) {
-  const status = kernel.getComplianceStatus();
+async function kernelComplianceCheckHandler(req, res) {
+  const status = await kernel.getComplianceStatus();
   res.status(200).json(status);
 }
 
 async function kernelRouteHandler(req, res, method, url) {
   try {
     if (method === 'POST' && url === '/api/kernel/chat') return await kernelChatHandler(req, res);
-    if (method === 'GET' && url.startsWith('/api/kernel/audit/')) return kernelAuditDetailHandler(req, res, url);
-    if (method === 'GET' && url === '/api/kernel/audit') return kernelAuditListHandler(req, res);
+    if (method === 'GET' && url.startsWith('/api/kernel/audit/')) return await kernelAuditDetailHandler(req, res, url);
+    if (method === 'GET' && url === '/api/kernel/audit') return await kernelAuditListHandler(req, res);
     if (method === 'POST' && url.startsWith('/api/kernel/approve/')) return await kernelApproveHandler(req, res, url);
-    if (method === 'POST' && url.startsWith('/api/kernel/reject/')) return kernelRejectHandler(req, res, url);
-    if (method === 'GET' && url === '/api/kernel/pending') return kernelPendingHandler(req, res);
-    if (method === 'GET' && url === '/api/kernel/stats') return kernelStatsHandler(req, res);
-    if (method === 'POST' && url.startsWith('/api/kernel/evidence/')) return kernelEvidenceHandler(req, res, url);
-    if (method === 'GET' && url === '/api/kernel/compliance/check') return kernelComplianceCheckHandler(req, res);
+    if (method === 'POST' && url.startsWith('/api/kernel/reject/')) return await kernelRejectHandler(req, res, url);
+    if (method === 'GET' && url === '/api/kernel/pending') return await kernelPendingHandler(req, res);
+    if (method === 'GET' && url === '/api/kernel/stats') return await kernelStatsHandler(req, res);
+    if (method === 'POST' && url.startsWith('/api/kernel/evidence/')) return await kernelEvidenceHandler(req, res, url);
+    if (method === 'GET' && url === '/api/kernel/compliance/check') return await kernelComplianceCheckHandler(req, res);
 
     res.status(404).json({ error: 'Kernel endpoint not found', errorCode: 'KERNEL_NOT_FOUND' });
   } catch (err) {

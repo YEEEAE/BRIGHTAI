@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BrightTrust Kernel — تجربة المحادثة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
+            ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' },
+            whatsapp: '#25D366'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background: #060914; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    .sidebar-open { transform: translateX(0); }
+    .sidebar-closed { transform: translateX(100%); }
+    @media (min-width: 1024px) {
+      .sidebar-closed { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body class="h-screen flex flex-col font-sans text-white overflow-hidden">
+
+  <!-- Header -->
+  <header class="flex items-center justify-between px-4 py-3 bg-ink-900/60 backdrop-blur-xl border-b border-white/10 shrink-0 z-30">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-l from-brand-500 to-purple-500 flex items-center justify-center">
+        <i class="fas fa-shield-halved text-white text-sm"></i>
+      </div>
+      <div>
+        <h1 class="text-base font-bold leading-tight">BrightTrust Kernel</h1>
+        <p class="text-xs text-gray-400">تجربة المحادثة</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <a href="/kernel/" class="w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-brand-500 transition-colors" title="رجوع">
+        <i class="fas fa-arrow-right text-sm"></i>
+      </a>
+      <a href="https://wa.me/" target="_blank" class="w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-whatsapp transition-colors" title="WhatsApp">
+        <i class="fab fa-whatsapp text-sm"></i>
+      </a>
+      <button id="sidebar-toggle" class="lg:hidden w-9 h-9 rounded-xl bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-brand-500 transition-colors" title="الإعدادات">
+        <i class="fas fa-sliders text-sm"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main layout -->
+  <div class="flex flex-1 overflow-hidden relative">
+
+    <!-- Chat column -->
+    <div class="flex-1 flex flex-col min-w-0">
+
+      <!-- Chat area -->
+      <div id="chat-area" class="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+        <!-- Welcome message -->
+        <div class="max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl rounded-br-sm p-4 text-white">
+          <div class="whitespace-pre-wrap">مرحباً! أنا نواة BrightTrust. يمكنني تحليل طلباتك والتحقق من توافقها مع سياسات الامتثال المحددة.
+
+جرّب إرسال رسالة لبدء التحليل.</div>
+        </div>
+      </div>
+
+      <!-- Input area -->
+      <div class="shrink-0 border-t border-white/10 bg-ink-900/60 backdrop-blur-xl p-4">
+        <!-- Pack pills -->
+        <div class="flex flex-wrap gap-2 mb-3">
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-brand-500 text-white" data-pack="general" onclick="setPack('general')">عام</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="pdpl" onclick="setPack('pdpl')">PDPL</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="nca_ecc" onclick="setPack('nca_ecc')">NCA ECC</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="sfda" onclick="setPack('sfda')">SFDA</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="procurement" onclick="setPack('procurement')">المشتريات</button>
+          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="healthcare" onclick="setPack('healthcare')">الرعاية الصحية</button>
+        </div>
+        <!-- Input row -->
+        <div class="flex gap-2">
+          <input id="message-input" type="text" placeholder="اكتب رسالتك هنا..." class="flex-1 bg-ink-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30 transition-colors text-sm">
+          <button onclick="sendMessage()" class="px-5 py-3 rounded-xl bg-gradient-to-l from-brand-500 to-purple-500 text-white font-medium text-sm hover:opacity-90 transition-opacity shrink-0">
+            <i class="fas fa-paper-plane ml-1"></i>
+            إرسال
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar overlay (mobile) -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden" onclick="closeSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="absolute lg:relative inset-y-0 right-0 w-72 bg-ink-900/80 backdrop-blur-xl border-l border-white/10 z-20 flex flex-col p-5 gap-5 overflow-y-auto transition-transform duration-300 sidebar-closed lg:sidebar-open">
+      <div class="flex items-center justify-between lg:hidden">
+        <h2 class="text-sm font-bold">الإعدادات</h2>
+        <button onclick="closeSidebar()" class="w-8 h-8 rounded-lg bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+          <i class="fas fa-times text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Kernel status -->
+      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
+        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">حالة النواة</h3>
+        <div class="flex items-center gap-2">
+          <span id="kernel-status-dot" class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+          <span id="kernel-status-text" class="text-sm text-green-400">متصل</span>
+        </div>
+      </div>
+
+      <!-- Compliance pack -->
+      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
+        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">حزمة الامتثال</h3>
+        <select id="sidebar-pack-select" onchange="setPack(this.value)" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50">
+          <option value="general">عام — General</option>
+          <option value="pdpl">PDPL — حماية البيانات</option>
+          <option value="nca_ecc">NCA ECC — الأمن السيبراني</option>
+          <option value="sfda">SFDA — الغذاء والدواء</option>
+          <option value="procurement">المشتريات — Procurement</option>
+          <option value="healthcare">الرعاية الصحية — Healthcare</option>
+        </select>
+      </div>
+
+      <!-- User ID -->
+      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
+        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">معرّف المستخدم</h3>
+        <input id="user-id-input" type="text" value="demo-user" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50" oninput="userId = this.value">
+      </div>
+
+      <!-- Session info -->
+      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
+        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">معلومات الجلسة</h3>
+        <div class="space-y-2 text-xs text-gray-400">
+          <div class="flex justify-between"><span>الرسائل</span><span id="msg-count" class="text-white">0</span></div>
+          <div class="flex justify-between"><span>المحظورة</span><span id="blocked-count" class="text-red-400">0</span></div>
+          <div class="flex justify-between"><span>بانتظار الموافقة</span><span id="pending-count" class="text-yellow-400">0</span></div>
+          <div class="flex justify-between"><span>الحزمة الحالية</span><span id="current-pack-label" class="text-brand-400">عام</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    // State
+    const chatArea = document.getElementById('chat-area');
+    const messageInput = document.getElementById('message-input');
+    let currentPack = 'general';
+    let userId = 'demo-user';
+    let msgCount = 0;
+    let blockedCount = 0;
+    let pendingCount = 0;
+
+    const packLabels = {
+      general: 'عام',
+      pdpl: 'PDPL',
+      nca_ecc: 'NCA ECC',
+      sfda: 'SFDA',
+      procurement: 'المشتريات',
+      healthcare: 'الرعاية الصحية'
+    };
+
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.remove('sidebar-closed');
+      sidebar.classList.add('sidebar-open');
+      sidebarOverlay.classList.remove('hidden');
+    });
+
+    function closeSidebar() {
+      sidebar.classList.remove('sidebar-open');
+      sidebar.classList.add('sidebar-closed');
+      sidebarOverlay.classList.add('hidden');
+    }
+
+    // Send message
+    async function sendMessage() {
+      const msg = messageInput.value.trim();
+      if (!msg) return;
+
+      addMessage(msg, 'user');
+      messageInput.value = '';
+      msgCount++;
+      updateStats();
+
+      const loadingEl = addMessage('جاري التحليل...', 'loading');
+
+      try {
+        const res = await fetch('/api/kernel/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Kernel-User-Id': userId },
+          body: JSON.stringify({ message: msg, compliancePack: currentPack })
+        });
+        const data = await res.json();
+
+        loadingEl.remove();
+
+        if (data.status === 'blocked') {
+          blockedCount++;
+          updateStats();
+          addMessage('\u{1F6AB} ' + data.reason, 'blocked', data);
+        } else if (data.status === 'pending_approval') {
+          pendingCount++;
+          updateStats();
+          addMessage('⏳ بانتظار الموافقة (مخاطر: ' + data.riskScore + ')', 'pending', data);
+        } else {
+          addMessage(data.response, 'ai', data);
+        }
+      } catch(e) {
+        loadingEl.remove();
+        addMessage('خطأ في الاتصال بالنواة', 'error');
+      }
+    }
+
+    function addMessage(text, type, kernelData) {
+      const div = document.createElement('div');
+
+      if (type === 'user') {
+        div.className = 'max-w-[75%] mr-auto bg-brand-500/20 border border-brand-500/30 rounded-2xl rounded-bl-sm p-4 text-white';
+        div.textContent = text;
+      } else if (type === 'ai') {
+        div.className = 'max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl rounded-br-sm p-4 text-white';
+        div.innerHTML = '<div class="whitespace-pre-wrap">' + escapeHtml(text) + '</div>';
+        if (kernelData?.kernel) {
+          div.innerHTML += '<details class="mt-3 text-xs text-gray-400 cursor-pointer"><summary class="text-brand-300">تفاصيل النواة</summary><pre class="mt-2 p-2 bg-ink-900 rounded-lg overflow-auto text-left" dir="ltr">' + escapeHtml(JSON.stringify(kernelData.kernel, null, 2)) + '</pre></details>';
+        }
+      } else if (type === 'blocked') {
+        div.className = 'max-w-[80%] ml-auto bg-red-500/20 border border-red-500/30 rounded-2xl p-4 text-red-200';
+        div.innerHTML = '<div>' + escapeHtml(text) + '</div>';
+        if (kernelData?.kernel) {
+          div.innerHTML += '<details class="mt-3 text-xs text-gray-400 cursor-pointer"><summary class="text-red-300">تفاصيل الحظر</summary><pre class="mt-2 p-2 bg-ink-900 rounded-lg overflow-auto text-left" dir="ltr">' + escapeHtml(JSON.stringify(kernelData.kernel, null, 2)) + '</pre></details>';
+        }
+      } else if (type === 'pending') {
+        div.className = 'max-w-[80%] ml-auto bg-yellow-500/20 border border-yellow-500/30 rounded-2xl p-4 text-yellow-200';
+        div.innerHTML = '<div>' + escapeHtml(text) + '</div><div class="text-xs mt-2">رقم التفاعل: ' + (kernelData?.interactionId || '') + '</div>';
+      } else if (type === 'loading') {
+        div.className = 'max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl p-4 text-gray-400';
+        div.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + escapeHtml(text);
+      } else {
+        div.className = 'max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl p-4 text-red-300';
+        div.textContent = text;
+      }
+
+      chatArea.appendChild(div);
+      chatArea.scrollTop = chatArea.scrollHeight;
+      return div;
+    }
+
+    function escapeHtml(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    function setPack(pack) {
+      currentPack = pack;
+      document.querySelectorAll('.pack-pill').forEach(p => {
+        const isActive = p.dataset.pack === pack;
+        p.classList.toggle('bg-brand-500', isActive);
+        p.classList.toggle('text-white', isActive);
+        p.classList.toggle('bg-ink-800', !isActive);
+        p.classList.toggle('text-gray-400', !isActive);
+        p.classList.toggle('border', !isActive);
+        p.classList.toggle('border-white/10', !isActive);
+      });
+      document.getElementById('sidebar-pack-select').value = pack;
+      document.getElementById('current-pack-label').textContent = packLabels[pack] || pack;
+    }
+
+    function updateStats() {
+      document.getElementById('msg-count').textContent = msgCount;
+      document.getElementById('blocked-count').textContent = blockedCount;
+      document.getElementById('pending-count').textContent = pendingCount;
+    }
+
+    // Send on Enter
+    messageInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+  </script>
+</body>
+</html>

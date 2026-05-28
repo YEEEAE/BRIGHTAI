@@ -1,51 +1,62 @@
 'use strict';
 
-const Database = require('better-sqlite3');
+const { Pool } = require('pg');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 
-let db = null;
+let pool = null;
 
 function getDb() {
-  if (!db) throw new Error('Database not initialized. Call initializeDatabase() first.');
-  return db;
+  if (!pool) throw new Error('Database not initialized. Call initializeDatabase() first.');
+  return pool;
 }
 
 function generateId(prefix) {
   return prefix + '_' + crypto.randomUUID().replace(/-/g, '').slice(0, 16);
 }
 
-function initializeDatabase() {
-  const dataDir = path.join(__dirname, '..', 'data');
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+async function initializeDatabase() {
+  const connectionString = process.env.DATABASE_URL ||
+    process.env.POSTGRES_URL ||
+    `postgresql://brighttrust:brighttrust@localhost:5432/brighttrust`;
 
-  const dbPath = path.join(dataDir, 'brighttrust.sqlite');
-  db = new Database(dbPath);
+  pool = new Pool({
+    connectionString,
+    max: 10,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 5000
+  });
 
-  db.pragma('journal_mode = WAL');
-  db.pragma('foreign_keys = ON');
-  db.pragma('synchronous = NORMAL');
+  pool.on('error', (err) => {
+    console.error('[BrightTrust Kernel] Unexpected PG pool error:', err.message);
+  });
 
-  const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
-  db.exec(schema);
+  // Test connection
+  const client = await pool.connect();
+  try {
+    await client.query('SELECT NOW()');
+    console.log('[BrightTrust Kernel] PostgreSQL connected');
+  } finally {
+    client.release();
+  }
 
-  seedDefaultPolicies();
+  // Run schema
+  const schemaPath = path.join(__dirname, 'schema-pg.sql');
+  const schema = fs.readFileSync(schemaPath, 'utf8');
+  await pool.query(schema);
 
-  console.log(`[BrightTrust Kernel] SQLite initialized at ${dbPath}`);
-  return db;
+  await seedDefaultPolicies();
+
+  console.log('[BrightTrust Kernel] PostgreSQL schema initialized');
+  return pool;
 }
 
-function seedDefaultPolicies() {
-  const existing = db.prepare('SELECT COUNT(*) as count FROM kernel_policy_rules').get();
-  if (existing.count > 0) return;
+async function seedDefaultPolicies() {
+  const { rows } = await pool.query('SELECT COUNT(*) as count FROM kernel_policy_rules');
+  if (parseInt(rows[0].count) > 0) return;
 
   const now = Date.now();
-  const insert = db.prepare(`
-    INSERT INTO kernel_policy_rules (id, name, description, pii_type, action, risk_score_modifier, compliance_pack, is_active, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?, ?)
-  `);
-
   const defaults = [
     ['pr_saudi_id_pdpl', 'Mask Saudi National ID', 'PDPL requires masking national IDs before external processing', 'saudi_id', 'mask', 15, 'pdpl'],
     ['pr_saudi_id_sfda', 'Block Saudi ID in medical context', 'SFDA prohibits unmasked IDs in medical data', 'saudi_id', 'block', 30, 'sfda'],
@@ -61,12 +72,13 @@ function seedDefaultPolicies() {
     ['pr_ip_nca', 'Mask IP addresses', 'NCA network data protection', 'ip_address', 'mask', 3, 'nca_ecc'],
   ];
 
-  const insertMany = db.transaction((rows) => {
-    for (const row of rows) {
-      insert.run(row[0], row[1], row[2], row[3], row[4], row[5], row[6], now, now);
-    }
-  });
-  insertMany(defaults);
+  for (const row of defaults) {
+    await pool.query(
+      `INSERT INTO kernel_policy_rules (id, name, description, pii_type, action, risk_score_modifier, compliance_pack, is_active, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 1, $8, $9)`,
+      [row[0], row[1], row[2], row[3], row[4], row[5], row[6], now, now]
+    );
+  }
   console.log(`[BrightTrust Kernel] Seeded ${defaults.length} default policy rules`);
 }
 

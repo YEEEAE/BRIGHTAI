@@ -1,178 +1,300 @@
-# BrightAI Monorepo
+# BrightTrust — Saudi AI Safety OS
 
-مستودع BrightAI الآن يعمل على فصل واضح بين الواجهة الثابتة وواجهة الـ API الخادمية.
-git add .
-git commit -m "update site"
-git push origin main
-## **الموقع فعلت فيه :**
+**برايت ترست — نظام أمان وحوكمة الذكاء الاصطناعي للشركات السعودية**
 
-
-
-## من cloudflare  :
-
-# Nihmuk@mohemil.com
-
-**Automatic SSL/TLS**
-
-[Page Shield](https://dash.cloudflare.com/08cdfffb36f5fcbe856c2e5cd8da97e6/brightai.site/security/page-shield/settings)
-
-Multi-signer DNSSEC
-
-Cache Reserve
-
-Security action items
-
-## الفهرسه 
-تمت في bing , google search 
-
-Saudi AI Safety  
-
-
-الفكرة هي اسمها BrightTrust هي طبقة الأمان والحوكمة التي تجعل الذكاء الاصطناعي قابلاً للاستخدام داخل الشركات السعودية بدون فقدان السيطرة على البيانات والقرارات والامتثال
-
-يا أ.يزيد، إي نعم. بعد ما شفت مشروعك، عندي لك فكرة أعتبرها أقوى من إنك تسوي “منصة AI” عادية:
-
-BrightTrust Kernel
-أو اسم تجاري أقوى: Saqr AI Safety OS
-يعني: نظام أمان وتشغيل واعتماد للذكاء الاصطناعي داخل الشركات السعودية.
-مو شات بوت. مو داشبورد فقط. مو أداة تحليل بيانات فقط.
-بل طبقة أساسية تدخل بين:
-الموظف ↔ الذكاء الاصطناعي ↔ بيانات الشركة ↔ ERP / CRM / HIS / Excel / SharePoint
-وتضمن إن كل طلب AI داخل الشركة يكون:
-آمن، موثّق، قابل للمراجعة، متوافق مع الأنظمة السعودية، وما يقدر يتخذ قرار خطير بدون موافقة بشرية.
-بالضبط مثل QNX: الناس ما تشوفه، لكنه يكون تحت الأنظمة الحساسة.
- 
-⸻
- 
-ليه هذي الفكرة مناسبة لك أنت تحديداً؟
-من مشروعك واضح عندك أساس جاهز:
-عندك AI Gateway في الباكند. عندك ديموهات قطاعات: صحة، مصانع، مناقصات، توظيف، OCR، سلاسل إمداد. عندك RAG وبحث ذكي. عندك تجربة MAIS للمرفوضات والجودة وCAPA وربط ERP بشكل read-only. وعندك توجه سعودي واضح في المحتوى والواجهات.
-يعني لا تبدأ من الصفر. أنت عندك “واجهات AI”، بس ناقصك المنتج العبقري اللي يربطها كلها:
-نواة ثقة وأمان واعتماد للـ AI.
- 
-⸻
- 
-المشكلة الكبيرة في السوق السعودي
-كل الشركات السعودية الحين بتدخل الذكاء الاصطناعي، لكن عندهم خوف حقيقي:
-هل الموظف بيرفع بيانات حساسة؟ هل النموذج بيطلع جواب غلط؟ هل القرار موثّق؟ هل فيه أثر تدقيق audit trail؟ هل هذا متوافق مع PDPL؟ هل نقدر نستخدمه مع متطلبات NCA؟ هل الطبيب/المحاسب/مدير الجودة يقدر يثق فيه؟ هل AI بيعدل في ERP بالغلط؟
-وهنا فرصتك.
-السعودية دافعة بقوة باتجاه الذكاء الاصطناعي؛ المنصة الوطنية تذكر أن الاستراتيجية الوطنية للبيانات والذكاء الاصطناعي تستهدف جعل المملكة من الدول القيادية في المجال بحلول 2030.   وفي نفس الوقت فيه ضغط تنظيمي: NCA حدّثت ضوابط الأمن السيبراني الأساسية ECC 2-2024 لحماية أصول الجهات الوطنية ومعلوماتها.   وSDAIA عندها إرشادات للذكاء الاصطناعي التوليدي للحكومة والاستخدام العام، وتركز على الاستخدام المسؤول والفعّال.  
-يعني السوق يبي AI، بس يبي AI مأمون.
- 
-⸻
- 
-المنتج وش يسوي بالضبط؟
-تخيله مثل “Black Box + Firewall + Operating Layer” للذكاء الاصطناعي.
-أي نظام AI عند العميل يمر عبر BrightTrust Kernel قبل ما يرد أو ينفذ.
-1. AI Firewall
-يفحص الطلب قبل ما يروح للنموذج:
-هل فيه رقم هوية؟ هل فيه بيانات مريض؟ هل فيه بيانات مالية؟ هل فيه أسرار شركة؟ هل المستخدم مصرح له يشوف هذي البيانات؟
-لو فيه خطر، النظام يخفي البيانات أو يمنع الطلب أو يطلب موافقة.
-وهذا مهم لأن دليل PDPL الرسمي يتكلم عن إجراءات الامتثال بحلول 14 سبتمبر 2024، وهذا يخلي موضوع إدارة البيانات الشخصية مو رفاهية.  
- 
-⸻
- 
-2. AI Audit Trail
-كل شيء يتسجل:
-مين سأل؟ وش سأل؟ وش البيانات المستخدمة؟ أي نموذج رد؟ وش المصادر؟ هل الموظف وافق؟ هل تم تصعيدها لمدير؟ هل فيه خطر؟ وش سبب القرار؟
-هذا يصير كنز وقت التدقيق، خصوصاً في المصانع والمستشفيات والجهات الحكومية.
- 
-⸻
- 
-3. Human Approval Layer
-الذكاء الاصطناعي يقترح، لكن ما يعتمد القرار.
-مثلاً في مشروع MAIS عندك:
-AI يقول: “هذه حالة مرفوضات عالية الخطورة، السبب غالباً فشل في تدوير المخزون، أقترح CAPA.”
-لكن ما يقدر يقول: “اتلف المادة” أو “خصمها من المخزون” أو “اعتمد الإجراء”.
-لازم QAM/QCM/Finance يوافقون.
-هذي نقطة ذهبية، لأنها تخلي المنتج مقبول في الشركات المحافظة والمنظمة.
- 
-⸻
- 
-4. Compliance Packs جاهزة للسعودية
-تبيع النظام ومعه حزم جاهزة:
-PDPL Pack حماية بيانات شخصية، إخفاء PII، سجل موافقات، سجل مشاركة البيانات.
-NCA ECC Pack ربط الضوابط الأمنية بالعمليات، سجل وصول، تصنيف بيانات، تقارير أمنية.
-SFDA / ISO 13485 Pack للمصانع الطبية، الجودة، CAPA، المرفوضات، الشكاوى، السجلات، وتتبع الإجراءات. SFDA عندها إرشادات QMS للمنشآت الطبية مرتبطة بـ ISO 13485 ومتطلبات الجهات المصنعة والمستوردة والموزعة.  
-Procurement & Tenders Pack تحليل مناقصات، مخاطر عقود، شروط جزائية، تعارضات، التزام الموردين.
-Healthcare Pack أرشفة طبية، OCR، تلخيص، لكن مع حماية بيانات المرضى ومسار موافقة واضح.
- 
-⸻
- 
-ليه تشبه QNX؟
-QNX ما فازت لأنها أجمل واجهة. فازت لأنها صارت طبقة موثوقة داخل الأنظمة الحساسة.
-أنت لا تحاول تصير “ChatGPT سعودي”. هذا طريق مزدحم وصعب.
-العبها كذا:
-“قبل لا تستخدمون أي AI في شركتكم، ركّبوا BrightTrust Kernel عشان يكون آمن، موثّق، ومناسب للبيئة السعودية.”
-هنا تصير مثل QNX: مو لازم كل موظف يعرف اسمك، لكن كل نظام AI داخل الشركة يحتاجك.
- 
-⸻
- 
-أول سوق تبدأ فيه؟ لا تبدأ عام
-لا تبدأ تقول: “نخدم كل الشركات”.
-ابدأ من أقوى نقطة عندك حالياً:
-مصانع المنتجات الطبية والجودة والامتثال
-ليش؟ لأن عندك ديمو MAIS جاهز تقريباً، وفيه ألم واضح:
-مرفوضات. تأخير موافقات. تكلفة إتلاف. CAPA. Audit. SFDA. ISO 13485. ERP. Finance. Quality. Management.
-هذا سوق يقدّر النظام اللي يقلل المخاطر، مو بس يعطي شكل جميل.
-المنتج الأول يكون اسمه مثلاً:
-BrightTrust QMS AI
-“نظام ذكاء اصطناعي آمن لإدارة المرفوضات، CAPA، وتدقيق الجودة في المصانع السعودية.”
-بعدها توسع:
-BrightTrust Healthcare BrightTrust Procurement BrightTrust Finance BrightTrust Government
- 
-⸻
- 
-الميزة العبقرية اللي تخلّيهم يدفعون
-سو ميزة اسمها:
-AI Evidence File
-كل حالة يشتغل عليها AI يطلع لها ملف تدقيق تلقائي:
-ملخص الحالة. البيانات المستخدمة. المخاطر. سبب تصنيف الخطورة. الإجراءات المقترحة. مين راجعها. مين وافق. هل فيها بيانات شخصية. هل فيها مخالفة سياسة. وش المتطلبات المرتبطة: PDPL / NCA / SFDA / ISO. نسخة PDF جاهزة للتدقيق.
-هذي لحالها تبيع.
-لأن المدير ما يبي “ذكاء اصطناعي ينبهر فيه”. هو يبي شيء يقول له: لو جاء تدقيق، أنا جاهز.
- 
-⸻
- 
-وش تبني خلال 30 يوم؟
-من مشروعك الحالي، لا تبني شيء ضخم. ابنِ نسخة مركزة:
-1. صفحة جديدة: /demo/brighttrust-kernel
-2. لوحة فيها 5 تبويبات:
-    * AI Requests
-    * Risk Score
-    * Compliance Mapping
-    * Human Approvals
-    * Evidence File
-3. اربطها بديمو MAIS الحالي.
-4. خل كل Reject Case يطلع له:
-    * درجة خطورة
-    * CAPA مقترح
-    * متطلبات تدقيق
-    * سجل قرار
-    * زر Export Audit File
-5. خل الـ AI Gateway عندك يصير مو بس “يرسل لجيميناي”، بل يضيف:
-    * policy check
-    * PII redaction
-    * prompt logging
-    * response verification
-    * source citation
-    * approval requirement
- 
-⸻
- 
-الجملة التسويقية القوية
-استخدم هذي:
 BrightTrust Kernel is the safety layer for enterprise AI in Saudi Arabia. It lets organizations adopt AI without losing control over data, decisions, compliance, or audit readiness.
-وبالعربي:
-برايت ترست هي طبقة الأمان والحوكمة التي تجعل الذكاء الاصطناعي قابلاً للاستخدام داخل الشركات السعودية بدون فقدان السيطرة على البيانات والقرارات والامتثال.
- 
-⸻
- 
-رأيي الصريح
-مشروعك حالياً فيه ديموهات كثيرة، وهذا ممتاز للعرض، لكن لو تبي شركة كبيرة مثل QNX لازم توقف تشتت “كل شيء AI” وتختار نواة واحدة صعبة التقليد.
-النواة اللي أنصحك فيها:
-Saudi AI Safety & Compliance Runtime
-هذا هو الشيء اللي ممكن يصير “QNX الذكاء الاصطناعي” بالسعودية.
-مو لأنك تملك أقوى نموذج. بل لأنك تملك الطبقة اللي تخلي النماذج قابلة للاستخدام في بيئات ما تتحمل الخطأ.
 
+---
 
+## Architecture
 
+```
+User Request → AI Firewall → Risk Scoring → Compliance Checks → (Human Approval?) → Gemini AI → Audit Trail → Response
+```
+
+Every AI request passes through 4 security layers before reaching the AI model and being logged in an immutable audit trail.
+
+### Core Layers
+
+1. **AI Firewall** — PII detection, masking, blocking, escalation based on configurable policy rules
+2. **AI Audit Trail** — Immutable append-only log with blockchain-like chain hashing (SHA-256)
+3. **Human Approval Layer** — Risk-based approval workflow (low→auto, medium→queue, high→manager, critical→admin)
+4. **Compliance Packs** — PDPL, NCA ECC 2-2024, SFDA/ISO 13485, Procurement & Tenders, Healthcare
+
+---
+
+## Project Structure
+
+```
+BRIGHTAI/
+├── index.html                    # Main landing page (brighttrust.sa)
+├── about/                        # About page
+├── blog/                         # Blog pages
+├── contact/                      # Contact page
+├── demo/                         # Demo pages
+├── docs/                         # API docs (OpenAPI/Swagger)
+├── pricing/                      # Pricing page
+├── privacy-cookies/              # Privacy policy
+├── services/                     # Services pages
+├── reports/                      # Reports pages
+├── dashboard/                    # BrightTrust Kernel Dashboard UI
+│   ├── index.html                #   Main dashboard (stats + quick chat)
+│   ├── audit.html                #   Audit trail viewer with filters
+│   ├── approvals.html            #   Approval queue (approve/reject)
+│   ├── compliance.html           #   Compliance status & packs
+│   ├── evidence.html             #   Evidence file viewer/generator
+│   └── stats.html                #   Statistics & analytics
+├── backend/
+│   ├── server.js                 # Main HTTP server (Node.js, no Express)
+│   ├── config/index.js           # Configuration (Gemini, Groq, NVIDIA, DeepSeek, PG)
+│   ├── package.json              # Dependencies: express, pg, ws, dotenv
+│   ├── db/
+│   │   ├── schema-pg.sql         # PostgreSQL schema (5 tables + indexes)
+│   │   ├── schema.sql            # Legacy SQLite schema (reference)
+│   │   └── init.js               # PG pool init, schema migration, seed policies
+│   ├── kernel/
+│   │   ├── index.js              # Main orchestrator (coordinates all layers + Gemini)
+│   │   ├── pii-patterns.js       # Saudi PII regex patterns + sensitive keywords
+│   │   ├── firewall.js           # AI Firewall: scan, mask, block, escalate
+│   │   ├── risk-scorer.js        # Risk scoring engine (0-100, 4 levels)
+│   │   ├── audit.js              # Immutable audit trail with chain hashing
+│   │   ├── approval.js           # Human approval workflow (queue/approve/reject)
+│   │   ├── compliance.js         # Compliance packs (6 packs, 23+ check types)
+│   │   └── evidence.js           # Evidence file generation + compliance reports
+│   ├── routes/
+│   │   └── kernel.js             # API route handlers + dispatcher
+│   ├── middleware/
+│   │   └── rateLimiter.js        # Rate limiting middleware
+│   ├── services/                 # AI gateway, static files, redirects, etc.
+│   └── utils/                    # Shared utilities
+├── robots.txt                    # Allows all AI crawlers
+├── sitemap.xml                   # Full sitemap
+├── llms-full.txt                 # AI-readable documentation for LLMs
+├── render.yaml                   # Render.com deployment config
+├── _headers                      # Netlify/Cloudflare headers
+├── _redirects                    # URL redirects
+└── manifest.webmanifest          # PWA manifest
+```
+
+---
+
+## Database Schema (PostgreSQL)
+
+5 tables, all async via `pg` Pool:
+
+| Table | Purpose |
+|-------|---------|
+| `kernel_interactions` | Every AI request/response — the core audit trail with chain hashes |
+| `kernel_approval_queue` | Pending approvals (subset of interactions requiring human review) |
+| `kernel_compliance_checks` | Per-interaction compliance check results |
+| `kernel_policy_rules` | Configurable firewall rules (seeded with 12 defaults for PDPL/NCA/SFDA) |
+| `kernel_users` | User registry (id, role, department, compliance_packs) |
+
+### Connection
+
+Set `DATABASE_URL` or `POSTGRES_URL` environment variable. Default: `postgresql://brighttrust:brighttrust@localhost:5432/brighttrust`
+
+---
+
+## API Endpoints
+
+### BrightTrust Kernel (`/api/kernel/*`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/kernel/chat` | Main: message → firewall → risk → compliance → (approval?) → Gemini → audit → response |
+| `GET` | `/api/kernel/audit` | Query audit trail (filters: userId, riskLevel, pack, dates, search) |
+| `GET` | `/api/kernel/audit/:id` | Single audit entry |
+| `POST` | `/api/kernel/approve/:id` | Approve pending request |
+| `POST` | `/api/kernel/reject/:id` | Reject pending request |
+| `GET` | `/api/kernel/pending` | List pending approvals |
+| `GET` | `/api/kernel/stats` | Dashboard statistics |
+| `POST` | `/api/kernel/evidence/:id` | Generate Evidence File |
+| `GET` | `/api/kernel/compliance/check` | Compliance status |
+
+### AI Gateway (`/api/ai/*`)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/ai/chat` | Unified chat (Gemini/Groq/NVIDIA/DeepSeek) |
+| `POST` | `/api/ai/chat/stream` | Streaming chat (SSE) |
+| `POST` | `/api/ai/openai-chat` | OpenAI-compatible endpoint |
+| `POST` | `/api/ai/search` | Smart search |
+| `POST` | `/api/ai/medical` | Medical image analysis |
+| `POST` | `/api/ai/summary` | Text summarization |
+| `POST` | `/api/ai/ocr` | OCR JSON extraction |
+| `POST` | `/api/ai/transcribe` | Audio to text |
+| `GET` | `/api/ai/models` | Model catalog |
+| `GET` | `/api/health` | Health check |
+
+### Dashboard UI
+
+| URL | Description |
+|-----|-------------|
+| `/dashboard/` | Main dashboard (stats + quick chat) |
+| `/dashboard/audit.html` | Audit trail viewer |
+| `/dashboard/approvals.html` | Approval queue |
+| `/dashboard/compliance.html` | Compliance status |
+| `/dashboard/evidence.html` | Evidence file viewer |
+| `/dashboard/stats.html` | Statistics & analytics |
+
+---
+
+## Request Flow (POST /api/kernel/chat)
+
+```
+1. Receive {message, userId, compliancePack, metadata}
+2. FIREWALL: scan(message) → PII detection, masking, block/allow/escalate
+3. If blocked → return {status: 'blocked', reason}
+4. COMPLIANCE: runComplianceChecks(pack, context) → pass/warning/fail
+5. RISK: computeRiskScore({firewall, compliance, metadata}) → 0-100 + level
+6. If risk.requiresApproval:
+   - Log interaction as 'pending'
+   - Queue for approval
+   - Return {status: 'pending_approval', interactionId}
+7. AUTO-APPROVE: callGemini(maskedMessage) → AI response
+8. AUDIT: logInteraction(all data + chain hash)
+9. Return {status: 'completed', interactionId, response, kernel metadata}
+```
+
+---
+
+## Saudi PII Detection
+
+| Type | Pattern | Example |
+|------|---------|---------|
+| Saudi National ID | 10 digits starting with 1 or 2 | `1234567890` |
+| Saudi Phone | +966/05 variants | `+966538229013` |
+| Saudi IBAN | SA + 22 chars | `SA0380000000608010167519` |
+| Email | Standard email regex | `user@example.com` |
+| Patient ID | MED- prefix + digits | `MED-123456` |
+| Credit Card | Luhn-valid card numbers | `4111111111111111` |
+| Passport | Letter + 8+ digits | `A12345678` |
+| IP Address | IPv4 | `192.168.1.1` |
+
+Sensitive keyword categories: `financial` (Arabic+English), `medical`, `corporate`
+
+---
+
+## Risk Scoring
+
+Base 0, additive from 13 signals:
+
+| Signal | Score |
+|--------|-------|
+| PII detected | +15 |
+| Saudi ID | +15 |
+| IBAN | +20 |
+| Patient ID | +25 |
+| Financial keywords | +10 |
+| Medical keywords | +10 |
+| Corporate secrets | +15 |
+| Block action | +40 |
+| Escalate action | +20 |
+| SFDA/Healthcare pack | +10 |
+| Unknown user | +10 |
+| Long message (>5000 chars) | +5 |
+| After-hours (22:00-06:00) | +5 |
+
+**Levels:**
+- Low (0-25): auto-approve
+- Medium (26-50): queue for approval
+- High (51-75): require manager
+- Critical (76-100): require admin
+
+---
+
+## Compliance Packs
+
+| Pack | Checks | Regulatory Framework |
+|------|--------|---------------------|
+| **PDPL** | PII scan, consent verify, data sharing log, cross-border flag | PDPL Articles 13, 17, 29 |
+| **NCA ECC** | Access control, data classification, encryption, audit, incident detection | NCA ECC 2-2024 Sections 4, 5 |
+| **SFDA/ISO 13485** | Patient data, medical integrity, CAPA relevance, regulatory audit | ISO 13485 §8.3, §8.5.2, SFDA QMS-GL |
+| **Procurement** | Tender analysis, contract risk, penalty detection, vendor confidentiality | Etimad Tender Regulations |
+| **Healthcare** | Patient protection, approval workflow, drug safety, clinical decision | PDPL Art 17, NCA Section 6 |
+| **General** | Basic PII, audit logging | Baseline |
+
+---
+
+## Environment Variables
+
+```env
+# Required
+GEMINI_API_KEY=your_gemini_api_key
+DATABASE_URL=postgresql://user:pass@host:5432/dbname
+
+# Optional AI Providers
+GROQ_API_KEY=
+NVIDIA_API_KEY=
+DEEPSEEK_API_KEY=
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Gemini
+GEMINI_MODEL=gemini-2.5-flash
+```
+
+---
+
+## Setup & Run
+
+```bash
+# Backend
+cd backend
+npm install
+cp ../.env.example .env  # Set your API keys and DATABASE_URL
+npm run dev               # Starts on port 3000
+
+# Ensure PostgreSQL is running and DATABASE_URL is set
+# Schema auto-creates on first start
+# 12 default policy rules are seeded automatically
+```
+
+---
+
+## Deployment (Render.com)
+
+Configured via `render.yaml`:
+- Static site for frontend (brighttrust.sa / brightai.site)
+- Backend API service for `/api/*` routes
+- PostgreSQL database via `DATABASE_URL` env var
+
+---
+
+## Tech Stack
+
+- **Backend**: Node.js, CommonJS, custom HTTP server (no Express framework)
+- **Database**: PostgreSQL via `pg` (async pool)
+- **AI**: Google Gemini 2.5 Flash (primary), Groq, NVIDIA NIM, DeepSeek
+- **Frontend**: Static HTML, Tailwind CSS (CDN), vanilla JavaScript
+- **Deployment**: Render.com, Cloudflare DNS/CDN
+- **Domain**: brighttrust.sa, brightai.site
+
+---
+
+## Key Files for AI Agents
+
+| File | What it does |
+|------|-------------|
+| `backend/kernel/index.js` | Orchestrator — coordinates all 4 layers + Gemini API call |
+| `backend/kernel/firewall.js` | PII scanning, policy lookup, masking/blocking |
+| `backend/kernel/audit.js` | Immutable audit trail with SHA-256 chain hashing |
+| `backend/kernel/approval.js` | Human approval queue (approve/reject workflow) |
+| `backend/kernel/compliance.js` | 6 compliance packs with 23+ automated check types |
+| `backend/kernel/risk-scorer.js` | Risk scoring engine (0-100, 4 levels) |
+| `backend/kernel/evidence.js` | Evidence file generation with regulatory references |
+| `backend/kernel/pii-patterns.js` | Saudi-specific PII regex patterns |
+| `backend/db/init.js` | PostgreSQL connection, schema init, policy seeding |
+| `backend/db/schema-pg.sql` | PostgreSQL DDL (5 tables + 8 indexes) |
+| `backend/routes/kernel.js` | API route dispatcher for all `/api/kernel/*` endpoints |
+| `backend/server.js` | Main server — routing, context, WebSocket, DB init |
+| `backend/config/index.js` | All configuration (AI providers, server, rate limits) |
+
+---
+
+## WhatsApp Contact
+
+All pages include floating WhatsApp button: https://wa.me/966538229013
