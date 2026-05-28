@@ -242,7 +242,7 @@ const navHtmlAr = `
 <header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
   <nav role="navigation" aria-label="القائمة الرئيسية" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
     <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
-      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
+      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
         <img src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
       </div>
       <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">AI</span></span>
@@ -275,7 +275,7 @@ const navHtmlEn = `
 <header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
   <nav role="navigation" aria-label="Main Navigation" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
     <a href="/" class="flex items-center gap-3" aria-label="BrightAI Home">
-      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
+      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
         <img src="/frontend/images/logo-new.PNG" alt="Bright AI Logo" width="40" height="40" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
       </div>
       <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">AI</span></span>
