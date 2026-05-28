@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://brightai.site/kernel/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/" />
+    <lastmod>2026-05-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/kernel/approvals/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/approvals/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/approvals/" />
+    <lastmod>2026-05-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/kernel/audit/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/audit/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/audit/" />
+    <lastmod>2026-05-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/kernel/chat/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/chat/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/chat/" />
+    <lastmod>2026-05-28</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/kernel/stats/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/stats/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/stats/" />
+    <lastmod>2026-05-28</lastmod>
+  </url>
+
+</urlset>

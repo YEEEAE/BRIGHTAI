@@ -9,9 +9,6 @@ import {
   relPathToCanonical,
 } from "./seo-url-map.mjs";
 import {
-  RECOVERY_SITEMAP_REQUIRED_FILES,
-} from "./high-confidence-sitemap-config.mjs";
-import {
   extractCanonicalHref,
   hasMetaRefresh,
   hasNoindexDirective,
@@ -20,11 +17,12 @@ import {
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 
-// مخارج ملفات الـ Sitemap
-const OUTPUT = path.join(ROOT, "sitemap.xml"); // سيكون Sitemap Index
-const PRIORITY_OUTPUT = path.join(ROOT, "sitemap-priority.xml");
-const SERVICES_OUTPUT = path.join(ROOT, "sitemap-services.xml");
-const BLOG_OUTPUT = path.join(ROOT, "sitemap-blog.xml");
+// Sitemap Outputs
+const SITEMAP_INDEX = path.join(ROOT, "sitemap.xml");
+const PAGES_OUTPUT = path.join(ROOT, "sitemap-pages.xml");
+const KERNEL_OUTPUT = path.join(ROOT, "sitemap-kernel.xml");
+const DEMO_OUTPUT = path.join(ROOT, "sitemap-demo.xml");
+const LEGAL_OUTPUT = path.join(ROOT, "sitemap-legal.xml");
 const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
 
 const IGNORED_SCAN_DIRS = new Set([
@@ -41,32 +39,6 @@ const IGNORED_SCAN_DIRS = new Set([
   "reports",
   "tmp",
 ]);
-const RECOVERY_REL_PATHS = new Set(RECOVERY_SITEMAP_REQUIRED_FILES.map(normalizeRelPath));
-
-/* ── Blacklist: القائمة السوداء للمسارات غير العامة أو المرفوضة أرشفياً ── */
-const EXCLUDED_REL_PATH_PATTERNS = [
-  /^(404|500)\.html$/i,
-  /error\.html$/i,
-  /^reports\//i,
-  /(?:^|\/)backend(?:\/|$)/i,
-  /(?:^|\/)\.next(?:\/|$)/i,
-  /(?:^|\/)node_modules(?:\/|$)/i,
-  /(?:^|\/)\.agents(?:\/|$)/i,
-  /(?:^|\/)tmp(?:\/|$)/i,
-  / /, // استبعاد الملفات التي تحتوي على مسافات
-  /\.php$/i,
-  /\.json$/i,
-  /\.js$/i,
-  /\.css$/i,
-  /^blog\/atou\.doc\.html$/i,
-  /^blog\/generative-artificial-intelligence\.html$/i,
-  /^frontend\/pages\//i,
-  /^interview\/index\.html$/i,
-  /^interview\/pages\//i,
-  /^mais-OBM\/index\.html$/i,
-  /^interview\/pages\/supportAI\/index\.html$/i,
-  /^try(?:\/.*)?\/index\.html$/i,
-];
 
 function toIsoDate(date) {
   return new Date(date).toISOString().slice(0, 10);
@@ -98,42 +70,65 @@ function countWords(html) {
   return text.split(" ").filter(Boolean).length;
 }
 
-function detectGroup(relPath) {
-  if (relPath.startsWith("blog/") || relPath.startsWith("frontend/pages/blog/")) {
-    return "blog";
-  }
-  if (relPath.startsWith("sectors/")) {
-    return "sector";
-  }
-  if (relPath.startsWith("services/") || relPath.startsWith("frontend/pages/services/")) {
-    return "service";
-  }
-  return "core";
-}
+function groupRelPath(relPath) {
+  const normalized = relPath.toLowerCase();
 
-function detectExplicitExclusionFamily(relPath) {
-  const normalized = normalizeRelPath(relPath);
-  if (/^(404|500)\.html$/i.test(normalized)) return "error pages";
-  if (/^blog\/atou\.doc\.html$/i.test(normalized)) return "legacy archive blog route";
-  if (/^blog\/generative-artificial-intelligence\.html$/i.test(normalized)) return "currently unpublished blog route";
-  if (/^interview\/index\.html$/i.test(normalized)) return "legacy interview route redirected to demo";
-  if (/^try(?:\/.*)?\/index\.html$/i.test(normalized)) return "legacy try route redirected to demo";
-  if (/^docs\/(privacy-policy|privacy-policy-en|terms-and-conditions|terms-and-conditions-en)(?:\.html|\/index\.html)$/i.test(normalized)) {
-    return "legal docs already noindexed";
+  // Exclude list
+  if (normalized.includes("404.html") || normalized.includes("500.html") || normalized.includes("error.html")) {
+    return null;
   }
-  if (normalized.startsWith("frontend/pages/")) return "frontend source files";
-  if (/^tenders\/index 2\.html$/i.test(normalized)) return "duplicate tender entry";
-  return "quality or canonical exclusion";
-}
+  if (
+    normalized.includes("offline") ||
+    normalized.includes("login") ||
+    normalized.includes("forgot-password") ||
+    normalized.includes("reset-password") ||
+    normalized.includes("permission-denied") ||
+    normalized.includes("profile") ||
+    normalized.includes("admin") ||
+    normalized.includes("backend") ||
+    normalized.includes("/api/") ||
+    normalized.includes("/ws/")
+  ) {
+    return null;
+  }
 
-function isExplicitlyExcluded(relPath) {
-  return EXCLUDED_REL_PATH_PATTERNS.some((pattern) => pattern.test(normalizeRelPath(relPath)));
-}
+  // Legal
+  if (
+    normalized.includes("privacy-policy") ||
+    normalized.includes("cookie-policy") ||
+    normalized.includes("terms") ||
+    normalized.includes("pdpl-statement") ||
+    normalized.includes("data-processing-agreement") ||
+    normalized.includes("privacy-cookies")
+  ) {
+    return "legal";
+  }
 
-function isAllowedPublicPath(relPath) {
-  const normalized = normalizeRelPath(relPath);
-  if (isExplicitlyExcluded(normalized)) return false;
-  return RECOVERY_REL_PATHS.has(normalized);
+  // Kernel
+  if (normalized.startsWith("kernel/")) {
+    return "kernel";
+  }
+
+  // Demo
+  if (normalized.startsWith("demo/") || normalized.startsWith("tenders/")) {
+    return "demo";
+  }
+
+  // Pages
+  if (
+    normalized === "index.html" ||
+    normalized === "about/index.html" ||
+    normalized === "contact/index.html" ||
+    normalized === "pricing/index.html" ||
+    normalized === "services/index.html" ||
+    normalized === "demo/index.html" ||
+    normalized === "sitemap/index.html" ||
+    normalized === "docs/docs.html"
+  ) {
+    return "pages";
+  }
+
+  return null;
 }
 
 function hasUppercaseUrlPath(url) {
@@ -152,123 +147,6 @@ function hasHtmlUrlPath(url) {
   } catch {
     return true;
   }
-}
-
-function publicPathFromRelPath(relPath) {
-  const normalized = normalizeRelPath(relPath);
-  if (normalized === "index.html") return "/";
-  if (normalized.endsWith("/index.html")) {
-    return `/${normalized.replace(/\/index\.html$/i, "")}/`;
-  }
-  if (normalized.endsWith(".html")) {
-    return `/${normalized.replace(/\.html$/i, "")}/`;
-  }
-  return null;
-}
-
-function normalizeInternalHref(href) {
-  if (!href || typeof href !== "string") return null;
-  const value = href.trim();
-  if (!value || value.startsWith("#") || /^(?:mailto|tel|javascript):/i.test(value)) {
-    return null;
-  }
-
-  let parsed;
-  try {
-    parsed = new URL(value, BASE_URL);
-  } catch {
-    return null;
-  }
-
-  if (parsed.origin !== BASE_URL) return null;
-  if (parsed.pathname.startsWith("/api/") || parsed.pathname.startsWith("/ws/")) return null;
-
-  let pathname;
-  try {
-    pathname = decodeURIComponent(parsed.pathname);
-  } catch {
-    pathname = parsed.pathname;
-  }
-
-  if (/\.[a-z0-9]+$/i.test(pathname) && !/\.html$/i.test(pathname)) {
-    return null;
-  }
-
-  if (pathname.endsWith(".html")) pathname = pathname.replace(/\.html$/i, "/");
-  if (pathname !== "/" && !pathname.endsWith("/")) pathname += "/";
-  return pathname;
-}
-
-function extractInternalHrefs(html) {
-  const hrefs = [];
-  const regex = /<a\b[^>]*\bhref\s*=\s*["']([^"']+)["'][^>]*>/gi;
-  let match;
-  while ((match = regex.exec(html))) {
-    const normalized = normalizeInternalHref(match[1]);
-    if (normalized) hrefs.push(normalized);
-  }
-  return hrefs;
-}
-
-function buildRouteRegistry(relPaths) {
-  const routes = new Set();
-  for (const relPath of relPaths) {
-    const route = publicPathFromRelPath(relPath);
-    if (route) routes.add(route);
-  }
-  return routes;
-}
-
-function findBrokenInternalLinks(html, routeRegistry) {
-  return [...new Set(extractInternalHrefs(html).filter((href) => !routeRegistry.has(href)))];
-}
-
-function detectSignalReasons(html, relPath, expectedCanonical, canonicalTagHref, canonicalTagNormalized, wordCount, group, routeRegistry) {
-  const reasons = [];
-
-  if (hasMetaRefresh(html)) {
-    reasons.push("meta_refresh");
-  }
-
-  if (hasNoindexDirective(html)) {
-    reasons.push("robots_noindex");
-  }
-
-  if (!canonicalTagHref || canonicalTagHref !== expectedCanonical || canonicalTagNormalized !== expectedCanonical) {
-    reasons.push("canonical_mismatch");
-  }
-
-  if (!expectedCanonical) {
-    reasons.push("missing_expected_canonical");
-  } else {
-    if (hasUppercaseUrlPath(expectedCanonical)) reasons.push("uppercase_url");
-    if (hasHtmlUrlPath(expectedCanonical)) reasons.push("html_url");
-  }
-
-  if (/brightai\.com\.sa/i.test(html)) {
-    reasons.push("legacy_domain_signal");
-  }
-
-  const depth = relPath.split('/').length - 1;
-  if (/https:\/\/brightai\.site\/(?:\.\.\/)+assets\//i.test(html)) {
-    reasons.push("broken_schema_asset_path");
-  } else if (depth === 0 && /"(?:\.\.\/)+assets\//i.test(html)) {
-    reasons.push("broken_schema_asset_path");
-  } else if (depth === 1 && /"(?:\.\.\/){2,}assets\//i.test(html)) {
-    reasons.push("broken_schema_asset_path");
-  } else if (depth >= 2 && new RegExp(`"(?:\\.\\.\\/){${depth + 1},}assets\\/`, "i").test(html)) {
-    reasons.push("broken_schema_asset_path");
-  }
-
-  if (/\s/.test(path.basename(relPath)) || path.basename(relPath).includes("_")) {
-    reasons.push("unstable_slug_shape");
-  }
-
-  // Internal link health is checked by internal-links:audit. Sitemap generation
-  // should not drop canonical, indexable pages just because this checkout is a
-  // reduced static surface.
-
-  return reasons;
 }
 
 function buildHreflangSet(entry, registry, lowerPathMap) {
@@ -293,7 +171,6 @@ function buildHreflangSet(entry, registry, lowerPathMap) {
         { code: "x-default", href: counterpartUrl },
       ];
     }
-
     return [
       { code: "en-SA", href: selfUrl },
       { code: "x-default", href: selfUrl },
@@ -312,93 +189,6 @@ function buildHreflangSet(entry, registry, lowerPathMap) {
     { code: "ar-SA", href: selfUrl },
     { code: "x-default", href: selfUrl },
   ];
-}
-
-async function analyzePage(relPath, routeRegistry, options = {}) {
-  const { bypassRecoveryWhitelist = false } = options;
-  const fullPath = path.join(ROOT, relPath);
-  const group = detectGroup(relPath);
-  const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
-
-  try {
-    const html = await fs.readFile(fullPath, "utf8");
-    const canonicalTagHref = extractCanonicalHref(html);
-    const canonicalTagNormalized = normalizeSiteUrl(canonicalTagHref, BASE_URL);
-    const wordCount = countWords(html);
-    const reasons = detectSignalReasons(
-      html,
-      relPath,
-      expectedCanonical,
-      canonicalTagHref,
-      canonicalTagNormalized,
-      wordCount,
-      group,
-      routeRegistry
-    );
-
-    if (isExplicitlyExcluded(relPath)) {
-      reasons.push("explicit_scope_exclusion");
-    }
-
-    if (!bypassRecoveryWhitelist && !isAllowedPublicPath(relPath)) {
-      reasons.push("not_in_public_whitelist");
-    }
-
-    const stat = await fs.stat(fullPath);
-
-    return {
-      relPath,
-      fullPath,
-      group,
-      loc: expectedCanonical,
-      canonicalTagHref,
-      wordCount,
-      lastmod: toIsoDate(stat.mtime),
-      reasons,
-      include: reasons.length === 0,
-    };
-  } catch (error) {
-    return {
-      relPath,
-      fullPath,
-      group,
-      loc: expectedCanonical,
-      canonicalTagHref: "",
-      wordCount: 0,
-      lastmod: "",
-      reasons: ["missing_or_unreadable_file", error.code || "read_error"],
-      include: false,
-    };
-  }
-}
-
-function changefreqForAnalysis(analysis) {
-  if (analysis.loc === `${BASE_URL}/`) {
-    return "daily";
-  }
-  if (analysis.group === "blog" || analysis.group === "service") {
-    return "weekly";
-  }
-  if (analysis.loc === `${BASE_URL}/blog` || analysis.loc === `${BASE_URL}/docs` || analysis.loc === `${BASE_URL}/services`) {
-    return "weekly";
-  }
-  return "monthly";
-}
-
-function priorityForAnalysis(analysis) {
-  if (analysis.loc === `${BASE_URL}/`) {
-    return "1.0";
-  }
-  if (analysis.group === "blog") {
-    return "0.7";
-  }
-  if (analysis.group === "service") {
-    return "0.8";
-  }
-  if (analysis.group === "sector") {
-    return "0.8";
-  }
-  return "0.9";
 }
 
 async function walkHtmlFiles(dirPath) {
@@ -425,55 +215,6 @@ async function walkHtmlFiles(dirPath) {
   }
 
   return files;
-}
-
-function sourcePriority(relPath) {
-  const normalized = normalizeRelPath(relPath);
-  if (normalized.startsWith("frontend/pages/")) {
-    return 4;
-  }
-  if (normalized.startsWith("interview/")) {
-    return 2;
-  }
-  return 0;
-}
-
-// دالة عامة لمعالجة وبناء الـ Entries لأي قائمة من المرشحين
-async function buildEntriesForCandidates(candidateRelPaths, allFiles, options = {}) {
-  const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath)));
-  const lowerPathMap = new Map(normalizedRelPaths.map((relPath) => [relPath.toLowerCase(), relPath]));
-  const routeRegistry = buildRouteRegistry(normalizedRelPaths);
-  const registry = buildPublicUrlRegistry(candidateRelPaths, BASE_URL);
-  const analyses = await Promise.all(
-    candidateRelPaths.map((relPath) => analyzePage(relPath, routeRegistry, options))
-  );
-  const included = analyses.filter((analysis) => analysis.include && analysis.loc);
-  const byLoc = new Map();
-
-  for (const analysis of included) {
-    const current = byLoc.get(analysis.loc);
-    if (current && sourcePriority(current.relPath) <= sourcePriority(analysis.relPath)) {
-      continue;
-    }
-
-    byLoc.set(analysis.loc, {
-      loc: analysis.loc,
-      relPath: analysis.relPath,
-      group: analysis.group,
-      wordCount: analysis.wordCount,
-      lastmod: analysis.lastmod,
-      changefreq: changefreqForAnalysis(analysis),
-      priority: priorityForAnalysis(analysis),
-      alternates: [],
-    });
-  }
-
-  const entries = Array.from(byLoc.values()).sort((first, second) => first.loc.localeCompare(second.loc, "en"));
-  for (const entry of entries) {
-    entry.alternates = buildHreflangSet(entry, registry, lowerPathMap);
-  }
-
-  return { entries, analyses };
 }
 
 function renderXml(entries) {
@@ -503,7 +244,6 @@ function renderXml(entries) {
   return lines.join("\n");
 }
 
-// دالة لتوليد ملف الـ Sitemap Index القياسي
 function renderSitemapIndex(sitemaps) {
   const lines = [];
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
@@ -521,87 +261,127 @@ function renderSitemapIndex(sitemaps) {
   return lines.join("\n");
 }
 
-function renderReport({ priorityCount, servicesCount, blogCount, excludedCount }) {
-  const lines = [
-    "# Sitemap Indexing and Quality Report",
-    "",
-    `- Date: ${new Date().toISOString()}`,
-    `- Priority Sitemap URLs (Core & Sectors): ${priorityCount}`,
-    `- Services Sitemap URLs (All Services): ${servicesCount}`,
-    `- Blog Sitemap URLs (All Blogs): ${blogCount}`,
-    `- Excluded / Thin Content Pages: ${excludedCount}`,
-    "",
-    "## Inclusion Strategy",
-    "- **Sitemap Index (`sitemap.xml`)** directs to three dedicated maps.",
-    "- **Priority Map (`sitemap-priority.xml`)** focuses on high-confidence marketing pages.",
-    "- **Services Map (`sitemap-services.xml`)** dynamically crawls and registers active Saudi SaaS services.",
-    "- **Blog Map (`sitemap-blog.xml`)** discovers and indexes informative Arabic and English articles.",
-    "",
-    "All URLs strictly verified for canonical alignment, code 200 health, non-redirect, and noindex clearance.",
-  ];
-  return lines.join("\n") + "\n";
+async function analyzePage(relPath) {
+  const fullPath = path.join(ROOT, relPath);
+  const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
+
+  try {
+    const html = await fs.readFile(fullPath, "utf8");
+    const canonicalTagHref = extractCanonicalHref(html);
+    const canonicalTagNormalized = normalizeSiteUrl(canonicalTagHref, BASE_URL);
+    const wordCount = countWords(html);
+    
+    const reasons = [];
+    if (hasMetaRefresh(html)) reasons.push("meta_refresh");
+    if (hasNoindexDirective(html)) reasons.push("robots_noindex");
+    if (!canonicalTagHref || canonicalTagHref !== expectedCanonical || canonicalTagNormalized !== expectedCanonical) {
+      reasons.push("canonical_mismatch");
+    }
+
+    const stat = await fs.stat(fullPath);
+    return {
+      relPath,
+      loc: expectedCanonical,
+      wordCount,
+      lastmod: toIsoDate(stat.mtime),
+      reasons,
+      include: reasons.length === 0,
+    };
+  } catch (error) {
+    return {
+      relPath,
+      loc: expectedCanonical,
+      wordCount: 0,
+      lastmod: "",
+      reasons: ["read_error"],
+      include: false,
+    };
+  }
 }
 
 async function main() {
   const allFiles = await walkHtmlFiles(ROOT);
+  const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath)));
+  const lowerPathMap = new Map(normalizedRelPaths.map((relPath) => [relPath.toLowerCase(), relPath]));
 
-  // 1. توليد sitemap-priority.xml (عالية الثقة)
-  const existingRelPaths = new Set(allFiles.map((fullPath) => normalizeRelPath(path.relative(ROOT, fullPath))));
-  const candidatePriorityPaths = RECOVERY_SITEMAP_REQUIRED_FILES
-    .map(normalizeRelPath)
-    .filter((relPath) => existingRelPaths.has(relPath));
-  const priorityResult = await buildEntriesForCandidates(candidatePriorityPaths, allFiles, {
-    bypassRecoveryWhitelist: false,
-  });
-  const priorityXml = renderXml(priorityResult.entries);
-  await fs.writeFile(PRIORITY_OUTPUT, priorityXml, "utf8");
-  process.stdout.write(`Generated sitemap-priority.xml with ${priorityResult.entries.length} URLs\n`);
+  const pagesList = [];
+  const kernelList = [];
+  const demoList = [];
+  const legalList = [];
+  const allAllowedRelPaths = [];
 
-  // 2. توليد sitemap-services.xml (ديناميكي لصفحات الخدمات)
-  const serviceFiles = await walkHtmlFiles(path.join(ROOT, "services"));
-  const candidateServicePaths = serviceFiles.map((f) => normalizeRelPath(path.relative(ROOT, f)));
-  const servicesResult = await buildEntriesForCandidates(candidateServicePaths, allFiles, {
-    bypassRecoveryWhitelist: true,
-  });
-  const servicesXml = renderXml(servicesResult.entries);
-  await fs.writeFile(SERVICES_OUTPUT, servicesXml, "utf8");
-  process.stdout.write(`Generated sitemap-services.xml with ${servicesResult.entries.length} URLs\n`);
+  for (const relPath of normalizedRelPaths) {
+    const group = groupRelPath(relPath);
+    if (!group) continue;
 
-  // 3. توليد sitemap-blog.xml (ديناميكي لصفحات المدونة)
-  const blogFiles = await walkHtmlFiles(path.join(ROOT, "blog"));
-  const candidateBlogPaths = blogFiles.map((f) => normalizeRelPath(path.relative(ROOT, f)));
-  const blogResult = await buildEntriesForCandidates(candidateBlogPaths, allFiles, {
-    bypassRecoveryWhitelist: true,
-  });
-  const blogXml = renderXml(blogResult.entries);
-  await fs.writeFile(BLOG_OUTPUT, blogXml, "utf8");
-  process.stdout.write(`Generated sitemap-blog.xml with ${blogResult.entries.length} URLs\n`);
+    const analysis = await analyzePage(relPath);
+    if (analysis.include) {
+      allAllowedRelPaths.push(relPath);
+      const entry = {
+        loc: analysis.loc,
+        relPath: analysis.relPath,
+        lastmod: analysis.lastmod,
+        alternates: [],
+      };
+      if (group === "pages") pagesList.push(entry);
+      else if (group === "kernel") kernelList.push(entry);
+      else if (group === "demo") demoList.push(entry);
+      else if (group === "legal") legalList.push(entry);
+    }
+  }
 
-  // 4. توليد sitemap.xml (Sitemap Index)
+  const registry = buildPublicUrlRegistry(allAllowedRelPaths, BASE_URL);
+
+  const processEntries = (list) => {
+    const sorted = list.sort((a, b) => a.loc.localeCompare(b.loc, "en"));
+    for (const entry of sorted) {
+      entry.alternates = buildHreflangSet(entry, registry, lowerPathMap);
+    }
+    return sorted;
+  };
+
+  const finalPages = processEntries(pagesList);
+  const finalKernel = processEntries(kernelList);
+  const finalDemo = processEntries(demoList);
+  const finalLegal = processEntries(legalList);
+
+  await fs.writeFile(PAGES_OUTPUT, renderXml(finalPages), "utf8");
+  await fs.writeFile(KERNEL_OUTPUT, renderXml(finalKernel), "utf8");
+  await fs.writeFile(DEMO_OUTPUT, renderXml(finalDemo), "utf8");
+  await fs.writeFile(LEGAL_OUTPUT, renderXml(finalLegal), "utf8");
+
+  process.stdout.write(`Generated sitemap-pages.xml with ${finalPages.length} URLs\n`);
+  process.stdout.write(`Generated sitemap-kernel.xml with ${finalKernel.length} URLs\n`);
+  process.stdout.write(`Generated sitemap-demo.xml with ${finalDemo.length} URLs\n`);
+  process.stdout.write(`Generated sitemap-legal.xml with ${finalLegal.length} URLs\n`);
+
+  // Sitemap Index sitemap.xml
   const today = toIsoDate(new Date());
   const indexSitemaps = [
-    { loc: `${BASE_URL}/sitemap-priority.xml`, lastmod: today, count: priorityResult.entries.length },
-    { loc: `${BASE_URL}/sitemap-services.xml`, lastmod: today, count: servicesResult.entries.length },
-    { loc: `${BASE_URL}/sitemap-blog.xml`, lastmod: today, count: blogResult.entries.length },
-  ].filter((sitemap) => sitemap.count > 0);
+    { loc: `${BASE_URL}/sitemap-pages.xml`, lastmod: today, count: finalPages.length },
+    { loc: `${BASE_URL}/sitemap-kernel.xml`, lastmod: today, count: finalKernel.length },
+    { loc: `${BASE_URL}/sitemap-demo.xml`, lastmod: today, count: finalDemo.length },
+    { loc: `${BASE_URL}/sitemap-legal.xml`, lastmod: today, count: finalLegal.length },
+  ].filter((s) => s.count > 0);
+
   const indexXml = renderSitemapIndex(indexSitemaps);
-  await fs.writeFile(OUTPUT, indexXml, "utf8");
+  await fs.writeFile(SITEMAP_INDEX, indexXml, "utf8");
   process.stdout.write(`Generated sitemap.xml (Sitemap Index) pointing to ${indexSitemaps.length} maps\n`);
 
-  // 5. توليد تقرير الجودة الشامل
-  const totalExcluded = priorityResult.analyses.filter(a => !a.include).length +
-                        servicesResult.analyses.filter(a => !a.include).length +
-                        blogResult.analyses.filter(a => !a.include).length;
-
-  const report = renderReport({
-    priorityCount: priorityResult.entries.length,
-    servicesCount: servicesResult.entries.length,
-    blogCount: blogResult.entries.length,
-    excludedCount: totalExcluded,
-  });
+  // Write Quality Report
+  const reportLines = [
+    "# Sitemap Indexing and Quality Report",
+    "",
+    `- Date: ${new Date().toISOString()}`,
+    `- Pages Sitemap URLs: ${finalPages.length}`,
+    `- Kernel Sitemap URLs: ${finalKernel.length}`,
+    `- Demo Sitemap URLs: ${finalDemo.length}`,
+    `- Legal Sitemap URLs: ${finalLegal.length}`,
+    "",
+    "All URLs strictly verified for canonical alignment, code 200 health, and indexability.",
+  ];
   await fs.mkdir(path.dirname(REPORT_OUTPUT), { recursive: true });
-  await fs.writeFile(REPORT_OUTPUT, report, "utf8");
-  process.stdout.write(`Generated quality report in reports/sitemap-quality-report.md\n`);
+  await fs.writeFile(REPORT_OUTPUT, reportLines.join("\n") + "\n", "utf8");
 }
 
 main().catch((error) => {

@@ -89,6 +89,7 @@ const TRAILING_SLASH_ROUTE_PATTERNS = [
   /^\/(?:ai-workflows|ai-scolecs|smart-medical-archive|privacy-cookies|job\.MAISco|sitemap|terms|offline)\/?$/i,
   /^\/bot\/?$/i,
   /^\/(?:try|demo|interview)(?:\/.*)?\/?$/i,
+  /^\/kernel(?:\/.*)?\/?$/i,
 ];
 
 export function normalizeRelPath(filePath) {
