@@ -9,23 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
-  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
-  <script src="https://cdn.tailwindcss.com" defer></script>
-  <script>
-    tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: { sans: ['Tajawal','IBM Plex Sans Arabic','system-ui','sans-serif'] },
-      colors: {
-        brand: { 50:'#e6fbff', 100:'#b3f0ff', 300:'#5fdcff', 500:'#00d4ff', 600:'#00a8d4', 700:'#0086ad' },
-        ink: { 900:'#0b1220', 800:'#111a2e', 700:'#1a2340' },
-        emerald: { 400:'#34d399', 500:'#10b981', 600:'#059669' },
-        whatsapp: '#25D366'
-      }
-    }
-  }
-}
-</script>
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
 <style>
   html { scroll-behavior: smooth; }
   body { background:#0b1220; color:#e6edf7; }
@@ -126,9 +110,9 @@
 <header class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
   <nav class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
     <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
-      <span class="inline-flex w-10 h-10 rounded-xl items-center justify-center" style="background:linear-gradient(135deg,#10b981,#00d4ff)">
-        <i class="fa-solid fa-shield-halved text-white text-lg"></i>
-      </span>
+      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+        <img src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
+      </div>
       <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">Trust</span></span>
     </a>
     <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80">
