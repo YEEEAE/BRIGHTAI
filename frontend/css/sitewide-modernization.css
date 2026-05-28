@@ -34,12 +34,15 @@
 html {
   min-width: 320px;
   scroll-behavior: smooth;
+  scroll-padding-block-start: max(4.5rem, env(safe-area-inset-top));
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   min-width: 0;
+  min-block-size: 100dvh;
   overflow-x: clip;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -66,6 +69,10 @@ html[lang^="ar"] body,
   block-size: auto;
 }
 
+:where(iframe, embed, object) {
+  max-inline-size: 100%;
+}
+
 :where(a, button, input, select, textarea, summary, [role="button"]) {
   touch-action: manipulation;
 }
@@ -76,6 +83,7 @@ html[lang^="ar"] body,
 
 :where(input, select, textarea) {
   max-inline-size: 100%;
+  min-block-size: var(--brightai-control);
 }
 
 @media (max-width: 700px) {
@@ -102,7 +110,15 @@ html[lang^="ar"] body,
   overflow-wrap: anywhere;
 }
 
-:where(main, section, article, aside, header, footer, nav, form, .container, .section, .hero, .content-container, .page-content, .main-viewport) {
+:where(main, section, article, aside, header, footer, nav, form, dl, .container, .section, .hero, .content-container, .page-content, .main-viewport) {
+  min-inline-size: 0;
+}
+
+:where(.container, .nav-container, .section, .content-container, .page-content) {
+  max-inline-size: 100%;
+}
+
+:where(.grid, [class*="grid-cols-"], [class*="columns-"], [class*="flex"]) > * {
   min-inline-size: 0;
 }
 
@@ -184,8 +200,12 @@ html[lang^="ar"] body,
   overflow: hidden;
 }
 
-:where(.case-grid, .cards-grid, .summary-grid, .trust-grid, .pricing-grid, .features-grid, .stats-grid, .dashboard-layout-grid) {
+:where(.case-grid, .cards-grid, .summary-grid, .trust-grid, .pricing-grid, .features-grid, .stats-grid, .dashboard-layout-grid, .dashboard-grid, .metrics-grid, .kpi-grid) {
   min-inline-size: 0;
+}
+
+:where(.glass, .glass-card, .panel, .dashboard-panel, .table-card, .chart-card, .metric-card, .stat-card) {
+  max-inline-size: 100%;
 }
 
 :where(table) {
@@ -209,6 +229,10 @@ html[lang^="ar"] body,
   min-inline-size: 640px;
 }
 
+:where([dir="rtl"] table, html[dir="rtl"] table) {
+  text-align: start;
+}
+
 .skip-link {
   position: fixed;
   inset-block-start: max(0.75rem, env(safe-area-inset-top));
@@ -229,6 +253,47 @@ body.bright-page--dashboard {
 
 body.bright-page--dashboard :where(.content-container, .page-content, .main-viewport) {
   min-inline-size: 0;
+}
+
+body:is(.bright-page--dashboard, .bright-page--kernel) {
+  background-color: #060914;
+}
+
+body:is(.bright-page--dashboard, .bright-page--kernel) :where(main, header, footer, aside, section, article, .grid, .flex, .overflow-x-auto) {
+  min-inline-size: 0;
+}
+
+body:is(.bright-page--dashboard, .bright-page--kernel) :where(.overflow-x-auto, .table-wrapper, .table-container, .brightai-responsive-table) {
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable both-edges;
+}
+
+body:is(.bright-page--dashboard, .bright-page--kernel) :where(th, td) {
+  vertical-align: middle;
+}
+
+body:is(.bright-page--dashboard, .bright-page--kernel) :where(input, textarea, select) {
+  background-clip: padding-box;
+}
+
+body.bright-page--kernel #chat-area {
+  overflow-anchor: auto;
+  scroll-padding-block: 1rem;
+}
+
+body.bright-page--kernel #chat-area > div {
+  max-inline-size: min(88vw, 46rem) !important;
+}
+
+body.bright-page--kernel :where(#message-input, #chatInput) {
+  min-block-size: 3rem;
+  max-block-size: 36dvh;
+}
+
+body.bright-page--dashboard :where(#sidebarToggle, #mobileMenuBtn, #menuBtn),
+body.bright-page--kernel :where(#sidebar-toggle, #menuBtn) {
+  min-inline-size: var(--brightai-control);
+  min-block-size: var(--brightai-control);
 }
 
 body.bright-page--dashboard :where(.sidebar-logo, .sidebar-brand) {
@@ -264,6 +329,27 @@ body.bright-page--dashboard :where(.chart-card, .card, .dashboard-panel) {
   }
 }
 
+@media (max-width: 1023px) {
+  body.bright-page--dashboard :where(main, .main-viewport, .main-content) {
+    margin-inline: 0 !important;
+  }
+
+  body.bright-page--dashboard #sidebar {
+    inline-size: min(84vw, 18rem);
+    max-inline-size: calc(100vw - 1rem);
+    box-shadow: -18px 0 46px rgba(2, 6, 23, 0.36);
+  }
+
+  body.bright-page--dashboard #sidebarToggle {
+    inset-block-start: max(0.85rem, env(safe-area-inset-top));
+    inset-inline-end: max(0.85rem, env(safe-area-inset-right));
+  }
+
+  body:is(.bright-page--dashboard, .bright-page--kernel) :where(.sticky, header) {
+    scroll-margin-block-start: max(4.25rem, env(safe-area-inset-top));
+  }
+}
+
 @media (max-width: 780px) {
   :where(.unified-nav, .demo-nav, .site-header, .top-nav, header[role="banner"] > nav, .topbar) {
     gap: 0.75rem;
@@ -294,6 +380,45 @@ body.bright-page--dashboard :where(.chart-card, .card, .dashboard-panel) {
 
   :where(.btn, .btn-primary, .btn-secondary, .btn-outline, .nav-cta, .nav-cta-pill) {
     inline-size: 100%;
+  }
+
+  :where(.hero-actions, .form-actions, .dash-cta, .sitewide-cta-actions, .actions) {
+    align-items: stretch;
+  }
+
+  body:is(.bright-page--dashboard, .bright-page--kernel) :where(main, section) {
+    padding-inline: max(1rem, env(safe-area-inset-left)) !important;
+  }
+
+  body:is(.bright-page--dashboard, .bright-page--kernel) :where(.grid) {
+    gap: 1rem;
+  }
+
+  body:is(.bright-page--dashboard, .bright-page--kernel) :where(.rounded-2xl, .rounded-xl) {
+    border-radius: 0.75rem;
+  }
+}
+
+@media (max-width: 540px) {
+  :where(.stats-grid, .summary-grid, .metrics-grid, .dashboard-grid, [class*="grid-cols-"]) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  :where(.nav-links, .nav-desktop, .header-actions) {
+    padding-block-end: 0.25rem;
+  }
+
+  body:is(.bright-page--dashboard, .bright-page--kernel) :where(.overflow-x-auto, .brightai-responsive-table) {
+    margin-inline: -0.35rem;
+    padding-inline: 0.35rem;
+  }
+
+  body.bright-page--kernel :where(#chat-area) {
+    padding-inline: 0.75rem !important;
+  }
+
+  body.bright-page--kernel #chat-area > div {
+    max-inline-size: 94vw !important;
   }
 }
 

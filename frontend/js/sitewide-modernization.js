@@ -60,6 +60,23 @@
     img.dataset.brightaiModernized = "true";
   }
 
+  function tuneFrame(frame) {
+    if (!frame || frame.dataset.brightaiModernized === "true") {
+      return;
+    }
+
+    if (frame.tagName === "IFRAME") {
+      if (!frame.hasAttribute("loading")) {
+        frame.loading = "lazy";
+      }
+      if (!frame.hasAttribute("title")) {
+        frame.title = "محتوى مضمّن من Bright AI";
+      }
+    }
+
+    frame.dataset.brightaiModernized = "true";
+  }
+
   function createLogoImage(sourceClass, hidden) {
     var image = document.createElement("img");
     image.src = LOGO_PATH;
@@ -136,14 +153,106 @@
     });
   }
 
+  function buttonLabel(button) {
+    var text = (button.textContent || "").replace(/\s+/g, " ").trim();
+    if (text) {
+      return "";
+    }
+
+    var id = button.id || "";
+    var labels = {
+      sidebarToggle: "فتح قائمة لوحة التحكم",
+      "sidebar-toggle": "فتح إعدادات المحادثة",
+      mobileMenuBtn: "فتح قائمة التنقل",
+      menuBtn: "فتح قائمة التنقل"
+    };
+
+    return button.getAttribute("title") || labels[id] || "زر إجراء";
+  }
+
+  function labelIconOnlyButtons(root) {
+    root.querySelectorAll("button").forEach(function (button) {
+      if (button.getAttribute("aria-label") || button.getAttribute("aria-labelledby")) {
+        return;
+      }
+
+      var label = buttonLabel(button);
+      if (label) {
+        button.setAttribute("aria-label", label);
+      }
+    });
+  }
+
+  function isTargetOpen(target) {
+    if (!target) {
+      return false;
+    }
+
+    if (target.classList.contains("hidden")) {
+      return false;
+    }
+
+    if (target.classList.contains("sidebar-closed")) {
+      return false;
+    }
+
+    if (target.classList.contains("sidebar-open") || target.classList.contains("is-mobile-active")) {
+      return true;
+    }
+
+    var style = window.getComputedStyle(target);
+    if (style.display === "none" || style.visibility === "hidden") {
+      return false;
+    }
+
+    var rect = target.getBoundingClientRect();
+    if (rect.width > 0 && (rect.right <= 0 || rect.left >= window.innerWidth)) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function syncDisclosureButton(button, target) {
+    if (!button || !target || button.dataset.brightaiDisclosure === "true") {
+      return;
+    }
+
+    button.setAttribute("aria-controls", target.id);
+    button.setAttribute("aria-expanded", String(isTargetOpen(target)));
+    button.dataset.brightaiDisclosure = "true";
+
+    button.addEventListener("click", function () {
+      window.setTimeout(function () {
+        button.setAttribute("aria-expanded", String(isTargetOpen(target)));
+      }, 0);
+    });
+  }
+
+  function improveMenus() {
+    [
+      ["sidebarToggle", "sidebar"],
+      ["sidebar-toggle", "sidebar"],
+      ["mobileMenuBtn", "mobileMenu"],
+      ["menuBtn", "mobileMenu"]
+    ].forEach(function (pair) {
+      var button = document.getElementById(pair[0]);
+      var target = document.getElementById(pair[1]);
+      syncDisclosureButton(button, target);
+    });
+  }
+
   function run(root) {
     root = root || document;
     replaceSvgBrandMarks(root);
     enrichTextBrandMarks(root);
     root.querySelectorAll("img").forEach(tuneImage);
+    root.querySelectorAll("iframe, embed, object").forEach(tuneFrame);
     wrapWideTables(root);
     normalizeMetaLogos();
     improveLinks();
+    labelIconOnlyButtons(root);
+    improveMenus();
     document.documentElement.classList.add("brightai-modernized");
   }
 

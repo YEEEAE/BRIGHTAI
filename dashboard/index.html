@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar-SA" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>لوحة تحكم BrightTrust Kernel</title>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script>
     tailwind.config = {
@@ -94,8 +95,9 @@
 }
   </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
 </head>
-<body class="text-gray-200 min-h-screen">
+<body class="text-gray-200 min-h-screen bright-page--dashboard" data-bright-page-type="dashboard">
 
   <!-- Sidebar -->
   <aside id="sidebar" class="fixed top-0 right-0 h-full w-64 bg-dark-800 border-l border-dark-600 z-40 transition-transform duration-300">
@@ -113,7 +115,7 @@
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
         لوحة التحكم
       </a>
-      <a href="audit.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent text-gray-400">
+      <a href="/kernel/audit.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-sm border-r-2 border-transparent text-gray-400">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         المراقبة
       </a>
@@ -141,7 +143,7 @@
   </aside>
 
   <!-- Mobile sidebar toggle -->
-  <button id="sidebarToggle" class="fixed top-4 right-4 z-50 lg:hidden bg-dark-700 p-2 rounded-lg border border-dark-600">
+  <button id="sidebarToggle" class="fixed top-4 right-4 z-50 lg:hidden bg-dark-700 p-2 rounded-lg border border-dark-600" aria-label="فتح قائمة لوحة التحكم" aria-controls="sidebar" aria-expanded="false">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
   </button>
 
@@ -187,7 +189,7 @@
       <div class="lg:col-span-2 bg-dark-800 rounded-xl border border-dark-600 overflow-hidden">
         <div class="px-5 py-4 border-b border-dark-600 flex items-center justify-between">
           <h3 class="text-white font-semibold">آخر التفاعلات</h3>
-          <a href="audit.html" class="text-accent text-xs hover:underline">عرض الكل</a>
+          <a href="/kernel/audit.html" class="text-accent text-xs hover:underline">عرض الكل</a>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full text-sm">
@@ -432,6 +434,8 @@
     loadAudit();
     loadChain();
   </script>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

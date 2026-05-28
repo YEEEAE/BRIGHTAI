@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar-SA" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ملفات الدليل والإثبات — BrightTrust Kernel</title>
   <meta name="theme-color" content="#0b1220">
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <script src="https://cdn.tailwindcss.com" defer></script>
   <script>
     tailwind.config = {
@@ -111,8 +112,9 @@
 }
   </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
 </head>
-<body class="bg-bg text-gray-200 min-h-screen flex flex-col">
+<body class="bg-bg text-gray-200 min-h-screen flex flex-col bright-page--dashboard" data-bright-page-type="dashboard">
 
   <!-- Nav -->
   <nav class="bg-surface border-b border-border sticky top-0 z-50">
@@ -123,7 +125,7 @@
       </div>
       <div class="flex items-center gap-1 overflow-x-auto text-sm">
         <a href="index.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">لوحة التحكم</a>
-        <a href="audit.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">المراقبة</a>
+        <a href="/kernel/audit.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">المراقبة</a>
         <a href="approvals.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">الموافقات</a>
         <a href="compliance.html" class="px-3 py-1.5 rounded-lg hover:bg-card text-muted hover:text-gray-100 transition">الامتثال</a>
         <a href="evidence.html" class="px-3 py-1.5 rounded-lg bg-accent/10 text-accent font-semibold transition">ملفات الدليل</a>
@@ -404,6 +406,8 @@
     // --- Init ---
     loadRecent();
   </script>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

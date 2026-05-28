@@ -2,7 +2,7 @@
 <html lang="ar-SA" dir="rtl">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0b1220" />
 <title>قائمة الموافقات المعلقة | BrightTrust Kernel</title>
 <link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png">
@@ -10,9 +10,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
-<script src="https://cdn.tailwindcss.com" defer></script>
-<script>
-  tailwind.config = {
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com" defer></script>
+  <script>
+    tailwind.config = {
     theme: {
       extend: {
         fontFamily: { sans: ['Tajawal','IBM Plex Sans Arabic','system-ui','sans-serif'] },
@@ -118,8 +119,9 @@
 }
   </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen bright-page--dashboard" data-bright-page-type="dashboard">
 
 <!-- ================= HEADER / NAV ================= -->
 <header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
@@ -134,7 +136,7 @@
 
     <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80">
       <li><a href="/index.html" class="hover:text-white transition-colors">لوحة التحكم</a></li>
-      <li><a href="/dashboard/audit.html" class="hover:text-white transition-colors">المراقبة</a></li>
+      <li><a href="/kernel/audit.html" class="hover:text-white transition-colors">المراقبة</a></li>
       <li><a href="/dashboard/approvals.html" class="text-emerald-400 font-bold transition-colors">الموافقات</a></li>
       <li><a href="/dashboard/compliance.html" class="hover:text-white transition-colors">الامتثال</a></li>
       <li><a href="/dashboard/evidence.html" class="hover:text-white transition-colors">ملفات الدليل</a></li>
@@ -148,7 +150,7 @@
   <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 bg-ink-900/95">
     <ul class="px-5 py-3 space-y-2 text-sm">
       <li><a class="block py-2" href="/index.html">لوحة التحكم</a></li>
-      <li><a class="block py-2" href="/dashboard/audit.html">المراقبة</a></li>
+      <li><a class="block py-2" href="/kernel/audit.html">المراقبة</a></li>
       <li><a class="block py-2 text-emerald-400 font-bold" href="/dashboard/approvals.html">الموافقات</a></li>
       <li><a class="block py-2" href="/dashboard/compliance.html">الامتثال</a></li>
       <li><a class="block py-2" href="/dashboard/evidence.html">ملفات الدليل</a></li>
@@ -513,6 +515,8 @@
   startCountdown();
 })();
 </script>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+
 
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
