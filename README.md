@@ -269,9 +269,11 @@ Configured via `render.yaml`:
 - **Backend**: Node.js, CommonJS, custom HTTP server (no Express framework)
 - **Database**: PostgreSQL via `pg` (async pool)
 - **AI**: Google Gemini 2.5 Flash (primary), Groq, NVIDIA NIM, DeepSeek
-- **Frontend**: Static HTML, Tailwind CSS (CDN), vanilla JavaScript
-- **Deployment**: Render.com, Cloudflare DNS/CDN
+- **Frontend**: Static HTML site (no framework), Tailwind CSS, vanilla JavaScript
+- **Deployment**: Render.com (static site + API service), Cloudflare DNS/CDN
 - **Domain**: brightai.site
+
+**Note**: This is a static HTML website. The `app/` directory is empty and Next.js is not used.
 
 ---
 
