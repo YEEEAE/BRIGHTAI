@@ -101,7 +101,8 @@ function groupRelPath(relPath) {
     normalized.includes("terms") ||
     normalized.includes("pdpl-statement") ||
     normalized.includes("data-processing-agreement") ||
-    normalized.includes("privacy-cookies")
+    normalized.includes("privacy-cookies") ||
+    normalized.includes("trust")
   ) {
     return "legal";
   }
@@ -129,6 +130,7 @@ function groupRelPath(relPath) {
 
   // Pages
   if (
+    normalized === "blog/index.html" ||
     normalized === "assessment/ai-governance-readiness/index.html" ||
     normalized === "index.html" ||
     normalized === "about/index.html" ||

@@ -25,6 +25,7 @@ const ROOT_INDEX_DIRS = new Set([
   "what-is-ai",
   "privacy-policy",
   "terms",
+  "trust",
   "cookie-policy",
   "pdpl-statement",
   "data-processing-agreement",

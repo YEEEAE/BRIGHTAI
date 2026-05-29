@@ -206,6 +206,10 @@
               <!-- العمود الثاني: الشركة -->
               <div class="brightai-resource-column">
                 <span class="brightai-column-title">${t.resourcesCol2}</span>
+                <a href="${prefix}/about/" class="brightai-resource-link" role="menuitem">
+                  <i class="fa-solid fa-building-shield"></i>
+                  <span>${isEnglish ? 'About BrightAI' : 'عن BrightAI'}</span>
+                </a>
                 <a href="${prefix}/contact/" class="brightai-resource-link" role="menuitem">
                   <i class="fa-solid fa-envelope"></i>
                   <span>${t.contact}</span>
@@ -221,6 +225,10 @@
                 <a href="${prefix}/cookie-policy/" class="brightai-resource-link" role="menuitem">
                   <i class="fa-solid fa-cookie-bite"></i>
                   <span>${isEnglish ? 'Cookie Policy' : 'سياسة الكوكيز'}</span>
+                </a>
+                <a href="${prefix}/trust/" class="brightai-resource-link" role="menuitem">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <span>${isEnglish ? 'Trust Center' : 'مركز الثقة والأمان'}</span>
                 </a>
               </div>
 
@@ -363,6 +371,10 @@
                   <i class="fa-solid fa-envelope"></i>
                   <div><span class="brightai-drawer-subtitle">${t.contact}</span></div>
                 </a>
+                <a href="${prefix}/about/" class="brightai-drawer-sublink">
+                  <i class="fa-solid fa-building-shield"></i>
+                  <div><span class="brightai-drawer-subtitle">${isEnglish ? 'About BrightAI' : 'عن BrightAI'}</span></div>
+                </a>
                 <a href="/services/" class="brightai-drawer-sublink">
                   <i class="fa-solid fa-handshake-angle"></i>
                   <div><span class="brightai-drawer-subtitle">${isEnglish ? 'Services' : 'الخدمات'}</span></div>
@@ -374,6 +386,10 @@
                 <a href="${prefix}/cookie-policy/" class="brightai-drawer-sublink">
                   <i class="fa-solid fa-cookie-bite"></i>
                   <div><span class="brightai-drawer-subtitle">${isEnglish ? 'Cookie Policy' : 'سياسة الكوكيز'}</span></div>
+                </a>
+                <a href="${prefix}/trust/" class="brightai-drawer-sublink">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <div><span class="brightai-drawer-subtitle">${isEnglish ? 'Trust Center' : 'مركز الثقة والأمان'}</span></div>
                 </a>
               </div>
             </li>

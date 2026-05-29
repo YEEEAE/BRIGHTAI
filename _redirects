@@ -55,6 +55,9 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /data-processing-agreement    /data-processing-agreement/   301
 /data-processing-agreement/index.html /data-processing-agreement/ 301
 /data-processing-agreement.html /data-processing-agreement/ 301
+/trust                        /trust/                       301
+/trust/index.html             /trust/                       301
+/trust.html                   /trust/                       301
 
 # ── English Legal Counterparts ───────────────────────────────────────────────
 /en/privacy-policy            /en/privacy-policy/           301

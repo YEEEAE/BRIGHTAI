@@ -77,5 +77,11 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/terms/" />
     <lastmod>2026-05-29</lastmod>
   </url>
+  <url>
+    <loc>https://brightai.site/trust/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/trust/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/trust/" />
+    <lastmod>2026-05-29</lastmod>
+  </url>
 
 </urlset>

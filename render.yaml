@@ -164,6 +164,7 @@ services:
         "kernel",
         "solutions",
         "assessment",
+        "trust",
         "demo/ai-tenders-analysis",
         "demo/ai-reject-dashboard/frontend/pages",
         "demo/ai-reject-dashboard/frontend/pages/admin"
@@ -434,6 +435,15 @@ services:
       - type: redirect
         source: /data-processing-agreement/index.html
         destination: /data-processing-agreement/
+      - type: redirect
+        source: /trust
+        destination: /trust/
+      - type: redirect
+        source: /trust.html
+        destination: /trust/
+      - type: redirect
+        source: /trust/index.html
+        destination: /trust/
       - type: redirect
         source: /offline
         destination: /offline/

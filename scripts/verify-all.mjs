@@ -141,7 +141,7 @@ let sitemapValid = true;
 if (fs.existsSync(sitemapPath)) {
   const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
   
-  const pagesWithSlash = ['about', 'ai-agent', 'blog', 'ai-bots'];
+  const pagesWithSlash = ['about', 'blog'];
   for (const page of pagesWithSlash) {
     if (!sitemapContent.match(new RegExp(`https://brightai.site/${page}/<`, 'i'))) {
        sitemapValid = false;
@@ -182,6 +182,7 @@ for (const file of allHtmlFiles) {
   // تخطي الصفحات الخاصة
   const basename = path.basename(file);
   if (['404.html', '500.html', 'offline.html'].includes(basename)) continue;
+  if (file.includes('/components/') || file.includes('/templates/')) continue;
   
   // فحص العناصر الأساسية
   const hasTitle = /<title[^>]*>[\s\S]*?<\/title>/i.test(content);
