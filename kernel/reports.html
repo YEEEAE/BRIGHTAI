@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>تقارير الامتثال والتشغيل | BrightAI Kernel</title>
+  <meta name="description" content="تقارير استخدام وأحداث أمنية وامتثال تساعد فرق المراجعة على فهم نشاط الذكاء الاصطناعي داخل المؤسسة.">
+  <link rel="canonical" href="https://brightai.site/kernel/reports/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/reports/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/reports/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+  <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
+  <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="kernel.css">
+  <style>
+    .report-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media (max-width: 900px) { .report-types { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .report-types { grid-template-columns: 1fr; } }
+
+    .report-card {
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+      border: 1px solid var(--border);
+    }
+    .report-card:hover { border-color: rgba(0,212,255,0.35); transform: translateY(-2px); }
+    .report-card.selected { border-color: var(--brand); background: rgba(0,212,255,0.06); }
+
+    .report-card .rc-icon { width: 52px; height: 52px; border-radius: 0.875rem; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; margin-bottom: 0.875rem; }
+    .report-card h3 { font-size: 0.95rem; font-weight: 800; margin-bottom: 0.35rem; }
+    .report-card p  { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+
+    .report-config {
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      display: none;
+    }
+    .report-config.visible { display: block; }
+
+    .config-row { display: flex; flex-wrap: wrap; gap: 0.875rem; align-items: flex-end; margin-bottom: 1rem; }
+    .config-item { display: flex; flex-direction: column; min-width: 160px; flex: 1; }
+
+    .report-output {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      display: none;
+    }
+    .report-output.visible { display: block; }
+
+    .output-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem; }
+    .output-title { font-size: 1rem; font-weight: 700; }
+    .export-btns { display: flex; gap: 0.5rem; }
+
+    /* Summary row */
+    .report-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.875rem; margin-bottom: 1.5rem; }
+    @media (max-width: 700px) { .report-summary { grid-template-columns: repeat(2, 1fr); } }
+    .rs-box { background: var(--ink-800); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1rem; text-align: center; }
+    .rs-box .rs-val { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.2rem; }
+    .rs-box .rs-lbl { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .tl-item { display: flex; gap: 1rem; padding: 0.875rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 0.35rem; flex-shrink: 0; }
+    .tl-time { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; min-width: 80px; }
+    .tl-text { font-size: 0.82rem; color: var(--text-muted); flex: 1; line-height: 1.5; }
+    .tl-badge { flex-shrink: 0; }
+
+    /* Chart bars inside report */
+    .mini-bar-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .mini-bar-lbl { font-size: 0.78rem; color: var(--text-muted); min-width: 100px; text-align: right; }
+    .mini-bar-track { flex: 1; background: var(--ink-800); border-radius: 99px; height: 1.2rem; overflow: hidden; }
+    .mini-bar-fill { height: 100%; border-radius: 99px; transition: width 0.8s ease; }
+    .mini-bar-val { font-size: 0.75rem; color: var(--text-muted); min-width: 28px; text-align: left; }
+
+    /* Compliance table */
+    .compliance-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.82rem; }
+    .compliance-row:last-child { border-bottom: none; }
+    .compliance-pack { color: var(--brand); font-weight: 600; }
+    .compliance-rate { display: flex; align-items: center; gap: 0.5rem; }
+    .compliance-rate .rate-val { font-weight: 700; }
+
+    .no-type-msg { text-align: center; padding: 3rem; color: var(--text-muted); font-size: 0.9rem; }
+    .no-type-msg i { font-size: 3rem; margin-bottom: 1rem; display: block; color: var(--border); }
+
+    .demo-banner {
+      background: rgba(167,139,250,0.08);
+      border: 1px dashed rgba(167,139,250,0.3);
+      border-radius: 0.75rem;
+      padding: 0.875rem 1.25rem;
+      font-size: 0.8rem;
+      color: #a78bfa;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/kernel/reports/#webpage",
+      "url": "https://brightai.site/kernel/reports/",
+      "name": "تقارير الامتثال والتشغيل | BrightAI Kernel",
+      "description": "تقارير استخدام وأحداث أمنية وامتثال تساعد فرق المراجعة على فهم نشاط الذكاء الاصطناعي داخل المؤسسة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/kernel/reports/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "kernel",
+          "item": "https://brightai.site/kernel/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "تقارير الامتثال والتشغيل | BrightAI Kernel",
+          "item": "https://brightai.site/kernel/reports/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+</head>
+<body>
+  
+  <div id="brightai-unified-header"></div>
+  <a href="#reports-main" class="skip-link">تخطي إلى التقارير</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
+
+  <main id="reports-main" class="page-wrap">
+
+    <div style="margin-bottom:1.5rem;" class="fade-up">
+      <h1 class="section-title">التقارير — أدلة التدقيق الجاهزة</h1>
+      <p class="section-sub">BrightAI Kernel تولّد تقارير احترافية جاهزة للتدقيق الخارجي والجهات الرقابية. كل تقرير يحتوي على بصمات مشفرة وسلاسل أثر لا يمكن تزييفها.</p>
+    </div>
+
+    <div class="glass fade-up d1" style="padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-left: 3px solid #a78bfa; background: rgba(167,139,250,0.08);">
+      <div style="font-size: 0.75rem; color: #a78bfa; font-weight: 600; margin-bottom: 0.35rem;">عرض توضيحي</div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">التقارير هنا توضح الشكل والمحتوى. يمكن تصديرها كـ JSON و CSV. في الإنتاج، تتم مصادقة التقارير رقمياً بـ SHA-256.</p>
+    </div>
+
+    <!-- Report Types -->
+    <section aria-labelledby="report-types-heading" class="fade-up d2">
+      <h2 id="report-types-heading" class="section-title" style="font-size:1.1rem;">اختر نوع التقرير</h2>
+      <div class="report-types" role="radiogroup" aria-label="نوع التقرير">
+
+        <div class="glass report-card" onclick="selectReport('usage')" tabindex="0" onkeydown="if(event.key==='Enter')selectReport('usage')" role="radio" aria-checked="false" id="card-usage">
+          <div class="rc-icon bg-brand"><i class="fas fa-chart-line c-brand" aria-hidden="true"></i></div>
+          <h3>تقرير الاستخدام</h3>
+          <p>ملخص شامل لعدد الطلبات وحالات المخاطر والموافقات والرفض خلال فترة زمنية</p>
+        </div>
+
+        <div class="glass report-card" onclick="selectReport('compliance')" tabindex="0" onkeydown="if(event.key==='Enter')selectReport('compliance')" role="radio" aria-checked="false" id="card-compliance">
+          <div class="rc-icon bg-purple"><i class="fas fa-layer-group c-purple" aria-hidden="true"></i></div>
+          <h3>تقرير الامتثال</h3>
+          <p>تفصيل مستوى الامتثال لكل حزمة تنظيمية مع معدلات الاكتشاف والمعالجة</p>
+        </div>
+
+        <div class="glass report-card" onclick="selectReport('security')" tabindex="0" onkeydown="if(event.key==='Enter')selectReport('security')" role="radio" aria-checked="false" id="card-security">
+          <div class="rc-icon bg-red"><i class="fas fa-shield-halved c-red" aria-hidden="true"></i></div>
+          <h3>تقرير الأحداث الأمنية</h3>
+          <p>سجل الطلبات المحظورة ومحاولات الاختراق والأحداث ذات الأولوية العالية</p>
+        </div>
+
+        <div class="glass report-card" onclick="selectReport('pii')" tabindex="0" onkeydown="if(event.key==='Enter')selectReport('pii')" role="radio" aria-checked="false" id="card-pii">
+          <div class="rc-icon bg-orange"><i class="fas fa-user-shield c-orange" aria-hidden="true"></i></div>
+          <h3>تقرير البيانات الشخصية</h3>
+          <p>تتبع جميع حالات اكتشاف وإخفاء البيانات الشخصية (PII) عبر التفاعلات</p>
+        </div>
+
+        <div class="glass report-card" onclick="selectReport('approvals')" tabindex="0" onkeydown="if(event.key==='Enter')selectReport('approvals')" role="radio" aria-checked="false" id="card-approvals">
+          <div class="rc-icon bg-green"><i class="fas fa-user-check c-green" aria-hidden="true"></i></div>
+          <h3>تقرير الموافقات</h3>
+          <p>إحصائيات قرارات الموافقة اليدوية بتفاصيل المعتمدين وأوقات الاستجابة</p>
+        </div>
+
+        <div class="glass report-card" onclick="selectReport('audit')" tabindex="0" onkeydown="if(event.key==='Enter')selectReport('audit')" role="radio" aria-checked="false" id="card-audit">
+          <div class="rc-icon bg-yellow"><i class="fas fa-link c-yellow" aria-hidden="true"></i></div>
+          <h3>تقرير سلسلة التدقيق</h3>
+          <p>تقرير كامل لسلسلة التدقيق مع التحقق من سلامة البصمات الرقمية</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Config Panel -->
+    <div class="glass report-config fade-up" id="report-config">
+      <h3 style="font-size:0.875rem;font-weight:700;margin-bottom:1rem;color:var(--brand);" id="config-title">إعداد التقرير</h3>
+      <div class="config-row">
+        <div class="config-item">
+          <label class="form-label" for="rpt-from">من تاريخ</label>
+          <input id="rpt-from" class="form-input" type="date">
+        </div>
+        <div class="config-item">
+          <label class="form-label" for="rpt-to">إلى تاريخ</label>
+          <input id="rpt-to" class="form-input" type="date">
+        </div>
+        <div class="config-item">
+          <label class="form-label" for="rpt-pack">حزمة الامتثال</label>
+          <select id="rpt-pack" class="form-select">
+            <option value="">الكل</option>
+            <option value="general">عام</option>
+            <option value="pdpl">PDPL</option>
+            <option value="nca_ecc">NCA ECC</option>
+            <option value="sfda">SFDA</option>
+            <option value="healthcare">الرعاية الصحية</option>
+            <option value="procurement">المشتريات</option>
+          </select>
+        </div>
+        <div class="config-item" style="justify-content:flex-end;min-width:auto;flex:0;">
+          <button class="btn btn-primary" onclick="generateReport()" aria-label="إنشاء التقرير">
+            <i class="fas fa-file-chart-column" aria-hidden="true"></i> إنشاء التقرير
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Output -->
+    <div class="glass report-output" id="report-output">
+      <div class="output-header">
+        <div class="output-title" id="output-title">التقرير</div>
+        <div class="export-btns">
+          <button class="btn btn-ghost btn-sm" onclick="exportJSON()">
+            <i class="fas fa-code" aria-hidden="true"></i> تصدير JSON
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="exportCSV()">
+            <i class="fas fa-file-csv" aria-hidden="true"></i> تصدير CSV
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="window.print()">
+            <i class="fas fa-print" aria-hidden="true"></i> طباعة
+          </button>
+        </div>
+      </div>
+      <div id="output-body">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="kernel-footer">&copy; 2026 BrightAI Kernel</footer>
+
+  <script>
+    let currentType = null;
+    let lastReportData = null;
+
+    // Set default dates (last 30 days)
+    const now = new Date();
+    const from30 = new Date(now); from30.setDate(from30.getDate() - 30);
+    document.getElementById('rpt-from').value = from30.toISOString().split('T')[0];
+    document.getElementById('rpt-to').value   = now.toISOString().split('T')[0];
+
+    const TITLES = {
+      usage: 'تقرير الاستخدام',
+      compliance: 'تقرير الامتثال',
+      security: 'تقرير الأحداث الأمنية',
+      pii: 'تقرير البيانات الشخصية',
+      approvals: 'تقرير الموافقات',
+      audit: 'تقرير سلسلة التدقيق',
+    };
+
+    function selectReport(type) {
+      currentType = type;
+      document.querySelectorAll('.report-card').forEach(c => {
+        c.classList.remove('selected');
+        c.setAttribute('aria-checked', 'false');
+      });
+      const card = document.getElementById('card-' + type);
+      card.classList.add('selected');
+      card.setAttribute('aria-checked', 'true');
+      const config = document.getElementById('report-config');
+      config.classList.add('visible');
+      document.getElementById('config-title').textContent = 'إعداد ' + (TITLES[type] || 'التقرير');
+      document.getElementById('report-output').classList.remove('visible');
+      config.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    async function generateReport() {
+      if (!currentType) { alert('الرجاء اختيار نوع التقرير'); return; }
+      const outputEl = document.getElementById('report-output');
+      const bodyEl   = document.getElementById('output-body');
+      const titleEl  = document.getElementById('output-title');
+
+      outputEl.classList.add('visible');
+      bodyEl.innerHTML = '<div style="text-align:center;padding:3rem;"><span class="spinner" aria-label="جاري إنشاء التقرير"></span><p style="margin-top:1rem;color:var(--text-muted);font-size:0.85rem;">جاري جمع البيانات وإنشاء التقرير...</p></div>';
+      titleEl.textContent = TITLES[currentType] || 'التقرير';
+      outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      const params = new URLSearchParams({
+        type: currentType,
+        dateFrom: document.getElementById('rpt-from').value,
+        dateTo: document.getElementById('rpt-to').value,
+        compliancePack: document.getElementById('rpt-pack').value,
+      });
+
+      try {
+        const res = await fetch('/api/kernel/reports?' + params);
+        const data = await res.json();
+        lastReportData = data;
+        bodyEl.innerHTML = renderReport(currentType, data);
+      } catch(_) {
+        // Render demo data
+        lastReportData = buildDemoData(currentType);
+        bodyEl.innerHTML = renderReport(currentType, lastReportData);
+      }
+    }
+
+    /* ---- DEMO DATA ---- */
+    function buildDemoData(type) {
+      const base = {
+        type, generatedAt: new Date().toISOString(),
+        dateFrom: document.getElementById('rpt-from').value,
+        dateTo:   document.getElementById('rpt-to').value,
+        pack: document.getElementById('rpt-pack').value || 'الكل',
+        demo: true,
+      };
+      if (type === 'usage') return { ...base, total: 847, blocked: 62, pending: 18, autoApproved: 650, approved: 92, rejected: 25, avgRiskScore: 34, byRiskLevel: [{label:'منخفض',count:510,color:'#4ade80'},{label:'متوسط',count:215,color:'#fbbf24'},{label:'مرتفع',count:98,color:'#fb923c'},{label:'حرج',count:24,color:'#f87171'}] };
+      if (type === 'compliance') return { ...base, packs: [{name:'PDPL',count:230,rate:'96%',color:'var(--brand)'},{name:'NCA ECC',count:180,rate:'92%',color:'#a78bfa'},{name:'SFDA',count:145,rate:'98%',color:'#fb923c'},{name:'Healthcare',count:120,rate:'97%',color:'#4ade80'},{name:'Procurement',count:100,rate:'91%',color:'#fbbf24'},{name:'General',count:72,rate:'89%',color:'#94a3b8'}] };
+      if (type === 'security') return { ...base, total: 62, critical: 8, high: 24, medium: 30, events: [{time:'2026-05-28 14:32',text:'محاولة استخراج بيانات ERP محظورة',level:'critical'},{time:'2026-05-27 09:11',text:'رقم هوية وطنية في طلب PDPL',level:'high'},{time:'2026-05-26 16:45',text:'طلب تعديل فاتورة > 50,000 ريال',level:'high'},{time:'2026-05-25 11:20',text:'بيانات مريض في طلب غير مصنف',level:'medium'},{time:'2026-05-24 08:55',text:'محاولة prompt injection اكتُشفت',level:'critical'},{time:'2026-05-23 15:30',text:'معلومات موردين في تقرير عام',level:'medium'}] };
+      if (type === 'pii') return { ...base, total: 423, byType: [{label:'أسماء أشخاص',count:185,color:'var(--brand)'},{label:'أرقام هوية',count:98,color:'#f87171'},{label:'أرقام جوال',count:72,color:'#fbbf24'},{label:'بريد إلكتروني',count:45,color:'#fb923c'},{label:'بيانات مرضى',count:23,color:'#a78bfa'}] };
+      if (type === 'approvals') return { ...base, total: 135, approved: 92, rejected: 25, pending: 18, avgResponse: '4.2 ساعة', approvers: [{name:'د. عبدالله الشمري',approved:28,rejected:5},{name:'م. محمد العتيبي (QAM)',approved:22,rejected:8},{name:'مدير مالي',approved:18,rejected:4},{name:'مسؤول الامتثال',approved:15,rejected:6},{name:'مسؤول الأمن',approved:9,rejected:2}] };
+      if (type === 'audit') return { ...base, total: 847, valid: 843, tampered: 0, missing: 4, lastHash: '0xa3f7e2b1c9d4...', chainNote: 'سلسلة التدقيق سليمة — لم يُكتشف أي تلاعب', events: [{time:'2026-05-28',hash:'0xa3f7...',status:'valid'},{time:'2026-05-27',hash:'0x9c2e...',status:'valid'},{time:'2026-05-26',hash:'0x5d8a...',status:'valid'},{time:'2026-05-25',hash:'0x7b3f...',status:'missing'}] };
+    }
+
+    /* ---- RENDERERS ---- */
+    function renderReport(type, d) {
+      const dateRange = `<span style="font-size:0.75rem;color:var(--text-muted);">الفترة: ${d.dateFrom || '—'} إلى ${d.dateTo || '—'}${d.demo ? ' &nbsp;|&nbsp; <span style="color:#a78bfa;">بيانات تجريبية</span>' : ''}</span>`;
+
+      if (type === 'usage') return `
+        ${dateRange}
+        <div class="report-summary" style="margin-top:1rem;">
+          <div class="rs-box"><div class="rs-val c-brand">${d.total}</div><div class="rs-lbl">إجمالي الطلبات</div></div>
+          <div class="rs-box"><div class="rs-val c-red">${d.blocked}</div><div class="rs-lbl">محظورة</div></div>
+          <div class="rs-box"><div class="rs-val c-yellow">${d.pending}</div><div class="rs-lbl">معلقة</div></div>
+          <div class="rs-box"><div class="rs-val c-green">${d.autoApproved}</div><div class="rs-lbl">مقبول تلقائي</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1rem;">
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);margin-bottom:0.75rem;">توزيع مستوى المخاطر</div>
+            ${(d.byRiskLevel||[]).map(r => miniBar(r.label, r.count, d.total, r.color)).join('')}
+          </div>
+          <div>
+            <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);margin-bottom:0.75rem;">ملخص القرارات</div>
+            ${miniBar('مقبول يدوياً', d.approved, d.total, '#4ade80')}
+            ${miniBar('مرفوض', d.rejected, d.total, '#f87171')}
+            ${miniBar('متوسط المخاطر', d.avgRiskScore, 100, 'var(--brand)')}
+          </div>
+        </div>`;
+
+      if (type === 'compliance') return `
+        ${dateRange}
+        <div style="margin-top:1rem;">${(d.packs||[]).map(p => `
+          <div class="compliance-row">
+            <span class="compliance-pack">${p.name}</span>
+            <span style="font-size:0.8rem;color:var(--text-muted);">${p.count} طلب</span>
+            <div class="compliance-rate">
+              <div style="width:80px;background:var(--ink-800);border-radius:99px;height:0.75rem;overflow:hidden;">
+                <div style="height:100%;border-radius:99px;background:${p.color};width:${p.rate}"></div>
+              </div>
+              <span class="rate-val" style="color:${p.color}">${p.rate}</span>
+            </div>
+          </div>`).join('')}
+        </div>`;
+
+      if (type === 'security') return `
+        ${dateRange}
+        <div class="report-summary" style="margin-top:1rem;">
+          <div class="rs-box"><div class="rs-val c-brand">${d.total}</div><div class="rs-lbl">إجمالي الأحداث</div></div>
+          <div class="rs-box"><div class="rs-val c-red">${d.critical}</div><div class="rs-lbl">حرجة</div></div>
+          <div class="rs-box"><div class="rs-val c-orange">${d.high}</div><div class="rs-lbl">مرتفعة</div></div>
+          <div class="rs-box"><div class="rs-val c-yellow">${d.medium}</div><div class="rs-lbl">متوسطة</div></div>
+        </div>
+        <div style="margin-top:1rem;">
+          <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);margin-bottom:0.75rem;">أبرز الأحداث الأمنية</div>
+          <div class="timeline">${(d.events||[]).map(ev => `
+            <div class="tl-item">
+              <div class="tl-dot" style="background:${ev.level==='critical'?'#f87171':ev.level==='high'?'#fb923c':'#fbbf24'}"></div>
+              <span class="tl-time">${ev.time}</span>
+              <span class="tl-text">${esc(ev.text)}</span>
+              <span class="tl-badge badge badge-${ev.level}">${ev.level==='critical'?'حرج':ev.level==='high'?'مرتفع':'متوسط'}</span>
+            </div>`).join('')}
+          </div>
+        </div>`;
+
+      if (type === 'pii') return `
+        ${dateRange}
+        <div class="report-summary" style="margin-top:1rem;">
+          <div class="rs-box" style="grid-column:span 4;"><div class="rs-val c-orange">${d.total}</div><div class="rs-lbl">إجمالي حقول PII مكتشفة ومخفية</div></div>
+        </div>
+        <div style="margin-top:1rem;">
+          <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);margin-bottom:0.75rem;">تصنيف البيانات الشخصية المكتشفة</div>
+          ${(d.byType||[]).map(t => miniBar(t.label, t.count, d.total, t.color)).join('')}
+        </div>`;
+
+      if (type === 'approvals') return `
+        ${dateRange}
+        <div class="report-summary" style="margin-top:1rem;">
+          <div class="rs-box"><div class="rs-val c-brand">${d.total}</div><div class="rs-lbl">إجمالي طلبات الموافقة</div></div>
+          <div class="rs-box"><div class="rs-val c-green">${d.approved}</div><div class="rs-lbl">موافق عليه</div></div>
+          <div class="rs-box"><div class="rs-val c-red">${d.rejected}</div><div class="rs-lbl">مرفوض</div></div>
+          <div class="rs-box"><div class="rs-val c-brand" style="font-size:1.1rem;">${d.avgResponse}</div><div class="rs-lbl">متوسط وقت الاستجابة</div></div>
+        </div>
+        <div style="margin-top:1rem;">
+          <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);margin-bottom:0.75rem;">إحصائيات المعتمدين</div>
+          <table class="kernel-table">
+            <thead><tr><th>المعتمد</th><th>موافقة</th><th>رفض</th><th>المجموع</th></tr></thead>
+            <tbody>${(d.approvers||[]).map(a => `
+              <tr>
+                <td>${esc(a.name)}</td>
+                <td><span class="c-green">${a.approved}</span></td>
+                <td><span class="c-red">${a.rejected}</span></td>
+                <td style="color:var(--text-muted)">${a.approved + a.rejected}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`;
+
+      if (type === 'audit') return `
+        ${dateRange}
+        <div class="report-summary" style="margin-top:1rem;">
+          <div class="rs-box"><div class="rs-val c-brand">${d.total}</div><div class="rs-lbl">إجمالي السجلات</div></div>
+          <div class="rs-box"><div class="rs-val c-green">${d.valid}</div><div class="rs-lbl">بصمات سليمة</div></div>
+          <div class="rs-box"><div class="rs-val c-red">${d.tampered}</div><div class="rs-lbl">تلاعب مكتشف</div></div>
+          <div class="rs-box"><div class="rs-val c-yellow">${d.missing}</div><div class="rs-lbl">غير مكتملة</div></div>
+        </div>
+        <div class="disclaimer" style="margin-top:1rem;"><i class="fas fa-link" aria-hidden="true"></i><span>${esc(d.chainNote || '')}</span></div>
+        <div style="margin-top:1rem;">
+          <div style="font-size:0.8rem;font-weight:600;color:var(--text-muted);margin-bottom:0.75rem;">آخر سجلات السلسلة</div>
+          <div class="timeline">${(d.events||[]).map(ev => `
+            <div class="tl-item">
+              <div class="tl-dot" style="background:${ev.status==='valid'?'#4ade80':'#fbbf24'}"></div>
+              <span class="tl-time">${ev.time}</span>
+              <span class="tl-text" style="font-family:monospace;font-size:0.75rem">${ev.hash}</span>
+              <span class="tl-badge badge ${ev.status==='valid'?'badge-approved':'badge-pending'}">${ev.status==='valid'?'سليم':'ناقص'}</span>
+            </div>`).join('')}
+          </div>
+        </div>`;
+
+      return '<div class="no-type-msg"><i class="fas fa-chart-simple"></i><p>نوع تقرير غير معروف</p></div>';
+    }
+
+    function miniBar(label, count, total, color) {
+      const pct = total > 0 ? Math.round(count / total * 100) : 0;
+      return `<div class="mini-bar-row">
+        <span class="mini-bar-lbl">${esc(String(label))}</span>
+        <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+        <span class="mini-bar-val">${count}</span>
+      </div>`;
+    }
+
+    function esc(s) { const d = document.createElement('div'); d.textContent = String(s); return d.innerHTML; }
+
+    function exportJSON() {
+      if (!lastReportData) return;
+      const blob = new Blob([JSON.stringify(lastReportData, null, 2)], { type: 'application/json' });
+      download(blob, 'kernel-report-' + currentType + '.json');
+    }
+
+    function exportCSV() {
+      if (!lastReportData) return;
+      const rows = [['type', 'generatedAt', 'dateFrom', 'dateTo', 'demo']];
+      rows.push([lastReportData.type, lastReportData.generatedAt, lastReportData.dateFrom, lastReportData.dateTo, lastReportData.demo]);
+      const csv = rows.map(r => r.map(c => '"' + String(c ?? '').replace(/"/g, '""') + '"').join(',')).join('\n');
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+      download(blob, 'kernel-report-' + currentType + '.csv');
+    }
+
+    function download(blob, name) {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+  </script>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
+</body>
+</html>

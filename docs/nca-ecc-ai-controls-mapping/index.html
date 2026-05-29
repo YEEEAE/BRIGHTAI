@@ -268,6 +268,114 @@
   </script>
 
   <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/#webpage",
+      "url": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/",
+      "name": "مواءمة استخدام الذكاء الاصطناعي مع NCA ECC | BrightAI",
+      "description": "دليل عملي يوضح كيف تساعد ضوابط BrightAI مثل AI Firewall وAudit Trail وHuman Approval في تشغيل استخدامات AI بطريقة قابلة للمراجعة أمنيًا.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "مواءمة استخدام الذكاء الاصطناعي مع NCA ECC | BrightAI",
+          "item": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "لماذا تحتاج استخدامات AI لضوابط أمنية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "استخدامات الذكاء الاصطناعي تختلف عن الأنظمة التقليدية لأن الموظف قد يرسل بيانات داخل prompt حر: أرقام عملاء، مستندات داخلية، تفاصيل مالية، أو ملاحظات تشغيلية. بدون ضوابط، يصير من الصعب معرفة ما تم إرساله، هل كان مسموحًا، وهل القرار الناتج يحتاج مراجعة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "جدول mapping بين المتطلب الأمني وخطر AI وضابط BrightAI المتطلب الأمني خطر AI ضابط BrightAI المقترح تصنيف وحماية البيانات الحساسة إدخال بيانات شخصية أو سرية داخل prompt بدون إدراك مستوى الحساسية. AI Firewall لتصنيف البيانات داخل prompts وتطبيق allow أو mask أو block حسب السياسة. قابلية التتبع والمراجعة الأمنية عدم القدرة على معرفة من أرسل الطلب، وما القرار الذي اتخذته السياسة. AI Audit Trail لتسجيل المستخدم، نوع البيانات، نتيجة الفحص، والنموذج أو المسار المستخدم. إدارة المخاطر قبل المعالجة التعامل مع كل طلب AI بنفس المستوى رغم اختلاف الحساسية والأثر. AI risk scoring يحسب درجة المخاطر حسب نوع البيانات، هدف الطلب، وحساسية القرار. الفصل بين الاستخدام العادي والقرارات الحساسة اعتماد مخرجات AI في قرارات مؤثرة بدون مراجعة بشرية. Human Approval للطلبات التي تتضمن أثرًا على عميل، موظف، مطالبة، عقد، أو إجراء أمني. تجهيز أدلة للمراجعة الداخلية وجود سياسات مكتوبة بدون أدلة تشغيلية تثبت تطبيقها. AI Evidence File لتجميع السياسات، السجلات، العينات المنقحة، ومسارات الموافقة. أمثلة على Audit Logs",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "السجل الجيد لا يخزن كل شيء بشكل عشوائي. المطلوب سجل يكفي للمراجعة الأمنية بدون تحويله إلى مستودع بيانات حساسة جديد."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Checklist تنفيذية احصر أدوات AI المستخدمة رسميًا وغير رسميًا داخل الفرق. عرّف مستويات تصنيف prompts: عام، داخلي، سري، عالي الحساسية. فعّل AI Firewall قبل وصول الطلب للنموذج، وليس بعد خروج المعلومة. اربط كل طلب بدرجة AI risk scoring قابلة للتفسير. سجل قرارات allow وmask وblock وescalate في Audit Trail. حدد متى تحتاج الطلبات الحساسة موافقة بشرية، ومن صاحب الموافقة. أنشئ Evidence File شهري يحتوي عينات تشغيلية وسجلات مراجعة. راجع السياسة دوريًا مع الأمن السيبراني والامتثال بدل الاعتماد على إعدادات ثابتة. FAQ هل BrightAI يقدم ضمان امتثال لـ NCA ECC؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. BrightAI لا يقدم ضمان امتثال نظامي أو أمني، لكنه يدعم الجاهزية التشغيلية من خلال ضوابط قابلة للتتبع مثل AI Firewall وAudit Trail وHuman Approval."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما الفرق بين Audit Trail وEvidence File؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Audit Trail هو سجل الأحداث اليومية: من استخدم، ماذا حدث، وما قرار السياسة. أما Evidence File فهو تجميع منظم للأدلة والسياسات والعينات لدعم المراجعة الداخلية أو الأمنية."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="bg-grid">
 

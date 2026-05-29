@@ -19,7 +19,7 @@
       home: 'الرئيسية',
       solutions: 'الحلول',
       resources: 'الموارد',
-      kernel: 'لوحة النواة KERNEL',
+      kernel: 'نواة BrightAI',
       pricing: 'الأسعار',
       contact: 'تواصل معنا',
       demoBtn: 'ابدأ ديمو خاص بشركتك',
@@ -37,7 +37,7 @@
       home: 'Home',
       solutions: 'Solutions',
       resources: 'Resources',
-      kernel: 'Kernel Board KERNEL',
+      kernel: 'BrightAI Kernel',
       pricing: 'Pricing',
       contact: 'Contact Us',
       demoBtn: 'Start Corporate Demo',
@@ -98,28 +98,38 @@
   // تعريف روابط لوحة النواة KERNEL
   const kernelList = [
     {
-      title: isEnglish ? 'Control Panel' : 'لوحة التحكم',
+      title: isEnglish ? 'BrightAI Kernel' : 'نواة BrightAI',
       url: isEnglish ? '/kernel/' : '/kernel/',
       icon: 'fa-gauge-high'
     },
     {
-      title: isEnglish ? 'Conversations' : 'المحادثات',
-      url: isEnglish ? '/kernel/chat.html' : '/kernel/chat.html',
+      title: isEnglish ? 'Request Inspector' : 'فاحص الطلبات',
+      url: isEnglish ? '/kernel/chat/' : '/kernel/chat/',
       icon: 'fa-comments'
     },
     {
       title: isEnglish ? 'Audit Log' : 'سجل التدقيق',
-      url: isEnglish ? '/kernel/audit.html' : '/kernel/audit.html',
+      url: isEnglish ? '/kernel/audit/' : '/kernel/audit/',
       icon: 'fa-file-lines'
     },
     {
-      title: isEnglish ? 'Human Approvals' : 'الموافقات البشرية',
-      url: isEnglish ? '/kernel/approvals.html' : '/kernel/approvals.html',
+      title: isEnglish ? 'Human Approvals' : 'الموافقات',
+      url: isEnglish ? '/kernel/approvals/' : '/kernel/approvals/',
       icon: 'fa-user-check'
     },
     {
+      title: isEnglish ? 'Reports' : 'التقارير',
+      url: isEnglish ? '/kernel/reports/' : '/kernel/reports/',
+      icon: 'fa-file-shield'
+    },
+    {
+      title: isEnglish ? 'Scenarios' : 'السيناريوهات',
+      url: isEnglish ? '/kernel/scenarios/' : '/kernel/scenarios/',
+      icon: 'fa-flask-vial'
+    },
+    {
       title: isEnglish ? 'Statistics' : 'الإحصائيات',
-      url: isEnglish ? '/kernel/stats.html' : '/kernel/stats.html',
+      url: isEnglish ? '/kernel/stats/' : '/kernel/stats/',
       icon: 'fa-chart-line'
     }
   ];
@@ -257,7 +267,7 @@
 
           <!-- قائمة لوحة النواة Dropdown -->
           <li class="brightai-menu-item">
-            <button class="brightai-menu-link ${pathname.includes('/kernel/') ? 'is-active' : ''}" aria-haspopup="true" aria-expanded="false" id="b-kerBtn" aria-controls="b-kerMenu">
+            <button class="brightai-menu-link ${pathname === '/kernel' || pathname.includes('/kernel/') ? 'is-active' : ''}" aria-haspopup="true" aria-expanded="false" id="b-kerBtn" aria-controls="b-kerMenu">
               <span>${t.kernel}</span>
               <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
             </button>
@@ -396,7 +406,7 @@
 
             <!-- أكورديون لوحة النواة للجوال -->
             <li>
-              <button class="brightai-drawer-accordion-btn ${pathname.includes('/kernel/') ? 'is-active' : ''}" aria-expanded="false" aria-controls="acc-kernel">
+              <button class="brightai-drawer-accordion-btn ${pathname === '/kernel' || pathname.includes('/kernel/') ? 'is-active' : ''}" aria-expanded="false" aria-controls="acc-kernel">
                 <span>${t.kernel}</span>
                 <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
               </button>

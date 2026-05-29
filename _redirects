@@ -110,16 +110,39 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 
 
 # ── Kernel Module Redirections ────────────────────────────────────────────────
-/kernel                       /kernel/                      301
+/kernel                       /kernel/index.html            200
+/kernel/                      /kernel/index.html            200
 /kernel/index.html            /kernel/                      301
-/kernel/stats                 /kernel/stats/                301
-/kernel/stats.html            /kernel/stats/                301
-/kernel/approvals             /kernel/approvals/            301
-/kernel/approvals.html        /kernel/approvals/            301
-/kernel/audit                 /kernel/audit/                301
-/kernel/audit.html            /kernel/audit/                301
-/kernel/chat                  /kernel/chat/                 301
+/kernel/chat                  /kernel/chat.html             200
+/kernel/chat/                 /kernel/chat.html             200
 /kernel/chat.html             /kernel/chat/                 301
+/kernel/audit                 /kernel/audit.html            200
+/kernel/audit/                /kernel/audit.html            200
+/kernel/audit.html            /kernel/audit/                301
+/kernel/approvals             /kernel/approvals.html        200
+/kernel/approvals/            /kernel/approvals.html        200
+/kernel/approvals.html        /kernel/approvals/            301
+/kernel/stats                 /kernel/stats.html            200
+/kernel/stats/                /kernel/stats.html            200
+/kernel/stats.html            /kernel/stats/                301
+/kernel/compliance            /kernel/compliance.html       200
+/kernel/compliance/           /kernel/compliance.html       200
+/kernel/compliance.html       /kernel/compliance/           301
+/kernel/policies              /kernel/policies.html         200
+/kernel/policies/             /kernel/policies.html         200
+/kernel/policies.html         /kernel/policies/             301
+/kernel/connectors            /kernel/connectors.html       200
+/kernel/connectors/           /kernel/connectors.html       200
+/kernel/connectors.html       /kernel/connectors/           301
+/kernel/scenarios             /kernel/scenarios.html        200
+/kernel/scenarios/            /kernel/scenarios.html        200
+/kernel/scenarios.html        /kernel/scenarios/            301
+/kernel/reports               /kernel/reports.html          200
+/kernel/reports/              /kernel/reports.html          200
+/kernel/reports.html          /kernel/reports/              301
+/kernel/evidence              /kernel/evidence.html         200
+/kernel/evidence/             /kernel/evidence.html         200
+/kernel/evidence.html         /kernel/evidence/             301
 
 # ── Tenders AI Demo Module Redirections ───────────────────────────────────────
 /tenders                      /demo/ai-tenders-analysis/    301

@@ -291,7 +291,7 @@ async function auditHtmlFile(filePath, publicRegistry) {
     issues.push("h1_invalid");
   }
 
-  if (frontendPagesLink) {
+  if (publicDocument && frontendPagesLink) {
     issues.push("frontend_pages_link");
   }
 

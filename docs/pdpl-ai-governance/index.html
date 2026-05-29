@@ -169,6 +169,90 @@
   ]
 }
   </script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/pdpl-ai-governance/#webpage",
+      "url": "https://brightai.site/docs/pdpl-ai-governance/",
+      "name": "PDPL والذكاء الاصطناعي | BrightAI Docs",
+      "description": "دليل تشغيلي لعلاقة PDPL باستخدامات الذكاء الاصطناعي وحماية البيانات الشخصية داخل المؤسسة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/pdpl-ai-governance/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "PDPL والذكاء الاصطناعي | BrightAI Docs",
+          "item": "https://brightai.site/docs/pdpl-ai-governance/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/pdpl-ai-governance/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "المخاطر الشائعة إرسال أرقام هوية أو جوال داخل prompt. استخدام ملفات عملاء أو مرضى بدون تنقية. غياب سجل يثبت ما حدث للبيانات. التطبيق العملي تعريف PII الحساسة. تفعيل masking/blocking قبل النموذج. تسجيل كل عملية تنقية أو منع. إنتاج Evidence File عند الحاجة. FAQ هل BrightAI بديل للاستشارة القانونية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. BrightAI يوفر طبقة تشغيلية تساعد على المواءمة ودعم جاهزية الامتثال، ولا يعد بديلًا للاستشارة القانونية."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="bg-grid">
 

@@ -1,43 +1,90 @@
 <!DOCTYPE html>
 <html lang="ar-SA" dir="rtl">
 <head>
-      <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-8LLESL207Q', { 'anonymize_ip': true, 'allow_google_signals': false });
-    </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>BrightAI Kernel — تجربة المحادثة</title>
-  <meta name="description" content="BrightAI Kernel — تجربة المحادثة من BrightAI، صفحة عامة قابلة للفهرسة ضمن تجربة الموقع وخدمات الذكاء الاصطناعي وحوكمة الأنظمة.">
-
-  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>فاحص طلبات الذكاء الاصطناعي | BrightAI Kernel</title>
+  <meta name="description" content="اختبر كيف يفحص BrightAI Kernel طلبات الذكاء الاصطناعي، يصنف المخاطر، ويحمي البيانات الحساسة قبل إرسالها للنماذج.">
+  <link rel="canonical" href="https://brightai.site/kernel/chat/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/chat/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/chat/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
   <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
   <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
   <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
   <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="kernel.css">
   <style>
-    body { background: #060914; }
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-    .sidebar-open { transform: translateX(0); }
-    .sidebar-closed { transform: translateX(100%); }
-    @media (min-width: 1024px) {
-      .sidebar-closed { transform: translateX(0); }
+    body { height: 100vh; overflow: hidden; flex-direction: column; }
+    .chat-layout { display: flex; flex: 1; overflow: hidden; }
+
+    /* Sidebar */
+    .chat-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      background: var(--ink-900);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 1.25rem;
+      gap: 1rem;
+      overflow-y: auto;
+    }
+    .sidebar-section { border-radius: 0.875rem; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 1rem; }
+    .sidebar-section h3 { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.75rem; }
+
+    /* Chat column */
+    .chat-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .chat-area { flex: 1; overflow-y: auto; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.875rem; }
+
+    .msg { max-width: 78%; padding: 0.875rem 1.1rem; border-radius: 1rem; font-size: 0.875rem; line-height: 1.6; }
+    .msg-user { align-self: flex-end; background: rgba(0,212,255,0.12); border: 1px solid rgba(0,212,255,0.2); border-bottom-left-radius: 0.25rem; }
+    .msg-ai { align-self: flex-start; background: var(--ink-800); border: 1px solid var(--border); border-bottom-right-radius: 0.25rem; }
+    .msg-blocked { align-self: flex-start; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; border-bottom-right-radius: 0.25rem; }
+    .msg-pending { align-self: flex-start; background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.25); color: #fde68a; border-bottom-right-radius: 0.25rem; }
+    .msg-loading { align-self: flex-start; background: var(--ink-800); border: 1px solid var(--border); color: var(--text-muted); border-bottom-right-radius: 0.25rem; }
+
+    .msg-meta { margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+    .msg-meta details summary { font-size: 0.72rem; color: var(--brand); cursor: pointer; }
+    .msg-meta pre { font-size: 0.72rem; color: #94a3b8; margin-top: 0.5rem; overflow-x: auto; max-height: 200px; direction: ltr; background: var(--ink-900); padding: 0.5rem; border-radius: 0.5rem; }
+
+    /* Input area */
+    .chat-input-area {
+      flex-shrink: 0;
+      border-top: 1px solid var(--border);
+      background: rgba(11,18,32,0.8);
+      backdrop-filter: blur(12px);
+      padding: 0.875rem 1.25rem;
+    }
+    .pack-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .pill {
+      padding: 0.3rem 0.7rem; border-radius: 99px; font-size: 0.72rem;
+      font-weight: 600; cursor: pointer; border: 1px solid var(--border);
+      background: var(--ink-800); color: var(--text-muted); transition: all 0.2s;
+    }
+    .pill.active { background: var(--brand); color: var(--bg); border-color: var(--brand); }
+
+    .input-row { display: flex; gap: 0.5rem; }
+    .input-row input { flex: 1; }
+    .input-row button { flex-shrink: 0; }
+
+    .session-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-muted); padding: 0 0.1rem; margin-bottom: 0.5rem; }
+
+    @media (max-width: 768px) {
+      .chat-sidebar { display: none; }
     }
   </style>
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://brightai.site/kernel/chat/">
-<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/chat/">
-<link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/chat/">
-<script id="brightai-production-schema" type="application/ld+json">
+  <script id="brightai-production-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -62,15 +109,16 @@
         "@id": "https://brightai.site/#organization"
       },
       "inLanguage": [
-        "ar-SA"
+        "ar-SA",
+        "en-SA"
       ]
     },
     {
       "@type": "WebPage",
       "@id": "https://brightai.site/kernel/chat/#webpage",
       "url": "https://brightai.site/kernel/chat/",
-      "name": "BrightAI Kernel — تجربة المحادثة",
-      "description": "BrightAI Kernel — تجربة المحادثة",
+      "name": "فاحص طلبات الذكاء الاصطناعي | BrightAI Kernel",
+      "description": "اختبر كيف يفحص BrightAI Kernel طلبات الذكاء الاصطناعي، يصنف المخاطر، ويحمي البيانات الحساسة قبل إرسالها للنماذج.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -98,7 +146,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "BrightAI Kernel — تجربة المحادثة",
+          "name": "فاحص طلبات الذكاء الاصطناعي | BrightAI Kernel",
           "item": "https://brightai.site/kernel/chat/"
         }
       ]
@@ -106,266 +154,285 @@
   ]
 }
   </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
-<body class="h-screen flex flex-col font-sans text-white overflow-hidden bright-page--kernel" data-bright-page-type="kernel">
-<h1 class="sr-only bright-a11y-h1">BrightAI Kernel — تجربة المحادثة</h1>
-
-  <a href="#chat-main" class="skip-link">تخطي إلى المحادثة</a>
-
-  <!-- Header -->
+<body>
+  
   <div id="brightai-unified-header"></div>
+  <a href="#chat-main" class="skip-link">تخطي إلى المحادثة</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
+  <div class="sr-only" id="live-region" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Main layout -->
-  <main id="chat-main" role="main" tabindex="-1" class="flex flex-1 overflow-hidden relative focus:outline-none">
+  <div class="chat-layout">
 
-    <!-- Chat column -->
-    <div class="flex-1 flex flex-col min-w-0">
-
-      <!-- Chat area -->
-      <div id="chat-area" class="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-        <!-- Welcome message -->
-        <div class="max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl rounded-br-sm p-4 text-white">
-          <div class="whitespace-pre-wrap">مرحباً! أنا نواة BrightAI. يمكنني تحليل طلباتك والتحقق من توافقها مع سياسات الامتثال المحددة.
-
-جرّب إرسال رسالة لبدء التحليل.</div>
+    <!-- Main Chat -->
+    <div class="chat-main" id="chat-main">
+      <h1 class="sr-only">فاحص طلبات الذكاء الاصطناعي - BrightAI Kernel</h1>
+      <div id="chat-area" class="chat-area" role="log" aria-label="سجل المحادثة" aria-live="polite">
+        <div class="msg msg-ai">
+          <div><strong>مرحباً بك في فاحص طلبات BrightAI</strong></div>
+          <div style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.8rem; line-height: 1.6;">كل طلب يمر عبر أربع مراحل: جدار الأمان → تقييم المخاطر → فحص الامتثال → الموافقة البشرية عند الحاجة ثم التسجيل في سجل التدقيق الدائم.</div>
+          <div class="msg-meta">
+            <details><summary>تفاصيل النظام</summary>
+            <pre>{ "status": "ready", "version": "kernel-v2", "mode": "demo", "inspectionMode": "enabled" }</pre></details>
+          </div>
         </div>
       </div>
 
-      <!-- Input area -->
-      <div class="shrink-0 border-t border-white/10 bg-ink-900/60 backdrop-blur-xl p-4">
-        <!-- Pack pills -->
-        <div class="flex flex-wrap gap-2 mb-3" role="group" aria-label="اختر حزمة الامتثال">
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-brand-500 text-white" data-pack="general" aria-pressed="true" onclick="setPack('general')">عام</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="pdpl" aria-pressed="false" onclick="setPack('pdpl')">PDPL</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="nca_ecc" aria-pressed="false" onclick="setPack('nca_ecc')">NCA ECC</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="sfda" aria-pressed="false" onclick="setPack('sfda')">SFDA</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="procurement" aria-pressed="false" onclick="setPack('procurement')">المشتريات</button>
-          <button class="pack-pill px-3 py-1 rounded-full text-xs font-medium transition-colors bg-ink-800 text-gray-400 border border-white/10" data-pack="healthcare" aria-pressed="false" onclick="setPack('healthcare')">الرعاية الصحية</button>
+      <!-- Input -->
+      <div class="chat-input-area">
+        <div class="session-row">
+          <span>الحزمة: <strong id="current-pack-lbl" style="color:var(--brand)">عام</strong></span>
+          <span>الرسائل: <span id="msg-cnt">0</span> &nbsp;|&nbsp; محظورة: <span id="blk-cnt" style="color:#f87171">0</span> &nbsp;|&nbsp; معلقة: <span id="pnd-cnt" style="color:#fbbf24">0</span></span>
         </div>
-        <!-- Input row -->
-        <div class="flex gap-2">
-          <input id="message-input" type="text" placeholder="اكتب رسالتك هنا..." aria-label="رسالتك للنواة" class="flex-1 bg-ink-800 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30 transition-colors text-sm">
-          <button onclick="sendMessage()" class="px-5 py-3 rounded-xl bg-gradient-to-l from-brand-500 to-purple-500 text-white font-medium text-sm hover:opacity-90 transition-opacity shrink-0" aria-label="إرسال الرسالة">
-            <i class="fas fa-paper-plane ml-1" aria-hidden="true"></i>
-            إرسال
+        <div class="pack-pills" role="group" aria-label="حزمة الامتثال">
+          <button class="pill active" data-pack="general" onclick="setPack('general')">عام</button>
+          <button class="pill" data-pack="pdpl" onclick="setPack('pdpl')">PDPL</button>
+          <button class="pill" data-pack="nca_ecc" onclick="setPack('nca_ecc')">NCA ECC</button>
+          <button class="pill" data-pack="sfda" onclick="setPack('sfda')">SFDA</button>
+          <button class="pill" data-pack="procurement" onclick="setPack('procurement')">المشتريات</button>
+          <button class="pill" data-pack="healthcare" onclick="setPack('healthcare')">الرعاية الصحية</button>
+        </div>
+
+        <div style="margin-bottom: 0.75rem; padding: 0.75rem; background: rgba(0,212,255,0.05); border-radius: 0.5rem; border: 1px solid rgba(0,212,255,0.15);">
+          <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem; font-weight: 600;">أمثلة جاهزة للاختبار:</div>
+          <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+            <button class="btn btn-ghost btn-sm" onclick="loadExample('طلب يحتوي رقم هوية وطني 1234567890')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">➜ رقم هوية وطني</button>
+            <button class="btn btn-ghost btn-sm" onclick="loadExample('بيانات مريض: الاسم أحمد محمد، التشخيص سكري، الهاتف 05XXXXXXXX')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">➜ بيانات مريض</button>
+            <button class="btn btn-ghost btn-sm" onclick="loadExample('تعديل الراتب الشهري من 10000 ريال إلى 15000')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">➜ تعديل راتب</button>
+            <button class="btn btn-ghost btn-sm" onclick="loadExample('طلب CAPA لخطأ في العبوة في مصنع الأدوية XYZ')" style="font-size: 0.75rem; padding: 0.25rem 0.5rem;">➜ CAPA صيدلاني</button>
+          </div>
+        </div>
+
+        <div class="input-row">
+          <input id="msg-input" class="form-input" type="text" placeholder="اكتب رسالتك أو اختر مثالاً أعلاه..." aria-label="رسالتك" autocomplete="off">
+          <button class="btn btn-primary" onclick="sendMsg()" aria-label="إرسال">
+            <i class="fas fa-paper-plane" aria-hidden="true"></i> فحص
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Sidebar overlay (mobile) -->
-    <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-20 hidden lg:hidden" onclick="closeSidebar()"></div>
-
     <!-- Sidebar -->
-    <aside id="sidebar" class="absolute lg:relative inset-y-0 right-0 w-72 bg-ink-900/80 backdrop-blur-xl border-l border-white/10 z-20 flex flex-col p-5 gap-5 overflow-y-auto transition-transform duration-300 sidebar-closed lg:sidebar-open">
-      <div class="flex items-center justify-between lg:hidden">
-        <h2 class="text-sm font-bold">الإعدادات</h2>
-        <button onclick="closeSidebar()" class="w-8 h-8 rounded-lg bg-ink-800 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-colors" aria-label="إغلاق إعدادات المحادثة">
-          <i class="fas fa-times text-xs"></i>
-        </button>
-      </div>
+    <aside class="chat-sidebar" aria-label="إعدادات المحادثة">
 
-      <!-- Kernel status -->
-      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
-        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">حالة النواة</h3>
-        <div class="flex items-center gap-2">
-          <span id="kernel-status-dot" class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-          <span id="kernel-status-text" class="text-sm text-green-400">متصل</span>
+      <div class="sidebar-section">
+        <h3>حالة النواة</h3>
+        <div style="display:flex;align-items:center;gap:0.5rem;">
+          <span class="pulse-dot" aria-hidden="true"></span>
+          <span style="color:#4ade80;font-size:0.85rem;">متصلة</span>
         </div>
       </div>
 
-      <!-- Compliance pack -->
-      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
-        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">حزمة الامتثال</h3>
-        <select id="sidebar-pack-select" aria-label="اختر حزمة الامتثال" onchange="setPack(this.value)" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50">
+      <div class="sidebar-section">
+        <h3>حزمة الامتثال</h3>
+        <select id="sb-pack" class="form-select" aria-label="حزمة الامتثال" onchange="setPack(this.value)">
           <option value="general">عام — General</option>
           <option value="pdpl">PDPL — حماية البيانات</option>
           <option value="nca_ecc">NCA ECC — الأمن السيبراني</option>
           <option value="sfda">SFDA — الغذاء والدواء</option>
-          <option value="procurement">المشتريات — Procurement</option>
-          <option value="healthcare">الرعاية الصحية — Healthcare</option>
+          <option value="procurement">المشتريات</option>
+          <option value="healthcare">الرعاية الصحية</option>
         </select>
       </div>
 
-      <!-- User ID -->
-      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
-        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">معرّف المستخدم</h3>
-        <input id="user-id-input" aria-label="معرّف المستخدم" type="text" value="demo-user" class="w-full bg-ink-800 border border-white/10 rounded-xl px-3 py-2.5 text-white text-sm focus:outline-none focus:border-brand-500/50" oninput="userId = this.value">
+      <div class="sidebar-section">
+        <h3>الدور الوظيفي</h3>
+        <select id="sb-role" class="form-select" aria-label="الدور الوظيفي">
+          <option value="employee">موظف</option>
+          <option value="manager">مدير</option>
+          <option value="compliance_officer">مسؤول الامتثال</option>
+          <option value="security_officer">مسؤول الأمن</option>
+          <option value="doctor">طبيب</option>
+          <option value="qam">QAM</option>
+          <option value="qcm">QCM</option>
+          <option value="finance_officer">مسؤول المالية</option>
+          <option value="procurement_officer">مسؤول المشتريات</option>
+          <option value="auditor">مدقق</option>
+          <option value="admin">مسؤول النظام</option>
+        </select>
       </div>
 
-      <!-- Session info -->
-      <div class="bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4">
-        <h3 class="text-xs font-bold text-gray-400 mb-3 uppercase tracking-wider">معلومات الجلسة</h3>
-        <div class="space-y-2 text-xs text-gray-400">
-          <div class="flex justify-between"><span>الرسائل</span><span id="msg-count" class="text-white">0</span></div>
-          <div class="flex justify-between"><span>المحظورة</span><span id="blocked-count" class="text-red-400">0</span></div>
-          <div class="flex justify-between"><span>بانتظار الموافقة</span><span id="pending-count" class="text-yellow-400">0</span></div>
-          <div class="flex justify-between"><span>الحزمة الحالية</span><span id="current-pack-label" class="text-brand-400">عام</span></div>
-        </div>
-    </aside>
-  </main>
+      <div class="sidebar-section">
+        <h3>معرّف المستخدم</h3>
+        <input id="sb-uid" class="form-input" type="text" value="demo-user" aria-label="معرّف المستخدم">
+      </div>
 
-  <div id="chat-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+      <div class="sidebar-section">
+        <h3>إحصائيات الجلسة</h3>
+        <div style="display:flex;flex-direction:column;gap:0.4rem;font-size:0.8rem;color:var(--text-muted)">
+          <div style="display:flex;justify-content:space-between"><span>الرسائل</span><span id="sb-msg-cnt" style="color:var(--text)">0</span></div>
+          <div style="display:flex;justify-content:space-between"><span>المحظورة</span><span id="sb-blk-cnt" style="color:#f87171">0</span></div>
+          <div style="display:flex;justify-content:space-between"><span>المعلقة</span><span id="sb-pnd-cnt" style="color:#fbbf24">0</span></div>
+          <div style="display:flex;justify-content:space-between"><span>الحزمة</span><span id="sb-pack-lbl" style="color:var(--brand)">عام</span></div>
+        </div>
+      </div>
+
+      <div class="disclaimer" style="font-size:0.72rem;">
+        <i class="fas fa-triangle-exclamation" aria-hidden="true"></i>
+        <span>وضع تجريبي — لا ترسل بيانات حساسة حقيقية</span>
+      </div>
+
+    </aside>
+  </div>
 
   <script>
-    // State
-    const chatArea = document.getElementById('chat-area');
-    const messageInput = document.getElementById('message-input');
-    let currentPack = 'general';
-    let userId = 'demo-user';
-    let msgCount = 0;
-    let blockedCount = 0;
-    let pendingCount = 0;
+    const packLabels = { general:'عام', pdpl:'PDPL', nca_ecc:'NCA ECC', sfda:'SFDA', procurement:'المشتريات', healthcare:'الرعاية الصحية' };
+    let currentPack = 'general', msgCount = 0, blockedCount = 0, pendingCount = 0;
+    const area = document.getElementById('chat-area');
+    const input = document.getElementById('msg-input');
 
-    const packLabels = {
-      general: 'عام',
-      pdpl: 'PDPL',
-      nca_ecc: 'NCA ECC',
-      sfda: 'SFDA',
-      procurement: 'المشتريات',
-      healthcare: 'الرعاية الصحية'
-    };
-
-    // Sidebar toggle
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebar-overlay');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-
-    sidebarToggle.addEventListener('click', () => {
-      sidebar.classList.remove('sidebar-closed');
-      sidebar.classList.add('sidebar-open');
-      sidebarOverlay.classList.remove('hidden');
-    });
-
-    function closeSidebar() {
-      sidebar.classList.remove('sidebar-open');
-      sidebar.classList.add('sidebar-closed');
-      sidebarOverlay.classList.add('hidden');
+    function loadExample(text) {
+      input.value = text;
+      input.focus();
+      announce('تم تحميل المثال: ' + text);
     }
 
-    function announceToScreenReader(msg) {
-      const region = document.getElementById('chat-live-region');
-      if (region) {
-        region.textContent = '';
-        setTimeout(() => { region.textContent = msg; }, 50);
-      }
+    function setPack(p) {
+      currentPack = p;
+      document.querySelectorAll('.pill').forEach(b => {
+        b.classList.toggle('active', b.dataset.pack === p);
+      });
+      document.getElementById('sb-pack').value = p;
+      const lbl = packLabels[p] || p;
+      document.getElementById('current-pack-lbl').textContent = lbl;
+      document.getElementById('sb-pack-lbl').textContent = lbl;
+      announce('تم تغيير الحزمة إلى ' + lbl);
     }
 
-    // Send message
-    async function sendMessage() {
-      const msg = messageInput.value.trim();
-      if (!msg) return;
+    function updateStats() {
+      document.getElementById('msg-cnt').textContent = msgCount;
+      document.getElementById('blk-cnt').textContent = blockedCount;
+      document.getElementById('pnd-cnt').textContent = pendingCount;
+      document.getElementById('sb-msg-cnt').textContent = msgCount;
+      document.getElementById('sb-blk-cnt').textContent = blockedCount;
+      document.getElementById('sb-pnd-cnt').textContent = pendingCount;
+    }
 
-      addMessage(msg, 'user');
-      messageInput.value = '';
-      msgCount++;
-      updateStats();
-      announceToScreenReader("تم إرسال رسالتك، جاري التحليل من قبل النواة...");
+    function announce(txt) {
+      const r = document.getElementById('live-region');
+      r.textContent = ''; setTimeout(() => r.textContent = txt, 50);
+    }
 
-      const loadingEl = addMessage('جاري التحليل...', 'loading');
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    function addMsg(html, cls) {
+      const d = document.createElement('div');
+      d.className = 'msg ' + cls;
+      d.innerHTML = html;
+      area.appendChild(d);
+      area.scrollTop = area.scrollHeight;
+      return d;
+    }
+
+    async function sendMsg() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      msgCount++; updateStats();
+      addMsg(esc(text), 'msg-user');
+      announce('تم إرسال الرسالة، جاري التحليل...');
+      const loader = addMsg('<span class="spinner" aria-label="جاري التحليل"></span> جاري التحليل...', 'msg-loading');
+
+      const uid   = document.getElementById('sb-uid').value || 'demo-user';
+      const role  = document.getElementById('sb-role').value || 'employee';
 
       try {
         const res = await fetch('/api/kernel/chat', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Kernel-User-Id': userId },
-          body: JSON.stringify({ message: msg, compliancePack: currentPack })
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Kernel-User-Id': uid,
+            'X-Kernel-User-Name': uid
+          },
+          body: JSON.stringify({
+            message: text,
+            compliancePack: currentPack,
+            metadata: { role, demoMode: true, source: 'kernel-ui' }
+          })
         });
         const data = await res.json();
-
-        loadingEl.remove();
+        loader.remove();
 
         if (data.status === 'blocked') {
           blockedCount++;
-          updateStats();
-          addMessage('\u{1F6AB} ' + data.reason, 'blocked', data);
-          announceToScreenReader("تنبيه: تم حظر الرسالة من قبل النواة. السبب: " + data.reason);
+          addMsg(
+            '<div><strong>&#128683; محظور</strong> — ' + esc(data.reason || 'تم حظر هذا الطلب') + '</div>' +
+            metaHtml(data),
+            'msg-blocked'
+          );
+          announce('تم حظر الرسالة: ' + (data.reason || ''));
         } else if (data.status === 'pending_approval') {
           pendingCount++;
-          updateStats();
-          addMessage('⏳ بانتظار الموافقة (مخاطر: ' + data.riskScore + ')', 'pending', data);
-          announceToScreenReader("تنبيه: الرسالة قيد المراجعة البشرية لوجود مخاطر بدرجة: " + data.riskScore);
+          addMsg(
+            '<div><strong>&#9203; بانتظار الموافقة</strong></div>' +
+            '<div style="font-size:0.8rem;margin-top:0.4rem;color:var(--text-muted)">رقم التفاعل: ' + esc(data.interactionId || '') + ' &nbsp;|&nbsp; درجة المخاطر: ' + (data.riskScore ?? '—') + '</div>' +
+            metaHtml(data),
+            'msg-pending'
+          );
+          announce('الرسالة قيد المراجعة البشرية، درجة المخاطر: ' + data.riskScore);
         } else {
-          addMessage(data.response, 'ai', data);
-          announceToScreenReader("استجابة جديدة من النواة: " + data.response);
+          addMsg(
+            '<div class="whitespace-pre-wrap">' + esc(data.response || '') + '</div>' +
+            metaHtml(data),
+            'msg-ai'
+          );
+          announce('استجابة جديدة من النواة');
         }
-      } catch(e) {
-        loadingEl.remove();
-        addMessage('خطأ في الاتصال بالنواة', 'error');
-        announceToScreenReader("خطأ: تعذر الاتصال بنواة BrightAI حالياً.");
+        updateStats();
+      } catch (e) {
+        loader.remove();
+        addMsg('&#10060; خطأ في الاتصال بالنواة', 'msg-blocked');
+        announce('خطأ في الاتصال');
       }
     }
 
-    function addMessage(text, type, kernelData) {
-      const div = document.createElement('div');
-
-      if (type === 'user') {
-        div.className = 'max-w-[75%] mr-auto bg-brand-500/20 border border-brand-500/30 rounded-2xl rounded-bl-sm p-4 text-white';
-        div.textContent = text;
-      } else if (type === 'ai') {
-        div.className = 'max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl rounded-br-sm p-4 text-white';
-        div.innerHTML = '<div class="whitespace-pre-wrap">' + escapeHtml(text) + '</div>';
-        if (kernelData?.kernel) {
-          div.innerHTML += '<details class="mt-3 text-xs text-gray-400 cursor-pointer"><summary class="text-brand-300">تفاصيل النواة</summary><pre class="mt-2 p-2 bg-ink-900 rounded-lg overflow-auto text-left" dir="ltr">' + escapeHtml(JSON.stringify(kernelData.kernel, null, 2)) + '</pre></details>';
-        }
-      } else if (type === 'blocked') {
-        div.className = 'max-w-[80%] ml-auto bg-red-500/20 border border-red-500/30 rounded-2xl p-4 text-red-200';
-        div.innerHTML = '<div>' + escapeHtml(text) + '</div>';
-        if (kernelData?.kernel) {
-          div.innerHTML += '<details class="mt-3 text-xs text-gray-400 cursor-pointer"><summary class="text-red-300">تفاصيل الحظر</summary><pre class="mt-2 p-2 bg-ink-900 rounded-lg overflow-auto text-left" dir="ltr">' + escapeHtml(JSON.stringify(kernelData.kernel, null, 2)) + '</pre></details>';
-        }
-      } else if (type === 'pending') {
-        div.className = 'max-w-[80%] ml-auto bg-yellow-500/20 border border-yellow-500/30 rounded-2xl p-4 text-yellow-200';
-        div.innerHTML = '<div>' + escapeHtml(text) + '</div><div class="text-xs mt-2">رقم التفاعل: ' + (kernelData?.interactionId || '') + '</div>';
-      } else if (type === 'loading') {
-        div.className = 'max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl p-4 text-gray-400';
-        div.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ' + escapeHtml(text);
-      } else {
-        div.className = 'max-w-[80%] ml-auto bg-ink-800/80 border border-white/10 rounded-2xl p-4 text-red-300';
-        div.textContent = text;
+    function metaHtml(d) {
+      if (!d.kernel && !d.riskScore && !d.status) return '';
+      const k = d.kernel || { riskScore: d.riskScore, riskLevel: d.riskLevel, status: d.status };
+      let html = '<div class="msg-meta">';
+      
+      // Display structured details
+      if (d.riskScore !== undefined) {
+        const level = d.riskLevel || (d.riskScore < 30 ? 'منخفضة' : d.riskScore < 70 ? 'متوسطة' : 'عالية');
+        html += '<div style="margin-bottom: 0.5rem;"><strong>درجة المخاطر:</strong> ' + d.riskScore + '/100 (' + level + ')</div>';
       }
-
-      chatArea.appendChild(div);
-      chatArea.scrollTop = chatArea.scrollHeight;
-      return div;
+      
+      if (d.reason) {
+        html += '<div style="margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.8rem;"><strong>السبب:</strong> ' + esc(d.reason) + '</div>';
+      }
+      
+      if (d.sensitiveDataDetected) {
+        html += '<div style="margin-bottom: 0.5rem; color: #fb923c; font-size: 0.8rem;"><strong>⚠ بيانات حساسة مكتشفة:</strong> ' + esc(d.sensitiveDataDetected.join(', ')) + '</div>';
+      }
+      
+      if (d.policiesTriggered && d.policiesTriggered.length > 0) {
+        html += '<div style="margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.8rem;"><strong>السياسات المفعلة:</strong> ' + esc(d.policiesTriggered.join(', ')) + '</div>';
+      }
+      
+      if (d.requiresApproval) {
+        html += '<div style="margin-bottom: 0.5rem; color: #fbbf24; font-size: 0.8rem;"><strong>✓ يحتاج موافقة بشرية</strong></div>';
+      }
+      
+      if (d.auditTrail) {
+        html += '<div style="margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.8rem;"><strong>بصمة التدقيق:</strong> <code style="direction: ltr;">sha256:' + esc(d.auditTrail.substring(0, 16)) + '...</code></div>';
+      }
+      
+      html += '<details style="margin-top: 0.5rem;"><summary style="font-size: 0.75rem; color: var(--brand); cursor: pointer;">عرض التفاصيل التقنية</summary><pre dir="ltr" style="font-size: 0.7rem;">' + esc(JSON.stringify(k, null, 2)) + '</pre></details>';
+      html += '</div>';
+      return html;
     }
 
-    function escapeHtml(str) {
-      const d = document.createElement('div');
-      d.textContent = str;
-      return d.innerHTML;
-    }
-
-    function setPack(pack) {
-      currentPack = pack;
-      document.querySelectorAll('.pack-pill').forEach(p => {
-        const isActive = p.dataset.pack === pack;
-        p.classList.toggle('bg-brand-500', isActive);
-        p.classList.toggle('text-white', isActive);
-        p.classList.toggle('bg-ink-800', !isActive);
-        p.classList.toggle('text-gray-400', !isActive);
-        p.classList.toggle('border', !isActive);
-        p.classList.toggle('border-white/10', !isActive);
-        p.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      });
-      document.getElementById('sidebar-pack-select').value = pack;
-      document.getElementById('current-pack-label').textContent = packLabels[pack] || pack;
-      announceToScreenReader("تم تغيير حزمة الامتثال النشطة إلى " + (packLabels[pack] || pack));
-    }
-
-    function updateStats() {
-      document.getElementById('msg-count').textContent = msgCount;
-      document.getElementById('blocked-count').textContent = blockedCount;
-      document.getElementById('pending-count').textContent = pendingCount;
-    }
-
-    // Send on Enter
-    messageInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-    });
+    input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); } });
   </script>
   <script defer src="/frontend/js/sitewide-modernization.js"></script>
-
-  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
-  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
 </body>
 </html>

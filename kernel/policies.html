@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>محرك سياسات الذكاء الاصطناعي | BrightAI Kernel</title>
+  <meta name="description" content="سياسات تشغيلية لحماية البيانات الحساسة وتصنيف المخاطر وطلب الموافقات البشرية عند استخدام الذكاء الاصطناعي.">
+  <link rel="canonical" href="https://brightai.site/kernel/policies/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/policies/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/policies/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+  <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
+  <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="kernel.css">
+  <style>
+    .policies-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    @media (max-width:700px) { .policies-grid { grid-template-columns: 1fr; } }
+
+    .policy-card { padding: 1.25rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .policy-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; }
+    .policy-icon { width: 40px; height: 40px; border-radius: 0.625rem; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .policy-name { font-size: 0.9rem; font-weight: 700; flex: 1; line-height: 1.4; }
+    .toggle-wrap { display: flex; align-items: center; gap: 0.4rem; }
+    .toggle { width: 40px; height: 22px; background: var(--brand); border-radius: 99px; position: relative; cursor: not-allowed; flex-shrink: 0; }
+    .toggle::after { content:''; position: absolute; top: 3px; right: 3px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: right 0.2s; }
+    .toggle.off { background: var(--ink-700); }
+    .toggle.off::after { right: auto; left: 3px; }
+    .toggle-label { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; }
+
+    .policy-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+    .policy-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .policy-trigger { font-size: 0.72rem; background: var(--ink-800); color: var(--text-muted); padding: 0.2rem 0.5rem; border-radius: 0.4rem; border: 1px solid var(--border); }
+    .policy-action { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 99px; }
+    .action-block   { background: rgba(239,68,68,0.12); color: #f87171; }
+    .action-approve { background: rgba(251,191,36,0.12); color: #fbbf24; }
+    .action-mask    { background: rgba(0,212,255,0.12); color: var(--brand); }
+    .action-log     { background: rgba(167,139,250,0.12); color: #a78bfa; }
+
+    .demo-note {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(167,139,250,0.06);
+      border: 1px dashed rgba(167,139,250,0.3);
+      border-radius: 0.75rem;
+      font-size: 0.8rem;
+      color: #a78bfa;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/kernel/policies/#webpage",
+      "url": "https://brightai.site/kernel/policies/",
+      "name": "محرك سياسات الذكاء الاصطناعي | BrightAI Kernel",
+      "description": "سياسات تشغيلية لحماية البيانات الحساسة وتصنيف المخاطر وطلب الموافقات البشرية عند استخدام الذكاء الاصطناعي.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/kernel/policies/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "kernel",
+          "item": "https://brightai.site/kernel/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "محرك سياسات الذكاء الاصطناعي | BrightAI Kernel",
+          "item": "https://brightai.site/kernel/policies/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+</head>
+<body>
+  
+  <div id="brightai-unified-header"></div>
+  <a href="#policies-main" class="skip-link">تخطي إلى السياسات</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
+
+  <main id="policies-main" class="page-wrap">
+
+    <div style="margin-bottom:1.5rem;" class="fade-up">
+      <h1 class="section-title">محرك السياسات — قواعد الحماية الذكية</h1>
+      <p class="section-sub">كل سياسة هنا تُطبّق قواعد تشغيل ذكية على كل طلب AI بلا استثناء. كل سياسة تحدد: متى تعمل، ماذا تفعل، هل تحظر أم تخفي أم تصعّد للموافقة البشرية؟</p>
+    </div>
+
+    <div class="glass fade-up d1" style="padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-left: 3px solid #a78bfa; background: rgba(167,139,250,0.08);">
+      <div style="font-size: 0.75rem; color: #a78bfa; font-weight: 600; margin-bottom: 0.35rem;">عرض توضيحي</div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">السياسات هنا تعمل مباشرة في النواة. هذه الصفحة للعرض والفهم فقط، وتُعدّل السياسات في لوحة الإعدادات الحقيقية (غير متوفرة في الديمو).</p>
+    </div>
+
+    <div class="policies-grid">
+
+      <div class="glass policy-card fade-up d1">
+        <div class="policy-header">
+          <div class="policy-icon bg-red"><i class="fas fa-id-card c-red" aria-hidden="true"></i></div>
+          <div class="policy-name">حظر مشاركة رقم الهوية الوطنية</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" aria-label="تفعيل السياسة" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">يمنع إرسال أي طلب يحتوي على رقم هوية وطنية سعودية (10 أرقام) إلى نماذج الذكاء الاصطناعي ويسجل المحاولة فوراً في سجل التدقيق.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: جميع الحزم</span>
+          <span class="policy-action action-block"><i class="fas fa-ban fa-xs" aria-hidden="true"></i> حظر فوري</span>
+          <span class="policy-action action-log"><i class="fas fa-book fa-xs" aria-hidden="true"></i> تسجيل</span>
+        </div>
+      </div>
+
+      <div class="glass policy-card fade-up d2">
+        <div class="policy-header">
+          <div class="policy-icon bg-orange"><i class="fas fa-user-nurse c-orange" aria-hidden="true"></i></div>
+          <div class="policy-name">إخفاء بيانات المرضى</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">يكتشف تلقائياً بيانات المرضى (الاسم، رقم الملف، التشخيص، الأدوية) ويخفيها قبل إرسال الطلب للنموذج — مع الاحتفاظ بنسخة مشفرة في السجل.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: healthcare, general</span>
+          <span class="policy-action action-mask"><i class="fas fa-mask fa-xs" aria-hidden="true"></i> إخفاء تلقائي</span>
+          <span class="policy-action action-log"><i class="fas fa-book fa-xs" aria-hidden="true"></i> تسجيل</span>
+        </div>
+      </div>
+
+      <div class="glass policy-card fade-up d3">
+        <div class="policy-header">
+          <div class="policy-icon bg-yellow"><i class="fas fa-coins c-yellow" aria-hidden="true"></i></div>
+          <div class="policy-name">إجراءات ERP المالية تحتاج موافقة</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">أي طلب يتضمن تعديلاً في بيانات ERP المالية (مدفوعات، فواتير، ميزانيات) يُوضع تلقائياً في قائمة انتظار الموافقة البشرية من مسؤول المالية.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: general, procurement</span>
+          <span class="policy-action action-approve"><i class="fas fa-user-check fa-xs" aria-hidden="true"></i> يحتاج موافقة مسؤول مالية</span>
+        </div>
+      </div>
+
+      <div class="glass policy-card fade-up d4">
+        <div class="policy-header">
+          <div class="policy-icon bg-orange"><i class="fas fa-vial c-orange" aria-hidden="true"></i></div>
+          <div class="policy-name">CAPA تحتاج موافقة QAM/QCM</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">إجراءات الإجراءات التصحيحية والوقائية (CAPA) التي تولّدها AI تحتاج مراجعة وموافقة صريحة من مدير الجودة (QAM) أو منسق الجودة (QCM) قبل التنفيذ.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: sfda, healthcare</span>
+          <span class="policy-action action-approve"><i class="fas fa-user-check fa-xs" aria-hidden="true"></i> يحتاج موافقة QAM/QCM</span>
+        </div>
+      </div>
+
+      <div class="glass policy-card fade-up d5">
+        <div class="policy-header">
+          <div class="policy-icon bg-green"><i class="fas fa-stethoscope c-green" aria-hidden="true"></i></div>
+          <div class="policy-name">التوصيات الطبية تحتاج موافقة طبيب</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">أي توصية طبية أو وصفة دوائية تصدر من AI تُعلَّق تلقائياً وتُرسل إلى الطبيب المسؤول للمراجعة والموافقة قبل الإفصاح عنها للمريض.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: healthcare</span>
+          <span class="policy-action action-approve"><i class="fas fa-user-md fa-xs" aria-hidden="true"></i> يحتاج موافقة طبيب</span>
+        </div>
+      </div>
+
+      <div class="glass policy-card fade-up d6">
+        <div class="policy-header">
+          <div class="policy-icon bg-brand"><i class="fas fa-server c-brand" aria-hidden="true"></i></div>
+          <div class="policy-name">نماذج AI الخارجية تستلزم إخفاء البيانات</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">عند إرسال طلب إلى نماذج AI خارجية (GPT, Gemini, Claude) يتم إخفاء جميع البيانات الحساسة تلقائياً قبل الإرسال مع توثيق ما تم إخفاؤه.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: جميع الحزم</span>
+          <span class="policy-action action-mask"><i class="fas fa-mask fa-xs" aria-hidden="true"></i> إخفاء إلزامي</span>
+          <span class="policy-action action-log"><i class="fas fa-book fa-xs" aria-hidden="true"></i> تسجيل</span>
+        </div>
+      </div>
+
+      <div class="glass policy-card fade-up d1">
+        <div class="policy-header">
+          <div class="policy-icon bg-purple"><i class="fas fa-file-contract c-purple" aria-hidden="true"></i></div>
+          <div class="policy-name">المناقصات عالية المخاطر تحتاج مراجعة مدير</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">أي تحليل AI لمناقصة أو عقد تزيد قيمته عن الحد المحدد يُحال تلقائياً لمراجعة مدير المشتريات أو الإدارة العليا قبل الإفصاح عن التوصية.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: procurement</span>
+          <span class="policy-action action-approve"><i class="fas fa-user-tie fa-xs" aria-hidden="true"></i> يحتاج موافقة مدير</span>
+        </div>
+      </div>
+
+      <div class="glass policy-card fade-up d2">
+        <div class="policy-header">
+          <div class="policy-icon bg-red"><i class="fas fa-ban c-red" aria-hidden="true"></i></div>
+          <div class="policy-name">حظر استخراج كلمات المرور والمفاتيح السرية</div>
+          <div class="toggle-wrap">
+            <div class="toggle" role="switch" aria-checked="true" title="مفعّل"></div>
+            <span class="toggle-label">مفعّل</span>
+          </div>
+        </div>
+        <div class="policy-desc">يحظر فوراً أي طلب يحاول استخراج كلمات المرور أو مفاتيح API أو بيانات الاعتماد من سياق المحادثة أو الوثائق المرفوعة.</div>
+        <div class="policy-meta">
+          <span class="policy-trigger">يُطبَّق على: جميع الحزم</span>
+          <span class="policy-action action-block"><i class="fas fa-ban fa-xs" aria-hidden="true"></i> حظر فوري</span>
+          <span class="policy-action action-log"><i class="fas fa-book fa-xs" aria-hidden="true"></i> تنبيه أمني</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="kernel-footer">&copy; 2026 BrightAI Kernel</footer>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
+</body>
+</html>

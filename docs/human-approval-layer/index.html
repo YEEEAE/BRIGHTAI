@@ -179,6 +179,90 @@
   ]
 }
   </script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/human-approval-layer/#webpage",
+      "url": "https://brightai.site/docs/human-approval-layer/",
+      "name": "وثائق Human Approval Layer | BrightAI",
+      "description": "وثيقة طبقة الموافقة البشرية في BrightAI للقرارات الحساسة داخل أنظمة الذكاء الاصطناعي.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/human-approval-layer/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "وثائق Human Approval Layer | BrightAI",
+          "item": "https://brightai.site/docs/human-approval-layer/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/human-approval-layer/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "متى يتم التصعيد؟ عند وجود بيانات حساسة. عند ارتفاع Risk Score. عند ارتباط القرار بتأثير مالي أو وظيفي أو صحي. عند مخالفة السياسة أو عدم وضوح الغرض. مكونات سير العمل تحديد عتبة المخاطر. تحديد أصحاب الموافقة حسب القسم. إرسال الطلب للمراجعة. توثيق القرار والوقت والسبب. إعادة الطلب لمسار التنفيذ أو الرفض. FAQ هل تعطل الموافقات سير العمل؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تصمم الموافقات للحالات الحساسة فقط، مع SLA وتصعيد واضح."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="bg-grid">
 

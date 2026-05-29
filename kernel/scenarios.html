@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>سيناريوهات استخدام BrightAI Kernel</title>
+  <meta name="description" content="سيناريوهات عملية توضح كيف تتحكم BrightAI Kernel في استخدام الذكاء الاصطناعي داخل قطاعات منظمة في السعودية.">
+  <link rel="canonical" href="https://brightai.site/kernel/scenarios/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/scenarios/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/scenarios/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+  <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
+  <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="kernel.css">
+  <style>
+    .scenarios-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+
+    .scenario-card { padding: 1.5rem; }
+    .sc-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.875rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .sc-icon { width: 56px; height: 56px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+    .sc-title { font-size: 1.05rem; font-weight: 800; line-height: 1.3; margin-bottom: 0.25rem; }
+    .sc-subtitle { font-size: 0.8rem; color: var(--text-muted); }
+    .sc-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+    .sc-steps { margin: 1rem 0; }
+    .step-list { list-style: none; padding: 0; counter-reset: step; }
+    .step-list li { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.5rem 0; font-size: 0.82rem; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.04); line-height: 1.5; }
+    .step-list li:last-child { border-bottom: none; }
+    .step-num { min-width: 22px; height: 22px; border-radius: 50%; background: var(--brand-dim); color: var(--brand); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; flex-shrink: 0; margin-top: 0.1rem; }
+
+    .sc-outcome { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; margin: 1rem 0; }
+    @media (max-width:600px) { .sc-outcome { grid-template-columns: 1fr 1fr; } }
+    .outcome-box { background: var(--ink-800); border-radius: 0.625rem; padding: 0.75rem; text-align: center; border: 1px solid var(--border); }
+    .outcome-box .ob-label { font-size: 0.68rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+    .outcome-box .ob-val { font-size: 0.875rem; font-weight: 700; }
+
+    .sc-footer { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .demo-state { font-size: 0.75rem; color: var(--text-muted); }
+
+    /* Demo runner */
+    .demo-log { margin-top: 0.875rem; background: var(--ink-900); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.875rem; display: none; font-size: 0.8rem; max-height: 220px; overflow-y: auto; }
+    .demo-log .log-line { display: flex; gap: 0.5rem; padding: 0.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .demo-log .log-line:last-child { border-bottom: none; }
+    .log-icon { flex-shrink: 0; margin-top: 0.05rem; }
+    .log-text { color: var(--text-muted); flex: 1; line-height: 1.5; }
+    .log-badge { flex-shrink: 0; }
+  </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/kernel/scenarios/#webpage",
+      "url": "https://brightai.site/kernel/scenarios/",
+      "name": "سيناريوهات استخدام BrightAI Kernel",
+      "description": "سيناريوهات عملية توضح كيف تتحكم BrightAI Kernel في استخدام الذكاء الاصطناعي داخل قطاعات منظمة في السعودية.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/kernel/scenarios/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "kernel",
+          "item": "https://brightai.site/kernel/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "سيناريوهات استخدام BrightAI Kernel",
+          "item": "https://brightai.site/kernel/scenarios/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+</head>
+<body>
+  
+  <div id="brightai-unified-header"></div>
+  <a href="#scenarios-main" class="skip-link">تخطي إلى السيناريوهات</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
+
+  <main id="scenarios-main" class="page-wrap">
+
+    <div style="margin-bottom:1.5rem;" class="fade-up">
+      <h1 class="section-title">سيناريوهات القطاعات — البرهان العملي</h1>
+      <p class="section-sub">مستشفيات، مصانع طبية، جهات حكومية، شركات مالية، إدارات مشتريات. كل قطاع له قصته. كل قصة توضح نفس الحقيقة: الموظف يطلب، النظام يحمي، الإنسان يقرر، كل شيء مسجّل.</p>
+    </div>
+
+    <div class="glass fade-up d1" style="padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-left: 3px solid var(--brand); background: rgba(0,212,255,0.06);">
+      <p style="font-size: 0.85rem; color: var(--text); margin: 0; line-height: 1.6;">كل سيناريو يمر بخمس مراحل: (1) الموظف يطلب (2) النظام يكتشف المخاطر (3) البيانات تُخفى أو يُطلب موافقة (4) الموافقة البشرية تحسم (5) كل شيء يُسجَّل في أثر دائمي.</p>
+    </div>
+
+    <div class="scenarios-grid" id="scenarios-container">
+      <!-- Rendered by JS -->
+    </div>
+
+  </main>
+
+  <footer class="kernel-footer">&copy; 2026 BrightAI Kernel</footer>
+
+  <script>
+    const SCENARIOS = [
+      {
+        id: 'hospital',
+        icon: 'fas fa-hospital-user',
+        iconBg: 'bg-green',
+        iconColor: 'c-green',
+        title: 'المستشفى — ملخص حالة مريض',
+        subtitle: 'قطاع الرعاية الصحية | حزمة: Healthcare',
+        tags: ['healthcare', 'مريض', 'طبيب'],
+        tagColors: ['badge-completed', 'badge-pending', 'badge-medium'],
+        steps: [
+          'الممرضة تطلب من AI تلخيص ملف مريض للتقرير',
+          'النواة تكتشف بيانات حساسة (الاسم، التشخيص، الدواء)',
+          'يتم إخفاء البيانات الشخصية تلقائياً قبل المعالجة',
+          'يُولَّد الملخص بالبيانات المخفية ويُوضع في قائمة انتظار الموافقة',
+          'الطبيب المسؤول يراجع الملخص ويوافق عليه',
+          'يُسجَّل القرار في سلسلة التدقيق مع بصمة رقمية',
+        ],
+        riskScore: 72,
+        riskLevel: 'مرتفع',
+        policyDecision: 'إخفاء + انتظار موافقة طبيب',
+        approvalRequired: 'طبيب مختص',
+        auditOutcome: 'مسجّل مع ملف دليل طبي',
+        logSteps: [
+          { icon: '🔍', text: 'استلام طلب: "لخّص ملف المريض أحمد محمد..."', badge: 'badge-medium', badgeTxt: 'معالجة' },
+          { icon: '⚠️', text: 'PII مكتشف: اسم_كامل، تشخيص، دواء — 3 حقول', badge: 'badge-high', badgeTxt: 'مخاطر 72' },
+          { icon: '🎭', text: 'إخفاء البيانات: [PATIENT_NAME], [DIAGNOSIS], [MEDICATION]', badge: 'badge-auto_approved', badgeTxt: 'إخفاء' },
+          { icon: '⏳', text: 'وضع في قائمة الموافقة — يحتاج: طبيب مختص', badge: 'badge-pending', badgeTxt: 'معلق' },
+          { icon: '✅', text: 'الطبيب أ. عبدالله راجع ووافق — التعليق: "صحيح طبياً"', badge: 'badge-approved', badgeTxt: 'موافق' },
+          { icon: '🔗', text: 'تسجيل في سلسلة التدقيق — hash: 0xa3f7...', badge: 'badge-completed', badgeTxt: 'مكتمل' },
+        ],
+      },
+      {
+        id: 'factory',
+        icon: 'fas fa-industry',
+        iconBg: 'bg-orange',
+        iconColor: 'c-orange',
+        title: 'المصنع الطبي — إجراء CAPA لدفعة مرفوضة',
+        subtitle: 'قطاع التصنيع الطبي | حزمة: SFDA / ISO 13485',
+        tags: ['sfda', 'CAPA', 'QAM/QCM'],
+        tagColors: ['badge-auto_approved', 'badge-high', 'badge-pending'],
+        steps: [
+          'موظف الجودة يطلب من AI اقتراح إجراء CAPA لدفعة رُفضت',
+          'النواة تُصنّف الطلب كعملية جودة حرجة وترفع درجة المخاطر',
+          'يُطبَّق اشتراط موافقة مدير الجودة QAM قبل الإفصاح',
+          'مدير الجودة QAM يراجع الاقتراح ويعتمده أو يرفضه',
+          'في حالة الاعتماد يصدر تقرير CAPA مع بصمة رقمية',
+          'يُسجَّل القرار في سلسلة التدقيق كدليل امتثال SFDA',
+        ],
+        riskScore: 81,
+        riskLevel: 'حرج',
+        policyDecision: 'تعليق + موافقة QAM إلزامية',
+        approvalRequired: 'مدير الجودة QAM',
+        auditOutcome: 'ملف دليل SFDA/ISO 13485',
+        logSteps: [
+          { icon: '🔍', text: 'طلب: "اقترح CAPA لدفعة B-2024-089 المرفوضة"', badge: 'badge-high', badgeTxt: 'معالجة' },
+          { icon: '🚨', text: 'تصنيف: عملية جودة SFDA حرجة — درجة مخاطر 81', badge: 'badge-critical', badgeTxt: 'حرج' },
+          { icon: '⏳', text: 'تعليق تلقائي — يحتاج: موافقة QAM قبل الإفصاح', badge: 'badge-pending', badgeTxt: 'معلق' },
+          { icon: '👔', text: 'م. الجودة محمد العتيبي راجع واعتمد مع ملاحظات', badge: 'badge-approved', badgeTxt: 'معتمد' },
+          { icon: '📄', text: 'إصدار تقرير CAPA رسمي مرتبط بسجل الدفعة', badge: 'badge-completed', badgeTxt: 'صادر' },
+          { icon: '🔗', text: 'تسجيل كدليل امتثال SFDA — hash: 0x9c2e...', badge: 'badge-completed', badgeTxt: 'مكتمل' },
+        ],
+      },
+      {
+        id: 'finance',
+        icon: 'fas fa-landmark',
+        iconBg: 'bg-yellow',
+        iconColor: 'c-yellow',
+        title: 'المالية — تعديل دفعة في نظام ERP',
+        subtitle: 'القطاع المالي | حزمة: General + PDPL',
+        tags: ['مالي', 'ERP', 'finance'],
+        tagColors: ['badge-high', 'badge-medium', 'badge-auto_approved'],
+        steps: [
+          'مسؤول مالي يطلب من AI تعديل فاتورة في ERP',
+          'النواة تُصنّف الطلب كإجراء مالي حساس',
+          'تُطبَّق سياسة: إجراءات ERP المالية تحتاج موافقة إنسانية',
+          'يُرسَل الطلب لمراجعة المدير المالي المسؤول',
+          'المدير المالي يراجع ويوافق مع التعليق',
+          'يُنفَّذ التعديل ويُسجَّل في سلسلة التدقيق',
+        ],
+        riskScore: 65,
+        riskLevel: 'مرتفع',
+        policyDecision: 'تعليق + موافقة مسؤول مالي',
+        approvalRequired: 'المدير المالي',
+        auditOutcome: 'سجل مالي موثّق',
+        logSteps: [
+          { icon: '💰', text: 'طلب: "عدّل فاتورة رقم INV-8821 من 15,000 إلى 17,500 ريال"', badge: 'badge-high', badgeTxt: 'معالجة' },
+          { icon: '⚠️', text: 'كشف: إجراء ERP مالي — مبلغ: 17,500 ريال — درجة مخاطر 65', badge: 'badge-high', badgeTxt: 'مخاطر' },
+          { icon: '⏳', text: 'تعليق — يحتاج: موافقة مدير مالي قبل التنفيذ', badge: 'badge-pending', badgeTxt: 'معلق' },
+          { icon: '✅', text: 'المدير المالي وافق — "مطابق للعقد المرجعي"', badge: 'badge-approved', badgeTxt: 'موافق' },
+          { icon: '🔄', text: 'تنفيذ التعديل في ERP بتوثيق كامل', badge: 'badge-completed', badgeTxt: 'منفّذ' },
+          { icon: '🔗', text: 'تسجيل نهائي في سلسلة التدقيق — hash: 0x5d8a...', badge: 'badge-completed', badgeTxt: 'مكتمل' },
+        ],
+      },
+      {
+        id: 'procurement',
+        icon: 'fas fa-handshake',
+        iconBg: 'bg-purple',
+        iconColor: 'c-purple',
+        title: 'المشتريات — تحليل مناقصة عالية القيمة',
+        subtitle: 'قطاع المشتريات | حزمة: Procurement',
+        tags: ['procurement', 'مناقصة', 'مدير'],
+        tagColors: ['badge-auto_approved', 'badge-high', 'badge-pending'],
+        steps: [
+          'مسؤول المشتريات يطلب تحليل مناقصة بقيمة 2.5 مليون ريال',
+          'النواة ترصد: مناقصة عالية القيمة تتجاوز الحد المحدد',
+          'يُطبَّق فلتر: معلومات أسعار الموردين تُخفى من التقرير العام',
+          'يُعلَّق التحليل لمراجعة مدير المشتريات',
+          'المدير يراجع التحليل ويعطي توصيته',
+          'يُصدَّر تقرير المناقصة مع ملف دليل المشتريات',
+        ],
+        riskScore: 58,
+        riskLevel: 'مرتفع',
+        policyDecision: 'إخفاء أسعار + موافقة مدير المشتريات',
+        approvalRequired: 'مدير المشتريات',
+        auditOutcome: 'تقرير مناقصة + ملف دليل',
+        logSteps: [
+          { icon: '📋', text: '��لب: "حلّل عروض مناقصة IT-2024-Q4 (2.5M ريال)"', badge: 'badge-high', badgeTxt: 'معالجة' },
+          { icon: '🔒', text: 'كشف مناقصة عالية القيمة — إخفاء أسعار الموردين', badge: 'badge-medium', badgeTxt: 'إخفاء' },
+          { icon: '⏳', text: 'تعليق — يحتاج: مراجعة مدير المشتريات', badge: 'badge-pending', badgeTxt: 'معلق' },
+          { icon: '✅', text: 'مدير المشتريات وافق — "التوصية بمورد A مقبولة"', badge: 'badge-approved', badgeTxt: 'موافق' },
+          { icon: '📄', text: 'إصدار تقرير المناقصة مع بيانات المورد الفائز', badge: 'badge-completed', badgeTxt: 'صادر' },
+          { icon: '🔗', text: 'ملف دليل المشتريات — hash: 0x7b3f...', badge: 'badge-completed', badgeTxt: 'مكتمل' },
+        ],
+      },
+      {
+        id: 'government',
+        icon: 'fas fa-building-columns',
+        iconBg: 'bg-brand',
+        iconColor: 'c-brand',
+        title: 'الجهة الحكومية — وثيقة حساسة مع تدقيق كامل',
+        subtitle: 'القطاع الحكومي والمؤسسي | حزمة: NCA ECC + PDPL',
+        tags: ['حكومي', 'NCA ECC', 'PDPL'],
+        tagColors: ['badge-auto_approved', 'badge-critical', 'badge-high'],
+        steps: [
+          'موظف يرفع وثيقة حكومية حساسة ويطلب تلخيصها',
+          'النواة تُصنّف الوثيقة كـ "سري" وتفعّل ضوابط NCA ECC',
+          'يتم إخفاء جميع البيانات الشخصية (أسماء، أرقام هوية، عناوين)',
+          'المحتوى الحساس يُخزَّن مشفراً ولا يُرسل لنماذج خارجية',
+          'يُولَّد ملخص للنسخة المخفية فقط مع وضعه في سجل التدقيق',
+          'يُنشأ ملف دليل شامل مع بصمة رقمية للتحقق من السلامة',
+        ],
+        riskScore: 88,
+        riskLevel: 'حرج',
+        policyDecision: 'إخفاء كامل + حفظ محلي + تدقيق شامل',
+        approvalRequired: 'مسؤول الأمن / مسؤول الامتثال',
+        auditOutcome: 'ملف دليل NCA + PDPL مشترك',
+        logSteps: [
+          { icon: '🏛️', text: 'رفع: "وثيقة_سياسة_داخلية_2026.pdf" — تصنيف: سري', badge: 'badge-critical', badgeTxt: 'حرج 88' },
+          { icon: '🛡️', text: 'تفعيل NCA ECC — حظر الإرسال الخارجي', badge: 'badge-blocked', badgeTxt: 'خارجي محظور' },
+          { icon: '🎭', text: 'إخفاء 12 حقلاً حساساً: أسماء، هوية، عناوين', badge: 'badge-high', badgeTxt: 'إخفاء' },
+          { icon: '⏳', text: 'إرسال لمراجعة مسؤول الأمن + مسؤول الامتثال', badge: 'badge-pending', badgeTxt: 'معلق' },
+          { icon: '✅', text: 'مسؤول الأمن وافق — "مطابق لسياسة NCA ECC-12"', badge: 'badge-approved', badgeTxt: 'موافق' },
+          { icon: '🔗', text: 'ملف دليل NCA+PDPL — hash: 0x1a9c... — موقّع رقمياً', badge: 'badge-completed', badgeTxt: 'مكتمل' },
+        ],
+      },
+    ];
+
+    function renderScenarios() {
+      document.getElementById('scenarios-container').innerHTML = SCENARIOS.map((s, i) => `
+        <div class="glass scenario-card fade-up d${(i % 3) + 1}">
+          <div class="sc-header">
+            <div style="display:flex;gap:0.875rem;align-items:flex-start;flex:1">
+              <div class="sc-icon ${s.iconBg}"><i class="${s.icon} ${s.iconColor}" aria-hidden="true"></i></div>
+              <div style="flex:1">
+                <div class="sc-title">${s.title}</div>
+                <div class="sc-subtitle">${s.subtitle}</div>
+              </div>
+            </div>
+            <div class="sc-tags">
+              ${s.tags.map((t, ti) => `<span class="badge ${s.tagColors[ti]}">${t}</span>`).join('')}
+            </div>
+          </div>
+
+          <ol class="step-list">
+            ${s.steps.map((step, si) => `<li><div class="step-num">${si + 1}</div><span>${step}</span></li>`).join('')}
+          </ol>
+
+          <div class="sc-outcome">
+            <div class="outcome-box">
+              <div class="ob-label">درجة المخاطر</div>
+              <div class="ob-val" style="color:${s.riskScore >= 80 ? '#f87171' : s.riskScore >= 60 ? '#fb923c' : '#fbbf24'}">${s.riskScore}</div>
+            </div>
+            <div class="outcome-box">
+              <div class="ob-label">قرار السياسة</div>
+              <div class="ob-val" style="color:var(--brand);font-size:0.75rem;line-height:1.4">${s.policyDecision}</div>
+            </div>
+            <div class="outcome-box">
+              <div class="ob-label">الموافقة المطلوبة</div>
+              <div class="ob-val" style="color:#fbbf24;font-size:0.75rem;line-height:1.4">${s.approvalRequired}</div>
+            </div>
+          </div>
+
+          <div class="sc-footer">
+            <button class="btn btn-primary" onclick="runDemo('${s.id}')">
+              <i class="fas fa-play" aria-hidden="true"></i> تشغيل العرض التجريبي
+            </button>
+            <span class="demo-state" id="state-${s.id}">جاهز للتشغيل</span>
+          </div>
+
+          <div class="demo-log" id="log-${s.id}" aria-live="polite" aria-label="سجل السيناريو"></div>
+        </div>
+      `).join('');
+    }
+
+    function runDemo(id) {
+      const s = SCENARIOS.find(x => x.id === id);
+      if (!s) return;
+      const logEl   = document.getElementById('log-' + id);
+      const stateEl = document.getElementById('state-' + id);
+      logEl.style.display = 'block';
+      logEl.innerHTML = '';
+      stateEl.textContent = 'جارٍ العرض...';
+      stateEl.style.color = 'var(--brand)';
+
+      let i = 0;
+      function next() {
+        if (i >= s.logSteps.length) {
+          stateEl.textContent = 'اكتمل العرض التجريبي';
+          stateEl.style.color = '#4ade80';
+          return;
+        }
+        const step = s.logSteps[i++];
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        line.innerHTML = `
+          <span class="log-icon">${step.icon}</span>
+          <span class="log-text">${step.text}</span>
+          <span class="log-badge badge ${step.badge}">${step.badgeTxt}</span>`;
+        logEl.appendChild(line);
+        logEl.scrollTop = logEl.scrollHeight;
+        setTimeout(next, 900);
+      }
+      next();
+    }
+
+    renderScenarios();
+  </script>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
+</body>
+</html>

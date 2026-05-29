@@ -73,6 +73,7 @@ const NON_INDEXABLE_REL_PATH_PATTERNS = [
   /^blog\/atou\.doc\.html$/i,
   /^blog\/generative-artificial-intelligence\.html$/i,
   /^demo\/mais-dashboard\//i,
+  /^demo\/ai-reject-dashboard\/frontend\/pages\//i,
 ];
 
 const TRAILING_SLASH_ROUTE_PATTERNS = [

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>موصلات أنظمة المؤسسة | BrightAI Kernel</title>
+  <meta name="description" content="نظرة على موصلات BrightAI Kernel مع أنظمة ERP وCRM وHIS وقواعد البيانات ونماذج الذكاء الاصطناعي.">
+  <link rel="canonical" href="https://brightai.site/kernel/connectors/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/connectors/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/connectors/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+  <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
+  <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="kernel.css">
+  <style>
+    .connectors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    @media (max-width:900px) { .connectors-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:580px) { .connectors-grid { grid-template-columns: 1fr; } }
+
+    .connector-card { padding: 1.25rem; }
+    .conn-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.875rem; }
+    .conn-icon { width: 44px; height: 44px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+    .conn-name { font-size: 0.9rem; font-weight: 700; flex: 1; margin-right: 0.625rem; }
+    .demo-tag { font-size: 0.65rem; font-weight: 700; background: rgba(167,139,250,0.15); color: #a78bfa; padding: 0.2rem 0.5rem; border-radius: 0.4rem; white-space: nowrap; }
+
+    .conn-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; padding: 0.3rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+    .conn-row:last-child { border-bottom: none; }
+    .conn-row .lbl { color: var(--text-muted); }
+    .conn-row .val { font-weight: 600; color: var(--text); }
+    .val-green { color: #4ade80; }
+    .val-brand { color: var(--brand); }
+    .val-yellow { color: #fbbf24; }
+
+    .conn-footer { margin-top: 0.875rem; padding-top: 0.75rem; border-top: 1px solid var(--border); }
+    .conn-btn { width: 100%; padding: 0.5rem; border-radius: 0.625rem; border: 1px solid var(--border); background: var(--ink-800); color: var(--text-muted); font-size: 0.78rem; font-weight: 600; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+
+    .section-sep { margin: 2rem 0 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); display: flex; align-items: center; gap: 0.75rem; }
+    .section-sep::before, .section-sep::after { content:''; flex:1; height:1px; background: var(--border); }
+  </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/kernel/connectors/#webpage",
+      "url": "https://brightai.site/kernel/connectors/",
+      "name": "موصلات أنظمة المؤسسة | BrightAI Kernel",
+      "description": "نظرة على موصلات BrightAI Kernel مع أنظمة ERP وCRM وHIS وقواعد البيانات ونماذج الذكاء الاصطناعي.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/kernel/connectors/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "kernel",
+          "item": "https://brightai.site/kernel/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "موصلات أنظمة المؤسسة | BrightAI Kernel",
+          "item": "https://brightai.site/kernel/connectors/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+</head>
+<body>
+  
+  <div id="brightai-unified-header"></div>
+  <a href="#connectors-main" class="skip-link">تخطي إلى الموصلات</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
+
+  <main id="connectors-main" class="page-wrap">
+
+    <div style="margin-bottom:1.5rem;" class="fade-up">
+      <h1 class="section-title">الموصلات — تكامل آمن مع أنظمتك</h1>
+      <p class="section-sub">BrightAI Kernel يتصل بأنظمتك الخارجية (ERP، CRM، HIS، نماذج AI) ويفرض الحماية والسياسات على كل بيانة تمر عبره. كل موصل يحدد تصنيف البيانات والموافقات المطلوبة.</p>
+    </div>
+
+    <div class="glass fade-up d1" style="padding: 1rem 1.5rem; margin-bottom: 1.5rem; border-left: 3px solid #a78bfa; background: rgba(167,139,250,0.08);">
+      <div style="font-size: 0.75rem; color: #a78bfa; font-weight: 600; margin-bottom: 0.35rem;">عرض توضيحي</div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">جميع الموصلات هنا في وضع Demo. لا يتم ربط أنظمة حقيقية ولا إرسال بيانات خارجة. في الإنتاج، كل موصل يتطلب مصادقة وتشفير وسجلات تدقيق دائمة.</p>
+    </div>
+
+    <div class="section-sep">أنظمة المؤسسات</div>
+    <div class="connectors-grid" style="margin-bottom:1.5rem;">
+
+      <div class="glass connector-card fade-up d1">
+        <div class="conn-top">
+          <div class="conn-icon bg-yellow"><i class="fas fa-database c-yellow" aria-hidden="true"></i></div>
+          <div class="conn-name">نظام ERP</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">سري - مالي</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">يحتاج موافقة مالي</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر مزامنة</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d2">
+        <div class="conn-top">
+          <div class="conn-icon bg-brand"><i class="fas fa-users c-brand" aria-hidden="true"></i></div>
+          <div class="conn-name">نظام CRM</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">بيانات عملاء - PDPL</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">إخفاء تلقائي</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر مزامنة</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d3">
+        <div class="conn-top">
+          <div class="conn-icon bg-green"><i class="fas fa-hospital c-green" aria-hidden="true"></i></div>
+          <div class="conn-name">نظام HIS</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">بيانات مرضى - طبية</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">يحتاج موافقة طبيب</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر مزامنة</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d4">
+        <div class="conn-top">
+          <div class="conn-icon bg-orange"><i class="fas fa-file-excel c-orange" aria-hidden="true"></i></div>
+          <div class="conn-name">ملفات Excel</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">عام - قابل للتصنيف</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">فحص تلقائي</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر رفع</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d5">
+        <div class="conn-top">
+          <div class="conn-icon bg-brand"><i class="fab fa-microsoft c-brand" aria-hidden="true"></i></div>
+          <div class="conn-name">SharePoint</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">وثائق داخلية</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">حسب المجموعة</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر مزامنة</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d6">
+        <div class="conn-top">
+          <div class="conn-icon bg-purple"><i class="fas fa-server c-purple" aria-hidden="true"></i></div>
+          <div class="conn-name">قاعدة بيانات SQL</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">متنوع - حسب الجدول</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">قراءة فقط</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر اتصال</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d1">
+        <div class="conn-top">
+          <div class="conn-icon bg-brand"><i class="fas fa-envelope c-brand" aria-hidden="true"></i></div>
+          <div class="conn-name">البريد الإلكتروني</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">قد يحتوي حساس</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">فحص PII إلزامي</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر فحص</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d2">
+        <div class="conn-top">
+          <div class="conn-icon bg-orange"><i class="fas fa-folder-open c-orange" aria-hidden="true"></i></div>
+          <div class="conn-name">إدارة الوثائق</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">وثائق رسمية</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">حسب التصنيف</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر فهرسة</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d3">
+        <div class="conn-top">
+          <div class="conn-icon bg-purple"><i class="fas fa-book c-purple" aria-hidden="true"></i></div>
+          <div class="conn-name">قاعدة المعرفة الداخلية</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">وضع تجريبي</span></div>
+        <div class="conn-row"><span class="lbl">تصنيف البيانات</span><span class="val val-brand">داخلي عام</span></div>
+        <div class="conn-row"><span class="lbl">سياسة الوصول</span><span class="val">مفتوح للموظفين</span></div>
+        <div class="conn-row"><span class="lbl">السجلات</span><span class="val val-green">مفعّلة</span></div>
+        <div class="conn-row"><span class="lbl">آخر تحديث</span><span class="val" style="color:var(--text-muted)">عرض توضيحي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-sep">نماذج الذكاء الاصطناعي</div>
+    <div class="connectors-grid">
+
+      <div class="glass connector-card fade-up d1">
+        <div class="conn-top">
+          <div class="conn-icon bg-green"><i class="fas fa-brain c-green" aria-hidden="true"></i></div>
+          <div class="conn-name">Google Gemini</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">محمي بالنواة</span></div>
+        <div class="conn-row"><span class="lbl">تصفية البيانات</span><span class="val val-green">قبل الإرسال</span></div>
+        <div class="conn-row"><span class="lbl">التسجيل</span><span class="val val-green">مفعّل</span></div>
+        <div class="conn-row"><span class="lbl">إخفاء PII</span><span class="val val-green">إلزامي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d2">
+        <div class="conn-top">
+          <div class="conn-icon bg-brand"><i class="fas fa-robot c-brand" aria-hidden="true"></i></div>
+          <div class="conn-name">OpenAI / ChatGPT</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">محمي بالنواة</span></div>
+        <div class="conn-row"><span class="lbl">تصفية البيانات</span><span class="val val-green">قبل الإرسال</span></div>
+        <div class="conn-row"><span class="lbl">التسجيل</span><span class="val val-green">مفعّل</span></div>
+        <div class="conn-row"><span class="lbl">إخفاء PII</span><span class="val val-green">إلزامي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d3">
+        <div class="conn-top">
+          <div class="conn-icon bg-orange"><i class="fas fa-infinity c-orange" aria-hidden="true"></i></div>
+          <div class="conn-name">Anthropic Claude</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">محمي بالنواة</span></div>
+        <div class="conn-row"><span class="lbl">تصفية البيانات</span><span class="val val-green">قبل الإرسال</span></div>
+        <div class="conn-row"><span class="lbl">التسجيل</span><span class="val val-green">مفعّل</span></div>
+        <div class="conn-row"><span class="lbl">إخفاء PII</span><span class="val val-green">إلزامي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+      <div class="glass connector-card fade-up d4">
+        <div class="conn-top">
+          <div class="conn-icon bg-brand"><i class="fab fa-microsoft c-brand" aria-hidden="true"></i></div>
+          <div class="conn-name">Azure OpenAI</div>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <div class="conn-row"><span class="lbl">الحالة</span><span class="val val-yellow">محمي بالنواة</span></div>
+        <div class="conn-row"><span class="lbl">تصفية البيانات</span><span class="val val-green">قبل الإرسال</span></div>
+        <div class="conn-row"><span class="lbl">التسجيل</span><span class="val val-green">مفعّل</span></div>
+        <div class="conn-row"><span class="lbl">إخفاء PII</span><span class="val val-green">إلزامي</span></div>
+        <div class="conn-footer">
+          <button class="conn-btn" disabled aria-disabled="true"><i class="fas fa-cog" aria-hidden="true"></i> إعداد (تجريبي)</button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer class="kernel-footer">&copy; 2026 BrightAI Kernel</footer>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
+</body>
+</html>

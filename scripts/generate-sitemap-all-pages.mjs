@@ -265,6 +265,12 @@ function renderXml(entries) {
       );
     }
     lines.push(`    <lastmod>${xmlEscape(entry.lastmod)}</lastmod>`);
+    if (entry.changefreq) {
+      lines.push(`    <changefreq>${xmlEscape(entry.changefreq)}</changefreq>`);
+    }
+    if (entry.priority) {
+      lines.push(`    <priority>${xmlEscape(entry.priority)}</priority>`);
+    }
     lines.push("  </url>");
   }
 
@@ -351,7 +357,11 @@ async function main() {
       const entry = {
         loc: analysis.loc,
         relPath: analysis.relPath,
-        lastmod: analysis.lastmod,
+        lastmod: group === "kernel" ? "2026-05-29" : analysis.lastmod,
+        changefreq: group === "kernel" ? "weekly" : null,
+        priority: group === "kernel"
+          ? (analysis.relPath === "kernel/index.html" ? "0.9" : "0.8")
+          : null,
         alternates: [],
       };
       if (group === "pages") pagesList.push(entry);
@@ -392,13 +402,14 @@ async function main() {
 
   const primarySitemapEntries = [
     ...finalPages,
+    ...finalKernel,
     ...finalLegal,
     ...finalDemo,
     ...finalSolutions,
   ].sort((a, b) => a.loc.localeCompare(b.loc, "en"));
 
   await fs.writeFile(SITEMAP_INDEX, renderXml(primarySitemapEntries), "utf8");
-  process.stdout.write(`Generated sitemap.xml with ${primarySitemapEntries.length} public marketing URLs\n`);
+  process.stdout.write(`Generated sitemap.xml with ${primarySitemapEntries.length} public URLs\n`);
 
   // Write Quality Report
   const reportLines = [
@@ -410,7 +421,7 @@ async function main() {
     `- Demo Sitemap URLs: ${finalDemo.length}`,
     `- Legal Sitemap URLs: ${finalLegal.length}`,
     `- Solutions Sitemap URLs: ${finalSolutions.length}`,
-    "- Kernel URLs are generated in sitemap-kernel.xml but intentionally excluded from primary sitemap.xml until the indexing policy is confirmed.",
+    "- Kernel URLs are generated in sitemap-kernel.xml and included in primary sitemap.xml as indexable BrightAI Kernel product pages.",
     "",
     "All URLs strictly verified for canonical alignment, code 200 health, and indexability.",
   ];

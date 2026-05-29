@@ -114,9 +114,20 @@ Allow: /
 
 # ==================== SEO Files ====================
 
+# BrightAI Kernel
+# AI Firewall, Audit Trail, Human Approval, Compliance Packs, and Evidence Reports.
+Allow: /kernel/
+Allow: /kernel/chat/
+Allow: /kernel/audit/
+Allow: /kernel/approvals/
+Allow: /kernel/compliance/
+Allow: /kernel/reports/
+Allow: /kernel/evidence/
+
 # Sitemaps
 Sitemap: https://brightai.site/sitemap.xml
 Sitemap: https://brightai.site/sitemap-pages.xml
+Sitemap: https://brightai.site/sitemap-kernel.xml
 Sitemap: https://brightai.site/sitemap-legal.xml
 Sitemap: https://brightai.site/sitemap-demo.xml
 Sitemap: https://brightai.site/sitemap-solutions.xml

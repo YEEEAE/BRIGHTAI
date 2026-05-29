@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html lang="ar-SA" dir="rtl">
 <head>
-      <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-8LLESL207Q', { 'anonymize_ip': true, 'allow_google_signals': false });
-    </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>الموافقات المعلقة — BrightAI Kernel</title>
-  <meta name="description" content="الموافقات المعلقة — BrightAI Kernel من BrightAI، صفحة عامة قابلة للفهرسة ضمن تجربة الموقع وخدمات الذكاء الاصطناعي وحوكمة الأنظمة.">
-  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>الموافقات البشرية | BrightAI Kernel</title>
+  <meta name="description" content="إدارة الطلبات عالية المخاطر التي تحتاج مراجعة بشرية قبل تنفيذ إجراءات الذكاء الاصطناعي داخل الشركات السعودية.">
+  <link rel="canonical" href="https://brightai.site/kernel/approvals/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/approvals/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/approvals/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
   <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
   <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
   <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
   <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://brightai.site/kernel/approvals/">
-<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/approvals/">
-<link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/approvals/">
-<script id="brightai-production-schema" type="application/ld+json">
+  <link rel="stylesheet" href="kernel.css">
+  <style>
+    .summary-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width:600px) { .summary-bar { grid-template-columns: 1fr; } }
+
+    .pending-item { margin-bottom: 1rem; padding: 1.5rem; }
+    .item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.875rem; flex-wrap: wrap; gap: 0.5rem; }
+    .item-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; align-items: center; }
+    .item-msg { font-size: 0.875rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; background: var(--ink-800); padding: 0.75rem 1rem; border-radius: 0.75rem; border-right: 3px solid rgba(251,191,36,0.5); }
+    .item-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+    .approval-form { margin-top: 0.875rem; padding-top: 0.875rem; border-top: 1px solid var(--border); display: none; }
+    .approval-form.open { display: block; }
+    .approval-form .btn-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+
+    .result-banner { text-align: center; padding: 1.5rem; }
+    .result-banner i { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+
+    .refresh-btn { display: flex; align-items: center; gap: 0.5rem; }
+  </style>
+  <script id="brightai-production-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -49,15 +68,16 @@
         "@id": "https://brightai.site/#organization"
       },
       "inLanguage": [
-        "ar-SA"
+        "ar-SA",
+        "en-SA"
       ]
     },
     {
       "@type": "WebPage",
       "@id": "https://brightai.site/kernel/approvals/#webpage",
       "url": "https://brightai.site/kernel/approvals/",
-      "name": "الموافقات المعلقة — BrightAI Kernel",
-      "description": "إجمالي المعلقة",
+      "name": "الموافقات البشرية | BrightAI Kernel",
+      "description": "إدارة الطلبات عالية المخاطر التي تحتاج مراجعة بشرية قبل تنفيذ إجراءات الذكاء الاصطناعي داخل الشركات السعودية.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -85,7 +105,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "الموافقات المعلقة — BrightAI Kernel",
+          "name": "الموافقات البشرية | BrightAI Kernel",
           "item": "https://brightai.site/kernel/approvals/"
         }
       ]
@@ -93,184 +113,197 @@
   ]
 }
   </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
-<body class="bg-[#060914] text-white font-sans min-h-screen flex flex-col bright-page--kernel" data-bright-page-type="kernel">
-<h1 class="sr-only bright-a11y-h1">الموافقات المعلقة — BrightAI Kernel</h1>
-
-  <a href="#approvals-main" class="skip-link">تخطي إلى الموافقات المعلقة</a>
-
-  <!-- Header -->
+<body>
+  
   <div id="brightai-unified-header"></div>
+  <a href="#approvals-main" class="skip-link">تخطي إلى الموافقات</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
 
-  <main id="approvals-main" role="main" tabindex="-1" class="focus:outline-none flex-1">
+  <main id="approvals-main" class="page-wrap">
 
-  <!-- Summary Bar -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-4">
-    <div class="grid grid-cols-3 gap-4">
-      <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
-        <p class="text-white/50 text-sm mb-1">إجمالي المعلقة</p>
-        <p id="summary-total" class="text-3xl font-bold text-brand-500">—</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem;" class="fade-up">
+      <div>
+        <h1 class="section-title">الموافقات المعلقة — نقطة القرار البشري الحاسمة</h1>
+        <p class="section-sub">هنا يتوقف النظام ويرفع الطلب للمسؤول المختص. موافقتك هي الفاصل بين اقتراح الذكاء الاصطناعي وتنفيذ القرار، وكل قرار يُحفظ برقم دائمي وبصمة مشفرة.</p>
       </div>
-      <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
-        <p class="text-white/50 text-sm mb-1">مخاطر عالية</p>
-        <p id="summary-high" class="text-3xl font-bold text-orange-400">—</p>
+      <button class="btn btn-ghost refresh-btn" onclick="loadPending()">
+        <i class="fas fa-rotate-right" aria-hidden="true"></i> تحديث
+      </button>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary-bar fade-up d1">
+      <div class="glass metric-card">
+        <div class="metric-icon bg-brand"><i class="fas fa-clock c-brand" aria-hidden="true"></i></div>
+        <div class="metric-value c-brand" id="sum-total">—</div>
+        <div class="metric-label">إجمالي المعلقة</div>
       </div>
-      <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-5 text-center">
-        <p class="text-white/50 text-sm mb-1">حرجة</p>
-        <p id="summary-critical" class="text-3xl font-bold text-red-400">—</p>
+      <div class="glass metric-card">
+        <div class="metric-icon bg-orange"><i class="fas fa-triangle-exclamation c-orange" aria-hidden="true"></i></div>
+        <div class="metric-value c-orange" id="sum-high">—</div>
+        <div class="metric-label">مخاطر عالية</div>
+      </div>
+      <div class="glass metric-card">
+        <div class="metric-icon bg-red"><i class="fas fa-radiation c-red" aria-hidden="true"></i></div>
+        <div class="metric-value c-red" id="sum-critical">—</div>
+        <div class="metric-label">حرجة</div>
       </div>
     </div>
-  </section>
 
-  <!-- Pending Items -->
-  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 flex-1">
-    <div id="pending-list">
-      <div class="text-center py-16">
-        <i class="fas fa-spinner fa-spin text-4xl text-brand-500 mb-4"></i>
-        <p class="text-gray-400 text-lg">جاري التحميل...</p>
+    <!-- Important Note -->
+    <div class="glass fade-up d2" style="padding: 1rem 1.5rem; margin-bottom: 1.25rem; border-left: 4px solid var(--brand); background: rgba(0,212,255,0.06);">
+      <p style="font-size: 0.85rem; color: var(--text); line-height: 1.6; margin: 0;">
+        <strong>ملاحظة مهمة:</strong> BrightAI Kernel لا يستبدل خبراتك. أنت تتولى القرار الحاسم هنا. كل موافقة أو رفض يُسجل دائماً مع تعليقك وبصمة مشفرة لا يمكن تعديلها. هذا هو سجل القرارات البشرية الذي يطلبه المدققون والسلطات.
+      </p>
+    </div>
+
+    <!-- List -->
+    <div id="pending-list" class="fade-up d3">
+      <div style="text-align:center;padding:3rem;">
+        <span class="spinner" aria-label="جاري التحميل"></span>
       </div>
     </div>
+
   </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo" class="mt-auto border-t border-white/10 py-6 text-center text-white/40 text-sm">
-    &copy; 2026 BrightAI Kernel
-  </footer>
+  <footer class="kernel-footer">&copy; 2026 BrightAI Kernel</footer>
 
   <script>
-    let pendingItems = [];
+    let items = [];
 
     async function loadPending() {
+      document.getElementById('pending-list').innerHTML = '<div style="text-align:center;padding:3rem;"><span class="spinner"></span></div>';
       try {
-        const res = await fetch('/api/kernel/pending');
-        const data = await res.json();
-        pendingItems = data.pending || [];
-        renderPending();
-        updateSummary();
+        const r = await fetch('/api/kernel/pending');
+        const d = await r.json();
+        items = d.pending || [];
+        renderSummary();
+        renderList();
       } catch(e) {
-        document.getElementById('pending-list').innerHTML = '<p class="text-red-400 text-center py-8">خطأ في تحميل الموافقات</p>';
+        document.getElementById('pending-list').innerHTML = '<p style="color:#f87171;text-align:center;padding:2rem;">خطأ في تحميل الموافقات</p>';
       }
     }
 
-    function updateSummary() {
-      const total = pendingItems.length;
-      const highRisk = pendingItems.filter(p => p.risk_level === 'high' || p.risk_level === 'critical').length;
-      const critical = pendingItems.filter(p => p.risk_level === 'critical').length;
-      document.getElementById('summary-total').textContent = total;
-      document.getElementById('summary-high').textContent = highRisk;
-      document.getElementById('summary-critical').textContent = critical;
+    function renderSummary() {
+      const total    = items.length;
+      const high     = items.filter(i => i.risk_level === 'high' || i.risk_level === 'critical').length;
+      const critical = items.filter(i => i.risk_level === 'critical').length;
+      document.getElementById('sum-total').textContent    = total;
+      document.getElementById('sum-high').textContent     = high;
+      document.getElementById('sum-critical').textContent = critical;
     }
 
-    function renderPending() {
+    function renderList() {
       const container = document.getElementById('pending-list');
-      if (pendingItems.length === 0) {
-        container.innerHTML = '<div class="text-center py-16"><i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i><p class="text-gray-400 text-xl">لا توجد طلبات معلقة</p></div>';
+      if (!items.length) {
+        container.innerHTML = `
+          <div class="glass" style="padding:3rem;text-align:center;">
+            <i class="fas fa-check-circle" style="font-size:3.5rem;color:#4ade80;display:block;margin-bottom:1rem;"></i>
+            <p style="font-size:1.1rem;color:var(--text-muted);">لا توجد طلبات معلقة</p>
+          </div>`;
         return;
       }
-      container.innerHTML = pendingItems.map(item => `
-        <div class="glass-card bg-ink-900/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 mb-4" id="item-${item.interaction_id}">
-          <div class="flex justify-between items-start mb-4">
+      container.innerHTML = items.map(item => `
+        <div class="glass pending-item" id="item-${item.interaction_id}">
+          <div class="item-header">
             <div>
-              <span class="text-xs text-gray-500">${item.interaction_id}</span>
-              <div class="text-sm text-gray-400 mt-1">${new Date(item.created_at).toLocaleString('ar-SA')}</div>
+              <div style="font-family:monospace;font-size:0.72rem;color:var(--text-dim);">${item.interaction_id}</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.15rem;">${new Date(item.created_at).toLocaleString('ar-SA')}</div>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-bold ${riskBadgeClass(item.risk_level)}">${item.risk_score} - ${item.risk_level}</span>
+            <span class="badge badge-${item.risk_level}">${item.risk_score ?? 0} — ${riskLabel(item.risk_level)}</span>
           </div>
-          <p class="text-white mb-2 text-sm">${(item.request_message || '').substring(0, 200)}${(item.request_message || '').length > 200 ? '...' : ''}</p>
-          <div class="flex items-center gap-2 mb-4">
-            <span class="text-xs px-2 py-1 bg-brand-500/20 text-brand-300 rounded">${item.compliance_pack || 'general'}</span>
+          <div class="item-meta">
+            <span class="badge badge-demo">${item.compliance_pack || 'عام'}</span>
+            <span class="badge badge-pending">يحتاج موافقة بشرية</span>
           </div>
-          <div class="flex gap-3" id="actions-${item.interaction_id}">
-            <button id="btn-approve-${item.interaction_id}" onclick="showApprovalForm('${item.interaction_id}', 'approve')" class="flex-1 py-2 bg-green-500/20 text-green-300 border border-green-500/30 rounded-xl hover:bg-green-500/30 transition" aria-expanded="false" aria-controls="form-${item.interaction_id}" aria-label="موافقة على الطلب ${item.interaction_id}"><i class="fas fa-check ml-2" aria-hidden="true"></i>موافقة</button>
-            <button id="btn-reject-${item.interaction_id}" onclick="showApprovalForm('${item.interaction_id}', 'reject')" class="flex-1 py-2 bg-red-500/20 text-red-300 border border-red-500/30 rounded-xl hover:bg-red-500/30 transition" aria-expanded="false" aria-controls="form-${item.interaction_id}" aria-label="رفض الطلب ${item.interaction_id}"><i class="fas fa-times ml-2" aria-hidden="true"></i>رفض</button>
+          <div style="margin-bottom: 1rem;">
+            <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.4rem; font-weight: 600;">الطلب الأصلي:</div>
+            <div class="item-msg">${esc((item.request_message || '').substring(0, 250))}${(item.request_message || '').length > 250 ? '…' : ''}</div>
           </div>
-          <div id="form-${item.interaction_id}" class="hidden mt-4" role="region" aria-label="نموذج القرار للطلب ${item.interaction_id}">
-            <textarea id="comment-${item.interaction_id}" aria-label="تعليق القرار (اختياري)" class="w-full bg-ink-800 border border-white/10 rounded-xl p-3 text-white text-sm mb-3" rows="2" placeholder="تعليق (اختياري)"></textarea>
-            <div class="flex gap-2">
-              <button id="confirm-${item.interaction_id}" class="flex-1 py-2 rounded-xl text-white font-bold" aria-label="تأكيد القرار">تأكيد</button>
-              <button onclick="hideApprovalForm('${item.interaction_id}')" class="px-4 py-2 bg-ink-800 text-gray-400 rounded-xl hover:bg-ink-700" aria-label="إلغاء">إلغاء</button>
+          <div class="item-actions" id="actions-${item.interaction_id}">
+            <button class="btn btn-green" onclick="showForm('${item.interaction_id}','approve')">
+              <i class="fas fa-check" aria-hidden="true"></i> موافقة
+            </button>
+            <button class="btn btn-red" onclick="showForm('${item.interaction_id}','reject')">
+              <i class="fas fa-times" aria-hidden="true"></i> رفض
+            </button>
+          </div>
+          <div class="approval-form" id="form-${item.interaction_id}">
+            <label class="form-label" for="comment-${item.interaction_id}">تعليق (اختياري)</label>
+            <textarea id="comment-${item.interaction_id}" class="form-textarea" rows="2" placeholder="أضف تعليقاً..."></textarea>
+            <div class="btn-row">
+              <button id="confirm-${item.interaction_id}" class="btn" style="flex:1">تأكيد</button>
+              <button onclick="hideForm('${item.interaction_id}')" class="btn btn-ghost">إلغاء</button>
             </div>
           </div>
         </div>
       `).join('');
     }
 
-    function riskBadgeClass(level) {
-      const m = { low:'bg-green-500/20 text-green-300', medium:'bg-yellow-500/20 text-yellow-300', high:'bg-orange-500/20 text-orange-300', critical:'bg-red-500/20 text-red-300' };
-      return m[level] || 'bg-gray-500/20 text-gray-300';
-    }
-
-    function showApprovalForm(id, action) {
-      document.getElementById('form-' + id).classList.remove('hidden');
+    function showForm(id, action) {
+      document.getElementById('form-' + id).classList.add('open');
       const btn = document.getElementById('confirm-' + id);
-      const approveBtn = document.getElementById('btn-approve-' + id);
-      const rejectBtn = document.getElementById('btn-reject-' + id);
-      
       if (action === 'approve') {
-        btn.className = 'flex-1 py-2 bg-green-500 rounded-xl text-white font-bold hover:bg-green-600';
-        btn.onclick = () => approveItem(id);
-        approveBtn?.setAttribute('aria-expanded', 'true');
-        rejectBtn?.setAttribute('aria-expanded', 'false');
+        btn.className = 'btn btn-green'; btn.style.flex = '1';
+        btn.textContent = 'تأكيد الموافقة';
+        btn.onclick = () => doAction(id, 'approve');
       } else {
-        btn.className = 'flex-1 py-2 bg-red-500 rounded-xl text-white font-bold hover:bg-red-600';
-        btn.onclick = () => rejectItem(id);
-        approveBtn?.setAttribute('aria-expanded', 'false');
-        rejectBtn?.setAttribute('aria-expanded', 'true');
+        btn.className = 'btn btn-red'; btn.style.flex = '1';
+        btn.textContent = 'تأكيد الرفض';
+        btn.onclick = () => doAction(id, 'reject');
       }
-      
-      // Focus comment textarea
-      setTimeout(() => document.getElementById('comment-' + id)?.focus(), 50);
+      setTimeout(() => document.getElementById('comment-' + id)?.focus(), 60);
     }
 
-    function hideApprovalForm(id) {
-      document.getElementById('form-' + id).classList.add('hidden');
-      const approveBtn = document.getElementById('btn-approve-' + id);
-      const rejectBtn = document.getElementById('btn-reject-' + id);
-      
-      approveBtn?.setAttribute('aria-expanded', 'false');
-      rejectBtn?.setAttribute('aria-expanded', 'false');
-      
-      // Restore focus to approve button
-      approveBtn?.focus();
+    function hideForm(id) {
+      document.getElementById('form-' + id).classList.remove('open');
     }
 
-    async function approveItem(id) {
+    async function doAction(id, action) {
       const comment = document.getElementById('comment-' + id).value;
+      const endpoint = action === 'approve' ? '/api/kernel/approve/' + id : '/api/kernel/reject/' + id;
+      const payload = action === 'approve'
+        ? { approvedBy: 'demo-approver', comment: comment || 'Approved from BrightAI Kernel demo UI' }
+        : { rejectedBy: 'demo-approver', comment: comment || 'Rejected from BrightAI Kernel demo UI' };
+
       try {
-        const res = await fetch('/api/kernel/approve/' + id, {
+        const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'X-Kernel-User-Id': 'dashboard-admin' },
-          body: JSON.stringify({ comment })
+          body: JSON.stringify(payload)
         });
-        const data = await res.json();
         if (res.ok) {
-          document.getElementById('item-' + id).innerHTML = '<div class="text-center py-4 text-green-400"><i class="fas fa-check-circle text-3xl mb-2"></i><p>تمت الموافقة بنجاح</p></div>';
-          setTimeout(loadPending, 1000);
-        } else { alert(data.error || 'خطأ'); }
+          const isApprove = action === 'approve';
+          document.getElementById('item-' + id).innerHTML = `
+            <div class="result-banner">
+              <i class="fas fa-${isApprove ? 'check-circle' : 'times-circle'}" style="color:${isApprove ? '#4ade80' : '#f87171'}"></i>
+              <p style="color:${isApprove ? '#4ade80' : '#f87171'}; font-weight: 700; margin-bottom: 0.5rem;">${isApprove ? 'تمت الموافقة' : 'تم الرفض'}</p>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">تم حفظ القرار والتعليق في سجل التدقيق الدائمي</p>
+            </div>`;
+          setTimeout(loadPending, 2000);
+        } else {
+          const d = await res.json();
+          alert(d.error || 'خطأ في التنفيذ');
+        }
       } catch(e) { alert('خطأ في الاتصال'); }
     }
 
-    async function rejectItem(id) {
-      const comment = document.getElementById('comment-' + id).value;
-      try {
-        const res = await fetch('/api/kernel/reject/' + id, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'X-Kernel-User-Id': 'dashboard-admin' },
-          body: JSON.stringify({ comment })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          document.getElementById('item-' + id).innerHTML = '<div class="text-center py-4 text-red-400"><i class="fas fa-times-circle text-3xl mb-2"></i><p>تم الرفض</p></div>';
-          setTimeout(loadPending, 1000);
-        } else { alert(data.error || 'خطأ'); }
-      } catch(e) { alert('خطأ في الاتصال'); }
-    }
+    function riskLabel(l) { return { low:'منخفض', medium:'متوسط', high:'مرتفع', critical:'حرج' }[l] || l; }
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
     loadPending();
+    setInterval(loadPending, 60000);
   </script>
   <script defer src="/frontend/js/sitewide-modernization.js"></script>
-
-  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
-  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
 </body>
 </html>

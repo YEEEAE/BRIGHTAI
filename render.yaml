@@ -815,17 +815,11 @@ services:
         source: /kernel/index.html
         destination: /kernel/
       - type: redirect
-        source: /kernel/stats
-        destination: /kernel/stats/
+        source: /kernel/chat
+        destination: /kernel/chat/
       - type: redirect
-        source: /kernel/stats.html
-        destination: /kernel/stats/
-      - type: redirect
-        source: /kernel/approvals
-        destination: /kernel/approvals/
-      - type: redirect
-        source: /kernel/approvals.html
-        destination: /kernel/approvals/
+        source: /kernel/chat.html
+        destination: /kernel/chat/
       - type: redirect
         source: /kernel/audit
         destination: /kernel/audit/
@@ -833,11 +827,53 @@ services:
         source: /kernel/audit.html
         destination: /kernel/audit/
       - type: redirect
-        source: /kernel/chat
-        destination: /kernel/chat/
+        source: /kernel/approvals
+        destination: /kernel/approvals/
       - type: redirect
-        source: /kernel/chat.html
-        destination: /kernel/chat/
+        source: /kernel/approvals.html
+        destination: /kernel/approvals/
+      - type: redirect
+        source: /kernel/stats
+        destination: /kernel/stats/
+      - type: redirect
+        source: /kernel/stats.html
+        destination: /kernel/stats/
+      - type: redirect
+        source: /kernel/compliance
+        destination: /kernel/compliance/
+      - type: redirect
+        source: /kernel/compliance.html
+        destination: /kernel/compliance/
+      - type: redirect
+        source: /kernel/policies
+        destination: /kernel/policies/
+      - type: redirect
+        source: /kernel/policies.html
+        destination: /kernel/policies/
+      - type: redirect
+        source: /kernel/connectors
+        destination: /kernel/connectors/
+      - type: redirect
+        source: /kernel/connectors.html
+        destination: /kernel/connectors/
+      - type: redirect
+        source: /kernel/scenarios
+        destination: /kernel/scenarios/
+      - type: redirect
+        source: /kernel/scenarios.html
+        destination: /kernel/scenarios/
+      - type: redirect
+        source: /kernel/reports
+        destination: /kernel/reports/
+      - type: redirect
+        source: /kernel/reports.html
+        destination: /kernel/reports/
+      - type: redirect
+        source: /kernel/evidence
+        destination: /kernel/evidence/
+      - type: redirect
+        source: /kernel/evidence.html
+        destination: /kernel/evidence/
 
       # ── Tenders AI Demo Module Redirects ────────────────────────────────────
       # AI tenders demo pages that exist and are normalized to /path/

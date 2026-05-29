@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>ملفات الأدلة للذكاء الاصطناعي | BrightAI Kernel</title>
+  <meta name="description" content="إنشاء ملفات أدلة للتفاعلات الحساسة مع الذكاء الاصطناعي، تشمل المخاطر والموافقات وسلسلة التدقيق.">
+  <link rel="canonical" href="https://brightai.site/kernel/evidence/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/evidence/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/evidence/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
+  <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
+  <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="kernel.css">
+  <style>
+    .top-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width: 700px) { .top-row { grid-template-columns: 1fr; } }
+
+    /* Generate panel */
+    .gen-panel { padding: 1.5rem; }
+    .gen-panel h3 { font-size: 0.875rem; font-weight: 700; color: var(--brand); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .gen-steps { list-style: none; padding: 0; margin-bottom: 1.25rem; counter-reset: step; }
+    .gen-steps li { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.4rem 0; font-size: 0.8rem; color: var(--text-muted); }
+    .gen-steps .num { min-width: 22px; height: 22px; border-radius: 50%; background: var(--brand-dim); color: var(--brand); display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; flex-shrink: 0; margin-top: 0.1rem; }
+
+    /* Chain info */
+    .chain-panel { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.875rem; }
+    .chain-panel h3 { font-size: 0.875rem; font-weight: 700; color: var(--brand); display: flex; align-items: center; gap: 0.5rem; }
+    .chain-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.8rem; }
+    .chain-row:last-child { border-bottom: none; }
+    .chain-row .lbl { color: var(--text-muted); }
+    .chain-row .val { font-weight: 600; font-family: monospace; word-break: break-all; max-width: 200px; text-align: left; }
+
+    /* Evidence list */
+    .evidence-list { display: flex; flex-direction: column; gap: 0.875rem; }
+    .ev-item { padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius); cursor: pointer; transition: border-color 0.2s; }
+    .ev-item:hover { border-color: rgba(0,212,255,0.35); }
+    .ev-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; }
+    .ev-id { font-family: monospace; font-size: 0.7rem; color: var(--text-dim); margin-bottom: 0.25rem; }
+    .ev-type { font-size: 0.875rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .ev-meta { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; margin-top: 0.5rem; }
+    .ev-hash { font-family: monospace; font-size: 0.7rem; color: var(--text-dim); padding: 0.2rem 0.5rem; background: var(--ink-800); border-radius: 0.4rem; border: 1px solid var(--border); }
+
+    /* File preview */
+    .file-preview {
+      background: var(--ink-900);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: none;
+    }
+    .file-preview.visible { display: block; }
+
+    .fp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+    .fp-title { font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; }
+
+    .fp-seal { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.375rem; padding: 1.25rem; background: rgba(74,222,128,0.06); border: 1px solid rgba(74,222,128,0.2); border-radius: 0.875rem; margin-bottom: 1.25rem; }
+    .fp-seal i { font-size: 2rem; color: #4ade80; }
+    .fp-seal .seal-text { font-size: 0.8rem; color: #4ade80; font-weight: 600; }
+    .fp-seal .seal-hash { font-family: monospace; font-size: 0.65rem; color: var(--text-muted); word-break: break-all; text-align: center; }
+
+    .fp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    @media (max-width: 600px) { .fp-grid { grid-template-columns: 1fr; } }
+    .fp-field { background: var(--ink-800); border: 1px solid var(--border); border-radius: 0.75rem; padding: 0.75rem 1rem; }
+    .fp-field .lbl { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.2rem; }
+    .fp-field .val { font-size: 0.85rem; font-weight: 600; word-break: break-word; }
+
+    .fp-section { margin-bottom: 1rem; }
+    .fp-section-title { font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+
+    .fp-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; padding-top: 1rem; border-top: 1px solid var(--border); }
+
+    /* Generate form */
+    .gen-form { display: flex; flex-direction: column; gap: 0.75rem; }
+    .gen-form .row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .gen-form .row .fi { flex: 1; min-width: 140px; }
+
+    .spinner-wrapper { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-muted); }
+
+    .demo-banner {
+      background: rgba(167,139,250,0.08);
+      border: 1px dashed rgba(167,139,250,0.3);
+      border-radius: 0.75rem;
+      padding: 0.875rem 1.25rem;
+      font-size: 0.8rem;
+      color: #a78bfa;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/kernel/evidence/#webpage",
+      "url": "https://brightai.site/kernel/evidence/",
+      "name": "ملفات الأدلة للذكاء الاصطناعي | BrightAI Kernel",
+      "description": "إنشاء ملفات أدلة للتفاعلات الحساسة مع الذكاء الاصطناعي، تشمل المخاطر والموافقات وسلسلة التدقيق.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/kernel/evidence/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "kernel",
+          "item": "https://brightai.site/kernel/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ملفات الأدلة للذكاء الاصطناعي | BrightAI Kernel",
+          "item": "https://brightai.site/kernel/evidence/"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+</head>
+<body>
+  
+  <div id="brightai-unified-header"></div>
+  <a href="#evidence-main" class="skip-link">تخطي إلى ملفات الدليل</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
+
+  <main id="evidence-main" class="page-wrap">
+
+    <div style="margin-bottom:1.5rem;" class="fade-up">
+      <h1 class="section-title">ملفات الدليل — التوثيق الأبدي المشفر</h1>
+      <p class="section-sub">لكل تفاعل مع الذكاء الاصطناعي ملف دليل محترف: من طلب الموظف إلى القرار النهائي والموافقة البشرية. كل ملف مختوم برقم فريد وبصمة SHA-256 غير قابلة للتعديل.</p>
+    </div>
+
+    <div class="demo-banner fade-up d1">
+      <i class="fas fa-flask" aria-hidden="true"></i>
+      وضع Demo — ملفات الدليل تتطلب تفاعلاً حقيقياً مسجلاً في النواة. يمكن إنشاء ملف تجريبي للعرض أدناه.
+    </div>
+
+    <div class="top-row">
+
+      <!-- Generate panel -->
+      <div class="glass gen-panel fade-up d2">
+        <h3><i class="fas fa-file-signature" aria-hidden="true"></i> إنشاء ملف دليل جديد</h3>
+        <ol class="gen-steps">
+          <li><div class="num">1</div><span>أدخل معرّف التفاعل من سجل التدقيق أو اتركه فارغاً للحصول على آخر تفاعل</span></li>
+          <li><div class="num">2</div><span>تُحسب بصمة رقمية SHA-256 لمحتوى ملف الدليل كاملاً</span></li>
+          <li><div class="num">3</div><span>يُبنى ملف الدليل ويُدرج في سلسلة التدقيق الرئيسية</span></li>
+          <li><div class="num">4</div><span>يمكن تصدير الملف بتنسيق JSON أو طباعته كمستند رسمي</span></li>
+        </ol>
+
+        <div class="gen-form">
+          <div class="form-group">
+            <label class="form-label" for="ev-interaction-id">معرّف التفاعل (اختياري)</label>
+            <input id="ev-interaction-id" class="form-input" type="text" placeholder="اتركه فارغا�� لاستخدام ملف تجريبي">
+          </div>
+          <div class="row">
+            <div class="fi">
+              <label class="form-label" for="ev-pack">حزمة الامتثال</label>
+              <select id="ev-pack" class="form-select">
+                <option value="general">عام</option>
+                <option value="pdpl">PDPL</option>
+                <option value="nca_ecc">NCA ECC</option>
+                <option value="sfda">SFDA</option>
+                <option value="healthcare">الرعاية الصحية</option>
+                <option value="procurement">المشتريات</option>
+              </select>
+            </div>
+            <div class="fi">
+              <label class="form-label" for="ev-notes">ملاحظات إضافية</label>
+              <input id="ev-notes" class="form-input" type="text" placeholder="اختياري...">
+            </div>
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="createEvidence()">
+              <i class="fas fa-file-shield" aria-hidden="true"></i> إنشاء ملف الدليل
+            </button>
+            <span id="ev-status" style="font-size:0.8rem;color:var(--text-muted);"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chain integrity -->
+      <div class="glass chain-panel fade-up d3">
+        <h3><i class="fas fa-link" aria-hidden="true"></i> سلامة سلسلة التدقيق</h3>
+        <div id="chain-body">
+          <div style="text-align:center;padding:2rem;"><span class="spinner" aria-label="جاري التحقق"></span></div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="loadChain()">
+          <i class="fas fa-rotate-right" aria-hidden="true"></i> إعادة التحقق
+        </button>
+      </div>
+    </div>
+
+    <!-- Evidence list -->
+    <section aria-labelledby="ev-list-heading" class="fade-up d4">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:0.5rem;">
+        <h2 id="ev-list-heading" class="section-title" style="font-size:1.1rem;">ملفات الدليل المُنشأة</h2>
+        <button class="btn btn-ghost btn-sm" onclick="loadEvidenceList()">
+          <i class="fas fa-rotate-right" aria-hidden="true"></i> تحديث
+        </button>
+      </div>
+      <div id="evidence-list">
+        <div style="text-align:center;padding:3rem;"><span class="spinner" aria-label="جاري التحميل"></span></div>
+      </div>
+    </section>
+
+    <!-- File Preview -->
+    <div class="file-preview" id="file-preview">
+      <div class="fp-header">
+        <div class="fp-title">
+          <i class="fas fa-file-shield" style="color:var(--brand);" aria-hidden="true"></i>
+          <span id="fp-title-text">ملف الدليل</span>
+        </div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+          <button class="btn btn-ghost btn-sm" onclick="downloadEvJSON()">
+            <i class="fas fa-code" aria-hidden="true"></i> JSON
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="window.print()">
+            <i class="fas fa-print" aria-hidden="true"></i> طباعة
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="closePreview()">
+            <i class="fas fa-xmark" aria-hidden="true"></i> إغلاق
+          </button>
+        </div>
+      </div>
+
+      <div id="fp-body">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="kernel-footer">&copy; 2026 BrightAI Kernel</footer>
+
+  <script>
+    let currentEvidence = null;
+    let evidenceList    = [];
+
+    /* ---- Chain ---- */
+    async function loadChain() {
+      const el = document.getElementById('chain-body');
+      el.innerHTML = '<div style="text-align:center;padding:2rem;"><span class="spinner"></span></div>';
+      try {
+        const r = await fetch('/api/kernel/chain');
+        const d = await r.json();
+        renderChain(d);
+      } catch(_) {
+        renderChain({ valid: true, total: 847, lastHash: '0xa3f7e2b1...', demo: true });
+      }
+    }
+
+    function renderChain(d) {
+      const el = document.getElementById('chain-body');
+      const valid = d.valid !== false;
+      el.innerHTML = `
+        <div style="text-align:center;margin-bottom:0.875rem;">
+          <i class="fas fa-${valid?'link':'link-slash'}" style="font-size:2.5rem;color:${valid?'#4ade80':'#f87171'}"></i>
+          <p style="font-size:0.85rem;font-weight:700;color:${valid?'#4ade80':'#f87171'};margin-top:0.4rem;">${valid ? 'سلسلة التدقيق سليمة' : 'تحذير: خلل في السلسلة'}</p>
+        </div>
+        <div class="chain-row"><span class="lbl">إجمالي السجلات</span><span class="val" style="color:var(--brand);font-family:inherit">${d.total ?? '—'}</span></div>
+        <div class="chain-row"><span class="lbl">آخر بصمة</span><span class="val">${d.lastHash || '—'}</span></div>
+        <div class="chain-row"><span class="lbl">الحالة</span><span class="val" style="color:${valid?'#4ade80':'#f87171'};font-family:inherit">${valid ? 'سليمة' : 'تحتاج مراجعة'}</span></div>
+        ${d.demo ? '<div class="chain-row"><span class="lbl">الوضع</span><span class="val" style="color:#a78bfa;font-family:inherit">تجريبي</span></div>' : ''}`;
+    }
+
+    /* ---- Evidence list ---- */
+    async function loadEvidenceList() {
+      const el = document.getElementById('evidence-list');
+      el.innerHTML = '<div style="text-align:center;padding:3rem;"><span class="spinner"></span></div>';
+      try {
+        const r = await fetch('/api/kernel/evidence');
+        const d = await r.json();
+        evidenceList = d.evidence || [];
+        renderEvidenceList();
+      } catch(_) {
+        evidenceList = buildDemoList();
+        renderEvidenceList();
+      }
+    }
+
+    function buildDemoList() {
+      const types = [
+        { type: 'healthcare', label: 'ملف دليل — رعاية صحية', level: 'high', pack: 'healthcare', approver: 'د. عبدالله الشمري', notes: 'ملخص مريض — تمت الموافقة' },
+        { type: 'sfda', label: 'ملف دليل — SFDA/ISO 13485', level: 'critical', pack: 'sfda', approver: 'م. محمد العتيبي', notes: 'إجراء CAPA دفعة B-2024-089' },
+        { type: 'pdpl', label: 'ملف دليل — PDPL', level: 'medium', pack: 'pdpl', approver: 'مسؤول الامتثال', notes: 'طلب بيانات عميل — تم الإخفاء' },
+        { type: 'nca_ecc', label: 'ملف دليل — NCA ECC', level: 'critical', pack: 'nca_ecc', approver: 'مسؤول الأمن', notes: 'وثيقة سرية — حظر خارجي' },
+        { type: 'general', label: 'ملف دليل — عام', level: 'low', pack: 'general', approver: 'تلقائي', notes: 'طلب عادي — مقبول تلقائياً' },
+      ];
+      return types.map((t, i) => ({
+        id: 'demo-ev-' + (i + 1).toString().padStart(4, '0'),
+        interaction_id: 'int-demo-' + (1000 + i),
+        compliance_pack: t.pack,
+        label: t.label,
+        risk_level: t.level,
+        approver: t.approver,
+        notes: t.notes,
+        hash: '0x' + Math.random().toString(16).slice(2, 12) + '...',
+        created_at: new Date(Date.now() - i * 86400000 * 3).toISOString(),
+        demo: true,
+      }));
+    }
+
+    function renderEvidenceList() {
+      const el = document.getElementById('evidence-list');
+      if (!evidenceList.length) {
+        el.innerHTML = `
+          <div class="glass" style="padding:3rem;text-align:center;">
+            <i class="fas fa-file-circle-plus" style="font-size:3.5rem;color:var(--border);display:block;margin-bottom:1rem;"></i>
+            <p style="color:var(--text-muted);">لا توجد ملفات دليل بعد — أنشئ أول ملف من النموذج أعلاه</p>
+          </div>`;
+        return;
+      }
+      el.innerHTML = '<div class="evidence-list">' + evidenceList.map(ev => `
+        <div class="glass ev-item fade-up" onclick="showEvidence('${ev.id}')" tabindex="0" onkeydown="if(event.key==='Enter')showEvidence('${ev.id}')" aria-label="فتح ملف الدليل ${ev.id}">
+          <div class="ev-header">
+            <div>
+              <div class="ev-id">${ev.id}</div>
+              <div class="ev-type">${ev.label || 'ملف دليل'}</div>
+            </div>
+            <span class="badge badge-${ev.risk_level}">${riskLabel(ev.risk_level)}</span>
+          </div>
+          <div class="ev-meta">
+            <span class="badge badge-demo">${ev.compliance_pack}</span>
+            ${ev.demo ? '<span class="badge" style="background:rgba(167,139,250,0.12);color:#a78bfa;">Demo</span>' : ''}
+            <span class="ev-hash">${ev.hash || '—'}</span>
+            <span style="font-size:0.75rem;color:var(--text-muted);margin-right:auto;">${new Date(ev.created_at).toLocaleDateString('ar-SA')}</span>
+          </div>
+          ${ev.notes ? `<div style="font-size:0.78rem;color:var(--text-muted);margin-top:0.5rem;border-top:1px solid rgba(255,255,255,0.04);padding-top:0.5rem;">${esc(ev.notes)}</div>` : ''}
+        </div>
+      `).join('') + '</div>';
+    }
+
+    /* ---- Create evidence ---- */
+    async function createEvidence() {
+      const interactionId = document.getElementById('ev-interaction-id').value.trim();
+      const pack  = document.getElementById('ev-pack').value;
+      const notes = document.getElementById('ev-notes').value.trim();
+      const statusEl = document.getElementById('ev-status');
+
+      statusEl.innerHTML = '<span class="spinner-wrapper"><span class="spinner" style="width:16px;height:16px;border-width:2px;"></span> جاري الإنشاء...</span>';
+
+      const id = interactionId || 'int-demo-' + Date.now();
+
+      try {
+        const res = await fetch('/api/kernel/evidence/' + id, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ compliancePack: pack, notes }),
+        });
+        const ev = await res.json();
+        statusEl.innerHTML = '<span style="color:#4ade80;"><i class="fas fa-check"></i> تم إنشاء ملف الدليل بنجاح</span>';
+        showEvidenceData(ev);
+        loadEvidenceList();
+      } catch(_) {
+        // Demo fallback
+        const demo = buildDemoEvidenceFile(id, pack, notes);
+        statusEl.innerHTML = '<span style="color:#a78bfa;"><i class="fas fa-flask"></i> ملف دليل تجريبي</span>';
+        showEvidenceData(demo);
+        // prepend to list
+        evidenceList.unshift({
+          id: demo.evidenceId,
+          interaction_id: id,
+          compliance_pack: pack,
+          label: 'ملف دليل — ' + packLabel(pack),
+          risk_level: 'medium',
+          hash: demo.hash,
+          created_at: demo.generatedAt,
+          notes: notes || '—',
+          demo: true,
+        });
+        renderEvidenceList();
+      }
+    }
+
+    function buildDemoEvidenceFile(interactionId, pack, notes) {
+      const now = new Date().toISOString();
+      const hashPart = Math.random().toString(16).slice(2, 14);
+      return {
+        evidenceId: 'ev-' + Date.now(),
+        version: 'kernel-v2',
+        generatedAt: now,
+        demo: true,
+        interaction: {
+          id: interactionId,
+          compliancePack: pack,
+          riskScore: 48,
+          riskLevel: 'medium',
+          approvalStatus: 'auto_approved',
+          requestMessage: 'طلب تجريبي لعرض ملف الدليل',
+          maskedMessage: 'طلب تجريبي لعرض ملف الدليل (مُخفًّى)',
+          piiDetected: ['اسم شخص', 'رقم جوال'],
+          complianceFlags: ['pii_detected', 'auto_masked'],
+          riskReasons: ['وجود بيانات شخصية', 'طلب بيانات خارجية'],
+          modelUsed: 'gemini-2.0-flash',
+          userId: 'demo-user',
+          createdAt: now,
+        },
+        auditChain: {
+          hash: '0x' + hashPart,
+          previousHash: '0x' + Math.random().toString(16).slice(2, 14),
+          chainValid: true,
+        },
+        complianceMapping: {
+          pack,
+          version: '1.0',
+          appliedPolicies: ['data_masking', 'pii_protection', 'audit_logging'],
+        },
+        notes: notes || null,
+        hash: '0x' + hashPart,
+      };
+    }
+
+    /* ---- Show evidence ---- */
+    function showEvidence(id) {
+      const ev = evidenceList.find(e => e.id === id);
+      if (!ev) return;
+      // Build a display-friendly object
+      const display = {
+        evidenceId: ev.id,
+        version: 'kernel-v2',
+        generatedAt: ev.created_at,
+        demo: ev.demo,
+        interaction: {
+          id: ev.interaction_id,
+          compliancePack: ev.compliance_pack,
+          riskLevel: ev.risk_level,
+          approvalStatus: ev.approval_status || 'auto_approved',
+          piiDetected: ev.pii_detected || [],
+        },
+        auditChain: { hash: ev.hash, chainValid: true },
+        notes: ev.notes,
+      };
+      showEvidenceData(display);
+    }
+
+    function showEvidenceData(ev) {
+      currentEvidence = ev;
+      const previewEl = document.getElementById('file-preview');
+      const bodyEl    = document.getElementById('fp-body');
+      const titleEl   = document.getElementById('fp-title-text');
+
+      previewEl.classList.add('visible');
+      titleEl.textContent = ev.evidenceId || 'ملف الدليل';
+
+      const ixn = ev.interaction || {};
+      const chain = ev.auditChain || {};
+
+      bodyEl.innerHTML = `
+        <div class="fp-seal">
+          <i class="fas fa-shield-check" aria-hidden="true"></i>
+          <div class="seal-text">ملف دليل موثّق بسلسلة تدقيق مشفرة</div>
+          <div class="seal-hash">${chain.hash || '—'}</div>
+          ${ev.demo ? '<div style="font-size:0.68rem;color:#a78bfa;margin-top:0.25rem;">بيانات تجريبية — Demo Mode</div>' : ''}
+        </div>
+
+        <div class="fp-grid">
+          <div class="fp-field"><div class="lbl">معرّف الدليل</div><div class="val" style="font-family:monospace;font-size:0.78rem">${esc(ev.evidenceId || '—')}</div></div>
+          <div class="fp-field"><div class="lbl">تاريخ الإنشاء</div><div class="val">${ev.generatedAt ? new Date(ev.generatedAt).toLocaleString('ar-SA') : '—'}</div></div>
+          <div class="fp-field"><div class="lbl">معرّف التفاعل</div><div class="val" style="font-family:monospace;font-size:0.78rem">${esc(ixn.id || '—')}</div></div>
+          <div class="fp-field"><div class="lbl">حزمة الامتثال</div><div class="val" style="color:var(--brand)">${esc(ixn.compliancePack || '—')}</div></div>
+          <div class="fp-field"><div class="lbl">مستوى المخاطر</div><div class="val"><span class="badge badge-${ixn.riskLevel}">${riskLabel(ixn.riskLevel)}</span></div></div>
+          <div class="fp-field"><div class="lbl">حالة الموافقة</div><div class="val"><span class="badge badge-${ixn.approvalStatus || 'auto_approved'}">${statusLabel(ixn.approvalStatus)}</span></div></div>
+          <div class="fp-field" style="grid-column:span 2"><div class="lbl">بصمة SHA-256</div><div class="val" style="font-family:monospace;font-size:0.75rem;word-break:break-all;color:#4ade80">${esc(chain.hash || '—')}</div></div>
+        </div>
+
+        ${(ixn.piiDetected || []).length ? `
+          <div class="fp-section">
+            <div class="fp-section-title">البيانات الشخصية المكتشفة والمخفية</div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+              ${ixn.piiDetected.map(p => `<span class="badge badge-high">${esc(p)}</span>`).join('')}
+            </div>
+          </div>` : ''}
+
+        ${(ixn.complianceFlags || []).length ? `
+          <div class="fp-section">
+            <div class="fp-section-title">علامات الامتثال</div>
+            <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">
+              ${ixn.complianceFlags.map(f => `<span class="badge badge-auto_approved">${esc(f)}</span>`).join('')}
+            </div>
+          </div>` : ''}
+
+        ${ev.notes ? `
+          <div class="fp-section">
+            <div class="fp-section-title">ملاحظات</div>
+            <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">${esc(ev.notes)}</p>
+          </div>` : ''}
+
+        <div class="fp-section">
+          <div class="fp-section-title">البيانات الكاملة (JSON)</div>
+          <pre style="font-size:0.72rem;color:#94a3b8;background:var(--ink-900);padding:1rem;border-radius:0.75rem;overflow-x:auto;direction:ltr;line-height:1.6;max-height:300px;">${esc(JSON.stringify(ev, null, 2))}</pre>
+        </div>
+      `;
+
+      previewEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closePreview() {
+      document.getElementById('file-preview').classList.remove('visible');
+      currentEvidence = null;
+    }
+
+    function downloadEvJSON() {
+      if (!currentEvidence) return;
+      const blob = new Blob([JSON.stringify(currentEvidence, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = (currentEvidence.evidenceId || 'evidence') + '.json';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function riskLabel(l)   { return { low:'منخفض', medium:'متوسط', high:'مرتفع', critical:'حرج' }[l] || (l || '—'); }
+    function statusLabel(s) { return { auto_approved:'مقبول تلقائي', approved:'مقبول', pending:'معلق', blocked:'محظور', rejected:'مرفوض' }[s] || (s || '—'); }
+    function packLabel(p)   { return { general:'عام', pdpl:'PDPL', nca_ecc:'NCA ECC', sfda:'SFDA', healthcare:'الرعاية الصحية', procurement:'المشتريات' }[p] || p; }
+    function esc(s) { const d = document.createElement('div'); d.textContent = String(s ?? ''); return d.innerHTML; }
+
+    loadChain();
+    loadEvidenceList();
+  </script>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
+</body>
+</html>

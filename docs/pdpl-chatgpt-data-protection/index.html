@@ -229,6 +229,114 @@
   ]
 }
   </script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/pdpl-chatgpt-data-protection/#webpage",
+      "url": "https://brightai.site/docs/pdpl-chatgpt-data-protection/",
+      "name": "ChatGPT والبيانات الشخصية في السعودية: كيف تستخدم AI بدون تسريب بيانات؟ | BrightAI",
+      "description": "دليل عملي للشركات السعودية لاستخدام ChatGPT والذكاء الاصطناعي مع حماية البيانات الشخصية، تنقية PII، وسجل تدقيق متوافق تشغيليًا مع PDPL.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/pdpl-chatgpt-data-protection/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ChatGPT والبيانات الشخصية في السعودية: كيف تستخدم AI بدون تسريب بيانات؟ | BrightAI",
+          "item": "https://brightai.site/docs/pdpl-chatgpt-data-protection/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/pdpl-chatgpt-data-protection/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "أمثلة على بيانات لا يجب إرسالها للنماذج بيانات تعريف مباشرة",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "رقم الهوية الوطنية أو الإقامة، الاسم الكامل مع رقم الجوال، البريد الشخصي، العنوان الوطني، أو رقم العميل."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "بيانات مالية وتعاقدية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "آيبان، كشوف حساب، أو عقود تحتوي أطرافًا وأرقامًا ومبالغ وتواريخ يمكن ربطها بشخص أو شركة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "جدول التعامل مع البيانات قبل ChatGPT نوع البيانات الخطر الإجراء المناسب رقم هوية، إقامة، جوال، بريد شخصي تعريف مباشر لصاحب البيانات وربط الطلب بشخص محدد. استخدام PII masking AI لاستبدال القيم قبل الإرسال، أو منع الطلب إذا لم يكن التنقيح كافيًا. محادثات دعم العملاء والشكاوى قد تحتوي أسماء، أرقام طلبات، تفاصيل مالية، أو معلومات حساسة داخل النص الحر. تمريرها عبر AI Firewall لاكتشاف النصوص الحساسة وتطبيق mask أو block. ملفات موظفين أو تقييمات أداء مخاطر خصوصية وقرارات وظيفية قد تؤثر على الشخص. تنقية البيانات، تقليل التفاصيل غير اللازمة، وتفعيل Human Approval Layer قبل أي قرار مؤثر. عقود، فواتير، ومعلومات موردين تسريب معلومات تجارية أو بيانات أطراف خارجية. حذف المعرفات، تلخيص داخلي آمن، وتوثيق العملية في AI Audit Trail . بيانات صحية أو عالية الحساسية مخاطر أعلى على الخصوصية والسمعة والامتثال. المنع الافتراضي أو التصعيد لموافقة بشرية، مع سجل سبب القرار والنسخة المنقحة من الطلب. كيف يساعد AI Firewall؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "AI Firewall Saudi Arabia يعمل كطبقة بين الموظف وأداة الذكاء الاصطناعي. بدل ما يذهب prompt مباشرة إلى ChatGPT أو أي نموذج خارجي، يمر أولًا على قواعد الحماية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "متى نحتاج Human Approval؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الموافقة البشرية ليست لكل طلب. فائدتها تظهر عندما يكون الطلب عالي المخاطر أو قد ينتج عنه أثر على عميل أو موظف أو جهة خارجية."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="bg-grid">
 

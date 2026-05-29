@@ -169,6 +169,98 @@
   ]
 }
   </script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-governance/#webpage",
+      "url": "https://brightai.site/docs/nca-ecc-ai-governance/",
+      "name": "NCA ECC وحوكمة الذكاء الاصطناعي | BrightAI Docs",
+      "description": "وثيقة تشغيلية تربط حوكمة الذكاء الاصطناعي بضوابط الأمن السيبراني وجاهزية التدقيق.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-governance/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "NCA ECC وحوكمة الذكاء الاصطناعي | BrightAI Docs",
+          "item": "https://brightai.site/docs/nca-ecc-ai-governance/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-governance/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "ضوابط تشغيلية مهمة تسجيل كل تفاعل AI. تصنيف البيانات قبل المعالجة. تفعيل الموافقات البشرية للحالات الحساسة. ربط السجلات بأدلة مراجعة. كيف يساعد BrightAI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يوفر AI Audit Trail وHuman Approval Layer وAI Evidence File لتكوين سلسلة أدلة واضحة تدعم فرق الأمن السيبراني والامتثال."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "FAQ هل هذا بديل GRC؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا، BrightAI يكمل برامج GRC بإضافة طبقة تشغيلية لاستخدامات AI."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="bg-grid">
 

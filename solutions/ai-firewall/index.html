@@ -232,7 +232,8 @@
         "@id": "https://brightai.site/#organization"
       },
       "inLanguage": [
-        "ar-SA"
+        "ar-SA",
+        "en-SA"
       ]
     },
     {
@@ -263,7 +264,7 @@
           "@type": "ListItem",
           "position": 2,
           "name": "solutions",
-          "item": "https://brightai.site/solutions/ai-governance-platform/"
+          "item": "https://brightai.site/solutions/"
         },
         {
           "@type": "ListItem",
@@ -272,10 +273,48 @@
           "item": "https://brightai.site/solutions/ai-firewall/"
         }
       ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/solutions/ai-firewall/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "التزامات PDPL",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نظام PDPL يُلزمك بحماية البيانات الشخصية من أي معالجة غير مصرح بها بما في ذلك إرسالها لنماذج خارجية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "القطاع المالي",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "بنوك وشركات تأمين وصناديق استثمار تحتاج حماية البيانات المالية الحساسة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "كيف يعمل AI Firewall لحظة بلحظة؟ 1 الموظف يُرسل طلب AI",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الموظف يكتب سؤاله لنموذج AI كالمعتاد من خلال واجهة BrightAI أو أي نقطة تكامل."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "فحص PII/PHI/البيانات المالية",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "النظام يحلل الطلب سيمانتيكياً ويُحدد كل بيانة حساسة: أسماء، هويات، تشخيصات، أرقام حسابات، أسرار تجارية."
+          }
+        }
+      ]
     }
   ]
 }
-</script>
+  </script>
 </head>
 <body class="bg-grid">
 

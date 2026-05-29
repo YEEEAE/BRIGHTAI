@@ -1,117 +1,57 @@
 <!DOCTYPE html>
 <html lang="ar-SA" dir="rtl">
 <head>
-      <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-8LLESL207Q', { 'anonymize_ip': true, 'allow_google_signals': false });
-    </script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>لوحة الإحصائيات — BrightAI Kernel</title>
-  <meta name="description" content="لوحة الإحصائيات — BrightAI Kernel من BrightAI، صفحة عامة قابلة للفهرسة ضمن تجربة الموقع وخدمات الذكاء الاصطناعي وحوكمة الأنظمة.">
-  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow">
+  <title>إحصائيات أمان الذكاء الاصطناعي | BrightAI Kernel</title>
+  <meta name="description" content="مؤشرات تشغيلية عن المخاطر والطلبات والموافقات وأداء طبقة BrightAI Kernel لحوكمة الذكاء الاصطناعي.">
+  <link rel="canonical" href="https://brightai.site/kernel/stats/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/stats/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/stats/">
+  <link rel="sitemap" type="application/xml" href="https://brightai.site/sitemap.xml">
   <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css">
   <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font">
   <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons">
   <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="kernel.css">
   <style>
-    body { background: #060914; }
+    .top-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width:900px) { .top-metrics { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width:480px) { .top-metrics { grid-template-columns: 1fr 1fr; } }
 
-    .metric-card {
-      position: relative;
-      overflow: hidden;
-    }
-    .metric-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      right: -50%;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle, rgba(0,212,255,.06) 0%, transparent 70%);
-      pointer-events: none;
-      transition: opacity .4s;
-      opacity: 0;
-    }
-    .metric-card:hover::before { opacity: 1; }
+    .mid-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width:700px) { .mid-charts { grid-template-columns: 1fr; } }
 
-    .metric-card:hover {
-      border-color: rgba(255,255,255,.15);
-      transform: translateY(-2px);
-    }
+    .bottom-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    @media (max-width:800px) { .bottom-row { grid-template-columns: 1fr 1fr; } }
+    @media (max-width:480px) { .bottom-row { grid-template-columns: 1fr; } }
 
-    .glow-blue { filter: drop-shadow(0 0 8px rgba(0,212,255,.5)); }
-    .glow-red { filter: drop-shadow(0 0 8px rgba(239,68,68,.5)); }
-    .glow-yellow { filter: drop-shadow(0 0 8px rgba(234,179,8,.5)); }
-    .glow-green { filter: drop-shadow(0 0 8px rgba(34,197,94,.5)); }
+    .chart-title { font-size: 0.875rem; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+    .bar-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+    .bar-label { font-size: 0.78rem; color: var(--text-muted); min-width: 70px; text-align: right; }
+    .bar-track { flex: 1; background: var(--ink-800); border-radius: 99px; height: 1.4rem; overflow: hidden; }
+    .bar-fill-inner { height: 100%; border-radius: 99px; transition: width 0.8s cubic-bezier(.4,0,.2,1); display: flex; align-items: center; padding-right: 0.4rem; font-size: 0.7rem; font-weight: 600; color: rgba(0,0,0,0.7); }
+    .bar-count { font-size: 0.78rem; color: var(--text-muted); min-width: 30px; text-align: left; }
 
-    .risk-circle-outer {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: conic-gradient(#00d4ff 0deg, #111a2e 0deg);
-      transition: background .8s ease;
-      position: relative;
-    }
-    .risk-circle-inner {
-      width: 96px;
-      height: 96px;
-      border-radius: 50%;
-      background: #0b1220;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      box-shadow: inset 0 0 20px rgba(0,0,0,.4);
-    }
+    /* Risk circle */
+    .risk-circle-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+    .risk-circle { width: 120px; height: 120px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: conic-gradient(var(--brand) 0deg, var(--ink-800) 0deg); transition: background 0.8s ease; }
+    .risk-inner { width: 94px; height: 94px; border-radius: 50%; background: var(--ink-900); display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-    .bar-fill {
-      transition: width .8s cubic-bezier(.4,0,.2,1);
-    }
-
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #22c55e;
-      animation: pulse-ring 2s ease-in-out infinite;
-    }
-    @keyframes pulse-ring {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,.6); }
-      50% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
-    }
-
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-up {
-      animation: fade-up .5s ease-out both;
-    }
-    .delay-1 { animation-delay: .08s; }
-    .delay-2 { animation-delay: .16s; }
-    .delay-3 { animation-delay: .24s; }
-    .delay-4 { animation-delay: .32s; }
-    .delay-5 { animation-delay: .40s; }
-    .delay-6 { animation-delay: .48s; }
-    .delay-7 { animation-delay: .56s; }
-    .delay-8 { animation-delay: .64s; }
-    .delay-9 { animation-delay: .72s; }
+    /* Chain status */
+    .chain-wrap { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 0.5rem; }
   </style>
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://brightai.site/kernel/stats/">
-<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/stats/">
-<link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/stats/">
-<script id="brightai-production-schema" type="application/ld+json">
+  <script id="brightai-production-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -136,15 +76,16 @@
         "@id": "https://brightai.site/#organization"
       },
       "inLanguage": [
-        "ar-SA"
+        "ar-SA",
+        "en-SA"
       ]
     },
     {
       "@type": "WebPage",
       "@id": "https://brightai.site/kernel/stats/#webpage",
       "url": "https://brightai.site/kernel/stats/",
-      "name": "لوحة الإحصائيات — BrightAI Kernel",
-      "description": "—",
+      "name": "إحصائيات أمان الذكاء الاصطناعي | BrightAI Kernel",
+      "description": "مؤشرات تشغيلية عن المخاطر والطلبات والموافقات وأداء طبقة BrightAI Kernel لحوكمة الذكاء الاصطناعي.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -172,7 +113,7 @@
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "لوحة الإحصائيات — BrightAI Kernel",
+          "name": "إحصائيات أمان الذكاء الاصطناعي | BrightAI Kernel",
           "item": "https://brightai.site/kernel/stats/"
         }
       ]
@@ -180,197 +121,194 @@
   ]
 }
   </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
-<body class="text-white font-sans min-h-screen flex flex-col bright-page--kernel" data-bright-page-type="kernel">
-<h1 class="sr-only bright-a11y-h1">لوحة الإحصائيات — BrightAI Kernel</h1>
-
-  <a href="#stats-main" class="skip-link">تخطي إلى الإحصائيات</a>
-
-  <!-- Header -->
+<body>
+  
   <div id="brightai-unified-header"></div>
+  <a href="#stats-main" class="skip-link">تخطي إلى الإحصائيات</a>
+  <script>
+    (function () {
+      var script = document.createElement('script');
+      script.src = window.location.protocol === 'file:' ? 'kernel-nav.js' : '/kernel/kernel-nav.js';
+      document.currentScript.insertAdjacentElement('beforebegin', script);
+    })();
+  </script>
 
-  <main id="stats-main" role="main" tabindex="-1" class="focus:outline-none max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full">
+  <main id="stats-main" class="page-wrap">
 
-    <!-- Top Metrics Row -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-
-      <!-- Total -->
-      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-1">
-        <div class="w-12 h-12 mx-auto rounded-xl bg-brand-500/10 flex items-center justify-center mb-3">
-          <i class="fa-solid fa-comments text-xl text-brand-500 glow-blue"></i>
-        </div>
-        <p id="metric-total" class="text-3xl font-extrabold text-brand-500 mb-1">—</p>
-        <p class="text-sm text-white/50">إجمالي التفاعلات</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem;" class="fade-up">
+      <div>
+        <h1 class="section-title">لوحة الإحصائيات — عرض صحتك الأمنية</h1>
+        <p class="section-sub">مراقبة مباشرة لكيفية أداء BrightAI Kernel في حماية الذكاء الاصطناعي لديك. البيانات تُحدّث كل 30 ثانية.</p>
       </div>
-
-      <!-- Blocked -->
-      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-2">
-        <div class="w-12 h-12 mx-auto rounded-xl bg-red-500/10 flex items-center justify-center mb-3">
-          <i class="fa-solid fa-shield text-xl text-red-400 glow-red"></i>
-        </div>
-        <p id="metric-blocked" class="text-3xl font-extrabold text-red-400 mb-1">—</p>
-        <p class="text-sm text-white/50">محظورة</p>
-      </div>
-
-      <!-- Pending -->
-      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-3">
-        <div class="w-12 h-12 mx-auto rounded-xl bg-yellow-500/10 flex items-center justify-center mb-3">
-          <i class="fa-solid fa-clock text-xl text-yellow-400 glow-yellow"></i>
-        </div>
-        <p id="metric-pending" class="text-3xl font-extrabold text-yellow-400 mb-1">—</p>
-        <p class="text-sm text-white/50">معلقة</p>
-      </div>
-
-      <!-- Compliance -->
-      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-5 text-center transition-all duration-300 animate-fade-up delay-4">
-        <div class="w-12 h-12 mx-auto rounded-xl bg-green-500/10 flex items-center justify-center mb-3">
-          <i class="fa-solid fa-check-double text-xl text-green-400 glow-green"></i>
-        </div>
-        <p id="metric-compliance" class="text-3xl font-extrabold text-green-400 mb-1">—</p>
-        <p class="text-sm text-white/50">معدل الامتثال</p>
-      </div>
-
+      <span style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-muted);">
+        <span class="pulse-dot" aria-hidden="true"></span> تحديث حي
+      </span>
     </div>
 
-    <!-- Middle Row -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
-
-      <!-- Risk Distribution -->
-      <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:border-white/15 animate-fade-up delay-5">
-        <h3 class="text-lg font-bold text-white/90 mb-4 flex items-center gap-2">
-          <i class="fa-solid fa-chart-bar text-brand-500 text-sm"></i>
-          توزيع مستوى المخاطر
-        </h3>
-        <div id="risk-chart">
-          <div class="text-white/30 text-sm py-8 text-center">جاري التحميل...</div>
-        </div>
+    <!-- Top Metrics -->
+    <div class="top-metrics">
+      <div class="glass metric-card fade-up d1">
+        <div class="metric-icon bg-brand"><i class="fas fa-comments c-brand" aria-hidden="true"></i></div>
+        <div class="metric-value c-brand" id="m-total">—</div>
+        <div class="metric-label">إجمالي الطلبات</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">كل طلب نحو AI يمر عبر النواة</div>
       </div>
-
-      <!-- Compliance Pack Distribution -->
-      <div class="rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 transition-all duration-300 hover:border-white/15 animate-fade-up delay-6">
-        <h3 class="text-lg font-bold text-white/90 mb-4 flex items-center gap-2">
-          <i class="fa-solid fa-layer-group text-brand-500 text-sm"></i>
-          توزيع حزم الامتثال
-        </h3>
-        <div id="pack-chart">
-          <div class="text-white/30 text-sm py-8 text-center">جاري التحميل...</div>
-        </div>
+      <div class="glass metric-card fade-up d2">
+        <div class="metric-icon bg-red"><i class="fas fa-shield c-red" aria-hidden="true"></i></div>
+        <div class="metric-value c-red" id="m-blocked">—</div>
+        <div class="metric-label">طُحظرت من الجدار</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">لم تصل للنموذج</div>
       </div>
+      <div class="glass metric-card fade-up d3">
+        <div class="metric-icon bg-yellow"><i class="fas fa-clock c-yellow" aria-hidden="true"></i></div>
+        <div class="metric-value c-yellow" id="m-pending">—</div>
+        <div class="metric-label">انتظار موافقة</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">عالية المخاطر</div>
+      </div>
+      <div class="glass metric-card fade-up d4">
+        <div class="metric-icon bg-green"><i class="fas fa-check-double c-green" aria-hidden="true"></i></div>
+        <div class="metric-value c-green" id="m-compliance">—</div>
+        <div class="metric-label">معدل الامتثال</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">% السياسات المتحققة</div>
+      </div>
+    </div>
 
+    <!-- Mid Charts -->
+    <div class="mid-charts">
+      <div class="glass" style="padding:1.5rem;" id="risk-chart-card">
+        <div class="chart-title"><i class="fas fa-chart-bar c-brand" aria-hidden="true"></i> توزيع مستوى المخاطر</div>
+        <div id="risk-chart"><div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.85rem;">جاري التحميل...</div></div>
+      </div>
+      <div class="glass" style="padding:1.5rem;" id="pack-chart-card">
+        <div class="chart-title"><i class="fas fa-layer-group c-brand" aria-hidden="true"></i> توزيع حزم الامتثال</div>
+        <div id="pack-chart"><div style="text-align:center;padding:2rem;color:var(--text-muted);font-size:0.85rem;">جاري التحميل...</div></div>
+      </div>
     </div>
 
     <!-- Bottom Row -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-
-      <!-- PII Detected -->
-      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 text-center transition-all duration-300 animate-fade-up delay-7">
-        <div class="w-12 h-12 mx-auto rounded-xl bg-amber-500/10 flex items-center justify-center mb-3">
-          <i class="fa-solid fa-user-shield text-xl text-amber-400"></i>
-        </div>
-        <p id="metric-pii" class="text-3xl font-extrabold text-amber-400 mb-1">—</p>
-        <p class="text-sm text-white/50">بيانات شخصية مكتشفة</p>
+    <div class="bottom-row">
+      <!-- PII -->
+      <div class="glass metric-card fade-up d5">
+        <div class="metric-icon bg-orange"><i class="fas fa-user-shield c-orange" aria-hidden="true"></i></div>
+        <div class="metric-value c-orange" id="m-pii">—</div>
+        <div class="metric-label">بيانات شخصية مكتشفة</div>
       </div>
 
-      <!-- Avg Risk Score -->
-      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 flex flex-col items-center justify-center transition-all duration-300 animate-fade-up delay-8">
-        <h4 class="text-sm text-white/50 mb-3">متوسط درجة المخاطر</h4>
-        <div id="risk-circle" class="risk-circle-outer">
-          <div class="risk-circle-inner">
-            <span id="metric-avg-risk" class="text-2xl font-extrabold text-brand-500">—</span>
-            <span class="text-xs text-white/40">من 100</span>
+      <!-- Avg Risk -->
+      <div class="glass" style="padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.75rem;">
+        <div class="chart-title" style="justify-content:center;margin-bottom:0;">متوسط درجة المخاطر</div>
+        <div class="risk-circle" id="risk-circle" aria-label="متوسط درجة المخاطر">
+          <div class="risk-inner">
+            <span id="m-avg-risk" style="font-size:1.5rem;font-weight:800;color:var(--brand);">—</span>
+            <span style="font-size:0.7rem;color:var(--text-muted);">من 100</span>
           </div>
         </div>
       </div>
 
-      <!-- Chain Integrity -->
-      <div class="metric-card rounded-2xl bg-ink-900/60 backdrop-blur-xl border border-white/10 p-6 flex flex-col items-center justify-center transition-all duration-300 animate-fade-up delay-9">
-        <h4 class="text-sm text-white/50 mb-3">سلامة سلسلة التدقيق</h4>
-        <div id="chain-status" class="flex flex-col items-center justify-center">
-          <div class="text-white/30 text-sm py-4 text-center">جاري التحقق...</div>
-        </div>
+      <!-- Chain -->
+      <div class="glass" style="padding:1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;">
+        <div class="chart-title" style="justify-content:center;margin-bottom:0;">سلامة سلسلة التدقيق</div>
+        <div id="chain-status" style="text-align:center;padding:1rem;color:var(--text-muted);font-size:0.85rem;">جاري التحقق...</div>
       </div>
+    </div>
 
+    <!-- Extra Stats -->
+    <div class="grid-3" style="margin-bottom:1.5rem;">
+      <div class="glass metric-card fade-up d1">
+        <div class="metric-icon bg-green"><i class="fas fa-check c-green" aria-hidden="true"></i></div>
+        <div class="metric-value c-green" id="m-approved">—</div>
+        <div class="metric-label">موافقة بشرية</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">قرارات المسؤولين</div>
+      </div>
+      <div class="glass metric-card fade-up d2">
+        <div class="metric-icon bg-brand"><i class="fas fa-robot c-brand" aria-hidden="true"></i></div>
+        <div class="metric-value c-brand" id="m-auto">—</div>
+        <div class="metric-label">قبول آلي آمن</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">لا مخاطر مكتشفة</div>
+      </div>
+      <div class="glass metric-card fade-up d3">
+        <div class="metric-icon bg-red"><i class="fas fa-ban c-red" aria-hidden="true"></i></div>
+        <div class="metric-value c-red" id="m-rejected">—</div>
+        <div class="metric-label">رفع أو رفض</div>
+        <div style="font-size: 0.7rem; color: var(--text-dim); margin-top: 0.35rem;">انتهاك سياسات</div>
+      </div>
     </div>
 
   </main>
 
-  <!-- Footer -->
-  <footer role="contentinfo" class="mt-auto border-t border-white/10 py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-white/30 text-sm">
-      <span>&copy; 2026 BrightAI Kernel</span>
-      <span class="flex items-center gap-2">
-        <span class="pulse-dot" aria-hidden="true"></span>
-        تحديث تلقائي كل ٣٠ ثانية
-      </span>
-    </div>
-  </footer>
+  <footer class="kernel-footer">&copy; 2026 BrightAI Kernel</footer>
 
   <script>
+    const RISK_COLORS = { low:'#4ade80', medium:'#fbbf24', high:'#fb923c', critical:'#f87171' };
+    const RISK_LABELS = { low:'منخفض', medium:'متوسط', high:'مرتفع', critical:'حرج' };
+    const PACK_COLOR  = 'var(--brand)';
+
     async function loadStats() {
       try {
-        const res = await fetch('/api/kernel/stats');
-        const data = await res.json();
+        const r = await fetch('/api/kernel/stats');
+        const d = await r.json();
 
-        // Top metrics
-        document.getElementById('metric-total').textContent = data.total || 0;
-        document.getElementById('metric-blocked').textContent = data.blocked || 0;
-        document.getElementById('metric-pending').textContent = data.pending || 0;
-        document.getElementById('metric-compliance').textContent = data.complianceRate || '100%';
+        set('m-total',      d.total ?? '—');
+        set('m-blocked',    d.blocked ?? '—');
+        set('m-pending',    d.pending ?? '—');
+        set('m-compliance', d.complianceRate || '—');
+        set('m-pii',        d.piiDetected ?? '—');
+        set('m-avg-risk',   d.avgRiskScore ?? '—');
+        set('m-approved',   d.approved ?? '—');
+        set('m-auto',       d.autoApproved ?? '—');
+        set('m-rejected',   d.rejected ?? '—');
 
-        // Risk distribution
-        const riskContainer = document.getElementById('risk-chart');
-        const total = data.total || 1;
-        const riskColors = { low: '#22c55e', medium: '#eab308', high: '#f97316', critical: '#ef4444' };
-        const riskLabels = { low: 'منخفض', medium: 'متوسط', high: 'عالي', critical: 'حرج' };
-        riskContainer.innerHTML = (data.byRiskLevel || []).map(r => `
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-sm text-gray-300 w-16">${riskLabels[r.risk_level] || r.risk_level}</span>
-            <div class="flex-1 bg-ink-800 rounded-full h-6 overflow-hidden">
-              <div class="bar-fill h-full rounded-full" style="width:${(r.count/total*100).toFixed(1)}%; background:${riskColors[r.risk_level] || '#6b7280'}"></div>
-            </div>
-            <span class="text-sm text-gray-400 w-12 text-left">${r.count}</span>
-          </div>
-        `).join('') || '<div class="text-white/30 text-sm py-4 text-center">لا توجد بيانات</div>';
+        const total = d.total || 1;
 
-        // Pack distribution
-        const packContainer = document.getElementById('pack-chart');
-        packContainer.innerHTML = (data.byCompliancePack || []).map(p => `
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-sm text-brand-300 w-24">${p.compliance_pack}</span>
-            <div class="flex-1 bg-ink-800 rounded-full h-6 overflow-hidden">
-              <div class="bar-fill h-full rounded-full bg-brand-500" style="width:${(p.count/total*100).toFixed(1)}%"></div>
-            </div>
-            <span class="text-sm text-gray-400 w-12 text-left">${p.count}</span>
-          </div>
-        `).join('') || '<div class="text-white/30 text-sm py-4 text-center">لا توجد بيانات</div>';
+        // Risk chart
+        const riskEl = document.getElementById('risk-chart');
+        riskEl.innerHTML = (d.byRiskLevel || []).map(r =>
+          barRow(RISK_LABELS[r.risk_level] || r.risk_level, r.count, total, RISK_COLORS[r.risk_level] || '#6b7280')
+        ).join('') || '<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:1rem;">لا توجد بيانات</div>';
 
-        // Bottom metrics
-        document.getElementById('metric-pii').textContent = data.piiDetected || 0;
-        document.getElementById('metric-avg-risk').textContent = data.avgRiskScore || 0;
+        // Pack chart
+        const packEl = document.getElementById('pack-chart');
+        packEl.innerHTML = (d.byCompliancePack || []).map(p =>
+          barRow(p.compliance_pack, p.count, total, PACK_COLOR)
+        ).join('') || '<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:1rem;">لا توجد بيانات</div>';
 
         // Avg risk circle
-        const avgPct = Math.min((data.avgRiskScore || 0), 100);
-        document.getElementById('risk-circle').style.background = `conic-gradient(#00d4ff ${avgPct * 3.6}deg, #111a2e ${avgPct * 3.6}deg)`;
+        const avg = Math.min(d.avgRiskScore || 0, 100);
+        document.getElementById('risk-circle').style.background =
+          `conic-gradient(var(--brand) ${avg * 3.6}deg, var(--ink-800) ${avg * 3.6}deg)`;
 
-        // Chain integrity
+        // Chain
         const chainEl = document.getElementById('chain-status');
-        if (data.chainIntegrity?.valid) {
-          chainEl.innerHTML = '<i class="fas fa-link text-4xl text-green-400 mb-2"></i><p class="text-green-300 text-sm">سلسلة التدقيق سليمة</p>';
-        } else {
-          chainEl.innerHTML = '<i class="fas fa-link-slash text-4xl text-red-400 mb-2"></i><p class="text-red-300 text-sm">تحذير: خلل في سلسلة التدقيق</p>';
+        if (d.chainIntegrity?.valid) {
+          chainEl.innerHTML = '<i class="fas fa-link" style="font-size:2.5rem;color:#4ade80;display:block;margin-bottom:0.5rem;"></i><p style="color:#4ade80;font-size:0.85rem;">سلسلة التدقيق سليمة</p>';
+        } else if (d.chainIntegrity) {
+          chainEl.innerHTML = '<i class="fas fa-link-slash" style="font-size:2.5rem;color:#f87171;display:block;margin-bottom:0.5rem;"></i><p style="color:#f87171;font-size:0.85rem;">تحذير: خلل في السلسلة</p>';
         }
 
-      } catch(e) {
-        console.error('Stats load error:', e);
-      }
+      } catch(e) { console.error('Stats error', e); }
+    }
+
+    function barRow(label, count, total, color) {
+      const pct = total > 0 ? (count / total * 100).toFixed(1) : 0;
+      return `<div class="bar-row">
+        <span class="bar-label">${label}</span>
+        <div class="bar-track"><div class="bar-fill-inner" style="width:${pct}%;background:${color}">${pct > 8 ? pct + '%' : ''}</div></div>
+        <span class="bar-count">${count}</span>
+      </div>`;
+    }
+
+    function set(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
     }
 
     loadStats();
     setInterval(loadStats, 30000);
   </script>
   <script defer src="/frontend/js/sitewide-modernization.js"></script>
-
-  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
-  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+  <script defer src="/frontend/js/production-runtime.v20260427.js"></script>
+  <script defer src="/frontend/js/unified-header.js?v=20260529-nav-v1"></script>
 </body>
 </html>

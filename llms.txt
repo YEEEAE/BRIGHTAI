@@ -11,11 +11,19 @@ BrightAI is an operational AI governance and safety layer for Saudi organization
 التواصل: +966538229013 (واتساب) | yazeed1job@gmail.com 
 تويتر: @BrightAISite
 
-## المنتج الأساسي: [نواة برايت آي (BrightAI Kernel)](https://brightai.site/#product)
+## المنتج الأساسي: [نواة برايت آي (BrightAI Kernel)](https://brightai.site/kernel/)
 نواة برايت آي هي طبقة التنفيذ الأساسية التي تقع بين المستخدمين ونماذج الذكاء الاصطناعي في البيئات المؤسسية. BrightAI Kernel يفحص الطلب، يصنف المخاطر، يطبق ضوابط الامتثال، يطلب الموافقة البشرية عند الحاجة، ثم يسجل كل تفاعل في Audit Trail قابل للمراجعة.
 
-البنية المعمارية: الموظف ← [نواة برايت آي](https://brightai.site/#product) ← نماذج الذكاء الاصطناعي (Gemini/GPT/Claude/محلي)
+البنية المعمارية: الموظف ← [نواة برايت آي](https://brightai.site/kernel/) ← نماذج الذكاء الاصطناعي (Gemini/GPT/Claude/محلي)
 الأنظمة المتصلة: ERP، CRM، HIS، SharePoint، Excel
+
+### صفحات BrightAI Kernel
+- [BrightAI Kernel](https://brightai.site/kernel/) — طبقة أمان وتشغيل واعتماد لاستخدام الذكاء الاصطناعي داخل الشركات السعودية.
+- [AI Firewall / فاحص الطلبات](https://brightai.site/kernel/chat/) — فحص الطلبات وحماية البيانات الحساسة قبل وصولها للنماذج.
+- [Audit Trail / سجل التدقيق](https://brightai.site/kernel/audit/) — توثيق الطلبات والقرارات والمخاطر والموافقات.
+- [Human Approval / الموافقات البشرية](https://brightai.site/kernel/approvals/) — مراجعة بشرية للإجراءات عالية المخاطر.
+- [Compliance Packs / حزم الامتثال](https://brightai.site/kernel/compliance/) — ربط استخدام الذكاء الاصطناعي بضوابط PDPL وNCA ECC وSFDA.
+- [Evidence Reports / ملفات الأدلة](https://brightai.site/kernel/evidence/) — أدلة قابلة للمراجعة لكل تفاعل حساس.
 
 ## حلول الحوكمة الأساسية
 

@@ -169,6 +169,90 @@
   ]
 }
   </script>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/ai-audit-readiness/#webpage",
+      "url": "https://brightai.site/docs/ai-audit-readiness/",
+      "name": "جاهزية تدقيق الذكاء الاصطناعي | BrightAI Docs",
+      "description": "دليل عملي لبناء أدلة تشغيلية تثبت السيطرة على استخدامات الذكاء الاصطناعي داخل المؤسسة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/ai-audit-readiness/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "جاهزية تدقيق الذكاء الاصطناعي | BrightAI Docs",
+          "item": "https://brightai.site/docs/ai-audit-readiness/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/ai-audit-readiness/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "الأدلة المطلوبة Audit Trail لكل تفاعل. Risk Score واضح. موافقات بشرية للحالات الحساسة. Evidence File قابل للمشاركة. Checklist هل يمكن تتبع كل طلب AI؟ هل تظهر البيانات المستخدمة؟ هل الموافقات مرتبطة بالقرار؟ هل يتم تحديث الأدلة دوريًا؟ FAQ هل يجب توليد Evidence File لكل طلب؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "ليس دائمًا، يمكن توليده للحالات الحساسة أو دوريًا حسب سياسة المؤسسة."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="bg-grid">
 

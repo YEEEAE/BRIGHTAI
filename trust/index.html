@@ -192,6 +192,108 @@
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 </style>
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/trust/#webpage",
+      "url": "https://brightai.site/trust/",
+      "name": "مركز الثقة والأمان | BrightAI",
+      "description": "تعرف على ضوابط الأمان والخصوصية والحوكمة في BrightAI، وكيف ندعم جاهزية المؤسسات السعودية لاستخدام الذكاء الاصطناعي بأمان.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/trust/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "مركز الثقة والأمان | BrightAI",
+          "item": "https://brightai.site/trust/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/trust/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "كيف نحمي البيانات الحساسة داخل بيئتك؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تعتمد هندستنا الأمنية على مبدأ \"انعدام الثقة\" (Zero Trust) . لا تمرر BrightAI أي بيانات حساسة أو معرفات شخصية للموديلات الخارجية دون تصفية مشددة، ونوفر آليات تحكم صارمة تمكّن فريق أمن المعلومات لديك من بسط سيطرته الفنية على كامل مجريات استخدام الذكاء الاصطناعي."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "طبقات درع أمان البيانات المدخلات (Prompts) تصفية العبارات، كشف Shadow AI، حجب الهجمات اللفظية والبرمجية. جدار الحماية الفوري (AI Firewall) تصنيف فوري للمخاطر، تصفية المعرفات الفردية، تطبيق سياسات الامتثال. المخرجات (Responses) منع الهلوسة وتسريب معلومات الكود المصدري، والتأكد من مطابقة السياسات. ركائز الثقة البنية التحتية لحوكمة الذكاء الاصطناعي",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تتكامل BrightAI مع تدفقات العمل الحالية لمؤسستك لتوفر لك حوكمة متواصلة وأماناً تقنياً مبنياً على أحدث الممارسات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "خيارات نشر متعددة تناسب متطلبات الأمان لديك",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "تتفهم BrightAI تباين متطلبات الأمان والسيادة للبيانات بين الجهات الحكومية والشركات الخاصة، لذلك نوفر 3 خيارات نشر رئيسية."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "نظام حماية البيانات الشخصية مبني وفق ممارسات ومعايير نظام حماية البيانات الشخصية السعودي (PDPL) لمنع خروج معلومات الهوية الفردية خارج حدود المملكة. NCA ضوابط الأمن السيبراني (ECC) مبني وفق ممارسات ومعايير الهيئة الوطنية للأمن السيبراني (NCA) لضمان أمان الأنظمة الحساسة والبنية التحتية الرقمية الحيوية. ISO ISO/IEC 42001 مبني وفق ممارسات ومعايير الحوكمة المعتمدة في نظام إدارة الذكاء الاصطناعي العالمي لإدارة المخاطر والمسؤولية التشغيلية. ISO ISO/IEC 27001 مبني وفق ممارسات ومعايير نظم إدارة أمن المعلومات العالمية، لضمان حماية وسرية البيانات بشكل مؤسسي صارم. ISO ISO/IEC 23894 مبني وفق ممارسات ومعايير إرشادات إدارة مخاطر الذكاء الاصطناعي العالمية لضمان سلامة اتخاذ القرار وحماية أصول المؤسسة. NIST NIST AI RMF مبني وفق إطار إدارة مخاطر الذكاء الاصطناعي من المعهد الوطني للمعايير والتقنية الأمريكي لزيادة موثوقية وسلامة النظم. معايير أمان التطبيقات والشبكة Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; Strict-Transport-Security: max-age=63072000; includeSubDomains; preload X-Frame-Options: DENY X-Content-Type-Options: nosniff Referrer-Policy: strict-origin-when-cross-origin الحماية التقنية Security Headers والسياسات التقنية الصارمة",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "نطبق في BrightAI حماية شاملة تبدأ من مستوى خادم الويب وحزم البيانات وحتى واجهات الاستخدام. تخضع منصتنا لفحوصات دورية للكشف عن الثغرات وتقييم مستوى الاختراق لضمان بقائها كحصن منيع ضد كافة التهديدات الأمنية المعاصرة."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
 </head>
 <body class="bg-grid">
 
