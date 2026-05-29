@@ -1025,6 +1025,18 @@
       "to": "/docs/Governance%D9%80application/"
     },
     {
+      "from": "/assessment/ai-governance-readiness",
+      "to": "/assessment/ai-governance-readiness/"
+    },
+    {
+      "from": "/assessment/ai-governance-readiness.html",
+      "to": "/assessment/ai-governance-readiness/"
+    },
+    {
+      "from": "/assessment/ai-governance-readiness/index.html",
+      "to": "/assessment/ai-governance-readiness/"
+    },
+    {
       "from": "/blog/ai-governance",
       "to": "/blog/ai-governance.html"
     }

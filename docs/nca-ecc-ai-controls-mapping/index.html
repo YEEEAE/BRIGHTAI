@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مواءمة استخدام الذكاء الاصطناعي مع NCA ECC | BrightAI</title>
+  <meta name="description" content="دليل عملي يوضح كيف تساعد ضوابط BrightAI مثل AI Firewall وAudit Trail وHuman Approval في تشغيل استخدامات AI بطريقة قابلة للمراجعة أمنيًا.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://brightai.site/docs/nca-ecc-ai-controls-mapping/">
+  <link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/nca-ecc-ai-controls-mapping/">
+  <link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/nca-ecc-ai-controls-mapping/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BrightAI">
+  <meta property="og:title" content="مواءمة استخدام الذكاء الاصطناعي مع NCA ECC | BrightAI">
+  <meta property="og:description" content="دليل عملي يوضح كيف تساعد ضوابط BrightAI مثل AI Firewall وAudit Trail وHuman Approval في تشغيل استخدامات AI بطريقة قابلة للمراجعة أمنيًا.">
+  <meta property="og:url" content="https://brightai.site/docs/nca-ecc-ai-controls-mapping/">
+  <meta property="og:image" content="https://brightai.site/frontend/images/logo-new.PNG">
+  <meta property="og:locale" content="ar_SA">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="مواءمة استخدام الذكاء الاصطناعي مع NCA ECC | BrightAI">
+  <meta name="twitter:description" content="دليل عملي يوضح كيف تساعد ضوابط BrightAI مثل AI Firewall وAudit Trail وHuman Approval في تشغيل استخدامات AI بطريقة قابلة للمراجعة أمنيًا.">
+  <meta name="twitter:image" content="https://brightai.site/frontend/images/logo-new.PNG">
+
+  <link rel="stylesheet" href="/frontend/css/tailwind.local.min.css" />
+  <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font" />
+  <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons" />
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+
+  <style>
+    :root {
+      --bg-dark: #060914;
+      --card-bg: rgba(15, 23, 42, 0.74);
+      --border-color: rgba(148, 163, 184, 0.18);
+      --text-main: #e5edf8;
+      --text-muted: #9fb0c7;
+      --primary-cyan: #06b6d4;
+      --accent-indigo: #6366f1;
+    }
+    body {
+      margin: 0;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'TheYearofTheCamel', system-ui, sans-serif;
+      line-height: 1.85;
+    }
+    .wrap {
+      max-width: 1040px;
+      margin: auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 10;
+    }
+    .crumb-nav, .muted { color: var(--text-muted); }
+    .crumb-nav { margin-bottom: 24px; font-size: 0.95rem; }
+    .crumb-nav a, .doc a { color: #67e8f9; text-decoration: none; }
+    .crumb-nav a:hover, .doc a:hover { text-decoration: underline; }
+    .hero-section {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 34px;
+      margin-bottom: 38px;
+    }
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      color: #a5f3fc;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(2rem, 4.5vw, 3.1rem);
+      line-height: 1.25;
+      color: #fff;
+      font-weight: 800;
+      margin: 0 0 16px;
+    }
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 1.85rem);
+      color: #fff;
+      font-weight: 700;
+      margin-top: 44px;
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+    }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      right: 0;
+      width: 64px;
+      height: 2px;
+      background: var(--primary-cyan);
+    }
+    h3 { color: #fff; font-size: 1.18rem; margin: 0 0 10px; }
+    p { font-size: 1.05rem; margin: 0 0 20px; }
+    .highlight-box, .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 24px;
+      margin: 18px 0;
+      box-shadow: 0 4px 28px rgba(0, 0, 0, 0.18);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      margin: 28px 0;
+      background: rgba(15, 23, 42, 0.42);
+    }
+    table { width: 100%; border-collapse: collapse; text-align: right; }
+    th, td { padding: 16px 18px; border-bottom: 1px solid rgba(148, 163, 184, 0.12); vertical-align: top; }
+    th { background: rgba(6, 182, 212, 0.13); color: #fff; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    ul, ol { padding-right: 24px; }
+    li { margin: 0.42rem 0; }
+    code {
+      direction: ltr;
+      display: inline-block;
+      color: #a5f3fc;
+      background: rgba(6, 182, 212, 0.08);
+      border: 1px solid rgba(6, 182, 212, 0.18);
+      border-radius: 6px;
+      padding: 1px 7px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+    .log-example {
+      direction: ltr;
+      text-align: left;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      background: rgba(2, 6, 23, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 14px;
+      padding: 18px;
+      color: #dbeafe;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92rem;
+      line-height: 1.65;
+    }
+    .action-cta {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.09), rgba(99, 102, 241, 0.08));
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 36px;
+      margin-top: 48px;
+    }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-cyan);
+      color: #00111d !important;
+      text-decoration: none !important;
+      font-weight: 800;
+      padding: 13px 24px;
+      border-radius: 12px;
+      margin: 8px 0 0 10px;
+      transition: all 0.25s ease;
+    }
+    .action-btn.secondary {
+      background: transparent;
+      color: #e5edf8 !important;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+    .action-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+  </style>
+
+  <script id="brightai-page-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "LocalBusiness"],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {"@id": "https://brightai.site/#organization"},
+      "inLanguage": ["ar-SA"]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/#webpage",
+      "url": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/",
+      "name": "مواءمة استخدام الذكاء الاصطناعي مع NCA ECC | BrightAI",
+      "description": "دليل عملي يوضح كيف تساعد ضوابط BrightAI مثل AI Firewall وAudit Trail وHuman Approval في تشغيل استخدامات AI بطريقة قابلة للمراجعة أمنيًا.",
+      "isPartOf": {"@id": "https://brightai.site/#website"},
+      "about": {"@id": "https://brightai.site/#organization"},
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/#breadcrumb",
+      "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/"},
+        {"@type": "ListItem", "position": 2, "name": "الوثائق", "item": "https://brightai.site/docs/"},
+        {"@type": "ListItem", "position": 3, "name": "NCA ECC AI Controls Mapping", "item": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/"}
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/#faq",
+      "url": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/",
+      "inLanguage": "ar-SA",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل BrightAI يقدم ضمان امتثال لـ NCA ECC؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. BrightAI لا يقدم ضمان امتثال نظامي أو أمني، لكنه يدعم الجاهزية التشغيلية من خلال ضوابط قابلة للتتبع مثل AI Firewall وAudit Trail وHuman Approval."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما علاقة AI audit trail cybersecurity بفرق الأمن السيبراني؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "سجل التدقيق يساعد فرق الأمن السيبراني على معرفة من استخدم AI، وما نوع البيانات التي دخلت في prompt، وما القرار الذي اتخذته السياسة، وهل حصلت موافقة بشرية عند الحاجة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل نحتاج تصنيف بيانات الذكاء الاصطناعي لكل prompt؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "الأفضل تصنيف prompts حسب حساسية البيانات وسياق القرار. التصنيف لا يعني إبطاء كل استخدام، بل تحديد متى نسمح، ومتى ننقي، ومتى نصعد للموافقة."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+</head>
+<body class="bg-grid">
+
+<!-- ================= HEADER / NAV ================= -->
+<div id="brightai-unified-header"></div>
+
+<main class="wrap doc">
+  <nav class="crumb-nav"><a href="/">الرئيسية</a> / <a href="/docs/">الوثائق</a> / مواءمة AI مع NCA ECC</nav>
+
+  <section class="hero-section">
+    <span class="pill-badge"><i class="fas fa-shield-halved"></i> NCA ECC AI governance</span>
+    <h1>مواءمة استخدام الذكاء الاصطناعي مع NCA ECC</h1>
+    <p class="muted">دليل تنفيذي لفرق الأمن السيبراني والامتثال يربط استخدامات AI بضوابط تشغيلية قابلة للمراجعة: تصنيف بيانات، AI risk scoring، سجل تدقيق، موافقات بشرية، وملف أدلة.</p>
+    <p class="muted">الهدف هنا ليس الادعاء بأن الأداة تضمن الامتثال، بل توضيح كيف يمكن لضوابط BrightAI أن <strong>تدعم الجاهزية التشغيلية</strong> وتساعد الفرق على إدارة مخاطر استخدام الذكاء الاصطناعي داخل المؤسسة.</p>
+  </section>
+
+  <section class="highlight-box">
+    <h2>لماذا تحتاج استخدامات AI لضوابط أمنية؟</h2>
+    <p>استخدامات الذكاء الاصطناعي تختلف عن الأنظمة التقليدية لأن الموظف قد يرسل بيانات داخل prompt حر: أرقام عملاء، مستندات داخلية، تفاصيل مالية، أو ملاحظات تشغيلية. بدون ضوابط، يصير من الصعب معرفة ما تم إرساله، هل كان مسموحًا، وهل القرار الناتج يحتاج مراجعة.</p>
+    <p>لذلك تحتاج المؤسسات إلى طبقة تشغيل تربط <a href="/solutions/ai-governance-platform/">AI Governance Platform</a> بسياسات الأمن السيبراني، بحيث يتم فحص الطلب قبل النموذج، تسجيل القرار، وتصعيد الحالات الحساسة للمراجعة البشرية.</p>
+  </section>
+
+  <section>
+    <h2>جدول mapping بين المتطلب الأمني وخطر AI وضابط BrightAI</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>المتطلب الأمني</th>
+            <th>خطر AI</th>
+            <th>ضابط BrightAI المقترح</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>تصنيف وحماية البيانات الحساسة</td>
+            <td>إدخال بيانات شخصية أو سرية داخل prompt بدون إدراك مستوى الحساسية.</td>
+            <td><a href="/solutions/ai-firewall/">AI Firewall</a> لتصنيف البيانات داخل prompts وتطبيق allow أو mask أو block حسب السياسة.</td>
+          </tr>
+          <tr>
+            <td>قابلية التتبع والمراجعة الأمنية</td>
+            <td>عدم القدرة على معرفة من أرسل الطلب، وما القرار الذي اتخذته السياسة.</td>
+            <td><a href="/solutions/ai-audit-trail/">AI Audit Trail</a> لتسجيل المستخدم، نوع البيانات، نتيجة الفحص، والنموذج أو المسار المستخدم.</td>
+          </tr>
+          <tr>
+            <td>إدارة المخاطر قبل المعالجة</td>
+            <td>التعامل مع كل طلب AI بنفس المستوى رغم اختلاف الحساسية والأثر.</td>
+            <td>AI risk scoring يحسب درجة المخاطر حسب نوع البيانات، هدف الطلب، وحساسية القرار.</td>
+          </tr>
+          <tr>
+            <td>الفصل بين الاستخدام العادي والقرارات الحساسة</td>
+            <td>اعتماد مخرجات AI في قرارات مؤثرة بدون مراجعة بشرية.</td>
+            <td>Human Approval للطلبات التي تتضمن أثرًا على عميل، موظف، مطالبة، عقد، أو إجراء أمني.</td>
+          </tr>
+          <tr>
+            <td>تجهيز أدلة للمراجعة الداخلية</td>
+            <td>وجود سياسات مكتوبة بدون أدلة تشغيلية تثبت تطبيقها.</td>
+            <td><a href="/solutions/ai-evidence-file/">AI Evidence File</a> لتجميع السياسات، السجلات، العينات المنقحة، ومسارات الموافقة.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>أمثلة على Audit Logs</h2>
+    <p>السجل الجيد لا يخزن كل شيء بشكل عشوائي. المطلوب سجل يكفي للمراجعة الأمنية بدون تحويله إلى مستودع بيانات حساسة جديد.</p>
+    <pre class="log-example">{
+  "event_id": "ai_evt_10482",
+  "user_role": "customer_support",
+  "data_classification": ["personal_data", "customer_identifier"],
+  "ai_risk_score": 78,
+  "policy_decision": "mask_and_escalate",
+  "control": "AI Firewall",
+  "masked_fields": ["national_id", "mobile_number", "customer_id"],
+  "human_approval_required": true,
+  "approval_status": "approved",
+  "retention_label": "security_review"
+}</pre>
+    <p>هذا النوع من السجلات يدعم مراجعة الأمن السيبراني لأنه يوضح القرار والسياسة والمخاطر بدون كشف القيم الأصلية داخل التقرير.</p>
+  </section>
+
+  <section>
+    <h2>تصنيف البيانات داخل prompts</h2>
+    <p>تصنيف بيانات الذكاء الاصطناعي يبدأ من prompt نفسه، لأن النص الحر قد يجمع بين سؤال عادي وبيانات حساسة. في BrightAI يمكن التعامل مع الطلب حسب طبقات عملية:</p>
+    <div class="grid">
+      <div class="card"><h3>عام</h3><p>صياغة بريد، تلخيص نص غير حساس، أو مساعدة معرفية بدون بيانات أشخاص أو أسرار عمل.</p></div>
+      <div class="card"><h3>داخلي</h3><p>إجراءات تشغيل، سياسات داخلية، أو بيانات أعمال لا تحتوي معلومات شخصية مباشرة.</p></div>
+      <div class="card"><h3>سري</h3><p>عقود، تفاصيل عملاء، بيانات مالية، أو مستندات لا يفترض خروجها من نطاق محدد.</p></div>
+      <div class="card"><h3>عالي الحساسية</h3><p>بيانات شخصية، صحية، أمنية، أو قرارات مؤثرة تتطلب تنقية أو منع أو موافقة بشرية.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>الموافقات البشرية للقرارات الحساسة</h2>
+    <p>الموافقة البشرية ليست تعطيلًا للاستخدام، بل نقطة تحكم للحالات التي قد تخلق أثرًا أمنيًا أو تشغيليًا. أمثلة ذلك: تحليل شكوى عميل تحتوي معرفات، توصية تتعلق بإجراء أمني، تلخيص عقد، أو قرار مبني على بيانات موظف.</p>
+    <ul>
+      <li>إذا كان AI risk scoring مرتفعًا، يتم تحويل الطلب للموافقة قبل الإرسال أو قبل استخدام المخرجات.</li>
+      <li>إذا اكتشف AI Firewall بيانات عالية الحساسية، يتم حجب الطلب أو تنقيته ثم تصعيده.</li>
+      <li>إذا كان القرار مؤثرًا، يتم ربط الموافقة بسجل التدقيق حتى يمكن مراجعته لاحقًا.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Evidence File للمراجعة الأمنية</h2>
+    <p>ملف الأدلة يحول الحوكمة من كلام عام إلى مادة قابلة للمراجعة. بدل الاكتفاء بسياسة تقول "لا ترسل بيانات حساسة"، يحتوي الملف على عينات قرارات، سجلات تنقية، قواعد تصنيف، موافقات، واستثناءات موثقة.</p>
+    <p>هذا يدعم الجاهزية التشغيلية لفرق الأمن السيبراني والمراجعة الداخلية، خصوصًا عند الحاجة لإثبات أن ضوابط الأمن السيبراني والذكاء الاصطناعي تعمل يوميًا وليست وثائق محفوظة فقط. للمزيد راجع <a href="/docs/nca-ecc-ai-governance/">دليل NCA ECC وحوكمة AI</a>.</p>
+  </section>
+
+  <section class="highlight-box">
+    <h2>Checklist تنفيذية</h2>
+    <ul>
+      <li>احصر أدوات AI المستخدمة رسميًا وغير رسميًا داخل الفرق.</li>
+      <li>عرّف مستويات تصنيف prompts: عام، داخلي، سري، عالي الحساسية.</li>
+      <li>فعّل AI Firewall قبل وصول الطلب للنموذج، وليس بعد خروج المعلومة.</li>
+      <li>اربط كل طلب بدرجة AI risk scoring قابلة للتفسير.</li>
+      <li>سجل قرارات allow وmask وblock وescalate في Audit Trail.</li>
+      <li>حدد متى تحتاج الطلبات الحساسة موافقة بشرية، ومن صاحب الموافقة.</li>
+      <li>أنشئ Evidence File شهري يحتوي عينات تشغيلية وسجلات مراجعة.</li>
+      <li>راجع السياسة دوريًا مع الأمن السيبراني والامتثال بدل الاعتماد على إعدادات ثابتة.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>FAQ</h2>
+    <h3>هل BrightAI يقدم ضمان امتثال لـ NCA ECC؟</h3>
+    <p>لا. BrightAI لا يقدم ضمان امتثال نظامي أو أمني، لكنه يدعم الجاهزية التشغيلية من خلال ضوابط قابلة للتتبع مثل AI Firewall وAudit Trail وHuman Approval.</p>
+
+    <h3>ما الفرق بين Audit Trail وEvidence File؟</h3>
+    <p>Audit Trail هو سجل الأحداث اليومية: من استخدم، ماذا حدث، وما قرار السياسة. أما Evidence File فهو تجميع منظم للأدلة والسياسات والعينات لدعم المراجعة الداخلية أو الأمنية.</p>
+
+    <h3>هل نحتاج تطبيق الضوابط على كل استخدام AI؟</h3>
+    <p>الأفضل أن تمر كل الطلبات عبر قناة موحدة، لكن مستوى التحكم يختلف حسب المخاطر. الطلبات العامة قد تمر بسرعة، بينما الطلبات الحساسة تحتاج تنقية أو موافقة أو منع.</p>
+
+    <h3>كيف نبدأ بدون تعطيل الفرق؟</h3>
+    <p>ابدأ بثلاث سياسات: منع إرسال البيانات عالية الحساسية، تنقية المعرفات الشخصية، وتصعيد القرارات المؤثرة. بعدها وسّع التصنيف والسجلات حسب نتائج الاستخدام الفعلي.</p>
+  </section>
+
+  <section class="action-cta">
+    <h2>حوّل استخدام AI إلى مسار قابل للمراجعة أمنيًا</h2>
+    <p>BrightAI يساعدك على تشغيل امتثال الذكاء الاصطناعي NCA بطريقة عملية: حوكمة، Firewall، سجل تدقيق، ملف أدلة، وموافقات بشرية للحالات الحساسة.</p>
+    <a class="action-btn" href="/solutions/ai-governance-platform/">استكشف منصة الحوكمة</a>
+    <a class="action-btn secondary" href="/contact/">احجز جلسة تقييم</a>
+  </section>
+</main>
+
+<script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+<script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+</body>
+</html>

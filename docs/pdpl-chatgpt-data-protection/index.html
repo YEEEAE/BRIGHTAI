@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ar-SA" dir="rtl">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-8LLESL207Q"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-8LLESL207Q');
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT والبيانات الشخصية في السعودية: كيف تستخدم AI بدون تسريب بيانات؟ | BrightAI</title>
+  <meta name="description" content="دليل عملي للشركات السعودية لاستخدام ChatGPT والذكاء الاصطناعي مع حماية البيانات الشخصية، تنقية PII، وسجل تدقيق متوافق تشغيليًا مع PDPL.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://brightai.site/docs/pdpl-chatgpt-data-protection/">
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/pdpl-chatgpt-data-protection/">
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/pdpl-chatgpt-data-protection/">
+<link rel="stylesheet" href="/frontend/css/tailwind.local.min.css" />
+  <link rel="stylesheet" href="/frontend/assets/css/global-fonts.css?v=20260529-official-font" />
+  <link rel="stylesheet" href="/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons" />
+  <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
+
+  <style>
+    body {
+      margin: 0;
+      background: #060914;
+      color: #e5edf8;
+      font-family: 'TheYearofTheCamel', system-ui, sans-serif;
+      line-height: 1.9;
+    }
+    .wrap {
+      max-width: 1040px;
+      margin: auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 10;
+    }
+    .crumb-nav, .muted { color: #9fb0c7; }
+    .crumb-nav a, .doc a { color: #67e8f9; text-decoration: none; }
+    .crumb-nav a:hover, .doc a:hover { text-decoration: underline; }
+    .hero {
+      padding: 48px 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.25;
+      margin: 0.5rem 0 1rem;
+      color: #fff;
+    }
+    h2 {
+      font-size: 1.55rem;
+      margin-top: 2.4rem;
+      color: #fff;
+    }
+    h3 { color: #f8fafc; }
+    .card {
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 18px;
+      padding: 22px;
+      margin: 18px 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+    }
+    .pill {
+      display: inline-block;
+      border: 1px solid rgba(103, 232, 249, 0.35);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: #a5f3fc;
+      font-size: 0.85rem;
+      background: rgba(0, 212, 255, 0.08);
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 14px;
+      margin: 18px 0;
+    }
+    .data-table th,
+    .data-table td {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      padding: 14px;
+      text-align: right;
+      vertical-align: top;
+    }
+    .data-table th {
+      background: rgba(6, 182, 212, 0.14);
+      color: #fff;
+    }
+    .data-table td {
+      background: rgba(15, 23, 42, 0.62);
+    }
+    li { margin: 0.35rem 0; }
+    .btn {
+      display: inline-flex;
+      background: #06b6d4;
+      color: #00111d;
+      text-decoration: none;
+      font-weight: 800;
+      padding: 12px 18px;
+      border-radius: 12px;
+      margin: 8px 0 0 10px;
+      transition: all 0.3s ease;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.1);
+      text-decoration: none;
+    }
+    .btn.secondary {
+      background: transparent;
+      color: #e5edf8;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+    }
+  </style>
+  
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script id="brightai-page-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/pdpl-chatgpt-data-protection/#webpage",
+      "url": "https://brightai.site/docs/pdpl-chatgpt-data-protection/",
+      "name": "ChatGPT والبيانات الشخصية في السعودية: كيف تستخدم AI بدون تسريب بيانات؟ | BrightAI",
+      "description": "دليل عملي للشركات السعودية لاستخدام ChatGPT والذكاء الاصطناعي مع حماية البيانات الشخصية، تنقية PII، وسجل تدقيق متوافق تشغيليًا مع PDPL.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/pdpl-chatgpt-data-protection/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "الوثائق",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ChatGPT والبيانات الشخصية",
+          "item": "https://brightai.site/docs/pdpl-chatgpt-data-protection/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/pdpl-chatgpt-data-protection/#faq",
+      "url": "https://brightai.site/docs/pdpl-chatgpt-data-protection/",
+      "inLanguage": "ar-SA",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "هل يمنع PDPL استخدام ChatGPT داخل الشركات السعودية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا يعني ذلك المنع المطلق. المهم أن يكون الاستخدام مضبوطًا بسياسات واضحة، وتنقية للبيانات الشخصية، وسجل يوضح ماذا أرسل ومن وافق ولماذا."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "ما المقصود بـ PII masking AI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "المقصود إخفاء أو استبدال البيانات التي تعرّف الشخص قبل إرسال الطلب للنموذج، مثل تحويل رقم الهوية أو الجوال إلى قيمة محجوبة لا تكشف صاحب البيانات."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "هل AI Firewall يغني عن الاستشارة القانونية؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا. AI Firewall طبقة تشغيلية للحماية والحوكمة، وهذا الدليل ليس استشارة قانونية. القرارات النظامية النهائية تحتاج مراجعة مختصين قانونيين داخل المؤسسة."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body class="bg-grid">
+
+<!-- ================= HEADER / NAV ================= -->
+<div id="brightai-unified-header"></div>
+
+<!-- درج الجوال الجانبي الفاخر (Mobile Drawer) -->
+
+<main class="wrap doc">
+  <nav class="crumb-nav"><a href="/">الرئيسية</a> / <a href="/docs/">الوثائق</a> / ChatGPT والبيانات الشخصية</nav>
+  <section class="hero">
+    <span class="pill">PDPL ChatGPT Saudi Arabia</span>
+    <h1>ChatGPT والبيانات الشخصية في السعودية: كيف تستخدم AI بدون تسريب بيانات؟</h1>
+    <p class="muted">دليل عملي لفرق التقنية والامتثال في الشركات السعودية لاستخدام ChatGPT وأدوات الذكاء الاصطناعي بدون إرسال بيانات شخصية أو سرية للنماذج بشكل غير مضبوط.</p>
+  </section>
+
+  <section class="card">
+    <h2>المقدمة المختصرة</h2>
+    <p>استخدام ChatGPT في الشركات السعودية صار جزءًا من العمل اليومي: تلخيص مستند، صياغة بريد، تحليل شكوى عميل، أو مساعدة موظف خدمة عملاء. المشكلة تبدأ عندما يدخل في الطلب رقم هوية، جوال، بريد عميل، عقد، ملف موظف، أو أي معلومة تكشف شخصًا أو حالة حساسة.</p>
+    <p>الطريقة المهنية ليست منع الذكاء الاصطناعي بالكامل، بل تشغيله بضوابط: تصنيف البيانات، منع أو تنقية PII قبل الإرسال، موافقة بشرية عند المخاطر العالية، وسجل تدقيق يثبت ما حدث. هذا المحتوى توعوي وتشغيلي ولا يعد استشارة قانونية.</p>
+  </section>
+
+  <section>
+    <h2>أمثلة على بيانات لا يجب إرسالها للنماذج</h2>
+    <div class="grid">
+      <div class="card"><h3>بيانات تعريف مباشرة</h3><p>رقم الهوية الوطنية أو الإقامة، الاسم الكامل مع رقم الجوال، البريد الشخصي، العنوان الوطني، أو رقم العميل.</p></div>
+      <div class="card"><h3>بيانات مالية وتعاقدية</h3><p>آيبان، كشوف حساب، أو عقود تحتوي أطرافًا وأرقامًا ومبالغ وتواريخ يمكن ربطها بشخص أو شركة.</p></div>
+      <div class="card"><h3>بيانات موظفين وعملاء</h3><p>تقييم أداء، شكوى عميل، سجل حضور، طلب تأمين، أو محادثة دعم تحتوي تفاصيل شخصية.</p></div>
+      <div class="card"><h3>بيانات صحية أو حساسة</h3><p>أعراض، تقارير طبية، ملفات مرضى، حالات اجتماعية، أو أي معلومة تحتاج حذرًا إضافيًا قبل المعالجة.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>جدول التعامل مع البيانات قبل ChatGPT</h2>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>نوع البيانات</th>
+          <th>الخطر</th>
+          <th>الإجراء المناسب</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>رقم هوية، إقامة، جوال، بريد شخصي</td>
+          <td>تعريف مباشر لصاحب البيانات وربط الطلب بشخص محدد.</td>
+          <td>استخدام PII masking AI لاستبدال القيم قبل الإرسال، أو منع الطلب إذا لم يكن التنقيح كافيًا.</td>
+        </tr>
+        <tr>
+          <td>محادثات دعم العملاء والشكاوى</td>
+          <td>قد تحتوي أسماء، أرقام طلبات، تفاصيل مالية، أو معلومات حساسة داخل النص الحر.</td>
+          <td>تمريرها عبر <a href="/solutions/ai-firewall/">AI Firewall</a> لاكتشاف النصوص الحساسة وتطبيق mask أو block.</td>
+        </tr>
+        <tr>
+          <td>ملفات موظفين أو تقييمات أداء</td>
+          <td>مخاطر خصوصية وقرارات وظيفية قد تؤثر على الشخص.</td>
+          <td>تنقية البيانات، تقليل التفاصيل غير اللازمة، وتفعيل <a href="/solutions/human-approval-layer/">Human Approval Layer</a> قبل أي قرار مؤثر.</td>
+        </tr>
+        <tr>
+          <td>عقود، فواتير، ومعلومات موردين</td>
+          <td>تسريب معلومات تجارية أو بيانات أطراف خارجية.</td>
+          <td>حذف المعرفات، تلخيص داخلي آمن، وتوثيق العملية في <a href="/solutions/ai-audit-trail/">AI Audit Trail</a>.</td>
+        </tr>
+        <tr>
+          <td>بيانات صحية أو عالية الحساسية</td>
+          <td>مخاطر أعلى على الخصوصية والسمعة والامتثال.</td>
+          <td>المنع الافتراضي أو التصعيد لموافقة بشرية، مع سجل سبب القرار والنسخة المنقحة من الطلب.</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>كيف يساعد AI Firewall؟</h2>
+    <p><a href="/solutions/ai-firewall/">AI Firewall Saudi Arabia</a> يعمل كطبقة بين الموظف وأداة الذكاء الاصطناعي. بدل ما يذهب prompt مباشرة إلى ChatGPT أو أي نموذج خارجي، يمر أولًا على قواعد الحماية.</p>
+    <ol>
+      <li>يفحص الطلب لاكتشاف PII مثل الهوية، الجوال، الآيبان، البريد، أسماء العملاء، وأرقام الملفات.</li>
+      <li>يطبق السياسة المناسبة: السماح، التنقية، الحجب، أو التصعيد.</li>
+      <li>يرسل للنموذج نسخة آمنة قدر الإمكان، مثل: "عميل رقم [MASKED_CUSTOMER] لديه اعتراض على فاتورة [MASKED_INVOICE]".</li>
+      <li>يحفظ الحدث في سجل تدقيق بدون تحويل السجل نفسه إلى مصدر تسريب جديد.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>متى نحتاج Human Approval؟</h2>
+    <p>الموافقة البشرية ليست لكل طلب. فائدتها تظهر عندما يكون الطلب عالي المخاطر أو قد ينتج عنه أثر على عميل أو موظف أو جهة خارجية.</p>
+    <ul>
+      <li>عندما يحتوي الطلب بيانات صحية، مالية، وظيفية، أو قانونية.</li>
+      <li>عندما يطلب الموظف من النموذج توصية تؤثر على قرار مهم، مثل رفض مطالبة أو تصعيد عميل.</li>
+      <li>عندما يفشل masking أو يكتشف النظام بيانات لا يعرف كيف يصنفها بثقة.</li>
+      <li>عندما تكون السياسة الداخلية تلزم موافقة مدير، امتثال، أو أمن سيبراني قبل الإرسال.</li>
+    </ul>
+    <p>هنا يساعد <a href="/solutions/human-approval-layer/">Human Approval Layer</a> في تحويل الطلب لمسار موافقة واضح بدل الاعتماد على تقدير الموظف وحده.</p>
+  </section>
+
+  <section>
+    <h2>كيف يفيد Audit Trail؟</h2>
+    <p>في الاستخدام المؤسسي، السؤال ليس فقط: "هل منعنا التسريب؟" بل أيضًا: "هل نقدر نثبت ماذا حدث؟" لذلك <a href="/solutions/ai-audit-trail/">AI Audit Trail</a> مهم لفرق الخصوصية، الأمن، والمراجعة الداخلية.</p>
+    <div class="grid">
+      <div class="card"><h3>إثبات القرار</h3><p>يسجل هل تم السماح، التنقية، الحجب، أو التصعيد، ومع أي سياسة تم اتخاذ القرار.</p></div>
+      <div class="card"><h3>تتبع المسؤولية</h3><p>يوضح من أرسل الطلب، من وافق عليه، ومتى تمت المعالجة.</p></div>
+      <div class="card"><h3>تحسين السياسات</h3><p>يكشف الأنماط المتكررة، مثل فريق يرسل أرقام عملاء كثيرًا، أو نوع مستند يحتاج قاعدة تنقية أدق.</p></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Checklist للشركات السعودية</h2>
+    <ul>
+      <li>اكتب سياسة واضحة لاستخدام ChatGPT في الشركات السعودية، وفرق بين الاستخدام العام والاستخدام الذي يتضمن بيانات شخصية.</li>
+      <li>حدد أنواع البيانات الممنوع إرسالها: هوية، جوال، بريد، آيبان، ملفات صحية، عقود، شكاوى، وبيانات موظفين.</li>
+      <li>فعّل تنقية PII قبل النموذج، وليس بعد ظهور المشكلة.</li>
+      <li>اربط الطلبات عالية المخاطر بموافقة بشرية حسب مستوى الحساسية.</li>
+      <li>احتفظ بسجل تدقيق يوضح القرار بدون تخزين بيانات حساسة أكثر من اللازم.</li>
+      <li>راجع <a href="/docs/pdpl-ai-governance/">دليل PDPL والذكاء الاصطناعي</a> و<a href="/pdpl-statement/">بيان PDPL</a> لتوحيد اللغة التشغيلية داخليًا.</li>
+      <li>اختبر القواعد بعينات تدريبية منقحة قبل فتح الاستخدام على فرق أوسع.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2>FAQ</h2>
+    <h3>هل يمنع PDPL استخدام ChatGPT داخل الشركات السعودية؟</h3>
+    <p>لا يعني ذلك المنع المطلق. المهم أن يكون الاستخدام مضبوطًا بسياسات واضحة، وتنقية للبيانات الشخصية، وسجل يوضح ماذا أرسل ومن وافق ولماذا.</p>
+
+    <h3>هل يكفي أن نطلب من الموظفين عدم إرسال بيانات شخصية؟</h3>
+    <p>التوعية مهمة، لكنها غير كافية وحدها. النص الحر يختلط فيه الاسم والجوال ورقم الطلب بسهولة، لذلك تحتاج طبقة تقنية تكتشف وتمنع أو تنقي قبل الإرسال.</p>
+
+    <h3>ما المقصود بـ PII masking AI؟</h3>
+    <p>المقصود إخفاء أو استبدال البيانات التي تعرّف الشخص قبل إرسال الطلب للنموذج، مثل تحويل رقم الهوية أو الجوال إلى قيمة محجوبة لا تكشف صاحب البيانات.</p>
+
+    <h3>هل AI Firewall يغني عن الاستشارة القانونية؟</h3>
+    <p>لا. AI Firewall طبقة تشغيلية للحماية والحوكمة، وهذا الدليل ليس استشارة قانونية. القرارات النظامية النهائية تحتاج مراجعة مختصين قانونيين داخل المؤسسة.</p>
+  </section>
+
+  <section class="card">
+    <h2>ابدأ بضوابط بسيطة قبل التوسع</h2>
+    <p>إذا كانت شركتك تستخدم ChatGPT أو أدوات ذكاء اصطناعي مشابهة، ابدأ بحماية المدخلات: تنقية PII، منع تسريب البيانات للذكاء الاصطناعي، توثيق القرارات، وموافقة بشرية عند الطلبات الحساسة.</p>
+    <a class="btn" href="/solutions/ai-firewall/">استكشف AI Firewall</a>
+    <a class="btn secondary" href="/contact/">اطلب جلسة تقييم</a>
+  </section>
+</main>
+
+<script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+</body>
+</html>

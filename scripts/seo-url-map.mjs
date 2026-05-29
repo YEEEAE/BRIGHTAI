@@ -75,6 +75,7 @@ const NON_INDEXABLE_REL_PATH_PATTERNS = [
 ];
 
 const TRAILING_SLASH_ROUTE_PATTERNS = [
+  /^\/assessment(?:\/.*)?\/?$/i,
   /^\/$/,
   /^\/en(?:\/.*)?\/?$/i,
   /^\/docs(?:\/.*)?\/?$/i,

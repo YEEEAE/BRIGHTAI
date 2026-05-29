@@ -129,6 +129,7 @@ function groupRelPath(relPath) {
 
   // Pages
   if (
+    normalized === "assessment/ai-governance-readiness/index.html" ||
     normalized === "index.html" ||
     normalized === "about/index.html" ||
     normalized === "contact/index.html" ||
@@ -145,7 +146,10 @@ function groupRelPath(relPath) {
     normalized === "docs/ai-governance-saudi-arabia/index.html" ||
     normalized === "docs/ai-risk-management/index.html" ||
     normalized === "docs/pdpl-ai-governance/index.html" ||
+    normalized === "docs/pdpl-chatgpt-data-protection/index.html" ||
     normalized === "docs/nca-ecc-ai-governance/index.html" ||
+    normalized === "docs/nca-ecc-ai-controls-mapping/index.html" ||
+    normalized === "docs/nca-ecc-ai-controls/index.html" ||
     normalized === "docs/ai-audit-readiness/index.html" ||
     normalized === "blog/ai-governance.html"
   ) {

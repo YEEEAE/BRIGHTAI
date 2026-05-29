@@ -163,6 +163,7 @@ services:
         "dashboard",
         "kernel",
         "solutions",
+        "assessment",
         "demo/ai-tenders-analysis",
         "demo/ai-reject-dashboard/frontend/pages",
         "demo/ai-reject-dashboard/frontend/pages/admin"
@@ -322,6 +323,15 @@ services:
         destination: https://brightai-api.onrender.com/ws/*
 
       # ── Standard Redirects for Clean Trailing Slashes ───────────────────────
+      - type: redirect
+        source: /assessment/ai-governance-readiness
+        destination: /assessment/ai-governance-readiness/
+      - type: redirect
+        source: /assessment/ai-governance-readiness.html
+        destination: /assessment/ai-governance-readiness/
+      - type: redirect
+        source: /assessment/ai-governance-readiness/index.html
+        destination: /assessment/ai-governance-readiness/
       - type: redirect
         source: /index.html
         destination: /
@@ -711,7 +721,18 @@ services:
         source: /docs/pdpl-ai-governance/index.html
         destination: /docs/pdpl-ai-governance/
 
-      # 9. nca-ecc-ai-governance (docs)
+      # 9. pdpl-chatgpt-data-protection (docs)
+      - type: redirect
+        source: /docs/pdpl-chatgpt-data-protection
+        destination: /docs/pdpl-chatgpt-data-protection/
+      - type: redirect
+        source: /docs/pdpl-chatgpt-data-protection.html
+        destination: /docs/pdpl-chatgpt-data-protection/
+      - type: redirect
+        source: /docs/pdpl-chatgpt-data-protection/index.html
+        destination: /docs/pdpl-chatgpt-data-protection/
+
+      # 10. nca-ecc-ai-governance (docs)
       - type: redirect
         source: /docs/nca-ecc-ai-governance
         destination: /docs/nca-ecc-ai-governance/
@@ -722,7 +743,18 @@ services:
         source: /docs/nca-ecc-ai-governance/index.html
         destination: /docs/nca-ecc-ai-governance/
 
-      # 10. ai-audit-readiness (docs)
+      # 11. nca-ecc-ai-controls-mapping (docs)
+      - type: redirect
+        source: /docs/nca-ecc-ai-controls-mapping
+        destination: /docs/nca-ecc-ai-controls-mapping/
+      - type: redirect
+        source: /docs/nca-ecc-ai-controls-mapping.html
+        destination: /docs/nca-ecc-ai-controls-mapping/
+      - type: redirect
+        source: /docs/nca-ecc-ai-controls-mapping/index.html
+        destination: /docs/nca-ecc-ai-controls-mapping/
+
+      # 12. ai-audit-readiness (docs)
       - type: redirect
         source: /docs/ai-audit-readiness
         destination: /docs/ai-audit-readiness/
@@ -733,7 +765,7 @@ services:
         source: /docs/ai-audit-readiness/index.html
         destination: /docs/ai-audit-readiness/
 
-      # 11. nca-ecc-ai-controls (docs)
+      # 13. nca-ecc-ai-controls (docs)
       - type: redirect
         source: /docs/nca-ecc-ai-controls
         destination: /docs/nca-ecc-ai-controls/
@@ -744,7 +776,7 @@ services:
         source: /docs/nca-ecc-ai-controls/index.html
         destination: /docs/nca-ecc-ai-controls/
 
-      # 12. Governance-application (docs)
+      # 14. Governance-application (docs)
       - type: redirect
         source: /docs/Governanceـapplication
         destination: /docs/Governanceـapplication/

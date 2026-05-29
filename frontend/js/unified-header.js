@@ -189,6 +189,10 @@
                   <i class="fa-solid fa-book-open"></i>
                   <span>${isEnglish ? 'Documentation' : 'الوثائق'}</span>
                 </a>
+                <a href="/docs/pdpl-chatgpt-data-protection/" class="brightai-resource-link" role="menuitem">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <span>${isEnglish ? 'ChatGPT Data Protection' : 'ChatGPT والبيانات الشخصية'}</span>
+                </a>
                 <a href="${prefix}/privacy-policy/" class="brightai-resource-link" role="menuitem">
                   <i class="fa-solid fa-user-shield"></i>
                   <span>${isEnglish ? 'Privacy Policy' : 'سياسة الخصوصية'}</span>

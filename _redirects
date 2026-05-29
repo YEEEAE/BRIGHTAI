@@ -10,6 +10,9 @@ http://brightai.site/*        https://brightai.site/:splat  301
 https://www.brightai.site/*    https://brightai.site/:splat  301
 
 # ── Core Marketing Pages ──────────────────────────────────────────────────────
+/assessment/ai-governance-readiness            /assessment/ai-governance-readiness/ 301
+/assessment/ai-governance-readiness.html       /assessment/ai-governance-readiness/ 301
+/assessment/ai-governance-readiness/index.html /assessment/ai-governance-readiness/ 301
 /index.html                   /                             301
 /about                        /about/                       301
 /about/index.html             /about/                       301
@@ -80,6 +83,14 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /en/docs/                     /docs/                        301
 
 # ── NCA ECC & Governance Application Docs Redirections ────────────────────────
+/docs/pdpl-chatgpt-data-protection /docs/pdpl-chatgpt-data-protection/ 301
+/docs/pdpl-chatgpt-data-protection.html /docs/pdpl-chatgpt-data-protection/ 301
+/docs/pdpl-chatgpt-data-protection/index.html /docs/pdpl-chatgpt-data-protection/ 301
+
+/docs/nca-ecc-ai-controls-mapping /docs/nca-ecc-ai-controls-mapping/ 301
+/docs/nca-ecc-ai-controls-mapping.html /docs/nca-ecc-ai-controls-mapping/ 301
+/docs/nca-ecc-ai-controls-mapping/index.html /docs/nca-ecc-ai-controls-mapping/ 301
+
 /docs/nca-ecc-ai-controls     /docs/nca-ecc-ai-controls/    301
 /docs/nca-ecc-ai-controls.html /docs/nca-ecc-ai-controls/   301
 /docs/nca-ecc-ai-controls/index.html /docs/nca-ecc-ai-controls/ 301
