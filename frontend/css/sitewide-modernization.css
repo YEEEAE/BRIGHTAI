@@ -432,3 +432,136 @@ body.bright-page--dashboard :where(.chart-card, .card, .dashboard-panel) {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   UNIFIED HEADER & PREMIUM DROPDOWN SYSTEM
+   ========================================================================== */
+
+/* 1. Container & Layout direction */
+.dropdown-container {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute !important;
+  top: calc(100% + 12px) !important;
+  right: 50% !important;
+  transform: translateX(50%) translateY(10px) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  min-width: 260px !important;
+  background: rgba(8, 14, 28, 0.98) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 18px !important;
+  padding: 10px !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.6), 0 0 30px 2px rgba(0, 212, 255, 0.15) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  z-index: 999 !important;
+}
+
+.dropdown-menu::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -6px !important;
+  right: 50% !important;
+  transform: translateX(50%) rotate(45deg) !important;
+  width: 12px !important;
+  height: 12px !important;
+  background: rgba(8, 14, 28, 0.98) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Hover & Focus state */
+.dropdown-container:hover .dropdown-menu,
+.dropdown-container:focus-within .dropdown-menu,
+.dropdown-container button[aria-expanded="true"] + .dropdown-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(50%) translateY(0) !important;
+}
+
+/* Solutions specific wider dropdown */
+.dropdown-menu.solutions-dropdown {
+  min-width: 380px !important;
+  right: 50% !important;
+  transform: translateX(50%) translateY(10px) !important;
+}
+
+.dropdown-container:hover .dropdown-menu.solutions-dropdown,
+.dropdown-container:focus-within .dropdown-menu.solutions-dropdown,
+.dropdown-container button[aria-expanded="true"] + .dropdown-menu.solutions-dropdown {
+  transform: translateX(50%) translateY(0) !important;
+}
+
+/* Dropdown items */
+.dropdown-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  padding: 12px 14px !important;
+  border-radius: 12px !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease !important;
+  text-align: right !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1) 0%, rgba(124, 92, 255, 0.1) 100%) !important;
+  color: #00d4ff !important;
+  padding-right: 18px !important;
+  outline: none !important;
+}
+
+.dropdown-item i {
+  font-size: 16px !important;
+  margin-top: 3px !important;
+  color: #00d4ff !important;
+  transition: transform 0.25s ease !important;
+}
+
+.dropdown-item:hover i,
+.dropdown-item:focus i {
+  transform: scale(1.1) !important;
+}
+
+.dropdown-item span.font-bold {
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+
+.dropdown-item:hover span.font-bold,
+.dropdown-item:focus span.font-bold {
+  color: #00d4ff !important;
+}
+
+.dropdown-item span.text-xs {
+  display: block !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  color: rgba(255, 255, 255, 0.45) !important;
+  margin-top: 4px !important;
+}
+
+/* Chevron animations */
+.dropdown-container button i.fa-chevron-down {
+  transition: transform 0.25s ease !important;
+}
+
+.dropdown-container:hover button i.fa-chevron-down,
+.dropdown-container:focus-within button i.fa-chevron-down {
+  transform: rotate(180deg) !important;
+}
+
+/* Custom styles to prevent layout shifts */
+header[role="banner"] {
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+

@@ -135,6 +135,7 @@
     padding: 1px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01) 40%, rgba(0, 212, 255, 0) 50%, rgba(0, 212, 255, 0.15) 100%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
@@ -269,7 +270,7 @@
     align-items: center;
     justify-content: space-between;
     padding-bottom: 20px;
-    border-b: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
   .mobile-drawer-close {
     width: 40px;
@@ -470,54 +471,107 @@
     </a>
 
     <ul class="hidden lg:flex items-center gap-6 text-sm text-white/80">
-      <li><a href="#product" class="hover:text-white transition-colors">المنتج</a></li>
-      <li><a href="#layers" class="hover:text-white transition-colors">طبقات الأمان</a></li>
-      <li><a href="#compliance" class="hover:text-white transition-colors">حزم الامتثال</a></li>
-      <li><a href="#sectors" class="hover:text-white transition-colors">القطاعات</a></li>
+      <li><a href="/" class="hover:text-white transition-colors">الرئيسية</a></li>
       
-      <!-- قائمة النواة المنسدلة الفاخرة للأجهزة المكتبية -->
+      <!-- Solutions Dropdown -->
       <li class="dropdown-container">
-        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="kernelDropdownBtn">
-          <i class="fa-solid fa-layer-group text-xs" aria-hidden="true"></i>
-          <span>لوحة النواة</span>
+        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="solutionsDropdownBtn" aria-controls="solutionsDropdownMenu">
+          <span>الحلول</span>
           <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
         </button>
-        <div class="dropdown-menu">
-          <a href="/kernel/" class="dropdown-item">
-            <i class="fa-solid fa-gauge-high text-brand-500"></i>
-            <span>لوحة التحكم</span>
+        <div class="dropdown-menu solutions-dropdown" id="solutionsDropdownMenu" role="menu">
+          <a href="/solutions/ai-governance-platform/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <div>
+              <span class="font-bold">منصة حوكمة الذكاء الاصطناعي</span>
+              <span class="text-xs">طبقة تشغيلية لإدارة استخدامات ومخاطر AI داخل المؤسسة.</span>
+            </div>
           </a>
-          <a href="/kernel/chat.html" class="dropdown-item">
-            <i class="fa-solid fa-comments text-brand-500"></i>
-            <span>المحادثات الموثوقة</span>
+          <a href="/solutions/ai-firewall/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+              <span class="font-bold">AI Firewall</span>
+              <span class="text-xs">فحص وحماية البيانات الحساسة قبل وصولها للنماذج.</span>
+            </div>
           </a>
-          <a href="/kernel/audit.html" class="dropdown-item">
-            <i class="fa-solid fa-file-lines text-brand-500"></i>
-            <span>سجل التدقيق (Audit)</span>
+          <a href="/solutions/ai-audit-trail/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-file-signature"></i>
+            <div>
+              <span class="font-bold">AI Audit Trail</span>
+              <span class="text-xs">سجل قابل للمراجعة لكل طلب وقرار وموافقة.</span>
+            </div>
           </a>
-          <a href="/kernel/approvals.html" class="dropdown-item">
-            <i class="fa-solid fa-user-check text-brand-500"></i>
-            <span>الموافقات البشرية</span>
+          <a href="/solutions/human-approval-layer/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-user-check"></i>
+            <div>
+              <span class="font-bold">طبقة الموافقة البشرية</span>
+              <span class="text-xs">مراجعة بشرية للطلبات والقرارات عالية المخاطر.</span>
+            </div>
           </a>
-          <a href="/kernel/stats.html" class="dropdown-item">
-            <i class="fa-solid fa-chart-line text-brand-500"></i>
-            <span>الإحصائيات والامتثال</span>
+          <a href="/solutions/ai-evidence-file/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-folder-open"></i>
+            <div>
+              <span class="font-bold">AI Evidence File</span>
+              <span class="text-xs">ملف أدلة يدعم التدقيق وجاهزية الامتثال.</span>
+            </div>
           </a>
         </div>
       </li>
 
-      <li><a href="/blog/" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-book ml-1 text-xs opacity-75"></i>الوثائق</a></li>
-      <li><a href="#faq" class="hover:text-white transition-colors">أسئلة شائعة</a></li>
+      <!-- Kernel Dropdown -->
+      <li class="dropdown-container">
+        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="kernelDropdownBtn" aria-controls="kernelDropdownMenu">
+          <span>لوحة النواة KERNEL</span>
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" id="kernelDropdownMenu" role="menu">
+          <a href="/kernel/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span class="font-bold">لوحة التحكم</span>
+          </a>
+          <a href="/kernel/chat.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-comments"></i>
+            <span class="font-bold">المحادثات</span>
+          </a>
+          <a href="/kernel/audit.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-file-lines"></i>
+            <span class="font-bold">سجل التدقيق</span>
+          </a>
+          <a href="/kernel/approvals.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-user-check"></i>
+            <span class="font-bold">الموافقات البشرية</span>
+          </a>
+          <a href="/kernel/stats.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-chart-line"></i>
+            <span class="font-bold">الإحصائيات</span>
+          </a>
+        </div>
+      </li>
+
+      <!-- Resources Dropdown -->
+      <li class="dropdown-container">
+        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="resourcesDropdownBtn" aria-controls="resourcesDropdownMenu">
+          <span>المصادر والمعلومات</span>
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" id="resourcesDropdownMenu" role="menu">
+          <a href="/docs/docs.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-book"></i>
+            <span class="font-bold">الوثائق والمعارف</span>
+          </a>
+          <a href="/#faq" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-question-circle"></i>
+            <span class="font-bold">الأسئلة الشائعة</span>
+          </a>
+        </div>
+      </li>
     </ul>
 
     <div class="flex items-center gap-2">
-      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold wa-btn text-white" aria-label="تواصل معنا عبر واتساب">
-        <i class="fa-brands fa-whatsapp text-lg"></i> تواصل معنا
+      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold wa-btn text-white" aria-label="تواصل مع BrightAI عبر واتساب">
+        <i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب
       </a>
-      <a href="mailto:yazeed1job@gmail.com" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold glow-btn text-white" aria-label="راسلنا عبر البريد الإلكتروني">
-        <i class="fa-solid fa-envelope"></i> yazeed1job@gmail.com
-      </a>
-      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass flex items-center justify-center text-white" aria-label="فتح القائمة">
+      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass flex items-center justify-center text-white" aria-label="فتح القائمة" aria-expanded="false" aria-controls="mobileDrawer">
         <i class="fa-solid fa-bars"></i>
       </button>
     </div>
@@ -526,7 +580,7 @@
 
 <!-- درج الجوال الجانبي الفاخر (Mobile Drawer) -->
 <div id="drawerOverlay" class="mobile-drawer-overlay" aria-hidden="true"></div>
-<aside id="mobileDrawer" class="mobile-drawer" role="complementary" aria-label="قائمة الجوال الجانبية">
+<aside id="mobileDrawer" class="mobile-drawer" role="complementary" aria-label="قائمة الجوال الجانبية" aria-hidden="true">
   <div class="mobile-drawer-header">
     <a href="/" class="flex items-center gap-2" aria-label="BrightAI الرئيسية">
       <span class="font-extrabold text-lg tracking-tight">Bright<span class="gradient-text">AI</span></span>
@@ -538,11 +592,15 @@
   <div class="mobile-drawer-content">
     <nav aria-label="روابط التنقل السريع للجوال">
       <ul class="space-y-1">
-        <li><a href="#product" class="mobile-drawer-link"><i class="fa-solid fa-cube text-brand-500"></i> المنتج</a></li>
-        <li><a href="#layers" class="mobile-drawer-link"><i class="fa-solid fa-shield-halved text-brand-500"></i> طبقات الأمان</a></li>
-        <li><a href="#compliance" class="mobile-drawer-link"><i class="fa-solid fa-lock text-brand-500"></i> حزم الامتثال</a></li>
-        <li><a href="#sectors" class="mobile-drawer-link"><i class="fa-solid fa-industry text-brand-500"></i> القطاعات</a></li>
+        <li><a href="/" class="mobile-drawer-link"><i class="fa-solid fa-house text-brand-500"></i> الرئيسية</a></li>
         
+        <div class="mobile-drawer-section-title">حلول BrightAI</div>
+        <li><a href="/solutions/ai-governance-platform/" class="mobile-drawer-link"><i class="fa-solid fa-scale-balanced text-brand-500"></i> منصة حوكمة الذكاء الاصطناعي</a></li>
+        <li><a href="/solutions/ai-firewall/" class="mobile-drawer-link"><i class="fa-solid fa-shield-halved text-brand-500"></i> AI Firewall</a></li>
+        <li><a href="/solutions/ai-audit-trail/" class="mobile-drawer-link"><i class="fa-solid fa-file-signature text-brand-500"></i> AI Audit Trail</a></li>
+        <li><a href="/solutions/human-approval-layer/" class="mobile-drawer-link"><i class="fa-solid fa-user-check text-brand-500"></i> طبقة الموافقة البشرية</a></li>
+        <li><a href="/solutions/ai-evidence-file/" class="mobile-drawer-link"><i class="fa-solid fa-folder-open text-brand-500"></i> AI Evidence File</a></li>
+
         <div class="mobile-drawer-section-title">لوحة النواة (Kernel)</div>
         <li><a href="/kernel/" class="mobile-drawer-link"><i class="fa-solid fa-gauge-high text-brand-500"></i> لوحة التحكم</a></li>
         <li><a href="/kernel/chat.html" class="mobile-drawer-link"><i class="fa-solid fa-comments text-brand-500"></i> المحادثات</a></li>
@@ -551,17 +609,14 @@
         <li><a href="/kernel/stats.html" class="mobile-drawer-link"><i class="fa-solid fa-chart-line text-brand-500"></i> الإحصائيات</a></li>
         
         <div class="mobile-drawer-section-title">المصادر والمعلومات</div>
-        <li><a href="/blog/" class="mobile-drawer-link"><i class="fa-solid fa-book text-brand-500"></i> الوثائق والمعارف</a></li>
-        <li><a href="#faq" class="mobile-drawer-link"><i class="fa-solid fa-question-circle text-brand-500"></i> الأسئلة الشائعة</a></li>
+        <li><a href="/docs/docs.html" class="mobile-drawer-link"><i class="fa-solid fa-book text-brand-500"></i> الوثائق والمعارف</a></li>
+        <li><a href="/#faq" class="mobile-drawer-link"><i class="fa-solid fa-question-circle text-brand-500"></i> الأسئلة الشائعة</a></li>
       </ul>
     </nav>
   </div>
   <div class="mobile-drawer-footer">
-    <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="wa-btn flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm">
+    <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="wa-btn flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm" aria-label="تواصل مع BrightAI عبر واتساب">
       <i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب
-    </a>
-    <a href="mailto:yazeed1job@gmail.com" class="glow-btn flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm">
-      <i class="fa-solid fa-envelope"></i> yazeed1job@gmail.com
     </a>
   </div>
 </aside>
@@ -921,77 +976,118 @@
 <div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
 
 <!-- ================= 4 LAYERS ================= -->
+<!-- ================= SOLUTIONS ================= -->
 <section id="layers" aria-labelledby="layers-title" class="py-20 lg:py-28">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="flex items-end justify-between flex-wrap gap-4">
       <div class="max-w-2xl">
-        <span class="chip inline-block px-3 py-1 rounded-full text-xs font-bold">المعمارية</span>
-        <h2 id="layers-title" class="mt-4 text-3xl sm:text-4xl font-black">4 طبقات أمان تشتغل ورا الكواليس</h2>
-        <p class="mt-3 text-white/70">كل طلب AI داخل شركتك يمر عبر هالأربع طبقات قبل ما يصير قرار. صفر سيطرة مفقودة. صفر بيانات مكشوفة.</p>
+        <span class="chip inline-block px-3 py-1 rounded-full text-xs font-bold">حلول BrightAI</span>
+        <h2 id="layers-title" class="mt-4 text-3xl sm:text-4xl font-black">حلول متكاملة لحوكمة وأمان الذكاء الاصطناعي</h2>
+        <p class="mt-3 text-white/70">نوفر طبقة تشغيلية وأمان شاملة تضمن استخداماً موثوقاً للذكاء الاصطناعي داخل المؤسسات السعودية متوافقاً مع الأنظمة والضوابط المحلية.</p>
       </div>
     </div>
 
-    <ol class="mt-12 grid md:grid-cols-2 gap-6">
-      <li class="feature-card glass rounded-2xl p-7">
-        <div class="flex items-start gap-4">
-          <span class="w-14 h-14 rounded-2xl glow-btn flex items-center justify-center text-2xl font-black shrink-0">1</span>
-          <div>
-            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-shield-halved text-brand-500"></i> AI Firewall</h3>
-            <p class="mt-2 text-white/70 leading-loose text-sm">يفحص كل طلب قبل ما يروح للنموذج: فيه رقم هوية؟ بيانات مريض؟ معلومات مالية؟ أسرار شركة؟ المستخدم مصرح له؟ لو فيه خطر، النظام <strong>يخفي البيانات</strong> أو <strong>يمنع الطلب</strong> أو <strong>يطلب موافقة</strong>.</p>
-            <ul class="mt-3 space-y-1.5 text-xs text-white/60">
-              <li>✓ PII Redaction تلقائي (هوية، جوال، IBAN، رقم مريض)</li>
-              <li>✓ تصنيف البيانات حسب درجة الحساسية</li>
-              <li>✓ Policy-as-Code قابل للتخصيص لكل قسم</li>
-            </ul>
+    <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- 1. منصة حوكمة الذكاء الاصطناعي -->
+      <div class="feature-card glass rounded-2xl p-7 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><i class="fa-solid fa-scale-balanced text-white"></i></span>
+            <h3 class="text-xl font-bold">منصة حوكمة الذكاء الاصطناعي</h3>
           </div>
+          <p class="text-white/70 leading-loose text-sm mb-4">طبقة تشغيلية لإدارة استخدامات ومخاطر AI داخل المؤسسة. توفر رؤية شاملة وضوابط مركزية لضمان الاستخدام الآمن والمسؤول.</p>
+          <ul class="space-y-1.5 text-xs text-white/60 mb-6">
+            <li>✓ إدارة وتتبع استخدامات الذكاء الاصطناعي مركزياً</li>
+            <li>✓ رصد وتحليل المخاطر الأمنية والتشغيلية</li>
+            <li>✓ متوافق بالكامل مع ضوابط SDAIA و NCA</li>
+          </ul>
         </div>
-      </li>
+        <a href="/solutions/ai-governance-platform/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
+          <span>اكتشف المزيد</span>
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </a>
+      </div>
 
-      <li class="feature-card glass rounded-2xl p-7">
-        <div class="flex items-start gap-4">
-          <span class="w-14 h-14 rounded-2xl glow-btn flex items-center justify-center text-2xl font-black shrink-0">2</span>
-          <div>
-            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-file-lines text-brand-500"></i> AI Audit Trail</h3>
-            <p class="mt-2 text-white/70 leading-loose text-sm">كل شيء يتسجّل بتفصيل ممل (وهذا ميزة مو عيب 😎): مين سأل، وش سأل، وش البيانات المستخدمة، أي نموذج رد، وش المصادر، هل تم تصعيدها، وش سبب القرار.</p>
-            <ul class="mt-3 space-y-1.5 text-xs text-white/60">
-              <li>✓ سجل غير قابل للتعديل (Append-only ledger)</li>
-              <li>✓ ربط مع SIEM والـ NCA ECC requirements</li>
-              <li>✓ Time-stamped + توقيع رقمي لكل عملية</li>
-            </ul>
+      <!-- 2. AI Firewall -->
+      <div class="feature-card glass rounded-2xl p-7 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><i class="fa-solid fa-shield-halved text-white"></i></span>
+            <h3 class="text-xl font-bold">AI Firewall</h3>
           </div>
+          <p class="text-white/70 leading-loose text-sm mb-4">فحص وحماية البيانات الحساسة قبل وصولها للنماذج. يحمي الخصوصية ويمنع تسرب الهويات والملفات الطبية والمالية للنماذج الخارجية.</p>
+          <ul class="space-y-1.5 text-xs text-white/60 mb-6">
+            <li>✓ PII/PHI Redaction تلقائي فوري</li>
+            <li>✓ فلترة ومنع الاستفسارات غير المصرح بها</li>
+            <li>✓ متوافق مع نظام حماية البيانات الشخصية PDPL</li>
+          </ul>
         </div>
-      </li>
+        <a href="/solutions/ai-firewall/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
+          <span>اكتشف المزيد</span>
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </a>
+      </div>
 
-      <li class="feature-card glass rounded-2xl p-7">
-        <div class="flex items-start gap-4">
-          <span class="w-14 h-14 rounded-2xl glow-btn flex items-center justify-center text-2xl font-black shrink-0">3</span>
-          <div>
-            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-user-check text-brand-500"></i> Human Approval Layer</h3>
-            <p class="mt-2 text-white/70 leading-loose text-sm">الـ AI <strong>يقترح</strong>، ما <strong>يعتمد</strong>. مثلاً يقول: "هذي مرفوضات عالية الخطورة، أقترح CAPA"، بس ما يقدر <strong>يتلف</strong> أو <strong>يخصم من المخزون</strong> أو <strong>يعتمد إجراء</strong>. لازم QAM/QCM/Finance يوافقون.</p>
-            <ul class="mt-3 space-y-1.5 text-xs text-white/60">
-              <li>✓ Risk-Based Approval (كل ما زاد الخطر زاد عدد الموافقات)</li>
-              <li>✓ Mobile Approvals عبر WhatsApp و Email و SMS</li>
-              <li>✓ تفويض ذكي عند الإجازات والـ Out-of-Office</li>
-            </ul>
+      <!-- 3. AI Audit Trail -->
+      <div class="feature-card glass rounded-2xl p-7 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><i class="fa-solid fa-file-signature text-white"></i></span>
+            <h3 class="text-xl font-bold">AI Audit Trail</h3>
           </div>
+          <p class="text-white/70 leading-loose text-sm mb-4">سجل غير قابل للتعديل لكل طلب وقرار ومواقف AI. يمنح المدققين والجهات الرقابية رؤية كاملة وتوثيقاً زمنياً دقيقاً لكل عملية.</p>
+          <ul class="space-y-1.5 text-xs text-white/60 mb-6">
+            <li>✓ سجل تدقيق Append-only ledger محمي بـ Hash</li>
+            <li>✓ ربط رقمي متكامل مع متطلبات NCA ECC 2-2024</li>
+            <li>✓ تتبع كامل للمسؤولية والقرارات التلقائية</li>
+          </ul>
         </div>
-      </li>
+        <a href="/solutions/ai-audit-trail/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
+          <span>اكتشف المزيد</span>
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </a>
+      </div>
 
-      <li class="feature-card glass rounded-2xl p-7">
-        <div class="flex items-start gap-4">
-          <span class="w-14 h-14 rounded-2xl glow-btn flex items-center justify-center text-2xl font-black shrink-0">4</span>
-          <div>
-            <h3 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-folder-open text-brand-500"></i> AI Evidence File ⭐</h3>
-            <p class="mt-2 text-white/70 leading-loose text-sm">الميزة العبقرية. كل حالة AI يطلع لها <strong>ملف تدقيق PDF</strong> تلقائي جاهز للمدقق الخارجي: ملخص، بيانات، مخاطر، إجراءات، موافقات، ارتباط بـ PDPL/NCA/SFDA/ISO.</p>
-            <ul class="mt-3 space-y-1.5 text-xs text-white/60">
-              <li>✓ PDF موقّع رقمياً + Hash للتأكد من عدم التعديل</li>
-              <li>✓ تصدير بصيغة معتمدة من المدققين</li>
-              <li>✓ ربط تلقائي بمتطلبات الجهات التنظيمية</li>
-            </ul>
+      <!-- 4. طبقة الموافقة البشرية -->
+      <div class="feature-card glass rounded-2xl p-7 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><i class="fa-solid fa-user-check text-white"></i></span>
+            <h3 class="text-xl font-bold">طبقة الموافقة البشرية</h3>
           </div>
+          <p class="text-white/70 leading-loose text-sm mb-4">مراجعة بشرية للطلبات والقرارات عالية المخاطر. يضمن بقاء السيطرة في أيدي البشر وعدم تفويض القرارات الحيوية للـ AI بشكل كامل.</p>
+          <ul class="space-y-1.5 text-xs text-white/60 mb-6">
+            <li>✓ مسار موافقة Risk-Based ذكي ومرن</li>
+            <li>✓ إشعارات وموافقات فورية عبر الواتساب والبريد</li>
+            <li>✓ تفويض الصلاحيات وضمان استمرارية العمل</li>
+          </ul>
         </div>
-      </li>
-    </ol>
+        <a href="/solutions/human-approval-layer/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
+          <span>اكتشف المزيد</span>
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </a>
+      </div>
+
+      <!-- 5. AI Evidence File -->
+      <div class="feature-card glass rounded-2xl p-7 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><i class="fa-solid fa-folder-open text-white"></i></span>
+            <h3 class="text-xl font-bold">AI Evidence File</h3>
+          </div>
+          <p class="text-white/70 leading-loose text-sm mb-4">ملف أدلة يدعم التدقيق وجاهزية الامتثال. توليد ملفات PDF موقّعة رقمياً تثبت مطابقة كل استخدام ذكاء اصطناعي للوائح السعودية.</p>
+          <ul class="space-y-1.5 text-xs text-white/60 mb-6">
+            <li>✓ تقارير PDF تلقائية موقعة بختم رقمي لمنع التعديل</li>
+            <li>✓ جاهز للتصدير والتسليم المباشر للمدققين</li>
+            <li>✓ مطابقة تامة لمعايير SDAIA و SFDA و ISO</li>
+          </ul>
+        </div>
+        <a href="/solutions/ai-evidence-file/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
+          <span>اكتشف المزيد</span>
+          <i class="fa-solid fa-arrow-left text-xs"></i>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1442,32 +1538,56 @@
     a.addEventListener('click', closeDrawer);
   });
 
-  // Keyboard navigation for desktop dropdown
-  const dropdownBtn = document.getElementById('kernelDropdownBtn');
-  const dropdownContainer = document.querySelector('.dropdown-container');
-  
-  if (dropdownBtn && dropdownContainer) {
-    dropdownBtn.addEventListener('focus', () => {
-      dropdownBtn.setAttribute('aria-expanded', 'true');
+  // Keyboard navigation for desktop dropdowns (Solutions, Kernel, Resources)
+  document.querySelectorAll('.dropdown-container').forEach(container => {
+    const btn = container.querySelector('button[aria-haspopup="true"]');
+    const menu = container.querySelector('.dropdown-menu');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('focus', () => {
+      btn.setAttribute('aria-expanded', 'true');
     });
-    dropdownContainer.addEventListener('focusout', (e) => {
-      if (!dropdownContainer.contains(e.relatedTarget)) {
-        dropdownBtn.setAttribute('aria-expanded', 'false');
+
+    container.addEventListener('focusout', (e) => {
+      if (!container.contains(e.relatedTarget)) {
+        btn.setAttribute('aria-expanded', 'false');
       }
     });
-    dropdownBtn.addEventListener('keydown', (e) => {
+
+    btn.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
-        dropdownContainer.querySelector('.dropdown-menu a')?.focus();
+        menu.querySelector('a')?.focus();
       }
     });
-  }
+
+    const links = menu.querySelectorAll('a');
+    links.forEach((link, idx) => {
+      link.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = links[idx + 1] || links[0];
+          next.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = links[idx - 1] || links[links.length - 1];
+          prev.focus();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          btn.focus();
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  });
 
   // Escape key support sitewide for drawers/dropdowns
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeDrawer();
-      dropdownBtn?.setAttribute('aria-expanded', 'false');
+      document.querySelectorAll('.dropdown-container button[aria-haspopup="true"]').forEach(btn => {
+        btn.setAttribute('aria-expanded', 'false');
+      });
     }
   });
 

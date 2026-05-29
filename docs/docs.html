@@ -559,351 +559,166 @@
   <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="antialiased selection:bg-gold-500/30 selection:text-gold-400 tracking-tight bright-page--docs" data-bright-page-type="docs">
-<header class="unified-nav" id="main-header" role="banner">
-<div class="nav-container">
-<div class="flex-shrink-0">
-<a aria-label="BrightAI — الصفحة الرئيسية" class="nav-logo group" href="/" title="الرئيسية — BrightAI حلول ذكاء اصطناعي">
-<div class="logo-box relative w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
-<img src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="36" height="36" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
-</div>
-</a>
-</div>
-<nav class="nav-desktop" style="contain: layout;">
-<ul class="nav-links">
-<li class="nav-item">
-<a class="nav-link" href="/">الرئيسية</a>
-</li>
-<li class="nav-item group/dropdown relative">
-<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
-              الحلول الذكية
-              <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
-</button>
-<div class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-<div class="p-2 space-y-1">
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/ai-tenders-analysis/landing/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
-<iconify-icon icon="lucide:file-search" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
-                نظام تحليل العقود والمناقصات</div>
-<div class="text-xs text-slate-400">ContractAI للعقود والاعتمادات</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/services/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-rose-500/10 flex items-center justify-center text-rose-400 group-hover/item:text-rose-300 transition-colors">
-<iconify-icon icon="lucide:cpu" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-rose-400 transition-colors">
-                        منصة BrightAI Agents</div>
-<div class="text-xs text-slate-400">بناء وإدارة الوكلاء الأذكياء</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/smart-automation/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover/item:text-indigo-300 transition-colors">
-<iconify-icon icon="lucide:workflow" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-indigo-400 transition-colors">
-                        الأتمتة الذكية</div>
-<div class="text-xs text-slate-400">وسير العمل المتقدم</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/ai-agent/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 group-hover/item:text-purple-300 transition-colors">
-<iconify-icon icon="lucide:bot" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-purple-400 transition-colors">
-                        AIaaS</div>
-<div class="text-xs text-slate-400">الذكاء الاصطناعي كخدمة</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/contact/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 group-hover/item:text-amber-300 transition-colors">
-<iconify-icon icon="lucide:users" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-amber-400 transition-colors">
-                        استشارات</div>
-<div class="text-xs text-slate-400">حلول مخصصة لشركتك</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/data-analysis/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover/item:text-emerald-300 transition-colors">
-<iconify-icon icon="lucide:bar-chart-3" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-emerald-400 transition-colors">
-                        تحليل البيانات</div>
-<div class="text-xs text-slate-400">رؤى دقيقة وقرارات ذكية</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-</li>
-<li class="nav-item group/dropdown relative">
-<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
-              النماذج الذكية
-              <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
-</button>
-<div class="dropdown-menu absolute top-full right-0 mt-2 w-72 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-<div class="p-2 space-y-1">
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/smart-medical-archive/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-teal-500/10 flex items-center justify-center text-teal-400 group-hover/item:text-teal-300 transition-colors">
-<iconify-icon icon="lucide:hospital" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-teal-400 transition-colors">
-                        الأرشيف الطبي الذكي</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/smart-hiring-system/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 group-hover/item:text-green-300 transition-colors">
-<iconify-icon icon="lucide:briefcase" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-green-400 transition-colors">
-                        منصة التوظيف الذكي</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/ai-scolecs/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400 group-hover/item:text-violet-300 transition-colors">
-<iconify-icon icon="lucide:graduation-cap" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-violet-400 transition-colors">
-                        المنصة التعليمية الذكية</div>
-</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/demo/smart-hospital-management/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover/item:text-cyan-300 transition-colors">
-<iconify-icon icon="lucide:heart-pulse" width="18"></iconify-icon>
-</div>
-<div>
-<div class="text-sm font-semibold text-white group-hover/item:text-cyan-400 transition-colors">
-                        حلول AI الطبية المتقدمة</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-</li>
-<li class="nav-item group/dropdown relative">
-<button aria-expanded="false" aria-haspopup="true" class="nav-link flex items-center gap-1.5">
-              عن برايت
-              <iconify-icon class="chevron-down text-xs opacity-60" icon="lucide:chevron-down"></iconify-icon>
-</button>
-<div class="dropdown-menu absolute top-full right-0 mt-2 w-56 bg-[#0f172a] border border-white/10 rounded-xl shadow-xl opacity-0 invisible group-hover/dropdown:opacity-100 group-hover/dropdown:visible transition-all duration-300 transform origin-top-right z-50">
-<div class="p-2 space-y-1">
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/about/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 group-hover/item:text-blue-300 transition-colors">
-<iconify-icon icon="lucide:info" width="18"></iconify-icon>
-</div>
-<div class="text-sm font-semibold text-white group-hover/item:text-blue-400 transition-colors">
-                      عن برايت</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/docs/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-slate-500/10 flex items-center justify-center text-slate-400 group-hover/item:text-slate-300 transition-colors">
-<iconify-icon icon="lucide:file-text" width="18"></iconify-icon>
-</div>
-<div class="text-sm font-semibold text-white group-hover/item:text-slate-400 transition-colors">
-                      المستندات</div>
-</div>
-</a>
-<a class="block px-4 py-3 rounded-lg hover:bg-white/5 transition-colors group/item" href="/blog/">
-<div class="flex items-center gap-3">
-<div class="w-8 h-8 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 group-hover/item:text-pink-300 transition-colors">
-<iconify-icon icon="lucide:library" width="18"></iconify-icon>
-</div>
-<div class="text-sm font-semibold text-white group-hover/item:text-pink-400 transition-colors">
-                      المكتبة الذكية</div>
-</div>
-</a>
-</div>
-</div>
-</li>
-</ul>
-</nav>
-<div class="nav-actions">
-<button aria-label="البحث في الموقع" class="search-trigger search-desktop">
-<iconify-icon class="text-base text-slate-500 group-hover:text-indigo-400 transition-colors" icon="lucide:search"></iconify-icon>
-<span class="text-[13px] font-medium">بحث...</span>
-<kbd class="search-kbd">⌘K</kbd>
-</button>
-<button aria-label="البحث في الموقع" class="mobile-search-btn search-mobile">
-<iconify-icon icon="lucide:search" width="18"></iconify-icon>
-</button>
-<a aria-label="Switch to English" class="hidden lg:flex items-center justify-center gap-1.5 text-[13px] font-semibold text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-lg px-3 py-1.5 mx-2 shadow-sm lang-switcher-btn" href="/en/docs/" title="English Version">
-                    <iconify-icon icon="lucide:globe" width="16"></iconify-icon>
-                    <span class="tracking-wide">EN</span>
-                </a>
-                <a aria-label="ابدأ رحلة التحول عبر الواتساب" class="nav-cta nav-cta-desktop" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" title="تواصل معنا عبر الواتساب" data-analytics-event="whatsapp_click" data-cta-location="in-content">
-<iconify-icon icon="lucide:message-circle" width="16"></iconify-icon>
-          ابدأ رحلة التحول
-        </a>
-<button aria-expanded="false" aria-label="فتح القائمة" class="mobile-toggle">
-<span class="bar"></span>
-<span class="bar"></span>
-<span class="bar"></span>
-</button>
-</div>
-</div>
+<!-- ================= HEADER / NAV ================= -->
+<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-[#080e1c]/80 border-b border-white/5">
+  <nav role="navigation" aria-label="القائمة الرئيسية" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
+    <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
+      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
+        <img src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
+      </div>
+      <span class="font-extrabold text-xl tracking-tight" style="color: #fff;">Bright<span class="gradient-text">AI</span></span>
+      <span class="hidden md:inline text-xs text-white/50 border-r border-white/10 pr-3 mr-1">Saudi AI Safety</span>
+    </a>
+
+    <ul class="hidden lg:flex items-center gap-6 text-sm text-white/80" style="list-style: none;">
+      <li><a href="/" class="hover:text-white transition-colors text-white/85">الرئيسية</a></li>
+      
+      <!-- Solutions Dropdown -->
+      <li class="dropdown-container">
+        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="solutionsDropdownBtn" aria-controls="solutionsDropdownMenu">
+          <span>الحلول</span>
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu solutions-dropdown" id="solutionsDropdownMenu" role="menu">
+          <a href="/solutions/ai-governance-platform/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-scale-balanced"></i>
+            <div>
+              <span class="font-bold">منصة حوكمة الذكاء الاصطناعي</span>
+              <span class="text-xs">طبقة تشغيلية لإدارة استخدامات ومخاطر AI داخل المؤسسة.</span>
+            </div>
+          </a>
+          <a href="/solutions/ai-firewall/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-shield-halved"></i>
+            <div>
+              <span class="font-bold">AI Firewall</span>
+              <span class="text-xs">فحص وحماية البيانات الحساسة قبل وصولها للنماذج.</span>
+            </div>
+          </a>
+          <a href="/solutions/ai-audit-trail/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-file-signature"></i>
+            <div>
+              <span class="font-bold">AI Audit Trail</span>
+              <span class="text-xs">سجل قابل للمراجعة لكل طلب وقرار وموافقة.</span>
+            </div>
+          </a>
+          <a href="/solutions/human-approval-layer/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-user-check"></i>
+            <div>
+              <span class="font-bold">طبقة الموافقة البشرية</span>
+              <span class="text-xs">مراجعة بشرية للطلبات والقرارات عالية المخاطر.</span>
+            </div>
+          </a>
+          <a href="/solutions/ai-evidence-file/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-folder-open"></i>
+            <div>
+              <span class="font-bold">AI Evidence File</span>
+              <span class="text-xs">ملف أدلة يدعم التدقيق وجاهزية الامتثال.</span>
+            </div>
+          </a>
+        </div>
+      </li>
+
+      <!-- Kernel Dropdown -->
+      <li class="dropdown-container">
+        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="kernelDropdownBtn" aria-controls="kernelDropdownMenu">
+          <span>لوحة النواة KERNEL</span>
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" id="kernelDropdownMenu" role="menu">
+          <a href="/kernel/" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-gauge-high"></i>
+            <span class="font-bold">لوحة التحكم</span>
+          </a>
+          <a href="/kernel/chat.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-comments"></i>
+            <span class="font-bold">المحادثات</span>
+          </a>
+          <a href="/kernel/audit.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-file-lines"></i>
+            <span class="font-bold">سجل التدقيق</span>
+          </a>
+          <a href="/kernel/approvals.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-user-check"></i>
+            <span class="font-bold">الموافقات البشرية</span>
+          </a>
+          <a href="/kernel/stats.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-chart-line"></i>
+            <span class="font-bold">الإحصائيات</span>
+          </a>
+        </div>
+      </li>
+
+      <!-- Resources Dropdown -->
+      <li class="dropdown-container">
+        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="resourcesDropdownBtn" aria-controls="resourcesDropdownMenu">
+          <span>المصادر والمعلومات</span>
+          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu" id="resourcesDropdownMenu" role="menu">
+          <a href="/docs/docs.html" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-book"></i>
+            <span class="font-bold">الوثائق والمعارف</span>
+          </a>
+          <a href="/#faq" class="dropdown-item" role="menuitem">
+            <i class="fa-solid fa-question-circle"></i>
+            <span class="font-bold">الأسئلة الشائعة</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="flex items-center gap-2">
+      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold wa-btn text-white" aria-label="تواصل مع BrightAI عبر واتساب">
+        <i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب
+      </a>
+      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass flex items-center justify-center text-white" aria-label="فتح القائمة" aria-expanded="false" aria-controls="mobileDrawer">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </nav>
 </header>
-<div class="mobile-menu-drawer" id="mobileDrawer">
-<div class="flex flex-col h-full bai-inline-0001">
-<div class="flex items-center justify-between mb-8 pb-6" style="border-bottom: 1px solid rgba(255,255,255,0.06);">
-<div class="flex items-center gap-2.5">
-<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
-<span class="text-white font-black text-sm">AI</span>
-</div>
-<span class="text-base font-bold text-white">القائمة</span>
-</div>
-<button aria-label="إغلاق القائمة" class="mobile-toggle w-9 h-9 flex items-center justify-center rounded-lg bg-white/[0.04] border border-white/[0.08] hover:bg-white/[0.08] transition-all">
-<iconify-icon class="text-slate-300 text-lg" icon="lucide:x"></iconify-icon>
-</button>
-</div>
-<ul class="mobile-nav-list space-y-1 flex-1" style="list-style:none; padding:0; margin:0;">
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all" href="/">
-<iconify-icon class="text-slate-500" icon="lucide:home" width="18"></iconify-icon>
-            الرئيسية
-          </a>
-</li>
-<li>
-<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer" href="#">
-<span class="flex items-center gap-3">
-<iconify-icon class="text-slate-500" icon="lucide:layers" width="18"></iconify-icon>
-              الحلول والخدمات
-            </span>
-<iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
-</a>
-<div class="mobile-dropdown mt-1 mr-6 bai-inline-0002">
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/demo/ai-tenders-analysis/landing/">
-<iconify-icon class="text-slate-600" icon="lucide:file-search" width="15"></iconify-icon>
-    نظام تحليل العقود والمناقصات
-</a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/services/">
-<iconify-icon class="text-slate-600" icon="lucide:cpu" width="15"></iconify-icon>
-              منصة BrightAI Agents
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/smart-automation/">
-<iconify-icon class="text-slate-600" icon="lucide:workflow" width="15"></iconify-icon>
-              الأتمتة الذكية
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/ai-agent/">
-<iconify-icon class="text-slate-600" icon="lucide:bot" width="15"></iconify-icon>
-              AIaaS — الذكاء كخدمة
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/data-analysis/">
-<iconify-icon class="text-slate-600" icon="lucide:bar-chart-3" width="15"></iconify-icon>
-              تحليل البيانات
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-indigo-400 hover:bg-indigo-500/[0.06] transition-all" href="/contact/">
-<iconify-icon class="text-slate-600" icon="lucide:users" width="15"></iconify-icon>
-              استشارات
-            </a>
-</div>
-</li>
-<li>
-<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer" href="#">
-<span class="flex items-center gap-3">
-<iconify-icon class="text-slate-500" icon="lucide:sparkles" width="18"></iconify-icon>
-              النماذج الذكية
-            </span>
-<iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
-</a>
-<div class="mobile-dropdown mt-1 mr-6 bai-inline-0003">
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/demo/smart-medical-archive/">
-<iconify-icon class="text-slate-600" icon="lucide:hospital" width="15"></iconify-icon>
-              الأرشيف الطبي الذكي
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/demo/smart-hiring-system/">
-<iconify-icon class="text-slate-600" icon="lucide:briefcase" width="15"></iconify-icon>
-              منصة التوظيف الذكي
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/demo/ai-scolecs/">
-<iconify-icon class="text-slate-600" icon="lucide:graduation-cap" width="15"></iconify-icon>
-              المنصة التعليمية الذكية
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-emerald-400 hover:bg-emerald-500/[0.06] transition-all" href="/demo/smart-hospital-management/">
-<iconify-icon class="text-slate-600" icon="lucide:heart-pulse" width="15"></iconify-icon>
-              حلول AI الطبية المتقدمة
-            </a>
-</div>
-</li>
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all" href="/blog/">
-<iconify-icon class="text-slate-500" icon="lucide:book-open" width="18"></iconify-icon>
-            المدونة التقنية
-          </a>
-</li>
-<li>
-<a aria-expanded="false" aria-haspopup="true" class="mobile-nav-link flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-slate-200 hover:bg-white/[0.05] hover:text-white transition-all cursor-pointer" href="#">
-<span class="flex items-center gap-3">
-<iconify-icon class="text-slate-500" icon="lucide:info" width="18"></iconify-icon>
-              عن برايت
-            </span>
-<iconify-icon class="text-slate-600 text-sm" icon="lucide:chevron-down"></iconify-icon>
-</a>
-<div class="mobile-dropdown mt-1 mr-6 bai-inline-0004">
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all" href="/about/">
-<iconify-icon class="text-slate-600" icon="lucide:info" width="15"></iconify-icon>
-              من نحن
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all" href="/docs/">
-<iconify-icon class="text-slate-600" icon="lucide:file-text" width="15"></iconify-icon>
-              المستندات
-            </a>
-<a class="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-sm text-slate-400 hover:text-blue-400 hover:bg-blue-500/[0.06] transition-all" href="/blog/">
-<iconify-icon class="text-slate-600" icon="lucide:library" width="15"></iconify-icon>
-              المكتبة الذكية
-            </a>
-</div>
-</li>
-<li>
-<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-[15px] font-medium text-indigo-400 hover:bg-indigo-500/[0.08] transition-all" href="/contact/">
-<iconify-icon class="text-indigo-500" icon="lucide:phone" width="18"></iconify-icon>
-            تواصل معنا
-          </a>
-</li>
-</ul>
-<div class="mt-6 pt-6" style="border-top: 1px solid rgba(255,255,255,0.06);">
-<a class="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl text-white font-bold text-[15px] transition-all bai-inline-0005" href="https://api.whatsapp.com/send?phone=966538229013" rel="noopener noreferrer" target="_blank" data-analytics-event="whatsapp_click" data-cta-location="in-content">
-<iconify-icon icon="lucide:message-circle" width="18"></iconify-icon>
-          ابدأ رحلة التحول
-        </a>
-<a class="flex items-center justify-center gap-2 w-full py-4 mt-4 rounded-xl text-slate-400 font-medium text-[15px] hover:text-white hover:bg-white/[0.04] transition-all" href="/demo/">
-<iconify-icon icon="lucide:play-circle" width="16"></iconify-icon>
-          جرّب النظام مجاناً
-        </a>
-</div>
-</div>
-</div>
-<div class="backdrop-overlay fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden"></div>
+<!-- درج الجوال الجانبي الفاخر (Mobile Drawer) -->
+<div id="drawerOverlay" class="mobile-drawer-overlay" aria-hidden="true"></div>
+<aside id="mobileDrawer" class="mobile-drawer" role="complementary" aria-label="قائمة الجوال الجانبية" aria-hidden="true">
+  <div class="mobile-drawer-header">
+    <a href="/" class="flex items-center gap-2" aria-label="BrightAI الرئيسية">
+      <span class="font-extrabold text-lg tracking-tight" style="color: #fff;">Bright<span class="gradient-text">AI</span></span>
+    </a>
+    <button id="drawerCloseBtn" class="mobile-drawer-close" aria-label="إغلاق القائمة">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+  <div class="mobile-drawer-content">
+    <nav aria-label="روابط التنقل السريع للجوال">
+      <ul class="space-y-1" style="list-style: none; padding: 0;">
+        <li><a href="/" class="mobile-drawer-link"><i class="fa-solid fa-house text-brand-500"></i> الرئيسية</a></li>
+        
+        <div class="mobile-drawer-section-title">حلول BrightAI</div>
+        <li><a href="/solutions/ai-governance-platform/" class="mobile-drawer-link"><i class="fa-solid fa-scale-balanced text-brand-500"></i> منصة حوكمة الذكاء الاصطناعي</a></li>
+        <li><a href="/solutions/ai-firewall/" class="mobile-drawer-link"><i class="fa-solid fa-shield-halved text-brand-500"></i> AI Firewall</a></li>
+        <li><a href="/solutions/ai-audit-trail/" class="mobile-drawer-link"><i class="fa-solid fa-file-signature text-brand-500"></i> AI Audit Trail</a></li>
+        <li><a href="/solutions/human-approval-layer/" class="mobile-drawer-link"><i class="fa-solid fa-user-check text-brand-500"></i> طبقة الموافقة البشرية</a></li>
+        <li><a href="/solutions/ai-evidence-file/" class="mobile-drawer-link"><i class="fa-solid fa-folder-open text-brand-500"></i> AI Evidence File</a></li>
+
+        <div class="mobile-drawer-section-title">لوحة النواة (Kernel)</div>
+        <li><a href="/kernel/" class="mobile-drawer-link"><i class="fa-solid fa-gauge-high text-brand-500"></i> لوحة التحكم</a></li>
+        <li><a href="/kernel/chat.html" class="mobile-drawer-link"><i class="fa-solid fa-comments text-brand-500"></i> المحادثات</a></li>
+        <li><a href="/kernel/audit.html" class="mobile-drawer-link"><i class="fa-solid fa-file-lines text-brand-500"></i> سجل التدقيق</a></li>
+        <li><a href="/kernel/approvals.html" class="mobile-drawer-link"><i class="fa-solid fa-user-check text-brand-500"></i> الموافقات البشرية</a></li>
+        <li><a href="/kernel/stats.html" class="mobile-drawer-link"><i class="fa-solid fa-chart-line text-brand-500"></i> الإحصائيات</a></li>
+        
+        <div class="mobile-drawer-section-title">المصادر والمعلومات</div>
+        <li><a href="/docs/docs.html" class="mobile-drawer-link"><i class="fa-solid fa-book text-brand-500"></i> الوثائق والمعارف</a></li>
+        <li><a href="/#faq" class="mobile-drawer-link"><i class="fa-solid fa-question-circle text-brand-500"></i> الأسئلة الشائعة</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="mobile-drawer-footer">
+    <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="wa-btn flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm" aria-label="تواصل مع BrightAI عبر واتساب">
+      <i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب
+    </a>
+  </div>
+</aside>
 <a class="skip-link" href="#main">تخطي إلى المحتوى</a>
 <span id="main-content" tabindex="-1" aria-hidden="true"></span>
 <main class="relative z-10" id="main">
@@ -1449,24 +1264,106 @@
 <a href="https://api.whatsapp.com/send?phone=966538229013&amp;text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D8%B3%D8%AA%D8%B4%D8%A7%D8%B1%D8%A9%20%D8%AD%D9%88%D9%84%20%D8%AD%D9%84%D9%88%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A" class="sitewide-cta-whatsapp" data-analytics-event="whatsapp_click" data-cta-location="footer">تواصل عبر واتساب</a>
 </div>
 </footer>
-<script defer="" src="/frontend/js/runtime-config.min.js"></script>
-<script defer="" src="/frontend/js/navigation.min.js"></script>
 <script>
-    // Simple search functionality
-    document.getElementById('docsSearch')?.addEventListener('input', function (e) {
-      const query = e.target.value.toLowerCase();
-      document.querySelectorAll('.doc-card, .quick-link').forEach(card => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(query) ? '' : 'none';
+  // Mobile drawer interaction
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const drawerOverlay = document.getElementById('drawerOverlay');
+  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
+
+  function openDrawer() {
+    mobileDrawer?.classList.add('active');
+    drawerOverlay?.classList.add('active');
+    mobileDrawer?.setAttribute('aria-hidden', 'false');
+    drawerOverlay?.setAttribute('aria-hidden', 'false');
+    menuBtn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    // Shift focus to close button
+    setTimeout(() => drawerCloseBtn?.focus(), 50);
+  }
+
+  function closeDrawer() {
+    mobileDrawer?.classList.remove('active');
+    drawerOverlay?.classList.remove('active');
+    mobileDrawer?.setAttribute('aria-hidden', 'true');
+    drawerOverlay?.setAttribute('aria-hidden', 'true');
+    menuBtn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    // Restore focus to menu button
+    menuBtn?.focus();
+  }
+
+  menuBtn?.addEventListener('click', openDrawer);
+  drawerCloseBtn?.addEventListener('click', closeDrawer);
+  drawerOverlay?.addEventListener('click', closeDrawer);
+
+  mobileDrawer?.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', closeDrawer);
+  });
+
+  // Keyboard navigation for desktop dropdowns (Solutions, Kernel, Resources)
+  document.querySelectorAll('.dropdown-container').forEach(container => {
+    const btn = container.querySelector('button[aria-haspopup="true"]');
+    const menu = container.querySelector('.dropdown-menu');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('focus', () => {
+      btn.setAttribute('aria-expanded', 'true');
+    });
+
+    container.addEventListener('focusout', (e) => {
+      if (!container.contains(e.relatedTarget)) {
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        menu.querySelector('a')?.focus();
+      }
+    });
+
+    const links = menu.querySelectorAll('a');
+    links.forEach((link, idx) => {
+      link.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = links[idx + 1] || links[0];
+          next.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = links[idx - 1] || links[links.length - 1];
+          prev.focus();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          btn.focus();
+          btn.setAttribute('aria-expanded', 'false');
+        }
       });
     });
-  </script>
-<script defer="" src="/frontend/js/clarity-events.js"></script>
+  });
 
+  // Escape key support sitewide for drawers/dropdowns
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeDrawer();
+      document.querySelectorAll('.dropdown-container button[aria-haspopup="true"]').forEach(btn => {
+        btn.setAttribute('aria-expanded', 'false');
+      });
+    }
+  });
 
-  <script src="/frontend/js/production-runtime.v20260427.js" defer=""></script>
-<script defer="" src="/frontend/js/accessibility.min.js?v=2026042904"></script>
-  <script src="/frontend/js/brightai-logo-replace.js" defer=""></script>
+  // Simple search functionality
+  document.getElementById('docsSearch')?.addEventListener('input', function (e) {
+    const query = e.target.value.toLowerCase();
+    document.querySelectorAll('.doc-card, .quick-link').forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = text.includes(query) ? '' : 'none';
+    });
+  });
+</script>
 
-    <script defer="" src="/frontend/js/sitewide-modernization.js"></script>
+  <script defer src="/frontend/js/sitewide-modernization.js"></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body></html>
