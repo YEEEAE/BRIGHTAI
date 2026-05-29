@@ -162,6 +162,7 @@ services:
         "docs",
         "dashboard",
         "kernel",
+        "solutions",
         "demo/ai-tenders-analysis",
         "demo/ai-reject-dashboard/frontend/pages",
         "demo/ai-reject-dashboard/frontend/pages/admin"
@@ -435,6 +436,114 @@ services:
       - type: redirect
         source: /sitemap/index.html
         destination: /sitemap/
+
+      # ── Solutions Module Redirects ──────────────────────────────────────────
+      # Solutions root redirect to services
+      - type: redirect
+        source: /solutions
+        destination: /services/
+      - type: redirect
+        source: /solutions/
+        destination: /services/
+
+      # 1. ai-governance-platform
+      - type: redirect
+        source: /solutions/ai-governance-platform
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /solutions/ai-governance-platform.html
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /solutions/ai-governance-platform/index.html
+        destination: /solutions/ai-governance-platform/
+
+      # 2. ai-use-case-discovery
+      - type: redirect
+        source: /solutions/ai-use-case-discovery
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /solutions/ai-use-case-discovery.html
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /solutions/ai-use-case-discovery/index.html
+        destination: /solutions/ai-use-case-discovery/
+
+      # 3. ai-risk-classification
+      - type: redirect
+        source: /solutions/ai-risk-classification
+        destination: /solutions/ai-risk-classification/
+      - type: redirect
+        source: /solutions/ai-risk-classification.html
+        destination: /solutions/ai-risk-classification/
+      - type: redirect
+        source: /solutions/ai-risk-classification/index.html
+        destination: /solutions/ai-risk-classification/
+
+      # 4. policy-to-control-mapping
+      - type: redirect
+        source: /solutions/policy-to-control-mapping
+        destination: /solutions/policy-to-control-mapping/
+      - type: redirect
+        source: /solutions/policy-to-control-mapping.html
+        destination: /solutions/policy-to-control-mapping/
+      - type: redirect
+        source: /solutions/policy-to-control-mapping/index.html
+        destination: /solutions/policy-to-control-mapping/
+
+      # 5. ai-firewall
+      - type: redirect
+        source: /solutions/ai-firewall
+        destination: /solutions/ai-firewall/
+      - type: redirect
+        source: /solutions/ai-firewall.html
+        destination: /solutions/ai-firewall/
+      - type: redirect
+        source: /solutions/ai-firewall/index.html
+        destination: /solutions/ai-firewall/
+
+      # 6. ai-audit-trail
+      - type: redirect
+        source: /solutions/ai-audit-trail
+        destination: /solutions/ai-audit-trail/
+      - type: redirect
+        source: /solutions/ai-audit-trail.html
+        destination: /solutions/ai-audit-trail/
+      - type: redirect
+        source: /solutions/ai-audit-trail/index.html
+        destination: /solutions/ai-audit-trail/
+
+      # 7. human-approval-layer
+      - type: redirect
+        source: /solutions/human-approval-layer
+        destination: /solutions/human-approval-layer/
+      - type: redirect
+        source: /solutions/human-approval-layer.html
+        destination: /solutions/human-approval-layer/
+      - type: redirect
+        source: /solutions/human-approval-layer/index.html
+        destination: /solutions/human-approval-layer/
+
+      # 8. ai-evidence-file
+      - type: redirect
+        source: /solutions/ai-evidence-file
+        destination: /solutions/ai-evidence-file/
+      - type: redirect
+        source: /solutions/ai-evidence-file.html
+        destination: /solutions/ai-evidence-file/
+      - type: redirect
+        source: /solutions/ai-evidence-file/index.html
+        destination: /solutions/ai-evidence-file/
+
+      # 9. continuous-ai-governance
+      - type: redirect
+        source: /solutions/continuous-ai-governance
+        destination: /solutions/continuous-ai-governance/
+      - type: redirect
+        source: /solutions/continuous-ai-governance.html
+        destination: /solutions/continuous-ai-governance/
+      - type: redirect
+        source: /solutions/continuous-ai-governance/index.html
+        destination: /solutions/continuous-ai-governance/
 
       # ── English Legal Redirects ─────────────────────────────────────────────
       # English legal pages that exist in the repository

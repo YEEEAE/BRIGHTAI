@@ -8,8 +8,6 @@ Disallow: /tables/
 Disallow: /api/
 Disallow: /private/
 Disallow: /.well-known/
-Disallow: /kernel/
-Disallow: /demo/ai-reject-dashboard/frontend/
 
 # Google
 User-agent: Googlebot
