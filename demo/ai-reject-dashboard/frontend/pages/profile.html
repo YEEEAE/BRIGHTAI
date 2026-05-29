@@ -3,11 +3,12 @@
     <meta name="ai-assistant" content="صقر AI by BrightAI">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>صقر AI — الملف الشخصي والأمان | ميس للمنتجات الطبية</title>
+  <meta name="description" content="صقر AI — الملف الشخصي والأمان | ميس للمنتجات الطبية من BrightAI، صفحة عامة قابلة للفهرسة ضمن تجربة الموقع وخدمات الذكاء الاصطناعي وحوكمة الأنظمة.">
   
   <!-- Central Design System Stylesheet -->
-  <link rel="stylesheet" href="/demo/ai-reject-dashboard/frontend/assets/css/design-system.css">
-  <link rel="stylesheet" href="/demo/ai-reject-dashboard/frontend/assets/css/notifications.css">
-<link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="stylesheet" href="/demo/frontend/assets/css/design-system.css">
+  <link rel="stylesheet" href="/demo/frontend/assets/css/notifications.css">
+<link rel="stylesheet" href="/demo/frontend/assets/css/dashboard.css">
   
   <style>
     body {
@@ -171,15 +172,17 @@
   </style>
 
   <!-- Alpine.js library — local vendor (CSP-safe, no CDN) -->
-  <script defer="" src="/demo/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
+  <script defer="" src="/demo/frontend/assets/vendor/alpine.min.js"></script>
   <link rel="stylesheet" href="/frontend/css/asset-fonts.css">
   <link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png">
 <link rel="apple-touch-icon" href="/frontend/images/logo-new.PNG">
   <link rel="preload" as="image" href="/frontend/images/logo-new.PNG" fetchpriority="high">
   <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/profile/">
-  <script id="brightai-production-schema" type="application/ld+json">
+  <link rel="canonical" href="https://brightai.site/demo/ai-reject-dashboard/profile/">
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/profile/">
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/profile/">
+<script id="brightai-production-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -204,14 +207,13 @@
         "@id": "https://brightai.site/#organization"
       },
       "inLanguage": [
-        "ar-SA",
-        "en-SA"
+        "ar-SA"
       ]
     },
     {
       "@type": "WebPage",
-      "@id": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/profile/#webpage",
-      "url": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/profile/",
+      "@id": "https://brightai.site/demo/profile/#webpage",
+      "url": "https://brightai.site/demo/profile/",
       "name": "صقر AI — الملف الشخصي والأمان | ميس للمنتجات الطبية",
       "description": "يجب ألا تقل عن 12 حرفاً، وتحتوي على أحرف كبيرة وصغيرة وأرقام ورموز.",
       "isPartOf": {
@@ -224,7 +226,7 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/profile/#breadcrumb",
+      "@id": "https://brightai.site/demo/profile/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -242,25 +244,25 @@
           "@type": "ListItem",
           "position": 3,
           "name": "ai reject dashboard",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/"
+          "item": "https://brightai.site/demo/"
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "frontend",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/frontend/"
+          "item": "https://brightai.site/demo/frontend/"
         },
         {
           "@type": "ListItem",
           "position": 5,
           "name": "pages",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/"
+          "item": "https://brightai.site/demo/"
         },
         {
           "@type": "ListItem",
           "position": 6,
           "name": "صقر AI — الملف الشخصي والأمان | ميس للمنتجات الطبية",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/profile/"
+          "item": "https://brightai.site/demo/profile/"
         }
       ]
     }
@@ -284,7 +286,7 @@
         <div class="sub">Focus ERP Integrated System</div>
       </div>
       <nav class="sidebar-nav" aria-label="التنقل الرئيسي للوحة BrightAI">
-        <a href="../../index.html" class="sidebar-link"><span class="sidebar-icon">📊</span><span>لوحة القيادة الرئيسية</span></a>
+        <a href="/demo/" class="sidebar-link"><span class="sidebar-icon">📊</span><span>لوحة القيادة الرئيسية</span></a>
         <a href="executive.html" class="sidebar-link"><span class="sidebar-icon">🏢</span><span>المنظور التنفيذي</span></a>
         <a href="finance.html" class="sidebar-link"><span class="sidebar-icon">💰</span><span>المنظور المالي</span></a>
         <a href="quality.html" class="sidebar-link"><span class="sidebar-icon">🔬</span><span>الجودة وإجراءات CAPA</span></a>
@@ -313,7 +315,7 @@
         </div>
         <div class="topbar-right" id="topbar-right">
           <!-- Bell will be auto-injected here -->
-          <div class="topbar-user" @click="window.location.href = '/pages/profile'">
+          <div class="topbar-user" @click="window.location.href = '/demo/profile/'">
             <div class="topbar-avatar" x-text="user.avatar || '👤'"></div>
             <div class="topbar-user-info">
               <span class="topbar-user-name" x-text="user.name"></span>
@@ -541,12 +543,12 @@
 
   </div>
 
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/auth-guard.js" defer></script>
+  <script src="/demo/frontend/assets/js/auth-guard.js" defer></script>
   <!-- Notifications Library -->
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/notifications.js" defer></script>
+  <script src="/demo/frontend/assets/js/notifications.js" defer></script>
   
   <!-- Page logic — extracted to external file (CSP-compliant) -->
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/pages/profile.js" defer></script>
+  <script src="/demo/frontend/assets/js/pages/profile.js" defer></script>
   <!-- dummy marker profile start
     function profileConsole() {
       return {
@@ -762,7 +764,7 @@
       };
     }
   </script>
-  <script defer src="../assets/js/dashboard.js"></script>
+  <script defer src="/demo/frontend/assets/js/dashboard.js"></script>
   <script defer src="/frontend/js/sitewide-modernization.js"></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
   <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>

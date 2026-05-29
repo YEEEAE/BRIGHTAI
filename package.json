@@ -23,6 +23,7 @@
     "seo:all": "npm run seo:check && npm run seo:gate",
     "seo:check": "node scripts/seo-health-check.mjs",
     "seo:gate": "node scripts/seo-ci-check.mjs",
+    "seo:production-guard": "npm run seo:check && npm run seo:gate",
     "sitemap:generate": "node scripts/generate-sitemap-all-pages.mjs",
     "sitemap:all": "npm run sitemap:generate",
     "verify:all": "node scripts/verify-all.mjs && node scripts/check-render-readiness.mjs && npm run sitemap:generate && npm run seo:gate",

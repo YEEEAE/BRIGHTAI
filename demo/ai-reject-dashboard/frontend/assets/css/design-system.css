@@ -1,22 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* --- BrightAI Component Library Imports --- */
-@import url('./components/buttons.css');
-@import url('./components/cards.css');
-@import url('./components/forms.css');
-@import url('./components/tables.css');
-@import url('./components/modals.css');
-@import url('./components/notifications.css');
-@import url('./components/badges.css');
-@import url('./components/tabs.css');
-@import url('./components/tooltips.css');
-@import url('./components/charts.css');
-@import url('./components/sidebar.css');
-@import url('./components/topbar.css');
-@import url('./components/breadcrumbs.css');
-@import url('./components/pagination.css');
-@import url('./components/skeletons.css');
-@import url('./components/empty-states.css');
+@import url('/demo/frontend/assets/css/components/buttons.css');
+@import url('/demo/frontend/assets/css/components/cards.css');
+@import url('/demo/frontend/assets/css/components/forms.css');
+@import url('/demo/frontend/assets/css/components/tables.css');
+@import url('/demo/frontend/assets/css/components/modals.css');
+@import url('/demo/frontend/assets/css/components/notifications.css');
+@import url('/demo/frontend/assets/css/components/badges.css');
+@import url('/demo/frontend/assets/css/components/tabs.css');
+@import url('/demo/frontend/assets/css/components/tooltips.css');
+@import url('/demo/frontend/assets/css/components/charts.css');
+@import url('/demo/frontend/assets/css/components/sidebar.css');
+@import url('/demo/frontend/assets/css/components/topbar.css');
+@import url('/demo/frontend/assets/css/components/breadcrumbs.css');
+@import url('/demo/frontend/assets/css/components/pagination.css');
+@import url('/demo/frontend/assets/css/components/skeletons.css');
+@import url('/demo/frontend/assets/css/components/empty-states.css');
 
 /* ==========================================================================
    BrightAI Enterprise Design System - Central Configuration

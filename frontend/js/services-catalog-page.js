@@ -1,5 +1,5 @@
 const WHATSAPP_URL = "https://wa.me/966538229013";
-        const products = [{"id":"smart-hiring-system","name":"نظام الاستقطاب (توظيف ذكي)","price":899,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/smart-hiring-system/","title":"نظام توظيف ذكي | اختَر أفضل المرشحين بسرعة ودقة","description":"نظام توظيف متكامل يؤتمت الفرز والمقابلات الأولية ويصنّف المرشحين بالذكاء الاصطناعي، مع تقارير مقارنة ولوحة تتبع لكل وظيفة.","answer":"يختصر وقت التوظيف ويعطي فرق الموارد البشرية قائمة مرشحين مرتبة حسب الكفاءة.","icon":"👥","highlights":["فرز سير ذاتية","مقابلات أولية","مقارنة المرشحين"],"keywords":"نظام توظيف ذكي السعودية فرز السير الذاتية ATS AI","slug":"smart-hiring-system","sku":"smart-hiring-system","demoUrl":"https://brightai.site/demo/smart-hiring-system/","demoLabel":"جرّب نظام التوظيف الذكي","secondaryDemoUrl":"https://brightai.site/ai-bots/BrightRecruiter/","secondaryDemoLabel":"جرّب BrightRecruiter"},{"id":"medical-archive","name":"نظام سجلات (أرشيف طبي)","price":899,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/medical-archive/","title":"نظام أرشفة السجلات الطبية | تنظيم ذكي وحماية عالية للبيانات","description":"أرشيف طبي رقمي ذكي يصنّف الملفات تلقائياً، يستخرج البيانات السريرية، ويربط السجلات بين الأقسام مع حماية متقدمة للبيانات.","answer":"يناسب المستشفيات والمراكز الطبية التي تحتاج أرشفة رقمية وربط بيانات المرضى بين الأقسام.","icon":"🗂️","highlights":["تصنيف تلقائي","بيانات سريرية","حماية متقدمة"],"keywords":"أرشيف طبي ذكي السعودية سجلات طبية رقمية","slug":"medical-archive","sku":"medical-archive","demoUrl":"https://brightai.site/demo/smart-medical-archive/","demoLabel":"جرّب الأرشيف الطبي الذكي","secondaryDemoUrl":"https://brightai.site/demo/smart-hospital-management/","secondaryDemoLabel":"استكشف نموذج البيانات الصحية"},{"id":"data-platform","name":"نظام التحليل (منصة بيانات)","price":899,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/data-platform/","title":"منصة بيانات موحّدة | تحكم كامل في بيانات شركتك","description":"منصة بيانات مؤسسية تجمع مصادر البيانات المتفرقة في مستودع موحّد مع لوحات تحليل ذكية وصلاحيات وصول حسب الإدارة والمنصب.","answer":"تجمع بيانات الشركة في مكان واحد وتمنح الإدارة رؤية موحدة للأداء والصلاحيات.","icon":"🧠","highlights":["مصادر موحدة","صلاحيات وصول","لوحات تحليل"],"keywords":"منصة بيانات السعودية مستودع بيانات داشبورد ذكاء اصطناعي","slug":"data-platform","sku":"data-platform","demoUrl":"https://brightai.site/demo/data-analyzer/","demoLabel":"جرّب نموذج تحليل البيانات"},{"id":"ai-scolecs","slug":"ai-scolecs","sku":"ai-scolecs","name":"نظام منصة تعليمية متكاملة ذكية","price":299,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/ai-scolecs/","demoUrl":"https://brightai.site/demo/ai-scolecs/","demoLabel":"جرّب المنصة التعليمية","title":"منصة تعليمية ذكية متكاملة بالذكاء الاصطناعي","description":"منصة تعليمية ذكية تدعم إدارة المحتوى، متابعة الطلاب، تحليل الأداء، وتخصيص تجربة التعلم للمدارس والمعاهد والجهات التدريبية.","answer":"مناسبة للجهات التعليمية والتدريبية التي تريد منصة ذكية لإدارة التعلم وتحليل أداء المتعلمين.","icon":"🎓","highlights":["إدارة تعلم ذكية","تحليل أداء الطلاب","محتوى وتقييمات"],"keywords":"منصة تعليمية ذكية تعليم إلكتروني ذكاء اصطناعي السعودية ai-scolecs"},{"id":"smart-hospital-management","slug":"smart-hospital-management","sku":"smart-hospital-management","name":"نظام إدارة المستشفيات الذكية","price":699,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/smart-hospital-management/","demoUrl":"https://brightai.site/demo/smart-hospital-management/","demoLabel":"جرّب نموذج إدارة المستشفيات","title":"نظام إدارة المستشفيات الذكية بالذكاء الاصطناعي","description":"نظام يساعد المنشآت الصحية على تنظيم العمليات، قراءة المؤشرات، دعم قرارات الجودة، وتحسين إدارة البيانات والتقارير الصحية.","answer":"مناسب للمستشفيات والمراكز الطبية التي تريد إدارة أذكى للعمليات والبيانات الصحية.","icon":"🏥","highlights":["مؤشرات تشغيلية صحية","دعم الجودة","إدارة بيانات طبية"],"keywords":"إدارة مستشفيات ذكية ذكاء اصطناعي صحي السعودية health"},{"id":"document-automation","name":"أتمتة إدارة البيانات والوثائق","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/document-automation/","title":"حوّل مستنداتك إلى بيانات ذكية | أتمتة كاملة لإدارة الوثائق","description":"فرز وتصنيف وأرشفة المستندات تلقائياً باستخدام AI، مع استخراج البيانات من الفواتير والعقود وتحويلها إلى سجلات رقمية قابلة للبحث.","answer":"مناسب للإدارات التي تتعامل مع عقود وفواتير وملفات كثيرة وتحتاج أرشفة واستخراج بيانات بسرعة.","icon":"📄","highlights":["OCR واستخراج بيانات","أرشفة ذكية","بحث سريع"],"keywords":"أتمتة الوثائق السعودية أرشفة المستندات الذكية OCR","slug":"document-automation","sku":"document-automation","demoUrl":"https://brightai.site/demo/ocr-demo/","demoLabel":"جرّب OCR عربي بالذكاء الاصطناعي"},{"id":"customer-service-automation","name":"أتمتة خدمة العملاء","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/customer-service-automation/","title":"أتمتة خدمة العملاء الذكية لرفع الرضا وتسريع الحلول","description":"ردود فورية وذكية على استفسارات العملاء عبر واتساب والموقع والبريد، مع تصعيد تلقائي للحالات المعقدة وتقارير رضا العملاء.","answer":"تقلل وقت الانتظار وتوفر خدمة عملاء أسرع عبر واتساب والموقع والبريد.","icon":"🤝","highlights":["ردود 24/7","تصعيد تلقائي","تقارير رضا"],"keywords":"أتمتة خدمة العملاء السعودية شات بوت واتساب AI","slug":"customer-service-automation","sku":"customer-service-automation","demoUrl":"https://brightai.site/demo/customer-service-automation/","demoLabel":"جرّب أتمتة خدمة العملاء"},{"id":"hr-automation","name":"أتمتة إدارة الموارد البشرية","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/hr-automation/","title":"حلّ شامل لأتمتة إدارة الموارد البشرية وتسريع عمليات الـ HR بدون تعقيد","description":"رقمنة كاملة لعمليات HR: المقابلات الوظيفية الأولية والترشيحات، وطلبات الإجازات والموافقات، وإعداد الرواتب وتقييم الأداء، مع تكامل مع نظام مقيم ومدد.","answer":"يسهل عمليات HR اليومية من التوظيف إلى الإجازات والموافقات والرواتب وتقييم الأداء.","icon":"🧾","highlights":["إجازات وموافقات","رواتب وتقييم","تكامل مقيم ومدد"],"keywords":"أتمتة الموارد البشرية السعودية HR automation","slug":"hr-automation","sku":"hr-automation","demoUrl":"https://brightai.site/demo/hr-automation/","demoLabel":"جرّب أتمتة الموارد البشرية"},{"id":"marketing-automation","name":"أتمتة التسويق الرقمي","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/marketing-automation/","title":"نظام تسويق ذكي | أتمتة الحملات وزيادة العائد","description":"جدولة ونشر المحتوى تلقائياً عبر جميع القنوات، مع تتبع أداء الحملات وإعادة استهداف العملاء المهتمين بناءً على سلوكهم.","answer":"يناسب الفرق التي تريد أتمتة النشر، إعادة الاستهداف، وقياس العائد من الحملات.","icon":"🚀","highlights":["جدولة النشر","إعادة استهداف","رفع العائد"],"keywords":"أتمتة التسويق الرقمي السعودية marketing automation","slug":"marketing-automation","sku":"marketing-automation","demoUrl":"https://brightai.site/demo/marketing-automation/","demoLabel":"جرّب ديمو أتمتة التسويق"},{"id":"approvals-automation","name":"أتمتة الموافقات الإدارية","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/approvals-automation/","title":"نظام موافقات ذكي | أتمتة كاملة للإجراءات الإدارية","description":"أوقف التعقيد والتأخير في الموافقات. نظامنا يربط جميع الإدارات في Workflow ذكي يضمن سرعة الاعتماد، الشفافية، وتتبع كامل لكل طلب في الوقت الحقيقي.","answer":"يحسن سرعة الاعتماد ويمنح الإدارة تتبعاً واضحاً لكل طلب وموافقة.","icon":"✅","highlights":["Workflow ذكي","تتبع لحظي","شفافية الاعتماد"],"keywords":"أتمتة الموافقات الإدارية السعودية workflow","slug":"approvals-automation","sku":"approvals-automation","demoUrl":"https://brightai.site/demo/approvals-automation/","demoLabel":"جرّب أتمتة الموافقات"},{"id":"operational-reports-automation","name":"أتمتة التقارير التشغيلية","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/operational-reports-automation/","title":"تقارير تشغيلية تلقائية 100% | أتمتة وتحليل فوري لبيانات شركتك","description":"تجميع آلي لمؤشرات الأداء KPIs من كافة الأنظمة وإصدار تقارير يومية أو أسبوعية مجهزة بالكامل لصناع القرار للإدارة.","answer":"يوفر تقارير يومية أو أسبوعية جاهزة لصناع القرار بدون جمع يدوي من الأنظمة.","icon":"📈","highlights":["KPIs تلقائية","تقارير يومية","دعم القرار"],"keywords":"أتمتة التقارير التشغيلية السعودية KPI reports","slug":"operational-reports-automation","sku":"operational-reports-automation","demoUrl":"https://brightai.site/demo/operational-reports-automation/","demoLabel":"جرّب أتمتة التقارير التشغيلية"},{"id":"supply-chain-optimization","name":"أتمتة تحسين سلسلة التوريد","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/supply-chain-optimization/","title":"تحسين سلسلة الإمداد في السعودية | أتمتة Supply Chain بالذكاء الاصطناعي","description":"تنبؤ مبكر بالطلب يعتمد على حركة السوق ليتم إعادة الطلب آلياً وتقليل نفاد المخزون، مما يخفض تكاليف التخزين ويرفع كفاءة التوزيع.","answer":"يساعد الشركات على تقليل نفاد المخزون وخفض تكاليف التخزين وتحسين التوزيع.","icon":"🚚","highlights":["تنبؤ بالطلب","إعادة طلب آلية","خفض المخزون"],"keywords":"تحسين سلسلة التوريد السعودية Supply Chain AI","slug":"supply-chain-optimization","sku":"supply-chain-optimization","demoUrl":"https://brightai.site/demo/supply-chain-optimization/","demoLabel":"جرّب ديمو سلسلة التوريد"},{"id":"data-analyst-agent","name":"وكيل محلل بيانات","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/data-analyst-agent/","title":"وكيل تحليل بيانات يحوّل أرقامك إلى قرارات دقيقة وفورية","description":"وكيل ذكي يقرأ بياناتك لحظيًا، يحلّلها، يكشف الأنماط، ويطلعك على مؤشرات الأداء الحقيقية بدون انتظار محلّل بشري. يعطيك تقارير فورية، تنبؤات دقيقة، وتنبيهات تساعدك تتحرك بسرعة وتاخذ قرار مبني على أرقام واضحة.","answer":"مناسب للشركات التي تحتاج تقارير فورية، قراءة مؤشرات الأداء، واكتشاف الأنماط بدون انتظار تحليل يدوي.","icon":"📊","highlights":["تحليل لحظي","تنبيهات أداء","تنبؤات دقيقة"],"keywords":"تحليل بيانات السعودية مؤشرات أداء KPI داشبورد ذكاء اصطناعي","slug":"data-analyst-agent","sku":"data-analyst-agent","demoUrl":"https://brightai.site/demo/data-analyzer/","demoLabel":"جرّب محلل البيانات"},{"id":"custom-ai-agent","name":"وكيل ذكاء اصطناعي مخصص","price":399,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/custom-ai-agent/","title":"وكيل ذكاء اصطناعي مخصص يعمل بهوية شركتك وأساليبك التشغيلية","description":"مبني خصيصاً ليحاكي دماغ مؤسستك. ندرّبه على سياساتك وبياناتك الخاصة لينفذ أعقد المهام التشغيلية بأسلوب وهوية علامتك التجارية بشكل تام.","answer":"أفضل خيار إذا كنت تحتاج وكيل AI مخصص يتعامل مع سياسات شركتك وبياناتك وهويتك التشغيلية.","icon":"🤖","highlights":["تدريب على بياناتك","هوية علامتك","مهام تشغيلية"],"keywords":"وكيل ذكاء اصطناعي مخصص السعودية AI Agent للشركات","slug":"custom-ai-agent","sku":"custom-ai-agent","demoUrl":"https://brightai.site/demo/custom-ai-agent/","demoLabel":"جرّب الوكيل المخصص","hasLiveDemo":true},{"id":"competitor-analysis-agent","name":"وكيل تحليل المنافسين","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/competitor-analysis-agent/","title":"وكيل تحليل المنافسين — يكشف أسرار السوق ويعطيك أفضلية حقيقية","description":"رادار مؤسسي لا يتوقف. يراقب أرقام وحملات وتقييمات منافسيك يومياً، ويستخرج نقاط ضعفهم ليمنحك تقارير استراتيجية تضعك في صدارة الحصة السوقية.","answer":"يساعد فرق التسويق والمبيعات على فهم المنافسين، متابعة الحملات، واستخراج فرص نمو قابلة للتنفيذ.","icon":"🛰️","highlights":["رصد يومي","نقاط ضعف المنافسين","تقارير استراتيجية"],"keywords":"تحليل المنافسين السعودية مراقبة المنافسين ذكاء اصطناعي","slug":"competitor-analysis-agent","sku":"competitor-analysis-agent","demoUrl":"https://brightai.site/demo/competitor-analysis-agent/","demoLabel":"جرّب تحليل المنافسين","hasLiveDemo":true},{"id":"seo-ai-agent","name":"وكيل تحسين محركات البحث SEO","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/seo-ai-agent/","title":"وكيل SEO ذكي يرفع ترتيبك ويقلّل تكلفة الإعلانات","description":"يستهدف الكلمات البيعية العالية ويكتب محتوى محسّن يساعد على مضاعفة الزيارات العضوية وخفض تكاليف النقرات الإعلانية.","answer":"مناسب للمواقع التي تريد رفع الزيارات العضوية من السعودية وتحسين ظهورها في Google ونتائج AI Search.","icon":"🔎","highlights":["كلمات بيعية","محتوى محسّن","زيارات عضوية"],"keywords":"SEO السعودية تحسين محركات البحث AEO GEO AI search","slug":"seo-ai-agent","sku":"seo-ai-agent","demoUrl":"https://brightai.site/demo/seo-ai-agent/","demoLabel":"جرّب وكيل SEO","hasLiveDemo":true},{"id":"marketing-ai-agent","name":"وكيل تسويق","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/marketing-ai-agent/","title":"وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات","description":"أداة تسويق آلية تدير حملاتك الرقمية، تحدد جمهورك المثالي، تولّد محتوى جذاب، وتحلّل الأداء لحظيًا. تقلّل الهدر وتزيد الفعالية، وتضمن وصول علامتك لأكبر عدد من العملاء المحتملين بأقل تكلفة ممكنة.","answer":"يساعدك على إدارة الحملات، توليد المحتوى، وتحسين الوصول والتحويلات بأقل وقت وجهد.","icon":"📣","highlights":["حملات ذكية","محتوى تلقائي","تحسين التحويلات"],"keywords":"وكيل تسويق السعودية حملات رقمية ذكاء اصطناعي","slug":"marketing-ai-agent","sku":"marketing-ai-agent","demoUrl":"https://brightai.site/demo/marketing-ai-agent/","demoLabel":"جرّب وكيل التسويق","hasLiveDemo":true},{"id":"opportunity-discovery-agent","name":"وكيل اكتشاف الفرص والعملاء","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/opportunity-discovery-agent/","title":"وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع","description":"صياد آلي لا يتعب. يمسح السوق والمنصات لجمع وتصنيف العملاء المحتملين وتقييم جديتهم لضخهم مباشرة كتدفق مستمر إلى فريق المبيعات.","answer":"يفيد فرق المبيعات التي تحتاج تدفق عملاء محتملين وفرص تجارية قابلة للمتابعة.","icon":"🎯","highlights":["جمع Leads","تقييم الجدية","تدفق للمبيعات"],"keywords":"توليد العملاء المحتملين السعودية lead generation AI","slug":"opportunity-discovery-agent","sku":"opportunity-discovery-agent","demoUrl":"https://brightai.site/demo/opportunity-discovery-agent/","demoLabel":"جرّب اكتشاف الفرص","hasLiveDemo":true},{"id":"brightproject","slug":"brightproject","sku":"brightproject","name":"BrightProject - إدارة المشاريع الذكي في السعودية","price":99,"currency":"ر.س","category":"وكيل","qtyType":"اشتراك شهري","billingLabel":"اشتراك شهري","priceNote":"شهرياً","isRecurring":true,"url":"https://brightai.site/services/brightproject/","demoUrl":"https://brightai.site/demo/brightproject/","demoLabel":"جرّب BrightProject","title":"BrightProject لإدارة المشاريع الذكية في السعودية","description":"روبوت ذكي يساعد فرق العمل على متابعة المهام، تلخيص حالة المشاريع، كشف التأخير، وتقديم توصيات عملية لإدارة أفضل للمشاريع داخل الشركات السعودية.","answer":"مناسب للشركات التي تريد متابعة مشاريعها ومهام فرقها بذكاء ووضوح شهرياً.","icon":"📌","highlights":["متابعة المهام","تنبيهات التأخير","ملخصات تنفيذية"],"keywords":"BrightProject إدارة مشاريع ذكاء اصطناعي السعودية روبوت مشاريع"},{"id":"brightsales","slug":"brightsales","sku":"brightsales","name":"BrightSales - روبوت المبيعات الذكي في السعودية","price":99,"currency":"ر.س","category":"وكيل","qtyType":"اشتراك شهري","billingLabel":"اشتراك شهري","priceNote":"شهرياً","isRecurring":true,"url":"https://brightai.site/services/brightsales/","demoUrl":"https://brightai.site/demo/brightsales/","demoLabel":"جرّب BrightSales","title":"BrightSales روبوت المبيعات الذكي للشركات في السعودية","description":"روبوت مبيعات ذكي يساعد على متابعة العملاء المحتملين، تجهيز رسائل البيع، ترتيب الأولويات، وتحسين تحويل الفرص إلى صفقات.","answer":"مناسب لفرق المبيعات التي تحتاج مساعد ذكي شهري لتسريع المتابعة وزيادة التحويلات.","icon":"💼","highlights":["متابعة العملاء","رسائل بيع ذكية","ترتيب الفرص"],"keywords":"BrightSales روبوت مبيعات ذكاء اصطناعي السعودية مبيعات AI"},{"id":"social-data-analysis","name":"تحليل بيانات وسائل التواصل الاجتماعي متقدم","price":200,"currency":"ر.س","category":"تحليل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/social-data-analysis/","title":"وكيل تحليل وسائل التواصل الاجتماعي — رؤى عميقة لزيادة التفاعل والمبيعات","description":"أداة ذكية تجمع بيانات كل منصات التواصل، تحلل التفاعل، تكتشف الأنماط والسلوكيات، وتقيم أداء الحملات بدقة. تساعدك على تحسين الاستراتيجية، زيادة التفاعل العضوي، وزيادة العائد من كل منصة بشكل محسوب وذكي.","answer":"يفيد فرق التسويق التي تريد فهم تفاعل الجمهور السعودي وتحسين المحتوى والحملات بناءً على البيانات.","icon":"💬","highlights":["تحليل التفاعل","سلوك الجمهور","تحسين الحملات"],"keywords":"تحليل السوشيال ميديا السعودية وسائل التواصل الاجتماعي","slug":"social-data-analysis","sku":"social-data-analysis","demoUrl":"https://brightai.site/demo/social-data-analysis/","demoLabel":"جرّب تحليل بيانات التواصل"},{"id":"health-data-analysis","name":"تحليل البيانات الصحية","price":299,"currency":"ر.س","category":"تحليل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/health-data-analysis/","title":"وكيل تحليل البيانات الصحية لتحسين الرعاية واتخاذ قرارات دقيقة","description":"تحلل بيانات المرضى والتقارير الطبية لحظيًا، تكشف الأنماط، تحدد المخاطر الصحية، وتساعد الفرق الطبية على اتخاذ قرارات أسرع وأكثر دقة. تقلّل الأخطاء، تحسّن جودة الرعاية، وتسهّل إدارة البيانات الصحية بشكل آمن.","answer":"مناسب للمنشآت الصحية التي تحتاج قراءة ذكية للتقارير الطبية ودعم قرارات أسرع وأكثر أماناً.","icon":"🏥","highlights":["تحليل طبي","كشف المخاطر","قرارات أسرع"],"keywords":"تحليل بيانات صحية السعودية ذكاء اصطناعي صحي","slug":"health-data-analysis","sku":"health-data-analysis","demoUrl":"https://brightai.site/demo/smart-hospital-management/","demoLabel":"جرّب نموذج تحليل البيانات الصحية"},{"id":"ai-tenders-analysis","slug":"ai-tenders-analysis","sku":"ai-tenders-analysis","name":"نظام تحليل المناقصات بالذكاء الاصطناعي","price":799,"currency":"ر.س","category":"القطاع المالي","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/ai-tenders-analysis/","demoUrl":"https://brightai.site/demo/ai-tenders-analysis/","demoLabel":"جرّب نموذج تحليل المناقصات","title":"نظام تحليل المناقصات بالذكاء الاصطناعي للقطاع المالي والمشتريات","description":"نظام ذكي يساعد فرق المشتريات والعقود على تحليل كراسات الشروط، مقارنة العروض، كشف المخاطر، وتجهيز تقارير تنفيذية قابلة للمراجعة قبل قرار التقديم أو الترسية.","answer":"مناسب للجهات المالية وفرق المشتريات والعقود التي تحتاج تحليل المناقصات بسرعة ودقة قبل اتخاذ قرار التقديم أو الترسية.","icon":"📑","highlights":["تحليل كراسات الشروط","مقارنة العروض","كشف المخاطر"],"keywords":"مناقصات عقود مشتريات قطاع مالي تحليل مناقصات ذكاء اصطناعي السعودية"},{"id":"ai-consulting","name":"استشارات الذكاء الاصطناعي","price":99,"currency":"ر.س","category":"استشارات","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/ai-consulting/","title":"استشارة ذكاء اصطناعي لتحديد أفضل حل يناسب عملك","description":"جلسة استشارية تساعدك تفهم أين يمكن للذكاء الاصطناعي أن يخفض التكاليف، يسرّع العمليات، ويحسّن تجربة العملاء داخل شركتك.","answer":"أفضل بداية إذا كنت غير متأكد أي منتج يناسب احتياجك أو تبي خريطة تطبيق AI واضحة.","icon":"💡","highlights":["تشخيص احتياج","خارطة تطبيق","أولوية الحلول"],"keywords":"استشارات ذكاء اصطناعي السعودية AI consulting","slug":"ai-consulting","sku":"ai-consulting","demoUrl":"https://brightai.site/demo/ai-consulting/","demoLabel":"جرّب استشارات AI"}];
+        const products = [{"id":"smart-hiring-system","name":"نظام الاستقطاب (توظيف ذكي)","price":899,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"نظام توظيف ذكي | اختَر أفضل المرشحين بسرعة ودقة","description":"نظام توظيف متكامل يؤتمت الفرز والمقابلات الأولية ويصنّف المرشحين بالذكاء الاصطناعي، مع تقارير مقارنة ولوحة تتبع لكل وظيفة.","answer":"يختصر وقت التوظيف ويعطي فرق الموارد البشرية قائمة مرشحين مرتبة حسب الكفاءة.","icon":"👥","highlights":["فرز سير ذاتية","مقابلات أولية","مقارنة المرشحين"],"keywords":"نظام توظيف ذكي السعودية فرز السير الذاتية ATS AI","slug":"smart-hiring-system","sku":"smart-hiring-system","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب نظام التوظيف الذكي","secondaryDemoUrl":"https://brightai.site/services/","secondaryDemoLabel":"جرّب BrightRecruiter"},{"id":"medical-archive","name":"نظام سجلات (أرشيف طبي)","price":899,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"نظام أرشفة السجلات الطبية | تنظيم ذكي وحماية عالية للبيانات","description":"أرشيف طبي رقمي ذكي يصنّف الملفات تلقائياً، يستخرج البيانات السريرية، ويربط السجلات بين الأقسام مع حماية متقدمة للبيانات.","answer":"يناسب المستشفيات والمراكز الطبية التي تحتاج أرشفة رقمية وربط بيانات المرضى بين الأقسام.","icon":"🗂️","highlights":["تصنيف تلقائي","بيانات سريرية","حماية متقدمة"],"keywords":"أرشيف طبي ذكي السعودية سجلات طبية رقمية","slug":"medical-archive","sku":"medical-archive","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب الأرشيف الطبي الذكي","secondaryDemoUrl":"https://brightai.site/demo/","secondaryDemoLabel":"استكشف نموذج البيانات الصحية"},{"id":"data-platform","name":"نظام التحليل (منصة بيانات)","price":899,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"منصة بيانات موحّدة | تحكم كامل في بيانات شركتك","description":"منصة بيانات مؤسسية تجمع مصادر البيانات المتفرقة في مستودع موحّد مع لوحات تحليل ذكية وصلاحيات وصول حسب الإدارة والمنصب.","answer":"تجمع بيانات الشركة في مكان واحد وتمنح الإدارة رؤية موحدة للأداء والصلاحيات.","icon":"🧠","highlights":["مصادر موحدة","صلاحيات وصول","لوحات تحليل"],"keywords":"منصة بيانات السعودية مستودع بيانات داشبورد ذكاء اصطناعي","slug":"data-platform","sku":"data-platform","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب نموذج تحليل البيانات"},{"id":"ai-scolecs","slug":"ai-scolecs","sku":"ai-scolecs","name":"نظام منصة تعليمية متكاملة ذكية","price":299,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب المنصة التعليمية","title":"منصة تعليمية ذكية متكاملة بالذكاء الاصطناعي","description":"منصة تعليمية ذكية تدعم إدارة المحتوى، متابعة الطلاب، تحليل الأداء، وتخصيص تجربة التعلم للمدارس والمعاهد والجهات التدريبية.","answer":"مناسبة للجهات التعليمية والتدريبية التي تريد منصة ذكية لإدارة التعلم وتحليل أداء المتعلمين.","icon":"🎓","highlights":["إدارة تعلم ذكية","تحليل أداء الطلاب","محتوى وتقييمات"],"keywords":"منصة تعليمية ذكية تعليم إلكتروني ذكاء اصطناعي السعودية ai-scolecs"},{"id":"smart-hospital-management","slug":"smart-hospital-management","sku":"smart-hospital-management","name":"نظام إدارة المستشفيات الذكية","price":699,"currency":"ر.س","category":"أنظمة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب نموذج إدارة المستشفيات","title":"نظام إدارة المستشفيات الذكية بالذكاء الاصطناعي","description":"نظام يساعد المنشآت الصحية على تنظيم العمليات، قراءة المؤشرات، دعم قرارات الجودة، وتحسين إدارة البيانات والتقارير الصحية.","answer":"مناسب للمستشفيات والمراكز الطبية التي تريد إدارة أذكى للعمليات والبيانات الصحية.","icon":"🏥","highlights":["مؤشرات تشغيلية صحية","دعم الجودة","إدارة بيانات طبية"],"keywords":"إدارة مستشفيات ذكية ذكاء اصطناعي صحي السعودية health"},{"id":"document-automation","name":"أتمتة إدارة البيانات والوثائق","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"حوّل مستنداتك إلى بيانات ذكية | أتمتة كاملة لإدارة الوثائق","description":"فرز وتصنيف وأرشفة المستندات تلقائياً باستخدام AI، مع استخراج البيانات من الفواتير والعقود وتحويلها إلى سجلات رقمية قابلة للبحث.","answer":"مناسب للإدارات التي تتعامل مع عقود وفواتير وملفات كثيرة وتحتاج أرشفة واستخراج بيانات بسرعة.","icon":"📄","highlights":["OCR واستخراج بيانات","أرشفة ذكية","بحث سريع"],"keywords":"أتمتة الوثائق السعودية أرشفة المستندات الذكية OCR","slug":"document-automation","sku":"document-automation","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب OCR عربي بالذكاء الاصطناعي"},{"id":"customer-service-automation","name":"أتمتة خدمة العملاء","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"أتمتة خدمة العملاء الذكية لرفع الرضا وتسريع الحلول","description":"ردود فورية وذكية على استفسارات العملاء عبر واتساب والموقع والبريد، مع تصعيد تلقائي للحالات المعقدة وتقارير رضا العملاء.","answer":"تقلل وقت الانتظار وتوفر خدمة عملاء أسرع عبر واتساب والموقع والبريد.","icon":"🤝","highlights":["ردود 24/7","تصعيد تلقائي","تقارير رضا"],"keywords":"أتمتة خدمة العملاء السعودية شات بوت واتساب AI","slug":"customer-service-automation","sku":"customer-service-automation","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب أتمتة خدمة العملاء"},{"id":"hr-automation","name":"أتمتة إدارة الموارد البشرية","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"حلّ شامل لأتمتة إدارة الموارد البشرية وتسريع عمليات الـ HR بدون تعقيد","description":"رقمنة كاملة لعمليات HR: المقابلات الوظيفية الأولية والترشيحات، وطلبات الإجازات والموافقات، وإعداد الرواتب وتقييم الأداء، مع تكامل مع نظام مقيم ومدد.","answer":"يسهل عمليات HR اليومية من التوظيف إلى الإجازات والموافقات والرواتب وتقييم الأداء.","icon":"🧾","highlights":["إجازات وموافقات","رواتب وتقييم","تكامل مقيم ومدد"],"keywords":"أتمتة الموارد البشرية السعودية HR automation","slug":"hr-automation","sku":"hr-automation","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب أتمتة الموارد البشرية"},{"id":"marketing-automation","name":"أتمتة التسويق الرقمي","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"نظام تسويق ذكي | أتمتة الحملات وزيادة العائد","description":"جدولة ونشر المحتوى تلقائياً عبر جميع القنوات، مع تتبع أداء الحملات وإعادة استهداف العملاء المهتمين بناءً على سلوكهم.","answer":"يناسب الفرق التي تريد أتمتة النشر، إعادة الاستهداف، وقياس العائد من الحملات.","icon":"🚀","highlights":["جدولة النشر","إعادة استهداف","رفع العائد"],"keywords":"أتمتة التسويق الرقمي السعودية marketing automation","slug":"marketing-automation","sku":"marketing-automation","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب ديمو أتمتة التسويق"},{"id":"approvals-automation","name":"أتمتة الموافقات الإدارية","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"نظام موافقات ذكي | أتمتة كاملة للإجراءات الإدارية","description":"أوقف التعقيد والتأخير في الموافقات. نظامنا يربط جميع الإدارات في Workflow ذكي يضمن سرعة الاعتماد، الشفافية، وتتبع كامل لكل طلب في الوقت الحقيقي.","answer":"يحسن سرعة الاعتماد ويمنح الإدارة تتبعاً واضحاً لكل طلب وموافقة.","icon":"✅","highlights":["Workflow ذكي","تتبع لحظي","شفافية الاعتماد"],"keywords":"أتمتة الموافقات الإدارية السعودية workflow","slug":"approvals-automation","sku":"approvals-automation","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب أتمتة الموافقات"},{"id":"operational-reports-automation","name":"أتمتة التقارير التشغيلية","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"تقارير تشغيلية تلقائية 100% | أتمتة وتحليل فوري لبيانات شركتك","description":"تجميع آلي لمؤشرات الأداء KPIs من كافة الأنظمة وإصدار تقارير يومية أو أسبوعية مجهزة بالكامل لصناع القرار للإدارة.","answer":"يوفر تقارير يومية أو أسبوعية جاهزة لصناع القرار بدون جمع يدوي من الأنظمة.","icon":"📈","highlights":["KPIs تلقائية","تقارير يومية","دعم القرار"],"keywords":"أتمتة التقارير التشغيلية السعودية KPI reports","slug":"operational-reports-automation","sku":"operational-reports-automation","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب أتمتة التقارير التشغيلية"},{"id":"supply-chain-optimization","name":"أتمتة تحسين سلسلة التوريد","price":699,"currency":"ر.س","category":"أتمتة","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"تحسين سلسلة الإمداد في السعودية | أتمتة Supply Chain بالذكاء الاصطناعي","description":"تنبؤ مبكر بالطلب يعتمد على حركة السوق ليتم إعادة الطلب آلياً وتقليل نفاد المخزون، مما يخفض تكاليف التخزين ويرفع كفاءة التوزيع.","answer":"يساعد الشركات على تقليل نفاد المخزون وخفض تكاليف التخزين وتحسين التوزيع.","icon":"🚚","highlights":["تنبؤ بالطلب","إعادة طلب آلية","خفض المخزون"],"keywords":"تحسين سلسلة التوريد السعودية Supply Chain AI","slug":"supply-chain-optimization","sku":"supply-chain-optimization","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب ديمو سلسلة التوريد"},{"id":"data-analyst-agent","name":"وكيل محلل بيانات","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل تحليل بيانات يحوّل أرقامك إلى قرارات دقيقة وفورية","description":"وكيل ذكي يقرأ بياناتك لحظيًا، يحلّلها، يكشف الأنماط، ويطلعك على مؤشرات الأداء الحقيقية بدون انتظار محلّل بشري. يعطيك تقارير فورية، تنبؤات دقيقة، وتنبيهات تساعدك تتحرك بسرعة وتاخذ قرار مبني على أرقام واضحة.","answer":"مناسب للشركات التي تحتاج تقارير فورية، قراءة مؤشرات الأداء، واكتشاف الأنماط بدون انتظار تحليل يدوي.","icon":"📊","highlights":["تحليل لحظي","تنبيهات أداء","تنبؤات دقيقة"],"keywords":"تحليل بيانات السعودية مؤشرات أداء KPI داشبورد ذكاء اصطناعي","slug":"data-analyst-agent","sku":"data-analyst-agent","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب محلل البيانات"},{"id":"custom-ai-agent","name":"وكيل ذكاء اصطناعي مخصص","price":399,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل ذكاء اصطناعي مخصص يعمل بهوية شركتك وأساليبك التشغيلية","description":"مبني خصيصاً ليحاكي دماغ مؤسستك. ندرّبه على سياساتك وبياناتك الخاصة لينفذ أعقد المهام التشغيلية بأسلوب وهوية علامتك التجارية بشكل تام.","answer":"أفضل خيار إذا كنت تحتاج وكيل AI مخصص يتعامل مع سياسات شركتك وبياناتك وهويتك التشغيلية.","icon":"🤖","highlights":["تدريب على بياناتك","هوية علامتك","مهام تشغيلية"],"keywords":"وكيل ذكاء اصطناعي مخصص السعودية AI Agent للشركات","slug":"custom-ai-agent","sku":"custom-ai-agent","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب الوكيل المخصص","hasLiveDemo":true},{"id":"competitor-analysis-agent","name":"وكيل تحليل المنافسين","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل تحليل المنافسين — يكشف أسرار السوق ويعطيك أفضلية حقيقية","description":"رادار مؤسسي لا يتوقف. يراقب أرقام وحملات وتقييمات منافسيك يومياً، ويستخرج نقاط ضعفهم ليمنحك تقارير استراتيجية تضعك في صدارة الحصة السوقية.","answer":"يساعد فرق التسويق والمبيعات على فهم المنافسين، متابعة الحملات، واستخراج فرص نمو قابلة للتنفيذ.","icon":"🛰️","highlights":["رصد يومي","نقاط ضعف المنافسين","تقارير استراتيجية"],"keywords":"تحليل المنافسين السعودية مراقبة المنافسين ذكاء اصطناعي","slug":"competitor-analysis-agent","sku":"competitor-analysis-agent","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب تحليل المنافسين","hasLiveDemo":true},{"id":"seo-ai-agent","name":"وكيل تحسين محركات البحث SEO","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل SEO ذكي يرفع ترتيبك ويقلّل تكلفة الإعلانات","description":"يستهدف الكلمات البيعية العالية ويكتب محتوى محسّن يساعد على مضاعفة الزيارات العضوية وخفض تكاليف النقرات الإعلانية.","answer":"مناسب للمواقع التي تريد رفع الزيارات العضوية من السعودية وتحسين ظهورها في Google ونتائج AI Search.","icon":"🔎","highlights":["كلمات بيعية","محتوى محسّن","زيارات عضوية"],"keywords":"SEO السعودية تحسين محركات البحث AEO GEO AI search","slug":"seo-ai-agent","sku":"seo-ai-agent","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب وكيل SEO","hasLiveDemo":true},{"id":"marketing-ai-agent","name":"وكيل تسويق","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل تسويق ذكي يضاعف وصول علامتك ويزيد التحويلات","description":"أداة تسويق آلية تدير حملاتك الرقمية، تحدد جمهورك المثالي، تولّد محتوى جذاب، وتحلّل الأداء لحظيًا. تقلّل الهدر وتزيد الفعالية، وتضمن وصول علامتك لأكبر عدد من العملاء المحتملين بأقل تكلفة ممكنة.","answer":"يساعدك على إدارة الحملات، توليد المحتوى، وتحسين الوصول والتحويلات بأقل وقت وجهد.","icon":"📣","highlights":["حملات ذكية","محتوى تلقائي","تحسين التحويلات"],"keywords":"وكيل تسويق السعودية حملات رقمية ذكاء اصطناعي","slug":"marketing-ai-agent","sku":"marketing-ai-agent","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب وكيل التسويق","hasLiveDemo":true},{"id":"opportunity-discovery-agent","name":"وكيل اكتشاف الفرص والعملاء","price":299,"currency":"ر.س","category":"وكيل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل اكتشاف الفرص الذكي — يجلب لك عملاء محتملين جاهزين للبيع","description":"صياد آلي لا يتعب. يمسح السوق والمنصات لجمع وتصنيف العملاء المحتملين وتقييم جديتهم لضخهم مباشرة كتدفق مستمر إلى فريق المبيعات.","answer":"يفيد فرق المبيعات التي تحتاج تدفق عملاء محتملين وفرص تجارية قابلة للمتابعة.","icon":"🎯","highlights":["جمع Leads","تقييم الجدية","تدفق للمبيعات"],"keywords":"توليد العملاء المحتملين السعودية lead generation AI","slug":"opportunity-discovery-agent","sku":"opportunity-discovery-agent","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب اكتشاف الفرص","hasLiveDemo":true},{"id":"brightproject","slug":"brightproject","sku":"brightproject","name":"BrightProject - إدارة المشاريع الذكي في السعودية","price":99,"currency":"ر.س","category":"وكيل","qtyType":"اشتراك شهري","billingLabel":"اشتراك شهري","priceNote":"شهرياً","isRecurring":true,"url":"https://brightai.site/services/","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب BrightProject","title":"BrightProject لإدارة المشاريع الذكية في السعودية","description":"روبوت ذكي يساعد فرق العمل على متابعة المهام، تلخيص حالة المشاريع، كشف التأخير، وتقديم توصيات عملية لإدارة أفضل للمشاريع داخل الشركات السعودية.","answer":"مناسب للشركات التي تريد متابعة مشاريعها ومهام فرقها بذكاء ووضوح شهرياً.","icon":"📌","highlights":["متابعة المهام","تنبيهات التأخير","ملخصات تنفيذية"],"keywords":"BrightProject إدارة مشاريع ذكاء اصطناعي السعودية روبوت مشاريع"},{"id":"brightsales","slug":"brightsales","sku":"brightsales","name":"BrightSales - روبوت المبيعات الذكي في السعودية","price":99,"currency":"ر.س","category":"وكيل","qtyType":"اشتراك شهري","billingLabel":"اشتراك شهري","priceNote":"شهرياً","isRecurring":true,"url":"https://brightai.site/services/","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب BrightSales","title":"BrightSales روبوت المبيعات الذكي للشركات في السعودية","description":"روبوت مبيعات ذكي يساعد على متابعة العملاء المحتملين، تجهيز رسائل البيع، ترتيب الأولويات، وتحسين تحويل الفرص إلى صفقات.","answer":"مناسب لفرق المبيعات التي تحتاج مساعد ذكي شهري لتسريع المتابعة وزيادة التحويلات.","icon":"💼","highlights":["متابعة العملاء","رسائل بيع ذكية","ترتيب الفرص"],"keywords":"BrightSales روبوت مبيعات ذكاء اصطناعي السعودية مبيعات AI"},{"id":"social-data-analysis","name":"تحليل بيانات وسائل التواصل الاجتماعي متقدم","price":200,"currency":"ر.س","category":"تحليل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل تحليل وسائل التواصل الاجتماعي — رؤى عميقة لزيادة التفاعل والمبيعات","description":"أداة ذكية تجمع بيانات كل منصات التواصل، تحلل التفاعل، تكتشف الأنماط والسلوكيات، وتقيم أداء الحملات بدقة. تساعدك على تحسين الاستراتيجية، زيادة التفاعل العضوي، وزيادة العائد من كل منصة بشكل محسوب وذكي.","answer":"يفيد فرق التسويق التي تريد فهم تفاعل الجمهور السعودي وتحسين المحتوى والحملات بناءً على البيانات.","icon":"💬","highlights":["تحليل التفاعل","سلوك الجمهور","تحسين الحملات"],"keywords":"تحليل السوشيال ميديا السعودية وسائل التواصل الاجتماعي","slug":"social-data-analysis","sku":"social-data-analysis","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب تحليل بيانات التواصل"},{"id":"health-data-analysis","name":"تحليل البيانات الصحية","price":299,"currency":"ر.س","category":"تحليل","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"وكيل تحليل البيانات الصحية لتحسين الرعاية واتخاذ قرارات دقيقة","description":"تحلل بيانات المرضى والتقارير الطبية لحظيًا، تكشف الأنماط، تحدد المخاطر الصحية، وتساعد الفرق الطبية على اتخاذ قرارات أسرع وأكثر دقة. تقلّل الأخطاء، تحسّن جودة الرعاية، وتسهّل إدارة البيانات الصحية بشكل آمن.","answer":"مناسب للمنشآت الصحية التي تحتاج قراءة ذكية للتقارير الطبية ودعم قرارات أسرع وأكثر أماناً.","icon":"🏥","highlights":["تحليل طبي","كشف المخاطر","قرارات أسرع"],"keywords":"تحليل بيانات صحية السعودية ذكاء اصطناعي صحي","slug":"health-data-analysis","sku":"health-data-analysis","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب نموذج تحليل البيانات الصحية"},{"id":"ai-tenders-analysis","slug":"ai-tenders-analysis","sku":"ai-tenders-analysis","name":"نظام تحليل المناقصات بالذكاء الاصطناعي","price":799,"currency":"ر.س","category":"القطاع المالي","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","demoUrl":"https://brightai.site/demo/ai-tenders-analysis/","demoLabel":"جرّب نموذج تحليل المناقصات","title":"نظام تحليل المناقصات بالذكاء الاصطناعي للقطاع المالي والمشتريات","description":"نظام ذكي يساعد فرق المشتريات والعقود على تحليل كراسات الشروط، مقارنة العروض، كشف المخاطر، وتجهيز تقارير تنفيذية قابلة للمراجعة قبل قرار التقديم أو الترسية.","answer":"مناسب للجهات المالية وفرق المشتريات والعقود التي تحتاج تحليل المناقصات بسرعة ودقة قبل اتخاذ قرار التقديم أو الترسية.","icon":"📑","highlights":["تحليل كراسات الشروط","مقارنة العروض","كشف المخاطر"],"keywords":"مناقصات عقود مشتريات قطاع مالي تحليل مناقصات ذكاء اصطناعي السعودية"},{"id":"ai-consulting","name":"استشارات الذكاء الاصطناعي","price":99,"currency":"ر.س","category":"استشارات","qtyType":"كمية غير محدودة","url":"https://brightai.site/services/","title":"استشارة ذكاء اصطناعي لتحديد أفضل حل يناسب عملك","description":"جلسة استشارية تساعدك تفهم أين يمكن للذكاء الاصطناعي أن يخفض التكاليف، يسرّع العمليات، ويحسّن تجربة العملاء داخل شركتك.","answer":"أفضل بداية إذا كنت غير متأكد أي منتج يناسب احتياجك أو تبي خريطة تطبيق AI واضحة.","icon":"💡","highlights":["تشخيص احتياج","خارطة تطبيق","أولوية الحلول"],"keywords":"استشارات ذكاء اصطناعي السعودية AI consulting","slug":"ai-consulting","sku":"ai-consulting","demoUrl":"https://brightai.site/demo/","demoLabel":"جرّب استشارات AI"}];
         let cart = JSON.parse(localStorage.getItem("brightai_services_cart") || "[]");
 
         function formatPrice(value) {
@@ -333,172 +333,172 @@ ${lines}
         const servicePageRoutes = `
 https://brightai.site/
 https://brightai.site/about/
-https://brightai.site/ai-agent/
-https://brightai.site/ai-workflows/
-https://brightai.site/blog/
-https://brightai.site/data-analysis/
 https://brightai.site/services/
-https://brightai.site/services/ai-tenders-analysis/
-https://brightai.site/services/brightproject/
-https://brightai.site/services/brightsales/
-https://brightai.site/services/ai-scolecs/
-https://brightai.site/services/smart-hospital-management/
-https://brightai.site/demo/ai-scolecs/
+https://brightai.site/services/
+https://brightai.site/blog/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/demo/
 https://brightai.site/demo/ai-tenders-analysis/
-https://brightai.site/demo/brightproject/
-https://brightai.site/demo/brightsales/
-https://brightai.site/demo/smart-hospital-management/
-https://brightai.site/smart-automation/
-https://brightai.site/demo/smart-medical-archive/
-https://brightai.site/tools/
-https://brightai.site/case-studies/
-https://brightai.site/consultation/
+https://brightai.site/demo/
+https://brightai.site/demo/
+https://brightai.site/demo/
+https://brightai.site/services/
+https://brightai.site/demo/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/contact/
 https://brightai.site/contact/
 https://brightai.site/demo/
-https://brightai.site/demo/ocr-demo/
-https://brightai.site/demo/pricing/
-https://brightai.site/demo/resources/report-ai-saudi-2026/
+https://brightai.site/demo/
+https://brightai.site/pricing/
+https://brightai.site/demo/
 https://brightai.site/en/
 https://brightai.site/en/about/
-https://brightai.site/en/ai-agent/
-https://brightai.site/en/ai-workflows/
-https://brightai.site/en/consultation/
-https://brightai.site/en/data-analysis/
+https://brightai.site/en/services/
+https://brightai.site/en/services/
+https://brightai.site/en/contact/
+https://brightai.site/en/services/
 https://brightai.site/en/docs/
-https://brightai.site/demo/smart-hospital-management/
-https://brightai.site/demo/smart-hiring-system/
-https://brightai.site/en/smart-automation/
-https://brightai.site/demo/smart-medical-archive/
-https://brightai.site/en/tools/
-https://brightai.site/demo/smart-hiring-system/
-https://brightai.site/machine-learning/
-https://brightai.site/partners/
-https://brightai.site/sectors/ecommerce-en/
-https://brightai.site/sectors/ecommerce/
-https://brightai.site/sectors/energy-en/
-https://brightai.site/sectors/energy/
-https://brightai.site/sectors/finance-en/
-https://brightai.site/sectors/finance/
-https://brightai.site/sectors/healthcare-en/
-https://brightai.site/sectors/healthcare/
-https://brightai.site/sectors/logistics-en/
-https://brightai.site/sectors/logistics/
-https://brightai.site/sectors/manufacturing-en/
-https://brightai.site/sectors/manufacturing/
 https://brightai.site/demo/
-https://brightai.site/demo/data-analyzer/
-https://brightai.site/demo/data-quality/
-https://brightai.site/demo/text-analysis/
-https://brightai.site/what-is-ai/
-https://brightai.site/blog/ai-marketing-guide/
+https://brightai.site/demo/
+https://brightai.site/en/services/
+https://brightai.site/demo/
+https://brightai.site/en/services/
+https://brightai.site/demo/
+https://brightai.site/services/
+https://brightai.site/about/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/demo/
+https://brightai.site/demo/
+https://brightai.site/demo/
+https://brightai.site/demo/
+https://brightai.site/services/
+https://brightai.site/services/
 https://brightai.site/blog/%D8%AA%D8%AD%D9%84%D9%8A%D9%84-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/
 https://brightai.site/blog/%D9%85%D9%82%D8%A7%D9%84-%D8%AA%D8%AD%D9%84%D9%8A%D9%84/
-https://brightai.site/blog/building-ai-agents-guide/
-https://brightai.site/blog/ai-agents-business-guide/
-https://brightai.site/blog/ai-energy-saudi/
-https://brightai.site/blog/ai-finance-saudi/
-https://brightai.site/blog/ai-generative-content-industry-saudi-arabia/
-https://brightai.site/blog/ai-guide-saudi-business/
-https://brightai.site/blog/ai-healthcare-saudi/
-https://brightai.site/blog/ai-implementation-cost-guide/
-https://brightai.site/blog/ai-innovation-saudi-arabia/
-https://brightai.site/blog/ai-transformation/
-https://brightai.site/blog/ai-business-performance/
-https://brightai.site/blog/data-analysis-best-practices/
-https://brightai.site/ai-bots/BrightMath/
-https://brightai.site/ai-bots/BrightRecruiter/
-https://brightai.site/ai-bots/BrightSupport/
-https://brightai.site/blog/industrial-automation-repetitive-tasks/
-https://brightai.site/blog/workplace-automation-guide/
-https://brightai.site/blog/hr-automation-saudi/
-https://brightai.site/blog/big-data-analysis/
-https://brightai.site/blog/business-intelligence-data-analysis/
-https://brightai.site/blog/business-intelligence-saudi/
-https://brightai.site/blog/case-study-saudi-companies-ai-agents-customer-service/
-https://brightai.site/blog/chatgpt-vs-claude-vs-gemini-arabic/
-https://brightai.site/blog/choose-ai-company-saudi/
-https://brightai.site/blog/claude-opus-4-6-saudi-market/
-https://brightai.site/blog/commerce-ministry-chatbot/
-https://brightai.site/blog/kpi-dashboard-guide/
-https://brightai.site/blog/power-bi-saudi-guide/
-https://brightai.site/blog/digital-banking-saudi/
-https://brightai.site/blog/digital-health-smart-archive/
-https://brightai.site/blog/ai-manufacturing-digital-guide/
-https://brightai.site/blog/future-of-intelligent-data-analysis-finance-sector/
-https://brightai.site/blog/generative-artificial-intelligence/
-https://brightai.site/blog/government-ai-solutions-saudi/
-https://brightai.site/blog/hr-automation-case-study/
-https://brightai.site/blog/intelligent-data-analysis/
-https://brightai.site/blog/kfshrc-breast-cancer-ai/
-https://brightai.site/blog/ksu-adaptive-learning/
-https://brightai.site/blog/nca-ai-compliance-saudi/
-https://brightai.site/blog/nca-compliance/
-https://brightai.site/blog/private-hospital-scheduling-optimization/
-https://brightai.site/blog/process-automation/
-https://brightai.site/blog/riyadh-municipality-ai-license/
-https://brightai.site/blog/saudi-agritech-smart-farming/
-https://brightai.site/blog/saudi-bank-fraud-detection/
-https://brightai.site/blog/saudi-dates-quality-ai/
-https://brightai.site/blog/saudi-ecommerce-ai-growth/
-https://brightai.site/blog/saudi-edtech-personalized-learning/
-https://brightai.site/blog/saudi-energy-predictive-maintenance/
-https://brightai.site/blog/saudi-factory-ai-productivity/
-https://brightai.site/blog/saudi-hospitality-dynamic-pricing/
-https://brightai.site/blog/saudi-insurance-claims-ai/
-https://brightai.site/blog/saudi-logistics-route-optimization/
-https://brightai.site/blog/saudi-manufacturing-predictive-maintenance/
-https://brightai.site/blog/saudi-mining-ai-exploration/
-https://brightai.site/blog/saudi-petrochemical-ai-safety/
-https://brightai.site/blog/saudi-real-estate-ai-valuation/
-https://brightai.site/blog/saudi-renewable-energy-ai/
-https://brightai.site/blog/saudi-smart-city-traffic/
-https://brightai.site/blog/saudi-sports-analytics-ai/
-https://brightai.site/blog/saudi-tourism-ai-guide/
-https://brightai.site/blog/saudi-waste-management-ai/
-https://brightai.site/blog/smart-automation-benefits/
-https://brightai.site/blog/smart-crm-system/
-https://brightai.site/blog/smart-document-processing/
-https://brightai.site/blog/smart-inventory-management/
-https://brightai.site/blog/top-ai-tools-saudi-2025/
-https://brightai.site/blog/transport-logistics-solutions/
-https://brightai.site/blog/vision-2030-ai-opportunities/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
+https://brightai.site/services/
 https://brightai.site/docs/
-https://brightai.site/docs/ai-agent-en/
-https://brightai.site/docs/ai-agent/
-https://brightai.site/docs/ai-bots-en/
-https://brightai.site/docs/ai-bots/
-https://brightai.site/docs/consultation-en/
-https://brightai.site/docs/consultation/
-https://brightai.site/docs/contact-en/
-https://brightai.site/docs/contact/
-https://brightai.site/docs/data-analysis-en/
-https://brightai.site/docs/data-analysis/
-https://brightai.site/docs/faq-en/
-https://brightai.site/docs/faq/
-https://brightai.site/docs/openapi/
-https://brightai.site/docs/services-overview-en/
-https://brightai.site/docs/services-overview/
-https://brightai.site/docs/smart-automation-en/
-https://brightai.site/docs/smart-automation/
-https://brightai.site/docs/solutions-bi-en/
-https://brightai.site/docs/solutions-bi/
-https://brightai.site/docs/solutions-crm-en/
-https://brightai.site/docs/solutions-crm/
-https://brightai.site/docs/solutions-finance-en/
-https://brightai.site/docs/solutions-finance/
-https://brightai.site/docs/solutions-healthcare-en/
-https://brightai.site/docs/solutions-healthcare/
-https://brightai.site/docs/solutions-hr-en/
-https://brightai.site/docs/solutions-hr/
-https://brightai.site/docs/solutions-interview-en/
-https://brightai.site/docs/solutions-interview/
-https://brightai.site/docs/solutions-logistics-en/
-https://brightai.site/docs/solutions-logistics/
-https://brightai.site/docs/solutions-ocr-en/
-https://brightai.site/docs/solutions-ocr/
-https://brightai.site/docs/solutions-retail-en/
-https://brightai.site/docs/solutions-retail/
-https://brightai.site/docs/solutions-supply-chain/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/contact/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
+https://brightai.site/docs/
 `.trim().split(/\s+/).filter(Boolean).map((url) => ({
             url,
             label: createServicesRouteLabel(url),
@@ -534,15 +534,15 @@ https://brightai.site/docs/solutions-supply-chain/
 
             if (labels[safe]) return labels[safe];
 
-            if (safe.includes("/sectors/healthcare")) return "قطاع الصحة";
-            if (safe.includes("/sectors/finance")) return "قطاع المالية";
-            if (safe.includes("/sectors/ecommerce")) return "قطاع التجارة الإلكترونية";
-            if (safe.includes("/sectors/logistics")) return "قطاع اللوجستيات";
-            if (safe.includes("/sectors/manufacturing")) return "قطاع التصنيع";
-            if (safe.includes("/sectors/energy")) return "قطاع الطاقة";
+            if (safe.includes("/services/healthcare")) return "قطاع الصحة";
+            if (safe.includes("/services/finance")) return "قطاع المالية";
+            if (safe.includes("/services/ecommerce")) return "قطاع التجارة الإلكترونية";
+            if (safe.includes("/services/logistics")) return "قطاع اللوجستيات";
+            if (safe.includes("/services/manufacturing")) return "قطاع التصنيع";
+            if (safe.includes("/services/energy")) return "قطاع الطاقة";
             if (safe.includes("/blog/")) return "مقال من مدونة Bright AI";
             if (safe.includes("/docs/")) return "دليل من مستندات Bright AI";
-            if (safe.includes("/ai-bots/")) return "بوت ذكاء اصطناعي من Bright AI";
+            if (safe.includes("/services/")) return "بوت ذكاء اصطناعي من Bright AI";
             if (safe.startsWith("/en/")) return "English page";
 
             return safe.split("/").filter(Boolean).pop()?.replace(/-/g, " ") || "صفحة Bright AI";
@@ -919,9 +919,9 @@ ${message}`.trim();
                 text: "أقدر أساعدك بشكل أدق لو تكتب لي المجال أو المشكلة. مثال: خدمة عملاء، HR، تقارير، مبيعات، SEO، تسويق، مخزون، أو تحليل بيانات.\n\nمبدئياً، لو أنت غير متأكد، استشارة الذكاء الاصطناعي هي أفضل بداية لأنها تحدد لك الأولويات وخطة التطبيق.",
                 productIds: ["ai-consulting", "custom-ai-agent", "data-analyst-agent"],
                 routes: [
-                    servicePageRoutes.find((route) => route.url.endsWith("/consultation/")),
                     servicePageRoutes.find((route) => route.url.endsWith("/contact/")),
-                    servicePageRoutes.find((route) => route.url.endsWith("/demo/pricing/"))
+                    servicePageRoutes.find((route) => route.url.endsWith("/contact/")),
+                    servicePageRoutes.find((route) => route.url.endsWith("/pricing/"))
                 ].filter(Boolean)
             };
         }
@@ -974,10 +974,10 @@ ${message}`.trim();
                 });
 
                 if (q.includes("اسعار") || q.includes("باقات") || q.includes("pricing")) {
-                    if (route.url.includes("/demo/pricing/")) score += 30;
+                    if (route.url.includes("/pricing/")) score += 30;
                 }
                 if (q.includes("تواصل") || q.includes("واتساب") || q.includes("contact")) {
-                    if (route.url.includes("/contact/") || route.url.includes("/consultation/")) score += 28;
+                    if (route.url.includes("/contact/") || route.url.includes("/contact/")) score += 28;
                 }
                 if (q.includes("تجربه") || q.includes("demo") || q.includes("جرب")) {
                     if (route.url.includes("/demo/")) score += 24;
@@ -989,7 +989,7 @@ ${message}`.trim();
                     if (route.url.includes("/docs/")) score += 22;
                 }
                 if (q.includes("قطاع") || q.includes("sectors")) {
-                    if (route.url.includes("/sectors/")) score += 20;
+                    if (route.url.includes("/services/")) score += 20;
                 }
 
                 return { ...route, score };
@@ -998,9 +998,9 @@ ${message}`.trim();
             if (!boosted.length) {
                 return [
                     servicePageRoutes.find((route) => route.url.endsWith("/services/")),
-                    servicePageRoutes.find((route) => route.url.endsWith("/demo/pricing/")),
+                    servicePageRoutes.find((route) => route.url.endsWith("/pricing/")),
                     servicePageRoutes.find((route) => route.url.endsWith("/contact/")),
-                    servicePageRoutes.find((route) => route.url.endsWith("/consultation/"))
+                    servicePageRoutes.find((route) => route.url.endsWith("/contact/"))
                 ].filter(Boolean);
             }
 

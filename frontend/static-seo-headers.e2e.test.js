@@ -163,7 +163,7 @@ describe('Static SEO headers', () => {
 
     try {
       const result = await invokeHandleRequest(runtime.handleRequest, {
-        url: '/missing-seo-page'
+        url: '/'
       });
 
       expect(result.status).toBe(404);

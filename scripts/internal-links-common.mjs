@@ -62,7 +62,7 @@ function matchesIgnorePattern(relPath, ignorePatterns) {
   return ignorePatterns.some((pattern) => {
     const normalizedPattern = normalizeRelativePath(pattern.replace(/^\*\*\//, "").replace(/\/\*\*$/, ""));
     if (!normalizedPattern) return false;
-    return relPath === normalizedPattern || relPath.startsWith(`${normalizedPattern}/`);
+    return relPath === normalizedPattern || relPath.startsWith(`${normalizedPattern}/`) || relPath.includes(`/${normalizedPattern}/`);
   });
 }
 

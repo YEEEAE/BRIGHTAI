@@ -180,7 +180,7 @@
       return;
     }
     const script = document.createElement('script');
-    script.src = '/socket.io/socket.io.js';
+    script.src = '/demo/node_modules/socket.io/client-dist/socket.io.js';
     script.onload = () => {
       callback();
     };

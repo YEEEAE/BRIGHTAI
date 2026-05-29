@@ -4,10 +4,6 @@
 
 User-agent: *
 Allow: /
-Disallow: /tables/
-Disallow: /api/
-Disallow: /private/
-Disallow: /.well-known/
 
 # Google
 User-agent: Googlebot

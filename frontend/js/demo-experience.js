@@ -577,7 +577,7 @@
         ${Object.keys(item.data).map(function (key) {
           return `<div class="field-row"><span class="field-label">${escapeHtml(key)}</span><span class="field-value">${escapeHtml(Array.isArray(item.data[key]) ? item.data[key].join("، ") : item.data[key])}</span></div>`;
         }).join("")}
-        <div class="ocr-result-cta"><span>النتيجة جاهزة للنسخ أو التخصيص على نماذج شركتك.</span><a class="btn-primary" href="/consultation/">اطلب OCR مخصص</a></div>
+        <div class="ocr-result-cta"><span>النتيجة جاهزة للنسخ أو التخصيص على نماذج شركتك.</span><a class="btn-primary" href="/contact/">اطلب OCR مخصص</a></div>
       `;
     }
     if (json) json.textContent = JSON.stringify(item.data, null, 2);

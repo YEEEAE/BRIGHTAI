@@ -43,46 +43,46 @@ const OWNER_DECISION_PATTERNS = [
 const PILLAR_LINKS_AR = [
   { href: "/", text: "شركة ذكاء اصطناعي في السعودية" },
   { href: "/services/", text: "خدمات الذكاء الاصطناعي للشركات" },
-  { href: "/ai-agent/", text: "وكلاء الذكاء الاصطناعي للأعمال" },
-  { href: "/smart-automation/", text: "أتمتة الأعمال بالذكاء الاصطناعي" },
-  { href: "/data-analysis/", text: "تحليل البيانات للشركات السعودية" },
-  { href: "/bot/", text: "مساعد Bright AI التجريبي" },
+  { href: "/services/", text: "وكلاء الذكاء الاصطناعي للأعمال" },
+  { href: "/services/", text: "أتمتة الأعمال بالذكاء الاصطناعي" },
+  { href: "/services/", text: "تحليل البيانات للشركات السعودية" },
+  { href: "/demo/", text: "مساعد Bright AI التجريبي" },
   { href: "/contact/", text: "تواصل مع Bright AI لتنفيذ حلول AI" },
 ];
 
 const PILLAR_LINKS_EN = [
   { href: "/en/", text: "Bright AI Saudi enterprise AI" },
   { href: "/en/services/", text: "AI services for Saudi companies" },
-  { href: "/en/ai-agent/", text: "AI agents for business teams" },
-  { href: "/en/smart-automation/", text: "AI workflow automation" },
-  { href: "/en/data-analysis/", text: "Data analytics for Saudi teams" },
+  { href: "/en/services/", text: "AI agents for business teams" },
+  { href: "/en/services/", text: "AI workflow automation" },
+  { href: "/en/services/", text: "Data analytics for Saudi teams" },
   { href: "/en/contact/", text: "Contact Bright AI for AI implementation" },
   { href: "/en/privacy-cookies/", text: "Bright AI privacy and cookies policy" },
   { href: "/en/terms/", text: "Bright AI terms and conditions" },
 ];
 
 const LOCATION_LINKS_AR = [
-  { href: "/locations/riyadh/", text: "خدمات الذكاء الاصطناعي في الرياض" },
-  { href: "/locations/jeddah/", text: "حلول AI للشركات في جدة" },
-  { href: "/locations/dammam/", text: "أتمتة وذكاء اصطناعي في الدمام" },
+  { href: "/contact/", text: "خدمات الذكاء الاصطناعي في الرياض" },
+  { href: "/contact/", text: "حلول AI للشركات في جدة" },
+  { href: "/contact/", text: "أتمتة وذكاء اصطناعي في الدمام" },
 ];
 
 const SERVICE_CLUSTER_LINKS_AR = [
-  { href: "/services/ai-automation-saudi/", text: "أتمتة الذكاء الاصطناعي في السعودية" },
-  { href: "/services/ai-agents-saudi/", text: "وكلاء الذكاء الاصطناعي للشركات السعودية" },
-  { href: "/services/ai-chatbot-arabic/", text: "شات بوت عربي للشركات" },
-  { href: "/services/customer-service-automation/", text: "أتمتة خدمة العملاء بالذكاء الاصطناعي" },
-  { href: "/services/ai-consulting/", text: "استشارات الذكاء الاصطناعي" },
-  { href: "/services/data-platform/", text: "منصة تحليل بيانات للشركات" },
+  { href: "/services/", text: "أتمتة الذكاء الاصطناعي في السعودية" },
+  { href: "/services/", text: "وكلاء الذكاء الاصطناعي للشركات السعودية" },
+  { href: "/services/", text: "شات بوت عربي للشركات" },
+  { href: "/services/", text: "أتمتة خدمة العملاء بالذكاء الاصطناعي" },
+  { href: "/services/", text: "استشارات الذكاء الاصطناعي" },
+  { href: "/services/", text: "منصة تحليل بيانات للشركات" },
 ];
 
 const BLOG_SUPPORT_LINKS_AR = [
-  { href: "/blog/ai-guide-saudi-business/", text: "دليل الذكاء الاصطناعي للشركات السعودية" },
-  { href: "/blog/building-ai-agents-practical-guide/", text: "شرح عملي لبناء وكلاء الذكاء الاصطناعي" },
-  { href: "/blog/ai-agents-business-guide/", text: "دليل وكلاء الذكاء الاصطناعي للأعمال" },
-  { href: "/blog/choose-ai-company-saudi/", text: "اختيار شركة ذكاء اصطناعي في السعودية" },
-  { href: "/blog/smart-automation-benefits/", text: "فوائد الأتمتة الذكية للشركات" },
-  { href: "/blog/ai-implementation-cost-guide/", text: "تكلفة تطبيق الذكاء الاصطناعي في السعودية" },
+  { href: "/services/", text: "دليل الذكاء الاصطناعي للشركات السعودية" },
+  { href: "/services/", text: "شرح عملي لبناء وكلاء الذكاء الاصطناعي" },
+  { href: "/services/", text: "دليل وكلاء الذكاء الاصطناعي للأعمال" },
+  { href: "/services/", text: "اختيار شركة ذكاء اصطناعي في السعودية" },
+  { href: "/services/", text: "فوائد الأتمتة الذكية للشركات" },
+  { href: "/services/", text: "تكلفة تطبيق الذكاء الاصطناعي في السعودية" },
 ];
 
 function toPosix(filePath) {
@@ -299,17 +299,17 @@ function relatedLinksForPage(page) {
       { href: "/services/", text: "كل خدمات الذكاء الاصطناعي من Bright AI" },
       ...SERVICE_CLUSTER_LINKS_AR,
       ...LOCATION_LINKS_AR,
-      { href: "/consultation/", text: "احجز استشارة ذكاء اصطناعي للشركات" },
+      { href: "/contact/", text: "احجز استشارة ذكاء اصطناعي للشركات" },
     ], page.url);
   }
 
   if (kind === "blog") {
     const rel = page.relPath.toLowerCase();
     const topical = [];
-    if (/health|medical|hospital|سرطان|صحي/.test(rel)) topical.push({ href: "/sectors/healthcare/", text: "حلول الذكاء الاصطناعي للقطاع الصحي" }, { href: "/services/medical-archive/", text: "الأرشيف الطبي الذكي" });
-    if (/finance|bank|insurance|مالي/.test(rel)) topical.push({ href: "/sectors/finance/", text: "حلول AI للقطاع المالي في السعودية" }, { href: "/data-analysis/", text: "تحليل البيانات المالية والتشغيلية" });
-    if (/logistics|supply|transport/.test(rel)) topical.push({ href: "/sectors/logistics/", text: "حلول الذكاء الاصطناعي للخدمات اللوجستية" }, { href: "/services/supply-chain-optimization/", text: "أتمتة تحسين سلسلة التوريد" });
-    if (/hr|hiring|recruit/.test(rel)) topical.push({ href: "/services/hr-automation/", text: "أتمتة الموارد البشرية" }, { href: "/services/smart-hiring-system/", text: "نظام التوظيف الذكي" });
+    if (/health|medical|hospital|سرطان|صحي/.test(rel)) topical.push({ href: "/services/", text: "حلول الذكاء الاصطناعي للقطاع الصحي" }, { href: "/services/", text: "الأرشيف الطبي الذكي" });
+    if (/finance|bank|insurance|مالي/.test(rel)) topical.push({ href: "/services/", text: "حلول AI للقطاع المالي في السعودية" }, { href: "/services/", text: "تحليل البيانات المالية والتشغيلية" });
+    if (/logistics|supply|transport/.test(rel)) topical.push({ href: "/services/", text: "حلول الذكاء الاصطناعي للخدمات اللوجستية" }, { href: "/services/", text: "أتمتة تحسين سلسلة التوريد" });
+    if (/hr|hiring|recruit/.test(rel)) topical.push({ href: "/services/", text: "أتمتة الموارد البشرية" }, { href: "/services/", text: "نظام التوظيف الذكي" });
     return dedupeLinks([...topical, ...PILLAR_LINKS_AR, ...BLOG_SUPPORT_LINKS_AR], page.url);
   }
 
@@ -325,16 +325,16 @@ function relatedLinksForPage(page) {
   if (kind === "sector") {
     return dedupeLinks([
       { href: "/services/", text: "خدمات AI المرتبطة بالقطاعات" },
-      { href: "/services/data-platform/", text: "منصة تحليل بيانات للقطاعات التشغيلية" },
-      { href: "/services/custom-ai-agent/", text: "وكيل ذكاء اصطناعي مخصص للقطاع" },
-      { href: "/services/operational-reports-automation/", text: "أتمتة التقارير التشغيلية" },
+      { href: "/services/", text: "منصة تحليل بيانات للقطاعات التشغيلية" },
+      { href: "/services/", text: "وكيل ذكاء اصطناعي مخصص للقطاع" },
+      { href: "/services/", text: "أتمتة التقارير التشغيلية" },
       ...LOCATION_LINKS_AR,
     ], page.url);
   }
 
   if (kind === "tool") {
     return dedupeLinks([
-      { href: "/tools/", text: "أدوات ذكاء اصطناعي مجانية من Bright AI" },
+      { href: "/services/", text: "أدوات ذكاء اصطناعي مجانية من Bright AI" },
       { href: "/try/", text: "جرّب نماذج AI للأعمال" },
       { href: "/services/", text: "حوّل التجربة إلى حل ذكاء اصطناعي مؤسسي" },
       { href: "/contact/", text: "ناقش تطبيق الأداة داخل شركتك" },

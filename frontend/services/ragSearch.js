@@ -18,14 +18,14 @@ const SKIPPED_INDEX_DIRS = new Set([
 const PRIORITY_PUBLIC_URLS = [
   '/',
   '/services/',
-  '/sectors/',
-  '/ai-agent/',
-  '/ai-bots/',
-  '/ai-workflows/',
-  '/smart-automation/',
-  '/data-analysis/',
+  '/services/',
+  '/services/',
+  '/services/',
+  '/services/',
+  '/services/',
+  '/services/',
   '/blog/',
-  '/tools/',
+  '/services/',
   '/docs/',
   '/en/'
 ];
@@ -73,14 +73,14 @@ const SEARCH_SYSTEM_PROMPT = `
     {
       "sourceId": "S1",
       "title": "عنوان المصدر",
-      "url": "/path",
+      "url": "/",
       "quote": "مقتطف قصير داعم"
     }
   ],
   "relatedResults": [
     {
       "title": "عنوان صفحة",
-      "url": "/path",
+      "url": "/",
       "description": "وصف مختصر"
     }
   ]
@@ -243,16 +243,16 @@ function routePriority(url, filePath = '') {
 
   if (PRIORITY_PUBLIC_URLS.includes(url)) score += 35;
   if (url.startsWith('/services/')) score += 18;
-  if (url.startsWith('/sectors/')) score += 17;
-  if (url.startsWith('/ai-agent/')) score += 17;
-  if (url.startsWith('/ai-bots/')) score += 17;
-  if (url.startsWith('/data-analysis/')) score += 16;
-  if (url.startsWith('/smart-automation/')) score += 16;
-  if (url.startsWith('/ai-workflows/')) score += 16;
+  if (url.startsWith('/services/')) score += 17;
+  if (url.startsWith('/services/')) score += 17;
+  if (url.startsWith('/services/')) score += 17;
+  if (url.startsWith('/services/')) score += 16;
+  if (url.startsWith('/services/')) score += 16;
+  if (url.startsWith('/services/')) score += 16;
   if (url.startsWith('/docs/')) score += 12;
   if (url.startsWith('/en/')) score += 10;
   if (url.startsWith('/blog/')) score += 9;
-  if (url.startsWith('/tools/')) score += 8;
+  if (url.startsWith('/services/')) score += 8;
   if (url.startsWith('/demo/')) score += 4;
   if (url.startsWith('/reports/')) score -= 80;
   if (url === '/404/' || url === '/500/' || url === '/error/') score -= 12;

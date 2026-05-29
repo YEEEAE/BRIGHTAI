@@ -72,12 +72,12 @@
     var value = anchor.getAttribute("data-service-name");
     if (value) return value;
     var href = anchor.getAttribute("href") || "";
-    if (href.indexOf("/ai-agent/") === 0) return "ai_agent";
-    if (href.indexOf("/smart-automation/") === 0) return "smart_automation";
-    if (href.indexOf("/data-analysis/") === 0) return "data_analysis";
-    if (href.indexOf("/ai-bots/") === 0) return "ai_bots";
-    if (href.indexOf("/ai-workflows/") === 0) return "ai_workflows";
-    if (href.indexOf("/demo/smart-medical-archive/") === 0) return "smart_medical_archive";
+    if (href.indexOf("/services/") === 0) return "ai_agent";
+    if (href.indexOf("/services/") === 0) return "smart_automation";
+    if (href.indexOf("/services/") === 0) return "data_analysis";
+    if (href.indexOf("/services/") === 0) return "ai_bots";
+    if (href.indexOf("/services/") === 0) return "ai_workflows";
+    if (href.indexOf("/demo/") === 0) return "smart_medical_archive";
     if (href.indexOf("/demo/ai-tenders-analysis/") === 0) return "contractai_tenders";
     if (href.indexOf("/services/") === 0) return "services";
     return undefined;
@@ -95,7 +95,7 @@
     if (href.indexOf("#pricing") === 0 || /pricing|price|التسعير|الأسعار/.test(lowerText)) return "pricing_click";
     if (href.indexOf("/demo/ai-tenders-analysis/compare.html") === 0) return "tender_compare_open";
     if (href.indexOf("/demo/ai-tenders-analysis/landing.html") === 0 || /demo|ديمو|عرض توضيحي|ابدأ مجاناً|جرب|جرّب/.test(lowerText)) return "request_demo";
-    if (href.indexOf("/consultation/") === 0 || /استشارة|جلسة/.test(lowerText)) return "consultation_request";
+    if (href.indexOf("/contact/") === 0 || /استشارة|جلسة/.test(lowerText)) return "consultation_request";
     if (href.indexOf("/contact/") === 0 || /تواصل|اتصل|مبيعات/.test(lowerText)) return "generate_lead";
     if (/^https?:\/\//i.test(href) && !href.includes("brightai.site")) return "outbound_click";
     if (/\.(pdf|docx?|xlsx?|csv|zip)(\?|#|$)/i.test(href)) {
@@ -212,12 +212,12 @@
 
   function trackPricingView() {
     var path = window.location.pathname;
-    if (path.indexOf("/pricing/") !== -1 || path.indexOf("/demo/pricing/") !== -1) {
+    if (path.indexOf("/pricing/") !== -1 || path.indexOf("/pricing/") !== -1) {
       if (sessionStorage.getItem(viewedPricingKey)) return;
       try { sessionStorage.setItem(viewedPricingKey, "1"); } catch (e) {}
       track("pricing_view", {
         page_path: path,
-        pricing_type: path.indexOf("/demo/pricing/") !== -1 ? "estimator" : "pricing_page"
+        pricing_type: path.indexOf("/pricing/") !== -1 ? "estimator" : "pricing_page"
       });
     }
   }

@@ -515,7 +515,7 @@ html.bai-demo-experience {
   margin-block-start: auto;
 }
 
-.bai-demo-experience .product-card:has(.product-actions a[href*="/try/"], .product-actions a[href*="/demo/"], .product-actions a[href*="/health/"], .product-actions a[href*="/interview/"], .product-actions a[href*="/ai-bots/"], .product-actions a[href*="/ai-scolecs/"], .product-actions a[href*="/demo/smart-medical-archive/"]) .product-media::after {
+.bai-demo-experience .product-card:has(.product-actions a[href*="/try/"], .product-actions a[href*="/demo/"], .product-actions a[href*="/services/"], .product-actions a[href*="/interview/"], .product-actions a[href*="/services/"], .product-actions a[href*="/ai-scolecs/"], .product-actions a[href*="/demo/"]) .product-media::after {
   content: "تجربة فورية";
   display: inline-flex;
   width: fit-content;

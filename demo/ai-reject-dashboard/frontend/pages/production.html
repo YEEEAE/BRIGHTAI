@@ -5,12 +5,13 @@
 <title>صقر AI — الإنتاج والتشغيل | ميس للمنتجات الطبية</title>
   <meta name="robots" content="index, follow">
   <meta name="description" content="نظام إدارة وتتبع التصنيع والعمليات لـ BrightAI - ممتثل لمعايير ممارسات التصنيع الجيد GMP وكفاءة الماكينات.">
-  <link rel="canonical" href="https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/">
-  
-  <!-- Central Design System and Components Bundle -->
-  <link rel="stylesheet" href="/demo/ai-reject-dashboard/frontend/assets/css/design-system.css">
-  <link rel="stylesheet" href="/demo/ai-reject-dashboard/frontend/assets/css/notifications.css">
-<link rel="stylesheet" href="../assets/css/dashboard.css">
+  <link rel="canonical" href="https://brightai.site/demo/ai-reject-dashboard/production/">
+<link rel="alternate" hreflang="ar-SA" href="https://brightai.site/demo/ai-reject-dashboard/production/">
+<link rel="alternate" hreflang="x-default" href="https://brightai.site/demo/ai-reject-dashboard/production/">
+<!-- Central Design System and Components Bundle -->
+  <link rel="stylesheet" href="/demo/frontend/assets/css/design-system.css">
+  <link rel="stylesheet" href="/demo/frontend/assets/css/notifications.css">
+<link rel="stylesheet" href="/demo/frontend/assets/css/dashboard.css">
   
   <!-- Bespoke Page Styling for Premium Siemens Opcenter & Rockwell MES Aesthetics -->
   <style>
@@ -133,10 +134,10 @@
   </style>
 
   <!-- Libraries — local vendor (CSP-safe, no CDN) -->
-  <script src="/demo/ai-reject-dashboard/frontend/assets/vendor/apexcharts.js" defer></script>
-  <script src="/demo/ai-reject-dashboard/frontend/assets/vendor/dayjs.min.js" defer></script>
-  <script src="/demo/ai-reject-dashboard/frontend/assets/vendor/ar.js" defer></script>
-  <script defer="" src="/demo/ai-reject-dashboard/frontend/assets/vendor/alpine.min.js"></script>
+  <script src="/demo/frontend/assets/vendor/apexcharts.js" defer></script>
+  <script src="/demo/frontend/assets/vendor/dayjs.min.js" defer></script>
+  <script src="/demo/frontend/assets/vendor/ar.js" defer></script>
+  <script defer="" src="/demo/frontend/assets/vendor/alpine.min.js"></script>
   <link rel="stylesheet" href="/frontend/css/asset-fonts.css">
   <link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png">
 <link rel="apple-touch-icon" href="/frontend/images/logo-new.PNG">
@@ -167,14 +168,13 @@
         "@id": "https://brightai.site/#organization"
       },
       "inLanguage": [
-        "ar-SA",
-        "en-SA"
+        "ar-SA"
       ]
     },
     {
       "@type": "WebPage",
-      "@id": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/#webpage",
-      "url": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/",
+      "@id": "https://brightai.site/demo/production/#webpage",
+      "url": "https://brightai.site/demo/production/",
       "name": "صقر AI — الإنتاج والتشغيل | ميس للمنتجات الطبية",
       "description": "نظام إدارة وتتبع التصنيع والعمليات لـ BrightAI - ممتثل لمعايير ممارسات التصنيع الجيد GMP وكفاءة الماكينات.",
       "isPartOf": {
@@ -187,7 +187,7 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/#breadcrumb",
+      "@id": "https://brightai.site/demo/production/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
@@ -205,25 +205,25 @@
           "@type": "ListItem",
           "position": 3,
           "name": "ai reject dashboard",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/"
+          "item": "https://brightai.site/demo/"
         },
         {
           "@type": "ListItem",
           "position": 4,
           "name": "frontend",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/frontend/"
+          "item": "https://brightai.site/demo/frontend/"
         },
         {
           "@type": "ListItem",
           "position": 5,
           "name": "pages",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/"
+          "item": "https://brightai.site/demo/"
         },
         {
           "@type": "ListItem",
           "position": 6,
           "name": "صقر AI — الإنتاج والتشغيل | ميس للمنتجات الطبية",
-          "item": "https://brightai.site/demo/ai-reject-dashboard/frontend/pages/production/"
+          "item": "https://brightai.site/demo/production/"
         }
       ]
     }
@@ -244,13 +244,13 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" :class="{ 'sidebar-collapsed': sidebarCollapsed }">
       <div class="sidebar-header">
-        <a href="/demo/ai-reject-dashboard/" class="sidebar-logo">
+        <a href="/demo/" class="sidebar-logo">
           <img class="sidebar-logo-mark brightai-brand-image" src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="32" height="32" decoding="async" fetchpriority="high">
           <span style="white-space: nowrap;">BrightAI Analytics</span>
         </a>
       </div>
       <nav class="sidebar-nav" aria-label="التنقل الرئيسي للوحة BrightAI">
-        <a href="../../index.html" class="sidebar-link"><span class="sidebar-icon">📊</span><span>لوحة القيادة الرئيسية</span></a>
+        <a href="/demo/" class="sidebar-link"><span class="sidebar-icon">📊</span><span>لوحة القيادة الرئيسية</span></a>
         <a href="executive.html" class="sidebar-link"><span class="sidebar-icon">🏢</span><span>المنظور التنفيذي</span></a>
         <a href="finance.html" class="sidebar-link"><span class="sidebar-icon">💰</span><span>المنظور المالي</span></a>
         <a href="quality.html" class="sidebar-link"><span class="sidebar-icon">🔬</span><span>الجودة وإجراءات CAPA</span></a>
@@ -305,7 +305,7 @@
 
         <!-- BREADCRUMBS -->
         <nav class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/demo/ai-reject-dashboard/" class="breadcrumb-link" x-text="lang === 'ar' ? 'لوحة القيادة' : 'Dashboard'"></a></li>
+          <li class="breadcrumb-item"><a href="/demo/" class="breadcrumb-link" x-text="lang === 'ar' ? 'لوحة القيادة' : 'Dashboard'"></a></li>
           <span class="breadcrumb-separator">/</span>
           <li class="breadcrumb-item is-active" x-text="lang === 'ar' ? 'التصنيع والعمليات' : 'Production'"></li>
         </nav>
@@ -518,16 +518,16 @@
   </div>
 
   <!-- Page logic — extracted to external file (CSP-compliant) -->
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/api-client.js" defer></script>
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/report-actions.js" defer></script>
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/pages/production.js" defer></script>
+  <script src="/demo/frontend/assets/js/api-client.js" defer></script>
+  <script src="/demo/frontend/assets/js/report-actions.js" defer></script>
+  <script src="/demo/frontend/assets/js/pages/production.js" defer></script>
   <!-- Frontend Auth Guard Shield -->
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/auth-guard.js" defer></script>
+  <script src="/demo/frontend/assets/js/auth-guard.js" defer></script>
   <!-- Global صقر AI Chatbot -->
-  <script src="../assets/js/ai-assistant.js" defer></script>
+  <script src="/demo/frontend/assets/js/ai-assistant.js" defer></script>
   <!-- Enterprise Notifications System -->
-  <script src="/demo/ai-reject-dashboard/frontend/assets/js/notifications.js" defer></script>
-  <script defer src="../assets/js/dashboard.js"></script>
+  <script src="/demo/frontend/assets/js/notifications.js" defer></script>
+  <script defer src="/demo/frontend/assets/js/dashboard.js"></script>
   <script defer src="/frontend/js/sitewide-modernization.js"></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
   <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>

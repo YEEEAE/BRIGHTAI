@@ -105,7 +105,7 @@
       const link = document.createElement('link');
       link.id = 'ai-assistant-styles';
       link.rel = 'stylesheet';
-      link.href = '/demo/ai-reject-dashboard/frontend/assets/css/ai-assistant.css';
+      link.href = '/demo/frontend/assets/css/ai-assistant.css';
       document.head.appendChild(link);
     }
   }
@@ -498,7 +498,7 @@
     if (action.command === 'create_capa' || action.command === 'initiate_capa') {
       // Toggle to quality.html or fill CAPA form dynamically
       if (window.location.pathname.indexOf('quality.html') === -1) {
-        window.location.href = '/demo/ai-reject-dashboard/frontend/pages/quality.html?action=new_capa&reason=' + encodeURIComponent(action.payload?.reason || '');
+        window.location.href = '/demo/frontend/pages/quality/?action=new_capa&reason=' + encodeURIComponent(action.payload?.reason || '');
       } else {
         // Safe dispatch if QMS dashboard listens
         const event = new CustomEvent('ai_trigger_capa', { detail: action.payload });

@@ -1,86 +1,86 @@
 const STATIC_ROUTE_REDIRECTS = new Map([
-  ['/interview', '/demo/smart-hiring-system/'],
-  ['/interview/', '/demo/smart-hiring-system/'],
-  ['/interview/index.html', '/demo/smart-hiring-system/'],
-  ['/interview/pages/supportAI', '/demo/smart-hiring-system/pages/support-ai/'],
-  ['/interview/pages/supportAI/', '/demo/smart-hiring-system/pages/support-ai/'],
-  ['/interview/pages/supportAI/index.html', '/demo/smart-hiring-system/pages/support-ai/'],
-  ['/job.MAISco', '/demo/smart-hiring-system/'],
-  ['/job.MAISco/', '/demo/smart-hiring-system/']
+  ['/interview', '/demo/'],
+  ['/interview/', '/demo/'],
+  ['/interview/index.html', '/demo/'],
+  ['/interview/pages/supportAI', '/demo/pages/support-ai/'],
+  ['/interview/pages/supportAI/', '/demo/pages/support-ai/'],
+  ['/interview/pages/supportAI/index.html', '/demo/pages/support-ai/'],
+  ['/job.MAISco', '/demo/'],
+  ['/job.MAISco/', '/demo/']
 ]);
 
 const BLOG_SLUG_REDIRECTS = new Map([
   [
     '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1',
-    '/blog/ai-automation-project-analysis/'
+    '/services/'
   ],
   [
     '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية',
-    '/blog/process-automation-ai-efficiency/'
+    '/services/'
   ],
   [
     '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية',
-    '/blog/industrial-automation-productivity/'
+    '/services/'
   ],
   [
     '/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية',
-    '/blog/financial-hr-automation/'
+    '/services/'
   ],
   [
     '/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار',
-    '/blog/digital-transformation-automation/'
+    '/services/'
   ],
   [
     '/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور',
-    '/blog/machine-learning-computer-vision/'
+    '/services/'
   ],
   [
     '/blog/الذكاء-الاصطناعي-و-التسويق',
-    '/blog/ai-marketing-guide/'
+    '/services/'
   ],
   [
     '/blog/تحليل-البيانات',
-    '/blog/data-analysis-decision-making/'
+    '/services/'
   ],
   [
     '/blog/تعلم-الآلة-و-الأعمال',
-    '/blog/machine-learning-business/'
+    '/services/'
   ],
   [
     '/blog/مقال-تحليل',
-    '/blog/ai-data-analysis-tools/'
+    '/services/'
   ],
   [
     '/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)',
-    '/blog/ai-automation-project-analysis/'
+    '/services/'
   ],
   [
     '/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية',
-    '/blog/process-automation-ai-efficiency/'
+    '/services/'
   ],
   [
     '/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات',
-    '/blog/choose-ai-company-saudi/'
+    '/services/'
   ],
   [
     '/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية',
-    '/blog/industrial-automation-productivity/'
+    '/services/'
   ],
   [
     '/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية',
-    '/blog/financial-hr-automation/'
+    '/services/'
   ],
   [
     '/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار',
-    '/blog/digital-transformation-automation/'
+    '/services/'
   ],
   [
     '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور',
-    '/blog/machine-learning-computer-vision/'
+    '/services/'
   ],
   [
     '/blog/atou.doc',
-    '/blog/process-automation-ai-efficiency/'
+    '/services/'
   ],
   [
     '/blog/astr.doc',
@@ -128,8 +128,8 @@ function getBlogRedirectTarget(pathname) {
     return `/blog/${folderSlugHtml[1]}/`;
   }
 
-  if (pathname === '/blog/production-line' || pathname === '/blog/production-line/' || pathname === '/blog/production-line.html') {
-    return '/blog/industrial-automation-productivity/';
+  if (pathname === '/blog/production-line' || pathname === '/services/' || pathname === '/blog/production-line.html') {
+    return '/services/';
   }
 
   if (
@@ -137,7 +137,7 @@ function getBlogRedirectTarget(pathname) {
     pathname === '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/' ||
     pathname === '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html'
   ) {
-    return '/blog/choose-ai-company-saudi/';
+    return '/services/';
   }
 
   const candidates = new Set([pathname]);

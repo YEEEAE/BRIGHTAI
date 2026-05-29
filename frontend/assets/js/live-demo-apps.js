@@ -210,12 +210,12 @@
   function getCurrentDemoId() {
     const path = location.pathname.toLowerCase();
     if (path.includes("/interview/")) return "interview";
-    if (path.includes("/demo/smart-medical-archive/")) return "smart-medical-archive";
+    if (path.includes("/demo/")) return "smart-medical-archive";
     if (path.includes("/try/data-analyzer/")) return "data-analyzer";
     if (path.includes("/ai-scolecs/")) return "ai-scolecs";
-    if (path.includes("/demo/smart-hospital-management/")) return "health";
-    if (path.includes("/demo/ocr-demo/")) return "ocr";
-    if (path.includes("/ai-bots/brightsupport/")) return "brightsupport";
+    if (path.includes("/demo/")) return "health";
+    if (path.includes("/demo/")) return "ocr";
+    if (path.includes("/services/")) return "brightsupport";
     if (path.includes("/services/marketing-automation") || path.includes("/services/marketing-agent")) return "marketing";
     if (path.includes("/services/supply-chain-optimization")) return "supply";
     return "";

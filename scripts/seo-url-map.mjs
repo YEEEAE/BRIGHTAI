@@ -218,6 +218,12 @@ export function relPathToSitePath(relPath) {
     return `/sectors/${path.basename(normalized, ".html")}/`;
   }
 
+  if (normalized.startsWith("demo/ai-reject-dashboard/frontend/pages/") && normalized.endsWith(".html")) {
+    const slug = path.basename(normalized, ".html");
+    if (slug === "index-ar") return "/demo/ai-reject-dashboard/";
+    return `/demo/ai-reject-dashboard/${slug}/`;
+  }
+
   if (normalized.startsWith("blog/") && normalized.endsWith(".html")) {
     return `/blog/${path.basename(normalized, ".html")}/`;
   }

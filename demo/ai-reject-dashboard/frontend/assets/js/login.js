@@ -39,11 +39,11 @@
       }
 
       // 3. التوجيه الفوري للوحة المرفوضات
-      var redirectPath = new URLSearchParams(window.location.search).get('redirect') || '/demo/ai-reject-dashboard/';
+      var redirectPath = new URLSearchParams(window.location.search).get('redirect') || '/demo/';
       
       // تجنب حدوث حلقات توجيه لا نهائية لصفحات المصادقة
       if (redirectPath.includes('login') || redirectPath.includes('forgot-password') || redirectPath.includes('reset-password')) {
-        redirectPath = '/demo/ai-reject-dashboard/';
+        redirectPath = '/demo/';
       }
 
       window.location.href = redirectPath;
@@ -51,7 +51,7 @@
     } catch (e) {
       // في الوضع الشكلي، ينجح تسجيل الدخول دائماً كخيار احتياطي
       localStorage.setItem('isLoggedIn', 'true');
-      window.location.href = '/demo/ai-reject-dashboard/';
+      window.location.href = '/demo/';
     }
   }
 

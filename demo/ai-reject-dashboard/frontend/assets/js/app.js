@@ -157,7 +157,7 @@
       clearToken();
       var target = window.location.pathname;
       if (target.indexOf('login.html') === -1) {
-        window.location.href = '/demo/ai-reject-dashboard/frontend/pages/login.html?redirect=' + encodeURIComponent(target);
+        window.location.href = '/demo/frontend/pages/login/?redirect=' + encodeURIComponent(target);
       }
       throw new Error('Unauthorized — redirecting to login');
     }
@@ -233,7 +233,7 @@
       state.authRequired = false;
       renderAll();
     } else {
-      showError('No data source available. Please ensure /demo/ai-reject-dashboard/frontend/assets/js/data.js is loaded.');
+      showError('No data source available. Please ensure /demo/frontend/assets/js/data.js is loaded.');
     }
   }
 
@@ -440,7 +440,7 @@
     var el = $('#source-info');
     if (!el) return;
     var descriptions = {
-      static: 'Displaying prepared demo data from /demo/ai-reject-dashboard/frontend/assets/js/data.js. Configure the Excel file for live data.',
+      static: 'Displaying prepared demo data from /demo/frontend/assets/js/data.js. Configure the Excel file for live data.',
       excel: 'Reading data from Excel file via local backend server. AI analysis is advisory only.',
       gemini: 'Data processed through Gemini AI analysis. Focus ERP remains the source of truth.',
       simulated: 'Backend is running but Gemini API key is not configured. Using local simulated AI analysis.',
@@ -725,7 +725,7 @@
     }
 
     var script = document.createElement('script');
-    script.src = '/socket.io/socket.io.js';
+    script.src = '/demo/node_modules/socket.io/client-dist/socket.io.js';
     script.async = true;
     script.onload = connectSocket;
     document.head.appendChild(script);

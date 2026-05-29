@@ -148,7 +148,7 @@
           
           <!-- قائمة الحلول المنسدلة العملاقة -->
           <li class="brightai-menu-item">
-            <button class="brightai-menu-link ${pathname.includes('/solutions/') ? 'is-active' : ''}" aria-haspopup="true" aria-expanded="false" id="b-solBtn" aria-controls="b-solMenu">
+            <button class="brightai-menu-link ${pathname.includes('/solutions/ai-governance-platform/') ? 'is-active' : ''}" aria-haspopup="true" aria-expanded="false" id="b-solBtn" aria-controls="b-solMenu">
               <span>${t.solutions}</span>
               <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
             </button>
@@ -185,7 +185,7 @@
                   <i class="fa-solid fa-rss"></i>
                   <span>${isEnglish ? 'Blog' : 'المدونة'}</span>
                 </a>
-                <a href="/docs/docs.html" class="brightai-resource-link" role="menuitem">
+                <a href="/docs/" class="brightai-resource-link" role="menuitem">
                   <i class="fa-solid fa-book-open"></i>
                   <span>${isEnglish ? 'Documentation' : 'الوثائق'}</span>
                 </a>
@@ -315,7 +315,7 @@
 
             <!-- أكورديون الحلول للجوال -->
             <li>
-              <button class="brightai-drawer-accordion-btn ${pathname.includes('/solutions/') ? 'is-active' : ''}" aria-expanded="false" aria-controls="acc-solutions">
+              <button class="brightai-drawer-accordion-btn ${pathname.includes('/solutions/ai-governance-platform/') ? 'is-active' : ''}" aria-expanded="false" aria-controls="acc-solutions">
                 <span>${t.solutions}</span>
                 <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
               </button>
@@ -343,7 +343,7 @@
                   <i class="fa-solid fa-rss"></i>
                   <div><span class="brightai-drawer-subtitle">${isEnglish ? 'Blog' : 'المدونة'}</span></div>
                 </a>
-                <a href="/docs/docs.html" class="brightai-drawer-sublink">
+                <a href="/docs/" class="brightai-drawer-sublink">
                   <i class="fa-solid fa-book-open"></i>
                   <div><span class="brightai-drawer-subtitle">${isEnglish ? 'Documentation' : 'الوثائق'}</span></div>
                 </a>

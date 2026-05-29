@@ -474,7 +474,7 @@ async function handleRequest(req, res) {
       await groqFaqHandler(ctx.req, ctx.res);
     } else if (method === 'POST' && url === '/api/ai/medical-archive') {
       await groqMedicalArchiveHandler(ctx.req, ctx.res);
-    } else if (method === 'GET' && url === '/api/health/ai') {
+    } else if (method === 'GET' && url === '/api/services/ai') {
       await groqHealthHandler(ctx.req, ctx.res);
     } else if (method === 'GET' && url === '/api/ai/status') {
       ctx.res.status(200).json(getSafeAiStatus());
@@ -638,7 +638,7 @@ function startServer() {
     console.log('  POST /api/ai/medical-agent - Medical smart agent');
     console.log('  POST /api/ai/faq      - FAQ generation');
     console.log('  POST /api/ai/medical-archive - Smart medical archive demo');
-    console.log('  GET  /api/health/ai   - AI provider health check');
+    console.log('  GET  /api/services/ai   - AI provider health check');
     console.log('  POST /api/analytics/ga4/conversion - Forward conversion events to GA4');
     console.log('  GET  /api/docs       - API Documentation (Swagger UI)');
     console.log('  GET  /api/health     - Health check');
