@@ -987,6 +987,46 @@
     {
       "from": "/blog/مقال-تحليل.html",
       "to": "/services/"
+    },
+    {
+      "from": "/docs/nca-ecc-ai-controls",
+      "to": "/docs/nca-ecc-ai-controls/"
+    },
+    {
+      "from": "/docs/nca-ecc-ai-controls.html",
+      "to": "/docs/nca-ecc-ai-controls/"
+    },
+    {
+      "from": "/docs/nca-ecc-ai-controls/index.html",
+      "to": "/docs/nca-ecc-ai-controls/"
+    },
+    {
+      "from": "/docs/Governanceـapplication",
+      "to": "/docs/Governanceـapplication/"
+    },
+    {
+      "from": "/docs/Governanceـapplication.html",
+      "to": "/docs/Governanceـapplication/"
+    },
+    {
+      "from": "/docs/Governanceـapplication/index.html",
+      "to": "/docs/Governanceـapplication/"
+    },
+    {
+      "from": "/docs/Governance%D9%80application",
+      "to": "/docs/Governance%D9%80application/"
+    },
+    {
+      "from": "/docs/Governance%D9%80application.html",
+      "to": "/docs/Governance%D9%80application/"
+    },
+    {
+      "from": "/docs/Governance%D9%80application/index.html",
+      "to": "/docs/Governance%D9%80application/"
+    },
+    {
+      "from": "/blog/ai-governance",
+      "to": "/blog/ai-governance.html"
     }
   ]
 }

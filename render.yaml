@@ -733,6 +733,37 @@ services:
         source: /docs/ai-audit-readiness/index.html
         destination: /docs/ai-audit-readiness/
 
+      # 11. nca-ecc-ai-controls (docs)
+      - type: redirect
+        source: /docs/nca-ecc-ai-controls
+        destination: /docs/nca-ecc-ai-controls/
+      - type: redirect
+        source: /docs/nca-ecc-ai-controls.html
+        destination: /docs/nca-ecc-ai-controls/
+      - type: redirect
+        source: /docs/nca-ecc-ai-controls/index.html
+        destination: /docs/nca-ecc-ai-controls/
+
+      # 12. Governance-application (docs)
+      - type: redirect
+        source: /docs/Governanceـapplication
+        destination: /docs/Governanceـapplication/
+      - type: redirect
+        source: /docs/Governanceـapplication.html
+        destination: /docs/Governanceـapplication/
+      - type: redirect
+        source: /docs/Governanceـapplication/index.html
+        destination: /docs/Governanceـapplication/
+      - type: redirect
+        source: /docs/Governance%D9%80application
+        destination: /docs/Governance%D9%80application/
+      - type: redirect
+        source: /docs/Governance%D9%80application.html
+        destination: /docs/Governance%D9%80application/
+      - type: redirect
+        source: /docs/Governance%D9%80application/index.html
+        destination: /docs/Governance%D9%80application/
+
       # ── Kernel Module Redirects ─────────────────────────────────────────────
       # BrightAI Kernel dashboard pages that exist and are normalized to /path/
       - type: redirect
@@ -1141,6 +1172,11 @@ services:
       - type: redirect
         source: /demo/ai-reject-dashboard/frontend/pages/admin/users.html
         destination: /demo/ai-reject-dashboard/frontend/pages/admin/users/
+
+      # ── Blog Module Redirects ────────────────────────────────────────────────
+      - type: redirect
+        source: /blog/ai-governance
+        destination: /blog/ai-governance.html
 
 databases:
   - name: brightai-db

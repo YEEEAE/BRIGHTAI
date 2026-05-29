@@ -1,599 +1,670 @@
-أنت Senior Technical SEO Engineer + Static HTML SEO Architect + B2B SaaS Content Strategist + AI Search / AEO / GEO Specialist.
+أكيد أ.يزيد. هذي برومتات جاهزة تنسخها لأي Agent مثل Codex / Cursor / Claude Code / Copilot. نفّذها **بالترتيب** لأن بعضها يعتمد على الثاني.
 
-المشروع: BrightAI / BRIGHTAI
-الريبو: YEEEAE/BRIGHTAI
-الموقع: https://brightai.site
-نوع المشروع حسب التحليل:
-Static HTML Marketing Site + Node.js API Backend داخل frontend/.
-لا يوجد /backend فعلي فعّال حسب التحليل؛ لا تفترض وجود backend/.
-لا تتعامل مع المشروع كـ Next.js أو React App.
-تعامل معه كموقع Static HTML + Vanilla JS + Tailwind + Node.js server داخل frontend/.
+## البرومبت 1: تجهيز فرع إصلاحات كامل
 
-السوق المستهدف:
-السعودية والخليج.
-
-اللغة:
-عربي سعودي مهني واضح، مع استخدام المصطلحات الإنجليزية عند الحاجة.
-
-────────────────────────────
-0. قاعدة التنفيذ الأساسية
-────────────────────────────
-
-لا تنفذ على main مباشرة.
-
-أنشئ branch جديد:
-
-feature/ai-governance-safe-authority-phase1
-
-نفّذ كل التعديلات على هذا الفرع فقط.
-افتح Pull Request للمراجعة.
-لا تدمج PR.
-
-هذا PR يجب أن يكون محافظًا ومحدود النطاق.
-لا تحاول إصلاح كل شيء في المشروع دفعة واحدة.
-
-────────────────────────────
-1. حدود النطاق الصارمة
-────────────────────────────
-
-المطلوب في هذا PR فقط:
-
-1. إصلاحات SEO تقنية حرجة وآمنة:
-   - sitemap / robots / kernel contradiction
-   - hreflang review بدون replace أعمى
-   - schema cleanup للصفحات التي سيتم تعديلها فقط
-   - llms.txt update
-
-2. إنشاء 5 صفحات Solutions أساسية فقط:
-   - /solutions/ai-governance-platform/
-   - /solutions/ai-firewall/
-   - /solutions/ai-audit-trail/
-   - /solutions/human-approval-layer/
-   - /solutions/ai-evidence-file/
-
-3. إنشاء 5 ملفات docx Markdown أساسية فقط:
-   - docx/ai-governance-saudi-arabia.md
-   - docx/ai-risk-management.md
-   - docx/pdpl-ai-governance.md
-   - docx/nca-ecc-ai-governance.md
-   - docx/ai-audit-readiness.md
-
-4. تحديث services/index.html كمدخل واضح للحلول الخمسة.
-5. إضافة Block خفيف فقط في index.html يربط للحلول.
-6. تحسين خفيف في contact/index.html إن كان آمنًا.
-7. إنشاء تقارير تنفيذ مختصرة داخل reports/seo/.
-
-ممنوع في هذا PR:
-- لا تعيد تصميم الصفحة الرئيسية.
-- لا تستبدل index.html بالكامل.
-- لا تغيّر Hero الرئيسي.
-- لا تنشئ Industries pages.
-- لا تنشئ Assessment pages.
-- لا تنشئ /assessment/ai-governance-readiness/.
-- لا تضف نموذج تقييم جاهزية.
-- لا تنشئ 20 ملف docx دفعة واحدة.
-- لا تنشئ 9 صفحات Solutions دفعة واحدة.
-- لا تحذف dependencies.
-- لا توحد Tailwind configs.
-- لا تعدل tsconfig أو ESLint بشكل كبير.
-- لا تحذف manifest.json أو manifest.webmanifest.
-- لا تعدّل Service Worker إلا إذا كان التعديل ضروري جدًا ومثبت.
-- لا تحذف meta keywords جماعيًا من كل المشروع.
-- لا تنفذ find/replace واسع على كل الملفات.
-- لا تضف React أو Next.js أو framework جديد.
-- لا تضف aggregateRating أو reviewCount.
-- لا تستخدم ادعاءات قانونية قاطعة.
-
-────────────────────────────
-2. التموضع المطلوب لـ BrightAI
-────────────────────────────
-
-BrightAI ليست شركة خدمات ذكاء اصطناعي عامة.
-BrightAI = Saudi AI Safety OS / طبقة تنفيذية لحوكمة وأمان الذكاء الاصطناعي للمؤسسات السعودية.
-
-BrightAI تساعد المؤسسات على:
-- اكتشاف استخدامات AI داخل المؤسسة.
-- تصنيف مخاطر الذكاء الاصطناعي.
-- حماية البيانات الحساسة قبل وصولها للنماذج.
-- تسجيل كل طلب AI وكل قرار وكل موافقة.
-- تطبيق الموافقة البشرية على القرارات الحساسة.
-- إنتاج Evidence Files لدعم جاهزية التدقيق والامتثال.
-- تشغيل الحوكمة بشكل مستمر.
-
-Core Capabilities:
-- AI Governance Platform
-- AI Firewall
-- AI Audit Trail
-- Human Approval Layer
-- AI Evidence File
-- AI Risk Management
-- Compliance Readiness
-
-Compliance Topics:
-- PDPL
-- NCA ECC 2-2024
-- ISO/IEC 42001 readiness
-- NIST AI RMF implementation
-- Privacy and AI
-- Data classification for AI
-
-استخدم صياغات آمنة:
-- "يساعد على المواءمة"
-- "يدعم جاهزية الامتثال"
-- "يوفر طبقة تشغيلية"
-- "يساعد فرق المخاطر والامتثال"
-- "يعزز القدرة على التدقيق"
-- "يدعم تطبيق الضوابط داخليًا"
-
-في أي محتوى عن الامتثال أضف:
-"هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
-
-────────────────────────────
-3. افهم المشروع قبل أي تعديل
-────────────────────────────
-
-افحص فعليًا هذه الملفات قبل التعديل:
-
-Root:
-- README.md
-- package.json
-- index.html
-- services/index.html
-- contact/index.html
-- sitemap.xml
-- sitemap-pages.xml
-- sitemap-legal.xml
-- sitemap-demo.xml
-- sitemap-kernel.xml
-- sitemap-images.xml
-- robots.txt
-- llms.txt
-- llms-full.txt إن وجد
-- manifest.json
-- manifest.webmanifest
-- redirects.json
-- render.yaml
-
-Frontend:
-- frontend/package.json
-- frontend/server.js
-- frontend/kernel/
-- frontend/routes/
-- frontend/services/
-- frontend/css/
-- frontend/js/
-- frontend/assets/
-
-Scripts:
-- scripts/generate-sitemap-all-pages.mjs
-- scripts/seo-health-check.mjs
-- scripts/seo-ci-check.mjs
-- scripts/internal-links-audit.mjs
-- scripts/check-performance-budget.js
-
-أنشئ تقرير أولي:
-reports/seo/AI-GOVERNANCE-PHASE1-AUDIT.md
-
-يحتوي:
-1. تأكيد بنية المشروع الفعلية.
-2. ما سيتم تعديله في هذا PR.
-3. ما لن يتم تعديله في هذا PR.
-4. المخاطر المتوقعة.
-5. الملفات المرشحة للتعديل.
-6. ملاحظات من تقرير التحليل:
-   - المشروع Static HTML + Node API داخل frontend/.
-   - يوجد SEO قوي مسبقًا.
-   - توجد مشكلة sitemap/robots/kernel.
-   - توجد مشكلة sitemaps متعددة بدون index واضح أو robots لا يشير لها كلها.
-   - توجد ملاحظة حول en-SA.
-   - توجد ملاحظة حول image sitemap.
-   - توجد آثار Next.js/React غير مستخدمة، لكنها مؤجلة وليست ضمن هذا PR.
-
-────────────────────────────
-4. إصلاح SEO التقني — بحذر
-────────────────────────────
-
-4.1 sitemap / robots
-
-راجع الملفات:
-- sitemap.xml
-- sitemap-pages.xml
-- sitemap-legal.xml
-- sitemap-demo.xml
-- sitemap-kernel.xml
-- sitemap-images.xml
-- robots.txt
+```text
+أنت Senior Frontend + Technical SEO Engineer. اعمل على مشروع BrightAI في المستودع الحالي.
 
 المطلوب:
-- لا تغيّر كل شيء بشكل واسع.
-- أصلح التناقض الأهم:
-  إذا /kernel/ محظور في robots.txt، لا تجعله ظاهرًا كسجل فهرسة في sitemap الرئيسي.
-- إذا كان robots.txt لا يشير إلا لبعض sitemaps، حدّثه ليشير إلى sitemap index أو أهم sitemaps الفعلية.
-- لا تضف docx إلى sitemap.
-- لا تضف صفحات داخلية أو demo غير مناسبة للفهرسة.
-- أضف صفحات Solutions الخمسة الجديدة إلى sitemap المناسب أو sitemap-solutions.xml.
+1. أنشئ فرع جديد باسم:
+fix/technical-seo-core-audit
 
-التنفيذ المفضل:
-- إن كان المشروع يستخدم sitemap.xml كقائمة URLs، لا تحوله جذريًا إن كان السكربت يعتمد عليه.
-- إن كان آمنًا، أنشئ sitemap-solutions.xml وأضفه للrobots.txt.
-- وثّق أي قرار في التقرير النهائي.
+2. لا تغيّر الهوية البصرية ولا التصميم العام.
+3. لا تحذف صفحات أو ملفات إلا إذا كانت مكررة أو broken بشكل مؤكد.
+4. قبل أي تعديل، افحص هذه الملفات:
+- _redirects
+- robots.txt
+- sitemap.xml
+- sitemap-pages.xml
+- docs/index.html
+- docs/ai-firewall/index.html
+- solutions/ai-firewall/index.html
+- frontend/js/unified-header.js
+- package.json
+- scripts/seo-ci-check.mjs
+- scripts/internal-links-audit.mjs إن وجد
 
-4.2 hreflang
-
-راجع استخدام:
-- en-SA
-- en
-- ar-SA
-- x-default
-
-لا تستبدل en-SA جماعيًا.
-افعل الآتي:
-- افحص هل توجد صفحات إنجليزية فعلية مقابلة.
-- إذا en-SA موجود في الصفحات التي تعدلها فقط، وظهر أنه غير مناسب، استبدله بـ en.
-- لا تنفذ replace شامل في كل المشروع.
-- وثّق أي مشكلة أوسع كتوصية PR لاحق.
-
-4.3 Schema
-
-نظّف Schema فقط في:
-- index.html إذا أضفت له Block.
-- services/index.html إذا عدلته.
-- contact/index.html إذا عدلته.
-- صفحات Solutions الجديدة.
-
-ممنوع:
-- aggregateRating بدون تقييمات ظاهرة.
-- reviewCount غير مثبت.
-- FAQPage بدون FAQ ظاهر.
-- claims غير ظاهرة للمستخدم.
-
-استخدم:
-- WebPage للـ Solutions.
-- BreadcrumbList للـ Solutions.
-- Organization/WebSite في الرئيسية فقط إذا كان موجودًا وصحيحًا.
-- FAQPage فقط إذا توجد FAQ ظاهرة في نفس الصفحة.
-
-لا تنظف كل Schema في المشروع دفعة واحدة.
-
-أنشئ تقرير:
-reports/seo/AI-GOVERNANCE-PHASE1-SEO-FIXES.md
-
-يتضمن:
-- ما تم إصلاحه.
-- ما تم تأجيله.
-- السبب.
-
-────────────────────────────
-5. إنشاء صفحات Solutions الخمسة فقط
-────────────────────────────
-
-أنشئ أو حسّن فقط:
-
-1. /solutions/ai-governance-platform/
-H1:
-منصة حوكمة الذكاء الاصطناعي للمؤسسات السعودية
-
-2. /solutions/ai-firewall/
-H1:
-AI Firewall لحماية البيانات الحساسة قبل وصولها للنماذج
-
-3. /solutions/ai-audit-trail/
-H1:
-AI Audit Trail لتوثيق كل طلب وقرار وموافقة
-
-4. /solutions/human-approval-layer/
-H1:
-طبقة الموافقة البشرية للقرارات الحساسة في أنظمة AI
-
-5. /solutions/ai-evidence-file/
-H1:
-AI Evidence File لإثبات الجاهزية أمام التدقيق والمراجعة
-
-كل صفحة تكون Static HTML وتلتزم بالتصميم الحالي قدر الإمكان.
-استخدم CSS الموجود ولا تضف CSS ضخم.
-
-لكل صفحة:
-- H1 واحد.
-- title فريد.
-- meta description فريدة.
-- canonical صحيح.
-- breadcrumb ظاهر.
-- BreadcrumbList JSON-LD.
-- WebPage JSON-LD.
-- FAQ ظاهر.
-- CTA فوق الصفحة ووسطها وآخرها.
-- روابط داخلية إلى:
-  - /
-  - /services/
-  - /contact/
-  - صفحات Solutions ذات علاقة.
-- لا تستخدم meta keywords.
-- لا تضف aggregateRating.
-- لا تضف reviewCount.
-- لا تستخدم claims قانونية قطعية.
-
-هيكل كل صفحة:
-1. Hero مختصر.
-2. الإجابة المختصرة:
-   فقرتان إلى 4 جمل مناسبة لمحركات الإجابة.
-3. المشكلة التجارية.
-4. متى تحتاج المؤسسة هذا الحل؟
-5. كيف يعمل BrightAI؟
-6. ماذا يكتشف BrightAI؟
-7. ماذا يتحكم به BrightAI؟
-8. ماذا يسجل BrightAI؟
-9. ما الدليل الذي ينتجه BrightAI؟
-10. مخرجات تجارية واضحة.
-11. FAQ.
-12. CTA نهائي.
-
-CTAs المسموحة:
-- اطلب ديمو تنفيذي.
-- تحدث مع فريق BrightAI.
-- استكشف حلول الحوكمة.
-- تواصل معنا.
-
-CTAs الممنوعة:
-- احجز تقييم جاهزية.
-- ابدأ Assessment.
-- ابدأ تقييم المخاطر.
-
-────────────────────────────
-6. ملفات docx الخمسة فقط
-────────────────────────────
-
-أنشئ مجلد:
-docx/
-
-ثم أنشئ فقط:
-
-1. docx/ai-governance-saudi-arabia.md
-العنوان:
-حوكمة الذكاء الاصطناعي في السعودية: دليل تنفيذي للمؤسسات
-
-2. docx/ai-risk-management.md
-العنوان:
-إدارة مخاطر الذكاء الاصطناعي للمؤسسات السعودية
-
-3. docx/pdpl-ai-governance.md
-العنوان:
-PDPL والذكاء الاصطناعي: إدارة الخصوصية والمخاطر داخل المؤسسة
-
-4. docx/nca-ecc-ai-governance.md
-العنوان:
-NCA ECC وحوكمة الذكاء الاصطناعي: ضوابط تشغيلية للجهات المنظمة
-
-5. docx/ai-audit-readiness.md
-العنوان:
-جاهزية تدقيق الذكاء الاصطناعي: كيف تثبت السيطرة والامتثال؟
-
-لكل ملف Markdown:
-- Frontmatter:
-  title
-  description
-  audience
-  funnel_stage
-  related_solutions
-  last_updated
-- ملخص تنفيذي.
-- الإجابة المختصرة.
-- لمن هذا المحتوى؟
-- لماذا الموضوع مهم؟
-- المخاطر الشائعة.
-- كيف يتم التطبيق؟
-- كيف يساعد BrightAI؟
-- Checklist.
-- FAQ.
-- CTA.
-- روابط داخلية مقترحة.
-- Disclaimer عند الامتثال:
-  "هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
-
-لا تحول هذه الملفات إلى صفحات HTML.
-لا تضفها إلى sitemap.
-لا تنشئ 20 ملفًا الآن.
-
-────────────────────────────
-7. الصفحة الرئيسية — إضافة خفيفة فقط
-────────────────────────────
-
-في index.html:
-لا تعيد كتابة الصفحة.
-لا تغير Hero.
-لا تغير Layout جذري.
-
-أضف Block صغير بعنوان:
-"مركز حوكمة الذكاء الاصطناعي"
-
-النص:
-"تعرّف كيف تساعد BrightAI المؤسسات السعودية على تحويل سياسات الذكاء الاصطناعي إلى ضوابط تشغيلية قابلة للتدقيق، مع AI Firewall وسجل تدقيق وموافقات بشرية وملفات أدلة."
-
-روابط:
-- /solutions/ai-governance-platform/
-- /solutions/ai-firewall/
-- /solutions/ai-audit-trail/
-- /solutions/human-approval-layer/
-- /solutions/ai-evidence-file/
-- /services/
-- /contact/
-
-CTA:
-- استكشف حلول الحوكمة.
-- تحدث مع فريق BrightAI.
-
-لا تحذف أقسام.
-لا تحذف سكربتات.
-لا تغيّر التصميم إلا بقدر لازم لإضافة هذا البلوك.
-
-────────────────────────────
-8. صفحة الخدمات — بوابة Solutions
-────────────────────────────
-
-في services/index.html:
-لا تعيد تصميم الصفحة بالكامل.
-أضف أو حسّن قسم واضح للحلول الخمسة:
-
-- AI Governance Platform
-- AI Firewall
-- AI Audit Trail
-- Human Approval Layer
-- AI Evidence File
-
-لكل حل:
-- عنوان.
-- وصف من جملة أو جملتين.
-- رابط صفحة Solution.
-- CTA صغير.
-
-الهدف:
-تتحول services إلى مدخل تجاري للحلول بدون تغيير جذري.
-
-────────────────────────────
-9. صفحة التواصل — تحسين خفيف فقط
-────────────────────────────
-
-في contact/index.html:
-إن كان آمنًا:
-- أضف CTA واضح:
-  "اطلب ديمو تنفيذي"
-- أضف Microcopy:
-  "نستخدم بيانات التواصل للرد على طلبك فقط وفق سياسة الخصوصية وبيان PDPL."
-- أضف روابط إلى أهم صفحات Solutions.
-- لا تضف Assessment.
-- لا تضف نموذج جديد كبير.
-- لا تعيد تصميم الصفحة.
-
-────────────────────────────
-10. تحديث llms.txt
-────────────────────────────
-
-حدّث llms.txt ليشمل:
-- تعريف مختصر لـ BrightAI.
-- تعريف BrightAI Kernel.
-- روابط صفحات Solutions الخمسة.
-- قائمة ملفات docx الخمسة كموارد داخلية/مرجعية.
-- الوصف الثابت:
-
-BrightAI is an operational AI governance and safety layer for Saudi organizations, helping teams classify AI risks, protect sensitive data, maintain audit trails, apply human approvals, and produce evidence for compliance readiness.
-
-إذا llms-full.txt موجود، حدثه بإضافة نفس البنية.
-إذا غير موجود، لا تنشئه في هذا PR إلا إذا كان ذلك بسيطًا وآمنًا.
-الأولوية لـ llms.txt فقط.
-
-────────────────────────────
-11. تقارير مطلوبة
-────────────────────────────
-
-أنشئ فقط هذه التقارير:
-
-1. reports/seo/AI-GOVERNANCE-PHASE1-AUDIT.md
-2. reports/seo/AI-GOVERNANCE-PHASE1-SEO-FIXES.md
-3. reports/seo/AI-GOVERNANCE-PHASE1-INTERNAL-LINKING.md
-4. reports/seo/AI-GOVERNANCE-PHASE1-FINAL-SUMMARY.md
-
-لا تنشئ تقارير كثيرة في هذا PR.
-
-FINAL-SUMMARY يجب أن يحتوي:
-- ما تم.
-- الصفحات الجديدة.
-- ملفات docx الجديدة.
-- الملفات المعدلة.
-- أوامر الفحص التي شُغّلت.
-- النتائج.
-- ما تم تأجيله ولماذا.
-- توصيات PR التالي.
-
-PR التالي المقترح:
-- Phase 2: بقية صفحات Solutions.
-- Phase 3: بقية ملفات docx.
-- Phase 4: image sitemap + OG images.
-- Phase 5: cleanup dependencies/configs.
-- Phase 6: English marketing pages.
-
-────────────────────────────
-12. أوامر التحقق
-────────────────────────────
-
-بعد التنفيذ شغّل المتاح:
-
-npm run sitemap:generate
+5. بعد كل تعديل شغّل:
 npm run seo:check
 npm run seo:gate
-npm run verify:all
 npm run internal-links:audit
 npm run performance:budget
 
-إذا فشل أمر:
-- اقرأ الخطأ.
-- أصلح إذا كان متعلقًا بتعديلاتك.
-- أعد التشغيل.
-- وثّق النتيجة.
+إذا فشل أي أمر، أصلح السبب ولا تتجاهله.
 
-إذا أمر غير موجود أو يفشل بسبب البيئة:
-- وثّق السبب.
-- لا تدّعي نجاحه.
+اكتب تقرير مختصر في نهاية التنفيذ يوضح:
+- الملفات التي عدلتها
+- سبب التعديل
+- نتيجة أوامر الفحص
+- أي مشاكل بقيت تحتاج تدخل يدوي
+```
 
-────────────────────────────
-13. Pull Request
-────────────────────────────
+---
 
-افتح PR من:
-feature/ai-governance-safe-authority-phase1
+## البرومبت 2: إصلاح مشكلة `/docs/` والـ redirects
 
-إلى:
-main
+```text
+افحص ملف _redirects وملفات sitemap/canonical المتعلقة بمسار /docs/.
 
-عنوان PR:
-Phase 1: Add AI Governance solution pages and safe SEO fixes
+المشكلة:
+يوجد تضارب محتمل بين:
+- /docs/
+- /docs/docs/
+- canonical الخاص بصفحة docs
+- روابط sitemap التي تشير إلى /docs/
 
-وصف PR:
-- Summary
-- Why
-- Scope
-- New solution pages
-- New docx resources
-- Homepage addition only
-- Services/contact additions
-- SEO fixes
-- llms.txt update
-- Validation results
-- Deferred items
-- Risks
+المطلوب:
+1. اجعل /docs/ هو المسار الرسمي النهائي لمركز الوثائق.
+2. أزل أو عدّل أي redirect يحوّل /docs أو /docs/ إلى /docs/docs/.
+3. تأكد أن canonical في docs/index.html هو:
+https://brightai.site/docs/
 
-لا تدمج PR.
+4. تأكد أن sitemap.xml و sitemap-pages.xml لا يحتويان على /docs/docs/ إلا إذا كان هذا ملفًا فعليًا مطلوبًا، والأفضل عدم استخدامه.
+5. أضف redirects فقط من المسارات القديمة إلى /docs/، مثل:
+   /docs.html -> /docs/
+   /docs/index.html -> /docs/
 
-────────────────────────────
-14. Acceptance Criteria
-────────────────────────────
+6. لا تغيّر محتوى الصفحة نفسها إلا إذا كان لازمًا لإصلاح الروابط.
 
-المهمة ناجحة فقط إذا:
+Acceptance Criteria:
+- /docs/ لا يتحول إلى /docs/docs/
+- sitemap يشير إلى /docs/
+- canonical self-referencing
+- npm run seo:gate ينجح
+```
 
-- تم إنشاء branch منفصل.
-- لم تتم إعادة تصميم الصفحة الرئيسية.
-- تمت إضافة Block خفيف فقط للرئيسية.
-- لم يتم إنشاء Industries.
-- لم يتم إنشاء Assessment.
-- تم إنشاء 5 صفحات Solutions فقط.
-- تم إنشاء 5 ملفات docx فقط.
-- تم تحديث services/index.html بروابط الحلول.
-- تم تحسين contact/index.html بشكل خفيف إن كان آمنًا.
-- تم تحديث llms.txt.
-- تم إصلاح أو توثيق مشكلة sitemap/robots/kernel.
-- لم يتم تنفيذ replace شامل لـ hreflang.
-- تم توثيق hreflang issues إن وجدت.
-- لم يتم حذف dependencies.
-- لم يتم تعديل Tailwind configs.
-- لم يتم حذف manifest files.
-- لم تتم إضافة meta keywords.
-- لم تتم إضافة aggregateRating.
-- كل صفحة Solution لها H1 واحد.
-- كل صفحة Solution لها title وdescription وcanonical.
-- كل صفحة Solution لها CTA وروابط داخلية.
-- كل ملف docx يحتوي Answer Block وChecklist وFAQ وCTA.
-- تم تشغيل الفحوصات أو توثيق سبب تعذرها.
-- تم فتح PR.
-- لم يتم الدمج إلى main.
+---
 
-ابدأ الآن خطوة بخطوة.
-أقل تغييرات ممكنة، أعلى أثر ممكن.
-ركّز على: SEO technical safety + 5 core solution pages + 5 authority docs + llms.txt.
+## البرومبت 3: إصلاح الربط الداخلي داخل مركز الوثائق
+
+```text
+افتح docs/index.html وأصلح روابط البطاقات الداخلية.
+
+المشكلة:
+بطاقات الوثائق مثل AI Firewall وAI Audit Trail وAI Governance Platform تشير إلى /docs/ بدل صفحاتها الفعلية.
+
+المطلوب:
+استبدل روابط البطاقات كالتالي:
+
+AI Governance Platform -> /docs/ai-governance-platform/
+AI Firewall -> /docs/ai-firewall/
+AI Audit Trail -> /docs/ai-audit-trail/
+Human Approval Layer -> /docs/human-approval-layer/
+AI Evidence File -> /docs/ai-evidence-file/
+حوكمة الذكاء الاصطناعي في السعودية -> /docs/ai-governance-saudi-arabia/
+إدارة مخاطر الذكاء الاصطناعي -> /docs/ai-risk-management/
+PDPL والذكاء الاصطناعي -> /docs/pdpl-ai-governance/
+NCA ECC وحوكمة AI -> /docs/nca-ecc-ai-governance/
+جاهزية تدقيق الذكاء الاصطناعي -> /docs/ai-audit-readiness/
+
+أضف وصفًا مختصرًا لكل بطاقة إن كان ناقصًا، لكن لا تكثر الكلام.
+
+Acceptance Criteria:
+- لا توجد بطاقة داخل docs/index.html رابطها /docs/ إلا بطاقة الرجوع للمركز نفسه إن وجدت.
+- كل رابط يشير إلى صفحة موجودة فعليًا.
+- npm run internal-links:audit ينجح.
+```
+
+---
+
+## البرومبت 4: إصلاح Schema في صفحات Docs
+
+```text
+افحص كل صفحات docs/*/index.html وخصوصًا:
+- docs/ai-firewall/index.html
+- docs/ai-audit-trail/index.html
+- docs/ai-evidence-file/index.html
+- docs/ai-governance-platform/index.html
+- docs/human-approval-layer/index.html
+- docs/pdpl-ai-governance/index.html
+- docs/nca-ecc-ai-governance/index.html
+- docs/ai-risk-management/index.html
+- docs/ai-audit-readiness/index.html
+- docs/ai-governance-saudi-arabia/index.html
+
+المشكلة:
+بعض JSON-LD WebPage وBreadcrumb وFAQ يشير إلى /docs/ بدل الصفحة الحالية.
+
+المطلوب:
+لكل صفحة:
+1. اجعل canonical مطابقًا لمسار الصفحة.
+2. اجعل WebPage @id بالشكل:
+https://brightai.site/{page-path}/#webpage
+
+3. اجعل WebPage url بالشكل:
+https://brightai.site/{page-path}/
+
+4. اجعل BreadcrumbList @id بالشكل:
+https://brightai.site/{page-path}/#breadcrumb
+
+5. اجعل آخر breadcrumb item يشير إلى الصفحة الحالية وليس /docs/.
+6. إذا وُجد FAQPage، اجعل @id بالشكل:
+https://brightai.site/{page-path}/#faq
+
+7. لا تكرر نفس Schema مرتين داخل الصفحة. إن وجدت أكثر من JSON-LD متضارب، وحّدها في graph واحد نظيف.
+
+Acceptance Criteria:
+- كل صفحة Docs لها Schema self-referencing.
+- لا توجد صفحة docs فرعية فيها WebPage url = https://brightai.site/docs/
+- JSON-LD صالح بدون أخطاء parsing.
+- npm run seo:gate ينجح.
+```
+
+---
+
+## البرومبت 5: تنظيف FAQ Schema من الأسئلة غير الطبيعية
+
+```text
+افحص FAQPage schema في صفحات:
+- solutions/ai-firewall/index.html
+- docs/ai-firewall/index.html
+- pricing/index.html
+- أي صفحة تحتوي FAQPage
+
+المشكلة:
+بعض الأسئلة داخل FAQ schema ليست أسئلة طبيعية، وبعضها طويل جدًا أو مأخوذ من أقسام كاملة.
+
+المطلوب:
+1. اجعل كل Question.name سؤالًا واضحًا وقصيرًا.
+2. لا تستخدم عناوين مثل "التزامات PDPL" أو "القطاع المالي" كسؤال.
+3. لا تجعل السؤال أطول من 120 حرفًا.
+4. لا تجعل الإجابة أطول من 350 حرفًا إلا عند الحاجة.
+5. يجب أن تكون كل أسئلة FAQ موجودة ظاهريًا في محتوى الصفحة، وليس فقط داخل schema.
+6. احذف FAQPage من أي صفحة لا تعرض FAQ فعليًا.
+
+أمثلة أسئلة جيدة:
+- كيف يمنع AI Firewall تسريب البيانات الحساسة؟
+- هل يعمل AI Firewall مع ChatGPT وGemini؟
+- هل يحذف النظام البيانات أم يخفيها فقط؟
+- كيف يساعد BrightAI في جاهزية PDPL؟
+- هل يحتاج استخدام AI إلى موافقة بشرية دائمًا؟
+
+Acceptance Criteria:
+- لا توجد FAQ schema بأسئلة طويلة جدًا أو غير طبيعية.
+- كل FAQ في Schema لها مقابل ظاهر في الصفحة.
+- JSON-LD valid.
+```
+
+---
+
+## البرومبت 6: إزالة JavaScript المكسور من صفحات Docs
+
+```text
+افحص صفحات docs التي تحتوي سكربت بهذا الشكل أو مشابه له:
+
+<script>
+  }
+  });
+</script>
+
+المطلوب:
+1. احذف أي script block مكسور أو غير مستخدم.
+2. لا تحذف سكربتات ضرورية مثل unified-header.js أو production-runtime إلا إذا ثبت أنها تسبب خطأ.
+3. تأكد أن كل صفحة HTML لا تحتوي JavaScript syntax error.
+4. افحص خصوصًا:
+- docs/index.html
+- docs/ai-firewall/index.html
+- بقية docs/*/index.html
+
+Acceptance Criteria:
+- لا توجد أقواس JS يتيمة.
+- لا يوجد script فارغ أو مكسور.
+- الصفحة تعمل بدون console syntax error.
+```
+
+---
+
+## البرومبت 7: تحسين Core Web Vitals للصفحة الرئيسية
+
+```text
+حسّن Core Web Vitals للصفحة الرئيسية index.html بدون تغيير الهوية البصرية.
+
+ركز على:
+- LCP
+- INP
+- CLS
+- Mobile performance
+
+المشاكل المحتملة:
+- Canvas animation في hero يعمل مبكرًا.
+- unified-header يتم حقنه عبر JS.
+- كثرة CSS/JS قبل ظهور المحتوى.
+- تحميل الخط والصورة والأنيميشن في البداية.
+
+المطلوب:
+1. اجعل Canvas animation لا يبدأ إلا بعد:
+   - requestIdleCallback إن كان مدعومًا
+   - أو بعد setTimeout بسيط
+   - أو بعد أول تفاعل للمستخدم على الموبايل
+
+2. على الموبايل، استخدم fallback CSS background بدل Canvas إن كان الجهاز ضعيفًا:
+   - hardwareConcurrency <= 4
+   - أو prefers-reduced-motion
+   - أو max-width <= 768px
+
+3. لا تجعل Canvas يؤخر ظهور H1 أو CTA.
+4. تأكد أن H1 والCTA الأساسيين يظهران بدون انتظار JS.
+5. راجع preload:
+   - الشعار فقط إذا كان مستخدمًا فوق fold
+   - الخط الرسمي
+6. لا تضف مكتبات جديدة.
+
+Acceptance Criteria:
+- لا يتأخر hero text بسبب Canvas.
+- Canvas لا يعمل على prefers-reduced-motion.
+- Animation لا يؤثر على أول تفاعل.
+- التصميم يبقى قريب جدًا من الحالي.
+```
+
+---
+
+## البرومبت 8: تحسين الهيدر للـ SEO والـ UX
+
+```text
+راجع frontend/js/unified-header.js وطريقة حقن الهيدر.
+
+المشكلة:
+الهيدر كامل يتم حقنه عبر JavaScript، وهذا قد يضعف الروابط الأساسية في HTML الأولي.
+
+المطلوب:
+1. لا تكسر نظام الهيدر الحالي.
+2. أضف fallback navigation بسيط داخل HTML في الصفحات الأساسية أو عبر template إن وجد، بحيث تظهر أهم الروابط حتى لو تعطل JS:
+   - الرئيسية /
+   - الحلول /services/ أو /solutions/ai-governance-platform/
+   - AI Firewall /solutions/ai-firewall/
+   - AI Audit Trail /solutions/ai-audit-trail/
+   - الوثائق /docs/
+   - الأسعار /pricing/
+   - التواصل /contact/
+
+3. اجعل fallback مخفيًا بصريًا بعد تحميل الهيدر أو مستبدلًا بطريقة آمنة.
+4. لا تكرر nav بشكل يربك القارئ أو قارئ الشاشة.
+5. حافظ على ARIA attributes في الهيدر الحالي.
+
+Acceptance Criteria:
+- روابط التنقل الأساسية موجودة في HTML حتى قبل تنفيذ JS.
+- لا يوجد duplicate navigation مزعج للمستخدم.
+- الهيدر الحالي يستمر بالعمل.
+- accessibility لا تتضرر.
+```
+
+---
+
+## البرومبت 9: إنشاء صفحة BOFU لتقييم جاهزية حوكمة AI
+
+```text
+أنشئ صفحة جديدة عالية التحويل:
+
+Path:
+assessment/ai-governance-readiness/index.html
+
+الهدف:
+صفحة BOFU لاستهداف الباحثين عن تقييم جاهزية حوكمة الذكاء الاصطناعي في الشركات السعودية.
+
+Primary Keyword:
+تقييم جاهزية حوكمة الذكاء الاصطناعي
+
+Secondary Keywords:
+AI governance assessment Saudi Arabia
+AI compliance readiness
+جاهزية تدقيق الذكاء الاصطناعي
+تقييم مخاطر الذكاء الاصطناعي
+حوكمة الذكاء الاصطناعي للشركات السعودية
+
+المطلوب في الصفحة:
+1. Title:
+تقييم جاهزية حوكمة الذكاء الاصطناعي للشركات السعودية | BrightAI
+
+2. Meta description:
+قيّم جاهزية مؤسستك لاستخدام الذكاء الاصطناعي بأمان عبر فحص المخاطر، البيانات، الموافقات، وسجلات التدقيق مع BrightAI.
+
+3. H1 واضح.
+4. فقرة افتتاحية تجيب مباشرة على نية البحث.
+5. أقسام:
+   - لمن هذا التقييم؟
+   - ماذا نفحص؟
+   - مخرجات التقييم
+   - لماذا BrightAI؟
+   - خطوات العمل
+   - FAQ
+   - CTA للتواصل أو واتساب
+
+6. روابط داخلية إلى:
+   /solutions/ai-governance-platform/
+   /solutions/ai-firewall/
+   /solutions/ai-audit-trail/
+   /docs/ai-audit-readiness/
+   /contact/
+
+7. Schema:
+   WebPage
+   BreadcrumbList
+   FAQPage إذا ظهرت الأسئلة في الصفحة
+
+8. أضف الصفحة إلى sitemap.xml و sitemap-pages.xml إن كان التوليد يدويًا أو حدّث سكربت التوليد إن كان آليًا.
+
+Acceptance Criteria:
+- الصفحة indexable
+- canonical self-referencing
+- CTA واضح فوق fold
+- روابط داخلية فعلية
+- لا تستخدم كلام قانوني كضمان امتثال
+```
+
+---
+
+## البرومبت 10: إنشاء صفحة PDPL + ChatGPT
+
+```text
+أنشئ صفحة جديدة:
+
+Path:
+docs/pdpl-chatgpt-data-protection/index.html
+
+Primary Keyword:
+ChatGPT والبيانات الشخصية في السعودية
+
+Secondary Keywords:
+PDPL ChatGPT Saudi Arabia
+حماية البيانات الشخصية في الذكاء الاصطناعي
+استخدام ChatGPT في الشركات السعودية
+منع تسريب البيانات للذكاء الاصطناعي
+PII masking AI
+AI Firewall Saudi Arabia
+
+المطلوب:
+1. Title:
+ChatGPT والبيانات الشخصية في السعودية: كيف تستخدم AI بدون تسريب بيانات؟ | BrightAI
+
+2. Meta description:
+دليل عملي للشركات السعودية لاستخدام ChatGPT والذكاء الاصطناعي مع حماية البيانات الشخصية، تنقية PII، وسجل تدقيق متوافق تشغيليًا مع PDPL.
+
+3. المحتوى:
+- مقدمة مباشرة
+- أمثلة على بيانات لا يجب إرسالها للنماذج
+- جدول: نوع البيانات / الخطر / الإجراء المناسب
+- كيف يساعد AI Firewall
+- متى نحتاج Human Approval
+- كيف يفيد Audit Trail
+- Checklist للشركات
+- FAQ
+- CTA
+
+4. الروابط الداخلية:
+   /solutions/ai-firewall/
+   /solutions/ai-audit-trail/
+   /solutions/human-approval-layer/
+   /docs/pdpl-ai-governance/
+   /pdpl-statement/
+   /contact/
+
+5. أضفها إلى sitemap إن لزم.
+6. أضفها إلى docs/index.html كبطاقة ضمن "أدلة تنفيذية".
+
+Acceptance Criteria:
+- الصفحة ليست استشارة قانونية.
+- اللغة سعودية مهنية وواضحة.
+- تحتوي أمثلة عملية.
+- FAQ طبيعي.
+```
+
+---
+
+## البرومبت 11: إنشاء صفحة NCA ECC Controls Mapping
+
+```text
+أنشئ صفحة جديدة:
+
+Path:
+docs/nca-ecc-ai-controls-mapping/index.html
+
+Primary Keyword:
+NCA ECC AI governance
+
+Secondary Keywords:
+ضوابط الأمن السيبراني والذكاء الاصطناعي
+امتثال الذكاء الاصطناعي NCA
+AI audit trail cybersecurity
+AI risk scoring
+تصنيف بيانات الذكاء الاصطناعي
+
+المطلوب:
+1. Title:
+مواءمة استخدام الذكاء الاصطناعي مع NCA ECC | BrightAI
+
+2. Meta description:
+دليل عملي يوضح كيف تساعد ضوابط BrightAI مثل AI Firewall وAudit Trail وHuman Approval في تشغيل استخدامات AI بطريقة قابلة للمراجعة أمنيًا.
+
+3. المحتوى:
+- لماذا تحتاج استخدامات AI لضوابط أمنية؟
+- جدول mapping:
+  المتطلب الأمني / خطر AI / ضابط BrightAI المقترح
+- أمثلة على Audit Logs
+- تصنيف البيانات داخل prompts
+- الموافقات البشرية للقرارات الحساسة
+- Evidence File
+- Checklist
+- FAQ
+- CTA
+
+4. الروابط الداخلية:
+   /solutions/ai-governance-platform/
+   /solutions/ai-firewall/
+   /solutions/ai-audit-trail/
+   /solutions/ai-evidence-file/
+   /docs/nca-ecc-ai-governance/
+   /contact/
+
+5. أضف الصفحة إلى docs/index.html و sitemap.
+
+Acceptance Criteria:
+- لا تدّعي امتثال قانوني مضمون.
+- استخدم عبارة "يدعم الجاهزية التشغيلية" بدل "يضمن الامتثال".
+- الصفحة تقرأ كدليل تنفيذي لا مقال عام.
+```
+
+---
+
+## البرومبت 12: إنشاء Trust Center
+
+```text
+أنشئ صفحة Trust Center جديدة:
+
+Path:
+trust/index.html
+
+الهدف:
+تعزيز الثقة للجهات الحكومية والشركات المنظمة.
+
+المطلوب:
+1. Title:
+مركز الثقة والأمان | BrightAI
+
+2. Meta description:
+تعرف على ضوابط الأمان والخصوصية والحوكمة في BrightAI، وكيف ندعم جاهزية المؤسسات السعودية لاستخدام الذكاء الاصطناعي بأمان.
+
+3. المحتوى:
+- مقدمة عن الأمان والخصوصية
+- كيف نحمي البيانات
+- AI Firewall
+- Audit Trail
+- Human Approval
+- Evidence File
+- خيارات النشر: سحابي / هجين / معزول
+- Security headers والسياسات التقنية
+- الامتثال التشغيلي: PDPL, NCA ECC, ISO/IEC 42001, ISO/IEC 27001, ISO/IEC 23894, NIST AI RMF
+- تنبيه مهم:
+  إذا لم توجد شهادات رسمية مثبتة داخل المشروع، استخدم عبارة:
+  "مبني وفق ممارسات ومعايير..." 
+  ولا تستخدم عبارة "حاصلين على شهادات" إلا إذا وُجدت ملفات تحقق أو روابط رسمية.
+
+4. أضف قسم:
+   "مستندات يمكن توفيرها عند الطلب"
+   - Security overview
+   - Data processing agreement
+   - AI governance controls summary
+   - Deployment architecture
+
+5. CTA:
+   اطلب ملف الأمان المؤسسي
+   تواصل مع BrightAI
+
+6. روابط داخلية:
+   /privacy-policy/
+   /data-processing-agreement/
+   /solutions/ai-firewall/
+   /solutions/ai-audit-trail/
+   /contact/
+
+Acceptance Criteria:
+- لا توجد ادعاءات شهادات غير مثبتة.
+- الصفحة تصلح للعميل enterprise.
+- أضفها للهيدر أو footer إن وجد.
+- أضفها للسitemap.
+```
+
+---
+
+## البرومبت 13: توحيد اسم البراند
+
+```text
+افحص استخدامات اسم العلامة في الصفحات العامة.
+
+المشكلة:
+يوجد تداخل بين BrightAI و Bright AI و برايت آي و مُشرقة للذكاء الاصطناعي.
+
+المطلوب:
+1. اعتمد الاسم التجاري الأساسي:
+BrightAI
+
+2. استخدم "برايت آي" فقط عند الحاجة بالعربي في النصوص التسويقية.
+3. لا تستخدم "Bright AI" إلا إذا كان موجودًا في ملفات قانونية أو عنوان رسمي لا يجب تغييره.
+4. لا تغيّر أسماء الملفات أو الصور.
+5. حدّث:
+- title
+- meta description
+- og:site_name
+- schema Organization name
+- H1/H2 عند الحاجة
+
+6. انتبه لا تكسر SEO القديم بشكل مبالغ. في أول ظهور داخل الصفحة يمكن كتابة:
+BrightAI "برايت آي"
+
+Acceptance Criteria:
+- توحيد واضح للبراند.
+- عدم كسر canonical أو URLs.
+- لا توجد صياغات متضاربة في الصفحة الواحدة.
+```
+
+---
+
+## البرومبت 14: تحسين صفحة About لتكون بشرية أكثر
+
+```text
+أعد كتابة وتحسين about/index.html بدون تغيير التصميم العام.
+
+المشكلة:
+النص الحالي SEO-like وقالب، مثل "دليل عملي من Bright AI حول شركة ذكاء اصطناعي وطنية في الرياض".
+
+المطلوب:
+1. اجعل الصفحة تبدو كصفحة شركة حقيقية، لا مقال SEO.
+2. ركز على:
+- من هي BrightAI؟
+- لماذا موجودة؟
+- ما المشكلة التي تحلها؟
+- لماذا السوق السعودي يحتاج AI Safety OS؟
+- كيف تختلف عن شركات AI العامة؟
+- من تخدم؟
+- كيف تبدأ العلاقة مع العميل؟
+
+3. حافظ على الكلمة الأساسية:
+شركة ذكاء اصطناعي في الرياض
+لكن لا تكررها بطريقة مزعجة.
+
+4. اجعل H1:
+BrightAI: شركة سعودية تبني طبقة أمان وحوكمة للذكاء الاصطناعي
+
+5. Meta description:
+BrightAI شركة سعودية من الرياض تساعد المؤسسات على استخدام الذكاء الاصطناعي بأمان عبر AI Firewall، Audit Trail، الموافقات البشرية، وملفات الأدلة.
+
+6. أضف روابط داخلية:
+   /solutions/ai-governance-platform/
+   /solutions/ai-firewall/
+   /docs/ai-governance-saudi-arabia/
+   /trust/
+   /contact/
+
+Acceptance Criteria:
+- النص طبيعي وبشري.
+- أقل تكرار للكلمات المفتاحية.
+- يحافظ على SEO المحلي.
+- يدعم ثقة العملاء.
+```
+
+---
+
+## البرومبت 15: فحص نهائي شامل قبل الدمج
+
+```text
+نفّذ فحص نهائي شامل بعد كل الإصلاحات.
+
+المطلوب:
+1. شغّل:
+npm run build
+npm run seo:check
+npm run seo:gate
+npm run internal-links:audit
+npm run performance:budget
+npm run sitemap:generate
+
+2. افحص يدويًا:
+- /
+- /docs/
+- /docs/ai-firewall/
+- /solutions/ai-firewall/
+- /pricing/
+- /about/
+- /assessment/ai-governance-readiness/
+- /trust/
+
+3. تحقق من:
+- canonical self-referencing
+- sitemap يحتوي الصفحات الجديدة
+- لا توجد روابط داخلية مكسورة
+- لا يوجد FAQ schema سيء
+- لا يوجد JS syntax error
+- لا يوجد redirect chain
+- CTA ظاهر فوق fold
+- الصفحة تعمل على mobile
+
+4. اكتب تقرير نهائي باسم:
+report/IMPLEMENTATION-FIXES-SUMMARY.md
+
+يحتوي:
+- ملخص الإصلاحات
+- الملفات المعدلة
+- الصفحات الجديدة
+- نتائج الأوامر
+- المشاكل المتبقية
+- توصيات المرحلة التالية
+
+Acceptance Criteria:
+- كل أوامر الفحص تنجح أو يتم توثيق سبب الفشل بوضوح.
+- لا يتم الدمج إلى main قبل نجاح الفحوصات.
+```
+
+---
+
+أفضل ترتيب تنفيذ:
+
+1. البرومبت 1
+2. البرومبت 2
+3. البرومبت 3
+4. البرومبت 4
+5. البرومبت 5
+6. البرومبت 6
+7. البرومبت 15
+8. بعدها صفحات النمو: 9، 10، 11، 12
+9. ثم تحسينات الثقة والأسلوب: 13، 14
+
+ابدأ بالإصلاحات التقنية قبل إنشاء صفحات جديدة، لأن المحتوى الجديد ما يستفيد إذا الربط والـ schema والـ redirects فيها مشاكل.
