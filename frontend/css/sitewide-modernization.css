@@ -55,6 +55,31 @@ html[lang^="ar"] *,
   font-family: "BrightAI Official", "BrightAI Official", "BrightAI Official", system-ui, -apple-system, "Segoe UI", sans-serif !important;
 }
 
+/* Fix Font Awesome icons after global Arabic font override */
+html[dir="rtl"] :where(.fa, .fa-solid, .fas),
+html[lang^="ar"] :where(.fa, .fa-solid, .fas),
+[dir="rtl"] :where(.fa, .fa-solid, .fas) {
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900 !important;
+  font-style: normal !important;
+}
+
+html[dir="rtl"] :where(.fa-regular, .far),
+html[lang^="ar"] :where(.fa-regular, .far),
+[dir="rtl"] :where(.fa-regular, .far) {
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+html[dir="rtl"] :where(.fa-brands, .fab),
+html[lang^="ar"] :where(.fa-brands, .fab),
+[dir="rtl"] :where(.fa-brands, .fab) {
+  font-family: "Font Awesome 6 Brands" !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
 *,
 *::before,
 *::after {
