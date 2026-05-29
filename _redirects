@@ -91,7 +91,7 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /docs/Governance%D9%80application/index.html /docs/Governance%D9%80application/ 301
 
 # ── Blog Module Redirections ──────────────────────────────────────────────────
-/blog/ai-governance           /blog/ai-governance.html      301
+/blog/ai-governance.html      /blog/ai-governance/          301
 
 
 # ── Kernel Module Redirections ────────────────────────────────────────────────

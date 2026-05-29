@@ -146,7 +146,8 @@ function groupRelPath(relPath) {
     normalized === "docs/ai-risk-management/index.html" ||
     normalized === "docs/pdpl-ai-governance/index.html" ||
     normalized === "docs/nca-ecc-ai-governance/index.html" ||
-    normalized === "docs/ai-audit-readiness/index.html"
+    normalized === "docs/ai-audit-readiness/index.html" ||
+    normalized === "blog/ai-governance.html"
   ) {
     return "pages";
   }
