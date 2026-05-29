@@ -1,6 +1,9 @@
 (function () {
   "use strict";
 
+  if (window.__brightaiAnalyticsEventsLoaded) return;
+  window.__brightaiAnalyticsEventsLoaded = true;
+
   var EVENT_PREFIX = "brightai:";
   var startedFormsKey = "brightai_started_forms";
   var scrollMarks = { 50: false, 90: false };

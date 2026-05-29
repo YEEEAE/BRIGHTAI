@@ -3,6 +3,7 @@
  * BrightAI Unified Premium Header System - JavaScript
  * Role: Senior UI/UX & Frontend Architect
  * Saudi Market AI Safety Platform - High-Performance Interactive Navigation
+ * Compliance: Strict Clean URLs (No public .html links allowed)
  * ========================================================================
  */
 
@@ -245,15 +246,11 @@
               <!-- العمود الثالث: المجتمع والقنوات -->
               <div class="brightai-resource-column">
                 <span class="brightai-column-title">${t.resourcesCol3}</span>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="brightai-resource-link" role="menuitem">
+                <a href="https://www.linkedin.com/company/brightai" target="_blank" rel="noopener noreferrer" class="brightai-resource-link" role="menuitem">
                   <i class="fa-brands fa-linkedin"></i>
                   <span>LinkedIn</span>
                 </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="brightai-resource-link" role="menuitem">
-                  <i class="fa-brands fa-youtube"></i>
-                  <span>YouTube</span>
-                </a>
-                <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="brightai-resource-link" role="menuitem">
+                <a href="https://x.com/BrightAISite" target="_blank" rel="noopener noreferrer" class="brightai-resource-link" role="menuitem">
                   <i class="fa-brands fa-x-twitter"></i>
                   <span>Twitter / X</span>
                 </a>

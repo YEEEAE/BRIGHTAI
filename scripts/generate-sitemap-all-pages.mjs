@@ -263,8 +263,32 @@ function renderXml(entries) {
   lines.push("");
 
   for (const entry of entries) {
+    let cleanLoc = entry.loc;
+    if (/\.html(?:\/)?$/i.test(cleanLoc)) {
+      try {
+        const parsed = new URL(cleanLoc);
+        let pathname = parsed.pathname;
+        if (pathname.endsWith(".html/")) {
+          pathname = pathname.slice(0, -6);
+        } else if (pathname.endsWith(".html")) {
+          pathname = pathname.slice(0, -5);
+        }
+        if (!pathname.endsWith("/")) {
+          pathname += "/";
+        }
+        parsed.pathname = pathname;
+        cleanLoc = parsed.toString();
+      } catch {
+        cleanLoc = cleanLoc.replace(/\.html\/?$/i, "/");
+      }
+    }
+
+    if (/\.html(?:\/)?$/i.test(cleanLoc)) {
+      continue;
+    }
+
     lines.push("  <url>");
-    lines.push(`    <loc>${xmlEscape(entry.loc)}</loc>`);
+    lines.push(`    <loc>${xmlEscape(cleanLoc)}</loc>`);
     for (const alt of entry.alternates) {
       if (hasUppercaseUrlPath(alt.href) || hasHtmlUrlPath(alt.href)) {
         continue;

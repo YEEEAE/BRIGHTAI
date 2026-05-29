@@ -52,11 +52,19 @@ const API_SECURITY_HEADERS = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()'
 };
 
-const PRODUCTION_ALLOWED_ORIGINS = new Set([
-  'https://brightai.site',
-  'https://www.brightai.site'
-]);
-const DEVELOPMENT_ALLOWED_HOSTS = new Set(['localhost', '127.0.0.1', '0.0.0.0', '::1']);
+// النطاق الأساسي (Canonical) لـ BrightAI هو brightai.site بدون www.
+const ALLOWED_CORS_ORIGINS = {
+  production: new Set([
+    'https://brightai.site',
+    'https://www.brightai.site'
+  ]),
+  development: new Set([
+    'localhost',
+    '127.0.0.1',
+    '0.0.0.0',
+    '::1'
+  ])
+};
 
 // CORS headers for API responses
 const BASE_CORS_HEADERS = {
@@ -101,10 +109,12 @@ function getCorsOrigin(req) {
   }
 
   if (config.server.nodeEnv === 'production') {
-    return PRODUCTION_ALLOWED_ORIGINS.has(origin) ? origin : '';
+    // في الإنتاج، لا يُسمح بـ wildcard (*) ولا بـ localhost ويتم السماح بالدومينات الرسمية المحددة فقط
+    return ALLOWED_CORS_ORIGINS.production.has(origin) ? origin : '';
   }
 
-  return DEVELOPMENT_ALLOWED_HOSTS.has(parsed.hostname) ? origin : '';
+  // في التطوير، يُسمح بـ localhost والنطاقات المحلية
+  return ALLOWED_CORS_ORIGINS.development.has(parsed.hostname) ? origin : '';
 }
 
 function buildCorsHeaders(req) {

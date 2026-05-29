@@ -6,6 +6,7 @@ import {
   isPublicIndexableRelPath,
   normalizeSiteUrl,
   relPathToCanonical,
+  relPathToSitePath,
 } from "./seo-url-map.mjs";
 import {
   HIGH_CONFIDENCE_CORE_FILES,
@@ -607,6 +608,105 @@ async function checkHtmlPolicy() {
     if (!hasNoindex && !isInternalPage(relPath) && hasBadPublicSlugPattern(relPath)) {
       result.summary.badPublicSlugs += 1;
       result.errors.push(`${relPath} is indexable with a weak or badly encoded public slug.`);
+    }
+
+    // الفحص التقني لمنع روابط .html في الروابط الداخلية العامة
+    const aTagRegex = /<a\b[^>]*\bhref\s*=\s*(['"])(.*?)\1/gi;
+    let aMatch;
+    while ((aMatch = aTagRegex.exec(html))) {
+      const href = aMatch[2].trim();
+      if (!href) continue;
+
+      const lowerHref = href.toLowerCase();
+      // تخطي الروابط الخارجية وبروتوكولات الروابط الأخرى
+      const skipPrefixes = [
+        "http://",
+        "https://",
+        "//",
+        "mailto:",
+        "tel:",
+        "javascript:",
+        "data:",
+        "blob:",
+        "sms:",
+        "geo:",
+        "ftp:",
+        "ws:",
+        "wss:",
+        "whatsapp:",
+        "chrome-extension:",
+        "about:"
+      ];
+      if (skipPrefixes.some(prefix => lowerHref.startsWith(prefix))) {
+        continue;
+      }
+
+      if (href.startsWith("#")) {
+        continue;
+      }
+
+      // تنظيف الاستعلام والـ hash من الرابط
+      const cleanPath = href.split('?')[0].split('#')[0];
+      const lowerCleanPath = cleanPath.toLowerCase();
+
+      // التحقق مما إذا كان ينتهي بـ .html
+      if (lowerCleanPath.endsWith(".html")) {
+        // روابط الأصول المسموحة (assets)
+        const allowedAssetExts = [
+          ".js",
+          ".css",
+          ".png",
+          ".jpg",
+          ".jpeg",
+          ".svg",
+          ".webp",
+          ".ico",
+          ".woff",
+          ".woff2"
+        ];
+        if (allowedAssetExts.some(ext => lowerCleanPath.endsWith(ext))) {
+          continue;
+        }
+
+        let pathWithoutHtml = cleanPath;
+        if (pathWithoutHtml.endsWith(".html")) {
+          pathWithoutHtml = pathWithoutHtml.slice(0, -5);
+        }
+
+        let relPathWithoutHtml = pathWithoutHtml;
+        if (relPathWithoutHtml.startsWith("/")) {
+          relPathWithoutHtml = relPathWithoutHtml.slice(1);
+        }
+
+        if (relPathWithoutHtml === "") {
+          relPathWithoutHtml = "index.html";
+        }
+
+        // التحقق من وجود ملف الفهرس index.html
+        let indexFileExists = false;
+        try {
+          const indexPath = path.join(ROOT, relPathWithoutHtml, "index.html");
+          indexFileExists = (await fs.stat(indexPath)).isFile();
+        } catch {}
+
+        let rootIndexExists = false;
+        if (relPathWithoutHtml === "index") {
+          rootIndexExists = true;
+        }
+
+        // التحقق من وجود تحويل أو مسار نظيف (site path)
+        let hasUrlMapRedirect = false;
+        const sitePath = relPathToSitePath(relPathWithoutHtml + ".html");
+        if (sitePath && sitePath.endsWith("/")) {
+          hasUrlMapRedirect = true;
+        }
+
+        if (indexFileExists || rootIndexExists || hasUrlMapRedirect) {
+          result.errors.push(
+            `${relPath} contains a forbidden .html link: '${href}'. Should be normalized to '${sitePath || "/" + relPathWithoutHtml + "/"}'.`
+          );
+        }
+      }
     }
   }
 
