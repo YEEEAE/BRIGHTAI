@@ -5,8 +5,8 @@
 
 /* تعريف الخطوط */
 @font-face {
-    font-family: 'BrightAI-Bold';
-    src: url('/frontend/fonts/Bold-font.otf') format('opentype');
+    font-family: 'BrightAI Official';
+    src: url('/frontend/assets/fonts/TheYearofTheCamel-Medium.otf') format('opentype');
     font-weight: 400 900;
     font-style: normal;
     font-display: swap;
@@ -17,7 +17,7 @@
    =================================== */
 
 *:not(.fa):not(.fa-solid):not(.fa-regular):not(.fa-brands):not(.fas):not(.far):not(.fab) {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
 }
 
 body,
@@ -41,7 +41,7 @@ label,
 .description,
 .paragraph,
 .body-text {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -72,7 +72,7 @@ b,
 .fw-bold,
 .font-weight-bold,
 .text-bold {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -89,7 +89,7 @@ a.btn,
 .glow-btn,
 .primary-btn,
 .secondary-btn {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -102,7 +102,7 @@ nav,
 nav a,
 .nav-link,
 .menu-item {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -110,13 +110,13 @@ nav a,
 .card,
 .card-body,
 .card-text {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .card-title,
 .card-header {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -129,31 +129,31 @@ input[type="email"],
 input[type="password"],
 input[type="search"],
 textarea {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .form-label,
 label {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 /* الجداول */
 table {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
 }
 
 table thead th,
 table th,
 .table-header {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 table tbody td,
 table td {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -161,33 +161,33 @@ table td {
 .alert,
 .notification,
 .message {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .alert-heading,
 .notification-title {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 /* النوافذ المنبثقة */
 .modal,
 .modal-body {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .modal-title,
 .modal-header {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 /* التذييل */
 footer,
 .footer {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -197,7 +197,7 @@ footer h3,
 footer h4,
 footer h5,
 footer h6 {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -245,7 +245,7 @@ body {
 .arabic,
 html[lang="ar"],
 html[lang="ar-SA"] {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -261,7 +261,7 @@ html[lang="ar-SA"] {
 .rtl h4,
 .rtl h5,
 .rtl h6 {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -270,19 +270,19 @@ html[lang="ar-SA"] {
    =================================== */
 
 .font-thin {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .font-bold,
 .font-heavy {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 /* Tailwind overrides */
 .font-normal {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -290,7 +290,7 @@ html[lang="ar-SA"] {
 .font-bold,
 .font-extrabold,
 .font-black {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -300,21 +300,21 @@ html[lang="ar-SA"] {
 
 .gradient-text,
 .brand-text {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .chip,
 .badge,
 .tag {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .doc-card h3,
 .feature-title,
 .section-title {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -322,13 +322,13 @@ html[lang="ar-SA"] {
 .dashboard-title,
 .stat-value,
 .metric-label {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
 .dashboard-text,
 .stat-description {
-    font-family: 'BrightAI-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 
@@ -339,8 +339,8 @@ html[lang="ar-SA"] {
 /* تحميل الخطوط بشكل أسرع */
 @supports (font-display: optional) {
     @font-face {
-        font-family: 'BrightAI-Bold';
-        src: url('/frontend/fonts/Bold-font.otf') format('opentype');
+        font-family: 'BrightAI Official';
+        src: url('/frontend/assets/fonts/TheYearofTheCamel-Medium.otf') format('opentype');
         font-weight: 400 900;
         font-style: normal;
         font-display: optional;

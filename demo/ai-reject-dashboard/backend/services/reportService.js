@@ -275,7 +275,7 @@ async function renderPdfReport(filePath, payload, records) {
       <style>
         @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap');
         body {
-          font-family: 'IBM Plex Sans Arabic', sans-serif;
+          font-family: 'BrightAI Official', sans-serif;
           margin: 0;
           padding: 40px;
           background: #ffffff;
@@ -748,41 +748,41 @@ async function renderPptxReport(filePath, payload, records) {
       slide1.background = { color: PRIMARY };
       slide1.addText('إيجاز إدارة الجودة والمرفوضات الاستراتيجي', {
         x: 1, y: 2, w: 8, h: 1.5,
-        fontSize: 32, bold: true, color: WHITE, align: 'right', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 32, bold: true, color: WHITE, align: 'right', fontFace: 'BrightAI Official'
       });
       slide1.addText('شركة الشرق الأوسط للمنتجات الطبية (MAIS)', {
         x: 1, y: 3.5, w: 8, h: 0.5,
-        fontSize: 16, color: TEAL, align: 'right', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 16, color: TEAL, align: 'right', fontFace: 'BrightAI Official'
       });
       slide1.addText(metadata.disclaimer, {
         x: 0.5, y: 5.0, w: 12.3, h: 0.5,
-        fontSize: 10, color: TEAL, align: 'center', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 10, color: TEAL, align: 'center', fontFace: 'BrightAI Official'
       });
 
       // Slide 2: KPIs & Key Metrics
       const slide2 = pptx.addSlide();
       slide2.addText('أهم مؤشرات المرفوضات التشغيلية والمالية', {
         x: 0.5, y: 0.5, w: 9, h: 0.6,
-        fontSize: 22, bold: true, color: PRIMARY, align: 'right', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 22, bold: true, color: PRIMARY, align: 'right', fontFace: 'BrightAI Official'
       });
 
       slide2.addText(`إجمالي المرفوضات: ${records.length} حالة\nإجمالي تكلفة الهدر المالي: SAR ${metrics.totalCost.toLocaleString()}\nمؤشر كفاءة الجودة: ${metrics.qualityEfficiency}%\nCAPA مفتوحة: ${metrics.pendingCapa} | مغلقة: ${metrics.closedCapa}`, {
         x: 1, y: 1.8, w: 8, h: 2,
-        fontSize: 18, color: '333333', align: 'right', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 18, color: '333333', align: 'right', fontFace: 'BrightAI Official'
       });
       slide2.addText(`source: ${metadata.source} | file_modified_at: ${metadata.file_modified_at || ''} | record_count: ${metadata.record_count} | hash_short: ${metadata.hash_short} | generated_by: ${metadata.generated_by}`, {
         x: 0.5, y: 4.6, w: 12.3, h: 0.4,
-        fontSize: 9, color: '666666', align: 'center', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 9, color: '666666', align: 'center', fontFace: 'BrightAI Official'
       });
       slide2.addText(metadata.disclaimer, {
         x: 0.5, y: 5.0, w: 12.3, h: 0.5,
-        fontSize: 10, color: '666666', align: 'center', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 10, color: '666666', align: 'center', fontFace: 'BrightAI Official'
       });
 
       const slide3 = pptx.addSlide();
       slide3.addText('مصادر التكلفة والأسباب الجذرية من البيانات', {
         x: 0.5, y: 0.5, w: 9, h: 0.6,
-        fontSize: 22, bold: true, color: PRIMARY, align: 'right', fontFace: 'IBM Plex Sans Arabic'
+        fontSize: 22, bold: true, color: PRIMARY, align: 'right', fontFace: 'BrightAI Official'
       });
       const deptText = deptBreakdown.length
         ? deptBreakdown.map(d => `${d.department}: ${d.count} حالة / SAR ${d.totalCost.toLocaleString()}`).join('\n')
@@ -792,7 +792,7 @@ async function renderPptxReport(filePath, payload, records) {
         : 'لا توجد أسباب جذرية متاحة.';
       slide3.addText(`حسب الأقسام:\n${deptText}\n\nالأسباب الجذرية:\n${causesText}`, {
         x: 1, y: 1.4, w: 10.5, h: 4,
-        fontSize: 15, color: '333333', align: 'right', fontFace: 'IBM Plex Sans Arabic', breakLine: false
+        fontSize: 15, color: '333333', align: 'right', fontFace: 'BrightAI Official', breakLine: false
       });
 
       // Save PowerPoint

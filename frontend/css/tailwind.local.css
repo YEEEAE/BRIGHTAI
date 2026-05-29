@@ -46,7 +46,7 @@ html,
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: Tajawal, IBM Plex Sans Arabic, system-ui, sans-serif;
+  font-family: BrightAI Official, BrightAI Official, system-ui, sans-serif;
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -2498,7 +2498,7 @@ video {
 }
 
 .font-sans {
-  font-family: Tajawal, IBM Plex Sans Arabic, system-ui, sans-serif;
+  font-family: BrightAI Official, BrightAI Official, system-ui, sans-serif;
 }
 
 .text-2xl {

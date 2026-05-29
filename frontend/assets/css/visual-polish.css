@@ -31,7 +31,7 @@
   --shadow-lg: 0 20px 60px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.35);
   --shadow-glow-cyan: 0 0 0 1px rgba(56,189,248,0.25), 0 12px 40px rgba(56,189,248,0.18);
   --shadow-glow-violet: 0 0 0 1px rgba(167,139,250,0.25), 0 12px 40px rgba(167,139,250,0.18);
-  --font-display: "Tajawal", "IBM Plex Sans Arabic", system-ui, sans-serif;
+  --font-display: "BrightAI Official", "BrightAI Official", system-ui, sans-serif;
   --fs-h1: clamp(2.25rem, 4.2vw, 3.75rem);
   --fs-h2: clamp(1.75rem, 3vw, 2.5rem);
   --fs-h3: clamp(1.25rem, 1.8vw, 1.5rem);

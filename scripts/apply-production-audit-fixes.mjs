@@ -213,8 +213,8 @@ function ensureRobots(html, relPath) {
 }
 
 function ensureAssetTags(html) {
-  const fontPreload = '<link rel="preload" href="/frontend/fonts/alfont_com_TheYearofTheCamel-ExtraLight.otf" as="font" type="font/otf" crossorigin />';
-  if (!html.includes('/frontend/fonts/alfont_com_TheYearofTheCamel-ExtraLight.otf')) {
+  const fontPreload = '<link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />';
+  if (!html.includes('/frontend/assets/fonts/TheYearofTheCamel-Medium.otf')) {
     html = html.replace(/<\/head>/i, `  ${fontPreload}\n</head>`);
   }
   if (!html.includes(CSS_HREF)) {

@@ -1,14 +1,14 @@
 @font-face {
-  font-family: "BrightAI Arabic";
-  src: url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+  font-family: "BrightAI Official";
+  src: url("/frontend/assets/fonts/TheYearofTheCamel-Medium.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "BrightAI Arabic";
-  src: url("/frontend/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");
+  font-family: "BrightAI Official";
+  src: url("/frontend/assets/fonts/TheYearofTheCamel-Medium.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -49,7 +49,7 @@ body {
 html[dir="rtl"] body,
 html[lang^="ar"] body,
 [dir="rtl"] :where(button, input, select, textarea) {
-  font-family: "BrightAI Arabic", "IBM Plex Sans Arabic", "Tajawal", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "BrightAI Official", "BrightAI Official", "BrightAI Official", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 *,

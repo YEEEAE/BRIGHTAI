@@ -1,14 +1,14 @@
 @font-face {
-  font-family: "IBM Plex Sans Arabic";
-  src: url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+  font-family: "BrightAI Official";
+  src: url("/frontend/assets/fonts/TheYearofTheCamel-Medium.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "IBM Plex Sans Arabic";
-  src: url("/frontend/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");
+  font-family: "BrightAI Official";
+  src: url("/frontend/assets/fonts/TheYearofTheCamel-Medium.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -22,7 +22,7 @@
 .bai-demo-shell {
   direction: rtl;
   text-align: start;
-  font-family: "IBM Plex Sans Arabic", "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+  font-family: "BrightAI Official", "BrightAI Official", Tahoma, Arial, sans-serif;
   color: var(--bai-color-ink);
   line-height: 1.8;
 }

@@ -30,7 +30,7 @@
       flex-direction: column;
       gap: 6px;
       max-width: 380px;
-      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      font-family: 'BrightAI Official', sans-serif;
       animation: slideInRealtime 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       border-right: 4px solid var(--teal, #00A6A6);
       direction: rtl;
@@ -81,7 +81,7 @@
       padding: 10px;
       font-size: 0.82rem;
       font-weight: 700;
-      font-family: 'IBM Plex Sans Arabic', sans-serif;
+      font-family: 'BrightAI Official', sans-serif;
       position: sticky;
       top: 0;
       z-index: 9999;

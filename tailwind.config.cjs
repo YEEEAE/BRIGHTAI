@@ -38,7 +38,7 @@ module.exports = {
         whatsapp: '#25D366'
       },
       fontFamily: {
-        sans: ['Tajawal', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif']
+        sans: ['BrightAI Official', 'BrightAI Official', 'system-ui', 'sans-serif']
       },
       boxShadow: {
         glow: '0 0 60px -10px rgba(0,212,255,.55)',

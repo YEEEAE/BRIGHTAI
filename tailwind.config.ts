@@ -13,7 +13,7 @@ const config: Config = {
         }
       },
       fontFamily: {
-        sans: ["var(--font-arabic)", "IBM Plex Sans Arabic", "Tajawal", "Arial", "sans-serif"],
+        sans: ["var(--font-arabic)", "BrightAI Official", "BrightAI Official", "Arial", "sans-serif"],
         mono: ["var(--font-mono)", "JetBrains Mono", "ui-monospace", "monospace"]
       },
       boxShadow: {

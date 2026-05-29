@@ -3,8 +3,8 @@
 ## 📁 الملفات المتوفرة
 
 ### الخطوط
-- **Thin-Font.otf** - خط رفيع للمحتوى العام
-- **Bold-font.otf** - خط عريض للعناوين والنصوص المهمة
+- **TheYearofTheCamel-Medium.otf** - الخط الرسمي الوحيد للمشروع
+- **TheYearofTheCamel-Medium.otf** - يستخدم للنصوص والعناوين
 
 ## 🎨 كيفية الاستخدام
 
@@ -101,13 +101,13 @@ h1, h2, h3, h4, h5, h6, strong, b, button, label,
 ```css
 /* استخدام الخط الرفيع */
 .my-custom-class {
-    font-family: 'YearOfCamel-Thin', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 100 !important;
 }
 
 /* استخدام الخط العريض */
 .my-heading-class {
-    font-family: 'YearOfCamel-Bold', 'Arial', sans-serif !important;
+    font-family: 'BrightAI Official', 'Arial', sans-serif !important;
     font-weight: 700 !important;
 }
 ```
@@ -116,16 +116,16 @@ h1, h2, h3, h4, h5, h6, strong, b, button, label,
 
 ```css
 @font-face {
-    font-family: 'YearOfCamel-Thin';
-    src: url('../fonts/Thin-Font.otf') format('opentype');
+    font-family: 'BrightAI Official';
+    src: url('/frontend/assets/fonts/TheYearofTheCamel-Medium.otf') format('opentype');
     font-weight: 100;
     font-style: normal;
     font-display: swap;
 }
 
 @font-face {
-    font-family: 'YearOfCamel-Bold';
-    src: url('../fonts/Bold-font.otf') format('opentype');
+    font-family: 'BrightAI Official';
+    src: url('/frontend/assets/fonts/TheYearofTheCamel-Medium.otf') format('opentype');
     font-weight: 700;
     font-style: normal;
     font-display: swap;

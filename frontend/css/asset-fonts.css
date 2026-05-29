@@ -1,17 +1,16 @@
 @font-face {
-  font-family: 'YearOfTheCamel';
-  src: url('/frontend/fonts/alfont_com_TheYearofTheCamel-ExtraLight.otf') format('opentype');
-  font-weight: 200;
+  font-family: "BrightAI Official";
+  src: url("/frontend/assets/fonts/TheYearofTheCamel-Medium.otf") format("opentype");
+  font-weight: 400 900;
   font-style: normal;
   font-display: swap;
 }
-h1, h2, h3, .camel-font {
-  font-family: 'YearOfTheCamel', 'BrightAI Arabic', 'Tajawal', sans-serif !important;
+
+:root {
+  --brightai-font-arabic: "BrightAI Official", Arial, sans-serif;
 }
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-SemiBold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
-@font-face{font-family:"BrightAI Arabic";src:url("/frontend/fonts/IBMPlexSansArabic-Bold.woff2") format("woff2");font-weight:800;font-style:normal;font-display:swap}
-@font-face{font-family:"Scheherazade New";src:url("/frontend/fonts/ScheherazadeNew-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
-:root{--brightai-font-arabic:"BrightAI Arabic","IBM Plex Sans Arabic","Tajawal",system-ui,-apple-system,"Segoe UI",sans-serif}
-html[dir="rtl"] body,html[lang^="ar"] body{font-family:var(--brightai-font-arabic)}
+
+html[dir="rtl"] body,
+html[lang^="ar"] body {
+  font-family: var(--brightai-font-arabic);
+}

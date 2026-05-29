@@ -24,7 +24,7 @@
   border: 1px solid var(--bai-demo-border);
   border-radius: var(--ba-radius-control, 8px);
   box-shadow: var(--bai-demo-shadow);
-  font-family: "Tajawal", "IBM Plex Sans Arabic", Arial, sans-serif;
+  font-family: "BrightAI Official", "BrightAI Official", Arial, sans-serif;
   isolation: isolate;
 }
 

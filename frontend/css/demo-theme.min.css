@@ -4,8 +4,8 @@
 ═══════════════════════════════════════════ */
 
 @font-face {
-  font-family: "IBM Plex Sans Arabic";
-  src: url("/frontend/fonts/IBMPlexSansArabic-Regular.woff2") format("woff2");
+  font-family: "BrightAI Official";
+  src: url("/frontend/assets/fonts/TheYearofTheCamel-Medium.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -39,7 +39,7 @@
 body {
   background-color: var(--c-bg);
   color: var(--c-text);
-  font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+  font-family: "BrightAI Official", "Segoe UI", Tahoma, Arial, sans-serif;
   min-height: 100vh;
   direction: rtl;
   overflow-x: hidden;

@@ -9,7 +9,7 @@ const ReportActions = (() => {
   function showLoading(lang) {
     const toast = document.createElement('div');
     toast.id = 'report-loading-toast';
-    toast.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:10000;background:#0F4C81;color:#fff;padding:16px 20px;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,0.15);font-family:IBM Plex Sans Arabic,sans-serif;direction:rtl;max-width:380px;';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:24px;z-index:10000;background:#0F4C81;color:#fff;padding:16px 20px;border-radius:8px;box-shadow:0 10px 25px rgba(0,0,0,0.15);font-family:BrightAI Official,sans-serif;direction:rtl;max-width:380px;';
     toast.innerHTML = `<div style="display:flex;align-items:center;gap:10px;"><div class="spinner" style="width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:raspin 0.8s linear infinite;"></div><span>${lang === 'ar' ? 'جاري توليد التقرير...' : 'Generating report...'}</span></div><style>@keyframes raspin{to{transform:rotate(360deg)}}</style>`;
     document.body.appendChild(toast);
     return toast;

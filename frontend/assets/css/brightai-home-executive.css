@@ -25,7 +25,7 @@ body {
         radial-gradient(circle at 18% 28%, rgba(16, 185, 129, 0.12), transparent 28rem),
         linear-gradient(180deg, #030712 0%, #06111d 46%, #030712 100%) !important;
     color: var(--home-text);
-    font-family: "Tajawal", "Scheherazade New", system-ui, sans-serif;
+    font-family: "BrightAI Official", "BrightAI Official", system-ui, sans-serif;
 }
 
 body::before {

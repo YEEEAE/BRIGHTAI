@@ -29,7 +29,7 @@
   }
 
   function loadDeferredResources() {
-    loadCSS("https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap");
+    loadCSS("https://fonts.googleapis.com/css2?family=BrightAI Official:wght@400;500;700;800&display=swap");
     loadCSS("/frontend/css/vendor/aos.css");
   }
 

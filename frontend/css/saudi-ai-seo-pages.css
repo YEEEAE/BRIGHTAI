@@ -26,7 +26,7 @@ body {
     linear-gradient(180deg, rgba(2, 6, 23, 0.96), rgba(3, 7, 18, 1)),
     #020617;
   color: var(--text);
-  font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif;
+  font-family: "BrightAI Official", "Segoe UI", Tahoma, Arial, sans-serif;
   line-height: 1.85;
 }
 
