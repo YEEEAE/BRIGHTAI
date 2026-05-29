@@ -182,7 +182,7 @@
 /* القوائم المنسدلة العملاقة Mega Dropdown و العادية */
 .brightai-dropdown {
   position: absolute;
-  display: none;
+  display: none !important;
   top: calc(100% + 0.75rem);
   inset-inline-start: 50%;
   transform: translateX(-50%) translateY(10px);

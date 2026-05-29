@@ -257,54 +257,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://brightai.site/kernel/compliance/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/compliance/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/compliance/" />
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/kernel/connectors/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/connectors/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/connectors/" />
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/kernel/evidence/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/evidence/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/evidence/" />
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/kernel/policies/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/policies/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/policies/" />
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/kernel/reports/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/reports/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/reports/" />
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://brightai.site/kernel/scenarios/</loc>
-    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/scenarios/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/scenarios/" />
-    <lastmod>2026-05-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://brightai.site/kernel/stats/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/stats/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/stats/" />

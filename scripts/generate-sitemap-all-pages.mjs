@@ -109,7 +109,16 @@ function groupRelPath(relPath) {
 
   // Kernel
   if (normalized.startsWith("kernel/")) {
-    return "kernel";
+    if (
+      normalized === "kernel/index.html" ||
+      normalized === "kernel/chat.html" ||
+      normalized === "kernel/audit.html" ||
+      normalized === "kernel/approvals.html" ||
+      normalized === "kernel/stats.html"
+    ) {
+      return "kernel";
+    }
+    return null;
   }
 
   // Solutions
@@ -400,6 +409,7 @@ async function main() {
   process.stdout.write(`Generated sitemap-legal.xml with ${finalLegal.length} URLs\n`);
   process.stdout.write(`Generated sitemap-solutions.xml with ${finalSolutions.length} URLs\n`);
 
+  // Kernel pages are public indexable marketing/product pages and are included in both sitemap.xml and sitemap-kernel.xml.
   const primarySitemapEntries = [
     ...finalPages,
     ...finalKernel,
