@@ -82,74 +82,11 @@
       filter: brightness(1.1);
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://brightai.site/docs/#webpage",
-        "url": "https://brightai.site/docs/",
-        "name": "وثائق Human Approval Layer | BrightAI",
-        "description": "وثيقة طبقة الموافقة البشرية في BrightAI للقرارات الحساسة داخل أنظمة الذكاء الاصطناعي.",
-        "inLanguage": "ar-SA",
-        "isPartOf": {
-          "@id": "https://brightai.site/#website"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://brightai.site/docs/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "الرئيسية",
-            "item": "https://brightai.site/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "الوثائق",
-            "item": "https://brightai.site/docs/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "Human Approval Layer",
-            "item": "https://brightai.site/docs/"
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://brightai.site/docs/#faq",
-        "url": "https://brightai.site/docs/",
-        "inLanguage": "ar-SA",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "هل تعطل الموافقات سير العمل؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "تصمم الموافقات للحالات الحساسة فقط، مع SLA وتصعيد واضح."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "تنبيه امتثال",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
+  
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
-  <script id="brightai-production-schema" type="application/ld+json">
+  
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script id="brightai-page-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -179,10 +116,10 @@
     },
     {
       "@type": "WebPage",
-      "@id": "https://brightai.site/docs/#webpage",
-      "url": "https://brightai.site/docs/",
+      "@id": "https://brightai.site/docs/human-approval-layer/#webpage",
+      "url": "https://brightai.site/docs/human-approval-layer/",
       "name": "وثائق Human Approval Layer | BrightAI",
-      "description": "وثيقة طبقة الموافقة البشرية في BrightAI للقرارات الحساسة داخل أنظمة الذكاء الاصطناعي.",
+      "description": "وثيقة Human Approval Layer من BrightAI لإدخال الإنسان في حلقة قرارات الذكاء الاصطناعي عالية المخاطر.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -193,38 +130,48 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/docs/#breadcrumb",
+      "@id": "https://brightai.site/docs/human-approval-layer/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "Bright AI",
+          "name": "الرئيسية",
           "item": "https://brightai.site/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "docs",
+          "name": "الوثائق",
           "item": "https://brightai.site/docs/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "وثائق Human Approval Layer | BrightAI",
-          "item": "https://brightai.site/docs/"
+          "name": "Human Approval Layer",
+          "item": "https://brightai.site/docs/human-approval-layer/"
         }
       ]
     },
     {
       "@type": "FAQPage",
-      "@id": "https://brightai.site/docs/#faq",
+      "@id": "https://brightai.site/docs/human-approval-layer/#faq",
+      "url": "https://brightai.site/docs/human-approval-layer/",
+      "inLanguage": "ar-SA",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "متى يتم التصعيد؟ عند وجود بيانات حساسة. عند ارتفاع Risk Score. عند ارتباط القرار بتأثير مالي أو وظيفي أو صحي. عند مخالفة السياسة أو عدم وضوح الغرض. مكونات سير العمل تحديد عتبة المخاطر. تحديد أصحاب الموافقة حسب القسم. إرسال الطلب للمراجعة. توثيق القرار والوقت والسبب. إعادة الطلب لمسار التنفيذ أو الرفض. FAQ هل تعطل الموافقات سير العمل؟",
+          "name": "متى يُشغَّل مسار الموافقة البشرية؟",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "تصمم الموافقات للحالات الحساسة فقط، مع SLA وتصعيد واضح."
+            "text": "عند تجاوز عتبة المخاطرة أو عند طلب قرار يؤثر على بيانات حساسة أو عمليات حرجة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "تنبيه امتثال",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
           }
         }
       ]
@@ -232,7 +179,6 @@
   ]
 }
   </script>
-  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="bg-grid">
 
@@ -251,12 +197,7 @@
   <div class="cta" style="margin-top: 20px;"><a class="btn" href="/solutions/human-approval-layer/">استكشف صفحة الحل</a><a class="btn secondary" href="/contact/" style="background:transparent; color:#e5edf8; border:1px solid rgba(148,163,184,.28); display:inline-flex; align-items:center; justify-content:center; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:800;">تحدث مع فريق BrightAI</a></div>
 </main>
 
-<script>
-  }
-  });
-</script>
-
-  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+<script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

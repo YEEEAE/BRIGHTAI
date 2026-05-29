@@ -84,10 +84,16 @@
       "@type": "Organization",
       "@id": "https://brightai.site/#organization",
       "name": "BrightAI",
-      "alternateName": ["برايت آي", "Saudi AI Safety OS"],
+      "alternateName": [
+        "برايت آي",
+        "Saudi AI Safety OS"
+      ],
       "url": "https://brightai.site/",
       "logo": "https://brightai.site/frontend/images/logo-new.PNG",
-      "areaServed": { "@type": "Country", "name": "Saudi Arabia" }
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
     },
     {
       "@type": "WebPage",
@@ -96,46 +102,35 @@
       "name": "اكتشاف استخدامات الذكاء الاصطناعي في مؤسستك | BrightAI",
       "description": "اكتشف كل استخدام للذكاء الاصطناعي داخل مؤسستك وسجّله ورصده في الوقت الفعلي. BrightAI يعطيك خريطة كاملة لـ AI shadow usage قبل أن يصبح مشكلة.",
       "inLanguage": "ar-SA",
-      "isPartOf": { "@id": "https://brightai.site/#website" },
-      "about": { "@id": "https://brightai.site/#organization" },
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/" },
-          { "@type": "ListItem", "position": 2, "name": "الحلول", "item": "https://brightai.site/solutions/ai-governance-platform/" },
-          { "@type": "ListItem", "position": 3, "name": "اكتشاف استخدامات الذكاء الاصطناعي", "item": "https://brightai.site/solutions/ai-use-case-discovery/" }
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "الرئيسية",
+            "item": "https://brightai.site/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "الحلول",
+            "item": "https://brightai.site/solutions/ai-governance-platform/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "اكتشاف استخدامات الذكاء الاصطناعي",
+            "item": "https://brightai.site/solutions/ai-use-case-discovery/"
+          }
         ]
       }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "ما Shadow AI ولماذا هو خطير على مؤسستي؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "Shadow AI هو استخدام أدوات الذكاء الاصطناعي من قِبل الموظفين بدون موافقة رسمية من إدارة تقنية المعلومات أو الامتثال. هذا يضع بيانات شركتك الحساسة خارج نطاق سيطرتك وخارج حدود الامتثال PDPL وNCA ECC." }
-        },
-        {
-          "@type": "Question",
-          "name": "هل يمكن اكتشاف استخدام ChatGPT من قِبل الموظفين؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "نعم، BrightAI يرصد الـ API calls ونقاط الإرسال على مستوى الشبكة والـ API Gateway، ويكتشف الاستخدام حتى لو كان عبر متصفح الويب أو تطبيقات غير معتمدة." }
-        },
-        {
-          "@type": "Question",
-          "name": "ما الفرق بين اكتشاف AI والحجب؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "الاكتشاف يسبق القرار — تعرف أولاً ما الذي يُستخدم قبل أن تقرر ما تفعله حياله. تستطيع بعد الاكتشاف أن تحجب أو تسمح بوعي كامل، بدلاً من الحجب العشوائي الذي يعطّل الإنتاجية." }
-        },
-        {
-          "@type": "Question",
-          "name": "هل يحتاج الحل وكيل agent على كل جهاز موظف؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "لا، BrightAI يعمل على مستوى الشبكة والـ API Gateway مما يعني أنه لا يحتاج تثبيت وكيل على كل جهاز. يعطي رؤية كاملة بتكاملات أبسط وأسرع." }
-        },
-        {
-          "@type": "Question",
-          "name": "كم من الوقت حتى أرى أول نتائج؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "خلال 48 ساعة من التفعيل، ستحصل على أول تقرير يكشف جميع استخدامات AI في شبكتك، بما فيها Shadow AI غير المعتمد." }
-        }
-      ]
     }
   ]
 }
@@ -291,48 +286,10 @@
           "item": "https://brightai.site/solutions/ai-use-case-discovery/"
         }
       ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://brightai.site/solutions/ai-use-case-discovery/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "متى تصبح Shadow AI أزمة حقيقية؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "هذه السيناريوهات تحدث يومياً في المؤسسات السعودية بدون أن تعلم الإدارة."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "🟠 سيناريو: تقرير مالي غير آمن",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "محلل مالي يستخدم AI لتحليل بيانات الأرباح غير المعلنة قبل الإفصاح. مخالفة محتملة لأنظمة هيئة السوق المالية."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "مديرو تقنية المعلومات",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "يريدون رؤية كاملة لكل حركة بيانات AI في الشبكة"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "رصد وتصنيف أنماط الاستخدام",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "خلال 48 ساعة، BrightAI يُحلّل الـ traffic ويُصنّف كل استخدام AI — ChatGPT، Copilot، Claude، Gemini، وغيرها — حتى غير المعتمدة منها."
-          }
-        }
-      ]
     }
   ]
 }
-  </script>
+</script>
 </head>
 <body class="bg-grid">
 

@@ -84,10 +84,16 @@
       "@type": "Organization",
       "@id": "https://brightai.site/#organization",
       "name": "BrightAI",
-      "alternateName": ["برايت آي", "Saudi AI Safety OS"],
+      "alternateName": [
+        "برايت آي",
+        "Saudi AI Safety OS"
+      ],
       "url": "https://brightai.site/",
       "logo": "https://brightai.site/frontend/images/logo-new.PNG",
-      "areaServed": { "@type": "Country", "name": "Saudi Arabia" }
+      "areaServed": {
+        "@type": "Country",
+        "name": "Saudi Arabia"
+      }
     },
     {
       "@type": "WebPage",
@@ -96,46 +102,35 @@
       "name": "تصنيف مخاطر الذكاء الاصطناعي حسب الاستخدام والبيانات | BrightAI",
       "description": "صنّف كل استخدام للذكاء الاصطناعي تلقائياً حسب درجة المخاطرة. BrightAI يحلل الاستخدام والبيانات ونوع القرار ويعطي Risk Score موثّق لكل عملية.",
       "inLanguage": "ar-SA",
-      "isPartOf": { "@id": "https://brightai.site/#website" },
-      "about": { "@id": "https://brightai.site/#organization" },
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
       "breadcrumb": {
         "@type": "BreadcrumbList",
         "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "الرئيسية", "item": "https://brightai.site/" },
-          { "@type": "ListItem", "position": 2, "name": "الحلول", "item": "https://brightai.site/solutions/ai-governance-platform/" },
-          { "@type": "ListItem", "position": 3, "name": "تصنيف مخاطر الذكاء الاصطناعي", "item": "https://brightai.site/solutions/ai-risk-classification/" }
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "الرئيسية",
+            "item": "https://brightai.site/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "الحلول",
+            "item": "https://brightai.site/solutions/ai-governance-platform/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "تصنيف مخاطر الذكاء الاصطناعي",
+            "item": "https://brightai.site/solutions/ai-risk-classification/"
+          }
         ]
       }
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "ما معايير تصنيف درجة خطورة الاستخدام؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "يعتمد BrightAI على ثلاثة محاور: نوع البيانات (PII/PHI/مالية/عامة)، نوع القرار (آلي/مساعد/إعلامي)، ونطاق التأثير (فرد/قسم/مؤسسة). تجمع هذه المحاور لإنتاج Risk Score من 0 إلى 100." }
-        },
-        {
-          "@type": "Question",
-          "name": "هل يمكن تخصيص معايير التصنيف حسب سياسة مؤسستي؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "نعم، معايير التصنيف قابلة للتخصيص الكامل حسب سياسة مؤسستك وطبيعة قطاعك وإطار الامتثال الذي تعمل ضمنه." }
-        },
-        {
-          "@type": "Question",
-          "name": "ماذا يحدث للاستخدامات عالية الخطورة؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "الاستخدامات التي تتجاوز درجة خطورة معينة (مثلاً أعلى من 70) تُحال تلقائياً لمسار الموافقة البشرية قبل التنفيذ، مع إشعار فوري للمسؤول المختص." }
-        },
-        {
-          "@type": "Question",
-          "name": "هل التصنيف يتوافق مع EU AI Act؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "نعم، منهجية التصنيف تتوافق مع المبادئ العالمية لتصنيف مخاطر AI بما فيها EU AI Act، وهي متوافقة أيضاً مع PDPL وNCA ECC وISO/IEC 42001." }
-        },
-        {
-          "@type": "Question",
-          "name": "كيف يُستخدم Risk Score في التدقيق؟",
-          "acceptedAnswer": { "@type": "Answer", "text": "كل Risk Score يُسجَّل في Immutable Audit Trail مع التعليل الكامل ويُرفق في Evidence File الخاص بكل عملية. يمكن استخراجه لأي مدقق أو جهة رقابية في أي وقت." }
-        }
-      ]
     }
   ]
 }
@@ -308,48 +303,10 @@
           "item": "https://brightai.site/solutions/ai-risk-classification/"
         }
       ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://brightai.site/solutions/ai-risk-classification/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "لماذا التصنيف ضروري؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "مؤسسات تضع قيوداً واحدة على جميع استخدامات AI — هذا الخطأ يكلّف على الوجهين."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "مثال: نفس الأداة AI — درجات مخاطر مختلفة تلخيص تقرير داخلي غير حساس بيانات عامة · قرار إعلامي · تأثير فردي منخفض 18 توليد عروض تجارية لعملاء بيانات العملاء (PII) · قرار مساعد · تأثير على القسم متوسط 52 تحليل ملفات المرضى للتشخيص بيانات طبية (PHI) · قرار مساعد · تأثير على المؤسسة عالي 78 قرار رفض/قبول قرض ائتماني آلياً بيانات مالية حساسة · قرار آلي · تأثير مؤسسي حرج 95 آلية التصنيف معادلة Risk Score في BrightAI",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "ثلاثة محاور تجتمع لإنتاج درجة مخاطرة دقيقة وقابلة للتدقيق"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "المحور الأول: نوع البيانات بيانات عامة وزن منخفض بيانات الموظفين وزن متوسط بيانات شخصية (PII) وزن متوسط-عالي بيانات مالية وزن عالي بيانات صحية (PHI) وزن حرج المحور الثاني: نوع القرار قرار إعلامي (تلخيص/تحليل) وزن منخفض قرار مساعد (توصية) وزن متوسط قرار شبه آلي (مع مراجعة) وزن عالي قرار آلي كامل وزن حرج المحور الثالث: نطاق التأثير تأثير على فرد واحد وزن منخفض تأثير على فريق أو قسم وزن متوسط تأثير على المؤسسة كاملة وزن عالي تأثير على عملاء خارجيين وزن حرج من يستفيد هذا الحل لفرق الامتثال والمخاطر",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "في البنوك والمستشفيات والشركات الصناعية السعودية التي تتعامل مع قرارات حيوية تمس بيانات حساسة."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "ماذا يفعل نظام التصنيف؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "الأبعاد الأربعة لنظام تصنيف مخاطر AI في BrightAI"
-          }
-        }
-      ]
     }
   ]
 }
-  </script>
+</script>
 </head>
 <body class="bg-grid">
 

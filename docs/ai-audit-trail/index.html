@@ -82,74 +82,11 @@
       filter: brightness(1.1);
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://brightai.site/docs/#webpage",
-        "url": "https://brightai.site/docs/",
-        "name": "وثائق AI Audit Trail | BrightAI",
-        "description": "وثيقة AI Audit Trail من BrightAI لتوثيق كل طلب وقرار وموافقة في استخدامات الذكاء الاصطناعي.",
-        "inLanguage": "ar-SA",
-        "isPartOf": {
-          "@id": "https://brightai.site/#website"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://brightai.site/docs/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "الرئيسية",
-            "item": "https://brightai.site/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "الوثائق",
-            "item": "https://brightai.site/docs/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "AI Audit Trail",
-            "item": "https://brightai.site/docs/"
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://brightai.site/docs/#faq",
-        "url": "https://brightai.site/docs/",
-        "inLanguage": "ar-SA",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "هل السجل بديل SIEM؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "لا، لكنه يمكن أن يمد أدوات المراقبة بسياق AI متخصص."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "تنبيه امتثال",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
+  
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
-  <script id="brightai-production-schema" type="application/ld+json">
+  
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script id="brightai-page-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -179,10 +116,10 @@
     },
     {
       "@type": "WebPage",
-      "@id": "https://brightai.site/docs/#webpage",
-      "url": "https://brightai.site/docs/",
+      "@id": "https://brightai.site/docs/ai-audit-trail/#webpage",
+      "url": "https://brightai.site/docs/ai-audit-trail/",
       "name": "وثائق AI Audit Trail | BrightAI",
-      "description": "وثيقة AI Audit Trail من BrightAI لتوثيق كل طلب وقرار وموافقة في استخدامات الذكاء الاصطناعي.",
+      "description": "وثيقة AI Audit Trail من BrightAI لتوثيق كل طلب وقرار وموافقة في منظومة الذكاء الاصطناعي.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -193,38 +130,48 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/docs/#breadcrumb",
+      "@id": "https://brightai.site/docs/ai-audit-trail/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "Bright AI",
+          "name": "الرئيسية",
           "item": "https://brightai.site/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "docs",
+          "name": "الوثائق",
           "item": "https://brightai.site/docs/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "وثائق AI Audit Trail | BrightAI",
-          "item": "https://brightai.site/docs/"
+          "name": "AI Audit Trail",
+          "item": "https://brightai.site/docs/ai-audit-trail/"
         }
       ]
     },
     {
       "@type": "FAQPage",
-      "@id": "https://brightai.site/docs/#faq",
+      "@id": "https://brightai.site/docs/ai-audit-trail/#faq",
+      "url": "https://brightai.site/docs/ai-audit-trail/",
+      "inLanguage": "ar-SA",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "الحقول الأساسية معرف الطلب والمستخدم والقسم. نوع البيانات ومستوى المخاطر. النموذج المستخدم ووقت المعالجة. قرار AI والموافقة البشرية إن وجدت. hash أو معرف تسلسلي لدعم سلامة السجل. استخدامات التدقيق مراجعة قرارات حساسة بعد وقوعها. تحليل أنماط استخدام AI داخل المؤسسة. إنتاج Evidence File للمراجعات. دعم التحقيق في حوادث أو تسريب بيانات. FAQ هل السجل بديل SIEM؟",
+          "name": "هل يمكن حذف سجلات التدقيق؟",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "لا، لكنه يمكن أن يمد أدوات المراقبة بسياق AI متخصص."
+            "text": "لا. السجلات محمية للقراءة فقط لضمان النزاهة والامتثال."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "تنبيه امتثال",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
           }
         }
       ]
@@ -232,7 +179,6 @@
   ]
 }
   </script>
-  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="bg-grid">
 
@@ -251,12 +197,7 @@
   <div class="cta" style="margin-top: 20px;"><a class="btn" href="/solutions/ai-audit-trail/">استكشف صفحة الحل</a><a class="btn secondary" href="/docs/" style="background:transparent; color:#e5edf8; border:1px solid rgba(148,163,184,.28); display:inline-flex; align-items:center; justify-content:center; padding:12px 18px; border-radius:12px; text-decoration:none; font-weight:800;">وثائق Evidence File</a></div>
 </main>
 
-<script>
-  }
-  });
-</script>
-
-  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+<script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

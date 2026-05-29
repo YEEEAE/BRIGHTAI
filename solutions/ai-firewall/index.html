@@ -80,7 +80,10 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["Organization", "LocalBusiness"],
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
       "@id": "https://brightai.site/#organization",
       "name": "BrightAI",
       "url": "https://brightai.site",
@@ -90,7 +93,10 @@
         "@type": "ContactPoint",
         "telephone": "+966-538-229-013",
         "contactType": "sales",
-        "availableLanguage": ["Arabic", "English"]
+        "availableLanguage": [
+          "Arabic",
+          "English"
+        ]
       }
     },
     {
@@ -99,54 +105,13 @@
       "url": "https://brightai.site/solutions/ai-firewall/",
       "name": "AI Firewall لحماية البيانات الحساسة قبل وصولها للنماذج | BrightAI",
       "description": "AI Firewall من BrightAI يفحص كل طلب قبل وصوله للنموذج. يحذف البيانات الشخصية والمالية والطبية تلقائياً ويمنع تسرب المعلومات السرية.",
-      "isPartOf": { "@id": "https://brightai.site/#website" },
-      "about": { "@id": "https://brightai.site/#organization" },
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
       "inLanguage": "ar-SA"
-    },
-    {
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "هل يؤثر AI Firewall على جودة الإجابات التي يحصل عليها الموظف؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "لا. AI Firewall يُنقّي فقط البيانات الحساسة الزائدة مع الحفاظ التام على سياق السؤال. الموظف يحصل على نفس جودة الإجابة لكن دون إرسال بيانات حساسة للنموذج."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "ما أنواع البيانات التي يكشفها ويحذفها AI Firewall؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "يكشف ويحذف: PII مثل الأسماء وأرقام الهوية وأرقام الهواتف، وPHI مثل التشخيصات الطبية والأدوية، والبيانات المالية مثل أرقام الحسابات وبيانات بطاقات الائتمان، والأسرار التجارية مثل أرقام العقود وأسماء العملاء السرية."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "هل AI Firewall يعمل مع جميع نماذج الذكاء الاصطناعي؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "نعم، يعمل كـ proxy شفاف بين الموظف وأي نموذج AI سواء ChatGPT أو Claude أو Gemini أو أي نموذج آخر، بما في ذلك النماذج المُستضافة محلياً."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "ما المقصود بـ PII Redaction وكيف يعمل تقنياً؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "PII Redaction هو استبدال البيانات الحساسة بـ placeholders قبل إرسال الطلب للنموذج. مثلاً: 'اسم المريض: محمد أحمد' يصبح 'اسم المريض: [PERSON_NAME]'. النموذج يُجيب على السياق دون رؤية البيانات الفعلية."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "كيف يختلف AI Firewall عن Firewall الشبكة التقليدي؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Firewall التقليدي يمنع أو يسمح بالوصول بالكامل بناءً على عناوين IP أو البروتوكولات. AI Firewall يفهم المحتوى سيمانتيكياً، يُنقّي البيانات الحساسة داخل الطلب مع السماح بالطلب المُنقّى، وهو أكثر دقة وذكاءً."
-          }
-        }
-      ]
     }
   ]
 }
@@ -307,48 +272,10 @@
           "item": "https://brightai.site/solutions/ai-firewall/"
         }
       ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://brightai.site/solutions/ai-firewall/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "التزامات PDPL",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "نظام PDPL يُلزمك بحماية البيانات الشخصية من أي معالجة غير مصرح بها بما في ذلك إرسالها لنماذج خارجية."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "القطاع المالي",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "بنوك وشركات تأمين وصناديق استثمار تحتاج حماية البيانات المالية الحساسة."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "كيف يعمل AI Firewall لحظة بلحظة؟ 1 الموظف يُرسل طلب AI",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "الموظف يكتب سؤاله لنموذج AI كالمعتاد من خلال واجهة BrightAI أو أي نقطة تكامل."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "فحص PII/PHI/البيانات المالية",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "النظام يحلل الطلب سيمانتيكياً ويُحدد كل بيانة حساسة: أسماء، هويات، تشخيصات، أرقام حسابات، أسرار تجارية."
-          }
-        }
-      ]
     }
   ]
 }
-  </script>
+</script>
 </head>
 <body class="bg-grid">
 

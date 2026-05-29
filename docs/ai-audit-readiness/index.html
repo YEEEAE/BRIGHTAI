@@ -72,66 +72,11 @@
       filter: brightness(1.1);
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://brightai.site/docs/#webpage",
-        "url": "https://brightai.site/docs/",
-        "name": "جاهزية تدقيق الذكاء الاصطناعي | BrightAI Docs",
-        "description": "دليل عملي لبناء أدلة تشغيلية تثبت السيطرة على استخدامات الذكاء الاصطناعي داخل المؤسسة.",
-        "inLanguage": "ar-SA",
-        "isPartOf": {
-          "@id": "https://brightai.site/#website"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://brightai.site/docs/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "الرئيسية",
-            "item": "https://brightai.site/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "الوثائق",
-            "item": "https://brightai.site/docs/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "جاهزية تدقيق الذكاء الاصطناعي",
-            "item": "https://brightai.site/docs/"
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://brightai.site/docs/#faq",
-        "url": "https://brightai.site/docs/",
-        "inLanguage": "ar-SA",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "هل يجب توليد Evidence File لكل طلب؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "ليس دائمًا، يمكن توليده للحالات الحساسة أو دوريًا حسب سياسة المؤسسة."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
+  
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
-  <script id="brightai-production-schema" type="application/ld+json">
+  
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script id="brightai-page-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -161,10 +106,10 @@
     },
     {
       "@type": "WebPage",
-      "@id": "https://brightai.site/docs/#webpage",
-      "url": "https://brightai.site/docs/",
-      "name": "جاهزية تدقيق الذكاء الاصطناعي | BrightAI Docs",
-      "description": "دليل عملي لبناء أدلة تشغيلية تثبت السيطرة على استخدامات الذكاء الاصطناعي داخل المؤسسة.",
+      "@id": "https://brightai.site/docs/ai-audit-readiness/#webpage",
+      "url": "https://brightai.site/docs/ai-audit-readiness/",
+      "name": "وثائق الجاهزية للتدقيق AI | BrightAI",
+      "description": "دليل الجاهزية للتدقيق على أنظمة الذكاء الاصطناعي من BrightAI للتحضير للمراجعات الرقابية.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -175,38 +120,48 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/docs/#breadcrumb",
+      "@id": "https://brightai.site/docs/ai-audit-readiness/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "Bright AI",
+          "name": "الرئيسية",
           "item": "https://brightai.site/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "docs",
+          "name": "الوثائق",
           "item": "https://brightai.site/docs/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "جاهزية تدقيق الذكاء الاصطناعي | BrightAI Docs",
-          "item": "https://brightai.site/docs/"
+          "name": "AI Audit Readiness",
+          "item": "https://brightai.site/docs/ai-audit-readiness/"
         }
       ]
     },
     {
       "@type": "FAQPage",
-      "@id": "https://brightai.site/docs/#faq",
+      "@id": "https://brightai.site/docs/ai-audit-readiness/#faq",
+      "url": "https://brightai.site/docs/ai-audit-readiness/",
+      "inLanguage": "ar-SA",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "الأدلة المطلوبة Audit Trail لكل تفاعل. Risk Score واضح. موافقات بشرية للحالات الحساسة. Evidence File قابل للمشاركة. Checklist هل يمكن تتبع كل طلب AI؟ هل تظهر البيانات المستخدمة؟ هل الموافقات مرتبطة بالقرار؟ هل يتم تحديث الأدلة دوريًا؟ FAQ هل يجب توليد Evidence File لكل طلب؟",
+          "name": "كم يستغرق التحضير للتدقيق؟",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "ليس دائمًا، يمكن توليده للحالات الحساسة أو دوريًا حسب سياسة المؤسسة."
+            "text": "مع BrightAI يمكن تقليص وقت التحضير من أشهر إلى أسابيع بفضل الأتمتة والتوثيق المستمر."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "تنبيه امتثال",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
           }
         }
       ]
@@ -214,7 +169,6 @@
   ]
 }
   </script>
-  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="bg-grid">
 
@@ -234,12 +188,7 @@
   <a class="btn" href="/solutions/ai-evidence-file/">استكشف AI Evidence File</a>
 </main>
 
-<script>
-  }
-  });
-</script>
-
-  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+<script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

@@ -75,70 +75,56 @@
 
   <!-- ================= STRUCTURED DATA: WebPage ================= -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://brightai.site/solutions/human-approval-layer/#webpage",
-        "url": "https://brightai.site/solutions/human-approval-layer/",
-        "name": "طبقة الموافقة البشرية للقرارات الحساسة في أنظمة AI | BrightAI",
-        "description": "لا قرار AI حساس يمر بدون موافقة بشرية. BrightAI يضع طبقة Human-in-the-Loop تلقائية على كل قرار يتجاوز حد المخاطرة المحدد، مع توثيق كامل للموافقة.",
-        "isPartOf": { "@id": "https://brightai.site/#website" },
-        "about": { "@id": "https://brightai.site/#organization" },
-        "inLanguage": "ar-SA",
-        "breadcrumb": { "@id": "https://brightai.site/solutions/human-approval-layer/#breadcrumb" }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/solutions/human-approval-layer/#webpage",
+      "url": "https://brightai.site/solutions/human-approval-layer/",
+      "name": "طبقة الموافقة البشرية للقرارات الحساسة في أنظمة AI | BrightAI",
+      "description": "لا قرار AI حساس يمر بدون موافقة بشرية. BrightAI يضع طبقة Human-in-the-Loop تلقائية على كل قرار يتجاوز حد المخاطرة المحدد، مع توثيق كامل للموافقة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
       },
-      {
-        "@type": ["Organization", "LocalBusiness"],
-        "@id": "https://brightai.site/#organization",
-        "name": "BrightAI",
-        "alternateName": ["برايت آي", "Saudi AI Safety OS"],
-        "url": "https://brightai.site/",
-        "logo": "https://brightai.site/frontend/images/logo-new.PNG"
+      "about": {
+        "@id": "https://brightai.site/#organization"
       },
-      {
-        "@type": "WebSite",
-        "@id": "https://brightai.site/#website",
-        "url": "https://brightai.site",
-        "name": "BrightAI",
-        "publisher": { "@id": "https://brightai.site/#organization" },
-        "inLanguage": ["ar-SA", "en-SA"]
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://brightai.site/solutions/human-approval-layer/#faq",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "من يحدد من يوافق على القرارات في نظام BrightAI؟",
-            "acceptedAnswer": { "@type": "Answer", "text": "تُحدد صلاحيات الموافقة حسب المنصب والقسم ونوع القرار. يمكن ضبط matrix الموافقة بشكل مرن يتناسب مع هيكل مؤسستك." }
-          },
-          {
-            "@type": "Question",
-            "name": "ما مدة انتظار الموافقة قبل إلغاء القرار؟",
-            "acceptedAnswer": { "@type": "Answer", "text": "يمكن ضبط SLA للموافقة من دقائق حتى أيام حسب نوع القرار وأهميته. عند انتهاء الـ SLA يتم escalation تلقائي للمستوى الأعلى." }
-          },
-          {
-            "@type": "Question",
-            "name": "ماذا يحدث إذا لم يرد المسؤول على طلب الموافقة؟",
-            "acceptedAnswer": { "@type": "Answer", "text": "يتم escalation تلقائي للمستوى الأعلى بعد انتهاء وقت الاستجابة المحدد. كل حالة escalation مُسجّلة ومُوثّقة بالكامل." }
-          },
-          {
-            "@type": "Question",
-            "name": "هل يمكن تفويض صلاحية الموافقة لشخص آخر؟",
-            "acceptedAnswer": { "@type": "Answer", "text": "نعم، delegation محكوم ومسجّل. يمكن تفويض صلاحية الموافقة مؤقتاً مع تحديد النطاق الزمني والنوع، وكل تفويض موثّق في سجل التدقيق." }
-          },
-          {
-            "@type": "Question",
-            "name": "كيف يختلف Human Approval في BrightAI عن workflow عادي؟",
-            "acceptedAnswer": { "@type": "Answer", "text": "الـ workflow العادي لا يفهم سياق القرار وخطورته. BrightAI يحلل كل قرار AI تلقائياً ويحسب Risk Score ويوجه الموافقة للشخص المناسب بناءً على نوع القرار وتأثيره." }
-          }
-        ]
+      "inLanguage": "ar-SA",
+      "breadcrumb": {
+        "@id": "https://brightai.site/solutions/human-approval-layer/#breadcrumb"
       }
-    ]
-  }
-  </script>
+    },
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "BrightAI",
+      "alternateName": [
+        "برايت آي",
+        "Saudi AI Safety OS"
+      ],
+      "url": "https://brightai.site/",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "BrightAI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    }
+  ]
+}
+</script>
 
   <!-- ================= ICONS / MANIFEST ================= -->
   <link rel="icon" href="/frontend/images/logo-new.PNG" type="image/png" />
@@ -296,48 +282,10 @@
           "item": "https://brightai.site/solutions/human-approval-layer/"
         }
       ]
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://brightai.site/solutions/human-approval-layer/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "علامات تقول أن مؤسستك بحاجة ماسة لطبقة الموافقة AI يوافق على عقود أو مدفوعات",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "أي نظام AI يُصدر موافقات مالية أو تعاقدية بدون رقابة بشرية مباشرة يمثل خطر امتثال حقيقي تحت لوائح PDPL و NCA."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "كيف تعمل طبقة الموافقة البشرية في BrightAI؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "خمس خطوات تلقائية من اقتراح الـ AI إلى التنفيذ الموثّق"
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "هل نظام AI مؤسستك يتخذ قرارات بدون مراجعة؟",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "اكتشف في 30 دقيقة كيف يمكن لـ BrightAI إضافة طبقة الموافقة البشرية على كل قرار حساس في منظومتك دون تعطيل العمليات."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "ماذا يفعل BrightAI بالضبط؟ ما الذي يكشفه ما الذي يتحكم فيه ما الذي يسجله ما الأدلة التي ينتجها كل قرار يتخذه AI وتصنيفه درجة مخاطرة كل قرار (Risk Score) القرارات التي تجاوزت الحد بلا موافقة أنماط القرارات المتكررة عالية الخطورة حالات رفض الموافقة وأسبابها حد المخاطرة الذي يُفعّل المراجعة البشرية مصفوفة الموافقة (من يوافق على ماذا) SLA وقت الاستجابة لكل نوع قرار سياسات التفويض والاستخلاف قواعد الـ Escalation التلقائي هوية الموافق وتوقيت الموافقة نص القرار الأصلي وتفاصيله تعليقات وملاحظات المراجعين سلسلة Escalation الكاملة التغييرات المُدخلة من المراجع البشري تقرير مسار الموافقة الكامل (Audit Trail) إثبات الرقابة البشرية للمدقق توثيق المسؤولية لكل قرار (Accountability) إحصائيات الأداء والاستجابة تقرير امتثال Human-in-the-Loop جاهز للتدقيق تطبيقات قطاعية كيف تستخدم القطاعات المختلفة طبقة الموافقة ؟ الرعاية الصحية كل توصية AI طبية تمر بمراجعة مختص قبل الوصول للمريض. يساعد ذلك على دعم جاهزية SFDA و ISO 13485 والحوكمة الداخلية. البنوك والتمويل قرارات الائتمان والتمويل التي تتجاوز حدوداً معينة تتطلب موافقة لجنة الائتمان. BrightAI يُشغّل هذا تلقائياً مع توثيق كامل لـ SAMA. الجهات الحكومية قرارات تخص المواطنين أو المشتريات الحكومية لا تُنفَّذ بدون موافقة المختص. توثيق يلبي متطلبات وزارة المالية وهيئة الرقابة ومكافحة الفساد. الصناعة والتصنيع قرارات إيقاف الإنتاج أو تغيير معايير التصنيع من AI تحتاج موافقة مهندس مسؤول. يضمن جودة التشغيل ومتطلبات ISO. التعليم قرارات AI بشأن قبول الطلاب أو نتائج التقييم تمر بمراجعة أكاديمية. يحافظ على العدالة والشفافية في القطاع التعليمي. الطاقة والمرافق قرارات التحكم في شبكات الطاقة أو توزيع المياه من أنظمة AI تتطلب موافقة مشغّل معتمد. حماية حرجة للبنية التحتية الوطنية. أسئلة شائعة أسئلة شائعة حول طبقة الموافقة البشرية من يحدد من يوافق على القرارات في BrightAI؟ تُحدد صلاحيات الموافقة حسب المنصب الوظيفي والقسم ونوع القرار. يمكن بناء مصفوفة موافقة مرنة تماماً تعكس هيكل السلطة في مؤسستك. مثلاً: قرارات تحت 500 ألف يوافق عليها المدير المباشر، وما فوق ذلك يذهب للمدير التنفيذي. كل هذا قابل للضبط والتعديل دون برمجة. ما مدة انتظار الموافقة قبل أن يتصرف النظام تلقائياً؟ يمكن ضبط SLA للموافقة من دقائق معدودة حتى أيام حسب طبيعة القرار وأهميته. القرارات الطارئة قد تكون مدتها 15 دقيقة، بينما القرارات الاستراتيجية قد تعطى 3 أيام عمل. عند انتهاء الـ SLA يتم escalation تلقائي للمستوى الأعلى. ماذا يحدث إذا لم يرد المسؤول على طلب الموافقة؟ عند انتهاء وقت الاستجابة المحدد، يتم escalation تلقائي للمستوى الأعلى في التسلسل الهرمي. كل حالة escalation مُسجّلة ومُوثّقة بالكامل مع ذكر السبب والوقت والأشخاص المُبلَّغين. لا قرار يضيع ولا مسؤولية تختفي في فراغ. هل يمكن تفويض صلاحية الموافقة لشخص آخر؟ نعم، التفويض (Delegation) مدعوم بشكل كامل ومحكوم. يمكن للمسؤول تفويض صلاحيته مؤقتاً لمن ينوب عنه مع تحديد النطاق الزمني وأنواع القرارات المفوَّضة. كل تفويض موثّق في سجل التدقيق ولا يتجاوز صلاحيات المفوِّض الأصلية. كيف يختلف Human Approval في BrightAI عن الـ workflow التقليدي؟ الـ workflow التقليدي لا يفهم سياق القرار وخطورته – يُرسل كل شيء أو لا شيء. BrightAI يحلل كل قرار AI تلقائياً ويحسب Risk Score ويوجّه طلب الموافقة للشخص المناسب بناءً على طبيعة القرار وتأثيره المتوقع. الفرق الجوهري: Intelligence في التوجيه وليس مجرد routing. ابدأ اليوم - ديمو تنفيذي كل قرار AI حساس يستحق نظرة بشرية",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "BrightAI يضع طبقة الموافقة البشرية الذكية على كل قرار AI يستوجب الرقابة. موثّق، قابل للتدقيق، ويدعم جاهزية PDPL و NCA ECC و ISO 42001."
-          }
-        }
-      ]
     }
   ]
 }
-  </script>
+</script>
 </head>
 <body class="bg-grid">
 

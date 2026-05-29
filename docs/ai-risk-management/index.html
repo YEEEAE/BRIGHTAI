@@ -72,66 +72,11 @@
       filter: brightness(1.1);
     }
   </style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": "https://brightai.site/docs/#webpage",
-        "url": "https://brightai.site/docs/",
-        "name": "إدارة مخاطر الذكاء الاصطناعي | BrightAI Docs",
-        "description": "دليل إدارة مخاطر الذكاء الاصطناعي للمؤسسات السعودية من التصنيف إلى الضوابط والمراجعة.",
-        "inLanguage": "ar-SA",
-        "isPartOf": {
-          "@id": "https://brightai.site/#website"
-        }
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://brightai.site/docs/#breadcrumb",
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "الرئيسية",
-            "item": "https://brightai.site/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "الوثائق",
-            "item": "https://brightai.site/docs/"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": "إدارة مخاطر الذكاء الاصطناعي للمؤسسات السعودية",
-            "item": "https://brightai.site/docs/"
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://brightai.site/docs/#faq",
-        "url": "https://brightai.site/docs/",
-        "inLanguage": "ar-SA",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "هل يمكن أتمتة تقييم المخاطر؟",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "يمكن دعمه آليًا، لكن القرارات الحساسة تحتاج حوكمة ومراجعة بشرية."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
+  
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
-  <script id="brightai-production-schema" type="application/ld+json">
+  
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <script id="brightai-page-schema" type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
@@ -161,10 +106,10 @@
     },
     {
       "@type": "WebPage",
-      "@id": "https://brightai.site/docs/#webpage",
-      "url": "https://brightai.site/docs/",
-      "name": "إدارة مخاطر الذكاء الاصطناعي | BrightAI Docs",
-      "description": "دليل إدارة مخاطر الذكاء الاصطناعي للمؤسسات السعودية من التصنيف إلى الضوابط والمراجعة.",
+      "@id": "https://brightai.site/docs/ai-risk-management/#webpage",
+      "url": "https://brightai.site/docs/ai-risk-management/",
+      "name": "وثائق إدارة مخاطر الذكاء الاصطناعي | BrightAI",
+      "description": "دليل إدارة مخاطر الذكاء الاصطناعي من BrightAI وفق أطر NIST AI RMF والأنظمة السعودية.",
       "isPartOf": {
         "@id": "https://brightai.site/#website"
       },
@@ -175,46 +120,48 @@
     },
     {
       "@type": "BreadcrumbList",
-      "@id": "https://brightai.site/docs/#breadcrumb",
+      "@id": "https://brightai.site/docs/ai-risk-management/#breadcrumb",
       "itemListElement": [
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "Bright AI",
+          "name": "الرئيسية",
           "item": "https://brightai.site/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "docs",
+          "name": "الوثائق",
           "item": "https://brightai.site/docs/"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "إدارة مخاطر الذكاء الاصطناعي | BrightAI Docs",
-          "item": "https://brightai.site/docs/"
+          "name": "AI Risk Management",
+          "item": "https://brightai.site/docs/ai-risk-management/"
         }
       ]
     },
     {
       "@type": "FAQPage",
-      "@id": "https://brightai.site/docs/#faq",
+      "@id": "https://brightai.site/docs/ai-risk-management/#faq",
+      "url": "https://brightai.site/docs/ai-risk-management/",
+      "inLanguage": "ar-SA",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "المخاطر الشائعة قرارات آلية حساسة بدون مراجعة. Prompts تحتوي بيانات شخصية أو مالية. غياب سجل يشرح سبب القرار. تفاوت الضوابط بين الإدارات. كيف يساعد BrightAI؟",
+          "name": "هل يتوافق النظام مع NIST AI RMF؟",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "BrightAI يربط AI Firewall وRisk Scoring وHuman Approval وAudit Trail لإدارة المخاطر كعملية يومية قابلة للمراجعة."
+            "text": "نعم. BrightAI مبني على مبادئ NIST AI RMF مع تكييف للسياق السعودي."
           }
         },
         {
           "@type": "Question",
-          "name": "Checklist تعريف مستويات المخاطر. ربط المخاطر بنوع البيانات. تفعيل موافقة للحالات عالية المخاطر. مراجعة التقارير دوريًا. FAQ هل يمكن أتمتة تقييم المخاطر؟",
+          "name": "تنبيه امتثال",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "يمكن دعمه آليًا، لكن القرارات الحساسة تحتاج حوكمة ومراجعة بشرية."
+            "text": "هذا المحتوى لأغراض معرفية وتشغيلية ولا يعد استشارة قانونية."
           }
         }
       ]
@@ -222,7 +169,6 @@
   ]
 }
   </script>
-  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="bg-grid">
 
@@ -243,12 +189,7 @@
   <a class="btn" href="/solutions/human-approval-layer/">استكشف Human Approval</a>
 </main>
 
-<script>
-  }
-  });
-</script>
-
-  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+<script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

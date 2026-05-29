@@ -71,12 +71,13 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /en/data-processing-agreement.html /en/data-processing-agreement/ 301
 
 # ── Docs Module Redirections ──────────────────────────────────────────────────
-/docs                         /docs/docs/                   301
-/docs/                        /docs/docs/                   301
-/docs.html                    /docs/docs/                   301
-/docs/docs.html               /docs/docs/                   301
-/en/docs                      /docs/docs/                   301
-/en/docs/                     /docs/docs/                   301
+# /docs/ هو المسار الرسمي النهائي لمركز الوثائق
+/docs                         /docs/                        301
+/docs.html                    /docs/                        301
+/docs/index.html              /docs/                        301
+/docs/docs.html               /docs/                        301
+/en/docs                      /docs/                        301
+/en/docs/                     /docs/                        301
 
 # ── NCA ECC & Governance Application Docs Redirections ────────────────────────
 /docs/nca-ecc-ai-controls     /docs/nca-ecc-ai-controls/    301
