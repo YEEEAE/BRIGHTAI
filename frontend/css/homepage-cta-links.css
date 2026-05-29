@@ -1,0 +1,108 @@
+/* BrightAI Premium CTA & Links CSS - Designed for Saudi SaaS Enterprise */
+
+.home-hero-actions,
+.section-action-row,
+.home-final-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.home-cta,
+.section-mini-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 14px;
+  padding: 12px 20px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  outline: none;
+}
+
+.home-cta:focus-visible,
+.section-mini-link:focus-visible {
+  box-shadow: 0 0 0 2px #00d4ff;
+}
+
+/* Primary Button with BrightAI Gradient */
+.home-cta-primary {
+  background: linear-gradient(135deg, #00d4ff, #7c5cff);
+  color: #ffffff !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 212, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border: 1px solid transparent;
+}
+
+.home-cta-primary:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1) saturate(1.1);
+  box-shadow: 0 15px 35px -10px rgba(0, 212, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Secondary Button with Glass Styling */
+.home-cta-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.home-cta-secondary:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Outline/Ghost Button */
+.home-cta-outline {
+  background: transparent;
+  color: #9be5ff !important;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.home-cta-outline:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 212, 255, 0.05);
+  border-color: rgba(0, 212, 255, 0.6);
+  color: #ffffff !important;
+}
+
+/* Section Mini Link Style */
+.section-mini-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 212, 255, 0.04);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  color: #9be5ff !important;
+  padding: 8px 14px;
+  font-size: 13px;
+  border-radius: 12px;
+}
+
+.section-mini-link:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 212, 255, 0.08);
+  border-color: rgba(0, 212, 255, 0.4);
+  color: #ffffff !important;
+}
+
+@media (max-width: 768px) {
+  .home-hero-actions,
+  .section-action-row,
+  .home-final-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .home-cta,
+  .section-mini-link {
+    width: 100%;
+  }
+}

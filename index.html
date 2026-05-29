@@ -455,6 +455,7 @@
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
   <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <link rel="stylesheet" href="/frontend/css/homepage-cta-links.css?v=20260529-home-cta-v1">
 </head>
 <body class="bg-grid">
 
@@ -648,15 +649,17 @@
         <span class="text-white">آمن، موثّق، قابل للمراجعة، ومتوافق مع الأنظمة السعودية</span> — بدون ما تفقد السيطرة على البيانات ولا القرارات ولا الامتثال.
       </p>
 
-      <div class="mt-8 flex flex-wrap items-center gap-3">
+      <div class="mt-8 home-hero-actions">
         <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="wa-btn inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-white">
           <i class="fa-brands fa-whatsapp text-xl"></i> تواصل عبر واتساب
         </a>
-        <a href="#demo" class="glow-btn inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-white">
-          <i class="fa-solid fa-rocket"></i> ابدأ ديمو خاص بشركتك
+        <a href="/contact/" class="home-cta home-cta-primary">
+          <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+          <span>ابدأ ديمو خاص بشركتك</span>
         </a>
-        <a href="/kernel/" class="glass inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl font-bold text-white/90 hover:text-white">
-          <i class="fa-solid fa-circle-info"></i> شف كيف يشتغل
+        <a href="/solutions/ai-governance-platform/" class="home-cta home-cta-secondary">
+          <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
+          <span>استكشف منصة الحوكمة</span>
         </a>
       </div>
 
@@ -707,6 +710,32 @@
             <div class="glass rounded-lg py-2"><div class="text-emerald-300 font-bold text-base">99.7%</div>امتثال</div>
             <div class="glass rounded-lg py-2"><div class="text-yellow-300 font-bold text-base">3</div>تصعيد بشري</div>
           </div>
+        </div>
+      </div>
+      
+      <!-- روابط تشغيلية إضافية تحت لوحة التحكم -->
+      <div class="mt-4 p-4 glass rounded-2xl text-right">
+        <p class="text-xs text-white/70 leading-relaxed mb-3">
+          <i class="fa-solid fa-circle-info text-brand-300 ml-1"></i>
+          لوحة النواة توضّح كيف تتحول حوكمة الذكاء الاصطناعي من سياسة مكتوبة إلى تشغيل يومي قابل للمراجعة.
+        </p>
+        <div class="flex flex-wrap gap-2 text-xs">
+          <a href="/kernel/" class="section-mini-link">
+            <i class="fa-solid fa-gauge" aria-hidden="true"></i>
+            <span>افتح لوحة النواة</span>
+          </a>
+          <a href="/kernel/audit.html" class="section-mini-link">
+            <i class="fa-solid fa-file-invoice" aria-hidden="true"></i>
+            <span>سجل التدقيق</span>
+          </a>
+          <a href="/kernel/approvals.html" class="section-mini-link">
+            <i class="fa-solid fa-signature" aria-hidden="true"></i>
+            <span>الموافقات البشرية</span>
+          </a>
+          <a href="/kernel/stats.html" class="section-mini-link">
+            <i class="fa-solid fa-chart-simple" aria-hidden="true"></i>
+            <span>إحصائيات الحوكمة</span>
+          </a>
         </div>
       </div>
     </aside>
@@ -771,7 +800,7 @@
           <span class="chip inline-block px-3 py-1 rounded-full text-xs font-bold">Saudi AI Safety OS</span>
           <h2 id="ai-governance-center-title" class="mt-4 text-2xl sm:text-4xl font-black">مركز حوكمة الذكاء الاصطناعي</h2>
           <p class="mt-4 text-white/70 leading-loose">
-            تعرّف كيف تساعد BrightAI المؤسسات السعودية على تحويل سياسات الذكاء الاصطناعي إلى ضوابط تشغيلية قابلة للتدقيق، مع AI Firewall وسجل تدقيق وموافقات بشرية وملفات أدلة.
+            BrightAI تساعد المؤسسات السعودية على تحويل سياسات الذكاء الاصطناعي إلى ضوابط تشغيلية قابلة للتدقيق، عبر طبقة تربط الموظف، بيانات المؤسسة، نموذج AI، والمراجعة البشرية، لتضمن تفعيلاً متكاملاً لـ AI Firewall وسجل تدقيق وموافقات بشرية وملفات أدلة متوافقة.
           </p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 shrink-0">
@@ -808,9 +837,14 @@
       </div>
 
       <div class="mt-6 flex flex-wrap gap-3 text-sm">
-        <a href="/services/" class="text-brand-300 hover:text-white font-bold">الخدمات</a>
-        <span class="text-white/25">/</span>
-        <a href="/contact/" class="text-brand-300 hover:text-white font-bold">تواصل معنا</a>
+        <a href="/services/" class="section-mini-link">
+          <i class="fa-solid fa-bell-concierge" aria-hidden="true"></i>
+          <span>استعرض خدمات BrightAI</span>
+        </a>
+        <a href="/contact/" class="section-mini-link">
+          <i class="fa-solid fa-user-shield" aria-hidden="true"></i>
+          <span>احجز جلسة جاهزية الامتثال</span>
+        </a>
       </div>
     </div>
   </div>
@@ -896,9 +930,9 @@
             <li>✓ يدعم جاهزية ضوابط SDAIA و NCA</li>
           </ul>
         </div>
-        <a href="/solutions/ai-governance-platform/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
-          <span>اكتشف المزيد</span>
-          <i class="fa-solid fa-arrow-left text-xs"></i>
+        <a href="/solutions/ai-governance-platform/" class="section-mini-link mt-auto">
+          <span>استكشف منصة الحوكمة</span>
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -916,9 +950,9 @@
             <li>✓ متوافق مع نظام حماية البيانات الشخصية PDPL</li>
           </ul>
         </div>
-        <a href="/solutions/ai-firewall/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
-          <span>اكتشف المزيد</span>
-          <i class="fa-solid fa-arrow-left text-xs"></i>
+        <a href="/solutions/ai-firewall/" class="section-mini-link mt-auto">
+          <span>استكشف AI Firewall</span>
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -936,9 +970,9 @@
             <li>✓ تتبع كامل للمسؤولية والقرارات التلقائية</li>
           </ul>
         </div>
-        <a href="/solutions/ai-audit-trail/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
-          <span>اكتشف المزيد</span>
-          <i class="fa-solid fa-arrow-left text-xs"></i>
+        <a href="/solutions/ai-audit-trail/" class="section-mini-link mt-auto">
+          <span>استكشف سجل التدقيق</span>
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -956,9 +990,9 @@
             <li>✓ تفويض الصلاحيات وضمان استمرارية العمل</li>
           </ul>
         </div>
-        <a href="/solutions/human-approval-layer/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
-          <span>اكتشف المزيد</span>
-          <i class="fa-solid fa-arrow-left text-xs"></i>
+        <a href="/solutions/human-approval-layer/" class="section-mini-link mt-auto">
+          <span>استكشف الموافقة البشرية</span>
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
         </a>
       </div>
 
@@ -976,11 +1010,67 @@
             <li>✓ يدعم متطلبات المراجعة المرتبطة بـ SDAIA و SFDA و ISO</li>
           </ul>
         </div>
-        <a href="/solutions/ai-evidence-file/" class="text-brand-300 font-bold hover:text-white transition-colors text-sm flex items-center gap-1 mt-auto">
-          <span>اكتشف المزيد</span>
-          <i class="fa-solid fa-arrow-left text-xs"></i>
+        <a href="/solutions/ai-evidence-file/" class="section-mini-link mt-auto">
+          <span>استكشف ملف الأدلة</span>
+          <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
         </a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CHOOSE GOVERNANCE LAYER ================= -->
+<section id="choose-governance" aria-labelledby="choose-gov-title" class="py-12 bg-gradient-to-b from-transparent via-cyan-500/[.02] to-transparent">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-10">
+      <h2 id="choose-gov-title" class="text-2xl sm:text-3xl font-black">اختَر طبقة الحوكمة المناسبة لمؤسستك</h2>
+      <p class="mt-2 text-xs sm:text-sm text-white/60">ضوابط وحلول سريعة التفعيل تناسب الاحتياجات التنظيمية والأمنية المختلفة لمؤسستك.</p>
+    </div>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <a href="/solutions/ai-firewall/" class="glass rounded-2xl p-4 hover:border-brand-500/40 transition-all flex flex-col justify-between">
+        <div>
+          <i class="fa-solid fa-shield-halved text-brand-300 text-lg mb-2"></i>
+          <h3 class="text-sm font-bold text-white mb-1">حماية البيانات قبل AI</h3>
+        </div>
+        <span class="text-xs text-brand-300 hover:text-white flex items-center gap-1 mt-3">
+          <span>التفاصيل</span>
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        </span>
+      </a>
+      
+      <a href="/solutions/ai-audit-trail/" class="glass rounded-2xl p-4 hover:border-brand-500/40 transition-all flex flex-col justify-between">
+        <div>
+          <i class="fa-solid fa-file-signature text-brand-300 text-lg mb-2"></i>
+          <h3 class="text-sm font-bold text-white mb-1">توثيق كل طلب وقرار</h3>
+        </div>
+        <span class="text-xs text-brand-300 hover:text-white flex items-center gap-1 mt-3">
+          <span>التفاصيل</span>
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        </span>
+      </a>
+      
+      <a href="/solutions/human-approval-layer/" class="glass rounded-2xl p-4 hover:border-brand-500/40 transition-all flex flex-col justify-between">
+        <div>
+          <i class="fa-solid fa-user-check text-brand-300 text-lg mb-2"></i>
+          <h3 class="text-sm font-bold text-white mb-1">مراجعة بشرية للقرارات</h3>
+        </div>
+        <span class="text-xs text-brand-300 hover:text-white flex items-center gap-1 mt-3">
+          <span>التفاصيل</span>
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        </span>
+      </a>
+      
+      <a href="/solutions/ai-evidence-file/" class="glass rounded-2xl p-4 hover:border-brand-500/40 transition-all flex flex-col justify-between">
+        <div>
+          <i class="fa-solid fa-folder-open text-brand-300 text-lg mb-2"></i>
+          <h3 class="text-sm font-bold text-white mb-1">ملف أدلة جاهز للتدقيق</h3>
+        </div>
+        <span class="text-xs text-brand-300 hover:text-white flex items-center gap-1 mt-3">
+          <span>التفاصيل</span>
+          <i class="fa-solid fa-arrow-left text-[10px]"></i>
+        </span>
+      </a>
     </div>
   </div>
 </section>
@@ -995,6 +1085,22 @@
       <span class="chip inline-block px-3 py-1 rounded-full text-xs font-bold">حزم الامتثال السعودية</span>
       <h2 id="compliance-title" class="mt-4 text-3xl sm:text-4xl font-black">Compliance Packs جاهزة 100% للسعودية 🇸🇦</h2>
       <p class="mt-3 text-white/70 leading-loose">تركّب الحزمة اللي تخصك حسب قطاعك، وتجي لك بكل المتطلبات الجاهزة من اليوم الأول. بدون ما تستأجر مكتب استشاري بمليون ريال.</p>
+      
+      <!-- روابط سريعة للامتثال والثقة -->
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/pdpl-statement/" class="section-mini-link">
+          <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+          <span>جاهزية PDPL</span>
+        </a>
+        <a href="/data-processing-agreement/" class="section-mini-link">
+          <i class="fa-solid fa-file-contract" aria-hidden="true"></i>
+          <span>اتفاقية معالجة البيانات</span>
+        </a>
+        <a href="/contact/" class="section-mini-link">
+          <i class="fa-solid fa-headset" aria-hidden="true"></i>
+          <span>تحدث مع فريق الامتثال</span>
+        </a>
+      </div>
     </div>
 
     <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -1275,6 +1381,22 @@
         <p class="mt-3 text-white/70 leading-loose">عندنا باقات حسب حجم الشركة وعدد المستخدمين وعدد حزم الامتثال المطلوبة. تواصل معنا عبر <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="text-green-400 hover:underline">الواتساب</a> للحصول على عرض سعر مخصص خلال 24 ساعة، وعندنا خصم خاص لأول 10 شركات سعودية تنضم للبرنامج التأسيسي.</p>
       </details>
     </div>
+    
+    <!-- روابط الموارد والتوثيق والمدونة -->
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href="/docs/docs.html" class="section-mini-link">
+        <i class="fa-solid fa-book" aria-hidden="true"></i>
+        <span>اقرأ وثائق BrightAI</span>
+      </a>
+      <a href="/blog/" class="section-mini-link">
+        <i class="fa-solid fa-newspaper" aria-hidden="true"></i>
+        <span>المدونة</span>
+      </a>
+      <a href="/privacy-policy/" class="section-mini-link">
+        <i class="fa-solid fa-user-lock" aria-hidden="true"></i>
+        <span>سياسة الخصوصية</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -1328,6 +1450,33 @@
           <span><i class="fa-solid fa-shield"></i> ما نشاركها مع أي طرف</span>
           <span><i class="fa-solid fa-flag"></i> فريق سعودي 100%</span>
           <span><i class="fa-brands fa-whatsapp text-green-400"></i> رد خلال ساعات</span>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- فاصل بصري مضيء -->
+<div class="ambient-separator" aria-hidden="true"><div class="ambient-separator-node"></div></div>
+
+<!-- ================= FINAL CTA ================= -->
+<section id="final-cta" aria-labelledby="final-cta-title" class="py-16 text-center bg-gradient-to-b from-transparent via-brand-500/[.03] to-transparent">
+  <div class="max-w-4xl mx-auto px-5 lg:px-8">
+    <div class="glass rounded-3xl p-8 lg:p-12 border border-white/10 relative overflow-hidden">
+      <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at center, #00d4ff 0, transparent 60%)"></div>
+      <div class="relative z-10">
+        <h2 id="final-cta-title" class="text-2xl sm:text-4xl font-black gradient-text">جاهز تطبق حوكمة AI داخل مؤسستك؟</h2>
+        <p class="mt-4 text-white/80 max-w-2xl mx-auto leading-loose text-sm sm:text-base">
+          ابدأ بتقييم عملي لاستخدامات الذكاء الاصطناعي، المخاطر، البيانات الحساسة، ومسارات الموافقة والتدقيق.
+        </p>
+        <div class="mt-8 home-final-cta-actions flex justify-center flex-wrap gap-4">
+          <a href="/contact/" class="home-cta home-cta-primary">
+            <i class="fa-solid fa-calendar-check" aria-hidden="true"></i>
+            <span>ابدأ ديمو خاص بشركتك</span>
+          </a>
+          <a href="/solutions/ai-governance-platform/" class="home-cta home-cta-secondary">
+            <i class="fa-solid fa-scale-balanced" aria-hidden="true"></i>
+            <span>استكشف حلول الحوكمة</span>
+          </a>
         </div>
       </div>
     </div>
