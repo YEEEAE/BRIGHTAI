@@ -135,7 +135,17 @@ function groupRelPath(relPath) {
     normalized === "services/index.html" ||
     normalized === "demo/index.html" ||
     normalized === "sitemap/index.html" ||
-    normalized === "docs/docs.html"
+    normalized === "docs/index.html" ||
+    normalized === "docs/ai-governance-platform/index.html" ||
+    normalized === "docs/ai-firewall/index.html" ||
+    normalized === "docs/ai-audit-trail/index.html" ||
+    normalized === "docs/human-approval-layer/index.html" ||
+    normalized === "docs/ai-evidence-file/index.html" ||
+    normalized === "docs/ai-governance-saudi-arabia/index.html" ||
+    normalized === "docs/ai-risk-management/index.html" ||
+    normalized === "docs/pdpl-ai-governance/index.html" ||
+    normalized === "docs/nca-ecc-ai-governance/index.html" ||
+    normalized === "docs/ai-audit-readiness/index.html"
   ) {
     return "pages";
   }

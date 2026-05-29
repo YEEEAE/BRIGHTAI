@@ -600,25 +600,138 @@ services:
         destination: /en/data-processing-agreement/
 
       # ── Docs Module Redirects ───────────────────────────────────────────────
-      # Docs: the only docs HTML page currently present is docs/docs.html, canonical /docs/docs/
+      # Docs root → landing index
       - type: redirect
         source: /docs
-        destination: /docs/docs/
-      - type: redirect
-        source: /docs/
-        destination: /docs/docs/
+        destination: /docs/
       - type: redirect
         source: /docs.html
-        destination: /docs/docs/
+        destination: /docs/
       - type: redirect
         source: /docs/docs.html
         destination: /docs/docs/
       - type: redirect
-        source: /en/docs
+        source: /docs/docs
         destination: /docs/docs/
       - type: redirect
+        source: /en/docs
+        destination: /docs/
+      - type: redirect
         source: /en/docs/
-        destination: /docs/docs/
+        destination: /docs/
+      - type: redirect
+        source: /docs/index.html
+        destination: /docs/
+
+      # 1. ai-governance-platform (docs)
+      - type: redirect
+        source: /docs/ai-governance-platform
+        destination: /docs/ai-governance-platform/
+      - type: redirect
+        source: /docs/ai-governance-platform.html
+        destination: /docs/ai-governance-platform/
+      - type: redirect
+        source: /docs/ai-governance-platform/index.html
+        destination: /docs/ai-governance-platform/
+
+      # 2. ai-firewall (docs)
+      - type: redirect
+        source: /docs/ai-firewall
+        destination: /docs/ai-firewall/
+      - type: redirect
+        source: /docs/ai-firewall.html
+        destination: /docs/ai-firewall/
+      - type: redirect
+        source: /docs/ai-firewall/index.html
+        destination: /docs/ai-firewall/
+
+      # 3. ai-audit-trail (docs)
+      - type: redirect
+        source: /docs/ai-audit-trail
+        destination: /docs/ai-audit-trail/
+      - type: redirect
+        source: /docs/ai-audit-trail.html
+        destination: /docs/ai-audit-trail/
+      - type: redirect
+        source: /docs/ai-audit-trail/index.html
+        destination: /docs/ai-audit-trail/
+
+      # 4. human-approval-layer (docs)
+      - type: redirect
+        source: /docs/human-approval-layer
+        destination: /docs/human-approval-layer/
+      - type: redirect
+        source: /docs/human-approval-layer.html
+        destination: /docs/human-approval-layer/
+      - type: redirect
+        source: /docs/human-approval-layer/index.html
+        destination: /docs/human-approval-layer/
+
+      # 5. ai-evidence-file (docs)
+      - type: redirect
+        source: /docs/ai-evidence-file
+        destination: /docs/ai-evidence-file/
+      - type: redirect
+        source: /docs/ai-evidence-file.html
+        destination: /docs/ai-evidence-file/
+      - type: redirect
+        source: /docs/ai-evidence-file/index.html
+        destination: /docs/ai-evidence-file/
+
+      # 6. ai-governance-saudi-arabia (docs)
+      - type: redirect
+        source: /docs/ai-governance-saudi-arabia
+        destination: /docs/ai-governance-saudi-arabia/
+      - type: redirect
+        source: /docs/ai-governance-saudi-arabia.html
+        destination: /docs/ai-governance-saudi-arabia/
+      - type: redirect
+        source: /docs/ai-governance-saudi-arabia/index.html
+        destination: /docs/ai-governance-saudi-arabia/
+
+      # 7. ai-risk-management (docs)
+      - type: redirect
+        source: /docs/ai-risk-management
+        destination: /docs/ai-risk-management/
+      - type: redirect
+        source: /docs/ai-risk-management.html
+        destination: /docs/ai-risk-management/
+      - type: redirect
+        source: /docs/ai-risk-management/index.html
+        destination: /docs/ai-risk-management/
+
+      # 8. pdpl-ai-governance (docs)
+      - type: redirect
+        source: /docs/pdpl-ai-governance
+        destination: /docs/pdpl-ai-governance/
+      - type: redirect
+        source: /docs/pdpl-ai-governance.html
+        destination: /docs/pdpl-ai-governance/
+      - type: redirect
+        source: /docs/pdpl-ai-governance/index.html
+        destination: /docs/pdpl-ai-governance/
+
+      # 9. nca-ecc-ai-governance (docs)
+      - type: redirect
+        source: /docs/nca-ecc-ai-governance
+        destination: /docs/nca-ecc-ai-governance/
+      - type: redirect
+        source: /docs/nca-ecc-ai-governance.html
+        destination: /docs/nca-ecc-ai-governance/
+      - type: redirect
+        source: /docs/nca-ecc-ai-governance/index.html
+        destination: /docs/nca-ecc-ai-governance/
+
+      # 10. ai-audit-readiness (docs)
+      - type: redirect
+        source: /docs/ai-audit-readiness
+        destination: /docs/ai-audit-readiness/
+      - type: redirect
+        source: /docs/ai-audit-readiness.html
+        destination: /docs/ai-audit-readiness/
+      - type: redirect
+        source: /docs/ai-audit-readiness/index.html
+        destination: /docs/ai-audit-readiness/
 
       # ── Kernel Module Redirects ─────────────────────────────────────────────
       # BrightAI Kernel dashboard pages that exist and are normalized to /path/

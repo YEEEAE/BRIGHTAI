@@ -25,6 +25,21 @@ BrightAI is an operational AI governance and safety layer for Saudi organization
 - [Human Approval Layer](https://brightai.site/solutions/human-approval-layer/) — موافقة بشرية للقرارات الحساسة في أنظمة AI.
 - [AI Evidence File](https://brightai.site/solutions/ai-evidence-file/) — ملفات أدلة تدعم جاهزية التدقيق والمراجعة.
 
+## وثائق الموقع الرسمية
+
+- [مركز وثائق BrightAI](https://brightai.site/docs/)
+
+- [وثائق AI Governance Platform](https://brightai.site/docs/ai-governance-platform/)
+- [وثائق AI Firewall](https://brightai.site/docs/ai-firewall/)
+- [وثائق AI Audit Trail](https://brightai.site/docs/ai-audit-trail/)
+- [وثائق Human Approval Layer](https://brightai.site/docs/human-approval-layer/)
+- [وثائق AI Evidence File](https://brightai.site/docs/ai-evidence-file/)
+- [حوكمة الذكاء الاصطناعي في السعودية](https://brightai.site/docs/ai-governance-saudi-arabia/)
+- [إدارة مخاطر الذكاء الاصطناعي](https://brightai.site/docs/ai-risk-management/)
+- [PDPL والذكاء الاصطناعي](https://brightai.site/docs/pdpl-ai-governance/)
+- [NCA ECC وحوكمة الذكاء الاصطناعي](https://brightai.site/docs/nca-ecc-ai-governance/)
+- [جاهزية تدقيق الذكاء الاصطناعي](https://brightai.site/docs/ai-audit-readiness/)
+
 ## موارد معرفية داخلية
 
 - `docx/ai-governance-saudi-arabia.md` — حوكمة الذكاء الاصطناعي في السعودية: دليل تنفيذي للمؤسسات.
