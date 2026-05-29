@@ -459,8 +459,38 @@
     }
     container.innerHTML = headerHtml;
 
+    updateHeaderHeightVariable();
+
     // تهيئة وظائف وإجراءات التفاعل
     initInteractions();
+  }
+
+  function updateHeaderHeightVariable() {
+    const header = document.querySelector('.brightai-header');
+    if (!header) return;
+
+    const setHeaderHeight = function () {
+      try {
+        const height = Math.ceil(header.getBoundingClientRect().height);
+        if (height > 0) {
+          document.documentElement.style.setProperty('--brightai-header-height', height + 'px');
+        }
+      } catch (e) {
+        // Fail silently; header sizing should never block navigation.
+      }
+    };
+
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight, { passive: true });
+
+    if ('ResizeObserver' in window) {
+      try {
+        const observer = new ResizeObserver(setHeaderHeight);
+        observer.observe(header);
+      } catch (e) {
+        // Fail silently when ResizeObserver is unavailable or blocked.
+      }
+    }
   }
 
   // 5. تهيئة وتفعيل وظائف التفاعل الفاخر وإمكانية الوصول

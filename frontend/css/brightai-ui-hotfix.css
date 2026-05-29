@@ -1,0 +1,208 @@
+/*
+  BrightAI UI Hotfix
+  Scope: overflow-safe header dropdowns, hero CTA wrapping, certificate chip wrapping.
+  Keep this file surgical; it intentionally overrides the existing UI without redesigning it.
+*/
+
+:root {
+  --brightai-header-height: 74px;
+  --brightai-page-gutter: clamp(16px, 3vw, 32px);
+  --brightai-header-layer: 1200;
+  --brightai-dropdown-layer: 1201;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  min-width: 0;
+}
+
+#brightai-unified-header {
+  position: relative;
+  z-index: var(--brightai-header-layer);
+  isolation: isolate;
+}
+
+.brightai-header {
+  z-index: var(--brightai-header-layer);
+  isolation: isolate;
+  max-width: 100vw;
+}
+
+.brightai-header-nav {
+  width: min(100%, 85rem);
+  max-width: 100vw;
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+}
+
+.brightai-logo-link,
+.brightai-actions,
+.brightai-desktop-menu,
+.brightai-menu-link {
+  min-width: 0;
+}
+
+.brightai-desktop-menu {
+  gap: clamp(0.55rem, 1.25vw, 1.5rem);
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+.brightai-actions {
+  flex: 0 1 auto;
+}
+
+.brightai-btn {
+  white-space: nowrap;
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .brightai-logo-badge {
+    display: none !important;
+  }
+
+  .brightai-header-nav {
+    padding-inline: 1rem;
+  }
+
+  .brightai-menu-link {
+    font-size: 0.84rem;
+    padding-inline: 0.15rem;
+  }
+
+  .brightai-btn {
+    font-size: 0.78rem;
+    padding-inline: 0.72rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .brightai-dropdown {
+    position: fixed;
+    top: calc(var(--brightai-header-height, 74px) + 0.65rem);
+    left: 50%;
+    right: auto;
+    inset-inline-start: auto;
+    transform: translateX(-50%) translateY(10px);
+    z-index: var(--brightai-dropdown-layer);
+    max-width: calc(100vw - (var(--brightai-page-gutter) * 2));
+  }
+
+  .brightai-menu-item:hover > .brightai-dropdown,
+  .brightai-menu-item:focus-within > .brightai-dropdown,
+  .brightai-menu-item.is-open > .brightai-dropdown {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .brightai-dropdown::before {
+    inset-inline-start: 50%;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .brightai-dropdown-solutions {
+    width: min(720px, calc(100vw - (var(--brightai-page-gutter) * 2)));
+    max-height: calc(100vh - var(--brightai-header-height, 74px) - 2rem);
+  }
+
+  .brightai-dropdown-resources {
+    width: min(52rem, calc(100vw - (var(--brightai-page-gutter) * 2)));
+    max-height: calc(100vh - var(--brightai-header-height, 74px) - 2rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .brightai-dropdown-kernel {
+    width: min(18rem, calc(100vw - (var(--brightai-page-gutter) * 2)));
+    max-height: calc(100vh - var(--brightai-header-height, 74px) - 2rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .brightai-dropdown-resources {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(42rem, calc(100vw - (var(--brightai-page-gutter) * 2)));
+  }
+}
+
+@media (max-width: 1023px) {
+  .brightai-desktop-menu > .brightai-menu-item > .brightai-dropdown-resources {
+    display: none !important;
+  }
+}
+
+.brightai-dropdown-item,
+.brightai-resource-link,
+.brightai-dropdown-cta,
+.brightai-dropdown-content,
+.brightai-dropdown-title,
+.brightai-dropdown-desc {
+  min-width: 0;
+}
+
+.brightai-resource-link span,
+.brightai-dropdown-title,
+.brightai-dropdown-desc,
+.brightai-dropdown-cta span {
+  overflow-wrap: anywhere;
+}
+
+#hero-section .chip {
+  max-width: 100%;
+  white-space: normal;
+  flex-wrap: wrap;
+  align-items: center;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+#hero-section .chip .pulse-dot {
+  flex: 0 0 auto;
+}
+
+.home-hero-actions,
+.home-final-cta-actions {
+  max-width: 100%;
+  min-width: 0;
+}
+
+.home-hero-actions > a,
+.home-final-cta-actions > a {
+  max-width: 100%;
+  min-width: min(100%, 13.5rem);
+  white-space: normal;
+  text-align: center;
+  line-height: 1.45;
+}
+
+.home-hero-actions .wa-btn {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.home-cta {
+  flex-wrap: wrap;
+}
+
+.home-cta span,
+.wa-btn {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .home-hero-actions > a,
+  .home-final-cta-actions > a {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 1rem;
+  }
+}
