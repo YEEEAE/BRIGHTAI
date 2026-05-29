@@ -150,6 +150,91 @@
   }
   </script>
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/ai-audit-trail/#webpage",
+      "url": "https://brightai.site/docs/ai-audit-trail/",
+      "name": "وثائق AI Audit Trail | BrightAI",
+      "description": "وثيقة AI Audit Trail من BrightAI لتوثيق كل طلب وقرار وموافقة في استخدامات الذكاء الاصطناعي.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/ai-audit-trail/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "وثائق AI Audit Trail | BrightAI",
+          "item": "https://brightai.site/docs/ai-audit-trail/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/ai-audit-trail/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "الحقول الأساسية معرف الطلب والمستخدم والقسم. نوع البيانات ومستوى المخاطر. النموذج المستخدم ووقت المعالجة. قرار AI والموافقة البشرية إن وجدت. hash أو معرف تسلسلي لدعم سلامة السجل. استخدامات التدقيق مراجعة قرارات حساسة بعد وقوعها. تحليل أنماط استخدام AI داخل المؤسسة. إنتاج Evidence File للمراجعات. دعم التحقيق في حوادث أو تسريب بيانات. FAQ هل السجل بديل SIEM؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا، لكنه يمكن أن يمد أدوات المراقبة بسياق AI متخصص."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="bg-grid">
 
@@ -260,5 +345,6 @@
 </script>
 
   <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

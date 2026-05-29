@@ -150,6 +150,91 @@
   }
   </script>
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/ai-evidence-file/#webpage",
+      "url": "https://brightai.site/docs/ai-evidence-file/",
+      "name": "وثائق AI Evidence File | BrightAI",
+      "description": "وثيقة AI Evidence File من BrightAI لبناء ملف أدلة يدعم جاهزية التدقيق والمراجعة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/ai-evidence-file/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "وثائق AI Evidence File | BrightAI",
+          "item": "https://brightai.site/docs/ai-evidence-file/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/ai-evidence-file/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "محتويات الملف ملخص حالة استخدام AI. سجل الطلبات والقرارات. مستويات المخاطر والتصنيف. الموافقات البشرية وأسبابها. السياسات والضوابط المطبقة. متى ينتج؟ قبل مراجعة داخلية. بعد حادثة أو قرار حساس. شهريًا أو ربع سنويًا حسب سياسة المؤسسة. عند طلب جهة تدقيق أو لجنة مخاطر. FAQ هل الملف ضمان امتثال؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "لا، لكنه يدعم جاهزية الامتثال عبر أدلة تشغيلية منظمة."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="bg-grid">
 
@@ -260,5 +345,6 @@
 </script>
 
   <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>

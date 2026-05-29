@@ -57,7 +57,7 @@
 }
 
 .brightai-header-nav {
-  max-w: 85rem;
+  max-width: 85rem;
   margin-inline: auto;
   padding: 0.85rem 1.5rem;
   display: flex;

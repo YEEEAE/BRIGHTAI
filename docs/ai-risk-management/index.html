@@ -132,6 +132,99 @@
   }
   </script>
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
+  <script id="brightai-production-schema" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "Organization",
+        "LocalBusiness"
+      ],
+      "@id": "https://brightai.site/#organization",
+      "name": "Bright AI",
+      "url": "https://brightai.site",
+      "logo": "https://brightai.site/frontend/images/logo-new.PNG",
+      "areaServed": "SA",
+      "sameAs": []
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "Bright AI",
+      "publisher": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": [
+        "ar-SA",
+        "en-SA"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://brightai.site/docs/ai-risk-management/#webpage",
+      "url": "https://brightai.site/docs/ai-risk-management/",
+      "name": "إدارة مخاطر الذكاء الاصطناعي | BrightAI Docs",
+      "description": "دليل إدارة مخاطر الذكاء الاصطناعي للمؤسسات السعودية من التصنيف إلى الضوابط والمراجعة.",
+      "isPartOf": {
+        "@id": "https://brightai.site/#website"
+      },
+      "about": {
+        "@id": "https://brightai.site/#organization"
+      },
+      "inLanguage": "ar-SA"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://brightai.site/docs/ai-risk-management/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Bright AI",
+          "item": "https://brightai.site/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "docs",
+          "item": "https://brightai.site/docs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "إدارة مخاطر الذكاء الاصطناعي | BrightAI Docs",
+          "item": "https://brightai.site/docs/ai-risk-management/"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://brightai.site/docs/ai-risk-management/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "المخاطر الشائعة قرارات آلية حساسة بدون مراجعة. Prompts تحتوي بيانات شخصية أو مالية. غياب سجل يشرح سبب القرار. تفاوت الضوابط بين الإدارات. كيف يساعد BrightAI؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "BrightAI يربط AI Firewall وRisk Scoring وHuman Approval وAudit Trail لإدارة المخاطر كعملية يومية قابلة للمراجعة."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Checklist تعريف مستويات المخاطر. ربط المخاطر بنوع البيانات. تفعيل موافقة للحالات عالية المخاطر. مراجعة التقارير دوريًا. FAQ هل يمكن أتمتة تقييم المخاطر؟",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "يمكن دعمه آليًا، لكن القرارات الحساسة تحتاج حوكمة ومراجعة بشرية."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
 </head>
 <body class="bg-grid">
 
@@ -244,5 +337,6 @@
 </script>
 
   <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
+  <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
 </body>
 </html>
