@@ -23,6 +23,7 @@ const PAGES_OUTPUT = path.join(ROOT, "sitemap-pages.xml");
 const KERNEL_OUTPUT = path.join(ROOT, "sitemap-kernel.xml");
 const DEMO_OUTPUT = path.join(ROOT, "sitemap-demo.xml");
 const LEGAL_OUTPUT = path.join(ROOT, "sitemap-legal.xml");
+const SOLUTIONS_OUTPUT = path.join(ROOT, "sitemap-solutions.xml");
 const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
 
 const IGNORED_SCAN_DIRS = new Set([
@@ -107,6 +108,17 @@ function groupRelPath(relPath) {
   // Kernel
   if (normalized.startsWith("kernel/")) {
     return "kernel";
+  }
+
+  // Solutions
+  if (
+    normalized === "solutions/ai-governance-platform/index.html" ||
+    normalized === "solutions/ai-firewall/index.html" ||
+    normalized === "solutions/ai-audit-trail/index.html" ||
+    normalized === "solutions/human-approval-layer/index.html" ||
+    normalized === "solutions/ai-evidence-file/index.html"
+  ) {
+    return "solutions";
   }
 
   // Demo
@@ -308,6 +320,7 @@ async function main() {
   const kernelList = [];
   const demoList = [];
   const legalList = [];
+  const solutionsList = [];
   const allAllowedRelPaths = [];
 
   for (const relPath of normalizedRelPaths) {
@@ -327,6 +340,7 @@ async function main() {
       else if (group === "kernel") kernelList.push(entry);
       else if (group === "demo") demoList.push(entry);
       else if (group === "legal") legalList.push(entry);
+      else if (group === "solutions") solutionsList.push(entry);
     }
   }
 
@@ -344,29 +358,29 @@ async function main() {
   const finalKernel = processEntries(kernelList);
   const finalDemo = processEntries(demoList);
   const finalLegal = processEntries(legalList);
+  const finalSolutions = processEntries(solutionsList);
 
   await fs.writeFile(PAGES_OUTPUT, renderXml(finalPages), "utf8");
   await fs.writeFile(KERNEL_OUTPUT, renderXml(finalKernel), "utf8");
   await fs.writeFile(DEMO_OUTPUT, renderXml(finalDemo), "utf8");
   await fs.writeFile(LEGAL_OUTPUT, renderXml(finalLegal), "utf8");
+  await fs.writeFile(SOLUTIONS_OUTPUT, renderXml(finalSolutions), "utf8");
 
   process.stdout.write(`Generated sitemap-pages.xml with ${finalPages.length} URLs\n`);
   process.stdout.write(`Generated sitemap-kernel.xml with ${finalKernel.length} URLs\n`);
   process.stdout.write(`Generated sitemap-demo.xml with ${finalDemo.length} URLs\n`);
   process.stdout.write(`Generated sitemap-legal.xml with ${finalLegal.length} URLs\n`);
+  process.stdout.write(`Generated sitemap-solutions.xml with ${finalSolutions.length} URLs\n`);
 
-  // Sitemap Index sitemap.xml
-  const today = toIsoDate(new Date());
-  const indexSitemaps = [
-    { loc: `${BASE_URL}/sitemap-pages.xml`, lastmod: today, count: finalPages.length },
-    { loc: `${BASE_URL}/sitemap-kernel.xml`, lastmod: today, count: finalKernel.length },
-    { loc: `${BASE_URL}/sitemap-demo.xml`, lastmod: today, count: finalDemo.length },
-    { loc: `${BASE_URL}/sitemap-legal.xml`, lastmod: today, count: finalLegal.length },
-  ].filter((s) => s.count > 0);
+  const primarySitemapEntries = [
+    ...finalPages,
+    ...finalLegal,
+    ...finalDemo,
+    ...finalSolutions,
+  ].sort((a, b) => a.loc.localeCompare(b.loc, "en"));
 
-  const indexXml = renderSitemapIndex(indexSitemaps);
-  await fs.writeFile(SITEMAP_INDEX, indexXml, "utf8");
-  process.stdout.write(`Generated sitemap.xml (Sitemap Index) pointing to ${indexSitemaps.length} maps\n`);
+  await fs.writeFile(SITEMAP_INDEX, renderXml(primarySitemapEntries), "utf8");
+  process.stdout.write(`Generated sitemap.xml with ${primarySitemapEntries.length} public marketing URLs\n`);
 
   // Write Quality Report
   const reportLines = [
@@ -377,6 +391,8 @@ async function main() {
     `- Kernel Sitemap URLs: ${finalKernel.length}`,
     `- Demo Sitemap URLs: ${finalDemo.length}`,
     `- Legal Sitemap URLs: ${finalLegal.length}`,
+    `- Solutions Sitemap URLs: ${finalSolutions.length}`,
+    "- Kernel URLs are generated in sitemap-kernel.xml but intentionally excluded from primary sitemap.xml until the indexing policy is confirmed.",
     "",
     "All URLs strictly verified for canonical alignment, code 200 health, and indexability.",
   ];

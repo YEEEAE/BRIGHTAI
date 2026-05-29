@@ -120,6 +120,10 @@ Allow: /
 
 # Sitemaps
 Sitemap: https://brightai.site/sitemap.xml
+Sitemap: https://brightai.site/sitemap-pages.xml
+Sitemap: https://brightai.site/sitemap-legal.xml
+Sitemap: https://brightai.site/sitemap-demo.xml
+Sitemap: https://brightai.site/sitemap-solutions.xml
 Sitemap: https://brightai.site/sitemap-images.xml
 
 # Host

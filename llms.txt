@@ -3,6 +3,8 @@
 ## نظرة عامة
 برايت آي (BrightAI) هي منصة أمان وحوكمة للذكاء الاصطناعي مصممة خصيصاً للمؤسسات السعودية. تعمل كطبقة وسيطة بين الموظفين ونماذج الذكاء الاصطناعي، لضمان أن كل طلب للذكاء الاصطناعي آمن وموثق وقابل للمراجعة ومتوافق مع الأنظمة السعودية.
 
+BrightAI is an operational AI governance and safety layer for Saudi organizations, helping teams classify AI risks, protect sensitive data, maintain audit trails, apply human approvals, and produce evidence for compliance readiness.
+
 التأسيس: 2025
 المقر الرئيسي: الرياض، المملكة العربية السعودية
 الموقع الإلكتروني: https://brightai.site
@@ -10,10 +12,26 @@
 تويتر: @BrightAISite
 
 ## المنتج الأساسي: [نواة برايت آي (BrightAI Kernel)](https://brightai.site/#product)
-نواة برايت آي هي المحرك الأساسي — مشابه لـ QNX في الأنظمة المدمجة — الذي يقع بين المستخدمين ونماذج الذكاء الاصطناعي في البيئات المؤسسية.
+نواة برايت آي هي طبقة التنفيذ الأساسية التي تقع بين المستخدمين ونماذج الذكاء الاصطناعي في البيئات المؤسسية. BrightAI Kernel يفحص الطلب، يصنف المخاطر، يطبق ضوابط الامتثال، يطلب الموافقة البشرية عند الحاجة، ثم يسجل كل تفاعل في Audit Trail قابل للمراجعة.
 
 البنية المعمارية: الموظف ← [نواة برايت آي](https://brightai.site/#product) ← نماذج الذكاء الاصطناعي (Gemini/GPT/Claude/محلي)
 الأنظمة المتصلة: ERP، CRM، HIS، SharePoint، Excel
+
+## حلول الحوكمة الأساسية
+
+- [AI Governance Platform](https://brightai.site/solutions/ai-governance-platform/) — منصة حوكمة الذكاء الاصطناعي للمؤسسات السعودية.
+- [AI Firewall](https://brightai.site/solutions/ai-firewall/) — حماية البيانات الحساسة قبل وصولها للنماذج.
+- [AI Audit Trail](https://brightai.site/solutions/ai-audit-trail/) — توثيق كل طلب وقرار وموافقة.
+- [Human Approval Layer](https://brightai.site/solutions/human-approval-layer/) — موافقة بشرية للقرارات الحساسة في أنظمة AI.
+- [AI Evidence File](https://brightai.site/solutions/ai-evidence-file/) — ملفات أدلة تدعم جاهزية التدقيق والمراجعة.
+
+## موارد معرفية داخلية
+
+- `docx/ai-governance-saudi-arabia.md` — حوكمة الذكاء الاصطناعي في السعودية: دليل تنفيذي للمؤسسات.
+- `docx/ai-risk-management.md` — إدارة مخاطر الذكاء الاصطناعي للمؤسسات السعودية.
+- `docx/pdpl-ai-governance.md` — PDPL والذكاء الاصطناعي: إدارة الخصوصية والمخاطر داخل المؤسسة.
+- `docx/nca-ecc-ai-governance.md` — NCA ECC وحوكمة الذكاء الاصطناعي: ضوابط تشغيلية للجهات المنظمة.
+- `docx/ai-audit-readiness.md` — جاهزية تدقيق الذكاء الاصطناعي: كيف تثبت السيطرة والامتثال؟
 
 ## [4 طبقات أمنية](https://brightai.site/#layers)
 
