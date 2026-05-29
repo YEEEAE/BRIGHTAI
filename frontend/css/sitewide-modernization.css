@@ -590,3 +590,156 @@ header[role="banner"] {
   -webkit-backdrop-filter: blur(20px) !important;
 }
 
+/* ==========================================================================
+   GLOBAL TEXT & CARD CENTER ALIGNMENT
+   محاذاة مركزية عامة للنصوص والبطاقات في جميع الصفحات
+   ========================================================================== */
+
+/* محاذاة النصوص والعناوين في المنتصف */
+:where(
+  h1, h2, h3, h4, h5, h6,
+  p, 
+  .hero-title, 
+  .section-title, 
+  .card-title,
+  .feature-title,
+  .metric-title,
+  .stat-title,
+  .pricing-title,
+  .testimonial-text,
+  .description,
+  .subtitle,
+  .lead-text
+) {
+  text-align: center !important;
+}
+
+/* محاذاة البطاقات والعناصر في المنتصف */
+:where(
+  .card,
+  .feature-card,
+  .metric-card,
+  .stat-card,
+  .pricing-card,
+  .service-card,
+  .solution-card,
+  .benefit-card,
+  .testimonial-card,
+  .team-card,
+  .glass,
+  .glass-card,
+  .panel,
+  .dashboard-panel
+) {
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* محاذاة محتوى البطاقات */
+:where(
+  .card-content,
+  .card-body,
+  .feature-content,
+  .metric-content,
+  .stat-content
+) {
+  text-align: center !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+/* محاذاة الأيقونات في المنتصف */
+:where(
+  .icon,
+  .feature-icon,
+  .metric-icon,
+  .stat-icon,
+  .card-icon,
+  .service-icon
+) {
+  margin-inline: auto !important;
+  text-align: center !important;
+}
+
+/* محاذاة الأزرار والروابط في المنتصف */
+:where(
+  .actions,
+  .card-actions,
+  .hero-actions,
+  .cta-actions,
+  .button-group
+) {
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+/* محاذاة القوائم في المنتصف */
+:where(
+  .features-list,
+  .benefits-list,
+  .checklist,
+  .stats-list
+) {
+  text-align: center !important;
+}
+
+/* محاذاة الأقسام الرئيسية */
+:where(
+  section,
+  .section,
+  .hero,
+  .hero-section,
+  .features-section,
+  .benefits-section,
+  .pricing-section,
+  .testimonials-section,
+  .cta-section
+) > :where(h1, h2, h3, h4, h5, h6, p, .subtitle, .description) {
+  text-align: center !important;
+}
+
+/* استثناءات للعناصر التي يجب أن تبقى على اليمين/اليسار */
+:where(
+  nav,
+  .nav-links,
+  .breadcrumb,
+  .topbar,
+  .sidebar,
+  .sidebar-nav,
+  .table,
+  table,
+  th,
+  td,
+  .form-group,
+  .input-group,
+  label,
+  input,
+  textarea,
+  select,
+  .alert,
+  .notification,
+  .toast,
+  .dropdown-menu,
+  .dropdown-item,
+  .menu,
+  .menu-item
+) {
+  text-align: start !important;
+}
+
+/* استثناء للنصوص الطويلة في المقالات */
+:where(
+  article p,
+  .article-content p,
+  .blog-content p,
+  .post-content p,
+  .long-text,
+  .prose p
+) {
+  text-align: start !important;
+}
+

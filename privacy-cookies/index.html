@@ -35,9 +35,6 @@
     <link rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'" href="/frontend/css/main.bundle.min.css"><noscript>
         <link rel="stylesheet" href="/frontend/css/main.bundle.min.css" />
     </noscript>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-
     <script>
         (function () {
             'use strict';
@@ -55,7 +52,8 @@
                 document.body.appendChild(script);
             }
             function loadDeferredResources() {
-                loadCSS('https://fonts.googleapis.com/css2?family=BrightAI Official:wght@400;500;700;800&display=swap');
+                loadCSS('/frontend/assets/css/global-fonts.css?v=20260529-official-font');
+                loadCSS('/frontend/vendor/fontawesome/css/all.min.css?v=20260529-icons');
                 // Centralized Design System
                 loadCSS('../css/brightai-core.css');
 
