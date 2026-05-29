@@ -153,40 +153,12 @@
 }
   </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
 </head>
 <body class="bg-grid">
 
 
-<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
-  <nav role="navigation" aria-label="Main Navigation" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-3" aria-label="BrightAI Home">
-      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 flex-shrink-0">
-        <img src="/frontend/images/logo-new.PNG" alt="Bright AI Logo" width="40" height="40" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
-      </div>
-      <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">AI</span></span>
-      <span class="hidden md:inline text-xs text-white/50 border-l border-white/10 pl-3 ml-1">Saudi AI Safety</span>
-    </a>
-
-    <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80">
-      <li><a href="/#product" class="hover:text-white transition-colors">Product</a></li>
-      <li><a href="/#layers" class="hover:text-white transition-colors">Safety Layers</a></li>
-      <li><a href="/#compliance" class="hover:text-white transition-colors">Compliance Packs</a></li>
-      <li><a href="/#sectors" class="hover:text-white transition-colors">Sectors</a></li>
-      <li><a href="/#evidence" class="hover:text-white transition-colors">Evidence File</a></li>
-      <li><a href="/#faq" class="hover:text-white transition-colors">FAQ</a></li>
-      <li><a href="/kernel/" class="hover:text-brand-300 transition-colors"><i class="fa-solid fa-microchip mr-1"></i>Kernel OS</a></li>
-    </ul>
-
-    <div class="flex items-center gap-2">
-      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold wa-btn text-white" aria-label="Contact us via WhatsApp">
-        <i class="fa-brands fa-whatsapp text-lg"></i> Contact Us
-      </a>
-      <a href="/#demo" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold glow-btn text-white">
-        <i class="fa-solid fa-play"></i> Request Demo
-      </a>
-    </div>
-  </nav>
-</header>
+<div id="brightai-unified-header"></div>
 
 
 <main class="max-w-7xl mx-auto px-5 lg:px-8 py-16 lg:py-24">
@@ -307,5 +279,6 @@
 
 
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
 </body>
 </html>

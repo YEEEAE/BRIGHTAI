@@ -90,26 +90,14 @@
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
   <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
   <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
 </head>
 <body class="bg-[#060914] text-white font-sans min-h-screen flex flex-col bright-page--kernel" data-bright-page-type="kernel">
 
   <a href="#audit-main" class="skip-link">تخطي إلى سجل التدقيق</a>
 
   <!-- Header -->
-  <header role="banner" class="border-b border-white/10 bg-ink-900/40 backdrop-blur-xl sticky top-0 z-50">
-    <nav role="navigation" aria-label="ملاحة التدقيق" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <a href="/kernel/" class="flex items-center gap-2 text-white/50 hover:text-brand-300 transition-colors text-sm" aria-label="العودة للرئيسية">
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-          <span class="hidden sm:inline">رجوع</span>
-        </a>
-        <span class="text-white/20">|</span>
-        <span class="text-2xl font-bold bg-gradient-to-l from-brand-500 to-purple-500 bg-clip-text text-transparent">BrightAI Kernel</span>
-        <span class="text-white/20 hidden sm:inline">|</span>
-        <span class="text-sm text-white/60 hidden sm:inline">سجل التدقيق</span>
-      </div>
-    </nav>
-  </header>
+  <div id="brightai-unified-header"></div>
 
   <main id="audit-main" role="main" tabindex="-1" class="focus:outline-none flex-1">
 
@@ -359,5 +347,6 @@
   <script defer src="/frontend/js/sitewide-modernization.js"></script>
 
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
 </body>
 </html>

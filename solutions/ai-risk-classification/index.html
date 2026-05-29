@@ -249,52 +249,14 @@
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
 </style>
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
 </head>
 <body class="bg-grid">
 
 <a href="#main" class="skip-link">تخطّى للمحتوى الرئيسي</a>
 
 <!-- ================= HEADER / NAV ================= -->
-<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-ink-900/70 border-b border-white/5">
-  <nav role="navigation" aria-label="القائمة الرئيسية" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
-      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 transition-all duration-500">
-        <img src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" class="h-full w-full object-contain" decoding="async" fetchpriority="high" />
-      </div>
-      <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">Trust</span></span>
-      <span class="hidden md:inline text-xs text-white/50 border-r border-white/10 pr-3 mr-1">Saudi AI Safety OS</span>
-    </a>
-
-    <ul class="hidden lg:flex items-center gap-7 text-sm text-white/80">
-      <li><a href="/#product" class="hover:text-white transition-colors">المنتج</a></li>
-      <li><a href="/#layers" class="hover:text-white transition-colors">طبقات الأمان</a></li>
-      <li><a href="/#compliance" class="hover:text-white transition-colors">حزم الامتثال</a></li>
-      <li><a href="/#sectors" class="hover:text-white transition-colors">القطاعات</a></li>
-      <li><a href="/blog/" class="hover:text-white transition-colors">الوثائق</a></li>
-      <li><a href="/contact/" class="text-brand-300 font-bold hover:text-white transition-colors">تواصل معنا</a></li>
-    </ul>
-
-    <div class="flex items-center gap-2">
-      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold wa-btn text-white" aria-label="تواصل معنا عبر واتساب">
-        <i class="fa-brands fa-whatsapp text-lg"></i> تواصل معنا
-      </a>
-      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass" aria-label="فتح القائمة">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-    </div>
-  </nav>
-  <div id="mobileMenu" class="lg:hidden hidden border-t border-white/5 bg-ink-900/95">
-    <ul class="px-5 py-3 space-y-2 text-sm">
-      <li><a class="block py-2" href="/#product">المنتج</a></li>
-      <li><a class="block py-2" href="/#layers">طبقات الأمان</a></li>
-      <li><a class="block py-2" href="/#compliance">حزم الامتثال</a></li>
-      <li><a class="block py-2" href="/#sectors">القطاعات</a></li>
-      <li><a class="block py-2" href="/blog/">الوثائق</a></li>
-      <li><a class="block py-2 text-brand-300 font-bold" href="/contact/">تواصل معنا</a></li>
-      <li><a class="block py-2 text-green-400 font-bold" href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> تواصل واتساب</a></li>
-    </ul>
-  </div>
-</header>
+<div id="brightai-unified-header"></div>
 
 <main id="main" role="main">
 
@@ -1151,5 +1113,6 @@
 </script>
 <script defer src="/frontend/js/sitewide-modernization.js"></script>
 <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
 </body>
 </html>

@@ -309,172 +309,18 @@
   </script>
   <link rel="stylesheet" href="/frontend/css/production-fixes.v20260427.css">
   <link rel="preload" href="/frontend/assets/fonts/TheYearofTheCamel-Medium.otf" as="font" type="font/otf" crossorigin />
+  <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">
 </head>
 <body class="bg-grid">
 
 <a href="#main" class="skip-link">تخطّى للمحتوى الرئيسي</a>
 
 <!-- ================= HEADER / NAV ================= -->
-<header role="banner" class="sticky top-0 z-50 backdrop-blur-xl bg-[#080e1c]/80 border-b border-white/5">
-  <nav role="navigation" aria-label="القائمة الرئيسية" class="max-w-7xl mx-auto px-5 lg:px-8 py-3 flex items-center justify-between">
-    <a href="/" class="flex items-center gap-3" aria-label="BrightAI الرئيسية">
-      <div class="logo-box relative w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all duration-500">
-        <img src="/frontend/images/logo-new.PNG" alt="شعار Bright AI" width="40" height="40" class="h-full w-full object-contain" decoding="async" fetchpriority="high">
-      </div>
-      <span class="font-extrabold text-xl tracking-tight">Bright<span class="gradient-text">AI</span></span>
-      <span class="hidden md:inline text-xs text-white/50 border-r border-white/10 pr-3 mr-1">Saudi AI Safety</span>
-    </a>
-
-    <ul class="hidden lg:flex items-center gap-6 text-sm text-white/80">
-      <li><a href="/" class="hover:text-white transition-colors">الرئيسية</a></li>
-      
-      <!-- Solutions Dropdown -->
-      <li class="dropdown-container">
-        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="solutionsDropdownBtn" aria-controls="solutionsDropdownMenu">
-          <span>الحلول</span>
-          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
-        </button>
-        <div class="dropdown-menu solutions-dropdown" id="solutionsDropdownMenu" role="menu">
-          <a href="/solutions/ai-governance-platform/" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-scale-balanced"></i>
-            <div>
-              <span class="font-bold">منصة حوكمة الذكاء الاصطناعي</span>
-              <span class="text-xs">طبقة تشغيلية لإدارة استخدامات ومخاطر AI داخل المؤسسة.</span>
-            </div>
-          </a>
-          <a href="/solutions/ai-firewall/" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-shield-halved"></i>
-            <div>
-              <span class="font-bold">AI Firewall</span>
-              <span class="text-xs">فحص وحماية البيانات الحساسة قبل وصولها للنماذج.</span>
-            </div>
-          </a>
-          <a href="/solutions/ai-audit-trail/" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-file-signature"></i>
-            <div>
-              <span class="font-bold">AI Audit Trail</span>
-              <span class="text-xs">سجل قابل للمراجعة لكل طلب وقرار وموافقة.</span>
-            </div>
-          </a>
-          <a href="/solutions/human-approval-layer/" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-user-check"></i>
-            <div>
-              <span class="font-bold">طبقة الموافقة البشرية</span>
-              <span class="text-xs">مراجعة بشرية للطلبات والقرارات عالية المخاطر.</span>
-            </div>
-          </a>
-          <a href="/solutions/ai-evidence-file/" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-folder-open"></i>
-            <div>
-              <span class="font-bold">AI Evidence File</span>
-              <span class="text-xs">ملف أدلة يدعم التدقيق وجاهزية الامتثال.</span>
-            </div>
-          </a>
-        </div>
-      </li>
-
-      <!-- Kernel Dropdown -->
-      <li class="dropdown-container">
-        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="kernelDropdownBtn" aria-controls="kernelDropdownMenu">
-          <span>لوحة النواة KERNEL</span>
-          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
-        </button>
-        <div class="dropdown-menu" id="kernelDropdownMenu" role="menu">
-          <a href="/kernel/" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-gauge-high"></i>
-            <span class="font-bold">لوحة التحكم</span>
-          </a>
-          <a href="/kernel/chat.html" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-comments"></i>
-            <span class="font-bold">المحادثات</span>
-          </a>
-          <a href="/kernel/audit.html" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-file-lines"></i>
-            <span class="font-bold">سجل التدقيق</span>
-          </a>
-          <a href="/kernel/approvals.html" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-user-check"></i>
-            <span class="font-bold">الموافقات البشرية</span>
-          </a>
-          <a href="/kernel/stats.html" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-chart-line"></i>
-            <span class="font-bold">الإحصائيات</span>
-          </a>
-        </div>
-      </li>
-
-      <!-- Resources Dropdown -->
-      <li class="dropdown-container">
-        <button class="hover:text-brand-300 transition-colors flex items-center gap-1.5 font-medium py-2 bg-transparent border-none cursor-pointer text-white/80" aria-haspopup="true" aria-expanded="false" id="resourcesDropdownBtn" aria-controls="resourcesDropdownMenu">
-          <span>المصادر والمعلومات</span>
-          <i class="fa-solid fa-chevron-down text-[10px] opacity-60" aria-hidden="true"></i>
-        </button>
-        <div class="dropdown-menu" id="resourcesDropdownMenu" role="menu">
-          <a href="/docs/docs.html" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-book"></i>
-            <span class="font-bold">الوثائق والمعارف</span>
-          </a>
-          <a href="/#faq" class="dropdown-item" role="menuitem">
-            <i class="fa-solid fa-question-circle"></i>
-            <span class="font-bold">الأسئلة الشائعة</span>
-          </a>
-        </div>
-      </li>
-    </ul>
-
-    <div class="flex items-center gap-2">
-      <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold wa-btn text-white" aria-label="تواصل مع BrightAI عبر واتساب">
-        <i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب
-      </a>
-      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-lg glass flex items-center justify-center text-white" aria-label="فتح القائمة" aria-expanded="false" aria-controls="mobileDrawer">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-    </div>
-  </nav>
-</header>
+<div id="brightai-unified-header"></div>
 
 <!-- درج الجوال الجانبي الفاخر (Mobile Drawer) -->
-<div id="drawerOverlay" class="mobile-drawer-overlay" aria-hidden="true"></div>
-<aside id="mobileDrawer" class="mobile-drawer" role="complementary" aria-label="قائمة الجوال الجانبية" aria-hidden="true">
-  <div class="mobile-drawer-header">
-    <a href="/" class="flex items-center gap-2" aria-label="BrightAI الرئيسية">
-      <span class="font-extrabold text-lg tracking-tight">Bright<span class="gradient-text">AI</span></span>
-    </a>
-    <button id="drawerCloseBtn" class="mobile-drawer-close" aria-label="إغلاق القائمة">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-  </div>
-  <div class="mobile-drawer-content">
-    <nav aria-label="روابط التنقل السريع للجوال">
-      <ul class="space-y-1">
-        <li><a href="/" class="mobile-drawer-link"><i class="fa-solid fa-house text-brand-500"></i> الرئيسية</a></li>
-        
-        <div class="mobile-drawer-section-title">حلول BrightAI</div>
-        <li><a href="/solutions/ai-governance-platform/" class="mobile-drawer-link"><i class="fa-solid fa-scale-balanced text-brand-500"></i> منصة حوكمة الذكاء الاصطناعي</a></li>
-        <li><a href="/solutions/ai-firewall/" class="mobile-drawer-link"><i class="fa-solid fa-shield-halved text-brand-500"></i> AI Firewall</a></li>
-        <li><a href="/solutions/ai-audit-trail/" class="mobile-drawer-link"><i class="fa-solid fa-file-signature text-brand-500"></i> AI Audit Trail</a></li>
-        <li><a href="/solutions/human-approval-layer/" class="mobile-drawer-link"><i class="fa-solid fa-user-check text-brand-500"></i> طبقة الموافقة البشرية</a></li>
-        <li><a href="/solutions/ai-evidence-file/" class="mobile-drawer-link"><i class="fa-solid fa-folder-open text-brand-500"></i> AI Evidence File</a></li>
 
-        <div class="mobile-drawer-section-title">لوحة النواة (Kernel)</div>
-        <li><a href="/kernel/" class="mobile-drawer-link"><i class="fa-solid fa-gauge-high text-brand-500"></i> لوحة التحكم</a></li>
-        <li><a href="/kernel/chat.html" class="mobile-drawer-link"><i class="fa-solid fa-comments text-brand-500"></i> المحادثات</a></li>
-        <li><a href="/kernel/audit.html" class="mobile-drawer-link"><i class="fa-solid fa-file-lines text-brand-500"></i> سجل التدقيق</a></li>
-        <li><a href="/kernel/approvals.html" class="mobile-drawer-link"><i class="fa-solid fa-user-check text-brand-500"></i> الموافقات البشرية</a></li>
-        <li><a href="/kernel/stats.html" class="mobile-drawer-link"><i class="fa-solid fa-chart-line text-brand-500"></i> الإحصائيات</a></li>
-        
-        <div class="mobile-drawer-section-title">المصادر والمعلومات</div>
-        <li><a href="/docs/docs.html" class="mobile-drawer-link"><i class="fa-solid fa-book text-brand-500"></i> الوثائق والمعارف</a></li>
-        <li><a href="/#faq" class="mobile-drawer-link"><i class="fa-solid fa-question-circle text-brand-500"></i> الأسئلة الشائعة</a></li>
-      </ul>
-    </nav>
-  </div>
-  <div class="mobile-drawer-footer">
-    <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="wa-btn flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white text-sm" aria-label="تواصل مع BrightAI عبر واتساب">
-      <i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب
-    </a>
-  </div>
-</aside>
+
 
 <main id="main" role="main">
 
@@ -902,5 +748,6 @@
 
   <script defer src="/frontend/js/sitewide-modernization.js"></script>
   <script src="/frontend/js/production-runtime.v20260427.js" defer></script>
+  <script src="/frontend/js/unified-header.js?v=20260529-nav-v1" defer></script>
 </body>
 </html>
