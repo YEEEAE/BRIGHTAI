@@ -31,6 +31,7 @@
       resourcesCol2: 'الشركة',
       resourcesCol3: 'المجتمع / القنوات',
       whatsappUrl: 'https://wa.me/966538229013',
+      solutionsCta: 'استعرض الخدمات والحلول',
     },
     en: {
       home: 'Home',
@@ -48,6 +49,7 @@
       resourcesCol2: 'Company',
       resourcesCol3: 'Community / Channels',
       whatsappUrl: 'https://wa.me/966538229013',
+      solutionsCta: 'Explore services and solutions',
     }
   };
 
@@ -162,6 +164,10 @@
                   </div>
                 </a>
               `).join('')}
+              <a href="/services/" class="brightai-dropdown-cta" role="menuitem">
+                <span>${t.solutionsCta}</span>
+                <i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i>
+              </a>
             </div>
           </li>
 
@@ -501,7 +507,7 @@
     });
 
     // إغلاق الدروير تلقائياً بعد النقر على رابط التنقل لضمان انسيابية التجربة
-    const drawerLinks = document.querySelectorAll('.brightai-mobile-drawer a');
+    const drawerLinks = drawer.querySelectorAll('a');
     drawerLinks.forEach(link => {
       link.addEventListener('click', function () {
         // نغلق فقط إذا لم يكن الضغط لفتح أكورديون أو رابط فارغ
@@ -513,49 +519,52 @@
 
     // إدارة التنقل عبر الكيبورد للقوائم المنسدلة للديسكتوب
     const desktopDropBtns = document.querySelectorAll('.brightai-desktop-menu button[aria-haspopup="true"]');
+
+    function closeDesktopDropdowns(exceptBtn) {
+      desktopDropBtns.forEach(otherBtn => {
+        if (otherBtn === exceptBtn) return;
+        const menuItem = otherBtn.closest('.brightai-menu-item');
+        otherBtn.setAttribute('aria-expanded', 'false');
+        if (menuItem) menuItem.classList.remove('is-open');
+      });
+    }
+
     desktopDropBtns.forEach(btn => {
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
-        const menuId = this.getAttribute('aria-controls');
-        const menu = document.getElementById(menuId);
         const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        const menuItem = this.closest('.brightai-menu-item');
 
-        // إغلاق البقية أولاً
-        desktopDropBtns.forEach(otherBtn => {
-          if (otherBtn !== btn) {
-            otherBtn.setAttribute('aria-expanded', 'false');
-            const otherMenu = document.getElementById(otherBtn.getAttribute('aria-controls'));
-            if (otherMenu) {
-              otherMenu.style.opacity = '0';
-              otherMenu.style.visibility = 'hidden';
-              otherMenu.style.pointerEvents = 'none';
-            }
-          }
-        });
+        closeDesktopDropdowns(btn);
 
         if (isExpanded) {
           this.setAttribute('aria-expanded', 'false');
-          menu.style.opacity = '0';
-          menu.style.visibility = 'hidden';
-          menu.style.pointerEvents = 'none';
+          if (menuItem) menuItem.classList.remove('is-open');
         } else {
           this.setAttribute('aria-expanded', 'true');
-          menu.style.opacity = '1';
-          menu.style.visibility = 'visible';
-          menu.style.pointerEvents = 'auto';
+          if (menuItem) menuItem.classList.add('is-open');
+        }
+      });
+
+      btn.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          closeDesktopDropdowns();
+          this.focus();
         }
       });
     });
 
     // إغلاق قوائم سطح المكتب عند النقر بالخارج
-    document.addEventListener('click', function () {
-      desktopDropBtns.forEach(btn => {
-        btn.setAttribute('aria-expanded', 'false');
-        const menu = document.getElementById(btn.getAttribute('aria-controls'));
-        if (menu) {
-          menu.removeAttribute('style');
-        }
-      });
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.brightai-desktop-menu')) {
+        closeDesktopDropdowns();
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        closeDesktopDropdowns();
+      }
     });
   }
 

@@ -233,8 +233,6 @@
 
 <!-- درج الجوال الجانبي الفاخر (Mobile Drawer) -->
 
-
-
 <main class="wrap">
   <nav class="crumb-nav"><a href="/">الرئيسية</a> / <a href="/docs/">الوثائق</a></nav>
   <h1>NCA ECC وحوكمة الذكاء الاصطناعي</h1>
@@ -247,91 +245,7 @@
 </main>
 
 <script>
-  // Mobile drawer interaction
-  const menuBtn = document.getElementById('menuBtn');
-  const mobileDrawer = document.getElementById('mobileDrawer');
-  const drawerOverlay = document.getElementById('drawerOverlay');
-  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
-
-  function openDrawer() {
-    mobileDrawer?.classList.add('active');
-    drawerOverlay?.classList.add('active');
-    mobileDrawer?.setAttribute('aria-hidden', 'false');
-    drawerOverlay?.setAttribute('aria-hidden', 'false');
-    menuBtn?.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-    setTimeout(() => drawerCloseBtn?.focus(), 50);
   }
-
-  function closeDrawer() {
-    mobileDrawer?.classList.remove('active');
-    drawerOverlay?.classList.remove('active');
-    mobileDrawer?.setAttribute('aria-hidden', 'true');
-    drawerOverlay?.setAttribute('aria-hidden', 'true');
-    menuBtn?.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-    menuBtn?.focus();
-  }
-
-  menuBtn?.addEventListener('click', openDrawer);
-  drawerCloseBtn?.addEventListener('click', closeDrawer);
-  drawerOverlay?.addEventListener('click', closeDrawer);
-
-  mobileDrawer?.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', closeDrawer);
-  });
-
-  // Keyboard navigation for desktop dropdowns (Solutions, Kernel, Resources)
-  document.querySelectorAll('.dropdown-container').forEach(container => {
-    const btn = container.querySelector('button[aria-haspopup="true"]');
-    const menu = container.querySelector('.dropdown-menu');
-    if (!btn || !menu) return;
-
-    btn.addEventListener('focus', () => {
-      btn.setAttribute('aria-expanded', 'true');
-    });
-
-    container.addEventListener('focusout', (e) => {
-      if (!container.contains(e.relatedTarget)) {
-        btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        menu.querySelector('a')?.focus();
-      }
-    });
-
-    const links = menu.querySelectorAll('a');
-    links.forEach((link, idx) => {
-      link.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          const next = links[idx + 1] || links[0];
-          next.focus();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          const prev = links[idx - 1] || links[links.length - 1];
-          prev.focus();
-        } else if (e.key === 'Escape') {
-          e.preventDefault();
-          btn.focus();
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    });
-  });
-
-  // Escape key support sitewide for drawers/dropdowns
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeDrawer();
-      document.querySelectorAll('.dropdown-container button[aria-haspopup="true"]').forEach(btn => {
-        btn.setAttribute('aria-expanded', 'false');
-      });
-    }
   });
 </script>
 

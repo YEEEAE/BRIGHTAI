@@ -25,11 +25,6 @@
 <meta name="keywords" content="مركز وثائق BrightAI للشركات السعودية, الأدلة والتكاملات, BrightAI, الذكاء الاصطناعي, السعودية">
 <meta name="description" content="أدلة BrightAI للخدمات والتكاملات والحوكمة، مع روابط مباشرة للوثائق القانونية والدعم وواجهات API والصفحات الإنجليزية.">
 
-
-
-
-
-
 <meta content="website" property="og:type">
 <meta content="BrightAI" property="og:site_name">
 <meta property="og:title" content="مركز وثائق BrightAI للشركات السعودية">
@@ -339,8 +334,6 @@
 <script defer="" src="/frontend/js/iconify-preload.js" fetchpriority="low"></script>
 <script defer="" src="/frontend/js/vendor/iconify-icon.min.js"></script>
 
-
-
 <link href="/frontend/css/unified-nav-search.css" rel="stylesheet" media="print" onload="this.media='all'">
 <noscript><link href="/frontend/css/unified-nav-search.css" rel="stylesheet"></noscript>
 <style id="internal-linking-cta-style">
@@ -431,8 +424,6 @@
     list-style: none;
   }
 </style>
-
-
 
   <script id="brightai-production-schema" type="application/ld+json">
 {
@@ -564,7 +555,6 @@
 <div id="brightai-unified-header"></div>
 <!-- درج الجوال الجانبي الفاخر (Mobile Drawer) -->
 
-
 <a class="skip-link" href="#main">تخطي إلى المحتوى</a>
 <span id="main-content" tabindex="-1" aria-hidden="true"></span>
 <main class="relative z-10" id="main">
@@ -583,12 +573,6 @@
 <div class="seo-intent-group"><h2>روابط ذات صلة</h2><h3>الصفحة التجارية</h3><p>يربط هذا المحور مركز وثائق BrightAI للشركات السعودية - الأدلة والتكاملات في BrightAI بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p><h3>الدعم والمراجعة</h3><p>يربط هذا المحور مركز وثائق BrightAI للشركات السعودية - الأدلة والتكاملات في BrightAI بقرار عملي: تحديد المشكلة التشغيلية، فهم البيانات والأنظمة المؤثرة، ثم اختيار خطوة تنفيذ تناسب الفريق والحوكمة المطلوبة داخل المؤسسة.</p></div>
 <div class="seo-intent-links"><h2>روابط تساعدك على الخطوة التالية</h2><ul><li><a href="/services/">صفحة الخدمة التجارية</a></li><li><a href="/services/">الخدمات</a></li><li><a href="/contact/">تواصل معنا</a></li></ul></div>
 </section>
-
-
-
-
-
-
 
 <p class="text-slate-400 text-lg max-w-2xl mx-auto mb-8">كل ما تحتاجه لفهم خدماتنا وحلولنا. أدلة واضحة وتوثيق
             شامل للمطورين وصناع القرار.</p>
@@ -1111,93 +1095,7 @@
 </div>
 </footer>
 <script>
-  // Mobile drawer interaction
-  const menuBtn = document.getElementById('menuBtn');
-  const mobileDrawer = document.getElementById('mobileDrawer');
-  const drawerOverlay = document.getElementById('drawerOverlay');
-  const drawerCloseBtn = document.getElementById('drawerCloseBtn');
-
-  function openDrawer() {
-    mobileDrawer?.classList.add('active');
-    drawerOverlay?.classList.add('active');
-    mobileDrawer?.setAttribute('aria-hidden', 'false');
-    drawerOverlay?.setAttribute('aria-hidden', 'false');
-    menuBtn?.setAttribute('aria-expanded', 'true');
-    document.body.style.overflow = 'hidden';
-    // Shift focus to close button
-    setTimeout(() => drawerCloseBtn?.focus(), 50);
   }
-
-  function closeDrawer() {
-    mobileDrawer?.classList.remove('active');
-    drawerOverlay?.classList.remove('active');
-    mobileDrawer?.setAttribute('aria-hidden', 'true');
-    drawerOverlay?.setAttribute('aria-hidden', 'true');
-    menuBtn?.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
-    // Restore focus to menu button
-    menuBtn?.focus();
-  }
-
-  menuBtn?.addEventListener('click', openDrawer);
-  drawerCloseBtn?.addEventListener('click', closeDrawer);
-  drawerOverlay?.addEventListener('click', closeDrawer);
-
-  mobileDrawer?.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', closeDrawer);
-  });
-
-  // Keyboard navigation for desktop dropdowns (Solutions, Kernel, Resources)
-  document.querySelectorAll('.dropdown-container').forEach(container => {
-    const btn = container.querySelector('button[aria-haspopup="true"]');
-    const menu = container.querySelector('.dropdown-menu');
-    if (!btn || !menu) return;
-
-    btn.addEventListener('focus', () => {
-      btn.setAttribute('aria-expanded', 'true');
-    });
-
-    container.addEventListener('focusout', (e) => {
-      if (!container.contains(e.relatedTarget)) {
-        btn.setAttribute('aria-expanded', 'false');
-      }
-    });
-
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        menu.querySelector('a')?.focus();
-      }
-    });
-
-    const links = menu.querySelectorAll('a');
-    links.forEach((link, idx) => {
-      link.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown') {
-          e.preventDefault();
-          const next = links[idx + 1] || links[0];
-          next.focus();
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          const prev = links[idx - 1] || links[links.length - 1];
-          prev.focus();
-        } else if (e.key === 'Escape') {
-          e.preventDefault();
-          btn.focus();
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-    });
-  });
-
-  // Escape key support sitewide for drawers/dropdowns
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeDrawer();
-      document.querySelectorAll('.dropdown-container button[aria-haspopup="true"]').forEach(btn => {
-        btn.setAttribute('aria-expanded', 'false');
-      });
-    }
   });
 
   // Simple search functionality
