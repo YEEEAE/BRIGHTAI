@@ -1,198 +1,123 @@
-# 📦 SESSION 1 — DISCOVERY & INVENTORY
+# SESSION 1: DISCOVERY & INVENTORY
 
-**المشروع:** `brightai.site` — Saudi AI Safety OS
-**الفرع:** `brightai-middle-east` (مشتق من `main`)
-**نوع المشروع:** موقع HTML ثابت (Static Site) — **ليس** Next.js/React
-**تاريخ الجرد:** 2026-06-10
-**الوضع:** READ-ONLY (لا تعديل على ملفات الإنتاج)
+> Lead Principal Auditor — BrightAI | الجلسة 1 من 4 | وضع READ-ONLY
+> تاريخ التنفيذ: 2026-06-10 | الفحص: مستودع محلي + فحص حي عبر المتصفح على https://brightai.site
 
 ---
 
-## 1. 🏗️ نظرة عامة على البنية (Architecture)
+## 1. Project Structure
 
 | البند | القيمة |
 |-------|--------|
-| **النوع** | موقع HTML ثابت يُخدَّم مباشرة (لا build للصفحات) |
-| **Monorepo** | `npm workspaces` → workspace واحد: `frontend` |
-| **Node** | `>=22 <23` |
-| **النشر** | Render (`render.yaml`) + GitHub Pages (`CNAME`, `.nojekyll`) |
-| **النطاق** | `brightai.site` |
-| **اللغة الأساسية** | عربي `lang="ar-SA" dir="rtl"` |
-| **اللغة الثانوية** | إنجليزي `/en/` (صفحات قانونية فقط) |
-| **التحليلات** | Google Analytics `gtag.js` (G-8LLESL207Q) |
-| **PWA** | نعم — `manifest.webmanifest` + `sw.js` (الموقع + Kernel منفصل) |
+| Branch | `brightai-middle-east` (base: `main`) |
+| آخر Commit | `a4f6dd0` — feat: add SESSION 1 INVENTORY documentation |
+| Node / npm | v24.14.1 / 11.11.0 |
+| نوع المشروع | موقع **HTML ثابت** (Static Site) — ليس Next.js/React |
+| Total files (html/js/json/md) | **607** |
+| HTML pages | **129** |
+| JS files | **170** |
+| JSON files | **30** |
+| اللغة الأساسية | عربي `lang="ar-SA" dir="rtl"` + إنجليزي `/en/` (قانوني فقط) |
+| النشر | Cloudflare Pages / GitHub Pages (CNAME → brightai.site) + PWA |
 
-### أدوات البناء والصيانة (scripts/)
-البناء لا يولّد الصفحات، بل يعالج الأصول وSEO:
-- `build:assets` → tailwind purge + CSS bundle + minify + audit fixes + schema sync
-- `seo:*` → فحص صحة SEO + تدقيق Schema + بوابة CI
-- `sitemap:generate` → توليد خريطة الموقع لكل الصفحات
-- `indexnow:*` → دفع التحديثات لمحركات البحث (IndexNow)
-- `internal-links:*` → تدقيق وإصلاح الروابط الداخلية
-- `test:kernel` → `vitest` لاختبارات Kernel
-
----
-
-## 2. 🗺️ جرد الصفحات (Page Inventory)
-
-**إجمالي ملفات HTML:** `129`
-
-### أ) الصفحات الرئيسية (Top-Level)
-| المسار | الوصف |
-|--------|-------|
-| `/` (index.html) | الصفحة الرئيسية — Saudi AI Safety OS |
-| `/about/` | من نحن |
-| `/services/` | الخدمات (صفحة واحدة مجمّعة) ⚠️ |
-| `/pricing/` | الأسعار |
-| `/contact/` | التواصل |
-| `/demo/` | الديمو التجريبي |
-| `/trust/` | مركز الثقة |
-| `/report/` | تقرير التحليل |
-| `/hub/` | المركز المعرفي (5 صفحات) |
-| `/sitemap/` | خريطة الموقع (HTML) |
-| `/assessment/` | تقييم الجاهزية |
-| `/authors/` | المؤلفون |
-| `/plugins/` | الإضافات |
-
-### ب) الصفحات القانونية (Legal)
-`/privacy-policy/`, `/privacy-cookies/`, `/cookie-policy/`, `/terms/`,
-`/data-processing-agreement/`, `/pdpl-statement/`
-+ نسخ إنجليزية تحت `/en/` (cookie-policy, data-processing-agreement, pdpl-statement, privacy-policy, terms)
-
-### ج) أقسام المحتوى (Content Sections)
-| القسم | عدد الصفحات | ملاحظات |
-|-------|:----------:|---------|
-| **Solutions** | 14 صفحة | حلول قطاعية + منتجات (banking, healthcare, government, manufacturing…) |
-| **Blog** | 22 مقال + index + feed.xml | محتوى حوكمة/امتثال سعودي |
-| **Docs** | 28 صفحة + index | توثيق منتج + أدلة تنظيمية (PDPL, NCA-ECC, SDAIA, ISO-42001) |
-| **Hub** | 5 صفحات | مركز معرفي |
-
-### د) صفحات النظام
-`/404.html`, `/500.html`, `/error.html`, `/offline/`
+### الأقسام الرئيسية
+- `kernel/` — منصة حوكمة AI (محور التدقيق): 12 صفحة HTML + 19 JS + 8 mock JSON + 4 tests
+- `blog/` (22 مقال), `docs/` (28), `solutions/` (14), `hub/` (5), `services/`, `pricing/`, `trust/`, `resources/`
+- `en/` — نسخة إنجليزية (صفحات قانونية)
+- `components/` — مكتبة مكوّنات HTML (15 ملف) **عليها noindex**
+- ملفات SEO/AI: `llms.txt`, `ai.txt`, `robots.txt`, `sitemap.xml`, `_redirects`, `_headers`
 
 ---
 
-## 3. 🎯 جرد KERNEL (قلب المنتج)
+## 2. Kernel Pages Status
 
-**الموقع:** `/kernel/` — تطبيق PWA مستقل (manifest + sw.js خاص)
+> فحص حي عبر المتصفح: كل الصفحات HTTP 200، كلها `index, follow`، عناوين SEO عربية فريدة.
+> تقييمات Speed/Design تقديرية بصرية أولية — التحليل العميق في SESSION 2.
 
-### صفحات Kernel (12 صفحة HTML)
-| # | الصفحة | الملف | robots |
-|---|--------|-------|:------:|
-| 1 | لوحة التحكم | `kernel/index.html` | ✅ index, follow |
-| 2 | المحادثة | `kernel/chat.html` | ✅ index, follow |
-| 3 | سجل التدقيق | `kernel/audit.html` | ✅ index, follow |
-| 4 | الموافقات | `kernel/approvals.html` | ✅ index, follow |
-| 5 | الإحصائيات | `kernel/stats.html` | ✅ index, follow |
-| 6 | التكاملات | `kernel/connectors.html` | ✅ index, follow |
-| 7 | السيناريوهات | `kernel/scenarios.html` | ✅ index, follow |
-| 8 | السياسات | `kernel/policies.html` | ✅ index, follow |
-| 9 | ملف الأدلة | `kernel/evidence.html` | ✅ index, follow |
-| 10 | الامتثال | `kernel/compliance.html` | ✅ index, follow |
-| 11 | التقارير | `kernel/reports.html` | ✅ index, follow |
-| 12 | Offline | `kernel/offline.html` | ✅ index, follow |
+| Page | Status | Speed (1-10) | Design (1-10) | Content Style | Mobile | noindex |
+|------|--------|--------------|---------------|---------------|--------|---------|
+| /kernel/ | 200 ✅ | 7 | 6 | عربي فصيح/تقني | ✅ | ❌ index, follow |
+| /kernel/chat/ | 200 ✅ | 6 | 6 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/audit/ | 200 ✅ | 6 | 5 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/approvals/ | 200 ✅ | 7 | 6 | عربي فصيح | ✅ | ❌ index, follow |
+| /kernel/stats/ | 200 ✅ | 7 | 6 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/connectors/ | 200 ✅ | 7 | 6 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/scenarios/ | 200 ✅ | 7 | 6 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/policies/ | 200 ✅ | 6 | 6 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/evidence/ | 200 ✅ | 7 | 6 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/compliance/ | 200 ✅ | 7 | 7 | عربي تقني | ✅ | ❌ index, follow |
+| /kernel/reports | 200 ✅ | 7 | 6 | عربي تقني | ✅ | ❌ index, follow |
 
-> **ملاحظة على البريفنغ:** الموجز ذكر 11 صفحة. الواقع 12 صفحة HTML فعلية (مع `offline.html`). كل الـ11 المطلوبة موجودة. `/reports` موجودة كـ `reports.html` (مش بدون امتداد).
+**ملاحظة جوهرية على الحالة الحية:** عند الزيارة الفعلية، عدة صفحات تعرض هياكل تحميل فارغة (skeletons) ونصوصًا مفقودة، مع شريط حالة دائم: **"Production API · Degraded"**, **"Fallback unavailable MODE"**, **"Unknown DB"**, وتوست **"offline"** ثابت يحجب جزءًا من الواجهة. صفحة `/compliance/` كانت الأوضح (KPIs ظاهرة: 2 / 20 / 5 / 93%). هذا يشير إلى أن طبقة البيانات الحية (`api/kernel`) غير متصلة في الإنتاج، وستُحلَّل بعمق في SESSION 2.
 
-### بنية Kernel التقنية
-```
-kernel/
-├── *.html                    (12 صفحة)
-├── assets/
-│   ├── css/kernel.css        (CSS أساسي)
-│   ├── css/pages/*.css       (11 ملف CSS لكل صفحة)
-│   └── js/kernel-*.js        (19 ملف JS: api, chat, compliance,
-│                              command-palette, nav, notifications,
-│                              onboarding, pwa, reports, stats, utils…)
-├── api/mock/*.json           (8 ملفات بيانات وهمية:
-│                              approvals, audit, compliance, connectors,
-│                              evidence, policies, scenarios, stats)
-├── tests/*.test.js           (4 اختبارات vitest + setup)
-├── manifest.json             (PWA)
-├── sw.js                     (Service Worker)
-├── kernel-perf.js
-└── kernel-web-vitals.js
-```
-
-### ملاحظات Kernel
-- ✅ **فهرسة سليمة:** كل الصفحات `index, follow` — مطابقة للقاعدة #1.
-- 🟡 **بيانات وهمية:** يعمل على `api/mock/*.json` (demo mode) — لا backend حقيقي مربوط في الواجهة الثابتة.
-- 🟡 **ثقل CSS:** ملف CSS منفصل لكل صفحة (احتمال render-blocking).
+> ملاحظة عددية: عدد صفحات Kernel الفعلي 12 ملف HTML (مع `offline.html`)؛ الـ11 المطلوبة في الموجز كلها موجودة وتعمل.
 
 ---
 
-## 4. 🚨 مخالفات القاعدة #1 (INDEX EVERYTHING)
+## 3. noindex Files Found
 
-تم العثور على **16 صفحة** تحمل `noindex` — تخالف القاعدة الصارمة:
+إجمالي ملفات `noindex` الحقيقية = **16 ملف** (وسم `<meta name="robots" content="noindex, nofollow">`):
 
-| المجموعة | العدد | المسار | الحالة الحالية |
-|----------|:-----:|--------|----------------|
-| **مكتبة المكوّنات** | 15 | `/components/*.html` | `noindex, nofollow` + `Disallow` في robots.txt |
-| **عرض الخطوط** | 1 | `/frontend/font-demo.html` | `noindex` + `Disallow` في robots.txt |
+**`components/` (15 ملف):**
+`badge.html`, `breadcrumb.html`, `button-ghost.html`, `button-primary.html`, `button-secondary.html`, `card-feature.html`, `card-glass.html`, `card-kpi.html`, `chat-widget.html`, `form-input.html`, `form-search.html`, `modal.html`, `nav-unified.html`, `table.html`, `toast.html`
 
-> صفحات `/components/` هي عروض مكوّنات UI داخلية (badge, button, card, modal, table, toast…).
-> **قرار مطلوب في SESSION 2/4:** هل تُفهرس فعلاً (التزاماً بالقاعدة #1) أم تُعتبر استثناء تقني؟ حالياً محظورة في `robots.txt` أيضاً.
->
-> ✅ **توضيح مهم:** `/report/index.html` **سليمة** (`index, follow`) — كلمة "noindex" ظهرت داخل نص JSON تحليلي وليست وسم meta.
+**`frontend/` (1 ملف):**
+`frontend/font-demo.html`
 
----
+**استثناءات (ليست noindex فعلية):**
+- `report/index.html` → الوسم الفعلي `index, follow`؛ كلمة "noindex" مجرد نص توصية داخل المحتوى.
+- `scripts/.scripts-manifest.json` → ملف بيانات داخلي وليس صفحة ويب.
 
-## 5. 🌐 حالة SEO والـ i18n
-
-| البند | الحالة |
-|-------|--------|
-| `robots.txt` | ✅ موجود — Allow الكل عدا `/components/` و `font-demo` |
-| `sitemap.xml` | ✅ موجود (36KB، يُولَّد آلياً) |
-| `llms.txt` / `llms-full.txt` | ✅ موجود — تعريف للـ AI crawlers |
-| `ai.txt` | ✅ موجود |
-| `humans.txt` | ✅ موجود |
-| `manifest.webmanifest` | ✅ موجود |
-| `_headers` / `_redirects` | ✅ موجود (Netlify-style) |
-| `redirects.json` | ✅ موجود (25KB) |
-| `schema-saudi-seo.json` | ✅ Schema منظم للسوق السعودي |
-| **hreflang** | 🟡 `ar-SA` + `x-default` فقط — الإنجليزي (`/en/`) غير مربوط بـ hreflang في كل الصفحات |
-| **اللهجة السعودية** | 🟡 يحتاج تدقيق محتوى (SESSION 3) |
+> ⚠️ خرق محتمل للقاعدة #1 (INDEX EVERYTHING): 16 ملف. هذه مكوّنات/عروض UI داخلية محظورة أيضًا في robots.txt — القرار التفصيلي يُؤجَّل للجلسات اللاحقة.
 
 ---
 
-## 6. ⚠️ ملاحظات ومخاطر أولية (للجلسات القادمة)
+## 4. Anthropic Console Comparison
 
-| # | الملاحظة | الخطورة | الجلسة |
-|---|----------|:-------:|:------:|
-| 1 | صفحة `/services/` واحدة مجمّعة بلا صفحات فرعية | 🔴 حرجة | S3 |
-| 2 | `/components/*` + `font-demo` تحمل `noindex` (مخالفة القاعدة #1) | 🟠 عالية | S2/S4 |
-| 3 | hreflang لا يربط النسخة الإنجليزية بشكل كامل | 🟡 متوسطة | S4 |
-| 4 | Kernel يعمل ببيانات mock فقط (لا backend مربوط بالواجهة) | 🟡 متوسطة | S2 |
-| 5 | ثقل CSS (ملف لكل صفحة Kernel) — احتمال render-blocking | 🟡 متوسطة | S2 |
-| 6 | لا صفحات استهداف مدن (جدة، الدمام، الخبر) | 🟡 متوسطة | S3 |
-| 7 | محتوى المدونة جيد (22 مقال) لكن يحتاج تدقيق لهجة | 🟢 منخفضة | S3 |
+### What makes it world-class
+- **Control plane لا مجرد بوابة:** بيئة موحّدة لإدارة المفاتيح والفوترة وتحليلات الاستخدام اللحظية تحوّل تطوير AI لعملية مؤسسية قابلة للقياس والتأمين.
+- **النماذج الأولية التفاعلية (Workbench):** تجربة البرومبت وضبط المعاملات لحظيًا ثم تصدير كود جاهز للإنتاج — حلقة تغذية راجعة قصيرة.
+- **الحوكمة التعاونية:** مكتبات برومبت مشتركة، مساحات عمل، وصلاحيات دقيقة.
+- **التقييم التجريبي (Evals):** توليد حالات اختبار آلي ومقارنة المخرجات جنبًا إلى جنب.
+- **جماليات مقصودة:** مساحات بيضاء سخية وطباعة مقروءة تعزّز الإحساس بالموثوقية البحثية.
 
----
+### BrightAI vs Anthropic
+- **تشابه الطموح:** Kernel يستهدف نفس فئة "control plane" للحوكمة (audit/approvals/policies/compliance/evidence) — توجّه صحيح ومتقدم.
+- **فجوة الموثوقية:** Anthropic يعرض بيانات حية مستقرة؛ Kernel حاليًا "Degraded / offline / Unknown DB" مع skeletons فارغة — يضعف الانطباع world-class.
+- **فجوة الصقل البصري:** تصميم Kernel وظيفي (داكن/نيون) لكنه يفتقر لاتساق التباعد والطباعة والامتلاء.
+- **ميزة BrightAI:** التموضع حول الامتثال السعودي (PDPL / NCA ECC / SFDA) — ميزة سياقية لا يقدّمها Anthropic.
 
-## 7. 📊 ملخص رقمي
-
-```
-إجمالي صفحات HTML:        129
-├── Kernel:               12  (كلها مفهرسة ✅)
-├── Solutions:            14
-├── Blog:                 22 مقال (+ index + feed)
-├── Docs:                 28 (+ index)
-├── Hub:                   5
-├── صفحات رئيسية:         ~13
-├── صفحات قانونية:        ~11 (عربي + en)
-├── مكوّنات (noindex):    15  ⚠️
-└── نظام/أخرى:            ~9
-
-مخالفات القاعدة #1:       16 صفحة (components + font-demo)
-لغات:                     عربي (أساسي) + إنجليزي (قانوني فقط)
-نوع التقنية:              HTML ثابت + Vanilla JS + Tailwind (purged)
-```
+### 3 lessons learned
+1. **الموثوقية أولاً:** الحالة الحية يجب أن تعرض بيانات فعلية لا skeletons دائمة — "Degraded/offline" يقتل الثقة فورًا.
+2. **الصقل التحريري:** مساحات بيضاء وتباعد متّسق وطباعة مقروءة ترفع الإحساس بالجودة قبل أي ميزة.
+3. **حلقة قيمة واضحة:** كل صفحة لازم توصل قيمة فورية مرئية (KPI/إجراء)، مثل Workbench/Evals لدى Anthropic.
 
 ---
 
-## ✅ جاهز للانتقال إلى SESSION 2 — Kernel Deep Analysis
+## 5. Initial Observations
 
-**المدخلات الجاهزة لـ S2:**
-- خريطة Kernel كاملة (12 صفحة + 19 JS + 8 mock + 4 tests)
-- نقاط فحص: حالة الفهرسة (✅)، البيانات الوهمية، ثقل CSS
-- المخرَج المتوقع: `SESSION-2-KERNEL-AUDIT.md`
+**ملاحظات عامة:**
+- مشروع ناضج ومنظّم: 129 صفحة HTML، بنية أقسام واضحة، وملفات SEO/AI متقدمة.
+- Kernel هو القلب: 12 صفحة + 19 JS + 8 mock JSON + 4 tests — معمارية طموحة لمنصة حوكمة.
+
+**نقاط القوة المبدئية:**
+- كل صفحات Kernel الـ11 تعمل (HTTP 200) وكلها `index, follow` مع عناوين SEO عربية فريدة ووصفية.
+- تموضع تنافسي ذكي حول الامتثال السعودي (PDPL / NCA ECC / SFDA).
+- استجابة جيدة على الجوال (الصفحة الرئيسية لـ Kernel تتكيّف نظيفًا).
+
+**نقاط الضعف المبدئية:**
+- طبقة البيانات الحية معطّلة: "Degraded" + "Fallback unavailable" + "Unknown DB" + توست "offline" دائم، ومحتوى كثير يظهر كـ skeletons فارغة.
+- 16 ملف عليها noindex (15 مكوّن + font-demo) — خرق محتمل للقاعدة #1.
+- الصقل البصري دون مستوى "أفضل منصة في الشرق الأوسط": تباعد/طباعة غير متّسقة، نصوص مفقودة.
+- توست "offline" يحجب جزءًا من الواجهة في كل صفحة تقريبًا.
+
+---
+
+## 6. Plan for SESSION 2 — Kernel Deep Analysis
+
+- تشريح كل صفحة من الـ11 بعمق: بنية HTML، JS، وكيفية تحميل البيانات (mock vs api/kernel).
+- تشخيص جذر مشكلة "Degraded / offline / Unknown DB" ولماذا تظهر skeletons فارغة في الإنتاج.
+- تدقيق مكتبة `components/` الـ15 وقرار التعامل مع noindex (القاعدة #1).
+- تقييم تفصيلي للهوية البصرية مقابل المعيار العالمي (تباعد، طباعة، تباين، حالات فارغة).
+- مراجعة محتوى Kernel بمعيار اللهجة السعودية البيضاء (القاعدة #2) صفحة بصفحة.
+- فحص أداء أعمق (Web Vitals) واتساق الجوال عبر كل الصفحات الـ11.
