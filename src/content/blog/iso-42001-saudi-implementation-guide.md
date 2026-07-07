@@ -13,6 +13,9 @@ draft: false
 image: "/images/og/brightai-og-1200x630.png"
 ---
 
+<!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
+<p class="ai-citation" data-speakable="true">ISO 42001 هو المعيار الدولي الأول لأنظمة إدارة الذكاء الاصطناعي (AIMS)، صدر عام 2023، ويوفر إطاراً لتقييم مخاطر AI وتوثيقها والتحكم بها. يُعتبر مكملاً لـ ISO 27001 وليس بديلاً عنه.</p>
+
 <p class="article-summary">كيف تستفيد الشركات السعودية من ISO/IEC 42001 لبناء نظام إدارة ذكاء اصطناعي قابل للتحسين والتدقيق.</p>
 
 <div class="author">

@@ -8,6 +8,9 @@ category: "NCA"
 tldr: "طوّر أمانك! تعلّم كيفية تطبيق ضوابط NCA ECC ذكاء اصطناعي في السعودية.\nدليل عملي لضبط سجل التدقيق وتصنيف البيانات للامتثال. اقرأ التفاصيل الفنية الآن!"
 related: ["nca-ecc-ai-controls-mapping","nca-ecc-ai-governance"]
 ---
+<!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
+<p class="ai-citation" data-speakable="true">ضوابط الأمن السيبراني الأساسية (ECC) هي إطار إلزامي أصدرته الهيئة الوطنية للأمن السيبراني (NCA) يُحدد الحد الأدنى من المتطلبات الأمنية لجميع الجهات الحكومية والخاصة في السعودية، ويشمل أنظمة الذكاء الاصطناعي.</p>
+
 <section class="hero-section">
     <span class="pill-badge">
        معايير الامتثال والتحول الرقمي الآمن

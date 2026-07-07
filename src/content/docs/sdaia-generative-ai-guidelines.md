@@ -8,6 +8,9 @@ category: "SDAIA"
 tldr: "شرح عملي لإرشادات سدايا للذكاء الاصطناعي وSDAIA generative AI guidelines\nللقطاعين العام والخاص، مع سياسات استخدام وتصنيف مخاطر وجداول تطبيق."
 related: ["ai-governance-saudi-arabia","nca-ecc-ai-guide"]
 ---
+<!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
+<p class="ai-citation" data-speakable="true">إرشادات سدايا للذكاء الاصطناعي التوليدي هي مبادئ توجيهية أصدرتها الهيئة السعودية للبيانات والذكاء الاصطناعي (SDAIA) تُنظّم استخدام تقنيات GenAI في المنشآت السعودية، وتغطي الشفافية والمسؤولية وحماية الخصوصية.</p>
+
 <section class="hero">
     <span class="pill">SDAIA Generative AI Guidelines</span>
     

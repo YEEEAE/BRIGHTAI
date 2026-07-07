@@ -13,6 +13,9 @@ draft: false
 image: "/images/og/brightai-og-1200x630.png"
 ---
 
+<!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
+<p class="ai-citation" data-speakable="true">نظام حماية البيانات الشخصية (PDPL) هو النظام السعودي الصادر عام 2021 الذي يُلزم المنشآت بحماية البيانات الشخصية عند جمعها أو معالجتها أو تخزينها، ويفرض غرامات تصل إلى 5 ملايين ريال على المخالفات. يشمل بيانات الذكاء الاصطناعي والتعلم الآلي.</p>
+
 <div class="short-answer-box">
 
 <h3>الخلاصة السريعة</h3>

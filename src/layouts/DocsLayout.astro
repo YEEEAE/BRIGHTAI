@@ -50,6 +50,12 @@ interface Props {
   prevDoc?: SiblingDoc | null;
   nextDoc?: SiblingDoc | null;
   currentPath: string;
+  /**
+   * REPORTS-AEO-FAQ-2026-07-08: Optional extra schema nodes (FAQPage, HowTo,
+   * Service, etc.) merged into the @graph. Used by pillar docs to expose
+   * FAQPage JSON-LD for AI Overview citability.
+   */
+  extraSchemaNodes?: Array<Record<string, unknown> | null | undefined>;
 }
 
 const {
@@ -65,6 +71,7 @@ const {
   prevDoc = null,
   nextDoc = null,
   currentPath,
+  extraSchemaNodes = [],
 } = Astro.props;
 
 const techArticleLd = {
@@ -105,7 +112,8 @@ const jsonLd = {
       { name: 'الوثائق', href: '/docs/' },
       { name: title, href: canonical },
     ]),
-  ],
+    ...extraSchemaNodes,
+  ].filter(Boolean),
 };
 
 // Update timestamp formatted for the docs-meta widget (e.g. "2026-06-30").

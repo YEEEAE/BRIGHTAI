@@ -7,6 +7,12 @@
  * footer, demo CTA. Content is read verbatim from src/content/docs/*.md
  * (frontmatter + markdown body).
  *
+ * REPORTS-AEO-FAQ-2026-07-08: For pillar docs (`nca-ecc-ai-controls` and
+ * `sdaia-generative-ai-guidelines`) we attach a `FAQPage` JSON-LD node via
+ * the new `extraSchemaNodes` prop on DocsLayout. This makes the page
+ * eligible for AI Overviews and Perplexity citations on the AEO questions
+ * matching the pillar topic.
+ *
  * Content Preservation Rule:
  *   Markdown bodies in src/content/docs/*.md are never modified by the
  *   page. We only adapt their visual surface.
@@ -14,6 +20,7 @@
 import { getCollection, render } from 'astro:content';
 import * as cheerio from 'cheerio';
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import { getFaqLd } from '../../data/schema-helpers';
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
@@ -48,20 +55,63 @@ export async function getStaticPaths() {
 
 const { doc, relatedDocs, prevDoc, nextDoc } = Astro.props;
 const { Content } = await render(doc);
-const $ = cheerio.load(doc.body, null, false);
+const $ = cheerio.load(doc.body ?? '', null, false);
 const headings = $('h2, h3').map((_, element) => ({
   depth: Number(element.tagName.slice(1)) as 2 | 3,
   slug: $(element).attr('id') ?? '',
   text: $(element).text().trim().replace(/\s+/g, ' '),
 })).get().filter((heading) => heading.slug && heading.text);
+
+// REPORTS-AEO-FAQ-2026-07-08: AEO FAQ schemas for pillar docs.
+// Each block is 40-60 word Saudi-dialect answers derived from the page body
+// (no fabrication — verified against published content).
+const FAQ_BY_DOC: Record<string, Array<{ q: string; a: string }>> = {
+  'nca-ecc-ai-controls': [
+    {
+      q: 'كيف تُطبّق ضوابط الأمن السيبراني الأساسية ECC على أنظمة الذكاء الاصطناعي؟',
+      a: 'تُطبَّق عبر ثلاثة أعمدة: (1) سجل تدقيق غير قابل للتلاعب يوثق مدخلات ومخرجات النموذج، (2) تصنيف البيانات إلى أربع مستويات (عامة، داخلية، سرية، سرية للغاية) مع تشفير وضوابط وصول متناسبة، (3) موافقات بشرية قبل إطلاق أي نظام AI في الإنتاج. تلتزم المنشآت بدمج هذه الأعمدة في دورة حياة تطوير الـ AI.',
+    },
+    {
+      q: 'ما الفرق بين ECC وCSCC في الأمن السيبراني السعودي؟',
+      a: 'ECC (ضوابط الأمن السيبراني الأساسية) هي الحد الأدنى الإلزامي لكل الجهات الحكومية والخاصة في السعودية. CSCC (ضوابط الأمن السيبراني للقطاعات الحساسة) هي ضوابط إضافية مشددة للقطاعات الـ 16 الحساسة وطنياً (طاقة، اتصالات، مياه، صحة). ECC للجميع، CSCC للقطاعات المحددة فقط.',
+    },
+    {
+      q: 'هل ضوابط NCA ECC إلزامية للقطاع الخاص؟',
+      a: 'نعم، NCA ECC إلزامية على جميع الجهات الحكومية والقطاع الخاص المشمول الذي يدير بنية تحتية رقمية مؤثرة. الهيئة الوطنية للأمن السيبراني تطبّقها عبر تقييمات دورية وتقارير امتثال، مع عقوبات تشمل الإنذار والتعليق والغرامات. بعض الضوابط الـ 114 الأساسية لا تقبل الاستثناء.',
+    },
+  ],
+  'sdaia-generative-ai-guidelines': [
+    {
+      q: 'ما إرشادات سدايا للذكاء الاصطناعي التوليدي؟',
+      a: 'إرشادات سدايا للذكاء الاصطناعي التوليدي هي مبادئ وطنية أصدرتها الهيئة السعودية للبيانات والذكاء الاصطناعي (SDAIA) لتنظيم استخدام GenAI في المنشآت السعودية. تتضمن نسختين (عامة وحكومية) وسبعة مبادئ أخلاقية: العدالة، الخصوصية والأمن، الإنسانية، المنافع الاجتماعية والبيئية، الموثوقية والسلامة، الشفافية والقابلية للتفسير، والمساءلة.',
+    },
+    {
+      q: 'كيف تلتزم المنشآت السعودية بمبادئ سدايا السبعة للذكاء الاصطناعي؟',
+      a: 'تلتزم المنشآت عبر تصنيف الاستخدامات إلى أربع مستويات (ممنوع، مقيد، مسموح بمراجعة، مسموح)، وتطبيق ضوابط تقنية: بوابة AI معتمدة، فحص بيانات PII، سجل تدقيق، موافقات بشرية للقرارات المؤثرة، إفصاح مناسب عن دور AI. يُربط كل استخدام بمالك قرار واضح ومسار اعتماد رسمي، مع تدريب إلزامي لجميع الموظفين.',
+    },
+    {
+      q: 'ما العلاقة بين سدايا وPDPL في حوكمة البيانات؟',
+      a: 'سدايا هي الجهة المُصدرة لإرشادات الذكاء الاصطناعي التوليدي (GenAI) ومبادئ أخلاقيات AI، وPDPL هو نظام حماية البيانات الشخصية السعودي. يكملان بعضهما: PDPL يحمي البيانات الشخصية (الأساس النظامي، حقوق أصحاب البيانات)، سدايا تنظم استخدام AI على هذه البيانات (الشفافية، الإفصاح، المراجعة البشرية). المنشأة السعودية تلتزم بالاثنين معاً.',
+    },
+  ],
+};
+
+const extraSchemaNodes: Array<Record<string, unknown>> = FAQ_BY_DOC[doc.id]
+  ? [
+      {
+        ...getFaqLd(FAQ_BY_DOC[doc.id]),
+        '@id': `${doc.data.canonical}#faq`,
+      },
+    ]
+  : [];
 ---
 
 <DocsLayout
   title={doc.data.title}
-  metaTitle={doc.data.metaTitle}
+  metaTitle={doc.data.metaTitle ?? doc.data.title}
   description={doc.data.description}
   canonical={doc.data.canonical}
-  updated={doc.data.updated}
+  updated={doc.data.updated ?? new Date()}
   category={doc.data.category}
   tldr={doc.data.tldr}
   headings={headings}
@@ -69,6 +119,7 @@ const headings = $('h2, h3').map((_, element) => ({
   prevDoc={prevDoc}
   nextDoc={nextDoc}
   currentPath={`/docs/${doc.id}/`}
+  extraSchemaNodes={extraSchemaNodes}
 >
   <Content />
 </DocsLayout>

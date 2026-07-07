@@ -109,12 +109,50 @@ const jsonLd = [
 // FoundationSchema emits Organization + WebSite + LocalBusiness (Riyadh) +
 // WebPage + BreadcrumbList — those are referenced by @id where applicable.
 // See /BRIGHTAI/.agents/brain.md Section 5.8 for the schema-helpers contract.
+// REPORTS-AEO-FAQ-2026-07-08: also append an AEO FAQPage node with the
+// canonical "حوكمة الذكاء الاصطناعي" pillar answers (40-60 words each,
+// Saudi dialect, derived from the existing pillar blog post). This second
+// FAQPage is scoped to AI Governance topic and tagged with its own @id so
+// the existing BrightAI-product FAQPage stays untouched.
+const aiGovernanceFaq = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': 'https://brightai.site/#faq-ai-governance',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'ما هي حوكمة الذكاء الاصطناعي ولماذا تحتاجها المنشآت السعودية؟',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'حوكمة الذكاء الاصطناعي هي منظومة من الأدوار والسياسات والضوابط والأدلة التي تنظم كيفية اختيار واستخدام ومراقبة AI داخل المنشأة. تحتاجها المنشآت السعودية لأنها: (1) تمكّن الابتكار المتحكم به، (2) تحقق الامتثال لـ PDPL وNCA وSDAIA، (3) تثبت المسؤولية عند الحوادث، (4) تبني ثقة العملاء والمستثمرين، (5) تحمي البيانات الحساسة من التسريب.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'ما مكونات إطار حوكمة الذكاء الاصطناعي الفعّال؟',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'إطار الحوكمة الفعّال يتكون من: (1) جرد حالات الاستخدام والموردين، (2) تصنيف المخاطر حسب نوع البيانات والأثر، (3) سياسات استخدام واضحة، (4) ضوابط تقنية (جدار AI، فحص بيانات)، (5) موافقات بشرية للقرارات الحساسة، (6) سجل تدقيق شامل، (7) ملف أدلة قابل للمراجعة، (8) مؤشرات أداء وتقارير دورية للإدارة العليا.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'كيف تبدأ منشأتك في تطبيق حوكمة الذكاء الاصطناعي؟',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'ابدأ بخمس خطوات: (1) جرد حالات الاستخدام والموردين، (2) تصنيف المخاطر حسب نوع البيانات والأثر، (3) تعيين مسؤول حوكمة AI، (4) صياغة سياسات استخدام قصيرة ومحددة، (5) تطبيق الضوابط التقنية (جدار، سجل تدقيق، موافقات بشرية). ثم وسّع تدريجياً: تدريب الموظفين، ربط بـ PDPL وNCA وSDAIA، قياس النضج، التحسين المستمر كل ربع سنة.',
+      },
+    },
+  ],
+};
+
 const enhancedJsonLd = appendLd(jsonLd, [
   LOCAL_BUSINESS_BY_CITY.jeddah,
   LOCAL_BUSINESS_BY_CITY.dammam,
   LOCAL_BUSINESS_BY_CITY.khobar,
   LOCAL_BUSINESS_BY_CITY.mecca,
   LOCAL_BUSINESS_BY_CITY.madinah,
+  aiGovernanceFaq,
 ]);
 ---
 
@@ -127,6 +165,20 @@ const enhancedJsonLd = appendLd(jsonLd, [
 >
 {/* ═══════════════ 1. HERO (SplitHero — DottedBackground now in BaseLayout) ═══════════════ */}
 <SplitHero />
+
+{/* REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words).
+   AEO-tuned definition placed at the very top of the page body so Google
+   AI Overviews / Perplexity can quote it verbatim. Tagged data-speakable
+   to opt in to the foundation speakable schema (currently h1-only, future-
+   ready). The block is visually subtle and does NOT count as a new
+   section in the 16-section rule. */}
+<section class="home-citable-definition" aria-label="تعريف حوكمة الذكاء الاصطناعي" data-speakable>
+  <div class="max-w-4xl mx-auto px-5 lg:px-8 py-6 text-center">
+    <p class="text-base lg:text-lg leading-loose text-white/85">
+      <strong>حوكمة الذكاء الاصطناعي</strong> هي مجموعة السياسات والإجراءات والأدوات التي تضمن استخدام الذكاء الاصطناعي بشكل آمن وأخلاقي ومتوافق مع الأنظمة داخل المنشأة. في السعودية، تشمل الامتثال لـ PDPL وسدايا وNCA ECC.
+    </p>
+  </div>
+</section>
 
 {/* ═══════════════ 2. PROBLEM ═══════════════ */}
 <section id="problem" aria-labelledby="problem-title" class="home-section--padded bg-ambient-dots">

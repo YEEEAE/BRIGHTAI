@@ -7,6 +7,66 @@
    Home Page (الصفحة الرئيسية)
    ======================================== */
 
+/* REPORTS-AEO-CITABLE-2026-07-08: Citability definition block.
+   Visually subtle, AEO-tuned definition paragraph placed at the very
+   top of the homepage body (after SplitHero) for Google AI Overviews
+   and Perplexity citation. Uses the design tokens, no new tokens
+   introduced. The block has a faint glass background to separate it
+   visually from the hero gradient without competing with it. */
+.home-citable-definition {
+  position: relative;
+  padding: var(--space-6) 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 21, 37, 0.55) 0%,
+    rgba(15, 21, 37, 0) 100%
+  );
+  border-block-end: 1px solid var(--line, rgba(255, 255, 255, 0.06));
+}
+.home-citable-definition p {
+  max-width: 60ch;
+  margin-inline: auto;
+  color: var(--text-secondary, rgba(255, 255, 255, 0.85));
+}
+.home-citable-definition strong {
+  color: var(--text-primary, #f1f5f9);
+  font-weight: 700;
+}
+
+/* REPORTS-AEO-CITABLE-2026-07-08: Article-level citability paragraph.
+   Used in pillar blog + docs markdown bodies (after frontmatter, before
+   the first existing content block). Visually quiet, semantically
+   first — designed for AI Overviews / Perplexity to quote verbatim. */
+.ai-citation {
+  max-width: 70ch;
+  margin: 0 auto var(--space-5) auto;
+  padding: var(--space-4) var(--space-5);
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  color: var(--text-secondary, #475569);
+  background: linear-gradient(
+    180deg,
+    rgba(34, 211, 238, 0.04) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-inline-start: 3px solid var(--interactive-primary, #06b6d4);
+  border-radius: 0 8px 8px 0;
+}
+.ai-citation::before {
+  content: "AI Definition · تعريف قابل للاقتباس";
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--interactive-primary, #06b6d4);
+  margin-block-end: var(--space-2);
+  opacity: 0.7;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ai-citation { transition: background 200ms var(--ease-out, ease-out); }
+}
+
 /* Trust/Compliance Section — REPORT-09 visual refresh.
    Increased depth via layered radial gradients, refined badge chip pattern,
    tighter stat grid (3 → 1) for mobile, and dedicated compliance-logo row. */
