@@ -1,12 +1,12 @@
 ---
-title: "مواءمة استخدام الذكاء الاصطناعي مع NCA ECC"
-metaTitle: "مواءمة AI مع ضوابط NCA ECC السعودية | BrightAI"
-description: "تعرف على طريقة مواءمة استخدامات الذكاء الاصطناعي مع ضوابط NCA ECC، وربط السياسات والأدلة التشغيلية بمتطلبات أمنية قابلة للمراجعة، مع خطوة تالية واضحة."
+title: "خريطة ربط ضوابط NCA ECC مع استخدامات الذكاء الاصطناعي"
+metaTitle: "خريطة ربط NCA ECC مع AI: ضوابط تشغيلية قابلة للمراجعة | BrightAI"
+description: "خريطة عملية لربط كل متطلب من ضوابط NCA ECC بسياسات وأدلة تشغيلية خاصة بالذكاء الاصطناعي: AI Firewall، Audit Trail، Human Approval، Risk Scoring، وEvidence File."
 canonical: "https://brightai.site/docs/nca-ecc-ai-controls-mapping/"
-updated: "2026-06-10"
+updated: "2026-07-08"
 category: "NCA"
-tldr: "تعرف على طريقة مواءمة استخدامات الذكاء الاصطناعي مع ضوابط NCA ECC، وربط\nالسياسات والأدلة التشغيلية بمتطلبات أمنية قابلة للمراجعة، مع خطوة تالية واضحة."
-related: ["nca-ecc-ai-controls","nca-ecc-ai-guide"]
+tldr: "خريطة ربط ضوابط NCA ECC مع استخدامات الذكاء الاصطناعي: متطلب أمني × خطر AI × ضابط BrightAI، مع أمثلة سجلات وتصنيف بيانات وموافقات."
+related: ["nca-ecc-ai-controls","nca-ecc-ai-governance","nca-ecc-ai-guide"]
 ---
 <section class="hero-section">
     <span class="pill-badge"> NCA ECC AI governance</span>

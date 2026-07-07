@@ -1,12 +1,12 @@
 ---
-title: "ضوابط NCA ECC 2-2024 للذكاء الاصطناعي: دليل التطبيق العملي"
-metaTitle: "ضوابط NCA ECC 2-2024 للذكاء الاصطناعي: دليل التطبيق العملي | BrightAI"
-description: "دليل عملي عميق لتطبيق ضوابط NCA للذكاء الاصطناعي وNCA ECC AI controls على بوابات AI والسجلات والموردين والسحابة داخل المؤسسات السعودية."
+title: "تطبيق NCA ECC على الذكاء الاصطناعي: خطة 90 يومًا"
+metaTitle: "دليل تطبيق NCA ECC على AI: خطة 90 يوم | BrightAI"
+description: "دليل خطوة بخطوة لتطبيق ضوابط NCA ECC 2-2024 على الذكاء الاصطناعي خلال 90 يومًا: AI Gateway، سجلات التدقيق، إدارة الموردين، ملف الأدلة، واختبار سيناريوهات الهجوم."
 canonical: "https://brightai.site/docs/nca-ecc-ai-guide/"
-updated: "2026-06-07"
+updated: "2026-07-08"
 category: "NCA"
-tldr: "دليل عملي عميق لتطبيق ضوابط NCA للذكاء الاصطناعي وNCA ECC AI\ncontrols على بوابات AI والسجلات والموردين والسحابة داخل المؤسسات السعودية."
-related: ["nca-ecc-ai-controls-mapping","nca-ecc-ai-governance","sdaia-generative-ai-guidelines"]
+tldr: "دليل 90 يوم لتطبيق NCA ECC على الذكاء الاصطناعي: بوابة AI، سجلات، إدارة موردين، ملف أدلة، اختبار prompt injection وتسريب الأسرار."
+related: ["nca-ecc-ai-controls","nca-ecc-ai-controls-mapping","nca-ecc-ai-governance","sdaia-generative-ai-guidelines"]
 ---
 <section class="hero">
     <span class="pill">NCA ECC 2-2024 AI Controls</span>

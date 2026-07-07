@@ -1,12 +1,13 @@
 ---
-title: "NCA ECC: ربط ضوابط الأمن السيبراني الأساسية بالذكاء الاصطناعي"
-metaTitle: "NCA ECC: ربط ضوابط الأمن السيبراني بالذكاء الاصطناعي"
-description: "NCA ECC وضوابط الأمن السيبراني الأساسية وكيفية ربطها بأنظمة الذكاء الاصطناعي في السعودية. دليل تقني شامل: سجل التدقيق، تصنيف البيانات، والموافقات البشرية."
+title: "NCA ECC والذكاء الاصطناعي: الدليل الشامل للامتثال"
+metaTitle: "NCA ECC والذكاء الاصطناعي: الدليل الشامل 2026 | BrightAI"
+description: "دليل NCA ECC الشامل لتطبيق ضوابط الأمن السيبراني على الذكاء الاصطناعي في السعودية: سجل تدقيق غير قابل للتلاعب، تصنيف بيانات بأربع مستويات، وموافقات بشرية قبل الإنتاج."
 canonical: "https://brightai.site/docs/nca-ecc-ai-controls/"
-updated: "2026-06-10"
+updated: "2026-07-08"
 category: "NCA"
-tldr: "طوّر أمانك! تعلّم كيفية تطبيق ضوابط NCA ECC ذكاء اصطناعي في السعودية.\nدليل عملي لضبط سجل التدقيق وتصنيف البيانات للامتثال. اقرأ التفاصيل الفنية الآن!"
-related: ["nca-ecc-ai-controls-mapping","nca-ecc-ai-governance"]
+tldr: "الدليل الشامل لضوابط NCA ECC على الذكاء الاصطناعي: سجل التدقيق، تصنيف البيانات، الموافقات البشرية، والحوكمة المؤسسية لربط الـ AI بالأمن السيبراني السعودي."
+related: ["nca-ecc-ai-controls-mapping","nca-ecc-ai-governance","nca-ecc-ai-guide"]
+cluster: ["docs:nca-ecc-ai-controls-mapping","docs:nca-ecc-ai-governance","docs:nca-ecc-ai-guide","blog:nca-ecc-ai-controls-guide","blog:nca-cybersecurity-requirements-saudi"]
 ---
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
 <p class="ai-citation" data-speakable="true">ضوابط الأمن السيبراني الأساسية (ECC) هي إطار إلزامي أصدرته الهيئة الوطنية للأمن السيبراني (NCA) يُحدد الحد الأدنى من المتطلبات الأمنية لجميع الجهات الحكومية والخاصة في السعودية، ويشمل أنظمة الذكاء الاصطناعي.</p>
@@ -642,4 +643,53 @@ related: ["nca-ecc-ai-controls-mapping","nca-ecc-ai-governance"]
     <h3 id="section-14-7">هل أنت جاهز لتأمين وامتثال أنظمة ذكاءك الاصطناعي؟</h3>
     <p>تواصل مع مستشارينا في BrightAI اليوم لنساعدك في مواءمة خوارزمياتك وتأمين بياناتك وفق أعلى المعايير الوطنية.</p>
     <a href="/contact/" class="action-btn">احجز جلسة استشارية لتأمين الـ AI</a>
+  </section>
+
+  <section class="cluster-table-of-contents" aria-labelledby="cluster-toc-title">
+    <h2 id="cluster-toc-title">جدول محتويات عنقود NCA ECC والذكاء الاصطناعي</h2>
+    <p class="cluster-table-of-contents__intro">هذه الصفحة هي الدليل الشامل (Pillar) للعنقود. الصفحات المرتبطة تغطي زوايا تكاملية — كل صفحة تستهدف نية بحث مختلفة لتفادي تكرار المنافسة على نفس الكلمة.</p>
+    <div class="table-container">
+      <table class="docs-table cluster-toc">
+        <thead>
+          <tr>
+            <th>الصفحة</th>
+            <th>الوظيفة</th>
+            <th>الكلمة المستهدفة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="الصفحة"><strong><a href="/docs/nca-ecc-ai-controls/">NCA ECC والذكاء الاصطناعي: الدليل الشامل</a></strong></td>
+            <td data-label="الوظيفة">الدليل الشامل (Pillar) — نقطة الدخول لكل من يبحث عن ضوابط NCA ECC كاملة.</td>
+            <td data-label="الكلمة المستهدفة">nca ecc</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/docs/nca-ecc-ai-controls-mapping/">خريطة ربط NCA ECC مع AI</a></td>
+            <td data-label="الوظيفة">جدول عملي يربط كل متطلب أمني بضابط BrightAI وخطر AI المقابل — للفرق التقنية.</td>
+            <td data-label="الكلمة المستهدفة">nca ecc mapping</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/docs/nca-ecc-ai-governance/">حوكمة الذكاء الاصطناعي وفق NCA ECC</a></td>
+            <td data-label="الوظيفة">زاوية الحوكمة: ربط فرق الأمن بالعمليات التشغيلية وعرض أثر الضابط.</td>
+            <td data-label="الكلمة المستهدفة">حوكمة الذكاء الاصطناعي + الأمن السيبراني</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/docs/nca-ecc-ai-guide/">دليل تطبيق NCA ECC على AI خلال 90 يوم</a></td>
+            <td data-label="الوظيفة">خطة تنفيذ تدريجية على 90 يومًا مع بوابة AI Gateway وملف الأدلة.</td>
+            <td data-label="الكلمة المستهدفة">ecc nca</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/blog/nca-ecc-ai-controls-guide/">ضوابط الأمن السيبراني الأساسية وتطبيقها على AI</a></td>
+            <td data-label="الوظيفة">مقال تشغيلي يشرح الحوكمة والوصول والبيانات والمراقبة للمديرين.</td>
+            <td data-label="الكلمة المستهدفة">ضوابط الامن السيبراني + الضوابط الأساسية للأمن السيبراني</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/blog/nca-cybersecurity-requirements-saudi/">الهيئة الوطنية للأمن السيبراني ومتطلباتها</a></td>
+            <td data-label="الوظيفة">مقال تعريفي بالهيئة ودورها والمحاور الخمسة لضوابط ECC.</td>
+            <td data-label="الكلمة المستهدفة">الهيئة الوطنية للأمن السيبراني</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cluster-table-of-contents__hint">لو تبحث عن ضوابط NCA ECC كاملة ابدأ بالـ Pillar. لو تبحث عن ربط تشغيلي محدد استخدم خريطة الربط. لو تبحث عن خطة تنفيذ جاهزة اختر دليل الـ 90 يوم.</p>
   </section>

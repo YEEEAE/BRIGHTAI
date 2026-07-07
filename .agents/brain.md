@@ -141,6 +141,37 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-08 — NCA ECC Cluster Keyword Cannibalization Fix (4 docs + 2 blog)
+
+- **Files**: `src/content/docs/nca-ecc-ai-controls.md`، `src/content/docs/nca-ecc-ai-controls-mapping.md`، `src/content/docs/nca-ecc-ai-governance.md`، `src/content/docs/nca-ecc-ai-guide.md`، `src/content/blog/nca-ecc-ai-controls-guide.md`، `src/content/blog/nca-cybersecurity-requirements-saudi.md` (6 ملفات محتوى — ليست protected)
+- **What**: فصلنا عنقود NCA ECC بتفريق الوظائف والعناوين. 6 عناوين unique، 6 كلمات مستهدفة مختلفة، 6 canonicals ذاتية صحيحة. أضفنا "جدول محتويات العنقود" في نهاية الـ Pillar يربط كل الـ 6 صفحات. تحقّقنا إن FAQPage schema بالأسئلة الثلاثة موجودة مسبقاً في `[...slug].astro:69-82` (FAQ_BY_DOC['nca-ecc-ai-controls']) فما احتجنا حقن يدوي. تحديث `updated` لـ 2026-07-08 في كل الـ 4 docs، و `updatedDate` للـ 2 blogs.
+- **Why**: طلب المؤسس (2026-07-08، العامية السعودية) — 6 صفحات في نفس العنقود كانت تتنافس semantic على كلمات متقاربة. ما كان duplicate title حرفي، لكن Google يشوف semantic similarity والـ 6 صفحات تضعف بعضها. المستخدم حدّد لكل صفحة وظيفتها والكلمة المستهدفة.
+- **Key changes per page**:
+  1. **Pillar** (1,000 vol "nca ecc"): "NCA ECC والذكاء الاصطناعي: الدليل الشامل للامتثال"
+  2. **Mapping** (mapping intent): "خريطة ربط ضوابط NCA ECC مع استخدامات الذكاء الاصطناعي"
+  3. **Governance** (حوكمة AI + الأمن السيبراني): "حوكمة الذكاء الاصطناعي وفق متطلبات NCA ECC"
+  4. **Guide** (320 vol "ecc nca"): "تطبيق NCA ECC على الذكاء الاصطناعي: خطة 90 يومًا"
+  5. **blog1** (260 + 210): "ضوابط الأمن السيبراني الأساسية وتطبيقها على الذكاء الاصطناعي"
+  6. **blog2** (5,400 vol): "الهيئة الوطنية للأمن السيبراني ومتطلباتها للشركات السعودية"
+- **Decisions**:
+  - **لم نضف FAQ schema يدوياً** — كان في `[...slug].astro:69-82` بالأسئلة الثلاثة، تحقّقنا عبر `grep FAQPage dist/docs/nca-ecc-ai-controls/index.html`.
+  - **لم نعدّل H1 يدوياً** — DocsLayout:144 و BlogLayout يحقنون `<h1>{title}</h1>` تلقائياً من frontmatter.
+  - **جدول المحتويات** نُفذ كـ `<section>` داخل الـ Pillar body، الـ TOC generator التقطه تلقائياً (`data-toc-target="cluster-toc-title"`).
+  - **body content ما اتغيّر** — التعديل الوحيد في body كان الجدول في الـ Pillar.
+  - **`cluster: [...]` field** أُضيف فقط في الـ Pillar frontmatter للتوثيق — الـ 5 صفحات عندها `related: []` كافي.
+- **Verification**:
+  - `grep title dist/docs/nca-ecc-*/index.html dist/blog/nca-*/index.html` → 6 عناوين unique ✅
+  - `grep canonical dist/docs/nca-ecc-*/index.html dist/blog/nca-*/index.html` → 6 canonicals صحيحة ✅
+  - `grep FAQPage dist/docs/nca-ecc-ai-controls/index.html` → schema كامل مع 3 أسئلة ✅
+  - `grep cluster-table-of-contents dist/docs/nca-ecc-ai-controls/index.html` → section ظاهرة ✅
+  - `npm run build` → 125 صفحة، 0 errors ✅
+  - `npm run verify:all` → exit 0 ✅
+  - `npm run internal-links:audit` → brokenLinks: 0 على العنقود ✅
+- **Report**: `report/2026-07-08-nca-ecc-cluster-fix.md`
+- **Commit**: uncommitted
+- **Status**: verified locally, awaiting deploy
+- **Brain updates**: تحديث Section 5 (Content Inventory — Pillar الآن له FAQPage schema)، Section 3 (KI-NCA-CLUSTER يمكن إغلاقه، لكنه غير مسجّل).
+
 ### 2026-07-08 — GEO Upgrade: Seed Vocabulary + Topical Pillars + Topical Coverage + AEO Question Bank in llms.txt and llms-full.txt
 
 - **Files**: `public/llms.txt`, `public/llms-full.txt` (2 ملفات، protected SEO surface)

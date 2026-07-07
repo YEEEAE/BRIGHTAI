@@ -1,14 +1,14 @@
 ---
-title: "متطلبات الهيئة الوطنية للأمن السيبراني NCA: دليل عملي"
-description: "دليل عملي شامل لمتطلبات الهيئة الوطنية للأمن السيبراني NCA وضوابط الأمن السيبراني الأساسية ECC للشركات السعودية، مع خطوات التطبيق والأمثلة."
+title: "الهيئة الوطنية للأمن السيبراني ومتطلباتها للشركات السعودية"
+description: "دليل شامل عن الهيئة الوطنية للأمن السيبراني (NCA): دورها، الفئات الخاضعة لرقابتها، المحاور الخمسة لضوابط ECC، خطوات التطبيق، تحديات الامتثال، ودور الذكاء الاصطناعي في تسريع الالتزام."
 canonical: "https://brightai.site/blog/nca-cybersecurity-requirements-saudi/"
 pubDate: "2026-06-08"
-updatedDate: "2026-06-08"
+updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "nca-cybersecurity-requirements-saudi"
 readingTime: 11
 category: "أمن-البيانات"
-tags: ["NCA", "الأمن السيبراني", "السعودية", "ECC", "حوكمة AI"]
+tags: ["الهيئة الوطنية للأمن السيبراني", "NCA", "السعودية", "ECC", "حوكمة AI"]
 draft: false
 image: "/images/og/brightai-og-1200x630.png"
 ---
