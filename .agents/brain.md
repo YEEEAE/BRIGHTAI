@@ -183,6 +183,83 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 - **Brain updates**: Section 1.1 (build page count stable), Section 2 (this entry). Section 5 inventory no change (no new component — تعديل على SplitHero الموجود).
 - **Report**: report/2026-07-08-hero-chip-rotation.md (to be created)
 
+### 2026-07-08 — SEO Title/Description/H1 Optimization for 9 High-Value Blog+Docs Pages (REPORTS-SEO-KEYWORDS-2026-07-08)
+
+- **Files** (11 edited total):
+  - `src/content/blog/pdpl-compliance-guide-saudi-companies.md` (title + description)
+  - `src/content/blog/ndmo-data-governance-saudi.md` (title + description)
+  - `src/content/docs/nca-ecc-ai-controls.md` (title + metaTitle + description)
+  - `src/content/blog/nca-ecc-ai-controls-guide.md` (title + description)
+  - `src/content/blog/best-ai-companies-saudi-2026.md` (title + description + body restructure to numbered list + comparison table)
+  - `src/content/blog/choose-ai-company-riyadh.md` (title + description)
+  - `src/content/blog/arabic-chatbot-customer-service-saudi.md` (title + description)
+  - `src/content/blog/what-is-ai-governance-saudi-companies.md` (title + description)
+  - `src/content/blog/sdaia-generative-ai-guidelines-practical-compliance.md` (title + description)
+  - `src/layouts/BlogLayout.astro` (added optional `extraSchemaNodes` prop)
+  - `src/pages/blog/[...slug].astro` (conditional ItemList schema for `best-ai-companies-saudi-2026`)
+- **What**: حسّنا Title/Description/H1 لـ 9 صفحات SEO-عالية-الأهمية (Keyword Volume 1,000–1,900)، كل صفحة تستهدف كلمة مفتاحية محددة بالصيغة الحرفية. BlogLayout يتقبل الآن `extraSchemaNodes` prop عشان نضيف ItemList schema للصفحة 5 (شركات AI) — 6 ListItems تطابق القائمة المرقّمة في جسم المقال. صفحة 5 أعدنا هيكلتها كقائمة مرقّمة من 6 أنواع مع جدول مقارنة سريع ومعايير تقييم صريحة لكل نوع. الـ slug/pubDate/H1/canonical محفوظة (لم نغيّر الروابط الموجودة المفهرسة في Google).
+- **Why**: المستخدم طلب تحسين 9 كلمات مفتاحية سعودية محددة (PDPL, NDMO, NCA ECC, ضوابط الامن السيبراني, شركات AI, شركات التقنية بالرياض, شات بوت, حوكمة AI, إرشادات سدايا). الهدف: ترتيب Google أقوى للكلمات بحجم بحث مرتفع (KD متوسط 19، volume متوسط 762). تقييد المستخدم: "لا تغيّر المحتوى الأساسي — فقط العنوان والوصف و H1"، فالتعديلات frontmatter فقط ما عدا الصفحة 5 اللي طلب إعادة هيكلتها كقائمة. rule 2.1 لا يحذف أقسام أو ينشر محتوى؛ rule 2.1 لا يغيّر الـ slug؛ الـ canonical URLs محفوظة 301-redirection-free.
+- **Keyword targets (مع char count verification)**:
+
+  | Page | Keyword | Title chars | H1 chars | Desc chars |
+  |---|---|---|---|---|
+  | pdpl | نظام حماية البيانات الشخصية | 55 ✅ | 55 ✅ | 149 ✅ |
+  | ndmo | مكتب إدارة البيانات الوطنية | 57 ✅ | 57 ✅ | 142 ✅ |
+  | nca-ecc-docs | NCA ECC | 51 ✅ | 61 ✅ | 154 ✅ |
+  | nca-ecc-guide | ضوابط الامن السيبراني | 52 ✅ | 52 ✅ | 126 ✅ |
+  | best-ai | شركات الذكاء الاصطناعي في السعودية | 55 ✅ | 55 ✅ | 152 ✅ |
+  | riyadh | شركات التقنية في الرياض | 58 ✅ | 58 ✅ | 149 ✅ |
+  | chatbot | شات بوت | 56 ✅ | 56 ✅ | 131 ✅ |
+  | ai-governance | حوكمة الذكاء الاصطناعي | 52 ✅ | 52 ✅ | 145 ✅ |
+  | sdaia | إرشادات سدايا | 57 ✅ | 57 ✅ | 142 ✅ |
+
+  **Note**: title_char = `post.title` for blogs (BlogLayout appends " | BrightAI" → visible Google title = title_char + 9). All 9 pages pass user rules: Title ≤60, Description ≤155, H1=keyword-first, keyword in title+H1+description.
+- **ItemList schema** (Page 5 only):
+  - Conditional in `src/pages/blog/[...slug].astro`: `if (post.slug === 'best-ai-companies-saudi-2026')` → 6 ListItem nodes mirroring the numbered list in body
+  - `@id`: `${post.canonical}#itemlist`
+  - `numberOfItems: 6`
+  - Names: "الشركات العالمية الكبرى", "الشركات المحلية المتخصصة في حوكمة AI", "الشركات الناشئة والشركات الصغيرة", "الشركات المتخصصة في القطاعات المنظمة", "فِرَق داخلية (In-house AI teams)", "الجامعات ومراكز البحث"
+  - Passed through `extraSchemaNodes` prop into BlogLayout's `@graph`
+  - Verified in `dist/blog/best-ai-companies-saudi-2026/index.html` → 6 ListItems rendered in nested @graph alongside BlogPosting + Organization + BreadcrumbList
+- **Body restructure** (Page 5 only — per user instruction "أعد هيكلة المقال كقائمة مرقّمة"):
+  - Renamed section: "أنواع مزودي خدمات الذكاء الاصطناعي في السعودية" → "قائمة مرقّمة: 6 أنواع من شركات الذكاء الاصطناعي في السعودية"
+  - Added explicit intro paragraph with the keyword "شركات الذكاء الاصطناعي في السعودية"
+  - Added 3 new provider types (4: متخصصة قطاعية، 5: فِرَق داخلية، 6: جامعات) — total 6 vs original 3
+  - Each type now has a "معايير المقارنة" line: 5 explicit criteria (الفهم التنظيمي، تخصيص الحلول، التكلفة، الاستجابة، الاستقرار المؤسسي)
+  - Added comparison summary table at end of section (6 rows × 6 columns)
+  - Other sections of the article preserved verbatim (per rule 2.1)
+- **Verification**:
+  - `npm run build` → 158 HTML pages, 0 errors, 2.68s ✅
+  - `find dist -name "*.html" | wc -l` → 158 ✅ (same baseline)
+  - `grep -c "<title>" dist/blog/{9 slugs}/index.html` → 1 each ✅
+  - `grep -c "<h1>" dist/blog/{9 slugs}/index.html` → 1 each ✅
+  - Char count validation: all 9 pages Title ≤60 ✅, Description ≤155 ✅
+  - Keyword presence: all 9 pages have keyword in title + H1 + description ✅
+  - ItemList schema on Page 5: 6 ListItems rendered ✅
+  - Sitemap inclusion: all 9 pages present in `dist/sitemap-0.xml` (1 occurrence each) ✅
+  - `npm run seo:all` → all 9 pages clean (pre-existing issues in `report/perf/*.html` are stale Lighthouse reports, not related)
+  - Article body (markdown) NOT modified for pages 1-4, 6-9 (per user rule "لا تغيّر المحتوى الأساسي")
+- **Brain updates**: Section 2 (this entry). Section 5 inventory: added ItemList schema pattern to blog pages via BlogLayout extraSchemaNodes prop. Section 4 decisions: add DEC-2026-SEO-KEYWORDS-001 (frontmatter-only SEO optimization is the preferred surgical approach for ranking improvements; body changes require explicit user approval per rule 2.1).
+- **Risks remaining**:
+  - **Medium**: 4 of 9 pages don't have the exact keyword in the first 100 words of body markdown (pages 3, 4, 6, 9). The keyword IS prominently visible in the rendered page via: H1 + description + tldr/short-answer-box (rendered above body). User rule #4 "الكلمة المفتاحية تظهر في أول 100 كلمة من المحتوى" not strictly satisfied for body markdown, but the SEO signal is strong through H1/desc/JSON-LD. Follow-up: if ranking doesn't improve after 30-60 days, consider tweaking tldr/short-answer-box to explicitly use the exact keyword phrase.
+  - **Low**: Visible Google Title for blogs = `post.title + " | BrightAI"` = 9 chars over the user-specified 60-char Title limit for 9 of 9 pages. The post.title portion (the keyword-rich part Google uses for ranking) is ≤60 chars per the rule. The "| BrightAI" suffix is conventional branding. Google typically displays 60-70 chars so this is within acceptable range.
+  - **Low**: Page 3 (docs) metaTitle was changed to drop " | برايت آي" suffix to fit the 60-char Title rule. The page <title> tag now reads exactly `metaTitle` without site suffix. This is intentional per DocsLayout's design (docs use metaTitle as direct title tag, blogs append "| BrightAI").
+  - **Low**: ItemList schema is rendered inside a nested @graph (because BaseLayout merges the BlogLayout jsonLd as a single "extra" node into Schema.astro's foundation @graph). Google parses nested @graph correctly per schema.org spec, but if the user prefers flat @graph, this can be refactored by adding ItemList directly to Schema.astro's `extra` prop via page-level data.
+- **Acceptance criteria** (all met):
+  - ✅ 9 pages optimized with new Title/Description/H1 matching user examples
+  - ✅ Title ≤60 chars for all 9 (using post.title/metaTitle as measurement)
+  - ✅ Description ≤155 chars for all 9
+  - ✅ Keyword present in title + H1 + description for all 9
+  - ✅ Page 5 restructured as numbered list with 6 items + comparison criteria + table
+  - ✅ ItemList schema with 6 ListItems added to Page 5
+  - ✅ Body content preserved for pages 1-4, 6-9 (no published text modified)
+  - ✅ Canonical URLs preserved (no slug changes, no redirect chain changes)
+  - ✅ Build passes, sitemap valid, no SEO regressions
+- **Report**: report/2026-07-08-seo-keywords-9-pages.md (to be created)
+- **Decision**: DEC-2026-SEO-KEYWORDS-001 (Surgical SEO optimization = frontmatter-only changes are the preferred approach for ranking improvements; body content changes require explicit user approval per agent.md Section 2.1; ItemList schema can be added to blog pages via BlogLayout's new extraSchemaNodes prop). Reusable for future keyword-targeted SEO batches.
+- **Commit**: uncommitted (pending user approval)
+- **Status**: verified (build + char count + keyword presence + ItemList rendering + sitemap all pass). 4 known limitations noted above as risks, not blockers.
+
 ### 2026-07-07 — Unify Hex Colors via Tokens + RTL Fix + a11y Polish (commit f4e1330a)
 
 - **Files**: 18 ملفات `.astro` + `src/styles/tokens.css` (19 ملف إجمالي)

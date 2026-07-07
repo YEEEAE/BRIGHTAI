@@ -82,6 +82,71 @@ const breadcrumbLd = {
     { '@type': 'ListItem', position: 3, name: post.title, item: post.canonical },
   ],
 };
+
+// REPORT-SEO-KEYWORDS-2026-07-08: ItemList schema for the best-AI-companies
+// article. The page is a comparison list, so we expose the curated list of
+// provider archetypes as an ItemList of ListItem nodes. Google reads this
+// directly from the @graph in the page JSON-LD. The items mirror the
+// numbered list rendered in the article body.
+const extraSchemaNodes: Record<string, unknown>[] =
+  post.slug === 'best-ai-companies-saudi-2026'
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          '@id': `${post.canonical}#itemlist`,
+          name: 'أنواع مزودي خدمات الذكاء الاصطناعي في السعودية',
+          description:
+            'قارنة مرقّمة لأنواع مزودي الذكاء الاصطناعي في السوق السعودي 2026: شركات عالمية كبرى، شركات محلية متخصصة، شركات ناشئة، ومزودو قطاعات.',
+          itemListOrder: 'https://schema.org/ItemListOrderAscending',
+          numberOfItems: 6,
+          itemListElement: [
+            {
+              '@type': 'ListItem',
+              position: 1,
+              name: 'الشركات العالمية الكبرى',
+              description:
+                'منصات سحابية ونماذج لغوية كبيرة — قوية في البنية التحتية ومحدودة في الفهم العميق للبيئة التنظيمية السعودية.',
+            },
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: 'الشركات المحلية المتخصصة في حوكمة AI',
+              description:
+                'شركات سعودية تركز على حوكمة وأمن وتطبيقات AI المتوافقة مع PDPL وNCA ECC وإرشادات سدايا.',
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: 'الشركات الناشئة والشركات الصغيرة',
+              description:
+                'تركيز على حالات استخدام محددة مثل الرؤية الحاسوبية ومعالجة اللغة العربية والذكاء الاصطناعي التوليدي المتخصص.',
+            },
+            {
+              '@type': 'ListItem',
+              position: 4,
+              name: 'الشركات المتخصصة في القطاعات المنظمة',
+              description:
+                'تركيز على قطاعات محددة مثل الصحة والبنوك والحكومة مع فهم عميق لمتطلبات SFDA وSAMA وDGA.',
+            },
+            {
+              '@type': 'ListItem',
+              position: 5,
+              name: 'فِرَق داخلية (In-house AI teams)',
+              description:
+                'فِرَق مؤسسية تبني حلول AI داخلية تحت إشراف حوكمة محلية وداعمة للامتثال الكامل.',
+            },
+            {
+              '@type': 'ListItem',
+              position: 6,
+              name: 'الجامعات ومراكز البحث',
+              description:
+                'مراكز بحثية سعودية (مثل جامعة الملك عبدالله للعلوم والتقنية) تنتج أبحاث AI تطبيقية قابلة للتطبيق التجاري.',
+            },
+          ],
+        },
+      ]
+    : [];
 ---
 
 <BlogLayout
@@ -89,6 +154,7 @@ const breadcrumbLd = {
   relatedPosts={relatedPosts}
   internalLinks={internalLinks}
   breadcrumbLd={breadcrumbLd}
+  extraSchemaNodes={extraSchemaNodes}
 >
   <Fragment slot="header">
     <Breadcrumbs crumbs={[

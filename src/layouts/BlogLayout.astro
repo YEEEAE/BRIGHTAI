@@ -26,9 +26,10 @@ interface Props {
   relatedPosts: BlogPost[];
   internalLinks?: InternalLink[];
   breadcrumbLd?: Record<string, unknown>;
+  extraSchemaNodes?: Record<string, unknown>[];
 }
 
-const { post, relatedPosts, internalLinks = [], breadcrumbLd } = Astro.props;
+const { post, relatedPosts, internalLinks = [], breadcrumbLd, extraSchemaNodes = [] } = Astro.props;
 
 const blogPostingLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
@@ -83,6 +84,7 @@ const jsonLd = {
     blogPostingLd,
     ORGANIZATION,
     breadcrumbLd,
+    ...extraSchemaNodes,
   ].filter(Boolean),
 };
 
