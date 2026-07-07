@@ -182,6 +182,22 @@ services:
       - type: redirect
         source: /authors/nasser-alabdullah/index.html
         destination: /authors/nasser-alabdullah/
+      # REPORTS-SEO-TEAM-SLUG-001 (2026-07-07): legacy Arabic slug "فريق BrightAI"
+      # was migrated to the Latin slug "brightai-team" so canonical URLs no
+      # longer contain %20 (seo-ci-check SITEMAP_BANNED_PATTERNS). These
+      # redirects keep any existing inbound links working (301).
+      - type: redirect
+        source: /authors/فريق%20BrightAI
+        destination: /authors/brightai-team/
+      - type: redirect
+        source: /authors/فريق%20BrightAI/
+        destination: /authors/brightai-team/
+      - type: redirect
+        source: /authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI
+        destination: /authors/brightai-team/
+      - type: redirect
+        source: /authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI/
+        destination: /authors/brightai-team/
       - type: redirect
         source: /contact
         destination: /contact/
