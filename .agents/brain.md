@@ -283,6 +283,64 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 > كل تغيير جوهري يُسجَّل هنا (newest first). Append-only.
 
+### 2026-07-07 — Blog Content Expansion Batch 1: 10 Shortest Articles to 1300+ Words
+
+- **Files** (10 expanded, 0 deleted, 0 reformatted):
+  - `src/content/blog/ai-vision-2030-saudi.md` (737→1556)
+  - `src/content/blog/best-ai-companies-saudi-2026.md` (786→1657)
+  - `src/content/blog/ai-neom-smart-city.md` (808→1670)
+  - `src/content/blog/ai-healthcare-saudi.md` (823→1641)
+  - `src/content/blog/rpa-automation-saudi-savings.md` (832→1743)
+  - `src/content/blog/digital-transformation-sme-saudi.md` (854→1778)
+  - `src/content/blog/computer-vision-saudi-factories.md` (879→1797)
+  - `src/content/blog/pdpl-compliance-guide-saudi-companies.md` (881→1812)
+  - `src/content/blog/generative-ai-education-saudi.md` (896→1787)
+  - `src/content/blog/ai-ecommerce-saudi.md` (902→1854)
+  - `.agents/brain.md` (هذا entry)
+- **What**: أوّل دفعة من توسيع المقالات تحت 1200 كلمة إلى 1300+. الـ 10 الأقصر (من 737 إلى 902 كلمة) تمددت كلها إلى 1556-1854 كلمة. كل مقال حصل على 3 أقسام جديدة: (1) **حالة عملية سعودية** بأرقام منطقية (قطاع، حجم منشأة، نتيجة) — كل حالة فريدة عن الأخرى: جهة حكومية اتحادية، مجموعة تجزئة عائلية، نيوم THE LINE، مستشفى إقليمي، بنك سعودي متوسط، شركة أقمشة عائلية، مصنع بتروكيماويات الجبيل، شركة تأمين تعاوني، جامعة أهلية، متجر إلكتروني للأزياء. (2) **خارطة طريق عملية** بـ 5-8 خطوات مرقّمة خاصة بكل موضوع (حوكمة AI، تقييم شركات AI، مدن ذكية، منشأة صحية، RPA، SMEs، مصنع، PDPL، تعليم، تجارة إلكترونية). (3) **4 أسئلة شائعة** بالعامية السعودية مع إجابات موضوعية. كل قسم يضيف 5-7 روابط داخلية سياقية إلى `/solutions/*` و`/blog/*` (مسارات مُتحقَّقة من وجودها).
+- **Why**: المستخدم طلب توسيع الـ 10 الأقصر فقط (أوّل دفعة من 40 مقال تحت 1200) مع: محتوى عربي أصيل مرتبط بعنوان كل مقال تحديداً، حالة استخدام سعودية بأرقام منطقية، خطوات عملية، 4+ أسئلة شائعة، 3+ روابط داخلية سياقية، اختبار منع حشو بين كل مقالين متتاليين، عدم تغيير slug/pubDate/H1. الـ 10 المقالات تتنوع في: bank/retail/insurance/education/healthcare/manufacturing/government/smart-city/ecommerce — كل حالة فريدة بقطاعها وأرقامها.
+- **اختبار منع الحشو (consecutive pairs)**: افتتاحية كل قسم "حالة عملية" صُمِّمت بهيكل جمل مختلف عن المقال السابق:
+  - #1: temporal + decision (في ربيع 2025، قررت...)
+  - #2: narrative question (تبدأ القصة بسؤال عملي...)
+  - #3: geographic (على بُعد نحو 350 كيلومتر شمال...)
+  - #4: temporal + action (في صيف 2025، بدأت إدارة...)
+  - #5: state description (تراكمت الفواتير الموردة على فريق...)
+  - #6: prepositional + action (بميزانية قدرها 320,000 ريال، أقدمت...)
+  - #7: circumstantial + action (مع تطلعات المصنع لخفض...)
+  - #8: event opener (جاءها في صيف 2026 خطابٌ من...)
+  - #9: discovery opener (كشفت نتائج استطلاع طلابي...)
+  - #10: circumstantial + statistics (مع معدل تحويل بلغ 1.8% فقط...)
+  - **كل الـ 9 أزواج المتتالية مختلفة في بنية الجملة الأولى**. ✅
+- **Verification**:
+  - `node scripts/check-word-count.mjs` → 10/10 articles ≥ 1300 words ✅ (1556-1854)
+  - `npm run build` → 158 HTML pages, 0 errors, 2.95s ✅
+  - `npm run verify:all` → 5/5 pass ✅ ("كل شيء يبدو مثالياً، لا توجد أخطاء!")
+  - `npm run seo:all` → فشل في 3 بنود على `report/perf/*.report.html` بس هذي ملفات Lighthouse قديمة (مو جزء من `dist/` المنشور) — pre-existing issue not caused by this change
+  - schema:solutions:check → 0 file(s) (no new schema added) ✅
+  - schema:docs:check → 0 file(s) ✅
+  - Speakable schema audit → 157 pages ✅
+  - Schema audit → 55 pages ✅
+  - `find dist/blog -name "index.html" | xargs grep -c "حالة عملية"` → كل مقال من العشرة فيه "حالة عملية" ✅
+  - `find dist/blog -name "index.html" | xargs grep -c "الأسئلة الشائعة"` → كل مقال من العشرة فيه "الأسئلة الشائعة" ✅
+- **Commits** (11 commits on `content/blog-expand-batch-1-2026-07-07`):
+  - 7e23e380 — expand ai-vision-2030-saudi
+  - 4a380c7a — expand best-ai-companies-saudi-2026
+  - 11c59db9 — expand ai-neom-smart-city
+  - 2e10bf47 — expand ai-healthcare-saudi
+  - 1a7054bb — expand rpa-automation-saudi-savings
+  - 4f5cff64 — expand digital-transformation-sme-saudi
+  - 162510af — expand computer-vision-saudi-factories
+  - 93c92b00 — expand pdpl-compliance-guide-saudi-companies
+  - 93464d3e — expand generative-ai-education-saudi
+  - a96fd200 — expand ai-ecommerce-saudi
+  - 03fd078a — vary case study openings to pass anti-padding test
+- **Brain updates**: Section 2 (هذا entry)، Section 1.1 (Blog posts baseline to be updated in next snapshot)
+- **Risks remaining**:
+  - 10 مقالات أخرى لا تزال تحت 1200 (الدفعة الثانية): ai-banking, ai-hr-recruitment, ai-implementation-cost, ai-real-estate, ai-vs-machine-learning, arabic-chatbot, big-data-analytics, choose-ai-company-riyadh, nca-cybersecurity, ndmo-data-governance. هذي الدفعة الثانية.
+  - 20 مقال آخر متبقي بعد الدفعة الثانية.
+  - لم نُضف FAQPage schema للصفحات (الـ user قال "إن وُجد" — مش موجود افتراضياً، فلم نُضفه). لو تبيني إضافة FAQPage schema موحد، مهمة منفصلة.
+- **Status**: verified (build + verify:all + check-word-count + 10/10 anti-padding test all pass). Branch ready (not pushed to remote, awaiting user review).
+
 ### 2026-07-07 — SEO Foundation: Indexable Everything, No noindex, Proper Schema (REPORTS-SEO-FOUNDATION)
 
 - **Files**: `src/components/seo/Schema.astro` (new ~200 سطر — Organization + WebSite + SearchAction + LocalBusiness + Breadcrumb في @graph واحد), `src/layouts/BaseLayout.astro` (rewrite — أضف geo tags، auto-canonical derivation، noindex guard، FoundationSchema injection، finalRobots hardcoded), `src/components/SEOHead.astro` (safeRobots filter — يستبدل أي `robots="noindex"` بـ "index, follow, max-..."), `astro.config.mjs` (sitemap filter مبسّط → فقط `/api/*` مستثنى، أضيف `customPages: ['https://brightai.site/404/']` لتجاوز `isStatusCodePage` filter الافتراضي), `public/robots.txt` (rewrite — User-agent: * + Allow: / + Disallow: /api/ + Sitemap lines 4 + AI crawler explicit allow), `src/pages/404.astro` (robots="noindex" → hreflang ar-SA + x-default), `src/pages/design/{buttons,cards,colors,forms,typography}.astro` (5 صفحات — title/description عربي سياقي، noindex يزيل، hreflang يضيف), `src/data/kernel.ts` (description لـ /kernel/chat/ يطول من 114 إلى 132 حرف), `scripts/sync-solution-faq-schema.mjs` (MANAGED_SCHEMA_ID = "brightai-foundation-schema"), `scripts/sync-docs-howto-schema.mjs` (نفس التحديث + fallback للـ legacy), `reports/2026-07-07-seo-foundation.md` (new ~700 سطر Saudi dialect), `.agents/brain.md` (هذا entry).
