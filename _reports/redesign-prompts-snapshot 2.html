@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrightAI — برومبتات إعادة التصميم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e1a; --surface-1:#0f1525; --surface-2:#151c30; --surface-3:#1c2440;
+    --border:rgba(148,163,184,.12); --border-strong:rgba(148,163,184,.22);
+    --text:#f1f5f9; --text-soft:#94a3b8; --text-muted:#64748b;
+    --brand:#06b6d4; --brand-soft:rgba(6,182,212,.12); --brand-glow:rgba(6,182,212,.3);
+    --accent:#22c55e; --warn:#f59e0b; --danger:#ef4444; --indigo:#6366f1;
+    --radius:14px; --radius-lg:20px;
+    --font:'IBM Plex Sans Arabic',system-ui,sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font); background:var(--bg); color:var(--text);
+    line-height:1.7; min-height:100vh;
+    background-image:
+      radial-gradient(ellipse at 80% -10%, rgba(6,182,212,.10), transparent 60%),
+      radial-gradient(ellipse at 10% 100%, rgba(99,102,241,.08), transparent 50%);
+  }
+
+  /* === Layout === */
+  .shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh}
+  @media(max-width:1024px){.shell{grid-template-columns:1fr}}
+
+  /* === Sidebar === */
+  aside.toc{
+    position:sticky;top:0;height:100vh;overflow-y:auto;
+    background:var(--surface-1); border-inline-end:1px solid var(--border);
+    padding:24px 20px;
+  }
+  @media(max-width:1024px){aside.toc{position:static;height:auto;border-inline-end:0;border-bottom:1px solid var(--border)}}
+  .toc__logo{
+    display:flex;align-items:center;gap:10px;margin-bottom:24px;
+    padding-bottom:20px;border-bottom:1px solid var(--border);
+  }
+  .toc__logo-mark{
+    width:36px;height:36px;border-radius:10px;
+    background:linear-gradient(135deg,var(--brand),var(--indigo));
+    display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;
+    box-shadow:0 0 24px var(--brand-glow);
+  }
+  .toc__logo-text{display:flex;flex-direction:column}
+  .toc__logo-text b{font-size:15px;font-weight:700}
+  .toc__logo-text span{font-size:11px;color:var(--text-muted);letter-spacing:.05em}
+  .toc__title{font-size:11px;font-weight:600;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;margin:18px 0 8px}
+  .toc a{
+    display:flex;align-items:center;gap:10px;
+    padding:7px 10px;border-radius:8px;
+    color:var(--text-soft);text-decoration:none;font-size:13.5px;
+    transition:all .15s;
+  }
+  .toc a:hover{background:var(--surface-2);color:var(--text)}
+  .toc a .num{
+    font-family:var(--mono);font-size:10.5px;color:var(--text-muted);
+    background:var(--surface-2);padding:2px 6px;border-radius:4px;min-width:28px;text-align:center;
+  }
+
+  /* === Main === */
+  main{padding:32px 36px 80px;max-width:1100px;width:100%}
+  @media(max-width:768px){main{padding:24px 18px 60px}}
+
+  /* === Header === */
+  .hero{
+    background:linear-gradient(135deg,var(--surface-2),var(--surface-1));
+    border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:36px;margin-bottom:32px;position:relative;overflow:hidden;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:-1px;border-radius:var(--radius-lg);
+    background:linear-gradient(135deg,var(--brand-glow),transparent 40%);
+    opacity:.5;z-index:0;pointer-events:none;
+  }
+  .hero>*{position:relative;z-index:1}
+  .hero__eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:5px 12px;border-radius:999px;
+    background:var(--brand-soft);border:1px solid var(--brand);
+    color:var(--brand);font-size:12px;font-weight:600;margin-bottom:16px;
+  }
+  .hero__eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--brand);box-shadow:0 0 12px var(--brand)}
+  .hero h1{font-size:clamp(28px,4vw,42px);font-weight:800;line-height:1.2;margin-bottom:12px;letter-spacing:-.02em}
+  .hero h1 .grad{background:linear-gradient(135deg,var(--brand),var(--indigo));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{color:var(--text-soft);font-size:16px;max-width:720px}
+
+  /* === Stats === */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+  .stat__num{font-size:26px;font-weight:800;color:var(--brand);font-family:var(--mono)}
+  .stat__lbl{font-size:12px;color:var(--text-muted);margin-top:2px}
+
+  /* === Sections === */
+  section.phase{margin-top:48px;scroll-margin-top:20px}
+  .phase__head{
+    display:flex;align-items:center;gap:14px;margin-bottom:20px;
+    padding-bottom:14px;border-bottom:1px solid var(--border);
+  }
+  .phase__badge{
+    width:48px;height:48px;border-radius:12px;
+    background:linear-gradient(135deg,var(--brand),var(--indigo));
+    display:grid;place-items:center;color:#fff;font-weight:800;font-size:18px;
+    font-family:var(--mono);box-shadow:0 4px 20px var(--brand-glow);flex-shrink:0;
+  }
+  .phase__title{font-size:22px;font-weight:700}
+  .phase__sub{font-size:13px;color:var(--text-muted);margin-top:2px}
+
+  /* === Constraints box === */
+  .constraints{
+    background:linear-gradient(135deg,rgba(239,68,68,.06),rgba(245,158,11,.04));
+    border:1px solid rgba(239,68,68,.2);border-radius:var(--radius);
+    padding:20px 22px;margin:24px 0;
+  }
+  .constraints h3{font-size:15px;color:var(--danger);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .constraints ol{padding-inline-start:20px;font-size:13.5px;color:var(--text-soft)}
+  .constraints li{margin-bottom:6px}
+  .constraints .ok{color:var(--accent)}
+
+  /* === Prompt cards === */
+  .prompt{
+    background:var(--surface-2);border:1px solid var(--border);
+    border-radius:var(--radius);margin-bottom:16px;overflow:hidden;
+    transition:border-color .2s;
+  }
+  .prompt:hover{border-color:var(--border-strong)}
+  .prompt__head{
+    padding:16px 20px;display:flex;align-items:center;gap:14px;
+    cursor:pointer;user-select:none;background:var(--surface-2);
+    border-bottom:1px solid transparent;transition:background .15s;
+  }
+  .prompt[open] .prompt__head{border-bottom-color:var(--border);background:var(--surface-3)}
+  .prompt__head:hover{background:var(--surface-3)}
+  .prompt__num{
+    font-family:var(--mono);font-size:13px;font-weight:600;
+    color:var(--brand);background:var(--brand-soft);
+    padding:4px 10px;border-radius:6px;flex-shrink:0;
+  }
+  .prompt__title{flex:1;font-size:15px;font-weight:600}
+  .prompt__chev{color:var(--text-muted);transition:transform .25s}
+  .prompt[open] .prompt__chev{transform:rotate(180deg)}
+
+  .prompt__body{padding:20px}
+  .prompt__copy-row{display:flex;justify-content:flex-end;margin-bottom:10px}
+  .copy-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--brand-soft);color:var(--brand);
+    border:1px solid var(--brand);border-radius:8px;
+    padding:6px 12px;font-size:12px;font-weight:600;font-family:var(--font);
+    cursor:pointer;transition:all .15s;
+  }
+  .copy-btn:hover{background:var(--brand);color:#fff}
+  .copy-btn.copied{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  pre.code{
+    background:#06080f;border:1px solid var(--border);border-radius:10px;
+    padding:18px;overflow-x:auto;font-family:var(--mono);
+    font-size:12.5px;line-height:1.65;color:#cbd5e1;direction:ltr;text-align:start;
+    white-space:pre-wrap;word-break:break-word;
+  }
+  pre.code .ar{direction:rtl;display:inline-block;font-family:var(--font);font-size:13px}
+
+  /* === Roadmap === */
+  .roadmap{
+    background:var(--surface-2);border:1px solid var(--border);
+    border-radius:var(--radius);padding:18px;margin:24px 0;
+    font-family:var(--mono);font-size:12.5px;line-height:1.9;
+    color:var(--text-soft);direction:ltr;text-align:start;
+  }
+  .roadmap b{color:var(--brand)}
+
+  /* === Footer === */
+  .end{
+    margin-top:60px;padding:28px;border-radius:var(--radius-lg);
+    background:linear-gradient(135deg,rgba(6,182,212,.08),rgba(99,102,241,.06));
+    border:1px solid var(--border-strong);text-align:center;
+  }
+  .end h3{font-size:18px;margin-bottom:8px}
+  .end p{color:var(--text-soft);font-size:14px}
+  .end strong{color:var(--brand)}
+
+  /* === Inline helpers === */
+  code.k{
+    font-family:var(--mono);font-size:12px;
+    background:var(--surface-3);padding:2px 6px;border-radius:4px;
+    color:var(--brand);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:5px}
+  ::-webkit-scrollbar-thumb:hover{background:var(--border-strong)}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- Sidebar TOC -->
+  <aside class="toc">
+    <div class="toc__logo">
+      <div class="toc__logo-mark">BA</div>
+      <div class="toc__logo-text"><b>BrightAI</b><span>Redesign Prompts</span></div>
+    </div>
+
+    <div class="toc__title">المراحل</div>
+    <a href="#phase-0"><span class="num">0</span>Discovery & Audit</a>
+    <a href="#phase-1"><span class="num">1</span>Design Tokens</a>
+    <a href="#phase-2"><span class="num">2</span>Core Components</a>
+    <a href="#phase-3"><span class="num">3</span>Pages Redesign</a>
+    <a href="#phase-4"><span class="num">4</span>Kernel UI</a>
+    <a href="#phase-5"><span class="num">5</span>Motion & A11y</a>
+    <a href="#phase-6"><span class="num">6</span>Final QA</a>
+
+    <div class="toc__title">روابط مفيدة</div>
+    <a href="BRIGHTAI-Redesign-Prompts.md"><span class="num">MD</span>الملف الكامل</a>
+    <a href="#constraints"><span class="num">⛔</span>القيود الصارمة</a>
+  </aside>
+
+  <main>
+
+    <!-- Hero -->
+    <div class="hero">
+      <span class="hero__eyebrow">Saudi AI Safety OS · Redesign Plan</span>
+      <h1>برومبتات إعادة <span class="grad">تصميم BrightAI</span> — UI/UX فقط</h1>
+      <p>22 برومبت تنفيذي مقسّم على 7 مراحل، تُغيّر التصميم وتجربة المستخدم لمشروعك بالكامل دون لمس أي محتوى أو قسم أو رابط أو SEO أو schema. كل برومبت مستقل، جاهز للنسخ، ينتهي بمعايير قبول واضحة.</p>
+
+      <div class="stats">
+        <div class="stat"><div class="stat__num">22</div><div class="stat__lbl">برومبت</div></div>
+        <div class="stat"><div class="stat__num">7</div><div class="stat__lbl">مراحل</div></div>
+        <div class="stat"><div class="stat__num">36</div><div class="stat__lbl">صفحة Astro</div></div>
+        <div class="stat"><div class="stat__num">11</div><div class="stat__lbl">شاشة Kernel</div></div>
+      </div>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="roadmap">
+المرحلة 0 — Discovery & Design System Audit       → <b>2 برومبتات</b> (0.1 → 0.2)
+المرحلة 1 — Design Tokens & Foundations           → <b>3 برومبتات</b> (1.1 → 1.3)
+المرحلة 2 — Core Components Redesign              → <b>4 برومبتات</b> (2.1 → 2.4)
+المرحلة 3 — Page-Level Visual Redesign            → <b>5 برومبتات</b> (3.1 → 3.5)
+المرحلة 4 — Kernel UI (HTML الثابت)               → <b>3 برومبتات</b> (4.1 → 4.3)
+المرحلة 5 — Motion, Micro-Interactions & A11y     → <b>3 برومبتات</b> (5.1 → 5.3)
+المرحلة 6 — Final QA & Polish                     → <b>2 برومبتات</b> (6.1 → 6.2)
+                                          <b>الإجمالي = 22 برومبت</b>
+    </div>
+
+    <!-- Constraints -->
+    <div id="constraints" class="constraints">
+      <h3>⛔ القيود الصارمة المشتركة (يجب نسخها في كل برومبت)</h3>
+      <ol>
+        <li>❌ لا تحذف أو تضيف أي section أو عنصر من أي صفحة.</li>
+        <li>❌ لا تغيّر أي نص عربي أو إنجليزي ظاهر للمستخدم.</li>
+        <li>❌ لا تعدّل: <code class="k">sitemap.xml</code>, <code class="k">robots.txt</code>, canonical URLs, hreflang, JSON-LD, <code class="k">redirects.json</code>, <code class="k">astro.config.mjs</code> (redirects), <code class="k">manifest.webmanifest</code>, <code class="k">_headers</code>, <code class="k">_redirects</code>.</li>
+        <li>❌ لا تكسر RTL، ولا تغيّر <code class="k">dir="rtl"</code> ولا <code class="k">lang="ar"</code>.</li>
+        <li>❌ لا تغيّر أسماء الـ routes أو ملفات الصفحات.</li>
+        <li>❌ لا تحذف أي <code class="k">data-*</code> attribute موجود حالياً.</li>
+        <li>❌ لا تغيّر أسماء classes مستخدمة في data-attributes/scripts.</li>
+        <li class="ok">✅ يُسمح بتغيير: CSS، animations، layout، spacing، typography، أيقونات، ظلال، حركات، micro-interactions.</li>
+        <li class="ok">✅ يُسمح بإضافة CSS classes/variables/ملفات جديدة.</li>
+        <li class="ok">✅ كل برومبت في فرع git منفصل + PR + تقرير .md.</li>
+        <li class="ok">✅ كل برومبت يولّد QA screenshots: before/after × Desktop/Mobile.</li>
+      </ol>
+    </div>
+
+    <!-- ============ PHASE 0 ============ -->
+    <section id="phase-0" class="phase">
+      <div class="phase__head">
+        <div class="phase__badge">0</div>
+        <div>
+          <div class="phase__title">Discovery & Design System Audit</div>
+          <div class="phase__sub">جرد الوضع الحالي + اختيار اتجاه التصميم</div>
+        </div>
+      </div>
+
+      <!-- Prompt 0.1 -->
+      <details class="prompt">
+        <summary class="prompt__head">
+          <span class="prompt__num">0.1</span>
+          <span class="prompt__title">جرد التصميم الحالي (Visual Audit Only)</span>
+          <svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        </summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE:
+<span class="ar">أنت Senior Product Designer + Frontend Auditor. مهمتك توثيق الوضع البصري الحالي للموقع، بدون أي تعديل.</span>
+
+CONSTRAINTS:
+[<span class="ar">انسخ القيود الصارمة المشتركة كاملة من الأعلى</span>]
+
+TASK:
+1. <span class="ar">افتح كل صفحة من هذه القائمة وخذ screenshot Desktop (1440px) + Mobile (390px):</span>
+   /, /solutions/, /solutions/ai-firewall/, /kernel/, /kernel/chat/,
+   /pricing/, /blog/, /docs/, /about/, /contact/, /trust/,
+   /assessment/ai-governance-readiness/, /hub/
+
+2. <span class="ar">لكل صفحة، وثّق في جدول:</span>
+   - <span class="ar">الأقسام الموجودة بالترتيب (Section 1, 2, 3...)</span>
+   - <span class="ar">نوع كل قسم (hero, grid, list, FAQ, CTA, ...)</span>
+   - <span class="ar">الألوان المستخدمة (hex)</span>
+   - <span class="ar">أوزان الخط (font-weight)</span>
+   - <span class="ar">أنماط البطاقات (radius, shadow, border)</span>
+   - <span class="ar">الحركات الموجودة (CSS animations, transitions)</span>
+
+3. <span class="ar">اكتشف الـ design inconsistencies:</span>
+   - <span class="ar">أي بطاقات بأشكال مختلفة لنفس النوع</span>
+   - <span class="ar">أي مسافات (padding/margin) غير متسقة</span>
+   - <span class="ar">أي خطوط/أوزان متعددة لنفس المستوى</span>
+   - <span class="ar">أي أيقونات بأحجام/أنماط مختلفة</span>
+
+OUTPUT:
+- <span class="ar">ملف</span> `reports/00-visual-audit.md` <span class="ar">يحتوي:</span>
+  * <span class="ar">جدول الصفحات + screenshots</span>
+  * <span class="ar">قائمة الـ inconsistencies (مرتبة حسب الأولوية)</span>
+  * <span class="ar">قائمة بأنواع المكونات المتكررة (مرشحة للتوحيد)</span>
+- <span class="ar">مجلد</span> `reports/screenshots/before/` <span class="ar">فيه كل الـ screenshots</span>
+
+ACCEPTANCE CRITERIA:
+✅ 26 screenshot <span class="ar">على الأقل (13 صفحة × 2 viewports)</span>
+✅ <span class="ar">التقرير يحدد ≥10 inconsistencies بأمثلة محددة (file:line)</span>
+✅ <span class="ar">ما تم لمس أي ملف مصدر</span></pre>
+        </div>
+      </details>
+
+      <!-- Prompt 0.2 -->
+      <details class="prompt">
+        <summary class="prompt__head">
+          <span class="prompt__num">0.2</span>
+          <span class="prompt__title">اختيار اتجاه التصميم (Design Direction Proposal)</span>
+          <svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        </summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE:
+<span class="ar">أنت Design Lead لمشروع SaaS تنفيذي (Enterprise B2B) موجّه للسوق السعودي.</span>
+
+CONSTRAINTS:
+[<span class="ar">انسخ القيود الصارمة المشتركة</span>]
+
+CONTEXT:
+- <span class="ar">المشروع: BrightAI — منصة حوكمة AI للشركات السعودية</span>
+- <span class="ar">الجمهور: CIO, CISO, Compliance Officers, IT Directors في بنوك ومستشفيات وحكومة</span>
+- <span class="ar">النبرة المطلوبة: ثقة، أمان، احترافية، سعودية حديثة</span>
+- <span class="ar">الموقع حالياً Dark theme — يجب أن يبقى dark</span>
+- <span class="ar">اللون الأساسي حالياً Cyan (#06b6d4) — يمكن تطويره</span>
+
+TASK:
+<span class="ar">اقترح 3 اتجاهات تصميمية، كل واحد يحدد:</span>
+
+1. **Mood & Personality**
+   - 3-5 <span class="ar">كلمات تصف الإحساس</span>
+   - inspiration references (Stripe, Linear, Vercel, Anthropic, ...)
+
+2. **Color System**
+   - Primary brand color
+   - Secondary accent
+   - Neutral scale (5+ <span class="ar">درجات</span>)
+   - Semantic colors (success/warning/danger/info)
+   - Surface layers (base/elevated/overlay)
+
+3. **Typography**
+   - Display font (<span class="ar">يجب أن يكون عربي ممتاز</span>)
+   - Body font (IBM Plex Sans Arabic <span class="ar">ثابت</span>)
+   - Type scale (modular: 1.125 <span class="ar">أو</span> 1.250)
+   - <span class="ar">أوزان مقترحة</span>
+
+4. **Surface Treatment**
+   - Glass morphism vs flat
+   - Border treatment
+   - Shadow philosophy
+   - Radius scale
+
+5. **Motion Philosophy**
+   - Ease curves, Duration scale, Micro-interaction style
+
+OUTPUT:
+- `reports/01-design-directions.md`
+- <span class="ar">لكل اتجاه: moodboard + color swatches + type sample + mock card</span>
+- <span class="ar">توصية نهائية مع justification</span>
+
+ACCEPTANCE CRITERIA:
+✅ 3 <span class="ar">اتجاهات متمايزة فعلاً</span>
+✅ <span class="ar">كل اتجاه يحترم: RTL، Dark mode، Enterprise B2B feel</span>
+✅ <span class="ar">التوصية النهائية مدعومة بـ rationale تجاري + بصري</span></pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ PHASE 1 ============ -->
+    <section id="phase-1" class="phase">
+      <div class="phase__head">
+        <div class="phase__badge">1</div>
+        <div>
+          <div class="phase__title">Design Tokens & Foundations</div>
+          <div class="phase__sub">تطوير نظام التوكنز والـ Typography والـ Color System</div>
+        </div>
+      </div>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">1.1</span><span class="prompt__title">تحديث Design Tokens</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Senior Design Systems Engineer.</span>
+CONSTRAINTS: [<span class="ar">القيود + لا تحذف أي token موجود — فقط أضف/طوّر</span>]
+
+CONTEXT:
+<span class="ar">الملف:</span> src/styles/tokens.css
+<span class="ar">يحتوي 15 مجموعة tokens (ألوان، خلفيات، نص، حدود، تباعد، خطوط، ظلال، حركات).</span>
+
+TASK:
+1. <span class="ar">حدّث</span> src/styles/tokens.css:
+
+   a) Color Refinement:
+      - <span class="ar">حسّن سلم brand ليكون deep & professional</span>
+      - <span class="ar">أضف neutrals scale موسّع (50-950)</span>
+      - <span class="ar">أضف:</span> --surface-1/2/3, --border-faint/soft/strong/bold,
+        --overlay-light/medium/heavy
+
+   b) Typography Scale:
+      - Modular scale (1.125 minor third / 1.200):
+        --text-2xs ... --text-7xl
+      - --tracking-tight, --tracking-normal, --tracking-wide
+      - font-feature-settings <span class="ar">للأرقام المختلطة</span>
+
+   c) Spacing: <span class="ar">سلم 4px أساس</span> (--space-0 .. --space-32)
+
+   d) Radius: <span class="ar">أضف</span> --radius-3xl, --radius-4xl
+
+   e) Shadow System:
+      - <span class="ar">نظام 3 layers (ambient + key + spread)</span>
+      - --shadow-glow-brand, --shadow-glow-accent, --shadow-glow-danger
+      - --shadow-inset-* <span class="ar">للـ pressed states</span>
+
+   f) Motion:
+      - --ease-emphasized, --ease-decelerated, --ease-accelerated
+      - --duration-instant (75ms), --duration-snappy (180ms)
+
+2. ✅ <span class="ar">احتفظ بكل الـ aliases (--surface, --text, --brand, ...)</span>
+
+3. <span class="ar">أضف</span> src/styles/tokens-v2-doc.md <span class="ar">يوثّق كل token جديد + مثال</span>
+
+OUTPUT:
+- src/styles/tokens.css (<span class="ar">محدّث</span>)
+- src/styles/tokens-v2-doc.md (<span class="ar">جديد</span>)
+- reports/02-tokens-update.md
+
+ACCEPTANCE CRITERIA:
+✅ <span class="ar">زيرو removal لأي token قديم</span>
+✅ Build <span class="ar">ينجح</span> (npm run build)
+✅ <span class="ar">كل الصفحات تعرض نفس المحتوى</span>
+✅ <span class="ar">التقرير يحتوي before/after لـ color/shadow/type samples</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">1.2</span><span class="prompt__title">Typography Refinement</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Typography Specialist (Arabic + Bi-directional).</span>
+CONSTRAINTS: [<span class="ar">القيود</span>] + <span class="ar">لا تستبدل IBM Plex Sans Arabic — يمكن إضافة display ثانوي للعناوين الضخمة فقط.</span>
+
+TASK:
+1. <span class="ar">حدّث</span> src/styles/base.css:
+
+   a) Heading hierarchy:
+      - h1: clamp(2.5rem, 5vw, 4.5rem), weight 800
+      - h2: 2.25rem → 3rem, weight 800
+      - h3: 1.75rem → 2.25rem, weight 700
+      - h4: 1.375rem → 1.5rem, weight 700
+
+   b) Body:
+      - line-height <span class="ar">للعربي</span>: 1.75
+      - tracking-tight <span class="ar">للعناوين الكبيرة</span> (-0.02em)
+
+   c) Tabular Nums:
+      - .tabular-nums { font-feature-settings: 'tnum' }
+      - <span class="ar">استخدمها في dashboards/stats/pricing</span>
+
+   d) Lead paragraphs:
+      - .lead = font-lg + line-height relaxed + color secondary
+
+   e) <span class="ar">أحجام للأقسام:</span>
+      - .section__title (3xl)
+      - .section__eyebrow (sm uppercase tracking-wide brand)
+      - .section__subtitle (lg secondary)
+
+2. <span class="ar">حدّث</span> SplitHero.astro <span class="ar">للعناوين فقط (CSS classes)</span>:
+   - h1 display-style <span class="ar">أكبر مع clamp responsive</span>
+   - <span class="ar">تحسين الـ gradient-text (smoother stops)</span>
+
+3. <span class="ar">أنشئ</span> src/pages/design/typography.astro (<span class="ar">internal — مو في sitemap</span>)
+
+OUTPUT:
+- src/styles/base.css, components.css (<span class="ar">محدّثة</span>)
+- src/pages/design/typography.astro
+- reports/03-typography.md
+
+ACCEPTANCE CRITERIA:
+✅ <span class="ar">كل النصوص قابلة للقراءة بوضوح على RTL</span>
+✅ Heading hierarchy <span class="ar">متباين (≥1.25× بين كل مستوى)</span>
+✅ <span class="ar">ما تغيّر ولا نص واحد</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">1.3</span><span class="prompt__title">Color System Application</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Visual Designer (Dark Mode UI).</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TASK: <span class="ar">طبّق tokens الجديدة:</span>
+
+1. Backgrounds:
+   body → --bg-base
+   .section--alt → --surface-1
+   <span class="ar">بطاقات elevated</span> → --surface-2
+   <span class="ar">بطاقات على بطاقات</span> → --surface-3
+   overlays/modals → --bg-overlay + backdrop-blur
+
+2. Borders:
+   <span class="ar">عادية</span> → --border-soft
+   hover → --border-strong
+   focus → --border-brand
+
+3. Brand Usage Rules:
+   - cyan-500: CTAs <span class="ar">الرئيسية فقط</span>
+   - cyan-400: links + accents
+   - cyan-300: subtle highlights
+   - cyan-200/100: glow only
+
+4. Status (<span class="ar">محافظة على المعنى</span>):
+   success → confirmations + compliance pass
+   warning → tier 2 risks
+   danger → tier 3 risks + blocking
+   info → informational
+
+5. <span class="ar">أنشئ</span> src/styles/color-usage.css:
+   - .surface-1/2/3, .border-soft/strong/brand
+   - .text-brand/accent/success/danger
+   - .bg-brand-glow, .bg-accent-glow
+
+6. <span class="ar">حدّث components.css:</span>
+   .card → --surface-2 + --border-soft
+   .card--feature → hover state
+   .chip → brand-soft bg + brand border
+   .btn--primary → brand-500, hover brand-400
+
+OUTPUT:
+- src/styles/color-usage.css (<span class="ar">جديد</span>)
+- src/styles/components.css (<span class="ar">محدّث</span>)
+- /design/colors.astro
+- reports/04-colors.md
+
+ACCEPTANCE CRITERIA:
+✅ <span class="ar">كل البطاقات تستخدم نظام surface layers</span>
+✅ <span class="ar">لا hex مكتوب يدوياً في أي مكون</span>
+✅ Contrast AA <span class="ar">لكل combination</span></pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ PHASE 2 ============ -->
+    <section id="phase-2" class="phase">
+      <div class="phase__head">
+        <div class="phase__badge">2</div>
+        <div>
+          <div class="phase__title">Core Components Redesign</div>
+          <div class="phase__sub">Header, Footer, Cards, Buttons, Forms</div>
+        </div>
+      </div>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">2.1</span><span class="prompt__title">Header & Navigation Redesign</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Senior UI Engineer + Interaction Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
++ ❌ <span class="ar">لا تغيّر هيكل NAV في</span> src/data/navigation.ts
++ ❌ <span class="ar">لا تغيّر أي href/label/labelAr</span>
++ ❌ <span class="ar">لا تحذف WhatsApp/Demo CTA</span>
++ ❌ <span class="ar">احتفظ بـ accessibility</span>
++ ✅ <span class="ar">يمكن تغيير: visual, dropdown animation, spacing, hover</span>
+
+TARGET: src/components/Header.astro + .site-header__* styles
+
+TASK:
+1. Visual Refinement:
+   - Glass: backdrop-filter: saturate(180%) blur(20px)
+   - Border bottom: 1px solid rgba(255,255,255,0.06)
+   - Padding-block 16 → 20
+   - Logo 36 → 32 + better spacing
+
+2. Nav Links:
+   - Active = 2px line cyan <span class="ar">أسفل الرابط (بدل background)</span>
+   - Hover: subtle bg + color shift (200ms)
+   - Dropdown trigger: chevron rotate 180deg on open
+
+3. Dropdown Panel:
+   - Width 650-720px
+   - Group headings: uppercase + tracking-wide + smaller
+   - <span class="ar">كل link داخل grid:</span> icon + label + description
+   - Animation: scale(0.98)+opacity0 → scale(1)+opacity1 (180ms emphasized)
+   - Light blur backdrop
+
+4. CTAs (<span class="ar">أقصى يسار RTL</span>):
+   - WhatsApp: outline + green accent
+   - "Book Demo": solid brand + subtle glow hover
+   - Gap 12px
+
+5. Mobile:
+   - Cleaner hamburger
+   - MobileNav: full-height drawer <span class="ar">من اليمين</span>
+   - Animation: translate-x slide
+
+6. Scroll Behavior:
+   - scroll > 20px → header <span class="ar">أصغر + ظل أعمق</span>
+
+OUTPUT:
+- Header.astro, MobileNav.astro (<span class="ar">visual</span>)
+- components.css (.site-header__*)
+- reports/05-header.md + 4 screenshots
+
+ACCEPTANCE:
+✅ <span class="ar">كل الروابط لنفس الـ URLs</span>
+✅ Keyboard nav (Tab+Enter+Escape)
+✅ ARIA <span class="ar">ما تغيّر</span>
+✅ Lighthouse a11y ≥ 95</pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">2.2</span><span class="prompt__title">Footer Redesign</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">UI Engineer متخصص في الـ footers التنفيذية.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>] + ❌ <span class="ar">لا تغيّر أي رابط/WhatsApp/lang-switcher/legal</span>
+
+TARGET: src/components/Footer.astro + .footer styles
+
+TASK:
+1. Grid Restructure:
+   Desktop: 5 cols (Brand wider + 4 nav)
+   Tablet: 2 cols
+   Mobile: 1 col + accordions <span class="ar">اختياري</span>
+
+2. Brand Column:
+   - Logo <span class="ar">أكبر + tagline سطرين max</span>
+   - WhatsApp = primary outline + green icon
+   - Language switcher = pill toggle
+
+3. Nav Columns:
+   - Heading uppercase tracking-wide sm secondary
+   - Links: gap 12px + hover (color + underline)
+
+4. Bottom Bar:
+   - Separator <span class="ar">فوقها</span>
+   - copyright + legal + social
+   - Centered mobile, split desktop
+
+5. Visual Polish:
+   - Background: --bg-base <span class="ar">أو radial gradient subtle</span>
+   - Top border gradient cyan→transparent
+   - Padding-block: 80px desktop, 48px mobile
+
+OUTPUT:
+- Footer.astro, components.css (.footer)
+- reports/06-footer.md + screenshots
+
+ACCEPTANCE:
+✅ <span class="ar">كل FOOTER_NAV.items معروضة</span>
+✅ Language switcher <span class="ar">يشتغل</span>
+✅ Social/contact <span class="ar">محفوظ</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">2.3</span><span class="prompt__title">Card System Unification</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Component Systems Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+CONTEXT: <span class="ar">الموقع فيه بطاقات متعددة بدون توحيد:</span>
+.card, .card--feature, .card--metric, .card--glass,
+.inner-card, .home-stat-card, .home-kernel-feature-link,
+SolutionCard, SectorCard.
+
+TASK: <span class="ar">وحّد كلها تحت نظام موحّد:</span>
+
+1. Base `.card`:
+   background: var(--surface-2);
+   border: 1px solid var(--border-soft);
+   border-radius: var(--radius-xl);
+   padding: var(--space-6);
+   transition: all 250ms var(--ease-emphasized);
+
+2. Variants:
+   .card--feature → icon top + hover lift -4px + border-strong
+   .card--metric → large number + label + trend indicator
+   .card--glass → backdrop-blur + bg surface-2/60 + border subtle
+   .card--gradient → gradient border (cyan→indigo) using mask
+   .card--interactive → cursor pointer + hover scale 1.01 + active 0.99
+
+3. Sizes: .card--sm (p-4), .card--md (p-6 default), .card--lg (p-8)
+
+4. Anatomy:
+   .card__icon (40-48px container with brand glow)
+   .card__eyebrow (uppercase tag)
+   .card__title (h3 style)
+   .card__desc (lead style)
+   .card__meta (bottom: stats, badges, arrow)
+   .card__action (cta link + arrow)
+
+5. Aliases (legacy compat):
+   .inner-card → .card
+   .home-stat-card → .card--metric
+   etc.
+
+6. <span class="ar">حدّث:</span>
+   - SolutionCard.astro
+   - SectorCard.astro
+   - <span class="ar">أي card inline في pages</span>
+
+⚠️ <span class="ar">لا تغيّر المحتوى — فقط wrapping classes + structure.</span>
+
+OUTPUT:
+- components.css (.card system)
+- SolutionCard.astro, SectorCard.astro (<span class="ar">محدّثة</span>)
+- /design/cards.astro
+- reports/07-cards.md
+
+ACCEPTANCE:
+✅ <span class="ar">كل البطاقات تستخدم base style واحد</span>
+✅ Hover/focus <span class="ar">موحّدة</span>
+✅ Legacy classes <span class="ar">تشتغل (aliases)</span>
+✅ <span class="ar">ما تغيّر محتوى أي بطاقة</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">2.4</span><span class="prompt__title">Buttons & Form Inputs</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Interaction Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TASK: <span class="ar">وحّد نظام الأزرار والمدخلات:</span>
+
+1. Button Variants:
+   .btn (base)
+   .btn--primary (solid brand + glow hover)
+   .btn--secondary (subtle bg + border)
+   .btn--ghost (transparent + hover bg)
+   .btn--outline (border only)
+   .btn--whatsapp (green specific)
+   .btn--danger
+
+2. Sizes:
+   .btn--sm (h36, px12)
+   .btn--md (h44, px16) — default
+   .btn--lg (h52, px24)
+   .btn--xl (h60, px32) — heroes
+
+3. States:
+   hover: brightness + lift + shadow
+   active: scale(0.98) + shadow reduced
+   disabled: opacity 0.5
+   loading: spinner inside
+   focus-visible: ring offset 2px brand
+
+4. Icon Buttons:
+   .btn--icon (square aspect)
+   <span class="ar">دعم icon+label أو icon فقط</span>
+
+5. Form Inputs:
+   .input (h44, p 12-16, radius md)
+   bg: --surface-2
+   border: --border-soft → --border-brand on focus
+   placeholder: --text-muted
+   <span class="ar">أحجام sm/md/lg</span>
+   <span class="ar">أنواع: text, email, tel, textarea</span>
+   error: border danger + helper
+
+6. Form Helpers:
+   .form-field, .form-label, .form-helper, .form-error
+
+⚠️ <span class="ar">لا تغيّر أي form موجود — فقط styles.</span>
+⚠️ <span class="ar">لا تغيّر action/method.</span>
+
+OUTPUT:
+- components.css (buttons + forms)
+- /design/buttons.astro, /design/forms.astro
+- reports/08-buttons-forms.md
+
+ACCEPTANCE:
+✅ <span class="ar">كل أزرار الموقع للنظام الجديد</span>
+✅ <span class="ar">كل forms تشتغل (contact/demo/assessment)</span>
+✅ Touch targets ≥ 44px <span class="ar">على mobile</span></pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ PHASE 3 ============ -->
+    <section id="phase-3" class="phase">
+      <div class="phase__head">
+        <div class="phase__badge">3</div>
+        <div>
+          <div class="phase__title">Page-Level Visual Redesign</div>
+          <div class="phase__sub">Home, Solutions, Pricing, Blog/Docs, About/Contact/Trust</div>
+        </div>
+      </div>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">3.1</span><span class="prompt__title">Homepage (/) Redesign</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Senior Product Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
++ ❌ <span class="ar">لا تحذف/تضيف أي قسم (11+ موجودة)</span>
++ ❌ <span class="ar">لا تغيّر ترتيب الأقسام</span>
++ ❌ <span class="ar">لا تغيّر أي نص/CTA target</span>
++ ❌ <span class="ar">احتفظ بكل JSON-LD schemas</span>
+
+TARGET: src/pages/index.astro + SplitHero.astro + styles
+
+ORDER (preserved):
+1. SplitHero
+2. Trust/Compliance signals
+3-N. ... (<span class="ar">راجع index.astro لكل الأقسام</span>)
+
+TASK:
+
+### 1. SplitHero:
+- <span class="ar">استبدل/حسّن DottedSurface: nodes أقل ضوضاء + connections smarter</span>
+- h1: clamp(2.5rem, 5vw, 4.5rem)
+- Gradient text smoother (cyan-400 → cyan-200 → white)
+- CTAs → .btn--xl
+- Kernel showcase: browser chrome <span class="ar">محسّن + stagger animation للـ feature grid</span>
+- Beams: <span class="ar">أقل تشتيت، أكثر اتجاهاً</span>
+
+### 2. Trust:
+- Badges → .chip <span class="ar">الجديد</span>
+- Stat cards → .card--metric + counter animation on scroll
+- Compliance logos row: grayscale → hover color
+
+### 3. <span class="ar">كل قسم آخر:</span>
+- Header: .section__eyebrow + .section__title + .section__subtitle
+- Grid: .grid--auto <span class="ar">أو</span> .grid--3
+- Cards: <span class="ar">النظام الجديد</span>
+- Section padding-block: 96px → 128px desktop, 64px mobile
+
+### 4. CTA Strips (<span class="ar">قبل الفوتر</span>):
+- Background: radial cyan-soft gradient
+- Big H2 + supporting text + 2 CTAs
+- Visual element on side (illustration/mockup placeholder)
+
+### 5. FAQ:
+- <span class="ar">Accordion (HTML &lt;details&gt;) styled</span>
+- Question: bold + chevron right (rotate on open)
+- Answer: padding + indent + secondary
+- max-height + opacity transition
+
+### 6. Background atmosphere:
+- <span class="ar">قسم بديل: gradient overlay خفيف أو dotted pattern</span>
+- <span class="ar">تجنّب التشتيت — البطاقات هي البطل</span>
+
+OUTPUT:
+- index.astro, SplitHero.astro, DottedSurface.tsx, pages.css
+- reports/09-home.md + Desktop+Mobile screenshots per section
+
+ACCEPTANCE:
+✅ <span class="ar">كل 11+ قسم بنفس الترتيب</span>
+✅ <span class="ar">كل النصوص محفوظة</span>
+✅ JSON-LD <span class="ar">ما تغيّر</span>
+✅ Lighthouse Perf ≥ 85 mobile
+✅ FCP ≤ 2.5s</pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">3.2</span><span class="prompt__title">Solutions Pages Redesign</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">B2B Product Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
++ ❌ <span class="ar">احتفظ بكل 9 منتجات + 4 قطاعات</span>
++ ❌ <span class="ar">لا تغيّر slug/path</span>
++ ❌ <span class="ar">احتفظ بكل JSON-LD</span>
+
+TARGETS:
+- src/pages/solutions/index.astro
+- src/pages/solutions/[slug].astro
+- src/pages/solutions/[sector].astro
+- src/pages/solutions/[sector]/[city].astro
+
+TASK:
+
+### Hub (/solutions/):
+1. Inner hero + pattern background subtle
+2. "<span class="ar">الإجابة المختصرة</span>" → featured card + gradient border
+3. "<span class="ar">كيف يشتغلون مع بعض</span>" steps:
+   - <span class="ar">استبدل inner-grid--4 بـ horizontal flow + connectors</span>
+   - <span class="ar">كل step: number badge + icon + title + desc</span>
+   - desktop: timeline + dashed lines
+   - mobile: vertical stack
+4. Solutions grid (.inner-grid--3):
+   - .card--feature, 9 cards in 3 cols
+   - <span class="ar">فلتر/تابز اختياري top (Products/Sectors)</span>
+5. Sectors grid (.inner-grid--2):
+   - <span class="ar">cards أكبر + bullet list of regulations</span>
+6. "<span class="ar">أي حل يناسبني</span>" guide:
+   - <span class="ar">decision tree visual أو grid of scenarios</span>
+
+### Individual Solution Page:
+1. Page hero: breadcrumb + eyebrow + h1 + subtitle + 2 CTAs
+2. Hero visual: mockup/animated illustration <span class="ar">على الجانب</span>
+3. "<span class="ar">كيف يشتغل</span>": 4-step flow + icons + arrows
+4. Features grid: 6-9 in .card--feature
+5. Use cases: before/after scenarios
+6. Integration: logos
+7. Final CTA: gradient banner + 2 actions
+
+### Sector Page:
+- <span class="ar">نفس template + "اللوائح المنطبقة" section</span>
+- Compliance badges grid
+
+⚠️ <span class="ar">كل المحتوى يبقى — فقط wrapping + layout يتغيّر.</span>
+
+OUTPUT:
+- <span class="ar">كل الصفحات المذكورة (محدّثة)</span>
+- SolutionCard.astro, SectorCard.astro (<span class="ar">محدّثة</span>)
+- reports/10-solutions.md + screenshots (hub + 3 products + 2 sectors)
+
+ACCEPTANCE:
+✅ <span class="ar">كل 9 منتجات + 4 قطاعات لها صفحة</span>
+✅ City-level <span class="ar">يشتغل</span>
+✅ Internal links <span class="ar">صحيحة</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">3.3</span><span class="prompt__title">Pricing Page Redesign</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">SaaS Pricing UX Specialist.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>] + ❌ <span class="ar">احتفظ بـ 4 باقات بأسماء/أسعار/مزايا حرفياً + 6 FAQs</span>
+
+TARGET: src/pages/pricing/index.astro + .pricing-* styles
+
+TASK:
+
+### Hero:
+- Breadcrumb + h1 + lead
+- 2 CTAs (WhatsApp + Contact)
+- Background: subtle radial gradient
+
+### Pricing Cards (4 <span class="ar">باقات</span>):
+1. Grid: 4 cols desktop, 2 tablet, 1 mobile
+2. <span class="ar">كل card:</span>
+   - Header: package name (h3) + brief description
+   - Price block: kbd-like price + period (smaller muted)
+   - Divider
+   - Features list: ✓ icon + text + gap 12px
+   - CTA button (full width)
+   - Optional badge "<span class="ar">الأكثر طلباً</span>" <span class="ar">على الوسطى لو موجودة قبل</span>
+3. Highlighted card: gradient border + glow + slight elevation
+4. Hover: lift + brand border
+
+### Comparison Table (<span class="ar">اختياري</span>):
+- <span class="ar">فقط لو يضيف قيمة بصرية بدون محتوى جديد</span>
+- ⚠️ <span class="ar">إذا في شك، تجاهل</span>
+
+### FAQ:
+- &lt;details&gt;&lt;summary&gt; + styling
+- Border bottom <span class="ar">بين كل سؤال</span>
+- Chevron rotate on open
+- Open: subtle highlight bg
+
+### Final CTA:
+- Banner: "<span class="ar">احجز موعد</span>"
+- Gradient + WhatsApp + Contact
+
+OUTPUT:
+- pricing/index.astro (<span class="ar">visual</span>)
+- pages.css (.pricing-*)
+- reports/11-pricing.md + screenshots
+
+ACCEPTANCE:
+✅ 4 <span class="ar">باقات بنفس البيانات</span>
+✅ <span class="ar">كل FAQs مفتوحة/مغلقة</span>
+✅ <span class="ar">كل links/CTAs تشتغل</span>
+✅ JSON-LD FAQPage <span class="ar">محفوظ</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">3.4</span><span class="prompt__title">Blog, Docs, Hub Pages</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Content-First UX Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>] + ❌ <span class="ar">لا تغيّر أي محتوى في src/content/blog/* و docs/*</span>
+
+TARGETS:
+- src/pages/blog/index.astro + [...slug].astro
+- src/pages/docs/index.astro + [...slug].astro
+- src/pages/hub/index.astro + [slug].astro
+- src/layouts/BlogLayout.astro + DocsLayout.astro
+
+TASK:
+
+### Blog Index:
+1. Hero + search input (visual)
+2. Featured post: <span class="ar">card كبير لو موجود</span>
+3. Posts grid: .card--article (img + cat + title + excerpt + author + date)
+4. Filters: category pills
+5. Pagination
+
+### Blog Post:
+1. Article hero: cover + cat + title + meta
+2. Reading layout: main (max 720px) + sidebar (sticky TOC + related)
+3. Typography: line-height 1.75 + para spacing
+4. Code blocks: dark syntax + copy button
+5. Inline images: rounded + shadow
+6. Pull quotes: gradient border + larger
+7. Author bio at end
+8. Related posts grid
+
+### Docs Index:
+1. Search prominent
+2. Categories grid
+3. Quick links to popular
+4. Recent updates feed
+
+### Docs Page:
+1. Sidebar tree nav (collapsible)
+2. Main + TOC
+3. Edit on GitHub link <span class="ar">لو موجود</span>
+4. Prev/Next doc footer
+5. Helpful? widget
+
+### Hub: <span class="ar">نفس treatment</span>
+
+OUTPUT:
+- <span class="ar">كل الصفحات المذكورة (visual)</span>
+- BlogLayout/DocsLayout (<span class="ar">محدّثة</span>)
+- TableOfContents.astro (<span class="ar">محدّث</span>)
+- pages.css (.blog-*, .docs-*, .hub-*)
+- reports/12-content-pages.md
+
+ACCEPTANCE:
+✅ <span class="ar">كل posts/docs/hub-pages تعرض محتواها كاملاً</span>
+✅ Frontmatter <span class="ar">معروضة صح</span>
+✅ Markdown rendering (code, images, tables, lists)
+✅ <span class="ar">قراءة مريحة على Desktop+Mobile</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">3.5</span><span class="prompt__title">About, Contact, Trust, Assessment, Demo</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">UX Designer للصفحات الثانوية.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TARGETS:
+- /about/, /contact/, /trust/
+- /assessment/ai-governance-readiness/
+- /demo/
+
+TASK:
+
+### /about/:
+- Hero <span class="ar">مختصر</span>
+- Story (timeline/narrative)
+- Team <span class="ar">لو موجود</span>
+- Mission/Vision/Values cards
+- "Made in KSA" badge prominent
+
+### /contact/:
+- Split: form (<span class="ar">يمين RTL</span>) + contact info (<span class="ar">يسار</span>)
+- Form fields <span class="ar">الموجودة — تنسيق محسّن</span>
+- Contact info cards: WhatsApp + Email + Phone + Address
+- Map embed <span class="ar">لو موجود</span>
+- Office hours block
+
+### /trust/:
+- Compliance badges grid (PDPL, NCA, ISO, ...) <span class="ar">كل واحد card</span>
+- Security practices accordion
+- Audit reports links
+- Data protection details
+- Incident response info
+- Trust signals: uptime, certifications
+
+### /assessment/ai-governance-readiness/:
+- Hero: explain assessment
+- Multi-step form visual:
+  * Progress bar
+  * Section headers
+  * Question groups
+  * Submit button
+- Result display <span class="ar">لو فيه preview</span>
+
+### /demo/:
+- Calendar embed <span class="ar">لو موجود أو form</span>
+- "What to expect" section
+- Testimonials/logos <span class="ar">لو موجودة</span>
+
+⚠️ <span class="ar">كل form fields الموجودة تبقى — فقط styled.</span>
+⚠️ <span class="ar">كل actions/methods كما هي.</span>
+
+OUTPUT:
+- <span class="ar">الصفحات (visual)</span>
+- pages.css
+- reports/13-secondary-pages.md
+
+ACCEPTANCE:
+✅ <span class="ar">كل forms تشتغل</span>
+✅ <span class="ar">كل المحتوى معروض</span>
+✅ Map/embeds <span class="ar">تشتغل لو موجودة</span>
+✅ Mobile-friendly</pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ PHASE 4 ============ -->
+    <section id="phase-4" class="phase">
+      <div class="phase__head">
+        <div class="phase__badge">4</div>
+        <div>
+          <div class="phase__title">Kernel UI (HTML الثابت)</div>
+          <div class="phase__sub">11 شاشة تحت /kernel/ — Dashboard, Chat, Audit, Approvals, ...</div>
+        </div>
+      </div>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">4.1</span><span class="prompt__title">Kernel Dashboard Shell</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Dashboard UI Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
++ ❌ <span class="ar">لا تغيّر API endpoints / data fetching</span>
++ ❌ <span class="ar">لا تغيّر any JS logic في kernel/assets/js/</span>
++ ❌ <span class="ar">احتفظ بكل demo data toggles + banners</span>
++ ❌ <span class="ar">احتفظ بـ keyboard shortcuts (C, A, S, ...)</span>
+
+TARGETS:
+- kernel/index.html (dashboard)
+- kernel/{chat,audit,approvals,evidence,stats,scenarios,compliance,policies,connectors,reports}.html
+- kernel/assets/css/kernel.css
+
+TASK:
+
+### Layout Shell (<span class="ar">مشترك</span>):
+
+1. Sidebar (<span class="ar">يمين RTL</span>):
+   - Width 260px desktop, collapsible to 72px
+   - Sections: Logo, Nav items + icons, bottom: user + settings
+   - Active: brand bg + border indicator
+   - Hover: subtle bg
+   - Collapse button <span class="ar">في الأسفل</span>
+   - Mobile: drawer <span class="ar">من اليمين</span>
+
+2. Top bar:
+   - Breadcrumb <span class="ar">يسار</span>
+   - Search (cmd+k style)
+   - Notifications + user menu <span class="ar">يمين</span>
+   - Demo data toggle pill <span class="ar">بارز</span>
+
+3. Main canvas:
+   - Page header: title + actions row
+   - Tabs <span class="ar">لو فيه sections</span>
+   - Content: cards/tables/charts
+
+### Dashboard:
+- Overview stat cards row (4 metrics)
+- Recent activity stream
+- Approvals pending widget
+- Compliance status widget
+- Risk distribution chart
+- <span class="ar">استلهم من</span> LiveDashboardMockup.astro
+
+### Cards:
+- White-on-dark surface
+- Consistent spacing
+- Headers + icon
+- Footer + "View all" link
+- Loading: skeleton shimmer
+- Empty: illustration + message + CTA
+
+OUTPUT:
+- kernel/assets/css/kernel.css (<span class="ar">محدّث كلياً</span>)
+- kernel/index.html (visual)
+- reports/14-kernel-shell.md + 4 screenshots
+
+ACCEPTANCE:
+✅ <span class="ar">كل JS scripts تشتغل (kernel-api, stats, chat-client, ...)</span>
+✅ Demo data toggle <span class="ar">يشتغل</span>
+✅ Keyboard shortcuts <span class="ar">تعمل</span>
+✅ Sidebar collapse smooth
+✅ Mobile drawer <span class="ar">يشتغل</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">4.2</span><span class="prompt__title">Kernel Interactive Pages (Chat, Audit, Approvals, Evidence)</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Enterprise Dashboard Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TARGETS: kernel/{chat, audit, approvals, evidence}.html
+
+TASK:
+
+### /kernel/chat.html:
+- Layout: 3-pane (sidebar + chat thread + context panel)
+- Messages: user (<span class="ar">يمين RTL، brand bg</span>) vs AI (<span class="ar">يسار، surface bg</span>)
+- Streaming: typing dots
+- NVIDIA status card (context panel): 3 fields (configured, model, mode)
+- Compose box: textarea + attach + send
+- Policy/firewall notifications inline (banner above blocked)
+
+### /kernel/audit.html:
+- Filters bar: date + risk level + status + user
+- Table: timestamp + user + action + risk + hash + view
+- Detail drawer (<span class="ar">slides from right</span>) on row click
+- Risk badges: color-coded (green/amber/red)
+- Hash: monospace + copy + truncate
+- Pagination + export buttons
+
+### /kernel/approvals.html:
+- Tabs: Pending / Approved / Rejected
+- Approval cards: request + risk + requester + actions (approve/reject/discuss)
+- Approval modal: full context + signature/comment
+- Notification badge on pending count
+
+### /kernel/evidence.html:
+- Evidence files grid/list
+- Each: title + date + signature status + download PDF
+- Filters: date + sector + compliance pack
+- Preview modal
+- Generate new evidence button
+
+OUTPUT:
+- 4 HTML <span class="ar">محدّثة</span>
+- kernel.css (4 sections)
+- reports/15-kernel-interactive.md + screenshots
+
+ACCEPTANCE:
+✅ <span class="ar">كل API calls تشتغل (chat streaming, audit log, approvals fetch, evidence download)</span>
+✅ Demo mode <span class="ar">يعمل</span>
+✅ Mobile responsive</pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">4.3</span><span class="prompt__title">Kernel Data Pages (Stats, Scenarios, Compliance, Policies, Connectors, Reports)</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Dashboard UI Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TARGETS: kernel/{stats, scenarios, compliance, policies, connectors, reports}.html
+
+TASK:
+
+### /kernel/stats.html:
+- KPI cards row (counts + trends)
+- Charts: line (requests over time), bar (top users), pie (risk distribution), heatmap (activity)
+- <span class="ar">استخدم Chart.js أو نفس library — لا تستبدل</span>
+- Time range selector (24h / 7d / 30d / 90d / custom)
+
+### /kernel/scenarios.html:
+- Categories: Finance / HR / Legal / Healthcare / Code Security
+- Scenario cards: title + desc + try button
+- Runner modal: prompt textarea + run + output + audit trail
+
+### /kernel/compliance.html:
+- Compliance packs grid: PDPL / NCA / SFDA / SAMA / ISO 13485 / Healthcare
+- <span class="ar">كل pack:</span> progress ring + status + last audit
+- Click → expand to controls list
+- Map view of regulations
+
+### /kernel/policies.html:
+- Policy editor list
+- <span class="ar">كل policy:</span> name + status + last modified + edit
+- Editor modal: rule builder UI + preview + save
+
+### /kernel/connectors.html:
+- Connector cards: ERP, CRM, HIS, SharePoint, ...
+- Status indicator (connected/disconnected/error)
+- Configure + last sync + records flowed
+
+### /kernel/reports.html:
+- Reports library
+- <span class="ar">كل تقرير:</span> title + period + download (PDF/Excel)
+- Generate new report wizard
+
+OUTPUT:
+- 6 HTML <span class="ar">محدّثة</span>
+- kernel.css (final updates)
+- reports/16-kernel-data.md + screenshots
+
+ACCEPTANCE:
+✅ <span class="ar">كل charts ترسم صح</span>
+✅ <span class="ar">كل التفاعلات تشتغل</span>
+✅ <span class="ar">Demo data واقعية</span></pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ PHASE 5 ============ -->
+    <section id="phase-5" class="phase">
+      <div class="phase__head">
+        <div class="phase__badge">5</div>
+        <div>
+          <div class="phase__title">Motion, Micro-Interactions & A11y</div>
+          <div class="phase__sub">Animations, Accessibility WCAG AA, Responsive</div>
+        </div>
+      </div>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">5.1</span><span class="prompt__title">Scroll-Reveal & Page Transitions</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Motion Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>] + <span class="ar">respect prefers-reduced-motion دائماً</span>
+
+TASK:
+
+1. Unified scroll reveal:
+   - IntersectionObserver <span class="ar">واحد عالمي (موجود في BaseLayout)</span>
+   - Reveal: fade-up, fade-in, scale-in, slide-in-right (RTL natural)
+   - Stagger children (50ms delay)
+   - Duration: 600ms emphasized ease
+
+2. Page transitions (Astro ViewTransitions):
+   - Hero text: fade (<span class="ar">موجود</span>)
+   - Card grids: cross-fade
+   - Sticky header: stay during transition
+
+3. Hover micro-interactions:
+   - Cards: lift -4px + shadow + border-strong (250ms)
+   - Buttons: brightness +5% + scale 1.02 (180ms)
+   - Links: underline reveal from left (200ms)
+
+4. Click feedback:
+   - Scale 0.98 active
+   - Ripple subtle optional
+
+5. Loading states:
+   - Skeleton shimmer (gradient sweep)
+   - Spinner: brand color smooth
+
+6. Reduce motion:
+   - prefers-reduced-motion → duration 0 + transforms removed
+   - @media (prefers-reduced-motion: reduce) <span class="ar">في كل CSS</span>
+
+OUTPUT:
+- src/styles/animations.css (<span class="ar">محدّث</span>)
+- src/scripts/scroll-reveal.js (<span class="ar">لو منفصل</span>)
+- reports/17-motion.md
+
+ACCEPTANCE:
+✅ <span class="ar">كل الحركات 60fps</span>
+✅ prefers-reduced-motion <span class="ar">يلغي كل animations</span>
+✅ <span class="ar">لا layout shifts (CLS=0)</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">5.2</span><span class="prompt__title">Accessibility Audit & Fix (WCAG 2.1 AA)</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Accessibility Engineer (WCAG 2.1 AA).</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TASK:
+
+1. Color contrast:
+   - <span class="ar">افحص كل text/bg بـ contrast checker</span>
+   - <span class="ar">أقل من 4.5:1 (عادي) أو 3:1 (كبير) → fix بـ tokens</span>
+
+2. Focus indicators:
+   - <span class="ar">كل interactive له focus-visible واضح</span>
+   - :focus-visible (<span class="ar">مو :focus</span>)
+   - Ring offset 2px + brand
+
+3. Keyboard nav:
+   - <span class="ar">كل dropdowns/modals/drawers مفتاحية</span>
+   - Escape <span class="ar">يقفل</span>
+   - Tab <span class="ar">دور صحيح</span>
+   - Skip-to-content link
+
+4. ARIA:
+   - <span class="ar">role/aria-label موجود حيث يلزم</span>
+   - <span class="ar">لا ARIA زيادة لو HTML semantic كافي</span>
+   - aria-current="page" <span class="ar">على الحالية</span>
+
+5. Screen reader:
+   - <span class="ar">VoiceOver/NVDA على 5 صفحات</span>
+   - <span class="ar">ترتيب القراءة منطقي</span>
+   - <span class="ar">الأيقونات: aria-hidden أو label</span>
+
+6. Forms:
+   - <span class="ar">كل field له label</span>
+   - Error messages → aria-describedby
+   - Required <span class="ar">واضحة</span>
+
+7. RTL specifics:
+   - logical properties (inset-inline, padding-inline)
+   - dir="rtl" <span class="ar">على html</span>
+   - <span class="ar">النصوص المختلطة تظهر صح</span>
+
+OUTPUT:
+- reports/18-a11y.md:
+  * Axe DevTools (<span class="ar">قبل/بعد</span>)
+  * Lighthouse a11y (<span class="ar">قبل/بعد</span>)
+  * Manual checks
+- <span class="ar">CSS/HTML محدّثة</span>
+
+ACCEPTANCE:
+✅ Lighthouse a11y ≥ 95
+✅ Zero critical Axe issues
+✅ <span class="ar">كل forms تجاوز screen reader</span>
+✅ Tab order <span class="ar">صحيح</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">5.3</span><span class="prompt__title">Responsive Refinement</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Responsive Design Specialist.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TASK:
+
+1. Breakpoints:
+   sm: 640, md: 768, lg: 1024, xl: 1280, 2xl: 1536
+   <span class="ar">وحّد عليها في كل CSS</span>
+
+2. Container widths:
+   max-width: 1280 (default)
+   max-width: 1440 (hero + marketing)
+
+3. Mobile-first (320, 390, 414):
+   - <span class="ar">لا horizontal scroll</span>
+   - Touch targets ≥ 44px
+   - text ≥ 14px
+
+4. Tablet (768-1024):
+   - 2-col <span class="ar">بدل 3</span>
+   - Side panels → bottom sheets/modals
+
+5. Large (≥1440):
+   - Heroes <span class="ar">تكبر بمساحة</span>
+   - Cards grids: max 4 cols
+   - Reading max-width 720-800
+
+6. RTL on mobile:
+   - Drawer <span class="ar">من اليمين</span>
+   - Swipe gestures <span class="ar">بالاتجاه الصحيح</span>
+   - Chevron/arrow <span class="ar">في الاتجاه</span>
+
+OUTPUT:
+- <span class="ar">CSS بـ media queries موحّدة</span>
+- reports/19-responsive.md + screenshots per breakpoint
+
+ACCEPTANCE:
+✅ <span class="ar">زيرو horizontal scroll</span>
+✅ <span class="ar">كل النصوص بدون zoom</span>
+✅ Touch targets ≥ 44×44 mobile
+✅ <span class="ar">Layout يتنفس على 2560px</span></pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ PHASE 6 ============ -->
+    <section id="phase-6" class="phase">
+      <div class="phase__head">
+        <div class="phase__badge">6</div>
+        <div>
+          <div class="phase__title">Final QA & Polish</div>
+          <div class="phase__sub">Performance + Visual QA + Acceptance Sign-off</div>
+        </div>
+      </div>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">6.1</span><span class="prompt__title">Performance & Quality Pass</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Performance Engineer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TASK:
+
+1. CSS Cleanup:
+   - <span class="ar">شيل styles ما تنطبق</span>
+   - <span class="ar">وحّد duplicate rules</span>
+   - <span class="ar">استخدم CSS layer لو منطقي</span>
+
+2. Images:
+   - <span class="ar">كل img: width+height+loading="lazy" (إلا hero)</span>
+   - WebP/AVIF <span class="ar">بديل لـ PNG/JPG</span>
+   - fetchpriority="high" <span class="ar">على hero</span>
+
+3. Fonts:
+   - preload IBM Plex Sans Arabic
+   - font-display: swap
+   - <span class="ar">لا FOUT/FOIT مزعج</span>
+
+4. JS:
+   - <span class="ar">راجع React islands — كلهم محتاجين hydration؟</span>
+   - client:idle/visible/media <span class="ar">حسب الحاجة</span>
+
+5. Lighthouse runs (10 <span class="ar">صفحات على الأقل</span>):
+   - Performance ≥ 85 mobile, ≥ 95 desktop
+   - Accessibility ≥ 95
+   - Best Practices ≥ 95
+   - SEO ≥ 95
+
+6. Core Web Vitals:
+   - LCP ≤ 2.5s
+   - INP ≤ 200ms
+   - CLS ≤ 0.1
+
+OUTPUT:
+- reports/20-performance.md
+- Lighthouse JSON exports
+- <span class="ar">قائمة بكل التحسينات</span>
+
+ACCEPTANCE:
+✅ <span class="ar">كل targets محققة</span>
+✅ Bundle size <span class="ar">ما زاد >10%</span>
+✅ Build time <span class="ar">معقول</span></pre>
+        </div>
+      </details>
+
+      <details class="prompt">
+        <summary class="prompt__head"><span class="prompt__num">6.2</span><span class="prompt__title">Final Visual QA & Acceptance Sign-off</span><svg class="prompt__chev" width="16" height="16" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg></summary>
+        <div class="prompt__body">
+          <div class="prompt__copy-row"><button class="copy-btn" data-copy>📋 نسخ</button></div>
+<pre class="code">ROLE: <span class="ar">Senior QA Designer.</span>
+CONSTRAINTS: [<span class="ar">القيود</span>]
+
+TASK:
+
+1. Visual regression:
+   - <span class="ar">قارن screenshots قبل/بعد لكل صفحة</span>
+   - <span class="ar">استخدم</span> qa-visual-diff.mjs
+   - <span class="ar">حدّد any unintended changes</span>
+
+2. Content verification:
+   - <span class="ar">شغّل</span> qa-text-snapshot.mjs <span class="ar">قبل/بعد</span>
+   - <span class="ar">زيرو تغيير في النصوص</span>
+   - <span class="ar">كل headings/CTAs زي ما كانوا</span>
+
+3. Link checking:
+   - <span class="ar">كل internal links تشتغل</span>
+   - <span class="ar">External: rel="noopener noreferrer"</span>
+   - <span class="ar">كل CTAs لـ targets الصحيحة</span>
+
+4. SEO verification:
+   - sitemap.xml <span class="ar">ما تغيّر</span>
+   - canonical URLs <span class="ar">ما تغيّروا</span>
+   - hreflang <span class="ar">محفوظة</span>
+   - JSON-LD <span class="ar">ما تغيّر (schema validator)</span>
+   - meta titles/descriptions <span class="ar">ما تغيّروا</span>
+
+5. Browsers:
+   Chrome, Safari, Firefox, Edge (latest)
+   iOS Safari 14+, Android Chrome
+
+6. Final checklist:
+   ☐ <span class="ar">كل 36 صفحة بنفس المحتوى</span>
+   ☐ <span class="ar">زيرو نص تغيّر</span>
+   ☐ <span class="ar">زيرو section حُذف/أُضيف</span>
+   ☐ <span class="ar">كل forms تشتغل</span>
+   ☐ <span class="ar">كل CTAs للـ targets الصحيحة</span>
+   ☐ Lighthouse ≥ thresholds
+   ☐ RTL <span class="ar">صحيح</span>
+   ☐ Mobile responsive
+   ☐ A11y AA
+   ☐ Build <span class="ar">ينجح</span>
+   ☐ sitemap.xml <span class="ar">ما تغيّر</span>
+   ☐ JSON-LD <span class="ar">ما تغيّر</span>
+
+OUTPUT:
+- reports/21-final-qa.md
+- Acceptance sign-off
+- reports/screenshots/before/ + after/
+- <span class="ar">Side-by-side comparison HTML</span>
+
+ACCEPTANCE:
+✅ <span class="ar">كل checklist items محققة</span>
+✅ Stakeholder review approved
+✅ Ready to merge</pre>
+        </div>
+      </details>
+    </section>
+
+    <!-- End -->
+    <div class="end">
+      <h3>🎯 جاهز للتنفيذ</h3>
+      <p>22 برومبت احترافي، 7 مراحل متتالية، صفر تغيير في المحتوى. ابدأ بـ <strong>Prompt 0.1</strong> ولا تخطّ المراحل. كل برومبت في فرع git منفصل + PR + تقرير .md.</p>
+      <p style="margin-top:14px;font-size:13px"><strong>التزم بالقاعدة الذهبية:</strong> التصميم يتطوّر — المحتوى ثابت.</p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Copy buttons
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const pre = btn.closest('.prompt__body').querySelector('pre.code');
+      const text = pre.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.classList.add('copied');
+        btn.textContent = '✓ تم النسخ';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = '📋 نسخ';
+        }, 1800);
+      } catch (err) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        btn.classList.add('copied'); btn.textContent = '✓ تم النسخ';
+        setTimeout(() => { btn.classList.remove('copied'); btn.textContent = '📋 نسخ'; }, 1800);
+      }
+    });
+  });
+
+  // Prevent details toggle when clicking copy button
+  document.querySelectorAll('.prompt__head').forEach(h => {
+    h.addEventListener('click', (e) => {
+      if (e.target.closest('.copy-btn')) e.preventDefault();
+    });
+  });
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>

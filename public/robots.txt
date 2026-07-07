@@ -104,8 +104,8 @@ Allow: /
 # @astrojs/sitemap emits dist/sitemap-index.xml pointing at every
 # page that builds (except /api/* which is excluded by astro.config.mjs).
 # ─────────────────────────────────────────────────────────────────────
-Sitemap: https://brightai.site/sitemap-index.xml
 Sitemap: https://brightai.site/sitemap.xml
+Sitemap: https://brightai.site/sitemap-index.xml
 Sitemap: https://brightai.site/sitemap-images.xml
 Sitemap: https://brightai.site/blog/feed.xml
 

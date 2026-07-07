@@ -53,6 +53,20 @@ export function getStaticPaths() {
       eyebrow: 'مركز محتوى BrightAI',
       icon: 'mdi-hospital-building',
     },
+    // REPORTS-SEO-FOUNDATION (2026-07-07): /hub/security/ — referenced by
+    // the أسمن-البيانات blog category (ai-firewall, ai-red-teaming,
+    // pdpl-ai-safety, …). This is a logical landing page for everything
+    // BrightAI publishes on AI security, data protection, and attack-surface
+    // mitigation. Filled with curated links + summaries of the security
+    // pillars; intentionally lean — the deep reading happens on /blog/.
+    {
+      slug: 'security',
+      title: 'أمان الذكاء الاصطناعي | مركز محتوى BrightAI',
+      description: 'كل ما يخص أمان الـ AI في المؤسسات السعودية: جدار حماية AI، اختبار الاختراق، منع تسريب البيانات، تصنيف المخاطر، وضوابط NCA ECC للذكاء الاصطناعي.',
+      tags: ['أمن-البيانات', 'أمان AI', 'AI Security'],
+      eyebrow: 'مركز محتوى BrightAI',
+      icon: 'mdi-shield-lock',
+    },
   ];
   return hubPages.map(page => ({
     params: { slug: page.slug },
