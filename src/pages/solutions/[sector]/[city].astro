@@ -54,7 +54,7 @@ const jsonLd = {
       "description": loc.description,
       "url": loc.canonical,
       "telephone": "+966538229013",
-      "image": "https://brightai.site/assets/images/og/og-solutions.png",
+      "image": "https://brightai.site/assets/images/og/og-solutions.webp",
       "priceRange": "$$$",
       "address": {
         "@type": "PostalAddress",
@@ -87,7 +87,7 @@ const jsonLd = {
   ]
 };
 ---
-<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]), ORGANIZATION] } : (jsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.png" ogImageAlt={migratedPage?.title ?? loc.title}>
+<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]), ORGANIZATION] } : (jsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title}>
 {migratedPage ? (
   <>
     {!/<h1\b/i.test(migratedPage.html) && <h1 class="sr-only">{loc.h1}</h1>}
