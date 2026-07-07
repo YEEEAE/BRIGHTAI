@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-06 18:05 +03:00
+last_updated: 2026-07-08 00:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.0
+version: 2.7.1
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -140,6 +140,48 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-08 — Hero Chip Word Rotation: "صنع في السعودية" → "AI Governance Platform" ↔ "AI Audit Trail"
+
+- **Files**: `src/components/SplitHero.astro` (HTML + CSS + JS — ملف واحد، 3 تعديلات)
+- **What**: استبدلنا النص الثابت "🇸🇦 صنع في السعودية" في الـ chip فوق الـ hero الرئيسي بـ animation يدوّر بين "AI Governance Platform" و "AI Audit Trail" كل 2.8 ثانية بـ fade + slide-up خفيف. الـ chip شكله ما تغيّر (نفس الـ pulse-dot، نفس الـ teal glass، نفس الـ position) — بس المحتوى صار متحرك ويعرض أهم منتجين في المنصة.
+- **Why**: طلب المؤسس (2026-07-08، العامية السعودية): "في الهيدر المتحرك فيه كلمتين عربيتين استبدلهم ب ( AI Governance Platform ، AI Audit Trail )". الـ chip الحالي فيه "صنع في السعودية" بس — ما كان فيه animation. الـ animation الجديد يحقق نية المؤسس: الـ chip يصير أداة marketing ديناميكية تذكر الزائر بأهم منتجين في المنصة بدل جملة هوية ثابتة.
+- **Implementation details**:
+  - HTML: `<span data-hero-chip-rotate>` يحتوي pulse-dot + `<span class="split-hero__chip-words">` فيه كلمتين: الأولى بـ `is-active`، الثانية `aria-hidden="true"`.
+  - CSS: الكلمة الفعّالة `position: relative` + `opacity: 1` (تاخذ مساحة). الباقية `position: absolute` + `opacity: 0` فوقها بـ `inset-inline-start: 0`. transition 450ms بـ `ease-out`. `min-width: 13ch` يحجز عرض ثابت أطول من "AI Audit Trail" (12 حرف). `direction: ltr` صريح على الـ words container عشان الإنجليزي يقرأ LTR داخل صفحة RTL. `prefers-reduced-motion`: يلغي transition ويخفي الكلمة الثانية بـ `display: none`.
+  - JS: vanilla `setInterval(2800)`. يستخدم `setTimeout(450)` داخلي عشان ينتظر transition يخلص قبل ما يفعّل الكلمة الجديدة. cleanup كامل على `astro:before-swap` (view-transitions). يحترم `prefers-reduced-motion` ويطلع بدون init.
+- **Verification**:
+  - `npm run build` → 158 HTML files، 0 errors ✅ (نفس baseline 130 + subpages)
+  - `grep -c "AI Governance Platform" dist/index.html` → 1 ✅
+  - `grep -c "AI Audit Trail" dist/index.html` → 2 ✅ (chip + governance cards)
+  - `grep -c "صنع في السعودية" dist/index.html` → 1 (في الـ footer فقط، مو في الـ hero chip) ✅
+  - `grep -c "split-hero__chip" dist/index.html` → 2 ✅
+  - Playwright desktop (1440×900):
+    - initial: "AI Governance Platform" → after 3.2s: "AI Audit Trail" → after another 3.2s: "AI Governance Platform" ✅
+    - active word: `position: relative, opacity: 1, transform: identity` ✅
+    - inactive word: `position: absolute, opacity: 0, pointer-events: none` ✅
+    - chip box: 168×30 px (مناسب للكلمتين) ✅
+  - Playwright mobile (390×844, isMobile, hasTouch):
+    - chip visible: 179×31 px ✅
+    - rotation works: initial "AI Governance Platform" → rotated "AI Audit Trail" ✅
+  - Playwright `reducedMotion: 'reduce'`:
+    - initial "AI Governance Platform" → after 3.5s: "AI Governance Platform" (ثابت) ✅
+    - inactive word: `display: none` ✅
+    - 0 console errors / page errors ✅
+- **Performance impact**:
+  - +47 سطر JS (~0.4KB minified) — تنحزم فقط في الـ bundle اللي يحوي SplitHero (الصفحة الرئيسية + أي صفحة تستورده).
+  - 0 تأثير على LCP: الكلمة الفعّالة initial render بنفس اللحظة، ما تنتظر JS.
+  - 0 تأثير على CLS: `min-width: 13ch` يحجز عرض ثابت.
+- **Risks remaining**:
+  - لو الكلمتين زادت أكثر من 13 حرف (نضيف ثالثة مستقبلاً) → الـ chip ممكن يرتجف لحظة التبديل. لازم نحدّث `min-width` يدوياً.
+  - "صنع في السعودية" اتشال من الـ chip لكن باقي في الـ footer (line 118) — هذا متعمد، الـ footer context مختلف (حقوق/هوية، مو marketing).
+- **Follow-up** (optional):
+  - ممكن نضيف كلمتين إضافيتين (مثلاً "AI Firewall" و "AI Evidence File") في نفس الـ chip — بس لازم نراجع هل الـ 13ch يكفي.
+  - نعمل variant من الـ chip في `/kernel/*` يعرض "Kernel · Connected" بدل المنتجات.
+- **Commit**: uncommitted
+- **Status**: verified (build + Playwright), ready to commit
+- **Brain updates**: Section 1.1 (build page count stable), Section 2 (this entry). Section 5 inventory no change (no new component — تعديل على SplitHero الموجود).
+- **Report**: report/2026-07-08-hero-chip-rotation.md (to be created)
 
 ### 2026-07-07 — Unify Hex Colors via Tokens + RTL Fix + a11y Polish (commit f4e1330a)
 

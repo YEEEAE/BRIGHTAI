@@ -69,9 +69,15 @@ import BrightStar from './brand/BrightStar.astro';
         <BrightStar variant="hero" size={300} decorative={true} className="split-hero__star" />
       </div>
 
-      <span class="chip split-hero__chip">
-        <span class="split-hero__dot pulse-dot"></span>
-        🇸🇦 صنع في السعودية
+      {/* Animated chip — يبدّل بين "AI Governance Platform" و "AI Audit Trail" كل 2.8 ثانية.
+         طلب المؤسس: استبدال النص الثابت بمحتوى متحرك يعرض أهم منتجين في المنصة.
+         يحترم prefers-reduced-motion (يعرض الكلمة الأولى بدون دوران). */}
+      <span class="chip split-hero__chip" data-hero-chip-rotate>
+        <span class="split-hero__dot pulse-dot" aria-hidden="true"></span>
+        <span class="split-hero__chip-words" aria-live="polite" aria-atomic="true">
+          <span class="split-hero__chip-word is-active">AI Governance Platform</span>
+          <span class="split-hero__chip-word" aria-hidden="true">AI Audit Trail</span>
+        </span>
       </span>
 
       <div class="split-hero__title-wrap">
@@ -363,6 +369,45 @@ import BrightStar from './brand/BrightStar.astro';
     border-radius: 9999px;
     background: var(--emerald-bright);
     display: inline-block;
+  }
+
+  /* Animated chip words — يبدّل بين كلمتين بـ fade + slide-up.
+     الكلمة الفعّالة relative + opacity 1 (تأخذ مساحة),
+     الكلمات الباقية absolute + opacity 0 فوقها. */
+  .split-hero__chip-words {
+    position: relative;
+    display: inline-block;
+    min-width: 13ch;   /* يحجز عرض ثابت أطول من "AI Audit Trail" عشان ما يرتجف الـ chip */
+    text-align: start;
+    /* direction: ltr ثابت للكلمات الإنجليزية حتى داخل صفحة RTL */
+    direction: ltr;
+  }
+  .split-hero__chip-word {
+    display: inline-block;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
+  }
+  .split-hero__chip-word.is-active {
+    position: relative;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .split-hero__chip-word:not(.is-active) {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .split-hero__chip-word {
+      transition: none;
+    }
+    /* مع reduced-motion: نخفي الكلمة الثانية، نخلي الأولى visible بدون أي animation */
+    .split-hero__chip-word:not(.is-active) {
+      display: none;
+    }
   }
 
   /* Title — REPORT-09: Display-style H1.
@@ -1018,6 +1063,59 @@ import BrightStar from './brand/BrightStar.astro';
         panel.style.removeProperty('--tilt-y');
       }
       panel = null;
+    }
+
+    document.addEventListener('astro:page-load', init);
+    document.addEventListener('astro:before-swap', destroy);
+  })();
+</script>
+
+<script>
+  // Hero chip word rotator — founder request (2026-07-08).
+  // يبدّل بين "AI Governance Platform" و "AI Audit Trail" كل 2800ms بـ fade.
+  // يحترم prefers-reduced-motion (يوقف الدوران ويعرض الكلمة الأولى).
+  // cleanup على astro:before-swap عشان view-transitions ما يكدّس intervals.
+  (function setupChipRotate() {
+    const ROTATE_MS = 2800;
+    const TRANSITION_MS = 450; // يطابق transition في CSS
+    let timer: number | null = null;
+    let words: HTMLElement[] = [];
+    let activeIdx = 0;
+
+    function tick() {
+      if (words.length < 2) return;
+      const current = words[activeIdx];
+      const next = words[(activeIdx + 1) % words.length];
+      if (!current || !next) return;
+      current.classList.remove('is-active');
+      // ننتظر transition يخلص قبل ما نضيف للكلمة الجاية
+      // (CSS transition على الكلمة اللي طافت يخلص ضمن TRANSITION_MS)
+      window.setTimeout(() => {
+        next.classList.add('is-active');
+        activeIdx = (activeIdx + 1) % words.length;
+      }, TRANSITION_MS);
+    }
+
+    function init() {
+      // Gate 1 — reduced motion: نخلي الكلمة الأولى فقط بدون أي دوران
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const container = document.querySelector<HTMLElement>('[data-hero-chip-rotate]');
+      if (!container) return;
+      words = Array.from(container.querySelectorAll<HTMLElement>('.split-hero__chip-word'));
+      if (words.length < 2) return;
+
+      // نبدأ بكلمة activeIdx = 0 (الـ HTML الأولية)
+      activeIdx = 0;
+      timer = window.setInterval(tick, ROTATE_MS);
+    }
+
+    function destroy() {
+      if (timer !== null) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+      words = [];
     }
 
     document.addEventListener('astro:page-load', init);
