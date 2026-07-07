@@ -141,6 +141,13 @@ interface LocalBusinessInput {
   regionAr: string;
   geoLat: number;
   geoLng: number;
+  /**
+   * Absolute path (under SITE.url) of the live city page that this
+   * LocalBusiness node represents. Must point to an existing built page
+   * — `/solutions/<city>/` alone returns 404, so we pin each city to its
+   * actual sector landing (e.g. `/solutions/banking-ai-governance/riyadh/`).
+   */
+  href: string;
   wikidataId?: string;
 }
 
@@ -149,11 +156,14 @@ interface LocalBusinessInput {
  * Each city gets its own @id, GeoCoordinates, and GeoCircle serviceArea.
  * Schema.org expects `LocalBusiness` (not `Service`) for local presence —
  * we merge both types via array.
+ *
+ * `href` must be the path of an existing built page. If you change which
+ * sector landing owns a city, update the `href` for that city in
+ * `LOCAL_BUSINESS_BY_CITY` below — never fabricate a non-existent URL.
  */
 export function getLocalBusinessLd(input: LocalBusinessInput) {
-  const { cityEn, cityAr, regionAr, geoLat, geoLng, wikidataId } = input;
-  const citySlug = cityEn.toLowerCase();
-  const canonical = `${SITE.url}/solutions/${citySlug}/`;
+  const { cityEn, cityAr, regionAr, geoLat, geoLng, wikidataId, href } = input;
+  const canonical = `${SITE.url}${href}`;
   return {
     '@context': 'https://schema.org',
     '@type': ['LocalBusiness', 'Service'],
@@ -225,6 +235,7 @@ export const LOCAL_BUSINESS_BY_CITY = {
     regionAr: 'منطقة الرياض',
     geoLat: 24.7136,
     geoLng: 46.6753,
+    href: '/solutions/banking-ai-governance/riyadh/',
     wikidataId: 'Q3674',
   }),
   jeddah: getLocalBusinessLd({
@@ -233,6 +244,7 @@ export const LOCAL_BUSINESS_BY_CITY = {
     regionAr: 'منطقة مكة المكرمة',
     geoLat: 21.4858,
     geoLng: 39.1925,
+    href: '/solutions/healthcare-ai-governance/jeddah/',
     wikidataId: 'Q39547',
   }),
   dammam: getLocalBusinessLd({
@@ -241,6 +253,7 @@ export const LOCAL_BUSINESS_BY_CITY = {
     regionAr: 'المنطقة الشرقية',
     geoLat: 26.4207,
     geoLng: 50.0888,
+    href: '/solutions/government-ai-governance/dammam/',
     wikidataId: 'Q41630',
   }),
   khobar: getLocalBusinessLd({
@@ -249,6 +262,7 @@ export const LOCAL_BUSINESS_BY_CITY = {
     regionAr: 'المنطقة الشرقية',
     geoLat: 26.2794,
     geoLng: 50.2083,
+    href: '/solutions/banking-ai-governance/khobar/',
     wikidataId: 'Q810482',
   }),
   mecca: getLocalBusinessLd({
@@ -257,6 +271,7 @@ export const LOCAL_BUSINESS_BY_CITY = {
     regionAr: 'منطقة مكة المكرمة',
     geoLat: 21.3891,
     geoLng: 39.8579,
+    href: '/solutions/healthcare-ai-governance/mecca/',
     wikidataId: 'Q35484',
   }),
   madinah: getLocalBusinessLd({
@@ -265,6 +280,7 @@ export const LOCAL_BUSINESS_BY_CITY = {
     regionAr: 'منطقة المدينة المنورة',
     geoLat: 24.4686,
     geoLng: 39.6142,
+    href: '/solutions/government-ai-governance/madinah/',
     wikidataId: 'Q35484',
   }),
 } as const;

@@ -141,6 +141,20 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-07 — Zero Broken Internal Links (links:dist + link-graph all green)
+
+- **Files**: `src/data/schema-helpers.ts` (LOCAL_BUSINESS_BY_CITY href update), `scripts/link-graph-validator.mjs` (walk dist/public instead of project root + asset route support + 404/500 skip)
+- **What**: حذفنا 18 رابط داخلي مكسور في `dist/` ناتج عن `LOCAL_BUSINESS_BY_CITY` (الـ canonical كان يولّد `/solutions/<city>/` بينما الصفحات الفعلية تحت `/solutions/<sector>/<city>/`). أصلحنا bug في `link-graph-validator` كان يمشي كل المشروع بدل dist/public فينتج 18777 false positive.
+- **Why**: `npm run links:dist` كان يفشل (18 رابط مكسور → روابط JSON-LD داخل 4 صفحات: dist, dist/about, dist/kernel, dist/demo تشير لـ 6 مدن). و `npm run seo:link-graph --strict` كان يخرج exit 1 بسبب bug، مو مشكلة إنتاج.
+- **Verification**:
+  - `npm run build` → 158 صفحة، 0 أخطاء ✅
+  - `npm run links:dist` → ✓ Successfully scanned 340 links in 3.5s — صفر مكسور ✅
+  - `npm run internal-links:audit` → 155 عطل كلّها false positives (qa-*.mjs 33، kernel/assets/js SPA strings 45، _reports/perf/*.html 48، public/500.html 3، _reports/redesign-prompts-snapshot 2)؛ 0 حقيقي ✅
+  - `npm run seo:link-graph --strict` → filesScanned 159، brokenLinks 0، legacyPaths 0، htmlSuffixes 0، exit 0 ✅
+  - `npm run redirects:check` → 204 redirects scanned، 0 self/missing/duplicates/chains/cycles ✅
+  - فحص يدوي: 42/42 مقال يربط بـ 9 خدمات (≥1 المطلوب)، 6/6 مدن تربط بـ 9 خدمات (≥3 المطلوب)
+- **Brain updates**: Section 4 (DEC-2026-LINKS-001 schema href + DEC-2026-LINKS-002 link-graph scope)، Section 5 (canonical cities with sector)
+
 ### 2026-07-07 — Three Bloat Fixes (perf/bloat-3-fixes-2026-07-07)
 
 - **Files**:
@@ -1915,6 +1929,26 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 - **Related risks**:
   - Cloudflare CDN cache may serve stale `/frontend/*` files for TTL after deploy. Mitigation: post-deploy manual purge.
   - `/kernel/*` pages that previously fetched from `/api/*` will now fail. Follow-up ticket needed to refactor or remove kernel API calls.
+
+### DEC-2026-LINKS-001 — LocalBusiness nodes cite existing sector pages (`/solutions/<sector>/<city>/`)
+
+- **Date**: 2026-07-07
+- **Context**: `LOCAL_BUSINESS_BY_CITY` كان يولّد `${SITE.url}/solutions/${citySlug}/` لكل مدينة (riyadh/mecca/madinah/jeddah/dammam/khobar) في `dist/` لكن `/solutions/<city>/` alone ما موجود — الصفحات الفعلية تحت `/solutions/<sector>/<city>/` (مثل `/solutions/banking-ai-governance/riyadh/`). يعني 18 رابط مكسور حقيقي في `dist/` (3 * 6 مدن) من JSON-LD داخل 4 صفحات (index, about, kernel, demo).
+- **Decision**: `getLocalBusinessLd(input)` يقبل `href: string` كمعطى إجباري. كل city يمرّر href ثابت يطابق الـ sector landing الفعلي (riyadh + khobar → banking، dammam + madinah → government، jeddah + mecca → healthcare). الـcanonical في JSON-LD يُبنى من `${SITE.url}${href}`.
+- **Rationale**: يضمن أن كل LocalBusiness @id يدل على صفحة فعلية indexable من Google. الـschema المحلي يصبح صالح للـLocal Pack بدون false signals.
+- **Reversal cost**: Low (revert schema-helpers.ts).
+- **Do not change sector-city mapping** بدون تحديث both src/data/solutions.ts (canonical) و src/data/schema-helpers.ts (city href) معاً — وإلا يصير mismatch جديد.
+- **Related reports**: `reports/2026-07-07-internal-links-zero.md`.
+
+### DEC-2026-LINKS-002 — link-graph-validator scans `dist/` + `public/`, not project root
+
+- **Date**: 2026-07-07
+- **Context**: `scripts/link-graph-validator.mjs` كان يستخدم `walkFiles(PROJECT_ROOT)` فيمسح dist/, kernel/, qa-*.mjs, _reports/, _archive/ — ينتج 18777 false positive broken (relPathToRoute يحفظ routes بـ prefix `dist/` لكن hrefs canonicalized بدونه). كذلك ما يحسب XML routes (rss.xml, sitemap.xml) — يفترض HTML فقط.
+- **Decision**: السكربت يفحص dist/ + public/ فقط (سطح النشر الفعلي)، يستثني 404.html/500.html/error.html من broken-link check (نوايا error page هي قائمة بكل routes)، ويحفظ XML/well-known assets كـ routes إضافية (rss.xml, sitemap*.xml, manifest.webmanifest, robots.txt, llms.txt, humans.txt, ai.txt).
+- **Rationale**: فحص dist/public فقط = فحص الـ artifact المنشور الفعلي → صفر false positive. دعم XML routes = sitemap وRSS في dist جزء من النشر (يتصفحها المستخدم ومتصفح Google)، يستحق أن يكون route صالح.
+- **Reversal cost**: Low (revert script).
+- **Do not reverse** بدون التأكد أن ROOT الافتراضي ما يلوّث routes بـ prefixes أو ينتج noisy outputs.
+- **Related reports**: `reports/2026-07-07-internal-links-zero.md`.
 
 ---
 

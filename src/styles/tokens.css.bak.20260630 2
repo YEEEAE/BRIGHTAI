@@ -1,0 +1,229 @@
+/* ========================================
+   Saudi AI Safety OS - Design Tokens
+   نظام التوكنز الموحد
+   ======================================== */
+
+/* 1. ألوان أساسية - Cyan */
+:root {
+  --brand-50: #ecfeff;
+  --brand-100: #cffafe;
+  --brand-200: #a5f3fc;
+  --brand-300: #67e8f9;
+  --brand-400: #22d3ee;
+  --brand-500: #06b6d4;
+  --brand-600: #0891b2;
+  --brand-700: #0e7490;
+  --brand-800: #155e75;
+  --brand-900: #164e63;
+
+  /* 2. ألوان أساسية - Green */
+  --accent-50: #f0fdf4;
+  --accent-100: #dcfce7;
+  --accent-200: #bbf7d0;
+  --accent-300: #86efac;
+  --accent-400: #4ade80;
+  --accent-500: #22c55e;
+  --accent-600: #16a34a;
+  --accent-700: #15803d;
+  --accent-800: #166534;
+  --accent-900: #14532d;
+
+  /* 3. ألوان أساسية - Indigo */
+  --indigo-50: #eef2ff;
+  --indigo-100: #e0e7ff;
+  --indigo-200: #c7d2fe;
+  --indigo-300: #a5b4fc;
+  --indigo-400: #818cf8;
+  --indigo-500: #6366f1;
+  --indigo-600: #4f46e5;
+  --indigo-700: #4338ca;
+  --indigo-800: #3730a3;
+  --indigo-900: #312e81;
+
+  /* 4. ألوان دلالية موحدة */
+  --bg-base: #0a0e1a;
+  --bg-surface: #0f1525;
+  --bg-elevated: #151c30;
+  --bg-overlay: rgba(10,14,26,0.8);
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0a0e1a;
+
+  --border-subtle: rgba(148,163,184,0.1);
+  --border-default: rgba(148,163,184,0.2);
+  --border-strong: rgba(148,163,184,0.35);
+
+  --interactive-primary: #06b6d4;
+  --interactive-hover: #0891b2;
+  --interactive-active: #0e7490;
+
+  --status-success: #22c55e;
+  --status-warning: #f59e0b;
+  --status-danger: #ef4444;
+  --status-info: #6366f1;
+
+  /* 5. تباعد موحد */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* 6. خطوط */
+  --font-sans: 'IBM Plex Sans Arabic', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Fira Code', monospace;
+  --font-display: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+
+  /* 7. سماكة الخط */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* 8. ارتفاع السطر */
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  /* 9. زوايا */
+  --radius-none: 0;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* 10. ظلال */
+  --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -2px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -4px rgba(0,0,0,0.3);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.3), 0 8px 10px -6px rgba(0,0,0,0.3);
+  --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.5);
+  --shadow-glow: 0 0 20px rgba(6,182,212,0.3);
+  --shadow-glow-lg: 0 0 40px rgba(6,182,212,0.4);
+
+  /* 11. حركات - مدد */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+
+  /* 12. حركات - دوال */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4,0,1,1);
+  --ease-out: cubic-bezier(0,0,0.2,1);
+  --ease-in-out: cubic-bezier(0.4,0,0.2,1);
+  --ease-spring: cubic-bezier(0.34,1.56,0.64,1);
+
+  /* 13. تباعد إضافي (للمكونات القديمة) */
+  --space-0-5: 0.125rem;
+  --space-1-5: 0.375rem;
+  --space-5: 1.25rem;
+  --space-10: 2.5rem;
+
+  /* 14. زوايا إضافية */
+  --radius-xs: 0.25rem;
+
+  /* 15. Depth & Material — noise texture + glass + inner-highlight (DEC-2026-030) */
+
+/* SVG noise — feTurbulence fractalNoise. Served from /public/noise.svg.
+   Was inlined as data URI initially, but the %23 (URL-encoded #) inside the filter
+   reference tripped the seo-ci-check broken-link scanner. Moving it to a real
+   asset keeps CSS clean (no encoded delimiters) and lets the file cache forever.
+   Initial request hits CDN once per user; subsequent navigations get 304 from cache. */
+--noise-svg: url("/noise.svg");
+
+/* Noise opacities (1–2.5%) */
+--noise-body: 0.015;         /* page-wide subtle grain */
+--noise-card: 0.022;         /* card surface grain */
+--noise-hero: 0.028;         /* hero panel grain */
+
+/* Glass — strengthened frosted layers (used by header, dropdown, drawer) */
+--glass-strong: rgba(15,21,37,0.72);
+--glass-blur: blur(16px) saturate(180%);
+--glass-blur-lg: blur(24px) saturate(180%);
+--glass-highlight: rgba(255,255,255,0.06);    /* top-edge hairline */
+--glass-highlight-strong: rgba(255,255,255,0.08);
+
+/* Inner edge highlights — give cards a subtle 1px top sheen without breaking flatness */
+--highlight-inner: inset 0 1px 0 0 var(--glass-highlight);
+--highlight-inner-strong: inset 0 1px 0 0 var(--glass-highlight-strong);
+
+/* Outer glow — for primary CTAs (subtle, not halo) */
+--shadow-cta-glow: 0 0 28px -6px rgba(6, 182, 212, 0.45);
+--shadow-cta-glow-lg: 0 0 40px -4px rgba(6, 182, 212, 0.55);
+
+/* Section radial gradients — gentle cyan halo from top */
+--gradient-section-radial: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6, 182, 212, 0.05), transparent 70%);
+--gradient-section-radial-indigo: radial-gradient(ellipse 70% 50% at 80% 100%, rgba(99, 102, 241, 0.06), transparent 70%);
+
+/* 16. Text Opacity Hierarchy (DEC-2026-031)
+   نظام opacity موحّد لتمييز أهمية النصوص. يُطبّق على
+   var(--text-primary) كـ base color فوق var(--bg-base).
+   - primary (1.00): العناوين + body — يتجاوز WCAG AAA (13.6:1)
+   - secondary (0.78): secondary descriptions — يتجاوز AAA (9.04:1)
+   - tertiary (0.58): captions/meta/timestamps — يجتاز AA (5.25:1)
+   - disabled (0.38): حالات disabled فقط — أقل من AA مقبول
+   - decorative (0.22): زخرفي بحت — أقل من AA مقبول */
+  --text-primary-opacity: 1;
+  --text-secondary-opacity: 0.78;
+  --text-tertiary-opacity: 0.58;
+  --text-disabled-opacity: 0.38;
+  --text-decorative-opacity: 0.22;
+
+/* 17. أسماء دلالية مستعارة (V2→V3 compatibility) */
+  /* سطح */
+  --surface: var(--bg-surface);
+  --surface-soft: var(--bg-elevated);
+
+  /* نص */
+  --text: var(--text-primary);
+  --text-soft: var(--text-secondary);
+  --text-faint: var(--text-muted);
+
+  /* حدود */
+  --border: var(--border-default);
+  --border-soft: var(--border-subtle);
+
+  /* علامة تجارية */
+  --brand: var(--interactive-primary);
+  --brand-hover: var(--interactive-hover);
+
+  /* حالات */
+  --success: var(--status-success);
+  --success-soft: rgba(34,197,94,0.15);
+  --info: var(--status-info);
+  --info-soft: rgba(99,102,241,0.15);
+  --warning: var(--status-warning);
+  --warning-soft: rgba(245,158,11,0.15);
+  --error: var(--status-danger);
+  --error-soft: rgba(239,68,68,0.15);
+
+  /* زجاج */
+  --glass: rgba(15,21,37,0.6);
+
+  /* أوزان الخط (V2 compatibility) */
+  --weight-normal: var(--font-normal);
+  --weight-medium: var(--font-medium);
+  --weight-semibold: var(--font-semibold);
+  --weight-bold: var(--font-bold);
+  --weight-extrabold: var(--font-extrabold);
+}
