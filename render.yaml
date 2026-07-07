@@ -166,7 +166,6 @@ services:
         name: Content-Security-Policy
         value: "default-src 'none'; frame-ancestors 'none'"
     routes:
-      # ── Trailing-slash redirects (legacy HTML → Astro) ─────────────────
       - type: redirect
         source: /index.html
         destination: /
@@ -179,25 +178,6 @@ services:
       - type: redirect
         source: /about/index.html
         destination: /about/
-      - type: redirect
-        source: /authors/nasser-alabdullah/index.html
-        destination: /authors/nasser-alabdullah/
-      # REPORTS-SEO-TEAM-SLUG-001 (2026-07-07): legacy Arabic slug "فريق BrightAI"
-      # was migrated to the Latin slug "brightai-team" so canonical URLs no
-      # longer contain %20 (seo-ci-check SITEMAP_BANNED_PATTERNS). These
-      # redirects keep any existing inbound links working (301).
-      - type: redirect
-        source: /authors/فريق%20BrightAI
-        destination: /authors/brightai-team/
-      - type: redirect
-        source: /authors/فريق%20BrightAI/
-        destination: /authors/brightai-team/
-      - type: redirect
-        source: /authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI
-        destination: /authors/brightai-team/
-      - type: redirect
-        source: /authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI/
-        destination: /authors/brightai-team/
       - type: redirect
         source: /contact
         destination: /contact/
@@ -244,15 +224,6 @@ services:
         source: /privacy-policy/index.html
         destination: /privacy-policy/
       - type: redirect
-        source: /privacy-cookies
-        destination: /privacy-cookies/
-      - type: redirect
-        source: /privacy-cookies.html
-        destination: /privacy-cookies/
-      - type: redirect
-        source: /privacy-cookies/index.html
-        destination: /privacy-cookies/
-      - type: redirect
         source: /cookie-policy
         destination: /cookie-policy/
       - type: redirect
@@ -298,301 +269,592 @@ services:
         source: /trust/index.html
         destination: /trust/
       - type: redirect
-        source: /offline
-        destination: /offline/
+        source: /report
+        destination: /trust/
       - type: redirect
-        source: /offline.html
-        destination: /offline/
+        source: /report.html
+        destination: /trust/
       - type: redirect
-        source: /offline/index.html
-        destination: /offline/
+        source: /report/index.html
+        destination: /trust/
       - type: redirect
-        source: /sitemap
-        destination: /sitemap/
+        source: /blog/Generative-artificial-intelligence
+        destination: /services/
       - type: redirect
-        source: /sitemap.html
-        destination: /sitemap/
+        source: /blog/Generative-artificial-intelligence.html
+        destination: /services/
       - type: redirect
-        source: /sitemap/index.html
-        destination: /sitemap/
-
-      # ── Solutions Module Redirects ──────────────────────────────────────
+        source: /blog/agint-bblog
+        destination: /services/
       - type: redirect
-        source: /solutions
-        destination: /solutions/
+        source: /blog/agint-bblog.html
+        destination: /services/
       - type: redirect
-        source: /solutions.html
-        destination: /solutions/
+        source: /blog/ai
+        destination: /services/
       - type: redirect
-        source: /solutions/index.html
-        destination: /solutions/
+        source: /blog/ai.html
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-governance-platform
-        destination: /solutions/ai-governance-platform/
+        source: /blog/analysy
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-governance-platform.html
-        destination: /solutions/ai-governance-platform/
+        source: /blog/analysy.html
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-governance-platform/index.html
-        destination: /solutions/ai-governance-platform/
+        source: /blog/atou-job
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-use-case-discovery
-        destination: /solutions/ai-use-case-discovery/
+        source: /blog/atou-job.html
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-use-case-discovery.html
-        destination: /solutions/ai-use-case-discovery/
+        source: /blog/auto
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-use-case-discovery/index.html
-        destination: /solutions/ai-use-case-discovery/
+        source: /blog/auto.html
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-risk-classification
-        destination: /solutions/ai-risk-classification/
+        source: /services/hr-automation-saudi
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-risk-classification.html
-        destination: /solutions/ai-risk-classification/
+        source: /services/hr-automation-saudi/
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-risk-classification/index.html
-        destination: /solutions/ai-risk-classification/
+        source: /services/hr-automation-saudi/index.html
+        destination: /services/
       - type: redirect
-        source: /solutions/policy-to-control-mapping
-        destination: /solutions/policy-to-control-mapping/
+        source: /blog/cloude-opus-4.6
+        destination: /services/
       - type: redirect
-        source: /solutions/policy-to-control-mapping.html
-        destination: /solutions/policy-to-control-mapping/
+        source: /blog/cloude-opus-4.6/
+        destination: /services/
       - type: redirect
-        source: /solutions/policy-to-control-mapping/index.html
-        destination: /solutions/policy-to-control-mapping/
+        source: /blog/cloude-opus-4.6.html
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-firewall
-        destination: /solutions/ai-firewall/
+        source: /services/kpi-dashboard-guide
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-firewall.html
-        destination: /solutions/ai-firewall/
+        source: /services/kpi-dashboard-guide/
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-firewall/index.html
-        destination: /solutions/ai-firewall/
+        source: /services/kpi-dashboard-guide/index.html
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-audit-trail
-        destination: /solutions/ai-audit-trail/
+        source: /services/power-bi-saudi-guide
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-audit-trail.html
-        destination: /solutions/ai-audit-trail/
+        source: /services/power-bi-saudi-guide/
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-audit-trail/index.html
-        destination: /solutions/ai-audit-trail/
+        source: /services/power-bi-saudi-guide/index.html
+        destination: /services/
       - type: redirect
-        source: /solutions/human-approval-layer
-        destination: /solutions/human-approval-layer/
+        source: /blog/digital
+        destination: /services/
       - type: redirect
-        source: /solutions/human-approval-layer.html
-        destination: /solutions/human-approval-layer/
+        source: /blog/digital.html
+        destination: /services/
       - type: redirect
-        source: /solutions/human-approval-layer/index.html
-        destination: /solutions/human-approval-layer/
+        source: /blog/gov
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-evidence-file
-        destination: /solutions/ai-evidence-file/
+        source: /blog/gov.html
+        destination: /services/
       - type: redirect
-        source: /solutions/ai-evidence-file.html
-        destination: /solutions/ai-evidence-file/
-      - type: redirect
-        source: /solutions/ai-evidence-file/index.html
-        destination: /solutions/ai-evidence-file/
-      - type: redirect
-        source: /solutions/continuous-ai-governance
-        destination: /solutions/continuous-ai-governance/
-      - type: redirect
-        source: /solutions/continuous-ai-governance.html
-        destination: /solutions/continuous-ai-governance/
-      - type: redirect
-        source: /solutions/continuous-ai-governance/index.html
-        destination: /solutions/continuous-ai-governance/
-
-      # ── EN Legal Redirects ─────────────────────────────────────────────
-      - type: redirect
-        source: /en/privacy-policy
-        destination: /en/privacy-policy/
-      - type: redirect
-        source: /en/privacy-policy.html
-        destination: /en/privacy-policy/
-      - type: redirect
-        source: /en/privacy-policy/index.html
-        destination: /en/privacy-policy/
-      - type: redirect
-        source: /en/terms
-        destination: /en/terms/
-      - type: redirect
-        source: /en/terms.html
-        destination: /en/terms/
-      - type: redirect
-        source: /en/terms/index.html
-        destination: /en/terms/
-      - type: redirect
-        source: /en/cookie-policy
-        destination: /en/cookie-policy/
-      - type: redirect
-        source: /en/cookie-policy.html
-        destination: /en/cookie-policy/
-      - type: redirect
-        source: /en/cookie-policy/index.html
-        destination: /en/cookie-policy/
-      - type: redirect
-        source: /en/pdpl-statement
-        destination: /en/pdpl-statement/
-      - type: redirect
-        source: /en/pdpl-statement.html
-        destination: /en/pdpl-statement/
-      - type: redirect
-        source: /en/pdpl-statement/index.html
-        destination: /en/pdpl-statement/
-      - type: redirect
-        source: /en/data-processing-agreement
-        destination: /en/data-processing-agreement/
-      - type: redirect
-        source: /en/data-processing-agreement.html
-        destination: /en/data-processing-agreement/
-      - type: redirect
-        source: /en/data-processing-agreement/index.html
-        destination: /en/data-processing-agreement/
-
-      # ── Docs Redirects ─────────────────────────────────────────────────
-      - type: redirect
-        source: /docs
-        destination: /docs/
+        source: /en/index.html
+        destination: /
       - type: redirect
         source: /docs.html
         destination: /docs/
       - type: redirect
-        source: /docs/docs.html
+        source: /docs/openapi.html
         destination: /docs/
       - type: redirect
-        source: /docs/docs
+        source: /docs/faq.html
         destination: /docs/
       - type: redirect
-        source: /en/docs
+        source: /docs/faq-en.html
         destination: /docs/
       - type: redirect
-        source: /en/docs/
+        source: /docs/terms-and-conditions.html
+        destination: /terms/
+      - type: redirect
+        source: /docs/terms-and-conditions-en.html
         destination: /docs/
       - type: redirect
-        source: /docs/index.html
+        source: /docs/services-overview.html
         destination: /docs/
       - type: redirect
-        source: /docs/ai-governance-platform
-        destination: /docs/ai-governance-platform/
+        source: /docs/services-overview-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-governance-platform.html
-        destination: /docs/ai-governance-platform/
+        source: /docs/privacy-policy.html
+        destination: /privacy-policy/
       - type: redirect
-        source: /docs/ai-governance-platform/index.html
-        destination: /docs/ai-governance-platform/
+        source: /docs/privacy-policy-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-firewall
-        destination: /docs/ai-firewall/
+        source: /docs/data-analysis.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-firewall.html
-        destination: /docs/ai-firewall/
+        source: /docs/data-analysis-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-firewall/index.html
-        destination: /docs/ai-firewall/
+        source: /docs/contact.html
+        destination: /contact/
       - type: redirect
-        source: /docs/ai-audit-trail
-        destination: /docs/ai-audit-trail/
+        source: /docs/contact-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-audit-trail.html
-        destination: /docs/ai-audit-trail/
+        source: /docs/ai-bots.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-audit-trail/index.html
-        destination: /docs/ai-audit-trail/
+        source: /docs/ai-bots-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/human-approval-layer
-        destination: /docs/human-approval-layer/
+        source: /docs/solutions-bi.html
+        destination: /docs/
       - type: redirect
-        source: /docs/human-approval-layer.html
-        destination: /docs/human-approval-layer/
+        source: /docs/solutions-bi-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/human-approval-layer/index.html
-        destination: /docs/human-approval-layer/
+        source: /docs/solutions-crm.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-evidence-file
-        destination: /docs/ai-evidence-file/
+        source: /docs/solutions-crm-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-evidence-file.html
-        destination: /docs/ai-evidence-file/
+        source: /docs/solutions-finance.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-evidence-file/index.html
-        destination: /docs/ai-evidence-file/
+        source: /docs/solutions-finance-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-governance-saudi-arabia
-        destination: /docs/ai-governance-saudi-arabia/
+        source: /docs/solutions-healthcare.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-governance-saudi-arabia.html
-        destination: /docs/ai-governance-saudi-arabia/
+        source: /docs/solutions-healthcare-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-governance-saudi-arabia/index.html
-        destination: /docs/ai-governance-saudi-arabia/
+        source: /docs/solutions-hr.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-risk-management
-        destination: /docs/ai-risk-management/
+        source: /docs/solutions-hr-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-risk-management.html
-        destination: /docs/ai-risk-management/
+        source: /docs/solutions-interview.html
+        destination: /docs/
       - type: redirect
-        source: /docs/ai-risk-management/index.html
-        destination: /docs/ai-risk-management/
+        source: /docs/solutions-interview-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/pdpl-ai-governance
-        destination: /docs/pdpl-ai-governance/
+        source: /docs/solutions-logistics.html
+        destination: /docs/
       - type: redirect
-        source: /docs/pdpl-ai-governance.html
-        destination: /docs/pdpl-ai-governance/
+        source: /docs/solutions-logistics-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/pdpl-ai-governance/index.html
-        destination: /docs/pdpl-ai-governance/
+        source: /docs/solutions-ocr.html
+        destination: /docs/
       - type: redirect
-        source: /docs/pdpl-chatgpt-data-protection
-        destination: /docs/pdpl-chatgpt-data-protection/
+        source: /docs/solutions-ocr-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/pdpl-chatgpt-data-protection.html
-        destination: /docs/pdpl-chatgpt-data-protection/
+        source: /docs/solutions-retail.html
+        destination: /docs/
       - type: redirect
-        source: /docs/pdpl-chatgpt-data-protection/index.html
-        destination: /docs/pdpl-chatgpt-data-protection/
+        source: /docs/solutions-retail-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/nca-ecc-ai-governance
-        destination: /docs/nca-ecc-ai-governance/
+        source: /docs/solutions-supply-chain.html
+        destination: /docs/
       - type: redirect
-        source: /docs/nca-ecc-ai-governance.html
-        destination: /docs/nca-ecc-ai-governance/
+        source: /docs/solutions-supply-chain-en.html
+        destination: /docs/
       - type: redirect
-        source: /docs/nca-ecc-ai-governance/index.html
-        destination: /docs/nca-ecc-ai-governance/
+        source: /services/ecommerce.html
+        destination: /services/
       - type: redirect
-        source: /docs/nca-ecc-ai-controls-mapping
-        destination: /docs/nca-ecc-ai-controls-mapping/
+        source: /services/ecommerce-en.html
+        destination: /services/
       - type: redirect
-        source: /docs/nca-ecc-ai-controls-mapping.html
-        destination: /docs/nca-ecc-ai-controls-mapping/
+        source: /services/energy.html
+        destination: /services/
       - type: redirect
-        source: /docs/nca-ecc-ai-controls-mapping/index.html
-        destination: /docs/nca-ecc-ai-controls-mapping/
+        source: /services/energy-en.html
+        destination: /services/
       - type: redirect
-        source: /docs/ai-audit-readiness
-        destination: /docs/ai-audit-readiness/
+        source: /services/finance.html
+        destination: /services/
       - type: redirect
-        source: /docs/ai-audit-readiness.html
-        destination: /docs/ai-audit-readiness/
+        source: /services/finance-en.html
+        destination: /services/
       - type: redirect
-        source: /docs/ai-audit-readiness/index.html
-        destination: /docs/ai-audit-readiness/
+        source: /services/healthcare.html
+        destination: /services/
       - type: redirect
-        source: /docs/nca-ecc-ai-controls
-        destination: /docs/nca-ecc-ai-controls/
+        source: /services/healthcare-en.html
+        destination: /services/
+      - type: redirect
+        source: /services/logistics.html
+        destination: /services/
+      - type: redirect
+        source: /services/logistics-en.html
+        destination: /services/
+      - type: redirect
+        source: /services/manufacturing.html
+        destination: /services/
+      - type: redirect
+        source: /services/manufacturing-en.html
+        destination: /services/
+      - type: redirect
+        source: /demo/pages/appointment/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/dashboard/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/support-ai/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/Visitor-registration/index.html
+        destination: /demo/
+      - type: redirect
+        source: /en/docs/docs.html
+        destination: /docs/
+      - type: redirect
+        source: /health-bright.html
+        destination: /services/
+      - type: redirect
+        source: /data-analysis.html
+        destination: /services/
+      - type: redirect
+        source: /our-products.html
+        destination: /services/
+      - type: redirect
+        source: /Company%20performance%20monitoring%20tool.html
+        destination: /services/
+      - type: redirect
+        source: /blogger/ai-generative-content-industry-saudi-arabia.html
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/about-us/index.html
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/about-us/
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/services/
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/contact/index.html
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/contact/
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/services/index.html
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/our-products/index.html
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/our-products/
+        destination: /services/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/index.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /frontend/pages/try/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/supportAI
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/supportAI/
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/supportAI/index.html
+        destination: /demo/
+      - type: redirect
+        source: /frontend/pages/blogger/nca-compliance
+        destination: /services/
+      - type: redirect
+        source: /ai-workflows
+        destination: /services/
+      - type: redirect
+        source: /blog/production-line
+        destination: /services/
+      - type: redirect
+        source: /blog/production-line.html
+        destination: /services/
+      - type: redirect
+        source: /blog/atou.doc
+        destination: /services/
+      - type: redirect
+        source: /blog/atou.doc/
+        destination: /services/
+      - type: redirect
+        source: /blog/astr.doc
+        destination: /blog/
+      - type: redirect
+        source: /blog/astr.doc/
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html
+        destination: /blog/
+      - type: redirect
+        source: /blog/ production-line
+        destination: /services/
+      - type: redirect
+        source: /blog/Generative artificial intelligence
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html
+        destination: /services/
+      - type: redirect
+        source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار
+        destination: /services/
+      - type: redirect
+        source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/
+        destination: /services/
+      - type: redirect
+        source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html
+        destination: /services/
+      - type: redirect
+        source: /blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html
+        destination: /blog/
+      - type: redirect
+        source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور
+        destination: /services/
+      - type: redirect
+        source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/
+        destination: /services/
+      - type: redirect
+        source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html
+        destination: /services/
+      - type: redirect
+        source: /terms/terms-and-conditions-en.html
+        destination: /docs/
+      - type: redirect
+        source: /privacy-policy/privacy-policy-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/docs-en.html
+        destination: /docs/
+      - type: redirect
+        source: /contact/contact-en.html
+        destination: /docs/
+      - type: redirect
+        source: /services/data-analyst-agent.html
+        destination: /services/
+      - type: redirect
+        source: /services/custom-ai-agent.html
+        destination: /services/
+      - type: redirect
+        source: /services/competitor-analysis-agent.html
+        destination: /services/
+      - type: redirect
+        source: /services/seo-agent.html
+        destination: /services/
+      - type: redirect
+        source: /services/social-data-analysis.html
+        destination: /services/
+      - type: redirect
+        source: /services/health-data-analysis.html
+        destination: /services/
+      - type: redirect
+        source: /services/marketing-agent.html
+        destination: /services/
+      - type: redirect
+        source: /services/document-automation.html
+        destination: /services/
+      - type: redirect
+        source: /services/smart-hiring-system.html
+        destination: /services/
+      - type: redirect
+        source: /services/medical-archive.html
+        destination: /services/
+      - type: redirect
+        source: /services/data-platform.html
+        destination: /services/
+      - type: redirect
+        source: /services/lead-hunter.html
+        destination: /services/
+      - type: redirect
+        source: /services/customer-service-automation.html
+        destination: /services/
+      - type: redirect
+        source: /services/hr-automation.html
+        destination: /services/
+      - type: redirect
+        source: /services/marketing-automation.html
+        destination: /services/
+      - type: redirect
+        source: /services/approvals-automation.html
+        destination: /services/
+      - type: redirect
+        source: /services/operational-reports-automation.html
+        destination: /services/
+      - type: redirect
+        source: /services/supply-chain-optimization.html
+        destination: /services/
+      - type: redirect
+        source: /services/ai-consulting.html
+        destination: /services/
+      - type: redirect
+        source: /services/brightproject.html
+        destination: /services/
+      - type: redirect
+        source: /services/brightsales.html
+        destination: /services/
+      - type: redirect
+        source: /services/ai-scolecs.html
+        destination: /services/
+      - type: redirect
+        source: /services/smart-hospital-management.html
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/
+        destination: /services/
+      - type: redirect
+        source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/
+        destination: /services/
+      - type: redirect
+        source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html
+        destination: /services/
+      - type: redirect
+        source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار
+        destination: /services/
+      - type: redirect
+        source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/
+        destination: /services/
+      - type: redirect
+        source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html
+        destination: /services/
+      - type: redirect
+        source: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور
+        destination: /services/
+      - type: redirect
+        source: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/
+        destination: /services/
+      - type: redirect
+        source: /blog/machine-learning-computer-vision-legacy.html
+        destination: /services/
+      - type: redirect
+        source: /blog/الذكاء-الاصطناعي-و-التسويق
+        destination: /services/
+      - type: redirect
+        source: /blog/الذكاء-الاصطناعي-و-التسويق/
+        destination: /services/
+      - type: redirect
+        source: /blog/الذكاء-الاصطناعي-و-التسويق.html
+        destination: /services/
+      - type: redirect
+        source: /blog/تحليل-البيانات
+        destination: /services/
+      - type: redirect
+        source: /blog/تحليل-البيانات/
+        destination: /services/
+      - type: redirect
+        source: /blog/تحليل-البيانات.html
+        destination: /services/
+      - type: redirect
+        source: /blog/تعلم-الآلة-و-الأعمال
+        destination: /services/
+      - type: redirect
+        source: /blog/تعلم-الآلة-و-الأعمال/
+        destination: /services/
+      - type: redirect
+        source: /blog/تعلم-الآلة-و-الأعمال.html
+        destination: /services/
+      - type: redirect
+        source: /blog/مقال-تحليل
+        destination: /services/
+      - type: redirect
+        source: /blog/مقال-تحليل/
+        destination: /services/
+      - type: redirect
+        source: /blog/مقال-تحليل.html
+        destination: /services/
       - type: redirect
         source: /docs/nca-ecc-ai-controls.html
-        destination: /docs/nca-ecc-ai-controls/
-      - type: redirect
-        source: /docs/nca-ecc-ai-controls/index.html
         destination: /docs/nca-ecc-ai-controls/
       - type: redirect
         source: /docs/Governanceـapplication
@@ -613,480 +875,8 @@ services:
         source: /docs/Governance%D9%80application/index.html
         destination: /docs/governance-application/
       - type: redirect
-        source: /docs/governance-application
-        destination: /docs/governance-application/
-      - type: redirect
-        source: /docs/governance-application.html
-        destination: /docs/governance-application/
-      - type: redirect
-        source: /docs/governance-application/index.html
-        destination: /docs/governance-application/
-
-      # ── Docs Kernel Redirects ──────────────────────────────────────────
-      - type: redirect
-        source: /docs/kernel-chat
-        destination: /docs/kernel-chat/
-      - type: redirect
-        source: /docs/kernel-chat.html
-        destination: /docs/kernel-chat/
-      - type: redirect
-        source: /docs/kernel-chat/index.html
-        destination: /docs/kernel-chat/
-      - type: redirect
-        source: /docs/kernel-audit-trail
-        destination: /docs/kernel-audit-trail/
-      - type: redirect
-        source: /docs/kernel-audit-trail.html
-        destination: /docs/kernel-audit-trail/
-      - type: redirect
-        source: /docs/kernel-audit-trail/index.html
-        destination: /docs/kernel-audit-trail/
-      - type: redirect
-        source: /docs/kernel-approvals
-        destination: /docs/kernel-approvals/
-      - type: redirect
-        source: /docs/kernel-approvals.html
-        destination: /docs/kernel-approvals/
-      - type: redirect
-        source: /docs/kernel-approvals/index.html
-        destination: /docs/kernel-approvals/
-      - type: redirect
-        source: /docs/kernel-evidence
-        destination: /docs/kernel-evidence/
-      - type: redirect
-        source: /docs/kernel-evidence.html
-        destination: /docs/kernel-evidence/
-      - type: redirect
-        source: /docs/kernel-evidence/index.html
-        destination: /docs/kernel-evidence/
-      - type: redirect
-        source: /docs/kernel-stats
-        destination: /docs/kernel-stats/
-      - type: redirect
-        source: /docs/kernel-stats.html
-        destination: /docs/kernel-stats/
-      - type: redirect
-        source: /docs/kernel-stats/index.html
-        destination: /docs/kernel-stats/
-      - type: redirect
-        source: /docs/kernel-reports
-        destination: /docs/kernel-reports/
-      - type: redirect
-        source: /docs/kernel-reports.html
-        destination: /docs/kernel-reports/
-      - type: redirect
-        source: /docs/kernel-reports/index.html
-        destination: /docs/kernel-reports/
-      - type: redirect
-        source: /docs/kernel-policies
-        destination: /docs/kernel-policies/
-      - type: redirect
-        source: /docs/kernel-policies.html
-        destination: /docs/kernel-policies/
-      - type: redirect
-        source: /docs/kernel-policies/index.html
-        destination: /docs/kernel-policies/
-      - type: redirect
-        source: /docs/kernel-compliance
-        destination: /docs/kernel-compliance/
-      - type: redirect
-        source: /docs/kernel-compliance.html
-        destination: /docs/kernel-compliance/
-      - type: redirect
-        source: /docs/kernel-compliance/index.html
-        destination: /docs/kernel-compliance/
-      - type: redirect
-        source: /docs/kernel-connectors
-        destination: /docs/kernel-connectors/
-      - type: redirect
-        source: /docs/kernel-connectors.html
-        destination: /docs/kernel-connectors/
-      - type: redirect
-        source: /docs/kernel-connectors/index.html
-        destination: /docs/kernel-connectors/
-      - type: redirect
-        source: /docs/kernel-scenarios
-        destination: /docs/kernel-scenarios/
-      - type: redirect
-        source: /docs/kernel-scenarios.html
-        destination: /docs/kernel-scenarios/
-      - type: redirect
-        source: /docs/kernel-scenarios/index.html
-        destination: /docs/kernel-scenarios/
-
-      # ── Kernel Module Redirects ─────────────────────────────────────────
-      - type: redirect
-        source: /kernel/index.html
-        destination: /kernel/
-      - type: redirect
-        source: /kernel/chat.html
-        destination: /kernel/chat/
-      - type: redirect
-        source: /kernel/audit.html
-        destination: /kernel/audit/
-      - type: redirect
-        source: /kernel/approvals.html
-        destination: /kernel/approvals/
-      - type: redirect
-        source: /kernel/stats.html
-        destination: /kernel/stats/
-      - type: redirect
-        source: /kernel/compliance.html
-        destination: /kernel/compliance/
-      - type: redirect
-        source: /kernel/policies.html
-        destination: /kernel/policies/
-      - type: redirect
-        source: /kernel/connectors.html
-        destination: /kernel/connectors/
-      - type: redirect
-        source: /kernel/scenarios.html
-        destination: /kernel/scenarios/
-      - type: redirect
-        source: /kernel/reports.html
-        destination: /kernel/reports/
-      - type: redirect
-        source: /kernel/evidence.html
-        destination: /kernel/evidence/
-      - type: redirect
-        source: /kernel/offline.html
-        destination: /kernel/offline/
-
-      # ── Blog Module Redirects ───────────────────────────────────────────
-      - type: redirect
-        source: /blog
-        destination: /blog/
-      - type: redirect
-        source: /blog.html
-        destination: /blog/
-      - type: redirect
-        source: /blog/index.html
-        destination: /blog/
-      - type: redirect
-        source: /blog/ai-audit-trail-saudi
-        destination: /blog/ai-audit-trail-saudi/
-      - type: redirect
-        source: /blog/ai-audit-trail-saudi.html
-        destination: /blog/ai-audit-trail-saudi/
-      - type: redirect
-        source: /blog/ai-audit-trail-saudi/index.html
-        destination: /blog/ai-audit-trail-saudi/
-      - type: redirect
-        source: /blog/ai-governance
-        destination: /blog/ai-governance/
-      - type: redirect
-        source: /blog/ai-governance.html
-        destination: /blog/ai-governance/
-      - type: redirect
-        source: /blog/ai-governance/index.html
-        destination: /blog/ai-governance/
-      - type: redirect
-        source: /blog/pdpl-ai-safety
-        destination: /blog/pdpl-ai-safety/
-      - type: redirect
-        source: /blog/pdpl-ai-safety.html
-        destination: /blog/pdpl-ai-safety/
-      - type: redirect
-        source: /blog/pdpl-ai-safety/index.html
-        destination: /blog/pdpl-ai-safety/
-      - type: redirect
-        source: /blog/ai-governance-saudi-arabia
-        destination: /blog/ai-governance-saudi-arabia/
-      - type: redirect
-        source: /blog/ai-governance-saudi-arabia.html
-        destination: /blog/ai-governance-saudi-arabia/
-      - type: redirect
-        source: /blog/ai-governance-saudi-arabia/index.html
-        destination: /blog/ai-governance-saudi-arabia/
-      - type: redirect
-        source: /blog/ai-customer-data-protection-saudi
-        destination: /blog/ai-customer-data-protection-saudi/
-      - type: redirect
-        source: /blog/ai-customer-data-protection-saudi.html
-        destination: /blog/ai-customer-data-protection-saudi/
-      - type: redirect
-        source: /blog/ai-customer-data-protection-saudi/index.html
-        destination: /blog/ai-customer-data-protection-saudi/
-      - type: redirect
-        source: /blog/pdpl-and-ai-saudi
-        destination: /blog/pdpl-and-ai-saudi/
-      - type: redirect
-        source: /blog/pdpl-and-ai-saudi.html
-        destination: /blog/pdpl-and-ai-saudi/
-      - type: redirect
-        source: /blog/pdpl-and-ai-saudi/index.html
-        destination: /blog/pdpl-and-ai-saudi/
-      - type: redirect
-        source: /blog/ai-audit-trail-compliance-path
-        destination: /blog/ai-audit-trail-compliance-path/
-      - type: redirect
-        source: /blog/ai-audit-trail-compliance-path.html
-        destination: /blog/ai-audit-trail-compliance-path/
-      - type: redirect
-        source: /blog/ai-audit-trail-compliance-path/index.html
-        destination: /blog/ai-audit-trail-compliance-path/
-      - type: redirect
-        source: /blog/ai-ethics-saudi-responsible-ai
-        destination: /blog/ai-ethics-saudi-responsible-ai/
-      - type: redirect
-        source: /blog/ai-ethics-saudi-responsible-ai.html
-        destination: /blog/ai-ethics-saudi-responsible-ai/
-      - type: redirect
-        source: /blog/ai-ethics-saudi-responsible-ai/index.html
-        destination: /blog/ai-ethics-saudi-responsible-ai/
-      - type: redirect
-        source: /blog/ai-firewall-why-you-need-it
-        destination: /blog/ai-firewall-why-you-need-it/
-      - type: redirect
-        source: /blog/ai-firewall-why-you-need-it.html
-        destination: /blog/ai-firewall-why-you-need-it/
-      - type: redirect
-        source: /blog/ai-firewall-why-you-need-it/index.html
-        destination: /blog/ai-firewall-why-you-need-it/
-      - type: redirect
-        source: /blog/ai-governance-vs-ai-safety-vs-ai-security
-        destination: /blog/ai-governance-vs-ai-safety-vs-ai-security/
-      - type: redirect
-        source: /blog/ai-governance-vs-ai-safety-vs-ai-security.html
-        destination: /blog/ai-governance-vs-ai-safety-vs-ai-security/
-      - type: redirect
-        source: /blog/ai-governance-vs-ai-safety-vs-ai-security/index.html
-        destination: /blog/ai-governance-vs-ai-safety-vs-ai-security/
-      - type: redirect
-        source: /blog/ai-red-teaming-security-testing
-        destination: /blog/ai-red-teaming-security-testing/
-      - type: redirect
-        source: /blog/ai-red-teaming-security-testing.html
-        destination: /blog/ai-red-teaming-security-testing/
-      - type: redirect
-        source: /blog/ai-red-teaming-security-testing/index.html
-        destination: /blog/ai-red-teaming-security-testing/
-      - type: redirect
-        source: /blog/banking-ai-governance-sama-requirements
-        destination: /blog/banking-ai-governance-sama-requirements/
-      - type: redirect
-        source: /blog/banking-ai-governance-sama-requirements.html
-        destination: /blog/banking-ai-governance-sama-requirements/
-      - type: redirect
-        source: /blog/banking-ai-governance-sama-requirements/index.html
-        destination: /blog/banking-ai-governance-sama-requirements/
-      - type: redirect
-        source: /blog/best-ai-governance-platforms-2026
-        destination: /blog/best-ai-governance-platforms-2026/
-      - type: redirect
-        source: /blog/best-ai-governance-platforms-2026.html
-        destination: /blog/best-ai-governance-platforms-2026/
-      - type: redirect
-        source: /blog/best-ai-governance-platforms-2026/index.html
-        destination: /blog/best-ai-governance-platforms-2026/
-      - type: redirect
-        source: /blog/healthcare-ai-governance-saudi-hospitals
-        destination: /blog/healthcare-ai-governance-saudi-hospitals/
-      - type: redirect
-        source: /blog/healthcare-ai-governance-saudi-hospitals.html
-        destination: /blog/healthcare-ai-governance-saudi-hospitals/
-      - type: redirect
-        source: /blog/healthcare-ai-governance-saudi-hospitals/index.html
-        destination: /blog/healthcare-ai-governance-saudi-hospitals/
-      - type: redirect
-        source: /blog/hidden-ai-risks-saudi-organizations
-        destination: /blog/hidden-ai-risks-saudi-organizations/
-      - type: redirect
-        source: /blog/hidden-ai-risks-saudi-organizations.html
-        destination: /blog/hidden-ai-risks-saudi-organizations/
-      - type: redirect
-        source: /blog/hidden-ai-risks-saudi-organizations/index.html
-        destination: /blog/hidden-ai-risks-saudi-organizations/
-      - type: redirect
-        source: /blog/iso-42001-saudi-implementation-guide
-        destination: /blog/iso-42001-saudi-implementation-guide/
-      - type: redirect
-        source: /blog/iso-42001-saudi-implementation-guide.html
-        destination: /blog/iso-42001-saudi-implementation-guide/
-      - type: redirect
-        source: /blog/iso-42001-saudi-implementation-guide/index.html
-        destination: /blog/iso-42001-saudi-implementation-guide/
-      - type: redirect
-        source: /blog/nca-ecc-ai-controls-guide
-        destination: /blog/nca-ecc-ai-controls-guide/
-      - type: redirect
-        source: /blog/nca-ecc-ai-controls-guide.html
-        destination: /blog/nca-ecc-ai-controls-guide/
-      - type: redirect
-        source: /blog/nca-ecc-ai-controls-guide/index.html
-        destination: /blog/nca-ecc-ai-controls-guide/
-      - type: redirect
-        source: /blog/pdpl-ai-compliance-guide
-        destination: /blog/pdpl-ai-compliance-guide/
-      - type: redirect
-        source: /blog/pdpl-ai-compliance-guide.html
-        destination: /blog/pdpl-ai-compliance-guide/
-      - type: redirect
-        source: /blog/pdpl-ai-compliance-guide/index.html
-        destination: /blog/pdpl-ai-compliance-guide/
-      - type: redirect
-        source: /blog/sdaia-generative-ai-guidelines-practical-compliance
-        destination: /blog/sdaia-generative-ai-guidelines-practical-compliance/
-      - type: redirect
-        source: /blog/sdaia-generative-ai-guidelines-practical-compliance.html
-        destination: /blog/sdaia-generative-ai-guidelines-practical-compliance/
-      - type: redirect
-        source: /blog/sdaia-generative-ai-guidelines-practical-compliance/index.html
-        destination: /blog/sdaia-generative-ai-guidelines-practical-compliance/
-      - type: redirect
-        source: /blog/shadow-ai-discovery-saudi-company
-        destination: /blog/shadow-ai-discovery-saudi-company/
-      - type: redirect
-        source: /blog/shadow-ai-discovery-saudi-company.html
-        destination: /blog/shadow-ai-discovery-saudi-company/
-      - type: redirect
-        source: /blog/shadow-ai-discovery-saudi-company/index.html
-        destination: /blog/shadow-ai-discovery-saudi-company/
-      - type: redirect
-        source: /blog/vision-2030-ai-governance-roadmap
-        destination: /blog/vision-2030-ai-governance-roadmap/
-      - type: redirect
-        source: /blog/vision-2030-ai-governance-roadmap.html
-        destination: /blog/vision-2030-ai-governance-roadmap/
-      - type: redirect
-        source: /blog/vision-2030-ai-governance-roadmap/index.html
-        destination: /blog/vision-2030-ai-governance-roadmap/
-      - type: redirect
-        source: /blog/what-is-ai-governance-saudi-companies
-        destination: /blog/what-is-ai-governance-saudi-companies/
-      - type: redirect
-        source: /blog/what-is-ai-governance-saudi-companies.html
-        destination: /blog/what-is-ai-governance-saudi-companies/
-      - type: redirect
-        source: /blog/what-is-ai-governance-saudi-companies/index.html
-        destination: /blog/what-is-ai-governance-saudi-companies/
-
-      # ── Additional Docs Redirects ──────────────────────────────────────
-      - type: redirect
-        source: /docs/nca-ecc-ai-guide
-        destination: /docs/nca-ecc-ai-guide/
-      - type: redirect
-        source: /docs/nca-ecc-ai-guide.html
-        destination: /docs/nca-ecc-ai-guide/
-      - type: redirect
-        source: /docs/nca-ecc-ai-guide/index.html
-        destination: /docs/nca-ecc-ai-guide/
-      - type: redirect
-        source: /docs/pdpl-ai-complete-guide
-        destination: /docs/pdpl-ai-complete-guide/
-      - type: redirect
-        source: /docs/pdpl-ai-complete-guide.html
-        destination: /docs/pdpl-ai-complete-guide/
-      - type: redirect
-        source: /docs/pdpl-ai-complete-guide/index.html
-        destination: /docs/pdpl-ai-complete-guide/
-      - type: redirect
-        source: /docs/sdaia-generative-ai-guidelines
-        destination: /docs/sdaia-generative-ai-guidelines/
-      - type: redirect
-        source: /docs/sdaia-generative-ai-guidelines.html
-        destination: /docs/sdaia-generative-ai-guidelines/
-      - type: redirect
-        source: /docs/sdaia-generative-ai-guidelines/index.html
-        destination: /docs/sdaia-generative-ai-guidelines/
-
-      # ── Hub Redirects ──────────────────────────────────────────────────
-      - type: redirect
-        source: /hub
-        destination: /hub/
-      - type: redirect
-        source: /hub.html
-        destination: /hub/
-      - type: redirect
-        source: /hub/index.html
-        destination: /hub/
-      - type: redirect
-        source: /hub/ai-governance
-        destination: /hub/ai-governance/
-      - type: redirect
-        source: /hub/ai-governance.html
-        destination: /hub/ai-governance/
-      - type: redirect
-        source: /hub/ai-governance/index.html
-        destination: /hub/ai-governance/
-      - type: redirect
-        source: /hub/compliance
-        destination: /hub/compliance/
-      - type: redirect
-        source: /hub/compliance.html
-        destination: /hub/compliance/
-      - type: redirect
-        source: /hub/compliance/index.html
-        destination: /hub/compliance/
-      - type: redirect
-        source: /hub/solutions
-        destination: /hub/solutions/
-      - type: redirect
-        source: /hub/solutions.html
-        destination: /hub/solutions/
-      - type: redirect
-        source: /hub/solutions/index.html
-        destination: /hub/solutions/
-      - type: redirect
-        source: /hub/use-cases
-        destination: /hub/use-cases/
-      - type: redirect
-        source: /hub/use-cases.html
-        destination: /hub/use-cases/
-      - type: redirect
-        source: /hub/use-cases/index.html
-        destination: /hub/use-cases/
-
-      # ── Additional Solution Redirects ──────────────────────────────────
-      - type: redirect
-        source: /solutions/banking-ai-governance
-        destination: /solutions/banking-ai-governance/
-      - type: redirect
-        source: /solutions/banking-ai-governance.html
-        destination: /solutions/banking-ai-governance/
-      - type: redirect
-        source: /solutions/banking-ai-governance/index.html
-        destination: /solutions/banking-ai-governance/
-      - type: redirect
-        source: /solutions/banking-ai-governance/riyadh/index.html
-        destination: /solutions/banking-ai-governance/riyadh/
-      - type: redirect
-        source: /solutions/government-ai-governance
-        destination: /solutions/government-ai-governance/
-      - type: redirect
-        source: /solutions/government-ai-governance.html
-        destination: /solutions/government-ai-governance/
-      - type: redirect
-        source: /solutions/government-ai-governance/index.html
-        destination: /solutions/government-ai-governance/
-      - type: redirect
-        source: /solutions/government-ai-governance/dammam/index.html
-        destination: /solutions/government-ai-governance/dammam/
-      - type: redirect
-        source: /solutions/healthcare-ai-governance
-        destination: /solutions/healthcare-ai-governance/
-      - type: redirect
-        source: /solutions/healthcare-ai-governance.html
-        destination: /solutions/healthcare-ai-governance/
-      - type: redirect
-        source: /solutions/healthcare-ai-governance/index.html
-        destination: /solutions/healthcare-ai-governance/
-      - type: redirect
-        source: /solutions/healthcare-ai-governance/jeddah/index.html
-        destination: /solutions/healthcare-ai-governance/jeddah/
-      - type: redirect
-        source: /solutions/manufacturing-ai-governance
-        destination: /solutions/manufacturing-ai-governance/
-      - type: redirect
-        source: /solutions/manufacturing-ai-governance.html
-        destination: /solutions/manufacturing-ai-governance/
-      - type: redirect
-        source: /solutions/manufacturing-ai-governance/index.html
-        destination: /solutions/manufacturing-ai-governance/
-
-      # ── Hard block: /frontend/* should never be served ────────────────
-      # Frontend (Express backend) was removed. Any cached request to
-      # /frontend/* should fall through to the 404 page.
+        source: /assessment/ai-governance-readiness.html
+        destination: /assessment/ai-governance-readiness/
       - type: redirect
         source: /frontend
         destination: /404/
@@ -1096,11 +886,6 @@ services:
       - type: redirect
         source: /frontend/*
         destination: /404/
-
-      # ── RSS Feed Migration (REPORT-BLOG-2026-07-07) ───────────────────
-      # RSS endpoint moved from /blog/feed.xml → /rss.xml/. All old paths
-      # continue to 301 to the new canonical URL. Both endpoints stay
-      # live until external redirect propagates externally.
       - type: redirect
         source: /rss
         destination: /rss.xml/

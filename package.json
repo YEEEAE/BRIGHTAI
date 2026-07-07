@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/generate-all-redirects.mjs",
     "build": "npm run image-sitemap && astro build && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css",
     "sync:dist:flat": "node scripts/sync-dist-flat.mjs",
     "build:verify": "npm run verify:all",

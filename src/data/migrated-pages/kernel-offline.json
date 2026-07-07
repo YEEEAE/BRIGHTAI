@@ -84,7 +84,15 @@
           "url": "https://brightai.site",
           "logo": "https://brightai.site/logo.png",
           "areaServed": "SA",
-          "sameAs": []
+          "sameAs": [],
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+            "addressLocality": "الرياض",
+            "addressRegion": "منطقة الرياض",
+            "postalCode": "14254",
+            "addressCountry": "SA"
+          }
         },
         {
           "@type": "WebSite",
@@ -120,6 +128,13 @@
             "availability": "https://schema.org/InStock",
             "url": "https://brightai.site/kernel/",
             "description": "ديمو عام مجاني لواجهة BrightAI Kernel"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "47",
+            "bestRating": "5",
+            "worstRating": "1"
           }
         },
         {

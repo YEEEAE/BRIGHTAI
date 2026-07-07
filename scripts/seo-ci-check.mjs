@@ -32,10 +32,9 @@ const SITEMAP_PATH = path.join(ROOT, "dist", "sitemap.xml");
 // OG images المقبولة لصفحات الحلول (كلاهما valid)
 const SERVICE_OG_IMAGE_URLS = new Set([
   `${BASE_URL}/assets/images/og/og-solutions.png`,
+  `${BASE_URL}/assets/images/og/og-solutions.webp`,
   `${BASE_URL}/images/og/brightai-og-1200x630.png`,
 ]);
-// للتوافق مع الرسائل
-const SERVICE_OG_IMAGE_URL = `${BASE_URL}/assets/images/og/og-solutions.png`;
 const HTML_IGNORE_DIRS = new Set([".git", ".agents", "node_modules", "dist", "build", "coverage", ".next", ".nuxt", ".render-static", "components"]);
 const INTERNAL_PAGE_PATTERN =
   /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^mais-OBM\/index\.html$|(^|\/)(admin|settings|analytics|reports|operations|scorecard|copilot|executive)(\/|\.|$)/i;

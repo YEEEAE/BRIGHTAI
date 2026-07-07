@@ -1,343 +1,213 @@
 # ==============================================================================
-# BRIGHTAI - Static Redirects Configuration
+# BRIGHTAI - Static Redirects Configuration (AUTO-GENERATED DO NOT EDIT)
+# Source: redirects.json
 # ==============================================================================
-# هذا الملف يحتوي فقط على التوجيهات الحقيقية المتطابقة مع صفحات HTML الفعلية في المشروع.
-# تم التطهير التام من أي مسارات لمدونات، خدمات فرعية، أو بوتات غير متواجدة محلياً.
-# جميع وجهات التحويل (Destinations) نظيفة وخالية تماماً من امتداد .html.
 
-# ── Canonical Domain Redirection ──────────────────────────────────────────────
 http://brightai.site/*        https://brightai.site/:splat  301
 https://www.brightai.site/*    https://brightai.site/:splat  301
 
-# ── SEO: Renamed URL redirects ───────────────────────────────────────────────
-/docs/Governance%D9%80application/  /docs/governance-application/  301
-
-# ── Core Marketing Pages ──────────────────────────────────────────────────────
-/assessment/ai-governance-readiness            /assessment/ai-governance-readiness/ 301
-/assessment/ai-governance-readiness.html       /assessment/ai-governance-readiness/ 301
-/assessment/ai-governance-readiness/index.html /assessment/ai-governance-readiness/ 301
-/index.html                   /                             301
-/about                        /about/                       301
-/about/index.html             /about/                       301
-/about.html                   /about/                       301
-/contact                      /contact/                     301
-/contact/index.html           /contact/                     301
-/contact.html                 /contact/                     301
-/pricing                      /pricing/                     301
-/pricing/index.html           /pricing/                     301
-/pricing.html                 /pricing/                     301
-/services                     /services/                    301
-/services/index.html          /services/                    301
-/services.html                /services/                    301
-/solutions                   /solutions/                   301
-/solutions/index.html        /solutions/                   301
-/solutions.html              /solutions/                   301
-/demo                         /demo/                        301
-/demo/index.html              /demo/                        301
-/demo.html                    /demo/                        301
-/offline                      /offline/                     301
-/offline/index.html           /offline/                     301
-/offline.html                 /offline/                     301
-/sitemap                      /sitemap/                     301
-/sitemap/index.html           /sitemap/                     301
-/sitemap.html                 /sitemap/                     301
-/report                       /trust/                       301
-/report/index.html            /trust/                       301
-/report.html                  /trust/                       301
-
-# ── Privacy, Policies and Legal Statements (Arabic) ─────────────────────────
-/privacy-policy               /privacy-policy/              301
-/privacy-policy/index.html     /privacy-policy/              301
-/privacy-policy.html          /privacy-policy/              301
-/cookie-policy                /cookie-policy/               301
-/cookie-policy/index.html      /cookie-policy/               301
-/cookie-policy.html           /cookie-policy/               301
-/terms                        /terms/                       301
-/terms/index.html             /terms/                       301
-/terms.html                   /terms/                       301
-/privacy-cookies              /privacy-cookies/             301
-/privacy-cookies/index.html    /privacy-cookies/             301
-/privacy-cookies.html         /privacy-cookies/             301
-/pdpl-statement               /pdpl-statement/              301
-/pdpl-statement/index.html     /pdpl-statement/              301
-/pdpl-statement.html          /pdpl-statement/              301
-/data-processing-agreement    /data-processing-agreement/   301
-/data-processing-agreement/index.html /data-processing-agreement/ 301
-/data-processing-agreement.html /data-processing-agreement/ 301
-/trust                        /trust/                       301
-/trust/index.html             /trust/                       301
-/trust.html                   /trust/                       301
-
-# ── English Legal Counterparts ───────────────────────────────────────────────
-/en/privacy-policy            /en/privacy-policy/           301
-/en/privacy-policy/index.html  /en/privacy-policy/           301
-/en/privacy-policy.html       /en/privacy-policy/           301
-/en/cookie-policy             /en/cookie-policy/            301
-/en/cookie-policy/index.html   /en/cookie-policy/            301
-/en/cookie-policy.html        /en/cookie-policy/            301
-/en/terms                     /en/terms/                    301
-/en/terms/index.html          /en/terms/                    301
-/en/terms.html                /en/terms/                    301
-/en/pdpl-statement            /en/pdpl-statement/           301
-/en/pdpl-statement/index.html  /en/pdpl-statement/           301
-/en/pdpl-statement.html       /en/pdpl-statement/           301
-/en/data-processing-agreement /en/data-processing-agreement/ 301
-/en/data-processing-agreement/index.html /en/data-processing-agreement/ 301
-/en/data-processing-agreement.html /en/data-processing-agreement/ 301
-
-# ── Docs Module Redirections ──────────────────────────────────────────────────
-# /docs/ هو المسار الرسمي النهائي لمركز الوثائق
-/docs                         /docs/                        301
-/docs.html                    /docs/                        301
-/docs/index.html              /docs/                        301
-/docs/docs.html               /docs/                        301
-/en/docs                      /docs/                        301
-/en/docs/                     /docs/                        301
-
-# ── NCA ECC & Governance Application Docs Redirections ────────────────────────
-/docs/pdpl-chatgpt-data-protection /docs/pdpl-chatgpt-data-protection/ 301
-/docs/pdpl-chatgpt-data-protection.html /docs/pdpl-chatgpt-data-protection/ 301
-/docs/pdpl-chatgpt-data-protection/index.html /docs/pdpl-chatgpt-data-protection/ 301
-
-/docs/nca-ecc-ai-controls-mapping /docs/nca-ecc-ai-controls-mapping/ 301
-/docs/nca-ecc-ai-controls-mapping.html /docs/nca-ecc-ai-controls-mapping/ 301
-/docs/nca-ecc-ai-controls-mapping/index.html /docs/nca-ecc-ai-controls-mapping/ 301
-
-/docs/nca-ecc-ai-controls     /docs/nca-ecc-ai-controls/    301
-/docs/nca-ecc-ai-controls.html /docs/nca-ecc-ai-controls/   301
-/docs/nca-ecc-ai-controls/index.html /docs/nca-ecc-ai-controls/ 301
-
-/docs/Governanceـapplication  /docs/governance-application/ 301
+/report /trust/ 301
+/report.html /trust/ 301
+/report/index.html /trust/ 301
+/blog/Generative-artificial-intelligence /services/ 301
+/blog/Generative-artificial-intelligence.html /services/ 301
+/blog/agint-bblog /services/ 301
+/blog/agint-bblog.html /services/ 301
+/blog/ai /services/ 301
+/blog/ai.html /services/ 301
+/blog/analysy /services/ 301
+/blog/analysy.html /services/ 301
+/blog/atou-job /services/ 301
+/blog/atou-job.html /services/ 301
+/blog/auto /services/ 301
+/blog/auto.html /services/ 301
+/services/hr-automation-saudi /services/ 301
+/services/hr-automation-saudi/ /services/ 301
+/services/hr-automation-saudi/index.html /services/ 301
+/blog/cloude-opus-4.6 /services/ 301
+/blog/cloude-opus-4.6/ /services/ 301
+/blog/cloude-opus-4.6.html /services/ 301
+/services/kpi-dashboard-guide /services/ 301
+/services/kpi-dashboard-guide/ /services/ 301
+/services/kpi-dashboard-guide/index.html /services/ 301
+/services/power-bi-saudi-guide /services/ 301
+/services/power-bi-saudi-guide/ /services/ 301
+/services/power-bi-saudi-guide/index.html /services/ 301
+/blog/digital /services/ 301
+/blog/digital.html /services/ 301
+/blog/gov /services/ 301
+/blog/gov.html /services/ 301
+/index.html / 301
+/en/index.html / 301
+/docs.html /docs/ 301
+/docs/openapi.html /docs/ 301
+/docs/faq.html /docs/ 301
+/docs/faq-en.html /docs/ 301
+/docs/terms-and-conditions.html /terms/ 301
+/docs/terms-and-conditions-en.html /docs/ 301
+/docs/services-overview.html /docs/ 301
+/docs/services-overview-en.html /docs/ 301
+/docs/privacy-policy.html /privacy-policy/ 301
+/docs/privacy-policy-en.html /docs/ 301
+/docs/data-analysis.html /docs/ 301
+/docs/data-analysis-en.html /docs/ 301
+/docs/contact.html /contact/ 301
+/docs/contact-en.html /docs/ 301
+/docs/ai-bots.html /docs/ 301
+/docs/ai-bots-en.html /docs/ 301
+/docs/solutions-bi.html /docs/ 301
+/docs/solutions-bi-en.html /docs/ 301
+/docs/solutions-crm.html /docs/ 301
+/docs/solutions-crm-en.html /docs/ 301
+/docs/solutions-finance.html /docs/ 301
+/docs/solutions-finance-en.html /docs/ 301
+/docs/solutions-healthcare.html /docs/ 301
+/docs/solutions-healthcare-en.html /docs/ 301
+/docs/solutions-hr.html /docs/ 301
+/docs/solutions-hr-en.html /docs/ 301
+/docs/solutions-interview.html /docs/ 301
+/docs/solutions-interview-en.html /docs/ 301
+/docs/solutions-logistics.html /docs/ 301
+/docs/solutions-logistics-en.html /docs/ 301
+/docs/solutions-ocr.html /docs/ 301
+/docs/solutions-ocr-en.html /docs/ 301
+/docs/solutions-retail.html /docs/ 301
+/docs/solutions-retail-en.html /docs/ 301
+/docs/solutions-supply-chain.html /docs/ 301
+/docs/solutions-supply-chain-en.html /docs/ 301
+/services/ecommerce.html /services/ 301
+/services/ecommerce-en.html /services/ 301
+/services/energy.html /services/ 301
+/services/energy-en.html /services/ 301
+/services/finance.html /services/ 301
+/services/finance-en.html /services/ 301
+/services/healthcare.html /services/ 301
+/services/healthcare-en.html /services/ 301
+/services/logistics.html /services/ 301
+/services/logistics-en.html /services/ 301
+/services/manufacturing.html /services/ 301
+/services/manufacturing-en.html /services/ 301
+/demo/pages/appointment/index.html /demo/ 301
+/demo/pages/dashboard/index.html /demo/ 301
+/demo/pages/support-ai/index.html /demo/ 301
+/demo/pages/Visitor-registration/index.html /demo/ 301
+/en/docs/docs.html /docs/ 301
+/health-bright.html /services/ 301
+/data-analysis.html /services/ 301
+/our-products.html /services/ 301
+/Company%20performance%20monitoring%20tool.html /services/ 301
+/blogger/ai-generative-content-industry-saudi-arabia.html /services/ 301
+/frontend/pages/about-us/index.html /about/ 301
+/frontend/pages/about-us/ /about/ 301
+/frontend/pages/services/ /services/ 301
+/frontend/pages/contact/index.html /contact/ 301
+/frontend/pages/contact/ /contact/ 301
+/frontend/pages/services/index.html /services/ 301
+/frontend/pages/our-products/index.html /services/ 301
+/frontend/pages/our-products/ /services/ 301
+/frontend/pages/smart-medical-archive/index.html /solutions/healthcare-ai-governance/ 301
+/frontend/pages/smart-medical-archive/ /solutions/healthcare-ai-governance/ 301
+/frontend/pages/try/index.html /demo/ 301
+/demo/pages/supportAI /demo/ 301
+/demo/pages/supportAI/ /demo/ 301
+/demo/pages/supportAI/index.html /demo/ 301
+/frontend/pages/blogger/nca-compliance /services/ 301
+/ai-workflows /services/ 301
+/blog/production-line /services/ 301
+/blog/production-line.html /services/ 301
+/blog/atou.doc /services/ 301
+/blog/atou.doc/ /services/ 301
+/blog/astr.doc /blog/ 301
+/blog/astr.doc/ /blog/ 301
+/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات /blog/ 301
+/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/ /blog/ 301
+/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html /blog/ 301
+/blog/ production-line /services/ 301
+/blog/Generative artificial intelligence /services/ 301
+/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1) /services/ 301
+/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/ /services/ 301
+/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html /services/ 301
+/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية /services/ 301
+/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/ /services/ 301
+/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html /services/ 301
+/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية /services/ 301
+/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/ /services/ 301
+/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html /services/ 301
+/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية /services/ 301
+/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/ /services/ 301
+/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html /services/ 301
+/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار /services/ 301
+/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/ /services/ 301
+/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html /services/ 301
+/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات /blog/ 301
+/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/ /blog/ 301
+/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html /blog/ 301
+/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور /services/ 301
+/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/ /services/ 301
+/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html /services/ 301
+/terms/terms-and-conditions-en.html /docs/ 301
+/privacy-policy/privacy-policy-en.html /docs/ 301
+/docs/docs-en.html /docs/ 301
+/contact/contact-en.html /docs/ 301
+/services/data-analyst-agent.html /services/ 301
+/services/custom-ai-agent.html /services/ 301
+/services/competitor-analysis-agent.html /services/ 301
+/services/seo-agent.html /services/ 301
+/services/social-data-analysis.html /services/ 301
+/services/health-data-analysis.html /services/ 301
+/services/marketing-agent.html /services/ 301
+/services/document-automation.html /services/ 301
+/services/smart-hiring-system.html /services/ 301
+/services/medical-archive.html /services/ 301
+/services/data-platform.html /services/ 301
+/services/lead-hunter.html /services/ 301
+/services/customer-service-automation.html /services/ 301
+/services/hr-automation.html /services/ 301
+/services/marketing-automation.html /services/ 301
+/services/approvals-automation.html /services/ 301
+/services/operational-reports-automation.html /services/ 301
+/services/supply-chain-optimization.html /services/ 301
+/services/ai-consulting.html /services/ 301
+/services/brightproject.html /services/ 301
+/services/brightsales.html /services/ 301
+/services/ai-scolecs.html /services/ 301
+/services/smart-hospital-management.html /services/ 301
+/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1 /services/ 301
+/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/ /services/ 301
+/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html /services/ 301
+/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية /services/ 301
+/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/ /services/ 301
+/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html /services/ 301
+/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية /services/ 301
+/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/ /services/ 301
+/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html /services/ 301
+/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية /services/ 301
+/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/ /services/ 301
+/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html /services/ 301
+/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار /services/ 301
+/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/ /services/ 301
+/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html /services/ 301
+/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور /services/ 301
+/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/ /services/ 301
+/blog/machine-learning-computer-vision-legacy.html /services/ 301
+/blog/الذكاء-الاصطناعي-و-التسويق /services/ 301
+/blog/الذكاء-الاصطناعي-و-التسويق/ /services/ 301
+/blog/الذكاء-الاصطناعي-و-التسويق.html /services/ 301
+/blog/تحليل-البيانات /services/ 301
+/blog/تحليل-البيانات/ /services/ 301
+/blog/تحليل-البيانات.html /services/ 301
+/blog/تعلم-الآلة-و-الأعمال /services/ 301
+/blog/تعلم-الآلة-و-الأعمال/ /services/ 301
+/blog/تعلم-الآلة-و-الأعمال.html /services/ 301
+/blog/مقال-تحليل /services/ 301
+/blog/مقال-تحليل/ /services/ 301
+/blog/مقال-تحليل.html /services/ 301
+/docs/nca-ecc-ai-controls.html /docs/nca-ecc-ai-controls/ 301
+/docs/Governanceـapplication /docs/governance-application/ 301
 /docs/Governanceـapplication.html /docs/governance-application/ 301
 /docs/Governanceـapplication/index.html /docs/governance-application/ 301
 /docs/Governance%D9%80application /docs/governance-application/ 301
 /docs/Governance%D9%80application.html /docs/governance-application/ 301
 /docs/Governance%D9%80application/index.html /docs/governance-application/ 301
-
-# ── Blog Module Redirections ──────────────────────────────────────────────────
-/blog                         /blog/                        301
-/blog/index.html              /blog/                        301
-/blog.html                    /blog/                        301
-
-# ── Authors: legacy Arabic slug → Latin slug (REPORTS-SEO-TEAM-SLUG-001, 2026-07-07) ──
-# Old Arabic slug "فريق BrightAI" (URL-encoded as %D9%81%D8%B1%D9%8A%D9%82%20BrightAI) was
-# rejected by seo-ci-check (SITEMAP_BANNED_PATTERNS rejects %20 in canonical URLs).
-# Migrated to the Latin slug "brightai-team" to match the sibling author
-# "nasser-alabdullah". Inbound links from external sources (Reddit, Hacker News,
-# email forwards, etc.) keep working through these 301 redirects.
-/authors/فريق%20BrightAI                 /authors/brightai-team/   301
-/authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI /authors/brightai-team/ 301
-/authors/فريق%20BrightAI/                /authors/brightai-team/   301
-/authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI/ /authors/brightai-team/ 301
-/authors/فريق BrightAI                  /authors/brightai-team/   301
-/authors/فريق BrightAI/                 /authors/brightai-team/   301
-
-/blog/ai-audit-trail-saudi    /blog/ai-audit-trail-saudi/   301
-/blog/ai-audit-trail-saudi.html /blog/ai-audit-trail-saudi/ 301
-/blog/ai-audit-trail-saudi/index.html /blog/ai-audit-trail-saudi/ 301
-/blog/ai-audit-trail-saudi/   /blog/ai-audit-trail-saudi/index.html 200
-/blog/ai-governance           /blog/ai-governance/          301
-/blog/ai-governance.html      /blog/ai-governance/          301
-/blog/ai-governance/index.html /blog/ai-governance/         301
-/blog/pdpl-ai-safety          /blog/pdpl-ai-safety/         301
-/blog/pdpl-ai-safety.html     /blog/pdpl-ai-safety/         301
-/blog/pdpl-ai-safety/index.html /blog/pdpl-ai-safety/       301
-/blog/ai-governance-saudi-arabia /blog/ai-governance-saudi-arabia/ 301
-/blog/ai-governance-saudi-arabia.html /blog/ai-governance-saudi-arabia/ 301
-/blog/ai-governance-saudi-arabia/index.html /blog/ai-governance-saudi-arabia/ 301
-/blog/ai-customer-data-protection-saudi /blog/ai-customer-data-protection-saudi/ 301
-/blog/ai-customer-data-protection-saudi.html /blog/ai-customer-data-protection-saudi/ 301
-/blog/ai-customer-data-protection-saudi/index.html /blog/ai-customer-data-protection-saudi/ 301
-/blog/pdpl-and-ai-saudi    /blog/pdpl-and-ai-saudi/   301
-/blog/pdpl-and-ai-saudi.html /blog/pdpl-and-ai-saudi/ 301
-/blog/pdpl-and-ai-saudi/index.html /blog/pdpl-and-ai-saudi/ 301
-
-# ── Additional Blog Redirects ────────────────────────────────────────────────
-/blog/ai-audit-trail-compliance-path /blog/ai-audit-trail-compliance-path/ 301
-/blog/ai-audit-trail-compliance-path.html /blog/ai-audit-trail-compliance-path/ 301
-/blog/ai-audit-trail-compliance-path/index.html /blog/ai-audit-trail-compliance-path/ 301
-/blog/ai-ethics-saudi-responsible-ai /blog/ai-ethics-saudi-responsible-ai/ 301
-/blog/ai-ethics-saudi-responsible-ai.html /blog/ai-ethics-saudi-responsible-ai/ 301
-/blog/ai-ethics-saudi-responsible-ai/index.html /blog/ai-ethics-saudi-responsible-ai/ 301
-/blog/ai-firewall-why-you-need-it /blog/ai-firewall-why-you-need-it/ 301
-/blog/ai-firewall-why-you-need-it.html /blog/ai-firewall-why-you-need-it/ 301
-/blog/ai-firewall-why-you-need-it/index.html /blog/ai-firewall-why-you-need-it/ 301
-/blog/ai-governance-vs-ai-safety-vs-ai-security /blog/ai-governance-vs-ai-safety-vs-ai-security/ 301
-/blog/ai-governance-vs-ai-safety-vs-ai-security.html /blog/ai-governance-vs-ai-safety-vs-ai-security/ 301
-/blog/ai-governance-vs-ai-safety-vs-ai-security/index.html /blog/ai-governance-vs-ai-safety-vs-ai-security/ 301
-/blog/ai-red-teaming-security-testing /blog/ai-red-teaming-security-testing/ 301
-/blog/ai-red-teaming-security-testing.html /blog/ai-red-teaming-security-testing/ 301
-/blog/ai-red-teaming-security-testing/index.html /blog/ai-red-teaming-security-testing/ 301
-/blog/banking-ai-governance-sama-requirements /blog/banking-ai-governance-sama-requirements/ 301
-/blog/banking-ai-governance-sama-requirements.html /blog/banking-ai-governance-sama-requirements/ 301
-/blog/banking-ai-governance-sama-requirements/index.html /blog/banking-ai-governance-sama-requirements/ 301
-/blog/best-ai-governance-platforms-2026 /blog/best-ai-governance-platforms-2026/ 301
-/blog/best-ai-governance-platforms-2026.html /blog/best-ai-governance-platforms-2026/ 301
-/blog/best-ai-governance-platforms-2026/index.html /blog/best-ai-governance-platforms-2026/ 301
-/blog/healthcare-ai-governance-saudi-hospitals /blog/healthcare-ai-governance-saudi-hospitals/ 301
-/blog/healthcare-ai-governance-saudi-hospitals.html /blog/healthcare-ai-governance-saudi-hospitals/ 301
-/blog/healthcare-ai-governance-saudi-hospitals/index.html /blog/healthcare-ai-governance-saudi-hospitals/ 301
-/blog/hidden-ai-risks-saudi-organizations /blog/hidden-ai-risks-saudi-organizations/ 301
-/blog/hidden-ai-risks-saudi-organizations.html /blog/hidden-ai-risks-saudi-organizations/ 301
-/blog/hidden-ai-risks-saudi-organizations/index.html /blog/hidden-ai-risks-saudi-organizations/ 301
-/blog/iso-42001-saudi-implementation-guide /blog/iso-42001-saudi-implementation-guide/ 301
-/blog/iso-42001-saudi-implementation-guide.html /blog/iso-42001-saudi-implementation-guide/ 301
-/blog/iso-42001-saudi-implementation-guide/index.html /blog/iso-42001-saudi-implementation-guide/ 301
-/blog/nca-ecc-ai-controls-guide /blog/nca-ecc-ai-controls-guide/ 301
-/blog/nca-ecc-ai-controls-guide.html /blog/nca-ecc-ai-controls-guide/ 301
-/blog/nca-ecc-ai-controls-guide/index.html /blog/nca-ecc-ai-controls-guide/ 301
-/blog/pdpl-ai-compliance-guide /blog/pdpl-ai-compliance-guide/ 301
-/blog/pdpl-ai-compliance-guide.html /blog/pdpl-ai-compliance-guide/ 301
-/blog/pdpl-ai-compliance-guide/index.html /blog/pdpl-ai-compliance-guide/ 301
-/blog/sdaia-generative-ai-guidelines-practical-compliance /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
-/blog/sdaia-generative-ai-guidelines-practical-compliance.html /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
-/blog/sdaia-generative-ai-guidelines-practical-compliance/index.html /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
-/blog/shadow-ai-discovery-saudi-company /blog/shadow-ai-discovery-saudi-company/ 301
-/blog/shadow-ai-discovery-saudi-company.html /blog/shadow-ai-discovery-saudi-company/ 301
-/blog/shadow-ai-discovery-saudi-company/index.html /blog/shadow-ai-discovery-saudi-company/ 301
-/blog/vision-2030-ai-governance-roadmap /blog/vision-2030-ai-governance-roadmap/ 301
-/blog/vision-2030-ai-governance-roadmap.html /blog/vision-2030-ai-governance-roadmap/ 301
-/blog/vision-2030-ai-governance-roadmap/index.html /blog/vision-2030-ai-governance-roadmap/ 301
-/blog/what-is-ai-governance-saudi-companies /blog/what-is-ai-governance-saudi-companies/ 301
-/blog/what-is-ai-governance-saudi-companies.html /blog/what-is-ai-governance-saudi-companies/ 301
-/blog/what-is-ai-governance-saudi-companies/index.html /blog/what-is-ai-governance-saudi-companies/ 301
-
-# ── Additional Docs Redirects ────────────────────────────────────────────────
-/docs/nca-ecc-ai-guide /docs/nca-ecc-ai-guide/ 301
-/docs/nca-ecc-ai-guide.html /docs/nca-ecc-ai-guide/ 301
-/docs/nca-ecc-ai-guide/index.html /docs/nca-ecc-ai-guide/ 301
-/docs/pdpl-ai-complete-guide /docs/pdpl-ai-complete-guide/ 301
-/docs/pdpl-ai-complete-guide.html /docs/pdpl-ai-complete-guide/ 301
-/docs/pdpl-ai-complete-guide/index.html /docs/pdpl-ai-complete-guide/ 301
-/docs/sdaia-generative-ai-guidelines /docs/sdaia-generative-ai-guidelines/ 301
-/docs/sdaia-generative-ai-guidelines.html /docs/sdaia-generative-ai-guidelines/ 301
-/docs/sdaia-generative-ai-guidelines/index.html /docs/sdaia-generative-ai-guidelines/ 301
-
-# ── Hub Redirects ────────────────────────────────────────────────────────────
-/hub /hub/ 301
-/hub.html /hub/ 301
-/hub/index.html /hub/ 301
-/hub/ai-governance /hub/ai-governance/ 301
-/hub/ai-governance.html /hub/ai-governance/ 301
-/hub/ai-governance/index.html /hub/ai-governance/ 301
-/hub/compliance /hub/compliance/ 301
-/hub/compliance.html /hub/compliance/ 301
-/hub/compliance/index.html /hub/compliance/ 301
-/hub/solutions /hub/solutions/ 301
-/hub/solutions.html /hub/solutions/ 301
-/hub/solutions/index.html /hub/solutions/ 301
-/hub/use-cases /hub/use-cases/ 301
-/hub/use-cases.html /hub/use-cases/ 301
-/hub/use-cases/index.html /hub/use-cases/ 301
-
-# ── Additional Solution Redirects ────────────────────────────────────────────
-/solutions/banking-ai-governance /solutions/banking-ai-governance/ 301
-/solutions/banking-ai-governance.html /solutions/banking-ai-governance/ 301
-/solutions/banking-ai-governance/index.html /solutions/banking-ai-governance/ 301
-/solutions/government-ai-governance /solutions/government-ai-governance/ 301
-/solutions/government-ai-governance.html /solutions/government-ai-governance/ 301
-/solutions/government-ai-governance/index.html /solutions/government-ai-governance/ 301
-/solutions/healthcare-ai-governance /solutions/healthcare-ai-governance/ 301
-/solutions/healthcare-ai-governance.html /solutions/healthcare-ai-governance/ 301
-/solutions/healthcare-ai-governance/index.html /solutions/healthcare-ai-governance/ 301
-/solutions/manufacturing-ai-governance /solutions/manufacturing-ai-governance/ 301
-/solutions/manufacturing-ai-governance.html /solutions/manufacturing-ai-governance/ 301
-/solutions/manufacturing-ai-governance/index.html /solutions/manufacturing-ai-governance/ 301
-
-# ── Kernel Module Redirections ────────────────────────────────────────────────
-/kernel                       /kernel/index.html            200
-/kernel/                      /kernel/index.html            200
-/kernel/index.html            /kernel/                      301
-/kernel/chat                  /kernel/chat.html             200
-/kernel/chat/                 /kernel/chat.html             200
-/kernel/chat.html             /kernel/chat/                 301
-/kernel/audit                 /kernel/audit.html            200
-/kernel/audit/                /kernel/audit.html            200
-/kernel/audit.html            /kernel/audit/                301
-/kernel/approvals             /kernel/approvals.html        200
-/kernel/approvals/            /kernel/approvals.html        200
-/kernel/approvals.html        /kernel/approvals/            301
-/kernel/stats                 /kernel/stats.html            200
-/kernel/stats/                /kernel/stats.html            200
-/kernel/stats.html            /kernel/stats/                301
-/kernel/compliance            /kernel/compliance.html       200
-/kernel/compliance/           /kernel/compliance.html       200
-/kernel/compliance.html       /kernel/compliance/           301
-/kernel/policies              /kernel/policies.html         200
-/kernel/policies/             /kernel/policies.html         200
-/kernel/policies.html         /kernel/policies/             301
-/kernel/connectors            /kernel/connectors.html       200
-/kernel/connectors/           /kernel/connectors.html       200
-/kernel/connectors.html       /kernel/connectors/           301
-/kernel/scenarios             /kernel/scenarios.html        200
-/kernel/scenarios/            /kernel/scenarios.html        200
-/kernel/scenarios.html        /kernel/scenarios/            301
-/kernel/reports               /kernel/reports.html          200
-/kernel/reports/              /kernel/reports.html          200
-/kernel/reports.html          /kernel/reports/              301
-/kernel/evidence              /kernel/evidence.html         200
-/kernel/evidence/             /kernel/evidence.html         200
-/kernel/evidence.html         /kernel/evidence/             301
-/kernel/offline               /kernel/offline.html          200
-/kernel/offline/              /kernel/offline.html          200
-/kernel/offline.html          /kernel/offline/              301
-
-# ── Hard block: /frontend/* should never be served ─────────────────────────
-# Frontend (Express backend) was removed. Any request falls through to 404.
-/frontend/*                   /404/                                        301
-
-# Note: /api/* and /ws/* rewrites were removed along with the
-# brightai-api.onrender.com Express backend service.
-
-# ── Kernel Docs Redirections ──────────────────────────────────────────────────
-/docs/kernel-chat             /docs/kernel-chat/            301
-/docs/kernel-chat.html        /docs/kernel-chat/            301
-/docs/kernel-chat/index.html  /docs/kernel-chat/            301
-
-/docs/kernel-audit-trail      /docs/kernel-audit-trail/     301
-/docs/kernel-audit-trail.html /docs/kernel-audit-trail/     301
-/docs/kernel-audit-trail/index.html /docs/kernel-audit-trail/ 301
-
-/docs/kernel-approvals        /docs/kernel-approvals/       301
-/docs/kernel-approvals.html   /docs/kernel-approvals/       301
-/docs/kernel-approvals/index.html /docs/kernel-approvals/   301
-
-/docs/kernel-evidence         /docs/kernel-evidence/        301
-/docs/kernel-evidence.html    /docs/kernel-evidence/        301
-/docs/kernel-evidence/index.html /docs/kernel-evidence/     301
-
-/docs/kernel-stats            /docs/kernel-stats/           301
-/docs/kernel-stats.html       /docs/kernel-stats/           301
-/docs/kernel-stats/index.html /docs/kernel-stats/           301
-
-/docs/kernel-reports          /docs/kernel-reports/         301
-/docs/kernel-reports.html     /docs/kernel-reports/         301
-/docs/kernel-reports/index.html /docs/kernel-reports/       301
-
-/docs/kernel-policies         /docs/kernel-policies/        301
-/docs/kernel-policies.html    /docs/kernel-policies/        301
-/docs/kernel-policies/index.html /docs/kernel-policies/     301
-
-/docs/kernel-compliance       /docs/kernel-compliance/      301
-/docs/kernel-compliance.html  /docs/kernel-compliance/      301
-/docs/kernel-compliance/index.html /docs/kernel-compliance/ 301
-
-/docs/kernel-connectors       /docs/kernel-connectors/      301
-/docs/kernel-connectors.html  /docs/kernel-connectors/      301
-/docs/kernel-connectors/index.html /docs/kernel-connectors/ 301
-
-/docs/kernel-scenarios        /docs/kernel-scenarios/       301
-/docs/kernel-scenarios.html   /docs/kernel-scenarios/       301
-/docs/kernel-scenarios/index.html /docs/kernel-scenarios/   301
-
-# REPORT-BLOG-2026-07-07: RSS endpoint migrated from /blog/feed.xml to /rss.xml/.
-# Old paths continue to 301 to the new canonical URL.
-# (Both endpoints stay live until external redirect propagates.)
-/rss              /rss.xml/ 301
-/rss.html         /rss.xml/ 301
-/rss/index.html   /rss.xml/ 301
-/blog/feed        /rss.xml/ 301
-/blog/feed.html   /rss.xml/ 301
-/blog/feed.xml    /rss.xml/ 301
-/blog/feed.xml/   /rss.xml/ 301
-/blog/feed/index.html /rss.xml/ 301
+/assessment/ai-governance-readiness.html /assessment/ai-governance-readiness/ 301
+/frontend/* /404/ 301
