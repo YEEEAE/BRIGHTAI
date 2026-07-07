@@ -16,7 +16,6 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import {
   ORGANIZATION,
-  getHowToLd,
   getBreadcrumbLd,
 } from '../../data/schema-helpers';
 
@@ -261,45 +260,6 @@ const jsonLd = {
       { name: 'الرئيسية', href: '/' },
       { name: 'الوثائق', href: '/docs/' },
     ]),
-    getHowToLd({
-      canonical,
-      name: 'كيف تبدأ حوكمة AI في شركتك خلال 30 يوم',
-      description:
-        'خطوات عملية من BrightAI لبناء برنامج حوكمة ذكاء اصطناعي خلال شهر: حصر الاستخدامات، تصنيف المخاطر، السياسات، الموافقات، السجلات، والأدلة.',
-      totalTime: 'P30D',
-      steps: [
-        {
-          name: 'حصر استخدامات AI',
-          text: 'اكتشاف وتصنيف كل الاستخدامات الحالية للذكاء الاصطناعي داخل الإدارات (اكتشاف حالات استخدام AI).',
-          url: 'https://brightai.site/solutions/ai-use-case-discovery/',
-        },
-        {
-          name: 'تصنيف المخاطر',
-          text: 'تقييم كل استخدام وفق حساسية البيانات، نوع القرار، والأثر المحتمل (تصنيف مخاطر AI).',
-          url: 'https://brightai.site/solutions/ai-risk-classification/',
-        },
-        {
-          name: 'تفعيل AI Firewall',
-          text: 'تركيب جدار حماية يمنع تسريب البيانات الحساسة قبل وصولها للنماذج.',
-          url: 'https://brightai.site/solutions/ai-firewall/',
-        },
-        {
-          name: 'تفعيل سجل التدقيق',
-          text: 'تسجيل كل طلب وقرار وموافقة في سجل غير قابل للتعديل.',
-          url: 'https://brightai.site/solutions/ai-audit-trail/',
-        },
-        {
-          name: 'ربط الموافقات البشرية',
-          text: 'مسار موافقة بشرية للقرارات عالية المخاطر.',
-          url: 'https://brightai.site/solutions/human-approval-layer/',
-        },
-        {
-          name: 'إصدار ملف الأدلة',
-          text: 'توليد ملف PDF موقّع رقمياً جاهز للمدققين.',
-          url: 'https://brightai.site/solutions/ai-evidence-file/',
-        },
-      ],
-    }),
   ],
 };
 

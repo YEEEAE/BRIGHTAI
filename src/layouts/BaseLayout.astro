@@ -142,11 +142,17 @@ const graphExtras: Array<Record<string, unknown>> = [
     robots={finalRobots}
   />
 
-  <!-- Foundation schema (Organization + WebSite + SearchAction + LocalBusiness)
-       merged with the page's extra schema in a single @graph. -->
+  <!-- Foundation schema (Organization + WebSite + SearchAction + LocalBusiness
+       + WebPage with speakable) merged with the page's extra schema in a
+       single @graph. Speakable is the foundation for AI voice / TTS engines
+       (Google Assistant, Siri, Alexa) — emitting it site-wide satisfies the
+       ≥30 pages Speakable audit (REPORTS-SEO-FOUNDATION, 2026-07-07). -->
   <FoundationSchema
     canonical={finalCanonical}
     breadcrumbs={breadcrumbs}
+    pageTitle={title}
+    pageDescription={description}
+    language={lang}
     extra={graphExtras}
   />
 

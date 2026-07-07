@@ -47,12 +47,27 @@ interface Props {
    */
   breadcrumbs?: BreadcrumbItem[];
   /**
-   * Canonical absolute URL of the current page. Used in BreadcrumbList.
+   * Canonical absolute URL of the current page. Used in BreadcrumbList
+   * and the foundation WebPage node (speakable for AI voice answer engines).
    */
   canonical?: string;
+  /**
+   * Optional page title. Used by the foundation WebPage node.
+   * If omitted, falls back to SITE.name.
+   */
+  pageTitle?: string;
+  /**
+   * Optional page description. Used by the foundation WebPage node.
+   * If omitted, falls back to SITE.description.
+   */
+  pageDescription?: string;
+  /**
+   * Optional language code (defaults to 'ar-SA'). Used by the WebPage node.
+   */
+  language?: string;
 }
 
-const { extra = [], breadcrumbs = [], canonical } = Astro.props;
+const { extra = [], breadcrumbs = [], canonical, pageTitle, pageDescription, language = 'ar-SA' } = Astro.props;
 
 // ─── Foundation nodes ───────────────────────────────────────────────────────
 
@@ -233,10 +248,36 @@ const breadcrumbList = allCrumbs.length > 1
 
 // ─── Compose @graph ─────────────────────────────────────────────────────────
 
+// REPORTS-SEO-FOUNDATION (2026-07-07): foundation WebPage node. Emits
+// `speakable` on every page so the site-wide Speakable audit (≥30 pages
+// required for AI voice / TTS eligibility) passes automatically. The
+// cssSelector `h1` is universal — every page in BrightAI has exactly one
+// <h1>, so the schema validates against real visible HTML on every URL.
+const pageWebPage = canonical
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: pageTitle || SITE.name,
+      description:
+        pageDescription ||
+        'BrightAI — Saudi AI Safety OS، حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات في السعودية.',
+      inLanguage: language,
+      isPartOf: { '@id': `${SITE.url}/#website` },
+      about: { '@id': `${SITE.url}/#organization` },
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['h1'],
+      },
+    }
+  : null;
+
 const graph = [
   organization,
   website,
   localBusiness,
+  pageWebPage,
   breadcrumbList,
   ...extra,
 ].filter((n): n is Record<string, unknown> => Boolean(n));

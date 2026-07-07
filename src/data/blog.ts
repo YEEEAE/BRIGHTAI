@@ -69,11 +69,15 @@ export interface BlogPost {
 /* ── Author registry ─────────────────────────────────────────────── */
 
 export const authors: Record<string, Author> = {
+  // REPORTS-SEO-FOUNDATION (2026-07-07): the registry keys ARE the URL slugs
+  // (Astro's getStaticPaths() uses Object.keys(authors) to build paths).
+  // The author.url must therefore match the built path exactly — otherwise
+  // the canonical mismatches the actually-served URL.
   'فريق BrightAI': {
-    slug: 'brightai-team',
+    slug: 'فريق BrightAI',
     name: 'فريق BrightAI',
     nameEn: 'BrightAI Team',
-    url: `${SITE.url}/authors/brightai-team/`,
+    url: `${SITE.url}/authors/${encodeURIComponent('فريق BrightAI')}/`,
     title: 'فريق BrightAI',
     bio: 'فريق BrightAI يكتب محتوى تنفيذي عن حوكمة الذكاء الاصطناعي والامتثال في السعودية.',
   },
@@ -102,7 +106,7 @@ function resolveAuthor(key: string | undefined): Author {
       slug: k,
       name: k,
       nameEn: k,
-      url: `${SITE.url}/authors/${k}/`,
+      url: `${SITE.url}/authors/${encodeURIComponent(k)}/`,
       title: k,
       bio: k,
     }
