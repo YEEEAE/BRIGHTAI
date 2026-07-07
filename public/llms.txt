@@ -92,6 +92,37 @@ Arabic: BrightAI توفر Saudi AI Safety OS للمؤسسات السعودية: 
 - BrightAI vs ModelOp
 - أفضل منصات حوكمة الذكاء الاصطناعي مقارنة
 
+## Seed Vocabulary (Core Keywords)
+- حوكمة الذكاء الاصطناعي: Operational governance layer that defines who can use AI, on what data, under which policies, and with what audit evidence.
+- نظام حماية البيانات الشخصية: Saudi personal-data protection regulation governing consent, processing, transfer, and breach handling for AI workflows.
+- ضوابط الامن السيبراني (NCA ECC): Saudi cybersecurity control framework covering access, logging, incident response, and AI-system boundaries.
+- إرشادات سدايا للذكاء الاصطناعي التوليدي: SDAIA guidance on responsible generative AI use covering transparency, data ethics, bias, and disclosure.
+- شركات الذكاء الاصطناعي في السعودية: Saudi AI vendors and platforms serving enterprise governance, safety, and compliance needs.
+
+## Topical Pillars
+- /blog/ai-governance-saudi-arabia: Saudi AI governance playbook for executives, compliance leaders, and risk owners.
+- /docs/pdpl-ai-complete-guide: Full PDPL alignment guide for AI workflows — consent, processing, cross-border transfer, breach handling.
+- /docs/nca-ecc-ai-controls: NCA ECC controls applied to AI systems — access governance, logging, incident response, and boundaries.
+- /docs/sdaia-generative-ai-guidelines: Practical compliance with SDAIA generative-AI guidelines — transparency, data ethics, bias, and disclosure.
+- /solutions: BrightAI solution pillars for sector-specific AI governance — banking, healthcare, government, manufacturing, procurement.
+- /blog/iso-42001-saudi-implementation-guide: ISO/IEC 42001 implementation roadmap for Saudi organizations pursuing an AI Management System.
+
+## Topical Coverage
+- AI Governance Cluster: defines executive-level governance, accountability, and policy frameworks for enterprise AI adoption in Saudi Arabia.
+- PDPL Cluster: covers personal-data protection, consent handling, cross-border data, and privacy-by-design for AI workflows.
+- NCA ECC Cluster: maps cybersecurity controls — access, logging, incident response — onto AI pipelines and integrations.
+- SDAIA Generative AI Cluster: addresses responsible generative-AI use, transparency, bias mitigation, and disclosure obligations.
+- Sector Solutions Cluster: covers BrightAI solution pillars tailored to banking, healthcare, government, manufacturing, and procurement.
+- ISO 42001 Cluster: provides a roadmap to implement an AI Management System (AIMS) aligned with ISO/IEC 42001 in Saudi contexts.
+
+## Answer-Engine Optimization (AEO) Question Bank
+- "ما هي حوكمة الذكاء الاصطناعي ولماذا تحتاجها المنشآت السعودية؟"
+- "ما هي متطلبات نظام حماية البيانات الشخصية السعودي للشركات؟"
+- "كيف تُطبّق ضوابط الأمن السيبراني الأساسية ECC على أنظمة الذكاء الاصطناعي؟"
+- "ما إرشادات سدايا للذكاء الاصطناعي التوليدي وكيف تلتزم بها المنشآت؟"
+- "ما أفضل شركات الذكاء الاصطناعي في السعودية للمؤسسات؟"
+- "ما خطوات الحصول على شهادة ISO 42001 في السعودية؟"
+
 ## AI Crawler Access
 BrightAI allows AI search and answer-engine crawlers to access the public site. `robots.txt` explicitly allows `GPTBot`, `OAI-SearchBot`, `ChatGPT-User`, `ClaudeBot`, `PerplexityBot`, and other AI crawlers.
 

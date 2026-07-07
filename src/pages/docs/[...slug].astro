@@ -112,7 +112,7 @@ const extraSchemaNodes: Array<Record<string, unknown>> = FAQ_BY_DOC[doc.id]
   description={doc.data.description}
   canonical={doc.data.canonical}
   updated={doc.data.updated ?? new Date()}
-  category={doc.data.category}
+  category={doc.data.category ?? ''}
   tldr={doc.data.tldr}
   headings={headings}
   relatedDocs={relatedDocs}
@@ -120,6 +120,7 @@ const extraSchemaNodes: Array<Record<string, unknown>> = FAQ_BY_DOC[doc.id]
   nextDoc={nextDoc}
   currentPath={`/docs/${doc.id}/`}
   extraSchemaNodes={extraSchemaNodes}
+  tldr={doc.data.tldr ?? ''}
 >
   <Content />
 </DocsLayout>

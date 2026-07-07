@@ -240,3 +240,38 @@ Stage Summary:
 - 🎯 3 commits مفيدة، 1 تقرير، 1 سكربت purge جديد
 - ⚠️ البندان المعلَّقان: HTML (16 sections rule 2.1) و CSS (50KB يحتاج code-splitting)
 - 🔖 الـ branch لم يُدفع للـ remote، يحتاج مراجعة المستخدم قبل merge
+
+---
+Task ID: 2026-07-08-001
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: GEO Upgrade — إضافة Seed Vocabulary + Topical Pillars + Topical Coverage + AEO Question Bank في llms.txt و llms-full.txt
+Started: 2026-07-08T01:17:11+03:00
+Mode: Senior
+
+Work Log:
+- 01:17: قرأت public/llms.txt (98 سطر) و public/llms-full.txt (176 سطر) كاملاً → فهمت البنية الحالية
+- 01:17: تحققت من وجود الـ 6 pillars فعلياً قبل ما أكتبهم:
+  - src/content/blog/ai-governance-saudi-arabia.md ✅
+  - src/content/docs/pdpl-ai-complete-guide.md ✅
+  - src/content/docs/nca-ecc-ai-controls.md ✅
+  - src/content/docs/sdaia-generative-ai-guidelines.md ✅
+  - src/pages/solutions/index.astro ✅
+  - src/content/blog/iso-42001-saudi-implementation-guide.md ✅
+- 01:17: ما غيّرت أي قسم قديم. أضفت 4 أقسام جديدة additive فقط:
+  - Seed Vocabulary (5 keywords)
+  - Topical Pillars (6 URLs)
+  - Topical Coverage (6 clusters)
+  - AEO Question Bank (6 أسئلة)
+- 01:18: `npm run build` → 0 errors، llms.txt (12.3KB) + llms-full.txt (16.8KB) انصدروا في dist/
+- 01:18: `diff public/llms.txt dist/llms.txt` → متطابقين ✅
+- 01:18: `diff public/llms-full.txt dist/llms-full.txt` → متطابقين ✅
+- 01:18: diff سريع على ملف git: لا تغيير على ملف محمي آخر غير llms.txt و llms-full.txt
+- 01:19: وثّقت في brain.md Section 2 (Change Ledger) + Section 4 (DEC-042)
+
+Stage Summary:
+- ✅ 2 ملفين معدّلين، 4 أقسام جديدة في كل ملف، 0 حذف
+- ✅ 6 pillars كلها موجودة في الـ content، ما كتبت روابط مكسورة
+- ✅ البناء نجح، dist/ محدّث، 0 أخطاء
+- 📊 صفر تأثير على bundle size أو SEO surface القائم
+- 🎯 التغيير contract مع AI engines (GPT/Perplexity/Claude) لـ Saudi AI governance citations
+- 🔖 الحماية: public/llms.txt و public/llms-full.txt كلاهما protected surface — التعديل تم بموافقة المستخدم الصريحة

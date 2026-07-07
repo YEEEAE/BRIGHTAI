@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-08 00:30 +03:00
+last_updated: 2026-07-08 01:15 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.1
+version: 2.7.2
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -140,6 +140,32 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-08 — GEO Upgrade: Seed Vocabulary + Topical Pillars + Topical Coverage + AEO Question Bank in llms.txt and llms-full.txt
+
+- **Files**: `public/llms.txt`, `public/llms-full.txt` (2 ملفات، protected SEO surface)
+- **What**: أضفنا 4 أقسام جديدة في llms.txt و llms-full.txt بعد بنية موجودة، بدون حذف أي محتوى قديم: (1) **Seed Vocabulary** — 5 كلمات أساسية مع تعريفاتها (حوكمة AI، PDPL، NCA ECC، سدايا التوليدي، شركات AI سعودية). (2) **Topical Pillars** — 6 روابط أساسية للـ citation authority (/blog/ai-governance-saudi-arabia، /docs/pdpl-ai-complete-guide، /docs/nca-ecc-ai-controls، /docs/sdaia-generative-ai-guidelines، /solutions، /blog/iso-42001-saudi-implementation-guide). (3) **Topical Coverage** — 6 عناقيد بجملة لكل عنقود (Governance، PDPL، NCA ECC، SDAIA، Sector Solutions، ISO 42001). (4) **AEO Question Bank** — 6 أسئلة بصياغة المستخدم السعودية الكاملة، مع ربط كل سؤال بـ pillar URL في llms-full.txt.
+- **Why**: طلب المؤسس (2026-07-08، العامية السعودية) — تحسين llms.txt/llms-full.txt كـ GEO surface يستهدف AI Overviews وChatGPT وPerplexity citations. الـ pillars الستة = pillar content موجود فعلاً في `src/content/blog/` و`src/content/docs/` و`src/pages/solutions/` (تحققت من وجود الكل قبل الكتابة). التعريفات بالإنجليزي neutral عشان LLMs الأجنبية تحلّلها صح، الأسئلة بالعربي لأنها user-intent سعودي.
+- **Implementation details**:
+  - llms.txt: أضفنا الأقسام الأربعة بين `## Target-AI-Search-Queries-Comparisons` و `## AI Crawler Access` (سطر 95–124).
+  - llms-full.txt: أضفناها بين `### Government And Public Sector` و `## How To Describe BrightAI` (سطر 121–158). الـ AEO Question Bank في النسخة الكاملة ربط كل سؤال بـ pillar URL (`→ /blog/...`) عشان answer engines تاخذ الـ source link جاهز.
+  - ما حذفنا ولا أعدنا تسمية أي قسم قديم. ما غيّرنا الـ existing positioning ولا citation format.
+- **Verification**:
+  - `npm run build` → 0 errors ✅، llms.txt (12.3KB) + llms-full.txt (16.8KB) انصدروا في `dist/` ✅
+  - `diff public/llms.txt dist/llms.txt` → متطابقين ✅
+  - `diff public/llms-full.txt dist/llms-full.txt` → متطابقين ✅
+  - التحقق من وجود الـ 6 pillars فعلياً قبل الكتابة:
+    - `src/content/blog/ai-governance-saudi-arabia.md` ✅
+    - `src/content/docs/pdpl-ai-complete-guide.md` ✅
+    - `src/content/docs/nca-ecc-ai-controls.md` ✅
+    - `src/content/docs/sdaia-generative-ai-guidelines.md` ✅
+    - `src/pages/solutions/index.astro` ✅
+    - `src/content/blog/iso-42001-saudi-implementation-guide.md` ✅
+  - التحقق من عدد الأسئلة في السؤال البنكي = 6 ✅، عدد الـ pillars = 6 ✅، عدد الـ keywords = 5 ✅.
+- **Risks remaining**:
+  - ملف llms.txt صار 12.3KB (كان ~3KB) — ضمن الحدود المعقولة لـ GEO surface (llms.txt spec يسمح بأي حجم، بس للـ crawler efficiency نراقب لو وصل 50KB).
+  - الأوصاف بالإنجليزي neutral — لو الـ brand يبغى نسخة سعودية dialect في الـ Seed Vocabulary، نقدر نضيف سطر ثانوي لكل keyword.
+- **Brain updates**: إضافة DEC جديد عن GEO surface في Section 4 (انظر أدناه)، تحديث Section 5 (GEO content inventory).
 
 ### 2026-07-08 — Hero Chip Word Rotation: "صنع في السعودية" → "AI Governance Platform" ↔ "AI Audit Trail"
 
@@ -2019,6 +2045,24 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 - **Do not reverse** without explicit user approval.
 - **Related KIs**: KI-007 (resolved), KI-042 (resolved). KI-043/044 (mobile-backdrop-filter) untouched — separate ticket.
 - **Related reports**: `report/REPORT-33_MOBILE-HIERARCHY.md` (~500 lines).
+
+### DEC-042 — GEO Surface (Seed Vocabulary + Pillars + Coverage + AEO) in llms.txt / llms-full.txt
+
+- **Date**: 2026-07-08
+- **Context**: BrightAI ينافس على AI Overviews / ChatGPT / Perplexity citations للمنافسة في السوق السعودي للـ AI governance. الـ llms.txt/llms-full.txt كانت تحوي positioning + nav فقط — ما كانت تعرّف الـ semantic space اللي AI engine يربط استعلامات المستخدمين فيها. بدون seed vocabulary + pillar anchors + AEO questions، إجابات LLMs تاخذ generic content من `/about/` و `/services/` بدل pillar authority pages.
+- **Decision**: إضافة 4 أقسام ثابته في `public/llms.txt` و `public/llms-full.txt` (بعد بنية موجودة، بدون حذف):
+  1. **Seed Vocabulary** — 5 keywords سعودية مع تعريفات neutral بالإنجليزي: حوكمة الذكاء الاصطناعي، نظام حماية البيانات الشخصية، ضوابط الامن السيبراني (NCA ECC)، إرشادات سدايا للذكاء الاصطناعي التوليدي، شركات الذكاء الاصطناعي في السعودية.
+  2. **Topical Pillars** — 6 pillar URLs موجودة فعلياً في `src/content/blog/`, `src/content/docs/`, `src/pages/solutions/`: ai-governance-saudi-arabia, pdpl-ai-complete-guide, nca-ecc-ai-controls, sdaia-generative-ai-guidelines, /solutions, iso-42001-saudi-implementation-guide.
+  3. **Topical Coverage** — 6 عناقيد بجملة لكل عنقود: Governance، PDPL، NCA ECC، SDAIA، Sector Solutions، ISO 42001.
+  4. **AEO Question Bank** — 6 أسئلة بصياغة المستخدم السعودية الكاملة، مع ربط كل سؤال بـ pillar URL في llms-full.txt (llms.txt يحوي الأسئلة بدون ربط لتخفيف الحجم).
+- **Rationale**:
+  1. **Pillar authority matching**: AI engines تحب pillar URL واحد يجاوب على query كامل. ربط السؤال بالـ pillar URL يعطي الـ LLM citation جاهز.
+  2. **Neutral English definitions**: الـ seed vocabulary لازم يكون machine-parseable للـ LLMs الأجنبية. لو حطيناه بالعربي dialect خام، Perplexity/Claude ممكن يفهموه غلط.
+  3. **Saudi dialect questions**: الـ AEO bank يعكس user-intent حقيقي (وش يسأل السعودي) — هنا السعودي dialect واجب لأن هذي نسخة user.
+  4. **No removals**: الأقسام الأربعة additive فقط. ما حذفنا ولا section ولا أعدنا تسمية.
+- **Reversal cost**: Trivial. احذف الأقسام الأربعة من الملفين (سطر 95–124 في llms.txt، سطر 121–158 في llms-full.txt). البناء يظل يمر لأن الأقسام خارج Astro rendering pipeline (public/ ينسخ كما هو).
+- **Do not reverse** بدون user approval — الأقسام صارت contract مع AI engines، حذفها يفقد citation surface.
+- **Related**: Skill `seo-geo` (GEO methodology)؛ report: `report/2026-07-08-geo-surface-upgrade.md` (لو احتجناه لاحقاً).
 
 ### DEC-022 — THE STAR — single SVG brand identity
 
