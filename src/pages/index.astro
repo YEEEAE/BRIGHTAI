@@ -7,10 +7,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SplitHero from '../components/SplitHero.astro';
 import {
-  ORGANIZATION,
   LOCAL_BUSINESS_BY_CITY,
   appendLd,
-  getBreadcrumbLd,
 } from '../data/schema-helpers';
 
 const faqItems = [
@@ -25,68 +23,18 @@ const faqItems = [
   { q: 'كم التكلفة؟', a: '<p>عندنا باقات حسب حجم الشركة وعدد المستخدمين. كلمنا عبر <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="text-green-400 hover:underline">الواتساب</a> للحصول على عرض سعر خلال 24 ساعة.</p>' },
 ];
 
+// PERF-FIX (2026-07-07): Removed duplicate Organization / WebSite / WebPage /
+// BreadcrumbList nodes. FoundationSchema (src/components/seo/Schema.astro) already
+// emits the canonical versions of all four with the same @id. schema.org resolves
+// entities by @id, so emitting the full node twice is wasted bytes.
+// We keep only entities that FoundationSchema does NOT emit:
+//   - SoftwareApplication (Kernel product)
+//   - FAQPage (homepage Q&A)
+//   - DefinedTermSet (technical AI governance terms)
+//   - 5 LocalBusiness nodes (Jeddah, Dammam, Khobar, Mecca, Madinah).
+//     The Riyadh LocalBusiness is in FoundationSchema already, so we omit it here.
+// See /BRIGHTAI/.agents/brain.md Section 5.8 for the schema-helpers contract.
 const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": "https://brightai.site/#organization",
-    "name": "BrightAI",
-    "alternateName": "برايت آي",
-    "url": "https://brightai.site/",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://brightai.site/assets/images/logo.png",
-      "width": 200,
-      "height": 55,
-      "caption": "شعار BrightAI"
-    },
-    "description": "Saudi AI Safety OS — منصة أمان وحوكمة الذكاء الاصطناعي للشركات السعودية. تدعم جاهزية الامتثال ولا تُعدّ استشارة قانونية.",
-    "foundingDate": "2025",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
-      "addressLocality": "الرياض",
-      "addressRegion": "منطقة الرياض",
-      "postalCode": "14254",
-      "addressCountry": "SA"
-    },
-    "areaServed": [
-      {"@type": "Country", "name": "المملكة العربية السعودية"},
-      {"@type": "City", "name": "الرياض"},
-      {"@type": "City", "name": "جدة"},
-      {"@type": "City", "name": "الدمام"},
-      {"@type": "City", "name": "الخبر"},
-      {"@type": "City", "name": "مكة المكرمة"},
-      {"@type": "City", "name": "المدينة المنورة"}
-    ],
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "telephone": "+966538229013",
-        "contactType": "customer support",
-        "contactOption": "WhatsApp",
-        "url": "https://wa.me/966538229013",
-        "areaServed": "SA",
-        "availableLanguage": ["Arabic", "English"]
-      }
-    ],
-    "sameAs": [
-      "https://linkedin.com/company/brightai-site",
-      "https://x.com/BrightAISite",
-      "https://www.youtube.com/@BrightAiSaudi",
-      "https://www.tiktok.com/@bright1ai",
-      "https://github.com/brightai-site",
-      "https://wa.me/966538229013"
-    ],
-    "knowsAbout": [
-      "AI Governance",
-      "AI Safety",
-      "PDPL Compliance",
-      "NCA ECC Controls",
-      "ISO/IEC 42001",
-      "حوكمة الذكاء الاصطناعي في السعودية"
-    ]
-  },
   {
     "@context": "https://schema.org",
     "@type": ["SoftwareApplication", "WebApplication"],
@@ -131,43 +79,6 @@ const jsonLd = [
   },
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": "https://brightai.site/#website",
-    "url": "https://brightai.site/",
-    "name": "BrightAI",
-    "publisher": { "@id": "https://brightai.site/#organization" },
-    "inLanguage": ["ar-SA", "en-SA"]
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "@id": "https://brightai.site/#webpage",
-    "url": "https://brightai.site/",
-    "name": "BrightAI | حوكمة وأمان AI للشركات السعودية — PDPL",
-    "description": "منصة سعودية متكاملة لحوكمة وأمان AI. تجمع AI Firewall، سجلات التدقيق، والموافقات البشرية في نظام واحد متوافق مع PDPL وNCA ECC لتأمين مؤسستك اليوم.",
-    "isPartOf": { "@id": "https://brightai.site/#website" },
-    "about": { "@id": "https://brightai.site/#organization" },
-    "inLanguage": "ar-SA",
-    "speakable": {
-      "@type": "SpeakableSpecification",
-      "cssSelector": ["h1"]
-    }
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "@id": "https://brightai.site/#breadcrumb",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "الرئيسية",
-        "item": "https://brightai.site/"
-      }
-    ]
-  },
-  {
-    "@context": "https://schema.org",
     "@type": "DefinedTermSet",
     "@id": "https://brightai.site/#technical-ai-governance-terms",
     "name": "BrightAI technical AI governance terms",
@@ -186,19 +97,17 @@ const jsonLd = [
   }
 ];
 
-// SCHEMA-ENHANCEMENT (REPORT-23): append canonical Organization node + LocalBusiness
-// for each of the six Saudi cities mentioned on the homepage, plus a top-level
-// breadcrumb. Original 7 schema nodes above are PRESERVED exactly as-is.
+// SCHEMA-ENHANCEMENT (REPORT-23): append the 5 LocalBusiness nodes for cities
+// other than Riyadh (Riyadh LocalBusiness is in FoundationSchema).
+// FoundationSchema emits Organization + WebSite + LocalBusiness (Riyadh) +
+// WebPage + BreadcrumbList — those are referenced by @id where applicable.
 // See /BRIGHTAI/.agents/brain.md Section 5.8 for the schema-helpers contract.
 const enhancedJsonLd = appendLd(jsonLd, [
-  ORGANIZATION,
-  LOCAL_BUSINESS_BY_CITY.riyadh,
   LOCAL_BUSINESS_BY_CITY.jeddah,
   LOCAL_BUSINESS_BY_CITY.dammam,
   LOCAL_BUSINESS_BY_CITY.khobar,
   LOCAL_BUSINESS_BY_CITY.mecca,
   LOCAL_BUSINESS_BY_CITY.madinah,
-  getBreadcrumbLd([{ name: 'الرئيسية', href: 'https://brightai.site/' }]),
 ]);
 ---
 
