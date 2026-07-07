@@ -63,9 +63,8 @@
         {
           "name": "check-performance-budget.js",
           "command": "npm run performance:budget",
-          "description": "فحص ميزانية الأداء",
-          "status": "active",
-          "config": "performance-budget.config.json"
+          "description": "فحص ميزانية الأداء لمخرجات dist/ (الميزانيات مدمجة في السكربت)",
+          "status": "active"
         }
       ]
     },
@@ -243,13 +242,7 @@
     ]
   },
   "configuration": {
-    "files": [
-      {
-        "name": "performance-budget.config.json",
-        "description": "تكوين حدود الأداء",
-        "usedBy": ["check-performance-budget.js"]
-      }
-    ]
+    "files": []
   },
   "statistics": {
     "totalScripts": 20,
