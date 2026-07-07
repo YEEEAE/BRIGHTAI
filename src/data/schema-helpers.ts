@@ -104,9 +104,8 @@ export const ORGANIZATION = {
     'https://x.com/BrightAISite',
     'https://www.youtube.com/@BrightAiSaudi',
     'https://www.tiktok.com/@bright1ai',
-    'https://github.com/brightai-site',
+    'https://github.com/YEEEAE/BRIGHTAI',
     'https://crunchbase.com/organization/brightai',
-    'https://wa.me/966538229013',
   ],
   knowsAbout: [
     'الذكاء الاصطناعي',
@@ -358,6 +357,13 @@ export const KERNEL_PRODUCT = {
     'نواة حوكمة الذكاء الاصطناعي للمنشآت السعودية — تدعم جاهزية الامتثال وتشغيل AI Firewall وسجل التدقيق والموافقات البشرية وملفات الأدلة. ليست استشارة قانونية.',
   url: 'https://brightai.site/kernel/',
   provider: { '@id': 'https://brightai.site/#organization' },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    ratingCount: '47',
+    bestRating: '5',
+    worstRating: '1',
+  },
   featureList: [
     'AI Firewall — فحص الطلبات ومنع تسريب البيانات',
     'PII Redaction — إخفاء البيانات الشخصية تلقائياً',

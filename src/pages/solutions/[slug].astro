@@ -53,7 +53,7 @@ const jsonLd = {
   "@graph":[
     {"@type":"Service","@id":solution.canonical+"#service","name":solution.h1,"description":solution.description,"provider":{"@type":"Organization","name":"BrightAI","url":"https://brightai.site"},"url":solution.canonical,"areaServed":"Saudi Arabia"},
     {"@type":"BreadcrumbList","itemListElement":crumbs.map((c,i)=>({"@type":"ListItem","position":i+1,"name":c.label,"item":c.href?`https://brightai.site${c.href}`:solution.canonical}))},
-    {"@type":["Organization","LocalBusiness"],"@id":"https://brightai.site/#organization","name":"BrightAI","url":"https://brightai.site","logo":"https://brightai.site/assets/images/logo.png","areaServed":"SA","sameAs":["https://twitter.com/BrightAISite","https://linkedin.com/company/brightai-site","https://github.com/brightai-site","https://crunchbase.com/organization/brightai"],"knowsAbout":["AI Governance","AI Safety","PDPL Compliance","NCA ECC Controls","ISO/IEC 42001","حوكمة الذكاء الاصطناعي في السعودية"]},
+    {"@type":["Organization","LocalBusiness"],"@id":"https://brightai.site/#organization","name":"BrightAI","url":"https://brightai.site","logo":"https://brightai.site/assets/images/logo.png","telephone":"+966538229013","address":{"@type":"PostalAddress","streetAddress":"6913 المبارك بن فضالة، حي الفيحاء","addressLocality":"الرياض","addressRegion":"منطقة الرياض","postalCode":"14254","addressCountry":"SA"},"areaServed":"SA","sameAs":["https://x.com/BrightAISite","https://linkedin.com/company/brightai-site","https://github.com/YEEEAE/BRIGHTAI","https://crunchbase.com/organization/brightai"],"knowsAbout":["AI Governance","AI Safety","PDPL Compliance","NCA ECC Controls","ISO/IEC 42001","حوكمة الذكاء الاصطناعي في السعودية"]},
     ...(solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
     // SCHEMA-ENHANCEMENT (REPORT-23): canonical Organization node added for cross-page resolution.
     // The legacy inline [Organization, LocalBusiness] above is preserved as-is for backward compatibility.
@@ -194,7 +194,7 @@ const useCases = buildScenarios(solution);
         {solution.content ? solution.content.lead.map(paragraph => <p class="inner-hero__desc">{paragraph}</p>) : <p class="inner-hero__desc">{solution.description}</p>}
         <div class="inner-hero__actions">
           <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
-<a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+<a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
         </div>
       </div>
 
@@ -376,7 +376,7 @@ const useCases = buildScenarios(solution);
       <p class="inner-cta-final__desc">{solution.content?.finalText ?? 'تواصل معنا للحصول على عرض توضيحي مخصص لقطاعك.'}</p>
       <div class="inner-hero__actions" style="justify-content:center;">
         <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
-        <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+        <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
       </div>
     </div>
   </div>
