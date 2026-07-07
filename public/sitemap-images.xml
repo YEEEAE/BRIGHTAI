@@ -247,13 +247,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://brightai.site/logo.webp</loc>
-    <image:image>
-      <image:loc>https://brightai.site/logo.webp</image:loc>
-      <image:title>logo</image:title>
-    </image:image>
-  </url>
-  <url>
     <loc>https://brightai.site/logo-192.webp</loc>
     <image:image>
       <image:loc>https://brightai.site/logo-192.webp</image:loc>

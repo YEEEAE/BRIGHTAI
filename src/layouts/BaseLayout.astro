@@ -152,16 +152,25 @@ const graphExtras: Array<Record<string, unknown>> = [
 
   <ClientRouter />
 
-  <!-- Service Worker registration (REPORTS-20: deferred via setTimeout to not block initial load) -->
-  <script is:inline>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          navigator.serviceWorker.register('/sw.js');
-        }, 100);
-      });
-    }
-  </script>
+  {/* Service Worker registration — REPORTS-20: deferred via setTimeout (100ms after
+       window.load) so it never competes with the LCP element. External file replaces
+       a prior is:inline script to remove unsafe-inline from CSP script-src. */}
+  <script defer src="/js/sw-register.js"></script>
+
+  {/* Google tag (gtag.js) — REPORTS-20: deferred loader. The 182KB gtag.js is loaded
+       lazily via requestIdleCallback inside gtag-init.js (fallback: setTimeout 1500ms)
+       so it never competes with the LCP element. External file replaces a prior
+       is:inline script to remove unsafe-inline from CSP script-src. The gtag ID is
+       passed as a data attribute (HTML attrs are not governed by script-src CSP). */}
+  <script defer src="/js/gtag-init.js" data-gtag-id={SITE.googleTagId}></script>
+
+  {/* Microsoft Clarity — only when a real ID is configured (skip on placeholder).
+       External file replaces a prior is:inline script to remove unsafe-inline from
+       CSP script-src. The Clarity ID is passed as a data attribute (HTML attrs are
+       not governed by script-src CSP). */}
+  {SITE.clarityId && (
+    <script defer src="/js/clarity-init.js" data-clarity-id={SITE.clarityId}></script>
+  )}
 
   <!-- Additional production meta tags -->
   <meta name="theme-color" content="#060914" />
@@ -176,45 +185,6 @@ const graphExtras: Array<Record<string, unknown>> = [
   )}
   {SITE.googleVerification && (
     <meta name="google-site-verification" content={SITE.googleVerification} />
-  )}
-
-  {/* Google tag (gtag.js) — REPORTS-20: deferred via requestIdleCallback-equivalent
-       so 182KB gtag.js doesn't compete with the LCP element. Initial pageview fires
-       after first paint via setTimeout(0) instead of blocking. */}
-  <script is:inline set:html={`
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${SITE.googleTagId}', { anonymize_ip: true, send_page_view: false });
-    function loadGtag() {
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.googletagmanager.com/gtag/js?id=${SITE.googleTagId}';
-      s.onload = function() {
-        gtag('event', 'page_view', {
-          page_path: window.location.pathname,
-          page_title: document.title,
-          page_location: window.location.href
-        });
-      };
-      document.head.appendChild(s);
-    }
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(loadGtag, { timeout: 4000 });
-    } else {
-      setTimeout(loadGtag, 1500);
-    }
-  `}></script>
-
-  {/* Microsoft Clarity — only when valid ID exists (not placeholder) */}
-  {SITE.clarityId && (
-    <script is:inline define:vars={{ clarityId: SITE.clarityId }}>
-      (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", clarityId);
-    </script>
   )}
 
   {/* SPA transition pageview — fires page_view on view-transition navigations.

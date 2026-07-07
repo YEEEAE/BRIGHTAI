@@ -129,16 +129,8 @@
       "to": "/"
     },
     {
-      "from": "/:slug/index.html",
-      "to": "/:slug/"
-    },
-    {
       "from": "/en/index.html",
       "to": "/"
-    },
-    {
-      "from": "/en/:slug/index.html",
-      "to": "/en/:slug/"
     },
     {
       "from": "/docs.html",
@@ -285,10 +277,6 @@
       "to": "/docs/"
     },
     {
-      "from": "/services/index.html",
-      "to": "/services/"
-    },
-    {
       "from": "/services/ecommerce.html",
       "to": "/services/"
     },
@@ -335,10 +323,6 @@
     {
       "from": "/services/manufacturing-en.html",
       "to": "/services/"
-    },
-    {
-      "from": "/demo/index.html",
-      "to": "/demo/"
     },
     {
       "from": "/demo/pages/appointment/index.html",
@@ -443,10 +427,6 @@
     {
       "from": "/ai-workflows",
       "to": "/services/"
-    },
-    {
-      "from": "/docs",
-      "to": "/docs/"
     },
     {
       "from": "/blog/production-line",
@@ -805,15 +785,7 @@
       "to": "/services/"
     },
     {
-      "from": "/docs/nca-ecc-ai-controls",
-      "to": "/docs/nca-ecc-ai-controls/"
-    },
-    {
       "from": "/docs/nca-ecc-ai-controls.html",
-      "to": "/docs/nca-ecc-ai-controls/"
-    },
-    {
-      "from": "/docs/nca-ecc-ai-controls/index.html",
       "to": "/docs/nca-ecc-ai-controls/"
     },
     {
@@ -841,20 +813,8 @@
       "to": "/docs/governance-application/"
     },
     {
-      "from": "/assessment/ai-governance-readiness",
-      "to": "/assessment/ai-governance-readiness/"
-    },
-    {
       "from": "/assessment/ai-governance-readiness.html",
       "to": "/assessment/ai-governance-readiness/"
-    },
-    {
-      "from": "/assessment/ai-governance-readiness/index.html",
-      "to": "/assessment/ai-governance-readiness/"
-    },
-    {
-      "from": "/blog/ai-governance",
-      "to": "/blog/ai-governance/"
     }
   ]
 }

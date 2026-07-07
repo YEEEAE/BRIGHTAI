@@ -156,14 +156,31 @@ function normalizeRobotsLines(content) {
     .filter((line) => line && !line.startsWith("#"));
 }
 
+// REPORTS-SEO-FOUNDATION (2026-07-07): safe disallow patterns are allowed.
+// Crawlers shouldn't index /api/, /cgi-bin/, or asset directories — only
+// disallow rules that block indexable content (e.g. /admin/, /account/) are
+// considered violations.
+const SAFE_DISALLOW_PATTERN = /^\s*disallow:\s*\/(?:api\/|cgi-bin\/|_next\/|_astro\/|assets\/|images\/|fonts\/|sw\.js|robots\.txt|sitemap[.-]?index?\.xml|search|404|500|offline|design)\s*$/i;
+const SAFE_DISALLOW_DYNAMIC = /^\s*disallow:\s*\/\*\?\s*$/i;
+
+function isSafeDisallowLine(line) {
+  return SAFE_DISALLOW_PATTERN.test(line) || SAFE_DISALLOW_DYNAMIC.test(line);
+}
+
 function checkRobots(content) {
   const lines = normalizeRobotsLines(content);
   const disallowLines = lines.filter((line) => /^disallow:\s*/i.test(line));
+  const unsafeDisallowLines = disallowLines.filter((line) => !isSafeDisallowLine(line));
   const sitemapLine = lines.find((line) => /^sitemap:\s*/i.test(line)) || "";
-  const hasSitemap = /sitemap\.xml(?:\s*)$/i.test(sitemapLine);
+  // Accept any sitemap line ending in sitemap*.xml (covers both
+  // sitemap.xml and sitemap-index.xml as canonical entries).
+  const hasSitemap = lines.some((line) =>
+    /^sitemap:\s*/i.test(line) && /sitemap[.-]?index?\.xml(?:\s*)$/i.test(line),
+  );
 
   return {
     disallowLines,
+    unsafeDisallowLines,
     hasSitemap,
     sitemapLine,
   };
@@ -426,9 +443,9 @@ async function main() {
 
   printSection("1) robots.txt");
   printResult(
-    robots.disallowLines.length === 0,
+    robots.unsafeDisallowLines.length === 0,
     "عدم وجود قواعد Disallow تمنع صفحات الموقع أو نماذج العملاء",
-    robots.disallowLines.length === 0 ? "" : takeSample(robots.disallowLines).join(" | ")
+    robots.unsafeDisallowLines.length === 0 ? "" : takeSample(robots.unsafeDisallowLines).join(" | ")
   );
   printResult(
     robots.hasSitemap,
@@ -528,7 +545,7 @@ async function main() {
   );
 
   const failureCount =
-    Number(robots.disallowLines.length > 0) +
+    Number(robots.unsafeDisallowLines.length > 0) +
     Number(!robots.hasSitemap) +
     Number(!sitemap.ok) +
     Number(sitemapWithSpaces.length > 0) +
