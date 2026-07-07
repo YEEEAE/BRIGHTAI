@@ -1,86 +1,189 @@
+#!/usr/bin/env node
+/**
+ * check-performance-budget.js
+ *
+ * فحص ميزانية الأداء لمخرجات dist/ الفعلية بعد `astro build`.
+ * يقيس:
+ *   1. dist/index.html < 80KB
+ *   2. أكبر ملف CSS في dist/_astro < 50KB (مرحلة أولى، الهدف النهائي 30KB)
+ *   3. إجمالي JS في dist/_astro < 60KB
+ *
+ * السلوك:
+ *   - نجاح: يطبع جدولاً ملخصاً بحالة "OK" لكل بند، ثم exit 0.
+ *   - فشل: يطبع جدولاً كاملاً يبيّن كل بند وحجمه والحد والفجوة، ثم exit 1.
+ *
+ * لا يعتمد على أي ملف إعداد خارجي — الميزانيات مدمجة هنا لأنها متطلبات
+ * تشغيليّة محدّدة (مرحلة 1). عند تشديد الحدود لاحقاً، عدّل BUDGETS مباشرة.
+ */
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { globSync } from 'glob';
 
-const root = process.cwd();
-const configPath = path.join(root, 'scripts', 'performance-budget.config.json');
+const ROOT = process.cwd();
+const DIST_DIR = path.join(ROOT, 'dist');
+const ASTRO_DIR = path.join(DIST_DIR, '_astro');
 
-if (!fs.existsSync(configPath)) {
-  console.error('فشل: ملف إعداد ميزانية الأداء غير موجود.');
-  process.exit(1);
-}
+/**
+ * ميزانيات الأداء (مرحلة 1).
+ * عند تشديد أي حد لاحقاً (مثلاً: cssMaxBytes → 30KB نهائياً)، عدّل القيمة هنا.
+ */
+const BUDGETS = {
+  indexHtml: { label: 'dist/index.html', maxBytes: 80 * 1024 },
+  cssLargest: { label: 'أكبر ملف CSS في dist/_astro', maxBytes: 50 * 1024 },
+  jsTotal: { label: 'إجمالي JS في dist/_astro', maxBytes: 60 * 1024 },
+};
 
-const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-
-function readSize(relPath) {
-  const abs = path.join(root, relPath);
-  if (!fs.existsSync(abs)) {
-    return { exists: false, bytes: 0 };
-  }
-  return { exists: true, bytes: fs.statSync(abs).size };
-}
-
-function formatBytes(bytes) {
+function formatKB(bytes) {
   return `${(bytes / 1024).toFixed(2)} ك.ب`;
 }
 
-const failures = [];
-
-for (const asset of config.assets || []) {
-  const result = readSize(asset.path);
-  if (!result.exists) {
-    failures.push(`ملف غير موجود: ${asset.path}`);
-    continue;
-  }
-  if (result.bytes > asset.maxBytes) {
-    failures.push(
-      `${asset.label}: ${asset.path} حجمه ${formatBytes(result.bytes)} وتجاوز الحد ${formatBytes(asset.maxBytes)}`
-    );
-  }
-}
-
-for (const group of config.pageGroups || []) {
-  const matches = globSync(group.pattern, { cwd: root, nodir: true });
-  if (matches.length === 0) {
-    if (group.optional) { continue; }
-    failures.push(`لا توجد ملفات مطابقة للنمط: ${group.pattern}`);
-    continue;
-  }
-  for (const rel of matches) {
-    const bytes = fs.statSync(path.join(root, rel)).size;
-    if (bytes > group.maxBytes) {
-      failures.push(
-        `${group.label}: ${rel} حجمه ${formatBytes(bytes)} وتجاوز الحد ${formatBytes(group.maxBytes)}`
-      );
-    }
-  }
-}
-
-for (const combo of config.combined || []) {
-  let total = 0;
-  let missing = false;
-  for (const rel of combo.paths || []) {
-    const result = readSize(rel);
-    if (!result.exists) {
-      failures.push(`ملف غير موجود ضمن ${combo.label}: ${rel}`);
-      missing = true;
-      break;
-    }
-    total += result.bytes;
-  }
-  if (!missing && total > combo.maxBytes) {
-    failures.push(
-      `${combo.label}: الحجم الإجمالي ${formatBytes(total)} وتجاوز الحد ${formatBytes(combo.maxBytes)}`
-    );
-  }
-}
-
-if (failures.length > 0) {
-  console.error('فشل ميزانية الأداء:');
-  for (const line of failures) {
-    console.error(`- ${line}`);
-  }
+function fail(msg) {
+  console.error(`\u274c فشل فحص ميزانية الأداء: ${msg}`);
   process.exit(1);
 }
 
-console.log('نجاح: جميع حدود ميزانية الأداء ضمن الحدود المسموحة.');
+if (!fs.existsSync(DIST_DIR)) {
+  fail(`مجلد dist/ غير موجود. شغّل \`npm run build\` أولاً.`);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * جمع البيانات
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const indexHtmlPath = path.join(DIST_DIR, 'index.html');
+const indexHtmlBytes = fs.existsSync(indexHtmlPath)
+  ? fs.statSync(indexHtmlPath).size
+  : null;
+
+const cssFiles = globSync('**/*.css', { cwd: ASTRO_DIR, nodir: true }).map((rel) => {
+  const full = path.join(ASTRO_DIR, rel);
+  return { rel, bytes: fs.statSync(full).size };
+});
+cssFiles.sort((a, b) => b.bytes - a.bytes);
+
+const jsFiles = globSync('**/*.js', { cwd: ASTRO_DIR, nodir: true }).map((rel) => {
+  const full = path.join(ASTRO_DIR, rel);
+  return { rel, bytes: fs.statSync(full).size };
+});
+jsFiles.sort((a, b) => b.bytes - a.bytes);
+
+const jsTotalBytes = jsFiles.reduce((sum, f) => sum + f.bytes, 0);
+const cssLargestBytes = cssFiles.length > 0 ? cssFiles[0].bytes : 0;
+const cssLargestName = cssFiles.length > 0 ? cssFiles[0].rel : '—';
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * تقييم البنود
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const checks = [
+  {
+    key: 'index-html',
+    label: BUDGETS.indexHtml.label,
+    path: 'dist/index.html',
+    measured: indexHtmlBytes,
+    budget: BUDGETS.indexHtml.maxBytes,
+    unit: 'bytes',
+  },
+  {
+    key: 'css-largest',
+    label: `${BUDGETS.cssLargest.label} (${cssLargestName})`,
+    path: `dist/_astro/${cssLargestName}`,
+    measured: cssLargestBytes,
+    budget: BUDGETS.cssLargest.maxBytes,
+    unit: 'bytes',
+  },
+  {
+    key: 'js-total',
+    label: `${BUDGETS.jsTotal.label} (${jsFiles.length} ملف)`,
+    path: 'dist/_astro/**',
+    measured: jsTotalBytes,
+    budget: BUDGETS.jsTotal.maxBytes,
+    unit: 'bytes',
+  },
+];
+
+for (const check of checks) {
+  if (check.measured === null) {
+    check.passed = false;
+    check.gap = null;
+    check.note = 'الملف غير موجود';
+  } else {
+    check.passed = check.measured <= check.budget;
+    check.gap = check.measured - check.budget;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * طباعة الجدول
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const pad = (s, n) => String(s).padEnd(n, ' ');
+const padNum = (s, n) => String(s).padStart(n, ' ');
+
+const NAME_W = 46;
+const MEASURED_W = 12;
+const BUDGET_W = 12;
+const GAP_W = 12;
+const STATUS_W = 8;
+
+console.log('\n┌── فحص ميزانية الأداء (dist/) ──────────────────────────────────┐\n');
+
+console.log(
+  `│ ${pad('البند', NAME_W)} │ ${padNum('القياس', MEASURED_W)} │ ${padNum('الحد', BUDGET_W)} │ ${padNum('الفجوة', GAP_W)} │ ${pad('الحالة', STATUS_W)} │`
+);
+console.log(
+  `│ ${pad('─'.repeat(NAME_W), NAME_W)} │ ${pad('─'.repeat(MEASURED_W - 2), MEASURED_W)} │ ${pad('─'.repeat(BUDGET_W - 2), BUDGET_W)} │ ${pad('─'.repeat(GAP_W - 2), GAP_W)} │ ${pad('─'.repeat(STATUS_W - 2), STATUS_W)} │`
+);
+
+for (const c of checks) {
+  const measuredText = c.measured === null ? '—' : formatKB(c.measured);
+  const budgetText = formatKB(c.budget);
+  const gapText = c.gap === null
+    ? '—'
+    : (c.gap > 0 ? `+${formatKB(c.gap)}` : `${formatKB(c.gap)}`);
+  const statusText = c.passed ? '✅ OK' : (c.note ? `⚠ ${c.note}` : '❌ FAIL');
+
+  console.log(
+    `│ ${pad(c.label, NAME_W)} │ ${padNum(measuredText, MEASURED_W)} │ ${padNum(budgetText, BUDGET_W)} │ ${padNum(gapText, GAP_W)} │ ${pad(statusText, STATUS_W)} │`
+  );
+}
+
+console.log('');
+
+/* طباعة تفاصيل (top 3 CSS + كل JS) لتسهيل التشخيص */
+if (cssFiles.length > 0) {
+  console.log('أعلى 3 ملفات CSS في dist/_astro:');
+  for (const f of cssFiles.slice(0, 3)) {
+    console.log(`  - ${f.rel} → ${formatKB(f.bytes)}`);
+  }
+}
+if (jsFiles.length > 0) {
+  console.log('\nكل ملفات JS في dist/_astro:');
+  for (const f of jsFiles) {
+    console.log(`  - ${f.rel} → ${formatKB(f.bytes)}`);
+  }
+}
+console.log('');
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * الخلاصة + exit code
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const failed = checks.filter((c) => !c.passed);
+
+if (failed.length === 0) {
+  console.log('✅ نجاح: جميع البنود ضمن ميزانية الأداء.\n');
+  process.exit(0);
+}
+
+console.log(`❌ فشل ${failed.length} بند(ات) من ميزانية الأداء:\n`);
+for (const c of failed) {
+  if (c.note) {
+    console.log(`  - ${c.label}: ${c.note}`);
+  } else {
+    console.log(`  - ${c.label}: قياس ${formatKB(c.measured)} vs حد ${formatKB(c.budget)} (تجاوز ${formatKB(c.gap)})`);
+  }
+}
+console.log('');
+process.exit(1);

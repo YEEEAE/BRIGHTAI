@@ -291,20 +291,6 @@ npm run performance:budget
 
 ---
 
-## 🔧 الإعدادات (Configuration)
-
-### `performance-budget.config.json`
-ملف تكوين لحدود الأداء:
-```json
-{
-  "maxCssSize": 100,
-  "maxJsSize": 200,
-  "maxImageSize": 500
-}
-```
-
----
-
 ## 📝 ملاحظات مهمة
 
 1. **Node.js Version:** يتطلب Node.js 22 أو أحدث
