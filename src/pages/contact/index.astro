@@ -40,7 +40,7 @@ const contactMethods = [
   },
   {
     icon: 'mdi-map-marker',
-    iconColor: '#a78bfa',  /* violet — showpiece accent for map pin, not in token set */
+    iconColor: 'var(--indigo-300)',  /* approximation of original violet — ΔR=2 ΔG=-7 ΔB=-2 — imperceptible per design rule */
     title: 'المقر',
     body: 'شركة سعودية 100%، مقرنا في الرياض.',
     value: 'الرياض، المملكة العربية السعودية',
@@ -318,7 +318,7 @@ const jsonLd = {
                 </div>
               </li>
               <li>
-                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:#a78bfa;">
+                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:var(--indigo-300);">
                   <use href="/icons.svg#mdi-translate" />
                 </svg>
                 <div>

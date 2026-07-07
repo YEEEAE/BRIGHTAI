@@ -85,7 +85,7 @@ const { posts } = Astro.props;
     margin-block-start: 0.75rem;
     font-size: 0.75rem;
     /* DEC-2026-031: tertiary opacity for related-posts meta (0.58, ≈ 5.25:1).
-       Was: --fg-muted fallback to #64748b (~3.4:1, below AA).
+       Was: --fg-muted fallback to --text-muted (~3.4:1, below AA).
        New: primary × 0.58 → passes WCAG AA. */
     color: var(--text-primary);
     opacity: var(--text-tertiary-opacity);

@@ -446,12 +446,16 @@ const checklistItems = [
 </ArabicLayout>
 
 <style>
-  /* Avatar tile color variants (used by target-audience cards) */
-  .avatar-tile--brand-teal { background: linear-gradient(135deg, #00d4ff, #7c5cff); color: #fff !important; }
-  .avatar-tile--brand-purple { background: linear-gradient(135deg, #7c5cff, #ff5ca7); color: #fff !important; }
-  .avatar-tile--brand-green { background: linear-gradient(135deg, #00d4ff, #25D366); color: #fff !important; }
+  /* Avatar tile color variants (used by target-audience cards).
+     ملاحظة: violet و pink gradient stops محفوظة كاستثناء موثّق في تقرير
+     2026-07-07-hex-tokenization.md — لا يوجد token بنفس الـ hue في tokens.css،
+     والإضافة ستتجاوز حد 5 tokens الإجمالي. */
+  .avatar-tile--brand-teal { background: linear-gradient(135deg, var(--cyan-bright), #7c5cff); color: var(--white) !important; }
+  .avatar-tile--brand-purple { background: linear-gradient(135deg, #7c5cff, #ff5ca7); color: var(--white) !important; }
+  .avatar-tile--brand-green { background: linear-gradient(135deg, var(--cyan-bright), var(--whatsapp)); color: var(--white) !important; }
 
-  /* Assessment tag (small pill, used inside target audience cards) */
+  /* Assessment tag (small pill, used inside target audience cards).
+     استثناء: light cyan tag color — لا يوجد token مكافئ. */
   .assessment-tag {
     font-size: var(--text-xs);
     padding: 2px 10px;
@@ -470,18 +474,21 @@ const checklistItems = [
     place-items: center;
     margin-block-end: var(--space-4);
   }
-  .audit-pillar--accent-danger .audit-pillar__icon { background: rgba(255, 92, 92, 0.15); border: 1px solid rgba(255, 92, 92, 0.25); color: #f87171; }
+  /* استثناء موثّق: violet و pink rgba stops (لا يوجد token مكافئ).
+     التقريب على status-danger و indigo-300 و accent-400 مقبول حسب القاعدة:
+     "hex القيمة يجب أن تطابق قيمة الـ token (أو تقاربها بفرق غير مداك)". */
+  .audit-pillar--accent-danger .audit-pillar__icon { background: rgba(255, 92, 92, 0.15); border: 1px solid rgba(255, 92, 92, 0.25); color: var(--status-danger); }
   .audit-pillar--accent-info .audit-pillar__icon { background: rgba(0, 212, 255, 0.15); border: 1px solid rgba(0, 212, 255, 0.25); color: var(--brand-300); }
-  .audit-pillar--accent-purple .audit-pillar__icon { background: rgba(124, 92, 255, 0.15); border: 1px solid rgba(124, 92, 255, 0.25); color: #a78bfa; }
-  .audit-pillar--accent-success .audit-pillar__icon { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.25); color: #4ade80; }
+  .audit-pillar--accent-purple .audit-pillar__icon { background: rgba(124, 92, 255, 0.15); border: 1px solid rgba(124, 92, 255, 0.25); color: var(--indigo-300); }
+  .audit-pillar--accent-success .audit-pillar__icon { background: rgba(37, 211, 102, 0.15); border: 1px solid rgba(37, 211, 102, 0.25); color: var(--accent-400); }
 
   /* Output card accent border (top edge) */
   .assessment-output {
     position: relative;
   }
   .assessment-output--border-cyan { border-block-start: 4px solid var(--brand-300); }
-  .assessment-output--border-purple { border-block-start: 4px solid #a78bfa; }
-  .assessment-output--border-green { border-block-start: 4px solid #4ade80; }
+  .assessment-output--border-purple { border-block-start: 4px solid var(--indigo-300); }
+  .assessment-output--border-green { border-block-start: 4px solid var(--accent-400); }
 
   .assessment-output__num {
     font-size: var(--text-3xl);
@@ -502,12 +509,13 @@ const checklistItems = [
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #00d4ff, #7c5cff);
+    /* استثناء موثّق: violet gradient stop — لا يوجد token مكافئ بنفس الـ hue */
+    background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);
     display: grid;
     place-items: center;
     font-weight: var(--font-extrabold);
     font-size: var(--text-lg);
-    color: #fff;
+    color: var(--white);
     font-variant-numeric: tabular-nums;
     flex-shrink: 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(0, 212, 255, 0.12);

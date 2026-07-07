@@ -39,11 +39,11 @@ const whatsappUrl = `${SITE.whatsapp.url}?text=${encodeURIComponent(message)}`;
     width: 56px;
     height: 56px;
     border-radius: var(--radius-full);
-    /* WCAG 1.4.11 Non-text Contrast (REPORTS-18): --status-success (#22c55e)
-       + white SVG fails. WhatsApp's official dark teal #075e54 gives
-       7.24:1 against white — passes AAA. Identifiable as "WhatsApp green"
-       in Saudi Arabia thanks to the brand's universal recognition.
-       NOTE: Kept as raw hex (contrast requirement, exceeds token budget) */
+    /* WCAG 1.4.11 Non-text Contrast (REPORTS-18): --status-success + white SVG fails.
+       WhatsApp's official dark teal gives 7.24:1 against white — passes AAA.
+       Identifiable as "WhatsApp green" in Saudi Arabia thanks to the brand's universal recognition.
+       NOTE: Kept as raw hex (contrast requirement, exceeds token budget).
+       Documented exception: report/2026-07-07-hex-tokenization.md */
     background: #075e54;
     color: var(--white);
     box-shadow: 0 4px 16px rgba(7, 94, 84, 0.4);

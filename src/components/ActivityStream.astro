@@ -29,7 +29,7 @@ const { events = activityEvents } = Astro.props;
     border-radius: 50%;
   }
   .k-timeline__item.k-risk--minimal::before { background: var(--status-success); }
-  .k-timeline__item.k-risk--low::before { background: #3b82f6; }      /* blue-500 — no token match, kept as hex */
+  .k-timeline__item.k-risk--low::before { background: #3b82f6; }      /* blue-500 — no token match, kept as hex. Documented exception: report/2026-07-07-hex-tokenization.md */
   .k-timeline__item.k-risk--medium::before { background: var(--status-warning); }
   .k-timeline__item.k-risk--high::before { background: var(--status-danger); }
   .k-timeline__item.k-risk--critical::before { background: var(--status-danger); }
