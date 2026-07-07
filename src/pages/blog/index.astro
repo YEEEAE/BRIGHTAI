@@ -29,7 +29,7 @@ import {
 import { SITE } from '../../data/site';
 import { ORGANIZATION } from '../../data/schema-helpers';
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 100;
 
 const allPosts = await getPublishedPosts();
 const categories = await getCategories();
@@ -167,7 +167,7 @@ function pageUrl(page: number): string {
       </a>
       {categories.map((cat) => (
         <a
-          href={`/blog/?category=${encodeURIComponent(cat)}`}
+          href={`/blog/category/${cat}/`}
           class={`blog-filters__btn ${activeCategory === cat ? 'is-active' : ''}`}
           data-category={cat}
         >

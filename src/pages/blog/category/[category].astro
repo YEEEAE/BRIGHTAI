@@ -22,7 +22,7 @@ import {
 import { SITE } from '../../../data/site';
 import { ORGANIZATION } from '../../../data/schema-helpers';
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 100;
 
 export async function getStaticPaths() {
   return BLOG_CATEGORIES.map((category) => ({ params: { category } }));

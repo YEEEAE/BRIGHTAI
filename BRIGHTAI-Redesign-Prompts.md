@@ -1,195 +1,291 @@
-Thought for 1s# حزمة البرومبتات المُعاد كتابتها — نسخة Astro مع ضمان الحفاظ الكامل على المحتوى ونشر كل الصفحات
+# 🚀 5 برومبتز لتعزيز إنتاجيتك — مبنية على مقال ClaudeDevs "Getting Started with Loops"
 
-**تغييران جوهريان في هذه النسخة:**
-
-1. **قاعدة حماية المحتوى** في كل برومبت: ممنوع حذف أي قسم أو صفحة أو نص أو محتوى موجود — التحسين بالإضافة وإعادة الهيكلة فقط.
-2. **قاعدة النشر الشامل**: كل صفحة موجودة يجب أن تُبنى وتُنشر وتُفهرس (لا noindex، لا حجب في robots.txt إلا /api/، الكل في sitemap).
-
+> **المصدر:** [مقال ClaudeDevs عن Loops](https://x.com/ClaudeDevs/status/2074208949205881033)
+> **مخصصة لـ:** سير عمل BrightAI الحالي (Astro + 38 skill + SEO + Design System)
 
 ---
 
-**القاعدة الثابتة — تُلصق في بداية كل جلسة MiniMax:**
+## التحليل: أين أنت الآن وأين الفجوة؟
 
-```plaintext
-السياق الثابت والقواعد غير القابلة للكسر:
-- المشروع: موقع BrightAI بـ Astro، عربي RTL، الدومين https://www.brightaii.com، الاستهداف: السوق السعودي.
-- قاعدة حماية المحتوى (إلزامية): ممنوع حذف أو إزالة أي قسم من أي صفحة، أو أي صفحة كاملة، أو أي نص عربي، أو أي محتوى مرئي موجود حالياً. كل التحسينات تتم بإعادة الهيكلة أو الإضافة فقط. إذا رأيت أن حذف شيء ضروري، توقف واذكره في تقريرك ولا تحذفه.
-- قاعدة النشر الشامل (إلزامية): كل صفحة موجودة في المشروع يجب أن تُبنى في dist/ وتظهر في sitemap وتكون قابلة للفهرسة. ممنوع إضافة noindex لأي صفحة، وممنوع حجب أي مسار في robots.txt باستثناء /api/ فقط.
-- لا تغيّر أي Schema JSON-LD أو meta tags موجودة إلا إذا طُلب صراحة.
-- بعد كل مهمة: npm run build يجب أن ينجح، وقارن عدد صفحات HTML في dist/ قبل وبعد — يجب ألا ينقص أبداً. أرفق العددين في كل تقرير.
-```
-
-
+| الجانب | حالتك الحالية | ما يقوله المقال |
+|---|---|---|
+| **Skills** | 38 مهارة ممتازة في `.agents/skills/` | ✅ أنت متقدم — لكن المهارات تُستدعى يدوياً |
+| **Verification** | `npm run build` + `verify:all` + `seo:gate` | ⚠️ التحقق يدوي — يمكن تحويله لـ self-verification loop |
+| **Loop Type** | Turn-based فقط (برومبت → نتيجة → برومبت تالي) | 🔴 لا تستخدم `/goal` أو `/schedule` أو proactive loops |
+| **Code Review** | عندك `requesting-code-review` skill لكن لا يُفعّل تلقائياً | ⚠️ المقال يقول: "reviewer with fresh context is less biased" |
+| **Token Management** | برومبتات طويلة جداً (~640 سطر في prompts.md) | 🔴 المقال يقول: "use scripts for deterministic work" |
 
 ---
 
-## المرحلة 4 — المحتوى والمدونة (35% → 85%)
+## البرومبت 1: 🔄 تحويل التحقق اليدوي إلى SKILL.md ذاتي التحقق
 
-### Prompt 7: بنية المدونة بـ Content Collections (ترحيل بدون فقد)
+> **الفكرة من المقال:** "You can improve the verification step by encoding your manual steps as a SKILL.md so Claude can check more of its own work, end-to-end."
+>
+> **المشكلة عندك:** كل مرة تنتهي من مهمة، تشغّل 4-5 أوامر تحقق يدوياً (`build` + `verify:all` + `seo:gate` + `seo:all` + `performance:budget`). هذا يستهلك وقتك ويخاطر بنسيان خطوة.
 
-```plaintext
-في مشروع Astro (BrightAI)، طبّق القواعد الثابتة. ابنِ المدونة بـ Content Collections مع ترحيل كامل بلا فقد:
+```text
+ROLE:
+Workflow Automation Engineer for BrightAI.
 
-1. أنشئ src/content.config.ts مع collection اسمها blog وschema (zod): title، description، pubDate، updatedDate اختياري، author (افتراضي "فريق BrightAI")، category (enum: ذكاء-اصطناعي، رؤية-2030، تحول-رقمي، دراسات-حالة، أمن-البيانات)، tags، image اختياري، draft (افتراضي false).
+OBJECTIVE:
+أنشئ SKILL.md واحد اسمه "post-task-verification" في `.agents/skills/`
+يُشغَّل تلقائياً بعد كل مهمة تطوير.
 
-2. أنشئ:
-   - src/pages/blog/index.astro: قائمة المقالات مع pagination (9 لكل صفحة)، فلترة بالتصنيف، بطاقات RTL متسقة مع هوية الموقع.
-   - src/pages/blog/[slug].astro: BaseLayout + schema BlogPosting كامل + breadcrumbs (مرئية + BreadcrumbList) + "مقالات ذات صلة" (3 من نفس التصنيف) + روابط داخلية للخدمات.
-   - src/pages/blog/category/[category].astro.
+TASKS:
+1) اقرأ worklog.md وحلّل الأوامر التي أشغّلها يدوياً بعد كل مهمة.
+   استخرج القائمة الكاملة:
+   - npm run build
+   - npm run verify:all
+   - npm run seo:gate
+   - npm run seo:all
+   - npm run performance:budget
+   - grep للتأكد من عدم تغيير النصوص العربية
+   - find dist للتأكد من عدم وجود ملفات مكررة
 
-3. الترحيل من القسمين الموروثين (blog و blogger) — بروتوكول عدم الفقد الإلزامي:
-   أ. اجرد أولاً كل المقالات/الصفحات في القسمين القديمين واكتب قائمة كاملة (العنوان + المسار القديم) في تقريرك.
-   ب. رحّل كل عنصر من القائمة إلى الـ collection بمحتواه النصي الكامل — ممنوع إسقاط أي مقال أو اختصار محتواه. إن وجدت مقالاً مكرراً حرفياً بين القسمين، رحّل نسخة واحدة ووجّه المسارين القديمين إليها.
-   ج. أضف redirect 301 في astro.config (redirects: {}) أو vercel.json من كل مسار قديم من القائمة إلى مساره الجديد — تغطية 100% من القائمة.
-   د. لا تحذف الملفات القديمة في هذه المهمة — فقط تأكد أن الـ redirects تعمل. الحذف يُقرر لاحقاً في مهمة الحوكمة بعد التحقق.
+2) أنشئ SKILL.md يحتوي:
+   - Frontmatter: name, description, trigger conditions
+   - قسم "Verification Steps": كل أمر + معيار النجاح/الفشل
+   - قسم "Quantitative Gates": 
+     * Build: 0 errors
+     * SEO Gate: 0 errors, 0 warnings
+     * Performance Budget: HTML < 80KB, CSS < 50KB
+     * Arabic Content: 0 deleted lines matching `[\u0600-\u06FF]`
+   - قسم "On Failure": ماذا يفعل الوكيل (يصلح تلقائياً أم يبلغك)
 
-4. ثبّت @astrojs/rss وأنشئ src/pages/rss.xml.ts.
+3) أنشئ scripts/post-task-verify.sh يشغّل كل الأوامر ويُخرج
+   تقرير PASS/FAIL بصيغة JSON.
 
-5. تحقق وأرفق: جدول الترحيل (مسار قديم ← مسار جديد ← redirect يعمل) لكل عنصر، npm run build ينجح، صفحات المدونة والتصنيفات وRSS في dist/ وكلها في sitemap.
-```
+ACCEPTANCE CRITERIA:
+- الـ skill يُستدعى بعد أي مهمة dev بدون تدخل يدوي.
+- النتيجة: تقرير واحد بدل 5 أوامر منفصلة.
+- الوقت الموفّر: ~3-5 دقائق لكل مهمة.
 
-### Prompt 8: كتابة 20 مقالاً سعودياً (إضافة صرفة)
-
-```plaintext
-في مشروع Astro (BrightAI)، طبّق القواعد الثابتة. مهمة إضافة محتوى صرفة — لا تمس أي ملف موجود عدا إضافة المقالات.
-
-اكتب 20 مقالاً عربياً أصلياً في src/content/blog/ (ملفات .md بـ frontmatter مطابق للـ schema). كل مقال 1200+ كلمة، عربية فصحى احترافية بسياق سعودي، بنية h2/h3 واضحة، فقرة تمهيدية تجيب على نية البحث مباشرة، خاتمة مع CTA لخدمات BrightAI، و3+ روابط داخلية (خدمات + مقالات أخرى + صفحات المدن).
-
-العناوين المستهدفة:
-1. أفضل شركات الذكاء الاصطناعي في السعودية 2026: دليل شامل
-2. كيف يدعم الذكاء الاصطناعي رؤية السعودية 2030
-3. نظام حماية البيانات الشخصية PDPL: دليل الامتثال للشركات
-4. الذكاء الاصطناعي في القطاع الصحي السعودي: تطبيقات وفرص
-5. شات بوت عربي لخدمة العملاء: دليل الشركات السعودية
-6. التحول الرقمي للشركات الصغيرة والمتوسطة في السعودية
-7. الذكاء الاصطناعي في القطاع المصرفي السعودي
-8. متطلبات الهيئة الوطنية للأمن السيبراني NCA: دليل عملي
-9. تحليل البيانات الضخمة للشركات السعودية: من أين تبدأ
-10. الذكاء الاصطناعي التوليدي في التعليم السعودي
-11. أتمتة العمليات RPA: كيف توفر الشركات السعودية ملايين الريالات
-12. الذكاء الاصطناعي في نيوم: مستقبل المدن الذكية
-13. حوكمة البيانات وفق NDMO: دليل الشركات
-14. الذكاء الاصطناعي في التجارة الإلكترونية السعودية
-15. رؤية حاسوبية للمصانع السعودية: تطبيقات عملية
-16. الذكاء الاصطناعي في الموارد البشرية: التوظيف الذكي بالسعودية
-17. تكلفة تطبيق الذكاء الاصطناعي للشركات السعودية: دليل الأسعار
-18. الفرق بين الذكاء الاصطناعي والتعلم الآلي: شرح مبسط
-19. الذكاء الاصطناعي في القطاع العقاري السعودي
-20. كيف تختار شركة ذكاء اصطناعي في الرياض: 10 معايير
-
-قواعد: pubDate متدرجة على آخر 4 أشهر، description فريد (120–158 حرفاً)، لا حشو ولا قوالب مكررة، أرقام وإحصاءات منسوبة لمصادر عامة (رؤية 2030، سدايا، الهيئات) بدون اختلاق. نفّذ على دفعات 5 مقالات مع build بعد كل دفعة. تحقق نهائياً: 20 مقالاً جديداً في sitemap، وعدد صفحات dist/ زاد ولم ينقص.
+DELIVERABLES:
+- .agents/skills/post-task-verification/SKILL.md
+- scripts/post-task-verify.sh
 ```
 
 ---
 
-## المرحلة 5 — UI/UX والحوكمة (65%/50% → 92%)
+## البرومبت 2: 🎯 استخدام /goal للمهام المعقدة بدل Turn-based
 
-### Prompt 9: توحيد الهوية البصرية (تحسين بدون تغيير محتوى)
+> **الفكرة من المقال:** "When you define the success criteria, Claude doesn't have to make a determination on what is 'good enough' and end the loop early."
+>
+> **المشكلة عندك:** مهام مثل "Mobile LCP من 8 ثوان إلى 2.5 ثانية" أو "CSS من 170KB إلى 50KB" — هذه مهام تحتاج تكرار وتجربة، مش برومبت واحد.
 
-```plaintext
-في مشروع Astro (BrightAI)، طبّق القواعد الثابتة. وحّد الهوية البصرية — هذه مهمة تنسيق وتوحيد، ممنوع فيها حذف أي قسم أو عنصر أو نص من أي صفحة:
+```text
+ROLE:
+Performance Optimization Engineer.
 
-1. في src/styles/global.css عرّف design tokens بـ CSS custom properties: 3–5 ألوان (مشتقة من الهوية الحالية للموقع — لا تخترع لوحة جديدة) وخطان كحد أقصى (خط عناوين + خط نص عربي كـ IBM Plex Sans Arabic أو Tajawal — أو الخط الحالي إن كان مناسباً). استبدل الألوان الـ hardcoded في المكونات بالـ tokens تدريجياً مع الحفاظ على نفس المظهر.
+CONTEXT:
+BrightAI عنده مشكلتين حرجتين مقاسة:
+1. Mobile LCP = 8.0-8.6 ثانية (المعيار: < 2.5s)
+2. CSS BaseLayout = 170KB (المعيار: < 50KB)
+3. HTML Homepage = 154KB (المعيار: < 80KB)
 
-2. مكونات موحدة في src/components/ui/: Button.astro (primary/secondary/ghost)، Card.astro، SectionHeading.astro — واستبدل التكرارات في الصفحات بها، مع الحفاظ على نفس النصوص والروابط والوظائف حرفياً.
+GOAL (استخدم /goal):
+خفّض Mobile LCP إلى أقل من 2.5 ثانية مع الحفاظ على:
+- SEO score ≥ 95
+- A11y ≥ 94
+- 0 Arabic content deleted
+- Desktop perf ≥ 93
 
-3. تجربة الجوال (70% من الزيارات): افحص كل الصفحات الرئيسية على 375px — القائمة تعمل، الأزرار بمساحة لمس 44px+، الجداول قابلة للتمرير أفقياً (وليس حذف أعمدتها)، لا overflow أفقي، تباين AA. أي إصلاح يكون بالـ CSS وليس بإزالة عناصر.
+SUCCESS CRITERIA (للـ evaluator):
+- Lighthouse Mobile Performance ≥ 85
+- LCP ≤ 2500ms
+- npm run build = 0 errors
+- npm run seo:gate = 0 errors
 
-4. إمكانية الوصول: skip-link، focus states مرئية، aria-labels للأيقونات، alt عربي وصفي لكل الصور (أضف alt للناقص — لا تحذف صوراً).
+STOP AFTER: 8 محاولات كحد أقصى.
 
-5. تحقق وأرفق: معاينة 3 صفحات (رئيسية، خدمة، مقال) على 375px و1440px مع لقطات، مقارنة innerText قبل/بعد لكل صفحة عدّلتها = متطابق، وعدد صفحات dist/ لم ينقص.
-```
+APPROACH:
+في كل محاولة:
+1. قِس الحالة الحالية (lighthouse --preset=perf --form-factor=mobile)
+2. حدّد أكبر bottleneck
+3. عالجه بتغيير واحد فقط
+4. قِس مرة ثانية
+5. إذا تحسّن → التالي، إذا ساء → ارجع
 
-### Prompt 10: الحوكمة والفحص النهائي (حذف آمن مشروط بالإثبات)
-
-```plaintext
-في مشروع Astro (BrightAI)، طبّق القواعد الثابتة. التنظيف النهائي — بروتوكول الحذف الآمن الإلزامي:
-
-1. المرشحون الوحيدون للحذف: (أ) ملفات بنمط "* 2.*" أو "* 3.*" (نسخ Finder مكررة)، (ب) new_index_part.html وأمثاله من مسودات الجذر، (ج) JS/CSS في public/ لا تشير إليه أي صفحة.
-   شرط الحذف لكل ملف على حدة: أثبت بـ grep على كامل src/ و public/ و dist/ أن صفر مراجع إليه، وأثبت أن له نسخة أصلية حية (للمكررات) أو مقابلاً في src/pages (للمسودات). أرفق دليل كل حذف في جدول: الملف / سبب الحذف / ناتج grep. أي ملف عليه شك = لا يُحذف ويُذكر في التقرير.
-   ممنوع قطعياً: حذف أي صفحة HTML لها رابط داخلي أو موجودة في sitemap القديم — هذه تُرحّل أو يوجَّه لها redirect، لا تُحذف.
-
-2. المسارات القديمة (مثل /frontend/pages/...): redirect 301 في astro.config أو vercel.json لكل صفحة كانت مفهرسة (راجع sitemap القديم بالكامل) إلى مقابلها الجديد — تغطية 100%، وأرفق جدول المسارات.
-
-3. أضف سكربتات فحص في package.json:
-   - "check:secrets": grep للأنماط gsk_|AIza على src/ و public/ (يفشل عند أي تطابق)
-   - "check:links": فحص روابط dist/ بعد البناء (npx linkinator dist/ --recurse أو ما يعادله)
-   - "check:pages": سكربت يقارن عدد صفحات dist/ بعدد روابط sitemap ويفشل عند أي صفحة مبنية غير مدرجة
-   - "check:all": build + الثلاثة أعلاه
-
-4. شغّل npm run check:all وأصلح كل فشل حتى النجاح الكامل.
-
-5. تقرير ختامي: جدول قبل/بعد (أمان، أحجام dist، عدد صفحات sitemap، عدد المقالات، الروابط المكسورة)، جدول المحذوفات بأدلتها، جدول الـ redirects، وقائمة البنود التي تحتاج قراراً بشرياً (الرمز البريدي، Google Business Profile، إبطال المفاتيح من لوحات المزودين، Search Console).
-```
-
----
-
-## Prompt 11 — التدقيق الشامل النهائي (بعد تنفيذ 1→10)
-
-```plaintext
-أنت مدقق جودة رئيسي (Lead QA Auditor) لمشروع BrightAI بـ Astro، الدومين https://www.brightaii.com، الاستهداف: السوق السعودي. نُفذت 10 مراحل إصلاح. مهمتك: تدقيق مستقل بالأدلة — لا تعتمد على أي ادعاء سابق، شغّل الفحوصات بنفسك وأرفق النواتج. قاعدة صارمة: قراءة وفحص فقط، ممنوع تعديل أي ملف — وثّق الأعطال ولا تصلحها.
-
-═══ 0. سلامة المحتوى والنشر الشامل (الأهم — يُفحص أولاً) ═══
-- عدد صفحات HTML في dist/ بعد build جديد: find dist -name "*.html" | wc -l — قارنه بعدد الصفحات قبل بدء المراحل العشر (من git log أو التقارير السابقة). أي نقص غير مبرر بجدول redirects موثق = فشل حرج.
-- grep -ri "noindex" dist/ = يجب صفر تطابق.
-- افحص robots.txt: لا يحجب شيئاً غير /api/، لا يحتوي Disallow: /*?*.
-- قارن عدد صفحات dist/ بعدد روابط sitemap — كل صفحة مبنية يجب أن تكون في sitemap. أرفق قائمة أي صفحة ناقصة.
-- تحقق من جدول الترحيل: كل مسار قديم من المدونتين الموروثتين (blog وblogger) وكل صفحة من sitemap القديم لها إما صفحة حية أو redirect 301 يعمل. اختبر عينة 10 مسارات قديمة.
-- تحقق أن أقسام الصفحة الرئيسية كاملة: قارن قائمة الأقسام الموثقة في عقد Prompt 3 بالصفحة الحالية.
-
-═══ 1. الأمان (فشل هنا يوقف التقرير) ═══
-- grep -rE "gsk_[A-Za-z0-9]{20,}|AIza[A-Za-z0-9_-]{30,}|sk-[A-Za-z0-9]{30,}" على src/ و public/ و dist/ = صفر.
-- git ls-files | grep -E "^\.env$" = فارغ، و.env.example موجود بدون قيم.
-- src/pages/api/ai/chat.ts: مفاتيح من import.meta.env بدون PUBLIC_، rate limiting، validation، prerender = false.
-- Headers: CORS ليس * على /api/، HSTS، X-Content-Type-Options، Referrer-Policy، Permissions-Policy، X-Frame-Options، CSP بدون unsafe-inline في script-src.
-- شغّل npm run check:secrets.
-
-═══ 2. البناء والأداء ═══
-- npm run build ينجح بدون أخطاء. أرفق الناتج.
-- جدول: dist/index.html (< 80KB)، إجمالي JS أول عرض (< 60KB)، أكبر CSS (< 30KB).
-- grep -r "client:load" src/ — برّر كل نتيجة.
-- preload للخط العربي + font-display: swap + ≤ خطين بوزنين.
-- chat widget والتحليلات كسولة التحميل — وتعمل فعلياً (اختبرها).
-
-═══ 3. SEO التقني السعودي ═══
-اكتب سكربت يمر على كل صفحات dist/ ويفحص، وأرفق ملخصاً + قائمة الفاشل:
-- lang="ar" dir="rtl"، title فريد < 60 حرفاً (اكشف المكرر)، description فريد 120–158 حرفاً (اكشف المكرر)، canonical صحيح، hreflang ar-SA + x-default، h1 واحد، OG + Twitter Cards.
-- Parse كل JSON-LD وتحقق من صحته: Organization/WebSite/LocalBusiness في الرئيسية، BlogPosting في المقالات، Service+areaServed في المدن، FAQPage وBreadcrumbList حيث يلزم. postalCode ليس 12345.
-
-═══ 4. المحتوى والمدونة ═══
-- عدد src/content/blog/*.md ≥ 20 + كل المقالات المرحّلة من القسمين القديمين (قارن بجدول الترحيل).
-- جدول لكل مقال: الملف / عدد الكلمات (≥ 1200 للجديدة) / التصنيف / التاريخ / عدد الروابط الداخلية (≥ 3).
-- اكشف التشابه القالبي المفرط بين المقالات.
-- /blog مع pagination، /blog/category/*، /rss.xml، "مقالات ذات صلة" تعمل.
-- dist/locations/: 4 مدن، كل واحدة 600+ كلمة فريدة، روابط المدن في الفوتر.
-
-═══ 5. الربط الداخلي ═══
-- npx linkinator dist/ --recurse (أو ما يعادله): إجمالي الروابط، المكسور (الهدف صفر)، قائمة المكسور.
-- كل مقال يرتبط بخدمة، كل صفحة مدينة بـ 3+ خدمات، قائمة الصفحات اليتيمة (لا يشير إليها رابط داخلي) — بما فيها الصفحات الموروثة، فاليتيمة تحتاج روابط وليس حذفاً.
-- breadcrumbs مرئية + schema في الصفحات الداخلية.
-
-═══ 6. UI/UX ═══
-- tokens موحدة (3–5 ألوان، خطان)، grep للألوان hardcoded في src/components وsrc/pages وأرفق العدد.
-- مكونات ui/ موجودة ومستخدمة.
-- img بدون alt = صفر (grep)، skip-link، aria-labels.
-- معاينة 3 صفحات على 375px و1440px: لا overflow، القائمة تعمل.
-
-═══ 7. الحوكمة ═══
-- find . -name "* 2.*" -o -name "* 3.*" (عدا node_modules) = صفر.
-- جدول المحذوفات من Prompt 10 موجود بأدلته — تحقق من عينة أن المحذوف لم يكن مرجعاً لأي صفحة.
-- npm run check:all ينجح كاملاً (بما فيه check:pages).
-- بقايا console.log تصحيحية / TODO / كود معطل.
-
-═══ التقرير النهائي ═══
-Markdown يتضمن:
-1. جدول النتيجة: سلامة المحتوى والنشر (إجباري 100% وإلا فشل حرج) + المجالات السبعة بنسب مئوية + الإجمالي الموزون (أمان 20%، أداء 20%، SEO 20%، محتوى 15%، روابط 10%، UI/UX 10%، حوكمة 5%).
-2. مقارنة بخط الأساس: أمان 30%، أداء 55%، SEO 82%، محتوى 35%، روابط 88%، UI/UX 65%، حوكمة 50%.
-3. قائمة "فشل حرج" قبل النشر — وعلى رأسها أي محتوى مفقود أو صفحة غير منشورة.
-4. "تحسينات متبقية" مرتبة بالأثر.
-5. "بنود تحتاج قراراً بشرياً" (Google Business Profile، إبطال المفاتيح من لوحات المزودين، الرمز البريدي، Search Console).
-6. كل نسبة مدعومة بدليل فحص مرفق — أي بند لم تفحصه اذكره "غير محقق" ولا تفترض نجاحه.
+لا تعالج أكثر من bottleneck واحد في كل محاولة.
 ```
 
 ---
 
-الفرق الجوهري في هذه النسخة: كل برومبت أصبح يحمل **عقد حماية محتوى** (جرد قبل التعديل + مقارنة innerText/عدد الصفحات بعده)، و**بروتوكول حذف آمن** مشروطاً بإثبات صفر مراجع، وبند **النشر الشامل** (كل صفحة في dist تدخل sitemap، صفر noindex، robots يحجب /api فقط). والتدقيق النهائي (Prompt 11) يبدأ بقسم "سلامة المحتوى والنشر" كفحص إجباري يُفشل التقرير كاملاً إن نقصت صفحة واحدة.
+## البرومبت 3: ⏰ أتمتة مراجعة SEO بـ /schedule
+
+> **الفكرة من المقال:** "Some agentic work is recurring: the task stays the same and only the inputs change... you can trigger when Claude runs with /loop"
+>
+> **المشكلة عندك:** عندك 12 مهارة SEO (seo-page, seo-schema, seo-technical, seo-content...) لكنك تشغّلها يدوياً. الموقع يتغيّر باستمرار ولا أحد يراقب.
+
+```text
+ROLE:
+SEO Monitoring Agent for BrightAI.
+
+SCHEDULE (استخدم /schedule):
+كل يوم أحد الساعة 8 صباحاً بتوقيت السعودية.
+
+ROUTINE:
+1) شغّل `npm run build` وتأكد من 0 errors.
+
+2) شغّل فحص SEO مختصر على أهم 5 صفحات:
+   - / (الرئيسية)
+   - /solutions/ 
+   - /kernel/
+   - /about/
+   - /blog/
+
+3) لكل صفحة افحص:
+   - Title tag (موجود + أقل من 60 حرف)
+   - Meta description (موجودة + 120-160 حرف)
+   - H1 واحد فقط
+   - JSON-LD valid
+   - hreflang صحيح (AR ↔ EN)
+   - Canonical صحيح
+   - الصور عندها alt text
+
+4) قارن النتائج مع آخر فحص (إن وجد).
+
+5) أنشئ تقرير أسبوعي مختصر:
+   - ✅ عدد الصفحات السليمة
+   - ⚠️ مشاكل جديدة ظهرت
+   - 📈 مشاكل تم حلها من الأسبوع الماضي
+
+OUTPUT:
+- reports/seo-weekly/YYYY-MM-DD.md
+- إذا كان هناك مشكلة حرجة (مثل canonical مكسور أو h1 مفقود)
+  → أبلغ فوراً بدل الانتظار للأسبوع القادم.
+
+STOP CONDITION:
+لا تتوقف — استمر كل أسبوع حتى أوقفك يدوياً.
+```
+
+---
+
+## البرومبت 4: 🧹 تحويل البرومبتات الطويلة إلى Scripts قابلة لإعادة الاستخدام
+
+> **الفكرة من المقال:** "Running a script is cheaper than reasoning through the steps. A PDF skill can ship a form-filling script that Claude runs each time, instead of re-deriving the code."
+>
+> **المشكلة عندك:** `prompts.md` = 640 سطر. كل برومبت يحتوي ROLE + TASKS + FORBIDDEN + ACCEPTANCE CRITERIA + DELIVERABLES. الكثير من هذا متكرر ويمكن أتمتته.
+
+```text
+ROLE:
+DevOps Engineer + Prompt Optimizer.
+
+OBJECTIVE:
+حوّل الأنماط المتكررة في prompts.md إلى scripts و skills
+قابلة لإعادة الاستخدام بدلاً من إعادة كتابتها كل مرة.
+
+TASKS:
+1) اقرأ prompts.md (640 سطر) واستخرج الأنماط المتكررة:
+   - "ULTRA-STRICT CONSTRAINTS" (10 قواعد) — متكررة في كل برومبت
+   - "FORBIDDEN" blocks — نفسها تقريباً
+   - "DELIVERABLES: REPORT-XX" — نمط واحد
+
+2) أنشئ:
+   a) .agents/skills/brightai-constraints/SKILL.md
+      → يحتوي القيود الصارمة كـ skill يُستدعى تلقائياً
+      → بدل نسخ 10 قواعد في كل برومبت
+
+   b) scripts/generate-report.sh <REPORT_NUMBER> <TASK_NAME>
+      → ينشئ هيكل التقرير تلقائياً بالتنسيق المعتمد
+      → يملأ metadata (تاريخ، فرع، وكيل)
+
+   c) scripts/create-task-branch.sh <phase> <task>
+      → ينشئ فرع feat/<phase>/<task> تلقائياً
+      → يحدّث worklog.md بسطر البداية
+
+3) أعد كتابة prompts.md بحيث:
+   - كل برومبت يصير 10-15 سطر بدل 30-40
+   - يشير لـ skill القيود بدل تكرارها
+   - يستدعي scripts بدل وصف الخطوات
+
+ACCEPTANCE CRITERIA:
+- prompts.md يصير < 200 سطر (من 640)
+- 0 فقدان في المعلومات (كل شيء انتقل لـ skills أو scripts)
+- كل script يعمل standalone بـ `bash scripts/xxx.sh`
+
+DELIVERABLES:
+- .agents/skills/brightai-constraints/SKILL.md
+- scripts/generate-report.sh
+- scripts/create-task-branch.sh
+- prompts.md (المحدّث)
+```
+
+---
+
+## البرومبت 5: 👥 Code Review تلقائي بوكيل ثانٍ (Second Agent Review)
+
+> **الفكرة من المقال:** "A reviewer with fresh context is less biased and not influenced by the main agent's reasoning. Use the built-in /code-review skill."
+>
+> **المشكلة عندك:** عندك `requesting-code-review` و `receiving-code-review` كـ skills لكنها لا تُفعَّل تلقائياً. كل التعديلات تمر بدون مراجعة مستقلة.
+
+```text
+ROLE:
+Quality Assurance Architect.
+
+OBJECTIVE:
+صمّم نظام مراجعة تلقائي يستخدم وكيل ثانٍ مستقل
+لمراجعة كل تغيير قبل أن يصلك للموافقة.
+
+TASKS:
+1) أنشئ .agents/skills/auto-code-review/SKILL.md يحتوي:
+
+   TRIGGER: يُستدعى تلقائياً عند أي من:
+   - إنشاء PR
+   - اكتمال مهمة (بعد post-task-verification)
+   - قبل merge لأي فرع feat/*
+
+   REVIEW CHECKLIST:
+   a) Arabic Content Integrity:
+      - هل تم حذف أي نص عربي؟ (diff grep [\u0600-\u06FF])
+      - هل hreflang AR↔EN لا يزال صحيحاً؟
+      
+   b) Design System Compliance:
+      - هل الـ CSS يستخدم توكنز tokens.css فقط؟
+      - هل في inline styles جديدة؟
+      - هل الـ components تتبع canonical patterns؟
+      
+   c) SEO Preservation:
+      - هل canonical URLs لم تتغير؟
+      - هل JSON-LD لا يزال valid؟
+      - هل meta descriptions موجودة لكل صفحة جديدة؟
+      
+   d) Performance Budget:
+      - هل حجم CSS الكلي لم يزد أكثر من 5%؟
+      - هل حجم HTML لم يزد أكثر من 5%؟
+      - هل في assets جديدة > 200KB؟
+
+2) الوكيل المراجع يكتب تقرير مراجعة مختصر:
+   - ✅ Approved / ⚠️ Approved with notes / ❌ Rejected
+   - قائمة المشاكل المكتشفة مرتبة بالأولوية
+   - اقتراحات تحسين (اختيارية)
+
+3) التقرير يُحفظ في reports/code-review/YYYY-MM-DD-<branch>.md
+
+ACCEPTANCE CRITERIA:
+- لا يمرّ أي تغيير بدون مراجعة مستقلة.
+- المراجع لا يرى reasoning الوكيل الأصلي (fresh context).
+- وقت المراجعة < 2 دقيقة لكل PR.
+- 0 false positives في أول 5 مراجعات.
+
+DELIVERABLES:
+- .agents/skills/auto-code-review/SKILL.md
+- scripts/trigger-review.sh
+```
+
+---
+
+## 📊 ملخص الأثر المتوقع
+
+| البرومبت | الفجوة المعالجة | الوقت الموفّر | مصدر الفكرة من المقال |
+|---|---|---|---|
+| **1. Self-Verification** | 5 أوامر يدوية → skill واحد | ~15 دقيقة/يوم | "encode manual steps as SKILL.md" |
+| **2. /goal للأداء** | محاولات عشوائية → حلقة مقاسة | ~2-4 ساعات للمهمة | "deterministic criteria are effective" |
+| **3. /schedule للـ SEO** | فحص يدوي متقطع → مراقبة أسبوعية | ~30 دقيقة/أسبوع | "recurring work with /loop and /schedule" |
+| **4. Scripts بدل Prompts** | 640 سطر → <200 سطر | ~5 دقائق/برومبت | "scripts cheaper than reasoning" |
+| **5. Auto Code Review** | مراجعة معدومة → مراجعة تلقائية | يمنع bugs قبل وصولها | "second agent for code reviews" |
+
+> [!TIP]
+> **ابدأ بالبرومبت 1** (Self-Verification) لأنه الأسرع تطبيقاً والأكثر أثراً فورياً.
+> ثم **البرومبت 4** (Scripts) لتخفيف حجم البرومبتات.
+> ثم **البرومبت 2** (/goal) لحل مشكلة Mobile LCP الحرجة.
