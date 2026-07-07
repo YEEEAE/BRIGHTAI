@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run image-sitemap && astro build && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync",
+    "build": "npm run image-sitemap && astro build && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css",
     "sync:dist:flat": "node scripts/sync-dist-flat.mjs",
     "build:verify": "npm run verify:all",
     "lint": "echo 'Linting skipped for static site'",
@@ -38,6 +38,7 @@
     "preview": "astro preview",
     "clean": "rm -rf .next .render-static reports/ dist/ .vercel/",
     "performance:budget": "node scripts/check-performance-budget.js",
+    "purge:css": "node scripts/purge-css.mjs",
     "links:dist": "linkinator ./dist --recurse --skip 'https?://(?!brightai.site)'",
     "internal-links:audit": "node scripts/internal-links-audit.mjs && node scripts/internal-linking-architecture.mjs",
     "internal-links:inventory": "node scripts/internal-linking-architecture.mjs",
@@ -69,6 +70,7 @@
     "linkinator": "^7.6.1",
     "playwright": "^1.61.1",
     "prettier": "^3.4.2",
+    "purgecss": "^8.0.0",
     "typescript": "^5.7.2",
     "vitest": "^1.0.0"
   }
