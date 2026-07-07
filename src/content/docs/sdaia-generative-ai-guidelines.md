@@ -3,10 +3,10 @@ title: "إرشادات سدايا للاستخدام المسؤول للذكاء
 metaTitle: "إرشادات سدايا للاستخدام المسؤول للذكاء الاصطناعي التوليدي: شرح عملي | BrightAI"
 description: "شرح عملي لإرشادات سدايا للذكاء الاصطناعي وSDAIA generative AI guidelines للقطاعين العام والخاص، مع سياسات استخدام وتصنيف مخاطر وجداول تطبيق."
 canonical: "https://brightai.site/docs/sdaia-generative-ai-guidelines/"
-updated: "2026-06-07"
+updated: "2026-07-08"
 category: "SDAIA"
 tldr: "شرح عملي لإرشادات سدايا للذكاء الاصطناعي وSDAIA generative AI guidelines\nللقطاعين العام والخاص، مع سياسات استخدام وتصنيف مخاطر وجداول تطبيق."
-related: ["ai-governance-saudi-arabia","nca-ecc-ai-guide"]
+related: ["ai-governance-saudi-arabia","nca-ecc-ai-guide","saudi-ai-regulators-guide","ndmo-roles-requirements-guide","sdaia-seven-principles-practical-guide","saudi-ai-landscape-sdaia-humain-allam-scai"]
 ---
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
 <p class="ai-citation" data-speakable="true">إرشادات سدايا للذكاء الاصطناعي التوليدي هي مبادئ توجيهية أصدرتها الهيئة السعودية للبيانات والذكاء الاصطناعي (SDAIA) تُنظّم استخدام تقنيات GenAI في المنشآت السعودية، وتغطي الشفافية والمسؤولية وحماية الخصوصية.</p>
@@ -182,7 +182,61 @@ related: ["ai-governance-saudi-arabia","nca-ecc-ai-guide"]
   <p>BrightAI تحول الإرشادات إلى سياسات تشغيلية: منع بيانات، موافقات، سجلات، تقييم مخاطر، وملف أدلة قابل للمراجعة.</p>
 </section>
 
-<section class="sources" aria-labelledby="official-sources">
+<section class="cluster-table-of-contents" aria-labelledby="cluster-toc-title">
+    <h2 id="cluster-toc-title">جدول محتويات عنقود سدايا والذكاء الاصطناعي التوليدي</h2>
+    <p class="cluster-table-of-contents__intro">هذه الصفحة هي الدليل الشامل (Pillar) لإرشادات سدايا للذكاء الاصطناعي التوليدي. الصفحات المرتبطة تغطي زوايا تكاملية — كل صفحة تستهدف نية بحث مختلفة لتفادي تكرار المنافسة على نفس الكلمة، وتساعد المنشأة السعودية على بناء حوكمة AI متكاملة تتفق مع رؤية 2030 ومتطلبات الامتثال.</p>
+    <div class="table-container">
+      <table class="docs-table cluster-toc">
+        <thead>
+          <tr>
+            <th>الصفحة</th>
+            <th>الوظيفة</th>
+            <th>الكلمة المستهدفة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="الصفحة"><strong><a href="/docs/sdaia-generative-ai-guidelines/">إرشادات سدايا للذكاء الاصطناعي التوليدي: شرح عملي</a></strong></td>
+            <td data-label="الوظيفة">الدليل الشامل (Pillar) — شرح عملي لإرشادات GenAI مع تصنيف الاستخدامات وقوائم التحقق.</td>
+            <td data-label="الكلمة المستهدفة">إرشادات سدايا التوليدي</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/blog/saudi-ai-regulators-guide/">دليل الجهات التنظيمية للذكاء الاصطناعي في السعودية</a></td>
+            <td data-label="الوظيفة">خريطة شاملة للجهات التنظيمية (سدايا، NCA، NDMO، ساما، SFDA، DGA، ZATCA) وصلاحياتها وعلاقتها بـ AI.</td>
+            <td data-label="الكلمة المستهدفة">الجهات التنظيمية للذكاء الاصطناعي في السعودية</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/blog/ndmo-roles-requirements-guide/">مكتب إدارة البيانات الوطنية NDMO: الأدوار والمتطلبات</a></td>
+            <td data-label="الوظيفة">شرح تفصيلي لـ NDMO، السياسات الوطنية السبع، التسجيل في NDGP، والعلاقة بـ PDPL.</td>
+            <td data-label="الكلمة المستهدفة">مكتب إدارة البيانات الوطنية</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/blog/sdaia-seven-principles-practical-guide/">مبادئ سدايا السبعة لأخلاقيات الذكاء الاصطناعي</a></td>
+            <td data-label="الوظيفة">دليل التطبيق العملي لمبادئ أخلاقيات AI السبعة مع خطوات تنفيذية وأدوات BrightAI المقابلة.</td>
+            <td data-label="الكلمة المستهدفة">أخلاقيات الذكاء الاصطناعي + مبادئ سدايا السبعة</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/blog/saudi-ai-landscape-sdaia-humain-allam-scai/">مشهد الذكاء الاصطناعي السعودي: سدايا، هيوماين، علام، SCAI</a></td>
+            <td data-label="الوظيفة">تحليل اللاعبين الرئيسيين في منظومة AI السيادية السعودية 2026 وأدوارهم في الحوكمة.</td>
+            <td data-label="الكلمة المستهدفة">هيوماين + علام + scai</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/blog/sdaia-generative-ai-guidelines-practical-compliance/">إرشادات سدايا للذكاء الاصطناعي التوليدي: دليل امتثال عملي</a></td>
+            <td data-label="الوظيفة">مقال تشغيلي يركز على خطوات الامتثال العملية لإرشادات GenAI في المنشآت.</td>
+            <td data-label="الكلمة المستهدفة">إرشادات سدايا</td>
+          </tr>
+          <tr>
+            <td data-label="الصفحة"><a href="/solutions/ai-governance-platform/">منصة BrightAI للحوكمة</a></td>
+            <td data-label="الوظيفة">الحل التقني الشامل لتطبيق إرشادات سدايا في المنشآت مع الامتثال لـ PDPL وNCA وNDMO.</td>
+            <td data-label="الكلمة المستهدفة">حوكمة AI</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="cluster-table-of-contents__hint">لو تبحث عن إطار عملي لإرشادات GenAI ابدأ بالـ Pillar. لو تبحث عن الجهة المسؤولة عن نشاطك ابدأ بدليل الجهات التنظيمية. لو تبحث عن فهم NDMO ومتطلبات التسجيل ابدأ بالمقال المتخصص. لو تبحث عن التطبيق الأخلاقي للمبادئ السبعة ابدأ بدليل الأخلاقيات. لو تبحث عن اللاعبين في السوق السعودي ابدأ بتحليل المشهد.</p>
+  </section>
+
+  <section class="sources" aria-labelledby="official-sources">
   <h2 id="section-15">المصادر الرسمية وآلية المراقبة</h2>
   <p>تمت مراجعة هذه الصفحة مقابل مراجع SDAIA الرسمية المتاحة في 7 يونيو 2026. هذه الروابط محفوظة أيضًا في كتلة بيانات قابلة للقراءة آليًا داخل الصفحة لمراجعة التحديثات عند النشر.</p>
   <ul>

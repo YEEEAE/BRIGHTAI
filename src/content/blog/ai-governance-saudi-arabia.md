@@ -3,12 +3,12 @@ title: "حوكمة الذكاء الاصطناعي في السعودية: كيف
 description: "دليل عملي لحوكمة الذكاء الاصطناعي في السعودية. ابدأ حوكمة AI في شركتك بدون تعقيد مع حلول BrightAI المتوافقة مع SDAIA وPDPL."
 canonical: "https://brightai.site/blog/ai-governance-saudi-arabia/"
 pubDate: "2026-05-31"
-updatedDate: "2026-05-31"
+updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ai-governance-saudi-arabia"
 readingTime: 22
 category: "ذكاء-اصطناعي"
-tags: ["حوكمة AI", "السعودية", "SDAIA", "PDPL", "حلول BrightAI"]
+tags: ["حوكمة AI", "السعودية", "SDAIA", "PDPL", "حلول BrightAI", "Pillar", "إطار حوكمة AI", "حوكمة GenAI", "سياسة استخدام AI"]
 draft: false
 image: "/images/og/brightai-og-1200x630.png"
 ---
@@ -554,5 +554,49 @@ image: "/images/og/brightai-og-1200x630.png"
                 <a href="/contact/" class="btn-primary">احجز عرضًا توضيحيًا مجانيًا</a>
                 <a href="/contact/" class="btn-secondary">تحدث مع فريقنا</a>
             </div>
-        
+
 </div>
+
+<section class="cluster-table-of-contents" aria-labelledby="cluster-toc-title">
+    <h2 id="cluster-toc-title">جدول محتويات عنقود حوكمة الذكاء الاصطناعي</h2>
+    <p class="cluster-table-of-contents__intro">هذه الصفحة هي الدليل الشامل (Pillar) لحوكمة الذكاء الاصطناعي في المنشآت السعودية. الصفحات المرتبطة تغطي زوايا تكاملية — كل صفحة تستهدف نية بحث مختلفة (إطار تشغيلي، قالب سياسة، حوكمة GenAI) لتفادي تكرار المنافسة على نفس الكلمة، وتساعد المنشأة السعودية على بناء برنامج حوكمة AI متكامل يتفق مع رؤية 2030 ومتطلبات PDPL و[سدايا](https://brightai.site/blog/sdaia-seven-principles-practical-guide/).</p>
+    <div class="table-container">
+        <table class="docs-table cluster-toc">
+            <thead>
+                <tr>
+                    <th>الصفحة</th>
+                    <th>الوظيفة</th>
+                    <th>الكلمة المستهدفة</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="الصفحة"><strong><a href="/blog/ai-governance-saudi-arabia/">حوكمة الذكاء الاصطناعي في السعودية: كيف تبدأ الشركات بدون تعقيد؟</a></strong></td>
+                    <td data-label="الوظيفة">الدليل الشامل (Pillar) — مدخل عام للحوكمة في المنشآت السعودية مع خطوات عملية على 6 مراحل.</td>
+                    <td data-label="الكلمة المستهدفة">حوكمة AI في السعودية</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-governance-framework-saudi-model/">إطار حوكمة الذكاء الاصطناعي للمنشآت السعودية: مكونات تشغيلية</a></td>
+                    <td data-label="الوظيفة">شرح تفصيلي للركائز الأربع للإطار (السياسات، الأدوار، الأدوات، القياس) مع مقارنة NIST AI RMF وEU AI Act وISO 42001 وخطة 90 يوم للبناء.</td>
+                    <td data-label="الكلمة المستهدفة">إطار حوكمة الذكاء الاصطناعي</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-usage-policy-template-saudi/">سياسة استخدام الذكاء الاصطناعي: قالب جاهز للمنشآت السعودية</a></td>
+                    <td data-label="الوظيفة">قالب عملي للبنود الـ 12 الأساسية للسياسة (الهدف، الأدوات المعتمدة، الاستخدام المسموح والممنوع، حماية البيانات، الإفصاح، الموافقات البشرية، الملكية الفكرية، الحوادث، التدريب).</td>
+                    <td data-label="الكلمة المستهدفة">سياسة استخدام الذكاء الاصطناعي</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/generative-ai-governance-vs-traditional/">حوكمة الذكاء الاصطناعي التوليدي: كيف تختلف عن الحوكمة التقليدية</a></td>
+                    <td data-label="الوظيفة">تحليل المخاطر الفريدة لـ GenAI (الهلوسة، تسريب البيانات، حقوق الملكية، الإفصاح، الحقن) والأدوات المتخصصة (AI Firewall، Guardrails).</td>
+                    <td data-label="الكلمة المستهدفة">حوكمة الذكاء الاصطناعي التوليدي</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/solutions/ai-governance-platform/">منصة BrightAI للحوكمة</a></td>
+                    <td data-label="الوظيفة">الحل التقني الشامل لتطبيق الإطار السعودي مع الامتثال لـ PDPL وSDAIA وNCA ECC وISO 42001.</td>
+                    <td data-label="الكلمة المستهدفة">منصة حوكمة AI</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p class="cluster-table-of-contents__hint">لو تبحث عن مدخل عام للحوكمة ابدأ بالـ Pillar. لو تبحث عن الإطار التشغيلي الكامل (ركائزه الأربع + خطة 90 يوم) ابدأ بدليل الإطار. لو تبحث عن قالب جاهز للسياسة ابدأ بقالب السياسة. لو تبحث عن تحديات GenAI الفريدة ابدأ بدليل الحوكمة التوليدية. لو تبحث عن تطبيق عملي ابدأ بمنصة BrightAI.</p>
+</section>
