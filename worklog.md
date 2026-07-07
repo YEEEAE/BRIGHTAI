@@ -191,6 +191,7 @@ Stage Summary:
 - النتيجة: 24 ملف تغيّر، 4 إضافات و 928 حذف. الـ Branch: `cleanup/violating-files` بـ 4 commits نظيفة (سجل git --stat في الأسفل).
 - القيد: 0 نص منشور تم تعديله (Arabic content في الصفحات أو schema untouched)؛ 0 section/page محذوفة؛ 0 canonical/hreflang تغيّرت إلا إصلاح مرجع واحد في `sitemap-images.xml` (تغيير `logo 2` → `logo`).
 - المخاطر المتبقية / بنود معلّقة:
-  1. `dist/` Folder ملوّث بنسخ Finder مكررة (مثل `favicon 2.svg`, `404 2.html`, `_headers 2`) — ليست tracked في git (`.gitignore`)؛ **يُحلّ تلقائيًا عند `rm -rf dist && npm run build`** (أمر معلق للتأكد النهائي).
+  1. `dist/` Folder ملوّث بنسخ Finder مكررة (مثل `favicon 2.svg`, `404 2.html`, `_headers 2`) — ليست tracked في git (`.gitignore`)؛ **تمّ الحل:** `mavis-trash dist && npm run build` نتج dist نظيف (`find dist -name '* 2.*'` = 0) و 157 صفحة HTML.
   2. مراجع نصّية توثيقية للـ .bak في `.agents/brain.md` (سطر 157, 990, 1006) و `report/2026-07-07-blog-content-collections.md` (سطر 35, 283) و `reports/2026-07-06-secret-hardening.md` (سطر 88, 267) — هذه ست指着 لـ ملفات محذوفة الآن؛ يمكن تنظيفها في PR لاحق.
+  3. ⚠️ **بند معلّق (خارج نطاق هذه المهمة):** ملف `./.kilo/worktrees/fair-otter/report/SEO-MIGRATION-CHECK 3.md` يطابق نمط `* 3.*` — هذا تابع لفرع `fair-otter` المنفصل (tracked في commit `fecdd719` على ذلك الفرع)، داخل worktree فعلي مسجّل في `git worktree list`. لا أتدخّل فيه لأنه ملف tracked في فرع آخر يحتمل أن يكون المستخدم يعمل عليه. الحل المقترح (يحتاج قرار المستخدم): (أ) `git worktree move` لنقل الـ worktree خارج مسار المشروع، أو (ب) حذف داخل فرع `fair-otter` بـ `git rm` ثم `git commit` هناك، أو (ج) تجاهل لأن find المستخدم يستثني `node_modules` فقط.
 
