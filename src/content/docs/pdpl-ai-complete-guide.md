@@ -191,3 +191,87 @@ related: ["pdpl-ai-governance","pdpl-chatgpt-data-protection"]
     <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PersonalDataDestruction/!ut/p/z1/04_Sj9CPykssy0xPLMnMz0vMAfIjo8ziPR1dzTwMgw2MDMOcTA3MjH39TE29jY0MQsz1w9EUhIZZAhUEGvl6OXoaGwQY60cRo98AB3A0IKTfi5ACoA-MinydfdP1owoSSzJ0M_PS8vUjAlKLikEedEksSXRJLS4pKk0G-RjonCi8BloYYyjA9DFYAR4vFeSGRlT5pAV7pisqAgBot2w2/dz/d5/L0lDUmlTUSEhL3dHa0FKRnNBLzROV3FpQSEhL2Vu/" rel="noopener" target="_blank">إرشاد إتلاف وإخفاء هوية البيانات الشخصية</a></li>
   </ul>
 </section>
+
+<section class="cluster-table-of-contents" aria-labelledby="cluster-toc-title">
+  <h2 id="cluster-toc-title">جدول محتويات عنقود PDPL والذكاء الاصطناعي</h2>
+  <p class="cluster-table-of-contents__intro">هذه الصفحة هي الدليل الشامل (Pillar) لتطبيق نظام حماية البيانات الشخصية (PDPL) مع الذكاء الاصطناعي. الصفحات المرتبطة تغطي زوايا تكاملية ومتخصصة: عقوبات PDPL، اللائحة التنفيذية، نقل البيانات، حماية بيانات ChatGPT، العلاقة بين PDPL وسلامة AI، وأكثر. كل صفحة تستهدف نية بحث مختلفة لتساعد المنشأة السعودية على بناء برنامج امتثال PDPL متكامل.</p>
+  <div class="table-container">
+    <table class="docs-table cluster-toc">
+      <thead>
+        <tr>
+          <th>الصفحة</th>
+          <th>الوظيفة</th>
+          <th>الكلمة المستهدفة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="الصفحة"><strong><a href="/docs/pdpl-ai-complete-guide/">الدليل الشامل PDPL + AI</a></strong></td>
+          <td data-label="الوظيفة">الدليل الشامل (Pillar) — مرجع شامل لكل مواد PDPL وعلاقتها بالذكاء الاصطناعي مع سيناريوهات عملية وقوائم تحقق.</td>
+          <td data-label="الكلمة المستهدفة">PDPL والذكاء الاصطناعي</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/chatgpt-pdpl-data-compliance/">ChatGPT والبيانات الشخصية</a></td>
+          <td data-label="الوظيفة">مخاطر إدخال بيانات شخصية في ChatGPT، متطلبات PDPL المحددة، سياسات OpenAI، وكيف يمنع AI Firewall التسريب.</td>
+          <td data-label="الكلمة المستهدفة">ChatGPT و PDPL</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/pdpl-cross-border-data-transfer-ai/">نقل البيانات الشخصية خارج السعودية</a></td>
+          <td data-label="الوظيفة">قواعد المادة 29 للنقل العابر للحدود، الاستثناءات، DPA، وآليات تقييم المخاطر.</td>
+          <td data-label="الكلمة المستهدفة">نقل البيانات خارج السعودية</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/pdpl-executive-regulations-explained/">اللائحة التنفيذية لـ PDPL</a></td>
+          <td data-label="الوظيفة">تفصيل اللائحة التنفيذية (32 مادة)، DPO، الاحتفاظ، الإتلاف، وحقوق أصحاب البيانات.</td>
+          <td data-label="الكلمة المستهدفة">اللائحة التنفيذية PDPL</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/pdpl-penalties-saudi-fines/">عقوبات PDPL والغرامات</a></td>
+          <td data-label="الوظيفة">المواد 35-40 من PDPL: السجن، الغرامات (حتى 5 مليون ريال)، التشهير، والمصادرة.</td>
+          <td data-label="الكلمة المستهدفة">عقوبات PDPL</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/pdpl-compliance-guide-saudi-companies/">دليل امتثال PDPL للشركات السعودية</a></td>
+          <td data-label="الوظيفة">دليل عملي 5 مراحل لبناء برنامج امتثال PDPL في المنشآت السعودية.</td>
+          <td data-label="الكلمة المستهدفة">دليل امتثال PDPL</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/pdpl-and-ai-saudi/">PDPL والذكاء الاصطناعي في السعودية</a></td>
+          <td data-label="الوظيفة">شرح العلاقة بين PDPL والذكاء الاصطناعي، التحديات المشتركة، والحلول العملية.</td>
+          <td data-label="الكلمة المستهدفة">PDPL والذكاء الاصطناعي</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/pdpl-ai-safety/">PDPL وسلامة الذكاء الاصطناعي</a></td>
+          <td data-label="الوظيفة">كيف يساعد PDPL الشركات السعودية على استخدام AI بأمان، تقليل المخاطر، والامتثال.</td>
+          <td data-label="الكلمة المستهدفة">PDPL وسلامة AI</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/pdpl-ai-compliance-guide/">دليل امتثال PDPL + AI</a></td>
+          <td data-label="الوظيفة">دليل مختصر للمطورين وقادة التقنية عن تطبيق PDPL في منتجاتهم القائمة على AI.</td>
+          <td data-label="الكلمة المستهدفة">دليل امتثال PDPL + AI</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/blog/ai-customer-data-protection-saudi/">حماية بيانات العملاء في AI</a></td>
+          <td data-label="الوظيفة">حماية بيانات العملاء الشخصية عند استخدام AI في التسويق، خدمة العملاء، وتحليل البيانات.</td>
+          <td data-label="الكلمة المستهدفة">حماية بيانات العملاء</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/docs/pdpl-chatgpt-data-protection/">حماية بيانات ChatGPT في PDPL</a></td>
+          <td data-label="الوظيفة">وثائق تقنية تفصيلية عن حماية بيانات ChatGPT: تصنيف PII، أنماط الكشف، قواعد التصفية.</td>
+          <td data-label="الكلمة المستهدفة">وثائق PDPL-ChatGPT</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/docs/pdpl-ai-governance/">حوكمة AI وفق PDPL</a></td>
+          <td data-label="الوظيفة">وثائق تقنية لبناء إطار حوكمة AI متوافق مع PDPL: السياسات، الأدوار، الأدوات، والقياس.</td>
+          <td data-label="الكلمة المستهدفة">وثائق حوكمة AI وفق PDPL</td>
+        </tr>
+        <tr>
+          <td data-label="الصفحة"><a href="/solutions/ai-governance-platform/">منصة BrightAI للحوكمة</a></td>
+          <td data-label="الوظيفة">الحل التقني لتطبيق PDPL مع AI: AI Firewall، Audit Trail، Human Approval، Evidence File.</td>
+          <td data-label="الكلمة المستهدفة">منصة PDPL-AI</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="cluster-table-of-contents__hint">لو تبحث عن دليل شامل PDPL-AI ابدأ بالـ Pillar. لو تبحث عن عقوبات محددة ابدأ بصفحة العقوبات. لو تبحث عن نقل البيانات ابدأ بصفحة النقل. لو تبحث عن ChatGPT تحديداً ابدأ بصفحة ChatGPT. لو تبحث عن اللائحة التنفيذية ابدأ بصفحة اللائحة. لو تبحث عن تطبيق عملي ابدأ بمنصة BrightAI.</p>
+</section>

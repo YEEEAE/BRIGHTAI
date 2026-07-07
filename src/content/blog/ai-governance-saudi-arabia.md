@@ -591,6 +591,111 @@ image: "/images/og/brightai-og-1200x630.png"
                     <td data-label="الكلمة المستهدفة">حوكمة الذكاء الاصطناعي التوليدي</td>
                 </tr>
                 <tr>
+                    <td data-label="الصفحة"><a href="/blog/what-is-ai-governance-saudi-companies/">ما هي حوكمة AI للشركات السعودية؟</a></td>
+                    <td data-label="الوظيفة">شرح مبسط للمفهوم، الفرق بين الحوكمة والأمن السيبراني، ولماذا هي ضرورة وليست رفاهية للشركات السعودية.</td>
+                    <td data-label="الكلمة المستهدفة">حوكمة AI للشركات</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/best-ai-governance-platforms-2026/">أفضل منصات حوكمة الذكاء الاصطناعي 2026</a></td>
+                    <td data-label="الوظيفة">مقارنة تفصيلية لأفضل 6 منصات حوكمة AI في السوق السعودي مع معايير الاختيار.</td>
+                    <td data-label="الكلمة المستهدفة">منصات حوكمة AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/vision-2030-ai-governance-roadmap/">خارطة طريق حوكمة AI في رؤية 2030</a></td>
+                    <td data-label="الوظيفة">ربط حوكمة AI بأهداف رؤية 2030، خارطة طريق 5 سنوات، والمبادرات الوطنية الداعمة.</td>
+                    <td data-label="الكلمة المستهدفة">خارطة طريق حوكمة AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-governance/">حوكمة AI: دليل شامل</a></td>
+                    <td data-label="الوظيفة">مقال تمهيدي عن حوكمة AI بدون تحديد جغرافي، يخدم الباحثين عن المفهوم العام.</td>
+                    <td data-label="الكلمة المستهدفة">حوكمة AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-governance-vs-ai-safety-vs-ai-security/">حوكمة AI vs سلامة AI vs أمن AI</a></td>
+                    <td data-label="الوظيفة">تفصيل الفروقات بين ثلاثة مفاهيم متقاربة غالباً ما يخلط بينها مسؤولو الامتثال.</td>
+                    <td data-label="الكلمة المستهدفة">حوكمة وسلامة وأمن AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-ethics-saudi-responsible-ai/">أخلاقيات الذكاء الاصطناعي والمسؤولية في السعودية</a></td>
+                    <td data-label="الوظيفة">مبادئ أخلاقيات AI في السياق السعودي، مبادئ سدايا السبعة، والمسؤولية المؤسسية.</td>
+                    <td data-label="الكلمة المستهدفة">أخلاقيات الذكاء الاصطناعي</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-firewall-why-you-need-it/">لماذا تحتاج AI Firewall؟</a></td>
+                    <td data-label="الوظيفة">شرح آلية عمل جدار حماية AI، حالات الاستخدام، ولماذا هو خط الدفاع الأول ضد تسرب البيانات.</td>
+                    <td data-label="الكلمة المستهدفة">AI Firewall</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/hidden-ai-risks-saudi-organizations/">المخاطر الخفية للذكاء الاصطناعي في المؤسسات السعودية</a></td>
+                    <td data-label="الوظيفة">أنماط المخاطر التي لا يلاحظها مسؤولو الامتثال (Shadow AI، الانحياز الخفي، تسرب تدريجي).</td>
+                    <td data-label="الكلمة المستهدفة">مخاطر AI الخفية</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/shadow-ai-discovery-saudi-company/">اكتشاف Shadow AI في الشركات السعودية</a></td>
+                    <td data-label="الوظيفة">كيفية اكتشاف أدوات AI غير المرخصة التي يستخدمها الموظفون بدون علم الإدارة.</td>
+                    <td data-label="الكلمة المستهدفة">اكتشاف Shadow AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-audit-trail-saudi/">سجل تدقيق الذكاء الاصطناعي للسوق السعودي</a></td>
+                    <td data-label="الوظيفة">أهمية سجل التدقيق في AI، المتطلبات النظامية، وكيفية بنائه.</td>
+                    <td data-label="الكلمة المستهدفة">سجل تدقيق AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-audit-trail-compliance-path/">مسار امتثال AI Audit Trail</a></td>
+                    <td data-label="الوظيفة">خارطة طريق 4 خطوات لبناء سجل تدقيق متوافق مع PDPL وNCA ECC.</td>
+                    <td data-label="الكلمة المستهدفة">مسار امتثال AI Audit Trail</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/blog/ai-red-teaming-security-testing/">اختبار AI Red Teaming الأمني</a></td>
+                    <td data-label="الوظيفة">منهجية اختبار اختراق نماذج AI، كشف ثغرات Prompt Injection، وتقييم المرونة.</td>
+                    <td data-label="الكلمة المستهدفة">AI Red Teaming</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/ai-governance-saudi-arabia/">حوكمة AI في السعودية (وثائق تقنية)</a></td>
+                    <td data-label="الوظيفة">وثائق تقنية تفصيلية عن تطبيق حوكمة AI في المنشآت السعودية.</td>
+                    <td data-label="الكلمة المستهدفة">وثائق حوكمة AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/ai-governance-platform/">منصة حوكمة AI (وثائق)</a></td>
+                    <td data-label="الوظيفة">وثائق منصة BrightAI للحوكمة، البنية المعمارية، واجهات API.</td>
+                    <td data-label="الكلمة المستهدفة">وثائق منصة الحوكمة</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/ai-risk-management/">إدارة مخاطر AI (وثائق)</a></td>
+                    <td data-label="الوظيفة">منهجية تصنيف مخاطر AI، مصفوفة الاحتمالية والتأثير، وآليات التخفيف.</td>
+                    <td data-label="الكلمة المستهدفة">إدارة مخاطر AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/governance-application/">تطبيق الحوكمة (وثائق)</a></td>
+                    <td data-label="الوظيفة">دليل تطبيق حوكمة AI عملياً في المؤسسات من الصفر.</td>
+                    <td data-label="الكلمة المستهدفة">تطبيق الحوكمة</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/ai-firewall/">AI Firewall (وثائق)</a></td>
+                    <td data-label="الوظيفة">وثائق تقنية لجدار حماية AI، أنماط الكشف، وقواعد التصفية.</td>
+                    <td data-label="الكلمة المستهدفة">وثائق AI Firewall</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/ai-evidence-file/">ملف أدلة AI (وثائق)</a></td>
+                    <td data-label="الوظيفة">كيفية بناء ملف الأدلة، أنواع الأدلة الرقمية، ومتطلبات الجهات التنظيمية.</td>
+                    <td data-label="الكلمة المستهدفة">ملف أدلة AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/ai-audit-trail/">AI Audit Trail (وثائق)</a></td>
+                    <td data-label="الوظيفة">وثائق سجل التدقيق، بنية البيانات، وأمثلة على الاستعلامات.</td>
+                    <td data-label="الكلمة المستهدفة">وثائق AI Audit Trail</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/ai-audit-readiness/">جاهزية تدقيق AI (وثائق)</a></td>
+                    <td data-label="الوظيفة">قائمة تحقق لتجهيز المنشأة لتدقيق AI، المتطلبات، والاختبارات.</td>
+                    <td data-label="الكلمة المستهدفة">جاهزية تدقيق AI</td>
+                </tr>
+                <tr>
+                    <td data-label="الصفحة"><a href="/docs/human-approval-layer/">طبقة الموافقة البشرية (وثائق)</a></td>
+                    <td data-label="الوظيفة">وثائق تقنية لطبقة الموافقة، سيناريوهات التصعيد، وقواعد القرار.</td>
+                    <td data-label="الكلمة المستهدفة">طبقة الموافقة البشرية</td>
+                </tr>
+                <tr>
                     <td data-label="الصفحة"><a href="/solutions/ai-governance-platform/">منصة BrightAI للحوكمة</a></td>
                     <td data-label="الوظيفة">الحل التقني الشامل لتطبيق الإطار السعودي مع الامتثال لـ PDPL وSDAIA وNCA ECC وISO 42001.</td>
                     <td data-label="الكلمة المستهدفة">منصة حوكمة AI</td>

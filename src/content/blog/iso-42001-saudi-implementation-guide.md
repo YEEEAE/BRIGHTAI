@@ -146,3 +146,47 @@ image: "/images/og/brightai-og-1200x630.png"
 <a class="btn secondary" href="/contact/">تحدث مع الفريق</a>
 </div>
 </section>
+
+<section class="cluster-table-of-contents" aria-labelledby="cluster-toc-title">
+<h2 id="cluster-toc-title">جدول محتويات عنقود ISO 42001 والحوكمة</h2>
+<p class="cluster-table-of-contents__intro">هذه الصفحة هي الدليل الشامل (Pillar) لتطبيق <strong>ISO 42001 في السعودية</strong> كإطار دولي لحوكمة الذكاء الاصطناعي. الصفحات المرتبطة تغطي أبعاد تكاملية: حوكمة AI العامة، إطار الحوكمة السعودي، وإرشادات سدايا للذكاء الاصطناعي التوليدي. ابدأ بهذا الـ Pillar للتعرف على ISO 42001، ثم انتقل للصفحات المرتبطة لتطبيق الحوكمة في السياق السعودي.</p>
+<div class="table-container">
+<table class="docs-table cluster-toc">
+<thead>
+<tr>
+<th>الصفحة</th>
+<th>الوظيفة</th>
+<th>الكلمة المستهدفة</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td data-label="الصفحة"><strong><a href="/blog/iso-42001-saudi-implementation-guide/">تطبيق ISO/IEC 42001 في السعودية</a></strong></td>
+<td data-label="الوظيفة">الدليل الشامل (Pillar) — شرح ISO 42001، متطلباته، وعلاقته بضوابط SDAIA وPDPL وNCA ECC، مع خطة تطبيق 6 مراحل.</td>
+<td data-label="الكلمة المستهدفة">ISO 42001 في السعودية</td>
+</tr>
+<tr>
+<td data-label="الصفحة"><a href="/blog/ai-governance-saudi-arabia/">حوكمة الذكاء الاصطناعي في السعودية</a></td>
+<td data-label="الوظيفة">مدخل شامل لحوكمة AI في السوق السعودي، زاوية مكملة لـ ISO 42001 تركز على المتطلبات المحلية.</td>
+<td data-label="الكلمة المستهدفة">حوكمة AI في السعودية</td>
+</tr>
+<tr>
+<td data-label="الصفحة"><a href="/blog/ai-governance-framework-saudi-model/">إطار حوكمة AI السعودي</a></td>
+<td data-label="الوظيفة">الركائز الأربع لإطار الحوكمة السعودي، مقارنة ISO 42001 مع NIST AI RMF وEU AI Act.</td>
+<td data-label="الكلمة المستهدفة">إطار حوكمة AI السعودي</td>
+</tr>
+<tr>
+<td data-label="الصفحة"><a href="/docs/sdaia-generative-ai-guidelines/">إرشادات سدايا للذكاء الاصطناعي التوليدي</a></td>
+<td data-label="الوظيفة">إرشادات سدايا العملية لتطبيق حوكمة GenAI، متوافقة مع ISO 42001.</td>
+<td data-label="الكلمة المستهدفة">إرشادات سدايا</td>
+</tr>
+<tr>
+<td data-label="الصفحة"><a href="/solutions/ai-governance-platform/">منصة BrightAI للحوكمة</a></td>
+<td data-label="الوظيفة">الحل التقني لتطبيق ISO 42001 مع PDPL وNCA ECC وSDAIA في منصة موحدة.</td>
+<td data-label="الكلمة المستهدفة">منصة حوكمة AI</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="cluster-table-of-contents__hint">لو تبحث عن تطبيق ISO 42001 في السعودية ابدأ بالـ Pillar. لو تبحث عن السياق السعودي الأوسع ابدأ بحوكمة AI في السعودية. لو تبحث عن الإطار التشغيلي الكامل ابدأ بدليل الإطار السعودي. لو تبحث عن GenAI تحديداً ابدأ بإرشادات سدايا. لو تبحث عن تطبيق عملي ابدأ بمنصة BrightAI.</p>
+</section>

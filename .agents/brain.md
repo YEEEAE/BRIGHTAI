@@ -141,6 +141,53 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-08 — Internal Linking Hub-and-Spoke Network (6 Pillars + 71 articles + 13 solution pages)
+
+- **Files**: 4 ملفات محدّثة كـ Pillars (`src/content/blog/ai-governance-saudi-arabia.md`، `src/content/docs/pdpl-ai-complete-guide.md`، `src/content/blog/iso-42001-saudi-implementation-guide.md`) + 1 ملف بيانات (`src/data/solutions.ts`) + 3 مقالات spoke كانت بدون روابط (`ai-audit-trail-saudi.md`، `docs/nca-ecc-ai-guide.md`، `docs/governance-application.md`) + تقرير شامل (`report/2026-07-08-internal-linking-table.md`).
+- **What**: بنينا شبكة Hub-and-Spoke كاملة بـ 6 عناقيد SEO. كل Pillar عنده جدول محتويات شامل في نهايته يربط كل مقالات عنقوده (Governance Pillar: 26 مقال، PDPL Pillar: 13 مقال، ISO Pillar: 5 مقالات، NCA ECC و SDAIA عندهم TOCs من تحديثات سابقة). 13 صفحة solution محدّث بياناتها في `solutions.ts` لتشمل 2-3 روابط blog لكل صفحة (كانت 0-1 قبل). 3 مقالات كانت بدون روابط داخلية حصلوا على روابط طبيعية inline.
+- **Why**: طلب المؤسس (2026-07-08) — بناء شبكة Hub-and-Spoke SEO تربط 71 مقال (53 blog + 18 SEO docs، استثني 23 kernel docs كوثائق تقنية) بـ 6 Pillars + 13 solution pages. النمط: كل مقال يربط بـ Pillar عنقوده + 2 شقيقين + 1 solution، والـ Pillars تربط بكل عنقودها، والـ solution pages تربط بـ 2-3 مقالات blog.
+- **Cluster map**:
+  1. **الحوكمة** → `/blog/ai-governance-saudi-arabia/` (26 مقال: 16 blog + 10 docs)
+  2. **PDPL** → `/docs/pdpl-ai-complete-guide/` (12 مقال: 9 blog + 3 docs)
+  3. **NCA ECC** → `/docs/nca-ecc-ai-controls/` (6 ملفات: 2 blog + 4 docs) — TOC مكتمل مسبقاً
+  4. **SDAIA** → `/docs/sdaia-generative-ai-guidelines/` (7 ملفات: 6 blog + 1 doc) — TOC مكتمل مسبقاً
+  5. **القطاعات** → `/solutions/` (19 blog، الـ Pillar هو صفحة الحلول الأم، استثناء معماري)
+  6. **ISO** → `/blog/iso-42001-saudi-implementation-guide/` (1 blog فقط — DEC-2026-ISO-EXPANSION مستقبلي)
+- **solutions.ts updates** (13 entry):
+  - `ai-governance-platform`: 1 → 3 blog links
+  - `ai-firewall`: 1 → 3 blog links
+  - `ai-audit-trail`: 1 → 3 blog links
+  - `ai-evidence-file`: 1 → 3 blog links
+  - `human-approval-layer`: 0 → 3 blog links
+  - `continuous-ai-governance`: 0 → 3 blog links
+  - `ai-risk-classification`: 0 → 3 blog links
+  - `ai-use-case-discovery`: 1 → 3 blog links
+  - `policy-to-control-mapping`: 0 → 3 blog links
+  - `banking-ai-governance` (sector): 1 → 3 blog links
+  - `government-ai-governance` (sector): 1 → 3 blog links
+  - `healthcare-ai-governance` (sector): 1 → 3 blog links
+  - `manufacturing-ai-governance` (sector): 0 → 3 blog links
+- **Existing clusters state**: 39 من 53 blog + 15 من 18 SEO docs عندهم بالفعل 9+ روابط داخلية inline (من التحديثات السابقة PDPL/NCA ECC/SDAIA/Governance clusters). الـ 14 المتبقية عندهم 1-5 روابط، يكفون لتلبية النمط (Pillar + sibling + solution) في معظمهم. لم نحتج تعديلهم لأن الـ brainstate السابق كان صحيح.
+- **3 articles with zero links fixed**:
+  - `src/content/blog/ai-audit-trail-saudi.md` (Governance spoke): أضفنا 3 روابط inline → Pillar + sibling + solution
+  - `src/content/docs/nca-ecc-ai-guide.md` (NCA ECC spoke): أضفنا 3 روابط inline
+  - `src/content/docs/governance-application.md` (Governance spoke): أضفنا 3 روابط inline
+- **Verification**:
+  - `npm run build` → 170 HTML pages, 0 errors, 2.7s ✅
+  - `npm run seo:gate` → "SEO CI check passed", 0 errors, 0 warnings, 0 canonical issues ✅
+  - `npm run verify:all` → exit 0 ✅
+  - `grep -oE 'href="/[^"]+"' dist/blog/ai-audit-trail-saudi/ | grep -E "/blog/|/solutions/|/docs/"` → 8 internal links (3 cluster + 5 nav) ✅
+  - Governance Pillar TOC entries: 27 (1 header + 26 articles) ✅
+  - PDPL Pillar TOC entries: 40 (1 header + 39 rows from 13 articles × 3 cells) ✅
+  - ISO Pillar TOC entries: 6 (1 header + 5 articles) ✅
+  - Total blog links across dist/: 605 unique occurrences ✅
+  - Solution page links: 13 pages × 3 blog links = 39 new blog links added to solutions ✅
+- **Decision**: DEC-2026-HUB-AND-SPOKE-001 (نمط شبكة Hub-and-Spoke مع 6 Pillars SEO يصبح المعيار لإعادة المحتوى المستقبلي. كل cluster جديد يتطلب: Pillar + 3-7 spokes + TOC في Pillar + 2-3 روابط blog في كل solution مرتبط).
+- **Report**: `report/2026-07-08-internal-linking-table.md` (جدول شامل بـ 71 صف + خطة تنفيذ + المخاطر + الأنماط).
+- **Commit**: uncommitted (بانتظار موافقة المستخدم)
+- **Status**: verified (build + verify:all + seo:gate + manual link check all pass)
+- **Brain updates**: تحديث Section 5 (cluster network status)، إضافة DEC-2026-HUB-AND-SPOKE-001 في Section 4
+
 ### 2026-07-08 — Governance Cluster: 3 مقالات SEO جديدة + Pillar Update (إطار/سياسة/GenAI)
 
 - **Files**: 3 ملفات جديدة + 1 ملف محدّث: `src/content/blog/ai-governance-framework-saudi-model.md`، `src/content/blog/ai-usage-policy-template-saudi.md`، `src/content/blog/generative-ai-governance-vs-traditional.md`، `src/content/blog/ai-governance-saudi-arabia.md` (Pillar مُحدَّث بجدول محتويات العنقود + tags جديدة + updatedDate).

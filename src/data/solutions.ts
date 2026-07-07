@@ -93,7 +93,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'المنصة الشاملة اللي تجمع كل الحلول. رؤية مركزية لكل استخدامات AI، السياسات، والمخاطر.',
     whenNeeded:'لو عندك أكثر من ٢ حالة استخدام AI.',
     related:['ai-firewall','ai-audit-trail','human-approval-layer','ai-evidence-file'],
-    docs:['/docs/ai-governance-platform/'], blog:['/blog/ai-governance/'], kernel:['/kernel/'],
+    docs:['/docs/ai-governance-platform/'], blog:['/blog/ai-governance/','/blog/what-is-ai-governance-saudi-companies/','/blog/best-ai-governance-platforms-2026/'], kernel:['/kernel/'],
     content: {
       lead: [
         'منصة حوكمة الذكاء الاصطناعي من BrightAI هي البنية التحتية المركزية لإدارة استخدام AI داخل المؤسسات السعودية. تساعدك على رصد كل أداة AI ومستخدم وقرار في مكان واحد، وتطبيق سياسات الاستخدام تلقائياً، مع التوافق الكامل مع PDPL وNCA ECC وISO/IEC 42001.',
@@ -182,7 +182,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'يفحص كل طلب AI ويخفي البيانات الشخصية والحساسة قبل وصولها للنموذج. حماية في الزمن الفعلي.',
     whenNeeded:'من اليوم الأول لاستخدام AI.',
     related:['ai-audit-trail','ai-risk-classification','human-approval-layer'],
-    docs:['/docs/ai-firewall/'], blog:['/blog/ai-firewall-why-you-need-it/'], kernel:['/kernel/chat/'],
+    docs:['/docs/ai-firewall/'], blog:['/blog/ai-firewall-why-you-need-it/','/blog/chatgpt-pdpl-data-compliance/','/blog/nca-cybersecurity-requirements-saudi/'], kernel:['/kernel/chat/'],
     content: content_ai_firewall,
   },
   {
@@ -195,7 +195,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'سجل تدقيق غير قابل للتعديل (Append-only) محمي بـ SHA-256. كل طلب وقرار محفوظ مدى الحياة.',
     whenNeeded:'لو شركتك تحت NCA أو SFDA.',
     related:['ai-firewall','human-approval-layer','ai-evidence-file'],
-    docs:['/docs/ai-audit-trail/'], blog:['/blog/ai-audit-trail-saudi/'], kernel:['/kernel/audit/'],
+    docs:['/docs/ai-audit-trail/'], blog:['/blog/ai-audit-trail-saudi/','/blog/ai-audit-trail-compliance-path/','/docs/ai-audit-trail/'], kernel:['/kernel/audit/'],
     content: content_ai_audit_trail,
   },
   {
@@ -208,7 +208,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'ملف PDF موقّع رقمياً يجمع كل البيانات والقرارات والموافقات. جاهز للمدقق أو الجهة التنظيمية.',
     whenNeeded:'قبل أي تدقيق خارجي.',
     related:['ai-audit-trail','human-approval-layer','continuous-ai-governance'],
-    docs:['/docs/ai-evidence-file/'], blog:['/blog/ai-audit-trail-compliance-path/'], kernel:['/kernel/evidence/'],
+    docs:['/docs/ai-evidence-file/'], blog:['/blog/ai-audit-trail-compliance-path/','/docs/ai-evidence-file/','/blog/banking-ai-governance-sama-requirements/'], kernel:['/kernel/evidence/'],
     content: content_ai_evidence_file,
   },
   {
@@ -223,7 +223,7 @@ export const solutions: SolutionData[] = [
     cardTitle:'طبقة الموافقة البشرية',
     whenLabel:'متى تحتاجها؟',
     related:['ai-risk-classification','ai-firewall','ai-audit-trail'],
-    docs:['/docs/human-approval-layer/'], blog:[], kernel:['/kernel/approvals/'],
+    docs:['/docs/human-approval-layer/'], blog:['/docs/human-approval-layer/','/blog/healthcare-ai-governance-saudi-hospitals/','/blog/banking-ai-governance-sama-requirements/'], kernel:['/kernel/approvals/'],
     content: content_human_approval_layer,
   },
   {
@@ -236,7 +236,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'حوكمة AI مو مشروع لمرة. هذا الحل يراقب ويحدّث ويعدّل السياسات تلقائياً مع تغير الأنظمة.',
     whenNeeded:'بعد ما تطبق الحوكمة الأساسية.',
     related:['ai-governance-platform','policy-to-control-mapping','ai-risk-classification'],
-    docs:['/docs/ai-governance-platform/'], blog:[], kernel:['/kernel/compliance/'],
+    docs:['/docs/ai-governance-platform/'], blog:['/blog/pdpl-penalties-saudi-fines/','/blog/saudi-ai-landscape-sdaia-humain-allam-scai/','/blog/rpa-automation-saudi-savings/'], kernel:['/kernel/compliance/'],
     content: content_continuous_ai_governance,
   },
   {
@@ -250,7 +250,7 @@ export const solutions: SolutionData[] = [
     whenNeeded:'لما يكثر عدد استخدامات AI.',
     cardTitle:'تصنيف مخاطر AI',
     related:['human-approval-layer','ai-use-case-discovery','continuous-ai-governance'],
-    docs:['/docs/ai-risk-management/'], blog:[], kernel:['/kernel/policies/'],
+    docs:['/docs/ai-risk-management/'], blog:['/docs/ai-risk-management/','/blog/hidden-ai-risks-saudi-organizations/','/blog/shadow-ai-discovery-saudi-company/'], kernel:['/kernel/policies/'],
     content: content_ai_risk_classification,
   },
   {
@@ -264,7 +264,7 @@ export const solutions: SolutionData[] = [
     whenNeeded:'لو ما عندك علم بكل استخدامات AI.',
     cardTitle:'اكتشاف استخدامات AI',
     related:['ai-risk-classification','ai-firewall','ai-governance-platform'],
-    docs:['/docs/ai-governance-platform/'], blog:['/blog/shadow-ai-discovery-saudi-company/'], kernel:['/kernel/stats/'],
+    docs:['/docs/ai-governance-platform/'], blog:['/blog/shadow-ai-discovery-saudi-company/','/blog/digital-transformation-sme-saudi/','/blog/ai-implementation-cost-saudi/'], kernel:['/kernel/stats/'],
     content: content_ai_use_case_discovery,
   },
   {
@@ -277,7 +277,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'يحوّل سياسات الورق إلى ضوابط تقنية تطبق نفسها. من السياسة إلى التنفيذ بكبسة واحدة.',
     whenNeeded:'لو عندك سياسات ما تتنفذ.',
     related:['continuous-ai-governance','ai-governance-platform','ai-risk-classification'],
-    docs:['/docs/nca-ecc-ai-controls-mapping/'], blog:[], kernel:['/kernel/policies/'],
+    docs:['/docs/nca-ecc-ai-controls-mapping/'], blog:['/blog/ai-usage-policy-template-saudi/','/blog/ndmo-roles-requirements-guide/','/docs/nca-ecc-ai-controls-mapping/'], kernel:['/kernel/policies/'],
     content: content_policy_to_control_mapping,
   },
 ];
@@ -313,7 +313,7 @@ export const sectors: SectorData[] = [
         parentSlug:'banking-ai-governance', parentHref:'/solutions/banking-ai-governance/',
       },
     ],
-    docs:['/docs/nca-ecc-ai-governance/'], blog:['/blog/banking-ai-governance-sama-requirements/'],
+    docs:['/docs/nca-ecc-ai-governance/'], blog:['/blog/banking-ai-governance-sama-requirements/','/blog/ai-banking-saudi/','/blog/healthcare-ai-governance-saudi-hospitals/'],
     regulations: regulationsBySectorSlug['banking-ai-governance'],
     faqs: faqsBySectorSlug['banking-ai-governance'],
   },
@@ -347,7 +347,7 @@ export const sectors: SectorData[] = [
         parentSlug:'government-ai-governance', parentHref:'/solutions/government-ai-governance/',
       },
     ],
-    docs:['/docs/pdpl-ai-governance/'], blog:['/blog/ai-governance-saudi-arabia/'],
+    docs:['/docs/pdpl-ai-governance/'], blog:['/blog/ai-governance-saudi-arabia/','/blog/saudi-ai-regulators-guide/','/blog/sdaia-seven-principles-practical-guide/'],
     regulations: regulationsBySectorSlug['government-ai-governance'],
     faqs: faqsBySectorSlug['government-ai-governance'],
   },
@@ -381,7 +381,7 @@ export const sectors: SectorData[] = [
         parentSlug:'healthcare-ai-governance', parentHref:'/solutions/healthcare-ai-governance/',
       },
     ],
-    docs:['/docs/ai-governance-saudi-arabia/'], blog:['/blog/healthcare-ai-governance-saudi-hospitals/'],
+    docs:['/docs/ai-governance-saudi-arabia/'], blog:['/blog/healthcare-ai-governance-saudi-hospitals/','/blog/ai-healthcare-saudi/','/docs/human-approval-layer/'],
     regulations: regulationsBySectorSlug['healthcare-ai-governance'],
     faqs: faqsBySectorSlug['healthcare-ai-governance'],
   },
@@ -395,7 +395,7 @@ export const sectors: SectorData[] = [
     shortDesc:'حوكمة AI في الجودة والصيانة التنبؤية وسلامة IoT وتوصيات التشغيل داخل المصانع.',
     whenNeeded:'إذا كان AI يؤثر على خط إنتاج أو جودة أو أصل صناعي.',
     related:['ai-firewall','ai-audit-trail','ai-risk-classification','continuous-ai-governance'],
-    docs:['/docs/ai-risk-management/'], blog:[],
+    docs:['/docs/ai-risk-management/'], blog:['/blog/computer-vision-saudi-factories/','/blog/ai-implementation-cost-saudi/','/blog/ai-vision-2030-saudi/'],
     regulations: regulationsBySectorSlug['manufacturing-ai-governance'],
     faqs: faqsBySectorSlug['manufacturing-ai-governance'],
   },
