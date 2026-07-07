@@ -7,7 +7,7 @@ SEO CI CHECK
 - Hreflang pages passed: 29
 - Service pages checked: 15
 - Service pages passed: 15
-- Sitemap URLs: 29
+- Sitemap URLs: 29 
 - Files scanned for broken links: 457
 - References scanned for broken links: 28903
 - Broken links: 0
