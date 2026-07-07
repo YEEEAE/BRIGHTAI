@@ -1,0 +1,98 @@
+---
+/**
+ * src/pages/en/index.astro — English-language homepage stub.
+ *
+ * Purpose (REPORTS-SEO-KEYWORDS-2026-07-08):
+ *   Anchor for the homepage hreflang en-SA → https://brightai.site/en/ signal
+ *   requested by the founder to support the bilingual SERP targeting of the
+ *   Arabic homepage ("حوكمة الذكاء الاصطناعي في السعودية" cluster).
+ *
+ * Scope:
+ *   This is a stub. The full BrightAI experience (hero, layers, kernel
+ *   showcase, compliance packs, sectors, evidence file, comparison, FAQ,
+ *   CTA form, docs grid, etc.) is published only in Arabic — the canonical
+ *   site language. The stub exists so the hreflang signal is valid (the
+ *   alternate URL must resolve to a 200 page, not a 404).
+ *
+ * Constraints:
+ *   - Mirrors the SEO foundation: FoundationSchema emits Organization +
+ *     WebSite + LocalBusiness + WebPage automatically via EnglishLayout.
+ *   - Single H1, no duplicate H1s elsewhere.
+ *   - hreflang carries ar-SA + x-default back to the Arabic homepage.
+ *   - Saudi dialect preserved in the cross-link to the Arabic version.
+ */
+import EnglishLayout from '../../layouts/EnglishLayout.astro';
+
+const route = '/en/';
+const canonical = `https://brightai.site${route}`;
+
+// hreflang: ar-SA points back to the full Arabic homepage, x-default mirrors it.
+// en-SA is the current page's self-reference.
+const hreflang = [
+  { lang: 'en-SA', href: canonical },
+  { lang: 'ar-SA', href: 'https://brightai.site/' },
+  { lang: 'x-default', href: 'https://brightai.site/' },
+];
+
+const title = 'BrightAI — AI Governance & Safety for Saudi Arabia | Saudi AI Safety OS';
+const description =
+  'BrightAI is a Saudi-built AI Safety OS — AI governance, AI firewall, audit trail, human approvals, and compliance packs for PDPL, NCA ECC, SFDA, and SAMA. Built in Riyadh for Saudi enterprises.';
+---
+
+<EnglishLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  hreflang={hreflang}
+  currentPath={route}
+  languageCounterpart="/"
+>
+  <section class="en-homepage" aria-labelledby="en-homepage-title">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8 py-16 lg:py-24 text-center">
+      <span class="section__eyebrow" lang="ar">Saudi AI Safety OS</span>
+      <h1 id="en-homepage-title" class="section__title mt-4">
+        AI Governance &amp; Safety for Saudi Arabia
+      </h1>
+      <p class="section__subtitle mt-6">
+        BrightAI is a Saudi-built AI Safety OS — the operating layer that sits
+        between your employees, your data, and AI models. We deliver AI firewall,
+        audit trail, human approval, and compliance packs aligned with PDPL,
+        NCA ECC, SFDA, and SAMA.
+      </p>
+
+      <div class="mt-10 card card--glass rounded-2xl p-6 lg:p-8 text-start">
+        <p class="text-sm text-white/70 leading-loose">
+          <strong class="text-white">Full experience in Arabic:</strong> The
+          complete BrightAI homepage — including the AI governance framework,
+          compliance packs, sector pages, kernel demo, evidence files, and the
+          Riyadh / Dammam / Jeddah / Khobar / Mecca / Madinah local pages — is
+          published in Saudi Arabic dialect.
+        </p>
+        <a
+          href="/"
+          hreflang="ar-SA"
+          class="home-cta-primary mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"
+        >
+          <span lang="ar">النسخة العربية الكاملة ←</span>
+        </a>
+      </div>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-3 text-sm">
+        <a
+          href="https://wa.me/966538229013"
+          target="_blank"
+          rel="nofollow noopener noreferrer"
+          class="wa-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"
+        >
+          Contact us on WhatsApp
+        </a>
+        <a
+          href="/privacy-policy/"
+          class="card card--glass inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white/80 font-bold hover:border-cyan-500/40 transition-all"
+        >
+          Privacy policy
+        </a>
+      </div>
+    </div>
+  </section>
+</EnglishLayout>

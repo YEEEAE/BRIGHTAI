@@ -156,11 +156,23 @@ const enhancedJsonLd = appendLd(jsonLd, [
 ]);
 ---
 
+{/* REPORTS-SEO-KEYWORDS-2026-07-08: Homepage re-targeted to the AI Governance
+    keyword cluster. Title now leads with the canonical Saudi search term
+    "حوكمة الذكاء الاصطناعي" + location phrase. Description carries the same
+    anchor + the "الذكاء الاصطناعي في السعودية" variant + a clear CTA.
+    hreflang enriched with en-SA (placeholder EN homepage) + x-default so the
+    page signals bilingual availability to Google. Foundation schema (Org +
+    WebSite + LocalBusiness + WebPage) is emitted by FoundationSchema — no
+    duplicate @id emitted here (see PERF-FIX comment above). */}
 <BaseLayout
-  title="BrightAI | حوكمة وأمان AI للشركات السعودية — PDPL"
-  description="منصة سعودية متكاملة لحوكمة وأمان AI. تجمع AI Firewall، سجلات التدقيق، والموافقات البشرية في نظام واحد متوافق مع PDPL وNCA ECC لتأمين مؤسستك اليوم."
+  title="حوكمة الذكاء الاصطناعي في السعودية — Saudi AI Safety OS | BrightAI"
+  description="حوكمة الذكاء الاصطناعي في السعودية — منصة سعودية تجمع AI Firewall، سجلات التدقيق، والموافقات البشرية في نظام واحد متوافق مع PDPL وNCA. الذكاء الاصطناعي في السعودية بأمان. تواصل واتساب للبدء."
   canonical="https://brightai.site/"
-  hreflang={[{lang:'ar-SA',href:'https://brightai.site/'}]}
+  hreflang={[
+    {lang:'ar-SA',href:'https://brightai.site/'},
+    {lang:'en-SA',href:'https://brightai.site/en/'},
+    {lang:'x-default',href:'https://brightai.site/'}
+  ]}
   jsonLd={enhancedJsonLd as any}
 >
 {/* ═══════════════ 1. HERO (SplitHero — DottedBackground now in BaseLayout) ═══════════════ */}

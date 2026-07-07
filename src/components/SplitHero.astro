@@ -81,9 +81,14 @@ import BrightStar from './brand/BrightStar.astro';
       </span>
 
       <div class="split-hero__title-wrap">
+        {/* REPORTS-SEO-KEYWORDS-2026-07-08: H1 rewritten to lead with the canonical
+            Saudi search term "حوكمة الذكاء الاصطناعي" verbatim (was previously
+            "منصة أمان وحوكمة" + "الذكاء الاصطناعي" on a separate line, which
+            left the two anchor words split across visual lines).
+            Visual structure preserved: gradient on the keyword span, plain
+            text for the location phrase. Saudi dialect untouched. */}
         <h1 id="hero-title" class="split-hero__h1" transition:animate="fade">
-          منصة أمان وحوكمة
-          <span class="gradient-text">الذكاء الاصطناعي</span>
+          <span class="gradient-text">حوكمة الذكاء الاصطناعي</span>
           للشركات
           <span class="gradient-text">السعودية</span>
         </h1>
