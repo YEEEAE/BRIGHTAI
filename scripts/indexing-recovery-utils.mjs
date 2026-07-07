@@ -2,12 +2,24 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 export const SITE_ORIGIN = "https://brightai.site";
+// REPORTS-SEO-FOUNDATION (2026-07-07): added agent / worktree dirs to the
+// ignorelist so audit output isn't polluted by code living inside tool
+// sandboxes (mavis, hermes, kiro, kilo, roo, claude, opencode worktrees).
+// None of these directories ship to production.
 export const IGNORED_DIRS = new Set([
   ".git",
   ".agents",
   ".render-static",
   "node_modules",
   "reports",
+  ".kilo",
+  ".hermes",
+  ".kiro",
+  ".roo",
+  ".claude",
+  ".vscode",
+  ".astro",
+  "_archive",
 ]);
 
 export async function walkFiles(root, current = "", files = []) {

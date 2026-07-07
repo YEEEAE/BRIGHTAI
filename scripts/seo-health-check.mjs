@@ -40,6 +40,21 @@ const HTML_IGNORE_DIRS = new Set([
   "components",
   ".kilo",
   "_archive",
+  // REPORTS-SEO-FOUNDATION (2026-07-07): ignore internal Lighthouse /
+  // performance reports — they are not part of the public SEO surface,
+  // they are diagnostic HTML and never get crawled.
+  "_reports",
+  "qa",
+  "reports",
+  ".hermes",
+  ".claude",
+  ".kiro",
+  ".roo",
+  ".well-known",
+  ".vscode",
+  ".astro",
+  ".github",
+  "playwright",
 ]);
 const INTERNAL_PAGE_PATTERN =
   /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^mais-OBM\/index\.html$|(^|\/)(admin|settings|analytics|reports|operations|scorecard|copilot|executive)(\/|\.|$)/i;

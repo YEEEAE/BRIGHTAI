@@ -18,7 +18,7 @@ import ArabicLayout from './ArabicLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import DocsRelatedLinks from '../components/DocsRelatedLinks.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { ORGANIZATION, getHowToLd, getBreadcrumbLd } from '../data/schema-helpers';
+import { ORGANIZATION, getBreadcrumbLd } from '../data/schema-helpers';
 
 interface Heading {
   depth: 2 | 3;
@@ -105,16 +105,6 @@ const jsonLd = {
       { name: 'الوثائق', href: '/docs/' },
       { name: title, href: canonical },
     ]),
-    getHowToLd({
-      canonical,
-      name: `دليل BrightAI: ${title}`,
-      description,
-      steps: [
-        { name: 'افهم المفهوم', text: `ابدأ بقراءة ${title} من BrightAI لفهم المفهوم والسياق.` },
-        { name: 'طبّق على بيئتك', text: 'استخدم السياسة أو الضوابط في شركتك ووثّق التطبيق.' },
-        { name: 'وثّق وسجّل', text: 'فعّل سجل التدقيق وملف الأدلة لإثبات الامتثال.' },
-      ],
-    }),
   ],
 };
 

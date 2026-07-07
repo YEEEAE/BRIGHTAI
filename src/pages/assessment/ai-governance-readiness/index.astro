@@ -20,7 +20,6 @@ import Icon from '../../../components/Icon.astro';
 import {
   ORGANIZATION,
   getBreadcrumbLd,
-  getHowToLd,
 } from '../../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'تقييم الجاهزية' }];
@@ -162,18 +161,6 @@ const jsonLd = {
       { name: 'الرئيسية', href: '/' },
       { name: 'تقييم الجاهزية', href: '/assessment/ai-governance-readiness/' },
     ]),
-    getHowToLd({
-      canonical: 'https://brightai.site/assessment/ai-governance-readiness/',
-      name: 'تقييم جاهزية حوكمة AI في 4 خطوات',
-      description: 'منهج BrightAI لتقييم جاهزية حوكمة الذكاء الاصطناعي في المؤسسات السعودية: الفحص الفني، التصنيف، الدمج، التشغيل.',
-      totalTime: 'P14D',
-      steps: [
-        { name: 'الفحص الفني والاستكشاف', text: 'فحص مسارات تدفق البيانات وتحديد أدوات AI و Shadow AI.', url: 'https://brightai.site/solutions/ai-firewall/' },
-        { name: 'تصنيف المخاطر', text: 'بناء مستويات تصنيف المخاطر وتحديد القواعد التلقائية.', url: 'https://brightai.site/solutions/ai-risk-classification/' },
-        { name: 'دمج AI Firewall', text: 'إدراج طبقة الأمان الذكية لمنع مشاركة البيانات الحساسة.', url: 'https://brightai.site/solutions/ai-firewall/' },
-        { name: 'تشغيل السجل والأدلة', text: 'تفعيل Audit Trail غير القابل للتعديل وتوليد ملفات الأدلة.', url: 'https://brightai.site/solutions/ai-audit-trail/' },
-      ],
-    }),
   ],
 };
 

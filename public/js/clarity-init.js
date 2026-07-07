@@ -1,9 +1,10 @@
 /**
  * clarity-init.js — Microsoft Clarity loader.
  *
- * Loaded with `defer` from BaseLayout.astro to replace the inline is:inline
- * Clarity script that previously lived in <head>. The Clarity ID is injected
- * at build time from SITE.clarityId via window.__BRIGHTAI_CLARITY_ID__.
+ * Loaded with `defer` from BaseLayout.astro. Replaces a prior is:inline Clarity
+ * script to remove the need for `unsafe-inline` in CSP script-src. The Clarity
+ * ID is read from the `data-clarity-id` attribute on this <script> tag (HTML
+ * attributes are not governed by script-src CSP).
  *
  * Behavior contract (preserved from prior inline version):
  *   - Skip silently if no Clarity ID is configured (placeholder or empty).
@@ -15,9 +16,16 @@
  */
 (function () {
   'use strict';
-  var id = window.__BRIGHTAI_CLARITY_ID__;
-  if (!id) return; // no Clarity ID configured — skip silently
   /* eslint-disable */
+  var id = '';
+  var scripts = document.getElementsByTagName('script');
+  for (var i = 0; i < scripts.length; i++) {
+    if (scripts[i].src && scripts[i].src.indexOf('/js/clarity-init.js') !== -1) {
+      id = scripts[i].getAttribute('data-clarity-id') || '';
+      break;
+    }
+  }
+  if (!id) return; // no Clarity ID configured — skip silently
   (function (c, l, a, r, i, t, y) {
     c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
     t = l.createElement(r);
