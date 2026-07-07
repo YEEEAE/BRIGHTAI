@@ -9,6 +9,13 @@
  * - data-sidebar attribute on body controls collapse state (72px expanded / 260px)
  * - All existing behavior preserved: skip-link, top-nav, focus visibility, etc.
  *
+ * PERF(bloat-3-fixes-2026-07-07):
+ * - kernel.css (128KB raw) loaded ONLY here, not in BaseLayout.
+ *   Astro will emit a separate KernelLayout.*.css bundle for kernel pages
+ *   only — homepage and other pages no longer pay for it.
+ * - The CSS layer remains in the same slot (kernel) so cascade order
+ *   is preserved when this file IS loaded.
+ *
  * RTL-aware, touch ≥44px, aria + keyboard nav.
  * Uses V2/V3 design tokens exclusively.
  */
@@ -40,6 +47,15 @@ const allItems = [
   jsonLd={jsonLd}
   currentPath={currentPath}
 >
+  {/* perf(bloat-3-fixes-2026-07-07): Kernel-only styles.
+      Was: BaseLayout @import kernel.css (128KB raw) for every page.
+      Now: loaded here only. Astro emits a separate KernelLayout.*.css
+      bundle that ships only to /kernel/* pages.
+      Layer 'kernel' is declared identically so cascade order is preserved
+      when this bundle is present. */}
+  <style is:global>
+    @import '../styles/kernel.css' layer(kernel);
+  </style>
   <style>
     /* Skip-link */
     .k-skip-link {
