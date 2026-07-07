@@ -145,3 +145,52 @@ Stage Summary:
 - النتيجة: 5 صفحات تشترك في نفس الـ visual language، 0 inline styles للـ layout (إلا text-align:center مبرّر)، 0 legacy classes مستخدمة، 0 console/page errors.
 - القيد: 0 نص منشور تم تعديله (grep cross-checked)، 0 sections محذوفة، 0 canonical/hreflang changes، form action preserved verbatim.
 - المخاطر المتبقية: CSS budget وصل ~6200 سطر في pages.css (من 5523)؛ اقتراح: فصل secondary-pages.css لو وصل 8000+. Map embed يعتمد على Google Maps output=embed endpoint المستقر.
+
+---
+Task ID: 2026-07-07-001
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: تنظيف ملفات مخالفة تصل الإنتاج + نظافة المستودع — لا تلمس المحتوى أو الأنماط
+Started: 2026-07-07T03:51:00+03:00
+Mode: Senior
+Branch: cleanup/violating-files
+
+Work Log:
+- 2026-07-07T03:48: stash → `git stash push BRIGHTAI-Redesign-Prompts.md` (للحفاظ على WIP المستخدم)
+- 2026-07-07T03:51: `git checkout -b cleanup/violating-files` من main
+- 2026-07-07T03:53: grep → `logo 2.webp` مرجع في 3 سطور من `public/sitemap-images.xml` (250/252/253) → أصلح كل واحد إلى `logo.webp` ثم `git rm public/logo 2.webp`
+- 2026-07-07T03:54: grep → مراجع وظيفية للـ .bak الستة = صفر (مراجع نصية في `.agents/brain.md` و `report/*.md` توثيقية فقط، ليست imports) → `git rm` للستة
+- 2026-07-07T03:55: تحقق dist → `index-2.html` و `report/perf/*.report.html` غير موجودين به (Astro لا ينشرها) → نقل لـ `_reports/` مع rebrand لـ `_reports/redesign-prompts-snapshot.html`
+- 2026-07-07T03:56: `grep -rn 'console.log' src/ kernel/ --include=*.ts --include=*.astro --include=*.js` → 6 نتائج `[v0]/[CHAT]` في 3 ملفات → حذف 6 سطور بعد قراءة كل سياق (الـ catch blocks كلها عندها showToast أو console.warn موازية)
+- 2026-07-07T03:57: `node --check` على الملفات الـ 3 المعدَّلة = نجح
+- 2026-07-07T03:58: حدّثت worklog.md (هذا السجل)
+- 2026-07-07T03:59: تحقّق نهائي (find + npm run build مذكور تحت في الـ Stage Summary)
+
+جدول الحذف (الملف | الدليل grep | commit):
+
+| الملف المحذوف / المنقول | الدليل (ناتج grep) | commit |
+|---|---|---|
+| `public/logo 2.webp` | `grep -rn 'logo 2' src/ public/` → 3 سطور في sitemap-images.xml (250/252/253) — أصلحتها أولًا إلى `logo.webp` | `6b1828a8` |
+| `astro.config.mjs.bak.20260706` | `grep -rn 'bak.20260706' --include='*.ts/*.{tsx,astro,js,mjs,cjs,json,yml,yaml,md}' .` → 0 results | `20404296` |
+| `src/content.config.ts.bak-blogger` | `grep -rn 'bak-blogger' ...` → 0 results | `20404296` |
+| `src/content.config.ts.bak-current` | `grep -rn 'bak-current' ...` → 0 results | `20404296` |
+| `src/content.config.ts.bak-minimal` | `grep -rn 'bak-minimal' ...` → 0 results | `20404296` |
+| `src/data/blog.ts.bak-2026-07-07` | `grep -rn 'bak-2026-07-07' ...` → 0 results (مرجع نصّي واحد في reports/internal-links/full-inventory.json لكن scan-entry ليس import) | `20404296` |
+| `src/styles/tokens.css.bak.20260630` | `grep -rn 'bak.20260630' ...` → 0 results | `20404296` |
+| `index-2.html` → `_reports/redesign-prompts-snapshot.html` | `find dist -name 'index-2*'` → 0 results (ليس في مسار النشر)؛ الـ refs في `reports/internal-links/full-inventory.json` (سطران) metadata وليست imports | `eb4c3ca2` |
+| `report/perf/*.report.html` (12 ملف) → `_reports/perf/` | `find dist -name '*.report.html'` → 0 results (ليس في مسار النشر)؛ `.json` و `.summary.json` بقيا مكانهم (مو في نطاق المطلوب) | `eb4c3ca2` |
+| `kernel/assets/js/kernel-reports.js:76` console.log | `grep -rn 'console.log' src/ kernel/ --include=*.ts --include=*.astro --include=*.js` → 1/6 من أصل 6 | `23fe6147` |
+| `kernel/assets/js/kernel-reports.js:421` console.log | نفسه | `23fe6147` |
+| `kernel/assets/js/kernel-reports.js:468` console.log | نفسه | `23fe6147` |
+| `kernel/assets/js/kernel-reports.js:494` console.log | نفسه | `23fe6147` |
+| `kernel/assets/js/kernel-stats.js:145` console.log | نفسه | `23fe6147` |
+| `kernel/assets/js/kernel-chat-client.js:640` console.log | نفسه | `23fe6147` |
+
+Stage Summary:
+- المشكلة: (أ) `public/logo 2.webp` يُنشر فعليًا لـ dist ويتسبب `dist/logo 2.webp`؛ (ب) 6 ملفات `.bak` غير مستوردة تُلوّث الـ git history؛ (ج) `index-2.html` و `report/perf/*.report.html` خارج dist لكن وجودها في الجذر/report مزعج؛ (د) 6 `console.log` debug في kernel/assets/js.
+- الحل: إصلاح sitemap ثم حذف `logo 2.webp`؛ `git rm` للـ .bak الستة (null functional references)؛ نقل HTML خارج publish paths مع rename؛ حذف 6 `console.log` debug فقط مع الحفاظ على كل `console.error/warn` المشروعة.
+- النتيجة: 24 ملف تغيّر، 4 إضافات و 928 حذف. الـ Branch: `cleanup/violating-files` بـ 4 commits نظيفة (سجل git --stat في الأسفل).
+- القيد: 0 نص منشور تم تعديله (Arabic content في الصفحات أو schema untouched)؛ 0 section/page محذوفة؛ 0 canonical/hreflang تغيّرت إلا إصلاح مرجع واحد في `sitemap-images.xml` (تغيير `logo 2` → `logo`).
+- المخاطر المتبقية / بنود معلّقة:
+  1. `dist/` Folder ملوّث بنسخ Finder مكررة (مثل `favicon 2.svg`, `404 2.html`, `_headers 2`) — ليست tracked في git (`.gitignore`)؛ **يُحلّ تلقائيًا عند `rm -rf dist && npm run build`** (أمر معلق للتأكد النهائي).
+  2. مراجع نصّية توثيقية للـ .bak في `.agents/brain.md` (سطر 157, 990, 1006) و `report/2026-07-07-blog-content-collections.md` (سطر 35, 283) و `reports/2026-07-06-secret-hardening.md` (سطر 88, 267) — هذه ست指着 لـ ملفات محذوفة الآن؛ يمكن تنظيفها في PR لاحق.
+
