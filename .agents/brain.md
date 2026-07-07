@@ -68,6 +68,25 @@ skills_ready: 7
 | FCP | ~2.5s (estimated) | 2026-07-06 | < 1.8s | ⚠️ needs measurement |
 | TTFB | ~200ms (Cloudflare CDN) | 2026-07-06 | < 600ms | ✅ excellent |
 
+### 1.2.b Performance (after perf/bloat-3-fixes-2026-07-07, measured 2026-07-07 18:17)
+
+| Metric | Before | After | Saved | Budget Status |
+|---|---|---|---|---|
+| BaseLayout CSS (raw) | 326,570 B (319KB) | 175,009 B (171KB) | -151,561 B (-46%) | ⚠️ 170KB still > 50KB target |
+| KernelLayout CSS (new bundle) | nested | 103,063 B (101KB) | (split out) | OK — only loads on /kernel/* |
+| Other CSS bundles | ~24KB | ~24KB | unchanged | OK |
+| homepage dist/index.html (raw) | 165,805 B (162KB) | 158,554 B (155KB) | -7,251 B (-4%) | ⚠️ 154KB still > 80KB target |
+| HTML gzip estimated | 30.4KB | ~29KB | -1.4KB | ⚠️ still over 30KB budget |
+| og-solutions.png | 777,242 B (759KB) | 0 (replaced by .webp 58,848 B = 57KB) | -718KB | ✅ |
+| logo.png (×2 locations) | 812,070 B (793KB) | 273,038 B (267KB) | -539KB | ✅ |
+| OTF fonts in dist | 723,940 B (707KB) | 0 | -724KB | ✅ |
+| **Total dist savings** | | | **-2.13MB** | |
+| Images >200KB in dist | exists | **0** | ✅ | ✅ below budget |
+| OTF files in dist | 2 | **0** | ✅ | ✅ |
+| JS total (gzipped, fits budget) | n/a | 20.18KB raw | n/a | ✅ < 60KB budget |
+
+Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:budget` exit code = 1 (HTML 154KB > 80KB, CSS 170KB > 50KB). Reason for FAIL documented in `report/2026-07-07-three-bloat-fixes.md` (16-sections rule 2.1 + code-splitting needed).
+
 ### 1.3 Lighthouse (REPORTS-20 measured, 30 runs on 15 pages × 2 form factors)
 
 | Metric | Mobile Avg | Desktop Avg | Target | Status |
@@ -121,6 +140,65 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-07 — Three Bloat Fixes (perf/bloat-3-fixes-2026-07-07)
+
+- **Files**:
+  - `public/fonts/TheYearofTheCamel-Medium.otf` (deleted, 362KB)
+  - `public/fonts/Thin-Font.otf` (deleted, 362KB)
+  - `public/assets/images/og/og-solutions.png` (deleted, 759KB)
+  - `public/assets/images/og/og-solutions.webp` (now referenced)
+  - `public/assets/images/logo.png` (750→400, 406KB→137KB)
+  - `public/logo.png` (750→400, 406KB→137KB)
+  - `public/images/logo-new.PNG`, `public/images/logo.webp`, `public/images/logo-new.webp` (deleted, unused)
+  - `src/layouts/BaseLayout.astro` (removed kernel.css @import)
+  - `src/layouts/KernelLayout.astro` (added kernel.css @import)
+  - `src/data/schema-helpers.ts` (og-solutions ref path)
+  - `src/pages/solutions/[slug].astro` (og-solutions ref)
+  - `src/pages/solutions/[sector].astro` (og-solutions ref)
+  - `src/pages/solutions/[sector]/[city].astro` (2 og-solutions refs)
+  - `scripts/purge-css.mjs` (NEW — PurgeCSS post-build step)
+  - `package.json` (build script now ends with `&& npm run purge:css`)
+  - `report/2026-07-07-three-bloat-fixes.md` (status report — full detailed breakdown)
+- **What**: معالجة التضخمات الثلاث المقاسة بدقة:
+  1. **OTF fonts** (724KB) — ملفين `.otf` بدون أي مرجع في `src/` أو `public/` (grep verified). Astro كان ينشرهم ضمنياً في `dist/fonts/`. حُذفا عبر `mavis-trash`.
+  2. **Images** (1.27MB) — og-solutions.png (759KB) → webp (58KB)؛ logo.png × 2 (812KB) → 400×400 PNG (273KB). 5 مراجع schema.jsonld path حدّثت `.png` → `.webp`. 3 ملفات logo ميتة حُذفت.
+  3. **kernel.css split** (128KB) — الـ `@import '../styles/kernel.css'` نُقل من BaseLayout إلى KernelLayout. Astro يصدر bundle منفصل، kernel pages فقط تتحمل 100KB (kernel scoped) بدلاً من إجباري على كل صفحة الموقع.
+  4. **PurgeCSS post-build** (54KB) — سكربت `scripts/purge-css.mjs` ينشغل آخر build step، يستخدم `purgecss` على `dist/_astro/*.css` لاستخراج classes مستخدمة فعلاً. Safety rail: لو ملف يقلّص >85% يُرجع للسnapshot (لاحظ `_slug_.D5mMPz82.css` أُعيد لأنه scoped IDs ما تظهر في scan). مُحَفَظ كـ 4 commits منفصلة.
+- **Why**: المهمة حددت 3 أرقام محددة (319KB CSS, 162KB HTML, 777KB+406KB images) بمعيار قبول واضح (`npm run performance:budget` exit 0 + 0 images >200K + 0 .otf). الـ agent قسّم المسعى لـ 3 commits نظيفة:
+  - Commit 1 (bc82eab9) — OTF removal: 724KB saved
+  - Commit 2 (9b52998a) — Images compress: 1.27MB saved
+  - Commit 3 (71f0e02e) — kernel.css split: 128KB off homepage
+  - Commit 4 (7915a856) — PurgeCSS pipeline: 54KB saved
+- **Verification** (raw outputs, copied from build 18:17):
+  - `find dist -iname "*.otf"` → **صفر نتائج** ✅
+  - `find dist -type f ( -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" ) -size +200k` → **صفر نتائج** ✅
+  - `grep -rln "\.otf" src/ public/` → **صفر نتائج** (verified pre-delete)
+  - `npm run build` → 130 pages, 3.37s, 0 errors ✅
+  - `npm run performance:budget` → output table (HTML 154KB FAIL, CSS 170KB FAIL, JS 20.18KB OK)
+  - JSON-LD graph audit (dist/index.html): 12 entities, Organization=1, WebSite=1, WebPage=1, BreadcrumbList=1, LocalBusiness=6, others=3 — **no duplicates, no missing types** ✅
+  - `find dist/_astro -name "*.css" | xargs ls -la`:
+    - BaseLayout.B_gtFa8X.css: 175,009 B (-46% vs 326,570 B)
+    - KernelLayout.BRtL4lC7.css: 103,063 B (new bundle, kernel only)
+    - Index.BCBz1ac6.css: 18,425 B
+- **Report**: `report/2026-07-07-three-bloat-fixes.md` (full with raw measurements, before/after table, deferred items with technical reasons)
+- **Commits**: 4 on branch `perf/bloat-3-fixes-2026-07-07`:
+  - `7915a856` perf(css): post-build PurgeCSS
+  - `71f0e02e` perf(css): split kernel.css out of BaseLayout
+  - `9b52998a` perf(images): compress logo + og-solutions
+  - `bc82eab9` perf(fonts): remove unused .otf files
+  - `818ce6ef` docs(report): publish three-bloat-fixes status report
+  - `d21cdff2` docs(worklog): record this session
+- **Brain updates**: Section 1 needs update post-deploy (project state snapshot for CSS/image numbers)
+- **Status**: branch ready (not pushed to remote, awaiting user review)
+- **DEFERRED items** (explicitly documented in report to prevent future agents retrying them):
+  1. **dist/index.html 154KB → 80KB**: intrinsic HTML size for 16 sections × rich Saudi-dialect content. Forbidden by rule 2.1 (no section deletion). Requires large restructure of section content (text trimming) OR lazy-loading sections (SEO risk).
+  2. **BaseLayout CSS 170KB → 50KB**: 50KB is unrealistic for the full utility/components/pages/kernel-critical combo. Would require per-route CSS bundling (each page imports only its own CSS) — non-trivial restructure, risk of breaking visual consistency.
+  3. **Lighthouse/LCP measurement**: environment lacks headless browser. Task explicitly says "وثّقه كبند معلّق ولا تدّعِ أرقاماً" — documented as deferred.
+- **Risk remaining**:
+  - **MEDIUM**: Post-build PurgeCSS at scan time may miss dynamically-added classes added by JS at runtime. Safelist in `scripts/purge-css.mjs` includes known dynamic classes (is-active, kernel-shell, etc.), but a new dynamic class would be wrongly stripped. Future mitigation: extract safelist from JS classList.add/remove/toggle calls automatically.
+  - **LOW**: og-solutions.webp instead of .png — all major social scrapers (LinkedIn, Twitter, Facebook, Bing) handle WebP for OG cards since 2020+. Pre-existing thumbnails (og-blog/og-docs/og-home/og-kernel at 51KB each) remain PNG — could also be WebP in a follow-up.
+  - **LOW**: logo.png at 400×400 affects the rare cases where Google Knowledge Graph displays logo at >400px source (current: thumbnail 200×200). Visually tested — still sharp.
 
 ### 2026-07-07 — Trust/Compliance Section Reorder (TRUST position 2 → 10 — founder override DEC-2026-TRUST-001)
 
