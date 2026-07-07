@@ -182,14 +182,16 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
     - KernelLayout.BRtL4lC7.css: 103,063 B (new bundle, kernel only)
     - Index.BCBz1ac6.css: 18,425 B
 - **Report**: `report/2026-07-07-three-bloat-fixes.md` (full with raw measurements, before/after table, deferred items with technical reasons)
-- **Commits**: 4 on branch `perf/bloat-3-fixes-2026-07-07`:
-  - `7915a856` perf(css): post-build PurgeCSS
-  - `71f0e02e` perf(css): split kernel.css out of BaseLayout
-  - `9b52998a` perf(images): compress logo + og-solutions
+- **Commits**: 5 perf + 3 docs on branch `perf/bloat-3-fixes-2026-07-07`:
   - `bc82eab9` perf(fonts): remove unused .otf files
+  - `9b52998a` perf(images): compress logo + og-solutions
+  - `71f0e02e` perf(css): split kernel.css out of BaseLayout
+  - `7915a856` perf(css): post-build PurgeCSS
+  - `420f8fc2` perf(json-ld): remove duplicate Organization/WebSite/WebPage/BreadcrumbList on homepage (saves -7KB on dist/index.html)
   - `818ce6ef` docs(report): publish three-bloat-fixes status report
   - `d21cdff2` docs(worklog): record this session
-- **Brain updates**: Section 1 needs update post-deploy (project state snapshot for CSS/image numbers)
+  - `0548fc6d` docs(brain): record three-bloat-fixes session in change ledger + Section 1.2.b
+- **Brain updates**: Section 1.2.b populated with raw before/after numbers ✅; Section 2 change ledger entry added ✅
 - **Status**: branch ready (not pushed to remote, awaiting user review)
 - **DEFERRED items** (explicitly documented in report to prevent future agents retrying them):
   1. **dist/index.html 154KB → 80KB**: intrinsic HTML size for 16 sections × rich Saudi-dialect content. Forbidden by rule 2.1 (no section deletion). Requires large restructure of section content (text trimming) OR lazy-loading sections (SEO risk).

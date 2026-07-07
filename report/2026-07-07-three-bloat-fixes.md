@@ -203,11 +203,15 @@ TheYearofTheCamel-Medium.woff2  (172KB — تنسيق سليم)
 `perf/bloat-3-fixes-2026-07-07` (لم يُدفع للـ remote بعد)
 
 ```
-4 commits:
-  7915a856 perf(css): post-build PurgeCSS to strip unused class rules (-54KB)
-  71f0e02e perf(css): split kernel.css out of BaseLayout (128KB → only /kernel/* pages)
-  9b52998a perf(images): compress logo+og-solutions to save 1.2MB across dist
+5 perf commits + 3 docs commits:
   bc82eab9 perf(fonts): remove unused .otf files (724KB total)
+  9b52998a perf(images): compress logo+og-solutions to save 1.2MB across dist
+  71f0e02e perf(css): split kernel.css out of BaseLayout (128KB → only /kernel/* pages)
+  7915a856 perf(css): post-build PurgeCSS to strip unused class rules (-54KB)
+  420f8fc2 perf(json-ld): remove duplicate Organization/WebSite/WebPage/BreadcrumbList on homepage (-7KB on dist/index.html)
+  818ce6ef docs(report): publish three-bloat-fixes status report
+  d21cdff2 docs(worklog): record three-bloat-fixes session
+  0548fc6d docs(brain): record three-bloat-fixes session in change ledger
 ```
 
 ---
