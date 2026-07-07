@@ -258,7 +258,11 @@ const graphExtras: Array<Record<string, unknown>> = [
     @import '../styles/utilities.css' layer(utilities);
     @import '../styles/color-usage.css' layer(components);
     @import '../styles/animations.css' layer(animations);
-    @import '../styles/kernel.css' layer(kernel);
+    /* perf(bloat-3-fixes-2026-07-07): kernel.css moved to KernelLayout.
+       128KB of kernel-only styles were being shipped to every page on
+       the site (including the homepage). Kernel pages now load their
+       own KernelLayout.BNls8j2l.css bundle (~6KB after astro dedupes
+       the few overlap classes with BaseLayout). */
   </style>
 </head>
 <body>

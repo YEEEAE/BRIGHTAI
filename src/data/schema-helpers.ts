@@ -162,7 +162,7 @@ export function getLocalBusinessLd(input: LocalBusinessInput) {
     description: `خدمات BrightAI لحوكمة وأمان الذكاء الاصطناعي في ${cityAr}، المملكة العربية السعودية. يدعم جاهزية الامتثال وفق PDPL وNCA ECC ولا يُعد استشارة قانونية.`,
     url: canonical,
     telephone: '+966538229013',
-    image: `${SITE.url}/assets/images/og/og-solutions.png`,
+    image: `${SITE.url}/assets/images/og/og-solutions.webp`,
     priceRange: '$$$',
     address: {
       '@type': 'PostalAddress',

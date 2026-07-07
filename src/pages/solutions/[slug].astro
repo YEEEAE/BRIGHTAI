@@ -174,7 +174,7 @@ const useCases = buildScenarios(solution);
   hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:solution.canonical},{lang:'x-default',href:solution.canonical}]}
   jsonLd={migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]), ORGANIZATION] } : (jsonLd as any)}
   currentPath={solution.href}
-  ogImage="/assets/images/og/og-solutions.png"
+  ogImage="/assets/images/og/og-solutions.webp"
   ogImageAlt={migratedPage?.title ?? solution.title}
 >
 {!solution.content ? (

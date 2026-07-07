@@ -109,6 +109,8 @@
     { "source": "/blog/feed.html", "destination": "/rss.xml/", "statusCode": 301 },
     { "source": "/blog/feed.xml", "destination": "/rss.xml/", "statusCode": 301 },
     { "source": "/blog/feed.xml/", "destination": "/rss.xml/", "statusCode": 301 },
-    { "source": "/blog/feed/index.html", "destination": "/rss.xml/", "statusCode": 301 }
+    { "source": "/blog/feed/index.html", "destination": "/rss.xml/", "statusCode": 301 },
+    { "source": "/authors/فريق%20BrightAI", "destination": "/authors/brightai-team/", "statusCode": 301 },
+    { "source": "/authors/فريق%20BrightAI/", "destination": "/authors/brightai-team/", "statusCode": 301 }
   ]
 }

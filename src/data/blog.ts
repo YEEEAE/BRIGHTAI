@@ -73,11 +73,16 @@ export const authors: Record<string, Author> = {
   // (Astro's getStaticPaths() uses Object.keys(authors) to build paths).
   // The author.url must therefore match the built path exactly — otherwise
   // the canonical mismatches the actually-served URL.
-  'فريق BrightAI': {
-    slug: 'فريق BrightAI',
+  // REPORTS-SEO-TEAM-SLUG-001 (2026-07-07): Latin slug to match the
+  // other author entry and satisfy seo-ci-check SITEMAP_BANNED_PATTERNS
+  // (no spaces / %20 in canonical URL). A 301 redirect from the legacy
+  // /authors/<encoded Arabic>/ path is wired in public/_redirects and
+  // render.yaml so any existing inbound links still resolve.
+  'brightai-team': {
+    slug: 'brightai-team',
     name: 'فريق BrightAI',
     nameEn: 'BrightAI Team',
-    url: `${SITE.url}/authors/${encodeURIComponent('فريق BrightAI')}/`,
+    url: `${SITE.url}/authors/brightai-team/`,
     title: 'فريق BrightAI',
     bio: 'فريق BrightAI يكتب محتوى تنفيذي عن حوكمة الذكاء الاصطناعي والامتثال في السعودية.',
   },
@@ -91,7 +96,7 @@ export const authors: Record<string, Author> = {
   },
 };
 
-const DEFAULT_AUTHOR_KEY = 'فريق BrightAI';
+const DEFAULT_AUTHOR_KEY = 'brightai-team';
 
 /* ── Mapping helpers ─────────────────────────────────────────────── */
 

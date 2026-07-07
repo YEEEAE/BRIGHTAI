@@ -118,6 +118,20 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /blog                         /blog/                        301
 /blog/index.html              /blog/                        301
 /blog.html                    /blog/                        301
+
+# ── Authors: legacy Arabic slug → Latin slug (REPORTS-SEO-TEAM-SLUG-001, 2026-07-07) ──
+# Old Arabic slug "فريق BrightAI" (URL-encoded as %D9%81%D8%B1%D9%8A%D9%82%20BrightAI) was
+# rejected by seo-ci-check (SITEMAP_BANNED_PATTERNS rejects %20 in canonical URLs).
+# Migrated to the Latin slug "brightai-team" to match the sibling author
+# "nasser-alabdullah". Inbound links from external sources (Reddit, Hacker News,
+# email forwards, etc.) keep working through these 301 redirects.
+/authors/فريق%20BrightAI                 /authors/brightai-team/   301
+/authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI /authors/brightai-team/ 301
+/authors/فريق%20BrightAI/                /authors/brightai-team/   301
+/authors/%D9%81%D8%B1%D9%8A%D9%82%20BrightAI/ /authors/brightai-team/ 301
+/authors/فريق BrightAI                  /authors/brightai-team/   301
+/authors/فريق BrightAI/                 /authors/brightai-team/   301
+
 /blog/ai-audit-trail-saudi    /blog/ai-audit-trail-saudi/   301
 /blog/ai-audit-trail-saudi.html /blog/ai-audit-trail-saudi/ 301
 /blog/ai-audit-trail-saudi/index.html /blog/ai-audit-trail-saudi/ 301

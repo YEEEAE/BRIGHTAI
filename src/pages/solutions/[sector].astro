@@ -102,7 +102,7 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
   { label: 'تقارير القطاع',             desc: 'تقارير جاهزة للجهات التنظيمية.',            icon: 'mdi-file-document' },
 ];
 ---
-<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={(migratedPage?.jsonLd ?? jsonLd) as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.png" ogImageAlt={migratedPage?.title ?? sector.title}>
+<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={(migratedPage?.jsonLd ?? jsonLd) as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? sector.title}>
 {!sector.regulations ? (
   /* legacy migrated fallback — only لو ما في regulations data */
   <>
