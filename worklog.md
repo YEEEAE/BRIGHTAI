@@ -195,3 +195,48 @@ Stage Summary:
   2. مراجع نصّية توثيقية للـ .bak في `.agents/brain.md` (سطر 157, 990, 1006) و `report/2026-07-07-blog-content-collections.md` (سطر 35, 283) و `reports/2026-07-06-secret-hardening.md` (سطر 88, 267) — هذه ست指着 لـ ملفات محذوفة الآن؛ يمكن تنظيفها في PR لاحق.
   3. ⚠️ **بند معلّق (خارج نطاق هذه المهمة):** ملف `./.kilo/worktrees/fair-otter/report/SEO-MIGRATION-CHECK 3.md` يطابق نمط `* 3.*` — هذا تابع لفرع `fair-otter` المنفصل (tracked في commit `fecdd719` على ذلك الفرع)، داخل worktree فعلي مسجّل في `git worktree list`. لا أتدخّل فيه لأنه ملف tracked في فرع آخر يحتمل أن يكون المستخدم يعمل عليه. الحل المقترح (يحتاج قرار المستخدم): (أ) `git worktree move` لنقل الـ worktree خارج مسار المشروع، أو (ب) حذف داخل فرع `fair-otter` بـ `git rm` ثم `git commit` هناك، أو (ج) تجاهل لأن find المستخدم يستثني `node_modules` فقط.
 
+---
+Task ID: 2026-07-07-001
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: معالجة ثلاثة تضخمات مقاسة (CSS BaseLayout 319KB، HTML 162KB، صور/font OTF)
+Started: 2026-07-07T17:53:04+03:00
+Mode: Senior
+Branch: perf/bloat-3-fixes-2026-07-07
+
+Work Log:
+- 17:53: قرأت `.agents/brain.md` (Section 1-6، project state + decisions log)
+- 17:53: أنشأت branch `perf/bloat-3-fixes-2026-07-07`، بقيت على main بدون تعديل
+- 17:54: قياس dist قبل أي تعديل:
+    - BaseLayout CSS = 326,570 B (319KB)
+    - dist/index.html = 165,805 B (162KB)
+    - og-solutions.png = 777,242 B (759KB)
+    - logo.png × 2 = 812,070 B
+    - .otf files = 723,940 B (2 ملفات)
+- 17:55: تشخيص CSS — 2,296 selector unique في BaseLayout؛ 8 ملفات imports مدمجة
+- 17:55: تشخيص HTML — JSON-LD بلوك 28.3KB فيه 19 entity مع 3×Organization و 2×WebPage المكررة
+- 17:55: grep for OTF → 0 refs in src/ و public/ لكن Astro ينشرهم ضمنياً
+- 17:56: Commit 1 (bc82eab9): حذف TheYearofTheCamel.otf + Thin-Font.otf → -724KB hosting
+- 17:57: ضغط og-solutions.png → og-solutions.webp (58KB)؛ تحديث 5 مراجع schema
+- 17:58: ضغط logo.png → 400×400 PNG (137KB لكل واحدة)، تحديث فروع
+- 17:58: Commit 2 (9b52998a): الصور (-1.27MB إجمالاً)
+- 17:59: Commit 3 (71f0e02e): نقل kernel.css لـ KernelLayout → -128KB على Homepage
+- 18:02: محاولة purge CSS في src/styles/* بـ python script → بَنَاء مكسور (postcss error)
+- 18:03: استرجع الملفات من git (clean)
+- 18:05: إعادة بناء، اكتشفت أن PurgeCSS post-build يعمل 54KB توفير بأمان
+- 18:06: PurgeCSS نجح: BaseLayout 213.8KB → 170.9KB، KernelLayout -10KB، index -1KB
+- 18:06: safety rail أرجع _slug_.css من 0KB إلى 5.9KB (>85% wipe)
+- 18:06: Commit 4 (7915a856): scripts/purge-css.mjs + package.json build script يربطها تلقائياً
+- 18:15: البناء النهائي:
+    - dist/index.html = 158,554 B (-7KB عن الأول)
+    - BaseLayout = 175,009 B (-46% عن الـ 319KB الأصلي)
+    - 0 .otf, 0 images >200KB ✅
+- 18:16: كتابة report/2026-07-07-three-bloat-fixes.md (تقرير صريح)
+- 18:17: Commit 5 (818ce6ef): تقرير
+
+Stage Summary:
+- ✅ ثلاثة فحوصات قبل/بعد ثنائية نجحت: 0 .otf, 0 images >200KB, npm run build OK
+- ❌ acceptance criterion لازال يفشل: HTML 154KB (>80KB) + CSS 170KB (>50KB) → `performance:budget` يطبع exit 1
+- 📊 Net Total Savings: ~1.4MB على dist/ hosting bandwidth
+- 🎯 3 commits مفيدة، 1 تقرير، 1 سكربت purge جديد
+- ⚠️ البندان المعلَّقان: HTML (16 sections rule 2.1) و CSS (50KB يحتاج code-splitting)
+- 🔖 الـ branch لم يُدفع للـ remote، يحتاج مراجعة المستخدم قبل merge
