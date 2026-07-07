@@ -142,7 +142,6 @@
         this.renderStats(normalized);
       } catch (error) {
         if (typeof global.kernelShouldUseDemoData === 'function' && global.kernelShouldUseDemoData()) {
-          console.log('[v0] Stats fetch failed, using demo data:', error);
           const demo = this.generateDemoData();
           const normalized = this.enrichStats(this.normalizeStats(demo), demo, demo.latestTraces || []);
           this.state.auditRows = demo.latestTraces || [];

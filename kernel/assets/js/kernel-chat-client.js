@@ -636,10 +636,7 @@
     },
 
     // Logging
-    logEvent(message, data = {}) {
-      console.log(`[CHAT] ${message}`, data);
-    },
-
+    logEvent(message, data = {}) {},
     logError(message, error) {
       console.error(`[CHAT ERROR] ${message}`, error);
     },

@@ -73,7 +73,6 @@
         }
       } catch (error) {
         if (typeof global.kernelShouldUseDemoData === 'function' && global.kernelShouldUseDemoData()) {
-          console.log('[v0] Reports fetch failed, using demo data');
           this.state.reports = this.generateDemoReports();
           this.state.scheduledReports = this.generateDemoScheduled();
         } else {
@@ -418,7 +417,6 @@
           throw new Error('Failed to generate report');
         }
       } catch (error) {
-        console.log('[v0] Report generation failed:', error);
         this.showToast('فشل في إنشاء التقرير', 'error');
       } finally {
         this.state.isGenerating = false;
@@ -465,7 +463,6 @@
           throw new Error('Failed to download report');
         }
       } catch (error) {
-        console.log('[v0] Download failed:', error);
         if (typeof global.kernelShouldUseDemoData === 'function' && global.kernelShouldUseDemoData()) {
           this.showToast('تم تحميل التقرير (وضع تجريبي)', 'success');
         } else {
@@ -491,7 +488,6 @@
           this.loadReports();
         }
       } catch (error) {
-        console.log('[v0] Schedule failed:', error);
         this.showToast('فشل في جدولة التقرير', 'error');
       }
     },
