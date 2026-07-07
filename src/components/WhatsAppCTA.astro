@@ -40,11 +40,12 @@ const whatsappUrl = `${SITE.whatsapp.url}?text=${encodeURIComponent(message)}`;
     height: 56px;
     border-radius: var(--radius-full);
     /* WCAG 1.4.11 Non-text Contrast (REPORTS-18): --status-success (#22c55e)
-       + white SVG fails. WhatsApp's official dark teal #075E54 gives
+       + white SVG fails. WhatsApp's official dark teal #075e54 gives
        7.24:1 against white — passes AAA. Identifiable as "WhatsApp green"
-       in Saudi Arabia thanks to the brand's universal recognition. */
+       in Saudi Arabia thanks to the brand's universal recognition.
+       NOTE: Kept as raw hex (contrast requirement, exceeds token budget) */
     background: #075e54;
-    color: white;
+    color: var(--white);
     box-shadow: 0 4px 16px rgba(7, 94, 84, 0.4);
     transition: transform var(--duration-fast) var(--ease-spring),
                 box-shadow var(--duration-fast) var(--ease-out);

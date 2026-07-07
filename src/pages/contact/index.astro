@@ -23,7 +23,7 @@ const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'تواصل �
 const contactMethods = [
   {
     icon: 'mdi-whatsapp',
-    iconColor: '#25D366',
+    iconColor: 'var(--whatsapp)',
     title: 'واتساب',
     body: 'أسرع طريقة للتواصل. اكتبنا ونجاوبك خلال دقائق.',
     value: '+966 538 229 013',
@@ -32,7 +32,7 @@ const contactMethods = [
   },
   {
     icon: 'mdi-email',
-    iconColor: '#22d3ee',
+    iconColor: 'var(--cyan-bright)',
     title: 'البريد الإلكتروني',
     body: 'للاستفسارات التفصيلية والمرفقات.',
     value: 'yazeed1job@gmail.com',
@@ -40,7 +40,7 @@ const contactMethods = [
   },
   {
     icon: 'mdi-map-marker',
-    iconColor: '#a78bfa',
+    iconColor: '#a78bfa',  /* violet — showpiece accent for map pin, not in token set */
     title: 'المقر',
     body: 'شركة سعودية 100%، مقرنا في الرياض.',
     value: 'الرياض، المملكة العربية السعودية',
@@ -300,7 +300,7 @@ const jsonLd = {
             <h3 class="inner-card__title">وش تتوقع بعد التواصل؟</h3>
             <ul class="contact-info-list">
               <li>
-                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:#25D366;">
+                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:var(--whatsapp);">
                   <use href="/icons.svg#mdi-whatsapp" />
                 </svg>
                 <div>
@@ -309,7 +309,7 @@ const jsonLd = {
                 </div>
               </li>
               <li>
-                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:#22d3ee;">
+                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:var(--cyan-bright);">
                   <use href="/icons.svg#mdi-email" />
                 </svg>
                 <div>

@@ -194,7 +194,7 @@ const useCases = buildScenarios(solution);
         {solution.content ? solution.content.lead.map(paragraph => <p class="inner-hero__desc">{paragraph}</p>) : <p class="inner-hero__desc">{solution.description}</p>}
         <div class="inner-hero__actions">
           <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
-          <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,#25D366,#128C7E)"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+<a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
         </div>
       </div>
 
@@ -347,7 +347,7 @@ const useCases = buildScenarios(solution);
     <div class="inner-grid inner-grid--2">
       {relSectors.map(sec => (
         <a href={sec.href} class="inner-card p-6" style="text-decoration:none;color:inherit">
-          <h3 class="inner-card__title"><Icon name={sec.icon} class="text-cyan-300 ml-2" />{sec.h1}</h3>
+          <h3 class="inner-card__title"><Icon name={sec.icon} class="text-cyan-300 ms-2" />{sec.h1}</h3>
           <p class="inner-card__text">{sec.shortDesc}</p>
         </a>
       ))}
@@ -376,7 +376,7 @@ const useCases = buildScenarios(solution);
       <p class="inner-cta-final__desc">{solution.content?.finalText ?? 'تواصل معنا للحصول على عرض توضيحي مخصص لقطاعك.'}</p>
       <div class="inner-hero__actions" style="justify-content:center;">
         <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
-        <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,#25D366,#128C7E)"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+        <a href="https://wa.me/966538229013" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
       </div>
     </div>
   </div>

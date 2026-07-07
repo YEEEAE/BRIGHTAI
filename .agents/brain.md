@@ -141,6 +141,36 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-07 — Unify Hex Colors via Tokens + RTL Fix + a11y Polish (commit f4e1330a)
+
+- **Files**: 18 ملفات `.astro` + `src/styles/tokens.css` (19 ملف إجمالي)
+  - tokens: `src/styles/tokens.css` (+5 tokens)
+  - hex → tokens (15 ملف): `BrightStar`, `Button`, `ActivityStream`, `RelatedPosts`, `SplitHero`, `WhatsAppCTA`, `SectionHeading`, `KernelBadge`, `contact/index`, `sitemap/index`, `solutions/[slug]`, `solutions/[sector]`, `solutions/[sector]/[city]`, `kernel/evidence`, `kernel/stats`
+  - RTL fix (4 ملف): `EvidenceFileMockup`, `SplitHero`, `index`, `solutions/[slug]`
+  - a11y: `MobileNav` (logo aria-label localization)
+- **What**:
+  1. **tokens.css**: أضفنا 5 tokens جديدة: `--white: #ffffff`, `--whatsapp: #25D366`, `--whatsapp-dark: #128C7E`, `--cyan-bright: #22d3ee` (legacy cyan قبل DEC-SovB-001)، `--emerald-bright: #34d399`
+  2. **Hex → Tokens**: استبدلنا 48 استخدام hex خام عبر tokens موجودة + جديدة. النتيجة: **160 → 112** (-30%)
+  3. **RTL**: 6 تحويلات direction→logical: `text-right → text-start` (3×)، `text-align: right → start` (2×)، `ml-2 → ms-2` (1×)
+  4. **a11y**: MobileNav logo aria-label كان `aria-label="BrightAI Home"` بالإنجليزي — صار `aria-label={isAr ? 'برايت أيه آي — الصفحة الرئيسية' : 'BrightAI Home'}` يطابق Header.astro و Footer.astro
+- **Why**: المهمة حددت 160 hex مكتوب مباشرة + RTL violations. الـ hex الخام يكسر الـ design system الموحد (DEC-SovB-001: Deep Teal) ويسبب drift بصري. الـ RTL violations تكسر LTR symmetry وتضر accessibility.
+- **Documented exceptions** (per task spec — SVG/JSON-LD excluded):
+  - `BrightStar.astro` (37) — داخل SVG attributes (`stop-color`, `stroke`, `fill`)
+  - `design/colors.astro` (22) — color showcase content (الـ hex هو المحتوى)
+  - `design/cards.astro` (2) — `<code>` text content showcase
+  - `assessment/ai-governance-readiness/index.astro` (11) — palette demo colors (متعمد)
+  - `kernel/evidence.astro` (7) — iframe srcdoc HTML (self-contained document، مثل JSON-LD exclusion)
+  - `kernel/stats.astro` (8) — JS chart data + `cssVar()` defensive fallbacks
+  - `WhatsAppCTA.astro` (1) — `#075e54` محفوظ لسبب WCAG AAA contrast (7.24:1 vs white)
+  - `ActivityStream.astro` (1) — `#3b82f6` (blue-500، لا يوجد token)
+  - `contact/index.astro` (2) — `#a78bfa` (violet accent، لا يوجد token)
+- **Verification**:
+  - `grep -rhoE "#[0-9a-fA-F]{3,6}" --include="*.astro" src/components src/pages | wc -l` → **160 → 112** ✅ (-48, -30%)
+  - `grep -rEn "(text-align|margin-left|margin-right):\s*(left|right)|class=\"[^\"]*\b(ml-|mr-|pl-|pr-|text-left|text-right)" --include="*.astro" src/components src/pages` → **0** ✅
+  - `npm run build` → **158 صفحة، 0 errors، 2.62s** ✅
+  - `npm run seo:all` → 4 مشاكل موجودة مسبقاً في `report/perf/*.html` (Lighthouse stale reports، مو إنتاج). فُحص بـ `git stash` على main قبل التغييرات: نفس النتيجة → **pre-existing، مو من التغييرات** ⚠️
+- **Brain updates**: Section 5 (canonical cities with sector)، tokens catalog إضافة 5 tokens جديدة
+
 ### 2026-07-07 — Zero Broken Internal Links (links:dist + link-graph all green)
 
 - **Files**: `src/data/schema-helpers.ts` (LOCAL_BUSINESS_BY_CITY href update), `scripts/link-graph-validator.mjs` (walk dist/public instead of project root + asset route support + 404/500 skip)

@@ -403,4 +403,21 @@
   --gutter-lg:  2rem;     /* 1024-1279px (lg+) */
   --gutter-xl:  2.5rem;   /* 1280-1535px (xl+) */
   --gutter-2xl: 3rem;     /* 1536px+ (2xl+) */
+
+  /* ════════════════════════════════════════════════════════════════════════════
+     33. Additions (2026-07-07 — refactor/stop-160-raw-hex)
+     خمسة tokens جديدة لاستبدال hex الخام في src/components و src/pages.
+     كلها لها uses موثّقة في code base — لا توجد tokens "احتياطية".
+     - --white               : زر نص على خلفية داكنة (Button variants)
+     - --whatsapp            : WhatsApp brand green (#25D366)
+     - --whatsapp-dark       : WhatsApp brand dark teal (#128C7E)
+     - --cyan-bright         : Legacy bright cyan قبل DEC-SovB-001 (#22d3ee)
+                                مستخدم في BrightStar + sitemap + contact icons
+     - --emerald-bright      : Accent green-emerald (#34d399) لـ SplitHero highlight
+     ════════════════════════════════════════════════════════════════════════════ */
+  --white:            #ffffff;
+  --whatsapp:         #25D366;
+  --whatsapp-dark:    #128C7E;
+  --cyan-bright:      #22d3ee;
+  --emerald-bright:   #34d399;
 }

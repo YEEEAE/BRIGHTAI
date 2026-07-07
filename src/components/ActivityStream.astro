@@ -28,11 +28,11 @@ const { events = activityEvents } = Astro.props;
     height: 0.5rem;
     border-radius: 50%;
   }
-  .k-timeline__item.k-risk--minimal::before { background: #22c55e; }
-  .k-timeline__item.k-risk--low::before { background: #3b82f6; }
-  .k-timeline__item.k-risk--medium::before { background: #f59e0b; }
-  .k-timeline__item.k-risk--high::before { background: #ef4444; }
-  .k-timeline__item.k-risk--critical::before { background: #dc2626; }
+  .k-timeline__item.k-risk--minimal::before { background: var(--status-success); }
+  .k-timeline__item.k-risk--low::before { background: #3b82f6; }      /* blue-500 — no token match, kept as hex */
+  .k-timeline__item.k-risk--medium::before { background: var(--status-warning); }
+  .k-timeline__item.k-risk--high::before { background: var(--status-danger); }
+  .k-timeline__item.k-risk--critical::before { background: var(--status-danger); }
   .k-timeline__header {
     display: flex;
     align-items: center;

@@ -466,10 +466,10 @@ const SECTOR_LABEL: Record<string, string> = {
     }
 
     function riskBadgeFor(score) {
-      if (score > 85) return '<span style="display:inline-block;padding:4px 10px;border-radius:9999px;font-size:11px;font-weight:bold;background:rgba(239,68,68,.15);color:#ef4444;">حرج (' + score + ')</span>';
-      if (score >= 60) return '<span style="display:inline-block;padding:4px 10px;border-radius:9999px;font-size:11px;font-weight:bold;background:rgba(245,158,11,.15);color:#f59e0b;">مرتفع (' + score + ')</span>';
-      if (score >= 30) return '<span style="display:inline-block;padding:4px 10px;border-radius:9999px;font-size:11px;font-weight:bold;background:rgba(245,158,11,.15);color:#f59e0b;">متوسط (' + score + ')</span>';
-      return '<span style="display:inline-block;padding:4px 10px;border-radius:9999px;font-size:11px;font-weight:bold;background:rgba(34,197,94,.15);color:#22c55e;">منخفض (' + score + ')</span>';
+      if (score > 85) return '<span class="kernel-risk-badge kernel-risk-badge--critical">حرج (' + score + ')</span>';
+      if (score >= 60) return '<span class="kernel-risk-badge kernel-risk-badge--high">مرتفع (' + score + ')</span>';
+      if (score >= 30) return '<span class="kernel-risk-badge kernel-risk-badge--medium">متوسط (' + score + ')</span>';
+      return '<span class="kernel-risk-badge kernel-risk-badge--low">منخفض (' + score + ')</span>';
     }
 
     function openPreview(btn) {

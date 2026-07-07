@@ -113,7 +113,7 @@ import BrightStar from './brand/BrightStar.astro';
     <aside class="home-kernel-showcase" aria-labelledby="kernel-demo-title">
       <div class="home-kernel-panel">
         <div class="home-kernel-bar">
-          <div class="home-kernel-dots"><span style="--dot:#ef4444"></span><span style="--dot:#f59e0b"></span><span style="--dot:#22c55e"></span></div>
+          <div class="home-kernel-dots"><span style="--dot:var(--status-danger)"></span><span style="--dot:var(--status-warning)"></span><span style="--dot:var(--status-success)"></span></div>
           <span class="home-kernel-path">brightai.site/kernel</span>
         </div>
         <div class="home-kernel-body">
@@ -336,7 +336,7 @@ import BrightStar from './brand/BrightStar.astro';
   }
   @media (min-width: 1024px) {
     .split-hero__main {
-      text-align: right;
+      text-align: start;
     }
   }
 
@@ -361,7 +361,7 @@ import BrightStar from './brand/BrightStar.astro';
     width: 0.5rem;
     height: 0.5rem;
     border-radius: 9999px;
-    background: #34d399;
+    background: var(--emerald-bright);
     display: inline-block;
   }
 
@@ -413,7 +413,7 @@ import BrightStar from './brand/BrightStar.astro';
     }
   }
 
-  .text-white { color: #fff; }
+  .text-white { color: var(--white); }
 
   /* ─── Hero CTA Actions Row (was previously unstyled) ─── */
   .home-hero-actions {
@@ -542,7 +542,7 @@ import BrightStar from './brand/BrightStar.astro';
     width: 10px;
     height: 10px;
     border-radius: 9999px;
-    background: var(--dot, #888);
+    background: var(--dot, var(--text-muted));
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3);
   }
   .home-kernel-path {

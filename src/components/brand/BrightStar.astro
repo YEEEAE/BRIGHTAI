@@ -387,11 +387,11 @@ const id = `bright-star-${Math.random().toString(36).slice(2, 9)}`;
 
   /* ── Variant: mono — single-color (cyan only, for 404) ── */
   .bright-star--mono [stroke] {
-    stroke: #22d3ee !important;
+    stroke: var(--cyan-bright) !important;
     stroke-opacity: 0.7 !important;
   }
   .bright-star--mono [fill^="url(#"] {
-    fill: #22d3ee !important;
+    fill: var(--cyan-bright) !important;
     fill-opacity: 0.25 !important;
   }
   .bright-star--mono .bright-star__halo { display: none; }
