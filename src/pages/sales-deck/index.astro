@@ -1,0 +1,69 @@
+---
+/**
+ * Sales Deck (AR) — /sales-deck/
+ * Printable slide deck for the BrightAI sales team.
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import SalesDeck from '../../components/SalesDeck.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'عرض المبيعات' }];
+
+const slides = [
+  { kicker: 'المشكلة', title: 'الذكاء الاصطناعي ينتشر… بس مين يراقبه؟', bullets: ['فرق تستخدم أدوات متفرقة بلا سجل موحد', 'بيانات حساسة تخرج لأدوات عامة', 'لا أدلة تشغيلية للتدقيق أمام الجهات التنظيمية'] },
+  { kicker: 'الحل', title: 'BrightAI — نظام حماية الذكاء الاصطناعي السعودي', bullets: ['AI Firewall يمنع تسرب البيانات', 'سجل تدقيق مشفر غير قابل للتعديل', 'ملف أدلة جاهز للامتثال لـ PDPL وضوابط NCA'] },
+  { kicker: 'الطبقات', title: '٥ طبقات حماية', bullets: ['منع PII + موافقة بشرية', 'سجل تدقيق + أدلة', 'تصنيف مخاطر + سياسات', 'تكامل مع ERP/CRM/HIS', 'استضافة محلية ١٠٠٪'] },
+  { kicker: 'الأمان', title: 'سيادة بيانات كاملة', bullets: ['استضافة داخل المملكة', 'البيانات ما تخرج حدود السعودية', 'فريق هندسي سعودي'] },
+  { kicker: 'العائد', title: 'قيمة مُثبتة', bullets: ['٩٤٪ انخفاض Shadow AI غير مرصود', '١٠٠٪ تغطية بيانات حساسة بالتدقيق', '٣ أسابيع لجاهزية تدقيق داخلي'], note: 'أرقام من case studies مجهولة المصدر — راجع /customers/' },
+  { kicker: 'الخطوة الجاية', title: 'نبدأ بتقييم جاهزية', bullets: ['تقييم مجاني في أيام', 'خارطة طريق لـ ٩٠ يوم', 'عرض سعر حسب النطاق'], note: 'تواصل: +966 538 229 013' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'عرض مبيعات BrightAI',
+      description: 'عرض شرائح BrightAI لحوكمة الذكاء الاصطناعي: المشكلة، الحل، الطبقات، الأمان، العائد.',
+      url: 'https://brightai.site/sales-deck/',
+      inLanguage: 'ar-SA',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'عرض المبيعات', href: '/sales-deck/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="عرض مبيعات BrightAI | حوكمة الذكاء الاصطناعي"
+  description="عرض شرائح BrightAI لحوكمة الذكاء الاصطناعي: المشكلة، الحل، الطبقات، الأمان، العائد."
+  canonical="https://brightai.site/sales-deck/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/sales-deck/' }, { lang: 'en-SA', href: 'https://brightai.site/en/sales-deck/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/sales-deck/"
+>
+
+  <section class="page-hero" aria-label="عرض المبيعات">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-presentation"></use></svg>
+        عرض المبيعات
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">عرض BrightAI</span> للمبيعات</h1>
+      <p class="page-hero__description">عرض شرائح قابل للطباعة يلخّص قيمة BrightAI في ٦ شرائح. استخدمه في الاجتماعات أو شاركه كـ PDF.</p>
+      <div class="about-hero__actions" style="justify-content:center;">
+        <a href="/contact/" class="btn btn--glow">اطلب عرضاً</a>
+      </div>
+    </div>
+  </section>
+
+  <SalesDeck slides={slides} />
+</ArabicLayout>
+
+<style>
+  .about-hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-block-start: var(--space-6); }
+</style>

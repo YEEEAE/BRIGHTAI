@@ -3,11 +3,11 @@
  * ROI Calculator — /calculator/roi/
  * Interactive vanilla-JS estimator of AI-governance value. No React, tokens only.
  */
-import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import BackgroundGrid from '../../components/BackgroundGrid.astro';
-import LeadForm from '../../components/LeadForm.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
+import ArabicLayout from '../../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../../components/BackgroundGrid.astro';
+import LeadForm from '../../../components/LeadForm.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'حاسبة العائد' }];
 
@@ -147,7 +147,7 @@ const jsonLd = {
 </ArabicLayout>
 
 <script>
-  import '../scripts/roi-calculator.js';
+  import '../../../scripts/roi-calculator.js';
 </script>
 
 <style>

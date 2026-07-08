@@ -1,0 +1,69 @@
+---
+/**
+ * Sales Deck (EN) — /en/sales-deck/
+ * English mirror of the Arabic sales deck.
+ */
+import EnglishLayout from '../../../layouts/EnglishLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../../components/BackgroundGrid.astro';
+import SalesDeck from '../../../components/SalesDeck.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
+
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Sales Deck' }];
+
+const slides = [
+  { kicker: 'Problem', title: 'AI is spreading — but who governs it?', bullets: ['Teams use scattered tools with no unified log', 'Sensitive data leaks to public tools', 'No operational evidence for regulators'] },
+  { kicker: 'Solution', title: 'BrightAI — Saudi AI Safety OS', bullets: ['AI Firewall blocks data leakage', 'Tamper-evident audit trail', 'Evidence file ready for PDPL / NCA'] },
+  { kicker: 'Layers', title: '5 protection layers', bullets: ['PII prevention + human approval', 'Audit trail + evidence', 'Risk classification + policies', 'ERP/CRM/HIS integration', '100% local hosting'] },
+  { kicker: 'Security', title: 'Full data sovereignty', bullets: ['Hosted inside Saudi Arabia', 'Data never leaves the Kingdom', 'Saudi engineering team'] },
+  { kicker: 'ROI', title: 'Proven value', bullets: ['94% reduction in unmonitored Shadow AI', '100% sensitive data covered by audit', '3 weeks to internal audit readiness'], note: 'From anonymized case studies — see /customers/' },
+  { kicker: 'Next', title: 'Start with a readiness assessment', bullets: ['Free assessment in days', '90-day roadmap', 'Pricing per scope'], note: 'Contact: +966 538 229 013' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'BrightAI Sales Deck',
+      description: 'BrightAI sales deck for AI governance: problem, solution, layers, security, ROI.',
+      url: 'https://brightai.site/en/sales-deck/',
+      inLanguage: 'en-SA',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'Home', href: '/' }, { name: 'Sales Deck', href: '/en/sales-deck/' }]),
+  ],
+};
+---
+
+<EnglishLayout
+  title="BrightAI Sales Deck | AI Governance"
+  description="BrightAI sales deck for AI governance: problem, solution, layers, security, ROI."
+  canonical="https://brightai.site/en/sales-deck/"
+  hreflang={[{ lang: 'en-SA', href: 'https://brightai.site/en/sales-deck/' }, { lang: 'ar-SA', href: 'https://brightai.site/sales-deck/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/en/sales-deck/"
+>
+
+  <section class="page-hero" aria-label="Sales Deck">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-presentation"></use></svg>
+        Sales Deck
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">BrightAI</span> Sales Deck</h1>
+      <p class="page-hero__description">A printable slide deck summarizing BrightAI's value in 6 slides.</p>
+      <div class="about-hero__actions" style="justify-content:center;">
+        <a href="/contact/" class="btn btn--glow">Request a demo</a>
+      </div>
+    </div>
+  </section>
+
+  <SalesDeck slides={slides} />
+</EnglishLayout>
+
+<style>
+  .about-hero__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-4); margin-block-start: var(--space-6); }
+</style>

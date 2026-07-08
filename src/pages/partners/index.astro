@@ -18,6 +18,12 @@ const tiers = [
   { icon: 'mdi-gavel', title: 'Law Firms', body: 'Al-Sabti، Al-Ghazzawi — دعم امتثال PDPL عبر أدلة BrightAI التشغيلية.', commission: '٣٠٪ عمولة' },
 ];
 
+const faqs = [
+  { q: 'كم عمولة الشريك في BrightAI؟', a: '٣٠٪ من قيمة كل صفقة محالة من شريك معتمد (مكتب تكامل، مزود سحابة، استشارات، أو مكتب محاماة).' },
+  { q: 'من يقدر يصير شريك؟', a: 'أي جهة في السعودية تخدم قطاع الذكاء الاصطناعي أو الامتثال: مكاتب تكامل، مزودو سحابة، شركات استشارات، ومكاتب محاماة.' },
+  { q: 'كيف أبدأ كشريك؟', a: 'عبّي نموذج الشراكة في هذه الصفحة، ونرسل لك اتفاقية الشراكة وملف العروض خلال ٤٨ ساعة.' },
+];
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -28,6 +34,7 @@ const jsonLd = {
       url: 'https://brightai.site/partners/',
       inLanguage: 'ar-SA',
     },
+    { '@type': 'FAQPage', mainEntity: faqs.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
     ORGANIZATION,
     getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الشراكة', href: '/partners/' }]),
   ],
@@ -72,6 +79,21 @@ const jsonLd = {
             </article>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="pt-faq">
+    <div class="max-w-4xl mx-auto px-5 lg:px-8">
+      <p class="inner-section__label">الأسئلة الشائعة</p>
+      <h2 id="pt-faq" class="inner-section__title">أسئلة عن الشراكة</h2>
+      <div class="inner-faq" role="list">
+        {faqs.map((item, i) => (
+          <details class="card card--glass home-faq-item" role="listitem" open={i === 0}>
+            <summary><span>{item.q}</span><svg class="home-faq-chevron" aria-hidden="true" width="1.25em" height="1.25em"><use href="/icons.svg#mdi-chevron-down"></use></svg></summary>
+            <div class="home-faq-answer"><p>{item.a}</p></div>
+          </details>
+        ))}
       </div>
     </div>
   </section>

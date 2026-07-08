@@ -1,0 +1,108 @@
+---
+/**
+ * LEAP 2026 — /events/leap-2026/
+ * Booth + speaking at LEAP Riyadh.
+ */
+import ArabicLayout from '../../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../../components/BackgroundGrid.astro';
+import LeadForm from '../../../components/LeadForm.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الفعاليات' }, { label: 'LEAP 2026' }];
+
+const highlights = [
+  { icon: 'mdi-podium', title: 'جلسة رئيسية', body: 'يزيد يشارك "حوكمة AI في السعودية: من النظرية للتنفيذ".' },
+  { icon: 'mdi-store', title: 'جناح تفاعلي', body: 'demo حي لـ AI Firewall + سجل التدقيق.' },
+  { icon: 'mdi-gift', title: 'هدايا + استشارات', body: 'تقييم جاهزية مجاني لزوار الجناح.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Event',
+      name: 'BrightAI في LEAP 2026',
+      description: 'زور جناح BrightAI في LEAP الرياض 2026: demo حي لحوكمة الذكاء الاصطناعي وجلسة رئيسية.',
+      url: 'https://brightai.site/events/leap-2026/',
+      inLanguage: 'ar-SA',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      organizer: ORGANIZATION,
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الفعاليات', href: '/events/leap-2026/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="BrightAI في LEAP 2026 | BrightAI"
+  description="زور جناح BrightAI في LEAP الرياض 2026: demo حي لحوكمة الذكاء الاصطناعي وجلسة رئيسية."
+  canonical="https://brightai.site/events/leap-2026/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/events/leap-2026/' }, { lang: 'x-default', href: 'https://brightai.site/events/leap-2026/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/events/leap-2026/"
+>
+
+  <section class="page-hero" aria-label="LEAP 2026">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-rocket-launch"></use></svg>
+        جناح BrightAI — LEAP الرياض
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">BrightAI في LEAP</span> 2026</h1>
+      <p class="page-hero__description">أكبر مؤتمر تقني في الشرق الأوسط. زور جناحنا للـ demo الحي، وحضر جلستنا الرئيسية عن حوكمة الذكاء الاصطناعي في السعودية.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="leap-high">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="leap-high" class="inner-section__title">وش في الجناح؟</h2>
+      <div class="grid grid--3">
+        {
+          highlights.map((h) => (
+            <article class="card card--feature">
+              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
+                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${h.icon}`} /></svg>
+              </div>
+              <h3 class="inner-card__title mt-3">{h.title}</h3>
+              <p class="inner-card__text">{h.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="leap-form">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <h2 id="leap-form" class="inner-section__title" style="text-align:center;">احجز لقاء في الجناح</h2>
+      <p class="inner-section__lead" style="text-align:center;">نحدد لك موعداً مع فريقنا خلال المؤتمر.</p>
+      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+        <LeadForm
+          title="حجز لقاء"
+          intro="عبّي بياناتك ونحدد الموعد."
+          subject="حجز لقاء في جناح BrightAI - LEAP"
+          ctaLabel="احجز اللقاء"
+          source="website"
+          medium="event"
+          campaign="leap-2026"
+          fields={[
+            { name: 'name', label: 'الاسم الكامل', required: true, autocomplete: 'name' },
+            { name: 'email', label: 'البريد الإلكتروني', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'company', label: 'الشركة', required: true, autocomplete: 'organization' },
+            { name: 'topic', label: 'موضوع اللقاء', type: 'select', options: ['حوكمة AI', 'امتثال PDPL', 'تكامل', 'عرض سعر', 'غيره'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .avatar-tile--sm { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; }
+  .mt-3 { margin-block-start: var(--space-3); }
+  .contact-form-card { background: var(--bg-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: var(--space-6); }
+</style>

@@ -1,0 +1,108 @@
+---
+/**
+ * AI Governance Day Riyadh — /events/ai-governance-day/
+ * BrightAI-owned flagship event.
+ */
+import ArabicLayout from '../../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../../components/BackgroundGrid.astro';
+import LeadForm from '../../../components/LeadForm.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الفعاليات' }, { label: 'يوم حوكمة AI' }];
+
+const sessions = [
+  { t: '٠٩:٠٠', title: 'تسجيل + قهوة', body: 'استقبال الحضور.' },
+  { t: '١٠:٠٠', title: 'كلمة الافتتاح: حوكمة AI في السعودية ٢٠٢٦', body: 'يزيد — مؤسس BrightAI.' },
+  { t: '١١:٠٠', title: 'جولة حية: AI Firewall + Audit Trail', body: 'demo تقني.' },
+  { t: '١٢:٣٠', title: 'طاولة نقاش: امتثال PDPL عملياً', body: 'خبراء من القطاع.' },
+  { t: '٠٢:٠٠', title: 'ورشة: ابنِ سجل تدقيق في ٩٠ دقيقة', body: 'ورشة تطبيقية.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Event',
+      name: 'AI Governance Day Riyadh',
+      description: 'حدث خاص من BrightAI عن حوكمة الذكاء الاصطناعي: جلسات تقنية، طاولة نقاش، وورشة تطبيقية. الرياض.',
+      url: 'https://brightai.site/events/ai-governance-day/',
+      inLanguage: 'ar-SA',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      organizer: ORGANIZATION,
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الفعاليات', href: '/events/ai-governance-day/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="AI Governance Day Riyadh | BrightAI"
+  description="حدث خاص من BrightAI عن حوكمة الذكاء الاصطناعي: جلسات تقنية، طاولة نقاش، وورشة تطبيقية في الرياض."
+  canonical="https://brightai.site/events/ai-governance-day/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/events/ai-governance-day/' }, { lang: 'x-default', href: 'https://brightai.site/events/ai-governance-day/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/events/ai-governance-day/"
+>
+
+  <section class="page-hero" aria-label="يوم حوكمة AI">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-star"></use></svg>
+        حدث BrightAI الخاص — الرياض
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">AI Governance Day</span> الرياض</h1>
+      <p class="page-hero__description">يوم كامل عن حوكمة الذكاء الاصطناعي في السعودية: جلسات تقنية، طاولة نقاش مع خبراء القطاع، وورشة تطبيقية تبني فيها سجل تدقيق خلال ٩٠ دقيقة.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="agd-agenda">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="agd-agenda" class="inner-section__title">أجندة اليوم</h2>
+      <div class="grid grid--2">
+        {
+          sessions.map((s) => (
+            <article class="card card--feature">
+              <span class="assessment-tag">{s.t}</span>
+              <h3 class="inner-card__title mt-3">{s.title}</h3>
+              <p class="inner-card__text">{s.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="agd-form">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <h2 id="agd-form" class="inner-section__title" style="text-align:center;">سجّل حضورك</h2>
+      <p class="inner-section__lead" style="text-align:center;">المقاعد محدودة. نرسل لك التفاصيل فور التسجيل.</p>
+      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+        <LeadForm
+          title="تسجيل الحضور"
+          intro="عبّي بياناتك ونؤكد مقعدك."
+          subject="تسجيل في AI Governance Day"
+          ctaLabel="سجّلني"
+          source="website"
+          medium="event"
+          campaign="ai-governance-day"
+          fields={[
+            { name: 'name', label: 'الاسم الكامل', required: true, autocomplete: 'name' },
+            { name: 'email', label: 'البريد الإلكتروني', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'company', label: 'الشركة', required: true, autocomplete: 'organization' },
+            { name: 'role', label: 'دورك', type: 'select', options: ['امتثال', 'أمن معلومات', 'تحول رقمي', 'إدارة', 'غيره'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .assessment-tag { font-size: var(--text-xs); padding: 2px 10px; border-radius: var(--radius-lg); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25); color: #9be5ff; display: inline-block; }
+  .mt-3 { margin-block-start: var(--space-3); }
+  .contact-form-card { background: var(--bg-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: var(--space-6); }
+</style>

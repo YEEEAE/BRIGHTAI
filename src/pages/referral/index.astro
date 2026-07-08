@@ -17,6 +17,12 @@ const tracks = [
   { icon: 'mdi-handshake', title: 'إحالة شريك', reward: '٣٠٪ عمولة', body: 'عن كل صفقة من شريك محال.', who: 'للشركاء' },
 ];
 
+const faqs = [
+  { q: 'كم مكافأة إحالة الموظف؟', a: '٢,٥٠٠ SAR لكل توظيف محال يكمل فترة التجربة (٩٠ يوم) بنجاح.' },
+  { q: 'كم عمولة إحالة العميل؟', a: '٢٠٪ من قيمة اشتراك العميل المحال، وذلك لـ ٣ أشهر فقط.' },
+  { q: 'كم عمولة إحالة الشريك؟', a: '٣٠٪ عن كل صفقة من شريك محال معتمد.' },
+];
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -27,6 +33,7 @@ const jsonLd = {
       url: 'https://brightai.site/referral/',
       inLanguage: 'ar-SA',
     },
+    { '@type': 'FAQPage', mainEntity: faqs.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
     ORGANIZATION,
     getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الإحالة', href: '/referral/' }]),
   ],
@@ -72,6 +79,21 @@ const jsonLd = {
             </article>
           ))
         }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="rf-faq">
+    <div class="max-w-4xl mx-auto px-5 lg:px-8">
+      <p class="inner-section__label">الأسئلة الشائعة</p>
+      <h2 id="rf-faq" class="inner-section__title">أسئلة عن الإحالة</h2>
+      <div class="inner-faq" role="list">
+        {faqs.map((item, i) => (
+          <details class="card card--glass home-faq-item" role="listitem" open={i === 0}>
+            <summary><span>{item.q}</span><svg class="home-faq-chevron" aria-hidden="true" width="1.25em" height="1.25em"><use href="/icons.svg#mdi-chevron-down"></use></svg></summary>
+            <div class="home-faq-answer"><p>{item.a}</p></div>
+          </details>
+        ))}
       </div>
     </div>
   </section>
