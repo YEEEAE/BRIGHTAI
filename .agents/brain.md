@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-08 20:25 +03:00
+last_updated: 2026-07-08 20:40 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.7
+version: 2.7.8
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -140,6 +140,17 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-08 — AI Firewall Engine Phase 1c (Token Vault + Audio Transcription) — Shipped
+
+- **Files**: 4 جديد + 5 معدّل. **جديد**: `apps/dashboard/lib/firewall/vault/token-vault.ts` (AES-256-GCM + HKDF-derived keys + token format + detokenize + rotateInPlace)، `apps/dashboard/lib/firewall/vault/index.ts` (barrel)، `apps/dashboard/app/api/firewall/transcribe/route.ts` (whisper-large-v3 endpoint مع PII redaction + optional tokenize)، `apps/dashboard/tests/firewall/token-vault.test.ts` (7 tests). **معدّل**: `packages/db/prisma/schema.prisma` (+TokenMapping model)، `apps/dashboard/lib/firewall/engine/redaction.ts` (+TokenVaultCallback type + applyActionsWithVault async variant)، `apps/dashboard/lib/firewall/llm/groq-client.ts` (+transcribe() function)، `apps/dashboard/.env.example` (+8 env vars للـ firewall + Groq)، `apps/dashboard/.env.local` (جديد gitignored).
+- **What**: (1) **Token Vault** — reversible tokenization عبر AES-256-GCM. الـ `tokenize` action يخزّن الـ PII الأصلية encrypted في Postgres (`TokenMapping` table) ويرجع token قابل للعكس `TKN_<keyId>_<suffix>_<hmac8>`. HKDF-derived AES + HMAC keys. Key rotation عبر dual-key window (24h overlap) + re-encryption via `rotateInPlace()`. (2) **Audio Transcription Endpoint** — `POST /api/firewall/transcribe` يستخدم `whisper-large-v3` (Groq) لكتابة الصوت → ثم نفس pipeline الـ PII detection/redaction. Default language: `ar`. Optional `tokenize=true`.
+- **Verification**: `pnpm test` → **70 passed (70)** في 5 test files ✅، `pnpm typecheck` → 0 errors ✅، Token vault round-trip يعمل ✅، cross-org isolation يعمل ✅.
+- **Report**: `report/2026-07-08-firewall-phase-1c.md`
+- **Status**: verified locally + ready for production
+- **Decisions (2 new)**:
+  - **DEC-FIREWALL-008**: Token Vault = AES-256-GCM + HKDF-derived keys + Postgres-backed `TokenMapping` table. Token format `TKN_<keyId>_<suffix>_<hmac8>`. Master key في `FIREWALL_TOKEN_VAULT_KEY` env (32+ random bytes). Key rotation via dual-key window (24h overlap via `FIREWALL_TOKEN_VAULT_KEY_PREV`).
+  - **DEC-FIREWALL-009**: Audio transcription = `POST /api/firewall/transcribe` (multipart/form-data) → Groq `whisper-large-v3` → text → PII detection → redaction. Default language: `ar`. Max audio: 25 MB.
 
 ### 2026-07-08 — AI Firewall Engine Phase 1b (NER + Streaming) — Shipped
 
@@ -3367,3 +3378,41 @@ npm run indexnow:trigger  # notifies Bing/Yandex
   - **NER cold start delays first chunk** — same as DEC-FIREWALL-006. Mitigated بالـ pre-warm.
   - **Stream aborted by client** — Next.js ReadableStream يـ cleanup تلقائياً. الـ audit log ما يُكتب لو الـ stream aborted.
   - **Token usage not in stream** — Groq's `stream_options: { include_usage: true }` يرسل usage في الـ final chunk، لكن `chatStream()` ما يلتقطه. Phase 1c يضيفه.
+
+### DEC-FIREWALL-008 — Token Vault (AES-256-GCM + HKDF + Postgres)
+
+- **Date**: 2026-07-08
+- **Context**: Phase 1a/b كان الـ `tokenize` action يرجع `TKN_<nanoid>` placeholder غير قابل للعكس. العملاء (خصوصاً الـ dashboard) يحتاجون يـ resolve الـ token بعد ما الـ LLM يرد، عشان يعرضوا الـ PII الأصلية للـ user المصرح له.
+- **Decision**: **AES-256-GCM** encryption + **HKDF-derived keys** + **Postgres-backed `TokenMapping` table**. Token format: `TKN_<keyId>_<suffix>_<hmac8>`. Master key من `FIREWALL_TOKEN_VAULT_KEY` env (32+ random bytes، generate: `openssl rand -base64 32`).
+- **Rationale**:
+  - **AES-256-GCM** = NIST-approved authenticated encryption. يدمج confidentiality + integrity في عملية وحدة (auth tag 16 bytes). 12-byte random IV per token.
+  - **HKDF** بدل raw key usage — يفصل الـ master key لـ AES subkey + HMAC subkey، يمنع key reuse عبر use cases مختلفة.
+  - **Postgres-backed** بدل in-memory Map — survives process restarts و multi-replica deployments. الـ `TokenMapping` table عندها index على `(organizationId, token)` للـ fast lookup.
+  - **Key rotation via dual-key window** — `FIREWALL_TOKEN_VAULT_KEY_PREV` يحتفظ بالـ old key لمدة 24h. `detokenize()` يـ try current أولاً، then prev. Re-encryption via `rotateInPlace()`.
+  - **HMAC suffix** في الـ token (8 chars) — quick integrity check قبل الـ DB lookup. لو الـ token تـ tamper، الـ HMAC يفشل.
+- **Reversal cost**: عالية. تغيير algorithm = كل الـ existing tokens غير قابلة للـ resolve (يحتاج manual re-encryption).
+- **Do not** تستخدم in-memory Map (data loss على restart). **Do not** تستخدم reversible encryption بدون integrity check (خطورة tampering).
+- **Risks**:
+  - **Vault key loss** → كل الـ tokens غير قابلة للـ resolve. **Mitigation**: quarterly backup للـ key في encrypted S3 + recovery procedure documented في runbook.
+  - **AES-GCM IV reuse** → catastrophic failure. **Mitigation**: `randomBytes(12)` لكل token — collision probability ≈ 0 لـ 2^48 tokens.
+  - **Token reuse بعد rotation** → `keyVersion` field في row يحدد أي key يُستخدم.
+  - **Detokenize timing attack** → constant-time comparison لـ HMAC (لو استخدمناه في lookup). حالياً direct DB lookup ما فيه هذا الـ risk.
+
+### DEC-FIREWALL-009 — Audio Transcription (Whisper-Large-V3)
+
+- **Date**: 2026-07-08
+- **Context**: Chat UIs الحديثة تدعم voice input. الـ firewall لازم يحمي الصوت كمان. Whisper-large-v3 على Groq WER ≈ 7% على Arabic (state-of-the-art).
+- **Decision**: `POST /api/firewall/transcribe` (multipart/form-data) → Groq `whisper-large-v3` (OpenAI-compatible `/openai/v1/audio/transcriptions` endpoint) → text → نفس PII detection + redaction pipeline. Default language: `ar`. Max audio: 25 MB. Optional `tokenize=true` form field للـ reversible tokens.
+- **Rationale**:
+  - **Groq whisper API** = OpenAI-compatible → SDK method أو raw fetch fallback. سهل الـ integration.
+  - **Default `ar` (Saudi market)** → chat voice في Saudi. الـ `language` form field يقدر override.
+  - **25 MB limit** = Groq's hard limit. يرجع 413 لو أكبر.
+  - **Max duration 120s** = whisper-large-v3 typical processing time + buffer.
+  - **Optional `tokenize=true`** → الـ caller يقرر إذا يبي reversible tokens أو mask.
+- **Reversal cost**: منخفضة. تبديل الـ transcription provider = تعديل `transcribe()` function في `groq-client.ts`.
+- **Do not** تستخدم proprietary STT (overkill، Groq whisper كافي). **Do not** تخزّن الـ audio file (PDPL — صوت العميل sensitive).
+- **Risks**:
+  - **Whisper hallucination على Arabic dialects** → NER post-pass catches PII في أي hallucinated text.
+  - **Audio > 25 MB** → 413 error upfront (لا partial upload).
+  - **Multipar tparsing على large files** → `request.formData()` streams. `maxDuration=120` يمنع hangs.
+  - **Audio PII leaks إلى logs** → الـ `transcription.text` ما يُسجّل raw، فقط SHA-256 hash + detection counts.

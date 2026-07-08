@@ -181,3 +181,95 @@ export async function collectStreamUsage(
       : null,
   };
 }
+
+// ─────────────────────────────────────────────────────────────────
+// Audio transcription (Phase 1c)
+//
+// Wraps Groq's OpenAI-compatible `/audio/transcriptions` endpoint
+// with the whisper-large-v3 model. The returned text is then passed
+// through the firewall's PII detection + redaction pipeline.
+// ─────────────────────────────────────────────────────────────────
+
+export interface TranscribeRequest {
+  /** Raw audio bytes (mp3, wav, m4a, ogg, flac, etc.). */
+  file: ArrayBuffer | Uint8Array | Blob;
+  /** Original filename (helps Groq infer the format). */
+  filename: string;
+  /** Optional model override. Default: `whisper-large-v3`. */
+  model?: string;
+  /** Language hint (ISO 639-1, e.g. 'ar' for Arabic, 'en' for English). */
+  language?: string;
+  /** Optional prompt to bias the transcription (e.g. domain terms). */
+  prompt?: string;
+}
+
+export interface TranscribeResponse {
+  text: string;
+  model: string;
+  /** Audio duration in seconds, if reported by Groq. */
+  durationSec?: number;
+}
+
+const WHISPER_MODEL = process.env.GROQ_WHISPER_MODEL || 'whisper-large-v3';
+
+export async function transcribe(req: TranscribeRequest): Promise<TranscribeResponse> {
+  const groq = getClient();
+  const model = req.model ?? WHISPER_MODEL;
+
+  // The groq-sdk doesn't (yet) expose a typed transcribe() method,
+  // so we hit the OpenAI-compatible endpoint via the SDK's underlying
+  // fetch. The SDK has `groq.audio.transcriptions.create()` since
+  // 0.7+ — use that if available, else fall back to fetch.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const audio = (groq as any).audio;
+  if (audio?.transcriptions?.create) {
+    // Use the SDK method.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const file = new Blob([req.file as any]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result: any = await audio.transcriptions.create({
+      file,
+      model,
+      language: req.language,
+      prompt: req.prompt,
+      response_format: 'verbose_json',
+    });
+    return {
+      text: result.text ?? '',
+      model: result.model ?? model,
+      durationSec: typeof result.duration === 'number' ? result.duration : undefined,
+    };
+  }
+
+  // Fallback: raw fetch to /openai/v1/audio/transcriptions.
+  // Convert ArrayBuffer/Uint8Array to a Blob for fetch.
+  const bytes = req.file instanceof ArrayBuffer
+    ? new Uint8Array(req.file)
+    : req.file instanceof Uint8Array
+      ? req.file
+      : new Uint8Array(await (req.file as Blob).arrayBuffer());
+  const blob = new Blob([bytes as BlobPart]);
+  const form = new FormData();
+  form.append('file', blob, req.filename);
+  form.append('model', model);
+  if (req.language) form.append('language', req.language);
+  if (req.prompt) form.append('prompt', req.prompt);
+  form.append('response_format', 'verbose_json');
+
+  const res = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${process.env.GROQ_API_KEY}` },
+    body: form,
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Groq transcribe failed (${res.status}): ${text}`);
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const result = (await res.json()) as any;
+  return {
+    text: result.text ?? '',
+    model: result.model ?? model,
+    durationSec: typeof result.duration === 'number' ? result.duration : undefined,
+  };
+}

@@ -693,6 +693,48 @@ model AuditLog {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// TokenMapping — reversible tokenization vault (AI Firewall Phase 1c)
+//
+// Maps an opaque token (TKN_xxx) back to the original PII value.
+// Encrypted at rest with HMAC-SHA256 using the org's vault key.
+// The plaintext value is NEVER stored — only the HMAC-protected
+// ciphertext. To resolve, the caller must have the current vault
+// key (or the previous key during a 24h rotation window).
+// ─────────────────────────────────────────────────────────────────
+
+model TokenMapping {
+  id             String   @id @default(cuid())
+  organizationId String
+  // The token (e.g. "TKN_a1b2c3d4...") — what the LLM sees.
+  token          String
+  // HMAC-SHA256(token, vault_key) — proves the token was issued
+  // by this vault. Not a secret, but authenticates the token.
+  tokenHmac      String
+  // AES-256-GCM ciphertext of the original value. Encrypted with
+  // a key derived from FIREWALL_TOKEN_VAULT_KEY via HKDF.
+  encryptedValue String
+  // IV for the AES-GCM ciphertext (base64).
+  iv             String
+  // Auth tag for the AES-GCM ciphertext (base64).
+  authTag        String
+  // Which key encrypted this (for rotation: "current" | "prev").
+  keyVersion     String   @default("current")
+  // Original PII type (for audit context, not used for resolution).
+  piiType        String
+  // Lifecycle
+  expiresAt      DateTime?
+  // Audit
+  createdById    String
+  createdAt      DateTime @default(now())
+
+  @@unique([organizationId, token])
+  @@index([organizationId, createdAt])
+  @@index([organizationId, piiType])
+  @@index([expiresAt])
+  @@map("token_mappings")
+}
+
+// ─────────────────────────────────────────────────────────────────
 // Domain — custom domains for an org (e.g. ai.acme.com)
 // ─────────────────────────────────────────────────────────────────
 

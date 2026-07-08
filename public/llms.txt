@@ -106,11 +106,13 @@ Arabic: BrightAI توفر Saudi AI Safety OS للمؤسسات السعودية: 
 - /docs/sdaia-generative-ai-guidelines: Practical compliance with SDAIA generative-AI guidelines — transparency, data ethics, bias, and disclosure.
 - /solutions: BrightAI solution pillars for sector-specific AI governance — banking, healthcare, government, manufacturing, procurement.
 - /blog/iso-42001-saudi-implementation-guide: ISO/IEC 42001 implementation roadmap for Saudi organizations pursuing an AI Management System.
+- /blog/appointing-dpo-saudi-data-protection: Appointing a Data Protection Officer (DPO) under PDPL executive regulations — mandatory cases, qualifications, duties, and SDAIA notification.
+- /blog/cloud-cybersecurity-controls-ccc-saudi: NCA Cloud Cybersecurity Controls (CCC) — when they apply to cloud-hosted AI, relationship with ECC and DCC.
 
 ## Topical Coverage
 - AI Governance Cluster: defines executive-level governance, accountability, and policy frameworks for enterprise AI adoption in Saudi Arabia.
-- PDPL Cluster: covers personal-data protection, consent handling, cross-border data, and privacy-by-design for AI workflows.
-- NCA ECC Cluster: maps cybersecurity controls — access, logging, incident response — onto AI pipelines and integrations.
+- PDPL Cluster: covers personal-data protection, consent handling, cross-border data, privacy-by-design, and DPO appointment for AI workflows.
+- NCA ECC Cluster: maps cybersecurity controls — access, logging, incident response — onto AI pipelines and integrations, including cloud (CCC) and data (DCC) controls.
 - SDAIA Generative AI Cluster: addresses responsible generative-AI use, transparency, bias mitigation, and disclosure obligations.
 - Sector Solutions Cluster: covers BrightAI solution pillars tailored to banking, healthcare, government, manufacturing, and procurement.
 - ISO 42001 Cluster: provides a roadmap to implement an AI Management System (AIMS) aligned with ISO/IEC 42001 in Saudi contexts.
