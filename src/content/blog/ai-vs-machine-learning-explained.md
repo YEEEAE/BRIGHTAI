@@ -1,9 +1,9 @@
 ---
-title: "الفرق بين الذكاء الاصطناعي والتعلم الآلي: شرح مبسط"
-description: "شرح مبسط للفرق بين الذكاء الاصطناعي AI والتعلم الآلي ML والتعلم العميق Deep Learning، مع أمثلة عملية وتطبيقات في الشركات السعودية."
+title: "ما هو الذكاء الاصطناعي وكيف يختلف عن التعلم الآلي والتعلم العميق؟"
+description: "ما هو الذكاء الاصطناعي (AI)؟ شرح مبسط للفرق بين الذكاء الاصطناعي AI، التعلم الآلي ML، والتعلم العميق Deep Learning، مع أمثلة عملية وتطبيقات في الشركات السعودية."
 canonical: "https://brightai.site/blog/ai-vs-machine-learning-explained/"
 pubDate: "2026-04-28"
-updatedDate: "2026-04-28"
+updatedDate: "2026-07-08"
 author: "nasser-alabdullah"
 slug: "ai-vs-machine-learning-explained"
 readingTime: 8
@@ -12,6 +12,9 @@ tags: ["ذكاء اصطناعي", "تعلم آلي", "تعلم عميق", "شر�
 draft: false
 image: "/images/og/brightai-og-1200x630.png"
 ---
+
+<!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
+<p class="ai-citation" data-speakable="true">الذكاء الاصطناعي (AI) هو مجال في علوم الحاسب يهدف لبناء أنظمة قادرة على أداء مهام تتطلب عادةً ذكاءً بشرياً مثل التعلم والاستنتاج وحل المشكلات. التعلم الآلي (ML) فرع من AI يتيح للأنظمة التعلم من البيانات بدلاً من البرمجة الصريحة، والتعلم العميق (DL) فرع من ML يستخدم شبكات عصبية متعددة الطبقات.</p>
 
 <div class="short-answer-box">
 

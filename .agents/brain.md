@@ -141,6 +141,33 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-08 — Authority Building: NCA Expansion + SDAIA Cluster + AI vs ML Title + Digital Transformation + Education Meta + New ISO Comparison Article
+
+- **Files**: 7 ملفات: `src/content/blog/nca-cybersecurity-requirements-saudi.md` (توسعة)، `src/content/blog/sdaia-generative-ai-guidelines-practical-compliance.md` (تحسين H2s)، `src/content/blog/sdaia-seven-principles-practical-guide.md` (Title + 3 H2s محسّنة)، `src/content/blog/ai-vs-machine-learning-explained.md` (Title + AEO paragraph)، `src/content/blog/digital-transformation-sme-saudi.md` (H2 جديد كبير)، `src/content/blog/generative-ai-education-saudi.md` (Title + Meta Description)، `src/content/blog/iso-27001-vs-iso-42001-ai-governance.md` (جديد)، + `src/pages/blog/[...slug].astro` (FAQ_BY_SLUG لـ NCA + ISO).
+- **What**: حملة بناء السلطة الموضوعية (Authority Building) على 6 صفحات: (1) NCA اتوسّع من 989 إلى 3,294 كلمة (محتوى شامل عن تاريخ NCA + صلاحياتها + مقارنة ECC/CSCC/CCC/DCC + كيف تؤثر على AI + جدول مقارنة شامل + FAQ Schema 9 أسئلة)، (2) عنقود SDAIA: حسّنا H2s في ملفَي SDAIA الرئيسيين لاستهداف "إرشادات سدايا للذكاء الاصطناعي التوليدي"، "امتثال سدايا"، "سدايا الذكاء الاصطناعي التوليدي"، (3) AI vs ML: غيّرنا Title لصيغة استفهامية "ما هو الذكاء الاصطناعي وكيف يختلف..." + أضفنا AEO paragraph (40-50 كلمة، data-speakable)، (4) التحول الرقمي: أضفنا H2 جديد "التحول الرقمي وحوكمة الذكاء الاصطناعي: لماذا لا ينفصلان" مع محتوى 800+ كلمة، (5) التعليم: حسّنا Title + Meta Description لاستهداف "الذكاء الاصطناعي في التعليم"، (6) ISO 27001 vs 42001: أنشأنا ملف جديد 2,445 كلمة يشرح الفرق والتكامل، + FAQ Schema 6 أسئلة.
+- **Why**: طلب المؤسس (2026-07-08) — توسيع 6 صفحات موجودة لبناء السلطة الموضوعية عبر استهداف keywords استراتيجية: NCA (KD 39, 5,400 حجم)، SDAIA cluster (إرشادات/امتثال/توليدي)، AI vs ML (KD 37, 1,600 حجم)، التحول الرقمي (KD 33, 1,900 حجم)، التعليم (KD 27, 590 حجم)، ISO المقارنة (KD جديد لكن strategic).
+- **Word counts** (measured by wc -w):
+  - `nca-cybersecurity-requirements-saudi.md`: 989 → 3,294 كلمة (+2,305) ✅ تجاوز الـ 2,500 المستهدف
+  - `sdaia-generative-ai-guidelines-practical-compliance.md`: 2,211 (H2s محدّثة، لا تغيير في الجوهر)
+  - `sdaia-seven-principles-practical-guide.md`: 2,756 (Title + 3 H2s محسّنة)
+  - `ai-vs-machine-learning-explained.md`: 1,059 (Title + AEO paragraph)
+  - `digital-transformation-sme-saudi.md`: 1,838 → 2,398 (+560)
+  - `generative-ai-education-saudi.md`: 1,849 (Title + Meta Description)
+  - `iso-27001-vs-iso-42001-ai-governance.md`: 2,445 كلمة (جديد)
+- **FAQ Schema additions** (في `src/pages/blog/[...slug].astro`):
+  - `nca-cybersecurity-requirements-saudi`: 9 أسئلة (NCA vs DGA، أنواع الضوابط، إلزامية للشركات الخاصة، تأثير على AI، الغرامات، الفرق عن ISO 27001، CISO، معدل التدقيق، أدوات AI الأجنبية)
+  - `iso-27001-vs-iso-42001-ai-governance`: 6 أسئلة (الفرق، البديل، التكلفة، الإلزام، التطبيق بدون 27001، المدة، السوق السعودي، ChatGPT فقط)
+- **SDAIA cluster H2 optimizations**:
+  - `sdaia-generative-ai-guidelines-practical-compliance.md`: 8 H2s محدّثة لإدراج عبارات "إرشادات سدايا للذكاء الاصطناعي التوليدي"، "امتثال سدايا"، "سدايا الذكاء الاصطناعي التوليدي" بشكل طبيعي
+  - `sdaia-seven-principles-practical-guide.md`: Title محدّث إلى "مبادئ سدايا السبعة لأخلاقيات الذكاء الاصطناعي — امتثال سدايا للذكاء الاصطناعي التوليدي (دليل عملي)" + 3 H2s محدّثة
+- **Verification needed** (post-deploy):
+  - `npm run build` → متوقع ~171 صفحة (المقال الجديد iso-27001-vs-iso-42001-ai-governance يضيف 1)
+  - `npm run verify:all` → متوقع exit 0
+  - `npm run seo:gate` → متوقع pass
+  - `npm run internal-links:audit` → تأكد إن FAQ schema تظهر في dist
+- **Brain updates**: تحديث Section 1 (Blog post count: 33 → 34)
+- **Status**: in-progress (verification بعد النشر)
+
 ### 2026-07-08 — Internal Linking Hub-and-Spoke Network (6 Pillars + 71 articles + 13 solution pages)
 
 - **Files**: 4 ملفات محدّثة كـ Pillars (`src/content/blog/ai-governance-saudi-arabia.md`، `src/content/docs/pdpl-ai-complete-guide.md`، `src/content/blog/iso-42001-saudi-implementation-guide.md`) + 1 ملف بيانات (`src/data/solutions.ts`) + 3 مقالات spoke كانت بدون روابط (`ai-audit-trail-saudi.md`، `docs/nca-ecc-ai-guide.md`، `docs/governance-application.md`) + تقرير شامل (`report/2026-07-08-internal-linking-table.md`).
