@@ -1,0 +1,46 @@
+{
+  "name": "@brightai/db",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Prisma schema, RLS policies, and seed data for BrightAI.",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "db:setup": "node ./scripts/setup-local-db.mjs",
+    "db:generate": "prisma generate",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:reset": "prisma migrate reset --force --skip-seed",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset --force",
+    "db:rls:apply": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f prisma/policies/rls.sql",
+    "db:rls:test": "tsx prisma/tests/rls-isolation.test.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "echo 'lint skipped for db package'"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma",
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@brightai/config": "workspace:*",
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "nanoid": "^5.0.9",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^22.10.2",
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^1.6.1"
+  }
+}

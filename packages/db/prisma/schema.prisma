@@ -1,0 +1,807 @@
+// ═══════════════════════════════════════════════════════════════════
+// BrightAI Prisma Schema — Multi-tenant SaaS Database
+// ═══════════════════════════════════════════════════════════════════
+//
+// Architecture:
+//   - Organization = tenant (slug + optional customDomain)
+//   - User synced from Clerk via webhook (clerkUserId is the join key)
+//   - Membership = (User × Organization × Role × Status)
+//   - Row-Level Security (RLS) in prisma/policies/rls.sql enforces
+//     tenant isolation at the database level. The application MUST
+//     set `app.current_org_id` before each query.
+//
+// Enums mirror @brightai/config/src/constants.ts. If you change one,
+// change the other.
+//
+// Naming:
+//   - Models:    PascalCase, singular
+//   - Fields:    camelCase
+//   - Tables:    snake_case via @@map
+//   - Indexes:   idx_<table>_<columns>
+//   - FK names:  fk_<from>_<to>
+// ═══════════════════════════════════════════════════════════════════
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["postgresqlExtensions", "fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
+  extensions = [pgcrypto, citext, "uuid-ossp"]
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Enums (must match @brightai/config exactly)
+// ─────────────────────────────────────────────────────────────────
+
+enum Role {
+  OWNER
+  ADMIN
+  COMPLIANCE_OFFICER
+  REVIEWER
+  MEMBER
+}
+
+enum Industry {
+  BANKING
+  GOVERNMENT
+  HEALTHCARE
+  OIL_GAS
+  EDUCATION
+  TELECOM
+  RETAIL
+  MANUFACTURING
+  INSURANCE
+  REAL_ESTATE
+  LOGISTICS
+  OTHER
+}
+
+enum CompanySize {
+  SIZE_1_10
+  SIZE_11_50
+  SIZE_51_200
+  SIZE_201_500
+  SIZE_501_1000
+  SIZE_1001_5000
+  SIZE_5001_PLUS
+}
+
+enum DeploymentMode {
+  CLOUD
+  HYBRID
+  AIR_GAPPED
+}
+
+enum ComplianceFramework {
+  PDPL
+  NCA_ECC
+  SDAIA_AI_ETHICS
+  SFDA
+  SAMA
+  ZATCA
+  ISO_27001
+  ISO_42001
+  ISO_13485
+}
+
+enum MemberStatus {
+  INVITED
+  ACTIVE
+  DEACTIVATED
+  REMOVED
+}
+
+enum AuditAction {
+  USER_LOGIN
+  USER_LOGIN_FAILED
+  USER_LOGOUT
+  USER_INVITED
+  USER_INVITE_ACCEPTED
+  USER_INVITE_REVOKED
+  USER_ROLE_CHANGED
+  USER_DEACTIVATED
+  USER_REACTIVATED
+  USER_REMOVED
+  ORG_CREATED
+  ORG_UPDATED
+  ORG_DELETED
+  MEMBERSHIP_CREATED
+  MEMBERSHIP_UPDATED
+  MEMBERSHIP_DELETED
+  POLICY_CREATED
+  POLICY_UPDATED
+  POLICY_DELETED
+  POLICY_APPROVED
+  REQUEST_CREATED
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  PASSWORD_RESET_REQUESTED
+  PASSWORD_RESET_COMPLETED
+  EMAIL_VERIFIED
+  TWO_FA_ENABLED
+  TWO_FA_DISABLED
+  TWO_FA_FAILED
+  PASSKEY_REGISTERED
+  PASSKEY_REMOVED
+  SUPPORT_IMPERSONATION_STARTED
+  SUPPORT_IMPERSONATION_ENDED
+  API_KEY_CREATED
+  API_KEY_REVOKED
+  INTEGRATION_CONNECTED
+  INTEGRATION_DISCONNECTED
+  DATA_EXPORT_REQUESTED
+  DATA_DELETION_REQUESTED
+  DATA_DELETION_COMPLETED
+}
+
+enum OnboardingStep {
+  ORG_INFO
+  COMPLIANCE_PROFILE
+  TEAM_INVITES
+  DEPLOYMENT_MODE
+  FIRST_INTEGRATION
+}
+
+enum IntegrationConnector {
+  SHAREPOINT
+  SLACK
+  TEAMS
+  EMAIL
+  WEBHOOK
+  CUSTOM_API
+}
+
+enum PolicyStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum PolicyCategory {
+  DATA_PRIVACY
+  ACCESS_CONTROL
+  MODEL_USAGE
+  CONTENT_MODERATION
+  INCIDENT_RESPONSE
+  AUDIT_RETENTION
+  CUSTOM
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  AUTO_APPROVED
+  EXPIRED
+}
+
+enum RequestRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IntegrationStatus {
+  ACTIVE
+  INACTIVE
+  ERROR
+  PENDING_SETUP
+}
+
+enum ApiKeyStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum DomainStatus {
+  PENDING_VERIFICATION
+  VERIFIED
+  FAILED
+  SSL_PENDING
+  SSL_ACTIVE
+  SSL_FAILED
+}
+
+enum DataRequestStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum ActorType {
+  USER
+  SYSTEM
+  SUPPORT
+  API_KEY
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Organization — the tenant
+// ─────────────────────────────────────────────────────────────────
+
+model Organization {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  name        String
+  nameAr      String
+  crNumber    String?      @unique
+  industry    Industry
+  size        CompanySize
+  deployment  DeploymentMode @default(CLOUD)
+  logoUrl     String?
+  primaryColor String?     // hex; default brand uses cyan/indigo
+  settings    Json         @default("{}")
+  // Onboarding
+  onboardingStep        OnboardingStep @default(ORG_INFO)
+  onboardingCompletedAt DateTime?
+  // Compliance frameworks (selected at signup, mutable in settings)
+  compliance  ComplianceFramework[]
+  // Billing
+  stripeCustomerId String? @unique
+  planName        String  @default("trial")
+  trialEndsAt     DateTime?
+  // Soft delete
+  deletedAt   DateTime?
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  members             Membership[]
+  invitations         Invitation[]
+  policies            Policy[]
+  requests            AIRequest[]
+  integrations        Integration[]
+  apiKeys             ApiKey[]
+  auditLogs           AuditLog[]
+  domains             Domain[]
+  onboardingProgress  OnboardingProgress?
+  dataExportRequests  DataExportRequest[]
+  dataDeletionRequests DataDeletionRequest[]
+  sessions            Session[]
+
+  @@index([slug])
+  @@index([deletedAt])
+  @@map("organizations")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// User — synced from Clerk
+// ─────────────────────────────────────────────────────────────────
+
+model User {
+  id            String   @id @default(cuid())
+  clerkUserId   String   @unique
+  email         String   @unique @db.Citext
+  emailVerified Boolean  @default(false)
+  name          String?
+  nameAr        String?
+  avatarUrl     String?
+  phoneNumber   String?  @db.Citext
+  phoneVerified Boolean  @default(false)
+  locale        String   @default("ar-SA")
+  timezone      String   @default("Asia/Riyadh")
+  // 2FA
+  twoFactorEnabled  Boolean @default(false)
+  twoFactorSecret   String? // encrypted at-rest (TOTP secret)
+  twoFactorMethod   String? // 'totp' | 'sms' | null
+  // Preferences
+  preferences  Json     @default("{}")
+  // Activity
+  lastSeenAt   DateTime?
+  // Soft delete
+  deletedAt    DateTime?
+  // Timestamps
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  memberships         Membership[]
+  passkeys            Passkey[]
+  backupCodes         TwoFactorBackupCode[]
+  sessions            Session[]
+  auditLogs           AuditLog[]
+  invitationsSent     Invitation[] @relation("InvitationInvitedBy")
+  apiKeysCreated      ApiKey[]
+  dataExports         DataExportRequest[]
+  dataDeletions       DataDeletionRequest[]
+  dataDeletionsAsTarget DataDeletionRequest[] @relation("DataDeletionTargetUser")
+  requestsCreated     AIRequest[]
+  requestsReviewed    AIRequest[] @relation("AIRequestReviewedBy")
+  impersonatedSessions Session[] @relation("SessionImpersonatedBy")
+
+  @@index([clerkUserId])
+  @@index([email])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Membership — User × Organization × Role × Status
+// ─────────────────────────────────────────────────────────────────
+
+model Membership {
+  id             String       @id @default(cuid())
+  organizationId String
+  userId         String
+  role           Role
+  status         MemberStatus @default(ACTIVE)
+  // Invitation lineage
+  invitedById    String?
+  invitedAt      DateTime     @default(now())
+  joinedAt       DateTime?
+  // Deactivation
+  deactivatedAt  DateTime?
+  deactivatedById String?
+  deactivationReason String?
+  // Activity
+  lastActiveAt   DateTime?
+  // Preferences (per-org)
+  preferences    Json         @default("{}")
+  // Timestamps
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Relations
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invitedBy      User?        @relation("MembershipInvitedBy", fields: [invitedById], references: [id])
+  deactivatedBy  User?        @relation("MembershipDeactivatedBy", fields: [deactivatedById], references: [id])
+
+  @@unique([organizationId, userId])
+  @@index([userId])
+  @@index([organizationId, role])
+  @@index([organizationId, status])
+  @@index([status])
+  @@map("memberships")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Invitation — pending team invites
+// ─────────────────────────────────────────────────────────────────
+
+model Invitation {
+  id             String   @id @default(cuid())
+  organizationId String
+  email          String   @db.Citext
+  role           Role
+  tokenHash      String   @unique // SHA-256 of the raw token
+  // Lifecycle
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  revokedAt      DateTime?
+  // Meta
+  invitedById    String
+  message        String?
+  // Bulk import (CSV)
+  batchId        String?
+  // Timestamps
+  createdAt      DateTime @default(now())
+
+  // Relations
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy      User         @relation("InvitationInvitedBy", fields: [invitedById], references: [id])
+
+  @@unique([organizationId, email])
+  @@index([email])
+  @@index([organizationId, expiresAt])
+  @@index([batchId])
+  @@map("invitations")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Passkey — WebAuthn credentials
+// ─────────────────────────────────────────────────────────────────
+
+model Passkey {
+  id            String   @id @default(cuid())
+  userId        String
+  credentialId  String   @unique // base64url-encoded
+  publicKey     String   // base64url-encoded COSE key
+  counter       BigInt   @default(0)
+  deviceName    String?
+  transports    String[] // ['usb', 'nfc', 'ble', 'internal']
+  backupEligible Boolean @default(false)
+  backupState   Boolean  @default(false)
+  lastUsedAt    DateTime?
+  createdAt     DateTime @default(now())
+
+  // Relations
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("passkeys")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// TwoFactorBackupCode — one-time recovery codes
+// ─────────────────────────────────────────────────────────────────
+
+model TwoFactorBackupCode {
+  id        String   @id @default(cuid())
+  userId    String
+  codeHash  String   // bcrypt-hashed code
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("two_factor_backup_codes")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Session — server-side session record (mirror of Clerk JWT)
+// ─────────────────────────────────────────────────────────────────
+
+model Session {
+  id             String   @id @default(cuid())
+  userId         String
+  organizationId String? // current active tenant
+  // Token
+  tokenHash      String   @unique // SHA-256 of session cookie
+  fingerprint    String?  // browser fingerprint hash
+  // Request context
+  ipAddress      String?
+  userAgent      String?
+  device         String?  // parsed device name
+  country        String?
+  // Lifecycle
+  expiresAt      DateTime
+  lastActiveAt   DateTime @default(now())
+  revokedAt      DateTime?
+  revokedById    String?
+  revocationReason String?
+  // Impersonation
+  impersonatedById String?
+  impersonationStartedAt DateTime?
+  impersonationEndedAt   DateTime?
+  impersonationReason    String?
+
+  // Relations
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  revokedBy      User?         @relation("SessionRevokedBy", fields: [revokedById], references: [id])
+  impersonatedBy User?         @relation("SessionImpersonatedBy", fields: [impersonatedById], references: [id])
+
+  @@index([userId])
+  @@index([organizationId])
+  @@index([tokenHash])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Compliance frameworks join table (explicit for RLS clarity)
+// ─────────────────────────────────────────────────────────────────
+
+model OrganizationCompliance {
+  organizationId String
+  framework      ComplianceFramework
+  enabledAt      DateTime @default(now())
+  certifiedAt    DateTime?
+  expiresAt      DateTime?
+  notes          String?
+
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@id([organizationId, framework])
+  @@index([framework])
+  @@map("organization_compliance")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Policy — AI governance policy (e.g. "Block PII in prompts")
+// ─────────────────────────────────────────────────────────────────
+
+model Policy {
+  id             String       @id @default(cuid())
+  organizationId String
+  // Identity
+  name           String
+  nameAr         String
+  description    String?
+  descriptionAr  String?
+  category       PolicyCategory
+  // Rules (JSON: conditions, actions, exceptions)
+  rules          Json
+  // Lifecycle
+  status         PolicyStatus @default(DRAFT)
+  version        Int          @default(1)
+  parentId       String?
+  // Audit
+  createdById    String
+  approvedById   String?
+  approvedAt     DateTime?
+  // Timestamps
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  archivedAt     DateTime?
+
+  // Relations
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  parent         Policy?      @relation("PolicyVersion", fields: [parentId], references: [id])
+  versions       Policy[]     @relation("PolicyVersion")
+  requests       AIRequest[]
+
+  @@index([organizationId, status])
+  @@index([organizationId, category])
+  @@index([organizationId, createdAt])
+  @@map("policies")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// AIRequest — gated AI request awaiting review
+// ─────────────────────────────────────────────────────────────────
+
+model AIRequest {
+  id             String           @id @default(cuid())
+  organizationId String
+  requestedById  String
+  policyId       String?
+  // Payload
+  prompt         String           @db.Text
+  response       String?          @db.Text
+  modelUsed      String?
+  tokensUsed     Int?
+  // Risk
+  riskScore      Float?           // 0.0 - 1.0
+  riskLevel      RequestRiskLevel?
+  piiDetected    Boolean          @default(false)
+  piiTypes       String[]
+  // Review
+  status         RequestStatus    @default(PENDING)
+  reviewedById   String?
+  reviewedAt     DateTime?
+  reviewNotes    String?
+  // Lifecycle
+  expiresAt      DateTime?
+  // Timestamps
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  // Relations
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requestedBy    User             @relation(fields: [requestedById], references: [id])
+  reviewedBy     User?            @relation("AIRequestReviewedBy", fields: [reviewedById], references: [id])
+  policy         Policy?          @relation(fields: [policyId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, status])
+  @@index([organizationId, createdAt])
+  @@index([organizationId, riskLevel])
+  @@index([requestedById, createdAt])
+  @@map("ai_requests")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Integration — SharePoint / Slack / Teams / etc.
+// ─────────────────────────────────────────────────────────────────
+
+model Integration {
+  id             String              @id @default(cuid())
+  organizationId String
+  connector      IntegrationConnector
+  // Display
+  displayName    String
+  // Config (encrypted at-rest JSON)
+  config         Json
+  // Status
+  status         IntegrationStatus   @default(PENDING_SETUP)
+  errorMessage   String?
+  // Sync
+  lastSyncAt     DateTime?
+  syncCursor     String?
+  // Audit
+  connectedById  String
+  // Timestamps
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  disconnectedAt DateTime?
+
+  // Relations
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, connector, displayName])
+  @@index([organizationId, status])
+  @@map("integrations")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// ApiKey — programmatic access
+// ─────────────────────────────────────────────────────────────────
+
+model ApiKey {
+  id             String       @id @default(cuid())
+  organizationId String
+  name           String
+  // First 8 chars for display (e.g. "bk_live_")
+  prefix         String
+  // SHA-256 of the full key (raw never stored)
+  hashedKey      String       @unique
+  // Authorization
+  scopes         String[]
+  // Lifecycle
+  status         ApiKeyStatus @default(ACTIVE)
+  expiresAt      DateTime?
+  lastUsedAt     DateTime?
+  lastUsedIp     String?
+  // Audit
+  createdById    String
+  revokedAt      DateTime?
+  revokedById    String?
+  revocationReason String?
+  // Timestamps
+  createdAt      DateTime     @default(now())
+
+  // Relations
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdBy      User         @relation(fields: [createdById], references: [id])
+
+  @@index([organizationId, status])
+  @@index([prefix])
+  @@map("api_keys")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// AuditLog — immutable log of every privileged action
+// ─────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id             String     @id @default(cuid())
+  organizationId String
+  // Actor (may be null for SYSTEM)
+  actorId        String?
+  actorType      ActorType  @default(USER)
+  // Action
+  action         AuditAction
+  // Target
+  targetType     String?    // 'Policy' | 'AIRequest' | etc
+  targetId       String?
+  // Context
+  ipAddress      String?
+  userAgent      String?
+  // Free-form metadata (JSON)
+  metadata       Json       @default("{}")
+  // Hash chain (tamper-evidence)
+  prevHash       String?
+  hash           String?
+  // Timestamp
+  createdAt      DateTime   @default(now())
+
+  // Relations
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  actor          User?        @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([organizationId, action, createdAt])
+  @@index([actorId, createdAt])
+  @@index([targetType, targetId])
+  @@map("audit_logs")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Domain — custom domains for an org (e.g. ai.acme.com)
+// ─────────────────────────────────────────────────────────────────
+
+model Domain {
+  id                  String       @id @default(cuid())
+  organizationId      String
+  domain              String       @unique
+  // Verification
+  verificationToken   String
+  verified            Boolean      @default(false)
+  verifiedAt          DateTime?
+  // SSL
+  sslStatus           DomainStatus @default(PENDING_VERIFICATION)
+  sslIssuedAt         DateTime?
+  sslExpiresAt        DateTime?
+  // CNAME
+  cnameTarget         String       @default("proxy.brightai.site")
+  // Primary flag (only one per org)
+  isPrimary           Boolean      @default(false)
+  // Timestamps
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  // Relations
+  organization        Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, domain])
+  @@index([organizationId, isPrimary])
+  @@map("domains")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// OnboardingProgress — 5-step wizard state
+// ─────────────────────────────────────────────────────────────────
+
+model OnboardingProgress {
+  id              String         @id @default(cuid())
+  organizationId  String         @unique
+  currentStep     OnboardingStep @default(ORG_INFO)
+  completedSteps  OnboardingStep[] @default([])
+  // Per-step partial data (so user can resume)
+  stepData        Json           @default("{}")
+  completedAt     DateTime?
+  // Timestamps
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  organization    Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("onboarding_progress")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// DataExportRequest — PDPL data export
+// ─────────────────────────────────────────────────────────────────
+
+model DataExportRequest {
+  id              String           @id @default(cuid())
+  organizationId  String
+  requestedById   String
+  status          DataRequestStatus @default(PENDING)
+  // Result
+  downloadUrl     String?
+  downloadExpiresAt DateTime?
+  fileSizeBytes   BigInt?
+  // Metadata
+  recordCounts    Json?            // { users: 5, policies: 12, ... }
+  // Lifecycle
+  startedAt       DateTime?
+  completedAt     DateTime?
+  failedAt        DateTime?
+  failureReason   String?
+  // Timestamps
+  createdAt       DateTime         @default(now())
+
+  // Relations
+  organization    Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requestedBy     User             @relation(fields: [requestedById], references: [id])
+
+  @@index([organizationId, status, createdAt])
+  @@map("data_export_requests")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// DataDeletionRequest — PDPL right-to-be-forgotten
+// ─────────────────────────────────────────────────────────────────
+
+model DataDeletionRequest {
+  id              String           @id @default(cuid())
+  organizationId  String
+  requestedById   String
+  targetUserId    String?          // null = full org deletion
+  status          DataRequestStatus @default(PENDING)
+  // Grace period (e.g. 14 days for full org deletion)
+  scheduledFor    DateTime
+  // Lifecycle
+  startedAt       DateTime?
+  completedAt     DateTime?
+  failedAt        DateTime?
+  failureReason   String?
+  reason          String?
+  // Audit preservation (audit logs may be retained per legal requirement)
+  preserveAudit   Boolean          @default(true)
+  // Timestamps
+  createdAt       DateTime         @default(now())
+
+  // Relations
+  organization    Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  requestedBy     User             @relation(fields: [requestedById], references: [id])
+  targetUser      User?            @relation("DataDeletionTargetUser", fields: [targetUserId], references: [id])
+
+  @@index([organizationId, status])
+  @@index([scheduledFor])
+  @@map("data_deletion_requests")
+}

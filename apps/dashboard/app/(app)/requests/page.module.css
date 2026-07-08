@@ -1,0 +1,97 @@
+.root {
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+.empty {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--text-muted);
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-lg);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-surface);
+  border: var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.table th,
+.table td {
+  padding: var(--space-3) var(--space-4);
+  text-align: start;
+  font-size: var(--text-sm);
+  border-bottom: var(--border-subtle);
+}
+
+.table th {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--text-xs);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+.prompt {
+  max-width: 24rem;
+  color: var(--text-primary);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15em 0.5em;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+.risk_LOW { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+.risk_MEDIUM { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.risk_HIGH { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+.risk_CRITICAL { background: rgba(239, 68, 68, 0.25); color: #fca5a5; }
+
+.status_PENDING { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+.status_APPROVED { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+.status_REJECTED { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+.status_EXPIRED { background: rgba(100, 116, 139, 0.15); color: #94a3b8; }
+
+.date {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  color: var(--text-muted);
+  direction: ltr;
+  text-align: start;
+  font-size: var(--text-xs);
+}
+
+.phaseNote {
+  color: var(--text-muted);
+  font-size: var(--text-xs);
+  text-align: center;
+  margin: 0;
+}
