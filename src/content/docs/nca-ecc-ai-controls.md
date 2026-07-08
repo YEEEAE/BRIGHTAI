@@ -1,6 +1,6 @@
 ---
-title: "NCA ECC والذكاء الاصطناعي: الدليل الشامل للامتثال"
-metaTitle: "NCA ECC والذكاء الاصطناعي: الدليل الشامل 2026 | BrightAI"
+title: "ECC NCA: الضوابط الأساسية للأمن السيبراني + AI"
+metaTitle: "ECC NCA: الضوابط الأساسية للأمن السيبراني + AI | BrightAI"
 description: "دليل NCA ECC الشامل لتطبيق ضوابط الأمن السيبراني على الذكاء الاصطناعي في السعودية: سجل تدقيق غير قابل للتلاعب، تصنيف بيانات بأربع مستويات، وموافقات بشرية قبل الإنتاج."
 canonical: "https://brightai.site/docs/nca-ecc-ai-controls/"
 updated: "2026-07-08"

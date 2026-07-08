@@ -1,5 +1,5 @@
 ---
-title: "ISO 27001 vs ISO 42001: الفرق والتكامل في حوكمة AI"
+title: "ISO 27001 vs ISO 42001: الفرق في حوكمة AI"
 description: "مقارنة شاملة بين ISO 27001 (أمن المعلومات) وISO 42001 (إدارة الذكاء الاصطناعي): الفرق الجوهري، التكامل، متى تستخدم كل معيار، وكيف تجمعهما في حوكمة AI شاملة متوافقة مع ضوابط NCA وPDPL وSDAIA في السعودية."
 canonical: "https://brightai.site/blog/iso-27001-vs-iso-42001-ai-governance/"
 pubDate: "2026-07-08"
