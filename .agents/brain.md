@@ -151,7 +151,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 - **Commit**: uncommitted.
 - **Status**: verified (build + verify:all + seo:gate).
 - **Brain updates**: Section 1.1 page count 182→190 (+8 صفحات). Section 5 (Inventory): أضفنا SalesDeck + roi-calculator + صفحات جديدة.
-- **Gated (يحتاج موافقة)**: `public/_headers` CSP لـ HubSpot/Bing/Mixpanel؛ تعبئة `marketing.ts` IDs و `site.ts` (clarityId/bingVerification). الـ llms.txt Citations section محظور بدون موافقة.
+- **Gated (يحتاج موافقة)**: `public/_headers` CSP لـ HubSpot/Bing/Mixpanel **تمت الموافقة وتنفيذها (2026-07-08)** — أُضيفت `js.hs-scripts.com`/`bat.bing.com`/`cdn.mxpnl.com`/`api.mixpanel.com`/`*.mixpanel.com` إلى script-src/script-src-elem/connect-src. الـ IDs نفسها تبقى placeholders فارغة (السكربتات تتخطاها) حتى يملأها المستخدم. الـ llms.txt Citations section محظور بدون موافقة (لم يُلمس).
 - **Follow-up**: تفعيل HubSpot/Clarity/Bing بمجرد تعبئة IDs + CSP. نشر العمليات الحية (LinkedIn/X/إعلانات/فعاليات/شراكات) حسب `MARKETING-PLAYBOOK.md` + `CONTENT-CALENDAR-90D.md`.
 
 ### 2026-07-08 — Growth Engine Batch 1 (Digital Substrate) — Shipped
