@@ -32,6 +32,7 @@ import WhatsAppCTA from '../components/WhatsAppCTA.astro';
 import DottedBackground from '../components/DottedBackground.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import FoundationSchema from '../components/seo/Schema.astro';
+import MarketingScripts from '../components/MarketingScripts.astro';
 import { SITE } from '../data/site';
 import type { SEOProps } from '../data/site';
 import { ClientRouter } from 'astro:transitions';
@@ -213,6 +214,10 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
   {SITE.clarityId && (
     <script defer src="/js/clarity-init.js" data-clarity-id={SITE.clarityId}></script>
   )}
+
+  {/* Growth-stack tracking (HubSpot / Bing UET / Mixpanel) — conditional on
+       configured IDs. Scaffolded inert until credentials + CSP are set. */}
+  <MarketingScripts />
 
   <!-- Additional production meta tags -->
   <meta name="theme-color" content="#060914" />

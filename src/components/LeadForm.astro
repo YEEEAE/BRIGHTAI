@@ -1,0 +1,148 @@
+---
+/**
+ * LeadForm.astro — Reusable lead-capture form wired to formsubmit.co.
+ *
+ * Emits a POST form to https://formsubmit.co/<leadInbox> with hidden fields for
+ * subject, captcha-off, and UTM attribution so every captured lead carries its
+ * acquisition source into the inbox (and a future HubSpot/CRM import).
+ *
+ * Design: uses existing canonical form classes (.inner-form, .field, .form-row,
+ * .form-label, .btn--primary). No Tailwind, no inline styles, RTL + tokens.
+ *
+ * Props:
+ *   - title: form card heading
+ *   - intro: short helper text under the title
+ *   - subject: value for formsubmit `_subject`
+ *   - ctaLabel: submit button text
+ *   - source/medium/campaign: UTM attribution
+ *   - fields: field definitions (see FieldDef)
+ *   - consentLabel: PDPL consent text (defaults to standard wording)
+ */
+import { MARKETING } from '../data/marketing';
+import { attributionFields } from '../data/marketing';
+
+interface FieldDef {
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'textarea' | 'select';
+  options?: string[];
+  required?: boolean;
+  placeholder?: string;
+  autocomplete?: string;
+  full?: boolean; // span both columns in the 2-col row
+}
+
+interface Props {
+  title: string;
+  intro?: string;
+  subject: string;
+  ctaLabel: string;
+  source?: string;
+  medium?: string;
+  campaign?: string;
+  fields: FieldDef[];
+  consentLabel?: string;
+}
+
+const {
+  title,
+  intro,
+  subject,
+  ctaLabel,
+  source,
+  medium,
+  campaign,
+  fields,
+  consentLabel = 'أوافق على معالجة بياناتي الشخصية المدخلة وفقاً لـ <a href="/privacy-policy/">سياسة الخصوصية</a> و <a href="/pdpl-statement/">بيان الامتثال لنظام PDPL السعودي</a>.',
+} = Astro.props;
+
+const attr = attributionFields({ source, medium, campaign });
+const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
+---
+
+<form
+  class="inner-form"
+  action={formAction}
+  method="POST"
+  aria-label={title}
+>
+  <input type="hidden" name="_subject" value={subject} />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_next" value={MARKETING.leadThankYou} />
+  <input type="hidden" name="_template" value="table" />
+  {attr.map((a) => <input type="hidden" name={a.name} value={a.value} />)}
+
+  <h3 class="form-card__title">{title}</h3>
+  {intro && <p class="form-card__desc">{intro}</p>}
+
+  {
+    fields.map((f) => {
+      const isSelect = f.type === 'select';
+      const isArea = f.type === 'textarea';
+      const inputType = isSelect || isArea ? undefined : f.type || 'text';
+      return (
+        <div class:list={['form-field', f.full && 'form-field--full']}>
+          <label class="form-label" for={f.name}>
+            {f.label}
+            {f.required && <span class="text-red-400" aria-hidden="true">*</span>}
+          </label>
+          {isSelect ? (
+            <select class="field field--select" id={f.name} name={f.name} required={f.required}>
+              <option value="">اختر…</option>
+              {f.options?.map((o) => <option>{o}</option>)}
+            </select>
+          ) : isArea ? (
+            <textarea
+              class="field field--textarea"
+              id={f.name}
+              name={f.name}
+              required={f.required}
+              placeholder={f.placeholder}
+            ></textarea>
+          ) : (
+            <input
+              class="field"
+              type={inputType}
+              id={f.name}
+              name={f.name}
+              required={f.required}
+              autocomplete={f.autocomplete}
+              inputmode={f.type === 'tel' ? 'tel' : f.type === 'email' ? 'email' : undefined}
+              placeholder={f.placeholder}
+            />
+          )}
+        </div>
+      );
+    })
+  }
+
+  <div class="form-field form-field--full" style="display: flex; align-items: flex-start; gap: var(--space-3);">
+    <input
+      required
+      aria-required="true"
+      id="pdpl_consent"
+      name="pdpl_consent"
+      type="checkbox"
+      style="margin-block-start: 0.2em;"
+    />
+    <label for="pdpl_consent" class="text-xs" style="color: var(--text-secondary); line-height: 1.6;" set:html={consentLabel}></label>
+  </div>
+
+  <button class="btn btn--primary btn--block inner-form__submit" type="submit">
+    <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-send"></use></svg>
+    {ctaLabel}
+  </button>
+</form>
+
+<style>
+  .form-card__title { margin-block-end: var(--space-2); }
+  .form-card__desc {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    margin-block-end: var(--space-4);
+    line-height: 1.6;
+  }
+  .form-field--full { grid-column: 1 / -1; }
+  /* 2-column field layout when the parent is .form-row--2 */
+  .inner-form :global(.form-field) { min-width: 0; }
+</style>
