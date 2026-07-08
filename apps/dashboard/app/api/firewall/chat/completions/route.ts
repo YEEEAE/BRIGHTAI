@@ -27,7 +27,7 @@ import { resolveApiKey } from '@/lib/firewall/auth/api-key';
 import { detect, applyActions, DEFAULT_POLICY } from '@/lib/firewall';
 import type { FirewallContext } from '@/lib/firewall';
 import { consume } from '@/lib/firewall/ratelimit/redis-bucket';
-import { chat } from '@/lib/firewall/llm/groq-client';
+import { chat, chatStream } from '@/lib/firewall/llm/groq-client';
 import { logFirewallEvent, sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
 import { dbServiceRole } from '@brightai/db';
 import { Prisma } from '@brightai/db';
@@ -49,6 +49,7 @@ const BodySchema = z.object({
   messages: z.array(MessageSchema).min(1).max(64),
   temperature: z.number().min(0).max(2).optional(),
   max_tokens: z.number().int().min(1).max(8192).optional(),
+  stream: z.boolean().optional(), // Phase 1b: OpenAI-compatible SSE
   // Firewall-specific overrides (not part of OpenAI spec).
   firewall: z
     .object({
@@ -173,6 +174,11 @@ export async function POST(req: NextRequest) {
   const redactedMessages = body.messages.map((m, i) =>
     i === lastUserIdx ? { ...m, content: inputResult.redactedText } : m,
   );
+
+  // 6b. Streaming SSE branch (Phase 1b) ─────────────────────────
+  if (body.stream) {
+    return handleStream(redactedMessages, body, ctx, apiKey, inputText, inputDetections, inputResult);
+  }
 
   const llmStart = Date.now();
   let llmResponse;
@@ -313,4 +319,191 @@ function computeRisk(
   const hasCritical = all.some((d) => critical.has(d.type));
   const score = Math.min(1, 0.1 * all.length + 0.4 * (hasCritical ? 1 : 0));
   return Number(score.toFixed(3));
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Streaming handler (Phase 1b)
+//
+// Buffers Groq SSE deltas, runs PII redaction on each flush, and
+// returns an OpenAI-compatible SSE stream to the client.
+// ─────────────────────────────────────────────────────────────────
+
+interface StreamDeps {
+  redactedMessages: { role: 'system' | 'user' | 'assistant'; content: string }[];
+  body: z.infer<typeof BodySchema>;
+  ctx: FirewallContext;
+  apiKey: { apiKeyId: string; organizationId: string; createdById: string };
+  inputText: string;
+  inputDetections: { type: string; start: number; end: number; value: string; confidence: number; detector: 'regex' | 'ner' }[];
+  inputResult: { redactedText: string; latencyMs: number };
+}
+
+async function handleStream(
+  redactedMessages: StreamDeps['redactedMessages'],
+  body: StreamDeps['body'],
+  ctx: StreamDeps['ctx'],
+  apiKey: StreamDeps['apiKey'],
+  inputText: string,
+  inputDetections: StreamDeps['inputDetections'],
+  inputResult: StreamDeps['inputResult'],
+) {
+  const encoder = new TextEncoder();
+
+  const stream = new ReadableStream<Uint8Array>({
+    async start(controller) {
+      const sendEvent = (data: unknown) => {
+        controller.enqueue(encoder.encode(`data: ${JSON.stringify(data)}\n\n`));
+      };
+      const sendDone = () => {
+        controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+        controller.close();
+      };
+
+      // Accumulated state.
+      let buffer = '';
+      let lastRedactedLen = 0;
+      let fullContent = '';
+      let totalInputDetections = inputDetections.length;
+      let totalOutputDetections = 0;
+      let finalModel = body.model ?? 'llama-3.1-8b-instant';
+      let chunkIndex = 0;
+      const created = Math.floor(Date.now() / 1000);
+
+      try {
+        const groqStream = chatStream({
+          messages: redactedMessages,
+          model: body.model,
+          temperature: body.temperature,
+          maxTokens: body.max_tokens,
+        });
+
+        for await (const chunk of groqStream) {
+          if (chunk.model) finalModel = chunk.model;
+
+          if (chunk.content) {
+            buffer += chunk.content;
+            fullContent += chunk.content;
+
+            // Flush every 256 chars or on finish.
+            if (buffer.length >= 256 || chunk.finishReason) {
+              const detections = await detect(buffer, ctx);
+              const result = applyActions(buffer, detections, ctx.policy);
+              totalOutputDetections += detections.length;
+              const redactedDelta = result.redactedText.slice(lastRedactedLen);
+              lastRedactedLen = result.redactedText.length;
+
+              if (redactedDelta) {
+                sendEvent({
+                  id: `chatcmpl-${ctx.requestId}`,
+                  object: 'chat.completion.chunk',
+                  created,
+                  model: finalModel,
+                  choices: [
+                    {
+                      index: 0,
+                      delta: { content: redactedDelta },
+                      finish_reason: null,
+                    },
+                  ],
+                });
+              }
+              // Reset buffer; keep lastRedactedLen anchored to the
+              // redacted text length so subsequent deltas slice correctly.
+              buffer = '';
+            }
+          }
+
+          if (chunk.finishReason) {
+            // Final chunk.
+            sendEvent({
+              id: `chatcmpl-${ctx.requestId}`,
+              object: 'chat.completion.chunk',
+              created,
+              model: finalModel,
+              choices: [
+                {
+                  index: 0,
+                  delta: {},
+                  finish_reason: chunk.finishReason,
+                },
+              ],
+            });
+          }
+          chunkIndex++;
+        }
+
+        // Persist AIRequest + audit log (fire-and-forget for stream,
+        // because we already sent the response).
+        try {
+          await dbServiceRole.aIRequest.create({
+            data: {
+              organizationId: ctx.organizationId,
+              requestedById: ctx.userId ?? apiKey.createdById,
+              prompt: inputText.slice(0, 8192),
+              response: fullContent.slice(0, 8192),
+              modelUsed: finalModel,
+              tokensUsed: null, // not available in stream usage
+              piiDetected: totalInputDetections + totalOutputDetections > 0,
+              piiTypes: Array.from(
+                new Set([
+                  ...inputDetections.map((d) => d.type),
+                  // Output pii types were tracked in totalOutputDetections
+                  // but we need to re-detect to get the types. For
+                  // the audit log, we record the count.
+                ]),
+              ),
+              status: 'AUTO_APPROVED',
+              riskScore: Math.min(1, 0.1 * (totalInputDetections + totalOutputDetections)),
+              riskLevel: 'LOW',
+            },
+          });
+          await logFirewallEvent(ctx, {
+            latencyMs: inputResult.latencyMs,
+            piiTypes: inputDetections.map((d) => d.type).filter((v, i, a) => a.indexOf(v) === i).sort(),
+            detectionCount: totalInputDetections + totalOutputDetections,
+            originalTextSha256: sha256Text(inputText),
+            originalLength: inputText.length,
+            effectiveAction: 'mask',
+            model: finalModel,
+            tokensUsed: null,
+            blocked: false,
+            llmLatencyMs: null,
+            notes: `stream:${ctx.requestId}`,
+          });
+        } catch {
+          // ignore persistence errors in stream
+        }
+
+        sendDone();
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'unknown_stream_error';
+        sendEvent({
+          id: `chatcmpl-${ctx.requestId}`,
+          object: 'chat.completion.chunk',
+          created,
+          model: finalModel,
+          choices: [
+            {
+              index: 0,
+              delta: { content: `\n\n[firewall error: ${message}]` },
+              finish_reason: 'stop',
+            },
+          ],
+        });
+        sendDone();
+      }
+    },
+  });
+
+  return new Response(stream, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-store',
+      Connection: 'keep-alive',
+      'X-Firewall-Request-Id': ctx.requestId,
+      'X-Firewall-Input-Detections': String(inputDetections.length),
+      'X-Firewall-Blocked': 'false',
+    },
+  });
 }

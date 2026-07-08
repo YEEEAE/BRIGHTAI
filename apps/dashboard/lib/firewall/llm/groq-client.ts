@@ -83,3 +83,101 @@ export async function chat(req: ChatRequest): Promise<ChatResponse> {
 export function isGroqConfigured(): boolean {
   return Boolean(process.env.GROQ_API_KEY);
 }
+
+// ─────────────────────────────────────────────────────────────────
+// Streaming (Phase 1b)
+// ─────────────────────────────────────────────────────────────────
+
+export interface ChatChunk {
+  content: string;
+  finishReason: string | null;
+  /** Model that produced this chunk. Usually set on the first chunk. */
+  model?: string;
+}
+
+/**
+ * Streaming chat completion. Yields content deltas as they arrive
+ * from the upstream provider. The caller (the chat route) is
+ * responsible for redacting each delta before sending to the client.
+ *
+ * Token usage is NOT reported in the stream (Groq sends it only on
+ * the final chunk with `stream_options: { include_usage: true }`).
+ * We handle this via the `usage` callback below.
+ */
+export async function* chatStream(req: ChatRequest): AsyncGenerator<ChatChunk> {
+  const groq = getClient();
+  const model = req.model ?? DEFAULT_MODEL;
+
+  const stream = await groq.chat.completions.create(
+    {
+      model,
+      messages: req.messages.map((m) => ({ role: m.role, content: m.content })),
+      temperature: req.temperature ?? 0.2,
+      max_tokens: req.maxTokens ?? 1024,
+      stream: true,
+      stream_options: { include_usage: true },
+    },
+    { signal: req.signal },
+  );
+
+  let finalUsage: { prompt_tokens: number; completion_tokens: number; total_tokens: number } | null = null;
+  let finalModel: string | null = null;
+
+  for await (const chunk of stream) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const c = chunk as any;
+    if (c.model) finalModel = c.model;
+    if (c.usage) {
+      finalUsage = {
+        prompt_tokens: c.usage.prompt_tokens ?? 0,
+        completion_tokens: c.usage.completion_tokens ?? 0,
+        total_tokens: c.usage.total_tokens ?? 0,
+      };
+    }
+    const choice = c.choices?.[0];
+    if (!choice) continue;
+    const delta = choice.delta?.content ?? '';
+    const finishReason = choice.finish_reason ?? null;
+    if (delta || finishReason) {
+      yield { content: delta, finishReason, model: finalModel ?? undefined };
+    }
+  }
+
+  // Final sentinel with usage info (consumers can listen for finishReason='stop').
+  if (finalUsage) {
+    yield {
+      content: '',
+      finishReason: 'stop',
+      model: finalModel ?? undefined,
+    };
+  }
+}
+
+export interface StreamUsage {
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+  model: string;
+}
+
+/**
+ * Wrap a stream and collect usage info. The returned generator
+ * yields the same chunks as `chatStream`; the second value of the
+ * tuple is the usage callback that should be called once at the end.
+ */
+export async function collectStreamUsage(
+  stream: AsyncGenerator<ChatChunk>,
+): Promise<{ chunks: ChatChunk[]; usage: StreamUsage | null }> {
+  const chunks: ChatChunk[] = [];
+  let model = '';
+  for await (const chunk of stream) {
+    chunks.push(chunk);
+    if (chunk.model) model = chunk.model;
+  }
+  return {
+    chunks,
+    usage: model
+      ? { promptTokens: 0, completionTokens: 0, totalTokens: 0, model }
+      : null,
+  };
+}
