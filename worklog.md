@@ -317,3 +317,44 @@ Stage Summary:
 - 📊 Net content addition: ~3,000 كلمة جديدة (مقال 1: ~700 + مقال 2: ~900 + مقال 5: 2,000) مع 0 حذف
 - 🎯 الخطوة التالية: مراجعة المستخدم + deploy + indexnow:trigger
 - 🔖 المخاطر المتبقية: cannibalization محتمل بين المقال 1 و ai-vision-2030-saudi.md (متابعة 14-30 يوم)
+
+---
+Task ID: 2026-07-08-002
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: تنظيف الديون التقنية — حذف الملفات المكررة والـ config غير المستخدم (الجزء الآمن من خطة 5 خطوات)
+Started: 2026-07-08T05:20:00+03:00
+Mode: Senior
+Branch: main (لم يُنشأ branch جديد — التغييرات واضحة وآمنة + snapshot محفوظ)
+
+Work Log:
+- 2026-07-08T05:14: قرأت `.agents/brain.md` أول 120 سطر (state snapshot + perf budget + hosting)
+- 2026-07-08T05:15: فحصت git status (نظيف) + ls CSS files (9 ملفات + bak + doc) + ls redirect sources (5 مصادر)
+- 2026-07-08T05:15: عملت find للملفات بنمط "* 2.*" → 14 ملف (مو 13)
+- 2026-07-08T05:16: عملت grep للـ BackgroundGrid → 15 صفحة تستخدمه (مو ميت)
+- 2026-07-08T05:16: عملت search للـ SectionReveal/Sparkles → 0 ملفات (محذوفة مسبقًا)
+- 2026-07-08T05:17: تحققت من نشر: render.yaml هو الـ active blueprint (Render، مو Vercel)
+- 2026-07-08T05:17: تحققت من BaseLayout 2.astro: مافي مرجع (0 grep results)
+- 2026-07-08T05:18: تحققت من .htaccess: مذكور بس في scripts/generate-inventory.py (سجل)
+- 2026-07-08T05:18: تحققت من report/perf/* 2.html: مذكورة بس في broken_links_before.json (سجل)
+- 2026-07-08T05:19: أوقفت المستخدم — وضّحت 4 تناقضات بين الطلب والواقع (التفاصيل في report)
+- 2026-07-08T05:19: المستخدم اختار خيار 2 (حذف .htaccess + vercel.json)
+- 2026-07-08T05:20: أنشأت snapshot tar.gz (2.9MB) في .agents/snapshots/2026-07-08-pre-cleanup-dupes.tar.gz
+- 2026-07-08T05:20: حذفت 17 ملف (12 تقرير أداء مكرر + 1 snapshot html + 1 BaseLayout 2 + 1 tokens.css.bak + .htaccess + vercel.json)
+- 2026-07-08T05:21: `npm run build` → 172 صفحة، 0 errors، 2.79s build time
+- 2026-07-08T05:21: `npm run verify:all` → exit 0 (0 broken links، 152 sitemap URLs)
+- 2026-07-08T05:21: `npm run seo:all` → seo:gate exit 0 (0 errors، 0 warnings) ✅
+- 2026-07-08T05:22: كتبت تقرير شامل في report/2026-07-08-cleanup-technical-debt.md
+
+Stage Summary:
+- 17 ملف محذوف (~1.4MB تنظيف)
+- 0 صفحات مكسورة (BackgroundGrid رفضت حذفه — مستخدم في 15 صفحة)
+- 0 نص عربي منشور متغير
+- 0 canonical/hreflang متغير
+- 3 مهام follow-up مؤجلة (دمج CSS، تقسيم kernel per-page، تنظيف report/perf/*.html الأصلية)
+- Snapshot محفوظ — git revert كافي للرجوع
+
+Decisions Made (مخالفة لخطة المستخدم):
+- رفضت حذف `BackgroundGrid.astro` (حيوي، 15 صفحة)
+- رفضت تنفيذ الخطوة 3 (دمج CSS) — مهمة مستقلة كبيرة
+- رفضت تنفيذ الخطوة 5 (kernel per-page) — مهمة مستقلة مع selectors analysis
+- فسّرت "Vercel" في طلب المستخدم كـ "Render" بناءً على render.yaml الفعلي

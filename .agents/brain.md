@@ -141,6 +141,27 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-08 — Cleanup: Removed 17 Duplicate Files + Unused Config (Technical Debt Pass, Safe Subset)
+
+- **Files**: 17 ملف محذوف. في `report/`: 12× `report/perf/*.report 2.html` (blog/desktop, blog/mobile, docs/desktop, docs/mobile, home/desktop, home/mobile, kernel/desktop, kernel/mobile, pricing/desktop, pricing/mobile, solutions/desktop, solutions/mobile) + 1× `_reports/redesign-prompts-snapshot 2.html`. في `src/`: 1× `src/layouts/BaseLayout 2.astro` (duplicate of root layout, 0 references) + 1× `src/styles/tokens.css.bak.20260630` (old backup, never imported). في الجذر: 1× `.htaccess` (Apache config — Render deployment لا يحتاجه) + 1× `vercel.json` (Vercel config — Render deployment لا يحتاجه). Snapshot: `.agents/snapshots/2026-07-08-pre-cleanup-dupes.tar.gz` (2.9MB).
+- **What**: حذف 17 ملف (~1.4MB تنظيف) — مكررات بنمط `* 2.*` + نسخة قديمة من tokens.css + 2 redirect config files ما تُستخدم. ما متغير أي نص منشور، ما متغير canonical/hreflang، ما حُذف أي component حيوي.
+- **Why**: المستخدم طلب 5 خطوات (حذف مكررات + مكونات ميتة + دمج CSS + توحيد redirects + تقسيم kernel per-page). بعد الفحص الفعلي، اكتشفت إن 4 من الـ 5 خطوات مبنية على معلومات قديمة: `BackgroundGrid` مستخدم في 15 صفحة (مو ميت)، `SectionReveal/Sparkles*` محذوفة مسبقًا، النشر على Render مو Vercel، دمج CSS وتقسيم kernel يبي خطتين منفصلتين. رفضت كل شي يكسر صفحات منشورة وركّزت على 17 ملف آمن 100% (تحققت من 0 مراجع).
+- **Verification**: `npm run build` → 172 صفحة، 0 errors، 2.79s build time، 152 sitemap URLs. `npm run verify:all` → exit 0 (0 broken links، 28749 مراجع مفحوصة). `npm run seo:gate` → exit 0 (0 errors، 0 warnings). `seo:check` يشتكي من `report/perf/*.report.html` (النسخة الأصلية بدون " 2") — هذي تقارير Lighthouse ضخمة مو صفحات موقع، التحذير موجود قبل جلستي.
+- **Report**: `report/2026-07-08-cleanup-technical-debt.md` (15KB، 10 أقسام، قرارات ومخاطر مفصّلة)
+- **Commit**: uncommitted (snapshot محفوظ في .agents/snapshots/)
+- **Status**: verified locally — جاهز للـ commit + push + deploy
+- **Brain updates**:
+  - Section 1: لازم تحديث — 17 ملف محذوف = ~1.4MB توفير
+  - Section 5.5 (Inventory): لازم إزالة `SparklesHero/SparklesCore/SectionReveal` من قائمة "Deprecated Components" — هم محذوفين فعلًا
+  - **Section 3 (Known Issues)**: إضافة KI جديدة — CSS 9 ملفات (170KB+) + kernel 134KB code-splitting مؤجل
+  - **Section 4 (Decisions)**: DEC جديدة — `BackgroundGrid.astro` لا يُحذف (حيوي لـ 15 صفحة)
+- **Decisions NOT executed (refused)**:
+  - **DEC**: `BackgroundGrid.astro` is canonical decorative component (used in 15 pages: 404, about, contact, services, trust, demo, offline, sitemap, solutions/×4, assessment). Do NOT delete.
+  - **DEC**: `SectionReveal.astro` + `SparklesHero.astro` + `SparklesCore.tsx` were deleted in prior sessions (confirmed: 0 results on grep). CLAUDE.md Section 5.5 inventory is stale — needs cleanup.
+  - **DEC**: `render.yaml` is the primary deployment config (Render), NOT `vercel.json`. `vercel.json` was orphan config. Hosting target is Render, not Vercel.
+
+---
+
 ### 2026-07-08 — Authority Building: NCA Expansion + SDAIA Cluster + AI vs ML Title + Digital Transformation + Education Meta + New ISO Comparison Article
 
 - **Files**: 7 ملفات: `src/content/blog/nca-cybersecurity-requirements-saudi.md` (توسعة)، `src/content/blog/sdaia-generative-ai-guidelines-practical-compliance.md` (تحسين H2s)، `src/content/blog/sdaia-seven-principles-practical-guide.md` (Title + 3 H2s محسّنة)، `src/content/blog/ai-vs-machine-learning-explained.md` (Title + AEO paragraph)، `src/content/blog/digital-transformation-sme-saudi.md` (H2 جديد كبير)، `src/content/blog/generative-ai-education-saudi.md` (Title + Meta Description)، `src/content/blog/iso-27001-vs-iso-42001-ai-governance.md` (جديد)، + `src/pages/blog/[...slug].astro` (FAQ_BY_SLUG لـ NCA + ISO).
