@@ -30,6 +30,11 @@ interface Props extends SEOProps {
 
 const { title, description, canonical, hreflang = [], ogImage, jsonLd, currentPath = '/kernel/' } = Astro.props;
 
+// SEMRUSH-FIX-2026-07-08 (#45): kernel pages are product-style (SoftwareApplication
+// primary entity) — omit the foundation LocalBusiness node so schema validators
+// don't see a confusing sibling LocalBusiness/ProfessionalService.
+const omitLocalBusiness = true;
+
 const allItems = [
   { path: '/kernel/', label: 'الفهرس' },
   ...kernelNavItems.map(item => ({ path: item.path, label: item.label })),
@@ -46,6 +51,7 @@ const allItems = [
   ogImage={ogImage}
   jsonLd={jsonLd}
   currentPath={currentPath}
+  omitLocalBusiness={omitLocalBusiness}
 >
   {/* perf(bloat-3-fixes-2026-07-07): Kernel-only styles.
       Was: BaseLayout @import kernel.css (128KB raw) for every page.

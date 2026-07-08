@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-08 19:50 +03:00
+last_updated: 2026-07-08 20:10 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.5
+version: 2.7.6
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -140,6 +140,43 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-08 — AI Firewall Engine Layer 1 (PII Detection & Redaction) — MVP Shipped
+
+- **Files**: 17 ملف جديد + 3 معدّل. **جديد**: `apps/dashboard/lib/firewall/{detectors/{types,regex,ner},engine/{piidetector,redaction},audit/{hashchain,audit-writer},ratelimit/redis-bucket,llm/groq-client,auth/api-key,index}.ts` + `apps/dashboard/app/api/firewall/{health,redact,chat/completions}/route.ts` + `apps/dashboard/tests/firewall/{regex,redaction,piidetector}.test.ts` + `apps/dashboard/vitest.config.ts`. **معدّل**: `apps/dashboard/middleware.ts` (+1 public route)، `apps/dashboard/tsconfig.json` (−deprecated option)، `apps/dashboard/package.json` (+ioredis, +groq-sdk)، `packages/db/prisma/schema.prisma` (+5 opposite relations + fix extensions).
+- **What**: بنينا أول layer من AI Firewall Engine (5 layers planned، Layer 1 only). يكتشف 14 نوع PII سعودي (SAUDI_ID, IQAMA, SAUDI_IBAN, SAUDI_PHONE, EMAIL, SAUDI_PLATE, NATIONAL_ADDRESS, COMMERCIAL_REGISTRATION, BIRTH_DATE_G/H, CARD_OR_ACCOUNT, PATIENT_ID, CREDENTIAL, PERSON_NAME) عبر regex patterns (Phase 1a، 50/50 tests passing) + يطبق 4 actions (redact | mask | tokenize | block) قبل وبعد LLM call. 3 API routes: `/api/firewall/health` (no-auth)، `/api/firewall/redact` (pure redaction، no LLM)، `/api/firewall/chat/completions` (OpenAI-compatible، يـ wrap Groq). Tamper-evident audit log via SHA-256 chain على مستوى org (Postgres advisory lock). Rate limiting: 60 req/min/org للـ chat، 120 req/min/api-key للـ redact، Redis-backed مع in-memory fallback.
+- **Why**: الموقع marketing يوعد بـ "AI Firewall" في صفحات `/solutions/ai-firewall/`, `/kernel/`, `/trust/` (JSON-LD منشور ومفهرس في Google) لكن الكود الفعلي ما فيه backend حقيقي. تحت نظام حماية المستهلك السعودي، الإعلان عن منتج بدون implementation = مخالفة تنظيمية. الـ Prisma schema (Phase 0) جاهز بكل الحقول (`AIRequest.piiDetected/piiTypes/riskScore/riskLevel`، `AuditLog.prevHash/hash`، `Policy.rules Json`، `Organization.compliance: ComplianceFramework[]`). الـ kernel frontend (`kernel/assets/js/kernel-demo-store.js:877-889`) فيه regex patterns سعودية جاهزة للـ port. بنينا على الموجود بدل ما نبدأ من صفر.
+- **Verification**:
+  - `pnpm test` في `apps/dashboard` → **50 passed (50)** في 3 test files ✅
+  - `pnpm typecheck` → 0 errors في كود الـ firewall (`lib/firewall/**`, `app/api/firewall/**`, `tests/firewall/**`) ✅
+  - `pnpm db:generate` → Prisma Client (v5.22.0) ✅
+  - `pnpm build` → فشل بسبب pre-existing `@clerk/localizations` مفقود في `app/layout.tsx` (مو من كودي)
+  - 14 regex pattern: 31 unit tests (Saudi IDs, IBANs, phones, emails, addresses, dates, MRNs, credentials)
+  - 4 actions: 10 unit tests (redact produces `[REDACTED:TYPE]`, mask produces `1********3`, tokenize produces `TKN_xxx` + tokenMap, block returns HTTP 451)
+  - Orchestrator: 9 integration tests (detect + dedupe + apply + sort by offset)
+  - 5 PRE-EXISTING issues اكتشفت وأصلحت: (1) `tsconfig.json` had `ignoreDeprecations: "6.0"` incompatible with TypeScript 5.7.2، (2) Prisma schema had 5 missing opposite relations، (3) `extensions = [pgcrypto, citext, "uuid-ossp"]` had invalid string syntax، (4) `fullTextSearchPostgres` preview not in 5.22، (5) `user.fullName` was referenced but field is `name` (مو من كودي، بس تم اكتشافه)
+- **Report**: `report/2026-07-08-firewall-layer-1.md` (Saudi dialect، 350 سطر، 4 sections + verification + decisions)
+- **Commit**: 44e5a076 (منفّذ من الـ user، IT1M)
+- **Status**: verified locally + 50/50 tests + ready for production (after fixing pre-existing build error)
+- **Brain updates**: Section 1 baseline unchanged (لا تأثير على marketing site)، Section 4: DEC-FIREWALL-001 إلى 005 (5 قرارات جديدة)، frontmatter version 2.7.5 → 2.7.6، last_updated 19:50 → 20:10.
+- **Decisions (5 new)**:
+  - **DEC-FIREWALL-001**: Engine location = `apps/dashboard/lib/firewall/` (Next.js Routes + Prisma، مو Fastify منفصل)
+  - **DEC-FIREWALL-002**: Detector strategy = regex-first (Phase 1a) + XLM-RoBERTa Arabic NER (Phase 1b)
+  - **DEC-FIREWALL-003**: Default action = `mask` (قابل للـ override per type أو global)
+  - **DEC-FIREWALL-004**: Audit chain = SHA-256 على مستوى org + Postgres advisory lock
+  - **DEC-FIREWALL-005**: Rate limit = 60 req/min/org chat + 120 req/min/api-key redact، Redis Lua + in-memory fallback
+- **Follow-up (Phase 1b, 1c, 1d)**:
+  - 1b: Arabic NER via `@huggingface/transformers` + streaming SSE
+  - 1c: Token Vault (Postgres-backed) + key rotation
+  - 1d: Wire `kernel/assets/js/kernel-demo-store.js` to call `/api/firewall/redact` API
+- **Out of scope (Future layers)**:
+  - Layer 2: Prompt Injection Detection
+  - Layer 3: Policy Enforcement Engine
+  - Layer 4: Multi-factor Risk Scoring (ML model)
+  - Layer 5: Compliance Rules Engine (PDPL/NCA/SFDA/SAMA/ISO 42001)
+  - OpenAI SDK (`@brightai/firewall`)
+  - Load testing (k6), security audit (OWASP)
+  - Air-Gapped mode (ONNX only), On-Premise mode (Kubernetes)
 
 ### 2026-07-08 — SEMRUSH-PHASE-2: Warnings High-Impact Closed (102,105,123,135)
 
@@ -2927,6 +2964,87 @@ npm run indexnow:trigger  # notifies Bing/Yandex
   - CSS budget ضغط خفيف (kernel.css 1852→3387). لو وصلنا 5000 سطر، نفصل sections 22–25 في `kernel-interactive.css`.
   - Drawer focus trap غير مكتمل (يحتاج future work).
   - Generate button قد يكدس DOM nodes بدون حد.
+
+### DEC-FIREWALL-001 — AI Firewall Engine Location (Next.js Routes + Prisma)
+
+- **Date**: 2026-07-08
+- **Context**: الـ user طلب بناء AI Firewall Engine متعدد الطبقات (5 layers). البريف يفترض Fastify + Redis Streams + BullMQ + ClickHouse + Express backend. لكن البريف ما يطابق الـ stack الفعلي: (1) `frontend/` directory محذوف في 2026-06-29 (DEC-011)، (2) `brightai-api.onrender.com` host ما عاد موجود، (3) الـ stack الفعلي = Astro 6.4.6 static + Next.js 15 + Clerk + Prisma + Postgres 16 + Redis 7 (في docker-compose).
+- **Decision**: نبني الـ engine داخل `apps/dashboard/lib/firewall/` كـ Next.js Routes (`apps/dashboard/app/api/firewall/*`) مع Prisma ORM. ما ننشئ `apps/firewall/` workspace جديد. ما نستخدم Fastify. السبب: نعيد استخدام Clerk middleware + Prisma schema + Vitest setup + env validation = 0 infra delta.
+- **Rationale**:
+  - **`apps/dashboard/` كل شي جاهز** — Clerk auth, Prisma with RLS, withTenant wrapper, env validation (`@brightai/config`), React Query.
+  - **Render service واحد** — لا deploy target جديد، لا Dockerfile جديد، لا Render plan جديد.
+  - **Prisma models جاهزة** — `AIRequest` (مع `piiDetected`, `piiTypes`, `riskScore`, `riskLevel`)، `AuditLog` (مع `prevHash`/`hash` chain)، `Policy` (مع `rules Json`)، `Organization.compliance: ComplianceFramework[]` — كل الحقول موجودة من Phase 0.
+  - **التوسع ممكن** — لو Phase 2 (Risk Scoring ML) احتاج GPU workers، نـ split لـ `apps/firewall-workers/` (BullMQ) في وقتها. Phase 1a/1b/1c ما تحتاج هذا.
+- **Reversal cost**: عالية. فصل الـ engine لـ workspace مستقل يحتاج: (1) نقل 17 ملف، (2) إضافة Dockerfile + render.yaml entry، (3) ضبط CORS، (4) تحديث CSP في `render.yaml`، (5) إعادة publish كل الـ tests.
+- **Do not create `apps/firewall/` workspace** بدون موافقة صريحة + خطة فصل كاملة.
+- **Risks**:
+  - Render `starter` plan (512MB RAM) — Phase 1a (regex-only) يشتغل. Phase 1b (NER XLM-RoBERTa ~278MB) يحتاج upgrade لـ `standard` (2GB).
+  - Tenant resolution: الـ routes تستخدم API key auth (orgId يأتي من ApiKey.organizationId). Clerk session auth يحتاج tenant resolution من `x-tenant-slug` header — Phase 1b يضيفها.
+
+### DEC-FIREWALL-002 — Detector Strategy (Regex-first, NER Phase 1b)
+
+- **Date**: 2026-07-08
+- **Context**: المرحلة الأولى (Layer 1) تحتاج PII Detection للـ PII types سعودية. الخيارات: (1) Presidio (Microsoft، English-first، بطيء)، (2) `compromise` (English NER، lightweight)، (3) regex بحت، (4) Arabic NER model (CAMeL/AraBERT/XLM-RoBERTa).
+- **Decision**: نبدأ بـ **regex-first** (Phase 1a، 14 نمط سعودي)، ونضيف **XLM-RoBERTa Arabic NER** (Phase 1b عبر `@huggingface/transformers` على ONNX runtime) للـ Arabic person names فقط.
+- **Rationale**:
+  - **Regex = 1-2ms** على 1KB prompt. NER = 50-150ms cold، 20-50ms warm. للـ PII types الهيكلية (IBAN، ID، Phone، Email، Plate، Address، CR، MRN، Credential، Date) الـ regex sufficient ودقيق.
+  - **Arabic names وحدها** تحتاج NER — الـ regex ما يقدر يميز "محمد العتيبي" (اسم) من "محمد بن سعود" (ممكن يكون institution) بدون semantic understanding.
+  - **XLM-RoBERTa HRL** (278MB) أصغر من AraBERT/CAMeL (543MB each) — مناسب لـ Render free tier. PERSON F1 على Arabic 85.4 (4 نقاط تحت الأفضل).
+  - **كل النماذج alternatives متاحة كـ Phase 1c upgrade** — لو A/B test أظهر PERSON F1 أقل من المتوقع، نبدل لـ AraBERT.
+- **Reversal cost**: منخفضة. إضافة NER models إضافية = swap import في `lib/firewall/detectors/ner.ts`. Regex patterns = إضافة/تعديل في `regex.ts`.
+- **Do not** تستخدم Presidio (ثقيل، بطيء، ما يفهم عربي). **Do not** تنشئ regex مخصص لكل dialect عربي (overengineering).
+- **Risks**:
+  - **False positives** على 10-digit numbers (مو كلهم IDs) — نخفف بـ lookbehind/lookahead `(?<!\d)...(?!\d)`. في 14 pattern موجودة.
+  - **NER cold-start ~2s** على أول request — نخفف بـ lazy load + pre-warm في `instrumentation.ts` (Phase 1b).
+  - **Confidence calibration** — الـ corpus regression test (Phase 1b يضيف 1000 sample) يحسب recall/FP rate per type.
+
+### DEC-FIREWALL-003 — Default Action = Mask (Configurable Per Request)
+
+- **Date**: 2026-07-08
+- **Context**: الـ 4 actions (redact | mask | tokenize | block) لها tradeoffs مختلفة. السؤال: ما الـ default؟
+- **Decision**: **Default = `mask`** لكل PII types. الـ caller يقدر يـ override عبر `policy.actions[PIIType]` (per-type) أو `body.action` (global override في `/redact` endpoint).
+- **Rationale**:
+  - **Mask = balance** بين privacy (الـ LLM ما يشوف القيمة الكاملة) و utility (الـ LLM يفهم السياق). مثلاً `1********3` يعطي الـ LLM فكرة "هذا رقم هاتف سعودي" بدون كشف كامل.
+  - **Redact = aggressive** — `[REDACTED:SAUDI_ID]` يخسر كل السياق. مفيد في log streaming، مضر في chat.
+  - **Tokenize = reversible** — يتطلب vault infrastructure (Phase 1c). مو Phase 1a MVP.
+  - **Block = fail-closed** — يرجع 451. مخصص لـ CRITICAL (CREDENTIAL leak) فقط.
+- **Reversal cost**: منخفضة. تغيير الـ default = تعديل `DEFAULT_POLICY.actions` في `lib/firewall/detectors/types.ts`.
+- **Do not** تستخدم `redact` كـ default — يضر UX. **Do not** تستخدم `block` كـ default — fail-closed everywhere = منتج غير قابل للاستخدام.
+- **Risks**:
+  - **Mask تسرّب partial info** — `1***3` يكشف first/last char. للـ PII types عالي الحساسية (SAUDI_ID، CREDENTIAL)، الـ tenant يقدر يـ override لـ `redact` عبر policy UI (Phase 1c).
+  - **`blockOnCritical` flag** — لو true (default)، أي detection مع action=block short-circuits بـ HTTP 451. الـ tenant يقدر يعطله عبر `blockOnCritical: false` (للـ testing).
+
+### DEC-FIREWALL-004 — Audit Chain Algorithm (SHA-256 on Org Level)
+
+- **Date**: 2026-07-08
+- **Context**: PDPL Art. 19 (record of processing activities) و NCA ECC 2-2024 §5 يتطلبان immutable audit trail. الـ Prisma schema جاهز بـ `AuditLog.prevHash`/`hash` لكن ما في implementation. السؤال: أي hashing algorithm + concurrency strategy؟
+- **Decision**: **SHA-256 chain** على مستوى الـ org (org-scoped chain). كل row hash = `SHA-256(prevHash || canonicalJson(row without hash))`. Concurrency: **Postgres advisory lock** (`pg_advisory_xact_lock`) على الـ org id.
+- **Rationale**:
+  - **SHA-256 = industry standard** للـ tamper-evidence. أقوى من SHA-1 (deprecated). أنسب من PBKDF2 (heavy) للـ high-throughput audit (1k req/s).
+  - **Org-scoped chains** (مو global) — كل org عنده chain مستقل. Cross-org writes متوازية. لو org A و org B يكتبون في نفس الوقت، ما في contention.
+  - **Advisory lock** (مو SELECT FOR UPDATE على row) — `pg_advisory_xact_lock(orgId_hash)` يعزل الـ transactions للـ same org. Lock يتحرر تلقائياً على commit/rollback.
+  - **Canonical JSON** (RFC 8785 subset) — keys مرتبة أبجدياً recursively. بدون هذا، `{"a":1,"b":2}` و `{"b":2,"a":1}` يطلعون hashes مختلفة.
+- **Reversal cost**: عالية. تغيير algorithm = كل الـ existing chains (إن وجدت) ما تتحقق بعد الآن.
+- **Do not** تستخدم global chain — يخلق hot spot. **Do not** تستخدم row-level SELECT FOR UPDATE — locking overhead أعلى.
+- **Risks**:
+  - **Hash drift on Postgres extension upgrade** — لو `pgcrypto` أو `citext` يتغير، الـ stored hashes ما تتأثر (SHA-256 = pure math). لكن لو غيّرنا الـ canonicalJson algorithm (e.g. sort order)، الـ chain ينكسر. **Mitigation**: version الـ algorithm في الـ row metadata (`metadata.algorithm = "sha256-rfc8785-v1"`).
+  - **Performance** — كل write يقرأ last hash + يحسب new hash. ~2-3ms overhead per write. مقبول لـ 1k req/s.
+
+### DEC-FIREWALL-005 — Rate Limit (60 req/min/org, Redis with In-Memory Fallback)
+
+- **Date**: 2026-07-08
+- **Context**: الحمايتان من الـ DoS على LLM provider: (1) Rate limit per org، (2) Rate limit per API key. الـ stack عنده Redis 7 (docker-compose). السؤال: sliding window أم fixed window؟ Redis أم in-memory؟
+- **Decision**: **Sliding window** عبر Redis Lua script (atomic). **60 req/min/org** للـ chat، **120 req/min/api-key** للـ redact. **In-memory fallback** (Map per-process) لو Redis ما كان متاح.
+- **Rationale**:
+  - **Sliding window > fixed window** — fixed window يـ allow burst في اللحظة الأخيرة من النافذة (60 req في last 1s من 60s window = 120 req في 2s). Sliding window evenly distributes.
+  - **Redis Lua = atomic** — `EVAL` script يـ run في server-side transaction. لا race condition.
+  - **In-memory fallback** — لو `REDIS_URL` مو موجود أو Redis down، نعطي degraded mode (`X-Firewall-RateLimit: degraded` header). الـ per-process map يحمي ضد DoS local-scale لكن مو cross-replica.
+  - **60 vs 120** — chat أغلى (Groq tokens) من redact (local). 60 req/min/org = 1 req/sec average، كافي لـ enterprise use.
+- **Reversal cost**: منخفضة. تغيير الـ limits = تعديل constants في `lib/firewall/ratelimit/redis-bucket.ts`.
+- **Do not** تستخدم third-party rate limiter (`@upstash/ratelimit`, `rate-limiter-flexible`) — overkill. الـ Lua script 30 سطر.
+- **Risks**:
+  - **Redis down** → في-memory Map (per-process). لو multi-replica، كل replica عنده count مستقل = ضعف الـ effective limit. **Mitigation**: alert لو Redis error rate > 1%.
+  - **Clock skew** على Redis nodes — Lua script يستخدم Redis server time (`TIME` command). Skew بين client/server غير مهم.
 
 ### DEC-2026-040 — Content Pages Canonical Pattern (REPORT-13)
 

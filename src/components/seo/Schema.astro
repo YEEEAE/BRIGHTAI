@@ -65,9 +65,18 @@ interface Props {
    * Optional language code (defaults to 'ar-SA'). Used by the WebPage node.
    */
   language?: string;
+  /**
+   * When true, the foundation LocalBusiness / ProfessionalService node is
+   * omitted from the @graph. Used by product-style pages (e.g. /kernel/*)
+   * where a SoftwareApplication is the primary entity and a nested
+   * LocalBusiness confuses schema validators (Semrush Issue #45).
+   * Pages that genuinely benefit from LocalBusiness (/contact/, /about/,
+   * the homepage) keep it by leaving this false.
+   */
+  omitLocalBusiness?: boolean;
 }
 
-const { extra = [], breadcrumbs = [], canonical, pageTitle, pageDescription, language = 'ar-SA' } = Astro.props;
+const { extra = [], breadcrumbs = [], canonical, pageTitle, pageDescription, language = 'ar-SA', omitLocalBusiness = false } = Astro.props;
 
 // ─── Foundation nodes ───────────────────────────────────────────────────────
 
@@ -276,7 +285,10 @@ const pageWebPage = canonical
 const graph = [
   organization,
   website,
-  localBusiness,
+  // SEMRUSH-FIX-2026-07-08 (#45): omit LocalBusiness on product-style pages
+  // (e.g. /kernel/*) so a SoftwareApplication primary entity is not confused
+  // by a sibling LocalBusiness/ProfessionalService node.
+  omitLocalBusiness ? null : localBusiness,
   pageWebPage,
   breadcrumbList,
   ...extra,

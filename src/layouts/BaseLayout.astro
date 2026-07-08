@@ -57,6 +57,11 @@ interface Props extends SEOProps {
    * (FAQPage, Article, Service, HowTo, …).
    */
   extraJsonLd?: Array<Record<string, unknown> | null | undefined>;
+  /**
+   * When true, the foundation LocalBusiness node is omitted from the @graph.
+   * Used by product-style pages (e.g. /kernel/*) — see Schema.astro.
+   */
+  omitLocalBusiness?: boolean;
 }
 
 const {
@@ -74,6 +79,7 @@ const {
   robots,
   breadcrumbs = [],
   extraJsonLd = [],
+  omitLocalBusiness = false,
 } = Astro.props;
 
 // REPORTS-SEO-FOUNDATION: canonical auto-derivation. If a page forgets to
@@ -182,6 +188,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     pageTitle={title}
     pageDescription={description}
     language={lang}
+    omitLocalBusiness={omitLocalBusiness}
     extra={graphExtras}
   />
 
