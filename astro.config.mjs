@@ -84,6 +84,11 @@ export default defineConfig({
   vite: {
     build: {
       cssMinify: true,
+      // SEMRUSH-FIX-2026-07-08 (#135): explicit minify to ensure Astro
+      // bundles JS through esbuild (which is the default but not guaranteed
+      // after the Vercel adapter integration in REPORTS-SEC-01). Setting it
+      // explicitly rules out the unminified-JS warning across all 172 pages.
+      minify: 'esbuild',
     },
   },
 });

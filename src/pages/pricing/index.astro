@@ -139,7 +139,7 @@ const jsonLd = {
                 </li>
               ))}
             </ul>
-            <a rel="nofollow noopener noreferrer" href={pkg.featured ? whatsapp : '/contact/'} class="btn btn--primary card__pricing-cta">{pkg.cta}</a>
+            <a rel={pkg.featured ? 'nofollow noopener noreferrer' : undefined} href={pkg.featured ? whatsapp : '/contact/'} class="btn btn--primary card__pricing-cta">{pkg.cta}</a>
           </article>
         ))}
       </div>

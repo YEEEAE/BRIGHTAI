@@ -45,8 +45,9 @@ const PATTERNS: PatternEntry[] = [
   { type: 'SAUDI_IBAN', pattern: /\bSA\d{2}[A-Z0-9]{20}\b/gi, confidence: 0.99 },
 
   // ── Saudi phone ───────────────────────────────────────────────
-  // Matches +966 5X XXX XXXX, 05XXXXXXXX, 5XXXXXXXX.
-  { type: 'SAUDI_PHONE', pattern: /(?:(?:\+966[\s-]?)|0)?5\d{8}\b/g, confidence: 0.93 },
+  // Matches +966 5X XXX XXXX, 05XXXXXXXX, 5XXXXXXXX. The 8 digits
+  // after the leading 5 may be space- or dash-separated.
+  { type: 'SAUDI_PHONE', pattern: /(?:(?:\+966[\s-]?)|0)?5[\d\s-]{8,12}\d\b/g, confidence: 0.93 },
 
   // ── Email (RFC 5322 simplified) ───────────────────────────────
   { type: 'EMAIL', pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, confidence: 0.98 },
