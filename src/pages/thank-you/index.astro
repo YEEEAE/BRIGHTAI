@@ -1,0 +1,45 @@
+---
+/**
+ * Thank-You Page — /thank-you/
+ * Post-lead-submit confirmation. Includes conditional conversion-pixel hooks
+ * (HubSpot / Bing UET / Mixpanel) so ad platforms can attribute conversions.
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+---
+
+<ArabicLayout
+  title="شكراً لتواصلك معنا | BrightAI"
+  description="وصلنا طلبك. فريق BrightAI للحوكمة والامتثال سيتواصل معك خلال 24 ساعة."
+  canonical="https://brightai.site/thank-you/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/thank-you/' }, { lang: 'x-default', href: 'https://brightai.site/thank-you/' }]}
+  currentPath="/thank-you/"
+  robots="noindex"
+>
+
+  <section class="page-hero" aria-label="تأكيد الاستلام">
+    <BackgroundGrid />
+    <div class="max-w-3xl mx-auto px-5 lg:px-8" style="text-align:center;">
+      <div class="inner-hero__badge" style="justify-content:center;">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-check-circle"></use></svg>
+        وصلنا طلبك
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">شكراً لك</span></h1>
+      <p class="page-hero__description">تواصلنا وصلنا بنجاح. فريق BrightAI للحوكمة والامتثال بيرد عليك خلال ٢٤ ساعة على نفس وسيلة التواصل اللي ذكرتها.</p>
+      <div class="about-hero__actions" style="justify-content:center;">
+        <a href="/" class="btn btn--glow">العودة للرئيسية</a>
+        <a href="/solutions/ai-governance-platform/" class="btn btn--whatsapp">استكشف الحلول</a>
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .about-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>

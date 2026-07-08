@@ -1,0 +1,55 @@
+---
+import ArabicLayout from '../../../layouts/ArabicLayout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      headline: 'حالة استخدام: مصنع أدوية — امتثال PDPL في البحث والتطوير',
+      description: 'كيف بنى مصنع أدوية حوكمة لاستخدامات الذكاء الاصطناعي في البحث والتطوير مع حفظ الأدلة التشغيلية للامتثال لنظام PDPL.',
+      url: 'https://brightai.site/customers/pharma/',
+      inLanguage: 'ar-SA',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'عملاؤنا', href: '/customers/' }, { name: 'مصنع أدوية', href: '/customers/pharma/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="حالة استخدام: مصنع أدوية | امتثال PDPL في البحث والتطوير"
+  description="كيف بنى مصنع أدوية حوكمة لاستخدامات الذكاء الاصطناعي في البحث والتطوير مع حفظ الأدلة التشغيلية للامتثال لنظام PDPL."
+  canonical="https://brightai.site/customers/pharma/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/customers/pharma/' }, { lang: 'x-default', href: 'https://brightai.site/customers/pharma/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/customers/pharma/"
+  robots="noindex"
+>
+  <CaseStudy
+    sector="صناعة دواء"
+    breadcrumbLabel="مصنع أدوية"
+    title="مصنع أدوية"
+    summary="المصنع استخدم الذكاء الاصطناعي في البحث والتطوير وتحليل الأوراق العلمية، لكن جمع الأدلة للامتثال لنظام PDPL كان يدوياً. بنى على BrightAI حوكمة تُنتج الأدلة تلقائياً."
+    metrics={[
+      { value: '٣ أسابيع', label: 'الزمن للوصول إلى جاهزية تدقيق داخلي' },
+      { value: '٩٤٪', label: 'تغطية السياسات المعتمدة بضوابط قابلة للقياس' },
+      { value: '٨٠٪', label: 'تخفيض في الجهد اليدوي لتجهيز ملفات الامتثال' },
+    ]}
+    challenge="فرق البحث والتطوير كانت تستخدم أدوات ذكاء اصطناعي لتسريع تحليل الأوراق واقتراح تركيبات، لكن إثبات الامتثال لنظام PDPL كان يعتمد على جمع أدلة يدوي متفرق. كل تدقيق يتطلب أسابيع من تجهيز الملفات."
+    solutionPoints={[
+      { title: 'حوكمة لعمليات R&D', body: 'تصنيف استخدامات الذكاء الاصطناعي في البحث حسب حساسية البيانات ومخرجات القرار.' },
+      { title: 'توليد الأدلة تلقائياً', body: 'إنتاج ملف أدلة تشغيلي مرتبط بكل سياسة معتمدة دون جهد يدوي متكرر.' },
+      { title: 'تكامل مع أنظمة الجودة', body: 'ربط سجل التدقيق بأنظمة إدارة الجودة القائمة لتقليل العمل المزدوج.' },
+    ]}
+    results={[
+      'الوصول إلى جاهزية تدقيق داخلي خلال ٣ أسابيع بدل مشاريع ممتدة.',
+      'تغطية ٩٤٪ من السياسات المعتمدة بضوابط قابلة للقياس آلياً.',
+      'تخفيض ٨٠٪ من الجهد اليدوي لتجهيز ملفات الامتثال للتدقيق.',
+      'تسريع دورات المراجعة الداخلية مع أدلة جاهزة وموثقة.',
+    ]}
+    quote={{ text: 'الامتثال صار جزءاً من العملية نفسها، مو مهمة نسويها قبل التدقيق بأسبوعين.', author: 'مدير الامتثال — مصنع أدوية' }}
+  />
+</ArabicLayout>

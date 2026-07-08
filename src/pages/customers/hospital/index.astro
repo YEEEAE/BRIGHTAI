@@ -1,0 +1,57 @@
+---
+import ArabicLayout from '../../../layouts/ArabicLayout.astro';
+import CaseStudy from '../../../components/CaseStudy.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      headline: 'حالة استخدام: مستشفى كبير — حماية بيانات المرضى في مخرجات الذكاء الاصطناعي',
+      description: 'كيف يبني مستشفى كبير حماية لبيانات المرضى ضمن استخدامات النماذج اللغوية الكبيرة مع سجل تدقيق طبي غير قابل للتعديل.',
+      url: 'https://brightai.site/customers/hospital/',
+      inLanguage: 'ar-SA',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'عملاؤنا', href: '/customers/' }, { name: 'مستشفى كبير', href: '/customers/hospital/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="حالة استخدام: مستشفى كبير | حماية بيانات المرضى"
+  description="كيف يبني مستشفى كبير حماية لبيانات المرضى ضمن استخدامات النماذج اللغوية الكبيرة مع سجل تدقيق طبي غير قابل للتعديل."
+  canonical="https://brightai.site/customers/hospital/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/customers/hospital/' }, { lang: 'x-default', href: 'https://brightai.site/customers/hospital/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/customers/hospital/"
+  robots="noindex"
+>
+  <CaseStudy
+    sector="صحي"
+    breadcrumbLabel="مستشفى كبير"
+    title="مستشفى كبير"
+    summary="المستشفى استخدم النماذج اللغوية الكبيرة في تحليل التقارير الطبية ودعم القرار السريري، لكن حماية بيانات المرضى كانت التحدي الأكبر. بنى على BrightAI سجلاً تشغيلياً يغطي كل مخرجات الذكاء الاصطناعي."
+    metrics={[
+      { value: '١٠٠٪', label: 'تغطية لسجلات المرضى الحساسة ضمن التدقيق' },
+      { value: '٠', label: 'حالات تسرب بيانات مرضى مؤكدة بعد التطبيق' },
+      { value: '٣ أسابيع', label: 'الزمن للوصول إلى جاهزية تدقيق داخلي' },
+    ]}
+    challenge="الأطباء والإداريون كانوا يستخدمون أدوات ذكاء اصطناعي لتبسيط التقارير ودعم القرار، لكن بدون ضوابط واضحة كانت بيانات المرضى (أسماء، تشخيصات، نتائج) قد تخرج إلى أدوات خارجية. أي تسرب يشكّل مخالفة لـ PDPL وأضراراً بالسمعة."
+    solutionPoints={[
+      { title: 'كشف بيانات المرضى آلياً', body: 'تصنيف وتحديد البيانات الصحية الحساسة قبل وبعد خروج مخرجات النموذج مع منع التسريب التلقائي.' },
+      { title: 'مسار موافقة سريري', body: 'ربط القرارات عالية الأثر بموافقة بشريّة من المختصين مع توثيق السبب والسياسة المطبقة.' },
+      { title: 'سجل تدقيق طبي', body: 'حفظ كل تفاعل في سجل مشفر غير قابل للتعديل يدعم التفتيش الصحي والتنظيمي.' },
+    ]}
+    results={[
+      'تغطية ١٠٠٪ لسجلات المرضى الحساسة ضمن سجل التدقيق التشغيلي.',
+      'صفر حالات تسرب بيانات مؤكدة بعد تفعيل الجدار الوقائي.',
+      'جاهزية تدقيق داخلي خلال ٣ أسابيع بدل مشاريع امتثال ممتدة.',
+      'ثقة أعلى من الأطباء باستخدام الأدوات بعد ما عرفوا إن بياناتهم محمية.',
+    ]}
+    quote={{ text: 'صرنا نستفيد من الذكاء الاصطناعي في دعم القرار بدون ما نقلق من تسرب ملف المريض. هذا غير شكل العمل السريري عندنا.', author: 'مدير تقنية المعلومات — مستشفى كبير' }}
+    nextSlug="pharma"
+    nextTitle="مصنع أدوية"
+  />
+</ArabicLayout>

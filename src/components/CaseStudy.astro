@@ -1,0 +1,180 @@
+---
+/**
+ * CaseStudy.astro — Reusable anonymized case-study page body.
+ * Used by /customers/{bank,hospital,pharma}/. Follows canonical design system.
+ */
+import Breadcrumbs from './Breadcrumbs.astro';
+import BackgroundGrid from './BackgroundGrid.astro';
+
+interface Metric {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  sector: string;
+  breadcrumbLabel: string;
+  title: string;
+  summary: string;
+  heroBadge?: string;
+  metrics: Metric[];
+  challenge: string;
+  solutionPoints: { title: string; body: string }[];
+  results: string[];
+  quote?: { text: string; author: string };
+  nextSlug?: string;
+  nextTitle?: string;
+}
+
+const {
+  sector,
+  breadcrumbLabel,
+  title,
+  summary,
+  heroBadge = 'قصة نجاح مجهولة المصدر',
+  metrics,
+  challenge,
+  solutionPoints,
+  results,
+  quote,
+  nextSlug,
+  nextTitle,
+} = Astro.props;
+---
+
+<section class="page-hero" aria-label={title}>
+  <BackgroundGrid />
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <Breadcrumbs crumbs={[{ label: 'الرئيسية', href: '/' }, { label: 'عملاؤنا', href: '/customers/' }, { label: breadcrumbLabel }]} />
+    <div class="inner-hero__badge">
+      <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-group"></use></svg>
+      {heroBadge}
+    </div>
+    <span class="assessment-tag">{sector}</span>
+    <h1 class="page-hero__title mt-3"><span class="gradient-text">{title}</span></h1>
+    <p class="page-hero__description">{summary}</p>
+  </div>
+</section>
+
+<section class="inner-section" aria-labelledby="cs-metrics">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <h2 id="cs-metrics" class="sr-only">النتائج</h2>
+    <div class="grid grid--3">
+      {
+        metrics.map((m) => (
+          <article class="card card--feature assessment-output assessment-output--border-cyan">
+            <div class="assessment-result-preview__score">{m.value}</div>
+            <p class="assessment-result-preview__hint">{m.label}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="inner-section inner-section--alt" aria-labelledby="cs-challenge">
+  <div class="max-w-4xl mx-auto px-5 lg:px-8">
+    <p class="inner-section__label">التحدي</p>
+    <h2 id="cs-challenge" class="inner-section__title">الوضع قبل BrightAI</h2>
+    <p class="inner-section__lead">{challenge}</p>
+  </div>
+</section>
+
+<section class="inner-section" aria-labelledby="cs-solution">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <p class="inner-section__label">الحل</p>
+    <h2 id="cs-solution" class="inner-section__title">كيف بنت المنشأة الحوكمة على BrightAI</h2>
+    <div class="grid grid--3">
+      {
+        solutionPoints.map((s) => (
+          <article class="card card--feature">
+            <h3 class="inner-card__title">{s.title}</h3>
+            <p class="inner-card__text">{s.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="inner-section inner-section--alt" aria-labelledby="cs-results">
+  <div class="max-w-4xl mx-auto px-5 lg:px-8">
+    <p class="inner-section__label">النتائج</p>
+    <h2 id="cs-results" class="inner-section__title">وش تحقق بعد التطبيق</h2>
+    <ul class="contact-info-list">
+      {
+        results.map((r) => (
+          <li>
+            <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color: var(--whatsapp);">
+              <use href="/icons.svg#mdi-check-circle"></use>
+            </svg>
+            <div><p class="inner-card__text" style="margin:0;">{r}</p></div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+{
+  quote && (
+    <section class="inner-section" aria-labelledby="cs-quote">
+      <div class="max-w-4xl mx-auto px-5 lg:px-8">
+        <blockquote class="card card--glass" style="padding: var(--space-8); border-inline-start: 4px solid var(--brand-300);">
+          <p style="font-size: var(--text-xl); line-height: 1.8; color: var(--text-primary);">“{quote.text}”</p>
+          <footer style="margin-block-start: var(--space-4); color: var(--text-secondary);">— {quote.author}</footer>
+        </blockquote>
+      </div>
+    </section>
+  )
+}
+
+<section class="inner-cta-final">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="inner-cta-final__card card card--cta">
+      <h2 class="inner-cta-final__title">تبي نتيجة مشابهة <span class="gradient-text">لمؤسستك؟</span></h2>
+      <p class="inner-cta-final__desc">احجز عرضاً مخصصاً ونتحدث عن خطة حوكمة تناسب قطاعك ومستوى مخاطرك.</p>
+      <div class="inner-cta-final__actions">
+        <a href="/contact/" class="btn btn--glow">احجز عرضاً</a>
+        <a href="/assessment/ai-governance-readiness/" class="btn btn--whatsapp">اطلب تقييم جاهزية</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .assessment-tag {
+    font-size: var(--text-xs);
+    padding: 2px 10px;
+    border-radius: var(--radius-lg);
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    color: #9be5ff;
+    display: inline-block;
+    margin-block-start: var(--space-3);
+  }
+  .mt-3 { margin-block-start: var(--space-3); }
+  .assessment-result-preview__score {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-extrabold);
+    color: var(--brand-300);
+    line-height: 1;
+    margin-block-end: var(--space-2);
+  }
+  .assessment-result-preview__hint {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .contact-info-list {
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .contact-info-list li { display: flex; align-items: flex-start; gap: var(--space-3); }
+  .contact-info-list svg { flex-shrink: 0; margin-block-start: 0.2em; }
+</style>

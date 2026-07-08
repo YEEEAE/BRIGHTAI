@@ -1,0 +1,106 @@
+---
+/**
+ * Webinar Page — /events/webinar/
+ * Monthly Arabic AI-governance webinar registration.
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الفعاليات' }, { label: 'الويبنار' }];
+
+const agenda = [
+  { t: '٣٠ دقيقة', title: 'من النظرية للتنفيذ', body: 'كيف تبني حوكمة AI قابلة للتدقيق في ٩٠ يوم.' },
+  { t: '٢٠ دقيقة', title: 'demo حي', body: 'جولة في AI Firewall + سجل التدقيق.' },
+  { t: '١٠ دقائق', title: 'أسئلة مباشرة', body: 'إجابة على أسئلة الحضور.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Event',
+      name: 'ويبنار: حوكمة الذكاء الاصطناعي في السعودية',
+      description: 'ويبنار شهري بالعربية عن حوكمة الذكاء الاصطناعي والامتثال لـ PDPL وضوابط NCA. تسجيل مجاني.',
+      url: 'https://brightai.site/events/webinar/',
+      inLanguage: 'ar-SA',
+      eventAttendanceMode: 'https://schema.org/OnlineEventAttendanceMode',
+      organizer: ORGANIZATION,
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الفعاليات', href: '/events/webinar/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="ويبنار حوكمة الذكاء الاصطناعي | BrightAI"
+  description="ويبنار شهري بالعربية عن حوكمة الذكاء الاصطناعي والامتثال لـ PDPL وضوابط NCA. تسجيل مجاني."
+  canonical="https://brightai.site/events/webinar/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/events/webinar/' }, { lang: 'x-default', href: 'https://brightai.site/events/webinar/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/events/webinar/"
+>
+
+  <section class="page-hero" aria-label="الويبنار">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-video"></use></svg>
+        مجاني — بالعربية
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">ويبنار شهري</span> حوكمة AI</h1>
+      <p class="page-hero__description">كل شهر نستضيف جلسة حية عن حوكمة الذكاء الاصطناعي في السعودية: من النظرية للتنفيذ، مع demo حي وأسئلة مباشرة. التسجيل مجاني.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="wb-agenda">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="wb-agenda" class="inner-section__title">أجندة الويبنار</h2>
+      <div class="grid grid--3">
+        {
+          agenda.map((a) => (
+            <article class="card card--feature">
+              <span class="assessment-tag">{a.t}</span>
+              <h3 class="inner-card__title mt-3">{a.title}</h3>
+              <p class="inner-card__text">{a.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="wb-form">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <h2 id="wb-form" class="inner-section__title" style="text-align:center;">سجّل مجاناً</h2>
+      <p class="inner-section__lead" style="text-align:center;">نرسل لك الرابط قبل الموعد بيوم.</p>
+      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+        <LeadForm
+          title="تسجيل الويبنار"
+          intro="عبّي بياناتك ونرسل لك التفاصيل."
+          subject="تسجيل ويبنار BrightAI"
+          ctaLabel="سجّلني"
+          source="website"
+          medium="webinar"
+          campaign="monthly-webinar"
+          fields={[
+            { name: 'name', label: 'الاسم الكامل', required: true, autocomplete: 'name' },
+            { name: 'email', label: 'البريد الإلكتروني', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'company', label: 'الشركة', autocomplete: 'organization' },
+            { name: 'role', label: 'دورك', type: 'select', options: ['امتثال', 'أمن معلومات', 'تحول رقمي', 'إدارة', 'غيره'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .assessment-tag { font-size: var(--text-xs); padding: 2px 10px; border-radius: var(--radius-lg); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25); color: #9be5ff; display: inline-block; }
+  .mt-3 { margin-block-start: var(--space-3); }
+  .contact-form-card { background: var(--bg-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: var(--space-6); }
+</style>

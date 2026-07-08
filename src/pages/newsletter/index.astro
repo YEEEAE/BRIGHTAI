@@ -1,0 +1,114 @@
+---
+/**
+ * Newsletter Page — /newsletter/
+ * Weekly Arabic AI-governance briefing signup. Uses LeadForm (formsubmit.co).
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'النشرة الأسبوعية' }];
+
+const benefits = [
+  { icon: 'mdi-newspaper', title: 'تحديثات PDPL وNCA أسبوعية', body: 'ملخّص مركّز لأحدث الضوابط والتفسيرات ذات العلاقة بالذكاء الاصطناعي في السعودية.' },
+  { icon: 'mdi-lightbulb', title: 'دروس حوكمة عملية', body: 'حالات استخدام جاهزة وتوصيات تطبيقية من مهندسي BrightAI.' },
+  { icon: 'mdi-chart-line', title: 'مؤشرات القطاع', body: 'أرقام واتجاهات عن تبنّي حوكمة الذكاء الاصطناعي في البنوك والصحة والحكومة.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'النشرة الأسبوعية لحوكمة الذكاء الاصطناعي | BrightAI',
+      description: 'اشترك في نشرة BrightAI الأسبوعية بالعربية: تحديثات PDPL وNCA ودروس حوكمة عملية ومؤشرات قطاع الذكاء الاصطناعي في السعودية.',
+      url: 'https://brightai.site/newsletter/',
+      inLanguage: 'ar-SA',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'النشرة الأسبوعية', href: '/newsletter/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="النشرة الأسبوعية لحوكمة الذكاء الاصطناعي | BrightAI"
+  description="اشترك في نشرة BrightAI الأسبوعية بالعربية: تحديثات PDPL وNCA ودروس حوكمة عملية ومؤشرات قطاع الذكاء الاصطناعي في السعودية."
+  canonical="https://brightai.site/newsletter/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/newsletter/' }, { lang: 'x-default', href: 'https://brightai.site/newsletter/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/newsletter/"
+>
+
+  <section class="page-hero" aria-label="النشرة الأسبوعية">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-email-newsletter"></use></svg>
+        نشرة أسبوعية — بالعربية
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">نشرة BrightAI</span> الأسبوعية</h1>
+      <p class="page-hero__description">كل أسبوع نرسل لك ملخّصاً مركّزاً عن حوكمة الذكاء الاصطناعي في السعودية: أحدث الضوابط، دروس تطبيقية، ومؤشرات القطاع. بدون ضجيج، بس اللي تحتاجه للقرار.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="nl-benefits">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="nl-benefits" class="inner-section__title">وش بتلقى في النشرة؟</h2>
+      <div class="grid grid--3">
+        {
+          benefits.map((b) => (
+            <article class="card card--feature">
+              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
+                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${b.icon}`} /></svg>
+              </div>
+              <h3 class="inner-card__title mt-3">{b.title}</h3>
+              <p class="inner-card__text">{b.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="nl-form">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <h2 id="nl-form" class="inner-section__title" style="text-align:center;">اشترك الآن</h2>
+      <p class="inner-section__lead" style="text-align:center;">ما نشارك بياناتك مع أي طرف ثالث. تقدر تلغي الاشتراك بضغطة وحدة.</p>
+      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+        <LeadForm
+          title="نموذج الاشتراك"
+          intro="اكتب بياناتك ونرسل أول نشرة لك مباشرة."
+          subject="اشتراك في نشرة BrightAI الأسبوعية"
+          ctaLabel="اشترك في النشرة"
+          source="website"
+          medium="newsletter"
+          campaign="always-on"
+          fields={[
+            { name: 'name', label: 'الاسم الكامل', required: true, autocomplete: 'name', placeholder: 'مثال: محمد أحمد' },
+            { name: 'email', label: 'البريد الإلكتروني', type: 'email', required: true, autocomplete: 'email', placeholder: 'example@company.sa' },
+            { name: 'company', label: 'الشركة / المؤسسة', autocomplete: 'organization', placeholder: 'اسم شركتك' },
+            { name: 'sector', label: 'القطاع', type: 'select', options: ['مصرفي', 'صحي', 'حكومي', 'صناعي', 'تقني', 'تعليم', 'غيره'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .avatar-tile--sm {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: grid; place-items: center; margin-block-end: var(--space-2);
+  }
+  .mt-3 { margin-block-start: var(--space-3); }
+  .contact-form-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color, rgba(255,255,255,0.08));
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+  }
+</style>

@@ -1,0 +1,109 @@
+---
+/**
+ * Partners Page — /partners/
+ * Partnership program for SIs, cloud providers, consulting, law firms.
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الشراكة' }];
+
+const tiers = [
+  { icon: 'mdi-rocket-launch', title: 'System Integrators', body: 'بيان، تكامل، ELM — نبني حوكمة AI معاً في مشاريع العملاء.', commission: '٣٠٪ عمولة' },
+  { icon: 'mdi-cloud', title: 'Cloud Providers', body: 'STC Cloud، Salam Cloud — حوكمة AI كطبقة ضمن عروض السحابة السعودية.', commission: '٣٠٪ عمولة' },
+  { icon: 'mdi-briefcase', title: 'Consulting', body: 'Big 4 + مكاتب محلية — ندمج حوكمة AI في مشاريع الاستشارات.', commission: '٣٠٪ عمولة' },
+  { icon: 'mdi-gavel', title: 'Law Firms', body: 'Al-Sabti، Al-Ghazzawi — دعم امتثال PDPL عبر أدلة BrightAI التشغيلية.', commission: '٣٠٪ عمولة' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'برنامج الشراكة | BrightAI',
+      description: 'كن شريكاً لـ BrightAI في حوكمة الذكاء الاصطناعي: مكاتب تكامل، مزودو سحابة، استشارات، ومكاتب محاماة. عمولة ٣٠٪.',
+      url: 'https://brightai.site/partners/',
+      inLanguage: 'ar-SA',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الشراكة', href: '/partners/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="برنامج الشراكة | BrightAI"
+  description="كن شريكاً لـ BrightAI في حوكمة الذكاء الاصطناعي: مكاتب تكامل، مزودو سحابة، استشارات، ومكاتب محاماة. عمولة ٣٠٪."
+  canonical="https://brightai.site/partners/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/partners/' }, { lang: 'x-default', href: 'https://brightai.site/partners/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/partners/"
+>
+
+  <section class="page-hero" aria-label="الشراكة">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-handshake"></use></svg>
+        نبني معاً
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">برنامج الشراكة</span> مع BrightAI</h1>
+      <p class="page-hero__description">نبحث عن شركاء في السعودية يشاركوننا مهمة حوكمة الذكاء الاصطناعي: مكاتب تكامل، مزودو سحابة، استشارات، ومكاتب محاماة. عمولة ٣٠٪ لكل صفقة محالة.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="pt-tiers">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="pt-tiers" class="inner-section__title">فئات الشركاء</h2>
+      <div class="grid grid--4">
+        {
+          tiers.map((t) => (
+            <article class="card card--feature">
+              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
+                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${t.icon}`} /></svg>
+              </div>
+              <h3 class="inner-card__title mt-3">{t.title}</h3>
+              <p class="inner-card__text">{t.body}</p>
+              <span class="assessment-tag">{t.commission}</span>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="pt-form">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <h2 id="pt-form" class="inner-section__title" style="text-align:center;">كن شريكاً</h2>
+      <p class="inner-section__lead" style="text-align:center;">شارك بياناتك ونرسل لك اتفاقية الشراكة وملف العروض.</p>
+      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+        <LeadForm
+          title="نموذج الشراكة"
+          intro="نراجع طلبك ونعود لك خلال ٤٨ ساعة."
+          subject="طلب شراكة مع BrightAI"
+          ctaLabel="أرسل الطلب"
+          source="website"
+          medium="partner"
+          campaign="always-on"
+          fields={[
+            { name: 'name', label: 'الاسم الكامل', required: true, autocomplete: 'name' },
+            { name: 'email', label: 'البريد الإلكتروني', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'company', label: 'اسم الشركة', required: true, autocomplete: 'organization' },
+            { name: 'partner_type', label: 'نوع الشراكة', type: 'select', options: ['مكتب تكامل', 'مزود سحابة', 'استشارات', 'مكتب محاماة', 'غيره'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .avatar-tile--sm { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; }
+  .mt-3 { margin-block-start: var(--space-3); }
+  .assessment-tag { font-size: var(--text-xs); padding: 2px 10px; border-radius: var(--radius-lg); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25); color: #9be5ff; display: inline-block; margin-block-start: var(--space-3); }
+  .contact-form-card { background: var(--bg-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: var(--space-6); }
+</style>

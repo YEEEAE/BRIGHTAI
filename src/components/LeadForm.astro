@@ -75,6 +75,7 @@ const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
   <h3 class="form-card__title">{title}</h3>
   {intro && <p class="form-card__desc">{intro}</p>}
 
+  <div class="form-row form-row--2">
   {
     fields.map((f) => {
       const isSelect = f.type === 'select';
@@ -115,6 +116,7 @@ const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
       );
     })
   }
+  </div>
 
   <div class="form-field form-field--full" style="display: flex; align-items: flex-start; gap: var(--space-3);">
     <input

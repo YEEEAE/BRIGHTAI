@@ -1,0 +1,110 @@
+---
+/**
+ * Referral Page — /referral/
+ * Employee / Customer / Partner referral program.
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الإحالة' }];
+
+const tracks = [
+  { icon: 'mdi-account-tie', title: 'إحالة موظف', reward: '٢,٥٠٠ SAR', body: 'لكل توظيف محال يكمل فترة التجربة بنجاح.', who: 'لموظفي BrightAI' },
+  { icon: 'mdi-account-group', title: 'إحالة عميل', reward: '٢٠٪ عمولة', body: 'لـ ٣ أشهر من قيمة اشتراك العميل المحال.', who: 'للعملاء الحاليين' },
+  { icon: 'mdi-handshake', title: 'إحالة شريك', reward: '٣٠٪ عمولة', body: 'عن كل صفقة من شريك محال.', who: 'للشركاء' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      name: 'برنامج الإحالة | BrightAI',
+      description: 'برنامج إحالة BrightAI: ٢,٥٠٠ SAR لإحالة موظف، ٢٠٪ عمولة لإحالة عميل، ٣٠٪ لإحالة شريك.',
+      url: 'https://brightai.site/referral/',
+      inLanguage: 'ar-SA',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الإحالة', href: '/referral/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="برنامج الإحالة | BrightAI"
+  description="برنامج إحالة BrightAI: ٢,٥٠٠ SAR لإحالة موظف، ٢٠٪ عمولة لإحالة عميل، ٣٠٪ لإحالة شريك."
+  canonical="https://brightai.site/referral/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/referral/' }, { lang: 'x-default', href: 'https://brightai.site/referral/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/referral/"
+>
+
+  <section class="page-hero" aria-label="الإحالة">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-gift"></use></svg>
+        ربح معنا
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">برنامج الإحالة</span> من BrightAI</h1>
+      <p class="page-hero__description">تعرف على من يستفيد من حوكمة الذكاء الاصطناعي، وأحنا نكافئك. ثلاثة مسارات: موظف، عميل، أو شريك.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="rf-tracks">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="rf-tracks" class="inner-section__title">مسارات الإحالة</h2>
+      <div class="grid grid--3">
+        {
+          tracks.map((t) => (
+            <article class="card card--feature card--lg">
+              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
+                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${t.icon}`} /></svg>
+              </div>
+              <h3 class="inner-card__title mt-3">{t.title}</h3>
+              <div class="assessment-result-preview__score" style="font-size: var(--text-2xl); margin-block: var(--space-2);">{t.reward}</div>
+              <p class="inner-card__text">{t.body}</p>
+              <span class="assessment-tag">{t.who}</span>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="rf-form">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <h2 id="rf-form" class="inner-section__title" style="text-align:center;">أحِل جهة الآن</h2>
+      <p class="inner-section__lead" style="text-align:center;">عبّي النموذج ونراجع الإحالة ونكافئك فور إتمامها.</p>
+      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+        <LeadForm
+          title="نموذج الإحالة"
+          intro="شارك بيانات الجهة المحالة وبياناتك."
+          subject="إحالة جديدة لـ BrightAI"
+          ctaLabel="أرسل الإحالة"
+          source="website"
+          medium="referral"
+          campaign="always-on"
+          fields={[
+            { name: 'referrer_name', label: 'اسمك', required: true, autocomplete: 'name' },
+            { name: 'referrer_email', label: 'بريدك', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'referral_name', label: 'اسم الجهة المحالة', required: true },
+            { name: 'referral_email', label: 'بريد الجهة المحالة', type: 'email', required: true },
+            { name: 'track', label: 'نوع الإحالة', type: 'select', options: ['موظف', 'عميل', 'شريك'] },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .avatar-tile--sm { width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; }
+  .mt-3 { margin-block-start: var(--space-3); }
+  .assessment-tag { font-size: var(--text-xs); padding: 2px 10px; border-radius: var(--radius-lg); background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.25); color: #9be5ff; display: inline-block; margin-block-start: var(--space-3); }
+  .contact-form-card { background: var(--bg-surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-lg); padding: var(--space-6); }
+</style>

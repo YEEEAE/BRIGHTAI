@@ -1,0 +1,156 @@
+---
+/**
+ * Customers Hub — /customers/
+ * Showcases BrightAI outcomes via anonymized case studies.
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
+
+const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'عملاؤنا' }];
+
+const caseStudies = [
+  {
+    slug: 'bank',
+    sector: 'مصرفي',
+    icon: 'mdi-bank',
+    title: 'بنك سعودي رائد',
+    summary: 'حوكمة استخدامات الذكاء الاصطناعي عبر ١٢ فرعاً رقمياً مع تقليل مخاطر تسرب بيانات العملاء إلى أدوات عامة.',
+    metric: '٩٤٪',
+    metricLabel: 'انخفاض في حالات Shadow AI غير المرصودة',
+  },
+  {
+    slug: 'hospital',
+    sector: 'صحي',
+    icon: 'mdi-hospital-building',
+    title: 'مستشفى كبير',
+    summary: 'حماية بيانات المرضى في مخرجات النماذج اللغوية الكبيرة مع سجل تدقيق طبي غير قابل للتعديل.',
+    metric: '١٠٠٪',
+    metricLabel: 'تغطية لسجلات المرضى الحساسة ضمن التدقيق',
+  },
+  {
+    slug: 'pharma',
+    sector: 'صناعة دواء',
+    icon: 'mdi-flask',
+    title: 'مصنع أدوية',
+    summary: 'امتثال لنظام PDPL في عمليات البحث والتطوير المدعومة بالذكاء الاصطناعي مع حفظ الأدلة التشغيلية.',
+    metric: '٣ أسابيع',
+    metricLabel: 'الزمن للوصول إلى جاهزية تدقيق داخلي',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'CollectionPage',
+      name: 'عملاؤنا | قصص نجاح حوكمة الذكاء الاصطناعي',
+      description: 'قصص نجاح anonymized لمنشآت سعودية استخدمت BrightAI لحوكمة الذكاء الاصطناعي والامتثال لـ PDPL وضوابط NCA.',
+      url: 'https://brightai.site/customers/',
+    },
+    ORGANIZATION,
+    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'عملاؤنا', href: '/customers/' }]),
+  ],
+};
+---
+
+<ArabicLayout
+  title="عملاؤنا | قصص نجاح حوكمة الذكاء الاصطناعي"
+  description="قصص نجاح anonymized لمنشآت سعودية استخدمت BrightAI لحوكمة الذكاء الاصطناعي والامتثال لـ PDPL وضوابط NCA."
+  canonical="https://brightai.site/customers/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/customers/' }, { lang: 'x-default', href: 'https://brightai.site/customers/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/customers/"
+>
+
+  <section class="page-hero" aria-label="عملاؤنا">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <Breadcrumbs crumbs={crumbs} />
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-group"></use></svg>
+        ثقة منشآت سعودية
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">عملاؤنا</span> يثقون بحوكمة BrightAI</h1>
+      <p class="page-hero__description">منشآت مصرفية وصحية وصناعية سعودية تبني حوكمة الذكاء الاصطناعي على BrightAI — مع امتثال محلي لـ PDPL وضوابط NCA وسرية كاملة للبيانات.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="cs-grid-title">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="cs-grid-title" class="inner-section__title">قصص نجاح (مجهولة المصدر)</h2>
+      <p class="inner-section__lead">احتراماً لسرية عملائنا، تُنشر القصص التالية بشكل مجهول مع الاحتفاظ بالنتائج القابلة للقياس.</p>
+      <div class="grid grid--3">
+        {
+          caseStudies.map((c) => (
+            <article class="card card--feature card--lg">
+              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
+                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${c.icon}`} /></svg>
+              </div>
+              <span class="assessment-tag">{c.sector}</span>
+              <h3 class="inner-card__title mt-3">{c.title}</h3>
+              <p class="inner-card__text">{c.summary}</p>
+              <div class="assessment-result-preview" style="margin-block-start: var(--space-4);">
+                <span class="assessment-result-preview__label">{c.metricLabel}</span>
+                <div class="assessment-result-preview__score">{c.metric}</div>
+              </div>
+              <a href={`/customers/${c.slug}/`} class="btn btn--glow btn--block mt-4">اقرأ القصة الكاملة</a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-section inner-section--alt" aria-labelledby="cs-cta">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8" style="text-align:center;">
+      <h2 id="cs-cta" class="inner-section__title">تبي قصة نجاح بنفس حجم مؤسستك؟</h2>
+      <p class="inner-section__lead">احجز عرضاً مخصصاً ونتحدث عن كيف تبني BrightAI حوكمة قابلة للتدقيق تناسب قطاعك.</p>
+      <div class="about-hero__actions" style="justify-content:center;">
+        <a href="/contact/" class="btn btn--glow">احجز عرضاً</a>
+        <a href="/assessment/ai-governance-readiness/" class="btn btn--whatsapp">اطلب تقييم جاهزية</a>
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .assessment-tag {
+    font-size: var(--text-xs);
+    padding: 2px 10px;
+    border-radius: var(--radius-lg);
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    color: #9be5ff;
+    display: inline-block;
+    margin-block-start: var(--space-3);
+  }
+  .assessment-result-preview {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding: var(--space-5);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.10), rgba(124, 92, 255, 0.08));
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: var(--radius-lg);
+  }
+  .assessment-result-preview__label {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+  }
+  .assessment-result-preview__score {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-extrabold);
+    color: var(--brand-300);
+    line-height: 1;
+  }
+  .mt-4 { margin-block-start: var(--space-4); }
+  .about-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-block-start: var(--space-6);
+  }
+</style>
