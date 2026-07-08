@@ -815,6 +815,18 @@
     {
       "from": "/assessment/ai-governance-readiness.html",
       "to": "/assessment/ai-governance-readiness/"
+    },
+    {
+      "from": "/blog/sdaia-generative-ai-guidelines",
+      "to": "/blog/sdaia-generative-ai-guidelines-practical-compliance/"
+    },
+    {
+      "from": "/blog/sdaia-generative-ai-guidelines/",
+      "to": "/blog/sdaia-generative-ai-guidelines-practical-compliance/"
+    },
+    {
+      "from": "/blog/sdaia-generative-ai-guidelines.html",
+      "to": "/blog/sdaia-generative-ai-guidelines-practical-compliance/"
     }
   ]
 }

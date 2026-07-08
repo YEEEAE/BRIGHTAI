@@ -35,6 +35,7 @@ const RESERVED_SUBDOMAINS = new Set(
 const isPublicRoute = createRouteMatcher([
   '/api/health',
   '/api/webhooks/(.*)', // Clerk + custom webhooks (verified by signature, not session)
+  '/api/firewall/(.*)', // AI firewall: API-key auth handled inside the route handler
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/unauthorized',
