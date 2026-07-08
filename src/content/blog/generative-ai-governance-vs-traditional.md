@@ -246,7 +246,7 @@ PDPL يغطي البيانات الشخصية لكنه:
 
 - مراجعة المؤشرات شهرياً.
 - اختبار النماذج ربع سنوياً (انحياز، هلوسة).
-- تحديث السياسات عند تغير [إرشادات سدايا](https://brightai.site/blog/sdaia-generative-ai-guidelines/).
+- تحديث السياسات عند تغير [إرشادات سدايا](https://brightai.site/blog/sdaia-generative-ai-guidelines-practical-compliance/).
 - إعادة تقييم الأدوات المعتمدة مع تطور السوق.
 
 ## كيف يدعم BrightAI حوكمة GenAI؟

@@ -14,17 +14,11 @@ import KernelMetricCard from '../../components/kernel/KernelMetricCard.astro';
 import KernelCard from '../../components/kernel/KernelCard.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import { getKernelUnit } from '../../data/kernel';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 
 const unit = getKernelUnit('reports')!;
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: `BrightAI Kernel - ${unit.label}`,
-  url: unit.canonical,
-  applicationCategory: 'BusinessApplication',
-  description: unit.description,
-};
+const jsonLd = getKernelSubPageJsonLd(unit);
 
 const reports = [
   {

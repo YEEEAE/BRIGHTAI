@@ -87,10 +87,39 @@ const finalRobots = 'index, follow, max-snippet:-1, max-image-preview:large, max
 
 // Build the @graph: foundation nodes + breadcrumbs + page extras + page jsonLd
 // All in a single block (avoids duplicate <script type="application/ld+json">).
-const graphExtras: Array<Record<string, unknown>> = [
+//
+// SEMRUSH-FIX-2026-07-08 (#45 structured data): flatten any node that is itself
+// a `{@context, @graph: [...]}` wrapper so inner nodes become top-level entries
+// in the foundation @graph. Some pages (e.g. /kernel/* migrated pages, /demo/)
+// historically nested their @graph inside another @graph, which made Schema.org
+// validators (and Semrush) treat the inner nodes as unreachable — losing REQUIRED
+// fields like SoftwareApplication.aggregateRating and SoftwareApplication.offers.
+// This flattens recursively so the final @graph contains ONE nested level only.
+function flattenGraphNodes(
+  entries: Array<Record<string, unknown> | null | undefined>,
+  seen: WeakSet<object> = new WeakSet(),
+): Array<Record<string, unknown>> {
+  const out: Array<Record<string, unknown>> = [];
+  for (const entry of entries) {
+    if (!entry || typeof entry !== 'object') continue;
+    if (seen.has(entry)) continue;
+    seen.add(entry);
+    const graph = (entry as Record<string, unknown>)['@graph'];
+    if (Array.isArray(graph) && graph.length > 0) {
+      // Recurse into the wrapper's children
+      const inner = flattenGraphNodes(graph as Array<Record<string, unknown>>, seen);
+      out.push(...inner);
+    } else {
+      out.push(entry);
+    }
+  }
+  return out;
+}
+
+const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
   ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd as Record<string, unknown>] : []),
   ...extraJsonLd,
-].filter((n): n is Record<string, unknown> => Boolean(n));
+]);
 ---
 
 <!DOCTYPE html>

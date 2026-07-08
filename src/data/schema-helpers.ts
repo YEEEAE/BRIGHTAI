@@ -415,6 +415,46 @@ export function getWebPageLd(opts: {
 }
 
 /* ──────────────────────────────────────────────────────────────────
+ * 8. KERNEL SUB-PAGE JSON-LD  (SEMRUSH-FIX-2026-07-08 #45)
+ * ────────────────────────────────────────────────────────────────
+ *
+ * Each /kernel/<slug>/ page used to emit a STRAY standalone WebApplication
+ * node missing SoftwareApplication parent + aggregateRating + offers.
+ * This helper produces a single KERNEL_PRODUCT node (with @type as ARRAY
+ * ["SoftwareApplication", "WebApplication"] and all REQUIRED/RECOMMENDED
+ * fields including aggregateRating and offers), plus optional page-specific
+ * overrides (per-unit label/url/description).
+ *
+ * Returned as an array, since `array` is what BaseLayout.flattenGraphNodes
+ * RECOGNIZES for merging into the foundation @graph.
+ *
+ * Usage:
+ *   import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+ *   const unit = getKernelUnit('stats');
+ *   const jsonLd = getKernelSubPageJsonLd(unit);
+ */
+export function getKernelSubPageJsonLd(
+  unit: {
+    canonical: string;
+    label: string;
+    description?: string;
+  },
+  extras: Array<Record<string, unknown>> = [],
+): Array<Record<string, unknown>> {
+  const overrideDescription =
+    unit.description ?? KERNEL_PRODUCT.description;
+  return [
+    {
+      ...KERNEL_PRODUCT,
+      name: `BrightAI Kernel - ${unit.label}`,
+      url: unit.canonical,
+      description: overrideDescription,
+    },
+    ...extras,
+  ];
+}
+
+/* ──────────────────────────────────────────────────────────────────
  * 7. HOW TO (for procedural / step-by-step docs)
  * ────────────────────────────────────────────────────────────────── */
 

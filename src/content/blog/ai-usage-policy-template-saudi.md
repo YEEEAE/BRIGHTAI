@@ -244,7 +244,7 @@ image: "/images/og/brightai-og-1200x630.png"
 > تُحدَّث السياسة في الحالات التالية (أيهما أسبق):
 >
 > - ربع سنوي (كل 3 أشهر): مراجعة روتينية.
-> - عند صدور تحديث من [سدايا](https://brightai.site/blog/sdaia-generative-ai-guidelines/) أو NDMO.
+> - عند صدور تحديث من [سدايا](https://brightai.site/blog/sdaia-generative-ai-guidelines-practical-compliance/) أو NDMO.
 > - عند صدور تحديث لـ [PDPL](https://brightai.site/blog/pdpl-executive-regulations-explained/) أو لائحته التنفيذية.
 > - عند إضافة أداة AI جديدة للقائمة المعتمدة.
 > - عند وقوع حادثة كبيرة تستدعي مراجعة السياسة.
@@ -317,7 +317,7 @@ image: "/images/og/brightai-og-1200x630.png"
 
 ## ملخص تنفيذي للمديرين
 
-سياسة استخدام AI هي الوثيقة التشغيلية الأكثر أهمية في برنامج حوكمة الذكاء الاصطناعي. بدونها، الإطار يبقى نظرياً. القالب القياسي الـ12 بنداً يوفر تغطية شاملة: من الهدف والنطاق إلى آلية التحديث. السياسة قابلة للتخصيص خلال 14 يوماً، ومتوافقة مع PDPL و[سدايا](https://brightai.site/blog/sdaia-generative-ai-guidelines/)، وتُنفَّذ عبر [أدوات BrightAI](https://brightai.site/solutions/ai-governance-platform/). كل منشأة سعودية تستخدم AI تحتاج هذه السياسة، وكل تأخير في اعتمادها يضاعف المخاطر النظامية والسمعية.
+سياسة استخدام AI هي الوثيقة التشغيلية الأكثر أهمية في برنامج حوكمة الذكاء الاصطناعي. بدونها، الإطار يبقى نظرياً. القالب القياسي الـ12 بنداً يوفر تغطية شاملة: من الهدف والنطاق إلى آلية التحديث. السياسة قابلة للتخصيص خلال 14 يوماً، ومتوافقة مع PDPL و[سدايا](https://brightai.site/blog/sdaia-generative-ai-guidelines-practical-compliance/)، وتُنفَّذ عبر [أدوات BrightAI](https://brightai.site/solutions/ai-governance-platform/). كل منشأة سعودية تستخدم AI تحتاج هذه السياسة، وكل تأخير في اعتمادها يضاعف المخاطر النظامية والسمعية.
 
 ## أسئلة شائعة حول سياسة استخدام الذكاء الاصطناعي
 

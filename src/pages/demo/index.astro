@@ -148,6 +148,17 @@ const demoJsonLd = [
     url: 'https://brightai.site',
     logo: 'https://brightai.site/assets/images/logo.png',
     areaServed: 'SA',
+    // SEMRUSH-FIX-2026-07-08 (#45): added PostalAddress so the
+    // schema.org/LocalBusiness sub-interpretation has the REQUIRED address
+    // (matches Schema.astro foundation LocalBusiness for Riyadh HQ).
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: '6913 المبارك بن فضالة، حي الفيحاء',
+      addressLocality: 'الرياض',
+      addressRegion: 'منطقة الرياض',
+      postalCode: '14254',
+      addressCountry: 'SA',
+    },
     sameAs: [
       'https://twitter.com/BrightAISite',
       'https://linkedin.com/company/brightai-site',

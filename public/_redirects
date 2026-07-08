@@ -210,4 +210,9 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /docs/Governance%D9%80application.html /docs/governance-application/ 301
 /docs/Governance%D9%80application/index.html /docs/governance-application/ 301
 /assessment/ai-governance-readiness.html /assessment/ai-governance-readiness/ 301
+# 2026-07-08 Semrush Fix #1 + #2: SDAIA blog slug consolidation
+# Old /blog/sdaia-generative-ai-guidelines/ → canonical /blog/sdaia-generative-ai-guidelines-practical-compliance/
+/blog/sdaia-generative-ai-guidelines /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
+/blog/sdaia-generative-ai-guidelines/ /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
+/blog/sdaia-generative-ai-guidelines.html /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
 /frontend/* /404/ 301
