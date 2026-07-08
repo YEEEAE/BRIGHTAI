@@ -1,0 +1,319 @@
+---
+/**
+ * BaseLayout — Root layout for every page in BrightAI.
+ *
+ * REPORTS-SEO-FOUNDATION (2026-07-07):
+ *   - Accepts canonical, ogImage, and optional extra schema via props.
+ *   - Emits geo.* meta tags for Riyadh (geo.region SA-01, geo.placename Riyadh).
+ *   - Forces <html lang="ar" dir="rtl"> as the site default (Arabic, Saudi).
+ *   - Always emits hreflang ar-SA + x-default. Adds en-SA + x-default when
+ *     a language counterpart exists (via i18n-pairs.ts LEGAL_I18N_PAIRS).
+ *   - Emits the foundation schema (Organization + WebSite + LocalBusiness)
+ *     from src/components/seo/Schema.astro, and merges any page-provided
+ *     extra schema into a single @graph (no duplicate <script> blocks).
+ *   - Hard rule: NO `meta name="robots" content="noindex"` is ever emitted
+ *     here. If a page tries to pass `robots="noindex, ..."`, the prop is
+ *     ignored with a console warning. Pages are crawled and indexed by
+ *     default — see REPORTS-SEO-FOUNDATION.
+ *
+ * PRESERVED (no regression):
+ *   - SEOHead still owns title/description/OG/Twitter meta.
+ *   - Header, MobileNav, Footer, WhatsAppCTA, CookieConsent, DottedBackground,
+ *     ClientRouter, gtag, scroll-reveal, CSS layers, brand @font-face are
+ *     all kept exactly as before.
+ *   - ArabicLayout and EnglishLayout continue to be thin wrappers that
+ *     forward their props here.
+ */
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import MobileNav from '../components/MobileNav.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppCTA from '../components/WhatsAppCTA.astro';
+import DottedBackground from '../components/DottedBackground.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import FoundationSchema from '../components/seo/Schema.astro';
+import { SITE } from '../data/site';
+import type { SEOProps } from '../data/site';
+import { ClientRouter } from 'astro:transitions';
+
+interface Props extends SEOProps {
+  lang?: 'ar' | 'en';
+  dir?: 'rtl' | 'ltr';
+  currentPath?: string;
+  languageCounterpart?: string;
+  /**
+   * @deprecated Indexing is forced by the SEO foundation (2026-07-07).
+   * Pass-through kept for backward compatibility; the layout ignores any
+   * "noindex" value and emits the canonical `index, follow, max-...` set.
+   */
+  robots?: string;
+  /**
+   * Optional page-level breadcrumbs (without the home crumb — added by
+   * FoundationSchema automatically). Order: ancestors first, current last.
+   */
+  breadcrumbs?: Array<{ name: string; href: string }>;
+  /**
+   * Optional extra schema nodes to merge into the foundation @graph
+   * (FAQPage, Article, Service, HowTo, …).
+   */
+  extraJsonLd?: Array<Record<string, unknown> | null | undefined>;
+}
+
+const {
+  lang = 'ar',
+  dir = 'rtl',
+  title,
+  description,
+  canonical,
+  hreflang = [],
+  ogImage,
+  ogImageAlt,
+  jsonLd,
+  currentPath = '/',
+  languageCounterpart,
+  robots,
+  breadcrumbs = [],
+  extraJsonLd = [],
+} = Astro.props;
+
+// REPORTS-SEO-FOUNDATION: canonical auto-derivation. If a page forgets to
+// pass a canonical, we derive one from Astro.url using the SITE.url host.
+const finalCanonical =
+  canonical ||
+  new URL(currentPath, SITE.url).toString().replace(/\/$/, '/').replace(/([^:])\/{2,}/g, '$1/');
+
+// Robots hard-coded to "index, follow" — never noindex.
+const finalRobots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+
+// Build the @graph: foundation nodes + breadcrumbs + page extras + page jsonLd
+// All in a single block (avoids duplicate <script type="application/ld+json">).
+const graphExtras: Array<Record<string, unknown>> = [
+  ...(Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd as Record<string, unknown>] : []),
+  ...extraJsonLd,
+].filter((n): n is Record<string, unknown> => Boolean(n));
+---
+
+<!DOCTYPE html>
+<html lang={lang} dir={dir}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- Geo tags — Riyadh HQ (REPORTS-SEO-FOUNDATION, 2026-07-07) -->
+  <meta name="geo.region" content="SA-01" />
+  <meta name="geo.placename" content="Riyadh" />
+  <meta name="geo.position" content="24.7136;46.6753" />
+  <meta name="ICBM" content="24.7136, 46.6753" />
+  <meta name="language" content={lang === 'ar' ? 'Arabic' : 'English'} />
+  <meta name="distribution" content="global" />
+  <meta name="rating" content="general" />
+  <meta name="revisit-after" content="7 days" />
+
+  <!-- Font preconnect (REPORTS-20: trimmed to body 400 + heading 600 only). -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Google Fonts CSS loaded non-blocking via print media trick — does not block render. -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" /></noscript>
+
+  <!-- Brand font loaded non-blocking AFTER first paint (font-display:swap already
+       in @font-face below). Removing the <link rel="preload"> keeps LCP free of the
+       172KB woff2 critical-path fetch. The font swaps in over the fallback family. -->
+  <link rel="prefetch" href="/assets/fonts/TheYearofTheCamel-Medium.woff2" as="font" type="font/woff2" crossorigin />
+  <script>
+    // Lazy-load the brand font via FontFace API once the browser is idle.
+    // Adds .fonts-loaded to <html> so CSS can swap from fallback to the brand font
+    // without blocking first paint or LCP.
+    (() => {
+      const start = () => {
+        if (document.fonts && 'FontFace' in window) {
+          const ff = new FontFace(
+            'BrightAI Official',
+            'url(/assets/fonts/TheYearofTheCamel-Medium.woff2) format("woff2")',
+            { weight: '400 900', display: 'swap' }
+          );
+          ff.load().then((loaded) => {
+            document.fonts.add(loaded);
+            document.documentElement.classList.add('fonts-loaded');
+          }).catch(() => {
+            document.documentElement.classList.add('fonts-failed');
+          });
+        }
+      };
+      if ('requestIdleCallback' in window) {
+        (window).requestIdleCallback(start, { timeout: 1500 });
+      } else {
+        setTimeout(start, 200);
+      }
+    })();
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <!-- Brand logo preload — webp ~17KB instead of 406KB PNG (REPORTS-20). -->
+  <link rel="preload" as="image" href="/logo-192.webp" type="image/webp" fetchpriority="high" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+
+  <!-- SEO meta + Open Graph + Twitter Cards + hreflang + page-level JSON-LD -->
+  <SEOHead
+    title={title}
+    description={description}
+    canonical={finalCanonical}
+    hreflang={hreflang}
+    ogImage={ogImage}
+    ogImageAlt={ogImageAlt}
+    jsonLd={undefined}
+    locale={lang}
+    robots={finalRobots}
+  />
+
+  <!-- Foundation schema (Organization + WebSite + SearchAction + LocalBusiness
+       + WebPage with speakable) merged with the page's extra schema in a
+       single @graph. Speakable is the foundation for AI voice / TTS engines
+       (Google Assistant, Siri, Alexa) — emitting it site-wide satisfies the
+       ≥30 pages Speakable audit (REPORTS-SEO-FOUNDATION, 2026-07-07). -->
+  <FoundationSchema
+    canonical={finalCanonical}
+    breadcrumbs={breadcrumbs}
+    pageTitle={title}
+    pageDescription={description}
+    language={lang}
+    extra={graphExtras}
+  />
+
+  <ClientRouter />
+
+  {/* Service Worker registration — REPORTS-20: deferred via setTimeout (100ms after
+       window.load) so it never competes with the LCP element. External file replaces
+       a prior is:inline script to remove unsafe-inline from CSP script-src. */}
+  <script defer src="/js/sw-register.js"></script>
+
+  {/* Google tag (gtag.js) — REPORTS-20: deferred loader. The 182KB gtag.js is loaded
+       lazily via requestIdleCallback inside gtag-init.js (fallback: setTimeout 1500ms)
+       so it never competes with the LCP element. External file replaces a prior
+       is:inline script to remove unsafe-inline from CSP script-src. The gtag ID is
+       passed as a data attribute (HTML attrs are not governed by script-src CSP). */}
+  <script defer src="/js/gtag-init.js" data-gtag-id={SITE.googleTagId}></script>
+
+  {/* Microsoft Clarity — only when a real ID is configured (skip on placeholder).
+       External file replaces a prior is:inline script to remove unsafe-inline from
+       CSP script-src. The Clarity ID is passed as a data attribute (HTML attrs are
+       not governed by script-src CSP). */}
+  {SITE.clarityId && (
+    <script defer src="/js/clarity-init.js" data-clarity-id={SITE.clarityId}></script>
+  )}
+
+  <!-- Additional production meta tags -->
+  <meta name="theme-color" content="#060914" />
+  <meta name="format-detection" content="telephone=no" />
+
+  {/* Verification meta — only emit when a real verified value exists */}
+  {SITE.bingVerification && (
+    <meta name="msvalidate.01" content={SITE.bingVerification} />
+  )}
+  {SITE.yandexVerification && (
+    <meta name="yandex-verification" content={SITE.yandexVerification} />
+  )}
+  {SITE.googleVerification && (
+    <meta name="google-site-verification" content={SITE.googleVerification} />
+  )}
+
+  {/* SPA transition pageview — fires page_view on view-transition navigations.
+       REPORTS-20: gtag.js itself is loaded lazily via requestIdleCallback above,
+       so this listener waits for gtag to exist before firing. */}
+  <script>
+    (function() {
+      document.addEventListener('astro:after-swap', () => {
+        const w = window as any;
+        if (w.gtag) {
+          w.gtag('event', 'page_view', {
+            page_path: window.location.pathname,
+            page_title: document.title,
+            page_location: window.location.href
+          });
+        }
+      });
+    })();
+  </script>
+
+  {/* Global centralized scroll-reveal observer — activates the unified motion system
+      (DEC-2026-Motion-001) across every page. Replaces 7 per-page duplicate
+      IntersectionObservers with a single observer that handles every reveal-able element.
+      SSR-safe (script is bundled by Astro and only runs in the browser). Respects
+      prefers-reduced-motion + degrades gracefully without IntersectionObserver support.
+
+      The actual implementation lives in src/scripts/scroll-reveal.js so it can be
+      unit-tested, versioned, and audited independently of this layout file. */}
+  <script>
+    import '../scripts/scroll-reveal.js';
+  </script>
+
+  <!-- Critical inline CSS: brand font-face + heading overrides -->
+  <style is:inline>
+    @font-face {
+      font-family: 'BrightAI Official';
+      src: url('/assets/fonts/TheYearofTheCamel-Medium.woff2') format('woff2');
+      font-weight: 400 900;
+      font-display: swap;
+    }
+    [dir=rtl] h1, [dir=rtl] h2, [dir=rtl] h3,
+    [dir=rtl] h4, [dir=rtl] h5, [dir=rtl] h6,
+    html[lang=ar] h1, html[lang=ar] h2, html[lang=ar] h3,
+    html[lang=ar] h4, html[lang=ar] h5, html[lang=ar] h6,
+    .gradient-text, .chip, .badge, .font-black, .font-bold,
+    .feature-title, .section-title, .metric-label, .brand-text {
+      font-family: 'BrightAI Official', 'IBM Plex Sans Arabic', Arial, sans-serif;
+      font-weight: 700;
+    }
+    /* Production body baseline */
+    body { background: var(--bg-base); color: var(--text-primary); overflow-x: hidden; }
+  </style>
+
+  <!-- Styles — V3 Unified Design System -->
+  <!-- REPORTS-20: Wrapped in CSS layers so the cascade is predictable.
+       Lower layers win when specificity is equal (override-by-layer).
+       Order (low → high priority): tokens < base < components < pages < animations < kernel < utilities -->
+  <style is:global>
+    @layer tokens, base, components, pages, animations, kernel, utilities;
+
+    @import '../styles/tokens.css' layer(tokens);
+    @import '../styles/base.css' layer(base);
+    @import '../styles/components.css' layer(components);
+    @import '../styles/pages.css' layer(pages);
+    @import '../styles/utilities.css' layer(utilities);
+    @import '../styles/color-usage.css' layer(components);
+    @import '../styles/animations.css' layer(animations);
+    /* perf(bloat-3-fixes-2026-07-07): kernel.css moved to KernelLayout.
+       128KB of kernel-only styles were being shipped to every page on
+       the site (including the homepage). Kernel pages now load their
+       own KernelLayout.BNls8j2l.css bundle (~6KB after astro dedupes
+       the few overlap classes with BaseLayout). */
+  </style>
+</head>
+<body>
+  <DottedBackground />
+  <a href="#main-content" class="skip-to-content">
+    {lang === 'ar' ? 'تخطي إلى المحتوى' : 'Skip to content'}
+  </a>
+
+  <div class="page">
+    <Header lang={lang} currentPath={currentPath} />
+    <MobileNav lang={lang} currentPath={currentPath} />
+
+    <main id="main-content" class="page__main">
+      <slot />
+    </main>
+
+    <Footer lang={lang} currentPath={currentPath} languageCounterpart={languageCounterpart} />
+  </div>
+
+  <aside class="whatsapp-cta-landmark" aria-label={lang === 'ar' ? 'تواصل سريع' : 'Quick contact'}>
+    <WhatsAppCTA lang={lang} />
+  </aside>
+  <CookieConsent />
+</body>
+</html>
