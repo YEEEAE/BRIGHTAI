@@ -1,6 +1,6 @@
 ---
 title: "Kernel Connectors: موصلات الأنظمة والبيانات"
-metaTitle: "Kernel Connectors - موصلات الأنظمة والبيانات | BrightAI"
+metaTitle: "Kernel Connectors: موصلات الأنظمة والبيانات"
 description: "شرح عملي لموصلات BrightAI Kernel: كيف تربط Kernel بأنظمة العمل ومصادر البيانات بشكل آمن ومنظم."
 canonical: "https://brightai.site/docs/kernel-connectors/"
 updated: "2026-06-10"

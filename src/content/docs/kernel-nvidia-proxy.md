@@ -1,6 +1,6 @@
 ---
 title: "Kernel NVIDIA Proxy: بوابة NVIDIA الآمنة في BrightAI"
-metaTitle: "Kernel NVIDIA Proxy - بوابة NVIDIA الآمنة في BrightAI | BrightAI"
+metaTitle: "Kernel NVIDIA Proxy: بوابة NVIDIA الآمنة في BrightAI"
 description: "شرح كيفية عمل بوابة NVIDIA Proxy في BrightAI Kernel: تشفير الطلبات، إدارة المفاتيح، وحماية البيانات عند استخدام نماذج NVIDIA."
 canonical: "https://brightai.site/docs/kernel-nvidia-proxy/"
 updated: "2026-06-10"

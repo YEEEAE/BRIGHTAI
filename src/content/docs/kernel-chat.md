@@ -1,6 +1,6 @@
 ---
 title: "Kernel Chat: المحادثة الآمنة مع الذكاء الاصطناعي"
-metaTitle: "Kernel Chat - المحادثة الآمنة مع الذكاء الاصطناعي | BrightAI"
+metaTitle: "Kernel Chat: المحادثة الآمنة مع الذكاء الاصطناعي"
 description: "شرح عملي لواجهة المحادثة الآمنة في BrightAI Kernel: كيف تحمي بيانات شركتك، تصنف المخاطر، وتوثق كل قرار قبل ما يوصل للنموذج."
 canonical: "https://brightai.site/docs/kernel-chat/"
 updated: "2026-06-10"

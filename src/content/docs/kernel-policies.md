@@ -1,6 +1,6 @@
 ---
 title: "Kernel Policies: محرر السياسات البصري"
-metaTitle: "Kernel Policies - محرر السياسات البصري | BrightAI"
+metaTitle: "Kernel Policies: محرر السياسات البصري"
 description: "شرح عملي لمحرر السياسات في BrightAI Kernel: كيف تنشئ وتعدل سياسات الذكاء الاصطناعي بشكل بصري وتربطها بالضوابط."
 canonical: "https://brightai.site/docs/kernel-policies/"
 updated: "2026-06-10"

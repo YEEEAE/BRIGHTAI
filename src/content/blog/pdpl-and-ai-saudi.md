@@ -1,5 +1,5 @@
 ---
-title: "PDPL والذكاء الاصطناعي:ما الذي يجب أن تعرفه الشركات السعودية؟"
+title: "PDPL و AI: ما الذي يجب أن تعرفه الشركات السعودية؟"
 description: "دليل شامل حول PDPL والذكاء الاصطناعي للشركات السعودية: المخاطر، الامتثال، حماية البيانات الشخصية، ودور AI Firewall و Audit Trail في بناء بيئة AI آمنة وخاضعة للحوكمة."
 canonical: "https://brightai.site/blog/pdpl-and-ai-saudi/"
 pubDate: "2026-05-31"

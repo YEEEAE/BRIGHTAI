@@ -1,6 +1,6 @@
 ---
 title: "Kernel Scenarios: سيناريوهات اختبار الذكاء الاصطناعي"
-metaTitle: "Kernel Scenarios - سيناريوهات اختبار الذكاء الاصطناعي | BrightAI"
+metaTitle: "Kernel Scenarios: سيناريوهات اختبار الذكاء الاصطناعي"
 description: "شرح عملي لسيناريوهات الاختبار في BrightAI Kernel: كيف تختبر سياسات AI والضوابط قبل التطبيق الفعلي."
 canonical: "https://brightai.site/docs/kernel-scenarios/"
 updated: "2026-06-10"

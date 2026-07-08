@@ -1,6 +1,6 @@
 ---
 title: "Kernel Architecture: بنية BrightAI Kernel التقنية"
-metaTitle: "Kernel Architecture - بنية BrightAI Kernel التقنية | BrightAI"
+metaTitle: "Kernel Architecture: بنية BrightAI Kernel التقنية"
 description: "شرح معماري شامل لبنية BrightAI Kernel: الطبقات التقنية، التكاملات، سير البيانات، وآليات الحوكمة الداخلية."
 canonical: "https://brightai.site/docs/kernel-architecture/"
 updated: "2026-06-10"

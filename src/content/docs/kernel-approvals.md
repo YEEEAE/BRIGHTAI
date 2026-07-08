@@ -1,6 +1,6 @@
 ---
 title: "Kernel Approvals: الموافقات البشرية للطلبات الحساسة"
-metaTitle: "Kernel Approvals - الموافقات البشرية على الطلبات الحساسة | BrightAI"
+metaTitle: "Kernel Approvals: الموافقات البشرية للطلبات الحساسة"
 description: "شرح عملي لنظام الموافقات في BrightAI Kernel: كيف تضمن إن القرارات الحساسة ما تمر إلا بعد مراجعة بشرية وموافقة واضحة."
 canonical: "https://brightai.site/docs/kernel-approvals/"
 updated: "2026-06-10"

@@ -1,6 +1,6 @@
 ---
 title: "Kernel Internal Linking: الروابط الداخلية في BrightAI"
-metaTitle: "Kernel Internal Linking - الروابط الداخلية في BrightAI | BrightAI"
+metaTitle: "Kernel Internal Linking: الروابط الداخلية في BrightAI"
 description: "شرح استراتيجية الروابط الداخلية في BrightAI Kernel: كيف نربط التوثيق بالصفحات والحلول، وتأثيره على SEO وتجربة المستخدم."
 canonical: "https://brightai.site/docs/kernel-internal-linking/"
 updated: "2026-06-10"

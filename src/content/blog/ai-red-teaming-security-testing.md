@@ -1,5 +1,5 @@
 ---
-title: "AI Red Teaming: كيف تختبر أمان أنظمة الذكاء الاصطناعي واختبار أمان AI لديك"
+title: "AI Red Teaming: اختبار أمان أنظمة الذكاء الاصطناعي"
 description: "طريقة منظمة لاختبار أمان AI ضد تسريب البيانات، prompt injection، تجاوز السياسات، والمخرجات الخطرة."
 canonical: "https://brightai.site/blog/ai-red-teaming-security-testing/"
 pubDate: "2026-07-28"

@@ -1,6 +1,6 @@
 ---
 title: "Kernel Reports: تقارير الحوكمة والامتثال"
-metaTitle: "Kernel Reports - تقارير الحوكمة والامتثال | BrightAI"
+metaTitle: "Kernel Reports: تقارير الحوكمة والامتثال"
 description: "شرح عملي لنظام التقارير في BrightAI Kernel: كيف تحوّل بيانات الحوكمة إلى تقارير واضحة للإدارة وفرق الامتثال."
 canonical: "https://brightai.site/docs/kernel-reports/"
 updated: "2026-06-10"

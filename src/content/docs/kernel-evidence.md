@@ -1,6 +1,6 @@
 ---
 title: "Kernel Evidence: ملف الدليل الكامل لكل طلب"
-metaTitle: "Kernel Evidence - ملفات الأدلة للتدقيق | BrightAI"
+metaTitle: "Kernel Evidence: ملف الدليل الكامل لكل طلب"
 description: "شرح عملي لملفات الأدلة في BrightAI Kernel: كيف تجمع كل التفاصيل عن كل طلب في ملف واحد قابل للتصدير والمراجعة."
 canonical: "https://brightai.site/docs/kernel-evidence/"
 updated: "2026-06-10"

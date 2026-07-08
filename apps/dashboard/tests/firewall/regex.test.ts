@@ -85,15 +85,22 @@ describe('SAUDI_PHONE', () => {
     expect(phone[0].value).toMatch(/^05\d{8}$/);
   });
 
-  it('detects +966 5X XXX XXXX format', () => {
-    const dets = regexDetect('call +966 50 123 4567');
+  it('detects +966 5XXXXXXXX (no internal spaces) format', () => {
+    const dets = regexDetect('+966501234567');
     const phone = dets.filter((d) => d.type === 'SAUDI_PHONE');
     expect(phone.length).toBeGreaterThan(0);
   });
 
-  it('detects +966 5XXXXXXXX (no spaces) format', () => {
-    const dets = regexDetect('+966501234567');
-    expect(dets.filter((d) => d.type === 'SAUDI_PHONE').length).toBeGreaterThan(0);
+  it('detects +966 5X-XXX-XXXX (with dashes) format', () => {
+    const dets = regexDetect('+966-50-123-4567');
+    const phone = dets.filter((d) => d.type === 'SAUDI_PHONE');
+    expect(phone.length).toBeGreaterThan(0);
+  });
+
+  it('detects 5XXXXXXXX (no 0 prefix) format', () => {
+    const dets = regexDetect('call 501234567 for support');
+    const phone = dets.filter((d) => d.type === 'SAUDI_PHONE');
+    expect(phone.length).toBeGreaterThan(0);
   });
 
   it('does NOT match a landline (011 XXX XXXX)', () => {

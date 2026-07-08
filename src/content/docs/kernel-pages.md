@@ -1,6 +1,6 @@
 ---
 title: "Kernel Pages: دليل صفحات BrightAI Kernel"
-metaTitle: "Kernel Pages - دليل صفحات BrightAI Kernel | BrightAI"
+metaTitle: "Kernel Pages: دليل صفحات BrightAI Kernel"
 description: "دليل شامل لكل صفحات BrightAI Kernel: لوحة التحكم، المحادثة، التدقيق، الموافقات، الإحصائيات، والموصلات."
 canonical: "https://brightai.site/docs/kernel-pages/"
 updated: "2026-06-10"

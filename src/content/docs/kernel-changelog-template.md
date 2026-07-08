@@ -1,6 +1,6 @@
 ---
 title: "Kernel Changelog Template: قالب تغييرات BrightAI Kernel"
-metaTitle: "Kernel Changelog Template - قالب تغييرات BrightAI Kernel | BrightAI"
+metaTitle: "Kernel Changelog Template: قالب تغييرات BrightAI Kernel"
 description: "قالب موحد لتوثيق تغييرات BrightAI Kernel: كيفية تسجيل التحديثات، الإصدارات، والتغييرات التقنية."
 canonical: "https://brightai.site/docs/kernel-changelog-template/"
 updated: "2026-06-10"
