@@ -45,14 +45,11 @@ const PATTERNS: PatternEntry[] = [
   { type: 'SAUDI_IBAN', pattern: /\bSA\d{2}[A-Z0-9]{20}\b/gi, confidence: 0.99 },
 
   // ── Saudi phone ───────────────────────────────────────────────
-  // Supports three formats:
-  //   1. +966 5XXXXXXXX        (international, no internal spaces)
-  //   2. +966-5X-XXX-XXXX      (international, with dashes)
-  //   3. 05XXXXXXXX            (local with leading 0)
-  //   4. 5XXXXXXXX             (local without 0)
-  // The 9 digits after the leading 5 may include internal spaces
-  // or dashes (handled by [\d\s-]).
-  { type: 'SAUDI_PHONE', pattern: /(?:\+966[\s-]?)?0?5[\d\s-]{7,8}\d\b/g, confidence: 0.93 },
+  // Two branches joined with `|`. The first handles the
+  // international format with optional internal separators
+  // (e.g. `+966-50-123-4567`, `+966 50 123 4567`). The second
+  // handles the local 10- or 9-digit form (`05XXXXXXXX`, `5XXXXXXXX`).
+  { type: 'SAUDI_PHONE', pattern: /(?:\+966[\s-]?5\d[\s-]?\d{3}[\s-]?\d{4})|(?:0?5\d{8})\b/g, confidence: 0.93 },
 
   // ── Email (RFC 5322 simplified) ───────────────────────────────
   { type: 'EMAIL', pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, confidence: 0.98 },

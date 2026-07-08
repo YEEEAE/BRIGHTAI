@@ -30,7 +30,7 @@ import { consume } from '@/lib/firewall/ratelimit/redis-bucket';
 import { chat } from '@/lib/firewall/llm/groq-client';
 import { logFirewallEvent, sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
 import { dbServiceRole } from '@brightai/db';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@brightai/db';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';

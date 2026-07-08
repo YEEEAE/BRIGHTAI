@@ -21,7 +21,7 @@
  */
 
 import { createHash } from 'node:crypto';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@brightai/db';
 import { dbServiceRole } from '@brightai/db';
 
 export type AuditChainInput = {
@@ -139,7 +139,9 @@ export async function appendAuditLog(
         },
       });
 
-      return row;
+      // Cast: the schema declares hash as nullable but we always
+      // write a non-null value via the chain writer.
+      return row as { id: string; prevHash: string | null; hash: string; createdAt: Date };
     },
     { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );

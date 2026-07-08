@@ -12,4 +12,29 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ---
 <EnglishLayout title="BrightAI PDPL Statement | Saudi AI" description="Read BrightAI PDPL compliance statement for responsible AI governance, data protection, and audit-ready controls for Saudi organizations today." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
   <div class="legal-page" set:html={legalContent.html} />
+
+  <section class="legal-related" aria-labelledby="legal-related-heading">
+    <h2 id="legal-related-heading">Related documents</h2>
+    <ul>
+      <li><a href="/en/data-processing-agreement/">Data processing agreement</a></li>
+      <li><a href="/en/privacy-policy/">Privacy policy</a></li>
+      <li><a href="/en/terms/">Terms of service</a></li>
+      <li><a href="/en/cookie-policy/">Cookie policy</a></li>
+      <li><a href="/">BrightAI home</a></li>
+      <li><a href="/contact/">Contact us</a></li>
+    </ul>
+  </section>
 </EnglishLayout>
+
+<style>
+  .legal-related {
+    max-width: 720px;
+    margin: 48px auto 0;
+    padding: 24px;
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+  }
+  .legal-related h2 { font-size: 16px; color: var(--text-secondary, #94a3b8); margin-bottom: 12px; }
+  .legal-related ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 12px 20px; }
+  .legal-related a { color: var(--brand-400, #22d3ee); text-decoration: none; }
+  .legal-related a:hover { text-decoration: underline; }
+</style>

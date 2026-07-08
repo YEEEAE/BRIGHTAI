@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-08 19:30 +03:00
+last_updated: 2026-07-08 19:50 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.4
+version: 2.7.5
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -140,6 +140,29 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-08 — SEMRUSH-PHASE-2: Warnings High-Impact Closed (102,105,123,135)
+
+- **Files**: 60 ملف. (1) `astro.config.mjs` (`vite.build.minify='esbuild'`) — ملف محمي. (2) `src/pages/pricing/index.astro:142` — conditional nofollow بدل ثابت. (3) `src/pages/assessment/ai-governance-readiness/index.astro:195` — حذف nofollow عن /contact/. (4) `src/pages/data-processing-agreement/index.astro:13` — title="DPA — اتفاقية معالجة البيانات | BrightAI" (نفس النمط الموجود في 4 صفحات legal أخرى). (5) 33 ملف blog `title` frontmatter تقصير (sdaia-seven-principles 98c→59c، best-ai-governance-platforms 91c→53c، hidden-ai-risks 90c→60c، إلخ). (6) 22 ملف docs `metaTitle` تقصير (kernel-* و nca-ecc-ai-controls-mapping). (7) docs/ الثلاث اللي Semrush رصدها كـ Issue #102 hard-fix: pdpl-ai-complete-guide (87c→50c)، sdaia-generative-ai-guidelines (78c→50c)، kernel-accessibility-mobile (76c→56c).
+- **What**: أصلحنا الـ Warnings عالية الأثر اللي رصدها Semrush بعد الـ Phase 1 للـ Errors. **Fix #1 (Issue #135)**: Unminified JS/CSS — أضفنا `minify: 'esbuild'` صراحة لـ `astro.config.mjs` (ملف محمي). قبل كان `cssMinify: true` فقط؛ Vercel adapter في REPORTS-SEC-01 كان قد كسر الـ default minify. **Fix #2 (Issue #123)**: Nofollow في internal links — 2 instance على /pricing/ و /assessment/ كانا يستخدمان `rel="nofollow noopener noreferrer"` على /contact/ (internal). الإصلاح: الـ pricing صار conditional nofollow (يطبق فقط على whatsapp external)، الـ assessment حذف rel كاملاً. **Fix #3 (Issue #105)**: H1 duplicates title على /data-processing-agreement/ — الـ title كان "اتفاقية معالجة البيانات (DPA)" والـ h1 كان نفس الشي بالضبط. الإصلاح: title صار "DPA — اتفاقية معالجة البيانات | BrightAI" (نفس النمط بـ "| BrightAI" suffix في 4 صفحات legal أخرى). **Fix #4 (Issue #102)**: Title too long (>60c) — هذا أكبر fix في Phase 2: 33 blog + 22 docs = 55 ملف. الـ BlogLayout يضيف ` | BrightAI` (11c) للـ <title>، فلازم frontmatter ≤ 49c عشان rendered ≤ 60c. الـ DocsLayout يستخدم metaTitle مباشرة، فلازم metaTitle ≤ 60c.
+- **Why**: طلب المؤسس (2026-07-08) "ابدا Phase 2" بعد Phase 1 مكتمل. الـ 4 issues المُختارة كانت عالية الأثر SEO: Issue #135 يضر LCP، Issue #123 ينقل PageRank من internal links، Issue #105 يظهر duplicate title في Google SERPs، Issue #102 يقص العنوان في Google SERPs (600px → ~580px).
+- **Verification**:
+  - `npm run build` → 172 HTML pages, 0 errors ✅
+  - `npm run verify:all` → exit 0 ✅ (0 broken links، 0 canonical issues، 28749 مراجع مفحوصة)
+  - `npm run seo:gate` → passed (Sitemap URLs: 152، Hreflang 6/6، Service 5/5)
+  - 36 blog titles: كل 0 منها > 60c في frontmatter ✅
+  - 22 docs metaTitles: كل 0 منها > 60c ✅
+  - JS minification: `dist/_astro/*.js` كلها single-line minified (15KB ClientRouter، 4.7KB SplitHero)
+  - pricing: `grep "rel=\"nofollow[^\"]*\"\\s+href=\"/contact/\"" dist/pricing/index.html` → 0 results ✅
+  - assessment: نفس الفحص → 0 results ✅
+  - DPA: title="DPA — اتفاقية معالجة البيانات | BrightAI" distinct from h1 ✅
+- **Report**: `report/2026-07-08-semrush-phase-2-fixes.md` (12 KB سعودي عامية، 4 fixes × verification × strategy × decisions × stats × risks × commit messages)
+- **Commit**: uncommitted (بانتظار موافقة المستخدم)
+- **Status**: verified locally + ready to commit
+- **Brain updates**: Section 1.1 page count stable 172، Section 1.2.b unchanged (CSS bundle 317KB unchanged — minify bug fixed but old build artifacts not remeasured). Section 4: DEC-SEMRUSH-FIX-004 (blog title ≤ 49c with | BrightAI suffix — DEC جديد)، DEC-SEMRUSH-FIX-005 (docs metaTitle ≤ 60c — DEC جديد).
+- **Decisions (2 new)**:
+  - **DEC-SEMRUSH-FIX-004**: Blog frontmatter `title` ≤ 49c. الـ BlogLayout يضيف ` | BrightAI` (11c) فيصدر <title> = title + 11 ≤ 60c (Google SERP threshold). لو محتاج title > 49c، استخدم حقل `metaTitle` منفصل (BlogLayout:103 `post.metaTitle ?? \`${post.title} | BrightAI\``).
+  - **DEC-SEMRUSH-FIX-005**: Docs `metaTitle` = `title` أو مختصر ≤ 60c. DocsLayout:127 `title={metaTitle}` يستخدم metaTitle مباشرة بدون suffix. فـ metaTitle يحتاج ≤ 60c للـ Google SERP.
 
 ### 2026-07-08 — SEMRUSH-PHASE-1: All 14 Site Audit Errors Fixed (14→0)
 
@@ -3147,4 +3170,22 @@ npm run indexnow:trigger  # notifies Bing/Yandex
 - **Reversal cost**: N/A (rule, not code).
 - **Do not reverse**.
 - **Related files**: `redirects.json` (source), `scripts/generate-all-redirects.mjs` (generator), `public/_redirects` (Netlify auto-loaded), `render.yaml` (Render deployment).
+
+### DEC-SEMRUSH-FIX-004 — Blog frontmatter `title` ≤ 49 chars (rendered adds " | BrightAI" suffix)
+
+- **Date**: 2026-07-08
+- **Context**: BlogLayout.astro:103 emits `<title>{post.metaTitle ?? \`${post.title} | BrightAI\`}</title>` — appends 11 chars (including space + pipe + space + brand). Google SERP displays ~60 chars of <title> before truncation. Issue #102 was "Title too long" meaning the rendered <title> was ≥ 60 chars. Phase 2 shortenings brought 33 blog titles into ≤ 49 chars range so final <title> ≤ 60c.
+- **Decision**: Blog frontmatter `title` field MUST be ≤ 49 chars. If a stronger description needs > 49 chars, set the `metaTitle` field separately and BlogLayout will use it (preserves the brand suffix in <title> while allowing the SEO-optimized title to differ in the OG card metadata).
+- **Rationale**: Semrush measures <title> directly. Without this rule, every blog title gets 11 chars added silently pushing it from OK to flagged.
+- **Reversal cost**: Low (audit existing titles + update).
+- **Related files**: All `src/content/blog/*.md` `title` field. Counter-check: `wc -m src/content/blog/*/title` should be ≤ 49.
+
+### DEC-SEMRUSH-FIX-005 — Docs `metaTitle` = `title` or ≤ 60 chars directly
+
+- **Date**: 2026-07-08
+- **Context**: DocsLayout.astro:127 emits `<title>{metaTitle}</title>` — no suffix added. Semrush measures <title> for Issue #102. Phase 2 batch-updated 22 kernel-* docs and 1 NCA ECC doc to remove the duplicate "| BrightAI" pattern (which had been manually added to metaTitle but was unnecessary since DocsLayout doesn't append it).
+- **Decision**: Docs `metaTitle` field MUST be ≤ 60 chars. Default behavior: `metaTitle` = `title` (so both align). If a longer descriptive version is needed, set metaTitle explicitly ≤ 60 chars.
+- **Rationale**: Docs are technical/SEO-heavy pages where long compound titles (e.g., "Kernel Architecture: بنية BrightAI Kernel التقنية") were having duplicated "| BrightAI" string baked into metaTitle even though DocsLayout doesn't append it. Standardizing on `metaTitle = title` (no suffix) eliminates confusion + prevents flag.
+- **Reversal cost**: Low (update metaTitle fields).
+- **Related files**: All `src/content/docs/*.md` `metaTitle` field.
 

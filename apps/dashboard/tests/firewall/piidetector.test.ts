@@ -10,7 +10,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { detect, detectAndRedact, dedupeOverlap, hasHighRiskPII } from '../../lib/firewall/engine/piidetector';
-import { DEFAULT_POLICY, type FirewallContext } from '../../lib/firewall/detectors/types';
+import { DEFAULT_POLICY, type FirewallContext, type Detection } from '../../lib/firewall/detectors/types';
 
 const baseCtx: FirewallContext = {
   organizationId: 'org_test',

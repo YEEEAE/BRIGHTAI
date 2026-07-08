@@ -23,14 +23,14 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions", "fullTextSearchPostgres"]
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider   = "postgresql"
   url        = env("DATABASE_URL")
   directUrl  = env("DIRECT_URL")
-  extensions = [pgcrypto, citext, "uuid-ossp"]
+  extensions = [pgcrypto, citext]
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -263,6 +263,7 @@ model Organization {
   apiKeys             ApiKey[]
   auditLogs           AuditLog[]
   domains             Domain[]
+  complianceRecords   OrganizationCompliance[]
   onboardingProgress  OnboardingProgress?
   dataExportRequests  DataExportRequest[]
   dataDeletionRequests DataDeletionRequest[]
@@ -305,9 +306,12 @@ model User {
 
   // Relations
   memberships         Membership[]
+  membershipsInvited    Membership[] @relation("MembershipInvitedBy")
+  membershipsDeactivated Membership[] @relation("MembershipDeactivatedBy")
   passkeys            Passkey[]
   backupCodes         TwoFactorBackupCode[]
   sessions            Session[]
+  sessionsRevoked     Session[] @relation("SessionRevokedBy")
   auditLogs           AuditLog[]
   invitationsSent     Invitation[] @relation("InvitationInvitedBy")
   apiKeysCreated      ApiKey[]
