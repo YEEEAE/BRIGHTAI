@@ -1,0 +1,172 @@
+---
+/**
+ * BlogToc — Auto-generated table of contents for blog articles.
+ *
+ * Reuses the scroll-spy pattern from TableOfContents.astro but with
+ * blog-scoped styling. Headings come from `render(entry).headings`
+ * (Astro auto-generates matching `id` slugs for every H2/H3), so the
+ * anchors resolve to real elements in the rendered article body.
+ *
+ * Content Preservation Rule: heading texts are rendered verbatim from the
+ * published Markdown — we do not "correct" Saudi dialect to MSA.
+ */
+interface Heading {
+  depth: 2 | 3;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+  title?: string;
+}
+
+const { headings, title = 'في هذا المقال' } = Astro.props;
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+---
+
+{tocHeadings.length > 0 && (
+  <nav class="blog-toc" aria-label="جدول المحتويات" data-toc>
+    <p class="blog-toc__title">{title}</p>
+    <ol class="blog-toc__list">
+      {tocHeadings.map((heading) => (
+        <li
+          class:list={[
+            'blog-toc__item',
+            heading.depth === 3 && 'blog-toc__item--nested',
+          ]}
+          data-toc-target={heading.slug}
+        >
+          <a href={`#${heading.slug}`}>{heading.text}</a>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <script>
+    function initBlogToc() {
+      const toc = document.querySelector('.blog-toc');
+      if (!toc || toc.hasAttribute('data-toc-initialized')) return;
+      toc.setAttribute('data-toc-initialized', 'true');
+
+      const items = Array.from(toc.querySelectorAll('.blog-toc__item'));
+      const linksBySlug = new Map<string, HTMLElement>();
+      items.forEach((item) => {
+        const slug = (item as HTMLElement).dataset.tocTarget;
+        if (slug) linksBySlug.set(slug, item as HTMLElement);
+      });
+
+      const observedHeadings = new Map<string, HTMLElement>();
+      linksBySlug.forEach((_, slug) => {
+        const heading = document.getElementById(slug);
+        if (heading) observedHeadings.set(slug, heading);
+      });
+
+      if (observedHeadings.size === 0) return;
+      const headingTargets = Array.from(observedHeadings.values());
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      items.forEach((item) => {
+        const anchor = item.querySelector('a');
+        if (!anchor) return;
+        anchor.addEventListener('click', (e) => {
+          const slug = (item as HTMLElement).dataset.tocTarget;
+          if (!slug) return;
+          const target = observedHeadings.get(slug);
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({
+            behavior: reduceMotion ? 'auto' : 'smooth',
+            block: 'start',
+          });
+          history.replaceState(null, '', `#${slug}`);
+          items.forEach((i) => i.classList.remove('is-active'));
+          item.classList.add('is-active');
+        });
+      });
+
+      const setActiveForInView = () => {
+        const viewportTop = window.scrollY + 120;
+        let topSlug: string | null = null;
+        let topY = -Infinity;
+        headingTargets.forEach((heading) => {
+          const slug = heading.id;
+          const rect = heading.getBoundingClientRect();
+          const absoluteTop = rect.top + window.scrollY;
+          if (absoluteTop <= viewportTop && absoluteTop > topY) {
+            topY = absoluteTop;
+            topSlug = slug;
+          }
+        });
+        items.forEach((item) => item.classList.remove('is-active'));
+        if (topSlug) {
+          const targetItem = linksBySlug.get(topSlug);
+          if (targetItem) targetItem.classList.add('is-active');
+        }
+      };
+
+      setActiveForInView();
+      let raf = 0;
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (raf) return;
+          raf = window.requestAnimationFrame(() => {
+            setActiveForInView();
+            raf = 0;
+          });
+        },
+        { passive: true }
+      );
+    }
+
+    document.addEventListener('astro:page-load', initBlogToc);
+    document.addEventListener('astro:before-swap', () => {
+      document.querySelectorAll('.blog-toc[data-toc-initialized]').forEach((el) => {
+        el.removeAttribute('data-toc-initialized');
+      });
+    });
+  </script>
+)}
+
+<style>
+  .blog-toc {
+    border-inline-start: 3px solid var(--brand-400, #22d3ee);
+    background: var(--bg-surface, #0f1525);
+    border-radius: var(--radius-md, 0.5rem);
+    padding: var(--space-4, 1rem) var(--space-5, 1.25rem);
+    margin-bottom: var(--space-6, 1.5rem);
+  }
+  .blog-toc__title {
+    margin: 0 0 var(--space-2, 0.5rem);
+    font-size: var(--text-sm, 0.875rem);
+    font-weight: 700;
+    color: var(--text-secondary, #94a3b8);
+    letter-spacing: 0.02em;
+  }
+  .blog-toc__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .blog-toc__item a {
+    color: var(--text-secondary, #94a3b8);
+    text-decoration: none;
+    font-size: var(--text-sm, 0.875rem);
+    line-height: 1.5;
+    transition: color var(--duration-fast, 150ms) var(--ease-out);
+  }
+  .blog-toc__item a:hover,
+  .blog-toc__item.is-active a {
+    color: var(--brand-400, #22d3ee);
+  }
+  .blog-toc__item--nested {
+    padding-inline-start: var(--space-4, 1rem);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blog-toc__item a { transition: none; }
+  }
+</style>

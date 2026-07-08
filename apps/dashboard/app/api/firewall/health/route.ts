@@ -73,7 +73,7 @@ export async function GET() {
     detectors: {
       regex: { version: REGEX_VERSION, types: REGEX_SUPPORTED_TYPES },
       ner: {
-        enabled: false, // Phase 1b will read this from env
+        enabled: process.env.FIREWALL_NER_ENABLED !== 'false',
         model: NER_MODEL_ID,
         loaded: isNerReady(),
       },

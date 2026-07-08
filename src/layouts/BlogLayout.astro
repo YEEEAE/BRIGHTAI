@@ -12,6 +12,7 @@
  */
 import ArabicLayout from './ArabicLayout.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
+import BlogToc from '../components/BlogToc.astro';
 import { SITE } from '../data/site';
 import type { BlogPost } from '../data/blog';
 import { ORGANIZATION } from '../data/schema-helpers';
@@ -21,15 +22,22 @@ interface InternalLink {
   label: string;
 }
 
+interface TocHeading {
+  depth: 2 | 3;
+  slug: string;
+  text: string;
+}
+
 interface Props {
   post: BlogPost;
   relatedPosts: BlogPost[];
   internalLinks?: InternalLink[];
   breadcrumbLd?: Record<string, unknown>;
   extraSchemaNodes?: Record<string, unknown>[];
+  headings?: TocHeading[];
 }
 
-const { post, relatedPosts, internalLinks = [], breadcrumbLd, extraSchemaNodes = [] } = Astro.props;
+const { post, relatedPosts, internalLinks = [], breadcrumbLd, extraSchemaNodes = [], headings = [] } = Astro.props;
 
 const blogPostingLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
@@ -78,12 +86,24 @@ const blogPostingLd: Record<string, unknown> = {
   isAccessibleForFree: true,
 };
 
+const speakableNode: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${post.canonical}#webpage`,
+  url: post.canonical,
+  speakable: {
+    '@type': 'SpeakableSpecification',
+    cssSelector: ['.article-hero__desc'],
+  },
+};
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     blogPostingLd,
     ORGANIZATION,
     breadcrumbLd,
+    speakableNode,
     ...extraSchemaNodes,
   ].filter(Boolean),
 };
@@ -145,6 +165,8 @@ const authorInitials = post.author.name
         🔄 آخر تحديث: <time datetime={post.updatedDate}>{post.updatedDate}</time>
       </div>
     )}
+
+    <BlogToc headings={headings} />
 
     <article class="article-content article-content--reading">
       <slot name="article" />

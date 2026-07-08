@@ -108,19 +108,19 @@ export async function* chatStream(req: ChatRequest): AsyncGenerator<ChatChunk> {
   const groq = getClient();
   const model = req.model ?? DEFAULT_MODEL;
 
-  const stream = await groq.chat.completions.create(
-    {
-      model,
-      messages: req.messages.map((m) => ({ role: m.role, content: m.content })),
-      temperature: req.temperature ?? 0.2,
-      max_tokens: req.maxTokens ?? 1024,
-      stream: true,
-      stream_options: { include_usage: true },
-    },
-    { signal: req.signal },
-  );
+  // The Groq SDK's create() overloads on the `stream` option, which
+  // makes the discriminated type wider than we want. Cast through
+  // `any` to call with the streaming shape.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const stream = (await (groq.chat.completions.create as any)({
+    model,
+    messages: req.messages.map((m) => ({ role: m.role, content: m.content })),
+    temperature: req.temperature ?? 0.2,
+    max_tokens: req.maxTokens ?? 1024,
+    stream: true,
+    stream_options: { include_usage: true },
+  })) as AsyncIterable<{ choices?: Array<{ delta?: { content?: string }; finish_reason?: string | null }>; usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number }; model?: string }>;
 
-  let finalUsage: { prompt_tokens: number; completion_tokens: number; total_tokens: number } | null = null;
   let finalModel: string | null = null;
 
   for await (const chunk of stream) {
