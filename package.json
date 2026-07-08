@@ -20,10 +20,8 @@
     "typecheck": "pnpm -r --parallel typecheck",
     "lint": "pnpm -r --parallel lint",
     "dashboard:dev": "pnpm --filter @brightai/dashboard dev",
-    "dashboard:build": "pnpm --filter @brightai/dashboard build"
-  },
-  "//": "Legacy Astro scripts below — DO NOT REMOVE until apps/marketing/ refactor lands.",
-  "_legacy_scripts_marker": "_astro_legacy",
+    "dashboard:build": "pnpm --filter @brightai/dashboard build",
+    "//_note": "Legacy Astro scripts below — DO NOT REMOVE until apps/marketing/ refactor lands.",
     "dev": "astro dev",
     "prebuild": "node scripts/generate-all-redirects.mjs",
     "build": "npm run image-sitemap && astro build && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css",
