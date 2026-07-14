@@ -214,8 +214,10 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 
   </div>
 
-  {/* Chart.js via CDN — loaded with defer to not block render */}
-  <script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  {/* Chart.js — KRN-007 / EXEC-07: self-hosted (vendored) for CSP + offline reliability.
+      Source: chart.js@4.4.1 UMD, minified via esbuild, vendored at public/vendor/chart.umd.min.js.
+      License: see public/vendor/CHART.JS-LICENSE.md (MIT). */}
+  <script is:inline src="/vendor/chart.umd.min.js"></script>
   <script is:inline>
     (function () {
       'use strict';

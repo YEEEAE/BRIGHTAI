@@ -21,7 +21,7 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd, getBreadcrumbLd } from '../../data/schema-helpers';
-import { KERNEL_SYSTEM_PROMPTS } from '../../data/kernel-system-prompts';
+// KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
 const unit = getKernelUnit('policies')!;
 const cross = getCrossLinks(unit);
@@ -543,7 +543,7 @@ const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
       <h2 id="ai-assistant-h2" class="inner-section__title">جرّب بالذكاء الاصطناعي</h2>
       <p class="inner-section__lead inner-section__lead--centered">اطلب من المساعد صياغة سياسة حوكمة AI مخصصة لمنشأتك، متوافقة مع PDPL وNCA ECC.</p>
       <KernelAiAssistant
-        systemPrompt={KERNEL_SYSTEM_PROMPTS.policies}
+        promptId="policies"
         title="كاتب سياسات الحوكمة"
         subtitle="يكتب سياسات قابلة للتفعيل عبر BrightAI Kernel."
         placeholder="مثال: اكتب لي سياسة استخدام ChatGPT Enterprise من قبل الموظفين في بنك، متوافقة مع SAMA."

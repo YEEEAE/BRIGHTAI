@@ -347,13 +347,14 @@ const allItems = [
   </nav>
 
   <!-- Mobile Drawer -->
-  <div class="k-drawer" id="k-drawer" aria-hidden="true" role="dialog" aria-label="قائمة Kernel">
+  <!-- KRN-010 fix: aria-modal="true" + aria-labelledby engages focus-trap.js auto-applied in BaseLayout -->
+  <div class="k-drawer" id="k-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="k-drawer-title">
     <div class="k-drawer__backdrop" data-kernel-drawer-close></div>
     <div class="k-drawer__panel">
       <button class="k-drawer__close" data-kernel-drawer-close aria-label="إغلاق القائمة">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </button>
-      <h3>وحدات Kernel</h3>
+      <h3 id="k-drawer-title">وحدات Kernel</h3>
       {allItems.map(item => (
         <a
           href={item.path}

@@ -1,11 +1,13 @@
 ---
 /**
  * KernelAiAssistant — KERNEL-AI-2026-07-14
+ *                  + KERNEL-AUDIT-2026-07-15-BATCH-2 (EXEC-02)
  *
  * قسم "جرّب بالذكاء الاصطناعي" قابل لإعادة الاستخدام في صفحات Kernel
  * الوظيفية (compliance / policies / evidence / audit / scenarios).
  *
- * يستدعي /api/ai/chat مع systemPrompt مخصص لمجال الصفحة.
+ * يستدعي /api/ai/chat مع promptId من allowlist الخادم. الـ server يبحث
+ * عن الـ systemPrompt الفعلي من KERNEL_SYSTEM_PROMPTS ويرسله للنموذج.
  * Fallback: لو الـ API رجع 404 (Render static أو hosting بدون serverless)
  * → يعرض "وضع تجريبي" + ردود توضيحية.
  *
@@ -14,7 +16,9 @@
  * (private mode) → يستخدم Map داخل الذاكرة فقط.
  *
  * Props:
- *   - systemPrompt: string (مطلوب) — systemPrompt المرسل إلى /api/ai/chat
+ *   - promptId: 'compliance'|'policies'|'evidence'|'audit'|'scenarios' (مطلوب)
+ *     — يُمرر للـ server كـ lookup key. الـ server لا يقبل systemPrompt
+ *     نصّي من الـ client (KRN-001 / EXEC-01).
  *   - title: string (افتراضي: "مساعد الحوكمة")
  *   - subtitle: string (افتراضي: جملة توضيحية)
  *   - placeholder: string (افتراضي: مثال عام)
@@ -28,12 +32,12 @@
  *
  * الأمان:
  *   - لا يستدعي Groq/Gemini مباشرة
- *   - systemPrompt محدود بـ 2000 حرف (KERNEL_SYSTEM_PROMPT_MAX_CHARS)
- *   - لا يحفظ الـ systemPrompt في DOM (يقرأ من data-attribute)
+ *   - لا يحفظ الـ systemPrompt في DOM (KRN-002 / EXEC-02)
+ *   - يبعت promptId فقط (الـ server يبحث عن النص)
  */
 
 interface Props {
-  systemPrompt: string;
+  promptId: 'compliance' | 'policies' | 'evidence' | 'audit' | 'scenarios';
   title?: string;
   subtitle?: string;
   placeholder?: string;
@@ -42,17 +46,13 @@ interface Props {
 }
 
 const {
-  systemPrompt,
+  promptId,
   title = 'مساعد الحوكمة',
   subtitle = 'اسأل سؤالاً متخصصاً في سياق السوق السعودي. كل سؤال يمر عبر طبقات الأمان قبل الوصول للنموذج.',
   placeholder = 'مثال: وش أحتاج عشان ألتزم PDPL في معالجة بيانات المرضى؟',
   id,
   maxTurns = 6,
 } = Astro.props;
-
-// التحقق من طول systemPrompt
-const truncated = systemPrompt.length > 2000;
-const safeSystemPrompt = truncated ? systemPrompt.slice(0, 2000) : systemPrompt;
 
 // معرّف فريد للـ instance
 const instanceId =
@@ -71,7 +71,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
   aria-labelledby={`${instanceId}-title`}
   data-kernel-ai-assistant
   data-instance-id={instanceId}
-  data-system-prompt={safeSystemPrompt}
+  data-prompt-id={promptId}
   data-max-turns={String(maxTurns)}
   data-storage-key={STORAGE_KEY}
 >
@@ -330,7 +330,8 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     border-radius: var(--radius-md);
     padding: var(--space-3);
     font-family: inherit;
-    font-size: var(--text-sm);
+    /* KRN-017 fix: font-size: var(--text-base) (16px) prevents iOS Safari auto-zoom on focus */
+    font-size: var(--text-base);
     line-height: 1.5;
     resize: vertical;
     min-block-size: 64px;
@@ -575,7 +576,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 
         if (!form || !input || !thread) return;
 
-        var systemPrompt = root.dataset.systemPrompt || '';
+        var promptId = root.dataset.promptId || '';
         var maxTurns = parseInt(root.dataset.maxTurns, 10) || 6;
         var storageKey = root.dataset.storageKey;
         var storage = safeStorage();
@@ -662,10 +663,12 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           }
 
           // جرّب /api/ai/chat/ (مع trailing slash لتفادي 301 → method change)
+          // KRN-001 / EXEC-02: أرسل promptId فقط (مو systemPrompt).
+          // الـ server يبحث عن النص الفعلي من KERNEL_SYSTEM_PROMPTS allowlist.
           fetch('/api/ai/chat/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: userText, systemPrompt: systemPrompt, provider: 'auto' }),
+            body: JSON.stringify({ message: userText, promptId: promptId, provider: 'auto' }),
           })
             .then(function (res) {
               if (res.status === 404) {

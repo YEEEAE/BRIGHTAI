@@ -23,6 +23,8 @@ html {
 
 body {
   min-height: 100vh;
+  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
+  min-height: 100dvh;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

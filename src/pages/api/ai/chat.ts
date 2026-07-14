@@ -1,37 +1,50 @@
 /**
  * src/pages/api/ai/chat.ts — REPORTS-SEC-01 (2026-07-06)
+ *                  + KERNEL-AUDIT-2026-07-15-BATCH-2 (ARCH-2 + EXEC-01)
  *
  * Server-side proxy for AI chat. Reads provider keys from
- * `import.meta.env.GROQ_API_KEY` and `import.meta.env.GEMINI_API_KEY`
- * so the keys NEVER ship to the client bundle.
+ * `process.env.GROQ_API_KEY` and `process.env.GEMINI_API_KEY`
+ * at REQUEST TIME (runtime, not build time) so the keys are NEVER
+ * inlined into the SSR bundle (ARCH-2 fix).
  *
  * Behavior:
- *  - POST { message: string, systemPrompt?: string, provider?: 'groq'|'gemini'|'auto' }
+ *  - POST { message: string, promptId?: 'compliance'|'policies'|'evidence'|'audit'|'scenarios', provider?: 'groq'|'gemini'|'auto' }
  *  - Returns { reply: string, provider: 'groq'|'gemini' } on success.
  *  - In-memory rate limit: 10 requests / minute / IP.
  *  - Validates: message is a non-empty string ≤ 4000 chars.
+ *  - promptId is looked up server-side from KERNEL_SYSTEM_PROMPTS
+ *    (EXEC-01 — KRN-001 prompt injection mitigation).
  *  - Auto mode: tries Groq first (fast), falls back to Gemini on failure.
  *  - Both providers fail → 502 with sanitized error.
  *
  * Why this exists:
- *  The BrightAI site (output: 'static' Astro) ships 147 prerendered
+ *  The BrightAI site (output: 'static' Astro) ships 190 prerendered
  *  pages. Any client-side AI integration would expose the key in the
- *  browser. By adding `@astrojs/vercel` and `export const prerender = false`
+ *  browser. By adding `@astrojs/node` and `export const prerender = false`
  *  on this file, ONLY this route is server-rendered; all other pages
  *  remain pure static HTML.
  *
- * Security:
- *  - Keys read via `import.meta.env.X` (server-only, no PUBLIC_ prefix).
+ * Security (KRN-A1 + KRN-001 + EXEC-01):
+ *  - Keys read via `process.env.X` (runtime, never inlined into the
+ *    SSR bundle). Previously used `import.meta.env.X` which Astro/Vite
+ *    statically replaces at build time — leading to the Gemini key
+ *    being baked into `dist/server/chunks/*.mjs`. ARCH-2 moves reads
+ *    to runtime.
+ *  - promptId is the ONLY way to specify a system prompt. The
+ *    `systemPrompt` field is rejected with 400. Server looks up the
+ *    actual prompt text from KERNEL_SYSTEM_PROMPTS (server-side import).
  *  - The client fetch (/api/ai/chat) goes through `fetch()` from the
  *    browser; keys are never returned in any response shape.
- *  - CSP in render.yaml will need an update to allow `connect-src`
- *    for `https://api.groq.com` and `https://generativelanguage.googleapis.com`
- *    if Vercel proxies (otherwise these domains are server-side only).
  *  - No request body is logged.
  *  - No message content is persisted server-side.
  */
 
 import type { APIRoute } from 'astro';
+import {
+  KERNEL_SYSTEM_PROMPTS,
+  KERNEL_SYSTEM_PROMPT_MAX_CHARS,
+  type KernelSystemPromptKey,
+} from '../../../data/kernel-system-prompts';
 
 export const prerender = false;
 
@@ -39,10 +52,21 @@ export const prerender = false;
 // Config — overridden via env vars in production
 // ─────────────────────────────────────────────────────────────────────────
 const MAX_MESSAGE_CHARS = 4000;
-const MAX_SYSTEM_PROMPT_CHARS = 2000;
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 10;
 const PROVIDER_TIMEOUT_MS = 25_000;
+
+// ─────────────────────────────────────────────────────────────────────────
+// Allowed promptIds — server-side allowlist for system prompt lookup
+// (KRN-001 / EXEC-01 — prompt injection mitigation)
+// ─────────────────────────────────────────────────────────────────────────
+const ALLOWED_PROMPT_IDS = [
+  'compliance',
+  'policies',
+  'evidence',
+  'audit',
+  'scenarios',
+] as const satisfies readonly KernelSystemPromptKey[];
 
 // ─────────────────────────────────────────────────────────────────────────
 // In-memory rate limit bucket (per IP)
@@ -132,13 +156,14 @@ async function callGroq(
   systemPrompt: string | undefined,
   signal: AbortSignal,
 ): Promise<string> {
-  const apiKey = import.meta.env.GROQ_API_KEY;
+  // ARCH-2: read env at runtime, never via import.meta.env (would be inlined)
+  const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey || apiKey === 'your_groq_api_key_placeholder') {
     throw new Error('GROQ_API_KEY not configured');
   }
-  const model = (import.meta.env.GROQ_MODEL as string) || 'llama-3.3-70b-versatile';
+  const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
   const endpoint =
-    (import.meta.env.GROQ_ENDPOINT as string) ||
+    process.env.GROQ_ENDPOINT ||
     'https://api.groq.com/openai/v1/chat/completions';
 
   const res = await fetch(endpoint, {
@@ -178,11 +203,12 @@ async function callGemini(
   systemPrompt: string | undefined,
   signal: AbortSignal,
 ): Promise<string> {
-  const apiKey = import.meta.env.GEMINI_API_KEY;
+  // ARCH-2: read env at runtime, never via import.meta.env (would be inlined)
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey || apiKey === 'your_openai_api_key_placeholder') {
     throw new Error('GEMINI_API_KEY not configured');
   }
-  const model = (import.meta.env.GEMINI_MODEL as string) || 'gemini-2.5-flash';
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
     model,
   )}:generateContent?key=${encodeURIComponent(apiKey)}`;
@@ -255,10 +281,25 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  // 4. Optional system prompt
+  // 4. Reject client-supplied systemPrompt (KRN-001 / EXEC-01 — prompt injection)
+  if (b.systemPrompt !== undefined) {
+    return jsonError(400, 'systemPrompt_not_accepted', {
+      hint: 'Send promptId from the allowlist instead. See KERNEL_SYSTEM_PROMPTS keys.',
+    });
+  }
+
+  // 5. Optional system prompt via server-side promptId allowlist (EXEC-01)
   let systemPrompt: string | undefined;
-  if (typeof b.systemPrompt === 'string') {
-    systemPrompt = b.systemPrompt.slice(0, MAX_SYSTEM_PROMPT_CHARS);
+  if (typeof b.promptId === 'string') {
+    if (!ALLOWED_PROMPT_IDS.includes(b.promptId as KernelSystemPromptKey)) {
+      return jsonError(400, 'invalid_prompt_id', {
+        allowed: ALLOWED_PROMPT_IDS,
+      });
+    }
+    systemPrompt = KERNEL_SYSTEM_PROMPTS[b.promptId as KernelSystemPromptKey].slice(
+      0,
+      KERNEL_SYSTEM_PROMPT_MAX_CHARS,
+    );
   }
 
   // 5. Provider selection

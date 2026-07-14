@@ -18,7 +18,7 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd, getBreadcrumbLd } from '../../data/schema-helpers';
-import { KERNEL_SYSTEM_PROMPTS } from '../../data/kernel-system-prompts';
+// KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
 const unit = getKernelUnit('evidence')!;
 const cross = getCrossLinks(unit);
@@ -462,7 +462,7 @@ const SECTOR_LABEL: Record<string, string> = {
       <h2 id="ai-assistant-h2" class="inner-section__title">جرّب بالذكاء الاصطناعي</h2>
       <p class="inner-section__lead inner-section__lead--centered">اسأل محقق الأدلة الرقمية عن بنية ملف الدليل (EVD) أو سلسلة الحفظ أو متطلبات الاحتفاظ.</p>
       <KernelAiAssistant
-        systemPrompt={KERNEL_SYSTEM_PROMPTS.evidence}
+        promptId="evidence"
         title="محقق الأدلة الرقمية"
         subtitle="متخصص في توثيق استخدامات الذكاء الاصطناعي في المنشآت السعودية."
         placeholder="مثال: وش الحقول الإلزامية في ملف دليل يثبت إخفاء بيانات شخصية لطلب تم رفضه؟"

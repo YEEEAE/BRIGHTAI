@@ -18,7 +18,7 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd, getBreadcrumbLd } from '../../data/schema-helpers';
-import { KERNEL_SYSTEM_PROMPTS } from '../../data/kernel-system-prompts';
+// KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
 const unit = getKernelUnit('compliance')!;
 const cross = getCrossLinks(unit);
@@ -375,7 +375,7 @@ const iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
       <h2 id="ai-assistant-h2" class="inner-section__title">جرّب بالذكاء الاصطناعي</h2>
       <p class="inner-section__lead inner-section__lead--centered">اسأل خبير حوكمة AI عن PDPL أو NCA ECC أو SFDA أو SAMA أو ISO 42001. كل سؤال يمر عبر طبقات الأمان قبل الوصول للنموذج.</p>
       <KernelAiAssistant
-        systemPrompt={KERNEL_SYSTEM_PROMPTS.compliance}
+        promptId="compliance"
         title="مساعد حوكمة AI"
         subtitle="متخصص في اللوائح السعودية لحوكمة الذكاء الاصطناعي."
         placeholder="مثال: وش الخطوات الفعلية عشان ألتزم PDPL في تسريب بيانات المرضى في نموذج توليدي؟"

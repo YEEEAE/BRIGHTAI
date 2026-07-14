@@ -6,6 +6,8 @@
 /* 1. Kernel Page Layout */
 .kernel-page {
   min-height: 100vh;
+  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -144,8 +146,6 @@
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .kernel-table td {
@@ -316,7 +316,9 @@
   background: var(--bg-surface);
   border-left: 1px solid var(--border-subtle);
   padding: var(--space-6);
+  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
   height: calc(100vh - 72px);
+  height: calc(100dvh - 72px);
   position: sticky;
   top: 72px;
   overflow-y: auto;
@@ -332,8 +334,6 @@
   font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin-bottom: var(--space-4);
 }
 
@@ -477,7 +477,6 @@
      Was: `--text-muted` (~3.4:1, below AA). New: primary × 0.58 (≈ 5.25:1, AA). */
   color: var(--text-primary);
   opacity: var(--text-tertiary-opacity);
-  text-transform: uppercase;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -605,8 +604,6 @@ body.kernel-shell {
   font-size: var(--text-xs);
   font-weight: var(--font-bold);
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .kernel-sidebar__nav {
@@ -772,7 +769,8 @@ body.kernel-shell {
   font-size: var(--text-xs);
   font-weight: var(--font-medium);
   cursor: pointer;
-  min-block-size: 38px;
+  /* KRN-019 fix: 38px → 44px (WCAG SC 2.5.5 Target Size) */
+  min-block-size: 44px;
   font-family: inherit;
   transition: background var(--duration-fast) var(--ease-out),
               border-color var(--duration-fast) var(--ease-out),
@@ -1298,8 +1296,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 .kernel-status-strip__kicker {
   font-size: var(--text-xs);
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
   font-weight: var(--font-semibold);
 }
 
@@ -1338,8 +1334,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 .kernel-status-strip__meta-label {
   font-size: var(--text-xs);
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   font-weight: var(--font-semibold);
 }
 
@@ -1865,7 +1859,9 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
+  /* KRN-018 + KRN-008 fix: dvh handles iOS Safari URL-bar collapse */
   min-block-size: 70vh;
+  min-block-size: 70dvh;
 }
 
 @media (min-width: 1024px) {
@@ -1882,7 +1878,9 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
   min-block-size: 60vh;
+  min-block-size: 60dvh;
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-md), var(--highlight-inner);
@@ -2339,8 +2337,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 .kernel-sidecard__title {
   font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--text-secondary);
   font-weight: var(--font-bold);
   margin: 0 0 var(--space-2);
@@ -2368,8 +2364,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 .kernel-audit-filters__label {
   font-size: var(--text-xs);
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   font-weight: var(--font-semibold);
 }
 
@@ -2443,8 +2437,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   inset-block-start: 0;
   background: var(--bg-elevated);
   font-size: var(--text-xs);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--text-secondary);
   font-weight: var(--font-bold);
   padding: var(--space-3) var(--space-4);
@@ -2539,7 +2531,8 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   font-weight: var(--font-semibold);
   cursor: pointer;
   font-family: inherit;
-  min-block-size: 32px;
+  /* KRN-019 fix: 32px → 44px (WCAG SC 2.5.5 Target Size) */
+  min-block-size: 44px;
 }
 
 .kernel-audit-table__view-btn:hover {
@@ -2692,11 +2685,9 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 .kernel-audit-drawer__section-title {
   font-size: var(--text-xs);
-  text-transform: uppercase;
   color: var(--text-secondary);
   opacity: var(--text-tertiary-opacity);
   font-weight: var(--font-bold);
-  letter-spacing: 0.05em;
   margin: 0 0 var(--space-2);
 }
 
@@ -2933,7 +2924,9 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 .kernel-modal__dialog {
   position: relative;
   inline-size: min(640px, 100%);
+  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
   max-block-size: 90vh;
+  max-block-size: 90dvh;
   background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-base) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
@@ -3147,9 +3140,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 .kernel-evidence-item__meta dt {
   opacity: var(--text-tertiary-opacity);
-  text-transform: uppercase;
   font-size: 0.65rem;
-  letter-spacing: 0.05em;
   font-weight: var(--font-bold);
   align-self: center;
 }
@@ -3197,7 +3188,8 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   cursor: pointer;
   font-family: inherit;
   text-decoration: none;
-  min-block-size: 32px;
+  /* KRN-019 fix: 32px → 44px (WCAG SC 2.5.5 Target Size) */
+  min-block-size: 44px;
 }
 
 .kernel-evidence-item__btn:hover,
@@ -3354,7 +3346,8 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 @media (max-width: 767px) {
   .kernel-audit-drawer__panel { inline-size: 100vw; }
   .kernel-modal__dialog { inline-size: 100%; }
-  .kernel-modal__iframe { block-size: 60vh; }
+  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
+  .kernel-modal__iframe { block-size: 60vh; block-size: 60dvh; }
 
   .kernel-audit-pagination__btn:not([aria-current="page"]):not(:disabled):not(.kernel-audit-pagination__btn--first):not(.kernel-audit-pagination__btn--last) {
     display: none;
@@ -3621,8 +3614,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 .kernel-scenario-card__category {
   font-size: var(--text-xs);
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
 }
 .kernel-scenario-card__title {
   margin: 0 0 var(--space-2);
@@ -3706,7 +3697,9 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 .kernel-modal__panel {
   position: relative;
   inline-size: min(640px, 100%);
+  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
   max-block-size: calc(100vh - var(--space-8));
+  max-block-size: calc(100dvh - var(--space-8));
   display: flex;
   flex-direction: column;
   background: var(--bg-surface);
@@ -4086,8 +4079,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   padding: var(--space-2) var(--space-3);
   font-size: var(--text-xs);
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   font-weight: var(--font-semibold);
   border-block-end: 1px solid var(--border-default);
 }

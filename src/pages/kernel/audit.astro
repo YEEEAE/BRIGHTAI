@@ -21,7 +21,7 @@ import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro
 import { getKernelUnit, getCrossLinks } from '../../data/kernel';
 import { getKernelSubPageJsonLd, getBreadcrumbLd, getFaqLd } from '../../data/schema-helpers';
 import { getKernelFaqJsonLd } from '../../data/kernel';
-import { KERNEL_SYSTEM_PROMPTS } from '../../data/kernel-system-prompts';
+// KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
 const unit = getKernelUnit('audit')!;
 const cross = getCrossLinks(unit);
@@ -341,7 +341,7 @@ const TOTAL_RECORDS = 12483;
       <h2 id="ai-assistant-h2" class="inner-section__title">جرّب بالذكاء الاصطناعي</h2>
       <p class="inner-section__lead inner-section__lead--centered">اسأل المدقق عن كيفية تحضير تقرير تدقيق لـ PDPL أو NCA أو SAMA أو ISO 42001.</p>
       <KernelAiAssistant
-        systemPrompt={KERNEL_SYSTEM_PROMPTS.audit}
+        promptId="audit"
         title="مدقق سجلات AI"
         subtitle="متخصص في تدقيق سجلات الذكاء الاصطناعي للجهات الرقابية السعودية."
         placeholder="مثال: كيف أجهّز تقرير تدقيق ربع سنوي لـ NCA ECC عن 348 تفاعل AI في البنك؟"
