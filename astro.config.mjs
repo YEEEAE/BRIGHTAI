@@ -125,8 +125,27 @@ export default defineConfig({
       // REPORTS-SEO-FOUNDATION requires the 404 page to be indexable, so we
       // explicitly inject it via `customPages`. The 500 page remains
       // excluded because it's a server-error fallback (not a real route).
+      //
+      // KERNEL-SEO-2026-07-14: With `@astrojs/node` adapter, Astro enters
+      // hybrid mode and the sitemap integration stops auto-discovering
+      // dynamic routes under /kernel/*. We add 10 explicit entries so all
+      // kernel sub-pages (chat, audit, approvals, stats, connectors,
+      // scenarios, policies, evidence, compliance, reports) end up in
+      // sitemap.xml. /kernel/ and /kernel/offline/ are auto-detected
+      // (the offline page is intentionally indexable — it's a real
+      // marketing page, not a service-worker fallback).
       customPages: [
         'https://brightai.site/404/',
+        'https://brightai.site/kernel/chat/',
+        'https://brightai.site/kernel/audit/',
+        'https://brightai.site/kernel/approvals/',
+        'https://brightai.site/kernel/stats/',
+        'https://brightai.site/kernel/connectors/',
+        'https://brightai.site/kernel/scenarios/',
+        'https://brightai.site/kernel/policies/',
+        'https://brightai.site/kernel/evidence/',
+        'https://brightai.site/kernel/compliance/',
+        'https://brightai.site/kernel/reports/',
       ],
       changefreq: 'weekly',
       priority: 0.7,

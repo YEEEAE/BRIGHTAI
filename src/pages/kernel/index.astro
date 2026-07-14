@@ -30,19 +30,11 @@ import KernelActivityItem from '../../components/kernel/KernelActivityItem.astro
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
-import { kernelNavItems, getCrossLinks } from '../../data/kernel';
-import { LOCAL_BUSINESS_BY_CITY } from '../../data/schema-helpers';
+import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
+import { kernelNavItems, getCrossLinks, getKernelUnit, getKernelFaqJsonLd } from '../../data/kernel';
+import { LOCAL_BUSINESS_BY_CITY, getBreadcrumbLd, getFaqLd } from '../../data/schema-helpers';
 
-const unit = {
-  title: 'BrightAI Kernel | حوكمة AI مركزية',
-  description: 'شغّل حوكمة الذكاء الاصطناعي من BrightAI Kernel: لوحة مركزية تجمع السياسات والموافقات والأدلة والرقابة. رؤية تنفيذية موحدة لفريقك في السعودية اليوم.',
-  canonical: 'https://brightai.site/kernel/',
-  h1: 'غرفة تشغيل حوكمة الذكاء الاصطناعي — راقب كل شي من مكان واحد',
-  hreflang: [
-    { lang: 'ar-SA', href: 'https://brightai.site/kernel/' },
-    { lang: 'x-default', href: 'https://brightai.site/kernel/' },
-  ],
-};
+const unit = getKernelUnit('index')!;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -159,6 +151,11 @@ const jsonLd = {
     LOCAL_BUSINESS_BY_CITY.khobar,
     LOCAL_BUSINESS_BY_CITY.mecca,
     LOCAL_BUSINESS_BY_CITY.madinah,
+    getBreadcrumbLd([
+      { name: 'الرئيسية', href: '/' },
+      { name: 'Kernel', href: 'https://brightai.site/kernel/' },
+    ]),
+    getFaqLd(unit.faq),
   ]
 };
 
@@ -572,4 +569,12 @@ const complianceRows = [
       <KernelLeadForm id="kernel-lead-form-index" page="/kernel/" />
     </div>
   </section>
+
+  {/* SEO content + FAQ — server-rendered for crawlers (2026-07-14) */}
+  <KernelSeoSection
+    id="kernel-seo-index"
+    heading="دليل حوكمة AI — السياق الكامل لـ BrightAI Kernel"
+    blocks={unit.seoBlocks}
+    faq={unit.faq}
+  />
 </KernelLayout>

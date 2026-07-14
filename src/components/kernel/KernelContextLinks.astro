@@ -1,16 +1,22 @@
 ---
 /**
  * KernelContextLinks — Cross-links section for Kernel pages.
- * Shows: back to index, solution link, docs link, contact CTA.
+ * Shows: back to index, solution link, docs link, blog link, contact CTA,
+ * and related kernel units.
  * Uses V2 design tokens. CSS-only, no JS.
+ *
+ * Phase 9 (2026-07-14): added blogPath + blogLabel for the related blog
+ * cross-link so every kernel page links to a relevant blog post.
  */
-import { kernelNavItems } from '../../data/kernel';
+import { kernelNavItems, type KernelUnit } from '../../data/kernel';
 
 interface Props {
   currentPath: string;
-  solutionPath?: string;
+  solutionPath?: string | null;
   solutionLabel?: string;
   docPath: string;
+  blogPath?: string;
+  blogLabel?: string;
   relatedSlugs?: string[];
 }
 
@@ -19,6 +25,8 @@ const {
   solutionPath,
   solutionLabel = 'الحل المقابل',
   docPath,
+  blogPath,
+  blogLabel = 'مقال مرتبط',
   relatedSlugs = [],
 } = Astro.props;
 ---
@@ -70,13 +78,14 @@ const {
     <a href="/kernel/">← العودة لفهرس Kernel</a>
     {solutionPath && <a href={solutionPath}>{solutionLabel} ←</a>}
     <a href={docPath}>التوثيق التقني ←</a>
+    {blogPath && <a href={blogPath}>{blogLabel} ←</a>}
     <a href="/contact/">احجز استشارة ←</a>
   </div>
 
   {relatedSlugs.length > 0 && (
     <div class="k-cross__related">
       {relatedSlugs.map(slug => {
-        const related = kernelNavItems.find(u => u.slug === slug);
+        const related = kernelNavItems.find((u: KernelUnit) => u.slug === slug);
         return related ? <a href={related.path}><span>{related.label}</span></a> : null;
       })}
     </div>

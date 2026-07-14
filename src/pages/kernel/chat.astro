@@ -13,14 +13,25 @@
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
-import { getKernelUnit } from '../../data/kernel';
-import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
+import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelSubPageJsonLd, getBreadcrumbLd } from '../../data/schema-helpers';
 import KernelContactCta from '../../components/kernel/KernelContactCta.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 
 const unit = getKernelUnit('chat')!;
+const cross = getCrossLinks(unit);
 
-const jsonLd = getKernelSubPageJsonLd(unit);
+const jsonLd = [
+  ...getKernelSubPageJsonLd(unit),
+  getBreadcrumbLd([
+    { name: 'الرئيسية', href: '/' },
+    { name: 'Kernel', href: '/kernel/' },
+    { name: unit.label, href: unit.canonical },
+  ]),
+  getKernelFaqJsonLd(unit),
+];
 
 const iconChat = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>';
 const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
@@ -608,4 +619,22 @@ const policyBanner = {
       <KernelLeadForm id="kernel-lead-form-chat" page="/kernel/chat/" />
     </div>
   </section>
+
+  {/* SEO content + FAQ — server-rendered for crawlers (2026-07-14) */}
+  <KernelSeoSection
+    id="kernel-seo-chat"
+    heading="دليل حوكمة AI — سياق إضافي عن وحدة المحادثة"
+    blocks={unit.seoBlocks}
+    faq={unit.faq}
+  />
+
+  {/* Cross-links: kernel ↔ kernel + solution + doc + blog */}
+  <KernelContextLinks
+    currentPath={unit.path}
+    solutionPath={cross.solutionPath}
+    docPath={cross.docPath ?? ''}
+    blogPath={cross.blogPath}
+    blogLabel={unit.blogLabel}
+    relatedSlugs={unit.relatedSlugs}
+  />
 </KernelLayout>

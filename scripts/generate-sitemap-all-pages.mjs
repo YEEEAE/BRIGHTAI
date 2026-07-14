@@ -36,8 +36,12 @@ const IGNORED_SCAN_DIRS = new Set([
   "coverage",
   "dist",
   "build",
-  "reports",
   "tmp",
+  // KERNEL-SEO-2026-07-14: removed `"reports"` from this list. It was
+  // matching the kernel/reports/ subdirectory (slug = "reports") and
+  // silently excluding /kernel/reports/ from the sitemap. Top-level
+  // `reports/` (project reports dir) is excluded by the relPath check
+  // below (`if (relPath.startsWith("reports/"))`).
 ]);
 
 function toIsoDate(date) {
@@ -131,19 +135,39 @@ function groupRelPath(relPath) {
   }
 
   // Kernel
+  // Supports BOTH legacy single-file format (`kernel/chat.html`) and the
+  // current `build.format: 'directory'` output (`kernel/chat/index.html`).
+  // After REPORTS-SEO-FOUNDATION (2026-07-07) + @astrojs/node adapter
+  // (KERNEL-AI-2026-07-14), the dist contains the directory form. We accept
+  // both so the customPages list (404 + 10 kernel sub-pages) stays in sync
+  // with the actual built HTML.
+  //
+  // `normalizeRelPath` is a pass-through (lowercases, NFC-normalises), so
+  // `dist/kernel/chat/index.html` is fed in as `kernel/chat/index.html`.
   if (normalized.startsWith("kernel/")) {
     if (
       normalized === "kernel/index.html" ||
+      normalized === "kernel/index/index.html" ||
       normalized === "kernel/chat.html" ||
+      normalized === "kernel/chat/index.html" ||
       normalized === "kernel/audit.html" ||
+      normalized === "kernel/audit/index.html" ||
       normalized === "kernel/approvals.html" ||
+      normalized === "kernel/approvals/index.html" ||
       normalized === "kernel/stats.html" ||
+      normalized === "kernel/stats/index.html" ||
       normalized === "kernel/compliance.html" ||
+      normalized === "kernel/compliance/index.html" ||
       normalized === "kernel/policies.html" ||
+      normalized === "kernel/policies/index.html" ||
       normalized === "kernel/connectors.html" ||
+      normalized === "kernel/connectors/index.html" ||
       normalized === "kernel/scenarios.html" ||
+      normalized === "kernel/scenarios/index.html" ||
       normalized === "kernel/reports.html" ||
-      normalized === "kernel/evidence.html"
+      normalized === "kernel/reports/index.html" ||
+      normalized === "kernel/evidence.html" ||
+      normalized === "kernel/evidence/index.html"
     ) {
       return "kernel";
     }

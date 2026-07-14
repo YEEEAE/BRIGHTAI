@@ -15,12 +15,23 @@ import KernelMetricCard from '../../components/kernel/KernelMetricCard.astro';
 import KernelCard from '../../components/kernel/KernelCard.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
-import { getKernelUnit } from '../../data/kernel';
-import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
+import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelSubPageJsonLd, getBreadcrumbLd } from '../../data/schema-helpers';
 
 const unit = getKernelUnit('connectors')!;
+const cross = getCrossLinks(unit);
 
-const jsonLd = getKernelSubPageJsonLd(unit);
+const jsonLd = [
+  ...getKernelSubPageJsonLd(unit),
+  getBreadcrumbLd([
+    { name: 'الرئيسية', href: '/' },
+    { name: 'Kernel', href: '/kernel/' },
+    { name: unit.label, href: unit.canonical },
+  ]),
+  getKernelFaqJsonLd(unit),
+];
 
 // Connectors: 8 enterprise connectors (ERP, CRM, HIS, LMS, etc.)
 const connectors = [
@@ -463,4 +474,22 @@ const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
       <KernelLeadForm id="kernel-lead-form-connectors" page="/kernel/connectors/" />
     </div>
   </section>
+
+  {/* SEO content + FAQ — server-rendered for crawlers (2026-07-14) */}
+  <KernelSeoSection
+    id="kernel-seo-connectors"
+    heading="دليل حوكمة AI — سياق إضافي عن وحدة الموصلات"
+    blocks={unit.seoBlocks}
+    faq={unit.faq}
+  />
+
+  {/* Cross-links: kernel ↔ kernel + solution + doc + blog */}
+  <KernelContextLinks
+    currentPath={unit.path}
+    solutionPath={cross.solutionPath}
+    docPath={cross.docPath ?? ''}
+    blogPath={cross.blogPath}
+    blogLabel={unit.blogLabel}
+    relatedSlugs={unit.relatedSlugs}
+  />
 </KernelLayout>

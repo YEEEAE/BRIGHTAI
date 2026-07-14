@@ -1,23 +1,42 @@
 ---
 /**
  * KernelSeoSection — SEO content section for Kernel pages.
- * Renders h2 + paragraphs with internal cross-links.
- * Takes a slot for custom content or an `items` array for structured content.
+ * Renders h2 + 2-3 long-form blocks + 3-5 FAQ items as <details>.
+ * Server-rendered (not JS-injected) so crawlers can index it.
  * Uses V2 design tokens. CSS-only, no JS.
+ *
+ * Phase 9 (2026-07-14): added structured faq prop, bullets prop, and
+ * native <details>/<summary> FAQ rendering with FAQPage schema hook.
  */
-interface SeoItem {
-  heading?: string;
-  text: string;
+import type { FaqItem } from '../../data/schema-helpers';
+
+interface SeoBlock {
+  heading: string;
+  paragraphs: string[];
+  bullets?: string[];
 }
 
 interface Props {
   id?: string;
   heading?: string;
-  items?: SeoItem[];
+  blocks?: SeoBlock[];
+  faq?: FaqItem[];
+  /** When provided, sets aria-labelledby on the FAQ section. */
+  faqHeading?: string;
 }
 
-const { id = 'kernel-seo-content', heading, items = [] } = Astro.props;
-const headingId = `${id}-heading`;
+const {
+  id = 'kernel-seo-content',
+  heading = 'محتوى الحوكمة (للأرشفة وفهرسة محركات البحث)',
+  blocks = [],
+  faq = [],
+  faqHeading = 'الأسئلة الشائعة',
+} = Astro.props;
+
+const sectionId = id;
+const headingId = `${sectionId}-heading`;
+const faqId = `${sectionId}-faq`;
+const faqHeadingId = `${sectionId}-faq-heading`;
 ---
 
 <style>
@@ -28,13 +47,13 @@ const headingId = `${id}-heading`;
   }
   .k-seo h2 {
     font-size: var(--text-lg);
-    font-weight: var(--weight-bold);
+    font-weight: var(--font-bold);
     color: var(--text);
     margin-bottom: var(--space-4);
   }
   .k-seo h3 {
     font-size: 1rem;
-    font-weight: var(--weight-bold);
+    font-weight: var(--font-bold);
     color: var(--text);
     margin: 1.5rem 0 0.5rem;
   }
@@ -54,15 +73,102 @@ const headingId = `${id}-heading`;
   .k-seo a:focus-visible {
     color: var(--brand-hover);
   }
+  .k-seo ul.k-seo__bullets {
+    margin: 0.5rem 0 1rem;
+    padding-inline-start: 1.5rem;
+    list-style: disc;
+  }
+  .k-seo ul.k-seo__bullets li {
+    font-size: var(--text-sm);
+    color: var(--text-soft);
+    line-height: var(--leading-relaxed);
+    margin-bottom: 0.25rem;
+  }
+
+  /* FAQ accordion */
+  .k-faq {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+  .k-faq h2 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--text);
+    margin-bottom: var(--space-4);
+  }
+  .k-faq__item {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-2);
+    background: var(--bg-surface);
+  }
+  .k-faq__summary {
+    cursor: pointer;
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--text);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    min-height: 44px;
+  }
+  .k-faq__summary::-webkit-details-marker { display: none; }
+  .k-faq__summary::after {
+    content: '+';
+    font-size: 1.25rem;
+    color: var(--brand);
+    transition: transform var(--duration-fast) var(--ease-out);
+    flex-shrink: 0;
+  }
+  .k-faq__item[open] .k-faq__summary::after {
+    content: '−';
+  }
+  .k-faq__body {
+    padding: 0 var(--space-4) var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--text-soft);
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .k-faq__summary::after { transition: none; }
+  }
 </style>
 
 <section class="k-seo" aria-labelledby={heading ? headingId : undefined}>
   {heading && <h2 id={headingId}>{heading}</h2>}
-  {items.map(item => (
-    <div>
-      {item.heading && <h3>{item.heading}</h3>}
-      <p set:html={item.text} />
-    </div>
+
+  {blocks.map(block => (
+    <article class="k-seo__block">
+      <h3>{block.heading}</h3>
+      {block.paragraphs.map(p => <p>{p}</p>)}
+      {block.bullets && block.bullets.length > 0 && (
+        <ul class="k-seo__bullets">
+          {block.bullets.map(b => <li>{b}</li>)}
+        </ul>
+      )}
+    </article>
   ))}
+
+  {faq.length > 0 && (
+    <section class="k-faq" id={faqId} aria-labelledby={faqHeadingId}>
+      <h2 id={faqHeadingId}>{faqHeading}</h2>
+      {faq.map((item, i) => (
+        <details class="k-faq__item" name={faqId}>
+          <summary class="k-faq__summary">
+            <span>{item.q}</span>
+          </summary>
+          <div class="k-faq__body">
+            <p>{item.a}</p>
+          </div>
+        </details>
+      ))}
+    </section>
+  )}
+
   <slot />
 </section>
