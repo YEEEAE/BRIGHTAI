@@ -6,7 +6,7 @@ services:
   - type: web
     runtime: static
     name: brightai-site
-    buildCommand: npm install --include=dev && npm run build
+    buildCommand: pnpm install && pnpm run build
     staticPublishPath: dist
     envVars:
       - key: NODE_VERSION
