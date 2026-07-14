@@ -43,8 +43,12 @@ const HTML_IGNORE_DIRS = new Set([
   // REPORTS-SEO-FOUNDATION (2026-07-07): ignore internal Lighthouse /
   // performance reports — they are not part of the public SEO surface,
   // they are diagnostic HTML and never get crawled.
+  // REPORTS-SEO-HEALTH-2026-07-14: include "report" (singular) which holds
+  // the actual perf/*.report.html files; "reports" (plural) was a typo
+  // and never matched anything. Both are QA artifacts, not production.
   "_reports",
   "qa",
+  "report",
   "reports",
   ".hermes",
   ".claude",

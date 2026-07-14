@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-14 20:11 +03:00
+last_updated: 2026-07-14 21:45 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.11
+version: 2.7.12
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -184,6 +184,22 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-14 — SEO-GATES-FIX-2026-07-14: Pass all 3 SEO gates (seo:all + seo:link-graph + seo:word-count) — Verified
+
+- **Files**: 12 ملف. **معدّل**: `src/content/blog/{ai-banking-saudi,ai-hr-recruitment-saudi,ai-implementation-cost-saudi,ai-real-estate-saudi,ai-vs-machine-learning-explained,arabic-chatbot-customer-service-saudi,big-data-analytics-saudi-companies,choose-ai-company-riyadh,ndmo-data-governance-saudi}.md` (إضافة section جديد قبل الخلاصة في كل واحد)، `scripts/seo-health-check.mjs` (إضافة `"report"` لـ HTML_IGNORE_DIRS لإصلاح false-positive في report/perf/*.report.html)، `public/llms.txt` (131→184 سطر: 6 مدن + 4 قطاعات + 5 hubs + 8 tools + 4 legal + 12 pillar blog)، `public/llms-full.txt` (215→328 سطر: blog cluster map كامل لـ 57 مقال + 17 docs). **جديد**: `META-CHANGES.csv` (12 row, 8 أعمدة: page,url,field,before,after,reason,status,date).
+- **What**: 4 مراحل. (1) **مدّ 9 مقالات** تحت حد 1200 كلمة: 921→1214، 914→1225، 985→1321، 923→1261، 1060→1369، 936→1341، 915→1297، 1084→1402، 920→1361. كل section جديد محتوى سعودي طبيعي (PDPL/NCA/SDAIA context + KPIs/roadmap/matrix عملي) بدون حشو. (2) **إصلاح typo في seo-health-check.mjs**: كان يستثني `reports/` (جمع) لكن الملفات الفعلية في `report/` (مفرد) — أضفت `report` للـ HTML_IGNORE_DIRS مع comment توضيحي. (3) **توسيع LLMO files**: 6 مدن (Riyadh/Khobar/Jeddah/Mecca/Dammam/Madinah)، 4 قطاعات (Banking/Healthcare/Government/Manufacturing)، 5 hubs، 8 tools (calculator/roi، partners، events، customers، referral، sales-deck، assessment، thank-you)، 4 legal pages إضافية (privacy-cookies، cookie-policy، etc)، blog cluster map كامل (PDPL/NCA/Sector/Governance/SDAIA/Vision 2030). (4) **META-CHANGES.csv** كـ audit trail.
+- **Why**: الـ brief الأصلي كان مبني على snapshot قديم (125 صفحة، 2026-06-29). الحالة الفعلية كانت 190 صفحة مع schema/hreflang/llms كاملين. البوابات الـ 3 كانت تفشل بسبب: 9 مدونات قصيرة + 3 false-positives في report/perf/. المراحل 1-3 تحل الفشل الحقيقي + تحسّن التغطية في llms.txt/llms-full.txt. النتيجة: البوابات الـ 3 تمر + تغطية LLMO شاملة لـ 190 صفحة (مو فقط top-level).
+- **Verification**: `npm run seo:word-count` → 57/57 ✅. `npm run seo:all` → 0 issues (5 stages: check + legacy + content 4/4 subtests + schema + gate) ✅. `npm run seo:link-graph` → 0 broken across 381 files ✅. `npm run build` → 190 صفحة، 0 أخطاء، 166 sitemap URLs، 6/6 hreflang، 5/5 service ✅. `npm run verify:all` → exit 0 ✅. كل التعديلات على المحتوى تلتزم rule 2.1 (لا تعديل على النص المنشور، فقط إضافة section جديد قبل الخلاصة).
+- **Report**: META-CHANGES.csv (12 row)
+- **Commit**: uncommitted
+- **Status**: verified (build + verify:all + 3 SEO gates).
+- **Brain updates**: Section 1 (version bump 2.7.11→2.7.12, last_updated 21:45), Section 2 (this entry).
+- **Decisions (2 new)**:
+  - **DEC-SEO-GATES-2026-07-14-001**: المستخدم اختار "focused" scope (3 مراحل + META-CHANGES) بدلاً من "extended" (مدن جديدة) أو "full" (إعادة تدقيق meta شامل). السبب: الحالة الفعلية متقدمة جداً وما تحتاج إعادة تدقيق كامل — فقط معالجة الفشل الحقيقي.
+  - **DEC-SEO-GATES-2026-07-14-002**: توسيع LLMO files (وليس إنشاؤها من الصفر). السبب: llms.txt/llms-full.txt موجودة من REPORTS-SEO-FOUNDATION 2026-07-07، تعديلها يبقي التاريخ + يضيف التغطية الشاملة. إعادة الإنشاء من الصفر تخسر anchoring AI crawl URLs الموجودة.
+- **Follow-up (مؤجل)**: (1) إعادة تدقيق meta شامل لكل 190 صفحة (مستخدم رفضها في هالجلسة — مو أولوية). (2) إضافة مدينتين إضافيتين (مثلاً أبها/تبوك) لو طلب المستخدم. (3) ربط META-CHANGES.csv بـ PR تلقائي (لو تم إنشاء PR). (4) تشغيل Lighthouse mobile على عينة بعد التعديلات للتأكد من عدم regression.
+- **Risks**: (1) performance budget لا يزال FAIL على raw HTML/CSS (script limitation، ليس regression فعلي). (2) sitemap URLs 166 لكن 190 HTML — الفجوة 24 URL لصفحات EN/customer-specific/apidocs/redirect. (3) الكلمات الإضافية في 9 مدونات قد تحتاج مراجعة بشرية للتأكد من عدم حشو (ثقتي 90% بناءً على هيكلة المحتوى).
 
 ### 2026-07-14 — KERNEL-SEO-2026-07-14: SEO content + FAQ + cross-links to 11 /kernel/* pages — Verified
 
