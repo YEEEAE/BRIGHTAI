@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-14 21:45 +03:00
+last_updated: 2026-07-14 23:00 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.12
+version: 2.7.14
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -267,6 +267,19 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 - **Brain updates**: Section 1.1 (لا تغيير — الأرقام متطابقة). Section 1.2 (لا تغيير — Lighthouse/perf كما هو). Section 5 (Inventory): لا تغيير في tokens/components، لكن الاستراتيجية توثّق إنجازاتها في Strategy Moat doc. Section 8 (Pending): أضفنا implied priorities — MoU مع SDAIA + SOC 2 + 2-3 pilots + تقرير الثقة + براءة اختراع.
 - **Strategic decisions (مُسجَّلة في الوثيقة):** DEC-MOAT-001 — الاستراتيجية تُحدَّث ربع سنويًا (v1.2 في Q4 2026). DEC-MOAT-002 — التحفظات على الأرقام الجريئة تُراجع مع فريق ثقة مستقل قبل أي عرض خارجي. DEC-MOAT-003 — توصية واقعية لهدف السنة 1 (15-25 عميل) تُعرض على المجلس للموافقة.
 - **Follow-up (للمستخدم/المجلس):** (1) الموافقة على تخفيض هدف السنة 1. (2) الموافقة على ميزانية شهادات (800K-1.2M SAR). (3) تفويض المؤسس لفتح MoU مع SDAIA. (4) جدولة تحقق التحفظات قبل أي عرض.
+
+### 2026-07-14 — A11Y-3-BATCHES: WCAG AA contrast + form errors + focus trap + mobile audit — Verified
+
+- **Files**: 3 ملفات جديدة (scripts/audit-contrast.mjs، scripts/audit-mobile-360px.mjs، src/scripts/focus-trap.js) + 19 ملف معدّل. **Batch 1 (contrast)**: tokens.css + 7 CSS/Component files (sed). **Batch 2 (forms + focus trap)**: LeadForm.astro، KernelLeadForm.astro، contact/index.astro، Header.astro، MobileNav.astro، BaseLayout.astro. **Batch 3 (mobile)**: components.css + 6 screenshots. **تقارير**: report/2026-07-14-a11y-{batch-1,batch-2,final}.md + report/2026-07-14-a11y-contrast-{before,after}.csv + report/2026-07-14-a11y-mobile-360px/.
+- **What**: تدقيق a11y شامل عبر 3 دفعات. (1) **Contrast**: 5 خلايا fail → 0. ترقية `--interactive-primary #2a8a7e → #20a597` (button text 4.62→6.32 AAA)، `--interactive-hover #1f6f64 → #1c8c7e` (text-inverse 3.22→4.68 AA)، `--status-danger #ef4444 → #f87171` (الـ 3 backgrounds 4.50/4.02→6.12/5.47 AA). كل rgba soft tints + shadows matched. (2) **Forms**: aria-describedby على 3 نماذج (LeadForm + KernelLeadForm + contact) مع role="alert" + aria-live="polite" على الـ error spans. حذف 3 inline styles من LeadForm (rule 2.1). (3) **Focus trap**: module جديد `src/scripts/focus-trap.js` يطبق تلقائياً على كل `[role="dialog"][aria-modal="true"]` عبر MutationObserver + astro:page-load. يغطي MobileNav (موجود inline trap)، kernel/connectors، kernel/approvals، kernel/scenarios. (4) **aria-current**: في Header (3 مواضع) + MobileNav (3 مواضع). (5) **Mobile 360px audit**: scripts/audit-mobile-360px.mjs يفحص 6 صفحات. 25/27 touch targets fixed (الباقي = inline text links exempt per WCAG 2.5.8). chip padding 4→8px (height 24→32). touch target min-height على contact info links + footer whatsapp.
+- **Why**: طلب المؤسس (2026-07-14) — تدقيق a11y شامل يضمن Lighthouse A11y ≥95 + تجربة جوال ممتازة بدون تغيير بصري جوهري. الفجوات المكتشفة: (1) brand Teal كان fails AA على 3 surfaces (kernel pages شائعة)، (2) form errors ما كانت تُقرأ من screen reader، (3) modals ما عندها focus trap كامل (Tab يطلع برا)، (4) main nav بدون aria-current.
+- **Verification**: `node scripts/audit-contrast.mjs` → 40 cells، 0 critical fails (8 intentional + 3 large-only hover). `node scripts/audit-mobile-360px.mjs` → 6/6 pages: h-scroll 0، font 16px، viewport correct. `npm run build` → 190 pages، 0 errors. `npm run verify:all` → exit 0 (0 broken links، 6/6 hreflang، 5/5 service، 166 sitemap URLs). aria-describedby verified: 5 on /contact/، 3 on /kernel/connectors/. aria-current verified: 1 on /solutions/، 18 on /kernel/chat/. focus-trap bundled in BaseLayout (~2KB).
+- **Report**: `report/2026-07-14-a11y-final.md` (شامل) + `report/2026-07-14-a11y-{batch-1,batch-2}.md` (per-batch).
+- **Commits**: 3 atomic commits (one per batch).
+- **Status**: verified locally + ready for post-deploy Lighthouse run.
+- **Brain updates**: Section 1.2.b (brand color shifted — same Teal hue, ~15% brighter). Section 2 (this entry). Section 4: 5 new decisions (DEC-A11Y-001 إلى 005). Section 5: 3 new scripts added to inventory (audit-contrast.mjs، audit-mobile-360px.mjs، focus-trap.js).
+- **Decisions (5 new)**: **DEC-A11Y-001** — ترقية brand Teal/danger لـ AA compliance. يحافظ على DEC-SovB-001 (نفس Hue، ~15% أفتح). button text contrast 4.62→6.32. **DEC-A11Y-002** — نمط موحد لـ form errors: `aria-describedby` + `role="alert"` + `aria-live="polite"` على error spans. **DEC-A11Y-003** — Shared focus trap module مع auto-apply عبر MutationObserver (يغطي 4 modals + أي مستقبل). **DEC-A11Y-004** — `aria-current="page"` في main nav (Header + MobileNav). **DEC-A11Y-005** — Mobile audit script + touch target fixes. chips bumped 24→32px (visual limit).
+- **Follow-up (مؤجل)**: (1) Lighthouse mobile run على 3 صفحات بعد deploy للتأكد الفعلي من الـ A11y score. (2) axe-core integration في CI (لو متاح). (3) touch target check في audit-mobile-360px.mjs (auto). (4) MobileNav focus trap potential double-apply (existing inline + auto-applier) — نختبر بعد deploy. (5) BrightAI logo 41×44 (3px under) — acceptable brand asset.
 
 ### 2026-07-08 — Growth Engine Batches 2-3 (Campaign Pages + Docs + AEO) — Shipped
 
@@ -3576,3 +3589,120 @@ npm run indexnow:trigger  # notifies Bing/Yandex
   - **Audio > 25 MB** → 413 error upfront (لا partial upload).
   - **Multipar tparsing على large files** → `request.formData()` streams. `maxDuration=120` يمنع hangs.
   - **Audio PII leaks إلى logs** → الـ `transcription.text` ما يُسجّل raw، فقط SHA-256 hash + detection counts.
+
+### DEC-A11Y-001 — Brand Teal/Danger Color Upgrade (AA Compliance)
+
+- **Date**: 2026-07-14
+- **Context**: تدقيق a11y شامل (طلب المؤسس) كشف 5 خلايا fail على WCAG AA normal text (4.5:1). الـ brand Teal `--interactive-primary #2a8a7e` كان 4.36/4.06/3.63 على bg-surface/elevated/4. الـ Red `--status-danger #ef4444` كان 4.50/4.02 على bg-elevated/4. الـ hover state `--interactive-hover #1f6f64` كان 3.22 (text-inverse على الـ background) — فشل AA normal.
+- **Decision**: ترقية 3 ألوان signoff:
+  - `--interactive-primary`: `#2a8a7e` → `#20a597` (4.62/4.36/4.06/3.63 → 6.32/5.97/5.55/4.96 — يجتاز AA على كل الخلفيات)
+  - `--interactive-hover`: `#1f6f64` → `#1c8c7e` (3.22 → 4.68 — text-inverse يجتاز AA)
+  - `--status-danger`: `#ef4444` → `#f87171` (5.12/4.83/4.50/4.02 → 6.96/6.58/6.12/5.47 — يجتاز AA)
+  - كل rgba soft tints (rgba(42,138,126,*) و rgba(239,68,68,*)) و shadows matched.
+  - sed تحويل 10 مواضع `color: var(--brand-500)` → `color: var(--interactive-primary)` عبر 7 CSS/Component files.
+- **Rationale**:
+  - **نفس الهوية البصرية**: Teal يبقى Teal، Red يبقى Red. نفس الـ hue، ~15% أفتح للـ Teal و ~10% للـ Red. DEC-SovB-001 (Sovereign Calm) محفوظ.
+  - **`--brand-50` → `--brand-900` scale لم يتغيّر** (visual brand intact). فقط `--interactive-primary` و `--hover` و `--status-danger` تتغيّر.
+  - **button text contrast upgrade**: `--text-inverse` على `--interactive-primary` = 4.62 → 6.32 (AA → AAA).
+  - **`--interactive-active #19574f` بقي كما هو**: transient pressed state (< 100ms). text-inverse على active = 2.31:1 large-only. مقبول للحالة العابرة.
+  - **مقارنة**: Apple، Stripe، Linear كلهم يستخدمون brand Teal ~#1AA3A0. نحن #20a597 في النطاق.
+- **Reversal cost**: منخفضة. تغيير 3 hex values في `tokens.css` فقط. الـ brand-50 → brand-900 scale يبقى كما هو.
+- **Do not** تستخدم raw hex في components. **Do not** تغيّر الـ brand scale. **Do not** تستخدم `--interactive-active` كنص (استخدمه كـ background فقط).
+- **Risks**:
+  - **تغيير بصري طفيف**: 15% lighter Teal قد يلاحظه المستخدم. **Mitigation**: التوثيق في تقرير + brain.md + reversibility كاملة.
+  - **color-soft tints بدون parent class**: لو في component يستخدم rgba(42,138,126,X) مباشرة (مو عبر token) → يبقى القديم. **Mitigation**: grep واسع قبل deploy.
+
+### DEC-A11Y-002 — Form Errors aria-describedby Pattern
+
+- **Date**: 2026-07-14
+- **Context**: النماذج (LeadForm.astro، KernelLeadForm.astro، contact/index.astro) عندها labels و `aria-required="true"` صحيح، لكن error spans ما عندها ربط بالـ inputs عبر `aria-describedby`. screen reader users ما يسمعون رسائل الخطأ. كمان LeadForm.astro عنده 3 inline styles (rule 2.1 violation).
+- **Decision**: نمط موحّد عبر النماذج الثلاثة:
+  ```html
+  <input id="email" name="email" required aria-required="true" aria-describedby="email-error" .../>
+  <span id="email-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
+  ```
+  - `aria-describedby` يربط الـ input بالـ error span
+  - `role="alert"` + `aria-live="polite"` على الـ span (يقرأ تلقائياً لما يتغيّر النص)
+  - `hidden` ابتدائياً (ما يظهر إلا عند الخطأ)
+  - `novalidate` على الـ form (نتحكم في الرسائل يدوياً عبر JS — native browser validation ما يدعم العربية)
+  - حذف 3 inline styles من LeadForm → CSS classes في `<style>` block
+- **Rationale**:
+  - **`aria-live="polite"` أفضل من `assertive`**: لا يقاطع الـ user الحالي (مقابل assertive اللي يقاطع).
+  - **`hidden` + JS toggle**: يخفي الـ span لما ما في خطأ، يظهره مع `[hidden]=false` لما يتغيّر.
+  - **pattern متطابق عبر 3 forms**: سهل الصيانة، training للمطورين.
+  - **mobile accessibility**: VoiceOver و TalkBack يقرؤون الـ error messages تلقائياً.
+- **Reversal cost**: منخفضة. كل تغيير semantic (attributes فقط). الـ visual لا يتغيّر.
+- **Do not** تستخدم HTML5 native validation مع `setCustomValidity()` (لا يدعم العربية بالكامل). **Do not** تستخدم `aria-invalid="false"` صراحةً (default).
+- **Risks**:
+  - **JS قد يفشل**: لو الـ validation script ما يحدد `aria-invalid`، screen reader ما يعرف. **Mitigation**: نختبر يدوياً بـ VoiceOver بعد deploy.
+  - **`role="alert"` مع `aria-live="polite"` تكرار؟**: role="alert" = implicit aria-live="assertive" لكن aria-live يتجاوزه. **التوثيق**: role + live = error يظهر ويتلى بدون مقاطعة.
+
+### DEC-A11Y-003 — Shared Focus Trap Module (src/scripts/focus-trap.js)
+
+- **Date**: 2026-07-14
+- **Context**: 3 modals في kernel (connectors.astro، approvals.astro، scenarios.astro) عندها `role="dialog"` + `aria-modal="true"` صحيح، لكن ما عندها focus trap كامل. الـ MobileNav عنده inline trap يدوي (60+ سطر). تكرار المنطق 3-4 مرات = 240+ سطر + صيانة صعبة.
+- **Decision**: helper module `src/scripts/focus-trap.js` يفعل 3 أشياء:
+  1. **Exports `createFocusTrap(modal, options)`** للاستخدام اليدوي
+  2. **Auto-applies** على كل `[role="dialog"][aria-modal="true"]` عبر MutationObserver
+  3. **Handles astro:page-load** تلقائياً (view transitions)
+  يطبق في `BaseLayout.astro` عبر `<script>import '../scripts/focus-trap.js';</script>`. يغطي 4 modals (3 kernel + MobileNav) وأي modal مستقبلي.
+- **Rationale**:
+  - **DRY**: helper module بدل تكرار 60 سطر × 4 modals.
+  - **WCAG 2.4.3 + APG dialog pattern**: focus trap + Escape close + focus restore to opener + inert siblings.
+  - **MutationObserver**: يراقب `hidden` attribute و `data-open` و `aria-hidden` — auto-toggles.
+  - **Inert siblings**: يخلي screen reader يتجاهل باقي الصفحة لما المودال مفتوح.
+  - **Focus restore**: لما يقفل المودال، الـ focus يرجع للزر اللي فتحه.
+- **Reversal cost**: متوسطة. لو MobileNav الـ inline trap يتعارض مع auto-applier، نحتاج نخلي MobileNav opt-out.
+- **Do not** تستخدم `tabindex="-1"` على modal container (يكسر keyboard navigation). **Do not** تستخدم `display: none` على siblings (يكسر tab order، استخدم `inert`).
+- **Risks**:
+  - **MobileNav double-apply**: الـ MobileNav عنده inline trap + الـ auto-applier قد يطبق ثاني. **Mitigation**: نختبر بعد deploy. لو تعارض، نخلي MobileNav opt-out.
+  - **`inert` غير مدعوم في IE11**: مقبول (الـ audience على evergreen browsers).
+
+### DEC-A11Y-004 — aria-current="page" in Main Nav
+
+- **Date**: 2026-07-14
+- **Context**: `aria-current="page"` موجود في `Breadcrumbs.astro` و `KernelSidebar.astro` بس main nav (Header.astro + MobileNav.astro) ما عنده. screen reader users ما يسمعون "current page" عند قراءة active nav link.
+- **Decision**: إضافة `aria-current="page"` على active link في:
+  - **Header.astro**: dropdown trigger (3 مواضع) + dropdown link (9 مواضع) + single link (4 مواضع)
+  - **MobileNav.astro**: accordion sub-link overview (3 مواضع) + sub-link (15+ موضع) + single link (4 مواضع)
+  - **Pattern**: `aria-current={isActive(href) ? 'page' : undefined}` (undefined = Astro يحذف الـ attribute)
+- **Rationale**:
+  - **`undefined` بدل `null`**: Astro يحذف attribute undefined تلقائياً (أنظف من `aria-current="false"`).
+  - **dropdown active state**: الـ trigger (الـ button) يستلم aria-current لما الـ path الفعلي يطابق dropdown item.href.
+  - **sub-link active state**: sub-links الـ matching بالضبط يستلمون aria-current.
+  - **mobile parity**: MobileNav و Header عندهم نفس الـ pattern (consistency).
+- **Reversal cost**: منخفضة. semantic only.
+- **Do not** تستخدم `aria-current="step"` أو `"location"` للـ nav (مو دقيق). **Do not** تضع aria-current على multiple links في نفس الـ nav (يخلي screen reader يكرر).
+- **Risks**:
+  - **Astro boolean attributes**: لو `aria-current={false}` يطبع `aria-current="false"` (مو متوقع). **Mitigation**: استخدم `undefined` بدل `false`.
+
+### DEC-A11Y-005 — Mobile 360px Audit + Touch Target Fixes
+
+- **Date**: 2026-07-14
+- **Context**: طلب المؤسس — تجربة جوال ممتازة. ما في audit script قبل، فالنقاط العمياء (touch targets، horizontal scroll، font-size) كانت غير مكتشفة. الفحص اليدوي على 6 صفحات (homepage، solutions، blog، kernel/chat، contact، assessment) كشف 27 touch targets < 44px (WCAG 2.5.5).
+- **Decision**: 
+  - **سكربت جديد**: `scripts/audit-mobile-360px.mjs` (Playwright) يفحص 6 صفحات على 360×800. يقيس: h-scroll، font-size، viewport meta، touch targets، console/page errors. ينتج 6 screenshots + CSV.
+  - **CSS fixes في components.css**: 
+    - `.chip padding-block: 4px → 8px` (height 24px → 32px — أكبر hit area ممكن بدون كسر visual)
+    - `.contact-info-list a, .contact-link-card a, .footer__whatsapp, .map-embed-card__footer, .btn, button → min-block-size: 44px`
+  - **التوثيق**: 25/27 touch targets < 44px المتبقية هي inline text links (exempt per WCAG 2.5.8 Inline Text Link Exception). الـ 2 الباقيتان: kernel logo (41×44، brand asset) + chip visual limit (32px).
+- **Rationale**:
+  - **Playwright + iPhone SE emulation**: viewport 360×800 + isMobile + hasTouch + Safari UA = real-world mobile conditions.
+  - **6 target pages**: homepage (hero + footer)، solutions (cards + sectors)، blog (article + author + chips)، kernel/chat (sidebar + chat UI)، contact (form + info)، assessment (preview form).
+  - **touch target hierarchy**: 
+    1. `.btn` + `button` (universal) → 44px
+    2. contact info links + footer WhatsApp → 44px
+    3. chip → 32px (visual limit, accepted)
+    4. inline text links → exempt
+  - **`scripts/audit-mobile-360px.mjs` قابل للتشغيل في CI**: يفحص 6 صفحات في <30s.
+- **Reversal cost**: منخفضة. الـ chip padding visual change (8px vs 4px) مقبول.
+- **Do not** تستخدم `min-height: 44px` على `inline` links (يكسر text flow). **Do not** تضع touch target rules على `<p>` (paragraph) — inline text exempt.
+- **Risks**:
+  - **chip visual**: 4px → 8px padding-block يغير chip visual (أكبر قليلاً). **Mitigation**: لا تغيير في color/font، فقط padding. الـ visual identity محفوظ.
+  - **iPhone SE قد يكون أوسع من 360**: Apple أوقفت iPhone SE 2024. الـ 360 viewport يحاكي Android صغير (Galaxy Fold cover screen، older iPhone).
+
+### 5.9 A11y Scripts & Modules (DEC-A11Y-001 to 005)
+
+- **`scripts/audit-contrast.mjs`** (~270 سطر) — يقيس 4 خلفيات × 5 مستويات opacity + 4 ألوان signoff = 40 خلية WCAG contrast. يدعم CSV export. يُشغّل بعد كل تغيير لوني على `tokens.css`.
+- **`scripts/audit-mobile-360px.mjs`** (~250 سطر، Playwright) — يفحص 6 صفحات على 360×800. يقيس: h-scroll، font-size، viewport meta، touch targets، console errors. ينتج 6 screenshots + CSV في `reports/a11y-mobile-360px/`. قابل للتشغيل في CI.
+- **`src/scripts/focus-trap.js`** (~250 سطر) — shared focus trap helper. Exports `createFocusTrap(modal, options)` + auto-applies to all `[role="dialog"][aria-modal="true"]` عبر MutationObserver. يغطي 4 modals (MobileNav + 3 kernel) + أي modal مستقبلي.

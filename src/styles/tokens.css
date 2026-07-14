@@ -55,19 +55,20 @@
   --border-default: rgba(148,163,184,0.2);
   --border-strong: rgba(148,163,184,0.35);
 
-  --interactive-primary: #2a8a7e;       /* DEC-SovB-001: Cyan → Deep Teal (Sovereign Calm) */
-  --interactive-hover: #1f6f64;
-  --interactive-active: #19574f;
+  --interactive-primary: #20a597;       /* DEC-SovB-001 + DEC-A11Y-001: brighter Teal — يجتاز AA على كل الخلفيات (4.96+) + AAA على bg-base (6.32) */
+  --interactive-hover: #1c8c7e;         /* DEC-A11Y-001: a11y-stronger hover (text-inverse on this = 4.68:1 AA) */
+  --interactive-active: #19574f;        /* transient pressed state (~100ms) — تبقى كما هي. النص على active = text-inverse (2.31:1 large-only) — مقبول للحالة العابرة */
 
   /* DEC-2026-033: Brand soft tints — used by chips, badges, tinted backgrounds.
-     Defined here so components.css stays token-only (no raw rgba). */
-  --brand-soft: rgba(42, 138, 126, 0.12);     /* chip base background */
-  --brand-soft-border: rgba(42, 138, 126, 0.15); /* chip base border */
-  --brand-soft-strong: rgba(42, 138, 126, 0.18); /* chip hover / featured */
+     Defined here so components.css stays token-only (no raw rgba).
+     DEC-A11Y-001: ترقية rgb values من (42,138,126) → (32,165,151) لتطابق --interactive-primary الجديد. */
+  --brand-soft: rgba(32, 165, 151, 0.12);     /* chip base background */
+  --brand-soft-border: rgba(32, 165, 151, 0.15); /* chip base border */
+  --brand-soft-strong: rgba(32, 165, 151, 0.18); /* chip hover / featured */
 
   --status-success: #22c55e;
   --status-warning: #f59e0b;
-  --status-danger: #ef4444;
+  --status-danger: #f87171;            /* DEC-A11Y-001: a11y-stronger red — يجتاز AA على كل الخلفيات (5.47+) + AAA على bg-base (6.96) */
   --status-info: #6366f1;
 
   /* DEC-SovB-001: Burnished Copper accent — sparingly، لمسة سعودية بدون فولكلور */
@@ -128,8 +129,8 @@
   --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.3), 0 4px 6px -4px rgba(0,0,0,0.3);
   --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.3), 0 8px 10px -6px rgba(0,0,0,0.3);
   --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.5);
-  --shadow-glow: 0 0 20px rgba(42,138,126,0.3);     /* Teal glow */
-  --shadow-glow-lg: 0 0 40px rgba(42,138,126,0.4);
+  --shadow-glow: 0 0 20px rgba(32,165,151,0.3);     /* DEC-A11Y-001: Teal glow — rgb matched to new --interactive-primary */
+  --shadow-glow-lg: 0 0 40px rgba(32,165,151,0.4);
 
   /* 11. حركات - مدد (DEC-SovB-001: longer for Sovereign Calm) */
   --duration-fast: 200ms;
@@ -179,8 +180,8 @@
 --highlight-inner-strong: inset 0 1px 0 0 var(--glass-highlight-strong);
 
 /* Outer glow — for primary CTAs (subtle, not halo) */
---shadow-cta-glow: 0 0 28px -6px rgba(42, 138, 126, 0.45);   /* Teal CTA glow */
-  --shadow-cta-glow-lg: 0 0 40px -4px rgba(42, 138, 126, 0.55);
+--shadow-cta-glow: 0 0 28px -6px rgba(32, 165, 151, 0.45);   /* DEC-A11Y-001: Teal CTA glow — rgb matched */
+  --shadow-cta-glow-lg: 0 0 40px -4px rgba(32, 165, 151, 0.55);
 
 /* Section radial gradients — gentle teal halo from top (DEC-SovB-001) */
   --gradient-section-radial: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(42, 138, 126, 0.05), transparent 70%);
@@ -226,7 +227,7 @@
   --warning: var(--status-warning);
   --warning-soft: rgba(245,158,11,0.15);
   --error: var(--status-danger);
-  --error-soft: rgba(239,68,68,0.15);
+  --error-soft: rgba(248,113,113,0.15);   /* DEC-A11Y-001: rgb matched to new --status-danger */
 
   /* زجاج */
   --glass: rgba(15,21,37,0.6);
@@ -339,9 +340,9 @@
 
 /* 28. Shadow glows — متخصصة لكل لون توقيع (brand / accent / danger).
    -glow و -glow-lg للـ brand ظلت كما هي (Teal) — نُضيف الـ variants. */
-  --shadow-glow-brand:    0 0 24px -4px rgba(42,138,126,0.4);    /* Deep Teal — للـ primary CTAs */
+  --shadow-glow-brand:    0 0 24px -4px rgba(32,165,151,0.4);    /* DEC-A11Y-001: Teal — rgb matched */
   --shadow-glow-accent:   0 0 24px -4px rgba(192,138,90,0.4);    /* Burnished Copper — sparingly */
-  --shadow-glow-danger:   0 0 24px -4px rgba(239,68,68,0.4);     /* Critical، destructive actions */
+  --shadow-glow-danger:   0 0 24px -4px rgba(248,113,113,0.4);   /* DEC-A11Y-001: Red — rgb matched to new --status-danger */
   --shadow-glow-success:  0 0 20px -4px rgba(34,197,94,0.4);     /* Confirmed/success states */
 
 /* 29. Shadow inset — للـ pressed/selected states (Buttons, Inputs, Toggles).

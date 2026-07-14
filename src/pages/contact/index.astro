@@ -188,7 +188,7 @@ const jsonLd = {
           <h3 class="form-card__title">أرسل تفاصيل طلبك</h3>
           <p class="form-card__desc">كل المعلومات تساعد فريقنا يفهم احتياجك قبل ما نتواصل معك.</p>
 
-          <form class="inner-form inner-form--padded" action="https://formsubmit.co/info@brightai.site" method="POST">
+          <form class="inner-form inner-form--padded" action="https://formsubmit.co/info@brightai.site" method="POST" aria-label="نموذج التواصل">
             <input type="hidden" name="_subject" value="طلب تواصل من موقع BrightAI" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_next" value="https://brightai.site/contact/" />
@@ -203,9 +203,11 @@ const jsonLd = {
                   name="name"
                   required
                   aria-required="true"
+                  aria-describedby="name-error"
                   autocomplete="name"
                   placeholder="مثال: محمد أحمد"
                 />
+                <span id="name-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
               </div>
               <div class="form-field">
                 <label class="form-label" for="email">البريد الإلكتروني <span class="text-red-400" aria-hidden="true">*</span></label>
@@ -216,10 +218,12 @@ const jsonLd = {
                   name="email"
                   required
                   aria-required="true"
+                  aria-describedby="email-error"
                   autocomplete="email"
                   inputmode="email"
                   placeholder="example@company.sa"
                 />
+                <span id="email-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
               </div>
             </div>
 
@@ -251,10 +255,11 @@ const jsonLd = {
 
             <div class="form-field">
               <label class="form-label" for="sector">القطاع</label>
-              <select class="field field--select" id="sector" name="sector">
+              <select class="field field--select" id="sector" name="sector" aria-describedby="sector-error">
                 <option value="">اختر القطاع</option>
                 {sectors.map(s => <option>{s}</option>)}
               </select>
+              <span id="sector-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
             </div>
 
             <div class="form-field">
@@ -265,14 +270,17 @@ const jsonLd = {
                 name="message"
                 required
                 aria-required="true"
+                aria-describedby="message-error"
                 placeholder="أخبرنا عن احتياجاتك أو استفسارك..."
               ></textarea>
+              <span id="message-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
             </div>
 
             <div class="form-field form-field--checkbox-row">
               <input
                 required
                 aria-required="true"
+                aria-describedby="pdpl-consent-error"
                 id="pdpl_consent"
                 name="pdpl_consent"
                 type="checkbox"
@@ -284,6 +292,7 @@ const jsonLd = {
                 <a href="/pdpl-statement/">بيان الامتثال لنظام PDPL السعودي</a>.
                 <span class="text-red-400" aria-hidden="true">*</span>
               </label>
+              <span id="pdpl-consent-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
             </div>
 
             <button class="btn btn--primary btn--block inner-form__submit" type="submit">

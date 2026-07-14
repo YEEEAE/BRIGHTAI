@@ -1,0 +1,41 @@
+group,text,opacity,bg,ratio,status_normal,status_large,intentional,hex_effective
+text-opacity,text-primary (primary (1.00)),1.00,--bg-base,17.58,AAA,AAA-large,,#f1f5f9
+text-opacity,text-primary (primary (1.00)),1.00,--bg-surface,16.61,AAA,AAA-large,,#f1f5f9
+text-opacity,text-primary (primary (1.00)),1.00,--bg-elevated,15.45,AAA,AAA-large,,#f1f5f9
+text-opacity,text-primary (primary (1.00)),1.00,--surface-4,13.81,AAA,AAA-large,,#f1f5f9
+text-opacity,text-secondary (secondary (0.78)),0.78,--bg-base,10.78,AAA,AAA-large,,#bec2c8
+text-opacity,text-secondary (secondary (0.78)),0.78,--bg-surface,10.35,AAA,AAA-large,,#bfc4ca
+text-opacity,text-secondary (secondary (0.78)),0.78,--bg-elevated,9.79,AAA,AAA-large,,#c1c5cd
+text-opacity,text-secondary (secondary (0.78)),0.78,--surface-4,8.94,AAA,AAA-large,,#c2c7d0
+text-opacity,text-tertiary (tertiary (0.58)),0.58,--bg-base,6.32,AA,AAA-large,,#90949b
+text-opacity,text-tertiary (tertiary (0.58)),0.58,--bg-surface,6.20,AA,AAA-large,,#9297a0
+text-opacity,text-tertiary (tertiary (0.58)),0.58,--bg-elevated,5.98,AA,AAA-large,,#959aa5
+text-opacity,text-tertiary (tertiary (0.58)),0.58,--surface-4,5.61,AA,AAA-large,,#989eab
+text-opacity,text-disabled (disabled (0.38)),0.38,--bg-base,3.33,AA-large-only,AA-large,intentional,#62666f
+text-opacity,text-disabled (disabled (0.38)),0.38,--bg-surface,3.36,AA-large-only,AA-large,intentional,#656a76
+text-opacity,text-disabled (disabled (0.38)),0.38,--bg-elevated,3.34,AA-large-only,AA-large,intentional,#696e7c
+text-opacity,text-disabled (disabled (0.38)),0.38,--surface-4,3.24,AA-large-only,AA-large,intentional,#6d7486
+text-opacity,text-decorative (decorative (0.22)),0.22,--bg-base,1.88,FAIL,FAIL,intentional,#3d414b
+text-opacity,text-decorative (decorative (0.22)),0.22,--bg-surface,1.93,FAIL,FAIL,intentional,#414654
+text-opacity,text-decorative (decorative (0.22)),0.22,--bg-elevated,1.97,FAIL,FAIL,intentional,#454c5c
+text-opacity,text-decorative (decorative (0.22)),0.22,--surface-4,1.97,FAIL,FAIL,intentional,#4b5369
+signoff,--interactive-primary,1.00,--bg-base,6.32,AA,AAA-large,,#20a597
+signoff,--interactive-primary,1.00,--bg-surface,5.97,AA,AAA-large,,#20a597
+signoff,--interactive-primary,1.00,--bg-elevated,5.55,AA,AAA-large,,#20a597
+signoff,--interactive-primary,1.00,--surface-4,4.96,AA,AAA-large,,#20a597
+signoff,--interactive-hover,1.00,--bg-base,4.68,AA,AAA-large,,#1c8c7e
+signoff,--interactive-hover,1.00,--bg-surface,4.42,AA-large-only,AA-large,,#1c8c7e
+signoff,--interactive-hover,1.00,--bg-elevated,4.11,AA-large-only,AA-large,,#1c8c7e
+signoff,--interactive-hover,1.00,--surface-4,3.68,AA-large-only,AA-large,,#1c8c7e
+signoff,--status-danger,1.00,--bg-base,6.96,AA,AAA-large,,#f87171
+signoff,--status-danger,1.00,--bg-surface,6.58,AA,AAA-large,,#f87171
+signoff,--status-danger,1.00,--bg-elevated,6.12,AA,AAA-large,,#f87171
+signoff,--status-danger,1.00,--surface-4,5.47,AA,AAA-large,,#f87171
+signoff,--status-success,1.00,--bg-base,8.45,AAA,AAA-large,,#22c55e
+signoff,--status-success,1.00,--bg-surface,7.98,AAA,AAA-large,,#22c55e
+signoff,--status-success,1.00,--bg-elevated,7.43,AAA,AAA-large,,#22c55e
+signoff,--status-success,1.00,--surface-4,6.64,AA,AAA-large,,#22c55e
+signoff,--accent-warm,1.00,--bg-base,6.44,AA,AAA-large,,#c08a5a
+signoff,--accent-warm,1.00,--bg-surface,6.09,AA,AAA-large,,#c08a5a
+signoff,--accent-warm,1.00,--bg-elevated,5.66,AA,AAA-large,,#c08a5a
+signoff,--accent-warm,1.00,--surface-4,5.06,AA,AAA-large,,#c08a5a

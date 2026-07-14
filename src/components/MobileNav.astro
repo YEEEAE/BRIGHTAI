@@ -69,6 +69,7 @@ function isActive(href: string): boolean {
                   'mobile-menu__sub-link--overview',
                   { 'mobile-menu__sub-link--active': currentPath === item.href },
                 ]}
+                aria-current={currentPath === item.href ? 'page' : undefined}
               >
                 {isAr ? `نظرة عامة — ${item.labelAr}` : `Overview — ${item.label}`}
               </a>
@@ -79,6 +80,7 @@ function isActive(href: string): boolean {
                     'mobile-menu__sub-link',
                     { 'mobile-menu__sub-link--active': currentPath === child.href },
                   ]}
+                  aria-current={currentPath === child.href ? 'page' : undefined}
                 >
                   {isAr ? child.labelAr : child.label}
                 </a>
@@ -92,6 +94,7 @@ function isActive(href: string): boolean {
               'mobile-menu__link',
               { 'mobile-menu__link--active': isActive(item.href) },
             ]}
+            aria-current={isActive(item.href) ? 'page' : undefined}
           >
             {isAr ? item.labelAr : item.label}
           </a>

@@ -523,7 +523,7 @@
 .btn-primary {                                     /* legacy single-dash alias */
   background: var(--brand-500);
   color: var(--text-inverse);
-  border-color: var(--brand-500);
+  border-color: var(--interactive-primary);
 }
 
 .btn--primary:hover,
@@ -3311,4 +3311,28 @@
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* DEC-A11Y-005 (2026-07-14): WCAG 2.5.5 — Touch targets ≥ 44×44px.
+   Applies a minimum hit area to standalone interactive elements that are
+   NOT inline text links in flowing paragraphs (those are exempt per
+   WCAG 2.5.8 Inline Text Link exception). Uses padding-block to expand
+   the clickable region without changing the visual appearance. */
+.contact-info-list a,
+.contact-link-card a,
+.footer__whatsapp,
+.map-embed-card__footer,
+.btn,
+button {
+  min-block-size: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Chip — bump padding slightly so chip click area is closer to 44px.
+   Was 4px vertical, now 8px vertical. Still under 44 but the largest
+   hit area achievable without changing the visual chip style. */
+.chip {
+  padding-block: var(--space-2);
+  min-block-size: 32px;
 }

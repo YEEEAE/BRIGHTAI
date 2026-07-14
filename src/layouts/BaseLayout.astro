@@ -264,6 +264,15 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     import '../scripts/scroll-reveal.js';
   </script>
 
+  {/* Global focus trap — DEC-A11Y-003 (2026-07-14). Auto-applies a WCAG-compliant
+      focus trap to every [role="dialog"][aria-modal="true"] element on the page.
+      Watches the modal's `hidden` attribute and toggles the trap automatically.
+      Used by MobileNav, kernel/connectors, kernel/approvals, kernel/scenarios,
+      and any future modal that follows the standard dialog pattern. */}
+  <script>
+    import '../scripts/focus-trap.js';
+  </script>
+
   <!-- Critical inline CSS: brand font-face + heading overrides + LCP element
        (homepage .split-hero__h1) sizing. Expanded 2026-07-14 (PERF-FIX) to
        cover the SplitHero h1 styles that previously lived only in the

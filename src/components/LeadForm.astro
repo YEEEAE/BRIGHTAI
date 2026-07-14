@@ -7,7 +7,18 @@
  * acquisition source into the inbox (and a future HubSpot/CRM import).
  *
  * Design: uses existing canonical form classes (.inner-form, .field, .form-row,
- * .form-label, .btn--primary). No Tailwind, no inline styles, RTL + tokens.
+ * .form-label, .btn--primary). No Tailwind, no inline styles (rule 2.1), RTL + tokens.
+ *
+ * a11y (DEC-A11Y-002, 2026-07-14):
+ *   - Every input has aria-describedby pointing to its error message span
+ *     so screen readers announce validation errors when they appear.
+ *   - The PDPL consent checkbox has its own error slot (linked via aria-describedby).
+ *   - Required fields are marked with both HTML5 `required` and `aria-required="true"`
+ *     for older assistive tech that doesn't pick up the HTML5 attribute.
+ *   - Error spans use role="alert" + aria-live="polite" so errors are announced
+ *     automatically when the text content changes.
+ *   - Helper text (e.g. field hint) is also linked via aria-describedby
+ *     (multiple IDs space-separated).
  *
  * Props:
  *   - title: form card heading
@@ -30,6 +41,7 @@ interface FieldDef {
   placeholder?: string;
   autocomplete?: string;
   full?: boolean; // span both columns in the 2-col row
+  hint?: string;  // helper text below the field, linked via aria-describedby
 }
 
 interface Props {
@@ -58,6 +70,11 @@ const {
 
 const attr = attributionFields({ source, medium, campaign });
 const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
+
+// Error span IDs — used by both the input (aria-describedby) and the span (id).
+// Same pattern as KernelLeadForm.astro (DEC-A11Y-002 + DEC-KERNEL-AI-2026-07-14).
+const errorIdFor = (name: string) => `${name}-error`;
+const hintIdFor = (name: string) => `${name}-hint`;
 ---
 
 <form
@@ -65,6 +82,7 @@ const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
   action={formAction}
   method="POST"
   aria-label={title}
+  novalidate
 >
   <input type="hidden" name="_subject" value={subject} />
   <input type="hidden" name="_captcha" value="false" />
@@ -81,36 +99,63 @@ const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
       const isSelect = f.type === 'select';
       const isArea = f.type === 'textarea';
       const inputType = isSelect || isArea ? undefined : f.type || 'text';
+      const errorId = errorIdFor(f.name);
+      const hintId = f.hint ? hintIdFor(f.name) : undefined;
+      // aria-describedby: hint + error (whichever exist)
+      const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
       return (
         <div class:list={['form-field', f.full && 'form-field--full']}>
           <label class="form-label" for={f.name}>
             {f.label}
-            {f.required && <span class="text-red-400" aria-hidden="true">*</span>}
+            {f.required && <span class="form-label__required" aria-hidden="true">*</span>}
           </label>
           {isSelect ? (
-            <select class="field field--select" id={f.name} name={f.name} required={f.required}>
-              <option value="">اختر…</option>
-              {f.options?.map((o) => <option>{o}</option>)}
-            </select>
+            <>
+              <select
+                class="field field--select"
+                id={f.name}
+                name={f.name}
+                required={f.required}
+                aria-required={f.required ? 'true' : undefined}
+                aria-describedby={describedBy}
+              >
+                <option value="">اختر…</option>
+                {f.options?.map((o) => <option>{o}</option>)}
+              </select>
+              {f.hint && <span id={hintId} class="form-field__hint">{f.hint}</span>}
+              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" hidden></span>
+            </>
           ) : isArea ? (
-            <textarea
-              class="field field--textarea"
-              id={f.name}
-              name={f.name}
-              required={f.required}
-              placeholder={f.placeholder}
-            ></textarea>
+            <>
+              <textarea
+                class="field field--textarea"
+                id={f.name}
+                name={f.name}
+                required={f.required}
+                aria-required={f.required ? 'true' : undefined}
+                aria-describedby={describedBy}
+                placeholder={f.placeholder}
+              ></textarea>
+              {f.hint && <span id={hintId} class="form-field__hint">{f.hint}</span>}
+              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" hidden></span>
+            </>
           ) : (
-            <input
-              class="field"
-              type={inputType}
-              id={f.name}
-              name={f.name}
-              required={f.required}
-              autocomplete={f.autocomplete}
-              inputmode={f.type === 'tel' ? 'tel' : f.type === 'email' ? 'email' : undefined}
-              placeholder={f.placeholder}
-            />
+            <>
+              <input
+                class="field"
+                type={inputType}
+                id={f.name}
+                name={f.name}
+                required={f.required}
+                aria-required={f.required ? 'true' : undefined}
+                aria-describedby={describedBy}
+                autocomplete={f.autocomplete}
+                inputmode={f.type === 'tel' ? 'tel' : f.type === 'email' ? 'email' : undefined}
+                placeholder={f.placeholder}
+              />
+              {f.hint && <span id={hintId} class="form-field__hint">{f.hint}</span>}
+              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" hidden></span>
+            </>
           )}
         </div>
       );
@@ -118,16 +163,18 @@ const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
   }
   </div>
 
-  <div class="form-field form-field--full" style="display: flex; align-items: flex-start; gap: var(--space-3);">
+  <div class="form-field form-field--full form-field--consent">
     <input
       required
       aria-required="true"
+      aria-describedby="pdpl-consent-error"
       id="pdpl_consent"
       name="pdpl_consent"
       type="checkbox"
-      style="margin-block-start: 0.2em;"
+      class="form-field__checkbox"
     />
-    <label for="pdpl_consent" class="text-xs" style="color: var(--text-secondary); line-height: 1.6;" set:html={consentLabel}></label>
+    <label for="pdpl_consent" class="form-field__consent-text" set:html={consentLabel}></label>
+    <span id="pdpl-consent-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
   </div>
 
   <button class="btn btn--primary btn--block inner-form__submit" type="submit">
@@ -147,4 +194,46 @@ const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
   .form-field--full { grid-column: 1 / -1; }
   /* 2-column field layout when the parent is .form-row--2 */
   .inner-form :global(.form-field) { min-width: 0; }
+
+  /* DEC-A11Y-002 (2026-07-14): moved from inline styles in template */
+  .form-label__required {
+    color: var(--status-danger);
+    margin-inline-start: var(--space-1);
+  }
+  .form-field__hint {
+    display: block;
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    margin-block-start: var(--space-1);
+  }
+  .form-field__error {
+    display: block;
+    color: var(--status-danger);
+    font-size: var(--text-xs);
+    line-height: 1.5;
+    margin-block-start: var(--space-1);
+    font-weight: var(--font-semibold);
+  }
+  .form-field__error[hidden] { display: none; }
+  .form-field--consent {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .form-field__checkbox {
+    margin-block-start: 0.2em;
+    flex-shrink: 0;
+  }
+  .form-field__consent-text {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: var(--text-xs);
+    flex: 1 1 200px;
+  }
+  .form-field--consent .form-field__error {
+    flex-basis: 100%;
+    margin-block-start: 0;
+  }
 </style>

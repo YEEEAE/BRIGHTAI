@@ -77,6 +77,7 @@ NAV.forEach((item, idx) => {
       <ul class="site-header__nav-list" role="menubar">
         {NAV.map((item, idx) => {
           const groups = dropdownGroups.get(idx);
+          const itemActive = isActive(item.href);
           return (
             <li class="site-header__nav-item" role="none">
               {groups ? (
@@ -85,12 +86,13 @@ NAV.forEach((item, idx) => {
                     class:list={[
                       'site-header__nav-link',
                       'site-header__dropdown-trigger',
-                      { 'site-header__nav-link--active': isActive(item.href) },
+                      { 'site-header__nav-link--active': itemActive },
                     ]}
                     role="menuitem"
                     aria-haspopup="true"
                     aria-expanded="false"
                     aria-controls={`dropdown-${idx}`}
+                    aria-current={itemActive ? 'page' : undefined}
                     data-dropdown-trigger
                   >
                     <span>{isAr ? item.labelAr : item.label}</span>
@@ -122,6 +124,7 @@ NAV.forEach((item, idx) => {
                               ]}
                               role="menuitem"
                               tabindex="-1"
+                              aria-current={currentPath === child.href ? 'page' : undefined}
                             >
                               {isAr ? child.labelAr : child.label}
                             </a>
@@ -139,6 +142,7 @@ NAV.forEach((item, idx) => {
                     { 'site-header__nav-link--active': isActive(item.href) },
                   ]}
                   role="menuitem"
+                  aria-current={isActive(item.href) ? 'page' : undefined}
                 >
                   {isAr ? item.labelAr : item.label}
                 </a>

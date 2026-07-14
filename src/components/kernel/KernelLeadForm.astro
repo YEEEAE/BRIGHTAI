@@ -76,12 +76,22 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
           class="kernel-lead-form__input"
           required
           aria-required="true"
+          aria-describedby={`${id}-name-error`}
           autocomplete="name"
           minlength="2"
           maxlength="100"
           placeholder="مثال: محمد أحمد القحطاني"
         />
-        <span class="kernel-lead-form__error" data-kernel-lead-error="name" hidden></span>
+        {/* DEC-A11Y-002 (2026-07-14): added id + role + aria-live so the input's
+            aria-describedby points to a stable target that announces on change */}
+        <span
+          id={`${id}-name-error`}
+          class="kernel-lead-form__error"
+          data-kernel-lead-error="name"
+          role="alert"
+          aria-live="polite"
+          hidden
+        ></span>
       </div>
 
       <div class="kernel-lead-form__field">
@@ -95,11 +105,19 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
           class="kernel-lead-form__input"
           required
           aria-required="true"
+          aria-describedby={`${id}-contact-error`}
           autocomplete="email"
           maxlength="120"
           placeholder="example@company.com أو +9665XXXXXXXX"
         />
-        <span class="kernel-lead-form__error" data-kernel-lead-error="contact" hidden></span>
+        <span
+          id={`${id}-contact-error`}
+          class="kernel-lead-form__error"
+          data-kernel-lead-error="contact"
+          role="alert"
+          aria-live="polite"
+          hidden
+        ></span>
       </div>
     </div>
 
@@ -114,12 +132,20 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         class="kernel-lead-form__input"
         required
         aria-required="true"
+        aria-describedby={`${id}-company-error`}
         autocomplete="organization"
         minlength="2"
         maxlength="120"
         placeholder="مثال: مجموعة stc، مستشفى الملك فيصل التخصصي، بنك الراجحي"
       />
-      <span class="kernel-lead-form__error" data-kernel-lead-error="company" hidden></span>
+      <span
+        id={`${id}-company-error`}
+        class="kernel-lead-form__error"
+        data-kernel-lead-error="company"
+        role="alert"
+        aria-live="polite"
+        hidden
+      ></span>
     </div>
 
     <div class="kernel-lead-form__actions">
@@ -235,7 +261,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   .kernel-lead-form__input:focus-visible {
     outline: 2px solid var(--brand-500);
     outline-offset: 2px;
-    border-color: var(--brand-500);
+    border-color: var(--interactive-primary);
   }
   .kernel-lead-form__input[aria-invalid="true"] {
     border-color: var(--status-danger);
