@@ -1,5 +1,5 @@
 ---
-title: "سجل تدقيق AI: كيف تبني AI Audit Trail ومسار امتثال"
+title: "سجل تدقيق AI: بناء مسار الامتثال"
 description: "دليل لبناء AI Audit Trail يوضح من استخدم النموذج، ما البيانات التي عولجت، ما القرار، وما الدليل."
 canonical: "https://brightai.site/blog/ai-audit-trail-compliance-path/"
 pubDate: "2026-07-10"

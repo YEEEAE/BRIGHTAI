@@ -1,6 +1,6 @@
 ---
 title: "ضوابط الحوسبة السحابية CCC في السعودية"
-description: "دليل ضوابط الحوسبة السحابية (Cloud Cybersecurity Controls - CCC) الصادرة عن NCA: متى تنطبق على منشأتك، كيف تؤثر على أنظمة الذكاء الاصطناعي السحابية، وعلاقتها بضوابط ECC وDCC."
+description: "ضوابط الحوسبة السحابية (CCC) من NCA: متى تنطبق على منشأتك وكيف تؤثر على أنظمة AI السحابية وعلاقتها بـ ECC وDCC."
 canonical: "https://brightai.site/blog/cloud-cybersecurity-controls-ccc-saudi/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"

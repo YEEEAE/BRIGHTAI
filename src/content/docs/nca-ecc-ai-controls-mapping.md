@@ -1,7 +1,7 @@
 ---
 title: "خريطة ربط ضوابط NCA ECC مع استخدامات الذكاء الاصطناعي"
 metaTitle: "خريطة ربط ضوابط NCA ECC مع استخدامات الذكاء الاصطناعي"
-description: "خريطة عملية لربط كل متطلب من ضوابط NCA ECC بسياسات وأدلة تشغيلية خاصة بالذكاء الاصطناعي: AI Firewall، Audit Trail، Human Approval، Risk Scoring، وEvidence File."
+description: "ربط ضوابط NCA ECC بسياسات وأدلة تشغيلية للذكاء الاصطناعي: AI Firewall وAudit Trail وHuman Approval."
 canonical: "https://brightai.site/docs/nca-ecc-ai-controls-mapping/"
 updated: "2026-07-08"
 category: "NCA"

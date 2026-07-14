@@ -1,5 +1,5 @@
 ---
-title: "حوكمة AI في السعودية: كيف تبدأ الشركات بدون تعقيد؟"
+title: "حوكمة AI في السعودية: ابدأ بدون تعقيد"
 description: "دليل عملي لحوكمة الذكاء الاصطناعي في السعودية. ابدأ حوكمة AI في شركتك بدون تعقيد مع حلول BrightAI المتوافقة مع SDAIA وPDPL."
 canonical: "https://brightai.site/blog/ai-governance-saudi-arabia/"
 pubDate: "2026-05-31"

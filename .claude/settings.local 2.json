@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//private/tmp/**)",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} | size %{size_download}B | time %{time_total}s\\\\n\" http://127.0.0.1:4321/)",
+      "Bash(npx lighthouse *)",
+      "Bash(pnpm install *)"
+    ]
+  }
+}

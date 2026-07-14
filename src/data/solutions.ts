@@ -85,7 +85,7 @@ const S = 'https://brightai.site';
 export const solutions: SolutionData[] = [
   {
     slug:'ai-governance-platform', href:'/solutions/ai-governance-platform/',
-    title:'منصة حوكمة الذكاء الاصطناعي للشركات السعودية | امتثال PDPL & NCA',
+    title:'منصة حوكمة الذكاء الاصطناعي للشركات السعودية',
     h1:'منصة حوكمة الذكاء الاصطناعي للمؤسسات السعودية',
     description:'منصة BrightAI لحوكمة الذكاء الاصطناعي تمنح المؤسسات رؤية مركزية على استخدام AI، متوافقة مع نظام حماية البيانات الشخصية PDPL وضوابط الأمن السيبراني NCA.',
     canonical:`${S}/solutions/ai-governance-platform/`,
@@ -174,7 +174,7 @@ export const solutions: SolutionData[] = [
   },
   {
     slug:'ai-firewall', href:'/solutions/ai-firewall/',
-    title:'AI Firewall لحماية بيانات الشركات | منع تسريب البيانات الشخصية',
+    title:'AI Firewall: حماية بيانات الشركات من التسريب',
     h1:'AI Firewall لحماية البيانات الحساسة قبل وصولها للنماذج',
     description:'جدار حماية الذكاء الاصطناعي (AI Firewall) يفحص مدخلات ومخرجات LLM ويمنع تسريب البيانات الحساسة للمؤسسات السعودية متوافقاً مع ضوابط الأمن السيبراني NCA.',
     canonical:`${S}/solutions/ai-firewall/`,
@@ -200,7 +200,7 @@ export const solutions: SolutionData[] = [
   },
   {
     slug:'ai-evidence-file', href:'/solutions/ai-evidence-file/',
-    title:'ملف أدلة امتثال الذكاء الاصطناعي (AI Evidence File) | جاهز للتدقيق',
+    title:'ملف أدلة امتثال الذكاء الاصطناعي (AI Evidence File)',
     h1:'ملف أدلة الامتثال للذكاء الاصطناعي (AI Evidence File)',
     description:'توليد ملفات أدلة الامتثال والتقارير الموقعة رقمياً لتقديمها للمدققين والجهات التنظيمية السعودية مثل سدايا (SDAIA) وهيئة الأمن السيبراني (NCA).',
     canonical:`${S}/solutions/ai-evidence-file/`,
@@ -319,7 +319,7 @@ export const sectors: SectorData[] = [
   },
   {
     slug:'government-ai-governance', href:'/solutions/government-ai-governance/',
-    title:'حوكمة الذكاء الاصطناعي في الجهات الحكومية | BrightAI',
+    title:'حوكمة الذكاء الاصطناعي في الجهات الحكومية',
     h1:'حوكمة الذكاء الاصطناعي في الجهات الحكومية',
     description:'حوكمة استخدامات AI في الخدمات الرقمية مع DGA وPDPL ورؤية 2030 وحماية بيانات المستفيدين في الجهات الحكومية.',
     canonical:`${S}/solutions/government-ai-governance/`,
@@ -339,7 +339,7 @@ export const sectors: SectorData[] = [
       },
       {
         slug:'madinah', href:'/solutions/government-ai-governance/madinah/',
-        title:'حوكمة الذكاء الاصطناعي للجهات الحكومية في المدينة المنورة | BrightAI',
+        title:'حوكمة الذكاء الاصطناعي الحكومي في المدينة المنورة',
         h1:'حوكمة الذكاء الاصطناعي للجهات الحكومية في المدينة المنورة',
         description:'خدمات حوكمة الذكاء الاصطناعي للجهات الحكومية في المدينة المنورة. امتثال DGA وPDPL وحماية بيانات المستفيدين.',
         canonical:`${S}/solutions/government-ai-governance/madinah/`,

@@ -1,5 +1,5 @@
 ---
-title: "Shadow AI: كيف تكتشف الاستخدام الخفي لـ AI في شركتك"
+title: "Shadow AI: اكتشف الاستخدام الخفي لـ AI"
 description: "طريقة عملية لاكتشاف أدوات AI غير المصرح بها، وتصنيفها، وتحويلها من خطر خفي إلى استخدام محكوم."
 canonical: "https://brightai.site/blog/shadow-ai-discovery-saudi-company/"
 pubDate: "2026-06-19"

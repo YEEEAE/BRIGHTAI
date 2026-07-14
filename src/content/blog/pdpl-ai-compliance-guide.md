@@ -1,5 +1,5 @@
 ---
-title: "دليل امتثال PDPL للذكاء الاصطناعي لمسؤولي الامتثال"
+title: "دليل امتثال PDPL للذكاء الاصطناعي"
 description: "دليل لمسؤولي الامتثال عن ربط PDPL باستخدامات الذكاء الاصطناعي، من الأساس النظامي إلى سجلات المعالجة والتدقيق."
 canonical: "https://brightai.site/blog/pdpl-ai-compliance-guide/"
 pubDate: "2026-06-23"

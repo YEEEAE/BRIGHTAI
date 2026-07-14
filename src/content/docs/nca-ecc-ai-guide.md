@@ -1,7 +1,7 @@
 ---
 title: "تطبيق NCA ECC على الذكاء الاصطناعي: خطة 90 يومًا"
 metaTitle: "دليل تطبيق NCA ECC على AI: خطة 90 يوم | BrightAI"
-description: "دليل خطوة بخطوة لتطبيق ضوابط NCA ECC 2-2024 على الذكاء الاصطناعي خلال 90 يومًا: AI Gateway، سجلات التدقيق، إدارة الموردين، ملف الأدلة، واختبار سيناريوهات الهجوم."
+description: "تطبيق ضوابط NCA ECC 2-2024 على الذكاء الاصطناعي خلال 90 يوماً: AI Gateway، سجلات التدقيق، وإدارة الموردين."
 canonical: "https://brightai.site/docs/nca-ecc-ai-guide/"
 updated: "2026-07-08"
 category: "NCA"

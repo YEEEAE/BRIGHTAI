@@ -1,6 +1,6 @@
 ---
-title: "ECC vs CSCC: أي ضوابط الأمن السيبراني تنطبق على منشأتك؟"
-metaTitle: "ECC vs CSCC: الفرق بين ضوابط الأمن السيبراني السعودية | BrightAI"
+title: "ECC vs CSCC: اختيار ضوابط الأمن السيبراني"
+metaTitle: "ECC vs CSCC: مقارنة ضوابط الأمن السيبراني | BrightAI"
 description: "مقارنة عملية بين ضوابط الأمن السيبراني الأساسية ECC وضوابط القطاعات الحساسة CSCC في السعودية، وكيف تختار الضوابط الصحيحة لمنشأتك حسب القطاع وحجم البيانات."
 canonical: "https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/"
 pubDate: "2026-07-08"
