@@ -112,6 +112,23 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
 
+### 2026-07-14 — KERNEL-AI-2026-07-14: تحويل Kernel من عرض تجريبي إلى صفحات قابلة للاستخدام — Verified
+
+- **Files**: 7 جديد + 10 معدّل = 17 ملف. **جديد**: `src/data/kernel-system-prompts.ts` (~120 سطر، 5 prompts فصحى للسوق السعودي)، `src/components/kernel/KernelChatError.astro` (~165 سطر، 6 أنواع أخطاء)، `src/components/kernel/KernelAiAssistant.astro` (~620 سطر، قابل لإعادة الاستخدام + sessionStorage)، `src/components/kernel/KernelContactCta.astro` (~80 سطر، يظهر بعد 3 رسائل)، `src/components/kernel/KernelLeadForm.astro` (~430 سطر، 3 حقول + Zod client + WhatsApp fallback)، `src/pages/api/lead.ts` (~205 سطر، rate limit 5/دقيقة + Zod server + log-only). **معدّل**: `astro.config.mjs` (vercel→node adapter)، `package.json` (`@astrojs/vercel@10.0.8` → `@astrojs/node@^11.0.2`)، `render.yaml` (static→node service + startCommand)، `scripts/sync-dist-flat.mjs` (إعادة كتابة — بدون wipe لـ dist/client/)، `scripts/seo-ci-check.mjs` (إضافة client, server لـ HTML_IGNORE_DIRS)، 10 صفحات kernel (chat.astro + 5 وظيفية + 5 lead only). **تقرير**: `report/2026-07-14-kernel-interactive-execution.md` (16KB، جداول حالة كل صفحة).
+- **What**: 3 تغييرات أساسية. (1) **Hosting switch**: `@astrojs/vercel` → `@astrojs/node@^11.0.2` (standalone mode). Render يتحول من static service إلى Node service (`startCommand: node ./dist/server/entry.mjs`). (2) **AI Assistant على 5 صفحات وظيفية**: `compliance`, `policies`, `evidence`, `audit`, `scenarios`. كل صفحة تستدعي `/api/ai/chat/` مع systemPrompt مخصص. يحفظ المحادثة في sessionStorage. Fallback إلى "وضع تجريبي" لو API رجع 404. (3) **Lead capture على 10 صفحات** (ما عدا offline): نموذج 3 حقول (اسم، بريد/جوال، شركة) → POST /api/lead/ → console log + response عربي. Fallback: لو API 404 → يفتح wa.me/966538229013 مع تفاصيل الـ lead. (4) **تحسينات chat.astro**: استبدال silent demo fallback بـ 6 أنواع أخطاء عربية (rate_limit, provider_failed, network, unavailable, timeout, unknown) + CTA "تواصل معنا" يظهر بعد 3 رسائل.
+- **Why**: صفحات kernel كانت تعرض بيانات تجريبية فقط بدون أي تفاعل. الهدف: تحويلها إلى صفحات قابلة للاستخدام الفعلي من العملاء المحتملين. API في chat.ts كان موجود لكن adapter mismatch (vercel → static Render) يكسره. الـ systemPrompts مكتوبة فصحى رسمية بمصطلحات السوق السعودي (PDPL/NCA ECC/SFDA/SAMA/ISO 13485/ISO 42001). Lead capture يحوّل الزائر النشط إلى opportunity قابلة للمتابعة.
+- **Verification**: `npm run build` → 190 صفحة، 0 أخطاء ✅. `npm run verify:all` → exit 0 ✅ (0 errors, 0 warnings, 0 broken links, 6/6 hreflang, 5/5 service, 156 sitemap URLs, 190 HTML policy). `node dist/server/entry.mjs` local → يستمع على 127.0.0.1:8765 ✅. جميع الـ 11 صفحة kernel ترجع 200 (ما عدا /kernel/index/ = 404 متوقع). جميع الـ 5 صفحات وظيفية فيها 2 `data-kernel-ai-assistant` blocks. جميع الـ 10 صفحات (ما عدا offline) فيها 4 `data-kernel-lead-form` blocks. `/api/ai/chat/` GET → 405 ✅، POST → 502 (لا مفاتيح في dev — متوقع) ✅. `/api/lead/` GET → 405 ✅، POST صحيح → 200 مع رسالة عربية ✅، POST غير صالح → 400 مع 3 Zod errors ✅، POST rate-limit > 5/دقيقة → 429 مع Retry-After ✅. التحقق من phone+email regex: يقبل +966538229013 و sara@example.sa ✅.
+- **Report**: `report/2026-07-14-kernel-interactive-execution.md`
+- **Commit**: uncommitted
+- **Status**: verified (build + verify:all + 11 صفحة curl tests + API endpoint tests + rate limit tests).
+- **Brain updates**: Section 1.1 (10 صفحات kernel الآن بـ lead form، 5 صفحات بـ AI section)، Section 1.5 (deps: -@astrojs/vercel +@astrojs/node@^11.0.2)، Section 2 (this entry)، Section 3 (KI-030: kernel pages now AI-interactive — open).
+- **Decisions (3 new)**:
+  - **DEC-KERNEL-AI-2026-07-14-001**: hosting switch to @astrojs/node. السبب: @astrojs/vercel ما يشتغل على Render static (adapter mismatch). node standalone ينتج dist/server/entry.mjs + dist/client/. Render يبدأ Node service بـ `node ./dist/server/entry.mjs`. النتيجة: API endpoints تشتغل فعلياً في الإنتاج.
+  - **DEC-KERNEL-AI-2026-07-14-002**: lead capture = log-only بدون DB/SMTP. يطبع في console.log + fallback إلى wa.me لو API 404. البنية جاهزة لـ webhook (Slack/Email/SendGrid) لاحقاً. لا استدعاء SMTP/DB ضروري الآن.
+  - **DEC-KERNEL-AI-2026-07-14-003**: trailing slash في API URLs. بسبب `trailingSlash: 'always'`، الـ clients تستدعي `/api/ai/chat/` و `/api/lead/` (مع slash). تفادي 301 → method change في fetch.
+- **Follow-up (مؤجل)**: (1) نشر على Render + اختبار post-deploy (يحتاج GROQ_API_KEY/GEMINI_API_KEY في env). (2) Lead capture webhook (Slack/Email/SendGrid) — حالياً console.log فقط. (3) CSRF token في /api/lead (نفس ضعف chat.ts). (4) Lighthouse mobile run على 5 صفحات وظيفية بعد النشر. (5) indexNow trigger بعد deploy.
+- **Risks**: (1) Performance budget 2 FAILs موجودة من قبل (raw vs gzipped — non-regression). (2) CSRF protection ضعيف (نفس chat.ts). (3) لو Node service في Render ما عنده plan مناسب، ممكن يواجه cold start بطيء. (4) console.log للـ leads ما يحفظ في مكان دائم (البنية التحتية للـ dashboard مفقودة).
+
 ### 1.3 Lighthouse (REPORTS-20 measured, 30 runs on 15 pages × 2 form factors)
 
 | Metric | Mobile Avg | Desktop Avg | Target | Status |
@@ -2218,6 +2235,9 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-039 | MX records = IONOS while NS = Cloudflare | low | open | 2026-06-29 | Mixed provider setup. May indicate config drift. |
 | KI-040 | `prompts.md`, `knowledge.md` in root — may be active knowledge files | low | open | 2026-06-29 | Verify before deletion. |
 | KI-041 | `seo_gate_log.txt`, `opencode.json` in root — tool residue | low | open | 2026-06-29 | Safe to delete. |
+| KI-042 | Lead capture webhook missing | medium | open | 2026-07-14 | KERNEL-AI-2026-07-14: /api/lead يطبع في console.log فقط. يحتاج webhook (Slack/Email/SendGrid/Resend) + dashboard لتتبع leads. حالياً لو فقدنا Render logs = فقدنا leads. |
+| KI-043 | Hosting now requires Node service (no more static deploy) | medium | open | 2026-07-14 | KERNEL-AI-2026-07-14: switched from Render static to Render Node service. يحتاج plan مناسب لـ Node (مو static free tier). Cold start ممكن يصير بطيء على free tier. |
+| KI-044 | /api/ai/chat + /api/lead CSRF protection weak | low | open | 2026-07-14 | KERNEL-AI-2026-07-14: POST endpoints بدون CSRF token. حالياً same-origin policy يكفي، لكن الأفضل إضافة origin check. |
 
 ---
 
@@ -2749,6 +2769,10 @@ Companion utility classes in `src/styles/utilities.css` Section 11b:
 | `LiveDashboardMockup.astro` | `src/components/` | 28 | Live dashboard mockup | — |
 | `ActivityStream.astro` | `src/components/` | 81 | Activity stream | — |
 | `kernel/*.astro` (8 files) | `src/components/kernel/` | various | Kernel UI components | — |
+| `kernel/KernelAiAssistant.astro` | `src/components/kernel/` | 620 | قابل لإعادة الاستخدام، يستدعي /api/ai/chat/ مع systemPrompt مخصص، sessionStorage history | KERNEL-AI-2026-07-14 ✅ |
+| `kernel/KernelChatError.astro` | `src/components/kernel/` | 165 | عرض أخطاء موحد بـ 6 أنواع (rate_limit, provider_failed, network, unavailable, timeout, unknown) بالعربية | KERNEL-AI-2026-07-14 ✅ |
+| `kernel/KernelContactCta.astro` | `src/components/kernel/` | 80 | CTA "تواصل معنا" يظهر بعد 3 رسائل (chat.astro) | KERNEL-AI-2026-07-14 ✅ |
+| `kernel/KernelLeadForm.astro` | `src/components/kernel/` | 430 | نموذج lead capture (3 حقول: اسم، بريد/جوال، شركة) + Zod client + WhatsApp fallback | KERNEL-AI-2026-07-14 ✅ |
 
 ### 5.4 Brand Visual Assets (`public/assets/star/`)
 

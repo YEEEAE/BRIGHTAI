@@ -12,6 +12,7 @@
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
+import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import { getKernelUnit } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 
@@ -405,6 +406,16 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
       </div>
     </div>
   </div>
+
+  {/* ═══════════ KERNEL-AI-2026-07-14: Lead Capture ═══════════ */}
+
+  <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-approvals">
+    <div class="max-w-3xl mx-auto px-5">
+      <h2 id="lead-form-h2-approvals" class="inner-section__title inner-section__title--centered">تبي تفعّل الموافقات البشرية على قرارات AI؟</h2>
+      <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يوضح لك كيف تربط الموافقات بسير العمل الحالي بدون تعطيل.</p>
+      <KernelLeadForm id="kernel-lead-form-approvals" page="/kernel/approvals/" />
+    </div>
+  </section>
 </KernelLayout>
 
 <script is:inline>

@@ -1,16 +1,26 @@
-# BrightAI Render Blueprint — Astro static site only
-# Generated after removing the frontend/ Express backend service and all
-# related routes. The site is now pure static (output: 'static').
+# BrightAI Render Blueprint — Astro site (static + Node server functions)
+# KERNEL-AI-2026-07-14: switched from `runtime: static` to `runtime: node`
+# to enable the /api/ai/chat and /api/lead serverless functions on Render.
+# Astro builds produce:
+#   - dist/client/   (190 prerendered HTML pages + assets)
+#   - dist/server/   (Node standalone server with API routes)
+# The Node server serves both static files and API routes from one process.
 
 services:
   - type: web
-    runtime: static
+    runtime: node
     name: brightai-site
     buildCommand: pnpm install && pnpm run build
-    staticPublishPath: dist
+    startCommand: node ./dist/server/entry.mjs
     envVars:
       - key: NODE_VERSION
         value: 22.22.2
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      # GROQ_API_KEY and GEMINI_API_KEY are set in Render dashboard env
+      # (NOT in this file — they are server secrets).
     headers:
       - path: /*
         name: Strict-Transport-Security

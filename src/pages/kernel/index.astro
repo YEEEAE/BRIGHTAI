@@ -29,6 +29,7 @@ import KernelActivityList from '../../components/kernel/KernelActivityList.astro
 import KernelActivityItem from '../../components/kernel/KernelActivityItem.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import { kernelNavItems, getCrossLinks } from '../../data/kernel';
 import { LOCAL_BUSINESS_BY_CITY } from '../../data/schema-helpers';
 
@@ -561,4 +562,14 @@ const complianceRows = [
       document.getElementById('shortcut-overlay')?.removeEventListener('click', handleShortcutBackdrop);
     });
   </script>
+
+  {/* ═══════════ KERNEL-AI-2026-07-14: Lead Capture ═══════════ */}
+
+  <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-index">
+    <div class="max-w-3xl mx-auto px-5">
+      <h2 id="lead-form-h2-index" class="inner-section__title inner-section__title--centered">تبي تشغّل Kernel في منشأتك؟</h2>
+      <p class="inner-section__lead inner-section__lead--centered">احجز عرض مخصص يوضح لك كيف تطبّق حوكمة AI على أدواتك الحالية.</p>
+      <KernelLeadForm id="kernel-lead-form-index" page="/kernel/" />
+    </div>
+  </section>
 </KernelLayout>

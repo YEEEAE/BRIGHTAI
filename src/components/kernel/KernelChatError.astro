@@ -1,0 +1,151 @@
+---
+/**
+ * KernelChatError — KERNEL-AI-2026-07-14
+ *
+ * عرض موحد لأخطاء /api/ai/chat بالعربية الفصحى.
+ *
+ * الاستخدام:
+ *   <KernelChatError type="rate_limit" retryAfterSec={42} />
+ *   <KernelChatError type="provider_failed" />
+ *   <KernelChatError type="network" />
+ *   <KernelChatError type="unavailable" />  ← API رجع 404 (Render static)
+ *
+ * التصميم: يستخدم kernel-chat-policy-banner classes الموجودة في kernel.css.
+ * RTL-aware، touch ≥44px، aria-live="polite" للقراءة من قارئ الشاشة.
+ *
+ * لا يلمس chat.ts — يكتفي بعرض رسائل واضحة للزائر.
+ */
+
+export type KernelChatErrorType =
+  | 'rate_limit'      // 429 — تجاوز حد المعدل
+  | 'provider_failed' // 502 — المزود (Groq/Gemini) فشل
+  | 'network'         // fetch() throw — انقطاع
+  | 'unavailable'     // 404 — الـ API مو متاح (Render static أو hosting بدون server)
+  | 'timeout'         // 504 أو timeout
+  | 'unknown';        // أي شي ثاني
+
+interface Props {
+  type: KernelChatErrorType;
+  retryAfterSec?: number;
+  id?: string;
+}
+
+const { type, retryAfterSec, id = 'kernel-chat-error' } = Astro.props;
+
+const iconError = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+const iconWarning = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+
+interface ErrorView {
+  tone: 'warning' | 'danger' | 'info';
+  icon: string;
+  title: string;
+  msg: string;
+  cta?: { href: string; label: string; external?: boolean };
+}
+
+function buildView(t: KernelChatErrorType, retry?: number): ErrorView {
+  switch (t) {
+    case 'rate_limit':
+      return {
+        tone: 'warning',
+        icon: iconWarning,
+        title: 'تم تجاوز حد الطلبات',
+        msg: retry
+          ? `وصلنا للحد المسموح (10 طلبات في الدقيقة). حاول مرة ثانية بعد ${retry} ثانية.`
+          : 'وصلنا للحد المسموح (10 طلبات في الدقيقة). حاول مرة ثانية بعد لحظات.',
+        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+      };
+    case 'provider_failed':
+      return {
+        tone: 'danger',
+        icon: iconError,
+        title: 'المزود الذكي غير متاح مؤقتاً',
+        msg: 'فشل الوصول إلى نموذج الذكاء الاصطناعي (Groq أو Gemini). هذا يحدث نادراً بسبب ضغط على المزود أو انقطاع مؤقت. حاول مرة ثانية خلال دقيقة.',
+        cta: { href: 'https://wa.me/966538229013', label: 'تواصل مع فريق الحوكمة', external: true },
+      };
+    case 'network':
+      return {
+        tone: 'warning',
+        icon: iconWarning,
+        title: 'تعذّر الاتصال',
+        msg: 'تحقق من اتصالك بالإنترنت وحاول مرة ثانية. إذا استمر الخطأ، جرب لاحقاً أو تواصل مع فريق الدعم.',
+        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+      };
+    case 'unavailable':
+      return {
+        tone: 'info',
+        icon: iconInfo(),
+        title: 'المساعد الذكي في وضع تجريبي',
+        msg: 'هذه الصفحة تستدعي المساعد الذكي في الخادم، لكن البيئة الحالية لا تشغّل نقطة الاتصال (Render static). سترى ردوداً تجريبية توضيحية. للتفعيل الكامل في بيئة إنتاجية، تواصل مع فريق BrightAI.',
+        cta: { href: '/contact/', label: 'تواصل مع فريق BrightAI' },
+      };
+    case 'timeout':
+      return {
+        tone: 'warning',
+        icon: iconWarning,
+        title: 'انتهت مهلة الاستجابة',
+        msg: 'النموذج أخذ وقتاً أطول من المتوقع للرد. حاول مرة ثانية بسؤال أقصر.',
+        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+      };
+    default:
+      return {
+        tone: 'danger',
+        icon: iconError,
+        title: 'حدث خطأ غير متوقع',
+        msg: 'نأسف للإزعاج. حاول مرة ثانية، وإذا تكرر الخطأ تواصل مع فريق الدعم.',
+        cta: { href: 'https://wa.me/966538229013', label: 'تواصل عبر واتساب', external: true },
+      };
+  }
+}
+
+function iconInfo(): string {
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>';
+}
+
+const view = buildView(type, retryAfterSec);
+const bannerClass = `kernel-chat-policy-banner kernel-chat-policy-banner--${view.tone}`;
+---
+
+<div
+  id={id}
+  class={bannerClass}
+  role="alert"
+  aria-live="polite"
+  data-kernel-chat-error
+  data-error-type={type}
+  hidden
+>
+  <span class="kernel-chat-policy-banner__icon" aria-hidden="true">
+    <Fragment set:html={view.icon} />
+  </span>
+  <div class="kernel-chat-policy-banner__body">
+    <p class="kernel-chat-policy-banner__title">{view.title}</p>
+    <p class="kernel-chat-policy-banner__msg">{view.msg}</p>
+    {view.cta && (
+      <p class="kernel-chat-policy-banner__msg" style="margin-block-start:var(--space-1);">
+        <a
+          href={view.cta.href}
+          target={view.cta.external ? '_blank' : undefined}
+          rel={view.cta.external ? 'noopener noreferrer' : undefined}
+          style="color:var(--text-primary); font-weight:var(--font-bold); text-decoration:underline; text-underline-offset:3px;"
+        >
+          {view.cta.label} ←
+        </a>
+      </p>
+    )}
+  </div>
+</div>
+
+<style>
+  /* خفيف: الـ banner الأساسي موجود في kernel.css.
+     هنا نضيف تعديلات خاصة بالـ error variant فقط. */
+  [data-kernel-chat-error][data-error-type="provider_failed"] {
+    border-color: var(--status-danger);
+  }
+  [data-kernel-chat-error][data-error-type="unavailable"] {
+    border-color: var(--brand-500);
+  }
+  [data-kernel-chat-error] .kernel-chat-policy-banner__title {
+    color: var(--text-primary);
+  }
+</style>

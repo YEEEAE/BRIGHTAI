@@ -1,0 +1,515 @@
+---
+/**
+ * KernelLeadForm — KERNEL-AI-2026-07-14
+ *
+ * نموذج lead capture موحد (3 حقول: اسم، بريد/جوال، شركة).
+ * يُستخدم في نهاية كل صفحة Kernel لتحويل الزائر إلى lead.
+ *
+ * السلوك:
+ *  1. POST /api/lead بـ { name, contact, company, page }
+ *  2. لو الـ API رجع 200 → success message
+ *  3. لو رجع 404 (Render static) → fallback إلى wa.me مع نص جاهز
+ *  4. لو رجع 429/500 → Arabic error message
+ *
+ * الأمان:
+ *  - لا يحفظ في localStorage (خصوصية)
+ *  - rate limit على مستوى الخادم (5/دقيقة/IP)
+ *  - Zod validation على الخادم
+ *  - data-page attribute يُسجّل الصفحة اللي جاء منها الـ lead
+ *
+ * Props:
+ *  - id: string (افتراضي: 'kernel-lead-form')
+ *  - title: string
+ *  - subtitle: string
+ *  - submitLabel: string
+ */
+
+interface Props {
+  id?: string;
+  title?: string;
+  subtitle?: string;
+  submitLabel?: string;
+  /** صفحة الـ lead (تلقائياً من URL) */
+  page?: string;
+}
+
+const {
+  id = 'kernel-lead-form',
+  title = 'تبي تطبّق هالشي في منشأتك؟',
+  subtitle = 'عبّي بياناتك وفريق الحوكمة يتواصل معك خلال 24 ساعة عبر البريد أو واتساب.',
+  submitLabel = 'إرسال الطلب',
+  page,
+} = Astro.props;
+
+const iconSend = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+---
+
+<section
+  id={id}
+  class="kernel-lead-form"
+  aria-labelledby={`${id}-title`}
+  data-kernel-lead-form
+  data-form-id={id}
+  data-page={page || 'kernel'}
+>
+  <header class="kernel-lead-form__head">
+    <h2 class="kernel-lead-form__title" id={`${id}-title`}>{title}</h2>
+    <p class="kernel-lead-form__subtitle">{subtitle}</p>
+  </header>
+
+  <form
+    class="kernel-lead-form__form"
+    data-kernel-lead-form-element
+    novalidate
+    onsubmit="return false;"
+  >
+    <div class="kernel-lead-form__row">
+      <div class="kernel-lead-form__field">
+        <label class="kernel-lead-form__label" for={`${id}-name`}>
+          الاسم الكامل <span class="kernel-lead-form__req" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id={`${id}-name`}
+          name="name"
+          class="kernel-lead-form__input"
+          required
+          aria-required="true"
+          autocomplete="name"
+          minlength="2"
+          maxlength="100"
+          placeholder="مثال: محمد أحمد القحطاني"
+        />
+        <span class="kernel-lead-form__error" data-kernel-lead-error="name" hidden></span>
+      </div>
+
+      <div class="kernel-lead-form__field">
+        <label class="kernel-lead-form__label" for={`${id}-contact`}>
+          البريد الإلكتروني أو رقم الجوال <span class="kernel-lead-form__req" aria-hidden="true">*</span>
+        </label>
+        <input
+          type="text"
+          id={`${id}-contact`}
+          name="contact"
+          class="kernel-lead-form__input"
+          required
+          aria-required="true"
+          autocomplete="email"
+          maxlength="120"
+          placeholder="example@company.com أو +9665XXXXXXXX"
+        />
+        <span class="kernel-lead-form__error" data-kernel-lead-error="contact" hidden></span>
+      </div>
+    </div>
+
+    <div class="kernel-lead-form__field">
+      <label class="kernel-lead-form__label" for={`${id}-company`}>
+        اسم الشركة أو الجهة <span class="kernel-lead-form__req" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="text"
+        id={`${id}-company`}
+        name="company"
+        class="kernel-lead-form__input"
+        required
+        aria-required="true"
+        autocomplete="organization"
+        minlength="2"
+        maxlength="120"
+        placeholder="مثال: مجموعة stc، مستشفى الملك فيصل التخصصي، بنك الراجحي"
+      />
+      <span class="kernel-lead-form__error" data-kernel-lead-error="company" hidden></span>
+    </div>
+
+    <div class="kernel-lead-form__actions">
+      <p class="kernel-lead-form__privacy">
+        بإرسالك النموذج توافق على <a href="/privacy-policy/" target="_blank" rel="noopener noreferrer">سياسة الخصوصية</a>. نستخدم بياناتك للرد على طلبك فقط.
+      </p>
+      <button
+        type="submit"
+        class="kernel-lead-form__submit"
+        data-kernel-lead-submit
+      >
+        <span class="kernel-lead-form__submit-label">{submitLabel}</span>
+        <span class="kernel-lead-form__submit-icon" aria-hidden="true">
+          <Fragment set:html={iconSend} />
+        </span>
+      </button>
+    </div>
+
+    {/* error banner — يظهر فوق الـ submit عند الفشل */}
+    <div
+      class="kernel-lead-form__alert kernel-lead-form__alert--error"
+      role="alert"
+      aria-live="assertive"
+      data-kernel-lead-alert="error"
+      hidden
+    ></div>
+
+    {/* success banner — يظهر بعد الإرسال الناجح */}
+    <div
+      class="kernel-lead-form__alert kernel-lead-form__alert--success"
+      role="status"
+      aria-live="polite"
+      data-kernel-lead-alert="success"
+      hidden
+    >
+      <span class="kernel-lead-form__alert-icon" aria-hidden="true">
+        <Fragment set:html={iconCheck} />
+      </span>
+      <p>تم استلام طلبك بنجاح. فريق الحوكمة سيتواصل معك خلال 24 ساعة.</p>
+    </div>
+  </form>
+</section>
+
+<style>
+  .kernel-lead-form {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-5);
+    max-inline-size: 720px;
+    margin-inline: auto;
+  }
+
+  .kernel-lead-form__head {
+    text-align: center;
+    margin-block-end: var(--space-5);
+  }
+
+  .kernel-lead-form__title {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-2);
+  }
+  .kernel-lead-form__subtitle {
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .kernel-lead-form__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .kernel-lead-form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+  }
+  @media (max-width: 640px) {
+    .kernel-lead-form__row { grid-template-columns: 1fr; }
+  }
+
+  .kernel-lead-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .kernel-lead-form__label {
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+  }
+  .kernel-lead-form__req {
+    color: var(--status-danger);
+  }
+
+  .kernel-lead-form__input {
+    inline-size: 100%;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    font-family: inherit;
+    font-size: var(--text-base);
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+  .kernel-lead-form__input:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+    border-color: var(--brand-500);
+  }
+  .kernel-lead-form__input[aria-invalid="true"] {
+    border-color: var(--status-danger);
+  }
+
+  .kernel-lead-form__error {
+    color: var(--status-danger);
+    font-size: var(--text-xs);
+  }
+
+  .kernel-lead-form__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-block-start: var(--space-2);
+  }
+  @media (max-width: 640px) {
+    .kernel-lead-form__actions { flex-direction: column; align-items: stretch; }
+  }
+  .kernel-lead-form__privacy {
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    margin: 0;
+    flex: 1 1 240px;
+    line-height: 1.5;
+  }
+  .kernel-lead-form__privacy a {
+    color: var(--brand-400);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .kernel-lead-form__submit {
+    background: var(--brand-500);
+    color: var(--text-inverse);
+    border: 0;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-bold);
+    font-size: var(--text-base);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-block-size: 48px;
+    transition: background var(--duration-fast) var(--ease-out);
+  }
+  .kernel-lead-form__submit:hover:not(:disabled),
+  .kernel-lead-form__submit:focus-visible {
+    background: var(--brand-400);
+  }
+  .kernel-lead-form__submit:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
+  }
+  .kernel-lead-form__submit:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+  .kernel-lead-form__submit-icon svg {
+    inline-size: 18px;
+    block-size: 18px;
+  }
+  .kernel-lead-form__submit[data-state="loading"] .kernel-lead-form__submit-label::after {
+    content: " …";
+  }
+
+  .kernel-lead-form__alert {
+    padding: var(--space-3) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .kernel-lead-form__alert--error {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--status-danger);
+    color: var(--text-primary);
+  }
+  .kernel-lead-form__alert--success {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid var(--status-success);
+    color: var(--text-primary);
+  }
+  .kernel-lead-form__alert--success p { margin: 0; }
+  .kernel-lead-form__alert-icon {
+    color: var(--status-success);
+    display: inline-flex;
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    'use strict';
+
+    function $(q, root) { return (root || document).querySelector(q); }
+    function $$(q, root) { return Array.prototype.slice.call((root || document).querySelectorAll(q)); }
+
+    function isValidEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+    function isValidPhone(v) { return /^\+?\d{8,15}$/.test(v.replace(/[\s-]/g, '')); }
+
+    function validateField(field) {
+      var name = field.name;
+      var value = field.value.trim();
+      var error = '';
+      if (!value) {
+        error = 'هذا الحقل مطلوب';
+      } else if (name === 'name' && value.length < 2) {
+        error = 'الاسم قصير جداً (الحد الأدنى حرفان)';
+      } else if (name === 'name' && value.length > 100) {
+        error = 'الاسم طويل جداً (الحد الأقصى 100 حرف)';
+      } else if (name === 'contact') {
+        if (value.length > 120) {
+          error = 'القيمة طويلة جداً';
+        } else if (!isValidEmail(value) && !isValidPhone(value)) {
+          error = 'أدخل بريد إلكتروني صحيح أو رقم جوال دولي يبدأ بـ +';
+        }
+      } else if (name === 'company' && value.length < 2) {
+        error = 'اسم الشركة قصير جداً (الحد الأدنى حرفان)';
+      } else if (name === 'company' && value.length > 120) {
+        error = 'اسم الشركة طويل جداً (الحد الأقصى 120 حرف)';
+      }
+      var errorEl = $('[data-kernel-lead-error="' + name + '"]', field.closest('[data-kernel-lead-form]'));
+      if (error) {
+        field.setAttribute('aria-invalid', 'true');
+        if (errorEl) {
+          errorEl.textContent = error;
+          errorEl.hidden = false;
+        }
+        return false;
+      } else {
+        field.removeAttribute('aria-invalid');
+        if (errorEl) {
+          errorEl.textContent = '';
+          errorEl.hidden = true;
+        }
+        return true;
+      }
+    }
+
+    function buildWhatsAppUrl(name, contact, company, page) {
+      var text = 'طلب تواصل من BrightAI Kernel' + '%0A' +
+                 '— — — — — — — — — —' + '%0A' +
+                 'الاسم: ' + encodeURIComponent(name) + '%0A' +
+                 'التواصل: ' + encodeURIComponent(contact) + '%0A' +
+                 'الشركة: ' + encodeURIComponent(company) + '%0A' +
+                 'الصفحة: ' + encodeURIComponent(page) + '%0A' +
+                 '— — — — — — — — — —' + '%0A' +
+                 'أرسلت من نموذج Kernel Lead Capture';
+      return 'https://wa.me/966538229013?text=' + text;
+    }
+
+    function init() {
+      $$('[data-kernel-lead-form]').forEach(function (root) {
+        if (root.dataset.bound === '1') return;
+        root.dataset.bound = '1';
+
+        var form = $('[data-kernel-lead-form-element]', root);
+        if (!form) return;
+
+        var page = root.dataset.page || (location.pathname.replace(/\/$/, '') || '/');
+        var submitBtn = $('[data-kernel-lead-submit]', root);
+        var errorAlert = $('[data-kernel-lead-alert="error"]', root);
+        var successAlert = $('[data-kernel-lead-alert="success"]', root);
+        var apiAvailability = null; // null = untested, true = ok, false = 404
+
+        // تحقق فوري عند الكتابة
+        $$('input', form).forEach(function (input) {
+          input.addEventListener('blur', function () { validateField(input); });
+        });
+
+        function showError(msg) {
+          errorAlert.textContent = msg;
+          errorAlert.hidden = false;
+        }
+        function hideError() {
+          errorAlert.textContent = '';
+          errorAlert.hidden = true;
+        }
+
+        function submitForm(payload) {
+          // POST /api/lead/ (مع trailing slash لتفادي 301 → method change)
+          fetch('/api/lead/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          })
+            .then(function (res) {
+              if (res.status === 404) {
+                apiAvailability = false;
+                // Fallback: wa.me
+                var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page);
+                window.open(url, '_blank', 'noopener,noreferrer');
+                showSuccess('لم نتمكن من إرسال النموذج من المتصفح. تم فتح واتساب تلقائياً مع تفاصيلك.');
+                return;
+              }
+              if (res.status === 429) {
+                showError('تم تجاوز حد الطلبات. حاول بعد دقيقة.');
+                submitBtn.disabled = false;
+                submitBtn.removeAttribute('data-state');
+                return;
+              }
+              if (!res.ok) {
+                showError('حدث خطأ في الإرسال. حاول مرة ثانية أو تواصل عبر واتساب 966538229013.');
+                submitBtn.disabled = false;
+                submitBtn.removeAttribute('data-state');
+                return;
+              }
+              return res.json();
+            })
+            .then(function (data) {
+              if (data && data.ok) {
+                showSuccess(data.message || 'تم استلام طلبك بنجاح. فريق الحوكمة سيتواصل معك خلال 24 ساعة.');
+                form.reset();
+              }
+            })
+            .catch(function () {
+              // network error → fallback to wa.me
+              var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page);
+              window.open(url, '_blank', 'noopener,noreferrer');
+              showSuccess('تعذّر إرسال النموذج. تم فتح واتساب تلقائياً مع تفاصيلك.');
+            })
+            .finally(function () {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.removeAttribute('data-state');
+              }
+            });
+        }
+
+        function showSuccess(msg) {
+          successAlert.querySelector('p').textContent = msg;
+          successAlert.hidden = false;
+          form.style.display = 'none';
+          successAlert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          hideError();
+
+          var nameInput = $('input[name="name"]', form);
+          var contactInput = $('input[name="contact"]', form);
+          var companyInput = $('input[name="company"]', form);
+
+          var ok = validateField(nameInput) &
+                   validateField(contactInput) &
+                   validateField(companyInput);
+          if (!ok) {
+            showError('يرجى تعبئة الحقول المطلوبة بشكل صحيح.');
+            return;
+          }
+
+          submitBtn.disabled = true;
+          submitBtn.setAttribute('data-state', 'loading');
+
+          var payload = {
+            name: nameInput.value.trim(),
+            contact: contactInput.value.trim(),
+            company: companyInput.value.trim(),
+            page: page,
+            source: 'kernel-lead-form',
+            ts: new Date().toISOString(),
+          };
+
+          submitForm(payload);
+        });
+      });
+    }
+
+    document.addEventListener('astro:page-load', init);
+    if (document.readyState !== 'loading') init();
+  })();
+</script>

@@ -1,7 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import vercel from '@astrojs/vercel';
+import node from '@astrojs/node';
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
@@ -133,13 +133,14 @@ export default defineConfig({
       lastmod: new Date(),
     }),
   ],
-  adapter: vercel({
-    // We rely on Astro's built-in image pipeline; do not double-process via Vercel.
-    imageService: false,
-    // No Vercel Web Analytics — BrightAI uses GA4 + Clarity instead.
-    webAnalytics: false,
-    // Exclude the legacy preview/manifest paths from edge middleware if any.
-    edgeMiddleware: false,
+  // KERNEL-AI-2026-07-14: switched from @astrojs/vercel to @astrojs/node
+  // to enable the new /api/lead endpoint (and existing /api/ai/chat) on
+  // Render as a Node service. Standalone mode bundles the Node server
+  // into dist/server/entry.mjs and serves static files from dist/client/.
+  adapter: node({
+    mode: 'standalone',
+    // Static files are served from dist/client/ at request time.
+    // No external image service (we use Astro's built-in pipeline).
   }),
   vite: {
     build: {

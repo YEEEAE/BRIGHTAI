@@ -15,6 +15,8 @@ import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import { getKernelUnit } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelContactCta from '../../components/kernel/KernelContactCta.astro';
+import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 
 const unit = getKernelUnit('chat')!;
 
@@ -136,6 +138,12 @@ const policyBanner = {
             <p class="kernel-chat-policy-banner__msg" set:html={policyBanner.msg}></p>
           </div>
         </div>
+
+        <!-- KERNEL-AI-2026-07-14: error banner (يظهر عند فشل API) -->
+        <div data-kernel-chat-error-slot style="margin-block:var(--space-2);"></div>
+
+        <!-- KERNEL-AI-2026-07-14: contact CTA يظهر بعد 3 رسائل -->
+        <KernelContactCta id="kernel-chat-cta" threshold={3} />
 
         <!-- Messages -->
         <div class="kernel-chat-thread" data-kernel-chat-thread>
@@ -340,6 +348,8 @@ const policyBanner = {
       var typing = el('[data-kernel-typing]');
       var newBtn = el('[data-kernel-chat-new]');
       var banner = el('[data-kernel-policy-banner]');
+      var errorSlot = el('[data-kernel-chat-error-slot]');
+      var contactCta = el('[data-kernel-contact-cta]');
 
       if (!form || !input || !messages) return;
 
@@ -350,6 +360,74 @@ const policyBanner = {
       // REPORTS-SEC-01 — track whether /api/ai/chat is reachable.
       // null = untested, true = reachable (try it), false = 404 (skip it).
       var apiAvailability = null;
+
+      // KERNEL-AI-2026-07-14 — عدد رسائل المستخدم لتفعيل CTA بعد 3 رسائل
+      var userMessageCount = 0;
+      var ctaThreshold = 3;
+
+      // KERNEL-AI-2026-07-14 — عرض أخطاء عربية موحدة
+      function showChatError(type, retryAfterSec) {
+        if (!errorSlot) return;
+        var titles = {
+          rate_limit: 'تم تجاوز حد الطلبات',
+          provider_failed: 'المزود الذكي غير متاح مؤقتاً',
+          network: 'تعذّر الاتصال',
+          unavailable: 'المساعد في وضع تجريبي',
+          timeout: 'انتهت مهلة الاستجابة',
+          unknown: 'حدث خطأ غير متوقع',
+        };
+        var msgs = {
+          rate_limit: retryAfterSec
+            ? 'حاول مرة ثانية بعد ' + retryAfterSec + ' ثانية.'
+            : 'حاول مرة ثانية بعد لحظات.',
+          provider_failed: 'فشل الوصول إلى نموذج الذكاء الاصطناعي. سنعرض رداً تجريبياً بدلاً من ذلك.',
+          network: 'تحقق من اتصالك بالإنترنت. سنعرض رداً تجريبياً بدلاً من ذلك.',
+          unavailable: 'هذه البيئة لا تشغّل نقطة الاتصال /api/ai/chat/. ستشاهد ردوداً توضيحية. للتفعيل الكامل تواصل مع فريق BrightAI.',
+          timeout: 'النموذج أخذ وقتاً أطول من المتوقع. سنعرض رداً تجريبياً بدلاً من ذلك.',
+          unknown: 'حاول مرة ثانية لاحقاً.',
+        };
+        var toneMap = {
+          rate_limit: 'warning',
+          provider_failed: 'danger',
+          network: 'warning',
+          unavailable: 'info',
+          timeout: 'warning',
+          unknown: 'danger',
+        };
+        var tone = toneMap[type] || 'warning';
+        var div = document.createElement('div');
+        div.className = 'kernel-chat-policy-banner kernel-chat-policy-banner--' + tone;
+        div.setAttribute('role', 'alert');
+        div.setAttribute('aria-live', 'polite');
+        div.innerHTML =
+          '<span class="kernel-chat-policy-banner__icon" aria-hidden="true">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+              (type === 'unavailable'
+                ? '<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>'
+                : '<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>') +
+            '</svg>' +
+          '</span>' +
+          '<div class="kernel-chat-policy-banner__body">' +
+            '<p class="kernel-chat-policy-banner__title">' + titles[type] + '</p>' +
+            '<p class="kernel-chat-policy-banner__msg">' + msgs[type] + '</p>' +
+          '</div>';
+        // replace existing error if any
+        errorSlot.innerHTML = '';
+        errorSlot.appendChild(div);
+        errorSlot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      function clearChatError() {
+        if (errorSlot) errorSlot.innerHTML = '';
+      }
+      function maybeShowContactCta() {
+        if (contactCta && userMessageCount >= ctaThreshold) {
+          contactCta.hidden = false;
+          // smooth scroll to CTA after a small delay
+          setTimeout(function () {
+            contactCta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 200);
+        }
+      }
 
       function sendMessage() {
         var raw = input.value;
@@ -371,15 +449,21 @@ const policyBanner = {
         // Hide any active policy banner after first send
         if (banner) banner.hidden = true;
 
-        // REPORTS-SEC-01: Try the server-side /api/ai/chat proxy first.
-        // Falls back to demo mode silently if the endpoint is unreachable
-        // (e.g. Render static hosting without server functions, network
-        // outage, or no API keys configured server-side). Preserves the
-        // existing UX 1:1 when API is unavailable.
+        // KERNEL-AI-2026-07-14: increment user message counter + show CTA after threshold
+        userMessageCount++;
+        maybeShowContactCta();
+
+        // KERNEL-AI-2026-07-14: clear any previous error
+        clearChatError();
+
+        // REPORTS-SEC-01 + KERNEL-AI-2026-07-14: Try the server-side /api/ai/chat/ proxy first.
+        // If it fails, show Arabic error message AND fall back to demo reply
+        // (so the user still gets visual feedback while being informed about the issue).
         var apiTried = false;
         if (apiAvailability !== false) {
           apiTried = true;
-          fetch('/api/ai/chat', {
+          // trailing slash لتفادي 301 → method change (fetch يحول POST→GET على 301)
+          fetch('/api/ai/chat/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: raw }),
@@ -387,38 +471,64 @@ const policyBanner = {
             .then(function (res) {
               if (res.status === 404) {
                 apiAvailability = false;
+                showChatError('unavailable');
+                runDemoReply();
+                return null;
+              }
+              if (res.status === 429) {
+                var retryAfter = parseInt(res.headers.get('Retry-After') || '60', 10);
+                showChatError('rate_limit', retryAfter);
+                // No demo reply — user must wait
+                typing.hidden = true;
+                messages.setAttribute('aria-busy', 'false');
+                if (sendBtn) sendBtn.disabled = false;
+                input.focus();
+                return null;
+              }
+              if (res.status === 502) {
+                showChatError('provider_failed');
+                runDemoReply();
+                return null;
+              }
+              if (res.status === 504) {
+                showChatError('timeout');
                 runDemoReply();
                 return null;
               }
               if (!res.ok) {
+                showChatError('unknown');
                 runDemoReply();
                 return null;
               }
               return res.json();
             })
             .then(function (data) {
-              if (!data || !data.reply) {
-                if (!apiAvailability === false) runDemoReply();
-                return;
-              }
-              var aiMsg = createMessage('ai', '');
-              messages.insertBefore(aiMsg.article, typing);
-              streamInto(aiMsg.bubble, data.reply, function () {
+              if (!data) return;
+              if (data && data.reply) {
+                var aiMsg = createMessage('ai', '');
+                messages.insertBefore(aiMsg.article, typing);
+                streamInto(aiMsg.bubble, data.reply, function () {
+                  typing.hidden = true;
+                  messages.setAttribute('aria-busy', 'false');
+                  if (sendBtn) sendBtn.disabled = false;
+                  input.focus();
+                  scrollThreadToEnd(thread);
+                });
+              } else {
+                showChatError('unknown');
                 typing.hidden = true;
                 messages.setAttribute('aria-busy', 'false');
                 if (sendBtn) sendBtn.disabled = false;
-                input.focus();
-                scrollThreadToEnd(thread);
-              });
+              }
             })
             .catch(function () {
+              showChatError('network');
               runDemoReply();
             });
         }
 
         // REPORTS-SEC-01: Demo fallback path (latency simulation + fake streaming).
-        // Preserved EXACTLY as before the security hardening so existing UX
-        // is intact when the API endpoint isn't reachable.
+        // يُستخدم عندما الـ API غير متاح أو رجع 404/502/504. يحفظ الـ UX القديم.
         function runDemoReply() {
           setTimeout(function () {
             var aiMsg = createMessage('ai', '');
@@ -462,6 +572,10 @@ const policyBanner = {
           // Remove all message articles, keep the typing indicator
           elAll('.kernel-chat-message', messages).forEach(function (a) { a.remove(); });
           if (banner) banner.hidden = false;
+          // KERNEL-AI-2026-07-14: reset CTA + error state for new chat
+          userMessageCount = 0;
+          if (contactCta) contactCta.hidden = true;
+          clearChatError();
           input.value = '';
           input.focus();
         });
@@ -484,3 +598,14 @@ const policyBanner = {
     if (document.readyState !== 'loading') init();
   })();
 </script>
+
+  {/* ═══════════ KERNEL-AI-2026-07-14: Lead Capture ═══════════ */}
+
+  <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-chat">
+    <div class="max-w-3xl mx-auto px-5">
+      <h2 id="lead-form-h2-chat" class="inner-section__title inner-section__title--centered">تبي Kernel يلائم فريقك في منشأتك؟</h2>
+      <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يرد خلال 24 ساعة لربط Kernel بأنظمة الذكاء الاصطناعي اللي تستخدمها.</p>
+      <KernelLeadForm id="kernel-lead-form-chat" page="/kernel/chat/" />
+    </div>
+  </section>
+</KernelLayout>

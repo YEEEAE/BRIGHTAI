@@ -35,7 +35,7 @@ const SERVICE_OG_IMAGE_URLS = new Set([
   `${BASE_URL}/assets/images/og/og-solutions.webp`,
   `${BASE_URL}/images/og/brightai-og-1200x630.png`,
 ]);
-const HTML_IGNORE_DIRS = new Set([".git", ".agents", "node_modules", "dist", "build", "coverage", ".next", ".nuxt", ".render-static", "components"]);
+const HTML_IGNORE_DIRS = new Set([".git", ".agents", "node_modules", "dist", "build", "coverage", ".next", ".nuxt", ".render-static", "components", "client", "server"]);
 const INTERNAL_PAGE_PATTERN =
   /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^mais-OBM\/index\.html$|(^|\/)(admin|settings|analytics|reports|operations|scorecard|copilot|executive)(\/|\.|$)/i;
 function buildRequiredHreflangForFile(file, lowerPathMap) {

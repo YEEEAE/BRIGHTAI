@@ -14,8 +14,11 @@
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
+import KernelAiAssistant from '../../components/kernel/KernelAiAssistant.astro';
+import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import { getKernelUnit } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import { KERNEL_SYSTEM_PROMPTS } from '../../data/kernel-system-prompts';
 
 const unit = getKernelUnit('audit')!;
 
@@ -316,6 +319,30 @@ const TOTAL_RECORDS = 12483;
       </section>
     </div>
   </div>
+
+  {/* ═══════════ KERNEL-AI-2026-07-14: AI Assistant + Lead Capture ═══════════ */}
+
+  <section class="kernel-ai-section inner-section" aria-labelledby="ai-assistant-h2">
+    <div class="max-w-4xl mx-auto px-5">
+      <h2 id="ai-assistant-h2" class="inner-section__title">جرّب بالذكاء الاصطناعي</h2>
+      <p class="inner-section__lead inner-section__lead--centered">اسأل المدقق عن كيفية تحضير تقرير تدقيق لـ PDPL أو NCA أو SAMA أو ISO 42001.</p>
+      <KernelAiAssistant
+        systemPrompt={KERNEL_SYSTEM_PROMPTS.audit}
+        title="مدقق سجلات AI"
+        subtitle="متخصص في تدقيق سجلات الذكاء الاصطناعي للجهات الرقابية السعودية."
+        placeholder="مثال: كيف أجهّز تقرير تدقيق ربع سنوي لـ NCA ECC عن 348 تفاعل AI في البنك؟"
+        id="kai-audit"
+      />
+    </div>
+  </section>
+
+  <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-audit">
+    <div class="max-w-3xl mx-auto px-5">
+      <h2 id="lead-form-h2-audit" class="inner-section__title inner-section__title--centered">تبي تدقيق خارجي لمنشأتك؟</h2>
+      <p class="inner-section__lead inner-section__lead--centered">فريق التدقيق يوضح لك كيف يبسّط Kernel عملية المراجعة من أسابيع إلى ساعات.</p>
+      <KernelLeadForm id="kernel-lead-form-audit" page="/kernel/audit/" />
+    </div>
+  </section>
 </KernelLayout>
 
 <script is:inline>

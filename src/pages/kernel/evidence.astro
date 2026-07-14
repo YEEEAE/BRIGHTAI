@@ -12,8 +12,11 @@
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
+import KernelAiAssistant from '../../components/kernel/KernelAiAssistant.astro';
+import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import { getKernelUnit } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import { KERNEL_SYSTEM_PROMPTS } from '../../data/kernel-system-prompts';
 
 const unit = getKernelUnit('evidence')!;
 
@@ -440,6 +443,30 @@ const SECTOR_LABEL: Record<string, string> = {
       </div>
     </div>
   </div>
+
+  {/* ═══════════ KERNEL-AI-2026-07-14: AI Assistant + Lead Capture ═══════════ */}
+
+  <section class="kernel-ai-section inner-section" aria-labelledby="ai-assistant-h2">
+    <div class="max-w-4xl mx-auto px-5">
+      <h2 id="ai-assistant-h2" class="inner-section__title">جرّب بالذكاء الاصطناعي</h2>
+      <p class="inner-section__lead inner-section__lead--centered">اسأل محقق الأدلة الرقمية عن بنية ملف الدليل (EVD) أو سلسلة الحفظ أو متطلبات الاحتفاظ.</p>
+      <KernelAiAssistant
+        systemPrompt={KERNEL_SYSTEM_PROMPTS.evidence}
+        title="محقق الأدلة الرقمية"
+        subtitle="متخصص في توثيق استخدامات الذكاء الاصطناعي في المنشآت السعودية."
+        placeholder="مثال: وش الحقول الإلزامية في ملف دليل يثبت إخفاء بيانات شخصية لطلب تم رفضه؟"
+        id="kai-evidence"
+      />
+    </div>
+  </section>
+
+  <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-evidence">
+    <div class="max-w-3xl mx-auto px-5">
+      <h2 id="lead-form-h2-evidence" class="inner-section__title inner-section__title--centered">تبي ملف دليل فعلي لمنشأتك؟</h2>
+      <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يوضح لك كيف يُولّد Kernel ملف الدليل تلقائياً مع كل قرار.</p>
+      <KernelLeadForm id="kernel-lead-form-evidence" page="/kernel/evidence/" />
+    </div>
+  </section>
 </KernelLayout>
 
 <script is:inline>

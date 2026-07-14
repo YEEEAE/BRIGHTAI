@@ -15,8 +15,11 @@ import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelStatusStrip from '../../components/kernel/KernelStatusStrip.astro';
 import KernelCard from '../../components/kernel/KernelCard.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
+import KernelAiAssistant from '../../components/kernel/KernelAiAssistant.astro';
+import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import { getKernelUnit } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import { KERNEL_SYSTEM_PROMPTS } from '../../data/kernel-system-prompts';
 
 const unit = getKernelUnit('policies')!;
 
@@ -521,4 +524,28 @@ const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
       });
     })();
   </script>
+
+  {/* ═══════════ KERNEL-AI-2026-07-14: AI Assistant + Lead Capture ═══════════ */}
+
+  <section class="kernel-ai-section inner-section" aria-labelledby="ai-assistant-h2">
+    <div class="max-w-4xl mx-auto px-5">
+      <h2 id="ai-assistant-h2" class="inner-section__title">جرّب بالذكاء الاصطناعي</h2>
+      <p class="inner-section__lead inner-section__lead--centered">اطلب من المساعد صياغة سياسة حوكمة AI مخصصة لمنشأتك، متوافقة مع PDPL وNCA ECC.</p>
+      <KernelAiAssistant
+        systemPrompt={KERNEL_SYSTEM_PROMPTS.policies}
+        title="كاتب سياسات الحوكمة"
+        subtitle="يكتب سياسات قابلة للتفعيل عبر BrightAI Kernel."
+        placeholder="مثال: اكتب لي سياسة استخدام ChatGPT Enterprise من قبل الموظفين في بنك، متوافقة مع SAMA."
+        id="kai-policies"
+      />
+    </div>
+  </section>
+
+  <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-policies">
+    <div class="max-w-3xl mx-auto px-5">
+      <h2 id="lead-form-h2-policies" class="inner-section__title inner-section__title--centered">تبي مكتبة سياسات جاهزة لمنشأتك؟</h2>
+      <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يرد خلال 24 ساعة بقوالب سياسات مخصصة لقطاعك وحجمك.</p>
+      <KernelLeadForm id="kernel-lead-form-policies" page="/kernel/policies/" />
+    </div>
+  </section>
 </KernelLayout>
