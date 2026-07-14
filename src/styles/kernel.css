@@ -2342,6 +2342,48 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   margin: 0 0 var(--space-2);
 }
 
+/* ── 22.b CHAT — Mobile responsive (KRN-008 / EXEC-08) ─────────────────
+   - On <1024px: hide threads + context sidebars, only show chat thread
+     full-width. Composer becomes sticky at bottom for always-visible input.
+   - On ≥1024px: 3-pane layout unchanged (threads | thread | context).
+*/
+@media (max-width: 1023px) {
+  .kernel-chat-layout {
+    /* Single column on mobile — grid-template-columns override at desktop */
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kernel-chat-layout__pane--left,
+  .kernel-chat-layout__pane--right {
+    /* Hide threads list + context panel on mobile (audit EXEC-08) */
+    display: none;
+  }
+
+  .kernel-chat-layout__pane--center {
+    /* Chat thread takes full width on mobile */
+    inline-size: 100%;
+    min-block-size: auto;
+  }
+
+  .kernel-chat-thread {
+    /* Ensure thread can shrink in flex layout so sticky composer works */
+    min-block-size: 0;
+  }
+
+  .kernel-chat-composer {
+    /* Sticky composer on mobile — always visible at bottom (KRN-008) */
+    position: sticky;
+    bottom: 0;
+    /* Account for KernelLayout bottom-nav (60px + safe-area) */
+    inset-block-end: calc(60px + env(safe-area-inset-bottom, 0px));
+    z-index: 5;
+    /* Solid background to cover scrolling thread content */
+    background: var(--bg-base);
+    border: 1px solid var(--border);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
 /* ── 23. AUDIT — table + filters + drawer + risk badges + hash ───────── */
 
 .kernel-audit-filters {

@@ -21,6 +21,15 @@ services:
         value: 10000
       # GROQ_API_KEY and GEMINI_API_KEY are set in Render dashboard env
       # (NOT in this file — they are server secrets).
+      # LEAD_WEBHOOK_URL + LEAD_WEBHOOK_SECRET (KRN-004 / EXEC-04) also
+      # set in Render dashboard env. Without LEAD_WEBHOOK_URL configured,
+      # leads are queued in-memory only (cap 100). Recommended webhook
+      # providers: Resend / SendGrid / HubSpot / Zapier / n8n.
+      # BRIGHTAI_CHAT_KEY (KRN-003 / EXEC-03) — optional API key for
+      # /api/ai/chat/. Current implementation uses Origin allowlist only
+      # (no API key required). Set BRIGHTAI_CHAT_KEY if you want to
+      # allow non-browser clients (curl/Postman) with x-brightai-chat-key
+      # header instead of Origin check. Generate with `openssl rand -hex 32`.
     headers:
       - path: /*
         name: Strict-Transport-Security

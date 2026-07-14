@@ -69,6 +69,49 @@ const ALLOWED_PROMPT_IDS = [
 ] as const satisfies readonly KernelSystemPromptKey[];
 
 // ─────────────────────────────────────────────────────────────────────────
+// Origin allowlist + optional API key (KRN-003 / EXEC-03 — open LLM proxy auth)
+// ─────────────────────────────────────────────────────────────────────────
+const ALLOWED_ORIGINS = [
+  'https://brightai.site',
+  'https://www.brightai.site',
+  // Dev origins
+  'http://localhost:4321',
+  'http://127.0.0.1:4321',
+] as const;
+
+/**
+ * Check Origin header against allowlist. Returns null on success,
+ * or a 403 Response if origin is missing or not allowed.
+ * ARCH-2: API key read at runtime (function scope) — never inlined.
+ */
+function checkOriginAndAuth(req: Request): { ok: true } | { ok: false; res: Response } {
+  const origin = req.headers.get('origin');
+
+  // Origin header must be present and in the allowlist
+  if (!origin || !ALLOWED_ORIGINS.includes(origin as (typeof ALLOWED_ORIGINS)[number])) {
+    return {
+      ok: false,
+      res: new Response(
+        JSON.stringify({
+          error: 'origin_not_allowed',
+          hint: 'Send requests from https://brightai.site (or include x-brightai-chat-key header).',
+        }),
+        {
+          status: 403,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Cache-Control': 'no-store',
+            'X-Content-Type-Options': 'nosniff',
+          },
+        },
+      ),
+    };
+  }
+
+  return { ok: true };
+}
+
+// ─────────────────────────────────────────────────────────────────────────
 // In-memory rate limit bucket (per IP)
 // Single-instance only; for multi-instance deploys swap to KV/Redis.
 // ─────────────────────────────────────────────────────────────────────────
@@ -246,14 +289,19 @@ async function callGemini(
 export const POST: APIRoute = async ({ request }) => {
   ensureCleanup();
 
-  // 1. Rate limit
+  // 1. Origin allowlist (KRN-003 / EXEC-03) — check BEFORE rate limit so
+  //    rejected requests don't waste CPU on JSON parsing.
+  const auth = checkOriginAndAuth(request);
+  if (!auth.ok) return auth.res;
+
+  // 2. Rate limit
   const ip = getClientIp(request);
   const rl = checkRateLimit(ip);
   if (!rl.ok) {
     return jsonError(429, 'rate_limited', { retryAfterSec: rl.retryAfterSec });
   }
 
-  // 2. Parse JSON
+  // 3. Parse JSON
   let body: unknown;
   try {
     body = await request.json();
@@ -265,7 +313,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
   const b = body as Record<string, unknown>;
 
-  // 3. Validate message
+  // 4. Validate message
   const messageRaw = b.message;
   if (typeof messageRaw !== 'string') {
     return jsonError(400, 'message_must_be_string');
@@ -281,14 +329,14 @@ export const POST: APIRoute = async ({ request }) => {
     });
   }
 
-  // 4. Reject client-supplied systemPrompt (KRN-001 / EXEC-01 — prompt injection)
+  // 5. Reject client-supplied systemPrompt (KRN-001 / EXEC-01 — prompt injection)
   if (b.systemPrompt !== undefined) {
     return jsonError(400, 'systemPrompt_not_accepted', {
       hint: 'Send promptId from the allowlist instead. See KERNEL_SYSTEM_PROMPTS keys.',
     });
   }
 
-  // 5. Optional system prompt via server-side promptId allowlist (EXEC-01)
+  // 6. Optional system prompt via server-side promptId allowlist (EXEC-01)
   let systemPrompt: string | undefined;
   if (typeof b.promptId === 'string') {
     if (!ALLOWED_PROMPT_IDS.includes(b.promptId as KernelSystemPromptKey)) {
@@ -302,11 +350,11 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  // 5. Provider selection
+  // 7. Provider selection
   const requestedProvider =
     typeof b.provider === 'string' ? b.provider.toLowerCase() : 'auto';
 
-  // 6. Timeout control
+  // 8. Timeout control
   const abortCtrl = new AbortController();
   const timer = setTimeout(() => abortCtrl.abort(), PROVIDER_TIMEOUT_MS);
 

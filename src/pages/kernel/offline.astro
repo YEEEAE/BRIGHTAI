@@ -1,6 +1,8 @@
 ---
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import { migratedKernelOffline as page } from '../../data/migratedKernelPages';
+// KRN-012 / EXEC-12: sanitize migrated HTML
+import DOMPurify from 'isomorphic-dompurify';
 ---
 <KernelLayout
   title={page.title}
@@ -10,5 +12,5 @@ import { migratedKernelOffline as page } from '../../data/migratedKernelPages';
   jsonLd={page.jsonLd as any}
   currentPath="/kernel/offline/"
 >
-  <main class="migrated-legacy-content" set:html={page.html} />
+  <main class="migrated-legacy-content" set:html={DOMPurify.sanitize(page.html)} />
 </KernelLayout>

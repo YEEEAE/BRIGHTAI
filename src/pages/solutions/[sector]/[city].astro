@@ -5,6 +5,8 @@ import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../../components/RelatedLinks.astro';
 import { sectors, solutions } from '../../../data/solutions';
 import { migratedLocalPages } from '../../../data/migratedSolutionPages';
+// KRN-012 / EXEC-12: sanitize migrated HTML
+import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../../components/Icon.astro';
 import { ORGANIZATION } from '../../../data/schema-helpers';
@@ -91,7 +93,7 @@ const jsonLd = {
 {migratedPage ? (
   <>
     {!/<h1\b/i.test(migratedPage.html) && <h1 class="sr-only">{loc.h1}</h1>}
-    <main class="migrated-legacy-content" set:html={migratedPage.html} />
+    <main class="migrated-legacy-content" set:html={DOMPurify.sanitize(migratedPage.html)} />
   </>
 ) : (
 <>

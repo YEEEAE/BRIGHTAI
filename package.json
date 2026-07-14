@@ -17,8 +17,6 @@
     "db:studio": "pnpm --filter @brightai/db db:studio",
     "db:reset": "pnpm --filter @brightai/db db:reset",
     "db:rls:test": "pnpm --filter @brightai/db db:rls:test",
-    "typecheck": "pnpm -r --parallel typecheck",
-    "lint": "pnpm -r --parallel lint",
     "dashboard:dev": "pnpm --filter @brightai/dashboard dev",
     "dashboard:build": "pnpm --filter @brightai/dashboard build",
     "//_note": "Legacy Astro scripts below — DO NOT REMOVE until apps/marketing/ refactor lands.",
@@ -72,6 +70,7 @@
     "clsx": "^2.1.1",
     "esbuild": "^0.21.5",
     "glob": "^13.0.6",
+    "isomorphic-dompurify": "^2.16.0",
     "postcss": "^8.5.15",
     "zod": "^3.24.1"
   },

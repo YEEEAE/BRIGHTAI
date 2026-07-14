@@ -18,6 +18,8 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { getPublishedPosts } from '../../data/blog';
 import { SITE } from '../../data/site';
 import { ORGANIZATION } from '../../data/schema-helpers';
+// KRN-012 / EXEC-12: static literal — sanitize for consistency (no-op for HTML comment)
+import DOMPurify from 'isomorphic-dompurify';
 
 export function getStaticPaths() {
   const hubPages = [
@@ -131,7 +133,7 @@ const hubSlugJsonLd = {
         Tailwind-flavored class names + inline styles. We render it
         verbatim below — no content mutations — and let the new
         canonical wrapper provide padding + max-width. */}
-    <div class="hub-subpage__body article-content" set:html={`<!-- generated -->`} />
+    <div class="hub-subpage__body article-content" set:html={DOMPurify.sanitize(`<!-- generated -->`)} />
   </main>
 
   {relatedPosts.length > 0 && (

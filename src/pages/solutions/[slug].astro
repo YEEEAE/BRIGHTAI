@@ -26,6 +26,8 @@ import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import { solutions, getRelatedSolutions, getRelatedSectors } from '../../data/solutions';
 import { migratedSolutionPages } from '../../data/migratedSolutionPages';
+// KRN-012 / EXEC-12: sanitize migrated HTML to prevent stored XSS via data files
+import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../components/Icon.astro';
 import { ORGANIZATION } from '../../data/schema-helpers';
@@ -179,7 +181,7 @@ const useCases = buildScenarios(solution);
 >
 {!solution.content ? (
   /* legacy migrated fallback — only لو ما في content data */
-  <main class="migrated-legacy-content" set:html={migratedHtml} />
+  <main class="migrated-legacy-content" set:html={DOMPurify.sanitize(migratedHtml)} />
 ) : (
 <>
 {/* ─── Section 1 · Hero (split: text + browser mockup) ─────────────── */}

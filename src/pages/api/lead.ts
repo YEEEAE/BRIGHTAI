@@ -1,35 +1,40 @@
 /**
  * src/pages/api/lead.ts — KERNEL-AI-2026-07-14
+ *                  + KERNEL-AUDIT-2026-07-15-BATCH-3 (EXEC-04)
  *
  * Server-side lead capture endpoint. يستقبل طلبات "تواصل معنا" من
  * KernelLeadForm الموجود في كل صفحة Kernel.
  *
- * السلوك:
+ * السلوك (KRN-004 / EXEC-04):
  *  - POST { name, contact, company, page?, source? }
  *  - يتحقق من الحقول بـ Zod
- *  - rate limit: 5 طلبات / دقيقة / IP (أقل من chat لأن lead = قيمة عالية)
- *  - يسجّل الـ lead في console (server-side log) — بدون DB أو SMTP
- *  - يرجّع { ok: true, mode: 'logged' } عند النجاح
- *  - يرجّع 400 / 429 / 502 بأخطاء موحدة
+ *  - rate limit: 5 طلبات / دقيقة / IP
+ *  - يولد leadId = SHA-256(ip + name + timestamp)
+ *  - يحاول ship إلى LEAD_WEBHOOK_URL (best-effort, 5s timeout)
+ *  - لو webhook فشل → queue في الذاكرة (cap 100)
+ *  - setInterval (60s) يجرب drain للـ queue (لو webhook رجع)
+ *  - queue overflow → 503 lead_sink_unavailable
+ *  - يطبع في console: id=<sha256> ts=<iso> page=<path> mode=<shipped|queued>
+ *    ← NO PII في الـ logs (لا name، لا contact، لا company، لا IP)
+ *  - يرجّع { ok: true, mode: 'shipped'|'queued' }
  *
  * النشر:
  *  - يتطلب @astrojs/node (مفعّل في astro.config.mjs)
  *  - ينشر على Render كـ Node service
- *  - لو نُشر على static hosting (404) → العميل يفتح wa.me fallback تلقائياً
+ *  - LEAD_WEBHOOK_URL + LEAD_WEBHOOK_SECRET تُضبط في Render dashboard
  *
  * الأمان:
  *  - لا يحفظ في localStorage / cookies
  *  - لا يكشف بيانات حساسة في الرد
  *  - rate limit يحمي من spam
  *  - Zod validation يحمي من حقن payloads
- *
- * الخصوصية:
- *  - لا يُسجّل body كامل (فقط الحقول المُتحققة)
- *  - IP يُسجّل في rate limit bucket فقط (لا يُحفظ)
+ *  - HMAC-SHA256 signing على الـ webhook (لو LEAD_WEBHOOK_SECRET موجود)
+ *  - leadId hash غير reversible (SHA-256 + salt = timestamp)
  */
 
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
+import crypto from 'node:crypto';
 
 export const prerender = false;
 
@@ -38,6 +43,9 @@ export const prerender = false;
 // ─────────────────────────────────────────────────────────────────────────
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 5;  // 5 leads / minute / IP
+const MAX_QUEUE_SIZE = 100;         // in-memory buffer cap
+const WEBHOOK_TIMEOUT_MS = 5_000;   // 5 seconds
+const DRAIN_INTERVAL_MS = 60_000;   // 1 minute retry interval
 
 // ─────────────────────────────────────────────────────────────────────────
 // Zod schema
@@ -146,6 +154,97 @@ function jsonError(
 }
 
 // ─────────────────────────────────────────────────────────────────────────
+// Lead ID hashing + HMAC signing (KRN-004 / EXEC-04 — PII redaction)
+// ─────────────────────────────────────────────────────────────────────────
+function sha256(input: string): string {
+  return crypto.createHash('sha256').update(input).digest('hex');
+}
+
+function hmacSign(message: string, secret: string): string {
+  return crypto.createHmac('sha256', secret).update(message).digest('hex');
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Webhook sink (best-effort, 5s timeout)
+// ─────────────────────────────────────────────────────────────────────────
+type QueuedLead = {
+  lead: LeadPayload;
+  leadId: string;
+  ip: string;
+  ts: number;
+};
+
+async function shipToWebhook(lead: LeadPayload, leadId: string, ip: string): Promise<boolean> {
+  const url = process.env.LEAD_WEBHOOK_URL;
+  if (!url) return false; // Not configured = treat as no-op (will fall through to queue)
+
+  const secret = process.env.LEAD_WEBHOOK_SECRET;
+  const body = JSON.stringify({
+    id: leadId,
+    name: lead.name,
+    contact: lead.contact,
+    company: lead.company,
+    page: lead.page ?? null,
+    source: lead.source ?? 'kernel',
+    ip, // OK to ship to webhook (we control the destination)
+    ts: new Date().toISOString(),
+  });
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    'X-BrightAI-Lead-Id': leadId,
+  };
+  if (secret) {
+    headers['X-BrightAI-Signature'] = `sha256=${hmacSign(body, secret)}`;
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), WEBHOOK_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers,
+      body,
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    return res.ok;
+  } catch {
+    clearTimeout(timer);
+    return false;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// In-memory queue (overflow → 503 lead_sink_unavailable)
+// ─────────────────────────────────────────────────────────────────────────
+const pendingLeads: QueuedLead[] = [];
+
+function enqueueLead(item: QueuedLead): 'ok' | 'overflow' {
+  if (pendingLeads.length >= MAX_QUEUE_SIZE) return 'overflow';
+  pendingLeads.push(item);
+  return 'ok';
+}
+
+// Periodic drain: try to flush queue to webhook every 60s (best-effort)
+let drainTimer: ReturnType<typeof setInterval> | null = null;
+function ensureDrain(): void {
+  if (drainTimer) return;
+  drainTimer = setInterval(async () => {
+    while (pendingLeads.length > 0) {
+      const item = pendingLeads[0];
+      const ok = await shipToWebhook(item.lead, item.leadId, item.ip);
+      if (!ok) break; // webhook still down — try again next interval
+      pendingLeads.shift();
+    }
+  }, DRAIN_INTERVAL_MS);
+  if (drainTimer && typeof drainTimer.unref === 'function') {
+    drainTimer.unref();
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
 // POST handler
 // ─────────────────────────────────────────────────────────────────────────
 export const POST: APIRoute = async ({ request }) => {
@@ -181,23 +280,42 @@ export const POST: APIRoute = async ({ request }) => {
 
   const lead: LeadPayload = parsed.data;
 
-  // 4. Log lead (server-side only — no DB yet)
-  // النية: لاحقاً يربط هذا مع SendGrid / Resend / webhook
-  // حالياً يطبع في console لسهولة الاختبار اليدوي
-  try {
-    // eslint-disable-next-line no-console
-    console.log(
-      `[brightai-kernel-lead] ${new Date().toISOString()} ip=${ip} page=${lead.page ?? 'unknown'} ` +
-      `name="${lead.name}" company="${lead.company}" contact="${lead.contact}" source=${lead.source ?? 'kernel'}`,
-    );
-  } catch {
-    // console.log قد يفشل في بعض البيئات (edge) — نتجاهل بصمت
+  // 4. Compute lead ID hash (SHA-256 of ip + name + timestamp)
+  //    — غير reversible. يُستخدم في الـ logs + الـ webhook signature.
+  const leadId = sha256(`${ip}|${lead.name}|${Date.now()}`);
+
+  // 5. Try to ship to webhook (best-effort, 5s timeout)
+  ensureDrain();
+  const webhookOk = await shipToWebhook(lead, leadId, ip);
+
+  // 6. If webhook failed, queue for later drain
+  let mode: 'shipped' | 'queued';
+  if (webhookOk) {
+    mode = 'shipped';
+  } else {
+    const queued = enqueueLead({ lead, leadId, ip, ts: Date.now() });
+    if (queued === 'overflow') {
+      // لا نخسر الـ lead بصمت — نرجّع 503 مع رسالة واضحة (KRN-004)
+      // الـ user يمكنه retry أو استخدام WhatsApp fallback
+      return jsonError(503, 'lead_sink_unavailable', {
+        message: 'Lead system temporarily unavailable. Please try again later or use WhatsApp fallback.',
+        hint: 'https://wa.me/?text=' + encodeURIComponent('استفسار عن BrightAI Kernel'),
+      });
+    }
+    mode = 'queued';
   }
 
-  // 5. نجاح
+  // 7. Log ONLY ID hash + timestamp + page (لا PII في stdout)
+  // eslint-disable-next-line no-console
+  console.log(
+    `[brightai-kernel-lead] id=${leadId} ts=${new Date().toISOString()} ` +
+    `page=${lead.page ?? 'unknown'} mode=${mode}`,
+  );
+
+  // 8. نجاح
   return jsonResponse({
     ok: true,
-    mode: 'logged',
+    mode,
     message: 'تم استلام طلبك بنجاح. فريق الحوكمة سيتواصل معك خلال 24 ساعة.',
   });
 };

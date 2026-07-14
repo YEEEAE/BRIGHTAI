@@ -16,6 +16,8 @@ import {
   type KernelUnit,
 } from '../../data/kernel';
 import { migratedKernelPages } from '../../data/migratedKernelPages';
+// KRN-012 / EXEC-12: sanitize migrated HTML
+import DOMPurify from 'isomorphic-dompurify';
 import { ORGANIZATION } from '../../data/schema-helpers';
 
 export function getStaticPaths() {
@@ -129,7 +131,7 @@ const isCompliance = unit.slug === 'compliance';
     {migratedPage ? (
       <>
         {!migratedPage.html.includes('<h1') && <h1>{unit.h1}</h1>}
-        <div class="migrated-kernel-content" set:html={migratedPage.html} />
+        <div class="migrated-kernel-content" set:html={DOMPurify.sanitize(migratedPage.html)} />
 
         <!-- SEO content from migrated page typically includes its own sections -->
       </>
