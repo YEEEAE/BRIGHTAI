@@ -35,6 +35,8 @@
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
 import crypto from 'node:crypto';
+// KRN-013 / EXEC-13: shared client IP extraction
+import { getClientIp } from '../../lib/ip';
 
 export const prerender = false;
 
@@ -82,15 +84,10 @@ type LeadPayload = z.infer<typeof LeadSchema>;
 type Bucket = { count: number; resetAt: number };
 const buckets = new Map<string, Bucket>();
 
-function getClientIp(req: Request): string {
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) {
-    const first = xff.split(',')[0]?.trim();
-    if (first) return first;
-  }
-  const real = req.headers.get('x-real-ip');
-  if (real) return real.trim();
-  return 'unknown';
+function getClientIpLocal(req: Request): string {
+  // KRN-013 / EXEC-13: TRUSTED_PROXY_COUNT env (default 1 for Render)
+  const trustedProxyCount = parseInt(process.env.TRUSTED_PROXY_COUNT || '1', 10);
+  return getClientIp(req, { trustedProxyCount });
 }
 
 function checkRateLimit(ip: string): { ok: true } | { ok: false; retryAfterSec: number } {
@@ -251,7 +248,7 @@ export const POST: APIRoute = async ({ request }) => {
   ensureCleanup();
 
   // 1. Rate limit
-  const ip = getClientIp(request);
+  const ip = getClientIpLocal(request);
   const rl = checkRateLimit(ip);
   if (!rl.ok) {
     return jsonError(429, 'rate_limited', { retryAfterSec: rl.retryAfterSec });

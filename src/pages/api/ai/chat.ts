@@ -45,6 +45,8 @@ import {
   KERNEL_SYSTEM_PROMPT_MAX_CHARS,
   type KernelSystemPromptKey,
 } from '../../../data/kernel-system-prompts';
+// KRN-013 / EXEC-13: shared client IP extraction with XFF rightmost-trust
+import { getClientIp } from '../../../lib/ip';
 
 export const prerender = false;
 
@@ -118,15 +120,10 @@ function checkOriginAndAuth(req: Request): { ok: true } | { ok: false; res: Resp
 type Bucket = { count: number; resetAt: number };
 const buckets = new Map<string, Bucket>();
 
-function getClientIp(req: Request): string {
-  const xff = req.headers.get('x-forwarded-for');
-  if (xff) {
-    const first = xff.split(',')[0]?.trim();
-    if (first) return first;
-  }
-  const real = req.headers.get('x-real-ip');
-  if (real) return real.trim();
-  return 'unknown';
+function getClientIpLocal(req: Request): string {
+  // KRN-013 / EXEC-13: TRUSTED_PROXY_COUNT env (default 1 for Render)
+  const trustedProxyCount = parseInt(process.env.TRUSTED_PROXY_COUNT || '1', 10);
+  return getClientIp(req, { trustedProxyCount });
 }
 
 function checkRateLimit(ip: string): { ok: true } | { ok: false; retryAfterSec: number } {
@@ -295,7 +292,7 @@ export const POST: APIRoute = async ({ request }) => {
   if (!auth.ok) return auth.res;
 
   // 2. Rate limit
-  const ip = getClientIp(request);
+  const ip = getClientIpLocal(request);
   const rl = checkRateLimit(ip);
   if (!rl.ok) {
     return jsonError(429, 'rate_limited', { retryAfterSec: rl.retryAfterSec });
@@ -354,9 +351,19 @@ export const POST: APIRoute = async ({ request }) => {
   const requestedProvider =
     typeof b.provider === 'string' ? b.provider.toLowerCase() : 'auto';
 
-  // 8. Timeout control
-  const abortCtrl = new AbortController();
-  const timer = setTimeout(() => abortCtrl.abort(), PROVIDER_TIMEOUT_MS);
+  // 8. Per-provider timeout (KRN-015 fix) — fresh AbortController per call
+  //    so a Groq timeout doesn't poison the Gemini fallback signal.
+  async function callWithTimeout<T>(
+    fn: (signal: AbortSignal) => Promise<T>,
+  ): Promise<T> {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), PROVIDER_TIMEOUT_MS);
+    try {
+      return await fn(ctrl.signal);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
 
   let reply = '';
   let usedProvider: 'groq' | 'gemini' | '' = '';
@@ -364,27 +371,24 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     if (requestedProvider === 'groq') {
-      reply = await callGroq(message, systemPrompt, abortCtrl.signal);
+      reply = await callWithTimeout((signal) => callGroq(message, systemPrompt, signal));
       usedProvider = 'groq';
     } else if (requestedProvider === 'gemini') {
-      reply = await callGemini(message, systemPrompt, abortCtrl.signal);
+      reply = await callWithTimeout((signal) => callGemini(message, systemPrompt, signal));
       usedProvider = 'gemini';
     } else {
-      // auto: try Groq first, fallback to Gemini
+      // auto: try Groq first, fallback to Gemini (each call gets its own AbortController)
       try {
-        reply = await callGroq(message, systemPrompt, abortCtrl.signal);
+        reply = await callWithTimeout((signal) => callGroq(message, systemPrompt, signal));
         usedProvider = 'groq';
       } catch (e) {
         lastError = (e as Error).message;
-        reply = await callGemini(message, systemPrompt, abortCtrl.signal);
+        reply = await callWithTimeout((signal) => callGemini(message, systemPrompt, signal));
         usedProvider = 'gemini';
       }
     }
   } catch (e) {
-    clearTimeout(timer);
     return jsonError(502, 'provider_failed', { detail: (e as Error).message });
-  } finally {
-    clearTimeout(timer);
   }
 
   if (!usedProvider || !reply) {
