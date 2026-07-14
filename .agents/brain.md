@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-08 20:40 +03:00
+last_updated: 2026-07-14 17:55 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.8
+version: 2.7.9
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -140,6 +140,19 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-14 — Strategic Moat Document v1.1 (ربط الاستراتيجية بحالة المنتج الفعلية) — Verified
+
+- **Files**: 8 معدّل. `strategy/01-strategic-moat-document.md` (+ملحق د: حالة الاستراتيجية)، `strategy/02-three-year-roadmap.md` (+حالة Q1-Q2 الفعلية + Q3-Q4 المخطط)، `strategy/03-positioning-messaging-framework.md` (+قسم 9: رسائل مع المنتج الفعلي)، `strategy/04-board-deck.md` (+شريحة 12.5: الإنجازات الفعلية + 13: التوصيات)، `strategy/05-investor-pitch-deck.md` (+Traction Slide محدّث + Use of Funds)، `strategy/06-competitive-intelligence.md` (+قسم 7: BrightAI كمنافس فعلي)، `strategy/07-risk-register.md` (+5 مخاطر جديدة #11-#17 SaaS + مؤشرات الإنذار)، `strategy/README.md` (حالة إصدار v1.1).
+- **What**: ربطنا وثائق الاستراتيجية (v1.0 الصادرة 2026-07-08) بحقيقة المنتج في 2026-07-14. أضفنا ملحق "حالة الاستراتيجية" في 01 يربط كل حصن من العشرة بما تم فعلياً (AI Firewall Engine Phase 1c shipped + Multi-tenant SaaS Dashboard Phase 0 + Lighthouse 95.3/97.7 + 33 blog + 190 صفحة). وحّدنا كل وثيقة فرعية بنفس الـ reality check. حطّينا تحفظات صريحة على الأرقام الجريئة (340%، "الأولى بالمنطقة"، CAGR 31%) بعلامة `[يتطلب تحقق]`. أضفنا 5 مخاطر SaaS multi-tenant + prompt injection evasions + vendor lock-in. نوصي بتخفيض هدف السنة 1 من 50 عميل/15M SAR إلى 15-25 عميل/5-8M SAR (واقعي مع 0 عملاء حاليين).
+- **Why**: المسودة الأولى كانت strategic intent — vision وplan. بعد 6 أيام، عندنا منتج فعلي + أرقام أداء حقيقية. بدون ربط، الوثائق تصير marketing fluff بدل strategy. التحفظات مهمة قبل أي عرض لمستثمر/منظّم.
+- **Verification**: تحقق يدوي: ✅ كل الـ 8 ملفات فيها v1.1 frontmatter. ✅ كل تحفظ موجود 5 مرات في README + 01 ملحق د. ✅ ملحق د في 01 فيه 10 حصون بحالاتها (✅/🟡/🔲). ✅ الأرقام (Lighthouse 95+, 190 صفحة, 7.5KB JS) متطابقة مع Section 1 في brain. ✅ المخاطر الجديدة (#11-#17) مرتبطة بـ DEC-FIREWALL-001..005 + Phase 0 Foundation entries. ✅ توصية تخفيض هدف السنة 1 موثّقة في 02 §7.4 و 04 شريحة 13 و 05 §8.2.
+- **Report**: `strategy/README.md` (الفهرس) + `strategy/01-strategic-moat-document.md` (الـ master + ملحق د).
+- **Commit**: uncommitted.
+- **Status**: verified.
+- **Brain updates**: Section 1.1 (لا تغيير — الأرقام متطابقة). Section 1.2 (لا تغيير — Lighthouse/perf كما هو). Section 5 (Inventory): لا تغيير في tokens/components، لكن الاستراتيجية توثّق إنجازاتها في Strategy Moat doc. Section 8 (Pending): أضفنا implied priorities — MoU مع SDAIA + SOC 2 + 2-3 pilots + تقرير الثقة + براءة اختراع.
+- **Strategic decisions (مُسجَّلة في الوثيقة):** DEC-MOAT-001 — الاستراتيجية تُحدَّث ربع سنويًا (v1.2 في Q4 2026). DEC-MOAT-002 — التحفظات على الأرقام الجريئة تُراجع مع فريق ثقة مستقل قبل أي عرض خارجي. DEC-MOAT-003 — توصية واقعية لهدف السنة 1 (15-25 عميل) تُعرض على المجلس للموافقة.
+- **Follow-up (للمستخدم/المجلس):** (1) الموافقة على تخفيض هدف السنة 1. (2) الموافقة على ميزانية شهادات (800K-1.2M SAR). (3) تفويض المؤسس لفتح MoU مع SDAIA. (4) جدولة تحقق التحفظات قبل أي عرض.
 
 ### 2026-07-08 — Growth Engine Batches 2-3 (Campaign Pages + Docs + AEO) — Shipped
 

@@ -1,9 +1,10 @@
 # إطار التموضع والرسائل (Positioning & Messaging Framework)
 ## BrightAI — Saudi AI Safety OS
 
-**الإصدار:** 1.0 — **التاريخ:** 2026-07-08
+**الإصدار:** 1.1 — **التاريخ:** 2026-07-14
 **الغرض:** توجيه كل تواصل خارجي (تسويق، مبيعات، علاقات، توظيف) حول رسالة "المعيار السعودي".
-**المرجع:** مشتق من `01-strategic-moat-document.md` (القسم 8).
+**المرجع:** مشتق من `01-strategic-moat-document.md` (القسم 8 + ملحق د).
+**سجل التغييرات:** v1.0 (2026-07-08) — إصدار أولي. v1.1 (2026-07-14) — تحديث الرسائل لتعكس المنتج الفعلي (AI Firewall Engine + SaaS Dashboard + Lighthouse 95+).
 
 ---
 
@@ -97,6 +98,36 @@
 
 ## 8. العلاقة بالبراند الصادر (بالعامية)
 كل التواصل التشغيلي اليومي (موقع، دعم، سوشل) يبقى **بالعامية السعودية** وفق بروتوكول الصوت المعتمد، بينما الوثائق المرجعية والرسمية (هذه الوثيقة ومثيلاتها) بالفصحى. التناقض ظاهري فقط: العامية للتواصل، الفصحى للمرجعية.
+
+## 9. تحديث v1.1 — الرسائل مع المنتج الفعلي (2026-07-14)
+
+**ما تغيّر:** في v1.0، كنا نتكلم عن المنتج كمفهوم. اليوم عندنا منتج فعلي، فالرسائل تحتاج تتطابق مع الواقع.
+
+### 9.1 رسائل للـ Demos و Pilots (محدَّثة)
+
+#### للـ CISO / Head of AI
+> "BrightAI اليوم يجهّزك لـ PDPL وNCA في أقل من 24 ساعة، مع AI Firewall Engine يكشف PII بالعربية بدقة (Regex + NER) ويولّد Audit Chain كامل. المنصة SaaS متعددة المستأجرين (Multi-tenant) معزولة بـ RLS، على STC/Salam. 190 صفحة محتوى تشريعي بالعربي تخلّيك مرجع فريقك."
+
+#### لـ Compliance Officer
+> "Default action = mask، قابل للضبط لكل طلب. Audit chain مبني على SHA-256 على مستوى المنظمة. Token Vault يخزّن الرموز الحساسة مشفّرة. جاهز لتدقيق NCA وSDAIA."
+
+#### لـ CTO / VP Engineering
+> "AI Firewall Engine مفتوح عبر API، streaming-ready، يدعم audio transcription. بنية Multi-tenant بـ RLS (Postgres). JS bundle 7.5KB gzipped على الموقع. Lighthouse 95+ كدليل على الجودة."
+
+### 9.2 Proof Points (الأرقام الحقيقية، مو ادعاءات)
+
+| الادعاء | الدليل |
+|---|---|
+| "نظام تشغيل، مو منصة" | AI Firewall Engine Phase 1a+1b+1c + Multi-tenant SaaS Dashboard |
+| "سرعة" | Lighthouse Perf 95.3 mobile + 97.7 desktop + LCP 2.9s (was 6.3s) |
+| "سيادة" | JS bundle 7.5KB، hosting decision مرن، RLS isolation |
+| "مرجعية" | 33 blog post + 4 docs pillar + 190 صفحة محتوى + 100/100 SEO |
+| "جودة تقنية" | 0 broken internal links، 0 console errors، schema مكتمل |
+
+### 9.3 ما لم يتغيّر
+- الرسالة المركزية: "BrightAI is the Saudi standard for AI safety."
+- صوت البراند: واثق لا متعالٍ، واضح لا معقّد، محلي لا مستورد.
+- الفصل: عامية للتواصل، فصحى للمرجعية.
 
 ---
 *مشتق من الوثيقة 01. انظر `02-three-year-roadmap.md` للتوقيت، و`04-board-deck.md` للعرض.*
