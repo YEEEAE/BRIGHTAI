@@ -207,7 +207,7 @@ const trustLinks = [
       </div>
 
       {/* Trust signals strip — uptime + certifications metrics */}
-      <div class="trust-signals-strip" style="margin-top: var(--space-10);">
+      <div class="trust-signals-strip trust-signals-strip--padded-top">
         {trustSignals.map(s => (
           <div class="trust-signals-strip__item">
             <div class="trust-signals-strip__value">{s.value}</div>
@@ -223,12 +223,12 @@ const trustLinks = [
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <h2 id="trust-data-protection" class="inner-section__title">كيف نحمي البيانات الحساسة داخل بيئتك؟</h2>
       <p class="inner-section__lead">تعتمد هندستنا الأمنية على مبدأ "انعدام الثقة" (Zero Trust). لا تمرر BrightAI أي بيانات حساسة أو معرفات شخصية للموديلات الخارجية دون تصفية مشددة، ونوفر آليات تحكم صارمة تمكّن فريق أمن المعلومات لديك من بسط سيطرته الفنية على كامل مجريات استخدام الذكاء الاصطناعي.</p>
-      <ul class="inner-card__text" style="line-height:1.85;">
+      <ul class="inner-card__text trust-inner-list-relaxed">
         <li>تجهيل البيانات الفوري (Anonymization): تصفية المعرفات الشخصية (PII) وسجلات الموظفين في الوقت الحقيقي.</li>
         <li>تشفير متطور (Encryption): تشفير البيانات في حالة السكون (At-Rest) باستخدام AES-256 وفي حالة الانتقال (In-Transit) عبر TLS 1.3.</li>
         <li>عزل تام للبيانات: هندسة معمارية متعددة المستأجرين (Multi-tenant) تضمن عزل بيانات كل مؤسسة في مستودع منفصل ومحمي.</li>
       </ul>
-      <h3 class="inner-section__title text-xl" style="margin-top: var(--space-8);">طبقات درع أمان البيانات</h3>
+      <h3 class="inner-section__title text-xl trust-subsection-title">طبقات درع أمان البيانات</h3>
       <div class="grid grid--3">
         {dataProtectionLayers.map((l, i) => (
           <article class="card card--feature card--lg">
@@ -250,22 +250,22 @@ const trustLinks = [
         <article class="card card--feature card--lg">
           <h3 class="inner-card__title">AI Firewall</h3>
           <p class="inner-card__text">جدار حماية ذكي يراقب تدفق البيانات من وإلى النماذج اللغوية بشكل لحظي، مانعاً تسرب أي معلومات سرية أو معرفات وطنية.</p>
-          <a href="/solutions/ai-firewall/" class="card__pricing-cta btn btn--outline" style="margin-top: var(--space-4);">استكشف جدار حماية الذكاء الاصطناعي لمنع التسريب</a>
+          <a href="/solutions/ai-firewall/" class="card__pricing-cta btn btn--outline card__pricing-cta--mt">استكشف جدار حماية الذكاء الاصطناعي لمنع التسريب</a>
         </article>
         <article class="card card--feature card--lg">
           <h3 class="inner-card__title">Audit Trail</h3>
           <p class="inner-card__text">سجل تدقيق تشغيلي متكامل غير قابل للتلاعب (Immutable) يسجل كل قرار وإدخال ومخرجات للمطابقة والامتثال مع متطلبات التفتيش.</p>
-          <a href="/solutions/ai-audit-trail/" class="card__pricing-cta btn btn--outline" style="margin-top: var(--space-4);">استعرض سجل تدقيق الذكاء الاصطناعي بالكامل</a>
+          <a href="/solutions/ai-audit-trail/" class="card__pricing-cta btn btn--outline card__pricing-cta--mt">استعرض سجل تدقيق الذكاء الاصطناعي بالكامل</a>
         </article>
         <article class="card card--feature card--lg">
           <h3 class="inner-card__title">Human Approval</h3>
           <p class="inner-card__text">طبقة مراجعة بشرية للقرارات والمدخلات ذات المخاطر العالية، تضمن أن الإنسان يظل مسيطراً ومحاسباً على المخرجات.</p>
-          <a href="/solutions/human-approval-layer/" class="card__pricing-cta btn btn--outline" style="margin-top: var(--space-4);">تعرف على طبقة الموافقات البشرية الحساسة</a>
+          <a href="/solutions/human-approval-layer/" class="card__pricing-cta btn btn--outline card__pricing-cta--mt">تعرف على طبقة الموافقات البشرية الحساسة</a>
         </article>
         <article class="card card--feature card--lg">
           <h3 class="inner-card__title">Evidence File</h3>
           <p class="inner-card__text">ملف الأدلة التنظيمية الجاهز للتصدير لدعم جهود الامتثال، وتوضيح تطبيق سياسات الحوكمة الفعالة أمام المفتشين والمنظمين.</p>
-          <a href="/solutions/ai-evidence-file/" class="card__pricing-cta btn btn--outline" style="margin-top: var(--space-4);">استكشف نظام حفظ أدلة التدقيق للأعمال</a>
+          <a href="/solutions/ai-evidence-file/" class="card__pricing-cta btn btn--outline card__pricing-cta--mt">استكشف نظام حفظ أدلة التدقيق للأعمال</a>
         </article>
       </div>
     </div>
@@ -281,7 +281,7 @@ const trustLinks = [
           <article class="card card--feature card--lg">
             <h3 class="inner-card__title">{opt.title}</h3>
             <p class="inner-card__text">{opt.body}</p>
-            <ul class="inner-card__text" style="line-height: 1.85; padding-inline-start: var(--space-5);">
+            <ul class="inner-card__text trust-list-relaxed">
               {opt.features.map(f => <li>{f}</li>)}
             </ul>
           </article>
@@ -301,14 +301,14 @@ const trustLinks = [
         {securityPractices.map((p, i) => (
           <details class="card card--glass home-faq-item" role="listitem" open={i === 0}>
             <summary>
-              <span style="display:flex; align-items:center; gap: var(--space-3);">
-                <svg aria-hidden="true" width="1.5em" height="1.5em" style="color:var(--brand-300);"><use href={`/icons.svg#${p.icon}`} /></svg>
+              <span class="trust-practices-row">
+                <svg class="trust-practice-icon" aria-hidden="true" width="1.5em" height="1.5em"><use href={`/icons.svg#${p.icon}`} /></svg>
                 {p.title}
               </span>
               <svg class="home-faq-chevron" aria-hidden="true" width="1.25em" height="1.25em"><use href="/icons.svg#mdi-chevron-down"></use></svg>
             </summary>
             <div class="home-faq-answer">
-              <p style="margin-block-end: var(--space-3); font-weight: var(--font-semibold); color: var(--brand-300);">{p.summary}</p>
+              <p class="trust-practices-summary">{p.summary}</p>
               <p>{p.detail}</p>
             </div>
           </details>
@@ -330,7 +330,7 @@ const trustLinks = [
           </article>
         ))}
       </div>
-      <h3 class="inner-section__title text-xl" style="margin-top: var(--space-8);">معايير أمان التطبيقات والشبكة</h3>
+      <h3 class="inner-section__title text-xl trust-subsection-title">معايير أمان التطبيقات والشبكة</h3>
     </div>
   </section>
 
@@ -352,7 +352,7 @@ const trustLinks = [
           <article class="card card--feature card--lg">
             <h3 class="inner-card__title">{d.title}</h3>
             <p class="inner-card__text">{d.desc}</p>
-            <a href={d.href} class="btn btn--outline" style="margin-top: var(--space-4); width: 100%;">طلب المستند ←</a>
+            <a href={d.href} class="btn btn--outline trust-doc-cta">طلب المستند ←</a>
           </article>
         ))}
       </div>
@@ -362,7 +362,7 @@ const trustLinks = [
   {/* ═══════════ 10. FAQ — preserved canonical accordion ═══════════ */}
   <section class="inner-section" aria-labelledby="trust-faq">
     <div class="max-w-4xl mx-auto px-5 lg:px-8">
-      <h2 id="trust-faq" class="inner-section__title" style="text-align:center;">أسئلة شائعة حول مركز الثقة</h2>
+      <h2 id="trust-faq" class="inner-section__title inner-section__title--centered">أسئلة شائعة حول مركز الثقة</h2>
       <div class="inner-faq" role="list">
         {faqs.map(([question, answer], i) => (
           <details class="card card--glass home-faq-item" role="listitem" open={i === 0}>
@@ -393,7 +393,7 @@ const trustLinks = [
             تواصل مع مهندسينا
           </a>
         </div>
-        <nav class="inner-cta-final__links" aria-label="روابط الثقة" style="margin-top: var(--space-6); display:flex; flex-wrap:wrap; justify-content:center; gap: var(--space-2);">
+        <nav class="inner-cta-final__links trust-cta-links" aria-label="روابط الثقة">
           {trustLinks.map(([href, label]) => (
             <a href={href} class="chip">{label}</a>
           ))}

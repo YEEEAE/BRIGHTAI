@@ -70,8 +70,8 @@ const jsonLd = {
         {
           tiers.map((t) => (
             <article class="card card--feature">
-              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
-                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${t.icon}`} /></svg>
+              <div class="avatar-tile avatar-tile--sm avatar-tile--gradient" aria-hidden="true">
+                <svg class="avatar-tile__icon avatar-tile__icon--white" aria-hidden="true" width="1.5rem" height="1.5rem"><use href={`/icons.svg#${t.icon}`} /></svg>
               </div>
               <h3 class="inner-card__title mt-3">{t.title}</h3>
               <p class="inner-card__text">{t.body}</p>
@@ -100,9 +100,9 @@ const jsonLd = {
 
   <section class="inner-section inner-section--alt" aria-labelledby="pt-form">
     <div class="max-w-3xl mx-auto px-5 lg:px-8">
-      <h2 id="pt-form" class="inner-section__title" style="text-align:center;">كن شريكاً</h2>
-      <p class="inner-section__lead" style="text-align:center;">شارك بياناتك ونرسل لك اتفاقية الشراكة وملف العروض.</p>
-      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+      <h2 id="pt-form" class="inner-section__title inner-section__title--centered">كن شريكاً</h2>
+      <p class="inner-section__lead inner-section__lead--centered">شارك بياناتك ونرسل لك اتفاقية الشراكة وملف العروض.</p>
+      <div class="contact-form-card contact-form-card--padded">
         <LeadForm
           title="نموذج الشراكة"
           intro="نراجع طلبك ونعود لك خلال ٤٨ ساعة."

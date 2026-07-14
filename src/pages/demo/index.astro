@@ -428,9 +428,9 @@ const whatsappDemoHref = 'https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%
       <div class="grid grid--3">
         {testimonials.map(t => (
           <article class="card card--feature card--gradient card--lg">
-            <div class="avatar-tile" aria-hidden="true" style="margin-block-end: var(--space-4);">{t.initials}</div>
-            <p class="inner-card__text" style="font-style: italic; line-height: 1.85;">"{t.quote}"</p>
-            <div style="margin-block-start: var(--space-4); padding-block-start: var(--space-4); border-block-start: 1px solid var(--border-subtle);">
+            <div class="avatar-tile avatar-tile--mb-4" aria-hidden="true">{t.initials}</div>
+            <p class="inner-card__text quote-block">"{t.quote}"</p>
+            <div class="quote-footer">
               <strong class="text-cyan-300 block">{t.role}</strong>
               <span class="text-sm">{t.org}</span>
             </div>

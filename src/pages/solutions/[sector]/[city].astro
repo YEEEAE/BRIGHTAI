@@ -104,7 +104,7 @@ const jsonLd = {
     <p class="inner-hero__desc">{loc.description}</p>
     <div class="inner-hero__actions">
       <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
-      <a href={`https://wa.me/966538229013?text=${whatsappMsg}`} target="_blank" rel="nofollow noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+      <a href={`https://wa.me/966538229013?text=${whatsappMsg}`} target="_blank" rel="nofollow noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
     </div>
   </div>
 </section>
@@ -123,7 +123,7 @@ const jsonLd = {
     <h2 id="solutions-local" class="inner-section__title"><svg class="text-cyan-300" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-puzzle"></use></svg> حلول BrightAI المتاحة في {loc.cityAr}</h2>
     <div class="inner-grid inner-grid--2">
       {relatedSols.map(sol => (
-        <a href={sol!.href} class="inner-card p-6" style="text-decoration:none;color:inherit">
+        <a href={sol!.href} class="inner-card p-6 text-decoration-reset">
           <div class="flex items-center gap-3 mb-3">
             <div class="text-2xl"><Icon name={sol!.icon} class="text-cyan-300" /></div>
             <h3 class="inner-card__title text-base">{sol!.h1.split('(')[0].trim()}</h3>
@@ -135,7 +135,7 @@ const jsonLd = {
   </div>
 </section>
 
-<a href={sector.href} class="block inner-section inner-section--alt" style="text-decoration:none;color:inherit" aria-labelledby="parent-sector">
+<a href={sector.href} class="block inner-section inner-section--alt text-decoration-reset" aria-labelledby="parent-sector">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="inner-card p-8 flex items-center gap-4">
       <div class="text-4xl"><Icon name={sector.icon} class="text-cyan-300" /></div>
@@ -154,9 +154,9 @@ const jsonLd = {
     <div class="inner-cta-final__card">
       <h2 class="inner-cta-final__title">ابدأ بحوكمة الذكاء الاصطناعي في {loc.cityAr} الآن</h2>
       <p class="inner-cta-final__desc">فريقنا في {loc.cityAr} جاهز لمساعدتك. تواصل معنا للحصول على عرض توضيحي مخصص.</p>
-      <div class="inner-hero__actions" style="justify-content:center;">
+      <div class="inner-hero__actions inner-hero__actions--centered">
         <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
-<a href={`https://wa.me/966538229013?text=${whatsappMsg}`} target="_blank" rel="nofollow noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white" style="background:linear-gradient(135deg,var(--whatsapp),var(--whatsapp-dark))"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+<a href={`https://wa.me/966538229013?text=${whatsappMsg}`} target="_blank" rel="nofollow noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
       </div>
     </div>
   </div>

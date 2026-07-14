@@ -147,8 +147,7 @@ const jsonLd = {
               href={m.href}
               target={m.external ? '_blank' : undefined}
               rel={m.external ? 'noopener noreferrer' : undefined}
-              class="card card--feature card--interactive"
-              style="text-decoration:none;"
+              class="card card--feature card--interactive contact-link-card"
             >
               <svg class="contact-info__icon" aria-hidden="true" width="2.5rem" height="2.5rem" style={`color:${m.iconColor};`}>
                 <use href={`/icons.svg#${m.icon}`} />
@@ -175,11 +174,11 @@ const jsonLd = {
   {/* ═══════════ 3. SPLIT: form (right RTL) + contact info (left RTL) ═══════════ */}
   <section class="inner-section inner-section--alt" aria-labelledby="contact-form-sec">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <h2 id="contact-form-sec" class="inner-section__title" style="text-align:center;">ابدأ بديمو مخصص لشركتك</h2>
-      <p class="inner-section__lead" style="text-align:center;">عبي النموذج ونتواصل معك خلال 24 ساعة.</p>
-      <p class="inner-section__lead" style="text-align:center;">نستخدم بياناتك للرد على طلبك فقط حسب سياسة الخصوصية.</p>
+      <h2 id="contact-form-sec" class="inner-section__title inner-section__title--centered">ابدأ بديمو مخصص لشركتك</h2>
+      <p class="inner-section__lead inner-section__lead--centered">عبي النموذج ونتواصل معك خلال 24 ساعة.</p>
+      <p class="inner-section__lead inner-section__lead--centered">نستخدم بياناتك للرد على طلبك فقط حسب سياسة الخصوصية.</p>
 
-      <div class="contact-split" style="margin-block-start: var(--space-10);">
+      <div class="contact-split contact-split--padded">
         {/* ─── Form (right in RTL = first column) ─── */}
         {/* WCAG fix (REPORTS-18): separate aria-labelledby target so the
             region has its own unique accessible name — doesn't collide
@@ -189,7 +188,7 @@ const jsonLd = {
           <h3 class="form-card__title">أرسل تفاصيل طلبك</h3>
           <p class="form-card__desc">كل المعلومات تساعد فريقنا يفهم احتياجك قبل ما نتواصل معك.</p>
 
-          <form class="inner-form" action="https://formsubmit.co/info@brightai.site" method="POST" style="margin-top: var(--space-6);">
+          <form class="inner-form inner-form--padded" action="https://formsubmit.co/info@brightai.site" method="POST">
             <input type="hidden" name="_subject" value="طلب تواصل من موقع BrightAI" />
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_next" value="https://brightai.site/contact/" />
@@ -270,16 +269,16 @@ const jsonLd = {
               ></textarea>
             </div>
 
-            <div class="form-field" style="display: flex; align-items: flex-start; gap: var(--space-3);">
+            <div class="form-field form-field--checkbox-row">
               <input
                 required
                 aria-required="true"
                 id="pdpl_consent"
                 name="pdpl_consent"
                 type="checkbox"
-                style="margin-block-start: 0.2em;"
+                class="form-checkbox--inline"
               />
-              <label for="pdpl_consent" class="text-xs" style="color: var(--text-secondary); line-height: 1.6;">
+              <label for="pdpl_consent" class="text-xs form-label--checkbox">
                 أوافق على معالجة بياناتي الشخصية المدخلة وفقاً لـ
                 <a href="/privacy-policy/">سياسة الخصوصية</a> و
                 <a href="/pdpl-statement/">بيان الامتثال لنظام PDPL السعودي</a>.
@@ -300,7 +299,7 @@ const jsonLd = {
             <h3 class="inner-card__title">وش تتوقع بعد التواصل؟</h3>
             <ul class="contact-info-list">
               <li>
-                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:var(--whatsapp);">
+                <svg class="contact-info__icon contact-info__icon--whatsapp" aria-hidden="true" width="1.75rem" height="1.75rem">
                   <use href="/icons.svg#mdi-whatsapp" />
                 </svg>
                 <div>
@@ -309,7 +308,7 @@ const jsonLd = {
                 </div>
               </li>
               <li>
-                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:var(--cyan-bright);">
+                <svg class="contact-info__icon contact-info__icon--cyan" aria-hidden="true" width="1.75rem" height="1.75rem">
                   <use href="/icons.svg#mdi-email" />
                 </svg>
                 <div>
@@ -318,7 +317,7 @@ const jsonLd = {
                 </div>
               </li>
               <li>
-                <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color:var(--indigo-300);">
+                <svg class="contact-info__icon contact-info__icon--indigo" aria-hidden="true" width="1.75rem" height="1.75rem">
                   <use href="/icons.svg#mdi-translate" />
                 </svg>
                 <div>
@@ -411,7 +410,7 @@ const jsonLd = {
   <section class="inner-section inner-section--alt" aria-labelledby="contact-process-title">
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <h2 id="contact-process-title" class="inner-section__title">وش يصير بعد استلام رسالتك؟</h2>
-      <ol class="grid grid--3" style="list-style: none; padding: 0; margin: 0;">
+      <ol class="grid grid--3 grid--process">
         {contactSteps.map(step => (
           <li class="card card--feature">
             <span class="text-cyan-300 font-black text-2xl">{step.n}</span>
@@ -451,12 +450,5 @@ const jsonLd = {
     display: flex;
     flex-direction: column;
     gap: var(--space-5);
-  }
-  .about-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-4);
-    margin-block-start: var(--space-6);
   }
 </style>

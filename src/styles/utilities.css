@@ -41,10 +41,10 @@
 .fixed { position: fixed; }
 .sticky { position: sticky; }
 .top-0 { top: 0; }
-.right-0 { right: 0; }
+.right-0 { inset-inline-end: 0; }
 .bottom-0 { bottom: 0; }
-.left-0 { left: 0; }
-.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.left-0 { inset-inline-start: 0; }
+.inset-0 { top: 0; inset-inline: 0; bottom: 0; }
 .z-10 { z-index: 10; }
 .z-20 { z-index: 20; }
 .z-1000 { z-index: 1000; }
@@ -271,8 +271,10 @@
 /* flex utilities (REPORTS-20): removed duplicates with section 5 above */
 .justify-end { justify-content: end; }
 .text-center { text-align: center; }
-.text-right { text-align: right; }
-.mx-auto { margin-left: auto; margin-right: auto; }
+/* Directional text-align: logical `end` adapts to dir="rtl"/"ltr" automatically.
+   Physical `text-right` is forbidden (RTL rule 8.4) — use `.text-end` instead. */
+.text-end { text-align: end; }
+.mx-auto { margin-inline: auto; }
 .max-w-3xl { max-width: 48rem; }
 .max-w-4xl { max-width: 56rem; }
 .max-w-5xl { max-width: 64rem; }

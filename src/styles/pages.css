@@ -440,7 +440,7 @@
 
 .home-comparison-table th:first-child,
 .home-comparison-table td:first-child {
-  text-align: right;
+  text-align: start;
 }
 
 .home-comparison-table th {

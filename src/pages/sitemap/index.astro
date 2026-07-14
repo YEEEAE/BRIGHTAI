@@ -124,7 +124,7 @@ const sections = [
           <p>{s.description}</p>
           <ul class="sitemap-links">
             {s.links.map(l => (
-              <li><a href={l.href}><svg style="transform:scaleX(-1);font-size:0.8rem;color:var(--cyan-bright);" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-chevron-left"></use></svg> {l.label}</a></li>
+              <li><a href={l.href}><svg class="sitemap-arrow" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-chevron-left"></use></svg> {l.label}</a></li>
             ))}
           </ul>
         </div>

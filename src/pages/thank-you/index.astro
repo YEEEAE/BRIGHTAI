@@ -17,29 +17,19 @@ import BackgroundGrid from '../../components/BackgroundGrid.astro';
   robots="noindex"
 >
 
-  <section class="page-hero" aria-label="تأكيد الاستلام">
+  <section class="page-hero page-hero--centered" aria-label="تأكيد الاستلام">
     <BackgroundGrid />
-    <div class="max-w-3xl mx-auto px-5 lg:px-8" style="text-align:center;">
-      <div class="inner-hero__badge" style="justify-content:center;">
+    <div class="max-w-3xl mx-auto px-5 lg:px-8">
+      <div class="inner-hero__badge inner-hero__badge--centered">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-check-circle"></use></svg>
         وصلنا طلبك
       </div>
       <h1 class="page-hero__title"><span class="gradient-text">شكراً لك</span></h1>
       <p class="page-hero__description">تواصلنا وصلنا بنجاح. فريق BrightAI للحوكمة والامتثال بيرد عليك خلال ٢٤ ساعة على نفس وسيلة التواصل اللي ذكرتها.</p>
-      <div class="about-hero__actions" style="justify-content:center;">
+      <div class="about-hero__actions about-hero__actions--centered">
         <a href="/" class="btn btn--glow">العودة للرئيسية</a>
         <a href="/solutions/ai-governance-platform/" class="btn btn--whatsapp">استكشف الحلول</a>
       </div>
     </div>
   </section>
 </ArabicLayout>
-
-<style>
-  .about-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-4);
-    margin-block-start: var(--space-6);
-  }
-</style>

@@ -209,9 +209,9 @@ const checklistItems = [
 
       <div class="assessment-progress" aria-hidden="true">
         <div class="assessment-progress__bar">
-          <div class="assessment-progress__fill" style="width: 100%"></div>
+          <div class="assessment-progress__fill assessment-progress__fill--full"></div>
         </div>
-        <ol class="assessment-progress__steps" style="list-style:none; padding:0; margin:0;">
+        <ol class="assessment-progress__steps assessment-progress__steps--reset">
           {formSteps.map(s => (
             <li><span>{s.label}</span></li>
           ))}
@@ -239,7 +239,7 @@ const checklistItems = [
         </div>
       ))}
 
-      <div style="display:flex; justify-content:center; gap: var(--space-3); margin-top: var(--space-6);">
+      <div class="assessment-actions-centered">
         <button type="button" class="btn btn--glow btn--lg" disabled>
           <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-arrow-right"></use></svg>
           ابدأ التقييم الكامل (متاح بعد التواصل)
@@ -259,7 +259,7 @@ const checklistItems = [
         {targetAudience.map(a => (
           <article class="card card--feature card--lg">
             <div class={`avatar-tile avatar-tile--sm ${a.bgClass}`} aria-hidden="true">
-              <Icon name={a.icon} style="font-size: 1.5rem; color: white;" />
+              <Icon name={a.icon} class="avatar-tile__icon--white icon-size-md" />
             </div>
             <h3 class="inner-card__title">{a.title}</h3>
             <p class="text-cyan-300 font-bold text-sm mb-3">{a.sub}</p>
@@ -283,7 +283,7 @@ const checklistItems = [
         {auditPillars.map(p => (
           <article class={`card card--feature audit-pillar audit-pillar--${p.accentClass}`}>
             <div class="audit-pillar__icon" aria-hidden="true">
-              <Icon name={p.icon} style="font-size: 1.5rem;" />
+              <Icon name={p.icon} class="icon-size-md" />
             </div>
             <h3 class="inner-card__title">{p.title}</h3>
             <p class="inner-card__text">{p.desc}</p>
@@ -340,7 +340,7 @@ const checklistItems = [
       <p class="inner-section__label">آلية التنفيذ</p>
       <h2 id="steps-title" class="inner-section__title">خطوات تقييم الجاهزية والتفعيل</h2>
       <p class="inner-section__lead">منهجية واضحة ومحددة تمكننا من فهم بيئتك التقنية وبناء جدار الحماية خلال فترة وجيزة.</p>
-      <div class="steps-vertical" style="max-width: 56rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-4);">
+      <div class="steps-vertical">
         {steps.map(s => (
           <article class="card card--feature assessment-step">
             <div class="assessment-step__num" aria-hidden="true">{s.num}</div>

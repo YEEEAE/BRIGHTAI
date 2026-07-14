@@ -85,13 +85,13 @@ const jsonLd = {
         {
           caseStudies.map((c) => (
             <article class="card card--feature card--lg">
-              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
-                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${c.icon}`} /></svg>
+              <div class="avatar-tile avatar-tile--sm avatar-tile--gradient" aria-hidden="true">
+                <svg class="avatar-tile__icon" aria-hidden="true" width="1.5rem" height="1.5rem"><use href={`/icons.svg#${c.icon}`} /></svg>
               </div>
               <span class="assessment-tag">{c.sector}</span>
               <h3 class="inner-card__title mt-3">{c.title}</h3>
               <p class="inner-card__text">{c.summary}</p>
-              <div class="assessment-result-preview" style="margin-block-start: var(--space-4);">
+              <div class="assessment-result-preview">
                 <span class="assessment-result-preview__label">{c.metricLabel}</span>
                 <div class="assessment-result-preview__score">{c.metric}</div>
               </div>
@@ -103,11 +103,11 @@ const jsonLd = {
     </div>
   </section>
 
-  <section class="inner-section inner-section--alt" aria-labelledby="cs-cta">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8" style="text-align:center;">
+  <section class="inner-section inner-section--alt inner-section--centered" aria-labelledby="cs-cta">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <h2 id="cs-cta" class="inner-section__title">تبي قصة نجاح بنفس حجم مؤسستك؟</h2>
       <p class="inner-section__lead">احجز عرضاً مخصصاً ونتحدث عن كيف تبني BrightAI حوكمة قابلة للتدقيق تناسب قطاعك.</p>
-      <div class="about-hero__actions" style="justify-content:center;">
+      <div class="about-hero__actions about-hero__actions--centered">
         <a href="/contact/" class="btn btn--glow">احجز عرضاً</a>
         <a href="/assessment/ai-governance-readiness/" class="btn btn--whatsapp">اطلب تقييم جاهزية</a>
       </div>
@@ -134,6 +134,7 @@ const jsonLd = {
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.10), rgba(124, 92, 255, 0.08));
     border: 1px solid rgba(0, 212, 255, 0.25);
     border-radius: var(--radius-lg);
+    margin-block-start: var(--space-4);
   }
   .assessment-result-preview__label {
     font-size: var(--text-xs);
@@ -146,11 +147,11 @@ const jsonLd = {
     line-height: 1;
   }
   .mt-4 { margin-block-start: var(--space-4); }
-  .about-hero__actions {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-4);
-    margin-block-start: var(--space-6);
+
+  /* Avatar tile gradient variant — replaces inline
+     `style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);"`. */
+  .avatar-tile--gradient {
+    background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);
   }
+  .avatar-tile--gradient .avatar-tile__icon { color: var(--white); }
 </style>

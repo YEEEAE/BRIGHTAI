@@ -57,6 +57,248 @@
 /* Aliases (legacy from pages.css) */
 .inner-section { padding-block: var(--space-16); }
 .inner-section--alt { background: var(--bg-surface); }
+/* Centered variant — for sections whose header + content should be centered
+   (partnerships, audiences, etc.). Replaces inline `style="text-align:center;"`. */
+.inner-section--centered { text-align: center; }
+.inner-section--centered .inner-section__lead { margin-inline: auto; }
+
+/* About hero CTAs — previously defined as scoped <style> in 5 pages.
+   Centralized here so all instances share one rule (no inline overrides needed). */
+.about-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-block-start: var(--space-6);
+}
+/* Default: start-aligned (matches the page hero flow). When you need centered
+   (e.g. thank-you, customers index, sales-deck), add the `--centered` modifier. */
+.about-hero__actions--centered { justify-content: center; }
+
+/* About team card — replaces inline `style="text-align:center;"` on team cards. */
+.about-team__card { text-align: center; }
+.about-team__avatar { margin: 0 auto var(--space-4); }
+.about-founder__avatar { margin-block-end: var(--space-4); }
+
+/* Inner section title/lead centered variants — replaces inline
+   `style="text-align:center;"` on .inner-section__title and .inner-section__lead. */
+.inner-section__title--centered,
+.inner-section__lead--centered { text-align: center; }
+
+/* Contact-form card / contact-split / inner-form padding — replaces inline
+   `style="margin-block-start: var(--space-10);"` and `style="margin-top: var(--space-6);"`. */
+.contact-split--padded { margin-block-start: var(--space-10); }
+.inner-form--padded { margin-block-start: var(--space-6); }
+
+/* Form field checkbox row — replaces inline
+   `style="display: flex; align-items: flex-start; gap: var(--space-3);"`. */
+.form-field--checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+.form-checkbox--inline { margin-block-start: 0.2em; }
+.form-label--checkbox { color: var(--text-secondary); line-height: 1.6; }
+
+/* Contact link card — removes inline text-decoration:none on contact cards. */
+.contact-link-card { text-decoration: none; }
+
+/* Process grid (ordered list as cards) — removes inline list-style/padding/margin. */
+.grid--process { list-style: none; padding: 0; margin: 0; }
+
+/* Contact info icon (in info stack) — keeps color tokens swappable per row. */
+.contact-info__icon { color: var(--text-secondary); }
+
+/* Page-hero centered variant — replaces inline `style="text-align:center;"`
+   on the page-hero wrapper (used on /thank-you/, single-column conversion pages). */
+.page-hero--centered { text-align: center; }
+.page-hero--centered .page-hero__title { margin-inline: auto; }
+.page-hero--centered .page-hero__description { margin-inline: auto; }
+
+/* Inner-hero badge centered variant — replaces inline `style="justify-content:center;"`. */
+.inner-hero__badge--centered { justify-content: center; }
+
+/* Contact form card padded variant — replaces inline
+   `style="margin-block-start: var(--space-6);"` on form cards. */
+.contact-form-card--padded { margin-block-start: var(--space-6); }
+
+/* Homepage flow diagram (employee → kernel → AI) — replaces inline
+   `style="background:linear-gradient(135deg, rgba(0,212,255,.12), rgba(124,92,255,.12));"`
+   on the central Kernel box. */
+.home-flow-kernel {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(124, 92, 255, 0.12));
+}
+/* Bidi-isolated arrow glyph so the ← renders consistently regardless of the
+   surrounding Arabic text. The isolation prevents the bidi algorithm from
+   flipping the arrow in mixed Arabic + Latin runs. */
+.home-flow-arrow { unicode-bidi: isolate; }
+
+/* Inner hero actions centered — replaces inline `style="justify-content:center;"`. */
+.inner-hero__actions--centered { justify-content: center; }
+
+/* Text-decoration reset for inner-card as <a> — replaces
+   `style="text-decoration:none;color:inherit"` patterns in solutions pages. */
+.text-decoration-reset { text-decoration: none; color: inherit; }
+.text-decoration-reset:hover { text-decoration: none; color: inherit; }
+
+/* Vertical list as flex column with gap — replaces inline
+   `style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:var(--space-1)"`. */
+.list-flex-column {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* List item secondary text — replaces inline
+   `style="font-size:var(--text-sm);color:var(--text-secondary)"`. */
+.list-item-secondary { font-size: var(--text-sm); color: var(--text-secondary); }
+
+/* Quote block — replaces inline
+   `style="font-style: italic; line-height: 1.85;"` on testimonial paragraphs. */
+.quote-block { font-style: italic; line-height: 1.85; }
+
+/* Quote footer (separator + padding) — replaces inline
+   `style="margin-block-start: var(--space-4); padding-block-start: var(--space-4); border-block-start: 1px solid var(--border-subtle);"`. */
+.quote-footer {
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--border-subtle);
+}
+
+/* Avatar tile margin variant — replaces inline
+   `style="margin-block-end: var(--space-4);"` on avatar tiles inside cards. */
+.avatar-tile--centered { margin: 0 auto var(--space-4); }
+.avatar-tile--mb-4 { margin-block-end: var(--space-4); }
+
+/* Brand color text — replaces inline `style="color:var(--brand-300)"` /
+   `style="color:var(--indigo-300)"` on inline SVGs. */
+.icon-brand { color: var(--brand-300); }
+.icon-indigo { color: var(--indigo-300); }
+
+/* Sitemap inline link arrow — replaces inline
+   `style="transform:scaleX(-1);font-size:0.8rem;color:var(--cyan-bright);"`.
+   The scaleX(-1) visually mirrors the chevron so it points into the text
+   in RTL layouts. */
+.sitemap-arrow {
+  transform: scaleX(-1);
+  font-size: 0.8rem;
+  color: var(--cyan-bright);
+}
+
+/* Contact info icon color variants — replace inline `style="color:..."`
+   on the 3 colored SVG icons in the contact info list. */
+.contact-info__icon--whatsapp { color: var(--whatsapp); }
+.contact-info__icon--cyan { color: var(--cyan-bright); }
+.contact-info__icon--indigo { color: var(--indigo-300); }
+
+/* Avatar tile white icon variant — replaces inline
+   `style="color: white;"` on SVG icons inside .avatar-tile--gradient. */
+.avatar-tile--gradient .avatar-tile__icon--white { color: var(--white); }
+
+/* Icon inline-size variants — replaces inline `style="font-size: 1.5rem;"`. */
+.icon-size-md { font-size: 1.5rem; }
+
+/* Trust/Assessment step row gap+max+center — replaces inline
+   `style="max-width: 56rem; margin-inline: auto; display: flex; flex-direction: column; gap: var(--space-4);"`. */
+.steps-vertical {
+  max-width: 56rem;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Trust signals strip top margin — replaces inline
+   `style="margin-top: var(--space-10);"`. */
+.trust-signals-strip--padded-top { margin-block-start: var(--space-10); }
+
+/* Trust "section title" with top margin — replaces inline
+   `style="margin-top: var(--space-8);"`. */
+.trust-subsection-title { margin-block-start: var(--space-8); }
+
+/* Trust "card pricing CTA" with top margin — replaces inline
+   `style="margin-top: var(--space-4);"` on outline CTAs inside cards. */
+.card__pricing-cta--mt { margin-block-start: var(--space-4); }
+
+/* Trust "list with 1.85 line-height + RTL list pad" — replaces inline
+   `style="line-height: 1.85; padding-inline-start: var(--space-5);"`. */
+.trust-list-relaxed {
+  line-height: 1.85;
+  padding-inline-start: var(--space-5);
+}
+
+/* Trust "practices row" — replaces inline
+   `style="display:flex; align-items:center; gap: var(--space-3);"`. */
+.trust-practices-row { display: flex; align-items: center; gap: var(--space-3); }
+
+/* Trust practices summary text — replaces inline
+   `style="margin-block-end: var(--space-3); font-weight: var(--font-semibold); color: var(--brand-300);"`. */
+.trust-practices-summary {
+  margin-block-end: var(--space-3);
+  font-weight: var(--font-semibold);
+  color: var(--brand-300);
+}
+
+/* Trust practice icon — color: brand-300, replaces inline
+   `style="color:var(--brand-300);"`. */
+.trust-practice-icon { color: var(--brand-300); }
+
+/* Trust inner card text with relaxed line height — replaces inline
+   `style="line-height:1.85;"` on <ul> inside cards. */
+.trust-inner-list-relaxed { line-height: 1.85; }
+
+/* Docs/blog/blog index page shell padding — replaces inline
+   `style="padding-block: var(--space-12);"` on .docs-page-shell__main. */
+.docs-page-shell__main--padded { padding-block: var(--space-12); }
+
+/* Docs cluster title paragraph — replaces inline
+   `style="font-size: var(--text-sm); font-weight: var(--font-normal); color: var(--text-muted); margin: 0 0 var(--space-3);"`. */
+.docs-cluster__title--muted {
+  font-size: var(--text-sm);
+  font-weight: var(--font-normal);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-3);
+}
+
+/* Blog section padding reset — replaces inline `style="padding-block-start:0;"`. */
+.blog-section--no-top-pad { padding-block-start: 0; }
+
+/* Assessment: progress list — replaces inline
+   `style="list-style:none; padding:0; margin:0;"` on .assessment-progress__steps. */
+.assessment-progress__steps--reset { list-style: none; padding: 0; margin: 0; }
+
+/* Assessment: action row centered — replaces inline
+   `style="display:flex; justify-content:center; gap: var(--space-3); margin-top: var(--space-6);"`. */
+.assessment-actions-centered {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-block-start: var(--space-6);
+}
+
+/* Trust document CTA button — replaces inline
+   `style="margin-top: var(--space-4); width: 100%;"` on the .btn--outline
+   inside audit-doc cards. */
+.trust-doc-cta {
+  margin-block-start: var(--space-4);
+  inline-size: 100%;
+}
+
+/* Trust CTA final links nav — replaces inline
+   `style="margin-top: var(--space-6); display:flex; flex-wrap:wrap; justify-content:center; gap: var(--space-2);"`. */
+.trust-cta-links {
+  margin-block-start: var(--space-6);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+/* Assessment progress fill (100% step indicator) — replaces inline
+   `style="width: 100%"` on .assessment-progress__fill. */
+.assessment-progress__fill--full { inline-size: 100%; }
 
 /* Section header (used by .section + alias)
    DEC-2026-032: hierarchy polish + new .section__eyebrow utility.
@@ -642,12 +884,12 @@
 .btn--loading::after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
   width: 1.15em;
   height: 1.15em;
-  margin-top: -0.575em;
-  margin-left: -0.575em;
+  margin-block-start: -0.575em;
+  margin-inline-start: -0.575em;
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
@@ -1433,8 +1675,8 @@
 .card__pricing-badge,
 .pricing-card__badge {
   position: absolute;
-  top: var(--space-4);
-  left: 50%;
+  inset-block-start: var(--space-4);
+  inset-inline-start: 50%;
   transform: translateX(-50%);
 }
 
@@ -1471,7 +1713,7 @@
 .card__pricing-features,
 .pricing-card__features {
   list-style: none;
-  text-align: right;
+  text-align: start;
   margin-bottom: var(--space-6);
 }
 
@@ -1522,14 +1764,14 @@
   font-size: var(--text-sm);
   color: var(--text-secondary);
   padding: var(--space-1) 0;
-  padding-right: var(--space-4);
+  padding-inline-end: var(--space-4);
   position: relative;
 }
 
 .pricing-panel li::before {
   content: '✓';
   position: absolute;
-  right: 0;
+  inset-inline-end: 0;
   color: var(--status-success);
   font-weight: var(--font-bold);
 }
@@ -2101,7 +2343,7 @@
 .pricing-table th,
 .pricing-table td {
   padding: var(--space-3) var(--space-4);
-  text-align: right;
+  text-align: start;
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -2337,8 +2579,8 @@
 
 .nav__dropdown-menu {
   position: absolute;
-  top: 100%;
-  right: 0;
+  inset-block-start: 100%;
+  inset-inline-end: 0;
   min-width: 220px;
   background: var(--bg-elevated);
   border: 1px solid var(--border-default);
@@ -3040,8 +3282,10 @@
 
 /* Text */
 .text-center { text-align: center; }
-.text-right { text-align: right; }
-.text-left { text-align: left; }
+/* Directional text-align: use logical `start`/`end` so they adapt to dir="rtl"/"ltr"
+   automatically. Physical `text-left` / `text-right` are forbidden (RTL rule 8.4). */
+.text-start { text-align: start; }
+.text-end { text-align: end; }
 .text-brand { color: var(--interactive-primary); }
 .text-accent { color: var(--accent-500); }
 .text-muted { color: var(--text-muted); }

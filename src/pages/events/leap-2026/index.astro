@@ -64,8 +64,8 @@ const jsonLd = {
         {
           highlights.map((h) => (
             <article class="card card--feature">
-              <div class="avatar-tile avatar-tile--sm" aria-hidden="true" style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);">
-                <svg aria-hidden="true" width="1.5rem" height="1.5rem" style="color: white;"><use href={`/icons.svg#${h.icon}`} /></svg>
+              <div class="avatar-tile avatar-tile--sm avatar-tile--gradient" aria-hidden="true">
+                <svg class="avatar-tile__icon avatar-tile__icon--white" aria-hidden="true" width="1.5rem" height="1.5rem"><use href={`/icons.svg#${h.icon}`} /></svg>
               </div>
               <h3 class="inner-card__title mt-3">{h.title}</h3>
               <p class="inner-card__text">{h.body}</p>
@@ -78,9 +78,9 @@ const jsonLd = {
 
   <section class="inner-section inner-section--alt" aria-labelledby="leap-form">
     <div class="max-w-3xl mx-auto px-5 lg:px-8">
-      <h2 id="leap-form" class="inner-section__title" style="text-align:center;">احجز لقاء في الجناح</h2>
-      <p class="inner-section__lead" style="text-align:center;">نحدد لك موعداً مع فريقنا خلال المؤتمر.</p>
-      <div class="contact-form-card" style="margin-block-start: var(--space-6);">
+      <h2 id="leap-form" class="inner-section__title inner-section__title--centered">احجز لقاء في الجناح</h2>
+      <p class="inner-section__lead inner-section__lead--centered">نحدد لك موعداً مع فريقنا خلال المؤتمر.</p>
+      <div class="contact-form-card contact-form-card--padded">
         <LeadForm
           title="حجز لقاء"
           intro="عبّي بياناتك ونحدد الموعد."
