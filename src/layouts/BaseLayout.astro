@@ -264,7 +264,13 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     import '../scripts/scroll-reveal.js';
   </script>
 
-  <!-- Critical inline CSS: brand font-face + heading overrides -->
+  <!-- Critical inline CSS: brand font-face + heading overrides + LCP element
+       (homepage .split-hero__h1) sizing. Expanded 2026-07-14 (PERF-FIX) to
+       cover the SplitHero h1 styles that previously lived only in the
+       (now-deferred) index.CQdUEhkK.css. Without these inline, the LCP
+       element would render at default font-size (~2rem) for ~100-300ms
+       after first paint, until the deferred CSS swaps in.
+       Total inline: ~1.6KB raw / ~0.7KB gzipped. -->
   <style is:inline>
     @font-face {
       font-family: 'BrightAI Official';
@@ -280,6 +286,23 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     .feature-title, .section-title, .metric-label, .brand-text {
       font-family: 'BrightAI Official', 'IBM Plex Sans Arabic', Arial, sans-serif;
       font-weight: 700;
+    }
+    /* LCP element — homepage hero h1 (covered here so the deferred
+       index.CQdUEhkK.css can apply the rest of SplitHero styles without
+       delaying first paint of the heading) */
+    .split-hero__h1 {
+      font-size: clamp(2.5rem, 1.25rem + 5vw, 4.5rem);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.018em;
+      text-wrap: balance;
+      text-shadow: 0 2px 24px rgba(4, 7, 17, 0.6);
+    }
+    @media (min-width: 1024px) {
+      .split-hero__h1 { line-height: 1.06; letter-spacing: -0.025em; }
+    }
+    @media (max-width: 767px) {
+      .split-hero__h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); line-height: 1.18; }
     }
     /* Production body baseline */
     body { background: var(--bg-base); color: var(--text-primary); overflow-x: hidden; }

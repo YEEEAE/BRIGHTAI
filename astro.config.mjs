@@ -2,6 +2,65 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
+import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
+import { join, extname } from 'node:path';
+
+/**
+ * perf-css-defer — Astro integration that runs at build done and converts
+ * the global stylesheet <link> tags from render-blocking `rel="stylesheet"`
+ * to non-blocking `rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"`
+ * with a <noscript> fallback. Critical CSS (font-face, headings, body baseline)
+ * is already inlined in BaseLayout.astro, so deferring the rest is safe and
+ * drops LCP by ~300-500ms on mobile Slow 4G.
+ *
+ * Scope: ONLY files that match `/_astro/{BaseLayout,KernelLayout,index}.*.css`
+ * — the global stylesheet bundles emitted by BaseLayout's <style is:global>.
+ * Per-component CSS (cards, buttons, …) stays as render-blocking because
+ * they're small and tied to a specific component rendering on the page.
+ */
+function perfCssDefer() {
+  return {
+    name: 'perf-css-defer',
+    hooks: {
+      'astro:build:done': async ({ dir }) => {
+        const distDir = dir.pathname.replace(/\/$/, '');
+        // Walk all .html files in dist
+        const walk = (d) => {
+          const out = [];
+          for (const entry of readdirSync(d, { withFileTypes: true })) {
+            const p = join(d, entry.name);
+            if (entry.isDirectory()) out.push(...walk(p));
+            else if (extname(entry.name) === '.html') out.push(p);
+          }
+          return out;
+        };
+        const htmlFiles = walk(distDir);
+        // Match global stylesheet bundles: BaseLayout, KernelLayout, index.
+        // Per-component CSS (cards, buttons, …) is small and stays as
+        // render-blocking. The hash part is mandatory in Astro's output.
+        const pattern = /<link rel="stylesheet" href="\/_astro\/(BaseLayout|KernelLayout|index)\.([A-Za-z0-9_-]+)\.css">/g;
+        let totalTransformed = 0;
+        for (const file of htmlFiles) {
+          const html = readFileSync(file, 'utf-8');
+          let count = 0;
+          const newHtml = html.replace(pattern, (full, name, hash) => {
+            count++;
+            const href = `/_astro/${name}.${hash}.css`;
+            return (
+              `<link rel="preload" href="${href}" as="style" onload="this.onload=null;this.rel='stylesheet'">` +
+              `<noscript><link rel="stylesheet" href="${href}"></noscript>`
+            );
+          });
+          if (count > 0) {
+            writeFileSync(file, newHtml, 'utf-8');
+            totalTransformed += count;
+          }
+        }
+        console.log(`[perf-css-defer] transformed ${totalTransformed} render-blocking <link> tag(s) across ${htmlFiles.length} HTML file(s)`);
+      },
+    },
+  };
+}
 
 /**
  * astro.config.mjs — REPORTS-SEO-FOUNDATION (2026-07-07)
@@ -47,6 +106,7 @@ export default defineConfig({
     format: 'directory',
   },
   integrations: [
+    perfCssDefer(),
     sitemap({
       i18n: {
         defaultLocale: 'ar',

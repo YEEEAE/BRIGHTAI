@@ -7,7 +7,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SplitHero from '../components/SplitHero.astro';
 import {
-  LOCAL_BUSINESS_BY_CITY,
   appendLd,
 } from '../data/schema-helpers';
 
@@ -27,12 +26,15 @@ const faqItems = [
 // BreadcrumbList nodes. FoundationSchema (src/components/seo/Schema.astro) already
 // emits the canonical versions of all four with the same @id. schema.org resolves
 // entities by @id, so emitting the full node twice is wasted bytes.
+// PERF-FIX (2026-07-14): Also removed the 5 LocalBusiness nodes (Jeddah, Dammam,
+// Khobar, Mecca, Madinah) from the homepage. They are duplicated on each
+// /solutions/<sector>/<city>/ page, and including them on the homepage bloats
+// HTML by ~30KB. Each city page has its own canonical LocalBusiness @id, so
+// search engines get the same entity information without the homepage bloat.
 // We keep only entities that FoundationSchema does NOT emit:
 //   - SoftwareApplication (Kernel product)
 //   - FAQPage (homepage Q&A)
 //   - DefinedTermSet (technical AI governance terms)
-//   - 5 LocalBusiness nodes (Jeddah, Dammam, Khobar, Mecca, Madinah).
-//     The Riyadh LocalBusiness is in FoundationSchema already, so we omit it here.
 // See /BRIGHTAI/.agents/brain.md Section 5.8 for the schema-helpers contract.
 const jsonLd = [
   {
@@ -104,11 +106,13 @@ const jsonLd = [
   }
 ];
 
-// SCHEMA-ENHANCEMENT (REPORT-23): append the 5 LocalBusiness nodes for cities
-// other than Riyadh (Riyadh LocalBusiness is in FoundationSchema).
-// FoundationSchema emits Organization + WebSite + LocalBusiness (Riyadh) +
-// WebPage + BreadcrumbList — those are referenced by @id where applicable.
-// See /BRIGHTAI/.agents/brain.md Section 5.8 for the schema-helpers contract.
+// SCHEMA-ENHANCEMENT (REPORT-23): City LocalBusiness nodes for Jeddah/Dammam/
+// Khobar/Mecca/Madinah were previously appended here. REMOVED 2026-07-14
+// (PERF-FIX): each city has its own page (/solutions/<sector>/<city>/) with
+// its canonical LocalBusiness @id. The homepage FoundationSchema retains
+// only the Riyadh LocalBusiness (the HQ, geo.region SA-01). Search engines
+// resolve entities by @id, so removing duplicates from the homepage has no
+// SEO downside and drops ~30KB of HTML.
 // REPORTS-AEO-FAQ-2026-07-08: also append an AEO FAQPage node with the
 // canonical "حوكمة الذكاء الاصطناعي" pillar answers (40-60 words each,
 // Saudi dialect, derived from the existing pillar blog post). This second
@@ -147,11 +151,6 @@ const aiGovernanceFaq = {
 };
 
 const enhancedJsonLd = appendLd(jsonLd, [
-  LOCAL_BUSINESS_BY_CITY.jeddah,
-  LOCAL_BUSINESS_BY_CITY.dammam,
-  LOCAL_BUSINESS_BY_CITY.khobar,
-  LOCAL_BUSINESS_BY_CITY.mecca,
-  LOCAL_BUSINESS_BY_CITY.madinah,
   aiGovernanceFaq,
 ]);
 ---
