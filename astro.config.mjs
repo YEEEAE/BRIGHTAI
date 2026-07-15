@@ -64,35 +64,38 @@ function perfCssDefer() {
 
 /**
  * astro.config.mjs — REPORTS-SEO-FOUNDATION (2026-07-07)
+ *                  + KERNEL-AI-2026-07-14 (switched to @astrojs/node)
+ *                  + KERNEL-AUDIT-2026-07-15-BATCH-10 (EXEC-16 — output mode audit)
  *
- * LATEST CHANGE (REPORTS-SEO-FOUNDATION):
- *  - Sitemap filter now EXCLUDES ONLY `/api/*` routes. Previously excluded
- *    `/404` and `/design/*` — that is wrong per the new foundation rule
- *    ("كل صفحة تُفهرس"). Now 404 (still rendered as HTML page) and the
- *    `/design/*` system reference pages are ALL included in sitemap.xml.
- *  - `site` retained as `https://brightai.site` (confirmed by founder
- *    on 2026-07-07 — brightai.site is the live production domain, NOT
- *    www.brightaii.com which appeared in the original task brief).
- *  - Everything else from REPORTS-SEC-01 (Vercel adapter for `/api/ai/chat`)
- *    is preserved verbatim.
+ * LATEST CHANGE (KERNEL-AUDIT-2026-07-15-BATCH-10):
+ *  - Audit attempted to set `output: 'hybrid'` explicitly (was misleadingly
+ *    'static' + node adapter). Astro 6.4.6 REMOVED `output: 'hybrid'` as a
+ *    separate option — the default `output: 'static'` now behaves identically
+ *    when an adapter is present (every page prerenders by default, SSR routes
+ *    opt in via `export const prerender = false`). Reverted to `output: 'static'`
+ *    with documentation explaining the actual behavior.
  *
- * PRESERVATION CONTRACT (REPORTS-SEC-01):
- *  - `output: 'static'` retained → all `.astro` pages remain prerendered HTML.
- *  - API route explicitly opts out via `export const prerender = false`
- *    → it becomes a serverless function; everything else stays static.
+ * PRESERVATION CONTRACT (REPORTS-SEC-01 + KERNEL-AI-2026-07-14):
+ *  - `output: 'static'` (Astro 6.4+ default with adapter) → all `.astro`
+ *    pages prerender by default. SSR routes opt in via `export const prerender = false`.
+ *  - Current SSR routes (all in src/pages/api/):
+ *      1. /api/ai/chat  (chat.ts)   — KERNEL-AI-2026-07-14
+ *      2. /api/lead     (lead.ts)    — KERNEL-AI-2026-07-14
+ *      3. /api/health   (health.ts)  — KERNEL-AUDIT-2026-07-15-BATCH-10 (new)
  *  - `site`, `trailingSlash: 'always'`, `compressHTML`, `redirects`,
  *    `vite` config unchanged.
  *
  * DEPLOYMENT NOTE:
- *  - Vercel: works out-of-the-box. `astro build` will emit
- *    `.vercel/output/functions/api/ai/chat.func/` + static `dist/`.
- *  - Render static: does NOT execute Vercel functions. To deploy on
- *    Render, either (a) swap `vercel(...)` for `node({ mode: 'standalone' })`
- *    + `npm install @astrojs/node`, or (b) migrate hosting to Vercel.
- *    This is documented in reports/2026-07-06-secret-hardening.md.
+ *  - Render: `node({ mode: 'standalone' })` bundles Node server into
+ *    `dist/server/entry.mjs`, serves static from `dist/client/`.
+ *    Render `startCommand` is `node ./dist/server/entry.mjs`.
+ *  - With Astro 6.4.6 default behavior + @astrojs/node adapter, all 190
+ *    pages prerender to HTML, the 3 API routes stay server-side.
  */
 export default defineConfig({
   site: 'https://brightai.site',
+  // Astro 6.4.6 default (static + adapter behaves as hybrid). SSR routes
+  // opt in via `export const prerender = false`.
   output: 'static',
   trailingSlash: 'always',
   compressHTML: true,

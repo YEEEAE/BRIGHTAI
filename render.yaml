@@ -12,6 +12,9 @@ services:
     name: brightai-site
     buildCommand: pnpm install && pnpm run build
     startCommand: node ./dist/server/entry.mjs
+    # KERNEL-AUDIT-2026-07-15-BATCH-10 / EXEC-17: hit a real SSR endpoint
+    # (not just / static HTML) so Render detects actual Node outages.
+    healthCheckPath: /api/health/
     envVars:
       - key: NODE_VERSION
         value: 22.22.2

@@ -186,6 +186,58 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — KERNEL-AUDIT-2026-07-15-BATCH-10: Health check + Astro config reconciliation — Verified
+
+- **Files**: 3 ملفات. **جديد**: `src/pages/api/health.ts` (SSR route — GET-only health endpoint، 75 سطر). **معدّل**: `astro.config.mjs` (header comment refresh + revert `output: 'hybrid'` → `output: 'static'` per Astro 6.4.6 deprecation، 8 أسطر تغيير)، `render.yaml` (إضافة `healthCheckPath: /api/health/`, سطرين). **ما تمس**: protected files الأخرى.
+- **What**: 3 مكونات. (1) **EXEC-17 (Health endpoint)**: `src/pages/api/health.ts` جديد، GET-only، يرجع `{ ok: true, ts: "<iso>", uptime: <sec>, service: "brightai-kernel" }` في <50ms. ما يـ call أي external service (Groq/Gemini/DB)، pure Node runtime. Methods الأخرى → 405. (2) **EXEC-17 (Render integration)**: `render.yaml` يحدد `healthCheckPath: /api/health/`، فالـ Render health checker يضرب SSR endpoint حقيقي (مو `/` static HTML)، يكتشف outages الـ Node process. (3) **EXEC-16 (output reconciliation)**: حاولت تعيين `output: 'hybrid'` صراحة، لكن Astro 6.4.6 أزال `'hybrid'` كخيار منفصل — الـ default `output: 'static'` الآن يسلك نفس السلوك (prerender default + SSR routes via `export const prerender = false`). Reverted + comment محدّث يوثّق.
+- **Why**: (1) **KRN-PERF** — Render's default health check يضرب `/` (static prerendered HTML). لو الـ Node SSR server down لكن static files تشتغل، Render يفكر إن الـ service healthy بينما الـ API endpoints (chat, lead) معطلة. health endpoint يخلي Render يكشف outages حقيقية. (2) **KRN-026 (Low)** — الـ `output: 'static'` + `adapter: node()` كان contradictory لكن Astro handledه بصمت. الـ audit أراد توضيح. النتيجة النهائية: documentation refresh + revert لأن Astro 6.4.6 أزال `'hybrid'`.
+- **Verification**: `npm run build` → 190 صفحة، 0 errors ✅. `node scripts/verify-all.mjs` → 5/5 فحص ناجح ✅. **Source checks**: `src/pages/api/health.ts` → 2248 bytes (created) ✅. **Bundle checks**: `health_OxhWWiQT.mjs` في `dist/server/chunks/` (SSR route built) ✅. `dist/server/entry.mjs` → موجود (Render startCommand target) ✅. `grep "healthCheckPath" render.yaml` → 1 hit ✅. `grep "output:" astro.config.mjs` → `'static'` مع documentation ✅.
+- **Report**: `report/2026-07-15-kernel-audit-batch10.md` (سيُكتب بعد موافقة الـ user على deploy)
+- **Commit**: **uncommitted** (per brain.md rule)
+- **Status**: verified (build + verify-all + 5 source/bundle checks).
+- **Brain updates**: Section 2 (this entry، الـ LAST of the 10-batch sequence)، Section 3 (KRN-026 → resolved via documentation).
+- **Decisions (1 new)**:
+  - **DEC-KERNEL-AUDIT-BATCH10-001**: revert `output: 'hybrid'` → `output: 'static'` (مع documentation). السبب: Astro 6.4.6 أزال `'hybrid'` كخيار منفصل — default `'static'` الآن يسلك نفس السلوك (prerender default + SSR via `prerender = false`). الكود الفعلي ما يتغيّر — فقط الـ label يبقى صحيح.
+- **Follow-up (user action قبل deploy)**: (1) **Render dashboard** — ما يحتاج config جديد (healthCheckPath من render.yaml). لو الـ user يستخدم Infrastructure-as-Code، `render apply` ينشر التغيير. لو dashboard only، يلزم تعديل يدوي. (2) **Live test بعد deploy**: `curl https://brightai.site/api/health/` → 200 مع JSON `{ ok: true, ... }`. (3) **Render logs** — تأكد إن healthCheck logs تظهر (مش marker of activity).
+- **Risks**: (1) **`/api/health/` مكشوف للعالم** — لكن ما يكشف أي sensitive info (ما في env vars، ما في tokens). (2) **Rate limit ما مطبق** — على الـ endpoint، لكن Render health check يجي من Render's own IP، low traffic. لو حد exploit (DDoS)، الـ handler خفيف (<5ms). (3) **uptime counter** — SERVER_START_TS يحسب من أول import للـ module، يبقى صحيح عبر handler calls (ما يُعاد initialize). لو الـ Node process restart، الـ counter يعود 0 — متوقع.
+
+---
+
+## 🎯 KERNEL-AUDIT-2026-07-15 — ملخص تنفيذي نهائي
+
+**10 batches تم تنفيذها من الـ audit (`/Users/yzydalshmry/.claude/plans/modular-snuggling-moonbeam.md`)**:
+
+| Batch | Files | Critical/High resolved | Status |
+|---|---|---|---|
+| 1 (Quick Wins) | 4 source + brain | KRN-009 + KRN-010 + KRN-017 + KRN-018 + KRN-019 | ✅ verified |
+| 2 (Critical Security) | 9 source + 2 new | KRN-A1 + KRN-001 + KRN-002 + KRN-007 | ✅ verified |
+| 3 (PII redaction) | 2 source | KRN-004 | ✅ verified |
+| 4 (Origin allowlist) | 2 source | KRN-003 | ✅ verified |
+| 5 (Chat mobile) | 1 source | KRN-008 | ✅ verified |
+| 6 (A11y keyboard/drawer) | 1 source | KRN-010 + KRN-011 | ✅ verified |
+| 7 (DOMPurify) | 6 source + package.json | KRN-012 | ✅ verified |
+| 8 (Reliability trio) | 3 source (1 new) | KRN-013 + KRN-015 + KRN-016 (partial) | ✅ verified |
+| 9 (Archive legacy) | 37 files moved + 1 README | KRN-A1 legacy SW + KRN-B mock handlers | ✅ verified |
+| 10 (Health + config) | 3 files (1 new) | KRN-026 + Render health visibility | ✅ verified |
+
+**Total**: ~30 files modified, ~5 new files created.
+
+**Findings resolved**: 3 Critical (KRN-A1, KRN-001, KRN-007) + 6 High (KRN-002, KRN-003, KRN-004, KRN-009, KRN-010, KRN-011) + 12 Medium + 4 Low = 25 findings fixed.
+
+**Overall health score**: 69.7% → ~85% (estimated after Critical/High fixes verified).
+
+**Ship-blocking** (user action items before deploy):
+1. **ARCH-1 (CRITICAL)**: rotation Gemini API key in Google AI Studio. الـ key القديم (`AIzaSy...`) كان مخبوز في `dist/server/chunks/chat_*.mjs` — Batch 2 fixed the bundle leak لكن الـ key نفس محتاج rotation. بدون rotation: نفس الـ key المخترق ينحفظ في الـ deployment الجديد.
+2. **Render dashboard env vars**:
+   - `LEAD_WEBHOOK_URL` (for Batch 3) — بدونها، leads تبقى في-memory queue (cap 100)
+   - `LEAD_WEBHOOK_SECRET` (اختياري لكن مستحسن) — HMAC signing
+   - `BRIGHTAI_CHAT_KEY` (اختياري) — لو تبي non-browser clients
+   - `TRUSTED_PROXY_COUNT` (default 1، صريح لو وضعت CDN أمام Render = 2)
+
+**Per-batch commits recommended** (per brain.md rule line 18: user commits):
+- 10 separate commits، كل واحد بعنوان conventional commit يطابق نطاقه.
+- بعد deploy: verify live via curl (`/api/health/`, `/api/ai/chat/`، إلخ).
+
 ### 2026-07-15 — KERNEL-AUDIT-2026-07-15-BATCH-9: Archive legacy kernel/ (29+ inert files) — Verified
 
 - **Files**: 37 ملف منقول (git mv) + 1 جديد. **منقول**: `kernel/sw.js`, `kernel/manifest.json`, `kernel/kernel-perf.js`, `kernel/kernel-web-vitals.js`, 18 ملف في `kernel/assets/js/*` (kernel-api, kernel-aurora, kernel-chat-client, kernel-chat-enhanced, kernel-command-palette, kernel-compliance, kernel-demo-banner, kernel-demo-store, kernel-empty-states, kernel-mobile, kernel-mock-handlers, kernel-nav, kernel-notifications, kernel-onboarding, kernel-pwa, kernel-reports, kernel-stats, kernel-utils)، 8 ملفات في `kernel/api/mock/*.json` (approvals, audit, compliance, connectors, evidence, policies, scenarios, stats)، 6 ملفات في `kernel/tests/*.js` (kernel-api.test, kernel-compliance.test, kernel-demo-store.test, kernel-nav-connectivity.test, kernel-utils.test, setup). **جديد**: `kernel/legacy-disabled/README.md` (يشرح الأرشفة + الـ risks + الـ grep verification + الـ migration path). **ما تمس**: protected files. `kernel/README.md` الأصلية بقيت في مكانها (توثيق تاريخي للـ migration).
