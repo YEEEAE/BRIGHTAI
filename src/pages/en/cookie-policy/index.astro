@@ -2,6 +2,7 @@
 import EnglishLayout from '../../../layouts/EnglishLayout.astro';
 import { getLanguageCounterpart, getLegalAlternates } from '../../../data/i18n-pairs';
 import { legal_en_cookie_policy } from '../../../data/legal-content-en-inline';
+import DOMPurify from 'isomorphic-dompurify';
 const route = '/en/cookie-policy/';
 const canonical = `https://brightai.site${route}`;
 const legalContent = legal_en_cookie_policy;
@@ -11,7 +12,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ]};
 ---
 <EnglishLayout title="BrightAI Cookie Policy | Saudi" description="How BrightAI uses cookies for site experience, analytics, and privacy choices. Clear options for Saudi organizations evaluating AI governance services." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
-  <div class="legal-page" set:html={legalContent.html} />
+  <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">
     <h2 id="legal-related-heading">Related documents</h2>

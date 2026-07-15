@@ -2,6 +2,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { getLanguageCounterpart, getLegalAlternates } from '../../data/i18n-pairs';
 import { legal_pdpl_statement } from '../../data/legal-content-inline';
+import DOMPurify from 'isomorphic-dompurify';
 const route = '/pdpl-statement/';
 const canonical = `https://brightai.site${route}`;
 const legalContent = legal_pdpl_statement;
@@ -11,5 +12,5 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ]};
 ---
 <ArabicLayout title="بيان PDPL | امتثال BrightAI للبيانات" description="بيان امتثال BrightAI لنظام PDPL: كيف نتعامل مع حماية البيانات الشخصية ضمن خدمات حوكمة AI بالسعودية. ضوابط واضحة وموثقة ومتوافقة محلياً مع LEA." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
-  <div class="legal-page" set:html={legalContent.html} />
+  <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>

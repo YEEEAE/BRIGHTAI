@@ -2,6 +2,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { getLegalAlternates } from '../../data/i18n-pairs';
 import { legal_privacy_cookies } from '../../data/legal-content-inline';
+import DOMPurify from 'isomorphic-dompurify';
 const route = '/privacy-cookies/';
 const canonical = `https://brightai.site${route}`;
 const legalContent = legal_privacy_cookies;
@@ -11,5 +12,5 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ]};
 ---
 <ArabicLayout title="سياسة الخصوصية + ملفات الارتباط" description="سياسة الخصوصية وملفات الارتباط في BrightAI: كيف نجمع البيانات ونستخدمها وخيارات التحكم المتاحة لزوار وعملاء الموقع في السعودية بوضوح تام وشامل." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route}>
-  <div class="legal-page" set:html={legalContent.html} />
+  <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>

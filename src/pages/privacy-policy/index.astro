@@ -2,6 +2,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { getLanguageCounterpart, getLegalAlternates } from '../../data/i18n-pairs';
 import { legal_privacy_policy } from '../../data/legal-content-inline';
+import DOMPurify from 'isomorphic-dompurify';
 const route = '/privacy-policy/';
 const canonical = `https://brightai.site${route}`;
 const legalContent = legal_privacy_policy;
@@ -11,5 +12,5 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ]};
 ---
 <ArabicLayout title="سياسة الخصوصية | كيف نحمي بياناتك" description="كيف نتعامل مع بيانات التواصل وطلبات الديمو وبيانات الأعمال في BrightAI. ضوابط سرية وحماية بيانات وفق نظام PDPL السعودي وأفضل الممارسات العالمية." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
-  <div class="legal-page" set:html={legalContent.html} />
+  <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>

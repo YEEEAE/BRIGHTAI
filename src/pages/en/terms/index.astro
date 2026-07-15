@@ -2,6 +2,7 @@
 import EnglishLayout from '../../../layouts/EnglishLayout.astro';
 import { getLanguageCounterpart, getLegalAlternates } from '../../../data/i18n-pairs';
 import { legal_en_terms } from '../../../data/legal-content-en-inline';
+import DOMPurify from 'isomorphic-dompurify';
 const route = '/en/terms/';
 const canonical = `https://brightai.site${route}`;
 const legalContent = legal_en_terms;
@@ -11,7 +12,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ]};
 ---
 <EnglishLayout title="BrightAI Terms of Service" description="Review BrightAI terms for website and service use: user responsibilities, acceptable use, and protections for AI governance customers in Saudi Arabia." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
-  <div class="legal-page" set:html={legalContent.html} />
+  <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">
     <h2 id="legal-related-heading">Related documents</h2>

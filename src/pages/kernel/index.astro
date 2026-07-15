@@ -447,7 +447,7 @@ const complianceRows = [
                CTA link with visible label, satisfying the link-name rule. */
             <article class="k-unit-card gsap-fade" data-gsap-delay={String(i * 60)}>
               <div class="k-unit-card__icon" aria-hidden="true">
-                <Fragment set:html={item.iconSvg} />
+                <Fragment set:html={DOMPurify.sanitize(item.iconSvg)} />
               </div>
               <div class="k-unit-card__label">{item.label}</div>
               <div class="k-unit-card__desc">{item.shortDescription}</div>

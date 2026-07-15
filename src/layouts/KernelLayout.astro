@@ -23,6 +23,7 @@ import BaseLayout from './BaseLayout.astro';
 import KernelSidebar from '../components/kernel/KernelSidebar.astro';
 import { kernelNavItems } from '../data/kernel';
 import type { SEOProps } from '../data/site';
+import DOMPurify from 'isomorphic-dompurify';
 
 interface Props extends SEOProps {
   currentPath?: string;
@@ -420,7 +421,7 @@ const allItems = [
             aria-current={currentPath === item.path ? 'page' : undefined}
             aria-label={item.label}
           >
-            <Fragment set:html={item.iconSvg} />
+            <Fragment set:html={DOMPurify.sanitize(item.iconSvg)} />
             <span>{item.label}</span>
           </a>
         </li>

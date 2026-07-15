@@ -14,6 +14,7 @@
 import { SITE } from '../data/site';
 import type { SEOProps } from '../data/site';
 import { LEGAL_I18N_PAIRS } from '../data/i18n-pairs';
+import DOMPurify from 'isomorphic-dompurify';
 
 interface HreflangLink {
   lang: string;
@@ -108,7 +109,7 @@ const finalHasXDefault = enrichedHreflang.some((link) => link.lang === 'x-defaul
 
 <!-- JSON-LD Structured Data -->
 {jsonLd && (
-  <script id="brightai-production-schema" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script id="brightai-production-schema" type="application/ld+json" set:html={DOMPurify.sanitize(JSON.stringify(jsonLd))} />
 )}
 
 <!-- Note: Google Analytics (gtag.js) is injected once in BaseLayout.astro to prevent duplicate pageview tracking. -->

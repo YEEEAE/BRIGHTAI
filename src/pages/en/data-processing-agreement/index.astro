@@ -2,6 +2,7 @@
 import EnglishLayout from '../../../layouts/EnglishLayout.astro';
 import { getLanguageCounterpart, getLegalAlternates } from '../../../data/i18n-pairs';
 import { legal_en_data_processing_agreement } from '../../../data/legal-content-en-inline';
+import DOMPurify from 'isomorphic-dompurify';
 const route = '/en/data-processing-agreement/';
 const canonical = `https://brightai.site${route}`;
 const legalContent = legal_en_data_processing_agreement;
@@ -11,7 +12,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ]};
 ---
 <EnglishLayout title="BrightAI DPA | Saudi Clients" description="Review BrightAI data processing terms: roles, safeguards, and contractual commitments for organizations using AI governance services in Saudi Arabia." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
-  <div class="legal-page" set:html={legalContent.html} />
+  <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">
     <h2 id="legal-related-heading">Related documents</h2>

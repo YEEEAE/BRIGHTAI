@@ -18,6 +18,7 @@ import {
   ORGANIZATION,
   getBreadcrumbLd,
 } from '../../data/schema-helpers';
+import DOMPurify from 'isomorphic-dompurify';
 
 const docs = await getCollection('docs');
 const title = 'مركز الوثائق | 30+ دليل حوكمة AI';
@@ -410,7 +411,7 @@ function cardIconFor(slug: string): string {
                 <use href="/icons.svg#mdi-chevron-down"></use>
               </svg>
             </summary>
-            <div class="docs-faq__answer" set:html={item.a} />
+            <div class="docs-faq__answer" set:html={DOMPurify.sanitize(item.a)} />
           </details>
         ))}
       </div>

@@ -9,6 +9,7 @@ import SplitHero from '../components/SplitHero.astro';
 import {
   appendLd,
 } from '../data/schema-helpers';
+import DOMPurify from 'isomorphic-dompurify';
 
 const faqItems = [
   { q: 'وش هي BrightAI؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI هي <strong>Saudi AI Safety OS</strong> — نظام تشغيل أمان وحوكمة للذكاء الاصطناعي داخل المؤسسات السعودية. تشتغل كطبقة وسيطة بين الموظف والـ AI وبيانات الشركة، وتضمن إن كل طلب ذكاء اصطناعي يكون آمن وموثّق وقابل للمراجعة.</p><p>عكس شات بوت عادي، BrightAI تركّب تحت أي نظام AI في شركتك وتفعّل AI Firewall وإخفاء البيانات الشخصية وسجل التدقيق والموافقات البشرية وملفات الأدلة — كلها متوافقة مع PDPL وNCA وSDAIA.</p>' },
@@ -501,7 +502,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
             <span class="font-bold text-lg">{item.q}</span>
             <svg class="home-faq-chevron" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-chevron-down"></use></svg>
           </summary>
-          <div class="home-faq-answer" set:html={item.a} />
+          <div class="home-faq-answer" set:html={DOMPurify.sanitize(item.a)} />
         </details>
       ))}
     </div>

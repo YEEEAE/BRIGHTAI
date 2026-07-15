@@ -15,6 +15,7 @@
  *
  * لا يلمس chat.ts — يكتفي بعرض رسائل واضحة للزائر.
  */
+import DOMPurify from 'isomorphic-dompurify';
 
 export type KernelChatErrorType =
   | 'rate_limit'      // 429 — تجاوز حد المعدل
@@ -116,7 +117,7 @@ const bannerClass = `kernel-chat-policy-banner kernel-chat-policy-banner--${view
   hidden
 >
   <span class="kernel-chat-policy-banner__icon" aria-hidden="true">
-    <Fragment set:html={view.icon} />
+    <Fragment set:html={DOMPurify.sanitize(view.icon)} />
   </span>
   <div class="kernel-chat-policy-banner__body">
     <p class="kernel-chat-policy-banner__title">{view.title}</p>

@@ -2,6 +2,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { getLanguageCounterpart, getLegalAlternates } from '../../data/i18n-pairs';
 import { legal_cookie_policy } from '../../data/legal-content-inline';
+import DOMPurify from 'isomorphic-dompurify';
 const route = '/cookie-policy/';
 const canonical = `https://brightai.site${route}`;
 const legalContent = legal_cookie_policy;
@@ -11,5 +12,5 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 ]};
 ---
 <ArabicLayout title="سياسة ملفات الارتباط | موقع BrightAI" description="كيف يستخدم BrightAI ملفات الارتباط لتحسين تجربة الموقع وقياس الأداء. خيارات التحكم والخصوصية لزوار الموقع في السعودية واضحة ومفصلة بالكامل للجميع." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
-  <div class="legal-page" set:html={legalContent.html} />
+  <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>

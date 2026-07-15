@@ -10,6 +10,7 @@
  */
 
 import { kernelUnits } from '../../data/kernel';
+import DOMPurify from 'isomorphic-dompurify';
 
 interface Props {
   /** Optional override for active page detection (e.g. /kernel/chat/). */
@@ -76,7 +77,7 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
     {items.filter(i => i.group === 'operations').map(item => (
       <>
         <a href={item.path} class="kernel-sidebar__item" data-kernel-nav-id={item.id} aria-current={currentPath === item.path || currentPath === item.path.replace(/\/$/, '') ? 'page' : undefined}>
-          <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={item.iconSvg} /></span>
+          <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={DOMPurify.sanitize(item.iconSvg)} /></span>
           <span class="kernel-sidebar__label">{item.label}</span>
           {item.pendingCount !== undefined && (
             <span class="kernel-sidebar__badge" aria-label={`${item.pendingCount} طلبات موافقة معلقة`}>{item.pendingCount}</span>
@@ -88,7 +89,7 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
     <span class="kernel-sidebar__section-label">الأدلة والقرارات</span>
     {items.filter(i => i.group === 'evidence').map(item => (
       <a href={item.path} class="kernel-sidebar__item" data-kernel-nav-id={item.id} aria-current={currentPath === item.path || currentPath === item.path.replace(/\/$/, '') ? 'page' : undefined}>
-        <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={item.iconSvg} /></span>
+        <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={DOMPurify.sanitize(item.iconSvg)} /></span>
         <span class="kernel-sidebar__label">{item.label}</span>
         {item.isNew && <span class="kernel-sidebar__badge kernel-sidebar__badge--new">جديد</span>}
       </a>
@@ -97,7 +98,7 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
     <span class="kernel-sidebar__section-label">الإدارة</span>
     {items.filter(i => i.group === 'admin').map(item => (
       <a href={item.path} class="kernel-sidebar__item" data-kernel-nav-id={item.id} aria-current={currentPath === item.path || currentPath === item.path.replace(/\/$/, '') ? 'page' : undefined}>
-        <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={item.iconSvg} /></span>
+        <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={DOMPurify.sanitize(item.iconSvg)} /></span>
         <span class="kernel-sidebar__label">{item.label}</span>
       </a>
     ))}
