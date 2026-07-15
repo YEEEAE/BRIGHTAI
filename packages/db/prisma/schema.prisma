@@ -392,6 +392,10 @@ model Organization {
   sessions             Session[]
   subscriptions        Subscription[]
   orgFeatureFlags      OrgFeatureFlag[]
+  // USAGE-001 (2026-07-15): per-org AI token usage for billing.
+  aiUsageEntries       AiUsageEntry[]
+  // SSO-001 (2026-07-15): per-org enterprise SSO connections.
+  samlConnections      SamlConnection[]
 
   @@index([slug])
   @@index([deletedAt])

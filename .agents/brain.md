@@ -190,6 +190,24 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-16 — DEPLOY-FIX-001: Render deploy failure fix (Option B) — Verified pnpm install works locally
+
+- **Files**: 2 معدّل + 1 working tree cleanup. **معدّل**: `packages/db/prisma/schema.prisma` (Organization model: أضف opposite relations لـ `aiUsageEntries` و `samlConnections` — fix لـ broken Prisma schema)، `.gitignore` (أضف `apps/dashboard/coverage/`, `coverage/`, `*.lcov`). **Working tree**: `git rm -r --cached coverage/` حذف 30+ tracked coverage HTML/JSON files.
+- **What**: أصلح الـ Render deploy failure الحاصل في commit `58034d8a5b04c7df033e4849f259bcba250cbfad` (12:07-12:10 GMT+3). الـ failure كان سببين: (1) coverage HTML/JSON files committed (commit pollution)، (2) Prisma schema broken بسبب missing opposite relations في Organization model.
+- **Why**: الـ deploy failure هذا manifestation حقيقي للـ NO-GO decision من الـ Release Readiness Board. لو الـ schema ما تصلح → Render و أي staging environment يفشل على `pnpm install` postinstall step.
+- **Verification**:
+  - `pnpm install --frozen-lockfile` → **Done in 1.5s** (was failing before)
+  - `pnpm exec prisma generate` → **✔ Generated Prisma Client (v5.22.0)** (was failing with 4 validation errors before)
+  - `git ls-files | grep coverage` → **0 hits** (was 30+ before)
+  - `git status` shows 30+ coverage files as `D` (deleted from index, but gitignore preserves them locally as artifacts)
+- **Risks**:
+  - **Database migration needed** for the new Prisma relations: `pnpm --filter @brightai/db db:migrate:dev --name add_aiusage_saml_relations` (يحتاج DB متصل). الـ generate فقط لا يكفي — production يحتاج migration.
+  - **Existing DB rows** لن تتأثر لأن relations nullable (SetNull/Cascade) — لو في AiUsageEntries مع organizationId=null، الـ relation nullable يحافظ عليها.
+  - **Rollback strategy**: لو الـ deploy فشل مرة ثانية، الـ rollback هو `git reset --hard 17e727c4164b61316776af825e5e07bdb0828337` (آخر commit قبل الـ pollution).
+- **Commit**: uncommitted (per brain.md rule). رسالة مقترحة: `fix(deploy): unblock Render build via Prisma schema fixes + gitignore coverage artifacts`.
+- **Status**: verified locally (pnpm install + prisma generate يعملان). يحتاج user: commit + push + Render auto-redeploy.
+- **Brain updates**: Section 1.1 (Infrastructure — deploy pipeline verified working locally).
+
 ### 2026-07-16 — SSO-001: Enterprise SSO foundation (Phase 1 — Code complete, awaiting Clerk Pro plan) — Partial implementation
 
 - **Files**: 6 جديد + 5 معدّل. **جديد**: `packages/db/prisma/schema.prisma` (SamlConnection model بـ 14 fields: provider, clerkEnterpriseSsoId, entityId, ssoUrl, sloUrl, x509Cert, nameIdFormat, emailDomains, enabled, config, roleMapping, lastSsoLoginAt, lastError)، `packages/db/prisma/migrations/20260715000001_saml_connections/migration.sql` (PostgreSQL)، `packages/db/prisma/migrations/20260715000000_audit_sso_actions/migration.sql` (42 AuditAction values + CLERK_WEBHOOK ActorType)، `apps/dashboard/app/(settings)/settings/sso/page.tsx` (OWNER-only server component)، `apps/dashboard/app/(settings)/settings/sso/page.module.css`، `apps/dashboard/app/(settings)/settings/sso/actions.ts` (configureSsoAction + disableSsoAction مع audit). **معدّل**: `packages/config/src/constants.ts` (إضافة SSO actions للـ AUDIT_ACTIONS enum + SSO feature في ENTERPRISE tier)، `apps/dashboard/lib/firewall/audit/hashchain.ts` (AuditChainInput.action: AuditAction، actorType: +CLERK_WEBHOOK)، `apps/dashboard/app/api/webhooks/clerk/route.ts` (توسيع لـ organization.* + organizationMembership.* + session.* events — 10 handlers جديد)، `apps/dashboard/lib/billing/plans.ts` (حذف SSO من PRO tier، إضافته لـ ENTERPRISE sales-led)، `apps/dashboard/app/(settings)/settings/layout.tsx` (SSO link في الـ nav)، `apps/dashboard/app/(auth)/sign-in/[[...sign-in]]/page.tsx` (custom sign-in مع detectSsoForEmail helper).
