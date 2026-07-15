@@ -1,0 +1,51 @@
+---
+/**
+ * KernelActivityItem.stories.astro — Storybook stories for KernelActivityItem.
+ *
+ * Single activity entry. 4 tones: default | success | warning | danger.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelActivityItem from './KernelActivityItem.astro';
+
+const meta = {
+  title: 'Kernel/ActivityItem',
+  component: KernelActivityItem,
+  tags: ['autodocs'],
+  argTypes: {
+    title: { control: 'text' },
+    tone: { control: 'select', options: ['default', 'success', 'warning', 'danger'] },
+    iconSvg: { control: 'text' },
+    traceId: { control: 'text' },
+    meta: { control: 'text' },
+    time: { control: 'text' },
+  },
+  args: {
+    title: 'طلب جديد من أحمد',
+    tone: 'default',
+    traceId: 'tr-9a8b7c',
+    meta: 'POST /api/chat',
+    time: 'منذ دقيقتين',
+    iconSvg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16m8-8H4"/></svg>',
+  },
+} satisfies Meta<typeof KernelActivityItem>;
+
+export default meta;
+type Story = StoryObj<typeof KernelActivityItem>;
+
+export const Default: Story = {};
+
+export const Success: Story = {
+  args: { tone: 'success', title: 'تمت الموافقة على الطلب', iconSvg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>' },
+};
+
+export const Warning: Story = {
+  args: { tone: 'warning', title: 'تنبيه: استخدام غير معتاد', iconSvg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 9v2m0 4h.01M5 19h14a2 2 0 001.84-2.75L13.74 4a2 2 0 00-3.48 0L3.16 16.25A2 2 0 005 19z"/></svg>' },
+};
+
+export const Danger: Story = {
+  args: { tone: 'danger', title: 'تم رفض المحاولة', iconSvg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 18L18 6M6 6l12 12"/></svg>' },
+};
+
+export const Minimal: Story = {
+  args: { iconSvg: '', traceId: '', meta: '', time: '' },
+};

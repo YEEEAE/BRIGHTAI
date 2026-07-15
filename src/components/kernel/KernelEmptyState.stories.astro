@@ -1,0 +1,48 @@
+---
+/**
+ * KernelEmptyState.stories.astro — Storybook stories for KernelEmptyState.
+ *
+ * Illustrated empty state مع CTA اختياري.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelEmptyState from './KernelEmptyState.astro';
+
+const meta = {
+  title: 'Kernel/EmptyState',
+  component: KernelEmptyState,
+  tags: ['autodocs'],
+  argTypes: {
+    title: { control: 'text' },
+    message: { control: 'text' },
+    ctaLabel: { control: 'text' },
+    ctaHref: { control: 'text' },
+    iconSvg: { control: 'text' },
+  },
+  args: {
+    title: 'لا توجد تقارير',
+    message: 'ابدأ بإضافة طلب جديد لمشاهدة التقارير هنا',
+    ctaLabel: 'طلب جديد',
+    ctaHref: '/demo/',
+    iconSvg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
+  },
+} satisfies Meta<typeof KernelEmptyState>;
+
+export default meta;
+type Story = StoryObj<typeof KernelEmptyState>;
+
+export const Default: Story = {};
+
+export const NoCTA: Story = {
+  args: { ctaLabel: '', ctaHref: '' },
+};
+
+export const TitleOnly: Story = {
+  args: { message: '', ctaLabel: '', ctaHref: '' },
+};
+
+export const LongMessage: Story = {
+  args: {
+    title: 'فشل تحميل البيانات',
+    message: 'حاول مرة أخرى أو تواصل مع الدعم إذا استمرت المشكلة. السبب المحتمل: انقطاع الاتصال أو انتهاء الجلسة.',
+  },
+};

@@ -1,0 +1,20 @@
+---
+/**
+ * KernelActivityList.stories.astro — Storybook stories for KernelActivityList.
+ *
+ * Container for KernelActivityItem.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelActivityList from './KernelActivityList.astro';
+
+const meta = {
+  title: 'Kernel/ActivityList',
+  component: KernelActivityList,
+  tags: ['autodocs'],
+  args: {},
+} satisfies Meta<typeof KernelActivityList>;
+
+export default meta;
+type Story = StoryObj<typeof KernelActivityList>;
+
+export const Default: Story = {};

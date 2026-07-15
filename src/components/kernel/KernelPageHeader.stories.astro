@@ -1,0 +1,45 @@
+---
+/**
+ * KernelPageHeader.stories.astro — Storybook stories for KernelPageHeader.
+ *
+ * Unified page header — h1 + optional badge + description.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelPageHeader from './KernelPageHeader.astro';
+
+const meta = {
+  title: 'Kernel/PageHeader',
+  component: KernelPageHeader,
+  tags: ['autodocs'],
+  argTypes: {
+    h1: { control: 'text' },
+    badge: { control: 'object', description: '{ level, label }' },
+    description: { control: 'text' },
+  },
+  args: {
+    h1: 'سجل التدقيق',
+    badge: { level: 'high', label: 'سري' },
+    description: 'كل الإجراءات المسجلة على النظام خلال آخر 30 يوم',
+  },
+} satisfies Meta<typeof KernelPageHeader>;
+
+export default meta;
+type Story = StoryObj<typeof KernelPageHeader>;
+
+export const Default: Story = {};
+
+export const WithCriticalBadge: Story = {
+  args: { h1: 'التنبيهات الحرجة', badge: { level: 'critical', label: 'عاجل' } },
+};
+
+export const MinimalBadge: Story = {
+  args: { h1: 'الإعدادات', badge: { level: 'minimal', label: 'عام' } },
+};
+
+export const NoBadge: Story = {
+  args: { h1: 'صفحة بدون badge', badge: undefined, description: 'بدون badge، عنوان فقط' },
+};
+
+export const NoDescription: Story = {
+  args: { h1: 'لوحة التحكم', description: '' },
+};

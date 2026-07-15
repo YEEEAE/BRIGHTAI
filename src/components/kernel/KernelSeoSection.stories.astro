@@ -1,0 +1,20 @@
+---
+/**
+ * KernelSeoSection.stories.astro — Storybook stories for KernelSeoSection.
+ *
+ * SEO content section (في صفحات Kernel).
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelSeoSection from './KernelSeoSection.astro';
+
+const meta = {
+  title: 'Kernel/SeoSection',
+  component: KernelSeoSection,
+  tags: ['autodocs'],
+  args: {},
+} satisfies Meta<typeof KernelSeoSection>;
+
+export default meta;
+type Story = StoryObj<typeof KernelSeoSection>;
+
+export const Default: Story = {};

@@ -1,0 +1,45 @@
+---
+/**
+ * BrightStar.stories.astro — Storybook stories for BrightStar.
+ *
+ * Single visual identity for BrightAI. 4 variants.
+ * Pure SVG, 0KB hydration cost.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import BrightStar from './BrightStar.astro';
+
+const meta = {
+  title: 'Brand/BrightStar',
+  component: BrightStar,
+  tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'inline-radio',
+      options: ['hero', 'minimal', 'mono', 'glow'],
+    },
+    size: { control: 'number' },
+    decorative: { control: 'boolean' },
+    label: { control: 'text', description: 'AT label (when not decorative)' },
+  },
+  args: {
+    variant: 'hero',
+    size: 220,
+    decorative: true,
+  },
+} satisfies Meta<typeof BrightStar>;
+
+export default meta;
+type Story = StoryObj<typeof BrightStar>;
+
+export const Hero: Story = {};
+
+export const Minimal: Story = { args: { variant: 'minimal' } };
+export const Mono: Story = { args: { variant: 'mono' } };
+export const Glow: Story = { args: { variant: 'glow' } };
+
+export const Small: Story = { args: { size: 120 } };
+export const Large: Story = { args: { size: 360 } };
+
+export const Accessible: Story = {
+  args: { decorative: false, label: 'نجمة BrightAI — شعار رسمي' },
+};

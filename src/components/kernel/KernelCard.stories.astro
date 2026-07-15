@@ -1,0 +1,44 @@
+---
+/**
+ * KernelCard.stories.astro — Storybook stories for KernelCard.
+ *
+ * Generic card surface (white-on-dark glass).
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelCard from './KernelCard.astro';
+
+const meta = {
+  title: 'Kernel/Card',
+  component: KernelCard,
+  tags: ['autodocs'],
+  argTypes: {
+    title: { control: 'text' },
+    subtitle: { control: 'text' },
+    iconSvg: { control: 'text', description: 'SVG inline (HTML)' },
+    accent: { control: 'boolean', description: 'variant مميز (featured)' },
+    labelledBy: { control: 'text' },
+  },
+  args: {
+    title: 'التقارير اليومية',
+    subtitle: 'ملخص النشاط خلال آخر 24 ساعة',
+    iconSvg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
+    accent: false,
+  },
+} satisfies Meta<typeof KernelCard>;
+
+export default meta;
+type Story = StoryObj<typeof KernelCard>;
+
+export const Default: Story = {};
+
+export const Accent: Story = {
+  args: { accent: true, title: 'مميز — لوحة التحكم', subtitle: 'هذا الـ variant للـ featured content' },
+};
+
+export const NoIcon: Story = { args: { iconSvg: '' } };
+export const NoSubtitle: Story = { args: { subtitle: '' } };
+export const Minimal: Story = { args: { title: 'عنوان فقط' } };
+
+export const A11yLabel: Story = {
+  args: { labelledBy: 'custom-card-id', title: 'بطاقة بمعرف مخصص' },
+};

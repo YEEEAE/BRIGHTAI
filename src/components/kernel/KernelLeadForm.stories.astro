@@ -1,0 +1,20 @@
+---
+/**
+ * KernelLeadForm.stories.astro — Storybook stories for KernelLeadForm.
+ *
+ * Lead capture form (Demo request).
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelLeadForm from './KernelLeadForm.astro';
+
+const meta = {
+  title: 'Kernel/LeadForm',
+  component: KernelLeadForm,
+  tags: ['autodocs'],
+  args: {},
+} satisfies Meta<typeof KernelLeadForm>;
+
+export default meta;
+type Story = StoryObj<typeof KernelLeadForm>;
+
+export const Default: Story = {};

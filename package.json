@@ -67,7 +67,11 @@
     "resource:audit:before": "node scripts/resource-paths-audit.mjs before",
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
     "resource:fix": "node scripts/fix-resource-paths.mjs",
-    "a11y:scan": "node scripts/axe-scan.mjs"
+    "a11y:scan": "node scripts/axe-scan.mjs",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build -o storybook-static",
+    "storybook:serve": "npx http-server storybook-static -p 6007 -c-1 --cors",
+    "storybook:clean": "rm -rf storybook-static .storybook/cache"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
@@ -88,6 +92,11 @@
     "@astrojs/node": "^11.0.2",
     "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.39.4",
+    "@storybook/addon-a11y": "^10.0.0",
+    "@storybook/addon-controls": "^10.0.0",
+    "@storybook/addon-docs": "^10.0.0",
+    "@storybook/addon-viewport": "^10.0.0",
+    "@storybook/astro-vite": "^10.0.0",
     "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.1",
@@ -99,6 +108,7 @@
     "playwright": "^1.61.1",
     "prettier": "^3.4.2",
     "purgecss": "^8.0.0",
+    "storybook": "^10.0.0",
     "typescript": "^5.7.2",
     "vitest": "^1.0.0"
   }

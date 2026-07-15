@@ -1,0 +1,39 @@
+---
+/**
+ * KernelStatusStrip.stories.astro — Storybook stories for KernelStatusStrip.
+ *
+ * Status strip — kicker + title + dot + items.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelStatusStrip from './KernelStatusStrip.astro';
+
+const meta = {
+  title: 'Kernel/StatusStrip',
+  component: KernelStatusStrip,
+  tags: ['autodocs'],
+  argTypes: {
+    kicker: { control: 'text' },
+    title: { control: 'text' },
+    dot: { control: 'select', options: ['ok', 'warn', 'down'] },
+    items: { control: 'object' },
+  },
+  args: {
+    kicker: 'حالة النظام',
+    title: 'كل الخدمات تعمل',
+    dot: 'ok',
+    items: [],
+  },
+} satisfies Meta<typeof KernelStatusStrip>;
+
+export default meta;
+type Story = StoryObj<typeof KernelStatusStrip>;
+
+export const Default: Story = {};
+
+export const Warning: Story = {
+  args: { title: 'بطء في بعض الخدمات', dot: 'warn' },
+};
+
+export const Down: Story = {
+  args: { title: 'انقطاع في الخدمة', dot: 'down' },
+};

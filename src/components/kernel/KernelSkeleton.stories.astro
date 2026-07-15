@@ -1,0 +1,42 @@
+---
+/**
+ * KernelSkeleton.stories.astro — Storybook stories for KernelSkeleton.
+ *
+ * Shimmer placeholder (loading state). 7 variants.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelSkeleton from './KernelSkeleton.astro';
+
+const meta = {
+  title: 'Kernel/Skeleton',
+  component: KernelSkeleton,
+  tags: ['autodocs'],
+  argTypes: {
+    variant: {
+      control: 'select',
+      options: ['text', 'text-sm', 'text-md', 'heading', 'avatar', 'icon', 'card'],
+    },
+    width: { control: 'text', description: 'override inline-size (مثال: 60%)' },
+    height: { control: 'text', description: 'override block-size (مثال: 100px)' },
+  },
+  args: {
+    variant: 'text',
+    width: '',
+    height: '',
+  },
+} satisfies Meta<typeof KernelSkeleton>;
+
+export default meta;
+type Story = StoryObj<typeof KernelSkeleton>;
+
+export const Default: Story = {};
+export const Text: Story = { args: { variant: 'text' } };
+export const TextSm: Story = { args: { variant: 'text-sm' } };
+export const TextMd: Story = { args: { variant: 'text-md' } };
+export const Heading: Story = { args: { variant: 'heading' } };
+export const Avatar: Story = { args: { variant: 'avatar' } };
+export const Icon: Story = { args: { variant: 'icon' } };
+export const Card: Story = { args: { variant: 'card' } };
+
+export const CustomWidth: Story = { args: { variant: 'text', width: '60%' } };
+export const CustomSize: Story = { args: { variant: 'card', width: '200px', height: '120px' } };

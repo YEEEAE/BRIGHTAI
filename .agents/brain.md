@@ -190,6 +190,26 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — STORYBOOK-10: إعداد Storybook 10 مع 25 story (kernel + ui + brand) — Verified structure, awaiting user commit
+
+- **Files**: 28 جديد + 1 معدّل. **جديد**: `.storybook/main.ts` (Storybook 10 + @storybook/astro-vite framework + 4 addons)، `.storybook/preview.ts` (RTL/LTR toggle + theme toggle + viewport + a11y + tokens.css import)، `docs/storybook.md` (توثيق بالعامية السعودية)، و 25 ملف `*.stories.astro` لـ 20 kernel component + 3 ui (Button, Card, SectionHeading) + 2 brand (BrightStar, BrightStarLoader). **معدّل**: `package.json` (إضافة scripts: `storybook`, `storybook:build`, `storybook:serve`, `storybook:clean` + devDependencies: `storybook@^10`, `@storybook/astro-vite@^10`, `@storybook/addon-{a11y,controls,docs,viewport}@^10`).
+- **What**: أضفنا Storybook 10 sandbox للـ UI components في الـ root (مو apps/dashboard، لأن kernel components هنا). الـ framework هو `@storybook/astro-vite` الرسمي (مو community addon). RTL toggle كـ global toolbar (افتراضي RTL). a11y يعرض violations بـ warning level (ما يكسر build). viewport 4 breakpoints (mobile/tablet/desktop/wide).
+- **Why**: عزل الـ UI components عن الـ page context للتطوير السريع. visual review بدون ما نشغّل الموقع كامل. توثيق design system. baseline لاختبار a11y لكل component لحاله. قرار المستخدم: static build فقط (لا Chromatic).
+- **Verification**:
+  - `pnpm install`: **يحتاج تشغيل المستخدم** (أنا ما ثبّت dependencies).
+  - `pnpm storybook`: **يحتاج تشغيل المستخدم** للتحقق الفعلي.
+  - `pnpm storybook:build`: **يحتاج تشغيل المستخدم** للتحقق من static output.
+  - بنية الملفات: ✅ 25 story file (20 kernel + 3 ui + 2 brand).
+  - `.storybook/main.ts`: ✅ 4 addons + correct stories glob.
+  - `.storybook/preview.ts`: ✅ RTL/LTR toggle + theme + viewport + a11y rules (6 WCAG AA rules).
+- **Risks**:
+  - Storybook 10 قد يحتاج tweaks في `main.ts` لو `@storybook/astro-vite` ما يكتشف `.stories.astro` بشكل صحيح (نحتاج run للتحقق).
+  - `*.stories.astro` يحتاج astro-vite loader — لازم يتأكد إن الـ build يشتغل (نفس السبب).
+  - size bundle: لم نقس فعلياً — `pnpm storybook:build` ضروري للتحقق (< 30MB goal).
+- **Commit**: uncommitted (per brain.md rule — المستخدم يعملها). رسالة مقترحة: `feat(dx): add Storybook 10 with 25 stories (kernel + ui + brand) and RTL toggle`.
+- **Status**: structure ready, awaiting user to run `pnpm install && pnpm storybook` for verification.
+- **Brain updates**: Section 5 (Token & Component Inventory) — 25 stories جديدة موثّقة.
+
 ### 2026-07-15 — CHAT-STREAM-2026-07-15: Server-Sent Events (SSE) streaming chat proxy لـ /api/ai/chat/ (P95 < 800ms) — Verified
 
 - **Files**: 1 جديد + 2 معدّل. **جديد**: `apps/dashboard/tests/api/chat-streaming.test.ts` (6 اختبارات vitest). **معدّل**: `src/pages/api/ai/chat.ts` (إضافة streamGroq + streamGemini helpers + wantsSSE check + parsing chunks + fallback logic + AbortController support + done/error/token events)، `src/components/kernel/KernelAiAssistant.astro` (تغيير الـ client fetch ليدعم Accept: text/event-stream، تحويل الـ JSON handling إلى stream-reading عبر getReader، دعم prefers-reduced-motion لتجميع التوكنز، وإلغاء الاتصال عبر AbortController عند التصفح أو مسح الشات).
@@ -3864,6 +3884,37 @@ Companion utility classes in `src/styles/utilities.css` Section 11b:
 | `bright-star-loading.svg` | 2585B | 1031B | glow | offline page, BrightStarLoader component |
 | `bright-star-minimal.svg` | 1230B | 675B | minimal | footer brand mark (replaces logo.png in chrome) |
 | `bright-star-mono.svg` | 2223B | 925B | mono | 404 page (broken-connection metaphor) |
+
+### 5.5 Storybook Stories (added 2026-07-15, STORYBOOK-10)
+
+| Category | Count | Path | Framework |
+|---|---|---|---|
+| Kernel stories | 20 | `src/components/kernel/*.stories.astro` | `@storybook/astro-vite` v10 |
+| UI stories | 3 | `src/components/ui/*.stories.astro` (Button, Card, SectionHeading) | same |
+| Brand stories | 2 | `src/components/brand/*.stories.astro` (BrightStar, BrightStarLoader) | same |
+| **Total** | **25** | — | — |
+
+**Config files:**
+- `.storybook/main.ts` — Storybook 10 + astro-vite framework + 4 addons (a11y, viewport, controls, docs) + static output.
+- `.storybook/preview.ts` — RTL/LTR toggle (default rtl) + theme toggle (default dark) + 4 viewports + 6 WCAG AA a11y rules + tokens.css + global.css imports.
+
+**Addons enabled:**
+- `@storybook/addon-a11y` (warning level, axe-core)
+- `@storybook/addon-viewport` (375/768/1280/1920)
+- `@storybook/addon-docs` (autodocs from argTypes)
+- `@storybook/addon-controls` (interactive args panel)
+
+**Scripts (in package.json):**
+- `pnpm storybook` — dev server on :6006
+- `pnpm storybook:build` — static build to `storybook-static/`
+- `pnpm storybook:serve` — preview build on :6007
+- `pnpm storybook:clean` — remove build + cache
+
+**Docs:** `docs/storybook.md` (بالعامية السعودية).
+
+**Decisions:**
+- DEC-STORY-001: Storybook في الـ root (مو apps/dashboard) — لأن kernel components هنا.
+- DEC-STORY-002: static build فقط (لا Chromatic) — قرار المستخدم.
 
 ### 5.5 Deprecated Components (marked for removal)
 

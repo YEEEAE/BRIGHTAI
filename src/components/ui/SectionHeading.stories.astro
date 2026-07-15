@@ -1,0 +1,70 @@
+---
+/**
+ * SectionHeading.stories.astro — Storybook stories for SectionHeading.
+ *
+ * Canonical section heading. Centered or start-aligned.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import SectionHeading from './SectionHeading.astro';
+
+const meta = {
+  title: 'UI/SectionHeading',
+  component: SectionHeading,
+  tags: ['autodocs'],
+  argTypes: {
+    eyebrow: { control: 'text' },
+    title: { control: 'text' },
+    subtitle: { control: 'text' },
+    align: { control: 'inline-radio', options: ['center', 'start'] },
+    as: { control: 'inline-radio', options: ['h1', 'h2', 'h3'] },
+  },
+  args: {
+    title: 'نظام تشغيل أمان سعودي للذكاء الاصطناعي',
+    align: 'center',
+    as: 'h2',
+  },
+} satisfies Meta<typeof SectionHeading>;
+
+export default meta;
+type Story = StoryObj<typeof SectionHeading>;
+
+export const Default: Story = {
+  args: {
+    eyebrow: 'حوكمة AI',
+    subtitle: 'كل طلب ذكاء اصطناعي يمر عبر طبقة وسيطة موثّقة.',
+  },
+};
+
+export const TitleOnly: Story = {
+  args: { title: 'عنوان القسم فقط' },
+};
+
+export const StartAligned: Story = {
+  args: {
+    align: 'start',
+    eyebrow: 'الإعدادات',
+    subtitle: 'خصص النظام حسب احتياج مؤسستك',
+  },
+};
+
+export const H1Override: Story = {
+  args: {
+    as: 'h1',
+    title: 'هذا الـ h1 (للصفحات الرئيسية فقط)',
+  },
+};
+
+export const H3Override: Story = {
+  args: {
+    as: 'h3',
+    title: 'هذا الـ h3 (sub-section)',
+  },
+};
+
+export const LongSubtitle: Story = {
+  args: {
+    eyebrow: 'PDPL',
+    title: 'حماية البيانات الشخصية',
+    subtitle: 'التزام كامل بنظام حماية البيانات الشخصية السعودي. نوثق كل عملية معالجة بيانات مع سجل تدقيق قابل للمراجعة من الجهات التنظيمية.',
+  },
+};

@@ -1,0 +1,39 @@
+---
+/**
+ * BrightStarLoader.stories.astro — Storybook stories for BrightStarLoader.
+ *
+ * Loading state with The Star in glow variant.
+ * Pure CSS — no JS. Pulse respects prefers-reduced-motion.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import BrightStarLoader from './BrightStarLoader.astro';
+
+const meta = {
+  title: 'Brand/BrightStarLoader',
+  component: BrightStarLoader,
+  tags: ['autodocs'],
+  argTypes: {
+    message: { control: 'text' },
+    size: { control: 'number' },
+  },
+  args: {
+    message: 'جاري التحميل...',
+    size: 220,
+  },
+} satisfies Meta<typeof BrightStarLoader>;
+
+export default meta;
+type Story = StoryObj<typeof BrightStarLoader>;
+
+export const Default: Story = {};
+
+export const CustomMessage: Story = {
+  args: { message: 'جاري معالجة الطلب...' },
+};
+
+export const Small: Story = { args: { size: 120 } };
+export const Large: Story = { args: { size: 360 } };
+
+export const NoMessage: Story = {
+  args: { message: '' },
+};

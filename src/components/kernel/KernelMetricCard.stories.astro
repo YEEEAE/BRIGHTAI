@@ -1,0 +1,33 @@
+---
+/**
+ * KernelMetricCard.stories.astro — Storybook stories for KernelMetricCard.
+ *
+ * Extended metric card (مع chart/sparkline محتمل).
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelMetricCard from './KernelMetricCard.astro';
+
+const meta = {
+  title: 'Kernel/MetricCard',
+  component: KernelMetricCard,
+  tags: ['autodocs'],
+  argTypes: {
+    label: { control: 'text' },
+    value: { control: 'text' },
+    change: { control: 'text' },
+    period: { control: 'text' },
+  },
+  args: {
+    label: 'معدل الامتثال',
+    value: '94%',
+    change: '+2.4%',
+    period: 'آخر 7 أيام',
+  },
+} satisfies Meta<typeof KernelMetricCard>;
+
+export default meta;
+type Story = StoryObj<typeof KernelMetricCard>;
+
+export const Default: Story = {};
+export const Negative: Story = { args: { value: '76%', change: '-8%' } };
+export const Stable: Story = { args: { value: '100%', change: '0%' } };

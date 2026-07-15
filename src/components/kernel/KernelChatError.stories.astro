@@ -1,0 +1,20 @@
+---
+/**
+ * KernelChatError.stories.astro — Storybook stories for KernelChatError.
+ *
+ * Chat error display.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelChatError from './KernelChatError.astro';
+
+const meta = {
+  title: 'Kernel/ChatError',
+  component: KernelChatError,
+  tags: ['autodocs'],
+  args: {},
+} satisfies Meta<typeof KernelChatError>;
+
+export default meta;
+type Story = StoryObj<typeof KernelChatError>;
+
+export const Default: Story = {};

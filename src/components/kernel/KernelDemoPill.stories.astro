@@ -1,0 +1,20 @@
+---
+/**
+ * KernelDemoPill.stories.astro — Storybook stories for KernelDemoPill.
+ *
+ * Demo indicator pill (يظهر إن المحتوى demo).
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelDemoPill from './KernelDemoPill.astro';
+
+const meta = {
+  title: 'Kernel/DemoPill',
+  component: KernelDemoPill,
+  tags: ['autodocs'],
+  args: {},
+} satisfies Meta<typeof KernelDemoPill>;
+
+export default meta;
+type Story = StoryObj<typeof KernelDemoPill>;
+
+export const Default: Story = {};
