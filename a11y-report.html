@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BrightAI A11y Report</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:960px;margin:2rem auto;padding:0 1rem;color:#111;}
+  h1{font-size:1.4rem;}
+  .summary{display:flex;gap:1rem;margin:1rem 0;}
+  .summary div{border:1px solid #ccc;border-radius:8px;padding:.75rem 1rem;min-width:90px;text-align:center;}
+  .summary b{display:block;font-size:1.4rem;}
+  .page{border-top:1px solid #eee;padding:1rem 0;}
+  .violation{border-left:4px solid #999;padding:.5rem .75rem;margin:.5rem 0;background:#fafafa;}
+  .severity-critical{border-color:#d33;}
+  .severity-serious{border-color:#e90;}
+  .severity-moderate{border-color:#fb3;}
+  .severity-minor{border-color:#9ad;}
+  .impact{font-size:.75rem;padding:.1rem .4rem;border-radius:4px;background:#222;color:#fff;}
+  .ok{color:#2a2;} .err{color:#d33;} code{background:#f0f0f0;padding:.1rem .3rem;border-radius:4px;}
+  small{color:#888;font-weight:normal;}
+</style>
+</head>
+<body>
+<h1>BrightAI — Accessibility Scan (WCAG 2.1 AA)</h1>
+<div class="summary">
+  <div><b>0</b>Critical</div>
+  <div><b>2</b>Serious</div>
+  <div><b>0</b>Moderate</div>
+  <div><b>0</b>Minor</div>
+</div>
+
+      <section class="page">
+        <h2>/ <small>http://localhost:4321/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/en/ <small>http://localhost:4321/en/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/pricing/ <small>http://localhost:4321/pricing/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/contact/ <small>http://localhost:4321/contact/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/about/ <small>http://localhost:4321/about/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/trust/ <small>http://localhost:4321/trust/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/kernel/ <small>http://localhost:4321/kernel/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/kernel/chat/ <small>http://localhost:4321/kernel/chat/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/blog/ <small>http://localhost:4321/blog/</small></h2>
+        <p class="status">1 violation(s)</p>
+        
+        <div class="violation severity-serious">
+          <h3>link-in-text-block — <span class="impact">SERIOUS</span></h3>
+          <p>Links must be distinguishable without relying on color <a href="https://dequeuniversity.com/rules/axe/4.12/link-in-text-block?application=playwright" target="_blank" rel="noopener">docs</a></p>
+          <ul><li><code>.breadcrumbs__link</code></li></ul>
+        </div>
+      </section>
+      <section class="page">
+        <h2>/customers/bank/ <small>http://localhost:4321/customers/bank/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/solutions/ <small>http://localhost:4321/solutions/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+      <section class="page">
+        <h2>/docs/ <small>http://localhost:4321/docs/</small></h2>
+        <p class="status">1 violation(s)</p>
+        
+        <div class="violation severity-serious">
+          <h3>color-contrast — <span class="impact">SERIOUS</span></h3>
+          <p>Elements must meet minimum color contrast ratio thresholds <a href="https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright" target="_blank" rel="noopener">docs</a></p>
+          <ul><li><code>.docs-recent__item:nth-child(1) > .docs-recent__date</code></li><li><code>.docs-recent__item:nth-child(1) > .docs-recent__body > .docs-recent__cat</code></li><li><code>.docs-recent__item[href$="nca-ecc-ai-controls/"] > .docs-recent__date</code></li><li><code>.docs-recent__item[href$="nca-ecc-ai-controls/"] > .docs-recent__body > .docs-recent__cat</code></li><li><code>.docs-recent__item:nth-child(3) > .docs-recent__date</code></li><li><code>.docs-recent__item:nth-child(3) > .docs-recent__body > .docs-recent__cat</code></li><li><code>.docs-recent__item[href$="nca-ecc-ai-governance/"] > .docs-recent__date</code></li><li><code>.docs-recent__item[href$="nca-ecc-ai-governance/"] > .docs-recent__body > .docs-recent__cat</code></li><li><code>.docs-recent__item[href$="nca-ecc-ai-guide/"] > .docs-recent__date</code></li><li><code>.docs-recent__item[href$="nca-ecc-ai-guide/"] > .docs-recent__body > .docs-recent__cat</code></li></ul>
+        </div>
+      </section>
+      <section class="page">
+        <h2>/hub/ <small>http://localhost:4321/hub/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
+        <p class="ok">لا يوجد مخالفات.</p>
+      </section>
+</body>
+</html>

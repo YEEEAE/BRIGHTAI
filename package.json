@@ -66,7 +66,8 @@
     "internal-links:fix": "node scripts/fix-internal-links.mjs",
     "resource:audit:before": "node scripts/resource-paths-audit.mjs before",
     "resource:audit:after": "node scripts/resource-paths-audit.mjs after",
-    "resource:fix": "node scripts/fix-resource-paths.mjs"
+    "resource:fix": "node scripts/fix-resource-paths.mjs",
+    "a11y:scan": "node scripts/axe-scan.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
@@ -85,11 +86,13 @@
   },
   "devDependencies": {
     "@astrojs/node": "^11.0.2",
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.39.4",
     "@types/node": "^22.10.2",
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.59.1",
     "astro": "^6.4.6",
+    "axe-core": "^4.12.1",
     "eslint": "^9.17.0",
     "jsdom": "^23.0.0",
     "linkinator": "^7.6.1",

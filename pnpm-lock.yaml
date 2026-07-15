@@ -51,6 +51,9 @@ importers:
       '@astrojs/node':
         specifier: ^11.0.2
         version: 11.0.2(astro@6.4.8(@types/node@22.20.1)(@vercel/functions@3.7.5(ws@8.21.0))(ioredis@5.11.1)(rollup@4.62.2)(tsx@4.23.0))
+      '@axe-core/playwright':
+        specifier: ^4.12.1
+        version: 4.12.1(playwright-core@1.61.1)
       '@eslint/js':
         specifier: ^9.39.4
         version: 9.39.4
@@ -66,6 +69,9 @@ importers:
       astro:
         specifier: ^6.4.6
         version: 6.4.8(@types/node@22.20.1)(@vercel/functions@3.7.5(ws@8.21.0))(ioredis@5.11.1)(rollup@4.62.2)(tsx@4.23.0)
+      axe-core:
+        specifier: ^4.12.1
+        version: 4.12.1
       eslint:
         specifier: ^9.17.0
         version: 9.39.4
@@ -359,6 +365,11 @@ packages:
   '@astrojs/telemetry@3.3.2':
     resolution: {integrity: sha512-j8DNruA8ors99Al39RYZPJK4DC1bKkoNm93mAMuBhY9TCNC4R8n1q7ovFnJ5qhGh5Lsh7pa1gpQVpYpsJPeTHQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0}
+
+  '@axe-core/playwright@4.12.1':
+    resolution: {integrity: sha512-rMd7xriptqKpP+w5265i4Hdkv2X5kbu6uiBi/B2I7uf3hieRBM3qDCfaKPtxfiYb2mKXfF+yLODJwIx+Jv1GDw==}
+    peerDependencies:
+      playwright-core: '>= 1.0.0'
 
   '@babel/helper-string-parser@7.29.7':
     resolution: {integrity: sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw==}
@@ -5321,6 +5332,11 @@ snapshots:
       is-docker: 4.0.0
       is-wsl: 3.1.1
       which-pm-runs: 1.1.0
+
+  '@axe-core/playwright@4.12.1(playwright-core@1.61.1)':
+    dependencies:
+      axe-core: 4.12.1
+      playwright-core: 1.61.1
 
   '@babel/helper-string-parser@7.29.7': {}
 

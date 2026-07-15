@@ -71,7 +71,7 @@ vi.mock('@brightai/db', () => ({
 // ─────────────────────────────────────────────────────────────────
 // Import SUT — must come AFTER vi.mock() calls
 // ─────────────────────────────────────────────────────────────────
-import { resolveFlags, getFlag, invalidateOrgCache } from '../../../lib/feature-flags/client';
+import { resolveFlags, getFlag, invalidateOrgCache } from '../../lib/feature-flags/client';
 
 // ─────────────────────────────────────────────────────────────────
 // Test helpers
