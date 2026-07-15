@@ -66,22 +66,33 @@ function perfCssDefer() {
  * astro.config.mjs — REPORTS-SEO-FOUNDATION (2026-07-07)
  *                  + KERNEL-AI-2026-07-14 (switched to @astrojs/node)
  *                  + KERNEL-AUDIT-2026-07-15-BATCH-10 (EXEC-16 — output mode audit)
+ *                  + KRN-016-2026-07-15 (explicit output: 'hybrid')
  *
- * LATEST CHANGE (KERNEL-AUDIT-2026-07-15-BATCH-10):
- *  - Audit attempted to set `output: 'hybrid'` explicitly (was misleadingly
- *    'static' + node adapter). Astro 6.4.6 REMOVED `output: 'hybrid'` as a
- *    separate option — the default `output: 'static'` now behaves identically
- *    when an adapter is present (every page prerenders by default, SSR routes
- *    opt in via `export const prerender = false`). Reverted to `output: 'static'`
- *    with documentation explaining the actual behavior.
+ * HYBRID OUTPUT MODEL (KRN-016, 2026-07-15):
+ *  - `output: 'hybrid'` (explicit) + `adapter: node({ mode: 'standalone' })`.
+ *    The hybrid model = static prerender by default, SSR opt-in per route.
+ *  - All 190 pages in src/pages/** prerender to HTML at build time
+ *    (default behavior, no per-page opt-in needed). They land in
+ *    `dist/client/` and are served by the Node server as static files.
+ *  - The 3 SSR routes opt in via `export const prerender = false`:
+ *      1. /api/ai/chat  (src/pages/api/ai/chat.ts)   — KERNEL-AI-2026-07-14
+ *      2. /api/lead     (src/pages/api/lead.ts)      — KERNEL-AI-2026-07-14
+ *      3. /api/health   (src/pages/api/health.ts)    — KERNEL-AUDIT-...BATCH-10
+ *    These stay server-side and ship in `dist/server/` with `entry.mjs`.
+ *  - Explicit `output: 'hybrid'` removes the implicit promotion that
+ *    Astro does when it sees `output: 'static'` + an adapter. KRN-016
+ *    specifies the mode by name so future Astro upgrades can't silently
+ *    change the routing semantics.
+ *  - For static pages that need explicit declaration (e.g., to document
+ *    intent or to override an outer scope), add `export const prerender = true`
+ *    at the top of the .astro file. Not needed today — current pages rely
+ *    on the default — but available for future use.
  *
  * PRESERVATION CONTRACT (REPORTS-SEC-01 + KERNEL-AI-2026-07-14):
- *  - `output: 'static'` (Astro 6.4+ default with adapter) → all `.astro`
- *    pages prerender by default. SSR routes opt in via `export const prerender = false`.
- *  - Current SSR routes (all in src/pages/api/):
- *      1. /api/ai/chat  (chat.ts)   — KERNEL-AI-2026-07-14
- *      2. /api/lead     (lead.ts)    — KERNEL-AI-2026-07-14
- *      3. /api/health   (health.ts)  — KERNEL-AUDIT-2026-07-15-BATCH-10 (new)
+ *  - This change is structural/metadata only — no route flips from SSR
+ *    to static or vice versa. The 3 SSR routes stay SSR; everything
+ *    else stays static. `dist/client/` + `dist/server/` output identical
+ *    bytes modulo per-build timestamps (sitemap.xml lastmod etc.).
  *  - `site`, `trailingSlash: 'always'`, `compressHTML`, `redirects`,
  *    `vite` config unchanged.
  *
@@ -89,14 +100,14 @@ function perfCssDefer() {
  *  - Render: `node({ mode: 'standalone' })` bundles Node server into
  *    `dist/server/entry.mjs`, serves static from `dist/client/`.
  *    Render `startCommand` is `node ./dist/server/entry.mjs`.
- *  - With Astro 6.4.6 default behavior + @astrojs/node adapter, all 190
- *    pages prerender to HTML, the 3 API routes stay server-side.
+ *  - With output 'hybrid' + adapter, the 3 SSR routes stay server-side
+ *    and 190 prerendered pages ship as static. Identical runtime as
+ *    output 'static' + adapter, only the config NAME differs.
  */
 export default defineConfig({
   site: 'https://brightai.site',
-  // Astro 6.4.6 default (static + adapter behaves as hybrid). SSR routes
-  // opt in via `export const prerender = false`.
-  output: 'static',
+  // KRN-016: explicit 'hybrid' (static prerender + SSR opt-in per route).
+  output: 'hybrid',
   trailingSlash: 'always',
   compressHTML: true,
   redirects: {
