@@ -190,6 +190,27 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — CSRF-LEAD-001: CSRF double-submit protection لـ /api/lead/ — Verified 29/29 tests pass
+
+- **Files**: 4 جديد + 2 معدّل. **جديد**: `src/lib/csrf.ts` (HMAC-SHA256 token generator + verifier + extractCsrfFromCookie + verifyCsrfRequest — constant-time comparison)، `src/pages/api/csrf-token.ts` (GET endpoint يرجّع token + Set-Cookie: csrf=...; Path=/; SameSite=Strict; Secure; Max-Age=3600)، `scripts/test-csrf.mjs` (29 unit tests تغطي كل الـ edge cases)، `src/pages/api/lead.ts` (تحديث — CSRF check قبل rate limit). **معدّل**: `package.json` (إضافة `test:csrf` script)، `src/components/kernel/KernelLeadForm.astro` (client-side: fetch cookie + send X-CSRF-Token header + 403 retry pattern).
+- **What**: أضفنا CSRF protection عبر double-submit cookie pattern. الـ client يجلب token من `/api/csrf-token/` (يضبط cookie تلقائي)، ثم يضيف نفس الـ token في `X-CSRF-Token` header. الـ server يتحقق من: (1) تطابق header + cookie، (2) HMAC-SHA256 signature مع `CSRF_SECRET`، (3) TTL < 1 ساعة. Defense-in-depth فوق Origin allowlist (الـ Origin optional في form submits).
+- **Why**: Origin allowlist وحده ما يكفي. attacker cross-origin ما يقدر يـ read الـ csrf cookie (SameSite=Strict) → ما يقدر يـ replicate الـ token في الـ header. حتى لو الـ attacker يعرف الـ HMAC algorithm، ما عنده `CSRF_SECRET`. الـ token shape: `<base36-ts>.<32-hex-nonce>.<64-hex-hmac>` (URL-safe, no padding).
+- **Verification**:
+  - `pnpm test:csrf`: **29/29 tests passed** (~140ms). يشمل:
+    - generate: shape, uniqueness (100 unique tokens)، secret validation (missing/short)
+    - verify: valid, expired (TTL boundary)، tampered (hmac/nonce/ts)، malformed، wrong secret
+    - extractCsrfFromCookie: present, missing, multiple cookies
+    - verifyCsrfRequest: matching header+cookie (200)، missing header (403)، missing cookie (403)، mismatch/CSRF attack (403)، tampered (403)
+    - timing-safe comparison: length mismatch → false immediately
+- **Risks**:
+  - **CSRF_SECRET غير مضبوط** في Render env → endpoint يرجّع 500. **المطلوب من المستخدم**: يضيف `CSRF_SECRET` لـ Render env vars (يُولَّد مرة: `openssl rand -hex 32`).
+  - **User على privacy mode بلا cookies** → 403 (accepted trade-off، الـ form يحتاج JS لتحديث الـ token).
+  - **First load للـ page**: الـ cookie يضبط فقط بعد أول `GET /api/csrf-token/` call. الـ `submitForm` يتعامل مع 403 → re-fetch → retry تلقائياً.
+  - **trailingSlash**: الـ endpoint يستخدم `/api/lead/` (مع trailing slash) — موجود في الـ existing redirect rule.
+- **Commit**: uncommitted (per brain.md rule — المستخدم يعملها). رسالة مقترحة: `feat(security): CSRF double-submit protection for /api/lead/ with HMAC-signed tokens`.
+- **Status**: verified locally (29/29 tests pass)، يحتاج user commit + CSRF_SECRET في Render env.
+- **Brain updates**: Section 1.1 baseline (security improvements)، Section 4 decisions log (DEC-SEC-002: CSRF double-submit).
+
 ### 2026-07-15 — FONTS-SUBSET-001: TheYearofTheCamel brand font subsetting — Verified, 58.2KB → 9.9KB (-83%)
 
 - **Files**: 3 جديد + 4 معدّل. **جديد**: `scripts/subset-fonts.mjs` (pyftsubset wrapper مع reproducible builds + backup logic + size validation)، `docs/fonts.md` (توثيق بالعامية السعودية)، `public/assets/fonts/TheYearofTheCamel-Medium.subset.woff2` (الـ subset الجديد، 9.9 KB). **معدّل**: `src/styles/critical.css` (تحديث `@font-face` لـ `.subset.woff2` + `unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+2122, U+00A9, U+00AE, U+2120`)، `src/layouts/BaseLayout.astro` (preload يشير للـ subset)، `package.json` (إضافة `fonts:subset` script + ربطه بـ `prebuild`)، `public/assets/fonts/original/TheYearofTheCamel-Medium.original.woff2` (backup تلقائي في أول تشغيل).

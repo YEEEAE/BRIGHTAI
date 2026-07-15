@@ -47,6 +47,8 @@ import {
 } from '@brightai/lead-queue';
 // BAI-005: shared Redis sliding-window rate limiter (unified across Render instances)
 import { rateLimit } from '../../lib/ratelimit';
+// CSRF-LEAD-001 (2026-07-15): double-submit cookie pattern
+import { verifyCsrfRequest } from '../../lib/csrf';
 // `drainOnce` is used inside ensureDrain() below — see the timer block.
 
 export const prerender = false;
@@ -180,6 +182,21 @@ function ensureDrain(): void {
 // POST handler
 // ─────────────────────────────────────────────────────────────────────────
 export const POST: APIRoute = async ({ request }) => {
+  // 0. CSRF (CSRF-LEAD-001): double-submit cookie validation.
+  //    يُتحقق قبل rate limit عشان ما نضيع quota على attackers.
+  //    Origin allowlist وحده غير كافي لأن Origin header optional في
+  //    بعض السيناريوهات (form submits، privacy modes، legacy browsers).
+  if (!verifyCsrfRequest(request)) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[brightai-kernel-lead] csrf_invalid ip=${getClientIpLocal(request)} ` +
+      `ua=${getUserAgentLocal(request).slice(0, 80)}`,
+    );
+    return jsonError(403, 'csrf_invalid', {
+      hint: 'fetch /api/csrf-token/ first, then re-submit with X-CSRF-Token header',
+    });
+  }
+
   // 1. Rate limit (BAI-005: Redis sliding-window, unified across Render instances)
   const ip = getClientIpLocal(request);
   const rl = await rateLimit(`lead:${ip}`, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS / 1_000);

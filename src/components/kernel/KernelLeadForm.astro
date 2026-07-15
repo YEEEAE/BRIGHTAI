@@ -10,11 +10,13 @@
  *  2. لو الـ API رجع 200 → success message
  *  3. لو رجع 404 (Render static) → fallback إلى wa.me مع نص جاهز
  *  4. لو رجع 429/500 → Arabic error message
+ *  5. لو رجع 403 csrf_invalid → re-fetch token + retry مرة واحدة
  *
  * الأمان:
  *  - لا يحفظ في localStorage (خصوصية)
  *  - rate limit على مستوى الخادم (5/دقيقة/IP)
  *  - Zod validation على الخادم
+ *  - CSRF double-submit pattern (X-CSRF-Token header + cookie)
  *  - data-page attribute يُسجّل الصفحة اللي جاء منها الـ lead
  *
  * Props:
@@ -446,16 +448,43 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         }
 
         function submitForm(payload) {
-          // POST /api/lead/ (مع trailing slash لتفادي 301 → method change)
-          fetch('/api/lead/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          })
+          // CSRF-LEAD-001: double-submit cookie pattern.
+          // نقرأ الـ token من الـ cookie (الـ server ضبطه عبر /api/csrf-token/).
+          // لو الـ 403 رجع → refresh + retry مرة وحدة.
+          function doPost(csrfToken) {
+            var headers = { 'Content-Type': 'application/json' };
+            if (csrfToken) headers['X-CSRF-Token'] = csrfToken;
+            return fetch('/api/lead/', {
+              method: 'POST',
+              headers: headers,
+              body: JSON.stringify(payload),
+            });
+          }
+
+          var token = readCookie('csrf');
+
+          doPost(token)
             .then(function (res) {
+              if (res.status === 403) {
+                // token expired أو غير موجود → refresh + retry مرة وحدة.
+                return fetchCsrfToken().then(function (newToken) {
+                  if (!newToken) {
+                    // /api/csrf-token ما رجع شي (404 = static build).
+                    apiAvailability = false;
+                    var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page);
+                    window.open(url, '_blank', 'noopener,noreferrer');
+                    showSuccess('لم نتمكن من إرسال النموذج من المتصفح. تم فتح واتساب تلقائياً مع تفاصيلك.');
+                    return null;
+                  }
+                  return doPost(newToken);
+                });
+              }
+              return res;
+            })
+            .then(function (res) {
+              if (!res) return; // handled above (fallback to wa.me)
               if (res.status === 404) {
                 apiAvailability = false;
-                // Fallback: wa.me
                 var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page);
                 window.open(url, '_blank', 'noopener,noreferrer');
                 showSuccess('لم نتمكن من إرسال النموذج من المتصفح. تم فتح واتساب تلقائياً مع تفاصيلك.');
@@ -492,6 +521,31 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                 submitBtn.disabled = false;
                 submitBtn.removeAttribute('data-state');
               }
+            });
+        }
+
+        // ─── CSRF helpers (CSRF-LEAD-001) ───────────────────────────
+        function readCookie(name) {
+          var match = document.cookie.match(
+            new RegExp('(?:^|;\\s*)' + name + '=([^;]+)')
+          );
+          return match ? decodeURIComponent(match[1]) : null;
+        }
+
+        function fetchCsrfToken() {
+          return fetch('/api/csrf-token/', {
+            method: 'GET',
+            credentials: 'same-origin',
+          })
+            .then(function (r) {
+              if (!r.ok) return null;
+              return r.json();
+            })
+            .then(function (data) {
+              return data && data.token ? data.token : null;
+            })
+            .catch(function () {
+              return null;
             });
         }
 
