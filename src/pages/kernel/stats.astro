@@ -82,12 +82,13 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 
     {/* Time Range Selector */}
     <nav class="kernel-stats-range" aria-label="نطاق زمني">
-      <div class="kernel-stats-range__tabs" role="tablist">
-        <button class="kernel-stats-range__tab" role="tab" data-range="24" aria-selected="false">آخر 24 ساعة</button>
-        <button class="kernel-stats-range__tab active" role="tab" data-range="7" aria-selected="true">آخر 7 أيام</button>
-        <button class="kernel-stats-range__tab" role="tab" data-range="30" aria-selected="false">آخر 30 يوم</button>
-        <button class="kernel-stats-range__tab" role="tab" data-range="90" aria-selected="false">آخر 90 يوم</button>
-        <button class="kernel-stats-range__tab" role="tab" data-range="custom" aria-selected="false">مخصص</button>
+      <!-- KRN-015: filter-buttons pattern (no panel switching; toggles time-range on the same chart) -->
+      <div class="kernel-stats-range__tabs" role="group" aria-label="النطاق الزمني">
+        <button class="kernel-stats-range__tab" type="button" role="button" aria-pressed="false" data-range="24">آخر 24 ساعة</button>
+        <button class="kernel-stats-range__tab active" type="button" role="button" aria-pressed="true" data-range="7">آخر 7 أيام</button>
+        <button class="kernel-stats-range__tab" type="button" role="button" aria-pressed="false" data-range="30">آخر 30 يوم</button>
+        <button class="kernel-stats-range__tab" type="button" role="button" aria-pressed="false" data-range="90">آخر 90 يوم</button>
+        <button class="kernel-stats-range__tab" type="button" role="button" aria-pressed="false" data-range="custom">مخصص</button>
       </div>
       <div class="kernel-stats-range__custom" id="custom-range-panel" hidden>
         <label class="kernel-stats-range__field">
@@ -454,15 +455,16 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
         grid.innerHTML = html;
       }
 
-      // ─── Time range tabs ───
+      // ─── Time range filter buttons (KRN-015: role=button + aria-pressed) ───
       function setupRangeTabs() {
         const tabs = document.querySelectorAll('[data-range]');
         const customPanel = document.getElementById('custom-range-panel');
         tabs.forEach((tab) => {
           tab.addEventListener('click', () => {
             tabs.forEach((t) => {
-              t.classList.toggle('active', t === tab);
-              t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+              const isActive = t === tab;
+              t.classList.toggle('active', isActive);
+              t.setAttribute('aria-pressed', isActive ? 'true' : 'false');
             });
             if (tab.dataset.range === 'custom') {
               customPanel.hidden = false;

@@ -213,16 +213,18 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
 
   <div class="kernel-main kernel-page-fade-in">
 
-    <!-- Tabs with notification badge -->
+    <!-- Tabs with notification badge (KRN-015: full WAI-ARIA tabs pattern) -->
     <div class="kernel-tabs" role="tablist" aria-label="حالات الموافقات" data-kernel-tabs>
       {tabs.map(tab => (
         <button
+          id={`kernel-tab-${tab.id}`}
           class="kernel-tabs__item"
           role="tab"
           type="button"
           data-tab-id={tab.id}
           aria-selected={tab.selected ? 'true' : 'false'}
           aria-controls={`tabpanel-${tab.id}`}
+          tabindex={tab.selected ? 0 : -1}
         >
           <span>{tab.label}</span>
           <span class:list={['kernel-approvals-tabs-count', tab.alert && 'kernel-approvals-tabs-count--alert']}>{tab.count}</span>
@@ -230,8 +232,8 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
       ))}
     </div>
 
-    <!-- PENDING panel -->
-    <section class="kernel-tabs-panel" id="tabpanel-pending" role="tabpanel" data-kernel-panel="pending">
+    <!-- PENDING panel (KRN-015: aria-labelledby + tabindex="0" for focus) -->
+    <section class="kernel-tabs-panel" id="tabpanel-pending" role="tabpanel" aria-labelledby="kernel-tab-pending" tabindex="0" data-kernel-panel="pending">
       <div class="kernel-approvals-list" data-kernel-approval-list="pending">
         {PENDING.map(item => (
           <article
@@ -304,8 +306,8 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
       </div>
     </section>
 
-    <!-- APPROVED panel -->
-    <section class="kernel-tabs-panel" id="tabpanel-approved" role="tabpanel" data-kernel-panel="approved" hidden>
+    <!-- APPROVED panel (KRN-015: aria-labelledby + tabindex="0") -->
+    <section class="kernel-tabs-panel" id="tabpanel-approved" role="tabpanel" aria-labelledby="kernel-tab-approved" tabindex="0" data-kernel-panel="approved" hidden>
       <div class="kernel-approvals-list" data-kernel-approval-list="approved">
         {APPROVED.map(item => (
           <article
@@ -338,8 +340,8 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
       </div>
     </section>
 
-    <!-- REJECTED panel -->
-    <section class="kernel-tabs-panel" id="tabpanel-rejected" role="tabpanel" data-kernel-panel="rejected" hidden>
+    <!-- REJECTED panel (KRN-015: aria-labelledby + tabindex="0") -->
+    <section class="kernel-tabs-panel" id="tabpanel-rejected" role="tabpanel" aria-labelledby="kernel-tab-rejected" tabindex="0" data-kernel-panel="rejected" hidden>
       <div class="kernel-approvals-list" data-kernel-approval-list="rejected">
         {REJECTED.map(item => (
           <article class:list={['kernel-approval-card', riskClass(item.risk)]}>

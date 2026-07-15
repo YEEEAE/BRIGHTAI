@@ -1,10 +1,33 @@
 ---
 /**
  * KernelTabs — Pill tabs with optional count badges.
- * Pure CSS. ARIA: role="tablist" on container, role="tab" on items.
- * Selection is rendered server-side via Astro; switching is the page's job
- * (we don't auto-wire click handlers — different pages need different behavior).
+ * Canonical WAI-ARIA tabs pattern (APG, https://www.w3.org/WAI/ARIA/apg/patterns/tabs/).
+ *
+ * Usage (real tabs, switching panels):
+ *   <KernelTabs
+ *     tabs={[
+ *       { id: 'pending', label: 'بانتظار', count: 12, selected: true },
+ *       { id: 'approved', label: 'مُعتمدة', count: 48 },
+ *       { id: 'rejected', label: 'مرفوضة', count: 3 },
+ *     ]}
+ *     panelIdBase="approvals-tabpanel"
+ *   />
+ *   <!-- Each panel: -->
+ *   <section id="approvals-tabpanel-pending"   role="tabpanel" aria-labelledby="kernel-tab-pending"   tabindex="0">…</section>
+ *   <section id="approvals-tabpanel-approved"  role="tabpanel" aria-labelledby="kernel-tab-approved"  tabindex="0" hidden>…</section>
+ *   <section id="approvals-tabpanel-rejected"  role="tabpanel" aria-labelledby="kernel-tab-rejected"  tabindex="0" hidden>…</section>
+ *
+ *   include :: KernelTabs.init  → adds keyboard handler (Arrow L/R, Home/End) with RTL inversion.
+ *
+ * For FILTER buttons (no panel switching, e.g. time-range selector), do NOT
+ * use this component — use plain <button role="button" aria-pressed="…"> instead.
+ *
+ * KRN-015 (2026-07-15): complete ARIA tab pattern (tabindex roving, keyboard
+ * navigation, RTL arrow inversion, panel aria-labelledby). The component
+ * previously emitted role="tablist"+role="tab"+aria-selected+aria-controls
+ * but lacked tabindex, keyboard handler, and tabpanel aria-labelledby.
  */
+
 interface TabItem {
   id: string;
   label: string;
@@ -15,23 +38,121 @@ interface TabItem {
 interface Props {
   tabs: TabItem[];
   ariaLabel?: string;
+  /**
+   * Prefix used to build `<section role="tabpanel">` ids.
+   * Each panel should have id = `${panelIdBase}-${tab.id}` and
+   * aria-labelledby = `${tabIdBase}-${tab.id}`.
+   */
+  panelIdBase?: string;
+  /**
+   * Base id for the tab buttons themselves. Used for aria-labelledby on the
+   * tabpanels. Defaults to `kernel-tab`.
+   */
+  tabIdBase?: string;
 }
 
-const { tabs, ariaLabel = 'tabs' } = Astro.props;
+const {
+  tabs,
+  ariaLabel = 'tabs',
+  panelIdBase = 'kernel-tabpanel',
+  tabIdBase = 'kernel-tab',
+} = Astro.props;
 ---
 
 <div class="kernel-tabs" role="tablist" aria-label={ariaLabel}>
-  {tabs.map(tab => (
+  {tabs.map((tab) => (
     <button
+      id={`${tabIdBase}-${tab.id}`}
       class="kernel-tabs__item"
       role="tab"
       type="button"
       data-tab-id={tab.id}
       aria-selected={tab.selected ? 'true' : 'false'}
-      aria-controls={`tabpanel-${tab.id}`}
+      aria-controls={`${panelIdBase}-${tab.id}`}
+      tabindex={tab.selected ? 0 : -1}
     >
       {tab.label}
       {tab.count != null && <span class="kernel-tabs__count">{tab.count}</span>}
     </button>
   ))}
 </div>
+
+<!--
+  Keyboard handler: roving tabindex + Arrow L/R (RTL-inverted) + Home/End.
+  The activation-on-focus pattern is optional — see toggleOnFocus below.
+  We use the APG-recommended Activate on Focus pattern (no Enter/Space
+  required) for tabs that auto-switch their panel on selection.
+-->
+<script>
+  // Vanilla JS, runs once per page. Multiple tablists on the page each wire
+  // up their own listeners. The script is keyed off [role="tablist"], so it
+  // works whether the consumer uses KernelTabs or inline markup.
+  (function initKernelTabsA11y() {
+    const tablists = document.querySelectorAll('[role="tablist"]');
+    tablists.forEach((tablist) => {
+      if ((tablist as HTMLElement).dataset['kernelTabsWired'] === '1') return;
+      (tablist as HTMLElement).dataset['kernelTabsWired'] = '1';
+
+      const tabs = Array.from(tablist.querySelectorAll('[role="tab"]')) as HTMLElement[];
+
+      function focusTab(idx: number) {
+        if (idx < 0 || idx >= tabs.length) return;
+        tabs.forEach((t, i) => {
+          const sel = i === idx;
+          t.setAttribute('aria-selected', sel ? 'true' : 'false');
+          t.setAttribute('tabindex', sel ? '0' : '-1');
+        });
+        tabs[idx].focus();
+      }
+
+      function currentIndex(): number {
+        return tabs.indexOf(document.activeElement as HTMLElement);
+      }
+
+      function isRtl(): boolean {
+        const dir = (document.documentElement.getAttribute('dir') || '').toLowerCase();
+        if (dir === 'rtl') return true;
+        return getComputedStyle(tablist).direction === 'rtl';
+      }
+
+      tablist.addEventListener('keydown', (e) => {
+        const evt = e as KeyboardEvent;
+        const cur = currentIndex();
+        if (cur === -1) return;
+
+        // Arrow keys invert in RTL: visually Left = next, Right = previous.
+        const rtl = isRtl();
+        const PREV_KEY = rtl ? 'ArrowRight' : 'ArrowLeft';
+        const NEXT_KEY = rtl ? 'ArrowLeft' : 'ArrowRight';
+
+        if (evt.key === PREV_KEY) {
+          evt.preventDefault();
+          if (cur > 0) focusTab(cur - 1);
+        } else if (evt.key === NEXT_KEY) {
+          evt.preventDefault();
+          if (cur < tabs.length - 1) focusTab(cur + 1);
+        } else if (evt.key === 'Home') {
+          evt.preventDefault();
+          focusTab(0);
+        } else if (evt.key === 'End') {
+          evt.preventDefault();
+          focusTab(tabs.length - 1);
+        }
+      });
+
+      // Activate on focus — change selection as user moves with arrows.
+      // Page-level click handlers (data-tab-id) still work for click selection.
+      tablist.addEventListener('focusin', (e) => {
+        const target = e.target as HTMLElement;
+        if (target.getAttribute('role') !== 'tab') return;
+        const idx = tabs.indexOf(target);
+        if (idx === -1) return;
+        tabs.forEach((t, i) => {
+          const sel = i === idx;
+          t.setAttribute('aria-selected', sel ? 'true' : 'false');
+          t.setAttribute('tabindex', sel ? '0' : '-1');
+        });
+      });
+    });
+  })();
+</script>

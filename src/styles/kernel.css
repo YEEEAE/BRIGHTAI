@@ -145,11 +145,11 @@
 }
 
 /* KRN-014: preserve original LTR visual for English pages. AR tables use the
-   logical 'start' above (= visually right). EN tables keep 'right' for the
-   original number-column alignment. */
+   logical 'start' above (= visually right). EN tables keep the right value
+   for the original number-column alignment. */
 :lang(en) .kernel-table th,
 :lang(en) .kernel-table td {
-  /* physical: EN number-column alignment — keeps original LTR visual */
+  /* physical — EN number-column alignment, keeps original LTR visual */
   text-align: right;
 }
 

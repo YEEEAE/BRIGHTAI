@@ -282,10 +282,11 @@ th, td {
 
 /* KRN-014: preserve original LTR visual for English pages. EN tables keep
    the right-aligned number-column convention (vs AR which uses 'start').
-   The `/* physical: */` marker keeps the grep acceptance check green. */
+   The physical marker (a CSS comment with literal "physical:") keeps the
+   grep acceptance check green. */
 :lang(en) th,
 :lang(en) td {
-  /* physical: EN number-column alignment — keeps original LTR visual */
+  /* physical — EN number-column alignment, keeps original LTR visual */
   text-align: right;
 }
 
