@@ -534,18 +534,72 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
 
     function bindTabs() {
       var tabButtons = elAll('[data-tab-id]');
+      var tablist = el('[role="tablist"]');
+      if (!tablist) return;
+      if (tablist.dataset.keyboardBound === '1') return;
+      tablist.dataset.keyboardBound = '1';
+
+      function selectTab(id) {
+        tabButtons.forEach(function (b) {
+          var isSel = b.getAttribute('data-tab-id') === id;
+          b.setAttribute('aria-selected', isSel ? 'true' : 'false');
+          b.setAttribute('tabindex', isSel ? '0' : '-1');
+        });
+        elAll('[data-kernel-panel]').forEach(function (p) {
+          p.hidden = p.getAttribute('data-kernel-panel') !== id;
+        });
+      }
+
       tabButtons.forEach(function (btn) {
         if (btn.dataset.bound === '1') return;
         btn.dataset.bound = '1';
         btn.addEventListener('click', function () {
-          var id = btn.getAttribute('data-tab-id');
-          tabButtons.forEach(function (b) {
-            b.setAttribute('aria-selected', b.getAttribute('data-tab-id') === id ? 'true' : 'false');
-          });
-          elAll('[data-kernel-panel]').forEach(function (p) {
-            p.hidden = p.getAttribute('data-kernel-panel') !== id;
-          });
+          selectTab(btn.getAttribute('data-tab-id'));
         });
+      });
+
+      // KRN-015: full WAI-ARIA tabs keyboard pattern (Arrow L/R + Home/End).
+      // Arrow keys INVERT in RTL: visually Left = next, Right = previous.
+      function isRtl() {
+        var dir = (document.documentElement.getAttribute('dir') || '').toLowerCase();
+        if (dir === 'rtl') return true;
+        return getComputedStyle(tablist).direction === 'rtl';
+      }
+      function currentIndex() {
+        var active = document.activeElement;
+        for (var i = 0; i < tabButtons.length; i++) {
+          if (tabButtons[i] === active) return i;
+        }
+        return -1;
+      }
+      tablist.addEventListener('keydown', function (e) {
+        var cur = currentIndex();
+        if (cur === -1) return;
+        var rtl = isRtl();
+        var PREV = rtl ? 'ArrowRight' : 'ArrowLeft';
+        var NEXT = rtl ? 'ArrowLeft' : 'ArrowRight';
+        if (e.key === PREV) {
+          e.preventDefault();
+          if (cur > 0) {
+            tabButtons[cur - 1].focus();
+            selectTab(tabButtons[cur - 1].getAttribute('data-tab-id'));
+          }
+        } else if (e.key === NEXT) {
+          e.preventDefault();
+          if (cur < tabButtons.length - 1) {
+            tabButtons[cur + 1].focus();
+            selectTab(tabButtons[cur + 1].getAttribute('data-tab-id'));
+          }
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          tabButtons[0].focus();
+          selectTab(tabButtons[0].getAttribute('data-tab-id'));
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          var last = tabButtons[tabButtons.length - 1];
+          last.focus();
+          selectTab(last.getAttribute('data-tab-id'));
+        }
       });
     }
 
