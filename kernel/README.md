@@ -10,6 +10,59 @@
 
 هذا المسار يعتمد على HTML/CSS/JavaScript مباشرة بدون React أو إطار Frontend داخل نفس المسار. كل صفحة تستخدم وحدات JavaScript مشتركة تحت `kernel/assets/js/`، وتتصل افتراضياً بواجهة الإنتاج `/api/kernel`.
 
+## الأرشفة والـ Quarantine (KRN-005 / EXEC-05 — 2026-07-15)
+
+> **ملاحظة:** أغلب محتوى `kernel/` (HTML، JS، manifest، SW، mock data) انتقل إلى `kernel/legacy-disabled/` كجزء من KRN-005. الـ Astro kernel الأَحياء يعيش في `src/pages/kernel/` + `src/components/kernel/` + `src/pages/api/`.
+
+الملفات اللي انتقلت للأرشيف:
+
+- الـ SW script في `kernel/sw.js` → `kernel/legacy-disabled/` (legacy service worker كان يـ cache `/api/kernel/*` ويصطفّ mutations مع PII في IndexedDB)
+- الـ PWA manifest في `kernel/manifest.json` → `kernel/legacy-disabled/` (legacy PWA manifest، `share_target` POST لـ `/kernel/chat/` = 404)
+- وحدات JS الـ 17 في `kernel/assets/js/` (تشمل `kernel-pwa.js` و `kernel-api.js` و `kernel-mock-handlers.js` و `kernel-demo-store.js` إلخ) → `kernel/legacy-disabled/assets/js/`
+- mock JSON seeds (8 ملفات) في `kernel/api/mock/` → `kernel/legacy-disabled/api/mock/`
+- legacy perf instrumentation (`kernel-perf.js` + `kernel-web-vitals.js`) → `kernel/legacy-disabled/`
+- legacy tests (6 ملفات `.test.js`) في `kernel/tests/` → `kernel/legacy-disabled/tests/`
+
+ما تبقّى في `kernel/` الأَحياء (يرثه Astro build من `src/pages/kernel/`):
+
+- `README.md` (هذا الملف)
+- `api/mock/` (لمّا تنضف، انقلها للأرشيف)
+- `assets/css/` (`kernel.css` + `pages/*.css` — مستخدم من Astro kernel layouts)
+- `assets/screenshots/`
+- `legacy-disabled/` (الأرشيف — ما يُحمَّل، ما يُخدم)
+
+**CI guard:** `node scripts/verify-no-legacy-sw.mjs` يفحص ملفات الكود فقط (`.html`, `.js`, `.ts`, `.css`, `.json`, إلخ) داخل `kernel/` (خارج `legacy-disabled/`)، ويتجاهل `.md` — التوثيق مسموح له يصف الـ patterns بدون trigger. الفحص يفشل لو ظهر:
+
+1. أي استدعاء من نوع "register" على `navigator.serviceWorker` داخل ملف كود
+2. ربط بمسار الـ legacy PWA manifest داخل مجلد `kernel/`
+3. ربط بمسار الـ legacy SW script داخل مجلد `kernel/`
+4. ربط بمسار الـ legacy PWA module داخل `kernel/assets/js/`
+
+**Migration path** لو احتجت أي ملف في المستقبل:
+
+```bash
+git mv kernel/legacy-disabled/<file> kernel/<file>
+node scripts/verify-no-legacy-sw.mjs   # يبقى pass لو ما في SW registration في الملف
+```
+
+التفاصيل الكاملة في `kernel/legacy-disabled/README.md`.
+
+## عزل الـ Mock Handlers (KRN-006 / EXEC-06 — 2026-07-15)
+
+> **ملاحظة:** 3 ملفات mock/demo من `kernel/assets/js/` انتقلت لـ subfolder تركيز `kernel/legacy-disabled/mock/` (KRN-006):
+>
+> - `kernel-mock-handlers.js` — كان يسجّل `fetch` interceptor على الـ window
+> - `kernel-demo-store.js` — مصدر الـ toggle (localStorage)
+> - `kernel-api.js` — `shouldUseDemoData()` decision point
+
+**الـ risk:** أي XSS injection أو مستخدم يفتح DevTools يقدر يقلب الـ localStorage flag → يحقن mock data في كل `fetch` call داخل الـ app → مستخدم production يشوف بيانات وهمية في مكان بيانات حقيقية.
+
+**CI guard ثاني:** `node scripts/verify-no-legacy-mock.mjs` (sibling للـ sw guard) يفحص `kernel/` لأي:
+- مرجع للـ fetch global عبر `window` (read أو patch)
+- ذكر للـ localStorage flag للـ demo mode (الاسم الفعلي موثّق في `kernel/legacy-disabled/mock/README.md` — لا يُذكر هنا حرفياً لتفادي الـ attack surface)
+
+التفاصيل الكاملة في `kernel/legacy-disabled/mock/README.md`.
+
 ## القاعدة التشغيلية الحالية
 
 - الوضع الافتراضي هو Production API عبر `/api/kernel`.
@@ -85,16 +138,18 @@ curl -s http://127.0.0.1:3000/api/kernel/providers
 
 ## هيكل الملفات
 
+> **مُحدَّث 2026-07-15:** الشجرة أدناه تصف **البنية التاريخية** لـ `kernel/`. البنية الفعلية الحالية: الـ HTML والـ JS والـ manifest والـ SW انتقلوا لـ `kernel/legacy-disabled/` (KRN-005). اللي تبقّى في `kernel/`: `assets/css/` (kernel.css + 13 page CSS)، `assets/screenshots/`، `api/mock/` (فارغ، الـ mock JSONs في الأرشيف)، `assets/js/` (فارغ).
+
 ```text
 kernel/
 ├── README.md
-├── manifest.json
-├── index.html
-├── chat.html
-├── stats.html
-├── approvals.html
-├── audit.html
-├── evidence.html
+├── manifest.json              # أرشيف (kernel/legacy-disabled/)
+├── index.html                 # أرشيف (HTML files removed)
+├── chat.html                  # أرشيف
+├── stats.html                 # أرشيف
+├── approvals.html             # أرشيف
+├── audit.html                 # أرشيف
+├── evidence.html              # أرشيف
 ├── reports.html
 ├── scenarios.html
 ├── compliance.html
@@ -463,10 +518,10 @@ kernel/
 
 ## وضع البيانات التجريبية
 
-المفتاح المستخدم:
+المفتاح المستخدم (الاسم الفعلي موثّق في `kernel/legacy-disabled/mock/README.md` لأسباب أمنية — لا يُذكر هنا حرفياً لتفادي الـ attack surface):
 
 ```text
-brightai_kernel_demo_mode
+<localStorage flag — see kernel/legacy-disabled/mock/README.md>
 ```
 
 القيم:
@@ -481,7 +536,7 @@ Config runtime الواضح موجود في `kernel-api.js` عبر `window.Brigh
 window.BrightAIKernelConfig = {
   baseURL: '/api/kernel',
   mode: 'auto', // auto | demo | mock | live | production
-  demoStorageKey: 'brightai_kernel_demo_mode',
+  demoStorageKey: '<localStorage flag — see kernel/legacy-disabled/mock/README.md>',
   timeout: 30000,
   retryAttempts: 3,
   retryDelays: [500, 1000, 2000],
@@ -505,14 +560,14 @@ window.BrightAIKernelConfig = {
 
 | المفتاح | الغرض |
 | --- | --- |
-| `brightai_kernel_demo_mode` | اختيار المستخدم لوضع البيانات التجريبية. |
+| `<localStorage flag — see kernel/legacy-disabled/mock/README.md>` | اختيار المستخدم لوضع البيانات التجريبية. |
 | `brightai_kernel_mock_db` | قاعدة mock موحدة بعد تحميل ملفات JSON أو hardcoded fallback. |
 | `brightai-chat-<sessionId>` | سجل محادثة محلي داخل `kernel-chat-client.js`. |
 
 قواعد مهمة:
 
 - لا تجعل demo هو الافتراضي في HTTP/HTTPS.
-- لا تضبط `brightai_kernel_demo_mode` إلى `true` عند فشل production API.
+- لا تضبط الـ localStorage flag لوضع demo إلى `true` عند فشل production API (الاسم موثّق في `kernel/legacy-disabled/mock/README.md`).
 - لا تضف fallback تلقائي من live إلى mock داخل `kernel-api.js`؛ أخطاء live يجب أن تظهر كـ loading/error واضحة في الواجهة.
 - حافظ على حالات loading/error متسقة: ابدأ بـ skeleton أو نص loading واضح، ثم اعرض empty/error بدون تغيير demo mode صامت.
 - عند إضافة صفحة جديدة تستخدم `/api/kernel`، تأكد أنها تحمل `kernel-api.js` قبل أي سكربت يعتمد على `kernelAPI`.
@@ -570,7 +625,9 @@ window.BrightAIKernelConfig = {
 
 ## Manifest
 
-`kernel/manifest.json` يعرّف تجربة PWA باسم:
+> **مُحدَّث 2026-07-15:** `kernel/manifest.json` انتقل إلى `kernel/legacy-disabled/manifest.json` (KRN-005). المحتوى أدناه وصفي للملف الأُرشيفي — ما يُستخدم في الـ Astro build.
+
+`kernel/legacy-disabled/manifest.json` كان يعرّف تجربة PWA باسم:
 
 ```text
 BrightAI Kernel - Enterprise AI Governance
@@ -610,7 +667,7 @@ BrightAI Kernel - Enterprise AI Governance
 - `DEFAULT_RUNTIME_CONFIG` و`KernelRuntimeConfig` داخل `kernel-api.js`
 - `getHardcodedDefaults` و`ensureDBInitialized` داخل `kernel-demo-store.js`
 - مسارات mock JSON النسبية داخل `kernel-demo-store.js`
-- `handleMockRequest` وfetch wrapper حول `window.fetch` داخل `kernel-mock-handlers.js`
+- `handleMockRequest` وfetch wrapper (حول الـ fetch global) داخل `kernel-mock-handlers.js`
 - HTTP status في `jsonResponse()` داخل `kernel-mock-handlers.js`
 - `injectBannerUI` و`updateBannerUI` داخل `kernel-demo-banner.js`
 - exports في نهاية كل ملف مشترك

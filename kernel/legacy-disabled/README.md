@@ -38,10 +38,13 @@ find dist -path "*kernel/api*"
 3. **Document why restoring**: update this README with rationale
 4. **Never delete without snapshot** — هذه الملفات history (pre-Astro migration) وممكن تحتاج للـ audit trail
 
-## الـ verification CI (TODO — مؤجل من Batch 7)
+## الـ verification CI (✅ مُطبَّق — KRN-005 + KRN-006، 2026-07-15)
 
-كان في EXEC-05/06 acceptance معايير CI tests:
-- `scripts/verify-no-legacy-sw.mjs` — fails build لو في `kernel/` (مو `legacy-disabled/`) فيه `navigator.serviceWorker.register`
-- `scripts/verify-no-legacy-mock.mjs` — fails build لو في `kernel/` فيه `window.fetch` patching أو `brightai_kernel_demo_mode`
+سكربتين CI guards مطبّقين في `scripts/`:
 
-مؤجلة — الكود الآن أرشيف فعلياً، فالـ CI tests ما هي حماية نشطة (ما في حاجة للحماية). لكن مفيدة كـ "defense in depth" لو حد ضاف ملف جديد في `kernel/`. يقترح إضافتها في Batch لاحق.
+- `scripts/verify-no-legacy-sw.mjs` (KRN-005) — يفشل البناء لو في `kernel/` (مو `legacy-disabled/`) أي ملف يسجّل `navigator.serviceWorker.register`، أو يربط بـ `kernel/manifest.json` / `kernel/sw.js` / `kernel/assets/js/kernel-pwa.js`. شغّله: `npm run verify:no-legacy-sw`.
+- `scripts/verify-no-legacy-mock.mjs` (KRN-006) — يفشل البناء لو في `kernel/` أي ملف يذكر `window.fetch` أو الـ localStorage flag للـ demo mode. شغّله: `npm run verify:no-legacy-mock`.
+
+الـ guards يفحصون `kernel/` recursive، يستثنون `kernel/legacy-disabled/` (الأرشيف) و `.md` (التوثيق). Pure file read + regex، < 100ms، بدون network calls. مربوطين بـ `package.json` scripts (`verify:no-legacy-sw` + `verify:no-legacy-mock`)، والـ user يقرر متى يضيفهم لـ `prebuild` أو `verify:all`.
+
+الـ subfolder `kernel/legacy-disabled/mock/` (KRN-006) فيه الـ 3 ملفات mock المعزولة + README.md يوثّق الـ risk + الـ migration path.
