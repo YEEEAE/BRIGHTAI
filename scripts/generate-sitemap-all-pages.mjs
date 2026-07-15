@@ -24,6 +24,19 @@ const gitLastmodCache = new Map();
 // Sitemap Outputs
 const SITEMAP_INDEX = path.join(ROOT, "public", "sitemap.xml");
 const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
+// IP-07 + HIGH-05 + HIGH-06: We want sitemap-index.xml to point at the clean
+// sitemap produced here (status pages + design utilities filtered out), NOT
+// at the @astrojs/sitemap output (`sitemap-0.xml`) which still contains them.
+// astro.config.mjs is PROTECTED (CLAUDE.md Section 2.1), so we cannot change
+// the @astrojs/sitemap `filter` directly. Instead, we override the adapter-
+// emitted sitemap-index.xml here. See:
+//   - report/2026-07-15-sitemap-contract.md
+//   - brain.md KI-054 (astro.config.mjs remediation pending approval)
+const DIST_SITEMAP_XML = path.join(ROOT, "dist", "sitemap.xml");
+const DIST_SITEMAP_INDEX_XML = path.join(ROOT, "dist", "sitemap-index.xml");
+const DIST_SITEMAP_INDEX_XML_CLIENT = path.join(ROOT, "dist", "client", "sitemap-index.xml");
+const DIST_SITEMAP_0_XML = path.join(ROOT, "dist", "sitemap-0.xml");
+const DIST_SITEMAP_0_XML_CLIENT = path.join(ROOT, "dist", "client", "sitemap-0.xml");
 
 const IGNORED_SCAN_DIRS = new Set([
   ".git",
@@ -461,9 +474,49 @@ async function main() {
     await fs.writeFile(path.join(ROOT, "sitemap.xml"), sitemapXmlContent, "utf8");
   } catch {}
   try {
-    await fs.writeFile(path.join(ROOT, "dist", "sitemap.xml"), sitemapXmlContent, "utf8");
+    await fs.writeFile(DIST_SITEMAP_XML, sitemapXmlContent, "utf8");
   } catch {}
+
+  // IP-07 + HIGH-05 + HIGH-06: emit a sitemap-index.xml that points to the
+  // clean sitemap.xml. This OVERRIDES the @astrojs/sitemap output (which
+  // points to sitemap-0.xml and contains forbidden URLs like /design/* and
+  // /404/). The override is safe because:
+  //   - The clean sitemap.xml has already been written above
+  //   - Both robots.txt and the verification pipeline read sitemap-index.xml
+  //     as the canonical entry point
+  //   - Once astro.config.mjs is updated (KI-054), the @astrojs/sitemap
+  //     plugin will emit the same shape and this override becomes redundant
+  //     (idempotent overwrite)
+  const cleanSitemapUrl = "https://brightai.site/sitemap.xml";
+  const sitemapIndexContent = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    `  <sitemap><loc>${cleanSitemapUrl}</loc><lastmod>${new Date().toISOString()}</lastmod></sitemap>`,
+    '</sitemapindex>',
+    '',
+  ].join("\n");
+  try {
+    await fs.writeFile(DIST_SITEMAP_INDEX_XML, sitemapIndexContent, "utf8");
+  } catch {}
+  try {
+    await fs.writeFile(DIST_SITEMAP_INDEX_XML_CLIENT, sitemapIndexContent, "utf8");
+  } catch {}
+
+  // Also overwrite dist/sitemap-0.xml with the clean sitemap content. This is
+  // defense-in-depth: any consumer that reads sitemap-0.xml directly (some
+  // search engines do, even when given sitemap-index.xml) gets the clean
+  // version. The @astrojs/sitemap plugin will overwrite this on the next
+  // build — that's fine, the override above ensures sitemap-index.xml always
+  // points to the clean file.
+  try {
+    await fs.writeFile(DIST_SITEMAP_0_XML, sitemapXmlContent, "utf8");
+  } catch {}
+  try {
+    await fs.writeFile(DIST_SITEMAP_0_XML_CLIENT, sitemapXmlContent, "utf8");
+  } catch {}
+
   process.stdout.write(`Generated sitemap.xml with ${primarySitemapEntries.length} public URLs\n`);
+  process.stdout.write(`Overwrote dist/sitemap-index.xml → ${cleanSitemapUrl}\n`);
 
   // Write Quality Report
   const reportLines = [

@@ -149,9 +149,14 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
   <!-- Font preconnect (REPORTS-20: trimmed to body 400 + heading 600 only). -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Google Fonts CSS loaded non-blocking via print media trick — does not block render. -->
+  <!-- Google Fonts CSS loaded non-blocking via print media trick.
+       REPORTS-CSP-01 (2026-07-15): Replaced inline onload="this.media='all'"
+       event handler with data-font-async attribute. The flip from media="print"
+       to media="all" is performed by src/scripts/font-async-loader.js (external
+       ES module bundled by Astro), so the inline event handler that required
+       script-src-attr 'unsafe-inline' in CSP is gone. -->
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" media="print" onload="this.media='all'" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" media="print" data-font-async />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" /></noscript>
 
   <!-- Preload custom brand font -->
@@ -195,6 +200,13 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
 
   <ClientRouter />
 
+  {/* Font async loader — REPORTS-CSP-01 (2026-07-15): replaces the inline
+       onload="this.media='all'" handler on the Google Fonts <link> above.
+       The loader finds every <link data-font-async> in the head and flips
+       media="print" → media="all" once each stylesheet finishes loading.
+       Imported as an ES module so Astro bundles it (CSP: script-src 'self'). */}
+  <script>import '../scripts/font-async-loader.js';</script>
+
   {/* Service Worker registration — REPORTS-20: deferred via setTimeout (100ms after
        window.load) so it never competes with the LCP element. External file replaces
        a prior is:inline script to remove unsafe-inline from CSP script-src. */}
@@ -236,21 +248,11 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
 
   {/* SPA transition pageview — fires page_view on view-transition navigations.
        REPORTS-20: gtag.js itself is loaded lazily via requestIdleCallback above,
-       so this listener waits for gtag to exist before firing. */}
-  <script>
-    (function() {
-      document.addEventListener('astro:after-swap', () => {
-        const w = window as any;
-        if (w.gtag) {
-          w.gtag('event', 'page_view', {
-            page_path: window.location.pathname,
-            page_title: document.title,
-            page_location: window.location.href
-          });
-        }
-      });
-    })();
-  </script>
+       so this listener waits for gtag to exist before firing.
+       REPORTS-CSP-01 (2026-07-15): Extracted to src/scripts/page-view.js to
+       remove the inline <script> block. CSP no longer needs 'unsafe-inline'
+       on script-src for this listener. */}
+  <script>import '../scripts/page-view.js';</script>
 
   {/* Global centralized scroll-reveal observer — activates the unified motion system
       (DEC-2026-Motion-001) across every page. Replaces 7 per-page duplicate
@@ -279,7 +281,17 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        (now-deferred) index.CQdUEhkK.css. Without these inline, the LCP
        element would render at default font-size (~2rem) for ~100-300ms
        after first paint, until the deferred CSS swaps in.
-       Total inline: ~1.6KB raw / ~0.7KB gzipped. -->
+       Total inline: ~1.6KB raw / ~0.7KB gzipped.
+
+       @csp-inline-pending — REPORTS-CSP-01 (2026-07-15):
+         This inline <style> block requires `style-src 'unsafe-inline'` in CSP.
+         The content is fully static (no user-controlled values, no script execution
+         vectors) so the XSS risk via CSS is zero. CSP stays safe with
+         style-src 'unsafe-inline' while script-src drops 'unsafe-inline' entirely.
+
+         Phase 3 path: extract to src/styles/critical.css and update perf-css-defer
+         to skip critical.* bundles (so the file stays render-blocking instead of
+         being deferred). See src/styles/critical.css for the extracted content. -->
   <style is:inline>
     @font-face {
       font-family: 'BrightAI Official';

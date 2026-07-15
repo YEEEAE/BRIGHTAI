@@ -24,6 +24,12 @@ import KernelSidebar from '../components/kernel/KernelSidebar.astro';
 import { kernelNavItems } from '../data/kernel';
 import type { SEOProps } from '../data/site';
 import DOMPurify from 'isomorphic-dompurify';
+// REPORTS-CSP-01 (2026-07-15): kernel-drawer and kernel-shell were previously
+// inline <script is:inline> blocks (CSP required 'unsafe-inline' on script-src).
+// Side-effect imports here get hoisted as external ES modules by Astro, which
+// is allowed by script-src 'self' alone.
+import '../scripts/kernel-drawer.js';
+import '../scripts/kernel-shell.js';
 
 interface Props extends SEOProps {
   currentPath?: string;
@@ -429,94 +435,6 @@ const allItems = [
     </ul>
   </nav>
 
-  <!-- Drawer JS (minimal, no external deps) -->
-  <script is:inline>
-    // KRN-010: Mobile drawer — focus-trap.js (loaded in BaseLayout) auto-engages on
-    // [role="dialog"][aria-modal="true"] and handles Escape, Tab/Shift+Tab trap, and
-    // focus restore to opener. This script owns: open/close toggle click, backdrop
-    // and close-button click handlers, body-scroll lock, and the visual hide
-    // (display:none) when the trap closes via Escape.
-    function initKernelDrawer() {
-      var toggle = document.querySelector('[data-kernel-drawer-toggle]');
-      var drawer = document.getElementById('k-drawer');
-      if (!toggle || !drawer) return;
-
-      function openDrawer() {
-        drawer.setAttribute('aria-hidden', 'false');
-        drawer.style.display = 'block';
-        toggle.setAttribute('aria-expanded', 'true');
-      }
-
-      function closeDrawer() {
-        drawer.setAttribute('aria-hidden', 'true');
-        drawer.style.display = 'none';
-        toggle.setAttribute('aria-expanded', 'false');
-      }
-
-      toggle.addEventListener('click', function () {
-        var isOpen = drawer.getAttribute('aria-hidden') === 'false';
-        if (isOpen) closeDrawer(); else openDrawer();
-      });
-
-      drawer.querySelectorAll('[data-kernel-drawer-close]').forEach(function (el) {
-        el.addEventListener('click', closeDrawer);
-      });
-
-      // Body scroll lock + visual hide, synced with focus-trap.js lifecycle events.
-      // a11y:modal-opened → focus-trap.js called open() (Tab trap active, siblings inert).
-      // a11y:modal-closed → focus-trap.js called close() (focus restored to opener, inert cleared).
-      drawer.addEventListener('a11y:modal-opened', function () {
-        document.body.style.overflow = 'hidden';
-      });
-      drawer.addEventListener('a11y:modal-closed', function () {
-        document.body.style.overflow = '';
-        // When close originates from focus-trap (Escape), display:none never fires
-        // there because focus-trap only flips aria-hidden. Sync the visual state here
-        // so the drawer actually disappears instead of staying as an invisible overlay.
-        if (drawer.style.display !== 'none') {
-          drawer.style.display = 'none';
-          toggle.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-
-    document.addEventListener('astro:page-load', initKernelDrawer);
-  </script>
+  <!-- Drawer JS — REPORTS-CSP-01 (2026-07-15): moved to src/scripts/kernel-drawer.js
+     (imported as ES module in frontmatter, no inline script). -->
 </BaseLayout>
-
-<script is:inline>
-  // REPORTS-14: Apply kernel-shell class to body so the CSS grid layout kicks in.
-  // Also add basic keyboard shortcuts (C, A, S) matching the prior /kernel/ PWA.
-  (function () {
-    'use strict';
-    function initShell() {
-      if (document.body && !document.body.classList.contains('kernel-shell')) {
-        document.body.classList.add('kernel-shell');
-      }
-    }
-    function initShortcuts() {
-      document.removeEventListener('keydown', handleShortcuts);
-      document.addEventListener('keydown', handleShortcuts);
-    }
-    function handleShortcuts(e) {
-      var target = e.target;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT')) return;
-      if (target && target.isContentEditable) return;
-      // KRN-011 / EXEC-11: REQUIRE Cmd/Ctrl modifier (WCAG SC 2.1.4).
-      // Single-key shortcuts trigger by accident on Arabic keyboards
-      // (e.g. typing س which maps to 's' navigates away).
-      if (!e.ctrlKey && !e.metaKey) return;
-      var key = (e.key || '').toLowerCase();
-      if (key === 'c') { window.location.href = '/kernel/chat/'; }
-      else if (key === 'a') { window.location.href = '/kernel/approvals/'; }
-      else if (key === 's') { window.location.href = '/kernel/stats/'; }
-      else if (key === 't') { window.location.href = '/kernel/audit/'; }
-      else if (key === 'r') { window.location.reload(); }
-    }
-    document.addEventListener('astro:page-load', function () {
-      initShell();
-      initShortcuts();
-    });
-    if (document.readyState !== 'loading') initShell();
-  })();
-</script>

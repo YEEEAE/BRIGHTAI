@@ -1,0 +1,70 @@
+/* =============================================================================
+ * critical.css — Inlined critical CSS for the LCP element.
+ *
+ * REPORTS-CSP-01 (2026-07-15): Extracted from BaseLayout.astro <style is:inline>
+ * block so it can be loaded as a regular external stylesheet WITHOUT needing
+ * style-src 'unsafe-inline' in CSP.
+ *
+ * Why this matters:
+ *   - The base Astro build emits global CSS via <link rel="stylesheet">
+ *     which the perf-css-defer integration then defers with rel="preload".
+ *   - To prevent the LCP element (homepage .split-hero__h1) from flashing
+ *     with default font-size until the deferred CSS swaps in, we ship this
+ *     small block synchronously via a normal <link rel="stylesheet">.
+ *   - Synchronous <link rel="stylesheet"> is allowed by style-src 'self' alone
+ *     (no 'unsafe-inline' needed) — the file is hashed + bundled by Astro,
+ *     so it's served from /_astro/critical.*.css.
+ *
+ * Scope (~1.6KB raw / ~0.7KB gzipped):
+ *   - BrightAI Official brand font @font-face
+ *   - Heading font-family override (Arabic + Inter + brand fallback)
+ *   - .split-hero__h1 sizing for the homepage hero
+ *   - Body baseline (background + color + overflow-x)
+ *
+ * IMPORTANT — Performance trade-off:
+ *   - This file is loaded as a regular render-blocking stylesheet (NOT deferred)
+ *     to preserve the LCP optimization we had with the inline version.
+ *   - Any future change that defers THIS file will regress LCP by ~100-300ms
+ *     until the deferred CSS swaps in (acceptable trade-off documented in
+ *     REPORTS-20).
+ * ============================================================================= */
+
+@font-face {
+  font-family: 'BrightAI Official';
+  src: url('/assets/fonts/TheYearofTheCamel-Medium.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+}
+
+[dir=rtl] h1, [dir=rtl] h2, [dir=rtl] h3,
+[dir=rtl] h4, [dir=rtl] h5, [dir=rtl] h6,
+html[lang=ar] h1, html[lang=ar] h2, html[lang=ar] h3,
+html[lang=ar] h4, html[lang=ar] h5, html[lang=ar] h6,
+.gradient-text, .chip, .badge, .font-black, .font-bold,
+.feature-title, .section-title, .metric-label, .brand-text {
+  font-family: 'BrightAI Official', 'IBM Plex Sans Arabic', Arial, sans-serif;
+  font-weight: 700;
+}
+
+/* LCP element — homepage hero h1 (covered here so the deferred
+   index.*.css can apply the rest of SplitHero styles without
+   delaying first paint of the heading) */
+.split-hero__h1 {
+  font-size: clamp(2.5rem, 1.25rem + 5vw, 4.5rem);
+  line-height: 1.1;
+  font-weight: 800;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+  text-shadow: 0 2px 24px rgba(4, 7, 17, 0.6);
+}
+
+@media (min-width: 1024px) {
+  .split-hero__h1 { line-height: 1.06; letter-spacing: -0.025em; }
+}
+
+@media (max-width: 767px) {
+  .split-hero__h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); line-height: 1.18; }
+}
+
+/* Production body baseline */
+body { background: var(--bg-base); color: var(--text-primary); overflow-x: hidden; }

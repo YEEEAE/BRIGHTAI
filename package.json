@@ -24,7 +24,7 @@
     "//_note": "Legacy Astro scripts below — DO NOT REMOVE until apps/marketing/ refactor lands.",
     "dev": "astro dev",
     "prebuild": "node scripts/generate-all-redirects.mjs",
-    "build": "npm run image-sitemap && astro build && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css",
+    "build": "npm run image-sitemap && astro build && npm run sitemap:generate && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css",
     "sync:dist:flat": "node scripts/sync-dist-flat.mjs",
     "build:verify": "npm run verify:all",
     "lint:legacy": "echo 'Linting skipped for static site'",

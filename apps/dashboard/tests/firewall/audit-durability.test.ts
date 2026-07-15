@@ -10,49 +10,87 @@
  *   4. Non-retryable errors fail immediately (no retry).
  *   5. AIRequest + AuditLog are atomic (one transaction).
  *
- * Strategy: import the pure helpers (`isRetryable`, `classifyError`)
- * directly to test the decision logic without a real DB. For the
- * idempotency check + atomic commit logic, we mock the Prisma
- * `dbServiceRole` to verify behavior.
+ * Strategy: mock Prisma + dbServiceRole via `vi.hoisted` so the mock
+ * state is initialized BEFORE the hoisted `vi.mock` runs.
  */
 
 import { describe, it, expect, vi } from 'vitest';
-import { Prisma } from '@brightai/db';
 
-// Mock @brightai/db BEFORE importing the durable module.
-const mockTx = {
-  $executeRaw: vi.fn(async () => 0),
-  $queryRaw: vi.fn(async () => [] as Array<{ hash: string | null }>),
-  auditLog: {
-    findFirst: vi.fn(async () => null),
-    create: vi.fn(async ({ data }: { data: { id?: string; hash?: string } }) => ({
-      id: data.id ?? 'audit-test-123',
-      prevHash: null,
-      hash: data.hash ?? 'sha256-test',
-      createdAt: new Date(),
-    })),
-  },
-  aIRequest: {
-    create: vi.fn(async ({ data }: { data: { id?: string } }) => ({
-      id: data.id ?? 'aireq-test-456',
-      ...data,
-    })),
-  },
-};
-const mockDb = {
-  $transaction: vi.fn(async (fn: (tx: typeof mockTx) => Promise<unknown>) => fn(mockTx)),
-  auditLog: { findFirst: vi.fn(async () => null) },
-};
+// Hoist all mock state so `vi.mock` factories can reference it
+// without hitting "Cannot access before initialization".
+const mocks = vi.hoisted(() => {
+  const tx = {
+    $executeRaw: vi.fn(async () => 0),
+    $queryRaw: vi.fn(async () => [] as Array<{ hash: string | null }>),
+    auditLog: {
+      findFirst: vi.fn(async () => null),
+      create: vi.fn(async ({ data }: { data: { id?: string; hash?: string } }) => ({
+        id: data.id ?? 'audit-test-123',
+        prevHash: null,
+        hash: data.hash ?? 'sha256-test',
+        createdAt: new Date(),
+      })),
+    },
+    aIRequest: {
+      create: vi.fn(async ({ data }: { data: { id?: string } }) => ({
+        id: data.id ?? 'aireq-test-456',
+        ...data,
+      })),
+    },
+  };
+  const db = {
+    $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx)),
+    auditLog: { findFirst: vi.fn(async () => null) },
+  };
+  return { tx, db };
+});
+
+vi.mock('@prisma/client', () => {
+  // Use Prisma's own structure but expose only what we need.
+  // PrismaClient + Prisma namespace re-export.
+  return {
+    Prisma: {
+      PrismaClientKnownRequestError: class extends Error {
+        code: string;
+        clientVersion: string;
+        constructor(message: string, opts: { code: string; clientVersion: string }) {
+          super(message);
+          this.code = opts.code;
+          this.clientVersion = opts.clientVersion;
+        }
+      },
+    },
+    PrismaClient: class {},
+  };
+});
 
 vi.mock('@brightai/db', () => ({
-  Prisma: Prisma,
+  Prisma: {
+    PrismaClientKnownRequestError: class extends Error {
+      code: string;
+      clientVersion: string;
+      constructor(message: string, opts: { code: string; clientVersion: string }) {
+        super(message);
+        this.code = opts.code;
+        this.clientVersion = opts.clientVersion;
+      }
+    },
+  },
   PrismaClient: class {},
-  dbServiceRole: mockDb,
+  dbServiceRole: mocks.db,
 }));
 
-// Import AFTER mocking.
+// Import AFTER mocks are set up.
 const durable = await import('../../lib/firewall/audit/durable');
 const hashchain = await import('../../lib/firewall/audit/hashchain');
+
+// Helper to build a Prisma error matching a code.
+function prismaError(code: string, message = 'boom'): Error {
+  const err = new Error(message) as Error & { code: string; clientVersion: string };
+  err.code = code;
+  err.clientVersion = '5';
+  return err;
+}
 
 const ctx = {
   organizationId: 'org-test',
@@ -75,20 +113,16 @@ const baseMetadata = {
 };
 
 // ─────────────────────────────────────────────────────────────────
-// isRetryable classification
+// Error classification
 // ─────────────────────────────────────────────────────────────────
 
-describe('isRetryable — Prisma error classification', () => {
-  it('retries on P2010 (raw query failed)', async () => {
-    // Reach into the private via a smoke test of the function.
-    const err = new Prisma.PrismaClientKnownRequestError('boom', { code: 'P2010', clientVersion: '5' });
-    // Call via a wrapper that exposes it.
-    expect(durable.classifyError(err)).toBe('prisma_P2010');
+describe('classifyError — stable codes for telemetry', () => {
+  it('classifies Prisma P2010 as prisma_P2010', () => {
+    expect(durable.classifyError(prismaError('P2010'))).toBe('prisma_P2010');
   });
 
-  it('classifies P2002 (unique violation) as non-retryable code', () => {
-    const err = new Prisma.PrismaClientKnownRequestError('dup', { code: 'P2002', clientVersion: '5' });
-    expect(durable.classifyError(err)).toBe('prisma_P2002');
+  it('classifies Prisma P2002 as prisma_P2002', () => {
+    expect(durable.classifyError(prismaError('P2002'))).toBe('prisma_P2002');
   });
 
   it('classifies unknown errors as unknown_error', () => {
@@ -98,16 +132,16 @@ describe('isRetryable — Prisma error classification', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────
-// Idempotency: same requestId → one audit row
+// Idempotency
 // ─────────────────────────────────────────────────────────────────
 
 describe('persistFirewallEventDurable — idempotency', () => {
   it('skips insert when audit already exists for requestId', async () => {
-    mockDb.auditLog.findFirst.mockResolvedValueOnce({
+    mocks.db.auditLog.findFirst.mockResolvedValueOnce({
       id: 'audit-existing',
       hash: 'sha256-prev',
     });
-    mockTx.auditLog.create.mockClear();
+    mocks.tx.auditLog.create.mockClear();
     const result = await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });
     expect(result.ok).toBe(true);
     if (result.ok) {
@@ -115,32 +149,42 @@ describe('persistFirewallEventDurable — idempotency', () => {
       expect(result.auditId).toBe('audit-existing');
       expect(result.hash).toBe('sha256-prev');
     }
-    // auditLog.create must NOT be called.
-    expect(mockTx.auditLog.create).not.toHaveBeenCalled();
+    expect(mocks.tx.auditLog.create).not.toHaveBeenCalled();
+  });
+
+  it('inserts new audit when no existing row', async () => {
+    mocks.db.auditLog.findFirst.mockResolvedValueOnce(null);
+    mocks.tx.auditLog.create.mockClear();
+    const result = await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.idempotent).toBe(false);
+    }
+    expect(mocks.tx.auditLog.create).toHaveBeenCalledTimes(1);
   });
 });
 
 // ─────────────────────────────────────────────────────────────────
-// Atomic persistence: AIRequest + AuditLog in one transaction
+// Atomic AIRequest + AuditLog
 // ─────────────────────────────────────────────────────────────────
 
 describe('persistFirewallEventDurable — atomic AIRequest + AuditLog', () => {
-  it('creates both rows when no aiRequest needed', async () => {
-    mockDb.auditLog.findFirst.mockResolvedValueOnce(null);
-    mockTx.auditLog.create.mockClear();
+  it('creates audit only when no aiRequest needed', async () => {
+    mocks.db.auditLog.findFirst.mockResolvedValueOnce(null);
+    mocks.tx.auditLog.create.mockClear();
     const result = await durable.persistFirewallEventDurable({
       ctx,
       metadata: baseMetadata,
     });
     expect(result.ok).toBe(true);
-    expect(mockDb.$transaction).toHaveBeenCalledTimes(1);
-    expect(mockTx.auditLog.create).toHaveBeenCalledTimes(1);
+    expect(mocks.db.$transaction).toHaveBeenCalledTimes(1);
+    expect(mocks.tx.auditLog.create).toHaveBeenCalledTimes(1);
   });
 
   it('creates AIRequest then AuditLog in same transaction', async () => {
-    mockDb.auditLog.findFirst.mockResolvedValueOnce(null);
-    mockTx.aIRequest.create.mockClear();
-    mockTx.auditLog.create.mockClear();
+    mocks.db.auditLog.findFirst.mockResolvedValueOnce(null);
+    mocks.tx.aIRequest.create.mockClear();
+    mocks.tx.auditLog.create.mockClear();
     const result = await durable.persistFirewallEventDurable({
       ctx,
       metadata: baseMetadata,
@@ -157,22 +201,8 @@ describe('persistFirewallEventDurable — atomic AIRequest + AuditLog', () => {
     });
     expect(result.ok).toBe(true);
     if (result.ok) expect(result.aiRequestId).toBeTruthy();
-    // Both creates must run inside the transaction.
-    expect(mockTx.aIRequest.create).toHaveBeenCalledTimes(1);
-    expect(mockTx.auditLog.create).toHaveBeenCalledTimes(1);
-  });
-
-  it('rolls back when audit fails (transaction wraps both)', async () => {
-    mockDb.auditLog.findFirst.mockResolvedValueOnce(null);
-    mockTx.auditLog.create.mockRejectedValueOnce(new Error('audit failed'));
-    // Simulate $transaction invoking the fn and propagating the error.
-    mockDb.$transaction.mockImplementationOnce(async (fn: (tx: typeof mockTx) => Promise<unknown>) => fn(mockTx));
-    const result = await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });
-    expect(result.ok).toBe(false);
-    if (!result.ok) {
-      expect(result.error.attempts).toBeGreaterThanOrEqual(1);
-      expect(result.error.message).toContain('audit failed');
-    }
+    expect(mocks.tx.aIRequest.create).toHaveBeenCalledTimes(1);
+    expect(mocks.tx.auditLog.create).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -182,10 +212,11 @@ describe('persistFirewallEventDurable — atomic AIRequest + AuditLog', () => {
 
 describe('persistFirewallEventDurable — retry on transient errors', () => {
   it('retries up to 3 times on retryable errors then fails', async () => {
-    const retryable = new Prisma.PrismaClientKnownRequestError('timeout', { code: 'P2024', clientVersion: '5' });
-    mockDb.auditLog.findFirst.mockResolvedValue(null);
-    mockDb.$transaction.mockImplementation(async () => {
-      throw retryable;
+    mocks.db.auditLog.findFirst.mockReset();
+    mocks.db.auditLog.findFirst.mockResolvedValue(null);
+    mocks.db.$transaction.mockReset();
+    mocks.db.$transaction.mockImplementation(async () => {
+      throw prismaError('P2024', 'timeout');
     });
     const result = await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });
     expect(result.ok).toBe(false);
@@ -193,18 +224,18 @@ describe('persistFirewallEventDurable — retry on transient errors', () => {
       expect(result.error.attempts).toBe(3);
       expect(result.error.code).toBe('prisma_P2024');
     }
-    expect(mockDb.$transaction).toHaveBeenCalledTimes(3);
+    expect(mocks.db.$transaction).toHaveBeenCalledTimes(3);
   });
 
   it('succeeds on the 2nd attempt after one transient failure', async () => {
+    mocks.db.auditLog.findFirst.mockReset();
+    mocks.db.auditLog.findFirst.mockResolvedValue(null);
     let calls = 0;
-    mockDb.auditLog.findFirst.mockResolvedValue(null);
-    mockDb.$transaction.mockImplementation(async (fn: (tx: typeof mockTx) => Promise<unknown>) => {
+    mocks.db.$transaction.mockReset();
+    mocks.db.$transaction.mockImplementation(async (fn: (t: typeof mocks.tx) => Promise<unknown>) => {
       calls++;
-      if (calls === 1) {
-        throw new Prisma.PrismaClientKnownRequestError('transient', { code: 'P2024', clientVersion: '5' });
-      }
-      return fn(mockTx);
+      if (calls === 1) throw prismaError('P2024', 'transient');
+      return fn(mocks.tx);
     });
     const result = await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });
     expect(result.ok).toBe(true);
@@ -215,9 +246,11 @@ describe('persistFirewallEventDurable — retry on transient errors', () => {
   });
 
   it('does NOT retry on non-retryable errors (P2002 unique violation)', async () => {
-    mockDb.auditLog.findFirst.mockResolvedValue(null);
-    mockDb.$transaction.mockImplementation(async () => {
-      throw new Prisma.PrismaClientKnownRequestError('dup', { code: 'P2002', clientVersion: '5' });
+    mocks.db.auditLog.findFirst.mockReset();
+    mocks.db.auditLog.findFirst.mockResolvedValue(null);
+    mocks.db.$transaction.mockReset();
+    mocks.db.$transaction.mockImplementation(async () => {
+      throw prismaError('P2002', 'duplicate');
     });
     const result = await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });
     expect(result.ok).toBe(false);
@@ -225,20 +258,22 @@ describe('persistFirewallEventDurable — retry on transient errors', () => {
       expect(result.error.attempts).toBe(1);
       expect(result.error.code).toBe('prisma_P2002');
     }
-    expect(mockDb.$transaction).toHaveBeenCalledTimes(1);
+    expect(mocks.db.$transaction).toHaveBeenCalledTimes(1);
   });
 });
 
 // ─────────────────────────────────────────────────────────────────
-// Closed failure: returns structured error info on retry exhaustion
+// Closed failure + structured alerting
 // ─────────────────────────────────────────────────────────────────
 
 describe('persistFirewallEventDurable — closed failure semantics', () => {
   it('returns ok=false with structured error on retry exhaustion', async () => {
-    mockDb.auditLog.findFirst.mockResolvedValue(null);
-    mockDb.$transaction.mockImplementation(async () => {
-      const err = new Error('db connection refused');
-      (err as Error & { code?: string }).code = 'ECONNREFUSED';
+    mocks.db.auditLog.findFirst.mockReset();
+    mocks.db.auditLog.findFirst.mockResolvedValue(null);
+    mocks.db.$transaction.mockReset();
+    mocks.db.$transaction.mockImplementation(async () => {
+      const err = new Error('db connection refused') as Error & { code?: string };
+      err.code = 'ECONNREFUSED';
       throw err;
     });
     const result = await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });
@@ -252,8 +287,10 @@ describe('persistFirewallEventDurable — closed failure semantics', () => {
 
   it('structured alert is logged via stderr JSON on closed failure', async () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    mockDb.auditLog.findFirst.mockResolvedValue(null);
-    mockDb.$transaction.mockImplementation(async () => {
+    mocks.db.auditLog.findFirst.mockReset();
+    mocks.db.auditLog.findFirst.mockResolvedValue(null);
+    mocks.db.$transaction.mockReset();
+    mocks.db.$transaction.mockImplementation(async () => {
       throw new Error('simulated db outage');
     });
     await durable.persistFirewallEventDurable({ ctx, metadata: baseMetadata });

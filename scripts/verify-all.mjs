@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizeRelPath, relPathToCanonical } from './seo-url-map.mjs';
+import { validateSitemapContract, extractSitemapLocs, isSitemapIndex } from './sitemap-contract.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -140,11 +141,52 @@ for (const dir of mainDirs) {
 logStatus(allCanonicalsValid, 'جميع الملفات تحتوي على canonical tags صحيحة.');
 
 
-// 3. فحص sitemap.xml — REPORTS-SEC-01: prioritise adapter-laid sitemaps.
-//    The script `scripts/generate-sitemap-all-pages.mjs` writes a fresh
-//    `dist/sitemap.xml` at the root, but it can land as an empty stub
-//    when the build before it was an adapter build. Prefer adapter output.
+// Wrap top-level execution in an async IIFE so we can use `await` for the
+// sitemap contract validator (validateSitemapContract is async because it
+// recursively expands sitemapindex and reads page HTML for canonical checks).
+async function main() {
+// 3a. PRERUN: regenerate the sitemap so it is in its canonical (clean)
+// state BEFORE validation. `npm run verify:all` historically ran the
+// generator AFTER the validator, which meant the validator saw the
+// @astrojs/sitemap output (with design + status pages) and failed. After
+// IP-07 the generator also overwrites sitemap-index.xml to point at the
+// clean sitemap.xml, so the validator sees the contract-conformant state.
+console.log('\n--- 3a. توليد sitemap.xml الموحد ---');
+try {
+  const { execFileSync } = await import('node:child_process');
+  execFileSync('node', ['scripts/generate-sitemap-all-pages.mjs'], {
+    cwd: rootDir,
+    stdio: 'inherit',
+  });
+} catch (err) {
+  errors.push({
+    type: 'Sitemap Generation Failed',
+    issue: `generate-sitemap-all-pages.mjs threw: ${err?.message || err}`,
+  });
+}
+
+console.log('\n--- 3. فحص sitemap (عقد IP-07) ---');
+// 3. فحص sitemap — IP-07 + HIGH-05 + HIGH-06
+//    Unified sitemap/indexing contract. Reads the sitemap-index.xml (single
+//    source of truth) when present, otherwise falls back to the candidate
+//    adapter-laid sitemaps. Validates each URL against the contract:
+//      - status pages (404, 500, offline, error) must NOT appear
+//      - design utilities (/design/*, /styleguide/*) must NOT appear
+//      - dev/admin/api routes must NOT appear
+//      - URLs must end with trailing slash
+//      - duplicates are rejected
+//    Also walks each URL against the matching HTML page in dist/ and
+//    verifies its <link rel="canonical"> matches the sitemap URL.
+//
+//    Refs:
+//      scripts/sitemap-contract.mjs   — pure validator module
+//      scripts/sitemap-contract.test.mjs — unit tests
+//      report/2026-07-15-sitemap-contract.md — design + astro.config.mjs
+//                                               remediation plan
+//      brain.md KI-054 — protected-file remediation pending approval
 const sitemapCandidates = [
+  path.join(rootDir, 'dist', 'client', 'sitemap-index.xml'),
+  path.join(rootDir, 'dist', 'sitemap-index.xml'),
   path.join(rootDir, 'dist', 'client', 'sitemap-0.xml'),
   path.join(rootDir, 'dist', 'client', 'sitemap.xml'),
   path.join(rootDir, 'dist', 'sitemap.xml'),
@@ -153,27 +195,91 @@ let sitemapPath = sitemapCandidates.find((p) => fs.existsSync(p));
 let sitemapValid = true;
 if (sitemapPath) {
   const sitemapContent = fs.readFileSync(sitemapPath, 'utf8');
+  const sitemapRel = path.relative(rootDir, sitemapPath);
 
-  // Guard against an empty stub: must contain at least one <loc>...
+  // 3a. Empty-stub guard (preserves the prior check)
   const hasAnyUrl = /<loc>https:\/\/brightai\.site\/[^<]+<\/loc>/.test(sitemapContent);
-
-  const pagesWithSlash = ['about', 'blog'];
-  if (!hasAnyUrl) {
+  if (!hasAnyUrl && !isSitemapIndex(sitemapContent)) {
     sitemapValid = false;
-    errors.push({ type: 'Sitemap Empty', issue: `Chosen sitemap (${path.relative(rootDir, sitemapPath)}) contains no <loc> entries.` });
+    errors.push({
+      type: 'Sitemap Empty',
+      issue: `Chosen sitemap (${sitemapRel}) contains no <loc> entries.`,
+    });
   } else {
-    for (const page of pagesWithSlash) {
-      if (!sitemapContent.match(new RegExp(`https://brightai.site/${page}/<`, 'i'))) {
-         sitemapValid = false;
-         errors.push({ type: 'Sitemap Trailing Slash', issue: `${page}/ is missing its trailing slash.` });
+    // 3b. For sitemap-index, expand recursively so every leaf URL is checked.
+    const fetchChildFromDist = async (childUrl) => {
+      // childUrl is an absolute URL like https://brightai.site/sitemap-0.xml
+      const childPathname = new URL(childUrl).pathname.replace(/^\//, '');
+      // Try dist/client/ first (adapter-laid), then dist/
+      const candidates = [
+        path.join(rootDir, 'dist', 'client', childPathname),
+        path.join(rootDir, 'dist', childPathname),
+      ];
+      for (const candidate of candidates) {
+        if (fs.existsSync(candidate)) {
+          return fs.readFileSync(candidate, 'utf8');
+        }
       }
+      throw new Error(`child sitemap not found: ${childUrl}`);
+    };
+
+    // 3c. resolveLocalHtml: load each page from dist/ for canonical checks.
+    const resolveLocalHtml = async (sitemapUrl) => {
+      const pathname = new URL(sitemapUrl).pathname;
+      const filePath = pathname === '/'
+        ? path.join(staticHtmlRoot, 'index.html')
+        : path.join(staticHtmlRoot, pathname, 'index.html');
+      if (!fs.existsSync(filePath)) return null;
+      return fs.readFileSync(filePath, 'utf8');
+    };
+
+    // 3d. Run the contract validation. Note: the async call is wrapped
+    // in an IIFE because verify-all.mjs is currently synchronous top-level.
+    let contractResult;
+    try {
+      contractResult = await validateSitemapContract(sitemapContent, {
+        fetchChild: isSitemapIndex(sitemapContent) ? fetchChildFromDist : undefined,
+        resolveLocalHtml,
+      });
+    } catch (err) {
+      sitemapValid = false;
+      errors.push({
+        type: 'Sitemap Contract Error',
+        issue: `validateSitemapContract threw: ${err?.message || err}`,
+      });
+      logStatus(false, 'Sitemap contract validation crashed.');
+    }
+
+    if (contractResult) {
+      for (const violation of contractResult.errors) {
+        sitemapValid = false;
+        errors.push({
+          type: `Sitemap ${violation.reason}`,
+          file: sitemapRel,
+          issue: `${violation.url} (${violation.pathname})`,
+        });
+      }
+      for (const canonicalError of contractResult.canonicalErrors) {
+        sitemapValid = false;
+        errors.push({
+          type: `Sitemap ${canonicalError.reason}`,
+          file: sitemapRel,
+          issue: `${canonicalError.url} — canonical: ${canonicalError.canonical || '(missing)'}, expected: ${canonicalError.expected}`,
+        });
+      }
+
+      // 3e. Trailing-slash legacy check removed (IP-07). The contract
+      // validator already enforces trailing slashes on every URL via
+      // `requireTrailingSlash: true`. The old check was a no-op when the
+      // sitemap was a sitemap-index (which contains only child sitemap URLs,
+      // not page URLs).
     }
   }
 } else {
   sitemapValid = false;
   errors.push({ type: 'Sitemap Missing', issue: 'sitemap.xml not found' });
 }
-logStatus(sitemapValid, 'Sitemap مطابق لقواعد trailing slash المحددة.');
+logStatus(sitemapValid, 'Sitemap مطابق لعقد الفهرسة الموحد (status + design + canonical).');
 
 
 // 4. فحص noindex للملفات المنقولة
@@ -227,20 +333,31 @@ for (const file of allHtmlFiles) {
 
 logStatus(structureValid, 'جميع الصفحات تحتوي على العناصر الأساسية (title, description, H1).');
 
+return { errors, passedChecks, totalChecks, reportPath };
+} // end of async function main()
 
-// التقرير النهائي
-console.log(`\n============ ملخص التحقق ============`);
-console.log(`${passedChecks}/${totalChecks} فحص ناجح.`);
-console.log(`=====================================\n`);
+// Top-level wrapper: run main(), print summary, then exit with the right code.
+// This MUST happen after main() resolves — otherwise process.exit() races
+// against the async work and sections 3, 4, 5 never run.
+main()
+  .then(({ errors, passedChecks, totalChecks, reportPath }) => {
+    console.log(`\n============ ملخص التحقق ============`);
+    console.log(`${passedChecks}/${totalChecks} فحص ناجح.`);
+    console.log(`=====================================\n`);
 
-if (errors.length > 0) {
-  fs.writeFileSync(reportPath, JSON.stringify(errors, null, 2), 'utf8');
-  console.log(`⚠️ تم العثور على أخطاء! تمت كتابتها في ${reportPath}`);
-  process.exit(1);
-} else {
-  if (fs.existsSync(reportPath)) {
-    fs.unlinkSync(reportPath);
-  }
-  console.log(`✅ كل شيء يبدو مثالياً، لا توجد أخطاء!`);
-  process.exit(0);
-}
+    if (errors.length > 0) {
+      fs.writeFileSync(reportPath, JSON.stringify(errors, null, 2), 'utf8');
+      console.log(`⚠️ تم العثور على أخطاء! تمت كتابتها في ${reportPath}`);
+      process.exit(1);
+    } else {
+      if (fs.existsSync(reportPath)) {
+        fs.unlinkSync(reportPath);
+      }
+      console.log(`✅ كل شيء يبدو مثالياً، لا توجد أخطاء!`);
+      process.exit(0);
+    }
+  })
+  .catch((err) => {
+    console.error(`✗ verify-all.mjs crashed: ${err?.stack || err}`);
+    process.exit(2);
+  });

@@ -224,6 +224,88 @@ enum ActorType {
 }
 
 // ─────────────────────────────────────────────────────────────────
+// LeadQueue — durable outbox for marketing-site /api/lead submissions
+// (HIGH-04 / 2026-07-15).
+//
+// Why durable:
+//   - The Astro /api/lead/ endpoint receives leads from public kernel
+//     pages. The previous in-memory queue (cap 100) was lost on every
+//     Render restart.
+//   - This table is the single source of truth: rows survive restarts,
+//     enable idempotency, retry with exponential backoff, and DLQ.
+//
+// No organization_id: leads are pre-signup (public visitors). They are
+// NOT tenant-scoped, so they bypass RLS via dbServiceRole. The service
+// role has BYPASSRLS so it reads + writes without per-row policy.
+//
+// Lifecycle:
+//   - PENDING     → newly enqueued, not yet attempted (or nextRetryAt in
+//                   the future).
+//   - SENDING     → an attempt is in flight (worker holds the row).
+//   - DELIVERED   → webhook returned 2xx. deliveredAt recorded.
+//   - DLQ         → attempts ≥ MAX_ATTEMPTS. lastError populated.
+//                   CI cron prunes DLQ rows after 30 days.
+//   - EXPIRED     → retention sweep deleted a delivered row (TTL). Only
+//                   used for observability — actual delete is hard.
+//
+// Idempotency:
+//   - idempotencyKey is UNIQUE. The Astro endpoint computes either the
+//     client-provided `Idempotency-Key` header value, or a synthetic
+//     fallback: sha256(ip + userAgent + contact + createdAtBucket).
+//   - Duplicate keys return the existing row (same id, same response).
+//   - Synthetic key bucket = current 30-second window. Same client
+//     resubmitting within the same window yields the same key (idempotent).
+//     Resubmitting across windows yields a different key (new lead).
+//
+// Retention:
+//   - Delivered rows older than 7 days are deleted by
+//     scripts/lead-retention-sweep.mjs (cron / scheduled job).
+//   - DLQ rows older than 30 days are deleted by the same sweep.
+// ─────────────────────────────────────────────────────────────────
+
+enum LeadQueueStatus {
+  PENDING
+  SENDING
+  DELIVERED
+  DLQ
+  EXPIRED
+}
+
+model LeadQueue {
+  id             String          @id @default(cuid())
+  // Idempotency
+  idempotencyKey String          @unique
+  // Lead payload — server-validated by Zod (3-120 chars each)
+  name           String
+  contact        String
+  company        String
+  page           String?
+  source         String?
+  // Submission context (used for synthetic key + audit; never PII-shared)
+  ip             String?
+  userAgent      String?
+  // Delivery state
+  status         LeadQueueStatus @default(PENDING)
+  attempts       Int             @default(0)
+  nextRetryAt    DateTime?
+  lastError      String?
+  webhookUrl     String?
+  responseStatus Int?
+  // Lead hash for log correlation (NOT the same as idempotencyKey)
+  leadHash       String?
+  // Timestamps
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  deliveredAt    DateTime?
+  dlqAt          DateTime?
+
+  @@index([status, nextRetryAt])
+  @@index([createdAt])
+  @@index([status, dlqAt])
+  @@map("lead_queue")
+}
+
+// ─────────────────────────────────────────────────────────────────
 // Organization — the tenant
 // ─────────────────────────────────────────────────────────────────
 

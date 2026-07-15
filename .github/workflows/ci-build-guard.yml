@@ -7,6 +7,9 @@
 #   - CRITICAL-02: Prisma schema drift + generation gaps
 #   - CRITICAL-03: No CI to catch invalid builds pre-merge
 #
+# Also catches (added 2026-07-15 — HIGH-08 / IP-09):
+#   - HIGH-08: Transitive dependency CVEs reaching production lockfile
+#
 # Branch protection (configure in GitHub repo settings) should require:
 #   - install
 #   - typecheck
@@ -15,6 +18,7 @@
 #   - build-astro
 #   - build-dashboard
 #   - seo-gates
+#   - security-scan (HIGH-08 — OSV lockfile scan + allowlist validation)
 #   - ci-success (must be green to merge)
 #
 # Edge cases handled:
@@ -23,6 +27,8 @@
 #   - Prisma client generated via packages/db postinstall hook
 #   - vitest firewall uses server-only stub (no runtime deps)
 #   - Astro/Next builds are static — no request-time secrets
+#   - Security scanner runs on push AND pull_request (full lockfile)
+#   - dependency-review-action only runs on pull_request (PR diff)
 #
 # Note: SEO Guard CI (.github/workflows/seo-guard.yml) remains as a
 # legacy single-job fallback for older branch protection configs.
@@ -295,7 +301,184 @@ jobs:
         run: pnpm run redirects:check
 
   # ────────────────────────────────────────────────────────────────
-  # Job 8: CI Success Gate
+  # Job 9: Dependency Security Scan (HIGH-08 / IP-09)
+  # Scans pnpm-lock.yaml for known CVEs.
+  #   - Fails on critical/high severity (no exceptions, no warnings)
+  #   - Warns on medium severity (annotations, does NOT fail CI)
+  #   - Allowlist: .github/security-allowlist.yml (must be valid YAML,
+  #     no expired entries, no duplicates, all required fields)
+  # Two scanners run in parallel:
+  #   1. anchore/scan-action@v3 (full lockfile scan via Grype/OSV)
+  #   2. actions/dependency-review-action@v4 (PR-only diff scan)
+  # SARIF results upload to GitHub Security tab for code-scanning alerts.
+  # ────────────────────────────────────────────────────────────────
+  security-scan:
+    name: Dependency Security Scan
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    permissions:
+      contents: read
+      # Required for actions/dependency-review-action to read PR diff
+      pull-requests: read
+      # Required for github/codeql-action to upload SARIF
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack + Activate pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install (frozen lockfile)
+        # Mirrors install job — needed because anchore/scan-action
+        # reads the lockfile alongside node_modules for transitive resolution.
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Validate security allowlist (no expired / malformed entries)
+        # Pre-flight check before scanning. Ensures:
+        #   - File exists
+        #   - YAML parses (Python is preinstalled on ubuntu-latest)
+        #   - Every expires: date is in the future
+        #   - No duplicate IDs across entries
+        # Fails CI BEFORE scanning — saves 1-2 min on bad allowlist PRs.
+        run: |
+          set -euo pipefail
+          ALLOWLIST=".github/security-allowlist.yml"
+          echo "::group::Validating $ALLOWLIST"
+
+          if [ ! -f "$ALLOWLIST" ]; then
+            echo "::error title=Allowlist missing::$ALLOWLIST does not exist. CI cannot validate exceptions."
+            exit 1
+          fi
+
+          # 1. YAML syntax check
+          python3 -c "import yaml,sys; yaml.safe_load(open('$ALLOWLIST'))" \
+            || (echo "::error title=Allowlist YAML invalid::$ALLOWLIST is not valid YAML"; exit 1)
+          echo "✅ YAML syntax valid"
+
+          # 2. Expiration check
+          TODAY=$(date -u +%Y-%m-%d)
+          EXPIRED_COUNT=0
+          while IFS= read -r line; do
+            if [[ "$line" =~ ^[[:space:]]*expires:[[:space:]]*[\"']([0-9-]+)[\"'] ]]; then
+              EXP_DATE="${BASH_REMATCH[1]}"
+              if [[ "$EXP_DATE" < "$TODAY" ]]; then
+                echo "::error title=Allowlist expired::Entry with expires=$EXP_DATE is past today=$TODAY. Remove or renew."
+                EXPIRED_COUNT=$((EXPIRED_COUNT + 1))
+              else
+                echo "✅ Allowlist entry expires: $EXP_DATE"
+              fi
+            fi
+          done < "$ALLOWLIST"
+          if [ "$EXPIRED_COUNT" -gt 0 ]; then
+            echo "::error title=Allowlist has expired entries::$EXPIRED_COUNT entries need renewal or removal."
+            exit 1
+          fi
+
+          # 3. Required-fields check + duplicate ID check
+          python3 <<'PYEOF' || exit 1
+          import yaml, sys, re
+          from collections import Counter
+          from datetime import date, datetime
+
+          with open('.github/security-allowlist.yml') as f:
+              data = yaml.safe_load(f) or {}
+
+          exceptions = data.get('exceptions', []) or []
+          if not isinstance(exceptions, list):
+              print('::error title=Allowlist shape::exceptions must be a list')
+              sys.exit(1)
+
+          ids = []
+          sev_ok = {'critical', 'high', 'medium', 'low'}
+          id_pat = re.compile(r'^(CVE-\d{4}-\d{4,}|GHSA-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4})$')
+          today = date.today()
+
+          for i, e in enumerate(exceptions):
+              missing = [k for k in ('id','package','severity','justification','expires') if not e.get(k)]
+              if missing:
+                  print(f'::error title=Allowlist entry #{i}::missing required fields: {missing}')
+                  sys.exit(1)
+              if e['severity'] not in sev_ok:
+                  print(f'::error title=Allowlist entry {e["id"]}::severity must be one of {sev_ok}, got "{e["severity"]}"')
+                  sys.exit(1)
+              if not id_pat.match(e['id']):
+                  print(f'::error title=Allowlist entry #{i}::id "{e["id"]}" does not match CVE-YYYY-NNNN or GHSA-xxxx-xxxx-xxxx')
+                  sys.exit(1)
+              try:
+                  exp = datetime.strptime(e['expires'], '%Y-%m-%d').date()
+              except ValueError:
+                  print(f'::error title=Allowlist entry {e["id"]}::expires "{e["expires"]}" not YYYY-MM-DD')
+                  sys.exit(1)
+              if exp <= today:
+                  print(f'::error title=Allowlist entry {e["id"]}::expires {e["expires"]} is not in the future (today={today.isoformat()})')
+                  sys.exit(1)
+              ids.append(e['id'])
+
+          dup = [k for k,v in Counter(ids).items() if v > 1]
+          if dup:
+              print(f'::error title=Allowlist duplicates::duplicate CVE IDs: {dup}')
+              sys.exit(1)
+
+          print(f'✅ {len(exceptions)} allowlist entries validated (no expired, no duplicates, all fields present)')
+          PYEOF
+
+          echo "::endgroup::"
+
+      - name: Run vulnerability scan on pnpm-lock.yaml
+        # anchore/scan-action uses Grype (backed by OSV + NVD data).
+        # Scans the WHOLE lockfile (all transitive deps), not just direct deps.
+        # severity-cutoff=high means: fail on critical OR high, warn on medium/low.
+        uses: anchore/scan-action@v3
+        with:
+          path: "."
+          scan-type: "lockfile"
+          target: "pnpm-lock.yaml"
+          fail-build: true
+          severity-cutoff: high
+          output-format: "sarif"
+          # Disable Anchore registry auth (we don't publish SBOMs there)
+          # and skip Docker scanning (this is a static site / Node app).
+
+      - name: Upload SARIF to GitHub Security tab
+        # Even if scan fails, we want the SARIF uploaded for forensics.
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: anchore-reports/sarif-result.sarif
+          category: anchore-lockfile-scan
+
+      - name: Dependency review (PR-only — diff scanning)
+        # Scans ONLY the dependency diff (added/updated/removed packages in the PR).
+        # Complements anchore (which scans the whole lockfile): catches new CVEs
+        # before they're merged. Runs ONLY on pull_request events (skip on push).
+        if: github.event_name == 'pull_request'
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          # No license restrictions — too noisy for a marketing site.
+          # Show OSSF Scorecard would be nice but adds ~30s; skip for now.
+          show-openssf-scorecard: false
+          # Don't fail on scope changes (we're not building/publishing from PRs).
+          fail-on-scopes: ''
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 10: CI Success Gate
   # Aggregates all jobs. Fails if any job failed/cancelled.
   # This is the single required status check for branch protection.
   # ────────────────────────────────────────────────────────────────
@@ -308,6 +491,7 @@ jobs:
       - build-astro
       - build-dashboard
       - seo-gates
+      - security-scan
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 1
@@ -324,11 +508,12 @@ jobs:
           echo "| build-astro | ${{ needs.build-astro.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| build-dashboard | ${{ needs.build-dashboard.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| seo-gates | ${{ needs.seo-gates.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| security-scan | ${{ needs.security-scan.result }} |" >> "$GITHUB_STEP_SUMMARY"
 
           # Fail if any required job did not succeed.
           # Direct GitHub Actions expressions (no bash loop interpolation).
           failed=0
-          for job in typecheck lint test build-astro build-dashboard seo-gates; do
+          for job in typecheck lint test build-astro build-dashboard seo-gates security-scan; do
             case "$job" in
               typecheck)       r="${{ needs.typecheck.result }}" ;;
               lint)            r="${{ needs.lint.result }}" ;;
@@ -336,6 +521,7 @@ jobs:
               build-astro)     r="${{ needs.build-astro.result }}" ;;
               build-dashboard) r="${{ needs.build-dashboard.result }}" ;;
               seo-gates)       r="${{ needs.seo-gates.result }}" ;;
+              security-scan)   r="${{ needs.security-scan.result }}" ;;
             esac
             if [ "$r" != "success" ]; then
               echo "❌ CI FAILED at job: $job (result: $r)"

@@ -17,6 +17,21 @@ import { join, extname } from 'node:path';
  * — the global stylesheet bundles emitted by BaseLayout's <style is:global>.
  * Per-component CSS (cards, buttons, …) stays as render-blocking because
  * they're small and tied to a specific component rendering on the page.
+ *
+ * @csp-attr-pending — REPORTS-CSP-01 (2026-07-15, HIGH-07 / IP-08):
+ *   This integration injects `onload="..."` inline event handlers into
+ *   every rendered HTML file. Inline event handlers require
+ *   `script-src-attr 'unsafe-inline'` in CSP. The 'unsafe-inline' is
+ *   still present in render.yaml and public/_headers for this reason.
+ *
+ *   Phase 3 path: rewrite this integration to either:
+ *     (a) keep `rel="stylesheet"` and accept the LCP regression, OR
+ *     (b) inject a tiny <script src="/js/css-defer-helper.js"> BEFORE
+ *         the <link> that finds the link via document.head.querySelector
+ *         and swaps it on `load`. This requires the helper to be allowed
+ *         by script-src 'self'.
+ *
+ *   Until Phase 3 lands, this is a known blocker for the strict-CSP goal.
  */
 function perfCssDefer() {
   return {

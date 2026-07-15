@@ -24,8 +24,11 @@ export type {
   OnboardingProgress,
   DataExportRequest,
   DataDeletionRequest,
+  LeadQueue,
 } from '@prisma/client';
 
+// `LeadQueueStatus` is a runtime enum — Prisma does not emit a separate
+// type alias. Re-export the enum only.
 export {
   Role,
   Industry,
@@ -47,3 +50,11 @@ export {
   ActorType,
   Prisma,
 } from '@prisma/client';
+
+// `LeadQueueStatus` is generated as a runtime enum that doubles as a
+// type alias. Re-export the enum under its original name, then derive
+// a type-only alias so consumers can use `LeadQueueStatus` as either a
+// value or a type without touching `@prisma/client` directly.
+import { LeadQueueStatus as _LeadQueueStatusEnum } from '@prisma/client';
+export const LeadQueueStatus = _LeadQueueStatusEnum;
+export type LeadQueueStatus = (typeof _LeadQueueStatusEnum)[keyof typeof _LeadQueueStatusEnum];

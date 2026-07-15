@@ -1,0 +1,60 @@
+# BRIGHTAI — Security CVE Allowlist
+#
+# Purpose: Allow specific CVEs to pass CI without failing the build.
+# This is a LAST RESORT — the default behavior is to FAIL on any critical/high CVE.
+#
+# Required fields for every entry:
+#   - id:           CVE identifier from a real database (NVD / GHSA / OSV)
+#   - package:      exact package name (case-sensitive, no version)
+#   - severity:     critical | high | medium | low (matches the CVE)
+#   - justification: WHY we accept the risk — must be concrete and specific
+#   - expires:      YYYY-MM-DD — CI fails if today > expires (max 90 days from creation)
+#
+# Rules (enforced by CI + manual review):
+#   - No entry without a real justification (no "just because" or "low risk")
+#   - No entry without an expiration date (max 90 days; renewable)
+#   - Critical CVEs require explicit founder approval before adding
+#   - Each entry must link a tracking issue (PR or task ID)
+#   - Entries older than 90 days MUST be re-justified or removed
+#   - Duplicate IDs are not allowed (CI fails on duplicates)
+#
+# How to add an exception:
+#   1. Get the CVE ID from GitHub Security Advisory, NVD, or OSV.dev
+#   2. Verify the CVE affects our exact version range:
+#        grep -A2 "package-name@" pnpm-lock.yaml
+#   3. Confirm no upstream patch exists (check npm/GitHub for newer version)
+#   4. Document the specific risk we're accepting (NOT generic boilerplate)
+#   5. Add the entry with concrete justification + ≤90 day expiration
+#   6. Open a PR — the security-scan job will validate the entry shape
+#      (duplicate ID, malformed date, expired entry all fail CI)
+#
+# How to remove:
+#   1. After patching the dependency, delete the entry
+#   2. CI will enforce: no expired entries, no duplicates, valid YAML
+#
+# Validation enforced by CI:
+#   - YAML syntax valid
+#   - Every entry has all 6 required fields
+#   - expires date is in the future (today < expires)
+#   - severity is one of: critical, high, medium, low
+#   - id follows CVE-YYYY-NNNN+ or GHSA-xxxx-xxxx-xxxx pattern
+#
+# Related:
+#   - Workflow: .github/workflows/ci-build-guard.yml (job: security-scan)
+#   - Brain entry: .agents/brain.md → "HIGH-08 DEPENDENCY-GATE-2026-07-15"
+#   - Report: report/2026-07-15-dependency-gate.md
+#
+# Last reviewed: 2026-07-15 (initial — empty allowlist, no exceptions granted)
+# Reviewer: BrightAI Workspace Agent
+
+exceptions: []
+# Example entry (commented — do NOT enable until a real CVE exists):
+#
+#   - id: CVE-2024-XXXXX
+#     package: 'package-name'
+#     severity: high
+#     justification: 'Used in dev-only test fixture (vitest stub), no production runtime path. Patch tracked in #NNN.'
+#     expires: '2026-10-15'
+#     added_by: 'founder'
+#     added_date: '2026-07-15'
+#     tracking_issue: '#NNN'
