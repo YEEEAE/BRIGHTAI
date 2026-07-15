@@ -29,6 +29,7 @@ import type { FirewallContext } from '@/lib/firewall';
 import { consume } from '@/lib/firewall/ratelimit/redis-bucket';
 import { chat, chatStream } from '@/lib/firewall/llm/groq-client';
 import { logFirewallEvent, sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
+import { redactStreamGenerator } from '@/lib/firewall/engine/streaming-redaction';
 import { dbServiceRole } from '@brightai/db';
 import { Prisma } from '@brightai/db';
 
@@ -359,14 +360,17 @@ async function handleStream(
         controller.close();
       };
 
-      // Accumulated state.
-      let buffer = '';
-      let lastRedactedLen = 0;
-      let fullContent = '';
+      // Accumulated state — `fullRedactedContent` is the redacted
+      // accumulator (NOT raw). We never store the raw assistant text
+      // in the database — only the post-redaction version. The actual
+      // PII detection / overlap / closed-failure logic lives in
+      // lib/firewall/engine/streaming-redaction.ts (HIGH-02 fix).
+      let fullRedactedContent = '';
       let totalInputDetections = inputDetections.length;
-      let totalOutputDetections = 0;
+      const outputTypes = new Set<string>();
       let finalModel = body.model ?? 'llama-3.1-8b-instant';
       let chunkIndex = 0;
+      let streamFailed = false;
       const created = Math.floor(Date.now() / 1000);
 
       try {
@@ -377,96 +381,95 @@ async function handleStream(
           maxTokens: body.max_tokens,
         });
 
-        for await (const chunk of groqStream) {
-          if (chunk.model) finalModel = chunk.model;
-
-          if (chunk.content) {
-            buffer += chunk.content;
-            fullContent += chunk.content;
-
-            // Flush every 256 chars or on finish.
-            if (buffer.length >= 256 || chunk.finishReason) {
-              const detections = await detect(buffer, ctx);
-              const result = applyActions(buffer, detections, ctx.policy);
-              totalOutputDetections += detections.length;
-              const redactedDelta = result.redactedText.slice(lastRedactedLen);
-              lastRedactedLen = result.redactedText.length;
-
-              if (redactedDelta) {
-                sendEvent({
-                  id: `chatcmpl-${ctx.requestId}`,
-                  object: 'chat.completion.chunk',
-                  created,
-                  model: finalModel,
-                  choices: [
-                    {
-                      index: 0,
-                      delta: { content: redactedDelta },
-                      finish_reason: null,
-                    },
-                  ],
-                });
-              }
-              // Reset buffer; keep lastRedactedLen anchored to the
-              // redacted text length so subsequent deltas slice correctly.
-              buffer = '';
+        // Wrap Groq's stream as an AsyncIterable<string> of content chunks
+        // (we ignore non-content chunks — finish_reason is handled by the
+        // generator's natural end-of-stream).
+        async function* contentOnly(): AsyncGenerator<string> {
+          for await (const chunk of groqStream) {
+            if (chunk.model) finalModel = chunk.model;
+            if (chunk.content) {
+              chunkIndex++;
+              yield chunk.content;
             }
+            if (chunk.finishReason) return;
           }
+        }
 
-          if (chunk.finishReason) {
-            // Final chunk.
+        for await (const ev of redactStreamGenerator(contentOnly(), {
+          policy: ctx.policy,
+          ctx,
+          detect,
+        })) {
+          if (ev.failed) {
+            // Closed failure: emit sentinel + stop.
             sendEvent({
               id: `chatcmpl-${ctx.requestId}`,
               object: 'chat.completion.chunk',
               created,
               model: finalModel,
-              choices: [
-                {
-                  index: 0,
-                  delta: {},
-                  finish_reason: chunk.finishReason,
-                },
-              ],
+              choices: [{ index: 0, delta: { content: ev.delta }, finish_reason: 'stop' }],
+            });
+            streamFailed = true;
+            break;
+          }
+
+          if (ev.delta) {
+            fullRedactedContent += ev.delta;
+            sendEvent({
+              id: `chatcmpl-${ctx.requestId}`,
+              object: 'chat.completion.chunk',
+              created,
+              model: finalModel,
+              choices: [{ index: 0, delta: { content: ev.delta }, finish_reason: null }],
             });
           }
-          chunkIndex++;
+
+          if (ev.isLast) {
+            sendEvent({
+              id: `chatcmpl-${ctx.requestId}`,
+              object: 'chat.completion.chunk',
+              created,
+              model: finalModel,
+              choices: [{ index: 0, delta: {}, finish_reason: 'stop' }],
+            });
+          }
         }
 
         // Persist AIRequest + audit log (fire-and-forget for stream,
-        // because we already sent the response).
+        // because we already sent the response). `fullRedactedContent`
+        // is the post-redaction text — the raw assistant text never
+        // touches the database.
         try {
           await dbServiceRole.aIRequest.create({
             data: {
               organizationId: ctx.organizationId,
               requestedById: ctx.userId ?? apiKey.createdById,
               prompt: inputText.slice(0, 8192),
-              response: fullContent.slice(0, 8192),
+              response: fullRedactedContent.slice(0, 8192),
               modelUsed: finalModel,
-              tokensUsed: null, // not available in stream usage
-              piiDetected: totalInputDetections + totalOutputDetections > 0,
+              tokensUsed: null,
+              piiDetected: totalInputDetections + outputTypes.size > 0,
               piiTypes: Array.from(
                 new Set([
                   ...inputDetections.map((d) => d.type),
-                  // Output pii types were tracked in totalOutputDetections
-                  // but we need to re-detect to get the types. For
-                  // the audit log, we record the count.
+                  ...outputTypes,
                 ]),
               ),
-              status: 'AUTO_APPROVED',
-              riskScore: Math.min(1, 0.1 * (totalInputDetections + totalOutputDetections)),
+              status: streamFailed ? 'REJECTED' : 'AUTO_APPROVED',
+              riskScore: Math.min(1, 0.1 * (totalInputDetections + outputTypes.size)),
               riskLevel: 'LOW',
             },
           });
           await logFirewallEvent(ctx, {
             latencyMs: inputResult.latencyMs,
             piiTypes: inputDetections.map((d) => d.type).filter((v, i, a) => a.indexOf(v) === i).sort(),
-            detectionCount: totalInputDetections + totalOutputDetections,
+            detectionCount: totalInputDetections + outputTypes.size,
             originalTextSha256: sha256Text(inputText),
             originalLength: inputText.length,
             effectiveAction: 'mask',
             model: finalModel,
             tokensUsed: null,
-            blocked: false,
+            blocked: streamFailed,
             llmLatencyMs: null,
             notes: `stream:${ctx.requestId}`,
           });
@@ -485,7 +488,7 @@ async function handleStream(
           choices: [
             {
               index: 0,
-              delta: { content: `\n\n[firewall error: ${message}]` },
+              delta: { content: `\n\n[firewall_error:${message}]` },
               finish_reason: 'stop',
             },
           ],

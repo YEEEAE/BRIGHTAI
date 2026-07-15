@@ -25,7 +25,9 @@
       "@brightai/config": ["../../packages/config/src/index.ts"],
       "@brightai/config/*": ["../../packages/config/src/*"],
       "@brightai/db": ["../../packages/db/src/index.ts"],
-      "@brightai/db/*": ["../../packages/db/src/*"]
+      "@brightai/db/*": ["../../packages/db/src/*"],
+      "@brightai/firewall-detectors": ["../../packages/firewall-detectors/src/index.ts"],
+      "@brightai/firewall-detectors/*": ["../../packages/firewall-detectors/src/*"]
     }
   },
   "include": [

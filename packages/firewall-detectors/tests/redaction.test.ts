@@ -5,9 +5,9 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { applyActions, isIdempotent } from '../../lib/firewall/engine/redaction';
-import { regexDetect } from '../../lib/firewall/detectors/regex';
-import { DEFAULT_POLICY, type PolicyConfig, type Detection } from '../../lib/firewall/detectors/types';
+import { applyActions, isIdempotent } from '../src/redaction';
+import { regexDetect } from '../src/regex';
+import { DEFAULT_POLICY, type PolicyConfig } from '../src/types';
 
 const text = 'اسمي محمد ورقمي 1029482103 وحسابي SA0380000000608010167519';
 

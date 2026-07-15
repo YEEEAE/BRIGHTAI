@@ -4,13 +4,13 @@
  * Integration tests for the detector orchestrator. These exercise
  * the full pipeline: regex → dedupe → actions.
  *
- * NER is disabled in Phase 1a so these tests run quickly and
- * without the 250MB model download.
+ * NER is disabled in Phase 1a (and not registered in this package's
+ * tests) so these run quickly and without the 250MB model download.
  */
 
 import { describe, it, expect } from 'vitest';
-import { detect, detectAndRedact, dedupeOverlap, hasHighRiskPII } from '../../lib/firewall/engine/piidetector';
-import { DEFAULT_POLICY, type FirewallContext, type Detection } from '../../lib/firewall/detectors/types';
+import { detect, detectAndRedact, dedupeOverlap, hasHighRiskPII } from '../src/piidetector';
+import { DEFAULT_POLICY, type FirewallContext, type Detection } from '../src/types';
 
 const baseCtx: FirewallContext = {
   organizationId: 'org_test',
