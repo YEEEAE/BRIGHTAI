@@ -582,6 +582,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
         var storage = safeStorage();
         var apiAvailability = null; // null = untested, true = ok, false = 404
         var userTurnCount = 0;
+        var currentController = null;
 
         // استرجاع المحادثة من sessionStorage
         var history = loadHistory(storage, storageKey);
@@ -596,6 +597,10 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
         // مسح المحادثة
         if (clearBtn) {
           clearBtn.addEventListener('click', function () {
+            if (currentController) {
+              currentController.abort();
+              currentController = null;
+            }
             history = [];
             if (storage) storage.removeItem(storageKey);
             thread.innerHTML = '<div class="kernel-ai-assistant__empty" data-kernel-ai-empty><p>لم يبدأ أي سؤال بعد. اكتب سؤالك في الأسفل وستحصل على إجابة متخصصة.</p></div>';
@@ -662,13 +667,130 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
             return;
           }
 
+          var activeControllers = window.__kassActiveControllers || [];
+          window.__kassActiveControllers = activeControllers;
+
+          if (!window.__kassNavListenerBound) {
+            window.__kassNavListenerBound = true;
+            document.addEventListener('astro:before-preparation', function () {
+              while (activeControllers.length > 0) {
+                var ctrl = activeControllers.pop();
+                if (ctrl) ctrl.abort();
+              }
+            });
+          }
+
+          if (currentController) {
+            currentController.abort();
+          }
+          currentController = new AbortController();
+          activeControllers.push(currentController);
+
+          function handleStream(res) {
+            var reader = res.body.getReader();
+            var decoder = new TextDecoder('utf-8');
+            var buffer = '';
+            var fullReplyText = '';
+            var bubble = null;
+            var messageArticle = null;
+
+            var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function finishStream() {
+              var idx = activeControllers.indexOf(currentController);
+              if (idx > -1) activeControllers.splice(idx, 1);
+              currentController = null;
+
+              thread.setAttribute('aria-busy', 'false');
+              if (sendBtn) sendBtn.disabled = false;
+              input.focus();
+            }
+
+            function processEvent(event, dataStr) {
+              try {
+                var data = JSON.parse(dataStr);
+                if (event === 'token') {
+                  if (data.delta) {
+                    fullReplyText += data.delta;
+                    if (!bubble) {
+                      typing.hidden = true;
+                      messageArticle = renderMessage(thread, 'ai', '');
+                      bubble = messageArticle.querySelector('.kernel-ai-assistant__bubble');
+                    }
+                    if (!reduceMotion) {
+                      bubble.textContent = fullReplyText;
+                      thread.scrollTop = thread.scrollHeight;
+                    }
+                  }
+                } else if (event === 'done') {
+                  if (!bubble) {
+                    typing.hidden = true;
+                    messageArticle = renderMessage(thread, 'ai', '');
+                    bubble = messageArticle.querySelector('.kernel-ai-assistant__bubble');
+                  }
+                  if (reduceMotion) {
+                    bubble.textContent = fullReplyText;
+                    thread.scrollTop = thread.scrollHeight;
+                  }
+                  history.push({ role: 'ai', text: fullReplyText, demo: false });
+                  saveHistory(storage, storageKey, history);
+                } else if (event === 'error') {
+                  showError(errorSlot, 'provider_failed');
+                  if (!bubble) {
+                    typing.hidden = true;
+                  }
+                }
+              } catch (e) {
+                // Ignore malformed JSON frames
+              }
+            }
+
+            function read() {
+              return reader.read().then(function (result) {
+                if (result.done) {
+                  finishStream();
+                  return;
+                }
+                buffer += decoder.decode(result.value, { stream: true });
+                var lines = buffer.split('\n');
+                buffer = lines.pop();
+
+                var currentEvent = '';
+                for (var i = 0; i < lines.length; i++) {
+                  var line = lines[i].trim();
+                  if (!line) continue;
+
+                  if (line.indexOf('event: ') === 0) {
+                    currentEvent = line.slice(7).trim();
+                  } else if (line.indexOf('data: ') === 0) {
+                    var dataStr = line.slice(6).trim();
+                    processEvent(currentEvent, dataStr);
+                  }
+                }
+                return read();
+              }).catch(function (err) {
+                if (err.name === 'AbortError') return;
+                showError(errorSlot, 'network');
+                typing.hidden = true;
+                thread.setAttribute('aria-busy', 'false');
+                if (sendBtn) sendBtn.disabled = false;
+              });
+            }
+
+            return read();
+          }
+
           // جرّب /api/ai/chat/ (مع trailing slash لتفادي 301 → method change)
           // KRN-001 / EXEC-02: نرسل promptId فقط — السيرفر يرفض أي prompt نصي من العميل.
           // السيرفر يبحث عن النص الفعلي من allowlist الخادم (server-side).
           fetch('/api/ai/chat/', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+              'Accept': 'text/event-stream, application/json',
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify({ message: userText, promptId: promptId, provider: 'auto' }),
+            signal: currentController.signal
           })
             .then(function (res) {
               if (res.status === 404) {
@@ -693,21 +815,28 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                 showError(errorSlot, 'unknown');
                 return null;
               }
-              return res.json();
-            })
-            .then(function (data) {
-              if (!data) return;
-              if (data && data.reply) {
+
+              var contentType = res.headers.get('content-type') || '';
+              if (contentType.indexOf('text/event-stream') > -1) {
                 apiAvailability = true;
-                finalize(data.reply, false);
+                return handleStream(res);
               } else {
-                showError(errorSlot, 'unknown');
-                typing.hidden = true;
-                thread.setAttribute('aria-busy', 'false');
-                if (sendBtn) sendBtn.disabled = false;
+                return res.json().then(function (data) {
+                  if (!data) return;
+                  if (data && data.reply) {
+                    apiAvailability = true;
+                    finalize(data.reply, false);
+                  } else {
+                    showError(errorSlot, 'unknown');
+                    typing.hidden = true;
+                    thread.setAttribute('aria-busy', 'false');
+                    if (sendBtn) sendBtn.disabled = false;
+                  }
+                });
               }
             })
-            .catch(function () {
+            .catch(function (err) {
+              if (err.name === 'AbortError') return;
               showError(errorSlot, 'network');
               typing.hidden = true;
               thread.setAttribute('aria-busy', 'false');

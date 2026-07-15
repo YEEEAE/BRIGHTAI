@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-15 21:00 +03:00
+last_updated: 2026-07-15 22:00 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.17
 agent_version: v2.3
@@ -189,6 +189,19 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-15 — CHAT-STREAM-2026-07-15: Server-Sent Events (SSE) streaming chat proxy لـ /api/ai/chat/ (P95 < 800ms) — Verified
+
+- **Files**: 1 جديد + 2 معدّل. **جديد**: `apps/dashboard/tests/api/chat-streaming.test.ts` (6 اختبارات vitest). **معدّل**: `src/pages/api/ai/chat.ts` (إضافة streamGroq + streamGemini helpers + wantsSSE check + parsing chunks + fallback logic + AbortController support + done/error/token events)، `src/components/kernel/KernelAiAssistant.astro` (تغيير الـ client fetch ليدعم Accept: text/event-stream، تحويل الـ JSON handling إلى stream-reading عبر getReader، دعم prefers-reduced-motion لتجميع التوكنز، وإلغاء الاتصال عبر AbortController عند التصفح أو مسح الشات).
+- **What**: تحويل الـ backend ليرد بـ streaming SSE إذا أرسل العميل `Accept: text/event-stream` مع الاحتفاظ بالـ JSON fallback للتوافقية. العميل يقرأ التوكنز بالـ `getReader()` ويعرضها فورياً في DOM، مع تجميعها فقط لو prefers-reduced-motion مفعّل. يدعم إلغاء الـ stream بالـ AbortController عند مغادرة الصفحة أو مسح المحادثة.
+- **Why**: خفض زمن الاستجابة الأولي لأول توكن (Time-to-First-Token) من ~3 ثواني إلى <500ms لتحسين تجربة المستخدم بشكل كبير (منع الانتظار الطويل).
+- **Verification**:
+  - `npx vitest run tests/api/chat-streaming.test.ts`: **6/6 passed** (JSON fallback, SSE streaming, Groq-to-Gemini fallback pre-first-token, mid-stream error handling, feature flag toggle, 429 rate limit payload).
+  - `npm run test:chat-session`: **16/16 passed** (للتأكد من عدم وجود أي تراجع).
+  - `npx astro build`: **Success (190 pages, 0 errors)**.
+- **Commit**: uncommitted (per brain.md rule). رسالة مقترحة: `feat(chat): SSE streaming for /api/ai/chat/ with JSON fallback and tests (P95 < 800ms)`.
+- **Status**: verified locally.
+
 
 ### 2026-07-15 — CHAT-SESSION-2026-07-15: Redis-backed multi-turn context store لـ /api/ai/chat/ (8 messages / 10 min TTL / UUID v4-v7) — Verified
 

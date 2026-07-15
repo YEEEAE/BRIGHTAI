@@ -3,6 +3,7 @@
  *                  + KERNEL-AUDIT-2026-07-15-BATCH-2 (ARCH-2 + EXEC-01)
  *                  + KRN-003-FULL-2026-07-15 (EXEC-03 API key check)
  *                  + CHAT-SESSION-2026-07-15 (multi-turn context store)
+ *                  + CHAT-STREAM-2026-07-15 (SSE streaming path)
  *
  * Server-side proxy for AI chat. Reads provider keys from
  * `process.env.GROQ_API_KEY` and `process.env.GEMINI_API_KEY`
@@ -11,6 +12,10 @@
  *
  * Behavior:
  *  - POST { message: string, sessionId?: string (UUID v4/v7), promptId?: ..., provider?: 'groq'|'gemini'|'auto' }
+ *  - SSE path: client sends Accept: text/event-stream → server streams
+ *    event: token / data: {"delta":"..."} frames then event: done.
+ *    Gated by CHAT_STREAMING_ENABLED env var (default true).
+ *    Backwards compat: Accept: application/json → old { reply, provider } shape.
  *  - Returns { reply: string, provider: 'groq'|'gemini' } on success.
  *  - In-memory rate limit: 10 requests / minute / IP.
  *  - Validates: message is a non-empty string ≤ 4000 chars.
@@ -96,6 +101,12 @@ const MAX_MESSAGE_CHARS = 4000;
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 10;
 const PROVIDER_TIMEOUT_MS = 25_000;
+
+// CHAT-STREAM-2026-07-15: feature flag — set CHAT_STREAMING_ENABLED=false
+// in env to force JSON-only mode without a redeploy (instant rollback).
+function isChatStreamingEnabled(): boolean {
+  return process.env.CHAT_STREAMING_ENABLED !== 'false';
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // CHAT-SESSION-2026-07-15: UUID validation
@@ -250,7 +261,7 @@ function jsonError(
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Provider: Groq (OpenAI-compatible)
+// Provider: Groq (OpenAI-compatible) — blocking JSON variant
 // ─────────────────────────────────────────────────────────────────────────
 async function callGroq(
   messages: ChatMessage[],
@@ -301,7 +312,7 @@ async function callGroq(
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Provider: Gemini (generativelanguage.googleapis.com)
+// Provider: Gemini (generativelanguage.googleapis.com) — blocking JSON variant
 // ─────────────────────────────────────────────────────────────────────────
 async function callGemini(
   messages: ChatMessage[],
@@ -353,6 +364,258 @@ async function callGemini(
 }
 
 // ─────────────────────────────────────────────────────────────────────────
+// CHAT-STREAM-2026-07-15: SSE streaming helpers
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Build a groq request body (shared between blocking + streaming callsites).
+ */
+function buildGroqBody(
+  messages: ChatMessage[],
+  systemPrompt: string | undefined,
+  stream: boolean,
+): string {
+  const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+  return JSON.stringify({
+    model,
+    messages: [
+      ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
+      ...messages.map((m) => ({ role: m.role, content: m.content })),
+    ],
+    max_tokens: 800,
+    temperature: 0.4,
+    stream,
+  });
+}
+
+/**
+ * Build a Gemini request body (shared between blocking + streaming callsites).
+ */
+function buildGeminiBody(
+  messages: ChatMessage[],
+  systemPrompt: string | undefined,
+): string {
+  const contents = messages.map((m) => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }],
+  }));
+  return JSON.stringify({
+    contents,
+    ...(systemPrompt
+      ? { systemInstruction: { parts: [{ text: systemPrompt }] } }
+      : {}),
+    generationConfig: { maxOutputTokens: 800, temperature: 0.4 },
+  });
+}
+
+/**
+ * Parse raw SSE text and yield each complete data payload string.
+ * Handles multi-line buffering so partial frames are not lost.
+ */
+function* parseSSEChunk(chunk: string): Generator<string> {
+  // Lines are separated by \n; frames by \n\n (or \r\n\r\n).
+  // We yield only lines that start with "data: ".
+  const lines = chunk.split(/\r?\n/);
+  for (const line of lines) {
+    if (line.startsWith('data: ')) {
+      yield line.slice(6);
+    }
+  }
+}
+
+/**
+ * Stream from Groq (OpenAI-compatible SSE) and yield delta strings.
+ * Throws before yielding anything if the upstream HTTP request fails.
+ */
+async function* streamGroq(
+  messages: ChatMessage[],
+  systemPrompt: string | undefined,
+  signal: AbortSignal,
+): AsyncGenerator<string> {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey || apiKey === 'your_groq_api_key_placeholder') {
+    throw new Error('GROQ_API_KEY not configured');
+  }
+  const endpoint =
+    process.env.GROQ_ENDPOINT ||
+    'https://api.groq.com/openai/v1/chat/completions';
+
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    signal,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: buildGroqBody(messages, systemPrompt, true),
+  });
+
+  if (!res.ok || !res.body) {
+    const t = await res.text().catch(() => '');
+    throw new Error(`groq_${res.status}:${t.slice(0, 120)}`);
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = '';
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      // Process complete lines from buffer
+      const lastNewline = buf.lastIndexOf('\n');
+      if (lastNewline === -1) continue;
+      const chunk = buf.slice(0, lastNewline + 1);
+      buf = buf.slice(lastNewline + 1);
+      for (const payload of parseSSEChunk(chunk)) {
+        if (payload === '[DONE]') return;
+        try {
+          const json = JSON.parse(payload) as {
+            choices?: Array<{ delta?: { content?: string }; finish_reason?: string | null }>;
+          };
+          const delta = json?.choices?.[0]?.delta?.content;
+          if (typeof delta === 'string' && delta.length > 0) {
+            yield delta;
+          }
+          if (json?.choices?.[0]?.finish_reason === 'stop') return;
+        } catch {
+          // Malformed JSON frame — skip silently
+        }
+      }
+    }
+    // Flush remaining buffer
+    if (buf.trim()) {
+      for (const payload of parseSSEChunk(buf)) {
+        if (payload === '[DONE]') return;
+        try {
+          const json = JSON.parse(payload) as {
+            choices?: Array<{ delta?: { content?: string } }>;
+          };
+          const delta = json?.choices?.[0]?.delta?.content;
+          if (typeof delta === 'string' && delta.length > 0) yield delta;
+        } catch {
+          // skip
+        }
+      }
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+/**
+ * Stream from Gemini (:streamGenerateContent?alt=sse) and yield text chunks.
+ * Throws before yielding anything if the upstream HTTP request fails.
+ */
+async function* streamGemini(
+  messages: ChatMessage[],
+  systemPrompt: string | undefined,
+  signal: AbortSignal,
+): AsyncGenerator<string> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey || apiKey === 'your_openai_api_key_placeholder') {
+    throw new Error('GEMINI_API_KEY not configured');
+  }
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  // Use :streamGenerateContent?alt=sse for true SSE output
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
+    model,
+  )}:streamGenerateContent?alt=sse&key=${encodeURIComponent(apiKey)}`;
+
+  const res = await fetch(url, {
+    method: 'POST',
+    signal,
+    headers: { 'Content-Type': 'application/json' },
+    body: buildGeminiBody(messages, systemPrompt),
+  });
+
+  if (!res.ok || !res.body) {
+    const t = await res.text().catch(() => '');
+    throw new Error(`gemini_${res.status}:${t.slice(0, 120)}`);
+  }
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = '';
+
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lastNewline = buf.lastIndexOf('\n');
+      if (lastNewline === -1) continue;
+      const chunk = buf.slice(0, lastNewline + 1);
+      buf = buf.slice(lastNewline + 1);
+      for (const payload of parseSSEChunk(chunk)) {
+        if (payload === '[DONE]') return;
+        try {
+          const json = JSON.parse(payload) as {
+            candidates?: Array<{
+              content?: { parts?: Array<{ text?: string }> };
+              finishReason?: string;
+            }>;
+          };
+          const text = json?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (typeof text === 'string' && text.length > 0) {
+            yield text;
+          }
+          if (json?.candidates?.[0]?.finishReason === 'STOP') return;
+        } catch {
+          // skip malformed frame
+        }
+      }
+    }
+    // Flush remaining buffer
+    if (buf.trim()) {
+      for (const payload of parseSSEChunk(buf)) {
+        if (payload === '[DONE]') return;
+        try {
+          const json = JSON.parse(payload) as {
+            candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>;
+          };
+          const text = json?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (typeof text === 'string' && text.length > 0) yield text;
+        } catch {
+          // skip
+        }
+      }
+    }
+  } finally {
+    reader.releaseLock();
+  }
+}
+
+/**
+ * Format a single SSE event frame.
+ * Newlines inside data JSON are already escaped by JSON.stringify.
+ */
+function sseEvent(event: string, data: Record<string, unknown>): string {
+  return `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+}
+
+/**
+ * Build the SSE Response with anti-buffering headers.
+ * The caller passes a ReadableStream that emits UTF-8 encoded SSE text.
+ */
+function sseResponse(stream: ReadableStream<Uint8Array>, extraHeaders: Record<string, string> = {}): Response {
+  return new Response(stream, {
+    status: 200,
+    headers: {
+      'Content-Type': 'text/event-stream; charset=utf-8',
+      // Prevent Render's nginx proxy from buffering the SSE stream.
+      'X-Accel-Buffering': 'no',
+      'Cache-Control': 'no-cache, no-store',
+      'Connection': 'keep-alive',
+      'X-Content-Type-Options': 'nosniff',
+      ...extraHeaders,
+    },
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────
 // POST handler — the only exported route used by the client.
 // ─────────────────────────────────────────────────────────────────────────
 export const POST: APIRoute = async ({ request }) => {
@@ -362,6 +625,8 @@ export const POST: APIRoute = async ({ request }) => {
   if (!auth.ok) return auth.res;
 
   // 2. Rate limit (BAI-005: Redis sliding-window, unified across Render instances)
+  //    Always runs before streaming — so the rate limit check is never inside
+  //    a stream (where sending a 429 HTTP status would be impossible).
   const ip = getClientIpLocal(request);
   const rl = await rateLimit(`chat:${ip}`, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS / 1_000);
   if (!rl.allowed) {
@@ -460,6 +725,175 @@ export const POST: APIRoute = async ({ request }) => {
     ...history,
     { role: 'user', content: message, ts: Date.now() },
   ];
+
+  // ─────────────────────────────────────────────────────────────────────
+  // CHAT-STREAM-2026-07-15: SSE path
+  //
+  // Conditions to enter SSE path:
+  //  1. Client sent Accept: text/event-stream
+  //  2. CHAT_STREAMING_ENABLED env is not 'false' (feature flag)
+  //
+  // Security invariants preserved:
+  //  - Origin + rate limit already checked above (before the stream opens)
+  //  - KRN-015: fresh AbortController per provider call
+  //  - KRN-001: promptId allowlist enforced above
+  //  - Session history fetched above; push happens after done event
+  // ─────────────────────────────────────────────────────────────────────
+  const wantsSSE = request.headers.get('accept')?.includes('text/event-stream') ?? false;
+
+  if (wantsSSE && isChatStreamingEnabled()) {
+    // Capture locals for use inside ReadableStream constructor
+    const _sessionId = sessionId;
+    const _sessionDegraded = sessionDegraded;
+    const _requestedProvider = requestedProvider;
+    const _providerMessages = providerMessages;
+    const _systemPrompt = systemPrompt;
+
+    const encoder = new TextEncoder();
+
+    const stream = new ReadableStream<Uint8Array>({
+      async start(controller) {
+        // Enqueue helper
+        const enq = (event: string, data: Record<string, unknown>) => {
+          controller.enqueue(encoder.encode(sseEvent(event, data)));
+        };
+
+        // KRN-015 fix: fresh AbortController per provider call
+        let ctrl = new AbortController();
+        let providerTimer = setTimeout(() => ctrl.abort(), PROVIDER_TIMEOUT_MS);
+
+        let usedProvider: 'groq' | 'gemini' | '' = '';
+        let fullReply = '';
+        let firstTokenSent = false;
+
+        // Helper: run a streaming generator with timeout reset on each token.
+        // Returns false if the generator threw before any token was yielded
+        // (safe to attempt fallback). Returns true on success or
+        // mid-stream error (fallback not possible after first token).
+        async function pipeGenerator(
+          gen: AsyncGenerator<string>,
+          provider: 'groq' | 'gemini',
+        ): Promise<'ok' | 'pre-first-token-error' | 'mid-stream-error'> {
+          try {
+            for await (const delta of gen) {
+              fullReply += delta;
+              enq('token', { delta });
+              if (!firstTokenSent) {
+                firstTokenSent = true;
+                usedProvider = provider;
+              }
+            }
+            return 'ok';
+          } catch (e) {
+            if (!firstTokenSent) {
+              return 'pre-first-token-error';
+            }
+            // Mid-stream error — stream is already open, can't fallback
+            enq('error', { error: (e as Error).message ?? 'stream_error' });
+            return 'mid-stream-error';
+          }
+        }
+
+        try {
+          let outcome: 'ok' | 'pre-first-token-error' | 'mid-stream-error' = 'pre-first-token-error';
+
+          if (_requestedProvider === 'groq') {
+            outcome = await pipeGenerator(
+              streamGroq(_providerMessages, _systemPrompt, ctrl.signal),
+              'groq',
+            );
+            if (outcome === 'pre-first-token-error') {
+              enq('error', { error: 'groq_failed' });
+            }
+          } else if (_requestedProvider === 'gemini') {
+            outcome = await pipeGenerator(
+              streamGemini(_providerMessages, _systemPrompt, ctrl.signal),
+              'gemini',
+            );
+            if (outcome === 'pre-first-token-error') {
+              enq('error', { error: 'gemini_failed' });
+            }
+          } else {
+            // auto mode: try Groq first
+            clearTimeout(providerTimer);
+            ctrl = new AbortController();
+            providerTimer = setTimeout(() => ctrl.abort(), PROVIDER_TIMEOUT_MS);
+
+            outcome = await pipeGenerator(
+              streamGroq(_providerMessages, _systemPrompt, ctrl.signal),
+              'groq',
+            );
+
+            if (outcome === 'pre-first-token-error') {
+              // Groq failed before first token — safe to try Gemini
+              clearTimeout(providerTimer);
+              ctrl = new AbortController();
+              providerTimer = setTimeout(() => ctrl.abort(), PROVIDER_TIMEOUT_MS);
+
+              outcome = await pipeGenerator(
+                streamGemini(_providerMessages, _systemPrompt, ctrl.signal),
+                'gemini',
+              );
+
+              if (outcome === 'pre-first-token-error') {
+                enq('error', { error: 'all_providers_failed' });
+              }
+            }
+            // mid-stream-error already handled inside pipeGenerator
+          }
+
+          // Send done event only on success
+          if (outcome === 'ok' && usedProvider) {
+            enq('done', {
+              provider: usedProvider,
+              sessionId: _sessionId ?? null,
+            });
+
+            // Session persistence — fire after done event is enqueued.
+            // Non-fatal: a Redis failure here does not abort the response.
+            if (_sessionId && fullReply) {
+              const now = Date.now();
+              getChatSessionStore()
+                .push(
+                  _sessionId,
+                  [
+                    { role: 'user', content: message, ts: now },
+                    { role: 'assistant', content: fullReply, ts: now },
+                  ],
+                  {
+                    maxMessages: CHAT_SESSION_LIMITS.MAX_MESSAGES,
+                    ttlSeconds: CHAT_SESSION_LIMITS.TTL_SECONDS,
+                  },
+                )
+                .catch(() => {
+                  // Intentionally swallow — same as JSON path (non-fatal)
+                });
+            }
+          }
+        } catch (e) {
+          // Outer catch: validation or setup errors that escaped pipeGenerator
+          try {
+            enq('error', { error: (e as Error).message ?? 'internal_error' });
+          } catch {
+            // controller may already be closed
+          }
+        } finally {
+          clearTimeout(providerTimer);
+          try { controller.close(); } catch { /* already closed */ }
+        }
+      },
+    });
+
+    const sseExtraHeaders: Record<string, string> = {};
+    if (sessionId) {
+      sseExtraHeaders['X-Chat-Session'] = sessionDegraded ? 'degraded' : 'ok';
+    }
+    return sseResponse(stream, sseExtraHeaders);
+  }
+
+  // ─────────────────────────────────────────────────────────────────────
+  // JSON path — original blocking behaviour (backwards compatible)
+  // ─────────────────────────────────────────────────────────────────────
 
   // 10. Per-provider timeout (KRN-015 fix) — fresh AbortController per call
   //     so a Groq timeout doesn't poison the Gemini fallback signal.
