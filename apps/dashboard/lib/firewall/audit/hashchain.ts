@@ -81,70 +81,81 @@ export async function appendAuditLog(
   input: AuditChainInput,
 ): Promise<{ id: string; prevHash: string | null; hash: string; createdAt: Date }> {
   return dbServiceRole.$transaction(
-    async (tx) => {
-      // Advisory lock on the org id so concurrent writes serialize.
-      // pg_advisory_xact_lock takes a bigint; hash the org id to fit.
-      const lockKey = hashStringToBigInt(input.organizationId);
-      await tx.$executeRaw(
-        Prisma.sql`SELECT pg_advisory_xact_lock(${lockKey})`,
-      );
-
-      const last = (await tx.$queryRaw<LastHashRow[]>`
-        SELECT "hash" FROM "audit_logs"
-        WHERE "organization_id" = ${input.organizationId}
-        ORDER BY "created_at" DESC
-        LIMIT 1
-        FOR UPDATE
-      `) as LastHashRow[];
-
-      const prevHash: string | null = last[0]?.hash ?? null;
-      const createdAt = new Date();
-
-      // Build the payload that gets hashed — everything except
-      // `hash` itself. We include createdAt so reordering is
-      // detectable.
-      const payload = {
-        organizationId: input.organizationId,
-        actorId: input.actorId,
-        actorType: input.actorType,
-        action: input.action,
-        targetType: input.targetType ?? null,
-        targetId: input.targetId ?? null,
-        metadata: input.metadata ?? {},
-        createdAt: createdAt.toISOString(),
-      };
-
-      const hash = sha256((prevHash ?? '') + canonicalJson(payload));
-
-      const row = await tx.auditLog.create({
-        data: {
-          organizationId: input.organizationId,
-          actorId: input.actorId,
-          actorType: input.actorType,
-          action: input.action,
-          targetType: input.targetType,
-          targetId: input.targetId,
-          ipAddress: input.ipAddress,
-          userAgent: input.userAgent,
-          metadata: (input.metadata ?? {}) as Prisma.InputJsonValue,
-          prevHash,
-          hash,
-          createdAt,
-        },
-        select: {
-          id: true,
-          prevHash: true,
-          hash: true,
-          createdAt: true,
-        },
-      });
-
-      // Cast: the schema declares hash as nullable but we always
-      // write a non-null value via the chain writer.
-      return row as { id: string; prevHash: string | null; hash: string; createdAt: Date };
-    },
+    (tx) => appendAuditLogInTx(tx, input),
     { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
   );
+}
+
+/**
+ * Transaction-friendly version of `appendAuditLog`. Caller passes
+ * an open Prisma transaction so this can be composed with other
+ * writes (e.g. AIRequest.create) for atomic persistence (HIGH-03
+ * fix). Same chain logic + lock as the standalone version.
+ */
+export async function appendAuditLogInTx(
+  tx: Prisma.TransactionClient,
+  input: AuditChainInput,
+): Promise<{ id: string; prevHash: string | null; hash: string; createdAt: Date }> {
+  // Advisory lock on the org id so concurrent writes serialize.
+  // pg_advisory_xact_lock takes a bigint; hash the org id to fit.
+  const lockKey = hashStringToBigInt(input.organizationId);
+  await tx.$executeRaw(
+    Prisma.sql`SELECT pg_advisory_xact_lock(${lockKey})`,
+  );
+
+  const last = (await tx.$queryRaw<LastHashRow[]>`
+    SELECT "hash" FROM "audit_logs"
+    WHERE "organization_id" = ${input.organizationId}
+    ORDER BY "created_at" DESC
+    LIMIT 1
+    FOR UPDATE
+  `) as LastHashRow[];
+
+  const prevHash: string | null = last[0]?.hash ?? null;
+  const createdAt = new Date();
+
+  // Build the payload that gets hashed — everything except
+  // `hash` itself. We include createdAt so reordering is
+  // detectable.
+  const payload = {
+    organizationId: input.organizationId,
+    actorId: input.actorId,
+    actorType: input.actorType,
+    action: input.action,
+    targetType: input.targetType ?? null,
+    targetId: input.targetId ?? null,
+    metadata: input.metadata ?? {},
+    createdAt: createdAt.toISOString(),
+  };
+
+  const hash = sha256((prevHash ?? '') + canonicalJson(payload));
+
+  const row = await tx.auditLog.create({
+    data: {
+      organizationId: input.organizationId,
+      actorId: input.actorId,
+      actorType: input.actorType,
+      action: input.action,
+      targetType: input.targetType,
+      targetId: input.targetId,
+      ipAddress: input.ipAddress,
+      userAgent: input.userAgent,
+      metadata: (input.metadata ?? {}) as Prisma.InputJsonValue,
+      prevHash,
+      hash,
+      createdAt,
+    },
+    select: {
+      id: true,
+      prevHash: true,
+      hash: true,
+      createdAt: true,
+    },
+  });
+
+  // Cast: the schema declares hash as nullable but we always
+  // write a non-null value via the chain writer.
+  return row as { id: string; prevHash: string | null; hash: string; createdAt: Date };
 }
 
 /**

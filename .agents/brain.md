@@ -169,6 +169,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | zod | ^3.24.1 | prod | ✅ |
 | clsx | ^2.1.1 | prod | ✅ |
 | lighthouse | 13.4.0 | dev | ✅ for performance audit |
+| @brightai/firewall-detectors | workspace:* | prod | ✅ NEW 2026-07-15 — PII regex + redaction (marketing site + dashboard). NER injectable via setNerDetector. |
 
 ### 1.6 Tracking & Analytics
 
@@ -185,6 +186,19 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-15 — BAI-001-PHASE1-EXTRACT-2026-07-15: استخراج regex/redaction/piidetector إلى packages/firewall-detectors (Phase 1 من BAI-001) — Verified
+
+- **Files**: 11 جديد + 7 معدّل + 3 محذوف. **جديد**: `packages/firewall-detectors/package.json` (719B، workspace pattern)، `packages/firewall-detectors/tsconfig.json` (361B، strict ES2022، types: node)، `packages/firewall-detectors/vitest.config.ts` (395B، environment: node)، `packages/firewall-detectors/src/types.ts` (3256B، نسخة طبق الأصل)، `packages/firewall-detectors/src/regex.ts` (6014B، نسخة طبق الأصل)، `packages/firewall-detectors/src/redaction.ts` (5915B، import path `./types` بدل `../detectors/types`)، `packages/firewall-detectors/src/piidetector.ts` (4658B، **NER injectable عبر setNerDetector** بدل dynamic import)، `packages/firewall-detectors/src/index.ts` (815B، barrel)، `packages/firewall-detectors/tests/regex.test.ts` (8475B، 31 test، import paths معدّلة)، `packages/firewall-detectors/tests/redaction.test.ts` (4592B، 10 tests)، `packages/firewall-detectors/tests/piidetector.test.ts` (3988B، 9 tests). **معدّل (shim pattern)**: `apps/dashboard/lib/firewall/index.ts` (1238B، re-export + side-effect `setNerDetector(nerDetect)`)، `apps/dashboard/lib/firewall/detectors/types.ts` (434B، re-export shim)، `apps/dashboard/lib/firewall/detectors/regex.ts` (513B، re-export shim)، `apps/dashboard/lib/firewall/engine/redaction.ts` (636B، re-export shim)، `apps/dashboard/lib/firewall/engine/piidetector.ts` (649B، re-export shim)، `apps/dashboard/package.json` (+1 سطر `"@brightai/firewall-detectors": "workspace:*"`)، `apps/dashboard/tsconfig.json` (+2 paths aliases). **محذوف** (mavis-trash): `apps/dashboard/tests/firewall/regex.test.ts`، `apps/dashboard/tests/firewall/redaction.test.ts`، `apps/dashboard/tests/firewall/piidetector.test.ts` (نقلوا للـ package الجديد، محتوى مكافئ).
+- **What**: 3 محاور. (1) **إنشاء package جديد** `packages/firewall-detectors/` يتبع نمط `packages/config` و `packages/db` (workspace pattern، exports map، main + types). اعتمادياته: `nanoid@^5.0.9` فقط (prod) + typescript + vitest (dev). **بدون** Prisma, ONNX, transformers, Redis, Clerk. خفيف وقابل للاستخدام من أي consumer. (2) **piidetector.ts → NER injectable**: الـ package الأصلي كان يعمل `await import('../detectors/ner')` dynamic. الجديد: `setNerDetector(fn | null)` يـ register callback. `detect()` يفحص `nerDetector !== null && ctx.policy.nerEnabled` قبل الاستدعاء. Marketing site يستورد الـ package بدون `setNerDetector` → NER ما يتحمّل أبداً → صفر overhead. (3) **Shim pattern في dashboard**: 4 ملفات قديمة (`detectors/types.ts`, `detectors/regex.ts`, `engine/redaction.ts`, `engine/piidetector.ts`) صارت re-export فقط من الـ package الجديد. هذا يحافظ على backwards compatibility — `app/api/firewall/transcribe/route.ts` يستورد `applyActionsWithVault` من `@/lib/firewall/engine/redaction` (مسار قديم) ويشتغل بدون تعديل. `health/route.ts` يستورد `REGEX_VERSION` من `@/lib/firewall/detectors/regex` ويشتغل. **بدون shims** كان لازم أحدّث ~7 imports في `app/api/firewall/*` و `tests/firewall/streaming-redaction.test.ts`.
+- **Why**: BAI-001 brief طلب "wire firewall.detectAndRedact على /api/ai/chat" في marketing site. الـ firewall موجود في dashboard فقط، يعتمد على Prisma + ONNX + Clerk — مستحيل يستورده marketing site اللي ما عنده DB ولا ONNX runtime. الحل: استخراج الطبقة الخفيفة (regex + actions) لـ workspace package منفصل، يقدر marketing site يستورده عبر `workspace:*`. النتيجة: marketing site يحصل على PII detection بدون أي تبعية ثقيلة. (2) NER يبقى في dashboard (server-only، يحتاج ONNX + DB) — marketing site ما يحتاج NER (شات demo، مو production customer data). (3) Shim pattern يخلّي الـ refactor آمن — لو حد في الـ future يستخدم paths قديمة (مثل `lib/firewall/detectors/regex`)، يشتغل بدون تعديل.
+- **Verification** (4/4 ACs): (1) `pnpm --filter @brightai/firewall-detectors typecheck` → **0 errors** ✅. (2) `pnpm --filter @brightai/dashboard typecheck` → **0 errors** ✅ (الـ shim re-exports + NER side-effect ما يكسرون الـ existing types). (3) `pnpm test` في firewall-detectors → **50/50 passed** (regex 31 + redaction 10 + piidetector 9) في 196ms ✅. (4) `pnpm test` في dashboard → **73/73 passed** (token-vault 7 + streaming-redaction 53 + ner 13) في 2.21s ✅. الـ NER test (13 cases) يحمّل `Xenova/bert-base-multilingual-cased-ner-hrl` بنجاح ويـ detect أسماء عربية → يثبت إن side-effect `setNerDetector(nerDetect)` في الـ dashboard barrel يشتغل production-correct. إجمالي: **123/123 tests** (أعلى من 70/70 الأصلي لأن streaming-redaction 53 tests ما كانت محسوبة في الـ 70/70 قبل).
+- **Report**: (لا يحتاج — change set modular، الـ decisions موثّقة هنا).
+- **Commit**: uncommitted (per brain.md rule line 18: المستخدم ينشئ الـ commits). رسالة مقترحة: `refactor(firewall): extract regex/redaction/piidetector to @brightai/firewall-detectors workspace package (BAI-001 Phase 1 — NER injectable, shim pattern, 123/123 tests pass)`.
+- **Status**: verified. جاهز لـ Phase 2 (wire إلى marketing site chat).
+- **Brain updates**: This entry (newest-first). Section 1.5 (dependencies) — add @brightai/firewall-detectors row. Section 4 (decisions) — 3 new decisions.
+- **Follow-up (مؤجل لـ Phase 2)**: (1) Wire `src/pages/api/ai/chat.ts` لـ `detectAndRedact` من الـ package الجديد. (2) إضافة `@brightai/firewall-detectors: workspace:*` في root `package.json` (marketing site). (3) إنشاء `src/lib/firewall-adapter.ts` (~50 سطر). (4) إضافة 451 response على CREDENTIAL في `chat.ts`. (5) console.log audit (لا DB). (6) Tests للـ adapter مع coverage > 90%.
+- **Risks**: (1) **`setNerDetector` global state**: لو حد يستورد الـ package مرتين في نفس الـ process (e.g. Next.js test runner)، الـ second import يحصل على الـ same module → setNerDetector يعمل replace (idempotent). لا bug. لكن لو أحد في الـ future يستورد الـ package و ما يستدعي setNerDetector → ما في NER. mitigation: الـ barrel في dashboard يفعل السلك تلقائياً. marketing site يوثّق في JSDoc إن NER غير مفعل. (2) **shim files تضيف طبقة indirection**: 4 ملفات dashboard صارت 1 سطر re-export. وقت التشغيل لا يتأثر (ESM re-exports inline). وقت الـ developer: لو أحد يفتح `lib/firewall/detectors/regex.ts` يلقى re-export، يقدر يتبع للـ source. mitigation: كل shim فيه JSDoc يشرح "moved to @brightai/firewall-detectors". (3) **`pnpm install` peer warnings** (Clerk + @astrojs/node) موجودة من قبل، مو من شغلي. (4) **Marketing site ما يستورد الـ package بعد** — Phase 2 يضيفه. لو أحد يستخدم marketing site قبل Phase 2، لا تأثير. (5) **Pre-existing marketing site tsconfig bug** (مو من شغلي، مفتوح): `tsconfig.json:16` يحوي `"ignoreDeprecations": "6.0"` — invalid value، `npx tsc --noEmit` يفشل فوراً بـ TS5103. الـ build الفعلي (`astro build`) يشتغل لأن Astro ما يستخدم tsc مباشرة. لازم fix منفصل (السطر الصحيح: `"5.0"`).
 
 ### 2026-07-15 — STREAMING-REDACTION-2026-07-15: إزالة HIGH-02 (redaction صحيح عبر حدود الـ chunks) — Verified
 
@@ -3096,6 +3110,66 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 4. Decisions Log
+
+### DEC-BAI-001-NER-INJECTION-001: NER كـ injectable detector بدل dynamic import
+
+- **Date**: 2026-07-15
+- **Context**: الـ firewall detector orchestrator (`piidetector.ts`) كان يستورد NER عبر `await import('../detectors/ner')` dynamic. BAI-001 طلب نقل الـ firewall لـ workspace package منفصل ليستورده marketing site. المشكلة: dynamic import يجبر أي consumer يدفع model-load cost (250MB ONNX model) حتى لو ما يستخدم NER. marketing site ما يحتاج NER (شات demo، مو production customer data) — يحب يدفع صفر overhead.
+- **Decision**: NER يصير injectable. الـ package الجديد يحتوي:
+  - `setNerDetector(fn: (text: string) => Promise<Detection[]>)` exported function.
+  - `let nerDetector: NerDetector | null = null` module-level state.
+  - في `detect()`: `if (ctx.policy.nerEnabled && nerDetector) { nerHits = await nerDetector(text); }`.
+  - الـ package نفسه ما يستورد أي NER module.
+  - Dashboard barrel (`apps/dashboard/lib/firewall/index.ts`) يستدعي `setNerDetector(nerDetect)` مرة عند module load.
+  - Marketing site يستورد الـ package مباشرة، ما يستدعي setNerDetector → NER ما يتحمّل أبداً.
+- **Rationale**:
+  - **Zero-cost consumer**: marketing site يحصل على regex + actions بدون أي ONNX model.
+  - **Single source of truth**: logic الـ detect + dedupe + apply actions واحد في الـ package، الـ NER يكبر أو يصغر حسب consumer.
+  - **Idempotent registration**: setNerDetector يـ replace previous (safe لو حُمل الـ package مرتين).
+  - **Failure isolation**: لو NER call يفشل (no network, missing dep)، regex-only fallback بدون crash.
+- **Reversal cost**: Low (~5 سطور في piidetector.ts). البديل: dynamic import داخل conditional — لكن يجبر الـ package يعرف مسار NER (cross-package coupling).
+- **Do not reverse** بدون explicit user approval.
+
+### DEC-BAI-001-PACKAGE-EXTRACT-001: استخراج 4 ملفات فقط (types, regex, redaction, piidetector) لـ packages/firewall-detectors
+
+- **Date**: 2026-07-15
+- **Context**: BAI-001 طلب "extract firewall to packages/firewall". الـ firewall الكامل في dashboard يحوي 13 ملف: `detectors/{arabic-names, types, ner, regex}`, `engine/{redaction, piidetector, streaming-redaction}`, `audit/{hashchain, audit-writer}`, `vault/{index, token-vault}`, `ratelimit/redis-bucket`, `auth/api-key`, `llm/groq-client`. الـ dependencies: Prisma (DB-backed audit)، ONNX (NER)، Redis (rate limit)، Clerk (auth). marketing site ما عنده أي من هذه.
+- **Decision**: استخراج الطبقة الخفيفة فقط (4 ملفات) لـ packages/firewall-detectors:
+  - `src/types.ts` — pure types, no deps.
+  - `src/regex.ts` — pure regex, no deps.
+  - `src/redaction.ts` — depends on `nanoid` (tiny) + types.
+  - `src/piidetector.ts` — depends on regex + redaction + types.
+  - اعتماديات الـ package: `nanoid@^5.0.9` فقط (prod) + typescript + vitest (dev).
+  - الباقي (ner, audit, vault, ratelimit, auth, llm, streaming-redaction, arabic-names) يبقى في dashboard.
+- **Rationale**:
+  - **Minimal scope**: BAI-001 يحتاج PII detection على marketing site chat — الـ 4 ملفات كافية.
+  - **No heavy deps**: ما يدخل NER (250MB ONNX) أو Prisma أو Redis في الـ package.
+  - **Dashboard stays intact**: NER + audit + vault + rate limit كلها server-side، تعتمد على DB + Redis + Clerk. استخراجها يخلق circular deps.
+  - **Streaming-redaction stays**: يستخدم applyActions عبر shim، لا يحتاج نقل.
+- **Reversal cost**: Medium (4 ملفات تترجع لـ dashboard + 4 shims تنحذف + 3 test files تننقل). Doable في ~30 min.
+- **Do not reverse** بدون explicit user approval و full refactor plan.
+
+### DEC-BAI-001-SHIM-PATTERN-001: shim re-export بدل حذف للملفات القديمة
+
+- **Date**: 2026-07-15
+- **Context**: 4 ملفات dashboard تنقلت لـ packages/firewall-detectors: `lib/firewall/detectors/types.ts`, `lib/firewall/detectors/regex.ts`, `lib/firewall/engine/redaction.ts`, `lib/firewall/engine/piidetector.ts`. الـ grep على `lib/firewall/` في dashboard يكشف 7 imports في `app/api/firewall/*` و `tests/firewall/streaming-redaction.test.ts` تستخدم هذه الـ paths القديمة:
+  - `app/api/firewall/transcribe/route.ts:28: import { applyActionsWithVault } from '@/lib/firewall/engine/redaction';`
+  - `app/api/firewall/health/route.ts:20: import { REGEX_VERSION, REGEX_SUPPORTED_TYPES } from '@/lib/firewall/detectors/regex';`
+  - `tests/firewall/streaming-redaction.test.ts:20-23: imports from both old paths.`
+- **Decision**: بدل حذف الملفات القديمة (يـ break الـ 7 imports)، نخليها كـ **thin re-export shims** (1-7 سطور):
+  - `lib/firewall/detectors/types.ts` → `export * from '@brightai/firewall-detectors/types';`
+  - `lib/firewall/detectors/regex.ts` → `export { regexDetect, REGEX_VERSION, REGEX_SUPPORTED_TYPES } from '@brightai/firewall-detectors/regex';`
+  - `lib/firewall/engine/redaction.ts` → `export { applyActions, applyActionsWithVault, isIdempotent, type ApplyOptions, type TokenVaultCallback } from '@brightai/firewall-detectors/redaction';`
+  - `lib/firewall/engine/piidetector.ts` → `export { detect, detectAndRedact, dedupeOverlap, hasHighRiskPII } from '@brightai/firewall-detectors/piidetector';`
+  - كل shim فيه JSDoc يشرح "moved to @brightai/firewall-detectors" + رابط للـ source الجديد.
+- **Rationale**:
+  - **Backwards compatibility**: الـ 7 imports القديمة تشتغل بدون تعديل.
+  - **Migration safety**: لو أحد في الـ future يستخدم paths قديمة (مثل `lib/firewall/detectors/regex`)، يشتغل.
+  - **Smaller blast radius**: Phase 1 يبقى 5 ملفات معدّلة (4 shims + 1 main barrel) بدل 12 ملف معدّل.
+  - **Bundle size**: لا تأثير (ESM re-exports inline).
+  - **Developer experience**: لو أحد يفتح shim file، يشوف re-export + JSDoc → يقدر يتبع للـ source.
+- **Reversal cost**: Trivial (4 shims تنحذف + الـ 7 imports تنحدّث).
+- **Do not reverse** بدون explicit user approval — shims هي الـ safety net للـ Phase 2.
 
 ### DEC-2026-032 — Typography Hierarchy + Arabic Line-Height + Utility Classes (REPORT-03)
 

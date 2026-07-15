@@ -29,8 +29,8 @@ import { applyActionsWithVault } from '@/lib/firewall/engine/redaction';
 import { tokenize } from '@/lib/firewall/vault/token-vault';
 import { transcribe } from '@/lib/firewall/llm/groq-client';
 import { consume } from '@/lib/firewall/ratelimit/redis-bucket';
-import { logFirewallEvent, sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
-import { dbServiceRole } from '@brightai/db';
+import { persistFirewallEventDurable } from '@/lib/firewall/audit/durable';
+import { sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -169,78 +169,93 @@ export async function POST(req: NextRequest) {
   }
 
   if (result.blocked) {
-    try {
-      await logFirewallEvent(
-        { ...ctx, requestId },
-        {
-          latencyMs: result.latencyMs,
-          piiTypes: uniquePiiTypes(detections),
-          detectionCount: detections.length,
-          originalTextSha256: sha256Text(transcription.text),
-          originalLength: transcription.text.length,
-          effectiveAction: 'block',
-          model: transcription.model,
-          tokensUsed: null,
-          blocked: true,
-          llmLatencyMs: null,
-          notes: `transcribe_blocked:${requestId}`,
-        },
-      );
-    } catch {
-      // ignore
-    }
+    // HIGH-03: durable audit for block path. The block IS enforceable
+    // (we return 451 regardless), but we MUST have an audit row. If
+    // audit fails after retries, we still return 451 — the block is
+    // enforced — but the alert fires via logAuditFailure.
+    const persistResult = await persistFirewallEventDurable({
+      ctx,
+      metadata: {
+        latencyMs: result.latencyMs,
+        piiTypes: uniquePiiTypes(detections),
+        detectionCount: detections.length,
+        originalTextSha256: sha256Text(transcription.text),
+        originalLength: transcription.text.length,
+        effectiveAction: 'block',
+        model: transcription.model,
+        tokensUsed: null,
+        blocked: true,
+        llmLatencyMs: null,
+        notes: `transcribe_blocked:${requestId}`,
+      },
+    });
     return NextResponse.json(
       {
         error: 'blocked_by_firewall',
         reason: 'PII policy violation in transcription',
         requestId,
+        auditOk: persistResult.ok,
       },
       {
         status: 451,
         headers: {
           'X-Firewall-Request-Id': requestId,
           'X-Firewall-Blocked': 'true',
+          'X-Firewall-Audit-Failed': persistResult.ok ? 'false' : 'true',
           'Cache-Control': 'no-store',
         },
       },
     );
   }
 
-  // 7. Persist AIRequest + audit log ────────────────────────────
-  try {
-    await dbServiceRole.aIRequest.create({
-      data: {
-        organizationId: apiKey.organizationId,
-        requestedById: apiKey.createdById,
-        prompt: `[audio:${filename}, ${blob.size} bytes, ${language}]`,
-        response: result.redactedText.slice(0, 8192),
-        modelUsed: transcription.model,
-        tokensUsed: null,
-        piiDetected: detections.length > 0,
-        piiTypes: uniquePiiTypes(detections),
-        status: 'AUTO_APPROVED',
-        riskScore: Math.min(1, 0.1 * detections.length),
-        riskLevel: 'LOW',
-      },
-    });
-    await logFirewallEvent(
-      { ...ctx, requestId },
+  // 7. Persist AIRequest + audit log atomically (HIGH-03).
+  const persistResult = await persistFirewallEventDurable({
+    ctx,
+    metadata: {
+      latencyMs: result.latencyMs,
+      piiTypes: uniquePiiTypes(detections),
+      detectionCount: detections.length,
+      originalTextSha256: sha256Text(transcription.text),
+      originalLength: transcription.text.length,
+      effectiveAction: tokenizeParam ? 'tokenize' : 'mask',
+      model: transcription.model,
+      tokensUsed: null,
+      blocked: false,
+      llmLatencyMs: null,
+      notes: `transcribe:${requestId},duration:${transcription.durationSec ?? 'unknown'}`,
+    },
+    aiRequest: {
+      organizationId: apiKey.organizationId,
+      requestedById: apiKey.createdById,
+      prompt: `[audio:${filename}, ${blob.size} bytes, ${language}]`,
+      response: result.redactedText.slice(0, 8192),
+      modelUsed: transcription.model,
+      tokensUsed: null,
+      piiDetected: detections.length > 0,
+      piiTypes: uniquePiiTypes(detections),
+      status: 'AUTO_APPROVED',
+      riskScore: Math.min(1, 0.1 * detections.length),
+      riskLevel: 'LOW',
+    },
+  });
+
+  if (!persistResult.ok) {
+    return NextResponse.json(
       {
-        latencyMs: result.latencyMs,
-        piiTypes: uniquePiiTypes(detections),
-        detectionCount: detections.length,
-        originalTextSha256: sha256Text(transcription.text),
-        originalLength: transcription.text.length,
-        effectiveAction: tokenizeParam ? 'tokenize' : 'mask',
-        model: transcription.model,
-        tokensUsed: null,
-        blocked: false,
-        llmLatencyMs: null,
-        notes: `transcribe:${requestId},duration:${transcription.durationSec ?? 'unknown'}`,
+        error: 'audit_persistence_failed',
+        details: persistResult.error.message,
+        code: persistResult.error.code,
+        requestId,
+      },
+      {
+        status: 503,
+        headers: {
+          'X-Firewall-Request-Id': requestId,
+          'X-Firewall-Audit-Failed': 'true',
+          'Cache-Control': 'no-store',
+        },
       },
     );
-  } catch {
-    // ignore persistence errors
   }
 
   // 8. Return ────────────────────────────────────────────────────

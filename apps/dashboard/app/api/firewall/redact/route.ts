@@ -22,7 +22,8 @@ import { resolveApiKey } from '@/lib/firewall/auth/api-key';
 import { detectAndRedact, DEFAULT_POLICY } from '@/lib/firewall';
 import type { Action, FirewallContext } from '@/lib/firewall';
 import { consume } from '@/lib/firewall/ratelimit/redis-bucket';
-import { logFirewallEvent, sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
+import { persistFirewallEventDurable } from '@/lib/firewall/audit/durable';
+import { sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -96,9 +97,10 @@ export async function POST(req: NextRequest) {
 
   const result = await detectAndRedact(body.text, ctx);
 
-  // 5. Audit log ─────────────────────────────────────────────────
-  try {
-    await logFirewallEvent(ctx, {
+  // 5. Audit log (HIGH-03: durable — returns 503 on persistence failure).
+  const persistResult = await persistFirewallEventDurable({
+    ctx,
+    metadata: {
       latencyMs: result.latencyMs,
       piiTypes: uniquePiiTypes(result.detections),
       detectionCount: result.detections.length,
@@ -109,10 +111,28 @@ export async function POST(req: NextRequest) {
       tokensUsed: null,
       blocked: result.blocked,
       llmLatencyMs: null,
-    });
-  } catch {
-    // Audit failures must not break the user-visible response.
-    // The chain is best-effort during 1a; we'll add monitoring in 1b.
+    },
+  });
+
+  if (!persistResult.ok) {
+    // Closed failure: audit could not be persisted. The redaction
+    // operation DID NOT succeed from a governance standpoint.
+    return NextResponse.json(
+      {
+        error: 'audit_persistence_failed',
+        details: persistResult.error.message,
+        code: persistResult.error.code,
+        requestId: ctx.requestId,
+      },
+      {
+        status: 503,
+        headers: {
+          'X-Firewall-Request-Id': ctx.requestId,
+          'X-Firewall-Audit-Failed': 'true',
+          'Cache-Control': 'no-store',
+        },
+      },
+    );
   }
 
   // 6. Return ────────────────────────────────────────────────────
@@ -129,6 +149,7 @@ export async function POST(req: NextRequest) {
         'X-Firewall-Detections': String(result.detections.length),
         'X-Firewall-Blocked': result.blocked ? 'true' : 'false',
         'X-Firewall-RateLimit': rl.degraded ? 'degraded' : 'enforced',
+        'X-Firewall-Audit-Failed': 'false',
         'Cache-Control': 'no-store',
       },
     },

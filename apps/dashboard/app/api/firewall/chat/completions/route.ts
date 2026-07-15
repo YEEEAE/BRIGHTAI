@@ -28,7 +28,8 @@ import { detect, applyActions, DEFAULT_POLICY } from '@/lib/firewall';
 import type { FirewallContext } from '@/lib/firewall';
 import { consume } from '@/lib/firewall/ratelimit/redis-bucket';
 import { chat, chatStream } from '@/lib/firewall/llm/groq-client';
-import { logFirewallEvent, sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
+import { persistFirewallEventDurable } from '@/lib/firewall/audit/durable';
+import { sha256Text, uniquePiiTypes } from '@/lib/firewall/audit/audit-writer';
 import { redactStreamGenerator } from '@/lib/firewall/engine/streaming-redaction';
 import { dbServiceRole } from '@brightai/db';
 import { Prisma } from '@brightai/db';
@@ -135,9 +136,14 @@ export async function POST(req: NextRequest) {
   const inputResult = applyActions(inputText, inputDetections, ctx.policy);
 
   if (inputResult.blocked) {
-    // Hard stop — record the block and return 451.
-    try {
-      await logFirewallEvent(ctx, {
+    // Hard stop — record the block and return 451. HIGH-03: durable
+    // audit. The block is enforced (we return 451 regardless), but the
+    // audit row is mandatory for compliance. If audit fails after
+    // retries, the alert fires via logAuditFailure but the block
+    // still holds — we never allow PII through, with or without audit.
+    const persistResult = await persistFirewallEventDurable({
+      ctx,
+      metadata: {
         latencyMs: inputResult.latencyMs,
         piiTypes: uniquePiiTypes(inputDetections),
         detectionCount: inputDetections.length,
@@ -149,22 +155,22 @@ export async function POST(req: NextRequest) {
         blocked: true,
         llmLatencyMs: null,
         notes: 'blocked_before_llm',
-      });
-    } catch {
-      // ignore
-    }
+      },
+    });
     return NextResponse.json(
       {
         error: 'blocked_by_firewall',
         reason: 'PII policy violation',
         detections: inputDetections.map((d) => ({ type: d.type, start: d.start, end: d.end })),
         requestId: ctx.requestId,
+        auditOk: persistResult.ok,
       },
       {
         status: 451,
         headers: {
           'X-Firewall-Request-Id': ctx.requestId,
           'X-Firewall-Blocked': 'true',
+          'X-Firewall-Audit-Failed': persistResult.ok ? 'false' : 'true',
           'Cache-Control': 'no-store',
         },
       },
@@ -212,59 +218,65 @@ export async function POST(req: NextRequest) {
     ? '[REDACTED_BY_FIREWALL]'
     : outputResult.redactedText;
 
-  // 8. Persist AIRequest + audit log ────────────────────────────
-  try {
-    await dbServiceRole.$transaction(async (tx) => {
-      // AIRequest row (tenant-scoped via withTenant would be ideal,
-      // but we use the service role for the cross-org write — the
-      // audit chain captures the orgId).
-      const aiReq = await tx.aIRequest.create({
-        data: {
-          organizationId: ctx.organizationId,
-          requestedById: ctx.userId ?? apiKey.createdById,
-          prompt: inputText.slice(0, 8192),
-          response: finalContent.slice(0, 8192),
-          modelUsed: llmResponse.model,
-          tokensUsed: llmResponse.totalTokens,
-          piiDetected: inputDetections.length + outputDetections.length > 0,
-          piiTypes: Array.from(
-            new Set([
-              ...uniquePiiTypes(inputDetections),
-              ...uniquePiiTypes(outputDetections),
-            ]),
-          ),
-          status: 'AUTO_APPROVED',
-          riskScore: computeRisk(inputDetections, outputDetections),
-          riskLevel: 'LOW',
-        },
-      });
+  // 8. Persist AIRequest + audit log atomically (HIGH-03).
+  const allPiiTypes = Array.from(
+    new Set([
+      ...uniquePiiTypes(inputDetections),
+      ...uniquePiiTypes(outputDetections),
+    ]),
+  ).sort();
+  const persistResult = await persistFirewallEventDurable({
+    ctx,
+    metadata: {
+      latencyMs: inputResult.latencyMs + outputResult.latencyMs,
+      piiTypes: allPiiTypes,
+      detectionCount: inputDetections.length + outputDetections.length,
+      originalTextSha256: sha256Text(inputText),
+      originalLength: inputText.length,
+      effectiveAction: 'mask',
+      model: llmResponse.model,
+      tokensUsed: llmResponse.totalTokens,
+      blocked: outputResult.blocked,
+      llmLatencyMs,
+      notes: `chat:${ctx.requestId}`,
+    },
+    aiRequest: {
+      organization: { connect: { id: ctx.organizationId } },
+      requestedBy: { connect: { id: ctx.userId ?? apiKey.createdById } },
+      prompt: inputText.slice(0, 8192),
+      response: finalContent.slice(0, 8192),
+      modelUsed: llmResponse.model,
+      tokensUsed: llmResponse.totalTokens,
+      piiDetected: inputDetections.length + outputDetections.length > 0,
+      piiTypes: allPiiTypes,
+      status: 'AUTO_APPROVED',
+      riskScore: computeRisk(inputDetections, outputDetections),
+      riskLevel: 'LOW',
+    },
+  });
 
-      // Append to audit chain. The hashchain writer uses its own
-      // transaction; this is fine because the advisory lock
-      // serializes per-org.
-      await logFirewallEvent(ctx, {
-        latencyMs: inputResult.latencyMs + outputResult.latencyMs,
-        piiTypes: Array.from(
-          new Set([
-            ...uniquePiiTypes(inputDetections),
-            ...uniquePiiTypes(outputDetections),
-          ]),
-        ).sort(),
-        detectionCount: inputDetections.length + outputDetections.length,
-        originalTextSha256: sha256Text(inputText),
-        originalLength: inputText.length,
-        effectiveAction: 'mask', // default; per-type action in metadata
-        model: llmResponse.model,
-        tokensUsed: llmResponse.totalTokens,
-        blocked: outputResult.blocked,
-        llmLatencyMs,
-        notes: `ai_request:${aiReq.id}`,
-      });
-    });
-  } catch (err) {
-    // Persistence failure must not lose the user's response.
-    // eslint-disable-next-line no-console
-    console.error('[firewall] persist failed:', err);
+  if (!persistResult.ok) {
+    // Closed failure: governance operation did NOT succeed.
+    // We already called the LLM — the client retries will trigger
+    // a new LLM call (wasteful but compliant). The audit log is
+    // the source of truth for "did this operation happen" — without
+    // it, we cannot claim the operation occurred.
+    return NextResponse.json(
+      {
+        error: 'audit_persistence_failed',
+        details: persistResult.error.message,
+        code: persistResult.error.code,
+        requestId: ctx.requestId,
+      },
+      {
+        status: 503,
+        headers: {
+          'X-Firewall-Request-Id': ctx.requestId,
+          'X-Firewall-Audit-Failed': 'true',
+          'Cache-Control': 'no-store',
+        },
+      },
+    );
   }
 
   // 9. Return OpenAI-shape response ──────────────────────────────
@@ -435,34 +447,29 @@ async function handleStream(
           }
         }
 
-        // Persist AIRequest + audit log (fire-and-forget for stream,
-        // because we already sent the response). `fullRedactedContent`
-        // is the post-redaction text — the raw assistant text never
-        // touches the database.
-        try {
-          await dbServiceRole.aIRequest.create({
-            data: {
-              organizationId: ctx.organizationId,
-              requestedById: ctx.userId ?? apiKey.createdById,
-              prompt: inputText.slice(0, 8192),
-              response: fullRedactedContent.slice(0, 8192),
-              modelUsed: finalModel,
-              tokensUsed: null,
-              piiDetected: totalInputDetections + outputTypes.size > 0,
-              piiTypes: Array.from(
-                new Set([
-                  ...inputDetections.map((d) => d.type),
-                  ...outputTypes,
-                ]),
-              ),
-              status: streamFailed ? 'REJECTED' : 'AUTO_APPROVED',
-              riskScore: Math.min(1, 0.1 * (totalInputDetections + outputTypes.size)),
-              riskLevel: 'LOW',
-            },
-          });
-          await logFirewallEvent(ctx, {
+        // Persist AIRequest + audit log atomically (HIGH-03). The
+        // stream may have already sent partial chunks to the client
+        // before persistence is attempted; if persistence fails, we
+        // log to stderr (via logAuditFailure inside the durable
+        // writer) and surface the failure to the client via the
+        // X-Firewall-Audit-Failed header on [DONE]. The client sees
+        // a degraded stream and should retry. Note that for streams
+        // we cannot unsend already-emitted chunks, so the audit
+        // failure is "we cannot prove this happened durably" rather
+        // than "PII leaked" — the redacted content in those chunks
+        // is post-redaction (HIGH-02) so no PII was leaked even on
+        // audit failure.
+        const allStreamTypes = Array.from(
+          new Set([
+            ...inputDetections.map((d) => d.type),
+            ...outputTypes,
+          ]),
+        ).sort();
+        const streamPersistResult = await persistFirewallEventDurable({
+          ctx,
+          metadata: {
             latencyMs: inputResult.latencyMs,
-            piiTypes: inputDetections.map((d) => d.type).filter((v, i, a) => a.indexOf(v) === i).sort(),
+            piiTypes: allStreamTypes,
             detectionCount: totalInputDetections + outputTypes.size,
             originalTextSha256: sha256Text(inputText),
             originalLength: inputText.length,
@@ -472,9 +479,39 @@ async function handleStream(
             blocked: streamFailed,
             llmLatencyMs: null,
             notes: `stream:${ctx.requestId}`,
+          },
+          aiRequest: {
+            organization: { connect: { id: ctx.organizationId } },
+            requestedBy: { connect: { id: ctx.userId ?? apiKey.createdById } },
+            prompt: inputText.slice(0, 8192),
+            response: fullRedactedContent.slice(0, 8192),
+            modelUsed: finalModel,
+            tokensUsed: null,
+            piiDetected: totalInputDetections + outputTypes.size > 0,
+            piiTypes: allStreamTypes,
+            status: streamFailed ? 'REJECTED' : 'AUTO_APPROVED',
+            riskScore: Math.min(1, 0.1 * (totalInputDetections + outputTypes.size)),
+            riskLevel: 'LOW',
+          },
+        });
+
+        if (!streamPersistResult.ok) {
+          // Persist failure: emit sentinel chunk + close. We can't
+          // unsend prior chunks but we can mark this stream as
+          // audit-failed so the client knows governance failed.
+          sendEvent({
+            id: `chatcmpl-${ctx.requestId}`,
+            object: 'chat.completion.chunk',
+            created,
+            model: finalModel,
+            choices: [
+              {
+                index: 0,
+                delta: { content: `\n\n[firewall_audit_persistence_failed]` },
+                finish_reason: 'stop',
+              },
+            ],
           });
-        } catch {
-          // ignore persistence errors in stream
         }
 
         sendDone();
