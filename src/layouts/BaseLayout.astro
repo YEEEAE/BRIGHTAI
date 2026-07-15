@@ -200,12 +200,18 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
 
   <ClientRouter />
 
+  {/* CSP-HARDENING-001 (2026-07-15): كل الـ <script> النشطة لازم تكون عندها nonce.
+       الـ middleware في src/middleware.ts يولّد nonce لكل request ويحقنه في
+       Astro.locals.cspNonce. الـ Report-Only header (الـ current Phase 1) يجمع
+       violations بدون ما يكسر الموقع. بعد أسبوع 0 violations → enforcement
+       + إزالة 'unsafe-inline' من CSP. */}
+
   {/* Font async loader — REPORTS-CSP-01 (2026-07-15): replaces the inline
        onload="this.media='all'" handler on the Google Fonts <link> above.
        The loader finds every <link data-font-async> in the head and flips
        media="print" → media="all" once each stylesheet finishes loading.
        Imported as an ES module so Astro bundles it (CSP: script-src 'self'). */}
-  <script>import '../scripts/font-async-loader.js';</script>
+  <script nonce={Astro.locals.cspNonce}>import '../scripts/font-async-loader.js';</script>
 
   {/* Service Worker registration — REPORTS-20: deferred via setTimeout (100ms after
        window.load) so it never competes with the LCP element. External file replaces
@@ -252,7 +258,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        REPORTS-CSP-01 (2026-07-15): Extracted to src/scripts/page-view.js to
        remove the inline <script> block. CSP no longer needs 'unsafe-inline'
        on script-src for this listener. */}
-  <script>import '../scripts/page-view.js';</script>
+  <script nonce={Astro.locals.cspNonce}>import '../scripts/page-view.js';</script>
 
   {/* Global centralized scroll-reveal observer — activates the unified motion system
       (DEC-2026-Motion-001) across every page. Replaces 7 per-page duplicate
@@ -262,7 +268,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
 
       The actual implementation lives in src/scripts/scroll-reveal.js so it can be
       unit-tested, versioned, and audited independently of this layout file. */}
-  <script>
+  <script nonce={Astro.locals.cspNonce}>
     import '../scripts/scroll-reveal.js';
   </script>
 
@@ -271,7 +277,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
       Watches the modal's `hidden` attribute and toggles the trap automatically.
       Used by MobileNav, kernel/connectors, kernel/approvals, kernel/scenarios,
       and any future modal that follows the standard dialog pattern. */}
-  <script>
+  <script nonce={Astro.locals.cspNonce}>
     import '../scripts/focus-trap.js';
   </script>
 

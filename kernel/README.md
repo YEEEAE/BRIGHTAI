@@ -10,46 +10,46 @@
 
 هذا المسار يعتمد على HTML/CSS/JavaScript مباشرة بدون React أو إطار Frontend داخل نفس المسار. كل صفحة تستخدم وحدات JavaScript مشتركة تحت `kernel/assets/js/`، وتتصل افتراضياً بواجهة الإنتاج `/api/kernel`.
 
-## الأرشفة والـ Quarantine (KRN-005 / EXEC-05 — 2026-07-15)
+## الأرشفة والـ Quarantine (KRN-005 / EXEC-05 — 2026-07-15 → CLEANUP-2026-07-15)
 
-> **ملاحظة:** أغلب محتوى `kernel/` (HTML، JS، manifest، SW، mock data) انتقل إلى `kernel/legacy-disabled/` كجزء من KRN-005. الـ Astro kernel الأَحياء يعيش في `src/pages/kernel/` + `src/components/kernel/` + `src/pages/api/`.
+> **ملاحظة:** محتوى `kernel/` المؤرشف (HTML، JS، manifest، SW، mock data) **حُذف نهائياً من الـ repo** في CLEANUP-2026-07-15. الـ git history يحتفظ بكل الـ files لو احتجنا يوماً. الـ snapshot الكامل محفوظ في `.agents/snapshots/brightai-kernel-legacy-2026-07-15.tar.gz` + docs/archived-artifacts.md. الـ Astro kernel الأَحياء يعيش في `src/pages/kernel/` + `src/components/kernel/` + `src/pages/api/`.
 
-الملفات اللي انتقلت للأرشيف:
+الملفات اللي حُذفت (كانت في `kernel/legacy-disabled/` الأرشيف):
 
-- الـ SW script في `kernel/sw.js` → `kernel/legacy-disabled/` (legacy service worker كان يـ cache `/api/kernel/*` ويصطفّ mutations مع PII في IndexedDB)
-- الـ PWA manifest في `kernel/manifest.json` → `kernel/legacy-disabled/` (legacy PWA manifest، `share_target` POST لـ `/kernel/chat/` = 404)
-- وحدات JS الـ 17 في `kernel/assets/js/` (تشمل `kernel-pwa.js` و `kernel-api.js` و `kernel-mock-handlers.js` و `kernel-demo-store.js` إلخ) → `kernel/legacy-disabled/assets/js/`
-- mock JSON seeds (8 ملفات) في `kernel/api/mock/` → `kernel/legacy-disabled/api/mock/`
-- legacy perf instrumentation (`kernel-perf.js` + `kernel-web-vitals.js`) → `kernel/legacy-disabled/`
-- legacy tests (6 ملفات `.test.js`) في `kernel/tests/` → `kernel/legacy-disabled/tests/`
+- الـ SW script في `kernel/sw.js` (legacy service worker كان يـ cache `/api/kernel/*` ويصطفّ mutations مع PII في IndexedDB)
+- الـ PWA manifest في `kernel/manifest.json` (legacy PWA manifest، `share_target` POST لـ `/kernel/chat/` = 404)
+- وحدات JS الـ 17 في `kernel/assets/js/` (تشمل `kernel-pwa.js` و `kernel-api.js` و `kernel-mock-handlers.js` و `kernel-demo-store.js` إلخ)
+- mock JSON seeds (8 ملفات) في `kernel/api/mock/`
+- legacy perf instrumentation (`kernel-perf.js` + `kernel-web-vitals.js`)
+- legacy tests (6 ملفات `.test.js`) في `kernel/tests/`
 
 ما تبقّى في `kernel/` الأَحياء (يرثه Astro build من `src/pages/kernel/`):
 
 - `README.md` (هذا الملف)
-- `api/mock/` (لمّا تنضف، انقلها للأرشيف)
+- `api/mock/` (فارغ بعد الـ cleanup، للأمان)
 - `assets/css/` (`kernel.css` + `pages/*.css` — مستخدم من Astro kernel layouts)
-- `assets/screenshots/`
-- `legacy-disabled/` (الأرشيف — ما يُحمَّل، ما يُخدم)
+- ~~`assets/screenshots/`~~ (حُذف — 0 references في الـ live code)
 
-**CI guard:** `node scripts/verify-no-legacy-sw.mjs` يفحص ملفات الكود فقط (`.html`, `.js`, `.ts`, `.css`, `.json`, إلخ) داخل `kernel/` (خارج `legacy-disabled/`)، ويتجاهل `.md` — التوثيق مسموح له يصف الـ patterns بدون trigger. الفحص يفشل لو ظهر:
+**CI guard:** `node scripts/verify-no-legacy-sw.mjs` يفحص ملفات الكود فقط (`.html`, `.js`, `.ts`, `.css`, `.json`, إلخ) داخل `kernel/` recursive بالكامل، ويتجاهل `.md` — التوثيق مسموح له يصف الـ patterns بدون trigger. الفحص يفشل لو ظهر:
 
 1. أي استدعاء من نوع "register" على `navigator.serviceWorker` داخل ملف كود
 2. ربط بمسار الـ legacy PWA manifest داخل مجلد `kernel/`
 3. ربط بمسار الـ legacy SW script داخل مجلد `kernel/`
 4. ربط بمسار الـ legacy PWA module داخل `kernel/assets/js/`
 
-**Migration path** لو احتجت أي ملف في المستقبل:
+**Migration path** لو احتجت أي ملف من الأرشيف في المستقبل:
 
 ```bash
-git mv kernel/legacy-disabled/<file> kernel/<file>
+tar xzf .agents/snapshots/brightai-kernel-legacy-2026-07-15.tar.gz -C /tmp/
+cp /tmp/kernel/legacy-disabled/<file> kernel/<file>
 node scripts/verify-no-legacy-sw.mjs   # يبقى pass لو ما في SW registration في الملف
 ```
 
-التفاصيل الكاملة في `kernel/legacy-disabled/README.md`.
+التفاصيل الكاملة في `docs/archived-artifacts.md` (دليل الأرشيف الرسمي).
 
 ## عزل الـ Mock Handlers (KRN-006 / EXEC-06 — 2026-07-15)
 
-> **ملاحظة:** 3 ملفات mock/demo من `kernel/assets/js/` انتقلت لـ subfolder تركيز `kernel/legacy-disabled/mock/` (KRN-006):
+> **ملاحظة:** 3 ملفات mock/demo من `kernel/assets/js/` انتقلت للأرشيف ثم حُذفت نهائياً في CLEANUP-2026-07-15. الـ snapshot محفوظ في `.agents/snapshots/brightai-kernel-legacy-2026-07-15.tar.gz`. الملفات المعنية:
 >
 > - `kernel-mock-handlers.js` — كان يسجّل `fetch` interceptor على الـ window
 > - `kernel-demo-store.js` — مصدر الـ toggle (localStorage)

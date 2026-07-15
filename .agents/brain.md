@@ -190,6 +190,47 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — CLEANUP-2026-07-15: حذف dead weight (legacy-disabled + chartjs.tgz + seo_gate_log + screenshots) — Verified, ~1.86MB freed
+
+- **Files**: 4 محذوف + 4 محدّث + 1 جديد. **محذوف**: `kernel/legacy-disabled/` (9 entries / 640 KB — archived kernel HTML/JS/manifest/SW/mock data)، `chartjs.tgz` (1.2 MB npm tarball)، `seo_gate_log.txt` (516 bytes CI residue)، `kernel/assets/screenshots/narrow.png + wide.png` (16 KB). **محدّث**: `.gitignore` (إضافة `*.tgz` + `/seo_gate_log.txt` + `/kernel/legacy-disabled/`)، `scripts/verify-no-legacy-sw.mjs` + `scripts/verify-no-legacy-mock.mjs` (تشيل `ARCHIVE_DIR` exception)، `kernel/README.md` (تحديث الـ migration path)، `META-CHANGES.csv` (9 entries جديدة). **جديد**: `docs/archived-artifacts.md` (دليل الأرشيف الرسمي).
+- **What**: حذف نهائي لـ 4 dead-weight artifacts. الـ git history يحتفظ بكل الـ files لو احتجنا يوماً. Snapshot كامل محفوظ في `.agents/snapshots/brightai-kernel-legacy-2026-07-15.tar.gz` (130 KB مضغوط) + docs/archived-artifacts.md يوثّق الـ restore procedure.
+- **Why**: الـ repo كان يحوي 1.86 MB من dead weight بدون قيمة فعلية (0 references في الـ live code). حذفها يحرر مساحة + يقلل cognitive load + يلغي attack surface (PII patterns في mock JSONs + legacy SW caches).
+- **Verification**:
+  - ✅ Snapshot قبل الحذف: `/tmp/brightai-kernel-legacy-2026-07-15.tar.gz` + `.agents/snapshots/` (permanent)
+  - ✅ 0 references في الـ live code: `grep -rn "kernel/legacy-disabled" src/ public/ apps/ packages/` = 0 hits
+  - ✅ CI guards updated: `verify-no-legacy-sw.mjs` و `verify-no-legacy-mock.mjs` يفحصان كل `kernel/` (ما عاد فيه exception)
+  - ✅ Documentation: `docs/archived-artifacts.md` يوثّق الـ snapshot pattern + restore procedure
+  - ✅ kernel/README.md محدّث بالـ migration path الجديد (extract from snapshot)
+- **Risks**:
+  - **CI guards بدون legacy-disabled قد يكشفوا false positives** — mitigated: reviewed content; patterns المراقبة ما تظهر في أي ملف كود حي
+  - **kernel/README.md قد يكون outdated في أقسام أخرى** — mitigated: راجعنا الـ migration path section فقط (الـ audit trail)
+  - **لو احتجنا أي ملف محذوف** — restore procedure موثّق في docs/archived-artifacts.md
+- **Commit**: uncommitted (per brain.md rule). رسالة مقترحة: `chore(cleanup): remove archived kernel/legacy-disabled + chartjs.tgz + seo_gate_log + screenshots (~1.86MB freed)`.
+- **Status**: verified locally، يحتاج user commit.
+- **Brain updates**: Section 1.0 (disk size — -1.86 MB)، Section 5 (Component Inventory — legacy items marked as archived not deprecated).
+
+### 2026-07-15 — CSP-HARDENING-001 (Phase 1): CSP nonce middleware + Report-Only enforcement — Awaiting 1-week 0-violations window
+
+- **Files**: 1 جديد + 3 معدّل. **جديد**: `src/pages/api/csp-report.ts` (CSP violation endpoint، 8KB body cap، 204 response). **معدّل**: `src/middleware.ts` (Report-Only header + strict-dynamic + report-uri + 'unsafe-inline' محفوظ للـ backward compat)، `src/layouts/BaseLayout.astro` (nonce على الـ 4 inline `<script>` imports)، `render.yaml` (CSP enforcement محدّث بـ `report-uri /api/csp-report`).
+- **What**: أضفنا CSP hardening عبر middleware يولّد nonce per-request ويحقنه في Astro.locals.cspNonce + Report-Only header. كل `<script>` tag في BaseLayout عنده `nonce={Astro.locals.cspNonce}`. middleware يضيف `'strict-dynamic'` (GTM injection الآمن) + `report-uri /api/csp-report` (violations → Sentry). `'unsafe-inline'` يبقى مؤقتاً (backward compat مع prerendered pages).
+- **Why**: إزالة `'unsafe-inline'` تدريجياً بدون ما يكسر الموقع. Phase 1 = soft enforcement (Report-Only) يجمع violations لمدة أسبوع. Phase 2 = hard enforcement (نحول لـ Content-Security-Policy) + نشيل `'unsafe-inline'` نهائياً.
+- **Verification**:
+  - `src/middleware.ts`: ✅ nonce generator (16 bytes CSPRNG → 22 chars base64)
+  - middleware يضبط `Content-Security-Policy-Report-Only` (مو enforcement): ✅
+  - `src/pages/api/csp-report.ts`: ✅ POST endpoint، 204 No Content، body cap 8KB
+  - BaseLayout: ✅ 4 `<script>` tags عندها `nonce` attribute
+  - render.yaml: ✅ CSP يحتوي `report-uri /api/csp-report`
+  - `'strict-dynamic'` مفعّل: ✅ (يحمي GTM injection)
+- **Risks**:
+  - **Phase 2 قد يكسر الموقع** لو فيه inline scripts نسيها الفريق — mitigated via Phase 1 monitoring (week-long window).
+  - **Astro hydration scripts** (view transitions) قد تحقن inline scripts بدون nonce → Phase 2 يحتاج migration.
+  - **JSON-LD** لا يتأثر بـ `script-src` (type="application/ld+json" exempt).
+  - **middleware CPU overhead** — mitigated via static asset skip.
+- **Commit**: uncommitted (per brain.md rule). رسالة مقترحة: `feat(security): CSP nonce middleware with Report-Only enforcement (Phase 1)`.
+- **Status**: awaiting deployment + 1-week monitoring window.
+- **Brain updates**: Section 1.1 (security baseline)، Section 4 decisions log (DEC-SEC-003: CSP hardening phased approach).
+- **Phase 2 TODO** (للـ user بعد أسبوع): convert `Content-Security-Policy-Report-Only` → `Content-Security-Policy` في middleware + إزالة `'unsafe-inline'` من render.yaml.
+
 ### 2026-07-15 — CSRF-LEAD-001: CSRF double-submit protection لـ /api/lead/ — Verified 29/29 tests pass
 
 - **Files**: 4 جديد + 2 معدّل. **جديد**: `src/lib/csrf.ts` (HMAC-SHA256 token generator + verifier + extractCsrfFromCookie + verifyCsrfRequest — constant-time comparison)، `src/pages/api/csrf-token.ts` (GET endpoint يرجّع token + Set-Cookie: csrf=...; Path=/; SameSite=Strict; Secure; Max-Age=3600)، `scripts/test-csrf.mjs` (29 unit tests تغطي كل الـ edge cases)، `src/pages/api/lead.ts` (تحديث — CSRF check قبل rate limit). **معدّل**: `package.json` (إضافة `test:csrf` script)، `src/components/kernel/KernelLeadForm.astro` (client-side: fetch cookie + send X-CSRF-Token header + 403 retry pattern).

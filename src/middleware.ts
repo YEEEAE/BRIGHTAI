@@ -38,9 +38,12 @@
  *   - Replace 'unsafe-inline' with 'nonce-{STATIC_NONCE}' in render.yaml /
  *     public/_headers.
  *
- * NOT YET ACTIVE — middleware file created and wired but the render.yaml
- * CSP still contains 'unsafe-inline' until the user approves the Phase 2
- * deployment (see report).
+ * CSP-HARDENING-001 (2026-07-15) — Phase 1 SOFT ENFORCEMENT:
+ *   - الحين يستخدم Content-Security-Policy-Report-Only header (ما يكسر شي).
+ *   - 'unsafe-inline' يبقى موجود (backward compat مع prerendered pages).
+ *   - 'strict-dynamic' مفعّل (GTM injection يشتغل تلقائياً).
+ *   - report-uri /api/csp-report يلتقط violations → Sentry alerts.
+ *   - بعد أسبوع 0 violations → نحوّل لـ Content-Security-Policy enforcement.
  */
 
 import type { MiddlewareHandler } from 'astro';
@@ -79,31 +82,46 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     // adds a per-response CSP that includes the nonce.
     const response = await next();
     if (response instanceof Response) {
-      // Build CSP header value with the nonce. Allow external origins that
-      // match the current render.yaml CSP (analytics, fonts, etc.).
+      // Build CSP header value with the nonce.
+      //
+      // Phase 1 (CSP-HARDENING-001): نستخدم Report-Only header.
+      //   - 'unsafe-inline' يبقى (backward compat مع الـ prerendered pages).
+      //   - 'nonce-{NONCE}' + 'strict-dynamic' (GTM injection الآمن).
+      //   - report-uri يلتقط violations → Sentry.
+      //   - لا يكسر الموقع حتى لو فيه inline script نسيه الفريق.
+      //
+      // Phase 2 (بعد أسبوع 0 violations): نغير لـ Content-Security-Policy
+      //   ونشيل 'unsafe-inline' نهائياً.
       const csp = [
         "default-src 'self'",
         "base-uri 'self'",
         "object-src 'none'",
         "frame-ancestors 'self'",
         "form-action 'self'",
-        `script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms`,
-        `script-src-elem 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms`,
-        "style-src 'self' https://fonts.googleapis.com",
-        "style-src-elem 'self' https://fonts.googleapis.com",
+        // Phase 1: 'unsafe-inline' للـ prerendered pages (transitional).
+        // Phase 2: نشيله بعد أسبوع 0 violations.
+        `script-src 'self' 'unsafe-inline' 'nonce-${nonce}' 'strict-dynamic' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com`,
+        `script-src-elem 'self' 'unsafe-inline' 'nonce-${nonce}' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com`,
+        "script-src-attr 'unsafe-inline'", // Astro يحقن inline event handlers في attributes
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+        "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com",
+        "style-src-attr 'unsafe-inline'",
         "img-src 'self' data: blob: https:",
-        "font-src 'self' data: https://fonts.gstatic.com",
-        "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://stats.g.doubleclick.net https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.clarity.ms https://*.clarity.ms",
-        "frame-src 'self' https://www.googletagmanager.com https://www.google.com",
+        "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com",
+        "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.clarity.ms https://*.clarity.ms https://c.bing.com",
+        "frame-src 'self' https://www.googletagmanager.com",
         "worker-src 'self' blob:",
         "manifest-src 'self'",
         "media-src 'self' data: blob: https:",
+        // report-uri: CSP violations → /api/csp-report → Sentry alerts.
+        "report-uri /api/csp-report",
         "upgrade-insecure-requests",
       ].join('; ');
 
       const newHeaders = new Headers(response.headers);
-      // Replace any existing CSP (don't double up).
-      newHeaders.set('Content-Security-Policy', csp);
+      // Phase 1: Report-Only. الـ browser يجمع violations بدون enforcement.
+      //   بعد أسبوع 0 violations → نغير لـ 'Content-Security-Policy'.
+      newHeaders.set('Content-Security-Policy-Report-Only', csp);
       return new Response(response.body, {
         status: response.status,
         statusText: response.statusText,

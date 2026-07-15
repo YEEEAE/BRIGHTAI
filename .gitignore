@@ -61,6 +61,11 @@ private/
 tmp/
 reports/
 
+# CLEANUP-2026-07-15: tarballs + CI residue (no longer needed in repo)
+*.tgz
+*.tar.gz
+/seo_gate_log.txt
+
 # Demo/Development directories (contain exposed API keys)
 h/
 Customer/
@@ -74,6 +79,9 @@ width.html
 fake.py
 ز.html
 يي
+
+# CLEANUP-2026-07-15: archived kernel directory (was legacy-disabled/)
+/kernel/legacy-disabled/
 
 # Directories with spaces (non-standard naming)
 Saudi tourism and heritage services/

@@ -5,30 +5,31 @@
  * Finding: KRN-006 (§3f) — Critical if re-loaded.
  *
  * الـ legacy `kernel-mock-handlers.js` كان يسجّل `fetch` interceptor على
- * الـ window ويقرأ localStorage flag (الـ demo mode). الحين مؤرشف في
- * `kernel/legacy-disabled/mock/` وما يُحمَّل من أي مكان. هذا الـ script
- * يضمن إن ما حد ضاف ملف جديد داخل `kernel/` (مو `legacy-disabled/`)
- * يحاول إعادة الـ mock surface للحياة.
+ * الـ window ويقرأ localStorage flag (الـ demo mode). انحذف نهائياً من الـ
+ * repo في CLEANUP-2026-07-15 (legacy-disabled/ + chartjs.tgz + seo_gate_log.txt).
+ * الـ git history يحتفظ بكل الـ files لو احتجنا يوماً.
+ *
+ * هذا الـ guard يضمن إن ما حد ضاف ملف جديد داخل `kernel/` يحاول
+ * إعادة الـ mock surface للحياة (defense-in-depth ضد re-introduction).
  *
  * Acceptance:
  *   - Pass: ✅ message + exit 0.
  *   - Fail: قائمة الملفات + الـ patterns + exit 1.
  *
  * القواعد:
- *   - يفحص `kernel/` (مو `kernel/legacy-disabled/`) recursive.
+ *   - يفحص `kernel/` recursive بالكامل.
  *   - يركّز على ملفات الكود: `.html`, `.js`, `.ts`, `.mjs`, `.cjs`, `.css`, `.json`.
  *     ملفات `.md` (التوثيق) مسموح لها تذكر الـ patterns بالاسم — التوثيق ما ينفّذ كود.
  *   - ما يعمل network calls — pure file read + regex.
  *   - سريع: < 100ms على مستودع كامل.
  *
- * Patterns المراقبة (لو ظهرت في ملف كود داخل `kernel/` خارج `legacy-disabled/`):
+ * Patterns المراقبة (لو ظهرت في ملف كود داخل `kernel/`):
  *   1. `window.fetch` — أي مرجع للـ fetch global (read أو patch).
  *      الـ attack: `window.fetch = function(...) { return mock; }` يستبدل كل fetch calls.
  *   2. `brightai_kernel_demo_mode` — الـ localStorage key اللي يفعّل الـ mock.
  *      الـ attack: `localStorage.setItem(brightai_kernel_demo_mode, 'true')` يقلب الـ mode.
  *
- * Rollback plan: `git rm scripts/verify-no-legacy-mock.mjs` وارجع
- * الـ files من `git mv kernel/legacy-disabled/mock/* kernel/assets/js/`.
+ * Rollback plan: `git rm scripts/verify-no-legacy-mock.mjs`.
  */
 
 import fs from "node:fs";
@@ -39,7 +40,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT = path.resolve(__dirname, "..");
 const SCAN_ROOT = path.join(ROOT, "kernel");
-const ARCHIVE_DIR = path.join(SCAN_ROOT, "legacy-disabled");
 
 // امتدادات ملفات الكود اللي يفحصها السكربت. ملفات `.md` (التوثيق)
 // مسموح لها تذكر الـ patterns بالاسم بدون trigger.
@@ -53,7 +53,7 @@ const IGNORE_PATHS = new Set([
   path.join(SCAN_ROOT, ".DS_Store"),
 ]);
 
-// الـ patterns اللي لازم تكون صفر في kernel/ (خارج legacy-disabled/).
+// الـ patterns اللي لازم تكون صفر في kernel/.
 // كل pattern: { name, re } — الـ re بدون flags (case-sensitive؛ الـ codebase كله lowercase).
 //
 // Pattern 1: `window.fetch` — يلتقط أي مرجع للـ fetch global، read أو patch.
@@ -77,15 +77,13 @@ const FORBIDDEN_PATTERNS = [
   },
 ];
 
-// يمشي recursive تحت SCAN_ROOT ويتجاهل ARCHIVE_DIR والـ IGNORE_PATHS
+// يمشي recursive تحت SCAN_ROOT ويتجاهل IGNORE_PATHS
 // و ملفات `.md` (التوثيق — مسموح يذكر الـ patterns بالاسم).
 function* walkFiles(dir) {
   if (!fs.existsSync(dir)) return;
   const entries = fs.readdirSync(dir, { withFileTypes: true });
   for (const entry of entries) {
     const full = path.join(dir, entry.name);
-    // قارن بعد تطبيع (macOS لا يهتم بالـ trailing slash).
-    if (full === ARCHIVE_DIR || full === ARCHIVE_DIR + path.sep) continue;
     if (IGNORE_PATHS.has(full)) continue;
     if (entry.isDirectory()) {
       yield* walkFiles(full);
@@ -134,7 +132,7 @@ function main() {
     }
   }
 
-  console.log(`فحص ${rel(SCAN_ROOT)} (ما عدا ${rel(ARCHIVE_DIR)}): ${scannedFiles} ملف.`);
+  console.log(`فحص ${rel(SCAN_ROOT)}: ${scannedFiles} ملف.`);
   console.log("");
 
   if (violations.length === 0) {
@@ -161,7 +159,7 @@ function main() {
   console.error("الإصلاح:");
   console.error("  • لو الملف يقرأ window.fetch عادي: استبدله بـ fetch() المباشر.");
   console.error("  • لو الملف يحتاج يصل لـ demo mode flag: استخدم feature flag server-side بدل localStorage.");
-  console.error("  • لو الملف لازم يكون في legacy-disabled/، انقله بـ `git mv`.");
+  console.error("  • شيل الـ reference من الملف المحدد.");
   console.error("  • استثناء `.md` فقط — أي ملف كود (.js/.ts/.astro/.html) يذكر الـ patterns = violation.");
   process.exit(1);
 }
