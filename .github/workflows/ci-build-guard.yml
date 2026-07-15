@@ -1,0 +1,348 @@
+# BRIGHTAI — CI Build Guard
+#
+# Prevents merging any invalid build. Secrets-free (runs on PRs without
+# external credentials). Catches the three production blockers from
+# 2026-07-15 sessions:
+#   - CRITICAL-01: pnpm dashboard:build failures (missing deps, ONNX bundling)
+#   - CRITICAL-02: Prisma schema drift + generation gaps
+#   - CRITICAL-03: No CI to catch invalid builds pre-merge
+#
+# Branch protection (configure in GitHub repo settings) should require:
+#   - install
+#   - typecheck
+#   - lint
+#   - test
+#   - build-astro
+#   - build-dashboard
+#   - seo-gates
+#   - ci-success (must be green to merge)
+#
+# Edge cases handled:
+#   - PRs without secrets: no DB, no Clerk, no API keys needed
+#   - pnpm via corepack (no global install, exact version)
+#   - Prisma client generated via packages/db postinstall hook
+#   - vitest firewall uses server-only stub (no runtime deps)
+#   - Astro/Next builds are static — no request-time secrets
+#
+# Note: SEO Guard CI (.github/workflows/seo-guard.yml) remains as a
+# legacy single-job fallback for older branch protection configs.
+# New branches should require this ci-build-guard instead.
+
+name: CI Build Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # allow manual run for emergency validation
+
+concurrency:
+  # Cancel in-progress runs when a new commit lands on the same PR/branch.
+  # Saves CI minutes on stacked commits.
+  group: ci-build-guard-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  # Explicitly NO write/secrets permissions — runs must be safe on public PRs.
+
+# Prevent the same job from queuing infinitely on a misconfigured runner.
+concurrency-group-timeout: 15m
+
+jobs:
+  # ────────────────────────────────────────────────────────────────
+  # Job 1: Install + Prisma Generate
+  # Foundational. All other jobs depend on this.
+  # Verifies:
+  #   - pnpm-lock.yaml is in sync (frozen install must succeed)
+  #   - Prisma client can be generated from schema.prisma
+  # ────────────────────────────────────────────────────────────────
+  install:
+    name: Install + Prisma Generate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack + Activate pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          # Uses the version from package.json `packageManager` field.
+          # No manual version drift between local dev and CI.
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter @brightai/db db:generate
+
+      - name: Verify Prisma client generated
+        run: |
+          test -d node_modules/.pnpm/@prisma+client@5.22.0_prisma@5.22.0/node_modules/.prisma/client \
+            && echo "✅ Prisma client generated" \
+            || (echo "❌ Prisma client NOT generated"; exit 1)
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 2: TypeScript Typecheck (all workspaces)
+  # Catches: type errors, missing fields, schema drift.
+  # Fast (~30s) and rejects bad code early.
+  # ────────────────────────────────────────────────────────────────
+  typecheck:
+    name: TypeScript Typecheck (root + dashboard + db)
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm --filter @brightai/db db:generate
+      - run: pnpm -r --parallel typecheck
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 3: Lint (ESLint across workspaces)
+  # Catches: unused vars, React anti-patterns, type-only ESLint rules.
+  # ────────────────────────────────────────────────────────────────
+  lint:
+    name: ESLint (root + dashboard)
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm --filter @brightai/db db:generate
+      - run: pnpm -r --parallel lint
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 4: Vitest (firewall unit tests)
+  # Verifies: regex detector, redaction, token vault, PII detector,
+  # NER pipeline (loads actual ONNX model — 2s cold start).
+  # No DB needed (vitest aliases server-only to a stub).
+  # ────────────────────────────────────────────────────────────────
+  test:
+    name: "Vitest (firewall: regex + redaction + token-vault + NER)"
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm --filter @brightai/db db:generate
+      - name: Run firewall vitest suite
+        run: pnpm exec vitest run --root apps/dashboard
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 5: Astro Marketing Build (190 pages)
+  # The public marketing site. Generates dist/ + sitemap.
+  # ────────────────────────────────────────────────────────────────
+  build-astro:
+    name: Astro Marketing Build (~190 pages)
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Build Astro marketing site
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+      - name: Verify build output
+        run: |
+          test -d dist \
+            && echo "✅ dist/ generated" \
+            || (echo "❌ dist/ missing"; exit 1)
+          echo "📊 Page count: $(find dist -name 'index.html' | wc -l)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-astro
+          path: dist
+          retention-days: 7
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 6: Dashboard Build (Next.js 15)
+  # The SaaS dashboard. 22 routes + middleware.
+  # ────────────────────────────────────────────────────────────────
+  build-dashboard:
+    name: Dashboard Build (Next.js 15, ~22 routes)
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm --filter @brightai/db db:generate
+      - name: Build Next.js dashboard
+        run: pnpm dashboard:build
+        env:
+          NODE_ENV: production
+      - name: Verify build output
+        run: |
+          test -f apps/dashboard/.next/BUILD_ID \
+            && echo "✅ BUILD_ID present" \
+            || (echo "❌ BUILD_ID missing"; exit 1)
+          echo "📊 Routes: $(ls apps/dashboard/.next/server/app/api 2>/dev/null | wc -l || echo 0) api dirs"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-dashboard
+          path: apps/dashboard/.next
+          retention-days: 7
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 7: SEO + Content + Performance Gates
+  # Runs after build-astro (needs dist/).
+  # Pure static analysis: sitemap, JSON-LD, schema, content, links,
+  # redirects, performance budget. No DB needed.
+  # ────────────────────────────────────────────────────────────────
+  seo-gates:
+    name: SEO + Content + Performance Gates
+    needs: build-astro
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - run: pnpm run build
+        env:
+          NODE_ENV: production
+      - name: Full verification (sitemap, schema, gate)
+        run: pnpm run verify:all
+      - name: Performance budget
+        run: pnpm run performance:budget
+      - name: Internal links audit
+        run: pnpm run internal-links:audit
+      - name: Redirects check
+        run: pnpm run redirects:check
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 8: CI Success Gate
+  # Aggregates all jobs. Fails if any job failed/cancelled.
+  # This is the single required status check for branch protection.
+  # ────────────────────────────────────────────────────────────────
+  ci-success:
+    name: CI Build Guard
+    needs:
+      - typecheck
+      - lint
+      - test
+      - build-astro
+      - build-dashboard
+      - seo-gates
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Aggregate CI results
+        run: |
+          echo "## CI Build Guard Results" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| Job | Status |" >> "$GITHUB_STEP_SUMMARY"
+          echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
+          echo "| typecheck | ${{ needs.typecheck.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| lint | ${{ needs.lint.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| test | ${{ needs.test.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| build-astro | ${{ needs.build-astro.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| build-dashboard | ${{ needs.build-dashboard.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| seo-gates | ${{ needs.seo-gates.result }} |" >> "$GITHUB_STEP_SUMMARY"
+
+          # Fail if any required job did not succeed.
+          # Direct GitHub Actions expressions (no bash loop interpolation).
+          failed=0
+          for job in typecheck lint test build-astro build-dashboard seo-gates; do
+            case "$job" in
+              typecheck)       r="${{ needs.typecheck.result }}" ;;
+              lint)            r="${{ needs.lint.result }}" ;;
+              test)            r="${{ needs.test.result }}" ;;
+              build-astro)     r="${{ needs.build-astro.result }}" ;;
+              build-dashboard) r="${{ needs.build-dashboard.result }}" ;;
+              seo-gates)       r="${{ needs.seo-gates.result }}" ;;
+            esac
+            if [ "$r" != "success" ]; then
+              echo "❌ CI FAILED at job: $job (result: $r)"
+              failed=1
+            fi
+          done
+          if [ "$failed" -ne 0 ]; then
+            exit 1
+          fi
+          echo "✅ All CI jobs passed."
