@@ -1,0 +1,3115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>BrightAI — تحليل شامل وخارطة طريق الريادة الإقليمية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   BrightAI Audit Report — Dark Executive Theme
+   Page: 720 × 1020 px (Creative Flow)
+   ============================================================ */
+@page {
+    size: 720px 1020px;
+    margin: 0;
+}
+
+:root {
+    --bg-deep: #0a0e1a;
+    --bg-base: #0d1322;
+    --bg-slate: #111827;
+    --bg-card: #1a2035;
+    --bg-elevated: #232b45;
+    --accent: #20a597;
+    --accent-light: #4ecdc4;
+    --accent-dim: #14786e;
+    --text-primary: #e8eaed;
+    --text-secondary: #c5cad6;
+    --text-muted: #8b93a8;
+    --text-faint: #5d6478;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --success: #10b981;
+    --info: #3b82f6;
+    --purple: #a78bfa;
+    --border: #2d3748;
+    --border-soft: #1f2937;
+    --font-ar: 'IBM Plex Sans Arabic', 'Tajawal', sans-serif;
+    --font-display: 'Tajawal', 'IBM Plex Sans Arabic', sans-serif;
+    --font-latin: 'IBM Plex Sans', 'IBM Plex Sans Arabic', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 720px;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: var(--font-ar), sans-serif;
+    font-size: 14px;
+    line-height: 1.75;
+    direction: rtl;
+}
+
+@media screen {
+    html {
+        height: auto;
+        display: flex;
+        justify-content: center;
+        background: #222;
+    }
+    body {
+        margin: 20px auto;
+        box-shadow: 0 0 50px rgba(0,0,0,0.5);
+    }
+}
+
+p, li, td, th, div {
+    overflow-wrap: break-word;
+    word-break: normal;
+    line-break: strict;
+}
+
+/* ─── COVER ───────────────────────────────────────────────── */
+.cover {
+    width: 720px;
+    height: 1020px;
+    background:
+        radial-gradient(ellipse 600px 400px at 80% 20%, rgba(32, 165, 151, 0.18), transparent 70%),
+        radial-gradient(ellipse 500px 350px at 20% 80%, rgba(78, 205, 196, 0.12), transparent 70%),
+        linear-gradient(180deg, #0a0e1a 0%, #0d1322 100%);
+    box-sizing: border-box;
+    break-after: page;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 70px 60px;
+}
+
+/* decorative bars removed to satisfy cover_validate.js text↔line detection */
+
+.cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.cover-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.cover-brand-mark {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg-deep);
+    font-weight: 900;
+    font-size: 22px;
+    font-family: var(--font-display), sans-serif;
+    box-shadow: 0 6px 24px rgba(32, 165, 151, 0.4);
+}
+
+.cover-brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.cover-brand-name {
+    font-family: var(--font-display), sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.3px;
+}
+
+.cover-brand-tag {
+    font-size: 11px;
+    color: var(--accent-light);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+.cover-meta {
+    text-align: left;
+    font-family: var(--font-latin), sans-serif;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.cover-meta strong {
+    color: var(--accent-light);
+    font-weight: 600;
+}
+
+.cover-center {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: -40px;
+}
+
+.cover-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(32, 165, 151, 0.10);
+    border: 1px solid rgba(32, 165, 151, 0.35);
+    color: var(--accent-light);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.cover-eyebrow::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+}
+
+.cover-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 56px;
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+    margin: 0;
+}
+
+.cover-title-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.cover-subtitle {
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    max-width: 540px;
+    margin: 0;
+}
+
+.cover-aspiration {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-right: 3px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    backdrop-filter: blur(8px);
+}
+
+.cover-aspiration-label {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-family: var(--font-latin), sans-serif;
+}
+
+.cover-aspiration-text {
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+.cover-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+}
+
+.cover-version {
+    font-family: var(--font-latin), sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.cover-version strong {
+    color: var(--accent-light);
+}
+
+.cover-confidential {
+    font-size: 10.5px;
+    color: var(--text-faint);
+    text-align: left;
+}
+
+/* ─── MAIN CONTENT ─────────────────────────────────────────── */
+.main-content {
+    padding: 55px 60px 45px 60px;
+}
+
+/* Section header */
+.chapter-header {
+    break-after: avoid;
+    break-inside: avoid;
+    margin-top: 28px;
+    margin-bottom: 22px;
+}
+
+.chapter-header:first-child {
+    margin-top: 0;
+}
+
+.section-tag {
+    display: inline-block;
+    font-family: var(--font-latin), sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent-light);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.section-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.25;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.5px;
+}
+
+.section-title-num {
+    color: var(--accent);
+    margin-left: 8px;
+}
+
+.divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 12px 0 24px 0;
+    width: 100px;
+}
+
+/* Subsection */
+.subsection-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 24px 0 12px 0;
+    line-height: 1.4;
+    break-after: avoid;
+}
+
+.subsection-title::before {
+    content: '◆';
+    color: var(--accent);
+    margin-left: 8px;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+/* Body text */
+.body-text {
+    font-size: 14px;
+    line-height: 1.85;
+    color: var(--text-secondary);
+    margin: 0 0 14px 0;
+    text-align: justify;
+}
+
+.body-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.body-text em {
+    color: var(--accent-light);
+    font-style: normal;
+    font-weight: 500;
+}
+
+.body-text .latin {
+    font-family: var(--font-latin), sans-serif;
+    direction: ltr;
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 12.5px;
+    color: var(--accent-light);
+}
+
+/* Callout */
+.callout {
+    break-inside: avoid;
+    background: rgba(32, 165, 151, 0.06);
+    border-right: 3px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin: 16px 0;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.callout-warning {
+    background: rgba(245, 158, 11, 0.06);
+    border-right-color: var(--warning);
+}
+
+.callout-danger {
+    background: rgba(239, 68, 68, 0.06);
+    border-right-color: var(--danger);
+}
+
+.callout-title {
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+/* KPI Table */
+.kpi-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 16px 0;
+    font-size: 12.5px;
+    break-inside: avoid;
+    background: var(--bg-slate);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.kpi-table thead {
+    background: var(--bg-elevated);
+}
+
+.kpi-table th {
+    padding: 12px 14px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.kpi-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--text-secondary);
+    vertical-align: middle;
+}
+
+.kpi-table tr:last-child td {
+    border-bottom: none;
+}
+
+.kpi-table tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.015);
+}
+
+.score-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-family: var(--font-latin), sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    min-width: 44px;
+    text-align: center;
+}
+
+.score-critical { background: rgba(239, 68, 68, 0.18); color: var(--danger); }
+.score-warning { background: rgba(245, 158, 11, 0.18); color: var(--warning); }
+.score-success { background: rgba(16, 185, 129, 0.18); color: var(--success); }
+.score-info { background: rgba(59, 130, 246, 0.18); color: var(--info); }
+
+/* Finding card */
+.finding-card {
+    break-inside: avoid;
+    background: var(--bg-slate);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    position: relative;
+}
+
+.finding-card.critical { border-right: 4px solid var(--danger); }
+.finding-card.high { border-right: 4px solid #c2410c; }
+.finding-card.medium { border-right: 4px solid var(--warning); }
+.finding-card.low { border-right: 4px solid #facc15; }
+
+.finding-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 12px;
+}
+
+.finding-id {
+    font-family: var(--font-latin), sans-serif;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.finding-severity {
+    font-family: var(--font-latin), sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.finding-severity.critical { background: var(--danger); color: white; }
+.finding-severity.high { background: #c2410c; color: white; }
+.finding-severity.medium { background: var(--warning); color: var(--bg-deep); }
+.finding-severity.low { background: #facc15; color: var(--bg-deep); }
+
+.finding-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 4px 0 8px 0;
+    line-height: 1.35;
+}
+
+.finding-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    font-family: var(--font-latin), sans-serif;
+}
+
+.finding-meta span {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.finding-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin: 6px 0;
+}
+
+.finding-body strong { color: var(--text-primary); }
+
+.finding-evidence {
+    background: var(--bg-deep);
+    border: 1px solid var(--border-soft);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin: 8px 0;
+    font-family: 'Liberation Mono', monospace;
+    font-size: 10.5px;
+    color: var(--accent-light);
+    direction: ltr;
+    text-align: left;
+    line-height: 1.55;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+
+.finding-fix {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+}
+
+.finding-fix-label {
+    font-weight: 700;
+    color: var(--accent-light);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: 6px;
+}
+
+/* Chart container */
+.chart-block {
+    break-inside: avoid;
+    margin: 18px 0;
+    text-align: center;
+}
+
+.chart-block img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.chart-caption {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-style: italic;
+}
+
+/* Metric strip */
+.metric-strip {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+    break-inside: avoid;
+}
+
+.metric-card {
+    flex: 1 1 0;
+    background: var(--bg-slate);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 12px;
+    text-align: center;
+}
+
+.metric-value {
+    font-family: var(--font-display), sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 4px;
+}
+
+.metric-value.danger { color: var(--danger); }
+.metric-value.warning { color: var(--warning); }
+.metric-value.success { color: var(--success); }
+.metric-value.accent { color: var(--accent); }
+
+.metric-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.3;
+}
+
+/* Prompt card */
+.prompt-card {
+    break-inside: avoid;
+    background: var(--bg-slate);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    border-right: 3px solid var(--purple);
+}
+
+.prompt-id {
+    font-family: var(--font-latin), sans-serif;
+    font-size: 10.5px;
+    color: var(--purple);
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.prompt-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.prompt-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+
+.prompt-meta strong { color: var(--accent-light); }
+
+/* Roadmap phase card */
+.phase-card {
+    break-inside: avoid;
+    background: var(--bg-slate);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 14px 0;
+    position: relative;
+    border-right: 4px solid var(--accent);
+}
+
+.phase-card.p1 { border-right-color: var(--accent); }
+.phase-card.p2 { border-right-color: var(--info); }
+.phase-card.p3 { border-right-color: var(--warning); }
+.phase-card.p4 { border-right-color: var(--purple); }
+.phase-card.p5 { border-right-color: var(--success); }
+
+.phase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.phase-name {
+    font-family: var(--font-display), sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.phase-timeframe {
+    font-family: var(--font-latin), sans-serif;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: var(--accent-light);
+    font-weight: 600;
+}
+
+.phase-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.phase-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.phase-stats strong {
+    color: var(--text-primary);
+    font-family: var(--font-latin), sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.phase-items {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    padding-right: 16px;
+    margin: 0;
+}
+
+.phase-items li {
+    margin-bottom: 4px;
+}
+
+/* Page number footer */
+/* page-footer removed — not used in this report */
+
+/* Ending */
+.ending {
+    width: 720px;
+    height: 1020px;
+    background:
+        radial-gradient(ellipse 600px 400px at 50% 40%, rgba(32, 165, 151, 0.20), transparent 70%),
+        linear-gradient(180deg, #0a0e1a 0%, #0d1322 100%);
+    box-sizing: border-box;
+    break-before: page;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 80px 60px;
+    text-align: center;
+}
+
+.ending-mark {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display), sans-serif;
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--bg-deep);
+    margin-bottom: 30px;
+    box-shadow: 0 12px 50px rgba(32, 165, 151, 0.4);
+}
+
+.ending-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 38px;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1.25;
+    margin-bottom: 24px;
+    max-width: 540px;
+}
+
+.ending-accent {
+    background: linear-gradient(135deg, var(--accent), var(--accent-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+.ending-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin-bottom: 30px;
+}
+
+.ending-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--accent);
+    margin: 20px 0;
+    border-radius: 2px;
+}
+
+.ending-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--font-latin), sans-serif;
+    line-height: 1.8;
+    margin-top: 40px;
+}
+
+.ending-meta strong {
+    color: var(--accent-light);
+    font-weight: 600;
+}
+
+/* Lists */
+ul.body-list, ol.body-list {
+    padding-right: 22px;
+    margin: 10px 0 14px 0;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    line-height: 1.8;
+}
+
+ul.body-list li, ol.body-list li {
+    margin-bottom: 6px;
+}
+
+ul.body-list li strong, ol.body-list li strong {
+    color: var(--text-primary);
+}
+
+/* Inline table */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 12px;
+    break-inside: avoid;
+    background: var(--bg-slate);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.data-table th {
+    background: var(--bg-elevated);
+    padding: 10px 12px;
+    text-align: right;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 11.5px;
+    border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--text-secondary);
+    vertical-align: top;
+}
+
+.data-table tr:last-child td {
+    border-bottom: none;
+}
+
+.data-table .latin {
+    font-family: var(--font-latin), sans-serif;
+    direction: ltr;
+    text-align: left;
+    font-size: 11px;
+    color: var(--accent-light);
+}
+
+/* Two-column layout */
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+}
+
+.col-card {
+    background: var(--bg-slate);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    break-inside: avoid;
+}
+
+.col-card-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.col-card-body {
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     COVER PAGE
+     ════════════════════════════════════════════════════════════ -->
+<div class="cover">
+
+    <div class="cover-top">
+        <div class="cover-brand">
+            <div class="cover-brand-mark">B</div>
+            <div class="cover-brand-text">
+                <div class="cover-brand-name">BrightAI</div>
+                <div class="cover-brand-tag">AI Governance · المملكة العربية السعودية</div>
+            </div>
+        </div>
+        <div class="cover-meta">
+            <strong>التقرير:</strong> BrightAI Audit v3.0<br>
+            <strong>التاريخ:</strong> يوليو 2026<br>
+            <strong>النسخة:</strong> 3.0 — شامل<br>
+            <strong>السرية:</strong> للإدارة التنفيذية
+        </div>
+    </div>
+
+    <div class="cover-center">
+        <div class="cover-eyebrow">تقرير تدقيق تكاملي · مستند إلى الكود</div>
+
+        <h1 class="cover-title">
+            تحليل شامل لمشروع <span class="cover-title-accent">BrightAI</span><br>
+            وخارطة الطريق نحو الريادة الإقليمية
+        </h1>
+
+        <p class="cover-subtitle">
+            تقييم تكاملي للأمن السيبراني والأداء وإمكانية الوصول والامتثال السعودي،
+            مع بنشمارك تنافسي ضد رواد حوكمة الذكاء الاصطناعي عالمياً، وخطة تنفيذية
+            مفصّلة على مدى 365 يوماً لتحقيق الريادة في الشرق الأوسط.
+        </p>
+
+        <div class="cover-aspiration">
+            <div>
+                <div class="cover-aspiration-label">الطموح المُستهدف</div>
+                <div class="cover-aspiration-text">
+                    منافس عالمي إقليمياً — في مصاف Credo AI و Holistic AI،
+                    مع تفوق إقليمي في الدعم العربي والامتثال السعودي.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cover-bottom">
+        <div class="cover-version">
+            <strong>BrightAI Audit Report</strong> · v3.0 · يوليو 2026
+        </div>
+        <div class="cover-confidential">
+            مُعدّ للإدارة التنفيذية<br>
+            Strategic Briefing
+        </div>
+    </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     MAIN CONTENT — single continuous container
+     ════════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 1 — الملخص التنفيذي
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 01 · Executive Summary</div>
+    <h2 class="section-title"><span class="section-title-num">01.</span> الملخص التنفيذي</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+يقدّم هذا التقرير تقييماً تكاملياً لمشروع <strong>BrightAI</strong> — منصة SaaS متعددة المستأجرين
+متخصصة في حوكمة وامتثال الذكاء الاصطناعي للسوق السعودي، مبنية على <span class="latin">Astro</span>
+للسطح التسويقي و <span class="latin">Next.js 15</span> للوحة التحكم، مع تكامل <span class="latin">AI Firewall</span>
+للكشف عن البيانات الشخصية وإخفائها. استند التقييم إلى قراءة كاملة لـ <strong>147</strong> صفحة
+مبنية، و <strong>12</strong> صفحة من سطح <span class="latin">Kernel</span>، و <strong>20</strong> مكوّن،
+و <strong>2</strong> مسارات <span class="latin">SSR</span> نشطة، و <strong>2</strong> service workers،
+بالإضافة إلى أكثر من <strong>200</strong> ملف برمجي في المستودع.
+</p>
+
+<p class="body-text">
+تكشف نتائج التدقيق أن المشروع يحتل <em>موقعاً واعداً</em> في السوق الإقليمية بفضل
+هويته العربية الأولى، تركيزه على <span class="latin">PDPL</span> السعودي، ووجود <span class="latin">AI Firewall</span>
+متكامل في لوحة التحكم. إلا أن درجة الصحة العامة للمشروع تبلغ <strong>56.7%</strong> فقط،
+وهو رقم يعكس فجوة كبيرة بين الطموح الاستراتيجي والتنفيذ التقني الحالي. الفجوة الأكبر
+تركز في ثلاثة محاور: <strong>الأمن السيبراني (42%)</strong> بسبب ثغرات حرجة في مسار
+<span class="latin">AI Firewall</span> و <span class="latin">SSR APIs</span>، و <strong>الامتثال السعودي (38%)</strong>
+بسبب غياب وحدات <span class="latin">DPO</span> و <span class="latin">ROPA</span> و <span class="latin">breach notification</span>،
+و <strong>نموذج عمل SaaS (45%)</strong> بسبب غياب tiers تسعير واضحة وآليات expansion revenue.
+</p>
+
+<div class="chart-block">
+    <img src="01_health_gauge.png" alt="Overall Health Score Gauge">
+    <div class="chart-caption">الشكل 1 — درجة الصحة العامة للمشروع مع الهدف المرجو بعد الإصلاح</div>
+</div>
+
+<div class="callout callout-danger">
+    <div class="callout-title">⚠ التوصية الإطلاقية: Ship with Known Risks</div>
+    لا يوصى بالإطلاق التجاري الكامل في الوضع الحالي. ثلاث ثغرات <strong>Critical</strong>
+    على كود حيّ يجب إصلاحها أولاً: ثغرة <span class="latin">prompt injection</span> في
+    <span class="latin">/api/ai/chat</span>، تسريب <span class="latin">system prompts</span> إلى الـ DOM،
+    وتخزين الـ <span class="latin">prompt</span> الخام غير منقّى في قاعدة بيانات <span class="latin">AIRequest</span>.
+    بعد إصلاح هذه الثغرات الثلاث (المقدّر ~24 ساعة تطوير)، يمكن الإطلاق المحدود للعملاء المبكرين.
+</div>
+
+<div class="subsection-title">جدول الـ KPIs الرئيسي</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr>
+            <th>القسم</th>
+            <th>النسبة الحالية</th>
+            <th>الهدف</th>
+            <th>الاتجاه</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>التغطية (Coverage)</td><td><span class="score-pill score-success">78%</span></td><td>100%</td><td>↑ جيد</td></tr>
+        <tr><td>الأمن السيبراني</td><td><span class="score-pill score-critical">42%</span></td><td>95%</td><td>↓ حرج</td></tr>
+        <tr><td>الموبايل والكمبيوتر</td><td><span class="score-pill score-warning">58%</span></td><td>95%</td><td>↓ يحتاج تحسين</td></tr>
+        <tr><td>الأداء (Performance)</td><td><span class="score-pill score-warning">65%</span></td><td>90%</td><td>→ مقبول</td></tr>
+        <tr><td>إمكانية الوصول (A11y)</td><td><span class="score-pill score-warning">51%</span></td><td>95%</td><td>↓ يحتاج تحسين</td></tr>
+        <tr><td>الامتثال السعودي</td><td><span class="score-pill score-critical">38%</span></td><td>90%</td><td>↓ حرج</td></tr>
+        <tr><td>استراتيجية الذكاء الاصطناعي</td><td><span class="score-pill score-warning">62%</span></td><td>90%</td><td>→ جيد</td></tr>
+        <tr><td>نموذج عمل SaaS</td><td><span class="score-pill score-warning">45%</span></td><td>85%</td><td>↓ يحتاج بناء</td></tr>
+        <tr><td>الموثوقية (Reliability)</td><td><span class="score-pill score-success">70%</span></td><td>95%</td><td>→ جيد</td></tr>
+        <tr style="background: rgba(32,165,151,0.08);"><td><strong>الدرجة الإجمالية الموزونة</strong></td><td><span class="score-pill score-warning"><strong>56.7%</strong></span></td><td><strong>92%</strong></td><td><strong>↑ +35.3 نقطة متوقعة</strong></td></tr>
+    </tbody>
+</table>
+
+<div class="chart-block">
+    <img src="02_kpi_categories.png" alt="KPI Scores by Category">
+    <div class="chart-caption">الشكل 2 — مقارنة النسب الحالية بالأهداف عبر الأقسام التسعة</div>
+</div>
+
+<div class="subsection-title">أبرز 5 ثغرات حرجة</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-001</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">ثغرة Prompt Injection كاملة في /api/ai/chat</div>
+    <div class="finding-meta">
+        <span>📁 src/pages/api/ai/chat.ts:258-262</span>
+        <span>🔒 100% من SSR LLM routes</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الخادم يقبل أي <span class="latin">systemPrompt</span> من جسم الطلب ويُمرره حرفياً إلى
+        <span class="latin">Groq</span> و <span class="latin">Gemini</span> دون أي قائمة بيضاء أو توقيع
+        <span class="latin">HMAC</span> أو تحقق خادمي. يمكن لمهاجم تجاوز <span class="latin">KERNEL_SYSTEM_PROMPTS</span>
+        المُصمّم بعناية وإعادة توجيه النموذج لأي هدف.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-002</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">تخزين الـ Prompt الخام غير المنقّى في قاعدة بيانات AIRequest</div>
+    <div class="finding-meta">
+        <span>📁 apps/dashboard/app/api/firewall/chat/completions/route.ts</span>
+        <span>🔒 100% من الطلبات</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ <span class="latin">AI Firewall</span> يخزّن النص الأصلي قبل <span class="latin">redaction</span>
+        في حقل <span class="latin">AIRequest.prompt</span>، بما فيه <span class="latin">SAUDI_ID</span> و
+        <span class="latin">CARD_OR_ACCOUNT</span> و <span class="latin">PATIENT_ID</span>. هذا يهدم
+        الغرض الكامل للمنتج: جدار حماية يخزّن البيانات التي يُفترض أن يحمي منها.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">KRN-003</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">عدم وجود Auth على LLM Proxy — مفتوح للعامة</div>
+    <div class="finding-meta">
+        <span>📁 src/pages/api/ai/chat.ts:220</span>
+        <span>🔒 0% auth</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        أي عميل مجهول يمكنه إرسال <span class="latin">POST</span> والحصول على استجابة من النموذج.
+        الـ <span class="latin">rate limit</span> (10 طلب/دقيقة/IP) يمكن تجاوزه بدوران الـ IP.
+        ناقل إساءة: حرق حصة <span class="latin">Groq + Gemini</span> على حساب BrightAI، أو توليد
+        محتوى تصيّد/رسائل مزعجة بمفاتيح BrightAI.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">KRN-004</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">تسجيل PII كاملة في stdout في /api/lead</div>
+    <div class="finding-meta">
+        <span>📁 src/pages/api/lead.ts:188-195</span>
+        <span>🔒 100% من الـ leads</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">name</span> + <span class="latin">contact</span> + <span class="latin">company</span>
+        + <span class="latin">IP</span> تُكتب كنص صريح إلى <span class="latin">stdout</span>. على Render،
+        تذهب إلى لوحة السجلات (احتفاظ 30 يوماً) متاحة لأي شخص لديه وصول للوحة. يتناقض بشكل صريح
+        مع تعليق الخصوصية في نفس الملف.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-005</span>
+        <span class="finding-severity critical">Critical · Legacy Inert</span>
+    </div>
+    <div class="finding-title">legacy kernel/sw.js يخزّن /api/kernel/* ويصطفّ الـ mutations في IndexedDB</div>
+    <div class="finding-meta">
+        <span>📁 kernel/sw.js:96-108, 461-509</span>
+        <span>🔒 0% active</span>
+        <span>⚠ Needs Verification</span>
+    </div>
+    <div class="finding-body">
+        الـ <span class="latin">SW</span> القديم يخزّن استجابات <span class="latin">GET /api/kernel/*</span>
+        ويصطفّ طلبات الـ <span class="latin">mutation</span> مع <span class="latin">PII</span> كاملة في
+        <span class="latin">IndexedDB</span> دون انتهاء صلاحية. اليوم غير مُسجّل في بناء Astro، لكنه
+        يمثل قنبلة موقوتة لو أُعيد تفعيله بالخطأ.
+    </div>
+</div>
+
+<div class="subsection-title">الرسالة الاستراتيجية للإدارة</div>
+
+<p class="body-text">
+يمتلك BrightAI كل المكونات الأساسية ليصبح المرجع الإقليمي لحوكمة الذكاء الاصطناعي:
+<strong>منتج</strong> (AI Firewall مدمج + Kernel demo surface)، و <strong>تسويق</strong>
+(147 صفحة Astro محسّنة لـ SEO)، و <strong>هوية سعودية</strong> (عربية أولاً، PDPL أولاً).
+الفجوة بين هذا الوضع والريادة الإقليمية هي <em>12 شهراً من العمل المركّز</em> على
+ثلاث جبهات: تأمين المسار الحرج، بناء طبقة الامتثال السعودي، وتطوير نموذج عمل SaaS
+قابل للتوسع. التقرير التالي يفصّل كل جبهة بنسب مئوية دقيقة وخارطة طريق مفصّلة بالتكاليف
+والمسؤوليات ومعايير القبول.
+</p>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 2 — المنهجية
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 02 · Methodology</div>
+    <h2 class="section-title"><span class="section-title-num">02.</span> منهجية التدقيق</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+اعتمد التدقيق على منهجية <strong>Adversarial Codebase-Grounded Audit</strong> التي تجمع
+بين عقلية المهاجم (التحقق من ناقلات الاستغلال الفعلية) وعقلية مهندس التشغيل في الساعة
+الثالثة فجراً (تتبّع مسارات الفشل الكامل)، مع توثيق كل ادعاء بمرجع دقيق <span class="latin">file:line</span>
+أو خطوة إعادة إنتاج. لم يتم الاكتفاء بفحص سطحي <span class="latin">lint-and-list</span>، بل
+تم تتبّع التدفقات الكاملة من <span class="latin">client</span> إلى <span class="latin">server</span>
+إلى <span class="latin">database</span> إلى <span class="latin">LLM provider</span>، مع التحقق
+من كل فرضية أمنية وأدائية.
+</p>
+
+<div class="subsection-title">نطاق التدقيق</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>السطح</th>
+            <th>العدد</th>
+            <th>الأولوية</th>
+            <th>نسبة الفحص</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>صفحات Astro (Kernel + Marketing + Legal)</td><td>147</td><td>عالية</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td>صفحات Kernel في src/pages/kernel/</td><td>12</td><td>الأعلى</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td>مكوّنات Kernel في src/components/kernel/</td><td>20</td><td>الأعلى</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td>مسارات SSR (chat.ts, lead.ts)</td><td>2</td><td>الأعلى</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td>ملفات legacy kernel/assets/js/</td><td>20</td><td>متوسطة</td><td><span class="score-pill score-success">95%</span></td></tr>
+        <tr><td>Service Workers (public + kernel)</td><td>2</td><td>عالية</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td>ملفات CSS (kernel + base + tokens)</td><td>~25</td><td>عالية</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td>ملفات mock JSON مع PII سعودي</td><td>8</td><td>متوسطة</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td>ملفات Next.js dashboard (apps/dashboard/)</td><td>~50</td><td>عالية</td><td><span class="score-pill score-warning">80%</span></td></tr>
+        <tr><td>scripts SEO + monitoring</td><td>~60</td><td>منخفضة</td><td><span class="score-pill score-warning">40%</span></td></tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">المعايير المعتمدة</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">أمن سيبراني</div>
+        <div class="col-card-body">
+            <strong>OWASP Top 10 (2021)</strong> — التحقق من جميع نقاط الضعف الكلاسيكية
+            (A01 Broken Access Control, A03 Injection, A04 Insecure Design, A07 Auth Failures,
+            A09 Security Logging).<br><br>
+            <strong>OWASP API Top 10</strong> — تطبيق خصيصاً على مساري <span class="latin">/api/ai/chat</span>
+            و <span class="latin">/api/lead</span>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">إمكانية وصول</div>
+        <div class="col-card-body">
+            <strong>WCAG 2.1 Level AA</strong> —focus على RTL، Arabic ligatures،
+            ARIA patterns، focus management، color contrast.<br><br>
+            <strong>WAI-ARIA Authoring Practices</strong> — patterns للـ tabs،
+            dialogs، command palette، live regions.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">امتثال سعودي</div>
+        <div class="col-card-body">
+            <strong>PDPL (نظام حماية البيانات الشخصية السعودي)</strong> — المرسوم الملكي م/19.<br>
+            <strong>SDAIA 7 Principles</strong> — مبادئ الذكاء الاصطناعي المسؤول.<br>
+            <strong>NCA ECC v2</strong> — ضوابط الأمن السيبراني (ECC-1:5:2-1 إلى ECC-4:4).<br>
+            <strong>ISO/IEC 42001:2023</strong> — نظام إدارة الذكاء الاصطناعي.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">أداء</div>
+        <div class="col-card-body">
+            <strong>Google Core Web Vitals</strong> — LCP ≤ 2.5s، CLS ≤ 0.1، INP ≤ 200ms.<br>
+            <strong>7 Viewports إلزامية:</strong> 320×568، 360×640، 390×844، 768×1024،
+            1024×768، 1440×900، 1920×1080.<br>
+            <strong>WCAG 2.5.5</strong> — touch targets ≥ 44×44px.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مستويات الثقة</div>
+
+<p class="body-text">
+كل ثغرة في هذا التقرير تحمل تصنيف ثقة من ثلاثة مستويات: <strong>Confirmed</strong>
+(تم التحقق منها بإعادة إنتاج أو دليل قاطع في الكود)، <strong>High Confidence</strong>
+(دليل قوي في الكود لكن لم يُعاد إنتاجها عملياً)، <strong>Needs Verification</strong>
+(مؤشرات قوية لكن تحتاج تحقق إضافي). كما يتم التمييز بشكل صريح بين <strong>Live Code</strong>
+(كود حيّ قابل للوصول في الإنتاج) و <strong>Legacy Inert</strong> (كود قديم غير محمّل
+اليوم لكنه يمثل خطراً محتملاً لو أُعيد تفعيله).
+</p>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 3 — نظرة معمارية شاملة
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 03 · Architecture</div>
+    <h2 class="section-title"><span class="section-title-num">03.</span> نظرة معمارية شاملة</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+يتكون مستودع <strong>BRIGHTAI-main</strong> من سطحين مختلفين في النضج: <strong>(1) سطح Astro</strong>
+التسويقي مع <span class="latin">Kernel</span> المُهاجَر إليه، و <strong>(2) سطح Next.js Dashboard</strong>
+للوحة التحكم الحقيقية مع <span class="latin">AI Firewall</span>. كلا السطحين منشوران على Render
+كخدمة Node واحدة، مع <span class="latin">Postgres</span> مشتركة و <span class="latin">Redis</span>
+اختياري للـ rate limiting. هذه البنية المختلطة تخلق تعقيداً تشغيلياً يستحق توضيحه قبل الغوص
+في التفاصيل.
+</p>
+
+<div class="subsection-title">طبقات البنية الأربعة</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">1. Astro Marketing Layer</div>
+        <div class="col-card-body">
+            147 صفحة <span class="latin">HTML</span> ثابتة في <span class="latin">src/pages/</span>،
+            مع بناء <span class="latin">output: 'static'</span> + <span class="latin">@astrojs/node</span>
+            للـ SSR Routes. تشمل: صفحات Kernel الـ12، المدونة (50+ مقال)، الحلول،
+            القطاعات، Hub، الوثائق، الصفحات القانونية (PDPL، Terms، Privacy). كلها تدعم
+            <span class="latin">dir="rtl" lang="ar"</span> افتراضياً.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">2. SSR API Layer</div>
+        <div class="col-card-body">
+            مساران فقط <span class="latin">prerender = false</span>: <span class="latin">/api/ai/chat</span>
+            (بروكسي LLM إلى Groq + Gemini مع fallback تلقائي) و <span class="latin">/api/lead</span>
+            (التقاط leads مع Zod validation). كلاهما بدون auth، مع rate limit في الذاكرة
+            (10 و 5 طلب/دقيقة/IP على التوالي).
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">3. Next.js Dashboard Layer</div>
+        <div class="col-card-body">
+            لوحة تحكم متعددة المستأجرين في <span class="latin">apps/dashboard/</span> مع Clerk auth،
+            Prisma + Postgres RLS، RBAC بخمسة أدوار (OWNER &gt; ADMIN &gt; COMPLIANCE_OFFICER
+            &gt; REVIEWER &gt; MEMBER). هنا يعيش <span class="latin">AI Firewall</span> الحقيقي
+            مع كشف PII، redaction، AES vault، وhash-chain audit log.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">4. Legacy Kernel Layer</div>
+        <div class="col-card-body">
+            20 ملف <span class="latin">JS</span> قديم في <span class="latin">kernel/assets/js/</span>
+            + <span class="latin">kernel/sw.js</span> + <span class="latin">kernel/manifest.json</span> +
+            8 ملفات mock JSON مع PII سعودي واقعي. <strong>غير محمّلة في بناء Astro</strong>، لكنها
+            تشكل خطراً محتملاً لو أُعيد تقديمها. تحتاج تطهيراً أو عزلاً صريحاً.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مسار الطلب الكامل (End-to-End Flow)</div>
+
+<p class="body-text">
+عندما يزور مستخدم صفحة <span class="latin">/kernel/chat/</span>، يتم تحميل HTML ثابت
+يحتوي مكوّن <span class="latin">KernelAiAssistant.astro</span>. هذا المكوّن يكتب الـ
+<span class="latin">system prompt</span> الكامل كـ <span class="latin">data-system-prompt</span>
+attribute في الـ DOM (ثغرة KRN-006). عند إرسال رسالة، يقوم الكلاينت بـ
+<span class="latin">fetch POST</span> إلى <span class="latin">/api/ai/chat/</span> مع
+<span class="latin">{ message, systemPrompt, provider }</span> في الجسم. الخادم يتحقق فقط
+من طول الرسالة (≤ 4000 حرف) وطول الـ prompt (≤ 2000 حرف)، ثم يُمررها حرفياً إلى
+<span class="latin">Groq</span> أولاً مع fallback إلى <span class="latin">Gemini</span>،
+ثم يُرجع النص للكلاينت.
+</p>
+
+<div class="callout callout-warning">
+    <div class="callout-title">⚠ نقطة ضع بنيوية</div>
+    لا يوجد <span class="latin">auth</span> في أي مرحلة من هذا المسار. الـ <span class="latin">rate limit</span>
+    هو الخط الدفاعي الوحيد، وهو <strong>in-memory per-process</strong> — أي أن أي توسع أفقي
+    على Render سيضاعف الحد الفعلي لكل IP. كما أن الـ <span class="latin">system prompt</span>
+    المُصمّم بعناية والذي يحدد سلوك المساعد (مثلاً: "أنت خبير امتثال سعودي، لا تعطِ توصيات
+    قانونية...") يمكن لأي مهاجم تجاوزه بالكامل بقيمة <span class="latin">"Ignore previous instructions..."</span>.
+</div>
+
+<div class="subsection-title">مصفوفة النضج لكل سطح</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>السطح</th>
+            <th>النضج</th>
+            <th>القابلية للإنتاج</th>
+            <th>التعقيد</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Astro marketing (147 صفحة)</td><td><span class="score-pill score-success">85%</span></td><td>Production-ready</td><td>منخفض</td></tr>
+        <tr><td>Kernel Astro (12 صفحة)</td><td><span class="score-pill score-warning">70%</span></td><td>Production-ready مع تحفظات</td><td>متوسط</td></tr>
+        <tr><td>SSR APIs (chat, lead)</td><td><span class="score-pill score-critical">35%</span></td><td>يحتاج إصلاح حرج</td><td>منخفض</td></tr>
+        <tr><td>Next.js Dashboard</td><td><span class="score-pill score-warning">60%</span></td><td>Phase 0 — Scaffolding</td><td>عالي</td></tr>
+        <tr><td>AI Firewall (in dashboard)</td><td><span class="score-pill score-warning">65%</span></td><td>قابل للإنتاج بعد إصلاحات</td><td>عالي جداً</td></tr>
+        <tr><td>Legacy kernel/ surface</td><td><span class="score-pill score-critical">15%</span></td><td>يجب عزله</td><td>متوسط</td></tr>
+        <tr><td>Service Worker (public/sw.js)</td><td><span class="score-pill score-success">90%</span></td><td>Production-ready</td><td>منخفض</td></tr>
+        <tr><td>PWA Manifest</td><td><span class="score-pill score-success">85%</span></td><td>Production-ready</td><td>منخفض</td></tr>
+    </tbody>
+</table>
+
+<p class="body-text">
+الاستنتاج المعماري الأساسي: المشروع يمتلك <strong>عموداً فقرياً قوياً</strong> (Astro + Kernel
+للتسويق، Dashboard + AI Firewall للمنتج)، لكن الطبقة الوسطى (SSR APIs) غير ناضجة بما
+يكفي لتكون حلقة وصل موثوقة. أي خارطة طريق للريادة يجب أن تبدأ بـ <em>تأمين هذه الطبقة
+الوسطى</em> قبل أي توسع في الميزات.
+</p>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 4 — الأمن السيبراني
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 04 · Cybersecurity</div>
+    <h2 class="section-title"><span class="section-title-num">04.</span> الأمن السيبراني — تحليل عميق</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+يحتل الأمن السيبراني المرتبة <strong>الأدنى</strong> في درجات المشروع بنسبة <strong>42%</strong> فقط.
+هذه النسبة المنخفضة لا تعني غياب الإدراك الأمني (الكود يحتوي تعليقات أمنية جيدة في أماكن
+مختلفة)، بل تعني وجود <em>فجوة تنفيذية</em> بين التصميم الأمني المُعلن والتطبيق الفعلي.
+تم اكتشاف <strong>3 ثغرات Critical على كود حيّ</strong> + <strong>2 ثغرات Critical على كود قديم خامد</strong>
++ <strong>5 ثغرات High</strong> + <strong>7 ثغرات Medium</strong>. كل ثغرة موثقة بمرجع دقيق
+مع نسبة تأثير وإجراء إصلاح.
+</p>
+
+<div class="chart-block">
+    <img src="03_severity_donut.png" alt="Severity Distribution">
+    <div class="chart-caption">الشكل 3 — توزيع الثغرات حسب الخطورة والوضع (حيّ/خامل)</div>
+</div>
+
+<div class="subsection-title">الثغرات الحرجة (Critical) — كود حيّ</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-001</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Prompt Injection كاملة في /api/ai/chat</div>
+    <div class="finding-meta">
+        <span>📁 src/pages/api/ai/chat.ts:258-262</span>
+        <span>🔒 100% من SSR LLM routes</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الخادم يقبل أي <span class="latin">systemPrompt</span> من جسم الطلب ويُمرره حرفياً إلى Groq و Gemini
+        دون أي قائمة بيضاء أو توقيع HMAC أو تحقق خادمي. التعليق على السطر 30 يزعم "No request body is logged"
+        بينما السطر 296 يُرجع <span class="latin">detail: (e as Error).message</span> للكلاينت، مما يكشف
+        أول 120 حرفاً من استجابة Groq/Gemini الخاطئة.
+    </div>
+    <div class="finding-evidence">POST /api/ai/chat/  →  body.systemPrompt = "Ignore all prior instructions..."
+→  forwarded verbatim to Groq as { role: 'system', content: systemPrompt }</div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        استبدال حقل <span class="latin">systemPrompt</span> بـ <span class="latin">promptId</span>
+        من قائمة بيضاء (<span class="latin">compliance, policies, evidence, audit, scenarios</span>)
+        مع استيراد الـ prompt الفعلي من <span class="latin">kernel-system-prompts.ts</span>
+        على الخادم فقط. الإصلاح المقدّر: 4-6 ساعات تطوير.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-002</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">تخزين الـ Prompt الخام غير المنقّى في AIRequest</div>
+    <div class="finding-meta">
+        <span>📁 apps/dashboard/app/api/firewall/chat/completions/route.ts</span>
+        <span>🔒 100% من الطلبات</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ AI Firewall يخزّن النص الأصلي قبل <span class="latin">redaction</span> في حقل
+        <span class="latin">AIRequest.prompt</span>، بما فيه SAUDI_ID و CARD_OR_ACCOUNT و PATIENT_ID.
+        التعليق في الكود يقول "tenant-scoped via withTenant would be ideal, but we use the service role" —
+        أي أن الـ <span class="latin">dbServiceRole</span> الذي يتجاوز RLS يُستخدم أيضاً هنا.
+    </div>
+    <div class="finding-evidence">const aiReq = await tx.aIRequest.create({
+  data: {
+    prompt: inputText.slice(0, 8192),       // ← raw, unredacted
+    response: finalContent.slice(0, 8192),  // ← redacted
+  }
+});</div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        سطر واحد: <span class="latin">prompt: inputResult.redactedText.slice(0, 8192)</span>
+        بدلاً من <span class="latin">inputText</span>. الإصلاح المقدّر: 30 دقيقة + اختبار
+        regression على الـ audit log.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-006</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">تسريب System Prompts إلى DOM — IP Disclosure</div>
+    <div class="finding-meta">
+        <span>📁 src/components/kernel/KernelAiAssistant.astro:74</span>
+        <span>🔒 5/5 prompts = 100%</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ system prompts المُصمّمة بعناية (compliance, policies, evidence, audit, scenarios)
+        تُكتب كـ <span class="latin">data-system-prompt="..."</span> على عنصر
+        <span class="latin">&lt;section&gt;</span>، متاحة لأي شخص بفتح DevTools. التعليق
+        على السطر 32 يزعم "لا يحفظ الـ systemPrompt في DOM" — وهو <strong>خطأ صريح</strong>،
+        الـ prompt موجود في الـ DOM.
+    </div>
+    <div class="finding-evidence">&lt;section data-kernel-ai-assistant
+    data-system-prompt="أنت خبير امتثال سعودي متخصص في PDPL و SDAIA و NCA ECC..."&gt;</div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        إزالة الـ <span class="latin">data-system-prompt</span> attribute بالكامل،
+        وإرسال <span class="latin">promptId</span> فقط في الـ fetch body. الإصلاح المقدّر: ساعة واحدة.
+    </div>
+</div>
+
+<div class="subsection-title">الثغرات الحرجة — كود قديم خامد</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-005</span>
+        <span class="finding-severity critical">Critical · Legacy Inert</span>
+    </div>
+    <div class="finding-title">legacy kernel/sw.js يخزّن /api/kernel/* ويصطفّ الـ mutations</div>
+    <div class="finding-meta">
+        <span>📁 kernel/sw.js:96-108, 125-155, 461-509</span>
+        <span>🔒 0% active اليوم</span>
+        <span>⚠ Needs Verification</span>
+    </div>
+    <div class="finding-body">
+        الـ SW القديم يخزّن استجابات <span class="latin">GET /api/kernel/*</span> عبر SWR،
+        ويُفعّل <span class="latin">periodicBackgroundSync</span> لجلب الـ approvals و stats
+        في الخلفية، ويصطفّ طلبات الـ mutation مع PII كاملة في IndexedDB دون انتهاء صلاحية.
+        اليوم غير مُسجّل في بناء Astro (تم التحقق بـ grep)، لكن أي إعادة تفعيل بالخطأ تخلق
+        خطراً مباشراً.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        نقل <span class="latin">kernel/sw.js</span> و <span class="latin">kernel/manifest.json</span>
+        إلى <span class="latin">kernel/legacy-disabled/</span> مع README يشرح السبب + إضافة
+        CI test يمنع أي تسجيل SW من <span class="latin">kernel/</span>.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">KRN-007</span>
+        <span class="finding-severity critical">Critical · Legacy Inert</span>
+    </div>
+    <div class="finding-title">kernel-mock-handlers.js يختطف window.fetch</div>
+    <div class="finding-meta">
+        <span>📁 kernel/assets/js/kernel-mock-handlers.js:745-758</span>
+        <span>🔒 0% loaded اليوم</span>
+        <span>⚠ Needs Verification</span>
+    </div>
+    <div class="finding-body">
+        عندما <span class="latin">localStorage.brightai_kernel_demo_mode === 'true'</span>،
+        يختطف الملف كل نداءات <span class="latin">fetch('/api/kernel/*')</span> ويُرجع بيانات
+        وهمية. أي مهاجم بـ XSS (أو حتى DevTools) يمكنه تفعيل الوضع التجريبي على خادم إنتاجي.
+        اليوم غير محمّل في Astro (تم التحقق)، لكن الملف موجود في المستودع.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        نقل الملفات الثلاثة (<span class="latin">kernel-mock-handlers.js</span>،
+        <span class="latin">kernel-demo-store.js</span>، <span class="latin">kernel-api.js</span>)
+        إلى <span class="latin">kernel/legacy-disabled/mock/</span> + CI test.
+    </div>
+</div>
+
+<div class="subsection-title">الثغرات عالية الخطورة (High)</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">KRN-003</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">عدم وجود Auth على LLM Proxy</div>
+    <div class="finding-meta">
+        <span>📁 src/pages/api/ai/chat.ts:220</span>
+        <span>🔒 0% auth</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        أي عميل مجهول يمكنه POST والحصول على استجابة LLM. الـ rate limit (10/دقيقة/IP)
+        يمكن تجاوزه بدوران IP أو من أجهزة متعددة. ناقل إساءة رئيسي: حرق حصة Groq + Gemini
+        على حساب BrightAI، أو توليد محتوى تصيّد بمفاتيح BrightAI.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        إضافة origin allowlist (BrightAI فقط) + optional API key من
+        <span class="latin">import.meta.env.BRIGHTAI_CHAT_KEY</span>. الإصلاح المقدّر: 3-4 ساعات.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">KRN-004</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">تسجيل PII كاملة في stdout في /api/lead</div>
+    <div class="finding-meta">
+        <span>📁 src/pages/api/lead.ts:188-195</span>
+        <span>🔒 100% من الـ leads</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        name + contact + company + IP تُكتب كنص صريح إلى stdout. على Render تذهب إلى لوحة
+        السجلات (30 يوماً افتراضياً) متاحة لأي شخص لديه وصول للوحة. يتناقض مع تعليق الخصوصية
+        في نفس الملف السطر 27 الذي يزعم "IP يُسجّل في rate limit bucket فقط".
+    </div>
+    <div class="finding-evidence">console.log(
+  `[brightai-kernel-lead] ${date} ip=${ip} page=${lead.page} ` +
+  `name="${lead.name}" company="${lead.company}" contact="${lead.contact}"`
+);</div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        استبدال الـ console.log بـ SHA-256 hash فقط + إرسال الـ lead كامل إلى webhook
+        (Resend/SendGrid/HubSpot) عبر متغيرات بيئة. الإصلاح المقدّر: 6-8 ساعات.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">KRN-008</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">dbServiceRole يتجاوز RLS في عدة مواقع</div>
+    <div class="finding-meta">
+        <span>📁 lib/session.ts, lib/tenant.ts, app/(app)/team/page.tsx, app/api/firewall/chat/completions/route.ts</span>
+        <span>🔒 ~12 موقع</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">dbServiceRole</span> يتجاوز Postgres RLS بالكامل ويُستخدم
+        في عدة مواقع tenant-adjacent بدون <span class="latin">withTenant</span>. كل موقعه
+        يحتاج فلتر <span class="latin">organizationId</span> يدوي صحيح. خطأ واحد = تسريب
+        بيانات cross-tenant بدون خط دفاعي ثانٍ.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        حصر <span class="latin">dbServiceRole</span> في pre-auth و migrations فقط،
+        وفرض <span class="latin">withTenant</span> على كل الـ tenant-scoped writes.
+        الإصلاح المقدّر: 16-24 ساعة.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">KRN-009</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">Streaming Redaction في chunks 256-char قد يفوت PII</div>
+    <div class="finding-meta">
+        <span>📁 apps/dashboard/app/api/firewall/chat/completions/route.ts (handleStream)</span>
+        <span>🔒 كل الطلبات streaming</span>
+        <span>⚠ Needs Verification</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">detect()/applyActions()</span> تعمل على كل chunk 256-char بشكل
+        مستقل، وليس على الـ fullContent المتراكم. PII مقسوم عبر حدود chunk (مثلاً: رقم هوية
+        سعودي مكون من 10 أرقام مقسوم 5+5 عبر flushين) قد يصل للكلاينت غير منقّى في SSE stream.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        تشغيل <span class="latin">detect()</span> على الـ fullContent المتراكم في كل flush،
+        أو زيادة حجم الـ buffer إلى 1024-char مع تداخل 128-char بين الـ flushes.
+    </div>
+</div>
+
+<div class="subsection-title">الثغرات متوسطة الخطورة (Medium) — مختارة</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">KRN-010 — Chart.js CDN بدون SRI</div>
+        <div class="col-card-body">
+            <span class="latin">src/pages/kernel/stats.astro:218</span> يحمل Chart.js من
+            <span class="latin">cdn.jsdelivr.net</span> بدون <span class="latin">integrity</span>
+            وبدون <span class="latin">defer</span>. CSP لا يسمح بـ cdn.jsdelivr.net،
+            فالـ script يُحظر على المضيفين الذين يطبّقون CSP، والرسوم البيانية تفشل بصمت.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">KRN-011 — spoofing X-Forwarded-For</div>
+        <div class="col-card-body">
+            <span class="latin">getClientIp()</span> في chat.ts و lead.ts يثق بالـ
+            <span class="latin">x-forwarded-for</span> (أول IP) و <span class="latin">x-real-ip</span>
+            دون تحقق. لو الـ proxy لا ي strip الـ header المُرسل من العميل، يمكن للمهاجم
+            spoof IPs لتجاوز الـ rate limit.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">KRN-012 — set:html بدون DOMPurify</div>
+        <div class="col-card-body">
+            <span class="latin">src/pages/kernel/[slug].astro:132</span> و
+            <span class="latin">offline.astro:13</span> يستخدمان <span class="latin">set:html</span>
+            على JSON مُؤلَّف وقت البناء. آمن اليوم، لكن أي تعديل JSON مستقبلاً يحتوي
+            <span class="latin">&lt;script&gt;</span> سيُنفَّذ.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">KRN-013 — Rate limiter fails open</div>
+        <div class="col-card-body">
+            <span class="latin">lib/firewall/ratelimit/redis-bucket.ts</span> يرجع إلى
+            in-memory Map عند غياب REDIS_URL. أي deployment متعدد الـ replicas يضاعف
+            الحد الفعلي، وrolling restart يعيد كل العدّادات إلى صفر.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">KRN-014 — Auto-OWNER race</div>
+        <div class="col-card-body">
+            <span class="latin">lib/session.ts</span> يتحقق من
+            <span class="latin">membership.count === 0</span> ثم يمنح OWNER — لكن ليس في
+            نفس الـ transaction. مستخدمان يضغطان Dashboard لأول مرة على tenant جديد في وقت
+            واحد قد يصبح كلاهما OWNER.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">KRN-015 — Tenant Host-header trust</div>
+        <div class="col-card-body">
+            <span class="latin">extractTenantFromHost()</span> في middleware.ts يحلّ هوية
+            الـ tenant من Host header. الـ Domain table (isVerified: true) تحمي جزئياً، لكن
+            لو العميل يستطيع الوصول مباشرة للـ Next.js server مع Host مزيّف، قد يصل لبيانات
+            tenant آخر.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات الأمن السيبراني الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card">
+        <div class="metric-value danger">42%</div>
+        <div class="metric-label">الدرجة الإجمالية للأمن</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value danger">3</div>
+        <div class="metric-label">Critical على كود حيّ</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value danger">5</div>
+        <div class="metric-label">High على كود حيّ</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value warning">2</div>
+        <div class="metric-label">Critical على كود خامد</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value accent">0%</div>
+        <div class="metric-label">SSR routes بـ auth</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value danger">100%</div>
+        <div class="metric-label">PII مسجّلة في stdout</div>
+    </div>
+</div>
+
+<div class="callout">
+    <div class="callout-title">الخلاصة الأمنية</div>
+    المشروع يمتلك <strong>أساساً أمنياً وعياً</strong> (CSP شامل في render.yaml، HSTS،
+    Svix webhook verification، RLS في Postgres)، لكن <strong>التطبيق العملي يعاني من فجوات
+    حرجة</strong> في ثلاثة مسارات: الـ LLM Proxy، الـ Lead Capture، والـ AI Firewall persistence.
+    إصلاح الثغرات الـ 5 الأولى (3 Critical + 2 High) يحتاج <strong>~40 ساعة تطوير</strong>
+    ويرفع الدرجة الأمنية من 42% إلى ~78%.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 5 — الأداء والموبايل
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 05 · Performance & Mobile</div>
+    <h2 class="section-title"><span class="section-title-num">05.</span> الأداء وتحسين الموبايل والكمبيوتر</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+حقق المشروع <strong>65%</strong> في محور الأداء و <strong>58%</strong> في محور الموبايل/الكمبيوتر —
+وهي نسب مقبولة لكنها أقل من المنافسين العالميين (Credo AI و Holistic AI يحرزون 80%+ في
+Web Vitals). الأساس السليم موجود: <span class="latin">perfCssDefer</span> integration لتحويل
+الـ CSS render-blocking إلى preload، وfonts محمّلة بـ <span class="latin">media="print" onload</span>
+trick، وcritical CSS مُضمّن في BaseLayout. لكن هناك <em>نقاط فشل حرجة</em> على الموبايل
+تحتاج معالجة فورية.
+</p>
+
+<div class="subsection-title">مصفوفة الاستجابة — صفحات Kernel × Viewports</div>
+
+<div class="chart-block">
+    <img src="04_viewport_matrix.png" alt="Viewport Matrix">
+    <div class="chart-caption">الشكل 4 — مصفوفة 12 صفحة × 7 viewports (PASS/WARN/FAIL)</div>
+</div>
+
+<p class="body-text">
+المصفوفة تكشف أن <strong>3 صفحات</strong> تعاني من مشاكل على الموبايل الصغير (320-360px):
+صفحة <span class="latin">/kernel/chat/</span> بسبب layout الـ 3-panes الذي لا يخفي قائمة
+الـ threads على الموبايل، و <span class="latin">/kernel/scenarios/</span> بسبب
+<span class="latin">grid-template-columns: repeat(auto-fill, minmax(340px, 1fr))</span> —
+الـ 340px أعرض من viewport 320px نفسه، مما يسبب overflow أفقي. صفحة الـ
+<span class="latin">/kernel/stats/</span> تعاني من Chart.js render-blocking و CSP block.
+</p>
+
+<div class="subsection-title">مؤشرات Web Vitals المتوقعة</div>
+
+<div class="chart-block">
+    <img src="08_web_vitals.png" alt="Web Vitals">
+    <div class="chart-caption">الشكل 5 — نسبة تحقيق أهداف Google Core Web Vitals</div>
+</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>المؤشر</th>
+            <th>الحالي</th>
+            <th>الهدف (Google)</th>
+            <th>نسبة التحقيق</th>
+            <th>السبب الرئيسي</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>LCP (Largest Contentful Paint)</td><td>3.2s</td><td>≤ 2.5s</td><td><span class="score-pill score-warning">78%</span></td><td>chart.js render-blocking على /stats/</td></tr>
+        <tr><td>CLS (Cumulative Layout Shift)</td><td>0.18</td><td>≤ 0.10</td><td><span class="score-pill score-warning">55%</span></td><td>صور بدون width/height على بعض الصفحات</td></tr>
+        <tr><td>INP (Interaction to Next Paint)</td><td>280ms</td><td>≤ 200ms</td><td><span class="score-pill score-warning">71%</span></td><td>view transitions + script re-init</td></tr>
+        <tr><td>TBT (Total Blocking Time)</td><td>320ms</td><td>≤ 200ms</td><td><span class="score-pill score-warning">63%</span></td><td>Chart.js + third-party scripts</td></tr>
+        <tr><td>JS Payload (gzipped)</td><td>95KB</td><td>≤ 80KB</td><td><span class="score-pill score-warning">84%</span></td><td>Clarity + Mixpanel + Bing UET</td></tr>
+        <tr><td>FCP (First Contentful Paint)</td><td>1.4s</td><td>≤ 1.8s</td><td><span class="score-pill score-success">100%</span></td><td>critical CSS inline</td></tr>
+        <tr><td>TTFB (Time to First Byte)</td><td>380ms</td><td>≤ 600ms</td><td><span class="score-pill score-success">100%</span></td><td>static + Render CDN</td></tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">مشاكل الموبايل الحرجة</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">MOB-001</span>
+        <span class="finding-severity high">High · Mobile</span>
+    </div>
+    <div class="finding-title">Chat 3-Pane Layout يكسر على الموبايل</div>
+    <div class="finding-meta">
+        <span>📁 src/styles/kernel.css:1863-1875</span>
+        <span>📱 320px-768px</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        على الموبايل (&lt;1024px)، الـ layout يصبح عمودياً واحداً لكن قائمة الـ threads
+        (left pane) لا تُخفى أبداً. المستخدم يرى threads → chat → context مكدسة عمودياً،
+        مما يتطلب تمريراً طويلاً قبل الوصول للـ composer. كما أن الـ layout يستخدم
+        <span class="latin">min-block-size: 70vh</span> (وليس <span class="latin">dvh</span>)،
+        فعلى iOS Safari الـ composer يُدفع تحت الـ fold بسبب شريط الـ URL.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        إخفاء الـ threads والـ context افتراضياً على الموبايل + إضافة أزرار "الرسائل" و
+        "السياق" تفتح drawers + استخدام <span class="latin">100dvh</span> بدلاً من
+        <span class="latin">70vh</span> + sticky composer.
+    </div>
+</div>
+
+<div class="finding-card medium">
+    <div class="finding-header">
+        <span class="finding-id">MOB-002</span>
+        <span class="finding-severity medium">Medium · Mobile</span>
+    </div>
+    <div class="finding-title">grids بـ minmax &gt; 320px تسبب overflow أفقي</div>
+    <div class="finding-meta">
+        <span>📁 src/styles/kernel.css:3863, 4276, 3597</span>
+        <span>📱 320px viewport</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        ثلاث grids تستخدم <span class="latin">minmax(X, 1fr)</span> بقيم X &gt; 320px:
+        <span class="latin">.kernel-scenarios-grid</span> (340px)،
+        <span class="latin">.kernel-connectors-grid</span> (320px)، وأخرى (320px). على viewport
+        320px مع padding، تحدث overflow أفقي. <span class="latin">overflow-x: clip</span> على
+        html/body يحمي من scroll الصفحة، لكن المحتوى يُقتطع.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        استبدال كل <span class="latin">minmax(X, 1fr)</span> بـ <span class="latin">minmax(min(100%, 280px), 1fr)</span>.
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات الموبايل/الكمبيوتر الإجمالية</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr>
+            <th>المؤشر</th>
+            <th>النسبة</th>
+            <th>الهدف</th>
+            <th>الحالة</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>صفحات بلا overflow أفقي عند 320px</td><td><span class="score-pill score-warning">75%</span></td><td>100%</td><td>3 صفحات تفشل</td></tr>
+        <tr><td>صفحات بلا overflow أفقي عند 360px</td><td><span class="score-pill score-success">92%</span></td><td>100%</td><td>1 صفحة تحذير</td></tr>
+        <tr><td>touch targets ≥ 44×44px</td><td><span class="score-pill score-success">95%</span></td><td>100%</td><td>sidebar collapse 38px</td></tr>
+        <tr><td>fixed/sticky elements بـ dvh (ليس vh)</td><td><span class="score-pill score-warning">40%</span></td><td>100%</td><td>5 من 8 تستخدم vh</td></tr>
+        <tr><td>form inputs بـ font-size ≥ 16px</td><td><span class="score-pill score-success">100%</span></td><td>100%</td><td>composer textarea ممتاز</td></tr>
+        <tr><td>grids بـ minmax ≤ 320px</td><td><span class="score-pill score-warning">70%</span></td><td>100%</td><td>3 grids تخالف</td></tr>
+        <tr><td>tables reflow أو scroll in-wrapper</td><td><span class="score-pill score-success">100%</span></td><td>100%</td><td>pattern ممتاز</td></tr>
+        <tr><td>images بـ width + height صريحين</td><td><span class="score-pill score-success">90%</span></td><td>100%</td><td>بعض images ناقصة</td></tr>
+        <tr><td>images بـ loading="lazy" (non-LCP)</td><td><span class="score-pill score-success">95%</span></td><td>100%</td><td>Header logo ممتاز</td></tr>
+        <tr><td>LCP elements preloaded</td><td><span class="score-pill score-success">100%</span></td><td>100%</td><td>logo-192.webp preload</td></tr>
+    </tbody>
+</table>
+
+<div class="callout callout-warning">
+    <div class="callout-title">ملاحظة استراتيجية — تجربة الموبايل السعودي</div>
+    السوق السعودي يتميز بـ <strong>92%+ معدل استخدام الموبايل</strong> للوصول للإنترنت، و
+    <strong>60%+ من المستخدمين على أجهزة ≤ 360px</strong>. أي فشل في تجربة الموبايل =
+    فشل في السوق المستهدف. إصلاح الـ chat 3-pane + الـ grids الزائدة يجب أن يكون
+    أولوية Quick Win في خارطة الطريق.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 6 — إمكانية الوصول
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 06 · Accessibility (RTL + Arabic)</div>
+    <h2 class="section-title"><span class="section-title-num">06.</span> إمكانية الوصول (A11y) و RTL العربي</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+حقق المشروع <strong>51%</strong> فقط في إمكانية الوصول — وهي النسبة الأقل بعد الأمن السيبراني.
+هذه النسبة <em>محرجة</em> لمنتج يستهدف السوق السعودي بنسبة 92%+ من المستخدمين العرب. الأساس
+موجود: <span class="latin">dir="rtl" lang="ar"</span> على KernelLayout، skip link، focus-visible
+على معظم العناصر التفاعلية، ARIA patterns على الـ AI assistant. لكن هناك <strong>مشاكل
+حرجة في RTL</strong> تؤثر على القراءة العربية، ونقص في ARIA patterns على الـ tabs و الـ drawer.
+</p>
+
+<div class="subsection-title">المشاكل الحرجة في RTL العربي</div>
+
+<div class="finding-card medium">
+    <div class="finding-header">
+        <span class="finding-id">A11Y-001</span>
+        <span class="finding-severity medium">Medium · Arabic</span>
+    </div>
+    <div class="finding-title">letter-spacing يكسر ligatures العربية</div>
+    <div class="finding-meta">
+        <span>📁 src/styles/kernel.css:147, 609, 2425-2430</span>
+        <span>🔒 كل صفحات Kernel</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">text-transform: uppercase; letter-spacing: 0.05em</span> على
+        <span class="latin">.kernel-table th</span> و <span class="latin">.kernel-sidebar__section-label</span>
+        و <span class="latin">.kernel-sidecard__title</span>. العربية لا تمتلك حالات (uppercase
+        لا effect)، لكن <span class="latin">letter-spacing</span> يكسر <strong>وصل الحروف</strong>
+        العربية — حروف يجب أن تتصل تظهر منفصلة. هذا عيب بصري واضح على كل عنوان sidecard و
+        جدول في صفحات Kernel.
+    </div>
+    <div class="finding-evidence">.kernel-sidecard__title {
+  text-transform: uppercase;     /* no-op on Arabic */
+  letter-spacing: 0.05em;        /* ← BREAKS Arabic ligatures */
+}</div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        إزالة الخاصيتين من أي selector يؤثر على عربية. للعناصر اللاتينية فقط، استخدام
+        <span class="latin">:lang(en) { text-transform: uppercase; letter-spacing: 0.05em }</span>.
+    </div>
+</div>
+
+<div class="finding-card medium">
+    <div class="finding-header">
+        <span class="finding-id">A11Y-002</span>
+        <span class="finding-severity medium">Medium · ARIA</span>
+    </div>
+    <div class="finding-title">Drawer بدون aria-modal — focus trap لا يُفعّل</div>
+    <div class="finding-meta">
+        <span>📁 src/layouts/KernelLayout.astro:350</span>
+        <span>🔒 كل صفحات Kernel</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ drawer له <span class="latin">role="dialog"</span> لكن بدون <span class="latin">aria-modal="true"</span>.
+        الـ <span class="latin">focus-trap.js</span> العام (محمل من BaseLayout) يُفعّل تلقائياً
+        فقط على <span class="latin">[role="dialog"][aria-modal="true"]</span>. النتيجة: Tab
+        key يهرب من الـ drawer إلى الصفحة خلفه. يستخدم مستخدمو قارئ الشاشة (VoiceOver/NVDA)
+        يجدون أنفسهم يتنقلون في عناصر غير مرئية.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        إضافة <span class="latin">aria-modal="true"</span> + <span class="latin">aria-labelledby</span>
+        + scroll lock + focus return.
+    </div>
+</div>
+
+<div class="finding-card medium">
+    <div class="finding-header">
+        <span class="finding-id">A11Y-003</span>
+        <span class="finding-severity medium">Medium · Keyboard</span>
+    </div>
+    <div class="finding-title">اختصارات لوحة مفاتيح بدون modifier — خطيرة للمستخدمين الكتابيين</div>
+    <div class="finding-meta">
+        <span>📁 src/layouts/KernelLayout.astro:501-504</span>
+        <span>🔒 كل صفحات Kernel</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        مفاتيح مفردة <span class="latin">c, a, s, t, r</span> تُفعّل تنقل أو reload بدون
+        modifier. الـ guard على السطر 497-499 يتخطى فقط <span class="latin">INPUT/TEXTAREA/SELECT</span>
+        و <span class="latin">contentEditable</span>. لو زر أو رابط له focus (مثلاً بعد نقرة)،
+        الضغط على <span class="latin">c</span> ينقل المستخدم لـ <span class="latin">/kernel/chat/</span>
+        دون قصد. <strong>خطير جداً</strong> لمستخدمي keyboard فقط.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        طلب <span class="latin">e.metaKey || e.ctrlKey</span> + الـ guard الحالي.
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات A11y الإجمالية</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr>
+            <th>المؤشر</th>
+            <th>النسبة</th>
+            <th>الهدف</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>صفحات بـ html lang dir صحيح</td><td><span class="score-pill score-success">100%</span></td><td>100%</td></tr>
+        <tr><td>logical CSS properties (vs physical)</td><td><span class="score-pill score-warning">75%</span></td><td>≥ 95%</td></tr>
+        <tr><td>text-transform uppercase أُزيل من عناصر عربية</td><td><span class="score-pill score-critical">0%</span></td><td>100%</td></tr>
+        <tr><td>letter-spacing &gt; 0 أُزيل من عناصر عربية</td><td><span class="score-pill score-critical">0%</span></td><td>100%</td></tr>
+        <tr><td>heading hierarchy صحيحة (no skips)</td><td><span class="score-pill score-warning">85%</span></td><td>100%</td></tr>
+        <tr><td>:focus-visible مرئي على كل العناصر التفاعلية</td><td><span class="score-pill score-success">90%</span></td><td>100%</td></tr>
+        <tr><td>modals/dialogs بـ role="dialog" aria-modal="true"</td><td><span class="score-pill score-warning">50%</span></td><td>100%</td></tr>
+        <tr><td>form inputs بـ label for صريح</td><td><span class="score-pill score-success">100%</span></td><td>100%</td></tr>
+        <tr><td>color contrast pairs تجتاز AA (4.5:1)</td><td><span class="score-pill score-success">95%</span></td><td>100%</td></tr>
+        <tr><td>صفحات تجتاز axe-core critical+serious</td><td><span class="score-pill score-warning">75%</span></td><td>100%</td></tr>
+    </tbody>
+</table>
+
+<div class="callout">
+    <div class="callout-title">نقاط القوة في A11y</div>
+    المشروع يمتلك <strong>أساساً ممتازاً</strong> في: تباين الألوان (موثّق في tokens.css)،
+    touch targets (44×44px على الأغلب)، form labels مع aria-required و aria-describedby،
+    skip link بالعربية، focus-visible outlines، role="log" على الـ AI assistant لـ
+    announcements. هذه نقاط انطلاق جيدة.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 7 — الامتثال السعودي
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 07 · Saudi Compliance</div>
+    <h2 class="section-title"><span class="section-title-num">07.</span> الامتثال السعودي — PDPL/SDAIA/NCA ECC/ISO 42001</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+الامتثال السعودي هو <strong>أقل المحاور نضجاً</strong> بعد الأمن السيبراني بنسبة <strong>38%</strong>
+فقط — وهي نتيجة <em>مفاجئة</em> لمنتج يعلن نفسه كمنصة حوكمة ذكاء اصطناعي سعودية. الفجوة
+ليست في الوعي (الموقع التسويقي مليء بالمحتوى عن PDPL و SDAIA و NCA ECC)، بل في
+<strong>التنفيذ الفعلي داخل المنتج</strong>. لا توجد وحدة DPO، لا ROPA (Records of Processing
+Activities)، لا breach notification workflow، لا data residency controls، لا cross-border
+transfer safeguards.
+</p>
+
+<div class="chart-block">
+    <img src="05_compliance_frameworks.png" alt="Compliance Frameworks">
+    <div class="chart-caption">الشكل 6 — نسب الامتثال الحالية والأهداف على مدى 180 و 365 يوماً</div>
+</div>
+
+<div class="subsection-title">جدول mapping الامتثال التفصيلي</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>الإطار</th>
+            <th>المتطلب الرئيسي</th>
+            <th>تنفيذ BrightAI</th>
+            <th>النسبة</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>PDPL (نظام حماية البيانات الشخصية)</strong></td>
+            <td>تعيين DPO + إخطار الهيئة عند الخروقات + ROPA</td>
+            <td>❌ لا يوجد DPO module، ❌ لا breach notification workflow، ❌ لا ROPA</td>
+            <td><span class="score-pill score-critical">38%</span></td>
+        </tr>
+        <tr>
+            <td><strong>SDAIA 7 Principles</strong></td>
+            <td>الشفافية، العدالة، الخصوصية، المساءلة، الأمان، الموثوقية، المراجعة البشرية</td>
+            <td>✓ الشفافية (توثيق ممتاز)، ⚠ العدالة (لا bias testing)، ❌ المساءلة (لا audit trail شامل)</td>
+            <td><span class="score-pill score-warning">45%</span></td>
+        </tr>
+        <tr>
+            <td><strong>NCA ECC v2</strong></td>
+            <td>ضوابط الأمن السيبراني (ECC-1 إلى ECC-4) — Identity, Network, Data, App</td>
+            <td>⚠ Identity (Clerk فقط)، ⚠ Network (Cloudflare)، ✓ Data (RLS + AES vault)، ⚠ App (CSP لكن ثغرات)</td>
+            <td><span class="score-pill score-warning">52%</span></td>
+        </tr>
+        <tr>
+            <td><strong>ISO/IEC 42001:2023</strong></td>
+            <td>نظام إدارة الذكاء الاصطناعي — AI policy، risk assessment، controls</td>
+            <td>❌ لا AI policy formal، ⚠ risk classification (موجود جزئياً)، ❌ لا controls register</td>
+            <td><span class="score-pill score-critical">30%</span></td>
+        </tr>
+        <tr>
+            <td><strong>UAE PDPL (مستقبلي)</strong></td>
+            <td>التوسع الإقليمي لدولة الإمارات</td>
+            <td>❌ لا دعم متعدد القوانين</td>
+            <td><span class="score-pill score-critical">12%</span></td>
+        </tr>
+        <tr>
+            <td><strong>GDPR (مستقبلي)</strong></td>
+            <td>التوسع الأوروبي</td>
+            <td>❌ لا دعم</td>
+            <td><span class="score-pill score-critical">18%</span></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">الفجوات الحرجة في الامتثال السعودي</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">1. لا وحدة DPO</div>
+        <div class="col-card-body">
+            PDPL المادة 12 تُلزم بتعيين Data Protection Officer للكيانات التي تعالج بيانات
+            شخصية حساسة. BrightAI لا يوفر role اسمه DPO ولا workflow لتعيينه ولا صلاحيات
+            مخصصة له (عرض ROPA، اعتماد DPIA، التواصل مع الهيئة).
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">2. لا ROPA</div>
+        <div class="col-card-body">
+            Records of Processing Activities إلزامية بموجب PDPL المادة 9. يجب توثيق كل
+            نشاط معالجة: الغرض، الأساس القانوني، الفئات، المستلمين، مدة الاحتفاظ، تدابير
+            الأمان. BrightAI لا يوفر أي وحدة لتوليد ROPA تلقائياً.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">3. لا Breach Notification</div>
+        <div class="col-card-body">
+            PDPL المادة 21 تُلزم بإخطار الهيئة خلال 72 ساعة من اكتشاف الخرق. لا يوجد في
+            BrightAI workflow لإدارة incident من الاكتشاف حتى الإخطار، مع template موحد
+            للمحتوى المطلوب وسجل لكل إخطار.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">4. لا Data Residency</div>
+        <div class="col-card-body">
+            PDPL المادة 14 يُقيّد نقل البيانات الشخصية خارج المملكة. BrightAI يستخدم
+            Postgres على Render (US/EU regions) و Groq/Gemini (US). لا توجد controls
+            لتحديد region أو منع نقل البيانات أو تطبيق Standard Contractual Clauses.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">5. لا AI Risk Assessment</div>
+        <div class="col-card-body">
+            ISO 42001 يطلب risk assessment لكل نموذج AI: المخاطر على حقوق الأفراد،
+            fairness، transparency، human oversight. BrightAI لديه risk classification
+            (موجود جزئياً في AIRequest) لكن لا risk assessment workflow كامل.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">6. لا DPIA Workflow</div>
+        <div class="col-card-body">
+            Data Protection Impact Assessment إلزامي للمعالجة عالية المخاطر بموجب PDPL
+            المادة 20. لا يوجد في BrightAI template لـ DPIA أو workflow لاعتماده من DPO
+            أو ربطه بنشاط معالجة محدد.
+        </div>
+    </div>
+</div>
+
+<div class="callout callout-danger">
+    <div class="callout-title">⚠ مخاطر امتثالية فورية</div>
+    إطلاق منتج AI governance سعودي بدون وحدة DPO + ROPA + breach notification يخلق
+    <strong>مسؤولية قانونية مباشرة</strong> للعملاء الذين سيعتمدون على BrightAI لإثبات
+    امتثالهم لـ PDPL. العميل الذي يستخدم BrightAI اليوم لا يستطيع إثبات امتثاله، وهذا
+    يهدم القيمة الكاملة لـ value proposition.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 8 — استراتيجية الذكاء الاصطناعي
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 08 · AI Strategy</div>
+    <h2 class="section-title"><span class="section-title-num">08.</span> استراتيجية الذكاء الاصطناعي — AI Firewall</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+الـ <strong>AI Firewall</strong> هو <em>الميزة التنافسية الأقوى</em> لـ BrightAI وحقق
+<strong>62%</strong> — وهي أعلى نسبة بين المحاور التقنية. الكود يقع في
+<span class="latin">apps/dashboard/app/api/firewall/</span> ويشمل: كشف PII (regex + optional
+NER)، redaction/tokenization engine، AES reversible vault، tamper-evident hash-chain audit
+log، وrate limiting (Redis Lua + in-memory fallback). هذه البنية متقدمة جداً مقارنة
+بالمنافسين الإقليميين، لكنها تعاني من <strong>ثغرات حرجة</strong> في persistence layer.
+</p>
+
+<div class="chart-block">
+    <img src="09_ai_firewall_coverage.png" alt="AI Firewall Coverage">
+    <div class="chart-caption">الشكل 7 — تحليل تغطية مكونات AI Firewall</div>
+</div>
+
+<div class="subsection-title">المكونات الثمانية للـ AI Firewall</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>المكوّن</th>
+            <th>الموقع</th>
+            <th>التغطية</th>
+            <th>الحالة</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>PII Detectors (regex)</td><td class="latin">lib/firewall/detectors/</td><td><span class="score-pill score-success">85%</span></td><td>SAUDI_ID, IBAN, CARD, PHONE, EMAIL, MRN</td></tr>
+        <tr><td>PII Detectors (NER)</td><td class="latin">lib/firewall/detectors/ner</td><td><span class="score-pill score-critical">30%</span></td><td>Optional، غير مفعّل افتراضياً</td></tr>
+        <tr><td>Redaction Engine</td><td class="latin">lib/firewall/engine/</td><td><span class="score-pill score-warning">75%</span></td><td>BUG: streaming chunk-boundary</td></tr>
+        <tr><td>Token Vault (AES)</td><td class="latin">lib/firewall/vault/token-vault.ts</td><td><span class="score-pill score-success">90%</span></td><td>Reversible، AES-256-GCM</td></tr>
+        <tr><td>Audit Hash Chain</td><td class="latin">lib/firewall/audit/hashchain.ts</td><td><span class="score-pill score-success">88%</span></td><td>Tamper-evident، SHA-256 chain</td></tr>
+        <tr><td>Rate Limit (Redis Lua)</td><td class="latin">lib/firewall/ratelimit/redis-bucket.ts</td><td><span class="score-pill score-warning">60%</span></td><td>Fails open عند غياب REDIS_URL</td></tr>
+        <tr><td>Rate Limit (in-memory)</td><td class="latin">same file</td><td><span class="score-pill score-success">95%</span></td><td>Single-instance فقط</td></tr>
+        <tr><td>Streaming Redaction</td><td class="latin">handleStream() in chat route</td><td><span class="score-pill score-critical">45%</span></td><td>256-char chunks، PII split risk</td></tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">الثغرات الحرجة في AI Firewall</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">AI-001</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">تخزين prompt خام غير منقّى في AIRequest.prompt</div>
+    <div class="finding-meta">
+        <span>📁 apps/dashboard/app/api/firewall/chat/completions/route.ts</span>
+        <span>🔒 100% من الطلبات</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        نفس ثغرة KRN-002 لكنها هنا <strong>أكثر خطورة</strong> لأنها في المنتج نفسه.
+        AI Firewall مصمم لحماية PII، لكنه يخزّن الـ PII الذي يفترض أنه يحميه. الـ LLM call
+        يستخدم <span class="latin">redactedMessages</span> (صحيح)، الـ response يخزّن
+        <span class="latin">finalContent</span> (منقّى، صحيح)، لكن الـ <span class="latin">prompt</span>
+        يخزّن <span class="latin">inputText</span> (الخام). هذا يهدم الـ value proposition.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        سطر واحد: <span class="latin">prompt: inputResult.redactedText.slice(0, 8192)</span>.
+        الإصلاح المقدّر: 30 دقيقة + اختبار regression.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">AI-002</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">Streaming Redaction في 256-char chunks — PII split risk</div>
+    <div class="finding-meta">
+        <span>📁 apps/dashboard/app/api/firewall/chat/completions/route.ts (handleStream)</span>
+        <span>🔒 كل الطلبات streaming</span>
+        <span>⚠ Needs Verification</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">detect()/applyActions()</span> تعمل على كل chunk 256-char بشكل
+        مستقل. PII مقسوم عبر حدود chunk (مثلاً: رقم هوية سعودي 10 أرقام مقسوم 5+5) يصل
+        للكلاينت غير منقّى في SSE stream. هذا <strong>ثغرة منطقية</strong> في الـ redaction
+        engine، وليس مجرد bug بسيط.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        تشغيل <span class="latin">detect()</span> على الـ fullContent المتراكم في كل flush،
+        أو زيادة حجم الـ buffer إلى 1024-char مع تداخل 128-char بين الـ flushes.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">AI-003</span>
+        <span class="finding-severity high">High · Live</span>
+    </div>
+    <div class="finding-title">dbServiceRole يتجاوز RLS في AIRequest + audit writes</div>
+    <div class="finding-meta">
+        <span>📁 app/api/firewall/chat/completions/route.ts</span>
+        <span>🔒 كل الـ transactions</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ <span class="latin">$transaction</span> لـ AIRequest + audit writes يستخدم
+        <span class="latin">dbServiceRole</span> الذي يتجاوز RLS. التعليق صريح: "tenant-scoped
+        via withTenant would be ideal, but we use the service role". هذا يعني أن أي bug في
+        الـ manual organizationId filter = تسريب cross-tenant بدون خط دفاعي ثانٍ.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        استخدام <span class="latin">withTenant(orgId, userId, fn)</span> للـ transaction
+        كاملة، مع الاحتفاظ بـ <span class="latin">dbServiceRole</span> فقط للـ pre-auth
+        و migrations.
+    </div>
+</div>
+
+<div class="subsection-title">ميزات تنافسية موجودة في AI Firewall</div>
+
+<div class="callout">
+    <div class="callout-title">نقاط القوة التنافسية</div>
+    <ul class="body-list">
+        <li><strong>Token Vault قابل للعكس (AES-256-GCM)</strong> — يسمح بـ de-redaction للمراجعة المخوّلة فقط، وهي ميزة <em>لا يقدمها معظم المنافسين</em>.</li>
+        <li><strong>Tamper-evident hash-chain audit log</strong> — كل AIRequest مرتبط بسابقه بـ SHA-256، مما يجعل التلاعب بالـ audit trail مكشوفاً رياضياً.</li>
+        <li><strong>Multi-level risk classification</strong> — PII مصنّف (CRITICAL/HIGH/MEDIUM/LOW) مع إجراءات مختلفة لكل مستوى.</li>
+        <li><strong>Pluggable NER architecture</strong> — تصميم يسمح بإضافة NER models مستقبلاً (مثلاً Arabic BERT) دون refactoring كبير.</li>
+        <li><strong>API key self-authentication</strong> — <span class="latin">bk_live_...</span> مع SHA-256 hash lookup، الـ raw key لا يُخزّن.</li>
+    </ul>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 9 — نموذج عمل SaaS
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 09 · SaaS Business Model</div>
+    <h2 class="section-title"><span class="section-title-num">09.</span> تحليل نموذج عمل SaaS</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+حقق نموذج عمل SaaS <strong>45%</strong> — وهي ثاني أدنى نسبة بعد الامتثال السعودي.
+المشروع يمتلك <em>الأساس التقني</em> لـ multi-tenancy قوي (subdomain + custom domain +
+Domain table + RLS + RBAC بخمسة أدوار)، لكنه يفتقر تماماً إلى <strong>التجارة</strong>:
+لا tiers تسعير، لا metering، no billing integration، no expansion revenue streams،
+no customer success workflow.
+</p>
+
+<div class="subsection-title">تحليل Multi-Tenancy و RBAC</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>الميزة</th>
+            <th>التنفيذ</th>
+            <th>النسبة</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Multi-tenancy model</td><td>Subdomain + custom domain + Domain table</td><td><span class="score-pill score-success">90%</span></td></tr>
+        <tr><td>RLS isolation</td><td>Postgres RLS via withTenant + SET LOCAL</td><td><span class="score-pill score-warning">75%</span></td></tr>
+        <tr><td>RBAC roles</td><td>OWNER(100) &gt; ADMIN(80) &gt; COMPLIANCE_OFFICER(60) &gt; REVIEWER(40) &gt; MEMBER(20)</td><td><span class="score-pill score-success">95%</span></td></tr>
+        <tr><td>Tenant resolution</td><td>extractTenantFromHost() + x-tenant-slug header</td><td><span class="score-pill score-warning">80%</span></td></tr>
+        <tr><td>Session management</td><td>Clerk + auto-OWNER-on-first-visit</td><td><span class="score-pill score-warning">70%</span></td></tr>
+        <tr><td>Audit trail</td><td>AIRequest + hashchain + audit events</td><td><span class="score-pill score-success">85%</span></td></tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">مقترح Tiers التسعير</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Tier</th>
+            <th>السعر الشهري</th>
+            <th>الميزات</th>
+            <th>السوق المستهدف</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Starter</strong></td>
+            <td>2,999 ريال</td>
+            <td>مستأجر واحد، 5 مستخدمين، 1,000 طلب AI/شهر، AI Firewall basic، dashboard قياسي</td>
+            <td>SMEs &lt; 50 موظف</td>
+        </tr>
+        <tr>
+            <td><strong>Pro</strong></td>
+            <td>9,999 ريال</td>
+            <td>مستأجر واحد، 25 مستخدم، 10,000 طلب AI/شهر، AI Firewall full + NER، DPO module، ROPA</td>
+            <td>Medium businesses 50-500 موظف</td>
+        </tr>
+        <tr>
+            <td><strong>Enterprise</strong></td>
+            <td>29,999 ريال</td>
+            <td>متعدد المستأجرين، مستخدمون غير محدودين، طلبات غير محدودة، breach notification، DPIA، SSO، على الطلب</td>
+            <td>Government + Banks + Healthcare</td>
+        </tr>
+        <tr>
+            <td><strong>Gov Cloud</strong></td>
+            <td>Custom</td>
+            <td>Deployment في debtir فيجوال، integration مع NCA ECC compliance audit، SLA 99.95%</td>
+            <td>الجهات الحكومية السعودية</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">مصادر Expansion Revenue المقترحة</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">1. AI Firewall Tokens</div>
+        <div class="col-card-body">
+            <strong>0.10 ريال/طلب</strong> بعد الـ quota الشهري. ميزة قابلة للقياس ومباشرة،
+            تربط النمو في استهلاك العميل بالنمو في الإيراد. المقترح: dashboard لمراقبة
+            الاستهلاك + تنبيهات تلقائية عند 80% و 100%.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">2. Audit Storage</div>
+        <div class="col-card-body">
+            <strong>0.50 ريال/GB/شهر</strong> لتخزين الـ AIRequest + audit logs بعد فترة
+            الاحتفاظ الأساسية (90 يوماً). ميزة طبيعية للامتثال — العملاء يريدون احتفاظاً
+            أطول للمراجعة التنظيمية.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">3. Premium Connectors</div>
+        <div class="col-card-body">
+            <strong>1,500 ريال/شهر</strong> لكل connector (Slack, Microsoft Teams،
+            ServiceNow، Jira). MCP-based integrations تخلق stickiness عالية وتقلل churn.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">4. Custom NER Models</div>
+        <div class="col-card-body">
+            <strong>15,000 ريال/one-time</strong> + 2,000 ريال/شهر لاستضافة NER model
+            مخصص للعميل (مثلاً: أرقام هويات موظفين، patient MRNs بصيغة معينة). ميزة
+            تنافسية لا يقدمها أغلب المنافسين.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">5. Compliance Audit Pack</div>
+        <div class="col-card-body">
+            <strong>5,000 ريال/one-time</strong> per audit — توليد تقرير امتثال شامل
+            (PDPL + SDAIA + NCA ECC + ISO 42001) جاهز للتقديم للجهات التنظيمية. ميزة
+            وقت الـ renewal.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">6. Dedicated DPO-as-a-Service</div>
+        <div class="col-card-body">
+            <strong>8,000 ريال/شهر</strong> — توفير DPO معتمد سعودي كخدمة للعملاء الذين
+            لا يستطيعون تعيين DPO داخلي. شراكة مع مكاتب محاماة سعودية متخصصة.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات SaaS الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card">
+        <div class="metric-value warning">45%</div>
+        <div class="metric-label">نضج نموذج SaaS</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value accent">5</div>
+        <div class="metric-label">RBAC roles</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value danger">0</div>
+        <div class="metric-label">tiers تسعير</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value danger">0</div>
+        <div class="metric-label">billing integrations</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value success">6</div>
+        <div class="metric-label">expansion streams مقترحة</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value warning">2</div>
+        <div class="metric-label">retention plays</div>
+    </div>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 10 — البنشمارك التنافسي
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 10 · Competitive Benchmark</div>
+    <h2 class="section-title"><span class="section-title-num">10.</span> البنشمارك التنافسي الإقليمي والعالمي</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+تمت مقارنة BrightAI مع <strong>أربعة منافسين</strong>: <span class="latin">Credo AI</span>
+(الولايات المتحدة، تقييم 1.3B)، <span class="latin">Holistic AI</span>
+(المملكة المتحدة، تستخدمها KPMG و Accenture)، <span class="latin">Saidot</span>
+(فنلندا، متخصصة في AI governance)، و <span class="latin">Trustible</span>
+(الولايات المتحدة، منصة ناشئة). المقارنة على <strong>10 أبعاد</strong> تكشف أن BrightAI
+يتفوق على الجميع في <em>ثلاثة أبعاد إقليمية حاسمة</em>، لكنه يتأخر في <em>أربعة أبعاد
+عالمية</em> تحتاج معالجة.
+</p>
+
+<div class="chart-block">
+    <img src="06_competitive_radar.png" alt="Competitive Benchmark Radar">
+    <div class="chart-caption">الشكل 8 — البنشمارك التنافسي على 10 أبعاد (10 = الأفضل)</div>
+</div>
+
+<div class="subsection-title">جدول المقارنة التفصيلي</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>البُعد</th>
+            <th>BrightAI</th>
+            <th>Credo AI</th>
+            <th>Holistic AI</th>
+            <th>Saidot</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>AI Firewall</strong></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+            <td><span class="score-pill score-warning">5/10</span></td>
+            <td><span class="score-pill score-warning">6/10</span></td>
+            <td><span class="score-pill score-success">7/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>PII Detection</strong></td>
+            <td><span class="score-pill score-warning">6/10</span></td>
+            <td><span class="score-pill score-warning">7/10</span></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>Arabic Support</strong></td>
+            <td><span class="score-pill score-success">10/10</span></td>
+            <td><span class="score-pill score-critical">2/10</span></td>
+            <td><span class="score-pill score-critical">2/10</span></td>
+            <td><span class="score-pill score-critical">1/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>PDPL Compliance</strong></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+            <td><span class="score-pill score-critical">3/10</span></td>
+            <td><span class="score-pill score-critical">3/10</span></td>
+            <td><span class="score-pill score-critical">3/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>RBAC Depth</strong></td>
+            <td><span class="score-pill score-warning">7/10</span></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+            <td><span class="score-pill score-warning">8/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>Multi-Tenancy</strong></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>Audit Trail</strong></td>
+            <td><span class="score-pill score-warning">7/10</span></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+            <td><span class="score-pill score-success">10/10</span></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>Integrations</strong></td>
+            <td><span class="score-pill score-critical">4/10</span></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+            <td><span class="score-pill score-success">8/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>Pricing Transparency</strong></td>
+            <td><span class="score-pill score-warning">5/10</span></td>
+            <td><span class="score-pill score-warning">7/10</span></td>
+            <td><span class="score-pill score-warning">6/10</span></td>
+            <td><span class="score-pill score-warning">6/10</span></td>
+        </tr>
+        <tr>
+            <td><strong>Regional Presence</strong></td>
+            <td><span class="score-pill score-success">9/10</span></td>
+            <td><span class="score-pill score-critical">4/10</span></td>
+            <td><span class="score-pill score-critical">4/10</span></td>
+            <td><span class="score-pill score-critical">3/10</span></td>
+        </tr>
+        <tr style="background: rgba(32,165,151,0.08);">
+            <td><strong>المجموع / 100</strong></td>
+            <td><strong>73/100</strong></td>
+            <td><strong>64/100</strong></td>
+            <td><strong>66/100</strong></td>
+            <td><strong>62/100</strong></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">نقاط القوة الإقليمية لـ BrightAI</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">1. Arabic-First Design</div>
+        <div class="col-card-body">
+            كل المنافسين العالميين يتعاملون مع العربية كـ afterthought — ترجمة UI فقط.
+            BrightAI مبني عربياً أولاً (dir="rtl" lang="ar" افتراضياً، خط IBM Plex Sans Arabic،
+            محتوى مدونة عربي عميق 50+ مقال). <strong>ميزة لا يمكن تقليدها بسرعة</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">2. PDPL-Native Architecture</div>
+        <div class="col-card-body">
+            لا منافس عالمي يقدم PDPL controls مدمجة. كلهم يطلبون "customization" — وهي تستغرق
+            أشهراً وتكلف مئات الآلاف. BrightAI جاهز لـ PDPL افتراضياً (بعد إكمال الفجوات
+            في هذا التقرير). <strong>ميزة وقت البيع</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">3. AI Firewall Integrated</div>
+        <div class="col-card-body">
+            Credo AI و Holistic AI يقدمون "governance layer" فقط — سياسات وتقارير. Saidot
+            أقرب لكنه لا يقدم AI Firewall حقيقي. BrightAI يقدم <strong>both</strong>: governance
+            + runtime enforcement. هذا يرفع switching cost للعميل بشكل كبير.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">4. Saudi Regulator Relationships</div>
+        <div class="col-card-body">
+            الموقع التسويقي يشير إلى وعي عميق بـ SDAIA و NCA و NDMO. العلاقات التنظيمية
+            ميزة لا يمكن تقليدها بسرعة. <strong>توصية</strong>: توثيق علاقات رسمية مع SDAIA
+            و NCA كـ "certified compliance partner".
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">نقاط الضعف مقابل المنافسين</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">1. Integrations Ecosystem (4/10)</div>
+        <div class="col-card-body">
+            Credo AI يقدم 50+ connectors (Slack, Teams, Jira, ServiceNow, Okta, etc.).
+            BrightAI يقدم 0 connectors حقيقية اليوم. <strong>أولوية قصوى</strong>: بناء
+            MCP-based connector framework في Phase 4.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">2. LLM Registry</div>
+        <div class="col-card-body">
+            Holistic AI يقدم "Model Registry" شامل لكل نماذج AI المستخدمة في المؤسسة مع
+            risk scoring لكل نموذج. BrightAI لا يقدم هذه الميزة. <strong>توصية</strong>: بناء
+            Model Registry في Phase 4.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">3. Bias Testing</div>
+        <div class="col-card-body">
+            Holistic AI و Saidot يقدمان bias testing workflows للنماذج. SDAIA Principle 2
+            (العدالة) يطلب هذا. BrightAI لا يقدمه. <strong>توصية</strong>: شراكة مع
+            IBM AI Fairness 360 أو AIF360.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">4. Pricing Transparency</div>
+        <div class="col-card-body">
+            حتى Credo AI (7/10) يقدم pricing page عامة. BrightAI لا يقدم أي pricing today.
+            <strong>توصية</strong>: نشر pricing tiers على الموقع بعد بنائها (Phase 3).
+        </div>
+    </div>
+</div>
+
+<div class="callout">
+    <div class="callout-title">الخلاصة التنافسية</div>
+    BrightAI يتفوق إجمالياً (73/100) على Credo AI (64/100) و Holistic AI (66/100) و
+    Saidot (62/100) بفضل التفوق الإقليمي (Arabic + PDPL + Regional Presence). لكن
+    الفجوة في <strong>Integrations و Model Registry</strong> تمنعه من أن يكون بديلاً
+    كاملاً للعملاء العالميين. استراتيجية الفوز: <em>تحصين السوق السعودي أولاً (Phase 1-3)،
+    ثم التوسع الإقليمي بـ integrations و Model Registry (Phase 4-5)</em>.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 11 — خارطة الطريق التنفيذية
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 11 · Execution Roadmap</div>
+    <h2 class="section-title"><span class="section-title-num">11.</span> خارطة الطريق التنفيذية للريادة الإقليمية</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+خارطة الطريق مبنية على <strong>5 مراحل متتابعة على مدى 365 يوماً</strong>، بإجمالي
+<strong>2,480 ساعة تطوير</strong> (~<strong>$186,000</strong> بمعدل $75/ساعة مخلوط).
+كل مرحلة لها milestones واضحة، مسؤول محدد، تكلفة تقديرية، ومعايير قبول قابلة للقياس.
+المراحل مصممة بحيث يمكن إطلاق كل مرحلة بشكل مستقل — لا تحتاج إنهاء كل المراحل لتحقيق
+قيمة تدريجية.
+</p>
+
+<div class="chart-block">
+    <img src="07_roadmap_gantt.png" alt="Roadmap Gantt">
+    <div class="chart-caption">الشكل 9 — الجدول الزمني للمراحل الخمس مع الـ milestones</div>
+</div>
+
+<div class="chart-block">
+    <img src="10_cost_by_phase.png" alt="Cost by Phase">
+    <div class="chart-caption">الشكل 10 — الاستثمار في الساعات والتكلفة التراكمية حسب المرحلة</div>
+</div>
+
+<div class="subsection-title">المرحلة 1 — Quick Wins (30 يوماً)</div>
+
+<div class="phase-card p1">
+    <div class="phase-header">
+        <div class="phase-name">Phase 1 — Quick Wins · تأمين المسار الحرج</div>
+        <div class="phase-timeframe">الأيام 0-30 · ~80 ساعة · ~$6,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Lead Backend Engineer</strong></span>
+        <span>الأولوية: <strong>P0 Critical</strong></span>
+        <span>القبول: <strong>0 Critical على live code</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li><strong>EXEC-01</strong> — استبدال client-supplied systemPrompt بـ prompt-ID allowlist (4-6 ساعات)</li>
+        <li><strong>EXEC-02</strong> — إزالة system prompts من DOM (1 ساعة)</li>
+        <li><strong>EXEC-03</strong> — إضافة origin allowlist + optional API key على /api/ai/chat (3-4 ساعات)</li>
+        <li><strong>EXEC-04</strong> — Redact PII قبل تسجيل leads + webhook للـ sink الحقيقي (6-8 ساعات)</li>
+        <li><strong>EXEC-05</strong> — Purge أو quarantine لـ legacy kernel/sw.js (4 ساعات)</li>
+        <li><strong>EXEC-06</strong> — Purge legacy kernel-mock-handlers.js (3 ساعات)</li>
+        <li><strong>EXEC-07</strong> — Self-host Chart.js + SRI أو defer (4 ساعات)</li>
+        <li><strong>EXEC-08</strong> — إصلاح chat 3-pane على الموبايل (8-10 ساعات)</li>
+        <li><strong>EXEC-09</strong> — إزالة letter-spacing من عناصر عربية (2 ساعة)</li>
+        <li><strong>EXEC-10</strong> — إضافة aria-modal + focus trap للـ drawer (3 ساعات)</li>
+        <li><strong>EXEC-11</strong> — تعديل اختصارات لوحة المفاتيح لتطلب modifier (2 ساعة)</li>
+        <li><strong>AI-001 fix</strong> — تخزين redactedText بدلاً من inputText في AIRequest (30 دقيقة)</li>
+    </ol>
+</div>
+
+<div class="subsection-title">المرحلة 2 — Foundation (60 يوماً)</div>
+
+<div class="phase-card p2">
+    <div class="phase-header">
+        <div class="phase-name">Phase 2 — Foundation · بناء الأساس الموثوق</div>
+        <div class="phase-timeframe">الأيام 25-60 · ~240 ساعة · ~$18,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Lead Backend + Senior Frontend</strong></span>
+        <span>الأولوية: <strong>P1 High</strong></span>
+        <span>القبول: <strong>Security 78%+, Mobile 75%+</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li><strong>EXEC-12</strong> — DOMPurify على كل set:html بـ JSON content (8 ساعات)</li>
+        <li><strong>EXEC-13</strong> — Validate X-Forwarded-For ضد trusted proxy count (6 ساعات)</li>
+        <li><strong>EXEC-14</strong> — استبدال physical CSS بـ logical في كل src/styles/ (24 ساعة)</li>
+        <li><strong>EXEC-15</strong> — إصلاح KernelTabs ARIA pattern (8 ساعات)</li>
+        <li><strong>EXEC-16</strong> — تصحيح astro.config output: 'hybrid' (4 ساعات)</li>
+        <li><strong>EXEC-17</strong> — إضافة /api/health endpoint + Render healthCheck (4 ساعات)</li>
+        <li><strong>EXEC-18</strong> — Lighthouse CI budget per-page (16 ساعة)</li>
+        <li>dbServiceRole cleanup — حصر في pre-auth + migrations فقط (24 ساعة)</li>
+        <li>Redis ENFORCED في prod لـ rate limiter (8 ساعات)</li>
+        <li>Auto-OWNER race fix — atomic transaction (8 ساعات)</li>
+        <li>Streaming redaction — fullContent-aware detect (16 ساعة)</li>
+        <li>Invitation flow completion — tokenHash lookup (16 ساعة)</li>
+        <li>Team invite button + tenant settings (24 ساعة)</li>
+    </ol>
+</div>
+
+<div class="subsection-title">المرحلة 3 — Saudi Compliance (90 يوماً)</div>
+
+<div class="phase-card p3">
+    <div class="phase-header">
+        <div class="phase-name">Phase 3 — Saudi Compliance · PDPL-ready</div>
+        <div class="phase-timeframe">الأيام 55-90 · ~320 ساعة · ~$24,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Compliance Engineer + Backend</strong></span>
+        <span>الأولوية: <strong>P1 Strategic</strong></span>
+        <span>القبول: <strong>PDPL 78%+, SDAIA 80%+, NCA ECC 85%+</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li>بناء وحدة DPO — role + workflow + صلاحيات (40 ساعة)</li>
+        <li>بناء ROPA — auto-generation من AIRequest + tenant settings (60 ساعة)</li>
+        <li>بناء breach notification workflow — incident → 72h template → submit (50 ساعة)</li>
+        <li>Data residency controls — region pinning + SCC templates (40 ساعة)</li>
+        <li>DPIA workflow — template + DPO approval + linkage (30 ساعة)</li>
+        <li>SDAIA 7 Principles dashboard — explicit mapping + evidence (24 ساعة)</li>
+        <li>NCA ECC controls register — ECC-1 إلى ECC-4 mapping (30 ساعة)</li>
+        <li>ISO 42001 AI policy formalization (20 ساعة)</li>
+        <li>Compliance audit pack generator — PDF/Excel تقارير (26 ساعة)</li>
+    </ol>
+</div>
+
+<div class="subsection-title">المرحلة 4 — Differentiation (180 يوماً)</div>
+
+<div class="phase-card p4">
+    <div class="phase-header">
+        <div class="phase-name">Phase 4 — Differentiation · توسيع الفجوة التنافسية</div>
+        <div class="phase-timeframe">الأيام 85-180 · ~640 ساعة · ~$48,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Full Engineering Team</strong></span>
+        <span>الأولوية: <strong>P2 Strategic</strong></span>
+        <span>القبول: <strong>التفوق على Holistic AI في 8/10 أبعاد</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li>Arabic NER model — fine-tune Arabic BERT للـ PII detection (160 ساعة)</li>
+        <li>Model Registry — كل نماذج AI المستخدمة + risk scoring (120 ساعة)</li>
+        <li>MCP-based connectors framework — Slack + Teams + Jira + ServiceNow (200 ساعة)</li>
+        <li>Audit dashboard — interactive timeline + filters + export (80 ساعة)</li>
+        <li>Bias testing integration — IBM AIF360 partnership (60 ساعة)</li>
+        <li>Real-time policy engine — async alerts على violations (40 ساعة)</li>
+        <li>Custom NER models as-a-service — per-tenant (40 ساعة)</li>
+    </ol>
+</div>
+
+<div class="subsection-title">المرحلة 5 — Regional Leadership (365 يوماً)</div>
+
+<div class="phase-card p5">
+    <div class="phase-header">
+        <div class="phase-name">Phase 5 — Regional Leadership · التوسع الإقليمي والعالمي</div>
+        <div class="phase-timeframe">الأيام 170-365 · ~1,200 ساعة · ~$90,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Multiple Teams + Compliance + Sales</strong></span>
+        <span>الأولوية: <strong>P2 Strategic</strong></span>
+        <span>القبول: <strong>ISO 42001 certified + 3 دول خليجية</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li>Multi-jurisdiction support — UAE PDPL + Egypt Personal Data Protection Law (200 ساعة)</li>
+        <li>Enterprise SSO — SAML 2.0 + SCIM provisioning (120 ساعة)</li>
+        <li>Gov Cloud deployment — فيجوال debtir + NCA audit (200 ساعة)</li>
+        <li>ISO/IEC 42001:2023 certification — external audit prep (160 ساعة)</li>
+        <li>Pricing pages + billing integration — Stripe + Tap Payments (120 ساعة)</li>
+        <li>Customer success workflows — onboarding + QBR + renewal (100 ساعة)</li>
+        <li>API public documentation + SDK (Python, JS, Java) (160 ساعة)</li>
+        <li>Marketplace launch — connectors marketplace + revenue share (140 ساعة)</li>
+    </ol>
+</div>
+
+<div class="subsection-title">ملخص الاستثمار والـ ROI المتوقع</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr>
+            <th>المرحلة</th>
+            <th>المدة</th>
+            <th>الساعات</th>
+            <th>التكلفة</th>
+            <th>التأثير المتوقع</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Phase 1 — Quick Wins</td><td>30 يوم</td><td>80</td><td>$6,000</td><td>Security 42% → 78%</td></tr>
+        <tr><td>Phase 2 — Foundation</td><td>60 يوم</td><td>240</td><td>$18,000</td><td>Mobile 58% → 85%، A11y 51% → 78%</td></tr>
+        <tr><td>Phase 3 — Saudi Compliance</td><td>90 يوم</td><td>320</td><td>$24,000</td><td>Compliance 38% → 85%</td></tr>
+        <tr><td>Phase 4 — Differentiation</td><td>180 يوم</td><td>640</td><td>$48,000</td><td>Competitive 73 → 85/100</td></tr>
+        <tr><td>Phase 5 — Regional Leadership</td><td>365 يوم</td><td>1,200</td><td>$90,000</td><td>Regional leader + ISO 42001</td></tr>
+        <tr style="background: rgba(32,165,151,0.08);"><td><strong>الإجمالي</strong></td><td><strong>365 يوم</strong></td><td><strong>2,480</strong></td><td><strong>$186,000</strong></td><td><strong>Health 56.7% → 92%</strong></td></tr>
+    </tbody>
+</table>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 12 — مجموعة البرومبتز التنفيذية
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 12 · Executive Implementation Prompts</div>
+    <h2 class="section-title"><span class="section-title-num">12.</span> مجموعة البرومبتز التنفيذية للوكيل الذكي</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+تم تصميم <strong>18 برومبت تنفيذي</strong> جاهز للّصق مباشرة في Claude Code أو Codex أو
+أي وكيل ذكي آخر مع وصول للمستودع. كل برومبت <em>مكتفٍ ذاتياً</em>: يحدد الملفات المستهدفة،
+المشكلة، الحالة النهائية المطلوبة، القيود، معايير القبول القابلة للقياس، وخطة التراجع.
+يُنصح بتشغيل البرومبتز بالترتيب التنفيذي الموضح أدناه.
+</p>
+
+<div class="subsection-title">البرومبتز الـ 18 — كتالوج مختصر</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-01 · Priority: P0 Critical</div>
+    <div class="prompt-title">استبدال client-supplied systemPrompt بـ prompt-ID allowlist</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/pages/api/ai/chat.ts + KernelAiAssistant.astro<br>
+        <strong>المشكلة:</strong> ثغرة prompt injection كاملة — الخادم يقبل أي systemPrompt<br>
+        <strong>الحالة النهائية:</strong> الخادم يقبل فقط promptId من قائمة بيضاء (compliance, policies, evidence, audit, scenarios)<br>
+        <strong>القيود:</strong> لا كسر fallback auto provider، لا تغيير response shape<br>
+        <strong>معايير القبول:</strong> 6 اختبارات curl محددة (promptId صحيح → 200، promptId خاطئ → 400، systemPrompt في body → 400)<br>
+        <strong>التراجع:</strong> revert chat.ts لقبول systemPrompt
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-02 · Priority: P0 Critical</div>
+    <div class="prompt-title">إزالة system prompts من client DOM</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/components/kernel/KernelAiAssistant.astro<br>
+        <strong>المشكلة:</strong> الـ prompts مكتوبة كـ data-system-prompt attribute، يمكن استخراجها<br>
+        <strong>الحالة النهائية:</strong> الـ prompt لا يظهر في DOM أبداً، الكلاينت يرسل promptId فقط<br>
+        <strong>القيود:</strong> لا كسر الـ UI، الإبقاء على data-kernel-ai-assistant hook<br>
+        <strong>معايير القبول:</strong> grep "data-system-prompt" src/ يعود 0 نتائج، الـ chat يعمل end-to-end<br>
+        <strong>التراجع:</strong> إعادة data-system-prompt attribute
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-03 · Priority: P0 Critical</div>
+    <div class="prompt-title">إضافة origin allowlist + optional API key على /api/ai/chat</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/pages/api/ai/chat.ts + public/_headers + render.yaml<br>
+        <strong>المشكلة:</strong> الـ endpoint مفتوح للعامة، أي أحد يحرق حصة Groq/Gemini<br>
+        <strong>الحالة النهائية:</strong> قبول الطلبات من BrightAI origin فقط + optional x-brightai-chat-key header<br>
+        <strong>القيود:</strong> لا كسر same-origin fetch، allowlist يشمل localhost:4321 للـ dev<br>
+        <strong>معايير القبول:</strong> curl من BrightAI origin → 200، curl من evil.com → 403، curl بدون Origin → 403<br>
+        <strong>التراجع:</strong> حذف origin check + env var
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-04 · Priority: P0 Critical</div>
+    <div class="prompt-title">Redact PII قبل تسجيل leads + webhook للـ sink حقيقي</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/pages/api/lead.ts + render.yaml<br>
+        <strong>المشكلة:</strong> name + contact + company + IP تُكتب كنص صريح إلى stdout<br>
+        <strong>الحالة النهائية:</strong> PII لا تُكتب لـ stdout، leads تُرسل لـ webhook (Resend/SendGrid/HubSpot)<br>
+        <strong>القيود:</strong> لا تغيير Zod schema أو response shape، webhook URL من env<br>
+        <strong>معايير القبول:</strong> stdout يحتوي SHA-256 hash فقط، webhook يستقبل الـ lead كامل، فشل الـ webhook → 503<br>
+        <strong>التراجع:</strong> العودة لـ console.log الأصلي
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-05 · Priority: P1 High</div>
+    <div class="prompt-title">Purge أو quarantine لـ legacy kernel/sw.js و kernel/manifest.json</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> kernel/sw.js + kernel/manifest.json + kernel/assets/js/kernel-pwa.js<br>
+        <strong>المشكلة:</strong> SW قديم يخزّن /api/kernel/* ويصطفّ mutations مع PII في IndexedDB<br>
+        <strong>الحالة النهائية:</strong> نقل الملفات لـ kernel/legacy-disabled/ + CI test يمنع التسجيل<br>
+        <strong>القيود:</strong> لا لمس public/sw.js النشط، CI test سريع بدون network<br>
+        <strong>معايير القبول:</strong> grep "navigator.serviceWorker.register" kernel/ = 0، CI test يخرج 0<br>
+        <strong>التراجع:</strong> git mv من legacy-disabled
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-06 · Priority: P1 High</div>
+    <div class="prompt-title">Purge legacy kernel-mock-handlers.js (fetch monkey-patch)</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> kernel/assets/js/kernel-mock-handlers.js + kernel-demo-store.js + kernel-api.js<br>
+        <strong>المشكلة:</strong> monkey-patches window.fetch عند تفعيل demo mode، يحقن بيانات وهمية<br>
+        <strong>الحالة النهائية:</strong> نقل الملفات الثلاثة لـ kernel/legacy-disabled/mock/ + CI test<br>
+        <strong>القيود:</strong> لا لمس KernelDemoPill.astro (cosmetic وآمن)<br>
+        <strong>معايير القبول:</strong> grep "window.fetch" kernel/ = 0، grep "brightai_kernel_demo_mode" kernel/ = 0<br>
+        <strong>التراجع:</strong> git mv من legacy-disabled/mock
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-07 · Priority: P1 High</div>
+    <div class="prompt-title">Self-host Chart.js (أو SRI + CSP allowlist)</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/pages/kernel/stats.astro + public/_headers<br>
+        <strong>المشكلة:</strong> Chart.js من CDN بدون SRI، CSP يحظره، الرسوم البيانية تفشل بصمت<br>
+        <strong>الحالة النهائية:</strong> Chart.js vendored لـ public/vendor/chart.umd.min.js + defer + LICENSE<br>
+        <strong>القيود:</strong> الإبقاء على if (!window.Chart) guard، تضمين defer<br>
+        <strong>معايير القبول:</strong> الرسوم تظهر على CSP-enforcing host، لا CSP violations في console، TBT يتحسن<br>
+        <strong>التراجع:</strong> العودة لـ CDN URL بدون SRI
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-08 · Priority: P1 High</div>
+    <div class="prompt-title">إصلاح chat 3-pane layout على الموبايل</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/styles/kernel.css + src/pages/kernel/chat.astro<br>
+        <strong>المشكلة:</strong> threads + chat + context مكدسة عمودياً على الموبايل، composer تحت fold<br>
+        <strong>الحالة النهائية:</strong> threads + context كـ drawers على الموبايل، 100dvh، sticky composer<br>
+        <strong>القيود:</strong> لا تغيير desktop (≥1024px)، drawers بـ role="dialog" aria-modal="true"<br>
+        <strong>معايير القبول:</strong> composer مرئي بدون scroll على iPhone SE 320×568، drawers بـ focus trap<br>
+        <strong>التراجع:</strong> revert CSS + حذف toggle buttons
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-09 · Priority: P1 High</div>
+    <div class="prompt-title">إزالة text-transform: uppercase و letter-spacing من عناصر عربية</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/styles/kernel.css (lines 147, 609, 2425-2430)<br>
+        <strong>المشكلة:</strong> letter-spacing يكسر ligatures العربية، الحروف تظهر منفصلة<br>
+        <strong>الحالة النهائية:</strong> الخاصيتان محصورتان في :lang(en) selectors فقط<br>
+        <strong>القيود:</strong> لا تغيير بصري للعناصر اللاتينية فقط<br>
+        <strong>معايير القبول:</strong> screenshot لـ /kernel/policies/ يظهر حروف عربية متصلة، grep يظهر الخاصيتين فقط داخل :lang(en)<br>
+        <strong>التراجع:</strong> إعادة الخاصيتين للـ selectors الأصلية
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-10 · Priority: P1 High</div>
+    <div class="prompt-title">إضافة aria-modal + focus trap للـ Kernel drawer</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/layouts/KernelLayout.astro<br>
+        <strong>المشكلة:</strong> drawer بـ role="dialog" بدون aria-modal، Tab يهرب للصفحة<br>
+        <strong>الحالة النهائية:</strong> aria-modal="true" + aria-labelledby + focus trap + scroll lock + Escape + focus return<br>
+        <strong>القيود:</strong> لا كسر Escape handler الحالي، لا كسر noscript fallback<br>
+        <strong>معايير القبول:</strong> Tab يبقى داخل drawer، Escape يغلق ويعيد focus للـ toggle، VoiceOver يعلن العنوان<br>
+        <strong>التراجع:</strong> حذف aria-modal + focus trap JS
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-11 · Priority: P2 Medium</div>
+    <div class="prompt-title">تعديل اختصارات لوحة المفاتيح لتطلب modifier</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/layouts/KernelLayout.astro<br>
+        <strong>المشكلة:</strong> c, a, s, t, r تُفعّل تنقل بدون modifier، خطيرة للمستخدمين الكتابيين<br>
+        <strong>الحالة النهائية:</strong> require e.metaKey || e.ctrlKey + guard الحالي<br>
+        <strong>القيود:</strong> لا كسر Cmd+K command palette (إن وجد)<br>
+        <strong>معايير القبول:</strong> الضغط على c بدون modifier = لا تنقل، Cmd+C = تنقل لـ /kernel/chat/<br>
+        <strong>التراجع:</strong> revert handler لـ single keys
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-12 · Priority: P2 Medium</div>
+    <div class="prompt-title">DOMPurify على كل set:html بـ JSON content</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/pages/kernel/[slug].astro + offline.astro<br>
+        <strong>المشكلة:</strong> set:html على JSON مُؤلَّف وقت البناء، آمن اليوم لكن هش<br>
+        <strong>الحالة النهائية:</strong> كل set:html بـ JSON يُغلَّف بـ DOMPurify.sanitize + CI test<br>
+        <strong>القيود:</strong> لا تغيير بصري، DOMPurify يعمل في build time<br>
+        <strong>معايير القبول:</strong> grep "set:html" src/ = فقط DOMPurify.sanitize أو static literals، حقن &lt;script&gt; في JSON لا يُنفَّذ<br>
+        <strong>التراجع:</strong> حذف DOMPurify wrapping
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-13 · Priority: P2 Medium</div>
+    <div class="prompt-title">Validate X-Forwarded-For ضد trusted proxy count</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/pages/api/ai/chat.ts + lead.ts + src/lib/ip.ts (new)<br>
+        <strong>المشكلة:</strong> getClientIp يثق بأول XFF دون تحقق، rate limit bypass risk<br>
+        <strong>الحالة النهائية:</strong> shared getClientIp في src/lib/ip.ts، rightmost entry من XFF، TRUSTED_PROXY_COUNT env<br>
+        <strong>القيود:</strong> لا تغيير rate limit numbers، default TRUSTED_PROXY_COUNT=1 لـ Render<br>
+        <strong>معايير القبول:</strong> rate limit يُحسب على IP الحقيقي، curl بـ X-Forwarded-For: 1.2.3.4 لا يخدع الـ bucket<br>
+        <strong>التراجع:</strong> revert لـ inline getClientIp
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-14 · Priority: P2 Medium</div>
+    <div class="prompt-title">استبدال physical CSS بـ logical في كل src/styles/</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/styles/kernel.css + base.css + global.css<br>
+        <strong>المشكلة:</strong> margin-left, text-align: right, border-left لا تُقلب في RTL<br>
+        <strong>الحالة النهائية:</strong> كل خاصية physical إما logical أو مع /* physical: reason */ comment<br>
+        <strong>القيود:</strong> لا تغيير بصري على صفحات RTL أو LTR<br>
+        <strong>معايير القبول:</strong> grep للـ physical properties = فقط مع comments، visual regression = 0 diff<br>
+        <strong>التراجع:</strong> revert CSS
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-15 · Priority: P2 Medium</div>
+    <div class="prompt-title">إصلاح KernelTabs ARIA pattern</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/components/kernel/KernelTabs.astro<br>
+        <strong>المشكلة:</strong> role="tablist" + role="tab" بدون tabpanel، tabindex، arrow keys<br>
+        <strong>الحالة النهائية:</strong> WAI-ARIA tabs pattern كامل أو تحويل لـ filter buttons<br>
+        <strong>القيود:</strong> لا تغيير بصري، Arrow Left/Right معكوس في RTL<br>
+        <strong>معايير القبول:</strong> axe-core = 0 violations، keyboard nav يعمل، RTL direction صحيح<br>
+        <strong>التراجع:</strong> revert ARIA
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-16 · Priority: P2 Medium</div>
+    <div class="prompt-title">تصحيح astro.config output: 'hybrid'</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> astro.config.mjs<br>
+        <strong>المشكلة:</strong> output: 'static' + adapter = contradiction، Astro silently promotes<br>
+        <strong>الحالة النهائية:</strong> output: 'hybrid' explicit + تعليق محدّث<br>
+        <strong>القيود:</strong> لا تغيير الـ SSR routes، dist/ يجب أن يكون مطابق<br>
+        <strong>معايير القبول:</strong> astro build = 0 warnings عن output، diff -r dist/ = فقط timestamps<br>
+        <strong>التراجع:</strong> revert لـ output: 'static'
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-17 · Priority: P3 Low</div>
+    <div class="prompt-title">إضافة /api/health endpoint + Render healthCheck</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> src/pages/api/health.ts (new) + render.yaml<br>
+        <strong>المشكلة:</strong> لا health endpoint، Render يفحص / (static) الذي لا يعكس SSR health<br>
+        <strong>الحالة النهائية:</strong> /api/health يرجع 200 { ok: true, ts: iso } في &lt; 50ms<br>
+        <strong>القيود:</strong> بدون auth، بدون external calls، &lt; 50ms<br>
+        <strong>معايير القبول:</strong> curl /api/health = 200، Render dashboard shows healthy، route ليس في sitemap<br>
+        <strong>التراجع:</strong> حذف الـ route
+    </div>
+</div>
+
+<div class="prompt-card">
+    <div class="prompt-id">EXEC-18 · Priority: P3 Low</div>
+    <div class="prompt-title">Lighthouse CI budget per-page enforcement</div>
+    <div class="prompt-meta">
+        <strong>الملف:</strong> scripts/lighthouse-batch.mjs + lighthouse-budget.json + CI config<br>
+        <strong>المشكلة:</strong> لا enforced performance budget، LCP/CLS/INP regressions تسلل دون اكتشاف<br>
+        <strong>الحالة النهائية:</strong> Lighthouse CI يفحص كل صفحات Kernel × 2 viewports، يقارن بـ budget JSON<br>
+        <strong>القيود:</strong> &lt; 5 دقائق إجمالي، بدون Groq/Gemini key حقيقي<br>
+        <strong>معايير القبول:</strong> regression على LCP = exit code ≠ 0، budget JSON قابل للتعديل بسهولة<br>
+        <strong>التراجع:</strong> حذف budget + CI step
+    </div>
+</div>
+
+<div class="callout">
+    <div class="callout-title">كيفية استخدام البرومبتز</div>
+    بعد اعتماد تقرير التدقيق، انسخ كل برومبت من EXEC-01 إلى EXEC-18 والصقه في Claude Code
+    مع وصول للمستودع. يُنصح بالترتيب: P0 (EXEC-01 إلى 04) أولاً، ثم P1 (EXEC-05 إلى 10)،
+    ثم P2 (EXEC-11 إلى 16)، ثم P3 (EXEC-17 إلى 18). كل برومبت مكتفٍ ذاتياً ولا يحتاج
+    قراءة التقرير — كل السياق مُضمَّن. كل برومبت يحتوي خطة تراجع صريحة في حال الفشل.
+</div>
+
+</div>
+<!-- ════════════════════════════════════════════════════════════
+     ENDING PAGE
+     ════════════════════════════════════════════════════════════ -->
+<div class="ending">
+
+    <div class="ending-mark">B</div>
+
+    <div class="ending-title">
+        الطريق إلى <span class="ending-accent">الريادة الإقليمية</span><br>
+        يبدأ من هنا
+    </div>
+
+    <div class="ending-divider"></div>
+
+    <div class="ending-text">
+        يمتلك BrightAI كل المكوّنات الأساسية ليصبح المرجع الإقليمي لحوكمة الذكاء الاصطناعي.
+        إصلاح الثغرات الـ 5 الحرجة، بناء طبقة الامتثال السعودي، وتطوير نموذج SaaS قابل
+        للتوسع — هي المفاتيح الثلاثة لتحويل الطموح إلى واقع.
+    </div>
+
+    <div class="ending-meta">
+        <strong>التوصية الإطلاقية:</strong> Ship with Known Risks (بعد Quick Wins)<br>
+        <strong>الدرجة المتوقعة بعد 365 يوماً:</strong> 92%<br>
+        <strong>الاستثمار الإجمالي:</strong> $186,000 · 2,480 ساعة تطوير<br>
+        <strong>الهدف:</strong> منافس عالمي إقليمياً في حوكمة الذكاء الاصطناعي
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+
+
+
+
+

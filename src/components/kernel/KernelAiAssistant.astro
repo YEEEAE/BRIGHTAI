@@ -663,8 +663,8 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           }
 
           // جرّب /api/ai/chat/ (مع trailing slash لتفادي 301 → method change)
-          // KRN-001 / EXEC-02: أرسل promptId فقط (مو systemPrompt).
-          // الـ server يبحث عن النص الفعلي من KERNEL_SYSTEM_PROMPTS allowlist.
+          // KRN-001 / EXEC-02: نرسل promptId فقط — السيرفر يرفض أي prompt نصي من العميل.
+          // السيرفر يبحث عن النص الفعلي من KERNEL_SYSTEM_PROMPTS allowlist.
           fetch('/api/ai/chat/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
