@@ -113,6 +113,9 @@ export const PERMISSIONS = [
   'settings:read',
   'settings:update',
 
+  // Feature flags (admin UI toggle)
+  'feature:manage',
+
   // Support (impersonation — server-side only)
   'support:impersonate',
 ] as const;
@@ -370,6 +373,7 @@ export const AUDIT_ACTIONS = [
   'DATA_EXPORT_REQUESTED',
   'DATA_DELETION_REQUESTED',
   'DATA_DELETION_COMPLETED',
+  'FEATURE_FLAG_TOGGLED',
 ] as const;
 
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];

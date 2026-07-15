@@ -143,6 +143,7 @@ enum AuditAction {
   DATA_EXPORT_REQUESTED
   DATA_DELETION_REQUESTED
   DATA_DELETION_COMPLETED
+  FEATURE_FLAG_TOGGLED
 }
 
 enum OnboardingStep {
@@ -387,6 +388,7 @@ model Organization {
   dataDeletionRequests DataDeletionRequest[]
   sessions             Session[]
   subscriptions        Subscription[]
+  orgFeatureFlags      OrgFeatureFlag[]
 
   @@index([slug])
   @@index([deletedAt])
@@ -1035,4 +1037,65 @@ model Subscription {
   @@index([stripeCustomerId])
   @@index([status, currentPeriodEnd])
   @@map("subscriptions")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// FeatureFlag — global catalog of feature flags
+//
+// One row per flag key. The key is a stable string identifier (e.g.
+// "ai_streaming") shared across code + DB. The defaultValue is the
+// fail-closed baseline: false means disabled unless explicitly enabled
+// for an organization via OrgFeatureFlag.
+//
+// RLS: FeatureFlag is non-tenant (global catalog). The service role
+// reads all rows when resolving flags for any org. Application layer
+// enforces the per-org toggle via OrgFeatureFlag.
+//
+// Lifecycle:
+//   - Flags are inserted via migration seed (INSERT ... ON CONFLICT DO NOTHING).
+//   - Removing a flag from code: leave the DB row (soft-warn in logs,
+//     no break). Hard-delete only when all references are gone.
+// ─────────────────────────────────────────────────────────────────
+
+model FeatureFlag {
+  id           String         @id @default(cuid())
+  key          String         @unique      // e.g. "ai_streaming", "vault_v2"
+  description  String
+  defaultValue Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+
+  orgOverrides OrgFeatureFlag[]
+
+  @@map("feature_flags")
+}
+
+// ─────────────────────────────────────────────────────────────────
+// OrgFeatureFlag — per-organization flag overrides
+//
+// Each row says whether a specific flag is enabled/disabled for
+// one organization. If no row exists, the flag falls back to
+// FeatureFlag.defaultValue (fail-closed: false).
+//
+// RLS: tenant-scoped. The app sets `app.current_org_id` before
+// any read so the DB enforces org isolation.
+//
+// Cache: the application caches resolved flags per-org for 30s
+// (module-level Map in lib/feature-flags/client.ts). Toggle
+// invalidates the cache immediately for the affected org.
+// ─────────────────────────────────────────────────────────────────
+
+model OrgFeatureFlag {
+  id             String       @id @default(cuid())
+  organizationId String
+  flagKey        String
+  enabled        Boolean
+  updatedAt      DateTime     @updatedAt
+  updatedBy      String?      // userId who last toggled
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  flag         FeatureFlag  @relation(fields: [flagKey], references: [key], onDelete: Cascade)
+
+  @@unique([organizationId, flagKey])
+  @@index([organizationId])
+  @@map("org_feature_flags")
 }

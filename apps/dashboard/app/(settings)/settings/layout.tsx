@@ -20,6 +20,7 @@ const SETTINGS_NAV = [
   { href: '/settings/security', label: 'الأمان' },
   { href: '/settings/billing', label: 'الفوترة', minRole: 'OWNER' as const },
   { href: '/settings/tenant', label: 'إعدادات المنظمة', minRole: 'ADMIN' as const },
+  { href: '/settings/features', label: 'إدارة المزايا', minRole: 'OWNER' as const },
 ];
 
 export default async function SettingsLayout({ children }: { children: React.ReactNode }) {

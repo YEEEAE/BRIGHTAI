@@ -15,6 +15,8 @@ export type {
   IntegrationConnector,
 } from './constants';
 
+export type { FeatureFlagKey } from './feature-flags';
+
 export {
   ROLES,
   INDUSTRIES,
@@ -53,3 +55,10 @@ export {
   CHAT_SESSION_LIMITS,
   PASSWORD_POLICY,
 } from './constants';
+
+export {
+  FEATURE_FLAGS,
+  FEATURE_FLAG_LABELS_AR,
+  FEATURE_FLAG_DESCRIPTIONS_AR,
+  isKnownFlagKey,
+} from './feature-flags';
