@@ -14,6 +14,12 @@ importers:
       '@astrojs/sitemap':
         specifier: ^3.7.3
         version: 3.7.3
+      '@brightai/db':
+        specifier: workspace:*
+        version: link:packages/db
+      '@brightai/lead-queue':
+        specifier: workspace:*
+        version: link:packages/lead-queue
       cheerio:
         specifier: ^1.2.0
         version: 1.2.0

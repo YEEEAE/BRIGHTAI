@@ -70,6 +70,8 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
+    "@brightai/db": "workspace:*",
+    "@brightai/lead-queue": "workspace:*",
     "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "esbuild": "^0.21.5",

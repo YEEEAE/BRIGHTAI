@@ -24,6 +24,13 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
+  // HIGH-04 (2026-07-15): generated client + runtime metadata live under
+  // `packages/db/node_modules/.prisma/client/`. This keeps the @prisma/client
+  // runtime (which uses bare `require('@prisma/client')`) able to find the
+  // generated pieces via the workspace-local node_modules — without this,
+  // Astro standalone bundle can't resolve `.prisma/client/default` in
+  // production builds (See report 2026-07-15-lead-durability.md).
+  output          = "../node_modules/.prisma/client"
 }
 
 datasource db {

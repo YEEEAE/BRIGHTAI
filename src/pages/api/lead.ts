@@ -1,27 +1,30 @@
 /**
  * src/pages/api/lead.ts — KERNEL-AI-2026-07-14
  *                  + KERNEL-AUDIT-2026-07-15-BATCH-3 (EXEC-04)
+ *                  + HIGH-04 (2026-07-15) — durable lead outbox
  *
  * Server-side lead capture endpoint. يستقبل طلبات "تواصل معنا" من
  * KernelLeadForm الموجود في كل صفحة Kernel.
  *
- * السلوك (KRN-004 / EXEC-04):
+ * السلوك (HIGH-04):
  *  - POST { name, contact, company, page?, source? }
+ *  - يدعم `Idempotency-Key` header (اختياري). لو مو موجود → synthetic
+ *    key من sha256(ip + ua + contact + 30s-bucket).
  *  - يتحقق من الحقول بـ Zod
  *  - rate limit: 5 طلبات / دقيقة / IP
- *  - يولد leadId = SHA-256(ip + name + timestamp)
- *  - يحاول ship إلى LEAD_WEBHOOK_URL (best-effort, 5s timeout)
- *  - لو webhook فشل → queue في الذاكرة (cap 100)
- *  - setInterval (60s) يجرب drain للـ queue (لو webhook رجع)
- *  - queue overflow → 503 lead_sink_unavailable
+ *  - enqueue في Postgres LeadQueue (durable على Render restart)
+ *  - drainOnce() يجرب ship لـ LEAD_WEBHOOK_URL كل 60s
+ *  - exponential backoff: 1min → 5min → 30min → DLQ
  *  - يطبع في console: id=<sha256> ts=<iso> page=<path> mode=<shipped|queued>
  *    ← NO PII في الـ logs (لا name، لا contact، لا company، لا IP)
- *  - يرجّع { ok: true, mode: 'shipped'|'queued' }
+ *  - يرجّع { ok: true, mode: 'shipped'|'queued', idempotencyKey }
  *
  * النشر:
  *  - يتطلب @astrojs/node (مفعّل في astro.config.mjs)
  *  - ينشر على Render كـ Node service
  *  - LEAD_WEBHOOK_URL + LEAD_WEBHOOK_SECRET تُضبط في Render dashboard
+ *  - DATABASE_URL يُضبط في Render dashboard (نفس connection string
+ *    للـ dashboard — shared Postgres instance)
  *
  * الأمان:
  *  - لا يحفظ في localStorage / cookies
@@ -37,6 +40,12 @@ import { z } from 'zod';
 import crypto from 'node:crypto';
 // KRN-013 / EXEC-13: shared client IP extraction
 import { getClientIp } from '../../lib/ip';
+import {
+  enqueue as enqueueLeadRow,
+  drainOnce,
+  resolveIdempotencyKey,
+} from '@brightai/lead-queue';
+// `drainOnce` is used inside ensureDrain() below — see the timer block.
 
 export const prerender = false;
 
@@ -45,7 +54,6 @@ export const prerender = false;
 // ─────────────────────────────────────────────────────────────────────────
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 5;  // 5 leads / minute / IP
-const MAX_QUEUE_SIZE = 100;         // in-memory buffer cap
 const WEBHOOK_TIMEOUT_MS = 5_000;   // 5 seconds
 const DRAIN_INTERVAL_MS = 60_000;   // 1 minute retry interval
 
@@ -88,6 +96,10 @@ function getClientIpLocal(req: Request): string {
   // KRN-013 / EXEC-13: TRUSTED_PROXY_COUNT env (default 1 for Render)
   const trustedProxyCount = parseInt(process.env.TRUSTED_PROXY_COUNT || '1', 10);
   return getClientIp(req, { trustedProxyCount });
+}
+
+function getUserAgentLocal(req: Request): string {
+  return req.headers.get('user-agent') ?? '';
 }
 
 function checkRateLimit(ip: string): { ok: true } | { ok: false; retryAfterSec: number } {
@@ -151,89 +163,42 @@ function jsonError(
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// Lead ID hashing + HMAC signing (KRN-004 / EXEC-04 — PII redaction)
+// Lead ID hashing — kept for log correlation only (sha256 of the leadId
+// row from @brightai/lead-queue). PII redaction (KRN-004 / EXEC-04)
+// preserved verbatim.
 // ─────────────────────────────────────────────────────────────────────────
 function sha256(input: string): string {
   return crypto.createHash('sha256').update(input).digest('hex');
 }
 
-function hmacSign(message: string, secret: string): string {
-  return crypto.createHmac('sha256', secret).update(message).digest('hex');
-}
-
 // ─────────────────────────────────────────────────────────────────────────
-// Webhook sink (best-effort, 5s timeout)
+// Drain timer — tries to ship the LeadQueue every DRAIN_INTERVAL_MS.
+//
+// Best-effort: if the webhook is down, we leave the rows in
+// LeadQueue.status = PENDING with nextRetryAt set; the next tick picks
+// them up automatically. Survives process restarts because rows live
+// in Postgres, not memory.
 // ─────────────────────────────────────────────────────────────────────────
-type QueuedLead = {
-  lead: LeadPayload;
-  leadId: string;
-  ip: string;
-  ts: number;
-};
-
-async function shipToWebhook(lead: LeadPayload, leadId: string, ip: string): Promise<boolean> {
-  const url = process.env.LEAD_WEBHOOK_URL;
-  if (!url) return false; // Not configured = treat as no-op (will fall through to queue)
-
-  const secret = process.env.LEAD_WEBHOOK_SECRET;
-  const body = JSON.stringify({
-    id: leadId,
-    name: lead.name,
-    contact: lead.contact,
-    company: lead.company,
-    page: lead.page ?? null,
-    source: lead.source ?? 'kernel',
-    ip, // OK to ship to webhook (we control the destination)
-    ts: new Date().toISOString(),
-  });
-
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-    'X-BrightAI-Lead-Id': leadId,
-  };
-  if (secret) {
-    headers['X-BrightAI-Signature'] = `sha256=${hmacSign(body, secret)}`;
-  }
-
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), WEBHOOK_TIMEOUT_MS);
-
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers,
-      body,
-      signal: controller.signal,
-    });
-    clearTimeout(timer);
-    return res.ok;
-  } catch {
-    clearTimeout(timer);
-    return false;
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────
-// In-memory queue (overflow → 503 lead_sink_unavailable)
-// ─────────────────────────────────────────────────────────────────────────
-const pendingLeads: QueuedLead[] = [];
-
-function enqueueLead(item: QueuedLead): 'ok' | 'overflow' {
-  if (pendingLeads.length >= MAX_QUEUE_SIZE) return 'overflow';
-  pendingLeads.push(item);
-  return 'ok';
-}
-
-// Periodic drain: try to flush queue to webhook every 60s (best-effort)
 let drainTimer: ReturnType<typeof setInterval> | null = null;
+let drainInFlight = false;
 function ensureDrain(): void {
   if (drainTimer) return;
   drainTimer = setInterval(async () => {
-    while (pendingLeads.length > 0) {
-      const item = pendingLeads[0];
-      const ok = await shipToWebhook(item.lead, item.leadId, item.ip);
-      if (!ok) break; // webhook still down — try again next interval
-      pendingLeads.shift();
+    if (drainInFlight) return;
+    const url = process.env.LEAD_WEBHOOK_URL;
+    if (!url) return; // sink not configured — pure queue mode
+    drainInFlight = true;
+    try {
+      await drainOnce({
+        webhookUrl: url,
+        webhookSecret: process.env.LEAD_WEBHOOK_SECRET,
+        httpTimeoutMs: WEBHOOK_TIMEOUT_MS,
+        batchSize: 10,
+      });
+    } catch {
+      // never propagate — drain errors are not user-facing
+    } finally {
+      drainInFlight = false;
     }
   }, DRAIN_INTERVAL_MS);
   if (drainTimer && typeof drainTimer.unref === 'function') {
@@ -277,42 +242,57 @@ export const POST: APIRoute = async ({ request }) => {
 
   const lead: LeadPayload = parsed.data;
 
-  // 4. Compute lead ID hash (SHA-256 of ip + name + timestamp)
-  //    — غير reversible. يُستخدم في الـ logs + الـ webhook signature.
-  const leadId = sha256(`${ip}|${lead.name}|${Date.now()}`);
+  // 4. Resolve Idempotency-Key (HIGH-04).
+  //    - If client sent the header, use it (client-provided key).
+  //    - Otherwise derive a synthetic key from IP + UA + contact +
+  //      30-second bucket (stable within a window so retries dedup).
+  const headerKey = request.headers.get('idempotency-key');
+  const resolvedKey = resolveIdempotencyKey({
+    headerValue: headerKey,
+    ip,
+    userAgent: getUserAgentLocal(request),
+    contact: lead.contact,
+  });
 
-  // 5. Try to ship to webhook (best-effort, 5s timeout)
+  // 5. Compute the public lead ID hash (for log correlation only).
+  //    sha256(ip + name + ts) — NOT the same as the Idempotency-Key.
+  const leadHash = sha256(`${ip}|${lead.name}|${Date.now()}`);
+
+  // 6. Always enqueue first — durability is the contract. The drain
+  //    timer (60s) picks the row up on the next tick. We deliberately
+  //    do NOT call drainOnce() inline: an immediate-drain attempt
+  //    would race the insert (the row is not yet on disk when the
+  //    drainer starts reading) and would also inflate LCP for the
+  //    client while waiting on the webhook.
   ensureDrain();
-  const webhookOk = await shipToWebhook(lead, leadId, ip);
+  const enqueued = await enqueueLeadRow({
+    idempotencyKey: resolvedKey.value,
+    name: lead.name,
+    contact: lead.contact,
+    company: lead.company,
+    page: lead.page ?? null,
+    source: lead.source ?? 'kernel',
+    ip,
+    userAgent: getUserAgentLocal(request),
+  });
+  // If the same Idempotency-Key was already delivered (re-submit from
+  // a client that lost the previous response), the row comes back with
+  // status = DELIVERED — surface that as `shipped`.
+  const mode: 'shipped' | 'queued' = enqueued.status === 'DELIVERED' ? 'shipped' : 'queued';
 
-  // 6. If webhook failed, queue for later drain
-  let mode: 'shipped' | 'queued';
-  if (webhookOk) {
-    mode = 'shipped';
-  } else {
-    const queued = enqueueLead({ lead, leadId, ip, ts: Date.now() });
-    if (queued === 'overflow') {
-      // لا نخسر الـ lead بصمت — نرجّع 503 مع رسالة واضحة (KRN-004)
-      // الـ user يمكنه retry أو استخدام WhatsApp fallback
-      return jsonError(503, 'lead_sink_unavailable', {
-        message: 'Lead system temporarily unavailable. Please try again later or use WhatsApp fallback.',
-        hint: 'https://wa.me/?text=' + encodeURIComponent('استفسار عن BrightAI Kernel'),
-      });
-    }
-    mode = 'queued';
-  }
-
-  // 7. Log ONLY ID hash + timestamp + page (لا PII في stdout)
+  // 8. Log ONLY ID hash + timestamp + page (لا PII في stdout)
   // eslint-disable-next-line no-console
   console.log(
-    `[brightai-kernel-lead] id=${leadId} ts=${new Date().toISOString()} ` +
-    `page=${lead.page ?? 'unknown'} mode=${mode}`,
+    `[brightai-kernel-lead] id=${leadHash} ts=${new Date().toISOString()} ` +
+    `page=${lead.page ?? 'unknown'} mode=${mode} ` +
+    `idem=${resolvedKey.source} key=${resolvedKey.value.slice(0, 12)}…`,
   );
 
-  // 8. نجاح
+  // 9. نجاح
   return jsonResponse({
     ok: true,
     mode,
+    idempotencyKey: resolvedKey.value,
     message: 'تم استلام طلبك بنجاح. فريق الحوكمة سيتواصل معك خلال 24 ساعة.',
   });
 };

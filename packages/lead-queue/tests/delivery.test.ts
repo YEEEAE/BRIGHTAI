@@ -151,39 +151,18 @@ describe('drainOnce', () => {
   });
 
   it('retries 3 times then moves the row to DLQ (HIGH-04 AC #3)', async () => {
-    // Queue 3 failures ahead of time. The first failure should be consumed
-    // by claimNext's attempt#1, the second by retry #1, etc. After the
-    // configured backoff schedule runs out the row moves to DLQ.
-    mockFetch.pushFail(503, 3); // first 3 attempts all fail
+    // The brief specifies a 3-step backoff schedule: 1min → 5min → 30min.
+    // Initial attempt + 3 retries = 4 attempts total. After the 4th
+    // failure the row is permanently DLQ'd.
+    mockFetch.pushFail(503, 4); // first 4 attempts all return 503
 
     const { id } = await enqueue(makeSubmission({ idempotencyKey: 'cli_dlq1' }));
-    // Attempt 1 — fails. Status stays PENDING, nextRetryAt set.
-    let counts = await drainOnce({
-      webhookUrl: 'https://example.com/webhook',
-      httpTimeoutMs: 1000,
-      batchSize: 10,
-    });
-    expect(counts.retried).toBe(1);
-    expect(mockFetch.calls().length).toBe(1);
-
-    // Force nextRetryAt to "now" so the second attempt is also due.
     const { dbServiceRole } = await import('@brightai/db');
-    await dbServiceRole.leadQueue.update({
-      where: { id },
-      data: { nextRetryAt: new Date(Date.now() - 1000) },
-    });
 
-    counts = await drainOnce({
-      webhookUrl: 'https://example.com/webhook',
-      httpTimeoutMs: 1000,
-      batchSize: 10,
-    });
-    expect(counts.retried + counts.dlq).toBeGreaterThanOrEqual(1);
-
-    // Run the drain a few more times, forcing nextRetryAt each time,
-    // until the row reaches DLQ. With backoff [1,5,30] minutes, attempts
-    // 1 → PENDING, 2 → PENDING, 3 → DLQ.
-    for (let i = 0; i < 5; i += 1) {
+    // Run the drain in a loop, forcing nextRetryAt each time, until the
+    // row reaches DLQ. The state machine guarantees monotonic progress:
+    // pending → pending → pending → DLQ across 4 attempts.
+    for (let i = 0; i < 6; i += 1) {
       const row = await dbServiceRole.leadQueue.findUnique({ where: { id } });
       if (!row || row.status === 'DLQ') break;
       await dbServiceRole.leadQueue.update({
@@ -199,8 +178,10 @@ describe('drainOnce', () => {
 
     const final = await dbServiceRole.leadQueue.findUnique({ where: { id } });
     expect(final?.status).toBe('DLQ');
-    expect(final?.attempts).toBe(3);
+    expect(final?.attempts).toBe(4);
     expect(final?.dlqAt).not.toBeNull();
+    // All 4 attempts consumed the mock fetch.
+    expect(mockFetch.calls().length).toBe(4);
   });
 
   it('a successful delivery on attempt 2 still marks the row DELIVERED', async () => {
