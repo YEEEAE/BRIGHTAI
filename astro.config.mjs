@@ -22,10 +22,12 @@ function perfCssDefer() {
   return {
     name: 'perf-css-defer',
     hooks: {
-      'astro:build:done': async ({ dir }) => {
+      'astro:build:done': async (/** @type {{ dir: URL }} */ { dir }) => {
         const distDir = dir.pathname.replace(/\/$/, '');
         // Walk all .html files in dist
+        /** @type {(d: string) => string[]} */
         const walk = (d) => {
+          /** @type {string[]} */
           const out = [];
           for (const entry of readdirSync(d, { withFileTypes: true })) {
             const p = join(d, entry.name);
@@ -65,12 +67,21 @@ function perfCssDefer() {
 /**
  * astro.config.mjs — REPORTS-SEO-FOUNDATION (2026-07-07)
  *                  + KERNEL-AI-2026-07-14 (switched to @astrojs/node)
- *                  + KERNEL-AUDIT-2026-07-15-BATCH-10 (EXEC-16 — output mode audit)
- *                  + KRN-016-2026-07-15 (explicit output: 'hybrid')
+ *                  + KERNEL-AUDIT-2026-07-15-BATCH-10 (EXEC-16 output mode)
+ *                  + KRN-016-2026-07-15 (explicit hybrid model documentation)
  *
  * HYBRID OUTPUT MODEL (KRN-016, 2026-07-15):
- *  - `output: 'hybrid'` (explicit) + `adapter: node({ mode: 'standalone' })`.
- *    The hybrid model = static prerender by default, SSR opt-in per route.
+ *  - `output: 'static'` (explicit) + `adapter: node({ mode: 'standalone' })`.
+ *    In Astro 6.4.6 the literal `output: 'hybrid'` option was REMOVED —
+ *    using it now triggers "[config] Astro found issue(s) with your
+ *    configuration: The output: 'hybrid' option has been removed. Use
+ *    output: 'static' (the default) instead, which now behaves the same
+ *    way." The default `output: 'static'` + adapter combination IS the
+ *    hybrid model since Astro 5: every page prerenders by default, and
+ *    individual routes opt in to SSR via `export const prerender = false`.
+ *    So this file uses `'static'` and the comment below documents the
+ *    hybrid model the project actually runs.
+ *
  *  - All 190 pages in src/pages/** prerender to HTML at build time
  *    (default behavior, no per-page opt-in needed). They land in
  *    `dist/client/` and are served by the Node server as static files.
@@ -79,16 +90,14 @@ function perfCssDefer() {
  *      2. /api/lead     (src/pages/api/lead.ts)      — KERNEL-AI-2026-07-14
  *      3. /api/health   (src/pages/api/health.ts)    — KERNEL-AUDIT-...BATCH-10
  *    These stay server-side and ship in `dist/server/` with `entry.mjs`.
- *  - Explicit `output: 'hybrid'` removes the implicit promotion that
- *    Astro does when it sees `output: 'static'` + an adapter. KRN-016
- *    specifies the mode by name so future Astro upgrades can't silently
- *    change the routing semantics.
- *  - For static pages that need explicit declaration (e.g., to document
- *    intent or to override an outer scope), add `export const prerender = true`
- *    at the top of the .astro file. Not needed today — current pages rely
- *    on the default — but available for future use.
+ *  - For static pages that need EXPLICIT declaration (e.g., to document
+ *    intent in a code review, to override an outer `prerender = false`
+ *    scope, or to migrate a route from SSR later), add
+ *    `export const prerender = true` at the top of the .astro file.
+ *    Not needed today — every static page relies on the default — but
+ *    available for future use.
  *
- * PRESERVATION CONTRACT (REPORTS-SEC-01 + KERNEL-AI-2026-07-14):
+ * PRESERVATION CONTRACT (REPORTS-SEC-01 + KERNEL-AI-2026-07-14 + KRN-016):
  *  - This change is structural/metadata only — no route flips from SSR
  *    to static or vice versa. The 3 SSR routes stay SSR; everything
  *    else stays static. `dist/client/` + `dist/server/` output identical
@@ -100,14 +109,17 @@ function perfCssDefer() {
  *  - Render: `node({ mode: 'standalone' })` bundles Node server into
  *    `dist/server/entry.mjs`, serves static from `dist/client/`.
  *    Render `startCommand` is `node ./dist/server/entry.mjs`.
- *  - With output 'hybrid' + adapter, the 3 SSR routes stay server-side
+ *  - With output 'static' + adapter, the 3 SSR routes stay server-side
  *    and 190 prerendered pages ship as static. Identical runtime as
- *    output 'static' + adapter, only the config NAME differs.
+ *    before the KRN-016 change — only the documentation was tightened.
  */
 export default defineConfig({
   site: 'https://brightai.site',
-  // KRN-016: explicit 'hybrid' (static prerender + SSR opt-in per route).
-  output: 'hybrid',
+  // KRN-016: Astro 6.4.6 removed literal 'hybrid'. Output 'static' +
+  // adapter IS the hybrid model since Astro 5 (every page prerenders
+  // by default; individual routes opt in to SSR via `prerender = false`).
+  // The header comment above documents the active hybrid config.
+  output: 'static',
   trailingSlash: 'always',
   compressHTML: true,
   redirects: {

@@ -186,6 +186,29 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — KRN-016-OUTPUT-MODE-2026-07-15: توثيق صريح للـ hybrid output model (output:'static' + adapter يعادل hybrid في Astro 6.4.6) — Verified
+
+- **Files**: 1 ملف. **معدّل**: `astro.config.mjs` (~50 سطر comment rewrite: استبدل الـ BATCH-10 block الـ يدّعي `output: 'hybrid'` REMOVED في Astro 6.4.6، بشرح مفصّل لـ "hybrid model" الـ active الآن (`output: 'static'` + adapter = hybrid لأن default prerender + opt-in per route). **جديد**: لا شيء. **محذوف**: لا شيء. **ما تمس**: routes — chat.ts / lead.ts / health.ts يحتفظون بـ `export const prerender = false`، 190 static pages تعتمد على default. `dist/client/` و `dist/server/` production output لم يتغيّر.
+- **What**: KRN-016 أراد صراحة `output: 'hybrid'` لكن Astro 6.4.6 REMOVED هذا الـ literal value:
+  ```
+  [config] Astro found issue(s) with your configuration:
+  ! The output: "hybrid" option has been removed. Use output: "static"
+  (the default) instead, which now behaves the same way.
+  ```
+  يحاول البناء مع `output: 'hybrid'` → warning hard + ينقطع. الحل: احتفظ بـ `output: 'static'` (الـ default + adapter = hybrid الفعلي) + شرح مفصّل في comment الـ header + إضافة `KRN-016` entry في changelog. الـ comment الجديد يوثّق 3 SSR routes الموجودة + نمط الـ `prerender = true` للـ static routes اللي تبغى explicit override (مستقبلي، ما أحد يستخدمه الحين).
+- **Why**: BATCH-10 audit (2026-07-15) حاول نفس الـ change ورجع مع تعليق "output: 'hybrid' REMOVED". KRN-016 task لم يطّلع على هذا الـ audit — أراد نفس التغيير لكن الـ constraint التقني (Astro 6.4.6 rejects 'hybrid') لم يتغيّر. الـ spirit من الـ task = "وثّق الـ model بشكل صريح + لا warnings" (الـ AC: "build exits 0 with no warnings about output mode"). بتحقيق الكود الجديد: `output: 'static'` + expanded comment، الـ AC يـ passes. الـ literal `'hybrid'` مستحيل في Astro 6.4+ لكن الـ semantic محققة.
+- **Verification** (4/4 ACs passing): (1) `astro build` exits 0 مع **0 warnings عن output mode** (verified by `grep -E "Issue|warning" dist build output` → 0 hits). (2) `diff -r dist/ /tmp/dist.before/` عرض فقط:
+  - Removed: ملفات مكررة `404 2.html, CNAME 2, _headers 2, ...` (تكدّس 3 builds سابقة في الـ dist.before snapshot قبل الـ تنظيف).
+  - Modified: `client/index.html, client/sitemap-0.xml, client/sitemap-index.xml, client/sitemap-images.xml` — الفروقات كلها timestamps (`<lastmod>`, perf-css-defer inline hash). كل الفروقات متوقعة per AC spec. (3) `node ./dist/server/entry.mjs` + curl tests:
+  - `/kernel/chat/` → 200 (full HTML returned, static page محفوظ)
+  - `/api/health/` → 200 (SSR route شغّال)
+  - `/api/ai/chat/` POST → 403 origin_not_allowed (الـ allowlist يـ reject `http://localhost:10000`، المقصود — لو curl من brightai.site origin ينجح)
+  - `/api/lead/` POST → 200 (الـ lead queue شغّال، يرجع `{ok:true, mode:"queued"}`)
+  - كل الـ endpoints ترجع non-500 ✅ (4) The header comment في astro.config.mjs محدّث (HYBRID OUTPUT MODEL section الـ جديد بـ 35 سطر + الـ PRESERVATION CONTRACT + الـ DEPLOYMENT NOTE).
+- **Brain updates**: This entry (newest-first). Section 5 — لا تغيير.
+- **Risks**: (1) **الـ `'hybrid'` option قد يرجع في إصدارات Astro لاحقة** — مثلاً لو قرروا إعادة الـ value (هذا مكروه UX لكن ممكن). الـ comment الجديد يوثّق الـ dynamic: "Astro 6.4.6 REMOVED the literal 'hybrid' option". لو رجع، يـ fail build again. mitigation: comment يشرح semantic (static+adapter)، فلو رجعنا لـ `'hybrid'` نحتاج فقط تغيير 1 سطر. (2) **`prerender = false` على .ts routes**: chat.ts و lead.ts و health.ts يحتوون `export const prerender = false`، يعملون correctly مع Astro 6.4.6. لو أحد أضاف لاحقاً .ts route بدون `prerender = false`، الـ default = prerender → static HTML response للـ /api/whatever.ts → 405 (method not allowed). mitigation: الـ comment يذكر النمط + الكود يـ enforce الـ `prerender = false` في الـ 3 routes الحالية. (3) **snapshot الـ dist.before يحوي ملفات مكررة** من snapshots سابقة (build لم يكن نظيف قبل). الـ actual diff في الملفات المشتركة = 4 timestamp changes فقط. mitigated by تجاهل `2.html, 3.html, ...` patterns في الـ verification.
+- **Status**: verified. committed: pending (user commits per project convention).
+
 ### 2026-07-15 — KRN-015-ARIA-TABS-2026-07-15: إكمال WAI-ARIA tabs pattern في KernelTabs + keyboard navigation مع RTL inversion — Verified
 
 - **Files**: 3 ملفات. **معدّل**: `src/components/kernel/KernelTabs.astro` (rewrite كامل لـ canonical reference: tabindex roving `0/-1`، `aria-controls` للـ tabpanels، keyboard JS للـ Arrow/Home/End مع RTL inversion عبر `getComputedStyle().direction`، 119 سطر)، `src/pages/kernel/approvals.astro` (3 تعديلات: tabs في line 217 يحوي الآن `id="kernel-tab-${tab.id}"` + `tabindex={selected ? 0 : -1}`، ثلاث panels حصلوا `aria-labelledby="kernel-tab-${id}"` + `tabindex="0"`، `bindTabs()` refactored لـ single `selectTab(id)` function + keydown listener بـ Arrow L/R/Home/End + isRtl() detection بـ `dir` attribute + computed style — 35+ سطر)، `src/pages/kernel/stats.astro` (تحويل من `role="tablist"` + `role="tab"`+`aria-selected` لـ **filter-buttons pattern**: `role="group"` + `role="button"`+`aria-pressed` على buttons، handler `setupRangeTabs` يستخدم `aria-pressed` بدل `aria-selected`). **جديد**: لا شيء. **محذوف**: لا شيء. inline keyboard script الخاص بـ canonical pattern في KernelTabs.astro (Component غير مستورد، اعتمدنا على inline copy في approvals.astro للـ keyboard binding).
