@@ -430,21 +430,11 @@ const allItems = [
 
   <!-- Drawer JS (minimal, no external deps) -->
   <script is:inline>
-    function handleKernelEscapeKey(e) {
-      var drawer = document.getElementById('k-drawer');
-      if (!drawer) return;
-      var toggle = document.querySelector('[data-kernel-drawer-toggle]');
-
-      if (e.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') {
-        drawer.setAttribute('aria-hidden', 'true');
-        drawer.style.display = 'none';
-        toggle?.setAttribute('aria-expanded', 'false');
-        // KRN-010 / EXEC-10: restore body scroll + return focus to trigger
-        document.body.style.overflow = '';
-        if (toggle instanceof HTMLElement) toggle.focus();
-      }
-    }
-
+    // KRN-010: Mobile drawer — focus-trap.js (loaded in BaseLayout) auto-engages on
+    // [role="dialog"][aria-modal="true"] and handles Escape, Tab/Shift+Tab trap, and
+    // focus restore to opener. This script owns: open/close toggle click, backdrop
+    // and close-button click handlers, body-scroll lock, and the visual hide
+    // (display:none) when the trap closes via Escape.
     function initKernelDrawer() {
       var toggle = document.querySelector('[data-kernel-drawer-toggle]');
       var drawer = document.getElementById('k-drawer');
@@ -454,31 +444,39 @@ const allItems = [
         drawer.setAttribute('aria-hidden', 'false');
         drawer.style.display = 'block';
         toggle.setAttribute('aria-expanded', 'true');
-        // KRN-010 / EXEC-10: body scroll lock while drawer is open
-        document.body.style.overflow = 'hidden';
-        drawer.querySelector('.k-drawer__link')?.focus();
       }
 
       function closeDrawer() {
         drawer.setAttribute('aria-hidden', 'true');
         drawer.style.display = 'none';
         toggle.setAttribute('aria-expanded', 'false');
-        // KRN-010 / EXEC-10: restore body scroll
-        document.body.style.overflow = '';
-        toggle.focus();
       }
 
-      toggle.addEventListener('click', function() {
+      toggle.addEventListener('click', function () {
         var isOpen = drawer.getAttribute('aria-hidden') === 'false';
         if (isOpen) closeDrawer(); else openDrawer();
       });
 
-      drawer.querySelectorAll('[data-kernel-drawer-close]').forEach(function(el) {
+      drawer.querySelectorAll('[data-kernel-drawer-close]').forEach(function (el) {
         el.addEventListener('click', closeDrawer);
       });
 
-      document.removeEventListener('keydown', handleKernelEscapeKey);
-      document.addEventListener('keydown', handleKernelEscapeKey);
+      // Body scroll lock + visual hide, synced with focus-trap.js lifecycle events.
+      // a11y:modal-opened → focus-trap.js called open() (Tab trap active, siblings inert).
+      // a11y:modal-closed → focus-trap.js called close() (focus restored to opener, inert cleared).
+      drawer.addEventListener('a11y:modal-opened', function () {
+        document.body.style.overflow = 'hidden';
+      });
+      drawer.addEventListener('a11y:modal-closed', function () {
+        document.body.style.overflow = '';
+        // When close originates from focus-trap (Escape), display:none never fires
+        // there because focus-trap only flips aria-hidden. Sync the visual state here
+        // so the drawer actually disappears instead of staying as an invisible overlay.
+        if (drawer.style.display !== 'none') {
+          drawer.style.display = 'none';
+          toggle.setAttribute('aria-expanded', 'false');
+        }
+      });
     }
 
     document.addEventListener('astro:page-load', initKernelDrawer);
