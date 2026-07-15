@@ -16,6 +16,8 @@ import { makeSubmission, truncateLeadQueue } from './helpers';
 import { dbServiceRole } from '@brightai/db';
 
 beforeAll(async () => {
+  // Sanity ping + truncate once before the suite so leftovers from
+  // queue.test.ts (or earlier suites) don't pollute this one.
   await dbServiceRole.$queryRaw`SELECT 1`;
   await truncateLeadQueue();
 });
@@ -25,17 +27,6 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await truncateLeadQueue();
-});
-import { dbServiceRole } from '@brightai/db';
-
-beforeAll(async () => {
-  // Truncate once before the suite so leftovers from queue.test.ts
-  // (or earlier suites) don't pollute this one.
-  await truncateLeadQueue();
-});
-
-beforeEach(async () => {
   await truncateLeadQueue();
 });
 
