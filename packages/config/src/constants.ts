@@ -441,6 +441,40 @@ export const SESSION_LIMITS = {
 } as const;
 
 // ─────────────────────────────────────────────────────────────────
+// Chat session context (CHAT-SESSION-2026-07-15)
+// Shared between the marketing site's /api/ai/chat/ and any future
+// consumer that wants the same multi-turn context behaviour. Currently
+// the only consumer is the kernel AI assistant (5 kernel pages + chat.astro)
+// but the constants live here so the dashboard can adopt the same shape
+// without a parallel definition.
+// ─────────────────────────────────────────────────────────────────
+
+export const CHAT_SESSION_LIMITS = {
+  /** Max messages kept in the per-session LIST (8 = 4 user + 4 assistant
+   *  turns, or 8 single-side messages). The kernel prompts ask for
+   *  multi-turn context within a 5-turn demo, so 8 gives 3 turns of
+   *  buffer for partial-match / off-by-one edge cases. */
+  MAX_MESSAGES: 8,
+
+  /** TTL on the per-session Redis key. 10 minutes matches the kernel
+   *  AI assistant's "stay on the same page" UX: a returning visitor
+   *  who pauses for 15 minutes gets a fresh conversation, which is the
+   *  safer default (avoids surfacing stale context to a new topic). */
+  TTL_SECONDS: 600,
+
+  /** Hard cap on sessionId length to bound key size in Redis. A
+   *  canonical UUID (with dashes) is 36 chars; we allow 64 for any
+   *  future client-side scheme that wants prefix + UUID. */
+  SESSION_ID_MAX_CHARS: 64,
+
+  /** Hard cap on each message's content length when reading from the
+   *  store. The /api/ai/chat/ endpoint already enforces 4000 chars on
+   *  incoming user messages; this is the symmetric cap for stored
+   *  content to defend against malformed Redis entries. */
+  STORED_MESSAGE_MAX_CHARS: 4000,
+} as const;
+
+// ─────────────────────────────────────────────────────────────────
 // Password policy
 // ─────────────────────────────────────────────────────────────────
 

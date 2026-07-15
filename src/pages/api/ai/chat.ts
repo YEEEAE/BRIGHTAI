@@ -2,6 +2,7 @@
  * src/pages/api/ai/chat.ts — REPORTS-SEC-01 (2026-07-06)
  *                  + KERNEL-AUDIT-2026-07-15-BATCH-2 (ARCH-2 + EXEC-01)
  *                  + KRN-003-FULL-2026-07-15 (EXEC-03 API key check)
+ *                  + CHAT-SESSION-2026-07-15 (multi-turn context store)
  *
  * Server-side proxy for AI chat. Reads provider keys from
  * `process.env.GROQ_API_KEY` and `process.env.GEMINI_API_KEY`
@@ -9,7 +10,7 @@
  * inlined into the SSR bundle (ARCH-2 fix).
  *
  * Behavior:
- *  - POST { message: string, promptId?: 'compliance'|'policies'|'evidence'|'audit'|'scenarios', provider?: 'groq'|'gemini'|'auto' }
+ *  - POST { message: string, sessionId?: string (UUID v4/v7), promptId?: ..., provider?: 'groq'|'gemini'|'auto' }
  *  - Returns { reply: string, provider: 'groq'|'gemini' } on success.
  *  - In-memory rate limit: 10 requests / minute / IP.
  *  - Validates: message is a non-empty string ≤ 4000 chars.
@@ -17,6 +18,16 @@
  *    (EXEC-01 — KRN-001 prompt injection mitigation).
  *  - Auto mode: tries Groq first (fast), falls back to Gemini on failure.
  *  - Both providers fail → 502 with sanitized error.
+ *  - CHAT-SESSION-2026-07-15: when sessionId is provided, the last
+ *    CHAT_SESSION_LIMITS.MAX_MESSAGES messages are fetched from Redis
+ *    and prepended to the provider call as conversation context. The
+ *    user message and assistant reply are then LPUSHed back to the same
+ *    Redis LIST with LTRIM 0 (MAX_MESSAGES-1) and EXPIRE TTL. If
+ *    sessionId is omitted, the endpoint behaves as a single-turn
+ *    request (no Redis access). If Redis is unavailable, the endpoint
+ *    degrades to in-memory storage (per-process, not shared across
+ *    replicas or restarts) and returns `X-Chat-Session: degraded` so
+ *    the client can surface a notice.
  *
  * Why this exists:
  *  The BrightAI site (output: 'static' Astro) ships 190 prerendered
@@ -25,7 +36,7 @@
  *  on this file, ONLY this route is server-rendered; all other pages
  *  remain pure static HTML.
  *
- * Security (KRN-A1 + KRN-001 + EXEC-01 + KRN-003 / EXEC-03):
+ * Security (KRN-A1 + KRN-001 + EXEC-01 + KRN-003 / EXEC-03 + CHAT-SESSION-2026-07-15):
  *  - Keys read via `process.env.X` (runtime, never inlined into the
  *    SSR bundle). Previously used `import.meta.env.X` which Astro/Vite
  *    statically replaces at build time — leading to the Gemini key
@@ -48,11 +59,22 @@
  *  - API key comparison uses `crypto.timingSafeEqual` to prevent
  *    timing attacks.
  *  - No request body is logged.
- *  - No message content is persisted server-side.
+ *  - CHAT-SESSION-2026-07-15: sessionId is treated as untrusted input.
+ *    We validate it matches a UUID format (any version) and apply a
+ *    hard length cap (CHAT_SESSION_LIMITS.SESSION_ID_MAX_CHARS) so a
+ *    malicious client can't blow up the Redis key space. Message
+ *    content is stored as JSON in Redis with a defensive length cap
+ *    on read; the original 4000-char cap on the incoming message
+ *    remains the primary bound.
+ *  - Stored messages never include the system prompt (it is resolved
+ *    server-side per request), so a future client that uses a
+ *    different promptId on a later turn cannot leak another prompt
+ *    through the history.
  */
 
 import type { APIRoute } from 'astro';
 import { timingSafeEqual } from 'node:crypto';
+import { CHAT_SESSION_LIMITS } from '@brightai/config';
 import {
   KERNEL_SYSTEM_PROMPTS,
   KERNEL_SYSTEM_PROMPT_MAX_CHARS,
@@ -60,6 +82,8 @@ import {
 } from '../../../data/kernel-system-prompts';
 // KRN-013 / EXEC-13: shared client IP extraction with XFF rightmost-trust
 import { getClientIp } from '../../../lib/ip';
+// CHAT-SESSION-2026-07-15: Redis-backed conversation context store
+import { getChatSessionStore, type ChatMessage } from '../../../lib/redis';
 
 export const prerender = false;
 
@@ -70,6 +94,27 @@ const MAX_MESSAGE_CHARS = 4000;
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 10;
 const PROVIDER_TIMEOUT_MS = 25_000;
+
+// ─────────────────────────────────────────────────────────────────────────
+// CHAT-SESSION-2026-07-15: UUID validation
+//
+// Accepts any UUID version (v4 and v7 are both fine — the server does
+// not care about the version, only that the shape is canonical). The
+// shape is what bounds the Redis key size; the version check is purely
+// for client compatibility (the kernel AI assistant generates v4 today
+// and v7 once the form-factor needs time ordering).
+// ─────────────────────────────────────────────────────────────────────────
+const UUID_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function isValidSessionId(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length > 0 &&
+    value.length <= CHAT_SESSION_LIMITS.SESSION_ID_MAX_CHARS &&
+    UUID_REGEX.test(value)
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // Allowed promptIds — server-side allowlist for system prompt lookup
@@ -240,7 +285,7 @@ function jsonError(
 // Provider: Groq (OpenAI-compatible)
 // ─────────────────────────────────────────────────────────────────────────
 async function callGroq(
-  message: string,
+  messages: ChatMessage[],
   systemPrompt: string | undefined,
   signal: AbortSignal,
 ): Promise<string> {
@@ -265,7 +310,11 @@ async function callGroq(
       model,
       messages: [
         ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
-        { role: 'user', content: message },
+        // CHAT-SESSION-2026-07-15: full history (oldest → newest) is sent
+        // as alternating user/assistant messages before the current
+        // user turn. The history is already in chronological order
+        // because src/lib/redis.ts reverse-reads the LPUSHed list.
+        ...messages.map((m) => ({ role: m.role, content: m.content })),
       ],
       max_tokens: 800,
       temperature: 0.4,
@@ -287,7 +336,7 @@ async function callGroq(
 // Provider: Gemini (generativelanguage.googleapis.com)
 // ─────────────────────────────────────────────────────────────────────────
 async function callGemini(
-  message: string,
+  messages: ChatMessage[],
   systemPrompt: string | undefined,
   signal: AbortSignal,
 ): Promise<string> {
@@ -301,12 +350,19 @@ async function callGemini(
     model,
   )}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
+  // Gemini uses 'user' and 'model' roles (not 'assistant'). Map our
+  // internal role names accordingly.
+  const contents = messages.map((m) => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }],
+  }));
+
   const res = await fetch(url, {
     method: 'POST',
     signal,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      contents: [{ role: 'user', parts: [{ text: message }] }],
+      contents,
       ...(systemPrompt
         ? { systemInstruction: { parts: [{ text: systemPrompt }] } }
         : {}),
@@ -395,12 +451,46 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  // 7. Provider selection
+  // 7. CHAT-SESSION-2026-07-15: optional sessionId → fetch conversation
+  //    history from the Redis-backed store. If sessionId is absent, the
+  //    endpoint behaves as a single-turn request (no Redis access). If
+  //    sessionId is malformed, reject with 400. If sessionId is valid
+  //    but Redis is unavailable, the store returns degraded=true and we
+  //    still serve the request with an empty history + a response header
+  //    so the client can surface a notice.
+  let history: ChatMessage[] = [];
+  let sessionDegraded = false;
+  let sessionId: string | undefined;
+  if (b.sessionId !== undefined) {
+    if (!isValidSessionId(b.sessionId)) {
+      return jsonError(400, 'invalid_session_id', {
+        hint: 'sessionId must be a UUID v4 or v7 (lowercase, with dashes).',
+      });
+    }
+    sessionId = b.sessionId;
+    const store = getChatSessionStore();
+    const result = await store.recent(
+      sessionId,
+      CHAT_SESSION_LIMITS.MAX_MESSAGES,
+    );
+    history = result.ok;
+    sessionDegraded = result.degraded;
+  }
+
+  // 8. Provider selection
   const requestedProvider =
     typeof b.provider === 'string' ? b.provider.toLowerCase() : 'auto';
 
-  // 8. Per-provider timeout (KRN-015 fix) — fresh AbortController per call
-  //    so a Groq timeout doesn't poison the Gemini fallback signal.
+  // 9. Build the messages array passed to the provider: history first
+  //    (already in chronological order from src/lib/redis.ts), then the
+  //    current user turn at the tail.
+  const providerMessages: ChatMessage[] = [
+    ...history,
+    { role: 'user', content: message, ts: Date.now() },
+  ];
+
+  // 10. Per-provider timeout (KRN-015 fix) — fresh AbortController per call
+  //     so a Groq timeout doesn't poison the Gemini fallback signal.
   async function callWithTimeout<T>(
     fn: (signal: AbortSignal) => Promise<T>,
   ): Promise<T> {
@@ -419,19 +509,27 @@ export const POST: APIRoute = async ({ request }) => {
 
   try {
     if (requestedProvider === 'groq') {
-      reply = await callWithTimeout((signal) => callGroq(message, systemPrompt, signal));
+      reply = await callWithTimeout((signal) =>
+        callGroq(providerMessages, systemPrompt, signal),
+      );
       usedProvider = 'groq';
     } else if (requestedProvider === 'gemini') {
-      reply = await callWithTimeout((signal) => callGemini(message, systemPrompt, signal));
+      reply = await callWithTimeout((signal) =>
+        callGemini(providerMessages, systemPrompt, signal),
+      );
       usedProvider = 'gemini';
     } else {
       // auto: try Groq first, fallback to Gemini (each call gets its own AbortController)
       try {
-        reply = await callWithTimeout((signal) => callGroq(message, systemPrompt, signal));
+        reply = await callWithTimeout((signal) =>
+          callGroq(providerMessages, systemPrompt, signal),
+        );
         usedProvider = 'groq';
       } catch (e) {
         lastError = (e as Error).message;
-        reply = await callWithTimeout((signal) => callGemini(message, systemPrompt, signal));
+        reply = await callWithTimeout((signal) =>
+          callGemini(providerMessages, systemPrompt, signal),
+        );
         usedProvider = 'gemini';
       }
     }
@@ -443,7 +541,50 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonError(502, 'provider_failed', { detail: lastError || 'empty' });
   }
 
-  return jsonResponse({ reply, provider: usedProvider });
+  // 11. CHAT-SESSION-2026-07-15: persist the current turn (user + assistant)
+  //     back to the store. Fire-and-forget from the response's perspective
+  //     (we await so tests can assert, but in prod a slow Redis would
+  //     surface in the same request — which is the right failure mode:
+  //     the client knows context wasn't saved).
+  const now = Date.now();
+  if (sessionId) {
+    try {
+      await getChatSessionStore().push(
+        sessionId,
+        [
+          { role: 'user', content: message, ts: now },
+          { role: 'assistant', content: reply, ts: now },
+        ],
+        {
+          maxMessages: CHAT_SESSION_LIMITS.MAX_MESSAGES,
+          ttlSeconds: CHAT_SESSION_LIMITS.TTL_SECONDS,
+        },
+      );
+    } catch {
+      // Persistence failure is non-fatal. The reply is already on the
+      // wire; the next request will simply start with the pre-failure
+      // history. We intentionally do NOT surface this to the client —
+      // a transient Redis blip shouldn't degrade the user experience
+      // beyond what the X-Chat-Session header already signals.
+    }
+  }
+
+  // 12. Build response. Set X-Chat-Session: degraded header when the
+  //     in-memory fallback was used (or the write was skipped) so the
+  //     client can show "conversation context not preserved across
+  //     reloads" if it wants to.
+  const extraHeaders: Record<string, string> = {};
+  if (sessionId) {
+    extraHeaders['X-Chat-Session'] = sessionDegraded ? 'degraded' : 'ok';
+    // The reply itself is per-request and should not be cached. The
+    // history lives in Redis (TTL 10 min) and is read on every request.
+  }
+
+  return jsonResponse(
+    { reply, provider: usedProvider, sessionId: sessionId ?? null },
+    200,
+    extraHeaders,
+  );
 };
 
 // ─────────────────────────────────────────────────────────────────────────

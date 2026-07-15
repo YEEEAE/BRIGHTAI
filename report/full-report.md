@@ -610,3 +610,1097 @@ scripts/               → 138 script للـ SEO + verification + build
 ---
 
 **نهاية التقرير — 15 يوليو 2026 · BrightAI v2.0.0**
+
+
+تمام. سأكمل الـ Executive Implementation Prompts للمسائل من رقم 6 إلى نهاية القائمة الحرجة والعالية (Critical + High). كل برومبت مكتوب بحيث تنسخه مباشرة لمطوّر أو agent وينفّذ.
+
+---
+
+# BrightAI — Executive Implementation Prompts (تكملة من #6)
+
+---
+
+## PROMPT #6 — BAI-006 · Streaming Response عبر SSE
+
+**ID:** BAI-006 · **Priority:** P1 · **Impact:** High · **Effort:** 3 أيام-إنسان
+
+### Objective
+تحويل `/api/ai/chat` من response كامل واحد إلى **Server-Sent Events (SSE)** بحيث يبدأ العميل يشوف الرد أول ما يبدأ الـ provider يولّد التوكنز. الهدف: تخفيض **Time-to-First-Token** من ~3s إلى <500ms.
+
+### Repository Context
+الـ endpoint حالياً يرجّع `{ reply, provider }` بعد ما ينتظر الـ provider كامل (400 سطر في `chat.ts`). Groq و Gemini الاثنين يدعمون streaming natively:
+- Groq: `stream: true` في body (OpenAI-compatible SSE).
+- Gemini: `:streamGenerateContent` endpoint بدل `:generateContent`.
+
+### Files to inspect
+- `src/pages/api/ai/chat.ts` (المصدر الأساسي)
+- `src/components/kernel/KernelAiAssistant.astro` (العميل الحالي)
+- `src/components/kernel/KernelChatError.astro`
+
+### Files to modify
+- `src/pages/api/ai/chat.ts` — إضافة streaming path.
+- `src/components/kernel/KernelAiAssistant.astro` — تحويل fetch إلى EventSource-style parsing عبر ReadableStream.
+- `astro.config.mjs` — التأكد إن `@astrojs/node` mode='standalone' يدعم streaming (يدعمه).
+
+### Architecture Constraints
+- الحفاظ على backwards compatibility: لو الـ client أرسل `Accept: application/json` نرجّع الشكل القديم؛ لو أرسل `Accept: text/event-stream` نرجّع SSE.
+- منع buffering من Render's proxy: إضافة `X-Accel-Buffering: no` header.
+- الحفاظ على rate limit + origin check قبل بدء الـ stream.
+- الحفاظ على `AbortController` per-provider (KRN-015 fix محفوظ).
+
+### Coding Standards
+- TypeScript strict.
+- لا تعديل على `KERNEL_SYSTEM_PROMPTS` allowlist.
+- الـ SSE events تكون بشكل:
+  ```
+  event: token
+  data: {"delta": "..."}
+
+  event: done
+  data: {"provider": "groq"}
+
+  event: error
+  data: {"error": "..."}
+  ```
+
+### Implementation Steps
+1. إضافة helper `streamGroq(message, systemPrompt, signal)` يستخدم `stream: true` ويعيد `AsyncGenerator<string>`.
+2. إضافة helper `streamGemini(...)` يستخدم `:streamGenerateContent`.
+3. تفريق مسار SSE عن مسار JSON بناءً على header `Accept`.
+4. في SSE path: كتابة `new ReadableStream({ start(ctrl) { ... } })` والـ ctrl.enqueue لكل token.
+5. الـ fallback logic (Groq → Gemini) يبدأ فقط لو Groq فشل قبل أول token (لو بدأ الـ stream ما نقدر نرجع عنه).
+6. تحديث `KernelAiAssistant`:
+   ```js
+   const res = await fetch('/api/ai/chat', {
+     method: 'POST',
+     headers: { 'Accept': 'text/event-stream', 'Content-Type': 'application/json' },
+     body: JSON.stringify({ message, promptId })
+   });
+   const reader = res.body.getReader();
+   const decoder = new TextDecoder();
+   // parse SSE frames token by token, append to DOM
+   ```
+
+### Edge Cases
+- Provider يقفل الـ connection قبل done → إرسال `event: error` قبل إغلاق الـ stream.
+- Client يقفل قبل الانتهاء → cleanup AbortController.
+- Rate limit hit في وسط الـ stream → مستحيل (rate limit قبل الـ stream).
+- Newlines داخل الـ delta → escape في JSON.
+
+### Regression Risks
+- **HIGH:** Render proxy قد يـ buffer SSE — لازم `X-Accel-Buffering: no` + `Cache-Control: no-cache`.
+- **MEDIUM:** ClientRouter من Astro قد يقاطع الـ EventSource — التأكد إن الـ chat page مستثناة.
+
+### Testing Checklist
+- [ ] curl مع `Accept: text/event-stream` يشوف tokens واحد واحد.
+- [ ] curl مع `Accept: application/json` يشوف الرد الكامل (backwards compat).
+- [ ] client-side: أول token يظهر في <1s على 4G بطيء.
+- [ ] AbortController: قفل الـ tab يقفل الـ upstream connection (verify في Groq dashboard).
+- [ ] Fallback من Groq إلى Gemini يشتغل لو Groq فشل قبل أول token.
+
+### Acceptance Criteria
+- Time-to-first-token < 800ms (P95) على 4G.
+- لا زيادة في error rate.
+- الاختبار موجود في `apps/dashboard/tests/api/chat-streaming.test.ts`.
+
+### Rollback Strategy
+Feature flag `CHAT_STREAMING_ENABLED` في env، لو false يرجع للسلوك القديم بالكامل.
+
+### Expected Measurable Improvement
+- TTFB لأول token: ~3000ms → ~500ms
+- User perceived latency: تحسّن ~85%
+
+### Expected Score Improvement
+AI Architecture: +6% · UX: +3%
+
+---
+
+## PROMPT #7 — BAI-007 · Feature Flags System
+
+**ID:** BAI-007 · **Priority:** P1 · **Impact:** High · **Effort:** 6 أيام-إنسان
+
+### Objective
+إضافة نظام feature flags يسمح بتفعيل/تعطيل المزايا per-organization بلا deploy. مطلوب للـ SaaS enterprise حتى نقدم gradual rollout + kill switches.
+
+### Repository Context
+حالياً لا يوجد أي feature flag mechanism. الـ Prisma schema فيه Organization + Membership لكن ما فيه FeatureFlag model.
+
+### Recommended Library
+**GrowthBook** (open source + self-hosted + free) بدل LaunchDarkly/Unleash — لأن BrightAI منتج للسوق السعودي والـ data residency مهم.
+
+بديل مقبول: **Unleash Community** (self-hosted).
+
+### Files to inspect
+- `packages/db/prisma/schema.prisma`
+- `apps/dashboard/lib/tenant.ts`
+- `apps/dashboard/lib/session.ts`
+
+### Files to modify/add
+- `packages/db/prisma/schema.prisma` — إضافة `FeatureFlag` + `OrgFeatureFlag`.
+- `packages/db/prisma/migrations/xxx_feature_flags/migration.sql`.
+- `packages/config/src/feature-flags.ts` (جديد) — enum بالـ flag keys.
+- `apps/dashboard/lib/feature-flags/client.ts` (جديد) — server-side check.
+- `apps/dashboard/lib/feature-flags/hook.ts` (جديد) — `useFeatureFlag(key)` client hook.
+- `apps/dashboard/app/(settings)/settings/features/page.tsx` (جديد) — admin UI.
+
+### Architecture Constraints
+- الـ flags يـ resolve في middleware/layout مرة واحدة per-request؛ مو per-component.
+- الـ default value لكل flag يكون `false` (fail-closed).
+- الـ flags يـ cache في memory 30s per-org لتقليل DB hits.
+- الـ RLS تشمل جدول `OrgFeatureFlag`.
+
+### Prisma Schema Addition
+```prisma
+model FeatureFlag {
+  id          String   @id @default(cuid())
+  key         String   @unique      // e.g. "ai_streaming", "vault_v2"
+  description String
+  defaultValue Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  orgOverrides OrgFeatureFlag[]
+
+  @@map("feature_flags")
+}
+
+model OrgFeatureFlag {
+  id             String   @id @default(cuid())
+  organizationId String
+  flagKey        String
+  enabled        Boolean
+  updatedAt      DateTime @updatedAt
+  updatedBy      String?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  flag         FeatureFlag  @relation(fields: [flagKey], references: [key], onDelete: Cascade)
+
+  @@unique([organizationId, flagKey])
+  @@index([organizationId])
+  @@map("org_feature_flags")
+}
+```
+
+### Initial Flag Set
+- `ai_streaming` — SSE chat (from BAI-006)
+- `firewall_ner_enabled` — Arabic NER detector
+- `billing_v2` — new pricing tier
+- `audit_ui_enabled` — audit trail page (from BAI-018)
+- `sso_enabled` — SAML/OIDC login
+
+### Implementation Steps
+1. Prisma migration + seed للـ flags الأولية.
+2. `getFlag(orgId, key): Promise<boolean>` مع in-memory Map cache TTL 30s.
+3. wrapper في `apps/dashboard/app/(app)/layout.tsx`:
+   ```tsx
+   const flags = await resolveFlags(session.orgId);
+   return <FeatureFlagProvider value={flags}>{children}</FeatureFlagProvider>;
+   ```
+4. Admin UI: جدول بسيط toggle per-flag per-org (فقط OWNER).
+5. Audit log entry لكل toggle (استخدم hash chain الموجود).
+
+### Edge Cases
+- Organization جديدة بلا overrides → استخدم `defaultValue`.
+- Flag مسحوب من الكود لكن باقي في DB → soft-warn في logs، لا break.
+- Toggle بينما المستخدم على session قديم → cache invalidation عبر Redis pubsub (اختياري phase 2).
+
+### Regression Risks
+- **MEDIUM:** إضافة DB hit لكل request — mitigated بالـ 30s cache.
+- **LOW:** RLS misconfiguration قد يـ leak flags — verify مع rls-isolation test.
+
+### Testing Checklist
+- [ ] Flag `false` بالـ default → المزايا مقفلة.
+- [ ] Toggle لـ org معينة → المزايا تفتح لها فقط.
+- [ ] Cache invalidation بعد 30s.
+- [ ] Non-OWNER يشوف 403 على `/settings/features`.
+- [ ] RLS test: org A ما يقدر يشوف flags org B.
+
+### Acceptance Criteria
+- 5 flags يشتغلون على staging.
+- Admin UI wired لـ 2 orgs مختلفتين مع سلوك مختلف.
+- test coverage >80% لـ `feature-flags/*`.
+
+### Rollback Strategy
+`ENABLE_FEATURE_FLAGS=false` في env → كل flag يرجع للـ hardcoded default.
+
+### Expected Score Improvement
+SaaS Readiness: +10% · DevEx: +3%
+
+---
+
+## PROMPT #8 — BAI-008 · axe-core في CI
+
+**ID:** BAI-008 · **Priority:** P1 · **Impact:** High · **Effort:** 3 أيام-إنسان
+
+### Objective
+إضافة axe-core scan على كل PR بحيث يفشل الـ merge لو فيه WCAG 2.1 AA violations. حالياً الفحوصات يدوية عبر `scripts/audit-contrast.mjs` بس.
+
+### Files to inspect
+- `.github/workflows/*` (3 ملفات)
+- `.lighthouserc.json`
+- `scripts/audit-contrast.mjs`
+
+### Files to modify/add
+- `.github/workflows/a11y.yml` (جديد)
+- `scripts/axe-scan.mjs` (جديد)
+- `package.json` — إضافة `"a11y:scan"` script
+
+### Recommended Tools
+- **@axe-core/cli** لـ static Astro output.
+- **@axe-core/playwright** لـ interactive testing على /kernel/chat/.
+
+### Implementation Steps
+1. `pnpm add -D -w @axe-core/cli @axe-core/playwright axe-core`.
+2. `scripts/axe-scan.mjs`:
+   ```js
+   import { chromium } from 'playwright';
+   import AxeBuilder from '@axe-core/playwright';
+   
+   const CRITICAL_PAGES = [
+     '/', '/en/', '/pricing/', '/contact/', '/kernel/', '/kernel/chat/',
+     '/blog/', '/customers/bank/', '/solutions/finance/'
+   ];
+   
+   const browser = await chromium.launch();
+   const results = [];
+   for (const path of CRITICAL_PAGES) {
+     const page = await browser.newPage();
+     await page.goto(`http://localhost:4321${path}`);
+     const scan = await new AxeBuilder({ page })
+       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+       .analyze();
+     results.push({ path, violations: scan.violations });
+   }
+   
+   const critical = results.filter(r => r.violations.some(v => v.impact === 'critical'));
+   if (critical.length > 0) {
+     console.error(JSON.stringify(critical, null, 2));
+     process.exit(1);
+   }
+   ```
+3. GitHub workflow:
+   ```yaml
+   name: A11y
+   on: [pull_request]
+   jobs:
+     axe:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: pnpm/action-setup@v3
+         - uses: actions/setup-node@v4
+         - run: pnpm install
+         - run: pnpm build
+         - run: pnpm preview &
+         - run: sleep 5
+         - run: node scripts/axe-scan.mjs
+   ```
+
+### Rules
+- **Critical violations = fail merge** (block).
+- **Serious violations = warning** (comment PR بدون block).
+- **Moderate/Minor = report only**.
+
+### Testing Checklist
+- [ ] الـ workflow يشتغل على PR.
+- [ ] PR فيه missing alt text → يفشل.
+- [ ] PR نظيف → ينجح.
+- [ ] الـ report يظهر كـ comment على الـ PR (استخدم `@axe-core/reporter-html`).
+
+### Acceptance Criteria
+- 0 critical violations على 9 صفحات حرجة.
+- CI badge أخضر مستقر.
+
+### Rollback Strategy
+Comment الـ workflow لو كسر urgent releases.
+
+### Expected Score Improvement
+Accessibility: +12%
+
+---
+
+## PROMPT #9 — BAI-009 · Storybook للـ Kernel Components
+
+**ID:** BAI-009 · **Priority:** P1 · **Impact:** High · **Effort:** 5 أيام-إنسان
+
+### Objective
+إعداد Storybook 8 لكل الـ 20 kernel component + UI components، مع a11y addon + RTL toggle + viewport addon.
+
+### Files to inspect
+- `src/components/kernel/` (20 مكون)
+- `src/components/ui/`
+- `src/components/brand/`
+- `src/styles/tokens.css`
+
+### Files to add
+- `.storybook/main.ts`
+- `.storybook/preview.ts`
+- `src/components/kernel/*.stories.ts` (20 ملف)
+- `.github/workflows/chromatic.yml` (اختياري لـ visual regression)
+
+### Architecture Constraints
+- Storybook يدعم Astro عبر `@storybook/addon-astro` (community). لو مو مستقر، استخدم Storybook للـ React components (dashboard) + preview فقط للـ Astro.
+- الـ tokens.css يـ load قبل كل story.
+- إضافة `dir="rtl"` toggle كـ global في preview.
+
+### Implementation Steps
+1. `pnpm dlx storybook@latest init --type=vue` ثم modify لـ Astro/React hybrid.
+2. `.storybook/preview.ts`:
+   ```ts
+   import '../src/styles/global.css';
+   import '../src/styles/tokens.css';
+   
+   export const globalTypes = {
+     direction: {
+       name: 'Direction',
+       toolbar: {
+         items: [
+           { value: 'rtl', title: 'RTL (عربي)' },
+           { value: 'ltr', title: 'LTR (English)' },
+         ],
+       },
+     },
+   };
+   
+   export const decorators = [
+     (Story, ctx) => {
+       document.documentElement.dir = ctx.globals.direction ?? 'rtl';
+       document.documentElement.lang = ctx.globals.direction === 'rtl' ? 'ar' : 'en';
+       return Story();
+     }
+   ];
+   ```
+3. Story example (`KernelCard.stories.ts`):
+   ```ts
+   export default { title: 'Kernel/Card', component: KernelCard };
+   export const Default = { args: { title: 'التقارير', body: 'محتوى البطاقة' } };
+   export const Loading = { args: { loading: true } };
+   export const Empty = { args: { empty: true } };
+   ```
+4. Addons: `@storybook/addon-a11y`, `@storybook/addon-viewport`, `@storybook/addon-controls`.
+5. deploy على Chromatic أو Netlify preview.
+
+### Testing Checklist
+- [ ] 20 kernel components لهم stories.
+- [ ] كل story تعمل في RTL + LTR.
+- [ ] a11y addon يظهر 0 critical على كل story.
+- [ ] viewport addon يعرض mobile 375px + tablet + desktop.
+
+### Acceptance Criteria
+- Storybook static build < 30 MB.
+- Chromatic أو Netlify preview link في الـ PR.
+- Documentation في `docs/storybook.md`.
+
+### Expected Score Improvement
+DevEx: +15% · UX: +5%
+
+---
+
+## PROMPT #10 — BAI-010 · Font Subsetting لـ Noto Sans Arabic
+
+**ID:** BAI-010 · **Priority:** P1 · **Impact:** High · **Effort:** 2 أيام-إنسان
+
+### Objective
+تخفيض حجم الـ Arabic fonts من ~200KB (unicode-range كامل) إلى <40KB per weight عبر subsetting دقيق للحروف المستخدمة فعلاً في الموقع.
+
+### Files to inspect
+- `src/styles/tokens.css` (font-face declarations)
+- `src/layouts/BaseLayout.astro` (font preload)
+- `public/fonts/` (لو موجود؛ لم أفحصه)
+
+### Files to modify/add
+- `scripts/subset-fonts.mjs` (جديد)
+- `src/styles/tokens.css` (تحديث unicode-range)
+- `public/fonts/noto-sans-arabic-*.woff2` (regenerate)
+- `package.json` — script `"fonts:subset"` قبل build
+
+### Recommended Tools
+- **glyphhanger** — يمسح كل HTML/CSS في dist ويستخرج الـ glyphs المستخدمة.
+- **fonttools (pyftsubset)** — Python-based، أدق.
+
+### Implementation Steps
+1. تثبيت:
+   ```bash
+   pip install fonttools brotli
+   npm i -D -w glyphhanger
+   ```
+2. `scripts/subset-fonts.mjs`:
+   ```js
+   import { execSync } from 'child_process';
+   
+   // Step 1: extract glyphs from built site
+   execSync('glyphhanger ./dist/**/*.html --formats=woff2 --subset=./public/fonts/NotoSansArabic-*.ttf');
+   
+   // Step 2: generate 3 weights (400, 600, 700) with same subset
+   const weights = [400, 600, 700];
+   for (const w of weights) {
+     execSync(`pyftsubset public/fonts/NotoSansArabic-${w}.ttf \
+       --output-file=public/fonts/NotoSansArabic-${w}.subset.woff2 \
+       --flavor=woff2 \
+       --unicodes=U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFF,U+0020-007E,U+2000-206F`);
+   }
+   ```
+3. تحديث `tokens.css`:
+   ```css
+   @font-face {
+     font-family: 'Noto Sans Arabic';
+     font-weight: 400;
+     font-display: swap;
+     src: url('/fonts/NotoSansArabic-400.subset.woff2') format('woff2');
+     unicode-range: U+0600-06FF, U+0750-077F, U+FB50-FDFF, U+FE70-FEFF, U+0020-007E;
+   }
+   ```
+4. Preload في BaseLayout:
+   ```html
+   <link rel="preload" href="/fonts/NotoSansArabic-400.subset.woff2" as="font" type="font/woff2" crossorigin>
+   ```
+5. إضافة `pnpm fonts:subset` في `prebuild`.
+
+### Edge Cases
+- Blog articles تحوي glyphs غير مستخدمة في الـ marketing site → glyphhanger يمسحها كلها، فالـ subset يشمل الاثنين.
+- Content Collections يـ generate بعد build → لازم subset يشتغل بعد `astro build`، مو قبله.
+
+### Testing Checklist
+- [ ] كل حرف عربي في الموقع يـ render صح (no tofu boxes).
+- [ ] كل ligature (لا، لله، الله) يظهر صح.
+- [ ] font-file size < 40 KB per weight.
+- [ ] LCP للـ homepage تحسّن (measure via Lighthouse).
+
+### Acceptance Criteria
+- إجمالي font payload < 120 KB (3 weights × 40 KB).
+- CLS = 0 (font-display: swap مع نفس metrics).
+- 0 missing glyphs مسحاً يدوياً على 10 صفحات مختلفة.
+
+### Rollback Strategy
+احتفظ بالـ fonts الأصلية في `public/fonts/original/` — swap unicode-range فوراً.
+
+### Expected Score Improvement
+Performance: +6% (LCP improvement ~200-400ms)
+
+---
+
+## PROMPT #11 — BAI-011 · CSRF على `/api/lead`
+
+**ID:** BAI-011 · **Priority:** P2 · **Impact:** Medium · **Effort:** 2 أيام-إنسان
+
+### Objective
+إضافة CSRF protection على `/api/lead` باستخدام double-submit cookie pattern. الـ Origin allowlist وحده غير كافي لأن الـ Origin header optional في بعض السيناريوهات (form submits من `<form action>` مثلاً).
+
+### Files to inspect
+- `src/pages/api/lead.ts` (330 سطر)
+- `src/components/kernel/KernelLeadForm.astro`
+- `src/layouts/BaseLayout.astro`
+
+### Files to modify/add
+- `src/pages/api/lead.ts`
+- `src/pages/api/csrf-token.ts` (جديد — GET يرجّع token)
+- `src/lib/csrf.ts` (جديد — helpers)
+- `src/components/kernel/KernelLeadForm.astro` — inject hidden field
+- `render.yaml` — إضافة CSP `form-action 'self'` (موجود بالفعل ✓)
+
+### Architecture Constraints
+- Stateless (لا session storage).
+- HMAC-signed token: `HMAC(SESSION_SECRET, sessionId + timestamp)`.
+- TTL 1 ساعة.
+- Cookie: `SameSite=Strict; Secure; HttpOnly=false` (client يقرأها).
+
+### Implementation Steps
+1. `src/lib/csrf.ts`:
+   ```ts
+   import crypto from 'node:crypto';
+   const TTL_MS = 60 * 60 * 1000;
+   
+   export function generateCsrfToken(): string {
+     const secret = process.env.CSRF_SECRET;
+     if (!secret) throw new Error('CSRF_SECRET not set');
+     const ts = Date.now();
+     const nonce = crypto.randomBytes(16).toString('hex');
+     const hmac = crypto.createHmac('sha256', secret)
+       .update(`${ts}.${nonce}`).digest('hex');
+     return `${ts}.${nonce}.${hmac}`;
+   }
+   
+   export function verifyCsrfToken(token: string): boolean {
+     const secret = process.env.CSRF_SECRET;
+     if (!secret || !token) return false;
+     const parts = token.split('.');
+     if (parts.length !== 3) return false;
+     const [tsStr, nonce, hmac] = parts;
+     const ts = parseInt(tsStr, 10);
+     if (Number.isNaN(ts) || Date.now() - ts > TTL_MS) return false;
+     const expected = crypto.createHmac('sha256', secret)
+       .update(`${ts}.${nonce}`).digest('hex');
+     const a = Buffer.from(hmac), b = Buffer.from(expected);
+     if (a.length !== b.length) return false;
+     return crypto.timingSafeEqual(a, b);
+   }
+   ```
+2. `src/pages/api/csrf-token.ts`:
+   ```ts
+   export const prerender = false;
+   export const GET: APIRoute = async () => {
+     const token = generateCsrfToken();
+     return new Response(JSON.stringify({ token }), {
+       headers: {
+         'Set-Cookie': `csrf=${token}; Path=/; SameSite=Strict; Secure; Max-Age=3600`,
+         'Content-Type': 'application/json',
+         'Cache-Control': 'no-store',
+       },
+     });
+   };
+   ```
+3. في `lead.ts` قبل rate limit:
+   ```ts
+   const csrfHeader = request.headers.get('x-csrf-token');
+   const csrfCookie = /csrf=([^;]+)/.exec(request.headers.get('cookie') ?? '')?.[1];
+   if (!csrfHeader || !csrfCookie || csrfHeader !== csrfCookie || !verifyCsrfToken(csrfHeader)) {
+     return jsonError(403, 'csrf_invalid');
+   }
+   ```
+4. في `KernelLeadForm.astro`:
+   ```js
+   const { token } = await fetch('/api/csrf-token').then(r => r.json());
+   // add to form submit:
+   headers: { 'x-csrf-token': token }
+   ```
+
+### Edge Cases
+- CSRF_SECRET غير مضبوط في env → 500 داخلي (لا تسمح للـ endpoint يشتغل).
+- Token expired → 403 مع hint للـ client يعيد fetch.
+- User على privacy mode بلا cookies → 403 (accepted trade-off).
+
+### Testing Checklist
+- [ ] POST بدون CSRF → 403.
+- [ ] POST مع CSRF header + cookie صحيحين → 200.
+- [ ] POST مع CSRF header يخالف الـ cookie → 403.
+- [ ] Token expired > 1h → 403.
+- [ ] Timing-safe comparison verified (طول مختلف = false مباشرة).
+
+### Acceptance Criteria
+- Form submission يشتغل من الموقع بلا user-visible changes.
+- CSRF attack من origin آخر يفشل حتى لو Origin ما يوصل.
+- Unit tests coverage 100% لـ `src/lib/csrf.ts`.
+
+### Expected Score Improvement
+Security: +3%
+
+---
+
+## PROMPT #12 — BAI-012 · CSP بـ Nonces
+
+**ID:** BAI-012 · **Priority:** P2 · **Impact:** Medium · **Effort:** 4 أيام-إنسان
+
+### Objective
+استبدال `'unsafe-inline'` في CSP script-src بـ nonce-based approach، لتقليل XSS surface بشكل كبير.
+
+### Files to inspect
+- `render.yaml` (CSP header الحالي — قُرِئ بالكامل)
+- `src/layouts/BaseLayout.astro`
+- `public/js/gtag-init.js`, `clarity-init.js`, `bing-uet.js`, `mixpanel-init.js`, `sw-register.js`
+- كل `<script is:inline>` في الـ .astro files
+
+### Files to modify
+- `astro.config.mjs` — middleware لتوليد nonce per-request.
+- `src/middleware.ts` (جديد).
+- `render.yaml` — استبدال CSP لتضم `'nonce-{RANDOM}'`.
+- كل `<script>` inline في layouts + pages.
+
+### Architecture Constraints
+- **مشكلة كبيرة**: الموقع static (`output: 'static'`) — الـ nonce ما يمكن يتغير per-request للـ prerendered HTML.
+- **الحل الوحيد**: SSR wrapper يحقن الـ nonce في الـ prerendered HTML عند الـ response.
+- بديل أبسط: hash-based CSP (`'sha256-...'`) لكل inline script — يتطلب حساب hashes في build time.
+
+### Recommended Approach: Hash-based CSP
+لأن الموقع static، الـ nonces مستحيلة بلا SSR wrapper. الحل الأنظف هو hash-based:
+
+### Implementation Steps
+1. `scripts/compute-csp-hashes.mjs`:
+   ```js
+   import crypto from 'crypto';
+   import { globSync } from 'glob';
+   import { readFileSync, writeFileSync } from 'fs';
+   
+   const htmlFiles = globSync('./dist/**/*.html');
+   const inlineScripts = new Set();
+   const scriptRe = /<script(?![^>]*\bsrc\b)[^>]*>([\s\S]*?)<\/script>/g;
+   
+   for (const file of htmlFiles) {
+     const html = readFileSync(file, 'utf8');
+     let m;
+     while ((m = scriptRe.exec(html)) !== null) {
+       const body = m[1];
+       if (!body.trim()) continue;
+       const hash = crypto.createHash('sha256').update(body).digest('base64');
+       inlineScripts.add(`'sha256-${hash}'`);
+     }
+   }
+   
+   const hashes = [...inlineScripts].join(' ');
+   writeFileSync('./csp-hashes.txt', hashes);
+   console.log(`[csp] ${inlineScripts.size} inline script hashes computed`);
+   ```
+2. تحديث `render.yaml` — استبدال `'unsafe-inline'` في script-src بمحتوى `csp-hashes.txt`.
+3. postbuild step: `node scripts/compute-csp-hashes.mjs && node scripts/inject-csp-hashes.mjs render.yaml`.
+4. تحويل الـ inline scripts الديناميكية (اللي فيها dates/random) إلى external `.js` files.
+
+### Alternative: Move Everything to External Scripts
+أفضل حل نظيف = **لا inline scripts أبداً**. كل الـ analytics init موجودة في `public/js/*.js`، فقط الـ marketing scripts (`MarketingScripts.astro`) قد تحوي inline. حوّلها لـ external.
+
+### Edge Cases
+- Astro تحقن inline hydration scripts للـ islands → لازم Astro config يستخدم external chunks.
+- Google Tag Manager يحقن inline scripts في runtime → لازم `strict-dynamic` policy.
+
+### Testing Checklist
+- [ ] `curl -I` يظهر CSP بدون `'unsafe-inline'` لـ script.
+- [ ] Console بدون CSP violations على 10 صفحات مختلفة.
+- [ ] GTM/GA/Clarity يشتغلون.
+- [ ] `securityheaders.com` grade يرتفع من B إلى A+.
+
+### Acceptance Criteria
+- 0 inline scripts في final HTML (باستثناء JSON-LD).
+- `'unsafe-inline'` مزال من script-src.
+- CSP report-only endpoint يستقبل 0 violations لمدة 48h قبل enforcement.
+
+### Rollback Strategy
+Feature flag `CSP_STRICT` في render.yaml — رجّع `'unsafe-inline'` مؤقتاً.
+
+### Expected Score Improvement
+Security: +5%
+
+---
+
+## PROMPT #13 — BAI-013 · حذف `legacy-disabled/` و `chartjs.tgz`
+
+**ID:** BAI-013 · **Priority:** P2 · **Impact:** Medium · **Effort:** 1 يوم-إنسان
+
+### Objective
+تنظيف الـ repo من dead weight: 38 ملف مؤرشف + 1.2 MB tarball بلا سبب.
+
+### Files to remove
+- `kernel/legacy-disabled/` (38 ملف، ~500 KB)
+- `chartjs.tgz` (1.2 MB)
+- تأكد من `kernel/assets/screenshots/` — هل مستخدمة؟ (فحص reference).
+
+### Steps
+1. Snapshot خارجي:
+   ```bash
+   tar czf brightai-kernel-legacy-2026-07-15.tar.gz kernel/legacy-disabled/
+   # ارفعها لـ S3 أو AI Drive باسم واضح
+   ```
+2. verification grep قبل الحذف:
+   ```bash
+   grep -rn "kernel/legacy-disabled\|kernel-mock\|kernel-demo-store\|kernel/sw.js\|kernel/manifest" src/ public/ apps/ packages/
+   # يجب يرجع 0
+   ```
+3. حذف:
+   ```bash
+   git rm -r kernel/legacy-disabled/
+   git rm chartjs.tgz
+   ```
+4. تحديث `.gitignore`:
+   ```
+   *.tgz
+   *.tar.gz
+   /kernel/legacy-disabled/
+   /seo_gate_log.txt
+   ```
+5. update `kernel/README.md` — remove references للـ legacy-disabled.
+6. update `META-CHANGES.csv` بـ entry جديد.
+
+### Testing Checklist
+- [ ] `pnpm build` ينجح.
+- [ ] `pnpm typecheck` ينجح.
+- [ ] `pnpm test` ينجح.
+- [ ] `linkinator dist/` = 0 broken links.
+- [ ] حجم الـ repo نقص بـ ~1.7 MB.
+
+### Acceptance Criteria
+- 0 references في الكود الحي.
+- Snapshot خارجي محفوظ + link في `docs/archived-artifacts.md`.
+
+### Expected Score Improvement
+Architecture: +2% · DevEx: +2%
+
+---
+
+## PROMPT #14 — BAI-014 · AVIF Image Pipeline
+
+**ID:** BAI-014 · **Priority:** P2 · **Impact:** Medium · **Effort:** 2 أيام-إنسان
+
+### Objective
+تفعيل AVIF format في Astro image pipeline. AVIF أصغر من WebP بـ 20-30% في نفس الجودة، ومدعوم في 95%+ من المتصفحات الحالية (2026).
+
+### Files to inspect
+- `astro.config.mjs`
+- `scripts/generate-image-sitemap.mjs`
+- كل `<img>` في .astro files (بحث)
+- `src/components/` — هل يوجد wrapper `<Image>` component؟
+
+### Files to modify
+- `astro.config.mjs` — تفعيل sharp + AVIF.
+- استبدال `<img>` بـ Astro `<Picture>` component في key pages.
+
+### Implementation Steps
+1. `pnpm add -w @astrojs/image sharp` (لو مو موجود — Astro 6 يستخدم sharp built-in).
+2. `astro.config.mjs`:
+   ```js
+   image: {
+     service: { entrypoint: 'astro/assets/services/sharp' },
+     domains: [],
+     remotePatterns: [],
+   },
+   ```
+3. استبدال:
+   ```astro
+   ---
+   import { Picture } from 'astro:assets';
+   import heroImg from '../assets/hero.jpg';
+   ---
+   <Picture
+     src={heroImg}
+     formats={['avif', 'webp', 'jpg']}
+     widths={[480, 768, 1200, 1600]}
+     sizes="(max-width: 768px) 100vw, 1200px"
+     alt="BrightAI hero"
+     loading="eager"
+     decoding="async"
+   />
+   ```
+4. Priority pages للتحويل:
+   - `src/pages/index.astro` (homepage)
+   - `src/pages/en/index.astro`
+   - `src/pages/pricing.astro`
+   - `src/pages/customers/**`
+5. تحديث `generate-image-sitemap.mjs` ليشمل AVIF variants.
+
+### Edge Cases
+- Safari < 16 (2022) لا يدعم AVIF — الـ `<Picture>` fallback إلى WebP → JPG.
+- OG images لا تدعم AVIF (LinkedIn/Twitter) — احتفظ بـ JPG/PNG لـ `og:image`.
+
+### Testing Checklist
+- [ ] Chrome/Firefox/Safari 17+ يعرضون AVIF.
+- [ ] Safari 15 يعرض WebP fallback.
+- [ ] IE-old fallback = JPG (unlikely في السوق السعودي 2026).
+- [ ] Image sitemap يشمل AVIF URLs.
+- [ ] Lighthouse image savings > 30%.
+
+### Acceptance Criteria
+- Homepage LCP image بـ AVIF < 40 KB (من 60 KB WebP).
+- 15 key pages محوّلة.
+
+### Expected Score Improvement
+Performance: +4%
+
+---
+
+## PROMPT #15 — BAI-015 · Token/Cost Tracking
+
+**ID:** BAI-015 · **Priority:** P2 · **Impact:** Medium · **Effort:** 3 أيام-إنسان
+
+### Objective
+تسجيل token usage per-organization + provider + prompt، عشان:
+1. الفوترة (usage-based pricing).
+2. Cost anomaly alerts.
+3. Analytics للـ product team.
+
+### Files to inspect
+- `src/pages/api/ai/chat.ts`
+- `packages/db/prisma/schema.prisma`
+- `apps/dashboard/lib/firewall/audit/audit-writer.ts`
+
+### Files to modify/add
+- `packages/db/prisma/schema.prisma` — model `AiUsageEntry`.
+- `packages/db/prisma/migrations/xxx_ai_usage/`.
+- `src/pages/api/ai/chat.ts` — يسجل بعد كل provider call.
+- `apps/dashboard/app/(app)/usage/page.tsx` (جديد).
+
+### Prisma Schema
+```prisma
+model AiUsageEntry {
+  id             String   @id @default(cuid())
+  organizationId String?           // nullable للـ marketing site chat (anon)
+  userId         String?
+  sessionId      String?
+  provider       String            // 'groq' | 'gemini'
+  model          String            // 'llama-3.3-70b-versatile'
+  promptTokens   Int
+  completionTokens Int
+  totalTokens    Int
+  latencyMs      Int
+  promptId       String?           // 'compliance' | 'policies' | ...
+  cost           Decimal  @db.Decimal(10, 6)  // in USD, computed at insert
+  createdAt      DateTime @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([organizationId, createdAt])
+  @@index([provider, createdAt])
+  @@map("ai_usage_entries")
+}
+```
+
+### Provider Cost Table (2026 rates)
+```ts
+const COST_PER_1K_TOKENS = {
+  'llama-3.3-70b-versatile': { input: 0.00059, output: 0.00079 },
+  'gemini-2.5-flash':        { input: 0.00030, output: 0.00120 },
+};
+```
+
+### Implementation Steps
+1. Migration + regenerate Prisma.
+2. تعديل `callGroq` و `callGemini` ليرجعوا `{ text, usage: { promptTokens, completionTokens } }`.
+3. بعد success response في `chat.ts`:
+   ```ts
+   await prisma.aiUsageEntry.create({
+     data: {
+       provider: usedProvider,
+       model: usedProvider === 'groq' ? process.env.GROQ_MODEL : process.env.GEMINI_MODEL,
+       promptTokens: usage.promptTokens,
+       completionTokens: usage.completionTokens,
+       totalTokens: usage.promptTokens + usage.completionTokens,
+       latencyMs: Date.now() - startTs,
+       promptId: b.promptId ?? null,
+       cost: calculateCost(usage, model),
+       organizationId: null,  // marketing site anon
+     }
+   });
+   ```
+4. Usage dashboard page في dashboard app:
+   - Chart: tokens over time.
+   - Table: per-user breakdown.
+   - Alert: >2× daily average.
+
+### Edge Cases
+- DB write failure → **لا نبلع الخطأ، لكن ما نـ fail الـ user request** — نستخدم `.catch(logError)` async.
+- Anonymous chat (no org) → `organizationId: null` مسموح.
+- Groq usage response قد يـ absent → default 0 مع warning log.
+
+### Testing Checklist
+- [ ] 10 chat requests → 10 entries في DB.
+- [ ] Cost calculated correctly (verify manual).
+- [ ] Usage dashboard يعرض الأرقام بعد refresh.
+- [ ] RLS: org A ما يشوف usage org B.
+
+### Acceptance Criteria
+- 100% من الـ chat requests تُسجَّل.
+- Usage dashboard على `/settings/usage` يعمل.
+
+### Expected Score Improvement
+SaaS: +5% · AI: +3%
+
+---
+
+## PROMPT #16 — BAI-016 (Bonus) · Audit Trail UI
+
+**ID:** BAI-016 · **Priority:** P2 · **Impact:** Medium · **Effort:** 4 أيام-إنسان
+
+### Objective
+عرض hash chain audit logs في UI dashboard مع زر "Verify Chain Integrity". الـ backend موجود بالفعل (`apps/dashboard/lib/firewall/audit/hashchain.ts`) — يحتاج UI فقط.
+
+### Files to add
+- `apps/dashboard/app/(app)/audit/page.tsx`
+- `apps/dashboard/app/(app)/audit/page.module.css`
+- `apps/dashboard/app/api/audit/list/route.ts`
+- `apps/dashboard/app/api/audit/verify/route.ts`
+- `apps/dashboard/lib/firewall/audit/verify-chain.ts` (جديد)
+
+### Implementation Steps
+1. `verify-chain.ts`:
+   ```ts
+   export async function verifyChain(organizationId: string): Promise<{
+     valid: boolean;
+     brokenAtId?: string;
+     totalEntries: number;
+   }> {
+     const entries = await dbServiceRole.auditLog.findMany({
+       where: { organizationId },
+       orderBy: { createdAt: 'asc' },
+     });
+     let prevHash = '';
+     for (const entry of entries) {
+       const expected = computeHash(prevHash, entry);
+       if (expected !== entry.hash) {
+         return { valid: false, brokenAtId: entry.id, totalEntries: entries.length };
+       }
+       prevHash = entry.hash;
+     }
+     return { valid: true, totalEntries: entries.length };
+   }
+   ```
+2. UI:
+   - جدول: action, actor, target, timestamp, hash (شبكة قصيرة).
+   - Filter: date range + action type.
+   - Export CSV button.
+   - Verify button → API call → toast مع result.
+3. Feature flag `audit_ui_enabled` (from BAI-007).
+
+### Access Control
+- OWNER + ADMIN + COMPLIANCE_OFFICER يشوفون.
+- MEMBER + REVIEWER → 403.
+
+### Testing Checklist
+- [ ] Verify يرجع valid للـ chain نظيف.
+- [ ] Manual tamper في DB → verify يرجع invalid + brokenAtId.
+- [ ] Export CSV يشتغل.
+- [ ] RLS: users يشوفون بس org logs.
+
+### Expected Score Improvement
+SaaS: +6% · Security: +2%
+
+---
+
+## PROMPT #17 — BAI-017 (Bonus) · Dockerfile للـ Site
+
+**ID:** BAI-017 · **Priority:** P2 · **Impact:** Medium · **Effort:** 2 أيام-إنسان
+
+### Objective
+إضافة Dockerfile production-ready للـ marketing site (حالياً فقط dashboard فيه Dockerfile). يسهّل self-hosting + air-gapped deploys (ذكرها الـ Prisma enum `DeploymentMode: AIR_GAPPED`).
+
+### Files to add
+- `Dockerfile` (root للـ marketing site)
+- `.dockerignore`
+- `docker-compose.yml` — إضافة service للـ site
+
+### Dockerfile
+```dockerfile
+# syntax=docker/dockerfile:1.7-labs
+FROM node:22.22.2-alpine AS base
+RUN corepack enable && corepack prepare pnpm@10.19.0 --activate
+WORKDIR /app
+
+FROM base AS deps
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY apps/dashboard/package.json ./apps/dashboard/
+COPY packages/db/package.json ./packages/db/
+COPY packages/config/package.json ./packages/config/
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile
+
+FROM base AS build
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN pnpm build
+
+FROM node:22.22.2-alpine AS runtime
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=10000
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./
+EXPOSE 10000
+USER node
+CMD ["node", "./dist/server/entry.mjs"]
+```
+
+### .dockerignore
+```
+node_modules
+dist
+.astro
+.next
+.git
+.github
+*.tgz
+_reports
+reports
+report
+scripts/*.test.mjs
+CLAUDE.md
+prompts.md
+```
+
+### docker-compose.yml Update
+```yaml
+services:
+  brightai-site:
+    build: .
+    ports: ["3000:10000"]
+    environment:
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      LEAD_WEBHOOK_URL: ${LEAD_WEBHOOK_URL}
+      TRUSTED_PROXY_COUNT: "1"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:10000/api/health/"]
+      interval: 30s
+```
+
+### Testing Checklist
+- [ ] `docker build .` ينجح.
+- [ ] `docker run -p 3000:10000 brightai` يشتغل.
+- [ ] `/api/health/` يرجع 200.
+- [ ] Image size < 300 MB.
+- [ ] Non-root user.
+
+### Acceptance Criteria
+- Multi-stage build يقلل الـ image size.
+- Vulnerability scan (trivy) بلا critical CVEs.
+
+### Expected Score Improvement
+DevEx: +5% · SaaS: +2%
+
+---
+
+## PROMPT #18 — BAI-018 (Bonus) · SSO/SAML Integration
+
+**ID:** BAI-018 · **Priority:** P3 · **Impact:** High (للـ Enterprise) · **Effort:** 10 أيام-إنسان
+
+### Objective
+دعم SSO عبر SAML 2.0 + OIDC (Azure AD, Okta, Google Workspace) — متطلب صريح لأي enterprise customer سعودي (بنوك، حكومة).
+
+### Recommended Approach
+Clerk (المستخدم بالفعل) يدعم SAML enterprise في الـ Pro plan. البديل: **WorkOS** (أفضل SAML DX) أو **Ory Kratos** (self-hosted).
+
+### Files to modify
+- `apps/dashboard/app/(auth)/sign-in/[[...sign-in]]/page.tsx`
+- Prisma: إضافة `SamlConnection` model per-org.
+- `apps/dashboard/app/(settings)/settings/sso/page.tsx` (جديد).
+
+### Implementation Steps (High-level)
+1. تفعيل Enterprise SSO في Clerk dashboard.
+2. Custom sign-in page يـ detect email domain → redirect للـ IdP.
+3. Post-SSO: sync roles + org membership من SAML attributes.
+4. Audit log entry لكل SSO login.
+5. Fallback: password login للـ users بلا SSO.
+
+### Testing Checklist
+- [ ] Azure AD test tenant → login يشتغل.
+- [ ] SAML assertion validated (signature).
+- [ ] Just-in-time provisioning يعمل.
+- [ ] Just-in-time deprovisioning عبر SCIM (optional Phase 2).
+
+### Expected Score Improvement
+SaaS: +12% · Security: +3%
+
+---
+
+# جدول ترتيب البرومبتات النهائي
+
+| # | ID | Priority | Effort (يوم) | التراكم |
+|---|---|---|---|---|
+| 1 | BAI-001 | P0 | 5 | 5 |
+| 2 | BAI-002 | P0 | 8 | 13 |
+| 3 | BAI-003 | P0 | 15 | 28 |
+| 4 | BAI-004 | P0 | 12 | 40 |
+| 5 | BAI-005 | P1 | 4 | 44 |
+| **6** | **BAI-006** | **P1** | **3** | **47** |
+| **7** | **BAI-007** | **P1** | **6** | **53** |
+| **8** | **BAI-008** | **P1** | **3** | **56** |
+| **9** | **BAI-009** | **P1** | **5** | **61** |
+| **10** | **BAI-010** | **P1** | **2** | **63** |
+| **11** | **BAI-011** | **P2** | **2** | **65** |
+| **12** | **BAI-012** | **P2** | **4** | **69** |
+| **13** | **BAI-013** | **P2** | **1** | **70** |
+| **14** | **BAI-014** | **P2** | **2** | **72** |
+| **15** | **BAI-015** | **P2** | **3** | **75** |
+| **16** | **BAI-016** | **P2** | **4** | **79** |
+| **17** | **BAI-017** | **P2** | **2** | **81** |
+| **18** | **BAI-018** | **P3** | **10** | **91** |
+
+**إجمالي الجهد الشامل من #6 إلى #18:** ~47 يوم-إنسان (≈ 2.5 شهر لفريق مطوّرَيْن).
+
+**بعد إتمام كل هذه البرومبتات، النتيجة المتوقعة تقفز إلى ≈ 92% وGO كاملة.**
+
+---
+
+هل تبغى أعطيك كل برومبت في ملف markdown منفصل جاهز للنسخ لـ Cursor / Claude Code / Cline، أو أخليها كلها في ملف واحد قابل للتنزيل؟

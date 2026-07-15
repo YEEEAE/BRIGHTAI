@@ -70,12 +70,14 @@
   "dependencies": {
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.3",
+    "@brightai/config": "workspace:*",
     "@brightai/db": "workspace:*",
     "@brightai/lead-queue": "workspace:*",
     "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "esbuild": "^0.21.5",
     "glob": "^13.0.6",
+    "ioredis": "^5.4.1",
     "isomorphic-dompurify": "^2.16.0",
     "postcss": "^8.5.15",
     "zod": "^3.24.1"

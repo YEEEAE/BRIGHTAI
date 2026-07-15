@@ -22,6 +22,15 @@ services:
         value: 0.0.0.0
       - key: PORT
         value: 10000
+      # CHAT-SESSION-2026-07-15: Redis-backed conversation context store for
+      # /api/ai/chat/. Stores the last 8 messages per sessionId in a Redis
+      # LIST with 10-minute TTL. Required for multi-turn context (kernel
+      # AI assistant). Set in Render dashboard as a sync from a Redis Cloud
+      # / Upstash / Render Key Value instance reachable from the Node
+      # service. If unset, the endpoint gracefully degrades to single-turn
+      # mode (no context) — see src/lib/redis.ts for the fallback contract.
+      - key: REDIS_URL
+        sync: false
       # GROQ_API_KEY and GEMINI_API_KEY are set in Render dashboard env
       # (NOT in this file — they are server secrets).
       # LEAD_WEBHOOK_URL + LEAD_WEBHOOK_SECRET (KRN-004 / EXEC-04) also
