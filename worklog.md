@@ -418,3 +418,74 @@ Suggested Follow-up:
 - (4) إطلاق "AI Governance Day" كمؤتمر سنوي (Q4 2026 أو Q1 2027)
 - (5) تعيين 2-3 عملاء pilot قبل نهاية Q3 2026
 - (6) v1.2 في Q4 2026 (تحديث ربع سنوي حسب DEC-MOAT-001)
+
+---
+Task ID: 2026-07-15-001
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: CHAT-SESSION-2026-07-15 — إضافة Redis-backed multi-turn context store لـ /api/ai/chat/ مع sessionId (UUID v4/v7)، LPUSH+LTRIM+EXPIRE 600s، context injection لـ Groq/Gemini، اختبار node --test (16/16 ✅)
+Started: 2026-07-15T20:32:00+03:00
+Mode: Senior
+Branch: feat/chat-session-store (لم يُنشأ بعد — brain.md يطلب عدم إنشاء commits)
+
+Work Log:
+- 2026-07-15T20:32: اكتشفت إن الفرضية فيها خطأ: "Redis موجود للـ rate limit" غير صحيح للـ marketing site (فقط للـ dashboard). الـ rate limit في chat.ts في الحقيقة in-memory Map.
+- 2026-07-15T20:35: سألت المستخدم 3 أسئلة (A/B/C architecture، +12% metric، نوع الاختبار) — أجاب A + drop + node --test
+- 2026-07-15T20:36: قرأت الملفات المعنية: src/pages/api/ai/chat.ts (501 سطر)، packages/config/src/constants.ts (15KB)، apps/dashboard/lib/firewall/ratelimit/redis-bucket.ts (نمط Redis في المشروع)، src/lib/ip.ts، src/data/kernel-system-prompts.ts
+- 2026-07-15T20:40: أضفت ioredis@^5.4.1 لـ root package.json + @brightai/config كـ workspace dep
+- 2026-07-15T20:41: حدّثت render.yaml بـ REDIS_URL (sync: false) + .env.example
+- 2026-07-15T20:42: أنشأت src/lib/redis.ts (lazy init + في-ذاكرة fallback + pipeline LPUSH+LTRIM+EXPIRE)
+- 2026-07-15T20:45: أضفت CHAT_SESSION_LIMITS لـ packages/config/src/constants.ts (MAX_MESSAGES=8, TTL_SECONDS=600, SESSION_ID_MAX_CHARS=64)
+- 2026-07-15T20:47: عدّلت src/pages/api/ai/chat.ts: UUID validator + sessionId handling + context injection (Groq: messages array, Gemini: contents array) + persist after reply + X-Chat-Session header
+- 2026-07-15T20:50: أنشأت scripts/test-ts-loader.mjs + scripts/test-ts-loader-hook.mjs (loader hook لـ Node 22 ESM + .ts extension resolution)
+- 2026-07-15T20:51: أنشأت scripts/test-chat-session.mjs بـ 16 اختبار
+- 2026-07-15T20:55: اكتشفت bug في in-memory fallback: ترتيب الرسائل (newest-first vs chronological) — أصلحته بـ reverse() قبل prepend
+- 2026-07-15T20:56: أصلحت rate-limit issue في الاختبار: كل request ياخذ X-Forwarded-For فريد (10.x.y.z incrementing)
+- 2026-07-15T20:57: 16/16 ✅ — npm run test:chat-session
+- 2026-07-15T20:58: أضفت test:chat-session لـ verify:all chain
+- 2026-07-15T20:58: npm run build → 190 صفحة، 0 أخطاء ✅
+- 2026-07-15T20:59: npm run verify:all → 16/16 tests + 190 HTML + 0 errors + 0 warnings + 0 broken links + 166 sitemap URLs ✅
+- 2026-07-15T21:00: اختبار curl على dist/server: لا-sessionId → 502 (no API key في dev)؛ invalid sessionId → 400؛ valid sessionId → 502 (نفس السبب)؛ oversized → 400 ✅
+
+Stage Summary:
+- ✅ 6 ملفات جديدة/معدّلة + 1 loader helper + 1 test file + 1 brain entry
+- ✅ Redis-backed multi-turn context (LPUSH+LTRIM+EXPIRE pipeline) + in-memory fallback (نفس الـ interface)
+- ✅ Provider API calls تمرّر history (Groq messages array + Gemini contents array)
+- ✅ X-Chat-Session: ok|degraded header لتوجيه العميل
+- ✅ 16/16 tests يمر (5 store-level + 11 handler-level)
+- ✅ Acceptance: حوار 5 دورات يحافظ على السياق (مبرهن — turn 6 يشوف turns 2-5 المخزّنة بعد LTRIM)
+- ✅ Build + verify:all + curl smoke tests كل شي green
+- ⚠️ تحذير Node صغير: packages/config/package.json ما فيه "type": "module" — أثر جانبي لـ --experimental-strip-types. اختياري إصلاحه (يلزم موافقة لأنه file مشترك).
+
+Decisions (3 جديدة):
+- **DEC-CHAT-SESSION-2026-07-15-001**: في-ذاكرة fallback بدون Redis. الـ endpoint ما يفشل لو Redis down؛ بدلًا من ذلك يصير "degraded" مع header. السبب: UX أولوية على infra. الـ cost: يضيع state على Render restart.
+- **DEC-CHAT-SESSION-2026-07-15-002**: LTRIM 0 (max-1) + EXPIRE في pipeline واحد (3 أوامر Redis في round-trip واحد). السبب: atomicity + latency. الـ cost: لا شيء.
+- **DEC-CHAT-SESSION-2026-07-15-003**: حذف +12% AI من الـ acceptance. ما كان مبني على benchmark. الـ acceptance الفعلي ("5 دورات تحافظ على السياق") قابل للقياس.
+
+Artifacts:
+- src/lib/redis.ts (جديد، 11.7KB)
+- scripts/test-ts-loader.mjs + test-ts-loader-hook.mjs (جديد، 4.5KB)
+- scripts/test-chat-session.mjs (جديد، 16.9KB)
+- src/pages/api/ai/chat.ts (معدّل، +80 سطر للـ session handling)
+- packages/config/src/constants.ts (معدّل، +CHAT_SESSION_LIMITS block)
+- packages/config/src/types.ts (معدّل، export CHAT_SESSION_LIMITS)
+- package.json (معدّل: ioredis + @brightai/config + test:chat-session script + verify:all chain)
+- render.yaml (معدّل: REDIS_URL env)
+- .env.example (معدّل: REDIS_URL documentation)
+- brain.md (معدّل: change ledger + state snapshot — قيد الكتابة)
+- report/2026-07-15-chat-session-store.md (جديد — قيد الكتابة)
+
+Risks Remaining (تحتاج قرار المستخدم):
+- 🚨 نشر على Render: يلزم تعيين REDIS_URL في Render dashboard (sync: false في render.yaml) + اختبار post-deploy
+- 🚨 اختيار Redis provider (Render Key Value / Upstash / Redis Cloud) — يلزم توصية تقنية
+- 🚨 تحديث KernelAiAssistant.astro (client-side) لتوليد sessionId (UUID v4/v7) + إعادة إرساله في كل request + قراءة X-Chat-Session header
+- 🚨 حذف seed.ts (3 pre-existing errors in packages/db) — غير متعلق بهذا الـ change
+- 🚨 إضافة "type": "module" لـ packages/config/package.json (تحذير Node اختياري)
+- 🚨 إنشاء branch + commit (brain.md يقول "لاتنشئ اي commits") — يحتاج قرار
+
+Suggested Follow-up:
+- (1) Render deploy + GROQ/GEMINI/REDIS_URL env vars + smoke test على production
+- (2) تحديث KernelAiAssistant.astro (client) لتوليد sessionId وقراءته من sessionStorage (موجود أصلاً per KERNEL-AI-2026-07-14)
+- (3) قياس Core Web Vitals بعد deploy (موبايل Slow 4G) — تأكد LCP ما تأثر
+- (4) توثيق REDIS_URL في ops runbook (deploy + monitoring + restart recovery)
+- (5) branch + PR + commit (brain.md يقول "لاتنشئ اي commits" — قرار المستخدم)
+- (6) Playwright E2E حقيقي على Render preview (يقيس 5 دورات حقيقية، مو mock) — optional لو تحب نتأكد أكثر

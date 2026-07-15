@@ -50,7 +50,7 @@
     "schema:solutions:check": "node scripts/sync-solution-faq-schema.mjs --check",
     "schema:docs:sync": "node scripts/sync-docs-howto-schema.mjs",
     "schema:docs:check": "node scripts/sync-docs-howto-schema.mjs --check",
-    "verify:all": "node scripts/verify-all.mjs && npm run sitemap:generate && npm run seo:schema && npm run seo:gate",
+    "verify:all": "node scripts/verify-all.mjs && npm run test:chat-session && npm run sitemap:generate && npm run seo:schema && npm run seo:gate",
     "preview": "astro preview",
     "clean": "rm -rf .next .render-static reports/ dist/ .vercel/",
     "performance:budget": "node scripts/check-performance-budget.js",

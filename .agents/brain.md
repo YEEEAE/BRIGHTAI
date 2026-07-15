@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-15 20:30 +03:00
+last_updated: 2026-07-15 21:00 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.16
+version: 2.7.17
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -169,8 +169,10 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | zod | ^3.24.1 | prod | ✅ |
 | clsx | ^2.1.1 | prod | ✅ |
 | lighthouse | 13.4.0 | dev | ✅ for performance audit |
+| ioredis | ^5.4.1 | prod | ✅ NEW 2026-07-15 — Redis client for /api/ai/chat/ multi-turn session context (LPUSH+LTRIM+EXPIRE pipeline). Server-only, no client bundle impact. ~41KB on disk. Mirrors apps/dashboard pattern. |
 | @brightai/firewall-detectors | workspace:* | prod | ✅ NEW 2026-07-15 — PII regex + redaction (marketing site + dashboard). NER injectable via setNerDetector. |
 | @brightai/lead-queue | workspace:* | prod | ✅ NEW 2026-07-15 — Durable lead-capture outbox for /api/lead/. Postgres-backed queue + exponential backoff (1min/5min/30min → DLQ) + retention sweep (delivered=7d, dlq=30d). Reverses DEC-KERNEL-AI-2026-07-14-002 (log-only → DB-persisted). |
+| @brightai/config | workspace:* | prod | ✅ NEW 2026-07-15 — Shared env validation, constants (CHAT_SESSION_LIMITS, RBAC, enums), RBAC. Marketing site now imports CHAT_SESSION_LIMITS for chat session config. |
 
 ### 1.6 Tracking & Analytics
 
@@ -187,6 +189,30 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-15 — CHAT-SESSION-2026-07-15: Redis-backed multi-turn context store لـ /api/ai/chat/ (8 messages / 10 min TTL / UUID v4-v7) — Verified
+
+- **Files**: 1 جديد module + 2 جديد scripts (loader + tests) + 5 معدّل + 0 محذوف. **جديد**: `src/lib/redis.ts` (~11.7KB، lazy-init ioredis client + ChatSessionStore interface + RedisStore + InMemoryStore fallback + pipeline LPUSH+LTRIM+EXPIRE + bounded fallback Map max 10k entries)، `scripts/test-ts-loader.mjs` (~2.8KB، self-registering ESM loader hook لـ Node 22)، `scripts/test-ts-loader-hook.mjs` (~1.8KB، companion hook)، `scripts/test-chat-session.mjs` (~16.9KB، 16 اختبار node --test). **معدّل**: `src/pages/api/ai/chat.ts` (+UUID validator + sessionId optional handling + history fetch قبل provider call + provider messages array بدل single message + persist بعد reply + X-Chat-Session header)، `packages/config/src/constants.ts` (+CHAT_SESSION_LIMITS block: MAX_MESSAGES=8, TTL_SECONDS=600, SESSION_ID_MAX_CHARS=64, STORED_MESSAGE_MAX_CHARS=4000)، `packages/config/src/types.ts` (+export CHAT_SESSION_LIMITS)، `package.json` (root) (+ioredis@^5.4.1 + @brightai/config@workspace:* + test:chat-session script + إضافته لـ verify:all chain)، `render.yaml` (+REDIS_URL env sync:false، documented in comments)، `.env.example` (+REDIS_URL= documentation block). **ما تمس**: `astro.config.mjs`، `src/data/kernel-system-prompts.ts`، `src/lib/ip.ts`، `apps/dashboard/**` (dashboard عنده Redis خاص فيه، الـ marketing site لازم setup مستقل).
+- **What**: 4 محاور. (1) **Redis client + store abstraction** — `getChatSessionStore()` يرجّع singleton يحوي RedisStore (ioredis lazy-connect) + InMemoryStore fallback (نفس ChatSessionStore interface). Redis path: `pipeline.lpush(key, ...msgs).ltrim(key, 0, MAX-1).expire(key, TTL)` = round-trip واحد. In-memory path: prepend إلى newest-first array + LTRIM slice(0, MAX) + TTL via resetAt. (2) **chat.ts handler** — sessionId اختياري في body. لو موجود: UUID regex validate (any version v4-v7) → recent() لجلب آخر 8 messages → prepend لـ provider call. Groq: messages array كامل. Gemini: contents array مع role mapping (assistant→model). بعد الـ provider reply: push([user, assistant], {maxMessages:8, ttlSeconds:600}). (3) **X-Chat-Session header** — `ok` لو Redis شغّال، `degraded` لو في-ذاكرة fallback. الـ client يقدر يعرض إشعار "السياق ما يحفظ عبر reloads" لو degraded. (4) **Test infrastructure** — Node 22.22 `--experimental-strip-types` + custom ESM loader (حلّ extension resolution gap). `npm run test:chat-session` يركّض 16 اختبار في ~170ms. مضاف لـ `verify:all` chain.
+- **Why**: Kernel AI assistant (5 صفحات وظيفية + chat.astro per KERNEL-AI-2026-07-14) يحتاج multi-turn context عشان 5 سيناريوهات kernel. قبل: كل request مستقل (لا context). بعد: يحفظ آخر 8 messages بـ Redis LIST، TTL 10 دقايق، context window يغطي ~4 turns كاملة. الـ Redis اختير (مو in-memory) لـ 3 أسباب: (a) يضيع على Render restart لو في-ذاكرة، (b) يضيع على multi-instance لو في-ذاكرة، (c) الـ dashboard عنده Redis جاهز (apps/dashboard/lib/firewall/ratelimit/redis-bucket.ts) — نمط موجود. fallback contract: لو Redis unavailable → degraded mode (الـ endpoint ما يفشل، بس ما يحفظ عبر restart).
+- **Verification**:
+  - `npm run test:chat-session`: **16/16 passed** في 170ms. 5 store-level (push+recent chronological, LTRIM عند 8, isolation بين sessions, degraded flag, empty on unknown) + 11 handler-level (no sessionId → no Redis + no header, invalid → 400, oversized → 400, first turn, 5-turn acceptance, session isolation, provider fallback, 502 on both fail, KRN-001 systemPrompt rejection, non-string message, 5-turn resilience).
+  - `npm run build` (Astro): 190 صفحة، 0 errors ✅.
+  - `npm run verify:all`: 16/16 tests + 190 HTML + 0 errors + 0 warnings + 0 broken links + 166 sitemap URLs + 6/6 hreflang + 5/5 service ✅.
+  - E2E curl على dist/server (no API key في dev → provider 502 متوقع): no sessionId → 502، invalid sessionId → 400, valid sessionId → 502 (نفس السبب)، oversized → 400. كل response shape صحيح (Content-Type JSON, X-Content-Type-Options nosniff, Cache-Control no-store).
+- **Report**: `report/2026-07-15-chat-session-store.md` (السعودية، What/Why/How/Risks/Rollback).
+- **Commit**: uncommitted (per brain.md rule "لاتنشئ اي commits جديده"). رسالة مقترحة: `feat(chat): Redis-backed multi-turn context store for /api/ai/chat/ (8 msgs / 10 min TTL / 16/16 tests)`.
+- **Status**: verified locally. User action required: (1) Render dashboard → set REDIS_URL secret. (2) Run `npm install` on Render. (3) Smoke test على production.
+- **Brain updates**: Section 1.5 (deps: +ioredis + @brightai/config rows)، Section 1.6 (no new tracking)، Section 2 (this entry — أعلى الـ ledger)، Section 3 (KI-CHAT-SESSION-001 — open: needs Render REDIS_URL + client-side sessionId generation in KernelAiAssistant.astro)، Section 4 (DEC-CHAT-SESSION-2026-07-15-001/002/003).
+- **Decisions (3 new)**:
+  - **DEC-CHAT-SESSION-2026-07-15-001**: In-memory fallback بدون Redis. الـ endpoint ما يفشل لو Redis unavailable؛ يصير degraded (X-Chat-Session: degraded header) + يضيع state على Render restart. Rationale: UX أولوية على infra durability. Reversal cost: low (just add a Redis check at boot). بديل مرفوض: fail-closed (503 لو Redis down) — يكسر UX في outage.
+  - **DEC-CHAT-SESSION-2026-07-15-002**: LPUSH + LTRIM + EXPIRE في pipeline واحد (3 أوامر، round-trip واحد). Rationale: atomicity (Redis applies them in order without interleaving from other clients) + latency (one TCP round-trip). Reversal cost: zero (no separate EXPIRE call to maintain).
+  - **DEC-CHAT-SESSION-2026-07-15-003**: حذف +12% AI claim. ما كان مبني على benchmark. الـ acceptance الفعلي ("5 دورات تحافظ على السياق") قابل للقياس + تم التحقق منه في `handler: 5-turn conversation preserves context (acceptance criterion)` test. Rationale: ground truth > vanity metrics.
+- **Follow-up (مؤجل)**: (1) **User ينشئ commit** (brain rule). (2) **Render deploy** + REDIS_URL secret + post-deploy smoke. (3) **KernelAiAssistant.astro (client-side)**: ولّد sessionId (UUID v4) في sessionStorage، أعد إرساله مع كل fetch، اعرض إشعار "degraded" لو X-Chat-Session: degraded. (4) **اختيار Redis provider** (Render Key Value / Upstash / Redis Cloud) — Render Key Value الأقرب للـ infra الحالية. (5) **Lighthouse mobile run** على 5 kernel pages بعد deploy — تأكد LCP ما تأثر (الـ endpoint أضبط من ناحية الـ history prepending، بس الـ bundle/response size زاد). (6) **تحسين warning** في Node: packages/config/package.json ما فيه "type": "module" — Node يصدر warning عند test import. (7) **Playwright E2E** على Render preview (يقيس 5 turns حقيقية بـ GROQ_API_KEY real) — optional، اختياري لو المستخدم يبي تأكيد أكثر.
+- **Risks**: (1) **REDIS_URL في Render env** (sync:false) — يلزم يحدّث يدوي. لو نسيان، الـ endpoint يصير degraded mode (يشتغل بس ما يحفظ). (2) **ioredis bundle** (added 41KB to dependencies) — لكن server-only (API route)، ما يوصل لـ client bundle. لا تأثير على Core Web Vitals. (3) **Redis key namespace collision** — namespace `chat:sess:` بادئة كل المفاتيح. لو مشروع ثاني يستخدم نفس Redis، يلزم coordination (ما في حالياً). (4) **Race condition** بين push من session A و read من session B — Redis pipeline atomic. (5) **PII في history** — kernel prompts قد تتعامل مع بيانات حساسة (PDPL context). الحل الحالي: stored messages لا تحتوي systemPrompt، فقط user/assistant. لو client يمرر data حساسة في message، تُخزّن. لاحقاً: encryption-at-rest option. (6) **render.yaml protected file** — تم تعديله بموافقة المستخدم. لو philosophy صارمة: "أي تعديل على render.yaml = approval gate"، نقدر نرجع لـ in-memory فقط (الخيار B اللي رفضه المستخدم).
+- **Critical-path note for future agents**: لو تشتغل على `src/pages/api/ai/chat.ts` لاحقاً: الـ context injection يحدث في `POST` handler step 9 (`providerMessages`). الـ persistence يحدث step 11 (بعد provider reply). الـ fallback flag من `getChatSessionStore().recent().degraded` يحدد `X-Chat-Session` header. ملاحظات في الـ file header توثّق التغييرات (CHAT-SESSION-2026-07-15 section).
+
+
 
 ### 2026-07-15 — HIGH-04: Durable lead capture outbox (reverses DEC-KERNEL-AI-2026-07-14-002) — Verified
 
