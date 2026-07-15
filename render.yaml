@@ -38,6 +38,14 @@ services:
       #   openssl rand -hex 32
       # The value is read at function scope (process.env) at request time
       # so it is never inlined into the SSR bundle.
+      # TRUSTED_PROXY_COUNT (KRN-013 / EXEC-13) — controls XFF trust depth
+      # for client-IP extraction in src/lib/ip.ts. Render fronts the Node
+      # service with exactly one reverse proxy, so the default value (1)
+      # is correct for production. The helper trusts the rightmost N
+      # entries of x-forwarded-for (where N = TRUSTED_PROXY_COUNT); the
+      # leftmost entry is client-controlled and ignored. Set to 0 if you
+      # switch to a proxy that strips XFF and only sets x-real-ip. Default
+      # when unset is 1 (Render).
     headers:
       - path: /*
         name: Strict-Transport-Security

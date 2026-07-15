@@ -1,27 +1,34 @@
 /**
- * src/lib/ip.ts — KERNEL-AUDIT-2026-07-15-BATCH-8 (EXEC-13)
+ * src/lib/ip.ts — KRN-013 (EXEC-13)
  *
  * Shared client IP extraction helper for SSR endpoints. Used by:
  *   - src/pages/api/ai/chat.ts (rate limit per IP)
- *   - src/pages/api/lead.ts (rate limit per IP + lead hashing)
+ *   - src/pages/api/lead.ts  (rate limit per IP + lead hashing)
  *
- * Problem (KRN-013):
- *   The previous inline getClientIp() in both chat.ts and lead.ts took the
- *   LEFTMOST entry from `x-forwarded-for`, which is client-controlled.
- *   RFC 7239 + the de-facto XFF convention is to count from the RIGHT by
- *   the number of trusted reverse proxies.
+ * Threat (KRN-013):
+ *   The previous inline getClientIp() took the LEFTMOST entry from
+ *   x-forwarded-for — which is the client-controlled IP. An attacker can
+ *   spoof XFF/X-Real-IP to rotate buckets and bypass the rate limit.
  *
- * Solution:
- *   - Take the rightmost entry from XFF, counting back by TRUSTED_PROXY_COUNT
- *     (default 1 for Render's single front proxy).
- *   - Falls back to `x-real-ip` if XFF is absent (and TRUSTED_PROXY_COUNT=0).
- *   - Returns 'unknown' as a last resort (matches prior behavior).
+ * Fix (this module):
+ *   - TRUSTED_PROXY_COUNT > 0: take the rightmost N entries from XFF, where
+ *     N is the number of trusted reverse proxies between the client and
+ *     this app. Render fronts the Node service with a single proxy, so the
+ *     default is 1 (trust only the rightmost entry — Render's appended IP).
+ *     XFF is treated as: "client, ..., proxyN-1, proxyN". Trust the last N.
+ *   - TRUSTED_PROXY_COUNT === 0: fall back to x-real-ip ONLY. This is for
+ *     deployments where we trust exactly one proxy (e.g. nginx) which sets
+ *     a server-controlled x-real-ip and we do NOT trust any XFF chain.
+ *     Useful when running behind a proxy that doesn't preserve XFF safely.
+ *   - Returns 'unknown' only as a last resort (no IP exposed). The rate
+ *     limiter then buckets all 'unknown' IPs together — a safe default that
+ *     blocks the entire anonymous pool, not isolated ones.
  *
- * Env vars (set in Render dashboard):
- *   - TRUSTED_PROXY_COUNT (number, default 1): how many proxies to trust
+ * Env vars (set in render.yaml / Render dashboard):
+ *   - TRUSTED_PROXY_COUNT (integer, default 1): how many proxies to trust
  *     between the client and the app. Render adds 1 XFF entry at the right,
- *     so TRUSTED_PROXY_COUNT=1 means trust only the rightmost.
- *   - TRUST_PROXY_DEPTH (alias, optional): same meaning, alternative name.
+ *     so TRUSTED_PROXY_COUNT=1 means trust only the rightmost (Render's).
+ *     Set to 0 to switch to x-real-ip-only mode.
  */
 
 export interface ClientIpOptions {
@@ -30,30 +37,47 @@ export interface ClientIpOptions {
 }
 
 /**
- * Extract client IP from request headers. Trusts the rightmost N entries
- * of XFF (where N = trustedProxyCount), falls back to x-real-ip, then
- * returns 'unknown'.
+ * Extract client IP from request headers.
+ *
+ * Strategy (see module header for threat model):
+ *   1. If trustedProxyCount === 0 → use x-real-ip (server-controlled header).
+ *   2. If trustedProxyCount > 0  → use rightmost-trusted entry from XFF.
+ *   3. Fallback: return 'unknown' (rate-limit pool buckets share this key).
  */
 export function getClientIp(req: Request, opts: ClientIpOptions = {}): string {
   const trustedProxyCount = opts.trustedProxyCount ?? 1;
 
-  // 1. Try x-forwarded-for (comma-separated, client → proxy1 → proxy2 → ...)
+  // ── Mode 1: x-real-ip only (TRUSTED_PROXY_COUNT=0) ──────────────────
+  // Use the server-controlled x-real-ip header. Client cannot spoof this
+  // because the trusted proxy is the only one allowed to set it.
+  if (trustedProxyCount === 0) {
+    const real = req.headers.get('x-real-ip');
+    if (real) return real.trim();
+    return 'unknown';
+  }
+
+  // ── Mode 2: trust rightmost N entries of x-forwarded-for ─────────────
+  // RFC 7239 + de-facto convention: XFF = "client, proxy1, proxy2, ...",
+  // i.e. client on the LEFT, last trusted proxy on the RIGHT. The
+  // server-controlled entry at position (length - N) is the first hop we
+  // trust; entries to its left may include client-controlled spoofing.
   const xff = req.headers.get('x-forwarded-for');
   if (xff) {
-    const parts = xff.split(',').map((s) => s.trim()).filter(Boolean);
+    const parts = xff
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
     if (parts.length > 0) {
-      // Take the entry at index (length - trustedProxyCount), clamped to [0, length-1]
-      // Example: "1.2.3.4, 10.0.0.1" with trustedProxyCount=1 → "10.0.0.1"
-      // Example: "1.2.3.4, 10.0.0.1, 10.0.0.2" with trustedProxyCount=2 → "10.0.0.1"
+      // Example: XFF="1.2.3.4, 10.0.0.1" with N=1 → index 1 = "10.0.0.1"
+      //          XFF="1.2.3.4, 10.0.0.1, 10.0.0.2" with N=2 → index 1 = "10.0.0.1"
       const idx = Math.max(0, parts.length - trustedProxyCount);
       return parts[idx];
     }
   }
 
-  // 2. Fallback to x-real-ip (single proxy convention)
-  const real = req.headers.get('x-real-ip');
-  if (real) return real.trim();
-
-  // 3. Last resort: no IP available
+  // ── Mode 2 fallback: no XFF available even though we trust proxies ────
+  // Do NOT fall back to x-real-ip here — that would indicate inconsistent
+  // proxy config (proxy sets XFF but not x-real-ip, or vice versa) and
+  // could mask spoofing attempts. Return 'unknown' to be safe.
   return 'unknown';
 }
