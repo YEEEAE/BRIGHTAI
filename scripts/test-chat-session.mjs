@@ -329,9 +329,9 @@ test("handler: 5-turn conversation preserves context (acceptance criterion)", as
   globalThis.fetch = mockFetchOk();
   const sid = randomUUID();
 
-  // Drive 5 turns. Each turn the assistant reply is the current
-  // mockProviderResponse.text ("ok"); we vary the USER content so we
-  // can assert the history contents.
+  // Drive 5 turns. The assistant reply is the current
+  // mockProviderResponse.text; we vary the USER content so we can
+  // assert the history contents.
   const userMessages = ["turn1", "turn2", "turn3", "turn4", "turn5"];
   for (const userMsg of userMessages) {
     mockProviderResponse = { reply: `reply-${userMsg}`, text: `reply-${userMsg}` };
@@ -345,39 +345,32 @@ test("handler: 5-turn conversation preserves context (acceptance criterion)", as
     assert.equal(res.status, 200, `turn ${userMsg} should succeed`);
   }
 
-  // On the 5th turn, the provider was sent the most recent 8 messages
-  // (= the last 4 turns, since LTRIM drops turn1). The current user
-  // message "turn5" is appended at the tail.
+  // On the 5th turn's provider call, the store still contains the
+  // pre-LTRIM state from turns 1-4 (the push + LTRIM for turn 5
+  // happens AFTER the provider returns). So the provider sees
+  // turns 1-4 fully (8 messages) + the current u5 = 9 messages.
+  // After turn 5's push, the store LTRIMs to 8 messages (dropping
+  // turn1's u1/a1) — the post-push state we assert below.
   const providerBody = JSON.parse(lastProviderRequest.init.body);
   const sentContents = providerBody.messages.map((m) => m.content);
-  // Expected: turn2, reply-turn2, turn3, reply-turn3, turn4, reply-turn4, turn5
-  // Wait — turn 5 is the current user message, NOT stored yet. So the
-  // store has turns 2..5 = 8 messages (after LTRIM from 10). The
-  // provider call adds turn5 as the user message at the tail.
-  // BUT: turn5 is the current user message being sent. So the
-  // provider sees: [u2, a2, u3, a3, u4, a4, u5] (7 messages) because
-  // the store has 8 = u2/a2/u3/a3/u4/a4/u5/a5 (assistant reply for
-  // turn5 was just written BEFORE the next call, but this IS the call
-  // for turn5 — so the store still has turns 2-4 only when the
-  // provider is called for turn5).
-  //
-  // Re-think: timeline for turn5:
-  //   t1: store has 8 messages (turns 2-4 fully + last is a4)
-  //   t2: handler reads store → 8 messages [u2, a2, u3, a3, u4, a4]
-  //   t3: handler calls provider with [u2, a2, u3, a3, u4, a4, u5]
-  //   t4: provider returns reply-turn5
-  //   t5: handler writes [u5, a5] to store
-  //   t6: store LTRIMs to 8: [u2, a2, u3, a3, u4, a4, u5, a5]
-  //
-  // So at t3, the provider receives 7 messages: turns 2-4 fully (6)
-  // + the current u5.
   assert.deepEqual(
     sentContents,
-    ["turn2", "reply-turn2", "turn3", "reply-turn3", "turn4", "reply-turn4", "turn5"],
-    "turn5 provider call sees turns 2-4 as context + the current u5",
+    [
+      "turn1",
+      "reply-turn1",
+      "turn2",
+      "reply-turn2",
+      "turn3",
+      "reply-turn3",
+      "turn4",
+      "reply-turn4",
+      "turn5",
+    ],
+    "turn5 provider call sees turns 1-4 as context + the current u5",
   );
 
-  // The store after turn5 should have 8 messages (turns 2-5).
+  // The store after turn5 should have 8 messages (LTRIM'd from 10).
+  // turn1's u1/a1 are dropped; turns 2-5 are kept in chronological order.
   const stored = await getChatSessionStore().recent(sid, 8);
   assert.equal(stored.ok.length, 8);
   const storedContents = stored.ok.map((m) => m.content);
@@ -394,6 +387,35 @@ test("handler: 5-turn conversation preserves context (acceptance criterion)", as
       "reply-turn5",
     ],
     "store has 8 messages after LTRIM, turn1 fully dropped",
+  );
+
+  // On a hypothetical 6th turn (post-LTRIM state), the provider would
+  // see exactly the 8 stored messages + the new user message. This
+  // proves the context window stays correct after LTRIM.
+  mockProviderResponse = { reply: "reply-turn6", text: "reply-turn6" };
+  await POST({
+    request: makeRequest({
+      message: "turn6",
+      sessionId: sid,
+      provider: "groq",
+    }),
+  });
+  const turn6Provider = JSON.parse(lastProviderRequest.init.body);
+  const turn6Contents = turn6Provider.messages.map((m) => m.content);
+  assert.deepEqual(
+    turn6Contents,
+    [
+      "turn2",
+      "reply-turn2",
+      "turn3",
+      "reply-turn3",
+      "turn4",
+      "reply-turn4",
+      "turn5",
+      "reply-turn5",
+      "turn6",
+    ],
+    "turn6 provider call sees the LTRIM'd window (turns 2-5) + u6",
   );
 });
 

@@ -278,10 +278,13 @@ class InMemoryStore implements ChatSessionStore {
   ): Promise<StoreResult<true>> {
     fallbackEvictIfExpired(sessionId, opts.ttlSeconds);
     const existing = fallbackBuckets.get(sessionId);
+    // The store keeps entries in NEWEST-FIRST order (mirroring the
+    // Redis LPUSH convention: index 0 = newest). The caller passes
+    // `messages` in chronological order [u, a], so we reverse before
+    // prepending to the (already newest-first) base.
+    const reversedNew = [...messages].reverse();
     const base = existing ? existing.messages.slice() : [];
-    // Prepend the new messages (caller passes in chronological order;
-    // head of list = newest, so new messages go to index 0).
-    const merged = [...messages, ...base].slice(0, opts.maxMessages);
+    const merged = [...reversedNew, ...base].slice(0, opts.maxMessages);
     fallbackBuckets.set(sessionId, {
       messages: merged,
       resetAt: Date.now() + opts.ttlSeconds * 1000,
