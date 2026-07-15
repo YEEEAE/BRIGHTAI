@@ -20,6 +20,13 @@ const nextConfig = {
       bodySizeLimit: '2mb',
     },
   },
+  // Keep native/binary-backed server packages out of the webpack bundle.
+  // `onnxruntime-node` ships prebuilt `.node` N-API binaries that webpack
+  // cannot parse; `@huggingface/transformers` (used by `lib/firewall/detectors/ner.ts`)
+  // statically re-exports ONNX bindings. Listing both here lets Node resolve
+  // them at runtime instead of bundling them. This preserves the lazy
+  // NER pipeline — no mocking, no silent disabling.
+  serverExternalPackages: ['@huggingface/transformers', 'onnxruntime-node'],
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

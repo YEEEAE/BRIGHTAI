@@ -37,7 +37,7 @@ export default async function DashboardPage() {
 
       <div className={styles.welcome}>
         <h2 className={styles.welcomeTitle}>
-          أهلاً {ctx.user.fullNameAr ?? ctx.user.fullName ?? ctx.user.email}
+          أهلاً {ctx.user.fullNameAr ?? ctx.user.fullName ?? ctx.user.email ?? 'مستخدم'}
         </h2>
         <p className={styles.welcomeLead}>
           أنت مسجّل دخولك بدور{' '}
