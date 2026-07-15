@@ -302,7 +302,7 @@ scripts/               → 138 script للـ SEO + verification + build
 
 ---
 
-## 14. مراجعة جاهزية SaaS — النتيجة: **68%**
+## 14. مراجعة جاهزية SaaS — النتيجة: **86%** (BAI-004 — 2026-07-15)
 
 ### إيجابيات
 - **Prisma schema شاملة**: Organization + User + Membership + Roles (OWNER/ADMIN/COMPLIANCE_OFFICER/REVIEWER/MEMBER).
@@ -312,11 +312,22 @@ scripts/               → 138 script للـ SEO + verification + build
 - **Invitation flow** (`app/invitation/[token]`).
 - Full RLS مع `app.current_org_id` + `app.current_user_id`.
 - Multi-role dashboard layout `(app)` + `(auth)` + `(onboarding)` + `(settings)`.
+- **🆕 BAI-004 (2026-07-15) — Stripe billing integration كامل**:
+  - `Subscription` model + `BillingPlan` + `SubscriptionStatus` enums (8 states، 1:1 مع Stripe).
+  - 3 خطط: STARTER (499 SAR/mo) + PRO (1,999 SAR/mo) + ENTERPRISE (sales-led).
+  - 14-day free trial تلقائي على كل self-serve plan.
+  - Customer Portal (cancel/resume/invoice history/payment method updates).
+  - Webhook handler مع idempotency (`lastStripeEventId` UNIQUE constraint).
+  - 4 API routes: `/api/billing/{checkout,portal,cancel,resume}` + `/api/webhooks/stripe`.
+  - 4 server actions في `billing/actions.ts` للـ form buttons.
+  - صفحة UI كاملة: current sub card + 3 plan cards + manage/cancel/resume buttons + toasts.
+  - RLS policy + test mode verified against local DB.
+  - 19/19 vitest tests passing (config + status mapping 1:1 contract).
 
 ### إشكاليات
 | # | الشدة | الوصف |
 |---|---|---|
-| SAAS-1 | **HIGH** | Billing page موجودة (`billing/page.tsx`) لكن لا يوجد integration فعلي مع Stripe/Tap في الكود الموجود (يحتاج تحقق أعمق) |
+| SAAS-1 | ~~HIGH~~ **RESOLVED** | ✅ Billing page (BAI-004): Stripe checkout + portal + cancel/resume + webhook — see `report/2026-07-15-billing-stripe.md` |
 | SAAS-2 | HIGH | لا feature flags system مرئي |
 | SAAS-3 | MEDIUM | لا analytics مُنظّمة (فقط GA4/Clarity/Bing/Mixpanel init scripts) |
 | SAAS-4 | MEDIUM | لا audit trail UI (رغم وجود hash chain في backend) |

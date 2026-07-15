@@ -19,8 +19,7 @@
  * EN secondary) to match the rest of the dashboard.
  */
 
-import type { BillingPlan } from '@brightai/db';
-import { BillingPlan as BillingPlanEnum } from '@brightai/db';
+import { BillingPlan } from '@brightai/db';
 
 export type PlanDefinition = {
   /** Plan key — must match the BillingPlan enum in schema.prisma. */
@@ -67,7 +66,7 @@ function formatSar(halala: number, lang: 'ar' | 'en'): string {
 
 export const PLANS: PlanDefinition[] = [
   {
-    key: 'STARTER',
+    key: BillingPlan.STARTER,
     stripePriceId: priceId(process.env.STRIPE_PRICE_STARTER),
     name: { ar: 'Starter', en: 'Starter' },
     tagline: {
@@ -100,7 +99,7 @@ export const PLANS: PlanDefinition[] = [
     tier: 1,
   },
   {
-    key: 'PRO',
+    key: BillingPlan.PRO,
     stripePriceId: priceId(process.env.STRIPE_PRICE_PRO),
     name: { ar: 'Pro', en: 'Pro' },
     tagline: {
@@ -137,7 +136,7 @@ export const PLANS: PlanDefinition[] = [
     tier: 2,
   },
   {
-    key: 'ENTERPRISE',
+    key: BillingPlan.ENTERPRISE,
     stripePriceId: null, // Sales-led — no self-serve price.
     name: { ar: 'Enterprise', en: 'Enterprise' },
     tagline: {
