@@ -91,6 +91,30 @@ const serverSchema = z.object({
 
   // Invitation
   INVITATION_BASE_URL: z.string().url().optional(),
+
+  // Stripe (BAI-004 / 2026-07-15) — server-only. All keys optional
+  // because the dashboard can boot without billing configured (the
+  // billing page returns a friendly "billing is not configured" state
+  // if STRIPE_SECRET_KEY is missing). The library throws a clear
+  // error when called without config.
+  STRIPE_SECRET_KEY: z
+    .string()
+    .regex(/^sk_(test|live)_[A-Za-z0-9]{16,}$/, 'STRIPE_SECRET_KEY must look like sk_test_xxx or sk_live_xxx')
+    .optional(),
+  STRIPE_PUBLISHABLE_KEY: z
+    .string()
+    .regex(/^pk_(test|live)_[A-Za-z0-9]{16,}$/, 'STRIPE_PUBLISHABLE_KEY must look like pk_test_xxx or pk_live_xxx')
+    .optional(),
+  STRIPE_WEBHOOK_SECRET: z
+    .string()
+    .regex(/^whsec_[A-Za-z0-9]{16,}$/, 'STRIPE_WEBHOOK_SECRET must look like whsec_xxx')
+    .optional(),
+  // Stripe Price IDs (one per plan). Optional to allow the dashboard
+  // to boot before all three plans are created in Stripe Dashboard.
+  STRIPE_PRICE_STARTER: z.string().regex(/^price_[A-Za-z0-9]+$/).optional(),
+  STRIPE_PRICE_PRO: z.string().regex(/^price_[A-Za-z0-9]+$/).optional(),
+  // ENTERPRISE has no self-serve price — sales-led. We just check-in
+  // form posts to a /contact endpoint.
 });
 
 // ─────────────────────────────────────────────────────────────────
@@ -105,6 +129,12 @@ const publicSchema = z.object({
     .enum(['true', 'false'])
     .default('true')
     .transform((v) => v === 'true'),
+  // Stripe (BAI-004 / 2026-07-15) — publishable key is safe for client
+  // (publishable keys can only create tokens / customers, not charge).
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z
+    .string()
+    .regex(/^pk_(test|live)_[A-Za-z0-9]{16,}$/)
+    .optional(),
 });
 
 // ─────────────────────────────────────────────────────────────────
@@ -162,4 +192,17 @@ export const REQUIRED_DASHBOARD_ENV = [
   'REDIS_URL',
   'CLERK_SECRET_KEY',
   'NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY',
+] as const;
+
+/**
+ * Required env for billing/stripe to be operational. The dashboard
+ * boots fine without these (billing page shows a "not configured"
+ * state). The webhook endpoint returns 503 if STRIPE_WEBHOOK_SECRET
+ * is missing.
+ */
+export const REQUIRED_BILLING_ENV = [
+  'STRIPE_SECRET_KEY',
+  'STRIPE_WEBHOOK_SECRET',
+  'STRIPE_PRICE_STARTER',
+  'STRIPE_PRICE_PRO',
 ] as const;

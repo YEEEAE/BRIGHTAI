@@ -25,6 +25,7 @@ export type {
   DataExportRequest,
   DataDeletionRequest,
   LeadQueue,
+  Subscription,
 } from '@prisma/client';
 
 // `LeadQueueStatus` is a runtime enum — Prisma does not emit a separate
@@ -48,6 +49,8 @@ export {
   DomainStatus,
   DataRequestStatus,
   ActorType,
+  SubscriptionStatus,
+  BillingPlan,
   Prisma,
 } from '@prisma/client';
 

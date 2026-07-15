@@ -5,3 +5,4 @@
 export * from './tenant';
 export * from './session';
 export * from './types';
+export * from './billing';

@@ -107,6 +107,7 @@ BEGIN
     'onboarding_progress',
     'data_export_requests',
     'data_deletion_requests',
+    'subscriptions',
     'users',
     'passkeys',
     'two_factor_backup_codes',
@@ -363,6 +364,25 @@ CREATE POLICY data_export_all ON data_export_requests
 
 DROP POLICY IF EXISTS data_deletion_all ON data_deletion_requests;
 CREATE POLICY data_deletion_all ON data_deletion_requests
+  FOR ALL
+  USING (
+    is_service_role()
+    OR organization_id = current_org_id()
+  )
+  WITH CHECK (
+    is_service_role()
+    OR organization_id = current_org_id()
+  );
+
+-- ─────────────────────────────────────────────────────────────────
+-- 14b. SUBSCRIPTIONS — tenant-isolated (BAI-004 / 2026-07-15).
+--     Webhook handler uses service role (BYPASSRLS) because there's
+--     no user session in webhook context — the org comes from Stripe
+--     customer metadata set at checkout time.
+-- ─────────────────────────────────────────────────────────────────
+
+DROP POLICY IF EXISTS subscription_all ON subscriptions;
+CREATE POLICY subscription_all ON subscriptions
   FOR ALL
   USING (
     is_service_role()
