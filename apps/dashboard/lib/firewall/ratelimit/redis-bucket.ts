@@ -153,3 +153,20 @@ export async function consume(opts: {
     return { ...mem, limit, degraded: true };
   }
 }
+
+/**
+ * Returns the current Redis connection status for the health endpoint.
+ * Called from GET /api/firewall/health to surface whether the rate limiter
+ * is using the shared Redis bucket or the per-process in-memory fallback.
+ */
+export function getRateLimitRedisStatus(): {
+  backend: 'redis' | 'memory';
+  degraded: boolean;
+} {
+  const r = getRedis();
+  const ready = r !== null && r.status === 'ready';
+  return {
+    backend: ready ? 'redis' : 'memory',
+    degraded: !ready,
+  };
+}

@@ -21,6 +21,7 @@ import { REGEX_VERSION, REGEX_SUPPORTED_TYPES } from '@/lib/firewall/detectors/r
 import { isNerReady, NER_MODEL_ID } from '@/lib/firewall/detectors/ner';
 import { isGroqConfigured } from '@/lib/firewall/llm/groq-client';
 import { verifyChain } from '@/lib/firewall/audit/hashchain';
+import { getRateLimitRedisStatus } from '@/lib/firewall/ratelimit/redis-bucket';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -36,6 +37,12 @@ interface HealthBody {
     ner: { enabled: boolean; model: string; loaded: boolean };
   };
   llm: { groqConfigured: boolean; defaultModel: string };
+  rateLimit: {
+    /** 'redis' when Redis is up and the unified bucket is in use. */
+    backend: 'redis' | 'memory';
+    /** True when the rate limiter has degraded to the per-process fallback. */
+    degraded: boolean;
+  };
   audit: { lastOrgHash: string | null; verified: boolean };
   timestamp: string;
 }
@@ -64,6 +71,8 @@ export async function GET() {
     verified = false;
   }
 
+  const rlStatus = getRateLimitRedisStatus();
+
   const body: HealthBody = {
     status: verified ? 'ok' : 'degraded',
     service: '@brightai/firewall-layer-1',
@@ -82,6 +91,7 @@ export async function GET() {
       groqConfigured: isGroqConfigured(),
       defaultModel: process.env.GROQ_DEFAULT_MODEL || 'llama-3.1-8b-instant',
     },
+    rateLimit: rlStatus,
     audit: { lastOrgHash, verified },
     timestamp: new Date().toISOString(),
   };

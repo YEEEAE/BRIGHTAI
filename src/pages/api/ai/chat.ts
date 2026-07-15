@@ -84,6 +84,8 @@ import {
 import { getClientIp } from '../../../lib/ip';
 // CHAT-SESSION-2026-07-15: Redis-backed conversation context store
 import { getChatSessionStore, type ChatMessage } from '../../../lib/redis';
+// BAI-005: shared Redis sliding-window rate limiter (unified across Render instances)
+import { rateLimit } from '../../../lib/ratelimit';
 
 export const prerender = false;
 
@@ -207,47 +209,13 @@ function checkOriginAndAuth(req: Request): { ok: true } | { ok: false; res: Resp
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// In-memory rate limit bucket (per IP)
-// Single-instance only; for multi-instance deploys swap to KV/Redis.
+// Client IP extraction (KRN-013 / EXEC-13)
 // ─────────────────────────────────────────────────────────────────────────
-type Bucket = { count: number; resetAt: number };
-const buckets = new Map<string, Bucket>();
 
 function getClientIpLocal(req: Request): string {
-  // KRN-013 / EXEC-13: TRUSTED_PROXY_COUNT env (default 1 for Render)
+  // TRUSTED_PROXY_COUNT env (default 1 for Render)
   const trustedProxyCount = parseInt(process.env.TRUSTED_PROXY_COUNT || '1', 10);
   return getClientIp(req, { trustedProxyCount });
-}
-
-function checkRateLimit(ip: string): { ok: true } | { ok: false; retryAfterSec: number } {
-  const now = Date.now();
-  const existing = buckets.get(ip);
-  if (!existing || now > existing.resetAt) {
-    buckets.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return { ok: true };
-  }
-  existing.count += 1;
-  if (existing.count > RATE_LIMIT_MAX_REQUESTS) {
-    return { ok: false, retryAfterSec: Math.ceil((existing.resetAt - now) / 1000) };
-  }
-  return { ok: true };
-}
-
-// Periodic cleanup so the Map doesn't grow unbounded.
-const CLEANUP_INTERVAL_MS = 5 * 60_000;
-let cleanupTimer: ReturnType<typeof setInterval> | null = null;
-function ensureCleanup(): void {
-  if (cleanupTimer) return;
-  cleanupTimer = setInterval(() => {
-    const now = Date.now();
-    for (const [ip, b] of buckets) {
-      if (now > b.resetAt) buckets.delete(ip);
-    }
-  }, CLEANUP_INTERVAL_MS);
-  // Don't keep the process alive solely for cleanup.
-  if (typeof cleanupTimer === 'object' && cleanupTimer && 'unref' in cleanupTimer) {
-    (cleanupTimer as { unref: () => void }).unref?.();
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -388,17 +356,21 @@ async function callGemini(
 // POST handler — the only exported route used by the client.
 // ─────────────────────────────────────────────────────────────────────────
 export const POST: APIRoute = async ({ request }) => {
-  ensureCleanup();
-
   // 1. Origin allowlist (KRN-003 / EXEC-03) — check BEFORE rate limit so
   //    rejected requests don't waste CPU on JSON parsing.
   const auth = checkOriginAndAuth(request);
   if (!auth.ok) return auth.res;
 
-  // 2. Rate limit
+  // 2. Rate limit (BAI-005: Redis sliding-window, unified across Render instances)
   const ip = getClientIpLocal(request);
-  const rl = checkRateLimit(ip);
-  if (!rl.ok) {
+  const rl = await rateLimit(`chat:${ip}`, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS / 1_000);
+  if (!rl.allowed) {
+    const headers: Record<string, string> = {
+      'Retry-After': String(rl.retryAfterSec),
+      'X-RateLimit-Limit': String(rl.limit),
+      'X-RateLimit-Remaining': '0',
+    };
+    if (rl.degraded) headers['X-RateLimit-Degraded'] = 'true';
     return jsonError(429, 'rate_limited', { retryAfterSec: rl.retryAfterSec });
   }
 

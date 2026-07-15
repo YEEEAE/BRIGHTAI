@@ -45,6 +45,8 @@ import {
   drainOnce,
   resolveIdempotencyKey,
 } from '@brightai/lead-queue';
+// BAI-005: shared Redis sliding-window rate limiter (unified across Render instances)
+import { rateLimit } from '../../lib/ratelimit';
 // `drainOnce` is used inside ensureDrain() below — see the timer block.
 
 export const prerender = false;
@@ -87,11 +89,8 @@ const LeadSchema = z.object({
 type LeadPayload = z.infer<typeof LeadSchema>;
 
 // ─────────────────────────────────────────────────────────────────────────
-// Rate limit bucket (نفس النمط في chat.ts)
+// Client IP / User-Agent helpers
 // ─────────────────────────────────────────────────────────────────────────
-type Bucket = { count: number; resetAt: number };
-const buckets = new Map<string, Bucket>();
-
 function getClientIpLocal(req: Request): string {
   // KRN-013 / EXEC-13: TRUSTED_PROXY_COUNT env (default 1 for Render)
   const trustedProxyCount = parseInt(process.env.TRUSTED_PROXY_COUNT || '1', 10);
@@ -100,35 +99,6 @@ function getClientIpLocal(req: Request): string {
 
 function getUserAgentLocal(req: Request): string {
   return req.headers.get('user-agent') ?? '';
-}
-
-function checkRateLimit(ip: string): { ok: true } | { ok: false; retryAfterSec: number } {
-  const now = Date.now();
-  const existing = buckets.get(ip);
-  if (!existing || now > existing.resetAt) {
-    buckets.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return { ok: true };
-  }
-  existing.count += 1;
-  if (existing.count > RATE_LIMIT_MAX_REQUESTS) {
-    return { ok: false, retryAfterSec: Math.ceil((existing.resetAt - now) / 1000) };
-  }
-  return { ok: true };
-}
-
-const CLEANUP_INTERVAL_MS = 5 * 60_000;
-let cleanupTimer: ReturnType<typeof setInterval> | null = null;
-function ensureCleanup(): void {
-  if (cleanupTimer) return;
-  cleanupTimer = setInterval(() => {
-    const now = Date.now();
-    for (const [ip, b] of buckets) {
-      if (now > b.resetAt) buckets.delete(ip);
-    }
-  }, CLEANUP_INTERVAL_MS);
-  if (typeof cleanupTimer === 'object' && cleanupTimer && 'unref' in cleanupTimer) {
-    (cleanupTimer as { unref: () => void }).unref?.();
-  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -210,12 +180,16 @@ function ensureDrain(): void {
 // POST handler
 // ─────────────────────────────────────────────────────────────────────────
 export const POST: APIRoute = async ({ request }) => {
-  ensureCleanup();
-
-  // 1. Rate limit
+  // 1. Rate limit (BAI-005: Redis sliding-window, unified across Render instances)
   const ip = getClientIpLocal(request);
-  const rl = checkRateLimit(ip);
-  if (!rl.ok) {
+  const rl = await rateLimit(`lead:${ip}`, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS / 1_000);
+  if (!rl.allowed) {
+    const headers: Record<string, string> = {
+      'Retry-After': String(rl.retryAfterSec),
+      'X-RateLimit-Limit': String(rl.limit),
+      'X-RateLimit-Remaining': '0',
+    };
+    if (rl.degraded) headers['X-RateLimit-Degraded'] = 'true';
     return jsonError(429, 'rate_limited', { retryAfterSec: rl.retryAfterSec });
   }
 

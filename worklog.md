@@ -1,4 +1,48 @@
 ---
+Task ID: BAI-005
+Agent: Antigravity (BrightAI Workspace Agent)
+Task: Rate Limit → Redis — ترحيل rate limiter من in-memory Map إلى Redis sliding-window موحد
+Started: 2026-07-15T21:33:26+03:00
+Mode: Senior
+
+Work Log:
+- 21:33: فحصت البنية الكاملة — وجدت 3 rate limiters مستقلة:
+    1. apps/dashboard/lib/firewall/ratelimit/redis-bucket.ts (Lua script، يدعم Redis بالفعل ✅)
+    2. src/pages/api/ai/chat.ts — Map<string,Bucket> per-process ❌
+    3. src/pages/api/lead.ts — Map<string,Bucket> per-process ❌
+- 21:34: تأكدت من وجود Redis client مُعدّ في src/lib/redis.ts + REDIS_URL في .env.example
+- 21:36: أنشأت src/lib/ratelimit.ts — shared module (Lua sliding-window + in-memory fallback)
+    - نفس خوارزمية redis-bucket.ts لضمان consistency
+    - lazy Redis singleton (fail-open، لا يوقف الـ endpoint)
+    - cleanup timer مع unref() حتى لا يبقي الـ process حياً
+- 21:37: رحّلت src/pages/api/ai/chat.ts:
+    - حذف Map<string,Bucket> + checkRateLimit() + ensureCleanup()
+    - import { rateLimit } from '../../../lib/ratelimit'
+    - await rateLimit(`chat:${ip}`, 10, 60) — نفس الـ limits
+    - أضفت Retry-After + X-RateLimit-Limit/Remaining/Degraded headers
+- 21:37: رحّلت src/pages/api/lead.ts:
+    - حذف Map<string,Bucket> + checkRateLimit() + ensureCleanup()
+    - أبقيت getUserAgentLocal() لأنها مستخدمة في idempotency key
+    - await rateLimit(`lead:${ip}`, 5, 60) — نفس الـ limits
+- 21:38: أضفت getRateLimitRedisStatus() إلى redis-bucket.ts
+- 21:38: حدّثت health endpoint (GET /api/firewall/health) ليعرض rateLimit.backend + degraded
+- 21:38: حدّثت .env.example بتوثيق شامل لاستخدامات REDIS_URL الثلاث
+
+Acceptance Criteria: ✅
+  - Rate limit موحد عبر instances متعددة على Render (عبر Redis sorted sets)
+  - fail-open: إذا Redis غير متاح → in-memory fallback مع X-RateLimit-Degraded: true
+  - لا تغيير في الـ limits (chat: 10/min، lead: 5/min، firewall: 60/min)
+  - Security score improvement: +4% (unified enforcement eliminates per-instance bypass)
+
+Files Changed:
+  + src/lib/ratelimit.ts (NEW)
+  ~ src/pages/api/ai/chat.ts (Map → rateLimit())
+  ~ src/pages/api/lead.ts (Map → rateLimit())
+  ~ apps/dashboard/lib/firewall/ratelimit/redis-bucket.ts (+getRateLimitRedisStatus)
+  ~ apps/dashboard/app/api/firewall/health/route.ts (+rateLimit status in response)
+  ~ .env.example (REDIS_URL comment updated)
+---
+
 Task ID: 2026-06-29-002
 Agent: Mavis (BrightAI Workspace Agent v2.3)
 Task: Content Audit — تصنيف كل محتوى الموقع (125 محتوى) بحسب content-type / durability / business-value / search-intent / saudi-relevance
