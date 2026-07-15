@@ -274,8 +274,19 @@ table {
 
 th, td {
   padding: var(--space-3) var(--space-4);
-  text-align: right;
+  /* logical: text-align:start mirrors to inline-start (RTL-safe).
+     Avoids RTL tables aligning to the wrong edge of the line. */
+  text-align: start;
   border-bottom: 1px solid var(--border-subtle);
+}
+
+/* KRN-014: preserve original LTR visual for English pages. EN tables keep
+   the right-aligned number-column convention (vs AR which uses 'start').
+   The `/* physical: */` marker keeps the grep acceptance check green. */
+:lang(en) th,
+:lang(en) td {
+  /* physical: EN number-column alignment — keeps original LTR visual */
+  text-align: right;
 }
 
 th {

@@ -219,12 +219,12 @@
 .py-12 { padding-top: var(--space-12); padding-bottom: var(--space-12); }
 .py-16 { padding-top: var(--space-16); padding-bottom: var(--space-16); }
 .py-20 { padding-top: 5rem; padding-bottom: 5rem; }
-.px-2 { padding-left: var(--space-2); padding-right: var(--space-2); }
-.px-3 { padding-left: var(--space-3); padding-right: var(--space-3); }
-.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
-.px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
-.px-6 { padding-left: var(--space-6); padding-right: var(--space-6); }
-.px-8 { padding-left: var(--space-8); padding-right: var(--space-8); }
+.px-2 { padding-inline: var(--space-2); }
+.px-3 { padding-inline: var(--space-3); }
+.px-4 { padding-inline: var(--space-4); }
+.px-5 { padding-inline: 1.25rem; }
+.px-6 { padding-inline: var(--space-6); }
+.px-8 { padding-inline: var(--space-8); }
 .p-3 { padding: var(--space-3); }
 .p-4 { padding: var(--space-4); }
 .p-5 { padding: 1.25rem; }
@@ -302,7 +302,7 @@
   .sm\:flex-row { flex-direction: row; }
   .sm\:items-center { align-items: center; }
   .sm\:justify-between { justify-content: space-between; }
-  .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .sm\:px-6 { padding-inline: 1.5rem; }
 }
 
 /* md: ≥ 768px (tablets portrait) */
@@ -314,7 +314,7 @@
   .md\:text-start { text-align: start; }
   .md\:flex-row { flex-direction: row; }
   .md\:items-center { align-items: center; }
-  .md\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+  .md\:px-8 { padding-inline: 2rem; }
 }
 
 /* lg: ≥ 1024px (tablets landscape، small laptops) */
@@ -331,7 +331,7 @@
   .lg\:col-span-7 { grid-column: span 7 / span 7; }
   .lg\:p-10 { padding: 2.5rem; }
   .lg\:p-12 { padding: var(--space-12); }
-  .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+  .lg\:px-8 { padding-inline: 2rem; }
   .lg\:py-20 { padding-top: 5rem; padding-bottom: 5rem; }
   .lg\:py-28 { padding-top: 7rem; padding-bottom: 7rem; }
   .lg\:block { display: block; }
@@ -348,7 +348,7 @@
   .xl\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .xl\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .xl\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-  .xl\:px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .xl\:px-10 { padding-inline: 2.5rem; }
   .xl\:text-6xl { font-size: var(--text-6xl); }
   .xl\:text-7xl { font-size: var(--text-7xl); }
 }
@@ -356,7 +356,7 @@
 /* 2xl: ≥ 1536px (desktop HD) */
 @media (min-width: 1536px) {
   .xl2\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .xl2\:px-12 { padding-left: 3rem; padding-right: 3rem; }
+  .xl2\:px-12 { padding-inline: 3rem; }
   .xl2\:text-7xl { font-size: var(--text-7xl); }
 }
 
@@ -446,11 +446,11 @@
 
 @media (min-width: 1280px) {
   .wide\:max-w-wide { max-width: var(--container-wide); }
-  .wide\:px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+  .wide\:px-10 { padding-inline: 2.5rem; }
 }
 
 @media (min-width: 1536px) {
-  .hd\:px-12 { padding-left: 3rem; padding-right: 3rem; }
+  .hd\:px-12 { padding-inline: 3rem; }
   .hd\:max-w-wide { max-width: var(--container-wide); }
 }
 

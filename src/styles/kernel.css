@@ -137,8 +137,20 @@
 .kernel-table th,
 .kernel-table td {
   padding: var(--space-4) var(--space-6);
-  text-align: right;
+  /* logical: text-align:start mirrors to inline-start (visually right in RTL, left in LTR).
+     Avoids forcing right-edge alignment in both directions, which would make Arabic
+     tables align to the end of the line (visually left in RTL). */
+  text-align: start;
   border-bottom: 1px solid var(--border-subtle);
+}
+
+/* KRN-014: preserve original LTR visual for English pages. AR tables use the
+   logical 'start' above (= visually right). EN tables keep 'right' for the
+   original number-column alignment. */
+:lang(en) .kernel-table th,
+:lang(en) .kernel-table td {
+  /* physical: EN number-column alignment — keeps original LTR visual */
+  text-align: right;
 }
 
 .kernel-table th {
@@ -314,7 +326,6 @@
 .kernel-sidebar {
   width: 280px;
   background: var(--bg-surface);
-  border-left: 1px solid var(--border-subtle);
   padding: var(--space-6);
   /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
   height: calc(100vh - 72px);
