@@ -1,12 +1,15 @@
 /**
  * Vitest config for the @brightai/dashboard workspace.
  *
- * Two test groups:
+ * Three test groups:
  *   - tests/firewall/**  — pure unit tests for the firewall engine
+ *   - tests/api/**       — Next.js route handler tests
  *   - tests/integration/** — tests that touch Prisma or external services
  *
- * The default Vitest env is `node` (matches the firewall code which
- * is server-side only).
+ * Coverage gate (BAI-003):
+ *   - `pnpm test` runs without coverage (fast local feedback).
+ *   - `pnpm test:coverage` enforces 60% threshold on lib/firewall/**
+ *     so CI fails when the firewall drops below the contract.
  *
  * `server-only` is aliased to an empty stub so unit tests can
  * import server-only modules without the framework guard tripping.
@@ -27,5 +30,22 @@ export default defineConfig({
     globals: true,
     include: ['tests/**/*.test.ts'],
     setupFiles: [],
+    coverage: {
+      provider: 'v8',
+      include: ['lib/firewall/**'],
+      exclude: [
+        'lib/firewall/**/index.ts',
+        'lib/firewall/**/types.ts',
+        'lib/firewall/detectors/types.ts',
+      ],
+      reporter: ['text', 'json-summary', 'html'],
+      thresholds: {
+        lines: 60,
+        functions: 60,
+        branches: 55,
+        statements: 60,
+        perFile: false,
+      },
+    },
   },
 });

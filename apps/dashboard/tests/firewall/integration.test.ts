@@ -134,7 +134,8 @@ describe('detectAndRedact — credential blocking', () => {
 
 describe('detect — NER injection', () => {
   it('merges regex + NER detections when nerEnabled', async () => {
-    const res = await detect('مرحبا أنا محمد ولدي بطاقة 1023456789', ctx());
+    const policy = { ...DEFAULT_POLICY, nerEnabled: true };
+    const res = await detect('مرحبا أنا محمد ولدي بطاقة 1023456789', ctx(policy));
     const types = res.map((d) => d.type);
     expect(types).toContain('PERSON_NAME');
     expect(types).toContain('SAUDI_ID');

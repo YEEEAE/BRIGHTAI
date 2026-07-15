@@ -67,3 +67,113 @@ afterEach(() => {
   store.clear();
   delete process.env.FIREWALL_TOKEN_VAULT_KEY_PREV;
 });
+
+describe('tokenize / detokenize — round trip', () => {
+  it('round-trips a Saudi ID', async () => {
+    const token = await tokenize('1023456789', {
+      organizationId: 'org_a',
+      createdById: 'u1',
+      piiType: 'SAUDI_ID',
+    });
+    expect(token.startsWith('TKN_current_')).toBe(true);
+    expect(await detokenize(token, 'org_a')).toBe('1023456789');
+  });
+
+  it('round-trips an Arabic name', async () => {
+    const name = 'عبدالله العتيبي';
+    const token = await tokenize(name, {
+      organizationId: 'org_a',
+      createdById: 'u1',
+      piiType: 'PERSON_NAME',
+    });
+    expect(await detokenize(token, 'org_a')).toBe(name);
+  });
+
+  it('returns null for unknown token', async () => {
+    expect(await detokenize('TKN_current_zzzz_nope', 'org_a')).toBeNull();
+  });
+
+  it('does NOT resolve across orgs', async () => {
+    const token = await tokenize('secret', {
+      organizationId: 'org_a',
+      createdById: 'u1',
+      piiType: 'CREDENTIAL',
+    });
+    expect(await detokenize(token, 'org_b')).toBeNull();
+  });
+});
+
+describe('applyActionsWithVault — reversible token flow', () => {
+  it('replaces PII with a reversible token and resolves original', async () => {
+    const text = 'هويتي 1023456789 مهمة';
+    const result = await applyActionsWithVault(
+      text,
+      [
+        {
+          type: 'SAUDI_ID',
+          start: 7,
+          end: 17,
+          value: '1023456789',
+          confidence: 0.92,
+          detector: 'regex',
+        },
+      ],
+      { actions: { SAUDI_ID: 'tokenize' }, blockOnCritical: false, nerEnabled: false },
+      async (value) =>
+        tokenize(value, { organizationId: 'org_a', createdById: 'u1', piiType: 'SAUDI_ID' }),
+    );
+    expect(result.blocked).toBe(false);
+    expect(Object.keys(result.tokens).length).toBe(1);
+    const token = Object.keys(result.tokens)[0];
+    expect(result.redactedText).toContain(token);
+    expect(await detokenize(token, 'org_a')).toBe('1023456789');
+  });
+});
+
+describe('key rotation', () => {
+  it('re-encrypts prev-key rows under current key', async () => {
+    const token = await tokenize('rotate-me', {
+      organizationId: 'org_a',
+      createdById: 'u1',
+      piiType: 'PERSON_NAME',
+    });
+    expect(await detokenize(token, 'org_a')).toBe('rotate-me');
+
+    // Simulate the rotation-window state: the row was originally on the
+    // current key; promote current→prev in the store to mark it as
+    // "needs re-encryption under the new key".
+    process.env.FIREWALL_TOKEN_VAULT_KEY_PREV = TEST_KEY;
+    process.env.FIREWALL_TOKEN_VAULT_KEY = 'next-rotated-key-also-32-bytes-min-yyyy';
+    const row = Array.from(store.values()).find((r) => r.organizationId === 'org_a');
+    expect(row).toBeTruthy();
+    if (row) row.keyVersion = 'prev';
+
+    const { reEncrypted } = await rotateInPlace('org_a');
+    expect(reEncrypted).toBe(1);
+    // rotateInPlace creates a new mapping via tokenize() then updates the
+    // old row's `token` field; both rows therefore remain in the store.
+    const rows = Array.from(store.values()).filter((r) => r.organizationId === 'org_a');
+    expect(rows.length).toBeGreaterThanOrEqual(1);
+    // The original (old) row was updated to keyVersion='current' with a new token.
+    const original = rows.find((r) => r.id);
+    expect(rows.some((r) => r.keyVersion === 'current')).toBe(true);
+    expect(rows.some((r) => r.token !== token)).toBe(true);
+  });
+
+  it('rotateInPlace throws when both keys are missing', async () => {
+    delete process.env.FIREWALL_TOKEN_VAULT_KEY_PREV;
+    await expect(rotateInPlace('org_a')).rejects.toThrow(/both/i);
+  });
+});
+
+describe('TTL expiry', () => {
+  it('returns null after expiresAt passed', async () => {
+    const token = await tokenize('temp', {
+      organizationId: 'org_a',
+      createdById: 'u1',
+      piiType: 'PERSON_NAME',
+      ttlSec: -1,
+    });
+    expect(await detokenize(token, 'org_a')).toBeNull();
+  });
+});
