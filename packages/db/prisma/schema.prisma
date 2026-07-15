@@ -283,12 +283,12 @@ model User {
   clerkUserId   String   @unique
   email         String   @unique @db.Citext
   emailVerified Boolean  @default(false)
-  name          String?
-  nameAr        String?
+  fullName      String?
+  fullNameAr    String?
   avatarUrl     String?
   phoneNumber   String?  @db.Citext
   phoneVerified Boolean  @default(false)
-  locale        String   @default("ar-SA")
+  primaryLocale String   @default("ar-SA")
   timezone      String   @default("Asia/Riyadh")
   // 2FA
   twoFactorEnabled  Boolean @default(false)
@@ -341,6 +341,7 @@ model Membership {
   // Invitation lineage
   invitedById    String?
   invitedAt      DateTime     @default(now())
+  acceptedAt     DateTime?
   joinedAt       DateTime?
   // Deactivation
   deactivatedAt  DateTime?
@@ -377,7 +378,7 @@ model Invitation {
   organizationId String
   email          String   @db.Citext
   role           Role
-  tokenHash      String   @unique // SHA-256 of the raw token
+  token          String   @unique // SHA-256 of the raw token (the lookup key — see app/invitation/[token]/page.tsx for hash flow)
   // Lifecycle
   expiresAt      DateTime
   acceptedAt     DateTime?
@@ -518,6 +519,8 @@ model Policy {
   category       PolicyCategory
   // Rules (JSON: conditions, actions, exceptions)
   rules          Json
+  // Priority (higher = applied first; ties broken by createdAt asc)
+  priority       Int          @default(0)
   // Lifecycle
   status         PolicyStatus @default(DRAFT)
   version        Int          @default(1)
@@ -744,7 +747,7 @@ model Domain {
   domain              String       @unique
   // Verification
   verificationToken   String
-  verified            Boolean      @default(false)
+  isVerified          Boolean      @default(false)
   verifiedAt          DateTime?
   // SSL
   sslStatus           DomainStatus @default(PENDING_VERIFICATION)

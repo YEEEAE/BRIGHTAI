@@ -29,11 +29,13 @@ declare global {
 }
 
 const baseConfig = {
-  log: (
-    process.env.NODE_ENV === 'development'
-      ? ['warn', 'error'] as const
-      : ['error'] as const
-  ),
+  // Prisma's `log` option expects a mutable `(LogLevel | LogDefinition)[]`.
+  // We pass an array literal (no `as const`) so the readonly tuple type
+  // doesn't conflict with the mutable array Prisma expects. See
+  // CRITICAL-02 fix (2026-07-15).
+  log: process.env.NODE_ENV === 'development'
+    ? ['warn', 'error'] as Array<'warn' | 'error'>
+    : ['error'] as Array<'error'>,
 };
 
 /** Application client — subject to RLS. Use this 99% of the time. */

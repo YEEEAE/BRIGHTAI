@@ -15,7 +15,7 @@
 import 'server-only';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { dbServiceRole, withTenant } from '@brightai/db';
-import type { Membership, User, Role } from '@brightai/db';
+import type { Membership, User, Role, Prisma } from '@brightai/db';
 import { ForbiddenError, requirePermission, requireRoleAtLeast, hasPermission } from '@brightai/config';
 import type { Permission } from '@brightai/config';
 import { requireTenant } from './tenant';
@@ -62,7 +62,7 @@ export async function getSessionContext(): Promise<SessionContext> {
   if (clerkUser && (user.email === '' || user.fullName === '')) {
     const email = clerkUser.emailAddresses[0]?.emailAddress ?? user.email;
     const fullName = [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(' ') || user.fullName;
-    const fullNameAr = clerkUser.publicMetadata?.fullNameAr as string | undefined;
+    const fullNameAr = (clerkUser.publicMetadata?.fullNameAr as string | undefined) ?? null;
     const primaryLocale = (clerkUser.publicMetadata?.locale as 'ar' | 'en' | undefined) ?? user.primaryLocale;
     await dbServiceRole.user.update({
       where: { id: user.id },
@@ -168,10 +168,14 @@ export async function hasSessionPermission(permission: Permission): Promise<bool
  * Run a callback inside a tenant-scoped transaction.
  * Use for any tenant-scoped read/write — the withTenant helper sets
  * the RLS context so the DB enforces isolation.
+ *
+ * The callback receives a `Prisma.TransactionClient` (not the full
+ * `dbServiceRole`) — this matches what `withTenant` provides and is
+ * the canonical Prisma 5 type for transaction callbacks.
  */
 export async function runInTenantContext<T>(
   ctx: SessionContext,
-  fn: (tx: typeof dbServiceRole) => Promise<T>,
+  fn: (tx: Prisma.TransactionClient) => Promise<T>,
 ): Promise<T> {
-  return withTenant(ctx.tenant.id, ctx.user.id, fn) as Promise<T>;
+  return withTenant(ctx.tenant.id, ctx.user.id, fn);
 }

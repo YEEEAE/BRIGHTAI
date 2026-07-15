@@ -11,6 +11,7 @@
     "./types": "./src/types.ts"
   },
   "scripts": {
+    "postinstall": "prisma generate",
     "db:setup": "node ./scripts/setup-local-db.mjs",
     "db:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev",

@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       fullName,
       fullNameAr,
       primaryLocale,
-      emailVerified: new Date(), // Clerk users are already verified by the time the webhook fires
+      emailVerified: true, // Clerk users are already verified by the time the webhook fires
     },
     update: {
       email: primaryEmail,

@@ -38,7 +38,7 @@ export async function getTenantFromHeaders(): Promise<TenantContext> {
 
   if (isCustomDomain) {
     const domain = await dbServiceRole.domain.findFirst({
-      where: { domain: slug, isVerified: true, deletedAt: null },
+      where: { domain: slug, isVerified: true },
       include: {
         organization: {
           select: { id: true, slug: true, name: true, nameAr: true, deletedAt: true },

@@ -114,7 +114,6 @@ async function main() {
       industry: 'BANKING',
       size: 'SIZE_201_500',
       deployment: 'CLOUD',
-      primaryLocale: 'ar',
       timezone: 'Asia/Riyadh',
     },
   });
@@ -129,7 +128,7 @@ async function main() {
       isVerified: true,
       verifiedAt: new Date(),
       verificationToken: hashToken('seed-verification-token'),
-      sslStatus: 'ACTIVE',
+      sslStatus: 'SSL_ACTIVE',
       sslIssuedAt: new Date(),
       sslExpiresAt: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       cnameTarget: 'proxy.brightai.site',
@@ -154,7 +153,7 @@ async function main() {
           fullName: u.name,
           fullNameAr: u.name,
           primaryLocale: 'ar',
-          emailVerified: new Date(),
+          emailVerified: true,
           twoFactorEnabled: u.role === 'OWNER' || u.role === 'ADMIN',
         },
       });
@@ -203,9 +202,9 @@ async function main() {
   const ownerUser = users.find((u) => u.role === 'OWNER')!;
   const policies = await Promise.all(
     [
-      { name: 'Allow medical AI assistance', category: 'DOMAIN_ALLOW' as const, status: 'ACTIVE' as const },
-      { name: 'Block transfers of customer PII', category: 'PII_BLOCK' as const, status: 'ACTIVE' as const },
-      { name: 'Require review for financial advice', category: 'REVIEW_REQUIRED' as const, status: 'DRAFT' as const },
+      { name: 'Allow medical AI assistance', category: 'CUSTOM' as const, status: 'ACTIVE' as const },
+      { name: 'Block transfers of customer PII', category: 'DATA_PRIVACY' as const, status: 'ACTIVE' as const },
+      { name: 'Require review for financial advice', category: 'ACCESS_CONTROL' as const, status: 'DRAFT' as const },
     ].map((p) =>
       prisma.policy.create({
         data: {
@@ -237,7 +236,7 @@ async function main() {
       { organizationId: org.id, requestedById: memberUser.dbId, prompt: 'اقترح استراتيجية استثمارية', riskLevel: 'HIGH', status: 'PENDING' },
       { organizationId: org.id, requestedById: memberUser.dbId, prompt: 'احسب ضريبة القيمة المضافة', riskLevel: 'MEDIUM', status: 'PENDING' },
       { organizationId: org.id, requestedById: memberUser.dbId, prompt: 'مريض يشتكي من صداع', riskLevel: 'MEDIUM', status: 'APPROVED', reviewedById: reviewerUser.dbId, reviewedAt: new Date() },
-      { organizationId: org.id, requestedById: memberUser.dbId, prompt: 'شارك بيانات العميل', riskLevel: 'CRITICAL', status: 'REJECTED', reviewedById: reviewerUser.dbId, reviewedAt: new Date(), reviewNote: 'محظور بموجب PDPL' },
+      { organizationId: org.id, requestedById: memberUser.dbId, prompt: 'شارك بيانات العميل', riskLevel: 'CRITICAL', status: 'REJECTED', reviewedById: reviewerUser.dbId, reviewedAt: new Date(), reviewNotes: 'محظور بموجب PDPL' },
     ],
   });
 
@@ -245,8 +244,8 @@ async function main() {
     data: {
       organizationId: org.id,
       connector: 'SLACK',
-      status: 'CONNECTED',
-      configEncrypted: { webhook: 'https://hooks.slack.com/services/T0/B0/XXXXX' },
+      status: 'ACTIVE',
+      config: { webhook: 'https://hooks.slack.com/services/T0/B0/XXXXX' },
       lastSyncAt: new Date(),
     },
   });
@@ -256,8 +255,8 @@ async function main() {
     data: {
       organizationId: org.id,
       name: 'Seed dev key',
-      keyHash: hashToken(apiKeyPlain),
-      keyPrefix: apiKeyPlain.slice(0, 12),
+      hashedKey: hashToken(apiKeyPlain),
+      prefix: apiKeyPlain.slice(0, 12),
       status: 'ACTIVE',
       scopes: ['request:create', 'request:read:own'],
       createdById: ownerUser.dbId,
@@ -268,7 +267,7 @@ async function main() {
   await prisma.onboardingProgress.create({
     data: {
       organizationId: org.id,
-      currentStep: 'CONNECT_INTEGRATION',
+      currentStep: 'FIRST_INTEGRATION',
       completedSteps: ['ORG_INFO', 'COMPLIANCE_PROFILE', 'TEAM_INVITES'],
       stepData: {
         ORG_INFO: { source: 'seed' },
@@ -296,7 +295,7 @@ async function main() {
         actorType: 'USER',
         actorId: e.actorId,
         action: e.action,
-        ipHash: hashToken('127.0.0.1'),
+        hash: hashToken('127.0.0.1'),
         userAgent: 'seed-script/1.0',
       },
     });

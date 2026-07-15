@@ -122,6 +122,7 @@ export async function* chatStream(req: ChatRequest): AsyncGenerator<ChatChunk> {
   })) as AsyncIterable<{ choices?: Array<{ delta?: { content?: string }; finish_reason?: string | null }>; usage?: { prompt_tokens?: number; completion_tokens?: number; total_tokens?: number }; model?: string }>;
 
   let finalModel: string | null = null;
+  let finalUsage: { prompt_tokens: number; completion_tokens: number; total_tokens: number } | null = null;
 
   for await (const chunk of stream) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
