@@ -34,6 +34,9 @@ const jsonLd = [
 ];
 
 const iconChat = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>';
+const iconMessages = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
+const iconContext = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>';
+const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 const iconPaperclip = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>';
 const iconSend = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
@@ -130,6 +133,36 @@ const policyBanner = {
 
       <!-- CENTER — Chat thread + composer -->
       <section class="kernel-chat-layout__pane kernel-chat-layout__pane--center" aria-label="محادثة نشطة">
+        {/*
+          KRN-008 / EXEC-08: Mobile toolbar — appears only on <1024px.
+          Toggles the threads drawer (الرسائل) and context drawer (السياق)
+          which expose the hidden --left and --right panes.
+        */}
+        <div class="kernel-chat-toolbar" role="toolbar" aria-label="أدوات الدردشة">
+          <button
+            type="button"
+            class="kernel-chat-toolbar__btn"
+            data-kernel-chat-threads-toggle
+            aria-controls="kernel-chat-drawer-threads"
+            aria-expanded="false"
+            aria-label="فتح قائمة المحادثات"
+          >
+            <span aria-hidden="true"><Fragment set:html={iconMessages} /></span>
+            <span>الرسائل</span>
+          </button>
+          <button
+            type="button"
+            class="kernel-chat-toolbar__btn"
+            data-kernel-chat-context-toggle
+            aria-controls="kernel-chat-drawer-context"
+            aria-expanded="false"
+            aria-label="فتح لوحة السياق"
+          >
+            <span aria-hidden="true"><Fragment set:html={iconContext} /></span>
+            <span>السياق</span>
+          </button>
+        </div>
+
         <header style="display:flex; align-items:center; justify-content:space-between; gap:var(--space-2); padding-bottom:var(--space-2); border-bottom:1px solid var(--border-subtle);">
           <div>
             <h2 style="font-size:var(--text-base); font-weight:var(--font-bold); color:var(--text-primary); margin:0;" data-kernel-thread-title>تصدير قائمة عملاء (محظور)</h2>
@@ -276,6 +309,154 @@ const policyBanner = {
         </section>
       </aside>
 
+    </div>
+
+    {/*
+      KRN-008 / EXEC-08: Mobile drawers (slide-in panels).
+      - Hidden on desktop (display: none).
+      - On <1024px, opened via the toolbar buttons (الرسائل / السياق).
+      - role="dialog" + aria-modal="true" + focus trap (per §4.5(i)).
+      - Body scroll lock + Escape-to-close + focus return to trigger.
+    */}
+
+    <!-- THREADS DRAWER (mobile only) -->
+    <div
+      class="kernel-chat-drawer"
+      id="kernel-chat-drawer-threads"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="kernel-chat-drawer-threads-title"
+      aria-hidden="true"
+      data-open="false"
+      data-drawer-name="threads"
+    >
+      <div class="kernel-chat-drawer__backdrop" data-kernel-chat-drawer-close="threads" aria-hidden="true"></div>
+      <div class="kernel-chat-drawer__panel">
+        <header class="kernel-chat-drawer__head">
+          <h3 class="kernel-chat-drawer__title" id="kernel-chat-drawer-threads-title">المحادثات</h3>
+          <button
+            type="button"
+            class="kernel-chat-drawer__close"
+            data-kernel-chat-drawer-close="threads"
+            aria-label="إغلاق قائمة المحادثات"
+          >
+            <Fragment set:html={iconClose} />
+          </button>
+        </header>
+        <div class="kernel-chat-drawer__body">
+          <button type="button" class="kernel-threads-list__new-btn" data-kernel-chat-new>
+            <span aria-hidden="true"><Fragment set:html={iconPlus} /></span>
+            <span>محادثة جديدة</span>
+          </button>
+          <ul class="kernel-threads-list" role="list" data-kernel-drawer-threads>
+            {threads.map(t => (
+              <li>
+                <button
+                  type="button"
+                  class="kernel-threads-list__item"
+                  aria-current={t.selected ? 'true' : 'false'}
+                  data-thread-id={t.id}
+                  data-thread-title={t.title}
+                >
+                  <span class="kernel-threads-list__title">{t.title}</span>
+                  <span class="kernel-threads-list__meta">{t.preview}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTEXT DRAWER (mobile only) -->
+    <div
+      class="kernel-chat-drawer"
+      id="kernel-chat-drawer-context"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="kernel-chat-drawer-context-title"
+      aria-hidden="true"
+      data-open="false"
+      data-drawer-name="context"
+    >
+      <div class="kernel-chat-drawer__backdrop" data-kernel-chat-drawer-close="context" aria-hidden="true"></div>
+      <div class="kernel-chat-drawer__panel">
+        <header class="kernel-chat-drawer__head">
+          <h3 class="kernel-chat-drawer__title" id="kernel-chat-drawer-context-title">لوحة السياق</h3>
+          <button
+            type="button"
+            class="kernel-chat-drawer__close"
+            data-kernel-chat-drawer-close="context"
+            aria-label="إغلاق لوحة السياق"
+          >
+            <Fragment set:html={iconClose} />
+          </button>
+        </header>
+        <div class="kernel-chat-drawer__body">
+          <!-- NVIDIA status card -->
+          <section class="kernel-chat-context-card" aria-labelledby="ctx-drawer-nvidia-title">
+            <header class="kernel-chat-context-card__head">
+              <span class="kernel-chat-context-card__logo" aria-hidden="true">N</span>
+              <div class="kernel-chat-context-card__title-block">
+                <h3 class="kernel-chat-context-card__title" id="ctx-drawer-nvidia-title">NVIDIA NIM</h3>
+                <p class="kernel-chat-context-card__sub">مزود النموذج</p>
+              </div>
+            </header>
+            <dl>
+              <div class="kernel-chat-context-card__field">
+                <dt class="kernel-chat-context-card__label">الحالة</dt>
+                <dd class="kernel-chat-context-card__value kernel-chat-context-card__value--ok">متصل · مهيأ</dd>
+              </div>
+              <div class="kernel-chat-context-card__field">
+                <dt class="kernel-chat-context-card__label">النموذج</dt>
+                <dd class="kernel-chat-context-card__value">minimaxai/minimax-m2.7</dd>
+              </div>
+              <div class="kernel-chat-context-card__field">
+                <dt class="kernel-chat-context-card__label">الوضع</dt>
+                <dd class="kernel-chat-context-card__value">Production</dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- Policy / Firewall notifications -->
+          <section class="kernel-sidecard" aria-labelledby="ctx-drawer-policy-title">
+            <h3 class="kernel-sidecard__title" id="ctx-drawer-policy-title">تنبيهات السياسة</h3>
+            <div style="display:flex; flex-direction:column; gap:var(--space-2);">
+              <div class="kernel-chat-policy-banner kernel-chat-policy-banner--warning" style="padding:var(--space-2);">
+                <span class="kernel-chat-policy-banner__icon" aria-hidden="true" style="inline-size:20px; block-size:20px;">
+                  <Fragment set:html={iconShield} />
+                </span>
+                <div class="kernel-chat-policy-banner__body">
+                  <p class="kernel-chat-policy-banner__title">Firewall: PDPL §12</p>
+                  <p class="kernel-chat-policy-banner__msg">حظر تصدير بيانات شخصية إلى نموذج خارجي.</p>
+                </div>
+              </div>
+              <div class="kernel-chat-policy-banner kernel-chat-policy-banner--info" style="padding:var(--space-2);">
+                <span class="kernel-chat-policy-banner__icon" aria-hidden="true" style="inline-size:20px; block-size:20px;">
+                  <Fragment set:html={iconInfo} />
+                </span>
+                <div class="kernel-chat-policy-banner__body">
+                  <p class="kernel-chat-policy-banner__title">Audit Chain: VALID</p>
+                  <p class="kernel-chat-policy-banner__msg">سلسلة hash متطابقة بصرياً — السجلات سليمة.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Session meta -->
+          <section class="kernel-sidecard" aria-labelledby="ctx-drawer-session-title">
+            <h3 class="kernel-sidecard__title" id="ctx-drawer-session-title">الجلسة الحالية</h3>
+            <dl style="display:grid; grid-template-columns:auto 1fr; gap:6px var(--space-3); font-size:var(--text-sm);">
+              <dt style="color:var(--text-secondary); opacity:var(--text-tertiary-opacity);">Trace</dt>
+              <dd style="margin:0; font-family:var(--font-mono); color:var(--text-primary);">AI-2026-10493</dd>
+              <dt style="color:var(--text-secondary); opacity:var(--text-tertiary-opacity);">Hash</dt>
+              <dd style="margin:0; font-family:var(--font-mono); color:var(--text-primary); font-size:0.78rem;">0xa7c8f2e9…d41b</dd>
+              <dt style="color:var(--text-secondary); opacity:var(--text-tertiary-opacity);">الوقت</dt>
+              <dd style="margin:0; color:var(--text-primary);">قبل 3د · live</dd>
+            </dl>
+          </section>
+        </div>
+      </div>
     </div>
 
     <!-- Legend below the chat for accessibility -->
@@ -605,8 +786,167 @@ const policyBanner = {
       });
     }
 
+    /*
+     * KRN-008 / EXEC-08: Mobile drawer controller.
+     * - Toggle buttons (الرسائل / السياق) open the matching drawer.
+     * - Only one drawer can be open at a time.
+     * - role="dialog" + aria-modal="true" + focus trap (per §4.5(i)).
+     * - Escape key closes the open drawer.
+     * - Focus returns to the trigger button on close.
+     * - Body scroll lock while drawer is open.
+     * - Re-bind-safe across Astro view transitions.
+     */
+    var DRAWER_NAMES = ['threads', 'context'];
+
+    function initDrawers() {
+      var drawers = {};
+      var triggers = {};
+      DRAWER_NAMES.forEach(function (name) {
+        drawers[name] = document.getElementById('kernel-chat-drawer-' + name);
+        triggers[name] = document.querySelector('[data-kernel-chat-' + name + '-toggle]');
+      });
+
+      // Bail if none of the drawer elements exist on this page
+      if (!drawers.threads && !drawers.context) return;
+
+      function getFocusable(root) {
+        if (!root) return [];
+        var nodes = root.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        return Array.prototype.filter.call(nodes, function (node) {
+          if (node.hasAttribute('disabled')) return false;
+          if (node.getAttribute('aria-hidden') === 'true') return false;
+          // offsetParent is null for display:none or detached nodes
+          return node.offsetParent !== null || node === document.activeElement;
+        });
+      }
+
+      function anyOpen() {
+        return DRAWER_NAMES.some(function (name) {
+          return drawers[name] && drawers[name].getAttribute('data-open') === 'true';
+        });
+      }
+
+      function openDrawer(name) {
+        var drawer = drawers[name];
+        var trigger = triggers[name];
+        if (!drawer) return;
+        drawer.setAttribute('data-open', 'true');
+        drawer.setAttribute('aria-hidden', 'false');
+        if (trigger) trigger.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+        // Focus first focusable in the panel
+        var panel = drawer.querySelector('.kernel-chat-drawer__panel');
+        var focusable = getFocusable(panel);
+        if (focusable[0]) {
+          try { focusable[0].focus(); } catch (e) { /* ignore */ }
+        }
+      }
+
+      function closeDrawer(name) {
+        var drawer = drawers[name];
+        var trigger = triggers[name];
+        if (!drawer) return;
+        drawer.setAttribute('data-open', 'false');
+        drawer.setAttribute('aria-hidden', 'true');
+        if (trigger) {
+          trigger.setAttribute('aria-expanded', 'false');
+          try { trigger.focus(); } catch (e) { /* ignore */ }
+        }
+        if (!anyOpen()) document.body.style.overflow = '';
+      }
+
+      function trapFocus(e, drawer) {
+        if (e.key !== 'Tab') return;
+        var panel = drawer.querySelector('.kernel-chat-drawer__panel');
+        if (!panel) return;
+        var focusable = getFocusable(panel);
+        if (focusable.length === 0) {
+          e.preventDefault();
+          return;
+        }
+        var first = focusable[0];
+        var last = focusable[focusable.length - 1];
+        var active = document.activeElement;
+        // If focus is outside the drawer, pull it back in
+        if (!panel.contains(active)) {
+          e.preventDefault();
+          first.focus();
+          return;
+        }
+        if (e.shiftKey && active === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && active === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+
+      function handleDrawerKeydown(e) {
+        if (e.key === 'Escape') {
+          var openName = DRAWER_NAMES.find(function (name) {
+            return drawers[name] && drawers[name].getAttribute('data-open') === 'true';
+          });
+          if (openName) {
+            e.preventDefault();
+            closeDrawer(openName);
+            return;
+          }
+        }
+        var openName = DRAWER_NAMES.find(function (name) {
+          return drawers[name] && drawers[name].getAttribute('data-open') === 'true';
+        });
+        if (openName) trapFocus(e, drawers[openName]);
+      }
+
+      // Bind triggers
+      DRAWER_NAMES.forEach(function (name) {
+        var trigger = triggers[name];
+        var drawer = drawers[name];
+        if (!trigger || !drawer) return;
+        if (trigger.dataset.bound === '1') return;
+        trigger.dataset.bound = '1';
+        trigger.addEventListener('click', function () {
+          var isOpen = drawer.getAttribute('data-open') === 'true';
+          if (isOpen) {
+            closeDrawer(name);
+          } else {
+            // Close any other open drawer first
+            DRAWER_NAMES.forEach(function (other) {
+              if (other !== name && drawers[other] && drawers[other].getAttribute('data-open') === 'true') {
+                closeDrawer(other);
+              }
+            });
+            openDrawer(name);
+          }
+        });
+      });
+
+      // Bind close buttons + backdrops
+      elAll('[data-kernel-chat-drawer-close]').forEach(function (btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', function () {
+          var name = btn.getAttribute('data-kernel-chat-drawer-close');
+          if (name) closeDrawer(name);
+        });
+      });
+
+      // Global keydown handler (Escape + focus trap)
+      if (typeof window.__kernelChatDrawerKeydownBound === 'undefined') {
+        document.addEventListener('keydown', handleDrawerKeydown);
+        window.__kernelChatDrawerKeydownBound = true;
+      }
+    }
+
     document.addEventListener('astro:page-load', init);
-    if (document.readyState !== 'loading') init();
+    document.addEventListener('astro:page-load', initDrawers);
+    if (document.readyState !== 'loading') {
+      init();
+      initDrawers();
+    }
   })();
 </script>
 

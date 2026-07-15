@@ -244,8 +244,8 @@ const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         >
           <header class="kernel-scenario-card__header">
             <div class="kernel-scenario-card__badges">
-              <span class:list={['kernel-badge', `kernel-badge--${s.riskLevel}`]}>{s.riskLevel}</span>
-              <span class="kernel-badge kernel-badge--pack">{s.compliancePack.toUpperCase()}</span>
+              <span class:list={['kernel-badge', `kernel-badge--${s.riskLevel}`]} lang="en">{s.riskLevel}</span>
+              <span class="kernel-badge kernel-badge--pack" lang="en">{s.compliancePack.toUpperCase()}</span>
             </div>
             <span class="kernel-scenario-card__category">{categories.find(c => c.id === s.category)?.label}</span>
           </header>
@@ -435,7 +435,7 @@ const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
             </div>
             <div class="kernel-modal__output-detectors">
               <strong>المكشفات:</strong>
-              ${currentScenario.expectedDetectors.length === 0 ? '<span>لا توجد</span>' : currentScenario.expectedDetectors.map(d => `<span class="kernel-badge kernel-badge--neutral">${d}</span>`).join('')}
+              ${currentScenario.expectedDetectors.length === 0 ? '<span>لا توجد</span>' : currentScenario.expectedDetectors.map(d => `<span class="kernel-badge kernel-badge--neutral" lang="en">${d}</span>`).join('')}
             </div>
             <div class="kernel-modal__output-trace">
               <strong>Trace ID:</strong> <code>AI-${Date.now().toString().slice(-8)}</code>

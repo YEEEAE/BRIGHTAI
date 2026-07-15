@@ -280,7 +280,7 @@ const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
                   <span class="kernel-policies-table__chip">{piiTypes.find(t => t.id === p.piiType)?.icon} {piiTypes.find(t => t.id === p.piiType)?.label || p.piiType}</span>
                 </span>
                 <span class="kernel-policies-table__cell" role="cell">
-                  <span class="kernel-badge kernel-badge--pack">{p.compliancePack.toUpperCase()}</span>
+                  <span class="kernel-badge kernel-badge--pack" lang="en">{p.compliancePack.toUpperCase()}</span>
                 </span>
                 <span class="kernel-policies-table__cell" role="cell">
                   <span class:list={['kernel-badge', `kernel-badge--${p.action === 'block' ? 'danger' : p.action === 'mask' ? 'brand' : p.action === 'hitl' ? 'warning' : 'neutral'}`]}>

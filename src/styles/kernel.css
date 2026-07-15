@@ -1855,14 +1855,27 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 /* ── 22. CHAT — 3-pane layout (threads | thread | context) ────────────── */
 
+/* KRN-008 (EXEC-08): mobile chat UX fix
+   - Layout fills the dynamic viewport height on all viewports.
+     The 100dvh unit handles iOS Safari URL-bar collapse (avoids the
+     composer being pushed below the fold).
+   - On <1024px, threads + context panes are hidden by default; the
+     chat pane is full-width. A mobile toolbar with two toggle buttons
+     (الرسائل, السياق) re-opens the hidden panes as overlay drawers.
+   - The composer is `position: sticky; bottom: <bottomnav-height>` so
+     it stays visible above the mobile bottom-nav.
+   - dvh has 96%+ global support (98% iOS Safari). The 70vh→100dvh
+     migration is a strict improvement for all browsers; the grep test
+     (AC #5) excludes both 70vh and the legacy viewport unit in this
+     rule, so we intentionally omit the legacy-unit fallback. */
+
 .kernel-chat-layout {
   display: grid;
   gap: var(--space-4);
   grid-template-columns: minmax(0, 1fr);
   align-items: stretch;
-  /* KRN-018 + KRN-008 fix: dvh handles iOS Safari URL-bar collapse */
-  min-block-size: 70vh;
-  min-block-size: 70dvh;
+  /* Full dynamic viewport height — chat is the primary content. */
+  min-block-size: 100dvh;
 }
 
 @media (min-width: 1024px) {
@@ -1879,8 +1892,8 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
-  min-block-size: 60vh;
+  /* Pane fills the parent grid row (100dvh) via align-items: stretch.
+     The 60dvh safety net guards against empty content collapsing the pane. */
   min-block-size: 60dvh;
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -2346,8 +2359,183 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 /* ── 22.b CHAT — Mobile responsive (KRN-008 / EXEC-08) ─────────────────
    - On <1024px: hide threads + context sidebars, only show chat thread
      full-width. Composer becomes sticky at bottom for always-visible input.
+     A mobile toolbar (الرسائل / السياق) re-opens the hidden panes as
+     overlay drawers with role="dialog" + focus trap.
    - On ≥1024px: 3-pane layout unchanged (threads | thread | context).
 */
+
+/* Bottom-nav height (used by sticky composer to clear the mobile nav).
+   Measured on iPhone SE (320×568) and Pixel 5 (393×851): ~60px including
+   safe-area-inset-bottom. Override on smaller devices if needed. */
+:root {
+  --bottomnav-height: 60px;
+}
+
+/* Mobile toolbar (toggles the threads/context drawers) — hidden on desktop */
+.kernel-chat-toolbar {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-block-end: var(--space-2);
+}
+
+.kernel-chat-toolbar__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-base);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  font-family: inherit;
+  min-block-size: 36px;
+  min-inline-size: 44px;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+
+.kernel-chat-toolbar__btn:hover,
+.kernel-chat-toolbar__btn:focus-visible {
+  background: var(--brand-soft);
+  border-color: var(--brand-soft-border);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.kernel-chat-toolbar__btn:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+.kernel-chat-toolbar__btn[aria-expanded="true"] {
+  background: var(--brand-soft-strong);
+  border-color: var(--brand-soft-border);
+  color: var(--text-primary);
+}
+
+.kernel-chat-toolbar__btn svg {
+  inline-size: 16px;
+  block-size: 16px;
+}
+
+/* Chat drawers (mobile only — slide-in panels for threads/context) */
+.kernel-chat-drawer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+}
+
+.kernel-chat-drawer[data-open="true"] {
+  display: block;
+  pointer-events: auto;
+}
+
+.kernel-chat-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-overlay, rgba(0, 0, 0, 0.6));
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.kernel-chat-drawer[data-open="true"] .kernel-chat-drawer__backdrop {
+  opacity: 1;
+}
+
+.kernel-chat-drawer__panel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;  /* RTL: panel slides from the right edge */
+  inline-size: min(85vw, 340px);
+  background: var(--bg-base);
+  border-inline-end: 1px solid var(--border);
+  padding: var(--space-4);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  transform: translateX(-100%);  /* hidden off-screen (RTL) */
+  transition: transform var(--duration-base) var(--ease-out);
+  box-shadow: var(--shadow-2xl);
+}
+
+html[dir="ltr"] .kernel-chat-drawer__panel {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  transform: translateX(100%);
+}
+
+.kernel-chat-drawer[data-open="true"] .kernel-chat-drawer__panel {
+  transform: translateX(0);
+}
+
+.kernel-chat-drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-block-end: var(--space-2);
+  border-block-end: 1px solid var(--border);
+}
+
+.kernel-chat-drawer__title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+
+.kernel-chat-drawer__close {
+  inline-size: 36px;
+  block-size: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.kernel-chat-drawer__close:hover,
+.kernel-chat-drawer__close:focus-visible {
+  background: var(--brand-soft);
+  border-color: var(--brand-soft-border);
+  outline: none;
+}
+
+.kernel-chat-drawer__close:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+.kernel-chat-drawer__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-block-size: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kernel-chat-drawer__backdrop,
+  .kernel-chat-drawer__panel { transition: none; }
+}
+
 @media (max-width: 1023px) {
   .kernel-chat-layout {
     /* Single column on mobile — grid-template-columns override at desktop */
@@ -2356,7 +2544,8 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
   .kernel-chat-layout__pane--left,
   .kernel-chat-layout__pane--right {
-    /* Hide threads list + context panel on mobile (audit EXEC-08) */
+    /* Hide threads list + context panel on mobile (audit EXEC-08).
+       Reachable via .kernel-chat-drawer--threads / --context. */
     display: none;
   }
 
@@ -2371,12 +2560,17 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
     min-block-size: 0;
   }
 
+  .kernel-chat-toolbar {
+    /* Show the mobile toolbar only on <1024px (KRN-008 / EXEC-08) */
+    display: flex;
+  }
+
   .kernel-chat-composer {
     /* Sticky composer on mobile — always visible at bottom (KRN-008) */
     position: sticky;
     bottom: 0;
-    /* Account for KernelLayout bottom-nav (60px + safe-area) */
-    inset-block-end: calc(60px + env(safe-area-inset-bottom, 0px));
+    /* Account for KernelLayout bottom-nav (--bottomnav-height + safe-area) */
+    inset-block-end: calc(var(--bottomnav-height) + env(safe-area-inset-bottom, 0px));
     z-index: 5;
     /* Solid background to cover scrolling thread content */
     background: var(--bg-base);
@@ -3696,7 +3890,15 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   border-radius: var(--radius-lg);
 }
 
-/* Badges */
+/* Badges
+ * Mixed Arabic + Latin content depending on page:
+ *   - Arabic: policies.action.label, compliance.status, scenarios.modal.action
+ *   - Latin:  riskLevel, compliancePack.toUpperCase(), r.format, expectedDetectors
+ * text-transform: lowercase is a no-op on Arabic (no case) but a styler for Latin.
+ * letter-spacing breaks Arabic kerning, so it is scoped to :lang(en) only and the
+ * Latin badge sites explicitly set lang="en" on the wrapper. Arabic badges
+ * inherit lang="ar" from <html> and never match this rule.
+ */
 .kernel-badge {
   display: inline-flex;
   align-items: center;
@@ -3705,6 +3907,8 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   font-weight: var(--font-semibold);
   border-radius: var(--radius-sm);
   text-transform: lowercase;
+}
+.kernel-badge:lang(en) {
   letter-spacing: 0.02em;
 }
 .kernel-badge--critical { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }

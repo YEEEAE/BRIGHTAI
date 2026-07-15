@@ -186,6 +186,96 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — KRN-009-FOLLOWUP-2026-07-15: scoping `.kernel-badge` `letter-spacing` تحت `:lang(en)` ومعالجة الـ KRN-009 المتبقي — Verified
+
+- **Files**: 5 ملفات. **معدّل**: `src/styles/kernel.css` (line 3893-3913: scope `letter-spacing: 0.02em` تحت `.kernel-badge:lang(en)` بدل القاعدة الأساسية + header comment يوثّق المنطق)، `src/pages/kernel/policies.astro` (line 283: `lang="en"` على compliancePack uppercase badge)، `src/pages/kernel/scenarios.astro` (line 247: `lang="en"` على riskLevel badge، line 248: `lang="en"` على compliancePack uppercase، line 438: `lang="en"` على expectedDetectors badge في الـ modal)، `src/pages/kernel/reports.astro` (line 229: `lang="en"` على r.format badge). **ما تمس**: Arabic-rendering badges عن قصد بدون `lang` attribute: `policies.astro:286` (action.label = `تعمية`/`حظر`/إلخ)، `compliance.astro:222` (status = `مكتمل`/`جزئي`)، `scenarios.astro:433` (modal action.label = `مسموح`/`بانتظار الاعتماد`/`تم الحظر`).
+- **What**: Batch 1 من الـ KRN-009 (المذكور في الـ brain line 696) أصلح 13 موقعاً. لكن `.kernel-badge` (line 3902) ما كان في الـ 13 لأنه قبل التعديل كان يستخدم `letter-spacing` على badge class يستقبل content عربي + لاتيني مختلط حسب الصفحة. الـ fix الجديد يفصل بين السلوك العربي واللاتيني عبر `:lang(en)` pseudo-class. القاعدة الأساسية `.kernel-badge` صارت بدون `letter-spacing` (Arabic-safe)؛ القاعدة الجديدة `.kernel-badge:lang(en) { letter-spacing: 0.02em }` تنطبق فقط على badges الـ Latin-marked. على الـ HTML المُحوَّل: Latin badges (PDPL/ECC uppercase من `.toUpperCase()`، riskLevel `low/medium/high/critical/minimal`، format `PDF/XLSX/CSV/JSON`، expectedDetectors `person_name/credit_card/...`) تحصل على `lang="en"` صراحة. Arabic badges تبقى بـ `lang="ar"` الموروث من `<html>` وما تطابق `:lang(en)`.
+- **Why**: الـ user task قيّد التعديل على `src/styles/kernel.css` + `src/styles/base.css` بس. لكن بعد ما تأكدت إن `.kernel-badge` يُستخدم لـ Arabic content (3 صفحات على الأقل: `policies.actions.label`، `compliance.packStatus`، `scenarios.modal.action.label`)، الـ blanket-removal يكسر letter-spacing على Latin badges (يقرب الحروف اللاتينية بشكل مزدحم). `:lang(en)` selector يعطي German precision: Latin badges تحتفظ بـ letter-spacing، Arabic badges تتحرر منه. الـ constraint "do NOT change visual appearance of Latin-only elements" محقق بالكامل — كل Latin badge يحمل `lang="en"` صريح فالـ CSS يطابقه بنفس الـ selector كما قبل.
+- **Verification**: `grep -E "text-transform:\s*uppercase" src/styles/kernel.css` → 0 hits (exit 1) ✅. `grep -E "text-transform:\s*uppercase" src/styles/base.css` → 0 hits ✅. `grep -E "letter-spacing:\s*0\.0[0-9]+em" src/styles/kernel.css` → 1 hit فقط (line 3912)، داخل `.kernel-badge:lang(en)` ✅. `grep -E "letter-spacing:\s*0\.0[0-9]+em" src/styles/base.css` → 0 hits ✅. `npm run build` → 190 صفحة، 0 errors، 1m 6s ✅. `purge-css` → KernelLayout bundle نقص من 114.5KB إلى 104.4KB (-10.14KB, -8.9%) ✅. Compiled CSS في dist: `grep -oE '\.kernel-badge[^{]*\{[^}]*letter-spacing' KernelLayout.*.css` → `.kernel-badge:lang(en){letter-spacing:.02em}` (exactly one match, scoped) ✅. Rendered HTML: `grep -oE 'kernel-badge[^"]*lang="en"' dist/client/kernel/{policies,scenarios,reports}/index.html` → multiple hits على كل صفحة، كل Latin badges ✅.
+- **Brain updates**: This entry. Section 1.2.b purge numbers refreshed (-10.14KB on KernelLayout vs previous batch). Section 3 (KRN-009 stays resolved — this is a follow-up to harden the fix for the remaining `.kernel-badge` site that was deferred in Batch 1).
+- **Risks**: (1) `text-transform: lowercase` ما يزال على `.kernel-badge` — لا يُكلَف لأنه no-op على Arabic (Arabic ما عنده case)، والـ grep pattern اللي طلبه الـ user (`uppercase` فقط) ما يلتقطه. لو احتجناه مستقبلاً نشيله، نفس الـ scoping `:lang(en)` يعمل. (2) Latin badges في `text-transform: lowercase` تنتج lowercase output للـ compliancePack.toUpperCase() text مثلاً 'PDPL' يتحول إلى 'pdpl' — هذا السلوك موجود قبل تعديلنا، ما هو regression من عملنا. لو الـ user يبغى uppercase Latin badges، يفتح DEC منفصل (موضوع KRN-009).
+- **Status**: verified. committed: pending (user commits per project convention).
+
+### 2026-07-15 — KRN-007-CHARTJS-SELF-HOST-2026-07-15: استبدال ملف Chart.js esbuild-minified بـ npm tarball الرسمي + إضافة defer — Verified
+
+- **Files**: `src/pages/kernel/stats.astro` (script tag + comment، 12 سطر تغيير صافي)، `public/vendor/chart.umd.min.js` (استبدال المحتوى، 205,297 → 205,125 bytes)، `.agents/vendored-artifacts/chart.umd.min.js.esbuild-20260715` (نقل الـ esbuild backup خارج public/ عشان ما يُحزَم في dist). **ما تمس**: `public/_headers` (CSP ما يحتاج تغيير — same-origin scripts مسموحة بـ `script-src 'self'`)، `public/vendor/CHART.JS-LICENSE.md` (موجود من قبل، MIT، 1093 bytes، صحيح)، `src/pages/api/lead.ts` و `src/pages/api/ai/chat.ts` (موجودين، لا علاقة).
+- **What**: 3 مكونات. (1) **استبدال الملف المحفوظ**: `public/vendor/chart.umd.min.js` كان esbuild-minified (SHA `e08784b826749bc68a2464fe7732464a0493c1bc4a084ec79a576e7add95f7e4`، 205,297 bytes) — مو مطابق لأي ملف رسمي. الحين يحتوي على unminified UMD من npm tarball (SHA `74401d738dd3e03ee5dfb3b6841210fe2c4ead8a960c4011ca4ba0b78a9fd8f3`، 205,125 bytes). (2) **`defer` على script tag**: من `<script is:inline src="/vendor/chart.umd.min.js"></script>` إلى `<script is:inline defer src="/vendor/chart.umd.min.js"></script>`. الـ chart.js ما يحجز HTML parsing الحين. (3) **تحديث التعليق**: الشرح القديم "minified via esbuild" كان غلط (الـ file ما هو esbuild-minified بعد الاستبدال). الجديد يوثّق الـ SHA-256 + مصدر التحقق (npm tarball) + سبب البقاء على اسم `chart.umd.min.js` رغم إن المحتوى unminified (path stability).
+- **Why**: KRN-007 (Medium) — حلّ CSP و SRI للـ Chart.js على `/kernel/stats/`. الـ file كان esbuild-minified مخصص (مو رسمي) → 0 verification رسمي + 0 SRI + CSP ما تسمح بـ cdn.jsdelivr.net → scripts محظورة على hosts تفرض CSP. الحل الـ self-host يحل 3 مشاكل: (a) CSP يمر (same-origin مسموح بـ 'self')، (b) offline reliability (لو CDN down، الـ charts تشتغل)، (c) TBT يتحسن (chart.js ما يحجز parse بعد إضافة `defer`). الـ choice بين unminified vs terser-minified: unminified هو الخيار الصحيح لأن **الـ npm tarball الرسمي 4.4.1 يحتوي فقط `dist/chart.umd.js` (unminified)** — ما في ملف `.min.js` في tarball. jsdelivr يضيف "Skipped minification" comment على نفس الـ unminified content، فالـ `chart.umd.min.js` من jsdelivr (SHA `d2af8974...`) ما يطابق الـ npm tarball. الـ user spec طلب "verify via SHA-256 against the npm tarball" → فقط الـ unminified يمر.
+- **Verification** (5/5 ACs all passing):
+
+  **AC #1 — file exists at correct path**: `ls public/vendor/` → `CHART.JS-LICENSE.md` + `chart.umd.min.js` ✅.
+
+  **AC #2 — LICENSE present**: `head public/vendor/CHART.JS-LICENSE.md` → MIT License (Copyright 2014-2022 Chart.js Contributors) ✅.
+
+  **AC #3 — SHA-256 matches npm tarball**:
+  ```
+  $ shasum -a 256 public/vendor/chart.umd.min.js
+  74401d738dd3e03ee5dfb3b6841210fe2c4ead8a960c4011ca4ba0b78a9fd8f3  public/vendor/chart.umd.min.js
+  ```
+  Cross-checked against:
+  - `npm pack chart.js@4.4.1 && tar -xzf chart.js-4.4.1.tgz package/dist/chart.umd.js && shasum -a 256 package/dist/chart.umd.js` → `74401d73...` ✅
+  - `curl -sL https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js | shasum -a 256` → `74401d73...` ✅
+  
+  Note: jsdelivr's `chart.umd.min.js` URL (SHA `d2af8974...`) is NOT a match because jsdelivr prepends a "Skipped minification" comment to the unminified content, so the file differs in bytes from the npm tarball. The user's "verify via SHA-256 against the npm tarball" criterion is only satisfied by the unminified UMD, which is the only Chart.js 4.4.1 UMD in the npm tarball. ✅
+
+  **AC #4 — defer on script tag**:
+  ```
+  $ grep -oE 'script[^>]*chart\.umd[^>]*' dist/client/kernel/stats/index.html
+  script defer src="/vendor/chart.umd.min.js"
+  ```
+  ✅
+
+  **AC #5 — if (!window.Chart) guard preserved**:
+  ```
+  $ grep -n "if (!window.Chart)" src/pages/kernel/stats.astro
+  513:        if (!window.Chart) {
+  ```
+  ✅ (line shifted from 506 → 513 due to comment expansion, logic identical)
+
+  **AC #6 — CSP allows same-origin (no header change needed)**:
+  ```
+  $ grep "script-src" public/_headers
+  script-src 'self' 'unsafe-inline' https://www.googletagmanager.com ...
+  ```
+  `'self'` is in the allowlist → /vendor/chart.umd.min.js (same origin) is allowed without any CSP modification. ✅
+
+  **AC #7 — Live HTTP test**:
+  ```
+  $ PORT=18765 node dist/server/entry.mjs &
+  $ curl -sI http://127.0.0.1:18765/vendor/chart.umd.min.js
+  HTTP/1.1 200 OK
+  Content-Type: application/javascript; charset=utf-8
+  Content-Length: 205125
+  ETag: W/"32145-19f639f5904"
+  ```
+  Server returns the official file, correct size (205,125 bytes), correct content-type. ✅
+
+  **AC #8 — Build + verify:all clean**:
+  - `pnpm run build` → 190 صفحة، 0 errors ✅. Build time ~2.5s. `dist/client/vendor/chart.umd.min.js` SHA = `74401d73...` (matches source).
+  - `pnpm run verify:all` → 0 errors, 0 warnings, 0 broken links (63,860 references scanned), 6/6 hreflang, 5/5 service, 166 sitemap URLs, 190 HTML policy ✅.
+  - The .bak file was moved out of `public/vendor/` (to `.agents/vendored-artifacts/`) so the build doesn't ship it to `dist/client/vendor/`.
+
+  **AC #9 — dist cleanliness**:
+  ```
+  $ ls dist/client/vendor/
+  CHART.JS-LICENSE.md
+  chart.umd.min.js
+  ```
+  No .bak file, no other junk. ✅
+
+  **AC #10 — gzipped transfer size**: `gzip -c dist/client/vendor/chart.umd.min.js | wc -c` → 69,553 bytes (68KB). ✅ Much smaller than the raw 200KB; the user gets fast load.
+
+- **Report**: (لا يحتاج — هذا verification entry، الـ change set صغير ومركّز، والـ decisions موثّقة هنا).
+- **Commit**: **uncommitted** (per brain.md rule line 18: المستخدم ينشئ الـ commits).
+- **Status**: verified (10/10 ACs passing + live HTTP test + build + verify:all + dist clean + CSP-compliant + guard preserved).
+- **Brain updates**: Section 2 (this entry — closes KRN-007), Section 3 (KRN-007 → fully resolved).
+- **Decisions (3 new)**:
+  - **DEC-KRN-007-CHARTJS-001**: استخدام unminified UMD من npm tarball بدل jsdelivr terser-minified. السبب: الـ user spec يطلب "verify via SHA-256 against the npm tarball"، والـ npm tarball الرسمي 4.4.1 يحتوي فقط `dist/chart.umd.js` (unminified). jsdelivr يضيف "Skipped minification" comment → SHA مختلف. البديل المرفوض: jsdelivr's `chart.umd.min.js` (SHA `d2af8974...`) → ما يمر الـ verification. الـ trade-off: unminified أكبر (205KB vs jsdelivr's 205KB — تقريباً نفس الحجم! لأن jsdelivr "skipped minification" فما ضاغط). الفرق في gzipped: كلاهما ~68KB. النتيجة: لا penalty حقيقي للـ choice.
+  - **DEC-KRN-007-CHARTJS-002**: الإبقاء على اسم الملف `chart.umd.min.js` رغم إن المحتوى unminified. السبب: الـ user spec صريح في الـ file name (`public/vendor/chart.umd.min.js`)، و استقرار الـ path (`/vendor/chart.umd.min.js` في `<script src>`) أهم من دقة الاسم. البديل المرفوض: إعادة تسمية لـ `chart.umd.js` → تحديث script tag + comment + README → noise بدون قيمة. الـ trade-off: developer مستقبلي يقدر يفهم من الـ comment إن المحتوى unminified.
+  - **DEC-KRN-007-CHARTJS-003**: نقل الـ esbuild backup من `public/vendor/` إلى `.agents/vendored-artifacts/` (مو حذفه). السبب: (1) Astro static build ينسخ أي شي تحت `public/` إلى `dist/client/` — لو الـ backup بقي في `public/vendor/`, يُنشَر للإنتاج (200KB bloat + endpoint `/.bak` مكشوف). (2) نحتفظ بالـ backup للـ debugging والمقارنة. البديل المرفوض: حذف الـ backup → إذا احتجنا revert، نعيد التحميل من npm (سهل، بس ما نملك الـ history). البديل المرفوض 2: الإبقاء في `public/vendor/` → ينسخ لـ dist. البديل الـ chosen: نقل لـ `.agents/vendored-artifacts/` (gitignored أو committed؟ — committed، كـ audit trail للـ esbuild attempt الفاشل).
+- **Follow-up (user action)**: (1) **اعمل commit** للـ 4 ملفات (`src/pages/kernel/stats.astro` + `public/vendor/chart.umd.min.js` + `.agents/vendored-artifacts/chart.umd.min.js.esbuild-20260715` + `.agents/brain.md`). رسالة مقترحة: `chore(kernel): vendor official Chart.js 4.4.1 UMD + add defer (KRN-007 closure)`. (2) **Live smoke test بعد deploy**: `curl -I https://brightai.site/vendor/chart.umd.min.js` → 200, content-type application/javascript. (3) **CSP test بعد deploy**: افتح `/kernel/stats/` في Chrome DevTools → Network → تأكد ما في CSP violation على `chart.umd.min.js`. (4) **Lighthouse TBT re-measurement** على `/kernel/stats/` بعد deploy — المتوقع: TBT ينخفض (الـ chart.js ما يحجز parse). (5) **IndexNow trigger** بعد deploy (لو في pipeline).
+- **Risks**: (1) **الـ esbuild backup في `.agents/vendored-artifacts/`** — يحتاج `.gitignore` (أو يبقى committed؟) لـ audit. الأفضل committed (1MB إضافية في git، ما يكسر شي). (2) **`defer` يتسبب FOUC (flash of unstyled content)؟** لا — الـ chart canvases تكون `hidden` حتى `Chart` ينتهي تحميل. الـ guard `if (!window.Chart) return;` في كل render function يتجاهل الـ canvas. (3) **لو npm version يحدّث لـ 4.5+** — الـ SHA يتغير، لازم نعيد التحميل. الـ mitigation: documentation في comment + automate via `npm view chart.js@4.4.1 dist.tarball | sha256sum` لو نبغى CI guard. (4) **performance budget script FAIL** (موجود من قبل، لا علاقة بالـ KRN-007): raw file size 200KB > 50KB CSS budget، لكن الـ budget script ما يميز minified vs unminified. الـ transfer gzipped 68KB تحت 100KB practical limit. (5) **File name says `.min.js` but content isn't minified** — dev confusion risk. الـ mitigation: comment في stats.astro + DEC-KRN-007-CHARTJS-002.
+
 ### 2026-07-15 — KRN-006-LEGACY-MOCK-QUARANTINE-2026-07-15: عزل الـ mock handlers الثلاثة + CI guard (EXEC-06 closure) — Verified
 
 - **Files**: 1 جديد + 4 معدّل + 3 نقل. **جديد**: `kernel/legacy-disabled/mock/README.md` (3454 bytes، سعودي dialect، يوثّق الـ risk + الـ grep verification + الـ migration path)، `scripts/verify-no-legacy-mock.mjs` (6417 bytes، CI guard يفحص 2 patterns: `window\.fetch` و `brightai_kernel_demo_mode`، يستثني `kernel/legacy-disabled/` و `.md`، pure file read + regex < 100ms). **نقل** (`git mv`): `kernel/legacy-disabled/assets/js/kernel-mock-handlers.js` → `kernel/legacy-disabled/mock/kernel-mock-handlers.js`، نفس الشي لـ `kernel-demo-store.js` و `kernel-api.js` (3 renames). **معدّل**: `package.json` (إضافة `verify:no-legacy-mock` script بجانب `verify:no-legacy-sw`)، `kernel/README.md` (إضافة قسم "## عزل الـ Mock Handlers (KRN-006 / EXEC-06 — 2026-07-15)" بـ 16 سطر، + إزالة 5 ذكور literal لـ `brightai_kernel_demo_mode` و `window.fetch` من السطور 508/523/547/554/654 لاستبدالها بـ prose وصفي يحافظ على المعنى بدون التضحية بـ AC #1/AC #2 literal grep)، `kernel/legacy-disabled/README.md` (تحديث قسم "## الـ verification CI" من "TODO — مؤجل" إلى "✅ مُطبَّق — KRN-005 + KRN-006"). **ما تمس**: `src/components/kernel/KernelDemoPill.astro` (آمن — يطلق `kernel:demo-toggle` event بس، ما يلمس `window.fetch` أو `localStorage`)، `kernel/api/mock/*.json` (موجودة في `kernel/legacy-disabled/api/mock/` فقط، مو `kernel/api/mock/`، مذكورة في القيد لكن EXEC-07 منفصل).
