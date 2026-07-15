@@ -91,6 +91,8 @@ import { getClientIp } from '../../../lib/ip';
 import { getChatSessionStore, type ChatMessage } from '../../../lib/redis';
 // BAI-005: shared Redis sliding-window rate limiter (unified across Render instances)
 import { rateLimit } from '../../../lib/ratelimit';
+// USAGE-001 (2026-07-15): token usage tracking for billing + analytics.
+import { recordUsageAsync } from '../../../lib/usagetracker';
 
 export const prerender = false;
 
@@ -267,7 +269,7 @@ async function callGroq(
   messages: ChatMessage[],
   systemPrompt: string | undefined,
   signal: AbortSignal,
-): Promise<string> {
+): Promise<{ text: string; usage: { promptTokens: number; completionTokens: number } }> {
   // ARCH-2: read env at runtime, never via import.meta.env (would be inlined)
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey || apiKey === 'your_groq_api_key_placeholder') {
@@ -308,7 +310,17 @@ async function callGroq(
   if (typeof text !== 'string' || !text) {
     throw new Error('groq_empty_response');
   }
-  return text;
+  // USAGE-001: extract usage for billing/analytics.
+  // Groq (OpenAI-compatible) returns prompt_tokens + completion_tokens.
+  // لو الـ usage object غائب (rare)، default إلى 0 مع warning.
+  const usage = data?.usage;
+  const promptTokens = typeof usage?.prompt_tokens === 'number' ? usage.prompt_tokens : 0;
+  const completionTokens = typeof usage?.completion_tokens === 'number' ? usage.completion_tokens : 0;
+  if (!usage) {
+    // eslint-disable-next-line no-console
+    console.warn('[chat] groq response missing usage object — recording 0 tokens');
+  }
+  return { text, usage: { promptTokens, completionTokens } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -318,7 +330,7 @@ async function callGemini(
   messages: ChatMessage[],
   systemPrompt: string | undefined,
   signal: AbortSignal,
-): Promise<string> {
+): Promise<{ text: string; usage: { promptTokens: number; completionTokens: number } }> {
   // ARCH-2: read env at runtime, never via import.meta.env (would be inlined)
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey || apiKey === 'your_openai_api_key_placeholder') {
@@ -360,7 +372,16 @@ async function callGemini(
   if (typeof text !== 'string' || !text) {
     throw new Error('gemini_empty_response');
   }
-  return text;
+  // USAGE-001: extract usage for billing/analytics.
+  // Gemini returns usageMetadata with promptTokenCount + candidatesTokenCount.
+  const meta = data?.usageMetadata;
+  const promptTokens = typeof meta?.promptTokenCount === 'number' ? meta.promptTokenCount : 0;
+  const completionTokens = typeof meta?.candidatesTokenCount === 'number' ? meta.candidatesTokenCount : 0;
+  if (!meta) {
+    // eslint-disable-next-line no-console
+    console.warn('[chat] gemini response missing usageMetadata — recording 0 tokens');
+  }
+  return { text, usage: { promptTokens, completionTokens } };
 }
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -910,32 +931,42 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   let reply = '';
+  let usage: { promptTokens: number; completionTokens: number } = { promptTokens: 0, completionTokens: 0 };
   let usedProvider: 'groq' | 'gemini' | '' = '';
   let lastError = '';
+  const providerStartTs = Date.now();
 
   try {
     if (requestedProvider === 'groq') {
-      reply = await callWithTimeout((signal) =>
+      const result = await callWithTimeout((signal) =>
         callGroq(providerMessages, systemPrompt, signal),
       );
+      reply = result.text;
+      usage = result.usage;
       usedProvider = 'groq';
     } else if (requestedProvider === 'gemini') {
-      reply = await callWithTimeout((signal) =>
+      const result = await callWithTimeout((signal) =>
         callGemini(providerMessages, systemPrompt, signal),
       );
+      reply = result.text;
+      usage = result.usage;
       usedProvider = 'gemini';
     } else {
       // auto: try Groq first, fallback to Gemini (each call gets its own AbortController)
       try {
-        reply = await callWithTimeout((signal) =>
+        const result = await callWithTimeout((signal) =>
           callGroq(providerMessages, systemPrompt, signal),
         );
+        reply = result.text;
+        usage = result.usage;
         usedProvider = 'groq';
       } catch (e) {
         lastError = (e as Error).message;
-        reply = await callWithTimeout((signal) =>
+        const result = await callWithTimeout((signal) =>
           callGemini(providerMessages, systemPrompt, signal),
         );
+        reply = result.text;
+        usage = result.usage;
         usedProvider = 'gemini';
       }
     }
@@ -946,6 +977,24 @@ export const POST: APIRoute = async ({ request }) => {
   if (!usedProvider || !reply) {
     return jsonError(502, 'provider_failed', { detail: lastError || 'empty' });
   }
+
+  // USAGE-001 (2026-07-15): record token usage for billing + analytics.
+  // Fire-and-forget — ما ينتظر DB write (الـ response يخرج فوراً).
+  // الـ marketing site anon → organizationId = null.
+  const model =
+    usedProvider === 'groq'
+      ? process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      : process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+  recordUsageAsync({
+    provider: usedProvider as 'groq' | 'gemini',
+    model,
+    promptTokens: usage.promptTokens,
+    completionTokens: usage.completionTokens,
+    latencyMs: Date.now() - providerStartTs,
+    promptId: typeof body?.promptId === 'string' ? body.promptId : undefined,
+    organizationId: null, // marketing site anon (dashboard passes via Clerk)
+    sessionId: sessionId ?? undefined,
+  });
 
   // 11. CHAT-SESSION-2026-07-15: persist the current turn (user + assistant)
   //     back to the store. Fire-and-forget from the response's perspective

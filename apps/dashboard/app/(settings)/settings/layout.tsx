@@ -19,6 +19,7 @@ const SETTINGS_NAV = [
   { href: '/settings/profile', label: 'الملف الشخصي' },
   { href: '/settings/security', label: 'الأمان' },
   { href: '/settings/billing', label: 'الفوترة', minRole: 'OWNER' as const },
+  { href: '/settings/usage', label: 'استخدام الذكاء الاصطناعي', minRole: 'OWNER' as const }, // USAGE-001 (2026-07-15)
   { href: '/settings/tenant', label: 'إعدادات المنظمة', minRole: 'ADMIN' as const },
   { href: '/settings/features', label: 'إدارة المزايا', minRole: 'OWNER' as const },
 ];

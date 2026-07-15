@@ -166,7 +166,10 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-  <!-- Brand logo preload — webp ~17KB instead of 406KB PNG (REPORTS-20). -->
+  <!-- Brand logo preload — AVIF (11.1KB, -33.7%) + WebP fallback.
+       AVIF-001 (2026-07-15): الـ browser يختار AVIF تلقائياً (95%+ دعم).
+       Fallback لـ Safari < 16: WebP. الـ preload الثاني يضمن تغطية كلا الـ paths. -->
+  <link rel="preload" as="image" href="/logo-192.avif" type="image/avif" fetchpriority="high" />
   <link rel="preload" as="image" href="/logo-192.webp" type="image/webp" fetchpriority="high" />
   <link rel="manifest" href="/manifest.webmanifest" />
 

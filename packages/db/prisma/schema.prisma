@@ -1099,3 +1099,38 @@ model OrgFeatureFlag {
   @@index([organizationId])
   @@map("org_feature_flags")
 }
+
+// ─────────────────────────────────────────────────────────────────────────
+// AI Usage Tracking (USAGE-001 — 2026-07-15)
+//
+// Per-request AI token usage records for:
+//   - Usage-based billing (charge customers per token)
+//   - Cost anomaly alerts (>2x daily average)
+//   - Product analytics (which prompts use which models)
+//
+// Anonymous (marketing site) records have organizationId = null.
+// Authenticated (dashboard) records link via organizationId.
+// ─────────────────────────────────────────────────────────────────
+
+model AiUsageEntry {
+  id               String   @id @default(cuid())
+  organizationId   String?            // nullable for marketing site anon chat
+  userId           String?            // Clerk userId when authenticated
+  sessionId        String?            // chat sessionId for context
+  provider         String             // 'groq' | 'gemini'
+  model            String             // 'llama-3.3-70b-versatile' | 'gemini-2.5-flash'
+  promptTokens     Int
+  completionTokens Int
+  totalTokens      Int
+  latencyMs        Int
+  promptId         String?            // 'compliance' | 'policies' | ...
+  cost             Decimal  @db.Decimal(10, 6)  // USD, computed at insert
+  createdAt        DateTime @default(now())
+
+  organization Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId, createdAt])
+  @@index([provider, createdAt])
+  @@index([createdAt])
+  @@map("ai_usage_entries")
+}

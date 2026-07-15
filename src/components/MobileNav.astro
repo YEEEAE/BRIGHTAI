@@ -25,7 +25,12 @@ function isActive(href: string): boolean {
   <!-- Header: close button -->
   <div class="mobile-menu__header">
     <a href="/" class="mobile-menu__logo" aria-label={isAr ? 'برايت أيه آي — الصفحة الرئيسية' : 'BrightAI Home'}>
-      <img src="/logo-96.webp" alt="" width="32" height="32" class="mobile-menu__logo-img" decoding="async" />
+      {/* AVIF-001 (2026-07-15): <picture> مع AVIF + WebP fallback. */}
+      <picture>
+        <source srcset="/logo-96.avif" type="image/avif" />
+        <source srcset="/logo-96.webp" type="image/webp" />
+        <img src="/logo-96.webp" alt="" width="32" height="32" class="mobile-menu__logo-img" decoding="async" />
+      </picture>
       <span>BrightAI</span>
     </a>
     <button class="mobile-menu__close" aria-label={isAr ? 'إغلاق' : 'Close'} data-mobile-close>

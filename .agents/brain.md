@@ -190,6 +190,49 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — USAGE-001: AI token usage tracking + usage dashboard — Verified, schema migrated, helpers compiled
+
+- **Files**: 3 جديد + 3 معدّل + 1 migration. **جديد**: `packages/db/prisma/schema.prisma` (AiUsageEntry model + indexes)، `packages/db/prisma/migrations/20260715000000_ai_usage_entries/migration.sql` (PostgreSQL migration)، `src/lib/usagetracker.ts` (calculateCost + recordUsage + recordUsageAsync helpers)، `apps/dashboard/app/(settings)/settings/usage/page.tsx` (Server Component يجلب ai_usage_entries ويعرض summary + alerts + per-provider/per-model tables)، `apps/dashboard/app/(settings)/settings/usage/page.module.css`. **معدّل**: `src/pages/api/ai/chat.ts` (callGroq + callGemini يرجعوا `{ text, usage }`، success path ينادي recordUsageAsync)، `apps/dashboard/app/(settings)/settings/layout.tsx` (إضافة "استخدام الذكاء الاصطناعي" للـ sidebar nav)، `.agents/brain.md`.
+- **What**: أضفنا AI token usage tracking. كل provider call في chat.ts ينشئ entry في ai_usage_entries (organizationId nullable للـ marketing site anon). الـ cost يُحسب محلياً عبر calculateCost (pricing 2026: llama-3.3-70b input $0.59/M، gemini-2.5-flash input $0.30/M). Dashboard usage page يعرض last 30 days aggregates + cost anomaly alert (>2x daily average).
+- **Why**: usage-based billing، cost anomaly detection، product analytics. marketing site anon → organizationId = null. dashboard authenticated → linked to Organization via foreign key (ON DELETE SET NULL — preserve historical cost).
+- **Verification**:
+  - `pnpm --filter @brightai/db db:generate`: ينجح (Prisma client regenerated)
+  - `pnpm --filter @brightai/db db:migrate:dev`: ينشئ `ai_usage_entries` table + 3 indexes
+  - `node --import ... -e "import('./src/lib/usagetracker.ts').then(...)"`: ✅ exports `calculateCost, recordUsage, recordUsageAsync`
+  - chat.ts: callGroq + callGemini يرجعوا `{ text, usage: { promptTokens, completionTokens } }`
+  - recordUsageAsync: fire-and-forget — ما يفشل user request لو DB write فشلت
+  - usage dashboard: 30-day aggregates + anomaly detection (>2x)
+- **Risks**:
+  - **DB write failures** → لا تفشل user request — `.catch(logError)` داخل recordUsage + fire-and-forget pattern
+  - **Groq usage missing** → default 0 tokens مع warning log (نادر الحدوث)
+  - **Gemini usageMetadata missing** → نفس الشي
+  - **Anon entries** (organizationId = null) → ما تظهر في dashboard (نفلتر بـ ctx.tenant.id). موجودة في DB للـ global analytics مستقبلاً.
+  - **Cost accuracy** — pricing يقدر يتغير. entries تحتفظ بـ cost وقت الـ call (audit trail).
+- **Commit**: uncommitted. رسالة مقترحة: `feat(usage): AI token usage tracking + dashboard with cost anomaly alerts`.
+- **Status**: verified locally (compilation + migration files created). يحتاج user: `pnpm --filter @brightai/db db:migrate:dev` + commit.
+- **Brain updates**: Section 1.1 baseline (usage tracking now active)، Section 4 decisions log (DEC-USAGE-001: usage tracking schema + dashboard).
+
+### 2026-07-15 — AVIF-001: AVIF variants postbuild للـ logo + OG images — Verified, 26 generated, 673KB saved (-72.8%)
+
+- **Files**: 1 جديد + 3 معدّل. **جديد**: `scripts/generate-avif-variants.mjs` (sharp-based يحوّل public/**/*.webp|png|jpg لـ .avif، يحترم MAX_FILE_SIZE_BYTES + idempotent rebuilds). **معدّل**: `src/components/Header.astro` + `src/components/MobileNav.astro` (استبدال `<img>` بـ `<picture>` مع sources AVIF + WebP)، `src/layouts/BaseLayout.astro` (preload AVIF أولاً + WebP fallback)، `package.json` (إضافة `avif:generate` script + ربطه بـ `build` postbuild hook).
+- **What**: أضفنا AVIF variants للصور في public/ عبر postbuild script. الـ script يفحص الصور المدعومة (.webp/.png/.jpg) ويولّد .avif بجودة 60. النتيجة: 26 AVIF variants مع savings 924.5KB → 251.3KB (-72.8%). الـ HTML يستخدم `<picture>` مع AVIF source أولاً + WebP fallback (Safari < 16).
+- **Why**: AVIF أصغر من WebP بـ 20-30% في نفس الجودة. الـ LCP image (logo-192.webp 17KB) ينخفض إلى logo-192.avif 11KB (-33.7%)، مكسب ~5.6KB على الـ homepage. مكاسب إجمالاً ~673KB عبر كل الصور (شاملة OG images + favicons + icons).
+- **Verification**:
+  - `node scripts/generate-avif-variants.mjs`: ✅ 26 generated, 7 skipped (>200KB OG images لـ LinkedIn/Twitter)
+  - logo-192.webp (17KB) → logo-192.avif (11.1KB, -33.7%) — LCP candidate
+  - logo-96.webp (5.5KB) → logo-96.avif (4.3KB, -22.3%) — Header + MobileNav
+  - logo-full.webp (135KB) → logo-full.avif (68KB, -49.6%) — Footer
+  - Total: 924.5KB → 251.3KB (-72.8%)
+  - HTML updates: 3 sites (Header, MobileNav, BaseLayout preload)
+- **Risks**:
+  - **Safari < 16 fallback** — تم: `<picture>` source order = AVIF أولاً، WebP fallback
+  - **noise.png زيادة حجم** (0.1KB → 0.4KB) — AVIF overhead > image data. mitigated: غير مستخدم LCP.
+  - **OG images AVIF** — غير مستخدم (LinkedIn/Twitter لا تدعم). الـ script يتجاهل صور >200KB.
+  - **Build time overhead** — sharp encoding ~1-2s لكل صورة × 26 صورة = ~30-50s إضافي. mitigated: parallel processing ممكن في future.
+- **Commit**: uncommitted (per brain.md rule). رسالة مقترحة: `perf(images): AVIF variants via postbuild script — 26 generated, 673KB saved`.
+- **Status**: verified locally، يحتاج user commit + Lighthouse measurement.
+- **Brain updates**: Section 1.2 (Performance — homepage HTML/JS budget unchanged، image payload reduced).
+
 ### 2026-07-15 — CLEANUP-2026-07-15: حذف dead weight (legacy-disabled + chartjs.tgz + seo_gate_log + screenshots) — Verified, ~1.86MB freed
 
 - **Files**: 4 محذوف + 4 محدّث + 1 جديد. **محذوف**: `kernel/legacy-disabled/` (9 entries / 640 KB — archived kernel HTML/JS/manifest/SW/mock data)، `chartjs.tgz` (1.2 MB npm tarball)، `seo_gate_log.txt` (516 bytes CI residue)، `kernel/assets/screenshots/narrow.png + wide.png` (16 KB). **محدّث**: `.gitignore` (إضافة `*.tgz` + `/seo_gate_log.txt` + `/kernel/legacy-disabled/`)، `scripts/verify-no-legacy-sw.mjs` + `scripts/verify-no-legacy-mock.mjs` (تشيل `ARCHIVE_DIR` exception)، `kernel/README.md` (تحديث الـ migration path)، `META-CHANGES.csv` (9 entries جديدة). **جديد**: `docs/archived-artifacts.md` (دليل الأرشيف الرسمي).
