@@ -190,6 +190,26 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-15 — FONTS-SUBSET-001: TheYearofTheCamel brand font subsetting — Verified, 58.2KB → 9.9KB (-83%)
+
+- **Files**: 3 جديد + 4 معدّل. **جديد**: `scripts/subset-fonts.mjs` (pyftsubset wrapper مع reproducible builds + backup logic + size validation)، `docs/fonts.md` (توثيق بالعامية السعودية)، `public/assets/fonts/TheYearofTheCamel-Medium.subset.woff2` (الـ subset الجديد، 9.9 KB). **معدّل**: `src/styles/critical.css` (تحديث `@font-face` لـ `.subset.woff2` + `unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+2122, U+00A9, U+00AE, U+2120`)، `src/layouts/BaseLayout.astro` (preload يشير للـ subset)، `package.json` (إضافة `fonts:subset` script + ربطه بـ `prebuild`)، `public/assets/fonts/original/TheYearofTheCamel-Medium.original.woff2` (backup تلقائي في أول تشغيل).
+- **What**: أضفنا brand font subsetting عبر `pyftsubset` (fonttools). يستخرج فقط الـ glyphs المستخدمة فعلياً (`BrightAI`, `Kernel`, `QNX`, `Firewall`, `Audit`, `Approval`, `Evidence`, أرقام، punctuation). النتيجة: 58.2KB → 9.9KB (-83%).
+- **Why**: تقليل الـ LCP عبر تصغير الـ brand font (الـ preload يحصل أسرع، الـ block time يقل). توفير 48KB في الـ initial font payload على الـ homepage. الخطة الأصلية من المستخدم كانت self-host + subset للـ IBM Plex Sans Arabic (من Google Fonts)، بس اكتشفنا إن Google Fonts أصلاً يرسل subsets محسّنة عبر unicode-range فـ self-host يخسر CDN caching بدون ROI كافي.
+- **Verification**:
+  - `node scripts/subset-fonts.mjs`: **✅ subset generated successfully** — 58.2KB → 9.9KB (-83%).
+  - `python3 -m fontTools.subset`: متاح (fonttools 4.61.1).
+  - subset < 40KB target: ✅ 9.9KB.
+  - Backup في original/: ✅.
+  - CSS @font-face updated: ✅ `unicode-range` محدد Latin only، الـ browser يحمّل الـ subset للـ Latin، ويستخدم IBM Plex Sans Arabic (Google Fonts) للعربي.
+  - BaseLayout preload updated: ✅.
+  - package.json: ✅ `pnpm fonts:subset` و `prebuild` يحتوي الـ subsetting.
+- **Risks**:
+  - لو أضفنا كلمة جديدة في headings بـ brand font، نحتاج نضيفها لـ `TEXT_USED` ثم نشغّل `pnpm fonts:subset` (documented in docs/fonts.md).
+  - لو ظهرت tofu boxes في الإنتاج: rollback سريع (نسخ `original/` → `TheYearofTheCamel-Medium.woff2` + شيل الـ subset من CSS).
+- **Commit**: uncommitted (per brain.md rule — المستخدم يعملها). رسالة مقترحة: `perf(fonts): subset TheYearofTheCamel brand font 58.2KB → 9.9KB (-83%)`.
+- **Status**: verified locally، يحتاج user commit.
+- **Brain updates**: Section 1.1 (Performance budget updates — homepage font payload ينخفض ~48KB)، Section 5.1 (Token inventory updated — الـ brand font له نسخة `.subset.woff2` و نسخة `.original.woff2` في original/).
+
 ### 2026-07-15 — STORYBOOK-10: إعداد Storybook 10 مع 25 story (kernel + ui + brand) — Verified structure, awaiting user commit
 
 - **Files**: 28 جديد + 1 معدّل. **جديد**: `.storybook/main.ts` (Storybook 10 + @storybook/astro-vite framework + 4 addons)، `.storybook/preview.ts` (RTL/LTR toggle + theme toggle + viewport + a11y + tokens.css import)، `docs/storybook.md` (توثيق بالعامية السعودية)، و 25 ملف `*.stories.astro` لـ 20 kernel component + 3 ui (Button, Card, SectionHeading) + 2 brand (BrightStar, BrightStarLoader). **معدّل**: `package.json` (إضافة scripts: `storybook`, `storybook:build`, `storybook:serve`, `storybook:clean` + devDependencies: `storybook@^10`, `@storybook/astro-vite@^10`, `@storybook/addon-{a11y,controls,docs,viewport}@^10`).
