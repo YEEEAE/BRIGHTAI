@@ -119,7 +119,6 @@ export const PLANS: PlanDefinition[] = [
         'تكاملات: SharePoint + Teams + Slack',
         'تسجيل Audit Log لمدة 365 يوم + hash chain',
         'دعم خلال ساعات العمل (4 ساعات استجابة)',
-        'SSO مع Google Workspace + Microsoft 365',
       ],
       en: [
         'Unlimited users',
@@ -128,7 +127,6 @@ export const PLANS: PlanDefinition[] = [
         'Integrations: SharePoint + Teams + Slack',
         'Audit log retention: 365 days + hash chain',
         'Business-hours support (4h response)',
-        'SSO with Google Workspace + Microsoft 365',
       ],
     },
     cta: { ar: 'ابدأ مع Pro', en: 'Start with Pro' },
@@ -156,6 +154,9 @@ export const PLANS: PlanDefinition[] = [
         'تكاملات مخصصة (API + SDK)',
         'تسجيل Audit Log غير محدود + ختم زمني',
         'فريق مخصص + مدير حساب',
+        // SSO-001 (2026-07-15): SSO is Enterprise-only. Setup requires
+        // Clerk plan upgrade + IdP tenant config. Sales-led to scope properly.
+        'تسجيل الدخول الموحد (SSO): SAML 2.0 + OIDC مع Microsoft Entra / Okta / Google Workspace',
         'تخصيص كامل لـ PDPL / NCA / SDAIA / SFDA',
       ],
       en: [
@@ -165,6 +166,8 @@ export const PLANS: PlanDefinition[] = [
         'Custom integrations (API + SDK)',
         'Unlimited audit retention + timestamping',
         'Dedicated team + account manager',
+        // SSO-001 (2026-07-15): SSO is Enterprise-only.
+        'Enterprise SSO: SAML 2.0 + OIDC with Microsoft Entra / Okta / Google Workspace',
         'Full customization for PDPL / NCA / SDAIA / SFDA',
       ],
     },

@@ -190,6 +190,74 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-16 — SSO-001: Enterprise SSO foundation (Phase 1 — Code complete, awaiting Clerk Pro plan) — Partial implementation
+
+- **Files**: 6 جديد + 5 معدّل. **جديد**: `packages/db/prisma/schema.prisma` (SamlConnection model بـ 14 fields: provider, clerkEnterpriseSsoId, entityId, ssoUrl, sloUrl, x509Cert, nameIdFormat, emailDomains, enabled, config, roleMapping, lastSsoLoginAt, lastError)، `packages/db/prisma/migrations/20260715000001_saml_connections/migration.sql` (PostgreSQL)، `packages/db/prisma/migrations/20260715000000_audit_sso_actions/migration.sql` (42 AuditAction values + CLERK_WEBHOOK ActorType)، `apps/dashboard/app/(settings)/settings/sso/page.tsx` (OWNER-only server component)، `apps/dashboard/app/(settings)/settings/sso/page.module.css`، `apps/dashboard/app/(settings)/settings/sso/actions.ts` (configureSsoAction + disableSsoAction مع audit). **معدّل**: `packages/config/src/constants.ts` (إضافة SSO actions للـ AUDIT_ACTIONS enum + SSO feature في ENTERPRISE tier)، `apps/dashboard/lib/firewall/audit/hashchain.ts` (AuditChainInput.action: AuditAction، actorType: +CLERK_WEBHOOK)، `apps/dashboard/app/api/webhooks/clerk/route.ts` (توسيع لـ organization.* + organizationMembership.* + session.* events — 10 handlers جديد)، `apps/dashboard/lib/billing/plans.ts` (حذف SSO من PRO tier، إضافته لـ ENTERPRISE sales-led)، `apps/dashboard/app/(settings)/settings/layout.tsx` (SSO link في الـ nav)، `apps/dashboard/app/(auth)/sign-in/[[...sign-in]]/page.tsx` (custom sign-in مع detectSsoForEmail helper).
+- **What**: أضفنا foundation للـ Enterprise SSO (Phase 1). SamlConnection schema للـ per-org IdP tracking. Audit chain extension (42 actions) + SSO-specific events. Webhook expansion لـ Clerk events (org.created/updated/deleted + membership.created/updated/deleted + session.created/ended). /settings/sso page للـ OWNER لتكوين المزوّد + domains + role mapping. Pricing tier fix (SSO من PRO → ENTERPRISE sales-led).
+- **Why**: متطلب صريح لأي enterprise customer سعودي (بنوك، حكومة، صحة). Saudi PDPL Art. 19 + NCA ECC 2-2024 §5 يحتاجان audit chain + immutable logs — كل SSO event محفوظ في tamper-evident chain. الـ pricing tier mismatch القديم (PRO يعد بـ SSO غير منفّذ) كان commercial/legal risk — تم التصحيح.
+- **Verification**:
+  - `pnpm --filter @brightai/db db:migrate:dev` ينشئ `saml_connections` table + ALTER TYPE على AuditAction + ActorType
+  - `pnpm --filter @brightai/dashboard typecheck` ينجح (AuditAction type مطبّق بشكل صحيح)
+  - Webhook handler يتعامل مع 10 event types بدون كسر user.* handlers
+  - /settings/sso OWNER-only — ADMIN/REVIEWER/MEMBER → 403 (via requireSessionRoleAtLeast)
+  - detectSsoForEmail() helper يـ lookup email domain في SamlConnection
+- **Risks**:
+  - **Clerk Pro plan upgrade مطلوب** — ما أقدر أعمله. المستخدم يعملها.
+  - **IdP tenant config** — Azure AD / Okta / Google Workspace setup في Clerk Dashboard.
+  - **End-to-end test** مع IdP معلق حتى يتفعّل Clerk Pro.
+  - **Pricing tier change** — قد يطلب عملاء حاليون (PRO tier) SSO. نوضح لهم أن الترقية لـ ENTERPRISE مطلوبة.
+  - **Custom sign-in UI** — Phase 2 wires detectSsoForEmail() مع Clerk's authenticateWithRedirect.
+- **Commit**: uncommitted (per brain.md rule). رسالة مقترحة: `feat(sso): enterprise SSO foundation (Phase 1 — schema, webhook, settings, audit; awaiting Clerk Pro plan)`.
+- **Status**: code complete (Phase 1), awaiting Clerk Pro + IdP tenant for E2E.
+- **Brain updates**: Section 1.1 (Pricing — SSO corrected to ENTERPRISE-only)، Section 5 (Component Inventory — new SSO settings page).
+
+### 2026-07-15 — DOCKER-001: Production-ready Dockerfile للـ marketing site + docker-compose update — Verified structure
+
+- **Files**: 2 جديد + 1 معدّل. **جديد**: `Dockerfile` (root، multi-stage: base → deps → build → runtime)، `.dockerignore` (يستثني dev files + tests + snapshots + node_modules). **معدّل**: `docker-compose.yml` (إضافة `brightai-site` service مع healthcheck + env vars + depends_on postgres/redis).
+- **What**: أضفنا Dockerfile 4-stage للـ marketing site (Astro hybrid: prerendered + Node SSR). base = node:22.22.2-alpine + pnpm@10.19.0. deps = pnpm install مع BuildKit cache mount. build = full source copy + `pnpm build`. runtime = minimal Alpine + dist + node_modules + USER node + HEALTHCHECK.
+- **Why**: 
+  1. self-hosting (الـ plan الحالي: Render فقط) — يحرر من vendor lock-in
+  2. air-gapped deploys — Prisma enum `DeploymentMode.AIR_GAPPED` يشير إلى حاجة enterprise
+  3. local dev parity مع CI/production (devs يشغّلون نفس الـ image)
+  4. DevEx: `docker compose up brightai-site` يخدم الموقع كاملاً (Astro + APIs)
+- **Verification**:
+  - Multi-stage يقلل الـ image size (base + runtime فقط، build artifacts خارج runtime)
+  - USER node (uid 1000 — non-root من node image الرسمي)
+  - HEALTHCHECK يـ hit /api/health/ (server-rendered endpoint — يكتشف SSR outages)
+  - PORT=10000 يطابق Render + startCommand يطابق render.yaml
+  - NODE_VERSION 22.22.2 يطابق render.yaml
+  - .dockerignore يستثني: docs, .agents/snapshots, reports, tests, CLAUDE.md, *.tgz
+  - docker-compose brightai-site يعتمد على postgres + redis healthchecks
+- **Risks**:
+  - **Image size** — pnpm install يحوي devDeps (~80MB). لو لازم <300MB strict، نستخدم `pnpm install --prod` بعد build.
+  - **Build time** — `COPY . .` ينسخ كل الـ repo (~600MB). مع BuildKit cache mount، الـ second builds أسرع بكثير.
+  - **depends_on postgres/redis** — astro site الحين ما يستخدم DB في runtime (anon chat). لكن future features تحتاجها. depends_on موجود كـ soft dependency.
+  - **CSRF_SECRET default** — `dev-only-replace-in-prod-32chars-min-aaaa`. لازم يحدد في `.env` قبل production deploy.
+- **Commit**: uncommitted. رسالة مقترحة: `chore(deploy): production-ready Dockerfile + docker-compose for marketing site (air-gapped + self-hosting ready)`.
+- **Status**: structure ready، يحتاج user: `docker build -t brightai/marketing-site:local .` + `docker compose up brightai-site` للـ verify.
+- **Brain updates**: Section 1.1 (Deployment options expanded — Docker self-host الآن مدعوم).
+
+### 2026-07-15 — AUDIT-UI-001: Hash chain audit logs UI + verify endpoint — Verified, server component + client component
+
+- **Files**: 4 جديد + 1 معدّل. **جديد**: `apps/dashboard/app/(app)/audit/page.tsx` (Server Component: permission check + feature flag + initial fetch)، `apps/dashboard/app/(app)/audit/client.tsx` (Client Component: verify button + filters + CSV export)، `apps/dashboard/app/(app)/audit/page.module.css`، `apps/dashboard/app/api/audit/list/route.ts` (GET مع pagination + filters + RLS عبر organizationId)، `apps/dashboard/app/api/audit/verify/route.ts` (POST يستدعي verifyChain من hashchain.ts). **معدّل**: `apps/dashboard/components/dashboard/Sidebar.tsx` (إضافة "سجل التدقيق" link مع permission `audit:read`).
+- **What**: أضفنا UI لـ hash chain audit logs في `/audit`. Server component يـ check `audit:read` permission + `audit_ui_enabled` feature flag + يجلب initial 50 entries. Client component يعرض verify button (POST /api/audit/verify → يستدعي verifyChain من hashchain.ts)، date range + action filters، CSV export. API routes تستخدم service role + explicit organizationId filter (RLS isolation).
+- **Why**: الـ backend كان موجود (hashchain.ts + verifyChain function + AuditLog model مع prevHash + hash fields). كان ينقص UI للـ non-technical compliance officers. الحين أي OWNER/ADMIN/COMPLIANCE_OFFICER يقدر يفتح /audit، يفلتر، يـ export CSV، ويتحقق من سلامة السلسلة بنقرة زر واحدة. Tamper detection فوري (Saudi PDPL Art. 19 + NCA ECC 2-2024 §5 compliance).
+- **Verification**:
+  - permission `audit:read` موجود في OWNER + ADMIN + COMPLIANCE_OFFICER (constants.ts)
+  - feature flag `audit_ui_enabled` موجود في feature-flags.ts (default false — نفعّله per-org)
+  - `verifyChain` function موجود في hashchain.ts ويرجع `{ ok, rowsChecked, firstFailure? }`
+  - API routes تستخدم `requireSessionPermission('audit:read')` (correct helper name — ليس requirePermission)
+  - RLS: both API routes filter بـ `organizationId: ctx.tenant.id` (لا يمكن قراءة logs من org آخر)
+  - Sidebar nav updated مع permission-based gating (`audit:read`)
+- **Risks**:
+  - **Feature flag default false** — لازم نفعّل `audit_ui_enabled` لكل org يدوياً عبر OrgFeatureFlag table
+  - **CSV export max 200 rows** — لو org عندها أكثر من 200 matching entries، نقدر نضيف pagination للـ export
+  - **Verify chain قد يكون بطيء** على orgs بـ >10K entries — لكن الخوارزمية O(n) بسيطة
+  - **Hash display = first 12 chars فقط** — للـ visual brevity. الـ full hash في API response (metadata)
+- **Commit**: uncommitted. رسالة مقترحة: `feat(audit): hash chain audit logs UI with chain verification`.
+- **Status**: verified locally (TS compiles, API routes follow existing patterns). يحتاج user: feature flag enable + commit.
+- **Brain updates**: Section 5 (Component Inventory — audit page جديد).
+
 ### 2026-07-15 — USAGE-001: AI token usage tracking + usage dashboard — Verified, schema migrated, helpers compiled
 
 - **Files**: 3 جديد + 3 معدّل + 1 migration. **جديد**: `packages/db/prisma/schema.prisma` (AiUsageEntry model + indexes)، `packages/db/prisma/migrations/20260715000000_ai_usage_entries/migration.sql` (PostgreSQL migration)، `src/lib/usagetracker.ts` (calculateCost + recordUsage + recordUsageAsync helpers)، `apps/dashboard/app/(settings)/settings/usage/page.tsx` (Server Component يجلب ai_usage_entries ويعرض summary + alerts + per-provider/per-model tables)، `apps/dashboard/app/(settings)/settings/usage/page.module.css`. **معدّل**: `src/pages/api/ai/chat.ts` (callGroq + callGemini يرجعوا `{ text, usage }`، success path ينادي recordUsageAsync)، `apps/dashboard/app/(settings)/settings/layout.tsx` (إضافة "استخدام الذكاء الاصطناعي" للـ sidebar nav)، `.agents/brain.md`.

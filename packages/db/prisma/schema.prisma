@@ -229,6 +229,9 @@ enum ActorType {
   SYSTEM
   SUPPORT
   API_KEY
+  // SSO-001 (2026-07-15): identify actors originating from Clerk webhooks
+  // (organization.* / organizationMembership.* / session.* events).
+  CLERK_WEBHOOK
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -1133,4 +1136,49 @@ model AiUsageEntry {
   @@index([provider, createdAt])
   @@index([createdAt])
   @@map("ai_usage_entries")
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Enterprise SSO (SSO-001 — 2026-07-15)
+//
+// Per-organization SAML 2.0 / OIDC connection metadata.
+// Clerk handles the actual SAML protocol; we store a reference + the
+// email domains that should auto-route to this IdP (used by our custom
+// sign-in page to detect "is this an SSO-eligible user?").
+//
+// One row per organization (one active IdP at a time — multi-IdP is
+// out of scope until customers ask).
+// ─────────────────────────────────────────────────────────────────────────
+
+model SamlConnection {
+  id                          String   @id @default(cuid())
+  organizationId              String   @unique
+  provider                     String   // 'azure_ad' | 'okta' | 'google_workspace' | 'generic'
+  clerkEnterpriseSsoId        String?  @unique  // Clerk's internal ID (set via webhook)
+  // IdP-specific config (entityId, SSO URL, signing certificate) for
+  // both Clerk Pro + native SAML SP paths.
+  entityId                     String?  // SAML 2.0 EntityID (urn:...)
+  ssoUrl                       String?  // SingleSignOnService URL
+  sloUrl                       String?  // SingleLogoutService URL (optional)
+  x509Cert                     String?  @db.Text  // IdP signing cert (PEM, multiline)
+  nameIdFormat                 String?  // e.g. urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress
+  emailDomains                String[] // email domains that trigger SSO (e.g. ['acme.com'])
+  enabled                     Boolean  @default(true)
+  // IdP-specific config (attribute mapping, raw metadata XML).
+  config                       Json     @default("{}")
+  // Role mapping from SAML groups claim → BrightAI Role enum.
+  // Example: { "compliance-officers": "COMPLIANCE_OFFICER", "admins": "ADMIN" }
+  roleMapping                  Json     @default("{}")
+  // Lifecycle.
+  lastSsoLoginAt               DateTime?
+  lastError                    String?  // Last failed assertion (for debugging)
+  createdAt                    DateTime @default(now())
+  updatedAt                    DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([provider])
+  @@index([enabled])
+  @@map("saml_connections")
 }

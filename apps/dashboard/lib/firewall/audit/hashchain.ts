@@ -23,16 +23,16 @@
 import { createHash } from 'node:crypto';
 import { Prisma } from '@brightai/db';
 import { dbServiceRole } from '@brightai/db';
+// SSO-001 (2026-07-15): expand AuditAction to all 42 actions + SSO events.
+// The hash chain accepts any AuditAction value; the const tuple in
+// @brightai/config defines the source of truth.
+import type { AuditAction } from '@brightai/config';
 
 export type AuditChainInput = {
   organizationId: string;
   actorId: string | null;
-  actorType: 'USER' | 'SYSTEM' | 'SUPPORT' | 'API_KEY';
-  action:
-    | 'REQUEST_CREATED'
-    | 'REQUEST_APPROVED'
-    | 'REQUEST_REJECTED'
-    | 'POLICY_APPROVED';
+  actorType: 'USER' | 'SYSTEM' | 'SUPPORT' | 'API_KEY' | 'CLERK_WEBHOOK';
+  action: AuditAction;
   targetType?: string;
   targetId?: string;
   ipAddress?: string | null;

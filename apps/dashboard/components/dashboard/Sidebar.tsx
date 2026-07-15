@@ -19,6 +19,8 @@ const NAV: NavItem[] = [
   { href: '/requests', label: 'الطلبات', icon: '✎', permission: 'request:read:own' },
   { href: '/policies', label: 'السياسات', icon: '⎙', permission: 'policy:read' },
   { href: '/team', label: 'الفريق', icon: '◐', permission: 'member:read' },
+  // AUDIT-UI-001 (2026-07-15): hash chain audit logs (feature-flagged).
+  { href: '/audit', label: 'سجل التدقيق', icon: '✓', permission: 'audit:read' },
 ];
 
 export function Sidebar({ role }: { role: Role }) {
