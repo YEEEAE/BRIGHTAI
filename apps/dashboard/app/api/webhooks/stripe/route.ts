@@ -84,9 +84,14 @@ function mapStripeStatus(s: Stripe.Subscription.Status): SubscriptionStatus {
 }
 
 /** Type guard: is this event a subscription-related event? */
-function isSubscriptionEvent(
-  event: Stripe.Event,
-): event is Stripe.CustomerSubscriptionEvent {
+// (Kept for documentation; the actual switch on event.type below is
+// what does the narrowing. This is a no-op function — left here in
+// case future code needs a reusable check.)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function isSubscriptionEvent(event: Stripe.Event): event is
+  | Stripe.CustomerSubscriptionCreatedEvent
+  | Stripe.CustomerSubscriptionUpdatedEvent
+  | Stripe.CustomerSubscriptionDeletedEvent {
   return (
     event.type === 'customer.subscription.created' ||
     event.type === 'customer.subscription.updated' ||
@@ -268,30 +273,43 @@ export async function POST(req: NextRequest) {
   try {
     let result: { applied: boolean; reason?: string } = { applied: false };
 
-    if (isSubscriptionEvent(event)) {
-      result = await applySubscriptionEvent(event.data.object, event.id);
-    } else if (event.type === 'checkout.session.completed') {
-      result = await handleCheckoutCompleted(event.data.object, event.id);
-    } else if (event.type === 'invoice.payment_failed' || event.type === 'invoice.payment_succeeded') {
-      // Re-sync the subscription from the invoice's subscription id.
-      const invoice = event.data.object as Stripe.Invoice;
-      const subscriptionId = (invoice as unknown as { subscription?: string | Stripe.Subscription }).subscription;
-      if (typeof subscriptionId === 'string') {
-        const stripe = getStripeClient();
-        if (!stripe) throw new Error('Stripe not configured');
-        const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-        result = await applySubscriptionEvent(subscription, event.id);
-      } else {
-        result = { applied: false, reason: 'no-subscription-on-invoice' };
+    switch (event.type) {
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted':
+        result = await applySubscriptionEvent(event.data.object, event.id);
+        break;
+
+      case 'checkout.session.completed':
+        result = await handleCheckoutCompleted(event.data.object, event.id);
+        break;
+
+      case 'invoice.payment_failed':
+      case 'invoice.payment_succeeded': {
+        // Re-sync the subscription from the invoice's subscription id.
+        const invoice = event.data.object;
+        const subscriptionId = (invoice as unknown as { subscription?: string | Stripe.Subscription }).subscription;
+        if (typeof subscriptionId === 'string') {
+          const stripe = getStripeClient();
+          if (!stripe) throw new Error('Stripe not configured');
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+          result = await applySubscriptionEvent(subscription, event.id);
+        } else {
+          result = { applied: false, reason: 'no-subscription-on-invoice' };
+        }
+        break;
       }
-    } else if (event.type === 'customer.subscription.trial_will_end') {
-      // No DB write — just log. Future: trigger SendGrid email.
-      // eslint-disable-next-line no-console
-      console.info(`[stripe webhook] trial_will_end for ${(event.data.object as Stripe.Subscription).id}`);
-      result = { applied: true };
-    } else {
-      // Acknowledged but ignored — Stripe will not retry.
-      result = { applied: false, reason: 'unhandled' };
+
+      case 'customer.subscription.trial_will_end':
+        // No DB write — just log. Future: trigger SendGrid email.
+        // eslint-disable-next-line no-console
+        console.info(`[stripe webhook] trial_will_end for ${(event.data.object as Stripe.Subscription).id}`);
+        result = { applied: true };
+        break;
+
+      default:
+        // Acknowledged but ignored — Stripe will not retry.
+        result = { applied: false, reason: 'unhandled' };
     }
 
     return NextResponse.json({

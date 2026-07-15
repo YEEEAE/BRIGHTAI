@@ -20,6 +20,7 @@
  */
 
 import type { BillingPlan } from '@brightai/db';
+import { BillingPlan as BillingPlanEnum } from '@brightai/db';
 
 export type PlanDefinition = {
   /** Plan key — must match the BillingPlan enum in schema.prisma. */

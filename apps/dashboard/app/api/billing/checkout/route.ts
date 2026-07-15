@@ -15,6 +15,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { dbServiceRole } from '@brightai/db';
 import { requireSessionRoleAtLeast } from '@/lib/session';
 import { createCheckoutSession, isBillingConfigured, BillingNotConfiguredError } from '@/lib/billing/stripe';
 import { getPlan } from '@/lib/billing/plans';
@@ -74,14 +75,23 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 5. Create checkout
+  // 5. Load the full organization (need stripeCustomerId)
+  const org = await dbServiceRole.organization.findUnique({
+    where: { id: ctx.tenant.id },
+    select: { id: true, slug: true, name: true, nameAr: true, stripeCustomerId: true },
+  });
+  if (!org) {
+    return NextResponse.json({ error: 'Organization not found' }, { status: 404 });
+  }
+
+  // 6. Create checkout
   const origin = req.nextUrl.origin;
   const successUrl = `${origin}/settings/billing?checkout=success&session_id={CHECKOUT_SESSION_ID}`;
   const cancelUrl = `${origin}/settings/billing?checkout=canceled`;
 
   try {
     const result = await createCheckoutSession({
-      organization: ctx.tenant,
+      organization: org,
       priceId: plan.stripePriceId,
       successUrl,
       cancelUrl,

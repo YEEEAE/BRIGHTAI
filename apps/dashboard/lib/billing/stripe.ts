@@ -26,7 +26,7 @@
 import 'server-only';
 import Stripe from 'stripe';
 import { dbServiceRole } from '@brightai/db';
-import type { Organization } from '@brightai/db';
+import type { Organization, BillingPlan } from '@brightai/db';
 import { getPlan } from './plans';
 
 // ─────────────────────────────────────────────────────────────────
@@ -307,7 +307,7 @@ export function verifyWebhookEvent(rawBody: string, signature: string): Stripe.E
  */
 export function subscriptionToPlanKey(
   subscription: Pick<Stripe.Subscription, 'items'>,
-): import('@brightai/db').BillingPlan | null {
+): BillingPlan | null {
   // The subscription has multiple items in theory, but our flow always
   // creates subscriptions with exactly one line item. Take the first.
   const item = subscription.items.data[0];
