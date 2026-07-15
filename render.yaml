@@ -28,11 +28,16 @@ services:
       # set in Render dashboard env. Without LEAD_WEBHOOK_URL configured,
       # leads are queued in-memory only (cap 100). Recommended webhook
       # providers: Resend / SendGrid / HubSpot / Zapier / n8n.
-      # BRIGHTAI_CHAT_KEY (KRN-003 / EXEC-03) — optional API key for
-      # /api/ai/chat/. Current implementation uses Origin allowlist only
-      # (no API key required). Set BRIGHTAI_CHAT_KEY if you want to
-      # allow non-browser clients (curl/Postman) with x-brightai-chat-key
-      # header instead of Origin check. Generate with `openssl rand -hex 32`.
+      # BRIGHTAI_CHAT_KEY (KRN-003-FULL-2026-07-15 / EXEC-03) — optional
+      # shared-secret API key for /api/ai/chat/. The endpoint accepts
+      # requests from the BrightAI origin (browser) OR from any client
+      # sending a valid `x-brightai-chat-key: <key>` header. Set in Render
+      # dashboard to enable the API-key auth path for non-browser clients
+      # (curl/Postman/server-to-server). When unset, only the Origin
+      # allowlist is enforced (current production default). Generate with:
+      #   openssl rand -hex 32
+      # The value is read at function scope (process.env) at request time
+      # so it is never inlined into the SSR bundle.
     headers:
       - path: /*
         name: Strict-Transport-Security

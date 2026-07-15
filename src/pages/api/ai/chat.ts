@@ -1,6 +1,7 @@
 /**
  * src/pages/api/ai/chat.ts — REPORTS-SEC-01 (2026-07-06)
  *                  + KERNEL-AUDIT-2026-07-15-BATCH-2 (ARCH-2 + EXEC-01)
+ *                  + KRN-003-FULL-2026-07-15 (EXEC-03 API key check)
  *
  * Server-side proxy for AI chat. Reads provider keys from
  * `process.env.GROQ_API_KEY` and `process.env.GEMINI_API_KEY`
@@ -24,7 +25,7 @@
  *  on this file, ONLY this route is server-rendered; all other pages
  *  remain pure static HTML.
  *
- * Security (KRN-A1 + KRN-001 + EXEC-01):
+ * Security (KRN-A1 + KRN-001 + EXEC-01 + KRN-003 / EXEC-03):
  *  - Keys read via `process.env.X` (runtime, never inlined into the
  *    SSR bundle). Previously used `import.meta.env.X` which Astro/Vite
  *    statically replaces at build time — leading to the Gemini key
@@ -33,13 +34,25 @@
  *  - promptId is the ONLY way to specify a system prompt. The
  *    `systemPrompt` field is rejected with 400. Server looks up the
  *    actual prompt text from KERNEL_SYSTEM_PROMPTS (server-side import).
+ *  - Origin allowlist + optional API key (KRN-003 / EXEC-03): The
+ *    endpoint accepts requests from the BrightAI origin (browser fetch
+ *    via KernelAiAssistant / chat.astro) OR from any client sending a
+ *    valid `x-brightai-chat-key` header matching the server-side
+ *    `process.env.BRIGHTAI_CHAT_KEY` (rotating, set in Render dashboard).
+ *    Either path is sufficient; failure on both returns 403. The env
+ *    var is read at function scope (runtime) so it is never inlined
+ *    into the SSR bundle, and is gated so unset/empty values fall
+ *    back to Origin-only auth (current production state).
  *  - The client fetch (/api/ai/chat) goes through `fetch()` from the
  *    browser; keys are never returned in any response shape.
+ *  - API key comparison uses `crypto.timingSafeEqual` to prevent
+ *    timing attacks.
  *  - No request body is logged.
  *  - No message content is persisted server-side.
  */
 
 import type { APIRoute } from 'astro';
+import { timingSafeEqual } from 'node:crypto';
 import {
   KERNEL_SYSTEM_PROMPTS,
   KERNEL_SYSTEM_PROMPT_MAX_CHARS,
@@ -82,14 +95,49 @@ const ALLOWED_ORIGINS = [
 ] as const;
 
 /**
- * Check Origin header against allowlist. Returns null on success,
- * or a 403 Response if origin is missing or not allowed.
- * ARCH-2: API key read at runtime (function scope) — never inlined.
+ * Constant-time string comparison. timingSafeEqual requires equal-length
+ * buffers, so we length-check first (the length check itself does not
+ * leak content — only the count of mismatched length attempts).
+ */
+function safeEqual(a: string, b: string): boolean {
+  const aBuf = Buffer.from(a);
+  const bBuf = Buffer.from(b);
+  if (aBuf.length !== bBuf.length) return false;
+  return timingSafeEqual(aBuf, bBuf);
+}
+
+/**
+ * Check Origin header against allowlist, OR accept a valid x-brightai-chat-key
+ * header if BRIGHTAI_CHAT_KEY is configured in the environment.
+ *
+ * Two authentication paths (either one is sufficient):
+ *  1. Browser fetch from an allowed origin (Origin header in ALLOWED_ORIGINS).
+ *  2. Non-browser client (curl/Postman/server-to-server) sending a valid
+ *     x-brightai-chat-key header. The key is read at RUNTIME from
+ *     process.env.BRIGHTAI_CHAT_KEY (function scope) — never via import.meta.env
+ *     (which Astro/Vite statically inlines into the SSR bundle, per the
+ *     ARCH-2 fix in BATCH-2). If the env var is unset/empty, this path is
+ *     disabled and only Origin-based auth is accepted.
+ *
+ * Failure on both paths returns 403 with `error: 'origin_not_allowed'`.
  */
 function checkOriginAndAuth(req: Request): { ok: true } | { ok: false; res: Response } {
-  const origin = req.headers.get('origin');
+  // Path 1: API key (KRN-003 / EXEC-03 — optional, runtime env read).
+  // Allows non-browser clients (no Origin header needed) to authenticate
+  // with a shared secret rotated via the BRIGHTAI_CHAT_KEY env var in
+  // Render dashboard. Trim both sides to avoid whitespace mismatches.
+  const expectedKey = process.env.BRIGHTAI_CHAT_KEY?.trim();
+  if (expectedKey) {
+    const providedKey = req.headers.get('x-brightai-chat-key')?.trim();
+    if (providedKey && safeEqual(expectedKey, providedKey)) {
+      return { ok: true };
+    }
+  }
 
-  // Origin header must be present and in the allowlist
+  // Path 2: Origin allowlist (default for browser clients).
+  // Browsers automatically attach an Origin header on fetch() from JS, so
+  // this works for all in-app pages (KernelAiAssistant, chat.astro, etc.).
+  const origin = req.headers.get('origin');
   if (!origin || !ALLOWED_ORIGINS.includes(origin as (typeof ALLOWED_ORIGINS)[number])) {
     return {
       ok: false,

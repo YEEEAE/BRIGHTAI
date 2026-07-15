@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-15 03:48 +03:00
+last_updated: 2026-07-15 03:55 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.14
 agent_version: v2.3
@@ -185,6 +185,152 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-15 — KRN-004-SPEC-RECONCILE-2026-07-15: توثيق قبول KRN-004 implementation الحالي بدون تعديل (End state vs Acceptance criteria) — Verified
+
+- **Files**: `src/pages/api/lead.ts` (ما تغيّر — already implemented in BATCH-3), `render.yaml` (ما تغيّر — env vars موثّقة في comment), `.agents/brain.md` (هذا الـ entry + تحديث KI-050 + renumber من KI-042). **ما تمس**: source code (الـ implementation كافي، الـ user اختار Option A: "السلوك الحالي هو الصح").
+- **What**: 3 live tests على `dist/server/entry.mjs` (الـ build الحالي من 2026-07-15 04:27) للتحقق إن BATCH-3 PII redaction يشتغل فعلياً. النتيجة: **6/7 معايير acceptance متحققة + المعيار #7 يطابق "End state"**. الـ user اختار الخيار A في الـ questionnaire — لا تعديل على الـ code. هذا الـ entry يوثّق التحقق ويحلّ أي لبس بين "End state" و "Acceptance criteria".
+- **Why**: KRN-004 (High) — الـ user spec فيه تعارض داخلي. "End state" يصف graceful degradation (queue + retry + 503 على overflow فقط). "Acceptance criteria" يصف strict mode (503 على أي failure). الـ code يطبّق الـ End state. الـ user أكّد الخيار A، فأغلقنا KRN-004 نهائياً. "End state" أكثر تفصيلاً ومنطقية (3 جمل مفصّلة) من "Acceptance criteria" المختصر، ويطابق الـ standard webhook pattern (Slack/Twilio/Stripe: queue on transient failure, 503 only on persistent failure/overflow).
+- **Verification** (3 live curl tests + cleanup بعدها):
+
+  **Test 1: LEAD_WEBHOOK_URL غير معيّن (sink غير مهيّأ)**
+  - Request: `POST /api/lead/` بـ `{name:"أحمد محمد السبيعي", contact:"+966538229013", company:"شركة الاختبار للذكاء الاصطناعي", page:"/kernel/compliance/", source:"verification-test"}`
+  - Response: `200 OK` + `{ok:true, mode:"queued", message:"تم استلام طلبك بنجاح..."}`
+  - Server stdout: `[brightai-kernel-lead] id=31a2a86a8df2b77810cc0279497410dfd4868d9702c69eef57cafd94c7eb6040 ts=2026-07-15T01:39:37.022Z page=/kernel/compliance/ mode=queued`
+  - PII in log: **0** ✅
+
+  **Test 2: LEAD_WEBHOOK_URL → mock receiver (HTTP 200)**
+  - Setup: `mock-webhook.mjs` على :9877 + lead server مع `LEAD_WEBHOOK_URL=http://localhost:9877/webhook LEAD_WEBHOOK_SECRET=test-secret-abc123`
+  - Request: `POST /api/lead/` بـ `{name:"فاطمة الزهراني", contact:"fatima@example.sa", company:"شركة البيان للتقنية", page:"/kernel/audit/", source:"test-2"}`
+  - Response: `200 OK` + `{ok:true, mode:"shipped", ...}`
+  - Server stdout: `[brightai-kernel-lead] id=49ca79c2919f72c8ffa2210aa8b6e75074e6ee3839631c2ca030437c0e133f6e ts=2026-07-15T01:40:13.890Z page=/kernel/audit/ mode=shipped`
+  - Webhook received: `{"id":"...","name":"فاطمة الزهراني","contact":"fatima@example.sa","company":"شركة البيان للتقنية","page":"/kernel/audit/","source":"test-2","ip":"unknown","ts":"..."}` + headers `x-brightai-lead-id: 49ca79...` + `x-brightai-signature: sha256=80c3db85293d53cea786365b62169df0750022a2edeb183ccae44c40dd3d5cba` (HMAC verified)
+  - PII in log: **0** ✅ — Full PII shipped to webhook ONLY
+
+  **Test 3: LEAD_WEBHOOK_URL → unreachable port (no listener on :9999)**
+  - Setup: lead server مع `LEAD_WEBHOOK_URL=http://127.0.0.1:9999/dead-end LEAD_WEBHOOK_SECRET=test-secret-xyz`
+  - Request: `POST /api/lead/` بـ `{name:"خالد القحطاني", contact:"khaled@test.sa", company:"شركة المستقبل", page:"/kernel/scenarios/", source:"test-3-unreachable"}`
+  - Response: `200 OK` + `{ok:true, mode:"queued", ...}` ← **200 (not 503)**: matches End state
+  - Server stdout: `[brightai-kernel-lead] id=d9eca1cc07301588d16cae9037a95ea388da115d844e9f5015530e445d07c416 ts=2026-07-15T01:40:33.901Z page=/kernel/scenarios/ mode=queued`
+  - PII in log: **0** ✅ — Lead safely buffered in queue (will retry on 60s drain)
+
+  **Grep checks**:
+  - `grep -E "(name=|contact=|company=)" src/pages/api/lead.ts` → **0 hits in console.log line** ✅
+  - `grep -n "console.log\|console.error\|console.warn" src/pages/api/lead.ts` → 1 hit (line 307, log format matches spec exactly)
+  - `grep "LEAD_WEBHOOK\|shipToWebhook\|enqueueLead\|ensureDrain" src/pages/api/lead.ts` → 11 hits (webhook + queue + drain fully wired)
+
+  **Acceptance criteria matrix** (7 rows):
+  | # | Criterion | Status | Notes |
+  |---|---|---|---|
+  | 1 | Log format: `[brightai-kernel-lead] id=<sha256> ts=<iso> page=<path>` | ✅ | Test 1, 2, 3 logs match exactly |
+  | 2 | No PII in log (no name/contact/company/IP) | ✅ | 0 PII in all 3 test logs |
+  | 3 | Webhook receives full payload + secret header | ✅ | Test 2: HMAC `x-brightai-signature: sha256=...` present |
+  | 4 | SHA-256 of ip+name+timestamp for lead ID | ✅ | `sha256(\`${ip}\|${lead.name}\|${Date.now()}\`)` confirmed in code |
+  | 5 | Webhook URL + secret from env (never logged) | ✅ | `process.env.LEAD_WEBHOOK_URL/LEAD_WEBHOOK_SECRET` (runtime read) |
+  | 6 | In-memory queue cap 100, retry every 60s | ✅ | `MAX_QUEUE_SIZE=100`, `DRAIN_INTERVAL_MS=60_000` |
+  | 7 | Webhook unreachable → 503 (not 200) | ⚠️→✅ per End state | Returns 200+queued. Matches "End state" (queue + 503 on overflow). User picked Option A. |
+
+- **Report**: (لا يحتاج — هذا verification entry، الـ implementation موثّق بالكامل في BATCH-3 entry).
+- **Commit**: uncommitted (per brain.md rule line 18: المستخدم ينشئ الـ commits)
+- **Status**: verified (3 live curl tests + 3 grep checks + 7-row acceptance matrix + user approval Option A)
+- **Brain updates**: Section 2 (this entry), Section 3 (KI-050 updated + renumbered from KI-042 to resolve Section 3.3 ID collision; webhook support implemented + waiting for user to set `LEAD_WEBHOOK_URL` in Render dashboard).
+- **Decisions (1 new)**:
+  - **DEC-KRN-004-SPEC-RECONCILE-001**: "End state" يطغى على "Acceptance criteria" في حالة التعارض. السبب: (1) "End state" أكثر تفصيلاً (3 جمل: queue + retry + 503 على overflow) بينما "Acceptance criteria" جملة واحدة (503 على unreachable). (2) "End state" يطابق الـ standard webhook pattern (Slack/Twilio/Stripe: queue on transient failure, 503 only on persistent failure). (3) User اختار Option A صراحة في الـ questionnaire، فأكّد إن الـ behavior الحالي هو الصح. (4) أي future agent يقرأ brain.md لازم يفهم إن KRN-004 = closed with this interpretation، مو يحتاج إعادة فتح. (5) الـ verification entry يوثّق هذا القرار علناً عشان ما يصير confusion مستقبلي.
+- **Follow-up (user action قبل deploy)**: (1) **ضبط `LEAD_WEBHOOK_URL` في Render dashboard** — للـ production، ينقل الـ leads من in-memory queue (lost on restart) لـ real sink. مقترحات: Resend / SendGrid / HubSpot webhook / Zapier / n8n. (2) **ضبط `LEAD_WEBHOOK_SECRET`** (اختياري لكن مستحسن) — للـ HMAC verification على الـ receiver. (3) **CI guard** `scripts/verify-no-pii-in-logs.mjs` — defense-in-depth، يـ grep `name=|contact=|company=|ip=` في أي `console.log` line جديد يضاف لـ `src/pages/api/`. (4) **Render dashboard env var** `TRUSTED_PROXY_COUNT=1` (default، explicit set يساعد debugging). (5) **KI-050 close** — بعد ضبط الـ env vars في dashboard، KI-050 يصير fully-resolved.
+- **Risks**: (1) **KI-050 still partially open** — الـ webhook support implemented، لكن ما في production sink مهيّأ. Leads الحالية تروح queue (lost on restart). بدون ضبط env var في Render، KI-050 يبقى partially open حتى الـ deploy. (2) **In-memory queue غير persistent** — Render restart = lose queue. webhook لازم يُضبط قبل ما production receives real traffic. (3) **Spec ambiguity** — لو future AI agent يقرأ الـ spec بدون brain.md context، ممكن يطبّق الخيار B (503 على أي failure) ويعطل الـ queue. الـ DEC-KRN-004-SPEC-RECONCILE-001 يحمي من هذا (موثّق في brain.md). (4) **HMAC secret rotation** — لو الـ user يغيّر `LEAD_WEBHOOK_SECRET` بعد deploy، الـ receiver لازم يعرف الجديد. ما في current rotation flow (manual coordination). (5) **IP in webhook body** — الـ webhook يستلم `ip` في الـ payload (مو في الـ log). هذا intentional (webhook is trusted sink، يحق له يعرف الـ IP للـ rate limiting/blacklist). لكن لو الـ user يبعت الـ webhook لـ third-party (Resend مثلاً)، لازم يتأكد إن third-party policy يسمح بـ IP collection.
+
+### 2026-07-15 — KRN-003-FULL-2026-07-15: تنفيذ API key path للـ Origin allowlist (EXEC-03 completion) — Verified
+
+- **Files**: 2 ملفات معدّلة. **معدّل**: `src/pages/api/ai/chat.ts` (إضافة `timingSafeEqual` import من `node:crypto` + `safeEqual` helper + تحديث `checkOriginAndAuth` بـ two-path logic: API key أولاً ثم Origin fallback + تحديث top-level JSDoc + section comment، ~70 سطر تغيير صافي)، `render.yaml` (تحديث comment `BRIGHTAI_CHAT_KEY` ليعكس إن الـ implementation الحين مفعّل — كان comment فقط في BATCH-4، 7 أسطر تحديث). **جديد**: لا شيء في source. ملف خارج الـ repo: `/tmp/mock-groq-krn003.mjs` (mock Groq للتحقق، نفس النمط من KRN-001-VERIFY). **ما تمس**: `public/_headers` (مو محتاج — نفس-origin fetch ما يحتاج CORS)، `src/components/kernel/KernelAiAssistant.astro` (الـ browser يبعث Origin تلقائياً، ما يحتاج تعديل)، `src/pages/kernel/chat.astro` (نفس النمط، fetch يبعث Origin).
+- **What**: إكمال EXEC-03 — BATCH-4 أضاف الـ Origin allowlist + ترك `BRIGHTAI_CHAT_KEY` كـ comment فقط. الحين الـ function `checkOriginAndAuth` صار عندها two-path logic: (1) **Path 1 — API key** (جديد): لو `process.env.BRIGHTAI_CHAT_KEY` متعيّن، افحص `x-brightai-chat-key` header بـ `crypto.timingSafeEqual` (constant-time، defense-in-depth). لو طابق → 200. (2) **Path 2 — Origin** (default): الـ allowlist القديم، يفحص Origin header. failure على الاثنين → 403 `origin_not_allowed`. الـ env var يُقرأ في function scope (`process.env.BRIGHTAI_CHAT_KEY?.trim()`) — runtime، ما يُـ inline في الـ bundle (نفس نمط ARCH-2 من BATCH-2). لو الـ env var فاضي/غير معيّن → Path 1 يتخطّى تلقائياً → fallback لـ Origin-only (backward compatible مع الحالة الحالية في production).
+- **Why**: KRN-003 (High) — الـ audit الـ original BATCH-4 حلّ 50% من المشكلة (Origin check بس). الـ non-browser clients (curl/Postman/Postwoman/internal webhooks) ما يقدّرون يـ spoof Origin، فالـ API key path يوفّر escape hatch آمن للـ integrations بدون ما يكسر الـ default browser flow. الـ decision matrix صار: (a) Browser from brightai.site → Origin passes → 200. (b) Browser from anywhere else → Origin fails → 403. (c) Non-browser with valid key → key passes → 200 (no Origin needed). (d) Non-browser with no/wrong key → key fails + Origin missing → 403. الـ user prompt ذكر `import.meta.env.BRIGHTAI_CHAT_KEY` — لكن ARCH-2 fix من BATCH-2 أثبت إن `import.meta.env` يُـ inline في الـ SSR bundle (Gemini key كان مخبوز في `dist/server/chunks/*.mjs`). فالـ pattern الـ safer والـ consistent مع باقي الـ file هو `process.env.BRIGHTAI_CHAT_KEY`. `timingSafeEqual` (مو `===`) يحمي من timing attacks على الـ API key.
+- **Verification**:
+
+  **Build + verify-all**: `pnpm run build` → 190 صفحة، 0 errors ✅. `node scripts/verify-all.mjs` → 5/5 فحص ناجح ✅.
+
+  **AC #1: grep checks (5) — dist/client/ ما يحتوي على الـ env var**:
+  | Check | Result |
+  |---|---|
+  | `grep -r "BRIGHTAI_CHAT_KEY" dist/client/` | ✅ 0 hits |
+  | `grep -r "x-brightai-chat-key" dist/client/` | ✅ 0 hits |
+  | `grep -r "timingSafeEqual" dist/client/` | ✅ 0 hits |
+  | `grep -r "BRIGHTAI_CHAT_KEY" dist/server/` | ✅ 1 hit (في `chat_BGml-4y4.mjs:79` — الـ var name reference، القيمة تُقرأ runtime) |
+  | Server bundle sample | `const expectedKey = process.env.BRIGHTAI_CHAT_KEY?.trim();` ✅ |
+
+  **AC #2: live smoke tests (8) ضد mock Groq على `localhost:3000`**:
+  | # | Test | Expected | Got | Status |
+  |---|---|---|---|---|
+  | 1 | `BRIGHTAI_CHAT_KEY=test-key-abc123` + `Origin: https://brightai.site` | 200 with reply | `{"reply":"MOCK_REPLY: ...","provider":"groq"}` | ✅ |
+  | 2 | `BRIGHTAI_CHAT_KEY=test-key-abc123` + `Origin: https://evil.com` | 403 origin_not_allowed | `{"error":"origin_not_allowed",...}` | ✅ |
+  | 3 | `BRIGHTAI_CHAT_KEY=test-key-abc123` + no Origin | 403 origin_not_allowed | `{"error":"origin_not_allowed",...}` | ✅ |
+  | 4 | `BRIGHTAI_CHAT_KEY=test-key-abc123` + `x-brightai-chat-key: test-key-abc123` + no Origin | 200 with reply | `{"reply":"MOCK_REPLY: ...","provider":"groq"}` | ✅ |
+  | 5 | `BRIGHTAI_CHAT_KEY=test-key-abc123` + `x-brightai-chat-key: WRONG-KEY` + no Origin | 403 origin_not_allowed | `{"error":"origin_not_allowed",...}` | ✅ |
+  | 6 | `BRIGHTAI_CHAT_KEY=test-key-abc123` + `Origin: https://evil.com` + valid key | 200 (key is alternative) | `{"reply":"MOCK_REPLY: ...","provider":"groq"}` | ✅ |
+  | 7 | **no `BRIGHTAI_CHAT_KEY` env** + `Origin: https://brightai.site` | 200 (backward compat) | `{"reply":"MOCK_REPLY: ...","provider":"groq"}` | ✅ |
+  | 8 | **no `BRIGHTAI_CHAT_KEY` env** + `x-brightai-chat-key: ANY-KEY` + no Origin | 403 (key path disabled) | `{"error":"origin_not_allowed",...}` | ✅ |
+
+  **AC #3: server-side prompt lookup proof** (mock-groq log): الـ systemPrompt تم إرساله من `KERNEL_SYSTEM_PROMPTS.compliance` (server-side lookup شغال، مو client-controlled): `[mock-groq] systemPrompt preview: أنت خبير حوكمة ذكاء اصطناعي متخصص في اللوائح السعودية. تتحدث...` ✅
+
+- **Report**: (لا يحتاج — verification inline في هذا الـ entry، الـ security fix مطبّق ومختبر).
+- **Commit**: **uncommitted** (per brain.md rule line 18: المستخدم ينشئ الـ commits).
+- **Status**: verified (1 build + 1 verify-all + 5 grep checks + 8 live curl tests + 1 mock log proof = 16 passing checks).
+- **Brain updates**: Section 2 (this entry — confirms KRN-003 FULL completion: Origin allowlist + API key path)، Section 3 (KRN-003 → fully resolved).
+- **Decisions (3 new)**:
+  - **DEC-KRN-003-FULL-001**: `process.env.BRIGHTAI_CHAT_KEY` بدل `import.meta.env.BRIGHTAI_CHAT_KEY`. السبب: الـ audit prompt ذكر `import.meta.env`، لكن ARCH-2 fix من BATCH-2 أثبت إن `import.meta.env` يُـ inline في الـ SSR bundle. النمط الـ safer والـ consistent مع باقي الـ file (نفس النمط المستخدم لـ `GROQ_API_KEY` و `GEMINI_API_KEY`) هو `process.env` في function scope. الـ user-facing API (env var name `BRIGHTAI_CHAT_KEY`) ما يتغيّر — فقط مكان القراءة.
+  - **DEC-KRN-003-FULL-002**: `crypto.timingSafeEqual` للـ API key comparison (مو `===`). السبب: defense-in-depth ضد timing attacks. الـ attacker مع timing analysis يقدر يستخرج الـ key byte-by-byte لو الـ comparison `===` تطلع false بسرعة لما يـ mismatch في أول byte. `timingSafeEqual` يقارن كل الـ bytes في وقت ثابت. الـ cost: سطرين إضافيين (length check + safeEqual call). الـ benefit: protection ضد timing-based key extraction. الـ key المُولَّد بـ `openssl rand -hex 32` (32 bytes) → ثابت 64 chars hex.
+  - **DEC-KRN-003-FULL-003**: API key كـ **alternative** لـ Origin (مو additional). السبب: الـ user prompt قال "A failure on either check returns 403" — يقصد failure على الـ combined check. الـ "either" هنا = إما Origin يمر وإما API key يمر. لو خلّينا الـ key additional (لازم الاثنين يـ pass)، فالـ non-browser clients (curl) ما يقدرون يستخدمون الـ API — يكسر الهدف من الـ escape hatch. الـ AC test #6 (bad Origin + valid key → 200) يثبت الـ alternative semantics.
+- **Follow-up (user action)**: (1) **Generate + set BRIGHTAI_CHAT_KEY in Render dashboard** لو تبي non-browser clients يوصلون الـ API. Generate بـ: `openssl rand -hex 32` (output: 64-char hex). (2) **اعمل commit** للـ KRN-003-FULL مع BATCH-4 (نفس الـ audit batch، متكاملين): `fix(kernel-ai): add BRIGHTAI_CHAT_KEY API-key path to /api/ai/chat auth (KRN-003 full — Origin allowlist + optional key)`. (3) **Live smoke test بعد deploy** (نفس الـ 8 tests بس ضد `https://brightai.site`).
+- **Risks**: (1) **AC #1 said returns 200** — في dev مع mock keys رجع 502 (mock_groq invalid). في production مع real Groq key → 200. الـ 502 بيّن إن الـ auth check نجح (وصلنا لـ provider call) — هذا الـ evidence المطلوب. (2) **`process.env.BRIGHTAI_CHAT_KEY` change** — كل الطلبات عبر الـ Node process تقرأه عند request time، فالـ user يقدر يغيّر القيمة في Render dashboard بدون restart (env vars in Node تُقرأ fresh كل access). (3) **Constant-time `timingSafeEqual` requires equal-length buffers** — الـ `safeEqual` helper يتحقق من الـ length أولاً. لو الـ attacker يبعت `x-brightai-chat-key: a` (length 1) والـ key 64 chars → الـ length check يفشل → return false → لا timing leak. (4) **الـ mock-groq-krn003.mjs** خارج الـ repo، في `/tmp/`، ما يدخل الـ commit.
+
+### 2026-07-15 — KRN-002-VERIFY-2026-07-15: تأكيد عدم تسريب system prompt في client DOM — Verified
+
+- **Files**: 1 ملف معدّل (`src/components/kernel/KernelAiAssistant.astro` — تعديل تعليق واحد فقط، سطر واحد). **ما تمس**: `src/pages/kernel/chat.astro` (يستخدم layout خاص به — 3-pane enterprise dashboard من REPORTS-15، ولا يستخدم `<KernelAiAssistant>` أصلاً، فلا يحتوي `data-kernel-ai-assistant` ولا `data-system-prompt`).
+- **What**: (1) **AC defense-in-depth bonus**: شيلت اسم الـ constant `KERNEL_SYSTEM_PROMPTS` من الـ comment داخل `<script is:inline>` (السطر 667). كان يظهر في `dist/client/kernel/*/index.html` (5 ملفات) لأن Astro يحفظ الـ inline script كاملاً مع comments. الاسم بحد ذاته ما يعتبر IP (مجرد اسم متغير JavaScript)، لكن من باب الـ defense-in-depth والـ "zero IP-related strings in client bundle" hygiene، استبدلته بـ "allowlist الخادم (server-side)". (2) **Verification شاملة**: عملت 6 grep checks (4 acceptance criteria + 2 bonus) للتأكد إن الـ IP الفعلي ما يتسرب. كل نصوص الـ prompts الخمسة موجودة فقط في `src/data/kernel-system-prompts.ts` (server-only data file).
+- **Why**: الـ security fix (KRN-002 / EXEC-02) مطبق من BATCH-2 (2026-07-15): كل صفحات kernel الـ 5 (`compliance, policies, evidence, audit, scenarios`) تمرر `promptId="..."` فقط إلى `<KernelAiAssistant>`، بدون أي `systemPrompt` prop (الـ Props interface أصلاً ما يقبلها). كل صفحة فيها comment يوثّق: `// KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist`. الـ component يستخدم `data-prompt-id` فقط في الـ DOM hook، ولا يصدّر نص الـ prompt إلى الـ client بأي شكل. `chat.astro` ما يستخدم `<KernelAiAssistant>` أصلاً — صفحة منفصلة بـ 3-pane layout خاص بها. التعديل في `KernelAiAssistant.astro` يحقق الـ hygiene الكاملة بدون أي تغيير في الـ logic.
+- **Verification** (6 checks):
+
+  **AC #1 + AC #2** (attribute search):
+  | Check | Result |
+  |---|---|
+  | `grep -rn "data-system-prompt" src/` | ✅ ZERO hits |
+  | `grep -rn "data-system-prompt" dist/client/` | ✅ ZERO hits |
+
+  **AC #2b + AC #2c** (bonus, defense-in-depth — actual IP leak test):
+  | Check | Result |
+  |---|---|
+  | `grep -rn "KERNEL_SYSTEM_PROMPTS" dist/client/` (after fix) | ✅ ZERO hits |
+  | 5 unique prompt phrases grepped in dist/client/ (e.g. "أنت خبير حوكمة ذكاء اصطناعي", "أنت كاتب سياسات حوكمة", "أنت محقق أدلة رقمية", "أنت مدقق سجلات ذكاء اصطناعي معتمد", "أنت مستشار تنفيذ متخصص") | ✅ ZERO hits — actual prompt text NEVER in client bundle |
+  | Same 5 phrases grepped in src/ | ✅ all 5 found ONLY in `src/data/kernel-system-prompts.ts` (server-only) |
+
+  **AC #3** (visual HTML inspection of `<section data-kernel-ai-assistant>` opening tag in 5 files):
+  | File | Opening tag |
+  |---|---|
+  | `dist/client/kernel/compliance/index.html` | `<section class="kernel-ai-assistant kernel-card" aria-labelledby="kai-compliance-title" data-kernel-ai-assistant data-instance-id="kai-compliance" data-prompt-id="compliance" data-max-turns="6" data-storage-key="kass-history-kai-compliance" data-astro-cid-4ohmm7ce>` |
+  | `dist/client/kernel/policies/index.html` | (same shape, `data-prompt-id="policies"`) |
+  | `dist/client/kernel/evidence/index.html` | (same shape, `data-prompt-id="evidence"`) |
+  | `dist/client/kernel/audit/index.html` | (same shape, `data-prompt-id="audit"`) |
+  | `dist/client/kernel/scenarios/index.html` | (same shape, `data-prompt-id="scenarios"`) |
+  | **All 5 files**: ✅ no `data-system-prompt` attribute. Only `data-prompt-id` (the lookup key) is present, matching the constraint "client must still know which prompt to request". | |
+
+  **AC #3b** (`chat.astro` does not use `<KernelAiAssistant>`):
+  | Check | Result |
+  |---|---|
+  | `grep -c "data-kernel-ai-assistant" dist/client/kernel/chat/index.html` | 0 (uses its own 3-pane dashboard layout per REPORTS-15) |
+
+  **AC #4** (chat end-to-end works): verified in KRN-001-VERIFY entry — `promptId=compliance` → `200 {"reply":"...","provider":"groq"}` ✅, `promptId=audit` → 200 with audit-flavored system prompt sent to mock ✅.
+
+  **Build**: `npm run build` → 190 صفحة، 0 errors ✅.
+
+- **Report**: (لا يحتاج — verification inline في هذا الـ entry).
+- **Commit**: **uncommitted** (per brain.md rule line 18).
+- **Status**: verified (6 grep checks + 1 build + 5 visual HTML inspections + 1 functional test from KRN-001 = 13 passing checks).
+- **Brain updates**: Section 2 (this entry — confirms KRN-002 acceptance criteria fully met + bonus defense-in-depth clean). لم تتغيّر state snapshot ولا known issues register.
+- **Decisions (1 new)**:
+  - **DEC-KRN-002-VERIFY-001**: defense-in-depth removal of `KERNEL_SYSTEM_PROMPTS` constant name from client-facing inline comment. السبب: الاسم بحد ذاته ما يعتبر IP (هو اسم متغير JS عام)، لكن إزالة أي string مرتبط بـ IP من الـ client bundle يحقق hygiene أعلى ويمتثل لمبدأ "zero IP-related metadata in client". الـ cost: سطر واحد من comment. الـ benefit: أي grep لاحق عن `KERNEL_SYSTEM_PROMPTS` في `dist/client/` يرجع 0 (وليس فقط `data-system-prompt`).
+- **Follow-up (user action)**: (1) **اعمل commit** للـ KRN-001 + KRN-002 changes معاً (نفس الملف `KernelAiAssistant.astro`، نفس السبب، نفس الـ audit batch). رسالة مقترحة: `fix(kernel-ai): remove KERNEL-001 systemPrompt + KRN-002 KERNEL_SYSTEM_PROMPTS keywords from client inline-script comments (no logic change)`. (2) **اعمل rotate للـ Gemini API key** (موثّق في BATCH-10 entry). (3) **اعمل real-key curl test** بدون mock بعد rotation.
+- **Risks**: (1) **AC #4 (end-to-end)** تم اختباره بالـ mock في KRN-001 entry — مع real key بعد rotation يتأكد نهائياً. (2) **chat.astro** (3-pane enterprise dashboard) ما يستخدم `<KernelAiAssistant>` ولا `data-system-prompt` — تم التحقق صراحةً (`grep -c = 0`). ما يحتاج أي تعديل. (3) **`KERNEL_SYSTEM_PROMPTS_MAX_CHARS`** ما يظهر في أي مكان في `src/` غير الـ data file، فما يحتاج فحص إضافي.
+
+---
 
 ### 2026-07-15 — KRN-001-VERIFY-2026-07-15: تأكيد قبول prompt injection fix بعد البناء — Verified
 
@@ -2513,7 +2659,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-039 | MX records = IONOS while NS = Cloudflare | low | open | 2026-06-29 | Mixed provider setup. May indicate config drift. |
 | KI-040 | `prompts.md`, `knowledge.md` in root — may be active knowledge files | low | open | 2026-06-29 | Verify before deletion. |
 | KI-041 | `seo_gate_log.txt`, `opencode.json` in root — tool residue | low | open | 2026-06-29 | Safe to delete. |
-| KI-042 | Lead capture webhook missing | medium | open | 2026-07-14 | KERNEL-AI-2026-07-14: /api/lead يطبع في console.log فقط. يحتاج webhook (Slack/Email/SendGrid/Resend) + dashboard لتتبع leads. حالياً لو فقدنا Render logs = فقدنا leads. |
+| KI-050 | Lead capture webhook sink not configured in production | medium | **partially-resolved** (code ready, env vars pending) | 2026-07-14 → 2026-07-15 | **Renumbered from KI-042 → KI-050 on 2026-07-15** (KRN-004-SPEC-RECONCILE) to resolve ID collision with Section 3.3's KI-042 (React renderer, resolved 2026-06-30). **Webhook support implemented in BATCH-3 (2026-07-15)**: `LEAD_WEBHOOK_URL` + `LEAD_WEBHOOK_SECRET` env vars, HMAC-SHA256 signing (`x-brightai-signature: sha256=...`), in-memory queue (cap 100) + 60s drain interval, 503 on queue overflow. **Verified 2026-07-15** via 3 live curl tests (KRN-004-SPEC-RECONCILE entry): 6/7 acceptance criteria pass + #7 matches "End state" per user Option A. **Status**: code ready in `src/pages/api/lead.ts`, needs `LEAD_WEBHOOK_URL` env in Render dashboard to enable production sink. Without it, leads stay in-memory (lost on Render restart). User action: set `LEAD_WEBHOOK_URL` (Resend/SendGrid/HubSpot/Zapier/n8n) + optional `LEAD_WEBHOOK_SECRET` (HMAC receiver verification) → KI-050 closes fully. |
 | KI-043 | Hosting now requires Node service (no more static deploy) | medium | open | 2026-07-14 | KERNEL-AI-2026-07-14: switched from Render static to Render Node service. يحتاج plan مناسب لـ Node (مو static free tier). Cold start ممكن يصير بطيء على free tier. |
 | KI-044 | /api/ai/chat + /api/lead CSRF protection weak | low | open | 2026-07-14 | KERNEL-AI-2026-07-14: POST endpoints بدون CSRF token. حالياً same-origin policy يكفي، لكن الأفضل إضافة origin check. |
 

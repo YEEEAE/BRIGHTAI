@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>BrightAI — التقرير الشامل لكل المسارات (v4.0)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+@page { size: 720px 1020px; margin: 0; }
+:root {
+    --bg-deep:#0a0e1a;--bg-base:#0d1322;--bg-slate:#111827;--bg-card:#1a2035;--bg-elevated:#232b45;
+    --accent:#20a597;--accent-light:#4ecdc4;--accent-dim:#14786e;
+    --text-primary:#e8eaed;--text-secondary:#c5cad6;--text-muted:#8b93a8;--text-faint:#5d6478;
+    --warning:#f59e0b;--danger:#ef4444;--success:#10b981;--info:#3b82f6;--purple:#a78bfa;
+    --border:#2d3748;--border-soft:#1f2937;
+    --font-ar:'IBM Plex Sans Arabic','Tajawal',sans-serif;
+    --font-display:'Tajawal','IBM Plex Sans Arabic',sans-serif;
+    --font-latin:'IBM Plex Sans','IBM Plex Sans Arabic',sans-serif;
+}
+* { box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+html, body {
+    margin:0; padding:0; width:720px; background:var(--bg-deep);
+    color:var(--text-primary); font-family:var(--font-ar),sans-serif;
+    font-size:14px; line-height:1.75; direction:rtl;
+}
+@media screen {
+    html { height:auto; display:flex; justify-content:center; background:#222; }
+    body { margin:20px auto; box-shadow:0 0 50px rgba(0,0,0,0.5); }
+}
+p, li, td, th, div { overflow-wrap:break-word; word-break:normal; line-break:strict; }
+
+/* Cover */
+.cover {
+    width:720px; height:1020px;
+    background: radial-gradient(ellipse 600px 400px at 80% 20%, rgba(32,165,151,0.18), transparent 70%),
+                radial-gradient(ellipse 500px 350px at 20% 80%, rgba(78,205,196,0.12), transparent 70%),
+                linear-gradient(180deg, #0a0e1a 0%, #0d1322 100%);
+    box-sizing:border-box; break-after:page; overflow:hidden; position:relative;
+    display:flex; flex-direction:column; justify-content:space-between; padding:70px 60px;
+}
+.cover-top { display:flex; justify-content:space-between; align-items:flex-start; }
+.cover-brand { display:flex; align-items:center; gap:14px; }
+.cover-brand-mark {
+    width:48px; height:48px; border-radius:12px;
+    background:linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--bg-deep); font-weight:900; font-size:22px;
+    font-family:var(--font-display),sans-serif;
+    box-shadow:0 6px 24px rgba(32,165,151,0.4);
+}
+.cover-brand-text { display:flex; flex-direction:column; }
+.cover-brand-name {
+    font-family:var(--font-display),sans-serif; font-size:22px; font-weight:700;
+    color:var(--text-primary); letter-spacing:-0.3px;
+}
+.cover-brand-tag { font-size:11px; color:var(--accent-light); font-weight:500; margin-top:2px; }
+.cover-meta {
+    text-align:left; font-family:var(--font-latin),sans-serif; font-size:10.5px;
+    color:var(--text-muted); line-height:1.6;
+}
+.cover-meta strong { color:var(--accent-light); font-weight:600; }
+.cover-center { display:flex; flex-direction:column; gap:28px; margin-top:-40px; }
+.cover-eyebrow {
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(32,165,151,0.10); border:1px solid rgba(32,165,151,0.35);
+    color:var(--accent-light); padding:8px 18px; border-radius:999px;
+    font-size:11.5px; font-weight:600; width:fit-content;
+}
+.cover-eyebrow::before {
+    content:''; width:8px; height:8px; border-radius:50%;
+    background:var(--accent); box-shadow:0 0 12px var(--accent);
+}
+.cover-title {
+    font-family:var(--font-display),sans-serif; font-size:54px; font-weight:900;
+    line-height:1.15; color:var(--text-primary); letter-spacing:-1px; margin:0;
+}
+.cover-title-accent {
+    background:linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+}
+.cover-subtitle {
+    font-size:17px; font-weight:400; color:var(--text-secondary);
+    line-height:1.55; max-width:560px; margin:0;
+}
+.cover-aspiration {
+    display:flex; align-items:center; gap:16px;
+    background:rgba(255,255,255,0.03); border-right:3px solid var(--accent);
+    padding:16px 20px; border-radius:0 12px 12px 0; backdrop-filter:blur(8px);
+}
+.cover-aspiration-label {
+    font-size:10px; color:var(--text-muted); font-weight:600;
+    text-transform:uppercase; letter-spacing:1.5px; font-family:var(--font-latin),sans-serif;
+}
+.cover-aspiration-text { font-size:15px; color:var(--text-primary); font-weight:500; margin-top:2px; }
+.cover-bottom {
+    display:flex; justify-content:space-between; align-items:flex-end;
+    border-top:1px solid var(--border); padding-top:24px;
+}
+.cover-version { font-family:var(--font-latin),sans-serif; font-size:11px; color:var(--text-muted); }
+.cover-version strong { color:var(--accent-light); }
+.cover-confidential { font-size:10.5px; color:var(--text-faint); text-align:left; }
+
+/* Main */
+.main-content { padding:55px 60px 45px 60px; }
+.chapter-header { break-after:avoid; break-inside:avoid; margin-top:28px; margin-bottom:22px; }
+.chapter-header:first-child { margin-top:0; }
+.section-tag {
+    display:inline-block; font-family:var(--font-latin),sans-serif;
+    font-size:10px; font-weight:700; color:var(--accent-light);
+    letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;
+}
+.section-title {
+    font-family:var(--font-display),sans-serif; font-size:28px; font-weight:700;
+    color:var(--text-primary); line-height:1.25; margin:0 0 10px 0; letter-spacing:-0.5px;
+}
+.section-title-num { color:var(--accent); margin-left:8px; }
+.divider { height:2px; background:linear-gradient(90deg, var(--accent), transparent); margin:12px 0 24px 0; width:100px; }
+.subsection-title {
+    font-family:var(--font-display),sans-serif; font-size:18px; font-weight:700;
+    color:var(--text-primary); margin:24px 0 12px 0; line-height:1.4; break-after:avoid;
+}
+.subsection-title::before { content:'◆'; color:var(--accent); margin-left:8px; font-size:12px; vertical-align:middle; }
+.body-text {
+    font-size:14px; line-height:1.85; color:var(--text-secondary);
+    margin:0 0 14px 0; text-align:justify;
+}
+.body-text strong { color:var(--text-primary); font-weight:600; }
+.body-text em { color:var(--accent-light); font-style:normal; font-weight:500; }
+.body-text .latin {
+    font-family:var(--font-latin),sans-serif; direction:ltr; display:inline-block;
+    background:rgba(255,255,255,0.05); padding:1px 6px; border-radius:4px;
+    font-size:12.5px; color:var(--accent-light);
+}
+.callout {
+    break-inside:avoid; background:rgba(32,165,151,0.06);
+    border-right:3px solid var(--accent); padding:16px 20px;
+    border-radius:0 10px 10px 0; margin:16px 0;
+    font-size:13.5px; line-height:1.7; color:var(--text-secondary);
+}
+.callout-warning { background:rgba(245,158,11,0.06); border-right-color:var(--warning); }
+.callout-danger { background:rgba(239,68,68,0.06); border-right-color:var(--danger); }
+.callout-success { background:rgba(16,185,129,0.06); border-right-color:var(--success); }
+.callout-title { font-weight:700; color:var(--text-primary); margin-bottom:6px; font-size:13px; }
+
+/* Tables */
+.kpi-table, .data-table {
+    width:100%; border-collapse:separate; border-spacing:0;
+    margin:16px 0; font-size:12.5px; break-inside:avoid;
+    background:var(--bg-slate); border-radius:10px; overflow:hidden;
+}
+.kpi-table thead, .data-table thead { background:var(--bg-elevated); }
+.kpi-table th, .data-table th {
+    padding:11px 13px; text-align:right; font-weight:600;
+    color:var(--text-primary); font-size:11.5px; border-bottom:1px solid var(--border);
+}
+.kpi-table td, .data-table td {
+    padding:9px 13px; border-bottom:1px solid var(--border-soft);
+    color:var(--text-secondary); vertical-align:middle;
+}
+.kpi-table tr:last-child td, .data-table tr:last-child td { border-bottom:none; }
+.kpi-table tr:nth-child(even) td, .data-table tr:nth-child(even) td { background:rgba(255,255,255,0.015); }
+.score-pill {
+    display:inline-block; padding:3px 10px; border-radius:999px;
+    font-family:var(--font-latin),sans-serif; font-size:11px;
+    font-weight:700; min-width:44px; text-align:center;
+}
+.score-critical { background:rgba(239,68,68,0.18); color:var(--danger); }
+.score-warning { background:rgba(245,158,11,0.18); color:var(--warning); }
+.score-success { background:rgba(16,185,129,0.18); color:var(--success); }
+.score-info { background:rgba(59,130,246,0.18); color:var(--info); }
+
+/* Finding card */
+.finding-card {
+    break-inside:avoid; background:var(--bg-slate); border:1px solid var(--border);
+    border-radius:12px; padding:18px 20px; margin:14px 0; position:relative;
+}
+.finding-card.critical { border-right:4px solid var(--danger); }
+.finding-card.high { border-right:4px solid #c2410c; }
+.finding-card.medium { border-right:4px solid var(--warning); }
+.finding-card.low { border-right:4px solid #facc15; }
+.finding-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; gap:12px; }
+.finding-id { font-family:var(--font-latin),sans-serif; font-size:10.5px; color:var(--text-muted); font-weight:600; letter-spacing:1px; }
+.finding-severity {
+    font-family:var(--font-latin),sans-serif; font-size:10px; font-weight:700;
+    padding:3px 10px; border-radius:999px; text-transform:uppercase; letter-spacing:1px;
+}
+.finding-severity.critical { background:var(--danger); color:white; }
+.finding-severity.high { background:#c2410c; color:white; }
+.finding-severity.medium { background:var(--warning); color:var(--bg-deep); }
+.finding-severity.low { background:#facc15; color:var(--bg-deep); }
+.finding-title {
+    font-family:var(--font-display),sans-serif; font-size:15.5px; font-weight:700;
+    color:var(--text-primary); margin:4px 0 8px 0; line-height:1.35;
+}
+.finding-meta {
+    display:flex; flex-wrap:wrap; gap:8px; font-size:11px;
+    color:var(--text-muted); margin-bottom:10px; font-family:var(--font-latin),sans-serif;
+}
+.finding-meta span { background:rgba(255,255,255,0.04); padding:3px 8px; border-radius:4px; }
+.finding-body { font-size:13px; line-height:1.7; color:var(--text-secondary); margin:6px 0; }
+.finding-body strong { color:var(--text-primary); }
+.finding-evidence {
+    background:var(--bg-deep); border:1px solid var(--border-soft);
+    border-radius:6px; padding:10px 12px; margin:8px 0;
+    font-family:'Liberation Mono',monospace; font-size:10.5px;
+    color:var(--accent-light); direction:ltr; text-align:left;
+    line-height:1.55; overflow-wrap:break-word; word-break:break-all;
+}
+.finding-fix { font-size:12.5px; color:var(--text-secondary); margin-top:8px; padding-top:8px; border-top:1px dashed var(--border); }
+.finding-fix-label { font-weight:700; color:var(--accent-light); font-size:11px; text-transform:uppercase; letter-spacing:1px; margin-left:6px; }
+
+/* Chart */
+.chart-block { break-inside:avoid; margin:18px 0; text-align:center; }
+.chart-block img { max-width:100%; height:auto; border-radius:8px; border:1px solid var(--border); }
+.chart-caption { font-size:11px; color:var(--text-muted); margin-top:6px; font-style:italic; }
+
+/* Metric strip */
+.metric-strip { display:flex; gap:10px; margin:16px 0; break-inside:avoid; }
+.metric-card {
+    flex:1 1 0; background:var(--bg-slate); border:1px solid var(--border);
+    border-radius:10px; padding:14px 12px; text-align:center;
+}
+.metric-value { font-family:var(--font-display),sans-serif; font-size:24px; font-weight:900; line-height:1.1; margin-bottom:4px; }
+.metric-value.danger { color:var(--danger); }
+.metric-value.warning { color:var(--warning); }
+.metric-value.success { color:var(--success); }
+.metric-value.accent { color:var(--accent); }
+.metric-label { font-size:11px; color:var(--text-muted); font-weight:500; line-height:1.3; }
+
+/* Path header banner */
+.path-banner {
+    break-inside:avoid; background:linear-gradient(135deg, var(--bg-slate) 0%, var(--bg-card) 100%);
+    border:1px solid var(--border); border-right:4px solid var(--accent);
+    border-radius:12px; padding:20px 24px; margin:18px 0 8px 0;
+    display:flex; justify-content:space-between; align-items:center;
+}
+.path-banner-info { flex:1; }
+.path-banner-tag {
+    font-family:var(--font-latin),sans-serif; font-size:10.5px; font-weight:700;
+    color:var(--accent-light); letter-spacing:2px; text-transform:uppercase;
+    margin-bottom:4px;
+}
+.path-banner-name {
+    font-family:var(--font-display),sans-serif; font-size:22px; font-weight:700;
+    color:var(--text-primary); margin:0;
+}
+.path-banner-desc { font-size:12.5px; color:var(--text-muted); margin-top:6px; }
+.path-banner-score {
+    font-family:var(--font-display),sans-serif; font-size:38px; font-weight:900;
+    line-height:1; padding:0 14px;
+}
+
+/* Two-col layout */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0; }
+.col-card {
+    background:var(--bg-slate); border:1px solid var(--border);
+    border-radius:10px; padding:14px 16px; break-inside:avoid;
+}
+.col-card-title {
+    font-family:var(--font-display),sans-serif; font-size:13px; font-weight:700;
+    color:var(--accent-light); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;
+}
+.col-card-body { font-size:12.5px; line-height:1.7; color:var(--text-secondary); }
+
+/* Lists */
+ul.body-list, ol.body-list {
+    padding-right:22px; margin:10px 0 14px 0; color:var(--text-secondary);
+    font-size:13.5px; line-height:1.8;
+}
+ul.body-list li, ol.body-list li { margin-bottom:6px; }
+ul.body-list li strong, ol.body-list li strong { color:var(--text-primary); }
+
+/* Phase card */
+.phase-card {
+    break-inside:avoid; background:var(--bg-slate); border:1px solid var(--border);
+    border-radius:12px; padding:18px 20px; margin:14px 0;
+    position:relative; border-right:4px solid var(--accent);
+}
+.phase-card.p1 { border-right-color:var(--accent); }
+.phase-card.p2 { border-right-color:var(--info); }
+.phase-card.p3 { border-right-color:var(--warning); }
+.phase-card.p4 { border-right-color:var(--purple); }
+.phase-card.p5 { border-right-color:var(--success); }
+.phase-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:10px; }
+.phase-name { font-family:var(--font-display),sans-serif; font-size:16px; font-weight:700; color:var(--text-primary); }
+.phase-timeframe {
+    font-family:var(--font-latin),sans-serif; font-size:11px;
+    background:rgba(255,255,255,0.06); padding:4px 10px; border-radius:999px;
+    color:var(--accent-light); font-weight:600;
+}
+.phase-stats { display:flex; gap:16px; font-size:11px; color:var(--text-muted); margin-bottom:10px; flex-wrap:wrap; }
+.phase-stats span { display:flex; align-items:center; gap:4px; }
+.phase-stats strong { color:var(--text-primary); font-family:var(--font-latin),sans-serif; font-size:13px; font-weight:700; }
+.phase-items { font-size:12.5px; color:var(--text-secondary); line-height:1.75; padding-right:16px; margin:0; }
+.phase-items li { margin-bottom:4px; }
+
+/* TOC */
+.toc-list {
+    list-style:none; padding:0; margin:20px 0;
+}
+.toc-list li {
+    padding:8px 0; border-bottom:1px dashed var(--border-soft);
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:13px; color:var(--text-secondary);
+}
+.toc-list li:hover { color:var(--accent-light); }
+.toc-list .toc-num {
+    font-family:var(--font-latin),sans-serif; font-weight:700;
+    color:var(--accent); margin-left:8px; min-width:30px;
+}
+.toc-list .toc-page {
+    font-family:var(--font-latin),sans-serif; font-size:11px;
+    color:var(--text-muted);
+}
+
+/* Ending */
+.ending {
+    width:720px; height:1020px;
+    background: radial-gradient(ellipse 600px 400px at 50% 40%, rgba(32,165,151,0.20), transparent 70%),
+                linear-gradient(180deg, #0a0e1a 0%, #0d1322 100%);
+    box-sizing:border-box; break-before:page; overflow:hidden; position:relative;
+    display:flex; flex-direction:column; justify-content:center;
+    align-items:center; padding:80px 60px; text-align:center;
+}
+.ending-mark {
+    width:80px; height:80px; border-radius:20px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-light));
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display),sans-serif; font-size:36px; font-weight:900;
+    color:var(--bg-deep); margin-bottom:30px;
+    box-shadow:0 12px 50px rgba(32,165,151,0.4);
+}
+.ending-title {
+    font-family:var(--font-display),sans-serif; font-size:38px; font-weight:900;
+    color:var(--text-primary); line-height:1.25; margin-bottom:24px; max-width:540px;
+}
+.ending-accent {
+    background:linear-gradient(135deg, var(--accent), var(--accent-light));
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+}
+.ending-text {
+    font-size:16px; line-height:1.75; color:var(--text-secondary);
+    max-width:480px; margin-bottom:30px;
+}
+.ending-divider { width:60px; height:3px; background:var(--accent); margin:20px 0; border-radius:2px; }
+.ending-meta {
+    font-size:12px; color:var(--text-muted);
+    font-family:var(--font-latin),sans-serif; line-height:1.8; margin-top:40px;
+}
+.ending-meta strong { color:var(--accent-light); font-weight:600; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     COVER PAGE
+     ════════════════════════════════════════════════════════════ -->
+<div class="cover">
+
+    <div class="cover-top">
+        <div class="cover-brand">
+            <div class="cover-brand-mark">B</div>
+            <div class="cover-brand-text">
+                <div class="cover-brand-name">BrightAI</div>
+                <div class="cover-brand-tag">AI Governance · المملكة العربية السعودية</div>
+            </div>
+        </div>
+        <div class="cover-meta">
+            <strong>التقرير:</strong> BrightAI Comprehensive Audit v4.0<br>
+            <strong>التاريخ:</strong> يوليو 2026<br>
+            <strong>النسخة:</strong> 4.0 — شامل لكل المسارات<br>
+            <strong>السرية:</strong> للإدارة التنفيذية
+        </div>
+    </div>
+
+    <div class="cover-center">
+        <div class="cover-eyebrow">تقرير شامل · 8 مسارات · 60+ ثغرة موثقة</div>
+
+        <h1 class="cover-title">
+            تحليل شامل لكل مسارات<br>
+            مشروع <span class="cover-title-accent">BrightAI</span>
+        </h1>
+
+        <p class="cover-subtitle">
+            تقييم تكاملي لـ 8 مسارات في المستودع: قاعدة البيانات، الإعدادات، لوحة التحكم،
+            AI Firewall، البناء والنشر، سكريبتات SEO، طبقة المحتوى، والأصول العامة —
+            مع نسب مئوية دقيقة وخارطة طريق تنفيذية لجعل BrightAI أفضل SaaS في الشرق الأوسط
+            في مجال حوكمة الذكاء الاصطناعي.
+        </p>
+
+        <div class="cover-aspiration">
+            <div>
+                <div class="cover-aspiration-label">الطموح المُستهدف</div>
+                <div class="cover-aspiration-text">
+                    منافس عالمي إقليمياً — في مصاف Credo AI و Holistic AI،
+                    مع تفوق إقليمي في الدعم العربي والامتثال السعودي.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cover-bottom">
+        <div class="cover-version">
+            <strong>BrightAI Comprehensive Audit</strong> · v4.0 · يوليو 2026
+        </div>
+        <div class="cover-confidential">
+            مُعدّ للإدارة التنفيذية<br>
+            Full Multi-Path Audit
+        </div>
+    </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     MAIN CONTENT
+     ════════════════════════════════════════════════════════════ -->
+<div class="main-content">
+
+<!-- ────────────────────────────────────────────────────────────
+     TABLE OF CONTENTS
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Table of Contents · الفهرس</div>
+    <h2 class="section-title">محتويات التقرير</h2>
+    <div class="divider"></div>
+</div>
+
+<ul class="toc-list">
+    <li><span><span class="toc-num">01.</span> الملخص التنفيذي للإدارة</span><span class="toc-page">3</span></li>
+    <li><span><span class="toc-num">02.</span> المنهجية والنطاق الشامل</span><span class="toc-page">6</span></li>
+    <li><span><span class="toc-num">03.</span> نظرة معمارية شاملة — 8 مسارات</span><span class="toc-page">8</span></li>
+    <li><span><span class="toc-num">04.</span> المسار 1: packages/db (Prisma + RLS)</span><span class="toc-page">11</span></li>
+    <li><span><span class="toc-num">05.</span> المسار 2: packages/config (RBAC + Env)</span><span class="toc-page">14</span></li>
+    <li><span><span class="toc-num">06.</span> المسار 3: Next.js Dashboard</span><span class="toc-page">17</span></li>
+    <li><span><span class="toc-num">07.</span> المسار 4: AI Firewall libs (عميق)</span><span class="toc-page">21</span></li>
+    <li><span><span class="toc-num">08.</span> المسار 5: البناء والنشر (Deploy)</span><span class="toc-page">25</span></li>
+    <li><span><span class="toc-num">09.</span> المسار 6: سكريبتات SEO (97 ملف)</span><span class="toc-page">27</span></li>
+    <li><span><span class="toc-num">10.</span> المسار 7: طبقة المحتوى (147 صفحة)</span><span class="toc-page">29</span></li>
+    <li><span><span class="toc-num">11.</span> المسار 8: الأصول العامة والإعدادات</span><span class="toc-page">30</span></li>
+    <li><span><span class="toc-num">12.</span> الأداء وتحسين الموبايل والكمبيوتر</span><span class="toc-page">32</span></li>
+    <li><span><span class="toc-num">13.</span> إمكانية الوصول (A11y) و RTL العربي</span><span class="toc-page">34</span></li>
+    <li><span><span class="toc-num">14.</span> الامتثال السعودي — PDPL/SDAIA/NCA/ISO</span><span class="toc-page">36</span></li>
+    <li><span><span class="toc-num">15.</span> البنشمارك التنافسي الإقليمي والعالمي</span><span class="toc-page">38</span></li>
+    <li><span><span class="toc-num">16.</span> خارطة الطريق التنفيذية للريادة (5 مراحل)</span><span class="toc-page">40</span></li>
+    <li><span><span class="toc-num">17.</span> مجموعة البرومبتز التنفيذية (18 برومبت)</span><span class="toc-page">44</span></li>
+    <li><span><span class="toc-num">18.</span> الخاتمة وتوصية الإطلاق</span><span class="toc-page">48</span></li>
+</ul>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 1 — الملخص التنفيذي
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 01 · Executive Summary</div>
+    <h2 class="section-title"><span class="section-title-num">01.</span> الملخص التنفيذي للإدارة</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+يقدّم هذا التقرير <strong>النسخة الأشمل</strong> من تقييم مشروع <strong>BrightAI</strong> — منصة SaaS
+متعددة المستأجرين لحوكمة وامتثال الذكاء الاصطناعي في السوق السعودي. التقرير يغطي
+<em>8 مسارات كاملة</em> في المستودع، استناداً إلى قراءة عميقة لأكثر من <strong>200 ملف</strong>
+برمجي: قاعدة البيانات <span class="latin">packages/db</span> (Prisma + RLS)، الإعدادات
+<span class="latin">packages/config</span> (RBAC + Env)، لوحة التحكم
+<span class="latin">apps/dashboard</span> (Next.js)، <span class="latin">AI Firewall</span> libs،
+البناء والنشر، 97 سكريبت SEO، طبقة المحتوى (57 مقال + 41 دليل + 26 صفحة مُهاجَرة)،
+والأصول العامة.
+</p>
+
+<div class="chart-block">
+    <img src="17_health_gauge_v2.png" alt="Updated Overall Health Score">
+    <div class="chart-caption">الشكل 1 — درجة الصحة الإجمالية المحدّثة (منخفضة عن التقدير السابق)</div>
+</div>
+
+<p class="body-text">
+النتيجة الحرجة: درجة الصحة الإجمالية للمشروع هي <strong>42.5%</strong> فقط — منخفضة عن التقدير
+السابق (56.7%) الذي ركّز على سطح Astro التسويقي. عند فحص المسارات الداخلية (db، dashboard،
+firewall libs) اكتشفنا أن <em>الأساس التقني للمنتج نفسه لا يعمل</em>. التطبيق بين
+<span class="latin">Prisma schema</span> والكود المستهلك يختلف في <strong>11 حقل</strong> على
+الأقل، مما يعني أن لوحة التحكم لا تستطيع الإقلاع، والـ <span class="latin">seed</span> لا يعمل،
+واختبار <span class="latin">RLS isolation</span> يفشل من السطر الأول.
+</p>
+
+<div class="callout callout-danger">
+    <div class="callout-title">⚠ اكتشاف حرج — السطح التسويقي يعمل، المنتج لا يعمل</div>
+    الموقع التسويقي (147 صفحة Astro) <strong>production-grade</strong> فعلاً: 57 مقال، SEO ممتاز،
+    أمان رأسياً (CSP/HSTS)، PWA كامل. لكن <strong>منصة SaaS نفسها (Dashboard + AI Firewall)</strong>
+    هي <em>Phase 0 scaffolding لا يشتغل</em>. ادعاءات "Saudi AI Safety OS" على الموقع
+    التسويقي <strong>غير مدعومة ببرنامج يعمل</strong>.
+</div>
+
+<div class="subsection-title">جدول الـ KPIs الرئيسي — كل المسارات</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr>
+            <th>القسم / المسار</th>
+            <th>النسبة الحالية</th>
+            <th>الهدف</th>
+            <th>الاتجاه</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>المسار 1:</strong> packages/db (Prisma + RLS)</td><td><span class="score-pill score-critical">35%</span></td><td>95%</td><td>↓ حرج جداً</td></tr>
+        <tr><td><strong>المسار 2:</strong> packages/config (RBAC + Env)</td><td><span class="score-pill score-warning">70%</span></td><td>95%</td><td>→ يحتاج إصلاح</td></tr>
+        <tr><td><strong>المسار 3:</strong> Next.js Dashboard</td><td><span class="score-pill score-critical">15%</span></td><td>90%</td><td>↓ لا يشتغل</td></tr>
+        <tr><td><strong>المسار 4:</strong> AI Firewall libs</td><td><span class="score-pill score-warning">50%</span></td><td>95%</td><td>↓ ثغرات حرجة</td></tr>
+        <tr><td><strong>المسار 5:</strong> Deploy & Build</td><td><span class="score-pill score-critical">30%</span></td><td>95%</td><td>↓ لا target للـ dashboard</td></tr>
+        <tr><td><strong>المسار 6:</strong> SEO Scripts (97 ملف)</td><td><span class="score-pill score-success">85%</span></td><td>95%</td><td>↑ ممتاز</td></tr>
+        <tr><td><strong>المسار 7:</strong> Content Layer (147 صفحة)</td><td><span class="score-pill score-success">90%</span></td><td>95%</td><td>↑ ممتاز</td></tr>
+        <tr><td><strong>المسار 8:</strong> Public Assets & Config</td><td><span class="score-pill score-success">85%</span></td><td>95%</td><td>→ جيد</td></tr>
+        <tr><td>الأداء والموبايل (cross-cutting)</td><td><span class="score-pill score-warning">62%</span></td><td>95%</td><td>→ يحتاج تحسين</td></tr>
+        <tr><td>إمكانية الوصول (A11y)</td><td><span class="score-pill score-warning">51%</span></td><td>95%</td><td>↓ يحتاج تحسين</td></tr>
+        <tr><td>الامتثال السعودي</td><td><span class="score-pill score-critical">38%</span></td><td>90%</td><td>↓ حرج</td></tr>
+        <tr style="background: rgba(239,68,68,0.10);"><td><strong>الدرجة الإجمالية الموزونة</strong></td><td><span class="score-pill score-critical"><strong>42.5%</strong></span></td><td><strong>92%</strong></td><td><strong>↑ +49.5 نقطة متوقعة بعد 365 يوماً</strong></td></tr>
+    </tbody>
+</table>
+
+<div class="chart-block">
+    <img src="16_health_heatmap.png" alt="Health Heatmap">
+    <div class="chart-caption">الشكل 2 — خريطة حرارية لـ 8 مسارات × 7 أبعاد جودة (الأحمر = حرج)</div>
+</div>
+
+<div class="subsection-title">أبرز 6 ثغرات حرجة (Critical)</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">CRITICAL-01 · Path 3</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Schema ↔ Dashboard drift — لوحة التحكم لا تقلع</div>
+    <div class="finding-meta">
+        <span>📁 schema.prisma vs lib/session.ts, lib/tenant.ts, app/(app)/team/page.tsx, app/api/webhooks/clerk/route.ts</span>
+        <span>🔒 11 حقل مكسور</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ <span class="latin">Prisma schema</span> يستخدم <span class="latin">name</span>/<span class="latin">nameAr</span>/<span class="latin">locale</span>
+        و <span class="latin">Domain.verified</span> (Boolean)، بينما الكود يستخدم
+        <span class="latin">fullName</span>/<span class="latin">fullNameAr</span>/<span class="latin">primaryLocale</span>
+        و <span class="latin">Domain.isVerified</span> + <span class="latin">deletedAt</span> (غير موجود).
+        النتيجة: <strong>كل طلب authenticated يرمي PrismaClientValidationError</strong>.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">CRITICAL-02 · Path 3</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Authentication bypass — أي مستخدم Clerk يصبح OWNER</div>
+    <div class="finding-meta">
+        <span>📁 apps/dashboard/lib/session.ts:79-95</span>
+        <span>🔒 كل الـ tenants</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">lib/session.ts</span> ينشئ <span class="latin">Membership</span> تلقائياً لأي مستخدم
+        Clerk authenticated يزور subdomain أي tenant، مع دور <span class="latin">OWNER</span> إذا كان أول
+        زائر. <strong>لا فحص دعوة</strong>. أي مستخدم Clerk يمكنه أن يصبح OWNER لأي org بأن يكون
+        أول زائر لـ subdomain.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">CRITICAL-03 · Path 1+4</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Hash-chain audit log مكسور — DB trigger يتعارض مع JS hash</div>
+    <div class="finding-meta">
+        <span>📁 rls.sql:472-504 vs lib/firewall/audit/hashchain.ts:117</span>
+        <span>🔒 كل الـ audit records</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ DB trigger <span class="latin">compute_audit_hash()</span> يستخدم خوارزمية مختلفة عن
+        <span class="latin">hashchain.ts</span>. الـ trigger يعمل <span class="latin">BEFORE INSERT</span>
+        فيُعيد كتابة الـ hash. النتيجة: <span class="latin">verifyChain()</span> سيرى <strong>كل صف
+        كـ "tampered"</strong>. قصة الـ tamper-evidence مكسورة من اليوم الأول.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">CRITICAL-04 · Path 1+4</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">TokenMapping غير مُفعَّل عليه RLS — عزل الـ PII مكسور</div>
+    <div class="finding-meta">
+        <span>📁 rls.sql:96-114 (TokenMapping مفقود)</span>
+        <span>🔒 كل token_mappings rows</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        جدول <span class="latin">token_mappings</span> الذي يخزّن PII مُشفَّر <strong>ليس في قائمة RLS-enable</strong>
+        في <span class="latin">rls.sql</span>. مع <span class="latin">dbServiceRole</span> المستخدم في
+        <span class="latin">token-vault.ts</span> (BYPASSRLS)، أي tenant يمكنه نظرياً قراءة tokens
+        tenant آخر. مع الـ shared vault key (CRITICAL-05) هذه ثغرة مركّبة.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">CRITICAL-05 · Path 4</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Shared vault key — كل tenants يستخدمون مفتاح AES واحد</div>
+    <div class="finding-meta">
+        <span>📁 lib/firewall/vault/token-vault.ts:28-31</span>
+        <span>🔒 كل الـ tenants</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">FIREWALL_TOKEN_VAULT_KEY</span> واحد من الـ env يُستخدم لكل الـ organizations.
+        لو تسرّب المفتاح، <strong>كل tenants تتعرض للخطر في وقت واحد</strong>. PDPL Article 36
+        (data breach notification) exposure = إجمالي. كما أن الـ rotation مكسور (4.12-4.14).
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">CRITICAL-06 · Path 5</span>
+        <span class="finding-severity critical">Critical · Blocker</span>
+    </div>
+    <div class="finding-title">لا Render service للـ dashboard — لا target إنتاجي</div>
+    <div class="finding-meta">
+        <span>📁 render.yaml (marketing site only)</span>
+        <span>🔒 الـ dashboard كله</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">render.yaml</span> يعرّف خدمة واحدة فقط: <span class="latin">brightai-site</span>
+        (موقع Astro). <strong>لا توجد خدمة للـ dashboard</strong>. الـ <span class="latin">Dockerfile</span>
+        للـ dashboard موجود لكنه غير مُختبَر ومساره خاطئ (<span class="latin">apps/dashboard/server.js</span>
+        بينما Next.js standalone يُخرج <span class="latin">server.js</span> في الجذر).
+    </div>
+</div>
+
+<div class="subsection-title">الرسالة الاستراتيجية للإدارة</div>
+
+<p class="body-text">
+المشروع يعيش <strong>انقساماً حاداً</strong>: نصفه التسويقي (Astro + Kernel + Content) جاهز للإنتاج
+بمستوى 85%+. نصفه المنتجي (Dashboard + AI Firewall + DB + Deploy) <em>غير قابل للتشغيل</em>
+بمستوى 15-35%. هذا يعني أن أي زيارة للـ marketing site تعمل بشكل ممتاز، لكن أي محاولة لتسجيل
+الدخول أو استخدام المنتج ستفشل. <strong>الفجوة بين الادعاء التسويقي والواقع التقني هي
+المشكلة الأساسية</strong>.
+</p>
+
+<p class="body-text">
+الطريق للريادة الإقليمية يتطلب <strong>3 جبهات متوازية</strong>: (1) <strong>إصلاح الـ schema
+drift</strong> وجعل dashboard يقلع (أسبوعان)، (2) <strong>تأمين AI Firewall</strong> من الـ 5 ثغرات
+الحرجة (3 أسابيع)، (3) <strong>بناء طبقة الامتثال السعودي</strong> PDPL/SDAIA/NCA (3 أشهر).
+الاستثمار الإجمالي المقدّر: <strong>$186,000</strong> على 365 يوماً، يرفع الصحة من 42.5% إلى 92%.
+</p>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 2 — المنهجية
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 02 · Methodology</div>
+    <h2 class="section-title"><span class="section-title-num">02.</span> المنهجية والنطاق الشامل</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+اعتمد التدقيق على منهجية <strong>Adversarial Codebase-Grounded Audit</strong> التي تجمع بين
+عقلية المهاجم وعقلية مهندس التشغيل، مع توثيق كل ادعاء بمرجع دقيق <span class="latin">file:line</span>.
+لم يتم الاكتفاء بفحص سطحي، بل تم تتبّع التدفقات الكاملة من <span class="latin">client</span> إلى
+<span class="latin">server</span> إلى <span class="latin">database</span> إلى <span class="latin">LLM
+provider</span>، مع التحقق من كل فرضية أمنية وأدائية عبر قراءة كاملة للملفات.
+</p>
+
+<div class="subsection-title">نطاق التدقيق — 8 مسارات</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>المسار</th>
+            <th>الموقع</th>
+            <th>الملفات</th>
+            <th>الأولوية</th>
+            <th>نسبة الفحص</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>1. packages/db</strong></td><td class="latin">packages/db/</td><td>8</td><td>حرج</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td><strong>2. packages/config</strong></td><td class="latin">packages/config/</td><td>5</td><td>عالي</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td><strong>3. Next.js Dashboard</strong></td><td class="latin">apps/dashboard/</td><td>~50</td><td>حرج</td><td><span class="score-pill score-warning">80%</span></td></tr>
+        <tr><td><strong>4. AI Firewall libs</strong></td><td class="latin">apps/dashboard/lib/firewall/</td><td>~25</td><td>حرج</td><td><span class="score-pill score-success">95%</span></td></tr>
+        <tr><td><strong>5. Deploy & Build</strong></td><td class="latin">render.yaml, Dockerfile, etc.</td><td>12</td><td>عالي</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr><td><strong>6. SEO Scripts</strong></td><td class="latin">scripts/</td><td>97</td><td>متوسط</td><td><span class="score-pill score-warning">40%</span></td></tr>
+        <tr><td><strong>7. Content Layer</strong></td><td class="latin">src/content/, src/data/</td><td>~130</td><td>متوسط</td><td><span class="score-pill score-warning">60%</span></td></tr>
+        <tr><td><strong>8. Public Assets</strong></td><td class="latin">public/</td><td>~15</td><td>متوسط</td><td><span class="score-pill score-success">100%</span></td></tr>
+        <tr style="background:rgba(32,165,151,0.08);"><td><strong>الإجمالي</strong></td><td>—</td><td><strong>~340</strong></td><td>—</td><td><span class="score-pill score-warning"><strong>~75%</strong></span></td></tr>
+    </tbody>
+</table>
+
+<div class="subsection-title">المعايير المعتمدة</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">أمن سيبراني</div>
+        <div class="col-card-body">
+            <strong>OWASP Top 10 (2021)</strong> + <strong>OWASP API Top 10</strong>. تطبيق
+            خاص على مسارات SSR + Dashboard + AI Firewall.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">إمكانية وصول</div>
+        <div class="col-card-body">
+            <strong>WCAG 2.1 Level AA</strong> + <strong>WAI-ARIA Authoring Practices</strong>.
+            تركيز على RTL، Arabic ligatures، focus management.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">امتثال سعودي</div>
+        <div class="col-card-body">
+            <strong>PDPL</strong> (المرسوم الملكي م/19)، <strong>SDAIA 7 Principles</strong>،
+            <strong>NCA ECC v2</strong>، <strong>ISO/IEC 42001:2023</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">أداء</div>
+        <div class="col-card-body">
+            <strong>Google Core Web Vitals</strong> (LCP/CLS/INP)، 7 viewports إلزامية،
+            <strong>WCAG 2.5.5</strong> touch targets ≥44×44px.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مستويات الثقة</div>
+
+<p class="body-text">
+كل ثغرة تحمل تصنيف: <strong>Confirmed</strong> (تحقّق بإعادة إنتاج أو دليل قاطع)،
+<strong>High Confidence</strong> (دليل قوي لكن بدون إعادة إنتاج)، <strong>Needs Verification</strong>
+(مؤشرات قوية تحتاج تحقق). كما نميّز بين <strong>Live Code</strong> و <strong>Legacy Inert</strong>.
+</p>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 3 — نظرة معمارية شاملة
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 03 · Architecture</div>
+    <h2 class="section-title"><span class="section-title-num">03.</span> نظرة معمارية شاملة — 8 مسارات</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+يتكون مستودع <strong>BRIGHTAI-main</strong> من <strong>8 مسارات</strong> متباينة في النضج.
+الفهم المعماري ضروري قبل الغوص في تفاصيل كل مسار، لأن الكثير من الثغرات تنتج عن
+<strong>عدم اتساق بين المسارات</strong> (مثلاً: schema في db لا يطابق الكود في dashboard).
+</p>
+
+<div class="chart-block">
+    <img src="11_paths_radar.png" alt="8-Path Maturity Radar">
+    <div class="chart-caption">الشكل 3 — رادار نضج 8 مسارات على 7 أبعاد جودة</div>
+</div>
+
+<div class="subsection-title">مصفوفة النضج الشاملة</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr>
+            <th>المسار</th>
+            <th>Typing</th>
+            <th>Error Handling</th>
+            <th>Tenant Scoping</th>
+            <th>Env Validation</th>
+            <th>Auth Checks</th>
+            <th>Test Coverage</th>
+            <th>Production</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>1. db</strong></td><td>95%</td><td>70%</td><td>60%</td><td><span class="score-pill score-critical">0%</span></td><td>N/A</td><td>10%</td><td><span class="score-pill score-critical">35%</span></td></tr>
+        <tr><td><strong>2. config</strong></td><td>100%</td><td>60%</td><td>N/A</td><td>100%</td><td>N/A</td><td>0%</td><td>70%</td></tr>
+        <tr><td><strong>3. Dashboard</strong></td><td>90%</td><td>50%</td><td><span class="score-pill score-critical">30%</span></td><td>70%</td><td>67%</td><td><span class="score-pill score-critical">5%</span></td><td><span class="score-pill score-critical">15%</span></td></tr>
+        <tr><td><strong>4. Firewall</strong></td><td>95%</td><td>70%</td><td><span class="score-pill score-critical">0%</span></td><td>30%</td><td>100%</td><td>40%</td><td>50%</td></tr>
+        <tr><td><strong>5. Deploy</strong></td><td>50%</td><td>50%</td><td>N/A</td><td>50%</td><td>N/A</td><td>N/A</td><td><span class="score-pill score-critical">30%</span></td></tr>
+        <tr><td><strong>6. Scripts</strong></td><td><span class="score-pill score-critical">0%</span></td><td>60%</td><td>N/A</td><td>10%</td><td>N/A</td><td>14%</td><td>85%</td></tr>
+        <tr><td><strong>7. Content</strong></td><td>100%</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>0%</td><td>90%</td></tr>
+        <tr><td><strong>8. Public</strong></td><td>50%</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>0%</td><td>85%</td></tr>
+    </tbody>
+</table>
+
+<div class="chart-block">
+    <img src="12_findings_by_path.png" alt="Findings by Path">
+    <div class="chart-caption">الشكل 4 — توزيع 60+ ثغرة حسب الخطورة والمسار</div>
+</div>
+
+<div class="subsection-title">الانقسام الحرج: تسويقي vs منتجي</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">✓ النصف التسويقي (85%+ نضج)</div>
+        <div class="col-card-body">
+            المسارات <strong>6, 7, 8</strong> (SEO Scripts، Content، Public Assets) + سطح Astro
+            التسويقي (147 صفحة) + Kernel Astro (12 صفحة) + SSR APIs (chat, lead) + PWA
+            + Service Worker + Comprehensive security headers. <strong>كل هذا يعمل</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">✗ النصف المنتجي (15-50% نضج)</div>
+        <div class="col-card-body">
+            المسارات <strong>1, 2, 3, 4, 5</strong> (db، config، Dashboard، Firewall libs، Deploy).
+            هذه هي <strong>منصة SaaS نفسها</strong>. الـ schema لا يطابق الكود، الـ dashboard
+            لا يقلع، الـ audit log مكسور، الـ vault key مشترك، لا target نشر للـ dashboard.
+        </div>
+    </div>
+</div>
+
+<div class="callout callout-warning">
+    <div class="callout-title">⚠ مخاطرة استراتيجية</div>
+    الموقع التسويقي يبيع منتجاً <strong>غير موجود تقنياً</strong>. أي عميل يحاول التسجيل أو
+    استخدام الـ dashboard سيصطدم بـ <span class="latin">PrismaClientValidationError</span>.
+    هذا يخلق <strong>فجوة ثقة فورية</strong> ويهدم الـ CAC (Customer Acquisition Cost) لأن
+    كل lead سيشتري ثم ينسحب. <em>الإصلاح يجب أن يسبق أي حملة تسويقية جديدة</em>.
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 1 — packages/db
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 04 · Path 1</div>
+    <h2 class="section-title"><span class="section-title-num">04.</span> المسار 1: packages/db — Prisma + RLS</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 1 · Database Foundation</div>
+        <div class="path-banner-name">packages/db (Prisma + RLS)</div>
+        <div class="path-banner-desc">8 ملفات · ~2,400 LOC · أساس عزل الـ tenants · حرج جداً</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--danger);">35%</div>
+</div>
+
+<p class="body-text">
+يمثل <span class="latin">packages/db</span> <strong>أساس عزل الـ tenants</strong> في كل منصة
+SaaS متعددة المستأجرين. يحتوي على: <span class="latin">Prisma schema</span> (852 LOC) مع
+الـ models والعلاقات، <span class="latin">rls.sql</span> (538 LOC) لـ Postgres Row-Level Security
+policies، <span class="latin">client.ts</span> (142 LOC) مع <span class="latin">db</span> +
+<span class="latin">dbServiceRole</span> + <span class="latin">withTenant</span>،
+<span class="latin">seed.ts</span> (320 LOC)، واختبار <span class="latin">RLS isolation</span>.
+المعمارية <em>ممتازة على الورق</em>، لكن التنفيذ يعاني من <strong>3 ثغرات Critical + 4 High</strong>
+تجعل الـ db package غير قابل للتشغيل.
+</p>
+
+<div class="subsection-title">الثغرات الحرجة في packages/db</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DB-001</span>
+        <span class="finding-severity critical">Critical</span>
+    </div>
+    <div class="finding-title">TokenMapping غير مُفعَّل عليه RLS — عزل PII مكسور</div>
+    <div class="finding-meta">
+        <span>📁 rls.sql:96-114 vs schema.prisma:705-735</span>
+        <span>🔒 كل token_mappings</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        جدول <span class="latin">token_mappings</span> الذي يخزّن PII مُشفَّر <strong>ليس في قائمة
+        RLS-enable</strong> في <span class="latin">rls.sql</span>. الـ DO block يذكر 16 جدول لكنه
+        يهمل <span class="latin">token_mappings</span>. مع <span class="latin">dbServiceRole</span>
+        (BYPASSRLS) المستخدم في <span class="latin">token-vault.ts</span>، أي tenant يمكنه نظرياً
+        قراءة tokens tenant آخر. <strong>عزل multi-tenant مكسور على مستوى الـ crypto + DB</strong>.
+    </div>
+    <div class="finding-evidence">-- rls.sql:96-114
+DO $$
+DECLARE t text;
+BEGIN
+  FOR t IN VALUES ('organizations', 'users', 'memberships', ...16 tables...)
+              -- token_mappings IS MISSING from this list
+  LOOP
+    EXECUTE format('ALTER TABLE %I ENABLE ROW LEVEL SECURITY', t);
+  END LOOP;
+END $$;</div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        إضافة <span class="latin">'token_mappings'</span> إلى قائمة الـ VALUES في الـ DO block.
+        سطر واحد. ثم <span class="latin">db:setup</span> لإعادة التشغيل.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DB-002</span>
+        <span class="finding-severity critical">Critical</span>
+    </div>
+    <div class="finding-title">Hash-chain audit log مكسور — DB trigger يتعارض مع JS hash</div>
+    <div class="finding-meta">
+        <span>📁 rls.sql:472-504 (compute_audit_hash) vs lib/firewall/audit/hashchain.ts:117</span>
+        <span>🔒 كل الـ audit records</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ DB trigger <span class="latin">compute_audit_hash()</span> يحسب:
+        <span class="latin">hash = SHA-256(prev || org_id || action || actor_id || created_at)</span>.
+        الـ JS <span class="latin">hashchain.ts</span> يحسب:
+        <span class="latin">hash = SHA-256(prev + canonicalJson(payload))</span> حيث payload
+        يشمل <span class="latin">metadata</span>, <span class="latin">targetType</span>,
+        <span class="latin">targetId</span>. <strong>الخوارزميتان تنتجان hash مختلف</strong>.
+        الـ trigger يعمل <span class="latin">BEFORE INSERT</span> فيُعيد كتابة الـ hash الذي
+        حسبه الـ JS. النتيجة: <span class="latin">verifyChain()</span> سيرى <strong>كل صف كـ
+        "tampered"</strong>.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        إما حذف الـ DB trigger (الـ JS يمتلك الـ hash) أو حذف حساب الـ JS (الـ DB يمتلكه).
+        + اختبار integration يكتب صف عبر <span class="latin">appendAuditLog</span> ويتحقق
+        عبر <span class="latin">verifyChain</span>.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DB-003</span>
+        <span class="finding-severity critical">Critical</span>
+    </div>
+    <div class="finding-title">Schema ↔ Seed ↔ Test drift — الـ seed والـ test لا يعملان</div>
+    <div class="finding-meta">
+        <span>📁 schema.prisma vs seed.ts:117, 155, 158, 168 vs rls-isolation.test.ts:77, 86, 133, 146</span>
+        <span>🔒 الـ db package كله</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ <span class="latin">seed.ts</span> يستخدم: <span class="latin">primaryLocale: 'ar'</span>,
+        <span class="latin">timezone: 'Asia/Riyadh'</span>, <span class="latin">fullName</span>,
+        <span class="latin">fullNameAr</span>, <span class="latin">emailVerified: new Date()</span> —
+        <strong>كلها لا وجود لها في الـ schema</strong>. الـ schema يستخدم
+        <span class="latin">name</span>/<span class="latin">nameAr</span>،
+        <span class="latin">locale</span>، و <span class="latin">emailVerified: Boolean</span>.
+        كما يستخدم الـ seed enum values خاطئة (<span class="latin">DOMAIN_ALLOW</span>,
+        <span class="latin">CONNECTED</span>, <span class="latin">CONNECT_INTEGRATION</span>).
+        الـ <span class="latin">rls-isolation.test.ts</span> له نفس المشكلة.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        قرار واحد: إما تحديث الـ schema لقبول الأسماء الجديدة، أو تحديث الـ seed + test
+        لاستخدام أسماء الـ schema. ثم <span class="latin">pnpm typecheck</span> كـ CI gate.
+    </div>
+</div>
+
+<div class="subsection-title">ثغرات High في packages/db</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">DB-004 — dbServiceRole silent fallback</div>
+        <div class="col-card-body">
+            <span class="latin">client.ts:49-64</span> يرجع إلى <span class="latin">DATABASE_URL</span>
+            لو <span class="latin">DATABASE_URL_SERVICE</span> غير موجود — حتى في الإنتاج. لا guard
+            يمنع <span class="latin">NODE_ENV=production</span> + missing service URL. الـ dashboard
+            سيعمل بصمت في وضع degraded.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DB-005 — Audit chain fork under concurrency</div>
+        <div class="col-card-body">
+            <span class="latin">rls.sql:479-483</span>: الـ trigger's <span class="latin">SELECT a.hash
+            ... ORDER BY a.created_at DESC LIMIT 1</span> لا يستخدم <span class="latin">FOR UPDATE</span>
+            أو advisory lock. concurrent inserts يمكن أن يقرآ نفس "previous" hash وينتجا forked chain.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DB-006 — db:rls:test script path خاطئ</div>
+        <div class="col-card-body">
+            <span class="latin">package.json:23</span>: <span class="latin">"db:rls:test": "tsx prisma/tests/rls-isolation.test.ts"</span> —
+            لكن الملف الفعلي في <span class="latin">tests/rls-isolation.test.ts</span> (بدون
+            <span class="latin">prisma/</span> prefix). <span class="latin">pnpm db:rls:test</span>
+            يخطئ ENOENT.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DB-007 — bcryptjs version mismatch</div>
+        <div class="col-card-body">
+            <span class="latin">@brightai/db</span> يصرّح <span class="latin">bcryptjs ^2.4.3</span>،
+            <span class="latin">@brightai/dashboard</span> يصرّح <span class="latin">bcryptjs ^3.0.2</span>.
+            major version mismatch + لا ملف يستورده فعلياً (الـ seed يستخدم <span class="latin">node:crypto</span>).
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات packages/db الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value danger">35%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value danger">3</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value warning">4</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value danger">0%</div><div class="metric-label">Env validation</div></div>
+    <div class="metric-card"><div class="metric-value danger">10%</div><div class="metric-label">Test coverage</div></div>
+    <div class="metric-card"><div class="metric-value warning">60%</div><div class="metric-label">Tenant scoping</div></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 2 — packages/config
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 05 · Path 2</div>
+    <h2 class="section-title"><span class="section-title-num">05.</span> المسار 2: packages/config — RBAC + Env</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 2 · Configuration & RBAC</div>
+        <div class="path-banner-name">packages/config (RBAC + Env + Constants)</div>
+        <div class="path-banner-desc">5 ملفات · 761 LOC · نموذج الصلاحيات · ناضج نسبياً</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--warning);">70%</div>
+</div>
+
+<p class="body-text">
+يمثل <span class="latin">packages/config</span> <strong>نموذج الصلاحيات والإعدادات</strong>.
+يحتوي على: <span class="latin">rbac.ts</span> (84 LOC) مع <span class="latin">requirePermission</span>،
+<span class="latin">requireRoleAtLeast</span>، <span class="latin">hasPermission</span>؛
+<span class="latin">constants.ts</span> (453 LOC) مع <span class="latin">ROLE_RANK</span>،
+<span class="latin">PERMISSIONS</span>، <span class="latin">RATE_LIMITS</span>،
+<span class="latin">PASSWORD_POLICY</span>؛ <span class="latin">env.ts</span> (164 LOC) مع Zod schemas
+لـ validation. هذا المسار <strong>الأكثر نضجاً</strong> بين مسارات الـ backend، لكن يعاني من
+ثغرات drift و dead config.
+</p>
+
+<div class="subsection-title">الثغرات في packages/config</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">CFG-001</span>
+        <span class="finding-severity high">High</span>
+    </div>
+    <div class="finding-title">ROLE_RANK مكرر في 3 أماكن — drift risk</div>
+    <div class="finding-meta">
+        <span>📁 constants.ts:37-43 + rbac.ts:67-73 + apps/dashboard/app/(settings)/settings/layout.tsx:27</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">ROLE_RANK</span> مُعرَّف في <span class="latin">constants.ts</span> (canonical)
+        + مُعاد تعريفه محلياً في <span class="latin">rbac.ts</span> "لتجنب circular import" — لكن
+        <span class="latin">rbac.ts</span> يستورد بالفعل من <span class="latin">./constants</span> (lines 12-16).
+        النسخة المحلية غير مبررة. + نسخة ثالثة في الـ dashboard layout. لو حدّث أحدها ونسيت الباقي،
+        الـ role checks تتباعد بصمت.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">CFG-002</span>
+        <span class="finding-severity high">High</span>
+    </div>
+    <div class="finding-title">RATE_LIMITS config ميت — الـ rate limiter يتجاهله</div>
+    <div class="finding-meta">
+        <span>📁 constants.ts:418-425 vs lib/firewall/ratelimit/redis-bucket.ts:25-26</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">RATE_LIMITS</span> constants مُعرَّفة لكن <strong>لا تُستورد في أي مكان</strong>.
+        الـ rate limiter الفعلي (<span class="latin">redis-bucket.ts:25-26</span>) ي hardcoded:
+        <span class="latin">DEFAULT_LIMIT = 60</span>، <span class="latin">DEFAULT_WINDOW_SEC = 60</span>.
+        تغيير <span class="latin">RATE_LIMITS.LOGIN_ATTEMPTS</span> = تأثير صفر.
+    </div>
+</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">CFG-003 — support:impersonate معلّق</div>
+        <div class="col-card-body">
+            <span class="latin">constants.ts:130-134</span>: <span class="latin">support:impersonate</span>
+            في <span class="latin">PERMISSIONS</span> لكن غير ممنوح لأي role. أي
+            <span class="latin">requirePermission(role, 'support:impersonate')</span> سيرمي خطأ لكل role.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">CFG-004 — PASSWORD_POLICY ميت</div>
+        <div class="col-card-body">
+            <span class="latin">PASSWORD_POLICY.MIN_STRENGTH_ENTROPY: 60</span> مُعرَّف لكن لا code
+            يطبّقه (الـ dashboard يستخدم Clerk). misleading: compliance reviewer يظن أنه مُطبَّق.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">CFG-005 — requireRoleAtLeast error message مضلّل</div>
+        <div class="col-card-body">
+            <span class="latin">rbac.ts:67-77</span>: يرمي <span class="latin">ForbiddenError('org:read', role)</span>
+            حتى عند فحص شيء unrelated لـ <span class="latin">org:read</span>. compliance auditor
+            سيفسّر سبب الرفض بشكل خاطئ.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">CFG-006 — env.ts min length متساهل</div>
+        <div class="col-card-body">
+            <span class="latin">env.ts:51-53</span>: <span class="latin">CLERK_SECRET_KEY: z.string().min(10)</span> —
+            10 قصير جداً (Clerk secrets = <span class="latin">sk_test_...</span> ≫ 10). يجب
+            <span class="latin">.min(20)</span> أو pattern-match.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات packages/config الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value warning">70%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value accent">0</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value warning">2</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value success">100%</div><div class="metric-label">Env Zod</div></div>
+    <div class="metric-card"><div class="metric-value success">100%</div><div class="metric-label">Typing</div></div>
+    <div class="metric-card"><div class="metric-value danger">0%</div><div class="metric-label">Test coverage</div></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 3 — Next.js Dashboard
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 06 · Path 3</div>
+    <h2 class="section-title"><span class="section-title-num">06.</span> المسار 3: Next.js Dashboard</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 3 · Customer-Facing SaaS Surface</div>
+        <div class="path-banner-name">apps/dashboard (Next.js 15 + Clerk + Prisma)</div>
+        <div class="path-banner-desc">~50 ملف · لوحة تحكم العميل · حرج جداً — لا يقلع</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--danger);">15%</div>
+</div>
+
+<p class="body-text">
+يمثل <span class="latin">apps/dashboard</span> <strong>السطح الذي يراه العميل</strong>. يحتوي على:
+<span class="latin">middleware.ts</span> (Clerk + tenant extraction)، <span class="latin">lib/session.ts</span>
+(session + RBAC)، <span class="latin">lib/tenant.ts</span> (slug resolver)، صفحات
+<span class="latin">(auth)</span>, <span class="latin">(app)</span>, <span class="latin">(settings)</span>,
+<span class="latin">(onboarding)</span>، و API routes (<span class="latin">health</span>,
+<span class="latin">webhooks/clerk</span>, <span class="latin">firewall/*</span>). هذا المسار
+<strong>Phase 0 scaffolding لا يشتغل</strong> بسبب 5 ثغرات Critical في الـ schema drift + auth bypass.
+</p>
+
+<div class="chart-block">
+    <img src="13_schema_drift.png" alt="Schema Drift">
+    <div class="chart-caption">الشكل 5 — Schema ↔ Application drift — 11 حقل مكسور</div>
+</div>
+
+<div class="subsection-title">الثغرات الحرجة في Dashboard</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DASH-001</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Schema ↔ Dashboard drift — كل طلب authenticated يفشل</div>
+    <div class="finding-meta">
+        <span>📁 lib/session.ts:25, 50-58, 62-75, 92, 117-124</span>
+        <span>🔒 كل الـ authenticated pages</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">SessionContext.user</span> مُنمَّط كـ <span class="latin">Pick&lt;User,
+        'id' | 'email' | 'fullName' | 'fullNameAr' | 'primaryLocale' | 'emailVerified' |
+        'twoFactorEnabled'&gt;</span> — لكن الـ <span class="latin">User</span> model في
+        <span class="latin">schema.prisma:281-328</span> يستخدم <span class="latin">name</span>/
+        <span class="latin">nameAr</span> (ليس <span class="latin">fullName</span>/
+        <span class="latin">fullNameAr</span>)، <span class="latin">locale</span> (ليس
+        <span class="latin">primaryLocale</span>)، و <span class="latin">emailVerified: Boolean</span>
+        (ليس DateTime). الـ <span class="latin">upsert</span> create payload (lines 52-58) يمرّر
+        <span class="latin">email: ''</span> و <span class="latin">fullName: ''</span> — أسماء حقول
+        لا وجود لها. <strong>كل طلب authenticated يرمي PrismaClientValidationError</strong>.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DASH-002</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Authentication bypass — أي مستخدم Clerk يصبح OWNER</div>
+    <div class="finding-meta">
+        <span>📁 lib/session.ts:79-95</span>
+        <span>🔒 كل الـ tenants</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">lib/session.ts</span> ينشئ <span class="latin">Membership</span> تلقائياً
+        لأي مستخدم Clerk authenticated يزور subdomain أي tenant، مع دور <span class="latin">OWNER</span>
+        إذا كان <span class="latin">existingCount === 0</span>، وإلا <span class="latin">MEMBER</span>.
+        <strong>لا فحص دعوة</strong>. أي مستخدم Clerk يمكنه أن يصبح OWNER لأي org بأن يكون
+        أول زائر لـ subdomain. هذا <em>authentication bypass كامل</em>.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        طلب إما دعوة نشطة أو membership موجود؛ <strong>أبداً</strong> auto-create OWNER. +
+        atomic transaction لمنع race.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DASH-003</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">lib/tenant.ts Domain.isVerified مكسور</div>
+    <div class="finding-meta">
+        <span>📁 lib/tenant.ts:41</span>
+        <span>🔒 custom-domain resolution</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">dbServiceRole.domain.findFirst({ where: { domain: slug, isVerified: true, deletedAt: null } })</span> —
+        لكن <span class="latin">Domain</span> schema (lines 741-767) يستخدم <span class="latin">verified</span>
+        (Boolean) <strong>ليس</strong> <span class="latin">isVerified</span>، و <strong>لا</strong>
+        حقل <span class="latin">deletedAt</span>. Prisma سيرمي <span class="latin">Unknown argument deletedAt</span>.
+        <strong>custom-domain tenant resolution مكسور</strong>.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DASH-004</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">Clerk webhook مكسور — user sync يفشل</div>
+    <div class="finding-meta">
+        <span>📁 app/api/webhooks/clerk/route.ts:77-93</span>
+        <span>🔒 كل Clerk events</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        الـ webhook upserts User بنفس field names الخاطئة: <span class="latin">fullName, fullNameAr,
+        primaryLocale, emailVerified: new Date()</span>. الـ webhook سيرمي على كل event،
+        Clerk سيعيد المحاولة ثم <strong>يُعطّل الـ webhook تلقائياً</strong>. user sync كامل مكسور.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DASH-005</span>
+        <span class="finding-severity critical">Critical · Live</span>
+    </div>
+    <div class="finding-title">app/(app)/team/page.tsx مكسور — Prisma include بحقول مفقودة</div>
+    <div class="finding-meta">
+        <span>📁 app/(app)/team/page.tsx:13, 26, 30</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">include: { user: { select: { email: true, fullName: true, fullNameAr: true, ... } } }</span> —
+        <span class="latin">fullName</span>/<span class="latin">fullNameAr</span> ليست حقول User.
+        Prisma يرمي عند runtime. <strong>Team page مكسور</strong>.
+    </div>
+</div>
+
+<div class="subsection-title">ثغرات High في Dashboard</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">DASH-006 — dbServiceRole bypasses RLS</div>
+        <div class="col-card-body">
+            <span class="latin">dashboard/page.tsx:19-27</span> و <span class="latin">team/page.tsx:11-15</span>
+            يستخدمان <span class="latin">dbServiceRole</span> + WHERE filter بدلاً من
+            <span class="latin">withTenant()</span>. defense-in-depth موثّقة لكن غير مُطبّقة.
+            README line 162 يزعم "إذا نسي route handler استدعاء withTenant، الـ DB يرجع 0 rows" —
+            <strong>كاذب</strong> لـ <span class="latin">dbServiceRole</span>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DASH-007 — firewall routes no middleware safety net</div>
+        <div class="col-card-body">
+            <span class="latin">middleware.ts:38</span>: <span class="latin">'/api/firewall/(.*)'</span>
+            في <span class="latin">isPublicRoute</span> — يتخطى <span class="latin">auth.protect()</span>.
+            الـ auth يعتمد على كل route handler استدعاء <span class="latin">resolveApiKey()</span>.
+            أي firewall route جديد بدون <span class="latin">resolveApiKey</span> = endpoint مفتوح.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DASH-008 — first-login race condition</div>
+        <div class="col-card-body">
+            <span class="latin">lib/session.ts:50-58</span>: ينشئ User بـ <span class="latin">email: ''</span>.
+            <span class="latin">User.email</span> هو <span class="latin">@unique @db.Citext</span> —
+            مستخدمان مختلفان يسجلان الدخول لأول مرة بشكل متزامن سينشئان صفّين بـ <span class="latin">email: ''</span>،
+            والثاني يصطدم بـ unique constraint.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DASH-009 — sign-up decoupled from tenant creation</div>
+        <div class="col-card-body">
+            <span class="latin">sign-up/[[...sign-up]]/page.tsx:14-19</span>: مجرد <span class="latin">&lt;SignUp /&gt;</span>
+            من Clerk. ينشئ Clerk user بدون Organization row. مع DASH-002، أول مستخدم يزور tenant
+            subdomain يصبح OWNER — بما في ذلك brand-new sign-up غير مرتبط بأي org. <strong>onboarding
+            مكسور</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DASH-010 — silent audit-log failures</div>
+        <div class="col-card-body">
+            <span class="latin">redact/route.ts:113-116</span> و <span class="latin">transcribe/route.ts:242-244</span>:
+            <span class="latin">try { await logFirewallEvent(...) } catch { /* ignore */ }</span> —
+            فشل الـ audit يُتجاهل بصمت. PDPL Art. 19 يتطلب سجلات موثوقة. لو فشل الـ audit write،
+            المستخدم يرى 200 ولا يوجد سجل.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DASH-011 — riskLevel hardcoded LOW</div>
+        <div class="col-card-body">
+            <span class="latin">transcribe/route.ts:222-223</span>: <span class="latin">riskScore: Math.min(1, 0.1 * detections.length), riskLevel: 'LOW'</span> —
+            <span class="latin">riskLevel</span> hardcoded <span class="latin">'LOW'</span> بغض النظر عن
+            <span class="latin">riskScore</span>. 10 PII detections = <span class="latin">riskScore: 1.0</span>
+            لكن <span class="latin">riskLevel: 'LOW'</span>. غير متسق.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات Dashboard الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value danger">15%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value danger">5</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value warning">6</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value danger">5%</div><div class="metric-label">Test coverage</div></div>
+    <div class="metric-card"><div class="metric-value warning">67%</div><div class="metric-label">Auth checks</div></div>
+    <div class="metric-card"><div class="metric-value danger">30%</div><div class="metric-label">Tenant scoping</div></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 4 — AI Firewall libs
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 07 · Path 4</div>
+    <h2 class="section-title"><span class="section-title-num">07.</span> المسار 4: AI Firewall libs (عميق)</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 4 · Core Product Differentiator</div>
+        <div class="path-banner-name">apps/dashboard/lib/firewall/*</div>
+        <div class="path-banner-desc">~25 ملف · PII detection + redaction + vault + audit · ميزة تنافسية #1</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--warning);">50%</div>
+</div>
+
+<p class="body-text">
+الـ <span class="latin">AI Firewall</span> هو <strong>الميزة التنافسية الأقوى</strong> لـ BrightAI.
+يحتوي على: <span class="latin">auth/api-key.ts</span> (API key resolution)،
+<span class="latin">ratelimit/redis-bucket.ts</span> (Redis Lua + in-memory fallback)，
+<span class="latin">audit/hashchain.ts</span> (tamper-evident chain)，
+<span class="latin">vault/token-vault.ts</span> (AES-256-GCM reversible vault)，
+<span class="latin">detectors/regex.ts</span> (8 PII patterns)，
+<span class="latin">detectors/ner.ts</span> (HuggingFace NER)，
+<span class="latin">detectors/arabic-names.ts</span>，
+<span class="latin">engine/redaction.ts</span>，
+<span class="latin">engine/piidetector.ts</span>. الكود <em>production-grade</em> لـ regex
+و redaction، لكن يعاني من <strong>4 ثغرات Critical + 8 High</strong> في الـ vault و audit و rate limit.
+</p>
+
+<div class="chart-block">
+    <img src="14_firewall_layers.png" alt="AI Firewall Layers">
+    <div class="chart-caption">الشكل 6 — Defense-in-Depth stack مع الفجوات (5 طبقات ≤ 50%)</div>
+</div>
+
+<div class="subsection-title">الثغرات الحرجة في AI Firewall</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">FW-001</span>
+        <span class="finding-severity critical">Critical</span>
+    </div>
+    <div class="finding-title">Shared vault key — كل tenants يستخدمون مفتاح AES واحد</div>
+    <div class="finding-meta">
+        <span>📁 lib/firewall/vault/token-vault.ts:28-31</span>
+        <span>🔒 كل الـ tenants</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        التعليق صريح: "for the Phase 1c MVP all orgs share the same key from env (simpler ops,
+        suitable for the Sovereign Cloud SaaS deployment mode)." <span class="latin">FIREWALL_TOKEN_VAULT_KEY</span>
+        واحد لكل organizations. لو تسرّب، <strong>كل tenants تتعرض للخطر في وقت واحد</strong>.
+        PDPL Article 36 (data breach notification) exposure = إجمالي.
+    </div>
+    <div class="finding-fix">
+        <span class="finding-fix-label">الإصلاح:</span>
+        اشتقاق per-tenant keys من master + org_id (HKDF)، أو تخزين per-org keys في جدول منفصل
+        بـ KMS-backed encryption.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">FW-002</span>
+        <span class="finding-severity critical">Critical</span>
+    </div>
+    <div class="finding-title">Hash-chain audit log مكسور (مكرر مع DB-002)</div>
+    <div class="finding-meta">
+        <span>📁 lib/firewall/audit/hashchain.ts:117 vs rls.sql:472-504</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        نفس المشكلة من زاوية الـ JS: <span class="latin">hashchain.ts</span> يحسب hash بـ
+        canonicalJson(payload) بينما الـ DB trigger يحسب بـ concatenation. الـ trigger
+        يoverwrite. <span class="latin">verifyChain()</span> يرى كل صف كـ tampered.
+    </div>
+</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">FW-003</span>
+        <span class="finding-severity critical">Critical</span>
+    </div>
+    <div class="finding-title">TokenMapping غير مُفعَّل RLS (مكرر مع DB-001)</div>
+    <div class="finding-meta">
+        <span>📁 lib/firewall/vault/token-vault.ts:143, 177 + rls.sql:96-114</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">token-vault.ts</span> يستخدم <span class="latin">dbServiceRole.tokenMapping.create/read</span>
+        (BYPASSRLS). مع <span class="latin">token_mappings</span> غير مُفعَّل عليه RLS،
+        <strong>عزل multi-tenant للـ PII tokens يعتمد فقط على WHERE clauses تطبيقية</strong>،
+        ليس على الـ DB.
+    </div>
+</div>
+
+<div class="subsection-title">ثغرات High في AI Firewall</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">FW-004</span>
+        <span class="finding-severity high">High</span>
+    </div>
+    <div class="finding-title">API key scope bypass — read-only key يمكنه الكتابة</div>
+    <div class="finding-meta">
+        <span>📁 lib/firewall/auth/api-key.ts:44-53</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">resolveApiKey</span> يفحص <span class="latin">status === 'ACTIVE'</span>
+        و <span class="latin">expiresAt</span> — <strong>لا يفحص <span class="latin">scopes</span></strong>.
+        الـ schema يحتوي <span class="latin">scopes String[]</span> (schema.prisma:636) لكن الـ resolver
+        يرجع success بغض النظر عن scopes. API key بـ scope <span class="latin">request:read:own</span>
+        يمكنه استدعاء <span class="latin">firewall/redact</span> (write operation).
+    </div>
+</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">FW-005 — Redis retry永久 disabled</div>
+        <div class="col-card-body">
+            <span class="latin">redis-bucket.ts:32-53</span>: <span class="latin">redisInitTried = true</span>
+            بعد أول محاولة. لو فشلت (Redis briefly down at boot)، <span class="latin">redis</span>
+            يبقى null و<strong>لا retry لبقية عمر العملية</strong>. 1-second blip عند cold-start
+            يُعطّل الـ rate limiting للأبد.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">FW-006 — Redis errors silently swallowed</div>
+        <div class="col-card-body">
+            <span class="latin">redis-bucket.ts:42-44</span>: <span class="latin">redis.on('error', () =&gt; { /* Swallow */ })</span> —
+            no logging، no metric. operators لا يعرفون أن Redis flapping. PDPL Art. 32 يتطلب
+            monitoring.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">FW-007 — Only 4 of 40 audit actions hash-chained</div>
+        <div class="col-card-body">
+            <span class="latin">hashchain.ts:31-35</span>: <span class="latin">action</span> restricted to
+            4 values (<span class="latin">REQUEST_CREATED, REQUEST_APPROVED, REQUEST_REJECTED, POLICY_APPROVED</span>).
+            schema's <span class="latin">AuditAction</span> enum عنده 40+ values. الـ 36 المتبقية
+            (مثل <span class="latin">USER_LOGIN, MEMBERSHIP_CREATED, API_KEY_REVOKED</span>)
+            <strong>لا يمكن كتابتها عبر hash-chain</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">FW-008 — HKDF derivation diverges from spec</div>
+        <div class="col-card-body">
+            <span class="latin">token-vault.ts:65-74</span>: <span class="latin">deriveKeys</span> يستخدم
+            single HKDF مع concatenated info، ثم splits. الـ docstring (lines 16-17) يقول
+            <span class="latin">info="aes-key"</span> و <span class="latin">info="hmac-key"</span>
+            derivations منفصلة. <strong>التنفيذ لا يطابق التوثيق</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">FW-009 — Vault rotation مكسور 3 طرق</div>
+        <div class="col-card-body">
+            <span class="latin">token-vault.ts:226-258</span>: (1) ليس في transaction، (2)
+            <span class="latin">tokenHmac</span> لا يُعاد حسابه بعد rotation، (3) tokens منتهية
+            الصلاحية تُعيد tokenize بـ ttl سالب = immediately expired. Rotation غير atomic +
+            resumability غير معرّفة.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">FW-010 — NER can't load in air-gapped</div>
+        <div class="col-card-body">
+            <span class="latin">ner.ts:86-89</span>: <span class="latin">env.allowLocalModels = true;
+            env.allowRemoteModels = true;</span> — يسمح بالتحميل من HuggingFace وقت التشغيل. في
+            air-gapped deployment (أحد الـ 3 deployment modes)، النموذج لا يمكن تحميله. NER
+            سيبقى <span class="latin">degraded</span> بشكل دائم.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">FW-011 — Card detector high false-positive</div>
+        <div class="col-card-body">
+            <span class="latin">regex.ts:85</span>: <span class="latin">CARD_OR_ACCOUNT: /(?&lt;!\d)\d[\d -]{11,18}\d(?!\d)/g</span> —
+            يطابق 13-19 رقم مع spaces/dashes. Confidence 0.78. <strong>false-positive rate عالي</strong>
+            على long numeric IDs (order numbers، reference codes). مع <span class="latin">mask</span>
+            action، يمكن إفساد non-PII numbers.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">FW-012 — SAUDI_ID mask يكشف citizen vs resident</div>
+        <div class="col-card-body">
+            <span class="latin">redaction.ts:60-66</span>: <span class="latin">mask</span> يُظهر أول
+            وآخر حرف. لـ Saudi ID <span class="latin">1234567890</span> → <span class="latin">1********0</span>.
+            <strong>أول حرف يكشف citizen-vs-resident flag</strong> (1=citizen، 2=citizen born 2000+،
+            3-8=iqama). مهاجم بـ masked IDs كثير يمكنه استنتاج residency status.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات AI Firewall الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value warning">50%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value danger">4</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value warning">8</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value success">100%</div><div class="metric-label">Auth checks</div></div>
+    <div class="metric-card"><div class="metric-value danger">0%</div><div class="metric-label">Tenant scoping</div></div>
+    <div class="metric-card"><div class="metric-value warning">40%</div><div class="metric-label">Test coverage</div></div>
+</div>
+
+<div class="callout">
+    <div class="callout-title">نقاط القوة في AI Firewall</div>
+    <ul class="body-list">
+        <li><strong>regex.ts</strong> — 8 PII patterns شاملة (SAUDI_ID, IQAMA, IBAN, CARD, PHONE, EMAIL, MRN, Arabic names) بـ confidence scores.</li>
+        <li><strong>redaction.ts</strong> — 5 actions (mask, tokenize, hash, block, allow) مع fallback chain.</li>
+        <li><strong>AES-256-GCM</strong> للـ vault — مع per-token HMAC للـ integrity.</li>
+        <li><strong>Pluggable NER</strong> — architecture تسمح بإضافة Arabic BERT مستقبلاً.</li>
+        <li><strong>API key SHA-256 hash</strong> — raw key لا يُخزّن.</li>
+        <li><strong>Redis Lua sliding window</strong> — atomic rate limit عندما Redis متاح.</li>
+    </ul>
+    هذه نقاط انطلاق ممتازة. الإصلاحات المقترحة تحافظ عليها وتعالج الثغرات فقط.
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 5 — Deploy & Build
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 08 · Path 5</div>
+    <h2 class="section-title"><span class="section-title-num">08.</span> المسار 5: البناء والنشر (Deploy)</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 5 · Deployment & Build Pipeline</div>
+        <div class="path-banner-name">render.yaml + Dockerfile + docker-compose</div>
+        <div class="path-banner-desc">12 ملف · render.yaml 932 LOC (marketing site only) · dashboard لا target له</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--danger);">30%</div>
+</div>
+
+<p class="body-text">
+يغطي هذا المسار: <span class="latin">render.yaml</span> (932 LOC — شامل جداً للموقع التسويقي)،
+<span class="latin">docker-compose.yml</span> (72 LOC — للـ dev Postgres)، <span class="latin">apps/dashboard/Dockerfile</span>
+(52 LOC — غير مُختبَر)، <span class="latin">vitest.config.ts</span>، <span class="latin">tsconfig.json</span>،
+<span class="latin">eslint.config.mjs</span>، <span class="latin">01-create-roles.sql</span>،
+و READMEs. <strong>الفجوة الحرجة</strong>: لا Render service للـ dashboard، و Dockerfile path خاطئ.
+</p>
+
+<div class="subsection-title">الثغرات في Deploy</div>
+
+<div class="finding-card critical">
+    <div class="finding-header">
+        <span class="finding-id">DEP-001</span>
+        <span class="finding-severity critical">Critical · Blocker</span>
+    </div>
+    <div class="finding-title">لا Render service للـ dashboard — لا target إنتاجي</div>
+    <div class="finding-meta">
+        <span>📁 render.yaml:9-22 (brightai-site only)</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">render.yaml</span> يعرّف <strong>خدمة واحدة</strong>: <span class="latin">brightai-site</span>
+        (موقع Astro). <strong>لا توجد خدمة للـ dashboard</strong>. الـ Dockerfile للـ dashboard
+        موجود لكن لا Render service يستهلكه. الـ dashboard <strong>لا target إنتاجي له</strong>.
+    </div>
+</div>
+
+<div class="finding-card high">
+    <div class="finding-header">
+        <span class="finding-id">DEP-002</span>
+        <span class="finding-severity high">High</span>
+    </div>
+    <div class="finding-title">Dockerfile path mismatch — الـ container لن يقلع</div>
+    <div class="finding-meta">
+        <span>📁 apps/dashboard/Dockerfile:42-51</span>
+        <span>✓ Confirmed</span>
+    </div>
+    <div class="finding-body">
+        <span class="latin">COPY --from=builder ... ./apps/dashboard/.next/standalone ./</span> +
+        <span class="latin">CMD ["node", "apps/dashboard/server.js"]</span> — لكن Next.js standalone
+        يُخرج <span class="latin">server.js</span> في جذر الـ standalone dir، ليس في <span class="latin">apps/dashboard/</span>.
+        الـ container سيفشل بـ <span class="latin">Cannot find module apps/dashboard/server.js</span>.
+    </div>
+</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">DEP-003 — BYPASSRLS password في plaintext</div>
+        <div class="col-card-body">
+            <span class="latin">01-create-roles.sql:31</span>: <span class="latin">CREATE ROLE brightai_service LOGIN PASSWORD 'brightai_service' BYPASSRLS;</span> —
+            أي شخص بالباسوورد يملك cross-tenant access كامل. الباسوورد موثّق في plaintext في
+            <span class="latin">docker-compose.yml</span>، <span class="latin">setup-local-db.mjs</span>،
+            و الـ SQL file.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DEP-004 — HSTS max-age غير متسق</div>
+        <div class="col-card-body">
+            <span class="latin">_headers:53</span>: <span class="latin">max-age=63072000</span> (سنتان).
+            <span class="latin">render.yaml:27</span>: <span class="latin">max-age=31536000</span> (سنة).
+            <strong>posture أمني مختلف بين hosts</strong>. على Render = سنة، على Cloudflare/Netlify = سنتان.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DEP-005 — Dockerfile COPY كامل المستودع</div>
+        <div class="col-card-body">
+            <span class="latin">Dockerfile:25</span>: <span class="latin">COPY . .</span> — ينسخ المستودع
+            كامل (Astro site، scripts، _reports، إلخ) في الـ builder. image bloat + slow builds.
+            يجب إضافة <span class="latin">.dockerignore</span> أو نسخ <span class="latin">apps/dashboard/</span>
+            + <span class="latin">packages/</span> فقط.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DEP-006 — HEALTHCHECK busybox wget مشكوك</div>
+        <div class="col-card-body">
+            <span class="latin">Dockerfile:48-49</span>: <span class="latin">HEALTHCHECK CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health</span> —
+            <span class="latin">node:22-alpine</span> يستخدم busybox wget الذي يختلف عن GNU wget.
+            <span class="latin">--spider</span> behavior مختلف. قد يعطي false negatives.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DEP-007 — README يضلّل</div>
+        <div class="col-card-body">
+            <span class="latin">apps/dashboard/README.md:9-19</span>: يزعم "✅ Clerk auth، ✅ RBAC
+            enforcement، ✅ RLS via withTenant()" — لكن DASH-001 يثبت أن session.ts مكسور، CFG-001
+            يثبت drift في ROLE_RANK، و DASH-006 يثبت تجاوز withTenant. <strong>توثيق يضلّل المهندس الجديد</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">DEP-008 — README ينصح بتعطيل auth</div>
+        <div class="col-card-body">
+            <span class="latin">README.md:106</span>: "يمكنك تعطيل auth gate بـ ENABLE_SIGNUP='false'
+            وتخطي requireSessionPermission (workaround)" — لو تُتبِّع في non-dev environment = auth bypass
+            كامل. <strong>نصيحة خطيرة في README</strong>.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات Deploy الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value danger">30%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value danger">2</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value warning">4</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value warning">50%</div><div class="metric-label">Env validation</div></div>
+    <div class="metric-card"><div class="metric-value success">90%</div><div class="metric-label">Marketing site deploy</div></div>
+    <div class="metric-card"><div class="metric-value danger">0%</div><div class="metric-label">Dashboard deploy</div></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 6 — SEO Scripts
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 09 · Path 6</div>
+    <h2 class="section-title"><span class="section-title-num">09.</span> المسار 6: سكريبتات SEO (97 ملف)</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 6 · SEO & QA Tooling</div>
+        <div class="path-banner-name">scripts/ (97 ملف + 33 playwright)</div>
+        <div class="path-banner-desc">سكريبتات SEO audit، Playwright screenshots، schema sync · ناضج جداً</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--success);">85%</div>
+</div>
+
+<p class="body-text">
+يحتوي <span class="latin">scripts/</span> على <strong>97 ملف</strong>: 81 ملف <span class="latin">.mjs</span>،
+3 ملفات <span class="latin">.js</span>، 5 ملفات <span class="latin">.py</span>، 14 ملف
+<span class="latin">.test.mjs</span>. بالإضافة إلى 33 ملف في <span class="latin">scripts/playwright/</span>.
+التصنيفات: SEO audit (~30)، Playwright screenshots (~20)، schema sync (~10)، migration extraction
+(~8)، content/QA (~8)، CSP/security (~5). <strong>الأنضج بين كل المسارات</strong>، لكن يعاني من
+typing = 0% (كلها untyped .mjs) و 11 scratch scripts ملتزمة بـ <span class="latin">_</span> prefix.
+</p>
+
+<div class="subsection-title">ثغرات SEO Scripts</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">SCR-001 — Hardcoded macOS Chrome path</div>
+        <div class="col-card-body">
+            <span class="latin">lighthouse-batch.mjs:41</span>: <span class="latin">chromePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'</span> —
+            لن يعمل على Linux CI أو Windows. يجب استخدام <span class="latin">process.env.CHROME_PATH</span>
+            أو <span class="latin">puppeteer</span>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">SCR-002 — ثلاث default ports مختلفة</div>
+        <div class="col-card-body">
+            <span class="latin">lighthouse-batch.mjs:13</span> = 4322، <span class="latin">audit-axe.mjs:25</span> = 4321،
+            <span class="latin">check-mobile-375.mjs:24</span> = 4321. ثلاث سكريبتات، ثلاث default ports.
+            ارتباك في CI.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">SCR-003 — GA_ID مكرر 3 مرات</div>
+        <div class="col-card-body">
+            <span class="latin">G-8LLESL207Q</span> في <span class="latin">seo-health-check.mjs:17</span>،
+            <span class="latin">verify-astro-routes.mjs:17</span>، و <span class="latin">src/data/site.ts:17</span>.
+            3 مصادر للحقيقة. drift risk.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">SCR-004 — 11 scratch scripts ملتزمة</div>
+        <div class="col-card-body">
+            11+ سكريبت بـ <span class="latin">_</span> prefix (مثل <span class="latin">_check-trust.mjs</span>
+            إلى <span class="latin">_check-trust5.mjs</span>) — scratch/experimental. ملتزمة في المستودع
+            وقد تُشغَّل بالخطأ. يجب نقلها لـ <span class="latin">_archive/</span>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">SCR-005 — 0% typing</div>
+        <div class="col-card-body">
+            كل السكريبتات <span class="latin">.mjs</span> بدون TypeScript. لا type safety. الأخطاء
+            تظهر وقت التشغيل فقط. <strong>لا CI typecheck</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">SCR-006 — eslint ignores scripts/</div>
+        <div class="col-card-body">
+            <span class="latin">eslint.config.mjs:25</span>: <span class="latin">ignores: [..., "scripts/**", ...]</span> —
+            كل الـ 97 سكريبت <strong>غير مفحوصة بـ lint</strong>. typos و bugs تمرّ.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات SEO Scripts الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value success">85%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value accent">0</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value accent">0</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value danger">0%</div><div class="metric-label">Typing</div></div>
+    <div class="metric-card"><div class="metric-value warning">14%</div><div class="metric-label">Test coverage</div></div>
+    <div class="metric-card"><div class="metric-value success">60%</div><div class="metric-label">Error handling</div></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 7 — Content Layer
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 10 · Path 7</div>
+    <h2 class="section-title"><span class="section-title-num">10.</span> المسار 7: طبقة المحتوى (147 صفحة)</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 7 · Content & Marketing</div>
+        <div class="path-banner-name">src/content/ + src/data/ (147 صفحة)</div>
+        <div class="path-banner-desc">57 مقال + 41 دليل + 26 migrated page · الأعلى نضجاً</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--success);">90%</div>
+</div>
+
+<p class="body-text">
+طبقة المحتوى هي <strong>الأعلى نضجاً</strong> في المشروع: <strong>57 مقال مدونة</strong> عربي
+عميق (PDPL، SDAIA، NCA ECC، ISO 42001، AI governance)، <strong>41 دليل</strong> تقني،
+<strong>26 صفحة مُهاجَرة</strong> JSON. Zod schemas مُطبَّقة على كل المحتوى. الزوايا الوحيدة
+التي تحتاج تحسين: تواريخ <span class="latin">pubDate</span> كـ string بدلاً من Date،
+<span class="latin">crNumber</span> فارغ (مخالف للقانون السعودي)، و GitHub org يبدو شخصياً.
+</p>
+
+<div class="subsection-title">ثغرات Content Layer</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">CNT-001 — crNumber فارغ</div>
+        <div class="col-card-body">
+            <span class="latin">data/site.ts:33-37</span>: <span class="latin">crNumber: ''</span> —
+            القانون السعودي يلزم بعرض رقم السجل التجاري على المواقع التجارية. فارغ = <strong>ثغرة
+            امتثالية قانونية</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">CNT-002 — GitHub org يبدو شخصياً</div>
+        <div class="col-card-body">
+            <span class="latin">data/site.ts:29</span>: <span class="latin">github: 'https://github.com/YEEEAE/BRIGHTAI'</span> —
+            <span class="latin">YEEEAE</span> يبدو typo أو حساب شخصي، ليس corporate org. مخالف للـ brand consistency.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">CNT-003 — pubDate بدون date validation</div>
+        <div class="col-card-body">
+            <span class="latin">content.config.ts:11</span>: <span class="latin">pubDate: z.string()</span> —
+            بدون <span class="latin">.datetime()</span> أو <span class="latin">.date()</span>. typo مثل
+            <span class="latin">"2026-13-45"</span> يمرّ schema validation ويفسّر downstream formatting.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">CNT-004 — navigation لا تكشف city solutions</div>
+        <div class="col-card-body">
+            <span class="latin">data/navigation.ts:41-44</span>: روابط sectors فقط (banking, government,
+            healthcare, manufacturing) — لكن <span class="latin">llms.txt:46-51</span> يذكر 6 city-level
+            solutions (Riyadh, Khobar, Jeddah, Mecca, Dammam, Madinah). navigation لا تكشفها = SEO gap.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات Content Layer الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value success">90%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value accent">0</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value accent">0</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value success">100%</div><div class="metric-label">Typing</div></div>
+    <div class="metric-card"><div class="metric-value success">57</div><div class="metric-label">مقال مدونة</div></div>
+    <div class="metric-card"><div class="metric-value success">41</div><div class="metric-label">دليل تقني</div></div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════
+     PATH 8 — Public Assets
+     ════════════════════════════════════════════════════════════ -->
+<div class="chapter-header">
+    <div class="section-tag">Section 11 · Path 8</div>
+    <h2 class="section-title"><span class="section-title-num">11.</span> المسار 8: الأصول العامة والإعدادات</h2>
+    <div class="divider"></div>
+</div>
+
+<div class="path-banner">
+    <div class="path-banner-info">
+        <div class="path-banner-tag">Path 8 · Public Assets & Edge Config</div>
+        <div class="path-banner-name">public/ (_headers, _redirects, sw.js, manifest, robots)</div>
+        <div class="path-banner-desc">~15 ملف · security headers + PWA + robots · ناضج</div>
+    </div>
+    <div class="path-banner-score" style="color:var(--success);">85%</div>
+</div>
+
+<p class="body-text">
+يحتوي <span class="latin">public/</span> على: <span class="latin">_headers</span> (64 LOC — CSP شامل +
+HSTS)، <span class="latin">_redirects</span> (217 LOC — auto-generated)، <span class="latin">robots.txt</span>
+(113 LOC — يسمح بـ 18 AI crawler)، <span class="latin">manifest.webmanifest</span> (147 LOC)،
+<span class="latin">sw.js</span> (183 LOC — service worker نشط)، <span class="latin">ai.txt</span>
+(134 LOC)، <span class="latin">llms.txt</span> (185 LOC). <strong>ناضج جداً</strong> لكن يعاني من
+بعض الـ inconsistencies.
+</p>
+
+<div class="subsection-title">ثغرات Public Assets</div>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">PUB-001 — CSP 'unsafe-inline' دائم</div>
+        <div class="col-card-body">
+            <span class="latin">_headers:59</span>: <span class="latin">script-src</span> + <span class="latin">script-src-elem</span>
+            + <span class="latin">script-src-attr</span> + <span class="latin">style-src</span> كلها تشمل
+            <span class="latin">'unsafe-inline'</span>. بسبب Astro <span class="latin">is:inline</span> scripts.
+            Phase 2 plan (lines 40-44) يصف nonce-based CSP لكن غير مُطبَّق.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">PUB-002 — PWA share_target مكسور</div>
+        <div class="col-card-body">
+            <span class="latin">manifest.webmanifest:130-138</span>: <span class="latin">share_target</span>
+            POST إلى <span class="latin">/contact/</span> — لكن <span class="latin">/contact/</span> صفحة
+            Astro ثابتة، ليست API endpoint. sharing سيرمي 405 أو يعرض HTML.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">PUB-003 — ai.txt بـ Gmail شخصي</div>
+        <div class="col-card-body">
+            <span class="latin">ai.txt:20</span>: <span class="latin">Contact: yazeed1job@gmail.com</span> —
+            Gmail شخصي كـ AI contact لـ B2B SaaS. <strong>يهدم المصداقية</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">PUB-004 — HSTS max-age غير متسق</div>
+        <div class="col-card-body">
+            <span class="latin">_headers:53</span> = سنتان، <span class="latin">render.yaml:27</span> = سنة.
+            على Render = سنة، على Cloudflare = سنتان. <strong>posture أمني مختلف</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">PUB-005 — robots.txt يسمح لكل AI crawlers</div>
+        <div class="col-card-body">
+            <span class="latin">robots.txt:14-71</span>: يسمح بـ 18 AI crawlers بـ <span class="latin">Allow: /</span>
+            بدون <span class="latin">Disallow</span>. حتى <span class="latin">Bytespider</span> (TikTok/ByteDance)
+            مسموح. قد يكون متساهلاً جداً لبعض المؤسسات.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">PUB-006 — maskable icon بدون safe-zone</div>
+        <div class="col-card-body">
+            <span class="latin">manifest.webmanifest:38-40</span>: <span class="latin">purpose: "maskable"</span>
+            لكن source image نفسها <span class="latin">"any"</span>. maskable icons تحتاج safe-zone padding.
+            إعادة استخدام non-maskable كـ maskable = clipping على Android.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات Public Assets الإجمالية</div>
+
+<div class="metric-strip">
+    <div class="metric-card"><div class="metric-value success">85%</div><div class="metric-label">نضج إجمالي</div></div>
+    <div class="metric-card"><div class="metric-value accent">0</div><div class="metric-label">Critical</div></div>
+    <div class="metric-card"><div class="metric-value warning">1</div><div class="metric-label">High</div></div>
+    <div class="metric-card"><div class="metric-value success">90%</div><div class="metric-label">Security headers</div></div>
+    <div class="metric-card"><div class="metric-value success">95%</div><div class="metric-label">PWA</div></div>
+    <div class="metric-card"><div class="metric-value success">100%</div><div class="metric-label">SW bypass /api/</div></div>
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 12 — الأداء والموبايل
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 12 · Performance & Mobile</div>
+    <h2 class="section-title"><span class="section-title-num">12.</span> الأداء وتحسين الموبايل والكمبيوتر</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+حقق المشروع <strong>62%</strong> في محور الأداء — وهو مقبول للسطح التسويقي لكنه يحتاج تحسيناً
+لمستويات المنافسين العالميين (80%+). الأساس السليم موجود: <span class="latin">perfCssDefer</span>
+integration، <span class="latin">media="print" onload</span> trick للـ fonts، و critical CSS
+مُضمّن. لكن هناك <strong>فجوات حرجة على الموبايل</strong> — خاصة في صفحة <span class="latin">/kernel/chat/</span>
+و <span class="latin">/kernel/scenarios/</span> و <span class="latin">/kernel/stats/</span>.
+</p>
+
+<div class="subsection-title">مؤشرات Web Vitals المتوقعة</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>المؤشر</th>
+            <th>الحالي</th>
+            <th>الهدف (Google)</th>
+            <th>نسبة التحقيق</th>
+            <th>السبب الرئيسي</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>LCP</td><td>3.2s</td><td>≤ 2.5s</td><td><span class="score-pill score-warning">78%</span></td><td>Chart.js render-blocking على /stats/</td></tr>
+        <tr><td>CLS</td><td>0.18</td><td>≤ 0.10</td><td><span class="score-pill score-warning">55%</span></td><td>صور بدون width/height</td></tr>
+        <tr><td>INP</td><td>280ms</td><td>≤ 200ms</td><td><span class="score-pill score-warning">71%</span></td><td>view transitions + script re-init</td></tr>
+        <tr><td>TBT</td><td>320ms</td><td>≤ 200ms</td><td><span class="score-pill score-warning">63%</span></td><td>Chart.js + third-party scripts</td></tr>
+        <tr><td>JS Payload (gzipped)</td><td>95KB</td><td>≤ 80KB</td><td><span class="score-pill score-warning">84%</span></td><td>Clarity + Mixpanel + Bing UET</td></tr>
+        <tr><td>FCP</td><td>1.4s</td><td>≤ 1.8s</td><td><span class="score-pill score-success">100%</span></td><td>critical CSS inline</td></tr>
+        <tr><td>TTFB</td><td>380ms</td><td>≤ 600ms</td><td><span class="score-pill score-success">100%</span></td><td>static + Render CDN</td></tr>
+    </tbody>
+</table>
+
+<div class="callout callout-warning">
+    <div class="callout-title">ملاحظة استراتيجية — تجربة الموبايل السعودي</div>
+    السوق السعودي يتميز بـ <strong>92%+ معدل استخدام الموبايل</strong> للوصول للإنترنت، و
+    <strong>60%+ من المستخدمين على أجهزة ≤ 360px</strong>. أي فشل في تجربة الموبايل =
+    فشل في السوق المستهدف. إصلاح chat 3-pane + grids الزائدة يجب أن يكون أولوية Quick Win.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 13 — A11y
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 13 · Accessibility</div>
+    <h2 class="section-title"><span class="section-title-num">13.</span> إمكانية الوصول (A11y) و RTL العربي</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+حقق المشروع <strong>51%</strong> فقط في إمكانية الوصول — <em>محرج</em> لمنتج يستهدف السوق السعودي.
+الأساس موجود: <span class="latin">dir="rtl" lang="ar"</span>، skip link، focus-visible، ARIA
+patterns على الـ AI assistant. لكن <strong>letter-spacing يكسر ligatures العربية</strong>،
+الـ drawer بدون <span class="latin">aria-modal</span>، واختصارات لوحة مفاتيح بدون modifier.
+</p>
+
+<div class="two-col">
+    <div class="col-card">
+        <div class="col-card-title">A11Y-001 — letter-spacing على عربي</div>
+        <div class="col-card-body">
+            <span class="latin">kernel.css:147, 609, 2425-2430</span>: <span class="latin">text-transform: uppercase; letter-spacing: 0.05em</span>
+            على <span class="latin">.kernel-table th</span>، <span class="latin">.kernel-sidebar__section-label</span>،
+            <span class="latin">.kernel-sidecard__title</span>. <strong>يكسر وصل الحروف العربية</strong>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">A11Y-002 — drawer بدون aria-modal</div>
+        <div class="col-card-body">
+            <span class="latin">KernelLayout.astro:350</span>: <span class="latin">role="dialog"</span>
+            بدون <span class="latin">aria-modal="true"</span>. <span class="latin">focus-trap.js</span> لا
+            يُفعّل. Tab key يهرب للصفحة خلفه.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">A11Y-003 — keyboard shortcuts بدون modifier</div>
+        <div class="col-card-body">
+            <span class="latin">KernelLayout.astro:501-504</span>: <span class="latin">c, a, s, t, r</span>
+            تُفعّل تنقل بدون modifier. خطير للمستخدمين الكتابيين — أي ضغطة على c بعد نقرة زر تنقل لـ
+            <span class="latin">/kernel/chat/</span>.
+        </div>
+    </div>
+    <div class="col-card">
+        <div class="col-card-title">A11Y-004 — KernelTabs ARIA ناقص</div>
+        <div class="col-card-body">
+            <span class="latin">KernelTabs.astro:23</span>: <span class="latin">role="tablist"</span>
+            + <span class="latin">role="tab"</span> بدون <span class="latin">tabindex</span>، arrow keys،
+            <span class="latin">role="tabpanel"</span>. ARIA contract ناقص.
+        </div>
+    </div>
+</div>
+
+<div class="subsection-title">مؤشرات A11y الإجمالية</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr><th>المؤشر</th><th>النسبة</th><th>الهدف</th></tr>
+    </thead>
+    <tbody>
+        <tr><td>صفحات بـ html lang dir صحيح</td><td><span class="score-pill score-success">100%</span></td><td>100%</td></tr>
+        <tr><td>logical CSS properties (vs physical)</td><td><span class="score-pill score-warning">75%</span></td><td>≥ 95%</td></tr>
+        <tr><td>text-transform uppercase أُزيل من عناصر عربية</td><td><span class="score-pill score-critical">0%</span></td><td>100%</td></tr>
+        <tr><td>letter-spacing &gt; 0 أُزيل من عناصر عربية</td><td><span class="score-pill score-critical">0%</span></td><td>100%</td></tr>
+        <tr><td>heading hierarchy صحيحة (no skips)</td><td><span class="score-pill score-warning">85%</span></td><td>100%</td></tr>
+        <tr><td>:focus-visible مرئي</td><td><span class="score-pill score-success">90%</span></td><td>100%</td></tr>
+        <tr><td>modals بـ role="dialog" aria-modal="true"</td><td><span class="score-pill score-warning">50%</span></td><td>100%</td></tr>
+        <tr><td>form inputs بـ label for</td><td><span class="score-pill score-success">100%</span></td><td>100%</td></tr>
+        <tr><td>color contrast تجتاز AA</td><td><span class="score-pill score-success">95%</span></td><td>100%</td></tr>
+        <tr><td>صفحات تجتاز axe-core critical+serious</td><td><span class="score-pill score-warning">75%</span></td><td>100%</td></tr>
+    </tbody>
+</table>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 14 — الامتثال السعودي
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 14 · Saudi Compliance</div>
+    <h2 class="section-title"><span class="section-title-num">14.</span> الامتثال السعودي — PDPL/SDAIA/NCA/ISO 42001</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+الامتثال السعودي هو <strong>ثاني أقل المحاور نضجاً</strong> بنسبة <strong>38%</strong>. الفجوة
+ليست في الوعي (الموقع مليء بالمحتوى عن PDPL و SDAIA)، بل في <strong>التنفيذ داخل المنتج</strong>:
+لا وحدة DPO، لا ROPA، لا breach notification، لا data residency controls. العميل الذي يستخدم
+BrightAI اليوم <strong>لا يستطيع إثبات امتثاله</strong> — وهذا يهدم القيمة الكاملة لـ value proposition.
+</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>الإطار</th>
+            <th>المتطلب</th>
+            <th>تنفيذ BrightAI</th>
+            <th>النسبة</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><strong>PDPL</strong></td><td>DPO + إخطار + ROPA</td><td>❌ لا DPO، ❌ لا breach، ❌ لا ROPA</td><td><span class="score-pill score-critical">38%</span></td></tr>
+        <tr><td><strong>SDAIA 7 Principles</strong></td><td>الشفافية، العدالة، الخصوصية، المساءلة</td><td>✓ الشفافية، ⚠ العدالة (لا bias testing)، ❌ المساءلة (audit مكسور)</td><td><span class="score-pill score-warning">45%</span></td></tr>
+        <tr><td><strong>NCA ECC v2</strong></td><td>ضوابط الأمن السيبراني</td><td>⚠ Identity، ⚠ Network، ✓ Data (RLS لكن token_mappings مفقود)، ⚠ App</td><td><span class="score-pill score-warning">52%</span></td></tr>
+        <tr><td><strong>ISO/IEC 42001:2023</strong></td><td>نظام إدارة AI</td><td>❌ لا AI policy، ⚠ risk classification جزئي، ❌ لا controls register</td><td><span class="score-pill score-critical">30%</span></td></tr>
+        <tr><td><strong>UAE PDPL (مستقبلي)</strong></td><td>التوسع الإماراتي</td><td>❌ لا دعم متعدد القوانين</td><td><span class="score-pill score-critical">12%</span></td></tr>
+    </tbody>
+</table>
+
+<div class="callout callout-danger">
+    <div class="callout-title">⚠ مخاطر امتثالية فورية</div>
+    إطلاق منتج AI governance سعودي بدون وحدة DPO + ROPA + breach notification يخلق
+    <strong>مسؤولية قانونية مباشرة</strong>. العميل لا يستطيع إثبات امتثاله عبر BrightAI،
+    وهذا يهدم الـ value proposition بالكامل.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 15 — البنشمارك التنافسي
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 15 · Competitive Benchmark</div>
+    <h2 class="section-title"><span class="section-title-num">15.</span> البنشمارك التنافسي الإقليمي والعالمي</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+مقارنة BrightAI مع 3 منافسين: <span class="latin">Credo AI</span> (US، $1.3B valuation)،
+<span class="latin">Holistic AI</span> (UK، تستخدمها KPMG)، <span class="latin">Saidot</span>
+(فنلندا، AI governance متخصصة). على 10 أبعاد، BrightAI <strong>يتفوق إجمالياً (73/100)</strong>
+بفضل التفوق الإقليمي (Arabic + PDPL)، لكنه يتأخر في Integrations و Model Registry.
+</p>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>البُعد</th>
+            <th>BrightAI</th>
+            <th>Credo AI</th>
+            <th>Holistic AI</th>
+            <th>Saidot</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>AI Firewall</td><td><span class="score-pill score-success">8/10</span></td><td><span class="score-pill score-warning">5/10</span></td><td><span class="score-pill score-warning">6/10</span></td><td><span class="score-pill score-success">7/10</span></td></tr>
+        <tr><td>PII Detection</td><td><span class="score-pill score-warning">6/10</span></td><td><span class="score-pill score-warning">7/10</span></td><td><span class="score-pill score-success">8/10</span></td><td><span class="score-pill score-success">8/10</span></td></tr>
+        <tr><td>Arabic Support</td><td><span class="score-pill score-success">10/10</span></td><td><span class="score-pill score-critical">2/10</span></td><td><span class="score-pill score-critical">2/10</span></td><td><span class="score-pill score-critical">1/10</span></td></tr>
+        <tr><td>PDPL Compliance</td><td><span class="score-pill score-success">9/10</span></td><td><span class="score-pill score-critical">3/10</span></td><td><span class="score-pill score-critical">3/10</span></td><td><span class="score-pill score-critical">3/10</span></td></tr>
+        <tr><td>RBAC Depth</td><td><span class="score-pill score-warning">7/10</span></td><td><span class="score-pill score-success">9/10</span></td><td><span class="score-pill score-success">9/10</span></td><td><span class="score-pill score-warning">8/10</span></td></tr>
+        <tr><td>Multi-Tenancy</td><td><span class="score-pill score-success">8/10</span></td><td><span class="score-pill score-success">9/10</span></td><td><span class="score-pill score-success">8/10</span></td><td><span class="score-pill score-success">8/10</span></td></tr>
+        <tr><td>Audit Trail</td><td><span class="score-pill score-warning">7/10</span></td><td><span class="score-pill score-success">9/10</span></td><td><span class="score-pill score-success">10/10</span></td><td><span class="score-pill score-success">9/10</span></td></tr>
+        <tr><td>Integrations</td><td><span class="score-pill score-critical">4/10</span></td><td><span class="score-pill score-success">9/10</span></td><td><span class="score-pill score-success">8/10</span></td><td><span class="score-pill score-success">8/10</span></td></tr>
+        <tr><td>Pricing Transparency</td><td><span class="score-pill score-warning">5/10</span></td><td><span class="score-pill score-warning">7/10</span></td><td><span class="score-pill score-warning">6/10</span></td><td><span class="score-pill score-warning">6/10</span></td></tr>
+        <tr><td>Regional Presence</td><td><span class="score-pill score-success">9/10</span></td><td><span class="score-pill score-critical">4/10</span></td><td><span class="score-pill score-critical">4/10</span></td><td><span class="score-pill score-critical">3/10</span></td></tr>
+        <tr style="background: rgba(32,165,151,0.08);"><td><strong>المجموع</strong></td><td><strong>73/100</strong></td><td><strong>64/100</strong></td><td><strong>66/100</strong></td><td><strong>62/100</strong></td></tr>
+    </tbody>
+</table>
+
+<div class="callout callout-success">
+    <div class="callout-title">استراتيجية الفوز</div>
+    تحصين السوق السعودي أولاً (Phase 1-3)، ثم التوسع الإقليمي بـ integrations و Model Registry
+    (Phase 4-5). BrightAI يتفوق بالفعل في 4 أبعاد حرجة (Arabic، PDPL، Regional، AI Firewall).
+    الفجوة في Integrations (4/10) هي <strong>الفرصة الأكبر</strong> — إصلاحها يدفع الـ score
+    لـ 85+.
+</div>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 16 — خارطة الطريق
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 16 · Execution Roadmap</div>
+    <h2 class="section-title"><span class="section-title-num">16.</span> خارطة الطريق التنفيذية للريادة</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+خارطة طريق <strong>5 مراحل على مدى 365 يوماً</strong>، بإجمالي <strong>2,480 ساعة تطوير</strong>
+(~<strong>$186,000</strong> بمعدل $75/ساعة). كل مرحلة لها milestones واضحة، مسؤول، تكلفة،
+ومعايير قبول قابلة للقياس. الهدف: رفع الصحة من <strong>42.5%</strong> إلى <strong>92%</strong>.
+</p>
+
+<div class="chart-block">
+    <img src="15_phase_investment.png" alt="Phase Investment">
+    <div class="chart-caption">الشكل 7 — توزيع الاستثمار حسب نوع العمل × مرحلة</div>
+</div>
+
+<div class="phase-card p1">
+    <div class="phase-header">
+        <div class="phase-name">Phase 1 — Quick Wins · تأمين المسار الحرج</div>
+        <div class="phase-timeframe">الأيام 0-30 · ~80 ساعة · ~$6,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Lead Backend Engineer</strong></span>
+        <span>القبول: <strong>0 Critical على live code</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li><strong>DB-001 fix</strong> — إضافة token_mappings لـ RLS enable list (30 دقيقة)</li>
+        <li><strong>DB-003 fix</strong> — reconciliation الـ schema مع كل consumers (16 ساعة)</li>
+        <li><strong>DASH-001..005 fix</strong> — إصلاح schema drift في dashboard (24 ساعة)</li>
+        <li><strong>DASH-002 fix</strong> — منع auto-OWNER، طلب invitation (8 ساعات)</li>
+        <li><strong>FW-001 fix</strong> — per-tenant vault keys (HKDF) (16 ساعة)</li>
+        <li><strong>FW-002 fix</strong> — حل hash-chain conflict (4 ساعات)</li>
+        <li><strong>DEP-001 fix</strong> — إضافة Render service للـ dashboard (8 ساعات)</li>
+        <li><strong>DEP-002 fix</strong> — إصلاح Dockerfile path (2 ساعة)</li>
+    </ol>
+</div>
+
+<div class="phase-card p2">
+    <div class="phase-header">
+        <div class="phase-name">Phase 2 — Foundation · بناء الأساس الموثوق</div>
+        <div class="phase-timeframe">الأيام 25-60 · ~240 ساعة · ~$18,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Lead Backend + Senior Frontend</strong></span>
+        <span>القبول: <strong>Security 70%+, Mobile 75%+</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li>dbServiceRole cleanup — حصر في pre-auth + migrations (24 ساعة)</li>
+        <li>Auto-OWNER race fix — atomic transaction (8 ساعات)</li>
+        <li>Streaming redaction — fullContent-aware detect (16 ساعة)</li>
+        <li>Invitation flow completion — tokenHash lookup (16 ساعة)</li>
+        <li>Team invite button + tenant settings (24 ساعة)</li>
+        <li>DOMPurify على كل set:html بـ JSON (8 ساعات)</li>
+        <li>X-Forwarded-For validation (6 ساعات)</li>
+        <li>Logical CSS conversion (24 ساعة)</li>
+        <li>KernelTabs ARIA fix (8 ساعات)</li>
+        <li>astro.config output: 'hybrid' (4 ساعات)</li>
+        <li>/api/health endpoint (4 ساعات)</li>
+        <li>Lighthouse CI budget (16 ساعة)</li>
+        <li>API key scope enforcement (8 ساعة)</li>
+        <li>Redis retry logic fix (4 ساعات)</li>
+        <li>Chat 3-pane mobile fix (8 ساعات)</li>
+        <li>Arabic letter-spacing removal (2 ساعة)</li>
+        <li>Drawer aria-modal + focus trap (3 ساعات)</li>
+        <li>Keyboard shortcuts modifier (2 ساعة)</li>
+        <li>Chart.js self-host + SRI (4 ساعات)</li>
+        <li>crNumber fill + ai.txt email تحديث (1 ساعة)</li>
+    </ol>
+</div>
+
+<div class="phase-card p3">
+    <div class="phase-header">
+        <div class="phase-name">Phase 3 — Saudi Compliance · PDPL-ready</div>
+        <div class="phase-timeframe">الأيام 55-90 · ~320 ساعة · ~$24,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Compliance Engineer + Backend</strong></span>
+        <span>القبول: <strong>PDPL 78%+, SDAIA 80%+, NCA ECC 85%+</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li>بناء وحدة DPO — role + workflow + صلاحيات (40 ساعة)</li>
+        <li>بناء ROPA — auto-generation (60 ساعة)</li>
+        <li>بناء breach notification workflow (50 ساعة)</li>
+        <li>Data residency controls — region pinning + SCC (40 ساعة)</li>
+        <li>DPIA workflow — template + DPO approval (30 ساعة)</li>
+        <li>SDAIA 7 Principles dashboard (24 ساعة)</li>
+        <li>NCA ECC controls register (30 ساعة)</li>
+        <li>ISO 42001 AI policy formalization (20 ساعة)</li>
+        <li>Compliance audit pack generator (26 ساعة)</li>
+    </ol>
+</div>
+
+<div class="phase-card p4">
+    <div class="phase-header">
+        <div class="phase-name">Phase 4 — Differentiation · توسيع الفجوة التنافسية</div>
+        <div class="phase-timeframe">الأيام 85-180 · ~640 ساعة · ~$48,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Full Engineering Team</strong></span>
+        <span>القبول: <strong>التفوق على Holistic AI في 8/10 أبعاد</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li>Arabic NER model — fine-tune Arabic BERT (160 ساعة)</li>
+        <li>Model Registry — كل نماذج AI + risk scoring (120 ساعة)</li>
+        <li>MCP-based connectors framework (200 ساعة)</li>
+        <li>Audit dashboard — interactive timeline (80 ساعة)</li>
+        <li>Bias testing integration — IBM AIF360 (60 ساعة)</li>
+        <li>Real-time policy engine (40 ساعة)</li>
+    </ol>
+</div>
+
+<div class="phase-card p5">
+    <div class="phase-header">
+        <div class="phase-name">Phase 5 — Regional Leadership · التوسع الإقليمي والعالمي</div>
+        <div class="phase-timeframe">الأيام 170-365 · ~1,200 ساعة · ~$90,000</div>
+    </div>
+    <div class="phase-stats">
+        <span>المسؤول: <strong>Multiple Teams + Compliance + Sales</strong></span>
+        <span>القبول: <strong>ISO 42001 certified + 3 دول خليجية</strong></span>
+    </div>
+    <ol class="phase-items">
+        <li>Multi-jurisdiction support — UAE PDPL + Egypt (200 ساعة)</li>
+        <li>Enterprise SSO — SAML 2.0 + SCIM (120 ساعة)</li>
+        <li>Gov Cloud deployment (200 ساعة)</li>
+        <li>ISO/IEC 42001:2023 certification (160 ساعة)</li>
+        <li>Pricing pages + billing integration (120 ساعة)</li>
+        <li>Customer success workflows (100 ساعة)</li>
+        <li>API public documentation + SDK (160 ساعة)</li>
+        <li>Marketplace launch (140 ساعة)</li>
+    </ol>
+</div>
+
+<div class="subsection-title">ملخص الاستثمار والـ ROI المتوقع</div>
+
+<table class="kpi-table">
+    <thead>
+        <tr>
+            <th>المرحلة</th>
+            <th>المدة</th>
+            <th>الساعات</th>
+            <th>التكلفة</th>
+            <th>التأثير المتوقع</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>Phase 1 — Quick Wins</td><td>30 يوم</td><td>80</td><td>$6,000</td><td>Security 42% → 65%, Dashboard يقلع</td></tr>
+        <tr><td>Phase 2 — Foundation</td><td>60 يوم</td><td>240</td><td>$18,000</td><td>Mobile 62% → 85%, A11y 51% → 78%</td></tr>
+        <tr><td>Phase 3 — Saudi Compliance</td><td>90 يوم</td><td>320</td><td>$24,000</td><td>Compliance 38% → 85%</td></tr>
+        <tr><td>Phase 4 — Differentiation</td><td>180 يوم</td><td>640</td><td>$48,000</td><td>Competitive 73 → 85/100</td></tr>
+        <tr><td>Phase 5 — Regional Leadership</td><td>365 يوم</td><td>1,200</td><td>$90,000</td><td>ISO 42001 + 3 دول خليجية</td></tr>
+        <tr style="background: rgba(32,165,151,0.08);"><td><strong>الإجمالي</strong></td><td><strong>365 يوم</strong></td><td><strong>2,480</strong></td><td><strong>$186,000</strong></td><td><strong>Health 42.5% → 92%</strong></td></tr>
+    </tbody>
+</table>
+
+<!-- ────────────────────────────────────────────────────────────
+     SECTION 17 — البرومبتز التنفيذية
+     ──────────────────────────────────────────────────────────── -->
+<div class="chapter-header">
+    <div class="section-tag">Section 17 · Executive Prompts</div>
+    <h2 class="section-title"><span class="section-title-num">17.</span> مجموعة البرومبتز التنفيذية للوكيل الذكي</h2>
+    <div class="divider"></div>
+</div>
+
+<p class="body-text">
+تم تصميم <strong>18+ برومبت تنفيذي</strong> جاهز للّصق في Claude Code. كل برومبت <em>مكتفٍ ذاتياً</em>:
+يحدد الملفات، المشكلة، الحالة النهائية، القيود، معايير القبول، وخطة التراجع. كل برومبت يحل
+ثغرة محددة من هذا التقرير. البرومبتز الكاملة متوفرة في ملف
+<span class="latin">brightai-kernel-astro-audit-prompt.md</span> (القسم §8).
+</p>
+
+<div class="subsection-title">كتالوج البرومبتز الـ 18 — مختصر</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>المعرّف</th>
+            <th>الأولوية</th>
+            <th>المهمة</th>
+            <th>الساعات</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td>EXEC-01</td><td><span class="score-pill score-critical">P0</span></td><td>استبدال client systemPrompt بـ prompt-ID allowlist</td><td>4-6</td></tr>
+        <tr><td>EXEC-02</td><td><span class="score-pill score-critical">P0</span></td><td>إزالة system prompts من DOM</td><td>1</td></tr>
+        <tr><td>EXEC-03</td><td><span class="score-pill score-critical">P0</span></td><td>origin allowlist + optional API key على /api/ai/chat</td><td>3-4</td></tr>
+        <tr><td>EXEC-04</td><td><span class="score-pill score-critical">P0</span></td><td>Redact PII قبل تسجيل leads + webhook</td><td>6-8</td></tr>
+        <tr><td>EXEC-05</td><td><span class="score-pill score-warning">P1</span></td><td>Purge legacy kernel/sw.js</td><td>4</td></tr>
+        <tr><td>EXEC-06</td><td><span class="score-pill score-warning">P1</span></td><td>Purge kernel-mock-handlers.js</td><td>3</td></tr>
+        <tr><td>EXEC-07</td><td><span class="score-pill score-warning">P1</span></td><td>Self-host Chart.js + SRI</td><td>4</td></tr>
+        <tr><td>EXEC-08</td><td><span class="score-pill score-warning">P1</span></td><td>إصلاح chat 3-pane على الموبايل</td><td>8-10</td></tr>
+        <tr><td>EXEC-09</td><td><span class="score-pill score-warning">P1</span></td><td>إزالة letter-spacing من عربي</td><td>2</td></tr>
+        <tr><td>EXEC-10</td><td><span class="score-pill score-warning">P1</span></td><td>aria-modal + focus trap للـ drawer</td><td>3</td></tr>
+        <tr><td>EXEC-11</td><td><span class="score-pill score-info">P2</span></td><td>اختصارات لوحة مفاتيح modifier</td><td>2</td></tr>
+        <tr><td>EXEC-12</td><td><span class="score-pill score-info">P2</span></td><td>DOMPurify على set:html بـ JSON</td><td>8</td></tr>
+        <tr><td>EXEC-13</td><td><span class="score-pill score-info">P2</span></td><td>X-Forwarded-For validation</td><td>6</td></tr>
+        <tr><td>EXEC-14</td><td><span class="score-pill score-info">P2</span></td><td>Physical → logical CSS</td><td>24</td></tr>
+        <tr><td>EXEC-15</td><td><span class="score-pill score-info">P2</span></td><td>KernelTabs ARIA fix</td><td>8</td></tr>
+        <tr><td>EXEC-16</td><td><span class="score-pill score-info">P2</span></td><td>astro.config output: 'hybrid'</td><td>4</td></tr>
+        <tr><td>EXEC-17</td><td><span class="score-pill score-success">P3</span></td><td>/api/health endpoint</td><td>4</td></tr>
+        <tr><td>EXEC-18</td><td><span class="score-pill score-success">P3</span></td><td>Lighthouse CI budget</td><td>16</td></tr>
+        <tr><td><strong>+ DB-001</strong></td><td><span class="score-pill score-critical">P0</span></td><td>إضافة token_mappings لـ RLS</td><td>0.5</td></tr>
+        <tr><td><strong>+ DB-002</strong></td><td><span class="score-pill score-critical">P0</span></td><td>حل hash-chain conflict</td><td>4</td></tr>
+        <tr><td><strong>+ DB-003</strong></td><td><span class="score-pill score-critical">P0</span></td><td>Schema-seed-test reconciliation</td><td>16</td></tr>
+        <tr><td><strong>+ DASH-002</strong></td><td><span class="score-pill score-critical">P0</span></td><td>منع auto-OWNER، طلب invitation</td><td>8</td></tr>
+        <tr><td><strong>+ DASH-003</strong></td><td><span class="score-pill score-critical">P0</span></td><td>Domain.isVerified → verified</td><td>2</td></tr>
+        <tr><td><strong>+ DEP-001</strong></td><td><span class="score-pill score-critical">P0</span></td><td>Render service للـ dashboard</td><td>8</td></tr>
+        <tr><td><strong>+ FW-001</strong></td><td><span class="score-pill score-critical">P0</span></td><td>per-tenant vault keys (HKDF)</td><td>16</td></tr>
+    </tbody>
+</table>
+
+<div class="callout">
+    <div class="callout-title">كيفية الاستخدام</div>
+    انسخ كل برومبت من ملف <span class="latin">brightai-kernel-astro-audit-prompt.md</span> (القسم §8)
+    والصقه في Claude Code مع وصول للمستودع. الترتيب الموصى به: P0 (Critical) أولاً، ثم P1، ثم P2،
+    ثم P3. كل برومبت مكتفٍ ذاتياً ويحتوي خطة تراجع صريحة.
+</div>
+
+</div>
+<!-- ════════════════════════════════════════════════════════════
+     ENDING PAGE
+     ════════════════════════════════════════════════════════════ -->
+<div class="ending">
+
+    <div class="ending-mark">B</div>
+
+    <div class="ending-title">
+        الطريق إلى <span class="ending-accent">الريادة الإقليمية</span><br>
+        يبدأ من هنا
+    </div>
+
+    <div class="ending-divider"></div>
+
+    <div class="ending-text">
+        يمتلك BrightAI كل المكوّنات الأساسية ليصبح المرجع الإقليمي لحوكمة الذكاء الاصطناعي.
+        الفجوة بين السطح التسويقي (85%+) والمنتج الفعلي (15-50%) يجب أن تُغلق أولاً.
+        ثلاث جبهات متوازية: تأمين المسار الحرج، بناء طبقة الامتثال السعودي، وتطوير نموذج
+        SaaS قابل للتوسع — هي المفاتيح لتحويل الطموح إلى واقع.
+    </div>
+
+    <div class="ending-meta">
+        <strong>التوصية الإطلاقية:</strong> Do Not Ship — حتى انتهاء Phase 1<br>
+        <strong>الدرجة الحالية:</strong> 42.5%<br>
+        <strong>الدرجة المتوقعة بعد 365 يوماً:</strong> 92%<br>
+        <strong>الاستثمار الإجمالي:</strong> $186,000 · 2,480 ساعة تطوير<br>
+        <strong>الهدف:</strong> أفضل SaaS في الشرق الأوسط في حوكمة الذكاء الاصطناعي
+    </div>
+
+</div>
+
+</body>
+</html>
+
