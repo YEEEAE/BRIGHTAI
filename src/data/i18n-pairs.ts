@@ -11,6 +11,13 @@ export const LEGAL_I18N_PAIRS = [
   { arabic: '/terms/', english: '/en/terms/' },
   { arabic: '/pdpl-statement/', english: '/en/pdpl-statement/' },
   { arabic: '/data-processing-agreement/', english: '/en/data-processing-agreement/' },
+  // SALES-DECK-2026-07-15: AR/EN sales deck published as a printable
+  // slide for the sales team. The pages were indexable but absent from
+  // sitemap.xml + i18n-pairs — adding the pair here keeps the language
+  // switcher consistent with other bilingual pages. (Both pages emit
+  // hreflang manually in the page frontmatter; this entry documents the
+  // reciprocal pair for future tooling that reads LEGAL_I18N_PAIRS.)
+  { arabic: '/sales-deck/', english: '/en/sales-deck/' },
 ] as const satisfies readonly I18nPair[];
 
 export function getLanguageCounterpart(route: string): string | undefined {

@@ -163,9 +163,13 @@ export default defineConfig({
       // is excluded by the Astro integration itself.)
       filter: (page) => !page.includes('/api/'),
       // @astrojs/sitemap v3 ignores status-code pages (404/500) by default.
-      // REPORTS-SEO-FOUNDATION requires the 404 page to be indexable, so we
-      // explicitly inject it via `customPages`. The 500 page remains
-      // excluded because it's a server-error fallback (not a real route).
+      // 404 MUST stay out of the sitemap — Google drops 404 entries from
+      // the index and treating an error page as indexable URL dilutes
+      // sitemap quality. The `dist/sitemap-0.xml` and `dist/sitemap.xml`
+      // produced by this integration are post-processed by
+      // `scripts/generate-sitemap-all-pages.mjs`, which overwrites both
+      // files with a clean URL set and writes `sitemap-index.xml` that
+      // points to the clean version.
       //
       // KERNEL-SEO-2026-07-14: With `@astrojs/node` adapter, Astro enters
       // hybrid mode and the sitemap integration stops auto-discovering
@@ -176,7 +180,6 @@ export default defineConfig({
       // (the offline page is intentionally indexable — it's a real
       // marketing page, not a service-worker fallback).
       customPages: [
-        'https://brightai.site/404/',
         'https://brightai.site/kernel/chat/',
         'https://brightai.site/kernel/audit/',
         'https://brightai.site/kernel/approvals/',
