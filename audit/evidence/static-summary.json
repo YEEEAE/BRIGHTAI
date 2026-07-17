@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-17T19:29:55.759Z",
+  "generatedAt": "2026-07-17T23:33:00.970Z",
   "pages": 190,
   "redirects": 207,
-  "edges": 23655,
-  "brokenInternalEdges": 74,
-  "issues": 7,
+  "edges": 23662,
+  "brokenInternalEdges": 7,
+  "issues": 2,
   "issueCounts": {
     "Medium": [
       {
@@ -31,71 +31,9 @@
         "reproduction": "افتح /design/typography/ وافحص HTML المبني",
         "recommendation": "راجع معيار الفحص وأصلح المصدر ثم أعد build."
       }
-    ],
-    "High": [
-      {
-        "id": "LINK-ORPHAN-3",
-        "category": "LINK",
-        "severity": "High",
-        "status": "open",
-        "url": "/blog/category/أمن-البيانات/",
-        "file": "dist/client/blog/category/أمن-البيانات/index.html",
-        "selector": "",
-        "evidence": "0 internal inlinks",
-        "reproduction": "ابحث في INTERNAL-LINKS.csv",
-        "recommendation": "أضف رابط سياقي من صفحة hub مناسبة."
-      },
-      {
-        "id": "LINK-ORPHAN-4",
-        "category": "LINK",
-        "severity": "High",
-        "status": "open",
-        "url": "/blog/category/تحول-رقمي/",
-        "file": "dist/client/blog/category/تحول-رقمي/index.html",
-        "selector": "",
-        "evidence": "0 internal inlinks",
-        "reproduction": "ابحث في INTERNAL-LINKS.csv",
-        "recommendation": "أضف رابط سياقي من صفحة hub مناسبة."
-      },
-      {
-        "id": "LINK-ORPHAN-5",
-        "category": "LINK",
-        "severity": "High",
-        "status": "open",
-        "url": "/blog/category/دراسات-حالة/",
-        "file": "dist/client/blog/category/دراسات-حالة/index.html",
-        "selector": "",
-        "evidence": "0 internal inlinks",
-        "reproduction": "ابحث في INTERNAL-LINKS.csv",
-        "recommendation": "أضف رابط سياقي من صفحة hub مناسبة."
-      },
-      {
-        "id": "LINK-ORPHAN-6",
-        "category": "LINK",
-        "severity": "High",
-        "status": "open",
-        "url": "/blog/category/ذكاء-اصطناعي/",
-        "file": "dist/client/blog/category/ذكاء-اصطناعي/index.html",
-        "selector": "",
-        "evidence": "0 internal inlinks",
-        "reproduction": "ابحث في INTERNAL-LINKS.csv",
-        "recommendation": "أضف رابط سياقي من صفحة hub مناسبة."
-      },
-      {
-        "id": "LINK-ORPHAN-7",
-        "category": "LINK",
-        "severity": "High",
-        "status": "open",
-        "url": "/blog/category/رؤية-2030/",
-        "file": "dist/client/blog/category/رؤية-2030/index.html",
-        "selector": "",
-        "evidence": "0 internal inlinks",
-        "reproduction": "ابحث في INTERNAL-LINKS.csv",
-        "recommendation": "أضف رابط سياقي من صفحة hub مناسبة."
-      }
     ]
   },
-  "orphanPages": 5,
+  "orphanPages": 0,
   "invalidSchemaPages": 0,
   "missingAltTotal": 0
 }

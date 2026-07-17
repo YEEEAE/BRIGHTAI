@@ -114,6 +114,33 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
 
+### 2026-07-18 — INTERNAL-LINK-CATEGORIES: روابط سياقية ظاهرة لـ 5 صفحات categories من hub pages + إصلاح URL-decode bug في collector — Verified
+
+- **Files**: 1 معدّل (محتوى) + 1 معدّل (collector fix) + 5 ملفات audit متجددة. **معدّل محتوى**: `src/pages/hub/[slug].astro` (إضافة `categoryLinks` field لـ 5 hub pages في `getStaticPaths` + section جديد "تصفّح المدونة حسب الموضوع" بين related-posts و final CTA). **معدّل collector**: `audit/evidence/static-audit.mjs` (إصلاح bug في `normalizePath`: `url.pathname` يحتفظ بـ percent-encoding للحروف العربية، فلا يطابق `routeFromFile` اللي يـ produce literal Arabic). **متجددة**: `audit/INTERNAL-LINKS.csv` (23655 → 23662 edges)، `audit/PAGE-INVENTORY.csv` (categories بقا inlinks > 0)، `audit/INTERNAL-LINK-RECOMMENDATIONS.csv` (5 categories اللي كانت orphans اختفت)، `audit/ISSUES.csv` (7 → 2 issues، الباقي SEC-BLANK-1 و SEO-H1-2 pre-existing)، `audit/evidence/static-summary.json`.
+- **What**: (1) **7 روابط سياقية جديدة** من 5 hub pages إلى 5 blog category pages، كل رابط بـ anchor عربي وصفي (مو مجرد "category badge"). التوزيع: `/hub/ai-governance/` → 2 (ذكاء-اصطناعي، رؤية-2030)، `/hub/compliance/` → 1 (أمن-البيانات)، `/hub/solutions/` → 1 (تحول-رقمي)، `/hub/use-cases/` → 2 (دراسات-حالة، رؤية-2030)، `/hub/security/` → 1 (أمن-البيانات). الـ design: section جديد بـ class `hub-categories` يستخدم نفس CSS الموجودة (`.hub-related` + `.hub-related-card`) + 3 سطور scoped CSS (`.hub-categories__lead` للوصف، `.hub-category-card` لتغيير border color عند hover). مش footer spam — section موضوع بشكل طبيعي بين related-posts و final CTA. (2) **إصلاح collector bug**: `normalizePath` كان يـ return `url.pathname` مباشرة (URL-encoded للحروف العربية) بينما `routeFromFile` يـ return literal Arabic، فالـ `incoming.get(page.route)` دائماً يطلع 0 لكل صفحات Arabic slug. الآن `normalizePath` يـ apply `decodeURIComponent` في try/catch، فالـ edges و routes كلاهما literal Arabic.
+- **Why**: `audit/INTERNAL-LINK-RECOMMENDATIONS.csv` كان يـ list 5 categories كأيتام (orphan) بدون inlinks. السبب الحقيقي: bug في collector (الـ counting ما يشتغل لـ Arabic slugs) + فعلاً ما في روابط سياقية وصفية (فقط filter chips + category badges على posts). إضافة روابط من hub pages (اللي هي canonical "تصفح حسب الموضوع") تخدم القارئ في رحلة الاستكشاف وتـ boost الـ internal link graph. الـ anchor النصوص (مثل "مقالات حماية البيانات والـ PDPL") أكثر فائدة من "أمن-البيانات 21" (filter chip). إصلاح الـ collector bug ضروري عشان `internal_inlinks` field في `PAGE-INVENTORY.csv` يعكس الحقيقة.
+- **Verification**:
+  - `npx astro build` → 190 صفحة، 0 أخطاء ✅
+  - `node scripts/sync-dist-flat.mjs` → 316 ملف mirrored ✅
+  - `node audit/evidence/static-audit.mjs` → **كل الـ 5 categories بقا inlinks > 0** ✅:
+    - `/blog/category/أمن-البيانات/`: **25** inlinks (من /blog/ + 22 blog posts + 2 hubs)
+    - `/blog/category/تحول-رقمي/`: **14** inlinks (من /blog/ + 11 blog posts + 1 hub)
+    - `/blog/category/دراسات-حالة/`: **5** inlinks (من /blog/ + 2 blog posts + 1 hub + 1 self-ref)
+    - `/blog/category/ذكاء-اصطناعي/`: **24** inlinks (من /blog/ + 21 blog posts + 1 hub)
+    - `/blog/category/رؤية-2030/`: **6** inlinks (من /blog/ + 2 blog posts + 2 hubs)
+  - `audit/INTERNAL-LINK-RECOMMENDATIONS.csv` → 5 rows → **0 rows** (ما في أيتام بـ category) ✅
+  - `pnpm seo:link-graph` → **exit 0** ✅ (381 files scanned، 0 broken links، 0 legacy paths، 0 html suffixes)
+  - `pnpm verify:all` → **exit 0** ✅ (190 HTML، 166 sitemap، 6/6 hreflang، 5/5 service، 0 errors، 0 warnings)
+  - الـ 7 روابط الجديدة موجودة في `dist/client/hub/*/index.html` مع anchors صحيحة (تحقق python من inner HTML)
+  - الـ 2 issues المتبقية (SEC-BLANK-1 على /blog/pdpl-and-ai-saudi/ + SEO-H1-2 على /design/typography/) **pre-existing** وما له علاقة بالتغيير
+- **Risks**:
+  - **light theme** — المشروع dark-only (مو relevant للتغيير)
+  - **CSS bundle** — +0.06KB raw (3 قواعد CSS scoped) — ضئيل
+  - **Build pipeline** — لازم `sync:dist:flat` يـ run بعد `astro build` (موجود في `pnpm build`، لكن لو developer run `npx astro build` مباشرة بدون باقي pipeline، الـ link-graph-validator يطلع broken links بسبب `dist/client/` layout). مذكور في الـ verification.
+  - **Collector routeSet limitation** — ما يشمل non-HTML files (`/rss.xml`، `/sitemap.xml`، `manifest.webmanifest`). pre-existing limitation: 7 edges تطلع "broken" بسبب /rss.xml و /sitemap.xml رغم إنها موجودة. ما له علاقة بالتغيير.
+- **الـ commit**: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: verified locally (build + sync:dist:flat + collector + link-graph-validator + verify:all كلها clean). يحتاج user: commit + push + Render auto-redeploy.
+
 ### 2026-07-14 — KERNEL-AI-2026-07-14: تحويل Kernel من عرض تجريبي إلى صفحات قابلة للاستخدام — Verified
 
 - **Files**: 7 جديد + 10 معدّل = 17 ملف. **جديد**: `src/data/kernel-system-prompts.ts` (~120 سطر، 5 prompts فصحى للسوق السعودي)، `src/components/kernel/KernelChatError.astro` (~165 سطر، 6 أنواع أخطاء)، `src/components/kernel/KernelAiAssistant.astro` (~620 سطر، قابل لإعادة الاستخدام + sessionStorage)، `src/components/kernel/KernelContactCta.astro` (~80 سطر، يظهر بعد 3 رسائل)، `src/components/kernel/KernelLeadForm.astro` (~430 سطر، 3 حقول + Zod client + WhatsApp fallback)، `src/pages/api/lead.ts` (~205 سطر، rate limit 5/دقيقة + Zod server + log-only). **معدّل**: `astro.config.mjs` (vercel→node adapter)، `package.json` (`@astrojs/vercel@10.0.8` → `@astrojs/node@^11.0.2`)، `render.yaml` (static→node service + startCommand)، `scripts/sync-dist-flat.mjs` (إعادة كتابة — بدون wipe لـ dist/client/)، `scripts/seo-ci-check.mjs` (إضافة client, server لـ HTML_IGNORE_DIRS)، 10 صفحات kernel (chat.astro + 5 وظيفية + 5 lead only). **تقرير**: `report/2026-07-14-kernel-interactive-execution.md` (16KB، جداول حالة كل صفحة).

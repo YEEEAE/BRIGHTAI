@@ -16,7 +16,14 @@ const normalizePath = (href, base = '/') => {
   try {
     const url = new URL(href, new URL(base, site));
     if (url.origin !== site) return null;
-    return url.pathname.endsWith('/') || /\.[a-z0-9]+$/i.test(url.pathname) ? url.pathname : `${url.pathname}/`;
+    // url.pathname preserves percent-encoding for non-ASCII characters
+    // (e.g. /blog/category/%D8%B0%D9%83%D8%A7%D8%A1-...). Decode so edge
+    // targets match the literal-Arabic routes produced by routeFromFile
+    // (e.g. /blog/category/ذكاء-اصطناعي/). Without this, every Arabic
+    // route would report internal_inlinks = 0 even when linked.
+    let pathname = url.pathname;
+    try { pathname = decodeURIComponent(pathname); } catch { /* keep encoded */ }
+    return pathname.endsWith('/') || /\.[a-z0-9]+$/i.test(pathname) ? pathname : `${pathname}/`;
   } catch { return null; }
 };
 const routeFromFile = (file) => {

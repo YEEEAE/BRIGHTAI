@@ -30,6 +30,20 @@ export function getStaticPaths() {
       tags: ['حوكمة الذكاء الاصطناعي'],
       eyebrow: 'مركز محتوى BrightAI',
       icon: 'mdi-brain',
+      categoryLinks: [
+        {
+          href: '/blog/category/ذكاء-اصطناعي/',
+          eyebrow: 'تصنيف المدونة',
+          title: 'مقالات حوكمة الذكاء الاصطناعي الكاملة',
+          desc: 'كل ما ينشر عن حوكمة الـ AI وأخلاقياته ومنصات BrightAI — مرتبة في تصنيف واحد للتنقل السريع.',
+        },
+        {
+          href: '/blog/category/رؤية-2030/',
+          eyebrow: 'تصنيف المدونة',
+          title: 'مقالات رؤية 2030 وحوكمة الـ AI',
+          desc: 'كيف يلتقي برنامج التحول الوطني مع حوكمة الذكاء الاصطناعي في القطاعين العام والخاص.',
+        },
+      ],
     },
     {
       slug: 'compliance',
@@ -38,6 +52,14 @@ export function getStaticPaths() {
       tags: ['امتثال'],
       eyebrow: 'مركز محتوى BrightAI',
       icon: 'mdi-scale-balance',
+      categoryLinks: [
+        {
+          href: '/blog/category/أمن-البيانات/',
+          eyebrow: 'تصنيف المدونة',
+          title: 'مقالات حماية البيانات والـ PDPL',
+          desc: 'دليل عملي لـ PDPL وNCA ECC وضوابط SDAIA على بيانات الـ AI — مقالات تنفيذية جاهزة للتطبيق.',
+        },
+      ],
     },
     {
       slug: 'solutions',
@@ -46,6 +68,14 @@ export function getStaticPaths() {
       tags: ['حلول'],
       eyebrow: 'مركز محتوى BrightAI',
       icon: 'mdi-view-dashboard',
+      categoryLinks: [
+        {
+          href: '/blog/category/تحول-رقمي/',
+          eyebrow: 'تصنيف المدونة',
+          title: 'مقالات التحول الرقمي وحوكمة الـ AI',
+          desc: 'مسارات التحول الرقمي، ISO/IEC 42001، وسجلات تدقيق AI — محتوى تطبيقي يساعدك في تخطيط المرحلة القادمة.',
+        },
+      ],
     },
     {
       slug: 'use-cases',
@@ -54,6 +84,20 @@ export function getStaticPaths() {
       tags: ['حالات استخدام'],
       eyebrow: 'مركز محتوى BrightAI',
       icon: 'mdi-hospital-building',
+      categoryLinks: [
+        {
+          href: '/blog/category/دراسات-حالة/',
+          eyebrow: 'تصنيف المدونة',
+          title: 'دراسات حالة سعودية من السوق',
+          desc: 'تطبيقات حقيقية لـ AI في الصحة والبنوك والحكومة والتعليم — أرقام ونتائج وقصص نجاح من السوق السعودي.',
+        },
+        {
+          href: '/blog/category/رؤية-2030/',
+          eyebrow: 'تصنيف المدونة',
+          title: 'مقالات رؤية 2030 في القطاعات',
+          desc: 'كيف يدعم الذكاء الاصطناعي مستهدفات رؤية 2030 في القطاعات الحكومية والصحية والمالية.',
+        },
+      ],
     },
     // REPORTS-SEO-FOUNDATION (2026-07-07): /hub/security/ — referenced by
     // the أسمن-البيانات blog category (ai-firewall, ai-red-teaming,
@@ -68,6 +112,14 @@ export function getStaticPaths() {
       tags: ['أمن-البيانات', 'أمان AI', 'AI Security'],
       eyebrow: 'مركز محتوى BrightAI',
       icon: 'mdi-shield-lock',
+      categoryLinks: [
+        {
+          href: '/blog/category/أمن-البيانات/',
+          eyebrow: 'تصنيف المدونة',
+          title: 'مقالات أمن البيانات و AI Firewall',
+          desc: 'كل ما ينشر عن جدار حماية AI، اختبار الاختراق، منع تسريب البيانات، وضوابط NCA ECC لحماية بيانات الذكاء الاصطناعي.',
+        },
+      ],
     },
   ];
   return hubPages.map(page => ({
@@ -151,6 +203,24 @@ const hubSlugJsonLd = {
     </section>
   )}
 
+  {page.categoryLinks && page.categoryLinks.length > 0 && (
+    <section class="hub-related hub-categories" aria-labelledby="hub-categories">
+      <h2 id="hub-categories">📚 تصفّح المدونة حسب الموضوع</h2>
+      <p class="hub-categories__lead">
+        لو تبي تتعمّق في جانب معيّن من هذا المركز، هذي تصنيفات المدونة اللي تخدمك:
+      </p>
+      <div class="hub-related-grid">
+        {page.categoryLinks.map((link) => (
+          <a href={link.href} class="hub-related-card hub-category-card">
+            <p class="hub-related-card__cat">{link.eyebrow}</p>
+            <h3>{link.title}</h3>
+            <p>{link.desc}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
   <section class="content-cta-final" aria-labelledby="hub-sub-cta">
     <div class="card card--cta">
       <h2 id="hub-sub-cta">تبي ترجع للمحتوى الكامل أو تبدأ تقييم؟</h2>
@@ -194,6 +264,19 @@ const hubSlugJsonLd = {
     }
     .hub-subpage__body :global(a) {
       color: var(--brand-300);
+    }
+    .hub-categories__lead {
+      color: var(--text-secondary);
+      font-size: var(--text-base);
+      margin: 0 0 var(--space-4);
+      max-width: 60ch;
+    }
+    .hub-category-card {
+      border-color: var(--brand-400);
+    }
+    .hub-category-card:hover {
+      border-color: var(--interactive-primary);
+      background: linear-gradient(180deg, transparent, rgba(34, 211, 238, 0.04));
     }
   </style>
 </ArabicLayout>
