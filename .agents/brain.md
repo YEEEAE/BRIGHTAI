@@ -190,6 +190,42 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-17 — DEPLOY-FIX-002: Render build failed at commit 5e468ea — missing fonttools + brotli Python packages
+
+- **Files**: 1 معدّل. **معدّل**: `render.yaml` (`buildCommand: pnpm install && pnpm run build` → `pip3 install fonttools brotli && pnpm install && pnpm run build`).
+- **What**: أضفنا `pip3 install fonttools brotli` في بداية `buildCommand` عشان Render's Node 22 base image يجي مع Python 3.11 بس ما يجي مع `fonttools` و `brotli` (مطلوبين لـ `prebuild` → `node scripts/subset-fonts.mjs` → `python3 -m fontTools.subset`).
+- **Why**: الـ deploy في commit `5e468ea` (Fri Jul 17 22:47 GMT+3) فشل بـ rollback، Render طباعة:
+  ```
+  [fonts:subset] ❌ pyftsubset مش متاح. ثبّت fonttools:
+    pip3 install fonttools brotli
+   ELIFECYCLE  Command failed with exit code 1.
+  ```
+  السكربت `scripts/subset-fonts.mjs` يفحص `python3 -c "from fontTools import subset"` في prebuild → يفشل → exit 1. الـ prebuild كان يشتغل قبل (brain entry 2026-07-14 يذكر `fonttools 4.61.1`) — على ما يبدو Render غيّر الـ base image أو الـ cache.
+- **Verification**:
+  - `git diff render.yaml` → **1 سطر فقط** (buildCommand).
+  - `pnpm run build` محلياً → **180 صفحة، 0 أخطاء** (fonttools 4.61.1 مثبّت محلياً).
+  - `docs/fonts.md:102` يذكر `pip3 install fonttools brotli` كـ Prerequisite يدوي — يعني البيئة المحلية تعرف المتطلب، بس ما كان مربوط بـ deploy.
+- **الـ commit**: `bd95fd26` على branch `chore/security-deps-upgrade-2026-07-17`. **يحتاج merge/cherry-pick إلى `main`** لأن Render يبني من `main` فقط.
+- **Risks**:
+  - `pip3 install` يضيف ~10s لـ build time. مقبول.
+  - Python version mismatch (Render: 3.11، dev: ممكن 3.13). `fonttools 4.61+` يدعم Python ≥ 3.9. آمن.
+  - ما يلمس Arabic content، ما يلمس SEO، ما يلمس design tokens. صفر blast radius على المحتوى.
+- **Brain updates**: Section 1 ما يحتاج تحديث (build page count ما تغير). Section 3 ما يحتاج entry جديد (مشكلة deploy، مش production KI). Section 4 يحتاج DEC جديد (راجع تحت).
+- **Status**: committed locally — needs push to main.
+
+### DEC-XXX (2026-07-17) — Python fonttools is a Render build prerequisite, install in buildCommand
+
+- **Date**: 2026-07-17
+- **Context**: `scripts/subset-fonts.mjs` (prebuild) يستدعي `python3 -m fontTools.subset` لتقليص TheYearofTheCamel brand font من 58KB إلى 9.9KB (-83%). الـ Python `fonttools` package غير مثبّت في Render's Node 22 base image.
+- **Decision**: إضافة `pip3 install fonttools brotli` إلى `render.yaml` `buildCommand`، قبل `pnpm install`.
+- **Rationale**:
+  - **render.yaml** (مو `package.json` prebuild): الـ docs/fonts.md يوثّق التثبيت كـ Prerequisite يدوي للمطور. نخلي dev workflow بدون تغيير، ونحقن التثبيت في deploy فقط.
+  - **buildCommand** (مو Dockerfile): Render ما يبني Docker لـ `runtime: node`، يستخدم base image.
+  - **pip3 install في build** (مو cache/blueprint): أبسط حل، ~10s، deterministic.
+- **Reversal cost**: Low — revert the line in render.yaml. The subset.woff2 file (9.9KB) يبقى في repo، الـ subsetting يتكرر في كل build.
+- **Do not reverse** without first checking: (a) لو Render يثبت fonttools افتراضياً مستقبلاً (unlikely)، (b) لو بننتقل لـ Node-based font subsetter كـ follow-up (قابل للنقاش — أنظف بس أكبر).
+- **Follow-up suggestion**: استكشاف `subset-font` (npm) كبديل pure-JS — يلغي اعتماد Python tooling كلياً من build pipeline. مذكور في commit message لكن مش متضمن في هذا الـ fix.
+
 ### 2026-07-16 — DEPLOY-FIX-001: Render deploy failure fix (Option B) — Verified pnpm install works locally
 
 - **Files**: 2 معدّل + 1 working tree cleanup. **معدّل**: `packages/db/prisma/schema.prisma` (Organization model: أضف opposite relations لـ `aiUsageEntries` و `samlConnections` — fix لـ broken Prisma schema)، `.gitignore` (أضف `apps/dashboard/coverage/`, `coverage/`, `*.lcov`). **Working tree**: `git rm -r --cached coverage/` حذف 30+ tracked coverage HTML/JSON files.
