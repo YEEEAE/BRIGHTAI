@@ -4687,7 +4687,10 @@ svg.icon {
   flex-shrink: 0;
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--text-muted);
+  /* A11Y-DOCS-CONTRAST (2026-07-18): --text-muted (#64748b) on --bg-elevated (#151c30)
+     was 3.42:1 — below WCAG AA 4.5:1 for normal text. --text-secondary (#94a3b8)
+     on the same surface is 6.40:1 (AAA). No global token changes. */
+  color: var(--text-secondary);
   background: var(--bg-elevated);
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
@@ -4715,7 +4718,10 @@ svg.icon {
 
 .docs-recent__cat {
   font-size: var(--text-xs);
-  color: var(--text-muted);
+  /* A11Y-DOCS-CONTRAST (2026-07-18): --text-muted on --bg-surface (#0f1525) was
+     3.72:1 — below WCAG AA 4.5:1. --text-secondary on the same surface is
+     6.96:1 (AAA). No global token changes; scope-limited override. */
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -6303,6 +6309,26 @@ svg.icon {
    Targeted selectors for elements the base rules missed.
    يضمن 44×44px touch target على كل العناصر التفاعلية داخل نص الصفحة.
    ============================================================ */
+
+/* A11Y-BLOG-LINK (2026-07-18): WCAG 1.4.1 — links must be distinguishable
+   without relying on color. The default <a> uses --interactive-primary
+   with no underline; that violates "Use of Color" when the link sits in
+   a text block (e.g. blog hero breadcrumb). We add a thin brand-tinted
+   underline with proper offset to keep the visual hierarchy clean
+   (thinner than prose links to avoid competing with the title).
+
+   Hover/focus thicken the line to match the prose-link pattern in base.css. */
+.breadcrumbs__link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(32, 165, 151, 0.55);
+}
+.breadcrumbs__link:hover,
+.breadcrumbs__link:focus-visible {
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--interactive-primary);
+}
 
 @media (max-width: 479px) {
   /* Breadcrumbs — links to home / page hierarchy.

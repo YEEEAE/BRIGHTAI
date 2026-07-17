@@ -1,0 +1,27 @@
+{
+  "page": "docs",
+  "url": "http://localhost:4321/docs/",
+  "viewport": "desktop-1440",
+  "width": 1440,
+  "violations": 0,
+  "incomplete": 2,
+  "passes": 30,
+  "consoleErrors": 0,
+  "timestamp": "2026-07-17T23:18:47.557Z",
+  "violationsList": [],
+  "incompleteList": [
+    {
+      "id": "aria-valid-attr-value",
+      "impact": "critical",
+      "help": "ARIA attributes must conform to valid values",
+      "nodes": 3
+    },
+    {
+      "id": "color-contrast",
+      "impact": "serious",
+      "help": "Elements must meet minimum color contrast ratio thresholds",
+      "nodes": 37
+    }
+  ],
+  "consoleErrorsList": []
+}

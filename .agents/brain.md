@@ -191,6 +191,31 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-18 — A11Y-BLOG-LINK + A11Y-DOCS-CONTRAST: fix two WCAG AA violations on /blog/ and /docs/ (no palette change) — Verified
+
+- **Files**: 1 معدّل + 2 جديد. **معدّل**: `src/styles/pages.css` (3 تغييرات scoped). **جديد**: `scripts/playwright/audit-blog-docs.mjs` (axe scan على 2 صفحة × 2 viewport مع screenshots)، `scripts/playwright/crop-fix-zones.mjs` (cropped screenshots للـ zones المتأثرة).
+- **What**: أصلحنا مخالفتين لـ WCAG AA على `/blog/` و `/docs/` بدون تغيير الـ palette العامة. (1) **A11Y-BLOG-LINK** — `.breadcrumbs__link` كان يعتمد على اللون بس (--interactive-primary teal + لا underline) → axe `link-in-text-block` violation. أضفنا `text-decoration: underline` (1px, offset 3px, brand-tinted color `rgba(32, 165, 151, 0.55)`) + hover/focus thicken to 2px. (2) **A11Y-DOCS-CONTRAST** — `.docs-recent__date` و `.docs-recent__cat` كانوا يستخدمون `var(--text-muted)` (#64748b) على `var(--bg-elevated)` و `var(--bg-surface)` → contrast ratios 3.42:1 و 3.72:1 (تحت AA 4.5:1). استبدلنا بـ `var(--text-secondary)` (#94a3b8) → 6.40:1 و 6.96:1 (AAA). Token `--text-muted` نفسه ما تغير.
+- **Why**: axe scan على `/blog/` و `/docs/` يكشف 21 serious node total (1 link + 10 date + 10 cat). الـ fix scope-limited (override على selectors محددة) عشان ما نأثر على باقي الاستخدامات لـ `--text-muted`. breadcrumb underline متعمد يكون أرق من prose links (1px vs 2px في base.css) عشان ما يتنافس مع الـ title.
+- **Verification**:
+  - `npx astro build` → 190 صفحة، 0 أخطاء ✅
+  - `node scripts/playwright/audit-blog-docs.mjs` (post-fix) → **0 critical، 0 serious، 0 moderate، 0 minor** على كل الـ 4 (page × viewport) combinations ✅
+  - `node scripts/verify-all.mjs` → 5/5 فحص ناجح ✅
+  - `node scripts/seo-schema-audit.mjs` → بدون أخطاء schema جديدة ✅
+  - `node scripts/check-performance-budget.js` → نفس الـ pre-existing FAIL (HTML 150KB > 80KB، CSS 218KB > 50KB) — ما هو regression من تغييرنا، السبب scripts تقيس raw بدل gzipped
+  - Visual: cropped screenshots في `download/qa/a11y-blog-docs/crop-*.png` (6 ملفات) + full-page في نفس المجلد (4 ملفات) — الـ breadcrumb underline واضح + الـ category/date labels مريّحة وقابلة للقراءة
+  - Contrast ratios (computed):
+    - `#94a3b8` (--text-secondary) on `#0f1525` (--bg-surface) = **6.96:1** (AAA)
+    - `#94a3b8` (--text-secondary) on `#151c30` (--bg-elevated) = **6.40:1** (AAA)
+    - underline: 1px brand-tinted → تمييز بصري مستقل عن اللون (WCAG 1.4.1 ✅)
+- **Risks**:
+  - **light theme**: المشروع dark-only (`color-scheme: dark` في kernel.css، لا data-theme). ما في light theme للـ screenshot. وضحنا للمستخدم في الرد.
+  - **pre-existing incomplete results**: axe "incomplete" 17 node على color-contrast — مو violations، axe ما يقدر يحددها تلقائياً (gradients/decorative). موجودة قبل الـ fix.
+  - **CSS bundle size**: +0.04KB raw (لا يكاد يذكر). الـ perf-budget FAIL ما زال موجود لكن لسبب آخر (16-sections rule + 180+ pages).
+  - **breadcrumbs في أي صفحة ثانية** (kernel, pricing, solutions, ...) — كلهم يستخدمون نفس `<Breadcrumbs />` component، فيستفيدون من نفس الـ fix تلقائياً.
+- **Brain updates**: Section 2 (this entry). ما يلامس Section 1 (metrics ما تغيرت)، Section 5 (inventory ما تغير)، Section 3 (KIs ما تغيرت).
+- **الـ commit**: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: verified locally (build + axe 0 serious + verify:all + visual). يحتاج user: commit + push + Render auto-redeploy.
+
 ### 2026-07-18 — ESLINT-DASHBOARD-001: dashboard ESLint flat config — register @typescript-eslint plugin + parser (rule was unresolvable)
 
 - **Files**: 2 معدّل. **معدّل**: `apps/dashboard/eslint.config.mjs` (flat-config: استيراد `@typescript-eslint/eslint-plugin` و `@typescript-eslint/parser`، تسجيلهم في `plugins` و `languageOptions.parser`، نشر `...tsPlugin.configs.recommended.rules`، إضافة `'no-undef': 'off'` صريح مثل الـ root، تخفيف `'no-irregular-whitespace': 'warn'` للـ Arabic regex patterns في firewall detectors)، `apps/dashboard/lib/firewall/audit/audit-writer.ts` (سطر واحد: استبدال `const { createHash } = require('node:crypto')` بـ `import { createHash } from 'node:crypto'` في الـ top-level imports + حذف الـ eslint-disable comment القديم لـ `@typescript-eslint/no-var-requires` لأن الـ rule الحالي اسمه `@typescript-eslint/no-require-imports`).
