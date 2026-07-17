@@ -16,17 +16,44 @@ import {
   normalizeSiteUrl,
   relPathToCanonical,
 } from "./seo-url-map.mjs";
+import {
+  listClientHtmlFiles,
+  readClientSitemapEntries,
+  resolveClientBuildRoot,
+} from "./_build-output.mjs";
 
 const BASE_URL = "https://brightai.site";
 const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(SCRIPT_DIR, "..");
 
+// SEO-AUDIT-001 (2026-07-18): unified client build root resolution.
+// Before this change, the script walked the entire project ROOT and only
+// found 3 HTML files (a11y reports). Now we read from the same canonical
+// location the rest of the verification pipeline uses: dist/client/ when
+// present (adapter-laid hybrid), otherwise dist/ (plain static fallback).
+const clientBuild = resolveClientBuildRoot(ROOT);
+if (!clientBuild.root) {
+  console.error(`❌ تعذر تحديد client build root: ${clientBuild.reason}`);
+  process.exit(1);
+}
+const CLIENT_ROOT = clientBuild.root;
+
 const ROBOTS_PATH = fsSync.existsSync(path.join(ROOT, "public", "robots.txt"))
   ? path.join(ROOT, "public", "robots.txt")
   : path.join(ROOT, "robots.txt");
-const SITEMAP_PATH = fsSync.existsSync(path.join(ROOT, "public", "sitemap.xml"))
-  ? path.join(ROOT, "public", "sitemap.xml")
-  : path.join(ROOT, "sitemap.xml");
+
+// SEO-AUDIT-001: prefer the sitemap emitted at the client build root
+// (dist/client/sitemap.xml), fall back to the source-of-truth in
+// public/sitemap.xml. Both contain the same 166 URLs after a clean build,
+// but reading from the client root keeps the audit consistent with the
+// HTML files we're auditing below.
+const CLIENT_SITEMAP_PATH = path.join(CLIENT_ROOT, "sitemap.xml");
+const PUBLIC_SITEMAP_PATH = path.join(ROOT, "public", "sitemap.xml");
+const SITEMAP_PATH = fsSync.existsSync(CLIENT_SITEMAP_PATH)
+  ? CLIENT_SITEMAP_PATH
+  : fsSync.existsSync(PUBLIC_SITEMAP_PATH)
+    ? PUBLIC_SITEMAP_PATH
+    : path.join(ROOT, "sitemap.xml");
 const HTML_IGNORE_DIRS = new Set([
   ".git",
   ".agents",
@@ -270,7 +297,14 @@ async function walkHtmlFiles(dirPath, bucket = []) {
 }
 
 async function auditHtmlFile(filePath, publicRegistry) {
-  const relPath = toRootRelative(filePath);
+  // SEO-AUDIT-001 (2026-07-18): compute the relPath against CLIENT_ROOT
+  // (not ROOT). When the file is at /abs/dist/client/about/index.html and
+  // CLIENT_ROOT is /abs/dist/client, the relPath is "about/index.html" —
+  // which matches what the rest of the registry/relPathToCanonical pipeline
+  // expects. Previously we computed against ROOT, which yielded
+  // "dist/client/about/index.html" and produced canonicals like
+  // "https://brightai.site/dist/client/about" — every page failed.
+  const relPath = formatPath(path.relative(CLIENT_ROOT, filePath));
   const html = await fs.readFile(filePath, "utf8");
 
   if (!isHtmlDocument(html)) {
@@ -396,18 +430,22 @@ async function main() {
       return false;
     }
   });
-  // Build registry from both source HTML and built dist HTML for accurate sitemap validation
-  const sourceHtmlFiles = (await walkHtmlFiles(ROOT)).map((filePath) => toRootRelative(filePath));
-  const distDir = path.join(ROOT, "dist");
-  let distHtmlFiles = [];
-  try {
-    distHtmlFiles = (await walkHtmlFiles(distDir)).map((filePath) =>
-      formatPath(path.relative(ROOT, filePath))
-    );
-  } catch {
-    // dist may not exist yet
-  }
-  const allHtmlRelPaths = [...new Set([...sourceHtmlFiles, ...distHtmlFiles])];
+  // SEO-AUDIT-001 (2026-07-18): build the public URL registry from the
+  // client build root. Before this change, the registry mixed source HTML
+  // (3 files, mostly a11y reports) with built dist HTML (the rest), which
+  // made canonical/hreflang comparisons unreliable. Now the registry
+  // reflects exactly the pages that ship to production.
+  const clientHtmlFiles = await listClientHtmlFiles(ROOT);
+  const clientHtmlRelPaths = clientHtmlFiles.map((filePath) =>
+    formatPath(path.relative(CLIENT_ROOT, filePath))
+  );
+  // Keep a small source-HTML sample so hreflang alternates pointing at
+  // legacy paths (renamed in this build) still resolve. This is best-effort
+  // and degrades to "no source registry" if the project has no legacy HTML.
+  const sourceHtmlFiles = (await walkHtmlFiles(ROOT)).map((filePath) =>
+    toRootRelative(filePath)
+  );
+  const allHtmlRelPaths = [...new Set([...sourceHtmlFiles, ...clientHtmlRelPaths])];
   const publicRegistry = buildPublicUrlRegistry(allHtmlRelPaths, BASE_URL);
   // An alternate is valid if it exists in the sitemap itself (self-consistent)
   // OR in the HTML file registry (for source-tracked pages)
@@ -420,7 +458,11 @@ async function main() {
     );
   });
 
-  const htmlFiles = await walkHtmlFiles(ROOT);
+  // SEO-AUDIT-001: walk the client build root, NOT the project root.
+  // The previous behavior walked ROOT (which includes src/, public/, audit/,
+  // etc.) and ignored dist/ in HTML_IGNORE_DIRS, so it only ever found
+  // 3 stray HTML files. The client root is the single source of truth.
+  const htmlFiles = clientHtmlFiles;
   const htmlAudits = await Promise.all(
     htmlFiles.map((filePath) => auditHtmlFile(filePath, publicRegistry))
   );
@@ -497,7 +539,7 @@ async function main() {
   console.log(`✅ عدد الروابط في sitemap.xml: ${sitemapLocs.length}`);
 
   printSection("3) ملفات HTML");
-  console.log(`✅ إجمالي ملفات HTML: ${htmlAudits.length}`);
+  console.log(`✅ إجمالي ملفات HTML: ${htmlAudits.length} (من ${formatPath(path.relative(ROOT, CLIENT_ROOT)) || "client root"})`);
   console.log(`✅ الصفحات الكاملة التي تم فحصها: ${documentAudits.length}`);
   if (skippedHtmlFiles.length > 0) {
     console.log(

@@ -9,8 +9,20 @@ import {
   redirectPath,
   walkFiles,
 } from "./indexing-recovery-utils.mjs";
+import {
+  resolveClientBuildRoot,
+  resolveClientSitemapFile,
+  listClientHtmlFiles,
+} from "./_build-output.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+// REDIRECTS-CHECK-001 (2026-07-18): unify client build root resolution.
+// Before this change the script walked `dist/` directly, which after
+// @astrojs/node adapter (KERNEL-AI-2026-07-14) might miss HTML files if
+// `sync-dist-flat.mjs` hasn't run yet. Now we read from the canonical
+// client root via _build-output.mjs and bail loudly when no build exists.
+const clientBuild = resolveClientBuildRoot(ROOT);
 
 async function loadRedirects(root) {
   let netlify = [];
@@ -33,12 +45,17 @@ export async function checkRedirectDestinations({ root = ROOT } = {}) {
   const rootHtmlFiles = (await walkFiles(root)).filter((file) => file.endsWith(".html"));
   const routes = buildRouteSet(rootHtmlFiles);
 
-  // إضافة وجهات valid إضافية: dist HTML routes
-  const distDir = path.join(root, "dist");
+  // REDIRECTS-CHECK-001: prefer the unified client build root (dist/client/
+  // when present, else dist/) for the post-build route set. This is the
+  // single source of truth shared with the other 3 verification scripts.
+  const clientRoot = (resolveClientBuildRoot(root).root) ?? path.join(root, "dist");
   try {
-    const distHtmlFiles = (await walkFiles(distDir)).filter((f) => f.endsWith(".html"));
+    const distHtmlFiles = await listClientHtmlFiles(root);
     for (const f of distHtmlFiles) {
-      const r = canonicalPath("/" + f.replaceAll("\\", "/").replace(/\/index\.html$/, "/").replace(/\.html$/, "/"));
+      const rel = path.relative(clientRoot, f).replaceAll("\\", "/");
+      const r = canonicalPath(
+        "/" + rel.replace(/\/index\.html$/, "/").replace(/\.html$/, "/")
+      );
       if (r) routes.add(r);
     }
   } catch {
@@ -64,25 +81,37 @@ export async function checkRedirectDestinations({ root = ROOT } = {}) {
     routes.add(sp);
   }
 
-  // إضافة routes من sitemap.xml إذا وُجد
-  const sitemapPath = path.join(root, "public", "sitemap.xml");
-  try {
-    const sitemapXml = await fs.readFile(sitemapPath, "utf8");
-    const locMatches = sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g);
-    const SITE_ORIGIN = "https://brightai.site";
-    for (const m of locMatches) {
-      try {
-        const u = new URL(m[1].trim());
-        if (u.origin === SITE_ORIGIN) {
-          const r = canonicalPath(u.pathname);
-          if (r) routes.add(r);
+  // REDIRECTS-CHECK-001: prefer the sitemap emitted at the client build
+  // root. Fall back to public/sitemap.xml (the source-of-truth) and the
+  // old root-level sitemap.xml for back-compat with older branches.
+  const sitemapCandidates = [
+    resolveClientSitemapFile(root),
+    path.join(root, "public", "sitemap.xml"),
+    path.join(root, "sitemap.xml"),
+  ].filter(Boolean);
+  const SITE_ORIGIN = "https://brightai.site";
+  for (const sitemapPath of sitemapCandidates) {
+    try {
+      const sitemapXml = await fs.readFile(sitemapPath, "utf8");
+      const locMatches = sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g);
+      for (const m of locMatches) {
+        try {
+          const u = new URL(m[1].trim());
+          if (u.origin === SITE_ORIGIN) {
+            const r = canonicalPath(u.pathname);
+            if (r) routes.add(r);
+          }
+        } catch {
+          // ignore invalid URLs
         }
-      } catch {
-        // ignore invalid URLs
       }
+      // Stop at the first readable sitemap candidate — duplicates are
+      // harmless (Set dedup) but reading every candidate wastes I/O on
+      // a 166-URL file.
+      if (locMatches && sitemapPath) break;
+    } catch {
+      // try next candidate
     }
-  } catch {
-    // sitemap not found
   }
 
   const redirects = await loadRedirects(root);

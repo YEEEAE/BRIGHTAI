@@ -15,11 +15,28 @@ import {
   hasMetaRefresh,
   hasNoindexDirective,
 } from "./sitemap-audit-utils.mjs";
+import {
+  ensureNonEmptySitemap,
+  resolveClientBuildRoot,
+} from "./_build-output.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 const execFileAsync = promisify(execFile);
 const gitLastmodCache = new Map();
+
+// SITEMAP-GEN-001 (2026-07-18): resolve the canonical client build root
+// via _build-output.mjs and bail loudly when no build is present. Before
+// this change, the generator hardcoded `dist/` and would happily emit a
+// 0-URL sitemap if dist/client was empty (e.g. mid-build). The user
+// reported exactly this: "لا تكتب sitemap صفر URL".
+const clientBuild = resolveClientBuildRoot(ROOT);
+if (!clientBuild.root) {
+  console.error(`❌ ${clientBuild.reason}`);
+  process.exit(1);
+}
+const CLIENT_ROOT = clientBuild.root;
+const CLIENT_REL = path.relative(ROOT, CLIENT_ROOT);
 
 // Sitemap Outputs
 const SITEMAP_INDEX = path.join(ROOT, "public", "sitemap.xml");
@@ -32,10 +49,10 @@ const REPORT_OUTPUT = path.join(ROOT, "reports", "sitemap-quality-report.md");
 // emitted sitemap-index.xml here. See:
 //   - report/2026-07-15-sitemap-contract.md
 //   - brain.md KI-054 (astro.config.mjs remediation pending approval)
-const DIST_SITEMAP_XML = path.join(ROOT, "dist", "sitemap.xml");
-const DIST_SITEMAP_INDEX_XML = path.join(ROOT, "dist", "sitemap-index.xml");
-const DIST_SITEMAP_INDEX_XML_CLIENT = path.join(ROOT, "dist", "client", "sitemap-index.xml");
-const DIST_SITEMAP_0_XML = path.join(ROOT, "dist", "sitemap-0.xml");
+const DIST_SITEMAP_XML = path.join(CLIENT_ROOT, "sitemap.xml");
+const DIST_SITEMAP_INDEX_XML = path.join(CLIENT_ROOT, "sitemap-index.xml");
+const DIST_SITEMAP_INDEX_XML_CLIENT = path.join(CLIENT_ROOT, "sitemap-index.xml");
+const DIST_SITEMAP_0_XML = path.join(CLIENT_ROOT, "sitemap-0.xml");
 const DIST_SITEMAP_0_XML_CLIENT = path.join(ROOT, "dist", "client", "sitemap-0.xml");
 
 const IGNORED_SCAN_DIRS = new Set([
@@ -369,7 +386,11 @@ function renderXml(entries) {
 }
 
 async function analyzePage(relPath) {
-  const fullPath = path.join(ROOT, "dist", relPath);
+  // SITEMAP-GEN-001 (2026-07-18): analyze from the unified client build
+  // root, not the legacy flat dist/. When `relPath` is "about/index.html",
+  // `fullPath` is now `${CLIENT_ROOT}/about/index.html` — matching the
+  // pages the other 3 verification scripts audit.
+  const fullPath = path.join(CLIENT_ROOT, relPath);
   const expectedCanonical = relPathToCanonical(relPath, BASE_URL);
 
   try {
@@ -411,9 +432,18 @@ async function analyzePage(relPath) {
 }
 
 async function main() {
-  const allFiles = await walkHtmlFiles(path.join(ROOT, "dist"));
-  const normalizedRelPaths = allFiles.map((fullPath) => normalizeRelPath(path.relative(path.join(ROOT, "dist"), fullPath)));
-  const lowerPathMap = new Map(normalizedRelPaths.map((relPath) => [relPath.toLowerCase(), relPath]));
+  // SITEMAP-GEN-001 (2026-07-18): walk the unified client build root.
+  // Before this change the generator walked `dist/`, which only worked
+  // because sync-dist-flat.mjs mirrored `dist/client/` → `dist/`. If that
+  // step is skipped or stale, the generator produced a sitemap missing
+  // pages — or, worse, an empty one.
+  const allFiles = await walkHtmlFiles(CLIENT_ROOT);
+  const normalizedRelPaths = allFiles.map((fullPath) =>
+    normalizeRelPath(path.relative(CLIENT_ROOT, fullPath))
+  );
+  const lowerPathMap = new Map(
+    normalizedRelPaths.map((relPath) => [relPath.toLowerCase(), relPath])
+  );
 
   const pagesList = [];
   const kernelList = [];
@@ -467,6 +497,20 @@ async function main() {
     ...finalDemo,
     ...finalSolutions,
   ].sort((a, b) => a.loc.localeCompare(b.loc, "en"));
+
+  // SITEMAP-GEN-001 (2026-07-18): 0-URL guard. Before this guard, the
+  // generator would happily write an empty <urlset/> if all HTML files
+  // failed canonical/noindex/no-meta-refresh checks. The user reported:
+  // "وما تكتب sitemap صفر URL". Now we refuse to write and exit 1.
+  const guard = ensureNonEmptySitemap({
+    urls: primarySitemapEntries.map((entry) => entry.loc),
+    outputPath: SITEMAP_INDEX,
+    existingPath: SITEMAP_INDEX,
+  });
+  if (guard.skipped) {
+    console.error(`❌ ${guard.reason}`);
+    process.exit(1);
+  }
 
   const sitemapXmlContent = renderXml(primarySitemapEntries);
   await fs.writeFile(SITEMAP_INDEX, sitemapXmlContent, "utf8");

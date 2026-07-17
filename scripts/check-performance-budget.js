@@ -2,11 +2,11 @@
 /**
  * check-performance-budget.js
  *
- * فحص ميزانية الأداء لمخرجات dist/ الفعلية بعد `astro build`.
+ * فحص ميزانية الأداء لمخرجات dist/client/ الفعلية بعد `astro build`.
  * يقيس:
- *   1. dist/index.html < 80KB
- *   2. أكبر ملف CSS في dist/_astro < 50KB (مرحلة أولى، الهدف النهائي 30KB)
- *   3. إجمالي JS في dist/_astro < 60KB
+ *   1. dist/client/index.html < 80KB
+ *   2. أكبر ملف CSS في dist/client/_astro < 50KB (مرحلة أولى، الهدف النهائي 30KB)
+ *   3. إجمالي JS في dist/client/_astro < 60KB
  *
  * السلوك:
  *   - نجاح: يطبع جدولاً ملخصاً بحالة "OK" لكل بند، ثم exit 0.
@@ -14,24 +14,41 @@
  *
  * لا يعتمد على أي ملف إعداد خارجي — الميزانيات مدمجة هنا لأنها متطلبات
  * تشغيليّة محدّدة (مرحلة 1). عند تشديد الحدود لاحقاً، عدّل BUDGETS مباشرة.
+ *
+ * PERF-BUDGET-001 (2026-07-18): read from the unified client build root
+ * (dist/client/ when present, else dist/) via _build-output.mjs. Before
+ * this change the script hardcoded `dist/`, which meant it measured the
+ * flat copy (sync-dist-flat.mjs output) rather than the actual adapter
+ * output. Now it reads the same root as the other 3 verification scripts.
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { globSync } from 'glob';
+import { resolveClientBuildRoot } from './_build-output.mjs';
 
 const ROOT = process.cwd();
-const DIST_DIR = path.join(ROOT, 'dist');
+// PERF-BUDGET-001: resolve the canonical client build root. Fail loudly
+// instead of silently measuring a stale `dist/` from a previous build.
+const clientBuild = resolveClientBuildRoot(ROOT);
+if (!clientBuild.root) {
+  console.error(`\u274c فشل فحص ميزانية الأداء: ${clientBuild.reason}`);
+  process.exit(1);
+}
+const DIST_DIR = clientBuild.root;
 const ASTRO_DIR = path.join(DIST_DIR, '_astro');
 
 /**
  * ميزانيات الأداء (مرحلة 1).
  * عند تشديد أي حد لاحقاً (مثلاً: cssMaxBytes → 30KB نهائياً)، عدّل القيمة هنا.
+ *
+ * PERF-BUDGET-001 (2026-07-18): labels now reflect the actual measured
+ * location (dist/client/) rather than the legacy flat dist/.
  */
 const BUDGETS = {
-  indexHtml: { label: 'dist/index.html', maxBytes: 80 * 1024 },
-  cssLargest: { label: 'أكبر ملف CSS في dist/_astro', maxBytes: 50 * 1024 },
-  jsTotal: { label: 'إجمالي JS في dist/_astro', maxBytes: 60 * 1024 },
+  indexHtml: { label: 'dist/client/index.html', maxBytes: 80 * 1024 },
+  cssLargest: { label: 'أكبر ملف CSS في dist/client/_astro', maxBytes: 50 * 1024 },
+  jsTotal: { label: 'إجمالي JS في dist/client/_astro', maxBytes: 60 * 1024 },
 };
 
 function formatKB(bytes) {
@@ -44,7 +61,7 @@ function fail(msg) {
 }
 
 if (!fs.existsSync(DIST_DIR)) {
-  fail(`مجلد dist/ غير موجود. شغّل \`npm run build\` أولاً.`);
+  fail(`مجلد ${path.relative(ROOT, DIST_DIR)}/ غير موجود. شغّل \`npm run build\` أولاً.`);
 }
 
 /* ──────────────────────────────────────────────────────────────────────────
@@ -127,7 +144,7 @@ const BUDGET_W = 12;
 const GAP_W = 12;
 const STATUS_W = 8;
 
-console.log('\n┌── فحص ميزانية الأداء (dist/) ──────────────────────────────────┐\n');
+console.log(`\n┌── فحص ميزانية الأداء (${path.relative(ROOT, DIST_DIR)}/) ──────────────────────────────────┐\n`);
 
 console.log(
   `│ ${pad('البند', NAME_W)} │ ${padNum('القياس', MEASURED_W)} │ ${padNum('الحد', BUDGET_W)} │ ${padNum('الفجوة', GAP_W)} │ ${pad('الحالة', STATUS_W)} │`
@@ -153,13 +170,13 @@ console.log('');
 
 /* طباعة تفاصيل (top 3 CSS + كل JS) لتسهيل التشخيص */
 if (cssFiles.length > 0) {
-  console.log('أعلى 3 ملفات CSS في dist/_astro:');
+  console.log(`أعلى 3 ملفات CSS في ${path.relative(ROOT, ASTRO_DIR)}/:`);
   for (const f of cssFiles.slice(0, 3)) {
     console.log(`  - ${f.rel} → ${formatKB(f.bytes)}`);
   }
 }
 if (jsFiles.length > 0) {
-  console.log('\nكل ملفات JS في dist/_astro:');
+  console.log(`\nكل ملفات JS في ${path.relative(ROOT, ASTRO_DIR)}/:`);
   for (const f of jsFiles) {
     console.log(`  - ${f.rel} → ${formatKB(f.bytes)}`);
   }

@@ -4,15 +4,31 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { normalizeRelPath, relPathToCanonical } from './seo-url-map.mjs';
 import { validateSitemapContract, extractSitemapLocs, isSitemapIndex } from './sitemap-contract.mjs';
+import { resolveClientBuildRoot } from './_build-output.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 const reportsDir = path.join(rootDir, 'reports');
 
-if (!fs.existsSync(reportsDir)) {
-  fs.mkdirSync(reportsDir, { recursive: true });
+// VERIFY-ALL-001 (2026-07-18): unify client build root resolution so
+// pnpm verify:all reads 190 HTML / 189 sitemap URLs from the same
+// canonical location as pnpm seo:all / performance:budget /
+// redirects:check. The helper exits with a clear error if no build is
+// present, instead of silently returning 0 files (which previously
+// caused the script to "pass" with 0 broken links and 0 checked pages).
+const clientBuild = resolveClientBuildRoot(rootDir);
+if (!clientBuild.root) {
+  console.error(`❌ تعذر تحديد client build root: ${clientBuild.reason}`);
+  process.exit(1);
 }
+const staticHtmlRoot = clientBuild.root;
+
+// REPORTS-SEC-01 — moved to top via the helper above.
+//   `allHtmlFiles` initialization lives further below, AFTER
+//   `getAllHtmlFiles` is declared, because JavaScript function
+//   declarations hoist but `const` does not.
+
 
 const errors = [];
 let passedChecks = 0;
@@ -57,15 +73,15 @@ function getAllHtmlFiles(dir, fileList = []) {
   return fileList;
 }
 
-// REPORTS-SEC-01 — adapt to @astrojs/vercel layout:
-//   With the adapter, static HTML lives at dist/client/ instead of dist/.
-//   When dist/client/ exists (adapter build), read from there; otherwise
-//   fall back to dist/ for plain-static builds (backward-compatible).
-const staticHtmlRoot = fs.existsSync(path.join(rootDir, 'dist', 'client', '404.html'))
-  ? path.join(rootDir, 'dist', 'client')
-  : path.join(rootDir, 'dist');
+// VERIFY-ALL-001 (2026-07-18): unified client build root via
+//   _build-output.mjs. The previous inline ternary was deleted — the
+//   helper now owns resolution for all 4 verification scripts.
 const allHtmlFiles = getAllHtmlFiles(staticHtmlRoot);
+const htmlFileCount = allHtmlFiles.length;
 
+console.log(
+  `--- 0. نطاق الفحص ---\n✅ Client root: ${path.relative(rootDir, staticHtmlRoot) || staticHtmlRoot} | Adapter: ${clientBuild.adapter} | ملفات HTML: ${htmlFileCount}\n`
+);
 // 1. فحص الروابط الداخلية
 console.log('--- 1. فحص الروابط الداخلية ---');
 let hasBrokenInternalLinks = false;
