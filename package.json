@@ -104,5 +104,10 @@
     "purgecss": "^8.0.0",
     "typescript": "^5.7.2",
     "vitest": "^1.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "js-cookie": ">=3.0.7"
+    }
   }
 }
