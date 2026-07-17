@@ -29,7 +29,15 @@
 
 import { readdirSync, statSync, existsSync } from 'node:fs';
 import { join, extname, basename } from 'node:path';
-import sharp from 'sharp';
+
+// Graceful import — if sharp is missing, skip AVIF generation instead of failing the build.
+let sharp;
+try {
+  sharp = (await import('sharp')).default;
+} catch {
+  console.warn('[avif-gen] ⚠️  sharp not found — skipping AVIF generation (install sharp to enable).');
+  process.exit(0);
+}
 
 const ROOT = process.cwd();
 const PUBLIC_DIR = join(ROOT, 'public');

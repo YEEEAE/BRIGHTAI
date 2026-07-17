@@ -102,6 +102,7 @@
     "playwright": "^1.61.1",
     "prettier": "^3.4.2",
     "purgecss": "^8.0.0",
+    "sharp": "^0.33.5",
     "typescript": "^5.7.2",
     "vitest": "^1.0.0"
   },
