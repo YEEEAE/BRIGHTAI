@@ -81,11 +81,21 @@ if (!existsSync(BACKUP)) {
   copyFileSync(SOURCE, BACKUP);
 }
 
-// ─── Step 3: تأكد إن pyftsubset متاح ───────────────────────────────
+// ─── Step 3: لو الـ subset موجود أصلاً (مسلّم في git) — نتخطى ───
+if (existsSync(OUTPUT)) {
+  const existingSize = statSync(OUTPUT).size;
+  log(`الـ subset موجود مسبقاً (${OUTPUT}) — ${(existingSize / 1024).toFixed(1)} KB`);
+  log('نتخطى التوليد (idempotent). ثبّت fonttools محلياً لإعادة التوليد يدوياً:');
+  log('  pip3 install fonttools brotli');
+  log('done.');
+  process.exit(0);
+}
+
+// ─── Step 3b: تأكد إن pyftsubset متاح (محلياً) ──────────────────
 try {
   execFileSync('python3', ['-c', 'from fontTools import subset'], { stdio: 'pipe' });
 } catch {
-  err('pyftsubset مش متاح. ثبّت fonttools:\n  pip3 install fonttools brotli');
+  err('pyftsubset مش متاح والـ subset غير موجود. ثبّت fonttools محلياً:\n  pip3 install fonttools brotli');
 }
 
 // ─── Step 4: قس حجم الـ source ─────────────────────────────────────
