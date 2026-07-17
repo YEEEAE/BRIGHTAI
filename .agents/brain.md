@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-15 22:00 +03:00
+last_updated: 2026-07-18 01:04 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.17
 agent_version: v2.3
@@ -190,6 +190,26 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-18 — ESLINT-DASHBOARD-001: dashboard ESLint flat config — register @typescript-eslint plugin + parser (rule was unresolvable)
+
+- **Files**: 2 معدّل. **معدّل**: `apps/dashboard/eslint.config.mjs` (flat-config: استيراد `@typescript-eslint/eslint-plugin` و `@typescript-eslint/parser`، تسجيلهم في `plugins` و `languageOptions.parser`، نشر `...tsPlugin.configs.recommended.rules`، إضافة `'no-undef': 'off'` صريح مثل الـ root، تخفيف `'no-irregular-whitespace': 'warn'` للـ Arabic regex patterns في firewall detectors)، `apps/dashboard/lib/firewall/audit/audit-writer.ts` (سطر واحد: استبدال `const { createHash } = require('node:crypto')` بـ `import { createHash } from 'node:crypto'` في الـ top-level imports + حذف الـ eslint-disable comment القديم لـ `@typescript-eslint/no-var-requires` لأن الـ rule الحالي اسمه `@typescript-eslint/no-require-imports`).
+- **What**: أصلحنا `apps/dashboard/eslint.config.mjs` اللي كان يذكر `@typescript-eslint/no-unused-vars` في الـ `rules` بدون ما يـ register الـ plugin نفسه. النتيجة: `pnpm lint` كان يفشل بـ `Key "rules": Key "@typescript-eslint/no-unused-vars": Could not find plugin "@typescript-eslint" in configuration.`
+- **Why**: الـ config الحالي كان ينقصه ثلاث أشياء أساسية للـ flat-config pattern: (1) استيراد `tsPlugin` و `tsParser`، (2) تسجيلهم في `plugins: { '@typescript-eslint': tsPlugin }` و `languageOptions: { parser: tsParser }`، (3) نشر `tsPlugin.configs.recommended.rules` عشان يـ swap الـ base `no-unused-vars` لصالح الـ TS-aware version. طبقنا نفس الـ pattern اللي في الـ root `/eslint.config.mjs` بالضبط (كما طلب المستخدم: "flat-config pattern الموجود"). `'no-undef': 'off'` ضروري لأن TypeScript هو اللي يتحقق من الـ types، والـ base rule يولّد false positives على `React` (JSX transform) و `BlobPart` (Node 22 lib).
+- **Verification**:
+  - `pnpm lint` (في `apps/dashboard/`) → **exit 0** ✅
+  - `pnpm typecheck` (في `apps/dashboard/`) → **exit 0** ✅
+  - عدد الـ errors بعد الإصلاح: **0**
+  - عدد الـ warnings: **29** (أغلبها unused imports موجودة من قبل — ما تفشل lint، تبقى كـ "follow-up cleanup" signals)
+  - القاعدة `@typescript-eslint/no-unused-vars`: **مفعّلة كـ warn** (17 تنبيه لسور فعلي) — مو off، مو معطّلة broad
+  - القاعدة `'no-unused-vars'` (base): **off ضمنياً** عبر `...tsPlugin.configs.recommended.rules` (الـ TS-aware version تاخذ مكانها — هذا الـ standard TS+ESLint config، مو broad disable)
+- **Risks**:
+  - الـ pre-existing unused imports الـ 17 تطلع warnings بس ما تفشل lint. لو تبي تنظّفها، هذا follow-up منفصل.
+  - ما يلمس Arabic content، ما يلمس SEO، ما يلمس design tokens، ما يلمس performance. صفر blast radius على المحتوى.
+  - الـ `require → import` في `audit-writer.ts` يغيّر من lazy import لـ top-level import. الـ comment القديم كان يقول "Lazy import to keep cold start small" — لكن في Next.js/Node ESM، الـ top-level import ما يضيف startup cost ملموس (الـ bundler يتعامل معه). السلوك واحد وظيفياً.
+- **Brain updates**: Section 1 (Dashboard) يحتاج entry جديد، Section 5 (Component Inventory) ما يحتاج، Section 3 (Known Issues) لا — هذا تحسين CI، مش production bug.
+- **الـ commit**: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: verified locally (lint + typecheck يمرون)، يحتاج user: commit + push + PR.
 
 ### 2026-07-17 — DEPLOY-FIX-002: Render build failed at commit 5e468ea — missing fonttools + brotli Python packages
 

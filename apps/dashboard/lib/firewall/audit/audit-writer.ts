@@ -8,6 +8,7 @@
  * when you need the lower-level row shape.
  */
 
+import { createHash } from 'node:crypto';
 import { appendAuditLog } from './hashchain';
 import type { Detection, FirewallContext } from '../detectors/types';
 
@@ -63,9 +64,6 @@ export async function logFirewallEvent(
  * Uses Node's built-in crypto (sync, fast).
  */
 export function sha256Text(text: string): string {
-  // Lazy import to keep cold start small.
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { createHash } = require('node:crypto') as typeof import('node:crypto');
   return createHash('sha256').update(text, 'utf8').digest('hex');
 }
 
