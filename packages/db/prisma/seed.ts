@@ -114,7 +114,6 @@ async function main() {
       industry: 'BANKING',
       size: 'SIZE_201_500',
       deployment: 'CLOUD',
-      timezone: 'Asia/Riyadh',
     },
   });
   console.log(`  ✓ org id=${org.id}`);
@@ -214,6 +213,13 @@ async function main() {
           description: `Auto-seeded policy: ${p.name}`,
           descriptionAr: `سياسة مُولّدة تلقائياً: ${p.name}`,
           category: p.category,
+          // Policy.rules is required (Json, no default). Shape mirrors
+          // the runtime evaluator: { conditions, actions, exceptions }.
+          rules: {
+            conditions: [{ type: 'always' }],
+            actions: [{ effect: 'enforce', category: p.category }],
+            exceptions: [],
+          },
           status: p.status,
           priority: 100,
           createdById: ownerUser.dbId,
@@ -244,6 +250,8 @@ async function main() {
     data: {
       organizationId: org.id,
       connector: 'SLACK',
+      displayName: 'Acme Slack (notifications)',
+      connectedById: ownerUser.dbId,
       status: 'ACTIVE',
       config: { webhook: 'https://hooks.slack.com/services/T0/B0/XXXXX' },
       lastSyncAt: new Date(),

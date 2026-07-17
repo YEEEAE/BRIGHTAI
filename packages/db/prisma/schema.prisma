@@ -24,13 +24,24 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["postgresqlExtensions"]
-  // HIGH-04 (2026-07-15): generated client + runtime metadata live under
-  // `packages/db/node_modules/.prisma/client/`. This keeps the @prisma/client
-  // runtime (which uses bare `require('@prisma/client')`) able to find the
-  // generated pieces via the workspace-local node_modules — without this,
-  // Astro standalone bundle can't resolve `.prisma/client/default` in
-  // production builds (See report 2026-07-15-lead-durability.md).
-  output          = "../node_modules/.prisma/client"
+  // HIGH-04 / PRISMA-RESOLUTION-001 (2026-07-18): Output goes to the
+  // pnpm-hoisted `.prisma/client/` at the workspace root, NOT to
+  // `packages/db/node_modules/.prisma/client/`. Reason:
+  //   - TypeScript with `moduleResolution: "Bundler"` (the db package
+  //     default) follows symlinks when resolving modules. From any
+  //     workspace package, `@prisma/client` resolves to the pnpm-store
+  //     location (`node_modules/.pnpm/@prisma+client@.../.../@prisma/client/`).
+  //   - The `@prisma/client/default.d.ts` in that location re-exports
+  //     from `.prisma/client/default`, which TS resolves relative to
+  //     the pnpm-store path, NOT the source-file path. So the generated
+  //     client must live under the pnpm-store sibling, not under
+  //     `packages/db/node_modules/.prisma/client/`.
+  //   - Writing to `../../node_modules/.prisma/client` (from
+  //     `packages/db/prisma/schema.prisma`) places the output at the
+  //     hoisted root, which both runtime (Node.js walks up from
+  //     `packages/db/node_modules/@prisma/client/`) and TypeScript
+  //     (resolves from the pnpm-store symlink) can find.
+  output          = "../../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -144,6 +155,15 @@ enum AuditAction {
   DATA_DELETION_REQUESTED
   DATA_DELETION_COMPLETED
   FEATURE_FLAG_TOGGLED
+  // SSO-001 (2026-07-18): Enterprise SSO events (SAML 2.0 / OIDC).
+  // Source of truth: packages/config/src/constants.ts → AUDIT_ACTIONS.
+  // Keep in sync — adding a value here requires a migration.
+  SSO_CONNECTION_CONFIGURED
+  SSO_CONNECTION_TESTED
+  SSO_CONNECTION_DISABLED
+  SSO_LOGIN_SUCCESS
+  SSO_LOGIN_FAILED
+  SSO_JIT_PROVISIONED
 }
 
 enum OnboardingStep {

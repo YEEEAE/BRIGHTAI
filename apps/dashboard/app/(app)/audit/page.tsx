@@ -18,7 +18,7 @@
 
 import { dbServiceRole } from '@brightai/db';
 import { requireSessionPermission, getSessionContext } from '@/lib/session';
-import { resolveFlags, getFlag } from '@/lib/feature-flags/client';
+import { resolveFlags } from '@/lib/feature-flags/client';
 import styles from './page.module.css';
 import { AuditClient } from './client';
 
@@ -32,7 +32,7 @@ export default async function AuditPage() {
 
   // 2. Feature flag check.
   const flags = await resolveFlags(ctx.tenant.id);
-  const uiEnabled = getFlag(flags, 'audit_ui_enabled');
+  const uiEnabled = flags['audit_ui_enabled'];
 
   if (!uiEnabled) {
     return (

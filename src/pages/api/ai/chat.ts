@@ -991,7 +991,7 @@ export const POST: APIRoute = async ({ request }) => {
     promptTokens: usage.promptTokens,
     completionTokens: usage.completionTokens,
     latencyMs: Date.now() - providerStartTs,
-    promptId: typeof body?.promptId === 'string' ? body.promptId : undefined,
+    promptId: typeof b.promptId === 'string' ? b.promptId : undefined,
     organizationId: null, // marketing site anon (dashboard passes via Clerk)
     sessionId: sessionId ?? undefined,
   });

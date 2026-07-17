@@ -46,7 +46,8 @@
 import { Prisma, type PrismaClient } from '@brightai/db';
 import { dbServiceRole } from '@brightai/db';
 import { appendAuditLogInTx } from './hashchain';
-import type { FirewallContext, FirewallEventMetadata } from '../detectors/types';
+import type { FirewallContext } from '../detectors/types';
+import type { FirewallEventMetadata } from './audit-writer';
 
 const MAX_ATTEMPTS = 3;
 const BASE_DELAY_MS = 100;
@@ -101,7 +102,7 @@ function isRetryable(err: unknown): boolean {
 }
 
 /** Classify the final error into a stable code for telemetry. */
-function classifyError(err: unknown): string {
+export function classifyError(err: unknown): string {
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     return `prisma_${err.code}`;
   }

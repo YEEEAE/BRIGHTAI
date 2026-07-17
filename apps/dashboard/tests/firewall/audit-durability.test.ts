@@ -40,7 +40,7 @@ const mocks = vi.hoisted(() => {
   };
   const db = {
     $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => fn(tx)),
-    auditLog: { findFirst: vi.fn(async () => null) },
+    auditLog: { findFirst: vi.fn(async () => null as { id: string; hash: string | null } | null) },
   };
   return { tx, db };
 });
@@ -189,8 +189,8 @@ describe('persistFirewallEventDurable — atomic AIRequest + AuditLog', () => {
       ctx,
       metadata: baseMetadata,
       aiRequest: {
-        organizationId: ctx.organizationId,
-        requestedById: ctx.userId ?? 'fallback',
+        organization: { connect: { id: ctx.organizationId } },
+        requestedBy: { connect: { id: ctx.userId ?? 'fallback' } },
         prompt: 'test prompt',
         response: 'test response',
         modelUsed: 'test-model',

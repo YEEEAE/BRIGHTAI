@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 
 type AuditRow = {
@@ -72,15 +72,20 @@ function makeTx() {
       create: vi.fn(async ({ data }: { data: Omit<AuditRow, 'hash'> & { hash?: string } }) => {
         const id = data.id ?? `al_${Math.random().toString(36).slice(2, 10)}`;
         const createdAt = data.createdAt ?? new Date();
-        const row: AuditRow = {
+        const row: Omit<AuditRow, 'hash'> & { hash?: string } = {
           ...data,
           id,
           createdAt,
           prevHash: data.prevHash ?? findLastHash(data.organizationId),
         };
-        row.hash = computeHash(row.prevHash, row);
-        store.push(row);
-        return row;
+        // Compute the canonical hash AFTER prevHash is settled, then
+        // assert the fully-formed row. The double cast (`unknown`)
+        // papers over the fact that `data` is `Omit<AuditRow, 'hash'>`
+        // — we always populate `hash` below, so the runtime shape is
+        // a valid `AuditRow`.
+        row.hash = computeHash(row.prevHash, row as AuditRow);
+        store.push(row as AuditRow);
+        return row as AuditRow;
       }),
       findMany: vi.fn(async ({ where, orderBy }: { where?: { organizationId?: string }; orderBy?: unknown }) => {
         let out = store.slice();

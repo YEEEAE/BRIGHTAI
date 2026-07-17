@@ -61,3 +61,10 @@ export {
 import { LeadQueueStatus as _LeadQueueStatusEnum } from '@prisma/client';
 export const LeadQueueStatus = _LeadQueueStatusEnum;
 export type LeadQueueStatus = (typeof _LeadQueueStatusEnum)[keyof typeof _LeadQueueStatusEnum];
+
+// Re-export the `PrismaClient` class type so consumers (e.g. the
+// dashboard's audit durable helpers) can type their transaction
+// callbacks without importing directly from `@prisma/client`. Keeping
+// the import surface narrow — just the class, not the runtime —
+// avoids accidental coupling to the generated client path.
+export type { PrismaClient } from '@prisma/client';

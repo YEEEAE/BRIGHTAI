@@ -225,8 +225,8 @@ export async function POST(req: NextRequest) {
       notes: `transcribe:${requestId},duration:${transcription.durationSec ?? 'unknown'}`,
     },
     aiRequest: {
-      organizationId: apiKey.organizationId,
-      requestedById: apiKey.createdById,
+      organization: { connect: { id: apiKey.organizationId } },
+      requestedBy: { connect: { id: apiKey.createdById } },
       prompt: `[audio:${filename}, ${blob.size} bytes, ${language}]`,
       response: result.redactedText.slice(0, 8192),
       modelUsed: transcription.model,

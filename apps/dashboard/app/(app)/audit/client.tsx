@@ -21,7 +21,10 @@ import styles from './page.module.css';
 interface AuditEntry {
   id: string;
   actorId: string | null;
-  actorType: 'USER' | 'SYSTEM' | 'SUPPORT' | 'API_KEY';
+  // Mirror Prisma's ActorType enum (includes 'CLERK_WEBHOOK' added
+  // for SSO webhooks). UI renders an icon per value, so the broader
+  // set is fine.
+  actorType: 'USER' | 'SYSTEM' | 'SUPPORT' | 'API_KEY' | 'CLERK_WEBHOOK';
   action: string;
   targetType: string | null;
   targetId: string | null;

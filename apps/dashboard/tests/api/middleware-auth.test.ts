@@ -72,7 +72,9 @@ vi.mock('@clerk/nextjs/server', () => ({
   clerkMiddleware: (
     handler: (auth: { protect: () => Promise<void> }, req: NextRequest) => Promise<Response>
   ) => {
-    return async (req: NextRequest) =>
+    // Next.js 15 invokes middleware with `(req, event)` — accept both,
+    // ignore the second (we only assert request-derived behaviour).
+    return async (req: NextRequest, _event?: unknown) =>
       handler(
         { protect: async () => { protectCalls.push({ pathname: req.nextUrl.pathname }); } },
         req
@@ -102,7 +104,14 @@ vi.mock('next/server', () => ({
   },
 }));
 
-import { default as middleware, extractTenantFromHost } from '../../middleware';
+import { default as middlewareRaw, extractTenantFromHost } from '../../middleware';
+
+// Next.js 15 types `middleware` as `(req, event) => Response`. Our
+// stubbed Clerk `clerkMiddleware` only needs `req`, and the `event`
+// arg is opaque plumbing (unused by the routes under test). Cast
+// once here so the per-call sites stay readable.
+type Middleware = (req: NextRequest) => Promise<Response>;
+const middleware = middlewareRaw as unknown as Middleware;
 
 beforeEach(() => {
   protectCalls = [];

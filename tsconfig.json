@@ -3,6 +3,14 @@
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["dom", "dom.iterable", "es2022"],
+    // Exclude workspace subprojects from the root tsconfig so VS Code's
+    // TS server doesn't try to typecheck their source files (which have
+    // their own per-package tsconfig with Node types). Without this
+    // `exclude`, files like `packages/db/prisma/seed.ts` get pulled
+    // into the root project and show spurious "Cannot find name
+    // 'process'" errors in the editor even though `pnpm typecheck`
+    // (using the per-package tsconfig) passes. `pnpm typecheck` still
+    // uses each package's own tsconfig — this exclude is editor-only.
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
@@ -13,7 +21,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
@@ -24,5 +32,17 @@
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.astro"],
-  "exclude": ["node_modules", "plugins", "dist"]
+  "exclude": [
+    "node_modules",
+    "plugins",
+    "dist",
+    "apps/**",
+    "packages/**",
+    "scripts/**",
+    "audit/**",
+    "kernel/**",
+    "frontend/**",
+    "customer-success/**",
+    "demo/**"
+  ]
 }

@@ -17,9 +17,21 @@
 
 import { dbServiceRole } from '@brightai/db';
 import { requireSessionRoleAtLeast } from '@/lib/session';
-import { resolveFlags, getFlag } from '@/lib/feature-flags/client';
+import { resolveFlags } from '@/lib/feature-flags/client';
 import styles from './page.module.css';
 import { configureSsoAction, disableSsoAction } from './actions';
+
+// HTML <form action> expects `(formData) => void | Promise<void>`.
+// Our server actions return `Promise<ActionResult>` so the page can
+// surface success/error messages. For raw form submission we wrap
+// them so the return value is discarded — UX feedback still flows
+// through `searchParams` / revalidation when needed.
+const handleConfigure = (formData: FormData) => {
+  void configureSsoAction(formData);
+};
+const handleDisable = () => {
+  void disableSsoAction();
+};
 
 export const dynamic = 'force-dynamic';
 
@@ -30,7 +42,7 @@ export default async function SsoSettingsPage({
 }) {
   const ctx = await requireSessionRoleAtLeast('OWNER');
   const flags = await resolveFlags(ctx.tenant.id);
-  const ssoEnabled = getFlag(flags, 'sso_enabled');
+  const ssoEnabled = flags['sso_enabled'];
 
   // Phase 1: feature flag gate.
   // إذا الـ flag معطّل، نعرض رسالة + روابط للتفعيل.
@@ -116,7 +128,7 @@ export default async function SsoSettingsPage({
           </div>
         </div>
         {conn?.enabled && (
-          <form action={disableSsoAction} className={styles.actions}>
+          <form action={handleDisable} className={styles.actions}>
             <button type="submit" className={`${styles.button} ${styles.buttonDanger}`}>
               إيقاف SSO
             </button>
@@ -127,7 +139,7 @@ export default async function SsoSettingsPage({
       {/* Configuration form */}
       <div className={styles.formSection}>
         <h2 className={styles.formTitle}>{conn?.enabled ? 'تحديث الإعدادات' : 'إعداد SSO'}</h2>
-        <form action={configureSsoAction} className={styles.formGrid}>
+        <form action={handleConfigure} className={styles.formGrid}>
           <label className={styles.formLabel} htmlFor="sso-provider">المزوّد</label>
           <div>
             <select
