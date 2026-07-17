@@ -30,7 +30,7 @@ image: "/images/og/brightai-og-1200x630.png"
     <div class="section-tag">الفصل الأول</div>
     <h2>ما العلاقة بين PDPL والذكاء الاصطناعي؟</h2>
     <p>
-      يصدر نظام <a href="https://www.sdaia.gov.sa" target="_blank">نظام حماية البيانات الشخصية السعودية (PDPL)</a>
+      يصدر نظام <a href="https://www.sdaia.gov.sa" target="_blank" rel="noopener noreferrer">نظام حماية البيانات الشخصية السعودية (PDPL)</a>
       الإطار القانوني العام لمعالجة أي بيانات شخصية داخل المملكة، سواء تمت المعالجة عبر نظام تقليدي أو عبر نماذج
       الذكاء الاصطناعي. ومع الانتشار السريع لأدوات Generative AI، باتت معظم الشركات السعودية تواجه أسئلة متشابهة:
     </p>

@@ -218,6 +218,46 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-18 — HEADERS-CONFIG-2026-07-18: تأكيد CSP/HSTS/Referrer-Policy/Permissions-Policy/X-Frame-Options في Render + Cloudflare + إصلاح target=_blank بدون rel في /blog/pdpl-and-ai-saudi/ — Verified locally, deploy manual
+
+- **Files**: 4 معدّل + 2 جديد. **معدّل**: `src/content/blog/pdpl-and-ai-saudi.md` (سطر 33: رابط sdaia.gov.sa `target="_blank"` → `target="_blank" rel="noopener noreferrer"`), `render.yaml` (HSTS `max-age=31536000` → `max-age=63072000` + preload — كان drifted من `_headers` اللي يحدد سنتين), `.agents/brain.md` (HSTS glossary من 1 سنة إلى 2 سنة). **جديد**: `scripts/headers-config.mjs` (parser لـ `render.yaml` headers + Netlify/Cloudflare `_headers`، بدون أي dependency جديد), `scripts/headers-config.test.mjs` (11 اختبار configuration يثبت القيم + يكتشف الانحراف بين الملفين + يفحص rel attribute + يفحص إن ما في Vercel config انضاف). **الـ dist**: `dist/client/blog/pdpl-and-ai-saudi/index.html` يحتوي rel attribute بعد `npx astro build` (190 صفحة، 0 أخطاء).
+- **What**: (1) **Headers config audit**: الـ headers المطلوبة (CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy, X-Content-Type-Options) موجودة في `render.yaml` (Render layer) و `public/_headers` (Cloudflare/Netlify/Render Static layer) — بـ القيم الصحيحة. HSTS في `render.yaml` كان drifted من 2 سنوات (63072000 في `_headers`) إلى 1 سنة (31536000) — رجّعناه لـ 2 سنوات + preload ليتطابق مع استراتيجية CSP الأصلية في `public/_headers` (اللي تقول "Submit brightai.site to https://hstspreload.org"). (2) **Blog rel fix**: الرابط الوحيد بـ `target="_blank"` بدون `rel` في `/blog/pdpl-and-ai-saudi/` (سطر 33) — كان مشكلة reverse tabnabbing + Referer leakage. أضفنا `rel="noopener noreferrer"` (NOOPENER يحمي من `window.opener`، NOREFERRER يحمي من تسريب رابط الموقع للـ SDAIA). (3) **Configuration test**: سكربت جديد `scripts/headers-config.test.mjs` يفحص كل header في `render.yaml` و `public/_headers` + يثبت إن HSTS متطابق بين الملفين + يفحص وجود X-Frame-Options **و** frame-ancestors (defence in depth) + يفحص rel attribute في source + dist + يتحقق ما في Vercel config انضاف. (4) **Local preview integration**: `node ./dist/server/entry.mjs` على port 14525 — الـ API endpoints تـ stamp `Content-Security-Policy-Report-Only` بـ nonce per-request من `src/middleware.ts` (الـ HTML prerendered ترجع 200 بـ `Cache-Control: public, max-age=0` لكن بدون security headers لأن Render edge يضيفها — مو الـ Node process).
+- **Why**: `audit/FULL-AUDIT-ar.md:69` يذكر "لقينا target blank واحد بدون noopener في `/blog/pdpl-and-ai-saudi/`" — هذا اللي صلحناه. `audit/MINIMAX-M3-REMEDIATION-PROMPTS-ar.md:27` يعطي الـ prompt للمستخدم: "أضف CSP/HSTS/Referrer-Policy/Permissions-Policy/X-Frame-Options أو `frame-ancestors` في طبقة Render/Cloudflare الموجودة فقط، من دون إنشاء أو تعديل أي إعداد أو ملف أو تكامل يخص Vercel. أضف `rel="noopener noreferrer"` للرابط المحدد في `/blog/pdpl-and-ai-saudi/`. ممنوع النشر؛ Acceptance محلي فقط..." — هذا الـ change يحقق كل البنود. الـ configuration test يثبت القيم في الـ source of truth (ملفات config) + يكتشف أي انحراف مستقبلي (مثلاً لو حدا غيّر HSTS في `render.yaml` بس نسي `_headers`).
+- **Verification**:
+  - `npx astro build` → 190 صفحة، 0 أخطاء ✅
+  - `node --test scripts/headers-config.test.mjs` → **11/11 pass** ✅:
+    - `render.yaml exists and is readable` ✅
+    - `render.yaml declares all required security headers on /*` ✅ (HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy, CSP, X-Content-Type-Options)
+    - `render.yaml HSTS uses 2-year max-age (aligned with public/_headers)` ✅
+    - `public/_headers exists and is readable` ✅
+    - `public/_headers declares the same required security headers on /*` ✅
+    - `public/_headers HSTS also uses 2-year max-age (cross-file consistency)` ✅
+    - `blog post source has the sdaia.gov.sa link with rel='noopener noreferrer'` ✅
+    - `blog post dist (after build) also has the sdaia.gov.sa link with rel='noopener noreferrer'` ✅
+    - `HSTS max-age is identical across render.yaml and public/_headers` ✅ (63072000 == 63072000)
+    - `X-Frame-Options and frame-ancestors coexist (defence in depth)` ✅
+    - `no vercel.json or .vercel/config.json was added by this change` ✅
+  - `node scripts/verify-all.mjs` → **5/5 pass** ✅ (189 HTML، 166 sitemap، 0 broken links، 0 canonical issues، 0 missing H1)
+  - `node ./dist/server/entry.mjs` (port 14525) + curl اختبارات:
+    - `/api/health/` → 200 + `content-security-policy-report-only: default-src 'self' ... 'nonce-4Kwpja...'` (middleware يـ stamp per-request) ✅
+    - `/api/lead` → 301 → `/api/lead/` (trailingSlash) ✅
+    - `/api/ai/chat` → 301 → `/api/ai/chat/` (trailingSlash) ✅
+    - POST `/api/lead/` بدون CSRF token → 403 (`{"error":"csrf_invalid"}`) ✅ (expected — CSRF protection يشتغل)
+    - `/_astro/ClientRouter*.js`, `/_astro/BaseLayout*.css`, `/js/sw-register.js`, `/js/gtag-init.js`, `/favicon.svg`, `/manifest.webmanifest`, `/icons.svg`, `/fonts/*.woff2`, `/logo-192.avif` → **كلها 200** ✅
+    - `/`, `/about/`, `/contact/`, `/services/`, `/trust/`, `/pricing/`, `/demo/`, `/kernel/`, `/kernel/chat/`, `/blog/`, `/blog/pdpl-and-ai-saudi/` → **كلها 200** ✅ (forms/assets ما تنكسر)
+    - `curl http://127.0.0.1:14525/blog/pdpl-and-ai-saudi/ | grep sdaia` → `<a href="https://www.sdaia.gov.sa" target="_blank" rel="noopener noreferrer">` ✅
+  - **ملاحظة عن HSTS/X-Frame-Options في curl -I على local Node server**: الـ `render.yaml` headers **ما تظهر** في curl -I local لأن Render يطبقها في الـ edge proxy، مو في الـ Node process. الـ Node server يستمع على 127.0.0.1:14525 ويرسل `Content-Security-Policy-Report-Only` بس (من `src/middleware.ts` للـ non-static assets). الـ configuration test + production deploy هو اللي يثبت HSTS/X-Frame-Options فعلاً.
+- **Risks**:
+  - **HSTS 2-year commitment** (الـ reversibility): لو قررنا نقل الموقع لـ origin جديد بدون HTTPS (unlikely — المشروع Always-HTTPS)، لازم ننزل max-age تدريجياً (5 min → 1 week → 1 month → 1 year → 2 year) عشان ما نقفل على الـ visitors بـ broken HTTPS. الآن: ✅ ما في خطر.
+  - **HSTS preload submission** (manual): لازم المستخدم يرسل brightai.site لـ https://hstspreload.org بعد deploy. بدون submission، `preload` directive هو hint للـ browser بس، مو enforced entry في preload list.
+  - **CSP Report-Only** (pre-existing، not changed): `src/middleware.ts` يضبط `Content-Security-Policy-Report-Only` بس — مو `Content-Security-Policy` enforcement. Phase 2 يعتمد على 0 violations لأسبوع. هذا الـ change ما يلمس middleware.
+  - **Cloudflare layer** (Unknown): ما في Cloudflare Worker في الـ repo. لو Cloudflare CDN أمام Render يطبق headers خاصة (Transform Rules)، ما عندنا طريقة نختبرها locally. يبقى "Unknown" حتى production deploy.
+  - **`render.yaml` headers في production** (Unknown locally): يثبتون فقط على Render edge، مو على Node process. الـ configuration test يثبت القيم في الـ YAML؛ الـ production deployment يثبت إن Render يطبقها. ما نفتح deploy تلقائي.
+- **Brain updates**: Section 2 (this entry) + Section 6 (HSTS glossary 1y → 2y aligned). ما يلامس Section 1 (build page count ما تغير)، Section 3 (KIs ما تغيرت — KI-AUDIT-2026-07-18-001 "target blank بدون noopener" بقا **resolved**)، Section 4 (no new decision — كان existing intent: 2y HSTS per CSP strategy doc في `_headers`).
+- **الـ commit**: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: **verified locally** (config tests 11/11 + verify:all 5/5 + build 190 pages + Node SSR curl tests 100% green). **Unknown حتى production deploy**: HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy, X-Content-Type-Options في الـ live response (Render edge applies them, not exercisable locally). CSP enforcement status (currently Report-Only).
+- **KI resolution**: KI-AUDIT-2026-07-18-001 (target=_blank بدون noopener على /blog/pdpl-and-ai-saudi/) → **resolved** (rel="noopener noreferrer" مضاف في source + dist).
+
 ### 2026-07-18 — A11Y-BLOG-LINK + A11Y-DOCS-CONTRAST: fix two WCAG AA violations on /blog/ and /docs/ (no palette change) — Verified
 
 - **Files**: 1 معدّل + 2 جديد. **معدّل**: `src/styles/pages.css` (3 تغييرات scoped). **جديد**: `scripts/playwright/audit-blog-docs.mjs` (axe scan على 2 صفحة × 2 viewport مع screenshots)، `scripts/playwright/crop-fix-zones.mjs` (cropped screenshots للـ zones المتأثرة).
@@ -3507,6 +3547,10 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 | ID | Issue | Priority | Status | Since | Notes | Affected Files |
 |---|---|---|---|---|---|---|
+| KI-AUDIT-SEC-2026-07-18-001 | `target="_blank"` بدون `rel="noopener noreferrer"` على `/blog/pdpl-and-ai-saudi/` (SEC-BLANK-1 من `audit/ISSUES.csv`) | medium | **resolved** | 2026-07-18 | **RESOLVED 2026-07-18 via HEADERS-CONFIG-2026-07-18**: rel مضاف على الرابط الخارجي (sdaia.gov.sa) في source + dist. configuration test يفحص الـ source و dist ويعتبر regression fail. | `src/content/blog/pdpl-and-ai-saudi.md`, `dist/client/blog/pdpl-and-ai-saudi/index.html`, `scripts/headers-config.test.mjs` |
+| KI-AUDIT-SEC-2026-07-18-002 | HSTS drift بين `render.yaml` (1 سنة) و `public/_headers` (2 سنة) | medium | **resolved** | 2026-07-18 | **RESOLVED 2026-07-18 via HEADERS-CONFIG-2026-07-18**: `render.yaml` رجع لـ `max-age=63072000; includeSubDomains; preload` (2 سنوات) ليتطابق مع استراتيجية CSP الأصلية. configuration test يفرض المساواة بين الملفين — أي drift مستقبلي يفشل الاختبار. | `render.yaml`, `public/_headers`, `scripts/headers-config.test.mjs` |
+| KI-AUDIT-SEC-2026-07-18-003 | HSTS preload submission لـ hstspreload.org (manual action) | medium | open | 2026-07-18 | الـ `preload` directive في HSTS هو hint للـ browser بس. الـ enforced entry يحتاج manual submission من المستخدم عبر https://hstspreload.org بعد deploy. الـ reversibility commitment: لازم max-age يتنزل تدريجياً لو احتجنا نقل الموقع. | `render.yaml` (deploy step) |
+| KI-AUDIT-SEC-2026-07-18-004 | Cloudflare edge layer security headers — Unknown | medium | open | 2026-07-18 | ما في Cloudflare Worker في الـ repo. لو Cloudflare CDN في front of Render يطبق Transform Rules خاصة (override/strip)، ما عندنا visibility. Production deploy + curl -I live فقط هو اللي يثبت. Configuration test يثبت القيم في الـ source of truth بس، مش في live response. | Cloudflare dashboard (out of repo scope) |
 | KI-020 | Dead code: `SparklesHero.astro`, `SparklesCore.tsx`, `hero/HeroVisual.tsx` | medium | open | 2026-06-29 | 0 usages. Bloats repo. | `src/components/SparklesHero.astro`, `src/components/SparklesCore.tsx`, `src/components/hero/HeroVisual.tsx` |
 | KI-021 | Dead code: `BackgroundGrid.astro` (primitive, replaced by DottedBackground) | low | open | 2026-06-29 | 7 lines. Used in 4 pages but should be removed after PageHero unification. | `src/components/BackgroundGrid.astro` |
 | KI-022 | Dead code: `SectionReveal.astro` (wrapper, logic moved to BaseLayout) | low | open | 2026-06-29 | 22 lines. | `src/components/SectionReveal.astro` |
@@ -4363,7 +4407,7 @@ Companion utility classes in `src/styles/utilities.css` Section 11b:
 - **`trailingSlash: 'always'`**: Astro config that forces trailing slashes on all URLs. Do not change (DEC-002).
 - **`output: 'static'`**: Astro config for static site generation. Do not change (DEC-008).
 - **CSP**: Content Security Policy. Defined in `public/_headers`. Allows specific domains for scripts, styles, fonts, connections.
-- **HSTS**: HTTP Strict Transport Security. Forces HTTPS. `max-age=31536000; includeSubDomains; preload`.
+- **HSTS**: HTTP Strict Transport Security. Forces HTTPS. `max-age=63072000; includeSubDomains; preload` (2 years, aligned across `render.yaml` and `public/_headers` since 2026-07-18 — was 1 year on `render.yaml` before that, drifted from `_headers` 2-year value).
 - **X-Robots-Tag**: HTTP header controlling indexing. Currently `index, follow, max-image-preview:large`.
 
 ---
