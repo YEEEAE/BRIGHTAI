@@ -63,6 +63,13 @@ interface Props extends SEOProps {
    * Used by product-style pages (e.g. /kernel/*) — see Schema.astro.
    */
   omitLocalBusiness?: boolean;
+  /**
+   * BAI-VOC-001-B (2026-07-18): extra cssSelector entries for the
+   * foundation `WebPage.speakable` node (forwarded to FoundationSchema).
+   * Each entry must match a real visible element on the rendered page.
+   * Default `[]` keeps the existing 419-page Speakable audit untouched.
+   */
+  extraSpeakableSelectors?: string[];
 }
 
 const {
@@ -81,6 +88,7 @@ const {
   breadcrumbs = [],
   extraJsonLd = [],
   omitLocalBusiness = false,
+  extraSpeakableSelectors = [],
 } = Astro.props;
 
 // REPORTS-SEO-FOUNDATION: canonical auto-derivation. If a page forgets to
@@ -199,6 +207,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     language={lang}
     omitLocalBusiness={omitLocalBusiness}
     extra={graphExtras}
+    extraSpeakableSelectors={extraSpeakableSelectors}
   />
 
   <ClientRouter />

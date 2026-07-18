@@ -298,6 +298,7 @@ const SECTOR_LABEL: Record<string, string> = {
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath={unit.path}
+  extraSpeakableSelectors={['.answer-first-summary']}
 >
   <header class="kernel-page-header">
     <div class="kernel-page-header__lead">
@@ -309,6 +310,9 @@ const SECTOR_LABEL: Record<string, string> = {
         </ol>
       </nav>
       <h1 class="kernel-page-header__title">{unit.h1}</h1>
+      {/* BAI-VOC-001-B (2026-07-18): answer-first summary — wired as the
+          second cssSelector for WebPage SpeakableSpecification. */}
+      <p class="answer-first-summary" data-speakable-target="answer-first">ملف أدلة PDF موقّع رقمياً يجمع السجلات والسياسات والموافقات لكل قرار AI، جاهز للجهات الرقابية (NCA، SDAIA، SAMA، SFDA) خلال دقائق. يُولَّد عند الطلب، يدعم metadata مخصصة للربط بسجل الموظف أو المعاملة.</p>
       <p class="kernel-page-header__subtitle">
         عرض الأدلة المرتبطة بقرارات الذكاء الاصطناعي مع إمكانية التصدير PDF داخل المتصفح عند الحاجة.
       </p>

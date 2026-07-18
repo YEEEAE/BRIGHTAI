@@ -83,6 +83,7 @@ const policyBanner = {
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath={unit.path}
+  extraSpeakableSelectors={['.answer-first-summary']}
 >
   <header class="kernel-page-header">
     <div class="kernel-page-header__lead">
@@ -94,6 +95,12 @@ const policyBanner = {
         </ol>
       </nav>
       <h1 class="kernel-page-header__title">{unit.h1}</h1>
+      {/* BAI-VOC-001-B (2026-07-18): answer-first summary sits between
+          the H1 and the subtitle so AI voice / TTS engines can quote it.
+          Also the second cssSelector entry for the WebPage
+          SpeakableSpecification (kernel pages use KernelLayout → Schema
+          via the foundation WebPage node). */}
+      <p class="answer-first-summary" data-speakable-target="answer-first">محادثة آمنة بضوابط حوكمة كاملة: كشف PII قبل الإرسال، تقييم مخاطر (0-100)، تطبيق سياسات الشركة، إجبار موافقة بشرية على القرارات عالية المخاطر، وإنشاء سجل تدقيق غير قابل للتعديل. متوافق مع PDPL وNCA ECC.</p>
       <p class="kernel-page-header__subtitle">
         ابدأ محادثة مع الذكاء الاصطناعي تحت ضوابط الحوكمة الكاملة: كشف PII، تقييم المخاطر، تطبيق السياسات، وإنشاء الأدلة تلقائياً.
       </p>

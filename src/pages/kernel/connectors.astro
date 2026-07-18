@@ -182,6 +182,7 @@ const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath={unit.path}
+  extraSpeakableSelectors={['.answer-first-summary']}
 >
   <header class="kernel-page-header">
     <div class="kernel-page-header__lead">
@@ -193,6 +194,9 @@ const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
         </ol>
       </nav>
       <h1 class="kernel-page-header__title">{unit.h1}</h1>
+      {/* BAI-VOC-001-B (2026-07-18): answer-first summary — wired as the
+          second cssSelector for WebPage SpeakableSpecification. */}
+      <p class="answer-first-summary" data-speakable-target="answer-first">موصلات جاهزة لأنظمة المؤسسة (ERP, CRM, HIS, LMS) ونماذج AI (OpenAI, Azure, Anthropic, Llama, نماذج On-Premise) — قراءة فقط افتراضياً مع مزامنة دورية ومراقبة حالة. يحمي بياناتك من vendor lock-in ويبقي الحوكمة موحدة.</p>
       <p class="kernel-page-header__subtitle">
         8 موصلات لأنظمة المؤسسة (ERP, CRM, HIS, LMS) — قراءة فقط مع مزامنة دورية ومراقبة حالة.
       </p>

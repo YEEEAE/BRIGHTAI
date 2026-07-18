@@ -191,6 +191,7 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath={unit.path}
+  extraSpeakableSelectors={['.answer-first-summary']}
 >
   <header class="kernel-page-header">
     <div class="kernel-page-header__lead">
@@ -202,6 +203,9 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
         </ol>
       </nav>
       <h1 class="kernel-page-header__title">{unit.h1}</h1>
+      {/* BAI-VOC-001-B (2026-07-18): answer-first summary — wired as the
+          second cssSelector for WebPage SpeakableSpecification. */}
+      <p class="answer-first-summary" data-speakable-target="answer-first">موافقات بشرية منظمة على قرارات AI عالية المخاطر: ترتيب حسب درجة المخاطرة، تحديد جماعي، رفض جماعي بسبب واضح، وتصعيد تلقائي عند انتهاء المهلة. كل قرار يُسجَّل في سجل تدقيق غير قابل للتعديل.</p>
       <p class="kernel-page-header__subtitle">
         لوحة مراجعة تشغيلية للطلبات التي تحتاج موافقة بشرية قبل التنفيذ، مع ترتيب حسب المخاطر، تحديد جماعي، ورفض جماعي بسبب واضح.
       </p>

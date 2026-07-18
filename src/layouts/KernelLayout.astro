@@ -33,9 +33,23 @@ import '../scripts/kernel-shell.js';
 
 interface Props extends SEOProps {
   currentPath?: string;
+  /**
+   * BAI-VOC-001-B (2026-07-18): forwarded to BaseLayout → FoundationSchema
+   * to extend the WebPage `speakable.cssSelector` array. See Schema.astro.
+   */
+  extraSpeakableSelectors?: string[];
 }
 
-const { title, description, canonical, hreflang = [], ogImage, jsonLd, currentPath = '/kernel/' } = Astro.props;
+const {
+  title,
+  description,
+  canonical,
+  hreflang = [],
+  ogImage,
+  jsonLd,
+  currentPath = '/kernel/',
+  extraSpeakableSelectors = [],
+} = Astro.props;
 
 // SEMRUSH-FIX-2026-07-08 (#45): kernel pages are product-style (SoftwareApplication
 // primary entity) — omit the foundation LocalBusiness node so schema validators
@@ -59,6 +73,7 @@ const allItems = [
   jsonLd={jsonLd}
   currentPath={currentPath}
   omitLocalBusiness={omitLocalBusiness}
+  extraSpeakableSelectors={extraSpeakableSelectors}
 >
   {/* perf(bloat-3-fixes-2026-07-07): Kernel-only styles.
       Was: BaseLayout @import kernel.css (128KB raw) for every page.

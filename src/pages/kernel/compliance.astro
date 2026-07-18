@@ -156,6 +156,7 @@ const iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath={unit.path}
+  extraSpeakableSelectors={['.answer-first-summary']}
 >
   <header class="kernel-page-header">
     <div class="kernel-page-header__lead">
@@ -167,6 +168,9 @@ const iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         </ol>
       </nav>
       <h1 class="kernel-page-header__title">{unit.h1}</h1>
+      {/* BAI-VOC-001-B (2026-07-18): answer-first summary — wired as the
+          second cssSelector for WebPage SpeakableSpecification. */}
+      <p class="answer-first-summary" data-speakable-target="answer-first">ربط عمليات AI بالأطر التنظيمية السعودية: PDPL، NCA ECC، SFDA، SAMA، ISO 13485، ISO 42001. يعرض حالة كل ضابط، الفجوات، وخطة التحسين بالأولويات. ملف أدلة جاهز للمدققين المعتمدين والجهة الرقابية.</p>
       <p class="kernel-page-header__subtitle">
         عرض حزم الامتثال وحالة الضوابط حسب الإطار التنظيمي السعودي: PDPL، NCA ECC، SFDA، SAMA، ISO 13485، ISO 42001.
       </p>

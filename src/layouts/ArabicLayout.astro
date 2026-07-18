@@ -10,6 +10,11 @@ interface Props extends SEOProps {
   currentPath?: string;
   languageCounterpart?: string;
   robots?: string;
+  /**
+   * BAI-VOC-001-B (2026-07-18): forwarded to BaseLayout → FoundationSchema
+   * to extend the WebPage `speakable.cssSelector` array. See Schema.astro.
+   */
+  extraSpeakableSelectors?: string[];
 }
 
 const {
@@ -23,6 +28,7 @@ const {
   currentPath = '/',
   languageCounterpart,
   robots,
+  extraSpeakableSelectors = [],
 } = Astro.props;
 ---
 
@@ -39,6 +45,7 @@ const {
   currentPath={currentPath}
   languageCounterpart={languageCounterpart}
   robots={robots}
+  extraSpeakableSelectors={extraSpeakableSelectors}
 >
   <slot />
 </BaseLayout>

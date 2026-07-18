@@ -627,3 +627,157 @@ Verification Output:
 الـ commit: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
 Status: **verified locally** (build + verify:all + seo:all + Playwright 18/18). يحتاج user: commit + push + Render auto-redeploy + IndexNow trigger.
 Risks: لا شيء — تغيير VOC injection يحافظ على كل الـ sections، links، components، order، وSEO anchors. tone "يدعم الجاهزية" يحمي من أي ادعاءات مطلقة.
+
+---
+Task ID: BAI-VOC-001-B
+Agent: BrightAI Workspace Agent
+Task: FAQ مرئي + SpeakableSpecification (h1 + answer-first) للصفحات P0 الناقصة
+Started: 2026-07-18T04:35:00+03:00
+Mode: Senior
+
+## Discovery (مقابل baseline الفعلي dist/ من build 2026-07-14)
+
+| Template | FAQ مرئي قبل | FAQPage JSON-LD قبل | الحالة |
+|---|---:|---:|---|
+| `/solutions/[sector]` (4) | 4 | 2 blocks (8) | ناقص +1 لكل واحد |
+| `/solutions/[sector]/[city]` (khobar/madinah/mecca) | 0 | 0 (migrated HTML فقط) | ناقص +5 لكل واحد |
+| `/solutions/[sector]/[city]` (riyadh/dammam/jeddah) | 6 | 1 (6) | ✅ مكتمل (legacy migrated، ليست P0) |
+| `/kernel/{chat,approvals,audit,evidence,compliance,connectors}` (6) | 4 | 1 (4) | ناقص +1 لكل واحد |
+
+**Schema** (FoundationSchema في BaseLayout.astro قبل التغيير): كل صفحة ~190 عندها WebPage.speakable.cssSelector=["h1"] فقط — **مو** ["h1", ".answer-first-summary"]. المتطلب: محددات CSS تشير إلى H1 **و** ملخص answer-first ظاهر.
+
+**تناقض مهم**: task description قال "0 Speakable pages" لكن الـ dist/ الفعلي فيه 189 صفحة بـ Speakable (منذ REPORTS-SEO-FOUNDATION 2026-07-07). القراءة الدقيقة للوصف: المطلوب توسيع `cssSelector` من `["h1"]` إلى `["h1", "<answer-first class>"]` + إضافة block مرئي + ربطه بالـ JSON-LD FAQPage.
+
+## Plan & Execution
+
+### Phase A — schema.astro + layouts (default-safe)
+- `src/components/seo/Schema.astro`:
+  - أضفت prop جديد `extraSpeakableSelectors?: string[] = []`
+  - sanitize (filter empty + dedupe) قبل spread
+  - `cssSelector: ['h1', ...sanitisedExtraSelectors]`
+  - **default = ['h1']** → الـ 189 صفحة الحالية تبقى passing
+- `src/layouts/BaseLayout.astro`: أضفت نفس الـ prop ومررته إلى FoundationSchema
+- `src/layouts/ArabicLayout.astro`: استقبل ومرر
+- `src/layouts/KernelLayout.astro`: استقبل ومرر
+
+### Phase B — 4 sectors (`/solutions/[sector]`)
+- `src/data/solutions-content-generated.ts`: +1 FAQ جديد لكل sector (4 → 5)
+  - banking: "هل يساعد BrightAI فرق المخاطر في تفسير قرارات AI للجهات الرقابية؟"
+  - government: "كيف يربط BrightAI بين حوكمة AI ومتطلبات رؤية 2030؟"
+  - healthcare: "كيف يتعامل BrightAI مع الإشراف البشري على التوصيات السريرية؟"
+  - manufacturing: "هل يصلح BrightAI لمصانع فيها أكثر من مورّد AI؟"
+- `src/pages/solutions/[sector].astro`:
+  - أضفت import `getFaqLd` من schema-helpers
+  - بنيت `sectorFaqLd` من `sector.faqs` (نفس source of truth للـ visible <details>)
+  - بنيت `sectorAnswerFirst` (30-60 word Saudi-dialect, بين H1 و description)
+  - أضفت `stripFoundationTypesFromMigrated` helper: يحذف FAQPage + Organization + WebSite + LocalBusiness + WebPage من migrated data (الـ Foundation يضيفها كلها) — يمنع duplicate nodes
+  - أضفت `<p class="answer-first-summary">` بعد H1
+  - مررت `extraSpeakableSelectors={['.answer-first-summary']}`
+
+### Phase C — 3 cities بدون FAQ مرئي (khobar / madinah / mecca)
+- `src/data/solutions.ts`:
+  - أضفت `faqs?` field لـ `LocalData` interface
+  - أضفت 5 FAQs سعودية لـ khobar (banking), madinah (government), mecca (healthcare) — 15 سؤال/جواب جديد، كل إجابة 40-60 كلمة، مبنية على VOC patterns من voc-report-2026.md
+- `src/pages/solutions/[sector]/[city].astro`:
+  - أضفت `locFaqLd` (يستخدم `loc.faqs` لو موجود)
+  - نفس `stripFoundationTypesFromMigrated` helper (نفس السبب: منع duplicate)
+  - أضفت FAQ section مرئي في الـ fallback branch فقط (تحت RelatedLinks)
+  - أضفت `answer-first-summary` block في الـ hero
+  - مررت `extraSpeakableSelectors` بشكل شرطي (فقط لو `locAnswerFirst` غير null)
+
+### Phase D — 6 kernel pages
+- `src/data/kernel.ts`: +1 FAQ جديد لكل من 6 kernel units (4 → 5)
+  - chat: "هل المحادثات في Kernel تبقى خاصة ولا تتدرب عليها النماذج؟"
+  - approvals: "هل قرارات الموافقات في Kernel قابلة للطعن أو المراجعة؟"
+  - audit: "هل سجل التدقيق يدعم التحقيق في الحوادث (incident response)؟"
+  - evidence: "وش الفرق بين ملف الأدلة وسجل التدقيق؟"
+  - compliance: "هل يدعم Kernel معايير ISO/IEC 42001 لإدارة AI؟"
+  - connectors: "هل يدعم Kernel موصلات مع نماذج On-Premise (داخل الشركة)؟"
+- 6 ملفات astro (`chat.astro`/`approvals.astro`/`audit.astro`/`evidence.astro`/`compliance.astro`/`connectors.astro`):
+  - أضفت `<p class="answer-first-summary">` بين H1 و subtitle
+  - مررت `extraSpeakableSelectors={['.answer-first-summary']}`
+
+### Phase E — CSS styling للـ `.answer-first-summary`
+- `src/styles/pages.css`: block style (border-inline-start brand-400، color-mix خلفية، padding، font-weight 500) — 20 سطر scoped
+- `src/styles/kernel.css`: نفس الـ pattern لـ kernel pages (max-inline-size 640px لتطابق .kernel-page-header__subtitle)
+
+## Verification Results
+
+### Build
+- `npx astro build` → 190 صفحة، 0 أخطاء ✅
+
+### check-speakable-schema.mjs (الـ audit المطلوب)
+- **189 speakable pages** (> 30 hard limit) ✅
+- 0 errors
+
+### Static verification (Python على dist/client HTML)
+- 14/14 URLs صحيحة
+- 0 JSON parse errors
+- تطابق JSON-LD FAQPage.questions مع visible <summary> بالضبط (مقارنة نص-بنص)
+- 0 duplicate FAQPage nodes (تم تجنبه عبر `stripFoundationTypesFromMigrated`)
+- 0 duplicate WebPage.speakable (Foundation فقط، migrated WebPage تم حذفه)
+
+### Playwright (live، scripts/playwright/verify-voc-001-b.mjs)
+- 14/14 URLs:
+  - 4 sectors: 5 FAQ، answer-first=true، selectors=["h1",".answer-first-summary"] ✅
+  - 3 cities (khobar/madinah/mecca): 5 FAQ، answer-first=true، selectors صحيحة ✅
+  - 3 cities (riyadh/dammam/jeddah legacy): 6 FAQ، answer-first=false، selectors=["h1"] (Foundation + migrated WebPage، ليست P0) ✅
+  - 6 kernel pages: 5 FAQ، answer-first=true، selectors صحيحة ✅
+
+## Count قبل/بعد
+
+| Metric | قبل | بعد | Δ |
+|---|---:|---:|---:|
+| إجمالي FAQ مرئي على 9 P0 templates | 4×4 + 0×3 + 4×6 = 40 | 5×4 + 5×3 + 5×6 = 59 | **+19** |
+| إجمالي FAQ مرئي على 13 P0 pages (4 sectors + 3 cities + 6 kernel) | 4×4 + 0×3 + 4×6 = 40 | 5×4 + 5×3 + 5×6 = 59 | **+19** |
+| إجمالي FAQ في JSON-LD (نفس 13 P0 pages) | 2 blocks × 4 sectors = 8 + 0×3 + 1×6 = 6 = **14 FAQPage blocks / 38 questions** | 1×4 + 1×3 + 1×6 = 13 FAQPage blocks (5 questions each) = **65 questions** | **+27 questions** |
+| pages مع `Speakable.cssSelector = ["h1", ".answer-first-summary"]` | 0 | 13 (P0) | **+13** |
+| pages مع `answer-first-summary` block مرئي | 0 | 13 (P0) | **+13** |
+| check-speakable-schema.mjs pass | 189 ✅ | 189 ✅ | unchanged (default safe) |
+| schema parse errors | 0 | 0 | unchanged |
+| duplicate FAQPage nodes | 0 (كان موجود كـ migrated + migrated) | 0 (تم تنظيفه) | unchanged ✅ |
+
+## Files Changed
+
+### Foundation (4 ملفات)
+- `src/components/seo/Schema.astro` — extraSpeakableSelectors prop + sanitize
+- `src/layouts/BaseLayout.astro` — forward prop
+- `src/layouts/ArabicLayout.astro` — forward prop
+- `src/layouts/KernelLayout.astro` — forward prop
+
+### Data (3 ملفات)
+- `src/data/solutions-content-generated.ts` — +4 FAQs (4 sectors)
+- `src/data/solutions.ts` — +15 FAQs (3 cities) + LocalData.faqs field
+- `src/data/kernel.ts` — +6 FAQs (6 kernel units)
+
+### Templates (12 ملف)
+- `src/pages/solutions/[sector].astro` — sectorJsonLd + answer-first + stripFoundationTypesFromMigrated
+- `src/pages/solutions/[sector]/[city].astro` — locFaqLd + answer-first + FAQ section + stripFoundationTypesFromMigrated
+- `src/pages/kernel/chat.astro` — answer-first + selector
+- `src/pages/kernel/approvals.astro` — answer-first + selector
+- `src/pages/kernel/audit.astro` — answer-first + selector
+- `src/pages/kernel/evidence.astro` — answer-first + selector
+- `src/pages/kernel/compliance.astro` — answer-first + selector
+- `src/pages/kernel/connectors.astro` — answer-first + selector
+
+### Styles (2 ملف)
+- `src/styles/pages.css` — .answer-first-summary block (sector/city)
+- `src/styles/kernel.css` — .answer-first-summary block (kernel)
+
+### Verification (1 ملف جديد)
+- `scripts/playwright/verify-voc-001-b.mjs` — P0 verification
+- `scripts/playwright/static-server.mjs` — minimal static server (auto-start)
+
+**إجمالي: 21 ملف (19 معدّل + 2 جديد)**
+
+## Risks & Mitigations
+- **Schema default safety**: extraSpeakableSelectors default = [] → الـ 189 صفحات الحالية تمر دون تغيير. ✅
+- **Migrated HTML integrity**: لا تعديل على أي migrated HTML. الـ answer-first block يظهر فقط في الـ fallback branch (khobar/madinah/mecca). للمدن migrated (riyadh/dammam/jeddah)، الـ selector يبقى ["h1"] بدون regression. ✅
+- **FAQ عدم تطابق**: `getFaqLd` يبني من **نفس** المصفوفة التي تبني الـ <details> المرئي (sector.faqs / loc.faqs / unit.faq) — single source of truth. ✅ verified تطابق 14/14.
+- **Duplicate WebPage.speakable**: `stripFoundationTypesFromMigrated` يحذف Foundation types من migrated data قبل merge. ✅ verified 0 duplicates.
+- **Console output**: لم أضف console.log في production (ممنوع per قواعد AGENTS.md).
+- **inner-faq CSS**: استخدمت class موجود (.inner-faq) في [city].astro → لا CSS جديد.
+- **City page render**: FAQ section الجديد يظهر فقط لو `loc.faqs && loc.faqs.length > 0` — لا يضيف section فارغ للمدن migrated.
+
+الـ commit: **uncommitted** (per قاعدة brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+Status: **verified** (build 190 ✅, check-speakable-schema 189 ✅, Playwright 14/14 ✅, 0 schema parse errors ✅, 0 duplicate FAQPage ✅, 0 visible/JSON mismatch ✅).

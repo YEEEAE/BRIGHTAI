@@ -42,6 +42,16 @@ interface Props {
    */
   extra?: Array<Record<string, unknown> | null | undefined>;
   /**
+   * BAI-VOC-001-B (2026-07-18): extra cssSelector entries to add to the
+   * foundation WebPage `speakable` node alongside the universal `h1`.
+   * Pages can opt in by passing class names that match visible content
+   * (e.g. an answer-first summary block). Each entry MUST match a real
+   * visible element on the page — `check-speakable-schema.mjs` validates.
+   * Default is `[]` so the existing 419-page audit (≥30 pages) keeps
+   * passing without any caller changes.
+   */
+  extraSpeakableSelectors?: string[];
+  /**
    * Breadcrumb items (without the home crumb — added automatically).
    * Provide items in display order; the last one is the current page.
    */
@@ -76,7 +86,7 @@ interface Props {
   omitLocalBusiness?: boolean;
 }
 
-const { extra = [], breadcrumbs = [], canonical, pageTitle, pageDescription, language = 'ar-SA', omitLocalBusiness = false } = Astro.props;
+const { extra = [], breadcrumbs = [], canonical, pageTitle, pageDescription, language = 'ar-SA', omitLocalBusiness = false, extraSpeakableSelectors = [] } = Astro.props;
 
 // ─── Foundation nodes ───────────────────────────────────────────────────────
 
@@ -262,6 +272,16 @@ const breadcrumbList = allCrumbs.length > 1
 // required for AI voice / TTS eligibility) passes automatically. The
 // cssSelector `h1` is universal — every page in BrightAI has exactly one
 // <h1>, so the schema validates against real visible HTML on every URL.
+//
+// BAI-VOC-001-B (2026-07-18): P0 pages can extend the selector with
+// `extraSpeakableSelectors` (e.g. `.answer-first-summary`) to also
+// tag the answer-first summary block for AI voice / TTS. The array is
+// sanitised: empty strings and duplicates are dropped to keep the
+// schema tidy and to satisfy `check-speakable-schema.mjs`.
+const sanitisedExtraSelectors = Array.from(
+  new Set(extraSpeakableSelectors.filter((s) => typeof s === 'string' && s.trim().length > 0))
+);
+
 const pageWebPage = canonical
   ? {
       '@context': 'https://schema.org',
@@ -277,7 +297,7 @@ const pageWebPage = canonical
       about: { '@id': `${SITE.url}/#organization` },
       speakable: {
         '@type': 'SpeakableSpecification',
-        cssSelector: ['h1'],
+        cssSelector: ['h1', ...sanitisedExtraSelectors],
       },
     }
   : null;

@@ -24,7 +24,7 @@ import { migratedSectorPages } from '../../data/migratedSolutionPages';
 import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../components/Icon.astro';
-import { ORGANIZATION } from '../../data/schema-helpers';
+import { ORGANIZATION, getFaqLd } from '../../data/schema-helpers';
 
 export function getStaticPaths() {
   return sectors.map(s => ({ params: { sector: s.slug }, props: { sector: s } }));
@@ -62,6 +62,81 @@ const jsonLd = {
     ORGANIZATION,
   ]
 };
+
+// BAI-VOC-001-B (2026-07-18): merge the sector's FAQPage (built from the
+// exact same array that powers the visible <details> section) into the
+// graph so the JSON-LD and the rendered DOM never drift.
+const sectorFaqLd = sector.faqs && sector.faqs.length > 0
+  ? getFaqLd(sector.faqs.map((f) => ({ q: f.question, a: f.answer })))
+  : null;
+const sectorJsonLd = sectorFaqLd
+  ? { '@context': 'https://schema.org', '@graph': [...jsonLd['@graph'], sectorFaqLd] }
+  : jsonLd;
+
+/**
+ * BAI-VOC-001-B (2026-07-18): some legacy migrated JSON-LD blocks
+ * (sector-banking-ai-governance.json et al.) ship their own FAQPage
+ * and/or a redundant WebPage node inside the page-level `@graph`. The
+ * FoundationSchema in BaseLayout already emits Organization, WebSite,
+ * LocalBusiness, WebPage (with the live SpeakableSpecification) and
+ * BreadcrumbList, so a second copy of any of these in the migrated
+ * payload produces duplicate @type nodes in the final @graph — which
+ * confuses Google Rich Results Test and inflates the JSON-LD payload.
+ * We must REPLACE the FAQPage (with `sectorJsonLd`) and DROP the
+ * redundant WebPage so the visible <details> and the JSON-LD stay in
+ * lockstep — otherwise a drift would surface in Google's Rich Results
+ * Test ("FAQPage answer does not match the visible answer") and break
+ * the P0 acceptance criterion "no question/answer mismatch".
+ */
+const FOUNDATION_TYPES = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage']);
+
+function sanitiseMigratedForFoundation(
+  node: unknown,
+  seen: WeakSet<object> = new WeakSet(),
+): unknown {
+  if (!node || typeof node !== 'object') return node;
+  if (seen.has(node as object)) return node;
+  seen.add(node as object);
+
+  if (Array.isArray(node)) {
+    return node
+      .filter((child) => {
+        if (!child || typeof child !== 'object') return true;
+        const t = (child as Record<string, unknown>)['@type'];
+        if (t === 'FAQPage') return false;
+        if (typeof t === 'string' && FOUNDATION_TYPES.has(t)) return false;
+        return true;
+      })
+      .map((child) => sanitiseMigratedForFoundation(child, seen));
+  }
+
+  const obj = node as Record<string, unknown>;
+  const next: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (key === '@type' && typeof value === 'string' && FOUNDATION_TYPES.has(value)) continue;
+    next[key] = sanitiseMigratedForFoundation(value, seen);
+  }
+  return next;
+}
+
+const migratedJsonLdSanitised = migratedPage?.jsonLd
+  ? (Array.isArray(migratedPage.jsonLd)
+      ? migratedPage.jsonLd.map((entry) => sanitiseMigratedForFoundation(entry))
+      : sanitiseMigratedForFoundation(migratedPage.jsonLd))
+  : null;
+
+const finalJsonLd = migratedJsonLdSanitised
+  ? sectorFaqLd
+    ? [...(Array.isArray(migratedJsonLdSanitised) ? migratedJsonLdSanitised : [migratedJsonLdSanitised]), sectorFaqLd]
+    : (migratedJsonLdSanitised as unknown as typeof jsonLd)
+  : sectorJsonLd;
+
+// BAI-VOC-001-B (2026-07-18): 30-60 word Saudi-dialect answer-first
+// summary. Sits immediately after the H1 so AI voice / TTS engines
+// (Google Assistant, Siri, Alexa) can quote it verbatim. Also the
+// second cssSelector entry for the WebPage SpeakableSpecification.
+const sectorAnswerFirst =
+  `حوكمة ${sector.chip} مع BrightAI تعني توثيق كل استخدام AI، تصنيف مخاطره، حجب البيانات الحساسة قبل الإرسال للنموذج، وإجبار موافقة بشرية على القرارات عالية الأثر. أداة تشغيلية لا تستبدل التقييم النظامي أو القانوني.`;
 
 /* ------------------------------------------------------------------
  * Per-sector compliance badges + 4-step flow مخصصة لكل قطاع.
@@ -105,7 +180,7 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
   { label: 'تقارير القطاع',             desc: 'تقارير جاهزة للجهات التنظيمية.',            icon: 'mdi-file-document' },
 ];
 ---
-<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={(migratedPage?.jsonLd ?? jsonLd) as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? sector.title}>
+<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={finalJsonLd as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? sector.title} extraSpeakableSelectors={['.answer-first-summary']}>
 {!sector.regulations ? (
   /* legacy migrated fallback — only لو ما في regulations data */
   <>
@@ -123,6 +198,11 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
       <div>
         <span class="inner-hero__badge"><Icon name={sector.icon} class="" /> {sector.chip}</span>
         <h1>{sector.h1}</h1>
+        {/* BAI-VOC-001-B (2026-07-18): answer-first summary — 30–60-word
+            Saudi-dialect, sits between H1 and the description so AI voice
+            / TTS engines can quote it. Also wired into the WebPage
+            SpeakableSpecification as the second cssSelector entry. */}
+        <p class="answer-first-summary" data-speakable-target="answer-first">{sectorAnswerFirst}</p>
         <p class="inner-hero__desc">{sector.vocLead ?? sector.description}</p>
         <div class="inner-hero__actions">
           <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>

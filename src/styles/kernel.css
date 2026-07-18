@@ -861,6 +861,22 @@ body.kernel-shell {
   max-inline-size: 640px;
 }
 
+/* BAI-VOC-001-B (2026-07-18): answer-first summary — sits between
+   the H1 and the subtitle on every Kernel page hero. Same visual
+   treatment as sector/city pages for consistency. */
+.answer-first-summary {
+  margin: 0;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--brand-500) 8%, var(--bg-surface));
+  border-inline-start: 3px solid var(--brand-400);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  max-inline-size: 640px;
+  font-weight: 500;
+}
+
 .kernel-page-header__actions {
   display: flex;
   align-items: center;

@@ -1303,6 +1303,27 @@
   margin-bottom: var(--space-6);
 }
 
+/* BAI-VOC-001-B (2026-07-18): answer-first summary — sits between
+   the H1 and the description on sector + city hero blocks. Designed
+   to be the highest-signal snippet for AI voice / TTS engines and
+   for the WebPage SpeakableSpecification selector. Visually marked
+   as a citable lede (left border in the brand cyan, slight elevation,
+   distinct colour tone) so the line stands out without competing
+   with the H1. */
+.answer-first-summary {
+  font-size: var(--text-base);
+  line-height: var(--leading-loose, 1.7);
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--brand-500) 8%, var(--bg-surface));
+  border-inline-start: 3px solid var(--brand-400);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-block: var(--space-4) var(--space-5);
+  max-width: var(--container-reading);
+  margin-inline: auto;
+  font-weight: var(--font-medium, 500);
+}
+
 .inner-hero__actions {
   display: flex;
   align-items: center;

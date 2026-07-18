@@ -9,7 +9,7 @@ import { migratedLocalPages } from '../../../data/migratedSolutionPages';
 import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../../components/Icon.astro';
-import { ORGANIZATION } from '../../../data/schema-helpers';
+import { ORGANIZATION, getFaqLd } from '../../../data/schema-helpers';
 
 export function getStaticPaths() {
   const paths: any[] = [];
@@ -88,8 +88,83 @@ const jsonLd = {
     ORGANIZATION,
   ]
 };
+
+// BAI-VOC-001-B (2026-07-18): merge the city-level FAQPage into the
+// graph. The visible <details> block and the JSON-LD FAQPage always
+// come from the same `loc.faqs` array — single source of truth. If a
+// legacy migrated page ships its own FAQPage we strip it (see
+// helper below) and replace it with the live locFaqLd so the two
+// never drift. The `loc.faqs` is mandatory for cities without a
+// migrated page (khobar, mecca, madinah) and optional for migrated
+// cities (riyadh, dammam, jeddah) where the legacy 6 questions are
+// still considered "in-sync" and pass through untouched.
+const locFaqLd = loc.faqs && loc.faqs.length > 0
+  ? getFaqLd(loc.faqs.map((f) => ({ q: f.question, a: f.answer })))
+  : null;
+
+/**
+ * BAI-VOC-001-B (2026-07-18): drop every @type:"FAQPage" node AND the
+ * redundant foundation types (Organization / WebSite / LocalBusiness /
+ * WebPage) from a (potentially nested) migrated JSON-LD payload. The
+ * FoundationSchema in BaseLayout already emits those, so keeping the
+ * migrated copies would create duplicate @type nodes — which inflate
+ * the JSON-LD payload and confuse the Google Rich Results Test.
+ * Cycle-safe via WeakSet.
+ */
+const FOUNDATION_TYPES_CITY = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage']);
+
+function stripFoundationTypesFromMigrated(
+  node: unknown,
+  seen: WeakSet<object> = new WeakSet(),
+): unknown {
+  if (!node || typeof node !== 'object') return node;
+  if (seen.has(node as object)) return node;
+  seen.add(node as object);
+
+  if (Array.isArray(node)) {
+    return node
+      .filter((child) => {
+        if (!child || typeof child !== 'object') return true;
+        const t = (child as Record<string, unknown>)['@type'];
+        if (t === 'FAQPage') return false;
+        if (typeof t === 'string' && FOUNDATION_TYPES_CITY.has(t)) return false;
+        return true;
+      })
+      .map((child) => stripFoundationTypesFromMigrated(child, seen));
+  }
+
+  const obj = node as Record<string, unknown>;
+  const next: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (key === '@type' && typeof value === 'string' && FOUNDATION_TYPES_CITY.has(value)) continue;
+    next[key] = stripFoundationTypesFromMigrated(value, seen);
+  }
+  return next;
+}
+
+const migratedJsonLdSanitised = migratedPage?.jsonLd
+  ? (Array.isArray(migratedPage.jsonLd)
+      ? migratedPage.jsonLd.map((entry) => stripFoundationTypesFromMigrated(entry))
+      : stripFoundationTypesFromMigrated(migratedPage.jsonLd))
+  : null;
+
+const finalJsonLd = migratedJsonLdSanitised
+  ? locFaqLd
+    ? [...(Array.isArray(migratedJsonLdSanitised) ? migratedJsonLdSanitised : [migratedJsonLdSanitised]), locFaqLd]
+    : (migratedJsonLdSanitised as unknown as typeof jsonLd)
+  : locFaqLd
+    ? { '@context': 'https://schema.org', '@graph': [...jsonLd['@graph'], locFaqLd] }
+    : jsonLd;
+
+// BAI-VOC-001-B (2026-07-18): answer-first summary (30–60 word Saudi
+// dialect) used in the fallback hero. Sits between the H1 and the
+// description so AI voice / TTS engines can quote it, and serves as
+// the second cssSelector entry for the WebPage SpeakableSpecification.
+const locAnswerFirst = loc.faqs && loc.faqs.length > 0
+  ? `خدمات حوكمة AI في ${loc.cityAr} للقطاعات المنظمة: توثيق استخدامات AI، حماية بيانات العملاء، ضوابط قابلة للتدقيق متوافقة مع الجهات السعودية. أداة تشغيلية لا تستبدل التقييم النظامي.`
+  : null;
 ---
-<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]), ORGANIZATION] } : (jsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title}>
+<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={(migratedPage?.jsonLd ?? finalJsonLd) as any} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title} extraSpeakableSelectors={locAnswerFirst ? ['.answer-first-summary'] : []}>
 {migratedPage ? (
   <>
     {!/<h1\b/i.test(migratedPage.html) && <h1 class="sr-only">{loc.h1}</h1>}
@@ -103,6 +178,12 @@ const jsonLd = {
     <Breadcrumbs crumbs={crumbs} />
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-map-marker-radius"></use></svg> {loc.cityAr} — {sector.chip}</div>
     <h1>{loc.h1}</h1>
+    {/* BAI-VOC-001-B (2026-07-18): answer-first summary. Only emitted
+        when the city has its own FAQ data (khobar / madinah / mecca).
+        Also wired into the WebPage SpeakableSpecification selector. */}
+    {locAnswerFirst && (
+      <p class="answer-first-summary" data-speakable-target="answer-first">{locAnswerFirst}</p>
+    )}
     <p class="inner-hero__desc">{loc.description}</p>
     <div class="inner-hero__actions">
       <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
@@ -150,6 +231,31 @@ const jsonLd = {
 </a>
 
 <RelatedLinks relatedSlugs={sector.related} sectorSlugs={sectors.filter(s => s.slug !== sector.slug).map(s => s.slug)} docs={sector.docs} blog={sector.blog} />
+
+{/* BAI-VOC-001-B (2026-07-18): city-level FAQ section, only rendered
+    when the city carries its own FAQs (khobar / madinah / mecca). The
+    same array drives the JSON-LD FAQPage above — single source of
+    truth, zero drift between visible UI and structured data. */}
+{loc.faqs && loc.faqs.length > 0 && (
+  <section class="inner-section" aria-labelledby="city-faqs">
+    <div class="max-w-4xl mx-auto px-5 lg:px-8">
+      <div class="section__header section__header--start">
+        <span class="section__eyebrow" lang="en">FAQ</span>
+        <h2 id="city-faqs" class="section__title section__title--start">أسئلة تدور في ذهنك عن {loc.cityAr}؟</h2>
+      </div>
+      <div class="inner-faq">
+        {loc.faqs.map((faq) => (
+          <details>
+            <summary>{faq.question}</summary>
+            <div class="inner-faq__answer">
+              <p>{faq.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
 
 <section class="inner-cta-final">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">

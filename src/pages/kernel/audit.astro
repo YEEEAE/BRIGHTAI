@@ -123,6 +123,7 @@ const TOTAL_RECORDS = 12483;
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath={unit.path}
+  extraSpeakableSelectors={['.answer-first-summary']}
 >
   <header class="kernel-page-header">
     <div class="kernel-page-header__lead">
@@ -134,6 +135,9 @@ const TOTAL_RECORDS = 12483;
         </ol>
       </nav>
       <h1 class="kernel-page-header__title">{unit.h1}</h1>
+      {/* BAI-VOC-001-B (2026-07-18): answer-first summary — wired as the
+          second cssSelector for WebPage SpeakableSpecification. */}
+      <p class="answer-first-summary" data-speakable-target="answer-first">سجل تدقيق غير قابل للتعديل يحفظ كل قرار AI: prompt، model، risk score، approval، action. حماية بـ hash chain يكشف أي تعديل، وفلاتر متقدمة للبحث بالزمن والمستخدم والمخاطر. إعادة بناء أي قرار من بدايته لنهايته في ثوانٍ.</p>
       <p class="kernel-page-header__subtitle">
         سلسلة قرارات الذكاء الاصطناعي مع تحقق hash chain، Trace Timeline للمراحل الست، وفلاتر متقدمة للقسم والمخاطر.
       </p>
