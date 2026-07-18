@@ -4135,12 +4135,14 @@ svg.icon {
   line-height: 1.75;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .listing-card--featured .listing-card__desc {
   -webkit-line-clamp: 4;
+  line-clamp: 4;
   font-size: var(--text-base);
 }
 
@@ -4530,6 +4532,7 @@ svg.icon {
   line-height: 1.7;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -5002,6 +5005,7 @@ svg.icon {
   line-height: 1.7;
   display: -webkit-box;
   -webkit-line-clamp: 3;
+  line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -5459,6 +5463,7 @@ svg.icon {
   line-height: 1.7;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -6432,7 +6437,11 @@ svg.icon {
    النقر تكبر لـ 44px على كل الأحجام. هذا يحل overflow اللمس
    دون كسر التخطيط (عكس إضافة padding حقيقي).
    ============================================================ */
+/* القاعدة العامة: كل الروابط النصية العادية (بدون كلاس زر) + كل الكلاسات
+   المعروفة من الفحص الشامل. نستثني .btn وأبناءه لأن الأزرار
+   لها padding كافٍ يرفعها فوق 44px. */
 .a11y-touch-target,
+a:not(.btn):not(.btn *),
 .breadcrumbs__link,
 .footer__link,
 .cookie-consent__link,
@@ -6444,6 +6453,27 @@ svg.icon {
 .legal-content a,
 .faq__answer a,
 .home-faq-answer a,
+.related-links__link,
+.content-link,
+.site-header__dropdown-link,
+.site-header__nav-link,
+.site-header__logo,
+.chip,
+.docs-meta__edit,
+.kernel-onboarding__link,
+.kernel-evidence-item__btn,
+.kernel-modal__btn,
+.kernel-modal__close,
+.kernel-audit-toolbar__btn,
+.kernel-audit-table__hash-copy,
+.kernel-audit-table__view-btn,
+.kernel-reports-filters__chip,
+.kernel-scheduled-row__edit,
+.kernel-stats-range__apply,
+.kernel-empty__cta,
+.kernel-approval-card__btn,
+.action-btn,
+.skip-to-content,
 a[href*="wa.me/"],
 a[href*="whatsapp"],
 a[href*="api.whatsapp"] {
@@ -6451,6 +6481,7 @@ a[href*="api.whatsapp"] {
 }
 
 .a11y-touch-target::before,
+a:not(.btn):not(.btn *)::before,
 .breadcrumbs__link::before,
 .footer__link::before,
 .cookie-consent__link::before,
@@ -6462,6 +6493,27 @@ a[href*="api.whatsapp"] {
 .legal-content a::before,
 .faq__answer a::before,
 .home-faq-answer a::before,
+.related-links__link::before,
+.content-link::before,
+.site-header__dropdown-link::before,
+.site-header__nav-link::before,
+.site-header__logo::before,
+.chip::before,
+.docs-meta__edit::before,
+.kernel-onboarding__link::before,
+.kernel-evidence-item__btn::before,
+.kernel-modal__btn::before,
+.kernel-modal__close::before,
+.kernel-audit-toolbar__btn::before,
+.kernel-audit-table__hash-copy::before,
+.kernel-audit-table__view-btn::before,
+.kernel-reports-filters__chip::before,
+.kernel-scheduled-row__edit::before,
+.kernel-stats-range__apply::before,
+.kernel-empty__cta::before,
+.kernel-approval-card__btn::before,
+.action-btn::before,
+.skip-to-content::before,
 a[href*="wa.me/"]::before,
 a[href*="whatsapp"]::before,
 a[href*="api.whatsapp"]::before {
@@ -6475,4 +6527,8 @@ a[href*="api.whatsapp"]::before {
   min-inline-size: var(--touch-min, 2.75rem);
   /* لا نريد أي تأثير بصري — المنطقة شفافة قابلة للنقر فقط. */
   border-radius: var(--radius-md);
+  /* نضمن أن المنطقة الممدودة تعلو العناصر المجاورة حتى تكون
+     قابلة للنقر فعلياً (تحسب ضمن منطقة اللمس). */
+  z-index: 1;
+  pointer-events: auto;
 }

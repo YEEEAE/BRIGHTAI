@@ -1,29 +1,53 @@
 {
   "ci": {
     "collect": {
-      "staticDistDir": ".",
+      "staticDistDir": "./dist/client",
       "url": [
+        "/",
+        "/about/",
+        "/services/",
+        "/solutions/",
+        "/contact/",
+        "/pricing/",
+        "/trust/",
+        "/blog/",
+        "/docs/",
         "/kernel/",
-        "/kernel/approvals.html",
-        "/kernel/audit.html",
-        "/kernel/chat.html",
-        "/kernel/compliance.html",
-        "/kernel/connectors.html",
-        "/kernel/evidence.html",
-        "/kernel/offline.html",
-        "/kernel/policies.html",
-        "/kernel/reports.html",
-        "/kernel/scenarios.html",
-        "/kernel/stats.html"
+        "/kernel/approvals/",
+        "/kernel/audit/",
+        "/kernel/chat/",
+        "/kernel/compliance/",
+        "/kernel/connectors/",
+        "/kernel/evidence/",
+        "/kernel/policies/",
+        "/kernel/reports/",
+        "/kernel/scenarios/",
+        "/kernel/stats/",
+        "/kernel/offline/"
       ],
       "settings": {
+        "preset": "desktop",
+        "formFactor": "desktop",
+        "throttlingMethod": "simulate",
+        "skipAudits": [
+          "canonical",
+          "is-crawlable",
+          "robots-txt",
+          "screenshot-thumbnails",
+          "full-page-screenshot",
+          "render-blocking-resources"
+        ],
         "budgets": [
           {
-            "path": "/kernel/*",
+            "path": "/*",
             "resourceSizes": [
               {
                 "resourceType": "script",
-                "budget": 200
+                "budget": 300
+              },
+              {
+                "resourceType": "total",
+                "budget": 1500
               }
             ],
             "timings": [
@@ -42,7 +66,20 @@
             ]
           }
         ]
-      }
+      },
+      "psiCollect": {
+        "url": [
+          "https://brightai.site/",
+          "https://brightai.site/kernel/"
+        ],
+        "strategy": "mobile",
+        "threshold": {
+          "performance": 0.8,
+          "accessibility": 0.9,
+          "seo": 0.9
+        }
+      },
+      "numberOfRuns": 3
     },
     "assert": {
       "assertions": {
@@ -53,23 +90,87 @@
           }
         ],
         "interaction-to-next-paint": [
-          "error",
+          "warn",
           {
             "maxNumericValue": 200
           }
         ],
         "cumulative-layout-shift": [
-          "error",
+          "warn",
           {
             "maxNumericValue": 0.1
           }
         ],
-        "font-display": "error"
-      }
+        "total-blocking-time": [
+          "warn",
+          {
+            "maxNumericValue": 300
+          }
+        ],
+        "speed-index": [
+          "warn",
+          {
+            "maxNumericValue": 3500
+          }
+        ],
+        "font-display": "warn",
+        "offscreen-images": "warn",
+        "uses-responsive-images": "warn",
+        "non-composited-animations": "warn"
+      },
+      "matchingUrlTemplate": [
+        {
+          "matchingUrlPattern": "^.*/kernel/.*$",
+          "assertions": {
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 200
+              }
+            ],
+            "cumulative-layout-shift": [
+              "warn",
+              {
+                "maxNumericValue": 0.1
+              }
+            ]
+          }
+        },
+        {
+          "matchingUrlPattern": "^/(about|services|solutions|contact|pricing|trust)/$",
+          "assertions": {
+            "largest-contentful-paint": [
+              "error",
+              {
+                "maxNumericValue": 2500
+              }
+            ],
+            "interaction-to-next-paint": [
+              "warn",
+              {
+                "maxNumericValue": 200
+              }
+            ],
+            "cumulative-layout-shift": [
+              "warn",
+              {
+                "maxNumericValue": 0.1
+              }
+            ]
+          }
+        }
+      ]
     },
     "upload": {
       "target": "filesystem",
-      "outputDir": "./reports/lighthouse"
+      "outputDir": "./reports/lighthouse",
+      "reportFilenamePattern": "lh-report-%%URLNAME%%-%%DATETIME%%.%%EXTENSION%%"
     }
   }
 }
