@@ -40,22 +40,37 @@ const waitCss = (tab) => tab.waitForFunction(() => {
 const hitTestTouch = (tab) => tab.evaluate(() => {
   const els = document.querySelectorAll('a, button, input, textarea, select, [role="button"], [tabindex]');
   const small = [];
+  const MIN = 44;
   els.forEach((el) => {
     const r = el.getBoundingClientRect();
     if (r.width === 0 || r.height === 0) return;
     const cs = getComputedStyle(el);
     if (cs.visibility === 'hidden' || cs.display === 'none') return;
-    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    const pts = [[cx, cy], [cx - 22, cy], [cx + 22, cy], [cx, cy - 22], [cx, cy + 22],
-      [cx - 15, cy - 15], [cx + 15, cy - 15], [cx - 15, cy + 15], [cx + 15, cy + 15]];
-    let reachable = false;
-    for (const [x, y] of pts) {
-      if (x < 0 || y < 0 || x > window.innerWidth || y > window.innerHeight) continue;
-      const hit = document.elementFromPoint(x, y);
-      if (!hit) continue;
-      if (el === hit || el.contains(hit) || (hit.parentElement && el.contains(hit.parentElement))) { reachable = true; break; }
+    // نحسب منطقة النقر الفعلية: العنصر نفسه + توسعة ::before
+    // (inset-block/-inline + min-block/inline-size) لو موجود. هذا يقيس
+    // منطقة اللمس الممدودة فعلياً بدون الاعتماد على elementFromPoint
+    // (اللي ما يرجّع pseudo-elements موثوقياً).
+    let left = r.left, top = r.top, right = r.right, bottom = r.bottom;
+    const before = getComputedStyle(el, '::before');
+    if (before.content && before.content !== 'none') {
+      const ib = parseFloat(before.insetBlockStart) || 0; // سالب = يوسّع فوق/تحت
+      const ii = parseFloat(before.insetInlineStart) || 0;
+      const mb = parseFloat(before.minBlockSize) || 0;
+      const mi = parseFloat(before.minInlineSize) || 0;
+      const expTop = top + (ib < 0 ? ib : 0);
+      const expBottom = bottom - (ib < 0 ? ib : 0);
+      const expLeft = left + (ii < 0 ? ii : 0);
+      const expRight = right - (ii < 0 ? ii : 0);
+      left = Math.min(left, expLeft); top = Math.min(top, expTop);
+      right = Math.max(right, expRight); bottom = Math.max(bottom, expBottom);
+      // نطبّق min-size لو أكبر من الممتد
+      if (mb && (bottom - top) < mb) { const half = (mb - (bottom - top)) / 2; top -= half; bottom += half; }
+      if (mi && (right - left) < mi) { const half = (mi - (right - left)) / 2; left -= half; right += half; }
     }
-    if (!reachable) small.push({ tag: el.tagName.toLowerCase(), w: Math.round(r.width), h: Math.round(r.height), text: (el.textContent || '').trim().slice(0, 30), cls: el.className?.toString?.().slice(0, 40) || '' });
+    const w = right - left, h = bottom - top;
+    if (w < MIN || h < MIN) {
+      small.push({ tag: el.tagName.toLowerCase(), w: Math.round(r.width), h: Math.round(r.height), expW: Math.round(w), expH: Math.round(h), text: (el.textContent || '').trim().slice(0, 30), cls: el.className?.toString?.().slice(0, 40) || '' });
+    }
   });
   return small;
 });
