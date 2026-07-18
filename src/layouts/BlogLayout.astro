@@ -238,7 +238,7 @@ const authorInitials = post.author.name
       const onScroll = () => { if (raf) return; raf = window.requestAnimationFrame(update); };
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll, { passive: true });
-      if (reduceMotion) bar.style.transition = 'none';
+      if (reduceMotion) (bar as HTMLElement).style.transition = 'none';
       update();
     }
     document.addEventListener('astro:page-load', initReadingProgress);

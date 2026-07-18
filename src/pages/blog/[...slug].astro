@@ -41,6 +41,11 @@ const slug = Astro.params.slug as string;
 const post = (await getPostBySlug(slug))!;
 const { Content, headings } = await render(entry);
 
+// Map MarkdownHeading[] (depth: number) → TocHeading[] (depth: 2 | 3)
+const tocHeadings = headings
+  .filter((h) => h.depth === 2 || h.depth === 3)
+  .map((h) => ({ depth: h.depth as 2 | 3, slug: h.slug, text: h.text }));
+
 const INTERNAL_LINKS_BY_CATEGORY: Record<string, Array<{ href: string; label: string }>> = {
   'ذكاء-اصطناعي': [
     { href: '/solutions/ai-governance-platform/', label: 'حل حوكمة AI' },
@@ -564,7 +569,7 @@ const p0Snippet = getP0Snippet(`/blog/${post.slug}/`);
   internalLinks={internalLinks}
   breadcrumbLd={breadcrumbLd}
   extraSchemaNodes={extraSchemaNodes}
-  headings={headings}
+  headings={tocHeadings}
 >
   <Fragment slot="header">
     <Breadcrumbs crumbs={[
