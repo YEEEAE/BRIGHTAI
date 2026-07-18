@@ -1,248 +1,49 @@
 # Scripts Documentation
 
+> **⚠️ الـ source of truth الجديد للـ scripts هو `scripts/INVENTORY.md`** (generated 2026-07-18).
+> هذا الـ README يحتوي على الـ categories العامة + أهم الـ workflows.
+> للـ exhaustive list (كل script بـ owner + purpose + entrypoint)، اقرأ `INVENTORY.md`.
+
 هذا المجلد يحتوي على السكريبتات الأساسية لبناء وفحص وصيانة مشروع BrightAI.
 
-## 📋 فهرس السكريبتات
+---
 
-### 🏗️ البناء والتجميع (Build & Compilation)
+## 📂 بنية المجلد (Scripts Directory Structure)
 
-#### `build-tailwind-purged.mjs`
-**الوصف:** بناء وتصفية وتصغير ملفات Tailwind CSS
-**الاستخدام:**
-```bash
-npm run tailwind:build
-```
-**الوظائف:**
-- تجميع Tailwind CSS من الملف المصدر
-- تصفية الأنماط غير المستخدمة باستخدام PurgeCSS
-- تصغير الملف النهائي باستخدام esbuild
-- إنتاج ملف CSS محسّن للإنتاج
+| المجلد | الغرض | العدد | المرجع في `package.json` |
+| --- | --- | --- | --- |
+| `scripts/` (root) | Production + Library — على المسار الحرج | 51 | ✅ كلهم مربوطين |
+| `scripts/qa/` | One-off QA/visual/audit (لا يُستورد، يُشغّل يدويًا) | 54 | ❌ لا |
+| `scripts/qa/playwright/` | One-off Playwright debug/probe (لا يُستورد) | 50 | ❌ لا |
+| `scripts/migration/` | HTML→Astro migration (replay-only، فُرغ 2026-07) | 15 | ❌ لا |
+| `scripts/playwright/` | Playwright verification scripts (مرجعية في brain) | 25 | ❌ لا |
+| `scripts/archived/` | Dead/duplicate (renamed من `* 2.mjs` بسبب spaces) | 2 | ❌ لا |
+| `scripts/seo/` | SEO sub-categorization | 2 | ❌ لا |
+| `scripts/migration-audit/` | تقرير static للتاريخ (paired with `migration/audit-html-vs-astro.mjs`) | 1 | ❌ لا |
+| `scripts/postgres-init/` | Postgres init SQL (one-time، في Docker entrypoint) | 1 | ❌ لا |
+| `scripts/__fixtures__/` | Test fixtures لـ `verify:all` | 1 dir | ❌ لا |
 
-#### `minify-seo-assets.mjs`
-**الوصف:** تصغير ملفات CSS و JavaScript
-**الاستخدام:**
-```bash
-npm run assets:minify
-```
-**الوظائف:**
-- تصغير جميع ملفات CSS و JS في المشروع
-- تحسين الأداء وتقليل حجم الملفات
-- الحفاظ على نسخ مصغرة بامتداد `.min.css` و `.min.js`
-
-#### `replace-unminified-refs.mjs`
-**الوصف:** استبدال المراجع إلى الملفات غير المصغرة بالمصغرة
-**الاستخدام:**
-```bash
-npm run assets:replace-refs
-```
-**الوظائف:**
-- البحث في ملفات HTML عن مراجع الملفات غير المصغرة
-- استبدالها بالمراجع المصغرة (`.min.css`, `.min.js`)
-- تحسين أداء التحميل في الإنتاج
-
-#### `apply-production-audit-fixes.mjs`
-**الوصف:** تطبيق إصلاحات التدقيق للإنتاج
-**الاستخدام:**
-```bash
-npm run production:fixes
-```
-**الوظائف:**
-- تطبيق التحسينات والإصلاحات النهائية قبل النشر
-- التأكد من جاهزية الملفات للإنتاج
+**Total**: 199 scripts (.mjs/.js/.py/.sh) + 1 .sql + 1 report
 
 ---
 
-### 🔍 الفحص والتحقق (Verification & Testing)
+## 🚀 أهم الـ scripts (Production Quick Reference)
 
-#### `verify-all.mjs`
-**الوصف:** فحص شامل لجودة المشروع
-**الاستخدام:**
-```bash
-npm run verify:all
-```
-**الفحوصات:**
-1. **الروابط الداخلية:** التحقق من عدم وجود روابط مكسورة أو قديمة
-2. **Canonical Tags:** التحقق من صحة canonical tags في جميع الصفحات
-3. **Sitemap:** التحقق من صحة sitemap.xml وقواعد trailing slash
-4. **Noindex:** التحقق من وجود noindex في الصفحات المنقولة
-5. **البنية الأساسية:** التحقق من وجود title, description, H1 في كل صفحة
+> **للـ list الكاملة، اقرأ `scripts/INVENTORY.md` Section 1 (Production).**
 
-**المخرجات:**
-- تقرير في الكونسول
-- ملف JSON في `reports/verify-report.json` (في حالة وجود أخطاء)
+### Build pipeline
+- `npm run build` → `astro build` + AVIF + sitemap + schema sync + CSS purge
+- `npm run prebuild` → `fonts:subset` + `generate-all-redirects`
+- `npm run dev` → `astro dev`
 
-#### `check-render-readiness.mjs`
-**الوصف:** التحقق من جاهزية المشروع للنشر على Render
-**الاستخدام:**
-```bash
-node scripts/check-render-readiness.mjs
-```
-**الفحوصات:**
-- وجود ملف `render.yaml`
-- وجود ملفات `package.json` و `package-lock.json` في frontend
-- صحة تكوين `DATABASE_URL`
-- توافق إصدار Node.js
+### Verification gates (CI: `pnpm run verify:all`)
+- `npm run verify:all` → internal links + sitemap + SEO schema + SEO gate + chat-session + CSRF
+- `npm run performance:budget` → raw file size check (HTML/CSS/JS)
+- `npm run seo:all` → `seo:check` + `seo:schema` + `seo:gate`
+- `npm run a11y:scan` → axe-core scan (في CI عبر `.github/workflows/a11y.yml`)
 
-#### `check-performance-budget.js`
-**الوصف:** فحص ميزانية الأداء للمشروع
-**الاستخدام:**
-```bash
-npm run performance:budget
-```
-**الوظائف:**
-- قياس أحجام الملفات
-- التحقق من عدم تجاوز حدود الأداء المحددة
-- تقرير بالملفات التي تتجاوز الحدود
-
----
-
-### 🔗 SEO والروابط (SEO & Links)
-
-#### `seo-health-check.mjs`
-**الوصف:** فحص صحة SEO الشامل للموقع
-**الاستخدام:**
-```bash
-npm run seo:check
-```
-**الفحوصات:**
-1. **robots.txt:** التحقق من عدم وجود قواعد Disallow ضارة
-2. **sitemap.xml:** التحقق من صحة البنية والروابط
-3. **HTML Files:** فحص canonical, title, description, H1
-4. **Hreflang:** التحقق من صحة روابط اللغات البديلة
-5. **Internal Links:** فحص الروابط الداخلية المكسورة
-
-**المخرجات:**
-- تقرير مفصل في الكونسول
-- Exit code 0 (نجاح) أو 1 (فشل)
-
-#### `seo-ci-check.mjs`
-**الوصف:** فحص SEO للتكامل المستمر (CI)
-**الاستخدام:**
-```bash
-npm run seo:gate
-```
-**الوظائف:**
-- فحص سريع لأهم معايير SEO
-- مناسب للاستخدام في CI/CD pipelines
-- يمنع النشر في حالة وجود مشاكل حرجة
-
-#### `generate-sitemap-all-pages.mjs`
-**الوصف:** توليد sitemap.xml شامل لجميع صفحات الموقع
-**الاستخدام:**
-```bash
-npm run sitemap:generate
-```
-**الوظائف:**
-- مسح جميع ملفات HTML في المشروع
-- تصنيف الصفحات (pages, kernel, demo, legal)
-- توليد `sitemap.xml` واحد شامل لكل الصفحات العامة القابلة للفهرسة
-- منع الخرائط المقسمة القديمة لتفادي أي مراجع stale في `robots.txt`
-- إضافة hreflang tags للصفحات متعددة اللغات
-
-**المخرجات:**
-- `sitemap.xml`
-- `reports/sitemap-quality-report.md`
-
----
-
-### 🔗 الروابط الداخلية (Internal Links)
-
-#### `internal-links-audit.mjs`
-**الوصف:** تدقيق الروابط الداخلية المكسورة
-**الاستخدام:**
-```bash
-npm run internal-links:audit
-```
-**الوظائف:**
-- فحص جميع الروابط الداخلية في ملفات HTML
-- اكتشاف الروابط المكسورة
-- تحديد الروابط القابلة للإصلاح التلقائي
-
-**المخرجات:**
-- `reports/internal-links/broken_links_before.json`
-- `reports/internal-links/broken_links_before.md`
-
-#### `internal-links-common.mjs`
-**الوصف:** وحدة مشتركة لوظائف الروابط الداخلية
-**الاستخدام:** يتم استيرادها من سكريبتات أخرى
-**الوظائف:**
-- دوال مشتركة لفحص الروابط
-- كتابة التقارير
-- معالجة المسارات
-
-#### `internal-linking-architecture.mjs`
-**الوصف:** تحليل وإصلاح بنية الروابط الداخلية
-**الاستخدام:**
-```bash
-npm run internal-links:inventory
-npm run internal-links:architecture:fix
-```
-**الوظائف:**
-- تحليل بنية الروابط الداخلية
-- اقتراح تحسينات
-- إصلاح تلقائي للروابط (مع --fix)
-
-#### `fix-internal-links.mjs`
-**الوصف:** إصلاح الروابط الداخلية المكسورة تلقائياً
-**الاستخدام:**
-```bash
-npm run internal-links:fix
-```
-**الوظائف:**
-- إصلاح الروابط المكسورة القابلة للإصلاح
-- تحديث المراجع في ملفات HTML
-- إنشاء تقرير بالإصلاحات
-
----
-
-### 📁 المسارات والموارد (Paths & Resources)
-
-#### `resource-paths-audit.mjs`
-**الوصف:** تدقيق مسارات الموارد (CSS, JS, Images)
-**الاستخدام:**
-```bash
-npm run resource:audit:before
-npm run resource:audit:after
-```
-**الوظائف:**
-- فحص صحة مسارات الموارد
-- اكتشاف المسارات المكسورة
-- مقارنة قبل وبعد الإصلاح
-
-#### `resource-paths-common.mjs`
-**الوصف:** وحدة مشتركة لوظائف مسارات الموارد
-**الاستخدام:** يتم استيرادها من سكريبتات أخرى
-
-#### `fix-resource-paths.mjs`
-**الوصف:** إصلاح مسارات الموارد المكسورة
-**الاستخدام:**
-```bash
-npm run resource:fix
-```
-**الوظائف:**
-- إصلاح مسارات CSS, JS, Images المكسورة
-- تحديث المراجع في ملفات HTML
-
----
-
-### 🛠️ الوحدات المساعدة (Utility Modules)
-
-#### `sitemap-audit-utils.mjs`
-**الوصف:** وحدة مساعدة لفحص sitemap
-**الوظائف:**
-- استخراج canonical href
-- استخراج hreflang links
-- فحص noindex directives
-- فحص meta refresh
-- البحث عن مراجع onrender.com
-
-#### `seo-url-map.mjs`
-**الوصف:** وحدة لإدارة خريطة URLs للموقع
-**الوظائف:**
-- بناء سجل URLs العامة
-- تطبيع المسارات النسبية
-- تحويل المسارات إلى canonical URLs
-- إيجاد الصفحات المقابلة (عربي/إنجليزي)
+### IndexNow (post-deploy)
+- `npm run indexnow:deploy` → notify Bing/Yandex (مستخدم في `deploy.yml`)
 
 ---
 
@@ -251,16 +52,16 @@ npm run resource:fix
 ### قبل النشر (Pre-deployment)
 ```bash
 # 1. بناء الأصول
-npm run build:assets
+npm run build
 
-# 2. توليد sitemap
-npm run sitemap:generate
-
-# 3. فحص شامل
+# 2. فحص شامل
 npm run verify:all
 
-# 4. فحص SEO
+# 3. فحص SEO
 npm run seo:all
+
+# 4. فحص الأداء
+npm run performance:budget
 ```
 
 ### صيانة دورية (Regular Maintenance)
@@ -269,65 +70,63 @@ npm run seo:all
 npm run internal-links:audit
 npm run internal-links:fix
 
-# فحص وإصلاح مسارات الموارد
+# فحص ومسارات الموارد
 npm run resource:audit:before
 npm run resource:fix
 npm run resource:audit:after
+```
 
-# فحص الأداء
-npm run performance:budget
+### صيانة الـ migration (replay-only)
+```bash
+# فقط لو احتجت نعيد ترحيل محتوى من HTML قديم
+node scripts/migration/extract-blog-articles.mjs
+node scripts/migration/migrate-blog-html-to-md.mjs
+```
+
+### QA audits (one-off)
+```bash
+# Visual screenshots (one-off batch)
+node scripts/qa/footer-screenshots.mjs
+
+# Lighthouse batch
+node scripts/qa/lighthouse-batch.mjs
+
+# Mobile 375px check
+node scripts/qa/check-mobile-375.mjs
 ```
 
 ---
 
 ## 📊 التقارير (Reports)
 
-جميع التقارير يتم حفظها في مجلد `reports/`:
-
-- `verify-report.json` - تقرير الفحص الشامل
-- `sitemap-quality-report.md` - تقرير جودة sitemap
-- `internal-links/` - تقارير الروابط الداخلية
-- `resource-paths/` - تقارير مسارات الموارد
+التقارير تُحفظ في `reports/`:
+- `verify-report.json` — تقرير `verify:all`
+- `sitemap-quality-report.md` — تقرير جودة sitemap
+- `internal-links/` — تقارير الروابط الداخلية
+- `resource-paths/` — تقارير مسارات الموارد
+- `lighthouse-20/` — تقارير Lighthouse (one-off)
 
 ---
 
 ## 📝 ملاحظات مهمة
 
-1. **Node.js Version:** يتطلب Node.js 22 أو أحدث
-2. **ES Modules:** جميع السكريبتات تستخدم ES Modules (`.mjs`)
-3. **Encoding:** جميع الملفات بترميز UTF-8
-4. **Exit Codes:** السكريبتات تستخدم exit code 0 للنجاح و 1 للفشل
+1. **Node.js Version:** يتطلب Node.js 22 أو أحدث (locked via `package.json#engines.node`).
+2. **ES Modules:** كل الـ scripts ES Modules (`.mjs`) — لا CommonJS.
+3. **Encoding:** كل الملفات بترميز UTF-8.
+4. **Exit Codes:** 0 للنجاح، 1 للفشل. الـ CI يفشل عند أي non-zero.
+5. **Imports:** الـ libraries في `scripts/` (root) تستخدم relative paths `./X.mjs`. أي نقل يحتاج تعديل كل الـ importers.
 
 ---
 
-## 🚀 التحديثات المستقبلية
+## 📚 مرجع الـ scripts الكامل
 
-السكريبتات المحذوفة (غير مستخدمة أو قديمة):
-- ❌ `seo-production-guard.mjs`
-- ❌ `audit-demo-ai-bindings.mjs`
-- ❌ `generate-related-articles.mjs`
-- ❌ `submit-indexnow.mjs`
-- ❌ `check-api-base-consistency.mjs`
-- ❌ `smoke-test-api.mjs`
-- ❌ `validate-production.js`
-- ❌ `create-clean-zip.mjs`
-- ❌ `html-seo-governor.mjs`
-- ❌ `content-score.cjs`
-- ❌ `seo-indexability-qa.mjs`
-- ❌ `check-kernel-pages.mjs`
-- ❌ `generate-legal-pages.mjs`
-- ❌ `run-monorepo-tests.mjs`
-- ❌ `generate-sitemap-images.mjs`
-- ❌ `test-gemini-unified-api.mjs`
-- ❌ `update-sitemap-from-current-files.mjs`
-- ❌ `seo-intent-headings-qa.mjs`
-- ❌ `analytics-qa.mjs`
-- ❌ `smoke-test.js`
-- ❌ `ui-audit.mjs`
-- ❌ `ping-search-engines.mjs`
-- ❌ `verify-clarity.mjs`
+- **`scripts/INVENTORY.md`** ← الـ source of truth لكل script (owner + purpose + entrypoint + classification)
+- **`docs/script-cleanup-plan.md`** ← خطة قديمة (2026-05-28) — superseded by INVENTORY.md
+- **`.agents/brain.md`** Section 2 ← القرارات المعمارية (protected files، forbidden deps، إلخ)
+- **`agent.md`** Section 14.5 ← Skills system reference
+- **`agent.md`** Section 0.6 ← Brain file protocol
 
 ---
 
-**آخر تحديث:** 2026-05-28
-**الإصدار:** 2.0.0
+**آخر تحديث:** 2026-07-18 (scripts/ cleanup pass — 199 scripts classified into 6 categories)
+**الإصدار:** 3.0.0 (replaces the old 2.0.0 dated 2026-05-28)
