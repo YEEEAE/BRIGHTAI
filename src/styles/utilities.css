@@ -523,3 +523,71 @@
   min-height: var(--touch-min);
   padding-inline: var(--space-3);
 }
+
+/* ========================================
+   BAI-VOC-001-C (2026-07-18): CTA microcopy
+   سطر صغير تحت زر CTA — يحدد مدة/مجانية/PDF/خصوصية/بدون التزام
+   - .cta-micro       → سطر فرعي صغير تحت زر CTA
+   - .cta-actions     → عمود flex للأزرار + microcopy تحتها
+   ======================================== */
+.cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.cta-actions--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.cta-micro {
+  display: block;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin-block-start: var(--space-1);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.cta-micro--inverse {
+  color: rgba(255, 255, 255, 0.65);
+}
+a:hover + .cta-micro,
+.btn:hover + .cta-micro,
+.glow-btn:hover + .cta-micro,
+.wa-btn:hover + .cta-micro,
+.btn--glow:hover + .cta-micro,
+.btn--outline:hover + .cta-micro,
+.btn--whatsapp:hover + .cta-micro {
+  color: var(--text-primary);
+}
+.cta-micro--accent {
+  color: var(--brand-300);
+}
+
+/* Service / inner-card CTAs (BAI-VOC-001-C) */
+.inner-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--brand-300);
+  margin-block-start: var(--space-3);
+}
+.inner-card__cta::after {
+  content: "←";
+  font-size: 0.9em;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.inner-card:hover .inner-card__cta::after {
+  transform: translateX(-3px);
+}
+.inner-card__cta-micro {
+  display: block;
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  margin-block-start: var(--space-1);
+  font-weight: 400;
+  letter-spacing: 0;
+}

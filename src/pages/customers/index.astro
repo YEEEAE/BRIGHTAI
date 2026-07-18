@@ -1,3 +1,4 @@
+<!-- BAI-VOC-001-C (2026-07-18): final CTA "احجز عرضاً" → "اطلب عرضاً مفصّلاً لقطاعك" + microcopy. href لم يتغير. -->
 ---
 /**
  * Customers Hub — /customers/
@@ -108,8 +109,14 @@ const jsonLd = {
       <h2 id="cs-cta" class="inner-section__title">تبي قصة نجاح بنفس حجم مؤسستك؟</h2>
       <p class="inner-section__lead">احجز عرضاً مخصصاً ونتحدث عن كيف تبني BrightAI حوكمة قابلة للتدقيق تناسب قطاعك.</p>
       <div class="about-hero__actions about-hero__actions--centered">
-        <a href="/contact/" class="btn btn--glow">احجز عرضاً</a>
-        <a href="/assessment/ai-governance-readiness/" class="btn btn--whatsapp">اطلب تقييم جاهزية</a>
+        <div class="cta-actions">
+          <a href="/contact/" class="btn btn--glow">اطلب عرضاً مفصّلاً لقطاعك</a>
+          <small class="cta-micro" aria-hidden="true">نطاق + SLA + milestones خلال 24 ساعة</small>
+        </div>
+        <div class="cta-actions">
+          <a href="/assessment/ai-governance-readiness/" class="btn btn--whatsapp">ابدأ تقييم جاهزية AI</a>
+          <small class="cta-micro" aria-hidden="true">20 دقيقة • تقرير فجوات PDF مجاني</small>
+        </div>
       </div>
     </div>
   </section>

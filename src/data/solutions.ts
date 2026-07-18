@@ -90,6 +90,12 @@ export interface LocalData {
    *  FAQPage. Mirrors `SolutionData.faqs` shape. Optional — if absent,
    *  the city page omits both the visible section and the JSON-LD node. */
   faqs?: { question: string; answer: string }[];
+  /** BAI-VOC-001-D (2026-07-18): unique localized context paragraph
+   *  (120–180 Saudi-dialect words) for the "local-context" section in
+   *  solutions/[sector]/[city].astro. Must name the city + sector +
+   *  appropriate regulator, and describe a persona, pain, and local use
+   *  case. Replaces the previously generic repeated paragraph. */
+  localContext?: string;
 }
 
 const S = 'https://brightai.site';
@@ -315,6 +321,8 @@ export const sectors: SectorData[] = [
         canonical:`${S}/solutions/banking-ai-governance/riyadh/`,
         cityAr:'الرياض', cityEn:'Riyadh', areaServed:'Riyadh', geoLat:24.7136, geoLng:46.6753,
         parentSlug:'banking-ai-governance', parentHref:'/solutions/banking-ai-governance/',
+        // BAI-VOC-001-D (2026-07-18): localized context — Riyadh banking.
+        localContext:'في الرياض، مقر كبرى البنوك ومقر مؤسسة النقد (ساما)، يواجه مسؤول الحوكمة تحدياً يومياً: لا يقدر يدافع عن قرار ذكاء اصطناعي أمام المدقق لأن الاستخدام موزع بين فرق الائتمان والاحتيال وخدمة العملاء بدون مالك موحد أو سجل مخاطر. الألم الحقيقي هو غياب الإثبات التشغيلي عند تدقيق ساما ونظام مكافحة غسل الأموال. حلنا يحوكم نماذج الائتمان والتقييم الآلي عبر طبقة وسطية تفرض موافقة بشرية على القرارات عالية المخاطر، وتصنّف كل طلب، وتربط الضابط بـ NCA ECC بدليل جاهز للجنة المخاطر خلال 24 ساعة.',
       },
       {
         slug:'khobar', href:'/solutions/banking-ai-governance/khobar/',
@@ -324,6 +332,8 @@ export const sectors: SectorData[] = [
         canonical:`${S}/solutions/banking-ai-governance/khobar/`,
         cityAr:'الخبر', cityEn:'Khobar', areaServed:'Khobar', geoLat:26.2172, geoLng:50.1971,
         parentSlug:'banking-ai-governance', parentHref:'/solutions/banking-ai-governance/',
+        // BAI-VOC-001-D (2026-07-18): localized context — Khobar banking (Eastern Province).
+        localContext:'الخبر بقلب المنطقة الشرقية حيث تتركز البنوك والشركات النفطية، يقلق مدير المخاطر من أن نماذج التسعير والائتمان تعمل بدون تفسير يقدر يراجعه مدقق ساما. الألم هنا هو تشتت الأدلة بين فروع الخبر والدمام وغياب مالك واحد مسؤول عن كل نظام. حلنا يحوكم كل استخدام AI مصرفي عبر طبقة موحّدة ترصد الظل وتطبّق ضوابط NCA ECC آلياً، وتنتج ملف أدلة موقّع رقمياً يجمع كل الفروع في مكان واحد. هكذا يمر أي قرار عالي الأثر بموافقة بشرية موثّقة ويصير جاهز للتدقيق دون تجميع يدوي يأخذ أيام.',
         // BAI-VOC-001-B (2026-07-18): 5 city-level FAQs powering both
         // the visible <details> section and the JSON-LD FAQPage node.
         faqs: [
@@ -374,6 +384,8 @@ export const sectors: SectorData[] = [
         canonical:`${S}/solutions/government-ai-governance/dammam/`,
         cityAr:'الدمام', cityEn:'Dammam', areaServed:'Dammam', geoLat:26.4207, geoLng:50.0888,
         parentSlug:'government-ai-governance', parentHref:'/solutions/government-ai-governance/',
+        // BAI-VOC-001-D (2026-07-18): localized context — Dammam government.
+        localContext:'في الدمام، حيث تتمركز إمارة المنطقة الشرقية وعدد من الجهات الحكومية الكبرى، يخشى ضابط الأمن السيبراني تسريب مستند مصنّف عبر أدوات الذكاء العامة لأن الموظفين يلصقون البيانات خارج القنوات المعتمدة. الألم هو غياب الجرد الموحّد لأدوات AI وعدم القدرة على إثبات الجاهزية أمام دايجا وسدايا ونظام الأمن السيبراني. حلنا يحوكم مساعدات خدمة المستفيدين عبر فحص كل طلب قبل النموذج، إخفاء المعرّفات الشخصية، وتسجيل سجل تدقيق غير قابل للتعديل. ينتج ملف أدلة واحد يثبت امتثال الجهة للضوابط الوطنية ويقلّل أيام الجمع اليدوي قبل التدقيق.',
       },
       {
         slug:'madinah', href:'/solutions/government-ai-governance/madinah/',
@@ -383,6 +395,8 @@ export const sectors: SectorData[] = [
         canonical:`${S}/solutions/government-ai-governance/madinah/`,
         cityAr:'المدينة المنورة', cityEn:'Madinah', areaServed:'Madinah', geoLat:24.5247, geoLng:39.5692,
         parentSlug:'government-ai-governance', parentHref:'/solutions/government-ai-governance/',
+        // BAI-VOC-001-D (2026-07-18): localized context — Madinah government.
+        localContext:'الجهات الحكومية في المدينة المنورة تخدم زواراً ومعتمرين على مدار العام، ما يضاعف حجم البيانات الشخصية ويهدد بخرق ضوابط حماية البيانات إن لم يوثّق كل استخدام للذكاء. الألم عند مسؤول البيانات هو غياب الخريطة الواضحة لتدفق معلومات المستفيد بين المساعد والنموذج والجهة الرقابية. حلنا يحوكم مساعد خدمة المستفيدين والمساعد الداخلي عبر طبقة تحجب المعرّفات الشخصية وتسجّل كل قرار بصورة قابلة لإعادة البناء. ينتج أدلة جاهزة للعرض على دايجا وسدايا تثبت حماية بيانات الزائر وتسرّع أي تقييم رسمي بدون استبداله.',
         // BAI-VOC-001-B (2026-07-18): 5 city-level FAQs for Madinah —
         // government sector. Drives visible <details> + JSON-LD FAQPage.
         faqs: [
@@ -433,6 +447,8 @@ export const sectors: SectorData[] = [
         canonical:`${S}/solutions/healthcare-ai-governance/jeddah/`,
         cityAr:'جدة', cityEn:'Jeddah', areaServed:'Jeddah', geoLat:21.4858, geoLng:39.1925,
         parentSlug:'healthcare-ai-governance', parentHref:'/solutions/healthcare-ai-governance/',
+        // BAI-VOC-001-D (2026-07-18): localized context — Jeddah healthcare.
+        localContext:'مستشفيات جدة الكبرى تشهد ضغطاً على البيانات الصحية الحساسة إذ تنتقل بين نظام المعلومات الصحية والنماذج والمورد الخارجي بدون خريطة واضحة. الألم عند ضابط البيانات الصحية هو عدم القدرة على إثبات مسار بيانات المريض أمام مدقق الهيئة والاعتماد. حلنا يحوكم كل استخدام للذكاء في التشخيص أو الجدولة عبر فحص يمنع خروج بيانات المرضى خارج المؤسسة، ويطبّق إشرافاً بشرياً من مختص على التوصيات عالية الأثر. ينتج سجلاً موثّقاً يدعم امتثال الهيئة العامة للغذاء والدواء واعتماد البورد الصحي وايزو 13485 وقت التدقيق.',
       },
       {
         slug:'mecca', href:'/solutions/healthcare-ai-governance/mecca/',
@@ -442,6 +458,8 @@ export const sectors: SectorData[] = [
         canonical:`${S}/solutions/healthcare-ai-governance/mecca/`,
         cityAr:'مكة المكرمة', cityEn:'Mecca', areaServed:'Mecca', geoLat:21.3891, geoLng:39.8579,
         parentSlug:'healthcare-ai-governance', parentHref:'/solutions/healthcare-ai-governance/',
+        // BAI-VOC-001-D (2026-07-18): localized context — Mecca healthcare (seasonal load).
+        localContext:'مستشفيات مكة تستقبل ملايين الحجاج والمعتمرين سنوياً، ما يضاعف الضغط الموسمي على البيانات الصحية ويرفع خطر خرق خصوصية المرضى إن لم يُحكَم الذكاء بشكل صارم. الألم عند رئيس الجودة هو غياب الإشراف البشري الموثّق على التوصيات السريرية وصعوبة إثبات الجاهزية أمام الهيئة العامة للغذاء والدواء. حلنا يحوكم المساعد الطبي الداخلي عبر طبقة تفرض موافقة مختص مؤهل قبل أي توصية عالية الأثر وتُخفي بيانات المريض. ينتج أدلة جودة جاهزة لاعتماد البورد الصحي تثبت سلامة المريض حتى في مواسم الذروة.',
         // BAI-VOC-001-B (2026-07-18): 5 city-level FAQs for Mecca —
         // healthcare sector. Drives visible <details> + JSON-LD FAQPage.
         faqs: [

@@ -1,4 +1,5 @@
 <!-- BAI-VOC-001-A (2026-07-18): VOC injection في H1 + lead — 5 ركائز (جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري). H1 suffix بـ inline style (display:block, font-size:0.5em) يحافظ على SEO anchor "Saudi AI Safety OS" ويضيف VOC تحت. tone = "يدعم الجاهزية" لا "مضمون". -->
+<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — service cards: 14 بطاقة vague → action-oriented + microcopy ≤12 كلمة. Final CTA: "واتساب" → "احصل على رد عبر واتساب" + microcopy. href/action لم يتغير. -->
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
@@ -11,21 +12,22 @@ import {
   getFaqLd,
 } from '../../data/schema-helpers';
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الخدمات' }];
+// BAI-VOC-001-C (2026-07-18): CTAs موحدة حسب intent — كل بطاقة عندها CTA action-oriented + microcopy ≤12 كلمة. 0 href متغير.
 const servicePaths = [
-  { icon: 'mdi:scale-balance', title: 'AI Governance Platform', desc: 'منصة تنظّم سياسات استخدام الذكاء الاصطناعي، الصلاحيات، المخاطر، وسجلات المراجعة داخل المؤسسة.', href: '/solutions/ai-governance-platform/', cta: 'اعرف أكثر' },
-  { icon: 'mdi:shield-half-full', title: 'AI Firewall & Data Protection', desc: 'طبقة تفحص الطلبات قبل وصولها للنماذج وتساعد في تقليل تسرب البيانات الحساسة أو غير المصرح بها.', href: '/solutions/ai-firewall/', cta: 'استكشف الحماية' },
-  { icon: 'mdi:file-sign', title: 'AI Audit Trail', desc: 'توثيق من استخدم AI، ماذا أرسل، ما الرد، وما الإجراء المتخذ، بطريقة تسهّل المراجعة الداخلية.', href: '/solutions/ai-audit-trail/', cta: 'راجع السجل' },
-  { icon: 'mdi:account-check', title: 'Human Approval Workflow', desc: 'مسارات موافقة بشرية للقرارات العالية المخاطر قبل التنفيذ أو إرسال مخرجات حساسة للعميل النهائي.', href: '/solutions/human-approval-layer/', cta: 'شاهد المسار' },
-  { icon: 'mdi:folder-open', title: 'AI Evidence File', desc: 'ملف أدلة يجمع المدخلات، السياسة المطبقة، نتيجة الفحص، الاعتمادات، والتوصيات للمراجعة والامتثال.', href: '/solutions/ai-evidence-file/', cta: 'افتح الملف' },
-  { icon: 'mdi:account-cog', title: 'Enterprise AI Assistants', desc: 'مساعدون داخليون للموارد البشرية، المبيعات، المشتريات، الجودة، والدعم، مبنيون على بيانات وسياسات الشركة.', href: '/demo/', cta: 'جرّب ديمو' },
-  { icon: 'mdi:robot-industrial', title: 'AI Automation for Operations', desc: 'أتمتة مهام تشغيلية مثل الفرز، التلخيص، التصنيف، متابعة الطلبات، وإعداد التقارير اليومية.', href: '/contact/', cta: 'ابدأ التقييم' },
-  { icon: 'mdi:certificate', title: 'Compliance Packs for Saudi Market', desc: 'حزم تساعد فرقك على رفع جاهزية الخصوصية والأمن والامتثال، دون ادعاء استبدال المستشار القانوني.', href: '/contact/', cta: 'ناقش الحزمة' },
-  { icon: 'mdi:connection', title: 'ERP / CRM / HIS Integrations', desc: 'ربط آمن مع أنظمة المؤسسة وواجهات APIs وقواعد المعرفة الداخلية حسب بيئة العميل ونطاق المشروع.', href: '/contact/', cta: 'خطط التكامل' },
-  { icon: 'mdi:workflow', title: 'Controlled AI Workflows', desc: 'تصميم مسارات AI خاصة بالقطاع لكن داخل نفس طبقة الأمان والحوكمة والتدقيق، بدل بناء حلول منفصلة عن Saudi AI Safety OS.', href: '/contact/', cta: 'صمّم المسار' },
-  { icon: 'mdi:alert-decagram', title: 'تصنيف مخاطر الذكاء الاصطناعي', desc: 'تصنيف تلقائي لمخاطر استخدامات AI حسب نوع البيانات، القرار، والتأثير المحتمل على المؤسسة.', href: '/solutions/ai-risk-classification/', cta: 'استكشف التصنيف' },
-  { icon: 'mdi:lightbulb-search', title: 'اكتشاف حالات استخدام AI', desc: 'تحديد الفرص الحقيقية لتطبيق الذكاء الاصطناعي داخل عمليات المؤسسة بطريقة آمنة وقابلة للقياس.', href: '/solutions/ai-use-case-discovery/', cta: 'اكتشف الفرص' },
-  { icon: 'mdi:sync', title: 'حوكمة مستمرة للذكاء الاصطناعي', desc: 'مراقبة وتحديث مستمر لسياسات وضوابط الذكاء الاصطناعي بناءً على التغيرات التنظيمية والتشغيلية.', href: '/solutions/continuous-ai-governance/', cta: 'تعرف على الحوكمة المستمرة' },
-  { icon: 'mdi:link-variant', title: 'ربط السياسات بالضوابط', desc: 'تحويل سياسات الذكاء الاصطناعي المكتوبة إلى ضوابط تقنية وإجرائية قابلة للتنفيذ والمراجعة.', href: '/solutions/policy-to-control-mapping/', cta: 'شاهد الربط' },
+  { icon: 'mdi:scale-balance', title: 'AI Governance Platform', desc: 'منصة تنظّم سياسات استخدام الذكاء الاصطناعي، الصلاحيات، المخاطر، وسجلات المراجعة داخل المؤسسة.', href: '/solutions/ai-governance-platform/', cta: 'استكشف منصة الحوكمة', ctaMicro: '8 دقائق • عرض منتج حي' },
+  { icon: 'mdi:shield-half-full', title: 'AI Firewall & Data Protection', desc: 'طبقة تفحص الطلبات قبل وصولها للنماذج وتساعد في تقليل تسرب البيانات الحساسة أو غير المصرح بها.', href: '/solutions/ai-firewall/', cta: 'اختبر منع تسرب PII', ctaMicro: 'ببيانات وهمية • دون رفع أسرار' },
+  { icon: 'mdi:file-sign', title: 'AI Audit Trail', desc: 'توثيق من استخدم AI، ماذا أرسل، ما الرد، وما الإجراء المتخذ، بطريقة تسهّل المراجعة الداخلية.', href: '/solutions/ai-audit-trail/', cta: 'افهم سجل التدقيق', ctaMicro: 'append-only • Hash مقاوم' },
+  { icon: 'mdi:account-check', title: 'Human Approval Workflow', desc: 'مسارات موافقة بشرية للقرارات العالية المخاطر قبل التنفيذ أو إرسال مخرجات حساسة للعميل النهائي.', href: '/solutions/human-approval-layer/', cta: 'شاهد مسار الموافقة', ctaMicro: 'risk-based • قرارات عالية الأثر' },
+  { icon: 'mdi:folder-open', title: 'AI Evidence File', desc: 'ملف أدلة يجمع المدخلات، السياسة المطبقة، نتيجة الفحص، الاعتمادات، والتوصيات للمراجعة والامتثال.', href: '/solutions/ai-evidence-file/', cta: 'افتح ملف الأدلة', ctaMicro: 'PDF موقّع رقمياً' },
+  { icon: 'mdi:account-cog', title: 'Enterprise AI Assistants', desc: 'مساعدون داخليون للموارد البشرية، المبيعات، المشتريات، الجودة، والدعم، مبنيون على بيانات وسياسات الشركة.', href: '/demo/', cta: 'افتح ديمو تفاعلي', ctaMicro: 'مجاناً • بدون تسجيل' },
+  { icon: 'mdi:robot-industrial', title: 'AI Automation for Operations', desc: 'أتمتة مهام تشغيلية مثل الفرز، التلخيص، التصنيف، متابعة الطلبات، وإعداد التقارير اليومية.', href: '/contact/', cta: 'ابدأ تقييم جاهزية', ctaMicro: '20 دقيقة • تقرير فجوات' },
+  { icon: 'mdi:certificate', title: 'Compliance Packs for Saudi Market', desc: 'حزم تساعد فرقك على رفع جاهزية الخصوصية والأمن والامتثال، دون ادعاء استبدال المستشار القانوني.', href: '/contact/', cta: 'ناقش حزمة امتثال', ctaMicro: 'PDPL/NCA/SFDA • خارطة ضوابط' },
+  { icon: 'mdi:connection', title: 'ERP / CRM / HIS Integrations', desc: 'ربط آمن مع أنظمة المؤسسة وواجهات APIs وقواعد المعرفة الداخلية حسب بيئة العميل ونطاق المشروع.', href: '/contact/', cta: 'خطط تكامل ERP/HIS/SIEM', ctaMicro: 'بدون إعادة بناء أنظمتك' },
+  { icon: 'mdi:workflow', title: 'Controlled AI Workflows', desc: 'تصميم مسارات AI خاصة بالقطاع لكن داخل نفس طبقة الأمان والحوكمة والتدقيق، بدل بناء حلول منفصلة عن Saudi AI Safety OS.', href: '/contact/', cta: 'صمّم مسار AI محكوم', ctaMicro: 'KPI واضح + قسم واحد' },
+  { icon: 'mdi:alert-decagram', title: 'تصنيف مخاطر الذكاء الاصطناعي', desc: 'تصنيف تلقائي لمخاطر استخدامات AI حسب نوع البيانات، القرار، والتأثير المحتمل على المؤسسة.', href: '/solutions/ai-risk-classification/', cta: 'استكشف تصنيف المخاطر', ctaMicro: 'بيانات • قرار • أثر' },
+  { icon: 'mdi:lightbulb-search', title: 'اكتشاف حالات استخدام AI', desc: 'تحديد الفرص الحقيقية لتطبيق الذكاء الاصطناعي داخل عمليات المؤسسة بطريقة آمنة وقابلة للقياس.', href: '/solutions/ai-use-case-discovery/', cta: 'اكتشف حالات استخدام AI', ctaMicro: 'قابلة للقياس وآمنة' },
+  { icon: 'mdi:sync', title: 'حوكمة مستمرة للذكاء الاصطناعي', desc: 'مراقبة وتحديث مستمر لسياسات وضوابط الذكاء الاصطناعي بناءً على التغيرات التنظيمية والتشغيلية.', href: '/solutions/continuous-ai-governance/', cta: 'اعرف الحوكمة المستمرة', ctaMicro: 'تحديث ربع سنوي • مربوط بالأنظمة' },
+  { icon: 'mdi:link-variant', title: 'ربط السياسات بالضوابط', desc: 'تحويل سياسات الذكاء الاصطناعي المكتوبة إلى ضوابط تقنية وإجرائية قابلة للتنفيذ والمراجعة.', href: '/solutions/policy-to-control-mapping/', cta: 'شاهد ربط السياسات بالضوابط', ctaMicro: 'PDF/تنفيذ/تدقيق' },
 ];
 const faqItems = [
   { q: 'ما هي Saudi AI Safety OS؟', a: 'Saudi AI Safety OS تشمل حوكمة الذكاء الاصطناعي، AI Firewall، سجلات التدقيق، الموافقات البشرية، ملفات الأدلة، الأتمتة، التكاملات، وبناء مساعدين AI داخليين للشركات.' },
@@ -85,7 +87,8 @@ const servicesJsonLd = {
           <div class="inner-card__icon"><Icon name={s.icon} class="" /></div>
           <h3 class="inner-card__title">{s.title}</h3>
           <p class="inner-card__text">{s.desc}</p>
-          <span>{s.cta}</span>
+          <span class="inner-card__cta">{s.cta}</span>
+          <small class="inner-card__cta-micro" aria-hidden="true">{s.ctaMicro}</small>
         </a>
       ))}
     </div>
@@ -177,9 +180,18 @@ const servicesJsonLd = {
       <h2 class="inner-cta-final__title">ابدأ تقييم جاهزية الذكاء الاصطناعي في شركتك</h2>
       <p class="inner-cta-final__desc">خلنا نفهم بيئتك الحالية ونحدد أين تحتاج AI آمن، قابل للتدقيق، ومربوط بأنظمة الشركة بدل الاعتماد على استخدامات فردية غير مضبوطة.</p>
       <div class="inner-hero__actions inner-hero__actions--centered">
-        <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> احجز جلسة تقييم</a>
-        <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="wa-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> واتساب</a>
-        <a href="/solutions/ai-governance-platform/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold">استكشاف منصة الحوكمة</a>
+        <div class="cta-actions">
+          <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> احجز جلسة تقييم 30 دقيقة</a>
+          <small class="cta-micro" aria-hidden="true">بدون التزام • سرية بياناتك مضمونة</small>
+        </div>
+        <div class="cta-actions">
+          <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="wa-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> احصل على رد عبر واتساب</a>
+          <small class="cta-micro" aria-hidden="true">يردّك مهندس سعودي خلال ساعة</small>
+        </div>
+        <div class="cta-actions">
+          <a href="/solutions/ai-governance-platform/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold">استكشف منصة الحوكمة</a>
+          <small class="cta-micro" aria-hidden="true">8 دقائق • عرض منتج حي</small>
+        </div>
       </div>
     </div>
   </div>

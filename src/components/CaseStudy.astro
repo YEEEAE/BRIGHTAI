@@ -1,3 +1,4 @@
+<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — "احجز عرضاً" → "اطلب عرضاً مفصّلاً لقطاعك" + microcopy "نطاق + SLA + milestones". 0 href متغير. -->
 ---
 /**
  * CaseStudy.astro — Reusable anonymized case-study page body.
@@ -135,8 +136,14 @@ const {
       <h2 class="inner-cta-final__title">تبي نتيجة مشابهة <span class="gradient-text">لمؤسستك؟</span></h2>
       <p class="inner-cta-final__desc">احجز عرضاً مخصصاً ونتحدث عن خطة حوكمة تناسب قطاعك ومستوى مخاطرك.</p>
       <div class="inner-cta-final__actions">
-        <a href="/contact/" class="btn btn--glow">احجز عرضاً</a>
-        <a href="/assessment/ai-governance-readiness/" class="btn btn--whatsapp">اطلب تقييم جاهزية</a>
+        <div class="cta-actions">
+          <a href="/contact/" class="btn btn--glow">اطلب عرضاً مفصّلاً لقطاعك</a>
+          <small class="cta-micro" aria-hidden="true">نطاق + SLA + milestones خلال 24 ساعة</small>
+        </div>
+        <div class="cta-actions">
+          <a href="/assessment/ai-governance-readiness/" class="btn btn--whatsapp">ابدأ تقييم جاهزية AI</a>
+          <small class="cta-micro" aria-hidden="true">20 دقيقة • تقرير فجوات PDF مجاني</small>
+        </div>
       </div>
     </div>
   </div>

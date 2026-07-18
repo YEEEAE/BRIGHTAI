@@ -1,3 +1,4 @@
+<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — hero + final CTA: "احصل على تقييم فوري" → "احصل على تقييم فوري لمؤسستك" + microcopy. "طلب اجتماع فني مخصص" → "اطلب اجتماعاً فنياً مخصصاً" (article tanween). href (whatsappAssessmentHref/whatsappEngineerHref + /contact/) لم يتغير. -->
 ---
 /**
  * Assessment Page — /assessment/ai-governance-readiness/
@@ -188,14 +189,20 @@ const checklistItems = [
       <h1 class="page-hero__title"><span class="gradient-text">تقييم جاهزية حوكمة</span><br />الذكاء الاصطناعي للشركات السعودية</h1>
       <p class="page-hero__description">هل تستخدم مؤسستك أدوات ونماذج الذكاء الاصطناعي بشكل فاعل وآمن بالكامل؟ يقدم تقييم جاهزية حوكمة الذكاء الاصطناعي من BrightAI رؤية تشغيلية شاملة تتيح لك رصد المخاطر، تصنيف البيانات، وهيكلة سجلات التدقيق لدعم كفاءة أعمالك محلياً.</p>
       <div class="about-hero__actions">
-        <a href={whatsappAssessmentHref} target="_blank" rel="nofollow noopener noreferrer" class="btn btn--glow">
-          <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-play-circle"></use></svg>
-          احصل على تقييم فوري لمؤسستك
-        </a>
+        <div class="cta-actions">
+          <a href={whatsappAssessmentHref} target="_blank" rel="nofollow noopener noreferrer" class="btn btn--glow">
+            <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-play-circle"></use></svg>
+            احصل على تقييم فوري لمؤسستك
+          </a>
+          <small class="cta-micro" aria-hidden="true">20 دقيقة • تقرير فجوات PDF مجاني</small>
+        </div>
+        <div class="cta-actions">
           <a href="/contact/" class="btn btn--whatsapp">
           <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-email"></use></svg>
           تواصل مع مهندسينا
         </a>
+          <small class="cta-micro" aria-hidden="true">رد خلال ساعة • يردّك مهندس سعودي</small>
+        </div>
       </div>
     </div>
   </section>
@@ -426,14 +433,20 @@ const checklistItems = [
         <h2 class="inner-cta-final__title">احمِ أصول بياناتك وباشر<br /><span class="gradient-text">تقييم جاهزيتك اليوم</span></h2>
         <p class="inner-cta-final__desc">فريقنا الهندسي في الرياض جاهز لمساعدتك في رصد وإدارة مخاطر الذكاء الاصطناعي وتطبيق سياسات الأمان السيبراني بفعالية تشغيلية تامة.</p>
         <div class="inner-cta-final__actions">
-          <a href={whatsappEngineerHref} target="_blank" rel="nofollow noopener noreferrer" class="btn btn--whatsapp">
-            <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
-            تحدث مع مهندسينا عبر واتساب
-          </a>
-          <a href="/contact/" class="btn btn--glow">
-            <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-calendar"></use></svg>
-            طلب اجتماع فني مخصص
-          </a>
+          <div class="cta-actions">
+            <a href={whatsappEngineerHref} target="_blank" rel="nofollow noopener noreferrer" class="btn btn--whatsapp">
+              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
+              تحدث مع مهندسينا عبر واتساب
+            </a>
+            <small class="cta-micro" aria-hidden="true">رد سريع • بدون التزام</small>
+          </div>
+          <div class="cta-actions">
+            <a href="/contact/" class="btn btn--glow">
+              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-calendar"></use></svg>
+              اطلب اجتماعاً فنياً مخصصاً
+            </a>
+            <small class="cta-micro" aria-hidden="true">30 دقيقة • نطاق + SLA + milestones</small>
+          </div>
         </div>
         <div class="assessment-cta-checklist">
           {checklistItems.map(item => (

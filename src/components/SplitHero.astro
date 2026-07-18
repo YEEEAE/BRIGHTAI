@@ -1,4 +1,5 @@
 <!-- BAI-VOC-001-A (2026-07-18): VOC injection في H1 + lead — أضفنا 5 ركائز (جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري) مع الحفاظ على الـ keywords (حوكمة الذكاء الاصطناعي / الشركات السعودية). tone = "يدعم الجاهزية" بدل "متوافق/مضمون". -->
+<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs حسب intent — primary=MOFU "احجز جلسة جاهزية 30 دقيقة" → /contact/، whatsapp=BOFU "احصل على رد سريع" → wa.me، solution/kernel=TOFU "استكشف/جرّب". microcopy موحّد أسفل الأزرار: "بدون التزام • سرية بياناتك مضمونة". href/action لم يتغير. -->
 ---
 /**
  * SplitHero.astro — Premium split-layout hero.
@@ -117,21 +118,22 @@ import BrightStar from './brand/BrightStar.astro';
 
       <div class="home-hero-actions">
         <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="wa-btn">
-          <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> واتساب
+          <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> احصل على رد سريع عبر واتساب
         </a>
         <a href="/contact/" class="home-cta-primary">
           <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg>
-          <span>احجز ديمو</span>
+          <span>احجز جلسة جاهزية 30 دقيقة</span>
         </a>
         <a href="/solutions/ai-governance-platform/" class="home-cta-secondary">
           <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-scale-balance"></use></svg>
-          <span>منصة الحوكمة</span>
+          <span>استكشف منصة الحوكمة</span>
         </a>
         <a href="/kernel/" class="home-cta-secondary">
           <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-gauge"></use></svg>
-          <span>BrightAI Kernel</span>
+          <span>جرّب Kernel — 8 دقائق</span>
         </a>
       </div>
+      <small class="cta-micro cta-micro--inverse" aria-hidden="true">بدون التزام • سرية بياناتك مضمونة • يردّك فريق سعودي</small>
     </div>
 
     {/* Right Column — Kernel Showcase */}
@@ -154,13 +156,14 @@ import BrightStar from './brand/BrightStar.astro';
           <div class="home-kernel-actions">
             <a href="/kernel/" class="home-kernel-action home-kernel-action--primary">
               <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-gauge"></use></svg>
-              <span>ابدأ التجربة المجانية</span>
+              <span>ابدأ تجربة Kernel المجانية</span>
             </a>
             <a href="/kernel/chat/" class="home-kernel-action home-kernel-action--secondary">
               <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-message-text"></use></svg>
               <span>اختبر المحادثة الآمنة</span>
             </a>
           </div>
+          <small class="cta-micro cta-micro--inverse" aria-hidden="true">بدون تسجيل • 8 دقائق • Sandbox معزول</small>
         </div>
       </div>
 

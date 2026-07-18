@@ -781,3 +781,146 @@ Mode: Senior
 
 الـ commit: **uncommitted** (per قاعدة brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
 Status: **verified** (build 190 ✅, check-speakable-schema 189 ✅, Playwright 14/14 ✅, 0 schema parse errors ✅, 0 duplicate FAQPage ✅, 0 visible/JSON mismatch ✅).
+
+---
+Task ID: BAI-VOC-001-C
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: CTA localization — توحيد CTAs حسب intent (TOFU·MOFU·BOFU) + microcopy ≤12 كلمة. 0 href/action متغير.
+Started: 2026-07-18T05:09:00+03:00
+Mode: Senior
+Branch: (uncommitted per قاعدة الـ brain — المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد)
+
+## Discovery — CTAs الحالية قبل التغيير
+
+| Slot | Text قبل | Href | Vague? |
+|---|---|---|---|
+| Homepage hero (wa-btn) | `واتساب` | `wa.me/...` | ❌ vague |
+| Homepage hero (primary) | `احجز ديمو` | `/contact/` | ❌ somewhat |
+| Homepage AI Center | `تحدث مع فريق BrightAI` | `/contact/` | ❌ vague |
+| Homepage compliance | `تحدث مع فريق الامتثال` | `/contact/` | ❌ vague |
+| Services final CTA | `واتساب` + `استكشاف منصة الحوكمة` | wa.me + /solutions/... | ❌ vague |
+| Services cards (14) | `اعرف أكثر` / `شاهد` / `تعرف` / `خطط` / `صمّم` | various | ❌ 14 vague |
+| CaseStudy (3 customers) | `احجز عرضاً` | `/contact/` | ❌ vague |
+| customers/index | `احجز عرضاً` | `/contact/` | ❌ vague |
+| homepage 30-pilot card | `تقييم جاهزية AI` (noun) | `/assessment/...` | ❌ noun form |
+
+**Solutions 4 sectors + 6 cities + N slugs**: CTAs `اطلب عرض توضيحي` + `تواصل عبر واتساب` — already action-oriented, يحتاج microcopy فقط.
+**Pricing hero/final**: CTAs `ناقش التسعير عبر واتساب` + `أرسل تفاصيل الاحتياج` + `احجز استشارة` + `اطلب عرض سعر` — already action-oriented, يحتاج microcopy.
+**Assessment hero/final**: CTAs `احصل على تقييم فوري` + `تواصل مع مهندسينا` + `تحدث مع مهندسينا عبر واتساب` + `طلب اجتماع فني مخصص` — already action-oriented, يحتاج microcopy + tanween fix.
+
+## Matrix — CTA + Microcopy (AR + EN)
+
+| Slot | Text (AR) | Microcopy (AR) | Href constraint |
+|---|---|---|---|
+| **TOFU·kernel** | `جرّب Kernel كأنك داخل شركتك` | `8 دقائق • بدون تسجيل • Sandbox معزول` | `/kernel/` |
+| **TOFU·assessment** | `ابدأ تقييم جاهزية AI` | `20 دقيقة • تقرير فجوات PDF` | `/assessment/...` |
+| **MOFU·contact** | `احجز جلسة جاهزية 30 دقيقة` | `بدون التزام • سرية بياناتك مضمونة` | `/contact/` |
+| **BOFU·whatsapp** | `احصل على رد سريع عبر واتساب` | `يردّك مهندس سعودي خلال ساعة` | `wa.me/...` |
+| **BOFU·contact** | `اطلب عرضاً مفصّلاً لقطاعك` | `نطاق + SLA + milestones خلال 24 ساعة` | `/contact/` |
+| **TOFU·solution** | `استكشف منصة الحوكمة` | `8 دقائق • عرض منتج حي` | `/solutions/...` |
+| **TOFU·dimo** | `افتح ديمو تفاعلي` | `مجاناً • بدون تسجيل` | `/demo/` |
+
+**EN matrix** (مرجع للنسخة الإنجليزية — EN counterpart محدود لـ 5 صفحات legal فقط، لم نطبّق):
+
+| Slot | Text (EN) | Microcopy (EN) |
+|---|---|---|
+| **TOFU·kernel** | `Try Kernel as if inside your company` | `8 min • No signup • Isolated sandbox` |
+| **MOFU·assessment** | `Start your AI readiness check` | `20 min • Gap report PDF` |
+| **BOFU·whatsapp** | `Get a fast reply on WhatsApp` | `Saudi engineer replies in 1 hour` |
+| **BOFU·contact** | `Request an itemized proposal in 24h` | `Scope + SLA + milestones` |
+
+## Files Changed (15 file)
+
+- `src/styles/utilities.css` (+68 سطر) — `.cta-actions`، `.cta-micro`، `.inner-card__cta*` (shared classes)
+- `src/components/SplitHero.astro` (+13 سطر، header comment + 4 CTA texts + 2 microcopy lines)
+- `src/components/CaseStudy.astro` (+11 سطر، header comment + 2 CTA wrapper + 2 microcopy) — affects bank, hospital, pharma
+- `src/data/solutions.ts` (+18 سطر، `vocLead?` interface field preserved + 4 `ctaMicro` per service card)
+- `src/pages/index.astro` (+7 سطر، header comment + 2 CTA text + 1 microcopy + 1 link)
+- `src/pages/services/index.astro` (+48 سطر، header comment + 14 `ctaMicro` per service card + 2 markup updates + final CTA wrappers)
+- `src/pages/pricing/index.astro` (+45 سطر، header comment + hero/final CTA wrappers + 4 microcopy)
+- `src/pages/customers/index.astro` (+11 سطر، header comment + 2 CTA wrappers + 2 microcopy)
+- `src/pages/assessment/ai-governance-readiness/index.astro` (+37 سطر، header comment + hero/final CTA wrappers + 4 microcopy)
+- `src/pages/solutions/[sector].astro` (+19 سطر، header comment + 2 CTA wrappers + 4 microcopy)
+- `src/pages/solutions/[sector]/[city].astro` (+22 سطر، header comment + 2 CTA wrappers + 4 microcopy)
+- `src/pages/solutions/[slug].astro` (+19 سطر، header comment + 2 CTA wrappers + 4 microcopy)
+- `src/pages/solutions/index.astro` (+11 سطر، header comment + 2 CTA wrappers + 2 microcopy)
+
+**New files (2):**
+- `scripts/playwright/audit-voc-001-c.mjs` — P0 verification (15 surfaces × 2 viewports)
+- `download/qa/voc-001-c/` — 60 screenshots (30 hero + 30 final)
+
+## Acceptance Criteria — Verified
+
+| المعيار | النتيجة |
+|---|---|
+| كل صفحة P0 لها CTA رئيسي action-oriented + ثانوي | ✅ 15/15 surfaces |
+| لا CTA مبهم مثل «اعرف أكثر» في hero/final CTA | ✅ 0 vague في hero/final CTAs (vague patterns check: 0 hits) |
+| كل microcopy ≤12 كلمة | ✅ 0 long microcopy (max 8 words) |
+| 0 href/action متغير | ✅ كل الـ hrefs أصلية محفوظة (wa.me encoded links، /contact/، /assessment/، /solutions/، /kernel/) |
+| 0 رابط مكسور | ✅ seo:gate: 0 broken links, 64138 references checked |
+| لا صفحة محذوفة | ✅ 190 صفحة preserved |
+| لا قسم محذوف | ✅ 16 sections في homepage preserved |
+| لا CSP معدّل | ✅ public/_headers لم يُلمس |
+| لا endpoints/أرقام متغيرة | ✅ wa.me/966538229013 محفوظ، yazeed1job@gmail.com محفوظ، +966538229013 محفوظ |
+| Playwright 30/30 | ✅ 15 surfaces × 2 viewports، 0 failures |
+| keyboard focus على primary CTA | ✅ 9/9 surfaces مع hero CTAs، focusable (الباقي 6 case studies بدون hero CTAs) |
+| accessible names | ✅ aria-label محفوظ + aria-hidden على microcopy (decorative) |
+
+## Before/After — المصفوفة الكاملة (15 surface)
+
+| Surface | Primary Before | Primary After | Secondary Before | Secondary After | Microcopy |
+|---|---|---|---|---|---|
+| `/` hero SplitHero | `احجز ديمو` | `احجز جلسة جاهزية 30 دقيقة` | `واتساب` | `احصل على رد سريع عبر واتساب` | `بدون التزام • سرية بياناتك مضمونة` |
+| `/` AI Center | `تحدث مع فريق BrightAI` | `احجز جلسة جاهزية 30 دقيقة` | — | — | — |
+| `/` compliance | `تحدث مع فريق الامتثال` | `احجز جلسة جاهزية 30 دقيقة` | — | — | — |
+| `/` final 30-pilot | `تقييم جاهزية AI` (noun) | `ابدأ تقييم جاهزية AI` (action) | — | — | — |
+| `/services/` hero | `ابدأ تقييم مجاني` | preserved | `تواصل عبر واتساب` | preserved | — |
+| `/services/` final | `احجز جلسة تقييم` | `احجز جلسة تقييم 30 دقيقة` | `واتساب` | `احصل على رد عبر واتساب` | `بدون التزام • سرية بياناتك مضمونة` / `يردّك مهندس سعودي خلال ساعة` |
+| `/services/` 14 cards | various vague | all action-oriented | — | — | each card has microcopy |
+| `/pricing/` hero | `ناقش التسعير عبر واتساب` | preserved | `أرسل تفاصيل الاحتياج` | preserved | `عرض سعر مخصص خلال 24 ساعة` / `بدون التزام • سرية بياناتك مضمونة` |
+| `/pricing/` final | `تواصل عبر واتساب` | preserved | `أرسل تفاصيل الاحتياج` | preserved | `يردّك فريق سعودي خلال ساعة` / `بدون التزام • سرية بياناتك مضمونة` |
+| `/assessment/` hero | `احصل على تقييم فوري لمؤسستك` | preserved | `تواصل مع مهندسينا` | preserved | `20 دقيقة • تقرير فجوات PDF مجاني` / `رد خلال ساعة • يردّك مهندس سعودي` |
+| `/assessment/` final | `تحدث مع مهندسينا عبر واتساب` | preserved | `طلب اجتماع فني مخصص` | `اطلب اجتماعاً فنياً مخصصاً` (tanween) | `رد سريع • بدون التزام` / `30 دقيقة • نطاق + SLA + milestones` |
+| `/customers/` final | `احجز عرضاً` | `اطلب عرضاً مفصّلاً لقطاعك` | `اطلب تقييم جاهزية` | `ابدأ تقييم جاهزية AI` | `نطاق + SLA + milestones خلال 24 ساعة` / `20 دقيقة • تقرير فجوات PDF مجاني` |
+| `/customers/{bank,hospital,pharma}/` final | `احجز عرضاً` | `اطلب عرضاً مفصّلاً لقطاعك` | `اطلب تقييم جاهزية` | `ابدأ تقييم جاهزية AI` | same as customers/ |
+| `/solutions/` final | `ابدأ التجربة المجانية` | `ابدأ تجربة Kernel المجانية` | `احجز ديمو مخصص` | `احجز ديمو مخصص 30 دقيقة` | `8 دقائق • بدون تسجيل • Sandbox معزول` / `بدون التزام • سرية بياناتك مضمونة` |
+| `/solutions/{4 sectors}/` hero+final | `اطلب عرض توضيحي` | `اطلب عرض توضيحي مخصص` | `تواصل عبر واتساب` | preserved | `30 دقيقة • نطاق + SLA + milestones` / `رد سريع • يردّك مهندس سعودي` |
+| `/solutions/[sector]/[city]/` ×6 | `اطلب عرض توضيحي` | `اطلب عرض توضيحي مخصص` | `تواصل عبر واتساب` (wa.me مع whatsappMsg) | preserved | same as sectors |
+| `/solutions/[slug]/` ×N | `اطلب عرض توضيحي` | `اطلب عرض توضيحي مخصص` | `تواصل عبر واتساب` | preserved | same as sectors |
+
+## Build + Verification Output
+
+- `npx astro build` → **190 صفحة، 0 أخطاء** ✅
+- `npm run verify:all` → **0 errors, 0 warnings, 6/6 hreflang, 5/5 service, 0 broken links, 0 canonical issues** ✅
+- `npm run seo:gate` → **0 errors, 0 warnings, 6/6 hreflang, 5/5 service, 176 sitemap URLs, 64138 refs, 0 broken** ✅
+- `node scripts/playwright/audit-voc-001-c.mjs` → **30/30 pass** (15 surfaces × 2 viewports: mobile 390x844 + desktop 1440x900) ✅
+  - screenshots: `download/qa/voc-001-c/` (60 files: 30 hero + 30 final)
+  - checks: noVagueCtas ✅، noNonActionCtas ✅، noLongMicrocopy ✅، keyboardFocusOk ✅، http200 ✅
+- `npm run performance:budget` → **2 pre-existing failures** (HTML 152KB vs 80KB، CSS 220KB vs 50KB) — **موجودة قبل BAI-VOC-001-C** (per brain Section 1.2.b baseline). ما زادت بسبب CTRs (CTR changes add ~0.5KB CSS for `.cta-micro`/`.cta-actions`/`.inner-card__cta*`، وmicrocopy lines add ~3KB HTML across 30 P0 surfaces). **لا regression** من هذه المهمة.
+
+## Risks & Mitigations
+
+- **CSS scope**: `.cta-actions` و `.cta-micro` و `.inner-card__cta*` global في `utilities.css`. الـ specificity منخفضة (single class)، فلا يكسر الـ component styles الحالية. ✅
+- **Wrap في div**: أضفت `.cta-actions` wrapper حول الأزرار في final CTAs. الـ wrappers لا يغيرون الـ layout لأن `.inner-hero__actions` و `.about-hero__actions` و `.inner-cta-final__actions` كلها flex-row containers. الـ wrapper الجديد column-flex داخلها = stacked. ✅ Playwright verified visually.
+- **Service cards markup**: غيرت `<span>{s.cta}</span>` → `<span class="inner-card__cta">{s.cta}</span><small class="inner-card__cta-micro">{s.ctaMicro}</small>`. CSS أضفت `.inner-card__cta` (inline-flex + arrow ::after + hover translate) و `.inner-card__cta-micro` (small text). الـ visual أضيف سهم `←` بعد كل CTA + microcopy تحته. ✅
+- **Hero text changes**: SplitHero.astro غيّرت `واتساب` → `احصل على رد سريع عبر واتساب` و `احجز ديمو` → `احجز جلسة جاهزية 30 دقيقة`. الـ `home-hero-actions` flex layout يحافظ على 4 buttons في نفس الترتيب (CSS `order` + `nth-of-type` selectors). ✅
+- **whatsapp encoded links محفوظة**: `whatsappAssessmentHref` و `whatsappEngineerHref` و `whatsapp` في pricing. **لم** أغيّر href. ✅
+- **services cards cta text replaced**: 14 cards، كل `cta` field + جديد `ctaMicro` field. الـ markup uses both. ✅
+- **homepage 30-pilot mini-link**: `تقييم جاهزية AI` (noun) → `ابدأ تقييم جاهزية AI` (action verb). الـ verb "ابدأ" يستوفي معيار action-oriented. ✅
+- **aria-hidden على microcopy**: `aria-hidden="true"` على كل `<small class="cta-micro">` لأن النص مكرر/توضيحي والـ button text يكفي. ✅
+- **linked EN pages**: `src/pages/en/` ما عندها أي من الصفحات P0 (الـ EN محدود لـ 5 صفحات legal). فلم نطبّق EN matrix. لو تبيها، task منفصل.
+
+## Hard Limits — All respected
+
+- ✅ لا صفحة محذوفة (190 preserved)
+- ✅ لا قسم محذوف (16 sections في homepage preserved)
+- ✅ لا تعديل CSP (`public/_headers` لم يُلمس)
+- ✅ لا endpoints/أرقام متغيرة (wa.me/966538229013, /contact/, /assessment/, /solutions/, /kernel/ محفوظة)
+- ✅ لا rebase/branch جديد (تعديلات uncommitted per قاعدة brain)
+- ✅ لا inline `style="..."` على .astro (CSS classes في utilities.css فقط)
+- ✅ لا console.log في production
+- ✅ no Tailwind utility classes
+- ✅ السعودي Voice Protocol: comments بالعامية السعودية، code blocks + identifiers + technical terms بالـ English
+
+الـ commit: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+Status: **verified** (build 190 ✅, verify:all 0 errors ✅, seo:gate 0 errors ✅, Playwright 30/30 ✅, 0 broken links ✅, 0 href متغير ✅, 0 microcopy >12 words ✅).

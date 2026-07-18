@@ -1,4 +1,5 @@
 <!-- BAI-VOC-001-A (2026-07-18): VOC injection في hero lead — يستبدل `sector.description` بـ `sector.vocLead` (per-sector، 5 ركائز) عند التوفر. H1 = `sector.h1` (keyword-rich, unchanged). الـ `<title>`/`<meta description>` JSON-LD يستخدمون `migratedPage?.description ?? sector.description` (لم يتغيّر). -->
+<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — hero + final: "اطلب عرض توضيحي" → "اطلب عرض توضيحي مخصص" + microcopy. href (wa.me/... + /contact/) لم يتغير. -->
 ---
 /**
  * /solutions/[sector]/ — Sector page (REPORT-10 redesign).
@@ -205,8 +206,14 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
         <p class="answer-first-summary" data-speakable-target="answer-first">{sectorAnswerFirst}</p>
         <p class="inner-hero__desc">{sector.vocLead ?? sector.description}</p>
         <div class="inner-hero__actions">
-          <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
+          <div class="cta-actions">
+            <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي مخصص</a>
+            <small class="cta-micro" aria-hidden="true">30 دقيقة • نطاق + SLA + milestones</small>
+          </div>
+<div class="cta-actions">
 <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+  <small class="cta-micro" aria-hidden="true">رد سريع • يردّك مهندس سعودي</small>
+</div>
         </div>
       </div>
 
@@ -375,8 +382,14 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
       <h2 class="inner-cta-final__title">ابدأ بحوكمة الذكاء الاصطناعي في {sector.h1.replace('حوكمة الذكاء الاصطناعي في', '').trim()} الآن</h2>
       <p class="inner-cta-final__desc">تواصل معنا للحصول على عرض توضيحي مخصص لقطاعك.</p>
       <div class="inner-hero__actions inner-hero__actions--centered">
-        <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي</a>
-        <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+        <div class="cta-actions">
+          <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> اطلب عرض توضيحي مخصص</a>
+          <small class="cta-micro" aria-hidden="true">30 دقيقة • نطاق + SLA + milestones</small>
+        </div>
+        <div class="cta-actions">
+          <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="btn--whatsapp inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>
+          <small class="cta-micro" aria-hidden="true">رد سريع • يردّك مهندس سعودي</small>
+        </div>
       </div>
     </div>
   </div>
