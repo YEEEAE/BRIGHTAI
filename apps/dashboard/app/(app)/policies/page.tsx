@@ -1,18 +1,16 @@
-import { getSessionContext } from '@/lib/session';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionPermission } from '@/lib/session';
+import { runInTenantContext, requireSessionPermission } from '@/lib/session';
 import { ROLE_LABELS_AR } from '@brightai/config';
 import styles from './page.module.css';
 
 export default async function PoliciesPage() {
-  await requireSessionPermission('policy:read');
-  const ctx = await getSessionContext();
+  const ctx = await requireSessionPermission('policy:read');
 
-  const policies = await dbServiceRole.policy.findMany({
-    where: { organizationId: ctx.tenant.id },
-    orderBy: { createdAt: 'desc' },
-    take: 50,
-  });
+  const policies = await runInTenantContext(ctx, (tx) =>
+    tx.policy.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+    }),
+  );
 
   return (
     <div className={styles.root}>

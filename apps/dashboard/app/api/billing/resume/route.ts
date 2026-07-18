@@ -12,8 +12,7 @@
 
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { resumeSubscription, isBillingConfigured } from '@/lib/billing/stripe';
 
 export const dynamic = 'force-dynamic';
@@ -36,16 +35,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Billing is not configured.' }, { status: 503 });
   }
 
-  // 2. Find the scheduled-to-cancel subscription
-  const sub = await dbServiceRole.subscription.findFirst({
-    where: {
-      organizationId: ctx.tenant.id,
-      cancelAtPeriodEnd: true,
-      status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
-    },
-    orderBy: { createdAt: 'desc' },
-    select: { stripeSubscriptionId: true, cancelAtPeriodEnd: true },
-  });
+  // 2. Find the scheduled-to-cancel subscription. RLS via runInTenantContext.
+  const sub = await runInTenantContext(ctx, (tx) =>
+    tx.subscription.findFirst({
+      where: {
+        organizationId: ctx.tenant.id,
+        cancelAtPeriodEnd: true,
+        status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
+      },
+      orderBy: { createdAt: 'desc' },
+      select: { stripeSubscriptionId: true, cancelAtPeriodEnd: true },
+    }),
+  );
   if (!sub) {
     return NextResponse.json(
       { error: 'No subscription scheduled for cancellation. Nothing to resume.' },

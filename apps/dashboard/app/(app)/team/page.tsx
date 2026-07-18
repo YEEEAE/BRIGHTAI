@@ -1,18 +1,16 @@
-import { getSessionContext } from '@/lib/session';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionPermission } from '@/lib/session';
+import { runInTenantContext, requireSessionPermission } from '@/lib/session';
 import { ROLE_LABELS_AR } from '@brightai/config';
 import styles from './page.module.css';
 
 export default async function TeamPage() {
-  await requireSessionPermission('member:read');
-  const ctx = await getSessionContext();
+  const ctx = await requireSessionPermission('member:read');
 
-  const members = await dbServiceRole.membership.findMany({
-    where: { organizationId: ctx.tenant.id },
-    include: { user: { select: { email: true, fullName: true, fullNameAr: true, twoFactorEnabled: true } } },
-    orderBy: { joinedAt: 'desc' },
-  });
+  const members = await runInTenantContext(ctx, (tx) =>
+    tx.membership.findMany({
+      include: { user: { select: { email: true, fullName: true, fullNameAr: true, twoFactorEnabled: true } } },
+      orderBy: { joinedAt: 'desc' },
+    }),
+  );
 
   return (
     <div className={styles.root}>

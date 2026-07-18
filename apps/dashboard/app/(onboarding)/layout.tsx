@@ -9,17 +9,19 @@
  */
 
 import { redirect } from 'next/navigation';
-import { getSessionContext } from '@/lib/session';
-import { dbServiceRole } from '@brightai/db';
+import { getSessionContext, runInTenantContext } from '@/lib/session';
 import styles from './layout.module.css';
 
 export default async function OnboardingLayout({ children }: { children: React.ReactNode }) {
   const ctx = await getSessionContext();
 
   // If onboarding is complete, push the user to the dashboard.
-  const progress = await dbServiceRole.onboardingProgress.findUnique({
-    where: { organizationId: ctx.tenant.id },
-  });
+  // RLS via runInTenantContext enforces tenant isolation.
+  const progress = await runInTenantContext(ctx, (tx) =>
+    tx.onboardingProgress.findUnique({
+      where: { organizationId: ctx.tenant.id },
+    }),
+  );
   if (progress?.completedAt) {
     redirect('/dashboard');
   }

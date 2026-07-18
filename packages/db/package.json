@@ -21,7 +21,7 @@
     "db:studio": "prisma studio",
     "db:reset": "prisma migrate reset --force",
     "db:rls:apply": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f prisma/policies/rls.sql",
-    "db:rls:test": "tsx prisma/tests/rls-isolation.test.ts",
+    "db:rls:test": "tsx tests/rls-isolation.test.ts && tsx tests/cross-tenant-leak.test.ts",
     "typecheck": "tsc --noEmit",
     "lint": "echo 'lint skipped for db package'"
   },

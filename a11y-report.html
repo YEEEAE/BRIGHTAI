@@ -24,113 +24,89 @@
 <h1>BrightAI — Accessibility Scan (WCAG 2.1 AA)</h1>
 <div class="summary">
   <div><b>0</b>Critical</div>
-  <div><b>0</b>Serious</div>
+  <div><b>3</b>Serious</div>
   <div><b>0</b>Moderate</div>
   <div><b>0</b>Minor</div>
 </div>
 
       <section class="page">
-        <h2>/ <small>http://127.0.0.1:4321/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/ <small>http://localhost:4321/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/en/ <small>http://127.0.0.1:4321/en/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/en/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/en/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/en/ <small>http://localhost:4321/en/</small></h2>
+        <p class="status">1 violation(s)</p>
+        
+        <div class="violation severity-serious">
+          <h3>color-contrast — <span class="impact">SERIOUS</span></h3>
+          <p>Elements must meet minimum color contrast ratio thresholds <a href="https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright" target="_blank" rel="noopener">docs</a></p>
+          <ul><li><code>#cookie-accept</code></li></ul>
+        </div>
+      </section>
+      <section class="page">
+        <h2>/pricing/ <small>http://localhost:4321/pricing/</small></h2>
+        <p class="status">1 violation(s)</p>
+        
+        <div class="violation severity-serious">
+          <h3>color-contrast — <span class="impact">SERIOUS</span></h3>
+          <p>Elements must meet minimum color contrast ratio thresholds <a href="https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright" target="_blank" rel="noopener">docs</a></p>
+          <ul><li><code>a[data-position="offer_detail_pilot"]</code></li><li><code>a[data-position="offer_detail_enterprise"]</code></li><li><code>a[data-cta="pilot_request"]</code></li><li><code>.btn--primary[data-cta="enterprise_contact"][data-position="decision_helper"]</code></li></ul>
+        </div>
+      </section>
+      <section class="page">
+        <h2>/contact/ <small>http://localhost:4321/contact/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/pricing/ <small>http://127.0.0.1:4321/pricing/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/pricing/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/pricing/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/about/ <small>http://localhost:4321/about/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/contact/ <small>http://127.0.0.1:4321/contact/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/contact/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/contact/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/trust/ <small>http://localhost:4321/trust/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/about/ <small>http://127.0.0.1:4321/about/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/about/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/about/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/kernel/ <small>http://localhost:4321/kernel/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/trust/ <small>http://127.0.0.1:4321/trust/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/trust/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/trust/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/kernel/chat/ <small>http://localhost:4321/kernel/chat/</small></h2>
+        <p class="status">1 violation(s)</p>
+        
+        <div class="violation severity-serious">
+          <h3>color-contrast — <span class="impact">SERIOUS</span></h3>
+          <p>Elements must meet minimum color contrast ratio thresholds <a href="https://dequeuniversity.com/rules/axe/4.12/color-contrast?application=playwright" target="_blank" rel="noopener">docs</a></p>
+          <ul><li><code>.btn--primary.btn[rel="noopener noreferrer"]</code></li></ul>
+        </div>
+      </section>
+      <section class="page">
+        <h2>/blog/ <small>http://localhost:4321/blog/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/kernel/ <small>http://127.0.0.1:4321/kernel/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/kernel/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/kernel/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/customers/bank/ <small>http://localhost:4321/customers/bank/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/kernel/chat/ <small>http://127.0.0.1:4321/kernel/chat/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/kernel/chat/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/kernel/chat/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/solutions/ <small>http://localhost:4321/solutions/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/blog/ <small>http://127.0.0.1:4321/blog/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/blog/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/blog/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/docs/ <small>http://localhost:4321/docs/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
       <section class="page">
-        <h2>/customers/bank/ <small>http://127.0.0.1:4321/customers/bank/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/customers/bank/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/customers/bank/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
-        <p class="ok">لا يوجد مخالفات.</p>
-      </section>
-      <section class="page">
-        <h2>/solutions/ <small>http://127.0.0.1:4321/solutions/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/solutions/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/solutions/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
-        <p class="ok">لا يوجد مخالفات.</p>
-      </section>
-      <section class="page">
-        <h2>/docs/ <small>http://127.0.0.1:4321/docs/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/docs/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/docs/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
-        <p class="ok">لا يوجد مخالفات.</p>
-      </section>
-      <section class="page">
-        <h2>/hub/ <small>http://127.0.0.1:4321/hub/</small></h2>
-        <p class="status"><span class="err">ERROR: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4321/hub/
-Call log:
-[2m  - navigating to &quot;http://127.0.0.1:4321/hub/&quot;, waiting until &quot;networkidle&quot;[22m
-</span></p>
+        <h2>/hub/ <small>http://localhost:4321/hub/</small></h2>
+        <p class="status"><span class="ok">clean</span></p>
         <p class="ok">لا يوجد مخالفات.</p>
       </section>
 </body>

@@ -6472,7 +6472,8 @@ a:not(.btn):not(.btn *),
 .kernel-stats-range__apply,
 .kernel-empty__cta,
 .kernel-approval-card__btn,
-.action-btn,
+.kernel-audit-pagination__btn,
+.btn--icon,
 .skip-to-content,
 a[href*="wa.me/"],
 a[href*="whatsapp"],
@@ -6512,7 +6513,8 @@ a:not(.btn):not(.btn *)::before,
 .kernel-stats-range__apply::before,
 .kernel-empty__cta::before,
 .kernel-approval-card__btn::before,
-.action-btn::before,
+.kernel-audit-pagination__btn::before,
+.btn--icon::before,
 .skip-to-content::before,
 a[href*="wa.me/"]::before,
 a[href*="whatsapp"]::before,
@@ -6531,4 +6533,11 @@ a[href*="api.whatsapp"]::before {
      قابلة للنقر فعلياً (تحسب ضمن منطقة اللمس). */
   z-index: 1;
   pointer-events: auto;
+}
+
+/* استثناء: checkboxes/radios معفية من WCAG 2.5.8 (target-size) لأن
+   لها hit-area مدمج عبر label، وتمديد ::before لها يكسر المحاذاة. */
+input[type="checkbox"],
+input[type="radio"] {
+  /* لا نطبّق ::before touch-target */
 }

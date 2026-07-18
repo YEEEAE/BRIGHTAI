@@ -5,26 +5,24 @@
  * counters. Phase 1+ will replace with real metrics.
  */
 
-import { getSessionContext } from '@/lib/session';
-import { dbServiceRole } from '@brightai/db';
+import { getSessionContext, runInTenantContext } from '@/lib/session';
 import { ROLE_DESCRIPTIONS_AR } from '@brightai/config';
 import styles from './page.module.css';
 
 export default async function DashboardPage() {
   const ctx = await getSessionContext();
 
-  // Quick tenant-scoped counters (read-only, OK to do with service role
-  // for these high-level stats; tenant data is still respected via the
-  // organizationId filter).
-  const [policiesCount, pendingRequests, teamSize] = await Promise.all([
-    dbServiceRole.policy.count({ where: { organizationId: ctx.tenant.id } }),
-    dbServiceRole.aIRequest.count({
-      where: { organizationId: ctx.tenant.id, status: 'PENDING' },
-    }),
-    dbServiceRole.membership.count({
-      where: { organizationId: ctx.tenant.id, status: 'ACTIVE' },
-    }),
-  ]);
+  // Tenant-scoped counters — RLS via runInTenantContext enforces isolation.
+  // No manual organizationId filter needed.
+  const [policiesCount, pendingRequests, teamSize] = await runInTenantContext(
+    ctx,
+    (tx) =>
+      Promise.all([
+        tx.policy.count(),
+        tx.aIRequest.count({ where: { status: 'PENDING' } }),
+        tx.membership.count({ where: { status: 'ACTIVE' } }),
+      ]),
+  );
 
   return (
     <div className={styles.root}>

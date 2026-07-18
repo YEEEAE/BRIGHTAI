@@ -68,6 +68,13 @@ async function withTenant(
 }
 
 beforeAll(async () => {
+  // Provision two tenants with admin client wrapped in a transaction.
+  // The transaction holds a single PG connection, and the SET LOCAL
+  // config persists for the entire transaction. This is the only way
+  // to make is_service_role() = true across multiple admin queries when
+  // the admin role doesn't have BYPASSRLS by default.
+  await admin.$transaction(async (setup) => {
+    await setup.$executeRawUnsafe(`SELECT set_config('app.is_service', 'true', true)`);
   // Provision two tenants with admin client (BYPASSRLS)
   await admin.user.create({
     data: {
@@ -130,10 +137,11 @@ beforeAll(async () => {
       nameAr: 'سياسة ألفا',
       description: 'alpha-only',
       descriptionAr: 'لفا فقط',
-      category: 'DOMAIN_ALLOW',
+      category: 'DATA_PRIVACY', // fixed: was DOMAIN_ALLOW (not a valid enum value)
       status: 'ACTIVE',
       priority: 100,
       createdById: ALPHA_USER,
+      rules: {}, // Policy.rules is required (Json) — added 2026-07-18
     },
   });
   const b = await admin.policy.create({
@@ -143,16 +151,18 @@ beforeAll(async () => {
       nameAr: 'سياسة بيتا',
       description: 'beta-only',
       descriptionAr: 'بيتا فقط',
-      category: 'DOMAIN_ALLOW',
+      category: 'DATA_PRIVACY', // fixed: was DOMAIN_ALLOW (not a valid enum value)
       status: 'ACTIVE',
       priority: 100,
       createdById: BETA_USER,
+      rules: {}, // Policy.rules is required (Json) — added 2026-07-18
     },
   });
   alphaPolicyId = a.id;
   betaPolicyId = b.id;
   alphaUserId = ALPHA_USER;
   betaUserId = BETA_USER;
+  }); // end setup transaction
 });
 
 afterAll(async () => {
@@ -204,10 +214,11 @@ describe('RLS — alpha tenant', () => {
             nameAr: 'محاولة تسريب',
             description: 'should fail',
             descriptionAr: 'لازم يفشل',
-            category: 'DOMAIN_ALLOW',
+            category: 'DATA_PRIVACY', // fixed: was DOMAIN_ALLOW
             status: 'DRAFT',
             priority: 1,
             createdById: BETA_USER,
+            rules: {},
           },
         }),
       ),

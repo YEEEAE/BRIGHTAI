@@ -17,9 +17,8 @@
  * calls the checkout action and navigates to the returned URL.
  */
 
-import { dbServiceRole } from '@brightai/db';
 import type { Subscription, SubscriptionStatus, BillingPlan } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { PLANS, isBillingConfigured } from '@/lib/billing';
 import styles from './page.module.css';
 import { BillingActions, PlanCardButton, CheckoutSuccessToast, CheckoutCanceledToast } from './client';
@@ -38,18 +37,21 @@ export default async function BillingSettingsPage({
 }) {
   const ctx = await requireSessionRoleAtLeast('OWNER');
 
-  // Resolve the current subscription (if any). Service role because
-  // RLS check would require a tenant context setup; here we know the
-  // orgId from the session and the row is unique per (org, subscription).
-  const sub = await dbServiceRole.subscription.findFirst({
-    where: { organizationId: ctx.tenant.id },
-    orderBy: { createdAt: 'desc' },
-  });
-
-  const orgHasCustomer = Boolean(
-    await dbServiceRole.organization
-      .findUnique({ where: { id: ctx.tenant.id }, select: { stripeCustomerId: true } })
-      .then((o) => o?.stripeCustomerId),
+  // Resolve the current subscription (if any) + org's stripeCustomerId.
+  // RLS via runInTenantContext enforces isolation (no manual orgId filter).
+  const { sub, orgHasCustomer } = await runInTenantContext(
+    ctx,
+    async (tx) => {
+      const sub = await tx.subscription.findFirst({
+        where: { organizationId: ctx.tenant.id },
+        orderBy: { createdAt: 'desc' },
+      });
+      const org = await tx.organization.findUnique({
+        where: { id: ctx.tenant.id },
+        select: { stripeCustomerId: true },
+      });
+      return { sub, orgHasCustomer: Boolean(org?.stripeCustomerId) };
+    },
   );
 
   const billingReady = isBillingConfigured();

@@ -523,9 +523,9 @@
 .btn-primary,
 a.btn--primary,
 button.btn--primary {                              /* legacy single-dash alias */
-  background: var(--brand-500);
-  /* A11Y-COLOR (2026-07-18): white text on --brand-500 (#2a8a7e) gives
-     ~4.6:1 contrast (passes WCAG AA 4.5:1). The previous
+  background: var(--brand-600);
+  /* A11Y-COLOR (2026-07-18): white text on --brand-600 (#1f6f64) gives
+     ~5.0:1 contrast (passes WCAG AA 4.5:1). The previous
      `color: var(--text-inverse)` (#0a0e1a, dark) on the dark teal surface
      failed color-contrast (serious). The a.btn--primary/button.btn--primary
      selectors raise specificity above the scoped `a[data-astro-cid]` rule

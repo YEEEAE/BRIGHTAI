@@ -11,8 +11,8 @@
 --   - The application calls `SET LOCAL app.current_user_id = 'usr_xxx'`
 --     for user-scoped checks.
 --   - Each tenant table has a policy:
---       USING      (organization_id = current_setting('app.current_org_id'))
---       WITH CHECK (organization_id = current_setting('app.current_org_id'))
+--       USING      ("organizationId" = current_setting('app.current_org_id'))
+--       WITH CHECK ("organizationId" = current_setting('app.current_org_id'))
 --   - FORCE ROW LEVEL SECURITY is on — even table owners respect the
 --     policies. Service-role operations use the `brightai_service` role,
 --     which has BYPASSRLS.
@@ -111,12 +111,24 @@ BEGIN
     'users',
     'passkeys',
     'two_factor_backup_codes',
-    'sessions'
+    'sessions',
+    -- P0-1 (2026-07-18): tenant-scoped tables added after initial RLS rollout.
+    -- Without these, runInTenantContext() would NOT enforce isolation on
+    -- these tables (the brightai_app role would see all rows).
+    'org_feature_flags',
+    'ai_usage_entries',
+    'saml_connections'
+    -- 'feature_flags' is a GLOBAL catalog (no "organizationId") — see policy
+    -- below; RLS enabled but policy is "everyone reads, service writes".
   ]
   LOOP
     EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY', t);
     EXECUTE format('ALTER TABLE public.%I FORCE ROW LEVEL SECURITY', t);
   END LOOP;
+  -- feature_flags: global catalog, no "organizationId" column.
+  -- RLS enabled but the policy allows broad SELECT; writes are service-only.
+  EXECUTE 'ALTER TABLE public.feature_flags ENABLE ROW LEVEL SECURITY';
+  EXECUTE 'ALTER TABLE public.feature_flags FORCE ROW LEVEL SECURITY';
 END
 $$;
 
@@ -159,7 +171,7 @@ CREATE POLICY member_select ON memberships
   FOR SELECT
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 DROP POLICY IF EXISTS member_insert ON memberships;
@@ -167,7 +179,7 @@ CREATE POLICY member_insert ON memberships
   FOR INSERT
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 DROP POLICY IF EXISTS member_update ON memberships;
@@ -175,11 +187,11 @@ CREATE POLICY member_update ON memberships
   FOR UPDATE
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 DROP POLICY IF EXISTS member_delete ON memberships;
@@ -196,11 +208,11 @@ CREATE POLICY invite_all ON invitations
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -212,11 +224,11 @@ CREATE POLICY compliance_all ON organization_compliance
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -228,11 +240,11 @@ CREATE POLICY policy_all ON policies
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -244,11 +256,11 @@ CREATE POLICY request_all ON ai_requests
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -260,11 +272,11 @@ CREATE POLICY integration_all ON integrations
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -276,11 +288,11 @@ CREATE POLICY apikey_all ON api_keys
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -292,7 +304,7 @@ CREATE POLICY audit_select ON audit_logs
   FOR SELECT
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 DROP POLICY IF EXISTS audit_insert ON audit_logs;
@@ -300,7 +312,7 @@ CREATE POLICY audit_insert ON audit_logs
   FOR INSERT
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 DROP POLICY IF EXISTS audit_update ON audit_logs;
@@ -323,11 +335,11 @@ CREATE POLICY domain_all ON domains
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -339,11 +351,11 @@ CREATE POLICY onboarding_all ON onboarding_progress
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -355,11 +367,11 @@ CREATE POLICY data_export_all ON data_export_requests
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 DROP POLICY IF EXISTS data_deletion_all ON data_deletion_requests;
@@ -367,11 +379,11 @@ CREATE POLICY data_deletion_all ON data_deletion_requests
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -386,11 +398,11 @@ CREATE POLICY subscription_all ON subscriptions
   FOR ALL
   USING (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   )
   WITH CHECK (
     is_service_role()
-    OR organization_id = current_org_id()
+    OR "organizationId" = current_org_id()
   );
 
 -- ─────────────────────────────────────────────────────────────────
@@ -406,8 +418,8 @@ CREATE POLICY user_select ON users
     OR id = current_user_id()
     OR EXISTS (
       SELECT 1 FROM memberships m
-      WHERE m.user_id = users.id
-        AND m.organization_id = current_org_id()
+      WHERE m."userId" = users.id
+        AND m."organizationId" = current_org_id()
         AND m.status = 'ACTIVE'
     )
   );
@@ -435,8 +447,8 @@ CREATE POLICY user_delete ON users
 DROP POLICY IF EXISTS passkey_all ON passkeys;
 CREATE POLICY passkey_all ON passkeys
   FOR ALL
-  USING (is_service_role() OR user_id = current_user_id())
-  WITH CHECK (is_service_role() OR user_id = current_user_id());
+  USING (is_service_role() OR "userId" = current_user_id())
+  WITH CHECK (is_service_role() OR "userId" = current_user_id());
 
 -- ─────────────────────────────────────────────────────────────────
 -- 17. TWO_FACTOR_BACKUP_CODES — user-scoped only
@@ -445,8 +457,8 @@ CREATE POLICY passkey_all ON passkeys
 DROP POLICY IF EXISTS backup_code_all ON two_factor_backup_codes;
 CREATE POLICY backup_code_all ON two_factor_backup_codes
   FOR ALL
-  USING (is_service_role() OR user_id = current_user_id())
-  WITH CHECK (is_service_role() OR user_id = current_user_id());
+  USING (is_service_role() OR "userId" = current_user_id())
+  WITH CHECK (is_service_role() OR "userId" = current_user_id());
 
 -- ─────────────────────────────────────────────────────────────────
 -- 18. SESSIONS — user-scoped reads; service role manages lifecycle
@@ -455,23 +467,105 @@ CREATE POLICY backup_code_all ON two_factor_backup_codes
 DROP POLICY IF EXISTS session_select ON sessions;
 CREATE POLICY session_select ON sessions
   FOR SELECT
-  USING (is_service_role() OR user_id = current_user_id());
+  USING (is_service_role() OR "userId" = current_user_id());
 
 DROP POLICY IF EXISTS session_insert ON sessions;
 CREATE POLICY session_insert ON sessions
   FOR INSERT
-  WITH CHECK (is_service_role() OR user_id = current_user_id());
+  WITH CHECK (is_service_role() OR "userId" = current_user_id());
 
 DROP POLICY IF EXISTS session_update ON sessions;
 CREATE POLICY session_update ON sessions
   FOR UPDATE
-  USING (is_service_role() OR user_id = current_user_id())
-  WITH CHECK (is_service_role() OR user_id = current_user_id());
+  USING (is_service_role() OR "userId" = current_user_id())
+  WITH CHECK (is_service_role() OR "userId" = current_user_id());
 
 DROP POLICY IF EXISTS session_delete ON sessions;
 CREATE POLICY session_delete ON sessions
   FOR DELETE
-  USING (is_service_role() OR user_id = current_user_id());
+  USING (is_service_role() OR "userId" = current_user_id());
+
+-- ─────────────────────────────────────────────────────────────────
+-- 18b. FEATURE_FLAGS — global catalog (P0-1 / 2026-07-18).
+--       No "organizationId" column. RLS forces:
+--         SELECT: anyone authenticated (app + readonly)
+--         INSERT/UPDATE/DELETE: service role only (admin ops)
+-- ─────────────────────────────────────────────────────────────────
+
+DROP POLICY IF EXISTS feature_flag_select ON feature_flags;
+CREATE POLICY feature_flag_select ON feature_flags
+  FOR SELECT
+  USING (true); -- global catalog — everyone reads
+
+DROP POLICY IF EXISTS feature_flag_insert ON feature_flags;
+CREATE POLICY feature_flag_insert ON feature_flags
+  FOR INSERT
+  WITH CHECK (is_service_role());
+
+DROP POLICY IF EXISTS feature_flag_update ON feature_flags;
+CREATE POLICY feature_flag_update ON feature_flags
+  FOR UPDATE
+  USING (is_service_role())
+  WITH CHECK (is_service_role());
+
+DROP POLICY IF EXISTS feature_flag_delete ON feature_flags;
+CREATE POLICY feature_flag_delete ON feature_flags
+  FOR DELETE
+  USING (is_service_role());
+
+-- ─────────────────────────────────────────────────────────────────
+-- 18c. ORG_FEATURE_FLAGS — per-org overrides (P0-1 / 2026-07-18).
+--       Tenant-scoped. App reads/writes its own org's overrides only.
+--       Service role for catalog seeding + cross-org admin ops.
+-- ─────────────────────────────────────────────────────────────────
+
+DROP POLICY IF EXISTS org_feature_flag_all ON org_feature_flags;
+CREATE POLICY org_feature_flag_all ON org_feature_flags
+  FOR ALL
+  USING (
+    is_service_role()
+    OR "organizationId" = current_org_id()
+  )
+  WITH CHECK (
+    is_service_role()
+    OR "organizationId" = current_org_id()
+  );
+
+-- ─────────────────────────────────────────────────────────────────
+-- 18d. AI_USAGE_ENTRIES — per-org usage records (P0-1 / 2026-07-18).
+--       Anon (marketing site) entries have "organizationId" = NULL and
+--       are visible ONLY to service role. Per-org entries visible to
+--       the owning org.
+-- ─────────────────────────────────────────────────────────────────
+
+DROP POLICY IF EXISTS ai_usage_all ON ai_usage_entries;
+CREATE POLICY ai_usage_all ON ai_usage_entries
+  FOR ALL
+  USING (
+    is_service_role()
+    OR ("organizationId" IS NOT NULL AND "organizationId" = current_org_id())
+  )
+  WITH CHECK (
+    is_service_role()
+    OR ("organizationId" IS NOT NULL AND "organizationId" = current_org_id())
+  );
+
+-- ─────────────────────────────────────────────────────────────────
+-- 18e. SAML_CONNECTIONS — per-org SSO config (P0-1 / 2026-07-18).
+--       One row per org (@unique). Tenant-isolated.
+-- ─────────────────────────────────────────────────────────────────
+
+DROP POLICY IF EXISTS saml_connection_all ON saml_connections;
+CREATE POLICY saml_connection_all ON saml_connections
+  FOR ALL
+  USING (
+    is_service_role()
+    OR "organizationId" = current_org_id()
+  )
+  WITH CHECK (
+    is_service_role()
+    OR "organizationId" = current_org_id()
+  );
 
 -- ─────────────────────────────────────────────────────────────────
 -- 19. GRANTs — explicit per-role
@@ -498,14 +592,14 @@ DECLARE
 BEGIN
   SELECT a.hash INTO prev
     FROM audit_logs a
-   WHERE a.organization_id = NEW.organization_id
+   WHERE a."organizationId" = NEW."organizationId"
    ORDER BY a.created_at DESC
    LIMIT 1;
   NEW.prev_hash := prev;
   NEW.hash := encode(
     digest(
       coalesce(prev, '') || '|' ||
-      NEW.organization_id || '|' ||
+      NEW."organizationId" || '|' ||
       NEW.action::text || '|' ||
       coalesce(NEW.actor_id, '') || '|' ||
       NEW.created_at::text,

@@ -16,8 +16,7 @@
  * موجودة لكن ما تظهر هنا (نفلتر organizationId = ctx.tenant.id).
  */
 
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -59,19 +58,23 @@ export default async function UsageSettingsPage() {
   const yesterday = startOfYesterday();
 
   // 1. Last 30 days: aggregate usage.
-  const entries30d = await dbServiceRole.aiUsageEntry.findMany({
-    where: { organizationId: orgId, createdAt: { gte: since } },
-    select: {
-      provider: true,
-      model: true,
-      promptTokens: true,
-      completionTokens: true,
-      totalTokens: true,
-      cost: true,
-      createdAt: true,
-    },
-    orderBy: { createdAt: 'desc' },
-  });
+  //    RLS via runInTenantContext enforces isolation; the where clause
+  //    here does NOT include organizationId (RLS adds it implicitly).
+  const entries30d = await runInTenantContext(ctx, (tx) =>
+    tx.aiUsageEntry.findMany({
+      where: { createdAt: { gte: since } },
+      select: {
+        provider: true,
+        model: true,
+        promptTokens: true,
+        completionTokens: true,
+        totalTokens: true,
+        cost: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    }),
+  );
 
   // 2. Aggregate by provider.
   const byProvider = new Map<string, { tokens: number; cost: number; requests: number }>();

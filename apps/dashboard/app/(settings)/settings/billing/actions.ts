@@ -21,10 +21,9 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { createCheckoutSession, isBillingConfigured } from '@/lib/billing/stripe';
 import { getPlan } from '@/lib/billing/plans';
-import { dbServiceRole } from '@brightai/db';
 import type { BillingPlan } from '@brightai/db';
 
 type ActionResult =
@@ -50,11 +49,13 @@ export async function startCheckoutAction(planKey: BillingPlan): Promise<ActionR
     return { ok: false, error: 'Enterprise plan is sales-led. Please contact us.' };
   }
 
-  // Load the full org (need stripeCustomerId).
-  const org = await dbServiceRole.organization.findUnique({
-    where: { id: ctx.tenant.id },
-    select: { id: true, slug: true, name: true, nameAr: true, stripeCustomerId: true },
-  });
+  // Load the full org (need stripeCustomerId). RLS via runInTenantContext.
+  const org = await runInTenantContext(ctx, (tx) =>
+    tx.organization.findUnique({
+      where: { id: ctx.tenant.id },
+      select: { id: true, slug: true, name: true, nameAr: true, stripeCustomerId: true },
+    }),
+  );
   if (!org) {
     return { ok: false, error: 'Organization not found' };
   }
@@ -88,10 +89,12 @@ export async function openPortalAction(): Promise<ActionResult> {
     return { ok: false, error: 'Billing is not configured.' };
   }
 
-  const org = await dbServiceRole.organization.findUnique({
-    where: { id: ctx.tenant.id },
-    select: { id: true, stripeCustomerId: true },
-  });
+  const org = await runInTenantContext(ctx, (tx) =>
+    tx.organization.findUnique({
+      where: { id: ctx.tenant.id },
+      select: { id: true, stripeCustomerId: true },
+    }),
+  );
   if (!org?.stripeCustomerId) {
     return { ok: false, error: 'No Stripe customer for this organization. Complete checkout first.' };
   }
@@ -121,14 +124,16 @@ export async function cancelSubscriptionAction(): Promise<ActionResult> {
     return { ok: false, error: 'Billing is not configured.' };
   }
 
-  const sub = await dbServiceRole.subscription.findFirst({
-    where: {
-      organizationId: ctx.tenant.id,
-      status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
-    },
-    orderBy: { createdAt: 'desc' },
-    select: { stripeSubscriptionId: true, currentPeriodEnd: true, cancelAtPeriodEnd: true },
-  });
+  const sub = await runInTenantContext(ctx, (tx) =>
+    tx.subscription.findFirst({
+      where: {
+        organizationId: ctx.tenant.id,
+        status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
+      },
+      orderBy: { createdAt: 'desc' },
+      select: { stripeSubscriptionId: true, currentPeriodEnd: true, cancelAtPeriodEnd: true },
+    }),
+  );
   if (!sub) {
     return { ok: false, error: 'لا يوجد اشتراك نشط للإلغاء.' };
   }
@@ -158,15 +163,17 @@ export async function resumeSubscriptionAction(): Promise<ActionResult> {
     return { ok: false, error: 'Billing is not configured.' };
   }
 
-  const sub = await dbServiceRole.subscription.findFirst({
-    where: {
-      organizationId: ctx.tenant.id,
-      cancelAtPeriodEnd: true,
-      status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
-    },
-    orderBy: { createdAt: 'desc' },
-    select: { stripeSubscriptionId: true },
-  });
+  const sub = await runInTenantContext(ctx, (tx) =>
+    tx.subscription.findFirst({
+      where: {
+        organizationId: ctx.tenant.id,
+        cancelAtPeriodEnd: true,
+        status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
+      },
+      orderBy: { createdAt: 'desc' },
+      select: { stripeSubscriptionId: true },
+    }),
+  );
   if (!sub) {
     return { ok: false, error: 'لا يوجد اشتراك مجدول للإلغاء.' };
   }

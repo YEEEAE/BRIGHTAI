@@ -16,8 +16,8 @@
  *   - Export CSV button → fetches all matching rows + client-side CSV.
  */
 
-import { dbServiceRole } from '@brightai/db';
 import { requireSessionPermission, getSessionContext } from '@/lib/session';
+import { runInTenantContext } from '@/lib/session';
 import { resolveFlags } from '@/lib/feature-flags/client';
 import styles from './page.module.css';
 import { AuditClient } from './client';
@@ -46,29 +46,29 @@ export default async function AuditPage() {
   }
 
   // 3. Initial fetch — latest 50 entries.
-  const [entries, total] = await Promise.all([
-    dbServiceRole.auditLog.findMany({
-      where: { organizationId: ctx.tenant.id },
-      orderBy: { createdAt: 'desc' },
-      take: PAGE_LIMIT,
-      select: {
-        id: true,
-        actorId: true,
-        actorType: true,
-        action: true,
-        targetType: true,
-        targetId: true,
-        ipAddress: true,
-        metadata: true,
-        hash: true,
-        prevHash: true,
-        createdAt: true,
-      },
-    }),
-    dbServiceRole.auditLog.count({
-      where: { organizationId: ctx.tenant.id },
-    }),
-  ]);
+  //    RLS via runInTenantContext enforces isolation (no manual orgId filter).
+  const [entries, total] = await runInTenantContext(ctx, (tx) =>
+    Promise.all([
+      tx.auditLog.findMany({
+        orderBy: { createdAt: 'desc' },
+        take: PAGE_LIMIT,
+        select: {
+          id: true,
+          actorId: true,
+          actorType: true,
+          action: true,
+          targetType: true,
+          targetId: true,
+          ipAddress: true,
+          metadata: true,
+          hash: true,
+          prevHash: true,
+          createdAt: true,
+        },
+      }),
+      tx.auditLog.count(),
+    ]),
+  );
 
   // 4. Serialize for client.
   const initialEntries = entries.map((e) => ({

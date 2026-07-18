@@ -7,13 +7,18 @@
  *
  * All actions:
  *   - require OWNER role (defense in depth, in addition to page-level gate)
- *   - write a hash-chained audit entry on success
+ *   - write a hash-chained audit entry on success (via appendAuditLog —
+ *     hash chain writer, allowlist keep-on-service-role)
  *   - return ActionResult discriminated union
+ *
+ * P0-1 (2026-07-18): samlConnection read/write moved to
+ * runInTenantContext for RLS enforcement. The hash chain writer
+ * (appendAuditLog) keeps its service-role connection (allowlist —
+ * needs cross-row advisory lock that doesn't compose with runInTenantContext).
  */
 
 import { revalidatePath } from 'next/cache';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { appendAuditLog } from '@/lib/firewall/audit/hashchain';
 
 export type ActionResult =
@@ -58,23 +63,27 @@ export async function configureSsoAction(formData: FormData): Promise<ActionResu
     }
   }
 
-  await dbServiceRole.samlConnection.upsert({
-    where: { organizationId: ctx.tenant.id },
-    create: {
-      organizationId: ctx.tenant.id,
-      provider,
-      emailDomains: domains,
-      enabled: true,
-      roleMapping,
-    },
-    update: {
-      provider,
-      emailDomains: domains,
-      enabled: true,
-      roleMapping,
-    },
-  });
+  // RLS via runInTenantContext (samlConnection is per-org).
+  await runInTenantContext(ctx, (tx) =>
+    tx.samlConnection.upsert({
+      where: { organizationId: ctx.tenant.id },
+      create: {
+        organizationId: ctx.tenant.id,
+        provider,
+        emailDomains: domains,
+        enabled: true,
+        roleMapping,
+      },
+      update: {
+        provider,
+        emailDomains: domains,
+        enabled: true,
+        roleMapping,
+      },
+    }),
+  );
 
+  // Hash chain writer — allowlist (needs cross-row advisory lock).
   await appendAuditLog({
     organizationId: ctx.tenant.id,
     actorId: ctx.user.id,
@@ -100,19 +109,25 @@ export async function disableSsoAction(): Promise<ActionResult> {
     return { ok: false, error: 'غير مصرح' };
   }
 
-  const existing = await dbServiceRole.samlConnection.findUnique({
-    where: { organizationId: ctx.tenant.id },
-    select: { id: true },
-  });
+  // RLS via runInTenantContext (samlConnection is per-org).
+  const existing = await runInTenantContext(ctx, (tx) =>
+    tx.samlConnection.findUnique({
+      where: { organizationId: ctx.tenant.id },
+      select: { id: true },
+    }),
+  );
   if (!existing) {
     return { ok: false, error: 'لا يوجد اتصال SSO لإيقافه' };
   }
 
-  await dbServiceRole.samlConnection.update({
-    where: { organizationId: ctx.tenant.id },
-    data: { enabled: false },
-  });
+  await runInTenantContext(ctx, (tx) =>
+    tx.samlConnection.update({
+      where: { organizationId: ctx.tenant.id },
+      data: { enabled: false },
+    }),
+  );
 
+  // Hash chain writer — allowlist.
   await appendAuditLog({
     organizationId: ctx.tenant.id,
     actorId: ctx.user.id,

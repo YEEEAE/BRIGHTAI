@@ -24,7 +24,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/500/",
@@ -51,7 +56,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/about/",
@@ -78,7 +88,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/assessment/ai-governance-readiness/",
@@ -105,7 +120,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/authors/brightai-team/",
@@ -132,7 +152,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/authors/compliance-officer/",
@@ -159,7 +184,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/authors/nasser-alabdullah/",
@@ -186,7 +216,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/authors/yazeed-alshareef/",
@@ -213,7 +248,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-audit-trail-compliance-path/",
@@ -240,7 +280,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-audit-trail-saudi/",
@@ -267,7 +312,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-banking-saudi/",
@@ -294,7 +344,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-customer-data-protection-saudi/",
@@ -321,7 +376,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-ecommerce-saudi/",
@@ -348,7 +408,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-ethics-saudi-responsible-ai/",
@@ -375,7 +440,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-firewall-why-you-need-it/",
@@ -402,7 +472,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-governance/",
@@ -429,7 +504,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-governance-framework-saudi-model/",
@@ -456,7 +536,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-governance-saudi-arabia/",
@@ -483,7 +568,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-governance-vs-ai-safety-vs-ai-security/",
@@ -510,7 +600,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-healthcare-saudi/",
@@ -537,7 +632,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-hr-recruitment-saudi/",
@@ -564,7 +664,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-implementation-cost-saudi/",
@@ -591,7 +696,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-neom-smart-city/",
@@ -618,7 +728,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-real-estate-saudi/",
@@ -645,7 +760,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-red-teaming-security-testing/",
@@ -672,7 +792,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-usage-policy-template-saudi/",
@@ -699,7 +824,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-vision-2030-saudi/",
@@ -726,7 +856,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ai-vs-machine-learning-explained/",
@@ -753,7 +888,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/appointing-dpo-saudi-data-protection/",
@@ -780,7 +920,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/arabic-chatbot-customer-service-saudi/",
@@ -807,7 +952,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/banking-ai-governance-sama-requirements/",
@@ -834,7 +984,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/best-ai-companies-saudi-2026/",
@@ -861,7 +1016,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/best-ai-governance-platforms-2026/",
@@ -888,7 +1048,27 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 2,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "th:nth-child(2) > a"
+          ],
+          [
+            "th:nth-child(2) > a > span"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/big-data-analytics-saudi-companies/",
@@ -915,7 +1095,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/category/أمن-البيانات/",
@@ -942,7 +1127,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/category/تحول-رقمي/",
@@ -969,7 +1159,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/category/دراسات-حالة/",
@@ -996,7 +1191,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/category/ذكاء-اصطناعي/",
@@ -1023,7 +1223,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/category/رؤية-2030/",
@@ -1050,7 +1255,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/chatgpt-pdpl-data-compliance/",
@@ -1077,7 +1287,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/choose-ai-company-riyadh/",
@@ -1104,7 +1319,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/cloud-cybersecurity-controls-ccc-saudi/",
@@ -1192,7 +1412,30 @@
         ]
       }
     ],
-    "bidi": []
+    "bidi": [],
+    "axe": [
+      {
+        "id": "label",
+        "impact": "critical",
+        "nodes": 8,
+        "help": "Form elements must have labels",
+        "targets": [
+          [
+            ".task-list-item:nth-child(1) > input"
+          ],
+          [
+            ".task-list-item:nth-child(2) > input"
+          ],
+          [
+            ".task-list-item:nth-child(3) > input"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/computer-vision-saudi-factories/",
@@ -1219,7 +1462,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/digital-transformation-sme-saudi/",
@@ -1246,7 +1494,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ecc-vs-cscc-cybersecurity-controls/",
@@ -1273,7 +1526,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/generative-ai-education-saudi/",
@@ -1300,7 +1558,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/generative-ai-governance-vs-traditional/",
@@ -1327,7 +1590,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/healthcare-ai-governance-saudi-hospitals/",
@@ -1354,7 +1622,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/hidden-ai-risks-saudi-organizations/",
@@ -1381,7 +1654,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/",
@@ -1408,7 +1686,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/iso-27001-vs-iso-42001-ai-governance/",
@@ -1435,7 +1718,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/iso-42001-saudi-implementation-guide/",
@@ -1462,7 +1750,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/nca-cybersecurity-requirements-saudi/",
@@ -1489,7 +1782,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/nca-ecc-ai-controls-guide/",
@@ -1516,7 +1814,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ndmo-data-governance-saudi/",
@@ -1543,7 +1846,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/ndmo-roles-requirements-guide/",
@@ -1570,7 +1878,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/pdpl-ai-compliance-guide/",
@@ -1597,7 +1910,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/pdpl-ai-safety/",
@@ -1624,7 +1942,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/pdpl-and-ai-saudi/",
@@ -1651,7 +1974,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/pdpl-compliance-guide-saudi-companies/",
@@ -1678,7 +2006,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/pdpl-cross-border-data-transfer-ai/",
@@ -1705,7 +2038,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/pdpl-executive-regulations-explained/",
@@ -1732,7 +2070,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/pdpl-penalties-saudi-fines/",
@@ -1759,7 +2102,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/rpa-automation-saudi-savings/",
@@ -1786,7 +2134,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/saudi-ai-landscape-sdaia-humain-allam-scai/",
@@ -1813,7 +2166,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/saudi-ai-regulators-guide/",
@@ -1840,7 +2198,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/sdaia-generative-ai-guidelines-practical-compliance/",
@@ -1867,7 +2230,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/sdaia-seven-principles-practical-guide/",
@@ -1894,7 +2262,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/shadow-ai-discovery-saudi-company/",
@@ -1921,7 +2294,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/vision-2030-ai-governance-roadmap/",
@@ -1948,7 +2326,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/blog/what-is-ai-governance-saudi-companies/",
@@ -1975,7 +2358,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/calculator/roi/",
@@ -2018,7 +2406,24 @@
         ]
       }
     ],
-    "bidi": []
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "span[data-submit-label=\"\"]"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/contact/",
@@ -2061,7 +2466,12 @@
         ]
       }
     ],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/cookie-policy/",
@@ -2088,7 +2498,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/customers/bank/",
@@ -2115,7 +2530,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/customers/hospital/",
@@ -2142,7 +2562,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/customers/",
@@ -2169,7 +2594,27 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 2,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            ".cta-actions[data-astro-cid-oelyuz2z=\"\"]:nth-child(1) > small"
+          ],
+          [
+            ".cta-actions[data-astro-cid-oelyuz2z=\"\"]:nth-child(2) > small"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/customers/pharma/",
@@ -2196,7 +2641,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/data-processing-agreement/",
@@ -2223,7 +2673,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/demo/",
@@ -2250,7 +2705,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/design/buttons/",
@@ -2398,7 +2858,47 @@
         ]
       }
     ],
-    "bidi": []
+    "bidi": [],
+    "axe": [
+      {
+        "id": "button-name",
+        "impact": "critical",
+        "nodes": 4,
+        "help": "Buttons must have discernible text",
+        "targets": [
+          [
+            ".btn--loading.btn--primary[type=\"button\"]"
+          ],
+          [
+            ".btn--outline.btn--loading[type=\"button\"]"
+          ],
+          [
+            ".btn--loading.btn--ghost[type=\"button\"]"
+          ]
+        ]
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 24,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "article:nth-child(3) > .buttons-page__variant-head > .buttons-page__variant-use"
+          ],
+          [
+            "article:nth-child(5) > .buttons-page__variant-head > .buttons-page__variant-use"
+          ],
+          [
+            "article:nth-child(6) > .buttons-page__variant-head > .buttons-page__variant-use"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/design/cards/",
@@ -2425,7 +2925,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/design/colors/",
@@ -2452,7 +2957,30 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 20,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "div[data-stop=\"50\"] > .brand-scale__meta > .brand-scale__use"
+          ],
+          [
+            "div[data-stop=\"100\"] > .brand-scale__meta > .brand-scale__use"
+          ],
+          [
+            "div[data-stop=\"200\"] > .brand-scale__meta > .brand-scale__use"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/design/forms/",
@@ -2961,7 +3489,30 @@
           }
         ]
       }
-    ]
+    ],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 4,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "section[aria-labelledby=\"textarea-heading\"] > .forms-page__demo--narrow.forms-page__demo > .form-field > .form-helper"
+          ],
+          [
+            "section[aria-labelledby=\"file-heading\"] > .forms-page__demo--narrow.forms-page__demo > .form-field > .form-helper"
+          ],
+          [
+            ".form-field:nth-child(7) > .form-helper"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/design/typography/",
@@ -2988,7 +3539,30 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 33,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "section[aria-labelledby=\"heading-hierarchy\"] > .typography-grid > article:nth-child(1) > .typography-card__meta > .typography-card__spec"
+          ],
+          [
+            "article:nth-child(1) > .typography-card__caption[lang=\"ar\"]"
+          ],
+          [
+            "section[aria-labelledby=\"heading-hierarchy\"] > .typography-grid > article:nth-child(2) > .typography-card__meta > .typography-card__spec"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/ai-audit-readiness/",
@@ -3015,7 +3589,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/ai-audit-trail/",
@@ -3042,7 +3621,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/ai-evidence-file/",
@@ -3069,7 +3653,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/ai-firewall/",
@@ -3096,7 +3685,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/ai-governance-platform/",
@@ -3123,7 +3717,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/ai-governance-saudi-arabia/",
@@ -3150,7 +3749,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/ai-risk-management/",
@@ -3177,7 +3781,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/governance-application/",
@@ -3204,7 +3813,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/human-approval-layer/",
@@ -3231,7 +3845,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/",
@@ -3258,7 +3877,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-accessibility-mobile/",
@@ -3285,7 +3909,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-api-client/",
@@ -3312,7 +3941,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-approvals/",
@@ -3339,7 +3973,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-architecture/",
@@ -3366,7 +4005,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-audit-evidence/",
@@ -3393,7 +4037,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-audit-trail/",
@@ -3476,7 +4125,12 @@
           }
         ]
       }
-    ]
+    ],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-changelog-template/",
@@ -3503,7 +4157,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-chat/",
@@ -3530,7 +4189,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-compliance/",
@@ -3557,7 +4221,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-connectors/",
@@ -3584,7 +4253,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-developer-onboarding/",
@@ -3611,7 +4285,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-evidence/",
@@ -3638,7 +4317,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-internal-linking/",
@@ -3665,7 +4349,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-nvidia-proxy/",
@@ -3692,7 +4381,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-operations-runbook/",
@@ -3719,7 +4413,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-pages/",
@@ -3746,7 +4445,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-policies/",
@@ -3773,7 +4477,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-production-vs-demo/",
@@ -3800,7 +4509,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-reports/",
@@ -3827,7 +4541,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-scenarios/",
@@ -3854,7 +4573,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-security-model/",
@@ -3942,7 +4666,12 @@
         ]
       }
     ],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-stats/",
@@ -3969,7 +4698,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/kernel-testing-checklist/",
@@ -3996,7 +4730,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/nca-ecc-ai-controls/",
@@ -4023,7 +4762,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/nca-ecc-ai-controls-mapping/",
@@ -4050,7 +4794,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/nca-ecc-ai-governance/",
@@ -4077,7 +4826,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/nca-ecc-ai-guide/",
@@ -4104,7 +4858,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/pdpl-ai-complete-guide/",
@@ -4131,7 +4890,12 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   },
   {
     "page": "/docs/pdpl-ai-governance/",
@@ -4158,6 +4922,2772 @@
       }
     ],
     "touch": [],
-    "bidi": []
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/docs/pdpl-chatgpt-data-protection/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/docs/sdaia-generative-ai-guidelines/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/docs/superpowers/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/en/cookie-policy/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "#cookie-accept"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/en/data-processing-agreement/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "#cookie-accept"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/en/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "#cookie-accept"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/en/pdpl-statement/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "#cookie-accept"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/en/privacy-policy/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "#cookie-accept"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/en/sales-deck/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "#cookie-accept"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/en/terms/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "#cookie-accept"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/events/ai-governance-day/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/events/leap-2026/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/events/webinar/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/hub/ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/hub/compliance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/hub/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/hub/security/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/hub/solutions/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/hub/use-cases/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/approvals/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/audit/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 5
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 34,
+            "h": 44,
+            "expW": 34,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn kernel-audi"
+          },
+          {
+            "tag": "button",
+            "w": 34,
+            "h": 44,
+            "expW": 34,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 34,
+            "h": 44,
+            "expW": 34,
+            "expH": 44,
+            "text": "1",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 34,
+            "h": 44,
+            "expW": 34,
+            "expH": 44,
+            "text": "2",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 34,
+            "h": 44,
+            "expW": 34,
+            "expH": 44,
+            "text": "3",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 34,
+            "h": 44,
+            "expW": 34,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn kernel-audi"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "1",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "2",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "3",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn kernel-audi"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "1",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "2",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "3",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn kernel-audi"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "1",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "2",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "3",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn kernel-audi"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "1",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "2",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "3",
+            "cls": "kernel-audit-pagination__btn"
+          },
+          {
+            "tag": "button",
+            "w": 40,
+            "h": 44,
+            "expW": 40,
+            "expH": 44,
+            "text": "",
+            "cls": "kernel-audit-pagination__btn"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/chat/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            ".btn--primary.btn[rel=\"noopener noreferrer\"]"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 1
+    },
+    "streaming": {
+      "messagesHasAriaLive": false,
+      "announcerPresent": true,
+      "announcerAriaLive": "polite"
+    }
+  },
+  {
+    "page": "/kernel/compliance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 13,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "article[data-pack-id=\"pdpl\"] > .kernel-compliance-pack__status > .kernel-compliance-pack__audit"
+          ],
+          [
+            "article[data-pack-id=\"nca_ecc\"] > .kernel-compliance-pack__status > .kernel-compliance-pack__audit"
+          ],
+          [
+            "article[data-pack-id=\"sfda\"] > .kernel-compliance-pack__status > .kernel-compliance-pack__audit"
+          ]
+        ]
+      },
+      {
+        "id": "svg-img-alt",
+        "impact": "serious",
+        "nodes": 1,
+        "help": "<svg> elements with an img role must have alternative text",
+        "targets": [
+          [
+            ".kernel-compliance-map__svg"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/connectors/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "aria-prohibited-attr",
+        "impact": "serious",
+        "nodes": 8,
+        "help": "Elements must only use permitted ARIA attributes",
+        "targets": [
+          [
+            "article[data-connector-id=\"sap\"] > .kernel-connector-card__header > .kernel-connector-card__icon-block > .kernel-connector-card__status-dot--connected.kernel-connector-card__status-dot[aria-label=\"الحالة: connected\"]"
+          ],
+          [
+            "article[data-connector-id=\"oracle-ebs\"] > .kernel-connector-card__header > .kernel-connector-card__icon-block > .kernel-connector-card__status-dot--connected.kernel-connector-card__status-dot[aria-label=\"الحالة: connected\"]"
+          ],
+          [
+            "article[data-connector-id=\"dynamics365\"] > .kernel-connector-card__header > .kernel-connector-card__icon-block > .kernel-connector-card__status-dot--connected.kernel-connector-card__status-dot[aria-label=\"الحالة: connected\"]"
+          ]
+        ]
+      },
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 15,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "article[data-connector-id=\"sap\"] > .kernel-connector-card__status-row > .kernel-connector-card__uptime"
+          ],
+          [
+            "article[data-connector-id=\"sap\"] > .kernel-connector-card__metrics > .kernel-connector-card__metric:nth-child(1) > .kernel-connector-card__metric-label"
+          ],
+          [
+            "article[data-connector-id=\"oracle-ebs\"] > .kernel-connector-card__status-row > .kernel-connector-card__uptime"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/evidence/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 5
+      },
+      {
+        "bp": 375,
+        "overflow": 5
+      },
+      {
+        "bp": 544,
+        "overflow": 5
+      },
+      {
+        "bp": 768,
+        "overflow": 5
+      },
+      {
+        "bp": 1024,
+        "overflow": 3
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/offline/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/policies/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 3,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "div[data-policy-id=\"pr_sdaia_genai\"] > .kernel-policies-table__cell[role=\"cell\"]:nth-child(6) > .inactive.kernel-policies-table__status"
+          ],
+          [
+            "div[data-policy-id=\"pr_iso42001_transparency\"] > .kernel-policies-table__cell[role=\"cell\"]:nth-child(6) > .inactive.kernel-policies-table__status"
+          ],
+          [
+            ".kernel-ai-assistant__cta-btn"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/reports/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 34,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            ".kernel-report-row--ready[data-type=\"compliance\"][data-status=\"ready\"]:nth-child(1) > .kernel-report-row__info > .kernel-report-row__meta > span:nth-child(2)"
+          ],
+          [
+            ".kernel-report-row--ready[data-type=\"compliance\"][data-status=\"ready\"]:nth-child(1) > .kernel-report-row__info > .kernel-report-row__meta > span:nth-child(4)"
+          ],
+          [
+            ".kernel-report-row--ready[data-type=\"compliance\"][data-status=\"ready\"]:nth-child(1) > .kernel-report-row__info > .kernel-report-row__meta > span:nth-child(6)"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/scenarios/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 13,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "article[data-category=\"legal\"][data-risk=\"critical\"][data-scenario-id=\"pdpl-id-leak\"] > .kernel-scenario-card__footer > .kernel-scenario-card__risk[aria-label=\"مستوى المخاطر: حرج\"]"
+          ],
+          [
+            "article[data-risk=\"minimal\"][data-sector=\"government\"][data-scenario-id=\"procurement-contract\"] > .kernel-scenario-card__footer > .kernel-scenario-card__risk[aria-label=\"مستوى المخاطر: منخفض جداً\"]"
+          ],
+          [
+            "article[data-category=\"healthcare\"][data-risk=\"critical\"][data-scenario-id=\"sfda-medical-export\"] > .kernel-scenario-card__footer > .kernel-scenario-card__risk[aria-label=\"مستوى المخاطر: حرج\"]"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/kernel/stats/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/newsletter/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/offline/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/partners/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/pdpl-statement/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/pricing/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [
+      {
+        "id": "color-contrast",
+        "impact": "serious",
+        "nodes": 4,
+        "help": "Elements must meet minimum color contrast ratio thresholds",
+        "targets": [
+          [
+            "a[data-position=\"offer_detail_pilot\"]"
+          ],
+          [
+            "a[data-position=\"offer_detail_enterprise\"]"
+          ],
+          [
+            "a[data-cta=\"pilot_request\"]"
+          ]
+        ]
+      }
+    ],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/privacy-cookies/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/privacy-policy/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/referral/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          }
+        ]
+      }
+    ],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/sales-deck/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/services/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/sitemap/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/ai-audit-trail/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/ai-evidence-file/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/ai-firewall/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/ai-governance-platform/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/ai-risk-classification/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/ai-use-case-discovery/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/banking-ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/banking-ai-governance/khobar/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/banking-ai-governance/riyadh/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/continuous-ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/government-ai-governance/dammam/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/government-ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/government-ai-governance/madinah/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/healthcare-ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/healthcare-ai-governance/jeddah/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/healthcare-ai-governance/mecca/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/human-approval-layer/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/manufacturing-ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/solutions/policy-to-control-mapping/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/terms/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/thank-you/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
+  },
+  {
+    "page": "/trust/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": [],
+    "axe": [],
+    "reducedMotion": {
+      "animatingCount": 0
+    },
+    "streaming": null
   }
 ]

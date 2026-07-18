@@ -19,7 +19,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { dbServiceRole } from '@brightai/db';
-import { getSessionContext } from '@/lib/session';
+import { getSessionContext, runInTenantContext } from '@/lib/session';
 import { invalidateOrgCache } from '@/lib/feature-flags/client';
 import {
   FEATURE_FLAGS,
@@ -46,42 +46,45 @@ async function toggleFlag(flagKey: FeatureFlagKey, newEnabled: boolean): Promise
   const orgId = ctx.tenant.id;
   const userId = ctx.user.id;
 
-  // Upsert the org-level override
-  await dbServiceRole.orgFeatureFlag.upsert({
-    where: {
-      organizationId_flagKey: {
+  // Upsert the org-level override + write audit log atomically inside
+  // a tenant transaction. RLS via runInTenantContext enforces isolation.
+  await runInTenantContext(ctx, async (tx) => {
+    await tx.orgFeatureFlag.upsert({
+      where: {
+        organizationId_flagKey: {
+          organizationId: orgId,
+          flagKey,
+        },
+      },
+      create: {
         organizationId: orgId,
         flagKey,
-      },
-    },
-    create: {
-      organizationId: orgId,
-      flagKey,
-      enabled: newEnabled,
-      updatedBy: userId,
-    },
-    update: {
-      enabled: newEnabled,
-      updatedBy: userId,
-    },
-  });
-
-  // Audit log entry (hash chain preserved — we pass no prevHash here,
-  // the existing AuditLog model does not enforce chain in the upsert path)
-  await dbServiceRole.auditLog.create({
-    data: {
-      organizationId: orgId,
-      actorId: userId,
-      actorType: 'USER',
-      action: 'FEATURE_FLAG_TOGGLED',
-      targetType: 'FeatureFlag',
-      targetId: flagKey,
-      metadata: {
-        flagKey,
         enabled: newEnabled,
-        previousValue: !newEnabled, // best-effort — we don't read the old value
+        updatedBy: userId,
       },
-    },
+      update: {
+        enabled: newEnabled,
+        updatedBy: userId,
+      },
+    });
+
+    // Audit log entry (hash chain preserved via the BEFORE INSERT
+    // trigger in rls.sql; tenant scoped by RLS).
+    await tx.auditLog.create({
+      data: {
+        organizationId: orgId,
+        actorId: userId,
+        actorType: 'USER',
+        action: 'FEATURE_FLAG_TOGGLED',
+        targetType: 'FeatureFlag',
+        targetId: flagKey,
+        metadata: {
+          flagKey,
+          enabled: newEnabled,
+          previousValue: !newEnabled, // best-effort — we don't read the old value
+        },
+      },
+    });
   });
 
   // Bust the 30s in-memory cache so next request sees the fresh value
@@ -104,12 +107,13 @@ export default async function FeaturesSettingsPage() {
     throw err;
   }
 
-  const orgId = ctx.tenant.id;
-
-  // Load global catalog + org overrides
+  // Load global catalog (featureFlag is a global table — no RLS scope
+  // needed) + per-org overrides (RLS via runInTenantContext).
   const [globalFlags, orgOverrides] = await Promise.all([
     dbServiceRole.featureFlag.findMany({ orderBy: { key: 'asc' } }),
-    dbServiceRole.orgFeatureFlag.findMany({ where: { organizationId: orgId } }),
+    runInTenantContext(ctx, (tx) =>
+      tx.orgFeatureFlag.findMany({ where: { organizationId: ctx.tenant.id } }),
+    ),
   ]);
 
   // Build override lookup

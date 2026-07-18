@@ -19,8 +19,7 @@
 
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionPermission } from '@/lib/session';
+import { requireSessionPermission, runInTenantContext } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -49,8 +48,9 @@ export async function GET(req: NextRequest) {
   const from = fromStr ? new Date(fromStr) : undefined;
   const to = toStr ? new Date(toStr) : undefined;
 
-  // 3. Build query — always filter by organizationId (RLS).
-  const where: Record<string, unknown> = { organizationId: ctx.tenant.id };
+  // 3. Build query — tenant isolation is enforced by RLS via
+  //    runInTenantContext (no manual organizationId filter needed).
+  const where: Record<string, unknown> = {};
   if (action) where.action = action;
   if (from || to) {
     where.createdAt = {};
@@ -58,29 +58,31 @@ export async function GET(req: NextRequest) {
     if (to)   (where.createdAt as Record<string, Date>).lte = to;
   }
 
-  // 4. Fetch entries + total count.
-  const [entries, total] = await Promise.all([
-    dbServiceRole.auditLog.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-      skip: offset,
-      select: {
-        id: true,
-        actorId: true,
-        actorType: true,
-        action: true,
-        targetType: true,
-        targetId: true,
-        ipAddress: true,
-        metadata: true,
-        prevHash: true,
-        hash: true,
-        createdAt: true,
-      },
-    }),
-    dbServiceRole.auditLog.count({ where }),
-  ]);
+  // 4. Fetch entries + total count inside a tenant transaction.
+  const [entries, total] = await runInTenantContext(ctx, (tx) =>
+    Promise.all([
+      tx.auditLog.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: limit,
+        skip: offset,
+        select: {
+          id: true,
+          actorId: true,
+          actorType: true,
+          action: true,
+          targetType: true,
+          targetId: true,
+          ipAddress: true,
+          metadata: true,
+          prevHash: true,
+          hash: true,
+          createdAt: true,
+        },
+      }),
+      tx.auditLog.count({ where }),
+    ]),
+  );
 
   return NextResponse.json({
     entries: entries.map((e) => ({

@@ -13,8 +13,7 @@
 
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { cancelSubscriptionAtPeriodEnd, isBillingConfigured } from '@/lib/billing/stripe';
 
 export const dynamic = 'force-dynamic';
@@ -37,15 +36,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Billing is not configured.' }, { status: 503 });
   }
 
-  // 2. Find the active subscription row
-  const sub = await dbServiceRole.subscription.findFirst({
-    where: {
-      organizationId: ctx.tenant.id,
-      status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
-    },
-    orderBy: { createdAt: 'desc' },
-    select: { stripeSubscriptionId: true, currentPeriodEnd: true, cancelAtPeriodEnd: true },
-  });
+  // 2. Find the active subscription row. RLS via runInTenantContext.
+  const sub = await runInTenantContext(ctx, (tx) =>
+    tx.subscription.findFirst({
+      where: {
+        organizationId: ctx.tenant.id,
+        status: { in: ['ACTIVE', 'TRIALING', 'PAST_DUE'] },
+      },
+      orderBy: { createdAt: 'desc' },
+      select: { stripeSubscriptionId: true, currentPeriodEnd: true, cancelAtPeriodEnd: true },
+    }),
+  );
   if (!sub) {
     return NextResponse.json(
       { error: 'No active subscription to cancel.' },

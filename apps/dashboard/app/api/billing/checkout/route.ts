@@ -15,8 +15,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { createCheckoutSession, isBillingConfigured, BillingNotConfiguredError } from '@/lib/billing/stripe';
 import { getPlan } from '@/lib/billing/plans';
 import type { BillingPlan } from '@brightai/db';
@@ -75,11 +74,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 5. Load the full organization (need stripeCustomerId)
-  const org = await dbServiceRole.organization.findUnique({
-    where: { id: ctx.tenant.id },
-    select: { id: true, slug: true, name: true, nameAr: true, stripeCustomerId: true },
-  });
+  // 5. Load the full organization (need stripeCustomerId). RLS via
+  //    runInTenantContext enforces isolation.
+  const org = await runInTenantContext(ctx, (tx) =>
+    tx.organization.findUnique({
+      where: { id: ctx.tenant.id },
+      select: { id: true, slug: true, name: true, nameAr: true, stripeCustomerId: true },
+    }),
+  );
   if (!org) {
     return NextResponse.json({ error: 'Organization not found' }, { status: 404 });
   }

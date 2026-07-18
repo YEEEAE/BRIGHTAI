@@ -156,15 +156,25 @@ small:has(button),
   opacity: 1;
 }
 
-a:not(.btn) {
+a:not(.btn):not(.btn--primary):not(.btn--secondary):not(.glow-btn) {
   color: var(--interactive-primary);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-a:not(.btn):hover {
+a:not(.btn):not(.btn--primary):not(.btn--secondary):not(.glow-btn):hover {
   color: var(--interactive-hover);
   text-decoration: underline;
+}
+
+/* A11Y-COLOR (2026-07-18): أزرار .btn--primary لازم نصها أبيض (ليس
+   --interactive-primary) عشان تبيض WCAG AA 4.5:1 على --brand-600.
+   نضيفها هنا (نفس الملف اللي يغلب components.css بسبب الـ scoped
+   [data-astro-cid]) عشان نتأكد إن اللون الأبيض يفوز. */
+a.btn--primary,
+a.glow-btn,
+a.btn--secondary {
+  color: #ffffff !important;
 }
 
 a:focus-visible {

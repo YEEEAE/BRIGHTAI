@@ -5,24 +5,23 @@
  * approval queue + filters + drawer.
  */
 
-import { getSessionContext } from '@/lib/session';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionPermission } from '@/lib/session';
+import { runInTenantContext, requireSessionPermission } from '@/lib/session';
 import { ROLE_LABELS_AR } from '@brightai/config';
 import styles from './page.module.css';
 
 export default async function RequestsPage() {
   const ctx = await requireSessionPermission('request:read:own');
 
-  const requests = await dbServiceRole.aIRequest.findMany({
-    where: { organizationId: ctx.tenant.id },
-    orderBy: { createdAt: 'desc' },
-    take: 50,
-    include: {
-      requestedBy: { select: { fullName: true, fullNameAr: true, email: true } },
-      reviewedBy: { select: { fullName: true, fullNameAr: true, email: true } },
-    },
-  });
+  const requests = await runInTenantContext(ctx, (tx) =>
+    tx.aIRequest.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 50,
+      include: {
+        requestedBy: { select: { fullName: true, fullNameAr: true, email: true } },
+        reviewedBy: { select: { fullName: true, fullNameAr: true, email: true } },
+      },
+    }),
+  );
 
   return (
     <div className={styles.root}>

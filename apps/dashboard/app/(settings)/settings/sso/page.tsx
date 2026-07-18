@@ -15,8 +15,7 @@
  *   3. Phase 2: IdP metadata fetch + test flow.
  */
 
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { resolveFlags } from '@/lib/feature-flags/client';
 import styles from './page.module.css';
 import { configureSsoAction, disableSsoAction } from './actions';
@@ -70,10 +69,12 @@ export default async function SsoSettingsPage({
     );
   }
 
-  // Load existing connection.
-  const conn = await dbServiceRole.samlConnection.findUnique({
-    where: { organizationId: ctx.tenant.id },
-  });
+  // Load existing connection. RLS via runInTenantContext enforces isolation.
+  const conn = await runInTenantContext(ctx, (tx) =>
+    tx.samlConnection.findUnique({
+      where: { organizationId: ctx.tenant.id },
+    }),
+  );
 
   return (
     <div className={styles.root}>

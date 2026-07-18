@@ -12,8 +12,7 @@
 
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { dbServiceRole } from '@brightai/db';
-import { requireSessionRoleAtLeast } from '@/lib/session';
+import { runInTenantContext, requireSessionRoleAtLeast } from '@/lib/session';
 import { createCustomerPortalSession, isBillingConfigured } from '@/lib/billing/stripe';
 
 export const dynamic = 'force-dynamic';
@@ -36,11 +35,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Billing is not configured.' }, { status: 503 });
   }
 
-  // 2. Resolve org with stripeCustomerId
-  const org = await dbServiceRole.organization.findUnique({
-    where: { id: ctx.tenant.id },
-    select: { id: true, stripeCustomerId: true },
-  });
+  // 2. Resolve org with stripeCustomerId. RLS via runInTenantContext.
+  const org = await runInTenantContext(ctx, (tx) =>
+    tx.organization.findUnique({
+      where: { id: ctx.tenant.id },
+      select: { id: true, stripeCustomerId: true },
+    }),
+  );
   if (!org?.stripeCustomerId) {
     return NextResponse.json(
       { error: 'No Stripe customer for this organization. Complete checkout first.' },
