@@ -176,6 +176,11 @@ image: "/images/og/brightai-og-1200x630.png"
 <td data-label="الكلمة المستهدفة">إطار حوكمة AI السعودي</td>
 </tr>
 <tr>
+<td data-label="الصفحة"><a href="/calculator/roi/">حاسبة عائد حوكمة AI</a></td>
+<td data-label="الوظيفة">تقدير سريع للوفر السنوي وعائد الاستثمار المتوقع من تطبيق حوكمة AI حسب حجم الشركة.</td>
+<td data-label="الكلمة المستهدفة">عائد الاستثمار</td>
+</tr>
+<tr>
 <td data-label="الصفحة"><a href="/docs/sdaia-generative-ai-guidelines/">إرشادات سدايا للذكاء الاصطناعي التوليدي</a></td>
 <td data-label="الوظيفة">إرشادات سدايا العملية لتطبيق حوكمة GenAI، متوافقة مع ISO 42001.</td>
 <td data-label="الكلمة المستهدفة">إرشادات سدايا</td>

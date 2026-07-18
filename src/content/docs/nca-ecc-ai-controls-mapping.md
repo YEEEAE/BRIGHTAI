@@ -139,7 +139,7 @@ related: ["nca-ecc-ai-controls","nca-ecc-ai-governance","nca-ecc-ai-guide"]
 
   <section class="action-cta">
     <h2 id="section-9">حوّل استخدام AI إلى مسار قابل للمراجعة أمنيًا</h2>
-    <p>BrightAI يساعدك على تشغيل امتثال الذكاء الاصطناعي NCA بطريقة عملية: حوكمة، Firewall، سجل تدقيق، ملف أدلة، وموافقات بشرية للحالات الحساسة.</p>
+    <p>BrightAI يساعدك على تشغيل امتثال الذكاء الاصطناعي NCA بطريقة عملية: حوكمة، Firewall، سجل تدقيق، ملف أدلة، وموافقات بشرية للحالات الحساسة. للشرح التنفيذي لكيفية قراءة الضوابط وتطبيقها على AI، ابدأ بـ <a href="/blog/nca-ecc-ai-controls-guide/">دليل ضوابط NCA ECC للذكاء الاصطناعي</a>.</p>
     <a class="action-btn" href="/solutions/ai-governance-platform/">استكشف منصة الحوكمة</a>
     <a class="action-btn secondary" href="/contact/">احجز جلسة تقييم</a>
   </section>

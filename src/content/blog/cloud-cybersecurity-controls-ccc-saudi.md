@@ -193,6 +193,7 @@ image: "/images/og/brightai-og-1200x630.png"
 **روابط ذات صلة**:
 - [الضوابط الأساسية للأمن السيبراني ECC — القائمة الكاملة](/blog/nca-cybersecurity-requirements-saudi/) — أساس الضوابط السعودية
 - [ECC مقابل DCC — أي الضوابط تنطبق على منشأتك؟](/blog/ecc-vs-cscc-cybersecurity-controls/) — المقارنة المفصلة
+- [دليل تطبيق ضوابط NCA ECC على الذكاء الاصطناعي](/blog/nca-ecc-ai-controls-guide/) — ربط الضوابط بسياسات وتشغيل AI
 - [نقل البيانات الشخصية خارج السعودية](/blog/pdpl-cross-border-data-transfer-ai/) — تقاطع السحابة مع PDPL
 - [منصة BrightAI لحوكمة الذكاء الاصطناعي](/solutions/ai-governance-platform/) — الجدار + السجل + التصنيف
 - [جدار حماية الذكاء الاصطناعي](/solutions/ai-firewall/) — حماية واجهات النموذج السحابي

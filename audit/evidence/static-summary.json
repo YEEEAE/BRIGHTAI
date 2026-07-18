@@ -1,26 +1,14 @@
 {
-  "generatedAt": "2026-07-17T23:33:00.970Z",
-  "pages": 190,
+  "generatedAt": "2026-07-18T15:29:04.962Z",
+  "pages": 193,
   "redirects": 207,
-  "edges": 23662,
+  "edges": 23985,
   "brokenInternalEdges": 7,
-  "issues": 2,
+  "issues": 1,
   "issueCounts": {
     "Medium": [
       {
-        "id": "SEC-BLANK-1",
-        "category": "SEC",
-        "severity": "Medium",
-        "status": "open",
-        "url": "/blog/pdpl-and-ai-saudi/",
-        "file": "dist/client/blog/pdpl-and-ai-saudi/index.html",
-        "selector": "",
-        "evidence": "1 روابط target=_blank بدون noopener",
-        "reproduction": "افتح /blog/pdpl-and-ai-saudi/ وافحص HTML المبني",
-        "recommendation": "راجع معيار الفحص وأصلح المصدر ثم أعد build."
-      },
-      {
-        "id": "SEO-H1-2",
+        "id": "SEO-H1-1",
         "category": "SEO",
         "severity": "Medium",
         "status": "open",

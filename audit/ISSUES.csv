@@ -1,3 +1,2 @@
 id,category,severity,status,url,file,selector,evidence,reproduction,recommendation
-"SEC-BLANK-1","SEC","Medium","open","/blog/pdpl-and-ai-saudi/","dist/client/blog/pdpl-and-ai-saudi/index.html","","1 روابط target=_blank بدون noopener","افتح /blog/pdpl-and-ai-saudi/ وافحص HTML المبني","راجع معيار الفحص وأصلح المصدر ثم أعد build."
-"SEO-H1-2","SEO","Medium","open","/design/typography/","dist/client/design/typography/index.html","","عدد H1 هو 2","افتح /design/typography/ وافحص HTML المبني","راجع معيار الفحص وأصلح المصدر ثم أعد build."
+"SEO-H1-1","SEO","Medium","open","/design/typography/","dist/client/design/typography/index.html","","عدد H1 هو 2","افتح /design/typography/ وافحص HTML المبني","راجع معيار الفحص وأصلح المصدر ثم أعد build."

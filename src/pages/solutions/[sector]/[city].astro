@@ -52,24 +52,36 @@ const whatsappMsg = encodeURIComponent(`مرحباً، أريد استفسار �
 // Schema.astro from the layout's `breadcrumbs` prop. We only emit the
 // page-specific LocalBusiness node here to avoid duplicate @id warnings
 // (verified via scripts/_check-duplicate-schema-ids.mjs).
+// BAI-SEO-003-S6 (2026-07-18): SAB honesty — LocalBusiness type is only
+// valid for Riyadh (the actual company HQ, 6913 المبارك بن فضالة، حي
+// الفيحاء، 14254). For the other 5 cities (khobar, dammam, jeddah,
+// mecca, madinah) we emit ProfessionalService + Service — service-area
+// business pattern. We keep geo + serviceArea on all cities (factual
+// reach) but only Riyadh carries a `address` block, and its address is
+// the real HQ street, NOT a fabricated branch office.
+const isHQ = loc.cityEn === 'Riyadh';
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["LocalBusiness", "Service"],
-      "@id": loc.canonical + "#localbusiness",
+      "@type": isHQ ? ["LocalBusiness", "Service"] : ["ProfessionalService", "Service"],
+      "@id": loc.canonical + (isHQ ? "#localbusiness" : "#service"),
       "name": `BrightAI — ${sector.h1}`,
       "description": loc.description,
       "url": loc.canonical,
       "telephone": "+966538229013",
       "image": "https://brightai.site/assets/images/og/og-solutions.webp",
       "priceRange": "$$$",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": loc.cityAr,
-        "addressRegion": loc.cityEn,
-        "addressCountry": "SA"
-      },
+      ...(isHQ ? {
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+          "addressLocality": "الرياض",
+          "addressRegion": "منطقة الرياض",
+          "postalCode": "14254",
+          "addressCountry": "SA"
+        }
+      } : {}),
       "geo": {
         "@type": "GeoCoordinates",
         "latitude": loc.geoLat,

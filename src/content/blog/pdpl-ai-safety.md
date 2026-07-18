@@ -224,12 +224,13 @@ image: "/images/og/brightai-og-1200x630.png"
 <li><a class="content-link" href="/docs/pdpl-ai-governance/">راجع دليل حوكمة PDPL والذكاء الاصطناعي</a></li>
 <li><a class="content-link" href="/docs/ai-firewall/">افهم دور AI Firewall في منع تسرب البيانات</a></li>
 <li><a class="content-link" href="/blog/ai-governance/">اقرأ مقال حوكمة الذكاء الاصطناعي المسؤول</a></li>
+<li><a class="content-link" href="/docs/pdpl-ai-complete-guide/">الدليل الشامل لتطبيق PDPL مع الذكاء الاصطناعي</a></li>
 </ul>
 </section>
 
 <!-- Call To Action (CTA) -->
 <section class="action-cta">
 <h3>هل أنت جاهز لتأمين خوارزميات شركتك والتوافق مع نظام PDPL؟</h3>
-<p>تجنب الغرامات المالية ومخاطر تسرب البيانات الحساسة اليوم. دع خبراء BrightAI يساعدونك في بناء بيئة عمل ممتثلة تماماً لأحدث التشريعات السعودية.</p>
+<p>تجنب الغرامات المالية ومخاطر تسرب البيانات الحساسة اليوم. دع خبراء BrightAI يساعدونك في بناء بيئة عمل ممتثلة تماماً لأحدث التشريعات السعودية. للاطّلاع على النص التنظيمي الكامل، راجع <a href="/docs/pdpl-ai-complete-guide/">دليل PDPL و AI الشامل</a> و<a href="/pdpl-statement/">بيان PDPL الرسمي</a> لـ BrightAI.</p>
 <a href="/contact/" class="action-btn">احصل على استشارة مجانية لحوكمة الـ AI الآن</a>
 </section>

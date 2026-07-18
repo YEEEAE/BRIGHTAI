@@ -12,7 +12,22 @@ import {
 } from "./seo-url-map.mjs";
 import { extractCanonicalHref, hasNoindexDirective } from "./sitemap-audit-utils.mjs";
 
-const ROOT = process.cwd();
+const args = process.argv.slice(2);
+function getArg(name, fallback) {
+  const idx = args.findIndex((arg) => arg === `--${name}` || arg.startsWith(`--${name}=`));
+  if (idx === -1) return fallback;
+  const token = args[idx];
+  if (token.includes("=")) return token.split("=", 2)[1];
+  const next = args[idx + 1];
+  return next && !next.startsWith("--") ? next : fallback;
+}
+
+// Allow override so the script can be pointed at the built site
+// (e.g. --source dist/client) instead of the project root, which only
+// holds legacy 500.html and report artifacts. Default = process.cwd()
+// for backward compatibility.
+const ROOT = path.resolve(getArg("source", process.cwd()));
+const SITEMAP_PATH = path.resolve(getArg("sitemap", path.join(ROOT, "sitemap.xml")));
 const BASE_URL = "https://brightai.site";
 const REPORT_DIR = path.join(ROOT, "reports", "internal-links");
 const REPORT_JSON = path.join(REPORT_DIR, "full-inventory.json");
@@ -28,7 +43,6 @@ const IGNORE_DIRS = new Set([
   "reports",
   "components",
   "tmp",
-  "dist",
   "build",
   "coverage",
   ".render-static",
@@ -162,7 +176,7 @@ function isOwnerDecision(relPath) {
 
 async function readSitemapUrls() {
   try {
-    const xml = await fs.readFile(path.join(ROOT, "sitemap.xml"), "utf8");
+    const xml = await fs.readFile(SITEMAP_PATH, "utf8");
     return new Set([...xml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map((match) => normalizeSiteUrl(match[1], BASE_URL)).filter(Boolean));
   } catch {
     return new Set();
@@ -554,6 +568,12 @@ async function auditOnly() {
 }
 
 const mode = process.argv.includes("--fix") ? "fix" : "audit";
+const verbose = process.argv.includes("--verbose") || process.argv.includes("-v");
+if (verbose) {
+  console.log(`[internal-linking-architecture] source=${ROOT}`);
+  console.log(`[internal-linking-architecture] sitemap=${SITEMAP_PATH}`);
+  console.log(`[internal-linking-architecture] mode=${mode}`);
+}
 if (mode === "fix") {
   const result = await applyArchitecture();
   console.log(`Updated internal linking architecture in ${result.changedFiles.length} files.`);

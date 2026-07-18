@@ -1,0 +1,153 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["Organization", "NGO"],
+      "@id": "https://brightai.site/#organization",
+      "name": "BrightAI",
+      "alternateName": "برايت أيه آي",
+      "legalName": "BrightAI",
+      "url": "https://brightai.site",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://brightai.site/assets/images/logo.png",
+        "width": 200,
+        "height": 55,
+        "caption": "شعار BrightAI"
+      },
+      "description": "BrightAI شركة سعودية متخصصة في حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات في السعودية — Saudi AI Safety OS.",
+      "foundingDate": "2025",
+      "founder": {
+        "@type": "Person",
+        "@id": "https://brightai.site/#founder",
+        "name": "يزيد",
+        "jobTitle": "المؤسس والمدير التنفيذي",
+        "worksFor": { "@id": "https://brightai.site/#organization" },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "الرياض",
+          "addressCountry": "SA"
+        },
+        "sameAs": [
+          "https://www.linkedin.com/in/yazeed-brightai"
+        ]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+        "addressLocality": "الرياض",
+        "addressRegion": "منطقة الرياض",
+        "postalCode": "14254",
+        "addressCountry": "SA"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+966538229013",
+          "contactType": "customer support",
+          "contactOption": "WhatsApp",
+          "url": "https://wa.me/966538229013",
+          "areaServed": "SA",
+          "availableLanguage": ["Arabic", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "email": "yazeed1job@gmail.com",
+          "contactType": "technical support",
+          "areaServed": "SA",
+          "availableLanguage": ["Arabic", "English"]
+        }
+      ],
+      "areaServed": [
+        { "@type": "Country", "name": "المملكة العربية السعودية" },
+        { "@type": "City", "name": "الرياض" },
+        { "@type": "City", "name": "جدة" },
+        { "@type": "City", "name": "الدمام" },
+        { "@type": "City", "name": "الخبر" },
+        { "@type": "City", "name": "مكة المكرمة" },
+        { "@type": "City", "name": "المدينة المنورة" }
+      ],
+      "sameAs": [
+        "https://linkedin.com/company/brightai-site",
+        "https://x.com/BrightAISite",
+        "https://www.youtube.com/@BrightAiSaudi",
+        "https://www.tiktok.com/@bright1ai",
+        "https://github.com/YEEEAE/BRIGHTAI",
+        "https://crunchbase.com/organization/brightai"
+      ],
+      "knowsAbout": [
+        "الذكاء الاصطناعي",
+        "AI Governance",
+        "AI Safety",
+        "PDPL Compliance",
+        "NCA ECC Controls",
+        "SDAIA Generative AI Guidelines",
+        "ISO/IEC 42001",
+        "ISO/IEC 27001",
+        "SFDA Medical Quality",
+        "ZATCA",
+        "SAMA",
+        "حوكمة الذكاء الاصطناعي في السعودية"
+      ],
+      "knowsLanguage": ["ar-SA", "en-SA"],
+      "slogan": "Saudi AI Safety OS",
+      "brand": {
+        "@type": "Brand",
+        "name": "BrightAI",
+        "slogan": "Saudi AI Safety OS"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://brightai.site/#website",
+      "url": "https://brightai.site",
+      "name": "BrightAI",
+      "alternateName": "برايت أيه آي",
+      "publisher": { "@id": "https://brightai.site/#organization" },
+      "inLanguage": ["ar-SA", "en-SA"]
+    },
+    {
+      "@type": ["LocalBusiness", "ProfessionalService"],
+      "@id": "https://brightai.site/#localbusiness-riyadh",
+      "name": "BrightAI — حوكمة AI في الرياض",
+      "description": "مكتب BrightAI الرئيسي في الرياض — حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات السعودية. متوافق مع PDPL وNCA ECC. لا يُعد استشارة قانونية.",
+      "url": "https://brightai.site",
+      "telephone": "+966538229013",
+      "image": "https://brightai.site/assets/images/og/brightai-og-1200x630.png",
+      "priceRange": "$$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+        "addressLocality": "الرياض",
+        "addressRegion": "منطقة الرياض",
+        "postalCode": "14254",
+        "addressCountry": "SA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 24.7136,
+        "longitude": 46.6753
+      },
+      "areaServed": [
+        { "@type": "Country", "name": "المملكة العربية السعودية" },
+        { "@type": "City", "name": "الرياض" },
+        { "@type": "City", "name": "جدة" },
+        { "@type": "City", "name": "الدمام" },
+        { "@type": "City", "name": "الخبر" },
+        { "@type": "City", "name": "مكة المكرمة" },
+        { "@type": "City", "name": "المدينة المنورة" }
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+          "opens": "08:00",
+          "closes": "17:00"
+        }
+      ],
+      "currenciesAccepted": "SAR",
+      "paymentAccepted": "Cash, Credit Card, Bank Transfer",
+      "parentOrganization": { "@id": "https://brightai.site/#organization" }
+    }
+  ]
+}

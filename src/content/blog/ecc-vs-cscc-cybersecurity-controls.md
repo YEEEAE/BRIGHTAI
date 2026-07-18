@@ -138,7 +138,7 @@ image: "/images/og/brightai-og-1200x630.png"
 <li><strong>أجرِ Gap Assessment:</strong> قارن وضعك الحالي مع ECC (114 ضابط) وCSCC (32 ضابط) إذا كنت في القطاعات الحساسة.</li>
 <li><strong>طبّق الأدوات التشغيلية:</strong> ابدأ بـ <a href="/solutions/ai-firewall/">AI Firewall</a> و<a href="/solutions/ai-audit-trail/">Audit Trail</a> كطبقات أساسية، ثم أضف <a href="/solutions/ai-risk-classification/">Risk Classification</a> و<a href="/solutions/human-approval-layer/">Human Approval Layer</a> للقرارات المؤثرة.</li>
 </ol>
-<p>المنشآت التي تطبق ECC وCSCC عبر أدوات تشغيلية (مثل <a href="/solutions/ai-governance-platform/">منصة BrightAI</a>) توفر 30-40% من الجهد مقارنة بالتطبيق اليدوي، وتثبت الامتثال بشكل قابل للمراجعة من NCA في أي وقت.</p>
+<p>المنشآت التي تطبق ECC وCSCC عبر أدوات تشغيلية (مثل <a href="/solutions/ai-governance-platform/">منصة BrightAI</a>) توفر 30-40% من الجهد مقارنة بالتطبيق اليدوي، وتثبت الامتثال بشكل قابل للمراجعة من NCA في أي وقت. للتفصيل العملي على AI تحديداً، ابدأ بـ <a href="/blog/nca-ecc-ai-controls-guide/">دليل ضوابط NCA ECC للذكاء الاصطناعي</a> الذي يربط كل ضابط بسياسة تشغيلية.</p>
 </section>
 
 <section>
