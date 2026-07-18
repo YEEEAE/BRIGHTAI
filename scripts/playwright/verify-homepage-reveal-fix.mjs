@@ -20,7 +20,7 @@ import { chromium } from 'playwright';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-const URL = process.env.URL || 'http://127.0.0.1:4321/';
+const URL = process.env.URL || 'http://localhost:4321/';
 const OUT = '/Users/yzydalshmry/Desktop/BRIGHTAI/download/qa/homepage-reveal-fix';
 
 const PROBLEM_TITLES = [
@@ -53,9 +53,17 @@ page.on('pageerror', (err) => {
 const response = await page.goto(URL, { waitUntil: 'networkidle', timeout: 30_000 });
 const status = response?.status() ?? 0;
 
-// Wait for scroll-reveal observer to reveal cards (IntersectionObserver fires
-// immediately for above-viewport elements after initReveal runs on astro:page-load).
-await page.waitForTimeout(1200);
+// Wait for scroll-reveal observer to be initialized.
+await page.waitForTimeout(800);
+
+// Scroll to the problem section so the IntersectionObserver fires for the
+// 6 feature cards (they start below the fold after the hero + citability +
+// TL;DR aside blocks).
+await page.evaluate(() => {
+  const el = document.getElementById('problem');
+  if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' });
+});
+await page.waitForTimeout(1500);
 
 const cards = await page.$$eval('#problem .feature-card', (els) =>
   els.map((el) => {
@@ -73,10 +81,7 @@ const footerRendered = await page.$('footer.footer') !== null;
 const footerText = await page.$eval('footer.footer', (el) => el.textContent?.length || 0).catch(() => 0);
 
 await page.screenshot({ path: join(OUT, 'homepage-full.png'), fullPage: true });
-await page.screenshot({ path: join(OUT, 'problem-section.png'), clip: await page.$eval('#problem', (el) => {
-  const r = el.getBoundingClientRect();
-  return { x: r.x, y: r.y, width: r.width, height: r.height };
-}).catch(() => ({ x: 0, y: 0, width: 1440, height: 900 })) });
+await page.screenshot({ path: join(OUT, 'problem-section.png'), fullPage: false });
 
 await browser.close();
 

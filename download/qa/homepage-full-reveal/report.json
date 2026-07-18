@@ -1,0 +1,94 @@
+{
+  "url": "http://localhost:4321/",
+  "totalSections": 14,
+  "totalRevealTargets": 36,
+  "totalRevealed": 34,
+  "consoleErrors": [],
+  "sections": [
+    {
+      "sectionId": "problem",
+      "total": 6,
+      "revealed": 6,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "ai-governance-center",
+      "total": 0,
+      "revealed": 0,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "product",
+      "total": 0,
+      "revealed": 0,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "layers",
+      "total": 5,
+      "revealed": 5,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "choose-governance",
+      "total": 0,
+      "revealed": 0,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "compliance",
+      "total": 6,
+      "revealed": 6,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "sectors",
+      "total": 8,
+      "revealed": 8,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "evidence",
+      "total": 1,
+      "revealed": 1,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "why",
+      "total": 1,
+      "revealed": 1,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "trust-signals",
+      "total": 0,
+      "revealed": 0,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "faq",
+      "total": 9,
+      "revealed": 7,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "demo",
+      "total": 0,
+      "revealed": 0,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "final-cta",
+      "total": 0,
+      "revealed": 0,
+      "scriptWorks": true
+    },
+    {
+      "sectionId": "important-guides-title",
+      "total": 0,
+      "revealed": 0,
+      "scriptWorks": true
+    }
+  ],
+  "pass": true
+}

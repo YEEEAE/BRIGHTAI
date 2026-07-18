@@ -7,6 +7,11 @@ import * as cheerio from "cheerio";
 import { glob } from "glob";
 
 const FAQ_PATTERN = /"@type"\s*:\s*"FAQPage"/;
+// BAI-SEO-003-S7 (2026-07-18): also include pages with a P0 snippet
+// (`aside[data-snippet="tl-dr"]`) so the snippet contract gets wired
+// into the WebPage SpeakableSpecification even on pages that don't
+// carry an FAQPage (case studies / blog pillars / docs pillars).
+const P0_SNIPPET_PATTERN = /aside[^>]*data-snippet="tl-dr"/;
 const EXCLUDED_PATH_PREFIXES = ["kernel/", "components/"];
 const EXCLUDED_PAGES = new Set(["demo/index.html", "report/index.html"]);
 
@@ -137,7 +142,7 @@ function speakableProperty(indent, selectors) {
     `${childIndent}"cssSelector": [`,
     selectorLines,
     `${childIndent}]`,
-    `${indent}},`,
+    `${indent}}`,
   ].join("\n");
 }
 
@@ -157,13 +162,9 @@ function addSpeakable(html, primary, selectors) {
     const replacement = `${speakableProperty(indent, selectors)}`;
     const start = primary.start + existingMatch.index;
     const end = start + existingMatch[0].length;
-    // Drop the trailing comma right after the existing speakable so we
-    // can splice in the freshly built block (which already terminates
-    // with a comma).
-    let trimEnd = end;
-    while (trimEnd < html.length && /[ \t]/.test(html[trimEnd])) trimEnd += 1;
-    if (html[trimEnd] === ",") trimEnd += 1;
-    return html.slice(0, start) + replacement + html.slice(trimEnd);
+    // Replace the existing block (which already includes its own
+    // trailing comma) — never leave a stranded comma behind.
+    return html.slice(0, start) + replacement + html.slice(end);
   }
 
   const typeLine = /"@type"\s*:\s*"WebPage"\s*,/;
@@ -175,7 +176,10 @@ function addSpeakable(html, primary, selectors) {
   const indentMatch = /^([ \t]*)/.exec(objectSource);
   const indent = indentMatch ? indentMatch[1] : "";
   const insertionPoint = primary.start + match.index + match[0].length;
-  const property = `${speakableProperty(indent, selectors)}`;
+  // The match ends right after the comma that follows the @type value,
+  // so the existing JSON already has the comma we need. speakableProperty
+  // therefore must NOT emit a trailing comma — we close with `}` only.
+  const property = speakableProperty(indent, selectors).replace(/,\s*$/, "");
   return html.slice(0, insertionPoint) + property + html.slice(insertionPoint);
 }
 
@@ -192,12 +196,14 @@ export async function applySpeakable(root = process.cwd()) {
   for (const file of files.sort()) {
     const relPath = path.relative(root, file).replaceAll(path.sep, "/");
     if (EXCLUDED_PAGES.has(relPath)) continue;
-    if (EXCLUDED_PATH_PREFIXES.some((prefix) => relPath.startsWith(prefix))) {
-      continue;
-    }
 
     const html = await fs.readFile(file, "utf8");
-    if (!FAQ_PATTERN.test(html)) continue;
+    if (!FAQ_PATTERN.test(html) && !P0_SNIPPET_PATTERN.test(html)) continue;
+    if (
+      EXCLUDED_PATH_PREFIXES.some((prefix) => relPath.startsWith(prefix))
+    ) {
+      continue;
+    }
 
     const selectors = existingSelectors(html);
     if (!selectors.includes("h1")) {

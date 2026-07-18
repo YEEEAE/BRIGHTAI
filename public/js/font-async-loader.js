@@ -1,28 +1,27 @@
 /**
- * font-async-loader.js — Replaces the inline `onload="this.media='all'"`
+ * font-async-loader.js — Replaces the inline onload-this-media-all
  * event handler used to load Google Fonts CSS asynchronously.
  *
- * REPORTS-CSP-01 (2026-07-15): Inline event handlers (onload, onclick, …)
+ * REPORTS-CSP-01 (2026-07-15): Inline event handlers (onload, onclick, etc.)
  * require 'unsafe-inline' on script-src-attr in CSP. This module moves
  * the same logic into an external IIFE so CSP can drop script-src-attr
  * 'unsafe-inline'.
  *
  * Usage (replaces the old pattern):
- *   OLD:
- *     <link rel="stylesheet" href="..." media="print" onload="this.media='all'" />
- *     <noscript><link rel="stylesheet" href="..." /></noscript>
- *
- *   NEW:
- *     <link rel="stylesheet" href="..." media="print" data-font-async />
- *     <noscript><link rel="stylesheet" href="..." /></noscript>
- *     <script>import '../scripts/font-async-loader.js';</script>
+ *   Add data-font-async to the Google Fonts link tag in the head.
+ *   Then load this script as a static ES module from public/js/.
  *
  * Behavior:
- *   - On DOMContentLoaded, every <link data-font-async> gets media flipped
- *     from "print" to "all" once it finishes loading.
- *   - Also handles error states by leaving the link in media="print" so
- *     the <noscript> fallback kicks in via the user's browser print stylesheet.
+ *   - On DOMContentLoaded, every element with data-font-async gets media
+ *     flipped from "print" to "all" once it finishes loading.
+ *   - Also handles error states by leaving the element in media="print" so
+ *     the noscript fallback kicks in via the user's browser print stylesheet.
  *   - Idempotent: re-running on the same element is a no-op (checks media attr).
+ *
+ * FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): now loaded as a static ES
+ * module from public/js/ instead of via inline `import` in BaseLayout. The
+ * previous pattern failed at runtime because browsers cannot resolve a
+ * relative `import` specifier inside an inline module.
  */
 
 (function () {

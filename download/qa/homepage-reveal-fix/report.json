@@ -1,0 +1,49 @@
+{
+  "url": "http://localhost:4321/",
+  "status": 200,
+  "consoleErrors": [],
+  "cardsFound": 6,
+  "cards": [
+    {
+      "title": "هل الموظف يرفع بيانات حساسة؟",
+      "opacity": 1,
+      "hasIsVisible": true,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "title": "وش لو الـ AI أعطى جواب غلط؟",
+      "opacity": 1,
+      "hasIsVisible": true,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "title": "وين سجل التدقيق؟",
+      "opacity": 1,
+      "hasIsVisible": true,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "title": "هل متوافق مع PDPL؟",
+      "opacity": 1,
+      "hasIsVisible": true,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "title": "هل AI يعدّل في الـ ERP بالغلط؟",
+      "opacity": 1,
+      "hasIsVisible": true,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)"
+    },
+    {
+      "title": "هل الطبيب/المحاسب يثق فيه؟",
+      "opacity": 1,
+      "hasIsVisible": true,
+      "transform": "matrix(1, 0, 0, 1, 0, 0)"
+    }
+  ],
+  "allCardsRevealed": true,
+  "allTitlesMatch": true,
+  "footerRendered": true,
+  "footerTextLen": 767,
+  "pass": true
+}
