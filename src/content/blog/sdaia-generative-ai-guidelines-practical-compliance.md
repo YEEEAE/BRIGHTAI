@@ -10,7 +10,7 @@ readingTime: 14
 category: "أمن-البيانات"
 tags: ["SDAIA", "الذكاء الاصطناعي التوليدي", "إرشادات", "امتثال"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <section class="highlight-box tldr">

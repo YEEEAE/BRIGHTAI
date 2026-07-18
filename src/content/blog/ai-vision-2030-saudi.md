@@ -10,7 +10,7 @@ readingTime: 8
 category: "رؤية-2030"
 tags: ["رؤية 2030", "ذكاء اصطناعي", "السعودية", "سدايا", "تحول رقمي"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">

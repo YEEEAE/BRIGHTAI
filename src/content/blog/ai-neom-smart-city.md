@@ -11,7 +11,7 @@ readingTime: 9
 category: "ذكاء-اصطناعي"
 tags: ["نيوم", "مدن ذكية", "السعودية", "رؤية 2030", "حوكمة AI", "PDPL", "NCA ECC", "سدايا"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">

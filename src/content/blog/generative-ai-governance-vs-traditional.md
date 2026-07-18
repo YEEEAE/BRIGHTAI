@@ -10,7 +10,7 @@ readingTime: 11
 category: "ذكاء-اصطناعي"
 tags: ["حوكمة GenAI", "Generative AI Governance", "هلوسة النماذج", "AI Firewall", "Guardrails", "سدايا إرشادات GenAI", "السعودية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->

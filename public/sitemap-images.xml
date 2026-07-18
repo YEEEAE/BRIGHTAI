@@ -51,90 +51,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://brightai.site/assets/images/og/og-blog.avif</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-blog.avif</image:loc>
-      <image:title>og blog</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-blog.png</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-blog.png</image:loc>
-      <image:title>og blog</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-blog.webp</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-blog.webp</image:loc>
-      <image:title>og blog</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-docs.avif</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-docs.avif</image:loc>
-      <image:title>og docs</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-docs.png</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-docs.png</image:loc>
-      <image:title>og docs</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-docs.webp</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-docs.webp</image:loc>
-      <image:title>og docs</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-home.avif</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-home.avif</image:loc>
-      <image:title>og home</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-home.png</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-home.png</image:loc>
-      <image:title>og home</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-home.webp</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-home.webp</image:loc>
-      <image:title>og home</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-kernel.avif</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-kernel.avif</image:loc>
-      <image:title>og kernel</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-kernel.png</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-kernel.png</image:loc>
-      <image:title>og kernel</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/assets/images/og/og-kernel.webp</loc>
-    <image:image>
-      <image:loc>https://brightai.site/assets/images/og/og-kernel.webp</image:loc>
-      <image:title>og kernel</image:title>
-    </image:image>
-  </url>
-  <url>
     <loc>https://brightai.site/assets/images/og/og-solutions.avif</loc>
     <image:image>
       <image:loc>https://brightai.site/assets/images/og/og-solutions.avif</image:loc>
@@ -289,20 +205,6 @@
     </image:image>
   </url>
   <url>
-    <loc>https://brightai.site/images/og/brightai-og-1200x630.avif</loc>
-    <image:image>
-      <image:loc>https://brightai.site/images/og/brightai-og-1200x630.avif</image:loc>
-      <image:title>brightai og 1200x630</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/images/og/brightai-og-1200x630.png</loc>
-    <image:image>
-      <image:loc>https://brightai.site/images/og/brightai-og-1200x630.png</image:loc>
-      <image:title>brightai og 1200x630</image:title>
-    </image:image>
-  </url>
-  <url>
     <loc>https://brightai.site/logo-192.avif</loc>
     <image:image>
       <image:loc>https://brightai.site/logo-192.avif</image:loc>
@@ -335,27 +237,6 @@
     <image:image>
       <image:loc>https://brightai.site/logo-full.avif</image:loc>
       <image:title>logo full</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/logo-full.webp</loc>
-    <image:image>
-      <image:loc>https://brightai.site/logo-full.webp</image:loc>
-      <image:title>logo full</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/logo.avif</loc>
-    <image:image>
-      <image:loc>https://brightai.site/logo.avif</image:loc>
-      <image:title>logo</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/logo.png</loc>
-    <image:image>
-      <image:loc>https://brightai.site/logo.png</image:loc>
-      <image:title>logo</image:title>
     </image:image>
   </url>
   <url>

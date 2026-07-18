@@ -10,7 +10,7 @@ readingTime: 13
 category: "ذكاء-اصطناعي"
 tags: ["NCA ECC", "ضوابط الامن السيبراني", "الضوابط الأساسية", "الذكاء الاصطناعي", "السعودية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <p class="article-summary">شرح تشغيلي لكيفية قراءة ضوابط NCA ECC عند استخدام AI، وربطها بسياسات الوصول، البيانات، المراقبة، والتدقيق.</p>

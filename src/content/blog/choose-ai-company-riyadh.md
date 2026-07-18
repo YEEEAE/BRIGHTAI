@@ -10,7 +10,7 @@ readingTime: 10
 category: "ذكاء-اصطناعي"
 tags: ["شركات AI", "الرياض", "السعودية", "اختيار شريك", "حوكمة AI"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">

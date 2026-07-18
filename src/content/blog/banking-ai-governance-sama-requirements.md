@@ -10,7 +10,7 @@ readingTime: 13
 category: "دراسات-حالة"
 tags: ["قطاع البنوك", "SAMA", "حوكمة AI", "البنوك السعودية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <p class="article-summary">كيف تبني البنوك السعودية حوكمة AI متوافقة مع توقعات الحوكمة التقنية وإدارة المخاطر والرقابة.</p>

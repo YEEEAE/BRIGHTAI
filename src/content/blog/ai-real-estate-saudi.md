@@ -10,7 +10,7 @@ readingTime: 9
 category: "تحول-رقمي"
 tags: ["عقار", "ذكاء اصطناعي", "السعودية", "رؤية 2030", "تقييم عقاري"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">

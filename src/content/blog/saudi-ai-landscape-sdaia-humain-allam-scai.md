@@ -10,7 +10,7 @@ readingTime: 14
 category: "ذكاء-اصطناعي"
 tags: ["هيوماين", "علام", "scai", "سدايا", "الذكاء الاصطناعي السعودي", "النموذج اللغوي العربي", "PIF", "HUMAIN", "ALLAM", "Vision 2030", "حوكمة AI"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
 <p class="ai-citation" data-speakable="true">مشهد الذكاء الاصطناعي السعودي 2026 يضم أربعة لاعبين رئيسيين: سدايا كمرجع وطني شامل للحوكمة، هيوماين كمنصة سيادية تحت PIF لبناء بنية AI متكاملة، علام كنموذج لغوي عربي متعدد الوسائط، وSCAI المندمجة الآن في هيوماين كذراع تنفيذي للحلول القطاعية.</p>

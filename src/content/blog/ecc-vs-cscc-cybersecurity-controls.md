@@ -11,7 +11,7 @@ readingTime: 9
 category: "ذكاء-اصطناعي"
 tags: ["NCA ECC", "CSCC", "ضوابط الأمن السيبراني", "NCA", "السعودية", "القطاعات الحساسة", "حوكمة AI", "ECC vs CSCC"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <p class="article-summary">مقارنة عملية بين ECC وCSCC تساعد المنشآت السعودية على تحديد الضوابط الصحيحة حسب القطاع وحجم البيانات الحساسة، مع أمثلة من الصحة والطاقة والبنوك وتأثيرها على الذكاء الاصطناعي.</p>

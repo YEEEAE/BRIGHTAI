@@ -10,7 +10,7 @@ readingTime: 11
 category: "أمن-البيانات"
 tags: ["مخاطر AI", "الأمن السيبراني", "المؤسسات السعودية", "تصنيف المخاطر"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <p class="article-summary">خمسة مخاطر قد لا تظهر في العروض التجريبية للذكاء الاصطناعي، لكنها تظهر عند التشغيل الحقيقي داخل المؤسسات السعودية.</p>

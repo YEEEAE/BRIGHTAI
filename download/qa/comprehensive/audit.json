@@ -14524,5 +14524,2588 @@
       }
     ],
     "bidi": []
+  },
+  {
+    "page": "/blog/pdpl-ai-safety/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 113,
+            "h": 24,
+            "expW": 113,
+            "expH": 24,
+            "text": "لوحة الامتثال للنواة",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "راجع دليل حوكمة PDPL والذكاء ا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "افهم دور AI Firewall في منع تس",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "اقرأ مقال حوكمة الذكاء الاصطنا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 260,
+            "h": 21,
+            "expW": 260,
+            "expH": 21,
+            "text": "الدليل الشامل لتطبيق PDPL مع ا",
+            "cls": "content-link"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 10,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 230,
+            "h": 24,
+            "expW": 230,
+            "expH": 24,
+            "text": "دليل حوكمة البيانات والذكاء ال",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "راجع دليل حوكمة PDPL والذكاء ا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "افهم دور AI Firewall في منع تس",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "اقرأ مقال حوكمة الذكاء الاصطنا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 260,
+            "h": 21,
+            "expW": 260,
+            "expH": 21,
+            "text": "الدليل الشامل لتطبيق PDPL مع ا",
+            "cls": "content-link"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 10,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 113,
+            "h": 24,
+            "expW": 113,
+            "expH": 24,
+            "text": "لوحة الامتثال للنواة",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "راجع دليل حوكمة PDPL والذكاء ا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "افهم دور AI Firewall في منع تس",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "اقرأ مقال حوكمة الذكاء الاصطنا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 260,
+            "h": 21,
+            "expW": 260,
+            "expH": 21,
+            "text": "الدليل الشامل لتطبيق PDPL مع ا",
+            "cls": "content-link"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 11,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 230,
+            "h": 24,
+            "expW": 230,
+            "expH": 24,
+            "text": "دليل حوكمة البيانات والذكاء ال",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 113,
+            "h": 24,
+            "expW": 113,
+            "expH": 24,
+            "text": "لوحة الامتثال للنواة",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "راجع دليل حوكمة PDPL والذكاء ا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "افهم دور AI Firewall في منع تس",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 226,
+            "h": 21,
+            "expW": 226,
+            "expH": 21,
+            "text": "اقرأ مقال حوكمة الذكاء الاصطنا",
+            "cls": "content-link"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 12,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 230,
+            "h": 24,
+            "expW": 230,
+            "expH": 24,
+            "text": "دليل حوكمة البيانات والذكاء ال",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 113,
+            "h": 24,
+            "expW": 113,
+            "expH": 24,
+            "text": "لوحة الامتثال للنواة",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 255,
+            "h": 24,
+            "expW": 255,
+            "expH": 24,
+            "text": "راجع دليل حوكمة PDPL والذكاء ا",
+            "cls": "content-link"
+          },
+          {
+            "tag": "a",
+            "w": 259,
+            "h": 24,
+            "expW": 259,
+            "expH": 24,
+            "text": "افهم دور AI Firewall في منع تس",
+            "cls": "content-link"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/pdpl-and-ai-saudi/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 24,
+            "expW": 68,
+            "expH": 24,
+            "text": "تواصل معنا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 97,
+            "h": 22,
+            "expW": 97,
+            "expH": 22,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 24,
+            "expW": 288,
+            "expH": 24,
+            "text": "نظام حماية البيانات الشخصية ال",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 24,
+            "expW": 68,
+            "expH": 24,
+            "text": "تواصل معنا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 8,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 24,
+            "expW": 288,
+            "expH": 24,
+            "text": "نظام حماية البيانات الشخصية ال",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 297,
+            "h": 24,
+            "expW": 297,
+            "expH": 24,
+            "text": "الدليل الشامل لتطبيق PDPL مع ا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 24,
+            "expW": 288,
+            "expH": 24,
+            "text": "نظام حماية البيانات الشخصية ال",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 24,
+            "expW": 68,
+            "expH": 24,
+            "text": "تواصل معنا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 8,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 24,
+            "expW": 288,
+            "expH": 24,
+            "text": "نظام حماية البيانات الشخصية ال",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/pdpl-compliance-guide-saudi-companies/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 22,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 32,
+            "h": 24,
+            "expW": 32,
+            "expH": 24,
+            "text": "سدايا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 121,
+            "h": 24,
+            "expW": 121,
+            "expH": 24,
+            "text": "نماذج ذكاء اصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 88,
+            "h": 24,
+            "expW": 88,
+            "expH": 24,
+            "text": "جدار حماية ذكي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 138,
+            "h": 24,
+            "expW": 138,
+            "expH": 24,
+            "text": "نماذج الذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "سجلات التدقيق",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 23,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 32,
+            "h": 24,
+            "expW": 32,
+            "expH": 24,
+            "text": "سدايا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 88,
+            "h": 24,
+            "expW": 88,
+            "expH": 24,
+            "text": "جدار حماية ذكي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 138,
+            "h": 24,
+            "expW": 138,
+            "expH": 24,
+            "text": "نماذج الذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "سجلات التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 60,
+            "h": 24,
+            "expW": 60,
+            "expH": 24,
+            "text": "BrightAI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 24,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 32,
+            "h": 24,
+            "expW": 32,
+            "expH": 24,
+            "text": "سدايا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 88,
+            "h": 24,
+            "expW": 88,
+            "expH": 24,
+            "text": "جدار حماية ذكي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 138,
+            "h": 24,
+            "expW": 138,
+            "expH": 24,
+            "text": "نماذج الذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "تصنيف المخاطر",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 60,
+            "h": 24,
+            "expW": 60,
+            "expH": 24,
+            "text": "BrightAI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 26,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 32,
+            "h": 24,
+            "expW": 32,
+            "expH": 24,
+            "text": "سدايا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 121,
+            "h": 24,
+            "expW": 121,
+            "expH": 24,
+            "text": "نماذج ذكاء اصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 88,
+            "h": 24,
+            "expW": 88,
+            "expH": 24,
+            "text": "جدار حماية ذكي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 138,
+            "h": 24,
+            "expW": 138,
+            "expH": 24,
+            "text": "نماذج الذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "سجلات التدقيق",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 27,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 32,
+            "h": 24,
+            "expW": 32,
+            "expH": 24,
+            "text": "سدايا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 121,
+            "h": 24,
+            "expW": 121,
+            "expH": 24,
+            "text": "نماذج ذكاء اصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 88,
+            "h": 24,
+            "expW": 88,
+            "expH": 24,
+            "text": "جدار حماية ذكي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 138,
+            "h": 24,
+            "expW": 138,
+            "expH": 24,
+            "text": "نماذج الذكاء الاصطناعي",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/pdpl-cross-border-data-transfer-ai/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 41,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 273,
+            "h": 21,
+            "expW": 273,
+            "expH": 21,
+            "text": "لماذا يُعدّ النقل العابر للحدو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 255,
+            "h": 21,
+            "expW": 255,
+            "expH": 21,
+            "text": "الشروط الأربعة للنقل العابر لل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 219,
+            "h": 21,
+            "expW": 219,
+            "expH": 21,
+            "text": "الشرط الثاني: ضمانات كافية لحم",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 190,
+            "h": 21,
+            "expW": 190,
+            "expH": 21,
+            "text": "الشرط الثالث: الحد الأدنى من ا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 187,
+            "h": 21,
+            "expW": 187,
+            "expH": 21,
+            "text": "الشرط الرابع: موافقة الجهة الم",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 42,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 273,
+            "h": 21,
+            "expW": 273,
+            "expH": 21,
+            "text": "لماذا يُعدّ النقل العابر للحدو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 255,
+            "h": 21,
+            "expW": 255,
+            "expH": 21,
+            "text": "الشروط الأربعة للنقل العابر لل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 312,
+            "h": 21,
+            "expW": 312,
+            "expH": 21,
+            "text": "الشرط الأول: عدم المساس بالأمن",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 219,
+            "h": 21,
+            "expW": 219,
+            "expH": 21,
+            "text": "الشرط الثاني: ضمانات كافية لحم",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 190,
+            "h": 21,
+            "expW": 190,
+            "expH": 21,
+            "text": "الشرط الثالث: الحد الأدنى من ا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 273,
+            "h": 21,
+            "expW": 273,
+            "expH": 21,
+            "text": "لماذا يُعدّ النقل العابر للحدو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 255,
+            "h": 21,
+            "expW": 255,
+            "expH": 21,
+            "text": "الشروط الأربعة للنقل العابر لل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 312,
+            "h": 21,
+            "expW": 312,
+            "expH": 21,
+            "text": "الشرط الأول: عدم المساس بالأمن",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 219,
+            "h": 21,
+            "expW": 219,
+            "expH": 21,
+            "text": "الشرط الثاني: ضمانات كافية لحم",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 190,
+            "h": 21,
+            "expW": 190,
+            "expH": 21,
+            "text": "الشرط الثالث: الحد الأدنى من ا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 44,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 273,
+            "h": 21,
+            "expW": 273,
+            "expH": 21,
+            "text": "لماذا يُعدّ النقل العابر للحدو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 255,
+            "h": 21,
+            "expW": 255,
+            "expH": 21,
+            "text": "الشروط الأربعة للنقل العابر لل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 312,
+            "h": 21,
+            "expW": 312,
+            "expH": 21,
+            "text": "الشرط الأول: عدم المساس بالأمن",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 219,
+            "h": 21,
+            "expW": 219,
+            "expH": 21,
+            "text": "الشرط الثاني: ضمانات كافية لحم",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 190,
+            "h": 21,
+            "expW": 190,
+            "expH": 21,
+            "text": "الشرط الثالث: الحد الأدنى من ا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 273,
+            "h": 21,
+            "expW": 273,
+            "expH": 21,
+            "text": "لماذا يُعدّ النقل العابر للحدو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 255,
+            "h": 21,
+            "expW": 255,
+            "expH": 21,
+            "text": "الشروط الأربعة للنقل العابر لل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 312,
+            "h": 21,
+            "expW": 312,
+            "expH": 21,
+            "text": "الشرط الأول: عدم المساس بالأمن",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 219,
+            "h": 21,
+            "expW": 219,
+            "expH": 21,
+            "text": "الشرط الثاني: ضمانات كافية لحم",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/pdpl-executive-regulations-explained/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 28,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "ما اللائحة التنفيذية لنظام PDP",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 21,
+            "expW": 247,
+            "expH": 21,
+            "text": "أهم المواد التي تهم المنشآت في",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "المادة 17 من اللائحة: اختيار ج",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 250,
+            "h": 21,
+            "expW": 250,
+            "expH": 21,
+            "text": "المادة 18 من اللائحة: معالجة ا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 259,
+            "h": 21,
+            "expW": 259,
+            "expH": 21,
+            "text": "المادة 19 من اللائحة: جمع الحد",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 29,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "ما اللائحة التنفيذية لنظام PDP",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 21,
+            "expW": 247,
+            "expH": 21,
+            "text": "أهم المواد التي تهم المنشآت في",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 263,
+            "h": 21,
+            "expW": 263,
+            "expH": 21,
+            "text": "المادة 32 من اللائحة: تعيين مس",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "المادة 17 من اللائحة: اختيار ج",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 250,
+            "h": 21,
+            "expW": 250,
+            "expH": 21,
+            "text": "المادة 18 من اللائحة: معالجة ا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 30,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "ما اللائحة التنفيذية لنظام PDP",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 21,
+            "expW": 247,
+            "expH": 21,
+            "text": "أهم المواد التي تهم المنشآت في",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 263,
+            "h": 21,
+            "expW": 263,
+            "expH": 21,
+            "text": "المادة 32 من اللائحة: تعيين مس",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "المادة 17 من اللائحة: اختيار ج",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 250,
+            "h": 21,
+            "expW": 250,
+            "expH": 21,
+            "text": "المادة 18 من اللائحة: معالجة ا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 30,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "ما اللائحة التنفيذية لنظام PDP",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 21,
+            "expW": 247,
+            "expH": 21,
+            "text": "أهم المواد التي تهم المنشآت في",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 263,
+            "h": 21,
+            "expW": 263,
+            "expH": 21,
+            "text": "المادة 32 من اللائحة: تعيين مس",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "المادة 17 من اللائحة: اختيار ج",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 250,
+            "h": 21,
+            "expW": 250,
+            "expH": 21,
+            "text": "المادة 18 من اللائحة: معالجة ا",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 31,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 223,
+            "h": 21,
+            "expW": 223,
+            "expH": 21,
+            "text": "ما اللائحة التنفيذية لنظام PDP",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 21,
+            "expW": 247,
+            "expH": 21,
+            "text": "أهم المواد التي تهم المنشآت في",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 263,
+            "h": 21,
+            "expW": 263,
+            "expH": 21,
+            "text": "المادة 32 من اللائحة: تعيين مس",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "المادة 17 من اللائحة: اختيار ج",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/pdpl-penalties-saudi-fines/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 22,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 269,
+            "h": 21,
+            "expW": 269,
+            "expH": 21,
+            "text": "ما المقصود بعقوبات PDPL السعود",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 200,
+            "h": 21,
+            "expW": 200,
+            "expH": 21,
+            "text": "الجدول الملخص للمخالفات والعقو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 245,
+            "h": 21,
+            "expW": 245,
+            "expH": 21,
+            "text": "كيف يتأثر استخدام الذكاء الاصط",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 21,
+            "expW": 161,
+            "expH": 21,
+            "text": "متى تتشدد العقوبة ومتى تخفّ؟",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 229,
+            "h": 21,
+            "expW": 229,
+            "expH": 21,
+            "text": "خطوات الامتثال الوقائي لتقليل ",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 21,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 269,
+            "h": 21,
+            "expW": 269,
+            "expH": 21,
+            "text": "ما المقصود بعقوبات PDPL السعود",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 200,
+            "h": 21,
+            "expW": 200,
+            "expH": 21,
+            "text": "الجدول الملخص للمخالفات والعقو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 245,
+            "h": 21,
+            "expW": 245,
+            "expH": 21,
+            "text": "كيف يتأثر استخدام الذكاء الاصط",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 21,
+            "expW": 161,
+            "expH": 21,
+            "text": "متى تتشدد العقوبة ومتى تخفّ؟",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 229,
+            "h": 21,
+            "expW": 229,
+            "expH": 21,
+            "text": "خطوات الامتثال الوقائي لتقليل ",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 22,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 269,
+            "h": 21,
+            "expW": 269,
+            "expH": 21,
+            "text": "ما المقصود بعقوبات PDPL السعود",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 200,
+            "h": 21,
+            "expW": 200,
+            "expH": 21,
+            "text": "الجدول الملخص للمخالفات والعقو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 245,
+            "h": 21,
+            "expW": 245,
+            "expH": 21,
+            "text": "كيف يتأثر استخدام الذكاء الاصط",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 21,
+            "expW": 161,
+            "expH": 21,
+            "text": "متى تتشدد العقوبة ومتى تخفّ؟",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 229,
+            "h": 21,
+            "expW": 229,
+            "expH": 21,
+            "text": "خطوات الامتثال الوقائي لتقليل ",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 23,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 269,
+            "h": 21,
+            "expW": 269,
+            "expH": 21,
+            "text": "ما المقصود بعقوبات PDPL السعود",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 200,
+            "h": 21,
+            "expW": 200,
+            "expH": 21,
+            "text": "الجدول الملخص للمخالفات والعقو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 245,
+            "h": 21,
+            "expW": 245,
+            "expH": 21,
+            "text": "كيف يتأثر استخدام الذكاء الاصط",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 21,
+            "expW": 161,
+            "expH": 21,
+            "text": "متى تتشدد العقوبة ومتى تخفّ؟",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 229,
+            "h": 21,
+            "expW": 229,
+            "expH": 21,
+            "text": "خطوات الامتثال الوقائي لتقليل ",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 24,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 269,
+            "h": 21,
+            "expW": 269,
+            "expH": 21,
+            "text": "ما المقصود بعقوبات PDPL السعود",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 200,
+            "h": 21,
+            "expW": 200,
+            "expH": 21,
+            "text": "الجدول الملخص للمخالفات والعقو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 245,
+            "h": 21,
+            "expW": 245,
+            "expH": 21,
+            "text": "كيف يتأثر استخدام الذكاء الاصط",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 21,
+            "expW": 161,
+            "expH": 21,
+            "text": "متى تتشدد العقوبة ومتى تخفّ؟",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/rpa-automation-saudi-savings/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 26,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 73,
+            "h": 32,
+            "expW": 73,
+            "expH": 32,
+            "text": "تحول-رقمي",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 24,
+            "expW": 145,
+            "expH": 24,
+            "text": "طبقات الذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 76,
+            "h": 24,
+            "expW": 76,
+            "expH": 24,
+            "text": "الشات بوتات",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 87,
+            "h": 24,
+            "expW": 87,
+            "expH": 24,
+            "text": "توثيق العمليات",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 24,
+            "expW": 89,
+            "expH": 24,
+            "text": "القطاع المصرفي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 128,
+            "h": 24,
+            "expW": 128,
+            "expH": 24,
+            "text": "اكتشاف الاستخدامات",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 29,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 73,
+            "h": 32,
+            "expW": 73,
+            "expH": 32,
+            "text": "تحول-رقمي",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 24,
+            "expW": 145,
+            "expH": 24,
+            "text": "طبقات الذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 96,
+            "h": 24,
+            "expW": 96,
+            "expH": 24,
+            "text": "جدران حماية AI",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 76,
+            "h": 24,
+            "expW": 76,
+            "expH": 24,
+            "text": "الشات بوتات",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 87,
+            "h": 24,
+            "expW": 87,
+            "expH": 24,
+            "text": "توثيق العمليات",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 107,
+            "h": 24,
+            "expW": 107,
+            "expH": 24,
+            "text": "إعداد ملفات الأدلة",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/saudi-ai-landscape-sdaia-humain-allam-scai/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 768,
+        "count": 149,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 104,
+            "h": 18,
+            "expW": 104,
+            "expH": 18,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 18,
+            "expW": 98,
+            "expH": 18,
+            "text": "BrightAI",
+            "cls": "site-header__logo"
+          },
+          {
+            "tag": "button",
+            "w": 60,
+            "h": 21,
+            "expW": 60,
+            "expH": 21,
+            "text": "الحلول",
+            "cls": "site-header__nav-link site-header__dropd"
+          },
+          {
+            "tag": "a",
+            "w": 179,
+            "h": 18,
+            "expW": 179,
+            "expH": 18,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 18,
+            "expW": 172,
+            "expH": 18,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 174,
+            "h": 18,
+            "expW": 174,
+            "expH": 18,
+            "text": "مسار تدقيق الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 27,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 32,
+            "expW": 83,
+            "expH": 32,
+            "text": "ذكاء-اصطناعي",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 291,
+            "h": 21,
+            "expW": 291,
+            "expH": 21,
+            "text": "مقدمة: خريطة مشهد الذكاء الاصط",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 209,
+            "h": 21,
+            "expW": 209,
+            "expH": 21,
+            "text": "سدايا (SDAIA): المرجع التنظيمي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 257,
+            "h": 21,
+            "expW": 257,
+            "expH": 21,
+            "text": "هيوماين (HUMAIN): المنصة السيا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 242,
+            "h": 21,
+            "expW": 242,
+            "expH": 21,
+            "text": "علام (ALLAM): النموذج اللغوي ا",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/blog/saudi-ai-regulators-guide/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 20,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 197,
+            "h": 21,
+            "expW": 197,
+            "expH": 21,
+            "text": "سدايا (SDAIA): المرجع الوطني ا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "هيئة الأمن السيبراني (NCA) وضو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 235,
+            "h": 21,
+            "expW": 235,
+            "expH": 21,
+            "text": "البنك المركزي السعودي (ساما) و",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 187,
+            "h": 21,
+            "expW": 187,
+            "expH": 21,
+            "text": "هيئة الغذاء والدواء (SFDA) وال",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 207,
+            "h": 21,
+            "expW": 207,
+            "expH": 21,
+            "text": "هيئة الزكاة والضريبة والجمارك ",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 26,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 319,
+            "h": 21,
+            "expW": 319,
+            "expH": 21,
+            "text": "خريطة الجهات التنظيمية السبع ل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 197,
+            "h": 21,
+            "expW": 197,
+            "expH": 21,
+            "text": "سدايا (SDAIA): المرجع الوطني ا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "هيئة الأمن السيبراني (NCA) وضو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 278,
+            "h": 21,
+            "expW": 278,
+            "expH": 21,
+            "text": "مكتب إدارة البيانات الوطنية (N",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 235,
+            "h": 21,
+            "expW": 235,
+            "expH": 21,
+            "text": "البنك المركزي السعودي (ساما) و",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 28,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 410,
+            "h": 21,
+            "expW": 410,
+            "expH": 21,
+            "text": "مقدمة: لماذا تحتاج المنشأة الس",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 319,
+            "h": 21,
+            "expW": 319,
+            "expH": 21,
+            "text": "خريطة الجهات التنظيمية السبع ل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 197,
+            "h": 21,
+            "expW": 197,
+            "expH": 21,
+            "text": "سدايا (SDAIA): المرجع الوطني ا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "هيئة الأمن السيبراني (NCA) وضو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 278,
+            "h": 21,
+            "expW": 278,
+            "expH": 21,
+            "text": "مكتب إدارة البيانات الوطنية (N",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 28,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 410,
+            "h": 21,
+            "expW": 410,
+            "expH": 21,
+            "text": "مقدمة: لماذا تحتاج المنشأة الس",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 319,
+            "h": 21,
+            "expW": 319,
+            "expH": 21,
+            "text": "خريطة الجهات التنظيمية السبع ل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 197,
+            "h": 21,
+            "expW": 197,
+            "expH": 21,
+            "text": "سدايا (SDAIA): المرجع الوطني ا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "هيئة الأمن السيبراني (NCA) وضو",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 278,
+            "h": 21,
+            "expW": 278,
+            "expH": 21,
+            "text": "مكتب إدارة البيانات الوطنية (N",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 29,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 75,
+            "h": 32,
+            "expW": 75,
+            "expH": 32,
+            "text": "أمن-البيانات",
+            "cls": "chip chip--brand article-hero__category"
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 25,
+            "expW": 89,
+            "expH": 25,
+            "text": "م. ناصر العبدالله",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 410,
+            "h": 21,
+            "expW": 410,
+            "expH": 21,
+            "text": "مقدمة: لماذا تحتاج المنشأة الس",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 319,
+            "h": 21,
+            "expW": 319,
+            "expH": 21,
+            "text": "خريطة الجهات التنظيمية السبع ل",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 197,
+            "h": 21,
+            "expW": 197,
+            "expH": 21,
+            "text": "سدايا (SDAIA): المرجع الوطني ا",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 217,
+            "h": 21,
+            "expW": 217,
+            "expH": 21,
+            "text": "هيئة الأمن السيبراني (NCA) وضو",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
   }
 ]

@@ -10,7 +10,7 @@ readingTime: 37
 category: "تحول-رقمي"
 tags: ["سجل التدقيق", "السعودية", "امتثال", "توثيق AI"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <section id="hero">

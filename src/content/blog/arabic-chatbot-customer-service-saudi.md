@@ -10,7 +10,7 @@ readingTime: 8
 category: "تحول-رقمي"
 tags: ["شات بوت", "خدمة العملاء", "السعودية", "ذكاء اصطناعي توليدي", "تحول رقمي"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">

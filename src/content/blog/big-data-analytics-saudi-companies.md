@@ -10,7 +10,7 @@ readingTime: 10
 category: "تحول-رقمي"
 tags: ["تحليل بيانات", "بيانات ضخمة", "السعودية", "PDPL", "ذكاء اصطناعي"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">

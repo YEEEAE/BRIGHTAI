@@ -10,7 +10,7 @@ readingTime: 13
 category: "تحول-رقمي"
 tags: ["ISO 42001", "إدارة AI", "الشركات السعودية", "تدقيق"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->

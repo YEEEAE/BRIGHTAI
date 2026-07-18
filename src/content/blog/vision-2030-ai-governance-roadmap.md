@@ -11,7 +11,7 @@ readingTime: 14
 category: "رؤية-2030"
 tags: ["رؤية 2030", "التحول الرقمي", "حوكمة AI", "السعودية", "سدايا", "PDPL", "NCA ECC"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <p class="article-summary">خريطة طريق تربط توسع الذكاء الاصطناعي في رؤية 2030 بالحوكمة، الثقة، الامتثال، وسلامة التحول الرقمي السعودي.</p>

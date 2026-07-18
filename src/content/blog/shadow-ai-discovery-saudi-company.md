@@ -10,7 +10,7 @@ readingTime: 11
 category: "أمن-البيانات"
 tags: ["Shadow AI", "الاستخدام الخفي", "اكتشاف AI", "الشركات السعودية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <p class="article-summary">طريقة عملية لاكتشاف أدوات AI غير المصرح بها، وتصنيفها، وتحويلها من خطر خفي إلى استخدام محكوم.</p>

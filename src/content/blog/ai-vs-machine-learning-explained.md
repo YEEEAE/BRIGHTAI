@@ -10,7 +10,7 @@ readingTime: 8
 category: "ذكاء-اصطناعي"
 tags: ["ذكاء اصطناعي", "تعلم آلي", "تعلم عميق", "شرح مبسط", "السعودية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->

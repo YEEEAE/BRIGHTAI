@@ -10,7 +10,7 @@ readingTime: 22
 category: "أمن-البيانات"
 tags: ["PDPL", "الذكاء الاصطناعي", "السعودية", "حماية البيانات"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <!-- Short Answer -->

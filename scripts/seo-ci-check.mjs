@@ -33,7 +33,7 @@ const SITEMAP_PATH = path.join(ROOT, "dist", "sitemap.xml");
 const SERVICE_OG_IMAGE_URLS = new Set([
   `${BASE_URL}/assets/images/og/og-solutions.png`,
   `${BASE_URL}/assets/images/og/og-solutions.webp`,
-  `${BASE_URL}/images/og/brightai-og-1200x630.png`,
+  `${BASE_URL}/assets/images/og/brightai-og-1200x630.png`,
 ]);
 const HTML_IGNORE_DIRS = new Set([".git", ".agents", "node_modules", "dist", "build", "coverage", ".next", ".nuxt", ".render-static", "components", "client", "server"]);
 const INTERNAL_PAGE_PATTERN =

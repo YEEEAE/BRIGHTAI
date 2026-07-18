@@ -10,7 +10,7 @@ readingTime: 9
 category: "تحول-رقمي"
 tags: ["RPA", "أتمتة العمليات", "السعودية", "تحول رقمي", "توفير التكاليف"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">

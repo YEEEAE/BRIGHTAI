@@ -10,7 +10,7 @@ readingTime: 12
 category: "تحول-رقمي"
 tags: ["سجل التدقيق", "AI Audit Trail", "امتثال", "تدقيق"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <section class="shell hero">

@@ -10,7 +10,7 @@ readingTime: 11
 category: "أمن-البيانات"
 tags: ["PDPL", "نقل البيانات", "Cloud AI", "Azure", "AWS", "السعودية", "سدايا"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->

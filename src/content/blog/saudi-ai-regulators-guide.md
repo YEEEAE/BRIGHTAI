@@ -10,7 +10,7 @@ readingTime: 14
 category: "أمن-البيانات"
 tags: ["الجهات التنظيمية للذكاء الاصطناعي في السعودية", "سدايا", "NCA", "ساما", "NDMO", "SFDA", "حوكمة AI", "PDPL", "الذكاء الاصطناعي التوليدي", "السعودية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
 <p class="ai-citation" data-speakable="true">الجهات التنظيمية للذكاء الاصطناعي في السعودية هي منظومة من سبع جهات رئيسية تقود حوكمة AI في المملكة: سدايا المرجع الوطني الشامل، هيئة الأمن السيبراني NCA للأمن السيبراني، NDMO لإدارة البيانات، ساما SFDA DGA للقطاعات المنظمة، ووزارة الاتصالات وتقنية المعلومات كجهة داعمة.</p>

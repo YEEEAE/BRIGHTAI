@@ -53,7 +53,7 @@
   ],
   "screenshots": [
     {
-      "src": "/images/og/brightai-og-1200x630.png",
+      "src": "/assets/images/og/brightai-og-1200x630.png",
       "sizes": "1200x630",
       "type": "image/png",
       "form_factor": "wide",

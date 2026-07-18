@@ -10,7 +10,7 @@ readingTime: 12
 category: "أمن-البيانات"
 tags: ["مكتب إدارة البيانات الوطنية", "NDMO", "NDGP", "سدايا", "PDPL", "حوكمة البيانات", "السعودية", "البيانات الشخصية", "نقل البيانات", "AI"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
 <p class="ai-citation" data-speakable="true">مكتب إدارة البيانات الوطنية (NDMO) هو الجهة المرجعية الوطنية السعودية لحوكمة البيانات، تابع لسدايا، تأسس 2019، أصدر 7 سياسات وطنية لإدارة البيانات، ويدير المنصة الوطنية NDGP للتسجيل الإلزامي للمتحكمين في البيانات الحساسة.</p>

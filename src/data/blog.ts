@@ -167,7 +167,7 @@ function entryToPost(entry: CollectionEntry<'blog'>): BlogPost {
     author: resolveAuthor(entry.data.author),
     tags: entry.data.tags || [],
     category: resolveCategory(entry.data.category),
-    ogImage: entry.data.image || '/images/og/brightai-og-1200x630.png',
+    ogImage: entry.data.image || '/assets/images/og/brightai-og-1200x630.png',
     draft: !!entry.data.draft,
     readingTime: entry.data.readingTime || 1,
   };

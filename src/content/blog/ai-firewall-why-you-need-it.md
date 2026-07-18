@@ -10,7 +10,7 @@ readingTime: 11
 category: "أمن-البيانات"
 tags: ["AI Firewall", "جدار حماية", "حماية البيانات", "أمان AI"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <p class="article-summary">شرح مبسط وعملي لمفهوم AI Firewall ودوره في حماية البيانات، منع الاستخدامات الخطرة، وتسجيل الأدلة.</p>

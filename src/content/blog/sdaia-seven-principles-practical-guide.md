@@ -10,7 +10,7 @@ readingTime: 13
 category: "أمن-البيانات"
 tags: ["أخلاقيات الذكاء الاصطناعي", "مبادئ سدايا السبعة", "AI Ethics", "SDAIA", "حوكمة AI", "PDPL", "الفجوة", "الخصوصية", "الإنسانية", "الشفافية", "المساءلة", "السعودية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 <!-- REPORTS-AEO-CITABLE-2026-07-08: Citability paragraph (40-50 words) — AEO definition. -->
 <p class="ai-citation" data-speakable="true">مبادئ سدايا السبعة لأخلاقيات الذكاء الاصطناعي هي إطار وطني سعودي يحدد معايير الاستخدام المسؤول لـ AI: العدالة، الخصوصية والأمان، الإنسانية، المنافع الاجتماعية والبيئية، الموثوقية والسلامة، الشفافية والقابلية للتفسير، والمساءلة والمسؤولية، صدرت في سبتمبر 2023.</p>

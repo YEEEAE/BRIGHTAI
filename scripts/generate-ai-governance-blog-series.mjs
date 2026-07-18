@@ -477,7 +477,7 @@ function schema(article) {
         '@id': `${url}#article`,
         headline: article.title,
         description: article.summary,
-        image: `${site}/assets/images/og/og-blog.png`,
+        image: `${site}/assets/images/og/brightai-og-1200x630.png`,
         author: { '@id': `${site}/authors/nasser-alabdullah/#person` },
         publisher: { '@id': `${site}/#organization` },
         datePublished: article.date,
@@ -532,7 +532,7 @@ function page(article, i) {
   <meta property="og:title" content="${esc(article.title)}">
   <meta property="og:description" content="${esc(article.summary)}">
   <meta property="og:url" content="${site}/blog/${article.slug}/">
-  <meta property="og:image" content="${site}/assets/images/og/og-blog.png">
+  <meta property="og:image" content="${site}/assets/images/og/brightai-og-1200x630.png">
   <meta property="og:site_name" content="BrightAI">
   <meta property="og:locale" content="ar_SA">
   <meta property="article:published_time" content="${article.date}T08:00:00+03:00">
@@ -543,7 +543,7 @@ function page(article, i) {
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${esc(article.title)}">
   <meta name="twitter:description" content="${esc(article.summary)}">
-  <meta name="twitter:image" content="${site}/assets/images/og/og-blog.png">
+  <meta name="twitter:image" content="${site}/assets/images/og/brightai-og-1200x630.png">
   <link rel="icon" href="/assets/images/logo.png" type="image/png">
   <link rel="stylesheet" href="/frontend/css/sitewide-modernization.css">
   <link rel="stylesheet" href="/frontend/css/unified-header.css?v=20260529-nav-v1">

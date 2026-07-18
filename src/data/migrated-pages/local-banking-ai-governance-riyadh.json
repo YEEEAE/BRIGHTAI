@@ -50,8 +50,8 @@
           "url": "https://brightai.site/solutions/banking-ai-governance/riyadh/",
           "telephone": "+966-538-229-013",
           "email": "yazeed1job@gmail.com",
-          "image": "https://brightai.site/images/og/brightai-og-1200x630.png",
-          "logo": "https://brightai.site/logo.png",
+          "image": "https://brightai.site/assets/images/og/brightai-og-1200x630.png",
+          "logo": "https://brightai.site/assets/images/logo.png",
           "priceRange": "SAR 15,000-85,000+",
           "address": {
             "@type": "PostalAddress",
@@ -144,7 +144,7 @@
           "@id": "https://brightai.site/#organization",
           "name": "BrightAI",
           "url": "https://brightai.site",
-          "logo": "https://brightai.site/logo.png",
+          "logo": "https://brightai.site/assets/images/logo.png",
           "areaServed": "SA",
           "sameAs": [],
           "address": {

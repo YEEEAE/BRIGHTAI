@@ -10,7 +10,7 @@ readingTime: 16
 category: "أمن-البيانات"
 tags: ["الهيئة الوطنية للأمن السيبراني", "NCA", "السعودية", "ECC", "حوكمة AI", "CSCC", "CCC", "DCC", "الأمن السيبراني", "القطاعات الحيوية"]
 draft: false
-image: "/images/og/brightai-og-1200x630.png"
+image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 <div class="short-answer-box">
