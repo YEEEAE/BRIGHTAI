@@ -41,10 +41,10 @@
         },
         {
           "@type": [
-            "LocalBusiness",
-            "ProfessionalService"
+            "ProfessionalService",
+            "Service"
           ],
-          "@id": "https://brightai.site/solutions/healthcare-ai-governance/jeddah/#local-business",
+          "@id": "https://brightai.site/solutions/healthcare-ai-governance/jeddah/#professional-service",
           "name": "BrightAI - Healthcare AI Governance Jeddah",
           "alternateName": "برايت آي لحوكمة الذكاء الاصطناعي في جدة",
           "url": "https://brightai.site/solutions/healthcare-ai-governance/jeddah/",
@@ -53,12 +53,6 @@
           "image": "https://brightai.site/images/og/brightai-og-1200x630.png",
           "logo": "https://brightai.site/logo.png",
           "priceRange": "SAR 18,000-95,000+",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Jeddah",
-            "addressRegion": "Makkah Region",
-            "addressCountry": "SA"
-          },
           "geo": {
             "@type": "GeoCoordinates",
             "latitude": 21.48581,

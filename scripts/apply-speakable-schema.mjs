@@ -110,6 +110,14 @@ function existingSelectors(html) {
   if ($(".tldr").length) selectors.push(".tldr");
   if ($(".key-takeaways").length) selectors.push(".key-takeaways");
   if ($("[data-speakable]").length) selectors.push("[data-speakable]");
+  // BAI-SEO-003-S7 (2026-07-18): central contract for the P0 snippet
+  // pack — `aside[data-snippet="tl-dr"]` is the canonical selector
+  // referenced by `src/data/snippet-pack.ts`. Pages render one
+  // <aside data-snippet="tl-dr" aria-label="الخلاصة">…</aside> in the
+  // hero/intro; the post-build apply pass picks it up here.
+  if ($('aside[data-snippet="tl-dr"]').length) {
+    selectors.push('aside[data-snippet="tl-dr"]');
+  }
   return selectors;
 }
 
@@ -135,25 +143,39 @@ function speakableProperty(indent, selectors) {
 
 function addSpeakable(html, primary, selectors) {
   const objectSource = html.slice(primary.start, primary.end);
-  const existingSpeakable =
-    /^([ \t]*)"speakable"\s*:\s*\{[\s\S]*?^\1\},[^\S\r\n]*(?:\r?\n|$)/m;
+  // BAI-SEO-003-S7 (2026-07-18): make speakable insertion work for both
+  // single-line and multi-line JSON-LD. The earlier regex required a
+  // line-anchored `@type` line; FoundationSchema now emits a single
+  // line of JSON.stringify output, so the anchored regex never matches.
+  // We now locate the `@type`/`speakable` by plain substring search
+  // and rely on objectRanges() to keep the source boundaries safe.
+  const existingSpeakable = /"speakable"\s*:\s*\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}/;
   const existingMatch = objectSource.match(existingSpeakable);
   if (existingMatch) {
-    const replacement = `${speakableProperty(existingMatch[1], selectors)}\n`;
+    const indentMatch = /([ \t]*)"speakable"/.exec(objectSource);
+    const indent = indentMatch ? indentMatch[1] : "";
+    const replacement = `${speakableProperty(indent, selectors)}`;
     const start = primary.start + existingMatch.index;
     const end = start + existingMatch[0].length;
-    return html.slice(0, start) + replacement + html.slice(end);
+    // Drop the trailing comma right after the existing speakable so we
+    // can splice in the freshly built block (which already terminates
+    // with a comma).
+    let trimEnd = end;
+    while (trimEnd < html.length && /[ \t]/.test(html[trimEnd])) trimEnd += 1;
+    if (html[trimEnd] === ",") trimEnd += 1;
+    return html.slice(0, start) + replacement + html.slice(trimEnd);
   }
 
-  const typeLine =
-    /^([ \t]*)"@type"\s*:\s*"WebPage"\s*,[^\S\r\n]*(?:\r?\n|$)/m;
+  const typeLine = /"@type"\s*:\s*"WebPage"\s*,/;
   const match = objectSource.match(typeLine);
   if (!match) {
-    throw new Error("Primary WebPage does not use a supported multiline @type property.");
+    throw new Error("Primary WebPage does not have a supported @type property.");
   }
 
+  const indentMatch = /^([ \t]*)/.exec(objectSource);
+  const indent = indentMatch ? indentMatch[1] : "";
   const insertionPoint = primary.start + match.index + match[0].length;
-  const property = `${speakableProperty(match[1], selectors)}\n`;
+  const property = `${speakableProperty(indent, selectors)}`;
   return html.slice(0, insertionPoint) + property + html.slice(insertionPoint);
 }
 

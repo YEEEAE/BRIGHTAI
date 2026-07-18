@@ -173,7 +173,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
     {lang:'x-default',href:'https://brightai.site/'}
   ]}
   jsonLd={enhancedJsonLd as any}
-  extraSpeakableSelectors={['.home-citable-definition']}
+  extraSpeakableSelectors={['.home-citable-definition', 'aside[data-snippet="tl-dr"]']}
 >
 {/* ═══════════════ 1. HERO (SplitHero — DottedBackground now in BaseLayout) ═══════════════ */}
 <SplitHero />
@@ -191,6 +191,14 @@ const enhancedJsonLd = appendLd(jsonLd, [
     </p>
   </div>
 </section>
+
+{/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+   Answer-first, self-contained, ≤60 words, formal Arabic. Visual
+   surface reuses .answer-first-summary (pages.css) — no new CSS.
+   Single source of truth: src/data/snippet-pack.ts. */}
+<aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
+  <p>برايت أيه آي هي نظام تشغيل أمان وحوكمة للذكاء الاصطناعي مصمم للمنشآت السعودية. تركّب تحت أي نموذج داخل المنشأة وتفعّل جدار حماية للبيانات وسجل تدقيق غير قابل للتعديل وموافقات بشرية على القرارات عالية الأثر، وتدعم جاهزية الامتثال لنظام حماية البيانات الشخصية وضوابط الأمن السيبراني وإرشادات سدايا. أداة تشغيلية لا تعد استشارة قانونية.</p>
+</aside>
 
 {/* ═══════════════ 2. PROBLEM ═══════════════ */}
 <section id="problem" aria-labelledby="problem-title" class="home-section--padded bg-ambient-dots">

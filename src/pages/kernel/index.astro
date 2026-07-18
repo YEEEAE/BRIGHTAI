@@ -92,7 +92,7 @@ const complianceRows = [
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath="/kernel/"
-  extraSpeakableSelectors={['.kernel-page-header__subtitle']}
+  extraSpeakableSelectors={['.kernel-page-header__subtitle', 'aside[data-snippet="tl-dr"]']}
 >
 
   <!-- Page header -->
@@ -108,6 +108,12 @@ const complianceRows = [
       <p class="kernel-page-header__subtitle">
         نظرة تشغيلية سريعة على طلبات الذكاء الاصطناعي، الموافقات المعلقة، توزيع المخاطر، وحالة النظام.
       </p>
+      {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+         Answer-first, self-contained, ≤60 words. Single source of truth:
+         src/data/snippet-pack.ts. */}
+      <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
+        <p>نواة برايت أيه آي هي نظام تشغيل حوكمة الذكاء الاصطناعي يركّب تحت أي نموذج داخل المنشأة. تشمل جدار حماية للذكاء الاصطناعي وسجل تدقيق غير قابل للتعديل وموافقات بشرية للقرارات عالية الأثر وملفات أدلة قابلة للمراجعة. تدعم المنشآت السعودية في تطبيق ضوابط حماية البيانات والأمن السيبراني وإرشادات سدايا. أداة تشغيلية لا تعد استشارة قانونية.</p>
+      </aside>
     </div>
     <div class="kernel-page-header__actions">
       <KernelDemoPill />

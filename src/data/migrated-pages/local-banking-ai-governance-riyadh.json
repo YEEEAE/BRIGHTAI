@@ -55,10 +55,10 @@
           "priceRange": "SAR 15,000-85,000+",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "King Fahd Road, Al Olaya",
-            "addressLocality": "Riyadh",
-            "addressRegion": "Riyadh",
-            "postalCode": "12212",
+            "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
+            "addressLocality": "الرياض",
+            "addressRegion": "منطقة الرياض",
+            "postalCode": "14254",
             "addressCountry": "SA"
           },
           "geo": {
@@ -76,8 +76,8 @@
                 "Wednesday",
                 "Thursday"
               ],
-              "opens": "09:00",
-              "closes": "18:00"
+              "opens": "08:00",
+              "closes": "17:00"
             }
           ],
           "areaServed": [

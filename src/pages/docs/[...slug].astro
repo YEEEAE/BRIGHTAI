@@ -21,6 +21,8 @@ import { getCollection, render } from 'astro:content';
 import * as cheerio from 'cheerio';
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import { getFaqLd } from '../../data/schema-helpers';
+// BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — central contract
+import { getP0Snippet } from '../../data/snippet-pack';
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
@@ -130,6 +132,13 @@ const extraSchemaNodes: Array<Record<string, unknown>> = FAQ_BY_DOC[doc.id]
       },
     ]
   : [];
+
+// BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+// Resolved by the canonical path so the central contract is the
+// snippet-pack.ts source. The aside is rendered inside the default
+// slot (below the DocsLayout's article-tldr card, above the article
+// body) so it sits inside the existing hero/intro area.
+const p0DocsSnippet = getP0Snippet(`/docs/${doc.id}/`);
 ---
 
 <DocsLayout
@@ -148,5 +157,17 @@ const extraSchemaNodes: Array<Record<string, unknown>> = FAQ_BY_DOC[doc.id]
   extraSchemaNodes={extraSchemaNodes}
   tldr={doc.data.tldr ?? ''}
 >
+  {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+     For the docs pillar, the new aside is rendered at the top of
+     the default slot (below the DocsLayout's article-tldr card,
+     above the article body). The post-build apply-speakable-schema
+     picks it up from the HTML. The existing article-tldr card is
+     preserved (different visual style, different content — not a
+     duplication). */}
+  {p0DocsSnippet && (
+    <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
+      <p>{p0DocsSnippet.text}</p>
+    </aside>
+  )}
   <Content />
 </DocsLayout>

@@ -29,6 +29,7 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/customers/hospital/' }, { lang: 'x-default', href: 'https://brightai.site/customers/hospital/' }]}
   jsonLd={jsonLd as any}
   currentPath="/customers/hospital/"
+  extraSpeakableSelectors={['aside[data-snippet="tl-dr"]']}
 >
   <CaseStudy
     sector="صحي"
@@ -56,4 +57,10 @@ const jsonLd = {
     nextSlug="pharma"
     nextTitle="مصنع أدوية"
   />
+  {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+     Answer-first, self-contained, ≤60 words. Single source of truth:
+     src/data/snippet-pack.ts. */}
+  <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
+    <p>مستشفى كبير بنى حوكمة لاستخدامات النماذج اللغوية في تحليل التقارير ودعم القرار. ركز على حماية بيانات المرضى ومنع خروجها إلى أدوات خارجية. النتيجة تغطية كاملة لسجلات المرضى الحساسة ضمن سجل التدقيق التشغيلي، وصفر حالات تسرب مؤكدة بعد تفعيل الجدار الوقائي، وجاهزية تدقيق داخلي خلال ثلاثة أسابيع.</p>
+  </aside>
 </ArabicLayout>

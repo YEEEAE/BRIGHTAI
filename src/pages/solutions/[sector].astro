@@ -26,6 +26,8 @@ import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../components/Icon.astro';
 import { getFaqLd } from '../../data/schema-helpers';
+// BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — central contract
+import { getP0Snippet, SNIPPET_SELECTOR } from '../../data/snippet-pack';
 
 export function getStaticPaths() {
   return sectors.map(s => ({ params: { sector: s.slug }, props: { sector: s } }));
@@ -148,6 +150,14 @@ const finalJsonLd = migratedJsonLdSanitised
 const sectorAnswerFirst =
   `حوكمة ${sector.chip} مع BrightAI تعني توثيق كل استخدام AI، تصنيف مخاطره، حجب البيانات الحساسة قبل الإرسال للنموذج، وإجبار موافقة بشرية على القرارات عالية الأثر. أداة تشغيلية لا تستبدل التقييم النظامي أو القانوني.`;
 
+// BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+// 3 sectors are P0 (banking, government, healthcare). For P0 sectors
+// we convert the existing answer-first summary into the central-contract
+// aside (new formal-Arabic text from src/data/snippet-pack.ts). For
+// the other sectors (manufacturing), the existing Saudi-dialect
+// answer-first summary is preserved unchanged.
+const p0SectorSnippet = getP0Snippet(sector.href);
+
 /* ------------------------------------------------------------------
  * Per-sector compliance badges + 4-step flow مخصصة لكل قطاع.
  * تستند على نفس البيانات الموجودة في migrated pages + حلول مرتبطة.
@@ -190,7 +200,7 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
   { label: 'تقارير القطاع',             desc: 'تقارير جاهزة للجهات التنظيمية.',            icon: 'mdi-file-document' },
 ];
 ---
-<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={finalJsonLd as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? sector.title} extraSpeakableSelectors={['.answer-first-summary']}>
+<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={finalJsonLd as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? sector.title} extraSpeakableSelectors={p0SectorSnippet ? ['.answer-first-summary', SNIPPET_SELECTOR] : ['.answer-first-summary']}>
 {!sector.regulations ? (
   /* legacy migrated fallback — only لو ما في regulations data */
   <>
@@ -208,11 +218,19 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
       <div>
         <span class="inner-hero__badge"><Icon name={sector.icon} class="" /> {sector.chip}</span>
         <h1>{sector.h1}</h1>
-        {/* BAI-VOC-001-B (2026-07-18): answer-first summary — 30–60-word
-            Saudi-dialect, sits between H1 and the description so AI voice
-            / TTS engines can quote it. Also wired into the WebPage
-            SpeakableSpecification as the second cssSelector entry. */}
-        <p class="answer-first-summary" data-speakable-target="answer-first">{sectorAnswerFirst}</p>
+        {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+            For P0 sectors (banking/government/healthcare) we convert
+            the existing answer-first summary into the central-contract
+            aside; text from src/data/snippet-pack.ts (formal Arabic,
+            ≤60 words, no new claims). For non-P0 sectors, the
+            BAI-VOC-001-B answer-first summary is preserved unchanged. */}
+        {p0SectorSnippet ? (
+          <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
+            <p>{p0SectorSnippet.text}</p>
+          </aside>
+        ) : (
+          <p class="answer-first-summary" data-speakable-target="answer-first">{sectorAnswerFirst}</p>
+        )}
         <p class="inner-hero__desc">{sector.vocLead ?? sector.description}</p>
         <div class="inner-hero__actions">
           <div class="cta-actions">

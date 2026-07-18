@@ -236,8 +236,16 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        onload="this.media='all'" handler on the Google Fonts <link> above.
        The loader finds every <link data-font-async> in the head and flips
        media="print" → media="all" once each stylesheet finishes loading.
-       Imported as an ES module so Astro bundles it (CSP: script-src 'self'). */}
-  <script nonce={Astro.locals.cspNonce}>import '../scripts/font-async-loader.js';</script>
+
+       FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): the previous inline
+       `<script>import '../scripts/font-async-loader.js';</script>` failed at
+       runtime because the browser cannot resolve a relative `import` specifier
+       inside an inline module (SyntaxError). The script now lives in
+       public/js/font-async-loader.js and loads as a static ES module — same
+       pattern as /js/analytics.js below. Astro bundles it as a side-effect
+       import when the nonce is removed, but `type="module"` + static `src=`
+       is more predictable and matches the analytics.js pattern. */}
+  <script type="module" src="/js/font-async-loader.js" nonce={Astro.locals.cspNonce}></script>
 
   {/* Service Worker registration — REPORTS-20: deferred via setTimeout (100ms after
        window.load) so it never competes with the LCP element. External file replaces
@@ -299,20 +307,27 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
       SSR-safe (script is bundled by Astro and only runs in the browser). Respects
       prefers-reduced-motion + degrades gracefully without IntersectionObserver support.
 
-      The actual implementation lives in src/scripts/scroll-reveal.js so it can be
-      unit-tested, versioned, and audited independently of this layout file. */}
-  <script nonce={Astro.locals.cspNonce}>
-    import '../scripts/scroll-reveal.js';
-  </script>
+      The actual implementation lives in public/js/scroll-reveal.js so it can be
+      unit-tested, versioned, and audited independently of this layout file.
+
+      FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): was previously an inline
+      `<script>import '../scripts/scroll-reveal.js';</script>` which the
+      browser couldn't resolve at runtime (relative `import` specifier
+      in an inline module → SyntaxError). All reveal-target elements stayed
+      at opacity 0 with translateY(16px), creating the long empty space
+      on the homepage after the "كل شركة تبي AI…" section. Loaded as a
+      static ES module instead, matching the analytics.js pattern. */}
+  <script type="module" src="/js/scroll-reveal.js" nonce={Astro.locals.cspNonce}></script>
 
   {/* Global focus trap — DEC-A11Y-003 (2026-07-14). Auto-applies a WCAG-compliant
       focus trap to every [role="dialog"][aria-modal="true"] element on the page.
       Watches the modal's `hidden` attribute and toggles the trap automatically.
       Used by MobileNav, kernel/connectors, kernel/approvals, kernel/scenarios,
-      and any future modal that follows the standard dialog pattern. */}
-  <script nonce={Astro.locals.cspNonce}>
-    import '../scripts/focus-trap.js';
-  </script>
+      and any future modal that follows the standard dialog pattern.
+
+      FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): same root cause as
+      scroll-reveal.js above — moved from inline `import` to static ES module. */}
+  <script type="module" src="/js/focus-trap.js" nonce={Astro.locals.cspNonce}></script>
 
   <!-- Critical inline CSS: brand font-face + heading overrides + LCP element
        (homepage .split-hero__h1) sizing. Expanded 2026-07-14 (PERF-FIX) to

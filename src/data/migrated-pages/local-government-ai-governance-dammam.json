@@ -41,10 +41,10 @@
         },
         {
           "@type": [
-            "LocalBusiness",
-            "ProfessionalService"
+            "ProfessionalService",
+            "Service"
           ],
-          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#local-business",
+          "@id": "https://brightai.site/solutions/government-ai-governance/dammam/#professional-service",
           "name": "BrightAI - Government AI Governance Dammam",
           "alternateName": "برايت آي لحوكمة الذكاء الاصطناعي في الدمام",
           "url": "https://brightai.site/solutions/government-ai-governance/dammam/",
@@ -53,12 +53,6 @@
           "image": "https://brightai.site/images/og/brightai-og-1200x630.png",
           "logo": "https://brightai.site/logo.png",
           "priceRange": "SAR 20,000-120,000+",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Dammam",
-            "addressRegion": "Eastern Province",
-            "addressCountry": "SA"
-          },
           "geo": {
             "@type": "GeoCoordinates",
             "latitude": 26.42068,

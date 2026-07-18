@@ -128,6 +128,33 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
 
+### 2026-07-18 — BAI-SEO-003-S6: City Solution Page AEO — unique answer-first + SAB-honest LocalBusiness + similarity test — Verified locally (build 190 + seo:gate 0/0 + body similarity max 29.5% < 50% threshold + 0 dup @id)
+
+- **Files**: 3 معدّلة + 2 جديدة + 1 جديدة. **معدّل**: `src/data/solutions.ts` (أضفت `answerFirst?: string` لـ `LocalData` interface + 6 نصوص فريدة ≤60 كلمة، 41/42/39/40/38/46 كلمة بالترتيب: riyadh/banking 41 — SAMA+NCA+AML، khobar/banking 42 — SAMA+NCA+multi-branch، dammam/gov 39 — DGA+SDAIA+NCA+Shadow AI، madinah/gov 40 — DGA+SDAIA+PDPL+pilgrim، jeddah/health 38 — SFDA+CBAHI+ISO 13485+PHI flow، mecca/health 46 — SFDA+CBAHI+ISO 13485+Hajj pressure). `src/pages/solutions/[sector]/[city].astro` (أضفت `const isHQ = loc.cityEn === 'Riyadh'`، LocalBusiness فقط للرياض مع عنوان HQ الحقيقي، ProfessionalService+Service للمدن الأخرى بدون address، `locAnswerFirst` يقرأ من `loc.answerFirst`، migrated branch يحصل على `<p class="answer-first-summary">` قبل `<main>`، `extraSpeakableSelectors` دائمًا). `src/data/migrated-pages/local-banking-ai-governance-riyadh.json` (إصلاح عنوان مزيف: `King Fahd Road, Al Olaya, 12212` → `6913 المبارك بن فضالة، حي الفيحاء, 14254`، openingHours 09:00-18:00 → 08:00-17:00). `src/data/migrated-pages/local-government-ai-governance-dammam.json` + `local-healthcare-ai-governance-jeddah.json` (LocalBusiness → ProfessionalService + Service، حذف address block، @id محدث). **جديد**: `scripts/seo/check-city-similarity.mjs` (~160 سطر، 3-shingle Jaccard + 2-shingle answer-first + word count). `_reports/BAI-SEO-003-S6-CITY-SIMILARITY.md` (~5KB).
+- **What**: تنفيذ Prompt S6 من `audit/seo-2026/MASTER-SEO-AEO-AUDIT-AR.md` Section 506. تحسين intent "حوكمة AI في {city} السعودية" بدون صفحات جديدة. 3 محاور: (1) **content** — أضفت `answerFirst` للـ interface، كل مدينة لها فقرة فريدة ≤60 كلمة بالعامية السعودية تذكر القطاع + المدينة + الجهة التنظيمية + المشكلة التشغيلية. (2) **schema** — LocalBusiness فقط للرياض (المقر الحقيقي)، باقي المدن ProfessionalService (SAB pattern). أصلحت عنوان riyadh المزيف في migrated JSON. (3) **verification** — pnpm build + seo:gate + body similarity script.
+- **Why**: قبل S6: 3 صفحات non-migrated (khobar/madinah/mecca) تشارك نفس الـ answer-first 26 كلمة، فقط اسم المدينة يتغير. 3 صفحات migrated (riyadh/dammam/jeddah) بدون answer-first. riyadh migrated JSON فيه عنوان مزيف `King Fahd Road, Al Olaya, 12212` يوهم بوجود مكتب في الرياض غير موجود. dammam/jeddah migrated يستخدمان LocalBusiness بدون address لكنه يوهم بوجود حقيقي. MASTER-SEO-AEO-AUDIT-AR Section 506 يقول "أضف answer-first ≤60 كلمة داخل hero/intro الموجود... احتفظ فقط بالحقائق المحلية القابلة للإثبات؛ لا تدّع وجود مكتب أو عميل أو شراكة في مدينة دون دليل". acceptance: "كل city page فيها answer block ≤60 كلمة، canonical صحيح، LocalBusiness غير مضلل، وتشابه body النصي بين city pages أقل من threshold يحدده الاختبار".
+- **Verification**:
+  - `pnpm build` → **190 صفحة، 0 أخطاء** ✅
+  - `pnpm seo:gate` → **0 errors, 0 warnings, 6/6 hreflang, 5/5 service, 444 files, 64628 refs, 0 broken** ✅
+  - `pnpm verify:all` → كل شي passed (1 pre-existing H1 fail على /design/typography/ — design utility مستثنى)
+  - `node scripts/_check-duplicate-schema-ids.mjs` → **0 duplicates on 392 pages** ✅
+  - `node scripts/seo/check-city-similarity.mjs`:
+    - **max body similarity 29.5%** (khobar/banking ↔ mecca/health) — under 50% threshold ✅
+    - 0 pairs >50%، 0 pairs >30%، avg 14.1%، median 10.9%
+    - **max answer-first similarity 11.6%** (dammam ↔ madinah) — كل الـ 6 فريدة
+    - 6/6 answer-first ≤60 كلمة (38-46)
+  - 6/6 canonical صحيحة (`https://brightai.site/solutions/<sector>/<city>/`)
+  - 0 روابط داخلية مكسورة، 0 redirect، 0 صفحة جديدة
+- **قبل/بعد**:
+  - answer-first متطابق: 3 صفحات → 6 صفحات فريدة
+  - LocalBusiness (page-specific): 6 → 1 (الرياض فقط، الباقي ProfessionalService)
+  - max body similarity: 32.4% → 29.5% (-2.9pp من التحسين)
+  - عناوين وهمية: 1 (riyadh King Fahd) → 0
+- **Report**: `_reports/BAI-SEO-003-S6-CITY-SIMILARITY.md` (4.8KB)
+- **Commit**: uncommitted (per brain line 18 — المستخدم ينشئ الـ commits). رسالة مقترحة: `feat(seo): unique city answer-first + SAB-honest LocalBusiness (BAI-SEO-003-S6)`
+- **Status**: verified locally (pnpm build + seo:gate + verify:all + check-duplicate-schema-ids + check-city-similarity).
+- **Brain updates**: Section 4 (new DEC-SEO-003-S6-2026-07-18-001: "answer-first uniqueness rule — no more generic paragraphs with city-name substitution"), Section 5 (interface `LocalData.answerFirst` added to inventory).
+
 ### 2026-07-18 — BAI-CRO-003: إعادة بناء /pricing/ كصفحة 3 عروض حوكمة مؤسسية (Assessment / Pilot featured / Enterprise Rollout) — Verified locally (build 190 + seo:all 0 + Playwright ALL PASS mobile+desktop)
 
 - **Files**: 1 معدّل + 1 جديد + 2 جديد screenshots. **معدّل**: `src/pages/pricing/index.astro` (إعادة كتابة كاملة، 708 أسطر 4 باقات → 800 سطر 3 عروض + 3 detail sections + 6 pricing factors + 13-صف جدول مقارنة + 8 FAQ اعتراضات + 3 decision helper + final CTA. CSS scoped: 9 قواعد جديدة لـ `.pricing-offer-detail__*` و `.pricing-factor` و `.pricing-table__caption` و `.pricing-decision-helper__*` + RTL-aware mobile-first responsive). **جديد**: `scripts/playwright/verify-pricing-cro.mjs` (152 سطر، يفحص على 2 viewports: HTTP 200, no console errors, 3 offers (واحد featured), 0 "99 ريال" anchor, ≥5 CTAs مع event metadata, table caption + 4 col-scope + region role + tabindex 0 + aria-label, FAQ 8 أسئلة, decision helper 3 بطاقات, Schema 3 Service + FAQPage). **جديد**: `download/qa/pricing-cro/mobile.png` (1.3MB) + `desktop.png` (1.9MB). **تقرير**: `report/2026-07-18-pricing-cro-rewrite.md` (13.6KB).
@@ -4287,6 +4314,19 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 - **Reversal cost**: Low.
 - **Related KIs**: KI-005 (resolved 2026-06-29).
 - **Related reports**: `report/REPORT-23_SCHEMA-ENHANCEMENT.md`.
+
+### DEC-SEO-003-S6 — SAB-honest LocalBusiness + unique answer-first (BAI-SEO-003-S6 supersedes DEC-020 partially)
+
+- **Date**: 2026-07-18
+- **Context**: DEC-020 (2026-06-29) منح كل مدينة (Riyadh, Jeddah, Dammam, Khobar, Mecca, Madinah) LocalBusiness node مع address. هذا يوهم بوجود 6 مكاتب فعلية بينما المقر الحقيقي واحد في الرياض (حي الفيحاء, 14254). Google "doorway pages" guidance يحذّر من صفحات city pages بدون local presence حقيقي. riyadh migrated JSON فيه عنوان مزيف `King Fahd Road, Al Olaya, 12212`. إجابة answer-first متطابقة 26 كلمة في 3 صفحات non-migrated (khobar/madinah/mecca).
+- **Decision**:
+  1. **LocalBusiness فقط للرياض** (المقر الفعلي). باقي 5 مدن = `["ProfessionalService", "Service"]` بدون address (SAB pattern). template يصدر `isHQ = loc.cityEn === 'Riyadh'` ويصدر النوع المناسب.
+  2. **العنوان الحقيقي للرياض**: `6913 المبارك بن فضالة، حي الفيحاء, 14254` (من schema foundation). migrated JSONs الثلاثة تم إصلاحها (riyadh = عنوان حقيقي، dammam/jeddah = ProfessionalService بدون address).
+  3. **answer-first فريد لكل مدينة**: ≤60 كلمة بالعامية السعودية، يذكر القطاع + المدينة + الجهة التنظيمية + المشكلة التشغيلية. محفوظ في `LocalData.answerFirst` (نوع جديد في `src/data/solutions.ts`).
+- **Rationale**: SAB honesty — `LocalBusiness` نوع schema.org يوهم بوجود مكتب حقيقي. بدون SAB، Google قد يصنّف صفحات city pages كـ doorway pages (تكرار + ادعاء زائف). answer-first الفريد يحسّن intent "حوكمة AI في {city} السعودية" لـ AI voice / TTS engines ويقلل body similarity بين city pages.
+- **Reversal cost**: Medium (يتطلب تعديل `src/pages/solutions/[sector]/[city].astro` schema + كل `LocalData.answerFirst` نص).
+- **Related KIs**: لا (DEC-020 لم يذكر KI).
+- **Related reports**: `_reports/BAI-SEO-003-S6-CITY-SIMILARITY.md`.
 
 ### DEC-021 — HowTo schema عبر DocsLayout + 2 procedural pages
 

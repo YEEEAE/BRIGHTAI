@@ -29,6 +29,7 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/customers/pharma/' }, { lang: 'x-default', href: 'https://brightai.site/customers/pharma/' }]}
   jsonLd={jsonLd as any}
   currentPath="/customers/pharma/"
+  extraSpeakableSelectors={['aside[data-snippet="tl-dr"]']}
 >
   <CaseStudy
     sector="صناعة دواء"
@@ -54,4 +55,10 @@ const jsonLd = {
     ]}
     quote={{ text: 'الامتثال صار جزءاً من العملية نفسها، مو مهمة نسويها قبل التدقيق بأسبوعين.', author: 'مدير الامتثال — مصنع أدوية' }}
   />
+  {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
+     Answer-first, self-contained, ≤60 words. Single source of truth:
+     src/data/snippet-pack.ts. */}
+  <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
+    <p>مصنع أدوية بنى حوكمة لاستخدامات الذكاء الاصطناعي في البحث والتطوير مع التركيز على توليد الأدلة تلقائيا وربطها بأنظمة الجودة. النتيجة جاهزية تدقيق داخلي خلال ثلاثة أسابيع، وتغطية واسعة للسياسات المعتمدة بضوابط قابلة للقياس آليا، مع تخفيض كبير في الجهد اليدوي لتجهيز ملفات الامتثال.</p>
+  </aside>
 </ArabicLayout>
