@@ -4,6 +4,7 @@
   <url>
     <loc>https://brightai.site/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/" />
     <lastmod>2026-06-24</lastmod>
   </url>
@@ -422,6 +423,12 @@
     <lastmod>2026-06-24</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/calculator/roi/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/calculator/roi/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/calculator/roi/" />
+    <lastmod>2026-07-17</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/contact/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/contact/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/contact/" />
@@ -700,6 +707,13 @@
     <lastmod>2026-07-17</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/" />
+    <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/" />
+    <lastmod>2026-05-27</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/en/cookie-policy/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/cookie-policy/" />
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/cookie-policy/" />
@@ -740,6 +754,24 @@
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/terms/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/terms/" />
     <lastmod>2026-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/events/ai-governance-day/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/events/ai-governance-day/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/events/ai-governance-day/" />
+    <lastmod>2026-07-17</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/events/leap-2026/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/events/leap-2026/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/events/leap-2026/" />
+    <lastmod>2026-07-17</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/events/webinar/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/events/webinar/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/events/webinar/" />
+    <lastmod>2026-07-17</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/hub/</loc>
@@ -844,6 +876,18 @@
     <lastmod>2026-07-17</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/newsletter/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/newsletter/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/newsletter/" />
+    <lastmod>2026-07-17</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/partners/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/partners/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/partners/" />
+    <lastmod>2026-05-27</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/pdpl-statement/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/pdpl-statement/" />
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/pdpl-statement/" />
@@ -868,6 +912,12 @@
     <xhtml:link rel="alternate" hreflang="en-SA" href="https://brightai.site/en/privacy-policy/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/privacy-policy/" />
     <lastmod>2026-06-24</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/referral/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/referral/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/referral/" />
+    <lastmod>2026-07-17</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/sales-deck/</loc>

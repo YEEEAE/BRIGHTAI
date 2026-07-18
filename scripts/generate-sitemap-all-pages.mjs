@@ -233,6 +233,14 @@ function groupRelPath(relPath) {
     normalized === "sitemap/index.html" ||
     normalized === "sales-deck/index.html" ||
     normalized === "en/sales-deck/index.html" ||
+    normalized === "en/index.html" ||
+    normalized === "calculator/roi/index.html" ||
+    normalized === "events/ai-governance-day/index.html" ||
+    normalized === "events/leap-2026/index.html" ||
+    normalized === "events/webinar/index.html" ||
+    normalized === "newsletter/index.html" ||
+    normalized === "partners/index.html" ||
+    normalized === "referral/index.html" ||
     (normalized.startsWith("authors/") && normalized.endsWith("/index.html")) ||
     (normalized.startsWith("blog/") && normalized.endsWith("/index.html")) ||
     (normalized.startsWith("docs/") && normalized.endsWith("/index.html")) ||
