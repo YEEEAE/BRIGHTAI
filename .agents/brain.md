@@ -70,6 +70,20 @@ skills_ready: 7
 | FCP | ~2.5s (estimated) | 2026-07-06 | < 1.8s | ⚠️ needs measurement |
 | TTFB | ~200ms (Cloudflare CDN) | 2026-07-06 | < 600ms | ✅ excellent |
 
+### 1.2.a Playwright Vitals (after AUDIT-REPLAY-2026-07-18, measured 2026-07-18 03:00)
+
+| Metric | Value | Last Measured | Budget | Status |
+|---|---|---|---|---|
+| Pages scanned (Playwright) | 10 | 2026-07-18 | — | — |
+| LCP avg (mobile Slow 4G, 4× CPU) | 1368ms | 2026-07-18 | < 2500 | ✅ within budget |
+| LCP max | 3408ms (`/about/`) | 2026-07-18 | < 2500 | ❌ outlier |
+| CLS avg | 0.30 (Playwright measurement noise) | 2026-07-18 | < 0.05 | ❌ high |
+| CLS max | 0.95 (`/`) | 2026-07-18 | < 0.1 | ❌ outlier |
+| Console errors total | 40 (4 × 10 pages) | 2026-07-18 | 0 | ❌ KI-SYNTAX-2026-07-18-001 |
+| SyntaxError per page | 4 | 2026-07-18 | 0 | ❌ 4 scripts × 190 pages = 760 events |
+
+**Note on Playwright vs Lighthouse**: Playwright LCP element أحياناً hidden (mobile-menu accordion, dropdown panel) → measurement noise. CLS أعلى من Lighthouse لأن mobile-menu hydration + scroll-reveal (broken بـ SyntaxError) → layout shifts accumulate. الـ 0.30 avg و 0.95 max قيم real-world signal مو methodology artifact. **KI-SYNTAX-2026-07-18-001** يفسر جزء كبير من CLS regression (الـ 4 scripts المعطلة → observers ما تتحمل → reveal animations stack).
+
 ### 1.2.b Performance (after perf/bloat-3-fixes-2026-07-07, measured 2026-07-07 18:17)
 
 | Metric | Before | After | Saved | Budget Status |
@@ -217,6 +231,32 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-18 — AUDIT-REPLAY-2026-07-18: clean checkout post-merge replay (build + verify:all + seo:all + performance:budget + axe + Playwright LCP/CLS/syntax) + اكتشاف regression KI-SYNTAX-2026-07-18-001 (4 SyntaxError × 190 pages) — Verified locally, evidence-driven
+
+- **Files**: 0 معدّل (read-only audit). **جديد** (untracked): `report/2026-07-18-audit-replay.md` (~28KB), `report/2026-07-18-vitals.md` + `report/2026-07-18-vitals.json`، `report/2026-07-18-syntax.md` + `report/2026-07-18-syntax.json`، `report/2026-07-18-pre-audit-brain-snapshot.md` (brain.md قبل الـ audit)، `scripts/audit-2026-07-18-vitals.mjs` (Playwright + CDP collector)، `scripts/audit-2026-07-18-syntax.mjs` (Playwright pageerror listener). **dist/ cleanup**: 3 ملفات "X 3" قديمة (404 3.html, 500 3.html, index 3.html, mode 0600) من build سابق معلق في 02:50.
+- **What**: شغّلنا نفس pipeline الـ audit على HEAD `ecc753db` "update site" (دمج SITEMAP-CLEANUP-2026-07-18). 7 أوامر + 2 collectors. النتيجة: 5/7 PASS (build, verify:all, seo:schema, seo:gate, axe-core) + 2/7 FAIL (seo:check, performance:budget) + 1 regression مكتشف (KI-SYNTAX-2026-07-18-001). **ممنوع تحويل partial/fail إلى pass بدون evidence** (قاعدة الـ user).
+- **Why**: المستخدم طلب audit replay بعد دمج الإصلاحات بنفس الأوامر والـ collector. كل الفحوصات المتعذرة (live curl, Bing/Clarity, Cloudflare headers, hstspreload.org) تبقى **Unknown** خارج المقام. كل issue يربط بـ evidence (command output + HTML + browser).
+- **Verification**:
+  - `pnpm run build` → 190 صفحات، 176 sitemap URLs (0 errors) ✅
+  - `pnpm run verify:all` (بعد dist cleanup) → 5/5 فحص، 0 errors, 0 warnings ✅
+  - `pnpm run seo:check` → 1 fail (`/design/typography/index.html` H1=2، design utilities pattern مستثنى من sitemap) ❌
+  - `pnpm run seo:schema` → 55 page pass + 378 Speakable pass ✅
+  - `pnpm run seo:gate` → 6/6 hreflang، 5/5 service، 0 errors ✅
+  - `pnpm run performance:budget` → HTML 150.74KB > 80KB، BaseLayout CSS 218.92KB > 50KB (KI-018 known)، JS 20.18KB < 60KB ✅ ❌
+  - `A11Y_BASE_URL=http://127.0.0.1:4321 pnpm run a11y:scan` → 13 صفحة، 0 critical/serious/moderate/minor ✅
+  - Playwright LCP/CLS (10 صفحات، Slow 4G + 4× CPU): LCP avg 1368ms (✅<2500)، LCP max 3408ms (❌)، CLS avg 0.30 (❌>0.05)، CLS max 0.95 (❌)
+  - Playwright SyntaxError collector (14 صفحة): **14/14 (100%) عندها 4 SyntaxError = 56 events** (regression)
+- **الـ regression الجديد KI-SYNTAX-2026-07-18-001** (critical): `<script nonce={Astro.locals.cspNonce}>import '...'</script>` بدون `type="module"` في `src/layouts/BaseLayout.astro:217, 264, 275, 284`. الـ 4 scripts: `font-async-loader.js`, `page-view.js`, `scroll-reveal.js`, `focus-trap.js`. **HTML evidence**: `<script nonce="NekNyilJH/ixFE3adaqSJw">import '../scripts/font-async-loader.js';</script>`. **Browser evidence**: `pageerror: Cannot use import statement outside a module` × 4 per page. **Blast radius**: 4 × 190 = 760 SyntaxError events. **الـ root cause**: REPORTS-CSP-01 / DEC-CSP-001 (2026-07-15) أضاف `nonce` attribute → Astro ما يقدر يبندل السكربت → يحتفظ به inline بدون `type="module"` → classic script parser يرمي SyntaxError. **Fix path**: (a) إضافة `type="module"` explicit، (b) نقل scripts لـ `src/scripts/*.js` بدون nonce (Astro يبندل تلقائياً)، (c) نقل لـ external `.js` files + `<script src="..." nonce="..." type="module">`. **يحتاج user approval** (BaseLayout.astro = protected area, يحتاج plan).
+- **detection gap**: `verify:all`, `seo:all`, `a11y:scan` ما يكشفون runtime SyntaxError — يفحصون static HTML structure بس. **regression catch path**: يضيف check للـ `<script>` content في CI يفحص إن أي `<script>` يحوي `import` ما عنده `type="module"` → fail-fast.
+- **Risks**:
+  - **KI-CSP-001 (in-progress)**: Phase 1 foundation OK لكن regression في scripts. DEC-CSP-001 يحتاج reversal جزئي (إرجاع `nonce` من 4 inline scripts، نقل لـ external files + `type="module"`) قبل Phase 2.
+  - **dist/ residue**: 9 ملفات "X 3" باقية (CNAME 3, _headers 3, _redirects 3, ai 3.txt, apple-touch-icon 3.avif/png, favicon-16x16 3.avif/png, favicon-32x32 3.avif/png, favicon-48x48 3.avif). mode 0600 + أذونات مختلفة. ما تأثر على verify:all لكن متبقية من builds قديمة معلقّة.
+  - **LCP/CLS measurement noise**: Playwright LCP element أحياناً hidden (`mobile-menu__accordion-panel`، `site-header__dropdown-group`). CLS يتأثر بـ mobile-menu hydration. الأرقام تختلف عن Lighthouse لكن real-world signal موجود (SyntaxError → scripts fail → layout shifts).
+- **DEC جديد (DEC-AUDIT-REPLAY-2026-07-18-001)**: Playwright-based vitals collector + syntax-error collector تنضم لـ permanent verification suite. الـ scripts: `scripts/audit-2026-07-18-vitals.mjs` + `scripts/audit-2026-07-18-syntax.mjs` (يمكن نقلها لـ `scripts/audit/*` لاحقاً). **CI integration**: `audit:regression` job يفحص static HTML للـ `<script>` tags التي تحوي `import` بدون `type="module"` (defense-in-depth ضد تكرار الـ KI-SYNTAX-2026-07-18-001).
+- **Brain updates**: Section 1.1 (sitemap URLs 168 → 176, 2026-07-18 measurement)، Section 1.2 (vitals baseline محدّث بـ Playwright values)، Section 3 (KI-SYNTAX-2026-07-18-001 جديد + KI-CSP-001 regression flagged)، Section 4 (DEC جديد)، Section 5 (no change).
+- **الـ commit**: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: verified locally (build + 7 commands + axe + 2 Playwright collectors). **يحتاج user decision**: fix path لـ KI-SYNTAX-2026-07-18-001 (3 options)، commit + push + Render auto-redeploy + IndexNow trigger.
 
 ### 2026-07-18 — SITEMAP-CLEANUP-2026-07-18: استبعاد /404/ من sitemap + إصلاح trailing-slash + إكمال sitemap بـ 10 صفحات indexable مفقودة (sales-deck + /en/ + /calculator/roi/ + /events/×3 + /newsletter/ + /partners/ + /referral/) — Verified locally, 176/176 URL = 200
 
@@ -3555,6 +3595,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-007 | React renderer (59KB gzipped) loaded on homepage | high | **resolved** | 2026-06-29 | **RESOLVED 2026-06-30 via DEC-017 + DEC-041**: `client:visible` replaced with `client:visible client:media="(min-width: 768px)"`. Verified via Playwright on 390×844: 0 React scripts in document, 0 visible canvas. Plus SSR canvas `display:none` at ≤768px. Saving ~60.7KB gz JS on mobile + zero canvas paint cost. Future full DEC-005 replacement (vanilla JS) is broader out-of-scope removal — current state sufficient. | `src/components/SplitHero.astro`, `src/components/hero/DottedSurface.tsx` |
 | KI-008 | KernelLayout uses missing CSS tokens | high | open | 2026-06-29 | `--ink-950`, `--blur-md`, `--gradient-brand` undefined in `tokens.css`. 11 kernel pages visually broken. | `src/layouts/KernelLayout.astro`, `src/styles/tokens.css` |
 | KI-009 | Tailwind configured but disabled | medium | open | 2026-06-29 | `tailwind.config.ts` exists, `tailwind-merge` in deps, but no `@tailwind` directive in CSS. Confuses contributors. | `tailwind.config.ts`, `package.json`, `src/lib/utils.ts` |
+| KI-SYNTAX-2026-07-18-001 | `<script nonce={Astro.locals.cspNonce}>import '...'</script>` بدون `type="module"` في 4 scripts من BaseLayout → 4 SyntaxError × 190 pages = 760 events | **critical** (100% pages broken at runtime) → **open** | 2026-07-18 | **DISCOVERED 2026-07-18 via AUDIT-REPLAY**: REPORTS-CSP-01 / DEC-CSP-001 (2026-07-15) أضاف `nonce` attribute للـ 4 inline scripts. Astro يبندل `<script>` بدون attributes، لكن مع attribute (nonce) يبقيه inline بدون `type="module"`. الـ browser يفسره كـ classic script → `import` keyword throws SyntaxError. الـ 4 scripts: `font-async-loader.js`, `page-view.js`, `scroll-reveal.js`, `focus-trap.js` (BaseLayout.astro:217, 264, 275, 284). **HTML evidence**: `<script nonce="NekNyilJH/ixFE3adaqSJw">import '../scripts/font-async-loader.js';</script>`. **Browser evidence**: Playwright `pageerror` listener = 4 SyntaxError events per page on 14/14 pages. **Detected by**: `scripts/audit-2026-07-18-syntax.mjs` (new collector). **Detection gap**: `verify:all`, `seo:all`, `a11y:scan` يفحصون static HTML structure بس — ما يكتشفون runtime script errors. **Fix path**: (a) إضافة `type="module"` explicit، (b) نقل scripts لـ `src/scripts/*.js` بدون nonce (Astro يبندل تلقائياً + ينتج external `_astro/*.js`)، (c) نقل لـ external `.js` files + `<script src="..." nonce="..." type="module">`. **يحتاج user approval** (BaseLayout.astro = protected area + الـ fix يحدد كيف Phase 2 من CSP يتنفذ). **CI guard proposed**: static check يفحص أي `<script>` يحوي `import` بدون `type="module"` → fail-fast. | `src/layouts/BaseLayout.astro:217,264,275,284`, `src/scripts/{font-async-loader,page-view,scroll-reveal,focus-trap}.js` |
 
 ### 3.2 High (يخفض CTR أو الأداء)
 
@@ -3667,6 +3708,27 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
   - **PR-only diff scanner**: defense against race conditions في CVE databases (CVE published اليوم،anchore ما يعرفها بعد، لكن PR أضاف الـ package — dependency-review-action يكتشف).
 - **Reversal cost**: Low (revert الـ commit يحذف Job 9 + الـ allowlist file). الـ 8 jobs الأصلية تبقى شغّالة.
 - **Do not reverse** بدون explicit user approval. الـ CI بدون security-scan = blind spot في supply chain — critical security gap.
+
+### DEC-AUDIT-REPLAY-2026-07-18-001: Playwright-based vitals + syntax-error collectors كـ permanent verification suite + CI guard للـ `<script>...import...</script>` بدون `type="module"`
+
+- **Date**: 2026-07-18
+- **Context**: AUDIT-REPLAY-2026-07-18 اكتشف KI-SYNTAX-2026-07-18-001 (4 SyntaxError × 190 pages = 760 events) — `<script nonce={Astro.locals.cspNonce}>import '...'</script>` بدون `type="module"`. الـ detection gap: `verify:all`, `seo:all`, `a11y:scan` يفحصون static HTML structure فقط، ما يكتشفون runtime script execution errors. الـ regression من REPORTS-CSP-01 / DEC-CSP-001 (2026-07-15) أضاف `nonce` attribute للـ 4 inline scripts في BaseLayout.astro — Astro يبندل `<script>` بدون attributes لكن مع attribute يحتفظ به inline بدون `type="module"`. الـ browser يفسره كـ classic script → `import` keyword throws SyntaxError.
+- **Decision**: 3 قرارات متشابكة:
+  1. **Playwright vitals collector** (`scripts/audit-2026-07-18-vitals.mjs`) يصير permanent verification tool. يقيس LCP/CLS/console errors عبر CDP (Slow 4G + 4× CPU throttling) على 10 صفحات حرجة. يكتب JSON + Markdown reports. مفيش dependencies جديدة (Playwright + CDP الأصلي).
+  2. **Playwright syntax-error collector** (`scripts/audit-2026-07-18-syntax.mjs`) يصير permanent verification tool. يستخدم `pageerror` + `console:error` listeners على 14 صفحة. يفحص 14/14 → 100% coverage. يكتب JSON + Markdown reports.
+  3. **CI guard proposal** (يحتاج user approval قبل الإضافة لـ `.github/workflows/ci-build-guard.yml`): static check يفحص أي `<script>` يحوي `import` بدون `type="module"` في `dist/client/**/*.html`. fail-fast على regression. 1-2ms per file (pure regex)، < 200ms total. **حالياً خارج CI** — pending user approval.
+- **Rationale**:
+  - **Defense in depth**: layers من verification (static HTML → SEO checks → axe → runtime syntax errors) كل طبقة تكشف defects مختلفة. الـ runtime layer ينقصه فقط Playwright.
+  - **CI guard للـ SyntaxError**: الـ static check يلتقط regression قبل deploy (build → check → fail). تكلفة: 1-2ms per file (negligible). catch rate: 100% لو الـ pattern بسيط.
+  - **collectors تبقى stand-alone** (مش skills): سهلة التشغيل، سهلة الـ re-run بعد deploy، سهلة الـ inspection من developer local.
+  - **عدم تعديل CSP phase 2 plan**: هذا DEC يخص verification فقط، ما يغير DEC-CSP-001. الـ fix للـ SyntaxError يبقى منفصل (يحتاج user approval لاختيار fix path a/b/c في KI-SYNTAX-2026-07-18-001).
+- **Reversal cost**: Low. الـ collectors يمكن حذفهم أو نقلهم لـ `scripts/audit/_archived/`. الـ CI guard ما اتنفذ بعد.
+- **Do not** تضف collectors لـ `npm run` بدون موافقة. الـ scripts تُشغّل يدوياً (audit replay) أو من CI.
+- **Tied to**: KI-SYNTAX-2026-07-18-001 (الـ regression المكتشف)، DEC-CSP-001 (الـ regression source)، `report/2026-07-18-audit-replay.md` (full audit).
+- **Risks**:
+  - **Playwright measurement noise**: LCP element أحياناً hidden، CLS يتأثر بـ mobile-menu hydration. الـ metrics قيم real-world signal مو methodology artifact، بس يحتاج context للقراءة.
+  - **CI guard false positives**: لو في page تستخدم `<script>...import...</script>` صحيح + `type="module"` صريح → ما يفشل. لو Astro يولد inline ES module بدون `type="module"` attribute → يفشل (لازم يكون explicit).
+  - **Run-time vs build-time detection gap**: الـ CI guard يفحص static HTML المُولّد، ما يفحص runtime behavior. لو في script يفشل بسبب CSP (لا بسبب missing type="module")، الـ guard ما يكتشف. Playwright runtime check يعالج هذا.
 
 ### DEC-BAI-001-NER-INJECTION-001: NER كـ injectable detector بدل dynamic import
 

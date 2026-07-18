@@ -1,0 +1,332 @@
+{
+  "summary": {
+    "total_pages": 14,
+    "pages_with_syntax": 14,
+    "total_syntax_errors": 56,
+    "total_errors": 56
+  },
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/about/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/pricing/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/solutions/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/kernel/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/kernel/chat/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/blog/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/docs/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/contact/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/trust/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/en/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/en/privacy-policy/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/sales-deck/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    },
+    {
+      "path": "/en/sales-deck/",
+      "status": 200,
+      "syntax_errors": [
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        },
+        {
+          "type": "pageerror",
+          "msg": "Cannot use import statement outside a module"
+        }
+      ],
+      "total_errors": 4
+    }
+  ]
+}
