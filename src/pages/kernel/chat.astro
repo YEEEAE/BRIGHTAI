@@ -229,6 +229,16 @@ const policyBanner = {
           banner.setAttribute('data-sector', meta.sector);
           banner.setAttribute('data-risk-band', meta.riskBand);
           banner.setAttribute('data-scenario-id', id);
+          // KERNEL-ANALYTICS-2026-07-18: scenario_selected — non-PII slugs only.
+          var rt = window.__BRIGHTAI_ANALYTICS__;
+          if (rt && typeof rt.track === 'function') {
+            rt.track(window.__BRIGHTAI_ANALYTICS__.events.SCENARIO_SELECTED, {
+              scenario_id: id,
+              sector: meta.sector,
+              risk_band: meta.riskBand,
+              journey_stage: 'run',
+            });
+          }
           var titleEl = banner.querySelector('[data-banner-title-text]');
           if (titleEl) titleEl.textContent = meta.title;
           var metaEl = banner.querySelector('[data-banner-meta]');
@@ -336,7 +346,14 @@ const policyBanner = {
 
         <!-- Messages -->
         <div class="kernel-chat-thread" data-kernel-chat-thread>
-          <div class="kernel-chat-thread__messages" data-kernel-chat-messages aria-live="polite" aria-busy="false">
+          {/* A11Y-STREAM (2026-07-18): الـ live region السابق كان على
+              data-kernel-chat-messages نفسه — وهذا يُعلن كل token أثناء
+              البث ويغرق قارئات الشاشة. الحل: نزيل aria-live من حاوية
+              الرسائل (نبقي aria-busy للإشارة لعدم الإعلان أثناء الكتابة)
+              ونستخدم مُعلِن منفصل sr-only نحدّثه بالرد الكامل فقط بعد
+              انتهاء البث — إعلان واحد نظيف لكل رسالة. */}
+          <div class="kernel-chat-thread__messages" data-kernel-chat-messages aria-busy="false">
+            <div class="sr-only" data-kernel-chat-announcer aria-live="polite" aria-atomic="true"></div>
             {seedMessages.map(m => (
               <article class:list={['kernel-chat-message', m.role === 'user' ? 'kernel-chat-message--user' : 'kernel-chat-message--ai']}>
                 <span class="kernel-chat-message__avatar" aria-hidden="true">{m.role === 'user' ? 'ي' : 'AI'}</span>
@@ -635,8 +652,33 @@ const policyBanner = {
       return FAKE_RESPONSES[Math.floor(Math.random() * FAKE_RESPONSES.length)];
     }
 
-    function el(q, root) { return (root || document).querySelector(q); }
-    function elAll(q, root) { return Array.prototype.slice.call((root || document).querySelectorAll(q)); }
+      function el(q, root) { return (root || document).querySelector(q); }
+      function elAll(q, root) { return Array.prototype.slice.call((root || document).querySelectorAll(q)); }
+
+      // KERNEL-ANALYTICS-2026-07-18 — funnel tracking (non-PII only).
+      // All payloads carry slugs/flags, never message text or contact PII.
+      // track() enforces consent gating + dedupe globally. ANALYTICS_EVENTS is
+      // exposed on window.__BRIGHTAI_ANALYTICS__.events (this is an inline
+      // script, so the module-scoped constant is not in scope).
+      function kernelTrack(name, payload) {
+        var rt = window.__BRIGHTAI_ANALYTICS__;
+        if (rt && typeof rt.track === 'function') rt.track(name, payload || {});
+      }
+      function KEV() {
+        var rt = window.__BRIGHTAI_ANALYTICS__;
+        return (rt && rt.events) || {};
+      }
+      // Reads the active scenario slugs from the banner (server or JS-upgraded).
+      function scenarioCtx() {
+        var banner = el('[data-scenario-banner]');
+        if (!banner) return {};
+        return {
+          scenario_id: banner.getAttribute('data-scenario-id') || undefined,
+          sector: banner.getAttribute('data-sector') || undefined,
+          risk_band: banner.getAttribute('data-risk-band') || undefined,
+          journey_stage: banner.getAttribute('data-journey-stage') || undefined,
+        };
+      }
 
     function createMessage(role, text) {
       var article = document.createElement('article');
@@ -687,6 +729,7 @@ const policyBanner = {
       var sendBtn = el('[data-kernel-chat-send]');
       var attachBtn = el('[data-kernel-chat-attach]');
       var messages = el('[data-kernel-chat-messages]');
+      var announcer = el('[data-kernel-chat-announcer]');
       var thread = el('[data-kernel-chat-thread]');
       var typing = el('[data-kernel-typing]');
       var newBtn = el('[data-kernel-chat-new]');
@@ -695,6 +738,11 @@ const policyBanner = {
       var contactCta = el('[data-kernel-contact-cta]');
 
       if (!form || !input || !messages) return;
+
+      // KERNEL-ANALYTICS-2026-07-18: kernel_started fires once per page view
+      // (dedupe in analytics.js collapses rapid repeats). Non-PII: carries the
+      // active scenario slugs when present, nothing else.
+      kernelTrack(KEV().KERNEL_STARTED, scenarioCtx());
 
       // Avoid double-binding across view transitions
       if (form.dataset.bound === '1') return;
@@ -742,6 +790,13 @@ const policyBanner = {
         div.className = 'kernel-chat-policy-banner kernel-chat-policy-banner--' + tone;
         div.setAttribute('role', 'alert');
         div.setAttribute('aria-live', 'polite');
+        // KERNEL-ANALYTICS-2026-07-18: message_blocked — the user's message
+        // did not reach the model (blocked / rejected / errored). Non-PII:
+        // carries only the error class + scenario slugs.
+        kernelTrack(KEV().MESSAGE_BLOCKED, Object.assign(
+          { error_type: type },
+          scenarioCtx()
+        ));
         div.innerHTML =
           '<span class="kernel-chat-policy-banner__icon" aria-hidden="true">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
@@ -1116,11 +1171,15 @@ const policyBanner = {
                 messages.insertBefore(aiMsg.article, typing);
                 if (data.provider) lastProvider = String(data.provider);
                 updateProviderBadges();
-                streamInto(aiMsg.bubble, data.reply, function () {
-                  finalizeIdle();
-                  input.focus();
-                  scrollThreadToEnd(thread);
-                });
+                // KERNEL-ANALYTICS-2026-07-18: message_allowed — a reply was
+                // produced (PII passed firewall or was redacted). Non-PII.
+                 kernelTrack(KEV().MESSAGE_ALLOWED, scenarioCtx());
+                 streamInto(aiMsg.bubble, data.reply, function () {
+                   lastCompletedReply = data.reply;
+                   finalizeIdle();
+                   input.focus();
+                   scrollThreadToEnd(thread);
+                 });
                 return null;
               });
             })
@@ -1165,13 +1224,16 @@ const policyBanner = {
                   aiMsg.bubble.textContent = fullReply;
                 }
                 scrollThreadToEnd(thread);
-              } else if (frame.event === 'done' && frame.data) {
-                doneSeen = true;
-                if (typeof frame.data.provider === 'string') {
-                  lastProvider = frame.data.provider;
-                }
-                updateProviderBadges();
-              } else if (frame.event === 'error') {
+               } else if (frame.event === 'done' && frame.data) {
+                 doneSeen = true;
+                 if (typeof frame.data.provider === 'string') {
+                   lastProvider = frame.data.provider;
+                 }
+                 updateProviderBadges();
+                 // KERNEL-ANALYTICS-2026-07-18: message_allowed — stream
+                 // completed with a reply. Non-PII.
+                kernelTrack(KEV().MESSAGE_ALLOWED, scenarioCtx());
+               } else if (frame.event === 'error') {
                 // Stream-level error mid-response: keep what we have, then
                 // surface a non-blocking notice.
                 showChatError('provider_failed');
@@ -1190,19 +1252,38 @@ const policyBanner = {
             // No tokens arrived before the stream closed — degrade gracefully.
             showChatError('unknown');
           }
+          if (fullReply) lastCompletedReply = fullReply;
           finalizeIdle();
           input.focus();
           scrollThreadToEnd(thread);
         }
 
-        /**
-         * BAI-KRN-002 / M2: shared finalize helper (idle state + focus).
-         */
-        function finalizeIdle() {
-          typing.hidden = true;
-          messages.setAttribute('aria-busy', 'false');
-          if (sendBtn) sendBtn.disabled = false;
+      /**
+       * A11Y-STREAM (2026-07-18): announce the COMPLETE reply once via the
+       * dedicated sr-only live region — never per-token. Prevents screen
+       * readers from reading every streamed chunk.
+       */
+      var lastCompletedReply = '';
+      function announce(text) {
+        if (!announcer) return;
+        // Clear then set so AT re-announces even identical consecutive replies.
+        announcer.textContent = '';
+        announcer.textContent = text || '';
+      }
+
+      /**
+       * BAI-KRN-002 / M2: shared finalize helper (idle state + focus).
+       */
+      function finalizeIdle() {
+        typing.hidden = true;
+        messages.setAttribute('aria-busy', 'false');
+        if (sendBtn) sendBtn.disabled = false;
+        // Announce the completed reply a single time, after streaming ends.
+        if (lastCompletedReply) {
+          announce(lastCompletedReply);
+          lastCompletedReply = '';
         }
+      }
 
         // REPORTS-SEC-01: Demo fallback path (latency simulation + fake streaming).
         // يُستخدم عندما الـ API غير متاح أو رجع 404/502/504. يحفظ الـ UX القديم.
@@ -1211,9 +1292,12 @@ const policyBanner = {
           setTimeout(function () {
             var aiMsg = createMessage('ai', '');
             messages.insertBefore(aiMsg.article, typing);
-            streamInto(aiMsg.bubble, pickFakeResponse(), function () {
+            var fake = pickFakeResponse();
+            streamInto(aiMsg.bubble, fake, function () {
+              lastCompletedReply = fake;
               typing.hidden = true;
               scrollThreadToEnd(thread);
+              finalizeIdle();
             });
           }, 700);
         }
@@ -1265,6 +1349,22 @@ const policyBanner = {
           btn.setAttribute('aria-current', 'true');
           var titleEl = el('[data-kernel-thread-title]');
           if (titleEl) titleEl.textContent = btn.dataset.threadTitle || 'محادثة';
+        });
+      });
+
+      // KERNEL-ANALYTICS-2026-07-18: evidence_viewed — clicking any evidence
+      // link/button (in-page or cross-page to /kernel/evidence/). Non-PII.
+      elAll('a[href*="/kernel/evidence/"], [data-kernel-evidence-preview], [data-kernel-evidence-download]').forEach(function (node) {
+        if (node.dataset.analyticsBound === '1') return;
+        node.dataset.analyticsBound = '1';
+        node.addEventListener('click', function () {
+          var ev = {
+            source: node.getAttribute('data-kernel-evidence-preview') ? 'preview' : 'link',
+            evidence_id: node.getAttribute('data-kernel-evidence-preview') ||
+                         node.getAttribute('data-kernel-evidence-download') || undefined,
+          };
+          Object.assign(ev, scenarioCtx());
+          kernelTrack(KEV().EVIDENCE_VIEWED, ev);
         });
       });
     }

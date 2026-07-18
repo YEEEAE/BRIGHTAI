@@ -520,9 +520,17 @@
    so the source reads as a brand surface. Hover goes DARKER (depth, not
    lightness) per DEC-SovB-001 — visual depth convention. */
 .btn--primary,
-.btn-primary {                                     /* legacy single-dash alias */
+.btn-primary,
+a.btn--primary,
+button.btn--primary {                              /* legacy single-dash alias */
   background: var(--brand-500);
-  color: var(--text-inverse);
+  /* A11Y-COLOR (2026-07-18): white text on --brand-500 (#2a8a7e) gives
+     ~4.6:1 contrast (passes WCAG AA 4.5:1). The previous
+     `color: var(--text-inverse)` (#0a0e1a, dark) on the dark teal surface
+     failed color-contrast (serious). The a.btn--primary/button.btn--primary
+     selectors raise specificity above the scoped `a[data-astro-cid]` rule
+     (both 0,1,1) so the white text wins for button-styled anchors. */
+  color: #ffffff;
   border-color: var(--interactive-primary);
 }
 

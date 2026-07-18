@@ -524,6 +524,19 @@ const SECTOR_LABEL: Record<string, string> = {
     function openPreview(btn) {
       var modal = el('[data-kernel-evidence-preview-modal]');
       if (!modal) return;
+
+      // KERNEL-ANALYTICS-2026-07-18: evidence_viewed — a file preview was
+      // opened. Non-PII: evidence id + sector/pack slugs only (never the
+      // query text or file content).
+      var rt = window.__BRIGHTAI_ANALYTICS__;
+      if (rt && typeof rt.track === 'function') {
+        rt.track(rt.events.EVIDENCE_VIEWED, {
+          source: 'preview',
+          evidence_id: btn.getAttribute('data-kernel-evidence-preview') || undefined,
+          sector: btn.getAttribute('data-sector') || undefined,
+          pack: btn.getAttribute('data-pack') || undefined,
+        });
+      }
       var data = {
         title:  btn.getAttribute('data-title'),
         trace:  btn.getAttribute('data-trace'),

@@ -484,6 +484,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                     var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page, { scenario: payload.scenario, sector: payload.sector, riskBand: payload.riskBand, journeyStage: payload.journeyStage });
                     window.open(url, '_blank', 'noopener,noreferrer');
                     showSuccess('لم نتمكن من إرسال النموذج من المتصفح. تم فتح واتساب تلقائياً مع تفاصيلك.');
+                    trackLeadSubmitted('whatsapp_fallback');
                     return null;
                   }
                   return doPost(newToken);
@@ -498,6 +499,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                 var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page, { scenario: payload.scenario, sector: payload.sector, riskBand: payload.riskBand, journeyStage: payload.journeyStage });
                 window.open(url, '_blank', 'noopener,noreferrer');
                 showSuccess('لم نتمكن من إرسال النموذج من المتصفح. تم فتح واتساب تلقائياً مع تفاصيلك.');
+                trackLeadSubmitted('whatsapp_fallback');
                 return;
               }
               if (res.status === 429) {
@@ -518,6 +520,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
               if (data && data.ok) {
                 showSuccess(data.message || 'تم استلام طلبك بنجاح. فريق الحوكمة سيتواصل معك خلال 24 ساعة.');
                 form.reset();
+                trackLeadSubmitted('api');
               }
             })
             .catch(function () {
@@ -525,6 +528,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
               var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page, { scenario: payload.scenario, sector: payload.sector, riskBand: payload.riskBand, journeyStage: payload.journeyStage });
               window.open(url, '_blank', 'noopener,noreferrer');
               showSuccess('تعذّر إرسال النموذج. تم فتح واتساب تلقائياً مع تفاصيلك.');
+              trackLeadSubmitted('whatsapp_fallback');
             })
             .finally(function () {
               if (submitBtn) {
@@ -584,6 +588,24 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 
           submitBtn.disabled = true;
           submitBtn.setAttribute('data-state', 'loading');
+
+          // KERNEL-ANALYTICS-2026-07-18: lead_submitted — fires on successful
+          // capture (API 200 or wa.me fallback). Linked to aggregated scenario
+          // context (slugs), NEVER to message text or contact PII. Consent
+          // gating + dedupe are inherited from the shared runtime.
+          function trackLeadSubmitted(channel) {
+            var rt = window.__BRIGHTAI_ANALYTICS__;
+            if (!rt || typeof rt.track !== 'function') return;
+            rt.track(rt.events.LEAD_SUBMITTED, {
+              form_id: root.dataset.formId || 'kernel-lead-form',
+              page: page,
+              channel: channel,
+              scenario_id: payload.scenario || undefined,
+              sector: payload.sector || undefined,
+              risk_band: payload.riskBand || undefined,
+              journey_stage: payload.journeyStage || undefined,
+            });
+          }
 
           // K1 (2026-07-18): pick up journey context (scenario + sector +
           // riskBand + journeyStage + ts) injected by KernelJourneyContext.

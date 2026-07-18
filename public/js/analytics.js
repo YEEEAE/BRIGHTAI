@@ -64,6 +64,16 @@ const ANALYTICS_EVENTS = {
   FORM_SUBMIT_FAILURE: 'form_submit_failure',
   CALENDAR_OPEN: 'calendar_open',
   MEETING_BOOKED: 'meeting_booked',
+  // ── Kernel funnel events (KERNEL-ANALYTICS-2026-07-18) ──
+  // Non-PII only. Lead is linked to aggregated scenario context (slugs),
+  // never to message text or contact details. Consent gating + dedupe are
+  // inherited from the shared track() path.
+  KERNEL_STARTED: 'kernel_started',
+  SCENARIO_SELECTED: 'scenario_selected',
+  MESSAGE_ALLOWED: 'message_allowed',
+  MESSAGE_BLOCKED: 'message_blocked',
+  EVIDENCE_VIEWED: 'evidence_viewed',
+  LEAD_SUBMITTED: 'lead_submitted',
 };
 
 // ─────────────────────────────────────────────────────────────────────

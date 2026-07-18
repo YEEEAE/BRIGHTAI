@@ -6422,3 +6422,57 @@ svg.icon {
     border-radius: var(--radius-md);
   }
 }
+
+/* ============================================================
+   A11Y-TOUCH (2026-07-18) — WCAG 2.5.5 touch targets ≥ 44px.
+   القواعد السابقة كانت محصورة في @media (max-width:479px) فقط،
+   ففشلت عند 544/768/1024px. هنا نمدّ منطقة اللمس لكل الروابط
+   النصية التفاعلية عبر ::before مطلق (inset سالب + min 44px)
+   WITHOUT تغيير البصمة البصرية — النص يبقى كما هو، بس منطقة
+   النقر تكبر لـ 44px على كل الأحجام. هذا يحل overflow اللمس
+   دون كسر التخطيط (عكس إضافة padding حقيقي).
+   ============================================================ */
+.a11y-touch-target,
+.breadcrumbs__link,
+.footer__link,
+.cookie-consent__link,
+.kernel-card__footer-link,
+.docs-toc a,
+.toc a,
+.prose a,
+.legal-prose a,
+.legal-content a,
+.faq__answer a,
+.home-faq-answer a,
+a[href*="wa.me/"],
+a[href*="whatsapp"],
+a[href*="api.whatsapp"] {
+  position: relative;
+}
+
+.a11y-touch-target::before,
+.breadcrumbs__link::before,
+.footer__link::before,
+.cookie-consent__link::before,
+.kernel-card__footer-link::before,
+.docs-toc a::before,
+.toc a::before,
+.prose a::before,
+.legal-prose a::before,
+.legal-content a::before,
+.faq__answer a::before,
+.home-faq-answer a::before,
+a[href*="wa.me/"]::before,
+a[href*="whatsapp"]::before,
+a[href*="api.whatsapp"]::before {
+  content: "";
+  position: absolute;
+  /* نوسّع المنطقة 10px عمودي + 8px أفقي حول الرابط؛ مع min 44px
+     يضمن الوصول لـ 44px حتى على الروابط القصيرة جداً مثل "مقدمة". */
+  inset-block: -10px;
+  inset-inline: -8px;
+  min-block-size: var(--touch-min, 2.75rem);
+  min-inline-size: var(--touch-min, 2.75rem);
+  /* لا نريد أي تأثير بصري — المنطقة شفافة قابلة للنقر فقط. */
+  border-radius: var(--radius-md);
+}

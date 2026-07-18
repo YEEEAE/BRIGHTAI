@@ -1,0 +1,1610 @@
+[
+  {
+    "page": "/404/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "الرئيسية",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "الحلول",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "النواة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "المدونة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "الوثائق",
+            "cls": "inner-card error-page__link is-visible"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "الرئيسية",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "الحلول",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "النواة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "المدونة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "الوثائق",
+            "cls": "inner-card error-page__link is-visible"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 46,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "الرئيسية",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "الحلول",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "النواة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "المدونة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "الوثائق",
+            "cls": "inner-card error-page__link is-visible"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 41,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 135,
+            "h": 52,
+            "text": "احجز جلسة",
+            "cls": "glow-btn inline-flex items-center gap-2 "
+          },
+          {
+            "tag": "a",
+            "w": 153,
+            "h": 52,
+            "text": "العودة للرئيسية",
+            "cls": "inline-flex items-center gap-2 px-6 py-3"
+          },
+          {
+            "tag": "a",
+            "w": 696,
+            "h": 153,
+            "text": "الأسعارشوف الباقات والأسعار",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          },
+          {
+            "tag": "a",
+            "w": 696,
+            "h": 153,
+            "text": "أمثلة من السوقشركات سعودية است",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          },
+          {
+            "tag": "a",
+            "w": 696,
+            "h": 153,
+            "text": "تواصل واتسابكلمنا مباشرة",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 36,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 720,
+            "h": 164,
+            "text": "تواصل واتسابكلمنا مباشرة",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          },
+          {
+            "tag": "a",
+            "w": 272,
+            "h": 44,
+            "text": "BrightAI",
+            "cls": "footer__logo"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "footer__whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "footer__link"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "footer__link"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/500/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "الرئيسية",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "الحلول",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "النواة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "المدونة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 248,
+            "h": 110,
+            "text": "الوثائق",
+            "cls": "inner-card error-page__link is-visible"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "الرئيسية",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "الحلول",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "النواة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "المدونة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 303,
+            "h": 110,
+            "text": "الوثائق",
+            "cls": "inner-card error-page__link is-visible"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 46,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "الرئيسية",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "الحلول",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "النواة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "المدونة",
+            "cls": "inner-card error-page__link is-visible"
+          },
+          {
+            "tag": "a",
+            "w": 472,
+            "h": 110,
+            "text": "الوثائق",
+            "cls": "inner-card error-page__link is-visible"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 41,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 135,
+            "h": 52,
+            "text": "احجز جلسة",
+            "cls": "glow-btn inline-flex items-center gap-2 "
+          },
+          {
+            "tag": "a",
+            "w": 153,
+            "h": 52,
+            "text": "العودة للرئيسية",
+            "cls": "inline-flex items-center gap-2 px-6 py-3"
+          },
+          {
+            "tag": "a",
+            "w": 696,
+            "h": 153,
+            "text": "الأسعارشوف الباقات والأسعار",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          },
+          {
+            "tag": "a",
+            "w": 696,
+            "h": 153,
+            "text": "أمثلة من السوقشركات سعودية است",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          },
+          {
+            "tag": "a",
+            "w": 696,
+            "h": 153,
+            "text": "تواصل واتسابكلمنا مباشرة",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 36,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 720,
+            "h": 164,
+            "text": "تواصل واتسابكلمنا مباشرة",
+            "cls": "inner-card error-page__legacy-link is-vi"
+          },
+          {
+            "tag": "a",
+            "w": 272,
+            "h": 44,
+            "text": "BrightAI",
+            "cls": "footer__logo"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "footer__whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "footer__link"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "footer__link"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/about/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 47,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 222,
+            "h": 48,
+            "text": "ابدأ ديمو خاص بشركتك",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 140,
+            "h": 48,
+            "text": "احجز ديمو",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 50,
+            "text": "اقرأ عن منصة الحوكمة",
+            "cls": "btn btn--outline"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 47,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 222,
+            "h": 48,
+            "text": "ابدأ ديمو خاص بشركتك",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 140,
+            "h": 48,
+            "text": "احجز ديمو",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 50,
+            "text": "اقرأ عن منصة الحوكمة",
+            "cls": "btn btn--outline"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 46,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 140,
+            "h": 50,
+            "text": "احجز ديمو",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 193,
+            "h": 50,
+            "text": "تواصل عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 50,
+            "text": "اقرأ عن منصة الحوكمة",
+            "cls": "btn btn--outline"
+          },
+          {
+            "tag": "a",
+            "w": 187,
+            "h": 50,
+            "text": "مقالات فريق حوكمة AI",
+            "cls": "btn btn--outline"
+          },
+          {
+            "tag": "a",
+            "w": 122,
+            "h": 21,
+            "text": "باقات وأسعار حوكمة AI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 46,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 140,
+            "h": 50,
+            "text": "احجز ديمو",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 193,
+            "h": 50,
+            "text": "تواصل عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 50,
+            "text": "اقرأ عن منصة الحوكمة",
+            "cls": "btn btn--outline"
+          },
+          {
+            "tag": "a",
+            "w": 187,
+            "h": 50,
+            "text": "مقالات فريق حوكمة AI",
+            "cls": "btn btn--outline"
+          },
+          {
+            "tag": "a",
+            "w": 122,
+            "h": 21,
+            "text": "باقات وأسعار حوكمة AI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 140,
+            "h": 50,
+            "text": "احجز ديمو",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 193,
+            "h": 50,
+            "text": "تواصل عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 50,
+            "text": "اقرأ عن منصة الحوكمة",
+            "cls": "btn btn--outline"
+          },
+          {
+            "tag": "a",
+            "w": 187,
+            "h": 50,
+            "text": "مقالات فريق حوكمة AI",
+            "cls": "btn btn--outline"
+          },
+          {
+            "tag": "a",
+            "w": 139,
+            "h": 24,
+            "text": "باقات وأسعار حوكمة AI",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/assessment/ai-governance-readiness/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 258,
+            "h": 44,
+            "text": "احصل على تقييم فوري لمؤسستك",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 202,
+            "h": 50,
+            "text": "تواصل مع مهندسينا",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "select",
+            "w": 230,
+            "h": 48,
+            "text": "— اختر — بنك / ماليصحي / مستشف",
+            "cls": "field field--select"
+          },
+          {
+            "tag": "select",
+            "w": 230,
+            "h": 48,
+            "text": "— اختر — 1-1011-5051-200201-10",
+            "cls": "field field--select"
+          },
+          {
+            "tag": "button",
+            "w": 319,
+            "h": 51,
+            "text": "ابدأ التقييم الكامل (متاح بعد ",
+            "cls": "btn btn--glow btn--lg"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 45,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 258,
+            "h": 44,
+            "text": "احصل على تقييم فوري لمؤسستك",
+            "cls": "btn btn--glow"
+          },
+          {
+            "tag": "a",
+            "w": 202,
+            "h": 50,
+            "text": "تواصل مع مهندسينا",
+            "cls": "btn btn--whatsapp"
+          },
+          {
+            "tag": "select",
+            "w": 285,
+            "h": 48,
+            "text": "— اختر — بنك / ماليصحي / مستشف",
+            "cls": "field field--select"
+          },
+          {
+            "tag": "select",
+            "w": 285,
+            "h": 48,
+            "text": "— اختر — 1-1011-5051-200201-10",
+            "cls": "field field--select"
+          },
+          {
+            "tag": "button",
+            "w": 335,
+            "h": 51,
+            "text": "ابدأ التقييم الكامل (متاح بعد ",
+            "cls": "btn btn--glow btn--lg"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 44,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "select",
+            "w": 454,
+            "h": 48,
+            "text": "— اختر — بنك / ماليصحي / مستشف",
+            "cls": "field field--select"
+          },
+          {
+            "tag": "select",
+            "w": 454,
+            "h": 48,
+            "text": "— اختر — 1-1011-5051-200201-10",
+            "cls": "field field--select"
+          },
+          {
+            "tag": "button",
+            "w": 339,
+            "h": 51,
+            "text": "ابدأ التقييم الكامل (متاح بعد ",
+            "cls": "btn btn--glow btn--lg"
+          },
+          {
+            "tag": "a",
+            "w": 129,
+            "h": 44,
+            "text": "اكتشف حلول AI Firewall",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          },
+          {
+            "tag": "a",
+            "w": 137,
+            "h": 44,
+            "text": "اقرأ عن نظام AI Audit Trail",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 42,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "button",
+            "w": 339,
+            "h": 51,
+            "text": "ابدأ التقييم الكامل (متاح بعد ",
+            "cls": "btn btn--glow btn--lg"
+          },
+          {
+            "tag": "a",
+            "w": 129,
+            "h": 44,
+            "text": "اكتشف حلول AI Firewall",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          },
+          {
+            "tag": "a",
+            "w": 137,
+            "h": 44,
+            "text": "اقرأ عن نظام AI Audit Trail",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 44,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          },
+          {
+            "tag": "a",
+            "w": 273,
+            "h": 50,
+            "text": "تحدث مع مهندسينا عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 41,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "button",
+            "w": 339,
+            "h": 51,
+            "text": "ابدأ التقييم الكامل (متاح بعد ",
+            "cls": "btn btn--glow btn--lg"
+          },
+          {
+            "tag": "a",
+            "w": 129,
+            "h": 25,
+            "text": "اكتشف حلول AI Firewall",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          },
+          {
+            "tag": "a",
+            "w": 137,
+            "h": 25,
+            "text": "اقرأ عن نظام AI Audit Trail",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 25,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "text-cyan-300 hover:text-white text-sm f"
+          },
+          {
+            "tag": "a",
+            "w": 273,
+            "h": 50,
+            "text": "تحدث مع مهندسينا عبر واتساب",
+            "cls": "btn btn--whatsapp"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/authors/brightai-team/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 51,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI ما هي حوكمة الذكاء ال",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI 5 مخاطر خفية للذكاء ا",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI الفرق بين AI Governan",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 112,
+            "text": "BrightAI Shadow AI: كيف تكتشف ",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI دليل PDPL والذكاء الا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 51,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI ما هي حوكمة الذكاء ال",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI 5 مخاطر خفية للذكاء ا",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI الفرق بين AI Governan",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI Shadow AI: كيف تكتشف ",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI دليل PDPL والذكاء الا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 52,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 84,
+            "text": "BrightAI ما هي حوكمة الذكاء ال",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 55,
+            "text": "BrightAI 5 مخاطر خفية للذكاء ا",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 55,
+            "text": "BrightAI الفرق بين AI Governan",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 84,
+            "text": "BrightAI Shadow AI: كيف تكتشف ",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 55,
+            "text": "BrightAI دليل PDPL والذكاء الا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 42,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI حوكمة الذكاء الاصطناع",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI حوكمة الذكاء الاصطناع",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI أخلاقيات الذكاء الاصط",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI مقارنة أفضل منصات حوك",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI AI Red Teaming: اختبا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 35,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 272,
+            "h": 44,
+            "text": "BrightAI",
+            "cls": "footer__logo"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "footer__whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "footer__link"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "footer__link"
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 44,
+            "text": "مسار التدقيق",
+            "cls": "footer__link"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/authors/compliance-officer/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 51,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI ما هي حوكمة الذكاء ال",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI 5 مخاطر خفية للذكاء ا",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI الفرق بين AI Governan",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 112,
+            "text": "BrightAI Shadow AI: كيف تكتشف ",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 288,
+            "h": 84,
+            "text": "BrightAI دليل PDPL والذكاء الا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 51,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI ما هي حوكمة الذكاء ال",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI 5 مخاطر خفية للذكاء ا",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI الفرق بين AI Governan",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI Shadow AI: كيف تكتشف ",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 343,
+            "h": 84,
+            "text": "BrightAI دليل PDPL والذكاء الا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 52,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 84,
+            "text": "BrightAI ما هي حوكمة الذكاء ال",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 55,
+            "text": "BrightAI 5 مخاطر خفية للذكاء ا",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 55,
+            "text": "BrightAI الفرق بين AI Governan",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 84,
+            "text": "BrightAI Shadow AI: كيف تكتشف ",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 512,
+            "h": 55,
+            "text": "BrightAI دليل PDPL والذكاء الا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 42,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI حوكمة الذكاء الاصطناع",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI حوكمة الذكاء الاصطناع",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI أخلاقيات الذكاء الاصط",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI مقارنة أفضل منصات حوك",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 736,
+            "h": 59,
+            "text": "BrightAI AI Red Teaming: اختبا",
+            "cls": "author-post-card"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 36,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 56,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 896,
+            "h": 65,
+            "text": "BrightAI الذكاء الاصطناعي في ر",
+            "cls": "author-post-card"
+          },
+          {
+            "tag": "a",
+            "w": 272,
+            "h": 44,
+            "text": "BrightAI",
+            "cls": "footer__logo"
+          },
+          {
+            "tag": "a",
+            "w": 161,
+            "h": 44,
+            "text": "تواصل عبر واتساب",
+            "cls": "footer__whatsapp"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "footer__link"
+          },
+          {
+            "tag": "a",
+            "w": 136,
+            "h": 44,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "footer__link"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  }
+]

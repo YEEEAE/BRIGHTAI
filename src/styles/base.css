@@ -156,13 +156,13 @@ small:has(button),
   opacity: 1;
 }
 
-a {
+a:not(.btn) {
   color: var(--interactive-primary);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
-a:hover {
+a:not(.btn):hover {
   color: var(--interactive-hover);
   text-decoration: underline;
 }
@@ -391,6 +391,14 @@ pre code {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
   .skip-to-content {
     transition: none;
   }

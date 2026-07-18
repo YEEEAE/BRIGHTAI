@@ -339,6 +339,23 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-18 — Kernel funnel analytics: event taxonomy + consent-gated tracking (no PII)
+
+- **Files**: `public/js/analytics.js` (أضفنا 6 أحداث للكيرنل في كائن الأحداث)، `src/pages/kernel/chat.astro` (helpers `kernelTrack`/`KEV`/`scenarioCtx` + ربط الأحداث في init/upgrade/رد JSON/SSE/showChatError/EVIDENCE_VIEWED)، `src/components/kernel/KernelLeadForm.astro` (`trackLeadSubmitted(channel)` عند نجاح API 200 و wa.me fallback في 3 مواقع)، `src/pages/kernel/evidence.astro` (EVIDENCE_VIEWED داخل `openPreview` بالـ slugs فقط).
+- **What**: عرّفنا taxonomy للـ kernel funnel (KERNEL_STARTED, SCENARIO_SELECTED, MESSAGE_ALLOWED, MESSAGE_BLOCKED, EVIDENCE_VIEWED, LEAD_SUBMITTED) وأرسلنا metadata غير حساسة فقط (slugs/flags)، مع consent gating + dedupe موروثين من `track()`.
+- **Why**: نبي نقيس تحويل الكيرنل (funnel) بدون ما نرسل أي prompt أو PII — عشان نعرف وين يوقف المستخدم. الـ lead يُربط بالسياق المجمع (slugs) لا بالنص أو بيانات التواصل.
+- **Verification**:
+  - `pnpm test:csrf` → 29/29 pass ✅
+  - `pnpm build` → exit 0 ✅ (380 ملف HTML، صفحات chat و evidence موجودة)
+  - Playwright intercept لطلبات analytics (يؤكد إرسال مرة واحدة وبلا PII) — **مخطط بس ما انفذ بعد**.
+- **Report**: none (تغيير analytics مباشر، سجل في brain/worklog).
+- **Commit**: uncommitted (branch غير محدد).
+- **Status**: verified locally (باقي Playwright intercept كـ تأكيد بصري).
+- **Brain updates**: Section 2 (this entry).
+- **مخاطر متبقية**:
+  - ما تأكدنا بصريًا عبر Playwright إن الأحداث تُرسل فعليًا مرة واحدة وبلا PII. مطلوب سكربت intercept قبل الشرح النهائي للعميل.
+  - الـ CTA (KernelContactCta) يظهر عند `threshold={3}` — تأكد إن العداد ما يزيد مرتين لنفس الرسالة.
+
 ### 2026-07-18 — P0-1 + P0-3: CI baseline green + dist crawl audit
 
 - **Files**: `package.json` (أضفنا سكربت `test` لأنه ما كان موجود)، `packages/db/tsconfig.json` (`ignoreDeprecations: "6.0"` → `"5.0"`)، `src/pages/api/ai/chat.ts` (صلحنا رموز غير معرّفة: `json`→`Response.json`, أضفنا `ChatResponse` interface + `incrementRequestCounter` محلي، استخدمنا `message` عوض `b.message`، و`userId` typed-safe)، `src/pages/design/typography.astro` (حوّلنا 6 specimen headings إلى `<p class="typography-specimen--hN">` عشان صفحة واحدة H1)، `scripts/p0-3-crawl.mjs` (جديد)، `artifacts/p0/*` (نتائج خارج git).
