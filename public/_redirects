@@ -38,7 +38,7 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /blog/gov /services/ 301
 /blog/gov.html /services/ 301
 /index.html / 301
-/en/index.html / 301
+/en/index.html /en/ 301
 /docs.html /docs/ 301
 /docs/openapi.html /docs/ 301
 /docs/faq.html /docs/ 301

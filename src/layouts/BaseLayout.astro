@@ -97,18 +97,20 @@ const finalCanonical =
   canonical ||
   new URL(currentPath, SITE.url).toString().replace(/\/$/, '/').replace(/([^:])\/{2,}/g, '$1/');
 
-// Robots policy (BAI-SEO-003-S1, 2026-07-18):
+// Robots policy (BAI-SEO-003-S1, 2026-07-18, updated P0-2 2026-07-18):
 //   Default: "index, follow, max-..." (per REPORTS-SEO-FOUNDATION).
-//   Exception (allowlisted): /thank-you/ is the only path allowed to emit
-//   "noindex, follow". It's a post-submit confirmation page with no SEO
-//   value, and its presence in the index would waste crawl budget. Adding
-//   a new path here requires a documented SEO decision in the worklog and
-//   the matching page must pass `robots="noindex, follow"` explicitly.
-//   No other page may opt-in to noindex — the SEOHead/SEO foundation rule
-//   that all public content is indexable remains in force.
-const NOINDEX_ALLOWLIST = new Set(['/thank-you/']);
+//   Exception (allowlisted): only the paths below may emit "noindex, follow".
+//   Each is a utility/confirmation/offline page with no search value; its
+//   presence in the index wastes crawl budget. Adding a new path here
+//   requires a documented SEO decision in the worklog AND the matching page
+//   must pass `robots="noindex, follow"` explicitly. No other page may
+//   opt-in to noindex — the SEOHead/SEO foundation rule that all public
+//   content is indexable remains in force.
+//   P0-2 (2026-07-18): added /offline/, /kernel/offline/, /design/* to the
+//   allowlist so these non-search utility pages stop being crawlable.
+const NOINDEX_ALLOWLIST_PREFIXES = ['/thank-you/', '/offline/', '/kernel/offline/', '/design/'];
 const normalizedCurrentPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
-const isNoindexAllowed = NOINDEX_ALLOWLIST.has(normalizedCurrentPath);
+const isNoindexAllowed = NOINDEX_ALLOWLIST_PREFIXES.some((p) => normalizedCurrentPath.startsWith(p));
 const wantsNoindex = typeof robots === 'string' && /noindex/i.test(robots);
 const finalRobots = isNoindexAllowed && wantsNoindex
   ? 'noindex, follow'

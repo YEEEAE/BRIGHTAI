@@ -416,7 +416,7 @@ services:
         destination: /services/
       - type: redirect
         source: /en/index.html
-        destination: /
+        destination: /en/
       - type: redirect
         source: /docs.html
         destination: /docs/

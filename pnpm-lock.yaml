@@ -23,6 +23,9 @@ importers:
       '@brightai/db':
         specifier: workspace:*
         version: link:packages/db
+      '@brightai/firewall-detectors':
+        specifier: workspace:*
+        version: link:packages/firewall-detectors
       '@brightai/lead-queue':
         specifier: workspace:*
         version: link:packages/lead-queue

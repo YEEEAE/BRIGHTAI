@@ -339,6 +339,80 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-18 — P0-1 + P0-3: CI baseline green + dist crawl audit
+
+- **Files**: `package.json` (أضفنا سكربت `test` لأنه ما كان موجود)، `packages/db/tsconfig.json` (`ignoreDeprecations: "6.0"` → `"5.0"`)، `src/pages/api/ai/chat.ts` (صلحنا رموز غير معرّفة: `json`→`Response.json`, أضفنا `ChatResponse` interface + `incrementRequestCounter` محلي، استخدمنا `message` عوض `b.message`، و`userId` typed-safe)، `src/pages/design/typography.astro` (حوّلنا 6 specimen headings إلى `<p class="typography-specimen--hN">` عشان صفحة واحدة H1)، `scripts/p0-3-crawl.mjs` (جديد)، `artifacts/p0/*` (نتائج خارج git).
+- **What**: P0-1 شغّلنا سلسلة الفحص الكاملة (`install --frozen-lockfile`, `build`, `seo:all`, `verify:all`, `typecheck`, `test`). طلعت 3 أعطال صلحناها: (1) `pnpm test` ما كان له سكربت → أضفناه. (2) `packages/db` tsconfig فيه قيمة `ignoreDeprecations` غير صالحة لـ TS 5.9 → صلحناها. (3) `chat.ts` فيه رموز ما تنعرف (`json`, `ChatResponse`, `incrementRequestCounter`) + أنواع `unknown` → صلحناها. P0-3 كتبنا سكربت يزحف `dist/client` (190 صفحة) ويحسب title/description uniqueness، canonical، schema، H1، word count.
+- **Why**: P0-1/P0-3 من `BRIGHTAI-AUDIT-REPORT.md` — يبي baseline قابل للتحقق (artifacts بدل ملفات git) وcrawl شامل لكل الصفحات الديناميكية.
+- **Verification**:
+  - P0-1: كل الستة exit 0 ✅ (install/build/seo/verify/typecheck/test).
+  - P0-3: 190 صفحة، 0 تكرار title/description/canonical، 190/190 schema، 190/190 H1 واحد، 182 indexable + 8 noindex (الـ design/offline/thank-you/500).
+- **Report**: `artifacts/p0/baseline-verification.md` + `artifacts/p0/seo-crawl.md` (خارج git).
+- **Commit**: uncommitted (branch `audit-p0`). رسالة مقترحة: `ci(audit): green baseline (test script, db tsconfig, chat.ts types) + dist SEO crawl (P0-1/P0-3)`
+- **Status**: verified locally.
+- **Brain updates**: Section 2 (this entry).
+- **مخاطر متبقية**:
+  - `apps/dashboard` typecheck يزحف `src/pages/api/ai/chat.ts` (خارج نطاقه) — هذا يكشف أخطاء كانت مخفية. الحين chat.ts سليم نوعيًا. المفروض نضيّق dashboard tsconfig `include` لئلا يفحص كود الـ Astro app، بس هذا تغيير أوسع نتركه متابعة.
+  - `index 2.html` ظهرت سابقًا بسبب dist متسخ من build متقطع — بعد clean build صار 0. مو مشكلة كود.
+
+### 2026-07-18 — P0-2: single indexability decision per route (noindex allowlist + /en/ redirect fix)
+
+- **Files**: `src/layouts/BaseLayout.astro` (allowlist صارت prefix-aware)، `src/pages/offline/index.astro`، `src/pages/kernel/offline.astro`، `src/pages/design/{buttons,cards,colors,forms,typography}.astro` (أضفنا `robots="noindex, follow"`)، `redirects.json` (صلحنا `/en/index.html` → `/en/`).
+- **What**: حدّدنا indexability لكل route بوضوح. صفحات utility/confirmation/offline (`/offline/`, `/kernel/offline/`, `/design/*`, `/thank-you/`) صارت `noindex, follow` فعليًا؛ كان `BaseLayout` يسقط أي noindex ما عدا `/thank-you/` (السبب إن `customers/bank` كان شالوا noindex لأنه "يختفي صامت"). وصلحنا redirect `/en/index.html` كان يروح لـ `/` بدل `/en/`.
+- **Why**: P0-2 من `BRIGHTAI-AUDIT-REPORT.md` — يبي قرار واحد (index/noindex/redirect) لكل route، وما يبي أي URL في sitemap يحمل noindex أو redirect، ولا redirect chains.
+- **Verification**:
+  - `pnpm build` → exit 0 ✅
+  - grep على `dist/client`: كل الصفحات المذكورة تطلع `<meta name="robots" content="noindex, follow">` ✅
+  - grep على `sitemap-0.xml`: 0 تواجد لـ `offline|/design/|thank-you` ✅ (ما في noindex URL في السitemap)
+  - `pnpm verify:all` → exit 0 ✅ (0 errors, 0 warnings, 0 noindex+hreflang conflicts, sitemap 176 URLs)
+  - تحقق `/en/index.html` → `/en/` وإن `/en/` صفحة حقيقية موجودة (ما في chain) ✅
+- **Report**: none (تغيير SEO مباشر، سجل في worklog/brain).
+- **Commit**: uncommitted. رسالة مقترحة: `seo(pages): single indexability decision — noindex utility/offline + /en/ redirect fix (P0-2)`
+- **Status**: verified locally.
+- **Brain updates**: Section 2 (this entry).
+- **مخاطر متبقية / قرارات**:
+  - `customers/{bank,hospital,pharma}` تُركت **indexable** (كان فريق سابق شال noindex عمدًا عشان صفحات search-intent). هذا قرار مقصود وثبّتناه، بس لو تبي نسوي لها noindex لازم نضيفها للـ allowlist.
+  - `/design/*` noindex يعني ما تطلع في البحث — هذا المقصود (utility pages).
+
+### 2026-07-18 — K4: unified distributed quota + cost cap + circuit-breaker + abuse layer (يستبدل BAI-005)
+
+- **Files**: `src/lib/quota.ts` (جديد — rewrite كامل من ratelimit.ts)، `src/lib/ratelimit.ts` (صار re-export رفيع من quota.ts عشان lead.ts ما ينكسر)، `src/pages/api/ai/chat.ts` (استبدال `rateLimit` بـ `checkQuota` + circuit breaker على مسارّي SSE و JSON)، `scripts/test-quota-race.mjs` (جديد — اختبار race).
+- **What**: بنينا طبقة quota موحّدة موزّعة على Redis (atomic Lua): حد لكل دقيقة (sliding-window)، quota يومي لكل IP+session، سقف تكلفة/توكن يومي (milli-USD)، circuit breaker لكل provider (5 فشل متتالية → OPEN 30s)، وabuse signals (firewall block يرفع النتيجة). أي استجابة block تحمل `Cache-Control: no-store` + `Retry-After`.
+- **Why**: K4 من `BRIGHTAI-AUDIT-REPORT.md` — BAI-005 كان per-minute بس و in-memory صامت. الحين: حدود متسقة عبر replicas (Redis)، لا نمو مفاتيح بلا حد (TTL لنهاية اليوم)، production بلا Redis → 503 fail-closed + `X-Quota-Degraded` (ما في silent in-memory)، development → in-memory fallback مرئي (degraded header، مو صامت).
+- **Verification**:
+  - `node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/test-quota-race.mjs` → 50 concurrent, 10 allowed / 40 rejected، all `no-store` ✅ (race test يثبت ما في condition سباق)
+  - `pnpm test:chat-session` → **16/16 passed** ✅
+  - `pnpm verify:all` → exit 0 ✅ (0 broken links, 0 errors, sitemap 176 URLs)
+- **Report**: `report/2026-07-18-K4-quota-circuit-breaker.md` (مقترح)
+- **Commit**: uncommitted (المستخدم ينشئ الـ commits). رسالة مقترحة: `feat(kernel): distributed quota + cost cap + circuit breaker + abuse signals (K4)`
+- **Status**: verified locally.
+- **Brain updates**: Section 2 (this entry)، Section 3 (KI-QUOTA-2026-07-18-001 — chat endpoint عنده quota موحّد + circuit breaker).
+- **مخاطر متبقية**:
+  - التكلفة المقدّرة pre-call تقريبية (≈1500 توكن/طلب) — الـ real cost يتصالح بعد الـ call عبر usagetracker. السقف احترازي.
+  - circuit breaker في الذاكرة (dev) ما يتشارك عبر replicas — بس للـ prod نعتمد على Redis.
+  - `estimatedTokens` في chat.ts = `Math.ceil(message.length/4)*2` تقريب خام؛ لو تبغى دقة أكثر نقدر نمرّر الطول الفعلي.
+  - rollback flag: `BRIGHTAI_QUOTA_DISABLED=1` يوقف كل الفحوصات (موثّق).
+
+### 2026-07-18 — K3: AI Firewall enforce point في chat endpoint (PII قبل الوصول للـ provider)
+
+- **Files**: `src/pages/api/ai/chat.ts` (معدّل: import + `runFirewallSync` + استدعاء قبل بناء `providerMessages` + بدّل `message`→`safeMessage` في التخزين)، `packages/firewall-detectors/package.json` (أضف `"type": "module"` + ربط workspace في root `package.json` `dependencies`), `packages/firewall-detectors/tests/k3-policy.test.ts` (جديد: 18 test — عربي/إنجليزي + prompt injection + provider isolation).
+- **What**: ربطنا `@brightai/firewall-detectors` (كان منفصل ومو مستخدم) في `chat.ts` قبل استدعاء Groq/Gemini. الـ pipeline: `normalize(NFC+trim)` → `detectAndRedact` → `policy decision` (allow | redact | block | require_approval). الـ blocked payloads (SAUDI_ID/IQAMA/IBAN/CARD/CREDENTIAL/PATIENT_ID/CR/NATIONAL_ADDRESS) يرجعون `451` وما يوصلون للـ provider أبداً. الـ SAUDI_PHONE/EMAIL/BIRTH_DATE يرجعون `428 require_approval`. النص المُرسل للـ provider هو `redactedText` فقط — PII الأصلي ما يخرج من الدالة. التخزين في Redis يستخدم `safeMessage` مو `message`.
+- **Why**: K3 من `BRIGHTAI-AUDIT-REPORT.md` — لازم الـ firewall يشتغل قبل الـ provider. الحزمة جاهزة بس ما كانت موصولة. بدون ربط، الـ PII يروح للـ LLM مباشرة (خرق PDPL).
+- **Verification**:
+  - `pnpm --filter @brightai/firewall-detectors test` → **68 tests passed (50 قديم + 18 جديد)** ✅
+  - `pnpm --filter @brightai/firewall-detectors typecheck` → exit 0 ✅
+  - `pnpm test:chat-session` → **16/16 passed** ✅ (الـ import تم حله بعد ربط workspace)
+  - `pnpm test:csrf` → **29/29 passed** ✅
+  - `pnpm build` → exit 0 ✅ (chat handler منبني في `dist/server/chunks/chat_*.mjs` مع `runFirewallSync`)
+- **Report**: `report/2026-07-18-K3-firewall-chat-enforce.md` (مقترح — أنشئه لو لزم)
+- **Commit**: uncommitted (المستخدم ينشئ الـ commits). رسالة مقترحة: `feat(kernel): enforce AI firewall PII pipeline before provider call (K3)`
+- **Status**: verified locally (tests + build). جاهز للـ commit بعد user approval.
+- **Brain updates**: Section 2 (this entry)، Section 5 (firewall-detectors الآن موصول بـ chat.ts)، Section 3 (KI-PII-2026-07-18-001 — chat endpoint يعزل PII عن provider).
+- **مخاطر متبقية**:
+  - NER (`PERSON_NAME`) معطّل (nerEnabled:false) — أسماء الأشخاص الحقيقية مو مكتشفة، بس البريد/الجوال/الهوية مكتشفة. K3-2 (NER) مؤجل.
+  - `nanoid` dependency في firewall-detectors (يستخدمه `tokenize`) — مو مأثر على chat حالياً لأننا نستخدم mask/block مو tokenize.
+  - Playwright e2e للـ 451/428 على الـ live endpoint يتطلب بيئة تشغيل (REDIS/DATABASE env) — ما شغّلناه، اكتفينا بـ unit/integration tests + build verification.
+
 ### 2026-07-18 — BAI-SEO-003-S4: AI search surface sync — public/llms*.txt + ai.txt + robots.txt + schema-saudi-seo.json — Verified locally, 0/0/0/0 validation checks (URL coverage / entity parity / crawler coverage / forbidden claims)
 
 - **Files**: 4 جديد + 4 معدّل. **جديد**: `public/schema-saudi-seo.json` (~110 سطر: Organization + WebSite + LocalBusiness @graph، mirrors schema-helpers.ts بنفس @id + foundingDate + founder + sameAs)، `scripts/seo/validate-ai-search-surface.mjs` (~340 سطر، 4 فحوصات: URL coverage، entity parity، crawler coverage، forbidden claims + schema-json field validation + schema-helpers.ts parity). **معدّل**: `public/llms.txt` (12.5KB، -20%: index عالي الإشارة + Entity Facts block + AI Crawler Access Policy block + Machine-Readable Companion Files block)، `public/llms-full.txt` (25.5KB، -13%: تفاصيل + EN pages + Events + Customer case studies anonymized + blog clusters)، `public/ai.txt` (9.5KB: فصل Search-Grounding (12) vs Training (11) + Google-Extended Policy + Applebot-Extended Policy + Position disclaimer)، `public/robots.txt` (4.0KB: نفس الـ rules، تعليقات تفصيلية تفرّق Search-Grounding vs Training vs Search Engines).

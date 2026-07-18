@@ -25,6 +25,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
   title="نظام الخطوط الموحّد | BrightAI Design System"
   description="مرجع نظام الخطوط الموحّد في BrightAI: 6 مستويات عناوين، 4 أوزان، 3 أحجام نص، وgradient-text للتمييز."
   canonical="https://brightai.site/design/typography/"
+  robots="noindex, follow"
   hreflang={[
     { lang: 'ar-SA', href: 'https://brightai.site/design/typography/' },
     { lang: 'x-default', href: 'https://brightai.site/design/typography/' },
@@ -74,7 +75,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
             <span class="typography-card__tag">h1</span>
             <span class="typography-card__spec">36px → 72px · 800 · tight · tracking-tight</span>
           </div>
-          <h1>منصة أمان وحوكمة الذكاء الاصطناعي</h1>
+          <p class="typography-specimen typography-specimen--h1">منصة أمان وحوكمة الذكاء الاصطناعي</p>
           <p class="typography-card__caption" lang="ar">display — يستخدم مرة واحدة في الصفحة</p>
         </article>
 
@@ -83,7 +84,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
             <span class="typography-card__tag">h2</span>
             <span class="typography-card__spec">30px → 48px · 800 · tight · tracking-tight</span>
           </div>
-          <h2>حوكمة الذكاء الاصطناعي للمؤسسات السعودية</h2>
+          <p class="typography-specimen typography-specimen--h2">حوكمة الذكاء الاصطناعي للمؤسسات السعودية</p>
           <p class="typography-card__caption" lang="ar">section title — استعمل في أقسام الصفحة</p>
         </article>
 
@@ -92,7 +93,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
             <span class="typography-card__tag">h3</span>
             <span class="typography-card__spec">24px → 36px · 700 · tight</span>
           </div>
-          <h3>ضوابط PDPL و NCA و SDAIA جاهزة من اليوم</h3>
+          <p class="typography-specimen typography-specimen--h3">ضوابط PDPL و NCA و SDAIA جاهزة من اليوم</p>
           <p class="typography-card__caption" lang="ar">subsection</p>
         </article>
 
@@ -101,7 +102,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
             <span class="typography-card__tag">h4</span>
             <span class="typography-card__spec">20px → 24px · 700 · tight</span>
           </div>
-          <h4>حماية البيانات وإخفاء الهوية تلقائياً</h4>
+          <p class="typography-specimen typography-specimen--h4">حماية البيانات وإخفاء الهوية تلقائياً</p>
           <p class="typography-card__caption" lang="ar">card title</p>
         </article>
 
@@ -110,7 +111,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
             <span class="typography-card__tag">h5</span>
             <span class="typography-card__spec">18px · 600 · snug</span>
           </div>
-          <h5>ملصقات ثانوية وأقسام فرعية</h5>
+          <p class="typography-specimen typography-specimen--h5">ملصقات ثانوية وأقسام فرعية</p>
           <p class="typography-card__caption" lang="ar">minor label</p>
         </article>
 
@@ -119,7 +120,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
             <span class="typography-card__tag">h6</span>
             <span class="typography-card__spec">16px · 600 · snug</span>
           </div>
-          <h6>تسمية صغرى — تستخدم في الجداول والقوائم</h6>
+          <p class="typography-specimen typography-specimen--h6">تسمية صغرى — تستخدم في الجداول والقوائم</p>
           <p class="typography-card__caption" lang="ar">micro label</p>
         </article>
       </div>
@@ -600,4 +601,22 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
     color: var(--text-muted);
     font-family: var(--font-mono);
   }
+
+  /* Specimen samples: visual demos of heading levels, NOT document
+     headings. Using <p> keeps exactly one real <h1> per page (the
+     page title) so the SEO one-H1 rule passes. The level is already
+     labeled via .typography-card__tag. */
+  .typography-specimen {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: var(--font-extrabold);
+    letter-spacing: var(--tracking-tight);
+    line-height: 1.15;
+  }
+  .typography-specimen--h1 { font-size: clamp(2.25rem, 4vw + 1rem, 4.5rem); }
+  .typography-specimen--h2 { font-size: clamp(1.875rem, 3vw + 0.75rem, 3rem); font-weight: var(--font-extrabold); }
+  .typography-specimen--h3 { font-size: clamp(1.5rem, 2vw + 0.5rem, 2.25rem); font-weight: var(--font-bold); }
+  .typography-specimen--h4 { font-size: clamp(1.25rem, 1.5vw + 0.5rem, 1.75rem); font-weight: var(--font-bold); }
+  .typography-specimen--h5 { font-size: clamp(1.125rem, 1vw + 0.5rem, 1.375rem); font-weight: var(--font-semibold); }
+  .typography-specimen--h6 { font-size: var(--text-base); font-weight: var(--font-semibold); color: var(--text-secondary); }
 </style>

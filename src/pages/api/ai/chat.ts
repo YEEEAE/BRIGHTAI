@@ -89,19 +89,52 @@ import {
 import { getClientIp } from '../../../lib/ip';
 // CHAT-SESSION-2026-07-15: Redis-backed conversation context store
 import { getChatSessionStore, type ChatMessage } from '../../../lib/redis';
-// BAI-005: shared Redis sliding-window rate limiter (unified across Render instances)
-import { rateLimit } from '../../../lib/ratelimit';
+// K4 (2026-07-18): unified distributed quota + cost + circuit-breaker + abuse
+// layer (supersedes BAI-005 per-minute limiter)
+import {
+  checkQuota,
+  recordProviderFailure,
+  isProviderOpen,
+  resetProviderCircuit,
+  type QuotaProvider,
+} from '../../../lib/quota';
 // USAGE-001 (2026-07-15): token usage tracking for billing + analytics.
 import { recordUsageAsync } from '../../../lib/usagetracker';
+// K3 (2026-07-18): AI Firewall — PII detection + redaction + policy decision
+// that runs BEFORE the request reaches Groq/Gemini. Blocked payloads never
+// leave this function; only redacted text + safe findings reach the provider.
+import {
+  detectAndRedact,
+  hasHighRiskPII,
+  DEFAULT_POLICY,
+  type FirewallContext,
+  type RedactionResult,
+  type PolicyConfig,
+} from '@brightai/firewall-detectors';
 
 export const prerender = false;
+
+// ChatResponse — shape returned to the client for non-streaming replies.
+interface ChatResponse {
+  reply: string;
+  blocked?: boolean;
+  decision?: 'block' | 'require_approval' | 'allow';
+  traceId?: string;
+  findings?: unknown;
+  provider?: string;
+}
+
+// Lightweight in-memory request counter for firewall short-circuits.
+// No external metrics dependency; safe for both SSR and static contexts.
+const requestCounters = new Map<string, number>();
+function incrementRequestCounter(key: string): void {
+  requestCounters.set(key, (requestCounters.get(key) ?? 0) + 1);
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // Config — overridden via env vars in production
 // ─────────────────────────────────────────────────────────────────────────
 const MAX_MESSAGE_CHARS = 4000;
-const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
-const RATE_LIMIT_MAX_REQUESTS = 10;
 const PROVIDER_TIMEOUT_MS = 25_000;
 
 // CHAT-STREAM-2026-07-15: feature flag — set CHAT_STREAMING_ENABLED=false
@@ -254,9 +287,10 @@ function jsonError(
   status: number,
   error: string,
   extra: Record<string, unknown> = {},
+  extraHeaders: Record<string, string> = {},
 ): Response {
-  const headers: Record<string, string> = {};
-  if (status === 429 && typeof extra.retryAfterSec === 'number') {
+  const headers: Record<string, string> = { ...extraHeaders };
+  if (status === 429 && typeof extra.retryAfterSec === 'number' && !headers['Retry-After']) {
     headers['Retry-After'] = String(extra.retryAfterSec);
   }
   return jsonResponse({ error, ...extra }, status, headers);
@@ -645,20 +679,9 @@ export const POST: APIRoute = async ({ request }) => {
   const auth = checkOriginAndAuth(request);
   if (!auth.ok) return auth.res;
 
-  // 2. Rate limit (BAI-005: Redis sliding-window, unified across Render instances)
-  //    Always runs before streaming — so the rate limit check is never inside
-  //    a stream (where sending a 429 HTTP status would be impossible).
+  // 2. Client IP (K4 quota is keyed by IP; rate-limit check moved to after
+  //    sessionId is parsed so daily quota can include the session dimension).
   const ip = getClientIpLocal(request);
-  const rl = await rateLimit(`chat:${ip}`, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS / 1_000);
-  if (!rl.allowed) {
-    const headers: Record<string, string> = {
-      'Retry-After': String(rl.retryAfterSec),
-      'X-RateLimit-Limit': String(rl.limit),
-      'X-RateLimit-Remaining': '0',
-    };
-    if (rl.degraded) headers['X-RateLimit-Degraded'] = 'true';
-    return jsonError(429, 'rate_limited', { retryAfterSec: rl.retryAfterSec });
-  }
 
   // 3. Parse JSON
   let body: unknown;
@@ -709,7 +732,49 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  // 7. CHAT-SESSION-2026-07-15: optional sessionId → fetch conversation
+  // 7. K3 (2026-07-18): Run the AI Firewall BEFORE the provider. Blocked or
+  //    require_approval payloads short-circuit with 451/428 and never reach
+  //    Groq/Gemini. Only `safeMessage` (redacted) is forwarded downstream.
+  const traceId = crypto.randomUUID();
+  const firewall = await runFirewallSync(message, {
+    organizationId: 'brightai_site',
+    userId: typeof b.scenario === 'string' ? b.scenario : 'guest',
+    requestId: traceId,
+  });
+
+  if (firewall.decision === 'block') {
+    incrementRequestCounter('chat:firewall:blocked');
+    return Response.json(
+      {
+        reply:
+          'تعذّر إرسال الطلب: يحتوي على بيانات شخصية أو سرية محظورة حسب سياسة الأمان. أعد صياغة الطلب بدون أرقام هوية أو بيانات حساسة.',
+        blocked: true,
+        decision: 'block',
+        traceId,
+        findings: firewall.findings,
+      } as ChatResponse,
+      { status: 451 },
+    );
+  }
+
+  if (firewall.decision === 'require_approval') {
+    incrementRequestCounter('chat:firewall:require_approval');
+    return Response.json(
+      {
+        reply:
+          'هذا الطلب يحتوي على بيانات شخصية حساسة ويتطلب موافقة صريحة قبل المتابعة. يرجى إزالة البيانات أو تأكيد الموافقة عبر قناة معتمدة.',
+        blocked: true,
+        decision: 'require_approval',
+        traceId,
+        findings: firewall.findings,
+      } as ChatResponse,
+      { status: 428 },
+    );
+  }
+
+  const safeMessage = firewall.redactedText;
+
+  // 7b. CHAT-SESSION-2026-07-15: optional sessionId → fetch conversation
   //    history from the Redis-backed store. If sessionId is absent, the
   //    endpoint behaves as a single-turn request (no Redis access). If
   //    sessionId is malformed, reject with 400. If sessionId is valid
@@ -735,6 +800,26 @@ export const POST: APIRoute = async ({ request }) => {
     sessionDegraded = result.degraded;
   }
 
+  // 2b. K4 (2026-07-18): unified quota check — runs BEFORE any provider call
+  //    and BEFORE the SSE stream opens (so a 429/503 HTTP status is always
+  //    possible). Enforces per-minute rate, daily request quota (IP+session),
+  //    daily cost/token cap, and abuse blocks. All dimensions are Redis-backed
+  //    and atomic. Production without Redis → 503 fail-closed (X-Quota-Degraded).
+  const quota = await checkQuota({
+    ip,
+    sessionId,
+    estimatedTokens: Math.ceil(message.length / 4) * 2 || undefined,
+  });
+  if (!quota.allowed) {
+    const status = quota.reason === 'quota_unavailable' ? 503 : 429;
+    return jsonError(
+      status,
+      quota.reason,
+      { retryAfterSec: quota.retryAfterSec },
+      quota.headers,
+    );
+  }
+
   // 8. Provider selection
   const requestedProvider =
     typeof b.provider === 'string' ? b.provider.toLowerCase() : 'auto';
@@ -744,7 +829,7 @@ export const POST: APIRoute = async ({ request }) => {
   //    current user turn at the tail.
   const providerMessages: ChatMessage[] = [
     ...history,
-    { role: 'user', content: message, ts: Date.now() },
+    { role: 'user', content: safeMessage, ts: Date.now() },
   ];
 
   // ─────────────────────────────────────────────────────────────────────
@@ -818,34 +903,63 @@ export const POST: APIRoute = async ({ request }) => {
         try {
           let outcome: 'ok' | 'pre-first-token-error' | 'mid-stream-error' = 'pre-first-token-error';
 
+          // K4 circuit breaker: if a provider is OPEN, skip it entirely.
+          const groqOpen = await isProviderOpen('groq');
+          const geminiOpen = await isProviderOpen('gemini');
+
           if (_requestedProvider === 'groq') {
-            outcome = await pipeGenerator(
-              streamGroq(_providerMessages, _systemPrompt, ctrl.signal),
-              'groq',
-            );
-            if (outcome === 'pre-first-token-error') {
-              enq('error', { error: 'groq_failed' });
+            if (groqOpen) {
+              enq('error', { error: 'groq_unavailable' });
+            } else {
+              outcome = await pipeGenerator(
+                streamGroq(_providerMessages, _systemPrompt, ctrl.signal),
+                'groq',
+              );
+              if (outcome === 'pre-first-token-error') {
+                await recordProviderFailure('groq');
+                enq('error', { error: 'groq_failed' });
+              } else if (outcome === 'ok') {
+                await resetProviderCircuit('groq');
+              }
             }
           } else if (_requestedProvider === 'gemini') {
-            outcome = await pipeGenerator(
-              streamGemini(_providerMessages, _systemPrompt, ctrl.signal),
-              'gemini',
-            );
-            if (outcome === 'pre-first-token-error') {
-              enq('error', { error: 'gemini_failed' });
+            if (geminiOpen) {
+              enq('error', { error: 'gemini_unavailable' });
+            } else {
+              outcome = await pipeGenerator(
+                streamGemini(_providerMessages, _systemPrompt, ctrl.signal),
+                'gemini',
+              );
+              if (outcome === 'pre-first-token-error') {
+                await recordProviderFailure('gemini');
+                enq('error', { error: 'gemini_failed' });
+              } else if (outcome === 'ok') {
+                await resetProviderCircuit('gemini');
+              }
             }
           } else {
-            // auto mode: try Groq first
-            clearTimeout(providerTimer);
-            ctrl = new AbortController();
-            providerTimer = setTimeout(() => ctrl.abort(), PROVIDER_TIMEOUT_MS);
+            // auto mode: try Groq first (unless its circuit is open)
+            if (!groqOpen) {
+              clearTimeout(providerTimer);
+              ctrl = new AbortController();
+              providerTimer = setTimeout(() => ctrl.abort(), PROVIDER_TIMEOUT_MS);
 
-            outcome = await pipeGenerator(
-              streamGroq(_providerMessages, _systemPrompt, ctrl.signal),
-              'groq',
-            );
+              outcome = await pipeGenerator(
+                streamGroq(_providerMessages, _systemPrompt, ctrl.signal),
+                'groq',
+              );
 
-            if (outcome === 'pre-first-token-error') {
+              if (outcome === 'pre-first-token-error') {
+                await recordProviderFailure('groq');
+              } else if (outcome === 'ok') {
+                await resetProviderCircuit('groq');
+              }
+            } else if (!geminiOpen) {
+              // Groq open → go straight to Gemini
+              outcome = 'pre-first-token-error';
+            }
+
+            if (outcome === 'pre-first-token-error' && !geminiOpen) {
               // Groq failed before first token — safe to try Gemini
               clearTimeout(providerTimer);
               ctrl = new AbortController();
@@ -857,8 +971,13 @@ export const POST: APIRoute = async ({ request }) => {
               );
 
               if (outcome === 'pre-first-token-error') {
+                await recordProviderFailure('gemini');
                 enq('error', { error: 'all_providers_failed' });
+              } else if (outcome === 'ok') {
+                await resetProviderCircuit('gemini');
               }
+            } else if (outcome === 'pre-first-token-error' && geminiOpen) {
+              enq('error', { error: 'all_providers_failed' });
             }
             // mid-stream-error already handled inside pipeGenerator
           }
@@ -877,10 +996,10 @@ export const POST: APIRoute = async ({ request }) => {
               getChatSessionStore()
                 .push(
                   _sessionId,
-                  [
-                    { role: 'user', content: message, ts: now },
-                    { role: 'assistant', content: fullReply, ts: now },
-                  ],
+                    [
+                      { role: 'user', content: safeMessage, ts: now },
+                      { role: 'assistant', content: fullReply, ts: now },
+                    ],
                   {
                     maxMessages: CHAT_SESSION_LIMITS.MAX_MESSAGES,
                     ttlSeconds: CHAT_SESSION_LIMITS.TTL_SECONDS,
@@ -936,38 +1055,61 @@ export const POST: APIRoute = async ({ request }) => {
   let lastError = '';
   const providerStartTs = Date.now();
 
+  // K4 circuit breaker: skip OPEN providers.
+  const groqOpen = await isProviderOpen('groq');
+  const geminiOpen = await isProviderOpen('gemini');
+
   try {
-    if (requestedProvider === 'groq') {
+    if (requestedProvider === 'groq' && !groqOpen) {
       const result = await callWithTimeout((signal) =>
         callGroq(providerMessages, systemPrompt, signal),
       );
       reply = result.text;
       usage = result.usage;
       usedProvider = 'groq';
-    } else if (requestedProvider === 'gemini') {
+      await resetProviderCircuit('groq');
+    } else if (requestedProvider === 'gemini' && !geminiOpen) {
       const result = await callWithTimeout((signal) =>
         callGemini(providerMessages, systemPrompt, signal),
       );
       reply = result.text;
       usage = result.usage;
       usedProvider = 'gemini';
+      await resetProviderCircuit('gemini');
+    } else if (requestedProvider === 'groq' || requestedProvider === 'gemini') {
+      // Explicitly requested provider is OPEN → fail fast.
+      return jsonError(503, 'provider_unavailable', {
+        provider: requestedProvider,
+      });
     } else {
-      // auto: try Groq first, fallback to Gemini (each call gets its own AbortController)
-      try {
-        const result = await callWithTimeout((signal) =>
-          callGroq(providerMessages, systemPrompt, signal),
-        );
-        reply = result.text;
-        usage = result.usage;
-        usedProvider = 'groq';
-      } catch (e) {
-        lastError = (e as Error).message;
-        const result = await callWithTimeout((signal) =>
-          callGemini(providerMessages, systemPrompt, signal),
-        );
-        reply = result.text;
-        usage = result.usage;
-        usedProvider = 'gemini';
+      // auto: try Groq first (unless open), fallback to Gemini (unless open)
+      if (!groqOpen) {
+        try {
+          const result = await callWithTimeout((signal) =>
+            callGroq(providerMessages, systemPrompt, signal),
+          );
+          reply = result.text;
+          usage = result.usage;
+          usedProvider = 'groq';
+          await resetProviderCircuit('groq');
+        } catch (e) {
+          lastError = (e as Error).message;
+          await recordProviderFailure('groq');
+        }
+      }
+      if (!reply && !geminiOpen) {
+        try {
+          const result = await callWithTimeout((signal) =>
+            callGemini(providerMessages, systemPrompt, signal),
+          );
+          reply = result.text;
+          usage = result.usage;
+          usedProvider = 'gemini';
+          await resetProviderCircuit('gemini');
+        } catch (e) {
+          lastError = lastError || (e as Error).message;
+          await recordProviderFailure('gemini');
+        }
       }
     }
   } catch (e) {
@@ -1007,7 +1149,7 @@ export const POST: APIRoute = async ({ request }) => {
       await getChatSessionStore().push(
         sessionId,
         [
-          { role: 'user', content: message, ts: now },
+          { role: 'user', content: safeMessage, ts: now },
           { role: 'assistant', content: reply, ts: now },
         ],
         {
@@ -1041,6 +1183,99 @@ export const POST: APIRoute = async ({ request }) => {
     extraHeaders,
   );
 };
+
+// ─────────────────────────────────────────────────────────────────────────
+// K3 (2026-07-18): AI Firewall enforce point.
+//
+// Runs BEFORE the provider call. Pipeline:
+//   normalize → detectAndRedact → policy decision
+//   decision ∈ { allow, redact, block, require_approval }
+//
+// The original message with PII is NEVER forwarded to the provider. Only
+// `redactedText` leaves this function. Findings are safe metadata (type +
+// position + action) with NO PII value — used by the client for a surface
+// notice and never logged with content.
+// ─────────────────────────────────────────────────────────────────────────
+type FirewallDecision = 'allow' | 'redact' | 'block' | 'require_approval';
+
+interface FirewallOutput {
+  decision: FirewallDecision;
+  redactedText: string;
+  findings: Array<{
+    type: string;
+    action: string;
+    confidence: number;
+    start: number;
+    end: number;
+  }>;
+}
+
+const K3_POLICY: PolicyConfig = {
+  ...DEFAULT_POLICY,
+  nerEnabled: false,
+  blockOnCritical: true,
+  // High-risk PII that must block outright (HTTP 451). Everything else
+  // falls back to the DEFAULT_POLICY action (mask/redact) and proceeds
+  // as allow/require_approval.
+  actions: {
+    ...DEFAULT_POLICY.actions,
+    SAUDI_ID: 'block',
+    IQAMA: 'block',
+    SAUDI_IBAN: 'block',
+    CARD_OR_ACCOUNT: 'block',
+    CREDENTIAL: 'block',
+    PATIENT_ID: 'block',
+    COMMERCIAL_REGISTRATION: 'block',
+    NATIONAL_ADDRESS: 'block',
+  },
+};
+
+async function runFirewallSync(
+  rawMessage: string,
+  ctx: { organizationId: string; userId: string; requestId: string },
+): Promise<FirewallOutput> {
+  const normalized = rawMessage.normalize('NFC').trim();
+
+  const firewallCtx: FirewallContext = {
+    organizationId: ctx.organizationId,
+    userId: ctx.userId,
+    requestId: ctx.requestId,
+    policy: K3_POLICY,
+  };
+
+  const result: RedactionResult = await detectAndRedact(normalized, firewallCtx);
+
+  const findings = result.detections.map((d) => ({
+    type: d.type,
+    action: (K3_POLICY.actions[d.type] ?? 'mask') as string,
+    confidence: d.confidence,
+    start: d.start,
+    end: d.end,
+  }));
+
+  let decision: FirewallDecision = 'allow';
+  if (result.blocked) {
+    decision = 'block';
+  } else if (result.detections.length > 0) {
+    // Anything that produced a detection is at least redacted (mask/redact).
+    decision = 'redact';
+    // High-risk PII that isn't in the block set but requires explicit
+    // approval before processing (e.g. SAUDI_PHONE, EMAIL, BIRTH_DATE_*).
+    const requiresApproval = result.detections.some(
+      (d) =>
+        d.type === 'SAUDI_PHONE' ||
+        d.type === 'EMAIL' ||
+        d.type.startsWith('BIRTH_DATE'),
+    );
+    if (requiresApproval) decision = 'require_approval';
+  }
+
+  return {
+    decision,
+    redactedText: result.redactedText,
+    findings,
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────
 // Other HTTP methods → 405 (don't burn rate-limit budget on GET/HEAD).

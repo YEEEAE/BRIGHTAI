@@ -2,6 +2,7 @@
   "name": "@brightai/firewall-detectors",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Lightweight PII detection (regex-based) for marketing site + dashboard. NER is optional + injectable. No DB, no ONNX, no Prisma.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -6,7 +6,7 @@
  * - Upgraded to 3-pane enterprise dashboard layout.
  * - LEFT: threads list (recent conversations, sticky header with "new" CTA).
  * - CENTER: streaming chat thread with user/AI bubbles, policy banners, typing indicator, compose box.
- * - RIGHT: NVIDIA provider status card (3 fields) + policy notifications + session meta.
+ *  - RIGHT: live provider status card (reflected from /api/ai/chat metadata) + policy notifications + session meta.
  * - Demo mode handled via KernelDemoPill (existing) + JS-driven fake streaming for "send" UX.
  * - Mobile responsive: panes collapse via CSS @media.
  * - RTL-aware, V3 tokens, design system preserved.
@@ -390,25 +390,29 @@ const policyBanner = {
         </div>
       </section>
 
-      <!-- RIGHT — Context panel (NVIDIA status + policy feed + session meta) -->
+      <!-- RIGHT — Context panel (live provider status + policy feed + session meta) -->
       <aside class="kernel-chat-layout__pane kernel-chat-layout__pane--right" aria-label="لوحة السياق">
-        <!-- NVIDIA status card (3 fields: configured, model, mode) -->
-        <section class="kernel-chat-context-card" aria-labelledby="ctx-nvidia-title">
+        <!-- Live provider card (K2 2026-07-18): name reflects the actual
+             provider returned by /api/ai/chat metadata — never hard-coded.
+             Starts as "—" until the first live reply; shows a DEMO badge
+             while a seed/demo reply is displayed, and a DEGRADED badge when
+             the session store fell back to in-memory storage. -->
+        <section class="kernel-chat-context-card" aria-labelledby="ctx-provider-title" data-provider-card>
           <header class="kernel-chat-context-card__head">
-            <span class="kernel-chat-context-card__logo" aria-hidden="true">N</span>
+            <span class="kernel-chat-context-card__logo" aria-hidden="true" data-provider-logo>B</span>
             <div class="kernel-chat-context-card__title-block">
-              <h3 class="kernel-chat-context-card__title" id="ctx-nvidia-title">NVIDIA NIM</h3>
-              <p class="kernel-chat-context-card__sub">مزود النموذج</p>
+              <h3 class="kernel-chat-context-card__title" id="ctx-provider-title">
+                مزود النموذج: <span data-provider-badge>—</span>
+              </h3>
+              <p class="kernel-chat-context-card__sub">يُعرض من استجابة الخادم</p>
             </div>
+            <span class="kernel-chat-context-card__tag" data-demo-badge hidden>تجريبي</span>
+            <span class="kernel-chat-context-card__tag kernel-chat-context-card__tag--warn" data-degraded-badge hidden>سياق غير محفوظ</span>
           </header>
           <dl>
             <div class="kernel-chat-context-card__field">
               <dt class="kernel-chat-context-card__label">الحالة</dt>
               <dd class="kernel-chat-context-card__value kernel-chat-context-card__value--ok">متصل · مهيأ</dd>
-            </div>
-            <div class="kernel-chat-context-card__field">
-              <dt class="kernel-chat-context-card__label">النموذج</dt>
-              <dd class="kernel-chat-context-card__value">minimaxai/minimax-m2.7</dd>
             </div>
             <div class="kernel-chat-context-card__field">
               <dt class="kernel-chat-context-card__label">الوضع</dt>
@@ -540,23 +544,23 @@ const policyBanner = {
           </button>
         </header>
         <div class="kernel-chat-drawer__body">
-          <!-- NVIDIA status card -->
-          <section class="kernel-chat-context-card" aria-labelledby="ctx-drawer-nvidia-title">
+          <!-- Live provider card (K2 2026-07-18): mirrors the RIGHT pane. -->
+          <section class="kernel-chat-context-card" aria-labelledby="ctx-drawer-provider-title" data-provider-card>
             <header class="kernel-chat-context-card__head">
-              <span class="kernel-chat-context-card__logo" aria-hidden="true">N</span>
+              <span class="kernel-chat-context-card__logo" aria-hidden="true" data-provider-logo>B</span>
               <div class="kernel-chat-context-card__title-block">
-                <h3 class="kernel-chat-context-card__title" id="ctx-drawer-nvidia-title">NVIDIA NIM</h3>
-                <p class="kernel-chat-context-card__sub">مزود النموذج</p>
+                <h3 class="kernel-chat-context-card__title" id="ctx-drawer-provider-title">
+                  مزود النموذج: <span data-provider-badge>—</span>
+                </h3>
+                <p class="kernel-chat-context-card__sub">يُعرض من استجابة الخادم</p>
               </div>
+              <span class="kernel-chat-context-card__tag" data-demo-badge hidden>تجريبي</span>
+              <span class="kernel-chat-context-card__tag kernel-chat-context-card__tag--warn" data-degraded-badge hidden>سياق غير محفوظ</span>
             </header>
             <dl>
               <div class="kernel-chat-context-card__field">
                 <dt class="kernel-chat-context-card__label">الحالة</dt>
                 <dd class="kernel-chat-context-card__value kernel-chat-context-card__value--ok">متصل · مهيأ</dd>
-              </div>
-              <div class="kernel-chat-context-card__field">
-                <dt class="kernel-chat-context-card__label">النموذج</dt>
-                <dd class="kernel-chat-context-card__value">minimaxai/minimax-m2.7</dd>
               </div>
               <div class="kernel-chat-context-card__field">
                 <dt class="kernel-chat-context-card__label">الوضع</dt>
@@ -919,8 +923,49 @@ const policyBanner = {
        * reply (SSE done event or JSON reply). Cleared on error/new chat.
        * No static / hardcoded provider value — always reflects the server's
        * metadata (Acceptance: "لا تعرض provider ثابتاً").
+       *
+       * K2 (2026-07-18): also drives the visible provider card in the
+       * RIGHT pane + context drawer (previously hard-coded "NVIDIA NIM").
+       * The card now shows the live provider name from the response, or a
+       * neutral "—" before the first successful reply.
        */
       var lastProvider = '';
+
+      /** K2 (2026-07-18): reflect the live provider into the provider card(s). */
+      var PROVIDER_LABELS = { groq: 'Groq', gemini: 'Gemini', '': '—' };
+      function updateProviderBadges() {
+        var label = PROVIDER_LABELS[lastProvider] || '—';
+        elAll('[data-provider-badge]').forEach(function (node) {
+          node.textContent = label;
+        });
+        // When a live provider is known, drop the static "demo" tint if any.
+        if (lastProvider) {
+          elAll('[data-provider-card]').forEach(function (node) {
+            node.removeAttribute('data-demo');
+          });
+        }
+      }
+
+      /** K2 (2026-07-18): DEMO badge — shown while the visible reply is a
+       *  seed/demo fallback (no live provider contacted). Hidden on the
+       *  first successful live reply. */
+      function setDemoMode(isDemo) {
+        elAll('[data-demo-badge]').forEach(function (node) {
+          node.hidden = !isDemo;
+        });
+        elAll('[data-provider-card]').forEach(function (node) {
+          if (isDemo) node.setAttribute('data-demo', 'true');
+        });
+      }
+
+      /** K2 (2026-07-18): DEGRADED badge — driven by the X-Chat-Session
+       *  response header when the Redis-backed session store fell back to
+       *  in-memory storage (context not preserved across reloads). */
+      function setDegradedMode(isDegraded) {
+        elAll('[data-degraded-badge]').forEach(function (node) {
+          node.hidden = !isDegraded;
+        });
+      }
 
       function sendMessage() {
         // BAI-KRN-002 / M1 (2026-07-18): wire-up layer — IME composition guard
@@ -956,6 +1001,9 @@ const policyBanner = {
 
         // KERNEL-AI-2026-07-14: clear any previous error
         clearChatError();
+        // K2 (2026-07-18): a live API attempt is starting — leave demo
+        // mode so the provider card shows "—" until the reply arrives.
+        setDemoMode(false);
 
         // BAI-KRN-002 / M1: fresh AbortController per request. M3 will wire the
         // Cancel button to composerAbort.abort(); for now the controller exists
@@ -1039,6 +1087,11 @@ const policyBanner = {
                 runDemoReply();
                 return null;
               }
+              // K2 (2026-07-18): surface degraded session notice if the
+              // server fell back to in-memory context storage.
+              if (res.headers.get('X-Chat-Session') === 'degraded') {
+                setDegradedMode(true);
+              }
               return { res: res, contentType: res.headers.get('content-type') || '' };
             })
             .then(function (handled) {
@@ -1062,6 +1115,7 @@ const policyBanner = {
                 var aiMsg = createMessage('ai', '');
                 messages.insertBefore(aiMsg.article, typing);
                 if (data.provider) lastProvider = String(data.provider);
+                updateProviderBadges();
                 streamInto(aiMsg.bubble, data.reply, function () {
                   finalizeIdle();
                   input.focus();
@@ -1116,6 +1170,7 @@ const policyBanner = {
                 if (typeof frame.data.provider === 'string') {
                   lastProvider = frame.data.provider;
                 }
+                updateProviderBadges();
               } else if (frame.event === 'error') {
                 // Stream-level error mid-response: keep what we have, then
                 // surface a non-blocking notice.
@@ -1152,6 +1207,7 @@ const policyBanner = {
         // REPORTS-SEC-01: Demo fallback path (latency simulation + fake streaming).
         // يُستخدم عندما الـ API غير متاح أو رجع 404/502/504. يحفظ الـ UX القديم.
         function runDemoReply() {
+          setDemoMode(true);
           setTimeout(function () {
             var aiMsg = createMessage('ai', '');
             messages.insertBefore(aiMsg.article, typing);
@@ -1512,5 +1568,37 @@ const policyBanner = {
   }
   @media (prefers-reduced-motion: reduce) {
     .k-scenario-banner__cancel { transition: none; }
+  }
+
+  /* K2 (2026-07-18): live provider card tags (DEMO / DEGRADED). */
+  .kernel-chat-context-card__head {
+    position: relative;
+  }
+  .kernel-chat-context-card__tag {
+    display: inline-flex;
+    align-items: center;
+    margin-inline-start: auto;
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-full);
+    font-size: 0.6875rem;
+    font-weight: var(--font-semibold);
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .kernel-chat-context-card__tag[hidden] { display: none; }
+  .kernel-chat-context-card__tag:not(.kernel-chat-context-card__tag--warn) {
+    background: var(--surface-info-soft, rgba(34, 211, 238, 0.14));
+    color: var(--status-info, #22d3ee);
+  }
+  .kernel-chat-context-card__tag--warn {
+    background: rgba(245, 158, 11, 0.16);
+    color: var(--status-warning, #f59e0b);
+  }
+  /* Demo tint on the whole card while a seed reply is shown. */
+  .kernel-chat-context-card[data-demo="true"] {
+    border-color: var(--status-warning, #f59e0b);
+  }
+  @media (max-width: 1023px) {
+    .kernel-chat-context-card__tag { font-size: 0.625rem; }
   }
 </style>
