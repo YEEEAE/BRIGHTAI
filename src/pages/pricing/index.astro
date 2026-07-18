@@ -1,61 +1,260 @@
-<!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs في hero + final CTA — text action-oriented + microcopy ≤12 كلمة. href (whatsapp encoded link + /contact/) لم يتغير. -->
+<!-- BAI-CRO-003 (2026-07-18): إعادة بناء صفحة /pricing/ وفق MASTER-CRO-AUDIT-AR.md Prompt 3.
+     - 3 عروض حوكمة مؤسسية: Assessment / 30-Day Pilot (الموصى به) / Enterprise Rollout
+     - لا فئات شات بوت/وكلاء/أتمتة تنافس منصة الحوكمة (Section 8 في الـ audit)
+     - إزالة مرساة سعر منخفضة من العرض الرئيسي (Section 4 المشكلة #5)
+     - كل عرض يوضح: مناسب لمن، النطاق، المدة، المخرجات، ما لا يشمله، معايير النجاح، الخطوة التالية
+     - CTA الأساسي = "احجز ديمو حوكمة مخصص" (Section 7)، ثانوي = "ابدأ تقييم الجاهزية"
+     - كل CTA يحمل data-cta + data-position + data-offer + data-page-type
+     - FAQ للاعتراضات (8): استضافة، بيانات، تكامل، شراء، NDA، SLA، دعم، امتثال
+     - جدول مقارنة متجاوب + scope/caption للـ keyboard
+     - Service Schema للعروض الثلاثة + FAQPage Schema
+     - قسم "عوامل التسعير" يفسر لماذا "مخصص"
+     - قسم "روابط القرار" بدل قسم الروابط الـ SEO (3 أسئلة شائعة → 3 وجهات)
+     - لا كسر canonical/hreflang/schema الأساسية
+     - لا اختراع أسعار/سلا/اعتمادات/عوائد
+-->
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
 
-const title = 'باقات وأسعار حوكمة AI | 4 مستويات للشركات';
-const description = '4 باقات واضحة من BrightAI لحوكمة AI: استشارية، أتمتة، وكلاء، وخدمة عملاء. اختر المستوى المناسب لحجم منشأتك وامتثالها وفق PDPL بالسعودية والنظام المحلي.';
+const title = 'باقات وأسعار حوكمة AI المؤسسية | 3 عروض واضحة';
+const description = '3 عروض حوكمة AI مؤسسية من BrightAI: تقييم جاهزية، Pilot 30 يوم بنطاق محدد، وEnterprise Rollout. سعر مخصص، Pilot هو الأنسب لقياس القيمة قبل التوسع.';
 const canonical = 'https://brightai.site/pricing/';
-const whatsapp = 'https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D8%A7%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D8%AA%D8%B3%D8%B9%D9%8A%D8%B1%20%D8%AD%D9%84%D9%88%D9%84%20%D8%A7%D9%84%D8%B0%D9%83%D8%A7%D8%A1%20%D8%A7%D9%84%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A%20%D9%84%D9%84%D8%B4%D8%B1%D9%83%D8%A7%D8%AA%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%B3%D8%B9%D9%88%D8%AF%D9%8A%D8%A9%20%D9%85%D8%B9%20Bright%20AI.';
+const whatsapp = 'https://wa.me/966538229013?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%86%D8%B7%D8%A7%D9%82%20Pilot%20%D8%AD%D9%88%D9%83%D9%85%D8%A9%20AI%20%D9%85%D8%A4%D8%B3%D8%B3%D9%8A%20%D9%85%D8%B9%20Bright%20AI.';
 
-const packages = [
+// العروض الثلاثة — single source of truth للبطاقات + الجدول + Service Schema
+const offers = [
   {
-    name: 'استشارات الذكاء الاصطناعي',
-    description: 'للشركات التي تحتاج تحديد الاتجاه الصحيح قبل الاستثمار في حلول أكبر.',
-    price: 'من 99 ريال',
-    period: 'لجلسة تشخيصية',
-    cta: 'احجز استشارة',
-    features: ['جلسة فهم احتياج لمدة 30-60 دقيقة', 'تحليل أولي للحالات المحتملة', 'توصيات أولية للبداية', 'خطة خطوات مقترحة'],
-    featured: false,
+    id: 'assessment',
+    name: 'تقييم جاهزية حوكمة AI',
+    tagline: 'نقطة البداية المؤسسية',
+    description: 'جلسة اكتشاف وجرد مخاطر لحالات استخدام AI في منشأتك قبل أي التزام تقني أو مالي.',
+    price: 'مخصص',
+    priceNote: 'حسب حجم المؤسسة وعدد حالات الاستخدام',
+    cta: 'ابدأ تقييم الجاهزية',
+    ctaHref: '/assessment/ai-governance-readiness/',
+    ctaTarget: '_self',
+    recommended: false,
+    suitableFor: [
+      'CISO وDPO اللذان يبنون حالة عمل لحوكمة AI',
+      'CIO الذي يستعد لقرار شراء خلال 60-90 يوم',
+      'الشركات في مرحلة استكشاف لم تلتزم بعد بأي منصة',
+    ],
+    scope: [
+      'حصر حالات استخدام AI الحالية والمخطط لها (3-5 أقسام عادةً)',
+      'تصنيف المخاطر حسب الحساسية والبيانات المتداولة',
+      'Gap analysis مقابل PDPL/NCA ECC/SDAIA Generative AI Guidelines',
+      'توصية واضحة بالمرحلة التالية (Pilot أو مؤجّل)',
+    ],
+    duration: '5-10 أيام عمل',
+    durationNote: 'لا يتطلب نشر أي منتج أو وصول لأنظمة الإنتاج',
+    deliverables: [
+      'تقرير جاهزية (12-18 صفحة) بصيغة PDF',
+      'Gap summary قابل للعرض على الإدارة',
+      'خارطة طريق مرحلية بـ milestones قابلة للقياس',
+      'توصية مكتوبة بالمرحلة التالية',
+    ],
+    notIncluded: [
+      'نشر AI Firewall أو أي مكون تقني في الإنتاج',
+      'تكامل مع أنظمتك الداخلية',
+      'سجلات تدقيق أو Evidence File قابل للتسليم',
+      'تعديل سياسات أو إجراءات قائمة',
+    ],
+    successCriteria: [
+      'استلام تقرير جاهزية مع Gap Summary مصنّف حسب الأولوية',
+      'اجتماع مراجعة مع فريقك خلال 14 يوم من التسليم',
+      'قرار واضح: Pilot، مؤجّل، أو غير مناسب حالياً',
+    ],
+    nextStep: 'ابدأ التقييم الذاتي (20 دقيقة) أو احجز جلسة جاهزية مع فريقنا',
+    nextStepHref: '/assessment/ai-governance-readiness/',
   },
   {
-    name: 'حلول الأتمتة الذكية',
-    description: 'للشركات التي تريد أتمتة عمليات محددة لتوفير الوقت وتقليل الأخطاء.',
-    price: 'سعر مخصص',
-    period: 'حسب نطاق المشروع',
-    cta: 'اطلب عرض سعر',
-    features: ['أتمتة عملية واحدة أو أكثر', 'تكامل مع أنظمتك الحالية', 'اختبار شامل قبل الإطلاق', 'تدريب لفريقك على الاستخدام', 'دعم فترة تجريبية'],
-    featured: false,
+    id: 'pilot',
+    name: 'Pilot 30 يوم بنطاق محدد',
+    tagline: 'الموصى به — قياس القيمة قبل التوسع',
+    description: 'تجربة عملية على قسم أو حالة استخدام واحدة مع AI Firewall وAudit Trail وHuman Approval. نتائج قابلة للقياس قبل أي التزام مؤسسي أوسع.',
+    price: 'مخصص',
+    priceNote: 'يعتمد على حجم القسم النطاق وعدد المستخدمين والـ connectors',
+    cta: 'اطلب نطاق Pilot',
+    ctaHref: '/contact/',
+    ctaTarget: '_self',
+    recommended: true,
+    suitableFor: [
+      'CISO الذي يثبت فرضية حوكمة AI لقسم أو حالة استخدام',
+      'مدير التقنية الذي يحتاج بيانات واقعية قبل Sourcing',
+      'مدير المخاطر والتدقيق الذي يستعد لقرار تعميم',
+    ],
+    scope: [
+      'قسم واحد أو حالة استخدام واحدة (مثل: خدمة العملاء، التسويق، القانونية)',
+      'AI Firewall مع سياسات افتراضية قابلة للتعديل',
+      'Audit Trail كامل لكل عملية استخدام',
+      'Human Approval لمسار حساس واحد على الأقل',
+      'تكامل مع قناة واحدة (Slack, Microsoft Teams, Email, أو API)',
+      'لوحة مؤشرات أساسية للفترة التجريبية',
+    ],
+    duration: '30 يوم تقويمي (قابل للتمديد أسبوعين بموافقة متبادلة)',
+    durationNote: 'الأسبوع 1-2: إعداد ودمج. الأسبوع 3: تشغيل مقيّد. الأسبوع 4: قياس وتقرير',
+    deliverables: [
+      'تقرير نتائج Pilot (15-25 صفحة) مع KPIs كمية',
+      'Sample Evidence File من فترة التشغيل',
+      'ملاحظات قابلة للتنفيذ قبل التوسع',
+      'توصية بثلاث سيناريوهات: تعميم، توسعة، أو إيقاف',
+    ],
+    notIncluded: [
+      'تغطية متعددة الأقسام أو المؤسسة بأكملها',
+      'تكاملات معقدة مع أنظمة ERP/CRM مخصصة',
+      'SLA إنتاجي أو دعم 24/7 (يُعرض في Enterprise)',
+      'تخصيصات عميقة في الكود أو في البنية',
+    ],
+    successCriteria: [
+      'مؤشران كمّيان على الأقل: (مثال) 100% من طلبات AI الحساسة مرّت عبر Approval، صفر تسريب PII مكتشف',
+      'استلام Sample Evidence File مع trace كامل',
+      'اجتماع ختامي مع تقرير وقرار خلال 7 أيام من نهاية Pilot',
+    ],
+    nextStep: 'احجز جلسة لتحديد نطاق Pilot: قسم، حالة استخدام، قناة، KPIs',
+    nextStepHref: '/contact/',
   },
   {
-    name: 'وكلاء الذكاء الاصطناعي',
-    description: 'للشركات والمؤسسات التي تحتاج وكلاء AI متكاملين للمهام المعقدة.',
-    price: 'سعر مخصص',
-    period: 'حسب التعقيد والتكاملات',
-    cta: 'اطلب عرض سعر',
-    features: ['وكيل مخصص لحالة استخدام محددة', 'تكامل عميق مع أنظمة متعددة', 'حوكمة وسجلات تدقيق كاملة', 'قدرة التوسع حسب الحاجة', 'صيانة وتحديثات مستمرة'],
-    featured: true,
-  },
-  {
-    name: 'شات بوت عربي ذكي',
-    description: 'للشركات التي تريد خدمة عملاء ذكية باللغة العربية على مدار الساعة.',
-    price: 'سعر مخصص',
-    period: 'حسب حجم الاستخدام',
-    cta: 'اطلب عرض سعر',
-    features: ['شات بوت مدرب على بيانات شركتك', 'دعم الفصحى واللهجات السعودية', 'تكامل واتساب وتيليجرام وموقع', 'تقارير أداء وتحليلات المحادثات', 'حوكمة وخصوصية البيانات'],
-    featured: false,
+    id: 'enterprise',
+    name: 'Enterprise Rollout',
+    tagline: 'نشر مؤسسي متكامل',
+    description: 'نشر BrightAI عبر المؤسسة مع تكاملات مؤسسية، حزم سياسات، وأدوار وصلاحيات، ودعم تشغيلي. مناسب للمؤسسات الجاهزة للتعميم بعد Pilot ناجح.',
+    price: 'مخصص',
+    priceNote: 'عرض سعر مفصّل بعد إكمال Pilot أو Assessment بنجاح',
+    cta: 'تواصل للمؤسسات',
+    ctaHref: '/contact/',
+    ctaTarget: '_self',
+    recommended: false,
+    suitableFor: [
+      'مؤسسات أكملت Pilot بنجاح وتستعد للتعميم',
+      'CIO/CISO مع موافقة ميزانية سنوية لحوكمة AI',
+      'قطاعات منظمة (حكومي، مصرفي، صحي، صناعي) تحتاج أدلة امتثال',
+    ],
+    scope: [
+      'نشر متعدد الأقسام مع connectors شاملة',
+      'تكامل مع SSO/IdP وأنظمة IAM المؤسسية',
+      'حزم سياسات مخصصة لكل قسم/دور',
+      'أدوار وصلاحيات مفصّلة (RBAC)',
+      'SLA إنتاجي مع خطة استمرارية الأعمال',
+      'تدريب لفريقك وفرق العمليات',
+    ],
+    duration: '12-16 أسبوع من توقيع العقد حتى التشغيل الكامل',
+    durationNote: 'المرحلة 1: تصميم مفصّل (3-4 أسابيع). المرحلة 2: نشر مرحلي (6-8 أسابيع). المرحلة 3: تشغيل ودعم (مستمر)',
+    deliverables: [
+      'بنية نشر موثقة (Architecture document)',
+      'حزم سياسات مخصصة (3-5 packs حسب القطاع)',
+      'تدريب معتمد لفريقك (8-16 ساعة)',
+      'SLA مكتوب وخطة استمرارية',
+      'دعم تشغيلي مع SLA محدد',
+    ],
+    notIncluded: [
+      'تطوير ميزات جديدة خارج خارطة المنتج المعلنة',
+      'استضافة محلية معزولة بالكامل (يُناقش كـ add-on)',
+      'عمليات تدقيق خارجية (Audit) نيابةً عنك',
+    ],
+    successCriteria: [
+      'نشر BrightAI في ≥ 3 أقسام مع ≥ 80% امتثال للسياسات',
+      'تشغيل Pilot شامل واحد (≥ 30 يوم) بدون انقطاع خدمة',
+      'استلام Architecture document + حزم السياسات',
+    ],
+    nextStep: 'تواصل مع فريق المؤسسات لمناقشة خارطة النشر والـ SLA',
+    nextStepHref: '/contact/',
   },
 ];
 
-const faqs = [
-  ['كيف تحددون أسعار حلول الذكاء الاصطناعي؟', 'نتبع نماذج تسعير مرنة تناسب حجم الشركة: استشارات بسعر ثابت، مشاريع حسب النطاق والمدة، واشتراكات شهرية للخدمات المستمرة. كل سعر يتم تحديده بعد فهم الاحتياج الفعلي وضمن شفافية تامة.'],
-  ['كم تبدأ أسعار استشارات الذكاء الاصطناعي؟', 'تبدأ استشارات الذكاء الاصطناعي من 99 ريال سعودي لجلسة تشخيصية. للاستشارات المتعمقة التي تشمل تحليل البيانات وتقييم الجاهزية وخريطة طريق، يتم تحديد السعر حسب نطاق العمل ومدة الاستشارة بعد فهم الاحتياج.'],
-  ['ما العوامل التي تؤثر في التسعير المخصص؟', 'التسعير المخصص يعتمد على عدة عوامل: حجم المشروع، مستوى التخصيص المطلوب، عدد التكاملات مع الأنظمة الحالية، مستوى الحوكمة والأمان، ومدة المشروع. نبدأ بجلسة فهم احتياج مجانية ثم نقدم عرض سعر مفصل.'],
-  ['ما خيارات وشروط الدفع؟', 'نوفر مرونة في شروط الدفع: دفعة مقدمة مع باقي الدفعات على مراحل المشروع، أو دفعات شهرية للخدمات المستمرة، أو دفعة واحدة بخصم للمشاريع الصغيرة. تقبل التحويلات البنكية وبطاقات الائتمان.'],
-  ['هل تضمنون عائداً محدداً على الاستثمار؟', 'نحدد مؤشرات أداء واضحة (KPIs) في بداية كل مشروع نقيسها بشكل دوري. بينما لا يمكننا ضمان مبلغ نقدي محدد، فإننا نعمل على تحقيق أهداف الجدوى التي تم الاتفاق عليها، ونقدم تقارير دورية توضح القيمة المحققة.'],
-  ['ماذا يشمل سعر الخدمة؟', 'يشمل سعر الخدمة عادة: التصميم والتطوير، التكامل مع الأنظمة، الاختبار الشامل، التدريب لفريقك، الدعم الفني للفترة التجريبية، والتوثيق. للخدمات المستمرة يضاف الدعم الفني وصيانة النظام والتحديثات.'],
+// عوامل التسعير — Section "سعر مخصص" يفسر لماذا
+const pricingFactors = [
+  { factor: 'حجم النطاق', detail: 'عدد المستخدمين النشطين، الأقسام المشمولة، وحجم الطلبات الشهرية المتوقعة' },
+  { factor: 'مستوى التخصيص', detail: 'تكاملات مخصصة، سياسات مخصصة لكل قسم، أوضاع نشر خاصة' },
+  { factor: 'البيئة التقنية', detail: 'سحابة عامة، استضافة خاصة، أو on-premise؛ التكامل مع IdP وأنظمة IAM' },
+  { factor: 'متطلبات الامتثال', detail: 'حزم PDPL/NCA ECC/SFDA/SAMA/ISO 13485/ISO 42001 المفعّلة وتكرار التدقيق' },
+  { factor: 'مستوى الدعم', detail: 'ساعات الدعم، SLA، مدير حساب مخصص، ودعم في الموقع للمؤسسات الكبرى' },
+  { factor: 'مدة العقد', detail: 'سنوي (الأكثر مرونة) أو متعدد السنوات (مع خصومات مرحلية)' },
 ];
+
+// FAQ للاعتراضات التجارية والأمنية — 8 أسئلة بصياغة دقيقة غير مضللة
+const objectionFaqs = [
+  {
+    q: 'أين تُستضاف بياناتنا؟',
+    a: 'تُستضاف البيانات في مزوّد سحابي رئيسي في منطقة الشرق الأوسط بشكل افتراضي، مع خيارات للنشر في مناطق جغرافية محددة أو داخل المملكة عند الحاجة المؤسسية. في Enterprise Rollout نناقش خيارات on-premise أو VPC خاصة كـ add-on. لا نشارك بيانات العملاء مع أي طرف ثالث لأغراض تدريب نماذج.',
+  },
+  {
+    q: 'مَن يصل إلى البيانات الحساسة في BrightAI؟',
+    a: 'الوصول إلى البيانات الحساسة مقيّد بأدوار RBAC مفصّلة. فريق BrightAI التشغيلي يصل فقط لما هو ضروري لتقديم الدعم المتفق عليه، مع تسجيل كل عملية وصول في Audit Trail. في Enterprise، يمكنك تقييد وصول فريق الدعم إلى بيئة الإنتاج كلياً وإتاحة بيئة دعم معزولة.',
+  },
+  {
+    q: 'كم يستغرق التكامل مع أنظمتنا الحالية؟',
+    a: 'في Pilot: تكامل مع قناة واحدة (Slack, Teams, Email, API) خلال 1-2 أسبوع. في Enterprise: تكامل مع IdP/SSO وأنظمة IAM خلال 3-4 أسابيع. التكاملات المخصصة مع ERP/CRM تُقيّم حالة بحالة وتعتمد على توفر API وموارد فريقك التقني.',
+  },
+  {
+    q: 'كم تستغرق دورة الشراء من التواصل إلى العقد؟',
+    a: 'عادةً 4-8 أسابيع للمؤسسات التي لديها موافقة ميزانية. الجدول التقريبي: أسبوع لجلسة النطاق + أسبوع للعرض + 2-4 أسابيع لتقييم أمني/قانوني + توقيع. في المؤسسات الحكومية والصحية قد تطول بسبب متطلبات المشتريات. Pilot أسرع لأنه نطاق محدد وموافقات أصغر.',
+  },
+  {
+    q: 'هل نوقّع NDA قبل مناقشة التفاصيل؟',
+    a: 'نعم. نوقّع NDA متبادل (mutual NDA) قبل مشاركة أي معلومات سرية عن بنيتك أو بياناتك. نموذج NDA المعياري متاح، ونقبل صيغ NDA المعتمدة من فريقك القانوني للمراجعة.',
+  },
+  {
+    q: 'ما هو مستوى SLA المضمون في Enterprise؟',
+    a: 'SLA الإنتاجي يُتفق عليه في عقد Enterprise Rollout بناءً على نطاق النشر ومتطلباتك. الافتراضي: 99.5% uptime شهري مع تعويض مرحلي، ودعم خلال ساعات العمل الموسّعة. SLA أعلى (99.9% مع دعم 24/7) متاح كترقية. لا نلتزم بـ SLA قبل Pilot ناجح.',
+  },
+  {
+    q: 'كيف يعمل الدعم الفني بعد الإطلاق؟',
+    a: 'في Pilot: دعم خلال ساعات العمل عبر البريد + WhatsApp. في Enterprise: مدير حساب مخصص + دعم خلال ساعات العمل الموسّعة + قناة طوارئ. الترقية إلى دعم 24/7 مع SLA 1 ساعة متاحة للمؤسسات الحرجة. لا نقدم دعم استشاري غير محدود في أي مستوى.',
+  },
+  {
+    q: 'هل BrightAI "متوافقة مع PDPL" أم "تدعم الجاهزية"؟',
+    a: 'BrightAI تساعد على الجاهزية للامتثال عبر Audit Trail، ضوابط الوصول، وتوثيق القرارات، لكنها لا تحل محل مسؤوليتك كمدير بيانات أو مسؤول امتثال. امتثال PDPL الفعلي يعتمد على تطبيقك للسياسات، تدريب فريقك، ومراجعاتك الداخلية. لا ندّعي امتثالاً كاملاً؛ ندّعي أن المنصة تقلل الجهد اللازم لإثبات الامتثال عند التدقيق.',
+  },
+];
+
+// أسئلة مساعدة القرار — بدل قسم الروابط الـ SEO
+const decisionHelper = [
+  {
+    question: 'لسنا متأكدين بعد هل نحتاج حوكمة AI',
+    answer: 'ابدأ بـ Assessment الذاتي (20 دقيقة، تقرير فجوات PDF) أو احجز جلسة جاهزية مع فريقنا. لا التزام تقني أو مالي.',
+    ctaLabel: 'ابدأ تقييم الجاهزية',
+    ctaHref: '/assessment/ai-governance-readiness/',
+    ctaData: 'assessment_start',
+  },
+  {
+    question: 'نريد قياس القيمة قبل التزام مؤسسي',
+    answer: 'Pilot 30 يوم على قسم واحد يعطيك KPIs كمية + Sample Evidence File قبل أي قرار تعميم. هذا المسار الأنسب لـ CISO وCIO.',
+    ctaLabel: 'اطلب نطاق Pilot',
+    ctaHref: '/contact/',
+    ctaData: 'pilot_request',
+  },
+  {
+    question: 'مستعدون للتعميم أو عندنا Pilot سابق',
+    answer: 'تواصل مع فريق المؤسسات لمناقشة Enterprise Rollout. نبدأ بمراجعة نتائج Pilot أو Assessment كأساس لخارطة النشر والـ SLA.',
+    ctaLabel: 'تواصل للمؤسسات',
+    ctaHref: '/contact/',
+    ctaData: 'enterprise_contact',
+  },
+];
+
+// Service Schema للعروض الثلاثة — schema.org/Service
+const serviceSchemas = offers.map((o) => ({
+  '@type': 'Service',
+  name: o.name,
+  description: o.description,
+  provider: { '@id': 'https://brightai.site/#organization' },
+  serviceType: 'AI Governance & Safety',
+  areaServed: { '@type': 'Country', name: 'المملكة العربية السعودية' },
+  offers: {
+    '@type': 'Offer',
+    priceCurrency: 'SAR',
+    priceSpecification: {
+      '@type': 'PriceSpecification',
+      priceCurrency: 'SAR',
+      description: o.priceNote,
+    },
+    availability: 'https://schema.org/InStock',
+    url: canonical,
+    category: o.recommended ? 'recommended' : 'standard',
+  },
+}));
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -70,11 +269,10 @@ const jsonLd = {
     },
     {
       '@type': 'FAQPage',
-      mainEntity: faqs.map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } })),
+      mainEntity: objectionFaqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
-    // SCHEMA-ENHANCEMENT (REPORT-23): canonical Organization node added.
+    ...serviceSchemas,
     ORGANIZATION,
-    // SCHEMA-ENHANCEMENT (REPORT-23): explicit BreadcrumbList helper (parallel to inline one for cross-page resolution).
     getBreadcrumbLd([
       { name: 'الرئيسية', href: '/' },
       { name: 'الأسعار', href: '/pricing/' },
@@ -88,221 +286,613 @@ const jsonLd = {
   <div class="pricing-page">
 
     {/* ──────────────────────────────────────────────────────────
-        1. HERO — breadcrumb + h1 + lead + 2 CTAs (radial gradient)
+        1. HERO — Category + 3 packages + Primary CTA
         ────────────────────────────────────────────────────────── */}
     <section class="page-hero pricing-hero">
       <div class="pricing-hero__inner">
         <Breadcrumbs crumbs={[{label:'الرئيسية',href:'/'},{label:'الأسعار'}]} />
-        <h1 class="pricing-hero__title">تسعير واضح ومرن يناسب حجم شركتك</h1>
-        <p class="pricing-hero__lead">وش تكلفة حوكمة AI فعلياً؟ نقدم من Saudi AI Safety OS نماذج تسعير شفافة تناسب الشركات السعودية من جميع الأحجام — استشارات تبدأ من ٩٩ ريال، حلول أتمتة، وكلاء AI، وشات بوت عربي — مع مرونة في النطاق والمدة حسب احتياجك.</p>
+        <p class="pricing-hero__eyebrow">باقات حوكمة AI المؤسسية</p>
+        <h1 class="pricing-hero__title">3 عروض واضحة — لا خدمات AI متفرقة</h1>
+        <p class="pricing-hero__lead">BrightAI منصة حوكمة AI مؤسسية واحدة. اختر نقطة البداية المناسبة لمؤسستك: تقييم جاهزية، Pilot بنطاق محدد، أو تعميم مؤسسي متكامل. السعر مخصص في كل عرض — لأن الحوكمة المؤسسية ليست منتج صندوقي.</p>
         <div class="pricing-hero__actions">
           <div class="cta-actions">
-            <a rel="nofollow noopener noreferrer" href={whatsapp} class="btn btn--glow">
-              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
-              ناقش التسعير عبر واتساب
+            <a
+              href="/contact/"
+              class="btn btn--glow"
+              data-cta="pricing_cta_click"
+              data-position="hero"
+              data-offer="pilot"
+              data-page-type="pricing"
+            >
+              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-calendar-check"></use></svg>
+              احجز ديمو حوكمة مخصص
             </a>
-            <small class="cta-micro" aria-hidden="true">عرض سعر مخصص خلال 24 ساعة</small>
+            <small class="cta-micro" aria-hidden="true">جلسة 30 دقيقة • نطاق + SLA + milestones</small>
           </div>
           <div class="cta-actions">
-            <a href="/contact/" class="btn btn--outline">
-              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-email"></use></svg>
-              أرسل تفاصيل الاحتياج
+            <a
+              href="/assessment/ai-governance-readiness/"
+              class="btn btn--outline"
+              data-cta="assessment_start"
+              data-position="hero"
+              data-offer="assessment"
+              data-page-type="pricing"
+            >
+              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-clipboard-check"></use></svg>
+              ابدأ تقييم الجاهزية
             </a>
-            <small class="cta-micro" aria-hidden="true">بدون التزام • سرية بياناتك مضمونة</small>
+            <small class="cta-micro" aria-hidden="true">20 دقيقة • تقرير فجوات PDF</small>
           </div>
         </div>
       </div>
     </section>
 
     {/* ──────────────────────────────────────────────────────────
-        2. INTRO — section header for the pricing surface
+        2. INTRO — Position the offers vs. scattered services
         ────────────────────────────────────────────────────────── */}
     <section class="pricing-section">
-      <h2>باقات Saudi AI Safety OS: كيف تختار الباقة الأنسب لـ نظام أمان AI للشركات الخاص بمؤسستك؟</h2>
-      <p>تسعير حلول الذكاء الاصطناعي للشركات في السعودية: نماذج تسعير شفافة ومرنة من Saudi AI Safety OS تناسب الشركات الصغيرة والمتوسطة والمؤسسات الكبرى في السعودية. نبدأ بفهم احتياجك الفعلي، ثم نقدم عرض سعر واضح يعتمد على النطاق والتعقيد والمدة. تشمل نماذجنا: استشارات تبدأ من 99 ريال، مشاريع تطوير حسب النطاق، واشتراكات شهرية للخدمات المستمرة. نركز دائماً على القيمة المقدمة والعائد على الاستثمار، مع مرونة في شروط الدفع.</p>
+      <h2>ليش 3 عروض فقط — وليش "مخصص" في السعر</h2>
+      <p>حوكمة AI المؤسسية ليست استشارة عامة ولا اشتراك صندوقي. هي مسار مؤسسي متدرج: أولاً تقيّم جاهزيتك، ثم تثبت القيمة في Pilot بنطاق محدد، ثم تعمّم. كل عرض يقيس شيئاً مختلفاً ويخدم قراراً مختلفاً. السعر "مخصص" لأن النطاق، التكاملات، ومتطلبات الامتثال تختلف من مؤسسة لأخرى — نشر رقم ثابت يخدع أكثر مما يوضّح.</p>
     </section>
 
     {/* ──────────────────────────────────────────────────────────
-        3. PRICING CARDS — 4 packages, 4-col → 2-col → 1-col
+        3. PRICING CARDS — 3 packages, 3-col → 2-col → 1-col
         ────────────────────────────────────────────────────────── */}
-    <section class="pricing-section">
-      <h2>الباقة المؤسسية الشاملة المخصصة للجهات الحكومية والقطاعات الحيوية</h2>
-      <p>نقدم حزم مرنة تناسب الشركات من جميع الأحجام. كل حزمة يمكن تخصيصها حسب احتياجك الفعلي.</p>
+    <section class="pricing-section" aria-label="العروض الثلاثة">
+      <h2>العروض الثلاثة</h2>
+      <p>اختر نقطة البداية المناسبة لمؤسستك. كل عرض يقود للذي بعده بشكل طبيعي.</p>
 
-      <div class="pricing-grid pricing-grid--4col">
-        {packages.map((pkg) => (
-          <article class:list={['card', 'card--pricing', pkg.featured && 'card--pricing--featured']}>
-            {pkg.featured && <span class="card__pricing-badge chip chip--brand">الأكثر طلباً</span>}
-            <h3 class="card__pricing-name">{pkg.name}</h3>
-            <p class="card__pricing-description">{pkg.description}</p>
-            <div class="card__pricing-price">{pkg.price}</div>
-            <p class="card__pricing-period">{pkg.period}</p>
+      <div class="pricing-grid pricing-grid--3col" role="list">
+        {offers.map((o) => (
+          <article
+            class:list={['card', 'card--pricing', o.recommended && 'card--pricing--featured']}
+            role="listitem"
+            aria-labelledby={`offer-${o.id}-name`}
+          >
+            {o.recommended && <span class="card__pricing-badge chip chip--brand">الموصى به</span>}
+            <h3 class="card__pricing-name" id={`offer-${o.id}-name`}>{o.name}</h3>
+            <p class="card__pricing-tagline">{o.tagline}</p>
+            <p class="card__pricing-description">{o.description}</p>
+            <div class="card__pricing-price">{o.price}</div>
+            <p class="card__pricing-period">{o.priceNote}</p>
             <div class="card__pricing-divider" aria-hidden="true"></div>
-            <ul class="card__pricing-features">
-              {pkg.features.map((feature) => (
-                <li>
-                  <svg aria-hidden="true" width="18" height="18" class="card__pricing-check"><use href="/icons.svg#mdi-check-circle"></use></svg>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-            <a rel={pkg.featured ? 'nofollow noopener noreferrer' : undefined} href={pkg.featured ? whatsapp : '/contact/'} class="btn btn--primary card__pricing-cta">{pkg.cta}</a>
+            <a
+              href={o.ctaHref}
+              class:list={['btn', o.recommended ? 'btn--primary' : 'btn--outline', 'card__pricing-cta']}
+              data-cta={o.id === 'pilot' ? 'pricing_cta_click' : o.id === 'assessment' ? 'assessment_start' : 'enterprise_contact'}
+              data-position="card"
+              data-offer={o.id}
+              data-page-type="pricing"
+            >
+              {o.cta}
+            </a>
           </article>
         ))}
       </div>
     </section>
 
     {/* ──────────────────────────────────────────────────────────
-        4. COMPLIANCE BULLETS — preserved verbatim
+        4. OFFER DETAIL SECTIONS — one per package
+           مناسب لمن / النطاق / المدة / المخرجات / ما لا يشمله / معايير النجاح / الخطوة التالية
         ────────────────────────────────────────────────────────── */}
-    <section class="pricing-section">
-      <h2>تفاصيل خطة الامتثال الأساسية للشركات الناشئة والمتوسطة</h2>
-      <ul>
-        <li>استشارات تبدأ من 99 ريال سعودي لجلسة تشخيصية.</li>
-        <li>حلول مخصصة حسب حجم المشروع والتعقيد والتكاملات.</li>
-        <li>مرونة في الدفع: دفعات مرحلية أو اشتراكات شهرية.</li>
-        <li>شفافية تامة في العروض ووضوح في ماذا تشمل الخدمة.</li>
-      </ul>
-    </section>
+    {offers.map((o) => (
+      <section class="pricing-section pricing-offer-detail" id={`offer-${o.id}`} aria-labelledby={`offer-${o.id}-heading`}>
+        <div class="pricing-offer-detail__head">
+          <p class="pricing-offer-detail__eyebrow">{o.recommended ? 'الموصى به' : o.id === 'assessment' ? 'نقطة البداية' : 'للمؤسسات الجاهزة'}</p>
+          <h2 id={`offer-${o.id}-heading`}>{o.name}</h2>
+          <p class="pricing-offer-detail__tagline">{o.tagline}</p>
+        </div>
+
+        <div class="pricing-offer-detail__grid">
+          {/* مناسب لمن */}
+          <div class="pricing-detail-card">
+            <h3>مناسب لمن</h3>
+            <ul>
+              {o.suitableFor.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* النطاق */}
+          <div class="pricing-detail-card">
+            <h3>النطاق المشمول</h3>
+            <ul>
+              {o.scope.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* المدة */}
+          <div class="pricing-detail-card">
+            <h3>المدة</h3>
+            <p class="pricing-detail-card__lead">{o.duration}</p>
+            <p class="pricing-detail-card__note">{o.durationNote}</p>
+          </div>
+
+          {/* المخرجات */}
+          <div class="pricing-detail-card">
+            <h3>المخرجات</h3>
+            <ul>
+              {o.deliverables.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* ما لا يشمله */}
+          <div class="pricing-detail-card">
+            <h3>ما لا يشمله هذا العرض</h3>
+            <ul>
+              {o.notIncluded.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          {/* معايير النجاح */}
+          <div class="pricing-detail-card">
+            <h3>معايير النجاح المتفق عليها</h3>
+            <ul>
+              {o.successCriteria.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* الخطوة التالية */}
+        <div class="pricing-offer-detail__next-step">
+          <h3>الخطوة التالية</h3>
+          <p>{o.nextStep}</p>
+          <a
+            href={o.nextStepHref}
+            class="btn btn--primary"
+            data-cta={o.id === 'pilot' ? 'pricing_cta_click' : o.id === 'assessment' ? 'assessment_start' : 'enterprise_contact'}
+            data-position={`offer_detail_${o.id}`}
+            data-offer={o.id}
+            data-page-type="pricing"
+          >
+            {o.id === 'pilot' ? 'احجز جلسة نطاق Pilot' : o.id === 'assessment' ? 'ابدأ تقييم الجاهزية' : 'تواصل مع فريق المؤسسات'}
+          </a>
+        </div>
+      </section>
+    ))}
 
     {/* ──────────────────────────────────────────────────────────
-        5. ROI PANELS — 3 informational panels
+        5. PRICING FACTORS — why "مخصص"
         ────────────────────────────────────────────────────────── */}
     <section class="pricing-section">
-      <h2>العائد على الاستثمار (ROI): كيف يوفر لك نظامنا تكاليف الغرامات والمخاطر السيبرانية؟</h2>
-      <p>للمؤسسات التي تحتاج حلولاً متكاملة مع متطلبات خاصة في الحوكمة والأمان والتكامل.</p>
-      <div class="pricing-grid pricing-grid--3col">
-        <article class="pricing-panel">
-          <h3>التكامل مع الأنظمة</h3>
-          <p>دعم متكامل لأنظمة المؤسسات الشائعة في السعودية مع مراعاة بيئات العمل المختلفة.</p>
-          <ul>
-            <li>تكامل ERP و CRM الحالي</li>
-            <li>ربط قواعد البيانات المختلفة</li>
-            <li>APIs آمنة وموثقة</li>
-            <li>دعم البيئات المحلية والسحابية</li>
-          </ul>
-        </article>
-        <article class="pricing-panel">
-          <h3>الحوكمة والامتثال</h3>
-          <p>حوكمة كاملة تفي بالمتطلبات التنظيمية في السعودية مع سجلات تدقيق وشفافية تامة.</p>
-          <ul>
-            <li>سجلات تدقيق كاملة لكل عملية</li>
-            <li>صلاحيات وصول مفصلة</li>
-            <li>امتثال للوائح المحلية</li>
-            <li>تشفير البيانات الحساسة</li>
-          </ul>
-        </article>
-        <article class="pricing-panel">
-          <h3>الدعم والتشغيل</h3>
-          <p>دعم مستمر وفريق متاح لضمان استمرارية العمل وأداء مثالي لحلول الذكاء الاصطناعي.</p>
-          <ul>
-            <li>دعم فني خلال أوقات العمل</li>
-            <li>صيانة وتحديثات دورية</li>
-            <li>تقارير أداء شهرية</li>
-            <li>فريق مخصص للمؤسسات</li>
-          </ul>
-        </article>
+      <h2>عوامل التسعير — ليش "مخصص" بدل رقم ثابت</h2>
+      <p>السعر "مخصص" ليس حيلة تسويقية. هو انعكاس للفرق الحقيقي بين المؤسسات. هذه العوامل التي يعتمد عليها عرض السعر:</p>
+      <div class="pricing-factors">
+        {pricingFactors.map((f) => (
+          <div class="pricing-factor">
+            <h3>{f.factor}</h3>
+            <p>{f.detail}</p>
+          </div>
+        ))}
       </div>
     </section>
 
     {/* ──────────────────────────────────────────────────────────
-        6. COMPARISON TABLE — feature × package grid
+        6. COMPARISON TABLE — feature × offer grid (keyboard-friendly)
         ────────────────────────────────────────────────────────── */}
     <section class="pricing-section">
-      <h2>الأسئلة الشائعة حول الفوترة، الدعم الفني، وخدمات التخصيص المحلّية</h2>
-      <p>جدول مقارن يساعدك على اختيار الحزمة المناسبة حسب مرحلة شركتك واحتياجك.</p>
-      <div class="pricing-table-wrap">
+      <h2>جدول المقارنة بين العروض الثلاثة</h2>
+      <p>جدول مقارن يساعدك على اختيار نقطة البداية المناسبة. استعرض باستخدام Tab و Enter للتنقل بين الخلايا، أو مرّر أفقياً على الجوال.</p>
+      <div class="pricing-table-wrap" role="region" aria-label="مقارنة بين العروض الثلاثة" tabindex="0">
         <table class="pricing-table">
+          <caption class="pricing-table__caption">مقارنة سريعة بين تقييم الجاهزية، Pilot 30 يوم، وEnterprise Rollout</caption>
           <thead>
-            <tr><th>الميزة</th><th>الاستشارة</th><th>الأتمتة</th><th>وكلاء AI</th><th>الشات بوت</th></tr>
+            <tr>
+              <th scope="col">المعيار</th>
+              <th scope="col">تقييم الجاهزية</th>
+              <th scope="col">Pilot 30 يوم</th>
+              <th scope="col">Enterprise Rollout</th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td>نقاط البداية</td><td>من 99 ريال</td><td>سعر مخصص</td><td>سعر مخصص</td><td>سعر مخصص</td></tr>
-            <tr><td>التكامل مع الأنظمة</td><td>لا</td><td>نعم</td><td>نعم</td><td>نعم</td></tr>
-            <tr><td>الحوكمة والتدقيق</td><td>لا</td><td>أساسي</td><td>متقدم</td><td>أساسي</td></tr>
-            <tr><td>تدريب الفريق</td><td>لا</td><td>نعم</td><td>نعم</td><td>نعم</td></tr>
-            <tr><td>الدعم المستمر</td><td>لا</td><td>فترة تجريبية</td><td>اشتراك</td><td>اشتراك</td></tr>
-            <tr><td>مناسب لـ</td><td>البداية</td><td>الشركات المتوسطة</td><td>المؤسسات</td><td>جميع الأحجام</td></tr>
+            <tr>
+              <th scope="row">نقطة البداية</th>
+              <td>استكشاف، بدون نشر تقني</td>
+              <td>قسم واحد، KPIs قابلة للقياس</td>
+              <td>مؤسسة متعددة الأقسام</td>
+            </tr>
+            <tr>
+              <th scope="row">المدة</th>
+              <td>5-10 أيام عمل</td>
+              <td>30 يوم تقويمي</td>
+              <td>12-16 أسبوع</td>
+            </tr>
+            <tr>
+              <th scope="row">النشر التقني</th>
+              <td>لا</td>
+              <td>على قسم واحد + قناة واحدة</td>
+              <td>مؤسسي + IdP + IAM</td>
+            </tr>
+            <tr>
+              <th scope="row">AI Firewall</th>
+              <td>لا</td>
+              <td>نعم (سياسات افتراضية)</td>
+              <td>نعم (سياسات مخصصة)</td>
+            </tr>
+            <tr>
+              <th scope="row">Audit Trail</th>
+              <td>لا</td>
+              <td>نعم (فترة Pilot)</td>
+              <td>نعم (مؤسسي + حوكم)</td>
+            </tr>
+            <tr>
+              <th scope="row">Human Approval</th>
+              <td>لا</td>
+              <td>لمسار حساس واحد على الأقل</td>
+              <td>لمسارات حرجة متعددة</td>
+            </tr>
+            <tr>
+              <th scope="row">تكاملات</th>
+              <td>لا</td>
+              <td>قناة واحدة (Slack/Teams/Email/API)</td>
+              <td>مؤسسي شامل</td>
+            </tr>
+            <tr>
+              <th scope="row">SLA إنتاجي</th>
+              <td>لا</td>
+              <td>لا</td>
+              <td>نعم (متفق عليه)</td>
+            </tr>
+            <tr>
+              <th scope="row">دعم فني</th>
+              <td>عبر البريد</td>
+              <td>ساعات العمل + WhatsApp</td>
+              <td>مدير حساب + SLA مكتوب</td>
+            </tr>
+            <tr>
+              <th scope="row">حزم سياسات مخصصة</th>
+              <td>لا</td>
+              <td>افتراضية قابلة للتعديل</td>
+              <td>3-5 packs حسب القطاع</td>
+            </tr>
+            <tr>
+              <th scope="row">تدريب الفريق</th>
+              <td>لا</td>
+              <td>مقدمة أولية</td>
+              <td>8-16 ساعة معتمدة</td>
+            </tr>
+            <tr>
+              <th scope="row">المخرج الرئيسي</th>
+              <td>تقرير جاهزية + Gap summary</td>
+              <td>تقرير Pilot + Sample Evidence</td>
+              <td>Architecture + حزم سياسات</td>
+            </tr>
+            <tr>
+              <th scope="row">السعر</th>
+              <td>مخصص</td>
+              <td>مخصص</td>
+              <td>مخصص</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </section>
 
     {/* ──────────────────────────────────────────────────────────
-        7. NAP — organization data block (SEO)
-        ────────────────────────────────────────────────────────── */}
-    <section class="pricing-section">
-      <h2>بيانات BrightAI الموحدة في السعودية</h2>
-      <p>نستخدم بيانات NAP نفسها عبر الصفحات حتى تفهم محركات البحث ومحركات الإجابة كيان BrightAI بوضوح.</p>
-      <ul>
-        <li>الاسم: BrightAI</li>
-        <li>العنوان: 6913 المبارك بن فضالة، حي الفيحاء، الرياض 14254، المملكة العربية السعودية</li>
-        <li>الهاتف: <a href="tel:+966538229013">+966538229013</a></li>
-        <li>البريد: <a href="mailto:yazeed1job@gmail.com">yazeed1job@gmail.com</a></li>
-      </ul>
-    </section>
-
-    {/* ──────────────────────────────────────────────────────────
-        8. INTERNAL LINKS — semantic cluster for SEO
-        ────────────────────────────────────────────────────────── */}
-    <section class="pricing-section">
-      <h2>روابط داخلية مرتبطة</h2>
-      <p>هذه الروابط تدعم بناء الكيان الموضوعي حول خدمات الذكاء الاصطناعي في السعودية والمدن المستهدفة.</p>
-      <div class="pricing-links">
-        <a href="/services/"><strong>استشارات الذكاء الاصطناعي في السعودية</strong><br />AI consulting Saudi</a>
-        <a href="/services/"><strong>أتمتة الذكاء الاصطناعي في السعودية</strong><br />AI automation Saudi</a>
-        <a href="/services/"><strong>وكلاء ذكاء اصطناعي في السعودية</strong><br />AI agents Saudi</a>
-        <a href="/services/"><strong>شات بوت عربي للشركات</strong><br />AI chatbot Arabic</a>
-        <a href="/services/"><strong>وكلاء ذكاء اصطناعي للمؤسسات في السعودية</strong><br />Enterprise AI agents Saudi</a>
-        <a href="/services/"><strong>أتمتة الأعمال للشركات السعودية</strong><br />Business automation Saudi</a>
-        <a href="/pricing/"><strong>ديمو التسعير التفاعلي</strong><br />Pricing demo</a>
-        <a href="/contact/"><strong>تواصل مع Saudi AI Safety OS</strong><br />Contact Saudi AI Safety OS</a>
-      </div>
-    </section>
-
-    {/* ──────────────────────────────────────────────────────────
-        9. FAQ — accordion with chevron rotation + open-state highlight
+        7. FAQ — objection handling accordion
         ────────────────────────────────────────────────────────── */}
     <section class="pricing-section pricing-faq-section">
-      <h2>الأسئلة الشائعة حول التسعير</h2>
-      <p>إجابات مختصرة وواضحة حول نموذج التسعير، الاستشارات، الدفع، وما يشمله نطاق الخدمة.</p>
+      <h2>اعتراضات شائعة قبل اتخاذ القرار</h2>
+      <p>إجابات مختصرة على الأسئلة التي يطرحها عادةً مديرو الأمن، الامتثال، والمشتريات قبل أي تواصل.</p>
       <div class="pricing-faq" role="list">
-        {faqs.map(([question, answer], i) => (
+        {objectionFaqs.map((f, i) => (
           <details class="card card--glass home-faq-item" role="listitem" open={i === 0}>
             <summary>
-              <span>{question}</span>
+              <span>{f.q}</span>
               <svg class="home-faq-chevron" aria-hidden="true" width="1.25em" height="1.25em"><use href="/icons.svg#mdi-chevron-down"></use></svg>
             </summary>
-            <div class="home-faq-answer"><p>{answer}</p></div>
+            <div class="home-faq-answer"><p>{f.a}</p></div>
           </details>
         ))}
       </div>
     </section>
 
     {/* ──────────────────────────────────────────────────────────
-        10. FINAL CTA — gradient banner with WhatsApp + Contact
+        8. DECISION HELPER — replaces the old SEO-link cluster
+        ────────────────────────────────────────────────────────── */}
+    <section class="pricing-section pricing-decision-helper">
+      <h2>ما الخطوة المناسبة لمؤسستك؟</h2>
+      <p>ثلاث أسئلة شائعة لاختيار نقطة البداية الأنسب. اختر الأقرب لواقعك:</p>
+      <div class="pricing-decision-helper__grid">
+        {decisionHelper.map((d) => (
+          <article class="pricing-decision-card">
+            <h3>{d.question}</h3>
+            <p>{d.answer}</p>
+            <a
+              href={d.ctaHref}
+              class="btn btn--primary"
+              data-cta={d.ctaData}
+              data-position="decision_helper"
+              data-page-type="pricing"
+            >
+              {d.ctaLabel}
+            </a>
+          </article>
+        ))}
+      </div>
+      <p class="pricing-decision-helper__note">لا تعرف من أين تبدأ؟ ابدأ بـ <a href="/assessment/ai-governance-readiness/" data-cta="assessment_start" data-position="decision_helper_fallback" data-page-type="pricing">تقييم جاهزية ذاتي مجاني</a> — 20 دقيقة، تقرير فجوات PDF، بدون أي التزام.</p>
+    </section>
+
+    {/* ──────────────────────────────────────────────────────────
+        9. FINAL CTA — gradient banner with Primary CTA
         ────────────────────────────────────────────────────────── */}
     <section class="inner-cta-final">
       <div class="card card--cta inner-cta-final__card">
-        <h2 class="inner-cta-final__title">احجز موعد للنقاش</h2>
-        <p class="inner-cta-final__desc">احصل على عرض سعر مخصص يناسب احتياج شركتك — أرسل وصفاً مختصراً لاحتياجك وسنقوم بفهمه وتقديم عرض سعر واضح وشفاف خلال وقت قصير.</p>
+        <h2 class="inner-cta-final__title">جاهز لقياس القيمة قبل الالتزام؟</h2>
+        <p class="inner-cta-final__desc">ابدأ بـ Pilot 30 يوم على قسم واحد — KPIs قابلة للقياس، Sample Evidence File، وقرار مبني على بيانات واقعية. احجز جلسة 30 دقيقة لتحديد النطاق والـ milestones.</p>
         <div class="inner-cta-final__actions">
           <div class="cta-actions">
-            <a rel="nofollow noopener noreferrer" href={whatsapp} class="btn btn--glow">
-              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
-              تواصل عبر واتساب
+            <a
+              href="/contact/"
+              class="btn btn--glow"
+              data-cta="pricing_cta_click"
+              data-position="final"
+              data-offer="pilot"
+              data-page-type="pricing"
+            >
+              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-calendar-check"></use></svg>
+              احجز ديمو حوكمة مخصص
             </a>
-            <small class="cta-micro" aria-hidden="true">يردّك فريق سعودي خلال ساعة</small>
+            <small class="cta-micro" aria-hidden="true">جلسة 30 دقيقة • نطاق + SLA + milestones</small>
           </div>
           <div class="cta-actions">
-            <a href="/contact/" class="btn btn--outline">
-              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-email"></use></svg>
-              أرسل تفاصيل الاحتياج
+            <a
+              href={whatsapp}
+              rel="nofollow noopener noreferrer"
+              class="btn btn--outline"
+              data-cta="whatsapp_click"
+              data-position="final"
+              data-offer="pilot"
+              data-page-type="pricing"
+            >
+              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-whatsapp"></use></svg>
+              ناقش النطاق عبر واتساب
             </a>
-            <small class="cta-micro" aria-hidden="true">بدون التزام • سرية بياناتك مضمونة</small>
+            <small class="cta-micro" aria-hidden="true">يردّك مهندس سعودي خلال ساعة</small>
           </div>
         </div>
       </div>
     </section>
   </div>
 </ArabicLayout>
+
+<style>
+  /* Scoped styles for the new CRO-aligned sections.
+     يبني على الـ tokens والـ classes الموجودة، ولا يغيّر .card--pricing / .pricing-grid (معرّفة في pages.css و components.css). */
+
+  /* ───── Hero eyebrow ───── */
+  .pricing-hero__eyebrow {
+    color: var(--interactive-primary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0;
+  }
+
+  /* ───── Pricing card tagline (subtle line under name) ───── */
+  .card__pricing-tagline {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    margin-block-end: var(--space-3);
+    font-style: italic;
+  }
+
+  /* ───── Offer detail section ───── */
+  .pricing-offer-detail {
+    border-block-start: 1px solid var(--border-subtle);
+    padding-block-start: var(--space-12);
+  }
+  .pricing-offer-detail__head {
+    margin-block-end: var(--space-8);
+    text-align: start;
+  }
+  .pricing-offer-detail__eyebrow {
+    color: var(--interactive-primary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 var(--space-2);
+  }
+  .pricing-offer-detail__tagline {
+    color: var(--text-secondary);
+    font-size: var(--text-lg);
+    margin-block-start: var(--space-2);
+  }
+  .pricing-offer-detail__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-block-end: var(--space-8);
+  }
+  .pricing-detail-card {
+    padding: var(--space-5);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+  }
+  .pricing-detail-card h3 {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-block-end: var(--space-3);
+  }
+  .pricing-detail-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .pricing-detail-card li {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+    padding-block: var(--space-1);
+    padding-inline-end: var(--space-4);
+    position: relative;
+  }
+  .pricing-detail-card li::before {
+    content: '✓';
+    position: absolute;
+    inset-inline-end: 0;
+    color: var(--status-success);
+    font-weight: var(--font-bold);
+  }
+  .pricing-detail-card__lead {
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    font-weight: var(--font-semibold);
+    margin-block-end: var(--space-2);
+  }
+  .pricing-detail-card__note {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .pricing-offer-detail__next-step {
+    padding: var(--space-6);
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.05), rgba(129, 140, 248, 0.05));
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    border-radius: var(--radius-xl);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .pricing-offer-detail__next-step h3 {
+    width: 100%;
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    margin: 0 0 var(--space-1);
+  }
+  .pricing-offer-detail__next-step p {
+    flex: 1 1 320px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .pricing-offer-detail__next-step .btn {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 1023px) {
+    .pricing-offer-detail__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .pricing-offer-detail__grid {
+      grid-template-columns: 1fr;
+    }
+    .pricing-offer-detail__next-step {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+
+  /* ───── Pricing factors (why مخصص) ───── */
+  .pricing-factors {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+  .pricing-factor {
+    padding: var(--space-5);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+  }
+  .pricing-factor h3 {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    margin-block-end: var(--space-2);
+  }
+  .pricing-factor p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  @media (max-width: 1023px) {
+    .pricing-factors {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 640px) {
+    .pricing-factors {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ───── Pricing table (accessibility: focus ring on the wrap region) ───── */
+  .pricing-table__caption {
+    caption-side: top;
+    text-align: start;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    padding-block-end: var(--space-3);
+    font-weight: var(--font-normal);
+  }
+  .pricing-table-wrap:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 4px;
+  }
+
+  /* ───── Decision helper (replaces old SEO link cluster) ───── */
+  .pricing-decision-helper__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-block-end: var(--space-6);
+  }
+  .pricing-decision-card {
+    padding: var(--space-6);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--bg-surface);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .pricing-decision-card h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    margin: 0;
+  }
+  .pricing-decision-card p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    flex: 1;
+  }
+  .pricing-decision-card .btn {
+    align-self: start;
+  }
+  .pricing-decision-helper__note {
+    margin: 0;
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    text-align: center;
+  }
+  .pricing-decision-helper__note a {
+    color: var(--interactive-primary);
+    font-weight: var(--font-semibold);
+  }
+  @media (max-width: 1023px) {
+    .pricing-decision-helper__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,209 @@
+{
+  "suite": "verify-leadform",
+  "ran_at": "2026-07-18T03:03:01.447Z",
+  "total": 40,
+  "passed": 40,
+  "failed": 0,
+  "results": [
+    {
+      "name": "Contact: form is present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: form_id is contact_main",
+      "ok": true,
+      "detail": "got contact_main"
+    },
+    {
+      "name": "Contact: field \"full_name\" present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: field \"work_email\" present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: field \"company\" present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: field \"role\" present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: field \"primary_need\" present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: field \"pdpl_consent\" present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: field \"phone\" present (optional)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: field \"message\" present (optional)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: honeypot field present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: pdpl_consent required",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: error summary present",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Contact: success panel present (hidden)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Empty submit: error summary visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Empty submit: first invalid field focused",
+      "ok": true,
+      "detail": "focused: full_name"
+    },
+    {
+      "name": "Empty submit: page still on /contact/",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Invalid email: aria-invalid set on field",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Invalid email: error message rendered",
+      "ok": true,
+      "detail": "أدخل بريد إلكتروني صحيح"
+    },
+    {
+      "name": "Honeypot: success panel shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Honeypot: no POST to AJAX endpoint",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Honeypot: form_submit_success emitted (silent)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Successful submit: success panel visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Successful submit: form data-state=\"success\"",
+      "ok": true,
+      "detail": "got success"
+    },
+    {
+      "name": "Successful submit: redirected to /thank-you/",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Successful submit: redirect carries lead_id",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Back/Retry: full_name restored",
+      "ok": true,
+      "detail": "got: اسم محفوظ"
+    },
+    {
+      "name": "Back/Retry: work_email restored",
+      "ok": true,
+      "detail": "got: remember@company.sa"
+    },
+    {
+      "name": "Back/Retry: company restored",
+      "ok": true,
+      "detail": "got: شركة محفوظة"
+    },
+    {
+      "name": "Back/Retry: pdpl_consent NOT restored (privacy)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Homepage: lead form is present",
+      "ok": true,
+      "detail": "count=1"
+    },
+    {
+      "name": "Homepage: form_id is home_cta",
+      "ok": true,
+      "detail": "got home_cta"
+    },
+    {
+      "name": "ARIA: every field has aria-describedby",
+      "ok": true,
+      "detail": "8/8"
+    },
+    {
+      "name": "ARIA: error spans have role=alert + aria-live",
+      "ok": true,
+      "detail": "8/8"
+    },
+    {
+      "name": "ARIA: error summary role=alert + aria-live=assertive",
+      "ok": true,
+      "detail": "role=alert live=assertive"
+    },
+    {
+      "name": "ARIA: success panel role=status + aria-live=polite",
+      "ok": true,
+      "detail": "role=status live=polite"
+    },
+    {
+      "name": "UTM: source captured",
+      "ok": true,
+      "detail": "got linkedin"
+    },
+    {
+      "name": "UTM: medium captured",
+      "ok": true,
+      "detail": "got cpc"
+    },
+    {
+      "name": "UTM: campaign captured",
+      "ok": true,
+      "detail": "got q3-pilot"
+    },
+    {
+      "name": "UTM: content captured",
+      "ok": true,
+      "detail": "got hero-cta"
+    }
+  ]
+}

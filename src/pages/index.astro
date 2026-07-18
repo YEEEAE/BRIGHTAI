@@ -10,6 +10,8 @@ import SplitHero from '../components/SplitHero.astro';
 import {
   appendLd,
 } from '../data/schema-helpers';
+import LeadForm from '../components/LeadForm.astro';
+import { FORM_TAXONOMY, DEFAULT_CONTACT_FIELDS } from '../data/marketing';
 import DOMPurify from 'isomorphic-dompurify';
 
 const faqItems = [
@@ -21,7 +23,7 @@ const faqItems = [
   { q: 'وش يميز BrightAI عن شات بوت AI العادي أو منصات الحوكمة الأجنبية؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI مو شات بوت ولا منصة حوكمة أجنبية. هي <strong>نظام تشغيل أمان سعودي</strong> (Saudi AI Safety OS) تركّب تحت أي نظام AI في شركتك وتفعّل:</p><ul class="mt-2 space-y-1 list-disc list-inside"><li><strong>AI Firewall</strong> مع إخفاء PII تلقائي</li><li><strong>سجل تدقيق</strong> غير قابل للتعديل محمي بـ Hash</li><li><strong>موافقات بشرية</strong> للقرارات عالية المخاطر</li><li><strong>ملفات أدلة PDF</strong> موقّعة رقمياً جاهزة للمدققين</li><li><strong>حزم امتثال</strong> جاهزة لـ PDPL وNCA وSFDA وISO 13485</li></ul><p>كل هذا مصنوع في السعودية، بالعربي، وبدعم سعودي 24/7.</p>' },
   { q: 'وش هي حزم الامتثال المتوفرة في BrightAI؟', a: '<p><strong class="text-white">الجواب:</strong> BrightAI يوفر <strong>6 حزم امتثال جاهزة</strong> مصممة للسوق السعودي:</p><ul class="mt-2 space-y-1 list-disc list-inside"><li><strong>PDPL Pack:</strong> حماية البيانات الشخصية وإخفاء PII</li><li><strong>NCA ECC Pack:</strong> ضوابط الأمن السيبراني 2-2024</li><li><strong>SFDA/ISO 13485 Pack:</strong> المصانع الطبية والجودة</li><li><strong>SAMA/ZATCA Pack:</strong> القطاع المالي والمصرفي</li><li><strong>Healthcare Pack:</strong> المستشفيات والرعاية الصحية</li><li><strong>Procurement Pack:</strong> المشتريات والمناقصات واعتماد</li></ul>' },
   { q: 'كم ياخذ وقت التركيب؟', a: '<p>الـ Pilot يطلع خلال <strong>30 يوم</strong> على قسم واحد. والنشر الكامل من 60 إلى 120 يوم حسب حجم الشركة.</p>' },
-  { q: 'كم التكلفة؟', a: '<p>عندنا باقات حسب حجم الشركة وعدد المستخدمين. كلمنا عبر <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="text-green-400 hover:underline">الواتساب</a> للحصول على عرض سعر خلال 24 ساعة.</p>' },
+  { q: 'كم التكلفة؟', a: '<p>عندنا باقات حسب حجم الشركة وعدد المستخدمين. كلمنا عبر <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="text-green-400 hover:underline" data-whatsapp data-cta-label="الواتساب" data-position="inline" data-page-type="home">الواتساب</a> للحصول على عرض سعر خلال 24 ساعة.</p>' },
 ];
 
 // PERF-FIX (2026-07-07): Removed duplicate Organization / WebSite / WebPage /
@@ -225,20 +227,20 @@ const enhancedJsonLd = appendLd(jsonLd, [
           <p class="section__subtitle section__subtitle--start mt-4">BrightAI تساعد المؤسسات السعودية على تحويل سياسات الذكاء الاصطناعي إلى ضوابط تشغيلية قابلة للتدقيق، عبر طبقة تربط الموظف، بيانات المؤسسة، نموذج AI، والمراجعة البشرية، لتضمن تفعيلاً متكاملاً لـ AI Firewall وسجل تدقيق وموافقات بشرية وملفات أدلة متوافقة.</p>
         </div>
         <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-          <a href="/solutions/ai-governance-platform/" class="glow-btn inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-scale-balance"></use></svg> استكشف حلول الحوكمة</a>
-          <a href="/contact/" class="card card--glass inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-bold hover:border-cyan-500/40 transition-all"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-message-text"></use></svg> احجز جلسة جاهزية 30 دقيقة</a>
+          <a href="/solutions/ai-governance-platform/" class="glow-btn inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-bold" data-cta="hero_cta_click" data-cta-label="استكشف حلول الحوكمة" data-position="inline" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-scale-balance"></use></svg> استكشف حلول الحوكمة</a>
+          <a href="/contact/" class="card card--glass inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white font-bold hover:border-cyan-500/40 transition-all" data-cta="secondary_cta_click" data-cta-label="احجز جلسة جاهزية 30 دقيقة" data-position="inline" data-page-type="home" data-offer="assessment"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-message-text"></use></svg> احجز جلسة جاهزية 30 دقيقة</a>
         </div>
       </div>
       <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
-        <a href="/solutions/ai-governance-platform/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all"><strong class="block text-white text-sm">AI Governance Platform</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">طبقة تشغيلية لحوكمة استخدامات AI.</span></a>
-        <a href="/solutions/ai-firewall/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all"><strong class="block text-white text-sm">AI Firewall</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">حماية البيانات قبل وصولها للنماذج.</span></a>
-        <a href="/solutions/ai-audit-trail/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all"><strong class="block text-white text-sm">AI Audit Trail</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">توثيق كل طلب وقرار وموافقة.</span></a>
-        <a href="/solutions/human-approval-layer/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all"><strong class="block text-white text-sm">Human Approval Layer</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">موافقات بشرية للقرارات الحساسة.</span></a>
-        <a href="/solutions/ai-evidence-file/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all"><strong class="block text-white text-sm">AI Evidence File</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">ملفات أدلة لدعم جاهزية التدقيق.</span></a>
+        <a href="/solutions/ai-governance-platform/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all" data-cta="hero_cta_click" data-cta-label="AI Governance Platform طبقة تشغيلية لحوكمة استخدامات AI." data-position="inline" data-page-type="home"><strong class="block text-white text-sm">AI Governance Platform</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">طبقة تشغيلية لحوكمة استخدامات AI.</span></a>
+        <a href="/solutions/ai-firewall/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all" data-cta="hero_cta_click" data-cta-label="AI Firewall حماية البيانات قبل وصولها للنماذج." data-position="inline" data-page-type="home"><strong class="block text-white text-sm">AI Firewall</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">حماية البيانات قبل وصولها للنماذج.</span></a>
+        <a href="/solutions/ai-audit-trail/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all" data-cta="hero_cta_click" data-cta-label="AI Audit Trail توثيق كل طلب وقرار وموافقة." data-position="inline" data-page-type="home"><strong class="block text-white text-sm">AI Audit Trail</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">توثيق كل طلب وقرار وموافقة.</span></a>
+        <a href="/solutions/human-approval-layer/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all" data-cta="hero_cta_click" data-cta-label="Human Approval Layer موافقات بشرية للقرارات الحساسة." data-position="inline" data-page-type="home"><strong class="block text-white text-sm">Human Approval Layer</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">موافقات بشرية للقرارات الحساسة.</span></a>
+        <a href="/solutions/ai-evidence-file/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all" data-cta="hero_cta_click" data-cta-label="AI Evidence File ملفات أدلة لدعم جاهزية التدقيق." data-position="inline" data-page-type="home"><strong class="block text-white text-sm">AI Evidence File</strong><span class="block mt-2 text-white/55 text-xs leading-relaxed">ملفات أدلة لدعم جاهزية التدقيق.</span></a>
       </div>
       <div class="mt-6 flex flex-wrap gap-3 text-sm">
-        <a href="/services/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-bell-concierge"></use></svg><span>استعرض Saudi AI Safety OS</span></a>
-        <a href="/contact/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-shield"></use></svg><span>احجز جلسة جاهزية الامتثال</span></a>
+        <a href="/services/" class="section-mini-link" data-cta-secondary data-cta-label="استعرض Saudi AI Safety OS" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-bell-concierge"></use></svg><span>استعرض Saudi AI Safety OS</span></a>
+        <a href="/contact/" class="section-mini-link" data-cta-secondary data-cta-label="احجز جلسة جاهزية الامتثال" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-shield"></use></svg><span>احجز جلسة جاهزية الامتثال</span></a>
       </div>
     </div>
   </div>
@@ -283,11 +285,11 @@ const enhancedJsonLd = appendLd(jsonLd, [
       <p class="section__subtitle section__subtitle--start">Saudi AI Safety OS يجمع الحوكمة، الحماية، سجل التدقيق، الموافقة البشرية، وملفات الأدلة في طبقة واحدة لتشغيل AI داخل المؤسسات السعودية بثقة وقابلية مراجعة.</p>
     </div>
     <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-scale-balance"></use></svg></span><h3 class="text-xl font-bold">منصة حوكمة الذكاء الاصطناعي</h3></div><p class="text-white/70 leading-loose text-sm mb-4">طبقة تشغيلية لإدارة استخدامات ومخاطر AI داخل المؤسسة. توفر رؤية شاملة وضوابط مركزية لضمان الاستخدام الآمن والمسؤول.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ إدارة وتتبع استخدامات الذكاء الاصطناعي مركزياً</li><li>✓ رصد وتحليل المخاطر الأمنية والتشغيلية</li><li>✓ يدعم جاهزية ضوابط SDAIA و NCA</li></ul></div><a href="/solutions/ai-governance-platform/" class="section-mini-link mt-auto"><span>استكشف منصة الحوكمة</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
-      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-half-full"></use></svg></span><h3 class="text-xl font-bold">AI Firewall</h3></div><p class="text-white/70 leading-loose text-sm mb-4">فحص وحماية البيانات الحساسة قبل وصولها للنماذج. يحمي الخصوصية ويمنع تسرب الهويات والملفات الطبية والمالية للنماذج الخارجية.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ PII/PHI Redaction تلقائي فوري</li><li>✓ فلترة ومنع الاستفسارات غير المصرح بها</li><li>✓ متوافق مع نظام حماية البيانات الشخصية PDPL</li></ul></div><a href="/solutions/ai-firewall/" class="section-mini-link mt-auto"><span>استكشف AI Firewall</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
-      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-sign"></use></svg></span><h3 class="text-xl font-bold">AI Audit Trail</h3></div><p class="text-white/70 leading-loose text-sm mb-4">سجل غير قابل للتعديل لكل طلب وقرار ومواقف AI. يمنح المدققين والجهات الرقابية رؤية كاملة وتوثيقاً زمنياً دقيقاً لكل عملية.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ سجل تدقيق Append-only ledger محمي بـ Hash</li><li>✓ ربط رقمي متكامل مع متطلبات NCA ECC 2-2024</li><li>✓ تتبع كامل للمسؤولية والقرارات التلقائية</li></ul></div><a href="/solutions/ai-audit-trail/" class="section-mini-link mt-auto"><span>استكشف سجل التدقيق</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
-      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-check"></use></svg></span><h3 class="text-xl font-bold">طبقة الموافقة البشرية</h3></div><p class="text-white/70 leading-loose text-sm mb-4">مراجعة بشرية للطلبات والقرارات عالية المخاطر. يضمن بقاء السيطرة في أيدي البشر وعدم تفويض القرارات الحيوية للـ AI بشكل كامل.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ مسار موافقة Risk-Based ذكي ومرن</li><li>✓ إشعارات وموافقات فورية عبر الواتساب والبريد</li><li>✓ تفويض الصلاحيات وضمان استمرارية العمل</li></ul></div><a href="/solutions/human-approval-layer/" class="section-mini-link mt-auto"><span>استكشف الموافقة البشرية</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
-      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-folder-open"></use></svg></span><h3 class="text-xl font-bold">AI Evidence File</h3></div><p class="text-white/70 leading-loose text-sm mb-4">ملف أدلة يدعم التدقيق وجاهزية الامتثال. توليد ملفات PDF موقّعة رقمياً تثبت مطابقة كل استخدام ذكاء اصطناعي للوائح السعودية.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ تقارير PDF تلقائية موقعة بختم رقمي لمنع التعديل</li><li>✓ جاهز للتصدير والتسليم المباشر للمدققين</li><li>✓ يدعم متطلبات المراجعة المرتبطة بـ SDAIA و SFDA و ISO</li></ul></div><a href="/solutions/ai-evidence-file/" class="section-mini-link mt-auto"><span>استكشف ملف الأدلة</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
+      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-scale-balance"></use></svg></span><h3 class="text-xl font-bold">منصة حوكمة الذكاء الاصطناعي</h3></div><p class="text-white/70 leading-loose text-sm mb-4">طبقة تشغيلية لإدارة استخدامات ومخاطر AI داخل المؤسسة. توفر رؤية شاملة وضوابط مركزية لضمان الاستخدام الآمن والمسؤول.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ إدارة وتتبع استخدامات الذكاء الاصطناعي مركزياً</li><li>✓ رصد وتحليل المخاطر الأمنية والتشغيلية</li><li>✓ يدعم جاهزية ضوابط SDAIA و NCA</li></ul></div><a href="/solutions/ai-governance-platform/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="استكشف منصة الحوكمة" data-position="section" data-page-type="home"><span>استكشف منصة الحوكمة</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
+      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-half-full"></use></svg></span><h3 class="text-xl font-bold">AI Firewall</h3></div><p class="text-white/70 leading-loose text-sm mb-4">فحص وحماية البيانات الحساسة قبل وصولها للنماذج. يحمي الخصوصية ويمنع تسرب الهويات والملفات الطبية والمالية للنماذج الخارجية.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ PII/PHI Redaction تلقائي فوري</li><li>✓ فلترة ومنع الاستفسارات غير المصرح بها</li><li>✓ متوافق مع نظام حماية البيانات الشخصية PDPL</li></ul></div><a href="/solutions/ai-firewall/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="استكشف AI Firewall" data-position="section" data-page-type="home"><span>استكشف AI Firewall</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
+      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-sign"></use></svg></span><h3 class="text-xl font-bold">AI Audit Trail</h3></div><p class="text-white/70 leading-loose text-sm mb-4">سجل غير قابل للتعديل لكل طلب وقرار ومواقف AI. يمنح المدققين والجهات الرقابية رؤية كاملة وتوثيقاً زمنياً دقيقاً لكل عملية.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ سجل تدقيق Append-only ledger محمي بـ Hash</li><li>✓ ربط رقمي متكامل مع متطلبات NCA ECC 2-2024</li><li>✓ تتبع كامل للمسؤولية والقرارات التلقائية</li></ul></div><a href="/solutions/ai-audit-trail/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="استكشف سجل التدقيق" data-position="section" data-page-type="home"><span>استكشف سجل التدقيق</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
+      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-check"></use></svg></span><h3 class="text-xl font-bold">طبقة الموافقة البشرية</h3></div><p class="text-white/70 leading-loose text-sm mb-4">مراجعة بشرية للطلبات والقرارات عالية المخاطر. يضمن بقاء السيطرة في أيدي البشر وعدم تفويض القرارات الحيوية للـ AI بشكل كامل.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ مسار موافقة Risk-Based ذكي ومرن</li><li>✓ إشعارات وموافقات فورية عبر الواتساب والبريد</li><li>✓ تفويض الصلاحيات وضمان استمرارية العمل</li></ul></div><a href="/solutions/human-approval-layer/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="استكشف الموافقة البشرية" data-position="section" data-page-type="home"><span>استكشف الموافقة البشرية</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
+      <div class="card card--feature rounded-2xl p-7 flex flex-col justify-between"><div><div class="flex items-center gap-3 mb-4"><span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold shrink-0"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-folder-open"></use></svg></span><h3 class="text-xl font-bold">AI Evidence File</h3></div><p class="text-white/70 leading-loose text-sm mb-4">ملف أدلة يدعم التدقيق وجاهزية الامتثال. توليد ملفات PDF موقّعة رقمياً تثبت مطابقة كل استخدام ذكاء اصطناعي للوائح السعودية.</p><ul class="space-y-1.5 text-xs text-white/60 mb-6"><li>✓ تقارير PDF تلقائية موقعة بختم رقمي لمنع التعديل</li><li>✓ جاهز للتصدير والتسليم المباشر للمدققين</li><li>✓ يدعم متطلبات المراجعة المرتبطة بـ SDAIA و SFDA و ISO</li></ul></div><a href="/solutions/ai-evidence-file/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="استكشف ملف الأدلة" data-position="section" data-page-type="home"><span>استكشف ملف الأدلة</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a></div>
     </div>
   </div>
 </section>
@@ -300,10 +302,10 @@ const enhancedJsonLd = appendLd(jsonLd, [
       <p class="mt-2 text-xs sm:text-sm text-white/60">ضوابط وحلول سريعة التفعيل تناسب الاحتياجات التنظيمية والأمنية المختلفة لمؤسستك.</p>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <a href="/solutions/ai-firewall/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-half-full"></use></svg><h3 class="text-sm font-bold text-white mb-1">حماية البيانات قبل AI</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
-      <a href="/solutions/ai-audit-trail/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-sign"></use></svg><h3 class="text-sm font-bold text-white mb-1">توثيق كل طلب وقرار</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
-      <a href="/solutions/human-approval-layer/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-check"></use></svg><h3 class="text-sm font-bold text-white mb-1">مراجعة بشرية للقرارات</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
-      <a href="/solutions/ai-evidence-file/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-folder-open"></use></svg><h3 class="text-sm font-bold text-white mb-1">ملف أدلة جاهز للتدقيق</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
+      <a href="/solutions/ai-firewall/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between" data-cta="hero_cta_click" data-cta-label="حماية البيانات قبل AI التفاصيل" data-position="inline" data-page-type="home"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-half-full"></use></svg><h3 class="text-sm font-bold text-white mb-1">حماية البيانات قبل AI</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
+      <a href="/solutions/ai-audit-trail/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between" data-cta="hero_cta_click" data-cta-label="توثيق كل طلب وقرار التفاصيل" data-position="inline" data-page-type="home"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-sign"></use></svg><h3 class="text-sm font-bold text-white mb-1">توثيق كل طلب وقرار</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
+      <a href="/solutions/human-approval-layer/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between" data-cta="hero_cta_click" data-cta-label="مراجعة بشرية للقرارات التفاصيل" data-position="inline" data-page-type="home"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-check"></use></svg><h3 class="text-sm font-bold text-white mb-1">مراجعة بشرية للقرارات</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
+      <a href="/solutions/ai-evidence-file/" class="card card--glass rounded-2xl p-4 hover:border-cyan-500/40 transition-all flex flex-col justify-between" data-cta="hero_cta_click" data-cta-label="ملف أدلة جاهز للتدقيق التفاصيل" data-position="inline" data-page-type="home"><div><svg class="text-cyan-300 text-lg mb-2" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-folder-open"></use></svg><h3 class="text-sm font-bold text-white mb-1">ملف أدلة جاهز للتدقيق</h3></div><span class="text-xs text-cyan-300 hover:text-white flex items-center gap-1 mt-3"><span>التفاصيل</span><svg class="text-[10px]" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span></a>
     </div>
   </div>
 </section>
@@ -318,9 +320,9 @@ const enhancedJsonLd = appendLd(jsonLd, [
       <h2 id="compliance-title" class="section__title section__title--start">حزم جاهزة للسوق السعودي 🇸🇦</h2>
       <p class="section__subtitle section__subtitle--start">ركّب الحزمة اللي تناسب قطاعك، وتجيك بكل المتطلبات جاهزة.</p>
       <div class="mt-6 flex flex-wrap gap-3">
-        <a href="/pdpl-statement/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-half-full"></use></svg><span>جاهزية PDPL</span></a>
-        <a href="/data-processing-agreement/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-document-edit"></use></svg><span>اتفاقية معالجة البيانات</span></a>
-        <a href="/contact/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-headset"></use></svg><span>احجز جلسة جاهزية 30 دقيقة</span></a>
+        <a href="/pdpl-statement/" class="section-mini-link" data-cta-secondary data-cta-label="جاهزية PDPL" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-half-full"></use></svg><span>جاهزية PDPL</span></a>
+        <a href="/data-processing-agreement/" class="section-mini-link" data-cta-secondary data-cta-label="اتفاقية معالجة البيانات" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-file-document-edit"></use></svg><span>اتفاقية معالجة البيانات</span></a>
+        <a href="/contact/" class="section-mini-link" data-cta-secondary data-cta-label="احجز جلسة جاهزية 30 دقيقة" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-headset"></use></svg><span>احجز جلسة جاهزية 30 دقيقة</span></a>
       </div>
     </div>
     <div class="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -374,7 +376,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
         <li class="flex gap-2"><svg class="text-cyan-400 mt-1" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-check-circle"></use></svg><span>ارتباط مباشر مع: PDPL / NCA / SFDA / ISO 13485</span></li>
         <li class="flex gap-2"><svg class="text-cyan-400 mt-1" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-check-circle"></use></svg><span>توقيع رقمي + Hash مضاد للتعديل</span></li>
       </ul>
-      <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="mt-7 wa-btn inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-white">
+      <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="mt-7 wa-btn inline-flex items-center gap-2 px-6 py-3 rounded-2xl font-bold text-white" data-whatsapp data-cta-label="اطلب عينة عبر واتساب" data-position="inline" data-page-type="home">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> اطلب عينة عبر واتساب
       </a>
     </div>
@@ -508,9 +510,9 @@ const enhancedJsonLd = appendLd(jsonLd, [
       ))}
     </div>
     <div class="mt-8 flex flex-wrap justify-center gap-3">
-      <a href="/docs/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-book"></use></svg><span>اقرأ وثائق BrightAI</span></a>
-      <a href="/blog/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-newspaper"></use></svg><span>المدونة</span></a>
-      <a href="/privacy-policy/" class="section-mini-link"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-lock"></use></svg><span>سياسة الخصوصية</span></a>
+      <a href="/docs/" class="section-mini-link" data-cta-secondary data-cta-label="اقرأ وثائق BrightAI" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-book"></use></svg><span>اقرأ وثائق BrightAI</span></a>
+      <a href="/blog/" class="section-mini-link" data-cta-secondary data-cta-label="المدونة" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-newspaper"></use></svg><span>المدونة</span></a>
+      <a href="/privacy-policy/" class="section-mini-link" data-cta-secondary data-cta-label="سياسة الخصوصية" data-position="section" data-page-type="home"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-lock"></use></svg><span>سياسة الخصوصية</span></a>
     </div>
   </div>
 </section>
@@ -522,21 +524,26 @@ const enhancedJsonLd = appendLd(jsonLd, [
       <span class="home-cta-strip__eyebrow relative z-10">ابدأ اليوم</span>
       <h2 id="cta-title" class="mt-4 home-cta-strip__title text-center relative z-10">جاهز تخلي AI شركتك <span class="gradient-text">آمن ومتوافق</span> من غدا؟</h2>
       <p class="mt-4 text-white/80 max-w-2xl mx-auto leading-loose relative z-10 text-center">سجّل اهتمامك وفريق BrightAI يتواصل معك خلال 24 ساعة لترتيب ديمو خاص على بيانات شركتك (بسرية كاملة).</p>
-      <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="mt-6 wa-btn inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-lg relative z-10">
+      <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="mt-6 wa-btn inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-lg relative z-10" data-whatsapp data-cta-label="تواصل مباشرة عبر واتساب" data-position="inline" data-page-type="home">
         <svg class="text-2xl" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل مباشرة عبر واتساب
       </a>
-      <form id="leadForm" class="mt-6 grid sm:grid-cols-2 gap-3 max-w-2xl mx-auto text-start relative z-10" aria-describedby="leadForm-help" novalidate>
-        <input required aria-required="true" name="name" aria-label="الاسم الكامل" placeholder="الاسم الكامل" autocomplete="name" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3" />
-        <input required aria-required="true" name="company" aria-label="اسم الشركة" placeholder="اسم الشركة" autocomplete="organization" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3" />
-        <input required aria-required="true" type="email" name="email" aria-label="البريد الإلكتروني" placeholder="البريد الإلكتروني" autocomplete="email" inputmode="email" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3" />
-        <input required aria-required="true" type="tel" name="phone" aria-label="رقم الجوال" placeholder="رقم الجوال" autocomplete="tel" inputmode="tel" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3" />
-        <select name="sector" aria-label="اختر القطاع" class="sm:col-span-2 bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-          <option value="">القطاع</option><option>مصانع طبية</option><option>رعاية صحية</option><option>جهة حكومية</option><option>مشتريات ومناقصات</option><option>مالي / بنوع</option><option>تعليم</option><option>غيره</option>
-        </select>
-        <button type="submit" class="sm:col-span-2 glow-btn rounded-xl py-3.5 font-bold text-white">اطلب ديمو الآن</button>
-        <p id="leadForm-help" class="sr-only">جميع الحقول المطلوبة يجب تعبئتها قبل الإرسال.</p>
-        <p id="leadMsg" class="sm:col-span-2 text-sm text-emerald-300 hidden text-center" aria-live="polite" role="status">✓ تم استلام طلبك بنجاح! نتواصل معك خلال 24 ساعة.</p>
-      </form>
+      {/* CRO audit 2026-07-18 (Prompt 4): the inline leadForm was replaced
+          with the canonical LeadForm component. Same fields, same UTM
+          capture, same event taxonomy, same thank-you redirect as /contact/.
+          The form is themed with .home-cta-form for the dark card surface. */}
+      <div class="mt-6 max-w-2xl mx-auto text-start relative z-10 home-cta-form">
+        <LeadForm
+          formId={FORM_TAXONOMY.HOME_CTA}
+          title="أو عبّي النموذج ونرجع لك خلال 24 ساعة"
+          intro="كل المعلومات تساعد فريقنا يجهز الديمو على بيانات شركتك."
+          subject="طلب ديمو من الصفحة الرئيسية لـ BrightAI"
+          ctaLabel="اطلب ديمو الآن"
+          source="website"
+          medium="homepage-cta"
+          campaign="always-on"
+          fields={DEFAULT_CONTACT_FIELDS}
+        />
+      </div>
       <div class="mt-8 flex flex-wrap justify-center gap-4 text-xs text-white/60 relative z-10">
         <span>بياناتك مشفّرة AES-256</span><span>ما نشاركها مع أي طرف</span><span>فريق سعودي 100%</span><span>رد خلال ساعات</span>
       </div>
@@ -553,7 +560,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
         <h2 id="final-cta-title" class="home-cta-strip__title">جاهز تطبق حوكمة AI داخل مؤسستك؟</h2>
         <p class="home-cta-strip__lead">ابدأ بتقييم عملي لاستخدامات الذكاء الاصطناعي، المخاطر، البيانات الحساسة، ومسارات الموافقة والتدقيق — كل ذلك خلال أيام بدون تعقيد تقني.</p>
         <div class="home-cta-strip__actions">
-          <a href="/contact/" class="home-cta-primary"><span>ابدأ ديمو خاص بشركتك</span></a>
+          <a href="/contact/" class="home-cta-primary" data-cta="hero_cta_click" data-cta-label="ابدأ ديمو خاص بشركتك" data-position="hero" data-page-type="home" data-offer="assessment"><span>ابدأ ديمو خاص بشركتك</span></a>
           <a href="/solutions/ai-governance-platform/" class="home-cta-secondary"><span>استكشف حلول الحوكمة</span></a>
         </div>
       </div>
@@ -562,7 +569,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
           <svg class="text-5xl text-cyan-300 mb-4" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-rocket-launch"></use></svg>
           <h3 class="text-xl font-bold mb-2">30 يوم Pilot</h3>
           <p class="text-white/70 text-sm leading-relaxed">نركّب BrightAI على قسم واحد من شركتك ونقيس الأثر الحقيقي على الحوكمة والامتثال قبل التوسع.</p>
-          <a href="/assessment/ai-governance-readiness/" class="section-mini-link mt-5"><span>ابدأ تقييم جاهزية AI</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
+          <a href="/assessment/ai-governance-readiness/" class="section-mini-link mt-5" data-cta-secondary data-cta-label="ابدأ تقييم جاهزية AI" data-position="section" data-page-type="home"><span>ابدأ تقييم جاهزية AI</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
         </div>
       </div>
     </div>
@@ -587,7 +594,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
           </div>
           <p class="text-white/70 leading-loose text-sm mb-4">دليل شامل لفهم متطلبات حوكمة الذكاء الاصطناعي في المملكة العربية السعودية وكيفية تطبيقها داخل المؤسسات.</p>
         </div>
-        <a href="/docs/ai-governance-saudi-arabia/" class="section-mini-link mt-auto"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
+        <a href="/docs/ai-governance-saudi-arabia/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="اقرأ الدليل" data-position="section" data-page-type="home"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
       </article>
 
       <article class="card card--feature rounded-2xl p-7 flex flex-col justify-between">
@@ -598,7 +605,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
           </div>
           <p class="text-white/70 leading-loose text-sm mb-4">كيف تطبق نظام حماية البيانات الشخصية السعودي على استخدامات الذكاء الاصطناعي في مؤسستك.</p>
         </div>
-        <a href="/docs/pdpl-ai-governance/" class="section-mini-link mt-auto"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
+        <a href="/docs/pdpl-ai-governance/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="اقرأ الدليل" data-position="section" data-page-type="home"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
       </article>
 
       <article class="card card--feature rounded-2xl p-7 flex flex-col justify-between">
@@ -609,7 +616,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
           </div>
           <p class="text-white/70 leading-loose text-sm mb-4">دليل تطبيق ضوابط الأمن السيبراني الأساسية من الهيئة الوطنية للأمن السيبراني على أنظمة AI.</p>
         </div>
-        <a href="/docs/nca-ecc-ai-governance/" class="section-mini-link mt-auto"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
+        <a href="/docs/nca-ecc-ai-governance/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="اقرأ الدليل" data-position="section" data-page-type="home"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
       </article>
 
       <article class="card card--feature rounded-2xl p-7 flex flex-col justify-between">
@@ -620,7 +627,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
           </div>
           <p class="text-white/70 leading-loose text-sm mb-4">إطار عملي لتحديد وتقييم وإدارة مخاطر الذكاء الاصطناعي في المؤسسات السعودية.</p>
         </div>
-        <a href="/docs/ai-risk-management/" class="section-mini-link mt-auto"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
+        <a href="/docs/ai-risk-management/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="اقرأ الدليل" data-position="section" data-page-type="home"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
       </article>
 
       <article class="card card--feature rounded-2xl p-7 flex flex-col justify-between">
@@ -631,7 +638,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
           </div>
           <p class="text-white/70 leading-loose text-sm mb-4">دليل شامل لإعداد مؤسستك لتدقيق استخدامات الذكاء الاصطناعي وضمان الامتثال المستمر.</p>
         </div>
-        <a href="/docs/ai-audit-readiness/" class="section-mini-link mt-auto"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
+        <a href="/docs/ai-audit-readiness/" class="section-mini-link mt-auto" data-cta-secondary data-cta-label="اقرأ الدليل" data-position="section" data-page-type="home"><span>اقرأ الدليل</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></a>
       </article>
     </div>
   </div>

@@ -1,7 +1,26 @@
 ---
 /**
  * CookieConsent — GDPR/PDPL cookie banner with accept/decline.
- * Uses V3 unified design tokens with scoped styles.
+ *
+ * CRO audit Prompt 5 (2026-07-18): wires the consent decision into the
+ * unified analytics runtime (window.__BRIGHTAI_ANALYTICS__.setConsent) so
+ * that:
+ *
+ *   - On accept: queued events (collected before the user clicked) are
+ *     flushed to the providers (gtag, mixpanel, bing).
+ *   - On decline: queued events are dropped, and the providers never
+ *     receive anything for the rest of the session.
+ *
+ * The consent flag is also written to localStorage under the
+ * `brightai:tracking_consent` key (the analytics runtime reads this on
+ * boot so consent survives a hard refresh).
+ *
+ * The legacy `cookie-consent` localStorage key is still set for any
+ * downstream scripts that read it (kept for back-compat with the
+ * perf-audit consent state).
+ *
+ * Visual: V3 unified design tokens with scoped styles (unchanged from
+ * the prior version).
  */
 ---
 
@@ -12,24 +31,41 @@
       <a href="/privacy-cookies/" class="cookie-consent__link">سياسة ملفات تعريف الارتباط</a>.
     </p>
     <div class="cookie-consent__actions">
-      <button id="cookie-accept" class="btn btn--primary cookie-consent__btn">قبول</button>
-      <button id="cookie-decline" class="btn btn--ghost cookie-consent__btn">رفض</button>
+      <button id="cookie-accept" class="btn btn--primary cookie-consent__btn" type="button">قبول</button>
+      <button id="cookie-decline" class="btn btn--ghost cookie-consent__btn" type="button">رفض</button>
     </div>
   </div>
 </div>
 
 <script>
+  // Banner visibility — show on first visit when no decision is recorded.
   const banner = document.getElementById('cookie-consent');
   if (banner && !localStorage.getItem('cookie-consent')) {
     banner.hidden = false;
   }
+
+  // Helper — set the legacy + the new consent key, and notify the analytics
+  // runtime. We tolerate the runtime not being installed yet (first page
+  // load order: this script runs synchronously, analytics.js runs deferred).
+  function setTrackingConsent(value) {
+    try {
+      localStorage.setItem('cookie-consent', value === 'granted' ? 'accepted' : 'declined');
+      localStorage.setItem('brightai:tracking_consent', value);
+    } catch { /* private mode */ }
+    if (banner) banner.hidden = true;
+    // Notify the runtime — if it isn't installed yet, hydrateConsentFromStorage
+    // will pick up the localStorage value when it boots.
+    const rt = window.__BRIGHTAI_ANALYTICS__;
+    if (rt && typeof rt.setConsent === 'function') {
+      rt.setConsent(value);
+    }
+  }
+
   document.getElementById('cookie-accept')?.addEventListener('click', () => {
-    localStorage.setItem('cookie-consent', 'accepted');
-    banner!.hidden = true;
+    setTrackingConsent('granted');
   });
   document.getElementById('cookie-decline')?.addEventListener('click', () => {
-    localStorage.setItem('cookie-consent', 'declined');
-    banner!.hidden = true;
+    setTrackingConsent('denied');
   });
 </script>
 

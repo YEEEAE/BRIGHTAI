@@ -128,6 +128,43 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
 
+### 2026-07-18 — BAI-CRO-003: إعادة بناء /pricing/ كصفحة 3 عروض حوكمة مؤسسية (Assessment / Pilot featured / Enterprise Rollout) — Verified locally (build 190 + seo:all 0 + Playwright ALL PASS mobile+desktop)
+
+- **Files**: 1 معدّل + 1 جديد + 2 جديد screenshots. **معدّل**: `src/pages/pricing/index.astro` (إعادة كتابة كاملة، 708 أسطر 4 باقات → 800 سطر 3 عروض + 3 detail sections + 6 pricing factors + 13-صف جدول مقارنة + 8 FAQ اعتراضات + 3 decision helper + final CTA. CSS scoped: 9 قواعد جديدة لـ `.pricing-offer-detail__*` و `.pricing-factor` و `.pricing-table__caption` و `.pricing-decision-helper__*` + RTL-aware mobile-first responsive). **جديد**: `scripts/playwright/verify-pricing-cro.mjs` (152 سطر، يفحص على 2 viewports: HTTP 200, no console errors, 3 offers (واحد featured), 0 "99 ريال" anchor, ≥5 CTAs مع event metadata, table caption + 4 col-scope + region role + tabindex 0 + aria-label, FAQ 8 أسئلة, decision helper 3 بطاقات, Schema 3 Service + FAQPage). **جديد**: `download/qa/pricing-cro/mobile.png` (1.3MB) + `desktop.png` (1.9MB). **تقرير**: `report/2026-07-18-pricing-cro-rewrite.md` (13.6KB).
+- **What**: تنفيذ Prompt 3 من `audit/CRO/MASTER-CRO-AUDIT-AR.md`. 4 باقات متفرقة (استشارات AI من 99 ريال + حلول أتمتة + وكلاء AI + شات بوت) → 3 عروض حوكمة مؤسسية متدرجة (Assessment / Pilot 30 يوم featured / Enterprise Rollout). Pilot هو الموصى به. سعر "مخصص" في كل العروض + قسم منفصل "عوامل التسعير" بـ 6 عوامل. كل CTA يحمل `data-cta` + `data-position` + `data-offer` (where applicable) + `data-page-type="pricing"`. FAQ 8 أسئلة (استضافة، وصول، تكامل، شراء، NDA، SLA، دعم، امتثال بصياغة دقيقة "تساعد على الجاهزية، لا تدّعي امتثالاً كاملاً"). جدول مقارنة بـ caption + 4 col-scope + 13 row-scope + role=region + tabindex=0 + aria-label للـ keyboard. قسم الروابط الـ SEO (8 روابط نحو /services/) استُبدل بـ 3 بطاقات "مساعدة قرار". 3 Service Schema + 8 FAQPage Schema + 4 PricingFactor calls. title/description معدّلان (4 مستويات → 3 عروض، 99 ريال → مخصص).
+- **Why**: MASTER-CRO-AUDIT-AR.md Section 4 المشكلة #4 + #5: صفحة الأسعار تخلط بين منتج الحوكمة وخدمات AI عامة، و 99 ريال كـ anchor منخفض لا يناسب Enterprise Governance. الـ audit (Section 9 خارطة الأولويات P1 #7) يقول "إعادة صياغة صفحة الأسعار إلى Assessment / Pilot / Enterprise" كأولوية للدورة الثانية. الـ acceptance criteria صريحة: "الفرق بين العروض الثلاثة واضح دون قراءة FAQ" + "لا توجد فئات شات بوت/وكلاء/أتمتة تنافس منصة الحوكمة" + "كل CTA يحمل event metadata" + "جدول المقارنة متجاوب وقابل للاستخدام بلوحة المفاتيح" + "build + browser verification ناجحان". الـ "99 ريال" كان الـ anchor الأول في الصفحة (4 مواضع) و meta description — يخالف الـ "احتفظ بالسعر مخصص" + يخلق مرساة منخفضة. الـ FAQ الجديد يجيب على اعتراضات الـ CISO/DPO/Procurement (المشتريات) — أهم شخصيات الـ persona matrix (Section 6).
+- **Verification**:
+  - `npx astro build` → **190 صفحة، 0 أخطاء** ✅ (4.41s)
+  - `npm run sync:dist:flat` → 317 files mirrored ✅
+  - `npm run seo:gate` → **0 errors, 0 warnings, 176 sitemap URLs, 6/6 hreflang, 5/5 service, 381 files scanned, 0 broken links, 0 canonical issues, 0 hreflang issues** ✅
+  - `npm run seo:schema` → exit 0 ✅
+  - `npm run seo:legacy` → 1/1 pass ✅
+  - `npm run seo:link-graph` → **381 files, 0 broken, 0 legacy paths, 0 html suffixes** ✅
+  - `node scripts/playwright/verify-pricing-cro.mjs` → **ALL CHECKS PASS** على mobile (390x844) + desktop (1440x900) ✅
+    - 3 offer cards (Assessment + Pilot featured "الموصى به" + Enterprise)
+    - 0 "99 ريال" anchor في visible text (التحقق: `!/99\s*ريال/.test(visibleText)`)
+    - 14 CTAs all with data-cta + data-position + data-page-type
+    - 5 unique CTA types: pricing_cta_click, assessment_start, enterprise_contact, pilot_request, whatsapp_click
+    - 8 unique positions: hero, card, offer_detail_{assessment,pilot,enterprise}, decision_helper, decision_helper_fallback, final
+    - Table: caption="مقارنة سريعة..." + 4 col-scope + 13 row-scope + role=region + tabindex=0 + aria-label
+    - FAQ: 8 أسئلة، الأول مفتوح (`open` attribute)
+    - Decision helper: 3 بطاقات (Assessment / Pilot / Enterprise)
+    - Schema: 12 nodes total = Org + WebSite + LocalBusiness + WebPage + WebPage + Breadcrumb + FAQPage + 3 Service + Org + Breadcrumb
+  - Screenshots mobile + desktop: `download/qa/pricing-cro/{mobile,desktop}.png` (تحقق visual)
+  - 0 console errors على كلا viewports
+  - `grep -c "99 ريال" dist/client/pricing/index.html` → 0 (zero occurrences)
+- **Acceptance criteria** (جميعها مُحققة):
+  - ✅ الفرق بين العروض الثلاثة واضح دون قراءة FAQ (3 بطاقات + 3 detail sections بـ 6 fields لكل واحد)
+  - ✅ لا توجد فئات شات بوت/وكلاء/أتمتة تنافس منصة الحوكمة (3 عروض governance فقط)
+  - ✅ كل CTA يحمل event metadata (14 CTA مع data-cta + data-position + data-page-type، 11 منهم data-offer)
+  - ✅ جدول المقارنة متجاوب وقابل للاستخدام بلوحة المفاتيح (caption + scope + region + tabindex + aria-label + horizontal scroll على mobile)
+  - ✅ build + browser verification ناجحان (build 190 + Playwright ALL PASS)
+- **DEC جديد (DEC-CRO-003-2026-07-18-001)**: Pricing page canonical offers = 3 governance tiers. أي إضافة لفئات جديدة (شات بوت، وكلاء، أتمتة) كـ package منافس يجب أن تمر بمراجعة CRO كاملة. الـ Pilot هو الـ featured package (لأنه الـ measurement-before-commit pattern الأنسب لمؤسسي B2B). لا "99 ريال" أو أي رقم ثابت أقل من 4 أرقام في الصفحة — كل عرض "مخصص" مع 6 عوامل موضوعية.
+- **Brain updates**: Section 1.1 (pricing page: 4 offers → 3 offers, +8 FAQ in schema, +3 Service in schema)، Section 5 (canonical: pricing-page = 3 governance offers, NOT multi-AI-services)، Section 6 (glossary: "Pricing factor" = one of 6 elements that justify custom price quote: حجم النطاق، مستوى التخصيص، البيئة التقنية، متطلبات الامتثال، مستوى الدعم، مدة العقد)، Section 4 (DEC جديد).
+- **الـ commit**: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: verified locally (build + 6 seo commands + Playwright 2 viewports + 0 console errors + 2 screenshots). يحتاج user: commit + push + Render auto-redeploy + IndexNow trigger.
+- **Risks remaining**: (1) data-cta و data-position يُلتقط في `MarketingScripts.astro` فقط بعد إضافة HubSpot/Bing IDs. (2) CTA "تواصل للمؤسسات" → /contact/ بدل نموذج enterprise مخصص (مقبول لأن LeadForm يلتقط role/department). (3) Service Schema `category: "recommended"` للـ Pilot قد يسيء قراءتها Google (low risk، standard schema.org). (4) جدول 13 صف قد يربك بعض المستخدمين (caption + scope + aria-label يقلل الإرباك).
+
 ### 2026-07-18 — BAI-VOC-001-C: CTA localization — توحيد CTAs حسب intent (TOFU·MOFU·BOFU) + microcopy ≤12 كلمة. 0 href/action متغير — Verified
 
 - **Files**: 12 معدّل + 2 جديد. **معدّل**: `src/styles/utilities.css` (+68 سطر: `.cta-actions`, `.cta-micro`, `.inner-card__cta*` shared classes)، `src/components/SplitHero.astro` (+13 سطر: header comment + 4 CTA texts + 2 microcopy lines)، `src/components/CaseStudy.astro` (+11 سطر: 2 CTA wrappers + 2 microcopy — affects bank/hospital/pharma)، `src/data/solutions.ts` (+18 سطر: 14 service card `ctaMicro` fields)، `src/pages/index.astro` (+7 سطر: 2 CTA texts + 1 microcopy + 1 link + 1 30-pilot card noun→verb fix)، `src/pages/services/index.astro` (+48 سطر: 14 card markup + 3 final CTA wrappers + 3 microcopy)، `src/pages/pricing/index.astro` (+45 سطر: hero+final wrappers + 4 microcopy)، `src/pages/customers/index.astro` (+11 سطر: 2 CTA wrappers + 2 microcopy)، `src/pages/assessment/ai-governance-readiness/index.astro` (+37 سطر: hero+final wrappers + 4 microcopy + tanween fix "اجتماع فني مخصص"→"اجتماعاً فنياً مخصصاً")، `src/pages/solutions/[sector].astro` (+19 سطر: hero+final wrappers + 4 microcopy)، `src/pages/solutions/[sector]/[city].astro` (+22 سطر: hero+final wrappers + 4 microcopy)، `src/pages/solutions/[slug].astro` (+19 سطر: hero+final wrappers + 4 microcopy)، `src/pages/solutions/index.astro` (+11 سطر: 2 CTA wrappers + 2 microcopy). **جديد**: `scripts/playwright/audit-voc-001-c.mjs` (verification 15 surfaces × 2 viewports)، `download/qa/voc-001-c/` (60 screenshots: 30 hero + 30 final).
@@ -250,6 +287,24 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-18 — CRO-LEADFORM-001: توحيد LeadForm + event taxonomy (Prompt 4 من MASTER-CRO-AUDIT-AR.md) — Verified locally, 40/40 Playwright checks + 0 critical axe-core
+
+- **Files**: 4 جديد + 4 معدّل. **جديد**: `src/lib/lead-tracker.ts` (PII-safe events abstraction — 6 events + 9 error codes + assertNoPii guard)، `src/scripts/lead-form-handler.js` (runtime: UTM capture + validation + honeypot + sessionStorage + state machine + ARIA)، `scripts/playwright/verify-leadform.mjs` (40-check end-to-end suite)، `report/2026-07-18-LeadForm-unification-CRO-Prompt-4.md` (تقرير شامل). **معدّل**: `src/components/LeadForm.astro` (rewrite: من formsubmit-only wrapper إلى canonical form مع honeypot + error summary + success panel + form state machine)، `src/data/marketing.ts` (+LEAD_FORM_ENDPOINTS + FORM_TAXONOMY 10 form_id + SESSION_KEYS + DEFAULT_CONTACT_FIELDS 8 حقول)، `src/pages/contact/index.astro` (inline form ~150 سطر استُبدل بـ LeadForm الموحد، `sectors` array حُذف dead code)، `src/pages/index.astro` (inline form في section 12 استُبدل بـ LeadForm مع formId="home_cta")، `src/pages/thank-you/index.astro` (يقرأ `?id=...` ويعرض رقم الطلب + 3 next-step cards).
+- **What**: وحّدنا كل نماذج الـlead capture في الموقع بـ LeadForm واحد canonical. حافظنا على Attribution كامل (UTM + referrer + landing_page). خففنا الاحتكاك بحالات loading/success/error مع retry. أضفنا honeypot. أطقنا event taxonomy (form_view, form_start, form_field_error, form_submit_attempt, form_submit_success, form_submit_failure) بدون PII (form_id + page_path + error_code + duration_ms فقط). contact page و homepage section 12 يستخدمان نفس الـ form.
+- **Why**: الـ audit §4 المشكلة #7: contact form ما يستخدم LeadForm الموحد + يخسر attribution + يستخدم `_next` للـ contact/ بدل thank-you. الـ audit §4 المشكلة #8: thank-you page غير مستخدمة في المسار. المطلوب Prompt 4: نموذج موحد + attribution + thank-you + events + ARIA + honeypot.
+- **Verification**:
+  - `pnpm run build` → 190 صفحات، 176 sitemap URLs، 0 errors ✅
+  - `pnpm run verify:all` → 0 broken links، 0 SEO errors، 0 canonical issues ✅
+  - `A11Y_BASE_URL=http://127.0.0.1:4321 pnpm run a11y:scan` → /contact/: 0/0/0/0، /: 0/0/0/0 ✅
+  - `BASE_URL=http://127.0.0.1:4321 node scripts/playwright/verify-leadform.mjs` → 40/40 checks PASSED (form fields, validation, honeypot, success state, redirect with lead_id, sessionStorage Back/Retry, ARIA contract, UTM capture) ✅
+  - HTML evidence: `grep "data-form-id" dist/contact/index.html` → `data-form-id="contact_main"` ✅
+  - HTML evidence: `grep "data-form-id" dist/index.html` → `data-form-id="home_cta"` ✅
+  - CSS evidence: `LeadForm.*.css: 4.5KB → 4.4KB` (-2.6%) بعد purge ✅
+- **Report**: `report/2026-07-18-LeadForm-unification-CRO-Prompt-4.md` (~11KB)
+- **Commit**: uncommitted (per brain.md line 18 — المستخدم ينشئ الـ commits). رسالة مقترحة: `feat(cro): unify lead forms + add event taxonomy (Prompt 4)`
+- **Status**: verified locally (build + verify:all + a11y:scan + Playwright e2e). جاهز للـ commit بعد user approval.
+- **Brain updates**: Section 2 (this entry — أعلى الـ ledger)، Section 3 (لا KI جديدة — كل الفجوات مغطاة)، Section 4 (6 DEC جديدة: DEC-CRO-LEADFORM-001 إلى 006)، Section 5 (Component Inventory — LeadForm v2 + lead-tracker + lead-form-handler مذكورة الآن).
 
 ### 2026-07-18 — AUDIT-REPLAY-2026-07-18: clean checkout post-merge replay (build + verify:all + seo:all + performance:budget + axe + Playwright LCP/CLS/syntax) + اكتشاف regression KI-SYNTAX-2026-07-18-001 (4 SyntaxError × 190 pages) — Verified locally, evidence-driven
 
@@ -3691,6 +3746,54 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 4. Decisions Log
 
+### DEC-CRO-LEADFORM-2026-07-18-001: LeadForm.astro = canonical واحد لكل الموقع (CRO audit Prompt 4)
+
+- **Date**: 2026-07-18
+- **Context**: MASTER-CRO-AUDIT-AR.md §4 المشكلة #7: contact form ما يستخدم LeadForm الموحد + يخسر attribution + يستخدم `_next` للـ contact/ بدل thank-you. الـ audit Prompt 4 طلب: توحيد النماذج + UTM/referrer + thank-you + أقل حقول + events + ARIA + honeypot.
+- **Decision**: LeadForm.astro = المكون الواحد لـ lead capture في كل الموقع. أي صفحة تبغى نموذج lead تستخدمه. inline forms ممنوعة. الـ rationale: تجربة موحدة + قياس موحد + تطوير أسرع + حماية PII موحدة + honeypot موحد.
+- **Reversal cost**: Medium (3+ صفحات تحوي inline forms تستبدل).
+- **Implementation**: LeadForm.astro v2 + `src/lib/lead-tracker.ts` (events) + `src/scripts/lead-form-handler.js` (runtime). contact/index.astro و index.astro section 12 يستخدموه الآن.
+
+### DEC-CRO-LEADFORM-2026-07-18-002: submit mode = `both` (AJAX + native fallback)
+
+- **Date**: 2026-07-18
+- **Context**: formsubmit.co يقبل POST form data + يتبع redirect. الـ handler يحتاج مسار submission واحد لكن مرن لو الـ network فشل.
+- **Decision**: الـ default submit mode = `both` (AJAX primary، native fallback). الـ JS يعترض ويستخدم fetch للـ AJAX endpoint → JSON response + state machine. لو فشل fetch (network/timeout) → fallback إلى native form submit (الـ `<form action method>` الأصلي). بدون JS → native submit مباشرة. كذا الـ UX نفسه في كل الحالات.
+- **Reversal cost**: Low (تغيير في الـ handler).
+- **Rationale**: Single code path، graceful degradation، analytics يشتغل في كلتا الحالتين (form_submit_attempt في كل حالة).
+
+### DEC-CRO-LEADFORM-2026-07-18-003: honeypot style = `name="_honey"` + CSS hidden + tabindex -1
+
+- **Date**: 2026-07-18
+- **Context**: نماذج lead تتعرض لـ bot farms. بدون حماية، الـ inbox يتلوث بـ spam.
+- **Decision**: honeypot field بـ name="_honey" (formsubmit يتجاهل underscore fields تلقائياً)، CSS hidden (`position: absolute; left: -9999px; opacity: 0`)، `tabindex="-1" aria-hidden="true" autocomplete="off"`. لو البوت ملأه → silent success (form_submit_success emitted)، ما POST حقيقي، success panel يظهر.
+- **Reversal cost**: Zero.
+- **Rationale**: لا reCAPTCHA (third-party dependency + UX cost)، لا Cloudflare Turnstile (يحتاج integration خارجي). الـ honeypot كافي لـ basic bot filtering (يقفل ~95% من naive bots).
+
+### DEC-CRO-LEADFORM-2026-07-18-004: email validation = soft (no hard block on free-mail)
+
+- **Date**: 2026-07-18
+- **Context**: Product سؤال: هل نحظر gmail/hotmail صراحةً في contact form؟ الـ B2B use case يقتضي work email، لكن بعض صناع القرار (founders) يستخدمون gmail.
+- **Decision**: Soft check. الـ regex يقبل أي بريد صحيح الـ syntax. لو النطاق في القائمة المعروفة (gmail, hotmail, yahoo, إلخ)، يُسجَّل `softHint: 'personal_email'` في الـ analytics payload (مو في الـ error). الـ sales team يقدر يميّز B2B من B2C في الـ CRM.
+- **Reversal cost**: Low (تغيير في `FREE_MAIL_DOMAINS` set).
+- **Rationale**: مو كل B2B يستخدم بريد الشركة. الـ conversion أهم من purity.
+
+### DEC-CRO-LEADFORM-2026-07-18-005: sessionStorage يحفظ كل القيم ما عدا `pdpl_consent`
+
+- **Date**: 2026-07-18
+- **Context**: Back/Retry preservation يحسّن UX. لكن PDPL يتطلب موافقة صريحة في كل interaction.
+- **Decision**: sessionStorage يحفظ values لـ `full_name`, `work_email`, `company`, `phone`, `message`, `role`, `primary_need` (الحقول الفعلية). `pdpl_consent` **ما ينحفظ أبداً** — checkbox فاضي بعد reload. الـ key pattern: `brightai:lead:<formId>:values` + `brightai:lead:landing_page` (session-wide) + `brightai:lead:<formId>:submitted` (lock).
+- **Reversal cost**: Low (تغيير في `SENSITIVE_FIELDS` set).
+- **Rationale**: Privacy by default. PDPL spirit = explicit consent. الحفظ يخالف الـ spirit.
+
+### DEC-CRO-LEADFORM-2026-07-18-006: redirect بعد success = `/thank-you/?id=<lead_id>`
+
+- **Date**: 2026-07-18
+- **Context**: شكر page كان يستخدم `_next=contact/` (نفس الصفحة) — ضعف التحويل. المطلوب: صفحة شكر مستقلة + personalization.
+- **Decision**: بعد submit ناجح، الـ handler يضيف `?id=<lead_id>` للـ thank-you URL (formsubmit.co يرجع `id` opaque، مو PII). شكر page يقرأه عبر `URLSearchParams` ويعرضه في `<code>` element. الـ user يقدر يشير للرقم لما يتصل.
+- **Reversal cost**: Low.
+- **Rationale**: Opaque id (مو PII)، يظهر في URL bar، يساعد sales في تتبع + يساعد funnel analytics في ربط session بالـ lead.
+
 ### DEC-CSP-001: Phase 1 of CSP hardening يستخرج inline scripts وينشئ middleware infrastructure بدون تعديل protected files
 
 - **Date**: 2026-07-15
@@ -4342,6 +4445,9 @@ Companion utility classes in `src/styles/utilities.css` Section 11b:
 | `ComplianceRadar.astro` | `src/components/` | 112 | Compliance radar visual | — |
 | `EvidenceFileMockup.astro` | `src/components/` | 122 | Evidence file mockup | — |
 | `LiveDashboardMockup.astro` | `src/components/` | 28 | Live dashboard mockup | — |
+| `LeadForm.astro` ⭐ | `src/components/` | ~530 | **CANONICAL lead-capture form** (CRO audit Prompt 4 — 2026-07-18). Auto UTM/referrer/landing, validation, honeypot, loading/success/error states, ARIA, sessionStorage. Used by /contact/, /, /newsletter/, /partners/, /referral/, /calculator/roi/, /events/*. | DEC-CRO-LEADFORM-001 ✅ |
+| `LeadForm.astro` companion: `src/lib/lead-tracker.ts` | `src/lib/` | ~280 | PII-safe events abstraction (form_view, form_start, form_field_error, form_submit_attempt, form_submit_success, form_submit_failure). assertNoPii() guard throws on PII keys in dev. | DEC-CRO-LEADFORM-001 ✅ |
+| `LeadForm.astro` companion: `src/scripts/lead-form-handler.js` | `src/scripts/` | ~570 | Runtime behavior for LeadForm.astro: UTM capture, validation (email/phone/min-length/consent), honeypot check, submit interception (AJAX + native fallback), sessionStorage Back/Retry, ARIA state machine, IntersectionObserver for form_view. | DEC-CRO-LEADFORM-001 ✅ |
 | `ActivityStream.astro` | `src/components/` | 81 | Activity stream | — |
 | `kernel/*.astro` (8 files) | `src/components/kernel/` | various | Kernel UI components | — |
 | `kernel/KernelAiAssistant.astro` | `src/components/kernel/` | 620 | قابل لإعادة الاستخدام، يستدعي /api/ai/chat/ مع systemPrompt مخصص، sessionStorage history | KERNEL-AI-2026-07-14 ✅ |

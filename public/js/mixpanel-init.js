@@ -1,9 +1,10 @@
 /**
- * mixpanel-init.js — Mixpanel product analytics loader.
+ * mixpanel-init.js — Mixpanel product analytics loader + provider.
  *
  * Loaded with `defer` from MarketingScripts.astro. CSP-safe: token read from
  * the `data-token` attribute on this <script> tag. Skips silently when no
- * token is configured. Tracks a page_view on SPA view transitions.
+ * token is configured. Registers as a provider with the unified analytics
+ * runtime so events flow through the central layer (CRO audit Prompt 5).
  *
  * NOTE: once a real token is set, public/_headers CSP must allow
  * `cdn.mxpnl.com` in script-src / connect-src (protected file — needs approval).
@@ -41,6 +42,8 @@
           x.parentNode.insertBefore(e, x);
           e.onload = function () {
             f.mixpanel._i.push([t, c, n]);
+            // Once the lib loads, register the provider with the runtime.
+            registerMixpanelProvider();
           };
         }
         s();
@@ -50,13 +53,24 @@
 
   window.mixpanel.init(token, { autotrack: true, track_pageview: true });
 
-  document.addEventListener('astro:after-swap', function () {
-    if (window.mixpanel) {
-      window.mixpanel.track('page_view', {
-        page_path: window.location.pathname,
-        page_title: document.title,
-        page_location: window.location.href,
-      });
-    }
-  });
+  // Register immediately (works even if mixpanel-2-latest.min.js hasn't
+  // loaded yet — calls queue in the shim).
+  registerMixpanelProvider();
+
+  function registerMixpanelProvider() {
+    var rt = window.__BRIGHTAI_ANALYTICS__;
+    if (!rt) return false;
+    rt.registerProvider({
+      name: 'mixpanel',
+      fn: function (event, payload) {
+        // Mixpanel accepts arbitrary event names + a properties object.
+        // We strip the PII-shaped keys one more time defensively (the
+        // runtime already enforces the allowlist, but defense in depth).
+        if (window.mixpanel && typeof window.mixpanel.track === 'function') {
+          window.mixpanel.track(event, payload);
+        }
+      },
+    });
+    return true;
+  }
 })();

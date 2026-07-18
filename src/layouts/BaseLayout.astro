@@ -264,13 +264,20 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     <meta name="google-site-verification" content={SITE.googleVerification} />
   )}
 
-  {/* SPA transition pageview — fires page_view on view-transition navigations.
-       REPORTS-20: gtag.js itself is loaded lazily via requestIdleCallback above,
-       so this listener waits for gtag to exist before firing.
-       REPORTS-CSP-01 (2026-07-15): Extracted to src/scripts/page-view.js to
-       remove the inline <script> block. CSP no longer needs 'unsafe-inline'
-       on script-src for this listener. */}
-  <script nonce={Astro.locals.cspNonce}>import '../scripts/page-view.js';</script>
+  {/* Unified analytics runtime — CRO audit Prompt 5 (2026-07-18).
+       Replaces the old page-view.js with the full unified layer:
+       - Installs window.__BRIGHTAI_ANALYTICS__ runtime
+       - Click delegation on [data-cta], [data-cta-secondary], [data-whatsapp]
+       - IntersectionObserver for [data-asset-type] + [data-case-study]
+       - First-focus listener for [data-assessment-form]
+       - Fires page_view on every page load + Astro view transition
+       Providers (gtag, mixpanel, bing) self-register via their init scripts
+       that loaded above. The console debug provider is registered by this
+       runtime on first boot.
+       Loaded as a self-contained ES module (type="module") so the nonce
+       pattern works without the import-bundling issue that hit the other
+       4 scripts (KI-SYNTAX-2026-07-18-001). */}
+  <script type="module" src="/js/analytics.js" nonce={Astro.locals.cspNonce}></script>
 
   {/* Global centralized scroll-reveal observer — activates the unified motion system
       (DEC-2026-Motion-001) across every page. Replaces 7 per-page duplicate

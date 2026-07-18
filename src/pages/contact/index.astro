@@ -12,10 +12,18 @@
  * - Map embed wrapped in .map-embed-card with footer link
  * - All Action URLs preserved (https://formsubmit.co/info@brightai.site POST)
  * - 0 published Arabic text changed, 0 sections removed
+ *
+ * CRO audit 2026-07-18 (Prompt 4): the inline form was replaced by the
+ * canonical LeadForm component so every lead in the site flows through
+ * one form: same fields, same UTM capture, same event taxonomy, same
+ * thank-you redirect. The visible copy and the section count are
+ * preserved.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { FORM_TAXONOMY, DEFAULT_CONTACT_FIELDS } from '../../data/marketing';
 import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'تواصل معنا' }];
@@ -55,18 +63,6 @@ const officeHours = [
   { day: 'الخميس', time: '9:00 ص – 6:00 م' },
   { day: 'الجمعة', time: 'إجازة — مغلق', closed: true },
   { day: 'السبت', time: 'إجازة — مغلق', closed: true },
-];
-
-const sectors = [
-  'مصانع طبية',
-  'رعاية صحية',
-  'جهة حكومية',
-  'مشتريات ومناقصات',
-  'مالي / بنوك',
-  'تعليم',
-  'طاقة / صناعة',
-  'تقنية / SaaS',
-  'غيره',
 ];
 
 const contactScenarios = [
@@ -182,124 +178,22 @@ const jsonLd = {
         {/* ─── Form (right in RTL = first column) ─── */}
         {/* WCAG fix (REPORTS-18): separate aria-labelledby target so the
             region has its own unique accessible name — doesn't collide
-            with the outer section's label. */}
+            with the outer section's label. CRO Prompt 4: the form is now
+            the canonical LeadForm component. Same fields, same UTM
+            capture, same event taxonomy as every other form on the site. */}
         <div class="contact-form-card" role="region" aria-labelledby="contact-form-card-title">
           <h3 id="contact-form-card-title" class="sr-only">نموذج التواصل</h3>
-          <h3 class="form-card__title">أرسل تفاصيل طلبك</h3>
-          <p class="form-card__desc">كل المعلومات تساعد فريقنا يفهم احتياجك قبل ما نتواصل معك.</p>
-
-          <form class="inner-form inner-form--padded" action="https://formsubmit.co/info@brightai.site" method="POST" aria-label="نموذج التواصل">
-            <input type="hidden" name="_subject" value="طلب تواصل من موقع BrightAI" />
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_next" value="https://brightai.site/contact/" />
-
-            <div class="form-row form-row--2">
-              <div class="form-field">
-                <label class="form-label" for="name">الاسم الكامل <span class="text-red-400" aria-hidden="true">*</span></label>
-                <input
-                  class="field"
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  aria-required="true"
-                  aria-describedby="name-error"
-                  autocomplete="name"
-                  placeholder="مثال: محمد أحمد"
-                />
-                <span id="name-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="email">البريد الإلكتروني <span class="text-red-400" aria-hidden="true">*</span></label>
-                <input
-                  class="field"
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  aria-required="true"
-                  aria-describedby="email-error"
-                  autocomplete="email"
-                  inputmode="email"
-                  placeholder="example@company.sa"
-                />
-                <span id="email-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
-              </div>
-            </div>
-
-            <div class="form-row form-row--2">
-              <div class="form-field">
-                <label class="form-label" for="phone">رقم الجوال</label>
-                <input
-                  class="field"
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  autocomplete="tel"
-                  inputmode="tel"
-                  placeholder="05X-XXX-XXXX"
-                />
-              </div>
-              <div class="form-field">
-                <label class="form-label" for="company">اسم الشركة</label>
-                <input
-                  class="field"
-                  type="text"
-                  id="company"
-                  name="company"
-                  autocomplete="organization"
-                  placeholder="اسم شركتك أو مؤسستك"
-                />
-              </div>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label" for="sector">القطاع</label>
-              <select class="field field--select" id="sector" name="sector" aria-describedby="sector-error">
-                <option value="">اختر القطاع</option>
-                {sectors.map(s => <option>{s}</option>)}
-              </select>
-              <span id="sector-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
-            </div>
-
-            <div class="form-field">
-              <label class="form-label" for="message">رسالتك <span class="text-red-400" aria-hidden="true">*</span></label>
-              <textarea
-                class="field field--textarea"
-                id="message"
-                name="message"
-                required
-                aria-required="true"
-                aria-describedby="message-error"
-                placeholder="أخبرنا عن احتياجاتك أو استفسارك..."
-              ></textarea>
-              <span id="message-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
-            </div>
-
-            <div class="form-field form-field--checkbox-row">
-              <input
-                required
-                aria-required="true"
-                aria-describedby="pdpl-consent-error"
-                id="pdpl_consent"
-                name="pdpl_consent"
-                type="checkbox"
-                class="form-checkbox--inline"
-              />
-              <label for="pdpl_consent" class="text-xs form-label--checkbox">
-                أوافق على معالجة بياناتي الشخصية المدخلة وفقاً لـ
-                <a href="/privacy-policy/">سياسة الخصوصية</a> و
-                <a href="/pdpl-statement/">بيان الامتثال لنظام PDPL السعودي</a>.
-                <span class="text-red-400" aria-hidden="true">*</span>
-              </label>
-              <span id="pdpl-consent-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
-            </div>
-
-            <button class="btn btn--primary btn--block inner-form__submit" type="submit">
-              <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-send"></use></svg>
-              إرسال الرسالة
-            </button>
-          </form>
+          <LeadForm
+            formId={FORM_TAXONOMY.CONTACT_MAIN}
+            title="أرسل تفاصيل طلبك"
+            intro="كل المعلومات تساعد فريقنا يفهم احتياجك قبل ما نتواصل معك."
+            subject="طلب تواصل من موقع BrightAI"
+            ctaLabel="إرسال الرسالة"
+            source="website"
+            medium="contact"
+            campaign="always-on"
+            fields={DEFAULT_CONTACT_FIELDS}
+          />
         </div>
 
         {/* ─── Contact info + Office hours (left in RTL = second column) ─── */}
@@ -313,7 +207,7 @@ const jsonLd = {
                 </svg>
                 <div>
                   <strong class="block text-white">واتساب (أسرع)</strong>
-                  <a rel="nofollow noopener noreferrer" href="https://wa.me/966538229013">+966 538 229 013</a>
+                  <a rel="nofollow noopener noreferrer" href="https://wa.me/966538229013" data-whatsapp data-cta-label="+966 538 229 013" data-position="inline" data-page-type="contact">+966 538 229 013</a>
                 </div>
               </li>
               <li>
@@ -394,7 +288,7 @@ const jsonLd = {
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
       <p class="inner-section__label">قبل ما ترسل الطلب</p>
       <h2 id="contact-guidance-title" class="inner-section__title">كيف نخلي أول مكالمة مفيدة من البداية؟</h2>
-      <p class="inner-section__lead">ما نحتاج منك ملف طويل أو مواصفات نهائية. يكفينا وصف واضح للمشكلة: وين تستخدمون الذكاء الاصطناعي اليوم، وش نوع البيانات اللي تدخل له، ومين يتخذ القرار بعد خروج النتيجة. إذا كان الاستخدام ما زال تحت الدراسة، اذكر الفريق أو العملية اللي تبون تبدأون منها، مثل خدمة العملاء، الموارد البشرية، المشتريات، الجودة، أو تحليل الوثائق. هذي المعلومات تساعدنا نحدد هل البداية الأنسب هي <a href="/solutions/ai-use-case-discovery/">اكتشاف حالات الاستخدام</a>، أو <a href="/assessment/ai-governance-readiness/">تقييم جاهزية الحوكمة</a>، أو تجربة تقنية محددة.</p>
+      <p class="inner-section__lead">ما نحتاج منك ملف طويل أو مواصفات نهائية. يكفينا وصف واضح للمشكلة: وين تستخدمون الذكاء الاصطناعي اليوم، وش نوع البيانات اللي تدخل له، ومين يتخذ القرار بعد خروج النتيجة. إذا كان الاستخدام ما زال تحت الدراسة، اذكر الفريق أو العملية اللي تبون تبدأون منها، مثل خدمة العملاء، الموارد البشرية، المشتريات، الجودة، أو تحليل الوثائق. هذي المعلومات تساعدنا نحدد هل البداية الأنسب هي <a href="/solutions/ai-use-case-discovery/">اكتشاف حالات الاستخدام</a>، أو <a href="/assessment/ai-governance-readiness/" data-cta="assessment_start" data-cta-label="تقييم جاهزية الحوكمة" data-position="inline" data-page-type="contact">تقييم جاهزية الحوكمة</a>، أو تجربة تقنية محددة.</p>
       <p class="inner-section__lead">لا ترسل بيانات شخصية، ملفات مرضى، معلومات حسابات، أسرار تجارية، أو مستندات داخلية حساسة عبر نموذج التواصل. في البداية نناقش النطاق بشكل عام، وبعد الاتفاق على قناة مناسبة يمكن تحديد طريقة آمنة لمشاركة العينات والوثائق. الهدف من أول تواصل هو فهم الحاجة وتحديد الخطوة التالية، وليس جمع بيانات تشغيلية من منشأتك.</p>
     </div>
   </section>

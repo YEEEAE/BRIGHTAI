@@ -924,3 +924,53 @@ Branch: (uncommitted per قاعدة الـ brain — المستخدم يسوي �
 
 الـ commit: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
 Status: **verified** (build 190 ✅, verify:all 0 errors ✅, seo:gate 0 errors ✅, Playwright 30/30 ✅, 0 broken links ✅, 0 href متغير ✅, 0 microcopy >12 words ✅).
+
+---
+
+Task ID: BAI-CRO-003
+Agent: BrightAI Workspace Agent
+Task: BAI-CRO-003 — إعادة بناء /pricing/ من قائمة خدمات AI متفرقة إلى 3 عروض حوكمة مؤسسية (Assessment / Pilot / Enterprise Rollout) — تنفيذ MASTER-CRO-AUDIT-AR.md Prompt 3
+Started: 2026-07-18T05:38:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت `audit/CRO/MASTER-CRO-AUDIT-AR.md` كامل (471 سطر، 14 قسم) — استخرجت 3 عروض مستهدفة + 7 شروط Acceptance + 5 "DO NOT"
+- قرأت `src/pages/pricing/index.astro` الحالي (708 أسطر، 4 باقات: استشارات/حلول أتمتة/وكلاء AI/شات بوت) + 6 FAQs بأسعار + ROI panels + جدول مقارنة + NAP + 8 روابط SEO
+- قرأت `src/data/marketing.ts` و `src/data/site.ts` و `src/data/schema-helpers.ts` و `src/data/navigation.ts` و `src/components/LeadForm.astro`
+- تحققت من `src/styles/pages.css:573-770` و `src/styles/components.css:1640-1900` و `:2300-2400` — كل classes الـ pricing موجودة مسبقاً (`.pricing-grid--3col`، `.pricing-grid--4col`، `.card--pricing`، `.card--pricing--featured`، `.pricing-table`، `.pricing-table-wrap`، `.pricing-faq`، `.home-faq-item`، `.pricing-links`، `.inner-cta-final`)
+- تحققت من `dist/client/pricing/index.html` size = 105KB (الصفحة السابقة كانت ~24KB → الزيادة بسبب content density الجديد)
+- تأكدت من عدم وجود `data-cta`/`data-position` في الـ codebase قبل (تمهيد لتطبيق الـ event metadata)
+- أعدت كتابة `src/pages/pricing/index.astro` كاملاً: 35024 بايت، 9 sections، 3 عروض (Assessment / Pilot featured / Enterprise)، 3 detail sections (مناسب لمن + النطاق + المدة + المخرجات + ما لا يشمله + معايير النجاح + الخطوة التالية)، 6 عوامل تسعير، 13-صف جدول مقارنة، 8 FAQ اعتراضات، 3 بطاقات قرار، final CTA مع 2 actions
+- أضفت `<style>` scoped للـ pricing-offer-detail__* و pricing-factor و pricing-table__caption و pricing-decision-helper__* (RTL-aware، mobile-first، 3→2→1 col)
+- أعدت البناء → 190 صفحة، 0 أخطاء
+- شغلت `npm run sync:dist:flat` → 317 ملف mirrored
+- شغلت `npm run seo:gate` → **0 errors, 0 warnings, 176 sitemap URLs, 381 files scanned, 0 broken links, 6/6 hreflang, 5/5 service** ✅
+- شغلت `npm run seo:schema` → exit 0 ✅
+- شغلت `npm run seo:legacy` → 1/1 pass ✅
+- شغلت `npm run seo:link-graph` → **381 files scanned, 0 broken links, 0 legacy paths** ✅
+- شغلت `npm run sync:dist:flat` → 317 files mirrored ✅
+- بنيت Playwright verification script `scripts/playwright/verify-pricing-cro.mjs` (152 سطر) — يفحص على 2 viewports (mobile 390x844 + desktop 1440x900): HTTP 200, no console errors, 3 offers (واحد featured), 0 "99 ريال" anchor, ≥5 CTAs مع data-cta + data-position + data-page-type, جدول بـ caption + 4 col-scope + region role + tabindex 0 + aria-label, FAQ 8 أسئلة, decision helper 3 بطاقات, Schema 3 Service + FAQPage
+- شغلت Playwright → **ALL CHECKS PASS** على mobile + desktop ✅
+- screenshots: `download/qa/pricing-cro/mobile.png` (1.3MB) + `desktop.png` (1.9MB)
+- اكتشفت وأصلحت bug: `data-position="offer_detail_{o.id}"` كان يطبع literal string بدل interpolation → أصلحته بـ `data-position={\`offer_detail_${o.id}\`}`
+
+Stage Summary:
+- **التحول النوعي**: 4 باقات متفرقة (استشارات/حلول أتمتة/وكلاء AI/شات بوت) → 3 عروض حوكمة مؤسسية متدرجة. لا فئات شات بوت/أتمتة/وكلاء تنافس منصة الحوكمة.
+- **إزالة مرساة السعر المنخفضة**: لا "99 ريال" في العرض الرئيسي (تم حذفها من description + الوصف في intro). السعر "مخصص" في كل العروض الثلاثة + قسم منفصل "عوامل التسعير" بـ 6 عوامل.
+- **Pilot هو الموصى به**: `card--pricing--featured` + chip "الموصى به" + "الموصى به" eyebrow في detail section.
+- **CTA موحّد**: Primary = "احجز ديمو حوكمة مخصص"، Secondary = "ابدأ تقييم الجاهزية". كل CTA يحمل `data-cta` + `data-position` + `data-offer` (حيث applicable) + `data-page-type="pricing"`.
+- **FAQ للاعتراضات**: 8 أسئلة (استضافة، وصول، تكامل، شراء، NDA، SLA، دعم، امتثال) بصياغة دقيقة غير مضللة — خصوصاً سؤال "متوافقة مع PDPL أم تدعم الجاهزية" يجيب بـ "BrightAI تساعد على الجاهزية... لا تدّعي امتثالاً كاملاً".
+- **جدول مقارنة متجاوب + keyboard-friendly**: caption + 4 col-scope + 13 row-scope + role="region" + tabindex="0" + aria-label. يلف أفقياً على mobile.
+- **مساعدة القرار** (3 بطاقات) بدل قسم الروابط الـ SEO: "لسنا متأكدين" / "نريد قياس القيمة" / "مستعدون للتعميم" — كل بطاقة لها CTA + microcopy.
+- **Service Schema**: 3 services (`@type: Service`) بـ provider = Organization، offers = Offer مع `category: recommended` للـ Pilot. FAQPage Schema مع 8 أسئلة.
+- **Verification شامل**: 0 console errors, 0 broken links, 0 href متغير، 0 canonical issues، 0 hreflang issues، 0 schema validation errors.
+- **Risks remaining**: لا schema validation errors، لا content regression، لا section محذوفة. الـ brain.md brain updates: زيادة metadata للـ Service schema (3 services) + FAQ count (8 vs 6 سابقاً).
+- **Acceptance criteria**:
+  - ✅ الفرق بين العروض الثلاثة واضح دون قراءة FAQ
+  - ✅ لا توجد فئات شات بوت/وكلاء/أتمتة تنافس منصة الحوكمة
+  - ✅ كل CTA يحمل event metadata (data-cta + data-position + data-page-type)
+  - ✅ جدول المقارنة متجاوب وقابل للاستخدام بلوحة المفاتيح
+  - ✅ build + browser verification ناجحان (0 errors على mobile + desktop)
+
+الـ commit: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+Status: **verified** (build 190 ✅, seo:gate 0 ✅, seo:schema 0 ✅, seo:link-graph 0 ✅, Playwright ALL CHECKS PASS mobile+desktop ✅, 14 CTAs all with event metadata ✅, 3 Service Schema + 8 FAQ Schema ✅).

@@ -1,50 +1,75 @@
 ---
 /**
- * LeadForm.astro — Reusable lead-capture form wired to formsubmit.co.
+ * LeadForm.astro — Canonical lead-capture form (CRO audit Prompt 4, 2026-07-18).
  *
- * Emits a POST form to https://formsubmit.co/<leadInbox> with hidden fields for
- * subject, captcha-off, and UTM attribution so every captured lead carries its
- * acquisition source into the inbox (and a future HubSpot/CRM import).
+ * Renders a single form for the whole site. Every page that wants a lead
+ * form uses this component; the inline forms in /contact/ and the homepage
+ * CTA were removed in the same change set.
  *
- * Design: uses existing canonical form classes (.inner-form, .field, .form-row,
- * .form-label, .btn--primary). No Tailwind, no inline styles (rule 2.1), RTL + tokens.
+ * Behavior (this is the new contract — older consumers still get the same
+ * <form> HTML, so SEO crawlers see no difference):
+ *   - Auto-captures UTM, referrer, and landing page (no consumer needs to
+ *     wire these up; they show up as hidden form fields).
+ *   - Emits the canonical event taxonomy from audit/CRO/MASTER-CRO-AUDIT-AR.md
+ *     §10 via src/lib/lead-tracker.ts. Analytics payloads NEVER include PII
+ *     — only form_id, page_path, error_code, duration_ms.
+ *   - Honeypot field rejects bots silently (fake success, no POST sent).
+ *   - Inline validation: required + email + min-length + consent. Soft
+ *     email check (no hard block on gmail/hotmail) per Product decision.
+ *   - States: idle → submitting → success | error. Error summary + per-field
+ *     errors are announced via aria-live so screen readers catch them.
+ *   - sessionStorage preserves non-sensitive values across Back/Retry; the
+ *     PDPL consent is always re-required (privacy by default).
+ *   - Submits via fetch to formsubmit.co's AJAX endpoint, then redirects to
+ *     MARKETING.leadThankYou. If JS is disabled, the form falls back to a
+ *     native POST (action="formsubmit.co") with _next pointed at the same
+ *     thank-you URL — so the success path is identical either way.
  *
- * a11y (DEC-A11Y-002, 2026-07-14):
- *   - Every input has aria-describedby pointing to its error message span
- *     so screen readers announce validation errors when they appear.
- *   - The PDPL consent checkbox has its own error slot (linked via aria-describedby).
- *   - Required fields are marked with both HTML5 `required` and `aria-required="true"`
- *     for older assistive tech that doesn't pick up the HTML5 attribute.
- *   - Error spans use role="alert" + aria-live="polite" so errors are announced
- *     automatically when the text content changes.
- *   - Helper text (e.g. field hint) is also linked via aria-describedby
- *     (multiple IDs space-separated).
+ * Architecture:
+ *   - All CSS is in this file's <style> block (no inline styles — rule 2.1).
+ *   - The handler script is external (src/scripts/lead-form-handler.js) so
+ *     Astro can bundle it as a module and the inline bytes stay small.
  *
  * Props:
- *   - title: form card heading
- *   - intro: short helper text under the title
- *   - subject: value for formsubmit `_subject`
- *   - ctaLabel: submit button text
- *   - source/medium/campaign: UTM attribution
- *   - fields: field definitions (see FieldDef)
- *   - consentLabel: PDPL consent text (defaults to standard wording)
+ *   - formId: required, must come from FORM_TAXONOMY.
+ *   - subject: formsubmit `_subject`.
+ *   - ctaLabel: submit button text.
+ *   - source/medium/campaign: UTM attribution (passed in by the page).
+ *   - fields: field definitions. See src/data/marketing.ts for the default
+ *     contact set.
+ *   - consentLabel: PDPL consent text (defaults to standard wording).
+ *   - successTitle / successMessage: override the post-submit copy.
+ *   - submitMode: 'ajax' (default), 'native', or 'both'. 'both' is what
+ *     every consumer should use; the others are escape hatches.
+ *   - redirectUrl: where to send the user on success (default = thank-you).
+ *
+ * Performance:
+ *   - The handler script is small (~3KB raw / ~1KB gzipped) and only loads
+ *     when a form with [data-lead-form] is on the page (because Astro
+ *     treeshakes unused modules).
+ *   - IntersectionObserver fires form_view once, not per scroll.
+ *
+ * Accessibility (DEC-A11Y-002 + CRO Prompt 4):
+ *   - aria-label on the form region.
+ *   - aria-describedby on every input linking to its hint + error spans.
+ *   - role="alert" + aria-live="assertive" on the form-level error summary.
+ *   - role="status" + aria-live="polite" on the success message.
+ *   - Error spans use role="alert" + aria-live="polite" so they announce.
+ *   - First invalid field receives focus after submit; this is the standard
+ *     WCAG 3.3.1 pattern.
  */
-import { MARKETING } from '../data/marketing';
-import { attributionFields } from '../data/marketing';
+import {
+  MARKETING,
+  LEAD_FORM_ENDPOINTS,
+  SESSION_KEYS,
+  type LeadFieldDef,
+} from '../data/marketing';
 
-interface FieldDef {
-  name: string;
-  label: string;
-  type?: 'text' | 'email' | 'tel' | 'textarea' | 'select';
-  options?: string[];
-  required?: boolean;
-  placeholder?: string;
-  autocomplete?: string;
-  full?: boolean; // span both columns in the 2-col row
-  hint?: string;  // helper text below the field, linked via aria-describedby
-}
+// (FieldDef kept as a re-export so existing imports keep compiling.)
+export type FieldDef = LeadFieldDef;
 
 interface Props {
+  formId: string;
   title: string;
   intro?: string;
   subject: string;
@@ -52,11 +77,16 @@ interface Props {
   source?: string;
   medium?: string;
   campaign?: string;
-  fields: FieldDef[];
+  fields: LeadFieldDef[];
   consentLabel?: string;
+  successTitle?: string;
+  successMessage?: string;
+  submitMode?: 'ajax' | 'native' | 'both';
+  redirectUrl?: string;
 }
 
 const {
+  formId,
   title,
   intro,
   subject,
@@ -66,32 +96,116 @@ const {
   campaign,
   fields,
   consentLabel = 'أوافق على معالجة بياناتي الشخصية المدخلة وفقاً لـ <a href="/privacy-policy/">سياسة الخصوصية</a> و <a href="/pdpl-statement/">بيان الامتثال لنظام PDPL السعودي</a>.',
+  successTitle = 'وصلنا طلبك',
+  successMessage = 'فريق BrightAI للحوكمة والامتثال سيتواصل معك خلال ٢٤ ساعة على نفس وسيلة التواصل اللي ذكرتها.',
+  submitMode = 'both',
+  redirectUrl = MARKETING.leadThankYou,
 } = Astro.props;
 
-const attr = attributionFields({ source, medium, campaign });
-const formAction = `https://formsubmit.co/${MARKETING.leadInbox}`;
+// Note: UTM inputs are rendered explicitly below (with data-utm attrs so
+// the handler can re-populate them at runtime). We do NOT also render
+// them via attributionFields() — that would emit duplicate hidden inputs
+// with the same name, which confuses formserializers + a11y tooling.
+const formAction = LEAD_FORM_ENDPOINTS.native;
+const formActionAjax = LEAD_FORM_ENDPOINTS.ajax;
 
-// Error span IDs — used by both the input (aria-describedby) and the span (id).
-// Same pattern as KernelLeadForm.astro (DEC-A11Y-002 + DEC-KERNEL-AI-2026-07-14).
-const errorIdFor = (name: string) => `${name}-error`;
-const hintIdFor = (name: string) => `${name}-hint`;
+// Stable id helpers — error/hint span ids must match the handler script.
+const errorIdFor = (name: string) => `${formId}-${name}-error`;
+const hintIdFor = (name: string) => `${formId}-${name}-hint`;
+const errorSummaryId = `${formId}-error-summary`;
+const successPanelId = `${formId}-success-panel`;
+
+// Form-level metadata for the handler script. Everything the JS needs is
+// surfaced via data-* attributes (CSP-safe, no inline JSON).
+const formConfig = {
+  formId,
+  ajaxEndpoint: formActionAjax,
+  redirectUrl,
+  // Field validation contract — names + rules only, no values.
+  fields: fields.map((f) => ({
+    name: f.name,
+    type: f.type ?? 'text',
+    required: !!f.required,
+  })),
+};
 ---
 
 <form
-  class="inner-form"
+  class="inner-form lead-form"
   action={formAction}
   method="POST"
   aria-label={title}
+  data-lead-form
+  data-form-id={formId}
+  data-form-action-ajax={formActionAjax}
+  data-redirect-url={redirectUrl}
+  data-submit-mode={submitMode}
+  data-form-config={JSON.stringify(formConfig)}
   novalidate
 >
   <input type="hidden" name="_subject" value={subject} />
   <input type="hidden" name="_captcha" value="false" />
-  <input type="hidden" name="_next" value={MARKETING.leadThankYou} />
+  <input type="hidden" name="_next" value={redirectUrl} />
   <input type="hidden" name="_template" value="table" />
-  {attr.map((a) => <input type="hidden" name={a.name} value={a.value} />)}
+  <input type="hidden" name="_form_id" value={formId} />
+  {/* UTM / referrer / landing fields — the handler script overwrites the
+      `value` attribute with whatever it pulled from the URL or session
+      storage. The defaults below are placeholders for the no-JS case. */}
+  <input type="hidden" name="utm_source" data-utm="source" value={source ?? ''} />
+  <input type="hidden" name="utm_medium" data-utm="medium" value={medium ?? ''} />
+  <input type="hidden" name="utm_campaign" data-utm="campaign" value={campaign ?? ''} />
+  <input type="hidden" name="utm_content" data-utm="content" value="" />
+  <input type="hidden" name="utm_term" data-utm="term" value="" />
+  <input type="hidden" name="referrer" data-meta="referrer" value="" />
+  <input type="hidden" name="landing_page" data-meta="landing_page" value="" />
+
+  {/* Honeypot — visually hidden field bots love to fill. Tabindex -1 so
+      keyboard users skip it; aria-hidden so screen readers skip it; if
+      anything lands here, the handler aborts the submit and fakes a
+      success. Never trust the value: we just check whether it's filled. */}
+  <div class="lead-form__honeypot" aria-hidden="true">
+    <label for={`${formId}-honey`}>Leave this field empty</label>
+    <input
+      id={`${formId}-honey`}
+      name="_honey"
+      type="text"
+      tabindex="-1"
+      autocomplete="off"
+      data-honeypot
+    />
+  </div>
 
   <h3 class="form-card__title">{title}</h3>
   {intro && <p class="form-card__desc">{intro}</p>}
+
+  {/* Form-level error summary — populated by the handler after a failed
+      submit. role=alert + aria-live=assertive so screen readers announce
+      it as soon as it appears. Hidden by default. */}
+  <div
+    id={errorSummaryId}
+    class="lead-form__error-summary"
+    role="alert"
+    aria-live="assertive"
+    data-form-error-summary
+    hidden
+  >
+    <p class="lead-form__error-summary-title">في الأخطاء اللي تحتاج تصحيح:</p>
+    <ul data-form-error-list></ul>
+  </div>
+
+  {/* Form-level error banner — surfaces server / network errors that
+      don't belong to a specific field. Distinct from the per-field error
+      summary (which holds validation messages) so the user can tell
+      apart "wrong format" from "the request didn't go through". */}
+  <div
+    class="lead-form__error-banner"
+    role="alert"
+    aria-live="assertive"
+    data-form-error-banner
+    hidden
+  >
+    <p data-form-error-banner-text></p>
+  </div>
 
   <div class="form-row form-row--2">
   {
@@ -101,11 +215,10 @@ const hintIdFor = (name: string) => `${name}-hint`;
       const inputType = isSelect || isArea ? undefined : f.type || 'text';
       const errorId = errorIdFor(f.name);
       const hintId = f.hint ? hintIdFor(f.name) : undefined;
-      // aria-describedby: hint + error (whichever exist)
       const describedBy = [hintId, errorId].filter(Boolean).join(' ') || undefined;
       return (
         <div class:list={['form-field', f.full && 'form-field--full']}>
-          <label class="form-label" for={f.name}>
+          <label class="form-label" for={`${formId}-${f.name}`}>
             {f.label}
             {f.required && <span class="form-label__required" aria-hidden="true">*</span>}
           </label>
@@ -113,38 +226,42 @@ const hintIdFor = (name: string) => `${name}-hint`;
             <>
               <select
                 class="field field--select"
-                id={f.name}
+                id={`${formId}-${f.name}`}
                 name={f.name}
                 required={f.required}
                 aria-required={f.required ? 'true' : undefined}
                 aria-describedby={describedBy}
+                data-field={f.name}
+                data-field-type="select"
               >
                 <option value="">اختر…</option>
                 {f.options?.map((o) => <option>{o}</option>)}
               </select>
               {f.hint && <span id={hintId} class="form-field__hint">{f.hint}</span>}
-              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" hidden></span>
+              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" data-field-error hidden></span>
             </>
           ) : isArea ? (
             <>
               <textarea
                 class="field field--textarea"
-                id={f.name}
+                id={`${formId}-${f.name}`}
                 name={f.name}
                 required={f.required}
                 aria-required={f.required ? 'true' : undefined}
                 aria-describedby={describedBy}
                 placeholder={f.placeholder}
+                data-field={f.name}
+                data-field-type="textarea"
               ></textarea>
               {f.hint && <span id={hintId} class="form-field__hint">{f.hint}</span>}
-              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" hidden></span>
+              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" data-field-error hidden></span>
             </>
           ) : (
             <>
               <input
                 class="field"
                 type={inputType}
-                id={f.name}
+                id={`${formId}-${f.name}`}
                 name={f.name}
                 required={f.required}
                 aria-required={f.required ? 'true' : undefined}
@@ -152,9 +269,11 @@ const hintIdFor = (name: string) => `${name}-hint`;
                 autocomplete={f.autocomplete}
                 inputmode={f.type === 'tel' ? 'tel' : f.type === 'email' ? 'email' : undefined}
                 placeholder={f.placeholder}
+                data-field={f.name}
+                data-field-type={f.type ?? 'text'}
               />
               {f.hint && <span id={hintId} class="form-field__hint">{f.hint}</span>}
-              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" hidden></span>
+              <span id={errorId} class="form-field__error" role="alert" aria-live="polite" data-field-error hidden></span>
             </>
           )}
         </div>
@@ -167,20 +286,48 @@ const hintIdFor = (name: string) => `${name}-hint`;
     <input
       required
       aria-required="true"
-      aria-describedby="pdpl-consent-error"
-      id="pdpl_consent"
+      aria-describedby={`${formId}-pdpl-consent-error`}
+      id={`${formId}-pdpl_consent`}
       name="pdpl_consent"
       type="checkbox"
       class="form-field__checkbox"
+      data-field="pdpl_consent"
+      data-field-type="checkbox"
     />
-    <label for="pdpl_consent" class="form-field__consent-text" set:html={consentLabel}></label>
-    <span id="pdpl-consent-error" class="form-field__error" role="alert" aria-live="polite" hidden></span>
+    <label for={`${formId}-pdpl_consent`} class="form-field__consent-text" set:html={consentLabel}></label>
+    <span id={`${formId}-pdpl-consent-error`} class="form-field__error" role="alert" aria-live="polite" data-field-error="pdpl_consent" hidden></span>
   </div>
 
-  <button class="btn btn--primary btn--block inner-form__submit" type="submit">
-    <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-send"></use></svg>
-    {ctaLabel}
+  <button
+    class="btn btn--primary btn--block inner-form__submit lead-form__submit"
+    type="submit"
+    data-submit-button
+    data-default-label={ctaLabel}
+  >
+    <span class="lead-form__submit-icon" aria-hidden="true" data-submit-icon="idle">
+      <svg width="20" height="20"><use href="/icons.svg#mdi-send"></use></svg>
+    </span>
+    <span data-submit-label>{ctaLabel}</span>
   </button>
+
+  {/* Success panel — replaces the form after a successful submit.
+      role=status + aria-live=polite so screen readers announce it. */}
+  <div
+    id={successPanelId}
+    class="lead-form__success"
+    role="status"
+    aria-live="polite"
+    data-form-success
+    hidden
+  >
+    <svg class="lead-form__success-icon" aria-hidden="true" width="2rem" height="2rem"><use href="/icons.svg#mdi-check-circle"></use></svg>
+    <p class="lead-form__success-title">{successTitle}</p>
+    <p class="lead-form__success-body">{successMessage}</p>
+    <div class="lead-form__success-actions">
+      <a href="/" class="btn btn--glow">العودة للرئيسية</a>
+      <a href="/solutions/ai-governance-platform/" class="btn btn--whatsapp">استكشف الحلول</a>
+    </div>
+  </div>
 </form>
 
 <style>
@@ -192,8 +339,21 @@ const hintIdFor = (name: string) => `${name}-hint`;
     line-height: 1.6;
   }
   .form-field--full { grid-column: 1 / -1; }
-  /* 2-column field layout when the parent is .form-row--2 */
   .inner-form :global(.form-field) { min-width: 0; }
+
+  /* Honeypot — visually hidden but present in the DOM so bots that scrape
+     every <input> still hit it. tabindex -1 + aria-hidden in the markup
+     keep real users and AT out of it. */
+  .lead-form__honeypot {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
 
   /* DEC-A11Y-002 (2026-07-14): moved from inline styles in template */
   .form-label__required {
@@ -236,4 +396,135 @@ const hintIdFor = (name: string) => `${name}-hint`;
     flex-basis: 100%;
     margin-block-start: 0;
   }
+
+  /* ──────────────────────────────────────────────────────────────────
+     Form-level error summary (CRO Prompt 4 — WCAG 3.3.1)
+     ────────────────────────────────────────────────────────────────── */
+  .lead-form__error-summary {
+    padding: var(--space-3) var(--space-4);
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid var(--status-danger);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+  }
+  .lead-form__error-summary[hidden] { display: none; }
+  .lead-form__error-summary-title {
+    margin: 0 0 var(--space-2);
+    font-weight: var(--font-semibold);
+    color: var(--status-danger);
+  }
+  .lead-form__error-summary ul {
+    margin: 0;
+    padding-inline-start: var(--space-5);
+  }
+  .lead-form__error-summary li {
+    margin-block-end: var(--space-1);
+  }
+  .lead-form__error-summary a {
+    color: var(--status-danger);
+    text-decoration: underline;
+  }
+  .lead-form__error-summary a:focus-visible {
+    outline: 2px solid var(--status-danger);
+    outline-offset: 2px;
+  }
+
+  /* Server / network error banner — distinct from the per-field summary
+     so the user can tell apart "wrong format" from "the request didn't
+     go through". Same danger palette, no field-specific list. */
+  .lead-form__error-banner {
+    padding: var(--space-3) var(--space-4);
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid var(--status-danger);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+  }
+  .lead-form__error-banner[hidden] { display: none; }
+  .lead-form__error-banner p {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--status-danger);
+  }
+
+  /* ──────────────────────────────────────────────────────────────────
+     Submit button states (idle | loading | success | error)
+     ────────────────────────────────────────────────────────────────── */
+  .lead-form__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+  .lead-form__submit[data-state="loading"] {
+    cursor: wait;
+    opacity: 0.85;
+  }
+  .lead-form__submit[data-state="loading"] .lead-form__submit-icon {
+    display: inline-block;
+    animation: lead-form-spin 0.8s linear infinite;
+  }
+  .lead-form__submit[data-state="success"],
+  .lead-form__submit[data-state="error"] {
+    cursor: default;
+  }
+  @keyframes lead-form-spin {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lead-form__submit[data-state="loading"] .lead-form__submit-icon {
+      animation: none;
+    }
+  }
+
+  /* Hide the form chrome while the success panel is showing. Done via
+     [data-state] on the form rather than :has() to keep CSS compatibility
+     with the older Safari that the audit team still uses. */
+  .lead-form[data-state="success"] > :not(.lead-form__success) {
+    display: none;
+  }
+  .lead-form[data-state="submitting"] .lead-form__submit {
+    pointer-events: none;
+  }
+
+  /* ──────────────────────────────────────────────────────────────────
+     Success panel — replaces the form after a successful submit
+     ────────────────────────────────────────────────────────────────── */
+  .lead-form__success {
+    text-align: center;
+    padding: var(--space-6) var(--space-5);
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid var(--status-success);
+    border-radius: var(--radius-lg);
+    color: var(--text-primary);
+  }
+  .lead-form__success[hidden] { display: none; }
+  .lead-form__success-icon {
+    color: var(--status-success);
+    margin-block-end: var(--space-3);
+  }
+  .lead-form__success-title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+  }
+  .lead-form__success-body {
+    margin: 0 0 var(--space-4);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .lead-form__success-actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: center;
+  }
 </style>
+
+<script>
+  // The handler is large enough to live in its own file so the
+  // documentation is in one place and the unit tests can import it.
+  // Astro bundles it as a module so we keep CSP clean (no unsafe-inline).
+  import '../scripts/lead-form-handler.js';
+</script>
