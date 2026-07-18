@@ -1,4 +1,9 @@
-<!-- BAI-VOC-001-A (2026-07-18): VOC injection في title (suffix) + summary (5 ركائز: جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري). tone = "يدعم الجاهزية" لا "مضمون/كامل". -->
+<!-- BAI-VOC-001-A (2026-07-18): VOC injection في title (suffix) + summary (5 ركائز: جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري). tone = "يدعم الجاهزية" لا "مضمون/كامل".
+
+BAI-SEO-003-S1 (2026-07-18): page is an indexable case study, not a pre-purchase sample.
+Decision documented in worklog.md under BAI-SEO-003-S1 → "Customer pages indexable policy".
+Removed `robots="noindex"` (was being silently dropped by BaseLayout). Page is now
+indexable + receives the standard ar-SA + x-default hreflang contract. -->
 ---
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import CaseStudy from '../../../components/CaseStudy.astro';
@@ -27,7 +32,6 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/customers/pharma/' }, { lang: 'x-default', href: 'https://brightai.site/customers/pharma/' }]}
   jsonLd={jsonLd as any}
   currentPath="/customers/pharma/"
-  robots="noindex"
 >
   <CaseStudy
     sector="صناعة دواء"

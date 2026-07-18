@@ -974,3 +974,232 @@ Stage Summary:
 
 الـ commit: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
 Status: **verified** (build 190 ✅, seo:gate 0 ✅, seo:schema 0 ✅, seo:link-graph 0 ✅, Playwright ALL CHECKS PASS mobile+desktop ✅, 14 CTAs all with event metadata ✅, 3 Service Schema + 8 FAQ Schema ✅).
+
+---
+
+# BAI-SEO-003-S1 — Meta Layer Only Sweep (2026-07-18)
+
+## Task
+تنفيذ BAI-SEO-003-S1 من `audit/seo-2026/MASTER-SEO-AEO-AUDIT-AR.md`:
+تدقيق وإصلاح طبقة metadata فقط لكل صفحة قابلة للفهرسة (title وdescription وcanonical وrobots وOG/Twitter وhreflang) دون لمس محتوى `<body>`.
+
+## المنهجية
+- استخدمت Sequential Thinking قبل التنفيذ (مشكلة: 4 صفحات تطلب noindex لكن BaseLayout يسقطه بصمت).
+- اخترت: allowlist صريح في BaseLayout + منع hreflang على صفحات noindex في SEOHead.
+- فحوصات: 3 scripts رسمية + script جديد مخصص للـ noindex contract.
+
+## Baseline (قبل الإصلاح)
+
+### `node scripts/seo-health-check.mjs`
+- إجمالي HTML: 190
+- canonical: ✅ كل صفحة عندها
+- title: ✅ كل صفحة
+- description: ✅ كل صفحة
+- H1: ❌ design/typography/index.html (مو metadata — خارج النطاق)
+- onrender refs: ✅ 0
+- noindex_hreflang: ✅ 0 (لكن فعليًا: /thank-you/ كان فيه hreflang بدون noindex — تعرّض غير مكتشف)
+- hreflang_ghost: ✅ 0
+- النتيجة: **1 issue** (H1 — body content، خارج النطاق)
+
+### `pnpm seo:gate`
+- hreflang pages: 6/6 ✅
+- service pages: 5/5 ✅
+- broken links: 0
+- HTML noindex+hreflang: 0
+- **0 errors, 0 warnings**
+
+### فحص يدوي لطبقة metadata
+- /thank-you/index.html → robots: `index, follow, max-...` ❌ (كان يطلب `noindex` لكن BaseLayout يسقط)
+- /customers/{bank,hospital,pharma}/index.html → robots: `index, follow, max-...` ⚠️ (هم case studies indexable لكن الكود يطلب `noindex` بدون توثيق)
+- /authors/{brightai-team,compliance-officer,nasser-alabdullah,yazeed-alshareef}/index.html → نفس title مكرر 4 مرات ❌
+- /privacy-cookies/index.html → hreflang en-SA → /en/privacy-cookies/ (غير موجود) ❌
+
+## التغييرات
+
+### 1) `src/layouts/BaseLayout.astro` — allowlist صريح لـ noindex
+```diff
+- // Robots hard-coded to "index, follow" — never noindex.
+- const finalRobots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
++ // Robots policy (BAI-SEO-003-S1, 2026-07-18):
++ //   Default: "index, follow, max-..." (per REPORTS-SEO-FOUNDATION).
++ //   Exception (allowlisted): /thank-you/ is the only path allowed to emit
++ //   "noindex, follow". It's a post-submit confirmation page with no SEO
++ //   value, and its presence in the index would waste crawl budget. Adding
++ //   a new path here requires a documented SEO decision in the worklog and
++ //   the matching page must pass `robots="noindex, follow"` explicitly.
++ const NOINDEX_ALLOWLIST = new Set(['/thank-you/']);
++ const normalizedCurrentPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
++ const isNoindexAllowed = NOINDEX_ALLOWLIST.has(normalizedCurrentPath);
++ const wantsNoindex = typeof robots === 'string' && /noindex/i.test(robots);
++ const finalRobots = isNoindexAllowed && wantsNoindex
++   ? 'noindex, follow'
++   : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+```
+
+### 2) `src/components/SEOHead.astro` — منع hreflang لما noindex
+```diff
+- // Hard guard — REPORTS-SEO-FOUNDATION: never allow noindex. Even if a page
+- // (or layout) passes robots="noindex, follow", we strip the noindex token
+- // and force "index, follow". This keeps the foundation rule tamper-proof.
+- const SAFE_ROBOTS = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+- const safeRobots = robots && /noindex/i.test(robots) ? SAFE_ROBOTS : (robots || SAFE_ROBOTS);
++ // Robots directive (BAI-SEO-003-S1, 2026-07-18):
++ //   BaseLayout already owns the allowlist + final coercion (only /thank-you/
++ //   may emit noindex). SEOHead honors the value passed in as-is so the
++ //   downstream contract is single-source. If a page is noindex, hreflang
++ //   + x-default annotations are dropped (Google guidelines: a noindex page
++ //   must not carry hreflang, otherwise the cluster breaks).
++ const isNoindexPage = /noindex/i.test(robots || '');
++ const safeRobots = robots || 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+```
+
+```diff
+- if (isArabic && !hasEnSA && canonical && hasEnglishCounterpart) {
++ if (isArabic && !hasEnSA && canonical && hasEnglishCounterpart && !isNoindexPage) {
+    const enHref = canonical.replace(`${SITE.url}/`, `${SITE.url}/en/`);
+    enrichedHreflang.push({ lang: 'en-SA', href: enHref });
+  }
++ // BAI-SEO-003-S1 (2026-07-18): drop hreflang annotations on noindex pages
++ const finalHreflang = isNoindexPage ? [] : enrichedHreflang;
++ const finalHasXDefault = finalHreflang.some((link) => link.lang === 'x-default');
+```
+
+```diff
+- {enrichedHreflang.map((link) => (
++ {finalHreflang.map((link) => (
+    <link rel="alternate" hreflang={link.lang} href={link.href} />
+  ))}
+- {!finalHasXDefault && enrichedHreflang.length > 0 && !safeRobots.includes('noindex') && (
++ {!finalHasXDefault && finalHreflang.length > 0 && !isNoindexPage && (
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+  )}
+```
+
+### 3) `src/pages/thank-you/index.astro` — توثيق العقد
+- أزلت `hreflang` prop (صفحة noindex ما تحتاجه).
+- خليت `robots="noindex, follow"` صريح (BaseLayout يطبّقه عبر allowlist).
+- `currentPath="/thank-you/"` وcanonical ما تغير.
+
+### 4) صفحات customers/* — قرار موثق
+ملفات: `src/pages/customers/{bank,hospital,pharma}/index.astro`
+القرار: customers هي case studies indexable (real data + metrics)، تخدم AEO وتجيب traffic عضوي. لا تحطها كنماذج قبل الشراء.
+- حذفت `robots="noindex"` من frontmatter.
+- أضفت comment BAI-SEO-003-S1 يوثّق القرار.
+- الحين indexable + تأخذ hreflang ar-SA + x-default contract.
+
+### 5) `src/pages/authors/[slug].astro` — title/description ديناميكي
+الكل كان يكرر "م. ناصر العبدالله | مؤسس BrightAI وخبير AI" 4 مرات.
+- بدّلت `title` و`description` بـ template يستخدم `author.name` و`author.bio`.
+- النتيجة: 4 عناوين فريدة + 4 أوصاف فريدة (من bio، مقتطعة لـ ~155 char).
+
+### 6) `src/data/hreflang-pairs.ts` — إزالة peer غير موجود
+- كان `EXPLICIT_HREFLANG_PAIRS` يربط `/privacy-cookies/` بـ `/en/privacy-cookies/`.
+- لكن `/en/privacy-cookies/index.html` ما يتبنى (src/pages/en/ ما فيها).
+- حذفت الـ entry. الحين `/privacy-cookies/` AR-only (ar-SA + x-default فقط).
+- إضافة ملف peer EN يكون منفصل (خارج نطاق S1 — ممنوع إنشاء صفحات).
+
+### 7) `src/data/hreflang-pairs.ts` — إصلاح build plumbing
+```diff
+- import { SITE, type HreflangLink } from './site';
++ import { SITE, type HreflangLink } from './site.ts';
+```
+السبب: Node 22 `--experimental-strip-types` ما يحل extensionless imports من داخل `.ts` modules. `generate-sitemap-all-pages.mjs` و `seo-ci-check.mjs` يستوردون `.ts` مباشرة بدون ts-loader. ضروري عشان `pnpm build` يكمل. (مو schema — plumbing فقط).
+
+### 8) `scripts/noindex-contract-check.mjs` — acceptance script جديد
+سكربت متخصص يفحص 13 قاعدة:
+- 0 missing title/description/canonical
+- canonical مطلق HTTPS
+- canonical متسق trailing slash
+- canonical يشير لـ brightai.site
+- 0 title مكرر
+- 0 description مكرر
+- noindex محصور بالـ allowlist (حالياً `/thank-you/`)
+- صفحات noindex ما فيها hreflang
+- صفحات الـ allowlist فعلاً noindex
+- مسار الـ allowlist موجود فعليًا
+
+## النتيجة النهائية
+
+### `node scripts/noindex-contract-check.mjs` (جديد)
+- HTML scanned: 190
+- Pages rendering noindex: 1 (thank-you/index.html)
+- Allowlist: `/thank-you/`
+- **13/13 checks pass** ✅
+- **0 missing title/description/canonical و0 canonical duplicates غير مقصودة و0 noindex-contract mismatch**
+- **اختبار القبول BAI-SEO-003-S1 نجح.** ✅
+
+### `node scripts/seo-health-check.mjs`
+- canonical: ✅ كل صفحة
+- title: ✅ كل صفحة
+- description: ✅ كل صفحة
+- H1: ❌ design/typography/index.html (out of scope — body content)
+- noindex_hreflang: ✅ 0
+- hreflang_ghost: ✅ 0
+- النتيجة: **1 issue (H1) — خارج نطاق S1** (المستخدم: "ممنوع تعديل أي نص داخل <body>")
+
+### `pnpm seo:gate`
+- 0 errors, 0 warnings ✅
+
+## القبول النهائي (per S1 spec)
+
+| Acceptance criterion | Status |
+|---|---|
+| 0 missing title/description/canonical | ✅ |
+| 0 canonical duplicates غير مقصودة | ✅ (كل canonical فريد عبر 190 صفحة) |
+| 0 noindex-contract mismatch | ✅ (/thank-you/ = noindex, no hreflang؛ الباقي indexable) |
+| /thank-you/ يبقى noindex | ✅ |
+| صفحات customers indexable + موثقة | ✅ |
+| canonical مطلق HTTPS + متسق trailing slash | ✅ |
+| title فريد | ✅ (4 عناوين authors فريدة + باقي 186 فريدة) |
+| description فريد | ✅ (4 أوصاف authors فريدة + باقي 186 فريدة) |
+| لا hreflang لصفحة peer غير موجودة | ✅ (privacy-cookies شيلت من map) |
+| لا حذف صفحة، لا redirect، لا duplicate route | ✅ |
+| لا تعديل <body> | ✅ (H1 في design/typography خارج النطاق ومتروك) |
+| لا تغيّر schema خارج ما يلزم | ✅ (سكة hreflang-pairs.ts كانت pre-existing من S2 setup) |
+
+## الملفات المتأثرة
+
+| File | Type | Description |
+|---|---|---|
+| `src/layouts/BaseLayout.astro` | Edited | أضفت NOINDEX_ALLOWLIST + finalRobots مع allowlist |
+| `src/components/SEOHead.astro` | Edited | شرط `&& !isNoindexPage` + `finalHreflang` منقّحة |
+| `src/pages/thank-you/index.astro` | Edited | حذف `hreflang`، `robots="noindex, follow"` صريح |
+| `src/pages/customers/bank/index.astro` | Edited | حذف `robots="noindex"` + BAI-SEO-003-S1 comment |
+| `src/pages/customers/hospital/index.astro` | Edited | نفس الشي |
+| `src/pages/customers/pharma/index.astro` | Edited | نفس الشي |
+| `src/pages/authors/[slug].astro` | Edited | title/description ديناميكي من `author.name/bio` |
+| `src/data/hreflang-pairs.ts` | Edited | حذف `/privacy-cookies` peer + إصلاح import extension |
+| `scripts/noindex-contract-check.mjs` | Created | acceptance script جديد متخصص |
+| `_reports/BAI-SEO-003-S1-INVENTORY.md` | Created | inventory src/pages ↔ dist/client |
+
+## المخاطر المتبقية
+
+- **H1 في design/typography**: 2 `<h1>` (1 page header + 1 sample في typography card). الصفحة هي مرجع typography الداخلي، فوجود h1 داخل cards مقصود. **خارج نطاق S1** (body). متروك كما هو.
+- **`/en/privacy-cookies/` غير موجود**: حذفته من map. لو احتجناه مستقبلاً، نضيف src/pages/en/privacy-cookies/index.astro مع نفس محتوى AR. (خارج نطاق S1 — ممنوع إنشاء صفحات).
+- **en-SA counterpart مفقود لـ ~170 صفحة AR**: طبيعي، أغلب الموقع AR-only. يخدم AEO.
+
+## الـ commit
+
+الـ commit: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+
+الرسالة المقترحة:
+```
+feat(seo): BAI-SEO-003-S1 metadata layer sweep
+
+- Allowlist /thank-you/ as the only noindex-eligible path in BaseLayout
+- SEOHead drops hreflang + x-default when robots = noindex (Google contract)
+- Customers/* pages: documented decision to remain indexable (real case studies)
+- Authors/[slug]: dynamic title/description (was 4× duplicate of one author)
+- Remove bogus en-SA peer /en/privacy-cookies/ (page doesn't exist)
+- Add scripts/noindex-contract-check.mjs acceptance script
+
+Verification:
+- node scripts/noindex-contract-check.mjs → 13/13 pass
+- node scripts/seo-health-check.mjs → only H1 on design/typography remains (out of scope)
+- pnpm seo:gate → 0 errors, 0 warnings
+- 190 HTML files in dist/client, 176 URLs in sitemap
+
+Closes BAI-SEO-003-S1 acceptance.
+```
+
+Status: **verified** (noindex-contract-check 13/13 ✅, seo:gate 0 ✅, build 190 ✅).

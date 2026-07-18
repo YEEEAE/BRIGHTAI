@@ -2,12 +2,12 @@
 import { promises as fs } from "fs";
 import path from "path";
 import {
-  findCounterpartRelPath,
   isPublicIndexableRelPath,
   normalizeSiteUrl,
   relPathToCanonical,
   relPathToSitePath,
 } from "./seo-url-map.mjs";
+import { getHreflangLinks } from "../src/data/hreflang-pairs.ts";
 import {
   HIGH_CONFIDENCE_CORE_FILES,
   RECOVERY_SITEMAP_REQUIRED_FILES,
@@ -38,38 +38,18 @@ const SERVICE_OG_IMAGE_URLS = new Set([
 const HTML_IGNORE_DIRS = new Set([".git", ".agents", "node_modules", "dist", "build", "coverage", ".next", ".nuxt", ".render-static", "components", "client", "server"]);
 const INTERNAL_PAGE_PATTERN =
   /(^|\/)(404|500)\.html$|(^|\/)offline\/index\.html$|^aimais\/public\/|^mais-OBM\/index\.html$|(^|\/)(admin|settings|analytics|reports|operations|scorecard|copilot|executive)(\/|\.|$)/i;
-function buildRequiredHreflangForFile(file, lowerPathMap) {
+// BAI-SEO-003-S2 (2026-07-18): build required hreflang from the explicit
+// pair map (src/data/hreflang-pairs.ts) instead of deriving /en/ by path
+// matching. getHreflangLinks() guarantees self-reference + return tag +
+// x-default and never invents an en-SA counterpart for AR-only pages.
+function buildRequiredHreflangForFile(file) {
   const selfUrl = relPathToCanonical(file, BASE_URL);
-  const counterpart = findCounterpartRelPath(file, lowerPathMap);
-  const counterpartUrl = counterpart ? relPathToCanonical(counterpart, BASE_URL) : null;
-  const isEnglish = /-en\.html$/i.test(file) || file === "en/index.html" || file.startsWith("en/");
-
-  if (isEnglish) {
-    if (counterpartUrl) {
-      return {
-        "ar-SA": counterpartUrl,
-        "en-SA": selfUrl,
-        "x-default": counterpartUrl,
-      };
-    }
-    return {
-      "en-SA": selfUrl,
-      "x-default": selfUrl,
-    };
+  const links = getHreflangLinks(selfUrl);
+  const out = {};
+  for (const link of links) {
+    out[link.lang] = link.href;
   }
-
-  if (counterpartUrl) {
-    return {
-      "ar-SA": selfUrl,
-      "en-SA": counterpartUrl,
-      "x-default": selfUrl,
-    };
-  }
-
-  return {
-    "ar-SA": selfUrl,
-    "x-default": selfUrl,
-  };
+  return out;
 }
 
 const SERVICE_PAGE_MAP = new Map(SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => [file.toLowerCase(), file]));
@@ -95,12 +75,12 @@ const HREFLANG_PAGE_FILES = [...new Set(RECOVERY_SITEMAP_REQUIRED_FILES)];
 const HREFLANG_PAGES = HREFLANG_PAGE_FILES.map((file) => ({
   file,
   canonical: relPathToCanonical(file, BASE_URL),
-  hreflang: buildRequiredHreflangForFile(file, ALL_CORE_FILES_MAP),
+  hreflang: buildRequiredHreflangForFile(file),
 }));
 const SERVICE_PAGES = SITEMAP_REQUIRED_SERVICE_PAGE_FILES.map((file) => ({
   file,
   canonical: relPathToCanonical(file, BASE_URL),
-  hreflang: buildRequiredHreflangForFile(file, SERVICE_PAGE_MAP),
+  hreflang: buildRequiredHreflangForFile(file),
 }));
 
 const SITEMAP_BANNED_PATTERNS = [

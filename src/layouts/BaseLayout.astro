@@ -97,8 +97,22 @@ const finalCanonical =
   canonical ||
   new URL(currentPath, SITE.url).toString().replace(/\/$/, '/').replace(/([^:])\/{2,}/g, '$1/');
 
-// Robots hard-coded to "index, follow" — never noindex.
-const finalRobots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+// Robots policy (BAI-SEO-003-S1, 2026-07-18):
+//   Default: "index, follow, max-..." (per REPORTS-SEO-FOUNDATION).
+//   Exception (allowlisted): /thank-you/ is the only path allowed to emit
+//   "noindex, follow". It's a post-submit confirmation page with no SEO
+//   value, and its presence in the index would waste crawl budget. Adding
+//   a new path here requires a documented SEO decision in the worklog and
+//   the matching page must pass `robots="noindex, follow"` explicitly.
+//   No other page may opt-in to noindex — the SEOHead/SEO foundation rule
+//   that all public content is indexable remains in force.
+const NOINDEX_ALLOWLIST = new Set(['/thank-you/']);
+const normalizedCurrentPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+const isNoindexAllowed = NOINDEX_ALLOWLIST.has(normalizedCurrentPath);
+const wantsNoindex = typeof robots === 'string' && /noindex/i.test(robots);
+const finalRobots = isNoindexAllowed && wantsNoindex
+  ? 'noindex, follow'
+  : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 
 // Build the @graph: foundation nodes + breadcrumbs + page extras + page jsonLd
 // All in a single block (avoids duplicate <script type="application/ld+json">).

@@ -39,6 +39,7 @@
     "seo:check": "node scripts/seo-health-check.mjs && npm run seo:legacy && npm run seo:content",
     "seo:schema": "npm run schema:solutions:check && npm run schema:docs:check && node scripts/seo-schema-audit.mjs && node scripts/check-speakable-schema.mjs",
     "seo:gate": "node scripts/seo-ci-check.mjs",
+    "seo:hreflang": "node scripts/hreflang-bidirectional-audit.mjs",
     "seo:legacy": "node --test scripts/legacy-seo-surface.test.mjs",
     "seo:content": "node --test scripts/content-acceptance.test.mjs",
     "seo:legacy-paths": "node scripts/legacy-paths-audit.mjs --strict",

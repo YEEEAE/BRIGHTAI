@@ -80,8 +80,8 @@ const authorJsonLd = {
 ---
 
 <ArabicLayout
-  title="م. ناصر العبدالله | مؤسس BrightAI وخبير AI"
-  description="م. ناصر العبدالله مؤسس BrightAI يكتب عن حوكمة الذكاء الاصطناعي وPDPL وNCA ECC وإرشادات سدايا. السيرة الكاملة والمقالات المهنية على الموقع الرسمي."
+  title={`${author.name} | ${author.title} | BrightAI`}
+  description={`${author.bio.slice(0, 155).replace(/\s+\S*$/, '')}...`}
   canonical={author.url}
   hreflang={[{ lang: 'ar-SA', href: author.url }]}
   jsonLd={authorJsonLd as any}

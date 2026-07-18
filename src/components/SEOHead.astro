@@ -13,7 +13,7 @@
  */
 import { SITE } from '../data/site';
 import type { SEOProps } from '../data/site';
-import { LEGAL_I18N_PAIRS } from '../data/i18n-pairs';
+import { getHreflangLinks } from '../data/hreflang-pairs';
 import DOMPurify from 'isomorphic-dompurify';
 
 interface HreflangLink {
@@ -42,37 +42,32 @@ const {
   robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1',
 } = Astro.props as Props;
 
-// Hard guard — REPORTS-SEO-FOUNDATION: never allow noindex. Even if a page
-// (or layout) passes robots="noindex, follow", we strip the noindex token
-// and force "index, follow". This keeps the foundation rule tamper-proof.
-const SAFE_ROBOTS = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
-const safeRobots = robots && /noindex/i.test(robots) ? SAFE_ROBOTS : (robots || SAFE_ROBOTS);
+// Robots directive (BAI-SEO-003-S1, 2026-07-18):
+//   BaseLayout already owns the allowlist + final coercion (only /thank-you/
+//   may emit noindex). SEOHead honors the value passed in as-is so the
+//   downstream contract is single-source. If a page is noindex, hreflang
+//   + x-default annotations are dropped (Google guidelines: a noindex page
+//   must not carry hreflang, otherwise the cluster breaks). All other
+//   pages get the foundation "index, follow, max-..." directive.
+const isNoindexPage = /noindex/i.test(robots || '');
+const safeRobots = robots || 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 
 const fullOgImage = ogImage.startsWith('http') ? ogImage : `${SITE.url}${ogImage}`;
 const siteName = SITE.name;
 
-const isArabic = locale === 'ar';
-const hasEnSA = hreflang.some((link) => link.lang === 'en-SA');
-const enrichedHreflang = [...hreflang];
+// BAI-SEO-003-S2 (2026-07-18): build hreflang from the explicit pair map
+// (src/data/hreflang-pairs.ts) instead of deriving /en/ by string replacement.
+// getHreflangLinks() guarantees: self-reference + return tag + x-default,
+// and never invents an en-SA counterpart for AR-only pages.
+const explicitHreflang = canonical ? getHreflangLinks(canonical) : [...hreflang];
 
-let currentPathname = '';
-try {
-  currentPathname = canonical ? new URL(canonical).pathname : Astro.url.pathname;
-} catch (e) {
-  currentPathname = Astro.url.pathname;
-}
-const normalizedPath = currentPathname.endsWith('/') ? currentPathname : `${currentPathname}/`;
-
-// التحقق من أن المسار الحالي يحتوي على ترجمة إنجليزية معتمدة في LEGAL_I18N_PAIRS
-const hasEnglishCounterpart = LEGAL_I18N_PAIRS.some(
-  (pair) => pair.arabic === normalizedPath || pair.english === normalizedPath
-);
-
-if (isArabic && !hasEnSA && canonical && hasEnglishCounterpart) {
-  const enHref = canonical.replace(`${SITE.url}/`, `${SITE.url}/en/`);
-  enrichedHreflang.push({ lang: 'en-SA', href: enHref });
-}
-const finalHasXDefault = enrichedHreflang.some((link) => link.lang === 'x-default');
+// BAI-SEO-003-S1 (2026-07-18): drop hreflang annotations on noindex pages
+// (Google cluster contract). When a page is noindex, we keep no
+// hreflang links at all — neither the explicit ones from the map nor any
+// passed-in prop, and we do not emit x-default. This keeps the
+// noindex contract consistent across crawlers.
+const finalHreflang = isNoindexPage ? [] : explicitHreflang;
+const finalHasXDefault = finalHreflang.some((link) => link.lang === 'x-default');
 ---
 
 <!-- Primary Meta Tags -->
@@ -100,10 +95,10 @@ const finalHasXDefault = enrichedHreflang.some((link) => link.lang === 'x-defaul
 <meta name="twitter:image:alt" content={ogImageAlt} />
 
 <!-- Hreflang -->
-{enrichedHreflang.map((link) => (
+{finalHreflang.map((link) => (
   <link rel="alternate" hreflang={link.lang} href={link.href} />
 ))}
-{!finalHasXDefault && enrichedHreflang.length > 0 && !safeRobots.includes('noindex') && (
+{!finalHasXDefault && finalHreflang.length > 0 && !isNoindexPage && (
   <link rel="alternate" hreflang="x-default" href={canonical} />
 )}
 

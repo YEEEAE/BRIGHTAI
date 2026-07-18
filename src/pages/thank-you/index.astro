@@ -36,9 +36,8 @@ const nextSteps = [
   title="شكراً لتواصلك معنا | BrightAI"
   description="وصلنا طلبك. فريق BrightAI للحوكمة والامتثال سيتواصل معك خلال 24 ساعة."
   canonical="https://brightai.site/thank-you/"
-  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/thank-you/' }, { lang: 'x-default', href: 'https://brightai.site/thank-you/' }]}
   currentPath="/thank-you/"
-  robots="noindex"
+  robots="noindex, follow"
 >
 
   <section class="page-hero page-hero--centered" aria-label="تأكيد الاستلام">
@@ -84,8 +83,8 @@ const nextSteps = [
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
       if (!id) return;
-      const el = document.querySelector('[data-thank-you-id]');
-      const val = document.querySelector('[data-thank-you-id-value]');
+      const el = document.querySelector<HTMLElement>('[data-thank-you-id]');
+      const val = document.querySelector<HTMLElement>('[data-thank-you-id-value]');
       if (el && val) {
         val.textContent = id;
         el.hidden = false;

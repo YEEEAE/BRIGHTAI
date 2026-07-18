@@ -5,11 +5,11 @@ import path from "path";
 import { promisify } from "util";
 import {
   buildPublicUrlRegistry,
-  findCounterpartRelPath,
   normalizeRelPath,
   normalizeSiteUrl,
   relPathToCanonical,
 } from "./seo-url-map.mjs";
+import { getHreflangLinks } from "../src/data/hreflang-pairs.ts";
 import {
   extractCanonicalHref,
   hasMetaRefresh,
@@ -270,46 +270,17 @@ function hasHtmlUrlPath(url) {
   }
 }
 
-function buildHreflangSet(entry, registry, lowerPathMap) {
-  const selfUrl = registry.canonicalByRelPath.get(entry.relPath) || entry.loc;
-  if (!selfUrl || !registry.publicRelPaths.has(entry.relPath)) {
+// BAI-SEO-003-S2 (2026-07-18): build hreflang from the explicit pair map
+// (src/data/hreflang-pairs.ts) instead of deriving /en/ by path matching.
+// getHreflangLinks() guarantees self-reference + return tag + x-default and
+// never invents an en-SA counterpart for AR-only pages.
+function buildHreflangSet(entry) {
+  const selfUrl = entry.loc;
+  if (!selfUrl) {
     return [];
   }
-
-  const counterpart = findCounterpartRelPath(entry.relPath, lowerPathMap, {
-    allowedRelPaths: registry.publicRelPaths,
-  });
-  const counterpartUrl = counterpart ? registry.canonicalByRelPath.get(counterpart) : null;
-  const isEnglish = entry.relPath.toLowerCase().startsWith("en/")
-    || /-en\.html$/i.test(entry.relPath)
-    || /-en\/index\.html$/i.test(entry.relPath);
-
-  if (isEnglish) {
-    if (counterpartUrl) {
-      return [
-        { code: "ar-SA", href: counterpartUrl },
-        { code: "en-SA", href: selfUrl },
-        { code: "x-default", href: counterpartUrl },
-      ];
-    }
-    return [
-      { code: "en-SA", href: selfUrl },
-      { code: "x-default", href: selfUrl },
-    ];
-  }
-
-  if (counterpartUrl) {
-    return [
-      { code: "ar-SA", href: selfUrl },
-      { code: "en-SA", href: counterpartUrl },
-      { code: "x-default", href: selfUrl },
-    ];
-  }
-
-  return [
-    { code: "ar-SA", href: selfUrl },
-    { code: "x-default", href: selfUrl },
-  ];
+  const links = getHreflangLinks(selfUrl);
+  return links.map((link) => ({ code: link.lang, href: link.href }));
 }
 
 async function walkHtmlFiles(dirPath) {
@@ -488,7 +459,7 @@ async function main() {
   const processEntries = (list) => {
     const sorted = list.sort((a, b) => a.loc.localeCompare(b.loc, "en"));
     for (const entry of sorted) {
-      entry.alternates = buildHreflangSet(entry, registry, lowerPathMap);
+      entry.alternates = buildHreflangSet(entry);
     }
     return sorted;
   };
