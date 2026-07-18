@@ -1,3 +1,4 @@
+<!-- BAI-VOC-001-A (2026-07-18): VOC injection في H1 + lead — 5 ركائز (جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري). H1 suffix بـ inline style (display:block, font-size:0.5em) يحافظ على SEO anchor "Saudi AI Safety OS" ويضيف VOC تحت. tone = "يدعم الجاهزية" لا "مضمون". -->
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
@@ -54,7 +55,7 @@ const servicesJsonLd = {
       { name: 'الرئيسية', href: '/' },
       { name: 'الخدمات', href: '/services/' },
     ]),
-  ].filter((n): n is Record<string, unknown> => Boolean(n)),
+  ].filter((n) => Boolean(n)) as Record<string, unknown>[],
 };
 ---
 
@@ -64,8 +65,8 @@ const servicesJsonLd = {
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <Breadcrumbs crumbs={crumbs} />
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-cogs"></use></svg> تنفيذ Saudi AI Safety OS للسوق السعودي</div>
-    <h1>خدمات تنفيذ <span class="gradient-text">Saudi AI Safety OS</span> داخل شركتك</h1>
-    <p class="inner-hero__desc">نركّب لك طبقة حماية وحوكمة تشغيلية متكاملة داخل المؤسسة: من تقييم جاهزية AI، لتصميم ضوابط الحماية والتدقيق والموافقة البشرية، ثم الربط الآمن مع أنظمتك الداخلية وتشغيل حالات الاستخدام.</p>
+    <h1>خدمات تنفيذ <span class="gradient-text">Saudi AI Safety OS</span> داخل شركتك <span style="display:block; font-size:0.5em; font-weight:500; color:var(--text-secondary); margin-top:0.5em; line-height:1.4;">بجرد AI ومالك مسؤول ومسار إشراف بشري</span></h1>
+    <p class="inner-hero__desc">نركّب لك طبقة حماية وحوكمة تشغيلية متكاملة داخل المؤسسة: من تقييم جاهزية AI، لتصميم ضوابط الحماية والتدقيق والموافقة البشرية، ثم الربط الآمن مع أنظمتك الداخلية وتشغيل حالات الاستخدام. يبدأ المسار بـ<strong>جرد AI</strong> شامل وتعيين <strong>مالك مسؤول</strong>، ويُستكمل بـ<strong>سجل مخاطر</strong> محدّث و<strong>أدلة جاهزة للتدقيق</strong> وإشراف بشري فعّال على القرارات عالية المخاطر.</p>
     <div class="inner-hero__actions">
       <a href="/contact/" class="glow-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white font-bold"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-check"></use></svg> ابدأ تقييم مجاني</a>
       <a href="https://wa.me/966538229013" target="_blank" rel="nofollow noopener noreferrer" class="wa-btn inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-whatsapp"></use></svg> تواصل عبر واتساب</a>

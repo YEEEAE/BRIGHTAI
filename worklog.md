@@ -533,3 +533,97 @@ Suggested Follow-up:
 - (4) توثيق REDIS_URL في ops runbook (deploy + monitoring + restart recovery)
 - (5) branch + PR + commit (brain.md يقول "لاتنشئ اي commits" — قرار المستخدم)
 - (6) Playwright E2E حقيقي على Render preview (يقيس 5 دورات حقيقية، مو mock) — optional لو تحب نتأكد أكثر
+
+---
+
+Task ID: BAI-VOC-001-A
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: VOC injection في H1 + lead عبر 9 surfaces (homepage + services + 4 sectors + 3 customers) — 5 ركائز (AI inventory، accountable owner، AI risk register، audit-ready evidence، human oversight) مع tone = "يدعم الجاهزية" (لا "مضمون/كامل"). كل hero ≥ 2 VOC pillars. حافظ على الـ SEO anchors في H1. comment `<!-- BAI-VOC-001-A (2026-07-18): ... -->` فوق frontmatter لكل ملف معدّل.
+Started: 2026-07-18T04:12:26+03:00
+Mode: Senior
+Branch: (uncommitted per قاعدة الـ brain — المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد)
+
+Work Log:
+- 04:12: قرأت brain.md كاملاً (v2.7.18, 5306 سطر) + agents/skills index + قسم 0.6 (Brain Protocol) + قسم 0.7 (Conduct Rules)
+- 04:13: خططت بـ Sequential Thinking: 9 surfaces = homepage (1) + services (1) + 4 sectors (تولّد 4 pages) + 3 customers (3) = 9
+- 04:14: قرأت src/pages/index.astro:194 (SplitHero) + src/pages/services/index.astro (كامل، 184 سطر) + src/pages/solutions/[sector].astro (كامل، 320 سطر) + src/data/solutions.ts (sectors part, سطر 286-415) + src/components/CaseStudy.astro (كامل، 160 سطر) + src/pages/customers/{bank,hospital,pharma}/index.astro
+- 04:15: قرأت worklog.md (آخر 5 سطور) + SplitHero.astro (lead part سطر 96-110)
+- 04:16: حددت الـ 5 VOC pillars + الـ persona customization per sector + الـ tone "يدعم الجاهزية" بدل "متوافق/مضمون"
+- 04:18: أضفت `<!-- BAI-VOC-001-A (2026-07-18): ... -->` فوق frontmatter في src/components/SplitHero.astro
+- 04:18: عدّلت SplitHero.astro: H1 suffix (display:block, font-size:0.42em, text-secondary) + lead extension بـ 3 VOC pillars (سجل مخاطر، أدلة جاهزة، إشراف بشري)
+- 04:19: أضفت comment في src/pages/services/index.astro + عدّلت H1 + lead بنفس النمط
+- 04:20: أضفت `vocLead?: string;` للـ SectorData interface في src/data/solutions.ts + comment
+- 04:21: أضفت vocLead مخصص لكل من الـ 4 sectors (banking/government/healthcare/manufacturing) — per-sector persona + regulator references
+- 04:22: أضفت comment في src/pages/solutions/[sector].astro + استبدلت `<p class="inner-hero__desc">{sector.description}</p>` بـ `<p class="inner-hero__desc">{sector.vocLead ?? sector.description}</p>`
+- 04:23: أضفت comment + عدّلت title + summary في src/pages/customers/{bank,hospital,pharma}/index.astro
+- 04:24: شغّلت `npm run build` → 190 صفحة، 0 أخطاء ✅ (sitemap 176 URLs preserved)
+- 04:25: شغّلت `npm run verify:all` → 5/5 فحص ناجح + 16/16 chat-session tests ✅ + seo:gate exit 0 ✅ (0 errors, 0 warnings, 6/6 hreflang, 5/5 service, 0 broken links, 0 canonical issues)
+- 04:26: شغّلت Python http.server على port 8765 (background)
+- 04:27: شغّلت scripts/playwright/audit-voc-001-a.mjs → **18/18 pass** (9 surfaces × 2 viewports) — كل hero 5/5 VOC pillars
+- 04:28: تفقّدت screenshots بصرياً: mobile-services.png, desktop-services.png, mobile-home.png, desktop-home.png, mobile-bank.png, desktop-hospital.png, mobile-manufacturing.png — كلها تبان سليمة، H1 suffix كـ sub-line بـ text-secondary color، lead ممتدة بشكل طبيعي
+- 04:29: أوقفت Python server (kill PID 75623)
+
+Files Changed (7):
+  ~ src/components/SplitHero.astro (+17 سطر H1 suffix + lead extension + 2 inline comments)
+  ~ src/pages/services/index.astro (+2 سطر H1 suffix + lead extension)
+  ~ src/data/solutions.ts (+9 سطور: vocLead interface field + 4 vocLead values per sector)
+  ~ src/pages/solutions/[sector].astro (+3 سطور: comment + vocLead ?? description)
+  ~ src/pages/customers/bank/index.astro (+2 سطور: title suffix + summary extension)
+  ~ src/pages/customers/hospital/index.astro (+2 سطور: title suffix + summary extension)
+  ~ src/pages/customers/pharma/index.astro (+2 سطور: title suffix + summary extension)
+
+الـ 9 Surfaces — Before/After:
+
+| # | Surface | H1 Before | H1 After | Lead (before) | Lead (after — VOC) |
+|---|---|---|---|---|---|
+| 1 | `/` (homepage) | "حوكمة الذكاء الاصطناعي / للشركات / السعودية" | + "بجرد AI ومالك مسؤول — Saudi AI Safety OS" suffix (small grey) | "BrightAI تقدم Saudi AI Safety OS: نواة أمان وتشغيل... آمن، موثّق، وقابل للمراجعة." | + "تساعد المنشأة على تشغيل سجل مخاطر محدّث، وأدلة جاهزة للتدقيق، مع إشراف بشري على القرارات عالية المخاطر." |
+| 2 | `/services/` | "خدمات تنفيذ Saudi AI Safety OS داخل شركتك" | + "بجرد AI ومالك مسؤول ومسار إشراف بشري" suffix | "نركّب لك طبقة حماية وحوكمة تشغيلية متكاملة... تشغيل حالات الاستخدام." | + "يبدأ المسار بجرد AI شامل وتعيين مالك مسؤول، ويُستكمل بسجل مخاطر محدّث وأدلة جاهزة للتدقيق وإشراف بشري فعّال على القرارات عالية المخاطر." |
+| 3 | `/solutions/banking-ai-governance/` | "حوكمة الذكاء الاصطناعي في القطاع المالي والبنكي" (preserved) | preserved | "ضوابط استخدام AI مع بيانات العملاء، امتثال SAMA، NCA ECC، ومكافحة غسل الأموال في البنوك السعودية." | vocLead (5 pillars + SAMA/NCA refs) — "يدعم المنشأة في جاهزية التدقيق عبر جرد AI شامل لمخاطر الائتمان والاحتيال، وتعيين مالك مسؤول للامتثال، وسجل مخاطر محدّث، وأدلة جاهزة للجهات التنظيمية (SAMA / NCA)، مع إشراف بشري على القرارات عالية المخاطر." |
+| 4 | `/solutions/government-ai-governance/` | "حوكمة الذكاء الاصطناعي في الجهات الحكومية" (preserved) | preserved | "حوكمة استخدامات AI في الخدمات الرقمية مع DGA وPDPL ورؤية 2030 وحماية بيانات المستفيدين..." | vocLead (5 pillars + DGA/SDAIA/NCA refs) — "يدعم المنشأة في جاهزية التدقيق عبر جرد AI شفاف للأدوات المعتمدة والظليلة، وتعيين مالك مسؤول لكل خدمة رقمية، وسجل مخاطر محدّث، وأدلة جاهزة للجهات الإشرافية (DGA / SDAIA / NCA)، مع إشراف بشري على الخدمات والموافقات الحساسة." |
+| 5 | `/solutions/healthcare-ai-governance/` | "حوكمة الذكاء الاصطناعي في القطاع الصحي" (preserved) | preserved | "حوكمة استخدامات الذكاء الاصطناعي مع بيانات المرضى، امتثال SFDA، ISO 13485، وسجلات أدلة الجودة..." | vocLead (5 pillars + SFDA/CBAHI refs) — "يدعم المنشأة الصحية في جاهزية التدقيق عبر جرد AI سريري شامل، وتعيين مالك مسؤول للقرارات الطبية، وسجل مخاطر محدّث، وأدلة جاهزة للمدققين (SFDA / CBAHI)، مع إشراف بشري من المختصين على التوصيات السريرية وبيانات المرضى." |
+| 6 | `/solutions/manufacturing-ai-governance/` | "حوكمة الذكاء الاصطناعي في القطاع الصناعي" (preserved) | preserved | "حوكمة AI في الجودة والصيانة التنبؤية وسلامة IoT وتوصيات التشغيل..." | vocLead (5 pillars + SFDA/SASO/NCA refs) — "يدعم المنشأة الصناعية في جاهزية التدقيق عبر جرد AI تشغيلي شامل، وتعيين مالك مسؤول لكل خط إنتاج، وسجل مخاطر الأصول، وأدلة جاهزة للجهات التنظيمية (SFDA / SASO / NCA)، مع إشراف بشري على القرارات المؤثرة على السلامة والجودة." |
+| 7 | `/customers/bank/` | "بنك سعودي رائد" | "بنك سعودي رائد \| حوكمة AI بجرد ومالك مسؤول" | "البنك كان يوسّع استخدام أدوات الذكاء الاصطناعي عبر ١٢ فرعاً رقمياً... تقليل مخاطر تسرب بيانات العملاء." | + "عبر جرد AI شامل ومالك مسؤول للامتثال في كل فرع، وسجل مخاطر محدّث، وأدلة جاهزة للجهات التنظيمية (SAMA / NCA)، مع إشراف بشري على القرارات عالية المخاطر." |
+| 8 | `/customers/hospital/` | "مستشفى كبير" | "مستشفى كبير \| حوكمة AI بسجل مخاطر وإشراف بشري" | "المستشفى استخدم النماذج اللغوية الكبيرة في تحليل التقارير الطبية ودعم القرار السريري... سجلاً تشغيلياً يغطي كل مخرجات الذكاء الاصطناعي." | + "مع جرد AI للأدوات السريرية، ومالك مسؤول للقرارات الطبية، وسجل مخاطر محدّث، وأدلة جاهزة للمدققين (SFDA / CBAHI)، وإشراف بشري من المختصين على التوصيات الحساسة." |
+| 9 | `/customers/pharma/` | "مصنع أدوية" | "مصنع أدوية \| حوكمة AI بأدلة جاهزة للتدقيق" | "المصنع استخدم الذكاء الاصطناعي في البحث والتطوير وتحليل الأوراق العلمية... حوكمة تُنتج الأدلة تلقائياً." | + "مع جرد AI لعمليات R&D، ومالك مسؤول للبحث، وسجل مخاطر محدّث، وأدلة جاهزة للمدققين (SFDA / NDMO)، وإشراف بشري على المخرجات المؤثرة على التركيبات والقرارات العلمية." |
+
+VOC Pillars Coverage (5 = max):
+- AI inventory (جرد AI): 9/9 ✅
+- Accountable owner (مالك مسؤول): 9/9 ✅
+- AI risk register (سجل مخاطر): 9/9 ✅
+- Audit-ready evidence (أدلة جاهزة): 9/9 ✅
+- Human oversight (إشراف بشري): 9/9 ✅
+- Min per hero: 5/5 (all surfaces carry all 5) — **exceeds 2/5 minimum by 250%**
+
+Acceptance Criteria:
+  - ✅ 9 surfaces (≥ 7) — exceeds minimum
+  - ✅ كل hero يتضمن 5 VOC pillars (≥ 2) — exceeds minimum
+  - ✅ لا H1 مكرر (9/9 unique)
+  - ✅ build ناجح (190 صفحة، 0 أخطاء)
+  - ✅ 0 رابط أو قسم محذوف
+  - ✅ tone = "يدعم الجاهزية" (لا "مضمون/كامل/متأكد")
+  - ✅ persona customization per sector (banking→SAMA/NCA، government→DGA/SDAIA، healthcare→SFDA/CBAHI، manufacturing→SFDA/SASO)
+  - ✅ BAI-VOC-001-A comment فوق frontmatter في كل ملف معدّل (7 files)
+  - ✅ Playwright verification: 18/18 pass (9 surfaces × 2 viewports, 5/5 pillars each)
+
+Hard Limits Respected:
+  - ✅ لا صفحة محذوفة، لا قسم محذوف
+  - ✅ لا تعديل CSP (`public/_headers` لم يُلمس)
+  - ✅ لا إعادة تسمية مكون (SplitHero, CaseStudy, ArabicLayout, InnerHero, Breadcrumbs سليمة)
+  - ✅ سُجّل في worklog.md (هذا entry)
+  - ✅ SEO anchors محفوظة (H1 keyword-rich في homepage/services/sectors، title في customers هو anonymized name + VOC suffix)
+  - ✅ `<title>` و `<meta description>` و JSON-LD **لم يتغيّروا** (sectors description للـ meta محفوظ، vocLead للـ hero paragraph فقط)
+  - ✅ لا dependency جديد، لا Tailwind، لا inline style scripts (inline style على span فقط، موجود في H1 suffix)
+  - ✅ SAMA/NCA/DGA/SDAIA/SFDA/CBAHI/SASO/NDMO = Saudi regulatory acronyms بالـ English (مسموح per Section 0.5.3)
+
+Verification Output:
+  - `npm run build` → 190 صفحة، sitemap 176 URLs ✅
+  - `npm run verify:all` → 5/5 فحص ناجح، 16/16 chat-session tests ✅
+  - `seo:gate` → 6/6 hreflang، 5/5 service، 0 errors، 0 warnings ✅
+  - `node scripts/playwright/audit-voc-001-a.mjs` → 18/18 pass ✅
+  - Screenshots: `download/qa/voc-001-a/{mobile,desktop}-{home,services,banking,government,healthcare,manufacturing,bank,hospital,pharma}.png` (18 ملفات)
+  - 9 H1 فريدة (no duplicates)
+  - VOC 5/5 per hero across 9/9 surfaces
+
+الـ commit: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+Status: **verified locally** (build + verify:all + seo:all + Playwright 18/18). يحتاج user: commit + push + Render auto-redeploy + IndexNow trigger.
+Risks: لا شيء — تغيير VOC injection يحافظ على كل الـ sections، links، components، order، وSEO anchors. tone "يدعم الجاهزية" يحمي من أي ادعاءات مطلقة.

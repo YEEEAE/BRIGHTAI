@@ -1,3 +1,4 @@
+<!-- BAI-VOC-001-A (2026-07-18): VOC injection في H1 + lead — أضفنا 5 ركائز (جرد AI، مالك مسؤول، سجل مخاطر، أدلة جاهزة للتدقيق، إشراف بشري) مع الحفاظ على الـ keywords (حوكمة الذكاء الاصطناعي / الشركات السعودية). tone = "يدعم الجاهزية" بدل "متوافق/مضمون". -->
 ---
 /**
  * SplitHero.astro — Premium split-layout hero.
@@ -86,11 +87,17 @@ import BrightStar from './brand/BrightStar.astro';
             "منصة أمان وحوكمة" + "الذكاء الاصطناعي" on a separate line, which
             left the two anchor words split across visual lines).
             Visual structure preserved: gradient on the keyword span, plain
-            text for the location phrase. Saudi dialect untouched. */}
+            text for the location phrase. Saudi dialect untouched.
+            BAI-VOC-001-A (2026-07-18): appended "بجرد AI ومالك مسؤول" as a
+            plain (non-gradient) suffix to inject 2 VOC pillars (AI inventory
+            + accountable owner) into the H1 while preserving the keyword
+            anchors (حوكمة الذكاء الاصطناعي / الشركات السعودية). tone is
+            "يدعم الجاهزية" — no "مضمون/كامل" claims. */}
         <h1 id="hero-title" class="split-hero__h1" transition:animate="fade">
           <span class="gradient-text">حوكمة الذكاء الاصطناعي</span>
           للشركات
           <span class="gradient-text">السعودية</span>
+          <span class="split-hero__h1-voc" style="display:block; font-size:0.42em; font-weight:500; color:var(--text-secondary); margin-top:0.4em; letter-spacing:-0.005em; line-height:1.4;">بجرد AI ومالك مسؤول — Saudi AI Safety OS</span>
         </h1>
       </div>
 
@@ -99,6 +106,13 @@ import BrightStar from './brand/BrightStar.astro';
         <strong class="text-white">نواة أمان وتشغيل</strong> تدخل بين الموظف والـ AI وبيانات الشركة،
         وتضمن إن كل طلب ذكاء اصطناعي يكون
         <span class="text-white">آمن، موثّق، وقابل للمراجعة</span>.
+        {/* BAI-VOC-001-A (2026-07-18): 3 additional VOC pillars injected into
+            the lead paragraph (AI risk register + audit-ready evidence +
+            human oversight). Combined with the H1 suffix, the hero now
+            carries all 5 VOC pillars required by the task. */}
+        تساعد المنشأة على تشغيل <strong class="text-white">سجل مخاطر</strong> محدّث،
+        و<strong class="text-white">أدلة جاهزة للتدقيق</strong>، مع
+        <strong class="text-white">إشراف بشري</strong> على القرارات عالية المخاطر.
       </p>
 
       <div class="home-hero-actions">

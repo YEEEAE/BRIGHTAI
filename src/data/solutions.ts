@@ -51,6 +51,13 @@ export interface SectorData {
   title: string;
   h1: string;
   description: string;
+  // BAI-VOC-001-A (2026-07-18): per-sector hero lead that injects the 5 VOC
+  // pillars (AI inventory, accountable owner, AI risk register, audit-ready
+  // evidence, human oversight). Used by solutions/[sector].astro as the
+  // hero paragraph; falls back to `description` if absent. tone = "يدعم
+  // الجاهزية" — never "مضمون/كامل". The canonical `description` is kept for
+  // SEO meta tags (title/description/og), so SEO anchor text is preserved.
+  vocLead?: string;
   canonical: string;
   icon: string;
   chip: string;
@@ -288,6 +295,7 @@ export const sectors: SectorData[] = [
     title:'حوكمة الذكاء الاصطناعي في البنوك والقطاع المالي | BrightAI',
     h1:'حوكمة الذكاء الاصطناعي في القطاع المالي والبنكي',
     description:'ضوابط استخدام AI مع بيانات العملاء، امتثال SAMA، NCA ECC، ومكافحة غسل الأموال في البنوك السعودية.',
+    vocLead:'ضوابط استخدام AI مع بيانات العملاء، امتثال SAMA، NCA ECC، ومكافحة غسل الأموال في البنوك السعودية. يدعم المنشأة في جاهزية التدقيق عبر جرد AI شامل لمخاطر الائتمان والاحتيال، وتعيين مالك مسؤول للامتثال، وسجل مخاطر محدّث، وأدلة جاهزة للجهات التنظيمية (SAMA / NCA)، مع إشراف بشري على القرارات عالية المخاطر.',
     canonical:`${S}/solutions/banking-ai-governance/`,
     icon:'mdi:bank', chip:'القطاع المالي',
     shortDesc:'ضوابط استخدام AI مع بيانات العملاء، امتثال SAMA، NCA ECC، ومكافحة غسل الأموال.',
@@ -322,6 +330,7 @@ export const sectors: SectorData[] = [
     title:'حوكمة الذكاء الاصطناعي في الجهات الحكومية',
     h1:'حوكمة الذكاء الاصطناعي في الجهات الحكومية',
     description:'حوكمة استخدامات AI في الخدمات الرقمية مع DGA وPDPL ورؤية 2030 وحماية بيانات المستفيدين في الجهات الحكومية.',
+    vocLead:'حوكمة استخدامات AI في الخدمات الرقمية مع DGA وPDPL ورؤية 2030 وحماية بيانات المستفيدين في الجهات الحكومية. يدعم المنشأة في جاهزية التدقيق عبر جرد AI شفاف للأدوات المعتمدة والظليلة، وتعيين مالك مسؤول لكل خدمة رقمية، وسجل مخاطر محدّث، وأدلة جاهزة للجهات الإشرافية (DGA / SDAIA / NCA)، مع إشراف بشري على الخدمات والموافقات الحساسة.',
     canonical:`${S}/solutions/government-ai-governance/`,
     icon:'mdi:domain', chip:'القطاع الحكومي',
     shortDesc:'حوكمة استخدامات AI في الخدمات الرقمية مع DGA وPDPL ورؤية 2030 وحماية بيانات المستفيدين.',
@@ -356,6 +365,7 @@ export const sectors: SectorData[] = [
     title:'حوكمة الذكاء الاصطناعي في المستشفيات والرعاية الصحية | BrightAI',
     h1:'حوكمة الذكاء الاصطناعي في القطاع الصحي',
     description:'حوكمة استخدامات الذكاء الاصطناعي مع بيانات المرضى، امتثال SFDA، ISO 13485، وسجلات أدلة الجودة في المستشفيات السعودية.',
+    vocLead:'حوكمة استخدامات الذكاء الاصطناعي مع بيانات المرضى، امتثال SFDA، ISO 13485، وسجلات أدلة الجودة في المستشفيات السعودية. يدعم المنشأة الصحية في جاهزية التدقيق عبر جرد AI سريري شامل، وتعيين مالك مسؤول للقرارات الطبية، وسجل مخاطر محدّث، وأدلة جاهزة للمدققين (SFDA / CBAHI)، مع إشراف بشري من المختصين على التوصيات السريرية وبيانات المرضى.',
     canonical:`${S}/solutions/healthcare-ai-governance/`,
     icon:'mdi:hospital-building', chip:'قطاع الرعاية الصحية',
     shortDesc:'حوكمة استخدامات الذكاء الاصطناعي مع بيانات المرضى، امتثال SFDA، ISO 13485، وسجلات أدلة الجودة.',
@@ -390,6 +400,7 @@ export const sectors: SectorData[] = [
     title:'حوكمة الذكاء الاصطناعي في القطاع الصناعي | BrightAI',
     h1:'حوكمة الذكاء الاصطناعي في القطاع الصناعي',
     description:'حوكمة AI في الجودة والصيانة التنبؤية وسلامة IoT وتوصيات التشغيل داخل المصانع السعودية.',
+    vocLead:'حوكمة AI في الجودة والصيانة التنبؤية وسلامة IoT وتوصيات التشغيل داخل المصانع السعودية. يدعم المنشأة الصناعية في جاهزية التدقيق عبر جرد AI تشغيلي شامل، وتعيين مالك مسؤول لكل خط إنتاج، وسجل مخاطر الأصول، وأدلة جاهزة للجهات التنظيمية (SFDA / SASO / NCA)، مع إشراف بشري على القرارات المؤثرة على السلامة والجودة.',
     canonical:`${S}/solutions/manufacturing-ai-governance/`,
     icon:'mdi:factory', chip:'القطاع الصناعي',
     shortDesc:'حوكمة AI في الجودة والصيانة التنبؤية وسلامة IoT وتوصيات التشغيل داخل المصانع.',
