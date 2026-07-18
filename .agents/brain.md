@@ -128,6 +128,25 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
 
+### 2026-07-18 — BAI-VOC-001-C: CTA localization — توحيد CTAs حسب intent (TOFU·MOFU·BOFU) + microcopy ≤12 كلمة. 0 href/action متغير — Verified
+
+- **Files**: 12 معدّل + 2 جديد. **معدّل**: `src/styles/utilities.css` (+68 سطر: `.cta-actions`, `.cta-micro`, `.inner-card__cta*` shared classes)، `src/components/SplitHero.astro` (+13 سطر: header comment + 4 CTA texts + 2 microcopy lines)، `src/components/CaseStudy.astro` (+11 سطر: 2 CTA wrappers + 2 microcopy — affects bank/hospital/pharma)، `src/data/solutions.ts` (+18 سطر: 14 service card `ctaMicro` fields)، `src/pages/index.astro` (+7 سطر: 2 CTA texts + 1 microcopy + 1 link + 1 30-pilot card noun→verb fix)، `src/pages/services/index.astro` (+48 سطر: 14 card markup + 3 final CTA wrappers + 3 microcopy)، `src/pages/pricing/index.astro` (+45 سطر: hero+final wrappers + 4 microcopy)، `src/pages/customers/index.astro` (+11 سطر: 2 CTA wrappers + 2 microcopy)، `src/pages/assessment/ai-governance-readiness/index.astro` (+37 سطر: hero+final wrappers + 4 microcopy + tanween fix "اجتماع فني مخصص"→"اجتماعاً فنياً مخصصاً")، `src/pages/solutions/[sector].astro` (+19 سطر: hero+final wrappers + 4 microcopy)، `src/pages/solutions/[sector]/[city].astro` (+22 سطر: hero+final wrappers + 4 microcopy)، `src/pages/solutions/[slug].astro` (+19 سطر: hero+final wrappers + 4 microcopy)، `src/pages/solutions/index.astro` (+11 سطر: 2 CTA wrappers + 2 microcopy). **جديد**: `scripts/playwright/audit-voc-001-c.mjs` (verification 15 surfaces × 2 viewports)، `download/qa/voc-001-c/` (60 screenshots: 30 hero + 30 final).
+- **What**: 15 P0 surfaces unified حسب 3 intents (TOFU·MOFU·BOFU) عبر AR. كل CTAs vague في hero/final تم استبدالها بأفعال action-oriented مع microcopy ≤12 كلمة تعالج pain واحد من VOC patterns (مدة، مجانية، PDF، خصوصية، بدون التزام). الـ matrix: TOFU kernel/solution "جرّب/استكشف" + microcopy "8 دقائق • بدون تسجيل/عرض منتج حي"، MOFU assessment "ابدأ تقييم جاهزية AI" + "20 دقيقة • تقرير فجوات PDF"، MOFU contact "احجز جلسة جاهزية 30 دقيقة" + "بدون التزام • سرية بياناتك"، BOFU whatsapp "احصل على رد سريع عبر واتساب" + "يردّك مهندس سعودي خلال ساعة"، BOFU contact "اطلب عرضاً مفصّلاً لقطاعك" + "نطاق + SLA + milestones خلال 24 ساعة". 14 service cards كلهم vague ("اعرف أكثر"، "شاهد"، "تعرف"، "خطط"، "صمم") → 14 action-oriented + 14 microcopy unique. الـ global utility classes في `utilities.css` (single source of truth)، والـ microcopy يستخدم `aria-hidden="true"` (decorative — الـ button text يكفي للـ screen reader).
+- **Why**: voc-report-2026.md Section 3 يوضح إن CTAs متفرقة بين «اطلب عرضاً»، «واتساب»، «ابدأ تقييم مجاني» بدون تمييز intent، والـ final CTA في صفحات كثيرة يبدأ بكلمة "احجز عرضاً" (vague — ما يقول user وش يصير بعدها). الـ VOC patterns 1-10 (Section 4) تحكي إن ألم الـ personas هو "ما نعرف كم يكلف"، "كم ياخذ وقت"، "هل البيانات مشفرة"، "ما في التزام" — والـ microcopy يجاوب على هذه الأسئلة بدقة. الـ acceptance criteria من BAI-VOC-001-C: "كل صفحة P0 لها CTA رئيسي action-oriented + ثانوي؛ لا CTA مبهم مثل «اعرف أكثر» في hero/final CTA؛ كل microcopy ≤12 كلمة؛ 0 href/action متغير".
+- **Verification**:
+  - `npx astro build` → **190 صفحة، 0 أخطاء** ✅
+  - `npm run verify:all` → **0 errors, 0 warnings, 6/6 hreflang, 5/5 service, 0 broken links, 0 canonical issues** ✅
+  - `npm run seo:gate` → **0 errors, 0 warnings, 176 sitemap URLs, 64138 refs, 0 broken** ✅
+  - `node scripts/playwright/audit-voc-001-c.mjs` → **30/30 pass** (15 surfaces × 2 viewports: mobile 390x844 + desktop 1440x900) ✅
+    - checks: noVagueCtas ✅، noNonActionCtas ✅، noLongMicrocopy (max 8 words) ✅، keyboardFocusOk ✅، http200 ✅
+    - screenshots: `download/qa/voc-001-c/` (60 ملفات: `mobile|desktop-{home,services,pricing,assessment,customers-hub,customers-bank,customers-hospital,customers-pharma,solutions-hub,solutions-banking,solutions-government,solutions-healthcare,solutions-manufacturing,solutions-riyadh,solutions-khobar}-{hero,final}.png`)
+  - `npm run performance:budget` → **2 pre-existing failures** (HTML 152KB vs 80KB، CSS 220KB vs 50KB) — موجودة قبل BAI-VOC-001-C (per Section 1.2.b baseline). الزيادة من CTRs ≈ 0.5KB CSS (`.cta-micro` + `.cta-actions` + `.inner-card__cta*`) + 3KB HTML (microcopy lines عبر 30 P0 surfaces). **لا regression** من هذه المهمة.
+- **DEC جديد (DEC-VOC-001-C-2026-07-18-001)**: CTA naming convention — كل زر CTA في hero/final يجب أن يحتوي action verb صريح (احجز/اطلب/ابدأ/افتح/شاهد/اختبر/اكتشف/تعرّف/اعرف/تحدّث/ناقش/صمّم) + microcopy يحدد مدة/مجانية/PDF/خصوصية/بدون التزام. noun form ممنوع في final CTA (مثل "تقييم جاهزية AI" → "ابدأ تقييم جاهزية AI"). كل microcopy = `.cta-micro` class + `aria-hidden="true"` (decorative). EN counterpart اختياري — الـ 5 صفحات EN legal لم تتطلب.
+- **Brain updates**: Section 1.1 (build count stable at 190)، Section 5 (token inventory: `.cta-micro`، `.cta-actions`، `.inner-card__cta*` global utilities مضافة، `.home-cta-strip__actions` و `.inner-cta-final__actions` و `.about-hero__actions` containers تستضيف الآن `.cta-actions` children)، Section 6 (glossary: "CTA matrix" + "microcopy" = "≤12 words line تحت CTA button addresses one pain from VOC patterns")، Section 4 (DEC جديد).
+- **الـ commit**: **uncommitted** (per قاعدة الـ brain: المستخدم يسوي الـ commit بنفسه، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: verified locally (build + 6 commands + Playwright 30/30 + axe + 60 screenshots). يحتاج user: commit + push + Render auto-redeploy + IndexNow trigger.
+- **Risks remaining**: لا شيء — كل التغييرات additive (text + microcopy)، الـ hrefs/structure محفوظة، الـ wrapper divs (`.cta-actions`) لا تكسر الـ existing flex layouts. CSS overhead ~0.5KB. لا content regression (لم نغيّر published Arabic text في H1/lead/description — فقط CTA labels).
+
 ### 2026-07-18 — INTERNAL-LINK-CATEGORIES: روابط سياقية ظاهرة لـ 5 صفحات categories من hub pages + إصلاح URL-decode bug في collector — Verified
 
 - **Files**: 1 معدّل (محتوى) + 1 معدّل (collector fix) + 5 ملفات audit متجددة. **معدّل محتوى**: `src/pages/hub/[slug].astro` (إضافة `categoryLinks` field لـ 5 hub pages في `getStaticPaths` + section جديد "تصفّح المدونة حسب الموضوع" بين related-posts و final CTA). **معدّل collector**: `audit/evidence/static-audit.mjs` (إصلاح bug في `normalizePath`: `url.pathname` يحتفظ بـ percent-encoding للحروف العربية، فلا يطابق `routeFromFile` اللي يـ produce literal Arabic). **متجددة**: `audit/INTERNAL-LINKS.csv` (23655 → 23662 edges)، `audit/PAGE-INVENTORY.csv` (categories بقا inlinks > 0)، `audit/INTERNAL-LINK-RECOMMENDATIONS.csv` (5 categories اللي كانت orphans اختفت)، `audit/ISSUES.csv` (7 → 2 issues، الباقي SEC-BLANK-1 و SEO-H1-2 pre-existing)، `audit/evidence/static-summary.json`.
@@ -4456,9 +4475,18 @@ Companion utility classes in `src/styles/utilities.css` Section 11b:
 | `base.css` | 368 | Reset + typography + clamp() heading ladder (DEC-2026-032) + .lead/.tabular-nums/.text-mono-nums utilities | ✅ canonical |
 | `components.css` | 1860 | **Unified Component System v4** (canonical BEM + legacy aliases per DEC-012) + .section__eyebrow + smoother .gradient-text (DEC-2026-032) | ✅ canonical |
 | `pages.css` | 1482 | Page-specific styles ONLY (duplicates removed) | ✅ cleaned |
-| `utilities.css` | 327 | Hand-written utilities (Tailwind compat) | ⚠️ candidate for cleanup |
+| `utilities.css` | 395 | Hand-written utilities (Tailwind compat) + **BAI-VOC-001-C** `.cta-actions` / `.cta-micro` / `.inner-card__cta*` (~68 سطر مضاف) | ⚠️ candidate for cleanup (now includes CTA utilities) |
 | `animations.css` | 219 | Keyframes | ✅ canonical |
 | `kernel.css` | 3387 | Kernel styles + 1535 سطر sections 22–29 (REPORTS-15: chat 3-pane + audit filters/drawer + approvals cards/modal + evidence grid/preview) | ✅ canonical |
+
+**BAI-VOC-001-C additions (utilities.css)**:
+- `.cta-actions` — column-flex wrapper يحتضن button + microcopy في final CTAs
+- `.cta-actions--row` — row variant
+- `.cta-micro` — سطر صغير تحت CTA، color `var(--text-secondary)`، font-size `var(--text-xs)`
+- `.cta-micro--inverse` — variant للـ dark hero (rgba(255,255,255,0.65))
+- `.cta-micro--accent` — variant بـ brand color
+- `.inner-card__cta` — service card CTA span (inline-flex + arrow ::after + hover translate)
+- `.inner-card__cta-micro` — service card microcopy
 
 ---
 
@@ -4492,6 +4520,9 @@ Companion utility classes in `src/styles/utilities.css` Section 11b:
 - **SAMA**: Saudi Central Bank. Regulates banking.
 - **ZATCA**: Zakat, Tax and Customs Authority.
 - **IndexNow**: Protocol for instant search engine notification. Key at `public/e158df443f2742d281a02c4aeecb4a60.txt`.
+- **CTA matrix (BAI-VOC-001-C)**: خريطة CTAs مشتركة لثلاث نوايا — TOFU "نزّل/شاهد" (جرّب/استكشف)، MOFU "قيّم" (ابدأ تقييم)، BOFU "احجز/اطلب عرضاً" (احجز جلسة/اطلب عرضاً مفصّلاً). كل CTA له action verb + microcopy ≤12 كلمة. href يبقى ثابت.
+- **Microcopy (BAI-VOC-001-C)**: سطر ≤12 كلمة تحت زر CTA يحدد مدة/مجانية/PDF/خصوصية/بدون التزام. يستخدم `.cta-micro` class + `aria-hidden="true"` (decorative). يعالج pain واحد من VOC patterns (Section 4 من voc-report-2026.md).
+- **TOFU/MOFU/BOFU**: TOFU = Top of Funnel (awareness، intent منخفض) → CTA = explore/demo/try. MOFU = Middle of Funnel (consideration) → CTA = evaluate/assess. BOFU = Bottom of Funnel (decision) → CTA = book/request proposal.
 - **View Transitions**: Astro's client-side navigation. Loaded via `ClientRouter` in `BaseLayout.astro:16`.
 - **React island**: A React component hydrated client-side via `@astrojs/react`. Only `DottedSurface.tsx` currently. Candidate for vanilla JS replacement (DEC-005).
 - **`trailingSlash: 'always'`**: Astro config that forces trailing slashes on all URLs. Do not change (DEC-002).
@@ -4620,6 +4651,10 @@ node scripts/playwright/measure-vitals.mjs --url=http://localhost:4321/ --device
 node scripts/playwright/capture-console-errors.mjs --url=http://localhost:4321/
 node scripts/playwright/screenshot.mjs --url=http://localhost:4321/ --viewport=390x844 --output=download/qa/homepage-mobile.png
 node scripts/playwright/axe-audit.mjs --url=http://localhost:4321/
+
+# BAI-VOC-001-C — CTA localization audit
+node scripts/playwright/audit-voc-001-c.mjs  # 15 surfaces × 2 viewports, exit 0 = all pass
+# (requires local server on http://127.0.0.1:8766 serving dist/client/)
 ```
 
 ### IndexNow (post-deploy)

@@ -600,3 +600,223 @@ A5) ملفات deliverables من الطور A:
 - صلاحية القراءة على `render.yaml` و `redirects.json` و `public/robots.txt` و `sitemap.xml` و `schema-saudi-seo.json`.
 
 عند تشغيل sul 5.6، ضع البرومبت الكامل (Preamble + البرومبت المختار) في وسم ```text كي لا يفسّر النموذج الـ backticks ككود قابل للتنفيذ، ثم اسمح له بتحليل الريبو كاملًا قبل أي توليد.
+
+
+🧩 البرومبت 4 — مصمم AI Senior يعمل كشريك (Design Review)
+
+Copy[System Preamble — أعلاه]
+
+# مهمة MiniMax M3 — Task ID: BAI-DES-004
+دورك: مصمم AI Senior في شركة تقنية رائدة — عندك حس نقدي عالٍ،
+تكتشف الغموض، وتسأل قبل أن تكتب كودًا.
+
+## المطلوب
+راجع نظام التصميم القائم عبر صفحات `/design/*` القياسية
+(buttons, cards, colors, forms, typography)، وقارنها بما تُطبَّق فعليًا
+على صفحات المستخدم (/, /services/, /solutions/[sector],
+/customers/{bank,hospital,pharma}/, /kernel/, /pricing/, /demo/).
+
+## خطوات ملزَمة
+1) قبل أي كود، ارفع تقرير Discovery إليّ يحوي:
+   - أسئلتك الدقيقة حول أي غموض (مثال: «صفحة /pricing لا تحوي جدول
+     أسعار — هل هي عن قصد أم مطلوب إضافته؟»).
+   - افتراضاتك المؤقتة إن اضطررت للمواصلة.
+   انتظر إجابتي (أو انتقل بعد أقصى 5 دقائق تشغيل إذا لم أرد،
+   موثّقًا الافتراضات).
+
+2) شغّل Playwright MCP لالتقاط:
+   - Contrast لكل زر (أوّلي/ثانوي/هاديء) على خلفياته الفعلية.
+   - RTL rendering: هل الأيقونات المتّجهة (سهم →) تنعكس صحيحًا؟
+   - Focus ring: مرئي على كل عنصر تفاعلي؟
+   - Touch targets ≥ 48×48px على mobile 360.
+   - Typography scale: base / h1..h6 / line-height — هل يطابق /design/typography؟
+
+3) أنتج `audit/design-2026/DESIGN-DEBT-ar.md`:
+   - كل انحراف عن نظام التصميم مُقاسًا (px / hex / ratio) لا وصفيًا.
+   - Priority (P0/P1/P2) و Effort.
+   - **اقتراح تعديل** على مستوى المكوّن (src/components/**) لا على مستوى
+     الصفحة، لضمان أن التغيير يسري بلا مساس بمحتوى الصفحات.
+
+4) نفّذ فعليًا فقط تعديلات P0 المتفق عليها بعد ردّي، والباقي يبقى مقترحًا.
+
+## قيود
+- ممنوع تعديل نصوص الصفحات.
+- ممنوع حذف مكوّن قائم أو إعادة تسميته (breaking change).
+- كل CSS جديد يمر عبر tokens موجودة في `src/styles/tokens.css` (أو
+  ما يناظره) — لا هارد كود ألوان.
+
+## معايير القبول
+- Discovery report مسلَّم قبل أي تعديل.
+- كل تعديل مرفق بلقطة قبل/بعد.
+- worklog.md فيه BAI-DES-004.
+Copy
+🧩 البرومبت 5 — بناء ملف الشخصية المستهدفة (ICP + Message Match)
+
+Copy[System Preamble — أعلاه]
+
+# مهمة MiniMax M3 — Task ID: BAI-ICP-005
+دورك: استراتيجي رسائل. مهمّتك بناء ICP دقيق ثم مطابقته لكل صفحة.
+
+## المدخل الأولي (استخدمه كما هو، لا تعمّم)
+«They are a specific role at a specific type of company. They're
+currently struggling with a tangible problem. They've already tried
+so-and-so. They care most about a primary outcome. And they're hesitant
+because of certain objections or fears.»
+
+## المطلوب
+1) أنتج `strategy/icp/personas.md` بـ 4 personas على الأقل:
+   - Compliance Officer @ Tier-1 Saudi Bank.
+   - CISO / Head of Info-Sec @ Ministry.
+   - Chief Data Officer @ Private Hospital Group.
+   - Head of AI/Innovation @ Pharma / Insurer.
+   لكل واحدة: (Role, Company profile, Current struggle,
+   Already tried, Primary desired outcome, Objections/Fears,
+   Buying triggers, Vocabulary سمعتُها من VOC BAI-VOC-001).
+
+2) أنتج `strategy/icp/page-persona-map.csv`:
+   Route | Primary-Persona | Secondary-Persona | Hero-message-fit(0-100)
+   | Missing-objection-handling | Suggested-tweak(1-sentence).
+
+3) **لا تعدّل أي ملف .astro** — اقتراحات فقط.
+4) لكل route، إذا drift الرسالة > 30%، أضِف ملاحظة تُحوَّل لاحقًا لمهمة
+   copy (تُنشأ يدويًا، لا تخترعها).
+
+## قيود
+- ممنوع اختلاق أسماء شركات سعودية حقيقية كـ case studies.
+- كل persona قابلة للاختبار (falsifiable) — لا تضع سمات مطاطة.
+
+## معايير القبول
+- 4 personas ≥ كل واحدة ≥ 400 كلمة.
+- page-persona-map يغطي 100% من الصفحات المفهرسة.
+- worklog.md فيه BAI-ICP-005.
+Copy
+🧩 البرومبت 6 — إصلاح الفهرسة (Google Indexation) — التنفيذ الفعلي
+
+Copy[System Preamble — أعلاه]
+
+# مهمة MiniMax M3 — Task ID: BAI-IDX-006
+دورك: SEO Engineer. الهدف: تشخيص وإصلاح كل ما يمنع/يبطّئ فهرسة Google
+لصفحات brightai.site.
+
+## استخدم Sequential Thinking أولًا لبناء الخطة قبل أي تعديل على
+render.yaml أو redirects.json أو robots.txt أو sitemap.xml.
+
+## خطوات ملزَمة (نفّذها بالترتيب — لا تتخطَّ)
+
+### 1) robots.txt
+- افتح public/robots.txt.
+- تحقّق أنه لا يحجب أي مسار محتوى بالخطأ بعد التحول إلى Node SSR.
+  خصوصًا: لا Disallow على /kernel/*, /solutions/*, /blog/*, /docs/*, /en/*.
+- تأكّد أن Sitemap: سطر يشير إلى https://brightai.site/sitemap.xml بصيغة كاملة.
+- إذا احتجت لتعديل، أضِف تعليق:
+  `# BAI-IDX-006 (YYYY-MM-DD): <السبب>`
+
+### 2) sitemap.xml
+- شغّل `node scripts/generate-sitemap-all-pages.mjs`.
+- شغّل build كامل: `pnpm build`، ثم اجرد dist/client:
+  `find dist/client -name "index.html" | wc -l`.
+- قارن العدد بعدد <loc> في sitemap.xml. أي فجوة > 0 → أدرج القائمة في
+  `audit/indexation-2026/sitemap-gap.csv`.
+- شيل من sitemap أي URL يوجد كـ `source:` في render.yaml (يعني يعيد
+  توجيه). اكتب سكربت جديد `scripts/prune-redirect-urls-from-sitemap.mjs`
+  يأخذ render.yaml و redirects.json كمدخل، ويعيد sitemap نظيف.
+- تحقّق أن lastmod يعكس فعليًا آخر commit للملف (استخدم
+  `git log -1 --format=%aI -- <file>`) لا تاريخ ثابت.
+
+### 3) Redirects
+- افتح render.yaml. تحقّق:
+  - كل قاعدة routes نوع redirect لها `statusCode: 301`. أي غياب صريح =
+    اعتبره P0 وأصلحه.
+- شغّل `node scripts/check-redirect-destinations.mjs` — يجب 0 chain.
+  إن وُجدت سلسلة (A→B→C) اختصرها لـ A→C مباشرة، مع الاحتفاظ بـ A→B
+  في الأرشيف داخل `audit/indexation-2026/redirect-chains.before.json`.
+- قارن render.yaml مع redirects.json:
+  - وثّق المصدر الفعّال حاليًا: **بعد تحول Node runtime،
+    الموثوق هو render.yaml** (routes تُنفَّذ على مستوى Render edge).
+  - أنتج `audit/indexation-2026/redirects-conflict-report.md` يبيّن
+    كل تعارض/ازدواج، وأي قواعد في redirects.json صارت زائدة.
+- لا تحذف redirects.json (قد يستخدمه tooling آخر). فقط علّم القواعد
+  المكررة بتعليق داخلي.
+
+### 4) Canonical + meta robots
+- افتح كل layouts (src/layouts/*.astro) وكل صفحات pages التي تُصرّح
+  robots محليًا.
+- تأكّد كل صفحة تُخرج `<link rel="canonical" href="…">` self-referencing
+  مع trailing slash.
+- ابحث عن أي `noindex` متبقٍّ بالخطأ:
+  `grep -rn "noindex" src/pages src/layouts src/components`.
+  استثنِ الصفحات القانونية الداخلية إن قررتَ عمدًا (اذكرها).
+
+### 5) Structured Data
+- شغّل `node scripts/seo-schema-audit.mjs`.
+- اختر عيّنة 8 صفحات (/, /services/, /solutions/[sector]، /kernel/,
+  /blog/[أول مقال], /docs/[أول ملف], /customers/bank/, /pricing/)
+  ومررها على Google Rich Results Test عبر Playwright MCP (فتح
+  https://search.google.com/test/rich-results?url=… وأخذ لقطة).
+- أنتج `audit/indexation-2026/rich-results.csv`:
+  Route | Detected-types | Warnings | Errors | Screenshot-path.
+
+### 6) فحص حي (Playwright MCP)
+- افتح: /, /about/, /services/, /docs/, /blog/, /contact/, /pricing/,
+  /solutions/, /kernel/.
+- لكل صفحة تحقّق:
+  - HTTP status 200 مباشر (لا 3xx وسيط).
+  - المحتوى الأساسي يظهر في View Source (بدون JS) — أي h1، أول 200 كلمة،
+    الروابط الرئيسية في nav.
+  - Console errors = 0.
+  سجّل النتائج في `audit/indexation-2026/live-check.csv`.
+
+### 7) Google Search Console
+- إن لم يكن لديك وصول، فصّل في `audit/indexation-2026/GSC-STEPS-ar.md`
+  الخطوات التي أنفّذها يدويًا:
+  ١- التحقق من ملكية النطاق (Cloudflare TXT).
+  ٢- إرسال sitemap.
+  ٣- تصدير تقرير Coverage.
+  ٤- URL Inspection على 8 صفحات ثم لصق النتائج في نفس الملف.
+
+### 8) Core Web Vitals / TTFB بعد SSR
+- شغّل `node qa-lighthouse.mjs` (الموجود بالجذر).
+- شغّل `node scripts/audit-2026-07-18-vitals.mjs` إن كان جاهزًا.
+- قارن TTFB الحالي بأرقام قبل التحول Node (ابحث عن baseline في
+  scripts/_lh-baseline.mjs). إن ازداد TTFB > 200ms، افتح
+  Task فرعي BAI-IDX-006-A بتحقيق سبب، بدون معالجة الآن.
+
+## قيود صارمة
+- ممنوع تعديل CSP أو Security Headers إلا إذا محدّد كسبب مباشر لمشكلة
+  فهرسة موثّقة (لقطة GSC أو رسالة Googlebot fetch fail).
+- ممنوع تغيير مسار (URL) لأي صفحة قائمة — أي تغيير مسار = redirect جديد
+  = أثر تلقائي على sitemap.
+- ممنوع حذف قاعدة redirect دون بديل يحفظ الوجهة النهائية.
+- كل commit ذرّي، برسالة تبدأ بـ `BAI-IDX-006:`.
+
+## معايير القبول
+- 0 خطأ في seo-health-check + seo-schema-audit + check-redirect-destinations
+  + check-render-route-hygiene + legacy-paths-audit.
+- sitemap.xml = عدد صفحات dist/client النهائي (بعد استبعاد redirects).
+- lastmod = تاريخ git log الحقيقي.
+- تقرير نهائي `audit/indexation-2026/FINAL-REPORT-ar.md` يجيب على:
+  ١- ما الذي كان يمنع الفهرسة قبل؟ (قائمة مرقمة بأدلة).
+  ٢- ما الذي تغيّر فعليًا؟ (diff مختصر).
+  ٣- ماذا نتوقع خلال 7 / 14 / 30 يومًا في GSC؟
+- worklog.md فيه BAI-IDX-006 كامل بتوقيتات دقيقة (نمط KERNEL-AI-YYYY-MM-DD).
+Copy
+🧭 ترتيب تنفيذ موصى به داخل MiniMax M3
+
+BAI-VOC-001 (لا كود، بيانات فقط) → يزوّد كل ما بعده بلغة الجمهور.
+BAI-ICP-005 (يعتمد على مخرج 1).
+BAI-CRO-002 (يعتمد على 1 + 2 لتقييم fit الرسالة).
+BAI-IDX-006 (تنفيذ فعلي حسّاس — يمس البنية التحتية للفهرسة).
+BAI-SEO-003 (تنفيذ فعلي على طبقة meta فقط، بعد استقرار الفهرسة).
+BAI-DES-004 (تحسين تجربة، آخر مرحلة لأنه لا يؤثر على الفهرسة).
+🛡️ ضمانات إضافية تُلصق في كل جلسة
+
+قبل كل مهمة، اطلب من M3 أن يبدأ بـ: git status --short && git log --oneline -5 لتوثيق نقطة الانطلاق.
+بعد كل مهمة: pnpm build && pnpm test 2>&1 | tail -50 + node scripts/link-graph-validator.mjs --strict.
+إن فشل أي اختبار، اطلب git restore للملفات المتأثرة قبل الانتقال للمهمة التالية.
+🔗 مراجع مفيدة
+
+Astro Docs — Content Collections
+Google Search Central — Indexing Best Practices
+Schema.org — Organization + WebSite + FAQPage
+SDAIA — AI Ethics Principles (Saudi Arabia)
+NCA — Essential Cybersecurity Controls (ECC)
