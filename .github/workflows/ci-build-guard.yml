@@ -164,16 +164,39 @@ jobs:
         run: pnpm lint:rls
 
   # ────────────────────────────────────────────────────────────────
-  # Job 4: Vitest (firewall unit tests)
-  # Verifies: regex detector, redaction, token vault, PII detector,
-  # NER pipeline (loads actual ONNX model — 2s cold start).
-  # No DB needed (vitest aliases server-only to a stub).
+  # Job 4: Vitest — ALL workspaces (firewall + detectors + lead-queue + db:rls + root)
+  # Verifies: regex, redaction, token vault, PII detector, NER pipeline
+  #   (2s cold start), durable audit, hash chain, RLS isolation (DB),
+  #   cross-tenant leak, chat session, CSRF.
+  # P0-2 (2026-07-19): replaced the firewall-only job with the full
+  #   workspace test suite. Requires Postgres service container for
+  #   db:rls:test.
   # ────────────────────────────────────────────────────────────────
-  test:
-    name: "Vitest (firewall: regex + redaction + token-vault + NER)"
+  test-all:
+    name: "Vitest — all workspaces (firewall + detectors + lead-queue + db:rls + root)"
     needs: install
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: brightai
+          POSTGRES_PASSWORD: brightai
+          POSTGRES_DB: brightai_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      # Use the service container's DB. App + service roles for RLS test.
+      DATABASE_URL: postgresql://brightai:brightai@localhost:5432/brightai_test
+      DATABASE_URL_SERVICE: postgresql://brightai:brightai@localhost:5432/brightai_test
+      DATABASE_URL_APP: postgresql://brightai:brightai@localhost:5432/brightai_test
+      DIRECT_URL: postgresql://brightai:brightai@localhost:5432/brightai_test
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -188,8 +211,58 @@ jobs:
             pnpm-${{ runner.os }}-
       - run: pnpm install --frozen-lockfile --prefer-offline
       - run: pnpm --filter @brightai/db db:generate
-      - name: Run firewall vitest suite
-        run: pnpm exec vitest run --root apps/dashboard
+      - name: Create RLS roles + dev DB (mirror local setup)
+        env:
+          PGPASSWORD: brightai
+        run: |
+          psql -U brightai -d brightai_test -h localhost <<'SQL'
+          DO $$
+          BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'brightai_app') THEN
+              CREATE ROLE brightai_app NOLOGIN;
+            END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'brightai_service') THEN
+              CREATE ROLE brightai_service NOLOGIN BYPASSRLS;
+            END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'brightai_readonly') THEN
+              CREATE ROLE brightai_readonly NOLOGIN;
+            END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'brightai_admin') THEN
+              CREATE ROLE brightai_admin NOLOGIN BYPASSRLS;
+            END IF;
+            GRANT brightai_app, brightai_service, brightai_readonly, brightai_admin TO brightai;
+          END
+          $$;
+          SQL
+      - name: Apply Prisma schema + RLS policies
+        env:
+          PGPASSWORD: brightai
+        run: |
+          # P0-2 (2026-07-19): use `prisma db push` instead of `migrate deploy`
+          # because the existing migrations have a pre-existing FK bug
+          # (reference "Organization" PascalCase instead of "organizations"
+          # snake_case — see packages/db/prisma/migrations/20260715000000_ai_usage_entries/migration.sql).
+          # db push is fine for the CI test DB (it's ephemeral).
+          # Tracked as a follow-up: fix the migration FK bug separately.
+          pnpm exec prisma db push --schema=./packages/db/prisma/schema.prisma --skip-generate --accept-data-loss
+          psql -U brightai -d brightai_test -h localhost -v ON_ERROR_STOP=1 -f packages/db/prisma/policies/rls.sql
+      - name: Run all workspace tests
+        run: pnpm -r test
+      - name: Run root chat-session + CSRF tests
+        run: |
+          pnpm test:chat-session
+          pnpm test:csrf
+      - name: Upload test artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-all-failure-logs
+          path: |
+            packages/db/test-results/
+            packages/firewall-detectors/test-results/
+            packages/lead-queue/test-results/
+            apps/dashboard/test-results/
+          retention-days: 7
 
   # ────────────────────────────────────────────────────────────────
   # Job 5: Astro Marketing Build (190 pages)
@@ -491,7 +564,7 @@ jobs:
     needs:
       - typecheck
       - lint
-      - test
+      - test-all
       - build-astro
       - build-dashboard
       - seo-gates
@@ -508,7 +581,7 @@ jobs:
           echo "|---|---|" >> "$GITHUB_STEP_SUMMARY"
           echo "| typecheck | ${{ needs.typecheck.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| lint | ${{ needs.lint.result }} |" >> "$GITHUB_STEP_SUMMARY"
-          echo "| test | ${{ needs.test.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| test-all | ${{ needs.test-all.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| build-astro | ${{ needs.build-astro.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| build-dashboard | ${{ needs.build-dashboard.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| seo-gates | ${{ needs.seo-gates.result }} |" >> "$GITHUB_STEP_SUMMARY"
@@ -517,11 +590,11 @@ jobs:
           # Fail if any required job did not succeed.
           # Direct GitHub Actions expressions (no bash loop interpolation).
           failed=0
-          for job in typecheck lint test build-astro build-dashboard seo-gates security-scan; do
+          for job in typecheck lint test-all build-astro build-dashboard seo-gates security-scan; do
             case "$job" in
               typecheck)       r="${{ needs.typecheck.result }}" ;;
               lint)            r="${{ needs.lint.result }}" ;;
-              test)            r="${{ needs.test.result }}" ;;
+              test-all)        r="${{ needs.test-all.result }}" ;;
               build-astro)     r="${{ needs.build-astro.result }}" ;;
               build-dashboard) r="${{ needs.build-dashboard.result }}" ;;
               seo-gates)       r="${{ needs.seo-gates.result }}" ;;
