@@ -240,6 +240,13 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.site/logo.avif</loc>
+    <image:image>
+      <image:loc>https://brightai.site/logo.avif</image:loc>
+      <image:title>logo</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.site/logo.webp</loc>
     <image:image>
       <image:loc>https://brightai.site/logo.webp</image:loc>
@@ -254,6 +261,13 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.site/grid 2.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/grid 2.svg</image:loc>
+      <image:title>grid 2</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.site/grid.svg</loc>
     <image:image>
       <image:loc>https://brightai.site/grid.svg</image:loc>
@@ -261,10 +275,45 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.site/hero-brain 2.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/hero-brain 2.svg</image:loc>
+      <image:title>hero brain 2</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.site/hero-brain.svg</loc>
     <image:image>
       <image:loc>https://brightai.site/hero-brain.svg</image:loc>
       <image:title>hero brain</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-192 2.avif</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-192 2.avif</image:loc>
+      <image:title>icon 192 2</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-192 2.png</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-192 2.png</image:loc>
+      <image:title>icon 192 2</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-192 2.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-192 2.svg</image:loc>
+      <image:title>icon 192 2</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-192-clean 2.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-192-clean 2.svg</image:loc>
+      <image:title>icon 192 clean 2</image:title>
     </image:image>
   </url>
   <url>
@@ -296,6 +345,20 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.site/icon-512 2.avif</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-512 2.avif</image:loc>
+      <image:title>icon 512 2</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-512 2.png</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-512 2.png</image:loc>
+      <image:title>icon 512 2</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.site/icon-512.avif</loc>
     <image:image>
       <image:loc>https://brightai.site/icon-512.avif</image:loc>
@@ -307,6 +370,27 @@
     <image:image>
       <image:loc>https://brightai.site/icon-512.png</image:loc>
       <image:title>icon 512</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-maskable 2.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-maskable 2.svg</image:loc>
+      <image:title>icon maskable 2</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-maskable-192 2.avif</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-maskable-192 2.avif</image:loc>
+      <image:title>icon maskable 192 2</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icon-maskable-192 2.png</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-maskable-192 2.png</image:loc>
+      <image:title>icon maskable 192 2</image:title>
     </image:image>
   </url>
   <url>
@@ -331,10 +415,31 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.site/icon-source 2.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icon-source 2.svg</image:loc>
+      <image:title>icon source 2</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.site/icon-source.svg</loc>
     <image:image>
       <image:loc>https://brightai.site/icon-source.svg</image:loc>
       <image:title>icon source</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/noise 2.avif</loc>
+    <image:image>
+      <image:loc>https://brightai.site/noise 2.avif</image:loc>
+      <image:title>noise 2</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/noise 2.png</loc>
+    <image:image>
+      <image:loc>https://brightai.site/noise 2.png</image:loc>
+      <image:title>noise 2</image:title>
     </image:image>
   </url>
   <url>
@@ -349,20 +454,6 @@
     <image:image>
       <image:loc>https://brightai.site/noise.png</image:loc>
       <image:title>noise</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/og/brightai-og-1200x630.avif</loc>
-    <image:image>
-      <image:loc>https://brightai.site/og/brightai-og-1200x630.avif</image:loc>
-      <image:title>brightai og 1200x630</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://brightai.site/og/brightai-og-1200x630.png</loc>
-    <image:image>
-      <image:loc>https://brightai.site/og/brightai-og-1200x630.png</image:loc>
-      <image:title>brightai og 1200x630</image:title>
     </image:image>
   </url>
 </urlset>

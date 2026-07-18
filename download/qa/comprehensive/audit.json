@@ -19758,5 +19758,2844 @@
     ],
     "touch": [],
     "bidi": []
+  },
+  {
+    "page": "/customers/hospital/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/customers/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/customers/pharma/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/data-processing-agreement/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "١ تعريفات وأطراف الاتفاقية...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "٢ نطاق المعالجة وتوجيهات ا...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "٣ الالتزام بالضوابط الأمني...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/demo/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/design/buttons/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 36,
+            "h": 36,
+            "expW": 36,
+            "expH": 36,
+            "text": "",
+            "cls": "btn btn--icon btn--icon btn--sm btn--gho"
+          },
+          {
+            "tag": "button",
+            "w": 44,
+            "h": 44,
+            "expW": 44,
+            "expH": 44,
+            "text": "نشر",
+            "cls": "btn btn--primary btn--sm"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 36,
+            "h": 36,
+            "expW": 36,
+            "expH": 36,
+            "text": "",
+            "cls": "btn btn--icon btn--icon btn--sm btn--gho"
+          },
+          {
+            "tag": "button",
+            "w": 44,
+            "h": 44,
+            "expW": 44,
+            "expH": 44,
+            "text": "نشر",
+            "cls": "btn btn--primary btn--sm"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 36,
+            "h": 36,
+            "expW": 36,
+            "expH": 36,
+            "text": "",
+            "cls": "btn btn--icon btn--icon btn--sm btn--gho"
+          },
+          {
+            "tag": "button",
+            "w": 44,
+            "h": 44,
+            "expW": 44,
+            "expH": 44,
+            "text": "نشر",
+            "cls": "btn btn--primary btn--sm"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 36,
+            "h": 36,
+            "expW": 36,
+            "expH": 36,
+            "text": "",
+            "cls": "btn btn--icon btn--icon btn--sm btn--gho"
+          },
+          {
+            "tag": "button",
+            "w": 44,
+            "h": 44,
+            "expW": 44,
+            "expH": 44,
+            "text": "نشر",
+            "cls": "btn btn--primary btn--sm"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "button",
+            "w": 36,
+            "h": 36,
+            "expW": 36,
+            "expH": 36,
+            "text": "",
+            "cls": "btn btn--icon btn--icon btn--sm btn--gho"
+          },
+          {
+            "tag": "button",
+            "w": 44,
+            "h": 44,
+            "expW": 44,
+            "expH": 44,
+            "text": "نشر",
+            "cls": "btn btn--primary btn--sm"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/design/cards/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/design/colors/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/design/forms/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 238,
+            "h": 37,
+            "expW": 238,
+            "expH": 37,
+            "text": "",
+            "cls": "input input--sm"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 293,
+            "h": 37,
+            "expW": 293,
+            "expH": 37,
+            "text": "",
+            "cls": "input input--sm"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 430,
+            "h": 37,
+            "expW": 430,
+            "expH": 37,
+            "text": "",
+            "cls": "input input--sm"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 430,
+            "h": 37,
+            "expW": 430,
+            "expH": 37,
+            "text": "",
+            "cls": "input input--sm"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          },
+          {
+            "tag": "input",
+            "w": 44,
+            "h": 18,
+            "expW": 44,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 430,
+            "h": 37,
+            "expW": 430,
+            "expH": 37,
+            "text": "",
+            "cls": "input input--sm"
+          },
+          {
+            "tag": "input",
+            "w": 18,
+            "h": 18,
+            "expW": 18,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 18,
+            "h": 18,
+            "expW": 18,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 18,
+            "h": 18,
+            "expW": 18,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--checkbox"
+          },
+          {
+            "tag": "input",
+            "w": 18,
+            "h": 18,
+            "expW": 18,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          },
+          {
+            "tag": "input",
+            "w": 18,
+            "h": 18,
+            "expW": 18,
+            "expH": 18,
+            "text": "",
+            "cls": "input input--radio"
+          }
+        ]
+      }
+    ],
+    "bidi": [
+      {
+        "bp": 320,
+        "count": 8,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 8,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 8,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 8,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 8,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          },
+          {
+            "dir": "ltr",
+            "tag": "input",
+            "text": ""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "page": "/design/typography/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/ai-audit-readiness/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "الموافقة البشرية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 120,
+            "h": 24,
+            "expW": 120,
+            "expH": 24,
+            "text": "وثائق منصة الحوكمة",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 24,
+            "expW": 181,
+            "expH": 24,
+            "text": "دليل PDPL والذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 133,
+            "h": 24,
+            "expW": 133,
+            "expH": 24,
+            "text": "التواصل مع BrightAI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "الموافقة البشرية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 133,
+            "h": 24,
+            "expW": 133,
+            "expH": 24,
+            "text": "التواصل مع BrightAI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "الموافقة البشرية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 120,
+            "h": 24,
+            "expW": 120,
+            "expH": 24,
+            "text": "وثائق منصة الحوكمة",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 24,
+            "expW": 181,
+            "expH": 24,
+            "text": "دليل PDPL والذكاء الاصطناعي",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "الموافقة البشرية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 120,
+            "h": 24,
+            "expW": 120,
+            "expH": 24,
+            "text": "وثائق منصة الحوكمة",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 181,
+            "h": 24,
+            "expW": 181,
+            "expH": 24,
+            "text": "دليل PDPL والذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 133,
+            "h": 24,
+            "expW": 133,
+            "expH": 24,
+            "text": "التواصل مع BrightAI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 95,
+            "h": 24,
+            "expW": 95,
+            "expH": 24,
+            "text": "الموافقة البشرية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 115,
+            "h": 24,
+            "expW": 115,
+            "expH": 24,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 120,
+            "h": 24,
+            "expW": 120,
+            "expH": 24,
+            "text": "وثائق منصة الحوكمة",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 133,
+            "h": 24,
+            "expW": 133,
+            "expH": 24,
+            "text": "التواصل مع BrightAI",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/ai-audit-trail/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 134,
+            "h": 24,
+            "expW": 134,
+            "expH": 24,
+            "text": "حوكمة AI وNCA ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 108,
+            "h": 24,
+            "expW": 108,
+            "expH": 24,
+            "text": "خدمات BrightAI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 134,
+            "h": 24,
+            "expW": 134,
+            "expH": 24,
+            "text": "حوكمة AI وNCA ECC",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 134,
+            "h": 24,
+            "expW": 134,
+            "expH": 24,
+            "text": "حوكمة AI وNCA ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 108,
+            "h": 24,
+            "expW": 108,
+            "expH": 24,
+            "text": "خدمات BrightAI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 115,
+            "h": 24,
+            "expW": 115,
+            "expH": 24,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 108,
+            "h": 24,
+            "expW": 108,
+            "expH": 24,
+            "text": "خدمات BrightAI",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/ai-evidence-file/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 192,
+            "h": 24,
+            "expW": 192,
+            "expH": 24,
+            "text": "Continuous AI Governance",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 192,
+            "h": 24,
+            "expW": 192,
+            "expH": 24,
+            "text": "Continuous AI Governance",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 192,
+            "h": 24,
+            "expW": 192,
+            "expH": 24,
+            "text": "Continuous AI Governance",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/ai-firewall/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 24,
+            "expW": 89,
+            "expH": 24,
+            "text": "إدارة مخاطر AI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 186,
+            "h": 24,
+            "expW": 186,
+            "expH": 24,
+            "text": "حوكمة PDPL للذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 24,
+            "expW": 89,
+            "expH": 24,
+            "text": "إدارة مخاطر AI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 24,
+            "expW": 89,
+            "expH": 24,
+            "text": "إدارة مخاطر AI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 186,
+            "h": 24,
+            "expW": 186,
+            "expH": 24,
+            "text": "حوكمة PDPL للذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 24,
+            "expW": 89,
+            "expH": 24,
+            "text": "إدارة مخاطر AI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 186,
+            "h": 24,
+            "expW": 186,
+            "expH": 24,
+            "text": "حوكمة PDPL للذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 89,
+            "h": 24,
+            "expW": 89,
+            "expH": 24,
+            "text": "إدارة مخاطر AI",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/ai-governance-platform/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/ai-governance-saudi-arabia/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 140,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 104,
+            "h": 18,
+            "expW": 104,
+            "expH": 18,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 18,
+            "expW": 98,
+            "expH": 18,
+            "text": "BrightAI",
+            "cls": "site-header__logo"
+          },
+          {
+            "tag": "button",
+            "w": 60,
+            "h": 21,
+            "expW": 60,
+            "expH": 21,
+            "text": "الحلول",
+            "cls": "site-header__nav-link site-header__dropd"
+          },
+          {
+            "tag": "a",
+            "w": 179,
+            "h": 18,
+            "expW": 179,
+            "expH": 18,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 255,
+            "h": 39,
+            "expW": 255,
+            "expH": 39,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 241,
+            "h": 39,
+            "expW": 241,
+            "expH": 39,
+            "text": "مسار تدقيق الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/ai-risk-management/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/governance-application/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/human-approval-layer/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-accessibility-mobile/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-api-client/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-approvals/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-architecture/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-audit-evidence/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 122,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 104,
+            "h": 18,
+            "expW": 104,
+            "expH": 18,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 18,
+            "expW": 98,
+            "expH": 18,
+            "text": "BrightAI",
+            "cls": "site-header__logo"
+          },
+          {
+            "tag": "button",
+            "w": 60,
+            "h": 21,
+            "expW": 60,
+            "expH": 21,
+            "text": "الحلول",
+            "cls": "site-header__nav-link site-header__dropd"
+          },
+          {
+            "tag": "a",
+            "w": 179,
+            "h": 18,
+            "expW": 179,
+            "expH": 18,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 18,
+            "expW": 172,
+            "expH": 18,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 174,
+            "h": 18,
+            "expW": 174,
+            "expH": 18,
+            "text": "مسار تدقيق الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-audit-trail/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": [
+      {
+        "bp": 320,
+        "count": 1,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "span",
+            "text": "Trace ID"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 1,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "span",
+            "text": "Trace ID"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 1,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "span",
+            "text": "Trace ID"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 1,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "span",
+            "text": "Trace ID"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "dir": "ltr",
+            "tag": "span",
+            "text": "Trace ID"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "page": "/docs/kernel-changelog-template/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-chat/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-compliance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-connectors/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-developer-onboarding/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 72,
+            "h": 24,
+            "expW": 72,
+            "expH": 24,
+            "text": "بنية Kernel",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 72,
+            "h": 24,
+            "expW": 72,
+            "expH": 24,
+            "text": "بنية Kernel",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 72,
+            "h": 24,
+            "expW": 72,
+            "expH": 24,
+            "text": "بنية Kernel",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 72,
+            "h": 24,
+            "expW": 72,
+            "expH": 24,
+            "text": "بنية Kernel",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 72,
+            "h": 24,
+            "expW": 72,
+            "expH": 24,
+            "text": "بنية Kernel",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
   }
 ]
