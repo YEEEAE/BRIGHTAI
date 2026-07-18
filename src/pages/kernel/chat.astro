@@ -16,7 +16,7 @@ import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
-import { getKernelSubPageJsonLd, getBreadcrumbLd } from '../../data/schema-helpers';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import KernelContactCta from '../../components/kernel/KernelContactCta.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 
@@ -25,11 +25,6 @@ const cross = getCrossLinks(unit);
 
 const jsonLd = [
   ...getKernelSubPageJsonLd(unit),
-  getBreadcrumbLd([
-    { name: 'الرئيسية', href: '/' },
-    { name: 'Kernel', href: '/kernel/' },
-    { name: unit.label, href: unit.canonical },
-  ]),
   getKernelFaqJsonLd(unit),
 ];
 

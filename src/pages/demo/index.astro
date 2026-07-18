@@ -17,7 +17,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
-import { ORGANIZATION, LOCAL_BUSINESS_BY_CITY, getBreadcrumbLd } from '../../data/schema-helpers';
+import { LOCAL_BUSINESS_BY_CITY } from '../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الديموهات' }];
 
@@ -139,67 +139,20 @@ const faqs = [
   ['وش الفرق بين الديمو والنسخة المخصصة؟', 'الديمو يوريك الفكرة بعينات مبسطة، والنسخة المخصصة نضبطها على بيانات شركتك وتتكامل مع أنظمتك.'],
 ];
 
+// BAI-SEO-003-S3 (2026-07-18): the demoJsonLd previously re-declared
+// the canonical Organization, WebPage, and BreadcrumbList nodes that
+// the foundation Schema.astro already emits. Re-declaring them
+// produced duplicate @id warnings (verified via
+// scripts/_check-duplicate-schema-ids.mjs). The page now keeps only
+// the page-specific nodes (FAQPage, LocalBusiness Riyadh).
 const demoJsonLd = [
-  {
-    '@context': 'https://schema.org',
-    '@type': ['Organization', 'LocalBusiness'],
-    '@id': 'https://brightai.site/#organization',
-    name: 'BrightAI',
-    url: 'https://brightai.site',
-    logo: 'https://brightai.site/assets/images/logo.png',
-    areaServed: 'SA',
-    // SEMRUSH-FIX-2026-07-08 (#45): added PostalAddress so the
-    // schema.org/LocalBusiness sub-interpretation has the REQUIRED address
-    // (matches Schema.astro foundation LocalBusiness for Riyadh HQ).
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: '6913 المبارك بن فضالة، حي الفيحاء',
-      addressLocality: 'الرياض',
-      addressRegion: 'منطقة الرياض',
-      postalCode: '14254',
-      addressCountry: 'SA',
-    },
-    sameAs: [
-      'https://twitter.com/BrightAISite',
-      'https://linkedin.com/company/brightai-site',
-      'https://github.com/brightai-site',
-      'https://crunchbase.com/organization/brightai',
-    ],
-    knowsAbout: [
-      'AI Governance', 'AI Safety', 'PDPL Compliance', 'NCA ECC Controls',
-      'ISO/IEC 42001', 'حوكمة الذكاء الاصطناعي في السعودية',
-    ],
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    '@id': 'https://brightai.site/demo/#webpage',
-    url: 'https://brightai.site/demo/',
-    name: '30+ ديمو AI تفاعلي | مبيعات، توظيف، صحة',
-    description: 'أكثر من 30 ديمو AI تفاعلي بالعربية: مبيعات، توظيف، خدمة عملاء، تحليل بيانات، OCR، صحة، تعليم. جرّب BrightAI مجاناً قبل قرار الشراء بدون أي التزام.',
-    inLanguage: 'ar-SA',
-  },
-  {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    '@id': 'https://brightai.site/demo/#breadcrumb',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'BrightAI', item: 'https://brightai.site/' },
-      { '@type': 'ListItem', position: 2, name: 'جميع ديموهات BrightAI للذكاء الاصطناعي في السعودية', item: 'https://brightai.site/demo/' },
-    ],
-  },
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     '@id': 'https://brightai.site/demo/#faq',
     mainEntity: faqs.map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } })),
   },
-  ORGANIZATION,
   LOCAL_BUSINESS_BY_CITY.riyadh,
-  getBreadcrumbLd([
-    { name: 'الرئيسية', href: '/' },
-    { name: 'الديموهات', href: '/demo/' },
-  ]),
 ];
 
 const whatsappDemoHref = 'https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%D9%88%D8%A7%D9%84%D9%84%D9%87%D8%8C%20%D8%A3%D8%A8%D8%BA%D9%89%20%D8%A3%D8%AC%D8%B1%D8%A8%20%D8%AF%D9%8A%D9%85%D9%88%D9%87%D8%A7%D8%AA%20Bright%20AI';

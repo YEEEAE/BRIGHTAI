@@ -17,7 +17,7 @@ import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
-import { getKernelSubPageJsonLd, getBreadcrumbLd } from '../../data/schema-helpers';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 // KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
 const unit = getKernelUnit('compliance')!;
@@ -25,11 +25,6 @@ const cross = getCrossLinks(unit);
 
 const jsonLd = [
   ...getKernelSubPageJsonLd(unit),
-  getBreadcrumbLd([
-    { name: 'الرئيسية', href: '/' },
-    { name: 'Kernel', href: '/kernel/' },
-    { name: unit.label, href: unit.canonical },
-  ]),
   getKernelFaqJsonLd(unit),
 ];
 

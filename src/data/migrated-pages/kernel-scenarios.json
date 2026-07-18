@@ -19,52 +19,6 @@
       "@graph": [
         {
           "@type": [
-            "Organization",
-            "LocalBusiness"
-          ],
-          "@id": "https://brightai.site/#organization",
-          "name": "BrightAI",
-          "url": "https://brightai.site",
-          "logo": "https://brightai.site/logo.png",
-          "areaServed": "SA",
-          "sameAs": [
-            "https://twitter.com/BrightAISite",
-            "https://linkedin.com/company/brightai-site",
-            "https://github.com/brightai-site",
-            "https://crunchbase.com/organization/brightai"
-          ],
-          "knowsAbout": [
-            "AI Governance",
-            "AI Safety",
-            "PDPL Compliance",
-            "NCA ECC Controls",
-            "ISO/IEC 42001",
-            "حوكمة الذكاء الاصطناعي في السعودية"
-          ],
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
-            "addressLocality": "الرياض",
-            "addressRegion": "منطقة الرياض",
-            "postalCode": "14254",
-            "addressCountry": "SA"
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
-          "name": "BrightAI",
-          "publisher": {
-            "@id": "https://brightai.site/#organization"
-          },
-          "inLanguage": [
-            "ar-SA",
-            "en-SA"
-          ]
-        },
-        {
-          "@type": [
             "SoftwareApplication",
             "WebApplication"
           ],
@@ -84,55 +38,7 @@
             "availability": "https://schema.org/InStock",
             "url": "https://brightai.site/kernel/",
             "description": "ديمو عام مجاني لواجهة BrightAI Kernel"
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "47",
-            "bestRating": "5",
-            "worstRating": "1"
           }
-        },
-        {
-          "@type": "WebPage",
-          "@id": "https://brightai.site/kernel/scenarios/#webpage",
-          "url": "https://brightai.site/kernel/scenarios/",
-          "name": "السيناريوهات | BrightAI Kernel",
-          "description": "محاكاة سيناريوهات BrightAI Kernel لاختبار الحوكمة، الحماية، المخاطر، والموافقات قبل التشغيل.",
-          "isPartOf": {
-            "@id": "https://brightai.site/#website"
-          },
-          "about": {
-            "@id": "https://brightai.site/#organization"
-          },
-          "inLanguage": "ar-SA",
-          "mainEntity": {
-            "@id": "https://brightai.site/#product"
-          }
-        },
-        {
-          "@type": "BreadcrumbList",
-          "@id": "https://brightai.site/kernel/scenarios/#breadcrumb",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "BrightAI",
-              "item": "https://brightai.site/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "kernel",
-              "item": "https://brightai.site/kernel/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": "السيناريوهات | BrightAI Kernel",
-              "item": "https://brightai.site/kernel/scenarios/"
-            }
-          ]
         }
       ]
     },

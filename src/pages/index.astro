@@ -40,6 +40,9 @@ const faqItems = [
 //   - FAQPage (homepage Q&A)
 //   - DefinedTermSet (technical AI governance terms)
 // See /BRIGHTAI/.agents/brain.md Section 5.8 for the schema-helpers contract.
+// BAI-SEO-003-S3 (2026-07-18): aggregateRating was removed (4.8/47 was
+// fabricated — no source-backed reviews for Kernel). Re-add when a real
+// review source is integrated (e.g. verified G2 / Capterra listing).
 const jsonLd = [
   {
     "@context": "https://schema.org",
@@ -69,13 +72,6 @@ const jsonLd = [
       "availability": "https://schema.org/InStock",
       "url": "https://brightai.site/contact/",
       "description": "تواصل عبر /contact/ للحصول على عرض سعر مخصص لحجم المنشأة"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "47",
-      "bestRating": "5",
-      "worstRating": "1"
     }
   },
   {
@@ -177,6 +173,7 @@ const enhancedJsonLd = appendLd(jsonLd, [
     {lang:'x-default',href:'https://brightai.site/'}
   ]}
   jsonLd={enhancedJsonLd as any}
+  extraSpeakableSelectors={['.home-citable-definition']}
 >
 {/* ═══════════════ 1. HERO (SplitHero — DottedBackground now in BaseLayout) ═══════════════ */}
 <SplitHero />

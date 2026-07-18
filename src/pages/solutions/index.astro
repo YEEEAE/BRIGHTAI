@@ -19,26 +19,16 @@ import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import SolutionCard from '../../components/SolutionCard.astro';
 import SectorCard from '../../components/SectorCard.astro';
 import { solutions, sectors } from '../../data/solutions';
-import {
-  ORGANIZATION,
-  getBreadcrumbLd,
-} from '../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الحلول التقنية' }];
 
+// BAI-SEO-003-S3 (2026-07-18): WebPage and BreadcrumbList are emitted
+// by the foundation Schema.astro. The solutions index page has no
+// page-specific schema nodes — every entity (Organization, WebSite,
+// BreadcrumbList, WebPage) is owned by the foundation.
 const jsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
-    { "@type": "WebPage", "@id": "https://brightai.site/solutions/#webpage", url: "https://brightai.site/solutions/", name: "حلول حوكمة AI | AI Firewall + سجل تدقيق + ملف أدلة", description: "كل حلول BrightAI التقنية لحوكمة AI في مكان واحد: AI Firewall، سجل التدقيق، الموافقات البشرية، ملف الأدلة، وأنظمة الحوكمة. اكتشف متى تستخدم كل حل.", inLanguage: "ar-SA" },
-    { "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "الرئيسية", item: "https://brightai.site/" }, { "@type": "ListItem", position: 2, name: "الحلول التقنية", item: "https://brightai.site/solutions/" }] },
-    // SCHEMA-ENHANCEMENT (REPORT-23): canonical Organization + canonical BreadcrumbList helper
-    // for cross-page resolution. Original WebPage + inline BreadcrumbList above are preserved.
-    ORGANIZATION,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'الحلول التقنية', href: '/solutions/' },
-    ]),
-  ]
+  "@graph": []
 };
 ---
 <ArabicLayout title="حلول حوكمة AI | AI Firewall + سجل تدقيق + ملف أدلة" description="كل حلول BrightAI التقنية لحوكمة AI في مكان واحد: AI Firewall، سجل التدقيق، الموافقات البشرية، ملف الأدلة، وأنظمة الحوكمة. اكتشف متى تستخدم كل حل." canonical="https://brightai.site/solutions/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/solutions/'},{lang:'x-default',href:'https://brightai.site/solutions/'}]} jsonLd={jsonLd as any} currentPath="/solutions/">

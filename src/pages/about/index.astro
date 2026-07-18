@@ -14,11 +14,7 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
-import {
-  ORGANIZATION,
-  LOCAL_BUSINESS_BY_CITY,
-  getBreadcrumbLd,
-} from '../../data/schema-helpers';
+import { LOCAL_BUSINESS_BY_CITY } from '../../data/schema-helpers';
 
 const crumbs = [
   { label: 'الرئيسية', href: '/' },
@@ -60,23 +56,20 @@ const jsonLd = {
   }
 };
 
-// SCHEMA-ENHANCEMENT (REPORT-23): keep original AboutPage + add canonical Organization,
-// founder (Person), 6 LocalBusiness nodes for Saudi cities, and BreadcrumbList.
+// SCHEMA-ENHANCEMENT (REPORT-23): keep original AboutPage + 6 LocalBusiness
+// nodes for Saudi cities. Organization, BreadcrumbList, and WebSite are
+// emitted by the foundation Schema.astro — adding them here would create
+// duplicate @id warnings (verified via scripts/_check-duplicate-schema-ids.mjs).
 const enhancedJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     jsonLd,
-    ORGANIZATION,
     LOCAL_BUSINESS_BY_CITY.riyadh,
     LOCAL_BUSINESS_BY_CITY.jeddah,
     LOCAL_BUSINESS_BY_CITY.dammam,
     LOCAL_BUSINESS_BY_CITY.khobar,
     LOCAL_BUSINESS_BY_CITY.mecca,
     LOCAL_BUSINESS_BY_CITY.madinah,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'من نحن', href: '/about/' },
-    ]),
   ],
 };
 

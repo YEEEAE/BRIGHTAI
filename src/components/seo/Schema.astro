@@ -2,11 +2,11 @@
 /**
  * Schema — Foundation schema.org JSON-LD for BrightAI.
  *
- * PURPOSE (REPORTS-SEO-FOUNDATION, 2026-07-07):
+ * PURPOSE (REPORTS-SEO-FOUNDATION, 2026-07-07 + BAI-SEO-003-S3, 2026-07-18):
  *   Single source of truth for the **foundation** structured data that every
  *   page in the BrightAI site must emit. Composed of:
  *     1. Organization    — company identity, postal address, contact
- *     2. WebSite         — site identity + SearchAction for sitelinks searchbox
+ *     2. WebSite         — site identity (SearchAction removed: no /search route)
  *     3. LocalBusiness   — Riyadh office (geo.region SA-01)
  *     4. BreadcrumbList  — when crumbs are provided
  *
@@ -19,6 +19,18 @@
  *   - region = "منطقة الرياض"
  *   - country = "SA"
  *
+ * BAI-SEO-003-S3 CHANGES:
+ *   - Organization node is now imported from src/data/schema-helpers.ts
+ *     (ORGANIZATION constant) so Schema.astro and page-level code share
+ *     ONE source of truth — no more drift between the two copies.
+ *   - `sameAs` no longer includes the WhatsApp number (wa.me is a contact
+ *     channel, not a social identity profile). Verified social profiles only.
+ *   - WebSite `potentialAction` (SearchAction) removed: there is no live
+ *     `/search` route in the build, and emitting a SearchAction that points
+ *     to a 404 violates Google's sitelinks searchbox guidelines.
+ *   - `knowsLanguage` is preserved as `['ar-SA', 'en-SA']` to match the
+ *     bilingual content surface.
+ *
  * The component emits **additive** schema nodes — pages may pass additional
  * schema via the `extra` prop and they will be merged into a single @graph
  * to avoid duplicate <script type="application/ld+json"> blocks.
@@ -29,6 +41,7 @@
  *   - If a verified ID is empty (clarityId, bingVerification), it is omitted.
  */
 import { SITE } from '../../data/site';
+import { ORGANIZATION } from '../../data/schema-helpers';
 
 export interface BreadcrumbItem {
   name: string;
@@ -90,94 +103,14 @@ const { extra = [], breadcrumbs = [], canonical, pageTitle, pageDescription, lan
 
 // ─── Foundation nodes ───────────────────────────────────────────────────────
 
-const organization = {
-  '@type': 'Organization',
-  '@id': `${SITE.url}/#organization`,
-  name: SITE.name,
-  alternateName: SITE.nameAr,
-  legalName: 'BrightAI',
-  url: SITE.url,
-  logo: {
-    '@type': 'ImageObject',
-    url: `${SITE.url}/assets/images/logo.png`,
-    width: 200,
-    height: 55,
-    caption: 'شعار BrightAI',
-  },
-  description:
-    'BrightAI شركة سعودية متخصصة في حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات في السعودية — Saudi AI Safety OS.',
-  foundingDate: '2025',
-  founder: {
-    '@type': 'Person',
-    '@id': `${SITE.url}/#founder`,
-    name: 'يزيد',
-    jobTitle: 'المؤسس والمدير التنفيذي',
-    worksFor: { '@id': `${SITE.url}/#organization` },
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'الرياض',
-      addressCountry: 'SA',
-    },
-    sameAs: ['https://www.linkedin.com/in/yazeed-brightai'],
-  },
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '6913 المبارك بن فضالة، حي الفيحاء',
-    addressLocality: 'الرياض',
-    addressRegion: 'منطقة الرياض',
-    postalCode: '14254',
-    addressCountry: 'SA',
-  },
-  contactPoint: [
-    {
-      '@type': 'ContactPoint',
-      telephone: '+966538229013',
-      contactType: 'customer support',
-      contactOption: 'WhatsApp',
-      url: SITE.whatsapp.url,
-      areaServed: 'SA',
-      availableLanguage: ['Arabic', 'English'],
-    },
-  ],
-  areaServed: [
-    { '@type': 'Country', name: 'المملكة العربية السعودية' },
-    { '@type': 'City', name: 'الرياض' },
-    { '@type': 'City', name: 'جدة' },
-    { '@type': 'City', name: 'الدمام' },
-    { '@type': 'City', name: 'الخبر' },
-    { '@type': 'City', name: 'مكة المكرمة' },
-    { '@type': 'City', name: 'المدينة المنورة' },
-  ],
-  sameAs: [
-    'https://linkedin.com/company/brightai-site',
-    'https://x.com/BrightAISite',
-    'https://www.youtube.com/@BrightAiSaudi',
-    'https://www.tiktok.com/@bright1ai',
-    'https://github.com/brightai-site',
-    'https://wa.me/966538229013',
-  ],
-  knowsAbout: [
-    'الذكاء الاصطناعي',
-    'AI Governance',
-    'AI Safety',
-    'PDPL Compliance',
-    'NCA ECC Controls',
-    'SDAIA Generative AI Guidelines',
-    'ISO/IEC 42001',
-    'ISO/IEC 27001',
-    'SFDA Medical Quality',
-    'ZATCA',
-    'SAMA',
-    'حوكمة الذكاء الاصطناعي في السعودية',
-  ],
-  knowsLanguage: ['ar-SA', 'en-SA'],
-  slogan: SITE.tagline,
-  brand: {
-    '@type': 'Brand',
-    name: SITE.name,
-    slogan: SITE.tagline,
-  },
-} as const;
+/**
+ * BAI-SEO-003-S3 (2026-07-18): import Organization from the shared
+ * `schema-helpers` module instead of redeclaring it. This is the SINGLE
+ * source of truth for the BrightAI Organization @id — every page in the
+ * site now references the EXACT same node, eliminating duplicate @id
+ * warnings in Schema.org validators.
+ */
+const organization = ORGANIZATION;
 
 const website = {
   '@type': 'WebSite',
@@ -187,16 +120,11 @@ const website = {
   alternateName: SITE.nameAr,
   publisher: { '@id': `${SITE.url}/#organization` },
   inLanguage: ['ar-SA', 'en-SA'],
-  // SearchAction — enables sitelinks searchbox in Google SERPs.
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${SITE.url}/search?q={search_term_string}`,
-    },
-    // query-input schema: "required name=search_term_string"
-    'query-input': 'required name=search_term_string',
-  },
+  // BAI-SEO-003-S3 (2026-07-18): SearchAction removed. There is no live
+  // `/search` route in the build (verified 2026-07-18 — no /search dir
+  // under src/pages, no /search/index.html in dist). Emitting a SearchAction
+  // to a 404 URL violates Google's sitelinks searchbox policy and is a
+  // soft-spam signal. Re-add ONLY when a real /search route ships.
 } as const;
 
 // LocalBusiness — Riyadh HQ (geo.region SA-01)

@@ -76,39 +76,6 @@
       "@graph": [
         {
           "@type": [
-            "Organization",
-            "LocalBusiness"
-          ],
-          "@id": "https://brightai.site/#organization",
-          "name": "Bright AI",
-          "url": "https://brightai.site",
-          "logo": "https://brightai.site/logo.png",
-          "areaServed": "SA",
-          "sameAs": [],
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "6913 المبارك بن فضالة، حي الفيحاء",
-            "addressLocality": "الرياض",
-            "addressRegion": "منطقة الرياض",
-            "postalCode": "14254",
-            "addressCountry": "SA"
-          }
-        },
-        {
-          "@type": "WebSite",
-          "@id": "https://brightai.site/#website",
-          "url": "https://brightai.site",
-          "name": "Bright AI",
-          "publisher": {
-            "@id": "https://brightai.site/#organization"
-          },
-          "inLanguage": [
-            "ar-SA",
-            "en-SA"
-          ]
-        },
-        {
-          "@type": [
             "SoftwareApplication",
             "WebApplication"
           ],
@@ -128,55 +95,7 @@
             "availability": "https://schema.org/InStock",
             "url": "https://brightai.site/kernel/",
             "description": "ديمو عام مجاني لواجهة BrightAI Kernel"
-          },
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "ratingCount": "47",
-            "bestRating": "5",
-            "worstRating": "1"
           }
-        },
-        {
-          "@type": "WebPage",
-          "@id": "https://brightai.site/kernel/offline/#webpage",
-          "url": "https://brightai.site/kernel/offline/",
-          "name": "BrightAI Kernel غير متصل | BrightAI",
-          "description": "صفحة offline لنواة BrightAI Kernel عند انقطاع الاتصال، مع روابط للرجوع إلى لوحة التحكم والموافقات بعد عودة الشبكة.",
-          "isPartOf": {
-            "@id": "https://brightai.site/#website"
-          },
-          "about": {
-            "@id": "https://brightai.site/#organization"
-          },
-          "inLanguage": "ar-SA",
-          "mainEntity": {
-            "@id": "https://brightai.site/#product"
-          }
-        },
-        {
-          "@type": "BreadcrumbList",
-          "@id": "https://brightai.site/kernel/offline/#breadcrumb",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Bright AI",
-              "item": "https://brightai.site/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "kernel",
-              "item": "https://brightai.site/kernel/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": "BrightAI Kernel غير متصل | BrightAI",
-              "item": "https://brightai.site/kernel/offline/"
-            }
-          ]
         }
       ]
     }

@@ -108,14 +108,33 @@ export function getHreflangPair(canonical: string): HreflangPair {
 
 /**
  * getHreflangLinks — returns the ordered HreflangLink[] for a canonical URL.
- * Order: ar-SA, en-SA (if present), x-default. Self-reference is guaranteed
- * because ar-SA === canonical for AR pages and en-SA === canonical for EN pages.
+ * The self-reference language is chosen by matching `canonical` against the
+ * pair's ar/en URLs (not by a fixed order), so:
+ *   - AR page (canonical === pair.ar): ar-SA=self, en-SA=counterpart, x-default=self
+ *   - EN page (canonical === pair.en): en-SA=self, ar-SA=counterpart, x-default=counterpart
+ *   - AR-only page (not in map): ar-SA=self, x-default=self (no en-SA invented)
+ * Self-reference is guaranteed because the self lang always points to `canonical`.
  */
 export function getHreflangLinks(canonical: string): HreflangLink[] {
   const pair = getHreflangPair(canonical);
-  const links: HreflangLink[] = [{ lang: 'ar-SA', href: pair.ar }];
-  if (pair.en) links.push({ lang: 'en-SA', href: pair.en });
-  links.push({ lang: 'x-default', href: pair.xDefault });
+  const links: HreflangLink[] = [];
+
+  if (canonical === pair.ar) {
+    // Arabic self page.
+    links.push({ lang: 'ar-SA', href: pair.ar });
+    if (pair.en) links.push({ lang: 'en-SA', href: pair.en });
+    links.push({ lang: 'x-default', href: pair.xDefault });
+  } else if (pair.en && canonical === pair.en) {
+    // English self page — ar-SA is the return counterpart.
+    links.push({ lang: 'en-SA', href: pair.en });
+    links.push({ lang: 'ar-SA', href: pair.ar });
+    links.push({ lang: 'x-default', href: pair.xDefault });
+  } else {
+    // AR-only page (not in explicit map, or canonical matches neither side).
+    links.push({ lang: 'ar-SA', href: pair.ar });
+    links.push({ lang: 'x-default', href: pair.xDefault });
+  }
+
   return links;
 }
 

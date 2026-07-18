@@ -25,7 +25,7 @@ import { migratedSectorPages } from '../../data/migratedSolutionPages';
 import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../components/Icon.astro';
-import { ORGANIZATION, getFaqLd } from '../../data/schema-helpers';
+import { getFaqLd } from '../../data/schema-helpers';
 
 export function getStaticPaths() {
   return sectors.map(s => ({ params: { sector: s.slug }, props: { sector: s } }));
@@ -40,6 +40,10 @@ const crumbs = [
   { label: sector.h1 }
 ];
 
+// BAI-SEO-003-S3 (2026-07-18): BreadcrumbList is emitted by the foundation
+// Schema.astro from the layout's `breadcrumbs` prop. We keep only the
+// page-specific Service node here to avoid duplicate @id warnings
+// (verified via scripts/_check-duplicate-schema-ids.mjs).
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -51,16 +55,7 @@ const jsonLd = {
       "provider": { "@type": "Organization", "name": "BrightAI", "url": "https://brightai.site" },
       "url": sector.canonical,
       "areaServed": "Saudi Arabia"
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": crumbs.map((c, i) => ({
-        "@type": "ListItem", "position": i + 1, "name": c.label,
-        "item": c.href ? `https://brightai.site${c.href}` : sector.canonical
-      }))
-    },
-    // SCHEMA-ENHANCEMENT (REPORT-23): canonical Organization node added.
-    ORGANIZATION,
+    }
   ]
 };
 
@@ -89,7 +84,12 @@ const sectorJsonLd = sectorFaqLd
  * Test ("FAQPage answer does not match the visible answer") and break
  * the P0 acceptance criterion "no question/answer mismatch".
  */
-const FOUNDATION_TYPES = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage']);
+// BAI-SEO-003-S3 (2026-07-18): BreadcrumbList added — the foundation
+// Schema.astro emits a BreadcrumbList (no @id) for every page; the
+// migrated JSON-LD also carried a BreadcrumbList with @id, which
+// produced a duplicate @id in the merged @graph (verified via
+// scripts/_check-duplicate-schema-ids.mjs).
+const FOUNDATION_TYPES = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage', 'BreadcrumbList']);
 
 function sanitiseMigratedForFoundation(
   node: unknown,
@@ -99,22 +99,31 @@ function sanitiseMigratedForFoundation(
   if (seen.has(node as object)) return node;
   seen.add(node as object);
 
+  // Helper: does the @type on this node refer to a foundation type?
+  // Handles both string @type and @type as array (e.g.
+  // `["Organization", "LocalBusiness"]` — the merged form used in some
+  // legacy migrated JSON files).
+  const isFoundationNode = (n: unknown): boolean => {
+    if (!n || typeof n !== 'object') return false;
+    const t = (n as Record<string, unknown>)['@type'];
+    if (typeof t === 'string') return t === 'FAQPage' || FOUNDATION_TYPES.has(t);
+    if (Array.isArray(t)) return t.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES.has(x)));
+    return false;
+  };
+
   if (Array.isArray(node)) {
     return node
-      .filter((child) => {
-        if (!child || typeof child !== 'object') return true;
-        const t = (child as Record<string, unknown>)['@type'];
-        if (t === 'FAQPage') return false;
-        if (typeof t === 'string' && FOUNDATION_TYPES.has(t)) return false;
-        return true;
-      })
+      .filter((child) => !isFoundationNode(child))
       .map((child) => sanitiseMigratedForFoundation(child, seen));
   }
 
   const obj = node as Record<string, unknown>;
   const next: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (key === '@type' && typeof value === 'string' && FOUNDATION_TYPES.has(value)) continue;
+    if (key === '@type') {
+      if (typeof value === 'string' && (value === 'FAQPage' || FOUNDATION_TYPES.has(value))) continue;
+      if (Array.isArray(value) && value.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES.has(x)))) continue;
+    }
     next[key] = sanitiseMigratedForFoundation(value, seen);
   }
   return next;

@@ -19,7 +19,7 @@ import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks } from '../../data/kernel';
-import { getKernelSubPageJsonLd, getBreadcrumbLd, getFaqLd } from '../../data/schema-helpers';
+import { getKernelSubPageJsonLd, getFaqLd } from '../../data/schema-helpers';
 import { getKernelFaqJsonLd } from '../../data/kernel';
 // KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
@@ -30,11 +30,6 @@ const cross = getCrossLinks(unit);
 // so every kernel page emits 3+ schema types (was 1 before: SoftwareApplication only).
 const jsonLd = [
   ...getKernelSubPageJsonLd(unit),
-  getBreadcrumbLd([
-    { name: 'الرئيسية', href: '/' },
-    { name: 'Kernel', href: '/kernel/' },
-    { name: unit.label, href: unit.canonical },
-  ]),
   getKernelFaqJsonLd(unit),
 ];
 

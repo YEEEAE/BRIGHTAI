@@ -31,7 +31,8 @@ import { migratedSolutionPages } from '../../data/migratedSolutionPages';
 import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../components/Icon.astro';
-import { ORGANIZATION } from '../../data/schema-helpers';
+// BAI-SEO-003-S3 (2026-07-18): ORGANIZATION import removed — foundation
+// Schema.astro emits the canonical Organization @id.
 
 export function getStaticPaths() {
   return solutions.map(s => ({ params: { slug: s.slug }, props: { solution: s } }));
@@ -51,18 +52,60 @@ const crumbs = [
   { label: solution.title.split(' | ')[0] }
 ];
 
+// BAI-SEO-003-S3 (2026-07-18): BreadcrumbList and Organization are emitted
+// by the foundation Schema.astro. We keep only the page-specific Service
+// node (+ optional FAQPage from solution.content.faqs) to avoid duplicate
+// @id warnings (verified via scripts/_check-duplicate-schema-ids.mjs).
 const jsonLd = {
   "@context":"https://schema.org",
   "@graph":[
     {"@type":"Service","@id":solution.canonical+"#service","name":solution.h1,"description":solution.description,"provider":{"@type":"Organization","name":"BrightAI","url":"https://brightai.site"},"url":solution.canonical,"areaServed":"Saudi Arabia"},
-    {"@type":"BreadcrumbList","itemListElement":crumbs.map((c,i)=>({"@type":"ListItem","position":i+1,"name":c.label,"item":c.href?`https://brightai.site${c.href}`:solution.canonical}))},
-    {"@type":["Organization","LocalBusiness"],"@id":"https://brightai.site/#organization","name":"BrightAI","url":"https://brightai.site","logo":"https://brightai.site/assets/images/logo.png","telephone":"+966538229013","address":{"@type":"PostalAddress","streetAddress":"6913 المبارك بن فضالة، حي الفيحاء","addressLocality":"الرياض","addressRegion":"منطقة الرياض","postalCode":"14254","addressCountry":"SA"},"areaServed":"SA","sameAs":["https://x.com/BrightAISite","https://linkedin.com/company/brightai-site","https://github.com/YEEEAE/BRIGHTAI","https://crunchbase.com/organization/brightai"],"knowsAbout":["AI Governance","AI Safety","PDPL Compliance","NCA ECC Controls","ISO/IEC 42001","حوكمة الذكاء الاصطناعي في السعودية"]},
     ...(solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
-    // SCHEMA-ENHANCEMENT (REPORT-23): canonical Organization node added for cross-page resolution.
-    // The legacy inline [Organization, LocalBusiness] above is preserved as-is for backward compatibility.
-    ORGANIZATION,
   ]
 };
+
+/**
+ * BAI-SEO-003-S3 (2026-07-18): the legacy migrated JSON-LD for /solutions/*
+ * pages contains Organization / WebSite / LocalBusiness / WebPage /
+ * BreadcrumbList nodes that DUPLICATE the foundation Schema.astro
+ * emission. Without stripping them, the merged @graph would carry
+ * `https://brightai.site/#organization` 2-3× per page (verified via
+ * scripts/_check-duplicate-schema-ids.mjs). This helper mirrors the
+ * stripping used in /solutions/[sector].astro and /solutions/[sector]/[city].astro.
+ */
+const FOUNDATION_TYPES_SLUG = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage', 'BreadcrumbList']);
+
+function stripFoundationTypesFromMigratedSlug(
+  node: unknown,
+  seen: WeakSet<object> = new WeakSet(),
+): unknown {
+  if (!node || typeof node !== 'object') return node;
+  if (seen.has(node as object)) return node;
+  seen.add(node as object);
+
+  if (Array.isArray(node)) {
+    return node
+      .filter((child) => {
+        if (!child || typeof child !== 'object') return true;
+        const t = (child as Record<string, unknown>)['@type'];
+        if (Array.isArray(t) && t.some((x) => FOUNDATION_TYPES_SLUG.has(String(x)))) return false;
+        if (typeof t === 'string' && FOUNDATION_TYPES_SLUG.has(t)) return false;
+        return true;
+      })
+      .map((child) => stripFoundationTypesFromMigratedSlug(child, seen));
+  }
+
+  const obj = node as Record<string, unknown>;
+  const next: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (key === '@type') {
+      if (typeof value === 'string' && FOUNDATION_TYPES_SLUG.has(value)) continue;
+      if (Array.isArray(value) && value.some((x) => FOUNDATION_TYPES_SLUG.has(String(x)))) continue;
+    }
+    next[key] = stripFoundationTypesFromMigratedSlug(value, seen);
+  }
+  return next;
+}
 
 /* ------------------------------------------------------------------
  * Per-product visual: أسماء 4 الخطوات + أيقوناتها في الـ flow.
@@ -175,7 +218,7 @@ const useCases = buildScenarios(solution);
   description={migratedPage?.description ?? solution.description}
   canonical={migratedPage?.canonical ?? solution.canonical}
   hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:solution.canonical},{lang:'x-default',href:solution.canonical}]}
-  jsonLd={migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]), ORGANIZATION] } : (jsonLd as any)}
+  jsonLd={migratedPage?.jsonLd ? { '@context': 'https://schema.org', '@graph': [...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]).map((entry) => stripFoundationTypesFromMigratedSlug(entry))] } : (jsonLd as any)}
   currentPath={solution.href}
   ogImage="/assets/images/og/og-solutions.webp"
   ogImageAlt={migratedPage?.title ?? solution.title}

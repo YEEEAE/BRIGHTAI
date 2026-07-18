@@ -16,7 +16,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { resolveClientBuildRoot } from "./_build-output.mjs";
-import { extractAlternateHreflangLinks, extractCanonicalHref } from "./sitemap-audit-utils.mjs";
+import { extractAlternateHreflangLinks, extractCanonicalHref, hasNoindexDirective } from "./sitemap-audit-utils.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
@@ -62,10 +62,13 @@ async function buildPageIndex() {
     const html = await fs.readFile(file, "utf8");
     const canonical = extractCanonicalHref(html);
     if (!canonical) continue;
+    // Skip noindex pages (error pages, thank-you, etc.) — they are not part
+    // of the indexable hreflang contract.
+    if (hasNoindexDirective(html)) continue;
     const alternates = parseHeadHreflang(html);
     const map = new Map();
     for (const a of alternates) {
-      map.set(a.lang, a.href);
+      map.set(a.hreflang, a.href);
     }
     index.set(canonical, { file, alternates: map });
   }
@@ -73,7 +76,9 @@ async function buildPageIndex() {
 }
 
 // Verify reciprocity: for every (lang, href) alternate on page P, the target
-// page at `href` must list P's canonical as a return alternate.
+// page at `href` must list P's canonical as a return alternate. AR-only pages
+// (ar-SA + x-default, no en-SA) legitimately have no en-SA return, so we skip
+// the return check when the target does not declare the return language.
 function checkReciprocity(index) {
   const errors = [];
   for (const [canonical, { alternates }] of index) {
@@ -85,11 +90,9 @@ function checkReciprocity(index) {
         continue;
       }
       const returnLang = lang === "ar-SA" ? "en-SA" : "ar-SA";
+      // AR-only target has no en-SA — no return expected.
+      if (!target.alternates.has(returnLang)) continue;
       const returnHref = target.alternates.get(returnLang);
-      if (!returnHref) {
-        errors.push(`missing-return: ${canonical} → ${lang} ${href} (no ${returnLang} on target)`);
-        continue;
-      }
       if (returnHref !== canonical) {
         errors.push(`missing-return: ${canonical} → ${lang} ${href} (target returns ${returnHref}, expected ${canonical})`);
       }

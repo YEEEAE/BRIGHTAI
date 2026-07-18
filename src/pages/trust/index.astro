@@ -18,7 +18,6 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
 
 const title = 'مركز ثقة BrightAI | أمان وامتثال PDPL';
 const description = 'ممارسات BrightAI في الأمان والخصوصية والامتثال التنظيمي. كيف نساعد الجهات السعودية على تشغيل الذكاء الاصطناعي بثقة ومسؤولية وفق PDPL وNCA ECC.';
@@ -135,16 +134,13 @@ const faqs = [
   ['كيف يدعم نظام BrightAI الامتثال لنظام PDPL؟', 'يقوم جدار حماية الذكاء الاصطناعي (AI Firewall) برصد وتجهيل البيانات الشخصية (PII) لحظياً قبل عبورها للنماذج الخارجية، بالإضافة إلى الاحتفاظ بسجل تدقيق كامل متوافق فريباً مع اللوائح، مما يمنع حدوث أي تسريبات غير مصرح بها.'],
 ];
 
+// BAI-SEO-003-S3 (2026-07-18): WebPage is emitted by the foundation
+// Schema.astro. The page now keeps only the FAQPage to avoid
+// duplicate @id warnings.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: 'ar-SA' },
     { '@type': 'FAQPage', mainEntity: faqs.map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } })) },
-    ORGANIZATION,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'مركز الثقة', href: '/trust/' },
-    ]),
   ],
 };
 

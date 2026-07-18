@@ -27,7 +27,9 @@ import {
   categoryFromSlug,
 } from '../../data/blog';
 import { SITE } from '../../data/site';
-import { ORGANIZATION } from '../../data/schema-helpers';
+// BAI-SEO-003-S3 (2026-07-18): Organization import removed — foundation
+// Schema.astro emits the canonical Organization @id. We keep this comment
+// so future agents don't re-introduce the duplicate.
 
 const PAGE_SIZE = 100;
 
@@ -73,9 +75,13 @@ const collectionLd = {
   publisher: { '@id': 'https://brightai.site/#organization' },
 };
 
+// BAI-SEO-003-S3 (2026-07-18): Organization and BreadcrumbList are
+// emitted by the foundation Schema.astro. We keep only the page-specific
+// CollectionPage node here to avoid duplicate @id warnings (verified
+// via scripts/_check-duplicate-schema-ids.mjs).
 const blogJsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [collectionLd, ORGANIZATION, breadcrumbLd],
+  '@graph': [collectionLd],
 };
 
 // Count per category (always over ALL posts, never the filtered list).

@@ -18,10 +18,6 @@ import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import Icon from '../../../components/Icon.astro';
-import {
-  ORGANIZATION,
-  getBreadcrumbLd,
-} from '../../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'تقييم الجاهزية' }];
 
@@ -157,11 +153,6 @@ const jsonLd = {
   '@graph': [
     { '@type': 'WebPage', name: 'تقييم جاهزية AI مجاني | فحص في 4 خطوات', url: 'https://brightai.site/assessment/ai-governance-readiness/', description: 'ابدأ تقييم جاهزية AI مجاني من BrightAI اليوم: فحص السياسات والضوابط والبيانات وسجلات التدقيق. احصل على خطة امتثال عملية تناسب منشأتك في السعودية.', inLanguage: 'ar-SA' },
     { '@type': 'FAQPage', mainEntity: faqs.map(({ q, a }) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
-    ORGANIZATION,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'تقييم الجاهزية', href: '/assessment/ai-governance-readiness/' },
-    ]),
   ],
 };
 
@@ -175,7 +166,7 @@ const checklistItems = [
 ];
 ---
 
-<ArabicLayout title="تقييم جاهزية AI مجاني | فحص في 4 خطوات" description="ابدأ تقييم جاهزية AI مجاني من BrightAI اليوم: فحص السياسات والضوابط والبيانات وسجلات التدقيق. احصل على خطة امتثال عملية تناسب منشأتك في السعودية." canonical="https://brightai.site/assessment/ai-governance-readiness/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/assessment/ai-governance-readiness/'},{lang:'x-default',href:'https://brightai.site/assessment/ai-governance-readiness/'}]} jsonLd={jsonLd as any} currentPath="/assessment/ai-governance-readiness/">
+<ArabicLayout title="تقييم جاهزية AI مجاني | فحص في 4 خطوات" description="ابدأ تقييم جاهزية AI مجاني من BrightAI اليوم: فحص السياسات والضوابط والبيانات وسجلات التدقيق. احصل على خطة امتثال عملية تناسب منشأتك في السعودية." canonical="https://brightai.site/assessment/ai-governance-readiness/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/assessment/ai-governance-readiness/'},{lang:'x-default',href:'https://brightai.site/assessment/ai-governance-readiness/'}]} jsonLd={jsonLd as any} currentPath="/assessment/ai-governance-readiness/" extraSpeakableSelectors={['.page-hero__description']}>
 
   {/* ═══════════ 1. HERO — page-hero ═══════════ */}
   <section class="page-hero" aria-label="تقييم الجاهزية">

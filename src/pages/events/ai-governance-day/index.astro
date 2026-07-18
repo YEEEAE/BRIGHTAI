@@ -7,7 +7,6 @@ import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import LeadForm from '../../../components/LeadForm.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الفعاليات' }, { label: 'يوم حوكمة AI' }];
 
@@ -19,22 +18,14 @@ const sessions = [
   { t: '٠٢:٠٠', title: 'ورشة: ابنِ سجل تدقيق في ٩٠ دقيقة', body: 'ورشة تطبيقية.' },
 ];
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Event',
-      name: 'AI Governance Day Riyadh',
-      description: 'حدث خاص من BrightAI عن حوكمة الذكاء الاصطناعي: جلسات تقنية، طاولة نقاش، وورشة تطبيقية. الرياض.',
-      url: 'https://brightai.site/events/ai-governance-day/',
-      inLanguage: 'ar-SA',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      organizer: ORGANIZATION,
-    },
-    ORGANIZATION,
-    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الفعاليات', href: '/events/ai-governance-day/' }]),
-  ],
-};
+/**
+ * BAI-SEO-003-S3 (2026-07-18): the previous Event node lacked a confirmed
+ * startDate and a physical venue in Riyadh. Fabricated dates would violate
+ * Google spam policies. The page now intentionally emits NO Event node —
+ * Organization, BreadcrumbList, and WebPage are emitted by FoundationSchema.
+ * When the event date + venue are confirmed, re-add Event via getEventLd().
+ */
+const jsonLd = null;
 ---
 
 <ArabicLayout

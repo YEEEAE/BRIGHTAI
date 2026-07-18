@@ -33,6 +33,17 @@ import { SITE } from './site';
  * Includes: founder, address, contactPoint, sameAs, knowsAbout,
  *           areaServed (6 Saudi cities), awards note.
  */
+/**
+ * BAI-SEO-003-S3 (2026-07-18): single source of truth for the BrightAI
+ * Organization node. The Schema.astro foundation component imports this
+ * constant directly so every page in the site emits the EXACT same
+ * Organization @id (https://brightai.site/#organization) with no field drift.
+ *
+ * IMPORTANT: `sameAs` lists only verifiable social profiles owned by the
+ * company. wa.me is a contact channel, not a social identity profile, so it
+ * is NOT included. `description` and Saudi-dialect strings are preserved
+ * verbatim from the original.
+ */
 export const ORGANIZATION = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -280,7 +291,10 @@ export const LOCAL_BUSINESS_BY_CITY = {
     geoLat: 24.4686,
     geoLng: 39.6142,
     href: '/solutions/government-ai-governance/madinah/',
-    wikidataId: 'Q35484',
+    // BAI-SEO-003-S3 (2026-07-18): correct Wikidata Q-ID. The previous value
+    // Q35484 was Mecca (a duplicate from the `mecca` entry above). Madinah's
+    // correct Q-ID per Wikidata is Q334084.
+    wikidataId: 'Q334084',
   }),
 } as const;
 
@@ -345,6 +359,15 @@ export function getFaqLd(items: FaqItem[]) {
  * 5. SOFTWARE APPLICATION (Kernel product)
  * ────────────────────────────────────────────────────────────────── */
 
+/**
+ * BAI-SEO-003-S3 (2026-07-18): AggregateRating was previously hard-coded
+ * with `ratingValue: "4.8"` and `ratingCount: "47"` but no source-backed
+ * review data exists for BrightAI Kernel — those numbers were fabricated.
+ * Google explicitly penalises unbacked AggregateRating in Search Quality
+ * guidelines (Product Reviews update 2024+). The field is removed here and
+ * will be re-added only when real, source-cited reviews are available
+ * (e.g. a verified G2 / Capterra listing or a public Trustpilot widget).
+ */
 export const KERNEL_PRODUCT = {
   '@context': 'https://schema.org',
   '@type': ['SoftwareApplication', 'WebApplication'],
@@ -357,13 +380,6 @@ export const KERNEL_PRODUCT = {
     'نواة حوكمة الذكاء الاصطناعي للمنشآت السعودية — تدعم جاهزية الامتثال وتشغيل AI Firewall وسجل التدقيق والموافقات البشرية وملفات الأدلة. ليست استشارة قانونية.',
   url: 'https://brightai.site/kernel/',
   provider: { '@id': 'https://brightai.site/#organization' },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.8',
-    ratingCount: '47',
-    bestRating: '5',
-    worstRating: '1',
-  },
   featureList: [
     'AI Firewall — فحص الطلبات ومنع تسريب البيانات',
     'PII Redaction — إخفاء البيانات الشخصية تلقائياً',
@@ -514,4 +530,118 @@ export function appendLd(
   additions: Array<Record<string, unknown> | null | undefined>,
 ): Array<Record<string, unknown>> {
   return [...existing, ...additions.filter((n): n is Record<string, unknown> => Boolean(n))];
+}
+
+/* ──────────────────────────────────────────────────────────────────
+ * 9. EVENT (BAI-SEO-003-S3, 2026-07-18)
+ * ────────────────────────────────────────────────────────────────
+ *
+ * Google requires `name`, `startDate`, and `location` for an Event node
+ * to be eligible for rich results. `eventStatus`, `organizer`, and
+ * `offers` are RECOMMENDED. Do NOT call this helper without verified
+ * startDate + venue — fabricated dates violate Google spam policies.
+ *
+ * BAI-SEO-003-S3 removed the previously-emitted Event nodes on the
+ * three /events/* pages because none had a confirmed startDate or
+ * physical venue at the time. Use this helper to add Event rich-result
+ * eligibility when a confirmed date + venue exist.
+ */
+export interface EventInput {
+  canonical: string;
+  name: string;
+  description: string;
+  startDate: string; // ISO 8601, e.g. "2026-09-15T18:00"
+  endDate?: string;
+  /** Physical Place (OfflineEvent) or VirtualLocation (OnlineEvent). */
+  location:
+    | {
+        type: 'Place';
+        name: string;
+        streetAddress?: string;
+        addressLocality: string;
+        addressRegion?: string;
+        addressCountry: string;
+      }
+    | {
+        type: 'VirtualLocation';
+        url: string;
+        name?: string;
+      };
+  eventAttendanceMode:
+    | 'https://schema.org/OfflineEventAttendanceMode'
+    | 'https://schema.org/OnlineEventAttendanceMode'
+    | 'https://schema.org/MixedEventAttendanceMode';
+  eventStatus?:
+    | 'https://schema.org/EventScheduled'
+    | 'https://schema.org/EventCancelled'
+    | 'https://schema.org/EventPostponed'
+    | 'https://schema.org/EventRescheduled';
+  /** Free-form ticket offer (e.g. SAR price + URL). */
+  offers?: {
+    price: number;
+    priceCurrency: string;
+    url: string;
+    availability: string;
+    validFrom?: string;
+  };
+  inLanguage?: string;
+}
+
+export function getEventLd(input: EventInput) {
+  const {
+    canonical,
+    name,
+    description,
+    startDate,
+    endDate,
+    location,
+    eventAttendanceMode,
+    eventStatus,
+    offers,
+    inLanguage = 'ar-SA',
+  } = input;
+  const locationNode =
+    location.type === 'Place'
+      ? {
+          '@type': 'Place',
+          name: location.name,
+          address: {
+            '@type': 'PostalAddress',
+            ...(location.streetAddress ? { streetAddress: location.streetAddress } : {}),
+            addressLocality: location.addressLocality,
+            ...(location.addressRegion ? { addressRegion: location.addressRegion } : {}),
+            addressCountry: location.addressCountry,
+          },
+        }
+      : {
+          '@type': 'VirtualLocation',
+          url: location.url,
+          ...(location.name ? { name: location.name } : {}),
+        };
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    '@id': `${canonical}#event`,
+    name,
+    description,
+    startDate,
+    ...(endDate ? { endDate } : {}),
+    eventAttendanceMode,
+    ...(eventStatus ? { eventStatus } : {}),
+    location: locationNode,
+    organizer: { '@id': 'https://brightai.site/#organization' },
+    inLanguage,
+    ...(offers
+      ? {
+          offers: {
+            '@type': 'Offer',
+            price: offers.price,
+            priceCurrency: offers.priceCurrency,
+            url: offers.url,
+            availability: offers.availability,
+            ...(offers.validFrom ? { validFrom: offers.validFrom } : {}),
+          },
+        }
+      : {}),
+  };
 }

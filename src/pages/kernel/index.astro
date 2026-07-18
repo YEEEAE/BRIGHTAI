@@ -32,131 +32,35 @@ import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import { kernelNavItems, getCrossLinks, getKernelUnit, getKernelFaqJsonLd } from '../../data/kernel';
-import { LOCAL_BUSINESS_BY_CITY, getBreadcrumbLd, getFaqLd } from '../../data/schema-helpers';
+import { KERNEL_PRODUCT, getFaqLd } from '../../data/schema-helpers';
 
 const unit = getKernelUnit('index')!;
 
+/**
+ * BAI-SEO-003-S3 (2026-07-18): kernel/index.astro used to emit its own
+ * Organization, WebSite, WebPage, BreadcrumbList, and Riyadh LocalBusiness
+ * — but the foundation Schema.astro (mounted by BaseLayout) already emits
+ * the canonical versions of every one of those nodes. The duplicates were
+ * a soft-spam signal and a source of drift (two different Organization
+ * descriptions, two different sameAs lists, two different BreadcrumbLists).
+ *
+ * The page now only adds page-specific nodes:
+ *   - KERNEL_PRODUCT  (SoftwareApplication — the kernel product entity)
+ *   - page-level FAQPage (only when there are ≥5 visible Q/A)
+ * Each city-local LocalBusiness is intentionally NOT emitted on /kernel/
+ * — Schema.org guidance puts LocalBusiness on the *city's own page*, not
+ * on a product showcase. The 6 city pages (/solutions/<sector>/<city>/)
+ * already carry their own LocalBusiness nodes.
+ */
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     {
-      '@type': ['SoftwareApplication', 'WebApplication'],
-      '@id': 'https://brightai.site/#product',
-      name: 'BrightAI Kernel',
-      applicationCategory: 'BusinessApplication',
-      operatingSystem: 'Cloud, Hybrid, On-Premise',
+      ...KERNEL_PRODUCT,
       description: 'نواة حوكمة الذكاء الاصطناعي للمنشآت السعودية — تدعم جاهزية الامتثال ولا تُعدّ استشارة قانونية. تشمل AI Firewall وسجل تدقيق غير قابل للتعديل وموافقات بشرية وملفات أدلة وحزم امتثال للوائح السعودية.',
-      url: 'https://brightai.site/kernel/',
-      provider: { '@id': 'https://brightai.site/#organization' },
-      featureList: [
-        'AI Firewall — فحص الطلبات ومنع تسريب البيانات',
-        'PII Redaction — إخفاء البيانات الشخصية تلقائياً',
-        'Audit Trail — سجل تدقيق غير قابل للتعديل',
-        'Human Approval Layer — موافقات بشرية للقرارات عالية المخاطر',
-        'AI Evidence File — ملفات أدلة PDF موقّعة رقمياً',
-        'Risk Scoring — تصنيف مخاطر كل طلب',
-        'Compliance Packs — حزم امتثال PDPL وNCA وSFDA وSAMA',
-        'Policy Editor — محرر سياسات بدون تعقيد تقني',
-        'Enterprise Connectors — ربط آمن مع ERP وCRM وHIS',
-        'Statistics Dashboard — مؤشرات تشغيلية ورؤية شاملة'
-      ],
-      offers: {
-        '@type': 'Offer',
-        priceCurrency: 'SAR',
-        price: 0,
-        availability: 'https://schema.org/InStock',
-        url: 'https://brightai.site/contact/',
-        description: 'تواصل عبر /contact/ للحصول على عرض سعر مخصص لحجم المنشأة'
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        ratingCount: '47',
-        bestRating: '5',
-        worstRating: '1'
-      }
     },
-    {
-      '@type': 'Organization',
-      '@id': 'https://brightai.site/#organization',
-      name: 'BrightAI',
-      url: 'https://brightai.site/',
-      logo: {
-        '@type': 'ImageObject',
-        url: 'https://brightai.site/assets/images/logo.png',
-        width: 200,
-        height: 55,
-        caption: 'شعار BrightAI'
-      },
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: '6913 المبارك بن فضالة، حي الفيحاء',
-        addressLocality: 'الرياض',
-        addressRegion: 'منطقة الرياض',
-        postalCode: '14254',
-        addressCountry: 'SA'
-      },
-      areaServed: [
-        { '@type': 'Country', name: 'المملكة العربية السعودية' },
-        { '@type': 'City', name: 'الرياض' },
-        { '@type': 'City', name: 'جدة' },
-        { '@type': 'City', name: 'الدمام' }
-      ],
-      contactPoint: [{
-        '@type': 'ContactPoint',
-        telephone: '+966538229013',
-        contactType: 'customer support',
-        contactOption: 'WhatsApp',
-        url: 'https://wa.me/966538229013',
-        areaServed: 'SA',
-        availableLanguage: ['Arabic', 'English']
-      }],
-      sameAs: [
-        'https://linkedin.com/company/brightai-site',
-        'https://x.com/BrightAISite',
-        'https://www.youtube.com/@BrightAiSaudi',
-        'https://wa.me/966538229013'
-      ]
-    },
-    {
-      '@type': 'WebSite',
-      '@id': 'https://brightai.site/#website',
-      url: 'https://brightai.site/',
-      name: 'BrightAI',
-      publisher: { '@id': 'https://brightai.site/#organization' },
-      inLanguage: 'ar-SA'
-    },
-    {
-      '@type': 'WebPage',
-      '@id': 'https://brightai.site/kernel/#webpage',
-      url: 'https://brightai.site/kernel/',
-      name: unit.title,
-      description: unit.description,
-      isPartOf: { '@id': 'https://brightai.site/#website' },
-      about: { '@id': 'https://brightai.site/#organization' },
-      mainEntity: { '@id': 'https://brightai.site/#product' },
-      inLanguage: 'ar-SA'
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': 'https://brightai.site/kernel/#breadcrumb',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'BrightAI', item: 'https://brightai.site/' },
-        { '@type': 'ListItem', position: 2, name: 'Kernel', item: 'https://brightai.site/kernel/' }
-      ]
-    },
-    LOCAL_BUSINESS_BY_CITY.riyadh,
-    LOCAL_BUSINESS_BY_CITY.jeddah,
-    LOCAL_BUSINESS_BY_CITY.dammam,
-    LOCAL_BUSINESS_BY_CITY.khobar,
-    LOCAL_BUSINESS_BY_CITY.mecca,
-    LOCAL_BUSINESS_BY_CITY.madinah,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'Kernel', href: 'https://brightai.site/kernel/' },
-    ]),
     getFaqLd(unit.faq),
-  ]
+  ].filter(Boolean),
 };
 
 // Icons (inline SVGs, no extra deps)
@@ -188,6 +92,7 @@ const complianceRows = [
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath="/kernel/"
+  extraSpeakableSelectors={['.kernel-page-header__subtitle']}
 >
 
   <!-- Page header -->

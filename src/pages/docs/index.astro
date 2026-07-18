@@ -14,10 +14,6 @@
 import { getCollection } from 'astro:content';
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import {
-  ORGANIZATION,
-  getBreadcrumbLd,
-} from '../../data/schema-helpers';
 import DOMPurify from 'isomorphic-dompurify';
 
 const docs = await getCollection('docs');
@@ -228,25 +224,13 @@ const quickLinks = [
   ['kernel-chat', 'Kernel Chat'],
 ] as const;
 
+// BAI-SEO-003-S3 (2026-07-18): WebPage and BreadcrumbList are emitted
+// by the foundation Schema.astro (WebPage@id={canonical}#webpage,
+// BreadcrumbList with no @id). The page now keeps only the ItemList
+// node to avoid duplicate @id warnings.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    {
-      '@type': 'WebPage',
-      '@id': `${canonical}#webpage`,
-      url: canonical,
-      name: 'وثائق Saudi AI Safety OS لحوكمة وأمان الذكاء الاصطناعي',
-      description: 'مركز وثائق Saudi AI Safety OS لحوكمة وأمان الذكاء الاصطناعي، يشمل وثائق الحلول وأدلة إدارة المخاطر والخصوصية وجاهزية التدقيق.',
-      inLanguage: 'ar-SA',
-    },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': `${canonical}#breadcrumb`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.site/' },
-        { '@type': 'ListItem', position: 2, name: 'الوثائق', item: canonical },
-      ],
-    },
     {
       '@type': 'ItemList',
       itemListElement: docs.map((doc, index) => ({
@@ -256,11 +240,6 @@ const jsonLd = {
         url: doc.data.canonical,
       })),
     },
-    ORGANIZATION,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'الوثائق', href: '/docs/' },
-    ]),
   ],
 };
 

@@ -20,7 +20,9 @@ import {
   categoryTint,
 } from '../../../data/blog';
 import { SITE } from '../../../data/site';
-import { ORGANIZATION } from '../../../data/schema-helpers';
+// BAI-SEO-003-S3 (2026-07-18): ORGANIZATION import removed (foundation Schema.astro
+// emits the canonical Organization @id). Keep the comment so future agents
+// don't re-introduce a duplicate.
 
 const PAGE_SIZE = 100;
 
@@ -47,15 +49,10 @@ function pageUrl(page: number): string {
 }
 
 // SEO + JSON-LD
-const breadcrumbLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: `${SITE.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'المدونة', item: `${SITE.url}/blog/` },
-    { '@type': 'ListItem', position: 3, name: category, item: `${SITE.url}/blog/category/${category}/` },
-  ],
-};
+// BAI-SEO-003-S3 (2026-07-18): Organization and BreadcrumbList are emitted
+// by the foundation Schema.astro. The category page only needs its
+// CollectionPage node to avoid duplicate @id warnings (verified via
+// scripts/_check-duplicate-schema-ids.mjs).
 
 const descriptionByCategory: Record<typeof category, string> = {
   'ذكاء-اصطناعي': 'مقالات عن حوكمة الذكاء الاصطناعي ومنصات BrightAI وأخلاقيات AI. محتوى تنفيذي مخصص للسوق السعودي.',
@@ -78,7 +75,7 @@ const categoryLd = {
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [categoryLd, ORGANIZATION, breadcrumbLd],
+  '@graph': [categoryLd],
 };
 
 void categoryTint;

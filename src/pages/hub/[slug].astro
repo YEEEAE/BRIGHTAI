@@ -17,7 +17,8 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { getPublishedPosts } from '../../data/blog';
 import { SITE } from '../../data/site';
-import { ORGANIZATION } from '../../data/schema-helpers';
+// BAI-SEO-003-S3 (2026-07-18): ORGANIZATION import removed — foundation
+// Schema.astro emits the canonical Organization @id.
 // KRN-012 / EXEC-12: static literal — sanitize for consistency (no-op for HTML comment)
 import DOMPurify from 'isomorphic-dompurify';
 
@@ -156,9 +157,12 @@ const breadcrumbLd = {
   ],
 };
 
+// BAI-SEO-003-S3 (2026-07-18): Organization and BreadcrumbList are emitted
+// by the foundation Schema.astro. We keep only the page-specific
+// CollectionPage node to avoid duplicate @id warnings.
 const hubSlugJsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [collectionLd, breadcrumbLd, ORGANIZATION],
+  '@graph': [collectionLd],
 };
 ---
 

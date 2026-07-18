@@ -7,7 +7,6 @@
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'عملاؤنا' }];
 
@@ -50,8 +49,6 @@ const jsonLd = {
       description: 'قصص نجاح anonymized لمنشآت سعودية استخدمت BrightAI لحوكمة الذكاء الاصطناعي والامتثال لـ PDPL وضوابط NCA.',
       url: 'https://brightai.site/customers/',
     },
-    ORGANIZATION,
-    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'عملاؤنا', href: '/customers/' }]),
   ],
 };
 ---

@@ -12,7 +12,6 @@
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import { SITE } from '../../data/site';
-import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
 
 const collectionLd = {
   '@context': 'https://schema.org',
@@ -33,11 +32,6 @@ const hubJsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     collectionLd,
-    ORGANIZATION,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'مراكز المحتوى', href: '/hub/' },
-    ]),
   ],
 };
 

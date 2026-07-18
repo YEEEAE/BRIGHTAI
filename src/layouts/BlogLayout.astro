@@ -15,7 +15,6 @@ import RelatedPosts from '../components/RelatedPosts.astro';
 import BlogToc from '../components/BlogToc.astro';
 import { SITE } from '../data/site';
 import type { BlogPost } from '../data/blog';
-import { ORGANIZATION } from '../data/schema-helpers';
 
 interface InternalLink {
   href: string;
@@ -62,6 +61,11 @@ const blogPostingLd: Record<string, unknown> = {
     url: post.author.url,
     jobTitle: post.author.title,
   },
+  // BAI-SEO-003-S3 (2026-07-18): publisher is a REFERENCE to the
+  // Organization by @id (already emitted by FoundationSchema). The
+  // Organization node itself is NOT redeclared here to avoid the
+  // duplicate @id=#organization that triggered Google's entity-merge
+  // warning (verified via scripts/_check-duplicate-schema-ids.mjs).
   publisher: {
     '@type': 'Organization',
     '@id': `${SITE.url}#organization`,
@@ -86,24 +90,23 @@ const blogPostingLd: Record<string, unknown> = {
   isAccessibleForFree: true,
 };
 
-const speakableNode: Record<string, unknown> = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${post.canonical}#webpage`,
-  url: post.canonical,
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['.article-hero__desc'],
-  },
-};
-
+/**
+ * BAI-SEO-003-S3 (2026-07-18): the previous BlogLayout emitted its own
+ * WebPage@id={post.canonical}#webpage plus a separate ORGANIZATION node
+ * in @graph. Both were duplicates of the foundation nodes emitted by
+ * Schema.astro (`WebPage @id={canonical}#webpage` and
+ * `Organization @id=https://brightai.site/#organization`). The duplicates
+ * caused `scripts/_check-duplicate-schema-ids.mjs` to flag every blog
+ * post. The speakable is now declared via `extraSpeakableSelectors` on
+ * BaseLayout (`<BlogLayout ... extraSpeakableSelectors={['.article-hero__desc']} />`)
+ * so FoundationSchema owns the single WebPage node with a unified
+ * speakable list.
+ */
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     blogPostingLd,
-    ORGANIZATION,
     breadcrumbLd,
-    speakableNode,
     ...extraSchemaNodes,
   ].filter(Boolean),
 };
@@ -127,6 +130,7 @@ const authorInitials = post.author.name
   ogImage={post.ogImage}
   jsonLd={jsonLd}
   currentPath={`/blog/${post.slug}/`}
+  extraSpeakableSelectors={['.article-hero__desc']}
 >
   <div class="reading-progress" hidden aria-hidden="true"></div>
 

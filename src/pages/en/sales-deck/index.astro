@@ -7,7 +7,6 @@ import EnglishLayout from '../../../layouts/EnglishLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import SalesDeck from '../../../components/SalesDeck.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
 
 const crumbs = [{ label: 'Home', href: '/' }, { label: 'Sales Deck' }];
 
@@ -30,8 +29,6 @@ const jsonLd = {
       url: 'https://brightai.site/en/sales-deck/',
       inLanguage: 'en-SA',
     },
-    ORGANIZATION,
-    getBreadcrumbLd([{ name: 'Home', href: '/' }, { name: 'Sales Deck', href: '/en/sales-deck/' }]),
   ],
 };
 ---

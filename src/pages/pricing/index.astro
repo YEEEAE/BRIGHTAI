@@ -16,7 +16,6 @@
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../data/schema-helpers';
 
 const title = 'باقات وأسعار حوكمة AI المؤسسية | 3 عروض واضحة';
 const description = '3 عروض حوكمة AI مؤسسية من BrightAI: تقييم جاهزية، Pilot 30 يوم بنطاق محدد، وEnterprise Rollout. سعر مخصص، Pilot هو الأنسب لقياس القيمة قبل التوسع.';
@@ -256,32 +255,23 @@ const serviceSchemas = offers.map((o) => ({
   },
 }));
 
+// BAI-SEO-003-S3 (2026-07-18): WebPage and BreadcrumbList are emitted
+// by the foundation Schema.astro. The page now keeps only the
+// page-specific Service nodes (one per offer) to avoid duplicate @id
+// warnings (verified via scripts/_check-duplicate-schema-ids.mjs).
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: 'ar-SA' },
-    {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.site/' },
-        { '@type': 'ListItem', position: 2, name: 'الأسعار', item: canonical },
-      ],
-    },
     {
       '@type': 'FAQPage',
       mainEntity: objectionFaqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
     ...serviceSchemas,
-    ORGANIZATION,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'الأسعار', href: '/pricing/' },
-    ]),
   ],
 };
 ---
 
-<ArabicLayout title={title} description={description} canonical={canonical} hreflang={[{lang:'ar-SA',href:canonical},{lang:'x-default',href:canonical}]} jsonLd={jsonLd} currentPath="/pricing/">
+<ArabicLayout title={title} description={description} canonical={canonical} hreflang={[{lang:'ar-SA',href:canonical},{lang:'x-default',href:canonical}]} jsonLd={jsonLd} currentPath="/pricing/" extraSpeakableSelectors={['.pricing-hero__lead']}>
 
   <div class="pricing-page">
 

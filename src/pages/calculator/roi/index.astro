@@ -7,7 +7,6 @@ import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import LeadForm from '../../../components/LeadForm.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'حاسبة العائد' }];
 
@@ -30,8 +29,6 @@ const jsonLd = {
       url: 'https://brightai.site/calculator/roi/',
       inLanguage: 'ar-SA',
     },
-    ORGANIZATION,
-    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'حاسبة العائد', href: '/calculator/roi/' }]),
   ],
 };
 ---

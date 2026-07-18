@@ -11,7 +11,7 @@ import { migratedLocalPages } from '../../../data/migratedSolutionPages';
 import DOMPurify from 'isomorphic-dompurify';
 
 import Icon from '../../../components/Icon.astro';
-import { ORGANIZATION, getFaqLd } from '../../../data/schema-helpers';
+import { getFaqLd } from '../../../data/schema-helpers';
 
 export function getStaticPaths() {
   const paths: any[] = [];
@@ -48,6 +48,10 @@ const wikiId = loc.cityEn === 'Riyadh' ? 'Q3674'
 
 const whatsappMsg = encodeURIComponent(`مرحباً، أريد استفسار عن خدمات حوكمة الذكاء الاصطناعي في ${loc.cityAr} (${sector.chip})`);
 
+// BAI-SEO-003-S3 (2026-07-18): BreadcrumbList is emitted by the foundation
+// Schema.astro from the layout's `breadcrumbs` prop. We only emit the
+// page-specific LocalBusiness node here to avoid duplicate @id warnings
+// (verified via scripts/_check-duplicate-schema-ids.mjs).
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -78,16 +82,7 @@ const jsonLd = {
         "geoMidpoint": { "@type": "GeoCoordinates", "latitude": loc.geoLat, "longitude": loc.geoLng },
         "geoRadius": "100 km"
       }
-    },
-    {
-      "@type": "BreadcrumbList",
-      "itemListElement": crumbs.map((c: any, i: number) => ({
-        "@type": "ListItem", "position": i + 1, "name": c.label,
-        "item": c.href ? `https://brightai.site${c.href}` : loc.canonical
-      }))
-    },
-    // SCHEMA-ENHANCEMENT (REPORT-23): canonical Organization node added.
-    ORGANIZATION,
+    }
   ]
 };
 
@@ -113,7 +108,12 @@ const locFaqLd = loc.faqs && loc.faqs.length > 0
  * the JSON-LD payload and confuse the Google Rich Results Test.
  * Cycle-safe via WeakSet.
  */
-const FOUNDATION_TYPES_CITY = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage']);
+// BAI-SEO-003-S3 (2026-07-18): BreadcrumbList added — the foundation
+// Schema.astro emits a BreadcrumbList (no @id) for every page; the
+// migrated JSON-LD also carried a BreadcrumbList with @id, which
+// produced a duplicate @id in the merged @graph (verified via
+// scripts/_check-duplicate-schema-ids.mjs).
+const FOUNDATION_TYPES_CITY = new Set(['Organization', 'WebSite', 'LocalBusiness', 'WebPage', 'BreadcrumbList']);
 
 function stripFoundationTypesFromMigrated(
   node: unknown,
@@ -123,22 +123,33 @@ function stripFoundationTypesFromMigrated(
   if (seen.has(node as object)) return node;
   seen.add(node as object);
 
+  // BAI-SEO-003-S3 (2026-07-18): also accept @type as array (e.g.
+  // `["Organization", "LocalBusiness"]` — the merged form used in some
+  // legacy migrated JSON files). The previous implementation only
+  // matched string @type, so merged Organization+LocalBusiness nodes
+  // escaped the filter and produced duplicate @id=#organization in
+  // the merged @graph.
+  const isFoundationNode = (n: unknown): boolean => {
+    if (!n || typeof n !== 'object') return false;
+    const t = (n as Record<string, unknown>)['@type'];
+    if (typeof t === 'string') return t === 'FAQPage' || FOUNDATION_TYPES_CITY.has(t);
+    if (Array.isArray(t)) return t.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES_CITY.has(x)));
+    return false;
+  };
+
   if (Array.isArray(node)) {
     return node
-      .filter((child) => {
-        if (!child || typeof child !== 'object') return true;
-        const t = (child as Record<string, unknown>)['@type'];
-        if (t === 'FAQPage') return false;
-        if (typeof t === 'string' && FOUNDATION_TYPES_CITY.has(t)) return false;
-        return true;
-      })
+      .filter((child) => !isFoundationNode(child))
       .map((child) => stripFoundationTypesFromMigrated(child, seen));
   }
 
   const obj = node as Record<string, unknown>;
   const next: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(obj)) {
-    if (key === '@type' && typeof value === 'string' && FOUNDATION_TYPES_CITY.has(value)) continue;
+    if (key === '@type') {
+      if (typeof value === 'string' && (value === 'FAQPage' || FOUNDATION_TYPES_CITY.has(value))) continue;
+      if (Array.isArray(value) && value.some((x) => typeof x === 'string' && (x === 'FAQPage' || FOUNDATION_TYPES_CITY.has(x)))) continue;
+    }
     next[key] = stripFoundationTypesFromMigrated(value, seen);
   }
   return next;
@@ -166,7 +177,7 @@ const locAnswerFirst = loc.faqs && loc.faqs.length > 0
   ? `خدمات حوكمة AI في ${loc.cityAr} للقطاعات المنظمة: توثيق استخدامات AI، حماية بيانات العملاء، ضوابط قابلة للتدقيق متوافقة مع الجهات السعودية. أداة تشغيلية لا تستبدل التقييم النظامي.`
   : null;
 ---
-<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={(migratedPage?.jsonLd ?? finalJsonLd) as any} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title} extraSpeakableSelectors={locAnswerFirst ? ['.answer-first-summary'] : []}>
+<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={(finalJsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title} extraSpeakableSelectors={locAnswerFirst ? ['.answer-first-summary'] : []}>
 {migratedPage ? (
   <>
     {!/<h1\b/i.test(migratedPage.html) && <h1 class="sr-only">{loc.h1}</h1>}

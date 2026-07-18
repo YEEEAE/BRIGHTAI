@@ -7,7 +7,6 @@ import ArabicLayout from '../../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import LeadForm from '../../../components/LeadForm.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../../../data/schema-helpers';
 
 const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الفعاليات' }, { label: 'LEAP 2026' }];
 
@@ -17,22 +16,15 @@ const highlights = [
   { icon: 'mdi-gift', title: 'هدايا + استشارات', body: 'تقييم جاهزية مجاني لزوار الجناح.' },
 ];
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Event',
-      name: 'BrightAI في LEAP 2026',
-      description: 'زور جناح BrightAI في LEAP الرياض 2026: demo حي لحوكمة الذكاء الاصطناعي وجلسة رئيسية.',
-      url: 'https://brightai.site/events/leap-2026/',
-      inLanguage: 'ar-SA',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      organizer: ORGANIZATION,
-    },
-    ORGANIZATION,
-    getBreadcrumbLd([{ name: 'الرئيسية', href: '/' }, { name: 'الفعاليات', href: '/events/leap-2026/' }]),
-  ],
-};
+/**
+ * BAI-SEO-003-S3 (2026-07-18): the previous Event node lacked a confirmed
+ * startDate and the physical venue (Riyadh Front / Riyadh Season venue) is
+ * not yet contracted. Fabricated dates would violate Google spam policies.
+ * The page now intentionally emits NO Event node — Organization,
+ * BreadcrumbList, and WebPage are emitted by FoundationSchema. When the
+ * LEAP booth assignment is confirmed, re-add Event via getEventLd().
+ */
+const jsonLd = null;
 ---
 
 <ArabicLayout

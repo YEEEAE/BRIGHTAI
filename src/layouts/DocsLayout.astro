@@ -18,7 +18,7 @@ import ArabicLayout from './ArabicLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import DocsRelatedLinks from '../components/DocsRelatedLinks.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { ORGANIZATION, getBreadcrumbLd } from '../data/schema-helpers';
+import { getBreadcrumbLd } from '../data/schema-helpers';
 
 interface Heading {
   depth: 2 | 3;
@@ -83,30 +83,28 @@ const techArticleLd = {
   mainEntityOfPage: canonical,
   dateModified: updated.toISOString().slice(0, 10),
   inLanguage: 'ar-SA',
-  author: { '@type': 'Organization', name: 'BrightAI', url: 'https://brightai.site/' },
-  publisher: { '@type': 'Organization', name: 'BrightAI', url: 'https://brightai.site/' },
+  // BAI-SEO-003-S3 (2026-07-18): author and publisher are REFERENCES to
+  // the Organization by @id (already emitted by FoundationSchema). The
+  // Organization node itself is NOT redeclared here — that would create
+  // a duplicate @id=#organization (verified via
+  // scripts/_check-duplicate-schema-ids.mjs).
+  author: { '@type': 'Organization', '@id': 'https://brightai.site/#organization' },
+  publisher: { '@type': 'Organization', '@id': 'https://brightai.site/#organization' },
 };
 
-const webPageLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebPage',
-  '@id': `${canonical}#webpage`,
-  url: canonical,
-  name: title,
-  description,
-  inLanguage: 'ar-SA',
-  speakable: {
-    '@type': 'SpeakableSpecification',
-    cssSelector: ['[data-speakable]'],
-  },
-};
-
+/**
+ * BAI-SEO-003-S3 (2026-07-18): the previous DocsLayout emitted its own
+ * WebPage@id={canonical}#webpage node, which duplicated the foundation
+ * WebPage@id={canonical}#webpage emitted by Schema.astro. The duplicate
+ * failed `scripts/_check-duplicate-schema-ids.mjs` and is removed.
+ * The speakable selectors are passed via the page-level
+ * `extraSpeakableSelectors` prop to BaseLayout, which forwards them to
+ * FoundationSchema — single WebPage, unified speakable list.
+ */
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     techArticleLd,
-    webPageLd,
-    ORGANIZATION,
     getBreadcrumbLd([
       { name: 'الرئيسية', href: '/' },
       { name: 'الوثائق', href: '/docs/' },
@@ -130,6 +128,7 @@ const editUrl = `https://github.com/YEEEAE/BRIGHTAI/edit/main/src/content/docs/$
   hreflang={[{ lang: 'ar-SA', href: canonical }]}
   jsonLd={jsonLd}
   currentPath={currentPath}
+  extraSpeakableSelectors={['[data-speakable]']}
 >
   <div class="docs-page-shell docs-page-shell--with-sidebar">
     <main class="docs-page-shell__main">

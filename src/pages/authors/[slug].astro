@@ -7,7 +7,6 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { authors } from '../../data/blog';
 import { SITE } from '../../data/site';
-import { ORGANIZATION } from '../../data/schema-helpers';
 
 export function getStaticPaths() {
   return Object.keys(authors).map(slug => ({
@@ -72,10 +71,13 @@ const breadcrumbLd = {
   ],
 };
 
-// SCHEMA-ENHANCEMENT (REPORT-23): wrap into @graph with canonical Organization + BreadcrumbList.
+// SCHEMA-ENHANCEMENT (REPORT-23): wrap into @graph with Person + BreadcrumbList.
+// BAI-SEO-003-S3 (2026-07-18): Organization and BreadcrumbList are emitted by
+// the foundation Schema.astro, so we no longer append them here to avoid
+// duplicate @id warnings (verified via scripts/_check-duplicate-schema-ids.mjs).
 const authorJsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [personLd, breadcrumbLd, ORGANIZATION],
+  '@graph': [personLd],
 };
 ---
 

@@ -18,7 +18,6 @@ import {
 import { migratedKernelPages } from '../../data/migratedKernelPages';
 // KRN-012 / EXEC-12: sanitize migrated HTML
 import DOMPurify from 'isomorphic-dompurify';
-import { ORGANIZATION } from '../../data/schema-helpers';
 
 export function getStaticPaths() {
   return kernelNavItems.map(unit => ({
@@ -33,68 +32,25 @@ const migratedPage = migratedKernelPages[unit.slug];
 const cross = getCrossLinks(unit);
 const relatedSlugs = unit.relatedSlugs ?? [];
 
-// BreadcrumbList JSON-LD
-const breadcrumbLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: 'https://brightai.site/' },
-    { '@type': 'ListItem', position: 2, name: 'Kernel', item: 'https://brightai.site/kernel/' },
-    { '@type': 'ListItem', position: 3, name: unit.label, item: unit.canonical },
-  ],
-};
-
-// SCHEMA-ENHANCEMENT (REPORT-23): when a page has NO migrated JSON-LD, enrich with
-// canonical Organization + SoftwareApplication node so kernel sub-pages consistently
-// emit 2+ schemas. When migrated JSON-LD exists (kernel/chat, audit, etc.), we still
-// append the canonical Organization node (additive — original schemas preserved).
-const kernelFallbackJsonLd = {
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': ['SoftwareApplication', 'WebApplication'],
-      '@id': `https://brightai.site/kernel/${unit.slug}/#product`,
-      name: `BrightAI Kernel — ${unit.label}`,
-      applicationCategory: 'BusinessApplication',
-      operatingSystem: 'Cloud, Hybrid, On-Premise',
-      description: unit.shortDescription,
-      url: unit.canonical,
-      provider: { '@id': 'https://brightai.site/#organization' },
-      isPartOf: { '@id': 'https://brightai.site/#product' },
-      offers: {
-        '@type': 'Offer',
-        priceCurrency: 'SAR',
-        price: 0,
-        availability: 'https://schema.org/InStock',
-        url: 'https://brightai.site/contact/',
-        description: 'تواصل عبر /contact/ للحصول على عرض سعر مخصص لحجم المنشأة',
-      },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.8',
-        ratingCount: '47',
-        bestRating: '5',
-        worstRating: '1',
-      },
-    },
-    breadcrumbLd,
-    ORGANIZATION,
-  ],
-};
-// SCHEMA-ENHANCEMENT (REPORT-23): append canonical Organization to migrated JSON-LD as well.
-// migrated pages already have Organization+LocalBusiness merged nodes but lack address/geo.
-// Adding the canonical Organization node (with full address + geo) satisfies schema.org
-// requirements for Local Pack eligibility without modifying any existing schema.
-const finalJsonLd = migratedPage?.jsonLd
-  ? {
-      '@context': 'https://schema.org',
-      // Flatten: migrated JSON-LD can be an array of @graph nodes OR single-node objects.
-      '@graph': [
-        ...(Array.isArray(migratedPage.jsonLd) ? migratedPage.jsonLd : [migratedPage.jsonLd]),
-        ORGANIZATION,
-      ],
-    }
-  : kernelFallbackJsonLd;
+/**
+ * BAI-SEO-003-S3 (2026-07-18): the kernel sub-page used to emit its own
+ * Organization, BreadcrumbList, and a per-page `SoftwareApplication` node
+ * with `@id: ...kernel/<slug>/#product` — but those are all duplicates of
+ * foundation nodes that Schema.astro (mounted via BaseLayout → KernelLayout)
+ * already emits. The product entity is the same Kernel product across all
+ * sub-pages; its @id is `https://brightai.site/#product` (one entity, many
+ * pages describing it).
+ *
+ * Page-level extra schema is now empty for non-migrated sub-pages
+ * (FoundationSchema handles Organization, WebSite, WebPage, BreadcrumbList).
+ * For migrated sub-pages, we surface the migrated JSON-LD untouched
+ * (REPORT-23 additive contract is preserved) — the FoundationSchema and
+ * the migrated @graph are merged into a single @graph at layout level.
+ *
+ * AggregateRating is removed from the fallback product node for the same
+ * reason as KERNEL_PRODUCT in schema-helpers.ts: no source-backed reviews.
+ */
+const finalJsonLd = migratedPage?.jsonLd ?? null;
 
 const isAudit = unit.slug === 'audit';
 const isEvidence = unit.slug === 'evidence';
@@ -108,6 +64,7 @@ const isCompliance = unit.slug === 'compliance';
   hreflang={migratedPage?.hreflang ?? unit.hreflang}
   jsonLd={finalJsonLd as any}
   currentPath={unit.path}
+  extraSpeakableSelectors={['.answer-first-summary', '.k-page__disclaimer']}
 >
 
   <div class="k-page">
