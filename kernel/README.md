@@ -1,81 +1,104 @@
-# Kernel
+# Kernel — BrightAI AI Safety OS
 
-واجهة Kernel الحالية مبنية على Astro داخل `src/pages/kernel/`. المسار المنشور
-يبدأ من `/kernel/`، وصفحة المحادثة الحالية هي `/kernel/chat/`.
+> آخر تحديث: 2026-07-18
 
-## الصفحات الحالية
+## نظرة عامة
 
-الصفحات الموجودة حالياً:
+Kernel هي طبقة الحوكمة والأمان بين المستخدم ونماذج الذكاء الاصطناعي. توفر:
+- كشف PII ومنع التسرب قبل وصول الطلب للنموذج
+- تقييم المخاطر (0-100) وتطبيق سياسات الشركة
+- إجبار موافقة بشرية على القرارات عالية المخاطر
+- سجل تدقيق غير قابل للتعديل
+- محادثة آمنة مع البث المباشر (SSE)
 
-- `/kernel/`
-- `/kernel/chat/`
-- `/kernel/approvals/`
-- `/kernel/audit/`
-- `/kernel/compliance/`
-- `/kernel/connectors/`
-- `/kernel/evidence/`
-- `/kernel/offline/`
-- `/kernel/policies/`
-- `/kernel/reports/`
-- `/kernel/scenarios/`
-- `/kernel/stats/`
+## المزودون (Providers)
 
-صفحات Kernel تستخدم `KernelLayout.astro` ومكوّنات Kernel المشتركة من
-`src/components/kernel/`، مع CSS الصفحة في `kernel/assets/css/pages/` عند الحاجة.
+| المزود | الحالة | النموذج | API Key |
+|---|---|---|---|
+| **Groq** (primary) | نشط | `llama-3.3-70b-versatile` (قابل للتغيير عبر `GROQ_MODEL`) | `GROQ_API_KEY` |
+| **Gemini** (fallback) | نشط | `gemini-2.5-flash` (قابل للتغيير عبر `GEMINI_MODEL`) | `GEMINI_API_KEY` |
 
-## محادثة Kernel
+- **Auto mode**: يحاول Groq أولاً، يرجع لـ Gemini لو فشل.
+- **Explicit mode**: العميل يحدد `provider: 'groq' | 'gemini'` في الطلب.
+- **Circuit breaker**: K4 layer يغلق المزود تلقائياً لو فشل مرات متتالية.
 
-الواجهة في `src/pages/kernel/chat.astro` ترسل `POST` إلى:
+## API
 
-```text
-/api/ai/chat/
+### `POST /api/ai/chat/`
+
+**SSE path** (مفضل): أرسل `Accept: text/event-stream` → يستقبل `event: token` / `event: done` / `event: error`.
+
+**JSON path** (fallback): أرسل `Accept: application/json` → يستقبل `{ reply, provider }`.
+
+**الطلب**:
+```json
+{
+  "message": "نص الاستعلام",
+  "sessionId": "uuid-v4",
+  "promptId": "compliance",
+  "provider": "auto"
+}
 ```
 
-الـ endpoint الحالي في `src/pages/api/ai/chat.ts` يختار Groq أولاً في وضع
-`auto`، ثم يحاول Gemini إذا فشل Groq. الاستجابة الناجحة ترجع metadata آمنة
-تحتوي `provider` بقيمة `groq` أو `gemini`، ومع SSE تأتي القيمة في `event: done`.
+**الاستجابة (JSON)**:
+```json
+{
+  "reply": "نص الرد",
+  "provider": "groq",
+  "sessionId": "uuid-v4"
+}
+```
 
-مصدر الحقيقة الوحيد لاسم المزود في الواجهة هو `provider` من response metadata.
-الواجهة ما تعرض `configured` أو `model` أو `mode` لأنها ما تستلمها من هذا
-العقد، وما تفترض مزوداً ثابتاً مسبقاً.
+## الأمان
 
-أسرار المزود تُقرأ داخل الخادم من environment variables فقط. ما تنرسل مفاتيح
-API للمتصفح، وما تنحط في HTML أو client bundle.
+- **API keys**: تُقرأ من `process.env` في وقت التشغيل (runtime) — مو في وقت البناء (build time).
+- **Origin allowlist**: `https://brightai.site`, `localhost:4321`.
+- **API key auth** (اختياري): `x-brightai-chat-key` header.
+- **AI Firewall (K3)**: يكشف PII قبل وصول الطلب للنموذج. يمنع: SAUDI_ID, IQAMA, IBAN, CREDENTIAL, PATIENT_ID.
+- **Rate limiting**: K4 quota layer (Redis-backed).
+- **Prompt injection**: `promptId` allowlist فقط — ممنوع إرسال `systemPrompt` مباشرة.
 
-## الردود التوضيحية
+## الجلسات (Sessions)
 
-صفحة المحادثة فيها seed messages وردود fallback لتوضيح تجربة الاستخدام. كل رد
-توضيحي موسوم بوضوح `بيانات توضيحية`، ويظهر وسم `تجريبي` في بطاقة السياق. الرد
-التوضيحي ما ينسب نفسه إلى Groq أو Gemini.
+- **Redis**: تخزين سياق المحادثة (TTL 10 دقائق).
+- **In-memory fallback**: لو Redis غير متاح، يخدم الطلب مع `X-Chat-Session: degraded`.
+- **Session ID**: UUID v4 يُنشأ في المتصفح ويُحفظ في `sessionStorage`.
 
-إذا رجع endpoint بخطأ قابل للعرض أو ما كان متاحاً، الواجهة توضح إن الرد تجريبي
-وتستخدم fallback بصري. هذا ما يغيّر مصدر الحقيقة: provider ما يظهر إلا بعد رد
-ناجح يحمل metadata فعلية.
+## البث المباشر (SSE)
 
-## الجلسة والأمان
+- **Feature flag**: `CHAT_STREAMING_ENABLED` (default `true`).
+- **الأحداث**: `token` (نص جزئي), `done` (اكتمال مع `provider`), `error`.
+- **Timeout**: 25 ثانية لكل مزود.
 
-- `sessionId` اختياري، ويُرسل كـ UUID للتحكم بسياق المحادثة.
-- `promptId` يمر عبر allowlist في الخادم.
-- حد الرسالة في الواجهة والخادم 4000 حرف.
-- الـ API يتحقق من origin ويدعم session storage مع تنبيه `سياق غير محفوظ` إذا
-  اضطر لاستخدام fallback غير دائم.
-- PII Firewall يشتغل قبل استدعاء المزود.
+## الملفات المعنية
 
-## التحقق
+| الملف | الوصف |
+|---|---|
+| `src/pages/api/ai/chat.ts` | API endpoint (SSR, prerender=false) |
+| `src/pages/kernel/chat.astro` | واجهة المحادثة (3-pane layout) |
+| `src/lib/redis.ts` | Redis session store |
+| `src/lib/quota.ts` | K4 quota + circuit breaker |
+| `src/lib/usagetracker.ts` | تتبع استخدام التوكنز |
+| `src/lib/ip.ts` | استخراج IP العميل |
+| `src/data/kernel-system-prompts.ts` | نظام البرومبتات المسموحة |
+| `@brightai/firewall-detectors` | كشف PII (package) |
+| `@brightai/config` | إعدادات الجلسات |
 
-من جذر المشروع شغّل:
+## المتغيرات البيئية
+
+```
+GROQ_API_KEY=...
+GEMINI_API_KEY=...
+GROQ_MODEL=llama-3.3-70b-versatile
+GEMINI_MODEL=gemini-2.5-flash
+CHAT_STREAMING_ENABLED=true
+BRIGHTAI_CHAT_KEY=...
+TRUSTED_PROXY_COUNT=1
+```
+
+## الاختبارات
 
 ```bash
-pnpm test:chat-session
-pnpm build
+pnpm test:chat-session   # اختبار جلسة المحادثة
+pnpm build               # بناء الموقع بالكامل
 ```
-
-ولفحص التدفق في browser بعد تشغيل preview أو dev server:
-
-```bash
-node scripts/playwright/kernel-chat-sse-json-test.mjs
-```
-
-اختبار browser يتأكد إن بطاقة المزود ما فيها اسم ثابت، وتبدأ بشرطة، وبعد
-الإرسال تعرض Groq أو Gemini من metadata الفعلية، أو تعرض وسم `تجريبي` عند
-fallback، ويتأكد بعد من حماية IME.

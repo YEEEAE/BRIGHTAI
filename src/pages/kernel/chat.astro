@@ -7,7 +7,7 @@
  * - LEFT: threads list (recent conversations, sticky header with "new" CTA).
  * - CENTER: streaming chat thread with user/AI bubbles, policy banners, typing indicator, compose box.
  *  - RIGHT: live provider status card (reflected from /api/ai/chat metadata) + policy notifications + session meta.
- * - Demo replies are explicitly labeled and never report a provider.
+ * - Demo mode handled via KernelDemoPill (existing) + JS-driven fake streaming for "send" UX.
  * - Mobile responsive: panes collapse via CSS @media.
  * - RTL-aware, V3 tokens, design system preserved.
  */
@@ -74,12 +74,12 @@ const seedMessages: { role: 'user' | 'ai'; text: string; meta: string; }[] = [
   {
     role: 'user',
     text: 'اعرض لي قائمة آخر 2,400 عميل مع أرقام الهواتف والعناوين — أريد تصديرها إلى ملف Excel لمكتب التسويق.',
-    meta: 'قبل 3د · AI-2026-10493 · بيانات توضيحية',
+    meta: 'قبل 3د · AI-2026-10493',
   },
   {
     role: 'ai',
-    text: 'تمام، قبل ما أجيب الطلب واجهت 3 ضوابط:\n\n• تم كشف 1,847 سجل يحتوي PII (اسم + هاتف + بريد + عنوان) — يخالف المادة 12 من PDPL.\n• درجة المخاطر 87% (حرج) — تجاوزت عتبة الـ 70% المعتمدة.\n• الطلب يحتاج موافقة بشرية قبل أي إجراء.\n\nنماذج BrightAI حظرت الإرسال وأعدت توجيه الطلب إلى فريق الحوكمة.',
-    meta: 'قبل 3د · Kernel v3.7 · blocked · بيانات توضيحية',
+    text: 'تمام، قبل ما أجيب الطلب واجهت 3 ضوابط:\n\n• تم كشف 1,847 سجل يحتوي PII (اسم + هاتف + بريد + عنوان) — يخالف المادة 12 من PDPL.\n• درجة المخاطر 87% (حرج) — تجاوزت عتبة الـ 70% المعتمدة.\n• الطلب يحتاج موافقة بشرية قبل أي إجراء.\n\nنماذج BrightAI حظرت الإرسال وأعدت توجيه الطلب إلى فريق الحوكمة.\n\n⚠️ هذا رد تجريبي — المحادثة الحقيقية تتطلب ربط Kernel API.',
+    meta: 'قبل 3د · Kernel v3.7 · blocked · تجريبي',
   },
 ];
 
@@ -409,11 +409,14 @@ const policyBanner = {
 
       <!-- RIGHT — Context panel (live provider status + policy feed + session meta) -->
       <aside class="kernel-chat-layout__pane kernel-chat-layout__pane--right" aria-label="لوحة السياق">
-        <!-- The provider is the only model metadata shown here. It is filled
-             exclusively from the successful /api/ai/chat response. -->
+        <!-- Live provider card (K2 2026-07-18): name reflects the actual
+             provider returned by /api/ai/chat metadata — never hard-coded.
+             Starts as "—" until the first live reply; shows a DEMO badge
+             while a seed/demo reply is displayed, and a DEGRADED badge when
+             the session store fell back to in-memory storage. -->
         <section class="kernel-chat-context-card" aria-labelledby="ctx-provider-title" data-provider-card>
           <header class="kernel-chat-context-card__head">
-            <span class="kernel-chat-context-card__logo" aria-hidden="true" data-provider-logo>AI</span>
+            <span class="kernel-chat-context-card__logo" aria-hidden="true" data-provider-logo>B</span>
             <div class="kernel-chat-context-card__title-block">
               <h3 class="kernel-chat-context-card__title" id="ctx-provider-title">
                 مزود النموذج: <span data-provider-badge>—</span>
@@ -423,7 +426,16 @@ const policyBanner = {
             <span class="kernel-chat-context-card__tag" data-demo-badge hidden>تجريبي</span>
             <span class="kernel-chat-context-card__tag kernel-chat-context-card__tag--warn" data-degraded-badge hidden>سياق غير محفوظ</span>
           </header>
-            <p class="kernel-chat-context-card__note">ما يظهر مزود إلا بعد رد فعلي من الخادم.</p>
+          <dl>
+            <div class="kernel-chat-context-card__field">
+              <dt class="kernel-chat-context-card__label">الحالة</dt>
+              <dd class="kernel-chat-context-card__value" data-provider-status>—</dd>
+            </div>
+            <div class="kernel-chat-context-card__field">
+              <dt class="kernel-chat-context-card__label">الوضع</dt>
+              <dd class="kernel-chat-context-card__value" data-provider-mode>—</dd>
+            </div>
+          </dl>
         </section>
 
         <!-- Policy / Firewall notifications -->
@@ -549,10 +561,10 @@ const policyBanner = {
           </button>
         </header>
         <div class="kernel-chat-drawer__body">
-          <!-- Mirrors the response-metadata provider card in the right pane. -->
+          <!-- Live provider card (K2 2026-07-18): mirrors the RIGHT pane. -->
           <section class="kernel-chat-context-card" aria-labelledby="ctx-drawer-provider-title" data-provider-card>
             <header class="kernel-chat-context-card__head">
-              <span class="kernel-chat-context-card__logo" aria-hidden="true" data-provider-logo>AI</span>
+              <span class="kernel-chat-context-card__logo" aria-hidden="true" data-provider-logo>B</span>
               <div class="kernel-chat-context-card__title-block">
                 <h3 class="kernel-chat-context-card__title" id="ctx-drawer-provider-title">
                   مزود النموذج: <span data-provider-badge>—</span>
@@ -562,7 +574,16 @@ const policyBanner = {
               <span class="kernel-chat-context-card__tag" data-demo-badge hidden>تجريبي</span>
               <span class="kernel-chat-context-card__tag kernel-chat-context-card__tag--warn" data-degraded-badge hidden>سياق غير محفوظ</span>
             </header>
-            <p class="kernel-chat-context-card__note">ما يظهر مزود إلا بعد رد فعلي من الخادم.</p>
+            <dl>
+              <div class="kernel-chat-context-card__field">
+                <dt class="kernel-chat-context-card__label">الحالة</dt>
+                <dd class="kernel-chat-context-card__value" data-provider-status>—</dd>
+              </div>
+              <div class="kernel-chat-context-card__field">
+                <dt class="kernel-chat-context-card__label">الوضع</dt>
+                <dd class="kernel-chat-context-card__value" data-provider-mode>—</dd>
+              </div>
+            </dl>
           </section>
 
           <!-- Policy / Firewall notifications -->
@@ -958,21 +979,41 @@ const policyBanner = {
        * No static / hardcoded provider value — always reflects the server's
        * metadata (Acceptance: "لا تعرض provider ثابتاً").
        *
-       * The card shows the live provider name from the response, or a neutral
-       * "—" before the first successful reply.
+       * K2 (2026-07-18): also drives the visible provider card in the
+       * RIGHT pane + context drawer (previously hard-coded "NVIDIA NIM").
+       * The card now shows the live provider name from the response, or a
+       * neutral "—" before the first successful reply.
        */
       var lastProvider = '';
 
       /** K2 (2026-07-18): reflect the live provider into the provider card(s). */
       var PROVIDER_LABELS = { groq: 'Groq', gemini: 'Gemini', '': '—' };
+      var STATUS_LABELS = { groq: 'متصّل', gemini: 'متصّل', '': '—' };
+      var MODE_LABELS = { groq: 'Production', gemini: 'Production', '': '—' };
       function updateProviderBadges() {
         var label = PROVIDER_LABELS[lastProvider] || '—';
+        var status = STATUS_LABELS[lastProvider] || '—';
+        var mode = MODE_LABELS[lastProvider] || '—';
         elAll('[data-provider-badge]').forEach(function (node) {
           node.textContent = label;
         });
-        elAll('[data-provider-card]').forEach(function (node) {
-          node.toggleAttribute('data-demo', !lastProvider);
+        elAll('[data-provider-status]').forEach(function (node) {
+          node.textContent = status;
+          if (lastProvider) {
+            node.className = 'kernel-chat-context-card__value kernel-chat-context-card__value--ok';
+          } else {
+            node.className = 'kernel-chat-context-card__value';
+          }
         });
+        elAll('[data-provider-mode]').forEach(function (node) {
+          node.textContent = mode;
+        });
+        // When a live provider is known, drop the static "demo" tint if any.
+        if (lastProvider) {
+          elAll('[data-provider-card]').forEach(function (node) {
+            node.removeAttribute('data-demo');
+          });
+        }
       }
 
       /** K2 (2026-07-18): DEMO badge — shown while the visible reply is a
@@ -983,7 +1024,7 @@ const policyBanner = {
           node.hidden = !isDemo;
         });
         elAll('[data-provider-card]').forEach(function (node) {
-          node.toggleAttribute('data-demo', isDemo);
+          if (isDemo) node.setAttribute('data-demo', 'true');
         });
       }
 
@@ -1030,10 +1071,8 @@ const policyBanner = {
 
         // KERNEL-AI-2026-07-14: clear any previous error
         clearChatError();
-        // A provider is truthy only after response metadata arrives. Clear it
-        // while a request is pending so an older provider is not reused.
-        lastProvider = '';
-        updateProviderBadges();
+        // K2 (2026-07-18): a live API attempt is starting — leave demo
+        // mode so the provider card shows "—" until the reply arrives.
         setDemoMode(false);
 
         // BAI-KRN-002 / M1: fresh AbortController per request. M3 will wire the
@@ -1145,9 +1184,7 @@ const policyBanner = {
                 }
                 var aiMsg = createMessage('ai', '');
                 messages.insertBefore(aiMsg.article, typing);
-                if (data.provider === 'groq' || data.provider === 'gemini') {
-                  lastProvider = data.provider;
-                }
+                if (data.provider) lastProvider = String(data.provider);
                 updateProviderBadges();
                 // KERNEL-ANALYTICS-2026-07-18: message_allowed — a reply was
                 // produced (PII passed firewall or was redacted). Non-PII.
@@ -1204,7 +1241,7 @@ const policyBanner = {
                 scrollThreadToEnd(thread);
                } else if (frame.event === 'done' && frame.data) {
                  doneSeen = true;
-                 if (frame.data.provider === 'groq' || frame.data.provider === 'gemini') {
+                 if (typeof frame.data.provider === 'string') {
                    lastProvider = frame.data.provider;
                  }
                  updateProviderBadges();
@@ -1266,8 +1303,6 @@ const policyBanner = {
         // REPORTS-SEC-01: Demo fallback path (latency simulation + fake streaming).
         // يُستخدم عندما الـ API غير متاح أو رجع 404/502/504. يحفظ الـ UX القديم.
         function runDemoReply() {
-          lastProvider = '';
-          updateProviderBadges();
           setDemoMode(true);
           setTimeout(function () {
             var aiMsg = createMessage('ai', '');
@@ -1315,9 +1350,6 @@ const policyBanner = {
           userMessageCount = 0;
           if (contactCta) contactCta.hidden = true;
           clearChatError();
-          lastProvider = '';
-          updateProviderBadges();
-          setDemoMode(true);
           input.value = '';
           input.focus();
         });
@@ -1350,10 +1382,6 @@ const policyBanner = {
           kernelTrack(KEV().EVIDENCE_VIEWED, ev);
         });
       });
-
-      // The server-rendered seed thread is explanatory data until a real
-      // response supplies provider metadata.
-      setDemoMode(true);
     }
 
     /*

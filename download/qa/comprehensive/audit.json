@@ -22597,5 +22597,5028 @@
       }
     ],
     "bidi": []
+  },
+  {
+    "page": "/docs/kernel-evidence/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-internal-linking/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-nvidia-proxy/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-operations-runbook/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-pages/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 10,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 73,
+            "h": 21,
+            "expW": 73,
+            "expH": 21,
+            "text": "Kernel Chat",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 108,
+            "h": 21,
+            "expW": 108,
+            "expH": 21,
+            "text": "Kernel Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 107,
+            "h": 21,
+            "expW": 107,
+            "expH": 21,
+            "text": "Kernel Approvals",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 76,
+            "h": 21,
+            "expW": 76,
+            "expH": 21,
+            "text": "Kernel Stats",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 116,
+            "h": 21,
+            "expW": 116,
+            "expH": 21,
+            "text": "Kernel Connectors",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 106,
+            "h": 21,
+            "expW": 106,
+            "expH": 21,
+            "text": "Kernel Scenarios",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 10,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 73,
+            "h": 21,
+            "expW": 73,
+            "expH": 21,
+            "text": "Kernel Chat",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 108,
+            "h": 21,
+            "expW": 108,
+            "expH": 21,
+            "text": "Kernel Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 107,
+            "h": 21,
+            "expW": 107,
+            "expH": 21,
+            "text": "Kernel Approvals",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 76,
+            "h": 21,
+            "expW": 76,
+            "expH": 21,
+            "text": "Kernel Stats",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 116,
+            "h": 21,
+            "expW": 116,
+            "expH": 21,
+            "text": "Kernel Connectors",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 106,
+            "h": 21,
+            "expW": 106,
+            "expH": 21,
+            "text": "Kernel Scenarios",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 10,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 73,
+            "h": 21,
+            "expW": 73,
+            "expH": 21,
+            "text": "Kernel Chat",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 108,
+            "h": 21,
+            "expW": 108,
+            "expH": 21,
+            "text": "Kernel Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 107,
+            "h": 21,
+            "expW": 107,
+            "expH": 21,
+            "text": "Kernel Approvals",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 76,
+            "h": 21,
+            "expW": 76,
+            "expH": 21,
+            "text": "Kernel Stats",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 116,
+            "h": 21,
+            "expW": 116,
+            "expH": 21,
+            "text": "Kernel Connectors",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 106,
+            "h": 21,
+            "expW": 106,
+            "expH": 21,
+            "text": "Kernel Scenarios",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 10,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 73,
+            "h": 21,
+            "expW": 73,
+            "expH": 21,
+            "text": "Kernel Chat",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 108,
+            "h": 21,
+            "expW": 108,
+            "expH": 21,
+            "text": "Kernel Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 107,
+            "h": 21,
+            "expW": 107,
+            "expH": 21,
+            "text": "Kernel Approvals",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 76,
+            "h": 21,
+            "expW": 76,
+            "expH": 21,
+            "text": "Kernel Stats",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 116,
+            "h": 21,
+            "expW": 116,
+            "expH": 21,
+            "text": "Kernel Connectors",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 106,
+            "h": 21,
+            "expW": 106,
+            "expH": 21,
+            "text": "Kernel Scenarios",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 11,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 24,
+            "expW": 84,
+            "expH": 24,
+            "text": "Kernel Chat",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 124,
+            "h": 24,
+            "expW": 124,
+            "expH": 24,
+            "text": "Kernel Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 122,
+            "h": 24,
+            "expW": 122,
+            "expH": 24,
+            "text": "Kernel Approvals",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 87,
+            "h": 24,
+            "expW": 87,
+            "expH": 24,
+            "text": "Kernel Stats",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 132,
+            "h": 24,
+            "expW": 132,
+            "expH": 24,
+            "text": "Kernel Connectors",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-policies/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-production-vs-demo/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-reports/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-scenarios/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-security-model/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-stats/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/kernel-testing-checklist/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 1024,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/nca-ecc-ai-controls/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 203,
+            "h": 24,
+            "expW": 203,
+            "expH": 24,
+            "text": "احجز جلسة استشارية لتأمين الـ ",
+            "cls": "action-btn"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 203,
+            "h": 24,
+            "expW": 203,
+            "expH": 24,
+            "text": "احجز جلسة استشارية لتأمين الـ ",
+            "cls": "action-btn"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 203,
+            "h": 24,
+            "expW": 203,
+            "expH": 24,
+            "text": "احجز جلسة استشارية لتأمين الـ ",
+            "cls": "action-btn"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 203,
+            "h": 24,
+            "expW": 203,
+            "expH": 24,
+            "text": "احجز جلسة استشارية لتأمين الـ ",
+            "cls": "action-btn"
+          },
+          {
+            "tag": "a",
+            "w": 152,
+            "h": 21,
+            "expW": 152,
+            "expH": 21,
+            "text": "خريطة ربط NCA ECC مع AI",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 203,
+            "h": 24,
+            "expW": 203,
+            "expH": 24,
+            "text": "احجز جلسة استشارية لتأمين الـ ",
+            "cls": "action-btn"
+          },
+          {
+            "tag": "a",
+            "w": 152,
+            "h": 21,
+            "expW": 152,
+            "expH": 21,
+            "text": "خريطة ربط NCA ECC مع AI",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/nca-ecc-ai-controls-mapping/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 24,
+            "expW": 172,
+            "expH": 24,
+            "text": "AI Governance Platform",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 24,
+            "expW": 166,
+            "expH": 24,
+            "text": "دليل NCA ECC وحوكمة AI",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 24,
+            "expW": 145,
+            "expH": 24,
+            "text": "استكشف منصة الحوكمة",
+            "cls": "action-btn"
+          },
+          {
+            "tag": "a",
+            "w": 104,
+            "h": 24,
+            "expW": 104,
+            "expH": 24,
+            "text": "احجز جلسة تقييم",
+            "cls": "action-btn secondary"
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 24,
+            "expW": 247,
+            "expH": 24,
+            "text": "دليل ضوابط NCA ECC للذكاء الاص",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 24,
+            "expW": 145,
+            "expH": 24,
+            "text": "استكشف منصة الحوكمة",
+            "cls": "action-btn"
+          },
+          {
+            "tag": "a",
+            "w": 104,
+            "h": 24,
+            "expW": 104,
+            "expH": 24,
+            "text": "احجز جلسة تقييم",
+            "cls": "action-btn secondary"
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 24,
+            "expW": 172,
+            "expH": 24,
+            "text": "AI Governance Platform",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 24,
+            "expW": 166,
+            "expH": 24,
+            "text": "دليل NCA ECC وحوكمة AI",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 24,
+            "expW": 145,
+            "expH": 24,
+            "text": "استكشف منصة الحوكمة",
+            "cls": "action-btn"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 24,
+            "expW": 172,
+            "expH": 24,
+            "text": "AI Governance Platform",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 24,
+            "expW": 166,
+            "expH": 24,
+            "text": "دليل NCA ECC وحوكمة AI",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 145,
+            "h": 24,
+            "expW": 145,
+            "expH": 24,
+            "text": "استكشف منصة الحوكمة",
+            "cls": "action-btn"
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 8,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 24,
+            "expW": 172,
+            "expH": 24,
+            "text": "AI Governance Platform",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 24,
+            "expW": 166,
+            "expH": 24,
+            "text": "دليل NCA ECC وحوكمة AI",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/nca-ecc-ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 21,
+            "expW": 160,
+            "expH": 21,
+            "text": "Policy to Control Mapping",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 152,
+            "h": 24,
+            "expW": 152,
+            "expH": 24,
+            "text": "خريطة ضوابط NCA ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 24,
+            "expW": 247,
+            "expH": 24,
+            "text": "دليل ضوابط NCA ECC للذكاء الاص",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 21,
+            "expW": 160,
+            "expH": 21,
+            "text": "Policy to Control Mapping",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 21,
+            "expW": 160,
+            "expH": 21,
+            "text": "Policy to Control Mapping",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 152,
+            "h": 24,
+            "expW": 152,
+            "expH": 24,
+            "text": "خريطة ضوابط NCA ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 247,
+            "h": 24,
+            "expW": 247,
+            "expH": 24,
+            "text": "دليل ضوابط NCA ECC للذكاء الاص",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 21,
+            "expW": 160,
+            "expH": 21,
+            "text": "Policy to Control Mapping",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 152,
+            "h": 24,
+            "expW": 152,
+            "expH": 24,
+            "text": "خريطة ضوابط NCA ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 91,
+            "h": 24,
+            "expW": 91,
+            "expH": 24,
+            "text": "جاهزية التدقيق",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 183,
+            "h": 24,
+            "expW": 183,
+            "expH": 24,
+            "text": "Policy to Control Mapping",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 115,
+            "h": 24,
+            "expW": 115,
+            "expH": 24,
+            "text": "AI Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 152,
+            "h": 24,
+            "expW": 152,
+            "expH": 24,
+            "text": "خريطة ضوابط NCA ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/nca-ecc-ai-guide/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 180,
+            "h": 21,
+            "expW": 180,
+            "expH": 21,
+            "text": "صفحة NCA الرسمية لضوابط ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 21,
+            "expW": 146,
+            "expH": 21,
+            "text": "ملف ECC 2-2024 الرسمي",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 180,
+            "h": 21,
+            "expW": 180,
+            "expH": 21,
+            "text": "صفحة NCA الرسمية لضوابط ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 21,
+            "expW": 146,
+            "expH": 21,
+            "text": "ملف ECC 2-2024 الرسمي",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 180,
+            "h": 21,
+            "expW": 180,
+            "expH": 21,
+            "text": "صفحة NCA الرسمية لضوابط ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 21,
+            "expW": 146,
+            "expH": 21,
+            "text": "ملف ECC 2-2024 الرسمي",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 265,
+            "h": 24,
+            "expW": 265,
+            "expH": 24,
+            "text": "الدليل الشامل NCA ECC والذكاء ",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 180,
+            "h": 21,
+            "expW": 180,
+            "expH": 21,
+            "text": "صفحة NCA الرسمية لضوابط ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 21,
+            "expW": 146,
+            "expH": 21,
+            "text": "ملف ECC 2-2024 الرسمي",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 265,
+            "h": 24,
+            "expW": 265,
+            "expH": 24,
+            "text": "الدليل الشامل NCA ECC والذكاء ",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 375,
+            "h": 24,
+            "expW": 375,
+            "expH": 24,
+            "text": "خريطة ربط ضوابط NCA ECC مع است",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 206,
+            "h": 24,
+            "expW": 206,
+            "expH": 24,
+            "text": "صفحة NCA الرسمية لضوابط ECC",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 167,
+            "h": 24,
+            "expW": 167,
+            "expH": 24,
+            "text": "ملف ECC 2-2024 الرسمي",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/pdpl-ai-complete-guide/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "دليل PDPL للمتحكمين والمعالجين",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 243,
+            "h": 21,
+            "expW": 243,
+            "expH": 21,
+            "text": "اللائحة التنفيذية لنظام حماية ",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 234,
+            "h": 21,
+            "expW": 234,
+            "expH": 21,
+            "text": "قواعد تعيين مسؤول حماية البيان",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "إرشاد الحد الأدنى للبيانات الش",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 220,
+            "h": 21,
+            "expW": 220,
+            "expH": 21,
+            "text": "إرشاد إتلاف وإخفاء هوية البيان",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "دليل PDPL للمتحكمين والمعالجين",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 243,
+            "h": 21,
+            "expW": 243,
+            "expH": 21,
+            "text": "اللائحة التنفيذية لنظام حماية ",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 234,
+            "h": 21,
+            "expW": 234,
+            "expH": 21,
+            "text": "قواعد تعيين مسؤول حماية البيان",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "إرشاد الحد الأدنى للبيانات الش",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 220,
+            "h": 21,
+            "expW": 220,
+            "expH": 21,
+            "text": "إرشاد إتلاف وإخفاء هوية البيان",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "دليل PDPL للمتحكمين والمعالجين",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 243,
+            "h": 21,
+            "expW": 243,
+            "expH": 21,
+            "text": "اللائحة التنفيذية لنظام حماية ",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 234,
+            "h": 21,
+            "expW": 234,
+            "expH": 21,
+            "text": "قواعد تعيين مسؤول حماية البيان",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "إرشاد الحد الأدنى للبيانات الش",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 220,
+            "h": 21,
+            "expW": 220,
+            "expH": 21,
+            "text": "إرشاد إتلاف وإخفاء هوية البيان",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 11,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "دليل PDPL للمتحكمين والمعالجين",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 243,
+            "h": 21,
+            "expW": 243,
+            "expH": 21,
+            "text": "اللائحة التنفيذية لنظام حماية ",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 234,
+            "h": 21,
+            "expW": 234,
+            "expH": 21,
+            "text": "قواعد تعيين مسؤول حماية البيان",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 182,
+            "h": 21,
+            "expW": 182,
+            "expH": 21,
+            "text": "إرشاد الحد الأدنى للبيانات الش",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 220,
+            "h": 21,
+            "expW": 220,
+            "expH": 21,
+            "text": "إرشاد إتلاف وإخفاء هوية البيان",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 127,
+            "h": 21,
+            "expW": 127,
+            "expH": 21,
+            "text": "اللائحة التنفيذية لـ PDPL",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 10,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 208,
+            "h": 24,
+            "expW": 208,
+            "expH": 24,
+            "text": "دليل PDPL للمتحكمين والمعالجين",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 278,
+            "h": 24,
+            "expW": 278,
+            "expH": 24,
+            "text": "اللائحة التنفيذية لنظام حماية ",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 268,
+            "h": 24,
+            "expW": 268,
+            "expH": 24,
+            "text": "قواعد تعيين مسؤول حماية البيان",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 208,
+            "h": 24,
+            "expW": 208,
+            "expH": 24,
+            "text": "إرشاد الحد الأدنى للبيانات الش",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 251,
+            "h": 24,
+            "expW": 251,
+            "expH": 24,
+            "text": "إرشاد إتلاف وإخفاء هوية البيان",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/pdpl-ai-governance/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 24,
+            "expW": 160,
+            "expH": 24,
+            "text": "AI Use Case Discovery",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 24,
+            "expW": 160,
+            "expH": 24,
+            "text": "AI Use Case Discovery",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 21,
+            "expW": 83,
+            "expH": 21,
+            "text": "Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 24,
+            "expW": 160,
+            "expH": 24,
+            "text": "AI Use Case Discovery",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 8,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 77,
+            "h": 24,
+            "expW": 77,
+            "expH": 24,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 95,
+            "h": 24,
+            "expW": 95,
+            "expH": 24,
+            "text": "Evidence File",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 160,
+            "h": 24,
+            "expW": 160,
+            "expH": 24,
+            "text": "AI Use Case Discovery",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/pdpl-chatgpt-data-protection/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 171,
+            "h": 24,
+            "expW": 171,
+            "expH": 24,
+            "text": "AI Firewall Saudi Arabia",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 21,
+            "expW": 159,
+            "expH": 21,
+            "text": "دليل PDPL والذكاء الاصطناعي",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 171,
+            "h": 24,
+            "expW": 171,
+            "expH": 24,
+            "text": "AI Firewall Saudi Arabia",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 21,
+            "expW": 159,
+            "expH": 21,
+            "text": "دليل PDPL والذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 58,
+            "h": 21,
+            "expW": 58,
+            "expH": 21,
+            "text": "بيان PDPL",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 171,
+            "h": 24,
+            "expW": 171,
+            "expH": 24,
+            "text": "AI Firewall Saudi Arabia",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 94,
+            "h": 24,
+            "expW": 94,
+            "expH": 24,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 21,
+            "expW": 159,
+            "expH": 21,
+            "text": "دليل PDPL والذكاء الاصطناعي",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 58,
+            "h": 21,
+            "expW": 58,
+            "expH": 21,
+            "text": "بيان PDPL",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 7,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 171,
+            "h": 24,
+            "expW": 171,
+            "expH": 24,
+            "text": "AI Firewall Saudi Arabia",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 159,
+            "h": 21,
+            "expW": 159,
+            "expH": 21,
+            "text": "دليل PDPL والذكاء الاصطناعي",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 8,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 68,
+            "h": 21,
+            "expW": 68,
+            "expH": 21,
+            "text": "AI Firewall",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 142,
+            "h": 21,
+            "expW": 142,
+            "expH": 21,
+            "text": "Human Approval Layer",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 82,
+            "h": 21,
+            "expW": 82,
+            "expH": 21,
+            "text": "AI Audit Trail",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 171,
+            "h": 24,
+            "expW": 171,
+            "expH": 24,
+            "text": "AI Firewall Saudi Arabia",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 163,
+            "h": 24,
+            "expW": 163,
+            "expH": 24,
+            "text": "Human Approval Layer",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/sdaia-generative-ai-guidelines/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 21,
+            "expW": 166,
+            "expH": 21,
+            "text": "SDAIA AI Ethics Principles",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 213,
+            "h": 21,
+            "expW": 213,
+            "expH": 21,
+            "text": "SDAIA Growth Algebra reference",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 21,
+            "expW": 270,
+            "expH": 21,
+            "text": "Generative AI Guidelines - Pub",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 308,
+            "h": 21,
+            "expW": 308,
+            "expH": 21,
+            "text": "Generative AI Guidelines - Gov",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 21,
+            "expW": 166,
+            "expH": 21,
+            "text": "SDAIA AI Ethics Principles",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 213,
+            "h": 21,
+            "expW": 213,
+            "expH": 21,
+            "text": "SDAIA Growth Algebra reference",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 4,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 21,
+            "expW": 270,
+            "expH": 21,
+            "text": "Generative AI Guidelines - Pub",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 308,
+            "h": 21,
+            "expW": 308,
+            "expH": 21,
+            "text": "Generative AI Guidelines - Gov",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 21,
+            "expW": 166,
+            "expH": 21,
+            "text": "SDAIA AI Ethics Principles",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 213,
+            "h": 21,
+            "expW": 213,
+            "expH": 21,
+            "text": "SDAIA Growth Algebra reference",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 5,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 132,
+            "h": 21,
+            "expW": 132,
+            "expH": 21,
+            "text": "منصة BrightAI للحوكمة",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 21,
+            "expW": 270,
+            "expH": 21,
+            "text": "Generative AI Guidelines - Pub",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 308,
+            "h": 21,
+            "expW": 308,
+            "expH": 21,
+            "text": "Generative AI Guidelines - Gov",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 166,
+            "h": 21,
+            "expW": 166,
+            "expH": 21,
+            "text": "SDAIA AI Ethics Principles",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 213,
+            "h": 21,
+            "expW": 213,
+            "expH": 21,
+            "text": "SDAIA Growth Algebra reference",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 132,
+            "h": 21,
+            "expW": 132,
+            "expH": 21,
+            "text": "منصة BrightAI للحوكمة",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 308,
+            "h": 24,
+            "expW": 308,
+            "expH": 24,
+            "text": "Generative AI Guidelines - Pub",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 353,
+            "h": 24,
+            "expW": 353,
+            "expH": 24,
+            "text": "Generative AI Guidelines - Gov",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 189,
+            "h": 24,
+            "expW": 189,
+            "expH": 24,
+            "text": "SDAIA AI Ethics Principles",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 243,
+            "h": 24,
+            "expW": 243,
+            "expH": 24,
+            "text": "SDAIA Growth Algebra reference",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/docs/superpowers/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 131,
+            "h": 24,
+            "expW": 131,
+            "expH": 24,
+            "text": "دليل صفحات Kernel",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 131,
+            "h": 24,
+            "expW": 131,
+            "expH": 24,
+            "text": "دليل صفحات Kernel",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 1,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 131,
+            "h": 24,
+            "expW": 131,
+            "expH": 24,
+            "text": "دليل صفحات Kernel",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 146,
+            "h": 35,
+            "expW": 146,
+            "expH": 35,
+            "text": "عدّل على GitHub",
+            "cls": "docs-meta__edit"
+          },
+          {
+            "tag": "a",
+            "w": 131,
+            "h": 24,
+            "expW": 131,
+            "expH": 24,
+            "text": "دليل صفحات Kernel",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/en/cookie-policy/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "1 What are Cookies?...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "2 Types of Cookies Used...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "3 Cookie Management and Ch...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 24,
+            "expW": 98,
+            "expH": 24,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 117,
+            "h": 24,
+            "expW": 117,
+            "expH": 24,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 116,
+            "h": 24,
+            "expW": 116,
+            "expH": 24,
+            "text": "PDPL statement",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/en/data-processing-agreement/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "1 Parties and Structural D...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "2 Scope of Processing and ...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "3 Security Safeguards and ...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 116,
+            "h": 24,
+            "expW": 116,
+            "expH": 24,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 24,
+            "expW": 98,
+            "expH": 24,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 117,
+            "h": 24,
+            "expW": 117,
+            "expH": 24,
+            "text": "Terms of service",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/en/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/en/pdpl-statement/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 9,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "1 Data Governance and SDAI...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "2 Autonomous PII Redaction...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "3 100% Localized Data Sove...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 197,
+            "h": 24,
+            "expW": 197,
+            "expH": 24,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 24,
+            "expW": 98,
+            "expH": 24,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 117,
+            "h": 24,
+            "expW": 117,
+            "expH": 24,
+            "text": "Terms of service",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/en/privacy-policy/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 103,
+            "h": 21,
+            "expW": 103,
+            "expH": 21,
+            "text": "Terms of service",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 11,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "1 Personal Data Collection...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "2 Purpose and Legal Basis ...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "3 Data Subject Rights...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "4 Data Security and AI Fir...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "5 Data Retention and Shari...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 95,
+            "h": 24,
+            "expW": 95,
+            "expH": 24,
+            "text": "Cookie policy",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/en/sales-deck/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [],
+    "bidi": []
+  },
+  {
+    "page": "/en/terms/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 6,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 86,
+            "h": 21,
+            "expW": 86,
+            "expH": 21,
+            "text": "Privacy policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 84,
+            "h": 21,
+            "expW": 84,
+            "expH": 21,
+            "text": "Cookie policy",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 101,
+            "h": 21,
+            "expW": 101,
+            "expH": 21,
+            "text": "PDPL statement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 21,
+            "expW": 172,
+            "expH": 21,
+            "text": "Data processing agreement",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 92,
+            "h": 21,
+            "expW": 92,
+            "expH": 21,
+            "text": "BrightAI home",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 67,
+            "h": 21,
+            "expW": 67,
+            "expH": 21,
+            "text": "Contact us",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 11,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "1 Acceptance and Licensing...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "2 User Obligations and Sec...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "3 Limitation of Liability...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "4 Intellectual Property...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 270,
+            "h": 41,
+            "expW": 270,
+            "expH": 41,
+            "text": "5 Governing Law and Disput...",
+            "cls": "block py-2 px-3 rounded-lg text-white/60"
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 24,
+            "expW": 98,
+            "expH": 24,
+            "text": "Privacy policy",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/events/ai-governance-day/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 544,
+        "count": 122,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 104,
+            "h": 18,
+            "expW": 104,
+            "expH": 18,
+            "text": "تخطي إلى المحتوى",
+            "cls": "skip-to-content"
+          },
+          {
+            "tag": "a",
+            "w": 98,
+            "h": 18,
+            "expW": 98,
+            "expH": 18,
+            "text": "BrightAI",
+            "cls": "site-header__logo"
+          },
+          {
+            "tag": "button",
+            "w": 60,
+            "h": 21,
+            "expW": 60,
+            "expH": 21,
+            "text": "الحلول",
+            "cls": "site-header__nav-link site-header__dropd"
+          },
+          {
+            "tag": "a",
+            "w": 179,
+            "h": 18,
+            "expW": 179,
+            "expH": 18,
+            "text": "منصة حوكمة الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 172,
+            "h": 18,
+            "expW": 172,
+            "expH": 18,
+            "text": "جدار حماية الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          },
+          {
+            "tag": "a",
+            "w": 464,
+            "h": 39,
+            "expW": 464,
+            "expH": 39,
+            "text": "مسار تدقيق الذكاء الاصطناعي",
+            "cls": "site-header__dropdown-link"
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 18,
+            "expW": 83,
+            "expH": 18,
+            "text": "سياسة الخصوصية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 157,
+            "h": 18,
+            "expW": 157,
+            "expH": 18,
+            "text": "بيان الامتثال لنظام PDPL السعو",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 18,
+            "expW": 83,
+            "expH": 18,
+            "text": "سياسة الخصوصية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 157,
+            "h": 18,
+            "expW": 157,
+            "expH": 18,
+            "text": "بيان الامتثال لنظام PDPL السعو",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
+  },
+  {
+    "page": "/events/leap-2026/",
+    "overflow": [
+      {
+        "bp": 320,
+        "overflow": 0
+      },
+      {
+        "bp": 375,
+        "overflow": 0
+      },
+      {
+        "bp": 544,
+        "overflow": 0
+      },
+      {
+        "bp": 768,
+        "overflow": 0
+      },
+      {
+        "bp": 1024,
+        "overflow": 0
+      }
+    ],
+    "touch": [
+      {
+        "bp": 320,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 18,
+            "expW": 83,
+            "expH": 18,
+            "text": "سياسة الخصوصية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 207,
+            "h": 37,
+            "expW": 207,
+            "expH": 37,
+            "text": "بيان الامتثال لنظام PDPL السعو",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 375,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 256,
+            "h": 37,
+            "expW": 256,
+            "expH": 37,
+            "text": "سياسة الخصوصية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 157,
+            "h": 18,
+            "expW": 157,
+            "expH": 18,
+            "text": "بيان الامتثال لنظام PDPL السعو",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 544,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 18,
+            "expW": 83,
+            "expH": 18,
+            "text": "سياسة الخصوصية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 432,
+            "h": 37,
+            "expW": 432,
+            "expH": 37,
+            "text": "بيان الامتثال لنظام PDPL السعو",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 768,
+        "count": 2,
+        "sample": [
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 18,
+            "expW": 83,
+            "expH": 18,
+            "text": "سياسة الخصوصية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 157,
+            "h": 18,
+            "expW": 157,
+            "expH": 18,
+            "text": "بيان الامتثال لنظام PDPL السعو",
+            "cls": ""
+          }
+        ]
+      },
+      {
+        "bp": 1024,
+        "count": 3,
+        "sample": [
+          {
+            "tag": "input",
+            "w": 13,
+            "h": 13,
+            "expW": 13,
+            "expH": 13,
+            "text": "",
+            "cls": "form-field__checkbox"
+          },
+          {
+            "tag": "a",
+            "w": 83,
+            "h": 18,
+            "expW": 83,
+            "expH": 18,
+            "text": "سياسة الخصوصية",
+            "cls": ""
+          },
+          {
+            "tag": "a",
+            "w": 157,
+            "h": 18,
+            "expW": 157,
+            "expH": 18,
+            "text": "بيان الامتثال لنظام PDPL السعو",
+            "cls": ""
+          }
+        ]
+      }
+    ],
+    "bidi": []
   }
 ]
