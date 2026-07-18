@@ -123,6 +123,63 @@ const complianceRows = [
   </header>
 
   <div class="kernel-main kernel-page-fade-in">
+    {/* K1 (2026-07-18): Stage 1 — Onboarding.
+       لوحة الحوكمة المعروضة أدناه (Status strip + KPI grid + Dashboard + Units)
+       تبقى كما هي. نضيف بطاقة رحلة Kernel فوقها كـ "بوابة" للزائر الجديد
+       تربطه بالمراحل الخمس. البيانات أدناه كلها تجريبية (KernelDemoPill). */}
+
+    <section class="kernel-onboarding" aria-labelledby="kernel-onboarding-title">
+      <h2 id="kernel-onboarding-title" class="k-section-title kernel-onboarding__title">رحلة Kernel — 5 مراحل</h2>
+      <p class="k-section-intro kernel-onboarding__lead">
+        Kernel أداة تشغيلية لحوكمة الذكاء الاصطناعي في المنشآت السعودية. لا تدّعي امتثالاً قانونياً كاملاً، لكنها تساعدك على الجاهزية للوائح (PDPL، NCA ECC، SDAIA، SFDA، SAMA). ابدأ بأي مرحلة تناسب مهمتك.
+      </p>
+      <ol class="kernel-onboarding__steps" role="list">
+        <li class="kernel-onboarding__step">
+          <span class="kernel-onboarding__num" aria-hidden="true">1</span>
+          <div class="kernel-onboarding__body">
+            <h3 class="kernel-onboarding__h3">تعرّف على Kernel</h3>
+            <p class="kernel-onboarding__p">وش هو، كيف يحمي منشأتك، وماذا تعني الأرقام في اللوحة.</p>
+            <a class="kernel-onboarding__link" href="#kernel-onboarding-more" aria-label="المزيد عن Kernel">المزيد عن Kernel</a>
+          </div>
+        </li>
+        <li class="kernel-onboarding__step">
+          <span class="kernel-onboarding__num" aria-hidden="true">2</span>
+          <div class="kernel-onboarding__body">
+            <h3 class="kernel-onboarding__h3">اختر سيناريو سعودي</h3>
+            <p class="kernel-onboarding__p">12 سيناريو واقعي يغطي بنوك، صحة، حكومي، قانوني، HR، وأمن الكود.</p>
+            <a class="kernel-onboarding__link" href="/kernel/scenarios/" data-scenario-link data-scenario-id="" data-sector="" data-risk-band="" data-journey-stage="scenario">تصفح السيناريوهات ←</a>
+          </div>
+        </li>
+        <li class="kernel-onboarding__step">
+          <span class="kernel-onboarding__num" aria-hidden="true">3</span>
+          <div class="kernel-onboarding__body">
+            <h3 class="kernel-onboarding__h3">شغّل المحادثة الآمنة</h3>
+            <p class="kernel-onboarding__p">محادثة بضوابط حوكمة كاملة: كشف PII، تقييم مخاطر، تطبيق سياسات.</p>
+            <a class="kernel-onboarding__link" href="/kernel/chat/">فتح المحادثة ←</a>
+          </div>
+        </li>
+        <li class="kernel-onboarding__step">
+          <span class="kernel-onboarding__num" aria-hidden="true">4</span>
+          <div class="kernel-onboarding__body">
+            <h3 class="kernel-onboarding__h3">افهم السياسات والأدلة</h3>
+            <p class="kernel-onboarding__p">كيف فسّر Kernel القرار: السياسات، الأدلة، السجل، والامتثال.</p>
+            <a class="kernel-onboarding__link" href="/kernel/policies/">السياسات والأدلة ←</a>
+          </div>
+        </li>
+        <li class="kernel-onboarding__step">
+          <span class="kernel-onboarding__num" aria-hidden="true">5</span>
+          <div class="kernel-onboarding__body">
+            <h3 class="kernel-onboarding__h3">تواصل مع الحوكمة</h3>
+            <p class="kernel-onboarding__p">احجز عرضاً مفصّلاً. الـ CTA يحمل القطاع والمخاطر — بدون PII.</p>
+            <a class="kernel-onboarding__link" href="#kernel-lead-form-index">احجز عرضاً مفصّلاً ←</a>
+          </div>
+        </li>
+      </ol>
+      <p class="kernel-onboarding__disclaimer" id="kernel-onboarding-more">
+        <strong>تنبيه تشغيلي:</strong> البيانات الظاهرة في هذه اللوحة تجريبية (محددة بوسم «بيانات تجريبية» في الأعلى). المكوّنات لا تستهلك بيانات حقيقية إلا بعد ربط Kernel بمنشأتك. لا يستخدم هذا الموقع لأغراض قانونية أو استشارية — للمراجعة القانونية المتخصصة تواصل مع مستشار مرخّص.
+      </p>
+    </section>
+
     <!-- Status strip -->
     <KernelStatusStrip
       kicker="Kernel Provider"
@@ -490,3 +547,124 @@ const complianceRows = [
     faq={unit.faq}
   />
 </KernelLayout>
+
+<style>
+  /* K1 (2026-07-18): Onboarding — 5-step entry to the kernel journey.
+     No new tokens, no new classes that conflict with kernel-shell.
+     Mobile-first; safe down to 320px. */
+  .kernel-onboarding {
+    margin: var(--space-8) 0 var(--space-6);
+    padding: var(--space-5) var(--space-4);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+  .kernel-onboarding__title {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-xl);
+    color: var(--text-primary);
+  }
+  .kernel-onboarding__lead {
+    margin: 0 0 var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 65ch;
+  }
+  .kernel-onboarding__steps {
+    list-style: none;
+    margin: 0 0 var(--space-5);
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .kernel-onboarding__step {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-3);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    min-height: 44px;
+  }
+  .kernel-onboarding__num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 9999px;
+    background: var(--interactive-primary);
+    color: var(--bg-base);
+    font-size: var(--text-sm);
+    font-weight: var(--font-bold);
+    flex-shrink: 0;
+  }
+  .kernel-onboarding__body { flex: 1 1 auto; min-width: 0; }
+  .kernel-onboarding__h3 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-base);
+    color: var(--text-primary);
+    line-height: 1.3;
+  }
+  .kernel-onboarding__p {
+    margin: 0 0 var(--space-2);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+  .kernel-onboarding__link {
+    display: inline-block;
+    padding: var(--space-1) 0;
+    color: var(--interactive-primary);
+    font-size: var(--text-xs);
+    font-weight: var(--font-semibold);
+    text-decoration: none;
+    min-height: 28px;
+  }
+  .kernel-onboarding__link:hover,
+  .kernel-onboarding__link:focus-visible {
+    text-decoration: underline;
+    outline: none;
+  }
+  .kernel-onboarding__link:focus-visible {
+    box-shadow: 0 0 0 2px var(--brand-500);
+    border-radius: 2px;
+  }
+  .kernel-onboarding__disclaimer {
+    margin: 0;
+    padding: var(--space-3);
+    background: var(--bg-elevated);
+    border-inline-start: 3px solid var(--status-warning);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .kernel-onboarding__disclaimer strong {
+    color: var(--status-warning);
+    font-weight: var(--font-semibold);
+  }
+
+  /* Tablet 544-1024: 2 columns */
+  @media (min-width: 544px) {
+    .kernel-onboarding__steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  /* Desktop ≥1024: 1 column for readability, but keep 2 if room */
+  @media (min-width: 1024px) {
+    .kernel-onboarding__steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .kernel-onboarding { padding: var(--space-6) var(--space-5); }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-onboarding__link { transition: none; }
+  }
+</style>

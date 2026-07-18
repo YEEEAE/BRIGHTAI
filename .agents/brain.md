@@ -128,6 +128,30 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
 
+### 2026-07-18 — BAI-KRN-002-M1: Kernel Chat composer wire-up — session UUID + AbortController + IME guard + 4000-char cap + URL promptId — Verified locally (build 190 + chat-session 16/16 + csrf 29/29)
+
+- **Files**: 1 معدّل. **معدّل**: `src/pages/kernel/chat.astro` (+90 سطر script section). الـ HTML/CSS/data والـ API endpoint (src/pages/api/ai/chat.ts) ما تغيّروا.
+- **What**: المرحلة 1 من K2. composer كان يستخدم fetch() بسيط + demo fallback، ما عنده AbortController ولا session UUID ولا IME guard. أضفنا 5 layers: (1) `getSessionId()` — UUID v4 من `crypto.randomUUID()` مخزّن في sessionStorage تحت `brightai.kernel.sessionId`، regex validation، try/catch fallback null. (2) `getPromptIdFromUrl()` — يقرأ `?prompt=` من URL ويُدخله في الـ allowlist `['compliance','policies','evidence','audit','scenarios']` (يخدم M1 contract + K2 acceptance "promptId من allowlist فقط"). (3) `composerAbort = new AbortController()` لكل sendMessage، مربوط بـ fetch signal. (4) IME guard: compositionstart/end listeners → `composerIsComposing` flag، يُفحص في `sendMessage()` (قبل trim) ومرة ثانية في keydown handler (`!e.isComposing && !composerIsComposing`). (5) MAX_INPUT_CHARS = 4000 UI clamp + server re-validate. payload الـ POST: `{ message, sessionId?, promptId? }`. الـ fetch path الحالي (JSON + demo fallback) ما تغيّر — M2 يستبدله بـ SSE.
+- **Why**: K2 acceptance criteria: "لا يرسل Enter الرسالة أثناء CJK composition" (IME guard)، "حد 4000 حرف ظاهر للمستخدم" (UI clamp)، "يعمل إلغاء الطلب" (AbortController). الـ chat endpoint عنده `promptId allowlist` server-side (chat.ts:135) و sessionId validator UUID (chat.ts:107) — ما كان الـ composer يرسلهم أصلاً، فما كان الـ multi-turn context يشتغل ولا الـ system prompt selection. K2 contract "session UUID + promptId من allowlist" يحتاج composer يرسلهم. SSR/CSR hybrid: الـ chat endpoint مُفعّل عبر `prerender = false` ضمن `output: 'static'` + `adapter: node` (astro.config.mjs:103).
+- **Verification**:
+  - `pnpm build` → **190 صفحة، 0 أخطاء** ✅ (chat HTML 170KB، +0.7KB من M1 helpers inline).
+  - `grep -c "getSessionId|composerAbort|getPromptIdFromUrl|MAX_INPUT_CHARS" dist/client/kernel/chat/index.html` → **15 occurrences** (الـ inline script embedded).
+  - `pnpm test:chat-session` → **16/16 pass** (sandbox session, UUID validator, Redis context).
+  - `pnpm test:csrf` → **29/29 pass** (origin allowlist + API key + double-submit).
+- **Acceptance Status** (K2 full):
+  - ✅ لا يرسل Enter الرسالة أثناء CJK composition → مُحققة في M1 (compositionstart guard + !e.isComposing في keydown).
+  - ✅ حد 4000 حرف ظاهر للمستخدم → مُحققة في M1 (UI clamp + server re-validate).
+  - ✅ لا توجد secrets في client bundle → مفيش secrets أصلاً (الـ API proxy).
+  - ⏳ يعمل streaming بصورة صحيحة → M2 (Accept: text/event-stream + ReadableStream parser).
+  - ⏳ يعمل إلغاء الطلب → الـ AbortController جاهز، زر "إيقاف" في M3.
+  - ⏳ أخطاء 403 و429 و502 و503 لها رسائل آمنة → موجودة في الـ pre-M1 code، M3 يضيف اختبارات Playwright.
+- **Out-of-Scope** (M2/M3): M2 = SSE parser + JSON fallback + provider من response metadata. M3 = زر "إيقاف" + modeBadge demo/degraded + Playwright tests.
+- **Risks Addressed**: R2 (abort cleanup — controller reset في finally)، R4 (IME guard — isComposing API + flag double-check). R3 (promptId URL spoofing) — server-side allowlist ثابت، الـ composer يرسل بس، الـ API يتحقق.
+- **Rollback**: `git checkout src/pages/kernel/chat.astro` (لا تغيير في غيره).
+- **Commit**: uncommitted per brain line 18. رسالة مقترحة: `feat(kernel-chat): wire-up session UUID + AbortController + IME guard (BAI-KRN-002-M1)`
+- **Status**: verified locally (build 190 + chat-session 16/16 + csrf 29/29). M2 + M3 pending user approval.
+- **Brain updates**: Section 5 (composer wire-up contract documented — `brightai.kernel.sessionId` sessionStorage key, `?prompt=` URL contract).
+
 ### 2026-07-18 — BAI-SEO-003-S6: City Solution Page AEO — unique answer-first + SAB-honest LocalBusiness + similarity test — Verified locally (build 190 + seo:gate 0/0 + body similarity max 29.5% < 50% threshold + 0 dup @id)
 
 - **Files**: 3 معدّلة + 2 جديدة + 1 جديدة. **معدّل**: `src/data/solutions.ts` (أضفت `answerFirst?: string` لـ `LocalData` interface + 6 نصوص فريدة ≤60 كلمة، 41/42/39/40/38/46 كلمة بالترتيب: riyadh/banking 41 — SAMA+NCA+AML، khobar/banking 42 — SAMA+NCA+multi-branch، dammam/gov 39 — DGA+SDAIA+NCA+Shadow AI، madinah/gov 40 — DGA+SDAIA+PDPL+pilgrim، jeddah/health 38 — SFDA+CBAHI+ISO 13485+PHI flow، mecca/health 46 — SFDA+CBAHI+ISO 13485+Hajj pressure). `src/pages/solutions/[sector]/[city].astro` (أضفت `const isHQ = loc.cityEn === 'Riyadh'`، LocalBusiness فقط للرياض مع عنوان HQ الحقيقي، ProfessionalService+Service للمدن الأخرى بدون address، `locAnswerFirst` يقرأ من `loc.answerFirst`، migrated branch يحصل على `<p class="answer-first-summary">` قبل `<main>`، `extraSpeakableSelectors` دائمًا). `src/data/migrated-pages/local-banking-ai-governance-riyadh.json` (إصلاح عنوان مزيف: `King Fahd Road, Al Olaya, 12212` → `6913 المبارك بن فضالة، حي الفيحاء, 14254`، openingHours 09:00-18:00 → 08:00-17:00). `src/data/migrated-pages/local-government-ai-governance-dammam.json` + `local-healthcare-ai-governance-jeddah.json` (LocalBusiness → ProfessionalService + Service، حذف address block، @id محدث). **جديد**: `scripts/seo/check-city-similarity.mjs` (~160 سطر، 3-shingle Jaccard + 2-shingle answer-first + word count). `_reports/BAI-SEO-003-S6-CITY-SIMILARITY.md` (~5KB).

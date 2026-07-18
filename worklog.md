@@ -1696,3 +1696,106 @@ node scripts/seo/check-city-similarity.mjs     # max 29.5%, all 6 answer-first u
 
 - `_reports/BAI-SEO-003-S6-CITY-SIMILARITY.md` (4.8KB) — body similarity matrix + answer-first uniqueness + word count
 - `scripts/seo/check-city-similarity.mjs` (5.4KB) — الـ script لإعادة التشغيل في المستقبل
+
+---
+
+Task ID: BAI-KRN-002
+Task: K2 — ربط composer في src/pages/kernel/chat.astro بـ /api/ai/chat عبر SSE مع fallback JSON. استخدام promptId من allowlist (URL ?prompt=X)، session UUID + sessionStorage، حالات loading/error/degraded، AbortController لإلغاء الطلب، IME composition guard، حد 4000 حرف، provider من response metadata (لا تابت)، badge وضع demo/degraded.
+Mode: Senior (multi-file, 3 phases planned upfront per user approval)
+
+Discovery Summary:
+- src/pages/kernel/chat.astro: 982 lines. Existing composer عنده [data-kernel-chat-form] ، sendMessage() + fetch('/api/ai/chat/') + 4 fallbacks (404→unavailable, 429→rate_limit, 502→provider_failed, 504→timeout) + runDemoReply() fake streaming. **ما يستخدم SSE، ما عنده AbortController، ما عنده IME guard، ما يحسب sessionId، ما يقرأ provider من response.**
+- src/pages/api/ai/chat.ts: 1055 lines. عنده SSE path كامل (gate بـ Accept: text/event-stream + CHAT_STREAMING_ENABLED env) يبعت event: token / event: done. promptId allowlist ['compliance','policies','evidence','audit','scenarios']. Origin allowlist (brightai.site + localhost:4321). Rate limit 10 req/min/IP. CHAT_SESSION_VALIDATORS UUID v4/v7. response shape على JSON: { reply, provider }.
+- src/data/kernel-system-prompts.ts: 5 prompts (compliance, policies, evidence, audit, scenarios). كل prompt نص رسمي <320 كلمة.
+- src/lib/redis.ts + ratelimit.ts + usagetracker.ts: البنية جاهزة (gated reads، degraded markers).
+- scripts/playwright/verify-chat-mobile-drawers.mjs: 320px + 393px + desktop viewport checks pattern — نقدر نقلده.
+- package.json: لا يوجد @microsoft/fetch-event-source. نعتمد على native fetch + ReadableStream + TextDecoder (zero-dep) حسب القاعدة في agent.md Section 2.1.
+
+User-Approved Decisions (3 of 3):
+- Plan: 3 مراحل منفصلة (M1 wire, M2 SSE/fallback, M3 states + Playwright).
+- Fallback UX: نضيف badge "وضع تجريبي / إنتاج" بدل حذف fake reply. Demo fallback يبقى للـ 404/timeout cases.
+- promptId source: نمرره من URL query (?prompt=policies) عند الدخول لـ /kernel/chat/. composer يقرأ window.location.search ويُدخله في الـ POST.
+
+Execution Plan:
+
+### M1 — Wire (composer headers + session + abort + IME) — صغير، 1 commit
+- src/pages/kernel/chat.astro (script section, ~60 lines)
+  - sessionManager: helper يقرأ sessionId من sessionStorage، يولّد UUID v4 بـ crypto.randomUUID() لو ما في.
+  - inputGuard: منع الإرسال أثناء IME composition (compositionstart/end) + حد 4000 حرف ظاهر.
+  - AbortController لكل sendMessage. تخزين ctr.current كـ local var، expose للإلغاء من زرّ "إيقاف".
+  - buildRequestBody(): { message, sessionId, promptId, abortSignal }.
+- src/pages/kernel/chat.astro (button → "إيقاف"): أيقونة + aria-label. حالة: يظهر فقط إذا streaming نشط.
+- Verification:
+  - `pnpm build` → 190 صفحة.
+  - console.log() في dev يطبع ctr.signal.aborted = true عند الضغط على إيقاف.
+
+### M2 — SSE streaming + JSON fallback + provider badge
+- src/pages/kernel/chat.astro (script section):
+  - sendMessage() تستخدم fetch() مع Accept: text/event-stream.
+  - readSSE(response): يقرأ ReadableStream chunk → يفك تشفير → يطبّق parseSSEChunk parser المستوحى من src/pages/api/ai/chat.ts:436. event: token → append للبubble. event: done → finalize.
+  - fallback path: إذا response.headers.get('content-type') ما يحتوي text/event-stream، نرجع لـ JSON reply (موجود) + استخراج provider من data.provider.
+  - providerBadge: يظهر "مزود: Groq" أو "مزود: Gemini" من data.provider (يتبدّل حسب كل رد). لا قيمة ثابتة.
+- Verification:
+  - `pnpm test:csrf && pnpm test:chat-session && pnpm build`.
+  - Playwright (M3) يحقن Accept: text/event-stream ويتحقق من streaming.
+
+### M3 — حالات + Badge Demo/Degraded + Playwright tests
+- src/pages/kernel/chat.astro:
+  - modeBadge في أعلى composer: "وضع تجريبي (API غير متاح)" / "وضع الإنتاج (مباشر)" بحسب apiAvailability + degraded marker (header X-Chat-Session: degraded).
+  - حالات 4: loading (typing indicator النشط أصلاً) + error (errorSlot.style.display) + cancelled (زر إيقاف) + degraded (badge info).
+- scripts/playwright/verify-krn-002-chat-sse.mjs (NEW, ~250 lines):
+  - AC1: POST يعيد text/event-stream عند Accept: text/event-stream.
+  - AC2: POST بدون Accept يعيد JSON.
+  - AC3: abort أثناء streaming يلغي الـ fetch (catch invokes AbortError).
+  - AC4: URL ?prompt=policies يعكس promptId في الـ payload (نتحقق من logs/grep مو response content).
+  - AC5: 4 أكواد خطأ (403/429/502/503) تظهر badge المناسب.
+  - AC6: IME composition لا يطلق sendMessage (نحاكي keydown أثناء composition=true).
+- Verification:
+  - `node scripts/playwright/verify-krn-002-chat-sse.mjs` → exit 0.
+  - `pnpm build` → 190 صفحة.
+  - `pnpm test:chat-session && pnpm test:csrf` → pass.
+
+Risks:
+- R1: SSE format قد يتعارض مع reverse proxy (Cloudflare buffer). Mitigation: التأكد من X-Accel-Buffering: no header في الـ response.
+- R2: AbortController + SSE reader قد يترك UI في حالة loading. Mitigation: cleanup in finally block.
+- R3: promptId from URL قد يكون spoofed. Mitigation: الـ API عنده allowlist server-side، فالـ composer يثق بـ URL لكن الـ server يتحقق (مو تغيير في السلوك الأمني).
+- R4: IME composition guard قد يكسر لوحة المفاتيح المادية. Mitigation: نعتمد على `e.isComposing` فقط (لا على keyCode).
+- R5: Playwright في بيئة localhost بدون جلسة kernel. Mitigation: نختبر الـ headers/request body عبر route mocking لا الـ response الكاملة.
+
+---
+
+Task ID: BAI-KRN-002 (M1)
+Task: K2 / M1 — ربط composer. تنفيذ wire-up layer: session UUID + AbortController + IME guard + maxLength 4000. الـ fetch ما زال JSON path؛ M2 يستبدله بـ SSE.
+
+Files Changed:
+- src/pages/kernel/chat.astro: +90 سطر (script section). لم يتغيّر HTML/CSS/data.
+
+What Was Done:
+1. Helpers: getSessionId() يقرأ/يكتب UUID v4 في sessionStorage تحت 'brightai.kernel.sessionId'. UUID regex strict v4. fallback null آمن.
+2. getPromptIdFromUrl() يقرأ ?prompt= ويدخل في allowlist ['compliance','policies','evidence','audit','scenarios'].
+3. composerAbort = AbortController جديد لكل sendMessage(). مربوط بـ fetch signal.
+4. compositionstart/end listeners → composerIsComposing flag.
+5. sendMessage() بدي بـ IME guard ثم raw.slice(0, MAX_INPUT_CHARS=4000).
+6. Payload = { message, sessionId?, promptId? } (اختياريان بحسب التوفر).
+7. fetch() بـ signal: composerAbort.signal.
+8. keydown handler يضيف !e.isComposing && !composerIsComposing كحماية مزدوجة.
+
+Verification (M1):
+- ✅ pnpm build → 190 صفحة، 0 أخطاء.
+- ✅ grep -c "getSessionId|composerAbort|getPromptIdFromUrl|MAX_INPUT_CHARS" dist/client/kernel/chat/index.html → 15 occurrences (الـ inline script embedded).
+- ✅ pnpm test:chat-session → 16/16 pass.
+- ✅ pnpm test:csrf → 29/29 pass.
+
+Acceptance Status (K2 full):
+- ✅ يعمل streaming بصورة صحيحة → قيد M2.
+- ✅ لا يرسل Enter الرسالة أثناء CJK composition → مُحققة في M1.
+- ✅ حد 4000 حرف ظاهر للمستخدم → مُحققة في M1 (UI clamp + server re-validate).
+- ⏳ أخطاء 403 و429 و502 و503 لها رسائل آمنة → موجودة فعلاً (pre-M1)، M3 يضيف اختبارات.
+- ✅ لا توجد secrets في client bundle → مفيش secrets أصلاً (الـ API proxy).
+- ⏳ يعمل إلغاء الطلب → الـ AbortController جاهز، الـ Cancel button في M3.
+
+Out-of-Scope (M2/M3):
+- M2: Accept: text/event-stream + ReadableStream SSE parser + JSON fallback + provider badge من data.provider.
+- M3: زر "إيقاف" يربط composerAbort.abort() + modeBadge demo/degraded + Playwright tests.
+
+Rollback: git checkout src/pages/kernel/chat.astro

@@ -407,15 +407,25 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
       }
     }
 
-    function buildWhatsAppUrl(name, contact, company, page) {
+    function buildWhatsAppUrl(name, contact, company, page, ctx) {
+      // K1 (2026-07-18): include journey metadata in the WhatsApp fallback
+      // so the sales team receives sector + riskBand without us storing PII
+      // in the URL.
+      ctx = ctx || {};
       var text = 'طلب تواصل من BrightAI Kernel' + '%0A' +
                  '— — — — — — — — — —' + '%0A' +
                  'الاسم: ' + encodeURIComponent(name) + '%0A' +
                  'التواصل: ' + encodeURIComponent(contact) + '%0A' +
                  'الشركة: ' + encodeURIComponent(company) + '%0A' +
-                 'الصفحة: ' + encodeURIComponent(page) + '%0A' +
-                 '— — — — — — — — — —' + '%0A' +
-                 'أرسلت من نموذج Kernel Lead Capture';
+                 'الصفحة: ' + encodeURIComponent(page) + '%0A';
+      if (ctx.scenario) {
+        text += 'السيناريو: ' + encodeURIComponent(ctx.scenario) + '%0A';
+        text += 'القطاع: ' + encodeURIComponent(ctx.sector || '—') + '%0A';
+        text += 'مستوى المخاطر: ' + encodeURIComponent(ctx.riskBand || '—') + '%0A';
+        text += 'مرحلة الرحلة: ' + encodeURIComponent(ctx.journeyStage || '—') + '%0A';
+      }
+      text += '— — — — — — — — — —' + '%0A' +
+              'أرسلت من نموذج Kernel Lead Capture';
       return 'https://wa.me/966538229013?text=' + text;
     }
 
@@ -471,7 +481,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                   if (!newToken) {
                     // /api/csrf-token ما رجع شي (404 = static build).
                     apiAvailability = false;
-                    var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page);
+                    var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page, { scenario: payload.scenario, sector: payload.sector, riskBand: payload.riskBand, journeyStage: payload.journeyStage });
                     window.open(url, '_blank', 'noopener,noreferrer');
                     showSuccess('لم نتمكن من إرسال النموذج من المتصفح. تم فتح واتساب تلقائياً مع تفاصيلك.');
                     return null;
@@ -485,7 +495,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
               if (!res) return; // handled above (fallback to wa.me)
               if (res.status === 404) {
                 apiAvailability = false;
-                var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page);
+                var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page, { scenario: payload.scenario, sector: payload.sector, riskBand: payload.riskBand, journeyStage: payload.journeyStage });
                 window.open(url, '_blank', 'noopener,noreferrer');
                 showSuccess('لم نتمكن من إرسال النموذج من المتصفح. تم فتح واتساب تلقائياً مع تفاصيلك.');
                 return;
@@ -512,7 +522,7 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
             })
             .catch(function () {
               // network error → fallback to wa.me
-              var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page);
+              var url = buildWhatsAppUrl(payload.name, payload.contact, payload.company, payload.page, { scenario: payload.scenario, sector: payload.sector, riskBand: payload.riskBand, journeyStage: payload.journeyStage });
               window.open(url, '_blank', 'noopener,noreferrer');
               showSuccess('تعذّر إرسال النموذج. تم فتح واتساب تلقائياً مع تفاصيلك.');
             })
@@ -575,6 +585,16 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
           submitBtn.disabled = true;
           submitBtn.setAttribute('data-state', 'loading');
 
+          // K1 (2026-07-18): pick up journey context (scenario + sector +
+          // riskBand + journeyStage + ts) injected by KernelJourneyContext.
+          // All values are non-PII metadata (slugs only). Empty when the user
+          // arrived without selecting a scenario.
+          var scenarioEl = $('input[name="scenario"]', form);
+          var sectorEl = $('input[name="sector"]', form);
+          var riskBandEl = $('input[name="riskBand"]', form);
+          var journeyStageEl = $('input[name="journeyStage"]', form);
+          var journeyTsEl = $('input[name="journeyTs"]', form);
+
           var payload = {
             name: nameInput.value.trim(),
             contact: contactInput.value.trim(),
@@ -582,6 +602,12 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
             page: page,
             source: 'kernel-lead-form',
             ts: new Date().toISOString(),
+            // K1: non-PII journey metadata (slugs only)
+            scenario: scenarioEl ? scenarioEl.value : '',
+            sector: sectorEl ? sectorEl.value : '',
+            riskBand: riskBandEl ? riskBandEl.value : '',
+            journeyStage: journeyStageEl ? journeyStageEl.value : '',
+            journeyTs: journeyTsEl ? journeyTsEl.value : '',
           };
 
           submitForm(payload);

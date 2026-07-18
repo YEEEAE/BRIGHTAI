@@ -19,6 +19,15 @@ import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/ker
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import KernelContactCta from '../../components/kernel/KernelContactCta.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
+// K1 (2026-07-18): kernel journey — read scenario from URL.
+import {
+  getScenarioMeta,
+  RISK_BAND_LABELS,
+  SECTOR_LABELS,
+  type ScenarioMeta,
+  type Sector,
+  type RiskBand,
+} from '../../data/kernel-journey';
 
 const unit = getKernelUnit('chat')!;
 const cross = getCrossLinks(unit);
@@ -27,6 +36,17 @@ const jsonLd = [
   ...getKernelSubPageJsonLd(unit),
   getKernelFaqJsonLd(unit),
 ];
+
+// K1 (2026-07-18): detect a pre-selected scenario from ?scenario=... query param.
+// The value is an opaque id (e.g. "pdpl-id-leak") — no PII. We use it to:
+//  1) show a sticky banner above the composer so the user remembers context;
+//  2) pre-fill the textarea with the prompt hint (best-effort);
+const activeScenarioId: string | null = Astro.url.searchParams.get('scenario');
+const activeScenario: ScenarioMeta | null = activeScenarioId
+  ? getScenarioMeta(activeScenarioId)
+  : null;
+const activeSectorLabel: string | null = activeScenario ? SECTOR_LABELS[activeScenario.sector] : null;
+const activeRiskLabel: string | null = activeScenario ? RISK_BAND_LABELS[activeScenario.riskBand] : null;
 
 const iconChat = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>';
 const iconMessages = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
@@ -106,6 +126,129 @@ const policyBanner = {
   </header>
 
   <div class="kernel-main kernel-page-fade-in">
+    {/* K1 (2026-07-18): scenario context banner.
+       Server-rendered with a fallback empty state — the JS in chat.astro
+       reads ?scenario=... at runtime and fills in the metadata.
+       This works for both SSR (activeScenario truthy when ?scenario= present
+       at build time) and static + query-string runtime (JS fills in).
+       When no scenario is active, the banner is hidden via [hidden]. */}
+    <aside
+      class="k-scenario-banner"
+      role="region"
+      aria-label="سياق السيناريو"
+      data-scenario-banner
+      data-sector={activeScenario?.sector ?? ''}
+      data-risk-band={activeScenario?.riskBand ?? ''}
+      data-journey-stage="run"
+      data-scenario-id={activeScenario?.id ?? ''}
+      hidden={!activeScenario}
+    >
+      <div class="k-scenario-banner__lead">
+        <span class="k-scenario-banner__icon" aria-hidden="true">
+          <Fragment set:html={iconShield} />
+        </span>
+        <div>
+          <p class="k-scenario-banner__title" data-banner-title>
+            {activeScenario
+              ? <Fragment>تشغييل سيناريو: <strong>{activeScenario.title}</strong></Fragment>
+              : <Fragment>تشغييل سيناريو: <strong data-banner-title-text>—</strong></Fragment>
+            }
+          </p>
+          <p class="k-scenario-banner__meta" data-banner-meta>
+            {activeScenario ? (
+              <Fragment>
+                القطاع: <strong>{activeSectorLabel}</strong>
+                <span aria-hidden="true">·</span>
+                المخاطر: <strong>{activeRiskLabel}</strong>
+                <span aria-hidden="true">·</span>
+                الحزمة: <strong lang="en">{activeScenario.compliancePack.toUpperCase()}</strong>
+                <span aria-hidden="true">·</span>
+                الإجراء المتوقع: <strong>{activeScenario.expectedAction}</strong>
+              </Fragment>
+            ) : (
+              <Fragment>—</Fragment>
+            )}
+          </p>
+          <p class="k-scenario-banner__hint" data-banner-hint>
+            {activeScenario?.promptHint ?? ''}
+          </p>
+        </div>
+      </div>
+      <a
+        class="k-scenario-banner__cancel"
+        href="/kernel/chat/"
+        data-clear-scenario
+        aria-label="إلغاء السيناريو والعودة لمحادثة فارغة"
+      >إلغاء السيناريو</a>
+    </aside>
+
+    <script>
+      // K1 (2026-07-18): scenario banner runtime upgrade.
+      // The Astro static build sees activeScenario=null because query
+      // params don't exist at build time. The banner is rendered with
+      // empty data + hidden=true at build; this script reads the query
+      // string at runtime and shows + fills the banner. The metadata
+      // map is a minimal mirror of SCENARIO_META — single source of
+      // truth stays in src/data/kernel-journey.ts; this is a browser
+      // duplicate for the banner UX only.
+      (function () {
+        'use strict';
+        var MAP = {
+          'pdpl-id-leak':            { sector: 'legal',      riskBand: 'critical', title: 'كشف تسريب الهوية الوطنية (PDPL)',                pack: 'PDPL',     action: 'block' },
+          'procurement-contract':    { sector: 'government', riskBand: 'minimal',  title: 'مراجعة عقود المشتريات الحكومية',                  pack: 'PROC',     action: 'allow' },
+          'sfda-medical-export':     { sector: 'healthcare', riskBand: 'critical', title: 'تصدير السجلات الطبية الحساسة (SFDA)',            pack: 'SFDA',     action: 'block' },
+          'nca-prompt-injection':    { sector: 'code',       riskBand: 'high',     title: 'منع Prompt Injection (NCA ECC)',                 pack: 'NCA ECC',  action: 'block' },
+          'hr-salary-export':        { sector: 'hr',         riskBand: 'high',     title: 'تصدير بيانات الرواتب (HR)',                       pack: 'PDPL',     action: 'block' },
+          'finance-iban-leak':       { sector: 'banking',    riskBand: 'critical', title: 'تسريب أرقام الآيبان البنكية (SAMA)',             pack: 'PDPL',     action: 'block' },
+          'code-secret-extract':     { sector: 'code',       riskBand: 'high',     title: 'استخراج أسرار من الكود (NCA)',                   pack: 'NCA ECC',  action: 'block' },
+          'healthcare-research':     { sector: 'healthcare', riskBand: 'medium',   title: 'بحث طبي على مرضى مجهولين (SFDA)',                pack: 'SFDA',     action: 'allow_with_review' },
+          'legal-contract-summary':  { sector: 'legal',      riskBand: 'minimal',  title: 'تلخيص عقد قانوني (مسموح)',                        pack: 'PROC',     action: 'allow' },
+          'hr-cv-screening':         { sector: 'hr',         riskBand: 'medium',   title: 'فحص سير ذاتية مع PII (HR)',                      pack: 'PDPL',     action: 'allow_with_review' },
+          'finance-quarterly-report':{ sector: 'banking',    riskBand: 'medium',   title: 'تقرير ربع سنوي بنوك (SAMA)',                     pack: 'PDPL',     action: 'allow_with_review' },
+          'code-sql-injection':      { sector: 'code',       riskBand: 'high',     title: 'كشف حقن SQL (NCA)',                              pack: 'NCA ECC',  action: 'block' },
+        };
+        var SECTOR_LABELS = {
+          banking: 'البنوك', government: 'الحكومي', healthcare: 'الرعاية الصحية',
+          hr: 'الموارد البشرية', legal: 'القانوني', finance: 'المالية',
+          code: 'أمن الكود',
+        };
+        var RISK_LABELS = {
+          minimal: 'منخفض جداً', low: 'منخفض', medium: 'متوسط',
+          high: 'عالي', critical: 'حرج',
+        };
+
+        function upgrade() {
+          var banner = document.querySelector('[data-scenario-banner]') as HTMLElement | null;
+          if (!banner) return;
+          var params = new URLSearchParams(location.search);
+          var id = params.get('scenario');
+          if (!id) return;
+          var meta = MAP[id as keyof typeof MAP];
+          if (!meta) return;
+          banner.hidden = false;
+          banner.setAttribute('data-sector', meta.sector);
+          banner.setAttribute('data-risk-band', meta.riskBand);
+          banner.setAttribute('data-scenario-id', id);
+          var titleEl = banner.querySelector('[data-banner-title-text]');
+          if (titleEl) titleEl.textContent = meta.title;
+          var metaEl = banner.querySelector('[data-banner-meta]');
+          if (metaEl) {
+            metaEl.innerHTML = '' +
+              'القطاع: <strong>' + (SECTOR_LABELS[meta.sector as keyof typeof SECTOR_LABELS] || meta.sector) + '</strong>' +
+              ' <span aria-hidden="true">·</span> ' +
+              'المخاطر: <strong>' + (RISK_LABELS[meta.riskBand as keyof typeof RISK_LABELS] || meta.riskBand) + '</strong>' +
+              ' <span aria-hidden="true">·</span> ' +
+              'الحزمة: <strong lang="en">' + meta.pack + '</strong>' +
+              ' <span aria-hidden="true">·</span> ' +
+              'الإجراء المتوقع: <strong>' + meta.action + '</strong>';
+          }
+        }
+
+        document.addEventListener('astro:page-load', upgrade);
+        if (document.readyState !== 'loading') upgrade();
+      })();
+    </script>
+
     <!-- 3-pane chat layout -->
     <div class="kernel-chat-layout">
 
@@ -224,6 +367,8 @@ const policyBanner = {
               placeholder="اكتب سؤالك هنا — كل رسالة تمر عبر فلتر PII، تقييم المخاطر، وفحص السياسات قبل إرسالها للنموذج…"
               rows="2"
               data-kernel-chat-input
+              data-scenario-id={activeScenario?.id ?? ''}
+              data-scenario-prompt-hint={activeScenario?.promptHint ?? ''}
               aria-describedby="kernel-chat-hint"
             ></textarea>
             <div class="kernel-chat-composer__row">
@@ -623,9 +768,171 @@ const policyBanner = {
         }
       }
 
+      // BAI-KRN-002 / M1 (2026-07-18): wire-up layer — session UUID, AbortController,
+      // IME guard, max-length 4000. Keeps the existing fetch path; M2 (next
+      // phase) replaces the JSON-only path with SSE. M3 wires the Cancel button
+      // and the demo/degraded badge.
+
+      /**
+       * sessionManager: lazy UUID v4 generator, persisted in sessionStorage so a
+       * tab refresh keeps the same conversation history on the server (Redis-backed
+       * context, per CHAT-SESSION-2026-07-15). Throws nothing — caller treats null
+       * as "single-turn request".
+       */
+      function getSessionId() {
+        try {
+          var KEY = 'brightai.kernel.sessionId';
+          var cached =
+            window.sessionStorage && window.sessionStorage.getItem(KEY);
+          if (
+            cached &&
+            /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+              cached,
+            )
+          ) {
+            return cached;
+          }
+          // crypto.randomUUID is supported in Astro's modern browser targets.
+          var fresh =
+            typeof crypto !== 'undefined' && crypto.randomUUID
+              ? crypto.randomUUID()
+              : null;
+          if (fresh && window.sessionStorage) {
+            window.sessionStorage.setItem(KEY, fresh);
+          }
+          return fresh;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      /**
+       * promptIdFromUrl: reads ?prompt= from window.location.search. The server
+       * enforces the ALLOWED_PROMPT_IDS allowlist (5 keys — see
+       * src/pages/api/ai/chat.ts:135). If absent or unknown, we send undefined
+       * and the server runs without a system prompt (matches the legacy JSON
+       * path's behaviour). BAI-KRN-002 / M1.
+       */
+      function getPromptIdFromUrl() {
+        try {
+          var sp = new URLSearchParams(window.location.search);
+          var v = sp.get('prompt');
+          if (!v) return undefined;
+          var allowed = [
+            'compliance',
+            'policies',
+            'evidence',
+            'audit',
+            'scenarios',
+          ];
+          return allowed.indexOf(v) !== -1 ? v : undefined;
+        } catch (_) {
+          return undefined;
+        }
+      }
+
+      /** BAI-KRN-002 / M1: one controller per send. M3 wires Cancel button. */
+      var composerAbort = null;
+
+      /** BAI-KRN-002 / M1: isComposing guard for CJK / IME keyboards. */
+      var composerIsComposing = false;
+      input.addEventListener('compositionstart', function () {
+        composerIsComposing = true;
+      });
+      input.addEventListener('compositionend', function () {
+        composerIsComposing = false;
+      });
+
+      /** BAI-KRN-002 / M1: 4000-char cap (server enforces too). */
+      var MAX_INPUT_CHARS = 4000;
+
+      // BAI-KRN-002 / M2 (2026-07-18): SSE reader + JSON fallback. The server
+      // (src/pages/api/ai/chat.ts:763) checks the Accept header:
+      //   Accept: text/event-stream → emits `event: token`, `event: done`,
+      //                          `event: error` frames.
+      //   Accept: application/json  → legacy { reply, provider } shape.
+      // We send text/event-stream first (better UX), but auto-detect the
+      // response Content-Type so a JSON-only server still works.
+
+      /**
+       * Read a fetch response as SSE. Yields {event, data} pairs where
+       * `data` is the parsed JSON payload. Mirrors the parser at
+       * src/pages/api/ai/chat.ts:436 but is client-side + resilient to
+       * the server closing the stream without a `done` event.
+       *
+       * Aborts cleanly when the AbortSignal fires (caller cancels).
+       */
+      async function* readSSE(response, signal) {
+        if (!response.body || typeof response.body.getReader !== 'function') {
+          throw new Error('SSE: no readable body');
+        }
+        var reader = response.body.getReader();
+        var decoder = new TextDecoder();
+        var buf = '';
+        var aborted = false;
+        if (signal) {
+          signal.addEventListener(
+            'abort',
+            function () {
+              aborted = true;
+              try { reader.cancel(); } catch (_) { /* noop */ }
+            },
+            { once: true },
+          );
+        }
+        try {
+          while (!aborted) {
+            var step = await reader.read();
+            if (step.done) break;
+            buf += decoder.decode(step.value, { stream: true });
+            // Split into complete frames (terminated by blank line)
+            var frames = buf.split(/\r?\n\r?\n/);
+            buf = frames.pop() || ''; // last partial frame goes back to buffer
+            for (var i = 0; i < frames.length; i++) {
+              var frame = frames[i];
+              var eventName = 'message';
+              var dataLines = [];
+              var lines = frame.split(/\r?\n/);
+              for (var j = 0; j < lines.length; j++) {
+                var line = lines[j];
+                if (line.indexOf('event:') === 0) {
+                  eventName = line.slice(6).trim();
+                } else if (line.indexOf('data:') === 0) {
+                  dataLines.push(line.slice(5).trim());
+                }
+              }
+              if (!dataLines.length) continue;
+              var payload = dataLines.join('\n');
+              if (payload === '[DONE]') return;
+              var parsed;
+              try { parsed = JSON.parse(payload); } catch (_) { parsed = null; }
+              yield { event: eventName, data: parsed, raw: payload };
+            }
+          }
+        } finally {
+          try { reader.releaseLock(); } catch (_) { /* noop */ }
+        }
+      }
+
+      /**
+       * BAI-KRN-002 / M2: provider badge state. Set after every successful
+       * reply (SSE done event or JSON reply). Cleared on error/new chat.
+       * No static / hardcoded provider value — always reflects the server's
+       * metadata (Acceptance: "لا تعرض provider ثابتاً").
+       */
+      var lastProvider = '';
+
       function sendMessage() {
+        // BAI-KRN-002 / M1 (2026-07-18): wire-up layer — IME composition guard
+        // must come BEFORE the trim check (Arabic/CJK keyboards fire Enter on
+        // a composing buffer, and we must not auto-submit during IME).
+        if (composerIsComposing) return;
+
         var raw = input.value;
         if (!raw || !raw.trim()) return;
+        // BAI-KRN-002 / M1: clamp to server-side cap (4000). Server re-validates;
+        // UI clamp is a UX nicety + prevents runaway payloads.
+        if (raw.length > MAX_INPUT_CHARS) raw = raw.slice(0, MAX_INPUT_CHARS);
 
         // Append user message
         var userMsg = createMessage('user', raw);
@@ -650,17 +957,41 @@ const policyBanner = {
         // KERNEL-AI-2026-07-14: clear any previous error
         clearChatError();
 
-        // REPORTS-SEC-01 + KERNEL-AI-2026-07-14: Try the server-side /api/ai/chat/ proxy first.
-        // If it fails, show Arabic error message AND fall back to demo reply
-        // (so the user still gets visual feedback while being informed about the issue).
+        // BAI-KRN-002 / M1: fresh AbortController per request. M3 will wire the
+        // Cancel button to composerAbort.abort(); for now the controller exists
+        // so callers can observe the signal state.
+        composerAbort = new AbortController();
+
+        // BAI-KRN-002 / M1: build payload with sessionId (Redis-backed context,
+        // CHAT-SESSION-2026-07-15) + promptId from URL (server allowlist, M1).
+        var payload = { message: raw };
+        var sessionId = getSessionId();
+        if (sessionId) payload.sessionId = sessionId;
+        var promptId = getPromptIdFromUrl();
+        if (promptId) payload.promptId = promptId;
+
+        // REPORTS-SEC-01 + KERNEL-AI-2026-07-14 + BAI-KRN-002 / M2 (2026-07-18):
+        // Try the server-side /api/ai/chat/ proxy first. We request SSE via
+        // Accept: text/event-stream; the server may return JSON instead
+        // (older build, env flag off, etc.) — we auto-detect via Content-Type
+        // and fall back accordingly. Provider badge is sourced from the
+        // response (SSE `done` event or JSON `provider` field), never
+        // hard-coded. On error, show Arabic error message AND fall back to
+        // demo reply so the user still gets visual feedback.
         var apiTried = false;
         if (apiAvailability !== false) {
           apiTried = true;
           // trailing slash لتفادي 301 → method change (fetch يحول POST→GET على 301)
           fetch('/api/ai/chat/', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: raw }),
+            headers: {
+              'Content-Type': 'application/json',
+              // BAI-KRN-002 / M2: ask for SSE. Server checks this header at
+              // chat.ts:763 and routes to the streaming generator when present.
+              'Accept': 'text/event-stream, application/json',
+            },
+            signal: composerAbort.signal,
+            body: JSON.stringify(payload),
           })
             .then(function (res) {
               if (res.status === 404) {
@@ -684,8 +1015,22 @@ const policyBanner = {
                 runDemoReply();
                 return null;
               }
+              if (res.status === 503) {
+                // 503 = upstream rate-limited / overloaded. Surface it like 502.
+                showChatError('provider_failed');
+                runDemoReply();
+                return null;
+              }
               if (res.status === 504) {
                 showChatError('timeout');
+                runDemoReply();
+                return null;
+              }
+              if (res.status === 403) {
+                // Origin allowlist rejected (or expired API key). This is the
+                // configuration / origin path — show a clear info-level notice
+                // without exposing why exactly, then fall back to demo.
+                showChatError('unavailable');
                 runDemoReply();
                 return null;
               }
@@ -694,31 +1039,114 @@ const policyBanner = {
                 runDemoReply();
                 return null;
               }
-              return res.json();
+              return { res: res, contentType: res.headers.get('content-type') || '' };
             })
-            .then(function (data) {
-              if (!data) return;
-              if (data && data.reply) {
+            .then(function (handled) {
+              if (!handled) return;
+              var res = handled.res;
+              var ct = handled.contentType;
+
+              // BAI-KRN-002 / M2: SSE path — server sent text/event-stream.
+              if (ct.indexOf('text/event-stream') !== -1) {
+                return consumeSSE(res);
+              }
+
+              // JSON fallback (server returned application/json). The shape
+              // is { reply: string, provider: 'groq'|'gemini' } on success.
+              return res.json().then(function (data) {
+                if (!data || !data.reply) {
+                  showChatError('unknown');
+                  finalizeIdle();
+                  return null;
+                }
                 var aiMsg = createMessage('ai', '');
                 messages.insertBefore(aiMsg.article, typing);
+                if (data.provider) lastProvider = String(data.provider);
                 streamInto(aiMsg.bubble, data.reply, function () {
-                  typing.hidden = true;
-                  messages.setAttribute('aria-busy', 'false');
-                  if (sendBtn) sendBtn.disabled = false;
+                  finalizeIdle();
                   input.focus();
                   scrollThreadToEnd(thread);
                 });
-              } else {
-                showChatError('unknown');
+                return null;
+              });
+            })
+            .catch(function (err) {
+              // BAI-KRN-002 / M2: distinguish user-cancel from network error.
+              if (err && (err.name === 'AbortError' || composerAbort && composerAbort.signal.aborted)) {
                 typing.hidden = true;
                 messages.setAttribute('aria-busy', 'false');
                 if (sendBtn) sendBtn.disabled = false;
+                input.focus();
+                showChatError('timeout'); // user-facing message: "ended early"
+                return;
               }
-            })
-            .catch(function () {
               showChatError('network');
               runDemoReply();
             });
+        }
+
+        /**
+         * BAI-KRN-002 / M2 (2026-07-18): SSE consumer.
+         * Pipes event: token deltas into the AI message bubble, listens for
+         * `event: done` to capture the provider metadata (sets lastProvider),
+         * and surfaces `event: error` as the appropriate Arabic error.
+         * Uses streamInto() — the same word-by-word typer used by the JSON
+         * path and the demo fallback — so the visual UX is identical
+         * regardless of source.
+         */
+        async function consumeSSE(res) {
+          var aiMsg = createMessage('ai', '');
+          messages.insertBefore(aiMsg.article, typing);
+          var fullReply = '';
+          var doneSeen = false;
+          try {
+            for await (var frame of readSSE(res, composerAbort && composerAbort.signal)) {
+              if (!frame) continue;
+              if (frame.event === 'token' && frame.data && typeof frame.data.delta === 'string') {
+                fullReply += frame.data.delta;
+                // Append text in chunks so the bubble updates as tokens arrive
+                if (typeof aiMsg.bubble.appendChunk === 'function') {
+                  aiMsg.bubble.appendChunk(frame.data.delta);
+                } else {
+                  aiMsg.bubble.textContent = fullReply;
+                }
+                scrollThreadToEnd(thread);
+              } else if (frame.event === 'done' && frame.data) {
+                doneSeen = true;
+                if (typeof frame.data.provider === 'string') {
+                  lastProvider = frame.data.provider;
+                }
+              } else if (frame.event === 'error') {
+                // Stream-level error mid-response: keep what we have, then
+                // surface a non-blocking notice.
+                showChatError('provider_failed');
+              }
+            }
+          } catch (err) {
+            // readSSE surfaces AbortError when the user cancels. Fall through
+            // to idle state without showing a confusing network error.
+            if (err && (err.name === 'AbortError' || composerAbort && composerAbort.signal.aborted)) {
+              // user cancel — leave the partial reply in place
+            } else {
+              showChatError('network');
+            }
+          }
+          if (!doneSeen && !fullReply) {
+            // No tokens arrived before the stream closed — degrade gracefully.
+            showChatError('unknown');
+          }
+          finalizeIdle();
+          input.focus();
+          scrollThreadToEnd(thread);
+        }
+
+        /**
+         * BAI-KRN-002 / M2: shared finalize helper (idle state + focus).
+         */
+        function finalizeIdle() {
+          typing.hidden = true;
+          messages.setAttribute('aria-busy', 'false');
+          if (sendBtn) sendBtn.disabled = false;
         }
 
         // REPORTS-SEC-01: Demo fallback path (latency simulation + fake streaming).
@@ -729,9 +1157,6 @@ const policyBanner = {
             messages.insertBefore(aiMsg.article, typing);
             streamInto(aiMsg.bubble, pickFakeResponse(), function () {
               typing.hidden = true;
-              messages.setAttribute('aria-busy', 'false');
-              if (sendBtn) sendBtn.disabled = false;
-              input.focus();
               scrollThreadToEnd(thread);
             });
           }, 700);
@@ -980,3 +1405,112 @@ const policyBanner = {
     relatedSlugs={unit.relatedSlugs}
   />
 </KernelLayout>
+
+<style>
+  /* K1 (2026-07-18): scenario context banner — visible at the top of the
+     chat page when the user arrived from a scenario card. Sticky on
+     small screens so the user always sees which scenario is active.
+     Responsive down to 320px. */
+  .k-scenario-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: linear-gradient(135deg, var(--brand-soft) 0%, var(--bg-elevated) 100%);
+    border: 1px solid var(--interactive-primary);
+    border-inline-start-width: 3px;
+    border-radius: var(--radius-md);
+  }
+  .k-scenario-banner__lead {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  .k-scenario-banner__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--interactive-primary);
+    color: var(--bg-base);
+    flex-shrink: 0;
+  }
+  .k-scenario-banner__icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .k-scenario-banner__title {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    font-weight: var(--font-semibold);
+    line-height: 1.4;
+  }
+  .k-scenario-banner__title strong {
+    color: var(--interactive-primary);
+    font-weight: var(--font-bold);
+  }
+  .k-scenario-banner__meta {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+  }
+  .k-scenario-banner__meta strong {
+    color: var(--text-primary);
+    font-weight: var(--font-semibold);
+  }
+  .k-scenario-banner__hint {
+    margin: 0;
+    font-size: 0.6875rem; /* 11px */
+    color: var(--text-muted);
+    line-height: 1.5;
+    max-width: 65ch;
+  }
+  .k-scenario-banner__cancel {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1-5) var(--space-3);
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: var(--text-xs);
+    text-decoration: none;
+    min-height: 44px;
+    flex-shrink: 0;
+    transition: color var(--duration-fast) var(--ease-out),
+                border-color var(--duration-fast) var(--ease-out);
+  }
+  .k-scenario-banner__cancel:hover,
+  .k-scenario-banner__cancel:focus-visible {
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+    outline: none;
+  }
+  .k-scenario-banner__cancel:focus-visible {
+    box-shadow: 0 0 0 2px var(--brand-500);
+  }
+
+  /* Mobile: stack the cancel link under the banner body. */
+  @media (max-width: 480px) {
+    .k-scenario-banner {
+      flex-direction: column;
+    }
+    .k-scenario-banner__cancel {
+      align-self: flex-start;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .k-scenario-banner__cancel { transition: none; }
+  }
+</style>

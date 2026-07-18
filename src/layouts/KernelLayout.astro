@@ -21,7 +21,11 @@
  */
 import BaseLayout from './BaseLayout.astro';
 import KernelSidebar from '../components/kernel/KernelSidebar.astro';
+// K1 (2026-07-18): Kernel Journey — 5-stage IA progress.
+import KernelJourneyProgress from '../components/kernel/KernelJourneyProgress.astro';
+import KernelJourneyContext from '../components/kernel/KernelJourneyContext.astro';
 import { kernelNavItems } from '../data/kernel';
+import { getStageForPath } from '../data/kernel-journey';
 import type { SEOProps } from '../data/site';
 import DOMPurify from 'isomorphic-dompurify';
 // REPORTS-CSP-01 (2026-07-15): kernel-drawer and kernel-shell were previously
@@ -390,6 +394,13 @@ const allItems = [
     </div>
   </div>
 
+  {/* K1 (2026-07-18): Kernel Journey — 5-stage progress bar.
+      Sits between topnav and main content. Sticky on scroll. */}
+  <KernelJourneyProgress
+    currentPath={currentPath}
+    variant={currentPath === '/kernel/scenarios/' || currentPath === '/kernel/' ? 'full' : 'compact'}
+  />
+
   <!-- REPORTS-14: Status bar (provider/db/mode) — visible to grid layout -->
   <section class="kernel-status-bar" role="status" aria-live="polite">
     <div class="kernel-status-bar-inner">
@@ -429,6 +440,8 @@ const allItems = [
   <!-- Main content -->
   <div class="k-content" id="k-content" tabindex="-1">
     <slot />
+    {/* K1 (2026-07-18): kernel journey context store (invisible). */}
+    <KernelJourneyContext />
   </div>
 
   <!-- Mobile Bottom Nav (5 key items) -->
