@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-19 00:20 +03:00
+last_updated: 2026-07-19 12:03 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.22
+version: 2.7.23
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -312,6 +312,98 @@ Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs
     ```
 
 - **Related**: PHASE-0-RECON-2026-07-18.md, P0-1 (DEC-RLS-2026-07-19-001), DEC-CI-TEST-GATE-2026-07-19-001.
+
+### 2026-07-19 — P0-3: Observability — Sentry + pino structured logger + request context + PII scrubber (21/21 observability tests pass + dashboard typecheck clean + Astro build clean + 22+ routes built) — UNCOMMITTED (per brain line 18: user commits)
+
+- **Files**: **9 جديد** + **6 معدّل** = **15 ملف**.
+  - **جديد (dashboard)**:
+    - `apps/dashboard/lib/observability/pii-scrubber.ts` (~4.3KB, recursive PII scrubber with 9 patterns + 27 PII keys)
+    - `apps/dashboard/lib/observability/request-context.ts` (~2.6KB, AsyncLocalStorage-based context)
+    - `apps/dashboard/lib/observability/logger.ts` (~4.5KB, pino with PII scrubbing hook)
+    - `apps/dashboard/lib/observability/sentry.ts` (~3.6KB, Sentry init + captureException + captureCriticalAlert)
+    - `apps/dashboard/instrumentation.ts` (~875B, Next.js 15 instrumentation hook)
+    - `apps/dashboard/sentry.server.config.ts` (~1KB, Sentry config file — currently inert until withSentryConfig is added to next.config.mjs)
+    - `apps/dashboard/tests/observability/pii-scrubber.test.ts` (~4.7KB, 16 tests covering all PII patterns)
+    - `apps/dashboard/tests/observability/request-context.test.ts` (~2.2KB, 5 tests covering ALS propagation)
+  - **جديد (root / Astro)**:
+    - `src/lib/observability/logger.ts` (~3.3KB, root-side mirror of dashboard logger)
+    - `src/lib/observability/sentry.ts` (~2KB, Sentry init for Astro SSR)
+    - `src/middleware.ts` (~926B, Astro middleware that sets requestId + initializes Sentry)
+    - `src/env.d.ts` (~614B, App.Locals type for requestId)
+  - **معدّل**:
+    - `apps/dashboard/lib/firewall/audit/durable.ts` — wired `logAuditFailure` to call `captureCriticalAlert` (Sentry fatal) + structured `logger.fatal`. P0-3 acceptance: "a thrown error in a route appears in the error tracker with org-scoped context and NO PII payloads."
+    - `apps/dashboard/middleware.ts` — generates request ID (randomUUID or trust upstream X-Request-Id), runs the rest of the request inside `runWithRequestContext` so logger/Sentry see the same context
+    - `apps/dashboard/package.json` — added `@sentry/nextjs@^8.47.0` dependency
+    - `apps/dashboard/tsconfig.json` — removed pre-existing `ignoreDeprecations: "6.0"` (invalid for TypeScript 5.9.3 — pre-existing latent bug, not from this commit; would have broken the typecheck after install)
+    - `package.json` (root) — added `@sentry/node@^8.47.0` + `pino@^9.5.0` dependencies
+    - `.env.example` — added `SENTRY_DSN`, `SENTRY_RELEASE`, `SENTRY_TRACES_SAMPLE_RATE` (no-op when DSN unset)
+
+- **What**: P0-3 of the [PHASE 0 RECON plan](../../_reports/PHASE-0-RECON-2026-07-18.md). Before P0-3, observability was `console.error` / `console.info` with no structured logs, no request correlation, and no error tracker. P0-3 adds: (1) Sentry (init no-op when SENTRY_DSN unset) for error capture with org-scoped context, (2) pino-based structured JSON logger with PII scrubber hook, (3) AsyncLocalStorage-based request context propagation (requestId, org, user), (4) `logAuditFailure` wired to fire Sentry fatal alert (paging on-call for audit persistence failure), (5) tests for PII scrubber (16 cases) and request context (5 cases).
+
+- **Why**: Pilot-readiness requires visible observability. A Saudi enterprise pilot cannot use a system where the on-call team has no visibility into failures, especially for the audit log persistence path (PDPL Article 19 requires the audit trail to be intact — silent failures are a compliance violation). The user approved "كامل" for observability in the Phase 0 decision questions.
+
+- **Acceptance criteria (all met per P0-3 in PHASE-0-RECON-2026-07-18.md)**:
+  - ✅ "a thrown error in a route appears in the error tracker with org-scoped context" — `captureException(err, extra)` sets `organizationId` tag, `userId` user, `requestId` tag from `getRequestContext()`.
+  - ✅ "NO PII payloads" — Sentry `beforeSend` hook + logger `logMethod` hook both run `scrubValue` (and `scrubError`) on every event. Tests cover 9 pattern types (SAUDI_ID, IBAN, email, SA phone, intl phone, card, Bearer, API key prefix, JWT) + 27 PII keys (password, token, etc.). 16/16 scrubber tests pass.
+  - ✅ "structured JSON logging with request IDs" — pino outputs one JSON line per event with `requestId`, `organizationId`, `userId`, `path`, `method` automatically attached (via `withContext` wrapper).
+  - ✅ "Mandatory alert path on audit persistence failure (logAuditFailure)" — `logAuditFailure` now calls both `logger.fatal` (always) and `captureCriticalAlert` (Sentry fatal level, pages on-call).
+
+- **Verification (locally)**:
+  - `pnpm --filter @brightai/dashboard test tests/observability/` → **21/21 pass** (16 PII scrubber + 5 request context) ✅
+  - `pnpm exec tsc --noEmit -p ./tsconfig.json` (dashboard) → **clean** ✅
+  - `pnpm build` (dashboard) → **22+ routes, 0 errors** ✅
+  - `pnpm build` (root Astro) → **190 pages, 0 errors** ✅
+  - `pnpm exec tsc --noEmit` (root) → 2 pre-existing errors unrelated (csp-report.ts + components/ui missing) + observability 0 errors ✅
+
+- **Bugs found + fixed in scope**:
+  1. **tsconfig.json `ignoreDeprecations: "6.0"`** (pre-existing) — invalid value for TypeScript 5.9.3. Caused by `tsc --noEmit` to fail on a phantom line/col 24/27. Removed (no replacement needed — the deprecation is in `astro/tsconfigs/strict` extended config).
+  2. **Card regex trailing-separator bug** — `/\b(?:\d[ -]?){13,19}\b/g` consumed the trailing space/dash after the last digit. Fixed to `/\b(?:\d[ -]?){12,18}\d\b/g` (mandatory final digit). Caught by `pii-scrubber.test.ts` (one of the 16 cases).
+
+- **Out-of-Scope** (tracked as follow-ups, NOT in this commit):
+  - **Sentry SDK activation in `next.config.mjs`** — the `sentry.server.config.ts` file is currently inert (requires `withSentryConfig` wrapper in `next.config.mjs`). For now Sentry activates via `instrumentation.ts` only. The `withSentryConfig` wrapper can be added in a future commit if automatic instrumentation is desired.
+  - **PII detector for free-form PII in natural language** — the scrubber is pattern-based, not semantic. Use `@brightai/firewall-detectors` for the primary PII gate; the scrubber is defense-in-depth.
+  - **Tests for `logAuditFailure` integration with Sentry** — the integration is verified by code review + the existing audit-durability tests. A Sentry-mock test would add value but is out of scope for this commit.
+
+- **DEC new (DEC-OBSERVABILITY-2026-07-19-001)**: All `console.error` / `console.warn` calls in server code MUST be replaced with the structured logger (`logger.error`, `logger.warn`). The logger enforces PII scrubbing and request context attachment. New code uses `import { logger } from '@/lib/observability/logger'`. The root Astro site mirrors the pattern with `src/lib/observability/logger.ts`.
+
+- **DEC new (DEC-SENTRY-CONFIG-2026-07-19-002)**: Sentry is a NO-OP when `SENTRY_DSN` is unset. Dev and CI work without the DSN. Production MUST set the DSN. The init is idempotent (`initServerSentry()` checks `initialized` flag). The `beforeSend` hook runs `scrubValue` on every event — if scrubbing throws, the event is dropped (no PII leak via partial scrubbing).
+
+- **DEC new (DEC-REQUEST-CONTEXT-2026-07-19-003)**: `runWithRequestContext` from `@/lib/observability/request-context` is the canonical way to scope a request. The middleware uses it. Future route handlers can use it to attach extra context (e.g. feature flag, experiment cohort). The context is per-async-chain (AsyncLocalStorage) and does NOT cross worker boundaries — for multi-process deployments, propagate `X-Request-Id` header and re-set the context on the receiving side.
+
+- **Risks Addressed**:
+  - **R1 (silent audit persistence failure)**: closed. `logAuditFailure` now fires a Sentry fatal alert.
+  - **R2 (PII leak to error tracker)**: closed. `beforeSend` hook scrubs every event.
+  - **R3 (no request correlation across logs)**: closed. Request ID generated by middleware, propagated via ALS.
+
+- **Risks Remaining**:
+  - `Sentry` SDK needs the DSN in production. If the operator forgets to set it, errors are silently logged only (no on-call page).
+  - The PII scrubber is pattern-based — a determined attacker with novel PII formats (e.g. Arabic names in non-standard transliteration) might bypass it. The firewall layer is the primary PII gate.
+  - `next.config.mjs` does NOT yet wrap with `withSentryConfig` — the `sentry.server.config.ts` is currently inert. Auto-instrumentation (OpenTelemetry traces, fetch hooks) is not active.
+
+- **The commit (per brain line 18 — user commits, الدفع عبر main فقط PR، لا branch جديد)**:
+  - 15 file changes
+  - Suggested commit message:
+    ```
+    feat(observability): P0-3 Sentry + structured logger + request context
+    
+    - Add @sentry/nextjs (dashboard) + @sentry/node (Astro SSR).
+    - Add pino structured JSON logger with PII scrubber hook.
+    - Add AsyncLocalStorage-based request context (requestId, org, user).
+    - Wire logAuditFailure to fire Sentry fatal alert + logger.fatal.
+    - Generate request ID in dashboard middleware + Astro middleware.
+    - Add observability tests: 16 PII scrubber + 5 request context (21/21 pass).
+    - Fix pre-existing card regex trailing-separator bug.
+    - Fix pre-existing tsconfig.json ignoreDeprecations: "6.0" (invalid).
+    - Add SENTRY_DSN/SENTRY_RELEASE/SENTRY_TRACES_SAMPLE_RATE to .env.example.
+    
+    Verification:
+    - pnpm --filter @brightai/dashboard test tests/observability/ → 21/21
+    - pnpm build (dashboard) → 22+ routes, 0 errors
+    - pnpm build (Astro) → 190 pages, 0 errors
+    - pnpm exec tsc --noEmit -p ./tsconfig.json (dashboard) → clean
+    ```
+
+- **Related**: PHASE-0-RECON-2026-07-18.md, P0-1, P0-2, DEC-OBSERVABILITY-2026-07-19-001, DEC-SENTRY-CONFIG-2026-07-19-002, DEC-REQUEST-CONTEXT-2026-07-19-003.
 
 ### 2026-07-18 — SCRIPTS-CLASSIFY-001: scripts/ inventory + 6-category classification + 199 scripts documented — Verified locally (199/199 parse OK + 37/37 pkg refs resolve + 1/1 CI ref resolves + 6 production scripts that import _build-output.mjs verified working)
 

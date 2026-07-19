@@ -31,8 +31,11 @@ const PII_PATTERNS: Array<{ name: string; re: RegExp }> = [
   // Saudi phone (05xxxxxxxx) and international (+966..., +1..., etc.)
   { name: 'PHONE', re: /(?:\+966|00966|0)?5\d{8}\b/g },
   { name: 'PHONE_INTL', re: /\+\d{10,15}\b/g },
-  // 13-19 digit card-like (we do NOT Luhn-validate here; logs are low-trust)
-  { name: 'CARD', re: /\b(?:\d[ -]?){13,19}\b/g },
+  // 13-19 digit card-like (we do NOT Luhn-validate here; logs are low-trust).
+  // The last char must be a digit so the trailing separator (if any) is
+  // preserved (e.g. "card 4532 0151 1283 0366 exp 12/27" → "card
+  // [REDACTED] exp 12/27", not "card [REDACTED]exp 12/27").
+  { name: 'CARD', re: /\b(?:\d[ -]?){12,18}\d\b/g },
   // Bearer / API key prefixes
   { name: 'BEARER', re: /Bearer\s+[A-Za-z0-9._-]{20,}/gi },
   { name: 'API_KEY', re: /\b(sk_live_|sk_test_|rk_live_|rk_test_|whsec_|pk_live_|pk_test_|bk_live_|bk_test_)[A-Za-z0-9]{10,}\b/g },

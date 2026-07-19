@@ -27,7 +27,7 @@ const PII_RE = [
   /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, // email
   /(?:\+966|00966|0)?5\d{8}\b/g,                       // SA phone
   /\+\d{10,15}\b/g,                                    // intl phone
-  /\b(?:\d[ -]?){13,19}\b/g,                           // card
+  /\b(?:\d[ -]?){12,18}\d\b/g,                        // card (no trailing separator)
   /Bearer\s+[A-Za-z0-9._-]{20,}/gi,                    // bearer
   /\b(sk_live_|sk_test_|rk_live_|rk_test_|whsec_|pk_live_|pk_test_|bk_live_|bk_test_)[A-Za-z0-9]{10,}\b/g, // API keys
   /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g, // JWT
@@ -64,11 +64,11 @@ const baseLogger = pino({
       try {
         const [mergeObj, msg, ...rest] = inputArgs;
         const safe = scrubValue(mergeObj);
-        // @ts-expect-error pino overloaded
-        method.call(this, safe, msg, ...rest);
+        // pino's overloaded signature — cast to any to bypass strict overloads.
+        (method as (...a: unknown[]) => void).call(this, safe, msg, ...rest);
       } catch {
-        // @ts-expect-error pino overloaded
-        method.call(this, { _logger_scrub_error: true }, inputArgs[1]);
+        // Last-resort fallback — never throw from the logger.
+        (method as (...a: unknown[]) => void).call(this, { _logger_scrub_error: true }, inputArgs[1]);
       }
     },
   },
