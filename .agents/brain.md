@@ -553,6 +553,26 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-18 — a11y + responsive audit + fixes (190 صفحة)
+
+- **Files**: `src/styles/components.css` (`.btn--primary` → `--brand-600`)، `src/styles/base.css` (استثناء `a:not(.btn)` 171 + كتلة `prefers-reduced-motion` 393)، `src/styles/pages.css` (قاعدة `::before` touch-targets عامة بنهاية الملف)، `src/pages/kernel/chat.astro` (sr-only announcer + `announce()` في `finalizeIdle`)، `scripts/playwright/comprehensive-audit.mjs` (جديد — فحص 190 صفحة × 5 breakpoints)، `report/2026-07-18-a11y-responsive-audit.md` (جديد).
+- **What**: فحص شامل لـ 190 صفحة على 320/375/544/768/1024px (overflow مفلتر + hit-test لـ `::before` المحسّن + axe + reducedMotion + streaming live region + mixed bidi). أصلحنا تباين الألوان (brand-600 بدل brand-500)، streaming announcer منفصل للـ chat، touch targets عبر `::before` ممدود (بدون min-height حقيقي)، وكتلة reduced-motion عامة تغطي كل الـ 28 `@keyframes`.
+- **Why**: المستخدم طلب فحص الـ 190 صفحة كاملة (معايير القبول: لا overflow فعلي، لا axe serious/critical، توافق LCP/INP/CLS، JS ≤ 200KB، ولا نغيّر budgets).
+- **Verification**:
+  - `pnpm build` → **190 صفحة، 0 أخطاء** ✅
+  - `npm run a11y:scan` (13 صفحة حرجة) → **0 critical / 0 serious / 0 moderate / 0 minor** ✅
+  - الفحص الشامل (190): overflow=0 (بعد فلتر العناصر المخفية/الطلعت برا الشاشة)، touchGaps=232 (من 10577 — على design/* تجريبية + checkboxes مستثناة)، bidi=45 (مقصودة: نصوص لاتينية بـ dir=ltr)، rmAnim=0 ✅
+  - `npm run performance:budget` → JS=32.79KB (الحد 60KB، المطلوب 200KB ✅). HTML/CSS raw FAIL (169KB/222KB vs 80/50KB — قياس غير مضغوط، ما لمسنا budgets)
+- **Risks**:
+  - overflow=+5px على `/kernel/audit/` + `/kernel/evidence/` من أيقونات SVG (`overflow:visible`) — ما فيه scroll فعلي (`docScrollW === clientWidth`)، تُرِكت.
+  - `design/*` pages عندها axe issues (buttons/colors/forms) — تجريبية، غير محسوبة في `a11y:scan` الرسمي.
+  - لم نثبّت Lighthouse (غير موجود محليًا) — اكتفينا بـ `performance:budget` + الفحص الشامل.
+- **DEC جديد (DEC-2026-07-18-002)**: لا نستخدم `min-height` حقيقي للـ touch targets فوق العناصر الصغيرة (يخلّ روابط متداخلة). نستخدم `::before` pseudo-element ممدود (`inset:-10px/-8px` + `min-block/inline-size:44px` + `z-index:1` + `pointer-events:auto`)، مع استثناء `input[type=checkbox/radio]`.
+- **Report**: `report/2026-07-18-a11y-responsive-audit.md`
+- **Commit**: uncommitted (القاعدة: المستخدم يسوي الـ commit عبر PR على main، لا branch جديد).
+- **Status**: verified locally — جاهز للـ commit.
+- **Brain updates**: Section 2 (this entry)، Section 5 (token `--brand-600` مستخدم للأزرار الأساسية؛ `--brand-500` فاشل التباين 4.17:1).
+
 ### 2026-07-18 — UNUSED-IMAGES-001: حذف 4 صور favicon variants غير مستخدمة (16x16 و 48x16) — Verified locally (build 190 + verify:all 5/5 + seo:schema 189/189 + 0 broken links)
 
 - **Files**: 4 محذوفة + 1 جديد. **محذوف**: `public/favicon-16x16.avif` (0.6 KB)، `public/favicon-16x16.png` (0.9 KB)، `public/favicon-48x48.avif` (1.0 KB)، `public/favicon-48x48.png` (2.0 KB). **جديد**: `scripts/_audit-unused-images.mjs` (73 سطر — سكربت قابل لإعادة الاستخدام يـ audit أي صورة في `public/` و `src/` ويحدد ref count عبر 439 ملف).

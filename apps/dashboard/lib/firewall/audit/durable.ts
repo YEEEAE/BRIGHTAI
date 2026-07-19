@@ -113,28 +113,39 @@ export function classifyError(err: unknown): string {
 }
 
 /**
- * Structured log line for production alerting. In a deployment with
- * Sentry/Datadog, this would integrate via the host platform's
- * logger. For now we use stderr JSON (consumed by any log shipper).
+ * Structured log + Sentry alert for production. P0-3 (2026-07-19):
+ * - Logs via the structured logger (pino, JSON to stdout).
+ * - Pages on-call via Sentry captureMessage (fatal level).
+ * - PII fields are scrubbed by the logger/Sentry beforeSend hook.
+ *
+ * Acceptance (per P0-3 in PHASE-0-RECON-2026-07-18.md):
+ *   "a thrown error in a route appears in the error tracker with
+ *    org-scoped context and NO PII payloads."
  */
 export function logAuditFailure(input: {
   ctx: FirewallContext;
   error: { code: string; message: string; attempts: number };
   operation: 'persist_firewall_event';
 }): void {
-  // eslint-disable-next-line no-console
-  console.error(
-    JSON.stringify({
-      severity: 'critical',
+  // Lazy import to avoid pulling observability deps into the firewall
+  // unit tests (where the test environment has no Sentry).
+  // The import is cheap after the first call.
+  void (async () => {
+    const { logger } = await import('@/lib/observability/logger');
+    const { captureCriticalAlert } = await import('@/lib/observability/sentry');
+    const fields = {
       event: 'firewall_audit_persistence_failed',
       operation: input.operation,
       organizationId: input.ctx.organizationId,
       requestId: input.ctx.requestId,
       userId: input.ctx.userId,
       error: input.error,
-      timestamp: new Date().toISOString(),
-    }),
-  );
+    };
+    // 1. Structured log line (always written, even without Sentry).
+    logger.fatal(fields, 'firewall audit persistence failed');
+    // 2. Sentry fatal alert (no-op if SENTRY_DSN is unset).
+    captureCriticalAlert('firewall_audit_persistence_failed', fields);
+  })();
 }
 
 /**
