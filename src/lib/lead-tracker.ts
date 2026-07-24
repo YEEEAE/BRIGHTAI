@@ -129,5 +129,8 @@ export function trackLeadEvent(
   event: LeadEventName,
   payload: LeadEventPayload,
 ): void {
-  track(event, payload as AnalyticsPayload);
+  // P0-3 cleanup (2026-07-19): pre-existing type cast was rejected by
+  // strict tsc (the two types don't overlap enough). Two-step through
+  // `unknown` is the documented escape hatch for intentional unsafe casts.
+  track(event, payload as unknown as AnalyticsPayload);
 }

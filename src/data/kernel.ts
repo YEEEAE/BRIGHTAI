@@ -8,6 +8,42 @@
  * and is server-rendered (not JS-injected) so crawlers can index it.
  */
 
+// P0-3 cleanup (2026-07-19): these types were referenced but never
+// declared. Adding them locally so the kernel demo data type-checks.
+export type DashboardMetric = {
+  label: string;
+  value: string;
+  trend: string;
+  demo?: boolean;
+};
+
+export type ActivityEvent = {
+  type: string;
+  label: string;
+  description: string;
+  riskLevel: 'low' | 'medium' | 'high' | 'critical';
+  timestamp: string;
+  demo?: boolean;
+};
+
+export type ComplianceFramework = {
+  id: string;
+  name: string;
+  nameAr: string;
+  description: string;
+  controls: number;
+  status: 'covered' | 'partial' | 'gap';
+};
+
+export type EvidenceRecord = {
+  id: string;
+  type: string;
+  title: string;
+  hash: string;
+  timestamp: string;
+  verified: boolean;
+};
+
 import type { FaqItem } from './schema-helpers';
 
 // ── Interfaces ──────────────────────────────────────────────────────────────

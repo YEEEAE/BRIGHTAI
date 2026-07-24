@@ -59,7 +59,12 @@ export const POST: APIRoute = async ({ request }) => {
       }
       chunks.push(value);
     }
-    const blob = new Blob(chunks);
+    // P0-3 cleanup (2026-07-19): Blob's BlobPart[] types tightened in
+    // TypeScript 5.7+ to require ArrayBufferView<ArrayBuffer> (not
+    // ArrayBufferLike which includes SharedArrayBuffer). Coerce to
+    // BlobPart[] to bypass the strict check (safe — the Blob API
+    // accepts both at runtime).
+    const blob = new Blob(chunks as unknown as BlobPart[]);
     try {
       const text = await blob.text();
       const parsed = JSON.parse(text) as CspViolationReport;
