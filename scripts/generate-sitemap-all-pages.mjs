@@ -1,4 +1,39 @@
 #!/usr/bin/env node
+/**
+ * scripts/generate-sitemap-all-pages.mjs — IP-07 / BAI-IDX-03 (2026-07-25)
+ *
+ * The single canonical writer of `public/sitemap.xml` (and the matching
+ * `dist/client/sitemap.xml`, `dist/client/sitemap-0.xml`,
+ * `dist/client/sitemap-index.xml`). After this script finishes, every
+ * sitemap consumer — Google, Bing, humans reading dist/sitemap-0.xml
+ * directly — sees the same contract-conformant output.
+ *
+ * BAI-IDX-03 sitemap contract:
+ *   1. EXACTLY ONE public sitemap file: `sitemap.xml`. No split files
+ *      advertised in `public/robots.txt` — that file declares one
+ *      Sitemap: directive only.
+ *   2. ZERO noindex / redirect / status / design / dev / api URLs.
+ *      The page-level `analyzePage()` rejects pages whose HTML
+ *      contains `<meta name="robots" content="noindex">` or
+ *      `<meta http-equiv="refresh">`, or whose canonical doesn't
+ *      match the expected URL. `groupRelPath()` further filters
+ *      `/design/*`, `/404/`, `/offline/`, `/api/*`, etc.
+ *   3. lastmod is derived from `git log -1 --format=%cs -- <source>`
+ *      where <source> is the page's real source file under src/ (the
+ *      HTML relPath is resolved to source candidates — see
+ *      resolveSourceFiles()). If no source candidate has git
+ *      history, the <lastmod> field is OMITTED from the URL entry
+ *      entirely. NEVER use the build artifact's mtime — that is
+ *      the build timestamp, which would lie about content freshness.
+ *      `astro.config.mjs` no longer sets `lastmod: new Date()` for
+ *      this reason (BAI-IDX-03).
+ *
+ * Single file, one source of truth. See:
+ *   - report/2026-07-25-bai-idx-03-sitemap-robots-unification.md
+ *   - .agents/brain.md (BAI-IDX-03 change ledger entry)
+ *   - scripts/sitemap-contract.mjs (the pure validator module)
+ *   - scripts/verify-all.mjs (the CI gate that enforces the contract)
+ */
 import { promises as fs } from "fs";
 import { execFile } from "child_process";
 import path from "path";
@@ -74,33 +109,189 @@ const IGNORED_SCAN_DIRS = new Set([
   // below (`if (relPath.startsWith("reports/"))`).
 ]);
 
+// Kept for potential future use (e.g. report timestamp formatting).
+// BAI-IDX-03 removed the file-mtime lastmod fallback; this function is
+// no longer called inside the sitemap pipeline.
 function toIsoDate(date) {
   return new Date(date).toISOString().slice(0, 10);
 }
-
-async function getGitLastModifiedDate(relPath) {
-  const normalizedRelPath = normalizeRelPath(relPath);
-  if (gitLastmodCache.has(normalizedRelPath)) {
-    return gitLastmodCache.get(normalizedRelPath);
+// BAI-IDX-03 (2026-07-25): lastmod source-of-truth. We resolve the
+// HTML relPath to its real source file(s) under src/ and ask git for
+// the last commit that touched them. The build timestamp would lie to
+// crawlers about content freshness — a page that hasn't changed in 30
+// days would show today's date after every deploy. Page freshness MUST
+// reflect real edits.
+//
+// Returns an ordered list of candidate source files. The first one
+// with git history wins. Order is:
+//   1. The static page candidate (src/pages/<relPath>) — works for
+//      every regular .astro file (about, contact, kernel/chat, etc.)
+//   2. Content collection candidates (src/content/blog|docs|hub/*.md)
+//      — for dynamic [slug] routes that render from Markdown
+//   3. Data file candidates (src/data/*.ts) — for data-driven routes
+//      (authors from blog.ts, solutions from solutions.ts, kernel
+//      from kernel.ts, cities from cities.ts, legal content from
+//      legal-content-inline.ts, etc.)
+function resolveSourceFiles(relPath) {
+  if (!relPath) return [];
+  if (relPath === "index.html") return ["src/pages/index.astro"];
+  if (relPath === "404.html") return ["src/pages/404.astro"];
+  if (relPath === "500.html") return []; // no source — Render fallback
+  if (relPath === "offline.html" || relPath === "kernel/offline.html") {
+    return ["src/pages/offline/index.astro", "src/pages/kernel/offline.astro"];
   }
 
-  let lastmod = "";
-  try {
-    const { stdout } = await execFileAsync(
-      "git",
-      ["log", "-1", "--format=%cs", "--", normalizedRelPath],
-      { cwd: ROOT }
-    );
-    const gitDate = stdout.trim();
-    if (/^\d{4}-\d{2}-\d{2}$/.test(gitDate)) {
-      lastmod = gitDate;
+  const sources = [];
+  const dir = relPath.replace(/\/index\.html$/, "").replace(/\.html$/, "");
+
+  // 1) Static page candidate — every relPath has one.
+  if (relPath.endsWith("/index.html")) {
+    sources.push(`src/pages/${dir}/index.astro`);
+  } else {
+    sources.push(`src/pages/${dir}.astro`);
+  }
+
+  // 2) Dynamic [param] route candidates — the route template is what
+  //    holds the rendering logic, regardless of the actual param value.
+  //    These candidates MUST be checked because the relPath carries the
+  //    concrete param value, not the template.
+  if (dir === "blog/category" || dir.startsWith("blog/category/")) {
+    // blog category subpages: src/pages/blog/category/[category].astro
+    // plus the data file that defines the category list.
+    sources.push("src/pages/blog/category/[category].astro");
+    sources.push("src/data/blog.ts");
+  }
+  if (dir === "hub" || dir.startsWith("hub/")) {
+    // hub subpages: src/pages/hub/[slug].astro (dynamic), with content
+    // sourced from src/data/hub-content-inline.ts.
+    sources.push("src/pages/hub/[slug].astro");
+    sources.push("src/data/hub-content-inline.ts");
+  }
+  if (dir === "authors" || dir.startsWith("authors/")) {
+    // author pages: src/pages/authors/[slug].astro, with author data
+    // embedded in src/data/blog.ts.
+    sources.push("src/pages/authors/[slug].astro");
+    sources.push("src/data/blog.ts");
+  }
+  if (dir.startsWith("solutions/cities/")) {
+    // city pages: src/pages/solutions/cities/[city].astro, with city
+    // data in src/data/cities.ts.
+    sources.push("src/pages/solutions/cities/[city].astro");
+    sources.push("src/data/cities.ts");
+  } else if (dir.startsWith("solutions/") && dir.split("/").length >= 3) {
+    // sector + city pages: src/pages/solutions/[sector]/[city].astro,
+    // with sector data in src/data/solutions.ts.
+    sources.push("src/pages/solutions/[sector]/[city].astro");
+    sources.push("src/data/solutions.ts");
+  } else if (dir === "solutions" || dir === "solutions/index") {
+    // solutions index.
+  } else if (dir.startsWith("solutions/")) {
+    // /solutions/<slug>/ — could be a solution page (src/pages/solutions/
+    // [slug].astro + src/data/solutions.ts) or a sector page
+    // (src/pages/solutions/[sector].astro + src/pages/solutions/[sector]/
+    // index.astro). Both are dynamic, so probe the most common templates.
+    const slug = dir.slice("solutions/".length);
+    sources.push("src/pages/solutions/[slug].astro");
+    sources.push("src/pages/solutions/[sector].astro");
+    sources.push("src/pages/solutions/[sector]/index.astro");
+    sources.push("src/data/solutions.ts");
+    // The slug itself can also be a static .astro file (e.g. a
+    // pre-rendered sector landing page). Try the literal path too.
+    sources.push(`src/pages/solutions/${slug}.astro`);
+  }
+  if (dir === "kernel" || dir.startsWith("kernel/")) {
+    // kernel subpages: src/pages/kernel/[slug].astro (dynamic), with
+    // kernel data in src/data/kernel.ts.
+    sources.push("src/pages/kernel/[slug].astro");
+    sources.push("src/data/kernel.ts");
+  }
+
+  // 3) Content collection candidates — only meaningful when the relPath
+  //    matches an actual content slug (e.g. blog/<slug>, docs/<slug>).
+  if (dir === "blog" || dir.startsWith("blog/")) {
+    const slug = dir === "blog" ? null : dir.slice("blog/".length);
+    if (slug && !slug.includes("/")) {
+      // Only try .md/.mdx when the slug looks like a direct child
+      // (not a category subpath).
+      sources.push(`src/content/blog/${slug}.md`);
+      sources.push(`src/content/blog/${slug}.mdx`);
     }
-  } catch {
-    lastmod = "";
+    if (dir === "blog" || slug) {
+      // blog index or any blog subpage: data file holds authors + posts.
+      sources.push("src/pages/blog/[...slug].astro");
+      sources.push("src/data/blog.ts");
+    }
+  }
+  if (dir === "docs" || dir.startsWith("docs/")) {
+    const slug = dir === "docs" ? null : dir.slice("docs/".length);
+    if (slug && !slug.includes("/")) {
+      sources.push(`src/content/docs/${slug}.md`);
+      sources.push(`src/content/docs/${slug}.mdx`);
+    }
+    if (dir === "docs" || slug) {
+      sources.push("src/pages/docs/[...slug].astro");
+    }
   }
 
-  gitLastmodCache.set(normalizedRelPath, lastmod);
-  return lastmod;
+  // 4) Data file candidates (data-driven pages).
+  if (dir === "newsletter" || dir.startsWith("newsletter/")) {
+    sources.push("src/data/marketing.ts");
+  }
+  if (
+    [
+      "privacy-policy",
+      "terms",
+      "cookie-policy",
+      "pdpl-statement",
+      "data-processing-agreement",
+      "privacy-cookies",
+    ].includes(dir)
+  ) {
+    sources.push("src/data/legal-content-inline.ts");
+  }
+  if (dir.startsWith("en/")) {
+    sources.push("src/data/legal-content-en-inline.ts");
+    sources.push("src/data/i18n-pairs.ts");
+  }
+  if (dir === "sitemap" || dir.startsWith("sitemap/")) {
+    sources.push("src/data/sitemap-builder.ts");
+  }
+
+  return [...new Set(sources)];
+}
+
+// BAI-IDX-03 (2026-07-25): returns "" if no source has git history.
+// We deliberately do NOT fall back to the build artifact's mtime —
+// that's the exact "build date as page freshness" anti-pattern the
+// brief is calling out. Pages without a resolvable git date simply
+// get no <lastmod> in the sitemap (Google accepts missing lastmod
+// as "unknown freshness" — that's strictly better than a lie).
+async function getGitLastModifiedDate(relPath) {
+  const sources = resolveSourceFiles(relPath);
+  for (const source of sources) {
+    if (gitLastmodCache.has(source)) {
+      const cached = gitLastmodCache.get(source);
+      if (cached) return cached;
+      continue;
+    }
+    let lastmod = "";
+    try {
+      const { stdout } = await execFileAsync(
+        "git",
+        ["log", "-1", "--format=%cs", "--", source],
+        { cwd: ROOT }
+      );
+      const gitDate = stdout.trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(gitDate)) {
+        lastmod = gitDate;
+      }
+    } catch {
+      lastmod = "";
+    }
+    gitLastmodCache.set(source, lastmod);
+    if (lastmod) return lastmod;
+  }
+  return "";
 }
 
 function xmlEscape(value) {
@@ -352,7 +543,12 @@ function renderXml(entries) {
         `    <xhtml:link rel="alternate" hreflang="${xmlEscape(alt.code)}" href="${xmlEscape(alt.href)}" />`
       );
     }
-    lines.push(`    <lastmod>${xmlEscape(entry.lastmod)}</lastmod>`);
+    // BAI-IDX-03 (2026-07-25): emit <lastmod> ONLY when we have a real
+    // git-derived date. Omit the field entirely when empty — emitting
+    // a build-time date would lie to crawlers about content freshness.
+    if (entry.lastmod) {
+      lines.push(`    <lastmod>${xmlEscape(entry.lastmod)}</lastmod>`);
+    }
     if (entry.changefreq) {
       lines.push(`    <changefreq>${xmlEscape(entry.changefreq)}</changefreq>`);
     }
@@ -392,13 +588,16 @@ async function analyzePage(relPath) {
       reasons.push("canonical_mismatch");
     }
 
-    const stat = await fs.stat(fullPath);
     const gitLastmod = await getGitLastModifiedDate(relPath);
     return {
       relPath,
       loc: expectedCanonical,
       wordCount,
-      lastmod: gitLastmod || toIsoDate(stat.mtime),
+      // BAI-IDX-03 (2026-07-25): strict — no file mtime fallback.
+      // Pages whose source can't be resolved to a git-tracked file
+      // get an empty lastmod; renderXml() then omits the <lastmod>
+      // field entirely. Better to omit than to emit build time.
+      lastmod: gitLastmod,
       reasons,
       include: reasons.length === 0,
     };

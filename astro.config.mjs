@@ -196,7 +196,16 @@ export default defineConfig({
       ],
       changefreq: 'weekly',
       priority: 0.7,
-      lastmod: new Date(),
+      // BAI-IDX-03 (2026-07-25): lastmod is owned by
+      // scripts/generate-sitemap-all-pages.mjs — it derives each page's
+      // freshness from `git log -1 --format=%cs -- <relPath>` (with file
+      // mtime as a last-resort fallback). We deliberately do NOT set
+      // `lastmod: new Date()` here, because that would emit the build
+      // timestamp as page freshness and lie to crawlers about when the
+      // content actually changed. The post-processor overwrites the
+      // adapter-laid sitemap files (dist/sitemap-0.xml,
+      // dist/sitemap-index.xml) with the git-based content, so this
+      // omission is safe — the adapter's interim output is discarded.
     }),
   ],
   // KERNEL-AI-2026-07-14: switched from @astrojs/vercel to @astrojs/node

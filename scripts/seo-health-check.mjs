@@ -218,10 +218,15 @@ function checkRobots(content) {
   const disallowLines = lines.filter((line) => /^disallow:\s*/i.test(line));
   const unsafeDisallowLines = disallowLines.filter((line) => !isSafeDisallowLine(line));
   const sitemapLine = lines.find((line) => /^sitemap:\s*/i.test(line)) || "";
-  // Accept any sitemap line ending in sitemap*.xml (covers both
-  // sitemap.xml and sitemap-index.xml as canonical entries).
+  // BAI-IDX-03 (2026-07-25): accept any sitemap URL ending in a
+  // sitemap*.xml file. The previous regex `sitemap[.-]?index?\.xml`
+  // was buggy — `index?` only matched "inde" or "index", so plain
+  // `sitemap.xml` (no separator + no `index`) never matched. The
+  // check's stated intent was "covers both sitemap.xml and
+  // sitemap-index.xml as canonical entries", which is what the
+  // fixed regex below does.
   const hasSitemap = lines.some((line) =>
-    /^sitemap:\s*/i.test(line) && /sitemap[.-]?index?\.xml(?:\s*)$/i.test(line),
+    /^sitemap:\s*\S*sitemap(?:-index)?\.xml(?:\s*)$/i.test(line),
   );
 
   return {

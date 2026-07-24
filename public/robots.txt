@@ -123,16 +123,28 @@ Allow: /
 
 # ─────────────────────────────────────────────────────────────────────
 # AI search / discovery surface — companion files for AI answer engines.
-# These URLs are reachable from the home page footer; the explicit
-# references here help crawlers that only read robots.txt discover them.
+# These URLs are reachable from the home page footer; explicit Sitemap:
+# directives for them are intentionally NOT emitted here (see block below).
 # ─────────────────────────────────────────────────────────────────────
-# Sitemaps — single source of truth for crawlers.
-# @astrojs/sitemap emits dist/sitemap-index.xml pointing at every
-# page that builds (except /api/* which is excluded by astro.config.mjs).
+# Sitemap — single canonical declaration.
+# BAI-IDX-03 (2026-07-25): exactly one Sitemap: directive. The unified
+# public sitemap (sitemap.xml) is the single source of truth every
+# crawler reads. It is produced by scripts/generate-sitemap-all-pages.mjs
+# and enforced by the contract in scripts/sitemap-contract.mjs:
+#   - One file, one source of truth (no sitemap-index split, no
+#     sitemap-0.xml, no per-section files advertised here).
+#   - lastmod is derived from git log (or content frontmatter) only;
+#     never from the build timestamp. Page freshness = when the
+#     content actually changed, not when the build ran.
+#   - status pages (/404/, /500/, /offline/, /kernel/offline/),
+#     design utilities (/design/*), dev/admin (/admin/*, /dev/*),
+#     and api routes (/api/*) are excluded by the contract — they
+#     MUST NEVER appear here.
+# Companion files (sitemap-images.xml, blog/feed.xml) are reachable
+# from in-page links and from sitemap.xml itself; they are NOT
+# advertised as separate Sitemap: directives. One declaration only.
+# ─────────────────────────────────────────────────────────────────────
 Sitemap: https://brightai.site/sitemap.xml
-Sitemap: https://brightai.site/sitemap-index.xml
-Sitemap: https://brightai.site/sitemap-images.xml
-Sitemap: https://brightai.site/blog/feed.xml
 
 # Host
 Host: https://brightai.site
