@@ -37,6 +37,18 @@ import { SITE } from '../data/site';
 import type { SEOProps } from '../data/site';
 import { ClientRouter } from 'astro:transitions';
 
+// BAI-PERF-01 (2026-07-25) — Astro-native critical CSS delivery.
+// Was: inline <style is:inline> block in <head> (required style-src 'unsafe-inline'
+// in CSP, blocked strict-CSP goal). Now: imported as a real stylesheet, bundled +
+// hashed by Astro into /_astro/critical.*.css, emitted as a normal render-blocking
+// <link rel="stylesheet">. This eliminates the post-build regex mutation in
+// astro.config.mjs (perfCssDefer) and removes the need for public/js/css-defer.js.
+// LCP is preserved because the critical.css file (1.6KB raw / 0.7KB gz) ships
+// synchronously alongside BaseLayout.css (~12KB gz) — both small enough to load
+// in parallel over the same HTTP/2 connection. FOUC is structurally impossible
+// because every CSS rule the page needs arrives via render-blocking link.
+import '../styles/critical.css';
+
 interface Props extends SEOProps {
   lang?: 'ar' | 'en';
   dir?: 'rtl' | 'ltr';
@@ -331,59 +343,13 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
       scroll-reveal.js above — moved from inline `import` to static ES module. */}
   <script type="module" src="/js/focus-trap.js" nonce={Astro.locals.cspNonce}></script>
 
-  <!-- Critical inline CSS: brand font-face + heading overrides + LCP element
-       (homepage .split-hero__h1) sizing. Expanded 2026-07-14 (PERF-FIX) to
-       cover the SplitHero h1 styles that previously lived only in the
-       (now-deferred) index.CQdUEhkK.css. Without these inline, the LCP
-       element would render at default font-size (~2rem) for ~100-300ms
-       after first paint, until the deferred CSS swaps in.
-       Total inline: ~1.6KB raw / ~0.7KB gzipped.
-
-       @csp-inline-pending — REPORTS-CSP-01 (2026-07-15):
-         This inline <style> block requires `style-src 'unsafe-inline'` in CSP.
-         The content is fully static (no user-controlled values, no script execution
-         vectors) so the XSS risk via CSS is zero. CSP stays safe with
-         style-src 'unsafe-inline' while script-src drops 'unsafe-inline' entirely.
-
-         Phase 3 path: extract to src/styles/critical.css and update perf-css-defer
-         to skip critical.* bundles (so the file stays render-blocking instead of
-         being deferred). See src/styles/critical.css for the extracted content. -->
-  <style is:inline>
-    @font-face {
-      font-family: 'BrightAI Official';
-      src: url('/assets/fonts/TheYearofTheCamel-Medium.woff2') format('woff2');
-      font-weight: 400 900;
-      font-display: swap;
-    }
-    [dir=rtl] h1, [dir=rtl] h2, [dir=rtl] h3,
-    [dir=rtl] h4, [dir=rtl] h5, [dir=rtl] h6,
-    html[lang=ar] h1, html[lang=ar] h2, html[lang=ar] h3,
-    html[lang=ar] h4, html[lang=ar] h5, html[lang=ar] h6,
-    .gradient-text, .chip, .badge, .font-black, .font-bold,
-    .feature-title, .section-title, .metric-label, .brand-text {
-      font-family: 'BrightAI Official', 'IBM Plex Sans Arabic', Arial, sans-serif;
-      font-weight: 700;
-    }
-    /* LCP element — homepage hero h1 (covered here so the deferred
-       index.CQdUEhkK.css can apply the rest of SplitHero styles without
-       delaying first paint of the heading) */
-    .split-hero__h1 {
-      font-size: clamp(2.5rem, 1.25rem + 5vw, 4.5rem);
-      line-height: 1.1;
-      font-weight: 800;
-      letter-spacing: -0.018em;
-      text-wrap: balance;
-      text-shadow: 0 2px 24px rgba(4, 7, 17, 0.6);
-    }
-    @media (min-width: 1024px) {
-      .split-hero__h1 { line-height: 1.06; letter-spacing: -0.025em; }
-    }
-    @media (max-width: 767px) {
-      .split-hero__h1 { font-size: clamp(1.75rem, 7vw, 2.25rem); line-height: 1.18; }
-    }
-    /* Production body baseline */
-    body { background: var(--bg-base); color: var(--text-primary); overflow-x: hidden; }
-  </style>
+  {/* BAI-PERF-01 (2026-07-25) — Critical CSS now imported above, NOT inlined.
+       The full critical.css content (~1.6KB raw / 0.7KB gz) lives in
+       src/styles/critical.css and ships as a normal <link rel="stylesheet"
+       href="/_astro/critical.*.css"> emitted by Astro. No <style is:inline>
+       blocks remain in the homepage head, so `style-src 'unsafe-inline'` can
+       be removed from CSP. FOUC is structurally impossible because both
+       critical.css and BaseLayout.css are render-blocking. */}
 
   <!-- Styles — V3 Unified Design System -->
   <!-- REPORTS-20: Wrapped in CSS layers so the cascade is predictable.

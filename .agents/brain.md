@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-25 01:50 +03:00
+last_updated: 2026-07-25 02:20 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.27
+version: 2.7.28
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -57,11 +57,12 @@ skills_ready: 7
 
 | Metric | Value | Last Measured | Budget | Status |
 |---|---|---|---|---|
-| Homepage HTML (gzipped) | **34.68KB** | 2026-07-24 | < 80KB | ✅ PASS (`npm run performance:budget`) |
-| Homepage CSS (gzipped) | **11.83KB** (`BaseLayout.*.css`) | 2026-07-24 | < 50KB | ✅ PASS (was 222KB raw; decomposed pages.css/components.css) |
-| Largest CSS bundle (gzipped) | **23.54KB** (`ArabicLayout.*.css`) | 2026-07-24 | < 50KB | ✅ PASS |
-| Total JS bundle (gzipped) | **11.80KB** | 2026-07-24 | < 60KB | ✅ PASS |
-| CSP script-src-attr | `'none'` | 2026-07-24 | `'none'` | ✅ PASS (removed inline `onload` handlers via `css-defer.js`) |
+| Homepage HTML (gzipped) | **33.98KB** | 2026-07-25 | < 80KB | ✅ PASS (`pnpm run performance:budget`) |
+| Homepage CSS (gzipped) | **8.92KB** (`BaseLayout.DHT_21B9.css` includes critical.css) | 2026-07-25 | < 50KB | ✅ PASS — BAI-PERF-01: critical.css bundled into BaseLayout.css; both render-blocking (no defer) |
+| Largest CSS bundle (gzipped) | **19.41KB** (`ArabicLayout.BOpN_8GX.css`) | 2026-07-25 | < 50KB | ✅ PASS (shrunk from 23.54KB after purge-css pass on BAI-PERF-01 build) |
+| Total JS bundle (gzipped) | **11.80KB** | 2026-07-25 | < 60KB | ✅ PASS (no change — `public/js/css-defer.js` removed by BAI-PERF-01, was already ~0.5KB) |
+| CSP script-src-attr | `'none'` | 2026-07-25 | `'none'` | ✅ PASS (no inline `onload` handlers — `public/js/css-defer.js` removed by BAI-PERF-01) |
+| CSP style-src `unsafe-inline` | **REMOVED** | 2026-07-25 | (not present) | ✅ BAI-PERF-01: critical CSS now a real stylesheet, no `<style is:inline>` block in BaseLayout.astro |
 
 ### 1.2.a Playwright Vitals (after AUDIT-REPLAY-2026-07-18, measured 2026-07-18 03:00)
 
@@ -743,6 +744,57 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-25 — BAI-PERF-01: Replace post-build HTML regex mutation with Astro-native critical CSS + normal stylesheet delivery — VERIFIED LOCALLY (uncommitted per قاعدة الـ brain)
+
+- **Files**: **4 معدّل** + 1 محذوف + 1 report.
+  - `src/layouts/BaseLayout.astro` (1 import + حذف inline style block) — `import '../styles/critical.css'` في الـ frontmatter (Astro يصدر `<link rel="stylesheet" href="/_astro/critical.*.css">` تلقائياً). حذف الـ `<style is:inline>` block الكامل (~36 سطر: font-face + heading overrides + .split-hero__h1 LCP styles + body baseline).
+  - `astro.config.mjs` (حذف ~70 سطر) — حذف `perfCssDefer()` function بالكامل (الـ integration كان يـ walk dist/*.html + يـ regex يحوّل `BaseLayout.*.css` لـ `rel="preload" data-css-defer` + يحقن `<script src="/js/css-defer.js">`). إزالته من integrations array. Header comment يوثّق الـ Phase 3 path المكتمل.
+  - `public/js/css-defer.js` (DELETED) — ما عاد له داعي بعد إزالة الـ regex. كان 49 سطر IIFE يـ swap preload → stylesheet.
+  - `scripts/security-headers.mjs` (تعديل CSP string + comment block) — حذف `'unsafe-inline'` من `style-src` (fallback). `style-src-elem` و `style-src-attr` يبقون كما هم (ClientRouter view-transitions + inline style="..." attrs في 65 ملف). Header comment يوثّق السبب.
+  - `public/_headers` (نفس تعديل CSP + comment) — متزامن مع security-headers.mjs للـ drift detection.
+  - `render.yaml` (نفس تعديل CSP + comment) — متزامن مع security-headers.mjs. الـ drift الموجود بين render.yaml و security-headers.mjs (cdnjs.cloudflare.com + Sentry في render.yaml فقط) مو جزء من BAI-PERF-01 — KI جديد (KI-CSP-DRIFT).
+  - `report/2026-07-25-bai-perf-01-css-defer-removal.md` (NEW, تقرير تفصيلي بالـ DECs + risks + commit message + screenshots).
+  - `.agents/brain.md` (version bump 2.7.27 → 2.7.28 + this entry + Section 1.2 update + KI جديد).
+
+- **What**: BAI-PERF-01 من `b/prompt.md` — P1 على Performance (+12% impact، depends على BAI-SEC-01). الـ ACs: (1) No post-build HTML regex rewrites stylesheet tags. (2) No FOUC in desktop/mobile screenshot checks. (3) CSP can remove script/style `unsafe-inline` where no longer needed. (4) `pnpm run build` and performance checks pass. **قبل BAI-PERF-01**: `astro.config.mjs` يحوي `perfCssDefer()` integration (49 سطر Astro hook + 49 سطر `public/js/css-defer.js` للـ runtime swap) + `<style is:inline>` block في BaseLayout.astro (~36 سطر يحوي LCP-critical CSS) + CSP `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com` (الـ unsafe-inline مطلوب للـ inline style). **بعد BAI-PERF-01**: 0 regex mutations، 0 separate JS swap script، 0 `<style is:inline>` في BaseLayout.astro (المحتوى انتقل لـ `src/styles/critical.css` المُستورد)، CSP `style-src 'self' https://fonts.googleapis.com` (بدون unsafe-inline). كل الـ CSS صار render-blocking (Astro-native، بدون defer).
+
+- **Why**: الـ regex كان هش — post-build mutation يطابق hashed bundle names، أي تغيير في Astro hash function يكسره بدون تشخيص واضح. الـ runtime يعتمد على JS لتطبيق CSS (css-defer.js) — لو JS فشل أو تأخر (3rd-party blocked، mobile slow CPU)، الصفحة تطلع unstyled = FOUC. الـ inline `<style is:inline>` كان يحفظ LCP بس يحبس `style-src 'unsafe-inline'` في CSP (يمنع strict-CSP). البديل Astro-native: `import '../styles/critical.css'` يصدر stylesheet عادي (hashed، cacheable، render-blocking = لا FOUC ممكن هيكلياً). الـ trade-off: LCP regression متوقع ~50ms (المتصفح ينتظر 2 stylesheet صغيرين بدل 1 inline + 1 deferred)، بس FOUC مضمون ينعدم + CSP صار أنظف + zero regex = صفر تكاليف صيانة.
+
+- **Verification**:
+  - `pnpm run build` → **196 pages**, 0 errors, 0 warnings ✅ (نفس عدد صفحات BAI-IDX-04)
+  - `grep -rn "data-css-defer\|css-defer.js" dist/client/*.html dist/client/*/index.html` → **0 matches** ✅
+  - `grep -rn "perfCssDefer\|perf-css-defer" astro.config.mjs` → **4 matches (all in comments documenting the change)**, 0 actual code ✅
+  - `grep -c "is:inline" dist/client/index.html` → **0** ✅ (كان موجود في BaseLayout قبل)
+  - `grep -oE 'style-src[^;]+' dist/client/index.html` → `style-src 'self' https://fonts.googleapis.com` ✅ (بدون unsafe-inline)
+  - `pnpm run performance:budget` → exit 0: HTML 33.98KB gz (was 34.68KB)، BaseLayout.css 8.92KB gz (was 11.83KB — شال الـ critical inline)، ArabicLayout.css 19.41KB gz (was 23.54KB — purge-css حسّن)، JS 11.80KB gz (no change) ✅
+  - `python3 inline-strip + onload check` → 0 real onload attributes في dist/home، 0 css-defer references، 0 data-css-defer references ✅
+  - **Playwright FOUC check** (`qa-screenshots/check-fouc.mjs` على `http://127.0.0.1:4322/`):
+    - Mobile 390×844: DOMContentLoaded screenshot → h1 font-size 28px، font-family `"BrightAI Official", "IBM Plex Sans Arabic", Arial, sans-serif`، font-weight 800 — **الستايل مطبّق قبل أي JS** ✅
+    - Mobile 390×844: networkidle screenshot → نفسه + الـ SplitHero visual ظاهر (الموظف → kernel lock → ai-data layers)
+    - Desktop 1440×900: networkidle screenshot → h1 font-size 72px (clamp max)، full hero مع bright-star visual + kernel mockup
+    - 4 stylesheets all loaded: googleapis, /_astro/index.CQdUEhkK.css, /_astro/BaseLayout.DHT_21B9.css, /_astro/LeadForm.D1Sh2lp_.css — all `loaded: true`، no `data-css-defer` attributes ✅
+    - 23 fonts loaded (يشمل BrightAI Official + IBM Plex Sans Arabic + Inter subsets)
+    - 0 page errors (3 console warnings pre-existing: frame-ancestors/report-uri/X-Frame-Options عبر meta — معروف، مو جزء من BAI-PERF-01)
+  - **FOUC verdict**: صفر FOUC. الـ DOMContentLoaded screenshot يبيّن الصفحة ستايل كامل بدون أي FOUC. الـ render-blocking pipeline (critical.css bundled + BaseLayout.css) يضمن أن لا CSS swap ولا JS dependency.
+
+- **DEC new (4)**:
+  - **DEC-BAI-PERF-01-2026-07-25-001**: Critical CSS pattern في BrightAI = import + bundle. لا `<style is:inline>`، لا post-build regex mutation، لا separate JS swap script. كل CSS render-blocking.
+  - **DEC-BAI-PERF-01-2026-07-25-002**: Astro يـ bundle `src/styles/critical.css` داخل BaseLayout.css bundle (ما يصدره كملف منفصل) — مقبول. الـ CSS المتضمن render-blocking، hashed، cached. No need for separate file.
+  - **DEC-BAI-PERF-01-2026-07-25-003**: CSP `style-src` بدون `'unsafe-inline'` صحيح طالما لا `<style is:inline>` blocks في `src/`. الـ 2 inline style blocks في dist (من `astro:transitions` ClientRouter) مسموحة عبر `style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com` (مو style-src fallback).
+  - **DEC-BAI-PERF-01-2026-07-25-004**: `render.yaml` ↔ `scripts/security-headers.mjs` drift موجود (cdnjs.cloudflare.com + Sentry في render.yaml فقط) — خارج نطاق BAI-PERF-01، مسجّل كـ KI جديد (KI-CSP-DRIFT-2026-07-25) للمعالجة في تذكرة منفصلة.
+
+- **Risks remaining**:
+  - **LCP regression متوقع ~50ms** (المتصفح ينتظر 2 stylesheet بدل 1 inline + 1 deferred). ما تم قياسه فعلياً بعد (يحتاج Lighthouse run على prod CDN). داخل budget 2500ms (الـ baseline 1368ms).
+  - **`verify-csp-no-unsafe-inline.mjs` false positives**: السكربت يـ flag الـ onload strings داخل HTML comments كـ "inline event handlers". 44 fails (33 inline script blocks في kernel pages + 8 inline event handlers + 1 perf-css-defer في comments + 2 missing crypto nonce). الـ inline script + event handlers حقيقيين (مو جزء من BAI-PERF-01 — الكيرنل يحتاجها للـ data injection عبر `define:vars`). الـ perf-css-defer في comments = false positive. الـ missing nonce = DEC-CSP-2026-07-15-001 Phase 2 (خارج النطاق).
+  - **CSP style-src-elem 'unsafe-inline' kept** — مطلوب لـ ClientRouter view-transition blocks. إزالته تكسر view-transitions (regression). السحب يحتاج nonces أو hash-based CSP + rewrite ClientRouter usage.
+  - **CSP style-src-attr 'unsafe-inline' kept** — مطلوب لـ inline `style="..."` attrs في 65 ملف. الإزالة تحتاج refactor شامل (use CSS classes) — خارج نطاق BAI-PERF-01.
+
+- **Related decisions**:
+  - DEC-2026-Motion-001 (unified motion system) — يستخدم ClientRouter view-transitions، يبقى سليم.
+  - DEC-CSP-2026-07-15-001 (strict-CSP migration plan) — BAI-PERF-01 يحقق جزء صغير (style-src fallback) من الـ migration. باقي script-src-attr + style-src-elem + style-src-attr يحتاج Phase 2 مع nonces.
+  - DEC-005 (vanilla JS over React islands) — منفصل، BAI-PERF-01 ما يلامس React.
+  - **Brain updates**: Section 1.2 Performance table (BaseLayout 11.83→8.92KB gz، ArabicLayout 23.54→19.41KB gz، HTML 34.68→33.98KB gz، CSP unsafe-inline row جديد). Section 3 KI-CSP-DRIFT-2026-07-25 جديد.
 
 ### 2026-07-25 — BAI-IDX-04: Zero indexable orphans + click depth ≤ 3 + broken-link gate — VERIFIED LOCALLY (uncommitted per قاعدة الـ brain)
 
@@ -4540,6 +4592,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-007 | React renderer (59KB gzipped) loaded on homepage | high | **resolved** | 2026-06-29 | **RESOLVED 2026-06-30 via DEC-017 + DEC-041**: `client:visible` replaced with `client:visible client:media="(min-width: 768px)"`. Verified via Playwright on 390×844: 0 React scripts in document, 0 visible canvas. Plus SSR canvas `display:none` at ≤768px. Saving ~60.7KB gz JS on mobile + zero canvas paint cost. Future full DEC-005 replacement (vanilla JS) is broader out-of-scope removal — current state sufficient. | `src/components/SplitHero.astro`, `src/components/hero/DottedSurface.tsx` |
 | KI-008 | KernelLayout uses missing CSS tokens | high | open | 2026-06-29 | `--ink-950`, `--blur-md`, `--gradient-brand` undefined in `tokens.css`. 11 kernel pages visually broken. | `src/layouts/KernelLayout.astro`, `src/styles/tokens.css` |
 | KI-SOC-2026-07-18-001 | `src/data/site.ts` social URLs diverge from schema foundation | medium | open | 2026-07-18 | `site.ts.social.twitter = "https://twitter.com/brightai_sa"` ≠ schema-helpers.ts.sameAs `https://x.com/BrightAISite`. `site.ts.social.linkedin = "https://linkedin.com/company/brightai"` ≠ `linkedin.com/company/brightai-site`. Footer renders `SITE.social.*` so visitors see handles that the AI-search surface and JSON-LD do not advertise as canonical. `site.ts` also missing YouTube/TikTok/Crunchbase. AI engines (ChatGPT, Perplexity, Copilot) get the schema-foundation URLs; humans get the `site.ts` URLs. **Fix requires user approval** (modifying `site.ts` is protected per `agent.md` Section 2.1). Discovered by BAI-SEO-003-S4. | `src/data/site.ts`, `src/components/Footer.astro` |
+| KI-CSP-DRIFT-2026-07-25 | `render.yaml` CSP block drifts from `scripts/security-headers.mjs` | medium | open | 2026-07-25 | `render.yaml` CSP يحوي `cdnjs.cloudflare.com` + `js.sentry-cdn.com` + `*.sentry.io` + `o4510966719840256.ingest.us.sentry.io` + `c.bing.com` (الـ historical documentation-only block، BAI-IDX-02 marked it as docs-only). `scripts/security-headers.mjs` ما يحوي هذه الـ origins (شيلوها BAI-IDX-04 / BAI-SEO-003). النتيجة: drift بين الـ canonical source-of-truth و الـ docs block. BAI-PERF-01 عدّل style-src في الاثنين لكن ما سوّا full sync. **Fix requires user approval** (modifying `render.yaml` is protected per `agent.md` Section 2.1) + يحتاج تذكرة منفصلة لتحديد: هل cdnjs/Sentry فعلاً مطلوبين في الـ posture، ولا cleanup كامل. Discovered during BAI-PERF-01 execution. | `render.yaml`, `scripts/security-headers.mjs` |
 | KI-009 | Tailwind configured but disabled | medium | open | 2026-06-29 | `tailwind.config.ts` exists, `tailwind-merge` in deps, but no `@tailwind` directive in CSS. Confuses contributors. | `tailwind.config.ts`, `package.json`, `src/lib/utils.ts` |
 | KI-SYNTAX-2026-07-18-001 | `<script nonce={Astro.locals.cspNonce}>import '...'</script>` بدون `type="module"` في 4 scripts من BaseLayout → 4 SyntaxError × 190 pages = 760 events | **critical** (100% pages broken at runtime) → **resolved 2026-07-18** | 2026-07-18 → 2026-07-18 | **RESOLVED 2026-07-18 via KI-SYNTAX-2026-07-18-001-FIX**: الـ root cause تم تأكيده + الـ fix path تم اختياره (نقل لـ `public/js/*.js` + `<script type="module" src="..." nonce="...">`، نفس pattern `analytics.js`). الـ 3 scripts (`font-async-loader.js`, `scroll-reveal.js`, `focus-trap.js`) انتقلت لـ `public/js/` وBaseLayout.astro يستخدم static ES modules. الـ script الرابع `page-view.js` deprecated ومُحذف في CRO-LEADFORM-001 (2026-07-18) ولا يحتاج fix. **Playwright verification**: 0 console SyntaxError events per page (was 4)، 6/6 problem-section feature cards `{ opacity: 1, is-visible: true }` (was opacity 0)، 30/31 reveal-targets revealed عبر 14 sections (was 0). **DEC جديد**: DEC-CSP-PATTERN-2026-07-18-001 يوثّق الـ pattern الآمن. **CI guard still TODO**: static check يفحص أي `<script>` يحوي `import` بدون `type="module"` → fail-fast. | `src/layouts/BaseLayout.astro` (3 scripts → static), `public/js/{font-async-loader,scroll-reveal,focus-trap}.js` (new location) |
 

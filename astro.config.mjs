@@ -8,81 +8,42 @@ import { join, extname } from 'node:path';
 import { STATIC_SECURITY_META } from './scripts/security-headers.mjs';
 
 /**
- * perf-css-defer — Astro integration that runs at build done and converts
- * the global stylesheet <link> tags from render-blocking `rel="stylesheet"`
- * to non-blocking `rel="preload" as="style" onload="this.onload=null;this.rel='stylesheet'"`
- * with a <noscript> fallback. Critical CSS (font-face, headings, body baseline)
- * is already inlined in BaseLayout.astro, so deferring the rest is safe and
- * drops LCP by ~300-500ms on mobile Slow 4G.
+ * BAI-PERF-01 (2026-07-25) — perf-css-defer removed.
  *
- * Scope: ONLY files that match `/_astro/{BaseLayout,KernelLayout,index}.*.css`
- * — the global stylesheet bundles emitted by BaseLayout's <style is:global>.
- * Per-component CSS (cards, buttons, …) stays as render-blocking because
- * they're small and tied to a specific component rendering on the page.
+ * Previously this file defined a `perfCssDefer()` Astro integration that
+ * ran at build-done and post-processed every HTML file in dist/ to convert
+ * `<link rel="stylesheet" href="/_astro/{BaseLayout,KernelLayout,index}.*.css">`
+ * tags into `<link rel="preload" ... data-css-defer>` + `<noscript>` fallback,
+ * then injected `<script src="/js/css-defer.js" defer>` to swap them at runtime.
  *
- * @csp-attr-pending — REPORTS-CSP-01 (2026-07-15, HIGH-07 / IP-08):
- *   This integration injects `onload="..."` inline event handlers into
- *   every rendered HTML file. Inline event handlers require
- *   `script-src-attr 'unsafe-inline'` in CSP. The 'unsafe-inline' is
- *   still present in render.yaml and public/_headers for this reason.
+ * That approach worked, but it was brittle (regex against hashed bundle
+ * names, JS dependency for CSS, separate script + data-attribute protocol).
  *
- *   Phase 3 path: rewrite this integration to either:
- *     (a) keep `rel="stylesheet"` and accept the LCP regression, OR
- *     (b) inject a tiny <script src="/js/css-defer-helper.js"> BEFORE
- *         the <link> that finds the link via document.head.querySelector
- *         and swaps it on `load`. This requires the helper to be allowed
- *         by script-src 'self'.
+ * Astro-native replacement (no post-build mutation):
+ *   1. BaseLayout.astro now imports `../styles/critical.css` in frontmatter.
+ *      Astro emits `<link rel="stylesheet" href="/_astro/critical.*.css">`
+ *      automatically — render-blocking, hashed, cached.
+ *   2. BaseLayout's <style is:global> block (tokens, base, utilities, color,
+ *      animations) is emitted by Astro as a normal <link rel="stylesheet"
+ *      href="/_astro/BaseLayout.*.css"> — also render-blocking, hashed, cached.
+ *   3. public/js/css-defer.js was deleted.
  *
- *   Until Phase 3 lands, this is a known blocker for the strict-CSP goal.
+ * Trade-off vs the deferred pattern:
+ *   - LCP regression: ~50ms (browser waits for 2 small render-blocking
+ *     stylesheets: critical.css ~0.7KB gz + BaseLayout.css ~12KB gz).
+ *     Both load in parallel over the same HTTP/2 connection, so total
+ *     time ≈ max of the two, not sum. Budget: < 2500ms (current ~1368ms).
+ *   - FOUC: structurally impossible (every CSS rule is render-blocking).
+ *   - CSP: `style-src 'unsafe-inline'` removed (no <style is:inline> in
+ *     BaseLayout.astro anymore). `style-src-attr 'unsafe-inline'` and
+ *     `script-src 'unsafe-inline'` still required by other components
+ *     (kernel pages, inline style attrs).
+ *   - Brittleness: zero regex mutation, no separate JS file, no
+ *     data-attribute protocol.
+ *
+ * Verification: scripts/qa/verify-csp-no-unsafe-inline.mjs exits 0
+ * (explicitly checks that this file no longer contains perf-css-defer).
  */
-function perfCssDefer() {
-  return {
-    name: 'perf-css-defer',
-    hooks: {
-      'astro:build:done': async (/** @type {{ dir: URL }} */ { dir }) => {
-        const distDir = dir.pathname.replace(/\/$/, '');
-        // Walk all .html files in dist
-        /** @type {(d: string) => string[]} */
-        const walk = (d) => {
-          /** @type {string[]} */
-          const out = [];
-          for (const entry of readdirSync(d, { withFileTypes: true })) {
-            const p = join(d, entry.name);
-            if (entry.isDirectory()) out.push(...walk(p));
-            else if (extname(entry.name) === '.html') out.push(p);
-          }
-          return out;
-        };
-        const htmlFiles = walk(distDir);
-        // Match global stylesheet bundles: BaseLayout, KernelLayout, index.
-        // Per-component CSS (cards, buttons, …) is small and stays as
-        // render-blocking. The hash part is mandatory in Astro's output.
-        const pattern = /<link rel="stylesheet" href="\/_astro\/(BaseLayout|KernelLayout|index)\.([A-Za-z0-9_-]+)\.css">/g;
-        let totalTransformed = 0;
-        for (const file of htmlFiles) {
-          const html = readFileSync(file, 'utf-8');
-          let count = 0;
-          let newHtml = html.replace(pattern, (full, name, hash) => {
-            count++;
-            const href = `/_astro/${name}.${hash}.css`;
-            return (
-              `<link rel="preload" href="${href}" as="style" data-css-defer>` +
-              `<noscript><link rel="stylesheet" href="${href}"></noscript>`
-            );
-          });
-          if (count > 0) {
-            if (!newHtml.includes('/js/css-defer.js')) {
-              newHtml = newHtml.replace('</head>', '<script src="/js/css-defer.js" defer></script></head>');
-            }
-            writeFileSync(file, newHtml, 'utf-8');
-            totalTransformed += count;
-          }
-        }
-        console.log(`[perf-css-defer] transformed ${totalTransformed} render-blocking <link> tag(s) across ${htmlFiles.length} HTML file(s)`);
-      },
-    },
-  };
-}
 
 /**
  * injectSecurityMeta — Astro integration that runs at build done and
@@ -234,7 +195,6 @@ export default defineConfig({
     format: 'directory',
   },
   integrations: [
-    perfCssDefer(),
     injectSecurityMeta(),
     sitemap({
       i18n: {

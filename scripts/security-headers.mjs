@@ -43,9 +43,17 @@
  *   CSP:            default-src 'self'; object-src 'none';
  *                   frame-ancestors 'self'; form-action 'self';
  *                   upgrade-insecure-requests; report-uri /api/csp-report;
- *                   'unsafe-inline' on script-src / style-src (Phase 1
- *                   only — see DEC-CSP-2026-07-15-001 / REPORTS-CSP-01
- *                   for the strict-CSP migration plan).
+ *                   'unsafe-inline' on script-src (kernel pages use
+ *                   <script is:inline define:vars> for data injection),
+ *                   style-src-elem (Astro ClientRouter emits inline
+ *                   view-transition styles), and style-src-attr
+ *                   (65+ components use inline style="..." attrs).
+ *                   'unsafe-inline' was REMOVED from style-src fallback
+ *                   in BAI-PERF-01 (2026-07-25) — BaseLayout.astro no
+ *                   longer has a <style is:inline> block; critical CSS
+ *                   is now imported as a real /_astro/critical.*.css
+ *                   stylesheet. See DEC-CSP-2026-07-15-001 for the
+ *                   broader strict-CSP migration plan.
  *
  * CHANGE PROTOCOL:
  *   Any change to POSTURE must:
@@ -77,7 +85,7 @@ export const RESPONSE_SECURITY_HEADERS = Object.freeze({
   "X-Robots-Tag":
     "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   "Content-Security-Policy":
-    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
+    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
 });
 
 /**
