@@ -8,8 +8,8 @@
  *   - 2026-07-14+: hybrid model (`output: 'static'` + `@astrojs/node`
  *     adapter, mode: 'standalone') → static HTML emitted at
  *     `dist/client/`, SSR entry at `dist/server/entry.mjs`.
- *   - `scripts/sync-dist-flat.mjs` then mirrors `dist/client/` → `dist/`
- *     so legacy consumers that hardcode `dist/` keep working.
+ *   - `scripts/sync-dist-flat.mjs` verifies this layout and intentionally
+ *     does not mirror `dist/client/` into `dist/`.
  *
  * Why this helper exists (2026-07-18, this file):
  *   Before this change, every verification script picked its own path:

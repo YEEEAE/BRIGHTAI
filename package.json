@@ -32,6 +32,7 @@
     "prebuild": "npm run fonts:subset && node scripts/generate-all-redirects.mjs",
     "build": "npm run image-sitemap && astro build && npm run avif:generate && npm run sitemap:generate && npm run sync:dist:flat && npm run schema:solutions:sync && npm run schema:docs:sync && npm run purge:css",
     "sync:dist:flat": "node scripts/sync-dist-flat.mjs",
+    "verify:deployment-surface": "node scripts/verify-deployment-surface.mjs",
     "build:verify": "npm run verify:all",
     "lint:legacy": "echo 'Linting skipped for static site'",
     "lint:fix": "echo 'Linting skipped for static site'",

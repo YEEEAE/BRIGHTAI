@@ -7,6 +7,7 @@ import { glob } from "glob";
 
 import { extractVisibleHowTo } from "./sync-docs-howto-schema.mjs";
 import { extractVisibleFaq } from "./sync-solution-faq-schema.mjs";
+import { resolveClientBuildRoot } from "./_build-output.mjs";
 
 function normalizeText(value) {
   return String(value || "").replace(/\s+/g, " ").trim();
@@ -125,15 +126,19 @@ export function auditHtml(relPath, html) {
   return errors;
 }
 
-export async function runAudit(root = path.join(process.cwd(), "dist")) {
+export async function runAudit(root) {
+  const buildRoot = root || resolveClientBuildRoot(process.cwd()).root;
+  if (!buildRoot) {
+    throw new Error("Client build root is missing. Run pnpm run build first.");
+  }
   const files = await glob(
     ["solutions/*/index.html", "docs/*/index.html", "services/index.html"],
-    { cwd: root, absolute: true, nodir: true },
+    { cwd: buildRoot, absolute: true, nodir: true },
   );
   const failures = [];
 
   for (const file of files.sort()) {
-    const relPath = path.relative(root, file).replaceAll(path.sep, "/");
+    const relPath = path.relative(buildRoot, file).replaceAll(path.sep, "/");
     const html = await fs.readFile(file, "utf8");
     const errors = auditHtml(relPath, html);
     if (errors.length) failures.push({ relPath, errors });

@@ -25,10 +25,17 @@ import {
   hasNoindexDirective,
 } from "./sitemap-audit-utils.mjs";
 import { runAudit as runInternalLinksAudit } from "./internal-links-common.mjs";
+import { resolveClientBuildRoot } from "./_build-output.mjs";
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
-const SITEMAP_PATH = path.join(ROOT, "dist", "sitemap.xml");
+const clientBuild = resolveClientBuildRoot(ROOT);
+if (!clientBuild.root) {
+  console.error(`SEO CI check cannot find the client build root: ${clientBuild.reason}`);
+  process.exit(1);
+}
+const CLIENT_ROOT = clientBuild.root;
+const SITEMAP_PATH = path.join(CLIENT_ROOT, "sitemap.xml");
 // OG images المقبولة لصفحات الحلول (كلاهما valid)
 const SERVICE_OG_IMAGE_URLS = new Set([
   `${BASE_URL}/assets/images/og/og-solutions.png`,
@@ -205,7 +212,7 @@ async function readFileSafe(file) {
   try {
     let content;
     try {
-      content = await fs.readFile(path.join(ROOT, "dist", file), "utf8");
+      content = await fs.readFile(path.join(CLIENT_ROOT, file), "utf8");
     } catch {
       content = await fs.readFile(path.join(ROOT, file), "utf8");
     }
@@ -385,7 +392,7 @@ async function checkBrokenLinks() {
   };
 
   const report = await runInternalLinksAudit({
-    root: path.join(ROOT, "dist"),
+    root: CLIENT_ROOT,
     ignorePatterns: [
       "**/node_modules/**",
       "**/.git/**"
@@ -479,7 +486,7 @@ async function checkSitemap() {
     let resolvedFile = null;
     for (const candidate of localCandidates) {
       try {
-        const stat = await fs.stat(path.join(ROOT, "dist", candidate));
+        const stat = await fs.stat(path.join(CLIENT_ROOT, candidate));
         if (!stat.isFile()) {
           continue;
         }
@@ -498,7 +505,7 @@ async function checkSitemap() {
 
     let html;
     try {
-      html = await fs.readFile(path.join(ROOT, "dist", resolvedFile), "utf8");
+      html = await fs.readFile(path.join(CLIENT_ROOT, resolvedFile), "utf8");
     } catch (error) {
       result.errors.push(`Unable to read sitemap target file: ${loc} -> ${resolvedFile} (${error.message})`);
       continue;
@@ -549,11 +556,11 @@ async function checkHtmlPolicy() {
     },
   };
 
-  const htmlFiles = await walkHtmlFiles(path.join(ROOT, "dist"));
+  const htmlFiles = await walkHtmlFiles(CLIENT_ROOT);
   result.summary.files = htmlFiles.length;
 
   for (const fullPath of htmlFiles) {
-    const relPath = path.relative(path.join(ROOT, "dist"), fullPath).replace(/\\/g, "/");
+    const relPath = path.relative(CLIENT_ROOT, fullPath).replace(/\\/g, "/");
     const html = await fs.readFile(fullPath, "utf8");
     if (!isHtmlDocument(html)) continue;
 
@@ -673,7 +680,7 @@ async function checkHtmlPolicy() {
         // التحقق من وجود ملف الفهرس index.html
         let indexFileExists = false;
         try {
-          const indexPath = path.join(ROOT, relPathWithoutHtml, "index.html");
+          const indexPath = path.join(CLIENT_ROOT, relPathWithoutHtml, "index.html");
           indexFileExists = (await fs.stat(indexPath)).isFile();
         } catch {}
 

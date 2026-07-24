@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import * as cheerio from "cheerio";
 import { glob } from "glob";
+import { resolveClientBuildRoot } from "./_build-output.mjs";
 
 // REPORTS-SEO-FOUNDATION (2026-07-07): FoundationSchema is the single source
 // of truth for JSON-LD now. The legacy id "brightai-production-schema"
@@ -144,11 +145,15 @@ export function syncSolutionFaqSchema(html) {
 }
 
 export async function runSync({
-  root = path.join(process.cwd(), "dist"),
+  root,
   check = false,
 } = {}) {
+  const buildRoot = root || resolveClientBuildRoot(process.cwd()).root;
+  if (!buildRoot) {
+    throw new Error("Client build root is missing. Run pnpm run build first.");
+  }
   const files = await glob("solutions/**/index.html", {
-    cwd: root,
+    cwd: buildRoot,
     absolute: true,
     nodir: true,
   });
@@ -160,7 +165,7 @@ export async function runSync({
     const after = syncSolutionFaqSchema(before);
     if (after === before) continue;
 
-    changed.push(path.relative(root, file));
+    changed.push(path.relative(buildRoot, file));
     if (!check) await fs.writeFile(file, after, "utf8");
   }
 

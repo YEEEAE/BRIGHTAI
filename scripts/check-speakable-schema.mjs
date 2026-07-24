@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import * as cheerio from "cheerio";
 import { glob } from "glob";
+import { resolveClientBuildRoot } from "./_build-output.mjs";
 
 const MINIMUM_SPEAKABLE_PAGES = 30;
 
@@ -90,9 +91,13 @@ export function auditSpeakablePage(relPath, html) {
   return { errors, hasSpeakable: speakableNodes.length > 0 };
 }
 
-export async function runSpeakableAudit(root = path.join(process.cwd(), "dist")) {
+export async function runSpeakableAudit(root) {
+  const buildRoot = root || resolveClientBuildRoot(process.cwd()).root;
+  if (!buildRoot) {
+    throw new Error("Client build root is missing. Run pnpm run build first.");
+  }
   const files = await glob("**/*.html", {
-    cwd: root,
+    cwd: buildRoot,
     absolute: true,
     nodir: true,
     ignore: ["node_modules/**", ".git/**", ".render-static/**"],
@@ -101,7 +106,7 @@ export async function runSpeakableAudit(root = path.join(process.cwd(), "dist"))
   const speakablePages = [];
 
   for (const file of files.sort()) {
-    const relPath = path.relative(root, file).replaceAll(path.sep, "/");
+    const relPath = path.relative(buildRoot, file).replaceAll(path.sep, "/");
     const html = await fs.readFile(file, "utf8");
     const result = auditSpeakablePage(relPath, html);
     if (result.hasSpeakable) speakablePages.push(relPath);

@@ -2,8 +2,8 @@
  * scripts/purge-css.mjs — Post-build CSS dead-code elimination.
  *
  * perf(bloat-3-fixes-2026-07-07):
- *   Use PurgeCSS to scan dist/*.html + dist/*.js for class usages,
- *   then strip unused class rules from dist/_astro/*.css.
+ *   Use PurgeCSS to scan the adapter-aware client build for class usages,
+ *   then strip unused class rules from its _astro/*.css directory.
  *
  *   Safe because:
  *   - Source CSS unchanged (no risky in-place edits).
@@ -21,18 +21,20 @@ import { PurgeCSS } from 'purgecss';
 import fs from 'node:fs';
 import path from 'node:path';
 import { globSync } from 'glob';
+import { resolveClientBuildRoot } from './_build-output.mjs';
 
-const DIST = path.join(process.cwd(), 'dist');
-const ASTRO = path.join(DIST, '_astro');
+const clientBuild = resolveClientBuildRoot(process.cwd());
+const CLIENT_ROOT = clientBuild.root;
+const ASTRO = CLIENT_ROOT ? path.join(CLIENT_ROOT, '_astro') : null;
 
-if (!fs.existsSync(ASTRO)) {
-  console.error('dist/_astro/ does not exist. Run npm run build first.');
+if (!ASTRO || !fs.existsSync(ASTRO)) {
+  console.error('client build _astro/ does not exist. Run pnpm build first.');
   process.exit(1);
 }
 
 const cssFiles = globSync('**/*.css', { cwd: ASTRO });
-const htmlFiles = globSync('**/*.html', { cwd: DIST });
-const jsFiles = globSync('**/*.js', { cwd: DIST });
+const htmlFiles = globSync('**/*.html', { cwd: CLIENT_ROOT });
+const jsFiles = globSync('**/*.js', { cwd: CLIENT_ROOT });
 
 // Take a snapshot of CSS files BEFORE purge so we can restore over-aggressive wipes
 const snapshot = {};
@@ -45,8 +47,8 @@ console.log(`[purge-css] scanning ${cssFiles.length} CSS, ${htmlFiles.length} HT
 
 const result = await new PurgeCSS().purge({
   content: [
-    ...htmlFiles.map((f) => path.join(DIST, f)),
-    ...jsFiles.map((f) => path.join(DIST, f)),
+    ...htmlFiles.map((f) => path.join(CLIENT_ROOT, f)),
+    ...jsFiles.map((f) => path.join(CLIENT_ROOT, f)),
   ],
   css: cssFiles.map((f) => path.join(ASTRO, f)),
   safelist: {

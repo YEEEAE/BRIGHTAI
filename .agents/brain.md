@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-24 21:20 +03:00
+last_updated: 2026-07-25 00:50 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.24
 agent_version: v2.3
@@ -655,6 +655,17 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-25 — P0: قفل سطح deployment artifact للـ standalone server
+
+- **Files**: `scripts/sync-dist-flat.mjs`, `scripts/verify-deployment-surface.mjs` (جديد), `render.yaml`, `package.json`, `scripts/{purge-css,seo-ci-check,seo-schema-audit,check-speakable-schema,sync-solution-faq-schema,sync-docs-howto-schema,_build-output}.mjs`, `report/2026-07-25-deployment-artifact-surface.md`.
+- **What**: وقفنا نسخ `dist/client/` إلى جذر `dist/`. صار Render يشغّل فحص HTTP محلي قبل deploy، وكل سكربتات post-build المهمة صارت تستخدم `dist/client/` كجذر الـ static artifact.
+- **Why**: النسخة المسطّحة كانت تخلق surface إضافي غير مقصود وتخلي فحوصات SEO/schema تقرأ artifact غلط. الـ standalone Node adapter أصلًا يخدم `dist/client/` ويحتاج `dist/server/entry.mjs` للـ SSR.
+- **Verification**: `pnpm run build` ✅، `pnpm run verify:all` ✅، `pnpm run seo:schema` → 55 schema pages + 189 speakable pages ✅، `pnpm run verify:deployment-surface` → `/` 200 و`/client/index.html` 404 و`/frontend/server.js` 404 ✅.
+- **Report**: `report/2026-07-25-deployment-artifact-surface.md`.
+- **Commit**: uncommitted (المستخدم يسوي الـ commit بنفسه).
+- **Status**: verified locally — بانتظار deploy على Render.
+- **Brain updates**: Section 2 (this entry).
 
 ### 2026-07-18 — a11y + responsive audit + fixes (190 صفحة)
 

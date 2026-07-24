@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 import * as cheerio from "cheerio";
 import { glob } from "glob";
+import { resolveClientBuildRoot } from "./_build-output.mjs";
 
 const PROCEDURAL_HEADING =
   /^(?:كيف|طريقة|مسار|خطة|بناء|تصميم|ضبط|ربط|خريطة تشغيل)/i;
@@ -138,11 +139,15 @@ export function syncDocsHowToSchema(html) {
 }
 
 export async function runSync({
-  root = path.join(process.cwd(), "dist"),
+  root,
   check = false,
 } = {}) {
+  const buildRoot = root || resolveClientBuildRoot(process.cwd()).root;
+  if (!buildRoot) {
+    throw new Error("Client build root is missing. Run pnpm run build first.");
+  }
   const files = await glob("docs/*/index.html", {
-    cwd: root,
+    cwd: buildRoot,
     absolute: true,
     nodir: true,
   });
@@ -153,7 +158,7 @@ export async function runSync({
     const after = syncDocsHowToSchema(before);
     if (after === before) continue;
 
-    changed.push(path.relative(root, file));
+    changed.push(path.relative(buildRoot, file));
     if (!check) await fs.writeFile(file, after, "utf8");
   }
 

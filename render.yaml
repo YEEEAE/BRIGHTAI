@@ -11,6 +11,7 @@ services:
     runtime: node
     name: brightai-site
     buildCommand: pip3 install fonttools brotli && pnpm install && pnpm run build
+    preDeployCommand: pnpm run verify:deployment-surface
     startCommand: node ./dist/server/entry.mjs
     # KERNEL-AUDIT-2026-07-15-BATCH-10 / EXEC-17: hit a real SSR endpoint
     # (not just / static HTML) so Render detects actual Node outages.
