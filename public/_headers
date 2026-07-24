@@ -1,8 +1,26 @@
 # ==============================================================================
 # BrightAI — Comprehensive HTTP Headers Configuration
 # Updated: 2026-07-07 — Security hardening pass (REPORTS-SEC-02)
+# Updated: 2026-07-25 — BAI-IDX-02 authoritative-layer correction
 #
-# PLATFORM NOTE:
+# ─── BAI-IDX-02 WARNING (2026-07-25) — DOCUMENTATION ONLY. ───
+# This file is the Netlify / Cloudflare Pages / Render Static style
+# convention. It is NOT read by the current Render Node Web Service
+# (Astro 6.4.6 + @astrojs/node), nor by Cloudflare in front of it.
+# The actual production security header posture is enforced by:
+#   1. src/middleware.ts — HTTP response headers on /api/* SSR
+#   2. injectSecurityMeta() in astro.config.mjs — <meta http-equiv>
+#      in every prerendered HTML file in dist/client/
+#   3. Cloudflare edge Transform Rule — HSTS on static pages
+#      (see docs/cloudflare-deployment-headers.md for setup)
+#
+# This file is kept in sync with scripts/security-headers.mjs for
+# documentation + drift detection. If you change a value here, also
+# update scripts/security-headers.mjs. Do NOT remove this file — it
+# is the single source of truth for any future migration to a
+# static-only host (Netlify / Cloudflare Pages / Render Static).
+#
+# PLATFORM NOTE (pre-BAI-IDX-02):
 #   This file is the Netlify / Cloudflare Pages / Render Static style.
 #   On VERCEL: Vercel does NOT read this file — see /vercel.json instead.
 #   On other static hosts (Netlify, Cloudflare Pages, Render): this file IS read.

@@ -1,28 +1,47 @@
 /**
  * scripts/headers-config.mjs — REPORTS-SEC-HEADERS-2026-07-18
+ *                            + BAI-IDX-02 (2026-07-25) — authoritative layer correction
  *
- * Parses the two layer-specific security header configuration files in
- * the BrightAI project and exposes them as plain objects for tests and
- * ad-hoc verification.
+ * Parses the two LEGACY config files that historically described
+ * the BrightAI security header posture and exposes them as plain
+ * objects for tests and ad-hoc verification.
  *
- * LAYERS (per agent.md / 0.5 / "Render/Cloudflare only, no Vercel"):
- *   1. render.yaml — the Render Blueprint. The `services[0].headers[]`
- *      array is what Render's reverse proxy adds to every response.
- *      Applies to BOTH static (dist/client) and SSR (dist/server) routes.
- *   2. public/_headers — Netlify / Cloudflare Pages / Render Static
- *      style. When the project ships to a static-only host, this file
- *      is read and applied. On the current Render Node service it is
- *      NOT read for SSR (only `render.yaml` matters), but the file is
- *      kept in sync so a future Cloudflare-Fronted static deploy would
- *      inherit the same posture.
+ * BAI-IDX-02 AUTHORITATIVE LAYER (CORRECTED 2026-07-25):
+ *   The actual security headers applied to live production responses
+ *   come from THREE places, NOT from render.yaml or public/_headers:
  *
- * Both files are the source of truth for the LOCAL acceptance test
- * `headers-config.test.mjs`. The test asserts the required header
- * values match the expected posture. Any header that depends on the
- * actual runtime (e.g. `Strict-Transport-Security` on Render, the
- * CSP-Report-Only stamp from Astro middleware) is verified at the
- * config level only — verifying it on a live response requires
- * production and stays "Unknown" until the next deploy.
+ *     1. scripts/security-headers.mjs (single source of truth)
+ *        - RESPONSE_SECURITY_HEADERS  → applied by src/middleware.ts
+ *          to every SSR response (/api/*, future SSR pages).
+ *        - STATIC_SECURITY_META        → applied by
+ *          injectSecurityMeta() Astro integration (astro.config.mjs)
+ *          to every prerendered HTML file in dist/client/.
+ *
+ *     2. Cloudflare edge (out of code)
+ *        - Strict-Transport-Security on static pages requires a
+ *          Cloudflare Transform Rule. HSTS does NOT work in meta
+ *          http-equiv. See docs/cloudflare-deployment-headers.md
+ *          for the manual setup steps.
+ *
+ *     3. Legacy config files (this module's job):
+ *        - render.yaml — Render Blueprint. The `services[0].headers[]`
+ *          block does NOT apply to Render Web Services (Node runtime).
+ *          It only applies to Render Static Sites. The block is kept
+ *          for documentation + future-static deploys and is verified
+ *          by headers-config.test.mjs for drift detection.
+ *        - public/_headers — Netlify / Cloudflare Pages convention.
+ *          Neither platform is in the current stack, so the file is
+ *          read by neither. Kept for documentation + drift detection.
+ *
+ * The two legacy files are NOT relied upon for live enforcement.
+ * The acceptance test in headers-config.test.mjs asserts the legacy
+ * files still describe the same posture (so a future migration to
+ * a static host inherits the right values), but a missing live
+ * header is NOT a failure of those legacy files — it is a failure
+ * of the new authoritative layer (middleware / meta injection /
+ * Cloudflare Transform Rule).
+ *
+ * For the live check, run `npm run verify:live:headers`.
  */
 
 import fs from "node:fs";

@@ -5,6 +5,8 @@ import node from '@astrojs/node';
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, extname } from 'node:path';
 
+import { STATIC_SECURITY_META } from './scripts/security-headers.mjs';
+
 /**
  * perf-css-defer — Astro integration that runs at build done and converts
  * the global stylesheet <link> tags from render-blocking `rel="stylesheet"`
@@ -83,6 +85,88 @@ function perfCssDefer() {
 }
 
 /**
+ * injectSecurityMeta — Astro integration that runs at build done and
+ * injects <meta http-equiv="..."> tags into every prerendered HTML
+ * file in dist/client/. This is the authoritative layer for security
+ * headers on static pages (CSP, X-Content-Type-Options, X-Frame-Options,
+ * Referrer-Policy).
+ *
+ * WHY META (not HTTP headers) for static:
+ *   - Render Web Services (Node) do NOT apply the `headers:` block in
+ *     render.yaml to runtime responses. The prerendered HTML files in
+ *     dist/client/ are served by the Node adapter with no header
+ *     injection. Cloudflare (our edge) also does not inject security
+ *     headers by default.
+ *   - The only mechanism that works at the HTML payload level — the
+ *     point at which we have authority over a static file — is
+ *     <meta http-equiv="...">. Browsers honour it for CSP,
+ *     X-Content-Type-Options (Chromium-based), X-Frame-Options
+ *     (legacy / older browsers), and Referrer-Policy.
+ *   - HSTS does NOT work in meta — it must come from the HTTP layer
+ *     (Cloudflare edge). See docs/cloudflare-deployment-headers.md
+ *     for the Cloudflare Transform Rule that completes the posture
+ *     on static pages.
+ *
+ * IDEMPOTENT: re-running on a file that already has the meta tags is
+ * a no-op (matched against the unique marker comment we inject).
+ *
+ * @csp-attr-safe — Unlike perf-css-defer (which injects inline
+ *   onload="" handlers and therefore needs 'unsafe-inline' on
+ *   script-src-attr), this integration only injects meta tags. The
+ *   strict script-src-attr 'none' posture is preserved.
+ */
+function injectSecurityMeta() {
+  // Unique marker for idempotency. If this comment is present, the
+  // meta tags are already injected for the current posture revision
+  // and the integration skips the file.
+  const MARKER = '<!-- brightai-security-meta:BAI-IDX-02 -->';
+  return {
+    name: 'inject-security-meta',
+    hooks: {
+      'astro:build:done': async (/** @type {{ dir: URL }} */ { dir }) => {
+        const distDir = dir.pathname.replace(/\/$/, '');
+        /** @type {(d: string) => string[]} */
+        const walk = (d) => {
+          /** @type {string[]} */
+          const out = [];
+          for (const entry of readdirSync(d, { withFileTypes: true })) {
+            const p = join(d, entry.name);
+            if (entry.isDirectory()) out.push(...walk(p));
+            else if (extname(entry.name) === '.html') out.push(p);
+          }
+          return out;
+        };
+        const htmlFiles = walk(distDir);
+
+        // Build the meta block once. Each meta tag carries
+        // http-equiv="<X>" and content="<Y>" so the browser treats
+        // it as the equivalent HTTP header.
+        const metaBlock =
+          MARKER +
+          STATIC_SECURITY_META.map(
+            (m) =>
+              `<meta http-equiv="${m.httpEquiv}" content="${m.content.replace(/"/g, '&quot;')}">`
+          ).join('') +
+          '<!-- /brightai-security-meta -->';
+
+        let totalInjected = 0;
+        for (const file of htmlFiles) {
+          const html = readFileSync(file, 'utf-8');
+          if (html.includes(MARKER)) continue; // already injected
+          if (!html.includes('</head>')) continue; // malformed — skip
+          const newHtml = html.replace('</head>', `${metaBlock}</head>`);
+          writeFileSync(file, newHtml, 'utf-8');
+          totalInjected += 1;
+        }
+        console.log(
+          `[inject-security-meta] injected ${STATIC_SECURITY_META.length} meta tag(s) into ${totalInjected} HTML file(s)`
+        );
+      },
+    },
+  };
+}
+
+/**
  * astro.config.mjs — REPORTS-SEO-FOUNDATION (2026-07-07)
  *                  + KERNEL-AI-2026-07-14 (switched to @astrojs/node)
  *                  + KERNEL-AUDIT-2026-07-15-BATCH-10 (EXEC-16 output mode)
@@ -151,6 +235,7 @@ export default defineConfig({
   },
   integrations: [
     perfCssDefer(),
+    injectSecurityMeta(),
     sitemap({
       i18n: {
         defaultLocale: 'ar',

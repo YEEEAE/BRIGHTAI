@@ -29,7 +29,10 @@ function getArg(name, fallback) {
 const ROOT = path.resolve(getArg("source", process.cwd()));
 const SITEMAP_PATH = path.resolve(getArg("sitemap", path.join(ROOT, "sitemap.xml")));
 const BASE_URL = "https://brightai.site";
-const REPORT_DIR = path.join(ROOT, "reports", "internal-links");
+// BAI-IDX-04: report directory is anchored at the project root (not ROOT)
+// so dist/ rebuilds don't delete past reports. `--source` only changes
+// which HTML files the audit reads — outputs stay in the project tree.
+const REPORT_DIR = path.resolve(process.cwd(), "reports", "internal-links");
 const REPORT_JSON = path.join(REPORT_DIR, "full-inventory.json");
 const REPORT_MD = path.join(REPORT_DIR, "full-inventory.md");
 const START = "<!-- BRIGHTAI_INTERNAL_LINKS_START -->";
@@ -230,7 +233,7 @@ async function buildInventory() {
       }
     });
 
-    if (expectedCanonical && canonical !== expectedCanonical && !isOwnerDecision(relPath)) {
+    if (expectedCanonical && canonical !== expectedCanonical && !isOwnerDecision(relPath) && !hasNoindexDirective(html)) {
       canonicalIssues.push({ relPath, expectedCanonical, canonical: canonicalHref || "" });
     }
 
@@ -274,6 +277,52 @@ async function buildInventory() {
     page.severity = page.problem.includes("canonical_mismatch") || page.problem.includes("orphan_page") ? "High" : page.problem ? "Medium" : "None";
   }
 
+  // BAI-IDX-04: BFS click depth from / to every indexable page.
+  // Max depth in the link graph = number of clicks a user (or crawler) needs
+  // to reach the page from the homepage. AC says ≤ 3.
+  const HOME_URL = `${BASE_URL}/`;
+  const urlToPage = new Map();
+  for (const page of pages) {
+    if (page.url && page.indexable) urlToPage.set(page.url, page);
+  }
+  const clickDepth = new Map();
+  clickDepth.set(HOME_URL, 0);
+  const bfsQueue = [HOME_URL];
+  let maxClickDepth = 0;
+  while (bfsQueue.length) {
+    const current = bfsQueue.shift();
+    const currentDepth = clickDepth.get(current) || 0;
+    const page = urlToPage.get(current);
+    if (!page) continue;
+    for (const target of page.outgoing) {
+      if (!urlToPage.has(target)) continue;
+      if (clickDepth.has(target)) continue;
+      const nextDepth = currentDepth + 1;
+      clickDepth.set(target, nextDepth);
+      if (nextDepth > maxClickDepth) maxClickDepth = nextDepth;
+      bfsQueue.push(target);
+    }
+  }
+  const CLICK_DEPTH_LIMIT = 3;
+  const highClickDepthPages = [];
+  for (const page of pages) {
+    if (!page.indexable || !page.url || page.url === HOME_URL) {
+      page.clickDepth = page.url && clickDepth.has(page.url) ? clickDepth.get(page.url) : 0;
+      continue;
+    }
+    const depth = clickDepth.has(page.url) ? clickDepth.get(page.url) : null;
+    page.clickDepth = depth;
+    if (depth === null) {
+      page.clickDepthIssue = "unreachable_from_home";
+    } else if (depth > CLICK_DEPTH_LIMIT) {
+      page.clickDepthIssue = `depth_${depth}_exceeds_limit_${CLICK_DEPTH_LIMIT}`;
+      highClickDepthPages.push({ url: page.url, depth, relPath: page.relPath });
+    }
+  }
+  const unreachableIndexable = pages
+    .filter((page) => page.indexable && page.url !== HOME_URL && clickDepth.get(page.url) === undefined)
+    .map((page) => ({ url: page.url, relPath: page.relPath }));
+
   const sitemapMissingInternalLinks = [...sitemapUrls].filter((url) => {
     const page = pages.find((row) => row.url === url);
     return page && page.url !== `${BASE_URL}/` && page.incoming.length === 0;
@@ -296,12 +345,20 @@ async function buildInventory() {
       hashIssues: hashIssues.length,
       sitemapUrls: sitemapUrls.size,
       sitemapMissingInternalLinks: sitemapMissingInternalLinks.length,
+      // BAI-IDX-04: click depth (BFS from /) + enforcement threshold
+      maxClickDepth,
+      clickDepthLimit: CLICK_DEPTH_LIMIT,
+      pagesWithHighClickDepth: highClickDepthPages.length,
+      unreachableFromHome: unreachableIndexable.length,
+      clickDepthViolations: [...highClickDepthPages.map((row) => ({ url: row.url, relPath: row.relPath, depth: row.depth })), ...unreachableIndexable.map((row) => ({ ...row, depth: null }))],
     },
     weakAnchors,
     noHrefLinks,
     canonicalIssues,
     hashIssues,
     sitemapMissingInternalLinks,
+    highClickDepthPages,
+    unreachableIndexable,
     registrySize: registry.publicRelPaths.size,
   };
 }
@@ -518,15 +575,48 @@ function renderMarkdown(report) {
     `- Weak anchors: ${report.summary.weakAnchors}`,
     `- Links without href: ${report.summary.noHrefLinks}`,
     `- Canonical issues: ${report.summary.canonicalIssues}`,
+    // BAI-IDX-04: click depth (BFS from /)
+    `- Max click depth from /: ${report.summary.maxClickDepth}`,
+    `- Click depth limit: ${report.summary.clickDepthLimit}`,
+    `- Pages exceeding click depth limit: ${report.summary.pagesWithHighClickDepth}`,
+    `- Indexable pages unreachable from /: ${report.summary.unreachableFromHome}`,
     "",
-    "## Page / URL / Source File / Route Type / Incoming Internal Links / Outgoing Internal Links / Is Orphan? / In Sitemap? / Canonical / Indexable? / Problem / Severity / Fix",
+    "## Click Depth (BAI-IDX-04)",
     "",
-    "| Page | URL | Source File | Route Type | Incoming | Outgoing | Orphan | Sitemap | Canonical | Indexable | Problem | Severity | Fix |",
-    "| --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- | --- | --- | --- |",
+    `Max click depth from /: **${report.summary.maxClickDepth}** (limit ${report.summary.clickDepthLimit}).`,
+    "",
   ];
 
+  if (report.highClickDepthPages && report.highClickDepthPages.length) {
+    lines.push("### Pages exceeding click depth limit", "");
+    lines.push("| URL | Depth | Source File |");
+    lines.push("| --- | ---: | --- |");
+    for (const row of report.highClickDepthPages) {
+      lines.push(`| ${row.url} | ${row.depth} | ${row.relPath} |`);
+    }
+    lines.push("");
+  } else {
+    lines.push("- None. All indexable pages reachable in ≤ " + report.summary.clickDepthLimit + " clicks from /.");
+    lines.push("");
+  }
+
+  if (report.unreachableIndexable && report.unreachableIndexable.length) {
+    lines.push("### Indexable pages unreachable from /", "");
+    lines.push("| URL | Source File |");
+    lines.push("| --- | --- |");
+    for (const row of report.unreachableIndexable) {
+      lines.push(`| ${row.url} | ${row.relPath} |`);
+    }
+    lines.push("");
+  }
+
+  lines.push("## Page / URL / Source File / Route Type / Incoming Internal Links / Outgoing Internal Links / Is Orphan? / In Sitemap? / Click Depth / Canonical / Indexable? / Problem / Severity / Fix", "");
+  lines.push("| Page | URL | Source File | Route Type | Incoming | Outgoing | Orphan | Sitemap | Click Depth | Canonical | Indexable | Problem | Severity | Fix |", "");
+  lines.push("| --- | --- | --- | --- | ---: | ---: | --- | --- | ---: | --- | --- | --- | --- | --- |", "");
+
   for (const page of topPages) {
-    lines.push(`| ${page.title.replace(/\|/g, "\\|")} | ${page.url} | ${page.relPath} | ${page.routeType} | ${page.incoming.length} | ${page.outgoing.length} | ${page.isOrphan ? "Yes" : "No"} | ${page.inSitemap ? "Yes" : "No"} | ${String(page.canonical).replace(/\|/g, "\\|")} | ${page.indexable ? "Yes" : "No"} | ${page.problem || "None"} | ${page.severity} | ${page.problem ? "Add contextual HTML links, sitemap regeneration, or canonical correction" : "None"} |`);
+    const depthCell = page.clickDepth == null ? "n/a" : String(page.clickDepth);
+    lines.push(`| ${page.title.replace(/\|/g, "\\|")} | ${page.url} | ${page.relPath} | ${page.routeType} | ${page.incoming.length} | ${page.outgoing.length} | ${page.isOrphan ? "Yes" : "No"} | ${page.inSitemap ? "Yes" : "No"} | ${depthCell} | ${String(page.canonical).replace(/\|/g, "\\|")} | ${page.indexable ? "Yes" : "No"} | ${page.problem || "None"} | ${page.severity} | ${page.problem ? "Add contextual HTML links, sitemap regeneration, or canonical correction" : "None"} |`);
   }
 
   lines.push("", "## Problems", "");
@@ -565,6 +655,35 @@ async function auditOnly() {
   await fs.writeFile(REPORT_MD, renderMarkdown(report), "utf8");
   console.log(`Full inventory written to ${REPORT_MD}`);
   console.log(JSON.stringify(report.summary, null, 2));
+
+  // BAI-IDX-04: enforce acceptance criteria as exit codes so
+  // `pnpm run internal-links:audit` fails the build when the link graph
+  // regresses. Each AC is a single line; reset exit code is 0.
+  const failures = [];
+  if (report.summary.orphanPages > 0) {
+    failures.push(`orphan_pages=${report.summary.orphanPages} (expected 0)`);
+  }
+  if (report.summary.brokenLinks > 0) {
+    failures.push(`broken_links=${report.summary.brokenLinks} (expected 0)`);
+  }
+  if (report.summary.maxClickDepth > report.summary.clickDepthLimit) {
+    failures.push(`max_click_depth=${report.summary.maxClickDepth} exceeds limit=${report.summary.clickDepthLimit}`);
+  }
+  if (report.summary.pagesWithHighClickDepth > 0) {
+    failures.push(`pages_with_high_click_depth=${report.summary.pagesWithHighClickDepth} (expected 0)`);
+  }
+  if (report.summary.unreachableFromHome > 0) {
+    failures.push(`unreachable_indexable=${report.summary.unreachableFromHome} (expected 0)`);
+  }
+  if (failures.length) {
+    console.error("");
+    console.error("❌ BAI-IDX-04 acceptance check FAILED:");
+    for (const failure of failures) console.error(`   - ${failure}`);
+    console.error(`   See ${REPORT_MD} for details.`);
+    process.exit(1);
+  }
+  console.log("");
+  console.log("✅ BAI-IDX-04 acceptance check PASSED: 0 orphans, 0 broken, max click depth " + report.summary.maxClickDepth + " ≤ " + report.summary.clickDepthLimit + ".");
 }
 
 const mode = process.argv.includes("--fix") ? "fix" : "audit";

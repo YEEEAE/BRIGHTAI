@@ -16,6 +16,29 @@ services:
     # KERNEL-AUDIT-2026-07-15-BATCH-10 / EXEC-17: hit a real SSR endpoint
     # (not just / static HTML) so Render detects actual Node outages.
     healthCheckPath: /api/health/
+    # ──────────────────────────────────────────────────────────────────
+    # BAI-IDX-02 (2026-07-25) — DOCUMENTATION ONLY.
+    # The `headers:` block below is NOT applied to runtime responses on
+    # Render Web Services (Node runtime). Render's `headers:` directive
+    # only works for Render Static Sites. On the current Node service,
+    # the actual production security header posture is enforced by:
+    #
+    #   1. src/middleware.ts — applies RESPONSE_SECURITY_HEADERS as
+    #      HTTP response headers on every SSR route (/api/*).
+    #   2. injectSecurityMeta() Astro integration in astro.config.mjs —
+    #      injects <meta http-equiv="..."> in every prerendered HTML
+    #      file in dist/client/.
+    #   3. Cloudflare edge Transform Rule — applies HSTS on static
+    #      pages (HSTS does NOT work in meta). See
+    #      docs/cloudflare-deployment-headers.md for the manual setup.
+    #
+    # The block below is kept in sync with the canonical posture in
+    # scripts/security-headers.mjs for documentation + drift detection.
+    # If you change a value here, also update scripts/security-headers.mjs
+    # and the post-deploy check (npm run verify:live:headers) will fail
+    # until they re-sync. Do NOT remove this block — it is the single
+    # line of defence for any future migration to a static-only host.
+    # ──────────────────────────────────────────────────────────────────
     envVars:
       - key: NODE_VERSION
         value: 22.22.2
