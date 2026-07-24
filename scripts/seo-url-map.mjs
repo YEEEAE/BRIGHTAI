@@ -7,11 +7,14 @@ const ROOT_INDEX_DIRS = new Set([
   "about",
   "ai-agent",
   "ai-bots",
+  "assessment",
+  "authors",
   "blog",
   "calculator",
   "case-studies",
   "consultation",
   "contact",
+  "customers",
   "data-analysis",
   "events",
   "health",
@@ -121,12 +124,7 @@ function stripTrailingSlash(sitePath) {
 
 function shouldKeepTrailingSlash(sitePath) {
   if (!sitePath || sitePath === "/") return true;
-  if (TRAILING_SLASH_ROUTE_PATTERNS.some((pattern) => pattern.test(sitePath))) {
-    return true;
-  }
-  const trimmed = stripTrailingSlash(sitePath);
-  const segment = trimmed.slice(1);
-  return ROOT_INDEX_DIRS.has(segment);
+  return true;
 }
 
 export function canonicalizeSitePath(rawPath) {

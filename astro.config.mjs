@@ -60,15 +60,18 @@ function perfCssDefer() {
         for (const file of htmlFiles) {
           const html = readFileSync(file, 'utf-8');
           let count = 0;
-          const newHtml = html.replace(pattern, (full, name, hash) => {
+          let newHtml = html.replace(pattern, (full, name, hash) => {
             count++;
             const href = `/_astro/${name}.${hash}.css`;
             return (
-              `<link rel="preload" href="${href}" as="style" onload="this.onload=null;this.rel='stylesheet'">` +
+              `<link rel="preload" href="${href}" as="style" data-css-defer>` +
               `<noscript><link rel="stylesheet" href="${href}"></noscript>`
             );
           });
           if (count > 0) {
+            if (!newHtml.includes('/js/css-defer.js')) {
+              newHtml = newHtml.replace('</head>', '<script src="/js/css-defer.js" defer></script></head>');
+            }
             writeFileSync(file, newHtml, 'utf-8');
             totalTransformed += count;
           }

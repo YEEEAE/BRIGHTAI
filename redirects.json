@@ -14,115 +14,115 @@
     },
     {
       "from": "/blog/Generative-artificial-intelligence",
-      "to": "/services/"
+      "to": "/blog/generative-ai-governance-vs-traditional/"
     },
     {
       "from": "/blog/Generative-artificial-intelligence.html",
-      "to": "/services/"
+      "to": "/blog/generative-ai-governance-vs-traditional/"
     },
     {
       "from": "/blog/agint-bblog",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/agint-bblog.html",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/ai",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/ai.html",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/analysy",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/analysy.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/atou-job",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/atou-job.html",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/auto",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/auto.html",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/services/hr-automation-saudi",
-      "to": "/services/"
+      "to": "/blog/ai-hr-recruitment-saudi/"
     },
     {
       "from": "/services/hr-automation-saudi/",
-      "to": "/services/"
+      "to": "/blog/ai-hr-recruitment-saudi/"
     },
     {
       "from": "/services/hr-automation-saudi/index.html",
-      "to": "/services/"
+      "to": "/blog/ai-hr-recruitment-saudi/"
     },
     {
       "from": "/blog/cloude-opus-4.6",
-      "to": "/services/"
+      "to": "/blog/ai-governance/"
     },
     {
       "from": "/blog/cloude-opus-4.6/",
-      "to": "/services/"
+      "to": "/blog/ai-governance/"
     },
     {
       "from": "/blog/cloude-opus-4.6.html",
-      "to": "/services/"
+      "to": "/blog/ai-governance/"
     },
     {
       "from": "/services/kpi-dashboard-guide",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/kpi-dashboard-guide/",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/kpi-dashboard-guide/index.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/power-bi-saudi-guide",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/power-bi-saudi-guide/",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/power-bi-saudi-guide/index.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/digital",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/digital.html",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/gov",
-      "to": "/services/"
+      "to": "/solutions/government-ai-governance/"
     },
     {
       "from": "/blog/gov.html",
-      "to": "/services/"
+      "to": "/solutions/government-ai-governance/"
     },
     {
       "from": "/index.html",
@@ -278,51 +278,51 @@
     },
     {
       "from": "/services/ecommerce.html",
-      "to": "/services/"
+      "to": "/blog/ai-ecommerce-saudi/"
     },
     {
       "from": "/services/ecommerce-en.html",
-      "to": "/services/"
+      "to": "/blog/ai-ecommerce-saudi/"
     },
     {
       "from": "/services/energy.html",
-      "to": "/services/"
+      "to": "/solutions/government-ai-governance/"
     },
     {
       "from": "/services/energy-en.html",
-      "to": "/services/"
+      "to": "/solutions/government-ai-governance/"
     },
     {
       "from": "/services/finance.html",
-      "to": "/services/"
+      "to": "/solutions/banking-ai-governance/"
     },
     {
       "from": "/services/finance-en.html",
-      "to": "/services/"
+      "to": "/solutions/banking-ai-governance/"
     },
     {
       "from": "/services/healthcare.html",
-      "to": "/services/"
+      "to": "/solutions/healthcare-ai-governance/"
     },
     {
       "from": "/services/healthcare-en.html",
-      "to": "/services/"
+      "to": "/solutions/healthcare-ai-governance/"
     },
     {
       "from": "/services/logistics.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/services/logistics-en.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/services/manufacturing.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/services/manufacturing-en.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/demo/pages/appointment/index.html",
@@ -346,23 +346,23 @@
     },
     {
       "from": "/health-bright.html",
-      "to": "/services/"
+      "to": "/solutions/healthcare-ai-governance/"
     },
     {
       "from": "/data-analysis.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/our-products.html",
-      "to": "/services/"
+      "to": "/solutions/ai-governance-platform/"
     },
     {
       "from": "/Company%20performance%20monitoring%20tool.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blogger/ai-generative-content-industry-saudi-arabia.html",
-      "to": "/services/"
+      "to": "/blog/generative-ai-governance-vs-traditional/"
     },
     {
       "from": "/frontend/pages/about-us/index.html",
@@ -374,7 +374,7 @@
     },
     {
       "from": "/frontend/pages/services/",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/frontend/pages/contact/index.html",
@@ -386,15 +386,15 @@
     },
     {
       "from": "/frontend/pages/services/index.html",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/frontend/pages/our-products/index.html",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/frontend/pages/our-products/",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/frontend/pages/smart-medical-archive/index.html",
@@ -422,27 +422,27 @@
     },
     {
       "from": "/frontend/pages/blogger/nca-compliance",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/ai-workflows",
-      "to": "/services/"
+      "to": "/solutions/ai-governance-platform/"
     },
     {
       "from": "/blog/production-line",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/production-line.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/atou.doc",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/atou.doc/",
-      "to": "/services/"
+      "to": "/404/"
     },
     {
       "from": "/blog/astr.doc",
@@ -466,71 +466,71 @@
     },
     {
       "from": "/blog/ production-line",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/Generative artificial intelligence",
-      "to": "/services/"
+      "to": "/blog/generative-ai-governance-vs-traditional/"
     },
     {
       "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية",
-      "to": "/services/"
+      "to": "/blog/rpa-automation-saudi-savings/"
     },
     {
       "from": "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/",
-      "to": "/services/"
+      "to": "/blog/rpa-automation-saudi-savings/"
     },
     {
       "from": "/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html",
-      "to": "/services/"
+      "to": "/blog/rpa-automation-saudi-savings/"
     },
     {
       "from": "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات",
@@ -546,15 +546,15 @@
     },
     {
       "from": "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور",
-      "to": "/services/"
+      "to": "/blog/computer-vision-saudi-factories/"
     },
     {
       "from": "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/",
-      "to": "/services/"
+      "to": "/blog/computer-vision-saudi-factories/"
     },
     {
       "from": "/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html",
-      "to": "/services/"
+      "to": "/blog/computer-vision-saudi-factories/"
     },
     {
       "from": "/terms/terms-and-conditions-en.html",
@@ -574,215 +574,215 @@
     },
     {
       "from": "/services/data-analyst-agent.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/custom-ai-agent.html",
-      "to": "/services/"
+      "to": "/solutions/ai-governance-platform/"
     },
     {
       "from": "/services/competitor-analysis-agent.html",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/services/seo-agent.html",
-      "to": "/services/"
+      "to": "/blog/arabic-chatbot-customer-service-saudi/"
     },
     {
       "from": "/services/social-data-analysis.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/health-data-analysis.html",
-      "to": "/services/"
+      "to": "/solutions/healthcare-ai-governance/"
     },
     {
       "from": "/services/marketing-agent.html",
-      "to": "/services/"
+      "to": "/blog/arabic-chatbot-customer-service-saudi/"
     },
     {
       "from": "/services/document-automation.html",
-      "to": "/services/"
+      "to": "/solutions/ai-evidence-file/"
     },
     {
       "from": "/services/smart-hiring-system.html",
-      "to": "/services/"
+      "to": "/blog/ai-hr-recruitment-saudi/"
     },
     {
       "from": "/services/medical-archive.html",
-      "to": "/services/"
+      "to": "/solutions/healthcare-ai-governance/"
     },
     {
       "from": "/services/data-platform.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/services/lead-hunter.html",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/services/customer-service-automation.html",
-      "to": "/services/"
+      "to": "/blog/arabic-chatbot-customer-service-saudi/"
     },
     {
       "from": "/services/hr-automation.html",
-      "to": "/services/"
+      "to": "/blog/ai-hr-recruitment-saudi/"
     },
     {
       "from": "/services/marketing-automation.html",
-      "to": "/services/"
+      "to": "/blog/arabic-chatbot-customer-service-saudi/"
     },
     {
       "from": "/services/approvals-automation.html",
-      "to": "/services/"
+      "to": "/solutions/human-approval-layer/"
     },
     {
       "from": "/services/operational-reports-automation.html",
-      "to": "/services/"
+      "to": "/solutions/ai-evidence-file/"
     },
     {
       "from": "/services/supply-chain-optimization.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/services/ai-consulting.html",
-      "to": "/services/"
+      "to": "/solutions/ai-governance-platform/"
     },
     {
       "from": "/services/brightproject.html",
-      "to": "/services/"
+      "to": "/solutions/ai-governance-platform/"
     },
     {
       "from": "/services/brightsales.html",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/services/ai-scolecs.html",
-      "to": "/services/"
+      "to": "/solutions/ai-governance-platform/"
     },
     {
       "from": "/services/smart-hospital-management.html",
-      "to": "/services/"
+      "to": "/solutions/healthcare-ai-governance/"
     },
     {
       "from": "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html",
-      "to": "/services/"
+      "to": "/solutions/ai-use-case-discovery/"
     },
     {
       "from": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html",
-      "to": "/services/"
+      "to": "/solutions/manufacturing-ai-governance/"
     },
     {
       "from": "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية",
-      "to": "/services/"
+      "to": "/blog/rpa-automation-saudi-savings/"
     },
     {
       "from": "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/",
-      "to": "/services/"
+      "to": "/blog/rpa-automation-saudi-savings/"
     },
     {
       "from": "/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html",
-      "to": "/services/"
+      "to": "/blog/rpa-automation-saudi-savings/"
     },
     {
       "from": "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html",
-      "to": "/services/"
+      "to": "/blog/digital-transformation-sme-saudi/"
     },
     {
       "from": "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور",
-      "to": "/services/"
+      "to": "/blog/computer-vision-saudi-factories/"
     },
     {
       "from": "/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/",
-      "to": "/services/"
+      "to": "/blog/computer-vision-saudi-factories/"
     },
     {
       "from": "/blog/machine-learning-computer-vision-legacy.html",
-      "to": "/services/"
+      "to": "/blog/computer-vision-saudi-factories/"
     },
     {
       "from": "/blog/الذكاء-الاصطناعي-و-التسويق",
-      "to": "/services/"
+      "to": "/blog/arabic-chatbot-customer-service-saudi/"
     },
     {
       "from": "/blog/الذكاء-الاصطناعي-و-التسويق/",
-      "to": "/services/"
+      "to": "/blog/arabic-chatbot-customer-service-saudi/"
     },
     {
       "from": "/blog/الذكاء-الاصطناعي-و-التسويق.html",
-      "to": "/services/"
+      "to": "/blog/arabic-chatbot-customer-service-saudi/"
     },
     {
       "from": "/blog/تحليل-البيانات",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/تحليل-البيانات/",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/تحليل-البيانات.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/تعلم-الآلة-و-الأعمال",
-      "to": "/services/"
+      "to": "/blog/ai-vs-machine-learning-explained/"
     },
     {
       "from": "/blog/تعلم-الآلة-و-الأعمال/",
-      "to": "/services/"
+      "to": "/blog/ai-vs-machine-learning-explained/"
     },
     {
       "from": "/blog/تعلم-الآلة-و-الأعمال.html",
-      "to": "/services/"
+      "to": "/blog/ai-vs-machine-learning-explained/"
     },
     {
       "from": "/blog/مقال-تحليل",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/مقال-تحليل/",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/blog/مقال-تحليل.html",
-      "to": "/services/"
+      "to": "/blog/big-data-analytics-saudi-companies/"
     },
     {
       "from": "/docs/nca-ecc-ai-controls.html",

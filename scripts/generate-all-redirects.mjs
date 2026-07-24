@@ -24,7 +24,7 @@ async function main() {
     netlifyRedirects += `https://www.brightai.site/*    https://brightai.site/:splat  301\n\n`;
 
     for (const r of redirects) {
-      netlifyRedirects += `${r.from} ${r.to} 301\n`;
+      netlifyRedirects += `${r.from} ${r.to} ${r.status || 301}\n`;
     }
     
     // إضافة حماية إضافية للـ frontend

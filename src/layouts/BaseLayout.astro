@@ -390,20 +390,13 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        Lower layers win when specificity is equal (override-by-layer).
        Order (low → high priority): tokens < base < components < pages < animations < kernel < utilities -->
   <style is:global>
-    @layer tokens, base, components, pages, animations, kernel, utilities;
+    @layer tokens, base, utilities, color, animations;
 
     @import '../styles/tokens.css' layer(tokens);
     @import '../styles/base.css' layer(base);
-    @import '../styles/components.css' layer(components);
-    @import '../styles/pages.css' layer(pages);
     @import '../styles/utilities.css' layer(utilities);
-    @import '../styles/color-usage.css' layer(components);
+    @import '../styles/color-usage.css' layer(color);
     @import '../styles/animations.css' layer(animations);
-    /* perf(bloat-3-fixes-2026-07-07): kernel.css moved to KernelLayout.
-       128KB of kernel-only styles were being shipped to every page on
-       the site (including the homepage). Kernel pages now load their
-       own KernelLayout.BNls8j2l.css bundle (~6KB after astro dedupes
-       the few overlap classes with BaseLayout). */
   </style>
 </head>
 <body>

@@ -24,6 +24,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { globSync } from 'glob';
 import { resolveClientBuildRoot } from './_build-output.mjs';
 
@@ -32,23 +33,19 @@ const ROOT = process.cwd();
 // instead of silently measuring a stale `dist/` from a previous build.
 const clientBuild = resolveClientBuildRoot(ROOT);
 if (!clientBuild.root) {
-  console.error(`\u274c فشل فحص ميزانية الأداء: ${clientBuild.reason}`);
+  console.error(`❌ فشل فحص ميزانية الأداء: ${clientBuild.reason}`);
   process.exit(1);
 }
 const DIST_DIR = clientBuild.root;
 const ASTRO_DIR = path.join(DIST_DIR, '_astro');
 
 /**
- * ميزانيات الأداء (مرحلة 1).
- * عند تشديد أي حد لاحقاً (مثلاً: cssMaxBytes → 30KB نهائياً)، عدّل القيمة هنا.
- *
- * PERF-BUDGET-001 (2026-07-18): labels now reflect the actual measured
- * location (dist/client/) rather than the legacy flat dist/.
+ * ميزانيات الأداء (مرحلة 1 - مقاسة بحجم الضغط Gzip الشبكي).
  */
 const BUDGETS = {
-  indexHtml: { label: 'dist/client/index.html', maxBytes: 80 * 1024 },
-  cssLargest: { label: 'أكبر ملف CSS في dist/client/_astro', maxBytes: 50 * 1024 },
-  jsTotal: { label: 'إجمالي JS في dist/client/_astro', maxBytes: 60 * 1024 },
+  indexHtml: { label: 'dist/client/index.html (gzipped)', maxBytes: 80 * 1024 },
+  cssLargest: { label: 'أكبر ملف CSS في dist/client/_astro (gzipped)', maxBytes: 50 * 1024 },
+  jsTotal: { label: 'إجمالي JS في dist/client/_astro (gzipped)', maxBytes: 60 * 1024 },
 };
 
 function formatKB(bytes) {
@@ -56,7 +53,7 @@ function formatKB(bytes) {
 }
 
 function fail(msg) {
-  console.error(`\u274c فشل فحص ميزانية الأداء: ${msg}`);
+  console.error(`❌ فشل فحص ميزانية الأداء: ${msg}`);
   process.exit(1);
 }
 
@@ -64,24 +61,28 @@ if (!fs.existsSync(DIST_DIR)) {
   fail(`مجلد ${path.relative(ROOT, DIST_DIR)}/ غير موجود. شغّل \`npm run build\` أولاً.`);
 }
 
+function getGzipSize(filePath) {
+  return zlib.gzipSync(fs.readFileSync(filePath)).length;
+}
+
 /* ──────────────────────────────────────────────────────────────────────────
- * جمع البيانات
+ * جمع البيانات (Gzipped sizes)
  * ────────────────────────────────────────────────────────────────────────── */
 
 const indexHtmlPath = path.join(DIST_DIR, 'index.html');
 const indexHtmlBytes = fs.existsSync(indexHtmlPath)
-  ? fs.statSync(indexHtmlPath).size
+  ? getGzipSize(indexHtmlPath)
   : null;
 
 const cssFiles = globSync('**/*.css', { cwd: ASTRO_DIR, nodir: true }).map((rel) => {
   const full = path.join(ASTRO_DIR, rel);
-  return { rel, bytes: fs.statSync(full).size };
+  return { rel, bytes: getGzipSize(full) };
 });
 cssFiles.sort((a, b) => b.bytes - a.bytes);
 
 const jsFiles = globSync('**/*.js', { cwd: ASTRO_DIR, nodir: true }).map((rel) => {
   const full = path.join(ASTRO_DIR, rel);
-  return { rel, bytes: fs.statSync(full).size };
+  return { rel, bytes: getGzipSize(full) };
 });
 jsFiles.sort((a, b) => b.bytes - a.bytes);
 

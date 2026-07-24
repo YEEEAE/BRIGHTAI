@@ -82,7 +82,7 @@ services:
         # - report-uri → /api/csp-report → Sentry alerts.
         # - middleware يضبط Content-Security-Policy-Report-Only مع nonce + strict-dynamic.
         # - Phase 2 (بعد أسبوع 0 violations): نشيل 'unsafe-inline' ونحوّل للـ enforcement.
-        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com; script-src-attr 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.clarity.ms https://*.clarity.ms https://c.bing.com; frame-src 'self' https://www.googletagmanager.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; report-uri /api/csp-report; upgrade-insecure-requests"
+        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.clarity.ms https://*.clarity.ms https://c.bing.com; frame-src 'self' https://www.googletagmanager.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; report-uri /api/csp-report; upgrade-insecure-requests"
       - path: /*
         name: Cache-Control
         value: public, max-age=0, must-revalidate
@@ -332,88 +332,88 @@ services:
         destination: /trust/
       - type: redirect
         source: /blog/Generative-artificial-intelligence
-        destination: /services/
+        destination: /blog/generative-ai-governance-vs-traditional/
       - type: redirect
         source: /blog/Generative-artificial-intelligence.html
-        destination: /services/
+        destination: /blog/generative-ai-governance-vs-traditional/
       - type: redirect
         source: /blog/agint-bblog
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/agint-bblog.html
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/ai
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/ai.html
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/analysy
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/analysy.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/atou-job
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/atou-job.html
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/auto
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/auto.html
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /services/hr-automation-saudi
-        destination: /services/
+        destination: /blog/ai-hr-recruitment-saudi/
       - type: redirect
         source: /services/hr-automation-saudi/
-        destination: /services/
+        destination: /blog/ai-hr-recruitment-saudi/
       - type: redirect
         source: /services/hr-automation-saudi/index.html
-        destination: /services/
+        destination: /blog/ai-hr-recruitment-saudi/
       - type: redirect
         source: /blog/cloude-opus-4.6
-        destination: /services/
+        destination: /blog/ai-governance/
       - type: redirect
         source: /blog/cloude-opus-4.6/
-        destination: /services/
+        destination: /blog/ai-governance/
       - type: redirect
         source: /blog/cloude-opus-4.6.html
-        destination: /services/
+        destination: /blog/ai-governance/
       - type: redirect
         source: /services/kpi-dashboard-guide
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/kpi-dashboard-guide/
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/kpi-dashboard-guide/index.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/power-bi-saudi-guide
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/power-bi-saudi-guide/
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/power-bi-saudi-guide/index.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/digital
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/digital.html
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/gov
-        destination: /services/
+        destination: /solutions/government-ai-governance/
       - type: redirect
         source: /blog/gov.html
-        destination: /services/
+        destination: /solutions/government-ai-governance/
       - type: redirect
         source: /en/index.html
         destination: /en/
@@ -527,40 +527,40 @@ services:
         destination: /docs/
       - type: redirect
         source: /services/ecommerce.html
-        destination: /services/
+        destination: /blog/ai-ecommerce-saudi/
       - type: redirect
         source: /services/ecommerce-en.html
-        destination: /services/
+        destination: /blog/ai-ecommerce-saudi/
       - type: redirect
         source: /services/energy.html
-        destination: /services/
+        destination: /solutions/government-ai-governance/
       - type: redirect
         source: /services/energy-en.html
-        destination: /services/
+        destination: /solutions/government-ai-governance/
       - type: redirect
         source: /services/finance.html
-        destination: /services/
+        destination: /solutions/banking-ai-governance/
       - type: redirect
         source: /services/finance-en.html
-        destination: /services/
+        destination: /solutions/banking-ai-governance/
       - type: redirect
         source: /services/healthcare.html
-        destination: /services/
+        destination: /solutions/healthcare-ai-governance/
       - type: redirect
         source: /services/healthcare-en.html
-        destination: /services/
+        destination: /solutions/healthcare-ai-governance/
       - type: redirect
         source: /services/logistics.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /services/logistics-en.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /services/manufacturing.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /services/manufacturing-en.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /demo/pages/appointment/index.html
         destination: /demo/
@@ -578,19 +578,19 @@ services:
         destination: /docs/
       - type: redirect
         source: /health-bright.html
-        destination: /services/
+        destination: /solutions/healthcare-ai-governance/
       - type: redirect
         source: /data-analysis.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /our-products.html
-        destination: /services/
+        destination: /solutions/ai-governance-platform/
       - type: redirect
         source: /Company%20performance%20monitoring%20tool.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blogger/ai-generative-content-industry-saudi-arabia.html
-        destination: /services/
+        destination: /blog/generative-ai-governance-vs-traditional/
       - type: redirect
         source: /frontend/pages/about-us/index.html
         destination: /about/
@@ -599,7 +599,7 @@ services:
         destination: /about/
       - type: redirect
         source: /frontend/pages/services/
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /frontend/pages/contact/index.html
         destination: /contact/
@@ -608,13 +608,13 @@ services:
         destination: /contact/
       - type: redirect
         source: /frontend/pages/services/index.html
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /frontend/pages/our-products/index.html
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /frontend/pages/our-products/
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /frontend/pages/smart-medical-archive/index.html
         destination: /solutions/healthcare-ai-governance/
@@ -635,22 +635,22 @@ services:
         destination: /demo/
       - type: redirect
         source: /frontend/pages/blogger/nca-compliance
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /ai-workflows
-        destination: /services/
+        destination: /solutions/ai-governance-platform/
       - type: redirect
         source: /blog/production-line
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/production-line.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/atou.doc
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/atou.doc/
-        destination: /services/
+        destination: /404/
       - type: redirect
         source: /blog/astr.doc
         destination: /blog/
@@ -668,55 +668,55 @@ services:
         destination: /blog/
       - type: redirect
         source: /blog/ production-line
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/Generative artificial intelligence
-        destination: /services/
+        destination: /blog/generative-ai-governance-vs-traditional/
       - type: redirect
         source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية
-        destination: /services/
+        destination: /blog/rpa-automation-saudi-savings/
       - type: redirect
         source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/
-        destination: /services/
+        destination: /blog/rpa-automation-saudi-savings/
       - type: redirect
         source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html
-        destination: /services/
+        destination: /blog/rpa-automation-saudi-savings/
       - type: redirect
         source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات
         destination: /blog/
@@ -728,13 +728,13 @@ services:
         destination: /blog/
       - type: redirect
         source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور
-        destination: /services/
+        destination: /blog/computer-vision-saudi-factories/
       - type: redirect
         source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/
-        destination: /services/
+        destination: /blog/computer-vision-saudi-factories/
       - type: redirect
         source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html
-        destination: /services/
+        destination: /blog/computer-vision-saudi-factories/
       - type: redirect
         source: /terms/terms-and-conditions-en.html
         destination: /docs/
@@ -749,163 +749,163 @@ services:
         destination: /docs/
       - type: redirect
         source: /services/data-analyst-agent.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/custom-ai-agent.html
-        destination: /services/
+        destination: /solutions/ai-governance-platform/
       - type: redirect
         source: /services/competitor-analysis-agent.html
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /services/seo-agent.html
-        destination: /services/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
       - type: redirect
         source: /services/social-data-analysis.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/health-data-analysis.html
-        destination: /services/
+        destination: /solutions/healthcare-ai-governance/
       - type: redirect
         source: /services/marketing-agent.html
-        destination: /services/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
       - type: redirect
         source: /services/document-automation.html
-        destination: /services/
+        destination: /solutions/ai-evidence-file/
       - type: redirect
         source: /services/smart-hiring-system.html
-        destination: /services/
+        destination: /blog/ai-hr-recruitment-saudi/
       - type: redirect
         source: /services/medical-archive.html
-        destination: /services/
+        destination: /solutions/healthcare-ai-governance/
       - type: redirect
         source: /services/data-platform.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /services/lead-hunter.html
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /services/customer-service-automation.html
-        destination: /services/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
       - type: redirect
         source: /services/hr-automation.html
-        destination: /services/
+        destination: /blog/ai-hr-recruitment-saudi/
       - type: redirect
         source: /services/marketing-automation.html
-        destination: /services/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
       - type: redirect
         source: /services/approvals-automation.html
-        destination: /services/
+        destination: /solutions/human-approval-layer/
       - type: redirect
         source: /services/operational-reports-automation.html
-        destination: /services/
+        destination: /solutions/ai-evidence-file/
       - type: redirect
         source: /services/supply-chain-optimization.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /services/ai-consulting.html
-        destination: /services/
+        destination: /solutions/ai-governance-platform/
       - type: redirect
         source: /services/brightproject.html
-        destination: /services/
+        destination: /solutions/ai-governance-platform/
       - type: redirect
         source: /services/brightsales.html
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /services/ai-scolecs.html
-        destination: /services/
+        destination: /solutions/ai-governance-platform/
       - type: redirect
         source: /services/smart-hospital-management.html
-        destination: /services/
+        destination: /solutions/healthcare-ai-governance/
       - type: redirect
         source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html
-        destination: /services/
+        destination: /solutions/ai-use-case-discovery/
       - type: redirect
         source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html
-        destination: /services/
+        destination: /solutions/manufacturing-ai-governance/
       - type: redirect
         source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية
-        destination: /services/
+        destination: /blog/rpa-automation-saudi-savings/
       - type: redirect
         source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/
-        destination: /services/
+        destination: /blog/rpa-automation-saudi-savings/
       - type: redirect
         source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html
-        destination: /services/
+        destination: /blog/rpa-automation-saudi-savings/
       - type: redirect
         source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html
-        destination: /services/
+        destination: /blog/digital-transformation-sme-saudi/
       - type: redirect
         source: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور
-        destination: /services/
+        destination: /blog/computer-vision-saudi-factories/
       - type: redirect
         source: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/
-        destination: /services/
+        destination: /blog/computer-vision-saudi-factories/
       - type: redirect
         source: /blog/machine-learning-computer-vision-legacy.html
-        destination: /services/
+        destination: /blog/computer-vision-saudi-factories/
       - type: redirect
         source: /blog/الذكاء-الاصطناعي-و-التسويق
-        destination: /services/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
       - type: redirect
         source: /blog/الذكاء-الاصطناعي-و-التسويق/
-        destination: /services/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
       - type: redirect
         source: /blog/الذكاء-الاصطناعي-و-التسويق.html
-        destination: /services/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
       - type: redirect
         source: /blog/تحليل-البيانات
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/تحليل-البيانات/
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/تحليل-البيانات.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/تعلم-الآلة-و-الأعمال
-        destination: /services/
+        destination: /blog/ai-vs-machine-learning-explained/
       - type: redirect
         source: /blog/تعلم-الآلة-و-الأعمال/
-        destination: /services/
+        destination: /blog/ai-vs-machine-learning-explained/
       - type: redirect
         source: /blog/تعلم-الآلة-و-الأعمال.html
-        destination: /services/
+        destination: /blog/ai-vs-machine-learning-explained/
       - type: redirect
         source: /blog/مقال-تحليل
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/مقال-تحليل/
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /blog/مقال-تحليل.html
-        destination: /services/
+        destination: /blog/big-data-analytics-saudi-companies/
       - type: redirect
         source: /docs/nca-ecc-ai-controls.html
         destination: /docs/nca-ecc-ai-controls/

@@ -47,7 +47,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
-const ROOT = dirname(dirname(__filename));
+const ROOT = dirname(dirname(dirname(__filename)));
 
 const COLORS = {
   red: '\x1b[31m',

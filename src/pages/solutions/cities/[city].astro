@@ -1,0 +1,13 @@
+---
+import { CITIES } from '../../../data/cities';
+
+export function getStaticPaths() {
+  return Object.values(CITIES).map((city) => ({
+    params: { city: city.slug },
+    props: { city },
+  }));
+}
+
+const { city } = Astro.props;
+return Astro.redirect(city.landingHref, 301);
+---

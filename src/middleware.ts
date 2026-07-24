@@ -14,13 +14,29 @@ export const onRequest = defineMiddleware(async (context, next) => {
   initSentry();
 
   // 2. Request ID — trust upstream if set (e.g. Cloudflare), else generate.
-  const incoming = context.request.headers.get('x-request-id');
+  // Guard header access on prerendered static pages to eliminate build warnings.
+  let incoming: string | null = null;
+  const descriptor =
+    Object.getOwnPropertyDescriptor(context.request, 'headers') ||
+    Object.getOwnPropertyDescriptor(Object.getPrototypeOf(context.request), 'headers');
+  const isAstroPrerenderProxy = Boolean(descriptor?.get?.toString().includes('Astro.request.headers'));
+
+  if (!isAstroPrerenderProxy) {
+    try {
+      incoming = context.request.headers.get('x-request-id');
+    } catch {
+      // Safe fallback
+    }
+  }
+
   const requestId = incoming ?? randomUUID();
   context.locals.requestId = requestId;
 
   // 3. Forward to next handler.
   const response = await next();
   // 4. Echo the request ID back so clients can correlate.
-  response.headers.set('x-request-id', requestId);
+  if (response?.headers) {
+    response.headers.set('x-request-id', requestId);
+  }
   return response;
 });
