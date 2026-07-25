@@ -1,6 +1,6 @@
 ---
 title: "سجل تدقيق AI: بناء مسار الامتثال"
-description: "دليل لبناء AI Audit Trail يوضح من استخدم النموذج، ما البيانات التي عولجت، ما القرار، وما الدليل."
+description: "دليل بناء AI Audit Trail المتوافق مع SDAIA وPDPL: من استخدم النموذج، ما البيانات، ما القرار. اقرأ الدليل الكامل لسجل تدقيق الذكاء الاصطناعي مع BrightAI."
 canonical: "https://brightai.site/blog/ai-audit-trail-compliance-path/"
 pubDate: "2026-07-10"
 updatedDate: "2026-07-10"

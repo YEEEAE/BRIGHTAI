@@ -1,6 +1,6 @@
 ---
 title: "Shadow AI: اكتشف الاستخدام الخفي لـ AI"
-description: "طريقة عملية لاكتشاف أدوات AI غير المصرح بها، وتصنيفها، وتحويلها من خطر خفي إلى استخدام محكوم."
+description: "طريقة عملية لاكتشاف أدوات AI غير المصرح بها في مؤسستك السعودية وفق ضوابط NCA. اقرأ الدليل الكامل لتحويل Shadow AI من خطر خفي إلى استخدام محكوم مع BrightAI."
 canonical: "https://brightai.site/blog/shadow-ai-discovery-saudi-company/"
 pubDate: "2026-06-19"
 updatedDate: "2026-06-19"

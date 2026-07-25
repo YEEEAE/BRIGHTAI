@@ -11,7 +11,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'en-SA' },
 ]};
 ---
-<EnglishLayout title="BrightAI Privacy Policy | Saudi AI" description="How BrightAI handles personal data, privacy choices, and security commitments for visitors evaluating AI governance services in Saudi Arabia today." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'Privacy Policy', href: '/en/privacy-policy/' }]}>
+<EnglishLayout title="BrightAI Privacy Policy | Saudi AI" description="BrightAI privacy policy for Saudi organizations: data handling, privacy choices, and security for AI governance. Learn how we protect your data." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'Privacy Policy', href: '/en/privacy-policy/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">

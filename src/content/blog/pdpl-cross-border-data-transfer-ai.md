@@ -1,6 +1,6 @@
 ---
 title: "نقل البيانات خارج السعودية والذكاء الاصطناعي"
-description: "نقل البيانات خارج السعودية وفق PDPL: شروط المادة 29، أثرها على Cloud AI، الاستثناءات، وكيف يساعد AI Firewall في الامتثال."
+description: "نقل البيانات خارج السعودية وفق PDPL: شروط المادة 29 وأثرها على Cloud AI والاستثناءات. اقرأ الدليل الكامل لامتثال نقل البيانات مع BrightAI وحماية بيانات مؤسستك."
 canonical: "https://brightai.site/blog/pdpl-cross-border-data-transfer-ai/"
 pubDate: "2026-07-08"
 updatedDate: "2026-07-08"

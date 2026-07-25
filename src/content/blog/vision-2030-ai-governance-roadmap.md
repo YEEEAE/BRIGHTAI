@@ -1,7 +1,7 @@
 ---
 title: "رؤية 2030 و AI: خارطة طريق الحوكمة للتحول الرقمي"
 metaTitle: "رؤية 2030 والذكاء الاصطناعي: خارطة الحوكمة | BrightAI"
-description: "خارطة طريق تربط رؤية 2030 بتوسع الذكاء الاصطناعي عبر الحوكمة والثقة والامتثال PDPL وSDAIA وNCA ECC، مع خطوات تنفيذية للتحول الرقمي السعودي."
+description: "خارطة طريق تربط رؤية 2030 بحوكمة AI وفق PDPL وSDAIA وNCA ECC. خطوات تنفيذية للتحول الرقمي السعودي. اكتشف كيف تقود مؤسستك نحو الامتثال والثقة مع BrightAI."
 canonical: "https://brightai.site/blog/vision-2030-ai-governance-roadmap/"
 pubDate: "2026-07-31"
 updatedDate: "2026-07-08"

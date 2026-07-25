@@ -170,7 +170,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'المحادثة',
     shortDescription: 'محادثة ذكاء اصطناعي آمنة بضوابط الحوكمة',
     title: 'محادثة ذكاء اصطناعي آمنة بضوابط الحوكمة | BrightAI',
-    description: 'وفّر لفرقك محادثة ذكاء اصطناعي آمنة تطبّق سياسات الحوكمة، وتحمي البيانات الحساسة، وتوثّق كل تفاعل بسجل تدقيق كامل وفق PDPL وNCA ECC.',
+    description: 'محادثة ذكاء اصطناعي آمنة لفرق عملك تطبّق سياسات الحوكمة وتحمي البيانات الحساسة وفق PDPL وNCA ECC. جرّب Kernel مجاناً ووثّق كل تفاعل بسجل تدقيق غير قابل للتعديل.',
     canonical: 'https://brightai.site/kernel/chat/',
     h1: 'المحادثة الآمنة',
     hreflang: [
@@ -237,7 +237,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'التدقيق',
     shortDescription: 'سجل تدقيق الذكاء الاصطناعي وتتبع القرارات',
     title: 'سجل تدقيق الذكاء الاصطناعي وتتبع القرارات | BrightAI',
-    description: 'تتبّع أحداث الذكاء الاصطناعي في سجل تدقيق زمني يوضح الطلبات والقرارات والتغييرات، ويسهّل التحقيق الداخلي والتحقق من المساءلة.',
+    description: 'سجل تدقيق ذكاء اصطناعي زمني غير قابل للتعديل يوثّق الطلبات والقرارات والمخاطر. حقّق في حوادث AI في ثوانٍ وفق متطلبات NCA ECC وPDPL. جرّب Kernel مجاناً الآن.',
     canonical: 'https://brightai.site/kernel/audit/',
     h1: 'سجل التدقيق',
     hreflang: [
@@ -304,7 +304,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'الموافقات',
     shortDescription: 'الموافقات البشرية على قرارات الذكاء الاصطناعي',
     title: 'الموافقات البشرية على قرارات الذكاء الاصطناعي | BrightAI',
-    description: 'أدر الموافقات البشرية على قرارات الذكاء الاصطناعي، وراجع مستوى المخاطر والسياق قبل التنفيذ، مع سجل كامل للقرارات.',
+    description: 'أدر الموافقات البشرية على قرارات الذكاء الاصطناعي وراجع مستوى المخاطر قبل التنفيذ. حقّق الامتثال لـ NCA ECC وPDPL مع سجل كامل للقرارات. جرّب Approval في Kernel.',
     canonical: 'https://brightai.site/kernel/approvals/',
     h1: 'مراجعة الحوكمة',
     hreflang: [
@@ -371,7 +371,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'الإحصائيات',
     shortDescription: 'مؤشرات وإحصائيات استخدام الذكاء الاصطناعي',
     title: 'مؤشرات وإحصائيات استخدام الذكاء الاصطناعي | BrightAI',
-    description: 'تابع مؤشرات استخدام الذكاء الاصطناعي ومعدلات المخاطر والموافقات والامتثال، واكشف الاتجاهات مبكراً.',
+    description: 'تابع مؤشرات استخدام الذكاء الاصطناعي ومعدلات المخاطر والامتثال في لوحة واحدة. اكشف الاتجاهات مبكراً واتخذ قرارات صائبة مع Kernel وفق معايير المملكة. ابدأ الآن.',
     canonical: 'https://brightai.site/kernel/stats/',
     h1: 'مؤشرات وإحصائيات استخدام الذكاء الاصطناعي — تابع الأداء والمخاطر',
     hreflang: [
@@ -432,7 +432,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'الموصلات',
     shortDescription: 'موصلات الذكاء الاصطناعي للأنظمة المؤسسية',
     title: 'موصلات الذكاء الاصطناعي للأنظمة المؤسسية | BrightAI',
-    description: 'اربط بوابة الذكاء الاصطناعي بأنظمة المؤسسة ومصادر البيانات عبر موصلات محكومة، مع فحص تلقائي وتوثيق كل اتصال.',
+    description: 'اربط أنظمة مؤسستك بـ Kernel عبر موصلات آمنة مع فحص PII تلقائي وتوثيق كل اتصال وتقييم مخاطر وفق ضوابط NCA ECC السعودية. وفّر وقت الربط وابدأ الحوكمة فوراً.',
     canonical: 'https://brightai.site/kernel/connectors/',
     h1: 'الموصلات',
     hreflang: [
@@ -499,7 +499,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'السيناريوهات',
     shortDescription: 'اختبار سيناريوهات ومخاطر الذكاء الاصطناعي',
     title: 'اختبار سيناريوهات ومخاطر الذكاء الاصطناعي | BrightAI',
-    description: 'اختبر سيناريوهات استخدام الذكاء الاصطناعي قبل التشغيل، وقارن مستويات المخاطر والاستجابات لتجهيز فرق الحوكمة.',
+    description: 'اختبر سيناريوهات الذكاء الاصطناعي قبل التشغيل واكتشف ثغرات PII وثغرات الأمان. جهّز فرق الحوكمة وفق إرشادات SDAIA. جرّب Scenario Testing في Kernel مجاناً.',
     canonical: 'https://brightai.site/kernel/scenarios/',
     h1: 'السيناريوهات',
     hreflang: [
@@ -560,7 +560,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'السياسات',
     shortDescription: 'محرر سياسات الذكاء الاصطناعي البصري',
     title: 'محرر سياسات الذكاء الاصطناعي البصري | BrightAI',
-    description: 'صمّم سياسات الذكاء الاصطناعي في محرر بصري يحدد الشروط والإجراءات والضوابط، ثم فعّلها فوراً عبر سير العمل.',
+    description: 'صمّم سياسات ذكاء اصطناعي في محرر بصري بدون كود وطبّقها فوراً على كل الفرق. حقّق الامتثال لـ PDPL وNCA ECC وسياسات شركتك في دقائق. ابدأ مع Kernel الآن.',
     canonical: 'https://brightai.site/kernel/policies/',
     h1: 'محرر السياسات البصري',
     hreflang: [
@@ -621,7 +621,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'الأدلة',
     shortDescription: 'ملف أدلة امتثال الذكاء الاصطناعي',
     title: 'ملف أدلة امتثال الذكاء الاصطناعي | BrightAI Kernel',
-    description: 'أنشئ ملف أدلة امتثال لكل قرار ذكاء اصطناعي، واجمع السجلات والموافقات والسياسات المرتبطة في ملف واحد.',
+    description: 'أنشئ ملف أدلة امتثال رقمي لكل قرار AI مع السجلات والموافقات والتوقيع الرقمي والتوثيق الكامل. احصل على أدلة جاهزة للجهات الرقابية السعودية SDAIA وNCA مع Kernel.',
     canonical: 'https://brightai.site/kernel/evidence/',
     h1: 'الأدلة',
     hreflang: [
@@ -688,7 +688,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'الامتثال',
     shortDescription: 'إدارة امتثال الذكاء الاصطناعي والضوابط',
     title: 'إدارة امتثال الذكاء الاصطناعي والضوابط | BrightAI',
-    description: 'راقب امتثال أنظمة الذكاء الاصطناعي للأطر التنظيمية، واربط كل متطلب بالضوابط والسجلات ذات الصلة.',
+    description: 'راقب امتثال أنظمة AI لـ PDPL وNCA ECC وSDAIA من لوحة واحدة متكاملة. اربط كل متطلب بالضوابط والسجلات واحصل على تقرير جاهز للإرسال. جرّب Compliance في Kernel.',
     canonical: 'https://brightai.site/kernel/compliance/',
     h1: 'الامتثال',
     hreflang: [
@@ -755,7 +755,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'التقارير',
     shortDescription: 'تقارير حوكمة الذكاء الاصطناعي التنفيذية',
     title: 'تقارير حوكمة الذكاء الاصطناعي التنفيذية | BrightAI',
-    description: 'أنشئ تقارير حوكمة الذكاء الاصطناعي للإدارة وفرق الامتثال، واعرض اتجاهات المخاطر والامتثال والقرارات في تقرير واحد.',
+    description: 'أنشئ تقارير حوكمة AI تنفيذية للإدارة وفرق الامتثال والتدقيق مع اتجاهات المخاطر. احصل على PDF موقّع وجاهز للجهات الرقابية السعودية. ابدأ مع Kernel اليوم.',
     canonical: 'https://brightai.site/kernel/reports/',
     h1: 'التقارير',
     hreflang: [
