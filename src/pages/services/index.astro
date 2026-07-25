@@ -2,12 +2,10 @@
 <!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — service cards: 14 بطاقة vague → action-oriented + microcopy ≤12 كلمة. Final CTA: "واتساب" → "احصل على رد عبر واتساب" + microcopy. href/action لم يتغير. -->
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 
 import Icon from '../../components/Icon.astro';
 import { getFaqLd } from '../../data/schema-helpers';
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الخدمات' }];
 // BAI-VOC-001-C (2026-07-18): CTAs موحدة حسب intent — كل بطاقة عندها CTA action-oriented + microcopy ≤12 كلمة. 0 href متغير.
 const servicePaths = [
   { icon: 'mdi:scale-balance', title: 'AI Governance Platform', desc: 'منصة تنظّم سياسات استخدام الذكاء الاصطناعي، الصلاحيات، المخاطر، وسجلات المراجعة داخل المؤسسة.', href: '/solutions/ai-governance-platform/', cta: 'استكشف منصة الحوكمة', ctaMicro: '8 دقائق • عرض منتج حي' },
@@ -52,11 +50,10 @@ const servicesJsonLd = {
 };
 ---
 
-<ArabicLayout title="خدمات حوكمة AI | تقييم، حماية، تدقيق — BrightAI" description="خدمات BrightAI الـ 15 تغطي تقييم جاهزية AI، حماية البيانات، سجلات التدقيق، والموافقات البشرية. خدمات مخصصة للسوق السعودي وفق PDPL وNCA ECC بكل احترافية." canonical="https://brightai.site/services/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/services/'},{lang:'x-default',href:'https://brightai.site/services/'}]} jsonLd={servicesJsonLd as any} currentPath="/services/" extraSpeakableSelectors={['.inner-hero__desc', 'aside[data-snippet="tl-dr"]']}>
+<ArabicLayout title="خدمات حوكمة AI | تقييم، حماية، تدقيق — BrightAI" description="خدمات BrightAI الـ 15 تغطي تقييم جاهزية AI، حماية البيانات، سجلات التدقيق، والموافقات البشرية. خدمات مخصصة للسوق السعودي وفق PDPL وNCA ECC بكل احترافية." canonical="https://brightai.site/services/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/services/'},{lang:'x-default',href:'https://brightai.site/services/'}]} jsonLd={servicesJsonLd as any} currentPath="/services/" extraSpeakableSelectors={['.inner-hero__desc', 'aside[data-snippet="tl-dr"]']} breadcrumbs={[{ name: 'الخدمات' }]}>
 <section class="inner-hero" aria-label="خدمات BrightAI">
   <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <Breadcrumbs crumbs={crumbs} />
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-cogs"></use></svg> تنفيذ Saudi AI Safety OS للسوق السعودي</div>
     <h1>خدمات تنفيذ <span class="gradient-text">Saudi AI Safety OS</span> داخل شركتك <span class="inner-hero__h1-suffix">بجرد AI ومالك مسؤول ومسار إشراف بشري</span></h1>
     <p class="inner-hero__desc">نركّب لك طبقة حماية وحوكمة تشغيلية متكاملة داخل المؤسسة: من تقييم جاهزية AI، لتصميم ضوابط الحماية والتدقيق والموافقة البشرية، ثم الربط الآمن مع أنظمتك الداخلية وتشغيل حالات الاستخدام. يبدأ المسار بـ<strong>جرد AI</strong> شامل وتعيين <strong>مالك مسؤول</strong>، ويُستكمل بـ<strong>سجل مخاطر</strong> محدّث و<strong>أدلة جاهزة للتدقيق</strong> وإشراف بشري فعّال على القرارات عالية المخاطر.</p>

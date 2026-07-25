@@ -22,7 +22,6 @@
  *   - JSON-LD محفوظ verbatim
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import { solutions, getRelatedSolutions, getRelatedSectors } from '../../data/solutions';
@@ -222,6 +221,7 @@ const useCases = buildScenarios(solution);
   currentPath={solution.href}
   ogImage="/assets/images/og/og-solutions.webp"
   ogImageAlt={migratedPage?.title ?? solution.title}
+  breadcrumbs={crumbs.slice(1).map(c => ({ name: c.label, href: c.href }))}
 >
 {!solution.content ? (
   /* legacy migrated fallback — only لو ما في content data */
@@ -232,7 +232,6 @@ const useCases = buildScenarios(solution);
 <section class="inner-hero inner-hero--split bg-ambient-teal-top" aria-label={solution.h1}>
   <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <Breadcrumbs crumbs={crumbs} />
     <div class="grid gap-10 lg:gap-12 lg:grid-cols-2 items-center">
       <div>
         <span class="inner-hero__badge"><Icon name={solution.icon} class="" /> {solution.chip}</span>

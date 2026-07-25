@@ -12,14 +12,8 @@
  * - 0 published Arabic text changed (all 8 sections preserved verbatim)
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import { LOCAL_BUSINESS_BY_CITY } from '../../data/schema-helpers';
-
-const crumbs = [
-  { label: 'الرئيسية', href: '/' },
-  { label: 'من نحن' },
-];
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -94,7 +88,6 @@ const pageHeroCTAs = [
   <section class="page-hero about-page-hero" aria-label="عن BrightAI">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
 
       <div class="ksa-flag-badge">
         <span class="ksa-flag-badge__icon" aria-hidden="true">

@@ -1834,6 +1834,7 @@ Stage Summary:
 ---
 
 Task ID: BAI-SEC-11
+<<<<<<< Updated upstream
 Agent: BrightAI Workspace Agent (Mavis)
 Task: توحيد CSP في مصدر حقيقة واحد (KI-CSP-DRIFT) + drift gate + generator + inline-style batch 1 (20 ملف) + HSTS Transform Rule script
 Started: 2026-07-25T04:00:00+03:00
@@ -1984,3 +1985,64 @@ Stage Summary:
 3. افتح Actions tab → تأكد إن "Production Post-Deploy" workflow اشتغل على الـ deploy الأخير (الـ job "Notify IndexNow" لازم يطبع `IndexNow accepted 180 URL(s) with HTTP 200`).
 4. سجّل دخول Bing Webmaster Tools → IndexNow → تأكد إن آخر submit timestamp بعد deploy.
 5. Cloudflare cache purge (`pnpm run cloudflare:purge`) عشان الـ headers الجديدة تنعكس (مو IndexNow-specific، بس recommended بعد كل deploy).
+=======
+Agent: BrightAI Workspace Agent
+Task: توحيد CSP في مصدر حقيقة واحد (KI-CSP-DRIFT) + drift gate + generator + inline-style batch 1 (20 ملف) + HSTS Transform Rule script
+Started: 2026-07-25T04:00:00+03:00
+Mode: Senior
+
+Work Log:
+- 04:00: قرأت `.agents/brain.md` Section 3 (KI-CSP-DRIFT-2026-07-25), Section 1.1/1.2 (baseline), `scripts/security-headers.mjs`, `src/middleware.ts`, `astro.config.mjs` (injectSecurityMeta).
+- 04:01: اكتشفت إن BAI-IDX-02 (2026-07-25) already حطّ `security-headers.mjs` كـ SoT. الـ drift الفعلي بين `render.yaml` و `security-headers.mjs`: 6 origins زيادة في render.yaml (cdnjs + 4 Sentry + c.bing.com + region1.google-analytics.com).
+- 04:02: اكتشفت 700+ inline style في 85 ملف (`grep -lrE 'style="' src/`). الـ user قال 65 — العدد تطوّر. الأنماط الشائعة: `color: #9fb0c7; font-size: 1.1rem;` (متكرر)، `font-size: 0.7rem;`، `margin-top: 0; color: #67e8f9;`.
+- 04:03: اكتشفت إن `scripts/headers-config.mjs` عنده parsers لـ public/_headers و render.yaml. لكن `parseRenderYamlHeaders` ما يفك YAML double-quoted scalars → `value` يحوي الـ quotes كـ part من الـ string. لازم إصلاح.
+- 04:05: سألت المستخدم عن 20 ملف المقترحين (batch 1) + HSTS approach. رد: "ابدأ بالقائمة كما هي" + "API فقط بدون fallback".
+- 04:10: كتبت `scripts/sync-headers-from-csp.mjs` (~235 سطر). idempotent. CHECK=1 / DRY_RUN=1 modes.
+- 04:12: أول تشغيل فاشل — المولِّد أكل كتلة `routes:` (251 redirect entries) + `/frontend/*` overrides. السبب: `headersEnd` كان يبحث عن "top-level key بـ no indent" لكن `routes:` عنده 4-space indent (نفس indent الـ `headers:`). أعدت كتابة المنطق: قارن indent الـ line مع indent الـ `headers:`.
+- 04:14: ثاني تشغيل فاشل — المولّد حذف `Content-Security-Policy: ... 'none'` override على `/frontend/*` (لأن name = "Content-Security-Policy" و هو key في RESPONSE_SECURITY_HEADERS). أعدت: فقط entries على path `/*` و name في SoT = canonical. الباقي = override → preserved verbatim.
+- 04:15: ثالث تشغيل فاشل — المولّد أكل `/*` path-glob (دمجه مع الـ Arabic comment قبله) + حذف blank line + حذف CORS comment بعد الـ rules block. أعدت: prefix / rules / suffix three-region split.
+- 04:18: المولّد اشتغل. `CHECK=1` بعد sync → clean. الـ diff في render.yaml: comments قديمة محذوفة، values موحدة بـ double quotes، X-Robots-Tag مضاف (كان ناقص)، drift الفعلي انتهى.
+- 04:20: كتبت `scripts/verify-csp-drift.mjs` (~165 سطر). CI gate. يطبع per-file/per-header diff. 0 errors → exit 0.
+- 04:22: اختبار drift detection: بدّلت `max-age=63072000` يدوياً → `verify:csp-drift` كشف `VALUE DIFFERS` (للـ 7 headers). رجّعت → clean.
+- 04:24: اكتشفت إن `verify:csp-drift` يكشف drift بشكل صحيح، لكن drift في render.yaml (مع quotes) ما يطابق الـ SoT (بدون quotes). السبب: `parseRenderYamlHeaders` يحفظ الـ value مع الـ quotes. أضفت `unwrapYamlScalar()` helper في `headers-config.mjs`. `node --test scripts/headers-config.test.mjs` → 11/11 pass.
+- 04:25: `pnpm run verify:all` → 0 errors, 0 warnings ✅
+- 04:26: أضفت 4 scripts في `package.json`: `headers:sync`, `headers:check`, `verify:csp-drift`. `headers:check` مدمج في `verify:all`.
+- 04:30: Phase B — components. EvidenceFileMockup (1→0), SalesDeck (1→0), CaseStudy (5→0). 3 components (`Icon`, `ComplianceRadar`, `DottedBackground`) ما عندهم inline styles فعلياً (الـ count الأول كان false positives).
+- 04:32: Phase B — pages. services/index.astro (1→0). 3 pages (`contact`, `customers`, `assessment`) ما عندهم inline styles فعلياً.
+- 04:34: Phase B — blog posts. أضفت 4 CSS classes (`tldr`, `tldr--gradient`, `tldr--gradient-banking`, `tldr--gradient-healthcare`, `related`) في `components.css`. 10 مدونات: 8 → 0 inline styles لكل (3 → 0 لكل واحد). اختلاف الـ gradient: banking = slate-blue، healthcare = teal-lime.
+- 04:38: `pnpm run build` → 190 pages, 0 errors ✅
+- 04:39: `pnpm run verify:all` → 0 errors, 0 warnings ✅
+- 04:40: HTML smoke test: `grep "tldr--gradient" dist/client/blog/ai-firewall-why-you-need-it/index.html` → rendered correctly.
+- 04:45: Phase C — كتبت `scripts/setup-cloudflare-hsts-transform-rule.mjs` (~215 سطر). Cloudflare Rulesets API v4. idempotent.
+- 04:47: `pnpm run cloudflare:hsts` → **FATAL: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ZONE_ID are required**. السكربت شغّال لكن الـ creds مو في env. per المستخدم: API فقط بدون fallback. لن أضيف manual fallback.
+- 04:50: Phase D — تحديث `.agents/brain.md`:
+    - Section 2: entry جديد BAI-SEC-11 مع كل التفاصيل (DECs + verification + risks).
+    - Section 3: KI-CSP-DRIFT-2026-07-25 → resolved.
+- 04:55: Phase D — كتابة `report/2026-07-25-bai-sec-11-csp-source-of-truth.md` (16KB).
+- 04:58: إنهاء الـ worklog entry.
+
+Stage Summary:
+- **المشكلة الأصلية**: KI-CSP-DRIFT-2026-07-25 — `render.yaml` يحوي 6 origins زيادة (cdnjs + 4 Sentry + c.bing.com) ما تطابق `scripts/security-headers.mjs` (الـ SoT). + 700+ inline style في 85 ملف (المستخدم طلب 65 — العدد تطوّر). + HSTS Transform Rule موثّق لكن ما متأكد إنه مفعّل.
+- **الحل**:
+    1. **Generator** `scripts/sync-headers-from-csp.mjs` — يكتب `public/_headers` و render.yaml security entries من SoT. idempotent. يحفظ path-specific overrides verbatim.
+    2. **Drift gate** `scripts/verify-csp-drift.mjs` — CI fail عند أي اختلاف.
+    3. **Cleanup فعلي لـ render.yaml** — 6 origins شُيلت، X-Robots-Tag مضاف.
+    4. **Parser fix** في `headers-config.mjs` — `unwrapYamlScalar` يفك YAML double-quoted. 11/11 tests pass.
+    5. **inline-style batch 1** — 38 inline style في 14 ملف مُنقل لـ CSS classes. 13 class جديدة في `components.css`.
+    6. **HSTS script** — Cloudflare Rulesets API v4 client، idempotent.
+- **النتيجة**:
+    - `pnpm run verify:csp-drift` → ✓ clean (7 security headers × 2 files)
+    - `pnpm run build` → ✓ 190 pages, 0 errors
+    - `pnpm run verify:all` → ✓ 0 errors, 0 warnings
+    - 14 ملف بـ 0 inline styles (من 38 قبل)
+    - KI-CSP-DRIFT-2026-07-25 → resolved
+- **المخاطر المتبقية**:
+    - HSTS مو مفعّل فعلياً (يحتاج CLOUDFLARE_API_TOKEN + CLOUDFLARE_ZONE_ID من المستخدم)
+    - inline-style batches 2-4 (71 ملف: kernel/* + 14 مدونة + 12 docs + design/* + index.astro الرئيسية) تحت KI-CSP-001 Phase 2 / BAI-SEC-12+
+    - KI-CSP-001 Phase 2 (nonces) لسا pending — 4 أسابيع تقديرياً
+- **التوصية**:
+    1. user يعمل `git add . && git commit -m "[BAI-SEC-11] chore(security): ..."` (لازم `[BAI-XXX-NN]` prefix، وإلا commit-msg hook يرفض)
+    2. user يصدّر `CLOUDFLARE_API_TOKEN` و `CLOUDFLARE_ZONE_ID` ثم `pnpm run cloudflare:hsts`
+    3. user يعمل `pnpm run verify:live:headers` بعد deploy للتأكد من live response
+    4. افتح BAI-SEC-12 لـ inline-style batch 2
+>>>>>>> Stashed changes

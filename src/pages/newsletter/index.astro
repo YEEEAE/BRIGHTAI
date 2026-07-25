@@ -4,11 +4,8 @@
  * Weekly Arabic AI-governance briefing signup. Uses LeadForm (formsubmit.co).
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import LeadForm from '../../components/LeadForm.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'النشرة الأسبوعية' }];
 
 const benefits = [
   { icon: 'mdi-newspaper', title: 'تحديثات PDPL وNCA أسبوعية', body: 'ملخّص مركّز لأحدث الضوابط والتفسيرات ذات العلاقة بالذكاء الاصطناعي في السعودية.' },
@@ -37,12 +34,12 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/newsletter/' }, { lang: 'x-default', href: 'https://brightai.site/newsletter/' }]}
   jsonLd={jsonLd as any}
   currentPath="/newsletter/"
+  breadcrumbs={[{ name: 'النشرة الأسبوعية' }]}
 >
 
   <section class="page-hero" aria-label="النشرة الأسبوعية">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-email-newsletter"></use></svg>
         نشرة أسبوعية — بالعربية

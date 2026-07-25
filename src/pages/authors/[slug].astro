@@ -4,7 +4,7 @@
  * Currently only nasser-alabdullah.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
 import { authors } from '../../data/blog';
 import { SITE } from '../../data/site';
 
@@ -88,14 +88,10 @@ const authorJsonLd = {
   hreflang={[{ lang: 'ar-SA', href: author.url }]}
   jsonLd={authorJsonLd as any}
   currentPath={`/authors/${author.slug}/`}
+  breadcrumbs={[{ name: 'المؤلفون', href: '/authors/' }, { name: author.name }]}
 >
 
   <div class="author-shell">
-    <Breadcrumbs crumbs={[
-      { label: 'الرئيسية', href: '/' },
-      { label: 'المؤلفون' },
-      { label: author.name },
-    ]} />
 
     <header class="author-header">
       <div>

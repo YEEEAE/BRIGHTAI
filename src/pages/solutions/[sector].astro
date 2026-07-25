@@ -15,7 +15,6 @@
  *   8. Final CTA — preserved
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../components/RelatedLinks.astro';
 import SectorCard from '../../components/SectorCard.astro';
@@ -200,7 +199,7 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
   { label: 'تقارير القطاع',             desc: 'تقارير جاهزة للجهات التنظيمية.',            icon: 'mdi-file-document' },
 ];
 ---
-<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={finalJsonLd as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? sector.title} extraSpeakableSelectors={p0SectorSnippet ? ['.answer-first-summary', SNIPPET_SELECTOR] : ['.answer-first-summary']}>
+<ArabicLayout title={migratedPage?.title ?? sector.title} description={migratedPage?.description ?? sector.description} canonical={migratedPage?.canonical ?? sector.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:sector.canonical},{lang:'x-default',href:sector.canonical}]} jsonLd={finalJsonLd as any} currentPath={sector.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? sector.title} extraSpeakableSelectors={p0SectorSnippet ? ['.answer-first-summary', SNIPPET_SELECTOR] : ['.answer-first-summary']} breadcrumbs={crumbs.slice(1).map(c => ({ name: c.label, href: c.href }))}>
 {!sector.regulations ? (
   /* legacy migrated fallback — only لو ما في regulations data */
   <>
@@ -213,7 +212,6 @@ const SECTOR_FLOW: { label: string; desc: string; icon: string }[] = [
 <section class="inner-hero inner-hero--split bg-ambient-teal-top" aria-label={sector.h1}>
   <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <Breadcrumbs crumbs={crumbs} />
     <div class="grid gap-10 lg:gap-12 lg:grid-cols-2 items-center">
       <div>
         <span class="inner-hero__badge"><Icon name={sector.icon} class="" /> {sector.chip}</span>

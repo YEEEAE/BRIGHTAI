@@ -15,11 +15,8 @@
  * - 0 published Arabic text changed
  */
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import Icon from '../../../components/Icon.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'تقييم الجاهزية' }];
 
 const targetAudience = [
   {
@@ -166,13 +163,12 @@ const checklistItems = [
 ];
 ---
 
-<ArabicLayout title="تقييم جاهزية AI مجاني | فحص في 4 خطوات" description="ابدأ تقييم جاهزية AI مجاني من BrightAI اليوم: فحص السياسات والضوابط والبيانات وسجلات التدقيق. احصل على خطة امتثال عملية تناسب منشأتك في السعودية." canonical="https://brightai.site/assessment/ai-governance-readiness/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/assessment/ai-governance-readiness/'},{lang:'x-default',href:'https://brightai.site/assessment/ai-governance-readiness/'}]} jsonLd={jsonLd as any} currentPath="/assessment/ai-governance-readiness/" extraSpeakableSelectors={['.page-hero__description', 'aside[data-snippet="tl-dr"]']}>
+<ArabicLayout title="تقييم جاهزية AI مجاني | فحص في 4 خطوات" description="ابدأ تقييم جاهزية AI مجاني من BrightAI اليوم: فحص السياسات والضوابط والبيانات وسجلات التدقيق. احصل على خطة امتثال عملية تناسب منشأتك في السعودية." canonical="https://brightai.site/assessment/ai-governance-readiness/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/assessment/ai-governance-readiness/'},{lang:'x-default',href:'https://brightai.site/assessment/ai-governance-readiness/'}]} jsonLd={jsonLd as any}   currentPath="/assessment/ai-governance-readiness/" extraSpeakableSelectors={['.page-hero__description', 'aside[data-snippet="tl-dr"]']} breadcrumbs={[{ name: 'تقييم الجاهزية' }]}>
 
   {/* ═══════════ 1. HERO — page-hero ═══════════ */}
   <section class="page-hero" aria-label="تقييم الجاهزية">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-clipboard-check"></use></svg>
         أدوات وتقنيات مواءمة لنظام PDPL وضوابط NCA

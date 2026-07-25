@@ -4,11 +4,8 @@
  * BrightAI-owned flagship event.
  */
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import LeadForm from '../../../components/LeadForm.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الفعاليات' }, { label: 'يوم حوكمة AI' }];
 
 const sessions = [
   { t: '٠٩:٠٠', title: 'تسجيل + قهوة', body: 'استقبال الحضور.' },
@@ -35,12 +32,12 @@ const jsonLd = null;
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/events/ai-governance-day/' }, { lang: 'x-default', href: 'https://brightai.site/events/ai-governance-day/' }]}
   jsonLd={jsonLd as any}
   currentPath="/events/ai-governance-day/"
+  breadcrumbs={[{ name: 'الفعاليات', href: '/events/' }, { name: 'يوم حوكمة AI' }]}
 >
 
   <section class="page-hero" aria-label="يوم حوكمة AI">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-star"></use></svg>
         حدث BrightAI الخاص — الرياض

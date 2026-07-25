@@ -1,8 +1,6 @@
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'خريطة الموقع' }];
 const sections = [
   { title: 'Saudi AI Safety OS والطبقات الرئيسية', description: 'أهم صفحات BrightAI المرتبطة بتطبيق Saudi AI Safety OS داخل الشركات السعودية: الحوكمة، الحماية، التدقيق، الموافقات، وملفات الأدلة.', links: [
     { href: '/', label: 'الرئيسية — BrightAI' },
@@ -121,11 +119,10 @@ const sections = [
   ]},
 ];
 ---
-<ArabicLayout title="خريطة موقع BrightAI | كل الخدمات" description="استكشف خريطة موقع BrightAI الكاملة: خدمات وحلول ووثائق وديموهات وقطاعات ومدن سعودية. اختر المسار الأنسب لاحتياجك بسرعة وسهولة في مكان واحد فقط." canonical="https://brightai.site/sitemap/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/sitemap/'},{lang:'x-default',href:'https://brightai.site/sitemap/'}]} jsonLd={{"@context":"https://schema.org","@type":"WebPage","name":"خريطة موقع BrightAI | كل الخدمات","description":"استكشف خريطة موقع BrightAI الكاملة: خدمات وحلول ووثائق وديموهات وقطاعات ومدن سعودية. اختر المسار الأنسب لاحتياجك بسرعة وسهولة في مكان واحد فقط.","url":"https://brightai.site/sitemap/"}} currentPath="/sitemap/">
+<ArabicLayout title="خريطة موقع BrightAI | كل الخدمات" description="استكشف خريطة موقع BrightAI الكاملة: خدمات وحلول ووثائق وديموهات وقطاعات ومدن سعودية. اختر المسار الأنسب لاحتياجك بسرعة وسهولة في مكان واحد فقط." canonical="https://brightai.site/sitemap/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/sitemap/'},{lang:'x-default',href:'https://brightai.site/sitemap/'}]} jsonLd={{"@context":"https://schema.org","@type":"WebPage","name":"خريطة موقع BrightAI | كل الخدمات","description":"استكشف خريطة موقع BrightAI الكاملة: خدمات وحلول ووثائق وديموهات وقطاعات ومدن سعودية. اختر المسار الأنسب لاحتياجك بسرعة وسهولة في مكان واحد فقط.","url":"https://brightai.site/sitemap/"}} currentPath="/sitemap/" breadcrumbs={[{ name: 'خريطة الموقع' }]}>
 <section class="inner-hero" aria-label="خريطة الموقع">
   <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <Breadcrumbs crumbs={crumbs} />
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-map"></use></svg> كل الروابط في مكان واحد</div>
     <h1>خريطة <span class="gradient-text">Saudi AI Safety OS</span> — روابط BrightAI العامة</h1>
     <p class="inner-hero__desc">هذه الخريطة تجمع روابط BrightAI العامة حول intent واحد: Saudi AI Safety OS. ستجد مسارات الحوكمة والأمان مثل AI Firewall وAudit Trail وHuman Approval وEvidence File، إضافة إلى الوثائق، الديمو، صفحات الامتثال، والتواصل. الهدف تسهيل وصول الزائر ومحركات البحث إلى صفحات تشغيل AI الآمن داخل الشركات السعودية بدون ازدواجية بين “شركة حلول” و“نظام أمان”.</p>

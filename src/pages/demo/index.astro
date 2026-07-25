@@ -15,11 +15,8 @@
  * - Form action / link href preserved
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import { LOCAL_BUSINESS_BY_CITY } from '../../data/schema-helpers';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الديموهات' }];
 
 const demoStats = [
   { value: '30+', label: 'ديمو تفاعلي جاهز' },
@@ -165,13 +162,13 @@ const whatsappDemoHref = 'https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%
   hreflang={[{lang:'ar-SA',href:'https://brightai.site/demo/'},{lang:'x-default',href:'https://brightai.site/demo/'}]}
   jsonLd={demoJsonLd as any}
   currentPath="/demo/"
+  breadcrumbs={[{ name: 'الديموهات' }]}
 >
 
   {/* ═══════════ 1. HERO — page-hero with RTL eyebrow ═══════════ */}
   <section class="page-hero" aria-label="ديموهات BrightAI">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <p class="inner-hero__eyebrow">هلا والله، نوّرت 👋</p>
       <h1 class="page-hero__title">جرّب <span class="gradient-text">سيناريوهات AI حقيقية</span> قبل ما تقرر</h1>
       <p class="page-hero__description">أكبر مجموعة ديموهات ذكاء اصطناعي تفاعلية بالعربية في السعودية. اختر التصنيف اللي يناسب شغلك، شغّل سيناريو سعودي، وشوف كيف BrightAI يحمي بياناتك — بعدين قرّر.</p>

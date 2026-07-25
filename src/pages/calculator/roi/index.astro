@@ -4,11 +4,8 @@
  * Interactive vanilla-JS estimator of AI-governance value. No React, tokens only.
  */
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import LeadForm from '../../../components/LeadForm.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'حاسبة العائد' }];
 
 const sectors = [
   { v: 'bank', t: 'بنك / مالي' },
@@ -40,12 +37,12 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/calculator/roi/' }, { lang: 'x-default', href: 'https://brightai.site/calculator/roi/' }]}
   jsonLd={jsonLd as any}
   currentPath="/calculator/roi/"
+  breadcrumbs={[{ name: 'حاسبة العائد' }]}
 >
 
   <section class="page-hero" aria-label="حاسبة العائد">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calculator-variant"></use></svg>
         حاسبة تفاعلية — بالعربية

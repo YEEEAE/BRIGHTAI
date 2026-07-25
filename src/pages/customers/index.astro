@@ -5,10 +5,7 @@
  * Showcases BrightAI outcomes via anonymized case studies.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'عملاؤنا' }];
 
 const caseStudies = [
   {
@@ -60,12 +57,12 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/customers/' }, { lang: 'x-default', href: 'https://brightai.site/customers/' }]}
   jsonLd={jsonLd as any}
   currentPath="/customers/"
+  breadcrumbs={[{ name: 'عملاؤنا' }]}
 >
 
   <section class="page-hero" aria-label="عملاؤنا">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-account-group"></use></svg>
         ثقة منشآت سعودية

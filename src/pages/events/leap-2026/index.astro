@@ -4,11 +4,8 @@
  * Booth + speaking at LEAP Riyadh.
  */
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import LeadForm from '../../../components/LeadForm.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الفعاليات' }, { label: 'LEAP 2026' }];
 
 const highlights = [
   { icon: 'mdi-podium', title: 'جلسة رئيسية', body: 'يزيد يشارك "حوكمة AI في السعودية: من النظرية للتنفيذ".' },
@@ -34,12 +31,12 @@ const jsonLd = null;
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/events/leap-2026/' }, { lang: 'x-default', href: 'https://brightai.site/events/leap-2026/' }]}
   jsonLd={jsonLd as any}
   currentPath="/events/leap-2026/"
+  breadcrumbs={[{ name: 'الفعاليات', href: '/events/' }, { name: 'LEAP 2026' }]}
 >
 
   <section class="page-hero" aria-label="LEAP 2026">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-rocket-launch"></use></svg>
         جناح BrightAI — LEAP الرياض

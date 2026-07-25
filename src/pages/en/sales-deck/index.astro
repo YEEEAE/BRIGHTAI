@@ -4,11 +4,8 @@
  * English mirror of the Arabic sales deck.
  */
 import EnglishLayout from '../../../layouts/EnglishLayout.astro';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import SalesDeck from '../../../components/SalesDeck.astro';
-
-const crumbs = [{ label: 'Home', href: '/' }, { label: 'Sales Deck' }];
 
 const slides = [
   { kicker: 'Problem', title: 'AI is spreading — but who governs it?', bullets: ['Teams use scattered tools with no unified log', 'Sensitive data leaks to public tools', 'No operational evidence for regulators'] },
@@ -40,12 +37,12 @@ const jsonLd = {
   hreflang={[{ lang: 'en-SA', href: 'https://brightai.site/en/sales-deck/' }, { lang: 'ar-SA', href: 'https://brightai.site/sales-deck/' }]}
   jsonLd={jsonLd as any}
   currentPath="/en/sales-deck/"
+  breadcrumbs={[{ name: 'Sales Deck' }]}
 >
 
   <section class="page-hero" aria-label="Sales Deck">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-presentation"></use></svg>
         Sales Deck

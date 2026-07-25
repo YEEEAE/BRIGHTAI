@@ -4,11 +4,8 @@
  * Partnership program for SIs, cloud providers, consulting, law firms.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import LeadForm from '../../components/LeadForm.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الشراكة' }];
 
 const tiers = [
   { icon: 'mdi-rocket-launch', title: 'System Integrators', body: 'بيان، تكامل، ELM — نبني حوكمة AI معاً في مشاريع العملاء.', commission: '٣٠٪ عمولة' },
@@ -45,12 +42,12 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/partners/' }, { lang: 'x-default', href: 'https://brightai.site/partners/' }]}
   jsonLd={jsonLd as any}
   currentPath="/partners/"
+  breadcrumbs={[{ name: 'شركاؤنا' }]}
 >
 
   <section class="page-hero" aria-label="الشراكة">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-handshake"></use></svg>
         نبني معاً

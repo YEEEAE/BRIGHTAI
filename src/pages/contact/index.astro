@@ -20,12 +20,9 @@
  * preserved.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import LeadForm from '../../components/LeadForm.astro';
 import { FORM_TAXONOMY, DEFAULT_CONTACT_FIELDS } from '../../data/marketing';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'تواصل معنا' }];
 
 const contactMethods = [
   {
@@ -110,13 +107,12 @@ const jsonLd = {
 };
 ---
 
-<ArabicLayout title="تواصل معنا | احجز عرض حوكمة AI بالسعودية" description="احجز عرض عملي مع BrightAI لحوكمة AI وحماية البيانات وأدلة امتثال تناسب منشأتك. متاح عبر واتساب +966538229013 والبريد الإلكتروني على مدار الأسبوع." canonical="https://brightai.site/contact/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/contact/'},{lang:'x-default',href:'https://brightai.site/contact/'}]} jsonLd={jsonLd as any} currentPath="/contact/">
+<ArabicLayout title="تواصل معنا | احجز عرض حوكمة AI بالسعودية" description="احجز عرض عملي مع BrightAI لحوكمة AI وحماية البيانات وأدلة امتثال تناسب منشأتك. متاح عبر واتساب +966538229013 والبريد الإلكتروني على مدار الأسبوع." canonical="https://brightai.site/contact/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/contact/'},{lang:'x-default',href:'https://brightai.site/contact/'}]} jsonLd={jsonLd as any} currentPath="/contact/" breadcrumbs={[{ name: 'تواصل معنا' }]}>
 
   {/* ═══════════ 1. HERO — page-hero with 24h response badge ═══════════ */}
   <section class="page-hero" aria-label="تواصل معنا">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-message-text"></use></svg>
         نرد خلال 24 ساعة

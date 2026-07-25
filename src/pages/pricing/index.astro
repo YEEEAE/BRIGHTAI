@@ -15,7 +15,7 @@
 -->
 ---
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
 
 const title = 'باقات وأسعار حوكمة AI المؤسسية | 3 عروض واضحة';
 const description = '3 عروض حوكمة AI مؤسسية من BrightAI: تقييم جاهزية، Pilot 30 يوم بنطاق محدد، وEnterprise Rollout. سعر مخصص، Pilot هو الأنسب لقياس القيمة قبل التوسع.';
@@ -271,7 +271,7 @@ const jsonLd = {
 };
 ---
 
-<ArabicLayout title={title} description={description} canonical={canonical} hreflang={[{lang:'ar-SA',href:canonical},{lang:'x-default',href:canonical}]} jsonLd={jsonLd} currentPath="/pricing/" extraSpeakableSelectors={['.pricing-hero__lead', 'aside[data-snippet="tl-dr"]']}>
+<ArabicLayout title={title} description={description} canonical={canonical} hreflang={[{lang:'ar-SA',href:canonical},{lang:'x-default',href:canonical}]} jsonLd={jsonLd} currentPath="/pricing/" extraSpeakableSelectors={['.pricing-hero__lead', 'aside[data-snippet="tl-dr"]']} breadcrumbs={[{ name: 'الأسعار' }]}>
 
   <div class="pricing-page">
 
@@ -280,7 +280,7 @@ const jsonLd = {
         ────────────────────────────────────────────────────────── */}
     <section class="page-hero pricing-hero">
       <div class="pricing-hero__inner">
-        <Breadcrumbs crumbs={[{label:'الرئيسية',href:'/'},{label:'الأسعار'}]} />
+
         <p class="pricing-hero__eyebrow">باقات حوكمة AI المؤسسية</p>
         <h1 class="pricing-hero__title">3 عروض واضحة — لا خدمات AI متفرقة</h1>
         <p class="pricing-hero__lead">BrightAI منصة حوكمة AI مؤسسية واحدة. اختر نقطة البداية المناسبة لمؤسستك: تقييم جاهزية، Pilot بنطاق محدد، أو تعميم مؤسسي متكامل. السعر مخصص في كل عرض — لأن الحوكمة المؤسسية ليست منتج صندوقي.</p>

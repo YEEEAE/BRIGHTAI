@@ -4,11 +4,8 @@
  * Employee / Customer / Partner referral program.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import LeadForm from '../../components/LeadForm.astro';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الإحالة' }];
 
 const tracks = [
   { icon: 'mdi-account-tie', title: 'إحالة موظف', reward: '٢,٥٠٠ SAR', body: 'لكل توظيف محال يكمل فترة التجربة بنجاح.', who: 'لموظفي BrightAI' },
@@ -44,12 +41,12 @@ const jsonLd = {
   hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/referral/' }, { lang: 'x-default', href: 'https://brightai.site/referral/' }]}
   jsonLd={jsonLd as any}
   currentPath="/referral/"
+  breadcrumbs={[{ name: 'الإحالة' }]}
 >
 
   <section class="page-hero" aria-label="الإحالة">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={crumbs} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-gift"></use></svg>
         ربح معنا

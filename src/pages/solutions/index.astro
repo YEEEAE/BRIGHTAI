@@ -14,13 +14,10 @@
  *   8. CTA النهائي             — gradient banner
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 import SolutionCard from '../../components/SolutionCard.astro';
 import SectorCard from '../../components/SectorCard.astro';
 import { solutions, sectors } from '../../data/solutions';
-
-const crumbs = [{ label: 'الرئيسية', href: '/' }, { label: 'الحلول التقنية' }];
 
 // BAI-SEO-003-S3 (2026-07-18): WebPage and BreadcrumbList are emitted
 // by the foundation Schema.astro. The solutions index page has no
@@ -31,13 +28,12 @@ const jsonLd = {
   "@graph": []
 };
 ---
-<ArabicLayout title="حلول حوكمة AI | AI Firewall + سجل تدقيق + ملف أدلة" description="كل حلول BrightAI التقنية لحوكمة AI في مكان واحد: AI Firewall، سجل التدقيق، الموافقات البشرية، ملف الأدلة، وأنظمة الحوكمة. اكتشف متى تستخدم كل حل." canonical="https://brightai.site/solutions/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/solutions/'},{lang:'x-default',href:'https://brightai.site/solutions/'}]} jsonLd={jsonLd as any} currentPath="/solutions/">
+<ArabicLayout title="حلول حوكمة AI | AI Firewall + سجل تدقيق + ملف أدلة" description="كل حلول BrightAI التقنية لحوكمة AI في مكان واحد: AI Firewall، سجل التدقيق، الموافقات البشرية، ملف الأدلة، وأنظمة الحوكمة. اكتشف متى تستخدم كل حل." canonical="https://brightai.site/solutions/" hreflang={[{lang:'ar-SA',href:'https://brightai.site/solutions/'},{lang:'x-default',href:'https://brightai.site/solutions/'}]} jsonLd={jsonLd as any} currentPath="/solutions/" breadcrumbs={[{ name: 'الحلول التقنية' }]}>
 
 {/* ─── Section 1 · Hero ─────────────────────────────────────────────────────── */}
 <section class="inner-hero bg-ambient-teal-top" aria-label="حلول BrightAI">
   <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <Breadcrumbs crumbs={crumbs} />
     <span class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-wrench"></use></svg> مركز محتوى تقني · Solutions Hub</span>
     <h1>حلول <span class="gradient-text">حوكمة وأمان</span> الذكاء الاصطناعي</h1>
     <p class="inner-hero__desc">كل حلول BrightAI التقنية في صفحة واحدة. اشرحنا لك كل حل بالتفصيل: متى تحتاجه، كيف يشتغل، وش الفايدة اللي يجيبها لشركتك. مرجعك السريع لاختيار الحل المناسب.</p>

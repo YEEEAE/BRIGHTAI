@@ -13,7 +13,6 @@
  */
 import { getCollection } from 'astro:content';
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import DOMPurify from 'isomorphic-dompurify';
 
 const docs = await getCollection('docs');
@@ -259,9 +258,9 @@ function cardIconFor(slug: string): string {
   hreflang={[{ lang: 'ar-SA', href: canonical }]}
   jsonLd={jsonLd}
   currentPath="/docs/"
+  breadcrumbs={[{ name: 'الوثائق' }]}
 >
   <main class="docs-page-shell">
-    <Breadcrumbs crumbs={[{ label: 'الرئيسية', href: '/' }, { label: 'الوثائق' }]} />
 
     <header class="docs-index__hero">
       <span class="chip chip--brand docs-index__eyebrow">

@@ -2,7 +2,6 @@
 <!-- BAI-VOC-001-C (2026-07-18): توحيد CTAs — hero + final: "اطلب عرض توضيحي" → "اطلب عرض توضيحي مخصص" + microcopy. href (wa.me مع whatsappMsg dynamic + /contact/) لم يتغير. -->
 ---
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../../components/BackgroundGrid.astro';
 import RelatedLinks from '../../../components/RelatedLinks.astro';
 import { sectors, solutions } from '../../../data/solutions';
@@ -193,7 +192,7 @@ const finalJsonLd = migratedJsonLdSanitised
 const locAnswerFirst = loc.answerFirst
   ?? `حوكمة AI في ${loc.cityAr} لقطاع ${sector.chip}: توثيق وضوابط قابلة للتدقيق متوافقة مع الجهات السعودية. أداة تشغيلية لا تستبدل التقييم النظامي.`;
 ---
-<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={(finalJsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title} extraSpeakableSelectors={['.answer-first-summary']}>
+<ArabicLayout title={migratedPage?.title ?? loc.title} description={migratedPage?.description ?? loc.description} canonical={migratedPage?.canonical ?? loc.canonical} hreflang={migratedPage?.hreflang ?? [{lang:'ar-SA',href:loc.canonical},{lang:'x-default',href:loc.canonical}]} jsonLd={(finalJsonLd as any)} currentPath={loc.href} ogImage="/assets/images/og/og-solutions.webp" ogImageAlt={migratedPage?.title ?? loc.title} extraSpeakableSelectors={['.answer-first-summary']} breadcrumbs={crumbs.slice(1).map(c => ({ name: c.label, href: c.href }))}>
 {migratedPage ? (
   <>
     {!/<h1\b/i.test(migratedPage.html) && <h1 class="sr-only">{loc.h1}</h1>}
@@ -209,7 +208,6 @@ const locAnswerFirst = loc.answerFirst
 <section class="inner-hero" aria-label={loc.h1}>
   <BackgroundGrid />
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
-    <Breadcrumbs crumbs={crumbs} />
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-map-marker-radius"></use></svg> {loc.cityAr} — {sector.chip}</div>
     <h1>{loc.h1}</h1>
     {/* BAI-SEO-003-S6 (2026-07-18): answer-first always rendered —

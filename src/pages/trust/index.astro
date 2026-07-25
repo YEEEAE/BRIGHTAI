@@ -16,7 +16,6 @@
  * - 0 published Arabic text changed, 3 FAQs preserved verbatim, all internal links preserved
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BackgroundGrid from '../../components/BackgroundGrid.astro';
 
 const title = 'مركز ثقة BrightAI | أمان وامتثال PDPL';
@@ -159,13 +158,12 @@ const trustLinks = [
 ];
 ---
 
-<ArabicLayout title={title} description={description} canonical={canonical} hreflang={[{lang:'ar-SA',href:canonical},{lang:'x-default',href:canonical}]} jsonLd={jsonLd} currentPath="/trust/">
+<ArabicLayout title={title} description={description} canonical={canonical} hreflang={[{lang:'ar-SA',href:canonical},{lang:'x-default',href:canonical}]} jsonLd={jsonLd} currentPath="/trust/" breadcrumbs={[{ name: 'مركز الثقة' }]}>
 
   {/* ═══════════ 1. HERO — page-hero with compliance headline ═══════════ */}
   <section class="page-hero" aria-label="مركز الثقة">
     <BackgroundGrid />
     <div class="max-w-7xl mx-auto px-5 lg:px-8">
-      <Breadcrumbs crumbs={[{ label: 'الرئيسية', href: '/' }, { label: 'مركز الثقة' }]} />
       <div class="inner-hero__badge">
         <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-shield-check"></use></svg>
         ممارسات أمن تشغيلية وامتثال تشريعي
