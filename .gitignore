@@ -57,6 +57,16 @@ apps/dashboard/coverage/
 coverage/
 *.lcov
 
+# BAI-REPO-13 (2026-07-25): internal state files moved outside the public repo
+# These files were bloating git history (1MB+ per commit) and exposing internal
+# memory + sensitive context. The agent's brain lives at ~/agents-data/brightai/.
+# Skills, types, and plugins under .agents/ stay in the repo (they're tooling).
+.agents/brain.md
+.agents/AGENTS.md
+.agents/snapshots/
+.agents/vendored-artifacts/
+.lighthouseci/
+
 # Publish surface protection - these should never be published
 .ai-reject-dashboard/.env
 .telegram-devto-bot/.env
