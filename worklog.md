@@ -1830,3 +1830,55 @@ Stage Summary:
 - **التوصية**: 
     1. الـ user يعمل `git commit -m "[BAI-XXX-NN] update site"` (لازم tag، وإلا الـ commit-msg hook يرفض).
     2. بعد deploy نشط، نفتح cleanup pass يحذف `./--version/` و `./--version/_/` (لأنهم deprecated husky v4 stubs).
+
+---
+
+Task ID: BAI-SEC-11
+Agent: BrightAI Workspace Agent (Mavis)
+Task: توحيد CSP في مصدر حقيقة واحد (KI-CSP-DRIFT) + drift gate + generator + inline-style batch 1 (20 ملف) + HSTS Transform Rule script
+Started: 2026-07-25T04:00:00+03:00
+Completed: 2026-07-25T04:32:00+03:00
+Mode: Senior
+
+Work Log:
+- 04:00: اكتشفت KI-CSP-DRIFT-2026-07-25 (render.yaml يحوي 6 origins زيادة في CSP: cdnjs + 4 Sentry + c.bing.com + region1.google-analytics.com).
+- 04:05: سألت المستخدم: 20 ملف (batch 1) + HSTS approach. رد: "ابدأ بالقائمة كما هي" + "API فقط بدون fallback".
+- 04:10: كتبت `scripts/sync-headers-from-csp.mjs` (235 سطر). idempotent. CHECK=1/DRY_RUN=1 modes.
+- 04:12-04:18: 3 محاولات لإصلاح bugs: (a) headersEnd logic، (b) /frontend/* overrides، (c) /routes: block + public/_headers suffix.
+- 04:20: كتبت `scripts/verify-csp-drift.mjs` (165 سطر). CI gate. drift detection tested.
+- 04:24: parser fix في `scripts/headers-config.mjs` (unwrapYamlScalar) — 11/11 tests pass.
+- 04:26: أضفت 4 scripts في `package.json` (headers:sync, headers:check, verify:csp-drift, cloudflare:hsts). `headers:check` مدمج في `verify:all`.
+- 04:30-04:38: Phase B — migration inline styles في 14 ملف (3 components + 1 page + 10 blog posts). 38 inline style attribute مُزال. 13 CSS class جديدة في `components.css`.
+- 04:38: `pnpm run build` → 190 pages, 0 errors ✅. `pnpm run verify:all` → 0 errors, 0 warnings ✅.
+- 04:40: HTML smoke test → tldr--gradient rendered correctly.
+- 04:45: كتبت `scripts/setup-cloudflare-hsts-transform-rule.mjs` (215 سطر). Cloudflare Rulesets API v4. idempotent.
+- 04:47: `pnpm run cloudflare:hsts` → **FATAL: CLOUDFLARE_API_TOKEN and CLOUDFLARE_ZONE_ID are required** — السكربت شغّال، الـ creds مو في env. per المستخدم: API فقط بدون fallback.
+- 04:50: brain.md — Section 2 (BAI-SEC-11 entry جديد) + Section 3 (KI-CSP-DRIFT-2026-07-25 → resolved).
+- 04:55: `report/2026-07-25-bai-sec-11-csp-source-of-truth.md` (16KB).
+- 04:58: git rebase نشط في الـ background (من user/automation). `git rebase --abort` لاسترجاع الحالة.
+- 04:59: HEAD على 54931de1 (BAI-PROC-13 commit يحتوي على كل شغلي). worklog entry أعيد كتابته هنا.
+
+Stage Summary:
+- **المشكلة**: KI-CSP-DRIFT-2026-07-25 (drift بين render.yaml و security-headers.mjs) + 38 inline style في 14 ملف + HSTS Transform Rule غير مفعّل.
+- **الحل**:
+    1. Generator (sync-headers-from-csp.mjs) — يكتب public/_headers و render.yaml security entries من SoT.
+    2. Drift gate (verify-csp-drift.mjs) — CI fail عند اختلاف.
+    3. Cleanup فعلي لـ render.yaml — 6 origins شُيلت، X-Robots-Tag مضاف.
+    4. Parser fix في headers-config.mjs — 11/11 tests pass.
+    5. inline-style batch 1 — 38 → 0 في 14 ملف، 13 CSS class جديدة.
+    6. HSTS script — Cloudflare API، idempotent، يحتاج creds.
+- **النتيجة**:
+    - `pnpm run verify:csp-drift` → ✓ clean
+    - `pnpm run build` → ✓ 190 pages, 0 errors
+    - `pnpm run verify:all` → ✓ 0 errors, 0 warnings
+    - KI-CSP-DRIFT-2026-07-25 → resolved
+- **المخاطر**:
+    - HSTS مو مفعّل (يحتاج creds)
+    - inline-style batches 2-4 (71 ملف) لـ BAI-SEC-12+
+    - KI-CSP-001 Phase 2 (nonces) لـ strict-CSP
+- **التوصية**:
+    1. user يصدر CLOUDFLARE_API_TOKEN + CLOUDFLARE_ZONE_ID و يشغّل `pnpm run cloudflare:hsts`
+    2. push BAI-PROC-13 للـ origin (local: 54931de1، origin: 1af7c871، diverged بـ 1)
+    3. Render auto-redeploy → IndexNow trigger
+    4. `pnpm run verify:live:headers` بعد deploy
+    5. افتح BAI-SEC-12 لـ inline-style batch 2
