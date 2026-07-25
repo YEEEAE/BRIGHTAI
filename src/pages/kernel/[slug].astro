@@ -18,6 +18,8 @@ import {
 import { migratedKernelPages } from '../../data/migratedKernelPages';
 // KRN-012 / EXEC-12: sanitize migrated HTML
 import DOMPurify from 'isomorphic-dompurify';
+// BAI-SCHEMA-05: Service schema for /kernel/* pages
+import { getServiceLd } from '../../data/schema-helpers';
 
 export function getStaticPaths() {
   return kernelNavItems.map(unit => ({
@@ -31,6 +33,41 @@ const { unit } = Astro.props;
 const migratedPage = migratedKernelPages[unit.slug];
 const cross = getCrossLinks(unit);
 const relatedSlugs = unit.relatedSlugs ?? [];
+
+// BAI-SCHEMA-05: build Service node for kernel unit
+const serviceLd = getServiceLd({
+  canonical: unit.canonical,
+  name: unit.h1,
+  description: unit.description,
+  serviceType: unit.label,
+  areaServed: 'Saudi Arabia',
+  offers: {
+    url: 'https://brightai.site/contact/',
+    description: 'تواصل عبر /contact/ للحصول على عرض توضيحي مخصص لمنشأتك',
+  },
+});
+
+// Merge with migrated JSON-LD if present (migrated pages may already have schema)
+const finalJsonLd = migratedPage?.jsonLd ?? null;
+const mergedJsonLd = (() => {
+  if (!finalJsonLd) return serviceLd;
+
+  if (Array.isArray(finalJsonLd)) {
+    return { '@context': 'https://schema.org', '@graph': [...finalJsonLd, serviceLd] };
+  }
+
+  if ((finalJsonLd as Record<string, unknown>)['@graph']) {
+    return {
+      ...(finalJsonLd as Record<string, unknown>),
+      '@graph': [
+        ...((finalJsonLd as Record<string, unknown>)['@graph'] as Array<Record<string, unknown>>),
+        serviceLd,
+      ],
+    };
+  }
+
+  return { '@context': 'https://schema.org', '@graph': [finalJsonLd, serviceLd] };
+})();
 
 /**
  * BAI-SEO-003-S3 (2026-07-18): the kernel sub-page used to emit its own
@@ -50,7 +87,6 @@ const relatedSlugs = unit.relatedSlugs ?? [];
  * AggregateRating is removed from the fallback product node for the same
  * reason as KERNEL_PRODUCT in schema-helpers.ts: no source-backed reviews.
  */
-const finalJsonLd = migratedPage?.jsonLd ?? null;
 
 const isAudit = unit.slug === 'audit';
 const isEvidence = unit.slug === 'evidence';
@@ -62,7 +98,7 @@ const isCompliance = unit.slug === 'compliance';
   description={migratedPage?.description ?? unit.description}
   canonical={migratedPage?.canonical ?? unit.canonical}
   hreflang={migratedPage?.hreflang ?? unit.hreflang}
-  jsonLd={finalJsonLd as any}
+  jsonLd={mergedJsonLd as any}
   currentPath={unit.path}
   breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: unit.label, href: unit.path }]}
   extraSpeakableSelectors={['.answer-first-summary', '.k-page__disclaimer']}

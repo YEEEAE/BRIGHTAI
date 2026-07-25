@@ -723,3 +723,53 @@ export function getArticleLd(input: ArticleLdInput) {
     inLanguage,
   };
 }
+
+/* ──────────────────────────────────────────────────────────────────
+ * 9. SERVICE (BAI-SCHEMA-05)
+ * ────────────────────────────────────────────────────────────────
+ *
+ * Reusable Service node for /solutions/* and /kernel/* pages.
+ * Uses ORGANIZATION @id as provider and includes the core fields
+ * requested by the ticket: serviceType, areaServed, offers.
+ */
+
+export interface ServiceLdInput {
+  canonical: string;
+  name: string;
+  description: string;
+  serviceType: string;
+  areaServed?: string | Array<string | Record<string, string>>;
+  offers?: {
+    priceCurrency?: string;
+    price?: number;
+    availability?: string;
+    url: string;
+    description?: string;
+  };
+}
+
+export function getServiceLd(input: ServiceLdInput) {
+  const { canonical, name, description, serviceType, areaServed = 'Saudi Arabia', offers } = input;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${canonical}#service`,
+    name,
+    description,
+    serviceType,
+    provider: { '@id': 'https://brightai.site/#organization' },
+    areaServed,
+    ...(offers
+      ? {
+          offers: {
+            '@type': 'Offer',
+            priceCurrency: offers.priceCurrency ?? 'SAR',
+            price: offers.price ?? 0,
+            availability: offers.availability ?? 'https://schema.org/InStock',
+            url: offers.url,
+            ...(offers.description ? { description: offers.description } : {}),
+          },
+        }
+      : {}),
+  };
+}

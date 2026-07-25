@@ -57,10 +57,24 @@ const crumbs = [
 // by the foundation Schema.astro. We keep only the page-specific Service
 // node (+ optional FAQPage from solution.content.faqs) to avoid duplicate
 // @id warnings (verified via scripts/_check-duplicate-schema-ids.mjs).
+// BAI-SCHEMA-05: use centralized getServiceLd() helper (serviceType +
+// provider @id + areaServed + offers).
+import { getServiceLd } from '../../data/schema-helpers';
+const serviceLd = getServiceLd({
+  canonical: solution.canonical,
+  name: solution.h1,
+  description: solution.description,
+  serviceType: solution.h1.split('(')[0].trim(),
+  areaServed: 'Saudi Arabia',
+  offers: {
+    url: 'https://brightai.site/contact/',
+    description: 'تواصل عبر /contact/ للحصول على عرض توضيحي مخصص لحجم المنشأة',
+  },
+});
 const jsonLd = {
   "@context":"https://schema.org",
   "@graph":[
-    {"@type":"Service","@id":solution.canonical+"#service","name":solution.h1,"description":solution.description,"provider":{"@type":"Organization","name":"BrightAI","url":"https://brightai.site"},"url":solution.canonical,"areaServed":"Saudi Arabia"},
+    serviceLd,
     ...(solution.content?.faqs ? [{"@type":"FAQPage","mainEntity":solution.content.faqs.map(faq=>({"@type":"Question","name":faq.question,"acceptedAnswer":{"@type":"Answer","text":faq.answer}}))}] : []),
   ]
 };

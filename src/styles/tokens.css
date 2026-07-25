@@ -174,6 +174,7 @@
 --glass-blur-lg: blur(24px) saturate(180%);
 --glass-highlight: rgba(255,255,255,0.06);    /* top-edge hairline */
 --glass-highlight-strong: rgba(255,255,255,0.08);
+--glass-border: rgba(255,255,255,0.1);        /* white hairline border on dark surfaces */
 
 /* Inner edge highlights — give cards a subtle 1px top sheen without breaking flatness */
 --highlight-inner: inset 0 1px 0 0 var(--glass-highlight);
