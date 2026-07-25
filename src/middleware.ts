@@ -3,14 +3,20 @@
  *
  * P0-3 (2026-07-19): request ID propagation + Sentry init.
  * BAI-IDX-02 (2026-07-25): security header enforcement on SSR responses.
+ * BAI-IDX-22 (2026-07-25): legacy 301 redirects via `astro.config.mjs
+ *   redirects:` (NOT via this middleware — see DEC-BAI-IDX-22-001).
+ *   The middleware approach was tried first but Astro's `renderError`
+ *   for 404s uses `prerenderedErrorPageFetch` to read the prerendered
+ *   404.html from disk and return it directly — the middleware never
+ *   runs for 404 paths. Astro's `redirects:` config IS processed for
+ *   paths without a static file, so that's the correct layer.
  *
  * Runs before every SSR route (/api/ai/chat, /api/lead, /api/health,
- * /api/csp-report, /api/csrf-token). The Node adapter serves prerendered
- * static pages directly from dist/client/ without invoking this
- * middleware, so static pages are protected at a different layer
- * (meta http-equiv via the injectSecurityMeta() integration, plus
- * Cloudflare edge Transform Rules for HSTS — see
- * docs/cloudflare-deployment-headers.md).
+ * /api/csp-report, /api/csrf-token). Prerendered static pages with a
+ * matching file in dist/client/ are served directly without invoking
+ * this middleware, so they are protected at a different layer (meta
+ * http-equiv via the injectSecurityMeta() integration, plus Cloudflare
+ * edge Transform Rules for HSTS — see docs/cloudflare-deployment-headers.md).
  */
 
 import { defineMiddleware } from 'astro:middleware';
@@ -46,6 +52,14 @@ function applySecurityHeaders(response) {
     }
   }
 }
+
+// BAI-IDX-22: legacy URL redirects are handled at build time via
+// `astro.config.mjs redirects:` (auto-injected by
+// scripts/generate-all-redirects.mjs from redirects.json). The
+// middleware is NOT used for legacy redirects because Astro's
+// `renderError` for 404 paths reads the prerendered 404.html from
+// disk via `prerenderedErrorPageFetch` and returns it directly,
+// bypassing the middleware. See DEC-BAI-IDX-22-001.
 
 export const onRequest = defineMiddleware(async (context, next) => {
   // 1. Sentry init (idempotent, no-op if DSN unset).

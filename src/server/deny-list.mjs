@@ -76,7 +76,15 @@ export const DENY_LIST_PATTERNS = [
   '^/packages(/|$)',
   '^/apps(/|$)',
   '^/\\.agents(/|$)',
-  '^/report(/|$)',          // redirected by Render to /trust/ — denylist catches /report/<file>
+  // BAI-IDX-22 (2026-07-25): /report is a legacy URL that the runtime
+  // middleware (src/middleware.ts → src/lib/legacy-redirects.mjs) 301s
+  // to /trust/. The old pattern `^/report(/|$)` blocked /report and
+  // /report/ before the middleware could see them, sending both to 404.
+  // The narrow pattern `^/report/.+` only blocks paths WITH content
+  // after /report/ — i.e. leaked source files like
+  // /report/2026-06-29-some-file.md. The bare /report and /report/ paths
+  // fall through to the legacy-redirect middleware and get a 301.
+  '^/report/.+',
   '^/kernel(/|$)',          // block /kernel/* source-style access (kernel/ public marketing handled by prerender, this blocks /kernel/foo.js if any)
 
   // ─── C. Sensitive config files at the root ───
@@ -220,7 +228,9 @@ export function selfCheck() {
     '/src/',
     '/packages/',
     '/apps/',
-    '/report/',
+    // BAI-IDX-22: /report/ is no longer denied — the runtime middleware
+    // 301s it to /trust/. Only paths with content after /report/ are
+    // denied (e.g. a leaked source file).
     '/report/2026-06-29-some-file.md',
     '/Dockerfile',
     '/docker-compose.yml',

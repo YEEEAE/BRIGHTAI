@@ -22,11 +22,86 @@
 // any error so it can gate CI / seo:gate.
 //
 // Run AFTER `pnpm build` (needs dist/client + public/sitemap.xml present).
-import { promises as fs } from "fs";
+import { promises as fs, readFileSync, readdirSync } from "fs";
 import path from "path";
 import { resolveClientBuildRoot } from "./_build-output.mjs";
 import { extractAlternateHreflangLinks, extractCanonicalHref, hasNoindexDirective } from "./sitemap-audit-utils.mjs";
 import { isExplicitBilingualPair } from "../src/data/hreflang-pairs.ts";
+
+function parseArgs(argv) {
+  const args = {
+    live: false,
+    host: 'https://brightai.site',
+    sample: 200,
+    concurrency: 10,
+    timeout: 15000,
+    report: null,
+    showHelp: false,
+  };
+
+  // Helper: parse a value flag. Accepts both `--key value` and `--key=value`.
+  // Returns { value, nextIndex } — caller advances i to nextIndex.
+  const valueFlag = (arg, key) => {
+    if (arg === `--${key}`) {
+      return { value: argv[argv.indexOf(arg) + 1], nextIndex: argv.indexOf(arg) + 2 };
+    }
+    if (arg.startsWith(`--${key}=`)) {
+      return { value: arg.slice(key.length + 3), nextIndex: argv.indexOf(arg) + 1 };
+    }
+    return null;
+  };
+
+  for (let i = 2; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === '--live') args.live = true;
+    else if (arg === '--local') args.live = false;
+    else if (arg === '--help' || arg === '-h') args.showHelp = true;
+    else if (arg.startsWith('--host')) {
+      const parsed = valueFlag(arg, 'host');
+      if (parsed) { args.host = parsed.value; i = parsed.nextIndex - 1; }
+    } else if (arg.startsWith('--sample')) {
+      const parsed = valueFlag(arg, 'sample');
+      if (parsed) { args.sample = parseInt(parsed.value, 10); i = parsed.nextIndex - 1; }
+    } else if (arg.startsWith('--concurrency')) {
+      const parsed = valueFlag(arg, 'concurrency');
+      if (parsed) { args.concurrency = parseInt(parsed.value, 10); i = parsed.nextIndex - 1; }
+    } else if (arg.startsWith('--timeout')) {
+      const parsed = valueFlag(arg, 'timeout');
+      if (parsed) { args.timeout = parseInt(parsed.value, 10); i = parsed.nextIndex - 1; }
+    } else if (arg.startsWith('--report')) {
+      const parsed = valueFlag(arg, 'report');
+      if (parsed) { args.report = parsed.value; i = parsed.nextIndex - 1; }
+    }
+  }
+  return args;
+}
+
+function printHelp() {
+  console.log(`Usage: node scripts/hreflang-bidirectional-audit.mjs [options]
+
+Hreflang bidirectional audit (BAI-IDX-14)
+
+Options:
+  --live                   Fetch from production via Playwright (default: filesystem)
+  --local                  Force filesystem mode (parity with check-mobile-375)
+  --host <url>             Production host (default: https://brightai.site)
+  --sample <n>             Pages to sample (default: 200; 0 = all)
+  --concurrency <n>        Parallel browser contexts (default: 10)
+  --timeout <ms>           Per-page navigation timeout (default: 15000)
+  --report <path>          JSON report output path
+  -h, --help               Show this help
+
+Examples:
+  node scripts/hreflang-bidirectional-audit.mjs                    # Local filesystem
+  node scripts/hreflang-bidirectional-audit.mjs --live             # Production
+  node scripts/hreflang-bidirectional-audit.mjs --live --sample=50 # Sample 50 pages
+
+Exit codes:
+  0  All checks passed
+  1  One or more violations detected
+  2  Internal error (browser launch, network, parse failure)
+`);
+}
 
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
@@ -40,18 +115,19 @@ if (!clientBuild.root) {
 const CLIENT_ROOT = clientBuild.root;
 
 // Collect all built HTML files under the client root.
-async function walkHtml(dir) {
+// Synchronous version — keeps fetchFilesystem sync (see Task 2.1).
+function walkHtml(dir) {
   const out = [];
   let entries;
   try {
-    entries = await fs.readdir(dir, { withFileTypes: true });
+    entries = readdirSync(dir, { withFileTypes: true });
   } catch {
     return out;
   }
   for (const entry of entries) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
-      out.push(...(await walkHtml(full)));
+      out.push(...walkHtml(full));
     } else if (entry.isFile() && entry.name.endsWith(".html")) {
       out.push(full);
     }
@@ -65,11 +141,15 @@ function parseHeadHreflang(html) {
 }
 
 // Build a map: canonical URL -> { file, alternates: Map<lang,href> }
-async function buildPageIndex() {
-  const files = await walkHtml(CLIENT_ROOT);
+// Synchronous — Task 2.1 renamed `buildPageIndex` → `fetchFilesystem` to match
+// the source abstraction (filesystem vs live). Uses readFileSync so the function
+// returns the Map directly (no Promise). `run()` calls `await fetchFilesystem()`
+// for parity with the live path; await on a non-Promise is a no-op.
+function fetchFilesystem() {
+  const files = walkHtml(CLIENT_ROOT);
   const index = new Map();
   for (const file of files) {
-    const html = await fs.readFile(file, "utf8");
+    const html = readFileSync(file, "utf8");
     const canonical = extractCanonicalHref(html);
     if (!canonical) continue;
     // Skip noindex pages (error pages, thank-you, etc.) — they are not part
@@ -231,25 +311,18 @@ function checkArOnlyPageNoEnAlternate(index) {
   return errors;
 }
 
-async function main() {
-  const index = await buildPageIndex();
-  const setCount = index.size;
-
-  const reciprocityErrors = checkReciprocity(index);
-  const canonicalErrors = checkCanonicalSelfMatch(index);
-  const xDefaultErrors = checkXDefault(index);
-  const enPageContractErrors = checkEnPageContract(index);
-  const arOnlyInventedEnErrors = checkArOnlyPageNoEnAlternate(index);
-
-  // Non-200 check: collect all alternate URLs, hit them via local file
-  // existence (build artifact) — a missing HTML file means non-200 in prod.
+// Filesystem-only: verify every alternate URL has a built HTML file under
+// CLIENT_ROOT. A missing file means non-200 in prod. Extracted from the
+// original inline non-200 loop in main() so run() can branch on source.
+// Task 2 will rename/move this as part of the fetchFilesystem split.
+async function checkNon200Files(index) {
   const allAlternateUrls = new Set();
   for (const { alternates } of index.values()) {
     for (const href of alternates.values()) {
       allAlternateUrls.add(href);
     }
   }
-  const non200Errors = [];
+  const errors = [];
   for (const href of allAlternateUrls) {
     // Map absolute URL → relative file under client root.
     let relPath;
@@ -257,7 +330,7 @@ async function main() {
       const parsed = new URL(href);
       relPath = decodeURIComponent(parsed.pathname);
     } catch {
-      non200Errors.push(`bad-url: ${href}`);
+      errors.push(`bad-url: ${href}`);
       continue;
     }
     if (relPath === "/") relPath = "/index.html";
@@ -267,8 +340,57 @@ async function main() {
     try {
       await fs.access(candidate);
     } catch {
-      non200Errors.push(`non-200: ${href} (missing ${candidate})`);
+      errors.push(`non-200: ${href} (missing ${candidate})`);
     }
+  }
+  return errors;
+}
+
+// Placeholder — Task 3 replaces with the real Playwright implementation
+// (chromium.launch() + Promise.allSettled chunks + page.content() extraction).
+async function fetchLive(_opts) {
+  throw new Error("fetchLive: not implemented yet (BAI-IDX-14 Task 3 will replace this placeholder).");
+}
+
+// Placeholder — Task 3 replaces with the real JSON writer.
+async function reportWriter(_path, _data) {
+  throw new Error("reportWriter: not implemented yet (BAI-IDX-14 Task 3 will replace this placeholder).");
+}
+
+/**
+ * Extract a structured violation from the error string emitted by check* functions.
+ * Format: `${type}: <url> <rest of message>`.
+ * The URL is always the first whitespace-separated token after the type prefix.
+ */
+function parseViolation(type, errorString) {
+  // Strip the type prefix: "missing-return: <url> ..." → "<url> ..."
+  const colonIdx = errorString.indexOf(':');
+  const remainder = colonIdx >= 0 ? errorString.slice(colonIdx + 1).trim() : errorString;
+  // The URL is the first whitespace-separated token.
+  const url = remainder.split(/\s+/)[0] || null;
+  return { type, url, detail: errorString };
+}
+
+async function run({ source, args, fetchLive, fetchFilesystem, reportWriter }) {
+  // Build the page index from the chosen source. filesystem uses the existing
+  // async buildPageIndex (Task 2 turns it into a sync fetchFilesystem); live
+  // delegates to the injected fetchLive (placeholder throws until Task 3).
+  const pageIndex = source === 'live'
+    ? await fetchLive({ host: args.host, sample: args.sample, concurrency: args.concurrency, timeout: args.timeout })
+    : await fetchFilesystem();
+
+  const setCount = pageIndex.size;
+
+  const reciprocityErrors = checkReciprocity(pageIndex);
+  const canonicalErrors = checkCanonicalSelfMatch(pageIndex);
+  const xDefaultErrors = checkXDefault(pageIndex);
+  const enPageContractErrors = checkEnPageContract(pageIndex);
+  const arOnlyInventedEnErrors = checkArOnlyPageNoEnAlternate(pageIndex);
+
+  // Non-200 check is filesystem-only (live fetch tracks its own non-200s).
+  let non200Errors = [];
+  if (source === 'filesystem') {
+    non200Errors = await checkNon200Files(pageIndex);
   }
 
   const totalErrors =
@@ -279,7 +401,14 @@ async function main() {
     arOnlyInventedEnErrors.length +
     non200Errors.length;
 
-  console.log(`Hreflang bidirectional audit`);
+  // Summary output (mode-aware)
+  const mode = source === 'live' ? 'live' : 'local';
+  console.log(`Hreflang bidirectional audit (${mode} mode)`);
+  if (source === 'live') {
+    console.log(`  Host:                ${args.host}`);
+    console.log(`  Pages sampled:       ${args.sample}`);
+    console.log(`  Concurrency:         ${args.concurrency}`);
+  }
   console.log(`  Sets audited:           ${setCount}`);
   console.log(`  Missing return tags:    ${reciprocityErrors.length}`);
   console.log(`  Canonical mismatch:     ${canonicalErrors.length}`);
@@ -314,13 +443,56 @@ async function main() {
     non200Errors.forEach((e) => console.log(`  ✗ ${e}`));
   }
 
+  // JSON report (only when --report is set)
+  if (args.report) {
+    await reportWriter(args.report, {
+      host: args.host,
+      sampledPages: args.sample,
+      totalPages: setCount,
+      concurrency: args.concurrency,
+      timestamp: new Date().toISOString(),
+      errors: {
+        missingReturn: reciprocityErrors.length,
+        canonicalMismatch: canonicalErrors.length,
+        missingXDefault: xDefaultErrors.length,
+        enPageContract: enPageContractErrors.length,
+        arOnlyInventedEn: arOnlyInventedEnErrors.length,
+        non200Responses: non200Errors.length,
+      },
+      violations: [
+        ...reciprocityErrors.map((e) => parseViolation('missing-return', e)),
+        ...canonicalErrors.map((e) => parseViolation('canonical-mismatch', e)),
+        ...xDefaultErrors.map((e) => parseViolation('missing-xdefault', e)),
+        ...enPageContractErrors.map((e) => parseViolation('en-page-contract', e)),
+        ...arOnlyInventedEnErrors.map((e) => parseViolation('ar-only-invented-en', e)),
+      ],
+    });
+  }
+
   if (totalErrors > 0) {
     process.exit(1);
   }
-  console.log("\n✅ All hreflang bidirectional checks passed.");
+  console.log(`\n✅ All hreflang bidirectional checks passed (${mode}).`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Run as CLI when invoked directly; export for tests when imported.
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const args = parseArgs(process.argv);
+  if (args.showHelp) {
+    printHelp();
+    process.exit(0);
+  }
+  run({
+    source: args.live ? 'live' : 'filesystem',
+    args,
+    fetchLive,
+    fetchFilesystem: buildPageIndex,
+    reportWriter,
+  })
+    .catch((err) => {
+      console.error(err);
+      process.exit(2); // Internal error (distinct from violations=1)
+    });
+}
+
+export { parseArgs, printHelp, run, checkNon200Files, parseViolation };
