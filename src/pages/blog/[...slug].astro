@@ -21,6 +21,7 @@ import { SITE } from '../../data/site';
 import { getFaqLd } from '../../data/schema-helpers';
 // BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — central contract
 import { getP0Snippet } from '../../data/snippet-pack';
+import { getRelatedSolutionsForBlog } from '../../data/cross-links';
 
 export async function getStaticPaths() {
   const entries = await getCollection('blog');
@@ -561,6 +562,9 @@ const extraSchemaNodes: Record<string, unknown>[] = [itemListNode, faqNode].filt
 // source-time FoundationSchema stays untouched for non-P0 blog
 // posts (no schema references a non-existent element).
 const p0Snippet = getP0Snippet(`/blog/${post.slug}/`);
+
+// BAI-LINK-05: related solutions for this blog post
+const relatedSolutions = getRelatedSolutionsForBlog(post.slug);
 ---
 
 <BlogLayout
@@ -586,6 +590,17 @@ const p0Snippet = getP0Snippet(`/blog/${post.slug}/`);
       </aside>
     )}
     <Content />
+
+    {relatedSolutions.length > 0 && (
+      <section class="article-links" aria-labelledby="related-solutions">
+        <h2 id="related-solutions" style="margin-top: 3rem; font-size: var(--text-2xl); font-weight: var(--font-bold); color: var(--text-primary);">حلول ذات صلة</h2>
+        <div class="article-links__grid">
+          {relatedSolutions.map((sol) => (
+            <a href={sol.href}>{sol.h1}</a>
+          ))}
+        </div>
+      </section>
+    )}
   </Fragment>
   <Fragment slot="footer">
     <div style="display: flex; justify-content: center; margin-block: 2rem;">

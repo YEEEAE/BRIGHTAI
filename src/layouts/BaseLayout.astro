@@ -103,11 +103,19 @@ const {
   extraSpeakableSelectors = [],
 } = Astro.props;
 
+// BAI-IDX-25 (2026-07-25): defensive guard for prerendering redirect pages
+// (e.g. /solutions/cities/[city].astro uses Astro.redirect() without a layout).
+// During prerender, Astro.props.currentPath can be undefined for redirect-only
+// pages that don't explicitly pass it. Default to '/' to prevent
+// "Cannot read properties of undefined (reading 'startsWith')" at
+// normalizedCurrentPath.startsWith(p) below.
+const safeCurrentPath = currentPath ?? '/';
+
 // REPORTS-SEO-FOUNDATION: canonical auto-derivation. If a page forgets to
 // pass a canonical, we derive one from Astro.url using the SITE.url host.
 const finalCanonical =
   canonical ||
-  new URL(currentPath, SITE.url).toString().replace(/\/$/, '/').replace(/([^:])\/{2,}/g, '$1/');
+  new URL(safeCurrentPath, SITE.url).toString().replace(/\/$/, '/').replace(/([^:])\/{2,}/g, '$1/');
 
 // Robots policy (BAI-SEO-003-S1, 2026-07-18, updated P0-2 2026-07-18):
 //   Default: "index, follow, max-..." (per REPORTS-SEO-FOUNDATION).
@@ -121,7 +129,7 @@ const finalCanonical =
 //   P0-2 (2026-07-18): added /offline/, /kernel/offline/, /design/* to the
 //   allowlist so these non-search utility pages stop being crawlable.
 const NOINDEX_ALLOWLIST_PREFIXES = ['/thank-you/', '/offline/', '/kernel/offline/', '/design/'];
-const normalizedCurrentPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+const normalizedCurrentPath = safeCurrentPath.endsWith('/') ? safeCurrentPath : `${safeCurrentPath}/`;
 const isNoindexAllowed = NOINDEX_ALLOWLIST_PREFIXES.some((p) => normalizedCurrentPath.startsWith(p));
 const wantsNoindex = typeof robots === 'string' && /noindex/i.test(robots);
 const finalRobots = isNoindexAllowed && wantsNoindex
@@ -380,14 +388,14 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
   </a>
 
   <div class="page">
-    <Header lang={lang} currentPath={currentPath} />
-    <MobileNav lang={lang} currentPath={currentPath} />
+    <Header lang={lang} currentPath={safeCurrentPath} />
+    <MobileNav lang={lang} currentPath={safeCurrentPath} />
 
     <main id="main-content" class="page__main">
       <slot />
     </main>
 
-    <Footer lang={lang} currentPath={currentPath} languageCounterpart={languageCounterpart} />
+    <Footer lang={lang} currentPath={safeCurrentPath} languageCounterpart={languageCounterpart} />
   </div>
 
   <aside class="whatsapp-cta-landmark" aria-label={lang === 'ar' ? 'تواصل سريع' : 'Quick contact'}>

@@ -25,6 +25,23 @@ const { solution } = Astro.props;
 const cardTitle =
   solution.cardTitle ??
   (solution.h1.split(' ').length > 4 ? solution.h1 : solution.title.split(' | ')[0]);
+
+// Generate descriptive anchor text based on solution slug
+function getDescriptiveAnchor(solution: SolutionData): string {
+  const slug = solution.slug;
+  const anchors: Record<string, string> = {
+    'ai-governance-platform': 'تعرّف على منصة الحوكمة الكاملة',
+    'ai-firewall': 'اكتشف كيف يحمي AI Firewall بياناتك',
+    'ai-audit-trail': 'تعرّف على سجل تدقيق AI غير القابل للتعديل',
+    'ai-evidence-file': 'شوف كيف يُصدّر ملف الأدلة للمدققين',
+    'human-approval-layer': 'اكتشف طبقة الموافقة البشرية للقرارات الحساسة',
+    'continuous-ai-governance': 'تعرّف على الحوكمة المستمرة والتحديث التلقائي',
+    'ai-risk-classification': 'شوف كيف يُصنّف مخاطر كل استخدام AI',
+    'ai-use-case-discovery': 'اكتشف استخدامات AI الخفية (Shadow AI) في شركتك',
+    'policy-to-control-mapping': 'تعرّف على ربط السياسات بالضوابط التقنية',
+  };
+  return anchors[slug] ?? 'اعرف المزيد ←';
+}
 ---
 
 <a
@@ -49,7 +66,7 @@ const cardTitle =
     <span class="card__meta-value">{solution.whenNeeded}</span>
   </span>
 
-  <span class="card__action">اعرف المزيد ←</span>
+  <span class="card__action">{getDescriptiveAnchor(solution)}</span>
 </a>
 
 <style>

@@ -32,6 +32,8 @@ import DOMPurify from 'isomorphic-dompurify';
 import Icon from '../../components/Icon.astro';
 // BAI-SEO-003-S3 (2026-07-18): ORGANIZATION import removed — foundation
 // Schema.astro emits the canonical Organization @id.
+// BAI-LINK-05: cross-links بين /blog/* و /solutions/*
+import { getRelatedBlogSlugs } from '../../data/cross-links';
 
 export function getStaticPaths() {
   return solutions.map(s => ({ params: { slug: s.slug }, props: { solution: s } }));
@@ -48,7 +50,7 @@ const relSectors = getRelatedSectors(solution.slug);
 const crumbs = [
   { label: 'الرئيسية', href: '/' },
   { label: 'الحلول', href: '/solutions/' },
-  { label: solution.title.split(' | ')[0] }
+  { label: solution.title.split(' | ')[0], href: solution.href }
 ];
 
 // BAI-SEO-003-S3 (2026-07-18): BreadcrumbList and Organization are emitted
@@ -417,9 +419,34 @@ const useCases = buildScenarios(solution);
   </section>
 )}
 
+{/* ─── Section 9 · مقالات ذات صلة (BAI-LINK-05) ──────────────────── */}
+{(() => {
+  const blogSlugs = getRelatedBlogSlugs(solution.slug);
+  if (blogSlugs.length === 0) return null;
+  const blogLinks = blogSlugs.map((bSlug) => {
+    const label = bSlug
+      .replace(/-/g, ' ');
+    return { href: `/blog/${bSlug}/`, label };
+  });
+  return (
+    <section class="inner-section" aria-labelledby="related-blog-posts">
+      <div class="max-w-7xl mx-auto px-5 lg:px-8">
+        <h2 id="related-blog-posts" class="inner-section__title">مقالات ذات صلة</h2>
+        <div class="inner-grid inner-grid--3">
+          {blogLinks.map((link) => (
+            <a href={link.href} class="inner-card p-6 text-decoration-reset">
+              <p class="inner-card__title text-sm">{link.label}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+})()}
+
 <RelatedLinks relatedSlugs={solution.related} sectorSlugs={relSectors.map(s=>s.slug)} docs={solution.docs} blog={solution.blog} kernel={solution.kernel} />
 
-{/* ─── Section 10 · Final CTA (preserved) ───────────────────────────── */}
+{/* ─── Section 11 · Final CTA (preserved) ───────────────────────────── */}
 <section class="inner-cta-final">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="inner-cta-final__card">

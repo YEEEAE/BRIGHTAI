@@ -38,7 +38,7 @@ const relatedSols = sector.related.map(r => solutions.find(s => s.slug === r)).f
 const crumbs = [
   { label: 'الرئيسية', href: '/' },
   { label: 'الحلول', href: '/solutions/' },
-  { label: sector.h1 }
+  { label: sector.h1, href: sector.href }
 ];
 
 // BAI-SEO-003-S3 (2026-07-18): BreadcrumbList is emitted by the foundation
