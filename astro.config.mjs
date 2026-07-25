@@ -235,6 +235,41 @@ export default defineConfig({
       status: 301,
       destination: '/trust/',
     },
+    // BAI-IDX-12 (2026-07-25) — Trailing-slash redirects.
+    //
+    // Why no explicit /blog → /blog/, /solutions → /solutions/,
+    // /kernel → /kernel/ entries here:
+    //
+    //   The task spec (BAI-IDX-12) assumed we need to add these
+    //   explicitly. The diagnostic in
+    //   report/2026-07-25-bai-idx-12-trailing-slash-diagnosis.md
+    //   proved otherwise. For `output: 'static'` with @astrojs/node,
+    //   the static handler in
+    //   node_modules/@astrojs/node/dist/serve-static.js ALREADY
+    //   auto-redirects trailing-slash via the `case "always"` branch
+    //   (returns 301 for any path without trailing slash, no file
+    //   extension, and not internal). So /blog, /solutions, /kernel
+    //   auto-301 to their slash versions at runtime WITHOUT needing
+    //   any config here.
+    //
+    //   We tried adding the 3 entries (commit attempted, reverted).
+    //   Result: Astro build deleted /blog/index.html,
+    //   /kernel/index.html, /solutions/index.html from dist/client/
+    //   because it interpreted the redirect as "this path is a
+    //   redirect source, remove the static file". This broke every
+    //   internal link TO /blog/, /kernel/, /solutions/ (verify:all
+    //   failed with 30+ broken-link errors). The trailing-slash
+    //   auto-redirect from the static handler is the right path
+    //   forward — it coexists with the static file at the
+    //   destination.
+    //
+    //   Production 404s on /blog, /solutions, /kernel in 2026-07-25
+    //   are caused by the OLDER build (last-modified 2026-07-24) on
+    //   Render — it predates the @astrojs/node auto-redirect logic.
+    //   Deploying the new build (a0818740+) fixes /blog and
+    //   /solutions without any code change. /kernel is blocked by
+    //   BAI-SEC-10 deny-list regression (KI-BAI-SEC-10-001 below) and
+    //   needs a separate fix (BAI-SEC-11).
   },
   build: {
     format: 'directory',

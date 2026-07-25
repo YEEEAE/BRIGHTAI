@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-25 09:45 +03:00
+last_updated: 2026-07-25 11:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.32
+version: 2.7.33
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -846,6 +846,107 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-25 — BAI-IDX-12: Trailing-slash 301 diagnosis (3 root causes, 1 line of code) — UNCOMMITTED (per brain line 18: user commits, الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 جديد** + **1 معدّل**:
+  - **جديد**:
+    - `report/2026-07-25-bai-idx-12-trailing-slash-diagnosis.md` (~11KB) — full root-cause analysis. 3 distinct root causes documented with curl evidence + local Node server evidence + build evidence.
+    - `.agents/brain.md` (هذا الـ entry + version bump 2.7.32 → 2.7.33 + KI-BAI-SEC-10-001 + DEC-BAI-IDX-12-2026-07-25-001).
+  - **معدّل**:
+    - `astro.config.mjs` — `redirects:` object: أضفت comment block (~30 سطر) يوثّق **ليش ما نضيف** trailing-slash entries. الـ comment يحتوي cross-reference للتقرير + DEC + KI الجديد + الـ underlying @astrojs/node mechanism. **صفر تغيير في الـ runtime config** (نفس الـ `/report/` redirect الوحيد).
+- **ما تغيّر (محمي أو خاطئ)**:
+  - **`astro.config.mjs` `redirects:` runtime** — ما فيه أي entry جديد. أضفت 3 entries للـ /blog, /solutions, /kernel أولًا، الـ build حذف `dist/client/blog/index.html` و `dist/client/kernel/index.html` و `dist/client/solutions/index.html` (الـ build فسر الـ redirect: "هذا الـ source path للـ redirect → احذف الـ static file"). `verify:all` رجع **30+ broken-link errors**. رجعنا التعديل + علّقنا في الـ config ليش ما نضيف.
+  - **`src/server/deny-list.mjs`** — **لم يُلمس** (محمي + خارج scope BAI-IDX-12). السبب الجذري لـ /kernel 404 يحتاج BAI-SEC-11 منفصل.
+- **What**: BAI-IDX-12 (P0, +5% indexation) طلب إضافة redirects لـ /blog, /solutions, /kernel في `astro.config.mjs`. التشخيص كشف 3 أسباب منفصلة:
+  1. **الـ @astrojs/node static handler** يولّد trailing-slash 301 تلقائيًا عبر `case "always"` في `node_modules/@astrojs/node/dist/serve-static.js` (سطر 11351-11358). **ما يحتاج config**. جربنا: /blog و /solutions يرجعون 301 محليًا بدون تعديل.
+  2. **إضافة للـ redirects object تكسر الـ build** — Astro يحذف `dist/client/{blog,kernel,solutions}/index.html` لأن الـ redirect يوحي بإن الـ source path للـ static file تم استبداله. الـ static handler يخدم `/blog/` عبر `dist/client/blog/index.html` — لو الـ build حذفه، كل الـ internal links لـ /blog/ تكسر. (راجعنا التجربة، نوثقها في التقرير.)
+  3. **/kernel 404 له سبب منفصل** — BAI-SEC-10 deny-list (2026-07-25) أضاف النمط `^/kernel(/|$)` في `src/server/deny-list.mjs` سطر 87. النية "block /kernel/foo.js source files" لكن الـ regex يحجب **كل** مسارات `/kernel/*` بما فيها صفحات الكيرنل التسويقية المسموحة (10 kernel pages مُفهرسة في Google). الـ patch في `dist/server/chunks/server_DVqXwGvD.mjs` سطر 11455 يـ short-circuit إلى 404 **قبل** الـ static handler. هذا **regression** يحتاج BAI-SEC-11 منفصل.
+- **Why**: التشخيص الكامل مطلوب قبل أي code change. الـ acceptance criteria (curl -I /blog → 301) تتحقق **تلقائيًا** في الـ build الجديد (a0818740) لـ /blog و /solutions — يحتاج deploy فقط (BAI-DEPLOY-12 dependency). /kernel يحتاج BAI-SEC-11 لتضييق deny-list pattern. الإضافة للـ redirects object **تكسر الـ build** (30+ broken internal links) — أسوأ من عدم الإضافة. الـ comment block في astro.config.mjs يحمي الـ agent المستقبلي من تكرار نفس الفخ.
+- **Verification (محلي على macOS dev)**:
+  - `node -e "import('./astro.config.mjs')..."` → config loads OK، `redirects: { '/report/': ... }` فقط ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **196 pages, 0 errors** ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run verify:all` → **0 errors, 0 warnings** ✅ (بعد الـ revert؛ قبل الـ revert كان 30+ broken links)
+  - `node dist/server/entry.mjs` (local Node server, port 4322) → starts clean ✅
+  - `curl -sI http://127.0.0.1:4322/blog` → **301 Location: /blog/** ✅
+  - `curl -sI http://127.0.0.1:4322/solutions` → **301 Location: /solutions/** ✅
+  - `curl -sI http://127.0.0.1:4322/about` → **301 Location: /about/** ✅ (control)
+  - `curl -sI http://127.0.0.1:4322/kernel` → **404** (BAI-SEC-10 deny-list blocks, expected)
+  - `curl -sI http://127.0.0.1:4322/kernel/` → **404** (BAI-SEC-10 deny-list blocks, expected)
+  - `ls -la dist/client/{blog,kernel,solutions}/index.html` → **all 3 exist** (revert restored them) ✅
+  - `curl -sI https://brightai.site/blog` (LIVE) → **404** (الإنتاج يشغّل build قديم last-modified 2026-07-24، قبل trailing-slash 301 logic)
+  - `curl -sI https://brightai.site/kernel/` (LIVE) → **200** (Cloudflare serves static file، الـ deny-list يخدم بعد الـ static، أو Cloudflare edge ما يطبّق deny-list — فرق local vs production)
+  - `curl -sI https://brightai.site/api/health/` (LIVE) → **404** (SSR pipeline broken in production — خارج scope BAI-IDX-12، يستحق تذكرة منفصلة)
+- **Bugs found + documented**:
+  1. **astro.config.mjs `redirects` config deletes destination static files** — Astro يفسر redirect من `/blog` لـ `/blog/` على إنه يستبدل الـ static file بـ redirect runtime. لكن الـ static handler يخدم `/blog/` عبر الـ static file. الإضافة = حذف الـ static file = 30+ broken internal links. (المحاولة موثقة في التقرير + comment في الـ config.)
+  2. **BAI-SEC-10 deny-list pattern too broad** — `^/kernel(/|$)` يحجب كل `/kernel/*` بدل source files بس. الإصلاح في BAI-SEC-11 (خارج scope BAI-IDX-12). documented as KI-BAI-SEC-10-001.
+  3. **Production running old build** — last-modified 2026-07-24، ما فيه trailing-slash 301 logic. BAI-DEPLOY-12 هو الـ fix (dependency).
+- **Acceptance criteria (من الـ ticket)**:
+  - ✅ `curl -I /blog → 301 Location: /blog/` — يتحقق في الـ build الجديد محليًا. في الإنتاج: 404 (يحتاج deploy).
+  - ✅ `curl -I /solutions → 301 Location: /solutions/` — يتحقق في الـ build الجديد محليًا. في الإنتاج: 404 (يحتاج deploy).
+  - ❌ `curl -I /kernel → 301 Location: /kernel/` — **ما يتحقق حتى في الـ build الجديد محليًا** (404 من deny-list). يحتاج BAI-SEC-11.
+- **DEC جديد (DEC-BAI-IDX-12-2026-07-25-001)**: لا نضيف trailing-slash entries (`/blog → /blog/` etc.) في `astro.config.mjs redirects:`. الـ @astrojs/node static handler يولّد الـ 301 تلقائيًا عبر `case "always"`. الإضافة تكسر الـ build (تحذف `dist/client/{blog,kernel,solutions}/index.html`، تكسر 30+ internal links). الـ documentation في الـ config (comment block) يحمي من التكرار. Reversal cost: zero (لا يوجد runtime change). Do not reverse بدون explicit user approval.
+- **DEC جديد (DEC-BAI-IDX-12-2026-07-25-002)**: BAI-DEPLOY-12 (الـ dependency) يحل /blog و /solutions في الإنتاج بدون أي code change. الـ build الجديد (a0818740) عنده trailing-slash 301 logic. deploy → curl -I /blog → 301. (ما نعدّل Astro / Node / Render config — نـ deploy و نـ purge Cloudflare cache للـ /report/ فقط.)
+- **Risks Addressed**:
+  - **R1 (production 404 على /blog, /solutions)**: diagnosed as old-build issue. الـ fix = BAI-DEPLOY-12 deploy. Documented in DEC-BAI-IDX-12-2026-07-25-002.
+  - **R2 (broken astro.config.mjs syntax)**: closed (لا تغيير runtime).
+  - **R3 (documentation future-proofing)**: closed (comment block في الـ config + تقرير + brain entry).
+- **Risks Remaining**:
+  - **R-BAI-SEC-10-001**: /kernel/ و /kernel/* marketing pages محجوبة في الـ build الجديد (BAI-SEC-10 deny-list regression). يحتاج BAI-SEC-11 منفصل. **خارج scope BAI-IDX-12.** Documented as KI-BAI-SEC-10-001.
+  - **R-OLD-BUILD**: /blog و /solutions يرجعون 404 في الإنتاج حتى deploy. الـ ticket نفسه ما يحلها (BAI-DEPLOY-12 يحلها).
+  - **R-API-HEALTH-404**: `/api/health/` يرجع 404 في الإنتاج. خارج scope BAI-IDX-12. يستحق تذكرة منفصلة (Render health check معطّل).
+  - **R-CLOUDFLARE-CACHE-OLD**: /report/ في الإنتاج يرجع 200 من cache (last-modified 2026-07-06). بعد deploy للـ build الجديد، الـ Node server يرجع 404 (الـ build ما يولّد `/report/index.html` لأنه redirect). Cloudflare لازم purge `https://brightai.site/report/` بعد deploy.
+  - **R-DIST-RESIDUE**: `dist/client/blog 3/`, `kernel 3/`, `solutions 2/` (pre-existing من قبل BAI-IDX-12). brain line 226-228 already tracks.
+- **Out-of-Scope (tracked as follow-ups, NOT in this commit)**:
+  - **BAI-SEC-11** (new ticket): تضييق `^/kernel(/|$)` في `src/server/deny-list.mjs` للنمط `^/kernel/.*\.(js|mjs|ts|tsx|jsx|map|json|md|astro)$` — يحجب source files بس، مو marketing pages.
+  - **BAI-DEPLOY-12** (already pending per ticket dependency): يدفع build a0818740 للإنتاج. يحل /blog و /solutions تلقائيًا.
+  - **Cloudflare cache purge** لـ `/report/` بعد deploy (الـ build الجديد يخدم 404 على /report/ لكن Cloudflare cache يخدم 200 قديم).
+  - **/api/health/ 404** (separate ticket): Render health check معطّل. يحتاج تحقيق منفصل.
+  - **dist residue cleanup** (separate ticket): `git clean -fdx dist/` قبل كل build، أو `scripts/clean-dist-residue.mjs`.
+- **Commits (per brain line 18 — user commits, الدفع عبر main فقط PR، لا branch جديد)**:
+  - 1 file modification (`astro.config.mjs` — comment block only) + 1 brain entry + 1 report
+  - **Suggested commit message**:
+    ```
+    docs(seo): BAI-IDX-12 — trailing-slash 301 diagnosis (no code change)
+
+    Production 404s on /blog, /solutions, /kernel traced to two
+    distinct root causes, NOT missing redirects in astro.config.mjs:
+
+    1. /blog, /solutions: Production runs an older build (last-modified
+       2026-07-24) that predates @astrojs/node trailing-slash auto-redirect
+       logic. The new build (a0818740) ALREADY returns 301 locally for
+       both paths via `case "always"` in
+       node_modules/@astrojs/node/dist/serve-static.js. Fix = BAI-DEPLOY-12.
+    2. /kernel: BAI-SEC-10 deny-list regression (2026-07-25) added
+       pattern `^/kernel(/|$)` in src/server/deny-list.mjs line 87,
+       blocking ALL /kernel/* paths including the 10 marketing pages
+       indexed in Google. Fix = BAI-SEC-11 (tighten the regex to
+       source files only).
+
+    Attempted the spec's "add explicit redirects" approach, then
+    reverted. Result: Astro's static build deletes
+    dist/client/{blog,kernel,solutions}/index.html when a redirect
+    is defined from /blog → /blog/, breaking 30+ internal links
+    (verify:all exit 1). The trailing-slash auto-redirect from
+    @astrojs/node is the correct mechanism, NOT astro.config.mjs
+    redirects.
+
+    This commit adds a comment block to astro.config.mjs `redirects:`
+    documenting why we DON'T add the entries, to protect future
+    agents from repeating the same mistake.
+
+    Verification:
+      - pnpm run build → 196 pages, 0 errors
+      - pnpm run verify:all → 0 errors, 0 warnings
+      - curl -I localhost:4322/blog → 301 Location: /blog/
+      - curl -I localhost:4322/solutions → 301 Location: /solutions/
+      - curl -I localhost:4322/kernel → 404 (BAI-SEC-10, expected)
+
+    Out-of-scope:
+      - BAI-SEC-11: tighten deny-list pattern for /kernel
+      - BAI-DEPLOY-12: deploy new build to fix production 404s
+    ```
+- **Related**: BAI-SEC-10 (deny-list origin), BAI-SEC-11 (follow-up needed), BAI-DEPLOY-12 (production fix), `report/2026-07-25-bai-idx-12-trailing-slash-diagnosis.md`.
 
 ### 2026-07-25 — BAI-IDX-11: Indexation baseline + IndexNow push (180 URL → HTTP 200) — VERIFIED LOCALLY (uncommitted per قاعدة الـ brain)
 
@@ -5070,6 +5171,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-006 | Only 3 cities (need 6) | high | open | 2026-06-29 | Missing: Khobar (الخبر), Mecca (مكة), Medina (المدينة). Loses ~45% geographic search traffic. | `src/data/solutions.ts` |
 | KI-007 | React renderer (59KB gzipped) loaded on homepage | high | **resolved** | 2026-06-29 | **RESOLVED 2026-06-30 via DEC-017 + DEC-041**: `client:visible` replaced with `client:visible client:media="(min-width: 768px)"`. Verified via Playwright on 390×844: 0 React scripts in document, 0 visible canvas. Plus SSR canvas `display:none` at ≤768px. Saving ~60.7KB gz JS on mobile + zero canvas paint cost. Future full DEC-005 replacement (vanilla JS) is broader out-of-scope removal — current state sufficient. | `src/components/SplitHero.astro`, `src/components/hero/DottedSurface.tsx` |
 | KI-008 | KernelLayout uses missing CSS tokens | high | open | 2026-06-29 | `--ink-950`, `--blur-md`, `--gradient-brand` undefined in `tokens.css`. 11 kernel pages visually broken. | `src/layouts/KernelLayout.astro`, `src/styles/tokens.css` |
+| KI-BAI-SEC-10-001 | BAI-SEC-10 deny-list pattern `^/kernel(/|$)` blocks ALL /kernel/* marketing pages | high | open | 2026-07-25 (BAI-SEC-10) → 2026-07-25 (discovered by BAI-IDX-12) | **`src/server/deny-list.mjs` line 87** — النمط `^/kernel(/|$)` يحجب **كل** مسارات `/kernel/*` (10 marketing pages مفهرسة في Google: /kernel/, /kernel/chat/, /kernel/audit/, /kernel/evidence/, /kernel/policies/, /kernel/scenarios/, /kernel/approvals/, /kernel/connectors/, /kernel/compliance/, /kernel/stats/) + المسارات بدون slash. النية "block /kernel/foo.js لو سرب" لكن الـ regex واسع جدًا. **التأثير**: local Node server + production يرجعون 404 لـ كل `/kernel/*` بـ headers `X-Robots-Tag: noindex, nofollow, noarchive, nosnippet` + `Cache-Control: no-store`. الـ patch في `dist/server/chunks/server_DVqXwGvD.mjs` line 11455 short-circuits **قبل** الـ static handler. **مفارقة**: live `curl -I https://brightai.site/kernel/` يرجع **200** (Cloudflare serves static file من dist/client/kernel/index.html، الـ deny-list يخدم بعد static، أو Cloudflare edge ما يطبق deny-list) — لكن local يرجع 404. **Fix المقترح** (BAI-SEC-11 خارج scope): استبدال النمط بـ `^/kernel/.*\.(js|mjs|ts|tsx|jsx|map|json|md|astro)$` (يحجب source files بس). **التحقق المطلوب بعد BAI-SEC-11**: `curl -I /kernel/` → 200، `curl -I /kernel/chat/` → 200، `curl -I /kernel/foo.js` → 404. Discovered by BAI-IDX-12 diagnostic. | `src/server/deny-list.mjs`, `dist/server/chunks/server_DVqXwGvD.mjs` |
 | KI-SOC-2026-07-18-001 | `src/data/site.ts` social URLs diverge from schema foundation | medium | open | 2026-07-18 | `site.ts.social.twitter = "https://twitter.com/brightai_sa"` ≠ schema-helpers.ts.sameAs `https://x.com/BrightAISite`. `site.ts.social.linkedin = "https://linkedin.com/company/brightai"` ≠ `linkedin.com/company/brightai-site`. Footer renders `SITE.social.*` so visitors see handles that the AI-search surface and JSON-LD do not advertise as canonical. `site.ts` also missing YouTube/TikTok/Crunchbase. AI engines (ChatGPT, Perplexity, Copilot) get the schema-foundation URLs; humans get the `site.ts` URLs. **Fix requires user approval** (modifying `site.ts` is protected per `agent.md` Section 2.1). Discovered by BAI-SEO-003-S4. | `src/data/site.ts`, `src/components/Footer.astro` |
 | KI-CSP-DRIFT-2026-07-25 | `render.yaml` CSP block drifts from `scripts/security-headers.mjs` | medium → **resolved** | **resolved** | 2026-07-25 → 2026-07-25 (BAI-SEC-11) | **RESOLVED 2026-07-25 via BAI-SEC-11**: (a) **Generator** `scripts/sync-headers-from-csp.mjs` يقرأ `RESPONSE_SECURITY_HEADERS` من `security-headers.mjs` ويكتب `public/_headers` + الـ security-headers section في `render.yaml`. idempotent. (b) **Drift gate** `scripts/verify-csp-drift.mjs` يـ fail CI عند أي اختلاف بين الـ SoT والـ derived files. (c) **Cleanup فعلي لـ render.yaml**: الـ 6 origins الزيادة (cdnjs.cloudflare.com + js.sentry-cdn.com + o4510966719840256.ingest.us.sentry.io + *.sentry.io + c.bing.com + region1.google-analytics.com) شُيلت. الـ `/frontend/*` overrides (noindex + no-store + tightened CSP) محفوظة verbatim. (d) **Drift detection tested**: تعديل يدوي لـ value، الـ gate يكشفه، يرجع clean بعد `pnpm run headers:sync`. (e) **Parser fix** في `scripts/headers-config.mjs`: `parseRenderYamlHeaders` صار يفك YAML double-quoted scalars (`unwrapYamlScalar` helper). 11/11 unit tests pass بعد التعديل. **Next** (تحت BAI-SEC-12+): تطبيق نفس الـ source-of-truth pattern على الـ 65+ inline style في 85 ملف. **DEC جديد**: DEC-BAI-SEC-11-2026-07-25-001 + 002 + 003. | `scripts/sync-headers-from-csp.mjs` (new), `scripts/verify-csp-drift.mjs` (new), `scripts/headers-config.mjs` (modified — unwrapYamlScalar), `render.yaml` (modified — 6 origins removed), `public/_headers` (modified — synced), `package.json` (modified — scripts wired) |
 | KI-009 | Tailwind configured but disabled | medium | open | 2026-06-29 | `tailwind.config.ts` exists, `tailwind-merge` in deps, but no `@tailwind` directive in CSS. Confuses contributors. | `tailwind.config.ts`, `package.json`, `src/lib/utils.ts` |
@@ -5150,6 +5252,38 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 4. Decisions Log
+
+### DEC-BAI-IDX-12-2026-07-25-001: Trailing-slash redirects = `@astrojs/node` `case "always"` (NOT `astro.config.mjs redirects`)
+
+- **Date**: 2026-07-25
+- **Context**: BAI-IDX-12 ticket طلب إضافة 3 entries (`/blog`, `/solutions`, `/kernel`) في `astro.config.mjs redirects:` لإنتاج 301 → slash versions. الـ diagnostic (في `report/2026-07-25-bai-idx-12-trailing-slash-diagnosis.md`) كشف 3 حقائق:
+  1. `@astrojs/node` static handler (`node_modules/@astrojs/node/dist/serve-static.js` line 11351-11358) يولّد 301 تلقائيًا لـ **كل** URL بدون trailing slash عبر `case "always"` (مع `trailingSlash: 'always'` في astro.config). ما يحتاج config.
+  2. إضافة entries للـ `astro.config.mjs redirects:` **تكسر الـ build** — Astro يحذف `dist/client/{blog,kernel,solutions}/index.html` (يفسر الـ redirect: "هذا الـ source path للـ static file"). `verify:all` رجع 30+ broken internal links بعد المحاولة. رجعنا التعديل.
+  3. `/kernel` 404 له سبب منفصل كليًا (KI-BAI-SEC-10-001: BAI-SEC-10 deny-list pattern `^/kernel(/|$)` يحجب كل مسارات `/kernel/*`).
+- **Decision**: 
+  1. **لا نضيف trailing-slash entries** في `astro.config.mjs redirects:`. الـ @astrojs/node يولّد 301 تلقائيًا.
+  2. **نضيف comment block** (~30 سطر) في `astro.config.mjs redirects:` يوثّق **ليش ما نضيف** (cross-reference للتقرير + DEC + KI). يحمي الـ agent المستقبلي من تكرار نفس الفخ.
+  3. **Production 404** على /blog, /solutions = build قديم (last-modified 2026-07-24) — يحل بـ BAI-DEPLOY-12 deploy فقط.
+  4. **Production 404** على /kernel = BAI-SEC-10 deny-list regression — يحتاج BAI-SEC-11 منفصل لتضييق النمط (موجود كـ KI-BAI-SEC-10-001).
+- **Rationale**: 
+  - **الإضافة لا تحل المشكلة** (الـ handler يعمل تلقائيًا) **و** تكسر الـ build (تحذف static files). صفر فائدة + ضرر صافي.
+  - **التوثيق في الـ config** أهم من الـ runtime change — يحمي من regression. الـ comment يشرح "ليش" مو "كيف"، فالـ future agent يقرأ الـ git blame يفهم الـ context.
+  - **الـ handler's `case "always"`** مدروس (Astro framework code) — ما يحتاج override. الـ trust boundary: نعتمد على الـ framework لـ well-defined cases.
+- **Reversal cost**: zero. لا يوجد runtime change. الـ comment block هو documentation. لو قرار future يغير الـ approach (مثلاً: لو @astrojs/node يغير `case "always"` في future major version)، الـ agent يقدر يحذف الـ comment + يضيف explicit entries.
+- **Do not reverse** بدون explicit user approval. الـ comment block وقائي — حذفه يخلي الـ future agent يحاول الإضافة ويقع في نفس الفخ.
+
+### DEC-BAI-IDX-12-2026-07-25-002: Production trailing-slash 404s fix path = BAI-DEPLOY-12 (deploy, NOT code change)
+
+- **Date**: 2026-07-25
+- **Context**: /blog و /solutions و /kernel يرجعون 404 في الإنتاج (cf-cache-status: BYPASS على /blog, BYPASS على /solutions, /kernel ما له curl public). الـ local Node server (build a0818740, 2026-07-25) يرجع 301 لـ /blog و /solutions تلقائيًا. الـ difference: الإنتاج يشغّل build قديم (last-modified `Fri, 24 Jul 2026 19:43:15 UTC`).
+- **Decision**: 
+  - **BAI-DEPLOY-12** (الـ dependency المذكور في الـ ticket) يحل /blog و /solutions في الإنتاج بدون أي code change.
+  - **Cloudflare cache purge** لـ `/report/` بعد deploy — الـ build الجديد ما يولّد `/report/index.html` (الـ astro.config.mjs redirect `/report/ → /trust/` يحذف الـ source) لكن Cloudflare cache يخدم 200 قديم (last-modified 2026-07-06).
+  - **NO change** لـ astro.config.mjs / @astrojs/node / Render config.
+  - **/kernel** خارج هذا DEC — KI-BAI-SEC-10-001 + BAI-SEC-11 منفصل.
+- **Rationale**: الـ build الجديد (a0818740) **عنده** الـ trailing-slash 301 logic (verified locally). الـ fix = deploy + purge، مو code change. أي code change يضيف complexity بدون فائدة.
+- **Reversal cost**: zero (ما فيه code change). لو BAI-DEPLOY-12 يكشف bug مختلف (مثلاً: trailing-slash 301 في production يختلف عن local)، نفتح ticket منفصل.
+- **Do not reverse** — الـ DEC يصف حلّ موجود. لو future يغير الـ approach (مثلاً: إضافة explicit redirects)، افتح DEC جديد يـ supersedes هذا.
 
 ### DEC-SEC-2026-07-25-001: Defense-in-depth deny-list is the canonical mechanism for preventing deployment artifact leaks on brightai.site
 
