@@ -231,45 +231,839 @@ export default defineConfig({
   trailingSlash: 'always',
   compressHTML: true,
   redirects: {
-    '/report/': {
+    // BAI-IDX-22 (2026-07-25) — auto-generated legacy redirects.
+    // Source of truth: redirects.json (run scripts/generate-all-redirects.mjs
+    // before astro build via the `prebuild` npm script). Entries whose
+    // source has a static page in src/pages/ are filtered out (Astro would
+    // delete the static file at build time — see BAI-IDX-12 for the /blog
+    // regression that taught us this). Wildcards and :placeholders are also
+    // excluded (Astro's redirects config only accepts literal paths; the full
+    // wildcard set lives in public/_redirects for Netlify/Cloudflare Pages).
+    // 206 entries (out of 207 in redirects.json).
+    '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html': {
+      status: 301,
+      destination: '/blog/computer-vision-saudi-factories/',
+    },
+    '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/': {
+      status: 301,
+      destination: '/blog/computer-vision-saudi-factories/',
+    },
+    '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور': {
+      status: 301,
+      destination: '/blog/computer-vision-saudi-factories/',
+    },
+    '/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/': {
+      status: 301,
+      destination: '/blog/computer-vision-saudi-factories/',
+    },
+    '/blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور': {
+      status: 301,
+      destination: '/blog/computer-vision-saudi-factories/',
+    },
+    '/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html': {
+      status: 301,
+      destination: '/blog/rpa-automation-saudi-savings/',
+    },
+    '/blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html': {
+      status: 301,
+      destination: '/blog/rpa-automation-saudi-savings/',
+    },
+    '/blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/': {
+      status: 301,
+      destination: '/blog/rpa-automation-saudi-savings/',
+    },
+    '/blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية': {
+      status: 301,
+      destination: '/blog/rpa-automation-saudi-savings/',
+    },
+    '/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/': {
+      status: 301,
+      destination: '/blog/rpa-automation-saudi-savings/',
+    },
+    '/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية': {
+      status: 301,
+      destination: '/blog/rpa-automation-saudi-savings/',
+    },
+    '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blogger/ai-generative-content-industry-saudi-arabia.html': {
+      status: 301,
+      destination: '/blog/generative-ai-governance-vs-traditional/',
+    },
+    '/blog/machine-learning-computer-vision-legacy.html': {
+      status: 301,
+      destination: '/blog/computer-vision-saudi-factories/',
+    },
+    '/frontend/pages/smart-medical-archive/index.html': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/Company%20performance%20monitoring%20tool.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/Generative-artificial-intelligence.html': {
+      status: 301,
+      destination: '/blog/generative-ai-governance-vs-traditional/',
+    },
+    '/services/operational-reports-automation.html': {
+      status: 301,
+      destination: '/solutions/ai-evidence-file/',
+    },
+    '/docs/Governance%D9%80application/index.html': {
+      status: 301,
+      destination: '/docs/governance-application/',
+    },
+    '/demo/pages/Visitor-registration/index.html': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/services/customer-service-automation.html': {
+      status: 301,
+      destination: '/blog/arabic-chatbot-customer-service-saudi/',
+    },
+    '/services/power-bi-saudi-guide/index.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/sdaia-generative-ai-guidelines.html': {
+      status: 301,
+      destination: '/blog/sdaia-generative-ai-guidelines-practical-compliance/',
+    },
+    '/blog/Generative-artificial-intelligence': {
+      status: 301,
+      destination: '/blog/generative-ai-governance-vs-traditional/',
+    },
+    '/services/hr-automation-saudi/index.html': {
+      status: 301,
+      destination: '/blog/ai-hr-recruitment-saudi/',
+    },
+    '/services/kpi-dashboard-guide/index.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/Generative artificial intelligence': {
+      status: 301,
+      destination: '/blog/generative-ai-governance-vs-traditional/',
+    },
+    '/services/competitor-analysis-agent.html': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/services/supply-chain-optimization.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/services/smart-hospital-management.html': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/assessment/ai-governance-readiness.html': {
+      status: 301,
+      destination: '/assessment/ai-governance-readiness/',
+    },
+    '/frontend/pages/our-products/index.html': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/docs/Governanceـapplication/index.html': {
+      status: 301,
+      destination: '/docs/governance-application/',
+    },
+    '/frontend/pages/smart-medical-archive/': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/frontend/pages/blogger/nca-compliance': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/privacy-policy/privacy-policy-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/Governance%D9%80application.html': {
+      status: 301,
+      destination: '/docs/governance-application/',
+    },
+    '/blog/الذكاء-الاصطناعي-و-التسويق.html': {
+      status: 301,
+      destination: '/blog/arabic-chatbot-customer-service-saudi/',
+    },
+    '/blog/sdaia-generative-ai-guidelines/': {
+      status: 301,
+      destination: '/blog/sdaia-generative-ai-guidelines-practical-compliance/',
+    },
+    '/docs/solutions-supply-chain-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/blog/sdaia-generative-ai-guidelines': {
+      status: 301,
+      destination: '/blog/sdaia-generative-ai-guidelines-practical-compliance/',
+    },
+    '/frontend/pages/about-us/index.html': {
+      status: 301,
+      destination: '/about/',
+    },
+    '/frontend/pages/services/index.html': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/terms/terms-and-conditions-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/services/social-data-analysis.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/services/health-data-analysis.html': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/services/marketing-automation.html': {
+      status: 301,
+      destination: '/blog/arabic-chatbot-customer-service-saudi/',
+    },
+    '/services/approvals-automation.html': {
+      status: 301,
+      destination: '/solutions/human-approval-layer/',
+    },
+    '/docs/terms-and-conditions-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-healthcare-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/demo/pages/appointment/index.html': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/frontend/pages/contact/index.html': {
+      status: 301,
+      destination: '/contact/',
+    },
+    '/services/document-automation.html': {
+      status: 301,
+      destination: '/solutions/ai-evidence-file/',
+    },
+    '/services/smart-hiring-system.html': {
+      status: 301,
+      destination: '/blog/ai-hr-recruitment-saudi/',
+    },
+    '/docs/solutions-interview-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-logistics-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-supply-chain.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/demo/pages/support-ai/index.html': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/services/data-analyst-agent.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/الذكاء-الاصطناعي-و-التسويق/': {
+      status: 301,
+      destination: '/blog/arabic-chatbot-customer-service-saudi/',
+    },
+    '/docs/Governanceـapplication.html': {
+      status: 301,
+      destination: '/docs/governance-application/',
+    },
+    '/docs/Governance%D9%80application': {
+      status: 301,
+      destination: '/docs/governance-application/',
+    },
+    '/demo/pages/dashboard/index.html': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/demo/pages/supportAI/index.html': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/blog/الذكاء-الاصطناعي-و-التسويق': {
+      status: 301,
+      destination: '/blog/arabic-chatbot-customer-service-saudi/',
+    },
+    '/services/power-bi-saudi-guide/': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/docs/terms-and-conditions.html': {
+      status: 301,
+      destination: '/terms/',
+    },
+    '/docs/services-overview-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-finance-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-healthcare.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/services/manufacturing-en.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/تعلم-الآلة-و-الأعمال.html': {
+      status: 301,
+      destination: '/blog/ai-vs-machine-learning-explained/',
+    },
+    '/services/hr-automation-saudi/': {
+      status: 301,
+      destination: '/blog/ai-hr-recruitment-saudi/',
+    },
+    '/services/kpi-dashboard-guide/': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/services/power-bi-saudi-guide': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/docs/solutions-interview.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-logistics.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-retail-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/frontend/pages/try/index.html': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/services/custom-ai-agent.html': {
+      status: 301,
+      destination: '/solutions/ai-governance-platform/',
+    },
+    '/services/marketing-agent.html': {
+      status: 301,
+      destination: '/blog/arabic-chatbot-customer-service-saudi/',
+    },
+    '/services/medical-archive.html': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/docs/nca-ecc-ai-controls.html': {
+      status: 301,
+      destination: '/docs/nca-ecc-ai-controls/',
+    },
+    '/services/hr-automation-saudi': {
+      status: 301,
+      destination: '/blog/ai-hr-recruitment-saudi/',
+    },
+    '/services/kpi-dashboard-guide': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/frontend/pages/our-products/': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/docs/services-overview.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/privacy-policy-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-finance.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/services/healthcare-en.html': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/services/manufacturing.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/services/data-platform.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/services/hr-automation.html': {
+      status: 301,
+      destination: '/blog/ai-hr-recruitment-saudi/',
+    },
+    '/services/ai-consulting.html': {
+      status: 301,
+      destination: '/solutions/ai-governance-platform/',
+    },
+    '/services/brightproject.html': {
+      status: 301,
+      destination: '/solutions/ai-governance-platform/',
+    },
+    '/docs/Governanceـapplication': {
+      status: 301,
+      destination: '/docs/governance-application/',
+    },
+    '/docs/data-analysis-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-crm-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-ocr-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-retail.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/services/ecommerce-en.html': {
+      status: 301,
+      destination: '/blog/ai-ecommerce-saudi/',
+    },
+    '/services/logistics-en.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/تعلم-الآلة-و-الأعمال/': {
+      status: 301,
+      destination: '/blog/ai-vs-machine-learning-explained/',
+    },
+    '/blog/cloude-opus-4.6.html': {
+      status: 301,
+      destination: '/blog/ai-governance/',
+    },
+    '/docs/solutions-bi-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-hr-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/blog/production-line.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/services/lead-hunter.html': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/services/brightsales.html': {
+      status: 301,
+      destination: '/solutions/ai-use-case-discovery/',
+    },
+    '/blog/تعلم-الآلة-و-الأعمال': {
+      status: 301,
+      destination: '/blog/ai-vs-machine-learning-explained/',
+    },
+    '/docs/privacy-policy.html': {
+      status: 301,
+      destination: '/privacy-policy/',
+    },
+    '/services/finance-en.html': {
+      status: 301,
+      destination: '/solutions/banking-ai-governance/',
+    },
+    '/services/healthcare.html': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/frontend/pages/about-us/': {
+      status: 301,
+      destination: '/about/',
+    },
+    '/frontend/pages/services/': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/services/ai-scolecs.html': {
+      status: 301,
+      destination: '/solutions/ai-governance-platform/',
+    },
+    '/blog/تحليل-البيانات.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/docs/data-analysis.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-crm.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-ocr.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/services/ecommerce.html': {
+      status: 301,
+      destination: '/blog/ai-ecommerce-saudi/',
+    },
+    '/services/energy-en.html': {
+      status: 301,
+      destination: '/solutions/government-ai-governance/',
+    },
+    '/services/logistics.html': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/frontend/pages/contact/': {
+      status: 301,
+      destination: '/contact/',
+    },
+    '/contact/contact-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/services/seo-agent.html': {
+      status: 301,
+      destination: '/blog/arabic-chatbot-customer-service-saudi/',
+    },
+    '/docs/solutions-bi.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/solutions-hr.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/blog/agint-bblog.html': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/blog/cloude-opus-4.6/': {
+      status: 301,
+      destination: '/blog/ai-governance/',
+    },
+    '/services/finance.html': {
+      status: 301,
+      destination: '/solutions/banking-ai-governance/',
+    },
+    '/demo/pages/supportAI/': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/blog/ production-line': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/cloude-opus-4.6': {
+      status: 301,
+      destination: '/blog/ai-governance/',
+    },
+    '/docs/contact-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/ai-bots-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/services/energy.html': {
+      status: 301,
+      destination: '/solutions/government-ai-governance/',
+    },
+    '/demo/pages/supportAI': {
+      status: 301,
+      destination: '/demo/',
+    },
+    '/blog/production-line': {
+      status: 301,
+      destination: '/solutions/manufacturing-ai-governance/',
+    },
+    '/blog/تحليل-البيانات/': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/مقال-تحليل.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/تحليل-البيانات': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/atou-job.html': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/health-bright.html': {
+      status: 301,
+      destination: '/solutions/healthcare-ai-governance/',
+    },
+    '/data-analysis.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/report/index.html': {
       status: 301,
       destination: '/trust/',
     },
-    // BAI-IDX-12 (2026-07-25) — Trailing-slash redirects.
-    //
-    // Why no explicit /blog → /blog/, /solutions → /solutions/,
-    // /kernel → /kernel/ entries here:
-    //
-    //   The task spec (BAI-IDX-12) assumed we need to add these
-    //   explicitly. The diagnostic in
-    //   report/2026-07-25-bai-idx-12-trailing-slash-diagnosis.md
-    //   proved otherwise. For `output: 'static'` with @astrojs/node,
-    //   the static handler in
-    //   node_modules/@astrojs/node/dist/serve-static.js ALREADY
-    //   auto-redirects trailing-slash via the `case "always"` branch
-    //   (returns 301 for any path without trailing slash, no file
-    //   extension, and not internal). So /blog, /solutions, /kernel
-    //   auto-301 to their slash versions at runtime WITHOUT needing
-    //   any config here.
-    //
-    //   We tried adding the 3 entries (commit attempted, reverted).
-    //   Result: Astro build deleted /blog/index.html,
-    //   /kernel/index.html, /solutions/index.html from dist/client/
-    //   because it interpreted the redirect as "this path is a
-    //   redirect source, remove the static file". This broke every
-    //   internal link TO /blog/, /kernel/, /solutions/ (verify:all
-    //   failed with 30+ broken-link errors). The trailing-slash
-    //   auto-redirect from the static handler is the right path
-    //   forward — it coexists with the static file at the
-    //   destination.
-    //
-    //   Production 404s on /blog, /solutions, /kernel in 2026-07-25
-    //   are caused by the OLDER build (last-modified 2026-07-24) on
-    //   Render — it predates the @astrojs/node auto-redirect logic.
-    //   Deploying the new build (a0818740+) fixes /blog and
-    //   /solutions without any code change. /kernel is blocked by
-    //   BAI-SEC-10 deny-list regression (KI-BAI-SEC-10-001 below) and
-    //   needs a separate fix (BAI-SEC-11).
+    '/blog/analysy.html': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/digital.html': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/docs/openapi.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/docs/contact.html': {
+      status: 301,
+      destination: '/contact/',
+    },
+    '/docs/ai-bots.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/en/docs/docs.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/our-products.html': {
+      status: 301,
+      destination: '/solutions/ai-governance-platform/',
+    },
+    '/docs/docs-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/blog/agint-bblog': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/docs/faq-en.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/blog/مقال-تحليل/': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/مقال-تحليل': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/auto.html': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/blog/atou.doc/': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/blog/astr.doc/': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blog/atou-job': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/blog/gov.html': {
+      status: 301,
+      destination: '/solutions/government-ai-governance/',
+    },
+    '/en/index.html': {
+      status: 301,
+      destination: '/en/',
+    },
+    '/docs/faq.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/blog/atou.doc': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/blog/astr.doc': {
+      status: 301,
+      destination: '/blog/',
+    },
+    '/blog/ai.html': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/blog/analysy': {
+      status: 301,
+      destination: '/blog/big-data-analytics-saudi-companies/',
+    },
+    '/blog/digital': {
+      status: 301,
+      destination: '/blog/digital-transformation-sme-saudi/',
+    },
+    '/ai-workflows': {
+      status: 301,
+      destination: '/solutions/ai-governance-platform/',
+    },
+    '/report.html': {
+      status: 301,
+      destination: '/trust/',
+    },
+    '/blog/auto': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/docs.html': {
+      status: 301,
+      destination: '/docs/',
+    },
+    '/blog/gov': {
+      status: 301,
+      destination: '/solutions/government-ai-governance/',
+    },
+    '/blog/ai': {
+      status: 301,
+      destination: '/404/',
+    },
+    '/report': {
+      status: 301,
+      destination: '/trust/',
+    },
   },
   build: {
     format: 'directory',

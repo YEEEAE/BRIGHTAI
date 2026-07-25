@@ -6,6 +6,186 @@ const ROOT = process.cwd();
 const redirectsJsonPath = path.join(ROOT, "redirects.json");
 const publicRedirectsPath = path.join(ROOT, "public", "_redirects");
 const renderYamlPath = path.join(ROOT, "render.yaml");
+const astroConfigPath = path.join(ROOT, "astro.config.mjs");
+
+/**
+ * BAI-IDX-22 (2026-07-25): Inject redirects into astro.config.mjs.
+ *
+ * Replaces the `redirects: { ... },` block in astro.config.mjs with an
+ * auto-generated list from redirects.json. This is the layer that
+ * Astro's adapter actually processes for paths without a static file
+ * — the Node middleware is NOT used (see DEC-BAI-IDX-22-001, Astro's
+ * renderError for 404s reads the prerendered 404.html from disk
+ * directly and never invokes the middleware).
+ *
+ * Only entries whose source has NO static file in src/pages/ are
+ * included. Entries whose source resolves to a real page would be
+ * deleted by the Astro build (it interprets the redirect as "this
+ * path is now a redirect, remove the static file" — see BAI-IDX-12
+ * for the /blog → /blog/ regression).
+ *
+ * Reversal cost: low. Delete this function + the call in main().
+ */
+async function injectAstroConfigRedirects(redirects) {
+  const content = await fs.readFile(astroConfigPath, "utf8");
+
+  // Locate the `redirects: {` block. The config has a single top-level
+  // redirects object. We find it by anchoring on the keyword.
+  const startMarker = "redirects: {";
+  const startIndex = content.indexOf(startMarker);
+  if (startIndex === -1) {
+    throw new Error(
+      `astro.config.mjs: could not find '${startMarker}' — cannot inject redirects`,
+    );
+  }
+
+  // Walk forward from the opening `{` to find its matching `}`. The
+  // redirects object is a flat list of `{ from, to, status }` entries
+  // — no nested objects — so a brace-counting walk is reliable.
+  const openBraceIndex = content.indexOf("{", startIndex);
+  let depth = 1;
+  let endBraceIndex = -1;
+  for (let i = openBraceIndex + 1; i < content.length; i += 1) {
+    const ch = content[i];
+    if (ch === "{") depth += 1;
+    else if (ch === "}") {
+      depth -= 1;
+      if (depth === 0) {
+        endBraceIndex = i;
+        break;
+      }
+    }
+  }
+  if (endBraceIndex === -1) {
+    throw new Error(
+      `astro.config.mjs: unbalanced braces in redirects block — refusing to modify`,
+    );
+  }
+
+  // Collect the set of paths that have a static page in src/pages/.
+  // We use the src/pages/ tree (not dist/) because dist/ is a build
+  // artifact and the Astro redirect check is against the source.
+  const staticPages = new Set();
+  async function walkSrcPages(dir) {
+    let entries;
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        await walkSrcPages(full);
+      } else if (entry.isFile() && entry.name.endsWith(".astro")) {
+        // Translate src/pages/foo/bar.astro → /foo/bar
+        const rel = path
+          .relative(path.join(ROOT, "src", "pages"), full)
+          .replace(/\.astro$/, "")
+          .replace(/index$/, "")
+          .replace(/\\/g, "/");
+        const url = "/" + rel;
+        staticPages.add(url);
+        // The trailing-slash variant (Astro's `trailingSlash: 'always'`
+        // emits a directory with index.html for every page).
+        if (!url.endsWith("/")) {
+          staticPages.add(url + "/");
+        }
+      }
+    }
+  }
+  await walkSrcPages(path.join(ROOT, "src", "pages"));
+
+  // Also include dist/client special files that the Node adapter serves
+  // directly (404.html, 500.html, index.html).
+  staticPages.add("/");
+  staticPages.add("/404");
+  staticPages.add("/500");
+  staticPages.add("/index.html");
+  staticPages.add("/404.html");
+  staticPages.add("/500.html");
+
+  // Filter redirects: skip any whose source matches a static page.
+  // We also skip entries with `*` or `:` in the source (wildcards +
+  // placeholders — these work in Netlify _redirects but not in
+  // Astro's redirects config which expects literal paths).
+  const safeRedirects = redirects.filter((r) => {
+    if (!r || typeof r.from !== "string" || typeof r.to !== "string") return false;
+    if (/[*:?]/.test(r.from) || /[*:?]/.test(r.to)) return false;
+    return !staticPages.has(r.from);
+  });
+
+  // De-dupe by source path. First wins (existing entries take
+  // precedence — mirrors the check-redirect-destinations.mjs logic).
+  const seen = new Set();
+  const deduped = [];
+  for (const r of safeRedirects) {
+    if (seen.has(r.from)) continue;
+    seen.add(r.from);
+    deduped.push(r);
+  }
+
+  // Build the new block content. We preserve the formatting style of
+  // the original (multi-line object, single quote strings, sorted
+  // longest-first to avoid prefix-shadowing — Astro's router is
+  // first-match, so a longer prefix must come before a shorter one
+  // for the same target).
+  deduped.sort((a, b) => b.from.length - a.from.length);
+
+  const blockLines = [];
+  blockLines.push("redirects: {");
+  blockLines.push(
+    "    // BAI-IDX-22 (2026-07-25) — auto-generated legacy redirects.",
+  );
+  blockLines.push(
+    "    // Source of truth: redirects.json (run scripts/generate-all-redirects.mjs",
+  );
+  blockLines.push(
+    "    // before astro build via the `prebuild` npm script). Entries whose",
+  );
+  blockLines.push(
+    "    // source has a static page in src/pages/ are filtered out (Astro would",
+  );
+  blockLines.push(
+    "    // delete the static file at build time — see BAI-IDX-12 for the /blog",
+  );
+  blockLines.push(
+    "    // regression that taught us this). Wildcards and :placeholders are also",
+  );
+  blockLines.push(
+    "    // excluded (Astro's redirects config only accepts literal paths; the full",
+  );
+  blockLines.push(
+    "    // wildcard set lives in public/_redirects for Netlify/Cloudflare Pages).",
+  );
+  blockLines.push(
+    `    // ${deduped.length} entries (out of ${redirects.length} in redirects.json).`,
+  );
+  for (const r of deduped) {
+    const status = Number.isInteger(r.status) ? r.status : 301;
+    blockLines.push(`    '${r.from}': {`);
+    blockLines.push(`      status: ${status},`);
+    blockLines.push(`      destination: '${r.to}',`);
+    blockLines.push(`    },`);
+  }
+  // Close the redirects object WITHOUT a trailing comma. The original
+  // config had `},` on the line after the matching `}`; we preserve
+  // that comma as part of `after` so we don't double it up.
+  blockLines.push("  }");
+
+  // Replace the old block.
+  const before = content.slice(0, startIndex);
+  const after = content.slice(endBraceIndex + 1);
+  const newContent = before + blockLines.join("\n") + after;
+
+  await fs.writeFile(astroConfigPath, newContent, "utf8");
+  return {
+    totalIn: redirects.length,
+    afterFilter: safeRedirects.length,
+    afterDedup: deduped.length,
+    skipped: redirects.length - deduped.length,
+  };
+}
 
 async function main() {
   try {
@@ -113,6 +293,14 @@ async function main() {
 
     await fs.writeFile(renderYamlPath, yamlPrefix + yamlRoutes, "utf8");
     console.log(`تم تحديث render.yaml بنجاح مع ${seenRoutes.size} قواعد تحويل`);
+
+    // 3. BAI-IDX-22 (2026-07-25): inject the safe subset of redirects
+    //    into astro.config.mjs. This is the layer that the @astrojs/node
+    //    adapter actually processes for paths without a static file.
+    const astroStats = await injectAstroConfigRedirects(redirects);
+    console.log(
+      `تم تحديث astro.config.mjs: ${astroStats.afterDedup} redirect(s) (${astroStats.skipped} skipped — have static page or wildcards)`,
+    );
 
   } catch (error) {
     console.error("خطأ أثناء توليد التحويلات:", error);

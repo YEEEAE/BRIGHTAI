@@ -24,6 +24,7 @@
 // Run AFTER `pnpm build` (needs dist/client + public/sitemap.xml present).
 import { promises as fs, readFileSync, readdirSync } from "fs";
 import path from "path";
+import { chromium } from "playwright";
 import { resolveClientBuildRoot } from "./_build-output.mjs";
 import { extractAlternateHreflangLinks, extractCanonicalHref, hasNoindexDirective } from "./sitemap-audit-utils.mjs";
 import { isExplicitBilingualPair } from "../src/data/hreflang-pairs.ts";
@@ -346,15 +347,96 @@ async function checkNon200Files(index) {
   return errors;
 }
 
-// Placeholder — Task 3 replaces with the real Playwright implementation
-// (chromium.launch() + Promise.allSettled chunks + page.content() extraction).
-async function fetchLive(_opts) {
-  throw new Error("fetchLive: not implemented yet (BAI-IDX-14 Task 3 will replace this placeholder).");
+// Fetches the live production sitemap + each sampled page via Playwright.
+// Returns a Map<canonical, { url, status, alternates }> with the same
+// alternates shape as fetchFilesystem. `url` replaces `file` (HTTP source
+// vs filesystem). Static assets (CSS, fonts, images) are blocked at the
+// context level to save bandwidth.
+async function fetchLive({ host, sample, concurrency, timeout }) {
+  const browser = await chromium.launch({ headless: true });
+  let context = null;
+  try {
+    context = await browser.newContext({
+      userAgent: "BrightAI-Hreflang-Audit/1.0 (+https://brightai.site)",
+    });
+    // Abort static assets to save bandwidth + time
+    await context.route("**/*", (route) => {
+      const type = route.request().resourceType();
+      if (["stylesheet", "font", "image", "media", "other"].includes(type)) {
+        return route.abort();
+      }
+      return route.continue();
+    });
+
+    // Get sitemap URLs (production surface)
+    const sitemapUrl = `${host.replace(/\/$/, "")}/sitemap.xml`;
+    const page = await context.newPage();
+    let urls;
+    try {
+      const response = await page.goto(sitemapUrl, { waitUntil: "domcontentloaded", timeout });
+      if (!response || response.status() >= 400) {
+        throw new Error(`Sitemap fetch failed: ${response?.status() ?? "no response"}`);
+      }
+      const sitemapXml = await page.content();
+      urls = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
+      await page.close();
+      if (urls.length === 0) throw new Error("Sitemap contains no URLs");
+    } catch (err) {
+      await page.close().catch(() => {});
+      throw err;
+    }
+
+    return await fetchPages(context, urls, host, sample, concurrency, timeout);
+  } finally {
+    if (context) await context.close();
+    await browser.close();
+  }
 }
 
-// Placeholder — Task 3 replaces with the real JSON writer.
-async function reportWriter(_path, _data) {
-  throw new Error("reportWriter: not implemented yet (BAI-IDX-14 Task 3 will replace this placeholder).");
+// Chunked page fetcher. Splits the sampled URLs into chunks of `concurrency`
+// pages, fetches each chunk in parallel with Promise.allSettled (one URL
+// failure does not stop the audit), and returns the page index.
+async function fetchPages(context, urls, host, sample, concurrency, timeout) {
+  const sampled = sample > 0 ? urls.slice(0, sample) : urls;
+  const index = new Map();
+  const chunks = [];
+  for (let i = 0; i < sampled.length; i += concurrency) {
+    chunks.push(sampled.slice(i, i + concurrency));
+  }
+  for (const chunk of chunks) {
+    const results = await Promise.allSettled(
+      chunk.map(async (url) => {
+        const page = await context.newPage();
+        try {
+          const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout });
+          if (response && response.status() >= 400) return null;
+          const html = await page.content();
+          const canonical = extractCanonicalHref(html);
+          if (!canonical) return null;
+          if (hasNoindexDirective(html)) return null;
+          const alternates = parseHeadHreflang(html);
+          const map = new Map();
+          for (const a of alternates) {
+            map.set(a.hreflang, a.href);
+          }
+          return { canonical, url, status: response?.status() ?? 0, alternates: map };
+        } finally {
+          await page.close();
+        }
+      }),
+    );
+    for (const r of results) {
+      if (r.status === "fulfilled" && r.value) {
+        index.set(r.value.canonical, { url: r.value.url, status: r.value.status, alternates: r.value.alternates });
+      }
+    }
+  }
+  return index;
+}
+
+// Writes the JSON report to the specified path with 2-space indentation.
+async function reportWriter(path, data) {
+  await fs.writeFile(path, JSON.stringify(data, null, 2));
 }
 
 /**
@@ -372,9 +454,10 @@ function parseViolation(type, errorString) {
 }
 
 async function run({ source, args, fetchLive, fetchFilesystem, reportWriter }) {
-  // Build the page index from the chosen source. filesystem uses the existing
-  // async buildPageIndex (Task 2 turns it into a sync fetchFilesystem); live
-  // delegates to the injected fetchLive (placeholder throws until Task 3).
+  // Build the page index from the chosen source. filesystem path uses the
+  // sync fetchFilesystem (await is a no-op on a sync return — kept for parity
+  // with the live path); live delegates to the injected fetchLive (placeholder
+  // throws until Task 3).
   const pageIndex = source === 'live'
     ? await fetchLive({ host: args.host, sample: args.sample, concurrency: args.concurrency, timeout: args.timeout })
     : await fetchFilesystem();
@@ -486,7 +569,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     source: args.live ? 'live' : 'filesystem',
     args,
     fetchLive,
-    fetchFilesystem: buildPageIndex,
+    fetchFilesystem: fetchFilesystem,
     reportWriter,
   })
     .catch((err) => {
@@ -495,4 +578,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     });
 }
 
-export { parseArgs, printHelp, run, checkNon200Files, parseViolation };
+export { parseArgs, printHelp, run, fetchFilesystem, checkNon200Files, parseViolation };
