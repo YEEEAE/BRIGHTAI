@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-25 11:30 +03:00
+last_updated: 2026-07-25 11:48 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.33
+version: 2.7.34
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -151,6 +151,29 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 **perf-budget script caveat**: still FAIL on raw file size (HTML 151KB > 80KB, CSS 175KB > 50KB) because the budget measures raw disk size, not gzipped transfer size or render-blocking impact. The script's measurement doesn't reflect the actual Lighthouse-relevant metrics. Follow-up: update budget to measure gzipped transferSize + render-blocking time.
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
+
+### 2026-07-25 — BAI-DEPLOY-13: `sync-dist-flat.mjs` EXCLUDE_PATTERNS — build-time guard لـ `/client/`, `/frontend/`, `/server/`, `/package.json`, `/render.yaml`, `/_headers`, `/_redirects`, `/CNAME` — UNCOMMITTED (per brain line 18)
+
+- **Files**: `scripts/sync-dist-flat.mjs` (1 file معدّل، 0 جديد، 0 محذوف).
+- **What**: أضفت `EXCLUDE_PATTERNS` const array (8 patterns) في `scripts/sync-dist-flat.mjs`. بعد الـ guard الحالي (اللي يتأكد من `dist/client/` + `dist/server/entry.mjs`)، أمرّ على كل pattern وأشيله من `dist/client/` لو موجود بـ `fs.rmSync({ recursive: true, force: true })`. الـ logic الأصلي محفوظ 100% — الـ guard ما اتغيّر، الـ "no flat copy created" log ما اتغيّر. أضفت بس: array الـ patterns + loop الإزالة + warning log عند الإزالة + summary log عند الإزالة + BAI-DEPLOY-13 header comment يشرح الـ rationale والعلاقة بـ BAI-SEC-10.
+- **Why**: الـ Node server يـ map `dist/client/foo` → `/foo` عند request. أي ملف من الـ 8 patterns لو كان في `dist/client/` كان يطلع publicly accessible. المشكلة الحقيقية: `public/_headers`, `public/_redirects`, `public/CNAME` لا زالوا في الـ repo (محميين بـ agent.md Section 2.1، ما ينحذفون) → Astro ينسخهم على `dist/client/` في كل build. الحل الصح: منشيلهم post-build من الـ artifact قبل ما يطلع للـ deploy. هذا build-time guard = first line of defense. الـ runtime deny-list في `dist/server/_deny-list.mjs` (BAI-SEC-10) = second line of defense. الاثنين مع بعض = defense in depth.
+- **Verification (محلي على macOS dev)**:
+  - `node -c scripts/sync-dist-flat.mjs` → syntax OK ✅
+  - `node scripts/sync-dist-flat.mjs` (first run, patterns exist) → removed 3 paths (`_headers`, `_redirects`, `CNAME`)، exit 0 ✅
+  - `node scripts/sync-dist-flat.mjs` (rerun, idempotency) → 0 paths to remove، exit 0 ✅
+  - `ls dist/client/ | grep -E "^(CNAME|_headers|_redirects|client|frontend|server|package.json|render.yaml)$"` → 0 results ✅
+  - `ls dist/server/entry.mjs` → present (لم يتأثر) ✅
+  - `node scripts/verify-deployment-surface.mjs` → **57 passed, 0 failed** (of 57 total) ✅ — `/_headers`, `/_redirects`, `/CNAME` 404 (deny-list)، `/client/index.html` 404، `/frontend/server.js` 404، `/server/entry.mjs` 404، `/package.json` 404، `/render.yaml` 404
+- **Report**: none (trivial change، single file، surgical edit، well-documented inline header)
+- **Commit**: uncommitted (per brain line 18، المستخدم هو من يـ commit)
+- **Status**: verified locally؛ يحتاج deploy للـ verification على production
+- **Brain updates**: frontmatter (version 2.7.33 → 2.7.34 + last_updated)؛ لا state snapshot change (البناء لا يتأثر material)
+- **Notes**:
+  - **Wiring (TODO للمستخدم)**: `pnpm run sync:dist:flat` حالياً standalone script. عشان يصير automatic، المستخدم يقدر (a) يضيفه للـ build chain في Render's buildCommand بعد `pnpm run build`، أو (b) يربطه بـ `astro.config.mjs` كـ integration post-build. Out of scope per "FILES IN SCOPE" clause.
+  - **Idempotency**: confirmed — re-running الـ script is a no-op عندما لا patterns تطابق.
+  - **Dist residue cleanup**: separate ticket. في duplicate folders (`_astro 2`, `about 2`, `assets 2`, etc.) في `dist/client/` — filesystem artifacts من concurrent builds قديمة. ما لها علاقة بـ BAI-DEPLOY-13.
+  - **Pattern list provenance**: BAI-DEPLOY-13 task spec (P0، depends on BAI-DEPLOY-12). أول 3 patterns (`/client/`, `/frontend/`, `/server/`) mirror BAI-SEC-10 runtime deny-list. آخر 5 (`/package.json`, `/render.yaml`, `/_headers`, `/_redirects`, `/CNAME`) build-time-only — ما كانت على runtime deny-list لأنها ما المفروض تكون في `dist/client/` أصلاً.
+  - **Edge case — `/client/index.html` 172KB**: هذا كان أكبر leak. السبب: على Node runtime، `dist/client/` يُخدَم at `/`، فلو في `dist/client/client/index.html` (172KB — نفس homepage HTML) يطلع served at `/client/index.html`. الـ user اكتشفه بـ curl على production. الـ build-time guard يضمن ما يوصل للـ artifact. الـ runtime deny-list يضمن حتى لو في regression future، يطلع 404.
 
 ### 2026-07-25 — BAI-SEC-18: Strict CSP Phase 1 — per-file SHA-256 hashes architecture + 5 inline script migrations + 6 form conversions — UNCOMMITTED (per brain line 18: user commits, الدفع عبر main فقط PR، لا branch جديد)
 
