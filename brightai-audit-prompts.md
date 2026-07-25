@@ -23,38 +23,6 @@
 
 
 
-
-
-
----
-## PROMPT [ID: BAI-PERF-05] — تصغير DOM size على /
-
-**Priority:** P2 |
-**Effort:** 4h |
-**Impact:** +3% على Performance |
-**Risk:** M |
-**Depends on:** BAI-DEPLOY-12 |
-**Blocks:** —
-
-**CONTEXT** — home.html حجمه 173KB. عدد عناصر DOM قد يكون > 1500 (افحص). DOM كبير يبطّئ INP.
-
-**FILES IN SCOPE** — src/pages/index.astro, src/components/*.astro (split, lazy-render)
-
-**MUST NOT TOUCH / PRESERVE** — existing home structure
-
-**TASK** — 1) curl / | grep -oE ' 1500: قسّم index.astro إلى lazy-render sections (IntersectionObserver). 3) احذف العناصر غير الضرورية. 4) اختبر: DOM size ≤ 1500.
-
-**ACCEPTANCE CRITERIA** — 1) curl / | grep -oE '<[a-z]+' | wc -l → ≤ 1500. 2) Lighthouse INP < 200ms.
-
-**VERIFICATION COMMANDS**
-```bash
-curl -s https://brightai.site/ | grep -oE '<[a-z]+' | wc -l
-```
-
-**ROLLBACK** — `git revert HEAD`
-
-**DEFINITION OF DONE** — DOM size على / ≤ 1500 element، مُتحقَّق بـ curl + grep.
-
 ---
 ## PROMPT [ID: BAI-PERF-06] — AVIF variants على كل صور
 
@@ -87,38 +55,6 @@ curl -s -o /dev/null -w '%{http_code}' https://brightai.site/assets/images/hero.
 
 ---
 
----
-
-# BAI-ARCH — Architecture
-
-## PROMPT [ID: BAI-ARCH-01] — تفعيل ESLint (lint:legacy ≠ echo)
-
-**Priority:** P2 |
-**Effort:** 4h |
-**Impact:** +5% على Code/Arch |
-**Risk:** M |
-**Depends on:** BAI-DEPLOY-12 |
-**Blocks:** —
-
-**CONTEXT** — package.json:55-56: lint:legacy + lint:fix = echo 'Linting skipped for static site'. eslint.config.mjs يتجاهل 80% من الكود (scripts/, dist/, .agents/, kernel/, public/).
-
-**FILES IN SCOPE** — package.json (أزل lint:legacy + lint:fix), eslint.config.mjs (وسّع files)
-
-**MUST NOT TOUCH / PRESERVE** — existing ESLint config
-
-**TASK** — 1) أزل lint:legacy + lint:fix من package.json. 2) في eslint.config.mjs: أزل scripts/** من ignores. 3) شغّل pnpm lint → احصر الأخطاء. 4) أصلح الأخطاء. 5) أضف pnpm lint لـ CI كـ required check.
-
-**ACCEPTANCE CRITERIA** — 1) package.json لا يحوي lint:legacy. 2) pnpm lint → 0 errors. 3) CI يحوي 'lint' required.
-
-**VERIFICATION COMMANDS**
-```bash
-grep -E '"lint:legacy"|"lint:fix"' package.json  # empty
-pnpm lint 2>&1 | tail -5
-```
-
-**ROLLBACK** — `git revert HEAD`
-
-**DEFINITION OF DONE** — lint:legacy غير موجود + pnpm lint = 0 errors + CI required، مُتحقَّق بـ grep + pnpm lint.
 
 ---
 ## PROMPT [ID: BAI-ARCH-02] — تشغيل RLS isolation test في CI

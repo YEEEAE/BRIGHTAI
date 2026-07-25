@@ -3150,6 +3150,10 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 /* Ambient Separator */
+/* BAI-PERF-05 (2026-07-25): ambient-separator-node moved to ::before
+   to save one DOM element per separator (10 separators on homepage).
+   The ::before rule matches the old .ambient-separator-node dimensions
+   and is visually identical. */
 .ambient-separator {
   display: flex;
   align-items: center;
@@ -3157,8 +3161,8 @@ button.btn--primary {                              /* legacy single-dash alias *
   padding: var(--space-1) 0;
   position: relative;
 }
-
-.ambient-separator-node {
+.ambient-separator::before {
+  content: '';
   width: 4px;
   height: 4px;
   border-radius: 50%;

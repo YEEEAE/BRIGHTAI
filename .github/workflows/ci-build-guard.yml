@@ -10,6 +10,12 @@
 # Also catches (added 2026-07-15 — HIGH-08 / IP-09):
 #   - HIGH-08: Transitive dependency CVEs reaching production lockfile
 #
+# Also catches (added 2026-07-25 — BAI-PERF-03):
+#   - PERF-03: Lighthouse LCP budget (2500ms) regression on dist/client
+#     via `pnpm run lhci:collect` + `pnpm run lhci:assert` steps inside
+#     the seo-gates job. Desktop-only gate; mobile measurement uses PSI
+#     in production (see report/2026-07-25-bai-perf-03-ci-lhci-gate.md).
+#
 # Branch protection (configure in GitHub repo settings) should require:
 #   - install
 #   - typecheck
@@ -370,7 +376,9 @@ jobs:
     name: SEO + Content + Performance Gates
     needs: build-astro
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    # BAI-PERF-03 (2026-07-25): lhci:collect adds ~3-5min for 21 URLs x 3 runs.
+    # Budget raised 12 -> 18min to absorb the Lighthouse scans safely.
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -399,6 +407,28 @@ jobs:
         run: pnpm run internal-links:audit
       - name: Redirects check
         run: pnpm run redirects:check
+      # BAI-PERF-03 (2026-07-25): Lighthouse CI gate.
+      # lhci:collect runs Lighthouse 3x on 21 URLs from .lighthouserc.json
+      # (desktop preset). lhci:assert enforces the budgets declared in
+      # .lighthouserc.json (LCP <=2500ms = error, INP/CLS/SI = warn).
+      # Desktop-only -- mobile measurement uses PSI in production
+      # (see report/2026-07-25-bai-perf-03-ci-lhci-gate.md for rationale).
+      - name: Lighthouse CI collect
+        run: pnpm run lhci:collect
+        env:
+          # Bump per-process memory for 21 URLs x 3 runs without OOM.
+          NODE_OPTIONS: --max-old-space-size=4096
+      - name: Lighthouse CI assert (LCP budget gate)
+        run: pnpm run lhci:assert
+      - name: Upload Lighthouse reports on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: |
+            .lighthouseci/
+            reports/lighthouse/
+          retention-days: 7
 
   # ────────────────────────────────────────────────────────────────
   # Job 8: Internal Links Audit (BAI-LINK-06)

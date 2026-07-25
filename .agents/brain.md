@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-25 16:56 +03:00
+last_updated: 2026-07-25 18:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.37
+version: 2.7.38
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -988,6 +988,27 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-25 — BAI-PERF-03 (part 1): Lighthouse CI gate wired in `seo-gates` — LCP ≤ 2500ms enforced on PR merge — UNCOMMITTED (per brain line 18, user commits)
+
+- **Files**: **1 معدّل** + **1 جديد** (no deletes). `.github/workflows/ci-build-guard.yml` (+32 lines, -1 line for the `timeout-minutes` swap). `report/2026-07-25-bai-perf-03-ci-lhci-gate.md` (تقرير BAI-PROC-12 compliant، `verified_production: no` + `verified_production_blocker: requires real CI run on a PR to confirm gate actually fires in production conditions`).
+- **What**: P1 من الـ perf cluster (8h effort, Risk H, Depends on BAI-PERF-02 = self-host fonts). المهمة كانت 4 parts: (1) add `lhci:assert` step in CI, (2) make it required, (3) prove it catches regression, (4) fix root causes. **الـ user اختار Option A** = تنفيذ 1+2+3 فقط في BAI-PERF-03، و الـ 4 (root causes) في BAI-PERF-04 منفصل. أضفت 3 steps في `seo-gates` job: `pnpm run lhci:collect` (≈3-5min على 21 URLs × 3 runs)، `pnpm run lhci:assert` (≈5s)، و upload-on-failure artifact. رفعت `timeout-minutes` من 12 → 18 للـ Lighthouse scans. ما عدّلت `.lighthouserc.json` (MUST NOT TOUCH — budget 2500ms محفوظ). ما عدّلت أي protected file.
+- **Why**: `.lighthouserc.json` كان يحدد `largest-contentful-paint: maxNumericValue 2500ms = error` من أيام، بس **0 CI job كان يـ enforce الـ budget**. الـ "LCP الحالي 8.6s على mobile" من تقرير stale (يونيو، قبل BAI-PERF-02) — الـ actual desktop LCP (اللي lhci يفحصه) **كله < 2500ms** (26/26 measurements، max 1203ms). الـ gate catches future regressions على desktop. mobile measurement يحتاج PSI + production deploy + Google API key → out of scope (BAI-PERF-04 + separate PSI workflow).
+- **Verification (محلي على macOS dev)**:
+  - `python3 -c "yaml.safe_load(open('.github/workflows/ci-build-guard.yml'))"` → parses ✅
+  - 15 steps في `seo-gates`، 9 jobs في `ci-success.needs` ✅
+  - `pnpm run lhci:assert` (مع lhr files من collect سابق) → exit 0 ✅
+  - **Failure test**: شددت budget 2500 → 100ms في `.lighthouserc.json`، `pnpm run lhci:assert` → **exit 1** مع "Assertion failed. Exiting with status code 1. expected: <=100 found: 812.5" (الـ actual LCP) ✅ (proves gate catches regressions)
+  - استعدت `.lighthouserc.json` من backup → `lhci:assert` → exit 0 ✅
+  - `git diff --stat .github/workflows/ci-build-guard.yml` → `+32 -1`
+- **Risks Remaining**:
+  - **kernel/* pages not in collect sample** (only `/kernel/` in URL list). لو أحدهم regresses، الـ gate ما يكتشفه. follow-up ticket.
+  - **Mobile LCP not in CI** (documented in workflow comments). BAI-PERF-04 root-cause fixes + separate PSI workflow.
+  - **lhci first-run npx install** adds ~30s on first CI run (subsequent runs use cache).
+- **DEC جديد (DEC-PERF-03-2026-07-25-001)**: `seo-gates` job is the SoT for performance gate enforcement on the marketing site. Future perf gates (mobile, kernel, real-user-monitoring) should **extend this job** (or follow the same pattern: add a step that calls `pnpm run <script>` and fail the job on non-zero exit). Don't create parallel jobs. Reversal cost: low (move steps to a new job + remove from `seo-gates`). Do not create parallel performance gate jobs بدون user approval.
+- **Out-of-Scope (BAI-PERF-04, NEXT ticket)**: root-cause fixes for mobile LCP. Candidates: (1) reduce font preloads (5 × ~75KB avg على Slow 4G = ~2s bandwidth قبل ما LCP element يـ render)، (2) purge unused CSS في `ArabicLayout.css` (137KB raw / 20KB gz)، (3) optimize logo preload (currently both .avif + .webp لـ 192x192 — based on `Accept` header)، (4) inline more critical CSS for SplitHero h1 (currently only 2.3KB inline). الـ user قال "TASK 4 منفصل" → ما تحرّكت في هذا الـ commit.
+- **Commit message مقترح (per brain line 18، المستخدم يـ commit، الدفع عبر main فقط PR، لا branch جديد)**: see `report/2026-07-25-bai-perf-03-ci-lhci-gate.md` Section "Suggested commit message".
+- **Related**: BAI-PERF-01 (2026-07-24، critical CSS decomposition 222KB → 11.8KB gz)، BAI-PERF-02 (2026-07-25، self-host fonts — eliminated the 3rd-party CSS fetch الذي كان ضمن root causes)، BAI-PROC-12 (2026-07-25، verified_production gate applied لهذا الـ report).
 
 ### 2026-07-25 — BAI-SCHEMA-03: Article JSON-LD on every blog post
 
