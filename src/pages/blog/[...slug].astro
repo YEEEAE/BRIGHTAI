@@ -587,4 +587,12 @@ const p0Snippet = getP0Snippet(`/blog/${post.slug}/`);
     )}
     <Content />
   </Fragment>
+  <Fragment slot="footer">
+    <div style="display: flex; justify-content: center; margin-block: 2rem;">
+      <a href="/blog/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white border border-white/20 hover:border-cyan-500/40 transition-all">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-right"></use></svg>
+        العودة إلى المدونة
+      </a>
+    </div>
+  </Fragment>
 </BlogLayout>

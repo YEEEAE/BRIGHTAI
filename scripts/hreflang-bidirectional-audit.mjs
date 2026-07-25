@@ -107,13 +107,20 @@ Exit codes:
 const BASE_URL = "https://brightai.site";
 const ROOT = process.cwd();
 
-// Resolve the unified client build root (dist/client or equivalent).
-const clientBuild = resolveClientBuildRoot(ROOT);
-if (!clientBuild.root) {
-  console.error(`❌ ${clientBuild.reason}`);
-  process.exit(1);
+// Lazy resolve the client build root. The filesystem audit (and the test
+// file's import-time evaluation) must not exit on a clean checkout before
+// `pnpm run build` — this helper only fires when fetchFilesystem() is
+// actually called.
+let _clientRoot;
+function getClientRoot() {
+  if (_clientRoot) return _clientRoot;
+  const clientBuild = resolveClientBuildRoot(ROOT);
+  if (!clientBuild.root) {
+    throw new Error(`hreflang-bidirectional-audit: ${clientBuild.reason}. Run \`pnpm run build\` first.`);
+  }
+  _clientRoot = clientBuild.root;
+  return _clientRoot;
 }
-const CLIENT_ROOT = clientBuild.root;
 
 // Collect all built HTML files under the client root.
 // Synchronous version — keeps fetchFilesystem sync (see Task 2.1).
@@ -147,7 +154,7 @@ function parseHeadHreflang(html) {
 // returns the Map directly (no Promise). `run()` calls `await fetchFilesystem()`
 // for parity with the live path; await on a non-Promise is a no-op.
 function fetchFilesystem() {
-  const files = walkHtml(CLIENT_ROOT);
+  const files = walkHtml(getClientRoot());
   const index = new Map();
   for (const file of files) {
     const html = readFileSync(file, "utf8");
@@ -192,8 +199,14 @@ function checkReciprocity(index) {
         continue;
       }
       const returnLang = lang === "ar-SA" ? "en-SA" : "ar-SA";
-      // AR-only target has no en-SA — no return expected.
-      if (!target.alternates.has(returnLang)) continue;
+      // AR-only target (not in the bilingual pair map) legitimately has no
+      // return tag — skip without flagging. EN target missing the ar-SA
+      // return IS a violation (an EN page that points to AR must come back).
+      if (!target.alternates.has(returnLang)) {
+        if (returnLang === "ar-SA") continue; // AR-only target — no return expected
+        errors.push(`missing-return: ${canonical} → ${lang} ${href} (target missing ${returnLang} return tag)`);
+        continue;
+      }
       const returnHref = target.alternates.get(returnLang);
       if (returnHref !== canonical) {
         errors.push(`missing-return: ${canonical} → ${lang} ${href} (target returns ${returnHref}, expected ${canonical})`);
@@ -221,12 +234,24 @@ function checkCanonicalSelfMatch(index) {
   return errors;
 }
 
-// Verify x-default is present on every indexed page.
+// Verify x-default is present on every indexed page AND does NOT point to
+// /en/ (BAI-IDX-14 AC#3: Arabic is the default site language; pointing
+// x-default at /en/ would override this for non-bilingual visitors).
 function checkXDefault(index) {
   const errors = [];
   for (const [canonical, { alternates }] of index) {
     if (!alternates.has("x-default")) {
       errors.push(`missing-xdefault: ${canonical}`);
+      continue;
+    }
+    const xDefault = alternates.get("x-default");
+    try {
+      const xDefaultPath = new URL(xDefault).pathname;
+      if (xDefaultPath === "/en/" || xDefaultPath === "/en" || xDefaultPath.startsWith("/en/")) {
+        errors.push(`xdefault-points-to-en: ${canonical} (x-default = ${xDefault}; Arabic is the default site language, not English)`);
+      }
+    } catch {
+      errors.push(`xdefault-malformed: ${canonical} (x-default = ${xDefault})`);
     }
   }
   return errors;
@@ -337,7 +362,7 @@ async function checkNon200Files(index) {
     if (relPath === "/") relPath = "/index.html";
     else if (relPath.endsWith("/")) relPath += "index.html";
     else if (!relPath.endsWith(".html")) relPath += "/index.html";
-    const candidate = path.join(CLIENT_ROOT, relPath);
+    const candidate = path.join(getClientRoot(), relPath);
     try {
       await fs.access(candidate);
     } catch {

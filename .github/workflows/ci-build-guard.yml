@@ -19,6 +19,7 @@
 #   - build-dashboard
 #   - seo-gates
 #   - security-scan (HIGH-08 — OSV lockfile scan + allowlist validation)
+#   - hreflang-live (BAI-IDX-14 — production drift detection, runs on push + schedule + dispatch)
 #   - ci-success (must be green to merge)
 #
 # Edge cases handled:
@@ -45,7 +46,20 @@ on:
     branches:
       - main
       - master
-  workflow_dispatch: # allow manual run for emergency validation
+  schedule:
+    # Daily at 03:00 UTC. Catches production drift within 24h.
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    # Allow manual run for staging validation or emergency checks.
+    inputs:
+      host:
+        description: 'Production host to audit (default: https://brightai.site)'
+        required: false
+        default: 'https://brightai.site'
+      sample:
+        description: 'Number of pages to sample from sitemap (default: 200, 0 = all)'
+        required: false
+        default: '200'
 
 concurrency:
   # Cancel in-progress runs when a new commit lands on the same PR/branch.
@@ -555,7 +569,79 @@ jobs:
           fail-on-scopes: ''
 
   # ────────────────────────────────────────────────────────────────
-  # Job 10: CI Success Gate
+  # Job 10: Hreflang Live Audit (BAI-IDX-14)
+  # Production drift detection. Fetches live HTML via Playwright
+  # and validates the 5 hreflang contracts:
+  #   1. Self hreflang on every page
+  #   2. Return link to counterpart (reciprocity)
+  #   3. x-default does not point to /en/
+  #   4. EN pages have en-SA=self + ar-SA return
+  #   5. AR-only pages don't invent en-SA
+  #
+  # Triggers: push (post-deploy smoke test) + schedule (daily 03:00
+  # UTC) + workflow_dispatch (manual staging validation).
+  # Pull requests are secrets-free (uses public brightai.site URL).
+  # ────────────────────────────────────────────────────────────────
+  hreflang-live:
+    name: Hreflang Live Audit (production)
+    needs: [build-astro]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        host:
+          - ${{ github.event.inputs.host || 'https://brightai.site' }}
+    env:
+      PROD_HOST: ${{ matrix.host }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack + Activate pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+
+      - name: Install (frozen lockfile)
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run live hreflang audit
+        run: |
+          node scripts/hreflang-bidirectional-audit.mjs \
+            --live \
+            --host="${{ env.PROD_HOST }}" \
+            --sample="${{ github.event.inputs.sample || '200' }}" \
+            --concurrency=10 \
+            --report="report/hreflang-live-$(date -u +%Y%m%dT%H%M%SZ).json"
+        continue-on-error: false
+
+      - name: Upload JSON report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hreflang-live-report-${{ matrix.host }}
+          path: report/hreflang-live-*.json
+          retention-days: 30
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 11: CI Success Gate
   # Aggregates all jobs. Fails if any job failed/cancelled.
   # This is the single required status check for branch protection.
   # ────────────────────────────────────────────────────────────────
@@ -569,6 +655,7 @@ jobs:
       - build-dashboard
       - seo-gates
       - security-scan
+      - hreflang-live
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 1
@@ -586,11 +673,12 @@ jobs:
           echo "| build-dashboard | ${{ needs.build-dashboard.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| seo-gates | ${{ needs.seo-gates.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| security-scan | ${{ needs.security-scan.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| hreflang-live | ${{ needs.hreflang-live.result }} |" >> "$GITHUB_STEP_SUMMARY"
 
           # Fail if any required job did not succeed.
           # Direct GitHub Actions expressions (no bash loop interpolation).
           failed=0
-          for job in typecheck lint test-all build-astro build-dashboard seo-gates security-scan; do
+          for job in typecheck lint test-all build-astro build-dashboard seo-gates security-scan hreflang-live; do
             case "$job" in
               typecheck)       r="${{ needs.typecheck.result }}" ;;
               lint)            r="${{ needs.lint.result }}" ;;
@@ -599,8 +687,9 @@ jobs:
               build-dashboard) r="${{ needs.build-dashboard.result }}" ;;
               seo-gates)       r="${{ needs.seo-gates.result }}" ;;
               security-scan)   r="${{ needs.security-scan.result }}" ;;
+              hreflang-live)   r="${{ needs.hreflang-live.result }}" ;;
             esac
-            if [ "$r" != "success" ]; then
+            if [ "$r" != "success" ] && [ "$r" != "skipped" ]; then
               echo "❌ CI FAILED at job: $job (result: $r)"
               failed=1
             fi

@@ -80,7 +80,7 @@
     "lhci:all": "bash scripts/run-lhci.sh --all",
     "lhci:assert": "bash scripts/run-lhci.sh --assert",
     "lhci:psi": "bash scripts/run-lhci.sh --psi",
-    "verify:all": "node scripts/verify-all.mjs && npm run headers:check && npm run test:chat-session && npm run sitemap:generate && npm run seo:schema && npm run seo:gate",
+    "verify:all": "node scripts/verify-all.mjs && npm run headers:check && npm run test:chat-session && npm run sitemap:generate && npm run seo:schema && npm run seo:gate && npm run seo:hreflang",
     "preview": "astro preview",
     "clean": "rm -rf .next .render-static reports/ dist/ .vercel/",
     "performance:budget": "node scripts/check-performance-budget.js",

@@ -2748,11 +2748,11 @@ button.btn--primary {                              /* legacy single-dash alias *
   }
 }
 
-/* Desktop: 5 columns — brand 2fr + 4×1fr nav */
+/* Desktop: 6 columns — brand 2fr + 5×1fr nav (BAI-IDX-22: +1 for team section) */
 @media (min-width: 1024px) {
   .footer__grid {
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: var(--space-10);
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr;
+    gap: var(--space-8);
   }
   .footer__brand {
     grid-column: auto;

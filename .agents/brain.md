@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-25 12:15 +03:00
+last_updated: 2026-07-25 13:15 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.36
+version: 2.7.37
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -151,6 +151,67 @@ Acceptance: 2 of 3 hard checks PASS (images, OTF). 1 FAIL: `npm run performance:
 **perf-budget script caveat**: still FAIL on raw file size (HTML 151KB > 80KB, CSS 175KB > 50KB) because the budget measures raw disk size, not gzipped transfer size or render-blocking impact. The script's measurement doesn't reflect the actual Lighthouse-relevant metrics. Follow-up: update budget to measure gzipped transferSize + render-blocking time.
 
 Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs real-world Lighthouse verification. budget script FAIL is a known script limitation, not a real perf regression.
+
+### 2026-07-25 — BAI-IDX-22: Footer link coverage — 4 sitemap pages with < 2 incoming now at 187 each — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 معدّل** (0 جديد، 0 محذوف).
+  - `src/data/navigation.ts` — `FOOTER_NAV.resources` أضفت `{ label: 'English', labelAr: 'الإنجليزية', href: '/en/' }` (يخدم `/en/`). `FOOTER_NAV.team` قسم جديد بـ 3 author links (yazeed-alshareef، compliance-officer، brightai-team — بنفس ترتيب `src/data/blog.ts` authors map). مع BAI-IDX-22 comment header يشرح الـ rationale.
+  - `src/styles/components.css` — `.footer__grid` desktop من `grid-template-columns: 2fr 1fr 1fr 1fr 1fr` (1 brand + 4 nav) إلى `2fr 1fr 1fr 1fr 1fr 1fr` (1 brand + 5 nav). gap من `--space-10` (40px) إلى `--space-8` (32px) — 5 columns في نفس الـ container تحتاج gap أصغر.
+  - `report/2026-07-25-bai-idx-22-orphan-pages-and-incoming-links.md` (تقرير BAI-PROC-12 compliant، `verified_local: yes` + `verified_production: no` + `verified_production_blocker` موثّق).
+
+- **What**: المهمة P1 من الـ indexation cluster (`+5% على Indexation` حسب الـ impact estimate). الـ acceptance criterion: "0 orphan pages + كل صفحة في sitemap لها ≥ 2 روابط داخلية واردة". قبل BAI-IDX-22 كان `internal-links:audit` يطلع 0 orphans (متحقق من BAI-IDX-04) لكن في **4 صفحات بـ exactly 1 incoming**:
+  - `/authors/brightai-team/` (← `/blog/` index)
+  - `/authors/compliance-officer/` (← 1 blog post)
+  - `/authors/yazeed-alshareef/` (← 1 blog post)
+  - `/en/` (← `/` text link in final-CTA)
+  
+  Footer هو المكان الوحيد اللي يظهر في كل صفحة، فأضفت 4 links في `FOOTER_NAV` (1 English في `resources` + 3 authors في قسم `team` جديد). النتيجة: الـ 4 صفحات صارت **187 incoming** كلهم (Footer في كل صفحة = 187 صفحة تـ link).
+
+- **Why**: DEC-BAI-IDX-22-2026-07-25-001 (جديد في Section 4): `FOOTER_NAV` in `src/data/navigation.ts` is the single source of truth for Footer navigation. New sitemap pages that need ≥ 2 incoming links → add to `FOOTER_NAV`، مو تعديل في `Footer.astro` مباشرة. الـ rationale: (1) `Footer.astro` renders `Object.values(FOOTER_NAV)` — declarative، single SoT؛ (2) adding to `FOOTER_NAV` = one-file edit بدل two؛ (3) localization (AR/EN labels) automatic via `isAr ? item.labelAr : item.label`؛ (4) adding 6th section needs grid update again. Reversal cost: low — remove from `FOOTER_NAV`، rebuild. Do not تـ hand-write `<a href>` tags في Footer.astro.
+
+- **Verification (كله locally على macOS dev)**:
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **194 pages، 0 errors** ✅
+  - `pnpm run internal-links:audit` → **0 orphans, 0 broken, max click depth 3** ✅ (internalLinksDiscovered 8786 → 9534، +748 من Footer links الجديدة)
+  - 4/4 previously under-linked pages now at **187 incoming** (was 1 each) ✅
+  - 0 sitemap pages with < 2 incoming (194/194 passes) ✅
+  - `pnpm run verify:all` → exit 0 (sitemap 180 URLs، 0 broken links، 0 canonical issues) ✅
+  - `pnpm run performance:budget` → exit 0 (HTML 34.17KB gz، CSS 19.58KB gz، JS 11.80KB gz — ما في انحدار) ✅
+  - `pnpm run seo:gate` → 0 errors، 0 warnings (6/6 hreflang pages passed، 5/5 service pages passed) ✅
+
+- **Bug discovered + documented (NOT fixed — out of scope per FILES IN SCOPE)**: `scripts/qa/orphan-pages-audit.mjs` فيه bug — `ROOT = path.resolve(__dirname, '..')` يـ resolve إلى `scripts/` بدل project root → يفحص `scripts/__fixtures__/build-output/dist/` (test fixtures) → 191 HTML files بدون أي `<a href>` tags بينهم → 0 internal links → كلهم "orphans". النتيجة: السكربت يطلع 191 orphan (كلهم fixtures، مو production). الفيكساتر HTMLs بسيطة: `<h1>/about</h1><p>Fixture content for https://brightai.site/about/.</p>`. الـ ticket BAI-IDX-22 يقول "MUST NOT TOUCH / PRESERVE — existing orphan detection logic"، فالـ fix في BAI-IDX-23 منفصل. الـ acceptance #1 من BAI-IDX-22 (السكربت هذا → 0 orphans) ما يقدر يتحقق حرفياً، لكن underlying reality متحقق: 0 production orphans via `internal-links:audit` (الـ gate الرسمي المعتمد على BAI-IDX-04).
+
+- **Bugs found in scope**:
+  1. **الـ 4 under-linked pages** — closed. Footer يضيف 187 incoming لكل واحدة.
+  2. **`scripts/qa/orphan-pages-audit.mjs` ROOT bug** — documented (out of scope).
+
+- **Acceptance criteria (per BAI-IDX-22 ticket)**:
+  - ⚠️ `node scripts/qa/orphan-pages-audit.mjs --strict → 0 orphans` — السكربت ما يدعم `--strict` flag + فيه ROOT bug. Underlying reality (0 production orphans) متحقق عبر `internal-links:audit`.
+  - ✅ كل صفحة في sitemap لها ≥ 2 روابط داخلية واردة — 194/194 passes.
+
+- **DEC جديد (DEC-BAI-IDX-22-2026-07-25-001)**: `FOOTER_NAV` in `src/data/navigation.ts` is the single source of truth for Footer navigation. To give a sitemap page ≥ 2 incoming links, add to `FOOTER_NAV` (existing section or new section). Do not hand-edit `Footer.astro`. Reversal cost: low. Do not reverse بدون explicit user approval.
+
+- **Risks Addressed**:
+  - **R1 (4 sitemap pages with < 2 incoming)**: closed. Footer + team section رفع الـ count لـ 187 لكل صفحة.
+  - **R2 (Authors under-discoverable)**: closed. 3 author pages now في Footer (every page) → E-E-A-T signal أقوى.
+  - **R3 (/en/ EN homepage under-discoverable)**: closed. Footer resources section + original AR homepage text link.
+
+- **Risks Remaining**:
+  - **Footer visual balance on tablet (640-1023px)**: 5 nav sections في 2-col grid → 4 في row 1 + 1 في row 2. Visually OK، ما في broken layout. Verify on tablet after deploy.
+  - **`/en/` self-link in Footer**: Footer يعرض "English" link حتى على `/en/` نفسها → link لنفس الصفحة (filtered out from incoming count، لكن visible). Cosmetic، low priority.
+  - **`scripts/qa/orphan-pages-audit.mjs` bug**: BAI-IDX-23 (follow-up).
+  - **New author pages**: لو أضفنا 4th author في `src/data/blog.ts`، لازم نضيفه لـ `FOOTER_NAV.team` كذلك. Documented in code comment.
+
+- **Out-of-Scope (tracked as follow-ups، NOT in this commit)**:
+  - **BAI-IDX-23**: Fix `scripts/qa/orphan-pages-audit.mjs` ROOT bug + add `--source <dir>` and `--strict` flags.
+  - **BAI-IDX-24**: Add `/en/` link in Header (high-blast-radius، Footer is sufficient for now).
+  - **BAI-IDX-25**: Create `/authors/index.astro` listing all 4 authors.
+  - **BAI-IDX-26**: `pnpm run purge-css` warning: 1 file reverted (`_slug_.Cz4Io-uH.css` purged too aggressively). Pre-existing، not from BAI-IDX-22.
+
+- **The commit (per brain line 18 — user commits، الدفع عبر main فقط PR، لا branch جديد)**:
+  - 2 file changes + 1 brain.md entry + 1 report/2026-07-25-bai-idx-22-orphan-pages-and-incoming-links.md
+  - Suggested commit message: see `report/2026-07-25-bai-idx-22-orphan-pages-and-incoming-links.md` Section 11 (full text).
+
+- **Related**: BAI-IDX-04 (2026-07-25، initial orphan cleanup + click depth gate)، BAI-IDX-03 (2026-07-25، sitemap + robots unification — 180 URLs baseline)، BAI-SEO-003-S3 (2026-07-25، bidirectional hreflang pair map — fixed /en/ hreflang cluster)، BAI-PROC-12 (2026-07-25، verified-production process gate — applied to this report)، DEC-BAI-IDX-22-2026-07-25-001 (new decision: FOOTER_NAV as SoT for sitemap-page incoming coverage).
 
 ### 2026-07-25 — BAI-DEPLOY-13: `sync-dist-flat.mjs` EXCLUDE_PATTERNS — build-time guard لـ `/client/`, `/frontend/`, `/server/`, `/package.json`, `/render.yaml`, `/_headers`, `/_redirects`, `/CNAME` — UNCOMMITTED (per brain line 18)
 
@@ -5497,6 +5558,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-CSP-DRIFT-2026-07-25 | `render.yaml` CSP block drifts from `scripts/security-headers.mjs` | medium → **resolved** | **resolved** | 2026-07-25 → 2026-07-25 (BAI-SEC-11) | **RESOLVED 2026-07-25 via BAI-SEC-11**: (a) **Generator** `scripts/sync-headers-from-csp.mjs` يقرأ `RESPONSE_SECURITY_HEADERS` من `security-headers.mjs` ويكتب `public/_headers` + الـ security-headers section في `render.yaml`. idempotent. (b) **Drift gate** `scripts/verify-csp-drift.mjs` يـ fail CI عند أي اختلاف بين الـ SoT والـ derived files. (c) **Cleanup فعلي لـ render.yaml**: الـ 6 origins الزيادة (cdnjs.cloudflare.com + js.sentry-cdn.com + o4510966719840256.ingest.us.sentry.io + *.sentry.io + c.bing.com + region1.google-analytics.com) شُيلت. الـ `/frontend/*` overrides (noindex + no-store + tightened CSP) محفوظة verbatim. (d) **Drift detection tested**: تعديل يدوي لـ value، الـ gate يكشفه، يرجع clean بعد `pnpm run headers:sync`. (e) **Parser fix** في `scripts/headers-config.mjs`: `parseRenderYamlHeaders` صار يفك YAML double-quoted scalars (`unwrapYamlScalar` helper). 11/11 unit tests pass بعد التعديل. **Next** (تحت BAI-SEC-12+): تطبيق نفس الـ source-of-truth pattern على الـ 65+ inline style في 85 ملف. **DEC جديد**: DEC-BAI-SEC-11-2026-07-25-001 + 002 + 003. | `scripts/sync-headers-from-csp.mjs` (new), `scripts/verify-csp-drift.mjs` (new), `scripts/headers-config.mjs` (modified — unwrapYamlScalar), `render.yaml` (modified — 6 origins removed), `public/_headers` (modified — synced), `package.json` (modified — scripts wired) |
 | KI-009 | Tailwind configured but disabled | medium | open | 2026-06-29 | `tailwind.config.ts` exists, `tailwind-merge` in deps, but no `@tailwind` directive in CSS. Confuses contributors. | `tailwind.config.ts`, `package.json`, `src/lib/utils.ts` |
 | KI-SYNTAX-2026-07-18-001 | `<script nonce={Astro.locals.cspNonce}>import '...'</script>` بدون `type="module"` في 4 scripts من BaseLayout → 4 SyntaxError × 190 pages = 760 events | **critical** (100% pages broken at runtime) → **resolved 2026-07-18** | 2026-07-18 → 2026-07-18 | **RESOLVED 2026-07-18 via KI-SYNTAX-2026-07-18-001-FIX**: الـ root cause تم تأكيده + الـ fix path تم اختياره (نقل لـ `public/js/*.js` + `<script type="module" src="..." nonce="...">`، نفس pattern `analytics.js`). الـ 3 scripts (`font-async-loader.js`, `scroll-reveal.js`, `focus-trap.js`) انتقلت لـ `public/js/` وBaseLayout.astro يستخدم static ES modules. الـ script الرابع `page-view.js` deprecated ومُحذف في CRO-LEADFORM-001 (2026-07-18) ولا يحتاج fix. **Playwright verification**: 0 console SyntaxError events per page (was 4)، 6/6 problem-section feature cards `{ opacity: 1, is-visible: true }` (was opacity 0)، 30/31 reveal-targets revealed عبر 14 sections (was 0). **DEC جديد**: DEC-CSP-PATTERN-2026-07-18-001 يوثّق الـ pattern الآمن. **CI guard still TODO**: static check يفحص أي `<script>` يحوي `import` بدون `type="module"` → fail-fast. | `src/layouts/BaseLayout.astro` (3 scripts → static), `public/js/{font-async-loader,scroll-reveal,focus-trap}.js` (new location) |
+| KI-BAI-IDX-22-001 | `scripts/qa/orphan-pages-audit.mjs` ROOT bug — يفحص `scripts/__fixtures__/build-output/dist/` (test fixtures) بدل `dist/client/` (production build) → 191 false-positive orphans | medium | open | 2026-07-25 (BAI-IDX-22) | **Discovered by BAI-IDX-22 diagnostic**: `const ROOT = path.resolve(__dirname, '..')` يـ resolve إلى `scripts/` (لأن `__dirname = scripts/qa/`)، بدل `path.resolve(__dirname, '../..')` للـ project root. السكربت يفحص `scripts/__fixtures__/build-output/dist/**/*.html` (191 fixtures بدون `<a href>` tags بينهم) → 0 internal links → كلهم "orphans". الـ production reality: 0 orphans via `pnpm run internal-links:audit` (الـ gate الرسمي المعتمد على BAI-IDX-04). **Fix المقترح** (BAI-IDX-23): (1) `ROOT = path.resolve(__dirname, '../..')` (project root). (2) أضف `--source <dir>` flag (مثل `internal-linking-architecture.mjs`). (3) أضف `--strict` flag يفحص `dist/client/` + يقارن مع `sitemap.xml` (BAI-IDX-22 acceptance criterion). (4) Default `--source=dist/client`. (5) Optional: `--min-incoming <N>` flag لفحص ≥ N incoming (default 1، BAI-IDX-22 يحتاج 2). **Out of scope لـ BAI-IDX-22** per FILES IN SCOPE: "scripts/qa/orphan-pages-audit.mjs (no change — موجود)". | `scripts/qa/orphan-pages-audit.mjs` (line 9) |
 
 ### 3.2 High (يخفض CTR أو الأداء)
 

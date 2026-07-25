@@ -119,7 +119,22 @@ export const FOOTER_NAV = {
       { label: 'Trust Center', labelAr: 'مركز الثقة', href: '/trust/' },
       { label: 'Assessment', labelAr: 'التقييم', href: '/assessment/ai-governance-readiness/' },
       { label: 'Pricing', labelAr: 'الأسعار', href: '/pricing/' },
+      { label: 'English', labelAr: 'الإنجليزية', href: '/en/' },
       { label: 'Sitemap', labelAr: 'خريطة الموقع', href: '/sitemap/' },
+    ],
+  },
+  // BAI-IDX-22 (2026-07-25): Team section ensures /authors/<slug>/ pages
+  // have ≥ 2 incoming internal links (previously each had only 1 — from a
+  // single blog post or the /blog/ index). The 3 author pages are now linked
+  // from the Footer on every page, satisfying the BAI-IDX-22 acceptance
+  // criterion (every sitemap page has ≥ 2 incoming internal links).
+  team: {
+    label: 'Team',
+    labelAr: 'الفريق',
+    items: [
+      { label: 'Yazeed AlShareef', labelAr: 'يزيد الشريف', href: '/authors/yazeed-alshareef/' },
+      { label: 'Compliance Officer', labelAr: 'موظف الامتثال', href: '/authors/compliance-officer/' },
+      { label: 'BrightAI Team', labelAr: 'فريق BrightAI', href: '/authors/brightai-team/' },
     ],
   },
   legal: {

@@ -272,6 +272,33 @@ function pageUrl(page: number): string {
       </div>
     </div>
   </section>
+
+  {/* ═══════════════ BACK TO HOME + RELATED (BAI-LINK-01) ═══════════════ */}
+  <section class="blog-section" aria-labelledby="back-to-home">
+    <div class="blog-final-cta__actions" style="justify-content: center; margin-bottom: 2rem;">
+      <a href="/" class="btn btn--outline">
+        <svg aria-hidden="true" width="20" height="20"><use href="/icons.svg#mdi-arrow-right"></use></svg>
+        العودة إلى الرئيسية
+      </a>
+    </div>
+  </section>
+
+  <section class="blog-section" aria-labelledby="related-content">
+    <h2 id="related-content">محتويات ذات صلة</h2>
+    <p>استكشف حلولنا ووثائقنا لتعميق فهمك لحوكمة الذكاء الاصطناعي.</p>
+    <div class="blog-featured" style="grid-template-columns: repeat(2, 1fr);">
+      <a href="/solutions/">
+        <span class="blog-featured__tag">💡 الحلول</span>
+        <h3>حلول حوكمة وأمان الذكاء الاصطناعي</h3>
+        <p>كل حلول BrightAI التقنية: AI Firewall، سجل التدقيق، الموافقات البشرية، ملف الأدلة، وأنظمة الحوكمة.</p>
+      </a>
+      <a href="/docs/">
+        <span class="blog-featured__tag">📚 الوثائق</span>
+        <h3>مركز الوثائق — 30+ دليل حوكمة AI</h3>
+        <p>أكثر من ٣٠ وثيقة شاملة تغطي الحوكمة، الامتثال، إدارة المخاطر، والتطبيق التقني.</p>
+      </a>
+    </div>
+  </section>
 </ArabicLayout>
 
 <style>

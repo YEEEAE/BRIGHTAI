@@ -717,4 +717,45 @@ const enhancedJsonLd = appendLd(jsonLd, [
   // Scroll Reveal: centralized in BaseLayout.astro (DEC-015) — no per-page observer needed.
 </script>
 
+{/* ═══════════════ 14. EXPLORE MORE — Hub & Spoke (BAI-LINK-01) ═══════════════ */}
+<section class="home-section--padded bg-ambient-teal-top" aria-labelledby="explore-more-title">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto section__header">
+      <span class="section__eyebrow" lang="ar">Explore More</span>
+      <h2 id="explore-more-title" class="section__title">اكتشف المزيد عن حوكمة AI</h2>
+      <p class="section__subtitle">مقالات، حلول، ووثائق شاملة لمساعدتك في تطبيق حوكمة الذكاء الاصطناعي في مؤسستك.</p>
+    </div>
+    <div class="mt-12 grid md:grid-cols-3 gap-5">
+
+      <a href="/blog/" class="card card--feature rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-500/40 transition-all" data-cta="explore_more" data-cta-label="المدونة" data-position="section" data-page-type="home">
+        <div>
+          <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold mb-4"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-newspaper"></use></svg></span>
+          <h3 class="text-xl font-bold mb-2">المدونة</h3>
+          <p class="text-white/70 leading-loose text-sm">مقالات تنفيذية عن حوكمة AI وPDPL وNCA ECC وسدايا وISO 42001 وAI Firewall، مخصصة للسوق السعودي.</p>
+        </div>
+        <span class="section-mini-link mt-4"><span>استعرض المقالات</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span>
+      </a>
+
+      <a href="/solutions/" class="card card--feature rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-500/40 transition-all" data-cta="explore_more" data-cta-label="الحلول" data-position="section" data-page-type="home">
+        <div>
+          <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold mb-4"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-wrench"></use></svg></span>
+          <h3 class="text-xl font-bold mb-2">الحلول</h3>
+          <p class="text-white/70 leading-loose text-sm">كل حلول BrightAI التقنية: AI Firewall، سجل التدقيق، الموافقات البشرية، ملف الأدلة، وأنظمة الحوكمة.</p>
+        </div>
+        <span class="section-mini-link mt-4"><span>استعرض الحلول</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span>
+      </a>
+
+      <a href="/docs/" class="card card--feature rounded-2xl p-7 flex flex-col justify-between hover:border-cyan-500/40 transition-all" data-cta="explore_more" data-cta-label="الوثائق" data-position="section" data-page-type="home">
+        <div>
+          <span class="w-12 h-12 rounded-xl glow-btn flex items-center justify-center text-xl font-bold mb-4"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-book"></use></svg></span>
+          <h3 class="text-xl font-bold mb-2">الوثائق</h3>
+          <p class="text-white/70 leading-loose text-sm">أكثر من ٣٠ وثيقة شاملة تغطي الحوكمة، الامتثال، إدارة المخاطر، والتطبيق التقني. من السياسة إلى الكود.</p>
+        </div>
+        <span class="section-mini-link mt-4"><span>استعرض الوثائق</span><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-left"></use></svg></span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
 </BaseLayout>
