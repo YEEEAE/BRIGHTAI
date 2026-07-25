@@ -62,6 +62,18 @@ export interface SectorData {
   icon: string;
   chip: string;
   shortDesc: string;
+  content?: {
+    lead: string[];
+    sections: {
+      title: string;
+      intro?: string;
+      paragraphs?: string[];
+      cards?: { title: string; subtitle?: string; text?: string; items?: string[] }[];
+    }[];
+    faqs?: { question: string; answer: string }[];
+    finalTitle: string;
+    finalText: string;
+  };
   whenNeeded: string;
   related: string[];
   locals?: LocalData[];
