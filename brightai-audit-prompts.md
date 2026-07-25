@@ -27,39 +27,6 @@
 
 
 ---
-
-# BAI-A11Y — Accessibility
-
-## PROMPT [ID: BAI-A11Y-01] — إصلاح كل مخالفات axe critical/serious من a11y-report.html
-
-**Priority:** P1 |
-**Effort:** 8h |
-**Impact:** +5% على Design |
-**Risk:** M |
-**Depends on:** BAI-DEPLOY-12 |
-**Blocks:** —
-
-**CONTEXT** — a11y-report.html يُظهر 0 مخالفات على 13 صفحة في main. لكن الإنتاج قد يحوي مخالفات. يجب فحص الإنتاج بعد deploy.
-
-**FILES IN SCOPE** — src/components/*.astro, src/pages/*.astro (حسب نتائج axe على الإنتاج)
-
-**MUST NOT TOUCH / PRESERVE** — —
-
-**TASK** — 1) بعد BAI-DEPLOY-12 deploy، شغّل pnpm run a11y:scan على brightai.site (افحص scripts/axe-scan.mjs). 2) احصر كل critical/serious violations. 3) أصلح كل واحد. 4) اختبر: axe scan = 0 violations.
-
-**ACCEPTANCE CRITERIA** — 1) axe scan على / و /pricing/ و /kernel/chat/ → 0 critical + 0 serious. 2) Lighthouse a11y score ≥ 95 على كل صفحة.
-
-**VERIFICATION COMMANDS**
-```bash
-node scripts/axe-scan.mjs --url https://brightai.site/
-node scripts/axe-scan.mjs --url https://brightai.site/pricing/
-```
-
-**ROLLBACK** — `git revert HEAD`
-
-**DEFINITION OF DONE** — 0 critical/serious axe violations على الإنتاج، مُتحقَّق بـ axe-scan.mjs.
-
----
 ## PROMPT [ID: BAI-A11Y-02] — focus-visible واضح على كل interactive elements
 
 **Priority:** P1 |

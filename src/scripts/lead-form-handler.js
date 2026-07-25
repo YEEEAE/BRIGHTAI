@@ -548,6 +548,14 @@ function attachSubmitListener(form) {
           leadId,
           mode: 'shipped',
         });
+        // GA4 conversion event: generate_lead — fires after successful
+        // submit so Google Ads / GA4 conversion tracking attributes the
+        // lead. Only carries form_id + page_path + UTM (never PII).
+        leadTracker.generateLead(formId, path, {
+          source: source || undefined,
+          medium: medium || undefined,
+          campaign: campaign || undefined,
+        });
         // Mark the form as submitted so Back/Retry doesn't restore values.
         try {
           sessionStorage.setItem(SESSION_KEYS.submitted(formId), '1');

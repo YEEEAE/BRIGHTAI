@@ -39,7 +39,8 @@ export type LeadEventName =
   | 'form_field_error'
   | 'form_submit_attempt'
   | 'form_submit_success'
-  | 'form_submit_failure';
+  | 'form_submit_failure'
+  | 'generate_lead';
 
 export interface LeadEventPayload {
   form_id: string;
@@ -115,6 +116,31 @@ export const leadTracker = {
       page_path: pagePath,
       error_code: errorCode,
       duration_ms: Math.round(durationMs),
+    }),
+
+  /** GA4 conversion event: generate_lead. Fired client-side after a
+   *  successful form submit so Google Ads / GA4 conversion tracking
+   *  can attribute the lead without waiting for server-side events.
+   *  Never contains PII — only form_id + page_path + attribution. */
+  generateLead: (
+    formId: string,
+    pagePath: string,
+    opts: {
+      source?: string;
+      medium?: string;
+      campaign?: string;
+      value?: number;
+      currency?: string;
+    } = {},
+  ) =>
+    track('generate_lead', {
+      form_id: formId,
+      page_path: pagePath,
+      source: opts.source ?? undefined,
+      medium: opts.medium ?? undefined,
+      campaign: opts.campaign ?? undefined,
+      value: opts.value ?? 1,
+      currency: opts.currency ?? 'SAR',
     }),
 };
 

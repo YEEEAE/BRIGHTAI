@@ -63,6 +63,7 @@ export const ANALYTICS_EVENTS = {
   FORM_SUBMIT_FAILURE: 'form_submit_failure',
   CALENDAR_OPEN: 'calendar_open',
   MEETING_BOOKED: 'meeting_booked',
+  GENERATE_LEAD: 'generate_lead',
 } as const;
 
 export type AnalyticsEventName =
