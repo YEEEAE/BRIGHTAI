@@ -473,7 +473,7 @@
    ════════════════════════════════════════════════════════════════════════
    REPORT-08: Button System Unification
    Canonical pattern:  .btn  +  .btn--{variant}  +  .btn--{size}
-   Size ladder (height / padding-x):  sm 36/12 · md 44/16 (default) · lg 52/24 · xl 60/32
+   Size ladder (height / padding-x):  sm 44/12 · md 44/16 (default) · lg 52/24 · xl 60/32
    States: hover · active · disabled · loading · focus-visible
    focus-visible: 2px ring offset 2px (WCAG 2.4.7 + brand color)
    ════════════════════════════════════════════════════════════════════════ */
@@ -814,14 +814,14 @@ button.btn--primary {                              /* legacy single-dash alias *
 
 /* Size modifiers — REPORT-08
    Size ladder (height / padding-x):
-     sm → 36px / 12px (compact, in-row, dense UI)
+     sm → 44px / 12px (compact, in-row — WCAG 2.5.5 tap target)
      md → 44px / 16px (default, accessible, all-purpose)
      lg → 52px / 24px (primary actions, section CTAs)
      xl → 60px / 32px (hero CTAs, conversion focal points) */
 .btn--sm {
   padding: var(--space-2) var(--space-3);     /* 8px / 12px */
   font-size: var(--text-sm);
-  min-height: 36px;
+  min-height: 44px;                           /* WCAG 2.5.5 AAA tap target */
   border-radius: var(--radius-md);
   gap: var(--space-1-5);
 }
@@ -941,8 +941,8 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 .btn--icon.btn--sm {
-  min-width: 36px;
-  min-height: 36px;
+  min-width: 44px;
+  min-height: 44px;
   padding: var(--space-2);
 }
 
