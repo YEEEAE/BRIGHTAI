@@ -8,7 +8,6 @@
     "pnpm": ">=10"
   },
   "packageManager": "pnpm@10.19.0",
-  "//_bai_proc_12_husky": "BAI-PROC-12 (2026-07-25) — husky commit-msg hook. Enforces [BAI-XXX-NN] format on every commit message. See .husky/commit-msg + DEC-PROC-12-2026-07-25-002.",
   "scripts": {
     "db:setup": "pnpm --filter @brightai/db db:setup",
     "db:generate": "pnpm --filter @brightai/db db:generate",
@@ -48,7 +47,6 @@
     "verify:production": "node scripts/verify-post-deploy.mjs",
     "//_bai_proc_12_reports": "BAI-PROC-12 (2026-07-25) — CI gate for report/*.md files. Scans every report for the verified_production: yes field. Exits 1 if any report claims ✅ without verified_production=yes. Runs in reports-gate workflow.",
     "verify:report": "node scripts/verify-report-claims.mjs",
-    "prepare": "husky || true",
     "//_bai_deploy_11_cf": "BAI-DEPLOY-11 (2026-07-25) — Cloudflare cache purge. Required env: CLOUDFLARE_API_TOKEN + CLOUDFLARE_ZONE_ID. --all by default, --files <path1> <path2>... for targeted.",
     "cloudflare:purge": "node scripts/purge-cloudflare-cache.mjs",
     "//_bai_sec_11_hsts": "BAI-SEC-11 (2026-07-25) — Cloudflare Transform Rule to inject Strict-Transport-Security on every response (completes the CSP source-of-truth posture on prerendered static pages; HSTS does not work in meta http-equiv). Required env: CLOUDFLARE_API_TOKEN + CLOUDFLARE_ZONE_ID. Idempotent — no-op if the rule already matches. API only (no manual fallback per user direction).",
@@ -135,7 +133,6 @@
     "astro": "^6.4.6",
     "axe-core": "^4.12.1",
     "eslint": "^9.17.0",
-    "husky": "^9.1.7",
     "jsdom": "^23.0.0",
     "linkinator": "^7.6.1",
     "playwright": "^1.61.1",
