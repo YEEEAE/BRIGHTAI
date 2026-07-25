@@ -262,21 +262,63 @@ export const legal_pdpl_statement: LegalInlineContent = {
 
     <li>
       <a href="#sec-1" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
-        ١ حوكمة البيانات والامتثال...
+        ١ حوكمة البيانات والامتثال لسدايا
       </a>
     </li>
 
 
     <li>
       <a href="#sec-2" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
-        ٢ إخفاء الهوية تلقائياً وج...
+        ٢ إخفاء الهوية تلقائياً وجدار الحماية
       </a>
     </li>
 
 
     <li>
       <a href="#sec-3" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
-        ٣ توطين وسيادة البيانات با...
+        ٣ توطين وسيادة البيانات بالكامل في الرياض
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-4" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٤ حقوق أصحاب البيانات وآليات الممارسة
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-5" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٥ سجل المعالجات وتقييم الأثر DPIA
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-6" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٦ الإخطار بالاختراقات والاستجابة للحوادث
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-7" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٧ نقل البيانات عبر الحدود والضوابط
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-8" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٨ حوكمة الذكاء الاصطناعي و PDPL
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-9" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ٩ العقوبات والغرامات — الوقاية خير من العلاج
+      </a>
+    </li>
+
+    <li>
+      <a href="#sec-10" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ١٠ خارطة طريق الامتثال للشركات السعودية
       </a>
     </li>
 
@@ -291,18 +333,82 @@ export const legal_pdpl_statement: LegalInlineContent = {
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-1">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">١. حوكمة البيانات والامتثال لسدايا (SDAIA)</h2>
       <p class="text-white/80 leading-loose text-sm lg:text-base">تم تصميم بنية منصة BrightAI بالكامل لتكون متوافقة مع نظام حماية البيانات الشخصية (PDPL) الصادر عن هيئة البيانات والذكاء الاصطناعي سدايا. قمنا بتطوير لوحة امتثال خاصة تقوم بتتبع مسار البيانات، وتعيين مسؤول مستقل لحماية البيانات الشخصية (Data Protection Officer) لتلقي الاستفسارات وإجراء تقييمات الأثر الدورية لحماية البيانات.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">نلتزم التزاماً كاملاً بالمبادئ الرئيسية للنظام: شفافية المعالجة، تحديد الغرض، تقليل البيانات، الحد من الاحتفاظ، سلامة البيانات وسريتها، والمساءلة. هذه المبادئ ليست مجرد نصوص قانونية نضعها في سياسة، بل هي قرارات هندسية نطبّقها في كل سطر كود، في كل بنية تحتية، وفي كل عملية تشغيلية داخل منصتنا.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">للاطلاع على الدليل التطبيقي الكامل لكيفية تطبيق PDPL في منشأتك، راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/">دليل امتثال PDPL للمنشآت السعودية 2026</a> — خطوات عملية، قوالب سياسات، وحالة عملية لشركة تأمين سعودية حققت 14 مليون ريال قيمة سنوية من الامتثال.</p>
     </article>
 
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-2">
-      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٢. إخفاء الهوية تلقائياً وجدار الحماية (PII Redaction)</h2>
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٢. إخفاء الهوية تلقائياً وجدار الحماية (PII Redaction & AI Firewall)</h2>
       <p class="text-white/80 leading-loose text-sm lg:text-base">يمثل جدار حماية الذكاء الاصطناعي لدينا (AI Firewall) خط الدفاع الأول للامتثال لـ PDPL؛ حيث يقوم بالتقاط أي نصوص أو مدخلات تحتوي على بيانات شخصية حساسة (مثل أرقام الهويات، السجلات الطبية، معلومات الحسابات البنكية) وإخفائها تلقائياً بعملية (Redaction) قبل وصولها للنماذج، مما يضمن أمانها التام من أي تسريب.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">هذه الطبقة التقنية تعمل على ثلاث مستويات: تصفية البيانات قبل التدريب (إزالة الأسماء، أرقام الهوية، العناوين)، تدريب النموذج في بيئة معزولة داخل المملكة، وسجل تدقيق يسجل كل وصول وقراءة. للمزيد عن كيفية حماية بياناتك عند استخدام AI، راجع <a class="text-brand-300 underline" href="/blog/pdpl-ai-safety/">كيف يحمي PDPL الشركات السعودية في استخدام AI</a> و <a class="text-brand-300 underline" href="/blog/pdpl-and-ai-saudi/">PDPL و AI: ما الذي يجب أن تعرفه الشركات السعودية؟</a>.</p>
     </article>
 
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-3">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٣. توطين وسيادة البيانات بالكامل في الرياض</h2>
       <p class="text-white/80 leading-loose text-sm lg:text-base">نحن نؤمن بسيادة البيانات الوطنية. تلتزم BrightAI التزاماً كاملاً بتوطين كافة بيانات العملاء ومعالجتها محلياً داخل خوادمنا السحابية فائقة الأمان والمشفرة في مدينة الرياض بالمملكة العربية السعودية، دون إجراء أي عمليات نقل أو معالجة خارجية عابرة للحدود إلا بموافقات استثنائية وبموجب الضوابط التنظيمية الرسمية.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">هذا التوطين ليس خياراً تقنياً فقط، بل التزام نظامي يمليه PDPL (المادة 29) وتوجيهات الهيئة الوطنية للأمن السيبراني (NCA ECC). لتفاصيل شروط نقل البيانات خارج المملكة والاستثناءات، راجع <a class="text-brand-300 underline" href="/blog/pdpl-cross-border-data-transfer-ai/">نقل البيانات الشخصية خارج السعودية: شروط المادة 29 وأثرها على Cloud AI</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-4">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٤. حقوق أصحاب البيانات وآليات الممارسة</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">نظام PDPL يمنح أصحاب البيانات حقوقاً واضحة وقابلة للتنفيذ: الحق في العلم، الحق في الوصول، الحق في التصحيح، الحق في الحذف (الحق في النسيان)، الحق في الاعتراض، والحق في نقل البيانات. هذه الحقوق تنقل السيطرة من المؤسسة إلى الفرد، ونحن في BrightAI نبني أدوات تتيح ممارستها عملياً.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">منصتنا توفر بوابة إلكترونية موحدة لطلبات أصحاب البيانات، مع أتمتة تقلل زمن الاستجابة من الحد النظامي (30 يوماً) إلى 4 أيام فقط. النظام يطلب الرد خلال 30 يوماً، لكن الشركات الأفضل ترد خلال 7 أيام باستخدام الأتمتة. لتفاصيل كيفية ممارسة هذه الحقوق في منشأتك، راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/#rights">دليل امتثال PDPL — قسم حقوق أصحاب البيانات</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-5">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٥. سجل المعالجات وتقييم الأثر DPIA</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يجب على كل جهة الاحتفاظ بسجل مفصل لعمليات المعالجة. هذا السجل ليس وثيقة ترفع لسدايا فقط، بل هو أداة تشغيلية تساعد الشركة على فهم تدفقات بياناتها باستمرار. السجل يتضمن: وصف الغرض من المعالجة، فئات البيانات الشخصية المعنية، فئات أصحاب البيانات، فئات المستلمين، آلية النقل خارج المملكة، مدة الاحتفاظ، وضوابط الأمن المطبقة.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">عندما تنطوي المعالجة على مخاطر عالية (بيانات صحية، مراقبة منهجية، تقنيات جديدة) — يجب إجراء تقييم أثر حماية البيانات (DPIA) قبل بدء المعالجة. منصة BrightAI تتيح إنشاء وتحديث سجل المعالجات و DPIA آلياً مع ربطها بسجل التدقيق المركزي. للتفاصيل التطبيقية راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/#dpia">دليل امتثال PDPL — قسم تقييم الأثر</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-6">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٦. الإخطار بالاختراقات والاستجابة للحوادث</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">في حال وقوع اختراق يؤدي إلى تعريض البيانات الشخصية للخطر، يجب إخطار سدايا خلال 72 ساعة من اكتشاف الحادث، وإخطار أصحاب البيانات المتأثرين إذا كان الاختراق ينطوي على مخاطر عالية. هذا يتطلب خطة استجابة للحوادث جاهزة ومختبرة مسبقاً — ليس وقت الاختراق هو الوقت المناسب لكتابة السياسات.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">BrightAI تطبّق بروتوكولات صارمة: مراقبة مستمرة، تنبيهات آلية، فريق استجابة متاح 24/7، وتمارين محاكاة كل 6 أشهر. اتفاقية معالجة البيانات (DPA) الخاصة بنا تلزمنا بإخطار المتحكم خلال 72 ساعة مع توفير ملف أدلة جنائي فني كامل. للتفاصيل راجع <a class="text-brand-300 underline" href="/pdpl-statement/#sec-6">هذا البيان — قسم اتفاقية معالجة البيانات</a> و <a class="text-brand-300 underline" href="/data-processing-agreement/">اتفاقية معالجة البيانات (DPA)</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-7">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٧. نقل البيانات عبر الحدود والضوابط</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يمنع النظام نقل البيانات الشخصية خارج المملكة إلا في حالات محددة ووفق ضوابط صارمة (المادة 29). هذا يعني أن استخدام نماذج AI مستضافة في الخارج يحتاج تقييماً دقيقاً وضوابط إضافية. بعض الجهات الرقابية تشدد على أن وجود بيانات العملاء في خوادم خارجية بدون ضمانات كافية يُعتبر مخالفة صريحة.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">الحل الأمثل: استخدام نماذج AI محلية أو مستضافة على بنية تحتية سعودية، مع طبقة حماية تمنع تسرب البيانات عبر الـ API. BrightAI توفر نماذج عربية مدربة على بيانات سعودية، مستضافة في الرياض، مع AI Firewall يمنع أي نقل غير مصرح. للتفاصيل الكاملة راجع <a class="text-brand-300 underline" href="/blog/pdpl-cross-border-data-transfer-ai/">نقل البيانات الشخصية خارج السعودية: شروط المادة 29 وأثرها على Cloud AI والاستثناءات</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-8">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٨. حوكمة الذكاء الاصطناعي و PDPL — تكامل لا انفصال</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">لا يوجد تعارض جوهري بين PDPL والذكاء الاصطناعي؛ النظام السعودي لا يمنع استخدام AI، لكنه يضع شروطاً صارمة حول شرعية المعالجة، تقليل البيانات، الشفافية، وحقوق أصحاب البيانات. التحدي الحقيقي ليس في "هل نستخدم AI؟" بل في "كيف نستخدمه بضوابط قابلة للتدقيق؟".</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">الحل العملي يمر عبر ثلاث طبقات متكاملة: <strong>AI Firewall</strong> لفحص كل input/output ومنع تسرب البيانات الحساسة، <strong>Audit Trail</strong> لتوثيق كل عملية وصول ومعالجة في سجل مركزي غير قابل للتلاعب، و<strong>طبقة موافقة بشرية</strong> للتحكم في الوصول للبيانات الحساسة والقرارات المؤثرة — مع إبقاء المسؤولية القانونية النهائية على عاتق الجهة وبالرجوع إلى مستشار قانوني متخصص.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">منصة BrightAI للحوكمة تقدم هذه الطبقات الثلاث ضمن منظومة موحدة. للمقارنة العملية راجع <a class="text-brand-300 underline" href="/blog/pdpl-and-ai-saudi/">PDPL و AI: ما الذي يجب أن تعرفه الشركات السعودية؟</a> و <a class="text-brand-300 underline" href="/blog/pdpl-ai-compliance-guide/">دليل امتثال PDPL للذكاء الاصطناعي</a> و <a class="text-brand-300 underline" href="/blog/chatgpt-pdpl-data-compliance/">مخاطر إدخال بيانات شخصية في ChatGPT ومتطلبات PDPL</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-9">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٩. العقوبات والغرامات — الوقاية خير من العلاج</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يواجه المخالفون عقوبات متنوعة: الإنذار مع مهلة تصحيحية، غرامات تصل إلى 18 مليون ريال أو 2.5% من الإيرادات السنوية (أيهما أعلى)، تعليق عمليات المعالجة جزئياً أو كلياً، وفي الحالات الجسيمة قد تشمل المسائلة الشخصية للمسؤولين. التشديد أخذ منحى تصاعدياً: في 2024-2025 رصدت السوق غرامات فعلية تجاوزت المليون ريال.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">مع ازدياد حالات التفتيش وتوسع فريق الرقابة في سدايا، الجاهزية الاستباقية أقل تكلفة بكثير من الغرامات والخسائر السمعةية. الشركات التي تبدأ مبكراً تنفق أقل وتحقق نتائج أفضل. لتفاصيل أنواع المخالفات، سقف الغرامات، وكيفية تجنبها، راجع <a class="text-brand-300 underline" href="/blog/pdpl-penalties-saudi-fines/">عقوبات PDPL في السعودية — الغرامات وكيفية تجنبها</a> و <a class="text-brand-300 underline" href="/blog/pdpl-executive-regulations-explained/">شرح اللائحة التنفيذية لـ PDPL: تعيين DPO، الإبلاغ خلال 72 ساعة، حقوق أصحاب البيانات</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8" id="sec-10">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">١٠. خارطة طريق عملية: 5 مراحل لتطبيق PDPL في شركة سعودية</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">بناءً على خبرتنا مع شركات سعودية كبرى (تأمين، بنوك، صحة، تقنية)، خارطة الطريق العملية كالتالي:</p>
+      <ol class="list-decimal list-inside space-y-4 mt-4 text-white/70 leading-loose text-sm lg:text-base">
+        <li><strong>مرحلة الجرد (8-12 أسبوع):</strong> لا تبنِ سياسات قبل أن تعرف بياناتك. ابدأ بحصر شامل لكل قواعد البيانات والملفات والأنظمة. صنّف البيانات إلى: عامة، داخلية، حساسة. حدّد الأساس النظامي لكل عملية معالجة.</li>
+        <li><strong>مرحلة الحوكمة (4-6 أسابيع):</strong> عيّن DPO، صِغ 5-7 سياسات أساسية، وثّق الأدوار في مصفوفة RACI، أنشئ لجنة حوكمة تجتمع شهرياً.</li>
+        <li><strong>مرحلة الضوابط التقنية (8-12 أسبوع):</strong> طبق AI Firewall، فعّل Audit Trail، شفّر البيانات (AES-256/TLS 1.3)، طبق موافقات بشرية إلزامية.</li>
+        <li><strong>مراجعة العقود والعمليات (4-6 أسابيع):</strong> راجع كل عقد مع بائع يلمس بيانات شخصية، تأكد من بنود PDPL الإلزامية، أتمت طلبات أصحاب البيانات.</li>
+        <li><strong>التدريب والتدقيق (مستمر):</strong> درّب كل موظف 3 ساعات مع اختبار إلزامي سنوياً، تدقيق داخلي كل 6 أشهر، خارجي سنوياً، حدّث ملف الأدلة باستمرار.</li>
+      </ol>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">للحالة العملية الكاملة لشركة التأمين السعودية التي حققت 14 مليون ريال قيمة سنوية، راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/#case-study">دليل امتثال PDPL — حالة عملية</a>.</p>
+    </article>
+
+    <!-- CTA Section -->
+    <article class="glass rounded-2xl p-6 lg:p-8 border border-brand-400/30" id="cta">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">جاهز لبناء بيئة AI خاضعة للحوكمة؟</h2>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mb-6">دعنا نساعدك على تقييم جاهزية مشاريع الذكاء الاصطناعي في شركتك، وفهم نقاط القوة والثغرات وفق أفضل الممارسات العملية. للاطّلاع على المتطلبات التنظيمية الكاملة وكيفية ترجمتها لضوابط تشغيلية، راجع <a class="text-brand-300 underline" href="/docs/pdpl-ai-complete-guide/">الدليل الشامل لتطبيق PDPL مع الذكاء الاصطناعي</a>.</p>
+      <div class="flex flex-wrap gap-4">
+        <a class="px-6 py-3 bg-brand-400/20 border border-brand-400/50 rounded-xl text-brand-300 font-semibold hover:bg-brand-400/30 transition-colors" href="/contact/">تواصل معنا</a>
+        <a class="px-6 py-3 bg-white/5 border border-white/10 rounded-xl text-white/80 font-semibold hover:bg-white/10 transition-colors" href="/services/">استعرض خدماتنا</a>
+      </div>
     </article>
 
     </section>
@@ -463,8 +569,7 @@ export const legal_privacy_cookies: LegalInlineContent = {
                             السعودية، فإننا لا نكتفي بتقديم التكنولوجيا المتقدمة فحسب، بل نُبني حلولنا على أساس متين من
                             الشفافية المطلقة واحترام خصوصية المستخدمين والمؤسسات التي نخدمها والتزامنا المستمر بأفضل
                             الممارسات.
-
-                    </p></div>
+                        </p></div>
 
                     <div class="space-y-10">
                         <section>
@@ -476,7 +581,6 @@ export const legal_privacy_cookies: LegalInlineContent = {
                                 تم تصميم وإقرار سياساتنا التشغيلية والتقنية لتتوافق بشكل كامل مع <strong>نظام حماية
                                     البيانات الشخصية (PDPL)</strong> المطبق حديثاً في المملكة العربية السعودية والصادر
                                 بمرسوم ملكي كريم. نحن نلتزم التزاماً صارماً بالمبادئ الرئيسية للنظام، والتي تشمل:
-
                             </p><ul class="list-disc list-inside space-y-2 mt-4 marker:text-indigo-400 pr-4">
                                 <li><strong>الغرض المشروع:</strong> جمع البيانات لغرض محدد وواضح للعميل وعدم معالجتها
                                     لأغراض أخرى دون موافقة مسبقة.</li>
@@ -497,7 +601,6 @@ export const legal_privacy_cookies: LegalInlineContent = {
                                 استجابةً لتوجيهات <strong>الهيئة الوطنية للأمن السيبراني (NCA)</strong> ومكتب إدارة
                                 البيانات الوطنية (NDMO)، نوفر لعملائنا في القطاعات الحساسة (مثل القطاع الصحي المعتمد على
                                 منتج الأرشيف الطبي الذكي أو القطاع المالي) خيارات استضافة سحابية محلية بالكامل.
-
                             </p><p>
                                 هذا يضمن أن جميع مدخلات العملاء (Prompts)، ونماذج التدريب، وقواعد المعرفة (Knowledge
                                 Bases) المرفوعة على وكلاء <strong>BrightAI</strong> تظل مشفرة من طرف إلى طرف (E2EE)
@@ -515,7 +618,6 @@ export const legal_privacy_cookies: LegalInlineContent = {
                                 <p class="mb-4">
                                     يتبادر إلى ذهن العديد من الشركات سؤال جوهري: هل ستُستخدم بياناتنا الخاصة وتفاعلاتنا
                                     لتدريب النماذج اللغوية الكبيرة (LLMs) لجهات أخرى؟
-
                                 </p><p class="font-bold text-white mb-2">في BrightAI، الجواب القاطع هو: لا.</p>
                                 <p class="text-sm">
                                     البيانات التي تُدخلها عبر منصاتنا—سواء كانت استفسارات عملاء في (BrightSupport) أو
@@ -535,8 +637,7 @@ export const legal_privacy_cookies: LegalInlineContent = {
                             </h3>
                             <p class="mb-4">
                                 نضمن التزامنا الشفاف تجاهك وتمكينك المباشر في إدارة بصمتك الرقمية؛ وفقاً للأنظمة
-                                المحلية، يمتلكعملاؤنا الحقوق الأصيلة التالية:
-
+                                المحلية، يمتلك عملاؤنا الحقوق الأصيلة التالية:
                             </p><ul class="list-disc list-inside space-y-2 mt-4 marker:text-indigo-400 pr-4">
                                 <li><strong>الحق في المعرفة:</strong> الطلب للحصول على تقرير مفصل بنوعية وكيفية جمع
                                     بياناتك الديموغرافية والتقنية.</li>
@@ -560,8 +661,7 @@ export const legal_privacy_cookies: LegalInlineContent = {
                                 تشمل المصادقة متعددة العوامل (MFA) لموظفينا، تشفير قواعد البيانات بتقنيات (AES-256)،
                                 وعمليات مسح يومية للثغرات الأمنية واختراق الأنظمة (Penetration Testing) من وكالات مستقلة
                                 لضمان صد وتتبع أي نشاطات تصيد (Phishing) أو دخول غير مصرح به.
-
-                        </p></section>
+                            </p></section>
 
                     </div>
                 </div>

@@ -11,6 +11,6 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'ar-SA' },
 ]};
 ---
-<ArabicLayout title="بيان PDPL | امتثال BrightAI للبيانات" description="بيان امتثال BrightAI لنظام PDPL: كيف نتعامل مع حماية البيانات الشخصية ضمن خدمات حوكمة AI بالسعودية. ضوابط واضحة وموثقة ومتوافقة مع SDAIA وNCA. اقرأ بيان الامتثال الكامل وتعرف على التزاماتنا." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'بيان PDPL', href: '/pdpl-statement/' }]}>
+<ArabicLayout title="بيان PDPL | امتثال BrightAI للبيانات" description="بيان امتثال BrightAI لنظام PDPL: حماية البيانات الشخصية ضمن خدمات حوكمة AI بالسعودية. ضوابط موثقة ومتوافقة مع SDAIA وNCA. اقرأ البيان وتعرف على التزاماتنا." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'بيان PDPL', href: '/pdpl-statement/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>
