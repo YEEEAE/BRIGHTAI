@@ -105,7 +105,7 @@ export const kernelUnits: KernelUnit[] = [
     label: 'الفهرس',
     shortDescription: 'نظرة عامة على Kernel ولوحة التشغيل',
     title: 'منصة حوكمة الذكاء الاصطناعي للمنشآت | BrightAI Kernel',
-    description: 'شغّل حوكمة الذكاء الاصطناعي في منشأتك من لوحة مركزية تجمع السياسات والموافقات والأدلة والرقابة، وتمنح فرق العمل رؤية تنفيذية موحدة.',
+    description: 'لوحة حوكمة ذكاء اصطناعي سعودية تجمع السياسات والموافقات والأدلة والرقابة بنظام متكامل. ابدأ حوكمة AI في منشأتك اليوم مع BrightAI Kernel وفق PDPL وNCA ECC.',
     canonical: 'https://brightai.site/kernel/',
     h1: 'غرفة تشغيل حوكمة الذكاء الاصطناعي — راقب كل شي من مكان واحد',
     hreflang: [

@@ -11,6 +11,6 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'ar-SA' },
 ]};
 ---
-<ArabicLayout title="سياسة الخصوصية + ملفات الارتباط" description="سياسة الخصوصية وملفات الارتباط في BrightAI: كيف نجمع البيانات ونستخدمها وخيارات التحكم المتاحة لزوار وعملاء الموقع في السعودية بوضوح تام وشامل." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} breadcrumbs={[{ name: 'ملفات تعريف الارتباط', href: '/privacy-cookies/' }]}>
+<ArabicLayout title="سياسة الخصوصية + ملفات الارتباط" description="سياسة الخصوصية وملفات الارتباط في BrightAI: كيف نجمع البيانات ونستخدمها وخيارات التحكم المتاحة لزوار وعملاء الموقع في السعودية وفق PDPL. اقرأ السياسة وتعرف على حقوقك في الخصوصية والتحكم ببياناتك." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} breadcrumbs={[{ name: 'ملفات تعريف الارتباط', href: '/privacy-cookies/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>

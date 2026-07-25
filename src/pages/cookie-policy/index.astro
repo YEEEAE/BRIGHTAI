@@ -11,6 +11,6 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'ar-SA' },
 ]};
 ---
-<ArabicLayout title="سياسة ملفات الارتباط | موقع BrightAI" description="كيف يستخدم BrightAI ملفات الارتباط لتحسين تجربة الموقع وقياس الأداء. خيارات التحكم والخصوصية لزوار الموقع في السعودية واضحة ومفصلة بالكامل للجميع." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'سياسة الكوكيز', href: '/cookie-policy/' }]}>
+<ArabicLayout title="سياسة ملفات الارتباط | موقع BrightAI" description="كيف يستخدم BrightAI ملفات الارتباط لتحسين تجربة الموقع وقياس الأداء. خيارات التحكم والخصوصية لزوار الموقع في السعودية واضحة ومفصلة. اطلع على سياسة الكوكيز وتحكم في إعدادات الخصوصية." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'سياسة الكوكيز', href: '/cookie-policy/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>
