@@ -411,19 +411,26 @@ async function fetchLive({ host, sample, concurrency, timeout }) {
       throw err;
     }
 
-    return await fetchPages(context, urls, host, sample, concurrency, timeout);
+    return await fetchPages(context, urls, sample, concurrency, timeout);
   } finally {
-    if (context) await context.close();
-    await browser.close();
+    // Nested try/finally so browser.close() always runs even if
+    // context.close() throws (e.g., Playwright already torn down).
+    if (context) {
+      try { await context.close(); } catch { /* swallow — best-effort cleanup */ }
+    }
+    try { await browser.close(); } catch { /* swallow — best-effort cleanup */ }
   }
 }
 
 // Chunked page fetcher. Splits the sampled URLs into chunks of `concurrency`
 // pages, fetches each chunk in parallel with Promise.allSettled (one URL
-// failure does not stop the audit), and returns the page index.
+// failure does not stop the audit), and returns { index, non200 } where
+// `non200` collects every URL that returned a non-2xx status (so the live
+// audit can flag production outages that would otherwise pass silently).
 async function fetchPages(context, urls, host, sample, concurrency, timeout) {
   const sampled = sample > 0 ? urls.slice(0, sample) : urls;
   const index = new Map();
+  const non200 = [];
   const chunks = [];
   for (let i = 0; i < sampled.length; i += concurrency) {
     chunks.push(sampled.slice(i, i + concurrency));
@@ -434,29 +441,39 @@ async function fetchPages(context, urls, host, sample, concurrency, timeout) {
         const page = await context.newPage();
         try {
           const response = await page.goto(url, { waitUntil: "domcontentloaded", timeout });
-          if (response && response.status() >= 400) return null;
+          const status = response?.status() ?? 0;
+          if (status >= 400) {
+            return { kind: "non200", url, status };
+          }
           const html = await page.content();
           const canonical = extractCanonicalHref(html);
-          if (!canonical) return null;
-          if (hasNoindexDirective(html)) return null;
+          if (!canonical) return { kind: "no-canonical", url, status };
+          if (hasNoindexDirective(html)) return { kind: "noindex", url, status };
           const alternates = parseHeadHreflang(html);
           const map = new Map();
           for (const a of alternates) {
             map.set(a.hreflang, a.href);
           }
-          return { canonical, url, status: response?.status() ?? 0, alternates: map };
+          return { kind: "ok", canonical, url, status, alternates: map };
         } finally {
           await page.close();
         }
       }),
     );
     for (const r of results) {
-      if (r.status === "fulfilled" && r.value) {
-        index.set(r.value.canonical, { url: r.value.url, status: r.value.status, alternates: r.value.alternates });
+      if (r.status === "rejected") {
+        non200.push({ url, status: 0, reason: r.reason?.message || "navigation/close failed" });
+        continue;
+      }
+      const v = r.value;
+      if (v.kind === "ok") {
+        index.set(v.canonical, { url: v.url, status: v.status, alternates: v.alternates });
+      } else {
+        non200.push({ url: v.url, status: v.status, reason: v.kind });
       }
     }
   }
-  return index;
+  return { index, non200 };
 }
 
 // Writes the JSON report to the specified path with 2-space indentation.
@@ -481,11 +498,12 @@ function parseViolation(type, errorString) {
 async function run({ source, args, fetchLive, fetchFilesystem, reportWriter }) {
   // Build the page index from the chosen source. filesystem path uses the
   // sync fetchFilesystem (await is a no-op on a sync return — kept for parity
-  // with the live path); live delegates to the injected fetchLive (placeholder
-  // throws until Task 3).
-  const pageIndex = source === 'live'
+  // with the live path); live returns { index, non200 }.
+  const liveResult = source === 'live'
     ? await fetchLive({ host: args.host, sample: args.sample, concurrency: args.concurrency, timeout: args.timeout })
-    : await fetchFilesystem();
+    : null;
+  const pageIndex = source === 'live' ? liveResult.index : await fetchFilesystem();
+  const liveNon200 = source === 'live' ? liveResult.non200 : [];
 
   const setCount = pageIndex.size;
 
@@ -499,6 +517,9 @@ async function run({ source, args, fetchLive, fetchFilesystem, reportWriter }) {
   let non200Errors = [];
   if (source === 'filesystem') {
     non200Errors = await checkNon200Files(pageIndex);
+  }
+  if (source === 'live') {
+    non200Errors = liveNon200.map((e) => `non-200: ${e.url} (status ${e.status}, ${e.reason || 'fetched'})`);
   }
 
   const totalErrors =
@@ -573,14 +594,17 @@ async function run({ source, args, fetchLive, fetchFilesystem, reportWriter }) {
         ...xDefaultErrors.map((e) => parseViolation('missing-xdefault', e)),
         ...enPageContractErrors.map((e) => parseViolation('en-page-contract', e)),
         ...arOnlyInventedEnErrors.map((e) => parseViolation('ar-only-invented-en', e)),
+        ...non200Errors.map((e) => parseViolation('non-200', e)),
       ],
     });
   }
 
   if (totalErrors > 0) {
-    process.exit(1);
+    console.log(`\n❌ ${totalErrors} hreflang violation(s) detected.`);
+    return { totalErrors, exitCode: 1, mode };
   }
   console.log(`\n✅ All hreflang bidirectional checks passed (${mode}).`);
+  return { totalErrors: 0, exitCode: 0, mode };
 }
 
 // Run as CLI when invoked directly; export for tests when imported.
@@ -597,6 +621,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     fetchFilesystem: fetchFilesystem,
     reportWriter,
   })
+    .then((result) => {
+      if (result && typeof result.exitCode === 'number') {
+        process.exit(result.exitCode);
+      }
+    })
     .catch((err) => {
       console.error(err);
       process.exit(2); // Internal error (distinct from violations=1)

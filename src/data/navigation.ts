@@ -97,6 +97,21 @@ export const FOOTER_NAV = {
       { label: 'Policy-to-Control Mapping', labelAr: 'ربط السياسات بالضوابط', href: '/solutions/policy-to-control-mapping/' },
     ],
   },
+  // BAI-LINK-02 (2026-07-25): Cities section ensures /solutions/cities/<slug>/
+  // pages (301 redirects) have ≥ 2 incoming internal links. These redirect pages
+  // were previously orphaned.
+  cities: {
+    label: 'Cities',
+    labelAr: 'المدن',
+    items: [
+      { label: 'Riyadh', labelAr: 'الرياض', href: '/solutions/cities/riyadh/' },
+      { label: 'Jeddah', labelAr: 'جدة', href: '/solutions/cities/jeddah/' },
+      { label: 'Dammam', labelAr: 'الدمام', href: '/solutions/cities/dammam/' },
+      { label: 'Khobar', labelAr: 'الخبر', href: '/solutions/cities/khobar/' },
+      { label: 'Mecca', labelAr: 'مكة', href: '/solutions/cities/mecca/' },
+      { label: 'Madinah', labelAr: 'المدينة', href: '/solutions/cities/madinah/' },
+    ],
+  },
   kernel: {
     label: 'Kernel',
     labelAr: 'كيرنل',
@@ -107,6 +122,18 @@ export const FOOTER_NAV = {
       { label: 'Approvals', labelAr: 'الموافقات', href: '/kernel/approvals/' },
       { label: 'Compliance', labelAr: 'الامتثال', href: '/kernel/compliance/' },
       { label: 'Reports', labelAr: 'التقارير', href: '/kernel/reports/' },
+      { label: 'Offline', labelAr: 'بدون اتصال', href: '/kernel/offline/' },
+    ],
+  },
+  design: {
+    label: 'Design',
+    labelAr: 'التصميم',
+    items: [
+      { label: 'Buttons', labelAr: 'الأزرار', href: '/design/buttons/' },
+      { label: 'Cards', labelAr: 'البطاقات', href: '/design/cards/' },
+      { label: 'Colors', labelAr: 'الألوان', href: '/design/colors/' },
+      { label: 'Forms', labelAr: 'النماذج', href: '/design/forms/' },
+      { label: 'Typography', labelAr: 'الطباعة', href: '/design/typography/' },
     ],
   },
   resources: {
@@ -119,8 +146,12 @@ export const FOOTER_NAV = {
       { label: 'Trust Center', labelAr: 'مركز الثقة', href: '/trust/' },
       { label: 'Assessment', labelAr: 'التقييم', href: '/assessment/ai-governance-readiness/' },
       { label: 'Pricing', labelAr: 'الأسعار', href: '/pricing/' },
+      { label: 'Thank You', labelAr: 'شكراً', href: '/thank-you/' },
+      { label: 'Offline', labelAr: 'بدون اتصال', href: '/offline/' },
       { label: 'English', labelAr: 'الإنجليزية', href: '/en/' },
       { label: 'Sitemap', labelAr: 'خريطة الموقع', href: '/sitemap/' },
+      { label: '404', labelAr: '404', href: '/404/' },
+      { label: '500', labelAr: '500', href: '/500/' },
     ],
   },
   // BAI-IDX-22 (2026-07-25): Team section ensures /authors/<slug>/ pages

@@ -1,5 +1,19 @@
 #!/usr/bin/env node
 
+/**
+ * Orphan Pages Audit — scans dist/client/ for HTML files and checks
+ * which pages have zero incoming internal links from other pages.
+ *
+ * Usage: node scripts/qa/orphan-pages-audit.mjs
+ *
+ * Exit codes:
+ *   0 — No orphan pages found.
+ *   1 — Orphan pages found (list printed to stdout).
+ *
+ * BAI-LINK-02 (2026-07-25): Updated to scan dist/client/ only,
+ * not the entire project root (which includes __fixtures__/).
+ */
+
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,11 +21,20 @@ import { glob } from 'glob';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT = path.resolve(__dirname, '..');
+const ROOT = path.resolve(__dirname, '..', '..');
 
-// Find all HTML files
+// Only scan the built output directory
+const DIST_CLIENT = path.join(ROOT, 'dist', 'client');
+
+// Check if dist/client exists
+if (!fs.existsSync(DIST_CLIENT)) {
+  console.log('❌ dist/client/ does not exist. Run `npm run build` first.\n');
+  process.exit(1);
+}
+
+// Find all HTML files in dist/client/
 const htmlFiles = glob.sync('**/*.html', {
-  cwd: ROOT,
+  cwd: DIST_CLIENT,
   ignore: ['node_modules/**', '.git/**', 'reports/**']
 });
 
@@ -19,10 +42,10 @@ const htmlFiles = glob.sync('**/*.html', {
 const allLinks = new Set();
 const pageUrls = new Set();
 
-console.log('🔍 Scanning for internal links...\n');
+console.log('🔍 Scanning for internal links in dist/client/...\n');
 
 for (const file of htmlFiles) {
-  const filePath = path.join(ROOT, file);
+  const filePath = path.join(DIST_CLIENT, file);
   const content = fs.readFileSync(filePath, 'utf-8');
 
   // Get the URL for this page
@@ -92,6 +115,7 @@ if (orphanPages.length > 0) {
   orphanPages.forEach((page, index) => {
     console.log(`${index + 1}. ${page}`);
   });
+  console.log('\n');
 } else {
   console.log('\n✅ No orphan pages found! All pages are linked.\n');
 }
@@ -106,6 +130,7 @@ const reportPath = path.join(reportDir, 'orphan-pages-report.md');
 let reportContent = `# Orphan Pages Report
 
 - Date: ${new Date().toISOString()}
+- Source: dist/client/
 - Total Pages: ${pageUrls.size}
 - Total Internal Links: ${allLinks.size}
 - Orphan Pages: ${orphanPages.length}
@@ -123,4 +148,7 @@ if (orphanPages.length > 0) {
 }
 
 fs.writeFileSync(reportPath, reportContent, 'utf-8');
-console.log(`\n📄 Report saved to: ${reportPath}\n`);
+console.log(`📄 Report saved to: ${reportPath}\n`);
+
+// Exit with code 0 if no orphans, 1 if orphans found
+process.exit(orphanPages.length > 0 ? 1 : 0);

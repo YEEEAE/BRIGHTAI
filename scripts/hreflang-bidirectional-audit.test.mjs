@@ -119,16 +119,10 @@ describe("run with filesystem source", () => {
     const fetchFilesystem = () => sampleIndex;
     const reportWriter = async () => {};
 
-    // Capture process.exit
-    const originalExit = process.exit;
-    let exitCode = null;
-    process.exit = (code) => { exitCode = code; };
-    try {
-      await run({ source: "filesystem", args: {}, fetchFilesystem, reportWriter });
-    } finally {
-      process.exit = originalExit;
-    }
-    assert.equal(exitCode, null, "should not exit when no errors");
+    const result = await run({ source: "filesystem", args: {}, fetchFilesystem, reportWriter });
+    assert.equal(result.exitCode, 0, "should report exitCode 0 when no errors");
+    assert.equal(result.totalErrors, 0);
+    assert.equal(result.mode, "local");
   });
 
   test("exit 1 when reciprocity fails (missing return tag)", async () => {
