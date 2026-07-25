@@ -17,8 +17,7 @@
 import ArabicLayout from './ArabicLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import DocsRelatedLinks from '../components/DocsRelatedLinks.astro';
-import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { getBreadcrumbLd } from '../data/schema-helpers';
+
 
 interface Heading {
   depth: 2 | 3;
@@ -101,15 +100,16 @@ const techArticleLd = {
  * `extraSpeakableSelectors` prop to BaseLayout, which forwards them to
  * FoundationSchema — single WebPage, unified speakable list.
  */
+// BAI-LINK-03: breadcrumbs for Schema.astro (without home — added automatically)
+const breadcrumbs = [
+  { name: 'الوثائق', href: '/docs/' },
+  { name: title, href: currentPath },
+];
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     techArticleLd,
-    getBreadcrumbLd([
-      { name: 'الرئيسية', href: '/' },
-      { name: 'الوثائق', href: '/docs/' },
-      { name: title, href: canonical },
-    ]),
     ...extraSchemaNodes,
   ].filter(Boolean),
 };
@@ -129,14 +129,10 @@ const editUrl = `https://github.com/YEEEAE/BRIGHTAI/edit/main/src/content/docs/$
   jsonLd={jsonLd}
   currentPath={currentPath}
   extraSpeakableSelectors={['[data-speakable]']}
+  breadcrumbs={breadcrumbs}
 >
   <div class="docs-page-shell docs-page-shell--with-sidebar">
     <main class="docs-page-shell__main">
-      <Breadcrumbs crumbs={[
-        { label: 'الرئيسية', href: '/' },
-        { label: 'الوثائق', href: '/docs/' },
-        { label: title },
-      ]} />
 
       <header class="article-hero" data-speakable>
         <span class="chip chip--brand article-hero__category">{category}</span>

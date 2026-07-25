@@ -11,7 +11,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'en-SA' },
 ]};
 ---
-<EnglishLayout title="BrightAI Cookie Policy | Saudi" description="How BrightAI uses cookies for site experience, analytics, and privacy choices. Clear options for Saudi organizations evaluating AI governance services." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
+<EnglishLayout title="BrightAI Cookie Policy | Saudi" description="How BrightAI uses cookies for site experience, analytics, and privacy choices. Clear options for Saudi organizations evaluating AI governance services." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'Cookie Policy', href: '/en/cookie-policy/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">

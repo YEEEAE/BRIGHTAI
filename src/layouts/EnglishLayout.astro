@@ -9,6 +9,10 @@ import type { SEOProps } from '../data/site';
 interface Props extends SEOProps {
   currentPath?: string;
   languageCounterpart?: string;
+  /**
+   * Page-level breadcrumbs (without the home crumb — added by FoundationSchema).
+   */
+  breadcrumbs?: Array<{ name: string; href?: string }>;
 }
 
 const {
@@ -20,6 +24,7 @@ const {
   jsonLd,
   currentPath = '/',
   languageCounterpart,
+  breadcrumbs = [],
 } = Astro.props;
 ---
 
@@ -34,6 +39,7 @@ const {
   jsonLd={jsonLd}
   currentPath={currentPath}
   languageCounterpart={languageCounterpart}
+  breadcrumbs={breadcrumbs}
 >
   <slot />
 </BaseLayout>

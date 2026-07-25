@@ -15,6 +15,10 @@ interface Props extends SEOProps {
    * to extend the WebPage `speakable.cssSelector` array. See Schema.astro.
    */
   extraSpeakableSelectors?: string[];
+  /**
+   * Page-level breadcrumbs (without the home crumb — added by FoundationSchema).
+   */
+  breadcrumbs?: Array<{ name: string; href?: string }>;
 }
 
 const {
@@ -29,6 +33,7 @@ const {
   languageCounterpart,
   robots,
   extraSpeakableSelectors = [],
+  breadcrumbs = [],
 } = Astro.props;
 ---
 
@@ -46,6 +51,7 @@ const {
   languageCounterpart={languageCounterpart}
   robots={robots}
   extraSpeakableSelectors={extraSpeakableSelectors}
+  breadcrumbs={breadcrumbs}
 >
   <slot />
 </BaseLayout>

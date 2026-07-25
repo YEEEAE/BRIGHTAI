@@ -11,6 +11,6 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'ar-SA' },
 ]};
 ---
-<ArabicLayout title="DPA — اتفاقية معالجة البيانات | BrightAI" description="اتفاقية معالجة بيانات خدمات BrightAI: أدوار المعالجة وحماية البيانات والالتزامات التعاقدية المناسبة لعملاء السعودية وفق PDPL والأنظمة المحلية." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
+<ArabicLayout title="DPA — اتفاقية معالجة البيانات | BrightAI" description="اتفاقية معالجة بيانات خدمات BrightAI: أدوار المعالجة وحماية البيانات والالتزامات التعاقدية المناسبة لعملاء السعودية وفق PDPL والأنظمة المحلية." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'اتفاقية معالجة البيانات', href: '/data-processing-agreement/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>

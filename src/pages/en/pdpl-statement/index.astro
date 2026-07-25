@@ -11,7 +11,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'en-SA' },
 ]};
 ---
-<EnglishLayout title="BrightAI PDPL Statement | Saudi AI" description="Read BrightAI PDPL compliance statement for responsible AI governance, data protection, and audit-ready controls for Saudi organizations today." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
+<EnglishLayout title="BrightAI PDPL Statement | Saudi AI" description="Read BrightAI PDPL compliance statement for responsible AI governance, data protection, and audit-ready controls for Saudi organizations today." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'PDPL Statement', href: '/en/pdpl-statement/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">

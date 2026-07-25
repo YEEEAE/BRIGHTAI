@@ -11,6 +11,6 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'ar-SA' },
 ]};
 ---
-<ArabicLayout title="سياسة الخصوصية | كيف نحمي بياناتك" description="كيف نتعامل مع بيانات التواصل وطلبات الديمو وبيانات الأعمال في BrightAI. ضوابط سرية وحماية بيانات وفق نظام PDPL السعودي وأفضل الممارسات العالمية." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
+<ArabicLayout title="سياسة الخصوصية | كيف نحمي بياناتك" description="كيف نتعامل مع بيانات التواصل وطلبات الديمو وبيانات الأعمال في BrightAI. ضوابط سرية وحماية بيانات وفق نظام PDPL السعودي وأفضل الممارسات العالمية." canonical={canonical} hreflang={getLegalAlternates(route, 'ar')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'سياسة الخصوصية', href: '/privacy-policy/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 </ArabicLayout>

@@ -64,6 +64,7 @@ const isCompliance = unit.slug === 'compliance';
   hreflang={migratedPage?.hreflang ?? unit.hreflang}
   jsonLd={finalJsonLd as any}
   currentPath={unit.path}
+  breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: unit.label, href: unit.path }]}
   extraSpeakableSelectors={['.answer-first-summary', '.k-page__disclaimer']}
 >
 

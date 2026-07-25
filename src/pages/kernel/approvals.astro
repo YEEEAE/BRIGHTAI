@@ -186,6 +186,7 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
   hreflang={unit.hreflang}
   jsonLd={jsonLd}
   currentPath={unit.path}
+  breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: 'الموافقات', href: unit.path }]}
   extraSpeakableSelectors={['.answer-first-summary']}
 >
   <header class="kernel-page-header">

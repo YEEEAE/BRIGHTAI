@@ -173,6 +173,7 @@ const hubSlugJsonLd = {
   hreflang={[{ lang: 'ar-SA', href: canonicalUrl }]}
   jsonLd={hubSlugJsonLd as any}
   currentPath={`/hub/${page.slug}/`}
+  breadcrumbs={[{ name: 'مركز المعرفة', href: '/hub/' }, { name: page.title, href: `/hub/${page.slug}/` }]}
 >
   <main class="hub-subpage">
     <header class="hub-subpage__hero">

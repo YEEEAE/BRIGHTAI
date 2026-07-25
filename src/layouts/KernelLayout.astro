@@ -42,6 +42,10 @@ interface Props extends SEOProps {
    * to extend the WebPage `speakable.cssSelector` array. See Schema.astro.
    */
   extraSpeakableSelectors?: string[];
+  /**
+   * Page-level breadcrumbs (without the home crumb — added by FoundationSchema).
+   */
+  breadcrumbs?: Array<{ name: string; href?: string }>;
 }
 
 const {
@@ -54,6 +58,7 @@ const {
   robots,
   currentPath = '/kernel/',
   extraSpeakableSelectors = [],
+  breadcrumbs = [],
 } = Astro.props;
 
 // SEMRUSH-FIX-2026-07-08 (#45): kernel pages are product-style (SoftwareApplication
@@ -80,6 +85,7 @@ const allItems = [
   robots={robots}
   omitLocalBusiness={omitLocalBusiness}
   extraSpeakableSelectors={extraSpeakableSelectors}
+  breadcrumbs={breadcrumbs}
 >
   {/* perf(bloat-3-fixes-2026-07-07): Kernel-only styles.
       Was: BaseLayout @import kernel.css (128KB raw) for every page.

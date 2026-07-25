@@ -11,7 +11,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
   { '@type': 'LegalDocument', name: legalContent.h1, url: canonical, inLanguage: 'en-SA' },
 ]};
 ---
-<EnglishLayout title="BrightAI Terms of Service" description="Review BrightAI terms for website and service use: user responsibilities, acceptable use, and protections for AI governance customers in Saudi Arabia." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)}>
+<EnglishLayout title="BrightAI Terms of Service" description="Review BrightAI terms for website and service use: user responsibilities, acceptable use, and protections for AI governance customers in Saudi Arabia." canonical={canonical} hreflang={getLegalAlternates(route, 'en')} jsonLd={jsonLd} currentPath={route} languageCounterpart={getLanguageCounterpart(route)} breadcrumbs={[{ name: 'Terms & Conditions', href: '/en/terms/' }]}>
   <div class="legal-page" set:html={DOMPurify.sanitize(legalContent.html)} />
 
   <section class="legal-related" aria-labelledby="legal-related-heading">
