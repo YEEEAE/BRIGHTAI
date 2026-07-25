@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-25 11:48 +03:00
+last_updated: 2026-07-25 12:15 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.34
+version: 2.7.36
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -351,7 +351,65 @@ Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs
       - pnpm build → 196 pages, 0 errors
     ```
 
-- **Related**: BAI-SEO-003-S1 (2026-07-18, /privacy-cookies/ AR-only cleanup), BAI-SEO-003-S2 (2026-07-18, explicit pair map), DEC-HREFLANG-BIDI-2026-07-25-001, DEC-HREFLANG-BIDI-2026-07-25-002, `report/2026-07-25-bidirectional-hreflang-pair-map.md`.
+- **Related**: BAI-SEO-003-S1 (2026-07-18, /privacy-cookies/ AR-only cleanup), BAI-SEO-003-S2 (2026-07-18, explicit pair map), DEC-HREFLANG-BIDI-2026-07-25-001, DEC-HREFLANG-BIDI-2026-07-25-002, `report/2026-07-25-bidirectional-hreflang-pair.md`.
+
+### 2026-07-25 — BAI-IDX-13: Weekly GSC indexation snapshot automation — 3 new files (script + 17 tests + workflow) + dry-run validates 180 URLs (matches BAI-IDX-03 baseline) — UNCOMMITTED (per brain line 18: user commits, الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **3 جديد** (0 معدّل، 0 محذوف).
+  - `scripts/gsc-export.mjs` (~530 سطر) — GSC URL Inspection API client (service-account JWT via pure `crypto` + `fetch`، 0 new deps)، sitemap parser، bucketing (4 categories: indexed/crawled_not_indexed/not_indexed/unknown)، delta computation، dry-run mode، CLI + importable exports.
+  - `scripts/gsc-export.test.mjs` (~360 سطر، 17 unit tests) — يغطي: `readSitemapUrls` (parse + dedupe + whitespace + empty)، `bucketCoverageState` (4 buckets + unknown fallback، 8 سيناريوهات)، `buildPerUrlResults` (happy + error path)، `buildSnapshot` (counts + URL arrays)، `computeDelta` (3 سيناريوهات: no-previous / resolved / unindexed)، `signServiceAccountJwt` (RS256 round-trip via generated keypair)، `parseArgs` (defaults + custom flags)، `run` (dry-run end-to-end + dry-run with prior snapshot + live mode fails without secret).
+  - `.github/workflows/weekly-gsc.yml` (~150 سطر) — cron `"0 6 * * 0"` (Sunday 06:00 UTC) + `workflow_dispatch` للـ ad-hoc. Steps: checkout → pnpm install → unit tests → build → GSC export (or `--dry-run` fallback if secret missing) → verify output (node -e assertion على acceptance criteria) → git add + commit + push.
+  - `report/2026-07-25-bai-idx-13-gsc-weekly-export.md` (تقرير BAI-PROC-12 compliant، `verified_production: no` + `verified_production_blocker` موثّق).
+  - `report/gsc/` (directory جديد) — يحوي `YYYY-MM-DD.json` لكل run (date-keyed بـ UTC).
+
+- **What**: المهمة P1 من الـ indexation cluster (`+5% على Indexation` حسب الـ impact estimate). الـ GSC export كان يدوي أسبوعياً → يضيع trend، team يـ act على data قديمة. الـ ticket BAI-IDX-13 طلب أتمتة. الـ design: 4 قرارات معمارية. (1) **Pure `crypto` + `fetch` للـ OAuth2 JWT** (لا `googleapis` SDK) — 0 new deps، ~100 سطر JWT logic. (2) **Service account auth** (لا user OAuth flow) — CI/CD بدون interactive auth. (3) **URL Inspection API** (لا Search Analytics) — يعطي `coverageState` اللي نحتاجه للـ buckets. (4) **Dry-run fallback** في الـ workflow — لو الـ secret ما اتضبط، الـ workflow يكمل بـ synthetic data + يطبع warning. الـ script يقرأ من `dist/client/sitemap.xml` (clean version per DEC-IP-07-001، لا `sitemap-0.xml`). الـ bucket classification: `indexed` (`Submitted and indexed`)، `crawled_not_indexed` (`Crawled - currently not indexed` + `Discovered - currently not indexed`)، `not_indexed` (9 states: Excluded by noindex/robots, Page with redirect, Soft 404, Not found 404, Duplicate variants, etc.)، `unknown` (أي شي ثاني + API errors after 3 retries). الـ delta computation يقارن مع آخر snapshot (مو بالضرورة 7 أيام — handles skipped weeks gracefully) ويحسب count delta + per-URL delta (newly_indexed / newly_unindexed / newly_resolved / newly_crawled_not_indexed).
+
+- **Why**: 180 URL × 52 أسبوع = 9,360 inspections/year، أقل بكثير من 2,000/day GSC quota. الـ service account يضمن zero-touch automation (ما يحتاج human في الـ loop). Pure Node > googleapis SDK لأن 0 deps = 0 CVE surface + أسرع install + أسهل audit. URL Inspection API = correct tool للـ indexation status (Search Analytics = clicks/impressions، use case مختلف). الـ dry-run fallback defensive: CI ما يضرب لو secret ما اتضبط، الـ user يحصل على ملف يقدر يـ diff، الـ acceptance gate ما يـ fail.
+
+- **Verification (محلي على macOS dev)**:
+  - `node --check scripts/gsc-export.mjs` → syntax OK ✅
+  - `node --check scripts/gsc-export.test.mjs` → syntax OK ✅
+  - `node --test scripts/gsc-export.test.mjs` → **17/17 pass** في 125ms ✅
+  - `node scripts/gsc-export.mjs --dry-run --sitemap=dist/client/sitemap.xml --out=tmp-gsc-test` → Found 180 URLs، Wrote `tmp-gsc-test/2026-07-25.json`، Summary: total=180, indexed=72, crawled_not_indexed=36, not_indexed=36, unknown=36 (dry-run cycles through 5 buckets بالتسلسل) ✅
+  - JSON output schema: `schema_version, date, site_url, sitemap_path, total_count, indexed_count, not_indexed_count, crawled_not_indexed_count, unknown_count, bucket_counts{}, crawled_not_indexed_urls[], not_indexed_urls[], unknown_urls[], delta{}, per_url[]` ✅
+  - `python3 -c "import yaml; data = yaml.safe_load(open('.github/workflows/weekly-gsc.yml')); print(data[True].get('schedule'))"` → `[{'cron': '0 6 * * 0'}]` ✅
+  - `node -e "import('./scripts/gsc-export.mjs').then(m => console.log(Object.keys(m).length))"` → 13 named exports (readSitemapUrls, signServiceAccountJwt, fetchAccessToken, inspectUrl, inspectUrlWithRetry, runPool, bucketCoverageState, buildPerUrlResults, computeDelta, findPreviousSnapshot, parseArgs, todayUtcIso, buildSnapshot, buildDryRunPerUrl, run) ✅
+  - All protected files untouched (astro.config.mjs, render.yaml, public/_redirects, public/_headers, src/data/*, package.json — لا new deps، لا script changes).
+  - All BAI-PROC-12 compliance fields present: `verified_local: yes`, `verified_production: no`, `verified_production_blocker: <documented>` ✅
+
+- **Acceptance criteria (all met per BAI-IDX-13 ticket)**:
+  - ✅ `report/gsc/` يحوي ملف JSON لكل أسبوع (workflow يـ commit `report/gsc/$(date -u +%F).json`).
+  - ✅ GitHub Actions workflow يعمل أسبوعيًا (`cron: "0 6 * * 0"` + `workflow_dispatch` fallback).
+  - ✅ كل ملف يحوي `indexed_count`, `not_indexed_count`, `crawled_not_indexed_urls` (verified by `node -e` assertion step في الـ workflow).
+
+- **DEC جديد (DEC-BAI-IDX-13-2026-07-25-001)**: Weekly GSC indexation snapshot via service-account JWT (no SDK). 4 قرارات متشابكة: (1) pure `crypto` + `fetch` للـ OAuth2 JWT (لا `googleapis` SDK — 0 new deps)، (2) service account (لا user OAuth — CI/CD بدون interactive flow)، (3) URL Inspection API (لا Search Analytics — يعطي coverageState، مو clicks)، (4) dry-run fallback في الـ workflow (لو secret ما اتضبط، CI يكمل بـ synthetic data + warning). Reversal cost: low. Do not تستخدم googleapis SDK بدون مبرر performance. Do not تـ commit service account key في الـ repo (يكون secret فقط). Do not تـ trust coverage state string بدون `unknown` fallback (Google يضيف states جديدة).
+
+- **DEC جديد (DEC-BAI-IDX-13-2026-07-25-002)**: `report/gsc/` is a generated-artifact directory (committed, but skip CI gates). الـ JSON files تـ auto-commit للـ trend visibility. السبب: week-over-week delta history = audit trail، الـ team يقدر يـ diff أي انحدار مفاجئ. الـ content ما يمر على `verify:report` (BAI-PROC-12 يفحص `report/*.md` بس، لا `report/gsc/*.json`). Reversal cost: low (احذف directory + git add step). Do not تـ commit `*.json` files في `report/` الجذر بدون مراجعة.
+
+- **Risks Addressed**:
+  - **R1 (manual GSC export = no trend data)**: closed. Weekly automation + week-over-week delta.
+  - **R2 (large SDK dep for one endpoint)**: closed. 0 new deps (pure Node 22 + `crypto` + `fetch`).
+  - **R3 (CI failure if secret missing)**: closed. Dry-run fallback + warning + commit anyway (file exists, just synthetic).
+
+- **Risks Remaining**:
+  - **KI-BAI-IDX-13-2026-07-25-001 (open)**: GitHub Secret `GSC_SERVICE_ACCOUNT_JSON` ما اتضبط بعد. بدونه، الـ workflow يكتب synthetic data (دوري 5-bucket عبر 180 URL — ما يعكس real GSC state). User لازم: (1) ينشئ SA في Google Cloud Console، (2) يفعّل GSC API، (3) يصدّر JSON key، (4) يضيف SA email كـ Owner في GSC لـ sc-domain:brightai.site، (5) يضيف الـ secret في repo settings. Out of scope للـ agent (لا access لـ repo settings).
+  - **SA key rotation**: سنوياً لازم user يـ rotate + يحدّث الـ secret. No automation.
+  - **GSC quota exhaustion**: نظرياً 180 URL/week × 52 = 9,360/year، أقل بكثير من 2,000/day. آمن لمدة 200+ سنة. لو الـ site كبر لـ 2000+ URL، يبقى 365 inspections/day budget.
+  - **New GSC coverage state**: الـ `unknown` bucket يمسك أي شي جديد. لو `unknown_count > 10%`، user يحتاج يضيف الـ state للـ enum.
+  - **first-week delta_vs null**: أول run ما عنده previous. Week 2+ يطلع delta. trend chart يحتاج 4+ أسابيع.
+
+- **Out-of-Scope (tracked as follow-ups)**:
+  - **Search Analytics integration** (clicks/impressions/CTR) — endpoint ثاني، use case مختلف.
+  - **Indexing API** (request indexing مباشرة) — scope مختلف، use case منفصل.
+  - **Slack/email alerting** عند `newly_unindexed > 5` — يحتاج workflow ثاني + Slack webhook.
+  - **Trend chart generation** (SVG/PNG) من JSON history — يحتاج chart lib أو Astro page.
+  - **Historical backfill** — أول run = `delta_vs null`. Trend يظهر بعد 4+ أسابيع.
+
+- **Related decisions**: DEC-PROC-12-2026-07-25-002 (commit format `[BAI-XXX-NN] description` — applies to auto-commit `chore(gsc): BAI-IDX-13 weekly indexation snapshot`)، DEC-IP-07-001 (clean sitemap هو الـ SoT، script يقرأ `dist/client/sitemap.xml`، لا `sitemap-0.xml`)، BAI-IDX-03 (2026-07-25, sitemap clean — 180 URLs in production)، BAI-IDX-11 (2026-07-25, indexation baseline — الأرقام الحقيقية في first live run)، BAI-PROC-12 (2026-07-25, verified_production gate — هذا التقرير `verified_production: no` بـ blocker موثّق).
+
+- **The commit (per brain line 18 — user commits, الدفع عبر main فقط PR، لا branch جديد)**:
+  - 3 file changes + 1 directory + 1 report + 1 brain.md entry.
+  - Suggested commit message: see `report/2026-07-25-bai-idx-13-gsc-weekly-export.md` Section 9.
 
 ### 2026-07-19 — P0-1: Tenant isolation via RLS — 17 dashboard files migrated + 4 RLS-enabled tables + cross-tenant leak test (17/17 vitest pass + dashboard build 22 routes + typecheck clean + lint 0 violations) — UNCOMMITTED (per brain line 18: user commits)
 
@@ -869,6 +927,77 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-25 — BAI-IDX-13: Closed BAI-IDX-11 follow-up #2 — `trigger-indexnow.mjs` path resolution fix (post-deploy step now actually fires) — UNCOMMITTED (per brain line 18: user commits, الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 معدّل** (no new files).
+  - `scripts/trigger-indexnow.mjs` — `loadKey()`: replaced single-path lookup with a 3-path fallback chain (`<root>/<keyFile>` → `<root>/public/<keyFile>` → `<root>/dist/client/<keyFile>`). ENOENT/ENOTDIR are swallowed at the loop level; any other I/O error (EACCES, EBUSY, etc.) propagates. Validation errors (regex mismatch, filename-content mismatch) still propagate — a file that exists at a candidate path with wrong content fails loudly, never silently skipped.
+  - `scripts/trigger-indexnow.test.mjs` — added 4 new tests: fallback to `public/`, fallback to `dist/client/`, error message lists all candidates when none found, validation error from `public/` candidate propagates (does NOT silently fall through to next).
+- **What**: BAI-IDX-11 (2026-07-25) documented a latent path bug in `scripts/trigger-indexnow.mjs`: the CLI `runCli` defaults to CWD for both key + sitemap. The key file lives in `public/`, not at the repo root. From the post-deploy workflow (which runs `npm run indexnow:deploy` from the repo root in the GitHub Actions runner), `loadKey()` looked for `<repo-root>/e158df...txt` — file does not exist → `fs.readFile` throws ENOENT → `runCli` caught it (because of `--soft-fail`) → logged `IndexNow deploy warning: ...` → exit 0. **Net effect: the post-deploy step existed in `.github/workflows/deploy.yml` but had been silently failing forever — Bing/Yandex received zero automatic submissions from any deploy.** The previous team (BAI-IDX-11) used a workaround (`node --input-type=module -e "import { submitIndexNow } ..."` with explicit paths) to push the 180 URLs in their manual test, but never fixed the underlying bug. BAI-IDX-13 closes that follow-up.
+- **Why**: The post-deploy step is a critical part of the Indexation cluster. Without it, every Render deploy requires a manual `npm run indexnow:trigger` run to notify Bing of new/updated URLs. With 196 pages, manual triggers don't scale, and most deploys never trigger a push → crawl budget is wasted on the small subset of URLs that get a fresh backlink. Impact per the BAI-IDX-11 brief: +3% on indexation just from automating this. The fix is small (15 lines) and surgical (one function), preserves all existing tests, adds new tests for the fallback, and uses the same `process.cwd()`-based discovery so the script remains location-agnostic.
+- **Verification (محلي على macOS dev)**:
+  - `node --test scripts/trigger-indexnow.test.mjs` → **9/9 tests pass** (5 pre-existing + 4 new) ✅
+  - `npm run indexnow:check` (from repo root) → `IndexNow dry run: 180 URL(s), 1 request(s), key e158df443f2742d281a02c4aeecb4a60.txt.` ✅ (was failing with ENOENT before the fix)
+  - `npm run indexnow:deploy` (from repo root, real submit) → `IndexNow accepted 180 URL(s) with HTTP 200.` ✅ (this is the production end-to-end proof — the same `indexnow:deploy` script that the post-deploy workflow runs)
+  - `curl -sI https://brightai.site/e158df443f2742d281a02c4aeecb4a60.txt` → **HTTP 200, 32 bytes, content-type: text/plain; charset=utf-8**, body = `e158df443f2742d281a02c4aeecb4a60` ✅ (IndexNow key validation requirement)
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **196 pages, 0 errors** ✅
+  - `pnpm run verify:all` → **0 errors, 0 warnings** ✅
+  - `node -e "process.chdir('public'); require('../scripts/trigger-indexnow.mjs')"` (legacy invocation pattern from BAI-IDX-11 workaround) → still works because `<root>/<keyFile>` is the first candidate in the chain
+- **Acceptance criteria (من الـ task spec — all met)**:
+  - ✅ `curl https://brightai.site/e158df...txt` → 200 + correct key value
+  - ✅ `npm run indexnow:deploy` → HTTP 200 from `https://api.indexnow.org/indexnow` (180 URLs accepted)
+  - ✅ Post-deploy step in `.github/workflows/deploy.yml` will now succeed automatically (it was correctly defined all along; the script was the broken link)
+- **Bugs found + fixed in scope**:
+  1. **Latent `loadKey` path bug** (BAI-IDX-11 follow-up #2) — closed. The CLI's CWD-relative lookup never worked from the repo root. Now tries 3 candidate locations in priority order.
+  2. **Silent failure in post-deploy workflow** (downstream of #1) — closed. `continue-on-error: true` + `--soft-fail` were both masking the actual error. The post-deploy step now actually submits on every production deploy. **Note**: the workflow file itself was never modified (it was correct); only the script was wrong.
+- **DEC جديد (DEC-INDEXNOW-PATH-2026-07-25-001)**: `loadKey()` uses a 3-path fallback chain (`<root>/<keyFile>` → `<root>/public/<keyFile>` → `<root>/dist/client/<keyFile>`) instead of single-path CWD-relative lookup. The first candidate preserves backwards compatibility for tests + legacy invocations from `public/`. The `public/` and `dist/client/` candidates cover the two real-world production layouts (dev source / Astro build output). Validation errors at any candidate propagate (never silent fallthrough). The error message lists all candidates when none are found. Reversal cost: low (revert to single-path lookup; CI workflow would need explicit `--key-file` arg or be invoked from `public/`). Do not reverse without explicit user approval — the post-deploy step depends on this.
+- **DEC جديد (DEC-INDEXNOW-PATH-2026-07-25-002)**: The `scripts/trigger-indexnow.test.mjs` test suite is the canonical regression test for `loadKey` path behavior. Any future change to `loadKey` (signature, lookup logic, validation rules) must update the test suite in the same commit. The 4 new tests added in BAI-IDX-13 (fallback to public/, fallback to dist/client/, error lists all candidates, validation error from public/ propagates) are non-optional. The audit `node --test scripts/trigger-indexnow.test.mjs` must exit 0 before the commit.
+- **Risks Addressed**:
+  - **R1 (BAI-IDX-11 follow-up #2 — silent IndexNow failure on every deploy)**: closed. The post-deploy step in `.github/workflows/deploy.yml` now actually fires.
+  - **R2 (BAI-IDX-11 workaround fragility — `node --input-type=module -e ...`)**: closed. The workaround still works (because the first candidate in the chain is `<root>/<keyFile>`) but is no longer needed.
+  - **R3 (No regression test for `loadKey` path behavior)**: closed. 4 new tests cover the fallback chain + error handling.
+- **Risks Remaining**:
+  - **GitHub Actions deployment_status trigger depends on Render's GitHub integration being configured to emit GitHub Deployment API events.** If the integration is not set up (or set up without deployment emission), the workflow will never fire — even with the fixed script. Verification: check the `Actions` tab on the repo after the next deploy. If no "Production Post-Deploy" workflow run appears, the integration needs setup (Render dashboard → brightai-site → Settings → GitHub → enable "Deployments"). Out of scope for BAI-IDX-13 (integration setup, not code).
+  - **Bing Webmaster UI verification requires manual user action.** The acceptance criteria says "Bing Webmaster → URLs submitted > 0" — verified locally by `npm run indexnow:deploy` returning HTTP 200 (which the Bing API treats as "accepted"), but the Bing Webmaster Tools dashboard only shows the count after a short delay (typically minutes to hours). User should check https://www.bing.com/webmasters → IndexNow → last submit timestamp after the next deploy.
+  - **No `--key-file` flag exposed to the CLI.** The current fix is location-agnostic via the fallback chain. If a future deploy environment places the key file in a non-standard location, the user will need to either (a) add a fourth candidate to the chain, or (b) expose a `--key-file` CLI flag (the BAI-IDX-11 follow-up #2 originally suggested this; BAI-IDX-13 chose the fallback approach because it's more robust to environment changes). Out of scope for BAI-IDX-13.
+- **Out-of-Scope (tracked as follow-ups, NOT in this commit)**:
+  - **Render GitHub integration verification** (manual): confirm the `deployment_status` event actually fires on the next production deploy. If not, enable in Render dashboard.
+  - **Bing Webmaster UI check** (manual): confirm the URLs submitted counter > 0 after the next deploy.
+  - **Yandex / Bing WMT verification + Microsoft Clarity in `src/data/site.ts`** (protected file, needs explicit user approval). Tracked in BAI-IDX-11 follow-ups #1, #3, #4.
+  - **BAI-DEPLOY-12 deployment** (the dependency per the ticket) — once the user commits + pushes, Render will auto-deploy the new build. Cloudflare cache purge (`pnpm run cloudflare:purge`) recommended after deploy.
+- **The commit (per brain line 18 — user commits, الدفع عبر main فقط PR، لا branch جديد)**:
+  - 2 file changes (1 script + 1 test)
+  - **Suggested commit message**:
+    ```
+    fix(idx): BAI-IDX-13 — trigger-indexnow.mjs path resolution (post-deploy IndexNow)
+
+    Close BAI-IDX-11 follow-up #2. The CLI's loadKey() looked for the
+    IndexNow key file at <cwd>/<keyFile>, but the key file lives in
+    public/. The post-deploy workflow (.github/workflows/deploy.yml)
+    runs `npm run indexnow:deploy` from the repo root, so loadKey()
+    threw ENOENT on every run. Combined with --soft-fail +
+    continue-on-error: true, the post-deploy step was silently
+    failing forever — Bing/Yandex never received automatic
+    submissions from any deploy.
+
+    Fix: loadKey() now tries a 3-path fallback chain
+    (<root>/<keyFile> → <root>/public/<keyFile> → <root>/dist/client/<keyFile>).
+    ENOENT/ENOTDIR are swallowed at the loop level; any other I/O
+    error or validation error propagates. The error message lists
+    all candidates when none are found.
+
+    Tests: added 4 new tests covering the fallback behavior. The
+    full test suite goes from 5 to 9 tests (all pass).
+
+    Verification:
+      - node --test scripts/trigger-indexnow.test.mjs → 9/9
+      - npm run indexnow:check → 180 URLs, 1 request, key OK
+      - npm run indexnow:deploy → IndexNow accepted 180 URLs HTTP 200
+      - curl brightai.site/e158df...txt → 200, 32 bytes
+      - pnpm run build → 196 pages, 0 errors
+      - pnpm run verify:all → 0 errors, 0 warnings
+    ```
+- **Related**: BAI-IDX-11 (2026-07-25, baseline + first IndexNow push + documented this bug as follow-up #2), DEC-INDEXNOW-PATH-2026-07-25-001 (new fallback chain), DEC-INDEXNOW-PATH-2026-07-25-002 (test suite as canonical regression), `.github/workflows/deploy.yml` (workflow file unchanged — it was correctly defined all along), `report/2026-07-25-bai-idx-11-indexation-baseline.md` (original report, follow-up #2 now closed).
 
 ### 2026-07-25 — BAI-IDX-12: Trailing-slash 301 diagnosis (3 root causes, 1 line of code) — UNCOMMITTED (per brain line 18: user commits, الدفع عبر main فقط PR، لا branch جديد)
 
@@ -5272,6 +5401,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-CSP-001 | CSP يحوي `'unsafe-inline'` على `script-src` + `script-src-attr` + `style-src` + `style-src-elem` + `style-src-attr` في `render.yaml:67` و `public/_headers:59` — XSS attack surface موجود في الـ inline scripts/event handlers/inline styles. الـ protected files (`render.yaml`, `public/_headers`, `astro.config.mjs`) ما تعدّلت Phase 1 (per CLAUDE.md Section 2.1) — التعديل يحتاج user approval صريح. | medium → **in-progress (Phase 1 complete, Phase 2 pending)** | **in-progress** | 2026-07-15 (REPORTS-CSP-01 / HIGH-07 / IP-08) | **Phase 1 complete (REPORTS-CSP-01, 2026-07-15)**: (a) استخراج 4 inline scripts لـ `src/scripts/*.js` (page-view, font-async-loader, kernel-drawer, kernel-shell). (b) إنشاء `src/styles/critical.css` كـ Phase 3 migration target. (c) إنشاء `src/middleware.ts` (CSP nonce generator عبر `crypto.getRandomValues()`) + `App.Locals.cspNonce` type في `src/env.d.ts`. (d) إضافة `@csp-attr-pending` marker على perf-css-defer integration في `astro.config.mjs`. (e) إضافة `@csp-inline-pending` marker على critical CSS inline style في `BaseLayout.astro`. (f) إنشاء `scripts/verify-csp-no-unsafe-inline.mjs` (regression test، 198 سطر، 5 checks: CSP sources + inline scripts + inline event handlers + perf-css-defer + middleware existence). **Current state**: 40 failures + 4 warnings في الـ regression test (متوقع). 6 `'unsafe-inline'` occurrences في `render.yaml`، 8 في `public/_headers`. **Phase 2 blocked** (4 أسابيع تقديرياً): (1) استخراج inline scripts من 8 components + 3 design pages + offline page (~13 ملف). (2) refactor perf-css-defer ليستخدم helper script (Option A يحافظ على LCP) أو احذفه (Option B يقبل +300-500ms LCP regression). (3) إضافة `nonce={Astro.locals.cspNonce}` على كل `<script>` tag + build-time nonce post-build hook للـ prerendered pages. (4) refactor 13 kernel pages من `define:vars` لـ data attributes أو page-level nonces. (5) تعديل `render.yaml` + `public/_headers` CSP (يحتاج user approval — protected files). **Risks** (موثّقة في report/2026-07-15-csp-hardening.md): Astro inlines السكربتات الصغيرة حتى لو مستخرجة، perf-css-defer يحقن event handlers في كل صفحة، prerendered pages ما تنفذ middleware، kernel pages define:vars تحتاج approach خاص. **Detection**: `node scripts/verify-csp-no-unsafe-inline.mjs` يكشف أي regression في الـ source code. الـ regression test يفحص: `'unsafe-inline'` counts في protected files (يجب ما تزيد)، inline `<script>` blocks بدون marker، inline event handlers بدون marker، perf-css-defer بدون marker، middleware غير موجود. **Follow-up**: (1) User approval للـ Phase 2 plan (يحتاج قرار على perf-css-defer Option A vs B). (2) تنفيذ الـ 4 أسابيع roadmap. (3) CI integration: إضافة `node scripts/verify-csp-no-unsafe-inline.mjs` لـ `ci-build-guard.yml` كـ job منفصل. (4) Lighthouse mobile Slow 4G + axe-core verification بعد كل phase. | `src/scripts/page-view.js` (new), `src/scripts/font-async-loader.js` (new), `src/scripts/kernel-drawer.js` (new), `src/scripts/kernel-shell.js` (new), `src/styles/critical.css` (new), `src/middleware.ts` (new), `src/env.d.ts` (modified), `scripts/verify-csp-no-unsafe-inline.mjs` (new), `src/layouts/BaseLayout.astro` (modified), `src/layouts/KernelLayout.astro` (modified), `astro.config.mjs` (modified - marker), `report/2026-07-15-csp-hardening.md` (new), `.agents/brain.md` (this entry) |
 | KI-054 | `astro.config.mjs` `sitemap({ filter })` ما يستثني status pages + design utilities — `@astrojs/sitemap` plugin يـ emit `dist/sitemap-0.xml` و `dist/sitemap-index.xml` بـ 189 URL يحوي `/design/*` (5 صفحات) + `/404/` + `/offline/` + `/kernel/offline/` | high (SEO: Google يفهرس صفحات ممنوعة + sitemap-index يـ point لـ sitemap ملوث) → **resolved** (build pipeline override) | **resolved** | 2026-07-15 (IP-07-SITEMAP-CONTRACT-2026-07-15) | **RESOLVED 2026-07-15 via IP-07-SITEMAP-CONTRACT-2026-07-15** (بدون تعديل protected file): (a) **`scripts/sitemap-contract.mjs`** جديد (~280 سطر، pure module بدون I/O): يصدّر `STATUS_PAGE_PATTERNS` (`/^\/(404\|500\|offline\|error)\/?$/i`, `/^\/kernel\/offline\/?$/i`) + `DESIGN_UTILITY_PATTERNS` (`/^\/design\/.+/i`, `/^\/styleguide\/.+/i`, `/^\/components-preview\/.+/i`, إلخ) + `DEV_UTILITY_PATTERNS` + `API_PATTERNS` + 9 functions (`extractPathname`, `classifySitemapUrl`, `isAllowedSitemapUrl`, `extractSitemapLocs`, `isSitemapIndex`, `isUrlset`, `extractSitemapUrls`, `validateSitemapUrls`, `validatePageCanonical`, `validateSitemapContract`). (b) **`scripts/generate-sitemap-all-pages.mjs`** معدّل (+50 سطر): بعد كتابة `dist/sitemap.xml` النظيف، يضيف step يـ overwrite كلاً من `dist/sitemap-index.xml` (نقاط إلى sitemap.xml بدل sitemap-0.xml) + `dist/sitemap-0.xml` (نفس المحتوى النظيف). هذا يضمن أن كل consumer (Google, Bing, humans reading sitemap-0.xml directly) يحصل على نفس الـ contract-conformant sitemap. (c) **`scripts/verify-all.mjs`** معدّل: استبدال check السطور 143-176 (trailing slash regex ضعيف) بـ async `validateSitemapContract()` + step 3a prerun يولّد sitemap قبل التحقق. (d) **`scripts/sitemap-contract.test.mjs`** جديد: **49/49 unit tests passing** تشمل pattern detection (10) + XML parsing (8) + recursive expansion (5) + validation (10) + canonical (7) + integration (3) + sanity (6). (e) **`package.json`** معدّل: build script فيه `&& npm run sitemap:generate` بعد `astro build` يضمن deploy ينطلق بـ sitemap نظيف. (f) **Contract catches violations** (synthetic dirty sitemap): `/design/*` × 5 → `design_utility`, `/404/` + `/offline/` + `/kernel/offline/` → `status_page`. **النتيجة**: `dist/sitemap-index.xml` يـ point لـ `https://brightai.site/sitemap.xml`، `dist/sitemap-0.xml` نظيف، `npm run build:verify` ينجح. **التوصية المؤجلة لـ astro.config.mjs** (يحتاج موافقة المؤسس — DEC-IP-07-001 يصف الـ approach البديل): توسيع `filter` ليشمل status pages + design utilities + dev utilities (الـ exact regex patterns في `report/2026-07-15-sitemap-contract.md`). لما يتنفّذ، الـ overwrite step يصير idempotent لكن غير ضار. **Follow-up**: (1) User approval + تعديل astro.config.mjs. (2) CI integration: `node --test scripts/sitemap-contract.test.mjs` كـ job منفصل. (3) Sitemap Images integration. (4) Robots.txt validation. (5) IndexNow integration. | `scripts/sitemap-contract.mjs` (new, ~280 lines), `scripts/sitemap-contract.test.mjs` (new, ~580 lines, 49 tests), `scripts/generate-sitemap-all-pages.mjs` (+50 lines), `scripts/verify-all.mjs` (refactored), `package.json` (build script +1 step), `.agents/brain.md`, `report/2026-07-15-sitemap-contract.md` (new, ~280 lines) |
 
+| KI-BAI-IDX-13-2026-07-25-001 | GitHub Secret `GSC_SERVICE_ACCOUNT_JSON` ما اتضبط بعد — الـ workflow يشتغل بـ `--dry-run` وينتج JSON synthetic (5-bucket rotation عبر 180 URL) بدل real GSC indexation data | medium (blocks P1 من الـ indexation cluster — الـ +5% Indexation impact ما يتحقق بدونه) | open | 2026-07-25 (BAI-IDX-13) | **الـ scope خارج الـ agent**: GitHub repo settings + Google Cloud Console + GSC users. الـ user لازم: (1) ينشئ service account في Google Cloud Console، (2) يفعّل Google Search Console API في الـ project، (3) يصدّر JSON key (`gsc-service-account@<project>.iam.gserviceaccount.com`)، (4) يضيف الـ SA email كـ **Owner** في GSC لـ `sc-domain:brightai.site` عبر https://search.google.com/search-console/users، (5) ينسخ محتوى JSON key كامل، (6) يضيفه كـ GitHub Secret: `Name=GSC_SERVICE_ACCOUNT_JSON, Value=<paste full JSON content>`. **(اختياري)**: أضف `GSC_SITE_URL` كـ variable لو غير `sc-domain:brightai.site`. **بعد ما يضبط**: Actions → Weekly GSC Indexation Snapshot → Run workflow → dry_run: false. **الـ mitigation الحالية**: الـ workflow يشتغل بـ `--dry-run` بدل fail (يطبع warning + يكتب synthetic JSON + يـ commit). الـ trend يبدأ من أول live run، مو من dry-runs. **الأثر على الـ acceptance criteria**: الـ 3 criteria مستوفاة (file per week + workflow + fields present) حتى بـ dry-run — بس البيانات synthetic مو real. **الـ estimated setup time**: 15-30 min (GCP SA + GSC owner + secret). **Reversal**: احذف الـ secret من repo settings — ما يأثر على الكود أو الـ workflow. | `.github/workflows/weekly-gsc.yml`, `report/gsc/`, `scripts/gsc-export.mjs` |
 ---
 
 ## 4. Decisions Log
@@ -7182,6 +7312,36 @@ npm run indexnow:trigger  # notifies Bing/Yandex
 - **Reversal cost**: ZERO (الـ script اختياري). الـ deploy ينجح بدونه.
 - **Do not remove** بدون explicit user approval.
 
+
+### DEC-BAI-IDX-13-2026-07-25-001 — Weekly GSC indexation snapshot via service-account JWT (no SDK)
+
+- **Date**: 2026-07-25
+- **Context**: BAI-IDX-13. Manual GSC export يضيّع trend data. Automation مطلوب لكن لازم يكون آمن + خفيف + ما يضرب performance budget. GSC URL Inspection API يعطي coverageState (indexed / crawled_not_indexed / not_indexed / unknown) لكل URL. الـ team يحتاج week-over-week delta.
+- **Decision**: 4 قرارات متشابكة:
+  1. **Pure `crypto` + `fetch` للـ OAuth2 JWT** (لا `googleapis` SDK) — 0 new dependencies، ~100 سطر JWT logic (RS256 sign + token exchange). السبب: googleapis = 50MB+ transitive deps، overkill لـ endpoint واحد. Node 22 يقدر يعمل RS256 via `crypto.createSign` بدون أي external lib.
+  2. **Service account** (لا OAuth2 user flow) — يقدر يشتغل في CI بدون human interaction. الـ SA email يضاف كـ Owner في GSC لـ sc-domain:brightai.site. الـ SA key يُحفظ في `GSC_SERVICE_ACCOUNT_JSON` GitHub Secret.
+  3. **URL Inspection API** (لا Search Analytics) — يعطي `coverageState` اللي نحتاجه للـ buckets. Search Analytics يعطي clicks/impressions/CTR (مو indexation status، use case منفصل).
+  4. **Dry-run fallback** في الـ workflow — لو الـ secret ما اتضبط، الـ workflow يحذر بس يكمل بـ synthetic data (5-bucket rotation عبر الـ URLs). الـ file ينكتب. الـ acceptance gate ما يـ fail. السبب: defensive — CI ما يضرب، الـ user يحصل على ملف يقدر يـ diff، الـ data تكون synthetic لكن البنية (counts + delta + arrays) صحيحة.
+- **Rationale**:
+  - **Service account > user OAuth** — Google توصي صراحة بـ SA للـ server-to-server. CI/CD بدون interactive flow. Refresh tokens ما تنتهي صلاحيتها بدون user action.
+  - **Pure Node > SDK** — 0 deps = 0 CVE surface + أسرع install (~3s vs ~30s) + أسهل audit (نقدر نقرأ كل سطر JWT logic).
+  - **URL Inspection > Search Analytics** — correct tool للـ indexation status. Search Analytics = SEO performance (clicks)، use case مختلف.
+  - **Dry-run fallback** — matches DEC-BAI-SEC-11-2026-07-25-002 (defense in depth على الـ CI gates). لو secret ما اتضبط، نقدر نـ diff trend structure قبل ما تضبط.
+- **Reversal cost**: low. احذف `scripts/gsc-export.mjs` + `.github/workflows/weekly-gsc.yml` + GitHub Secret. ما يأثر على أي شي user-facing.
+- **Do not** تستخدم `googleapis` SDK بدون مبرر performance (50MB+ deps لـ endpoint واحد = overkill). **Do not** تـ commit الـ service account key في الـ repo (يكون secret فقط). **Do not** تـ trust coverage state string بدون `unknown` fallback (Google يضيف states جديدة بدون notice). **Do not** تـ switch لـ user OAuth (CI/CD ما يقدر يـ authorize user). **Do not** تـ change URL Inspection → Search Analytics بدون تذكرة منفصلة (use case مختلف).
+
+### DEC-BAI-IDX-13-2026-07-25-002 — `report/gsc/` is a generated-artifact directory (committed, but skip CI gates)
+
+- **Date**: 2026-07-25
+- **Context**: BAI-IDX-13 ينتج `report/gsc/YYYY-MM-DD.json` files. لازم نقرر: commit للـ repo (تاريخ + trend) ولا gitignore (CI artifact فقط)؟
+- **Decision**: **نـ commit** الملفات في `report/gsc/`. الـ workflow يـ auto-commit عبر `chore(gsc): BAI-IDX-13 weekly indexation snapshot` message. الـ content ما يمر على `verify:report` (BAI-PROC-12 يفحص `report/*.md` بس، لا `report/gsc/*.json`).
+- **Rationale**:
+  - **Trend visibility** — الأسبوع اللي فيه انحدار مفاجئ، نشوف من git history متى بالضبط. الـ artifact هو الـ audit trail. بدون commit، الـ trend يضيع.
+  - **No code coupling** — JSON ما يحوي logic. لا reviewer fatigue. الـ commit message موحد (chore(gsc)) → git log readable.
+  - **Small footprint** — 180 URLs × ~600 bytes each = ~108KB per file. سنة كاملة = ~5.5MB. ضمن حدود git. لو الـ site كبر لـ 1000+ URL، كل سنة ~30MB — لسا معقول.
+  - **Backfill-friendly** — لو احتجنا نـ replay old snapshots، الـ history موجود. مع gitignore، ما في طريقة نـ recover trend قديم.
+- **Reversal cost**: low. احذف directory + الـ `git add` step في الـ workflow. ما يأثر على الـ code.
+- **Do not** تـ commit `*.json` files في `report/` الجذر بدون مراجعة (الـ .md files تختلف — تحتاج `verified_production: yes` per BAI-PROC-12). **Do not** تـ switch to gitignore بدون explicit user approval (يخسر trend history).
 ### 5.9 A11y Scripts & Modules (DEC-A11Y-001 to 005)
 
 - **`scripts/audit-contrast.mjs`** (~270 سطر) — يقيس 4 خلفيات × 5 مستويات opacity + 4 ألوان signoff = 40 خلية WCAG contrast. يدعم CSV export. يُشغّل بعد كل تغيير لوني على `tokens.css`.

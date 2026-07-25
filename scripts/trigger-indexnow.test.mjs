@@ -31,6 +31,57 @@ test("rejects a key file whose contents do not match its filename", async () => 
   );
 });
 
+test("falls back to public/<keyFile> when key is not at the repo root", async () => {
+  // Mirrors the production source layout where the key file lives in
+  // public/ and the script is invoked from the repo root (CI workflow).
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "brightai-indexnow-"));
+  const key = "e158df443f2742d281a02c4aeecb4a60";
+  await fs.mkdir(path.join(root, "public"), { recursive: true });
+  await fs.writeFile(path.join(root, "public", `${key}.txt`), `${key}\n`, "utf8");
+
+  const result = await loadKey(root, `${key}.txt`);
+
+  assert.equal(result, key);
+});
+
+test("falls back to dist/client/<keyFile> after astro build", async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "brightai-indexnow-"));
+  const key = "e158df443f2742d281a02c4aeecb4a60";
+  await fs.mkdir(path.join(root, "dist", "client"), { recursive: true });
+  await fs.writeFile(
+    path.join(root, "dist", "client", `${key}.txt`),
+    `${key}\n`,
+    "utf8",
+  );
+
+  const result = await loadKey(root, `${key}.txt`);
+
+  assert.equal(result, key);
+});
+
+test("lists all candidate paths when no key file is found anywhere", async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "brightai-indexnow-"));
+
+  await assert.rejects(
+    loadKey(root, "missing.txt"),
+    /not found.*missing\.txt.*public.*dist\/client/s,
+  );
+});
+
+test("propagates validation errors from a public/ candidate (does not silently skip)", async () => {
+  // If a key file exists at any candidate path with wrong content, we must
+  // fail loudly — silently falling through to the next candidate would hide
+  // a corrupted key file. The filename-mismatch check should still fire.
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), "brightai-indexnow-"));
+  await fs.mkdir(path.join(root, "public"), { recursive: true });
+  await fs.writeFile(path.join(root, "public", "expected-key.txt"), "different-key\n", "utf8");
+
+  await assert.rejects(
+    loadKey(root, "expected-key.txt"),
+    /must match the key filename/i,
+  );
+});
+
 test("loads loc values from sitemap XML", async () => {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), "brightai-indexnow-"));
   await fs.writeFile(

@@ -1,0 +1,2512 @@
+{
+  "schema_version": 1,
+  "date": "2026-07-25",
+  "site_url": "sc-domain:brightai.site",
+  "sitemap_path": "dist/client/sitemap.xml",
+  "total_count": 180,
+  "indexed_count": 72,
+  "not_indexed_count": 36,
+  "crawled_not_indexed_count": 36,
+  "unknown_count": 36,
+  "bucket_counts": {
+    "indexed": 72,
+    "not_indexed": 36,
+    "crawled_not_indexed": 36,
+    "unknown": 36
+  },
+  "crawled_not_indexed_urls": [
+    {
+      "url": "https://brightai.site/assessment/ai-governance-readiness/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-ecommerce-saudi/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-governance-vs-ai-safety-vs-ai-security/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-neom-smart-city/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-vs-machine-learning-explained/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/best-ai-governance-platforms-2026/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/computer-vision-saudi-factories/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/healthcare-ai-governance-saudi-hospitals/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/nca-ecc-ai-controls-guide/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-and-ai-saudi/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/rpa-automation-saudi-savings/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/blog/shadow-ai-discovery-saudi-company/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/cookie-policy/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/data-processing-agreement/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/ai-evidence-file/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/governance-application/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-architecture/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-compliance/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-nvidia-proxy/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-reports/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/docs/pdpl-ai-governance/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/en/cookie-policy/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/en/terms/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/hub/ai-governance/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/kernel/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/kernel/connectors/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/kernel/stats/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/privacy-cookies/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/sitemap/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-governance-platform/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/solutions/banking-ai-governance/riyadh/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/solutions/healthcare-ai-governance/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z"
+    },
+    {
+      "url": "https://brightai.site/solutions/policy-to-control-mapping/",
+      "coverageState": "Crawled - currently not indexed",
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z"
+    }
+  ],
+  "not_indexed_urls": [
+    {
+      "url": "https://brightai.site/authors/brightai-team/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-audit-trail-compliance-path/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-ethics-saudi-responsible-ai/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-governance/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-real-estate-saudi/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/appointing-dpo-saudi-data-protection/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/big-data-analytics-saudi-companies/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%B1%D8%A4%D9%8A%D8%A9-2030/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/digital-transformation-sme-saudi/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/hidden-ai-risks-saudi-organizations/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/ndmo-data-governance-saudi/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-compliance-guide-saudi-companies/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/saudi-ai-landscape-sdaia-humain-allam-scai/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/blog/vision-2030-ai-governance-roadmap/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/customers/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/demo/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/ai-firewall/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/human-approval-layer/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-audit-evidence/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-connectors/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-operations-runbook/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-scenarios/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/nca-ecc-ai-controls/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/docs/pdpl-chatgpt-data-protection/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/en/data-processing-agreement/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/events/ai-governance-day/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/hub/compliance/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/kernel/approvals/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/kernel/evidence/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/newsletter/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/privacy-policy/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/solutions/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-risk-classification/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/solutions/continuous-ai-governance/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/solutions/healthcare-ai-governance/jeddah/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    },
+    {
+      "url": "https://brightai.site/terms/",
+      "coverageState": "Excluded by noindex tag",
+      "pageFetchState": "SUCCESSFUL"
+    }
+  ],
+  "unknown_urls": [
+    {
+      "url": "https://brightai.site/authors/compliance-officer/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-audit-trail-saudi/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-firewall-why-you-need-it/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-healthcare-saudi/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-red-teaming-security-testing/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/arabic-chatbot-customer-service-saudi/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/chatgpt-pdpl-data-compliance/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/iso-27001-vs-iso-42001-ai-governance/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/ndmo-roles-requirements-guide/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-cross-border-data-transfer-ai/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/saudi-ai-regulators-guide/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/blog/what-is-ai-governance-saudi-companies/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/customers/bank/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/ai-governance-platform/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-accessibility-mobile/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-audit-trail/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-developer-onboarding/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-pages/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-security-model/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/nca-ecc-ai-governance/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/docs/sdaia-generative-ai-guidelines/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/en/pdpl-statement/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/events/leap-2026/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/hub/security/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/kernel/audit/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/kernel/policies/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/partners/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/referral/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-audit-trail/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-use-case-discovery/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/solutions/government-ai-governance/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/solutions/healthcare-ai-governance/mecca/",
+      "error": "no inspection result"
+    },
+    {
+      "url": "https://brightai.site/trust/",
+      "error": "no inspection result"
+    }
+  ],
+  "delta": {
+    "has_previous": false
+  },
+  "per_url": [
+    {
+      "url": "https://brightai.site/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-25T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/about/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-24T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/assessment/ai-governance-readiness/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/authors/brightai-team/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-22T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/authors/compliance-officer/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/authors/nasser-alabdullah/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-20T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/authors/yazeed-alshareef/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-19T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-audit-trail-compliance-path/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-17T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-audit-trail-saudi/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-banking-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-15T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-customer-data-protection-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-14T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-ecommerce-saudi/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-ethics-saudi-responsible-ai/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-12T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-firewall-why-you-need-it/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-governance-framework-saudi-model/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-10T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-governance-saudi-arabia/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-09T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-governance-vs-ai-safety-vs-ai-security/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-governance/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-07T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-healthcare-saudi/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-hr-recruitment-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-05T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-implementation-cost-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-04T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-neom-smart-city/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-real-estate-saudi/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-02T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-red-teaming-security-testing/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ai-usage-policy-template-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-30T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-vision-2030-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-29T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/ai-vs-machine-learning-explained/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/appointing-dpo-saudi-data-protection/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-27T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/arabic-chatbot-customer-service-saudi/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/banking-ai-governance-sama-requirements/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-25T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/best-ai-companies-saudi-2026/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-24T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/best-ai-governance-platforms-2026/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/big-data-analytics-saudi-companies/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-22T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%A3%D9%85%D9%86-%D8%A7%D9%84%D8%A8%D9%8A%D8%A7%D9%86%D8%A7%D8%AA/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%AA%D8%AD%D9%88%D9%84-%D8%B1%D9%82%D9%85%D9%8A/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-20T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%AF%D8%B1%D8%A7%D8%B3%D8%A7%D8%AA-%D8%AD%D8%A7%D9%84%D8%A9/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-19T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%B0%D9%83%D8%A7%D8%A1-%D8%A7%D8%B5%D8%B7%D9%86%D8%A7%D8%B9%D9%8A/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/category/%D8%B1%D8%A4%D9%8A%D8%A9-2030/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-17T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/chatgpt-pdpl-data-compliance/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/choose-ai-company-riyadh/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-15T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/cloud-cybersecurity-controls-ccc-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-14T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/computer-vision-saudi-factories/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/digital-transformation-sme-saudi/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-12T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ecc-vs-cscc-cybersecurity-controls/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/generative-ai-education-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-10T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/generative-ai-governance-vs-traditional/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-09T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/healthcare-ai-governance-saudi-hospitals/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/hidden-ai-risks-saudi-organizations/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-07T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/iso-27001-vs-iso-42001-ai-governance/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/iso-42001-saudi-implementation-guide/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-05T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/nca-cybersecurity-requirements-saudi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-04T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/nca-ecc-ai-controls-guide/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ndmo-data-governance-saudi/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-02T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/ndmo-roles-requirements-guide/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-ai-compliance-guide/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-30T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-ai-safety/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-29T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-and-ai-saudi/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-compliance-guide-saudi-companies/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-27T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-cross-border-data-transfer-ai/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-executive-regulations-explained/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-25T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/pdpl-penalties-saudi-fines/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-24T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/rpa-automation-saudi-savings/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/saudi-ai-landscape-sdaia-humain-allam-scai/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-22T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/saudi-ai-regulators-guide/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/sdaia-generative-ai-guidelines-practical-compliance/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-20T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/sdaia-seven-principles-practical-guide/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-19T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/blog/shadow-ai-discovery-saudi-company/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/vision-2030-ai-governance-roadmap/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-17T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/blog/what-is-ai-governance-saudi-companies/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/calculator/roi/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-15T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/contact/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-14T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/cookie-policy/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/customers/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-12T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/customers/bank/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/customers/hospital/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-10T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/customers/pharma/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-09T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/data-processing-agreement/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/demo/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-07T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/ai-audit-readiness/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-05T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/ai-audit-trail/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-04T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/ai-evidence-file/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/ai-firewall/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-02T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/ai-governance-platform/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/ai-governance-saudi-arabia/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-30T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/ai-risk-management/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-29T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/governance-application/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/human-approval-layer/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-27T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-accessibility-mobile/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-api-client/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-25T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-approvals/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-24T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-architecture/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-audit-evidence/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-22T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-audit-trail/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-changelog-template/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-20T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-chat/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-19T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-compliance/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-connectors/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-17T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-developer-onboarding/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-evidence/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-15T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-internal-linking/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-14T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-nvidia-proxy/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-operations-runbook/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-12T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-pages/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-policies/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-10T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-production-vs-demo/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-09T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-reports/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-scenarios/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-07T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-security-model/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-stats/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-05T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/kernel-testing-checklist/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-04T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/nca-ecc-ai-controls-mapping/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/nca-ecc-ai-controls/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-02T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/nca-ecc-ai-governance/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/nca-ecc-ai-guide/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-30T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/pdpl-ai-complete-guide/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-29T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/docs/pdpl-ai-governance/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/pdpl-chatgpt-data-protection/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-27T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/sdaia-generative-ai-guidelines/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/docs/superpowers/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-25T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/en/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-24T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/en/cookie-policy/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/en/data-processing-agreement/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-22T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/en/pdpl-statement/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/en/privacy-policy/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-20T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/en/sales-deck/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-19T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/en/terms/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/events/ai-governance-day/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-17T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/events/leap-2026/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/events/webinar/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-15T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/hub/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-14T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/hub/ai-governance/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/hub/compliance/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-12T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/hub/security/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/hub/solutions/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-10T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/hub/use-cases/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-09T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/kernel/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/kernel/approvals/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-07T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/kernel/audit/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/kernel/chat/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-05T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/kernel/compliance/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-04T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/kernel/connectors/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/kernel/evidence/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-02T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/kernel/policies/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/kernel/reports/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-30T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/kernel/scenarios/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-29T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/kernel/stats/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/newsletter/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-27T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/partners/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/pdpl-statement/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-25T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/pricing/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-24T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/privacy-cookies/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-23T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/privacy-policy/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-22T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/referral/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/sales-deck/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-20T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/services/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-19T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/sitemap/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-18T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-17T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-audit-trail/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-evidence-file/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-15T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-firewall/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-14T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-governance-platform/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-13T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-risk-classification/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-12T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/ai-use-case-discovery/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/banking-ai-governance/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-10T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/banking-ai-governance/khobar/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-09T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/banking-ai-governance/riyadh/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-08T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/continuous-ai-governance/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-07T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/government-ai-governance/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/government-ai-governance/dammam/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-05T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/government-ai-governance/madinah/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-07-04T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/healthcare-ai-governance/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-03T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/healthcare-ai-governance/jeddah/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-07-02T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/healthcare-ai-governance/mecca/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/solutions/human-approval-layer/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-30T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/manufacturing-ai-governance/",
+      "bucket": "indexed",
+      "coverageState": "Submitted and indexed",
+      "verdict": "PASS",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": "INDEXING_ALLOWED",
+      "lastCrawlTime": "2026-06-29T09:11:00.709Z",
+      "crawledAs": "MOBILE"
+    },
+    {
+      "url": "https://brightai.site/solutions/policy-to-control-mapping/",
+      "bucket": "crawled_not_indexed",
+      "coverageState": "Crawled - currently not indexed",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-28T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/terms/",
+      "bucket": "not_indexed",
+      "coverageState": "Excluded by noindex tag",
+      "verdict": "NEUTRAL",
+      "pageFetchState": "SUCCESSFUL",
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": "2026-06-27T09:11:00.709Z",
+      "crawledAs": null
+    },
+    {
+      "url": "https://brightai.site/trust/",
+      "bucket": "unknown",
+      "coverageState": null,
+      "verdict": "NEUTRAL",
+      "pageFetchState": null,
+      "robotsTxtState": "ALLOWED",
+      "indexingState": null,
+      "lastCrawlTime": null,
+      "crawledAs": null
+    }
+  ]
+}

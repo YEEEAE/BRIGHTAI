@@ -10,18 +10,50 @@ const INDEXNOW_ENDPOINT = "https://api.indexnow.org/indexnow";
 const MAX_URLS_PER_REQUEST = 10_000;
 
 export async function loadKey(root = process.cwd(), keyFile = KEY_FILE) {
-  const keyPath = path.join(root, keyFile);
-  const key = (await fs.readFile(keyPath, "utf8")).trim();
-  const expectedKey = path.basename(keyFile, ".txt");
+  // Candidate locations, in priority order:
+  //   1. <root>/<keyFile>                — tests + explicit override
+  //   2. <root>/public/<keyFile>         — repo source layout (dev + CI)
+  //   3. <root>/dist/client/<keyFile>    — post `astro build` output
+  // We try each candidate; ENOENT is the only error we swallow (so a real
+  // I/O failure like EACCES still propagates). Validation errors (wrong
+  // key content, mismatched filename) also propagate — if a file exists
+  // at a candidate path, its contents must be valid, not silently skipped.
+  const candidates = [
+    path.join(root, keyFile),
+    path.join(root, "public", keyFile),
+    path.join(root, "dist/client", keyFile),
+  ];
 
-  if (!/^[A-Za-z0-9-]{8,128}$/.test(key)) {
-    throw new Error("IndexNow key must contain 8-128 letters, numbers, or dashes.");
-  }
-  if (key !== expectedKey) {
-    throw new Error("IndexNow key contents must match the key filename.");
+  let lastMissing;
+  for (const keyPath of candidates) {
+    let key;
+    try {
+      key = (await fs.readFile(keyPath, "utf8")).trim();
+    } catch (error) {
+      if (error && (error.code === "ENOENT" || error.code === "ENOTDIR")) {
+        lastMissing = keyPath;
+        continue;
+      }
+      throw error;
+    }
+
+    const expectedKey = path.basename(keyFile, ".txt");
+    if (!/^[A-Za-z0-9-]{8,128}$/.test(key)) {
+      throw new Error("IndexNow key must contain 8-128 letters, numbers, or dashes.");
+    }
+    if (key !== expectedKey) {
+      throw new Error("IndexNow key contents must match the key filename.");
+    }
+
+    return key;
   }
 
-  return key;
+  throw new Error(
+    `IndexNow key file not found. Looked in:\n${candidates
+      .map((p) => `  - ${p}`)
+      .join("\n")}` +
+      (lastMissing ? `\nLast attempted: ${lastMissing}` : ""),
+  );
 }
 
 export async function loadSitemapUrls(
