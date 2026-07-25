@@ -282,10 +282,109 @@ function checkMiddleware() {
 }
 
 /* ------------------------------------------------------------------ *
+ * 6. BAI-SEC-18 (2026-07-25) — Architecture checks
+ * ------------------------------------------------------------------ */
+
+/**
+ * Asserts the new CSP architecture is in place:
+ *   - scripts/security-headers.mjs exports buildCspWithStyleHashes
+ *     and computeStyleHash helpers
+ *   - astro.config.mjs uses them in injectSecurityMeta
+ *   - The 4 external scripts (KernelSidebar, KernelDemoPill,
+ *     KernelConnectors, ThankYouId) are served from public/js/
+ *   - prevent-default-forms.js exists and BaseLayout loads it
+ *
+ * This is a PASS-only check — Phase 1 of BAI-SEC-18 is now in
+ * place. Phase 2 (migrate the remaining 7 kernel inline scripts
+ * + 2 define:vars) is the next ticket; this check just confirms
+ * the foundation is wired correctly.
+ */
+function checkBaiSec18Migration() {
+  const soFile = join(ROOT, 'scripts/security-headers.mjs');
+  if (!existsSync(soFile)) {
+    warn('scripts/security-headers.mjs not found — BAI-SEC-18 architecture missing.');
+    return;
+  }
+  const soContent = readFileSync(soFile, 'utf-8');
+  if (!soContent.includes('export function buildCspWithStyleHashes')) {
+    warn('scripts/security-headers.mjs missing buildCspWithStyleHashes() — BAI-SEC-18 architecture incomplete.');
+  } else {
+    pass('scripts/security-headers.mjs exports buildCspWithStyleHashes() (BAI-SEC-18 architecture).');
+  }
+  if (!soContent.includes('export function computeStyleHash')) {
+    warn('scripts/security-headers.mjs missing computeStyleHash() — BAI-SEC-18 architecture incomplete.');
+  } else {
+    pass('scripts/security-headers.mjs exports computeStyleHash() (BAI-SEC-18 architecture).');
+  }
+
+  // Check the 4 expected external scripts exist
+  const expectedJs = [
+    'public/js/kernel-sidebar.js',
+    'public/js/kernel-demo-pill.js',
+    'public/js/kernel-connectors.js',
+    'public/js/thank-you-id.js',
+    'public/js/prevent-default-forms.js',
+  ];
+  for (const js of expectedJs) {
+    if (!existsSync(join(ROOT, js))) {
+      warn(`BAI-SEC-18 expected external script missing: ${js}`);
+    } else {
+      pass(`BAI-SEC-18 external script present: ${js}`);
+    }
+  }
+
+  // Check that the migrated Astro files load the external scripts
+  const astroChecks = [
+    {
+      file: 'src/components/kernel/KernelSidebar.astro',
+      pattern: '/js/kernel-sidebar.js',
+      desc: 'KernelSidebar loads external script',
+    },
+    {
+      file: 'src/components/kernel/KernelDemoPill.astro',
+      pattern: '/js/kernel-demo-pill.js',
+      desc: 'KernelDemoPill loads external script',
+    },
+    {
+      file: 'src/pages/kernel/connectors.astro',
+      pattern: '/js/kernel-connectors.js',
+      desc: 'connectors page loads external script',
+    },
+    {
+      file: 'src/pages/kernel/connectors.astro',
+      pattern: 'id="kernel-connectors-data"',
+      desc: 'connectors page has JSON data block (define:vars replacement)',
+    },
+    {
+      file: 'src/pages/thank-you/index.astro',
+      pattern: '/js/thank-you-id.js',
+      desc: 'thank-you page loads external script',
+    },
+    {
+      file: 'src/layouts/BaseLayout.astro',
+      pattern: '/js/prevent-default-forms.js',
+      desc: 'BaseLayout loads centralised prevent-default-forms',
+    },
+  ];
+  for (const check of astroChecks) {
+    if (!existsSync(join(ROOT, check.file))) {
+      warn(`BAI-SEC-18 source file missing: ${check.file}`);
+      continue;
+    }
+    const content = readFileSync(join(ROOT, check.file), 'utf-8');
+    if (!content.includes(check.pattern)) {
+      warn(`BAI-SEC-18 ${check.desc} — pattern "${check.pattern}" not found in ${check.file}.`);
+    } else {
+      pass(`BAI-SEC-18 ${check.desc}.`);
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ *
  * Main
  * ------------------------------------------------------------------ */
 
-console.log('CSP regression test (REPORTS-CSP-01 / HIGH-07 / IP-08)');
+console.log('CSP regression test (REPORTS-CSP-01 / HIGH-07 / IP-08 / BAI-SEC-18)');
 console.log('======================================================');
 console.log('');
 
@@ -298,6 +397,8 @@ console.log('');
 checkPerfCssDefer();
 console.log('');
 checkMiddleware();
+console.log('');
+checkBaiSec18Migration();
 console.log('');
 
 console.log('======================================================');

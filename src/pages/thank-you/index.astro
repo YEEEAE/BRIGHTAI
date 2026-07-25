@@ -74,23 +74,9 @@ const nextSteps = [
     </div>
   </section>
 
-  <script>
-    /* CRO audit 2026-07-18 (Prompt 4): if the URL carries ?id=<lead_id>,
-       surface it in the page so the user can reference it when they call
-       us. The lead_id itself is not PII (it's an opaque id from the form
-       sink), so it can be shown in cleartext. */
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
-      if (!id) return;
-      const el = document.querySelector<HTMLElement>('[data-thank-you-id]');
-      const val = document.querySelector<HTMLElement>('[data-thank-you-id-value]');
-      if (el && val) {
-        val.textContent = id;
-        el.hidden = false;
-      }
-    })();
-  </script>
+  <!-- BAI-SEC-18 (2026-07-25): inline script moved to public/js/thank-you-id.js
+       to enable strict-CSP (no 'unsafe-inline' on script-src). -->
+  <script type="module" src="/js/thank-you-id.js"></script>
 </ArabicLayout>
 
 <style>

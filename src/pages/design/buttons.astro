@@ -372,7 +372,7 @@ import ArabicLayout from '../../layouts/ArabicLayout.astro';
 
       <h3 class="buttons-page__subhead">Loading state in context (form submit)</h3>
       <div class="buttons-page__demo buttons-page__demo--narrow">
-        <form class="buttons-page__form" onsubmit="event.preventDefault();">
+        <form class="buttons-page__form" data-prevent-default>
           <div class="form-field">
             <label for="demo-name" class="form-label">الاسم <span aria-hidden="true">*</span></label>
             <input id="demo-name" type="text" class="input" required placeholder="اكتب اسمك" />

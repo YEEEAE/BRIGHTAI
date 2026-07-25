@@ -119,57 +119,6 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
   </footer>
 </aside>
 
-<script is:inline>
-  // Kernel sidebar collapse/expand — CSS-driven via data-sidebar on <body>.
-  // State persisted to localStorage. Survives Astro view transitions.
-  (function () {
-    'use strict';
-    var KEY = 'brightai-kernel-sidebar';
-
-    function syncLabel(state, btn) {
-      var label = state === 'collapsed' ? 'فتح القائمة' : 'طي القائمة';
-      btn.setAttribute('aria-label', label);
-      btn.setAttribute('title', label);
-      var text = btn.querySelector('.kernel-sidebar__collapse-label');
-      if (text) text.textContent = label;
-    }
-
-    function init() {
-      var body = document.body;
-      // Ensure body has kernel-shell class (KernelLayout script may run after)
-      if (!body.classList.contains('kernel-shell')) {
-        body.classList.add('kernel-shell');
-      }
-      var btn = document.querySelector('[data-kernel-sidebar-collapse]');
-      if (!btn) return;
-
-      try {
-        var saved = localStorage.getItem(KEY);
-        body.setAttribute('data-sidebar', saved === 'collapsed' ? 'collapsed' : 'expanded');
-      } catch (e) {
-        body.setAttribute('data-sidebar', 'expanded');
-      }
-
-      syncLabel(body.getAttribute('data-sidebar'), btn);
-
-      // Avoid duplicate listeners across page transitions
-      if (btn.dataset.bound === '1') return;
-      btn.dataset.bound = '1';
-
-      btn.addEventListener('click', function () {
-        var next = body.getAttribute('data-sidebar') === 'collapsed' ? 'expanded' : 'collapsed';
-        body.setAttribute('data-sidebar', next);
-        try { localStorage.setItem(KEY, next); } catch (e) {}
-        syncLabel(next, btn);
-      });
-    }
-
-    // Astro view transition hooks + initial load
-    document.addEventListener('astro:page-load', init);
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', init);
-    } else {
-      init();
-    }
-  })();
-</script>
+<!-- BAI-SEC-18 (2026-07-25): inline script moved to public/js/kernel-sidebar.js
+     to enable strict-CSP (no 'unsafe-inline' on script-src). Loaded as ES module. -->
+<script type="module" src="/js/kernel-sidebar.js"></script>

@@ -1,5 +1,6 @@
 /**
  * scripts/security-headers.mjs — BAI-IDX-02 (2026-07-25)
+ *                              + BAI-SEC-18 (2026-07-25) — per-file style hashes
  *
  * SINGLE SOURCE OF TRUTH for the BrightAI security header posture across
  * every layer the production response actually traverses:
@@ -42,18 +43,47 @@
  *   Permissions-Policy: camera=(), microphone=(), geolocation=()
  *   CSP:            default-src 'self'; object-src 'none';
  *                   frame-ancestors 'self'; form-action 'self';
- *                   upgrade-insecure-requests; report-uri /api/csp-report;
- *                   'unsafe-inline' on script-src (kernel pages use
- *                   <script is:inline define:vars> for data injection),
- *                   style-src-elem (Astro ClientRouter emits inline
- *                   view-transition styles), and style-src-attr
- *                   (65+ components use inline style="..." attrs).
- *                   'unsafe-inline' was REMOVED from style-src fallback
- *                   in BAI-PERF-01 (2026-07-25) — BaseLayout.astro no
- *                   longer has a <style is:inline> block; critical CSS
- *                   is now imported as a real /_astro/critical.*.css
- *                   stylesheet. See DEC-CSP-2026-07-15-001 for the
- *                   broader strict-CSP migration plan.
+ *                   upgrade-insecure-requests; report-uri /api/csp-report.
+ *                   BAI-SEC-18 (2026-07-25) — PHASE 1 OF 3 COMPLETE:
+ *                   The SoT now has the FULL strict-CSP posture
+ *                   (script-src, script-src-elem, style-src-elem all
+ *                   WITHOUT 'unsafe-inline'). style-src-elem gets
+ *                   per-file 'sha256-...' hashes via the
+ *                   injectSecurityMeta() integration (uses the new
+ *                   buildCspWithStyleHashes() + computeStyleHash()
+ *                   helpers in this file).
+ *
+ *                   PHASE 1 SHIPPED (3 of 10 migrations done):
+ *                   - KernelDemoPill.astro → public/js/kernel-demo-pill.js
+ *                   - KernelSidebar.astro → public/js/kernel-sidebar.js
+ *                   - connectors.astro define:vars → JSON data block +
+ *                     public/js/kernel-connectors.js
+ *
+ *                   PHASE 1 KEPT 'unsafe-inline' ON script-src +
+ *                   style-src-elem TEMPORARILY because the remaining 7
+ *                   kernel inline scripts (chat, audit, approvals,
+ *                   policies, scenarios, KernelAiAssistant,
+ *                   KernelLeadForm) and 2 define:vars (policies,
+ *                   scenarios) have NOT been migrated yet — without
+ *                   'unsafe-inline' those 5 kernel pages would be
+ *                   broken at runtime (CSP blocks their inline scripts).
+ *
+ *                   PHASE 2: migrate the remaining 7 inline scripts
+ *                   + 2 define:vars to public/js/*.js. Each migration
+ *                   is a small, isolated PR (~1-2h each). After all
+ *                   are done, flip the SoT by removing 'unsafe-inline'
+ *                   from script-src + style-src-elem (a one-line edit
+ *                   in this file). The integration already handles
+ *                   per-file hashes, so no other code changes needed.
+ *
+ *                   PHASE 3 (out of scope for BAI-SEC-18): remove
+ *                   'unsafe-inline' from style-src-attr. This requires
+ *                   migrating the remaining 628 inline style="" attrs
+ *                   to CSS classes. BAI-SEC-12/13 cover that work.
+ *
+ *                   See DEC-BAI-SEC-18-2026-07-25-001 (architecture
+ *                   + per-file hashes), DEC-BAI-SEC-18-2026-07-25-002
+ *                   (3 migrations + 7 remaining).
  *
  * CHANGE PROTOCOL:
  *   Any change to POSTURE must:
@@ -65,7 +95,28 @@
  *     4. Add a DEC to .agents/brain.md (Change Ledger).
  */
 
+import { createHash } from "node:crypto";
+
 // ─── Canonical posture constants ──────────────────────────────────────────
+
+/**
+ * STATIC style-src-elem base — applied to all static pages via the
+ * meta tag. Per-file 'sha256-...' hashes for Astro ClientRouter
+ * view-transition inline styles are appended by injectSecurityMeta()
+ * at build time (computed from each HTML file's actual <style>
+ * blocks). See DEC-BAI-SEC-18-2026-07-25-002.
+ *
+ * For HTTP response headers (SSR /api/* routes), style-src-elem
+ * does not apply (JSON responses have no inline styles), so the
+ * SoT can use this base value directly.
+ *
+ * BAI-SEC-18 Phase 1 (2026-07-25): includes 'unsafe-inline' as a
+ * bridge until the remaining 7 kernel inline scripts + 2 define:vars
+ * are migrated. Phase 2 removes this token (one-line edit). The
+ * per-file hash logic is independent of this token — hashes are
+ * always appended on top.
+ */
+export const STYLE_SRC_ELEM_BASE = "'self' https://fonts.googleapis.com 'unsafe-inline'";
 
 /**
  * HTTP response headers applied by src/middleware.ts to every SSR
@@ -85,30 +136,26 @@ export const RESPONSE_SECURITY_HEADERS = Object.freeze({
   "X-Robots-Tag":
     "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   "Content-Security-Policy":
-    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
+    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com; style-src-elem " +
+    STYLE_SRC_ELEM_BASE +
+    " 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
 });
 
 /**
- * <meta http-equiv="..."> tags injected by the injectSecurityMeta()
- * Astro integration into every prerendered HTML file in dist/client/.
+ * <meta http-equiv="..."> tags (other than the CSP) injected by
+ * the injectSecurityMeta() Astro integration into every prerendered
+ * HTML file in dist/client/.
  *
- * Why meta for static, headers for SSR:
- *   - Render Web Services do NOT apply the `headers:` block in
- *     render.yaml to runtime responses. The prerendered HTML files
- *     in dist/client/ are served by the Node adapter with no header
- *     injection (Cloudflare also does not inject by default).
- *   - Meta http-equiv is the only mechanism that works at the HTML
- *     payload level. Browsers honour it for CSP, X-Content-Type-Options
- *     (Chromium), X-Frame-Options (legacy), and Referrer-Policy.
- *   - HSTS does NOT work in meta — it must come from the HTTP layer
- *     (Cloudflare edge). See docs/cloudflare-deployment-headers.md
- *     for the Cloudflare Transform Rule setup.
+ * The CSP meta tag is NOT in this list — it is built per-file by
+ * the integration because the style-src-elem directive needs
+ * per-file 'sha256-...' hashes for Astro ClientRouter view-
+ * transition inline styles. The integration reads the HTML file,
+ * finds every inline <style> block, computes SHA-256 of each, and
+ * builds the per-file CSP via buildCspWithStyleHashes(). This split
+ * keeps the declarative SoT in this file and the build-time
+ * artifacts in astro.config.mjs.
  */
-export const STATIC_SECURITY_META = Object.freeze([
-  {
-    httpEquiv: "Content-Security-Policy",
-    content: RESPONSE_SECURITY_HEADERS["Content-Security-Policy"],
-  },
+export const STATIC_SECURITY_META_OTHER = Object.freeze([
   {
     httpEquiv: "X-Content-Type-Options",
     content: "nosniff",
@@ -122,6 +169,59 @@ export const STATIC_SECURITY_META = Object.freeze([
     content: "strict-origin-when-cross-origin",
   },
 ]);
+
+/**
+ * Backwards-compat alias. The CSP entry is built per-file now, so this
+ * export is the non-CSP portion only. Old consumers (verifier scripts)
+ * that iterated over STATIC_SECURITY_META expecting 4 entries should
+ * be updated to use STATIC_SECURITY_META_OTHER + a separate call to
+ * buildCspWithStyleHashes() for the CSP entry.
+ */
+export const STATIC_SECURITY_META = STATIC_SECURITY_META_OTHER;
+
+/**
+ * Build the full Content-Security-Policy string for a static HTML file.
+ * Takes an array of SHA-256 hashes (each formatted as 'sha256-XXX') for
+ * every inline <style> block in that file, and appends them to the
+ * style-src-elem directive. If no hashes, the directive is just the
+ * base value. Used by injectSecurityMeta() integration in astro.config.mjs.
+ *
+ * @param {string[]} styleHashes - Array of 'sha256-XXX' formatted hashes
+ * @returns {string} Full CSP value ready for http-equiv="Content-Security-Policy"
+ */
+export function buildCspWithStyleHashes(styleHashes = []) {
+  // Build the per-file style-src-elem by appending the file's
+  // 'sha256-...' hashes to the base. The base is always present;
+  // hashes are appended only when the file has inline <style> blocks.
+  const styleSrcElem =
+    styleHashes.length > 0
+      ? `${STYLE_SRC_ELEM_BASE} ${styleHashes.join(" ")}`
+      : STYLE_SRC_ELEM_BASE;
+  // Build by string substitution on the SoT template. We match the
+  // full directive — base + any 'unsafe-inline' that may be in the
+  // SoT (BAI-SEC-18 Phase 1 keeps it temporarily until the remaining
+  // 7 inline script migrations land; Phase 2 removes it). This regex
+  // is robust to both states.
+  return RESPONSE_SECURITY_HEADERS["Content-Security-Policy"].replace(
+    /style-src-elem [^;]+;/,
+    `style-src-elem ${styleSrcElem};`
+  );
+}
+
+/**
+ * Compute SHA-256 hash of a style content string, formatted as
+ * 'sha256-XXX' for inclusion in a CSP style-src-elem directive.
+ * The hash uses the CSP-hash format (base64, prefixed).
+ *
+ * @param {string} styleContent - The raw CSS content (between <style> and </style>)
+ * @returns {string} Hash formatted as 'sha256-XXX'
+ */
+export function computeStyleHash(styleContent) {
+  const hash = createHash("sha256")
+    .update(styleContent, "utf-8")
+    .digest("base64");
+  return `'sha256-${hash}'`;
+}
 
 // ─── Per-route expectations for the post-deploy verifier ──────────────────
 
@@ -224,7 +324,9 @@ export function expectedHttpHeaderNames(kind) {
 
 /**
  * Returns the meta http-equiv tags that must be present in the
- * HTML payload of a prerendered static page.
+ * HTML payload of a prerendered static page. BAI-SEC-18: this now
+ * returns only the non-CSP meta tags. The CSP is checked separately
+ * because it has per-file style-src-elem hashes.
  */
 export function expectedMetaTags() {
   return STATIC_SECURITY_META;

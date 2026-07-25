@@ -24,25 +24,6 @@ const { label = 'بيانات تجريبية', pressed = true } = Astro.props;
   <span>{label}</span>
 </button>
 
-<script is:inline>
-  // Demo pill click handler — emits custom event + toggles class.
-  // Pages can listen for 'kernel:demo-toggle' to refresh data.
-  (function () {
-    'use strict';
-    function init() {
-      document.querySelectorAll('[data-kernel-demo-pill]').forEach(function (pill) {
-        if (pill.dataset.bound === '1') return;
-        pill.dataset.bound = '1';
-        pill.addEventListener('click', function () {
-          var isPressed = pill.getAttribute('aria-pressed') === 'true';
-          var next = !isPressed;
-          pill.setAttribute('aria-pressed', next ? 'true' : 'false');
-          pill.classList.toggle('kernel-demo-pill--inactive', !next);
-          document.dispatchEvent(new CustomEvent('kernel:demo-toggle', { detail: { active: next } }));
-        });
-      });
-    }
-    document.addEventListener('astro:page-load', init);
-    if (document.readyState !== 'loading') init();
-  })();
-</script>
+<!-- BAI-SEC-18 (2026-07-25): inline script moved to public/js/kernel-demo-pill.js
+     to enable strict-CSP (no 'unsafe-inline' on script-src). Loaded as ES module. -->
+<script type="module" src="/js/kernel-demo-pill.js"></script>

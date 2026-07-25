@@ -1882,3 +1882,41 @@ Stage Summary:
     3. Render auto-redeploy → IndexNow trigger
     4. `pnpm run verify:live:headers` بعد deploy
     5. افتح BAI-SEC-12 لـ inline-style batch 2
+
+---
+
+Task ID: BAI-DEPLOY-11-VERIFY
+Agent: BrightAI Workspace Agent (Mavis)
+Task: P1 — verify build:patch-entry is wired + x-brightai-build header appears on live
+Started: 2026-07-25T07:53:00+03:00
+Mode: Senior
+
+Work Log:
+- 07:53 — قرأت scripts/patch-server-entry.mjs كاملاً (402 سطر). لقيت كل المنطق: deny-list + BAI-DEPLOY-11 build-info + BAI-SEC-10 markers. PATCH_MARKERS = ['BAI-SEC-10:deny-list', 'BAI-DEPLOY-11:build-info'].
+- 07:53 — لقيت dist/server/_build-info.mjs فيه BUILD_COMMIT=19ee3cbe (قديم، من build سابق). live site last-modified=2026-07-24T19:43:14Z (أقدم من HEAD الحالي).
+- 07:54 — `pnpm run build:patch-entry` → نجح. stripped 1 prior marker block + added current. dist _build-info.mjs الحين = 08b9848e6510 (يطابق HEAD المحلي).
+- 07:54 — chunk موجود marker BAI-SEC-10:deny-list + setHeader('x-brightai-build', BUILD_COMMIT) في السطر 11448. الـ patch idempotent ✅.
+- 07:55 — `pnpm run verify:deployment-surface` محلياً → 57 passed, 0 failed (يشمل /api/health/ → 200 و / و deny-list 404). preDeployCommand ما يمنع النشر.
+- 07:55 — `pnpm run verify:post-deploy --skip-content` → فشل:
+    - x-brightai-build header على /:  ❌ غائب
+    - /api/health/ JSON commit:       ❌ HTTP 404
+  السبب: live site يخدم deploy من 2026-07-24T19:43:14Z (قبل BAI-DEPLOY-11). cf-cache-status: HIT.
+- 07:56 — git log --oneline: patch script في commit 54931de1 (BAI-PROC-13). build:patch-entry wiring في 19ee3cbe. كله على origin/main (local متزامن).
+- 07:56 — ما في deploy script في package.json، ما في RENDER_API_TOKEN، ما في CLOUDFLARE_API_TOKEN.
+
+Stage Summary:
+- **النتيجة المحلية**: PASS. build:patch-entry يشتغل، dist/ فيه PATCH_MARKERS + x-brightai-build setHeader call، verify:deployment-surface 57/57.
+- **النتيجة الحيّة**: BLOCKED. live site يخدم deploy من 19:43 UTC أمس (قبل BAI-DEPLOY-11). الـ patch في الكود لكن ما انتقل للإنتاج.
+- **الـ root cause**: Render auto-deploy ما اشتغل بعد الـ commits الأخيرة (19ee3cbe, c52de2b0, 08b9848e كلها في origin لكن ما في deploy جديد).
+- **الـ AC** ("curl -I | grep x-brightai-build يرجع SHA") → ما تحقق لأن live is pre-patch build. يحتاج user action.
+
+المخاطر المتبقية:
+- 1. Render auto-deploy ممكن يكون معطّل في dashboard (يحتاج user يفحص).
+- 2. حتى لو Render نشر، Cloudflare cache يحتفظ بالـ responses القديمة → cf-cache-status: HIT لحد ما يصير purge.
+- 3. لا CLOUDFLARE_API_TOKEN + CLOUDFLARE_ZONE_ID متاحين في env → ما نقدر نسوي purge تلقائي.
+
+التوصية للـ user (P1 — يعتمد على BAI-DEPLOY-12):
+1. افتح Render dashboard → brightai-site service → "Manual Deploy" → اختر commit 08b9848e.
+2. راقب deploy logs. المفروض preDeployCommand: `pnpm run verify:deployment-surface` ينجح 57/57 (مُختبر محلياً).
+3. بعد deploy success: `pnpm run cloudflare:purge` (يحتاج CLOUDFLARE_API_TOKEN + CLOUDFLARE_ZONE_ID في env).
+4. `pnpm run verify:post-deploy` → الـ AC يت تحقق (x-brightai-build يرجع 08b9848e6510).

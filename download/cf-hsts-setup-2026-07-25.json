@@ -1,0 +1,18 @@
+{
+  "action": "created",
+  "rulesetId": "f79b8e31941b4ae7a947f40f3d19146a",
+  "totalRules": 1,
+  "desiredRule": {
+    "expression": "true",
+    "description": "BrightAI HSTS preload (BAI-SEC-11)",
+    "action": "rewrite",
+    "action_parameters": {
+      "headers": {
+        "Strict-Transport-Security": {
+          "operation": "set",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
+      }
+    }
+  }
+}

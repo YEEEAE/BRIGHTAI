@@ -315,6 +315,14 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        4 scripts (KI-SYNTAX-2026-07-18-001). */}
   <script type="module" src="/js/analytics.js" nonce={Astro.locals.cspNonce}></script>
 
+  {/* BAI-SEC-18 (2026-07-25): centralised form submit prevention.
+       Replaces the `onsubmit="return false;"` inline event handlers
+       that required `script-src-attr 'unsafe-inline'` in CSP. Any
+       <form data-prevent-default> gets its submit event prevented
+       automatically. Loaded first so the listener is installed
+       before any form-using component mounts via astro:page-load. */}
+  <script type="module" src="/js/prevent-default-forms.js"></script>
+
   {/* Global centralized scroll-reveal observer — activates the unified motion system
       (DEC-2026-Motion-001) across every page. Replaces 7 per-page duplicate
       IntersectionObservers with a single observer that handles every reveal-able element.

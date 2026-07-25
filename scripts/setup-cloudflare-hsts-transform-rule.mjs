@@ -113,16 +113,33 @@ function buildDesiredRule() {
  * Read the current entrypoint ruleset for the http_response_headers_transform
  * phase. Returns { rulesetId, rules } where rulesetId is null if the
  * entrypoint has not been initialised yet.
+ *
+ * BAI-SEC-11 fix (2026-07-25): Cloudflare returns HTTP 404 + error code
+ * 10003 ("could not find entrypoint ruleset in the http_response_headers_transform
+ * phase") when no rules have ever been created for this phase on the zone.
+ * This is the normal "fresh zone" state on brightai.site. The PUT path
+ * creates the entrypoint atomically with the first rule, so we treat
+ * this specific 404 as "no existing rules" and return defaults instead
+ * of aborting. Any other HTTP error is re-thrown.
  */
 async function readEntrypoint() {
-  const json = await cfFetch(
-    "GET",
-    `/zones/${ZONE_ID}/rulesets/phases/http_response_headers_transform/entrypoint`
-  );
-  return {
-    rulesetId: json.result?.id ?? null,
-    rules: json.result?.rules ?? [],
-  };
+  try {
+    const json = await cfFetch(
+      "GET",
+      `/zones/${ZONE_ID}/rulesets/phases/http_response_headers_transform/entrypoint`
+    );
+    return {
+      rulesetId: json.result?.id ?? null,
+      rules: json.result?.rules ?? [],
+    };
+  } catch (e) {
+    // Match the exact error pattern Cloudflare emits for missing entrypoint.
+    // cfFetch formats errors as: "GET /path → HTTP 404: 10003 could not find..."
+    if (e.message.includes("HTTP 404") && e.message.includes("10003")) {
+      return { rulesetId: null, rules: [] };
+    }
+    throw e;
+  }
 }
 
 /**
