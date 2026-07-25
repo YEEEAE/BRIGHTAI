@@ -120,7 +120,7 @@ export const solutions: SolutionData[] = [
     shortDesc:'المنصة الشاملة اللي تجمع كل الحلول. رؤية مركزية لكل استخدامات AI، السياسات، والمخاطر.',
     whenNeeded:'لو عندك أكثر من ٢ حالة استخدام AI.',
     related:['ai-firewall','ai-audit-trail','human-approval-layer','ai-evidence-file'],
-    docs:['/docs/ai-governance-platform/'], blog:['/blog/ai-governance/','/blog/what-is-ai-governance-saudi-companies/','/blog/best-ai-governance-platforms-2026/'], kernel:['/kernel/'],
+    docs:['/docs/ai-governance-platform/'], blog:['/blog/ai-governance/','/blog/what-is-ai-governance-saudi-companies/','/blog/best-ai-governance-platforms-2026/','/blog/sdaia-generative-ai-guidelines-practical-compliance/'], kernel:['/kernel/'],
     content: {
       lead: [
         'منصة حوكمة الذكاء الاصطناعي من BrightAI هي البنية التحتية المركزية لإدارة استخدام AI داخل المؤسسات السعودية. تساعدك على رصد كل أداة AI ومستخدم وقرار في مكان واحد، وتطبيق سياسات الاستخدام تلقائياً، مع التوافق الكامل مع PDPL وNCA ECC وISO/IEC 42001.',

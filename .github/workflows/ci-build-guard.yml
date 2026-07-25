@@ -20,6 +20,7 @@
 #   - seo-gates
 #   - security-scan (HIGH-08 — OSV lockfile scan + allowlist validation)
 #   - hreflang-live (BAI-IDX-14 — production drift detection, runs on push + schedule + dispatch)
+#   - links-dist (BAI-LINK-06 — internal link audit on dist/)
 #   - ci-success (must be green to merge)
 #
 # Edge cases handled:
@@ -300,6 +301,10 @@ jobs:
           restore-keys: |
             pnpm-${{ runner.os }}-
       - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Sync solution FAQ schema
+        run: pnpm run schema:solutions:sync
+      - name: Sync docs HowTo schema
+        run: pnpm run schema:docs:sync
       - name: Build Astro marketing site
         run: pnpm run build
         env:
@@ -379,6 +384,10 @@ jobs:
           restore-keys: |
             pnpm-${{ runner.os }}-
       - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Sync solution FAQ schema
+        run: pnpm run schema:solutions:sync
+      - name: Sync docs HowTo schema
+        run: pnpm run schema:docs:sync
       - run: pnpm run build
         env:
           NODE_ENV: production
@@ -390,6 +399,37 @@ jobs:
         run: pnpm run internal-links:audit
       - name: Redirects check
         run: pnpm run redirects:check
+
+  # ────────────────────────────────────────────────────────────────
+  # Job 8: Internal Links Audit (BAI-LINK-06)
+  # Runs linkinator on the built dist/ output to catch broken internal links.
+  # Uses the existing `links:dist` script from package.json.
+  # ────────────────────────────────────────────────────────────────
+  links-dist:
+    name: Internal Links Audit (dist/)
+    needs: build-astro
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { run_install: false }
+      - uses: actions/setup-node@v4
+        with: { node-version-file: '.node-version' }
+      - uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-${{ runner.os }}-
+      - run: pnpm install --frozen-lockfile --prefer-offline
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-astro
+          path: dist
+      - name: Run linkinator on dist/
+        run: pnpm run links:dist
 
   # ────────────────────────────────────────────────────────────────
   # Job 9: Dependency Security Scan (HIGH-08 / IP-09)
@@ -656,6 +696,7 @@ jobs:
       - seo-gates
       - security-scan
       - hreflang-live
+      - links-dist
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 1
@@ -674,11 +715,12 @@ jobs:
           echo "| seo-gates | ${{ needs.seo-gates.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| security-scan | ${{ needs.security-scan.result }} |" >> "$GITHUB_STEP_SUMMARY"
           echo "| hreflang-live | ${{ needs.hreflang-live.result }} |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| links-dist | ${{ needs.links-dist.result }} |" >> "$GITHUB_STEP_SUMMARY"
 
           # Fail if any required job did not succeed.
           # Direct GitHub Actions expressions (no bash loop interpolation).
           failed=0
-          for job in typecheck lint test-all build-astro build-dashboard seo-gates security-scan hreflang-live; do
+          for job in typecheck lint test-all build-astro build-dashboard seo-gates security-scan hreflang-live links-dist; do
             case "$job" in
               typecheck)       r="${{ needs.typecheck.result }}" ;;
               lint)            r="${{ needs.lint.result }}" ;;
@@ -688,6 +730,7 @@ jobs:
               seo-gates)       r="${{ needs.seo-gates.result }}" ;;
               security-scan)   r="${{ needs.security-scan.result }}" ;;
               hreflang-live)   r="${{ needs.hreflang-live.result }}" ;;
+              links-dist)      r="${{ needs.links-dist.result }}" ;;
             esac
             if [ "$r" != "success" ] && [ "$r" != "skipped" ]; then
               echo "❌ CI FAILED at job: $job (result: $r)"
