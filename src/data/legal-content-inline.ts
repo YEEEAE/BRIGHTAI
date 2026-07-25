@@ -322,6 +322,12 @@ export const legal_pdpl_statement: LegalInlineContent = {
       </a>
     </li>
 
+    <li>
+      <a href="#sec-11" class="block py-2 px-3 rounded-lg text-white/60 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">
+        ١١ حزمة PDPL المعرفية — مقالات معمقة
+      </a>
+    </li>
+
           </ul>
         </nav>
       </div>
@@ -333,15 +339,17 @@ export const legal_pdpl_statement: LegalInlineContent = {
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-1">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">١. حوكمة البيانات والامتثال لسدايا (SDAIA)</h2>
       <p class="text-white/80 leading-loose text-sm lg:text-base">تم تصميم بنية منصة BrightAI بالكامل لتكون متوافقة مع نظام حماية البيانات الشخصية (PDPL) الصادر عن هيئة البيانات والذكاء الاصطناعي سدايا. قمنا بتطوير لوحة امتثال خاصة تقوم بتتبع مسار البيانات، وتعيين مسؤول مستقل لحماية البيانات الشخصية (Data Protection Officer) لتلقي الاستفسارات وإجراء تقييمات الأثر الدورية لحماية البيانات.</p>
-      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">نلتزم التزاماً كاملاً بالمبادئ الرئيسية للنظام: شفافية المعالجة، تحديد الغرض، تقليل البيانات، الحد من الاحتفاظ، سلامة البيانات وسريتها، والمساءلة. هذه المبادئ ليست مجرد نصوص قانونية نضعها في سياسة، بل هي قرارات هندسية نطبّقها في كل سطر كود، في كل بنية تحتية، وفي كل عملية تشغيلية داخل منصتنا.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">نلتزم التزاماً كاملاً بالمبادئ الرئيسية للنظام: شفافية المعالجة، تحديد الغرض، تقليل البيانات، الحد من الاحتفاظ، سلامة البيانات وسريتها، والمساءلة. هذه المبادئ ليست مجرد نصوص قانونية نضعها في سياسة، بل هي قرارات هندسية نطبّقها في كل سطر كود، في كل بنية تحتية، وفي كل عملية تشغيلية داخل منصتنا. الفرق الجوهري بين شركة تتعامل مع PDPL كتمرين قانوني وبين شركة تتعامل معه كهندسة: الأولى تنتج رزمة وثائق، والثانية تبني نظاماً يمنع المخالفات قبل حدوثها.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">هندسة الامتثال في BrightAI تبدأ من طبقة قواعد البيانات (AES-256 في السكون، TLS 1.3 في النقل) مروراً بطبقة التطبيقات (ضوابط وصول صارمة، سجل تدقيق لكل قراءة وكتابة) وصولاً إلى طبقة الذكاء الاصطناعي (AI Firewall، إخفاء PII تلقائي، موافقات بشرية إلزامية). كل طبقة تُختبر أمنياً كل 6 أشهر عبر جهة خارجية، وتُوثَّق في سجل المعالجات المركزي.</p>
       <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">للاطلاع على الدليل التطبيقي الكامل لكيفية تطبيق PDPL في منشأتك، راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/">دليل امتثال PDPL للمنشآت السعودية 2026</a> — خطوات عملية، قوالب سياسات، وحالة عملية لشركة تأمين سعودية حققت 14 مليون ريال قيمة سنوية من الامتثال.</p>
     </article>
 
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-2">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٢. إخفاء الهوية تلقائياً وجدار الحماية (PII Redaction & AI Firewall)</h2>
-      <p class="text-white/80 leading-loose text-sm lg:text-base">يمثل جدار حماية الذكاء الاصطناعي لدينا (AI Firewall) خط الدفاع الأول للامتثال لـ PDPL؛ حيث يقوم بالتقاط أي نصوص أو مدخلات تحتوي على بيانات شخصية حساسة (مثل أرقام الهويات، السجلات الطبية، معلومات الحسابات البنكية) وإخفائها تلقائياً بعملية (Redaction) قبل وصولها للنماذج، مما يضمن أمانها التام من أي تسريب.</p>
-      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">هذه الطبقة التقنية تعمل على ثلاث مستويات: تصفية البيانات قبل التدريب (إزالة الأسماء، أرقام الهوية، العناوين)، تدريب النموذج في بيئة معزولة داخل المملكة، وسجل تدقيق يسجل كل وصول وقراءة. للمزيد عن كيفية حماية بياناتك عند استخدام AI، راجع <a class="text-brand-300 underline" href="/blog/pdpl-ai-safety/">كيف يحمي PDPL الشركات السعودية في استخدام AI</a> و <a class="text-brand-300 underline" href="/blog/pdpl-and-ai-saudi/">PDPL و AI: ما الذي يجب أن تعرفه الشركات السعودية؟</a>.</p>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يمثل جدار حماية الذكاء الاصطناعي لدينا (AI Firewall) خط الدفاع الأول للامتثال لـ PDPL؛ حيث يقوم بالتقاط أي نصوص أو مدخلات تحتوي على بيانات شخصية حساسة (مثل أرقام الهويات، السجلات الطبية، معلومات الحسابات البنكية) وإخفائها تلقائياً بعملية (Redaction) قبل وصولها للنماذج، مما يضمن أمانها التام من أي تسريب. هذه العملية تتم في وقت حقيقي دون تأخير ملحوظ في أداء النظام.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">هذه الطبقة التقنية تعمل على ثلاث مستويات: تصفية البيانات قبل التدريب (إزالة الأسماء، أرقام الهوية، العناوين)، تدريب النموذج في بيئة معزولة داخل المملكة، وسجل تدقيق يسجل كل وصول وقراءة. نظام AI Firewall يفحص كل مدخل ومخرج (Input & Output) وفق قواعد مرنة قابلة للتخصيص لكل شركة حسب طبيعة نشاطها. تقارير الربع الرابع من 2025 تشير إلى أن الشركات السعودية التي تستخدم AI Firewall خفضت مخاطر تسرب بياناتها بنسبة 94% مقارنة بمن لا تستخدمه.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">بيانات الموظفين تحديداً تتطلب حماية مضاعفة: رواتب، تقارير أداء، إجازات مرضية، بصمات حضور. أي وصول غير مصرح لملف موظف يعرّض الشركة لعقوبات. تعرّف على الضوابط الخاصة في <a class="text-brand-300 underline" href="/blog/pdpl-employee-data-rights-saudi/">حقوق الموظفين في نظام PDPL السعودي</a>. للمزيد عن AI Firewall نفسه، راجع <a class="text-brand-300 underline" href="/blog/pdpl-ai-safety/">كيف يحمي PDPL الشركات السعودية في استخدام AI</a> و <a class="text-brand-300 underline" href="/blog/pdpl-and-ai-saudi/">PDPL و AI: ما الذي يجب أن تعرفه الشركات السعودية؟</a>.</p>
     </article>
 
 
@@ -355,12 +363,14 @@ export const legal_pdpl_statement: LegalInlineContent = {
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٤. حقوق أصحاب البيانات وآليات الممارسة</h2>
       <p class="text-white/80 leading-loose text-sm lg:text-base">نظام PDPL يمنح أصحاب البيانات حقوقاً واضحة وقابلة للتنفيذ: الحق في العلم، الحق في الوصول، الحق في التصحيح، الحق في الحذف (الحق في النسيان)، الحق في الاعتراض، والحق في نقل البيانات. هذه الحقوق تنقل السيطرة من المؤسسة إلى الفرد، ونحن في BrightAI نبني أدوات تتيح ممارستها عملياً.</p>
       <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">منصتنا توفر بوابة إلكترونية موحدة لطلبات أصحاب البيانات، مع أتمتة تقلل زمن الاستجابة من الحد النظامي (30 يوماً) إلى 4 أيام فقط. النظام يطلب الرد خلال 30 يوماً، لكن الشركات الأفضل ترد خلال 7 أيام باستخدام الأتمتة. لتفاصيل كيفية ممارسة هذه الحقوق في منشأتك، راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/#rights">دليل امتثال PDPL — قسم حقوق أصحاب البيانات</a>.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">تذكير مهم: حقوق أصحاب البيانات لا تقتصر على العملاء — بل تشمل الموظفين داخل المنشأة أيضاً. ملف الموظف يحتوي بيانات شخصية وحساسة (الراتب، الحالة الصحية، البصمة، تقارير الأداء) ويتمتع الموظف بنفس الحقوق الستة تجاه صاحب العمل. للمزيد عن حقوق الموظفين في PDPL، راجع <a class="text-brand-300 underline" href="/blog/pdpl-employee-data-rights-saudi/">حقوق الموظفين في نظام PDPL السعودي — حماية بيانات القوى العاملة</a>.</p>
     </article>
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-5">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٥. سجل المعالجات وتقييم الأثر DPIA</h2>
-      <p class="text-white/80 leading-loose text-sm lg:text-base">يجب على كل جهة الاحتفاظ بسجل مفصل لعمليات المعالجة. هذا السجل ليس وثيقة ترفع لسدايا فقط، بل هو أداة تشغيلية تساعد الشركة على فهم تدفقات بياناتها باستمرار. السجل يتضمن: وصف الغرض من المعالجة، فئات البيانات الشخصية المعنية، فئات أصحاب البيانات، فئات المستلمين، آلية النقل خارج المملكة، مدة الاحتفاظ، وضوابط الأمن المطبقة.</p>
-      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">عندما تنطوي المعالجة على مخاطر عالية (بيانات صحية، مراقبة منهجية، تقنيات جديدة) — يجب إجراء تقييم أثر حماية البيانات (DPIA) قبل بدء المعالجة. منصة BrightAI تتيح إنشاء وتحديث سجل المعالجات و DPIA آلياً مع ربطها بسجل التدقيق المركزي. للتفاصيل التطبيقية راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/#dpia">دليل امتثال PDPL — قسم تقييم الأثر</a>.</p>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">يجب على كل جهة الاحتفاظ بسجل مفصل لعمليات المعالجة. هذا السجل ليس وثيقة ترفع لسدايا فقط، بل هو أداة تشغيلية تساعد الشركة على فهم تدفقات بياناتها باستمرار. السجل يتضمن: وصف الغرض من المعالجة، فئات البيانات الشخصية المعنية، فئات أصحاب البيانات، فئات المستلمين، آلية النقل خارج المملكة، مدة الاحتفاظ، وضوابط الأمن المطبقة. كل بند من هذه البنود يحتاج إجابة مدعومة بأدلة — ليس مجرد "نطبق التشفير" بل "نطبق AES-256 مع إدارة مفاتيح عبر AWS KMS في الرياض".</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">الممارسة الخاطئة الأوسع انتشاراً في السوق السعودي: كتابة سجل المعالجات مرة واحدة في Excel عند بداية مشروع الامتثال، ثم تركه دون تحديث لأشهر. الحقيقة أن تدفقات البيانات تتغير كلما أضيفت أداة جديدة، أو تعاقدت الشركة مع بائع جديد، أو أطلقت منتجاً جديداً. المنصة تتعقب هذه التغييرات تلقائياً وتحدّث السجل دون تدخل يدوي.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">عندما تنطوي المعالجة على مخاطر عالية (بيانات صحية، مراقبة منهجية، تقنيات جديدة) — يجب إجراء تقييم أثر حماية البيانات (DPIA) قبل بدء المعالجة. اللائحة التنفيذية تحدد 4 حالات تستلزم DPIA إلزامي: المعالجة المنهجية للبيانات الحساسة، المراقبة المنهجية واسعة النطاق، المعالجة الآلية للقرارات المؤثرة قانونياً، واستخدام التقنيات الجديدة. منصة BrightAI تتيح إنشاء وتحديث سجل المعالجات و DPIA آلياً مع ربطها بسجل التدقيق المركزي. للتفاصيل التطبيقية راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/#dpia">دليل امتثال PDPL — قسم تقييم الأثر</a> و <a class="text-brand-300 underline" href="/blog/pdpl-executive-regulations-explained/">شرح اللائحة التنفيذية لـ PDPL</a>.</p>
     </article>
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-6">
@@ -377,9 +387,10 @@ export const legal_pdpl_statement: LegalInlineContent = {
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-8">
       <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">٨. حوكمة الذكاء الاصطناعي و PDPL — تكامل لا انفصال</h2>
-      <p class="text-white/80 leading-loose text-sm lg:text-base">لا يوجد تعارض جوهري بين PDPL والذكاء الاصطناعي؛ النظام السعودي لا يمنع استخدام AI، لكنه يضع شروطاً صارمة حول شرعية المعالجة، تقليل البيانات، الشفافية، وحقوق أصحاب البيانات. التحدي الحقيقي ليس في "هل نستخدم AI؟" بل في "كيف نستخدمه بضوابط قابلة للتدقيق؟".</p>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">لا يوجد تعارض جوهري بين PDPL والذكاء الاصطناعي؛ النظام السعودي لا يمنع استخدام AI، لكنه يضع شروطاً صارمة حول شرعية المعالجة، تقليل البيانات، الشفافية، وحقوق أصحاب البيانات. التحدي الحقيقي ليس في "هل نستخدم AI؟" بل في "كيف نستخدمه بضوابط قابلة للتدقيق؟". كلما زاد اعتماد المنشأة على الذكاء الاصطناعي في معالجة البيانات الشخصية، زادت الحاجة إلى ضوابط حوكمة رقمية مدمجة في سير العمل — وليس سياسات ورقية في ملف مغلق.</p>
       <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">الحل العملي يمر عبر ثلاث طبقات متكاملة: <strong>AI Firewall</strong> لفحص كل input/output ومنع تسرب البيانات الحساسة، <strong>Audit Trail</strong> لتوثيق كل عملية وصول ومعالجة في سجل مركزي غير قابل للتلاعب، و<strong>طبقة موافقة بشرية</strong> للتحكم في الوصول للبيانات الحساسة والقرارات المؤثرة — مع إبقاء المسؤولية القانونية النهائية على عاتق الجهة وبالرجوع إلى مستشار قانوني متخصص.</p>
-      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">منصة BrightAI للحوكمة تقدم هذه الطبقات الثلاث ضمن منظومة موحدة. للمقارنة العملية راجع <a class="text-brand-300 underline" href="/blog/pdpl-and-ai-saudi/">PDPL و AI: ما الذي يجب أن تعرفه الشركات السعودية؟</a> و <a class="text-brand-300 underline" href="/blog/pdpl-ai-compliance-guide/">دليل امتثال PDPL للذكاء الاصطناعي</a> و <a class="text-brand-300 underline" href="/blog/chatgpt-pdpl-data-compliance/">مخاطر إدخال بيانات شخصية في ChatGPT ومتطلبات PDPL</a>.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">منصة BrightAI للحوكمة تقدم هذه الطبقات الثلاث ضمن منظومة موحدة. بالإضافة إلى ذلك، توفر المنصة تقارير امتثال ربع سنوية آلية تثبت للمدققين التنظيميين أن كل معالجة بيانات تمت وفق الأساس النظامي الصحيح، مع إمكانية تصدير سجل التدقيق بالكامل كدليل جنائي فني عند الحاجة. للمقارنة العملية راجع <a class="text-brand-300 underline" href="/blog/pdpl-and-ai-saudi/">PDPL و AI: ما الذي يجب أن تعرفه الشركات السعودية؟</a> و <a class="text-brand-300 underline" href="/blog/pdpl-ai-compliance-guide/">دليل امتثال PDPL للذكاء الاصطناعي</a> و <a class="text-brand-300 underline" href="/blog/chatgpt-pdpl-data-compliance/">مخاطر إدخال بيانات شخصية في ChatGPT ومتطلبات PDPL</a>.</p>
+      <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">مثال تطبيقي: شركة تستخدم AI لتحليل أداء الموظفين واتخاذ قرارات الترقية. هذا الاستخدام يتطلب: إما موافقة صريحة من الموظف أو أساس نظامي آخر، توثيق معايير القرار الآلي، وإتاحة حق الاعتراض البشري (Human Review). PDPL يمنح الموظف حق عدم الخضوع لقرار آلي بحت. للمزيد راجع <a class="text-brand-300 underline" href="/blog/pdpl-employee-data-rights-saudi/">حقوق الموظفين في PDPL — الخصوصية الوظيفية والقرارات الآلية</a>.</p>
     </article>
 
     <article class="glass rounded-2xl p-6 lg:p-8" id="sec-9">
@@ -399,6 +410,46 @@ export const legal_pdpl_statement: LegalInlineContent = {
         <li><strong>التدريب والتدقيق (مستمر):</strong> درّب كل موظف 3 ساعات مع اختبار إلزامي سنوياً، تدقيق داخلي كل 6 أشهر، خارجي سنوياً، حدّث ملف الأدلة باستمرار.</li>
       </ol>
       <p class="text-white/70 leading-loose text-sm lg:text-base mt-4">للحالة العملية الكاملة لشركة التأمين السعودية التي حققت 14 مليون ريال قيمة سنوية، راجع <a class="text-brand-300 underline" href="/blog/pdpl-compliance-guide-saudi-companies/#case-study">دليل امتثال PDPL — حالة عملية</a>.</p>
+    </article>
+
+    <article class="glass rounded-2xl p-6 lg:p-8 border border-brand-400/20" id="sec-11">
+      <h2 class="text-xl lg:text-2xl font-bold gradient-text mb-4">١١. حزمة PDPL المعرفية — مقالات معمقة في كل جانب</h2>
+      <p class="text-white/80 leading-loose text-sm lg:text-base">نظام PDPL واسع ويغطي جوانب متعددة: من حقوق الأفراد إلى العقوبات، من اللائحة التنفيذية إلى تداخل PDPL مع الذكاء الاصطناعي. أعددنا 8 مقالات تغطي كل جانب بالتفصيل، لتكون مرجعاً متكاملاً للمنشآت السعودية:</p>
+      <div class="grid sm:grid-cols-2 gap-3 mt-4">
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-compliance-guide-saudi-companies/">
+          <span class="text-white font-semibold">دليل امتثال PDPL للمنشآت السعودية</span>
+          <span class="block text-white/60 mt-1">دليل تطبيقي شامل: من الجرد إلى التدقيق، مع حالة عملية لشركة تأمين.</span>
+        </a>
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-penalties-saudi-fines/">
+          <span class="text-white font-semibold">عقوبات PDPL في السعودية</span>
+          <span class="block text-white/60 mt-1">أنواع المخالفات، سقف الغرامات 5 ملايين ريال، وكيفية تجنبها.</span>
+        </a>
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-executive-regulations-explained/">
+          <span class="text-white font-semibold">اللائحة التنفيذية لـ PDPL</span>
+          <span class="block text-white/60 mt-1">شرح المادة 32 لتعيين DPO، الإبلاغ خلال 72 ساعة، حقوق أصحاب البيانات.</span>
+        </a>
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-cross-border-data-transfer-ai/">
+          <span class="text-white font-semibold">نقل البيانات خارج السعودية</span>
+          <span class="block text-white/60 mt-1">شروط المادة 29، أثرها على Cloud AI، الضمانات الكافية والاستثناءات.</span>
+        </a>
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-ai-safety/">
+          <span class="text-white font-semibold">PDPL وسلامة AI</span>
+          <span class="block text-white/60 mt-1">كيف يحمي PDPL الشركات عند استخدام الذكاء الاصطناعي: الضوابط والمخاطر.</span>
+        </a>
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-and-ai-saudi/">
+          <span class="text-white font-semibold">PDPL و AI للشركات السعودية</span>
+          <span class="block text-white/60 mt-1">العلاقة بين PDPL والذكاء الاصطناعي، أدوار AI Firewall و Audit Trail.</span>
+        </a>
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-ai-compliance-guide/">
+          <span class="text-white font-semibold">دليل امتثال PDPL للذكاء الاصطناعي</span>
+          <span class="block text-white/60 mt-1">للمسؤولين: ربط PDPL باستخدامات AI من الأساس النظامي إلى سجلات التدقيق.</span>
+        </a>
+        <a class="block glass rounded-xl p-4 text-sm hover:bg-white/5 transition-colors" href="/blog/pdpl-employee-data-rights-saudi/">
+          <span class="text-white font-semibold">حقوق الموظفين في PDPL</span>
+          <span class="block text-white/60 mt-1">كيف تحمي بيانات موظفيك: الخصوصية الوظيفية، المراقبة، الحقوق الخاصة.</span>
+        </a>
+      </div>
+      <p class="text-white/60 leading-loose text-sm mt-4">كل مقالة تركز على جانب مختلف من PDPL، وتشير إلى المقالات الأخرى ذات الصلة، لتكوّن مع هذا البيان مرجعاً شاملاً للمنشآت السعودية التي تسعى للامتثال الكامل.</p>
     </article>
 
     <!-- CTA Section -->

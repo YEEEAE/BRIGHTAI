@@ -453,7 +453,7 @@ export const sectors: SectorData[] = [
         ],
       },
     ],
-    docs:['/docs/pdpl-ai-governance/'], blog:['/blog/ai-governance-saudi-arabia/','/blog/saudi-ai-regulators-guide/','/blog/sdaia-seven-principles-practical-guide/'],
+    docs:['/docs/pdpl-ai-governance/'], blog:['/blog/ai-governance-saudi-arabia/','/blog/saudi-ai-regulators-guide/','/blog/sdaia-generative-ai-guidelines-practical-compliance/','/blog/sdaia-seven-principles-practical-guide/','/blog/sdaia-nca-pdpl-regulatory-map/','/blog/sdaia-90-day-implementation-plan/','/blog/sdaia-sector-compliance-healthcare-banking-government/','/blog/sdaia-allam-model-enterprise/','/blog/sdaia-audit-checklist-preparedness/','/blog/sdaia-international-standards-unesco-oecd/'],
     regulations: regulationsBySectorSlug['government-ai-governance'],
     faqs: faqsBySectorSlug['government-ai-governance'],
   },
