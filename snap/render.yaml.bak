@@ -1,0 +1,1008 @@
+# BrightAI Render Blueprint — Astro site (static + Node server functions)
+# KERNEL-AI-2026-07-14: switched from `runtime: static` to `runtime: node`
+# to enable the /api/ai/chat and /api/lead serverless functions on Render.
+# Astro builds produce:
+#   - dist/client/   (190 prerendered HTML pages + assets)
+#   - dist/server/   (Node standalone server with API routes)
+# The Node server serves both static files and API routes from one process.
+
+services:
+  - type: web
+    runtime: node
+    name: brightai-site
+    buildCommand: pip3 install fonttools brotli && pnpm install && pnpm run build
+    preDeployCommand: pnpm run verify:deployment-surface
+    startCommand: node ./dist/server/entry.mjs
+    # KERNEL-AUDIT-2026-07-15-BATCH-10 / EXEC-17: hit a real SSR endpoint
+    # (not just / static HTML) so Render detects actual Node outages.
+    healthCheckPath: /api/health/
+    # ──────────────────────────────────────────────────────────────────
+    # BAI-IDX-02 (2026-07-25) — DOCUMENTATION ONLY.
+    # The `headers:` block below is NOT applied to runtime responses on
+    # Render Web Services (Node runtime). Render's `headers:` directive
+    # only works for Render Static Sites. On the current Node service,
+    # the actual production security header posture is enforced by:
+    #
+    #   1. src/middleware.ts — applies RESPONSE_SECURITY_HEADERS as
+    #      HTTP response headers on every SSR route (/api/*).
+    #   2. injectSecurityMeta() Astro integration in astro.config.mjs —
+    #      injects <meta http-equiv="..."> in every prerendered HTML
+    #      file in dist/client/.
+    #   3. Cloudflare edge Transform Rule — applies HSTS on static
+    #      pages (HSTS does NOT work in meta). See
+    #      docs/cloudflare-deployment-headers.md for the manual setup.
+    #
+    # The block below is kept in sync with the canonical posture in
+    # scripts/security-headers.mjs for documentation + drift detection.
+    # If you change a value here, also update scripts/security-headers.mjs
+    # and the post-deploy check (npm run verify:live:headers) will fail
+    # until they re-sync. Do NOT remove this block — it is the single
+    # line of defence for any future migration to a static-only host.
+    # ──────────────────────────────────────────────────────────────────
+    envVars:
+      - key: NODE_VERSION
+        value: 22.22.2
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      # CHAT-SESSION-2026-07-15: Redis-backed conversation context store for
+      # /api/ai/chat/. Stores the last 8 messages per sessionId in a Redis
+      # LIST with 10-minute TTL. Required for multi-turn context (kernel
+      # AI assistant). Set in Render dashboard as a sync from a Redis Cloud
+      # / Upstash / Render Key Value instance reachable from the Node
+      # service. If unset, the endpoint gracefully degrades to single-turn
+      # mode (no context) — see src/lib/redis.ts for the fallback contract.
+      - key: REDIS_URL
+        sync: false
+      # GROQ_API_KEY and GEMINI_API_KEY are set in Render dashboard env
+      # (NOT in this file — they are server secrets).
+      # LEAD_WEBHOOK_URL + LEAD_WEBHOOK_SECRET (KRN-004 / EXEC-04) also
+      # set in Render dashboard env. Without LEAD_WEBHOOK_URL configured,
+      # leads are queued in-memory only (cap 100). Recommended webhook
+      # providers: Resend / SendGrid / HubSpot / Zapier / n8n.
+      # BRIGHTAI_CHAT_KEY (KRN-003-FULL-2026-07-15 / EXEC-03) — optional
+      # shared-secret API key for /api/ai/chat/. The endpoint accepts
+      # requests from the BrightAI origin (browser) OR from any client
+      # sending a valid `x-brightai-chat-key: <key>` header. Set in Render
+      # dashboard to enable the API-key auth path for non-browser clients
+      # (curl/Postman/server-to-server). When unset, only the Origin
+      # allowlist is enforced (current production default). Generate with:
+      #   openssl rand -hex 32
+      # The value is read at function scope (process.env) at request time
+      # so it is never inlined into the SSR bundle.
+      # TRUSTED_PROXY_COUNT (KRN-013 / EXEC-13) — controls XFF trust depth
+      # for client-IP extraction in src/lib/ip.ts. Render fronts the Node
+      # service with exactly one reverse proxy, so the default value (1)
+      # is correct for production. The helper trusts the rightmost N
+      # entries of x-forwarded-for (where N = TRUSTED_PROXY_COUNT); the
+      # leftmost entry is client-controlled and ignored. Set to 0 if you
+      # switch to a proxy that strips XFF and only sets x-real-ip. Default
+      # when unset is 1 (Render).
+    headers:
+      - path: /*
+        name: Strict-Transport-Security
+        # HSTS-2026-07-18: aligned with public/_headers (2 years + preload).
+        # max-age=63072000 (2 years) per the original CSP strategy doc
+        # in public/_headers. Submit brightai.site to https://hstspreload.org
+        # once to enable browser-side preload.
+        value: max-age=63072000; includeSubDomains; preload
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: Permissions-Policy
+        value: camera=(), microphone=(), geolocation=()
+      - path: /*
+        name: Content-Security-Policy
+        # CSP-HARDENING-001 (2026-07-15): Phase 1 soft enforcement.
+        # - 'unsafe-inline' يبقى مؤقتاً على script-src / style-src-elem /
+        #   style-src-attr (kernel scripts, ClientRouter view-transitions,
+        #   inline style="..." attrs).
+        # - BAI-PERF-01 (2026-07-25): 'unsafe-inline' removed from style-src
+        #   fallback only — BaseLayout.astro no longer has a <style is:inline>
+        #   block; critical CSS is imported as a real /_astro/critical.*.css.
+        # - report-uri → /api/csp-report → Sentry alerts.
+        # - middleware يضبط Content-Security-Policy-Report-Only مع nonce + strict-dynamic.
+        # - Phase 2 (بعد أسبوع 0 violations): نشيل 'unsafe-inline' من script-src ونحوّل للـ enforcement.
+        # NOTE: هذا الـ block documentation-only على Render Web Services. الـ CSP الفعلي
+        # على static pages يجي من <meta http-equiv> via injectSecurityMeta() (مصدره
+        # scripts/security-headers.mjs). الـ drift الموجود بين هذا الـ block والـ
+        # source-of-truth (cdnjs.cloudflare.com, Sentry هنا — لكن مو في security-headers.mjs)
+        # يحتاج تزامن كامل في تذكرة منفصلة.
+        value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://js.sentry-cdn.com https://www.clarity.ms https://*.clarity.ms https://cdnjs.cloudflare.com; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://o4510966719840256.ingest.us.sentry.io https://*.sentry.io https://www.clarity.ms https://*.clarity.ms https://c.bing.com; frame-src 'self' https://www.googletagmanager.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; report-uri /api/csp-report; upgrade-insecure-requests"
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /*.html
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+      - path: /_astro/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /sw.js
+        name: Cache-Control
+        value: no-store, no-cache, must-revalidate, max-age=0
+      - path: /service-worker.js
+        name: Cache-Control
+        value: no-store, no-cache, must-revalidate, max-age=0
+      - path: /*.css
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /**/*.css
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /*.js
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /**/*.js
+        name: Cache-Control
+        value: public, max-age=86400
+      - path: /*.v*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.v*.css
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.v*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.v*.js
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.woff
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.woff
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.woff2
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.woff2
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.ttf
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.ttf
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.otf
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /**/*.otf
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      - path: /*.png
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /**/*.png
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /*.jpg
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /**/*.jpg
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /*.jpeg
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /**/*.jpeg
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /*.webp
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /**/*.webp
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /*.avif
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /**/*.avif
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /*.svg
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /**/*.svg
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /*.ico
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /**/*.ico
+        name: Cache-Control
+        value: public, max-age=7776000, stale-while-revalidate=2592000
+      - path: /llms.txt
+        name: Content-Type
+        value: text/plain; charset=utf-8
+      - path: /llms-full.txt
+        name: Content-Type
+        value: text/plain; charset=utf-8
+      - path: /robots.txt
+        name: Content-Type
+        value: text/plain; charset=utf-8
+      - path: /sitemap*.xml
+        name: Content-Type
+        value: application/xml; charset=utf-8
+      - path: /manifest.webmanifest
+        name: Content-Type
+        value: application/manifest+json; charset=utf-8
+      # ── Hard block: frontend/ (Express backend code) is NOT published ──
+      # Safety net in case any stale cache or accidental file ends up under
+      # /frontend/*. Tells crawlers + browsers to never index or cache it.
+      - path: /frontend/*
+        name: X-Robots-Tag
+        value: noindex, nofollow, noarchive, nosnippet
+      - path: /frontend/*
+        name: Cache-Control
+        value: no-store, no-cache, must-revalidate, max-age=0
+      - path: /frontend/*
+        name: Content-Security-Policy
+        value: "default-src 'none'; frame-ancestors 'none'"
+    routes:
+      - type: redirect
+        source: /index.html
+        destination: /
+      - type: redirect
+        source: /about
+        destination: /about/
+      - type: redirect
+        source: /about.html
+        destination: /about/
+      - type: redirect
+        source: /about/index.html
+        destination: /about/
+      - type: redirect
+        source: /contact
+        destination: /contact/
+      - type: redirect
+        source: /contact.html
+        destination: /contact/
+      - type: redirect
+        source: /contact/index.html
+        destination: /contact/
+      - type: redirect
+        source: /services
+        destination: /services/
+      - type: redirect
+        source: /services.html
+        destination: /services/
+      - type: redirect
+        source: /services/index.html
+        destination: /services/
+      - type: redirect
+        source: /pricing
+        destination: /pricing/
+      - type: redirect
+        source: /pricing.html
+        destination: /pricing/
+      - type: redirect
+        source: /pricing/index.html
+        destination: /pricing/
+      - type: redirect
+        source: /demo
+        destination: /demo/
+      - type: redirect
+        source: /demo.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/index.html
+        destination: /demo/
+      - type: redirect
+        source: /privacy-policy
+        destination: /privacy-policy/
+      - type: redirect
+        source: /privacy-policy.html
+        destination: /privacy-policy/
+      - type: redirect
+        source: /privacy-policy/index.html
+        destination: /privacy-policy/
+      - type: redirect
+        source: /cookie-policy
+        destination: /cookie-policy/
+      - type: redirect
+        source: /cookie-policy.html
+        destination: /cookie-policy/
+      - type: redirect
+        source: /cookie-policy/index.html
+        destination: /cookie-policy/
+      - type: redirect
+        source: /terms
+        destination: /terms/
+      - type: redirect
+        source: /terms.html
+        destination: /terms/
+      - type: redirect
+        source: /terms/index.html
+        destination: /terms/
+      - type: redirect
+        source: /pdpl-statement
+        destination: /pdpl-statement/
+      - type: redirect
+        source: /pdpl-statement.html
+        destination: /pdpl-statement/
+      - type: redirect
+        source: /pdpl-statement/index.html
+        destination: /pdpl-statement/
+      - type: redirect
+        source: /data-processing-agreement
+        destination: /data-processing-agreement/
+      - type: redirect
+        source: /data-processing-agreement.html
+        destination: /data-processing-agreement/
+      - type: redirect
+        source: /data-processing-agreement/index.html
+        destination: /data-processing-agreement/
+      - type: redirect
+        source: /trust
+        destination: /trust/
+      - type: redirect
+        source: /trust.html
+        destination: /trust/
+      - type: redirect
+        source: /trust/index.html
+        destination: /trust/
+      - type: redirect
+        source: /report
+        destination: /trust/
+      - type: redirect
+        source: /report.html
+        destination: /trust/
+      - type: redirect
+        source: /report/index.html
+        destination: /trust/
+      - type: redirect
+        source: /blog/Generative-artificial-intelligence
+        destination: /blog/generative-ai-governance-vs-traditional/
+      - type: redirect
+        source: /blog/Generative-artificial-intelligence.html
+        destination: /blog/generative-ai-governance-vs-traditional/
+      - type: redirect
+        source: /blog/agint-bblog
+        destination: /404/
+      - type: redirect
+        source: /blog/agint-bblog.html
+        destination: /404/
+      - type: redirect
+        source: /blog/ai
+        destination: /404/
+      - type: redirect
+        source: /blog/ai.html
+        destination: /404/
+      - type: redirect
+        source: /blog/analysy
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/analysy.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/atou-job
+        destination: /404/
+      - type: redirect
+        source: /blog/atou-job.html
+        destination: /404/
+      - type: redirect
+        source: /blog/auto
+        destination: /404/
+      - type: redirect
+        source: /blog/auto.html
+        destination: /404/
+      - type: redirect
+        source: /services/hr-automation-saudi
+        destination: /blog/ai-hr-recruitment-saudi/
+      - type: redirect
+        source: /services/hr-automation-saudi/
+        destination: /blog/ai-hr-recruitment-saudi/
+      - type: redirect
+        source: /services/hr-automation-saudi/index.html
+        destination: /blog/ai-hr-recruitment-saudi/
+      - type: redirect
+        source: /blog/cloude-opus-4.6
+        destination: /blog/ai-governance/
+      - type: redirect
+        source: /blog/cloude-opus-4.6/
+        destination: /blog/ai-governance/
+      - type: redirect
+        source: /blog/cloude-opus-4.6.html
+        destination: /blog/ai-governance/
+      - type: redirect
+        source: /services/kpi-dashboard-guide
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/kpi-dashboard-guide/
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/kpi-dashboard-guide/index.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/power-bi-saudi-guide
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/power-bi-saudi-guide/
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/power-bi-saudi-guide/index.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/digital
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/digital.html
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/gov
+        destination: /solutions/government-ai-governance/
+      - type: redirect
+        source: /blog/gov.html
+        destination: /solutions/government-ai-governance/
+      - type: redirect
+        source: /en/index.html
+        destination: /en/
+      - type: redirect
+        source: /docs.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/openapi.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/faq.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/faq-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/terms-and-conditions.html
+        destination: /terms/
+      - type: redirect
+        source: /docs/terms-and-conditions-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/services-overview.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/services-overview-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/privacy-policy.html
+        destination: /privacy-policy/
+      - type: redirect
+        source: /docs/privacy-policy-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/data-analysis.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/data-analysis-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/contact.html
+        destination: /contact/
+      - type: redirect
+        source: /docs/contact-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/ai-bots.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/ai-bots-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-bi.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-bi-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-crm.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-crm-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-finance.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-finance-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-healthcare.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-healthcare-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-hr.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-hr-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-interview.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-interview-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-logistics.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-logistics-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-ocr.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-ocr-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-retail.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-retail-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-supply-chain.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/solutions-supply-chain-en.html
+        destination: /docs/
+      - type: redirect
+        source: /services/ecommerce.html
+        destination: /blog/ai-ecommerce-saudi/
+      - type: redirect
+        source: /services/ecommerce-en.html
+        destination: /blog/ai-ecommerce-saudi/
+      - type: redirect
+        source: /services/energy.html
+        destination: /solutions/government-ai-governance/
+      - type: redirect
+        source: /services/energy-en.html
+        destination: /solutions/government-ai-governance/
+      - type: redirect
+        source: /services/finance.html
+        destination: /solutions/banking-ai-governance/
+      - type: redirect
+        source: /services/finance-en.html
+        destination: /solutions/banking-ai-governance/
+      - type: redirect
+        source: /services/healthcare.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /services/healthcare-en.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /services/logistics.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /services/logistics-en.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /services/manufacturing.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /services/manufacturing-en.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /demo/pages/appointment/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/dashboard/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/support-ai/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/Visitor-registration/index.html
+        destination: /demo/
+      - type: redirect
+        source: /en/docs/docs.html
+        destination: /docs/
+      - type: redirect
+        source: /health-bright.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /data-analysis.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /our-products.html
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /Company%20performance%20monitoring%20tool.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blogger/ai-generative-content-industry-saudi-arabia.html
+        destination: /blog/generative-ai-governance-vs-traditional/
+      - type: redirect
+        source: /frontend/pages/about-us/index.html
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/about-us/
+        destination: /about/
+      - type: redirect
+        source: /frontend/pages/services/
+        destination: /404/
+      - type: redirect
+        source: /frontend/pages/contact/index.html
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/contact/
+        destination: /contact/
+      - type: redirect
+        source: /frontend/pages/services/index.html
+        destination: /404/
+      - type: redirect
+        source: /frontend/pages/our-products/index.html
+        destination: /404/
+      - type: redirect
+        source: /frontend/pages/our-products/
+        destination: /404/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/index.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /frontend/pages/smart-medical-archive/
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /frontend/pages/try/index.html
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/supportAI
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/supportAI/
+        destination: /demo/
+      - type: redirect
+        source: /demo/pages/supportAI/index.html
+        destination: /demo/
+      - type: redirect
+        source: /frontend/pages/blogger/nca-compliance
+        destination: /404/
+      - type: redirect
+        source: /ai-workflows
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /blog/production-line
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/production-line.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/atou.doc
+        destination: /404/
+      - type: redirect
+        source: /blog/atou.doc/
+        destination: /404/
+      - type: redirect
+        source: /blog/astr.doc
+        destination: /blog/
+      - type: redirect
+        source: /blog/astr.doc/
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات/
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات-الذكاء-الاصطناعي-كيف-تسهم-في-تحقيق-التحول-الرقمي-للشركات.html
+        destination: /blog/
+      - type: redirect
+        source: /blog/ production-line
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/Generative artificial intelligence
+        destination: /blog/generative-ai-governance-vs-traditional/
+      - type: redirect
+        source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1)/
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /blog/أتمتة الذكاء الاصطناعي_ حلول مخصصة لتحليل المشاريع وتحسين محركات البحث (1).html
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية/
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/أتمتة العمليات باستخدام الذكاء الاصطناعي_ الطريق إلى تحسين الكفاءة التشغيلية.html
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية/
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/الأتمتة الصناعية وأتمتة المهام المتكررة_ كيفية تحسين الكفاءة الإنتاجية.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية
+        destination: /blog/rpa-automation-saudi-savings/
+      - type: redirect
+        source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية/
+        destination: /blog/rpa-automation-saudi-savings/
+      - type: redirect
+        source: /blog/الأتمتة المالية وأتمتة الموارد البشرية_ حلول مستقبلية للشركات الذكية.html
+        destination: /blog/rpa-automation-saudi-savings/
+      - type: redirect
+        source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار/
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/التحول الرقمي وأتمتة العمليات_ كيف يمكن للذكاء الاصطناعي أن يقود الابتكار.html
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات/
+        destination: /blog/
+      - type: redirect
+        source: /blog/استشارات الذكاء الاصطناعي_ كيف تسهم في تحقيق التحول الرقمي للشركات.html
+        destination: /blog/
+      - type: redirect
+        source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور
+        destination: /blog/computer-vision-saudi-factories/
+      - type: redirect
+        source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور/
+        destination: /blog/computer-vision-saudi-factories/
+      - type: redirect
+        source: /blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html
+        destination: /blog/computer-vision-saudi-factories/
+      - type: redirect
+        source: /terms/terms-and-conditions-en.html
+        destination: /docs/
+      - type: redirect
+        source: /privacy-policy/privacy-policy-en.html
+        destination: /docs/
+      - type: redirect
+        source: /docs/docs-en.html
+        destination: /docs/
+      - type: redirect
+        source: /contact/contact-en.html
+        destination: /docs/
+      - type: redirect
+        source: /services/data-analyst-agent.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/custom-ai-agent.html
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /services/competitor-analysis-agent.html
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /services/seo-agent.html
+        destination: /blog/arabic-chatbot-customer-service-saudi/
+      - type: redirect
+        source: /services/social-data-analysis.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/health-data-analysis.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /services/marketing-agent.html
+        destination: /blog/arabic-chatbot-customer-service-saudi/
+      - type: redirect
+        source: /services/document-automation.html
+        destination: /solutions/ai-evidence-file/
+      - type: redirect
+        source: /services/smart-hiring-system.html
+        destination: /blog/ai-hr-recruitment-saudi/
+      - type: redirect
+        source: /services/medical-archive.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /services/data-platform.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /services/lead-hunter.html
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /services/customer-service-automation.html
+        destination: /blog/arabic-chatbot-customer-service-saudi/
+      - type: redirect
+        source: /services/hr-automation.html
+        destination: /blog/ai-hr-recruitment-saudi/
+      - type: redirect
+        source: /services/marketing-automation.html
+        destination: /blog/arabic-chatbot-customer-service-saudi/
+      - type: redirect
+        source: /services/approvals-automation.html
+        destination: /solutions/human-approval-layer/
+      - type: redirect
+        source: /services/operational-reports-automation.html
+        destination: /solutions/ai-evidence-file/
+      - type: redirect
+        source: /services/supply-chain-optimization.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /services/ai-consulting.html
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /services/brightproject.html
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /services/brightsales.html
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /services/ai-scolecs.html
+        destination: /solutions/ai-governance-platform/
+      - type: redirect
+        source: /services/smart-hospital-management.html
+        destination: /solutions/healthcare-ai-governance/
+      - type: redirect
+        source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1/
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /blog/أتمتة-الذكاء-الاصطناعي-حلول-مخصصة-لتحليل-المشاريع-وتحسين-محركات-البحث-1.html
+        destination: /solutions/ai-use-case-discovery/
+      - type: redirect
+        source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية/
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/أتمتة-العمليات-باستخدام-الذكاء-الاصطناعي-الطريق-إلى-تحسين-الكفاءة-التشغيلية.html
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية/
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/الأتمتة-الصناعية-وأتمتة-المهام-المتكررة-كيفية-تحسين-الكفاءة-الإنتاجية.html
+        destination: /solutions/manufacturing-ai-governance/
+      - type: redirect
+        source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية
+        destination: /blog/rpa-automation-saudi-savings/
+      - type: redirect
+        source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية/
+        destination: /blog/rpa-automation-saudi-savings/
+      - type: redirect
+        source: /blog/الأتمتة-المالية-وأتمتة-الموارد-البشرية-حلول-مستقبلية-للشركات-الذكية.html
+        destination: /blog/rpa-automation-saudi-savings/
+      - type: redirect
+        source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار/
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/التحول-الرقمي-وأتمتة-العمليات-كيف-يمكن-للذكاء-الاصطناعي-أن-يقود-الابتكار.html
+        destination: /blog/digital-transformation-sme-saudi/
+      - type: redirect
+        source: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور
+        destination: /blog/computer-vision-saudi-factories/
+      - type: redirect
+        source: /blog/التعلم-الآلي-والرؤية-الحاسوبية-مستقبل-الذكاء-الاصطناعي-في-معالجة-اللغة-الطبيعية-والتعرف-على-الصور/
+        destination: /blog/computer-vision-saudi-factories/
+      - type: redirect
+        source: /blog/machine-learning-computer-vision-legacy.html
+        destination: /blog/computer-vision-saudi-factories/
+      - type: redirect
+        source: /blog/الذكاء-الاصطناعي-و-التسويق
+        destination: /blog/arabic-chatbot-customer-service-saudi/
+      - type: redirect
+        source: /blog/الذكاء-الاصطناعي-و-التسويق/
+        destination: /blog/arabic-chatbot-customer-service-saudi/
+      - type: redirect
+        source: /blog/الذكاء-الاصطناعي-و-التسويق.html
+        destination: /blog/arabic-chatbot-customer-service-saudi/
+      - type: redirect
+        source: /blog/تحليل-البيانات
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/تحليل-البيانات/
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/تحليل-البيانات.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/تعلم-الآلة-و-الأعمال
+        destination: /blog/ai-vs-machine-learning-explained/
+      - type: redirect
+        source: /blog/تعلم-الآلة-و-الأعمال/
+        destination: /blog/ai-vs-machine-learning-explained/
+      - type: redirect
+        source: /blog/تعلم-الآلة-و-الأعمال.html
+        destination: /blog/ai-vs-machine-learning-explained/
+      - type: redirect
+        source: /blog/مقال-تحليل
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/مقال-تحليل/
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /blog/مقال-تحليل.html
+        destination: /blog/big-data-analytics-saudi-companies/
+      - type: redirect
+        source: /docs/nca-ecc-ai-controls.html
+        destination: /docs/nca-ecc-ai-controls/
+      - type: redirect
+        source: /docs/Governanceـapplication
+        destination: /docs/governance-application/
+      - type: redirect
+        source: /docs/Governanceـapplication.html
+        destination: /docs/governance-application/
+      - type: redirect
+        source: /docs/Governanceـapplication/index.html
+        destination: /docs/governance-application/
+      - type: redirect
+        source: /docs/Governance%D9%80application
+        destination: /docs/governance-application/
+      - type: redirect
+        source: /docs/Governance%D9%80application.html
+        destination: /docs/governance-application/
+      - type: redirect
+        source: /docs/Governance%D9%80application/index.html
+        destination: /docs/governance-application/
+      - type: redirect
+        source: /assessment/ai-governance-readiness.html
+        destination: /assessment/ai-governance-readiness/
+      - type: redirect
+        source: /blog/sdaia-generative-ai-guidelines
+        destination: /blog/sdaia-generative-ai-guidelines-practical-compliance/
+      - type: redirect
+        source: /blog/sdaia-generative-ai-guidelines/
+        destination: /blog/sdaia-generative-ai-guidelines-practical-compliance/
+      - type: redirect
+        source: /blog/sdaia-generative-ai-guidelines.html
+        destination: /blog/sdaia-generative-ai-guidelines-practical-compliance/
+      - type: redirect
+        source: /frontend
+        destination: /404/
+      - type: redirect
+        source: /frontend/
+        destination: /404/
+      - type: redirect
+        source: /frontend/*
+        destination: /404/
+      - type: redirect
+        source: /rss
+        destination: /rss.xml/
+      - type: redirect
+        source: /rss.html
+        destination: /rss.xml/
+      - type: redirect
+        source: /rss/index.html
+        destination: /rss.xml/
+      - type: redirect
+        source: /blog/feed
+        destination: /rss.xml/
+      - type: redirect
+        source: /blog/feed.html
+        destination: /rss.xml/
+      - type: redirect
+        source: /blog/feed.xml
+        destination: /rss.xml/
+      - type: redirect
+        source: /blog/feed.xml/
+        destination: /rss.xml/
+      - type: redirect
+        source: /blog/feed/index.html
+        destination: /rss.xml/

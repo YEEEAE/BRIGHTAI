@@ -59,6 +59,12 @@ const { records = evidenceRecords } = Astro.props;
     margin-top: var(--space-2);
   }
 
+  /* BAI-SEC-11 (2026-07-25) — hash cell (was inline style) */
+  .k-evidence-hash {
+    font-size: var(--text-xs);
+    color: var(--text-faint);
+  }
+
   @media (max-width: 768px) {
     .k-evidence-table { display: none; }
     .k-evidence-cards { display: block; }
@@ -87,7 +93,7 @@ const { records = evidenceRecords } = Astro.props;
         <td><KernelBadge level={r.riskLevel as any} label={riskLevelLabel(r.riskLevel)} size="sm" /></td>
         <td>{r.riskScore}/100</td>
         <td><time>{r.createdAt}</time></td>
-        <td dir="ltr" style="font-size:var(--text-xs);color:var(--text-faint)">{r.hash}</td>
+        <td dir="ltr" class="k-evidence-hash">{r.hash}</td>
       </tr>
     ))}
   </tbody>

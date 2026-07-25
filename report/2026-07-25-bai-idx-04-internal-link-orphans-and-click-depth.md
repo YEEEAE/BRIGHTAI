@@ -20,12 +20,12 @@
 
 الحالة بعد BAI-IDX-04:
 - **179 صفحة indexable** (180 - 1 = الـ offline بقت في الـ build لكن صارت noindex → خرجت من "indexable")
-- **0 orphans** ✅
-- **0 brokenLinks** ✅
-- **0 canonicalIssues** (الـ 6 redirect files صارت تُستثنى لأنها noindex) ✅
-- **max click depth = 3** (limit 3) ✅
-- **0 pages with depth > 3** ✅
-- **0 indexable pages unreachable from /** ✅
+- **0 orphans** ✓
+- **0 brokenLinks** ✓
+- **0 canonicalIssues** (الـ 6 redirect files صارت تُستثنى لأنها noindex) ✓
+- **max click depth = 3** (limit 3) ✓
+- **0 pages with depth > 3** ✓
+- **0 indexable pages unreachable from /** ✓
 - **`pnpm run internal-links:audit` exits 0** + يطبع banner نجاح
 
 التغييرات: **3 ملفات** (`src/layouts/KernelLayout.astro` + `scripts/internal-linking-architecture.mjs` + `package.json`).
@@ -70,10 +70,10 @@
   "clickDepthViolations": []
 }
 
-✅ BAI-IDX-04 acceptance check PASSED: 0 orphans, 0 broken, max click depth 3 ≤ 3.
+✓ BAI-IDX-04 acceptance check PASSED: 0 orphans, 0 broken, max click depth 3 ≤ 3.
 ```
 
-Exit code: **0** ✅
+Exit code: **0** ✓
 
 ### Click Depth Distribution (BAI-IDX-04 metric)
 
@@ -99,12 +99,12 @@ Exit code: **0** ✅
 
 | Check | Result |
 |---|---|
-| `ASTRO_TELEMETRY_DISABLED=1 pnpm build` | ✅ 196 pages, 0 errors, 0 warnings |
-| `pnpm run verify:all` | ✅ 5/5 checks pass, 0 errors, 0 warnings |
-| `pnpm run seo:gate` (in verify:all) | ✅ 6/6 hreflang + 5/5 service + 180 sitemap + 0 errors + 0 warnings |
-| `pnpm run performance:budget` | ✅ كل البنود داخل الميزانية |
-| `node scripts/seo-ci-check.mjs` | ✅ SEO CI check passed (0 errors, 0 warnings) |
-| Failure-path test (mocked: `maxClickDepth=4, pagesWithHighClickDepth=1`) | ✅ exits 1, prints "❌ BAI-IDX-04 acceptance check FAILED" |
+| `ASTRO_TELEMETRY_DISABLED=1 pnpm build` | ✓ 196 pages, 0 errors, 0 warnings |
+| `pnpm run verify:all` | ✓ 5/5 checks pass, 0 errors, 0 warnings |
+| `pnpm run seo:gate` (in verify:all) | ✓ 6/6 hreflang + 5/5 service + 180 sitemap + 0 errors + 0 warnings |
+| `pnpm run performance:budget` | ✓ كل البنود داخل الميزانية |
+| `node scripts/seo-ci-check.mjs` | ✓ SEO CI check passed (0 errors, 0 warnings) |
+| Failure-path test (mocked: `maxClickDepth=4, pagesWithHighClickDepth=1`) | ✓ exits 1, prints "❌ BAI-IDX-04 acceptance check FAILED" |
 
 ### Functional evidence (BAI-IDX-04 ACs)
 
@@ -167,8 +167,8 @@ Exit code: **0** ✅
 ```
 
 **النتيجة بعد build**:
-- `dist/client/kernel/offline/index.html` robots meta: `noindex, follow` ✅
-- باقي kernel pages (`/kernel/chat/`, `/kernel/audit/`, `/kernel/approvals/`, ...): `index, follow, ...` (لم تتأثر) ✅
+- `dist/client/kernel/offline/index.html` robots meta: `noindex, follow` ✓
+- باقي kernel pages (`/kernel/chat/`, `/kernel/audit/`, `/kernel/approvals/`, ...): `index, follow, ...` (لم تتأثر) ✓
 - `/kernel/offline/` خرجت من عداد "indexable" (179 بدلاً من 180) → 0 orphans
 
 ### Change 2: `scripts/internal-linking-architecture.mjs` (3 regions)
@@ -184,7 +184,7 @@ Exit code: **0** ✅
 
 **المشكلة قبل**: الـ 6 ملفات `solutions/cities/{city}/index.html` (redirect files) عندها canonical = redirect target (`/solutions/{sector}/{city}/`)، لكن `expectedCanonical` (محسوب من path) = `/solutions/cities/{city}/`. الـ mismatch حقيقي بس **مقصود** (الصفحة redirect، والـ canonical يشير للـ target). مع noindex فهي ما تحتاج فحص.
 
-**النتيجة**: `canonicalIssues: 6 → 0` ✅
+**النتيجة**: `canonicalIssues: 6 → 0` ✓
 
 #### Region B: BFS Click Depth (جديد — 50 سطر تقريباً)
 
@@ -250,7 +250,7 @@ if (failures.length) {
   process.exit(1);
 }
 console.log("");
-console.log("✅ BAI-IDX-04 acceptance check PASSED: 0 orphans, 0 broken, max click depth " + report.summary.maxClickDepth + " ≤ " + report.summary.clickDepthLimit + ".");
+console.log("✓ BAI-IDX-04 acceptance check PASSED: 0 orphans, 0 broken, max click depth " + report.summary.maxClickDepth + " ≤ " + report.summary.clickDepthLimit + ".");
 ```
 
 #### Region D: REPORT_DIR anchored على project root (3 lines)
@@ -438,4 +438,20 @@ DEC new:
   - DEC-BAI-IDX-04-2026-07-25-004: redirect files (solutions/cities/
     {city}/) are excluded from the graph; their canonical points to
     the real target, not the file path.
+
+---
+
+## Verification Status (BAI-PROC-12)
+
+- **verified_local**: yes
+  - `scripts/internal-links-audit.mjs` — 0 orphans, 0 broken internal links ✓
+  - `scripts/link-graph-validator.mjs --strict` — exit 0 ✓
+  - Click depth analysis — all indexable pages reachable within ≤ 3 hops from `/` ✓
+  - `npm run internal-links:audit` — 0 findings ✓
+  - `pnpm build` — 196 pages, 0 errors ✓
+  - `npm run verify:all` — 5/5 pass ✓
+- **verified_production**: no
+- **verified_production_blocker**: awaiting user commit + Render auto-deploy + `pnpm run cloudflare:purge` per BAI-DEPLOY-11. Without these, the live sitemap still has 180 URLs from the prior build.
+
+> To promote this report to `verified_production: yes`, run after deploy: `node scripts/internal-links-audit.mjs --against=https://brightai.site` and capture the output.
 ```

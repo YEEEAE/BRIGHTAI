@@ -105,7 +105,7 @@ export function parseRenderYamlHeaders(yamlText) {
     }
     const valueMatch = line.match(/^\s+value:\s*(.+?)\s*$/);
     if (valueMatch && currentEntry) {
-      currentEntry.value = valueMatch[1];
+      currentEntry.value = unwrapYamlScalar(valueMatch[1]);
       pendingKey = null;
       continue;
     }
@@ -116,7 +116,7 @@ export function parseRenderYamlHeaders(yamlText) {
     if (currentEntry?.value && /^\s{8,}\S/.test(line)) {
       const continuation = line.trim();
       if (continuation) {
-        currentEntry.value += " " + continuation;
+        currentEntry.value += " " + unwrapYamlScalarContinuation(continuation);
       }
     }
   }
@@ -194,6 +194,50 @@ export function parseNetlifyHeaders(text) {
 export function headerValueForPath(rules, pathGlob) {
   if (rules[pathGlob]) return rules[pathGlob];
   return null;
+}
+
+/**
+ * Unwrap a YAML double-quoted scalar. The generator in
+ * scripts/sync-headers-from-csp.mjs emits values like
+ *   value: "max-age=63072000; includeSubDomains; preload"
+ * because the CSP string contains colons, semicolons, and single quotes
+ * that are easier to read inside double-quoted YAML. This helper strips
+ * the wrapping quotes and unescapes \" and \\ so the parsed value matches
+ * the raw value the generator was given.
+ *
+ * If the input is not a quoted scalar, it is returned unchanged.
+ */
+function unwrapYamlScalar(raw) {
+  if (typeof raw !== "string") return raw;
+  if (raw.length < 2) return raw;
+  if (raw[0] !== '"' || raw[raw.length - 1] !== '"') return raw;
+  // Unescape \" → " and \\ → \. The CSP value does not contain other
+  // YAML double-quoted escapes, so the simple state machine is enough.
+  let out = "";
+  for (let i = 1; i < raw.length - 1; i++) {
+    const ch = raw[i];
+    if (ch === "\\" && i + 1 < raw.length - 1) {
+      const next = raw[i + 1];
+      if (next === '"' || next === "\\") {
+        out += next;
+        i++;
+        continue;
+      }
+    }
+    out += ch;
+  }
+  return out;
+}
+
+/**
+ * Continuation lines (folded scalars) should be appended verbatim — they
+ * are part of an already-unwrapped scalar. But if a generator wrapped a
+ * long value across multiple lines (uncommon for our security headers),
+ * strip any wrapping quotes from the continuation too. Today no security
+ * value is folded across lines, so this is a safety net.
+ */
+function unwrapYamlScalarContinuation(raw) {
+  return unwrapYamlScalar(raw);
 }
 
 export function loadRenderYamlHeaders() {

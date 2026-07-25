@@ -165,7 +165,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
           <p>اختبر وضع شركتك الحالي وحدد أول 5 ضوابط تحتاجها قبل توسيع استخدام AI.</p>
           <a class="btn" href="/assessment/ai-governance-readiness/">ابدأ التقييم</a>
         </div>
-        <div class="related" style="margin-top:16px">
+        <div class="related">
           <h2>روابط داخلية مهمة</h2>
           <a href="/solutions/ai-governance-platform/">منصة حوكمة الذكاء الاصطناعي</a>
           <a href="/solutions/ai-firewall/">جدار حماية الذكاء الاصطناعي</a>

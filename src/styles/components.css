@@ -3344,3 +3344,75 @@ button {
   padding-block: var(--space-2);
   min-block-size: 32px;
 }
+/* ===========================================================================
+ * BAI-SEC-11 (2026-07-25) — TLDR / highlight-box patterns (inline-style migration)
+ *
+ * The blog + docs .md files use a `.highlight-box.tldr` wrapper for the
+ * "الخلاصة السريعة" quick-summary callout, plus a few one-off inline-styled
+ * boxes for gradient variants. The inline styles used to be the only way
+ * the look was defined. We have now lifted the patterns here so the
+ * markdown can be class-only, which:
+ *   1. Removes `style="..."` from the markdown (CSP-friendly; the
+ *      remaining 700+ inline styles in 85 files are being phased out in
+ *      BAI-SEC-11 batches).
+ *   2. Centralises the design intent (padding, color, gradient) so a
+ *      change to the tldr look only needs one edit.
+ *   3. Makes the markdown grep-clean for future audits.
+ * =========================================================================== */
+
+/* Base tldr callout — used in most blog posts. */
+.highlight-box.tldr {
+  margin-block-start: 24px;
+  padding: 18px 20px;
+}
+.highlight-box.tldr > h3:first-child {
+  margin-block-start: 0;
+}
+.highlight-box.tldr > p {
+  margin: 0;
+}
+
+/* Gradient tldr variant — used in posts that did not previously have a
+ * .highlight-box wrapper. Mirrors the previous inline styles exactly. */
+.tldr--gradient {
+  margin: 24px 0;
+  padding: 18px 20px;
+  background: linear-gradient(
+    135deg,
+    rgba(124, 58, 237, 0.06),
+    rgba(45, 212, 191, 0.06)
+  );
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.tldr--gradient > h3:first-child {
+  margin-block-start: 0;
+  font-size: 1.15rem;
+}
+.tldr--gradient > p {
+  margin: 0;
+  font-size: 1.02rem;
+  color: #283142;
+}
+
+/* TLDR gradient variants — used by blog posts that previously had
+ * inline-styled gradient boxes. Each variant overrides the base
+ * .tldr--gradient background. Add more here as new blog posts need them. */
+.tldr--gradient-banking {
+  background: linear-gradient(
+    135deg,
+    rgba(51, 65, 85, 0.06),
+    rgba(56, 189, 248, 0.06)
+  );
+}
+.tldr--gradient-healthcare {
+  background: linear-gradient(
+    135deg,
+    rgba(21, 94, 117, 0.06),
+    rgba(132, 204, 22, 0.06)
+  );
+}
+
+/* BAI-SEC-11 (2026-07-25) — .related (blog post "روابط داخلية" block).
+   Replaces an inline `style="margin-top:16px"` from one blog post. */
+.related { margin-block-start: 16px; }

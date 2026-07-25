@@ -1799,3 +1799,34 @@ Out-of-Scope (M2/M3):
 - M3: زر "إيقاف" يربط composerAbort.abort() + modeBadge demo/degraded + Playwright tests.
 
 Rollback: git checkout src/pages/kernel/chat.astro
+
+---
+
+Task ID: BAI-PROC-13
+Agent: BrightAI Workspace Agent
+Task: إصلاح `core.hooksPath` من `--version/_` لـ `.husky` — git push كان يفشل بـ `sh: --version/_/pre-push: invalid option`
+Started: 2026-07-25T03:38:00+03:00
+Mode: Senior
+
+Work Log:
+- 03:38: فحصت `.git/config` → `core.hooksPath = --version/_` (السبب الجذري).
+- 03:38: تأكدت إن المجلد `./--version/_/` فيه husky v4 stubs (39B لكل hook) + `husky.sh` (160B) + `h` (551B) — الكل DEPRECATED.
+- 03:39: تأكدت إن `.husky/commit-msg` (2679B) + `.husky/pre-commit` (2033B) موجودين و مرتبطين بـ helpers تحت `.husky/_/`.
+- 03:40: أخذت backup → `cp .git/config .git/config.bak.20260725`.
+- 03:40: أصلحت → `git config core.hooksPath .husky`.
+- 03:41: تحققت:
+    - `git config --get core.hooksPath` → `.husky` ✅
+    - `git push --dry-run origin main` → "Everything up-to-date" + exit 0 ✅
+    - `ls -la .git/hooks/` → كل hooks `.sample` (default، ما تشتغل) ✅
+
+Stage Summary:
+- **المشكلة**: `core.hooksPath` كاتب `--version/_` بدال `.husky`. كل `git commit` / `git push` ينفّذ `sh --version/_/pre-commit` أو `sh --version/_/pre-push`، و `sh` يفسر `--version` كـ long option → invalid option → exit 2 → git يطبع error ويفشل.
+- **السبب**: شخص كتب `git config core.hooksPath --version/_` بيده (نسخ/لصق فاسد أو typo). المسار `--version/_/` هو بقايا husky v4 (< v9) اللي كانت تحط hooks تحت `.git/hooks/_/`. husky v9 يستخدم `.husky/` مباشرة. ملف `husky.sh` نفسه يحذّر: `husky - DEPRECATED`.
+- **الحل**: `git config core.hooksPath .husky` (+ backup في `.git/config.bak.20260725`).
+- **النتيجة**: `git push --dry-run origin main` → exit 0. البنية التحتية للـ hooks تشتغل صح. الـ user الحين يقدر يعمل `git commit -m "[BAI-XXX-NN] description"` (لأن `.husky/commit-msg` صارم ويرفض plain subjects بدون tag) ثم `git push`.
+- **المخاطر المتبقية**:
+    - `./--version/` + `./--version/_/` باقيين في working directory (litter، يحتاج cleanup pass لاحق).
+    - لو الـ user رجع لـ commit قديم قبل fix، `.git/config` per-commit يرجع `hooksPath = --version/_` (يحتاج patch بأثر رجعي).
+- **التوصية**: 
+    1. الـ user يعمل `git commit -m "[BAI-XXX-NN] update site"` (لازم tag، وإلا الـ commit-msg hook يرفض).
+    2. بعد deploy نشط، نفتح cleanup pass يحذف `./--version/` و `./--version/_/` (لأنهم deprecated husky v4 stubs).

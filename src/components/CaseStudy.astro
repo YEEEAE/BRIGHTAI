@@ -106,10 +106,10 @@ const {
       {
         results.map((r) => (
           <li>
-            <svg class="contact-info__icon" aria-hidden="true" width="1.75rem" height="1.75rem" style="color: var(--whatsapp);">
+            <svg class="contact-info__icon cs-results__icon" aria-hidden="true" width="1.75rem" height="1.75rem">
               <use href="/icons.svg#mdi-check-circle"></use>
             </svg>
-            <div><p class="inner-card__text" style="margin:0;">{r}</p></div>
+            <div><p class="inner-card__text cs-results__text">{r}</p></div>
           </li>
         ))
       }
@@ -121,9 +121,9 @@ const {
   quote && (
     <section class="inner-section" aria-labelledby="cs-quote">
       <div class="max-w-4xl mx-auto px-5 lg:px-8">
-        <blockquote class="card card--glass" style="padding: var(--space-8); border-inline-start: 4px solid var(--brand-300);">
-          <p style="font-size: var(--text-xl); line-height: 1.8; color: var(--text-primary);">“{quote.text}”</p>
-          <footer style="margin-block-start: var(--space-4); color: var(--text-secondary);">— {quote.author}</footer>
+        <blockquote class="card card--glass cs-quote">
+          <p class="cs-quote__text">“{quote.text}”</p>
+          <footer class="cs-quote__author">— {quote.author}</footer>
         </blockquote>
       </div>
     </section>
@@ -184,4 +184,21 @@ const {
   }
   .contact-info-list li { display: flex; align-items: flex-start; gap: var(--space-3); }
   .contact-info-list svg { flex-shrink: 0; margin-block-start: 0.2em; }
+
+  /* BAI-SEC-11 (2026-07-25) — quote + results inline-style migration */
+  .cs-results__icon { color: var(--whatsapp); }
+  .cs-results__text { margin: 0; }
+  .cs-quote {
+    padding: var(--space-8);
+    border-inline-start: 4px solid var(--brand-300);
+  }
+  .cs-quote__text {
+    font-size: var(--text-xl);
+    line-height: 1.8;
+    color: var(--text-primary);
+  }
+  .cs-quote__author {
+    margin-block-start: var(--space-4);
+    color: var(--text-secondary);
+  }
 </style>

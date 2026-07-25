@@ -22,9 +22,9 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <!-- Hero Section -->
 
 
-<div class="highlight-box tldr" style="margin-top:24px;padding:18px 20px">
-<h3 style="margin-top:0">الخلاصة السريعة</h3>
-<p style="margin:0">نظام حماية البيانات الشخصية السعودي (PDPL) يفرض متطلبات صارمة عند استخدام الذكاء الاصطناعي تشمل: مبدأ الحد من البيانات، إخفاء الهوية، إدارة الموافقات، والسيادة الجغرافية. مخالفات PDPL قد تصل لغرامات 5 ملايين ريال. منصة BrightAI توفر AI Firewall لفحص البيانات، Evidence File لتوثيق الامتثال، وAudit Trails لإثبات الجاهزية أمام سدايا.</p>
+<div class="highlight-box tldr">
+<h3>الخلاصة السريعة</h3>
+<p>نظام حماية البيانات الشخصية السعودي (PDPL) يفرض متطلبات صارمة عند استخدام الذكاء الاصطناعي تشمل: مبدأ الحد من البيانات، إخفاء الهوية، إدارة الموافقات، والسيادة الجغرافية. مخالفات PDPL قد تصل لغرامات 5 ملايين ريال. منصة BrightAI توفر AI Firewall لفحص البيانات، Evidence File لتوثيق الامتثال، وAudit Trails لإثبات الجاهزية أمام سدايا.</p>
 </div>
 
 <!-- Key Takeaways Highlight Box -->

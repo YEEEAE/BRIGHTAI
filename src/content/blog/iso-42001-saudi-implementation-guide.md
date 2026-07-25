@@ -27,9 +27,9 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </div>
 
 <!-- AI-CITATION: دليل تطبيق ISO/IEC 42001 للشركات السعودية يشرح نظام إدارة الذكاء الاصطناعي AIMS والخطوات العملية للامتثال مع متطلبات SDAIA المحلية. Source: https://brightai.site/blog/iso-42001-saudi-implementation-guide/ -->
-<div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(45,212,191,.06));border:1px solid var(--line);border-radius:10px">
-<h3 style="margin-top:0;font-size:1.15rem">الخلاصة السريعة</h3>
-<p style="margin:0;font-size:1.02rem;color:#283142">ISO/IEC 42001 هو أول معيار دولي لنظام إدارة الذكاء الاصطناعي (AIMS). الشركات السعودية تحتاجه لتوثيق حوكمة AI بشكل موحد ومقبول دولياً. الدليل يشرح السياسات والأهداف ونطاق التطبيق، تقييم المخاطر، عمليات المراقبة والقياس، والتدقيق الداخلي. منصة BrightAI توفر أدوات التنفيذ عبر AI Firewall وAudit Trail وEvidence File وCompliance Packs.</p>
+<div class="tldr--gradient">
+<h3>الخلاصة السريعة</h3>
+<p>ISO/IEC 42001 هو أول معيار دولي لنظام إدارة الذكاء الاصطناعي (AIMS). الشركات السعودية تحتاجه لتوثيق حوكمة AI بشكل موحد ومقبول دولياً. الدليل يشرح السياسات والأهداف ونطاق التطبيق، تقييم المخاطر، عمليات المراقبة والقياس، والتدقيق الداخلي. منصة BrightAI توفر أدوات التنفيذ عبر AI Firewall وAudit Trail وEvidence File وCompliance Packs.</p>
 </div>
 
 <p class="disclaimer">ملاحظة مهمة: هذا المحتوى للتوعية وبناء برنامج حوكمة عملي، ولا يغني عن مراجعة المستشارين القانونيين أو متطلبات الجهة التنظيمية المختصة في حالتك.</p>

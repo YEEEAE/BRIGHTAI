@@ -18,7 +18,7 @@ const { slides } = Astro.props;
 ---
 
 <section class="deck" aria-label="عروض الشرائح">
-  <div class="max-w-4xl mx-auto px-5 lg:px-8" style="display:flex; flex-direction:column; gap: var(--space-6);">
+  <div class="max-w-4xl mx-auto px-5 lg:px-8 deck__stack">
     {
       slides.map((s, i) => (
         <article class="card card--feature card--lg deck-slide">
@@ -38,6 +38,12 @@ const { slides } = Astro.props;
 </section>
 
 <style>
+  /* BAI-SEC-11 (2026-07-25) — slide stack container (was inline style) */
+  .deck__stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
   .deck-slide { position: relative; padding: var(--space-8); }
   .deck-slide__num {
     font-size: var(--text-5xl);

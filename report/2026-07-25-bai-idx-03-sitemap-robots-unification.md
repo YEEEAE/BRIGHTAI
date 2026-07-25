@@ -64,17 +64,17 @@
 
 | Check | Result |
 |---|---|
-| `grep -c '^Sitemap:' public/robots.txt` | ✅ 1 |
-| `node scripts/generate-sitemap-all-pages.mjs` | ✅ "Generated sitemap.xml with 180 public URLs" |
-| `grep -c '<loc>' public/sitemap.xml` | ✅ 180 |
-| `awk '/<url>/,/<\/url>/' public/sitemap.xml \| grep -c '<lastmod>'` | ✅ 180/180 (100% coverage) |
-| Build-date leak: `<lastmod>$(date -u +%F)</lastmod>` count | ✅ 0 |
-| Forbidden patterns in sitemap: 404/500/offline/error/design/api/admin/dev/thank-you/styleguide/components-preview/ws | ✅ 0 |
-| `grep -ci 'noindex' public/sitemap.xml` | ✅ 0 |
-| `xmllint --noout public/sitemap.xml` | ✅ Valid XML |
-| `xmllint --noout dist/client/sitemap-index.xml` | ✅ Valid XML |
-| `node scripts/verify-all.mjs` | ✅ 5/5 فحص ناجح، exit 0 |
-| `npm run seo:gate` | ✅ 0 errors, 0 warnings, exit 0 |
+| `grep -c '^Sitemap:' public/robots.txt` | ✓ 1 |
+| `node scripts/generate-sitemap-all-pages.mjs` | ✓ "Generated sitemap.xml with 180 public URLs" |
+| `grep -c '<loc>' public/sitemap.xml` | ✓ 180 |
+| `awk '/<url>/,/<\/url>/' public/sitemap.xml \| grep -c '<lastmod>'` | ✓ 180/180 (100% coverage) |
+| Build-date leak: `<lastmod>$(date -u +%F)</lastmod>` count | ✓ 0 |
+| Forbidden patterns in sitemap: 404/500/offline/error/design/api/admin/dev/thank-you/styleguide/components-preview/ws | ✓ 0 |
+| `grep -ci 'noindex' public/sitemap.xml` | ✓ 0 |
+| `xmllint --noout public/sitemap.xml` | ✓ Valid XML |
+| `xmllint --noout dist/client/sitemap-index.xml` | ✓ Valid XML |
+| `node scripts/verify-all.mjs` | ✓ 5/5 فحص ناجح، exit 0 |
+| `npm run seo:gate` | ✓ 0 errors, 0 warnings, exit 0 |
 
 **Lastmod distribution** (real git dates only — no build-date leak):
 
@@ -97,8 +97,8 @@
 | `astro.config.mjs` `lastmod` | `new Date()` (build date) | omitted (post-processor owns) |
 | Sitemap `<lastmod>` for 180 URLs | mix of git dates + mtime/build date fallback | **100% git dates** |
 | URLs with build date in lastmod | up to 82 (data-driven pages: blog/docs/kernel) | **0** |
-| Sitemap contract: 0 noindex | ✅ (already enforced) | ✅ (verified) |
-| Sitemap contract: 0 status/design/dev/api | ✅ (already enforced) | ✅ (verified) |
+| Sitemap contract: 0 noindex | ✓ (already enforced) | ✓ (verified) |
+| Sitemap contract: 0 status/design/dev/api | ✓ (already enforced) | ✓ (verified) |
 | `node scripts/verify-all.mjs` exit | 0 | 0 (no regression) |
 | `npm run seo:gate` exit | 0 | 0 (no regression) |
 
@@ -199,7 +199,24 @@ git push origin main  # Render auto-redeploys
 
 ## Related work (موثّق في brain.md)
 
-- BAI-IDX-01 (P0 deployment surface): ✅ resolved 2026-07-25 (`report/2026-07-25-deployment-artifact-surface.md`)
-- BAI-IDX-02 (P0 hreflang bidirectional): ✅ resolved 2026-07-25 (`report/2026-07-25-bidirectional-hreflang-pair-map.md`)
-- BAI-IDX-03 (P0 sitemap + robots): ✅ هذا التقرير، verified locally
+- BAI-IDX-01 (P0 deployment surface): ✓ resolved 2026-07-25 (`report/2026-07-25-deployment-artifact-surface.md`)
+- BAI-IDX-02 (P0 hreflang bidirectional): ✓ resolved 2026-07-25 (`report/2026-07-25-bidirectional-hreflang-pair-map.md`)
+- BAI-IDX-03 (P0 sitemap + robots): ✓ هذا التقرير، verified locally
 - BAI-IDX-04+ (مستقبل): orphan pages، broken links، header hardening — يعتمد على BAI-IDX-03 per `b/prompt.md` dependency chain.
+
+---
+
+## Verification Status (BAI-PROC-12)
+
+- **verified_local**: yes
+  - `public/robots.txt` — 1 Sitemap directive (was 4) ✓
+  - `astro.config.mjs` — sitemap: false (Astro's; we own the file) ✓
+  - `scripts/generate-sitemap-all-pages.mjs` — emits valid XML with lastmod from git ✓
+  - `npm run sitemap:generate` — 180 URLs in `public/sitemap.xml` ✓
+  - `node scripts/legacy-paths-audit.mjs --strict` — 0 patterns ✓
+  - `node scripts/seo-ci-check.mjs` — 6/6 hreflang pages + sitemap + robots ✓
+  - `pnpm build` — 196 pages, 0 errors ✓
+- **verified_production**: no
+- **verified_production_blocker**: awaiting user commit + Render auto-deploy + `pnpm run cloudflare:purge` per BAI-DEPLOY-11. Without these, `https://brightai.site/robots.txt` still serves the 4-sitemap version.
+
+> To promote this report to `verified_production: yes`, run after deploy: `curl -s https://brightai.site/robots.txt | grep -c "^Sitemap:"` must return 1. Update the report with `verified_production_commit: <SHA>`.

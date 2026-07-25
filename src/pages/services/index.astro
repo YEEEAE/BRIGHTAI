@@ -58,7 +58,7 @@ const servicesJsonLd = {
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <Breadcrumbs crumbs={crumbs} />
     <div class="inner-hero__badge"><svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-cogs"></use></svg> تنفيذ Saudi AI Safety OS للسوق السعودي</div>
-    <h1>خدمات تنفيذ <span class="gradient-text">Saudi AI Safety OS</span> داخل شركتك <span style="display:block; font-size:0.5em; font-weight:500; color:var(--text-secondary); margin-top:0.5em; line-height:1.4;">بجرد AI ومالك مسؤول ومسار إشراف بشري</span></h1>
+    <h1>خدمات تنفيذ <span class="gradient-text">Saudi AI Safety OS</span> داخل شركتك <span class="inner-hero__h1-suffix">بجرد AI ومالك مسؤول ومسار إشراف بشري</span></h1>
     <p class="inner-hero__desc">نركّب لك طبقة حماية وحوكمة تشغيلية متكاملة داخل المؤسسة: من تقييم جاهزية AI، لتصميم ضوابط الحماية والتدقيق والموافقة البشرية، ثم الربط الآمن مع أنظمتك الداخلية وتشغيل حالات الاستخدام. يبدأ المسار بـ<strong>جرد AI</strong> شامل وتعيين <strong>مالك مسؤول</strong>، ويُستكمل بـ<strong>سجل مخاطر</strong> محدّث و<strong>أدلة جاهزة للتدقيق</strong> وإشراف بشري فعّال على القرارات عالية المخاطر.</p>
     {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
        Answer-first, self-contained, ≤60 words. Single source of truth:
@@ -193,4 +193,19 @@ const servicesJsonLd = {
     </div>
   </div>
 </section>
+
+<style>
+  /* BAI-SEC-11 (2026-07-25) — H1 suffix (was inline style).
+     The suffix preserves the SEO anchor "Saudi AI Safety OS" in the H1
+     and adds the BAI-VOC-001-A value pillars below it (جرد AI، مالك
+     مسؤول، مسار إشراف بشري). RTL-safe via logical properties. */
+  .inner-hero__h1-suffix {
+    display: block;
+    font-size: 0.5em;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-block-start: 0.5em;
+    line-height: 1.4;
+  }
+</style>
 </ArabicLayout>

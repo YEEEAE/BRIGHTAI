@@ -1,0 +1,57 @@
+#!/usr/bin/env sh
+# .husky/pre-commit — BAI-PROC-12 (2026-07-25)
+#
+# P0/P1/P2 reminder for the developer before commit. Per the BAI-PROC-12
+# decision, this hook does NOT auto-commit on the user's behalf (that
+# would violate brain.md line 18: "لاتنشئ اي commits جديده اجعل المستخدم
+# هو من يقوم بذلك"). It only:
+#
+#   1. Detects files modified in this commit whose path matches
+#      `src/`, `scripts/`, `public/_redirects`, `public/_headers`,
+#      or `astro.config.mjs` (the high-blast-radius set).
+#   2. If any such file is modified AND the commit message does NOT
+#      start with [BAI-P0-* / [BAI-P1-* / [FIX-P0-* / [FIX-P1-*,
+#      prints a warning (but does NOT block — the user is the
+#      commit authority per brain line 18).
+#
+# Exit code:
+#   0  — always (warning only, per BAI-PROC-12 task 4)
+#
+# Related: BAI-PROC-12 task 4 (CI reminder, not auto-commit).
+
+# Find modified source files (staged for commit, not yet committed)
+MODIFIED=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null \
+  | grep -E '^(src/|scripts/|public/_redirects|public/_headers|astro\.config\.mjs)' \
+  | head -5)
+
+if [ -z "$MODIFIED" ]; then
+  exit 0
+fi
+
+# Read the prepared commit message
+COMMIT_MSG_FILE=".git/COMMIT_EDITMSG"
+if [ ! -f "$COMMIT_MSG_FILE" ]; then
+  exit 0
+fi
+SUBJECT=$(head -n 1 "$COMMIT_MSG_FILE" | tr -d '\r')
+
+# Skip if subject indicates a high-priority fix (the user already knows)
+case "$SUBJECT" in
+  "[BAI-P0-"*|"[BAI-P1-"*|"[FIX-P0-"*|"[FIX-P1-"*|"[DEC-"*)
+    exit 0 ;;
+esac
+
+cat <<EOF
+💡 BAI-PROC-12 reminder (non-blocking, per brain line 18):
+
+  You are about to commit changes to high-blast-radius files:
+$(echo "$MODIFIED" | sed 's/^/    /')
+
+  If this is a P0 or P1 fix (per b/prompt.md), the commit-msg hook
+  already requires [BAI-P0-NN] or [BAI-P1-NN] format. Otherwise, this
+  is just a friendly reminder that the change touches protected-ish
+  files — review carefully before pushing.
+
+  This is a WARNING ONLY. The commit proceeds.
+EOF
+exit 0

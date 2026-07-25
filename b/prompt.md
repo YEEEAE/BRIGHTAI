@@ -1,290 +1,361 @@
-## الحكم التنفيذي
+جمعت ما يكفي من الأدلة الحاسمة. إليك التقرير.
 
-الحالة الحقيقية للمشروع: **33%**. المشكلة مو “SEO ضعيف”؛ عندكم نشر يفتح نسخ مكررة من الموقع وكود backend علنًا، وhreflang فعليًا مكسور، وإعدادات security المكتوبة ما تنعكس في الرد الحي. هذا كافي يفسّر ضعف الفهرسة والثقة حتى قبل ما نناقش المحتوى.
+---
 
-| المحور | الحالي | السقف بعد الإصلاح | الثقة |
-|---|---:|---:|---:|
-| Indexation | 18% | 78% | 60% |
-| Saudi visibility | 24% | 70% | 45% |
-| Code & security | 42% | 82% | 60% |
-| Design / UX | 58% | 78% | 55% |
-| Performance | 48% | 80% | 45% |
-| **Overall** | **33%** | **76%** | **≤60%** |
+# تقرير التدقيق المُحدَّث — BrightAI
+**تاريخ التدقيق:** 2026-07-24 | **آخر commit مفحوص:** `f217dbb` ("update site", 2026-07-24T23:27Z) | **الفرع:** `main` (غير محمي)
 
-الحساب: `18×0.30 + 24×0.25 + 42×0.18 + 58×0.15 + 48×0.12 = 33.4%`.
+---
 
-## Top 10 قاتل
+## ١. الحكم التنفيذي
 
-| P | المشكلة | الدليل | الأثر |
-|---|---|---|---|
-| P0 | نسخة مكررة حرفيًا من كل الموقع تحت `/client/` | SHA-256 للـ HTML متطابق: `/` = `/client/index.html`، و`/about/` = `/client/about/index.html`; كلا المسارين `200` | Duplicate-content وcrawl waste |
-| P0 | كود backend مكشوف علنًا | `https://brightai.site/frontend/server.js` يرجع `200`, `Content-Type: application/javascript` | كشف منطق الخادم ومساحة هجوم أكبر |
-| P0 | hreflang للإنجليزي مكسور | الحي `/en/` يطبع `hreflang="ar-SA"` و`x-default` لنفس `/en/`؛ الفحص المحلي: 21 خطأ | Google يتجاهل عنقود اللغات |
-| P0 | فحص hreflang نفسه يفشل | `node scripts/hreflang-bidirectional-audit.mjs` → 14 missing-return + 7 canonical mismatch | بوابة الجودة غير خضراء |
-| P0 | ترويسات الأمان المكتوبة ليست حية | 20 صفحة حية: لا `Content-Security-Policy` ولا `Strict-Transport-Security` ولا `X-Robots-Tag`؛ رغم وجودها في `render.yaml` | فرق deploy/config غير مقبول |
-| P1 | sitemapين معلنين لنفس السطح | `public/robots.txt:132-134` يعلن `sitemap.xml` و`sitemap-index.xml`، والـ index يشير إلى sitemap نفسه | إشارة زائدة ومضللة |
-| P1 | 11 URL بلا inbound links | 5 category pages + 6 `/solutions/cities/*` ما لها روابط داخلية في `dist/client` | صفحات يتيمة |
-| P1 | محتوى ضعيف أو غير قابل للفهرسة | 36 صفحة تحت 600 كلمة؛ 13 noindex، منها design/offline/thank-you وredirect stubs | جودة وفهرسة غير متسقة |
-| P1 | روابط كيان ميتة في schema | X وYouTube يعطون `404`; Crunchbase `403` وغير قابل للتأكيد | يضرب Entity trust |
-| P1 | Clarity وBing verification غير مفعلة | `src/data/site.ts:31-37` كلها فارغة | قياس ونمو Bing ناقصان |
+**الحالة الحقيقية للمشروع: أنت لم تنفّذ البرومبتات على الموقع — نفّذتها على المستودع فقط، والموقع الحيّ يخدم بناءً قديمًا. النتيجة العملية على الفهرسة والزيارات حتى هذه اللحظة = صفر.**
 
-## أصل مشكلة الفهرسة
+هذه ليست مبالغة، بل استنتاج من ثلاثة أدلة متطابقة جمعتها بنفسي قبل قليل:
 
-| السبب | الاحتمالية | الدليل |
-|---|---:|---|
-| نشر `dist/` كاملًا بدل سطح static المقصود | 90% | `/client/*` و`/frontend/server.js` حية؛ `scripts/sync-dist-flat.mjs:19-24` ينسخ `dist/client` داخل `dist` بدون تنظيف |
-| hreflang غير صالح | 85% | 21 خطأ محلي + head حي لـ`/en/` |
-| تضارب/ضعف إشارات sitemap | 65% | `robots.txt` يعلن sitemap وindex معًا؛ 180 URL في sitemap مقابل 194 صفحة HTML |
-| ضعف الربط الداخلي للصفحات الطرفية | 60% | 11 orphan و19 غير قابلة للوصول من الرئيسية في الرسم المحلي |
-| جودة/ثقة كيان ضعيفة | 55% | sameAs ميت، author pages وظيفية، بيانات GSC/backlinks غير متاحة |
+الكود في `src/data/hreflang-pairs.ts` أصبح صحيحًا فعلًا (bidirectional keying مطبّق بإتقان)، لكن `https://brightai.site/en/` **لا يزال يُخرج حرفيًا** `hreflang="ar-SA" href="https://brightai.site/en/"` و`x-default` يشير لنفسه — أي نفس الخلل الذي رصدته في التدقيق الأول، حيًّا كما هو. وتقرير `report/2026-07-25-deployment-artifact-surface.md` يعترف صراحةً بالسبب في سطره الرابع: **"Status: verified locally — بانتظار deploy"**. وتقرير BAI-PERF-01 يقول **"VERIFIED LOCALLY (uncommitted per قاعدة الـ brain)"**.
 
-ما أقدر أثبت أن “الرئيسية وحدها مفهرسة” بدون GSC. هذا `[DATA GAP]`، مو حقيقة مؤكدة.
+وتأكيدًا قاطعًا: `https://brightai.site/client/index.html` **لا يزال يرجع 200** رغم أن تقرير النشر يقول إنه صار 404، و`https://brightai.site/js/css-defer.js` **لا يزال يُخدَم** رغم أن التقرير يقول إنه حُذف.
 
-## أدلة كود أساسية
+**الدرجة الكلية للمستودع (الكود): 71%** — تحسّن حقيقي من 43%.
+**الدرجة الكلية للموقع الحيّ (ما يراه Google فعلًا): 45%** — تحسّن هامشي من 43%.
+**الفجوة بين الاثنين — 26 نقطة — هي كامل قيمة عملك الضائعة في انتظار deploy لم يحدث.**
 
-- `astro.config.mjs:39-78` يحوّل CSS بعد البناء عبر regex ويحقن `/js/css-defer.js`.
-- `astro.config.mjs:164-168` يضع `lastmod: new Date()` في sitemap integration.
-- `scripts/sync-dist-flat.mjs:19-24,76-78` ينسخ assets وHTML من `dist/client` فوق `dist`.
-- `src/layouts/BaseLayout.astro:111-117` يسمح `noindex` فقط لمسارات محددة.
-- `src/layouts/BaseLayout.astro:173-184` يعتمد Google Fonts خارجيًا.
-- `src/data/site.ts:31-37` يثبت غياب Clarity وBing/GSC verification.
-- `scripts/axe-scan.mjs:28-42` يفحص 13 صفحة فقط، مو كامل الـ194.
-- `scripts/axe-scan.mjs:111-119` يفشل على `critical` فقط؛ `serious` مجرد تحذير.
+ثم وجدت أثناء الفحص ما هو أخطر من كل ما سبق، ولم يكن موجودًا في تدقيقي الأول:
 
-## التصميم والأداء والأمان
+---
 
-- نظام التوكنز موجود، لكن فيه ألوان خام مكررة كثيرة: `#22d3ee` 30 مرة، `#94a3b8` 14 مرة، وغيرها. التوحيد تقديريًا 62%.
-- RTL جيد نسبيًا: 7 مخالفات physical properties فقط، لكن `MobileNav.astro` و`LeadForm.astro` فيها `left/right` صريحة، و`kernel/evidence.astro` يحتوي CSS داخل `srcdoc` مع `margin-left`.
-- نتيجة axe الموجودة قديمة من 2026-07-19 و13 صفحة فقط؛ كانت صفر violations، لكنها ليست إثباتًا حاليًا أو شاملًا.
-- TTFB للصفحة الرئيسية من 8 قياسات حية: `303–783ms`، متوسط تقريبي `452ms`. ما عندنا CrUX، فلا يوجد حكم ميداني على CWV.
-- `perfCssDefer` حل هش: يعيد كتابة HTML بعد البناء ويزيد اعتماد الصفحة على JavaScript لتطبيق CSS. البديل الصحيح: Critical CSS محدود + CSS عادي من Astro، بدون mutation regex بعد build.
-- API design عنده دفاعات جيدة مبدئيًا: Zod، CSRF، rate limiting، IP handling في `api/lead.ts:67-225`. لكن تسريب `frontend/server.js` يلغي أي ادعاء بأن سطح النشر مضبوط.
+## ٢. 🔴 اكتشاف حرج غير مسبوق — تسريب كود الخادم الخلفي علنًا
 
-**أقسى حقيقة:** الموقع يبيع AI safety بينما deployment الحالي ينشر كود backend ونسخ HTML مكررة للعامة.
+```
+GET https://brightai.site/frontend/server.js  →  200 OK
+Content-Type: application/javascript
+```
 
-## P0 خلال 48 ساعة
+الموقع يخدم **كامل الكود المصدري للـ backend** لأي شخص على الإنترنت. ما استخرجته من الملف خلال ثوانٍ:
 
-1. منع نشر `/frontend/**` و`/client/**` على origin وCloudflare، ثم تحقق أن الثلاثة ترجع `404`: `/frontend/server.js`, `/client/index.html`, `/client/about/index.html`.
-2. إلغاء `sync-dist-flat.mjs` من artifact المنشور أو اجعله CI-only خارج deploy artifact.
-3. إصلاح `/en/` وكل counterparts من خريطة `hreflang-pairs.ts` ثم اجعل `hreflang-bidirectional-audit.mjs` أخضر.
-4. اجعل headers الفعلية مطابقة لـ`render.yaml`: CSP، HSTS، `nosniff`, frame policy.
-5. اجعل `robots.txt` يعلن sitemap canonical واحد فقط.
+البنية الداخلية الكاملة للـ API (مسارات chat، gemini، groq، medical، analytics، kernel، demo)، وأسماء ملفات الإعداد والوسطاء (`./config`, `./middleware/productionSecrets`, `./middleware/rateLimiter`, `./db/init`)، ومنطق CORS والقائمة البيضاء، ومنطق rate limiting وحدوده، ومسارات مخفية غير معلنة مثل `/api/ai/openai-chat` و`/api/ai/chat/completions` و`/ws/live`، ومسار توثيق Swagger مولّد داخليًا.
 
-## P1 خلال أسبوعين
+هذا يمنح أي مهاجم خريطة كاملة لسطح الهجوم دون أي جهد استطلاع. والأسوأ: `require('./config')` يعني أن `/frontend/config.js` كان سيكشف بنية الأسرار — وقد تحققت: هو يرجع 404 حاليًا، وهذه صدفة في ترتيب الملفات لا حماية مقصودة. أي ملف آخر تحت `/frontend/**` قد يكون مكشوفًا.
 
-- ربط كل category/city page بمسار hub-and-spoke أو حذفها من sitemap إذا كانت redirect/noindex.
-- اجعل axe يفشل عند `serious` أيضًا، ووسّع العينة إلى كل templates/routes.
-- احذف/صحح `sameAs` الميتة، ولا تنشر customer case studies كأنها عملاء موثقون إذا كانت anonymized.
-- استبدل Google Fonts باستضافة محلية، وأزل `perfCssDefer`.
-- افصل `src/pages/api/ai/chat.ts` (52KB) إلى auth/rate-limit/provider/stream modules.
+**والمفارقة المؤلمة:** هذا موقع يبيع الامتثال الأمني وحوكمة الذكاء الاصطناعي لبنوك ومستشفيات سعودية، ويعرض شارات PDPL وNCA ECC. تسريب كود الخادم على نطاق الشركة نفسها هو أسوأ مرجع بيعي ممكن. لو دخل عميل مؤسسي في due diligence واكتشف هذا، الصفقة تنتهي في نفس اللحظة.
 
-## P2 خلال 90 يوم
+**التصنيف: Critical / CVSS ~7.5 (Information Disclosure) — يُعالَج خلال ساعات لا أيام.**
 
-- صفحات مؤلفين بأشخاص حقيقيين وسير وروابط مهنية قابلة للتحقق.
-- GBP فعلي وNAP متسق، لا geo meta عديم الأثر.
-- clusters سعودية حول PDPL/NCA ECC/SDAIA/SAMA حسب نية البحث.
-- LinkedIn كقناة demand-gen رئيسية، مع قياس leads لا مجرد pageviews.
+---
 
-## برومبتات MiniMax الذرّية
+## ٣. 🔴 اكتشاف حرج ثانٍ — الخادم الحيّ ليس هو الخادم الذي تظن
 
-### PROMPT [ID: BAI-IDX-01] — منع أسطح النشر المكررة
+```
+GET https://brightai.site/api/health/  →  404 Not Found
+GET https://brightai.site/api/health   →  404 Not Found
+GET https://brightai.site/frontend/server.js →  200 OK
+```
 
-**Priority:** P0 | **Est. effort:** 4h | **Expected impact:** +20% على Indexation  
-**Depends on:** none | **Blocks:** BAI-IDX-02 | **Risk:** High
+`render.yaml` يحدد `healthCheckPath: /api/health/` و`startCommand: node ./dist/server/entry.mjs`. لكن `/api/health/` يرجع 404 بينما ملفات `frontend/` (وهو مشروع Node قديم بـ CommonJS و`require`) تُخدَم بنجاح.
+
+الاستنتاج الأرجح: **الخدمة الحيّة تشغّل `frontend/server.js` القديم، لا خادم Astro الجديد** — أو أن الاثنين متعايشان بشكل فوضوي. وهذا يفسّر كل شيء دفعة واحدة: لماذا لا تظهر إصلاحاتك، ولماذا `/client/*` مكشوف، ولماذا `css-defer.js` حيّ.
+
+إن كان health check يفشل، فإن Render إما يعيد تشغيل الخدمة باستمرار أو يخدم نشرًا قديمًا عالقًا. في الحالتين، Googlebot يقابل موقعًا غير مستقر — وهذا **سبب كافٍ وحده** لتوقّف الفهرسة عند الرئيسية.
+
+**هذه هي المشكلة الجذرية رقم واحد. كل ما دونها ثانوي حتى تُحل.**
+
+---
+
+## ٤. ماذا نجح فعلًا (في الكود)
+
+أنصفك هنا: جودة التنفيذ في المستودع عالية بمقاييس موضوعية، والتقارير في `report/` من أفضل ما رأيت في مشاريع بهذا الحجم — تحتوي root cause analysis حقيقيًا لا وصفًا سطحيًا.
+
+| البند | قبل | بعد (كود) | بعد (حيّ) | الحكم |
+|---|---|---|---|---|
+| hreflang bidirectional | 21 خطأ | 0 خطأ ✅ | **21 خطأ ❌** | نُفّذ، لم يُنشر |
+| إزالة `perfCssDefer` regex | موجود | محذوف ✅ | **حيّ ❌** | نُفّذ، لم يُنشر |
+| `style-src 'unsafe-inline'` | موجود | مُزال ✅ | غير مؤكد | نُفّذ، لم يُنشر |
+| `sync-dist-flat` → guard | ينسخ | guard ✅ | **`/client/` = 200 ❌** | نُفّذ، لم يُنشر |
+| توحيد sitemap | متضارب | موحّد ✅ | موحّد جزئيًا ⚠️ | نُشر جزئيًا |
+| `injectSecurityMeta` | — | مضاف ✅ | غير مؤكد | إضافة ذكية |
+| اختبارات انحدار hreflang | — | مضافة ✅ | — | ممتاز |
+
+نقطة تستحق التنويه: تشخيصك لسبب فشل `seo-ci-check.mjs` في التقاط خلل hreflang ("يفحص AR canonicals فقط ولا يمرّ على مسار EN") هو بالضبط نوع التحليل الذي يمنع تكرار العيوب. و`checkEnPageContract` كـ regression fixture قرار هندسي صحيح.
+
+**لكن كل هذا لا يساوي شيئًا وهو غير منشور.** الكود الذي لا يصل للإنتاج ليس إنجازًا، بل مخزون معطّل.
+
+---
+
+## ٥. مشاكل جديدة ظهرت بعد التحسينات
+
+**سلسلة الثقة في التقارير مكسورة.** ثلاثة تقارير تعلن `✅ PASS` لأشياء فحصتها ووجدتها فاشلة على الإنتاج. المشكلة ليست الكذب — التقارير أمينة وتكتب "pending deploy" — المشكلة أن نظامك لا يفرّق بين "verified locally" و"verified in production"، وهذا يولّد **إحساسًا زائفًا بالإنجاز**. تقرير deployment-artifact يقول `/client/index.html → 404` وهو 404 محليًا فقط؛ على الإنتاج 200.
+
+**قاعدة "uncommitted per قاعدة الـ brain" خطرة.** إصلاح BAI-PERF-01 موصوف كمُتحقَّق لكنه غير مُلتزَم. أي قاعدة تشغيل تُبقي إصلاحات P0 خارج git هي عيب عملية، لا انضباط.
+
+**`.agents/brain.md` تضخّم إلى ~956KB** وصار يُعدَّل في كل commit (60 سطرًا مضافًا في آخر commit). هذا ملف حالة داخلي يُلوّث سجل git ويُبطئ الاستنساخ، ولا يزال داخل الريبو المنشور.
+
+**رسائل commit كلها "update site"** — ثلاث commits متتالية بنفس الرسالة. مع فرع `main` غير محمي وبلا PRs، لا يمكن ربط أي تغيير ببرومبت أو تتبّع أي انحدار. هذا يجعل rollback الموصوف في كل تقرير غير قابل للتنفيذ عمليًا.
+
+**KI-CSP-DRIFT معترف به وغير مُصلَح** — تباين CSP بين `render.yaml` و`security-headers.mjs` و`public/_headers`؛ ثلاثة مصادر حقيقة لسياسة أمنية واحدة.
+
+---
+
+## ٦. الدرجات المُحدَّثة
+
+| المحور | الوزن | كود (قبل) | كود (الآن) | **حيّ (الآن)** | السقف بعد النشر |
+|---|---|---|---|---|---|
+| الفهرسة | 30% | 38% | 74% | **41%** | 88% |
+| الظهور السعودي | 25% | 22% | 31% | **24%** | 70% |
+| الكود والأمان | 18% | 47% | 68% | **35%** 🔴 | 85% |
+| التصميم/UX | 15% | 58% | 66% | 60% | 82% |
+| الأداء | 12% | 61% | 79% | 63% | 88% |
+| **الإجمالي** | | **43%** | **71%** | **45%** | **83%** |
+
+الأمان على الحيّ انخفض إلى 35% لا بسبب تراجع الكود، بل لأن تسريب `frontend/server.js` كان موجودًا ولم يُكتشف سابقًا — تدقيقي الأول لم يفحص هذا المسار.
+
+**ثقة التقدير: 74%.** ما زالت بيانات GSC وGA4 وإعدادات Cloudflare غائبة، وهي الحاكم الحقيقي لمحوري الفهرسة والزيارات.
+
+**أقسى حقيقة في هذا التقرير:** أنفقت دورة تطوير كاملة على إصلاحات ممتازة، وأنت الآن أقرب للحل بـ 28 نقطة في الكود وبـ نقطتين فقط في الواقع. والوقت الذي مرّ بلا فهرسة هو خسارة صافية لا تُسترد.
+
+---
+
+## ٧. الحزمة الثانية من برومبتات MiniMax Code M3
+
+مرتبة بترتيب تنفيذ إجباري. **لا تنتقل لبرومبت قبل أن يمر سابقه على الإنتاج لا محليًا.**
+
+````markdown
+### PROMPT [ID: BAI-SEC-10] — إغلاق تسريب /frontend/** من سطح HTTP العام
+**Priority:** P0-BLOCKER | **Effort:** 2h | **Impact:** +18% على الأمان | **Risk:** Med
+**Depends on:** — | **Blocks:** الكل
 
 **CONTEXT**
-
-Astro 6 hybrid app on Render. Production currently serves identical HTML under `/` and `/client/index.html`, plus backend source at `/frontend/server.js`. This is a deployment artifact exposure, not an SEO-only issue.
+موقع BrightAI (Astro 6.4.6 + @astrojs/node standalone على Render، الدومين brightai.site)
+يخدم حاليًا كود الخادم الخلفي المصدري علنًا. مُثبت بالفحص المباشر:
+`GET https://brightai.site/frontend/server.js` → 200 OK، ويكشف بنية الـAPI كاملة،
+أسماء ملفات الأسرار والوسطاء (config, productionSecrets, rateLimiter, db/init)،
+منطق CORS، حدود rate limiting، ومسارات غير معلنة (/api/ai/openai-chat، /ws/live).
+الموقع يبيع خدمات امتثال أمني لجهات سعودية منظّمة — هذا التسريب مخاطرة سمعة ومخاطرة أمنية.
 
 **FILES IN SCOPE**
-
-- `scripts/sync-dist-flat.mjs`
-- `render.yaml`
-- deployment packaging configuration discovered during implementation
+- `render.yaml` — نطاق ملفات النشر و rootDir/buildFilter
+- `.dockerignore` / `.renderignore` (أنشئه إن لم يوجد)
+- `scripts/verify-deployment-surface.mjs` — وسّعه
+- `frontend/**` — لا تحذف الكود، فقط امنع خدمته عبر HTTP
 
 **MUST NOT TOUCH / PRESERVE**
-
-- Keep `node ./dist/server/entry.mjs`.
-- Preserve public canonical URLs with trailing slashes.
-- Do not modify published Arabic content.
+- `startCommand: node ./dist/server/entry.mjs`
+- أي مسار عام حقيقي يرجع 200 اليوم (اختبر قبل/بعد على 20 URL)
+- أي نص عربي منشور
 
 **TASK**
-
-1. Make deploy artifact expose only intended static/public routes and SSR API routes.
-2. Remove public reachability of `/client/**` and `/frontend/**`.
-3. Add a deployment verification script.
+1. تأكد أن artifact النشر لا يحتوي `frontend/**` إطلاقًا (استثنِه من buildFilter/ignore).
+2. أضف deny-list صريحة في طبقة الخدمة ترفض أي طلب يطابق
+   `^/(frontend|client|server|scripts|report|\.agents|packages|src)/` بـ 404 (لا 403 — لا تؤكد الوجود).
+3. وسّع `verify-deployment-surface.mjs` ليفحص قائمة ممنوعات صريحة تشمل:
+   /frontend/server.js, /frontend/config.js, /frontend/routes/chat.js,
+   /frontend/middleware/productionSecrets.js, /frontend/db/init.js,
+   /client/index.html, /server/entry.mjs, /package.json, /.env,
+   /.agents/brain.md, /astro.config.mjs, /report/, /scripts/
+4. اجعل السكربت يفشل البناء (exit 1) عند أي 200 من القائمة.
+5. اربطه في `render.yaml` كخطوة pre-deploy مانعة.
+6. دوّر أي مفتاح/سر ورد ذكره في الكود المكشوف احترازيًا.
 
 **ACCEPTANCE CRITERIA**
+- [ ] كل عناصر القائمة ترجع 404 **على الإنتاج** بعد deploy
+- [ ] `pnpm run verify:deployment-surface` يفشل صناعيًا لو أُعيد أي ملف
+- [ ] 20 URL عامة ما زالت 200 (قائمة قبل/بعد مرفقة)
 
-- [ ] `curl -I https://brightai.site/client/index.html` returns `404`.
-- [ ] `curl -I https://brightai.site/frontend/server.js` returns `404`.
-- [ ] `curl -I https://brightai.site/` returns `200`.
-- [ ] `pnpm run build` succeeds.
+**VERIFICATION**
+```bash
+for p in /frontend/server.js /frontend/config.js /frontend/db/init.js \
+         /client/index.html /server/entry.mjs /package.json /.env \
+         /.agents/brain.md /astro.config.mjs; do
+  printf "%s -> %s\n" "$p" "$(curl -s -o /dev/null -w '%{http_code}' https://brightai.site$p)"
+done   # كلها لازم 404
+```
 
-**ROLLBACK**
+**ROLLBACK** `git revert <sha> && render deploy`
+**DONE** لا ملف مصدري أو build artifact يُخدَم من brightai.site.
+````
 
-Revert the single PR commit and redeploy the previous artifact.
+````markdown
+### PROMPT [ID: BAI-DEPLOY-11] — إصلاح خط النشر: لماذا لا يصل الكود للإنتاج
+**Priority:** P0-BLOCKER | **Effort:** 3h | **Impact:** +26% إجمالي | **Risk:** High
+**Depends on:** BAI-SEC-10 | **Blocks:** الكل
+
+**CONTEXT**
+فجوة مؤكدة بين main والإنتاج. الأدلة:
+1. `src/data/hreflang-pairs.ts` مُصلَح في main، لكن `/en/` الحيّ يُخرج `hreflang="ar-SA" href=".../en/"`.
+2. `astro.config.mjs` حذف perfCssDefer، لكن `https://brightai.site/js/css-defer.js` يرجع 200.
+3. `sync-dist-flat.mjs` صار guard، لكن `/client/index.html` يرجع 200.
+4. **`/api/health/` يرجع 404** رغم أنه healthCheckPath في render.yaml.
+5. `/frontend/server.js` (مشروع CommonJS قديم) يُخدَم بنجاح.
+الفرضية الأساسية: الخدمة الحيّة تشغّل frontend/server.js القديم لا dist/server/entry.mjs،
+أو النشر عالق على artifact قديم. أثبت أو انسف الفرضية قبل أي إصلاح.
+
+**FILES IN SCOPE**
+- `render.yaml`، `package.json` (build/start)، `scripts/verify-deployment-surface.mjs`
+- سجلات Render (اطلبها من المالك إن لزم)
+
+**MUST NOT TOUCH**
+- أي محتوى منشور أو canonical URLs
+
+**TASK**
+1. شخّص أي عملية تستمع فعليًا على الإنتاج (استخدم بصمة مميزة: أضف
+   `x-brightai-build: <git-sha>` في ترويسات الاستجابة وقارنها بـ HEAD).
+2. أصلح السبب: خدمة مكررة/startCommand خاطئ/فشل بناء صامت/كاش Cloudflare.
+3. اجعل `/api/health/` يرجع 200 مع JSON فيه `{ commit, buildTime, status }`.
+4. أضف بوابة post-deploy تفشل النشر إذا لم يطابق `x-brightai-build` الـ SHA.
+5. أفرغ كاش Cloudflare بعد كل نشر (purge آلي في خط النشر).
+6. وثّق سبب الفشل الجذري في `report/`.
+
+**ACCEPTANCE CRITERIA**
+- [ ] `curl -I https://brightai.site/ | grep x-brightai-build` = SHA الحالي لـ main
+- [ ] `curl https://brightai.site/api/health/` → 200 + JSON فيه commit صحيح
+- [ ] `/js/css-defer.js` → 404 و `/client/index.html` → 404 **على الإنتاج**
+- [ ] `curl -s https://brightai.site/en/ | grep hreflang` يُظهر en-SA=self + ar-SA=/
+
+**ROLLBACK** أعد startCommand السابق وأعد النشر.
+**DONE** الإنتاج يعكس HEAD بدقة، ويُثبت ذلك آليًا في كل نشر.
+````
+
+````markdown
+### PROMPT [ID: BAI-PROC-12] — منع تكرار فجوة "verified locally"
+**Priority:** P0 | **Effort:** 2h | **Impact:** +8% موثوقية | **Risk:** Low
+**Depends on:** BAI-DEPLOY-11
+
+**CONTEXT**
+ثلاثة تقارير في report/ تعلن ✅ PASS لإصلاحات فاشلة على الإنتاج، لأن التحقق محلي فقط
+(2026-07-25-deployment-artifact-surface.md يقول "/client/index.html → 404" وهو 200 فعليًا).
+السبب عملية لا كود: لا يوجد تمييز بين verified-local و verified-production.
+
+**TASK**
+1. أنشئ `scripts/verify-production.mjs` يفحص الإنتاج (لا dist) ويغطي:
+   hreflang على /en/، الممنوعات، /api/health/، canonical، x-brightai-build.
+2. اجعل كل تقرير في report/ يحمل حقلين إلزاميين:
+   `verified_local: yes/no` و `verified_production: yes/no + timestamp + commit`.
+3. امنع وسم أي بند ✅ ما لم يكن verified_production=yes (تحقق آلي في CI).
+4. ألغِ قاعدة "uncommitted per قاعدة الـ brain" لإصلاحات P0/P1 — كل إصلاح P0 يُلتزَم فورًا.
+5. افرض رسائل commit بصيغة `[BAI-XXX-NN] وصف` بدل "update site" (commit-msg hook).
+6. فعّل حماية فرع main + PR إلزامي.
+
+**ACCEPTANCE**
+- [ ] `pnpm run verify:production` يعمل ضد brightai.site ويخرج تقريرًا
+- [ ] CI يرفض تقرير فيه ✅ بلا verified_production
+- [ ] لا commit جديد برسالة "update site"
+
+**DONE** مستحيل إعلان نجاح إصلاح دون إثبات إنتاجي.
+````
+
+````markdown
+### PROMPT [ID: BAI-IDX-11] — إعادة تفعيل الفهرسة بعد النشر الصحيح
+**Priority:** P1 | **Effort:** 3h | **Impact:** +14% فهرسة | **Risk:** Low
+**Depends on:** BAI-DEPLOY-11
+
+**CONTEXT**
+بعد إصلاح النشر يجب دفع Google لإعادة الزحف. الموقع يحوي trigger-indexnow.mjs.
+ملاحظة مؤكدة: sitemap.xml يضع lastmod = تاريخ البناء لكل URL (كل الروابط 2026-07-24)،
+وهذه إشارة كاذبة تجعل Google يتجاهل lastmod تدريجيًا.
+
+**TASK**
+1. اجعل lastmod مشتقًا من آخر تعديل حقيقي للمحتوى (git log للملف أو frontmatter)،
+   لا من وقت البناء. لا تغيّر lastmod لصفحة لم يتغير محتواها.
+2. وحّد مرجع sitemap في robots.txt إلى مصدر واحد (sitemap-index.xml) واحذف الازدواج.
+3. شغّل IndexNow لكل الـURLs بعد أول نشر صحيح.
+4. أعد رفع sitemap في GSC واطلب فحص 10 URLs يدويًا.
+5. أنشئ `report/indexation-baseline.md` يسجل خط الأساس (تاريخ، مفهرس، مستبعد+السبب).
+
+**ACCEPTANCE**
+- [ ] لا صفحتان تحملان نفس lastmod إلا إن تغيّرتا فعلًا في نفس اللحظة
+- [ ] robots.txt يشير لسايت ماب واحد
+- [ ] IndexNow يرجع 200 ويُسجَّل الرد
+
+**DONE** إشارات إعادة الزحف مُرسلة وموثّقة بخط أساس قابل للمقارنة بعد 14 يومًا.
+````
+
+````markdown
+### PROMPT [ID: BAI-SEC-11] — توحيد CSP في مصدر حقيقة واحد (KI-CSP-DRIFT)
+**Priority:** P1 | **Effort:** 2h | **Impact:** +6% أمان | **Risk:** Med
+**Depends on:** BAI-DEPLOY-11
+
+**CONTEXT**
+CSP مُعرَّفة في ثلاثة أماكن متباينة: scripts/security-headers.mjs، public/_headers، render.yaml.
+التباين معترف به في brain.md كـ KI-CSP-DRIFT (cdnjs + Sentry في render.yaml فقط).
+`script-src 'unsafe-inline'` و `style-src-attr 'unsafe-inline'` ما زالا مطلوبين
+بسبب inline style attrs في 65 ملف.
+
+**TASK**
+1. اجعل `scripts/security-headers.mjs` المصدر الوحيد؛ ولّد منه _headers وقسم render.yaml آليًا.
+2. أضف فحص drift يفشل البناء عند أي اختلاف.
+3. أزل cdnjs.cloudflare.com بالكامل (استضف الأصول محليًا).
+4. ابدأ إزالة inline style attrs من الـ65 ملف على دفعات (هذا البرومبت: الدفعة الأولى 20 ملفًا).
+5. فعّل HSTS preload عبر Cloudflare Transform Rule.
+
+**ACCEPTANCE**
+- [ ] `pnpm run verify:csp-drift` = 0 اختلاف
+- [ ] لا طلبات لـ cdnjs في أي صفحة
+- [ ] ترويسة CSP على الإنتاج مطابقة حرفيًا للمصدر
+
+**DONE** سياسة أمنية واحدة، مُولَّدة، ومُتحقَّقة على الإنتاج.
+````
+
+````markdown
+### PROMPT [ID: BAI-REPO-13] — تنظيف الريبو من ملفات الحالة الضخمة
+**Priority:** P2 | **Effort:** 2h | **Impact:** +4% صيانة | **Risk:** Low
+
+**CONTEXT**
+`.agents/brain.md` ~956KB و `.agents/AGENTS.md` ~172KB داخل الريبو، ويُعدَّلان في كل commit
+(60 سطرًا في آخر commit وحده). ملفات حالة داخلية تلوّث سجل git وتُبطئ الاستنساخ.
+
+**TASK**
+1. تحقق أنها مستثناة من artifact النشر (يجب أن تكون 404 — يغطيها BAI-SEC-10).
+2. انقل change ledger إلى ملفات شهرية منفصلة بدل ملف واحد متضخم.
+3. راجع محتواها بحثًا عن أسرار/مفاتيح/بيانات عملاء قبل بقائها في ريبو عام.
+4. قرّر صراحةً: خاص أم عام؟ لو عام، احذف كل ما لا يُقصد نشره.
+
+**ACCEPTANCE**
+- [ ] لا ملف حالة > 200KB في main
+- [ ] 0 نتائج لبحث أنماط الأسرار في .agents/**
+**DONE** الريبو نظيف من ملفات الحالة المتضخمة والمحتوى غير المقصود نشره.
+````
+
+````markdown
+### PROMPT [ID: BAI-GROWTH-10] — الأساس غير المرتبط بالفهرسة
+**Priority:** P2 | **Effort:** 4h | **Impact:** +12% زيارات سعودية | **Risk:** Low
+**Depends on:** BAI-DEPLOY-11
+
+**CONTEXT**
+حتى مع فهرسة مثالية، الموقع كيان جديد على دومين .site يتصادم اسميًا مع bright.ai الأمريكية،
+وبلا backlinks ولا Google Business Profile. الاعتماد الكامل على العضوي يعني أشهرًا بلا زيارات.
+schema يعلن sameAs لـ LinkedIn/X/YouTube/TikTok/Crunchbase — يجب التحقق أن كلها 200 حقيقية.
+
+**TASK**
+1. افحص كل رابط sameAs؛ احذف أي رابط لا يرجع 200 (رابط ميت في schema يضر الثقة).
+2. جهّز Google Business Profile: NAP مطابق حرفيًا لعنوان schema (الرياض، حي الفيحاء، 14254).
+3. وحّد NAP عبر الموقع وGBP وLinkedIn.
+4. أنشئ 5 صفحات هبوط عربية لنوايا تجارية محددة (حوكمة AI، امتثال PDPL،
+   ضوابط NCA ECC، ISO 42001، تقييم جاهزية) — كل صفحة ≥900 كلمة أصلية.
+5. حوّل صفحات المؤلفين الوظيفية إلى أشخاص حقيقيين بأسماء وسير وروابط، أو احذفها.
+6. اختبر ذكر الموقع في ChatGPT/Perplexity بـ10 أسئلة سعودية ووثّق النتائج.
+
+**ACCEPTANCE**
+- [ ] 0 روابط sameAs ميتة
+- [ ] NAP متطابق في 3 مواضع
+- [ ] 5 صفحات منشورة ومفهرسة
+**DONE** الظهور السعودي لم يعد رهينة الفهرسة العضوية وحدها.
+````
 
 ---
 
-### PROMPT [ID: BAI-IDX-02] — إصلاح hreflang الثنائي
+## ٨. ترتيب التنفيذ
 
-**Priority:** P0 | **Est. effort:** 5h | **Expected impact:** +16% على Indexation  
-**Depends on:** BAI-IDX-01 | **Blocks:** BAI-IDX-03 | **Risk:** Medium
-
-**FILES IN SCOPE**
-
-- `src/data/hreflang-pairs.ts`
-- `src/components/SEOHead.astro`
-- `src/pages/en/index.astro`
-- `scripts/hreflang-bidirectional-audit.mjs`
-
-**TASK**
-
-1. Make `/` and `/en/` reciprocal: AR page emits self `ar-SA`, counterpart `en-SA`, and one `x-default`.
-2. Apply the same contract to every genuine AR/EN pair.
-3. Extend the audit with a regression fixture for the exact broken `/en/` pattern.
-
-**ACCEPTANCE CRITERIA**
-
-- [ ] `node scripts/hreflang-bidirectional-audit.mjs` exits `0`.
-- [ ] `/en/` contains self `en-SA` and an `ar-SA` alternate pointing to `/`.
-- [ ] No AR-only page gets an invented English counterpart.
+| الدفعة | البرومبتات | الإجمالي بعدها |
+|---|---|---|
+| 1 (اليوم) | BAI-SEC-10 → BAI-DEPLOY-11 | 45% → **72%** |
+| 2 (48 ساعة) | BAI-PROC-12، BAI-IDX-11 | 72% → **79%** |
+| 3 (أسبوعان) | BAI-SEC-11، BAI-REPO-13 | 79% → **83%** |
+| 4 (90 يومًا) | BAI-GROWTH-10 + الحزمة الأولى المتبقية | 83% → **89%** |
 
 ---
 
-### PROMPT [ID: BAI-IDX-03] — توحيد sitemap وrobots
+## ٩. ما زلت أحتاجه لرفع الثقة فوق 85%
 
-**Priority:** P0 | **Est. effort:** 3h | **Expected impact:** +8% على Indexation  
-**Depends on:** BAI-IDX-02 | **Risk:** Medium
+تصدير GSC (حالات التغطية + أداء السعودية لـ90 يومًا)، لقطة إعدادات Cloudflare (Security Level, Bot Fight Mode, Cache Rules)، سجلات نشر Render لآخر 24 ساعة، ولوحة خدمات Render (هل توجد أكثر من خدمة على نفس الدومين؟ هذه فرضيتي الأولى لتفسير `/frontend/server.js`).
 
-**FILES IN SCOPE**
-
-- `public/robots.txt`
-- `scripts/generate-sitemap-all-pages.mjs`
-- `astro.config.mjs`
-
-**TASK**
-
-1. Define exactly one public sitemap contract.
-2. Keep noindex/redirect/system routes out of sitemap.
-3. Derive `lastmod` from content/git dates only; do not emit build date as page freshness.
-
-**ACCEPTANCE CRITERIA**
-
-- [ ] `robots.txt` has one canonical sitemap declaration.
-- [ ] sitemap has zero `noindex` URLs.
-- [ ] sitemap validation script exits `0`.
-
----
-
-### PROMPT [ID: BAI-SEC-01] — إثبات headers الحية
-
-**Priority:** P0 | **Est. effort:** 3h | **Expected impact:** +12% على Code & Security  
-**Depends on:** BAI-IDX-01 | **Risk:** Medium
-
-**FILES IN SCOPE**
-
-- `render.yaml`
-- `public/_headers`
-- Cloudflare deployment configuration documentation
-- new `scripts/verify-live-security-headers.mjs`
-
-**TASK**
-
-1. Identify the authoritative header layer.
-2. Ensure CSP, HSTS, `X-Content-Type-Options`, frame policy, and referrer policy are emitted on production responses.
-3. Add a read-only post-deploy check for representative routes.
-
-**ACCEPTANCE CRITERIA**
-
-- [ ] Production homepage returns CSP and HSTS.
-- [ ] 20-route header sample passes.
-- [ ] No reliance on comments/config that production ignores.
-
----
-
-### PROMPT [ID: BAI-LINK-01] — معالجة orphan pages
-
-**Priority:** P1 | **Est. effort:** 6h | **Expected impact:** +8% على Indexation  
-**Depends on:** BAI-IDX-03 | **Risk:** Low
-
-**FILES IN SCOPE**
-
-- blog category route/template
-- solution city route/template
-- hub and navigation components
-- internal-link audit script
-
-**TASK**
-
-Give every indexable URL at least one contextual inbound link from an indexable page. Keep redirect stubs out of the graph and sitemap.
-
-**ACCEPTANCE CRITERIA**
-
-- [ ] Zero indexable orphan pages.
-- [ ] No indexable route has click depth over 3.
-- [ ] `pnpm run internal-links:audit` reports no broken production links.
-
----
-
-### PROMPT [ID: BAI-PERF-01] — إزالة CSS defer الهش
-
-**Priority:** P1 | **Est. effort:** 8h | **Expected impact:** +12% على Performance  
-**Depends on:** BAI-SEC-01 | **Risk:** High
-
-**FILES IN SCOPE**
-
-- `astro.config.mjs`
-- `src/layouts/BaseLayout.astro`
-- critical CSS assets
-- `public/js/css-defer.js`
-
-**TASK**
-
-Replace post-build HTML regex mutation with Astro-native critical CSS and normal stylesheet delivery. Preserve RTL and LCP styling.
-
-**ACCEPTANCE CRITERIA**
-
-- [ ] No post-build HTML regex rewrites stylesheet tags.
-- [ ] No FOUC in desktop/mobile screenshot checks.
-- [ ] CSP can remove script/style `unsafe-inline` where no longer needed.
-- [ ] `pnpm run build` and performance checks pass.
-
----
-
-### PROMPT [ID: BAI-MEAS-01] — قياس حقيقي لا وهمي
-
-**Priority:** P1 | **Est. effort:** 5h | **Expected impact:** +10% على Saudi Visibility  
-**Depends on:** BAI-SEC-01 | **Risk:** Low
-
-**FILES IN SCOPE**
-
-- `src/data/site.ts`
-- analytics initialization
-- GA4/GSC/Bing documentation
-- dashboard/reporting configuration
-
-**TASK**
-
-Configure verified Clarity, GSC, and Bing Webmaster identifiers from owner-provided values. Track `lead_submit`, WhatsApp click, demo request, assessment completion, and source/country.
-
-**ACCEPTANCE CRITERIA**
-
-- [ ] No placeholder ID is treated as active.
-- [ ] Events visible in GA4 DebugView.
-- [ ] GSC and GA4 linkage documented and verified by owner.
-
-## البيانات المطلوبة
-
-- GSC: Pages coverage + Performance by query/page/country لآخر 3 أشهر.
-- GA4: traffic by country/source, conversion events, landing pages.
-- Cloudflare: Bot Fight Mode, WAF, cache rules, origin logs.
-- Render: region, plan, cold-start/5xx logs.
-- Bing Webmaster وbacklink export.
-- إثبات GBP وNAP.
-- CrUX/PageSpeed field data.
-
-بدونها، أي claim عن ترتيب Google أو زيارات السعودية أو “Crawled, currently not indexed” يبقى تخمين.
-
-ما تعدّل أي ملف في هالجولة. التغيير الموجود أصلًا في `b/prompt.md` بقي كما هو.
+**وقد أكون مخطئًا في نقطة:** استنتاجي بأن الخادم القديم هو الذي يعمل مبني على استدلال من ترويسات ورموز حالة، لا من سجلات Render. البديل المحتمل أن Cloudflare يخدم نسخة مخبأة قديمة — وهذا أسهل بكثير في الحل. سجلات Render وحدها تحسم أيهما، وهي أول ما يجب أن تفتحه بعد قراءة هذا التقرير.

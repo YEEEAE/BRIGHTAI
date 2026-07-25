@@ -36,21 +36,21 @@ No protected files touched (per Section 2.1 of agent.md: `astro.config.mjs`, `pu
 
 | Check | Before | After | Status |
 |---|---|---|---|
-| `node scripts/hreflang-bidirectional-audit.mjs` exit code | 1 | **0** | ✅ |
-| `node scripts/hreflang-bidirectional-audit.mjs` TOTAL ERRORS | 21 | **0** | ✅ |
-| `node scripts/hreflang-bidirectional-audit.mjs` Canonical mismatch | 7 | **0** | ✅ |
-| `node scripts/hreflang-bidirectional-audit.mjs` Missing return tags | 14 | **0** | ✅ (after self-ref fix) |
-| `node scripts/hreflang-bidirectional-audit.mjs` EN page contract (S3) | — | **0** | ✅ (new fixture) |
-| `node scripts/hreflang-bidirectional-audit.mjs` AR-only invented en | — | **0** | ✅ (new invariant) |
-| `/en/` emits en-SA=self | ❌ (missing) | ✅ | ✅ |
-| `/en/` emits ar-SA=↗/ | ❌ (was self) | ✅ | ✅ |
-| `/en/` emits x-default=/ | ✅ | ✅ | ✅ |
-| `/cookie-policy/` ↔ `/en/cookie-policy/` (5 legal + sales-deck + /) | ❌ (all 7 broken) | ✅ | ✅ |
-| `/solutions/ai-governance-platform/` (AR-only) has NO en-SA invented | ✅ | ✅ | ✅ |
-| `/privacy-cookies/` (S1 AR-only, was the 2026-07-18 fix) | ✅ | ✅ | ✅ |
-| `node scripts/verify-all.mjs` (5/5 checks) | ✅ | ✅ | ✅ |
-| `node scripts/seo-ci-check.mjs` (seo:gate) | ✅ (6/6 hreflang pages passed) | ✅ | ✅ |
-| `ASTRO_TELEMETRY_DISABLED=1 pnpm build` | 196 pages, 0 errors | 196 pages, 0 errors | ✅ |
+| `node scripts/hreflang-bidirectional-audit.mjs` exit code | 1 | **0** | ✓ |
+| `node scripts/hreflang-bidirectional-audit.mjs` TOTAL ERRORS | 21 | **0** | ✓ |
+| `node scripts/hreflang-bidirectional-audit.mjs` Canonical mismatch | 7 | **0** | ✓ |
+| `node scripts/hreflang-bidirectional-audit.mjs` Missing return tags | 14 | **0** | ✓ (after self-ref fix) |
+| `node scripts/hreflang-bidirectional-audit.mjs` EN page contract (S3) | — | **0** | ✓ (new fixture) |
+| `node scripts/hreflang-bidirectional-audit.mjs` AR-only invented en | — | **0** | ✓ (new invariant) |
+| `/en/` emits en-SA=self | ❌ (missing) | ✓ | ✓ |
+| `/en/` emits ar-SA=↗/ | ❌ (was self) | ✓ | ✓ |
+| `/en/` emits x-default=/ | ✓ | ✓ | ✓ |
+| `/cookie-policy/` ↔ `/en/cookie-policy/` (5 legal + sales-deck + /) | ❌ (all 7 broken) | ✓ | ✓ |
+| `/solutions/ai-governance-platform/` (AR-only) has NO en-SA invented | ✓ | ✓ | ✓ |
+| `/privacy-cookies/` (S1 AR-only, was the 2026-07-18 fix) | ✓ | ✓ | ✓ |
+| `node scripts/verify-all.mjs` (5/5 checks) | ✓ | ✓ | ✓ |
+| `node scripts/seo-ci-check.mjs` (seo:gate) | ✓ (6/6 hreflang pages passed) | ✓ | ✓ |
+| `ASTRO_TELEMETRY_DISABLED=1 pnpm build` | 196 pages, 0 errors | 196 pages, 0 errors | ✓ |
 
 ---
 
@@ -148,9 +148,9 @@ Before S3, every AR page had `ar-SA=self` and every EN page had `en-SA=self`. Th
 
 ## Acceptance Criteria (from the task spec)
 
-- ✅ `node scripts/hreflang-bidirectional-audit.mjs` exits 0.
-- ✅ `/en/` contains self `en-SA` and an `ar-SA` alternate pointing to `/` (verified via `grep hreflang dist/client/en/index.html`).
-- ✅ No AR-only page gets an invented English counterpart (verified via `checkArOnlyPageNoEnAlternate` against all 182 audited pages; `/solutions/ai-governance-platform/`, `/privacy-cookies/`, etc. all still AR-only with no `en-SA` alternate).
+- ✓ `node scripts/hreflang-bidirectional-audit.mjs` exits 0.
+- ✓ `/en/` contains self `en-SA` and an `ar-SA` alternate pointing to `/` (verified via `grep hreflang dist/client/en/index.html`).
+- ✓ No AR-only page gets an invented English counterpart (verified via `checkArOnlyPageNoEnAlternate` against all 182 audited pages; `/solutions/ai-governance-platform/`, `/privacy-cookies/`, etc. all still AR-only with no `en-SA` alternate).
 
 ---
 
@@ -236,3 +236,18 @@ Out-of-scope (tracked in DEC-HREFLANG-BIDI-2026-07-25-001):
 - `scripts/generate-sitemap-all-pages.mjs` — consumer (unchanged, but now produces correct alternates for EN URLs)
 - `report/2026-07-18-...` (BAI-SEO-003-S1 + S2 historical context) — the same hreflang lineage
 - `brain.md` Section 1.1 (Build & Pages, EN pages) — unchanged (still 5 legal + / + sales-deck = 7 EN)
+
+---
+
+## Verification Status (BAI-PROC-12)
+
+- **verified_local**: yes
+  - `node scripts/hreflang-bidirectional-audit.mjs` — 0 errors (was 21) ✓
+  - `node scripts/verify-all.mjs` — 5/5 checks pass ✓
+  - `node scripts/seo-ci-check.mjs` — 6/6 hreflang pages, 0 errors ✓
+  - `grep hreflang dist/client/en/index.html` — `en-SA=self + ar-SA=↗/ + x-default=/` ✓
+  - `pnpm build` — 196 pages, 0 errors ✓
+- **verified_production**: no
+- **verified_production_blocker**: awaiting user commit + Render auto-deploy + `pnpm run cloudflare:purge` per BAI-DEPLOY-11. Without these, the live `/en/` page still emits the broken `ar-SA=self + x-default=self` (no en-SA self, no return tag) that Google penalizes.
+
+> To promote this report to `verified_production: yes`, run after deploy: `pnpm run verify:production` — the `hreflang contract` probe must pass for both `/en/` and `/`. Update the report with `verified_production_commit: <SHA>`.

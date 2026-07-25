@@ -24,9 +24,9 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </div>
 
 <!-- AI-CITATION: دليل تشغيلي لضوابط NCA ECC للذكاء الاصطناعي يشرح إدارة الهوية والوصول وحماية البيانات والمراقبة والتدقيق للشركات السعودية. Source: https://brightai.site/blog/nca-ecc-ai-controls-guide/ -->
-<div style="margin:24px 0;padding:18px 20px;background:linear-gradient(135deg,rgba(124,58,237,.06),rgba(45,212,191,.06));border:1px solid var(--line);border-radius:10px">
-<h3 style="margin-top:0;font-size:1.15rem">الخلاصة السريعة</h3>
-<p style="margin:0;font-size:1.02rem;color:#283142">ضوابط NCA ECC للذكاء الاصطناعي تحدد متطلبات الأمن السيبراني لتطبيقات AI في السعودية. الدليل يشرح عملياً: الحوكمة والملكية والسياسات، إدارة الهوية والوصول، حماية البيانات، المراقبة والتدقيق. منصة BrightAI توفر AI Firewall وAudit Trail وRisk Classification وHuman Approval Layer لتنفيذ هذه الضوابط بشكل آلي ومتوافق.</p>
+<div class="tldr--gradient">
+<h3>الخلاصة السريعة</h3>
+<p>ضوابط NCA ECC للذكاء الاصطناعي تحدد متطلبات الأمن السيبراني لتطبيقات AI في السعودية. الدليل يشرح عملياً: الحوكمة والملكية والسياسات، إدارة الهوية والوصول، حماية البيانات، المراقبة والتدقيق. منصة BrightAI توفر AI Firewall وAudit Trail وRisk Classification وHuman Approval Layer لتنفيذ هذه الضوابط بشكل آلي ومتوافق.</p>
 </div>
 
 <p class="disclaimer">ملاحظة مهمة: هذا المحتوى للتوعية وبناء برنامج حوكمة عملي، ولا يغني عن مراجعة المستشارين القانونيين أو متطلبات الجهة التنظيمية المختصة في حالتك.</p>
