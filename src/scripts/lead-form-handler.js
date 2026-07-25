@@ -303,14 +303,27 @@ function setSubmitState(form, state) {
   btn.setAttribute('data-state', state);
   const label = btn.querySelector('[data-submit-label]');
   const icon = btn.querySelector('[data-submit-icon]');
+  const spinner = btn.querySelector('[data-submit-spinner]');
   if (state === 'loading') {
+    btn.classList.add('is-loading');
+    btn.setAttribute('aria-busy', 'true');
     btn.disabled = true;
     if (label) label.textContent = 'جاري الإرسال…';
     if (icon) icon.setAttribute('data-submit-icon', 'loading');
+    if (spinner) spinner.hidden = false;
+    // Activate focus trap when submitting
+    const trapWrap = form.querySelector('[data-trap-focus]');
+    if (trapWrap) trapWrap.setAttribute('data-active', 'true');
   } else {
+    btn.classList.remove('is-loading');
+    btn.removeAttribute('aria-busy');
     btn.disabled = false;
     if (label) label.textContent = btn.dataset.defaultLabel || label.textContent;
     if (icon) icon.setAttribute('data-submit-icon', 'idle');
+    if (spinner) spinner.hidden = true;
+    // Deactivate focus trap
+    const trapWrap = form.querySelector('[data-trap-focus]');
+    if (trapWrap) trapWrap.setAttribute('data-active', 'false');
   }
 }
 

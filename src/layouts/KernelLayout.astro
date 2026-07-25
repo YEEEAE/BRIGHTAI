@@ -164,7 +164,7 @@ const allItems = [
       display: flex;
       align-items: center;
       gap: var(--space-1);
-      margin-right: auto;
+      margin-inline-end: auto;
     }
     .k-topnav__link {
       display: inline-flex;
@@ -269,11 +269,12 @@ const allItems = [
     .k-drawer__panel {
       position: absolute;
       top: 0;
-      right: 0;
+      inset-inline-start: 0;
+      inset-inline-end: 0;
       bottom: 0;
       width: min(85vw, 320px);
       background: var(--bg-base);
-      border-left: 1px solid var(--border);
+      border-inline-start: 1px solid var(--border);
       padding: var(--space-6) var(--space-4);
       overflow-y: auto;
     }
@@ -306,7 +307,7 @@ const allItems = [
     .k-drawer__close {
       position: absolute;
       top: var(--space-4);
-      left: var(--space-4);
+      inset-inline-start: var(--space-4);
       width: 44px;
       height: 44px;
       display: flex;

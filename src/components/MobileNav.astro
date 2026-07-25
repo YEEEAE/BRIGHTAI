@@ -245,8 +245,8 @@ function isActive(href: string): boolean {
        اللي عندهم transform يحسبون في scrollWidth، حتى لو visibility: hidden).
        LTR: drawer يجي من اليسار، يبدأ من خارج يمين الشاشة.
        RTL: drawer يجي من اليمين، يبدأ من خارج يسار الشاشة. */
-    right: 0;
-    left: auto;
+    inset-inline-end: 0;
+    inset-inline-start: auto;
     transform: translateX(100%);
     width: 100%;
     max-width: 480px;
@@ -284,8 +284,8 @@ function isActive(href: string): boolean {
 
   [dir="rtl"] .mobile-menu {
     /* RTL: drawer يدخل من اليمين (start side)، يبدأ من خارج يسار الشاشة. */
-    right: auto;
-    left: 0;
+    inset-inline-end: auto;
+    inset-inline-start: 0;
     transform: translateX(-100%);
   }
 

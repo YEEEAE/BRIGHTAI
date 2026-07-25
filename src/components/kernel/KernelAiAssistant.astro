@@ -173,10 +173,16 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           type="submit"
           class="kernel-ai-assistant__send"
           data-kernel-ai-send
+          data-default-label="إرسال"
           aria-label="إرسال السؤال"
         >
-          <span aria-hidden="true"><Fragment set:html={iconSend} /></span>
-          <span>إرسال</span>
+          <span class="kernel-ai-assistant__send-spinner" aria-hidden="true" data-kai-spinner hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="16" height="16">
+              <circle cx="12" cy="12" r="10" stroke-dasharray="31.4 31.4" stroke-dashoffset="0" />
+            </svg>
+          </span>
+          <span aria-hidden="true" data-kai-send-icon><Fragment set:html={iconSend} /></span>
+          <span data-kai-send-label>إرسال</span>
         </button>
       </div>
     </form>
@@ -384,13 +390,31 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     outline: 2px solid var(--text-primary);
     outline-offset: 2px;
   }
+  .kernel-ai-assistant__send.is-loading,
   .kernel-ai-assistant__send:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
+  .kernel-ai-assistant__send-spinner {
+    display: none;
+    animation: kai-spin 0.6s linear infinite;
+  }
+  .kernel-ai-assistant__send-spinner[hidden] { display: none; }
+  .kernel-ai-assistant__send.is-loading .kernel-ai-assistant__send-spinner {
+    display: inline-block;
+  }
+  .kernel-ai-assistant__send.is-loading [data-kai-send-icon] {
+    display: none;
+  }
   .kernel-ai-assistant__send svg {
     inline-size: 16px;
     block-size: 16px;
+  }
+  @keyframes kai-spin {
+    to { transform: rotate(360deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-ai-assistant__send-spinner { animation: none; }
   }
 
   @media (max-width: 640px) {

@@ -1,0 +1,132 @@
+---
+/**
+ * TrapFocus.astro — Keyboard focus trap wrapper.
+ *
+ * يحبس التركيز اللوحةي (Tab/Shift+Tab) داخل المحتوى المغلف عند تفعيله.
+ * يُستخدم للنماذج في حالة الإرسال، والمودالات، والسحب الجانبية.
+ *
+ * يستغل الآلية الموجودة في focus-trap.js العام (public/js/focus-trap.js)
+ * الذي يراقب [data-focus-trap] ويطبق الحبس تلقائياً عند الإظهار.
+ *
+ * Props:
+ *   - active: boolean — يفعّل/يعطّل حبس التركيز.
+ *
+ * الاستخدام:
+ *   <TrapFocus active={isSubmitting}>
+ *     <form>...</form>
+ *   </TrapFocus>
+ */
+interface Props {
+  active?: boolean;
+  id?: string;
+}
+
+const { active = false } = Astro.props;
+const wrapperId = `trap-focus-${Math.random().toString(36).slice(2, 10)}`;
+---
+
+<div
+  id={wrapperId}
+  class="trap-focus-wrapper"
+  data-trap-focus
+  aria-hidden={active ? 'false' : undefined}
+  data-active={active ? 'true' : 'false'}
+>
+  <slot />
+</div>
+
+<style>
+  .trap-focus-wrapper {
+    /* لا إضافات بصرية — الحبس فقط */
+    position: relative;
+  }
+</style>
+
+<script>
+  (function () {
+    'use strict';
+
+    var FOCUSABLE_SELECTOR = [
+      'a[href]',
+      'button:not([disabled])',
+      'input:not([disabled]):not([type="hidden"])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])',
+      'audio[controls]',
+      'video[controls]',
+      '[contenteditable]:not([contenteditable="false"])',
+    ].join(',');
+
+    function getFocusable(root) {
+      return Array.from(root.querySelectorAll(FOCUSABLE_SELECTOR)).filter(function (el) {
+        if (el.hasAttribute('disabled')) return false;
+        if (el.getAttribute('aria-hidden') === 'true') return false;
+        if (el.offsetParent === null && getComputedStyle(el).position !== 'fixed') return false;
+        if (el.getClientRects && el.getClientRects().length === 0) return false;
+        return true;
+      });
+    }
+
+    function initTrap() {
+      var wrappers = document.querySelectorAll('[data-trap-focus]');
+      wrappers.forEach(function (wrapper) {
+        if (wrapper.dataset.trapBound === '1') return;
+        wrapper.dataset.trapBound = '1';
+
+        var isActive = function () {
+          return wrapper.getAttribute('data-active') === 'true';
+        };
+        var isTrapping = false;
+
+        function onKeydown(e) {
+          if (!isTrapping) return;
+          if (e.key === 'Tab') {
+            var focusables = getFocusable(wrapper);
+            if (focusables.length === 0) {
+              e.preventDefault();
+              return;
+            }
+            var first = focusables[0];
+            var last = focusables[focusables.length - 1];
+            var activeEl = document.activeElement;
+            var inside = wrapper.contains(activeEl);
+
+            if (e.shiftKey) {
+              if (!inside || activeEl === first) {
+                e.preventDefault();
+                last.focus();
+              }
+            } else {
+              if (!inside || activeEl === last) {
+                e.preventDefault();
+                first.focus();
+              }
+            }
+          }
+        }
+
+        function sync() {
+          isTrapping = isActive();
+          wrapper.setAttribute('aria-hidden', isTrapping ? 'false' : undefined);
+        }
+
+        var observer = new MutationObserver(sync);
+        observer.observe(wrapper, {
+          attributes: true,
+          attributeFilter: ['data-active'],
+        });
+
+        document.addEventListener('keydown', onKeydown, true);
+        sync();
+      });
+    }
+
+    document.addEventListener('astro:page-load', initTrap);
+    if (document.readyState !== 'loading') {
+      initTrap();
+    } else {
+      document.addEventListener('DOMContentLoaded', initTrap);
+    }
+  })();
+</script>

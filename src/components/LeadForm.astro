@@ -58,6 +58,7 @@
  *   - First invalid field receives focus after submit; this is the standard
  *     WCAG 3.3.1 pattern.
  */
+import TrapFocus from './ui/TrapFocus.astro';
 import {
   MARKETING,
   LEAD_FORM_ENDPOINTS,
@@ -143,6 +144,7 @@ const formConfig = {
   data-form-config={JSON.stringify(formConfig)}
   novalidate
 >
+  <TrapFocus>
   <input type="hidden" name="_subject" value={subject} />
   <input type="hidden" name="_captcha" value="false" />
   <input type="hidden" name="_next" value={redirectUrl} />
@@ -260,7 +262,7 @@ const formConfig = {
             <>
               <input
                 class="field"
-                type={inputType}
+                type={f.type === 'email' ? 'email' : f.type === 'tel' ? 'tel' : 'text'}
                 id={`${formId}-${f.name}`}
                 name={f.name}
                 required={f.required}
@@ -304,6 +306,11 @@ const formConfig = {
     data-submit-button
     data-default-label={ctaLabel}
   >
+    <span class="lead-form__submit-icon lead-form__submit-spinner" aria-hidden="true" data-submit-spinner hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" width="20" height="20">
+        <circle cx="12" cy="12" r="10" stroke-dasharray="31.4 31.4" stroke-dashoffset="0" />
+      </svg>
+    </span>
     <span class="lead-form__submit-icon" aria-hidden="true" data-submit-icon="idle">
       <svg width="20" height="20"><use href="/icons.svg#mdi-send"></use></svg>
     </span>
@@ -328,6 +335,7 @@ const formConfig = {
       <a href="/solutions/ai-governance-platform/" class="btn btn--whatsapp">استكشف الحلول</a>
     </div>
   </div>
+  </TrapFocus>
 </form>
 
 <style>
@@ -346,7 +354,7 @@ const formConfig = {
      keep real users and AT out of it. */
   .lead-form__honeypot {
     position: absolute;
-    left: -9999px;
+    inset-inline-start: -9999px;
     top: auto;
     inline-size: 1px;
     block-size: 1px;
@@ -456,13 +464,24 @@ const formConfig = {
     justify-content: center;
     gap: var(--space-2);
   }
+  .lead-form__submit.is-loading,
   .lead-form__submit[data-state="loading"] {
     cursor: wait;
     opacity: 0.85;
+    pointer-events: none;
   }
-  .lead-form__submit[data-state="loading"] .lead-form__submit-icon {
+  .lead-form__submit.is-loading .lead-form__submit-icon:not(.lead-form__submit-spinner),
+  .lead-form__submit[data-state="loading"] .lead-form__submit-icon:not(.lead-form__submit-spinner) {
+    display: none;
+  }
+  .lead-form__submit-spinner {
     display: inline-block;
-    animation: lead-form-spin 0.8s linear infinite;
+    animation: lead-form-spin 0.6s linear infinite;
+  }
+  .lead-form__submit-spinner[hidden] { display: none; }
+  .lead-form__submit.is-loading .lead-form__submit-spinner,
+  .lead-form__submit[data-state="loading"] .lead-form__submit-spinner {
+    display: inline-block;
   }
   .lead-form__submit[data-state="success"],
   .lead-form__submit[data-state="error"] {
@@ -472,9 +491,7 @@ const formConfig = {
     to { transform: rotate(360deg); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .lead-form__submit[data-state="loading"] .lead-form__submit-icon {
-      animation: none;
-    }
+    .lead-form__submit-spinner { animation: none; }
   }
 
   /* Hide the form chrome while the success panel is showing. Done via
