@@ -18,7 +18,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getPostBySlug, getRelatedPosts } from '../../data/blog';
 import { getCollection, render } from 'astro:content';
 import { SITE } from '../../data/site';
-import { getFaqLd } from '../../data/schema-helpers';
+import { getFaqLd, getArticleLd } from '../../data/schema-helpers';
 // BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — central contract
 import { getP0Snippet } from '../../data/snippet-pack';
 import { getRelatedSolutionsForBlog } from '../../data/cross-links';
@@ -550,7 +550,21 @@ const faqNode = FAQ_BY_SLUG[post.slug]
   ? { ...getFaqLd(FAQ_BY_SLUG[post.slug]), '@id': `${post.canonical}#faq` }
   : null;
 
-const extraSchemaNodes: Record<string, unknown>[] = [itemListNode, faqNode].filter(
+// BAI-SCHEMA-03 (2026-07-25): Article JSON-LD + speakable for blog posts.
+const articleNode = getArticleLd({
+  canonical: post.canonical,
+  headline: post.title,
+  description: post.description,
+  image: post.ogImage,
+  datePublished: post.pubDate,
+  dateModified: post.updatedDate ?? post.pubDate,
+  authorName: post.author.name,
+  authorSlug: post.author.slug,
+  category: post.category,
+  tags: post.tags,
+});
+
+const extraSchemaNodes: Record<string, unknown>[] = [itemListNode, faqNode, articleNode].filter(
   (n): n is Record<string, unknown> => Boolean(n),
 );
 

@@ -24,8 +24,8 @@ export const SITE = {
     },
   },
   social: {
-    twitter: 'https://twitter.com/brightai_sa',
-    linkedin: 'https://linkedin.com/company/brightai',
+    twitter: 'https://x.com/brightai_sa',
+    linkedin: 'https://linkedin.com/company/brightai-saudi',
     github: 'https://github.com/YEEEAE/BRIGHTAI',
   },
   // Verification/tracking IDs — empty until real verified values are provided.

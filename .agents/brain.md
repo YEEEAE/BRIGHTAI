@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-25 13:15 +03:00
+last_updated: 2026-07-25 16:56 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.37
 agent_version: v2.3
@@ -988,6 +988,17 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-25 — BAI-SCHEMA-03: Article JSON-LD on every blog post
+
+- **Files**: src/data/schema-helpers.ts, src/pages/blog/[...slug].astro
+- **What**: أضفت `getArticleLd()` helper في schema-helpers.ts، واستخدمته في blog/[...slug].astro عشان كل blog post يطلع Article JSON-LD (@type=Article مع headline, author Person@id, datePublished, dateModified, image, publisher@id).
+- **Why**: كل blog post كان عنده BlogPosting schema بس، والـ task يطلب Article JSON-LD صريح عشان تحسين الـ indexation. الـ BlogPosting موجود أصلاً في BlogLayout.astro وما تمسّكناه.
+- **Verification**: npm run build ✅, grep -c '"@type":"Article"' → 1 على كل blog post (71/71 ✅), npm run verify:all → exit 0 ✅
+- **Report**: none
+- **Commit**: uncommitted
+- **Status**: verified
+- **Brain updates**: none
 
 ### 2026-07-25 — BAI-IDX-22: Architectural fix for Render Node redirect processing — 206 redirects auto-injected into `astro.config.mjs` from `redirects.json` + deny-list narrowed to allow legacy URLs — UNCOMMITTED (per brain line 18, user commits)
 

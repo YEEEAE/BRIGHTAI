@@ -111,12 +111,8 @@ export const ORGANIZATION = {
     { '@type': 'City', name: 'المدينة المنورة' },
   ],
   sameAs: [
-    'https://linkedin.com/company/brightai-site',
-    'https://x.com/BrightAISite',
-    'https://www.youtube.com/@BrightAiSaudi',
     'https://www.tiktok.com/@bright1ai',
     'https://github.com/YEEEAE/BRIGHTAI',
-    'https://crunchbase.com/organization/brightai',
   ],
   knowsAbout: [
     'الذكاء الاصطناعي',
@@ -643,5 +639,87 @@ export function getEventLd(input: EventInput) {
           },
         }
       : {}),
+  };
+}
+
+/* ──────────────────────────────────────────────────────────────────
+ * 10. ARTICLE (BAI-SCHEMA-03)
+ * ────────────────────────────────────────────────────────────────
+ *
+ * Article JSON-LD node for blog posts. Adds an `Article` type alongside
+ * the existing `BlogPosting` in the @graph. Includes speakable
+ * specification pointing to the TL;DR aside and the description.
+ *
+ * Usage:
+ *   import { getArticleLd } from '../../data/schema-helpers';
+ *   const articleNode = getArticleLd({
+ *     canonical: post.canonical,
+ *     headline: post.title,
+ *     description: post.description,
+ *     image: post.ogImage,
+ *     datePublished: post.pubDate,
+ *     dateModified: post.updatedDate,
+ *     authorName: post.author.name,
+ *     authorSlug: post.author.slug,
+ *     category: post.category,
+ *     tags: post.tags,
+ *   });
+ */
+
+export interface ArticleLdInput {
+  canonical: string;
+  headline: string;
+  description: string;
+  image: string;
+  datePublished: string;
+  dateModified: string;
+  authorName: string;
+  authorSlug: string;
+  category: string;
+  tags: string[];
+  inLanguage?: string;
+}
+
+export function getArticleLd(input: ArticleLdInput) {
+  const {
+    canonical,
+    headline,
+    description,
+    image,
+    datePublished,
+    dateModified,
+    authorName,
+    authorSlug,
+    category,
+    tags,
+    inLanguage = 'ar-SA',
+  } = input;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    '@id': `${canonical}#article`,
+    headline,
+    description,
+    image: {
+      '@type': 'ImageObject',
+      url: `${SITE.url}${image}`,
+      width: 1200,
+      height: 630,
+    },
+    datePublished,
+    dateModified,
+    author: {
+      '@type': 'Person',
+      '@id': `${SITE.url}/authors/${authorSlug}#person`,
+      name: authorName,
+    },
+    publisher: { '@id': 'https://brightai.site/#organization' },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonical,
+    },
+    articleSection: category,
+    keywords: tags.join(', '),
+    inLanguage,
   };
 }
