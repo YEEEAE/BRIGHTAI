@@ -264,7 +264,6 @@ export function selfCheck() {
     '/e158df443f2742d281a02c4aeecb4a60.txt',
     '/_astro/critical.1234.css',
     '/_astro/ClientRouter.foo.js',
-    '/js/font-async-loader.js',
     '/assets/images/og/brightai-og-1200x630.png',
     '/assets/fonts/TheYearofTheCamel-Medium.woff2',
     '/fonts/ibm-plex-sans-arabic.woff2',

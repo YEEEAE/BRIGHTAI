@@ -190,18 +190,13 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
   <meta name="rating" content="general" />
   <meta name="revisit-after" content="7 days" />
 
-  <!-- Font preconnect (REPORTS-20: trimmed to body 400 + heading 600 only). -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Google Fonts CSS loaded non-blocking via print media trick.
-       REPORTS-CSP-01 (2026-07-15): Replaced inline onload="this.media='all'"
-       event handler with data-font-async attribute. The flip from media="print"
-       to media="all" is performed by src/scripts/font-async-loader.js (external
-       ES module bundled by Astro), so the inline event handler that required
-       script-src-attr 'unsafe-inline' in CSP is gone. -->
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" media="print" data-font-async />
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&family=Inter:wght@400;600&display=swap" /></noscript>
+  <!-- BAI-PERF-02 (2026-07-25): Self-hosted fonts — no Google Fonts requests.
+       Font files in public/fonts/, @font-face in tokens.css.
+       Preloaded for optimal LCP: no FOUT, no FOUT mitigations needed. -->
+  <link rel="preload" href="/fonts/IBMPlexSansArabic-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/IBMPlexSansArabic-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/Inter-SemiBold.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Preload custom brand font (subsetted — 58.2KB → 9.9KB) -->
   <link rel="preload" href="/assets/fonts/TheYearofTheCamel-Medium.subset.woff2" as="font" type="font/woff2" crossorigin />
@@ -254,20 +249,9 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        violations بدون ما يكسر الموقع. بعد أسبوع 0 violations → enforcement
        + إزالة 'unsafe-inline' من CSP. */}
 
-  {/* Font async loader — REPORTS-CSP-01 (2026-07-15): replaces the inline
-       onload="this.media='all'" handler on the Google Fonts <link> above.
-       The loader finds every <link data-font-async> in the head and flips
-       media="print" → media="all" once each stylesheet finishes loading.
-
-       FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): the previous inline
-       `<script>import '../scripts/font-async-loader.js';</script>` failed at
-       runtime because the browser cannot resolve a relative `import` specifier
-       inside an inline module (SyntaxError). The script now lives in
-       public/js/font-async-loader.js and loads as a static ES module — same
-       pattern as /js/analytics.js below. Astro bundles it as a side-effect
-       import when the nonce is removed, but `type="module"` + static `src=`
-       is more predictable and matches the analytics.js pattern. */}
-  <script type="module" src="/js/font-async-loader.js" nonce={Astro.locals.cspNonce}></script>
+  {/* BAI-PERF-02 (2026-07-25): font-async-loader.js removed — no longer needed.
+       Google Fonts are self-hosted, no media="print" flip required.
+       All fonts load via preload + @font-face in tokens.css. */}
 
   {/* Service Worker registration — REPORTS-20: deferred via setTimeout (100ms after
        window.load) so it never competes with the LCP element. External file replaces
@@ -337,23 +321,15 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
       SSR-safe (script is bundled by Astro and only runs in the browser). Respects
       prefers-reduced-motion + degrades gracefully without IntersectionObserver support.
 
-      The actual implementation lives in public/js/scroll-reveal.js so it can be
-      unit-tested, versioned, and audited independently of this layout file.
-
       FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): was previously an inline
       `<script>import '../scripts/scroll-reveal.js';</script>` which the
       browser couldn't resolve at runtime (relative `import` specifier
-      in an inline module → SyntaxError). All reveal-target elements stayed
-      at opacity 0 with translateY(16px), creating the long empty space
-      on the homepage after the "كل شركة تبي AI…" section. Loaded as a
-      static ES module instead, matching the analytics.js pattern. */}
+      in an inline module → SyntaxError). Loaded as a static ES module instead. */}
   <script type="module" src="/js/scroll-reveal.js" nonce={Astro.locals.cspNonce}></script>
 
   {/* Global focus trap — DEC-A11Y-003 (2026-07-14). Auto-applies a WCAG-compliant
       focus trap to every [role="dialog"][aria-modal="true"] element on the page.
       Watches the modal's `hidden` attribute and toggles the trap automatically.
-      Used by MobileNav, kernel/connectors, kernel/approvals, kernel/scenarios,
-      and any future modal that follows the standard dialog pattern.
 
       FIX-2026-07-18 (KI-SYNTAX-2026-07-18-001): same root cause as
       scroll-reveal.js above — moved from inline `import` to static ES module. */}
@@ -383,7 +359,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
 </head>
 <body>
   <DottedBackground />
-  <a href="#main-content" class="skip-to-content">
+  <a href="#main" class="skip-link">
     {lang === 'ar' ? 'تخطي إلى المحتوى' : 'Skip to content'}
   </a>
 
@@ -391,7 +367,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     <Header lang={lang} currentPath={safeCurrentPath} />
     <MobileNav lang={lang} currentPath={safeCurrentPath} />
 
-    <main id="main-content" class="page__main">
+    <main id="main" class="page__main">
       <slot />
     </main>
 

@@ -423,3 +423,41 @@
   --cyan-bright:      #22d3ee;
   --emerald-bright:   #34d399;
 }
+
+/* ════════════════════════════════════════════════════════════════════════════
+   BAI-PERF-02 (2026-07-25): Self-hosted Google Fonts replacement.
+   Font files stored at public/fonts/ for zero external requests.
+   IBM Plex Sans Arabic + Inter — both open-source, OFL-licensed.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/IBMPlexSansArabic-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans Arabic';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/IBMPlexSansArabic-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Inter-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Inter-SemiBold.woff2') format('woff2');
+}

@@ -116,7 +116,7 @@ import { createHash } from "node:crypto";
  * per-file hash logic is independent of this token — hashes are
  * always appended on top.
  */
-export const STYLE_SRC_ELEM_BASE = "'self' https://fonts.googleapis.com 'unsafe-inline'";
+export const STYLE_SRC_ELEM_BASE = "'self' 'unsafe-inline'";
 
 /**
  * HTTP response headers applied by src/middleware.ts to every SSR
@@ -136,9 +136,9 @@ export const RESPONSE_SECURITY_HEADERS = Object.freeze({
   "X-Robots-Tag":
     "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   "Content-Security-Policy":
-    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com; style-src-elem " +
+    "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-elem 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; script-src-attr 'none'; style-src 'self'; style-src-elem " +
     STYLE_SRC_ELEM_BASE +
-    " 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
+    " 'unsafe-inline'; style-src-attr 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://analytics.google.com https://www.google.com https://stats.g.doubleclick.net https://www.clarity.ms https://*.clarity.ms https://js.hs-scripts.com https://bat.bing.com https://cdn.mxpnl.com https://api.mixpanel.com https://*.mixpanel.com; frame-src 'self' https://www.google.com; worker-src 'self' blob:; manifest-src 'self'; media-src 'self' data: blob: https:; upgrade-insecure-requests; report-uri /api/csp-report",
 });
 
 /**

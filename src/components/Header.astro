@@ -68,8 +68,8 @@ NAV.forEach((item, idx) => {
           "BrightAI logo BrightAI" (redundant). The logo is decorative
           in this context because the link's aria-label provides the
           accessible name. */}
-      {/* AVIF-001 (2026-07-15): <picture> مع AVIF (5.5KB→4.3KB) + WebP fallback.
-          fetchpriority="high" على الـ <img> tag — الـ browser يختار AVIF تلقائياً. */}
+      {/* AVIF-001 (2026-07-15): picture مع AVIF (5.5KB→4.3KB) + WebP fallback.
+          fetchpriority="high" على img tag — browser يختار AVIF تلقائياً. */}
       <picture>
         <source srcset="/logo-96.avif" type="image/avif" />
         <source srcset="/logo-96.webp" type="image/webp" />

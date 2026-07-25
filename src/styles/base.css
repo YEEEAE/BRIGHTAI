@@ -364,7 +364,7 @@ pre code {
    Hidden by default — appears at the very top of the page when the user
    tabs into it. Uses high-contrast brand-on-surface styling so it's
    unmistakable when it appears. Critical for keyboard-only navigation. */
-.skip-to-content {
+.skip-link {
   position: absolute;
   inset-inline-start: var(--space-4);
   inset-block-start: var(--space-4);
@@ -388,8 +388,8 @@ pre code {
     opacity var(--duration-fast) var(--ease-out);
 }
 
-.skip-to-content:focus,
-.skip-to-content:focus-visible {
+.skip-link:focus,
+.skip-link:focus-visible {
   transform: translateY(0);
   opacity: 1;
   pointer-events: auto;
@@ -409,7 +409,7 @@ pre code {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .skip-to-content {
+  .skip-link {
     transition: none;
   }
 }
