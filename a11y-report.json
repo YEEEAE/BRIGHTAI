@@ -18,7 +18,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:14.421Z",
+      "timestamp": "2026-07-25T15:00:14.906Z",
       "url": "https://brightai.site/",
       "toolOptions": {
         "runOnly": {
@@ -6145,7 +6145,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:16.136Z",
+      "timestamp": "2026-07-25T15:00:16.362Z",
       "url": "https://brightai.site/en/",
       "toolOptions": {
         "runOnly": {
@@ -12353,7 +12353,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:18.102Z",
+      "timestamp": "2026-07-25T15:00:17.694Z",
       "url": "https://brightai.site/pricing/",
       "toolOptions": {
         "runOnly": {
@@ -18131,7 +18131,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:22.532Z",
+      "timestamp": "2026-07-25T15:00:20.859Z",
       "url": "https://brightai.site/contact/",
       "toolOptions": {
         "runOnly": {
@@ -24386,7 +24386,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:24.061Z",
+      "timestamp": "2026-07-25T15:00:22.061Z",
       "url": "https://brightai.site/about/",
       "toolOptions": {
         "runOnly": {
@@ -30010,7 +30010,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:25.650Z",
+      "timestamp": "2026-07-25T15:00:23.275Z",
       "url": "https://brightai.site/trust/",
       "toolOptions": {
         "runOnly": {
@@ -35786,7 +35786,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:27.466Z",
+      "timestamp": "2026-07-25T15:00:24.633Z",
       "url": "https://brightai.site/kernel/",
       "toolOptions": {
         "runOnly": {
@@ -40620,56 +40620,6 @@
                   "data": null,
                   "relatedNodes": [
                     {
-                      "html": "<div class=\"kernel-page-header__actions\" data-astro-cid-q2fulmdr=\"\">",
-                      "target": [
-                        ".kernel-page-header__actions"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Links can be distinguished from surrounding text by visual styling"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": null,
-              "html": "<a class=\"kernel-card__footer-link\" href=\"/kernel/chat/\" data-astro-cid-q2fulmdr=\"\">فتح محادثة جديدة <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14M12 5l7 7-7 7\"></path></svg></a>",
-              "target": [
-                ".kernel-card__footer-link[href$=\"chat/\"][data-astro-cid-q2fulmdr=\"\"]"
-              ]
-            },
-            {
-              "any": [
-                {
-                  "id": "link-in-text-block-style",
-                  "data": null,
-                  "relatedNodes": [
-                    {
-                      "html": "<footer class=\"kernel-card__footer\" data-astro-cid-q2fulmdr=\"\"> <span data-astro-cid-q2fulmdr=\"\">آخر تقييم: قبل 4 ساعات</span> <a href=\"/kernel/compliance/\" class=\"kernel-card__footer-link\" data-astro-cid-q2fulmdr=\"\">عرض خطة التحسين ←</a> </footer>",
-                      "target": [
-                        ".kernel-card__footer"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Links can be distinguished from surrounding text by visual styling"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": null,
-              "html": "<a href=\"/kernel/compliance/\" class=\"kernel-card__footer-link\" data-astro-cid-q2fulmdr=\"\">عرض خطة التحسين ←</a>",
-              "target": [
-                ".kernel-card__footer > .kernel-card__footer-link[href$=\"compliance/\"][data-astro-cid-q2fulmdr=\"\"]"
-              ]
-            },
-            {
-              "any": [
-                {
-                  "id": "link-in-text-block-style",
-                  "data": null,
-                  "relatedNodes": [
-                    {
                       "html": "<p class=\"k-section-intro\" data-astro-cid-q2fulmdr=\"\">أدلة مرجعية تشرح إعداد السياسات والموافقات والسجلات والتقارير لكل فريق مسؤول. <a href=\"/docs/\" data-astro-cid-q2fulmdr=\"\">كل الوثائق</a></p>",
                       "target": [
                         "section[aria-labelledby=\"kernel-docs\"] > .k-section-intro"
@@ -41989,7 +41939,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:29.309Z",
+      "timestamp": "2026-07-25T15:00:26.083Z",
       "url": "https://brightai.site/kernel/chat/",
       "toolOptions": {
         "runOnly": {
@@ -50715,7 +50665,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:30.933Z",
+      "timestamp": "2026-07-25T15:00:27.461Z",
       "url": "https://brightai.site/blog/",
       "toolOptions": {
         "runOnly": {
@@ -56433,7 +56383,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:32.448Z",
+      "timestamp": "2026-07-25T15:00:28.727Z",
       "url": "https://brightai.site/customers/bank/",
       "toolOptions": {
         "runOnly": {
@@ -62010,7 +61960,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:33.970Z",
+      "timestamp": "2026-07-25T15:00:30.026Z",
       "url": "https://brightai.site/solutions/",
       "toolOptions": {
         "runOnly": {
@@ -68032,7 +67982,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:35.599Z",
+      "timestamp": "2026-07-25T15:00:31.474Z",
       "url": "https://brightai.site/docs/",
       "toolOptions": {
         "runOnly": {
@@ -74320,7 +74270,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-25T14:46:37.049Z",
+      "timestamp": "2026-07-25T15:00:32.727Z",
       "url": "https://brightai.site/hub/",
       "toolOptions": {
         "runOnly": {

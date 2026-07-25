@@ -166,18 +166,33 @@
    نضمنه هنا لأي صفحة تستورد global.css فقط. */
 html[dir="rtl"] body { overflow-x: hidden; }
 
-/* Focus-visible baseline (أقل 2px outline) — لو مكوّن جديد لا يحدد focus،
-   يظهر افتراضياً بشكل مرئي. WCAG 2.4.7. */
+/* Focus-visible baseline — outline 2px لكل interactive elements.
+   لو مكوّن جديد لا يحدد focus، يظهر افتراضياً بشكل مرئي. WCAG 2.4.7.
+   الألوان تستخدم --interactive-primary (Teal) — نفس نظام التوكنز. */
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--interactive-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
 }
 
+/* Explicit coverage for every interactive element type — تضمن outline واضح
+   حتى لو مكوّن عنده :focus style خاص يمسح الـ outline.
+   Selectors: buttons, links, form controls, tabbable elements, ARIA widgets. */
 button:focus-visible,
-a:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 3px;
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="switch"]:focus-visible,
+[role="menuitem"]:focus-visible,
+[role="radio"]:focus-visible,
+[role="checkbox"]:focus-visible,
+details summary:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
