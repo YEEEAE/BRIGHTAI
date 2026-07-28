@@ -14,10 +14,8 @@
  * article body) for Google AI Overviews / Perplexity citation.
  */
 import BlogLayout from '../../layouts/BlogLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { getPostBySlug, getRelatedPosts } from '../../data/blog';
 import { getCollection, render } from 'astro:content';
-import { SITE } from '../../data/site';
 import { getFaqLd, getArticleLd } from '../../data/schema-helpers';
 // BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — central contract
 import { getP0Snippet } from '../../data/snippet-pack';
@@ -88,12 +86,15 @@ const sameCategory = allRelated.filter((p) => p.category === post.category).slic
 const relatedPosts = sameCategory.length > 0 ? sameCategory : allRelated.slice(0, 3);
 
 const breadcrumbLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'الرئيسية', item: `${SITE.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'المدونة', item: `${SITE.url}/blog/` },
-    { '@type': 'ListItem', position: 3, name: post.title, item: post.canonical },
+  // BAI-LINK-03 (2026-07-29): legacy `breadcrumbLd` object is no longer
+  // emitted as a JSON-LD node. The structured-data side is now owned by
+  // FoundationSchema (Schema.astro) via the `breadcrumbs` array prop on
+  // BlogLayout / BaseLayout. The local array below is the source of truth
+  // for both the visual breadcrumbs (rendered by BlogLayout inside
+  // article-shell when `hasHeaderBreadcrumbs` is true) and the JSON-LD.
+  crumbs: [
+    { name: 'المدونة', href: '/blog/' },
+    { name: post.title, href: `/blog/${post.slug}/` },
   ],
 };
 
@@ -585,18 +586,11 @@ const relatedSolutions = getRelatedSolutionsForBlog(post.slug);
   post={post}
   relatedPosts={relatedPosts}
   internalLinks={internalLinks}
-  breadcrumbLd={breadcrumbLd}
+  breadcrumbs={breadcrumbLd.crumbs}
+  hasHeaderBreadcrumbs={true}
   extraSchemaNodes={extraSchemaNodes}
   headings={tocHeadings}
 >
-  <Fragment slot="header">
-    <Breadcrumbs crumbs={[
-      { label: 'الرئيسية', href: '/' },
-      { label: 'المدونة', href: '/blog/' },
-      { label: post.title },
-    ]} />
-  </Fragment>
-
   <Fragment slot="article">
     {p0Snippet && (
       <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">

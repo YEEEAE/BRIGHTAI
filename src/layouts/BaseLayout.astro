@@ -33,6 +33,11 @@ import DottedBackground from '../components/DottedBackground.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import FoundationSchema from '../components/seo/Schema.astro';
 import MarketingScripts from '../components/MarketingScripts.astro';
+// BAI-LINK-03 (2026-07-29): auto-render visual breadcrumbs when `breadcrumbs`
+// prop is present. FoundationSchema (Schema.astro) already emits the matching
+// BreadcrumbList JSON-LD from the same prop, so the structured data lives in
+// ONE place and the visual lives here.
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SITE } from '../data/site';
 import type { SEOProps } from '../data/site';
 import { ClientRouter } from 'astro:transitions';
@@ -63,8 +68,22 @@ interface Props extends SEOProps {
   /**
    * Optional page-level breadcrumbs (without the home crumb — added by
    * FoundationSchema automatically). Order: ancestors first, current last.
+   *
+   * BAI-LINK-03 (2026-07-29): when set, BaseLayout auto-renders a visual
+   * `<nav class="breadcrumbs">` above the page slot. To suppress the visual
+   * (e.g. when a wrapper layout like BlogLayout renders its own version),
+   * pass `omitBreadcrumbsUI={true}`. FoundationSchema still emits the
+   * matching BreadcrumbList JSON-LD from this prop regardless.
    */
   breadcrumbs?: Array<{ name: string; href: string }>;
+  /**
+   * BAI-LINK-03 (2026-07-29): opt-out flag for the auto-rendered visual
+   * breadcrumbs. Use when a child layout (e.g. BlogLayout) renders its own
+   * `<Breadcrumbs>` to avoid duplicate visual navigation.
+   * JSON-LD emission is NOT affected — FoundationSchema always honours
+   * `breadcrumbs` for the structured-data side.
+   */
+  omitBreadcrumbsUI?: boolean;
   /**
    * Optional extra schema nodes to merge into the foundation @graph
    * (FAQPage, Article, Service, HowTo, …).
@@ -98,6 +117,7 @@ const {
   languageCounterpart,
   robots,
   breadcrumbs = [],
+  omitBreadcrumbsUI = false,
   extraJsonLd = [],
   omitLocalBusiness = false,
   extraSpeakableSelectors = [],
@@ -368,6 +388,22 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
     <MobileNav lang={lang} currentPath={safeCurrentPath} />
 
     <main id="main" class="page__main">
+      {/*
+        BAI-LINK-03 (2026-07-29): auto-render visual breadcrumbs when the page
+        passes a `breadcrumbs` prop. Home (/) is excluded because it never sets
+        the prop. The home crumb is prepended here so the visual matches the
+        JSON-LD that FoundationSchema emits (home at position 1). When a child
+        layout (e.g. BlogLayout) renders its own `<Breadcrumbs>`, the parent
+        passes `omitBreadcrumbsUI={true}` to avoid duplicate visual nav.
+      */}
+      {!omitBreadcrumbsUI && breadcrumbs.length > 0 && (
+        <Breadcrumbs
+          crumbs={[
+            { label: 'الرئيسية', href: '/' },
+            ...breadcrumbs.map((c) => ({ label: c.name, href: c.href })),
+          ]}
+        />
+      )}
       <slot />
     </main>
 

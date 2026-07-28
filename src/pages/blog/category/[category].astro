@@ -12,7 +12,6 @@
  *   `?page=N` shape so deep links to "page 2 of category X" stay valid.
  */
 import ArabicLayout from '../../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../../components/Breadcrumbs.astro';
 import {
   BLOG_CATEGORIES,
   getPostsByCategory,
@@ -88,6 +87,10 @@ void categoryTint;
   hreflang={[{ lang: 'ar-SA', href: `${SITE.url}/blog/category/${category}/` }]}
   jsonLd={jsonLd as any}
   currentPath={`/blog/category/${category}/`}
+  breadcrumbs={[
+    { name: 'المدونة', href: '/blog/' },
+    { name: category, href: `/blog/category/${category}/` },
+  ]}
 >
   <header class="blog-index__hero">
     <span class="chip chip--brand blog-index__eyebrow">
@@ -111,12 +114,6 @@ void categoryTint;
       </a>
     </div>
   </header>
-
-  <Breadcrumbs crumbs={[
-    { label: 'الرئيسية', href: '/' },
-    { label: 'المدونة', href: '/blog/' },
-    { label: category },
-  ]} />
 
   <div class="blog-section">
     <article class="listing-grid">

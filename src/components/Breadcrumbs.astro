@@ -1,9 +1,24 @@
 ---
 /**
- * Breadcrumbs — Accessible breadcrumb navigation with Schema.org markup.
+ * Breadcrumbs — Accessible breadcrumb navigation (visual only).
+ *
+ * BAI-LINK-03 (2026-07-29):
+ *   The Schema.org BreadcrumbList JSON-LD node is emitted by the foundation
+ *   Schema.astro (via the `breadcrumbs` prop on BaseLayout). Emitting a second
+ *   `<script type="application/ld+json">` here would duplicate the node and
+ *   trigger `_check-duplicate-schema-ids.mjs` warnings. This component is now
+ *   visual-only — the structured data lives in ONE place (FoundationSchema).
+ *
+ * Accessibility:
+ *   - `<nav aria-label="مسار التنقل">` landmark for screen readers.
+ *   - Last item carries `aria-current="page"` (WCAG 2.4.8).
+ *   - Separator is `aria-hidden="true"` so it isn't announced.
+ *
+ * Visual:
+ *   - Uses `.breadcrumbs` / `.breadcrumbs__link` / `.breadcrumbs__sep` /
+ *     `.breadcrumbs__current` styles in src/styles/pages.css (existing tokens).
+ *   - Inline rendering inside `<main>` (caller positions it where needed).
  */
-import { SITE } from '../data/site';
-
 interface Crumb {
   label: string;
   href?: string;
@@ -14,43 +29,9 @@ interface Props {
 }
 
 const { crumbs } = Astro.props;
-
-const schemaItems = crumbs.map((crumb, i) => {
-  const isLast = i === crumbs.length - 1;
-  let href = crumb.href;
-  if (!href && isLast) {
-    href = Astro.url.pathname;
-  }
-
-  let itemUrl = '';
-  if (href) {
-    let cleanPath = href;
-    if (!cleanPath.startsWith('/')) {
-      cleanPath = '/' + cleanPath;
-    }
-    if (!cleanPath.endsWith('/')) {
-      cleanPath = cleanPath + '/';
-    }
-    itemUrl = `${SITE.url}${cleanPath}`;
-  }
-
-  return {
-    '@type': 'ListItem',
-    position: i + 1,
-    name: crumb.label,
-    ...(itemUrl ? { item: itemUrl } : {}),
-  };
-});
-
-const breadcrumbSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'BreadcrumbList',
-  itemListElement: schemaItems,
-};
 ---
 
 <nav class="breadcrumbs" aria-label="مسار التنقل">
-  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   {crumbs.map((crumb, i) => (
     <>
       {i > 0 && <span class="breadcrumbs__sep" aria-hidden="true">/</span>}

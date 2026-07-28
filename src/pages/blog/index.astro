@@ -18,7 +18,6 @@
  *   the new 5-category enum.
  */
 import ArabicLayout from '../../layouts/ArabicLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import {
   getPublishedPosts,
   getCategories,
@@ -109,6 +108,7 @@ function pageUrl(page: number): string {
   hreflang={[{ lang: 'ar-SA', href: `${SITE.url}/blog/` }]}
   jsonLd={blogJsonLd as any}
   currentPath="/blog/"
+  breadcrumbs={[{ name: 'المدونة', href: '/blog/' }]}
 >
   <header class="blog-index__hero">
     <span class="chip chip--brand blog-index__eyebrow">
@@ -253,8 +253,6 @@ function pageUrl(page: number): string {
       </nav>
     )}
   </div>
-
-  <Breadcrumbs crumbs={[{ label: 'الرئيسية', href: '/' }, { label: 'المدونة' }]} />
 
   <section class="blog-final-cta" aria-labelledby="blog-cta">
     <div class="card card--cta">

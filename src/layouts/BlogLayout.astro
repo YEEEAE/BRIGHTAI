@@ -9,10 +9,25 @@
  *     type for blog content).
  *   - Breadcrumbs component provided by the page via `slot="header"`.
  *   - Internal links grid driven by an `internalLinks` prop.
+ *
+ * BAI-LINK-03 (2026-07-29):
+ *   - `breadcrumbs` is now an array of `{ name, href }` (without home crumb —
+ *     FoundationSchema prepends it). Pages that previously passed `breadcrumbLd`
+ *     as a pre-built object must convert to this array shape.
+ *   - `hasHeaderBreadcrumbs` toggles the visual breadcrumbs inside the
+ *     article-shell (preserves the legacy `<slot name="header">` position).
+ *   - When `hasHeaderBreadcrumbs` is true, BlogLayout forwards
+ *     `omitBreadcrumbsUI={true}` to BaseLayout to prevent duplicate visual
+ *     navigation (BaseLayout would otherwise auto-render the same nav above
+ *     the main slot).
+ *   - The home crumb is added implicitly by FoundationSchema, so the visual
+ *     Breadcrumbs component receives the same shape (home + page items) that
+ *     appears in the JSON-LD.
  */
 import ArabicLayout from './ArabicLayout.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
 import BlogToc from '../components/BlogToc.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SITE } from '../data/site';
 import type { BlogPost } from '../data/blog';
 
@@ -27,16 +42,41 @@ interface TocHeading {
   text: string;
 }
 
+interface BreadcrumbItem {
+  name: string;
+  href: string;
+}
+
 interface Props {
   post: BlogPost;
   relatedPosts: BlogPost[];
   internalLinks?: InternalLink[];
-  breadcrumbLd?: Record<string, unknown>;
+  /**
+   * BAI-LINK-03 (2026-07-29): page-level breadcrumbs (without the home crumb —
+   * added by FoundationSchema). Order: ancestors first, current last.
+   * Replaces the previous `breadcrumbLd` object prop.
+   */
+  breadcrumbs?: BreadcrumbItem[];
+  /**
+   * BAI-LINK-03 (2026-07-29): when true, BlogLayout renders the visual
+   * `<Breadcrumbs>` inside the article-shell (same position as the legacy
+   * `<slot name="header">`). Also forwards `omitBreadcrumbsUI={true}` to
+   * BaseLayout so it does NOT also render the same nav above `<main>`.
+   */
+  hasHeaderBreadcrumbs?: boolean;
   extraSchemaNodes?: Record<string, unknown>[];
   headings?: TocHeading[];
 }
 
-const { post, relatedPosts, internalLinks = [], breadcrumbLd, extraSchemaNodes = [], headings = [] } = Astro.props;
+const {
+  post,
+  relatedPosts,
+  internalLinks = [],
+  breadcrumbs = [],
+  hasHeaderBreadcrumbs = false,
+  extraSchemaNodes = [],
+  headings = [],
+} = Astro.props;
 
 const blogPostingLd: Record<string, unknown> = {
   '@context': 'https://schema.org',
@@ -61,11 +101,11 @@ const blogPostingLd: Record<string, unknown> = {
     url: post.author.url,
     jobTitle: post.author.title,
   },
-  // BAI-SEO-003-S3 (2026-07-18): publisher is a REFERENCE to the
-  // Organization by @id (already emitted by FoundationSchema). The
-  // Organization node itself is NOT redeclared here to avoid the
-  // duplicate @id=#organization that triggered Google's entity-merge
-  // warning (verified via scripts/_check-duplicate-schema-ids.mjs).
+  // BAI-SEO-003-S3 (2026-07-18): publisher is a REFERENCE to the Organization
+  // by @id (already emitted by FoundationSchema). The Organization node itself
+  // is NOT redeclared here to avoid the duplicate @id=#organization that
+  // triggered Google's entity-merge warning (verified via
+  // scripts/_check-duplicate-schema-ids.mjs).
   publisher: {
     '@type': 'Organization',
     '@id': `${SITE.url}#organization`,
@@ -101,12 +141,16 @@ const blogPostingLd: Record<string, unknown> = {
  * BaseLayout (`<BlogLayout ... extraSpeakableSelectors={['.article-hero__desc']} />`)
  * so FoundationSchema owns the single WebPage node with a unified
  * speakable list.
+ *
+ * BAI-LINK-03 (2026-07-29): `breadcrumbs` array is forwarded to BaseLayout
+ * via ArabicLayout's `breadcrumbs` prop, which FoundationSchema converts
+ * into the single BreadcrumbList JSON-LD node. The legacy `breadcrumbLd`
+ * object prop is REMOVED to avoid duplicate BreadcrumbList emissions.
  */
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
     blogPostingLd,
-    breadcrumbLd,
     ...extraSchemaNodes,
   ].filter(Boolean),
 };
@@ -120,6 +164,18 @@ const authorInitials = post.author.name
   .slice(0, 2)
   .map((part) => part[0] ?? '')
   .join('');
+
+/**
+ * BAI-LINK-03 (2026-07-29): visual breadcrumb chain used inside article-shell.
+ * Home crumb is prepended here (matches what FoundationSchema emits in the
+ * JSON-LD). Only rendered when the page opts in via `hasHeaderBreadcrumbs`.
+ */
+const visualCrumbs = hasHeaderBreadcrumbs
+  ? [
+      { label: 'الرئيسية', href: '/' },
+      ...breadcrumbs.map((c) => ({ label: c.name, href: c.href })),
+    ]
+  : [];
 ---
 
 <ArabicLayout
@@ -131,11 +187,13 @@ const authorInitials = post.author.name
   jsonLd={jsonLd}
   currentPath={`/blog/${post.slug}/`}
   extraSpeakableSelectors={['.article-hero__desc']}
+  breadcrumbs={breadcrumbs}
+  omitBreadcrumbsUI={hasHeaderBreadcrumbs}
 >
   <div class="reading-progress" hidden aria-hidden="true"></div>
 
   <div class="article-shell">
-    <slot name="header" />
+    {hasHeaderBreadcrumbs && <Breadcrumbs crumbs={visualCrumbs} />}
 
     <header class="article-hero" data-speakable>
       <a class="chip chip--brand article-hero__category" href={`/blog/category/${encodeURIComponent(post.category)}/`}>

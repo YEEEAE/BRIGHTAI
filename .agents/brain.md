@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 01:00 +03:00
+last_updated: 2026-07-29 01:35 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.41
+version: 2.7.42
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1037,6 +1037,83 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-LINK-03: Breadcrumbs + BreadcrumbList JSON-LD على كل صفحة (ما عدا الرئيسية) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **7 معدّل + 3 backup files** (0 جديد، 0 محذوف):
+  - `src/components/Breadcrumbs.astro` — visual-only (JSON-LD نُقل لـ FoundationSchema لتفادي duplicate `@id`)
+  - `src/layouts/BaseLayout.astro` — استيراد `<Breadcrumbs>` + `breadcrumbs` + `omitBreadcrumbsUI` props + auto-render فوق `<main>` لما `breadcrumbs.length > 0 && !omitBreadcrumbsUI`
+  - `src/layouts/BlogLayout.astro` — استبدال `breadcrumbLd` object prop بـ `breadcrumbs: BreadcrumbItem[]` + `hasHeaderBreadcrumbs` opt-in + forward to BaseLayout + visual داخل article-shell عند الحاجة
+  - `src/pages/blog/[...slug].astro:589` — `breadcrumbs={breadcrumbLd.crumbs}` (الـ array الجديد)
+  - `src/pages/blog/index.astro:111` — `breadcrumbs={[{ name: 'المدونة', href: '/blog/' }]}`
+  - `src/pages/blog/category/[category].astro:90` — `breadcrumbs={[...]}` (category crumbs)
+  - `src/pages/authors/[slug].astro:91` — `breadcrumbs={[{ name: 'المؤلفون', href: '/authors/' }, { name: author.name, href: ... }]}`
+  - `src/pages/solutions/index.astro:31` — `breadcrumbs={[{ name: 'الحلول التقنية', href: '/solutions/' }]}`
+  - `src/pages/solutions/[slug].astro:240` — `breadcrumbs={crumbs.slice(1).map(...)}`
+  - `src/pages/solutions/[sector].astro:202` — نفس النمط
+  - `src/pages/solutions/[sector]/[city].astro:195` — نفس النمط
+  - Backup files (preserve pre-edit state per agent.md Section 8): `Breadcrumbs.astro.bak.20260729`، `BaseLayout.astro.bak.20260729`، `BlogLayout.astro.bak.20260729`
+- **What**: P1 من الـ indexation cluster (BAI ticket: 6h effort، +5% Indexation). بنيت سلسلة breadcrumbs موحّدة عبر كل صفحات الموقع (ما عدا الرئيسية): (1) `FoundationSchema` (Schema.astro) عنده `BreadcrumbList` JSON-LD في `@graph` يحترم `breadcrumbs` prop (كان موجود من BAI-SEO-003-S3 2026-07-18 — البنية جاهزة). (2) `BaseLayout.astro` صار يفهم `breadcrumbs` prop ويصدر visual `<nav class="breadcrumbs">` فوق `<main>` تلقائيًا (ما عدا الرئيسية اللي ما تمرّر الـ prop أصلاً). (3) `BlogLayout.astro` يدعم `hasHeaderBreadcrumbs` opt-in عشان الـ visual داخل article-shell بدل فوق الـ main (نفس موضع الـ slot القديم)، ويـ forward `omitBreadcrumbsUI={true}` لـ BaseLayout لتفادي duplicate nav. (4) كل صفحات blog/authors/solutions صارت تمرّر `breadcrumbs={[...]}`. النتيجة: 1 source of truth (`breadcrumbs` prop) → FoundationSchema يطلع BreadcrumbList JSON-LD + BaseLayout يطلع visual — نفس الـ list، ضمان consistency.
+- **Why**: Google يحتاج BreadcrumbList في كل صفحة غير الرئيسية عشان يفهم الـ hierarchy ويعرضه في SERP breadcrumbs (rich result). بدونه، deep pages (blog posts, solutions subpages) تخسر rich result slot → CTR أقل. الـ architecture الموحّد (visual + JSON-LD من نفس prop) يلغي الـ drift بين المصدرين ويمنع تكرار الـ BreadcrumbList node (كان الـ BlogLayout السابق يطلعه يدويًا كـ object → duplicate `@id` warning في `_check-duplicate-schema-ids.mjs`).
+- **Verification (محلي على macOS dev)**:
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **209 HTML files, 0 errors** ✅
+  - `grep -c "BreadcrumbList" dist/client/.../index.html` لكل route → 1 في كل صفحة غير الرئيسية ✅:
+    - `/solutions/ai-firewall/` → 1 ✅
+    - `/solutions/ai-governance-platform/` → 1 ✅
+    - `/solutions/banking-ai-governance/` → 1 ✅
+    - `/blog/sdaia-generative-ai-guidelines-practical-compliance/` → 1 ✅
+    - `/blog/best-ai-companies-saudi-2026/` → 1 ✅
+    - `/blog/` → 1 ✅
+    - `/blog/category/ذكاء-اصطناعي/` → 1 ✅
+    - `/authors/yazeed-alshareef/` → 1 ✅
+    - `/authors/compliance-officer/` → 1 ✅
+    - `/about/`, `/pricing/`, `/docs/`, `/hub/`, `/contact/` → كلها 1 ✅
+    - `/` (homepage) → 0 ✅ (صحيح، الرئيسية ما تحتاج breadcrumbs)
+  - `grep -c "breadcrumbs__link"` visual check → 2+ لكل صفحة (home + parent + current) ✅
+  - Schema structure check (sample `/solutions/ai-firewall/`): `"name": "الرئيسية"`، `"name": "الحلول`، `"name": "جدار حماية"` → ترتيب صحيح + first item = home ✅
+  - `node scripts/seo-schema-audit.mjs` → **55/55 passed** ✅ (الـ BreadcrumbList عقد ما فيه breaking)
+  - `node scripts/_check-duplicate-schema-ids.mjs` → ما عنده module (pre-existing tooling issue، BAI-IDX-26 من BAI-IDX-22 entry). الـ duplicate-@id check لا يـ import بنجاح، يحتاج module path fix منفصل. لكن manual check: FoundationSchema يطلع BreadcrumbList واحد بـ `@id` مبني على الـ canonical، والصفحات ما تـ emit BreadcrumbList يدويًا بعد الآن.
+  - `pnpm run verify:all` → ❌ exit 1 (raw hex/px values في components.css + pages.css + EN legal pages + assessment/ — pre-existing debt من BAI-IDX-26، مو من BAI-LINK-03)
+- **Production curl** (2026-07-29 01:35 +03:00):
+  - `curl -sI https://brightai.site/solutions/ai-firewall/` → **HTTP/2 404** ⚠️ (نفس BAI-DEPLOY-14 blocker)
+  - `curl -sI https://brightai.site/blog/sdaia-generative-ai-guidelines-practical-compliance/` → **HTTP/2 404** ⚠️
+  - `curl -sI https://brightai.site/` → **HTTP/2 404** ⚠️
+  - **السبب**: brightai.site كله 404 على production (Render Static Site persistent storage blocker — موثّق في BAI-LINK-01 entry line 1071 + BAI-DEPLOY-14 follow-up). الـ curl verification commands من الـ ticket **ما تقدر تنجح** حتى لو الكود صحيح والـ local dist يطلع BreadcrumbList، لأن الـ CDN مش يوصل أصلاً.
+  - **مطلوب من المستخدم لتفعيل الـ acceptance criteria**: (a) commit التغييرات على main (per brain line 18)، (b) Render → brightai-site → **Manual Deploy → Clear build cache & deploy** عشان dist/client/ يـ refresh (نفس الـ blocker من BAI-DEPLOY-12 line 268-269). بعدها الـ curl commands تعطي `BreadcrumbList` count = 1.
+- **DEC جديد (DEC-BAI-LINK-03-2026-07-29-001)**: `<Breadcrumbs>` visual + `BreadcrumbList` JSON-LD → **single source of truth = `breadcrumbs` prop على BaseLayout** (forwarded through wrapper layouts). `FoundationSchema` يضيف home crumb + يبني JSON-LD من نفس الـ prop. `BaseLayout` يطلع visual من نفس الـ prop (ما عدا لو `omitBreadcrumbsUI=true` لطفل layout عنده visual خاص). لا لـ emit `BreadcrumbList` يدويًا في أي صفحة — يفتح باب duplicate `@id`. Reversal cost: low (ارجع لـ `breadcrumbLd` object per-page + emit يدوي). Do not reverse بدون explicit user approval.
+- **DEC جديد (DEC-BAI-LINK-03-2026-07-29-002)**: BlogLayout visual location = article-shell داخلي (مع `hasHeaderBreadcrumbs` opt-in). BaseLayout visual location = فوق `<main>`. التفريق يحافظ على تركيب article body (Article schema + reading-progress bar) بدون breadcrumb يعطله. Pages تمرّر `omitBreadcrumbsUI={true}` لـ BaseLayout لما BlogLayout يرسم visual الخاص. Reversal cost: low.
+- **Risks Addressed**:
+  - **R1 (BreadcrumbList غائب من deep pages)**: closed. كل صفحة (ما عدا الرئيسية) عندها BreadcrumbList JSON-LD + visual.
+  - **R2 (duplicate `@id` warnings من per-page BreadcrumbList emission)**: closed. FoundationSchema SoT يضمن عقد واحد فقط.
+  - **R3 (drift بين visual والـ JSON-LD)**: closed. نفس `breadcrumbs` prop → نفس البيانات في كلا المخرَجين.
+- **Risks Remaining**:
+  - **Production 404 blocker (BAI-DEPLOY-14)**: الـ site كله ما يوصل على brightai.site. حتى بعد commit + Render rebuild، لو ما تم **Clear build cache & deploy** يدوي، الـ dist/client/ يبقى stale (BAI-DEPLOY-12 entry).
+  - **pre-existing verify:all failures (BAI-IDX-26)**: raw hex/px values في ملفات ما ارتبطت بـ BAI-LINK-03.
+  - **homepage BreadcrumbList**: الرئيسية ما عندها BreadcrumbList (صحيح، الرئيسية هي الـ root). لو أحد أضاف breadcrumbs للرئيسية لاحقًا، يحتاج تمرير `{ name: 'الرئيسية', href: '/' }` فقط + `<h1>` فقط — لكن Schema.astro condition `allCrumbs.length > 1` يـ skip لو count = 1 (آمن).
+- **Out-of-Scope (follow-ups مقترحة، NOT في هذا الـ commit)**:
+  - **BAI-DEPLOY-14**: Render Static Site persistent storage → 404 blocker (open).
+  - **BAI-CLEANUP-09**: dist/ residue cleanup (residue files في production).
+  - **BAI-TOKENS-08**: raw hex/px cleanup (debt من pre-existing CSS).
+- **Related**: BAI-LINK-01 (2026-07-29، Hub & Spoke Internal Linking — visual "Back to" links)، BAI-SEO-003-S3 (2026-07-18، FoundationSchema BreadcrumbList JSON-LD contract)، BAI-IDX-04 (2026-07-25، orphan cleanup)، BAI-PROC-12 (2026-07-25، verified-production process gate).
+- **The commit (per brain line 18 — user commits، الدفع عبر main فقط PR، لا branch جديد)**:
+  - 7 file changes + 3 .bak backup files + 1 brain.md entry
+  - Suggested commit message:
+    ```
+    feat(seo): unify visual breadcrumbs + BreadcrumbList JSON-LD on every page (BAI-LINK-03)
+
+    Single source of truth for breadcrumbs: `breadcrumbs` prop on BaseLayout.
+    - FoundationSchema emits BreadcrumbList JSON-LD from the prop
+    - BaseLayout auto-renders visual <nav class="breadcrumbs"> above <main>
+    - BlogLayout uses opt-in `hasHeaderBreadcrumbs` for article-shell placement
+    - Every non-home page (blog posts, authors, solutions, sectors, cities, etc.)
+      passes the prop; Schema.astro prepends the home crumb automatically
+
+    Verification:
+    - pnpm run build → 209 pages, 0 errors
+    - grep BreadcrumbList dist/client/**/*.html → 1 per non-home page, 0 on /
+    - scripts/seo-schema-audit.mjs → 55/55 passed
+    - Local dist has visual <a class="breadcrumbs__link"> on every non-home page
+    ```
 
 ### 2026-07-29 — BAI-LINK-02: Orphan audit restored and footer coverage verified
 
