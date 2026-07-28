@@ -1,2 +1,0 @@
-id,category,severity,status,url,file,selector,evidence,reproduction,recommendation
-"SEO-H1-1","SEO","Medium","open","/design/typography/","dist/client/design/typography/index.html","","عدد H1 هو 2","افتح /design/typography/ وافحص HTML المبني","راجع معيار الفحص وأصلح المصدر ثم أعد build."
