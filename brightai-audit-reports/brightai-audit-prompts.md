@@ -24,37 +24,6 @@
 
 # BAI-DEPLOY — Deployment Forensics
 
-## PROMPT [ID: BAI-DEPLOY-12] — نشر main فعليًا على Render + Cloudflare
-
-**Priority:** P0-BLOCKER |
-**Effort:** 1h |
-**Impact:** +30% على Deployment |
-**Risk:** H |
-**Depends on:** — |
-**Blocks:** —
-
-**CONTEXT** — الإنتاج يخدم بناءًا قديمًا من 2026-07-24 19:43:14 UTC. main الحالي يحوي Astro SSR مع @astrojs/node + 3 routes SSR (/api/health/, /api/lead, /api/ai/chat). render.yaml في main يصف runtime: node + startCommand: node ./dist/server/entry.mjs. لكن Render لا يزال يخدم render.yaml القديم (static + rsync).
-
-**FILES IN SCOPE** — render.yaml (final), package.json, astro.config.mjs (no change), src/middleware.ts (no change), src/pages/api/health.ts (no change)
-
-**MUST NOT TOUCH / PRESERVE** — render.yaml startCommand، canonical URLs، النصوص العربية المنشورة، أي مسار عام يُرجع 200 اليوم
-
-**TASK** — 1) git add -A على كل التغييرات غير الملتزمة. 2) git commit -m 'BAI-DEPLOY-12: deploy main with SSR routes + security headers + deny-list'. 3) git push origin main. 4) انتظر Render auto-deploy (أو manual deploy من dashboard). 5) بعد اكتمال deploy، شغّل scripts/purge-cloudflare-cache.mjs --all (يتطلب CLOUDFLARE_API_TOKEN + CLOUDFLARE_ZONE_ID).
-
-**ACCEPTANCE CRITERIA** — 1) curl https://brightai.site/api/health/ → 200 JSON مع commit + buildTime. 2) curl -I https://brightai.site/ → Strict-Transport-Security + Content-Security-Policy headers. 3) curl https://brightai.site/frontend/server.js → 404. 4) curl -I https://brightai.site/blog → 301 (not 404).
-
-**VERIFICATION COMMANDS**
-```bash
-curl -s -o /dev/null -w '%{http_code}' https://brightai.site/api/health/
-curl -sI https://brightai.site/ | grep -E '(Strict-Transport|Content-Security|X-Frame)'
-curl -s -o /dev/null -w '%{http_code}' https://brightai.site/frontend/server.js
-curl -sI https://brightai.site/blog | head -1
-```
-
-**ROLLBACK** — `git revert HEAD && git push origin main`
-
-**DEFINITION OF DONE** — كل الأوامر الأربعة في VERIFICATION تعيد النتيجة المتوقّعة، مُتحقَّق على الإنتاج brightai.site بعد deploy + Cloudflare purge.
-
 ---
 ## PROMPT [ID: BAI-DEPLOY-13] — Cloudflare cache purge تلقائي بعد deploy
 
