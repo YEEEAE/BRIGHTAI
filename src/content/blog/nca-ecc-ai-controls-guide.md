@@ -149,6 +149,37 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 </ul>
 </section>
 
+<h2 id="الأسئلة-الشائعة-عن-NCA-ECC-و-AI">الأسئلة الأكثر شيوعاً عن تطبيق ضوابط NCA ECC على الذكاء الاصطناعي</h2>
+
+<div class="faq" itemscope="" itemtype="https://schema.org/FAQPage">
+
+<h3 itemprop="name">هل ضوابط NCA ECC إلزامية على القطاع الخاص؟</h3>
+<div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">الضوابط إلزامية على الجهات الحكومية والقطاعات الحيوية (طاقة، اتصالات، بنوك، صحة، تعليم). القطاع الخاص غير ملزم مباشرة لكن كثير من الجهات تتعامل معها كمرجع. <a href="/solutions/ai-governance-platform/">منصة الحوكمة</a> تساعدك على تطبيق الضوابط بشكل طوعي يعزز ثقة العملاء والشركاء. عملياً: لو أنت مقاول حكومي، NCA ECC شرط للتعاقد.</p>
+</div>
+
+<h3 itemprop="name">كيف أعرف إن نموذج AI يخالف ضابط معين من ECC؟</h3>
+<div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">ابدأ بتقييم ذاتي: كل نموذج AI يخضع لـ 11 ضابط ECC. <a href="/solutions/ai-risk-classification/">تصنيف المخاطر</a> يحدد مستوى الخطورة. الضوابط الأساسية اللي على AI: إدارة الوصول (ECC-1)، حماية البيانات (ECC-4)، التشفير (ECC-5)، المراقبة والتسجيل (ECC-7)، إدارة الأطراف الخارجية (ECC-10)، الاستجابة للحوادث (ECC-9). <a href="/solutions/ai-audit-trail/">سجل التدقيق</a> يوثق الامتثال لكل ضابط.</p>
+</div>
+
+<h3 itemprop="name">وش الفرق بين ECC و SAMA و NCA في تنظيم AI؟</h3>
+<div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">NCA مسؤولة عن الأمن السيبراني بشكل عام (ضوابط ECC). SAMA مسؤولة عن القطاع المالي (بنوك، تأمين، تمويل). السكيا (SAMA) أصدرت ضوابط إضافية للذكاء الاصطناعي في الخدمات المالية. كل قطاع له ضوابطه الخاصة فوق NCA ECC. <a href="/solutions/policy-to-control-mapping/">ربط السياسات بالضوابط</a> يجمع كل المتطلبات في إطار واحد. عملياً: لو أنت بنك، تخضع لـ NCA ECC + SAMA + PDPL.</p>
+</div>
+
+<h3 itemprop="name">كم تكلفة تطبيق NCA ECC على AI في شركة متوسطة؟</h3>
+<div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">التكلفة تختلف حسب عدد النماذج وتعقيدها. شركة عندها 3-5 نماذج AI تحتاج 200,000 إلى 500,000 ريال لتطبيق الحوكمة الكاملة (تقييم + سياسات + تقنيات + تدريب). <a href="/solutions/ai-firewall/">حماية البيانات</a> و<a href="/solutions/ai-audit-trail/">سجل التدقيق</a> و<a href="/solutions/human-approval-layer/">الموافقات</a> تشكل 70% من التكلفة. الاستثناء: لو الشركة عندها فريق أمن سيبراني داخلي، التكلفة تنخفض 30-40%.</p>
+</div>
+
+<h3 itemprop="name">ماذا يحدث لو اكتشفت NCA مخالفة في نظام AI؟</h3>
+<div itemscope="" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+<p itemprop="text">الإجراء يبدأ بإنذار رسمي ومهلة تصحيحية (30-90 يوم). المخالفات الجسيمة تؤدي لغرامات مالية (تختلف حسب حجم الجهة)، وفي حالات نادرة تعليق للأنشطة. <a href="/solutions/ai-evidence-file/">ملف الأدلة</a> يُظهر للهيئة إنك تلتزم طوعياً ويخفف العقوبة. النصيحة: وثّق كل شيء من البداية، حتى لو ما طلبت NCA ذلك. الشركات اللي توثق = شركات محمية.</p>
+</div>
+
+</div>
+
 <section class="final">
 <h2>الخطوة التالية: حوّل المقال إلى برنامج حوكمة قابل للتنفيذ</h2>
 <p>إذا كانت مؤسستك تستخدم الذكاء الاصطناعي في خدمة العملاء، التحليل، الموارد البشرية، الصحة، المالية، أو العمليات الداخلية، فالخطوة الذكية هي بناء طبقة تشغيلية تجمع التصنيف، السياسات، الجدار، الموافقات، وسجل الأدلة في مكان واحد.</p>
