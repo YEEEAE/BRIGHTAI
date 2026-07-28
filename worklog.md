@@ -2190,3 +2190,99 @@ Out-of-Scope Items Discovered (separate tickets recommended):
   - SEC-2026-07-28-001: Rotate Cloudflare API token (was shared in chat)
   - /index.Cf9ZzOE8.css returns 404 in production (purge-css aggressive on _slug_.BBtPOoZO.css — separate ticket)
   - brightai-audit-reports/brightai-audit-prompts.md has 305 lines deleted in git status (not touched by me — pre-existing, user should review)
+
+---
+Task ID: 2026-07-28-BAI-SEC-17
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: BAI-SEC-17 — Consent Mode v2 مفعّل (gtag consent update) — P1 | 4h | +5% Security/PDPL
+Started: 2026-07-28T23:37:46+03:00
+Mode: Senior
+
+Work Log:
+- 23:37: قرأت brain.md (protocol 0.6) + DEC-PROC-12-001/002/003/004 rules
+- 23:38: قرأت الـ 3 ملفات في الـ scope:
+  - public/js/analytics.js (setConsent function السطر 159-172)
+  - public/js/gtag-init.js (السطر 32-35 للـ dataLayer + config)
+  - src/components/CookieConsent.astro (السطر 64-69 للـ accept/decline listeners)
+- 23:38: تأكدت إن الـ queue logic في setConsent() سليم (ما يُلمس — MUST NOT TOUCH)
+- 23:39: عدّلت public/js/gtag-init.js:
+  - أضفت gtag('consent', 'default', {ad_storage: 'denied', analytics_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'}) قبل gtag('js', new Date()) و gtag('config', ...)
+  - عدّلت الـ header comment ليعكس الـ 5-step behavior contract الجديد + BAI-SEC-17 reference
+- 23:40: عدّلت public/js/analytics.js setConsent():
+  - أضفت defensive gtag('consent', 'update', {...}) call:
+    - لو window.gtag موجودة → direct call
+    - وإلا لو dataLayer array → dataLayer.push(['consent', 'update', {...}]) — يضمن الـ update يُحفظ حتى لو gtag.js ما حمّل
+  - ad_storage + analytics_storage يتغيران حسب next (granted/denied)
+  - ad_user_data + ad_personalization يبقون 'denied' (ما نستخدم Google Ads أو personalized ads)
+- 23:41: تحققت إن CookieConsent.astro ما يحتاج تغيير:
+  - setTrackingConsent('granted'|'denied') → rt.setConsent(value) يستدعي setConsent الجديد
+  - الـ update يطلق تلقائيًا عند click ✅
+- 23:42: شغّلت `pnpm run build` → 211 HTML files, 0 errors ✅
+- 23:42: تحققت من dist/client/js/gtag-init.js + dist/client/js/analytics.js:
+  - gtag-init.js: gtag('consent', 'default', {all 4 signals denied}) ✅
+  - analytics.js: window.gtag('consent', 'update', {...}) ✅
+- 23:43: شغّلت `pnpm run verify:all`:
+  - verify-all.mjs: 5/5 passes ✅
+  - headers:check: no drift ✅
+  - seo:gate: 0 errors, 0 warnings ✅
+  - seo:hreflang: 0 errors ✅
+  - lint:tokens: 99 raw hex/px violations (pre-existing، مو له علاقة بالـ consent) ⚠️
+- 23:44: شغّلت `pnpm run performance:budget`:
+  - HTML gz: 35.37KB (< 80KB) ✅
+  - أكبر CSS: 19.57KB (< 50KB) ✅
+  - إجمالي JS: 11.97KB (< 60KB) ✅
+  - analytics.js delta: ~+1KB raw (gz ~+~250B) — negligible
+  - gtag-init.js delta: ~+700B raw (gz ~+~250B) — negligible
+- 23:45: تحققت من script load order في dist/client/index.html:
+  - gtag-init.js (defer) → ينفّذ أولاً → default consent في dataLayer → gtag('js') → gtag('config') → requestIdleCallback(loadGtag)
+  - analytics.js (type="module") → ينفّذ ثانياً → installRuntime → hydrateConsentFromStorage
+
+Acceptance Criteria:
+  ✅ AC #1 (functional): gtag('consent', 'default', {...}) في gtag-init.js + gtag('consent', 'update', {...}) في analytics.js
+    - ملاحظة: الكود في external scripts (gtag-init.js, analytics.js)، مو inline. الـ CSP عندنا 'script-src-attr' = 'none' (per BAI-PERF-01) فما ينفع inline. الـ functional behavior صحيح.
+  ⏳ AC #2 (GA4 DebugView): يحتاج اختبار بعد deploy (production gtag ID = G-8LLESL207Q). قبل accept: لا events تُرسل (analytics.js setConsent('denied') → dispatch يتخطى providers). بعد accept: events تُرسل.
+  ⏳ AC #3 (no events before accept): الـ dispatch logic في analytics.js (السطر 330) + setConsent logic (السطر 159-172) يضمن: consent !== 'granted' → يتخطى gtag provider. قبل user click، consent = 'unknown' → events في pendingQueue، لا تُرسل.
+
+Files Changed:
+  ~ public/js/gtag-init.js (+12 LOC default consent call + ~15 lines comments)
+  ~ public/js/analytics.js (+25 LOC defensive update call + ~7 lines comments)
+
+UNCOMMITTED (per brain line 18 — user commits، الدفع عبر main فقط PR، لا branch جديد):
+  - 2 file changes + 0 brain.md entry yet (سأكتب بعد التحقق)
+  - Suggested commit message:
+    [BAI-SEC-17] feat(consent): Google Consent Mode v2 — default + update
+    - public/js/gtag-init.js: gtag('consent', 'default', {4 signals: denied})
+      BEFORE gtag('js') + gtag('config') (required by Consent Mode v2)
+    - public/js/analytics.js setConsent(): defensive gtag('consent', 'update', {...})
+      on consent change (accept/decline). ad_storage + analytics_storage flip;
+      ad_user_data + ad_personalization stay 'denied'.
+    - CookieConsent.astro: no change — setTrackingConsent already routes to setConsent
+    - Bundle size delta: < 1KB gz combined (negligible)
+    - All gates pass: verify-all 5/5, headers:check, seo:gate, seo:hreflang, performance:budget
+
+Risks Addressed:
+  - R1 (PDPL non-compliance — no gtag consent signals): closed
+  - R2 (Google Consent Mode v2 violation — missing ad_user_data + ad_personalization): closed
+  - R3 (Race condition — gtag.js loads before default consent set): mitigated
+    (gtag-init.js sets default in dataLayer BEFORE gtag('js') + gtag('config') + requestIdleCallback(loadGtag))
+
+Risks Remaining:
+  - AC #2 (GA4 DebugView): يحتاج اختبار production بعد deploy
+  - AC #1 HTML grep ambiguity: الكود في external scripts (CSP compliant). لو الـ ticket يقصد
+    inline check، نحتاج نقاش — لكن inline يكسر CSP 'none' rule. الـ functional behavior
+    مُتحقَّق في dist files.
+
+Verification Commands (post-deploy):
+  - `curl -s https://brightai.site/js/gtag-init.js | grep -oE "gtag\('consent'[^)]+\)"` → default call
+  - `curl -s https://brightai.site/js/analytics.js | grep -oE "gtag\('consent'[^)]+\)"` → update call
+  - GA4 DebugView (chrome://gcm-webtool/ أو GA4 Admin > DebugView):
+    - Open site, observe 'consent_update' event after click Accept
+    - Verify ad_storage + analytics_storage = 'granted' in event payload
+    - Verify ad_user_data + ad_personalization = 'denied' (always)
+
+Related:
+  - BAI-SEC-10 (sync-dist-flat.mjs EXCLUDE_PATTERNS — build-time guard) — independent
+  - BAI-PERF-01 (CSP 'script-src-attr' = 'none' + remove inline onload) — الـ سبب إن consent
+    calls external (مو inline)
+  - BAI-PROC-12 (verified-production process gate) — يحتاج verified_production: yes بعد
+    deploy + GA4 DebugView verification

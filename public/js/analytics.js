@@ -164,6 +164,33 @@ function setConsent(next) {
       localStorage.setItem('brightai:tracking_consent', next);
     }
   } catch (e) { /* private mode */ }
+  // BAI-SEC-17 — Google Consent Mode v2 update. Mirrors the runtime consent
+  // flag into gtag's dataLayer. ad_storage + analytics_storage flip with
+  // accept/decline; ad_user_data + ad_personalization stay `denied` because
+  // we don't run Google Ads or personalized ads. Defensive: window.gtag may
+  // not exist yet if setConsent runs before gtag.js loads (dataLayer.push
+  // will still queue the update for gtag.js to consume on boot).
+  if (typeof window !== 'undefined') {
+    if (typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', {
+        ad_storage: next === 'granted' ? 'granted' : 'denied',
+        analytics_storage: next === 'granted' ? 'granted' : 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+      });
+    } else if (Array.isArray(window.dataLayer)) {
+      window.dataLayer.push([
+        'consent',
+        'update',
+        {
+          ad_storage: next === 'granted' ? 'granted' : 'denied',
+          analytics_storage: next === 'granted' ? 'granted' : 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+        },
+      ]);
+    }
+  }
   for (const fn of consentListeners) {
     try { fn(next); } catch (e) { /* noop */ }
   }

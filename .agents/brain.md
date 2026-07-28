@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-28 23:15 +03:00
+last_updated: 2026-07-28 23:46 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.39
+version: 2.7.40
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1037,6 +1037,48 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-28 — BAI-SEC-17: Google Consent Mode v2 مفعّل (default + update) — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 معدّل** (0 جديد، 0 محذوف):
+  - `public/js/gtag-init.js` (+12 LOC: `gtag('consent', 'default', {4 signals denied})` + ~15 lines comments)
+  - `public/js/analytics.js` setConsent() (+25 LOC: defensive `gtag('consent', 'update', {...})` + ~7 lines comments)
+- **What**: P1 من الـ security/PDPL cluster (4h effort، +5% على Security/PDPL). أضفت gtag Consent Mode v2 support:
+  1. **`gtag-init.js`**: `gtag('consent', 'default', {ad_storage: 'denied', analytics_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied'})` — يتنفّذ **قبل** `gtag('js', new Date())` و `gtag('config', ...)`. يضمن إن dataLayer يحمل default consent state لما gtag.js يحمّل عبر `requestIdleCallback(loadGtag)`.
+  2. **`analytics.js` setConsent()**: defensive `gtag('consent', 'update', {...})` call. لو `window.gtag` موجودة → direct call. وإلا `dataLayer.push(['consent', 'update', ...])` (يحفظ الـ update لـ gtag.js لما يحمّل). `ad_storage` و `analytics_storage` يتغيرون حسب `next` (granted على accept، denied على decline). `ad_user_data` و `ad_personalization` يبقون 'denied' دائمًا.
+  3. **`CookieConsent.astro`**: **ما تغيّر** — `setTrackingConsent(value)` → `rt.setConsent(value)` يستدعي setConsent الجديد → الـ update يطلق تلقائيًا عند click.
+- **Why**: BAI-SEC-17 ticket. قبل التعديل: `analytics.js` setConsent() يحدّث الـ local consent flag بس (queue + localStorage + listeners)، بدون إشعار gtag. يعني gtag.js ما يعرف إن المستخدم وافق أو رفض → يخالف Google Consent Mode v2 (مطلوب من مارس 2024 للـ EEA، نفّذناه كـ best practice للسعودية PDPL). الـ 4 signals (ad_storage, analytics_storage, ad_user_data, ad_personalization) لازم تُمرّر لـ gtag dataLayer.
+- **Verification (محلي على macOS dev)**:
+  - `pnpm run build` → 211 HTML files, 0 errors ✅
+  - `pnpm exec node scripts/verify-all.mjs` → 5/5 passes ✅
+  - `pnpm run headers:check` → no drift ✅
+  - `pnpm run seo:gate` → 0 errors, 0 warnings ✅
+  - `pnpm run seo:hreflang` → 0 errors ✅
+  - `pnpm run performance:budget` → HTML 35.37KB / أكبر CSS 19.57KB / JS 11.97KB (كلها OK) ✅
+  - `grep -A 5 "consent', 'default'" dist/client/js/gtag-init.js` → 4 signals denied ✅
+  - `grep -A 5 "consent', 'update'" dist/client/js/analytics.js` → update call present ✅
+  - Script load order في `dist/client/index.html`: `gtag-init.js` (defer) → ينفّذ أولاً (default قبل `gtag('js')`)، `analytics.js` (type="module") → ينفّذ ثانياً ✅
+  - `pnpm run lint:tokens` → 99 raw hex/px violations (pre-existing، مو له علاقة بالـ consent) ⚠️
+- **DEC جديد (DEC-SEC-2026-07-28-001)**: راجع Section 4 — gtag Consent Mode v2 default = denied (all 4 signals)، `ad_user_data` + `ad_personalization` stay denied always.
+- **Risks Remaining**:
+  - **AC #2 (GA4 DebugView)**: يحتاج اختبار production بعد deploy. الـ gtag ID = `G-8LLESL207Q`. افتح GA4 Admin > DebugView، اعمل hard refresh، اضغط Accept، لازم تشوف `consent_update` event بـ `ad_storage: granted, analytics_storage: granted, ad_user_data: denied, ad_personalization: denied`.
+  - **AC #3 (no events before accept)**: متحقق منطقيًا — `analytics.js` السطر 330 (`if (!p.bypassConsent && consent !== 'granted') continue;`) يضمن إن gtag provider ما يستقبل events إلا لو consent = 'granted'. قبل user click، consent = 'unknown' → events في `pendingQueue`، لا تُرسل. يحتاج تأكيد في DebugView أيضًا.
+  - **AC #1 HTML grep ambiguity**: الكود في external scripts (`gtag-init.js` و `analytics.js` في `public/js/`)، مو inline في HTML. هذا تصميم صحيح مع CSP عندنا `script-src-attr: 'none'` (per BAI-PERF-01). لو الـ ticket يقصد inline، نحتاج نقاش — لكن inline يكسر الـ CSP. الـ functional behavior مُتحقَّق في dist files.
+  - **Bundle size delta**: analytics.js +1KB raw (+~250B gz)، gtag-init.js +700B raw (+~250B gz) — negligible.
+- **Commit message مقترح (per brain line 18 — user commits، الدفع عبر main فقط PR، لا branch جديد)**:
+  ```
+  [BAI-SEC-17] feat(consent): Google Consent Mode v2 — default + update
+
+  - public/js/gtag-init.js: gtag('consent', 'default', {4 signals: denied})
+    BEFORE gtag('js') + gtag('config') (required by Consent Mode v2)
+  - public/js/analytics.js setConsent(): defensive gtag('consent', 'update', {...})
+    on consent change. ad_storage + analytics_storage flip; ad_user_data +
+    ad_personalization stay 'denied'.
+  - CookieConsent.astro: no change — setTrackingConsent already routes to setConsent
+  - Bundle size delta: < 1KB gz combined (negligible)
+  - All gates pass: verify-all 5/5, headers:check, seo:gate, seo:hreflang, performance:budget
+  ```
+- **Related**: BAI-SEC-10 (2026-07-25، deny-list for `/frontend/**`)، BAI-PERF-01 (2026-07-24، CSP `script-src-attr: 'none'` — السبب إن consent calls external، مو inline)، BAI-PROC-12 (2026-07-25، verified_production gate — يحتاج `verified_production: yes` بعد deploy + GA4 DebugView verification).
 
 ### 2026-07-25 — BAI-PERF-03 (part 1): Lighthouse CI gate wired in `seo-gates` — LCP ≤ 2500ms enforced on PR merge — UNCOMMITTED (per brain line 18, user commits)
 
@@ -6441,6 +6483,30 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 - **Reversal cost**: Low (revert script).
 - **Do not reverse** بدون التأكد أن ROOT الافتراضي ما يلوّث routes بـ prefixes أو ينتج noisy outputs.
 - **Related reports**: `reports/2026-07-07-internal-links-zero.md`.
+
+### DEC-SEC-2026-07-28-001: Google Consent Mode v2 default = denied (all 4 signals); ad_user_data + ad_personalization stay denied always
+
+- **Date**: 2026-07-28
+- **Context**: BAI-SEC-17 (Consent Mode v2 ticket). قبل التعديل، `public/js/analytics.js` setConsent() كان يحدّث الـ local consent flag بس (`pendingQueue` + `localStorage` + `consentListeners`)، بدون إشعار gtag. يعني gtag.js ما يعرف إن المستخدم وافق أو رفض → يخالف Google Consent Mode v2 (مطلوب من مارس 2024 للـ EEA، ومن best practice للـ PDPL السعودية). الـ 4 signals المطلوبة (ad_storage, analytics_storage, ad_user_data, ad_personalization) كانت كلها غائبة من dataLayer.
+- **Decision**:
+  1. **`gtag('consent', 'default', {all 4 signals: 'denied'})`** — في `public/js/gtag-init.js`، يُنفّذ **قبل** `gtag('js', new Date())` و `gtag('config', ...)`. يضمن إن dataLayer يحمل default state لما gtag.js يحمّل عبر `requestIdleCallback(loadGtag)`.
+  2. **`gtag('consent', 'update', {...})`** — في `public/js/analytics.js` setConsent(). `ad_storage` و `analytics_storage` يتغيرون حسب user decision (`'granted'` على accept، `'denied'` على decline). `ad_user_data` و `ad_personalization` يبقون `'denied'` **دائمًا** (المشروع ما يستخدم Google Ads أو personalized ads).
+  3. **Defensive update call**: لو `window.gtag` ما هي موجودة وقت `setConsent` (الـ race: analytics.js ينفّذ قبل ما gtag.js يحمّل عبر `requestIdleCallback`)، الـ update ينحفظ في `dataLayer.push(['consent', 'update', ...])` — gtag.js يستهلكه لما يحمّل. هذا يضمن إن الـ update ما يضيع حتى لو الـ user يضغط Accept قبل ما gtag.js يجهز.
+  4. **`CookieConsent.astro` ما يحتاج تغيير** — `setTrackingConsent(value)` → `rt.setConsent(value)` يستدعي setConsent الجديد → الـ update يطلق تلقائيًا.
+- **Rationale**:
+  - **Default 'denied' لجميع الـ 4 signals** = best practice للـ privacy + PDPL + Google Consent Mode v2 compliance. أي tracking قبل consent = مخالفة.
+  - **`ad_user_data` + `ad_personalization` = 'denied' دائمًا** = المشروع ما يستخدم Google Ads أو personalized ads. هذي الـ signals ما تحتاج تتغير مع accept. لو في future نضيف Google Ads، نحتاج DEC منفصل لتغييرها إلى 'granted' بعد accept.
+  - **الـ default قبل `gtag('js')`** = required من Google. لو الـ default يجي بعد `gtag('js')`، gtag.js يحمّل بـ 'undefined' consent state ثم يتجاهل signals — يفشل الـ compliance audit.
+  - **External scripts (مو inline)** = تصميم CSP-compliant. `script-src-attr: 'none'` (per BAI-PERF-01) يمنع inline scripts. الـ gtag calls تنفّذ من external `gtag-init.js` و `analytics.js`، كلاهما يتحمّل بـ `defer` / `type="module"`.
+  - **Defensive `dataLayer.push` fallback** = race condition guard. الـ update ينحفظ في dataLayer حتى لو gtag.js ما حمّل — يستهلكه لما يجهز.
+- **Reversal cost**: medium. يتطلب:
+  1. تعديل `public/js/gtag-init.js` (default consent values).
+  2. تعديل `public/js/analytics.js` setConsent() (update values).
+  3. تعديل `src/components/CookieConsent.astro` UX إذا انقلب المنطق (accept → denied بدل granted).
+  4. تحديث GA4 DebugView verification + Privacy Policy statement.
+  5. إعادة بناء + redeploy.
+- **Do not reverse** بدون explicit user approval + مراجعة قانونية PDPL + Google Consent Mode v2 documentation update.
+- **Related**: BAI-SEC-17 (2026-07-28، هذا الـ ticket)، BAI-PERF-01 (2026-07-24، CSP `script-src-attr: 'none'` — يحدد إن consent calls external)، BAI-SEC-10 (2026-07-25، deny-list for `/frontend/**` — adjacent security gate)، BAI-PROC-12 (2026-07-25، verified_production gate — يحتاج GA4 DebugView verification بعد deploy).
 
 ---
 

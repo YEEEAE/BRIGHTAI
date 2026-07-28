@@ -8,16 +8,28 @@
  *
  * Behavior contract (preserved from prior inline version):
  *   1. Initialize window.dataLayer + gtag() shim immediately.
- *   2. Fire the `js` + `config` events (config: anonymize_ip=true, send_page_view=false).
- *   3. Load gtag.js itself lazily via requestIdleCallback (fallback: setTimeout 1500ms)
+ *   2. Fire `consent: default` (denied for all 4 Consent Mode v2 signals)
+ *      BEFORE `js` + `config` so the dataLayer carries the default state
+ *      when gtag.js boots. Required by Google Consent Mode v2.
+ *   3. Fire the `js` + `config` events (config: anonymize_ip=true, send_page_view=false).
+ *   4. Load gtag.js itself lazily via requestIdleCallback (fallback: setTimeout 1500ms)
  *      so the 182KB gtag.js payload never competes with the LCP element.
- *   4. Register as a provider with the unified analytics runtime
+ *   5. Register as a provider with the unified analytics runtime
  *      (window.__BRIGHTAI_ANALYTICS__.registerProvider) so all events
  *      flow through the unified layer (CRO audit Prompt 5).
  *
  * No tracking happens before gtag.js loads — the initial config event primes
- * the dataLayer so subsequent gtag() calls don't get lost.
+ * the dataLayer so subsequent gtag() calls don't get lost. Consent updates
+ * (accept/decline) are pushed by analytics.js setConsent() via
+ * gtag('consent', 'update', {...}).
+ *
+ * BAI-SEC-17 (Consent Mode v2): default is `denied` for all 4 signals
+ * (ad_storage, analytics_storage, ad_user_data, ad_personalization). The
+ * update from analytics.js setConsent() flips ad_storage + analytics_storage
+ * to `granted` on accept and keeps ad_user_data + ad_personalization at
+ * `denied` (we don't run Google Ads or personalized ads).
  */
+
 (function () {
   'use strict';
   /* eslint-disable */
@@ -31,6 +43,14 @@
   }
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
+  // BAI-SEC-17 — Google Consent Mode v2 default. MUST run before `js` and
+  // `config` so gtag.js boots with the default consent state in dataLayer.
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    analytics_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+  });
   gtag('js', new Date());
   gtag('config', id, { anonymize_ip: true, send_page_view: false });
 
