@@ -60,6 +60,27 @@
  *     upstream changed (a future migration, a manual copy, etc.) and we
  *     want to fail-loud here rather than ship the leak.
  *
+ * ─────────────────────────────────────────────────────────────────────
+ * BAI-DEPLOY-12 (2026-07-28) — RETAIN _headers + _redirects for Static Site
+ * ─────────────────────────────────────────────────────────────────────
+ * brightai.site is deployed on Render as a STATIC SITE service (not a
+ * Node Web Service — verified 2026-07-28 via rndr-id + 404 on /api/*).
+ * The original exclusion of `/_headers` and `/_redirects` was based on
+ * the assumption that the Node Web Service runtime ignores them
+ * (the comment in public/_headers says "DOCUMENTATION ONLY" for that
+ * reason). That assumption is wrong for this deployment: Render Static
+ * Site DOES read both files, and removing them disables:
+ *   - HSTS via _headers (max-age=63072000; includeSubDomains; preload) —
+ *     the entire BAI-DEPLOY-12 posture depends on this file surviving.
+ *   - /api/* rewrites via _redirects (legacy /api/lead, /api/csrf-token
+ *     → brightai-api.onrender.com Express backend).
+ *
+ * CNAME stays excluded: it leaks the hosting provider (Cloudflare → IONOS
+ * via CNAME setup) and the underlying nameservers, which an attacker
+ * could correlate with subdomain-takeover or DNS-rebinding reconnaissance.
+ * It is never used by Render Static Site for serving — only by the
+ * GitHub Pages deploy flow which is not in scope for brightai.site.
+ *
  * The runtime `src/server/deny-list.mjs` (deployed as
  * `dist/server/_deny-list.mjs` and wired into `dist/server/entry.mjs` via
  * the BAI-SEC-10 patch) is the SECOND line of defense. This script is
@@ -110,8 +131,10 @@ const EXCLUDE_PATTERNS = [
   // Top-level files that must never be served.
   { urlPath: '/package.json', relPath: 'package.json' },
   { urlPath: '/render.yaml', relPath: 'render.yaml' },
-  { urlPath: '/_headers', relPath: '_headers' },
-  { urlPath: '/_redirects', relPath: '_redirects' },
+  // BAI-DEPLOY-12 (2026-07-28): CNAME is the only special-file exclusion
+  // remaining. _headers and _redirects are now retained so Render Static
+  // Site can serve HSTS + /api/* rewrites from them. See the
+  // BAI-DEPLOY-12 comment block above for the rationale.
   { urlPath: '/CNAME', relPath: 'CNAME' },
 ];
 
