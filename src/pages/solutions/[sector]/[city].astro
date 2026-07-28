@@ -28,7 +28,7 @@ export function getStaticPaths() {
 }
 const { sector, loc } = Astro.props;
 const migratedPage = migratedLocalPages[`${sector.slug}/${loc.slug}`];
-const relatedSols = sector.related.map(r => solutions.find(s => s.slug === r)).filter(Boolean);
+const relatedSols = sector.related.map((r: string) => solutions.find(s => s.slug === r)).filter(Boolean);
 
 const crumbs = [
   { label: 'الرئيسية', href: '/' },
@@ -107,7 +107,7 @@ const jsonLd = {
 // cities (riyadh, dammam, jeddah) where the legacy 6 questions are
 // still considered "in-sync" and pass through untouched.
 const locFaqLd = loc.faqs && loc.faqs.length > 0
-  ? getFaqLd(loc.faqs.map((f) => ({ q: f.question, a: f.answer })))
+  ? getFaqLd(loc.faqs.map((f: any) => ({ q: f.question, a: f.answer })))
   : null;
 
 /**
@@ -243,7 +243,7 @@ const locAnswerFirst = loc.answerFirst
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <h2 id="solutions-local" class="inner-section__title"><svg class="text-cyan-300" aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-puzzle"></use></svg> حلول BrightAI المتاحة في {loc.cityAr}</h2>
     <div class="inner-grid inner-grid--2">
-      {relatedSols.map(sol => (
+      {relatedSols.map((sol: any) => (
         <a href={sol!.href} class="inner-card p-6 text-decoration-reset">
           <div class="flex items-center gap-3 mb-3">
             <div class="text-2xl"><Icon name={sol!.icon} class="text-cyan-300" /></div>
@@ -282,7 +282,7 @@ const locAnswerFirst = loc.answerFirst
         <h2 id="city-faqs" class="section__title section__title--start">أسئلة تدور في ذهنك عن {loc.cityAr}؟</h2>
       </div>
       <div class="inner-faq">
-        {loc.faqs.map((faq) => (
+        {loc.faqs.map((faq: any) => (
           <details>
             <summary>{faq.question}</summary>
             <div class="inner-faq__answer">
@@ -317,4 +317,13 @@ const locAnswerFirst = loc.answerFirst
 {/* Scroll Reveal: centralized in BaseLayout.astro (DEC-015). */}
 </>
 )}
+
+{/* ═══════════════ BACK TO SOLUTIONS (BAI-LINK-01) ═══════════════ */}
+<div style="display: flex; justify-content: center; margin-block: 2rem; padding: 0 1.5rem;">
+  <a href="/solutions/" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-white border border-white/20 hover:border-cyan-500/40 transition-all">
+    <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-arrow-right"></use></svg>
+    العودة إلى جميع الحلول
+  </a>
+</div>
+
 </ArabicLayout>

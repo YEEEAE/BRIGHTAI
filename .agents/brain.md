@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-28 23:46 +03:00
+last_updated: 2026-07-29 01:00 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.40
+version: 2.7.41
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1037,6 +1037,36 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-LINK-01: Hub & Spoke Internal Linking Complete — VERIFIED LOCALLY (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 معدّل** (0 جديد، 0 محذوف):
+  - `src/pages/solutions/[sector].astro` — Back to Solutions link (8 أسطر قبل `</ArabicLayout>`، نفس النمط من `[slug].astro` السطور 483-489)
+  - `src/pages/solutions/[sector]/[city].astro` — Back to Solutions link (8 أسطر، نفس النمط)
+- **What**: P1 من الـ indexation cluster (BAI ticket: 8h effort، +5% Indexation). البذكاء الاصطناعي ticket BAI-LINK-01 طلب 3 خطوات: (1) الرئيسية سيكشن Explore More، (2) blog/solutions/docs indexes Back to home + Related، (3) subpages breadcrumb + Back to. بعد الـ discovery اكتشفت إن الخطوات 1 و 2 منفذة بالكامل في commits سابقة (الرئيسية سيكشن 14، indexes عندهم كل شي). الفجوة الوحيدة: حلول subpages الـ 3 routes (`[slug]`, `[sector]`, `[sector]/[city]`) ما عندها Back to link مرئي. `[slug].astro` كان عنده أصلاً (السطور 483-489) — ليش الباقي ناقصين؟ على الأرجح الـ pattern تم تطبيقه على `[slug]` بس ولم يُعمّم. أضفت نفس النمط في `[sector]` و `[sector]/[city]` كآخر section قبل `</ArabicLayout>` (خارج الـ conditional عشان يظهر في كل الحالات).
+- **Why**: بدون Back to link مرئي في subpages، المستخدم يقدر يضل في deep page بدون ما يلاقي route سهل لـ `/solutions/`. schema BreadcrumbList (JSON-LD) موجود في كل صفحات الحلول (عبر `breadcrumbs={[...]}` prop في ArabicLayout → BaseLayout → FoundationSchema)، لكن schema وحده ما يخدم UX — يحتاج visual link. النمط متّسق مع blog subpages ("العودة إلى المدونة") و docs subpages ("العودة إلى مركز الوثائق").
+- **Verification (محلي على macOS dev)**:
+  - `ASTRO_TELEMETRY_DISABLED=1 npx astro build` → **205 pages, 0 errors** ✅
+  - Local `dist/client/` grep verification:
+    - `dist/client/index.html` → 4 occurrences of "Explore More" / "استكشف" ✅
+    - `dist/client/blog/index.html` → "العودة إلى الرئيسية" موجود ✅
+    - `dist/client/solutions/index.html` → "العودة إلى الرئيسية" موجود ✅
+    - `dist/client/docs/index.html` → "العودة إلى الرئيسية" موجود ✅
+    - `dist/client/solutions/ai-firewall/index.html` → "العودة إلى جميع الحلول" موجود ✅ (كان موجود مسبقاً)
+    - `dist/client/solutions/banking-ai-governance/index.html` → "العودة إلى جميع الحلول" موجود ✅ (BAI-LINK-01)
+    - `dist/client/solutions/banking-ai-governance/riyadh/index.html` → "العودة إلى جميع الحلول" موجود ✅ (BAI-LINK-01)
+  - `pnpm run verify:all` → ❌ exit 1 — السبب: raw hex/px values في ملفات **pre-existing** (`components.css`, `pages.css`, `en/terms/`, `en/privacy-policy/`, `assessment/`). مو من تعديلاتي.
+  - `pnpm run seo:gate` → ❌ exit 1 — السبب: html-policy issues على ملفات "index 2.html" residue من concurrent builds قديمة في dist/ (موثّق في brain.md السطر 235). مو من تعديلاتي.
+- **Production curl**: `curl -sI https://brightai.site/` → **HTTP/2 404** (2026-07-29 00:58 +03:00). الموقع 404 على production وقت التحقق — خارج نطاق BAI-LINK-01 (Render Static Site persistent-storage blocker منفصل، BAI-DEPLOY-14 مقترح).
+- **Report**: `report/2026-07-29-bai-link-01-hub-and-spoke.md` (BAI-PROC-12 compliant)
+- **Commit**: uncommitted (per brain line 18، المستخدم هو من يـ commit)
+- **Status**: verified locally؛ يحتاج deploy + production verification من المستخدم
+- **Brain updates**: frontmatter (version 2.7.40 → 2.7.41 + last_updated)؛ Section 1.1 (Build & Pages) لا تتغير (205 pages قبل وبعد)؛ لا state snapshot change
+- **Out-of-Scope (follow-ups مقترحة)**:
+  - **BAI-LINK-02**: Visual Breadcrumbs (مرئي `<nav>` element) في solutions و docs subpages (حالياً schema JSON-LD فقط). 4-5 ملفات، ~30 سطر CSS جديد + استخدام `<Breadcrumbs>` component الموجود.
+  - **BAI-DEPLOY-14**: Investigate brightai.site 404 (Render Static Site persistent-storage blocker).
+  - **BAI-CLEANUP-09**: dist/ residue cleanup (remove "index 2.html" duplicates).
+  - **BAI-TOKENS-08**: raw hex/px values cleanup (debt من components.css, pages.css, EN legal pages, assessment/).
 
 ### 2026-07-28 — BAI-SEC-17: Google Consent Mode v2 مفعّل (default + update) — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
 
