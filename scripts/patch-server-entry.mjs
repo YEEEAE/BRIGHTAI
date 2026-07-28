@@ -75,17 +75,45 @@ const DENY_LIST_DEPLOY = path.join(DIST_SERVER, '_deny-list.mjs');
 
 // PATCH_MARKER is the per-build identifier we inject into the chunk. We
 // started with BAI-SEC-10:deny-list for the deny-list patch and added
-// BAI-DEPLOY-11:build-info when we introduced the x-brightai-build header.
-// The function we replace the createStandaloneHandler with now stamps BOTH
-// markers, so re-running the patcher against an already-patched chunk
-// (with either marker present) would re-apply the same logic and produce
-// a non-idempotent change. To keep idempotency tight, we treat ANY of the
-// per-build markers as "chunk already patched" and skip the rewrite. The
-// full patcher should re-run only after a fresh `astro build` (which
-// regenerates the chunk with a new hash filename).
+// BAI-DEPLOY-11:build-info when we introduced the x-brightai-build header,
+// then BAI-DEPLOY-12:hsts when the Cloudflare Transform Rule approach
+// turned out to be inert under CNAME setup (Transform Rule creates
+// successfully but is not executed on responses — verified 2026-07-28).
+// The function we replace the createStandaloneHandler with now stamps
+// ALL three markers, so re-running the patcher against an
+// already-patched chunk (with any marker present) would re-apply the
+// same logic and produce a non-idempotent change. To keep idempotency
+// tight, we treat ANY of the per-build markers as "chunk already
+// patched" and skip the rewrite. The full patcher should re-run only
+// after a fresh `astro build` (which regenerates the chunk with a new
+// hash filename).
+//
+// BAI-DEPLOY-12 — HSTS INJECTION RATIONALE
+// ========================================
+// Why listener-level HSTS (not middleware, not meta, not _headers):
+//   - middleware.ts in src/ runs only on SSR routes (/api/*). Prerendered
+//     HTML in dist/client/ is served by staticHandler BEFORE the Astro
+//     app handler — middleware is bypassed.
+//   - <meta http-equiv="Strict-Transport-Security"> is honoured by NO
+//     browser. HSTS is HTTP-layer only.
+//   - public/_headers is the Netlify / Cloudflare Pages / Render Static
+//     convention. Render Web Service (Node) does not read it.
+//   - Cloudflare Transform Rule (scripts/setup-cloudflare-hsts-transform-rule.mjs)
+//     is the design-intended layer, but brightai.site is on CNAME setup
+//     at Cloudflare — the rule is created successfully but never executes
+//     on responses. Cloudflare Workers Custom Domains work (proven on
+//     hsts.brightai.site) but Workers Routes are also inert under CNAME
+//     setup (proven 2026-07-28 — Route binds in dashboard but is not
+//     invoked for brightai.site traffic).
+// The only remaining HTTP-layer hook for the prerendered HTML responses
+// is the Node server listener itself — the createStandaloneHandler
+// returned function. Setting Strict-Transport-Security via res.setHeader
+// there is the same layer that already stamps x-brightai-build, and it
+// runs for every response (deny-list 404, static file 200, SSR 200/4xx/5xx).
 const PATCH_MARKERS = [
   'BAI-SEC-10:deny-list',
   'BAI-DEPLOY-11:build-info',
+  'BAI-DEPLOY-12:hsts',
 ];
 
 function log(msg) { console.log(`[patch-server-entry] ${msg}`); }
@@ -337,9 +365,10 @@ if (existingMarker) {
   // BAI-DEPLOY-11:build-info (x-brightai-build response header +
   // process.env identity for SSR routes).
   const patchedFn = `function createStandaloneHandler(app, options, headersMap) {
-  // BAI-SEC-10:deny-list + BAI-DEPLOY-11:build-info (2026-07-25) —
-  // deployment-surface deny-list + build identity headers at the
-  // listener level. Runs BEFORE staticHandler reads any file from disk.
+  // BAI-SEC-10:deny-list + BAI-DEPLOY-11:build-info (2026-07-25) +
+  // BAI-DEPLOY-12:hsts (2026-07-28) — deployment-surface deny-list +
+  // build identity + Strict-Transport-Security at the listener level.
+  // Runs BEFORE staticHandler reads any file from disk.
   // See src/server/deny-list.mjs, scripts/patch-server-entry.mjs.
   // BAI-DEPLOY-11: stamp process.env so SSR routes (api/health.ts) can
   // include the build identity in their JSON response.
@@ -355,10 +384,22 @@ if (existingMarker) {
     // BAI-DEPLOY-11: stamp build identity on every response BEFORE the
     // deny-list check. Even denied responses carry the header so a
     // post-deploy gate can verify which build is live.
+    // BAI-DEPLOY-12:hsts — set Strict-Transport-Security on every
+    // response, including denied (404) and static file (200) responses.
+    // Value mirrors scripts/security-headers.mjs
+    // RESPONSE_SECURITY_HEADERS["Strict-Transport-Security"]; keep in
+    // sync if that canonical value changes (max-age is the long-lived
+    // preload commitment, do NOT shorten without a security review).
     try {
       if (res && typeof res.setHeader === 'function') {
         try { res.setHeader('x-brightai-build', BUILD_COMMIT); } catch { /* ignore */ }
         try { res.setHeader('x-brightai-build-time', BUILD_TIME); } catch { /* ignore */ }
+        try {
+          res.setHeader(
+            'Strict-Transport-Security',
+            'max-age=63072000; includeSubDomains; preload'
+          );
+        } catch { /* ignore */ }
       }
     } catch { /* ignore */ }
     // BAI-SEC-10 deny-list check — short-circuit to 404 before the static

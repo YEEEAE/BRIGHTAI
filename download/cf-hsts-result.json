@@ -1,0 +1,9 @@
+{
+  "action": "noop",
+  "reason": "rule-already-matches",
+  "existing": {
+    "id": "f03f82879fec450d93f9dab888c389ca",
+    "description": "BrightAI HSTS preload (BAI-SEC-11)"
+  },
+  "value": "max-age=63072000; includeSubDomains; preload"
+}
