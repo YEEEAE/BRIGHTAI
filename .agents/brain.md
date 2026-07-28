@@ -1038,6 +1038,17 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-29 — BAI-LINK-02: Orphan audit restored and footer coverage verified
+
+- **Files**: `scripts/qa/orphan-pages-audit.mjs` (new)
+- **What**: رجّعت سكربت تدقيق اليتامى للمسار اللي يطلبه التكت، وخليته يفحص `dist/client/` بس ويتجاهل بقايا build المكررة مثل `* 2.html`. السكربت يحسب الصفحات اليتيمة والصفحات اللي عندها أقل من رابطين داخليين.
+- **Why**: السكربت القديم كان مفقود من الشجرة الحالية، والنسخة التاريخية كانت تفحص `scripts/__fixtures__` بسبب `ROOT` غلط. فحص graph الحالي أثبت إن ما عندنا orphan pages، وما احتجنا حذف صفحات أو نغيّر بنية الـ Footer.
+- **Verification**: `node scripts/qa/orphan-pages-audit.mjs` → 211 صفحة، 0 orphan، 0 صفحات بأقل من رابطين ✅. `npm run internal-links:audit` → graph: 0 orphan، 0 broken، max click depth 3 ✅؛ أمر الروابط العام سجّل 1490 مراجع تاريخية/مولّدة مكسورة من نطاق أوسع. `npm run build` → فشل في `sync-dist-flat.mjs` لأن `dist/client/` صار مفقود أثناء خطوة المزامنة، لذلك ما أعتبر build ناجح.
+- **Report**: `report/2026-07-29-bai-link-02-orphan-pages.md`
+- **Commit**: uncommitted
+- **Status**: verified locally with build blocker documented
+- **Brain updates**: change ledger فقط؛ ما تغيّر Footer أو صفحات منشورة.
+
 ### 2026-07-29 — BAI-LINK-01: Hub & Spoke Internal Linking Complete — VERIFIED LOCALLY (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
 
 - **Files**: **2 معدّل** (0 جديد، 0 محذوف):

@@ -2286,3 +2286,25 @@ Related:
     calls external (مو inline)
   - BAI-PROC-12 (verified-production process gate) — يحتاج verified_production: yes بعد
     deploy + GA4 DebugView verification
+
+
+---
+Task ID: BAI-LINK-02
+Agent: BrightAI Workspace Agent
+Task: إنهاء الصفحات اليتيمة بربطها من footer أو حذفها
+Started: 2026-07-29
+Mode: Mid
+
+Work Log:
+- قريت brain.md وراجعت سجل BAI-IDX-22: الـ Footer coverage موجودة، والـ orphan script القديم كان فيه ROOT bug ومفقود من الشجرة الحالية.
+- راجعت `Footer.astro` و`src/data/navigation.ts`: ما احتجنا نغيّر بنية الـ Footer أو نحذف صفحة.
+- أنشأت `scripts/qa/orphan-pages-audit.mjs` عشان يفحص `dist/client/` ويتجاهل artifacts المكررة.
+- شغلت السكربت: 211 صفحة، 0 orphan، 0 صفحات بأقل من رابطين داخليين.
+- شغلت `npm run internal-links:audit`: production graph = 0 orphan، 0 broken، max click depth 3.
+- شغلت `npm run build`: فشل في `sync-dist-flat.mjs` برسالة `dist/client/ is missing`؛ مو محسوب نجاح.
+
+Stage Summary:
+- الحالة الفعلية للـ production graph متحققة: ما فيه صفحات يتيمة.
+- ما انحذفت صفحات وما تغير Footer عشان ما فيه orphan تحتاج معالجة.
+- أضيف سكربت acceptance المطلوب + تقرير BAI-LINK-02.
+- المخاطر المتبقية: build blocker مستقل في `sync-dist-flat.mjs`، وbroad internal-links scan فيه 1490 مراجع تاريخية/مولّدة مكسورة رغم إن graph production يطلع 0 broken.
