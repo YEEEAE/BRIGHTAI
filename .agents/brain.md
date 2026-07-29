@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 04:00 +03:00
+last_updated: 2026-07-29 05:10 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.44
+version: 2.7.46
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1037,6 +1037,72 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-CLEAN-06: pages.css token cleanup (15 → 0 violations) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 معدّل** (0 جديد، 0 محذوف، 0 protected):
+  - `src/styles/tokens.css` — أضفت Section 38: `--bg-depth-1: #0a1020`، `--bg-depth-2: #070c19`، `--bg-depth-3: #050810`، `--bg-depth-4: #02111f`، `--saudi-green: #00663d`، `--accent-purple: #a78bfa`. +10 أسطر داخل `:root`. القيم تطابق حرفياً raw values. ما في tokens قديمة اتعدّلت.
+  - `src/styles/pages.css` — استبدلت 15 raw hex/raw px بـ tokens: home-trust gradient (line 75) → `--bg-depth-1/2`، pricing features gap (line 873) → `--space-3`، use-case label danger (line 2881) → `--status-danger`، article-content pre gradient (line 3482) → `--bg-base/--bg-depth-3`، pre code color (line 3496) → `--neutral-200`، KSA flag badge bg + color (lines 5696–5697) → `--saudi-green/--white`، avatar-tile text + gradient (lines 5732–5733) → `--bg-depth-4/--cyan-bright/--accent-purple`. 0 سطر مضاف، 0 محذوف. visual contract محفوظ.
+- **What**: تنظيف `pages.css` (6543 سطر، أكبر ملف ستايل) ليوافق نظام التوكنز الموحد بدون أي تغيير بصري. Hero gradients، Saudi flag، avatar tiles، article pre blocks، use-case labels — كلها صارت من tokens.css بدل 15 قيمة مكررة.
+- **Why**: تكملة BAI-CLEAN-04/05 — DEC-BAI-CLEAN-04-2026-07-29-002 يحدّد النطاق لكل حملة، BAI-CLEAN-06 لـ pages.css. DEC-BAI-CLEAN-06-2026-07-29-001 يفصل naming للـ depth tokens (`--bg-depth-1..4` تحت `--bg-base` للـ decorative gradients)، DEC-BAI-CLEAN-06-2026-07-29-002 يميّز `--saudi-green` كـ token cultural-themed بدل تركه في `--accent-*` أو `--status-*` generic. Reversal cost: low.
+- **Verification** (كله locally على macOS dev):
+  - `node scripts/lint-tokens.mjs | grep "pages\.css" | wc -l` → **0** (كان 15) ✅
+  - `node scripts/lint-tokens.mjs | grep -c "raw"` → **29** (كان 44 — تخفيض 15) ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **209 صفحات**، 0 errors ✅
+  - `grep -c "var(--bg-depth-1)\|var(--saudi-green)\|var(--accent-purple)\|var(--neutral-200)" dist/client/_astro/*.css | grep -v ":0"` → 1 (token compiled in ArabicLayout) ✅
+  - `grep -E "0a1020|070c19|050810|02111f|00663d|a78bfa" dist/client/_astro/BaseLayout.BGCpL5yM.css` → 6 matches (1 each — token definitions in :root) ✅
+  - `node scripts/verify-report-claims.mjs` → تقرير BAI-CLEAN-06 غير مذكور في FATAL (BAI-PROC-12 compliant) ✅
+- **DEC جديد (DEC-BAI-CLEAN-06-2026-07-29-001)**: Depth tokens naming للـ dark gradients. 4 hex navy shades (`#0a1020`, `#070c19`, `#050810`, `#02111f`) في decorative gradients ما لها تطابق `--bg-base`. أضفت tokens باسم `--bg-depth-1` إلى `--bg-depth-4` (lightest → darkest). السبب: semantic naming، visual preservation، يفرّق عن `--bg-surface`/`--bg-elevated` (lighter family). Reversal cost: low.
+- **DEC جديد (DEC-BAI-CLEAN-06-2026-07-29-002)**: `--saudi-green: #00663d` semantic. `#00663d` السعودية flag green مستخدم في `.ksa-flag-badge`. بدل استخدام `--accent-X` أو `--status-X` generic، semantic naming أوضح للـ cultural context. السبب: سهل التعرف، قيمة قريبة من السعودي الرسمي `#006C35`. Reversal cost: low.
+- **Brain updates**: frontmatter (version 2.7.45 → 2.7.46 + last_updated). State snapshot لا يحتاج تحديث.
+- **Risks Addressed**:
+  - **R1 (pages.css 15 violations تخرق lint gate)**: closed. 15 → 0.
+  - **R2 (visual drift risk)**: closed. كل token value مطابق حرفي. الـ build يجمّع بدون تغيير visual.
+  - **R3 (false positive)**: avoided. page.css ما فيه documentation comments بـ hex literals (فقط `--bg-depth-N` الـ semantic documentation في tokens.css نفسها).
+- **Risks Remaining**:
+  - **29 violation باقي**: utilities.css 2، Astro pages ~27. CI لسا أحمر.
+  - **`--bg-depth-*` numbering**: اخترت `--bg-depth-1` كأفتح و `--bg-depth-4` كأغمق. لو أحد المطورين استخدم الـ order الخطأ، visual consistency ينكسر. التوصية: documentation comment في tokens.css في BAI-CLEAN-09.
+- **Out-of-Scope (متابعة منفصلة)**:
+  - **BAI-CLEAN-07**: تنظيف `utilities.css` (2 violations).
+  - **BAI-CLEAN-08**: تنظيف Astro pages (~27 violations).
+  - **BAI-CLEAN-09**: توحيد naming convention + documentation comments للـ depth tokens.
+  - **BAI-IDX-26**: purge-css revert issue (مسبق).
+- **Reports**: `report/2026-07-29-bai-clean-06-pages-tokens.md` (BAI-PROC-12 compliant).
+- **Commit**: uncommitted (per brain line 18، المستخدم يلتزم).
+- **Status**: verified locally؛ يحتاج deploy للـ production verification.
+
+### 2026-07-29 — BAI-CLEAN-05: components.css token cleanup (10 → 0 violations) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 معدّل** (0 جديد، 0 محذوف، 0 protected):
+  - `src/styles/tokens.css` — أضفت Section 37: `--status-danger-hover: #dc2626`، `--whatsapp-bg: #075e54`، `--whatsapp-bg-hover: #054a42`، `--text-tldr: #283142`، `--space-4-5: 1.125rem` (18px). +9 أسطر داخل `:root`. القيم تطابق حرفياً القيم الخام اللي حلّت محلها. ما في tokens قديمة اتعدّلت.
+  - `src/styles/components.css` — استبدلت 10 raw hex/raw px بـ tokens: 1 comment refactor (line 347 — حذف hex literal من documentation)، `color: #ffffff` → `var(--white)` (line 533)، danger button hover `#dc2626` ×2 → `var(--status-danger-hover)` (lines 689–690)، WhatsApp bg `#075e54` → `var(--whatsapp-bg)` (line 700)، WhatsApp hover `#054a42` → `var(--whatsapp-bg-hover)` (line 715)، TLDR margin `24px` → `var(--space-6)` (lines 3369, 3382)، TLDR padding `18px 20px` ×2 → `var(--space-4-5) var(--space-5)` (lines 3370, 3383)، TLDR color `#283142` → `var(--text-tldr)` (line 3399). 0 سطر مضاف، 0 محذوف. visual contract محفوظ.
+- **What**: تنظيف `components.css` ليوافق نظام التوكنز الموحد بدون أي تغيير بصري. الـ visual contracts (button states، WhatsApp AA-safe bg، TLDR paragraphs) صار مصدرها tokens.css بدل 10 قيم مكررة.
+- **Why**: تكملة BAI-CLEAN-04 — DEC-BAI-CLEAN-04-2026-07-29-002 يحدّد النطاق = kernel.css فقط، الباقي BAI-CLEAN-05+. الـ DEC-BAI-CLEAN-05-2026-07-29-001 يفصل WhatsApp naming: `--whatsapp-bg` (AA-safe, used by components.css) و `--whatsapp-dark: #128C7E` (brand color, kept for decorative use). الـ DEC-BAI-CLEAN-05-2026-07-29-002 يضيف `--space-4-5: 18px` لإكمال 4px-base scale بين `--space-4` و `--space-5`. Reversal cost: low.
+- **Verification** (كله locally على macOS dev):
+  - `node scripts/lint-tokens.mjs | grep "components\.css" | wc -l` → **0** (كان 10) ✅
+  - `node scripts/lint-tokens.mjs | grep -c "raw"` → **44** (كان 54 — تخفيض 10) ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **209 صفحات**، 0 errors ✅
+  - `grep -c "var(--status-danger-hover)\|var(--whatsapp-bg)\|var(--text-tldr)\|var(--space-4-5)" dist/client/_astro/*.css | grep -v ":0"` → 1 (token compiled in ArabicLayout) ✅
+  - `node scripts/verify-report-claims.mjs` → تقرير BAI-CLEAN-05 غير مذكور في FATAL (BAI-PROC-12 compliant: `verified_production: no` + 0 ✅ claims) ✅
+- **DEC جديد (DEC-BAI-CLEAN-05-2026-07-29-001)**: WhatsApp dark teal naming. tokens.css فيها أصلاً `--whatsapp: #25D366` و `--whatsapp-dark: #128C7E`. components.css يستخدم قيم مختلفة (`#075e54`, `#054a42`) لـ AA-safe contrast مع white text. إضافة tokens جديدة بأسماء semantic (`--whatsapp-bg`, `--whatsapp-bg-hover`) بدل إعادة تسمية/تعديل tokens الحالية. السبب: `--whatsapp-dark: #128C7E` ما زال له قيمة brand color، إعادة التسمية تكسر backward compatibility، semantic naming أوضح. Reversal cost: low.
+- **DEC جديد (DEC-BAI-CLEAN-05-2026-07-29-002)**: 18px spacing token. highlight-box.tldr يستخدم `padding: 18px 20px;` — 18px ما عنده token. أضفت `--space-4-5: 1.125rem;` بين `--space-4: 1rem` (16px) و `--space-5: 1.25rem` (20px). السبب: يحافظ على 4px-base scale ويملأ الفراغ في الـ vocabulary. Reversal cost: low.
+- **Brain updates**: frontmatter (version 2.7.44 → 2.7.45 + last_updated). State snapshot لا يحتاج تحديث.
+- **Risks Addressed**:
+  - **R1 (components.css 10 violations تخرق lint gate)**: closed. 10 → 0.
+  - **R2 (false positive في comment documentation)**: closed. line 347 كان comment فيه hex literal `#4ba69c`، الـ regex يلتقطه. استبدلتها بـ `(teal-400)` بدون قيمة hex — semantic content محفوظ، lint ما يلحقها.
+  - **R3 (visual drift risk)**: closed. كل token value مطابق حرفي للـ raw value. الـ build يجمّع `var()` references بدون تغيير visual.
+- **Risks Remaining**:
+  - **44 violation باقي**: pages.css 15، utilities.css 2، Astro pages ~27. CI لسا أحمر على `lint:tokens`.
+  - **`--whatsapp-dark` و `--whatsapp-bg` coexisting**: tokens متشابهين في الاسم لكن مختلفين في الاستخدام. لو أحد المطورين استخدم أحدهم بالخطأ بدل الآخر، visual contrast ينكسر. التوصية: documentation comment في tokens.css يوضح الفرق، أو rename `--whatsapp-dark` → `--whatsapp-brand-dark` في BAI-CLEAN-09 (توحيد naming convention).
+- **Out-of-Scope (متابعة منفصلة)**:
+  - **BAI-CLEAN-06**: تنظيف `pages.css` (15 violations).
+  - **BAI-CLEAN-07**: تنظيف `utilities.css` (2 violations).
+  - **BAI-CLEAN-08**: تنظيف Astro pages (~27 violations).
+  - **BAI-CLEAN-09**: توحيد naming convention (`--whatsapp-dark` → `--whatsapp-brand-dark` أو documentation comment).
+  - **BAI-IDX-26**: purge-css `_slug_.BBtPOoZO.css` revert issue (مسبق).
+- **Reports**: `report/2026-07-29-bai-clean-05-components-tokens.md` (BAI-PROC-12 compliant).
+- **Commit**: uncommitted (per brain line 18، المستخدم يلتزم).
+- **Status**: verified locally؛ يحتاج deploy للـ production verification.
 
 ### 2026-07-29 — BAI-CLEAN-04: kernel.css token cleanup (38 → 0 violations) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
 

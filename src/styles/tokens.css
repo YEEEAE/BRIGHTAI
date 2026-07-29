@@ -454,6 +454,31 @@
 
   /* 36. Spacing extension (BAI-CLEAN-04, 2026-07-29) */
   --space-2-5:                   0.625rem;                    /* 10px — inline horizontal padding */
+
+  /* ════════════════════════════════════════════════════════════════════════════
+     37. Status + Brand hover + Blog text (BAI-CLEAN-05, 2026-07-29)
+     قيم موجودة في components.css كـ raw hex، أضيفها كتokens للحفاظ على
+     الـ visual contracts (danger button hover، WhatsApp AA-safe bg،
+     blog TLDR paragraph color، spacing 18px للـ highlight-box).
+     ════════════════════════════════════════════════════════════════════════════ */
+  --status-danger-hover:         #dc2626;                     /* BAI-CLEAN-05: danger button hover (red-600) */
+  --whatsapp-bg:                 #075e54;                     /* BAI-CLEAN-05: WhatsApp AA-safe bg (decoded from #075E54 in components.css:700) */
+  --whatsapp-bg-hover:           #054a42;                     /* BAI-CLEAN-05: WhatsApp darker hover */
+  --text-tldr:                   #283142;                     /* BAI-CLEAN-05: blog TLDR paragraph text */
+  --space-4-5:                   1.125rem;                    /* 18px — highlight-box padding (between --space-4 16px and --space-5 20px) */
+
+  /* ════════════════════════════════════════════════════════════════════════════
+     38. Section depth + Saudi-themed + accent (BAI-CLEAN-06, 2026-07-29)
+     Raw hex في pages.css لقطاعات decorative (hero gradients, Saudi flag, avatar tiles).
+     كل token قيمة تطابق حرفياً الـ raw value اللي حلّت محلها — visual contract محفوظ.
+     --bg-depth-* تملأ الـ depth scale تحت --bg-base للـ gradients الزخرفية.
+     ════════════════════════════════════════════════════════════════════════════ */
+  --bg-depth-1:                  #0a1020;                     /* BAI-CLEAN-06: home-trust gradient first stop */
+  --bg-depth-2:                  #070c19;                     /* BAI-CLEAN-06: home-trust gradient second stop */
+  --bg-depth-3:                  #050810;                     /* BAI-CLEAN-06: article-content pre gradient second stop */
+  --bg-depth-4:                  #02111f;                     /* BAI-CLEAN-06: avatar-tile text (darkest navy for light gradient surfaces) */
+  --saudi-green:                 #00663d;                     /* BAI-CLEAN-06: Saudi flag green (ksa-flag-badge) */
+  --accent-purple:               #a78bfa;                     /* BAI-CLEAN-06: avatar-tile gradient second stop (purple-400) */
 }
 
 /* ════════════════════════════════════════════════════════════════════════════

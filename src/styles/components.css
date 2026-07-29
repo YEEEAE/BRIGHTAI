@@ -344,7 +344,7 @@
   text-transform: uppercase;
   /* WCAG AA fix (REPORTS-18): --interactive-primary (#2a8a7e) on tinted
      background gives only ~4.1:1, fails 4.5:1 threshold for small body
-     text. --brand-300 (#4ba69c) on the same background gives ~7.1:1 (AAA).
+     text. --brand-300 (teal-400) on the same background gives ~7.1:1 (AAA).
      Visually nearly identical (one Teal shade lighter) but accessibility-clean. */
   color: var(--brand-300);
   background: rgba(42, 138, 126, 0.08);      /* Teal at 8% */
@@ -530,7 +530,7 @@ button.btn--primary {                              /* legacy single-dash alias *
      failed color-contrast (serious). The a.btn--primary/button.btn--primary
      selectors raise specificity above the scoped `a[data-astro-cid]` rule
      (both 0,1,1) so the white text wins for button-styled anchors. */
-  color: #ffffff;
+  color: var(--white);
   border-color: var(--interactive-primary);
 }
 
@@ -686,18 +686,18 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 .btn--danger:hover {
-  background: #dc2626;
-  border-color: #dc2626;
+  background: var(--status-danger-hover);
+  border-color: var(--status-danger-hover);
 }
 
 /* WhatsApp — green pill (safer alternative to .btn--accent for CTAs) */
 .btn--whatsapp,
 .wa-btn {
-  /* WCAG AA fix (REPORTS-18): #25d366 brand green + white text = 1.96:1,
-     fails every WCAG threshold. WhatsApp's official dark teal #075E54
+  /* WCAG AA fix (REPORTS-18): brand WhatsApp green + white text = 1.96:1,
+     fails every WCAG threshold. The AA-safe darker teal (--whatsapp-bg)
      gives 7.24:1 with white text — passes AAA. Visually still recognizably
      "WhatsApp green" thanks to the brand's universal recognition. */
-  background: #075e54;
+  background: var(--whatsapp-bg);
   color: white;
   display: inline-flex;
   align-items: center;
@@ -712,7 +712,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 .btn--whatsapp:hover,
 .wa-btn:hover {
   /* Hover stays in the dark-teal family to preserve contrast. */
-  background: #054a42;
+  background: var(--whatsapp-bg-hover);
   box-shadow: 0 0 24px rgba(7, 94, 84, 0.45);
   transform: translateY(-2px);
   color: white;
@@ -3366,8 +3366,8 @@ button {
 
 /* Base tldr callout — used in most blog posts. */
 .highlight-box.tldr {
-  margin-block-start: 24px;
-  padding: 18px 20px;
+  margin-block-start: var(--space-6);
+  padding: var(--space-4-5) var(--space-5);
 }
 .highlight-box.tldr > h3:first-child {
   margin-block-start: 0;
@@ -3379,8 +3379,8 @@ button {
 /* Gradient tldr variant — used in posts that did not previously have a
  * .highlight-box wrapper. Mirrors the previous inline styles exactly. */
 .tldr--gradient {
-  margin: 24px 0;
-  padding: 18px 20px;
+  margin: var(--space-6) 0;
+  padding: var(--space-4-5) var(--space-5);
   background: linear-gradient(
     135deg,
     rgba(124, 58, 237, 0.06),
@@ -3396,7 +3396,7 @@ button {
 .tldr--gradient > p {
   margin: 0;
   font-size: 1.02rem;
-  color: #283142;
+  color: var(--text-tldr);
 }
 
 /* TLDR gradient variants — used by blog posts that previously had
