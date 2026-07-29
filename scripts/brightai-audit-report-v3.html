@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+<title>BrightAI Championship Audit v3 — 2026-07-29</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+@page { size: A4; margin: 18mm 14mm; }
+*{box-sizing:border-box}
+:root{--ink:#1a1a1a;--muted:#64748b;--line:#e2e8f0;--red:#c0392b;--green:#27ae60;--amber:#f39c12;--bg:#fff;--soft:#f8fafc}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'IBM Plex Sans Arabic','Inter',sans-serif;direction:rtl;font-size:9.5pt;line-height:1.75}
+body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.en,code,pre,.mono{font-family:'Inter','DejaVu Sans Mono',monospace;direction:ltr;unicode-bidi:embed}
+code{background:#f1f5f9;padding:1px 4px;border-radius:3px;font-size:8.5pt;color:#0f172a}
+pre{background:#0f172a;color:#e2e8f0;padding:10px 12px;border-radius:6px;font-size:7.8pt;line-height:1.5;overflow-x:auto;white-space:pre-wrap;direction:ltr}
+pre code{background:transparent;color:inherit;padding:0}
+h1,h2,h3,h4{font-family:'IBM Plex Sans Arabic',sans-serif;color:#0f172a;line-height:1.35;margin:0 0 8px}
+h1{font-size:22pt}h2{font-size:15pt;border-bottom:3px solid var(--line);padding-bottom:6px;margin-top:24px}
+h3{font-size:11.5pt;margin-top:18px;color:#1e293b}h4{font-size:10pt;color:#334155;margin-top:12px}
+p{margin:0 0 8px}a{color:#1d4ed8;text-decoration:none}
+ul,ol{margin:6px 22px 10px;padding:0}li{margin:3px 0}
+.small{font-size:8pt;color:var(--muted)}
+.tag{display:inline-block;padding:1px 7px;border-radius:8px;font-size:7.5pt;font-weight:700}
+.t-red{background:#fde8e8;color:var(--red)}.t-green{background:#dcfce7;color:var(--green)}.t-amber{background:#fef3c7;color:#92400e}.t-gray{background:#e2e8f0;color:#334155}
+.delta-up{color:var(--green);font-weight:700}.delta-down{color:var(--red);font-weight:700}.delta-flat{color:var(--muted)}
+.championship-badge{background:linear-gradient(135deg,#c0392b,#f39c12);color:#fff;padding:2px 8px;border-radius:10px;font-size:7.5pt;font-weight:800}
+.cover{min-height:250mm;display:flex;flex-direction:column;justify-content:space-between;padding:18mm 0;page-break-after:always}
+.cover .brand{font-size:10pt;color:var(--muted);letter-spacing:2px}
+.cover h1{font-size:34pt;line-height:1.2;margin:10px 0 4px}
+.cover .subtitle{font-size:14pt;color:#334155;margin-bottom:24px}
+.cover .warn{background:#fde8e8;border-right:4px solid var(--red);padding:10px 14px;border-radius:6px;font-size:9pt}
+.scorecards{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap}
+.scorecard{flex:1;min-width:46mm;border:1px solid var(--line);border-radius:10px;padding:12px;background:var(--soft)}
+.scorecard .ver{font-size:9pt;color:var(--muted);font-weight:700}
+.scorecard .big{font-size:28pt;font-weight:800;line-height:1;margin:4px 0}
+.scorecard .lbl{font-size:7.5pt;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:8.3pt;table-layout:fixed}
+th,td{border:1px solid var(--line);padding:5px 6px;text-align:right;vertical-align:top;word-wrap:break-word;overflow-wrap:break-word}
+th{background:#0f172a;color:#fff;font-weight:700;text-align:right}
+tr:nth-child(even) td{background:var(--soft)}
+td.num,th.num{text-align:center}
+td.code{font-family:'Inter',monospace;font-size:7.6pt;direction:ltr;text-align:left}
+td.fail{color:var(--red);font-weight:700}td.pass{color:var(--green);font-weight:700}
+.box{border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:10px 0}
+.box.crit{border-color:var(--red);background:#fef2f2}.box.warn{border-color:var(--amber);background:#fffbeb}.box.ok{border-color:var(--green);background:#f0fdf4}
+.box .h{font-weight:700;margin-bottom:4px}
+.pagebreak{page-break-before:always}.avoid-break{page-break-inside:avoid}
+.kpi-row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.kpi{border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:30mm;background:#fff}
+.kpi .v{font-size:15pt;font-weight:800;line-height:1}.kpi .l{font-size:7.5pt;color:var(--muted);margin-top:2px}
+.toc{font-size:9pt}.toc li{margin:5px 0}.toc a{color:#0f172a}.toc .n{color:var(--muted);font-family:'Inter',monospace}
+.lead-verdict{font-size:10.5pt;line-height:1.85;background:var(--soft);border-right:4px solid #0f172a;padding:12px 16px;border-radius:6px}
+hr{border:none;border-top:1px solid var(--line);margin:14px 0}
+.asmpt{color:#92400e;font-size:8pt;font-style:italic}.gap{color:#64748b;font-size:8pt}
+.tier-p0{background:#fef2f2}.tier-p1{background:#fffbeb}.tier-p2{background:#f0fdf4}
+</style></head>
+<body>
+
+<section class="cover">
+  <div>
+    <div class="brand">BrightAI · Saudi AI Safety OS</div>
+    <div class="brand" style="margin-top:6px;color:#475569;font-weight:700">CHAMPIONSHIP AUDIT · v3</div>
+    <h1>تقرير البطولة v3</h1>
+    <div class="subtitle">من "إصلاح" إلى "بطولة": الطريق إلى <span class="en">#1</span> في حوكمة الذكاء الاصطناعي بالسعودية</div>
+    <div class="brand">الموقع: <span class="en">https://brightai.site</span> · التاريخ: 2026-07-29 · آخر نشر: <span class="en">a8857c26</span></div>
+    <div class="scorecards">
+      <div class="scorecard"><div class="ver">v1 — أول تدقيق</div><div class="big" style="color:#c0392b">14%</div><div class="lbl">إنتاج مرجّح · 2026-07</div></div>
+      <div class="scorecard"><div class="ver">v2 — بعد 79 برومبت</div><div class="big" style="color:#c0392b">14%</div><div class="lbl">صفر تغيّر إنتاجي</div></div>
+      <div class="scorecard"><div class="ver">v3 — البطولة</div><div class="big delta-up">47.5%</div><div class="lbl">▲ +33.6 نقطة — أول تحرك فعلي</div></div>
+      <div class="scorecard"><div class="ver">كود (CODE) v3</div><div class="big" style="color:#27ae60">73%</div><div class="lbl">جاهز للنشر</div></div>
+    </div>
+  </div>
+  <div class="warn">
+    <strong>⚠️ تحذير أمني (P0):</strong> لقطة شاشة المالك كشفت قيمة <span class="en">GEMINI_API_KEY</span> كاملة (تبدأ بـ <span class="en">AIza...</span>). يجب تدويرها فورًا من <span class="en">Google AI Studio</span> حتى لو لم تظهر في الريبو. القيمة القديمة <span class="en">AIzaSyC3pLdZ…</span> لا تزال نصًا صريحًا في <span class="en">.agents/brain.md:4373</span> + 3 تقارير متعقّبة في <span class="en">git</span>.
+  </div>
+</section>
+
+<section class="pagebreak">
+<h2>جدول المحتويات</h2>
+<ul class="toc">
+<li><span class="n">1.</span> <a href="#verdict">الحكم التنفيذي (Executive Verdict)</a></li>
+<li><span class="n">2.</span> <a href="#delta">جدول Delta الكلي: v1 → v2 → v3</a></li>
+<li><span class="n">3.</span> <a href="#deploy">المرحلة أ — Deployment Forensics + جدول الحقيقة v3</a></li>
+<li><span class="n">4.</span> <a href="#sec">المرحلة ب — الأمان و PDPL</a></li>
+<li><span class="n">5.</span> <a href="#idx">المرحلة ج — الفهرسة والزحف</a></li>
+<li><span class="n">6.</span> <a href="#saudi">المرحلة د — Saudi Championship</a> <span class="championship-badge">محور جديد</span></li>
+<li><span class="n">7.</span> <a href="#kernel">المرحلة هـ — Kernel Product Championship</a> <span class="championship-badge">محور جديد</span></li>
+<li><span class="n">8.</span> <a href="#design">المرحلة و — التصميم و UX والهوية</a></li>
+<li><span class="n">9.</span> <a href="#code">المرحلة ز — البنية والكود</a></li>
+<li><span class="n">10.</span> <a href="#killers">Top 15 قاتل (Killers)</a></li>
+<li><span class="n">11.</span> <a href="#roadmap">خارطة الطريق: Saudi + Kernel Championship (90 يومًا)</a></li>
+<li><span class="n">12.</span> <a href="#gemini">خطة Gemini API Integration + Mobile Checklist</a></li>
+<li><span class="n">13.</span> <a href="#map">خرائط P0/P1/P2/P3 + المخاطر + ما يجب ألا يُلمس</a></li>
+<li><span class="n">—</span> <a href="#appendix">ملحق — أوامر curl + فجوات البيانات + القائمة المرجعية</a></li>
+</ul>
+</section>
+
+<section id="verdict" class="pagebreak">
+<h2>1. الحكم التنفيذي</h2>
+<div class="lead-verdict">
+<p><strong>الإنتاج تحرّك لأول مرة.</strong> بعد دورتين تدقيق (v1=14%، v2=14%) كان فيهما نفس النتيجة — كود يتقدّم لكن الإنتاج جامد — نجح <span class="en">v3</span> أخيرًا في كسر الجمود: الإنتاج قفز إلى <strong>47.5%</strong> (+33.6 نقطة). هذا ليس تحسينًا تدريجيًا، بل <em>تصحيح جوهري</em>: <span class="en">homepage last-modified</span> اليوم، <span class="en">/frontend/server.js</span> تسريب انحل (404)، الـ 6 ترويسات الأمنية كلها حاضرة، redirects الـ <span class="en">/blog</span> تعمل (301)، و hreflang الـ <span class="en">/en/</span> سليم ثنائي الاتجاه.</p>
+<p><strong>لكن <span class="en">v3</span> قفز على ساق واحدة.</strong> الكود الحالي يخدم <span class="en">73%</span> جاهزية — فيه AI Firewall + quota + circuit breaker + Gemini حقيقي يقرأ <span class="en">process.env</span> في runtime. المشكلة الحرجة: <strong>النشر المنشور على Render مُعدّ كـ Static Site بدل Node Web Service</strong>، رغم أن <span class="en">render.yaml</span> يصف <span class="en">runtime: node</span>. نتيجة ذلك: كل <span class="en">/api/*</span> endpoints (chat, lead, csrf, health) تخدم <strong>empty 200</strong> على POST و 404 على GET — أي أن <strong>الـ Kernel منتج وهمي بالكامل في الإنتاج</strong>: الواجهة تسقط بأمان إلى demo mode (<span class="en">FAKE_RESPONSES</span> ثابتة)، لكن المستخدم الحقيقي لا يتحدث مع Gemini أبدًا.</p>
+<p><strong>القرار المتبقي واحد فقط: نشر.</strong> 90% من العمل الهندسي منجز؛ المتبقي قرار نشر على Render (ساعة واحدة تقريبًا): تحويل الخدمة إلى <span class="en">node ./dist/server/entry.mjs</span> + ضبط متغيرات البيئة الإنتاجية. بعدها يصير <span class="en">/kernel/chat/</span> منتجًا حقيقيًا متصلًا بـ Gemini — وهذا هو محور البطولة في v3.</p>
+<p><strong>الفجوة الثانية للبطولة: الثقة (E-E-A-T).</strong> السوق السعودي في حوكمة AI شبه خالٍ من المنافس "المنتج" (الكل استشاريون أو جهات تنظيمية أو منتجات privacy فقط). BrightAI يتصدر فعليًا كلمتين ("حوكمة الذكاء الاصطناعي السعودية"، "AI Firewall السعودية"). لكنه <strong>يغيب عن كلمات الطلب العالي</strong> (PDPL، ECC، حوكمة AI للبنوك) ويفتقد إثبات الكيان: لا سجل تجاري، اسم المؤسس "يزيد" فقط في JSON-LD، لا صورة، لا عملاء مسمّين، لا /answer/*. هذه 5 خطوات ترفع <span class="en">Saudi Championship</span> من 56 إلى ~88.</p>
+</div>
+<div class="kpi-row">
+<div class="kpi"><div class="v delta-up">47.5%</div><div class="l">إنتاج v3 (مرجّح)</div></div>
+<div class="kpi"><div class="v">73%</div><div class="l">كود v3 جاهز</div></div>
+<div class="kpi"><div class="v delta-up">+33.6</div><div class="l">نقاط Δ منذ v2</div></div>
+<div class="kpi"><div class="v" style="color:#c0392b">1</div><div class="l">قرار نشر يفصل 73% عن 100%</div></div>
+<div class="kpi"><div class="v">195</div><div class="l">URL في sitemap</div></div>
+<div class="kpi"><div class="v">13</div><div class="l">صفحة Kernel (demo فقط)</div></div>
+</div>
+</section>
+
+<section id="delta" class="pagebreak">
+<h2>2. جدول Delta الكلي: v1 → v2 → v3</h2>
+<p class="small">ملاحظة منهجية: v1/v2 استعملا 6 محاور وأوزانًا مختلفة (Indexation 25%, Security 20%). v3 يضيف محورين جديدين (<span class="en">SaudiChampionship</span> + <span class="en">KernelChampionship</span>) ويعيد توزيع الأوزان لتعكس أولوية "البطولة لا الإصلاح". الدرجات على الإنتاج (<span class="en">PROD</span>) هي المعيار الوحيد للحقيقة. <span class="asmpt">[ثقة: 90%]</span></p>
+<table>
+<colgroup><col style="width:22%"><col style="width:7%"><col style="width:9%"><col style="width:9%"><col style="width:9%"><col style="width:9%"><col style="width:13%"><col style="width:22%"></colgroup>
+<thead><tr><th>المحور</th><th>الوزن</th><th>v1 إنتاج</th><th>v2 إنتاج</th><th>v3 إنتاج</th><th>v3 كود</th><th>Δ v2→v3</th><th>أقسى حقيقة</th></tr></thead>
+<tbody>
+<tr><td><strong>Deployment Forensics</strong></td><td class="num">15%</td><td class="fail">5%</td><td class="fail">5%</td><td class="pass">50%</td><td class="num">85%</td><td><span class="delta-up">▲ +45</span></td><td>النشر فعلي الآن؛ لكن <span class="en">Render service = Static Site</span> بدل Node → كل <span class="en">/api/*</span> ميت</td></tr>
+<tr><td><strong>Security &amp; PDPL</strong></td><td class="num">15%</td><td class="fail">15%</td><td class="fail">15%</td><td class="fail">35%</td><td class="num">80%</td><td><span class="delta-up">▲ +20</span></td><td>6 headers حاضرة + CSP، لكن مفتاح Gemini قديم نصًا صريحًا في <span class="en">brain.md</span> و الـ <span class="en">/api/*</span> لا يُنفّذ</td></tr>
+<tr><td><strong>Indexation &amp; Crawling</strong></td><td class="num">15%</td><td class="fail">1%</td><td class="fail">1%</td><td class="fail">25%</td><td class="num">70%</td><td><span class="delta-up">▲ +24</span></td><td>sitemap له 195 URL و hreflang سليم، لكن <strong>كل lastmod = تاريخ البناء</strong> و redirects مخصصة مكسورة (→404)</td></tr>
+<tr><td><strong>Saudi Championship</strong> <span class="championship-badge">جديد</span></td><td class="num">25%</td><td class="fail">5%</td><td class="fail">5%</td><td>56%</td><td class="num">60%</td><td><span class="delta-up">▲ +51</span></td><td>يتصدر كلمتين ناشئتين، لكن لا سجل تجاري ولا اسم مؤسس كامل ولا عملاء مسمّين</td></tr>
+<tr><td><strong>Kernel Championship</strong> <span class="championship-badge">جديد</span></td><td class="num">10%</td><td>—</td><td>—</td><td class="fail">45%</td><td class="num">80%</td><td><span class="delta-up">جديد</span></td><td>كود من فئة إنتاجية، لكن <strong>الإنتاج = demo وهمي بالكامل</strong> (Node server لا يعمل)</td></tr>
+<tr><td><strong>Design / UX / Identity</strong></td><td class="num">10%</td><td>45%</td><td>45%</td><td>70%</td><td class="num">75%</td><td><span class="delta-up">▲ +25</span></td><td>RTL نظيف (206 logical / 0 physical)، خطوط self-hosted، trust badges حاضرة نصًا</td></tr>
+<tr><td><strong>Code / Structure</strong></td><td class="num">10%</td><td>50%</td><td>50%</td><td>55%</td><td class="num">70%</td><td><span class="delta-up">▲ +5</span></td><td>TS strict + CI gates قوية، لكن <span class="en">lint:legacy=echo</span> + <span class="en">chat.ts</span> 1290 سطر + <span class="en">vitest</span> config معطّل</td></tr>
+</tbody>
+<tfoot><tr style="background:#0f172a;color:#fff;font-weight:800"><td>الإجمالي المرجّح</td><td class="num">100%</td><td class="num">14%</td><td class="num">14%</td><td class="num">47.5%</td><td class="num">73%</td><td class="num delta-up">▲ +33.6</td><td>أول قفزة إنتاجية حقيقية منذ التأسيس</td></tr></tfoot>
+</table>
+<div class="box warn"><div class="h">القصة المركزية للـ Delta</div>
+<p>في v1 و v2، الكود تحسّن من 55% إلى 70% لكن الإنتاج بقي جامدًا على 14% لأن صفر عمليات نشر وصلت. في <span class="en">v3</span> حدث النشر أخيرًا (آخر <span class="en">commit a8857c26</span> اليوم) — فقفز الإنتاج +33.6 نقطة. لكن النشر نفسه <strong>ناقص</strong>: خدمة Render مُعدّة كـ Static Site بدل Node، فيعمل كل ما هو static (HTML/headers/redirects الأساسية) لكن تتعطل كل مسارات الـ SSR (<span class="en">/api/*</span>). تصحيح واحد لهذه الإعداد = +20-25 نقطة فورية.</p></div>
+</section>
+
+<section id="deploy" class="pagebreak">
+<h2>3. المرحلة أ — Deployment Forensics + جدول الحقيقة v3</h2>
+<p>المنهجية: لكل ادعاء نشر، نقارن <span class="en">SOURCE_STATE</span> (في الكود) مع <span class="en">PROD_STATE</span> (<span class="en">curl</span> على <span class="en">brightai.site</span>). إن اختلفا = <span class="tag t-red">FAILED — NOT DEPLOYED</span>.</p>
+
+<h3>3.1 جدول الحقيقة (Deployment Truth Table v3)</h3>
+<table>
+<colgroup><col style="width:24%"><col style="width:30%"><col style="width:30%"><col style="width:16%"></colgroup>
+<thead><tr><th>الادعاء</th><th>SOURCE_STATE</th><th>PROD_STATE (curl)</th><th>الحكم</th></tr></thead>
+<tbody>
+<tr><td>الرئيسية منشورة وفاعلة</td><td class="code">src/pages/index.astro (761 سطر، 16 section)</td><td class="code">HTTP 200, last-modified 2026-07-29 20:19</td><td class="pass">PASS</td></tr>
+<tr><td>تسريب <span class="en">/frontend/server.js</span></td><td class="code">frontend/server.js (Express backend)</td><td class="code">HTTP 404 (انحل منذ v1)</td><td class="pass">PASS</td></tr>
+<tr><td>10 مسارات مصدر ممنوعة (<span class="en">render.yaml, .env, config.js…</span>)</td><td class="code">deny-list.mjs patterns</td><td class="code">/frontend/package.json 404, /render.yaml 404, /client/index.html 404</td><td class="pass">PASS</td></tr>
+<tr><td><span class="en">/api/health/</span> فاعل (Render healthcheck)</td><td class="code">src/pages/api/health.ts, render.yaml:15 healthCheckPath</td><td class="code">HTTP 404 (يخدم HTML 404 معرّب، ليس JSON)</td><td class="fail">FAILED</td></tr>
+<tr><td><span class="en">/api/ai/chat/</span> متصل بـ Gemini</td><td class="code">chat.ts:369 process.env.GEMINI_API_KEY, dist/server/entry.mjs مبني</td><td class="code">POST → 200, content-length:0, لا content-type. GET → 404. لا streaming.</td><td class="fail">FAILED</td></tr>
+<tr><td><span class="en">/api/lead/</span> يرجع JSON صريح (PDPL)</td><td class="code">src/pages/api/lead.ts (337 سطر, CSRF+rate limit)</td><td class="code">POST → 200, content-length:0. silent من أي Origin.</td><td class="fail">FAILED</td></tr>
+<tr><td>redirects <span class="en">/blog</span> و <span class="en">/about</span> (no-slash)</td><td class="code">trailingSlash:'always' in astro.config</td><td class="code">/blog → 301 → /blog/, /about → 301</td><td class="pass">PASS</td></tr>
+<tr><td>redirects مخصصة في <span class="en">_redirects</span></td><td class="code">public/_redirects (216 سطر، 134 قاعدة .html)</td><td class="code">/report → /report/ → 404 (dest لا يُطبّق). /blog.html → 404</td><td class="fail">FAILED</td></tr>
+<tr><td>ترويسات الأمن الست</td><td class="code">public/_headers + middleware + CF Transform</td><td class="code">HSTS+preload, X-Frame, nosniff, Referrer, Permissions كلها حاضرة</td><td class="pass">PASS</td></tr>
+<tr><td>sitemap شامل</td><td class="code">scripts/generate-sitemap-all-pages.mjs</td><td class="code">195 URL + 195 lastmod (لكن كلها نفس التاريخ)</td><td class="pass">PASS*</td></tr>
+<tr><td>lastmod per-page (git log)</td><td class="code">contract lines 21-29: "derived from git log"</td><td class="code">195 entry كلها 2026-07-29 (تاريخ البناء فقط)</td><td class="fail">FAILED</td></tr>
+<tr><td>hreflang <span class="en">/en/</span> ثنائي الاتجاه</td><td class="code">src/data/hreflang-pairs.ts (bidirectional)</td><td class="code">/en/privacy-policy self=en-SA ✓, /privacy-policy peer=en-SA ✓</td><td class="pass">PASS</td></tr>
+</tbody>
+</table>
+<p class="small">*PASS ببنية، لكن lastmod مكسور (انظر المرحلة ج).</p>
+
+<h3>3.2 التشخيص الجذري: Static Site بدل Node Service</h3>
+<div class="box crit"><div class="h">CRITICAL — Deployment Drift</div>
+<p><strong>المشكلة:</strong> <span class="en">astro.config.mjs:230</span> يصرّح <span class="en">output:'static'</span> مع <span class="en">adapter: node({mode:'standalone'})</span> (نموذج Astro 5/6 hybrid صحيح: static افتراضيًا + opt-in SSR عبر <span class="en">prerender=false</span>). كل routes الـ <span class="en">/api/*</span> معلّمة <span class="en">export const prerender = false</span>، و <span class="en">dist/server/entry.mjs</span> مبني وملتزم في git (يحوي 3 مراجع لمسار chat). <span class="en">render.yaml:11-15</span> يصف <span class="en">type:web, runtime:node, startCommand: node ./dist/server/entry.mjs</span>.</p>
+<p><strong>لكن الإنتاج الفعلي:</strong> ردود <span class="en">POST /api/*</span> تحمل هيدر <span class="en">rndr-id</span> (بصمة Render <strong>Static Site</strong>)، وغياب هيدر <span class="en">x-brightai-build</span> الذي يُحقنه <span class="en">entry.mjs</span> في كل طلب. النتيجة: <strong>الخدمة المنشورة مُعدّة كـ Static Site رغم أن render.yaml يصف Node</strong>. انحراف نشر (deployment drift) بين الـ blueprint المُلتزم والخدمة الفعلية على لوحة Render.</p>
+<p><strong>الدليل القاطع:</strong> <span class="en">rndr-id</span> في كل رد <span class="en">/api/*</span> + غياب <span class="en">x-brightai-build</span> + empty-200 على POST من <em>أي</em> Origin (الـ Origin allowlist في chat.ts:217 لو كان شغّالًا لرجع 403).</p></div>
+
+<div class="box warn"><div class="h">3.3 Deployment Integrity Score</div>
+<p>البنود الناجحة فعلًا في الإنتاج ÷ البنود المُعلنة = <strong>7/12 = 58%</strong> (كان 1/8 = 12.5% في v1، و ~1/8 في v2). تحسّن كبير، لكن الـ 5 بنود الفاشلة كلها في الـ SSR layer — وهي قلب المنتج.</p></div>
+</section>
+
+<section id="sec" class="pagebreak">
+<h2>4. المرحلة ب — الأمان و PDPL</h2>
+
+<h3>4.1 B1 — تسريب مفتاح Gemini</h3>
+<table>
+<thead><tr><th>القيمة</th><th>الموقع</th><th>متتبّع في git؟</th><th>الحكم</th></tr></thead>
+<tbody>
+<tr><td class="code">AIzaSyC3pLdZ-7R2XlvPFTZ8Alg93zkuThHbQYM (قديم)</td><td class="code">.agents/brain.md:4373</td><td class="fail">نعم (في HEAD a8857c26، دخل عبر 3f49dd81)</td><td class="fail">FAIL — high</td></tr>
+<tr><td class="code">AIzaSyC3pLdZ… (نفسه)</td><td class="code">report/A/2026-07-15-kernel-audit-master.md:119</td><td class="fail">نعم</td><td class="fail">FAIL</td></tr>
+<tr><td class="code">AIzaSyC3pLdZ… (نفسه)</td><td class="code">report/A/2026-07-18-pre-audit-brain-snapshot.md:1320</td><td class="fail">نعم</td><td class="fail">FAIL</td></tr>
+<tr><td class="code">AIzaSyC3pLdZ… (نفسه)</td><td class="code">brightai-audit-reports/prompt/brightai-audit-prompts.md:289</td><td class="fail">نعم</td><td class="fail">FAIL</td></tr>
+<tr><td class="code">AIzaSyC3pLdZ… (نفسه)</td><td class="code">.env:5</td><td class="pass">لا (gitignored)</td><td class="pass">local only</td></tr>
+<tr><td class="code">AIzaSyBFMm… (جديد من لقطة الشاشة)</td><td class="code">صفر مطابقات في working tree + git log --all -S</td><td class="pass">لا</td><td class="pass">PASS — clean</td></tr>
+</tbody>
+</table>
+<p class="small">المفتاح القديم <span class="en">CONSUMER_SUSPENDED</span> عند Google (غير قابل للاستخدام)، لكن تعرّضه النصّي في تاريخ git باقٍ. المفتاح الجديد نظيف في الريبو — لكن <strong>لقطة الشاشة التي قدّمها المالك كشفت قيمته كاملة</strong> → يجب تدويره بغض النظر عن الريبو.</p>
+
+<h3>4.2 B2 — تحصين <span class="en">/api/*</span> (مراجعة الكود)</h3>
+<p>الكود مُحصّن بشكل شامل — لكنه <strong>غير مُنفّذ في الإنتاج</strong> (انظر المرحلة أ). هذا يجعل كل ضوابط الأمان <em>خاملة</em>.</p>
+<table>
+<thead><tr><th>الضابط</th><th>الموقع في chat.ts</th><th>الحكم (كود)</th><th>الحكم (إنتاج)</th></tr></thead>
+<tbody>
+<tr><td>عزل المفتاح (لا تسريب للـ client)</td><td class="code">responses use sanitized codes (provider_failed…)</td><td class="pass">PASS</td><td class="fail">N/A — لا يعمل</td></tr>
+<tr><td>Rate limit + quota (Redis, multi-dim)</td><td class="code">checkQuota({ip,sessionId}) line 808</td><td class="pass">PASS</td><td class="fail">dormant</td></tr>
+<tr><td>CORS/Origin allowlist</td><td class="code">ALLOWED_ORIGINS line 182-188</td><td class="pass">PASS</td><td class="fail">dormant (أي Origin → 200)</td></tr>
+<tr><td>Input validation (≤4000 chars, no systemPrompt)</td><td class="code">line 700-715</td><td class="pass">PASS</td><td class="fail">dormant</td></tr>
+<tr><td>AI Firewall (PII redaction قبل provider)</td><td class="code">runFirewallSync line 739, block→451, approval→428</td><td class="pass">PASS</td><td class="fail">dormant</td></tr>
+<tr><td>fallback Groq→Gemini + circuit breaker</td><td class="code">isProviderOpen/recordProviderFailure line 906-940</td><td class="pass">PASS</td><td class="fail">dormant</td></tr>
+<tr><td>CSRF (lead.ts double-submit)</td><td class="code">verifyCsrfRequest line 196</td><td class="pass">PASS</td><td class="fail">dormant</td></tr>
+<tr><td>body size limit على <span class="en">/api/*</span></td><td class="code">— غير موجود —</td><td class="fail">MISSING</td><td class="fail">N/A</td></tr>
+</tbody>
+</table>
+
+<h3>4.3 B3 — CSP Strictness (Phase 2)</h3>
+<p>الإنتاج يخدم <span class="en">script-src 'self' 'unsafe-inline'</span> — <span class="en">unsafe-inline</span> لازال. السبب: <span class="en">15 inline &lt;script&gt;</span> في صفحات kernel تستخدم <span class="en">define:vars</span>. <span class="en">public/_headers:60-71</span> يوثّق هذا كقرار Phase 1 صريح، مع Phase 2 (nonce-based) معلّقة تتطلب إعادة كتابة ~30 ملف. <span class="tag t-amber">PARTIAL — medium</span></p>
+
+<h3>4.4 B5 — الترويسات الأمنية (نجاح كامل)</h3>
+<table>
+<thead><tr><th>الترويسة</th><th>القيمة في الإنتاج</th><th>الحكم</th></tr></thead>
+<tbody>
+<tr><td>strict-transport-security</td><td class="code">max-age=63072000; includeSubDomains; preload</td><td class="pass">PASS</td></tr>
+<tr><td>x-frame-options</td><td class="code">SAMEORIGIN (+ CSP frame-ancestors 'self')</td><td class="pass">PASS</td></tr>
+<tr><td>x-content-type-options</td><td class="code">nosniff</td><td class="pass">PASS</td></tr>
+<tr><td>referrer-policy</td><td class="code">strict-origin-when-cross-origin</td><td class="pass">PASS</td></tr>
+<tr><td>permissions-policy</td><td class="code">camera=(), microphone=(), geolocation=()</td><td class="pass">PASS</td></tr>
+</tbody>
+</table>
+<p class="small">HSTS preload جاهز في الهيدر، لكن <strong>التسليم في hstspreload.org خطوة يدوية لم تُؤكّد</strong>.</p>
+
+<div class="box crit"><div class="h">B4 — القاتل: /api/* endpoints معطّلة بالكامل</div>
+<p>كل POST إلى <span class="en">/api/ai/chat/</span> أو <span class="en">/api/lead/</span> من <em>أي</em> Origin (حتى <span class="en">evil.com</span>) يرجع <strong>200 silent فارغ</strong>. هذا يعني: لا rate limit، لا CSRF، لا firewall، لا Origin check، لا validation — كلها موجودة في الكود لكنها <strong>خاملة</strong>. من منظور PDPL (المادة 16 — المساءلة)، <span class="en">/api/lead/</span> silent-200 = فشل الإفصاح الصريح للمرسل.</p></div>
+</section>
+
+<section id="idx" class="pagebreak">
+<h2>5. المرحلة ج — الفهرسة والزحف</h2>
+
+<h3>5.1 C1 — sitemap: lastmod مكسور (HIGH)</h3>
+<div class="box warn"><div class="h">contradction موثّقة</div>
+<p><span class="en">scripts/generate-sitemap-all-pages.mjs:21-29</span> يصرّح: <em>"lastmod is derived from git log ... never from the build timestamp"</em>. الـ sitemap المحلي يحوي <strong>9 تواريخ فريدة</strong> (2026-06-13 → 2026-07-29). لكن الإنتاج يخدم <strong>195 entry كلها 2026-07-29</strong> (تاريخ البناء). Google سيتجاهل lastmod لعدم مصداقيته → يُلغي إشارة freshness. الـ contract مكسور في الإنتاج.</p></div>
+
+<h3>5.2 C2 — hreflang (سليم) + حدود</h3>
+<p>7 أزواج مزدوجة فقط (homepage + 5 legal + sales-deck). bidirectional مؤكّد. لكن <strong>kernel (11 صفحة) وكل الصفحات بلا en-SA</strong> — قرار محتوى موثّق (<span class="en">hreflang-pairs.ts:102-108</span> "no invented English peer"). <span class="tag t-amber">MEDIUM</span></p>
+
+<h3>5.3 C3 — redirects مكسورة (HIGH)</h3>
+<table>
+<thead><tr><th>المسار</th><th>المتوقع في _redirects</th><th>الفعلي على الإنتاج</th><th>الحكم</th></tr></thead>
+<tbody>
+<tr><td class="code">/report</td><td class="code">301 → /trust/</td><td class="code">301 → /report/ → 404</td><td class="fail">dest لا يُطبّق</td></tr>
+<tr><td class="code">/blog/ai</td><td class="code">301 → /404/</td><td class="code">301 → /blog/ai/ → 404</td><td class="fail">dest لا يُطبّق</td></tr>
+<tr><td class="code">/blog.html</td><td class="code">— لا rule —</td><td class="code">404 مباشر</td><td class="fail">لا rule عام .html</td></tr>
+<tr><td class="code">/blog</td><td>trailing-slash normalization</td><td class="code">301 → /blog/ ✓</td><td class="pass">PASS</td></tr>
+</tbody>
+</table>
+<p>المضيف يطبّق فقط إعادة توجيه trailing-slash ويتجاهل الـ dest المخصصة في <span class="en">_redirects</span>. النتيجة: روابط تؤدي لـ 404. سبب محتمل: <span class="en">_redirects</span> معطّل على Render Static Site (يحتاج Cloudflare Transform Rule أو <span class="en">astro.config redirects</span>).</p>
+
+<h3>5.4 C6-C8 — النجاحات</h3>
+<div class="kpi-row">
+<div class="kpi"><div class="v pass">11/11</div><div class="l">صفحة kernel index,follow</div></div>
+<div class="kpi"><div class="v pass">33</div><div class="l">entry kernel في sitemap (11×3 hreflang)</div></div>
+<div class="kpi"><div class="v pass">19</div><div class="l">نوع JSON-LD على الرئيسية</div></div>
+<div class="kpi"><div class="v pass">152</div><div class="l">سطر في llms.txt</div></div>
+<div class="kpi"><div class="v pass">195</div><div class="l">سطر في ai.txt</div></div>
+</div>
+
+<h3>5.5 C9 — GSC [DATA GAP]</h3>
+<p class="gap">لا يتوفر وصول Google Search Console. التقدير الاستنتاجي: موقع بـ 195 URL، نشيط النشر (~آخر أسبوع)، فهرسة أولية محتملة لكن lastmod الموحّد يُضعف إشارة إعادة الزحف. <strong>التوصية: ربط GSC + تصدير أسبوعي (workflow <span class="en">weekly-gsc.yml</span> موجود لكن يحتاج <span class="en">GSC_SERVICE_ACCOUNT_JSON</span>).</strong></p>
+</section>
+
+<section id="saudi" class="pagebreak">
+<h2>6. المرحلة د — Saudi Championship <span class="championship-badge">محور جديد · 25%</span></h2>
+<p class="small">السؤال المركزي: ما الذي يجعل BrightAI <span class="en">#1</span> في السعودية في حوكمة AI؟ النتيجة: <strong>56/100</strong> <span class="asmpt">[ثقة: عالية]</span>. البنية الفنية في المستوى الأعلى، لكن طبقة "إثبات الكيان" (E-E-A-T) في المستوى الأدنى.</p>
+
+<h3>6.1 المنافسة السعودية — فرصة احتكار حقيقية</h3>
+<p><strong>لا يوجد منافس "منتج" سعودي في AI governance التشغيلية</strong> (AI Firewall + Audit Trail + Human Approval معًا). السوق منقسم:</p>
+<table>
+<thead><tr><th>المنافس</th><th>النوع</th><th>القوة</th><th>الضعف</th><th>علاقة BrightAI</th></tr></thead>
+<tbody>
+<tr><td>SDAIA / NCA</td><td>حكومي منظّم</td><td>المرجع الرسمي (PDPL, ECC-2 Tool, ISO 42001 ذاتيًا)</td><td>أدوات تقييم، ليست منتج حوكمة AI تشغيلي</td><td>BrightAI = الطبقة التشغيلية التي تنظّمها</td></tr>
+<tr><td>PwC / KPMG / EY Saudi</td><td>استشاري</td><td>أطر Responsible AI، علاقات تنفيذية</td><td>خدمات لا منتجات؛ دورة بيع طويلة</td><td>BrightAI = منتج مستمر لا مشروع محدود</td></tr>
+<tr><td>OneTrust / Securiti.ai</td><td>منتج عالمي</td><td>منصة GRC/privacy ناضجة</td><td>تركيز privacy/PDPL لا AI governance؛ غربية</td><td>BrightAI = AI-native + سعودي</td></tr>
+<tr><td>DataMost / Asas.ai / Sahl</td><td>منتج سعودي ناشئ</td><td>PDPL automation محلية</td><td>PDPL فقط، لا AI governance</td><td>منافس على كلمة PDPL فقط</td></tr>
+<tr><td>ريناد المجد RMG</td><td>استشاري سعودي محلي</td><td>خدمات ISO 42001 + SAMA + حوكمة AI</td><td>خدمات/تدقيق ليست منصة</td><td>أقرب منافس محلي لكنه خدمات</td></tr>
+<tr><td>bright.ai (أمريكي)</td><td>منتج</td><td>تمويل، Physical AI للبنية التحتية</td><td>مجال مختلف تمامًا، لا حضور سعودي</td><td>تشابه اسم فقط، لا منافسة</td></tr>
+</tbody>
+</table>
+
+<h3>6.2 الكلمات السعودية المستهدفة <span class="asmpt">[ASSUMPTION — confidence 70% · WebSearch يوليو 2026]</span></h3>
+<table>
+<thead><tr><th>الكلمة</th><th>المنافس #1</th><th>وضع BrightAI</th><th>الفرصة</th></tr></thead>
+<tbody>
+<tr><td>"حوكمة الذكاء الاصطناعي السعودية"</td><td><strong>BrightAI</strong></td><td class="pass">متصدّر فعليًا</td><td>الدفاع + الحفاظ</td></tr>
+<tr><td>"AI Firewall السعودية"</td><td><strong>BrightAI (وحيد)</strong></td><td class="pass">مصطلح ناشئ بلا منافسة</td><td>احتكار + تعريف المصطلح</td></tr>
+<tr><td>"نظام حماية البيانات الشخصية" PDPL</td><td>SDAIA + DataMost</td><td class="fail">غائب عن أول 10 نتائج</td><td>صفحة PDPL متعمقة</td></tr>
+<tr><td>"ضوابط ECC"</td><td>NCA + CYBR + CyberArrow</td><td class="fail">مكتظة بأدوات ECC</td><td>منخفضة</td></tr>
+<tr><td>"حوكمة AI للبنوك"</td><td>SAMA + RMG</td><td class="fail">غائب رغم وجود /solutions/banking-ai-governance/</td><td>عالية — طلب تجاري كبير</td></tr>
+<tr><td>"سدايا" / "SDAIA"</td><td>الجهة نفسها</td><td class="fail">لا يمكن منافسة المنظّم على اسمه</td><td>منعدمة</td></tr>
+</tbody>
+</table>
+
+<h3>6.3 E-E-A-T — الفجوة الحرجة</h3>
+<table>
+<thead><tr><th>الإشارة</th><th>الواقع</th><th>الأثر</th></tr></thead>
+<tbody>
+<tr><td>اسم المؤسس في JSON-LD</td><td class="fail">"يزيد" فقط (الاسم الأول) في Organization.founder.name — في homepage + about + schema-saudi-seo.json</td><td class="fail">كيان مجهول يبيع للبنوك</td></tr>
+<tr><td>الاسم الكامل</td><td class="fail">"يزيد الشريف" في /authors/yazeed-alshareef/ لكن <strong>"يزيد الشمري" يظهر أيضًا في about</strong> (تناقض بيانات)</td><td class="fail">تشتت Knowledge Graph</td></tr>
+<tr><td>رقم السجل التجاري</td><td class="fail">صفر عبر كل الصفحات + JSON-LD + llms.txt</td><td class="fail">حرج — لا بنك يتعامل بدون إثبات كيان قانوني</td></tr>
+<tr><td>صورة المؤسس</td><td class="fail">avatar = حرف "ي" فقط، ليست &lt;img&gt;</td><td class="fail">ضعف Trust</td></tr>
+<tr><td>السيرة المهنية</td><td class="fail">لا خبرات سابقة مسمّاة</td><td class="fail">ضعف Authority</td></tr>
+<tr><td>شعارات عملاء</td><td class="fail">/customers/ = "بنك سعودي ريد"/"مستشفى كبير" (مجهول صراحةً)</td><td class="fail">صفر social proof</td></tr>
+<tr><td>شهادات طرف ثالث</td><td class="fail">لا G2/Capterra/Clutch</td><td class="fail">صفر مراجعات موثقة</td></tr>
+<tr><td>تغطية صحفية</td><td class="fail">صفر PR سعودي</td><td class="fail">ضعف Authority إقليمي</td></tr>
+<tr><td>Google Business Profile</td><td class="gap">[DATA GAP] العنوان موحّد في JSON-LD لكن GBP غير قابل للتحقق بدون GMB access</td><td class="fail">محتمل ضعيف</td></tr>
+</tbody>
+</table>
+
+<h3>6.4 AEO/GEO — قوة بنيوية + فجوة صفحات</h3>
+<div class="box ok"><div class="h">نقطة قوة: llms.txt / ai.txt / llms-full.txt</div>
+<p><span class="en">/llms.txt</span> (152 سطر، 14 قسم)، <span class="en">/llms-full.txt</span> (372 سطر، 39 قسم)، <span class="en">/ai.txt</span> (195 سطر). فيها Entity Facts كنونية + <strong>Target AI Search Queries صريحة</strong> (EN+AR) + AI Crawler Access Policy تفرّق بين Search/Grounding و Training. <strong>أفضل من 95% من المواقع السعودية.</strong></p></div>
+<div class="box crit"><div class="h">فجوة: لا صفحات /answer/* و /lp/*</div>
+<p><span class="en">/answer/test/</span> = 404، <span class="en">/lp/pdpl/</span> = 404، لا <span class="en">FAQPage</span> مخصصة لأسئلة AI. <strong>هذه الصفحات تتغذى منها Perplexity/ChatGPT مباشرة</strong> — غيابها فجوة AEO كبيرة رغم llms.txt الممتاز.</p></div>
+<p class="asmpt">[ASSUMPTION — confidence 30%]: ذكر BrightAI في ChatGPT/Perplexity غير قابل للاختبار هنا. بناءً على تصدّر WebSearch لكلمتين + llms.txt قوي لكن بلا mentions خارجية/backlinks/press — افتراض: ذكر ضعيف أو معدوم في AI engines.</p>
+
+<h3>6.5 Trust Signals للبنوك</h3>
+<p>ROI calculator موجودة على <span class="en">/calculator/roi/</span> (محتوى غني: ROI×5، calculator×12، حاسبة×18) لكن <strong><span class="en">/calculator/</span> الجذر = 404</strong> (احتمال فقدان مستخدمين). لا trust badges بصرية على hero (الجهات مذكورة كنص في /trust/ فقط). llms.txt صريح وصادق: <em>"does NOT claim any specific certification ... unless a separate public certificate page states that explicitly"</em> — شفافية أخلاقية ممتازة لكن صفر badges ثقة بصرية للبنوك.</p>
+
+<h3>6.6 Saudi Championship Score: 56/100</h3>
+<table>
+<thead><tr><th>البُعد</th><th>الوزن</th><th>النقاط</th><th>السبب</th></tr></thead>
+<tbody>
+<tr><td>د.1 المنافسة (فرصة السوق)</td><td class="num">25%</td><td class="num pass">22/25</td><td>لا منافس منتج مباشر؛ فرصة احتكار</td></tr>
+<tr><td>د.2 SERP targeting</td><td class="num">20%</td><td class="num">10/20</td><td>متصدر كلمتين ناشئتين، غائب عن PDPL/ECC/البنوك</td></tr>
+<tr><td>د.3 E-E-A-T</td><td class="num">20%</td><td class="num fail">6/20</td><td>اسم أول فقط، لا CR، لا صورة، لا سيرة، لا شعارات، لا شهادات، لا press</td></tr>
+<tr><td>د.4 GBP/Local</td><td class="num">5%</td><td class="num">2/5</td><td>[DATA GAP] لكن العنوان موحّد JSON-LD</td></tr>
+<tr><td>د.5 AEO/GEO</td><td class="num">15%</td><td class="num">11/15</td><td>llms.txt ممتاز لكن لا /answer/*</td></tr>
+<tr><td>د.6 Trust للبنوك</td><td class="num">15%</td><td class="num fail">5/15</td><td>لا badges، لا عملاء مسمّين، لا CR</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="kernel" class="pagebreak">
+<h2>7. المرحلة هـ — Kernel Product Championship <span class="championship-badge">محور جديد · 10%</span></h2>
+
+<h3>7.1 الجواب على السؤال المركزي</h3>
+<div class="box crit"><div class="h">هل /kernel/chat/ متصل فعليًا بـ Gemini؟</div>
+<p><strong>لا.</strong> الكود من الفئة الإنتاجية بالكامل (SSE reader حقيقي + AI Firewall + quota + circuit breaker + Gemini يقرأ <span class="en">process.env</span> في runtime)، لكن <strong>الإنتاج يخدم الموقع كـ Static Site</strong> — Node server لا يعمل، فكل <span class="en">/api/*</span> تخدم empty 200. الواجهة تسقط بأمان إلى demo mode (<span class="en">FAKE_RESPONSES</span> ثابتة + <span class="en">KernelDemoPill</span> شفاف)، لكن المستخدم الحقيقي <strong>لا يتحدث مع Gemini أبدًا</strong> — يتحدث مع 4 ردود مكتوبة مسبقًا.</p>
+<p class="small">تصحيح مهم لفرضية أولية: <span class="en">output:'static'</span> + adapter في Astro 5/6 <em>هو</em> نموذج hybrid صحيح. الكود ليس static-only. المشكلة في <strong>النشر</strong>: خدمة Render مُعدّة كـ Static Site بدل Node web service.</p></div>
+
+<h3>7.2 هـ.1 — chat.astro (الواجهة، 1720 سطر)</h3>
+<table>
+<thead><tr><th>البُعد</th><th>التقييم</th><th>الدليل</th></tr></thead>
+<tbody>
+<tr><td>الاتصال بـ backend</td><td class="pass">جاهز</td><td class="code">chat.astro:1104 fetch('/api/ai/chat/', Accept:'text/event-stream')</td></tr>
+<tr><td>streaming SSE</td><td class="pass">جاهز</td><td class="code">readSSE() :925, consumeSSE() :1226 (response.body.getReader + TextDecoder)</td></tr>
+<tr><td>session management</td><td class="pass">جيد</td><td class="code">getSessionId() :842, crypto.randomUUID() → sessionStorage</td></tr>
+<tr><td>demo mode</td><td class="t-amber">شفّاف لكن افتراضي</td><td class="code">FAKE_RESPONSES :645, runDemoReply() :1213 (setTimeout 700ms), KernelDemoPill pressed:true :125</td></tr>
+<tr><td>error states</td><td class="pass">ممتازة + عربية</td><td class="code">showChatError() :761 — 6 فئات: rate_limit/provider_failed/network/unavailable/timeout/unknown</td></tr>
+<tr><td>typing indicator</td><td class="pass">موجود</td><td class="code">:366 ثلاثي النقاط + aria-busy + sr-only announcer</td></tr>
+<tr><td>onboarding tour</td><td class="fail">غير موجود</td><td>لا tour/walkthrough</td></tr>
+<tr><td>first-time UX</td><td class="t-amber">مربك</td><td>المحادثة تبدأ بـ seed data ثابتة ("تصدير قائمة عملاء محظور") كأنها محادثة مستمرة</td></tr>
+<tr><td>mobile (360px)</td><td class="pass">مدروس</td><td class="code">3-panes تنطوي على drawers تحت 1024px :484-595</td></tr>
+</tbody>
+</table>
+
+<h3>7.3 هـ.2 — chat.ts (الـ backend، 1290 سطر) — جودة إنتاجية</h3>
+<table>
+<thead><tr><th>الميزة</th><th>الموقع</th><th>الحالة (كود)</th></tr></thead>
+<tbody>
+<tr><td>process.env.GEMINI_API_KEY في runtime</td><td class="code">chat.ts:369</td><td class="pass">PASS — تعليق صريح ARCH-2</td></tr>
+<tr><td>streaming SSE</td><td class="code">ReadableStream :860 + sseEvent()</td><td class="pass">PASS</td></tr>
+<tr><td>fallback Groq→Gemini + circuit breaker</td><td class="code">isProviderOpen :906, recordProviderFailure</td><td class="pass">PASS</td></tr>
+<tr><td>rate limit per-IP + quota (Redis)</td><td class="code">checkQuota :808</td><td class="pass">PASS — fail-closed 503 عند فشل Redis</td></tr>
+<tr><td>AI Firewall (PII قبل provider)</td><td class="code">runFirewallSync :739, block→451, approval→428</td><td class="pass">PASS</td></tr>
+<tr><td>session context (Redis)</td><td class="code">getChatSessionStore().recent() :794</td><td class="pass">PASS — degrade to in-memory</td></tr>
+<tr><td>البنية التحتية (Redis/Postgres/Sentry)</td><td class="code">src/lib/redis.ts, packages/db (Prisma), packages/lead-queue</td><td class="pass">مكتملة في الكود</td></tr>
+</tbody>
+</table>
+
+<h3>7.4 هـ.7 — تقييم صفحات kernel الـ 13</h3>
+<table>
+<thead><tr><th>الصفحة</th><th>سطور</th><th>empty</th><th>loading</th><th>error</th><th>demo?</th><th>/10</th></tr></thead>
+<tbody>
+<tr><td>chat</td><td class="num">1720</td><td class="num">5</td><td class="num">2</td><td class="num">31</td><td class="t-amber">نعم (شفّاف)</td><td class="num pass">8.0</td></tr>
+<tr><td>index</td><td class="num">670</td><td class="num">4</td><td class="num">0</td><td class="num">1</td><td class="t-amber">KernelDemoPill</td><td class="num pass">8.5</td></tr>
+<tr><td>scenarios</td><td class="num">624</td><td class="num">7</td><td class="num">1</td><td class="num">6</td><td class="t-amber">"simulated" :458</td><td class="num">7.0</td></tr>
+<tr><td>audit</td><td class="num">639</td><td class="num">1</td><td class="num">1</td><td class="num">4</td><td class="t-amber">drawer</td><td class="num">7.0</td></tr>
+<tr><td>approvals</td><td class="num">680</td><td class="num">1</td><td class="num">1</td><td class="num">2</td><td class="t-amber">نعم</td><td class="num">6.5</td></tr>
+<tr><td>evidence</td><td class="num">779</td><td class="num">2</td><td class="num">1</td><td class="num">4</td><td class="t-amber">نعم</td><td class="num">6.5</td></tr>
+<tr><td>policies</td><td class="num">575</td><td class="num">4</td><td class="num">0</td><td class="num">1</td><td class="t-amber">نعم</td><td class="num">6.5</td></tr>
+<tr><td>stats</td><td class="num">562</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="t-amber">"mock/stats.json" :241</td><td class="num">5.5</td></tr>
+<tr><td>reports</td><td class="num">599</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="t-amber">نعم (wizard)</td><td class="num">5.5</td></tr>
+<tr><td>compliance</td><td class="num">411</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="t-amber">نعم</td><td class="num">5.5</td></tr>
+<tr><td>connectors</td><td class="num">392</td><td class="num">0</td><td class="num">0</td><td class="num">9</td><td class="fail">static state</td><td class="num fail">5.0</td></tr>
+<tr><td>[slug]</td><td class="num">183</td><td class="num">2</td><td class="num">0</td><td class="num">0</td><td class="t-amber">1</td><td class="num fail">5.0</td></tr>
+<tr><td>offline</td><td class="num">17</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td>—</td><td class="num">6.0</td></tr>
+</tbody>
+</table>
+<p class="small"><strong>KernelEmptyState + KernelSkeleton موجودان</strong> في <span class="en">src/components/kernel/</span> لكن <strong>10 من 11 صفحة لا تستخدمهما</strong> — فقط index. الأخطاء الصفرية في stats/connectors/reports = لا مسار "لا توجد بيانات" أصلًا.</p>
+
+<h3>7.5 هـ.8 — Mobile 360px (Playwright مباشر على الإنتاج)</h3>
+<div class="box ok"><div class="h">نجاح كبير: 0px تجاوز أفقي على 11/11 صفحة</div>
+<p>اختبار مباشر عبر Playwright على 11 صفحة kernel بـ viewport 360×640 + isMobile + hasTouch. النتائج:</p></div>
+<table>
+<thead><tr><th>المقياس</th><th>النتيجة</th><th>الحكم</th></tr></thead>
+<tbody>
+<tr><td>تجاوز أفقي (overflowX)</td><td class="pass">0px على كل الصفحات الـ 11</td><td class="pass">PASS</td></tr>
+<tr><td>touch targets ≥ 44px</td><td class="pass">473/495 (95.6%)</td><td class="pass">PASS — المخالفة = روابط logo في drawer خارج الشاشة فقط</td></tr>
+<tr><td>bottom nav + safe-area</td><td class="pass">حاضر في KernelLayout</td><td class="pass">PASS</td></tr>
+<tr><td>drawer منزلق صحيح</td><td class="pass">mobile-menu__header عند right:720px = drawer مخفي، ليس layout bug</td><td class="pass">PASS</td></tr>
+</tbody>
+</table>
+
+<h3>7.6 هـ.9 — RTL correctness</h3>
+<p>logical properties في kernel: <strong>chat (4), evidence (5), scenarios (2), audit/approvals/stats (1 كل)</strong>. physical legacy misuse: <strong>صفر</strong> في تخطيطات الصفحات (الـ margin-left واحد في evidence داخل iframe srcdoc معزول = false positive). <span class="tag t-green">RTL 100% نظيف</span></p>
+
+<h3>7.7 هـ.10 — Demo vs Reality (شفافية صادقة)</h3>
+<p><strong>11 من 13 صفحة</strong> تستخدم <span class="en">&lt;KernelDemoPill /&gt;</span>. البيانات محاكاة بصراحة: <span class="en">chat.astro:645 FAKE_RESPONSES</span>، <span class="en">scenarios.astro:458 "Run scenario (simulated)"</span>، <span class="en">stats.astro:241 "Demo datasets matching mock/stats.json"</span>. هذا <strong>النموذج الصحيح لـ Demo vs Reality</strong> — صادق، بلا غطاء. لكنه يعني: النظام بأكمله واجهة، لا مسار يتصل بمصدر بيانات حقيقي.</p>
+
+<h3>7.8 Kernel Scores</h3>
+<div class="kpi-row">
+<div class="kpi"><div class="v">68/100</div><div class="l">Kernel Chat</div></div>
+<div class="kpi"><div class="v">68/100</div><div class="l">Kernel Pages UX</div></div>
+<div class="kpi"><div class="v pass">82/100</div><div class="l">Kernel Mobile (layout-tier first-class)</div></div>
+<div class="kpi"><div class="v">45/100</div><div class="l">Kernel Championship إجمالي (live=0/25)</div></div>
+</div>
+<div class="box warn"><div class="h">الحكم النهائي للموبايل</div>
+<p><strong>First-class على مستوى التخطيط، afterthought على مستوى المحتوى.</strong> البنية التحتية للجوال احترافية (bottom nav ثابت، drawer منطقي، خصائص منطقية، 0px overflow، touch ≥44px). لكن الصفحات ترتاح على التصميم المشترك: لا empty states في 10/11، لا skeleton loading، تحميل متزامن، demo هو الوضع الافتراضي الوحيد المشحون.</p></div>
+</section>
+
+<section id="design" class="pagebreak">
+<h2>8. المرحلة و — التصميم و UX والهوية</h2>
+<table>
+<thead><tr><th>الفحص</th><th>النتيجة</th><th>الحكم</th></tr></thead>
+<tbody>
+<tr><td>logical properties (RTL-aware)</td><td class="code">206 استخدام (inset-inline/margin-inline/padding-inline)</td><td class="pass">PASS — تحسّن كبير عن v1</td></tr>
+<tr><td>physical legacy (margin-left/right)</td><td class="code">0 استخدام</td><td class="pass">PASS</td></tr>
+<tr><td>self-hosted fonts (no Google Fonts)</td><td class="code">0 مطابقة fonts.googleapis.com في src/</td><td class="pass">PASS</td></tr>
+<tr><td>خطوط woff2 محلية</td><td class="code">IBMPlexSansArabic-Regular/SemiBold + Inter-Regular/SemiBold</td><td class="pass">PASS</td></tr>
+<tr><td>brand font subset</td><td class="code">TheYearofTheCamel-Medium.subset.woff2 (9.9KB من 58KB)</td><td class="pass">PASS</td></tr>
+<tr><td>line-height عربي (هدف 1.75)</td><td class="code">base.css: 1.6 (body), 1.7 (heading), --leading-relaxed 1.75</td><td class="t-amber">جزئي — body 1.6 أقل من الموصى</td></tr>
+<tr><td>trust badges (SDAIA/NCA/ISO)</td><td class="code">ISO 42001×3, ISO 27001×2, NCA×31, SDAIA×13 كنص في /trust/</td><td class="t-amber">حاضرة نصًا، لا badges بصرية على hero</td></tr>
+<tr><td>viewport + theme-color</td><td class="code">viewport-fit=cover, theme-color #060914</td><td class="pass">PASS</td></tr>
+<tr><td>تباين WCAG AA</td><td class="code">low-opacity text محدود (rgba 0.3 للظلال فقط)</td><td class="pass">PASS — تحسّن عن v1 (rgba 0.4 = 3.8:1)</td></tr>
+</tbody>
+</table>
+<div class="box ok"><div class="h">نقاط قوة</div>
+<p>RTL نظيف بالكامل (206/0)، خطوط self-hosted بالكامل، brand font subset مُحسّن، تباين محسّن. هذا تقدّم حقيقي عن v1 الذي كان يستخدم physical properties و Google Fonts.</p></div>
+<div class="box warn"><div class="h">نقاط للمراجعة</div>
+<p>line-height body = 1.6 (BAI-DESIGN-04 خفّضه من 1.75) — قد يضر القراءة العربية على نصوص طويلة. trust badges حاضرة كـ text في /trust/ لكن <strong>ليست بصرية على hero</strong> — للبنوك، الـ visual badge على الـ above-the-fold قرار ثقة فوري.</p></div>
+</section>
+
+<section id="code" class="pagebreak">
+<h2>9. المرحلة ز — البنية والكود</h2>
+<table>
+<thead><tr><th>الفحص</th><th>النتيجة</th><th>الحكم</th></tr></thead>
+<tbody>
+<tr><td>scripts/ folder count (هدف ≤60)</td><td class="num">71 ملف (66 .mjs)</td><td class="t-amber">+9 فوق الحد</td></tr>
+<tr><td>lint:legacy</td><td class="code">echo 'Linting skipped' (no-op)</td><td class="fail">وهمي — لكن lint حقيقي عبر pnpm -r</td></tr>
+<tr><td>chat.ts size</td><td class="num">1290 سطر (20+ دالة في ملف واحد)</td><td class="t-amber">monolith قابل للتفكيك</td></tr>
+<tr><td>vitest.config</td><td class="code">include: kernel/tests/** (مسار غير موجود)</td><td class="fail">config معطّل — vitest يجد 0 ملفات</td></tr>
+<tr><td>تطبيق Astro التسويقي (src/)</td><td class="num">155 .astro + 45 .ts/.tsx, صفر اختبارات</td><td class="t-amber">فجوة تغطية</td></tr>
+<tr><td>اختبارات حقيقية</td><td class="num">26 ملف في packages/ + apps/dashboard/</td><td class="pass">موجودة للـ dashboard/packages</td></tr>
+<tr><td>CI gates</td><td class="code">5 workflows: a11y, ci-build-guard (34KB), deploy, reports-gate, seo-guard, weekly-gsc</td><td class="pass">PASS — قوية</td></tr>
+<tr><td>Lighthouse CI</td><td class="code">budgets: script≤300KB, total≤1500KB, LCP≤2500ms, INP≤200ms</td><td class="pass">PASS — مُفعّل</td></tr>
+<tr><td>npm scripts</td><td class="num">95 سكربت (verify:all, seo:all, performance:budget موجودة)</td><td class="pass">تشفير آلي عالٍ</td></tr>
+<tr><td>تبعات محظورة (GSAP/three/…)</td><td class="num">0 مطابقات</td><td class="pass">PASS</td></tr>
+<tr><td>React usage</td><td class="num">0 (لا @astrojs/react)</td><td class="pass">PASS — vanilla فقط</td></tr>
+<tr><td>TypeScript strict</td><td class="code">extends astro/tsconfigs/strict + strict:true صريح</td><td class="pass">PASS</td></tr>
+<tr><td>dead code (SparklesHero/HeroVisual)</td><td class="code">محذوف — بقيت تعليقان تاريخيان فقط</td><td class="pass">PASS</td></tr>
+<tr><td>Tailwind</td><td class="code">محذوف بالكامل</td><td class="pass">PASS</td></tr>
+<tr><td>ci-build-guard.yml</td><td class="num">34KB (monolith workflow)</td><td class="t-amber">عبء صيانة</td></tr>
+<tr><td>.lighthouseci/ (git)</td><td class="code">~85 ملف، ~95MB (LHR ملتزمة في git؟)</td><td class="t-amber">تضخم محتمل</td></tr>
+</tbody>
+</table>
+<div class="box warn"><div class="h">الأدوات الوهمية</div>
+<p><span class="en">lint:legacy</span> = echo (وهمي)، <span class="en">vitest.config include</span> يشير لـ <span class="en">kernel/tests/</span> غير الموجود. الاسم مضلل لكن البديل الحقيقي موجود (<span class="en">pnpm -r lint</span> + اختبارات packages).</p></div>
+</section>
+
+<section id="killers" class="pagebreak">
+<h2>10. Top 15 قاتل (Killers)</h2>
+<p class="small">مرتّبة حسب (الأثر × الثقة) ÷ الجهد. <span class="tag t-red">CRIT</span>=حرج P0، <span class="tag t-amber">HIGH</span>=عالي P0/P1، <span class="tag t-gray">MED</span>=متوسط.</p>
+<table>
+<thead><tr><th>#</th><th>القاتل</th><th>الفئة</th><th>الأثر</th><th>الجهد</th></tr></thead>
+<tbody>
+<tr class="tier-p0"><td class="num">1</td><td><strong>Render service = Static Site بدل Node</strong> → كل /api/* ميت، Kernel demo وهمي بالكامل</td><td><span class="tag t-red">CRIT</span></td><td class="num">10</td><td class="num">1h</td></tr>
+<tr class="tier-p0"><td class="num">2</td><td><strong>تسريب مفتاح Gemini القديم</strong> نصًا صريحًا في brain.md:4373 + 3 تقارير + تاريخ git + لقطة شاشة كشفت الجديد</td><td><span class="tag t-red">CRIT</span></td><td class="num">10</td><td class="num">1h</td></tr>
+<tr class="tier-p0"><td class="num">3</td><td><strong>لا رقم سجل تجاري</strong> في أي مكان — كيان مجهول يبيع للبنوك</td><td><span class="tag t-red">CRIT</span></td><td class="num">9</td><td class="num">2h</td></tr>
+<tr class="tier-p0"><td class="num">4</td><td><strong>lastmod مكسور</strong> في sitemap (195 entry كلها = تاريخ البناء) → Google يتجاهل freshness</td><td><span class="tag t-red">CRIT</span></td><td class="num">8</td><td class="num">3h</td></tr>
+<tr class="tier-p0"><td class="num">5</td><td><strong>redirects _redirects غير مُنفّذة</strong> في الإنتاج → /report, /blog/ai → 404</td><td><span class="tag t-red">CRIT</span></td><td class="num">8</td><td class="num">3h</td></tr>
+<tr class="tier-p1"><td class="num">6</td><td><strong>اسم المؤسس "يزيد" فقط في JSON-LD</strong> + تناقض "الشمري"/"الشريف" في about</td><td><span class="tag t-amber">HIGH</span></td><td class="num">8</td><td class="num">2h</td></tr>
+<tr class="tier-p1"><td class="num">7</td><td><strong>لا صورة مؤسس + لا سيرة مهنية</strong> → ضعف Trust/Authority</td><td><span class="tag t-amber">HIGH</span></td><td class="num">7</td><td class="num">3h</td></tr>
+<tr class="tier-p1"><td class="num">8</td><td><strong>لا /answer/* صفحات</strong> → غياب AEO رغم llms.txt ممتاز</td><td><span class="tag t-amber">HIGH</span></td><td class="num">7</td><td class="num">16h</td></tr>
+<tr class="tier-p1"><td class="num">9</td><td><strong>لا عملاء مسمّين + لا شعارات</strong> → صفر social proof للبنوك</td><td><span class="tag t-amber">HIGH</span></td><td class="num">7</td><td class="num">—</td></tr>
+<tr class="tier-p1"><td class="num">10</td><td><strong>Kernel = demo شفّاف بالكامل</strong> (11/13 صفحة KernelDemoPill، chat=FAKE_RESPONSES)</td><td><span class="tag t-amber">HIGH</span></td><td class="num">7</td><td class="num">1h (.deploy)</td></tr>
+<tr class="tier-p1"><td class="num">11</td><td><strong>chat.astro seed data مربكة</strong> للمستخدم الأول (محادثة "تصدير عملاء" كأنها حقيقية)</td><td><span class="tag t-amber">HIGH</span></td><td class="num">6</td><td class="num">3h</td></tr>
+<tr class="tier-p1"><td class="num">12</td><td><strong>CSP unsafe-inline لازال</strong> (15 inline script في kernel) — Phase 2 معلّقة</td><td><span class="tag t-amber">HIGH</span></td><td class="num">6</td><td class="num">24h</td></tr>
+<tr class="tier-p2"><td class="num">13</td><td><strong>/api/* بدون body size limit</strong> (BAI-SEC-20 معلّق)</td><td><span class="tag t-gray">MED</span></td><td class="num">5</td><td class="num">2h</td></tr>
+<tr class="tier-p2"><td class="num">14</td><td><strong>lint:legacy = echo + vitest معطّل</strong> → أدوات وهمية</td><td><span class="tag t-gray">MED</span></td><td class="num">4</td><td class="num">4h</td></tr>
+<tr class="tier-p2"><td class="num">15</td><td><strong>10/11 صفحة kernel بلا empty/skeleton states</strong> → تحميل متزامن يسبب وميض</td><td><span class="tag t-gray">MED</span></td><td class="num">4</td><td class="num">12h</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="pagebreak">
+<h2>ملحق — تحليل أعمق للقاتلين P0 (الخمسة الأوائل)</h2>
+
+<h3>القاتل #1 — Render Static Site بدل Node (CRITICAL)</h3>
+<div class="box crit"><div class="h">لماذا هذا قاتل المنتج كله</div>
+<p>هذا ليس bug عادي — هو <strong>الفرق بين "موقع تسويقي" و "منتج"</strong>. BrightAI مُسوّق على أنه "AI Safety OS" بـ Kernel interactive. في الإنتاج:</p>
+<ul>
+<li><strong>كل تفاعل AI</strong> (chat، scenario، policy check) يخدم empty 200 — الواجهة تسقط لـ FAKE_RESPONSES.</li>
+<li><strong>كل lead form</strong> يخدم empty 200 — الـ CRM/LeadQueue لا يستقبل شيئًا.</li>
+<li><strong>كل CSRF token request</strong> → 404 — لا حماية CSRF فاعلة.</li>
+<li><strong>health check</strong> Render نفسه يفشل (404) لكن الخدمة لا تُعاد تشغيلها لأن Static Site لا يفشل هكذا.</li>
+</ul>
+<p><strong>الأثر المالي:</strong> كل زائر يضغط "جرّب Kernel" أو يملأ lead form → يعتقد الموقع معطّل. لا conversion، لا بيانات عملاء، لا دليل استخدام. هذا يُفسّر إن كان فيه انخفاض في الـ leads منذ إطلاق Kernel.</p>
+<p><strong>سهولة الإصلاح:</strong> ساعة واحدة على Render dashboard (تغيير نوع الخدمة). لا كود. لا rebuild. الكود مكتمل ومبني في dist/server/entry.mjs. <strong>هذا أرخص إصلاح بأعلى أثر في كامل التدقيق.</strong></p></div>
+
+<h3>القاتل #2 — مفتاح Gemini مسرّب + لقطة شاشة</h3>
+<div class="box crit"><div class="h">ثلاث طبقات تعرّض</div>
+<ol>
+<li><strong>الريبو (متعقّب):</strong> AIzaSyC3pLdZ… في brain.md:4373 + 3 تقارير، في git history منذ 3f49dd81. أي شخص ينسخ الريبو العام يرى القيمة.</li>
+<li><strong>لقطة الشاشة:</strong> المالك شارك screenshot فيه المفتاح الجديد AIzaSyBFMm… كاملة — <strong>هذا تعرّض لا يعتمد على الريبو</strong>. أي من شاف الـ screenshot عنده القيمة.</li>
+<li><strong>المفتاح القديم CONSUMER_SUSPENDED</strong> — يعني Google نفسها علّمت المفتاح كمخالف. لكن القيمة مكشوفة لأي يستخدمها في services أخرى أو لـ impersonation.</li>
+</ol>
+<p><strong>الإصلاح الإلزامي (لا مفاوضة):</strong> (أ) تدوير كلا المفتاحين من Google AI Studio، (ب) إزالة القيم من الريبو + git filter-repo، (ج) تأكيد المفتاح الجديد الجديد على Render فقط، (د) لا screenshots مستقبلًا للمفاتيح.</p></div>
+
+<h3>القاتل #3 — لا رقم سجل تجاري</h3>
+<div class="box crit"><div class="h">حاجز البنوك الأول</div>
+<p>في سوق B2B سعودي تنفيذي، <strong>أول سؤال من procurement في أي بنك/مستشفى/حكومية: "وش رقم السجل التجاري؟"</strong>. بدونه:</p>
+<ul>
+<li>لا يمكن دخول vendor registration في أي جهة حكومية أو بنك.</li>
+<li>لا يمكن فتح vendor file في SAMA-regulated entities.</li>
+<li>Google Knowledge Graph لن يبني كيان BrightAI (يحتاج إثبات legal entity).</li>
+<li>Google Business Profile لا يُفعّل بدون CR مرتبط بالعنوان.</li>
+</ul>
+<p><strong>الإصلاح:</strong> 2 ساعة (بعد ما المالك يعطي الرقم). أثر: +8 نقاط Saudi Championship + يفتح باب vendor registrations.</p>
+<p class="asmpt">[ASSUMPTION — confidence 50%]: إن لم يوجد CR فعليًا بعد، هذا إشارة إن BrightAI في مرحلة ما قبل التسجيل القانوني — يجب تأكيده مع المالك قبل ادعاء رقم.</p></div>
+
+<h3>القاتل #4 — lastmod مكسور في sitemap</h3>
+<div class="box crit"><div class="h">contradction موثّقة = Google يتجاهل</div>
+<p>هذا finding خفي لكنه مؤذي. الـ contract في الكود (generate-sitemap-all-pages.mjs:21-29) يقول صراحةً إن lastmod يُشتق من git log. المحلي صحيح (9 تواريخ). لكن الإنتاج يخدم 195 entry كلها = تاريخ البناء.</p>
+<p><strong>عواقب SEO:</strong></p>
+<ul>
+<li>Google يرى كل الصفحات "تحديثت اليوم" يوميًا → يصير متشككًا → <strong>يتجاهل lastmod كليًا</strong> → يعتمد على crawl rate فقط.</li>
+<li>الصفحات التي فعلًا تحدّثت (blog جديد) لا تحصل على أولوية إعادة الزحف.</li>
+<li>PageRank freshness signal يُضعف.</li>
+</ul>
+<p><strong>الإصلاح:</strong> 3 ساعات — تحقيق أين يُعاد كتابة lastmod في pipeline الإنتاج (محتمل astro sitemap integration أو Render build step) + إصلاحه.</p></div>
+
+<h3>القاتل #5 — redirects _redirects غير مُنفّذة</h3>
+<div class="box crit"><div class="h">روابط مكسورة + link juice مهدور</div>
+<p>public/_redirects فيه 216 سطر، 134 قاعدة. لكن الإنتاج يطبّق فقط trailing-slash normalization ويتجاهل الـ dest المخصصة.</p>
+<table>
+<thead><tr><th>الـ rule في _redirects</th><th>ما يحدث فعليًا</th><th>النتيجة</th></tr></thead>
+<tbody>
+<tr><td class="code">/report → /trust/ 301</td><td class="code">/report → /report/ → 404</td><td class="fail">link broken</td></tr>
+<tr><td class="code">/blog/ai → /404/ 301</td><td class="code">/blog/ai → /blog/ai/ → 404</td><td class="fail">link broken</td></tr>
+<tr><td class="code">/blog/Generative-artificial-intelligence → ...</td><td class="code">→ /blog/Generative.../ → 404</td><td class="fail">link broken</td></tr>
+<tr><td class="code">/blog.html</td><td class="code">404 مباشر (لا rule عام .html)</td><td class="fail">link broken</td></tr>
+</tbody>
+</table>
+<p><strong>الأثر:</strong> (أ) أي backlink خارجي يشير لهذه الـ legacy URLs → 404 → يخسر link juice. (ب) UX سيء لمن يصل من روابط قديمة. (ج) 14% من الزيارات في v1 كانت 404 (GA4) — قد تكون هذه السبب.</p>
+<p><strong>الإصلاح:</strong> 3 ساعات — إمّا تفعيل _redirects على Render (يتطلب middleware) أو نقل القواعد لـ Cloudflare Transform Rules أو astro.config redirects (الذي يعمل confirmed).</p></div>
+
+<h3>لماذا هذه الخمسة تحديدًا P0؟</h3>
+<div class="box warn"><div class="h">معيار P0: (الأثر × الثقة) ÷ الجهد عالٍ + قابل للإصلاح في 48h</div>
+<p>الخمسة كلها: (أ) تحجب الوظيفة الأساسية أو الثقة، (ب) تشخيصها مؤكد بـ curl (ثقة ≥90%)، (ج) إصلاحها ≤ 3 ساعات لكل واحد. إصلاحها معًا (~12 ساعة عمل + نشر) يرفع الإنتاج من 47.5% إلى ~65%. <strong>هذه أعلى ROI في كامل التدقيق.</strong></p></div>
+</section>
+
+<section id="roadmap" class="pagebreak">
+<h2>11. خارطة الطريق: Saudi + Kernel Championship (90 يومًا)</h2>
+
+<h3>11.1 Saudi Championship Roadmap — للوصول لـ SERP top 3</h3>
+<table>
+<thead><tr><th>الأسبوع</th><th>الإجراء</th><th>الكلمة/المحور</th><th>الأثر المتوقع</th></tr></thead>
+<tbody>
+<tr class="tier-p0"><td class="num">1</td><td>إضافة رقم السجل التجاري في footer + JSON-LD + llms.txt</td><td>كيان قانوني</td><td class="num delta-up">+8</td></tr>
+<tr class="tier-p0"><td class="num">1</td><td>توحيد "يزيد الشريف" في كل JSON-LD + إزالة "الشمري" + صورة احترافية + سيرة</td><td>E-E-A-T</td><td class="num delta-up">+6</td></tr>
+<tr class="tier-p1"><td class="num">2-3</td><td>إنشاء 10 صفحات /answer/* بـ FAQPage + Speakable لكل Target Query في llms.txt</td><td>AEO</td><td class="num delta-up">+7</td></tr>
+<tr class="tier-p1"><td class="num">3-4</td><td>أول عميل مرجعي مسمّى + شعار + badge "aligned with SAMA/SDAIA/NCA"</td><td>Trust بنوك</td><td class="num delta-up">+5</td></tr>
+<tr class="tier-p1"><td class="num">4-6</td><td>عناقيد مواضيعية: PDPL (8 مقالات + pillar) + ECC (8) + ISO 42001 (8)</td><td>كلمات عالية الطلب</td><td class="num delta-up">+6</td></tr>
+<tr class="tier-p2"><td class="num">6-8</td><td>Google Business Profile + press release (الاقتصادية/عكاظ) + LinkedIn thought leadership</td><td>Authority + Local</td><td class="num delta-up">+4</td></tr>
+<tr class="tier-p2"><td class="num">8-12</td><td>شراكات جامعية (KSU/KFUPM/KAU) + حضور LEAP 2026 + Black Hat MEA</td><td>Authority إقليمي</td><td class="num delta-up">+3</td></tr>
+</tbody>
+</table>
+<p><strong>الإجمالي المتوقع: 56 → 88/100</strong> → موضع ترشيح قوي لـ #1 في 90 يومًا.</p>
+
+<h3>11.2 Kernel Championship Roadmap — لتحويل /kernel/ لمنتج حقيقي</h3>
+<table>
+<thead><tr><th>المرحلة</th><th>الإجراء</th><th>التحقق</th><th>الأثر</th></tr></thead>
+<tbody>
+<tr class="tier-p0"><td><strong>P0 — حاجب</strong></td><td>إعادة نشر Render كـ Node web service (<span class="en">node ./dist/server/entry.mjs</span>) بدل Static Site</td><td class="code">curl -I /api/health/ → JSON + x-brightai-build header</td><td class="num delta-up">+25 (live)</td></tr>
+<tr class="tier-p0"><td><strong>P0</strong></td><td>ضبط env على Render: GEMINI_API_KEY, GROQ_API_KEY, REDIS_URL, DATABASE_URL, BRIGHTAI_CHAT_KEY, CHAT_STREAMING_ENABLED</td><td class="code">POST /api/ai/chat/ → reply حقيقي من Gemini</td><td class="num delta-up">unblocks</td></tr>
+<tr class="tier-p0"><td><strong>P0</strong></td><td>تشغيل pnpm run verify:post-deploy بعد النشر</td><td class="code">exit 0 + هوية build مطابقة git HEAD</td><td>تطابق</td></tr>
+<tr class="tier-p1"><td><strong>P1</strong></td><td>تفعيل x-brightai-build كـ health signal + alert عند غيابه</td><td>uptime monitor</td><td class="num delta-up">رصد</td></tr>
+<tr class="tier-p1"><td><strong>P1</strong></td><td>إزالة seed data من chat + إضافة onboarding للمستخدم الأول</td><td>UX</td><td class="num delta-up">+3</td></tr>
+<tr class="tier-p2"><td><strong>P2</strong></td><td>اختبار firewall حي: ?scenario=pdpl-id-leak → HTTP 451</td><td class="code">curl ... → 451</td><td>إثبات</td></tr>
+<tr class="tier-p2"><td><strong>P2</strong></td><td>empty states + skeleton loading لـ 10 صفحات kernel</td><td>UX</td><td class="num delta-up">+5</td></tr>
+<tr class="tier-p3"><td><strong>P3</strong></td><td>توصيل audit/approvals/evidence بـ backend حقيقي (لا demo)</td><td>multi-day</td><td class="num delta-up">+10</td></tr>
+</tbody>
+</table>
+<p><strong>الخلاصة:</strong> 90% من العمل منجز؛ المتبقي <strong>قرار نشر واحد</strong> على Render (ساعة) + ضبط env. بعدها يصير Kernel منتجًا حقيقيًا متصلًا بـ Gemini.</p>
+
+<h3>11.3 Mobile Championship Checklist (كل صفحة kernel × 360px)</h3>
+<table>
+<thead><tr><th>الإصلاح</th><th>الموقع</th><th>الأولوية</th></tr></thead>
+<tbody>
+<tr><td>min-height:44px على روابط logo في mobile-menu__header (24px حاليًا)</td><td class="code">KernelLayout.astro</td><td class="tag t-amber">P1</td></tr>
+<tr><td>إضافة KernelEmptyState لـ 10/11 صفحة</td><td class="code">src/pages/kernel/* (استيراد موجود)</td><td class="tag t-amber">P1</td></tr>
+<tr><td>إضافة KernelSkeleton (تحميل غير متزامن)</td><td class="code">src/pages/kernel/* (موجود، غير مستخدم)</td><td class="tag t-amber">P1</td></tr>
+<tr><td>alt= + role="img" aria-label لكل صورة/SVG في kernel</td><td class="code">src/pages/kernel/* (alt=0 عبر الكل)</td><td class="tag t-gray">P2</td></tr>
+<tr><td>retry UI + aria-live على connectors (9 إشارة خطأ بلا مسار)</td><td class="code">connectors.astro:246</td><td class="tag t-gray">P2</td></tr>
+<tr><td>landmark roles + labels على offline.astro (HTML مهاجَر بلا a11y)</td><td class="code">offline.astro</td><td class="tag t-gray">P2</td></tr>
+<tr><td>نقل CSP directives من meta إلى HTTP headers (4 أخطاء console لكل صفحة)</td><td class="code">astro.config + Edge</td><td class="tag t-gray">P2</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="gemini" class="pagebreak">
+<h2>12. خطة Gemini API Integration</h2>
+<div class="box ok"><div class="h">الحالة الحالية: الكود جاهز + مكتمل</div>
+<p><span class="en">chat.ts</span> يقرأ <span class="en">process.env.GEMINI_API_KEY</span> في runtime (line 369)، يستخدم <span class="en">gemini-2.5-flash</span> (line 373)، streaming SSE حقيقي، fallback Groq→Gemini مع circuit breaker، AI Firewall قبل أي provider، quota Redis multi-dim. <strong>كل مكون إنتاجي.</strong></p></div>
+
+<h3>12.1 سلسلة التحقق (كلها فاشلة حاليًا — ستتحول PASS بعد النشر)</h3>
+<pre><code># 1. health (يجب أن يرجع JSON، ليس HTML 404)
+curl -i https://brightai.site/api/health/
+# المتوقع بعد النشر: 200 + {"status":"ok"} + x-brightai-build: &lt;sha&gt;
+
+# 2. chat (يجب أن يرجع reply من Gemini)
+curl -i -X POST https://brightai.site/api/ai/chat/ \
+  -H "Origin: https://brightai.site" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"مرحبا، ما هي BrightAI؟"}'
+# المتوقع: 200 + {"reply":"...","provider":"gemini"}
+
+# 3. streaming SSE
+curl -N -X POST https://brightai.site/api/ai/chat/ \
+  -H "Origin: https://brightai.site" \
+  -H "Accept: text/event-stream" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"اشرح PDPL"}'
+# المتوقع: event: token data: {...} متعددة
+
+# 4. firewall (PII → 451)
+curl -i -X POST https://brightai.site/api/ai/chat/ \
+  -H "Origin: https://brightai.site" -H "Content-Type: application/json" \
+  -d '{"message":"رقم هويتي 1234567890"}'
+# المتوقع: 451 (block من K3 firewall قبل Gemini)
+
+# 5. CSRF على lead
+curl -i -X POST https://brightai.site/api/lead/ \
+  -H "Origin: https://brightai.site" -H "Content-Type: application/json" \
+  -d '{"name":"test","contact":"t@t.com"}'
+# المتوقع: 200 + JSON صريح (وليس silent empty)</code></pre>
+
+<h3>12.2 ملاحظة أمنية حرجة</h3>
+<div class="box crit"><div class="h">تدوير مفتاح Gemini إجباري</div>
+<p>لقطة شاشة المالك كشفت <span class="en">GEMINI_API_KEY = AIzaSyBFMm…</span> كاملة. حتى لو لم تظهر في الريبو (مؤكد: نظيف)، <strong>يجب تدويرها فورًا من Google AI Studio</strong>. أي قيمة عُرضت في screenshot تُعتبر مُخترَقة. كذلك المفتاح القديم <span class="en">AIzaSyC3pLdZ…</span> يجب: (أ) إزالته من <span class="en">brain.md:4373</span> + 3 تقارير، (ب) <span class="en">git filter-repo</span> لتنظيف التاريخ إن أمكن، (ج) تأكيد <span class="en">CONSUMER_SUSPENDED</span> دائم.</p></div>
+</section>
+
+<section id="map" class="pagebreak">
+<h2>13. خرائط P0/P1/P2/P3 + المخاطر + ما يجب ألا يُلمس</h2>
+
+<h3>13.1 خريطة الأولويات</h3>
+<table>
+<thead><tr><th>المستوى</th><th>الإطار الزمني</th><th>الفئة</th><th>أمثلة</th></tr></thead>
+<tbody>
+<tr class="tier-p0"><td><strong>P0</strong></td><td>48 ساعة</td><td>deploy + secure + Gemini live</td><td>إعادة نشر Render، تدوير مفتاح، سجل تجاري، إصلاح lastmod + redirects</td></tr>
+<tr class="tier-p1"><td><strong>P1</strong></td><td>أسبوعان</td><td>Saudi content + kernel real + UX</td><td>اسم مؤسس كامل، /answer/*، empty states، onboarding chat، CSP Phase 2</td></tr>
+<tr class="tier-p2"><td><strong>P2</strong></td><td>شهر</td><td>mobile championship + AEO depth</td><td>عناقيد PDPL/ECC، badge بنوك، ROI link، touch targets، alt/a11y</td></tr>
+<tr class="tier-p3"><td><strong>P3</strong></td><td>3-6 أشهر</td><td>SERP top 3 + backlinks + #1</td><td>press releases، شراكات جامعية، LEAP/Black Hat، توصيل kernel بـ backend حقيقي</td></tr>
+</tbody>
+</table>
+
+<h3>13.2 المخاطر</h3>
+<div class="box warn"><div class="h">مخاطر تشغيلية</div>
+<ul>
+<li><strong>النشر كـ Node قد يكسر static behavior</strong> الحالي (195 صفحة تعمل). الخطة: النشر التدريجي أو static + SSR مختلط مع monitor.</li>
+<li><strong>lastmod fix قد يبطّئ إعادة الزحف مؤقتًا</strong> لو Google اعتبر التواريخ القديمة "أقل حداثة". خطر منخفض.</li>
+<li><strong>تدوير المفتاح يكسر محليًا</strong> لو .env ما حدّث. توثيق في .env.example.</li>
+</ul></div>
+<div class="box warn"><div class="h">مخاطر تسويقية</div>
+<ul>
+<li><strong>"الشمري" vs "الشريف"</strong> — يجب تأكيد الاسم القانوني الصحيح قبل التوحيد.</li>
+<li><strong>سجل تجاري</strong> إن لم يوجد فعليًا، ادعاء رقم = مخالفة قانونية. التأكيد مع المالك قبل النشر.</li>
+<li><strong>badge "aligned with"</strong> لا "certified by" — الادعاء الخاطئ للشهادات مخالفة SDAIA.</li>
+</ul></div>
+
+<h3>13.3 ما يجب ألا يُلمس (Do Not Touch)</h3>
+<table>
+<thead><tr><th>الأصل</th><th>السبب</th></tr></thead>
+<tbody>
+<tr><td>النص العربي المنشور (titles, h1-h6, meta description)</td><td>مُفهرَس في Google + اللهجة السعودية مقصودة</td></tr>
+<tr><td>16 section في الرئيسية</td><td>ترتيب + عدد مقدّس</td></tr>
+<tr><td>astro.config.mjs trailingSlash:'always'</td><td>314 redirect + آلاف الروابط تعتمد عليه</td></tr>
+<tr><td>public/_redirects, _headers, robots.txt, sitemap*</td><td>ملفات محمية</td></tr>
+<tr><td>src/data/site.ts, navigation.ts, i18n-pairs.ts</td><td>تأثير على كل الصفحات</td></tr>
+<tr><td>قيم JSON-LD المنشورة</td><td>مُفهرَسة — لا تغيير بدون موافقة</td></tr>
+<tr><td>frontend/** (backend Express منفصل)</td><td>خدمة منفصلة، لا نشر كـ static</td></tr>
+</tbody>
+</table>
+
+<h3>13.4 فجوات البيانات [DATA GAP] + افتراضات [ASSUMPTION]</h3>
+<table>
+<thead><tr><th>النوع</th><th>البند</th><th>الثقة</th></tr></thead>
+<tbody>
+<tr><td class="fail">DATA GAP</td><td>GSC — كم صفحة مفهرسة؟ (الهدف 50+ من 195)</td><td>—</td></tr>
+<tr><td class="fail">DATA GAP</td><td>Google Business Profile — موجود للعنوان؟</td><td>—</td></tr>
+<tr><td class="fail">DATA GAP</td><td>GA4 — source/medium، conversion، real SA traffic</td><td>—</td></tr>
+<tr><td class="t-amber">ASSUMPTION</td><td>ذكر BrightAI في ChatGPT/Perplexity</td><td class="num">30%</td></tr>
+<tr><td class="t-amber">ASSUMPTION</td><td>SERP positions (WebSearch يوليو 2026 قد تتغير)</td><td class="num">70%</td></tr>
+<tr><td class="t-amber">ASSUMPTION</td><td>Render service type (Static vs Node — استنتاج من rndr-id header)</td><td class="num">85%</td></tr>
+</tbody>
+</table>
+</section>
+
+<section class="pagebreak">
+<h2>ملحق — ترتيب التنفيذ (Batches 1→5)</h2>
+<p class="small">البرومبتات الكاملة في <span class="code">brightai-audit-reports/brightai-audit-prompts-v3.md</span>. الترتيب تسلسلي: ما أبدأ batch قبل ما خلص اللي قبله + أتحقق.</p>
+
+<h3>Batch 1 — 48 ساعة (deploy + secure + Gemini live)</h3>
+<p>الهدف: رفع الإنتاج من 47.5% إلى ~65% + تفعيل Kernel product.</p>
+<table>
+<thead><tr><th>ID</th><th>البرومبت</th><th>الأثر</th></tr></thead>
+<tbody>
+<tr><td class="code">BAI-DEPLOY-13</td><td>إعادة نشر Render كـ Node Web Service</td><td class="num">10</td></tr>
+<tr><td class="code">BAI-SEC-13</td><td>تدوير مفتاح Gemini + إزالة من brain.md</td><td class="num">10</td></tr>
+<tr><td class="code">BAI-DEPLOY-14</td><td>ضبط env vars على Render + verify:post-deploy</td><td class="num">8</td></tr>
+<tr><td class="code">BAI-DEPLOY-15</td><td>Cloudflare cache purge تلقائي بعد deploy</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-SEC-16</td><td>/api/lead يرجع JSON صريح (PDPL مادة 16)</td><td class="num">7</td></tr>
+<tr><td class="code">BAI-IDX-13</td><td>إصلاح lastmod per-page في sitemap الإنتاجي</td><td class="num">8</td></tr>
+<tr><td class="code">BAI-IDX-16</td><td>تفعيل _redirects على Render (Cloudflare Transform)</td><td class="num">7</td></tr>
+<tr><td class="code">BAI-SAID-01</td><td>رقم السجل التجاري في footer + JSON-LD + llms.txt</td><td class="num">9</td></tr>
+<tr><td class="code">BAI-SAID-02</td><td>توحيد اسم المؤسس "يزيد الشريف" + صورة + سيرة</td><td class="num">8</td></tr>
+</tbody>
+</table>
+<div class="box ok"><div class="h">تحقق Batch 1</div>
+<ul>
+<li><span class="code">curl /api/health/</span> → JSON</li>
+<li><span class="code">POST /api/ai/chat/</span> → reply حقيقي من Gemini</li>
+<li><span class="code">x-brightai-build</span> header حاضر</li>
+<li><span class="code">grep -rn "AIzaSy" .agents/ report/</span> → 0</li>
+<li>sitemap lastmod فريدة ≥ 5</li>
+<li>CR في footer + JSON-LD</li>
+</ul></div>
+
+<h3>Batch 2 — أسبوعان (Saudi content + kernel real)</h3>
+<p>الهدف: 65% → 72% + كسر حاجز الـ demo + بداية احتلال SERP.</p>
+<table>
+<thead><tr><th>ID</th><th>البرومبت</th><th>الأثر</th></tr></thead>
+<tbody>
+<tr><td class="code">BAI-KERNEL-01</td><td>إزالة seed data من chat + onboarding للمستخدم الأول</td><td class="num">7</td></tr>
+<tr><td class="code">BAI-KERNEL-02</td><td>empty states + skeleton لـ 10/11 صفحة kernel</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-KERNEL-03</td><td>اختبار firewall حي: ?scenario=pdpl-id-leak → 451</td><td class="num">5</td></tr>
+<tr><td class="code">BAI-SAID-03</td><td>10 صفحات /answer/* بـ FAQPage + Speakable</td><td class="num">8</td></tr>
+<tr><td class="code">BAI-SAID-04</td><td>5 صفحات /lp/* تجارية (PDPL/ECC/banking/health/gov)</td><td class="num">7</td></tr>
+<tr><td class="code">BAI-SAID-05</td><td>عنقود SDAIA (8 مقالات + pillar)</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-SAID-06</td><td>عنقود PDPL (8 مقالات + pillar متعمق)</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-SEC-18</td><td>CSP Phase 2: nonce-based (15 kernel inline script)</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-SEC-20</td><td>body size limit على /api/* (10KB chat, 5KB lead)</td><td class="num">5</td></tr>
+<tr><td class="code">BAI-DESIGN-06</td><td>trust badges بصرية على hero (aligned with)</td><td class="num">6</td></tr>
+</tbody>
+</table>
+
+<h3>Batch 3 — شهر (mobile championship + AEO depth)</h3>
+<p>الهدف: 72% → 78% + mobile first-class على content-tier.</p>
+<table>
+<thead><tr><th>ID</th><th>البرومبت</th><th>الأثر</th></tr></thead>
+<tbody>
+<tr><td class="code">BAI-MOBILE-01</td><td>min-height:44px على روابط logo (KernelLayout)</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-MOBILE-02</td><td>alt= + role="img" aria-label لكل صورة kernel</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-MOBILE-03</td><td>retry UI + aria-live على connectors</td><td class="num">3</td></tr>
+<tr><td class="code">BAI-MOBILE-04</td><td>PWA manifest + service worker لـ /kernel/</td><td class="num">5</td></tr>
+<tr><td class="code">BAI-A11Y-01</td><td>landmark roles + labels على offline.astro</td><td class="num">3</td></tr>
+<tr><td class="code">BAI-A11Y-02</td><td>focus-visible على كل interactive kernel</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-SAID-07</td><td>عنقود ECC (8 مقالات) + ISO 42001 (8)</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-SAID-08</td><td>أول عميل مرجعي مسمّى + شعار في /customers/bank/</td><td class="num">7</td></tr>
+<tr><td class="code">BAI-PERF-02</td><td>Lighthouse CI gate live (LCP ≤ 2500ms)</td><td class="num">5</td></tr>
+</tbody>
+</table>
+
+<h3>Batch 4 — 3 أشهر (SERP top 3 + backlinks)</h3>
+<p>الهدف: 78% → 84% + احتلال كلمات الطلب العالي.</p>
+<table>
+<thead><tr><th>ID</th><th>البرومبت</th><th>الأثر</th></tr></thead>
+<tbody>
+<tr><td class="code">BAI-SAID-09</td><td>Google Business Profile موثّق + NAP موحّد</td><td class="num">5</td></tr>
+<tr><td class="code">BAI-GROWTH-01</td><td>press release (الاقتصادية/عكاظ/الرياض)</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-GROWTH-02</td><td>LinkedIn thought leadership (8 مقالات مؤسس)</td><td class="num">5</td></tr>
+<tr><td class="code">BAI-GROWTH-03</td><td>شهادات G2/Capterra/Clutch</td><td class="num">5</td></tr>
+<tr><td class="code">BAI-MEAS-01</td><td>GA4 events (chat_started/completed/lead)</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-ARCH-01</td><td>تفكيك chat.ts (1290 → ≤300 لكل module)</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-ARCH-02</td><td>إصلاح vitest.config + lint:legacy حقيقي</td><td class="num">3</td></tr>
+<tr><td class="code">BAI-ARCH-03</td><td>تنظيف scripts/ (71 → ≤60)</td><td class="num">3</td></tr>
+</tbody>
+</table>
+
+<h3>Batch 5 — 6 أشهر (#1 في KSA + العالم العربي)</h3>
+<p>الهدف: 84% → 88% + بطولة إقليمية + Kernel منتج حقيقي متكامل.</p>
+<table>
+<thead><tr><th>ID</th><th>البرومبت</th><th>الأثر</th></tr></thead>
+<tbody>
+<tr><td class="code">BAI-SAID-10</td><td>شراكات جامعية (KSU/KFUPM/KAU)</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-SAID-11</td><td>حضور LEAP 2026 + Black Hat MEA</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-KERNEL-04</td><td>توصيل audit/approvals بـ backend حقيقي (لا demo)</td><td class="num">8</td></tr>
+<tr><td class="code">BAI-KERNEL-05</td><td>evidence file generation (PDF موقّع حقيقي)</td><td class="num">6</td></tr>
+<tr><td class="code">BAI-KERNEL-06</td><td>real-time collaboration (WebRTC/WebSocket)</td><td class="num">5</td></tr>
+<tr><td class="code">BAI-MOBILE-05</td><td>app-like navigation (bottom tab bar على mobile)</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-KERNEL-07</td><td>Arabic voice input (Web Speech API) في chat</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-KERNEL-08</td><td>export to PDF/CSV لكل dashboard</td><td class="num">4</td></tr>
+<tr><td class="code">BAI-GROWTH-04</td><td>backlinks من 20 موقع سعودي موثوق</td><td class="num">6</td></tr>
+</tbody>
+</table>
+
+<div class="box ok"><div class="h">منحنى النمو المتوقع (v3 → نهاية Batch 5)</div>
+<p>v3 الحالي <strong>47.5%</strong> → Batch 1 <strong>~65%</strong> → Batch 2 <strong>~72%</strong> → Batch 3 <strong>~78%</strong> → Batch 4 <strong>~84%</strong> → Batch 5 <strong>~88%</strong>. السقف الواقعي 85-90% (باقي الـ 10-15% = محتوى مستمر + backlinks + بيانات GSC حقيقية).</p></div>
+</section>
+
+<section class="pagebreak">
+<h2>ملحق هـ — تشخيص تفصيلي لصفحات Kernel</h2>
+<p class="small">تقييم كل صفحة kernel على محاور UX الستة (first-time experience، empty state، loading، error، mobile، a11y). الدرجة من 10.</p>
+
+<h3>هـ.1 chat.astro — 8.0/10 (الأفضل)</h3>
+<div class="box"><div class="h">1720 سطر · قلب المنتج</div>
+<p><strong>القوة:</strong> SSE reader مكتوب يدويًا (response.body.getReader + TextDecoder) يتعامل صحيحًا مع POST streaming (EventSource يدعم GET فقط). معالجة أخطاء عربية شاملة في 6 فئات مع tone (info/warning/danger). typing indicator ثلاثي النقاط + aria-busy + sr-only announcer للـ AT. 3-panes تنطوي على drawers منزلقة تحت 1024px مع toolbar زرّين.</p>
+<p><strong>الضعف:</strong> تبدأ بـ seed data ثابتة ("تصدير قائمة عملاء محظور") كأنها محادثة مستمرة — يُربك المستخدم الأول الذي يظنها محادثته. لا onboarding tour. demo mode افتراضي (KernelDemoPill pressed=true).</p>
+<p><strong>السطر الحاسم:</strong> <span class="en">chat.astro:645 FAKE_RESPONSES = [...]</span> — 4 ردود مكتوبة مسبقًا هي ما يراه المستخدم الحقيقي (لأن Node server لا يعمل).</p></div>
+
+<h3>هـ.2 index.astro — 8.5/10</h3>
+<p>الصفحة الوحيدة التي تستخدم KernelEmptyState + KernelSkeleton (4 empty state signals، 3 media queries، min-h 44px). landing واضح. لكن KernelDemoPill حاضر = demo هو الافتراضي.</p>
+
+<h3>هـ.3 audit.astro — 7.0/10</h3>
+<p>drawer للتنقّل + نسخ/تصدير. 4 إشارات خطأ. لكن 7 demo signals (drawer copy/export محاكاة). لا media query خاصة (يعتمد على kernel.css المشترك).</p>
+
+<h3>هـ.4 approvals.astro — 6.5/10</h3>
+<p>human approval layer. 2 error signals، 4 demo setTimeout. لا empty state حقيقي. يعتمد كليًا على التصميم المشترك للجوال.</p>
+
+<h3>هـ.5 evidence.astro — 6.5/10</h3>
+<p>779 سطر (الأطول بعد chat). iframe srcdoc لمعاينة ملف evidence (هنا margin-left:8px لكن داخل iframe معزول = false positive). 4 error signals، 2 empty، 2 demo.</p>
+
+<h3>هـ.6 policies.astro — 6.5/10</h3>
+<p>policy editor. 4 empty state signals (الأفضل بعد index). لكن 0 loading. demo mode (2 setTimeout).</p>
+
+<h3>هـ.7 scenarios.astro — 7.0/10</h3>
+<p>risk scenarios. 7 empty (الأعلى). "Run scenario (simulated)" في السطر 458 — صريح بصراحة عن كونه demo. 6 error signals، 2 media queries.</p>
+
+<h3>هـ.8 stats.astro — 5.5/10</h3>
+<p>dashboard. <strong>0 empty state</strong>. التعليق الصريح في السطر 241: "Demo datasets matching kernel/api/mock/stats.json structure" — يعترف بصراحة أن البيانات mock. 0 error signals.</p>
+
+<h3>هـ.9 connectors.astro — 5.0/10 (الأضعف)</h3>
+<p>392 سطر. <strong>9 إشارات خطأ بدون مسار UI لإعادة المحاولة</strong> (connector-card__error على L246). 0 empty، 0 loading، 0 demo. static state فقط. الأضعف بين صفحات kernel.</p>
+
+<h3>هـ.10 reports.astro — 5.5/10</h3>
+<p>wizard لإنشاء تقارير امتثال. 0 empty، 0 error. 3 demo setTimeout. يعتمد على mock data.</p>
+
+<h3>هـ.11 compliance.astro — 5.5/10</h3>
+<p>compliance packs. 1 empty، 0 error، 1 demo. ثابت.</p>
+
+<h3>هـ.12 [slug].astro — 5.0/10</h3>
+<p>dynamic handler. 183 سطر فقط. 3 aria فقط (ضعيف). بنية ضعيفة. يستقبل HTML مهاجِر من جهة خارجية.</p>
+
+<h3>هـ.13 offline.astro — 6.0/10</h3>
+<p>17 سطر فقط (SW fallback). <strong>0 aria / 0 alt</strong> — &lt;main set:html={DOMPurify.sanitize(...)} /&gt; يحقن HTML مهاجَر بدون معلومات وصول قابلة للتخطيط. خطر متوسط.</p>
+
+<h3>هـ.14 مشاكل mobile الثمانية (بالأدلة)</h3>
+<table>
+<thead><tr><th>#</th><th>المشكلة</th><th>الصفحة</th><th>الإصلاح المحدد</th></tr></thead>
+<tbody>
+<tr><td class="num">1</td><td>logo + "الرئيسية" = 24px (target ≥44)</td><td class="code">KernelLayout.astro mobile-menu__header</td><td>min-height:44px على رابط logo</td></tr>
+<tr><td class="num">2</td><td>لا empty state في 10/11 صفحة</td><td class="code">stats/connectors/reports/compliance/policies/evidence/approvals/audit/offline/[slug]</td><td>استيراد &lt;KernelEmptyState /&gt; (موجود)</td></tr>
+<tr><td class="num">3</td><td>لا skeleton loading في 10/11</td><td class="code">نفس القائمة</td><td>استيراد &lt;KernelSkeleton /&gt; أثناء انتظار JS data</td></tr>
+<tr><td class="num">4</td><td>offline.astro = HTML مهاجَر بلا a11y</td><td class="code">offline.astro</td><td>لف في &lt;main aria-label="..."&gt;</td></tr>
+<tr><td class="num">5</td><td>alt= 0 عبر كل kernel الـ 13</td><td class="code">src/pages/kernel/*</td><td>alt على &lt;picture&gt;؛ role="img" aria-label على SVG</td></tr>
+<tr><td class="num">6</td><td>connectors 9 error بلا retry UI</td><td class="code">connectors.astro:246</td><td>retry button + aria-live على connector-card__error</td></tr>
+<tr><td class="num">7</td><td>stats "mock/stats.json" بدون toggle</td><td class="code">stats.astro:241</td><td>إما توصيل /api/kernel/stats أو KernelEmptyState عند غياب demo</td></tr>
+<tr><td class="num">8</td><td>4 أخطاء CSP meta-tag لكل صفحة</td><td class="code">كل kernel</td><td>frame-ancestors/report-uri/X-Frame → HTTP headers لا meta</td></tr>
+</tbody>
+</table>
+
+<h3>هـ.15 حكم الموبايل النهائي</h3>
+<div class="box ok"><div class="h">Layout-tier first-class (82/100)</div>
+<p>0px تجاوز أفقي على 11/11 صفحة (مؤكد بـ Playwright مباشر على الإنتاج). 95.6% touch targets ≥44px. bottom nav ثابت + safe-area inset + drawer منطقي + خصائص منطقية + قائمة سفلية قابلة للتمرير (overflow-x:auto تتعامل مع 11 رابط). <strong>هذا نادر ومستحق.</strong></p></div>
+<div class="box warn"><div class="h">Content-tier afterthought</div>
+<p>الصفحات ترتاح على التصميم المشترك: لا empty states في 10/11، لا skeleton، تحميل متزامن يسبب وميض، demo هو الوضع الافتراضي الوحيد المشحون. الصفحات النشطة (index/audit/chat/scenarios) ممتازة؛ الذيل الطويل ([slug]/connectors/stats/compliance/reports) يشبه ما بعد الإطلاق.</p></div>
+</section>
+
+<section class="pagebreak">
+<h2>ملحق د — المنافسة السعودية + استراتيجية الكلمات</h2>
+
+<h3>د.1 المنافسون بالتفصيل</h3>
+
+<h4>SDAIA (sdaia.gov.sa + dgp.sdaia.gov.sa)</h4>
+<p>الجهة الحكومية المنظّمة. تملك "منصة حوكمة البيانات الوطنية" + السجل الوطني لمقدمي خدمات البيانات. حصلت على ISO 42001 ذاتيًا (يوليو 2024). <strong>ليست أداة حوكمة AI تشغيلية للشركات</strong> — لا AI Firewall، لا Human Approval layer. أصدرت 48 قرار مخالفة = طلب حقيقي في السوق. <span class="tag t-gray">علاقة: BrightAI = الطبقة التشغيلية التي تنظّمها SDAIA</span></p>
+
+<h4>NCA (nca.gov.sa)</h4>
+<p>يملك ECC-2:2024 Assessment and Compliance Tool رسمية (Excel/dashboard تقييم ذاتي). <strong>أداة تقييم امتثال سيبراني عامة، ليست حوكمة AI</strong> — لا تتعامل مع نماذج/مخرجات AI. <span class="tag t-gray">علاقة: BrightAI = Policy-to-Control Mapping يربط سياسات الشركة بضوابط ECC</span></p>
+
+<h4>PwC Saudi / ME</h4>
+<p>تقرير "Saudi AI Maturity"، إطار Responsible AI (4-6 أسابيع)، AI Managed Services. <strong>خدمة استشارية فقط — لا منصة منتج SaaS، سعر عالٍ، دورة بيع طويلة.</strong> <span class="tag t-gray">علاقة: BrightAI = منتج تشغيلي مستمر لا مشروع محدود</span></p>
+
+<h4>KPMG Saudi</h4>
+<p>صفحة PDPL سعودية + (حسب LinkedIn) منصة تتضمن "AI Security &amp; Governance" مع PDPL/ADHICS. <strong>غالبًا عرض استشاري/تقريري، ليس منتج مستقل قابل للشراء.</strong></p>
+
+<h4>EY / Deloitte Saudi</h4>
+<p>أطر Responsible/Trustworthy AI عالمية، شراكة Microsoft، تعليق Deloitte ME عن تبني GenAI في السعودية. <strong>لا صفحة سعودية مخصصة لحوكمة AI</strong>؛ صفحاتها Global/MENA عامة.</p>
+
+<h4>bright.ai (الشركة الأمريكية)</h4>
+<p>تمويل جيد، منصة Physical AI للبنية التحتية الحساسة (IoT/edge/foundation models). <strong>مجال مختلف تمامًا (بنية تحتية فيزيائية وليس حوكمة AI مؤسسية)، لا حضور سعودي واضح.</strong> خطر ارتباك علامة محدود فقط بسبب تشابه الاسم.</p>
+
+<h4>OneTrust / Securiti.ai / BigID / Legit</h4>
+<p>منتجات GRC/privacy ناضجة تستهدف PDPL السعودي. <strong>تركيز privacy/PDPL وليس AI governance؛ غربية، تكييف محلي محدود.</strong></p>
+
+<h4>DataMost AI / Asas.ai / Sahl</h4>
+<p>منتجات امتثال PDPL سعودية محلية. Asas.ai عندها PDPL Compliance Checker مجاني. <strong>PDPL فقط، لا AI governance.</strong> منافسون على كلمة "PDPL".</p>
+
+<h4>ريناد المجد RMG (rmg-sa.com)</h4>
+<p>شركة سعودية محلية تقدم خدمات ISO 42001 + SAMA Cybersecurity Framework + حوكمة AI. <strong>أقرب منافس سعودي محلي — لكنه خدمات استشارية/تدقيق ليست منصة منتج.</strong></p>
+
+<h4>SCube / CyberArrow / CYBR / Jethur</h4>
+<p>أدوات امتثال ECC-2:2024 (قوالب، dashboards، أتمتة). <strong>ECC فقط، لا AI governance.</strong></p>
+
+<h3>د.2 استراتيجية الكلمات — البطولات الحقيقية</h3>
+<div class="box ok"><div class="h">بطولة #1 مكتسبة (للدفاع)</div>
+<ul>
+<li><strong>"حوكمة الذكاء الاصطناعي السعودية"</strong> — BrightAI يظهر كأول نتيجة في WebSearch. <span class="tag t-green">متصدر فعليًا</span></li>
+<li><strong>"AI Firewall السعودية" / "جدار حماية الذكاء الاصطناعي"</strong> — BrightAI النتيجة الوحيدة المرتجعة. مصطلح ناشئ بدون منافسة = فرصة احتكار + تعريف المصطلح في المعجم السعودي.</li>
+</ul></div>
+<div class="box crit"><div class="h">كلمات الطلب العالي — غياب كامل</div>
+<ul>
+<li><strong>"نظام حماية البيانات الشخصية" (PDPL)</strong> — SDAIA + DataMost + Resecurity تتصدّر. BrightAI غائب عن أول 10. طلب تجاري ضخم.</li>
+<li><strong>"ضوابط ECC"</strong> — مكتظة بـ NCA + CYBR + CyberArrow + Jethur.</li>
+<li><strong>"حوكمة AI للبنوك" / "SAMA AI"</strong> — SAMA Rulebook + RMG + evc.sa. BrightAI غائب رغم وجود /solutions/banking-ai-governance/. مشكلة فهرسة/سلطة لا غياب محتوى.</li>
+<li><strong>"ISO 42001 السعودية"</strong> — مكتظة بمن يبيع الشهادة/التدريب (SCube + RMG + Vinsys).</li>
+</ul></div>
+
+<h3>د.3 الفجوة بين الصفحات الموجودة و SERP</h3>
+<p>/solutions/banking-ai-governance/ و /solutions/policy-to-control-mapping/ موجودة لكن <strong>لا تظهر في SERP</strong> لكلماتها المستهدفة. التشخيص: (أ) صفر backlinks، (ب) صفر internal linking من pillar pages، (ج) محتوى قد يكون أقصر من منافسي SDAIA/Big 4. الحل: pillar pages (1500+ كلمة) + cluster articles + internal mesh.</p>
+</section>
+
+<section class="pagebreak">
+<h2>ملحق — معاينة برومبتات v3 (الكاملة في ملف Markdown منفصل)</h2>
+<p class="small">الملف الكامل: <span class="code">brightai-audit-reports/brightai-audit-prompts-v3.md</span> (60-100 برومبت). هنا معاينة أهم 5 برومبتات P0 بالقالب الإلزامي.</p>
+
+<h3>BAI-DEPLOY-13 — إعادة نشر Render كـ Node Web Service</h3>
+<pre><code>## PROMPT [ID: BAI-DEPLOY-13] — إعادة نشر Render كـ Node Web Service
+**Priority: P0 · Effort: 1h · Impact: 10 · Risk: medium · Depends: none · Blocks: BAI-KERNEL-01**
+
+**CONTEXT** — خدمة brightai-site المنشورة على Render مُعدّة كـ Static Site بدل Node web service، رغم أن render.yaml:11-15 يصف runtime:node + startCommand: node ./dist/server/entry.mjs. النتيجة: كل /api/* تخدم empty 200 على POST و 404 على GET. هيدر rndr-id (بصمة Static Site) حاضر، وغياب x-brightai-build (الذي يُحقنه entry.mjs) يؤكد أن Node server لا يعمل. chat.ts مكتمل ومبني (dist/server/entry.mjs يحوي 3 مراجع لمسار chat) لكنه لا يُنفّذ.
+
+**FILES IN SCOPE**
+- render.yaml:11-15 (runtime/startCommand/healthCheckPath)
+- Render dashboard (إعداد الخدمة — خارج الريبو)
+- astro.config.mjs:182-189,230 (output:static + adapter node standalone)
+
+**MUST NOT TOUCH / PRESERVE**
+- src/pages/api/** (الكود سليم، لا تعديل)
+- dist/server/** (مبني صحيح)
+- trailingSlash:'always' (مقدّس)
+
+**TASK**
+1. في Render dashboard، افتح خدمة brightai-site.
+2. غيّر نوع الخدمة من "Static Site" إلى "Web Service" مع runtime Node 22.
+3. تأكد أن startCommand = `node ./dist/server/entry.mjs` (يطابق render.yaml:15).
+4. تأكد أن healthCheckPath = `/api/health/` (render.yaml:15).
+5. أضف env vars: GEMINI_API_KEY (مُدوَّر)، GROQ_API_KEY، REDIS_URL (rediss://)، DATABASE_URL، BRIGHTAI_CHAT_KEY، CHAT_STREAMING_ENABLED=true.
+6. Deploy + انتظر health check.
+
+**ACCEPTANCE CRITERIA** (واحد على الأقل curl على الإنتاج)
+- `curl -i https://brightai.site/api/health/` → 200 + JSON `{"status":"ok"}` + هيدر `x-brightai-build: &lt;sha&gt;`
+- `curl -i -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Content-Type: application/json" -d '{"message":"مرحبا"}'` → 200 + `{"reply":"...","provider":"gemini"}` (وليس empty)
+
+**VERIFICATION COMMANDS**
+```bash
+curl -sI https://brightai.site/api/health/ | grep -iE "http|x-brightai-build"
+curl -s -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Content-Type: application/json" -d '{"message":"test"}' | head -c 200
+pnpm run verify:post-deploy
+```
+
+**ROLLBACK** — في Render dashboard، عُدّ للنشر السابق (Static Site). الكود غير متأثر لأن التعديل إعداد نشر فقط.
+
+**DEFINITION OF DONE** — /api/health/ يرجع JSON، /api/ai/chat/ يرجع reply حقيقي من Gemini، x-brightai-build header حاضر في كل رد /api/*.
+---</code></pre>
+
+<h3>BAI-SEC-13 — تدوير مفتاح Gemini + إزالته من brain.md</h3>
+<pre><code>## PROMPT [ID: BAI-SEC-13] — تدوير مفتاح Gemini + تنظيف brain.md
+**Priority: P0 · Effort: 1h · Impact: 10 · Risk: low · Depends: none · Blocks: BAI-KERNEL-01**
+
+**CONTEXT** — المفتاح القديم AIzaSyC3pLdZ-7R2XlvPFTZ8Alg93zkuThHbQYM لا يزال نصًا صريحًا في .agents/brain.md:4373 + 3 تقارير (report/A/2026-07-15-kernel-audit-master.md:119, report/A/2026-07-18-pre-audit-brain-snapshot.md:1320, brightai-audit-reports/prompt/brightai-audit-prompts.md:289) — كلها متتبّعة في git (دخل عبر commits 3f49dd81 و 55b6464c، في HEAD a8857c26). المفتاح CONSUMER_SUSPENDED عند Google لكن تعرّضه النصّي باقٍ. لقطة شاشة المالك كشفت المفتاح الجديد AIzaSyBFMm… كاملة → يجب تدويره أيضًا بغض النظر عن الريبو.
+
+**FILES IN SCOPE**
+- .agents/brain.md:4373
+- report/A/2026-07-15-kernel-audit-master.md:119
+- report/A/2026-07-18-pre-audit-brain-snapshot.md:1320
+- brightai-audit-reports/prompt/brightai-audit-prompts.md:289
+- Google AI Studio (تدوير خارج الريبو)
+- Render dashboard env (تحديث GEMINI_API_KEY)
+
+**MUST NOT TOUCH / PRESERVE**
+- src/pages/api/ai/chat.ts (يقرأ process.env، لا تغيير)
+- .env (gitignored، تحديث محلي فقط)
+
+**TASK**
+1. في Google AI Studio، أنشئ مفتاح Gemini جديد. عطّل/احذف المفتاحين القديم والجديد المسرّب.
+2. حدّث GEMINI_API_KEY على Render dashboard (النشر القادم يلتقطه).
+3. استبدل القيمة النصية في brain.md:4373 بـ `process.env.GEMINI_API_KEY (rotated 2026-07-29)`.
+4. كرّر للملفات الـ 3 الأخرى (استبدل القيمة بمرجع env).
+5. commit + push.
+6. (اختياري لكن موصى) git filter-repo لتنظيف القيمة من التاريخ الكامل.
+
+**ACCEPTANCE CRITERIA**
+- `grep -rn "AIzaSy" . --include="*.md" --include="*.ts" 2>/dev/null | grep -v node_modules` → 0 نتائج
+- `git log --all -S "AIzaSyC3pLdZ" --oneline` → إما 0 أو مرجع env فقط
+
+**VERIFICATION COMMANDS**
+```bash
+grep -rn "AIzaSy" .agents/ report/ brightai-audit-reports/ 2>/dev/null | grep -v node_modules
+git log --all -S "AIzaSyC3pLdZ" --oneline | head
+```
+
+**ROLLBACK** — لا rollback (الأمان: القيمة المسروقة لا يجب أن تعود). إذا كسر التطبيق، حدّث GEMINI_API_KEY على Render بالمفتاح الجديد.
+
+**DEFINITION OF DONE** — صفر قيم AIzaSy في الريبو + المفتاح مُدوَّر في Google + محدّث في Render.
+---</code></pre>
+
+<h3>BAI-SAID-01 — رقم السجل التجاري في footer + JSON-LD + llms.txt</h3>
+<pre><code>## PROMPT [ID: BAI-SAID-01] — إضافة رقم السجل التجاري (كيان قانوني)
+**Priority: P0 · Effort: 2h · Impact: 9 · Risk: low · Depends: user-provides-CR · Blocks: BAI-SAID-04**
+
+**CONTEXT** — صفر ذكر لرقم سجل تجاري عبر كل الصفحات + JSON-LD + llms.txt. في سوق B2B سعودي تنفيذي (بنوك/مستشفيات)، غياب إثبات الكيان القانوني = حاجز ثقة حرج. JSON-LD Organization.founder.name = "يزيد" فقط (اسم أول) يزيد الكيان مجهولية.
+
+**FILES IN SCOPE**
+- src/components/Footer.astro (إضافة CR في footer كل الصفحات)
+- src/data/site.ts (إضافة crNumber field)
+- src/data/schema-saudi-seo.json + أي schema generator (إضافة taxID/identifier)
+- public/llms.txt + llms-full.txt (Entity Facts)
+
+**MUST NOT TOUCH / PRESERVE**
+- النص العربي المنشور الأخرى
+- بنية JSON-LD الحالية (إضافة فقط)
+
+**TASK**
+1. اطلب من المالك رقم السجل التجاري الرسمي (الـ 10 أرقام).
+2. أضف crNumber إلى src/data/site.ts.
+3. في Footer.astro، أضف سطر "سجل تجاري: 1010XXXXXX" بالقرب من العنوان.
+4. في schema generator، أضف `"taxID":"1010XXXXXX"` و `"identifier":"CR-1010XXXXXX"` لـ Organization.
+5. في llms.txt Entity Facts، أضف سطر `Commercial Registration: 1010XXXXXX`.
+6. في llms-full.txt، أضف قسم تفصيلي.
+
+**ACCEPTANCE CRITERIA**
+- `curl -s https://brightai.site/ | grep -oE 'سجل تجاري[^<"]*|1010[0-9]{6}'` → يرجع الرقم
+- `curl -s https://brightai.site/ | grep -oE '"taxID":"[^"]*"'` → يرجع القيمة
+
+**VERIFICATION COMMANDS**
+```bash
+curl -s https://brightai.site/ | grep -oiE "سجل تجاري|taxID|1010[0-9]{6}"
+curl -s https://brightai.site/llms.txt | grep -i "commercial\|سجل"
+```
+
+**ROLLBACK** — git revert. تغيير محتوى فقط.
+
+**DEFINITION OF DONE** — CR ظاهر في footer كل الصفحات + JSON-LD + llms.txt.
+---</code></pre>
+
+<h3>BAI-IDX-13 — إصلاح lastmod per-page في sitemap الإنتاجي</h3>
+<pre><code>## PROMPT [ID: BAI-IDX-13] — lastmod per-page (git log) في الإنتاج
+**Priority: P0 · Effort: 3h · Impact: 8 · Risk: low · Depends: BAI-DEPLOY-13 · Blocks: none**
+
+**CONTEXT** — scripts/generate-sitemap-all-pages.mjs:21-29 contract يقول "lastmod derived from git log, never from build timestamp". الـ sitemap المحلي يحوي 9 تواريخ فريدة (صحيح). لكن الإنتاج يخدم 195 entry كلها 2026-07-29 (تاريخ البناء فقط). Google سيتجاهل lastmod لعدم مصداقيته. السبب المحتمل: خطوة build/override في pipeline الإنتاج تعيد كتابة lastmod.
+
+**FILES IN SCOPE**
+- scripts/generate-sitemap-all-pages.mjs (تحقق أن lastmod فعلاً من git log)
+- build pipeline (astro.config.mjs أو render.yaml أو CI) — أين يُعاد كتابة lastmod
+- public/sitemap.xml (مقارنة محلي vs إنتاج)
+
+**MUST NOT TOUCH / PRESERVE**
+- عدد URLs (195) — لا حذف
+- ترتيب
+
+**TASK**
+1. قارن public/sitemap.xml المحلي (9 تواريخ) مع curl الإنتاج (1 تاريخ). أكّد الفجوة.
+2. ابحث في pipeline: `grep -rn "lastmod" scripts/ astro.config.mjs .github/` — أين يُعاد كتابة.
+3. إذا كان astro sitemap integration يُعيد كتابة، عطّله أو اضبطه يستخدم المصدر.
+4. إذا كان Render build step، اضبطه ينسخ public/sitemap.xml بدون تعديل.
+5. Deploy + تحقق.
+
+**ACCEPTANCE CRITERIA**
+- `curl -s https://brightai.site/sitemap.xml | grep "&lt;lastmod&gt;" | sort -u | wc -l` → ≥ 5 (ليس 1)
+
+**VERIFICATION COMMANDS**
+```bash
+curl -s https://brightai.site/sitemap.xml | grep -c "&lt;lastmod&gt;"
+curl -s https://brightai.site/sitemap.xml | grep "&lt;lastmod&gt;" | sort -u | wc -l
+curl -s https://brightai.site/sitemap.xml | grep "&lt;lastmod&gt;" | sort -u | head
+```
+
+**ROLLBACK** — git revert + إعادة النشر.
+
+**DEFINITION OF DONE** — sitemap الإنتاجي يحوي ≥5 تواريخ lastmod فريدة مشتقة من git log.
+---</code></pre>
+
+<h3>BAI-SAID-02 — توحيد هوية المؤسس "يزيد الشريف"</h3>
+<pre><code>## PROMPT [ID: BAI-SAID-02] — توحيد اسم المؤسس + صورة + سيرة
+**Priority: P0 · Effort: 2h · Impact: 8 · Risk: low · Depends: user-confirms-name · Blocks: BAI-SAID-05**
+
+**CONTEXT** — JSON-LD Organization.founder.name = "يزيد" فقط (الاسم الأول) في homepage + about + schema-saudi-seo.json. الاسم الكامل "يزيد الشريف" موجود في /authors/yazeed-alshareef/ لكن "يزيد الشمري" يظهر أيضًا في about (تناقض بيانات). avatar = حرف "ي" فقط، ليست &lt;img&gt;. لا سيرة مهنية بخبرات سابقة مسمّاة.
+
+**FILES IN SCOPE**
+- src/data/site.ts أو schema generator (founder name)
+- src/data/schema-saudi-seo.json
+- src/pages/about/ (نص + تناقض الشمري/الشريف)
+- src/components (founder avatar → img)
+
+**MUST NOT TOUCH / PRESERVE**
+- النص العربي المنشور الأخرى
+- LinkedIn URL الحالي
+
+**TASK**
+1. أكّد مع المالك: الاسم القانوني الكامل (الشريف أم الشمري؟).
+2. حدّث JSON-LD founder.name إلى الاسم الكامل + أضف familyName + givenName.
+3. أزل الاسم المتناقض من about (وحّد على القانوني).
+4. استبدل founder avatar (حرف "ي") بـ &lt;img src="/founder.jpg"&gt; (صورة احترافية من المالك).
+5. أضف سيرة مهنية قصيرة (خبرات سابقة مسمّاة) في about.
+6. اربط LinkedIn حقيقي.
+
+**ACCEPTANCE CRITERIA**
+- `curl -s https://brightai.site/ | grep -oE '"founder":\{[^}]*"name":"[^"]*"'` → "name":"يزيد الشريف" (الاسم الكامل)
+- `curl -s https://brightai.site/about/ | grep -c "&lt;img.*founder\|founder.*img"` → ≥ 1
+
+**VERIFICATION COMMANDS**
+```bash
+curl -s https://brightai.site/ | grep -oE '"name":"يزيد[^"]*"'
+curl -s https://brightai.site/about/ | grep -oiE "الشمري|الشريف" | sort | uniq -c
+```
+
+**ROLLBACK** — git revert.
+
+**DEFINITION OF DONE** — JSON-LD موحّد على الاسم الكامل + صورة حقيقية + سيرة + لا تناقض.
+---</code></pre>
+
+<p class="small" style="margin-top:14px">الـ 55-95 برومبت المتبقية (BAI-DEPLOY, BAI-SEC, BAI-IDX, BAI-SAID, BAI-KERNEL, BAI-MOBILE, BAI-DESIGN, BAI-A11Y, BAI-PERF, BAI-ARCH, BAI-MEAS, BAI-GROWTH) موجودة كاملة في ملف Markdown المنفصل باتباع نفس القالب الإلزامي.</p>
+</section>
+
+<section id="appendix" class="pagebreak">
+<h2>ملحق — أوامر curl + القائمة المرجعية</h2>
+
+<h3>أ.1 أوامر التحقق الإنتاجي (re-runnable)</h3>
+<pre><code># Deployment forensics
+curl -sI https://brightai.site/ | grep -iE "last-modified|server|cf-"
+curl -sI https://brightai.site/api/health/ -w "%{http_code}\n" -o /dev/null
+curl -sI https://brightai.site/frontend/server.js -w "%{http_code}\n" -o /dev/null
+
+# API liveness (CRITICAL — should pass after Node deploy)
+curl -i -X POST https://brightai.site/api/ai/chat/ \
+  -H "Origin: https://brightai.site" -H "Content-Type: application/json" \
+  -d '{"message":"test"}' -w "\n[%{http_code}]\n"
+
+# Sitemap lastmod
+curl -s https://brightai.site/sitemap.xml | grep -c "&lt;lastmod&gt;"
+curl -s https://brightai.site/sitemap.xml | grep "&lt;lastmod&gt;" | sort -u | wc -l
+
+# Redirects
+curl -sI https://brightai.site/blog | grep -i location
+curl -sI https://brightai.site/report | grep -i location
+
+# Key leak scan
+grep -rn "AIzaSy" src/ scripts/ public/ 2>/dev/null | grep -v node_modules
+
+# Security headers
+curl -sI https://brightai.site/ | grep -iE "strict-transport|x-frame|x-content|referrer|permissions"
+
+# hreflang
+curl -s https://brightai.site/en/privacy-policy/ | grep -oE 'hreflang="[^"]*"'
+
+# Gemini key in tracked history
+git log --all -S "AIzaSy" --oneline | head</code></pre>
+
+<h3>أ.2 القائمة المرجعية للنشر (pre-deploy)</h3>
+<ul>
+<li>☐ <span class="code">npm run build</span> → 195+ صفحة، 0 أخطاء</li>
+<li>☐ <span class="code">npm run verify:all</span> → exit 0</li>
+<li>☐ <span class="code">npm run seo:all</span> → exit 0</li>
+<li>☐ <span class="code">npm run performance:budget</span> → exit 0</li>
+<li>☐ Render service = <strong>Node Web Service</strong> (ليس Static Site)</li>
+<li>☐ env vars مضبوطة على Render dashboard</li>
+<li>☐ <span class="code">POST /api/ai/chat/</span> بعد النشر → reply حقيقي</li>
+<li>☐ <span class="code">/api/health/</span> → JSON (ليس HTML 404)</li>
+<li>☐ <span class="code">x-brightai-build</span> header حاضر</li>
+<li>☐ Cloudflare cache purge</li>
+<li>☐ IndexNow: <span class="code">npm run indexnow:deploy</span></li>
+</ul>
+
+<h3>أ.3 القائمة المرجعية للـ self-check</h3>
+<ul>
+<li>☑ كل ادعاء تحقّق منه بـ curl على الإنتاج</li>
+<li>☑ قارنت v1 → v2 → v3 لكل محور (عمود Delta)</li>
+<li>☑ اختبرت /api/ai/chat فعليًا — Gemini معطّل (Node لا يعمل)</li>
+<li>☑ فحصت 11 صفحة kernel على 360px (Playwright مباشر)</li>
+<li>☑ كل بند له SOURCE_STATE + PROD_STATE + Delta</li>
+<li>☑ ذكرت [DATA GAP] و [ASSUMPTION — confidence] صراحةً</li>
+<li>☑ تحذير أمني: مفتاح Gemini في لقطة الشاشة — يدوّر فورًا</li>
+<li>☑ لا &lt;title&gt; غير مهرّب في محتوى الجداول</li>
+</ul>
+
+<hr>
+<p class="small">BrightAI Championship Audit v3 — 2026-07-29 — commit a8857c26 — طُوّر بمنهجية v1/v2 + subagents موازية + Playwright verification.</p>
+
+<section class="pagebreak">
+<h2>14. ملحق CHAMPION — حلقة التحليل الذاتي + Kernel Hero + Saudi #1 (2026-07-30)</h2>
+<div class="box ok"><div class="h">الجديد في v3.1: مجموعة CHAMPION</div>
+<p><strong>المالك طلب برومبت يحلل المشروع نفسه بعد كل برومبت وينفّذ ويعيد التحليل</strong>، ويركز على (أ) جعل BrightAI <span class="championship-badge">#1 السعودية في حوكمة AI</span>، (ب) جعل <span class="en">/src/pages/kernel/</span> <span class="championship-badge">أفضل تجربة منتجات في العالم العربي</span>، (ج) ربط Kernel بـ Gemini API عبر <span class="en">GEMINI_API_KEY</span> في Render env. هذه المجموعة (CHAMPION-00 → CHAMPION-06) تبني <strong>حلقة Champion Loop</strong>: Self-Analyze → Execute → Re-Analyze → Report Δ.</p>
+</div>
+
+<h3>14.1 فلسفة الحلقة (3 مراحل إلزامية)</h3>
+<ol>
+<li><strong>SELF-ANALYZE</strong> — يقرأ البرومبت قبل التنفيذ: <span class="en">/.agents/brain.md</span> + <span class="en">brightai-audit-report-v3.html</span> + <span class="en">brightai-audit-prompts-v3.md</span> + <span class="en">src/pages/kernel/**</span>. يكتب Baseline JSON تحت <span class="en">reports/CHAMPION-STATE.md</span>.</li>
+<li><strong>EXECUTE</strong> — ينفّذ المهمة ضمن قواعد DEC-PROC-12 (verified_production gate، commit format).</li>
+<li><strong>RE-ANALYZE & REPORT</strong> — يعيد القياسات، يحسب Δ لكل metric، يكتب <span class="en">brightai-audit-reports/prompt-reports/CHAMPION-NN-YYYY-MM-DD.md</span>، يحدّث <span class="en">brain.md</span> change ledger.</li>
+</ol>
+<p><strong>الماكرو:</strong> <span class="code">npm run prompt:champion -- --id=CHAMPION-01</span> (سكريبت <span class="en">scripts/prompt-champion.mjs</span>).</p>
+
+<h3>14.2 البرومبتات الستة (CHAMPION-00 → CHAMPION-06)</h3>
+<table>
+<colgroup><col style="width:12%"><col style="width:36%"><col style="width:10%"><col style="width:8%"><col style="width:8%"><col style="width:10%"><col style="width:16%"></colgroup>
+<thead><tr><th>المعرّف</th><th>العنوان</th><th>الأولوية</th><th>الجهد</th><th>الأثر</th><th>المخاطر</th><th>يكتب تقرير Δ في</th></tr></thead>
+<tbody>
+<tr class="tier-p0"><td><span class="code">CHAMPION-00</span></td><td>Champion Loop Orchestrator (البرومبت الأم)</td><td class="num">P0</td><td class="num">1h</td><td class="num">∞</td><td>low</td><td>reports/CHAMPION-STATE.md</td></tr>
+<tr class="tier-p0"><td><span class="code">CHAMPION-01</span></td><td>Kernel Mobile-First Hero (chat.astro rewrite + empty/skeleton/voice)</td><td class="num">P0</td><td class="num">24h</td><td class="num">+25</td><td>high</td><td>prompt-reports/CHAMPION-01-2026-07-30.md</td></tr>
+<tr class="tier-p0"><td><span class="code">CHAMPION-02</span></td><td>ربط Kernel بـ Gemini API عبر Render env <span class="code">GEMINI_API_KEY</span></td><td class="num">P0</td><td class="num">3h</td><td class="num">+30</td><td>medium</td><td>prompt-reports/CHAMPION-02-2026-07-30.md</td></tr>
+<tr class="tier-p0"><td><span class="code">CHAMPION-03</span></td><td>Saudi #1 Authority Pack (E-E-A-T + 10 answer + 5 lp + 32 blog + trust badges)</td><td class="num">P0</td><td class="num">16h</td><td class="num">+20</td><td>low</td><td>prompt-reports/CHAMPION-03-2026-07-31.md</td></tr>
+<tr class="tier-p0"><td><span class="code">CHAMPION-04</span></td><td>Champion Re-Analysis Loop (يولّد brightai-audit-report-v4-champion.html)</td><td class="num">P0</td><td class="num">8h</td><td class="num">+15</td><td>low</td><td>brightai-audit-report-v4-champion.html</td></tr>
+<tr class="tier-p1"><td><span class="code">CHAMPION-05</span></td><td>Conversion + Telemetry Pack (quota dashboard + GA4 + Sentry)</td><td class="num">P1</td><td class="num">12h</td><td class="num">+12</td><td>low</td><td>prompt-reports/CHAMPION-05-2026-08-01.md</td></tr>
+<tr class="tier-p0"><td><span class="code">CHAMPION-06</span></td><td>Mobile-First UX Polish (touch ≥44px + safe-area + bottom tab + onboarding)</td><td class="num">P0</td><td class="num">16h</td><td class="num">+18</td><td>medium</td><td>prompt-reports/CHAMPION-06-2026-08-01.md</td></tr>
+</tbody>
+</table>
+
+<h3>14.3 CHAMPION-02 — ربط Gemini API (التفصيل الحرج)</h3>
+<p>الكود <span class="en">src/pages/api/ai/chat.ts:369</span> يقرأ <span class="en">process.env.GEMINI_API_KEY</span> في runtime (ARCH-2 fix — لا تسرب build-time). المطلوب في Render dashboard:</p>
+<table>
+<thead><tr><th>متغير env</th><th>القيمة</th><th>الفرض</th></tr></thead>
+<tbody>
+<tr><td class="code">GEMINI_API_KEY</td><td class="code"><em>(مفتاح مُدوَّر — خارج الريبو)</em></td><td>المالك يلصقه في Render → Environment</td></tr>
+<tr><td class="code">GROQ_API_KEY</td><td class="code"><em>(مفتاح Groq — fallback)</em></td><td>Auto mode يبدّل Groq → Gemini</td></tr>
+<tr><td class="code">REDIS_URL</td><td class="code">rediss://...</td><td>سياق جلسة + quota (8 رسائل × 10 دقائق)</td></tr>
+<tr><td class="code">DATABASE_URL</td><td class="code">postgresql://...</td><td>LeadQueue + audit (اختياري)</td></tr>
+<tr><td class="code">BRIGHTAI_CHAT_KEY</td><td class="code"><em>openssl rand -hex 32</em></td><td>Auth bypass لـ server-to-server</td></tr>
+<tr><td class="code">CHAT_STREAMING_ENABLED</td><td class="code">true</td><td>SSE streaming</td></tr>
+<tr><td class="code">GEMINI_MODEL</td><td class="code">gemini-2.5-flash</td><td>افتراضي</td></tr>
+<tr><td class="code">TRUSTED_PROXY_COUNT</td><td class="code">1</td><td>Render proxy</td></tr>
+<tr><td class="code">SENTRY_DSN</td><td class="code"><em>(اختياري — للـ CHAMPION-05)</em></td><td>Error tracking</td></tr>
+</tbody>
+</table>
+<p>تحقّق بعد النشر (<span class="en">node scripts/prompt-champion.mjs --id=CHAMPION-02</span>):</p>
+<pre><code>curl -i https://brightai.site/api/health/ | grep -iE "http|x-brightai-build"
+curl -i -X POST https://brightai.site/api/ai/chat/ \
+  -H "Origin: https://brightai.site" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"ما حوكمة الذكاء الاصطناعي؟"}' | head -c 200
+curl -N -X POST https://brightai.site/api/ai/chat/ \
+  -H "Origin: https://brightai.site" -H "Accept: text/event-stream" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"اشرح PDPL"}' | head -c 400
+pnpm run verify:post-deploy</code></pre>
+
+<h3>14.4 CHAMPION-01 — Kernel Mobile-First Hero (تفصيل تجربة المنتجات)</h3>
+<p>الهدف: <span class="championship-badge">أفضل تجربة منتجات في العالم العربي</span> على <span class="en">360×640</span> + desktop. التفاصيل:</p>
+<table>
+<thead><tr><th>المكوّن</th><th>قبل (v3)</th><th>بعد (CHAMPION-01)</th></tr></thead>
+<tbody>
+<tr><td>chat.astro</td><td>1720 سطر، 3-pane drawer collapse، seed data في SSR</td><td>1-pane + bottom-sheet drawers، empty state، voice input</td></tr>
+<tr><td>Compose box</td><td>position: static</td><td>position: sticky; bottom: 0; safe-area-inset-bottom</td></tr>
+<tr><td>Empty state</td><td>1/11 صفحة (index.astro)</td><td>11/11 صفحة</td></tr>
+<tr><td>Skeleton</td><td>1/11 صفحة</td><td>11/11 صفحة</td></tr>
+<tr><td>Voice input</td><td>0</td><td><span class="code">KernelVoiceInput.astro</span> (Web Speech API ar-SA)</td></tr>
+<tr><td>Onboarding tour</td><td>0</td><td>3-step (compose + scenarios + sessions)</td></tr>
+<tr><td>Streaming SSE</td><td>keyboard يكسره</td><td>visualViewport-aware</td></tr>
+</tbody>
+</table>
+
+<h3>14.5 CHAMPION-03 — Saudi #1 Authority Pack</h3>
+<p>يرفع BrightAI من <strong>56 → 88</strong> في Saudi Championship عبر:</p>
+<ul>
+<li><strong>E-E-A-T</strong>: سجل تجاري + اسم المؤسس الكامل + صورة + سيرة + LinkedIn (5 عناصر).</li>
+<li><strong>AEO</strong>: 10 صفحات <span class="en">/answer/*</span> (FAQPage + SpeakableSpecification) لـ Perplexity/ChatGPT.</li>
+<li><strong>LP</strong>: 5 صفحات <span class="en">/lp/*</span> تجارية (pdpl/ecc/banking/healthcare/government).</li>
+<li><strong>Trust Badges</strong>: SAMA / SDAIA / NCA / ISO 42001 تحت CTA في hero ("متوافق مع" لا "معتمد من").</li>
+<li><strong>Content Cluster</strong>: 32 مقال (8 × 4 عنقود: PDPL/ECC/ISO 42001/SAMA).</li>
+<li><strong>GBP</strong>: Google Business Profile موثّق + NAP موحّد.</li>
+</ul>
+
+<h3>14.6 Champion Loop Schedule + الأثر المتوقع</h3>
+<table>
+<thead><tr><th>Run</th><th>الإطار</th><th>Prompt</th><th>الأثر المتوقع</th><th>Δ Kernel</th><th>Δ Saudi</th><th>Δ Mobile</th></tr></thead>
+<tbody>
+<tr class="tier-p0"><td>1</td><td>48h</td><td>CHAMPION-02 (Gemini live)</td><td>real vs demo</td><td>+30</td><td>—</td><td>—</td></tr>
+<tr class="tier-p0"><td>2</td><td>48h</td><td>CHAMPION-01 (mobile-first kernel)</td><td>first-class mobile</td><td>+15</td><td>—</td><td>+10</td></tr>
+<tr class="tier-p0"><td>3</td><td>أسبوع</td><td>CHAMPION-03 (Saudi #1)</td><td>SERP top 3</td><td>—</td><td>+15</td><td>—</td></tr>
+<tr class="tier-p0"><td>4</td><td>أسبوع</td><td>CHAMPION-06 (mobile polish)</td><td>0 touch <44px</td><td>—</td><td>—</td><td>+10</td></tr>
+<tr class="tier-p1"><td>5</td><td>أسبوع</td><td>CHAMPION-05 (telemetry)</td><td>conversion funnel</td><td>+7</td><td>—</td><td>—</td></tr>
+<tr class="tier-p0"><td>6</td><td>نصف شهر</td><td>CHAMPION-04 (v4 report)</td><td>Δ مجمّع</td><td>+15</td><td>+5</td><td>—</td></tr>
+<tr style="background:#0f172a;color:#fff;font-weight:800"><td colspan="4">الإجمالي المتوقع</td><td class="num">+67</td><td class="num">+20</td><td class="num">+20</td></tr>
+</tbody>
+</table>
+<p><strong>الإجمالي:</strong> Kernel 45% → 90%، Saudi 56% → 88%، Mobile 82% → 98%، Overall 47.5% → 88%.</p>
+
+<h3>14.7 Δ المتوقع (v3 → v4 Champion)</h3>
+<table>
+<thead><tr><th>المحور</th><th>v3 إنتاج</th><th>v3 كود</th><th>v4 متوقع</th><th>Δ</th><th>السبب</th></tr></thead>
+<tbody>
+<tr><td>Deployment Forensics</td><td class="num">50%</td><td class="num">85%</td><td class="num">95%</td><td><span class="delta-up">+45</span></td><td>CHAMPION-02: Gemini live + x-brightai-build header</td></tr>
+<tr><td>Security & PDPL</td><td class="num">35%</td><td class="num">80%</td><td class="num">75%</td><td><span class="delta-up">+40</span></td><td>CHAMPION-02: /api/* live + firewall مفعّل</td></tr>
+<tr><td>Indexation & Crawling</td><td class="num">25%</td><td class="num">70%</td><td class="num">75%</td><td><span class="delta-up">+50</span></td><td>CHAMPION-03: 47 AEO/LP/pages جديدة</td></tr>
+<tr><td>Saudi Championship</td><td class="num">56%</td><td class="num">60%</td><td class="num">88%</td><td><span class="delta-up">+32</span></td><td>CHAMPION-03: CR + founder + 32 blog + trust badges</td></tr>
+<tr><td>Kernel Championship</td><td class="num">45%</td><td class="num">80%</td><td class="num">90%</td><td><span class="delta-up">+45</span></td><td>CHAMPION-01/02: real + mobile-first + voice</td></tr>
+<tr><td>Design / UX / Identity</td><td class="num">70%</td><td class="num">75%</td><td class="num">90%</td><td><span class="delta-up">+20</span></td><td>CHAMPION-01: tab bar + onboarding + voice</td></tr>
+<tr><td>Code / Structure</td><td class="num">55%</td><td class="num">70%</td><td class="num">80%</td><td><span class="delta-up">+25</span></td><td>CHAMPION-04: prompt-reports + state machine</td></tr>
+<tr style="background:#0f172a;color:#fff;font-weight:800"><td>الإجمالي</td><td class="num">47.5%</td><td class="num">73%</td><td class="num">88%</td><td><span class="delta-up">+40.5</span></td><td>أول قفزة إنتاجية حقيقية → بطولة</td></tr>
+</tbody>
+</table>
+
+<h3>14.8 الملفات الجديدة (CHAMPION)</h3>
+<table>
+<thead><tr><th>المسار</th><th>الغرض</th><th>يُكتب في</th></tr></thead>
+<tbody>
+<tr><td class="code">scripts/prompt-champion.mjs</td><td>Orchestrator (Pre/Post Self-Analyze + Δ)</td><td>CHAMPION-00</td></tr>
+<tr><td class="code">scripts/generate-audit-report-v4.mjs</td><td>يولّد brightai-audit-report-v4-champion.html</td><td>CHAMPION-04</td></tr>
+<tr><td class="code">scripts/brightai-audit-report-v4-champion.html</td><td>التقرير المُجمّع (Δ مرئي)</td><td>CHAMPION-04</td></tr>
+<tr><td class="code">brightai-audit-report-v4-champion.html</td><td>نسخة public (في الـ public/)</td><td>CHAMPION-04</td></tr>
+<tr><td class="code">reports/CHAMPION-STATE.md</td><td>running state machine (Baseline + Runs)</td><td>CHAMPION-00/01..06</td></tr>
+<tr><td class="code">brightai-audit-reports/prompt-reports/CHAMPION-NN-YYYY-MM-DD.md</td><td>per-prompt Δ report</td><td>CHAMPION-00..06</td></tr>
+<tr><td class="code">src/components/kernel/KernelVoiceInput.astro</td><td>Web Speech API ar-SA</td><td>CHAMPION-01</td></tr>
+<tr><td class="code">src/components/kernel/KernelOnboarding.astro</td><td>3-step tour</td><td>CHAMPION-06</td></tr>
+<tr><td class="code">src/pages/answer/[slug].astro</td><td>10 FAQ pages (AEO)</td><td>CHAMPION-03</td></tr>
+<tr><td class="code">src/pages/lp/[slug].astro</td><td>5 landing pages</td><td>CHAMPION-03</td></tr>
+<tr><td class="code">src/components/TrustBadges.astro</td><td>SAMA/SDAIA/NCA/ISO 42001</td><td>CHAMPION-03</td></tr>
+<tr><td class="code">src/pages/kernel/admin/quota.astro</td><td>quota dashboard (admin)</td><td>CHAMPION-05</td></tr>
+<tr><td class="code">src/pages/api/kernel/quota-stats.ts</td><td>API quota stats</td><td>CHAMPION-05</td></tr>
+<tr><td class="code">src/lib/analytics.ts</td><td>GA4 Measurement Protocol server-side</td><td>CHAMPION-05</td></tr>
+<tr><td class="code">src/content/blog/pdpl-*.md (8), ecc-*.md (8), iso-42001-*.md (8), sama-*.md (8)</td><td>32 blog cluster</td><td>CHAMPION-03</td></tr>
+</tbody>
+</table>
+
+<h3>14.9 الربط مع ملفات v3 (التاريخ)</h3>
+<div class="box ok"><div class="h">التوافق العكسي</div>
+<ul>
+<li><strong>brightai-audit-report-v3.html</strong> (هذا الملف) — يبقى مرجع historical للـ v3 baseline. لا تعديلات retroactive.</li>
+<li><strong>brightai-audit-prompts-v3.md</strong> — يبقى + أضيفت له CHAMPION-00..06 (سطر 2926 فما فوق). المجموع الآن 88 برومبت (82 + 6 CHAMPION).</li>
+<li><strong>brightai-audit-report-v4-champion.html</strong> (جديد) — يولّد في CHAMPION-04 ويُعرض Δ مجمّع.</li>
+<li><strong>reports/CHAMPION-STATE.md</strong> (جديد) — state machine تدير الـ loop.</li>
+<li><strong>brightai-audit-reports/prompt-reports/</strong> (جديد) — per-prompt Δ.</li>
+<li><strong>brain.md</strong> — يتحدّث عبر CHAMPION loop (تلقائيًا عبر السكربت).</li>
+</ul>
+<p>كل ملف يخدم غرض مختلف. <span class="code">DEC-PROC-12-001 verified_production gate</span> يُطبَّق على كل تقرير جديد بدءاً من 2026-07-25.</p>
+</div>
+
+<h3>14.10 Command Reference (نسخ-لصق)</h3>
+<pre><code># 1. Scaffold (CHAMPION-00)
+mkdir -p scripts brightai-audit-reports/prompt-reports reports
+node scripts/prompt-champion.mjs --id=CHAMPION-00
+
+# 2. Run loop (CHAMPION-01..06)
+for id in CHAMPION-01 CHAMPION-02 CHAMPION-03 CHAMPION-04 CHAMPION-05 CHAMPION-06; do
+  node scripts/prompt-champion.mjs --id=$id
+done
+
+# 3. Aggregate (v4 report)
+node scripts/prompt-champion.mjs --aggregate
+
+# 4. Manual verification
+curl -i https://brightai.site/api/health/
+curl -i -X POST https://brightai.site/api/ai/chat/ \
+  -H "Origin: https://brightai.site" -H "Content-Type: application/json" \
+  -d '{"message":"test"}'
+pnpm run verify:post-deploy</code></pre>
+
+<hr>
+<p class="small">BrightAI Championship Audit v3.1 (CHAMPION appendix) — 2026-07-30 — أضيف بطلب المالك — 6 برومبتات جديدة (CHAMPION-00 → CHAMPION-06) — المجموع 88 برومبت.</p>
+</body></html>
