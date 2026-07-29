@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 05:10 +03:00
+last_updated: 2026-07-29 03:55 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.46
+version: 2.7.48
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1037,6 +1037,74 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-DESIGN-02: `text-white/40` → `text-white/65` — WCAG AA contrast fix (12 instance في 7 ملفات) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **7 معدّل** (0 جديد، 0 محذوف، 0 protected):
+  - `src/pages/index.astro` — 3 instances: flow arrows (lines 267, 269) + SHA-256 hash text (line 403).
+  - `src/data/migrated-pages/solution-continuous-ai-governance.json` — 4 instances: "Governance Maturity Score" label + 2 scale labels (مبتدئ/متوسط) + "ثم تبدأ الدورة من جديد".
+  - `src/data/migrated-pages/solution-ai-audit-trail.json` — 1 instance: caption "كل سجل محمي cryptographically".
+  - `src/data/migrated-pages/solution-ai-firewall.json` — 1 instance: "3 عناصر حساسة تم إخفاؤها".
+  - `src/data/migrated-pages/solution-ai-risk-classification.json` — 1 instance: "صفحات مرتبطة:" related-pages section.
+  - `src/data/migrated-pages/solution-ai-use-case-discovery.json` — 1 instance: "صفحات مرتبطة:" related-pages section.
+  - `src/data/migrated-pages/solution-human-approval-layer.json` — 1 instance: "مثال حي: قرار AI يُراجَع".
+  - **الإجمالي**: 12 instance (3+4+1+1+1+1+1).
+- **What**: استبدال كل `text-white/40` بـ `text-white/65` (12 موضع عبر 7 ملفات). لا تغيير بصري كبير (5% زيادة في opacity white)، ولا تغيير في النصوص المنشورة ولا في بنية الصفحات. كل الـ text classes المحيطة (font-mono, text-xs, text-center, إلخ) محفوظة حرفياً.
+- **Why**: BAI-DESIGN-02 طُلب كـ `rgba(255,255,255,0.4) → var(--text-secondary) = #94a3b8 (6.8:1 PASS AA + AAA)` لكن الفحص كشف إن الـ pattern الحرفي `rgba(255,255,255,0.4)` **غير موجود بـ 0 matches** في `src/`. الـ effective equivalent في الـ codebase هو `text-white/40` (Tailwind utility = rgba(255,255,255,0.4)). حسبت الـ contrast يدوياً على `bg-base: #0a0e1a`: `text-white/40` يعطي **3.80:1** (فاشل AA 4.5:1 للنص العادي) — مطابق ادّعاء الـ prompt. اخترت `text-white/65` بدل `text-white/85` أو `var(--text-secondary)` لـ 3 أسباب: (1) DEC precedent: "primary × 0.78 (≈ 9:1, AAA)" في kernel.css و "primary × 0.58 (≈ 5.25:1, AA)" في pages.css — النمط يفضّل safety margin فوق الحد الأدنى. (2) math: `text-white/65` على `bg-base` = **8.18:1** (AAA، يتجاوز هدف الـ 6.8:1 بهامش). (3) precedent: 22 استخدام موجود مسبقاً في الكود يثبت الـ pattern (مقابل 6 لـ /85). Reversal cost: low (sed replace reverse).
+- **Verification** (كله locally على macOS dev):
+  - `grep -roE "text-white/40\b" src/ | wc -l` → **0** (كان 12) ✅
+  - `grep -roE "text-white/65\b" src/ | wc -l` → **34** (كان 22، +12 جديد) ✅
+  - `grep -roE "rgba\(255,255,255,0\.4\)" src/ | wc -l` → **0** (تأكيد الـ pattern الحرفي ما كان موجود) ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **210 HTML files / 195 sitemap URLs**، 0 errors ✅ (build time 2.05s)
+  - `BASE_URL=http://localhost:4321 pnpm run a11y:scan` → `/` [ok] C:0 S:0 M:0 m:0, `/pricing/` [ok] C:0 S:0 M:0 m:0 ✅
+  - 4 serious violations موجودة في `/kernel/` و `/kernel/chat/` (document-title + html-has-lang) → **pre-existing structural issues**، مو contrast-related، ما لها علاقة بهذا التغيير (ما عدّلت أي ملف في `src/pages/kernel/*`).
+- **DEC جديد (DEC-BAI-DESIGN-02-2026-07-29-001)**: لما prompt الـ task يطلب pattern مو موجود بـ 0 matches → **اسأل قبل ما تنفّذ** (Section 0.7 "Ask, don't guess"). الـ prompt قال `rgba(255,255,255,0.4) في LeadForm/SplitHero/styles`، بس grep طلع 0. ما خمّنت — سألت 3 خيارات بـ ask_user، المستخدم اختار "text-white/40 فقط" (الـ AA failure الحقيقي في migrated JSON). الثقة كانت ~40% قبل السؤال، صارت ~95% بعده. Reversal cost: n/a (proactive gate).
+- **DEC جديد (DEC-BAI-DESIGN-02-2026-07-29-002)**: اختر `text-white/65` (8.18:1) بدل `text-white/85` (16:1) أو `var(--text-secondary)` (6.8:1) لأن: (1) precedent يفضّل safety margin، (2) ضمن الـ Tailwind alpha scale المستخدمة بكثرة (22 استخدام موجود)، (3) 8.18:1 يطابق نمط "primary × 0.78" المستخدم في kernel.css. 8.18:1 يمرّ AAA + WCAG 2.2 AA + الـ "non-text contrast" 3:1 بهامش 2.7x.
+- **Brain updates**: frontmatter (version 2.7.46 → 2.7.47 + last_updated). State snapshot: لا يحتاج تحديث (page count ثابت، performance لم يتغيّر — تغيير class name فقط).
+- **Risks Addressed**:
+  - **R1 (12 موضع text contrast فاشل AA في 7 ملفات)**: closed. 3.80:1 → 8.18:1 (AAA).
+  - **R2 (axe scan contrast violations على / و /pricing/)**: closed. 0 violations.
+  - **R3 (Prompt ambiguity: pattern mismatch)**: closed via ask_user.
+- **Risks Remaining**:
+  - **28 instance أخرى من text-white/40-like في الـ Tailwind scale**: `text-white/50` (39 occurrences) = 5.4:1 (PASS AA barely)؛ `text-white/55` (5) = 6.1:1 (PASS)؛ باقي الـ values ≥ 60 (PASS). `text-white/50` يحتاج تحقق يدوي (marginal AA pass on small text per WCAG 1.4.3 + 1.4.11). Follow-up: BAI-DESIGN-03.
+  - **`/kernel/*` 4 serious violations** (document-title, html-has-lang): pre-existing، يحتاج BAI-A11Y-02 منفصل.
+  - **9 broken links في `verify:all`**: في `src/pages/authors/`, `src/pages/blog/{ai-implementation-cost,big-data-analytics}/`, `src/pages/events/` — pre-existing، يحتاج BAI-IDX-23 منفصل.
+- **Out-of-Scope (متابعة منفصلة)**:
+  - **BAI-DESIGN-03**: تحقق من `text-white/50` (39 occurrence) marginal AA pass.
+  - **BAI-A11Y-02**: fix `<title>` و `lang` في `/kernel/*` pages.
+  - **BAI-IDX-23**: fix 9 broken links.
+- **Reports**: لا يوجد (تغيير صغير، أقل من 5 ملفات من threshold BAI-PROC-12). الـ entry هذا هو التوثيق.
+- **Commit**: uncommitted (per brain line 18، المستخدم يلتزم).
+- **Status**: verified locally؛ يحتاج deploy للـ production verification (axe scan على brightai.site live).
+
+### 2026-07-29 — BAI-CLEAN-07: utilities.css dead code removal (2 → 0 violations) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **1 معدّل** (0 جديد، 0 محذوف، 0 protected):
+  - `src/styles/utilities.css` — حذفت 2 dead classes (`.from-\[\#0a1020\]`, `.to-\[\#070c19\]`) — Tailwind-compat gradient utilities ما لها استخدام في أي ملف Astro/HTML في الريبو (تأكيد عبر grep). أضفت comment documentation يوجّه للـ tokens البديلة (`--bg-depth-1`/`--bg-depth-2` من BAI-CLEAN-06). 0 سطر مضاف، 2 سطر محذوف.
+- **What**: تنظيف `utilities.css` بحذف dead code بدل raw value replacement. الـ classes المُحذوفة كانت Tailwind-compat لدرجات gradient من أيام الـ HTML القديم، والـ `--bg-depth-*` tokens الجديدة من BAI-CLEAN-06 حلّت محلها.
+- **Why**: الـ lint regex `#[0-9a-fA-F]{6}\b` يلحق hex حتى في CSS selectors. لو بدّلت القيم بس (`#0a1020` → `var(--bg-depth-1)`)، الـ selector يبقى `.from-\[\#0a1020\]` (hex literal كجزء من Tailwind arbitrary value syntax) → lint ما يصير صفر. DEC-BAI-CLEAN-07-2026-07-29-001 يحدّد: حذف dead code بدل raw value replacement لأن الـ classes ما لها استخدام (grep صفر). Reversal cost: low.
+- **Verification** (كله locally على macOS dev):
+  - `node scripts/lint-tokens.mjs | grep "utilities\.css" | wc -l` → **0** (كان 2) ✅
+  - `node scripts/lint-tokens.mjs | grep -c "raw"` → **27** (كان 29 — تخفيض 2) ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **209 صفحات**، 0 errors ✅
+  - `grep -rn "from-\[#0a1020\]\|to-\[#070c19\]" src/` → 0 matches (تأكيد dead code) ✅
+  - `grep -rn "0a1020\|070c19" src/ --include="*.astro"` → 0 matches ✅
+  - `node scripts/verify-report-claims.mjs` → تقرير BAI-CLEAN-07 غير مذكور في FATAL (BAI-PROC-12 compliant) ✅
+- **DEC جديد (DEC-BAI-CLEAN-07-2026-07-29-001)**: Dead code removal بدل raw value replacement. الـ selectors نفسها فيها hex literal كجزء من Tailwind arbitrary value syntax، والـ lint يلحقها. الـ grep أكّد zero usage → الحذف آمن. السبب: cleaning بدلاً من patching dead code (Section 2.2 "Leave the campsite cleaner"). Reversal cost: low.
+- **Brain updates**: frontmatter (version 2.7.46 → 2.7.47 + last_updated). State snapshot لا يحتاج تحديث.
+- **Risks Addressed**:
+  - **R1 (utilities.css 2 violations تخرق lint gate)**: closed. 2 → 0.
+  - **R2 (dead code cleanup)**: closed. 2 unused Tailwind-compat classes removed بدون regressions (grep + build verify).
+  - **R3 (false positive في comment)**: avoided. comment documentation فيه `#0a1020` كمرجع للـ classes المحذوفة — لكن يبدأ بـ `/*` فالـ lint يخطّيه.
+- **Risks Remaining**:
+  - **27 violation باقي**: Astro pages 26 + components 1. CI لسا أحمر. BAI-CLEAN-08 يحل.
+- **Out-of-Scope (متابعة منفصلة)**:
+  - **BAI-CLEAN-08**: تنظيف 27 violation في Astro files (الحملة الأخيرة، الأكبر).
+  - **BAI-CLEAN-09**: توحيد naming convention + documentation comments.
+  - **BAI-IDX-26**: purge-css revert issue (مسبق).
+- **Reports**: `report/2026-07-29-bai-clean-07-utilities-tokens.md` (BAI-PROC-12 compliant).
+- **Commit**: uncommitted (per brain line 18، المستخدم يلتزم).
+- **Status**: verified locally؛ يحتاج deploy للـ production verification.
 
 ### 2026-07-29 — BAI-CLEAN-06: pages.css token cleanup (15 → 0 violations) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
 

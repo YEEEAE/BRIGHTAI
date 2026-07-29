@@ -123,7 +123,7 @@ const jsonLd = {
     border-radius: var(--radius-lg);
     background: rgba(0, 212, 255, 0.08);
     border: 1px solid rgba(0, 212, 255, 0.25);
-    color: #9be5ff;
+    color: var(--assessment-tag-color);
     display: inline-block;
     margin-block-start: var(--space-3);
   }
@@ -149,10 +149,10 @@ const jsonLd = {
   }
   .mt-4 { margin-block-start: var(--space-4); }
 
-  /* Avatar tile gradient variant — replaces inline
-     `style="background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);"`. */
+/* Avatar tile gradient variant — replaces inline
+      `style="background: linear-gradient(135deg, var(--cyan-bright), var(--accent-purple-deep));"`. */
   .avatar-tile--gradient {
-    background: linear-gradient(135deg, var(--cyan-bright), #7c5cff);
+    background: linear-gradient(135deg, var(--cyan-bright), var(--accent-purple-deep));
   }
   .avatar-tile--gradient .avatar-tile__icon { color: var(--white); }
 </style>

@@ -30,14 +30,14 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
 <style>
   .legal-related {
     max-width: 720px;
-    margin: 48px auto 0;
+    margin: var(--space-12) auto 0;
     padding: var(--space-6);
     border-top: 1px solid rgba(148, 163, 184, 0.18);
   }
   .legal-related h2 {
     font-size: 16px;
     color: var(--text-secondary, #94a3b8);
-    margin-bottom: 12px;
+    margin-bottom: var(--space-3);
   }
   .legal-related ul {
     list-style: none;
@@ -45,7 +45,7 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': [
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px 20px;
+    gap: var(--space-3) var(--space-5);
   }
   .legal-related a {
     color: var(--brand-400, #22d3ee);

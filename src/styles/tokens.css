@@ -479,6 +479,15 @@
   --bg-depth-4:                  #02111f;                     /* BAI-CLEAN-06: avatar-tile text (darkest navy for light gradient surfaces) */
   --saudi-green:                 #00663d;                     /* BAI-CLEAN-06: Saudi flag green (ksa-flag-badge) */
   --accent-purple:               #a78bfa;                     /* BAI-CLEAN-06: avatar-tile gradient second stop (purple-400) */
+
+  /* ════════════════════════════════════════════════════════════════════════════
+     39. Accent + assessment tag (BAI-CLEAN-08, 2026-07-29)
+     الـ tokens الجديدة لـ avatar-tile brand gradients (purple-500 + pink-400)
+     و الـ assessment-tag cyan-200 foreground. visual contracts محفوظة.
+     ════════════════════════════════════════════════════════════════════════════ */
+  --accent-purple-deep:         #7c5cff;                     /* BAI-CLEAN-08: avatar-tile--brand-teal/purple gradient (purple-500) */
+  --accent-pink:                #ff5ca7;                     /* BAI-CLEAN-08: avatar-tile--brand-purple second stop (pink-400) */
+  --assessment-tag-color:        #9be5ff;                     /* BAI-CLEAN-08: assessment-tag foreground (cyan-200) */
 }
 
 /* ════════════════════════════════════════════════════════════════════════════

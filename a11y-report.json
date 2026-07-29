@@ -18,7 +18,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:38.597Z",
+      "timestamp": "2026-07-29T00:53:33.959Z",
       "url": "http://localhost:4321/",
       "toolOptions": {
         "runOnly": {
@@ -1500,9 +1500,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-ml0ckkm7\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-ml0ckkm7"
+                "#trap-focus-a8zr0pkr"
               ]
             },
             {
@@ -2913,9 +2913,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-ml0ckkm7\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-ml0ckkm7"
+                "#trap-focus-a8zr0pkr"
               ]
             },
             {
@@ -5385,7 +5385,7 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div class=\"text-2xl text-white/40 hidden lg:block home-flow-arrow\" aria-hidden=\"true\">←</div>",
+              "html": "<div class=\"text-2xl text-white/65 hidden lg:block home-flow-arrow\" aria-hidden=\"true\">←</div>",
               "target": [
                 ".hidden.lg\\:block.home-flow-arrow:nth-child(2)"
               ]
@@ -5449,7 +5449,7 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div class=\"text-2xl text-white/40 hidden lg:block home-flow-arrow\" aria-hidden=\"true\">←</div>",
+              "html": "<div class=\"text-2xl text-white/65 hidden lg:block home-flow-arrow\" aria-hidden=\"true\">←</div>",
               "target": [
                 ".hidden.lg\\:block.home-flow-arrow:nth-child(4)"
               ]
@@ -9583,9 +9583,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-ml0ckkm7\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-ml0ckkm7"
+                "#trap-focus-a8zr0pkr"
               ]
             },
             {
@@ -12125,9 +12125,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-ml0ckkm7\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-ml0ckkm7"
+                "#trap-focus-a8zr0pkr"
               ]
             },
             {
@@ -13511,9 +13511,9 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-ml0ckkm7\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-ml0ckkm7"
+                "#trap-focus-a8zr0pkr"
               ]
             },
             {
@@ -25872,7 +25872,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:39.682Z",
+      "timestamp": "2026-07-29T00:53:35.142Z",
       "url": "http://localhost:4321/en/",
       "toolOptions": {
         "runOnly": {
@@ -37571,7 +37571,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:40.576Z",
+      "timestamp": "2026-07-29T00:53:36.109Z",
       "url": "http://localhost:4321/pricing/",
       "toolOptions": {
         "runOnly": {
@@ -38480,6 +38480,39 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/pricing/\" class=\"breadcrumbs__link\">الأسعار</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -39449,6 +39482,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/pricing/\" class=\"breadcrumbs__link\">الأسعار</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -40854,6 +40905,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<svg aria-hidden=\"true\" width=\"20\" height=\"20\" data-astro-cid-ym4a2o7m=\"\"><use href=\"/icons.svg#mdi-calendar-check\" data-astro-cid-ym4a2o7m=\"\"></use></svg>",
               "target": [
                 ".btn--glow[data-position=\"hero\"][data-cta=\"pricing_cta_click\"] > svg[width=\"20\"][height=\"20\"]"
@@ -41801,6 +41884,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/pricing/\" class=\"breadcrumbs__link\">الأسعار</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -44598,6 +44699,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/pricing/\" class=\"breadcrumbs__link\">الأسعار</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<aside data-snippet=\"tl-dr\" aria-label=\"الخلاصة\" class=\"answer-first-summary\" data-astro-cid-ym4a2o7m=\"\">",
               "target": [
                 ".answer-first-summary"
@@ -45513,6 +45646,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/pricing/\" class=\"breadcrumbs__link\">الأسعار</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -48141,31 +48292,6 @@
               "target": [
                 ".pricing-decision-helper__note"
               ]
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "fgColor": "#94a3b8",
-                    "bgColor": "#151c30",
-                    "contrastRatio": 6.6,
-                    "fontSize": "10.5pt (14px)",
-                    "fontWeight": "normal",
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "Element has sufficient color contrast of 6.6"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": null,
-              "html": "<p class=\"cookie-consent__text\" data-astro-cid-garwan2p=\"\">\nنستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالاستمرار في التصفح، أنت توافق على\n<a href=\"/privacy-cookies/\" class=\"cookie-consent__link\" data-astro-cid-garwan2p=\"\">سياسة ملفات تعريف الارتباط</a>.\n</p>",
-              "target": [
-                ".cookie-consent__text"
-              ]
             }
           ]
         },
@@ -48910,6 +49036,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/pricing/\" class=\"breadcrumbs__link\">الأسعار</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"pricing/\"]"
               ]
             },
             {
@@ -54775,6 +54953,31 @@
                 ".footer__made-in"
               ],
               "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "messageKey": "elmPartiallyObscuring",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined because it partially overlaps other elements"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<p class=\"cookie-consent__text\" data-astro-cid-garwan2p=\"\">\nنستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالاستمرار في التصفح، أنت توافق على\n<a href=\"/privacy-cookies/\" class=\"cookie-consent__link\" data-astro-cid-garwan2p=\"\">سياسة ملفات تعريف الارتباط</a>.\n</p>",
+              "target": [
+                ".cookie-consent__text"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
             }
           ]
         }
@@ -54801,7 +55004,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:43.727Z",
+      "timestamp": "2026-07-29T00:53:39.024Z",
       "url": "http://localhost:4321/contact/",
       "toolOptions": {
         "runOnly": {
@@ -55631,6 +55834,39 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/contact/\" class=\"breadcrumbs__link\">تواصل معنا</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"تواصل معنا\" data-astro-cid-ahc3q4vw=\"\">",
               "target": [
                 ".page-hero"
@@ -55796,9 +56032,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-j2fk2sav\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-j2fk2sav"
+                "#trap-focus-mts1oixk"
               ]
             },
             {
@@ -56864,6 +57100,24 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/contact/\" class=\"breadcrumbs__link\">تواصل معنا</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"تواصل معنا\" data-astro-cid-ahc3q4vw=\"\">",
               "target": [
                 ".page-hero"
@@ -56954,9 +57208,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-j2fk2sav\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-j2fk2sav"
+                "#trap-focus-mts1oixk"
               ]
             },
             {
@@ -58182,6 +58436,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<div class=\"bg-grid\" aria-hidden=\"true\"></div>",
               "target": [
                 ".bg-grid"
@@ -59126,6 +59412,24 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/contact/\" class=\"breadcrumbs__link\">تواصل معنا</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"تواصل معنا\" data-astro-cid-ahc3q4vw=\"\">",
               "target": [
                 ".page-hero"
@@ -59216,9 +59520,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-j2fk2sav\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-j2fk2sav"
+                "#trap-focus-mts1oixk"
               ]
             },
             {
@@ -61154,6 +61458,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/contact/\" class=\"breadcrumbs__link\">تواصل معنا</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"تواصل معنا\" data-astro-cid-ahc3q4vw=\"\">",
               "target": [
                 ".page-hero"
@@ -61314,9 +61650,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-j2fk2sav\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-j2fk2sav"
+                "#trap-focus-mts1oixk"
               ]
             },
             {
@@ -62354,6 +62690,24 @@
               "all": [],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/contact/\" class=\"breadcrumbs__link\">تواصل معنا</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"تواصل معنا\" data-astro-cid-ahc3q4vw=\"\">",
               "target": [
                 ".page-hero"
@@ -62444,9 +62798,9 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-j2fk2sav\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-j2fk2sav"
+                "#trap-focus-mts1oixk"
               ]
             },
             {
@@ -65988,6 +66342,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/contact/\" class=\"breadcrumbs__link\">تواصل معنا</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"contact/\"]"
               ]
             },
             {
@@ -70421,7 +70827,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:44.705Z",
+      "timestamp": "2026-07-29T00:53:40.068Z",
       "url": "http://localhost:4321/about/",
       "toolOptions": {
         "runOnly": {
@@ -71358,6 +71764,39 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"https://brightai.site/about/\" class=\"breadcrumbs__link\">من نحن</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -72342,6 +72781,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"https://brightai.site/about/\" class=\"breadcrumbs__link\">من نحن</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -73513,6 +73970,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<div class=\"bg-grid\" aria-hidden=\"true\"></div>",
               "target": [
                 ".bg-grid"
@@ -74154,6 +74643,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"https://brightai.site/about/\" class=\"breadcrumbs__link\">من نحن</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -76003,6 +76510,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"https://brightai.site/about/\" class=\"breadcrumbs__link\">من نحن</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero about-page-hero\" aria-label=\"عن BrightAI\">",
               "target": [
                 ".page-hero"
@@ -76932,6 +77471,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"https://brightai.site/about/\" class=\"breadcrumbs__link\">من نحن</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -78797,6 +79354,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"https://brightai.site/about/\" class=\"breadcrumbs__link\">من نحن</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"about/\"]"
               ]
             },
             {
@@ -81951,6 +82560,38 @@
                 {
                   "id": "color-contrast",
                   "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "12.0pt (16px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<div class=\"dotted-bg__anchor dotted-bg__anchor--top\" data-astro-cid-zcul7klc=\"\"></div>",
+                      "target": [
+                        ".dotted-bg__anchor--top"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<a href=\"https://brightai.site/about/\" class=\"breadcrumbs__link\">من نحن</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"about/\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
                     "fontSize": "9.0pt (12px)",
                     "fontWeight": "normal",
                     "messageKey": "pseudoContent",
@@ -82508,7 +83149,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:45.571Z",
+      "timestamp": "2026-07-29T00:53:41.308Z",
       "url": "http://localhost:4321/trust/",
       "toolOptions": {
         "runOnly": {
@@ -83426,6 +84067,39 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/trust/\" class=\"breadcrumbs__link\">مركز الثقة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -84443,6 +85117,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/trust/\" class=\"breadcrumbs__link\">مركز الثقة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -85830,6 +86522,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<div class=\"bg-grid\" aria-hidden=\"true\"></div>",
               "target": [
                 ".bg-grid"
@@ -86823,6 +87547,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/trust/\" class=\"breadcrumbs__link\">مركز الثقة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -89438,6 +90180,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/trust/\" class=\"breadcrumbs__link\">مركز الثقة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"مركز الثقة\" data-astro-cid-tcvvo7xq=\"\">",
               "target": [
                 ".page-hero"
@@ -90399,6 +91173,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/trust/\" class=\"breadcrumbs__link\">مركز الثقة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -92270,6 +93062,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/trust/\" class=\"breadcrumbs__link\">مركز الثقة</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"trust/\"]"
               ]
             },
             {
@@ -97495,7 +98339,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:46.396Z",
+      "timestamp": "2026-07-29T00:53:42.336Z",
       "url": "http://localhost:4321/kernel/",
       "toolOptions": {
         "runOnly": {
@@ -98933,7 +99777,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:47.042Z",
+      "timestamp": "2026-07-29T00:53:42.996Z",
       "url": "http://localhost:4321/kernel/chat/",
       "toolOptions": {
         "runOnly": {
@@ -100288,7 +101132,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:47.905Z",
+      "timestamp": "2026-07-29T00:53:43.899Z",
       "url": "http://localhost:4321/blog/",
       "toolOptions": {
         "runOnly": {
@@ -101239,6 +102083,39 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/blog/\" class=\"breadcrumbs__link\">المدونة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
               "html": "<section class=\"blog-section\" aria-labelledby=\"featured-posts\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 "section[aria-labelledby=\"featured-posts\"]"
@@ -101308,72 +102185,6 @@
               "html": "<nav class=\"blog-filters\" aria-label=\"تصفية بالفئة\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 ".blog-filters"
-              ]
-            },
-            {
-              "any": [],
-              "all": [
-                {
-                  "id": "aria-allowed-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attributes are used correctly for the defined role"
-                },
-                {
-                  "id": "aria-allowed-attr-elm",
-                  "data": null,
-                  "relatedNodes": [],
-                  "message": "ARIA attributes are allowed for this element",
-                  "impact": "critical"
-                }
-              ],
-              "none": [
-                {
-                  "id": "aria-unsupported-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attribute is supported"
-                }
-              ],
-              "impact": null,
-              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
-              "target": [
-                ".breadcrumbs"
-              ]
-            },
-            {
-              "any": [],
-              "all": [
-                {
-                  "id": "aria-allowed-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attributes are used correctly for the defined role"
-                },
-                {
-                  "id": "aria-allowed-attr-elm",
-                  "data": null,
-                  "relatedNodes": [],
-                  "message": "ARIA attributes are allowed for this element",
-                  "impact": "critical"
-                }
-              ],
-              "none": [
-                {
-                  "id": "aria-unsupported-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attribute is supported"
-                }
-              ],
-              "impact": null,
-              "html": "<span class=\"breadcrumbs__current\" aria-current=\"page\">المدونة</span>",
-              "target": [
-                ".breadcrumbs__current"
               ]
             },
             {
@@ -102142,6 +102953,24 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/blog/\" class=\"breadcrumbs__link\">المدونة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"blog-section\" aria-labelledby=\"featured-posts\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 "section[aria-labelledby=\"featured-posts\"]"
@@ -102181,42 +103010,6 @@
               "html": "<nav class=\"blog-filters\" aria-label=\"تصفية بالفئة\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 ".blog-filters"
-              ]
-            },
-            {
-              "any": [],
-              "all": [
-                {
-                  "id": "aria-conditional-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "ARIA attribute is allowed"
-                }
-              ],
-              "none": [],
-              "impact": null,
-              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
-              "target": [
-                ".breadcrumbs"
-              ]
-            },
-            {
-              "any": [],
-              "all": [
-                {
-                  "id": "aria-conditional-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "ARIA attribute is allowed"
-                }
-              ],
-              "none": [],
-              "impact": null,
-              "html": "<span class=\"breadcrumbs__current\" aria-current=\"page\">المدونة</span>",
-              "target": [
-                ".breadcrumbs__current"
               ]
             },
             {
@@ -103233,6 +104026,38 @@
               "html": "<div id=\"mobile-menu\" class=\"mobile-menu\" role=\"dialog\" aria-modal=\"true\" aria-label=\"القائمة\" aria-hidden=\"true\" data-astro-cid-37bvxqo4=\"\">",
               "target": [
                 "#mobile-menu"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
               ]
             },
             {
@@ -110270,38 +111095,6 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
-              "target": [
-                ".breadcrumbs__sep"
-              ]
-            },
-            {
-              "any": [],
-              "all": [
-                {
-                  "id": "focusable-modal-open",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "No focusable elements while a modal is open"
-                },
-                {
-                  "id": "focusable-disabled",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "No focusable elements contained within element"
-                },
-                {
-                  "id": "focusable-not-tabbable",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "No focusable elements contained within element"
-                }
-              ],
-              "none": [],
-              "impact": null,
               "html": "<svg aria-hidden=\"true\" width=\"20\" height=\"20\" data-astro-cid-5tznm7mj=\"\"><use href=\"/icons.svg#mdi-gauge\" data-astro-cid-5tznm7mj=\"\"></use></svg>",
               "target": [
                 ".btn--primary.btn > svg[width=\"20\"][height=\"20\"]"
@@ -110734,6 +111527,24 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/blog/\" class=\"breadcrumbs__link\">المدونة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
               "html": "<section class=\"blog-section\" aria-labelledby=\"featured-posts\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 "section[aria-labelledby=\"featured-posts\"]"
@@ -110773,42 +111584,6 @@
               "html": "<nav class=\"blog-filters\" aria-label=\"تصفية بالفئة\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 ".blog-filters"
-              ]
-            },
-            {
-              "any": [],
-              "all": [],
-              "none": [
-                {
-                  "id": "aria-prohibited-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "ARIA attribute is allowed"
-                }
-              ],
-              "impact": null,
-              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
-              "target": [
-                ".breadcrumbs"
-              ]
-            },
-            {
-              "any": [],
-              "all": [],
-              "none": [
-                {
-                  "id": "aria-prohibited-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "ARIA attribute is allowed"
-                }
-              ],
-              "impact": null,
-              "html": "<span class=\"breadcrumbs__current\" aria-current=\"page\">المدونة</span>",
-              "target": [
-                ".breadcrumbs__current"
               ]
             },
             {
@@ -112514,6 +113289,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/blog/\" class=\"breadcrumbs__link\">المدونة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"blog-section\" aria-labelledby=\"featured-posts\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 "section[aria-labelledby=\"featured-posts\"]"
@@ -112581,70 +113388,6 @@
               "html": "<nav class=\"blog-filters\" aria-label=\"تصفية بالفئة\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 ".blog-filters"
-              ]
-            },
-            {
-              "any": [],
-              "all": [
-                {
-                  "id": "aria-valid-attr-value",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attribute values are valid"
-                },
-                {
-                  "id": "aria-errormessage",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
-                },
-                {
-                  "id": "aria-level",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "aria-level values are valid"
-                }
-              ],
-              "none": [],
-              "impact": null,
-              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
-              "target": [
-                ".breadcrumbs"
-              ]
-            },
-            {
-              "any": [],
-              "all": [
-                {
-                  "id": "aria-valid-attr-value",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attribute values are valid"
-                },
-                {
-                  "id": "aria-errormessage",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
-                },
-                {
-                  "id": "aria-level",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "aria-level values are valid"
-                }
-              ],
-              "none": [],
-              "impact": null,
-              "html": "<span class=\"breadcrumbs__current\" aria-current=\"page\">المدونة</span>",
-              "target": [
-                ".breadcrumbs__current"
               ]
             },
             {
@@ -113362,6 +114105,24 @@
               "all": [],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/blog/\" class=\"breadcrumbs__link\">المدونة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"blog-section\" aria-labelledby=\"featured-posts\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 "section[aria-labelledby=\"featured-posts\"]"
@@ -113401,42 +114162,6 @@
               "html": "<nav class=\"blog-filters\" aria-label=\"تصفية بالفئة\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 ".blog-filters"
-              ]
-            },
-            {
-              "any": [
-                {
-                  "id": "aria-valid-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attribute name is valid"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": null,
-              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
-              "target": [
-                ".breadcrumbs"
-              ]
-            },
-            {
-              "any": [
-                {
-                  "id": "aria-valid-attr",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "critical",
-                  "message": "ARIA attribute name is valid"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": null,
-              "html": "<span class=\"breadcrumbs__current\" aria-current=\"page\">المدونة</span>",
-              "target": [
-                ".breadcrumbs__current"
               ]
             },
             {
@@ -119371,31 +120096,6 @@
                   "data": null,
                   "relatedNodes": [
                     {
-                      "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
-                      "target": [
-                        ".breadcrumbs"
-                      ]
-                    }
-                  ],
-                  "impact": "serious",
-                  "message": "Links can be distinguished from surrounding text by visual styling"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": null,
-              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
-              "target": [
-                ".breadcrumbs__link"
-              ]
-            },
-            {
-              "any": [
-                {
-                  "id": "link-in-text-block-style",
-                  "data": null,
-                  "relatedNodes": [
-                    {
                       "html": "<p data-astro-cid-5tznm7mj=\"\">",
                       "target": [
                         ".card > p"
@@ -119624,6 +120324,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/blog/\" class=\"breadcrumbs__link\">المدونة</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"blog/\"]"
               ]
             },
             {
@@ -121782,32 +122534,6 @@
               "html": "<a href=\"/blog/choose-ai-company-riyadh/\" class=\"listing-card\" data-category=\"ذكاء-اصطناعي\" data-tint=\"teal\" data-astro-cid-5tznm7mj=\"\">",
               "target": [
                 ".listing-card[data-tint=\"teal\"][data-category=\"ذكاء-اصطناعي\"]:nth-child(72)"
-              ]
-            },
-            {
-              "any": [
-                {
-                  "id": "has-visible-text",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "Element has text that is visible to screen readers"
-                }
-              ],
-              "all": [],
-              "none": [
-                {
-                  "id": "focusable-no-name",
-                  "data": null,
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "Element is not in tab order or has accessible text"
-                }
-              ],
-              "impact": null,
-              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
-              "target": [
-                ".breadcrumbs__link"
               ]
             },
             {
@@ -125383,7 +126109,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:48.906Z",
+      "timestamp": "2026-07-29T00:53:44.981Z",
       "url": "http://localhost:4321/customers/bank/",
       "toolOptions": {
         "runOnly": {
@@ -126350,6 +127076,39 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
+              "target": [
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"]"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"بنك سعودي رائد | حوكمة AI بجرد ومالك مسؤول\" data-astro-cid-zzz72t2a=\"\">",
               "target": [
                 ".page-hero"
@@ -126385,7 +127144,7 @@
               "impact": null,
               "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
               "target": [
-                ".breadcrumbs"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"]"
               ]
             },
             {
@@ -127319,6 +128078,24 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
+              "target": [
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"]"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"بنك سعودي رائد | حوكمة AI بجرد ومالك مسؤول\" data-astro-cid-zzz72t2a=\"\">",
               "target": [
                 ".page-hero"
@@ -127339,7 +128116,7 @@
               "impact": null,
               "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
               "target": [
-                ".breadcrumbs"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"]"
               ]
             },
             {
@@ -128475,6 +129252,70 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__sep:nth-child(2)"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__sep:nth-child(4)"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<div class=\"bg-grid\" aria-hidden=\"true\"></div>",
               "target": [
                 ".bg-grid"
@@ -128509,7 +129350,7 @@
               "impact": null,
               "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
               "target": [
-                ".breadcrumbs__sep:nth-child(3)"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__sep:nth-child(2)"
               ]
             },
             {
@@ -128541,7 +129382,7 @@
               "impact": null,
               "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
               "target": [
-                ".breadcrumbs__sep:nth-child(5)"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__sep:nth-child(4)"
               ]
             },
             {
@@ -129131,6 +129972,24 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
+              "target": [
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"]"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"بنك سعودي رائد | حوكمة AI بجرد ومالك مسؤول\" data-astro-cid-zzz72t2a=\"\">",
               "target": [
                 ".page-hero"
@@ -129151,7 +130010,7 @@
               "impact": null,
               "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
               "target": [
-                ".breadcrumbs"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"]"
               ]
             },
             {
@@ -130947,6 +131806,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
+              "target": [
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"]"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"بنك سعودي رائد | حوكمة AI بجرد ومالك مسؤول\" data-astro-cid-zzz72t2a=\"\">",
               "target": [
                 ".page-hero"
@@ -130981,7 +131872,7 @@
               "impact": null,
               "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
               "target": [
-                ".breadcrumbs"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"]"
               ]
             },
             {
@@ -131859,6 +132750,24 @@
               "all": [],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
+              "target": [
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"page-hero\" aria-label=\"بنك سعودي رائد | حوكمة AI بجرد ومالك مسؤول\" data-astro-cid-zzz72t2a=\"\">",
               "target": [
                 ".page-hero"
@@ -131879,7 +132788,7 @@
               "impact": null,
               "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
               "target": [
-                ".breadcrumbs"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"]"
               ]
             },
             {
@@ -133161,7 +134070,7 @@
                     {
                       "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
                       "target": [
-                        ".breadcrumbs"
+                        ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"]"
                       ]
                     }
                   ],
@@ -133174,7 +134083,7 @@
               "impact": null,
               "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
               "target": [
-                ".breadcrumbs__link[href=\"/\"]"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__link[href=\"/\"]"
               ]
             },
             {
@@ -133186,7 +134095,7 @@
                     {
                       "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\">",
                       "target": [
-                        ".breadcrumbs"
+                        ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"]"
                       ]
                     }
                   ],
@@ -133199,7 +134108,7 @@
               "impact": null,
               "html": "<a href=\"/customers/\" class=\"breadcrumbs__link\">عملاؤنا</a>",
               "target": [
-                "a[href$=\"customers/\"]"
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__link[href$=\"customers/\"]"
               ]
             },
             {
@@ -133412,7 +134321,7 @@
               "impact": null,
               "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
               "target": [
-                ".breadcrumbs__link[href=\"/\"]"
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__link[href=\"/\"]"
               ]
             },
             {
@@ -133438,7 +134347,85 @@
               "impact": null,
               "html": "<a href=\"/customers/\" class=\"breadcrumbs__link\">عملاؤنا</a>",
               "target": [
-                "a[href$=\"customers/\"]"
+                "#main > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__link[href$=\"customers/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/customers/bank/\" class=\"breadcrumbs__link\">بنك سعودي رائد</a>",
+              "target": [
+                "a[href$=\"bank/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/customers/\" class=\"breadcrumbs__link\">عملاؤنا</a>",
+              "target": [
+                ".max-w-7xl.mx-auto.px-5 > .breadcrumbs[aria-label=\"مسار التنقل\"] > .breadcrumbs__link[href$=\"customers/\"]"
               ]
             },
             {
@@ -137149,7 +138136,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:49.770Z",
+      "timestamp": "2026-07-29T00:53:45.974Z",
       "url": "http://localhost:4321/solutions/",
       "toolOptions": {
         "runOnly": {
@@ -138050,6 +139037,39 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/solutions/\" class=\"breadcrumbs__link\">الحلول التقنية</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -139610,6 +140630,24 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/solutions/\" class=\"breadcrumbs__link\">الحلول التقنية</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"inner-hero bg-ambient-teal-top\" aria-label=\"حلول BrightAI\">",
               "target": [
                 ".inner-hero"
@@ -141043,6 +142081,38 @@
               "html": "<div id=\"mobile-menu\" class=\"mobile-menu\" role=\"dialog\" aria-modal=\"true\" aria-label=\"القائمة\" aria-hidden=\"true\" data-astro-cid-37bvxqo4=\"\">",
               "target": [
                 "#mobile-menu"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
               ]
             },
             {
@@ -142545,6 +143615,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/solutions/\" class=\"breadcrumbs__link\">الحلول التقنية</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -144682,6 +145770,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/solutions/\" class=\"breadcrumbs__link\">الحلول التقنية</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"inner-hero bg-ambient-teal-top\" aria-label=\"حلول BrightAI\">",
               "target": [
                 ".inner-hero"
@@ -146123,6 +147243,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/solutions/\" class=\"breadcrumbs__link\">الحلول التقنية</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -149595,6 +150733,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/solutions/\" class=\"breadcrumbs__link\">الحلول التقنية</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"solutions/\"]"
               ]
             },
             {
@@ -154867,7 +156057,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:50.767Z",
+      "timestamp": "2026-07-29T00:53:47.958Z",
       "url": "http://localhost:4321/docs/",
       "toolOptions": {
         "runOnly": {
@@ -155710,6 +156900,39 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/docs/\" class=\"breadcrumbs__link\">الوثائق</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -156727,6 +157950,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/docs/\" class=\"breadcrumbs__link\">الوثائق</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -157905,6 +159146,38 @@
               "html": "<div id=\"mobile-menu\" class=\"mobile-menu\" role=\"dialog\" aria-modal=\"true\" aria-label=\"القائمة\" aria-hidden=\"true\" data-astro-cid-37bvxqo4=\"\">",
               "target": [
                 "#mobile-menu"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
               ]
             },
             {
@@ -161598,6 +162871,24 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/docs/\" class=\"breadcrumbs__link\">الوثائق</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
               "html": "<section class=\"docs-index__section\" aria-labelledby=\"docs-solutions\" data-astro-cid-zsukdfzm=\"\">",
               "target": [
                 "section[aria-labelledby=\"docs-solutions\"]"
@@ -163482,6 +164773,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/docs/\" class=\"breadcrumbs__link\">الوثائق</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<section class=\"docs-index__section\" aria-labelledby=\"docs-solutions\" data-astro-cid-zsukdfzm=\"\">",
               "target": [
                 "section[aria-labelledby=\"docs-solutions\"]"
@@ -164411,6 +165734,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/docs/\" class=\"breadcrumbs__link\">الوثائق</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -168127,6 +169468,31 @@
               "target": [
                 ".docs-index__card[href$=\"solutions/\"] > .docs-index__card-link"
               ]
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "fgColor": "#94a3b8",
+                    "bgColor": "#151c30",
+                    "contrastRatio": 6.6,
+                    "fontSize": "10.5pt (14px)",
+                    "fontWeight": "normal",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has sufficient color contrast of 6.6"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<p class=\"cookie-consent__text\" data-astro-cid-garwan2p=\"\">\nنستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالاستمرار في التصفح، أنت توافق على\n<a href=\"/privacy-cookies/\" class=\"cookie-consent__link\" data-astro-cid-garwan2p=\"\">سياسة ملفات تعريف الارتباط</a>.\n</p>",
+              "target": [
+                ".cookie-consent__text"
+              ]
             }
           ]
         },
@@ -169369,6 +170735,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/docs/\" class=\"breadcrumbs__link\">الوثائق</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"docs/\"]"
               ]
             },
             {
@@ -176496,31 +177914,6 @@
                 ".footer__made-in"
               ],
               "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
-            },
-            {
-              "any": [
-                {
-                  "id": "color-contrast",
-                  "data": {
-                    "contrastRatio": 0,
-                    "fontSize": "10.5pt (14px)",
-                    "fontWeight": "normal",
-                    "messageKey": "elmPartiallyObscuring",
-                    "expectedContrastRatio": "4.5:1"
-                  },
-                  "relatedNodes": [],
-                  "impact": "serious",
-                  "message": "Element's background color could not be determined because it partially overlaps other elements"
-                }
-              ],
-              "all": [],
-              "none": [],
-              "impact": "serious",
-              "html": "<p class=\"cookie-consent__text\" data-astro-cid-garwan2p=\"\">\nنستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالاستمرار في التصفح، أنت توافق على\n<a href=\"/privacy-cookies/\" class=\"cookie-consent__link\" data-astro-cid-garwan2p=\"\">سياسة ملفات تعريف الارتباط</a>.\n</p>",
-              "target": [
-                ".cookie-consent__text"
-              ],
-              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined because it partially overlaps other elements"
             }
           ]
         }
@@ -176547,7 +177940,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-28T20:59:51.731Z",
+      "timestamp": "2026-07-29T00:53:49.426Z",
       "url": "http://localhost:4321/hub/",
       "toolOptions": {
         "runOnly": {
@@ -177514,6 +178907,39 @@
                 }
               ],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/hub/\" class=\"breadcrumbs__link\">مركز المعرفة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
               "html": "<nav class=\"hub-page__grid\" aria-label=\"مراكز المحتوى\" data-astro-cid-3mi5e246=\"\">",
               "target": [
                 ".hub-page__grid"
@@ -178204,6 +179630,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/hub/\" class=\"breadcrumbs__link\">مركز المعرفة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -179231,6 +180675,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span>",
+              "target": [
+                ".breadcrumbs__sep"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "focusable-modal-open",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements while a modal is open"
+                },
+                {
+                  "id": "focusable-disabled",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                },
+                {
+                  "id": "focusable-not-tabbable",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "No focusable elements contained within element"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<svg aria-hidden=\"true\" width=\"14\" height=\"14\" data-astro-cid-3mi5e246=\"\"><use href=\"/icons.svg#mdi-layers\" data-astro-cid-3mi5e246=\"\"></use></svg>",
               "target": [
                 ".chip > svg[width=\"14\"][height=\"14\"]"
@@ -179904,6 +181380,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/hub/\" class=\"breadcrumbs__link\">مركز المعرفة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -181609,6 +183103,38 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/hub/\" class=\"breadcrumbs__link\">مركز المعرفة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<nav class=\"hub-page__grid\" aria-label=\"مراكز المحتوى\" data-astro-cid-3mi5e246=\"\">",
               "target": [
                 ".hub-page__grid"
@@ -182282,6 +183808,24 @@
               "html": "<a href=\"https://wa.me/966538...\" class=\"site-header__whatsap...\" target=\"_blank\" rel=\"nofollow noopener no...\" aria-label=\"تواصل معنا عبر واتسا...\" data-astro-cid-3ef6k...=\"\">",
               "target": [
                 ".site-header__whatsapp"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<nav class=\"breadcrumbs\" aria-label=\"مسار التنقل\"> <a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a><span class=\"breadcrumbs__sep\" aria-hidden=\"true\">/</span><a href=\"/hub/\" class=\"breadcrumbs__link\">مركز المعرفة</a> </nav>",
+              "target": [
+                ".breadcrumbs"
               ]
             },
             {
@@ -183691,6 +185235,58 @@
               "html": "<a href=\"/contact/\" class=\"site-header__cta btn btn--primary btn--sm\" data-astro-cid-3ef6ksr2=\"\"> احجز ديمو </a>",
               "target": [
                 ".site-header__cta"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/\" class=\"breadcrumbs__link\">الرئيسية</a>",
+              "target": [
+                ".breadcrumbs__link[href=\"/\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-visible-text",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element has text that is visible to screen readers"
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "focusable-no-name",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "Element is not in tab order or has accessible text"
+                }
+              ],
+              "impact": null,
+              "html": "<a href=\"/hub/\" class=\"breadcrumbs__link\">مركز المعرفة</a>",
+              "target": [
+                ".breadcrumbs__link[href$=\"hub/\"]"
               ]
             },
             {

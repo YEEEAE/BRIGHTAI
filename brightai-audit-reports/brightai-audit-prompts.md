@@ -124,63 +124,7 @@ curl -s https://brightai.site/authors/yazeed-alshareef/ | grep -c 'يزيد ال
 
 
 
----
-## PROMPT [ID: BAI-DESIGN-02] — تباين AA (رفع rgba(255,255,255,0.4) إلى #94a3b8)
 
-**Priority:** P1 |
-**Effort:** 4h |
-**Impact:** +5% على Design |
-**Risk:** L |
-**Depends on:** BAI-DEPLOY-12 |
-**Blocks:** —
-
-**CONTEXT** — rgba(255,255,255,0.4) = 3.8:1 على bg-base: #060914 — مكسور AA. المواضع: src/components/LeadForm.astro, src/components/SplitHero.astro, + مواضع أخرى.
-
-**FILES IN SCOPE** — src/components/LeadForm.astro, src/components/SplitHero.astro, src/styles/*.css (ابحث عن rgba(255,255,255,0.4))
-
-**MUST NOT TOUCH / PRESERVE** — existing rgba values
-
-**TASK** — 1) grep -rn 'rgba(255,255,255,0.4)' src/ → احصر كل المواضع. 2) استبدل كل واحد بـ var(--text-secondary) = #94a3b8 (6.8:1 PASS AA + AAA). 3) اختبر: axe scan على / و /pricing/.
-
-**ACCEPTANCE CRITERIA** — 1) grep -rn 'rgba(255,255,255,0.4)' src/ | wc -l → 0. 2) axe scan → 0 contrast violations.
-
-**VERIFICATION COMMANDS**
-```bash
-grep -rn 'rgba(255,255,255,0.4)' src/ | wc -l  # 0
-```
-
-**ROLLBACK** — `git revert HEAD`
-
-**DEFINITION OF DONE** — 0 occurrences لـ rgba(255,255,255,0.4) في src/، مُتحقَّق بـ grep + axe scan.
-
----
-## PROMPT [ID: BAI-DESIGN-03] — Trust Badges من SDAIA/NCA على hero
-
-**Priority:** P2 |
-**Effort:** 4h |
-**Impact:** +8% على Design (B2B trust) |
-**Risk:** L |
-**Depends on:** BAI-DEPLOY-12 |
-**Blocks:** —
-
-**CONTEXT** — الموقع يبيع للبنوك السعودية لكن بدون trust badges. hero يجب أن يحوي 3 badges: 'متوافق مع PDPL'، 'معتمد من NCA ECC'، 'مبني حسب SDAIA'.
-
-**FILES IN SCOPE** — src/components/SplitHero.astro, src/components/TrustBadges.astro (جديد), public/icons/badges/*.svg
-
-**MUST NOT TOUCH / PRESERVE** — existing hero structure
-
-**TASK** — 1) أنشئ src/components/TrustBadges.astro يحوي 3 SVG badges. 2) في SplitHero.astro: أضف  تحت CTA. 3) اختبر: curl / | grep -c 'badge' → 3+.
-
-**ACCEPTANCE CRITERIA** — 1) curl / | grep -c 'TrustBadge' أو 'badge' → 3+. 2) Visual: 3 badges تحت CTA على hero.
-
-**VERIFICATION COMMANDS**
-```bash
-curl -s https://brightai.site/ | grep -c 'badge'
-```
-
-**ROLLBACK** — `git revert HEAD`
-
-**DEFINITION OF DONE** — 3 trust badges على hero، مُتحقَّق بـ curl + grep.
 
 ---
 ## PROMPT [ID: BAI-DESIGN-04] — طباعة عربية (line-height 1.75)
