@@ -180,6 +180,7 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 ---
 
 **روابط ذات صلة**:
+- [بيان PDPL الرسمي من BrightAI](/pdpl-statement/) — الصفحة الشاملة لـ 11 جانب من جوانب امتثال البيانات الشخصية (سدايا، توطين، DPIA، عقوبات).
 - [الدليل الشامل لتطبيق PDPL مع الذكاء الاصطناعي](/docs/pdpl-ai-complete-guide/) — المرجع الكامل للمنشآت السعودية
 - [نظام حماية البيانات الشخصية: دليل الامتثال للمنشآت](/blog/pdpl-compliance-guide-saudi-companies/) — دليل تطبيقي بخمس خطوات
 - [ضوابط الأمن السيبراني ومتطلباتها للشركات السعودية](/blog/nca-cybersecurity-requirements-saudi/) — ضوابط NCA ECC وعلاقتها بـ PDPL

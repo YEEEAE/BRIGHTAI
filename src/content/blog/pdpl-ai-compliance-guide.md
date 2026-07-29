@@ -147,6 +147,16 @@ image: "/assets/images/og/brightai-og-1200x630.png"
 <li><a href="https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/PDPLCP/" rel="noopener" target="_blank">دليل PDPL من سدايا</a></li>
 </ul>
 </section>
+<section class="related-links">
+<h2>روابط ذات صلة من حزمة PDPL</h2>
+<ul>
+<li><a href="/pdpl-statement/">بيان PDPL الرسمي من BrightAI</a> — الصفحة الشاملة لـ 11 جانب من جوانب امتثال البيانات الشخصية في 1955 كلمة (سدايا، AI Firewall، توطين، حقوق، DPIA، حوادث، نقل بيانات، عقوبات، خارطة طريق).</li>
+<li><a href="/blog/pdpl-compliance-guide-saudi-companies/">دليل امتثال PDPL للمنشآت السعودية 2026</a> — دليل تطبيقي بخمس خطوات وقوالب سياسات.</li>
+<li><a href="/blog/pdpl-executive-regulations-explained/">شرح اللائحة التنفيذية لـ PDPL</a> — المواد 17 و18 و19 و32 بالتفصيل.</li>
+<li><a href="/blog/pdpl-ai-safety/">PDPL وسلامة AI</a> — كيف يحمي PDPL الشركات عند استخدام الذكاء الاصطناعي.</li>
+<li><a href="/blog/pdpl-penalties-saudi-fines/">عقوبات PDPL في السعودية</a> — أنواع المخالفات والغرامات وكيف تتجنبها.</li>
+</ul>
+</section>
 <section class="key-takeaways" data-speakable="">
 <h2>أهم النقاط</h2>
 <ul>
