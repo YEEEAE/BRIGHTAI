@@ -465,7 +465,7 @@ export const sectors: SectorData[] = [
         ],
       },
     ],
-    docs:['/docs/pdpl-ai-governance/','/docs/nca-ecc-ai-controls/','/docs/nca-ecc-ai-controls-mapping/','/docs/nca-ecc-ai-governance/','/docs/nca-ecc-ai-guide/'], blog:['/blog/ai-governance-saudi-arabia/','/blog/saudi-ai-regulators-guide/','/blog/sdaia-seven-principles-practical-guide/','/blog/nca-cybersecurity-requirements-saudi/','/blog/nca-ecc-ai-controls-guide/','/blog/ecc-vs-cscc-cybersecurity-controls/','/blog/cloud-cybersecurity-controls-ccc-saudi/','/blog/iso-42001-nca-ecc-saudi/','/blog/sdaia-nca-pdpl-regulatory-map/'],
+    docs:['/docs/pdpl-ai-governance/','/docs/nca-ecc-ai-controls/','/docs/nca-ecc-ai-controls-mapping/','/docs/nca-ecc-ai-governance/','/docs/nca-ecc-ai-guide/'], blog:['/blog/ai-governance-saudi-arabia/','/blog/saudi-ai-regulators-guide/','/blog/sdaia-seven-principles-practical-guide/','/blog/nca-cybersecurity-requirements-saudi/','/blog/nca-ecc-ai-controls-guide/','/blog/ecc-vs-cscc-cybersecurity-controls/','/blog/cloud-cybersecurity-controls-ccc-saudi/','/blog/iso-42001-nca-ecc-saudi/','/blog/sdaia-nca-pdpl-regulatory-map/','/blog/ai-firewall-why-you-need-it/','/blog/ai-red-teaming-security-testing/','/blog/ai-governance-vs-ai-safety-vs-ai-security/','/blog/what-is-ai-governance-saudi-companies/','/blog/best-ai-governance-platforms-2026/','/blog/vision-2030-ai-governance-roadmap/','/blog/iso-42001-saudi-implementation-guide/','/blog/banking-ai-governance-sama-requirements/','/blog/shadow-ai-discovery-saudi-company/','/blog/hidden-ai-risks-saudi-organizations/'],
     regulations: regulationsBySectorSlug['government-ai-governance'],
     faqs: faqsBySectorSlug['government-ai-governance'],
     content: {

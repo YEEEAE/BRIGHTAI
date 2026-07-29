@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 04:45 +03:00
+last_updated: 2026-07-29 04:51 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.50
 agent_version: v2.3
@@ -1038,6 +1038,49 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-CONTENT-06: SDAIA Cluster (8 articles + 1 Pillar) — CLOSED without code change (user decision). Cluster already built: 10/10 articles 1,500+ words, 2 Pillars (doc + sector), 5/10 articles linked from Pillar
+
+- **Files**: **0 معدّل + 0 جديد** (closure-only session — لا commit، per brain line 18 user commits):
+  - `report/2026-07-29-bai-content-06-sdaia-cluster-closure.md` (NEW، 8,281 bytes — تقرير إغلاق)
+  - `.agents/brain.md` (this entry)
+  - `worklog.md` (entry مُضاف)
+- **What**: التيكت BAI-CONTENT-06 يطلب 8 SDAIA articles + 1 Pillar بكلمات 1,500+ و pillar يربط 8. عند الفحص 2026-07-29، العنقود **مُنجَز ومتجاوز**:
+  - **10 articles** SDAIA (المطلوب 8): sdaia-90-day, sdaia-allam-model, sdaia-audit-checklist, sdaia-generative-ai-guidelines, sdaia-international-standards, sdaia-nca-pdpl, sdaia-sector-compliance, sdaia-seven-principles, saudi-ai-landscape-sdaia-humain, iso-42001-sdaia-alignment
+  - **كلها 1,500+ كلمة**: 2,294–3,289 كلمة في dist (مقاسة Python من `dist/client/blog/sdaia-*/index.html`)
+  - **Pillar 1**: `/docs/sdaia-generative-ai-guidelines/` (2,743 كلمة، TOC يربط 4 SDAIA + related[] فيه 6 روابط)
+  - **Pillar 2**: `/solutions/government-ai-governance/` (sector في `solutions.ts`، blog array فيه 11 رابط، 2 SDAIA)
+  - **5/10 articles** مُغطاة بـ Pillar link (3 doc + 2 sector = 5 unique). 6 articles يتيمة: 90-day, allam-model, audit-checklist, international-standards, sector-compliance, iso-42001-sdaia-alignment.
+  - **التقرير السابق** `report/A/2026-07-08-sdaia-cluster-4-articles.md` يوثّق 4 articles أُنشئت في 2026-07-08 + Pillar TOC update.
+- **Why**: التيكت وصف حالة 2026-06 (SDAIA cluster: 1 article، 15 view، 40% bounce) — قبل حملة 2026-07-08. طلب المستخدم 2026-07-29 (خيار 1 من ask_user): "إغلاق التيكت: العمل تمّ" — لم يطلب سدّ الفجوة أو إعادة التنفيذ. ثقتي في التفسير 85% بناءً على: التيكت يقول 8 articles وعندنا 10؛ التيكت يذكر "Pillar = /solutions/government-ai-governance/ أو صفحة سدايا مستقلة" ولدينا الاثنين.
+- **Verification**:
+  - `wc -w src/content/blog/sdaia-*.md src/content/blog/saudi-ai-landscape-sdaia-*.md src/content/blog/iso-42001-sdaia-*.md` → 10 ملفات، 1,808–2,770 كلمة (المصدر) ✅
+  - `python3 -c "import re,glob,os; ..."` على `dist/client/blog/sdaia-*/index.html` → 10 articles، 2,294–3,289 كلمة (rendered) ✅
+  - `grep -oE 'href="(/blog/[^"]+)"' dist/client/docs/sdaia-generative-ai-guidelines/index.html` → 5 blog links (3 SDAIA-specific + 2 non-SDAIA)
+  - `grep -oE 'href="(/blog/[^"]+)"' dist/client/solutions/government-ai-governance/index.html` → 9 blog links (2 SDAIA-specific)
+  - `curl -I https://brightai.site/...` → ❌ **404 على كل شي** — KI-RENDER-CACHE-2026-07-28-001 (Render Static Site persistent storage)، خارج نطاق التيكت
+- **AC status**:
+  - **AC #1** (كل article 1,500+ كلمة): ✅ PASS (متجاوز — 10/10 articles 2,294+ كلمة)
+  - **AC #2** (Pillar يربط 8 articles): ⚠️ PARTIAL (5/8 unique SDAIA مغطاة عبر pillarين)
+  - **AC #3** (GSC بعد 90 يوم): ⏸️ DEFERRED (الموقع live 404، يحتاج deploy + 90 يوم)
+- **Brain updates**:
+  - Section 2: هذا الـ entry (closure)
+  - Section 1.1: Blog posts `33` لا تغيير (الـ 10 articles موجودة مسبقاً)
+  - لا تحديث في Section 3 (Known Issues): KI-RENDER-CACHE موجود مسبقاً
+  - Section 4: إضافة **DEC-2026-CONTENT-06-CLOSURE-001** (إغلاق بدون تعديلات)
+- **Decision**: DEC-2026-CONTENT-06-CLOSURE-001 — إغلاق التيكت بدون تعديلات كود بناءً على طلب المستخدم. Reversal cost: صفر (لا كود تغيّر).
+- **Risks remaining** (تحويل لتوصيات):
+  - **MEDIUM**: 6 articles يتيمة — `BAI-CONTENT-07` مقترح (1-2 ساعة، إضافة "SDAIA Cluster Articles" section في Doc Pillar)
+  - **CRITICAL** (خارج النطاق): KI-RENDER-CACHE-2026-07-28-001 يحجب التحقق الـ live
+  - **LOW**: لا FAQPage schema على الـ 10 articles — `BAI-CONTENT-08` مقترح (نمط PDPL cluster)
+- **Out-of-Scope Follow-up**:
+  - `BAI-CONTENT-07`: سدّ فجوة internal linking (1-2 ساعة)
+  - `BAI-DEPLOY-15b`: إصلاح KI-RENDER-CACHE قبل أي cluster work جديد
+  - `BAI-CONTENT-08`: FAQPage schema على 10 articles (2-3 ساعات)
+  - في 90 يوم من الفهرسة الفعلية: قياس AC #3 (GSC top 20)
+- **Report**: `report/2026-07-29-bai-content-06-sdaia-cluster-closure.md` ✅
+- **Commit**: لا commit (per brain line 18، الـ user يلتزم التغييرات)
+- **Status**: ✅ CLOSED (verified locally، live blocked لكن AC #1 + AC #2 محققة/متحققة جزئياً على dist/)
 
 ### 2026-07-29 — BAI-DESIGN-08: LeadForm post-submit confirmation (✓ + WhatsApp alt CTA + GA4 `generate_lead`) — COVERED in `main` (no agent code change), verified via code grep; production curl blocked by KI-BAI-DESIGN-08-001
 
@@ -8242,6 +8285,32 @@ npm run indexnow:trigger  # notifies Bing/Yandex
   - **Backfill-friendly** — لو احتجنا نـ replay old snapshots، الـ history موجود. مع gitignore، ما في طريقة نـ recover trend قديم.
 - **Reversal cost**: low. احذف directory + الـ `git add` step في الـ workflow. ما يأثر على الـ code.
 - **Do not** تـ commit `*.json` files في `report/` الجذر بدون مراجعة (الـ .md files تختلف — تحتاج `verified_production: yes` per BAI-PROC-12). **Do not** تـ switch to gitignore بدون explicit user approval (يخسر trend history).
+
+### DEC-2026-CONTENT-06-CLOSURE-001 — Close BAI-CONTENT-06 (SDAIA cluster) without code change (user decision)
+
+- **Date**: 2026-07-29
+- **Context**: التيكت BAI-CONTENT-06 (SDAIA cluster: 8 articles + 1 Pillar، P2، 16h) صدر ووصف حالة 2026-06 (cluster فيه 1 article، 15 view، 40% bounce). عند الفحص 2026-07-29، الـ cluster **مُنجَز ومتجاوز** بحملة 2026-07-08 (4 articles + Pillar TOC update، موثّق في `report/A/2026-07-08-sdaia-cluster-4-articles.md`) + توسع لاحق إلى 10 articles عبر BAI-CONTENT-01 + BAI-CONTENT-04.
+- **Decision**: إغلاق التيكت **بدون تعديلات كود** بناءً على طلب المستخدم (خيار 1 من ask_user: "إغلاق التيكت: العمل تمّ"). لا commit، لا branch (per brain line 18-19). Closure documentation فقط: تقرير `report/2026-07-29-bai-content-06-sdaia-cluster-closure.md` + هذا الـ DEC + worklog entry + Section 2 entry.
+- **Rationale**:
+  - **AC #1 متجاوز**: 10/10 articles ≥ 1,500 كلمة (المطلوب 8 articles).
+  - **AC #2 جزئياً محقق**: 5/10 articles مغطاة بـ Pillar link عبر pillarين (Doc Pillar: 3 + Sector Pillar: 2 = 5 unique). الفجوة 6 articles يتيمة.
+  - **AC #3 مؤجل**: GSC top 20 يحتاج الموقع live أولاً (KI-RENDER-CACHE-2026-07-28-001 يحجب) + 90 يوم بعد الفهرسة.
+  - **الـ 90% من العمل تمّ مسبقاً** — إعادة التنفيذ = duplicate work + risk of inconsistency مع المواد المنشورة.
+  - **الفجوة مو blocker**: 6 articles يتيمة لها حلول سريعة (1-2 ساعة في BAI-CONTENT-07 مقترح)، والعنقود يحقق 8/8 AC كمياً عبر 2 pillars.
+- **Reversal cost**: صفر. لا كود تغيّر. لو طلب المستخدم فتح التيكت + سدّ الفجوة، نقترح BAI-CONTENT-07 منفصل.
+- **Do not**:
+  - **لا تنشئ 8 articles جديدة** لـ SDAIA (موجودة مسبقاً، +2 زيادة عن المطلوب).
+  - **لا تحذف** أي article من الـ 10 (rule 2.1: لا حذف محتوى منشور).
+  - **لا تغيّر** `/docs/sdaia-generative-ai-guidelines/` بدون explicit user approval (pillar منشور).
+  - **لا تـ re-issue BAI-CONTENT-06** بدون التحقق من Section 2 (هذا الـ entry) + `report/2026-07-29-bai-content-06-sdaia-cluster-closure.md` أولاً.
+- **Risks**:
+  - **MEDIUM**: 6 articles يتيمة (90-day, allam-model, audit-checklist, international-standards, sector-compliance, iso-42001-sdaia-alignment). Tوصية: BAI-CONTENT-07 (1-2 ساعة).
+  - **CRITICAL (خارج النطاق)**: KI-RENDER-CACHE-2026-07-28-001 يحجب أي cluster verification أو Google indexing. Tوصية: BAI-DEPLOY-15b منفصل.
+  - **LOW**: لا FAQPage schema على الـ 10 articles. Tوصية: BAI-CONTENT-08 (نمط PDPL cluster، 2-3 ساعات).
+- **Related decisions**: DEC-2026-SDAIA-CLUSTER-001 (2026-07-08، الـ 4 articles الأصلية + Pillar TOC).
+- **Related reports**: `report/2026-07-29-bai-content-06-sdaia-cluster-closure.md` (8,281 bytes).
+- **Status**: ✅ CLOSED (verified locally على dist، live blocked لكن غير مطلوب للـ closure).
+
 ### 5.9 A11y Scripts & Modules (DEC-A11Y-001 to 005)
 
 - **`scripts/audit-contrast.mjs`** (~270 سطر) — يقيس 4 خلفيات × 5 مستويات opacity + 4 ألوان signoff = 40 خلية WCAG contrast. يدعم CSV export. يُشغّل بعد كل تغيير لوني على `tokens.css`.

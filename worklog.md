@@ -2308,3 +2308,66 @@ Stage Summary:
 - ما انحذفت صفحات وما تغير Footer عشان ما فيه orphan تحتاج معالجة.
 - أضيف سكربت acceptance المطلوب + تقرير BAI-LINK-02.
 - المخاطر المتبقية: build blocker مستقل في `sync-dist-flat.mjs`، وbroad internal-links scan فيه 1490 مراجع تاريخية/مولّدة مكسورة رغم إن graph production يطلع 0 broken.
+
+
+---
+
+Task ID: 2026-07-29-BAI-CONTENT-06-CLOSURE
+Agent: Mavis (BrightAI Workspace Agent v2.3)
+Task: BAI-CONTENT-06 — SDAIA cluster (8 articles + 1 Pillar) — closure decision
+Started: 2026-07-29T04:44:00+03:00
+Mode: Senior
+User Decision: Option 1 من ask_user ("إغلاق التيكت: العمل تمّ") — لا تعديلات كود
+
+Work Log:
+- 04:44: قرأت prompt BAI-CONTENT-06 + brain.md (protocol 0.6) + Section 2 + Section 4.
+- 04:45: استكشفت `src/content/blog/` — اكتشفت 10 SDAIA articles (مو 1 كما وصف التيكت):
+  - sdaia-90-day-implementation-plan.md (2,258 كلمة)
+  - sdaia-allam-model-enterprise.md (2,242)
+  - sdaia-audit-checklist-preparedness.md (2,186)
+  - sdaia-generative-ai-guidelines-practical-compliance.md (1,884)
+  - sdaia-international-standards-unesco-oecd.md (2,351)
+  - sdaia-nca-pdpl-regulatory-map.md (2,465)
+  - sdaia-sector-compliance-healthcare-banking-government.md (2,746)
+  - sdaia-seven-principles-practical-guide.md (2,770)
+  - saudi-ai-landscape-sdaia-humain-allam-scai.md (2,739)
+  - iso-42001-sdaia-alignment-saudi.md (1,808)
+- 04:46: قست rendered word counts من dist/client/blog/ عبر Python:
+  - كل الـ 10 articles بين 2,294 و 3,289 كلمة (المطلوب 1,500+) ✅
+- 04:47: حددت الـ Pillarين:
+  - Pillar 1: /docs/sdaia-generative-ai-guidelines/ (2,743 كلمة، TOC فيه 4 SDAIA links)
+  - Pillar 2: /solutions/government-ai-governance/ (sector page، blog array فيه 2 SDAIA)
+  - إجمالي: 5/10 SDAIA articles مغطاة بـ Pillar link → 6 articles يتيمة
+- 04:48: اكتشفت إن brightai.site لايف راجع 404 على كل شي (KI-RENDER-CACHE-2026-07-28-001) → أمر التحقق التيكت `curl ... | wc -w` ما ينفع
+- 04:48: بحثت في worklog + report/A/ — اكتشفت `report/A/2026-07-08-sdaia-cluster-4-articles.md` يوثّق حملة سابقة (4 articles + Pillar TOC)
+- 04:48: سألت المستخدم عبر ask_user: 4 خيارات (إغلاق / سدّ الفجوة / سدّ + إصلاح الموقع / تيكت خاطئ)
+- 04:49: المستخدم اختار Option 1: "إغلاق التيكت: العمل تمّ"
+- 04:50: كتبت تقرير `report/2026-07-29-bai-content-06-sdaia-cluster-closure.md` (8,281 bytes)
+- 04:51: حدّثت brain.md:
+  - Section 2: إضافة closure entry (newest first)
+  - Section 4: إضافة DEC-2026-CONTENT-06-CLOSURE-001
+  - frontmatter last_updated: 2026-07-29 04:45 → 04:51
+- 04:51: كتابة worklog entry (هذا الـ entry)
+
+Stage Summary:
+- التيكت BAI-CONTENT-06 مُغلق بدون تعديلات كود.
+- 10 SDAIA articles موجودة، كلها 1,500+ كلمة (المطلوب 8).
+- 2 Pillars موجودة (doc + sector)، تغطي 5/10 articles.
+- 6 articles يتيمة (مو blocker؛ قابلة للمعالجة في BAI-CONTENT-07 لو طلب المستخدم).
+- AC #1 PASS (متجاوز)، AC #2 PARTIAL (5/8)، AC #3 DEFERRED (الموقع live 404).
+- لا commit (per brain line 18، الـ user يلتزم التغييرات).
+- المخاطر المتبقية: KI-RENDER-CACHE-2026-07-28-001 (CRITICAL، خارج النطاق).
+
+Files Changed:
+  + report/2026-07-29-bai-content-06-sdaia-cluster-closure.md (NEW, 8,281 bytes)
+  ~ .agents/brain.md (Section 2: +closure entry، Section 4: +DEC-2026-CONTENT-06-CLOSURE-001، frontmatter last_updated)
+  ~ worklog.md (this entry)
+
+Out-of-Scope (separate tickets recommended):
+  - BAI-CONTENT-07: سدّ فجوة internal linking (6 articles يتيمة → ربطها في Doc Pillar) — 1-2 ساعة
+  - BAI-DEPLOY-15b: إصلاح KI-RENDER-CACHE-2026-07-28-001 (Render Static Site persistent storage) — يحجب أي cluster verification جديد
+  - BAI-CONTENT-08: FAQPage schema على 10 SDAIA articles (نمط PDPL cluster) — 2-3 ساعات
+  - في 90 يوم من الفهرسة الفعلية: قياس AC #3 (5 articles في GSC top 20 لـ 'sdaia' keywords)
+
+Commit: لا commit (per brain line 18، user يلتزم التغييرات)
+Status: ✅ CLOSED
