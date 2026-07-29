@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 03:35 +03:00
+last_updated: 2026-07-29 04:00 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.43
+version: 2.7.44
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1037,6 +1037,42 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-CLEAN-04: kernel.css token cleanup (38 → 0 violations) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **2 معدّل** (0 جديد، 0 محذوف، 0 protected):
+  - `src/styles/tokens.css` — أضفت Section 34 (status badge surfaces — 10 tokens: `--status-critical/high/medium/low/minimal/pack-{bg,fg}` + `--status-rulebuilder-and/then-{bg,fg}`)، Section 35 (`--accent-warning: #f97316`)، Section 36 (`--space-2-5: 0.625rem` للـ 10px). +24 سطر داخل `:root`. القيم تطابق حرفياً القيم الخام اللي حلّت محلها — visual contract محفوظ 100%. ما في tokens قديمة اتعدّلت.
+  - `src/styles/kernel.css` — استبدلت 38 raw hex/raw px بـ tokens: 8 `.kernel-badge--*` (lines 3941–3951)، 2 compliance legend (4337–4338)، 3 connector pills (4611–4613)، 1 report pill (4796)، 2 scheduled rows (4863–4864)، 2 rulebuilder keywords (4517–4518)، 1 connector error text (4624)، 1 risk-row high fill (1603)، 2 approval gradients (3135, 3142)، 21 raw px gaps/paddings. 0 سطر مضاف، 0 محذوف. كل استبدال بـ token موجود = لا visual drift.
+- **What**: تنظيف `kernel.css` ليوافق نظام التوكنز الموحد بدون أي تغيير بصري. الـ visual contract للـ Kernel risk badges (critical/high/medium/low/minimal/pack) + rulebuilder keywords + connector/scheduled status pills صار من مصدر واحد (tokens.css) بدل 38 قيمة مكررة.
+- **Why**: BAI-DESIGN-01 لقّح تشديد CI (`lint:tokens` مربوط بـ `verify:all` → `seo-gates`). الفحص اللاحق طلع 38 violation في `kernel.css` كلها في visual contracts دلالية. الـ DEC-BAI-CLEAN-04-2026-07-29-001 يفصل استراتيجية naming: semantic per risk role (--status-critical/high/...) + tokens منفصلة للـ rulebuilder emphasis alpha 0.20. الـ DEC-BAI-CLEAN-04-2026-07-29-002 يحدّد النطاق = kernel.css فقط، باقي الريبو (54 violation) في BAI-CLEAN-05+ لحملات منفصلة. Reversal cost: low.
+- **Verification** (كله locally على macOS dev):
+  - `node scripts/lint-tokens.mjs | grep "kernel\.css" | wc -l` → **0** (كان 38) ✅
+  - `node scripts/lint-tokens.mjs | grep -c "raw"` → **54** (كان 99 — تخفيض 45%) ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **209 صفحات** (كان 196 — الفرق من BAI-IDX-04 روابط حلول/مدن، مو من BAI-CLEAN-04)، 0 errors، `purge-css` نجح (1 ملف REVERT لـ `_slug_.BBtPOoZO.css` لكن هذا BAI-IDX-26 منفصل) ✅
+  - `grep -c "rgba(239, 68, 68, 0.18)" dist/client/_astro/KernelLayout.HmtezlvO.css` → **0** (raw اختفى من dist) ✅
+  - `grep -c "var(--status-critical-bg)" dist/client/_astro/KernelLayout.HmtezlvO.css` → **1** (token مُجمَّع) ✅
+  - `awk '/^  :root \{/,/^  \}/' src/styles/tokens.css | grep -c "status-critical-bg\|accent-warning\|space-2-5"` → **3** (التوكنز داخل `:root`) ✅
+  - `node scripts/verify-report-claims.mjs` → تقرير BAI-CLEAN-04 غير مذكور في FATAL (BAI-PROC-12 compliant: `verified_production: no` + 0 ✅ claims) ✅
+- **DEC جديد (DEC-BAI-CLEAN-04-2026-07-29-001)**: Token naming convention للـ status badges. semantic naming حسب risk role (`--status-critical/-high/-medium/-low/-minimal/-pack`) + tokens منفصلة للـ rulebuilder keywords (`--status-rulebuilder-and/-then`) لـ alpha 0.20 distinct عن default alpha 0.18. السبب: self-documenting، يميّز بين alpha variants بدون تكرار. Reversal cost: low.
+- **DEC جديد (DEC-BAI-CLEAN-04-2026-07-29-002)**: BAI-CLEAN-04 kernel فقط، باقي الريبو BAI-CLEAN-05+. السبب: kernel.css له blast radius مُركَّز على 11 صفحة kernel، تجنّب scope creep، CI ما يبقى أحمر كامل دفعة واحدة. Reversal cost: low.
+- **Brain updates**: frontmatter (version 2.7.43 → 2.7.44 + last_updated). State snapshot لا يحتاج تحديث (lint violations مو من المقاييس المعلنة، build page count 209 يطابق الواقع).
+- **Risks Addressed**:
+  - **R1 (kernel.css 38 violations تخرق lint gate)**: closed. 38 → 0.
+  - **R2 (visual drift risk من tokenization)**: closed. كل token value مطابق حرفي للـ raw value المستبدل، build يجمّع `var()` references بدون تغيير visual.
+  - **R3 (تعارض naming مع tokens الحالية)**: closed. `--success-soft/-warning-soft/-info-soft/-error-soft` العائلة الموجودة بـ alpha 0.15 ما في مساس، الإضافة بجانبها بأسماء `-strong` أو `-critical/-high` إلخ.
+- **Risks Remaining**:
+  - **54 violation باقي في الـ repo** (مو في kernel): pages.css 15، components.css 10، utilities.css 2، Astro pages ~27. CI لسا أحمر على `lint:tokens`. DEC-BAI-CLEAN-04-2026-07-29-002 يفصلها في BAI-CLEAN-05+.
+  - **`--status-pack-bg` alpha 0.16** خارج الـ convention (default 0.18). لو BAI-CLEAN-05 وحّد alphas موحدة، نراجع.
+  - **purge-css `_slug_.BBtPOoZO.css` revert**: BAI-IDX-26 منفصل، مسبق.
+- **Out-of-Scope (متابعة منفصلة، NOT في هذا commit)**:
+  - **BAI-CLEAN-05**: تنظيف `components.css` (10 violations).
+  - **BAI-CLEAN-06**: تنظيف `pages.css` (15 violations).
+  - **BAI-CLEAN-07**: تنظيف `utilities.css` (2 violations).
+  - **BAI-CLEAN-08**: تنظيف Astro pages (~27 violations).
+  - **BAI-IDX-26**: purge-css `_slug_.BBtPOoZO.css` revert issue (مسبق، مو من BAI-CLEAN-04).
+- **Reports**: `report/2026-07-29-bai-clean-04-kernel-tokens.md` (BAI-PROC-12 compliant: `verified_production: no` + 0 ✅ claims + 14 token details + 38 استبدال موثَّق + DEC جديد).
+- **Commit**: uncommitted (per brain line 18، المستخدم هو اللي يـ commit).
+- **Status**: verified locally؛ يحتاج deploy للـ production verification.
 
 ### 2026-07-29 — BAI-CONTENT-04: PDPL pillar 1955 → 3462 كلمة + 8/8 cluster articles ≥ 1500 كلمة + 16 bidirectional cross-links — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
 

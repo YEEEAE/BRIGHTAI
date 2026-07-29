@@ -122,34 +122,7 @@ curl -s https://brightai.site/authors/yazeed-alshareef/ | grep -c 'يزيد ال
 
 # BAI-DESIGN — Design/UX
 
-## PROMPT [ID: BAI-DESIGN-01] — توكنز موحّدة (أنشئ src/styles/tokens.css بمصدر واحد)
 
-**Priority:** P1 |
-**Effort:** 8h |
-**Impact:** +5% على Design |
-**Risk:** M |
-**Depends on:** BAI-DEPLOY-12 |
-**Blocks:** —
-
-**CONTEXT** — rgba(255,255,255,0.1) مكرر في 3 مواضع (src/styles/pages.css:3512, src/styles/utilities.css:386, src/styles/utilities.css:417). أرقام سحرية مثل padding: 24px بدل var(--space-md).
-
-**FILES IN SCOPE** — src/styles/tokens.css (no change — موجود)، لكن أضف lint rule يمنع raw hex/raw px
-
-**MUST NOT TOUCH / PRESERVE** — existing token values
-
-**TASK** — 1) أنشئ scripts/lint-tokens.mjs يفحص CSS و Astro لـ raw hex (#xxxxxx) و raw px خارج var(). 2) أضفه كـ CI step. 3) استبدل raw values بـ tokens في 3 مواضع.pages.css:3512, utilities.css:386, utilities.css:417. 4) استبدل padding: 24px بـ var(--space-6).
-
-**ACCEPTANCE CRITERIA** — 1) node scripts/lint-tokens.mjs → 0 violations. 2) grep -rn 'rgba(255,255,255,0.1)' src/ → ≤ 1 (in tokens.css).
-
-**VERIFICATION COMMANDS**
-```bash
-node scripts/lint-tokens.mjs
-grep -rn 'rgba(255,255,255,0.1)' src/ | wc -l  # ≤ 1
-```
-
-**ROLLBACK** — `git revert HEAD`
-
-**DEFINITION OF DONE** — 0 raw hex/raw px في src/styles/*.css خارج tokens.css، مُتحقَّق بـ lint-tokens.mjs.
 
 ---
 ## PROMPT [ID: BAI-DESIGN-02] — تباين AA (رفع rgba(255,255,255,0.4) إلى #94a3b8)

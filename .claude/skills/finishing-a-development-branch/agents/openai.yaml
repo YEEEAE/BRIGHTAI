@@ -1,0 +1,4 @@
+interface:
+  display_name: "Finishing A Development Branch"
+  short_description: "Finish branches after implementation and tests."
+  default_prompt: "Use $finishing-a-development-branch to finish this completed development branch."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "RTL UI Guardian"
+  short_description: "يراجع ويصلح جودة RTL في الواجهات العربية المؤسسية."
+  default_prompt: "استخدم $rtl-ui-guardian لمراجعة وإصلاح مشاكل RTL في هذه الواجهة العربية مع إبقاء التعديلات ضمن نطاق الاتجاه والمحاذاة فقط."
