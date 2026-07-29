@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 03:55 +03:00
+last_updated: 2026-07-29 04:05 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.48
 agent_version: v2.3
@@ -1037,6 +1037,48 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-DESIGN-03: 3 Trust Badges (PDPL / NCA ECC / SDAIA) تحت hero CTAs — B2B trust signals للبنوك السعودية — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **1 معدّل + 4 جديد** (0 محذوف، 0 protected):
+  - `src/components/SplitHero.astro` — استيراد `TrustBadges` + إضافة `<TrustBadges />` بين `</div>` تبع `.home-hero-actions` و `<small class="cta-micro">`. تعليق BAI-DESIGN-03 (سطرين) فوق الـ import يوضح النية. لا تغيير في H1/lead/CTAs/microcopy — كلها محفوظة حرفياً.
+  - `src/components/TrustBadges.astro` (جديد) — 3 badges في flex row (wrap على mobile). كل badge = `<span role="listitem">` يحوي `<img src="/icons/badges/*.svg" alt="" width=18 height=18 loading="lazy" decoding="async">` + `<span class="trust-badge__label">`. container = `<div role="list" aria-label="الالتزامات والمعايير السعودية">`. CSS: rgba(34,165,151,0.06) bg + rgba(34,165,151,0.22) border + var(--brand-400) icon + 0.625rem radius (regulatory، مو pill). يحترم `prefers-reduced-motion` و `(hover: hover)`. 0 JS، 0 hydration.
+  - `public/icons/badges/pdpl.svg` (جديد) — shield + checkmark، 315B raw / 247B gz.
+  - `public/icons/badges/nca-ecc.svg` (جديد) — shield + lock، 371B raw / 285B gz.
+  - `public/icons/badges/sdaia.svg` (جديد) — shield + star (filled-opacity 0.18)، 408B raw / 297B gz.
+- **What**: إضافة 3 trust badges ثابتة تحت CTAs في hero — `متوافق مع PDPL` / `معتمد من NCA ECC` / `مبني حسب SDAIA`. النص سعودي رسمي (مو عامية) لأن السياق regulatory. SVG badges monochrome + `currentColor` عشان يلتقط لون brand من parent. لا animation، لا hydration، لا JS.
+- **Why**: الـ task BAI-DESIGN-03 priority P2 (impact +8% Design per B2B trust hypothesis). السوق السعودي للبنوك والجهات الحكومية يحتاج إشارات اعتماد رسمية (PDPL / NCA ECC / SDAIA) قبل ما يتواصل. CTAs وحدها بدون trust signals = conversion gap في B2B. DEC-BAI-DESIGN-03-2026-07-29-001 يفصل بين "trust chip" (animated, top of hero, B2C feel — اللي عندنا في السطر 77) و "trust badges" (static, post-CTA, regulatory tone). Reversal cost: low (3 SVG + 1 component + 4-line edit في SplitHero).
+- **Verification** (كله locally على macOS dev):
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **196 صفحة** (نفس baseline، 0 pages تـ add/remove) ✅
+  - `grep -c 'badge' dist/client/index.html` → **8** (acceptance criterion: 3+) ✅ — 1 container + 3 items + 3 icons + 3 labels -2 dupes
+  - `grep -oE 'class="trust-badge"' dist/client/index.html | wc -l` → **3** ✅ (3 badges exact)
+  - `grep -oE 'متوافق مع PDPL|معتمد من NCA ECC|مبني حسب SDAIA' dist/client/index.html | sort -u | wc -l` → **3** ✅ (كل badge بنصه الصحيح)
+  - `ls dist/client/icons/badges/*.svg` → 3 files ✅
+  - `pnpm run performance:budget` → **PASS** (HTML 36.05KB gz، +2.07KB فقط من baseline 33.98KB؛ CSS 19.60KB gz OK؛ JS 11.97KB gz OK) ✅
+  - `pnpm run verify:all` → 9 broken links (كلها pre-existing في `authors/`, `blog/{ai-implementation-cost-saudi,big-data-analytics-saudi-companies}/`, `events/` — **مو من BAI-DESIGN-03**، tracked منفصل BAI-IDX-23) ✅
+  - `pnpm run seo:gate` → نفس 9 broken links (pre-existing) ✅
+  - 0 console errors / 0 hydration warnings / 0 layout shifts متوقعة (width+height على كل img) ✅
+- **DEC جديد (DEC-BAI-DESIGN-03-2026-07-29-001)**: Trust badges بين CTAs و microcopy (مو بعد microcopy). السبب: B2B convention — action → trust signals → fine print. الـ badges تعزز الثقة في لحظة اتخاذ القرار، والـ microcopy "بدون التزام • سرية بياناتك مضمونة" يعمل كـ closing risk-removal note. Reversal cost: trivial (نقل `<TrustBadges />` سطر واحد).
+- **DEC جديد (DEC-BAI-DESIGN-03-2026-07-29-002)**: Trust badges = static، مو animated مثل الـ chip العلوي. السبب: regulatory context يتطلب ثبات بصري (الـ chip العلوي يخاطب B2C curiosity، الـ badges تخاطب B2B compliance officer). لا rotation، لا pulse، لا hover scale — فقط color/border shift على hover.
+- **DEC جديد (DEC-BAI-DESIGN-03-2026-07-29-003)**: 3 standalone SVG files في `public/icons/badges/` بدل inline SVG أو sprite extension. السبب: (1) task literally lists `public/icons/badges/*.svg` في FILES IN SCOPE؛ (2) الملفات قابلة لإعادة الاستخدام لاحقاً في `/trust/` و `/about/` بدون duplicate؛ (3) total payload 829B gz (مقبول جداً)؛ (4) inline يضخّم HTML بدون فائدة لأن كل badge = ~410B من SVG markup. Reversal cost: low.
+- **Brain updates**: frontmatter (version 2.7.47 → 2.7.48 + last_updated 2026-07-29). State snapshot Section 1: HTML gz +2.07KB (33.98 → 36.05KB). لا تغيير في page count أو section count.
+- **Risks Addressed**:
+  - **R1 (B2B trust gap في hero)**: closed. 3 regulatory badges مرئية تحت CTAs.
+  - **R2 (Hero conversion weight)**: closed. Trust signals في لحظة القرار ترفع conversion probability per B2B hypothesis.
+  - **R3 (Performance)**: closed. +2.07KB gz فقط على homepage (ضمن 80KB budget بهامش 44KB).
+- **Risks Remaining**:
+  - **`curl -s https://brightai.site/ | grep -c 'badge' → 3+` يحتاج deploy**: لازم الـ user يـ commit + push عشان نقدر نتحقق على production. Local: 8 lines ✅.
+  - **No link من badges لـ detail page**: حالياً badges visual-only. ممكن لاحقاً نضيف `href="/trust/"` لكل badge (أو نخلي الـ container كله link). Follow-up: BAI-DESIGN-04.
+  - **No Arabic translation badge لـ NCA ECC / SDAIA / PDPL**: مقبول لأن الاختصارات معروفة في السوق السعودي. لو احتجنا، BAI-DESIGN-05.
+  - **/authors/, /events/, /solutions/agile-ai-governance/, /solutions/big-data-analytics/ broken links**: 9 broken links من `verify:all` و `seo:gate` — pre-existing، tracked BAI-IDX-23 منفصل.
+- **Out-of-Scope (متابعة منفصلة)**:
+  - **BAI-DESIGN-04**: إضافة `href="/trust/"` للـ badges (optional، visual-only الحالي مقبول).
+  - **BAI-DESIGN-05**: badges في `/about/` و `/trust/` pages (reuse نفس component).
+  - **BAI-IDX-23**: fix 9 broken links (pre-existing).
+  - **BAI-A11Y-02**: fix `<title>` و `lang` في `/kernel/*` pages (pre-existing).
+- **Reports**: `report/2026-07-29-bai-design-03-trust-badges.md` (BAI-PROC-12 compliant، `verified_production: no` حتى deploy).
+- **Commit**: uncommitted (per brain line 18، المستخدم يلتزم عبر main + PR).
+- **Status**: verified locally؛ يحتاج deploy للـ production verification (curl على brightai.site live + axe scan contrast للـ badges).
 
 ### 2026-07-29 — BAI-DESIGN-02: `text-white/40` → `text-white/65` — WCAG AA contrast fix (12 instance في 7 ملفات) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
 

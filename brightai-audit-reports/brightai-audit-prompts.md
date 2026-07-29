@@ -126,34 +126,6 @@ curl -s https://brightai.site/authors/yazeed-alshareef/ | grep -c 'يزيد ال
 
 
 
----
-## PROMPT [ID: BAI-DESIGN-04] — طباعة عربية (line-height 1.75)
-
-**Priority:** P1 |
-**Effort:** 3h |
-**Impact:** +3% على Design |
-**Risk:** L |
-**Depends on:** BAI-DEPLOY-12 |
-**Blocks:** —
-
-**CONTEXT** — tokens.css:115 يحوي --leading-relaxed: 1.75 لكن معظم المكونات تستخدم --leading-normal: 1.5. العربي يحتاج 1.7+ للتشكيل.
-
-**FILES IN SCOPE** — src/styles/base.css (default line-height), src/styles/tokens.css (no change)
-
-**MUST NOT TOUCH / PRESERVE** — existing line-height values
-
-**TASK** — 1) في src/styles/base.css: غيّر body line-height من 1.5 إلى 1.75. 2) في كل CSS class يستخدم --leading-normal: غيّر إلى --leading-relaxed. 3) اختبر بصريًا على / و /blog/.
-
-**ACCEPTANCE CRITERIA** — 1) curl / | grep -c 'line-height: 1.75' → 1+. 2) Visual: النصوص العربية أكثر قراءة.
-
-**VERIFICATION COMMANDS**
-```bash
-curl -s https://brightai.site/ | grep -oE 'line-height:\s*[0-9.]+' | sort | uniq -c
-```
-
-**ROLLBACK** — `git revert HEAD`
-
-**DEFINITION OF DONE** — body line-height = 1.75 على كل الصفحات، مُتحقَّق بـ curl + grep.
 
 ---
 ## PROMPT [ID: BAI-DESIGN-05] — Logical properties (استبدال left/right بـ inline-start/end)

@@ -184,6 +184,27 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.site/icons/badges/nca-ecc.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icons/badges/nca-ecc.svg</image:loc>
+      <image:title>nca ecc</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icons/badges/pdpl.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icons/badges/pdpl.svg</image:loc>
+      <image:title>pdpl</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://brightai.site/icons/badges/sdaia.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/icons/badges/sdaia.svg</image:loc>
+      <image:title>sdaia</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.site/icons.svg</loc>
     <image:image>
       <image:loc>https://brightai.site/icons.svg</image:loc>
