@@ -113,7 +113,8 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
       </div>
     </div>
 
-    {/* typing indicator */}
+    {/* typing indicator — light 3-dot pulse, shows as soon as the request fires.
+        Kept for snappy first-paint feedback. */}
     <div
       class="kernel-ai-assistant__typing"
       data-kernel-ai-typing
@@ -125,6 +126,22 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
       <span class="kernel-ai-assistant__typing-dot" aria-hidden="true"></span>
       <span class="kernel-ai-assistant__typing-dot" aria-hidden="true"></span>
       <span class="kernel-ai-assistant__typing-dot" aria-hidden="true"></span>
+    </div>
+
+    {/* skeleton bubble (BAI-DESIGN-06) — shimmer placeholder for the AI reply.
+        Mimics the actual response structure (3 lines of varying widths) so
+        the user sees a recognizable "ghost message" while the model thinks.
+        aria-hidden so screen readers get the typing indicator only, not a
+        duplicated "loading" announcement. */}
+    <div
+      class="kernel-ai-assistant__skeleton"
+      data-kernel-ai-skeleton
+      aria-hidden="true"
+      hidden
+    >
+      <span class="kernel-ai-assistant__skeleton-line kernel-ai-assistant__skeleton-line--lg"></span>
+      <span class="kernel-ai-assistant__skeleton-line kernel-ai-assistant__skeleton-line--md"></span>
+      <span class="kernel-ai-assistant__skeleton-line kernel-ai-assistant__skeleton-line--sm"></span>
     </div>
 
     {/* error banner (مخفي افتراضياً، يظهر عند الخطأ) */}
@@ -302,6 +319,51 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
   }
   @media (prefers-reduced-motion: reduce) {
     .kernel-ai-assistant__typing-dot { animation: none; }
+  }
+
+  /* BAI-DESIGN-06: skeleton bubble (shimmer placeholder) — appears next to
+     the typing dots while the AI is thinking. Mimics a 3-line response so
+     the user sees a recognizable ghost message, not just an abstract
+     spinner. Skeleton uses the same bubble shape as real AI messages
+     (--bg-elevated, --radius-lg) so the layout doesn't jump when the
+     response streams in. */
+  .kernel-ai-assistant__skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    margin-block-end: var(--space-2);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    max-inline-size: 85%;
+    inset-inline-start: 0; /* AI bubbles align inline-start in RTL */
+  }
+  .kernel-ai-assistant__skeleton-line {
+    display: block;
+    block-size: 12px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(
+      90deg,
+      var(--bg-surface) 0%,
+      rgba(148, 163, 184, 0.18) 50%,
+      var(--bg-surface) 100%
+    );
+    background-size: 200% 100%;
+    animation: kai-skeleton-shimmer 1.4s var(--ease-in-out) infinite;
+  }
+  .kernel-ai-assistant__skeleton-line--lg { inline-size: 92%; }
+  .kernel-ai-assistant__skeleton-line--md { inline-size: 68%; }
+  .kernel-ai-assistant__skeleton-line--sm { inline-size: 41%; }
+  @keyframes kai-skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-ai-assistant__skeleton-line {
+      animation: none;
+      background: var(--bg-surface);
+    }
   }
 
   .kernel-ai-assistant__cta {
@@ -593,6 +655,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
         var sendBtn = $('[data-kernel-ai-send]', root);
         var thread = $('[data-kernel-ai-thread]', root);
         var typing = $('[data-kernel-ai-typing]', root);
+        var skeleton = $('[data-kernel-ai-skeleton]', root);
         var errorSlot = $('[data-kernel-ai-error-slot]', root);
         var cta = $('[data-kernel-ai-cta]', root);
         var ctaLink = $('[data-kernel-ai-cta-link]', root);
@@ -659,6 +722,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           if (sendBtn) sendBtn.disabled = true;
           hideError(errorSlot);
           typing.hidden = false;
+          if (skeleton) skeleton.hidden = false;
           thread.setAttribute('aria-busy', 'true');
 
           // ارسم رسالة المستخدم
@@ -682,6 +746,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 
           function finalize(text, isDemo) {
             typing.hidden = true;
+            if (skeleton) skeleton.hidden = true;
             var article = renderMessage(thread, 'ai', '');
             streamInto(article.querySelector('.kernel-ai-assistant__bubble'), text, function () {
               thread.setAttribute('aria-busy', 'false');
@@ -758,6 +823,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                     fullReplyText += data.delta;
                     if (!bubble) {
                       typing.hidden = true;
+                      if (skeleton) skeleton.hidden = true;
                       messageArticle = renderMessage(thread, 'ai', '');
                       bubble = messageArticle.querySelector('.kernel-ai-assistant__bubble');
                     }
@@ -769,6 +835,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                 } else if (event === 'done') {
                   if (!bubble) {
                     typing.hidden = true;
+                    if (skeleton) skeleton.hidden = true;
                     messageArticle = renderMessage(thread, 'ai', '');
                     bubble = messageArticle.querySelector('.kernel-ai-assistant__bubble');
                   }
@@ -782,6 +849,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                   showError(errorSlot, 'provider_failed');
                   if (!bubble) {
                     typing.hidden = true;
+                    if (skeleton) skeleton.hidden = true;
                   }
                 }
               } catch (e) {
@@ -816,6 +884,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                 if (err.name === 'AbortError') return;
                 showError(errorSlot, 'network');
                 typing.hidden = true;
+                if (skeleton) skeleton.hidden = true;
                 thread.setAttribute('aria-busy', 'false');
                 if (sendBtn) sendBtn.disabled = false;
               });
@@ -873,6 +942,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                   } else {
                     showError(errorSlot, 'unknown');
                     typing.hidden = true;
+                    if (skeleton) skeleton.hidden = true;
                     thread.setAttribute('aria-busy', 'false');
                     if (sendBtn) sendBtn.disabled = false;
                   }
@@ -883,6 +953,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
               if (err.name === 'AbortError') return;
               showError(errorSlot, 'network');
               typing.hidden = true;
+              if (skeleton) skeleton.hidden = true;
               thread.setAttribute('aria-busy', 'false');
               if (sendBtn) sendBtn.disabled = false;
             });

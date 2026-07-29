@@ -49,9 +49,14 @@ body {
        - All headings: tracking-tight (-0.02em) — Arabic display reading.
        - clamp() responsive sizing — same hierarchy across viewport widths.
 
-   (C) Arabic line-height (DEC-2026-032): 1.75 (relaxed) for <p>.
-       Arabic script has taller ascenders/descenders and diacritics baseline;
-       1.75 gives the text "breathing room" without losing density.
+   (C) Arabic line-height (DEC-2026-032 superseded by BAI-DESIGN-04, 2026-07-29):
+       body + <p>: 1.6 — body text default (a touch tighter than the old 1.75,
+       keeps Arabic legible without spreading paragraphs over too much height).
+       headings (h1–h6): 1.7 — display heads need more vertical room for tall
+       Arabic ascenders/descenders, especially with font-weight 800.
+       tokens.css leading values remain unchanged (1.2/1.5/1.75) so other
+       surfaces (cards, forms, tables) can still pick a tighter rhythm where
+       it fits.
 
    This block replaces the original h1: text-4xl / h2: text-3xl / ... / h6: text-base
    baseline with a fully responsive clamp() ladder. Visual contrast between
@@ -60,7 +65,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: var(--font-normal);
-  line-height: var(--leading-relaxed);   /* DEC-2026-032: 1.75 — Arabic breathing room */
+  line-height: 1.6;   /* BAI-DESIGN-04: 1.6 — Arabic body default (was 1.75) */
   color: var(--text-primary);
   background-color: var(--bg-base);
   /* Base body text uses primary opacity (1.0) — full WCAG AAA contrast (13.6:1). */
@@ -73,7 +78,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
   color: var(--text-primary);
-  line-height: var(--leading-tight);     /* DEC-2026-032: tight (1.2) for display */
+  line-height: 1.7;   /* BAI-DESIGN-04: 1.7 — heading line-height (was 1.2) */
   letter-spacing: var(--tracking-tight); /* DEC-2026-032: -0.02em — optical tightening */
   text-wrap: balance;                     /* prevents orphaned trailing word */
   opacity: var(--text-primary-opacity);
@@ -106,18 +111,18 @@ h4 {
 h5 {
   font-size: var(--text-lg);                          /* 18px */
   font-weight: var(--font-semibold);                  /* 600 */
-  line-height: var(--leading-snug);                   /* 1.35 for dense UI */
+  line-height: 1.7;   /* BAI-DESIGN-04: 1.7 — heading line-height (was 1.35) */
 }
 h6 {
   font-size: var(--text-base);                        /* 16px */
   font-weight: var(--font-semibold);                  /* 600 */
-  line-height: var(--leading-snug);                   /* 1.35 */
+  line-height: 1.7;   /* BAI-DESIGN-04: 1.7 — heading line-height (was 1.35) */
 }
 
 p {
   margin-bottom: var(--space-4);
   color: var(--text-secondary);
-  line-height: var(--leading-relaxed);   /* DEC-2026-032: 1.75 — Arabic breathing room */
+  line-height: 1.6;   /* BAI-DESIGN-04: 1.6 — body paragraph default (was 1.75) */
   /* NOTE on opacity (DEC-2026-031):
      Intentionally NOT applying opacity to <p> — paragraphs commonly wrap
      <a>/<button> elements and inherited opacity would dim interactive
@@ -300,14 +305,18 @@ th, td {
   border-bottom: 1px solid var(--border-subtle);
 }
 
-/* KRN-014: preserve original LTR visual for English pages. EN tables keep
-   the right-aligned number-column convention (vs AR which uses 'start').
-   The physical marker (a CSS comment with literal "physical:") keeps the
-   grep acceptance check green. */
+/* KRN-014 (logical-property update 2026-07-29 / BAI-DESIGN-05):
+   EN tables previously used the physical right-alignment value to force
+   right-edge number alignment on both LTR and RTL pages. Switched to the
+   logical 'start' for the BAI-DESIGN-05 logical-property sweep. This is a
+   visual change for EN number columns on LTR pages (numbers shift from the
+   right edge to the left edge). To force right alignment regardless of
+   direction, wrap the <td> in a dir="ltr" container — do not reintroduce
+   the physical right value here. */
 :lang(en) th,
 :lang(en) td {
-  /* physical — EN number-column alignment, keeps original LTR visual */
-  text-align: right;
+  /* logical — EN table number-column alignment */
+  text-align: start;
 }
 
 th {

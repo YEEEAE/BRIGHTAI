@@ -2371,3 +2371,43 @@ Out-of-Scope (separate tickets recommended):
 
 Commit: لا commit (per brain line 18، user يلتزم التغييرات)
 Status: ✅ CLOSED
+
+---
+Task ID: 2026-07-29-OUTAGE-FIX
+Agent: BrightAI Workspace Agent
+Task: إصلاح انقطاع موقع brightai.site (المستخدم بلّغ إن الموقع صار ما يشتغل بعد حذف Cloudflare Workers & Pages)
+Started: 2026-07-29T22:40:00+03:00
+Ended: 2026-07-29T22:58:00+03:00
+Mode: Senior
+
+Work Log:
+- فحصت `curl -sI https://brightai.site/` → HTTP/2 404 لكن فيه `rndr-id` header (بصمة Render) → المشكلة في Render مو Cloudflare.
+- فحصت DNS (NS + A + CNAME) → كله سليم على Cloudflare، zone `active`. Cloudflare بريئة.
+- تحققت من Render service `srv-d7m5bcjbc2fs73826v20` → نوع `static_site`، `live`، مو معلّقة، `publishPath: dist`.
+- اختبرت الـ URL الأصلي `https://brightai-4x39.onrender.com/` → 404 على كل المسارات حتى `/` و `/index.html`.
+- فحصت `dist/` محليًا → يحوي بس `client/` و `server/`، **ما فيه `index.html`**. المحتوى تحت `dist/client/index.html` (182KB).
+- قرأت `scripts/sync-dist-flat.mjs` → commit `66b79d0c` حوّله لـ no-op (ما ينسخ `dist/client/*` للجذر بعد)، لأسباب أمنية صحيحة (BAI-DEPLOY-13).
+- **السبب الجذري اكتُشف**: `static_site` على Render تخدم من `publishPath: dist`، بس `@astrojs/node` adapter ينتج المحتوى في `dist/client/`، فما تلقى `index.html` في الجذر → 404 على الكل.
+- **الحل**: `PATCH /v1/services/srv-d7m5bcjbc2fs73826v20` بـ `{"serviceDetails":{"publishPath":"dist/client"}}` → نجح (`publishPath: dist/client`).
+- شغّلت redeploy عبر `POST /v1/services/{id}/deploys` → HTTP 202.
+- انتظرت 90s → deploy `dep-d9l5kh6d3bks738jojr0` صار `live`.
+- **تحققت من الإنتاج**: `/`, `/sitemap.xml`, `/robots.txt`, `/kernel/`, `/blog/`, `/about/` → كلهم **200** ✅. `www` → 301 → apex ✅. HSTS شغّال ✅. `_headers` (`x-content-type-options: nosniff`) ✅. `_redirects` (`/api/lead` → 301) ✅.
+- كتبت تقرير `report/2026-07-29-fix-render-publishpath.md` (verified_production: yes).
+- حدّثت `.agents/brain.md`: +Change Ledger entry، +DEC-FIX-2026-07-29-001، أغليت KI-BAI-DESIGN-08-001 (resolved) مع تصحيح التشخيص السابق الخاطئ، frontmatter bump.
+
+Stage Summary:
+- **الموقع رجع يشتغل بالكامل** بعد انقطاع كامل (404 على كل المسارات).
+- **السبب الجذري**: عدم تطابق `publishPath: dist` (Render static_site) مع مخرجات `@astrojs/node` adapter (`dist/client/`)، تفاقم بعد تحويل `sync-dist-flat.mjs` لـ no-op في commit `66b79d0c`.
+- **الحل**: تغيير `publishPath` لـ `dist/client` على Render (infra-only، 0 ملفات كود).
+- **تصحيح مهم**: entries الـ brain القديمة (BAI-DEPLOY-12 على 2026-07-28/29) و KI-BAI-DESIGN-08-001 شخّصت المشكلة غلط على إنها "persistent-storage blocker". التشخيص الصحيح: publishPath mismatch. تم تصحيحها في الـ brain.
+- **ملاحظة أمنية**: المستخدم نشر Cloudflare + Render API tokens في نص الطلب — لازم تُدوَّر فورًا.
+- **مخاطر متبقية**: `render.yaml` قد ما يطابق الإعداد على Render — متابعة مقترحة (مراجعة الـ Blueprint).
+- **لا commit** (per brain line 18 — الإصلاح infra-only على Render، ما فيه تغيير كود في الـ repo).
+
+Files Changed:
+  + report/2026-07-29-fix-render-publishpath.md (NEW)
+  ~ .agents/brain.md (+Change Ledger entry، +DEC-FIX-2026-07-29-001، KI-BAI-DESIGN-08-001 → resolved، frontmatter bump)
+  ~ worklog.md (this entry)
+
+Commit: لا commit (infra-only على Render via API، per brain line 18)
+Status: ✅ RESOLVED + VERIFIED in production

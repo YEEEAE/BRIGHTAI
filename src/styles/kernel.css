@@ -144,13 +144,18 @@
   border-bottom: 1px solid var(--border-subtle);
 }
 
-/* KRN-014: preserve original LTR visual for English pages. AR tables use the
-   logical 'start' above (= visually right). EN tables keep the right value
-   for the original number-column alignment. */
+/* KRN-014 (logical-property update 2026-07-29 / BAI-DESIGN-05):
+   EN kernel tables previously used the physical right-alignment value to
+   force right-edge number alignment on both LTR and RTL pages. Switched to
+   the logical 'start' for the BAI-DESIGN-05 logical-property sweep. This
+   is a visual change for EN number columns on LTR pages (numbers shift from
+   the right edge to the left edge). To force right alignment regardless of
+   direction, wrap the cell in a dir="ltr" container — do not reintroduce
+   the physical right value here. */
 :lang(en) .kernel-table th,
 :lang(en) .kernel-table td {
-  /* physical — EN number-column alignment, keeps original LTR visual */
-  text-align: right;
+  /* logical — EN kernel-table number-column alignment */
+  text-align: start;
 }
 
 .kernel-table th {

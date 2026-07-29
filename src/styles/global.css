@@ -20,7 +20,7 @@
    - ممنوع hardcoded ألوان في المكونات الجديدة. استخدم الـ tokens فقط.
    - ممنوع jQuery / Three.js / GSAP / animation libs. CSS فقط.
    - يدعم prefers-reduced-motion ضمنياً عبر الـ duration tokens.
-   - يدعم RTL عبر logical properties (margin-inline-start, not margin-left).
+   - يدعم RTL عبر logical properties (inline-start/-end بدل الخصائص الفيزيائية).
    - Touch targets ≥ 44px (--touch-min).
    ============================================================ */
 

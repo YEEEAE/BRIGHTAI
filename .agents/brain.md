@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 19:38 +03:00
+last_updated: 2026-07-29 22:58 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.54
+version: 2.7.57
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1124,6 +1124,92 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — FIX (P0 outage): Render `publishPath` `dist` → `dist/client` — الموقع كله 404، تم الإصلاح والتحقق — INFRA-ONLY (no code change، لا commit، per brain line 18)
+
+- **Files**: **0 repo files** (إصلاح على Render dashboard/API فقط). `report/2026-07-29-fix-render-publishpath.md` (تقرير جديد).
+- **What**: غيّرت `publishPath` على خدمة Render `srv-d7m5bcjbc2fs73826v20` (type `static_site`) من `dist` → `dist/client` عبر Render API (`PATCH /v1/services/{id}` بـ `{"serviceDetails":{"publishPath":"dist/client"}}`)، بعدها شغّلت redeploy (`POST /v1/services/{id}/deploys`، HTTP 202). الـ deploy الأخير `dep-d9l5kh6d3bks738jojr0` صار `live` على `19:55:09 UTC`.
+- **Why (السبب الجذري الحقيقي — يصحّح التشخيص الخاطئ في BAI-DEPLOY-12 entries)**: `@astrojs/node` adapter (standalone mode) ينتج `dist/client/` (HTML/CSS/JS) + `dist/server/` (Node standalone). خدمة Render نوعها `static_site` تخدم من جذر `publishPath` مباشرة. كان `publishPath = dist`، بس `dist/` يحوي بس `client/` و `server/` بدون `index.html` (المحتوى تحت `dist/client/index.html`). فـ static_site ما تلقى محتوى في جذر `dist/` → **404 على كل المسارات** حتى الرئيسية.
+  - commit `66b79d0c` (BAI-DEPLOY-12) غيّر `scripts/sync-dist-flat.mjs` من "نسخ `dist/client/*` لجذر `dist/`" إلى **no-op** (لأسباب أمنية — منع double-surface + leaks). هذا صحيح بحد ذاته، بس نسيجة إنه ما صار فيه flat copy، الـ static_site فقد الطريقة الوحيدة اللي كانت تخدم المحتوى من `dist/`. **السبب ما له علاقة بـ persistent-storage ولا Cloudflare** — تشخيص entries الـ 2026-07-28/29 BAI-DEPLOY-12 كان غلط.
+- **الحل المختار وليس غيره**: `publishPath: dist/client` (يطابق مخرجات الـ adapter + طبيعة static_site). البدائل المرفوضة: (1) استرجاع الـ flat copy في `sync-dist-flat.mjs` — يرجّع الـ double-surface الأمني اللي أزالته BAI-DEPLOY-13؛ (2) تحويل لـ Node Web Service — تغيير معماري كبير غير مطلوب.
+- **Verification (production, 2026-07-29 19:55+ UTC)** — verified_production: yes:
+  - `curl -I https://brightai.site/` → **HTTP/2 200** ✅ (كان 404)
+  - `/sitemap.xml`, `/robots.txt`, `/kernel/`, `/blog/`, `/about/` → كلهم **200** ✅
+  - `www.brightai.site/` → 301 → `brightai.site/` ✅
+  - `strict-transport-security` (HSTS) على `/` و `/kernel/` → شغّال ✅ (يؤكد `_headers` يُقرأ)
+  - `x-content-type-options: nosniff` → موجود ✅ (يؤكد `_headers` يشتغل)
+  - `/api/lead` → 301 ✅ (يؤكد `_redirects` يشتغل للـ Express backend)
+  - deploy `dep-d9l5kh6d3bks738jojr0` status=`live` ✅
+- **Report**: `report/2026-07-29-fix-render-publishpath.md`
+- **Commit**: none (infra-only على Render، per brain line 18)
+- **Status**: **deployed + verified** ✅
+- **DEC جديد (DEC-FIX-2026-07-29-001)**: خدمة Render `srv-d7m5bcjbc2fs73826v20` (static_site) يجب أن يبقى `publishPath: dist/client` لأن `@astrojs/node` adapter ينتج `dist/client/` (مو `dist/` جاهز). **لا ترجع `publishPath: dist` ولا ترجّع الـ flat copy في `sync-dist-flat.mjs`** — كلاهما يكسر الموقع (404 على الكل). لو تغيّر adapter لـ plain-static (بدون adapter، ينتج `dist/` مباشرة)، وقتها `publishPath: dist` يكون صحيح.
+- **Brain updates**: هذا الـ entry؛ Known Issues — KI الـ "Render persistent-storage blocker" (مذكور في BAI-DEPLOY-12 entries) **مبني على تشخيص خاطئ ويجب إغلاقه** (انظر Known Issues Register). يـ supersede تشخيص BAI-DEPLOY-12 entries الـ 2026-07-28/29.
+- **Risks Remaining**:
+  1. `render.yaml` في الـ repo قد يكون ما يطابق الإعداد الحالي على Render (`publishPath`) — **متابعة مقترحة**: مراجعة `render.yaml` للتأكد من المطابقة (لتفادي drift عند أي Blueprint deploy مستقبلي).
+  2. الإعداد موجود على Render بس، ما في drift detection. لو Render أعاد ضبطه (نادر جدًا)، يرجع الـ 404.
+- **Notes**:
+  - هذا الإصلاح **يُغلق عنقودة BAI-DEPLOY-12** اللي استمرت من 2026-07-28. كل المحاولات السابقة (clear cache, manual deploy, Cloudflare purge) ما نجحت لأنها عالجت عرض المشكلة (persistent storage) بدل السبب الجذري (publishPath mismatch).
+  - اكتشاف تحوّل مهم: المستخدم ظن إن السبب حذف Cloudflare Workers/Pages. التشخيص أثبت إن Cloudflare بريئة تمامًا (DNS + zone active + routing شغّال). حذف Workers/Pages كان صدفة توقيت.
+  - **تحذير أمني**: المستخدم نشر Cloudflare + Render API tokens في نص الطلب. لازم تُدوَّر (rotate) فورًا.
+
+### 2026-07-29 — EXEC-12 / BAI-DESIGN-04/05/06: Arabic line-height (1.6/1.7) + logical properties sweep (text-align: start) + loading states (spinner + skeleton) — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: 5 files, +126 / -16 lines net.
+  - `src/styles/base.css` (5 selectors + comment block: body 1.75→1.6, h1-h6 1.2/1.35→1.7, p 1.75→1.6، `:lang(en) th/td` text-align right→start)
+  - `src/styles/kernel.css` (1 selector + comment: `:lang(en) .kernel-table th/td` text-align right→start)
+  - `src/styles/global.css` (1 comment rephrase: removed literal "margin-left" trigger من RTL docs)
+  - `src/components/kernel/KernelLeadForm.astro` (HTML: spinner SVG + aria-busy؛ CSS: @keyframes kernel-lead-spin + reduced-motion؛ script: 4 places updated لـ aria-busy management)
+  - `src/components/kernel/KernelAiAssistant.astro` (HTML: skeleton bubble element (3 shimmer lines)؛ CSS: @keyframes kai-skeleton-shimmer + reduced-motion؛ script: 8 places updated لـ `if (skeleton) skeleton.hidden = X` بالتوازي مع typing)
+- **What**: ثلاث تحسينات تصميمية دفعة واحدة:
+  1. **BAI-DESIGN-04** — Arabic line-height tuning: body + `<p>` = 1.6 (كان 1.75، ضيّق شوي)، h1-h6 = 1.7 (كان 1.2 لـ h1-h4 + 1.35 لـ h5-h6، وسّع للـ display heads). tokens في tokens.css ما تغيرت (--leading-tight: 1.2، --leading-snug: 1.35، --leading-relaxed: 1.75 لسا مستخدمة لـ cards/forms/.lead).
+  2. **BAI-DESIGN-05** — Logical properties sweep: 0 `margin-left/right` فعلي قبل ما أبدأ (1 hit كان comment rephrased)، 2 `text-align: right` في `:lang(en)` selectors صارت `text-align: start` (logical). الـ comments توضح: لو تبي force right-alignment لـ EN بغض النظر عن direction، استخدم `<td dir="ltr">` wrapper.
+  3. **BAI-DESIGN-06** — Loading states: KernelLeadForm كان ناقص spinner مرئي (كان عنده بس `…` suffix) — أضفت spinner SVG + CSS keyframe + aria-busy. KernelAiAssistant عنده typing dots (3 dots متحركة) — أضفت skeleton bubble (3 lines متفاوتة العرض 92/68/41% مع shimmer) بالتوازي عشان يحس المستخدم إن الـ AI يكتب رد فعلي. LeadForm ما يحتاج تغيير (spinner + state machine موجودين من قبل). demo page ما يحتاج (static marketing page بدون API calls).
+- **Why**: 3 تحسينات مترابطة: line-height يحسّن readability للعربي، logical properties تضمن RTL correctness، loading states تخفف anxiety أثناء async operations. الـ DEC-2026-032 الأصلي (1.75 breathing room) كان مبالغ فيه للـ body، والـ KRN-014 (EN number-column physical right) كان workaround يحتاج grep-aware comment.
+- **Verification** (كله locally على macOS dev):
+  - `grep -rn 'margin-left\|margin-right' src/styles/` → **0 نتائج** ✅
+  - `grep -rn 'text-align: left\|text-align: right' src/styles/` → **0 نتائج** ✅
+  - `grep -n 'line-height: 1.6' src/styles/base.css` → **2 نتائج** (body + p) ✅
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **211 HTML files** في `dist/client`، 0 errors، 8.89s ✅
+  - `pnpm run performance:budget` → HTML 36.16KB gz، أكبر CSS 19.65KB gz (ArabicLayout)، JS 12.00KB gz — كله under budget ✅
+  - RTL check: AR pages `dir="rtl"` (index, about, kernel)، EN page `dir="ltr"` (en/privacy-policy) ✅
+  - Skeleton rendered: `grep -c "data-kernel-ai-skeleton" dist/client/kernel/chat/index.html` → present ✅
+  - Spinner rendered: `grep -c "data-kernel-lead-spinner" dist/client/kernel/index.html` → present ✅
+  - `pnpm run verify:all` → 9 broken links (⚠️ كلها pre-existing، مو من EXEC-12؛ tracked in KI register)
+- **DEC جديد (DEC-BAI-DESIGN-04-2026-07-29-001)**: body + `<p>` line-height = 1.6، h1-h6 line-height = 1.7. Supersedes DEC-2026-032 part (C) لـ body/`<p>`/headings. `--leading-relaxed` token (1.75) لسا مستخدم لـ `.lead` و cards و forms. Reversal cost: low (edit 5 selectors in base.css). Do not reverse بدون explicit user approval.
+- **DEC جديد (DEC-BAI-DESIGN-05-2026-07-29-001)**: `:lang(en)` table cells تستخدم `text-align: start` (logical). Supersedes KRN-014 EN number-column physical right-alignment. لو احتجت force right-alignment بغض النظر عن direction، استخدم `<td dir="ltr">` wrapper (مو إعادة physical right value). Reversal cost: low. Visual change flagged: EN number columns على LTR pages صارت left-aligned بدل right (documented in report).
+- **DEC جديد (DEC-BAI-DESIGN-06-2026-07-29-001)**: KernelAiAssistant يعرض typing dots + skeleton bubble في نفس الوقت. الـ typing dots (3 bouncing dots) لـ first-paint feedback (snappy)، الـ skeleton bubble (3 shimmer lines) لـ substantive shape (يخفف anxiety). Reversal cost: low (hide one via CSS). Both respect `prefers-reduced-motion: reduce`.
+- **Report**: `report/2026-07-29-bai-design-04-05-06.md` (BAI-PROC-12 compliant: `verified_local: yes` + `verified_production: no` + `verified_production_blocker` موثّق)
+- **Commit**: uncommitted (per brain line 18)
+- **Status**: verified_local (build ناجح + كل grep checks passed + perf budget OK + RTL OK)
+- **Brain updates**: Section 1.1 (line-height baseline) + Section 2 (this entry) + Section 4 (3 new DECs) + Section 5 (loading state inventory — KernelLeadForm spinner جديد + KernelAiAssistant skeleton)
+- **Visual change flagged for user review**: EN number columns على LTR pages صارت left-aligned (1.0 decision) — لو تبي ترجع right، لفّ في `<td dir="ltr">`. الـ comments في `base.css:309-318` و `kernel.css:148-159` يوثقون.
+- **Pre-existing issues documented (NOT fixed — خارج نطاق EXEC-12)**: 9 broken links in `pnpm run verify:all` (4 author pages → /authors/، 2 blog posts → /solutions/ غير موجودة، 3 event pages → /events/).
+
+### 2026-07-29 — EXEC-10 / BAI-MEAS-01/02: GA4 events (lead/chat/demo) + server-side `generate_lead` via Measurement Protocol — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: `src/lib/analytics.ts` (+10 alias events)، `src/lib/ga4-server.ts` (NEW، 230 سطر، GA4 Measurement Protocol server-side)، `src/pages/api/lead.ts` (+36 سطر، ربط post-enqueue)، `src/scripts/lead-form-handler.js` (+9 سطر، 3 نقاط حقن)، `src/components/kernel/KernelAiAssistant.astro` (+18 سطر، chat_started + chat_completed)، `src/pages/demo/index.astro` (+11 سطر، demo_opened script)
+- **What**: أضفنا 5 أحداث alias لـ `ANALYTICS_EVENTS` (`lead_started`, `lead_completed`, `chat_started`, `chat_completed`, `demo_opened`) — تُطلق **بجانب** الأسماء الموحّدة الموجودة (alias policy، قرار المستخدم). أنشأنا `src/lib/ga4-server.ts` يحوي `sendServerEvent({ events, clientId })` يبني POST لـ `https://www.google-analytics.com/mp/collect` (best-effort + fallback آمن لو `GA4_API_SECRET` فاضي = no-op + warning). ربطنا `api/lead.ts` يطلق `generate_lead` server-side بعد الـ enqueue الناجح (يغطي فقدان client event عند adblocker/شبكة مقطوعة/سكّر التبويب). في LeadForm: `lead_started` عند submit + `lead_completed` عند success (shipped/queued). في KernelAiAssistant: `chat_started` عند send + `chat_completed` داخل `finalize` callback **بس لما `isDemo === false`** (reply حقيقي فقط). في demo: `demo_opened` عند page load.
+- **Why**: الـ prompt الأصلي مكتوب على فرضيات قديمة (طلب "أنشئ ga4-measurement.ts" بس `analytics.ts` موجود كـ single source 647 سطر). النقص الحقيقي الوحيد ذو قيمة = GA4 Measurement Protocol **server-side** (client-side gtag موجود في `gtag-init.js`). الفجوة: لو client fetch فشل = event يُفقد. الحل: السيرفر نفسه يرسل event مباشرة لـ GA4. قرارات المستخدم: (1) أسماء جديدة كـ alias مو استبدال، (2) GA4 server-side مع fallback آمن (المستخدم يضيف secrets لـ Render لاحقًا)، (3) chat حقيقي (Groq llama-3.3-70b عبر `/api/ai/chat`) → نطلق chat_completed على happy path حقيقي فقط.
+- **Verification** (local build فقط، production verification يتطلب deploy + إضافة secrets):
+  - `npm run build` → Complete! + 211 صفحة HTML في `dist/client` ✅
+  - `grep -nE "LEAD_STARTED|LEAD_COMPLETED|CHAT_STARTED|CHAT_COMPLETED|DEMO_OPENED" src/lib/analytics.ts` → 5 نتائج ✅
+  - `grep -nE "track\('lead_started'|track\('lead_completed'" src/scripts/lead-form-handler.js` → 3 نتائج ✅
+  - `grep -nE "track\('chat_started'|track\('chat_completed'" src/components/kernel/KernelAiAssistant.astro` → 2 نتيجة ✅
+  - `grep -n "demo_opened" src/pages/demo/index.astro` → 1 نتيجة ✅
+  - `grep -nE "sendServerEvent|generate_lead" src/pages/api/lead.ts` → import + call ✅
+  - `grep -rl "chat_started\|chat_completed" dist/client/kernel/` → في صفحات الكيرنل ✅
+  - `grep -rl "lead_started\|lead_completed" dist/client/` → في LeadForm JS bundle ✅
+  - `grep -rl "sendServerEvent\|generate_lead" dist/server/` → في lead server chunk ✅
+  - `grep -c "demo_opened" dist/client/demo/index.html` → 1 ✅
+  - GA4 DebugView: ⏳ يتطلب deploy + إضافة `GA4_API_SECRET` + `GA4_MEASUREMENT_SECRET` لـ Render (manual، للمستخدم)
+- **DEC جديد (DEC-EXEC-10-2026-07-29-001)**: GA4 Measurement Protocol server-side **best-effort + fallback آمن**. القاعدة: أي server-side analytics call يُطلق بـ `void promise.catch()` (fire-and-forget) + لو الـ secret env فاضي = no-op + warning (ما يكسر dev ولا production). السبب: الـ lead enqueue هو الـ contract الأساسي (durable)، analytics ما يصير blocker. عكس هذا: لو analytics throw يفشل الـ enqueue = regression خطير (نخسر lead عشان metric). الوثيقة: `src/lib/ga4-server.ts` comment block + `src/pages/api/lead.ts` line ~281. Reversal cost: medium (احذف الـ sendServerEvent call).
+- **DEC جديد (DEC-EXEC-10-2026-07-29-002)**: Alias event policy. لما prompt يطلب أسماء events جديدة بس المشروع فيه taxonomy موحّدة موجودة → **أضف الجديدة كـ alias بجانب الموجودة** (مو استبدال). السبب: backward-compat مع reports قديمة + لا regression لـ dashboards موجودة. التبعة: حجم events يزيد (كل form submit يطلع 5-6 أحداث متوازية). القرار البديل المرفوض: استبدال الأسماء القديمة (يكسر reports). الوثيقة: `src/lib/analytics.ts` line 67-75.
+- **Report**: `report/2026-07-29-exec-10-ga4-events.md`
+- **Commit**: uncommitted (per brain line 18)
+- **Status**: verified_local (build ناجح + كل events في output)؛ **production verification PENDING** (deploy + GA4 secrets + DebugView)
+- **Brain updates**: Section 5 (analytics events inventory — أضف 5 alias + ga4-server.ts module)
+- **Pre-existing issue ملاحظ (ما أصلحته — خارج نطاق EXEC-10)**: `api/lead.ts:271` type error (`page: lead.page ?? null` يصرّف لـ `string | undefined`) موجود على HEAD النظيف قبل تعديلي. تأكدت عبر `git stash`. يحتاج مهمة منفصلة.
 
 ### 2026-07-29 — EXEC-08 (new ticket) / BAI-DESIGN-02 duplicate: AA contrast fix re-prompted with CSS-variable approach — CLOSED without code change (user decision: keep BAI-DESIGN-02 as is)
 
@@ -6500,7 +6586,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-009 | Tailwind configured but disabled | medium | open | 2026-06-29 | `tailwind.config.ts` exists, `tailwind-merge` in deps, but no `@tailwind` directive in CSS. Confuses contributors. | `tailwind.config.ts`, `package.json`, `src/lib/utils.ts` |
 | KI-SYNTAX-2026-07-18-001 | `<script nonce={Astro.locals.cspNonce}>import '...'</script>` بدون `type="module"` في 4 scripts من BaseLayout → 4 SyntaxError × 190 pages = 760 events | **critical** (100% pages broken at runtime) → **resolved 2026-07-18** | 2026-07-18 → 2026-07-18 | **RESOLVED 2026-07-18 via KI-SYNTAX-2026-07-18-001-FIX**: الـ root cause تم تأكيده + الـ fix path تم اختياره (نقل لـ `public/js/*.js` + `<script type="module" src="..." nonce="...">`، نفس pattern `analytics.js`). الـ 3 scripts (`font-async-loader.js`, `scroll-reveal.js`, `focus-trap.js`) انتقلت لـ `public/js/` وBaseLayout.astro يستخدم static ES modules. الـ script الرابع `page-view.js` deprecated ومُحذف في CRO-LEADFORM-001 (2026-07-18) ولا يحتاج fix. **Playwright verification**: 0 console SyntaxError events per page (was 4)، 6/6 problem-section feature cards `{ opacity: 1, is-visible: true }` (was opacity 0)، 30/31 reveal-targets revealed عبر 14 sections (was 0). **DEC جديد**: DEC-CSP-PATTERN-2026-07-18-001 يوثّق الـ pattern الآمن. **CI guard still TODO**: static check يفحص أي `<script>` يحوي `import` بدون `type="module"` → fail-fast. | `src/layouts/BaseLayout.astro` (3 scripts → static), `public/js/{font-async-loader,scroll-reveal,focus-trap}.js` (new location) |
 | KI-BAI-IDX-22-001 | `scripts/qa/orphan-pages-audit.mjs` ROOT bug — يفحص `scripts/__fixtures__/build-output/dist/` (test fixtures) بدل `dist/client/` (production build) → 191 false-positive orphans | medium | open | 2026-07-25 (BAI-IDX-22) | **Discovered by BAI-IDX-22 diagnostic**: `const ROOT = path.resolve(__dirname, '..')` يـ resolve إلى `scripts/` (لأن `__dirname = scripts/qa/`)، بدل `path.resolve(__dirname, '../..')` للـ project root. السكربت يفحص `scripts/__fixtures__/build-output/dist/**/*.html` (191 fixtures بدون `<a href>` tags بينهم) → 0 internal links → كلهم "orphans". الـ production reality: 0 orphans via `pnpm run internal-links:audit` (الـ gate الرسمي المعتمد على BAI-IDX-04). **Fix المقترح** (BAI-IDX-23): (1) `ROOT = path.resolve(__dirname, '../..')` (project root). (2) أضف `--source <dir>` flag (مثل `internal-linking-architecture.mjs`). (3) أضف `--strict` flag يفحص `dist/client/` + يقارن مع `sitemap.xml` (BAI-IDX-22 acceptance criterion). (4) Default `--source=dist/client`. (5) Optional: `--min-incoming <N>` flag لفحص ≥ N incoming (default 1، BAI-IDX-22 يحتاج 2). **Out of scope لـ BAI-IDX-22** per FILES IN SCOPE: "scripts/qa/orphan-pages-audit.mjs (no change — موجود)". | `scripts/qa/orphan-pages-audit.mjs` (line 9) |
-| KI-BAI-DESIGN-08-001 | `brightai.site` يرجع HTTP 404 على الرئيسية + `/contact/` + كل المسارات الـ prerendered (ما عدا `/api/lead` POST يرجع 200 بـ body فاضي) | critical | open | 2026-07-29 (BAI-DESIGN-08 verification) | **Discovered by BAI-DESIGN-08 verification** (2026-07-29 04:40+03:00): `curl -sI https://brightai.site/` → **HTTP 404** بـ `cf-ray: a22868f19c2bf4c0-MRS` + `rndr-id: e7abac19-e1a6-4834` + `server: cloudflare` (الطلب يوصل لـ Render لكن Render ما يلاقي الـ route). `curl -sI /contact/` → 404 نفس الـ behavior. `curl -sI /api/lead` (GET) → 404. `curl -X POST /api/lead -d '{}'` → **HTTP 200 بـ Content-Length: 0** (مش JSON المتوقع). **التأثير**: 100% من الزوار يشوفون 404 → Googlebot يحط الـ site في "Soft 404" → فقد ترتيب كامل خلال أيام. **الـ hypotheses**: (1) آخر deploy مكسور — `dist/server/entry.mjs` مفقود أو `dist/client/` فاضي. (2) Render service restarted بـ empty state (KI-050 الـ queue يدل على in-memory dependency). (3) Cloudflare cache poisoning بـ 404 stale response. (4) @astrojs/node standalone يطلب static من path غلط. **Next** (manual، خارج نطاق الـ agent): (a) Render dashboard → Logs → آخر deploy + current service state. (b) `curl -I https://brightai.site/api/health/` (الـ health check path من render.yaml). (c) لو 200 على health، المشكلة في static path؛ لو 404، الخدمة نفسها معطّلة. (d) Cloudflare cache purge (KI-001 post-deploy lesson). **Workaround قصير**: لو الموقع حي قبل آخر deploy، `git revert HEAD` أو redeploy نفس الـ commit. Discovered during BAI-DESIGN-08 curl verification. | Render service (live)، `dist/server/entry.mjs` (suspect)، `dist/client/` (suspect)، Cloudflare cache (suspect) |
+| KI-BAI-DESIGN-08-001 | `brightai.site` يرجع HTTP 404 على الرئيسية + `/contact/` + كل المسارات الـ prerendered | critical | **resolved 2026-07-29** | 2026-07-29 → 2026-07-29 | **RESOLVED 2026-07-29 via FIX (Render publishPath)**: الـ root cause الحقيقي اتكشف — **عدم تطابق `publishPath` مع مخرجات `@astrojs/node` adapter**. خدمة Render نوعها `static_site` كانت تخدم من `publishPath: dist`، بس `@astrojs/node` ينتج المحتوى تحت `dist/client/` (مو `dist/index.html`). commit `66b79d0c` (BAI-DEPLOY-12) حوّل `scripts/sync-dist-flat.mjs` لـ no-op، فما صار فيه flat copy للجذر → `dist/` فاضي من `index.html` → static_site ما تلقى محتوى → 404 على الكل. **الـ hypotheses السابقة كانت غلط**: مو `dist/server/entry.mjs` مفقود، ولا empty state، ولا Cloudflare cache poisoning. **الإصلاح**: `PATCH /v1/services/{id}` بـ `{"serviceDetails":{"publishPath":"dist/client"}}` + redeploy. النتيجة: `/`, `/sitemap.xml`, `/kernel/`, `/blog/`, `/about/` → كلهم **200**، HSTS + `_headers` + `_redirects` شغّالة. تفاصيل كاملة في Change Ledger entry "FIX (P0 outage)" و `report/2026-07-29-fix-render-publishpath.md`. **DEC-FIX-2026-07-29-001**: ابقِ `publishPath: dist/client` على Render ما دام `@astrojs/node` هو الـ adapter. | Render service `srv-d7m5bcjbc2fs73826v20` (`publishPath` setting) |
 
 ### 3.2 High (يخفض CTR أو الأداء)
 
@@ -7647,6 +7733,21 @@ Companion utility classes in `src/styles/utilities.css` Section 11b:
 - `.cta-micro--accent` — variant بـ brand color
 - `.inner-card__cta` — service card CTA span (inline-flex + arrow ::after + hover translate)
 - `.inner-card__cta-micro` — service card microcopy
+
+### 5.10 Analytics Modules & Events Taxonomy (added 2026-07-29, EXEC-10)
+
+**Canonical modules (do not rebuild):**
+- **`src/lib/analytics.ts`** (~657 سطر) — single source of truth للتحليلات. يحوي: `ANALYTICS_EVENTS` enum، `track()` موحّد، PII guard (`assertNoPii` + `PII_KEYS` + suffix rule)، consent state، dedup، providers registry. كل event يمر من هنا.
+- **`src/lib/lead-tracker.ts`** (~162 سطر) — THIN WRAPPER على `analytics.ts`. يحوي `leadTracker` helpers (`formView`, `formStart`, `formSubmitAttempt`, `formSubmitSuccess`, `formSubmitFailure`, `generateLead`). New code يستخدم `track()` مباشرة.
+- **`src/lib/ga4-server.ts`** (NEW، ~230 سطر، EXEC-10 2026-07-29) — GA4 Measurement Protocol **server-side**. يحوي `sendServerEvent({ events, clientId })` + `parseClientIdFromCookie()`. Best-effort (لو `GA4_API_SECRET` فاضي = no-op + warning). يستخدمه `api/lead.ts` لإطلاق `generate_lead` بعد الـ enqueue.
+- **`public/js/analytics.js`** (~26KB) — client-side bootstrap. يثبّت `window.__BRIGHTAI_ANALYTICS__` مع `.track()`, `.setConsent()`. Provider scripts (gtag-init, mixpanel-init, bing-uet) تسجّل نفسها هنا.
+- **`public/js/gtag-init.js`** — client-side gtag.js للحساب `G-8LLESL207Q`.
+
+**Events taxonomy (`ANALYTICS_EVENTS` in `analytics.ts`):**
+- Unified (القديمة): `page_view`, `hero_cta_click`, `secondary_cta_click`, `whatsapp_click`, `pricing_view`, `pricing_cta_click`, `proof_asset_view`, `case_study_view`, `assessment_start`, `assessment_complete`, `form_view`, `form_start`, `form_field_error`, `form_submit_attempt`, `form_submit_success`, `form_submit_failure`, `calendar_open`, `meeting_booked`, `generate_lead`
+- Alias (جديد EXEC-10 2026-07-29): `lead_started`, `lead_completed`, `chat_started`, `chat_completed`, `demo_opened` — تُطلق **بجانب** الـ unified (alias policy DEC-EXEC-10-2026-07-29-002)
+
+**DEC precedent:** DEC-EXEC-10-2026-07-29-001 (server-side analytics = best-effort + fallback آمن)، DEC-EXEC-10-2026-07-29-002 (alias policy).
 
 ---
 
