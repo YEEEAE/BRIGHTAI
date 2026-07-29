@@ -2411,3 +2411,45 @@ Files Changed:
 
 Commit: لا commit (infra-only على Render via API، per brain line 18)
 Status: ✅ RESOLVED + VERIFIED in production
+
+---
+Task ID: 2026-07-29-SEC-HEADERS
+Agent: BrightAI Workspace Agent
+Task: إصلاح فجوة security headers (CSP + 4 headers ناقصة) المكتشفة بعد إصلاح الـ P0 outage — المستخدم اختار "تحقق أعمق" ثم "Cloudflare Transform Rules"
+Started: 2026-07-29T23:00:00+03:00
+Ended: 2026-07-29T23:20:00+03:00
+Mode: Senior
+
+Work Log:
+- فحصت `render.yaml` بالكامل → اكتشفت drift كبير: يصف Node Web Service (type: web, runtime: node) بس الخدمة الفعلية static_site.
+- فحصت security headers على الإنتاج → **فقط 2 من 7 headers** (HSTS + X-Content-Type-Options). CSP/X-Frame-Options/Referrer/Permissions/X-Robots كلها مفقودة.
+- فحصت مصدر الـ 2 headers: HSTS من Cloudflare Transform Rule "BAI-SEC-11"، X-Content-Type من Render default.
+- **الاكتشاف القاطع**: فحصت ملف CSS على الإنتاج → `cache-control: max-age=14400, s-maxage=300` (Render default) بدل `max-age=31536000, immutable` (من `_headers`). يعني Render Static Site **ما يقرأ `_headers`** إطلاقًا (60+ قاعدة مُهمَلة)، بس يقرأ `_redirects` (210 قاعدة ✅).
+- فحصت الـ API endpoints: `/api/ai/chat/` و `/api/lead/` معطّلة، بس الـ frontend عنده fallback ذكي (demo mode + WhatsApp redirect في `KernelLeadForm.astro:530`). Express backend (`brightai-api.onrender.com`) كمان معطّل (404). المشروع مصمّم للـ static fallback.
+- رفعت 4 خيارات للمستخدم → اختار "تحقق أعمق أولًا" → نفّذت → ثم "Cloudflare Transform Rules".
+- أنشأت `cloudflare` ruleset JSON من قيم `render.yaml` canonical (7 headers).
+- وصّلت typo صغير في CSP (`stats.gdoubleclick.net` → `stats.g.doubleclick.net`) قبل التطبيق.
+- طبّقت v2 (7 headers) عبر `PUT /zones/{zone}/rulesets/{ruleset}` → success: True, version 2.
+- فحصت Playwright → كشف CSP violations (cloudflare beacon ممنوع). طبّقت v3 (أضفت `cloudflareinsights.com` للـ CSP).
+- فحصت Playwright → beacon يظل ممنوع (السبب: CSP مزدوج — HTTP header + `<meta>` قديمة في HTML، المتصفح يطبّق intersection).
+- فحصت إن الموقع ما انكسر: **0 functional CSP errors، GA4 شغّال (GTM 200)، H1 رندر صح**. الموقع يعمل كامل.
+- كتبت تقرير `report/2026-07-29-cloudflare-security-headers.md`.
+- حدّثت `.agents/brain.md`: +Change Ledger entry (BAI-SEC-HEADERS)، +DEC-BAI-SEC-HEADERS-2026-07-29-001، +KI-BAI-SEC-HEADERS-001 (CSP مزدوج).
+
+Stage Summary:
+- **الفجوة الأمنية الحقيقية انحلت**: CSP + X-Frame-Options + Referrer-Policy + Permissions-Policy + X-Robots-Tag كلها صارت تخدم على كل صفحة (7/7 headers).
+- **السبب الجذري**: Render Static Site ما يقرأ `_headers` (يقرأ `_redirects` فقط). الـ headers لازم تُطبَّق عبر Cloudflare edge.
+- **الموقع ما انكسر**: 0 functional errors، GA4 شغّال، H1 رندر صح.
+- **مشاكل متبقية موثّقة كـ known issues**: (1) CSP مزدوج (HTTP header + `<meta>` قديمة — يحتاج rebuild لإزالة `injectSecurityMeta()`). (2) cloudflare beacon ممنوع بسبب intersection. (3) `/api/*` معطّلة (مقصودة). (4) `render.yaml` drifting.
+- **لا commit** (per brain line 18 — الإصلاح Cloudflare edge only، ما فيه تغيير كود في الـ repo غير الـ scripts/tiquir).
+
+Files Changed:
+  + report/2026-07-29-cloudflare-security-headers.md (NEW)
+  + scripts/verify-csp-compat.mjs (NEW — Playwright)
+  + scripts/verify-csp-functional.mjs (NEW — Playwright)
+  + scripts/verify-csp-beacon.mjs (NEW — Playwright)
+  ~ .agents/brain.md (+Change Ledger، +DEC، +KI-BAI-SEC-HEADERS-001، frontmatter bump)
+  ~ worklog.md (this entry)
+
+Commit: لا commit (Cloudflare edge only، per brain line 18)
+Status: ✅ DEPLOYED + VERIFIED in production (7/7 security headers, 0 functional errors)

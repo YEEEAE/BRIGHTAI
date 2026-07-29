@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 22:58 +03:00
+last_updated: 2026-07-29 23:20 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.57
+version: 2.7.58
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1124,6 +1124,32 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-SEC-HEADERS: Cloudflare Transform Rule — 7 security headers على كل الصفحات (CSP/X-Frame-Options/Referrer/Permissions/X-Robots + HSTS) — CLOUDFLARE-ONLY (no code change، لا commit، per brain line 18)
+
+- **Files**: **0 repo files** (إصلاح على Cloudflare edge فقط). `report/2026-07-29-cloudflare-security-headers.md` (تقرير جديد). `scripts/verify-csp-compat.mjs` + `scripts/verify-csp-functional.mjs` + `scripts/verify-csp-beacon.mjs` (Playwright verification scripts الجديدة).
+- **What**: وسّعت قاعدة Cloudflare Transform Rule الموجودة (ruleset `f79b8e31941b4ae7a947f40f3d19146a`، rule `f03f82879fec450d93f9dab888c389ca`) من "HSTS فقط" إلى "7 security headers". عبر `PUT /zones/b94b6d42e42609999ab36294e6728e21/rulesets/{ruleset}`. إصدارات: v1 (HSTS فقط، موجود سابقًا) → v2 (+6 headers) → v3 (+`cloudflareinsights.com` في CSP). القاعدة النهائية: `expression: true`, `action: rewrite`, 7 headers (`Strict-Transport-Security`, `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`, `X-Robots-Tag`, `Content-Security-Policy` كاملة من `render.yaml` canonical).
+- **Why**: فحص معمّق بعد إصلاح الـ P0 outage كشف إن الإنتاج كان يخدم **فقط 2 من 7 headers** على كل صفحة. السبب: خدمة Render نوعها `static_site` تقرأ `_redirects` (210 قاعدة ✅) بس **ما تقرأ `_headers`** إطلاقًا (60+ قاعدة مُهمَلة). الدليل القاطع: ملف CSS على الإنتاج فيه `cache-control: public, max-age=14400, s-maxage=300` (Render default) بدل `max-age=31536000, immutable` (من `_headers`). النتيجة: `CSP` + `X-Frame-Options` + `Referrer-Policy` + `Permissions-Policy` + `X-Robots-Tag` كلها كانت **مفقودة** = ثغرات حقيقية (XSS injection بلا CSP، clickjacking بلا X-Frame-Options). الـ 2 headers الشغّالة: HSTS من Cloudflare Transform Rule سابق (BAI-SEC-11) + `X-Content-Type-Options` من Render default.
+- **الحل المختار**: Cloudflare Transform Rules (نفس مكان HSTS الشغّال). البدائل المرفوضة: (1) تحويل لـ Node Web Service — تغيير معماري كبير، المشروع مصمّم للـ static fallback؛ (2) `_headers` في Render — اتضح إنه ما يُقرأ على static_site؛ (3) middleware في Astro — ما يشتغل على static_site.
+- **Verification (production, Playwright 2026-07-29 23:10+03:00)** — verified_production: yes:
+  - `/`, `/kernel/`, `/blog/`, `/contact/` → كلهم **7/7 security headers** ✅
+  - Functional CSP errors (non-beacon): **0** ✅
+  - GA4 (GTM `G-8LLESL207Q`) يحمّل → 200 ✅
+  - H1 رندر: "حوكمة الذكاء الاصطناعي للشركات السعودية..." ✅
+  - Failed requests (non-beacon): 0 ✅
+- **Report**: `report/2026-07-29-cloudflare-security-headers.md`
+- **Commit**: none (Cloudflare edge only، per brain line 18)
+- **Status**: **deployed + verified** ✅
+- **DEC جديد (DEC-BAI-SEC-HEADERS-2026-07-29-001)**: على Render Static Site، الـ security headers تُطبَّق حصرًا عبر Cloudflare Transform Rules (phase `http_response_headers_transform`). `dist/client/_headers` و `render.yaml` `headers:` block كلاهما **DOCUMENTATION ONLY** على static_site (ما يُقرآن من Render). لو تغيّر نوع الخدمة لـ Node Web Service، يرجع الـ middleware + `_headers` يكونون المصدر. Reversal cost: medium (حذف القاعدة من Cloudflare). Do not reverse بدون البديل.
+- **Brain updates**: هذا الـ entry؛ Known Issues — KI-BAI-SEC-HEADERS-001 (CSP مزدوج جديد، see Known Issues Register).
+- **Risks Remaining**:
+  1. **CSP مزدوج** (KI-BAI-SEC-HEADERS-001): HTTP header (Transform Rule) + `<meta http-equiv>` (مخبوزة في HTML من `injectSecurityMeta()` في `astro.config.mjs:94`). المتصفح يطبّق intersection. النتيجة: تحذيرات console pre-existing (`frame-ancestors`/`report-uri`/`X-Frame-Options` مُتجاهلة في `<meta>`) + الـ beacon `cloudflareinsights.com` يظل ممنوع (الـ `<meta>` ما عنده القاعدة). **الحل**: rebuild + redeploy لإزالة الـ `<meta>` (HTTP header صار كافي). يحتاج code change (تعطيل `injectSecurityMeta()`).
+  2. `/api/*` معطّلة (مقصودة — fallback للـ WhatsApp + demo mode).
+  3. `render.yaml` drifting (يصف Node Web Service ما موجودة — KI منفصل).
+- **Notes**:
+  - هذا الإصلاح يحل **الثغرة الأمنية الحقيقية** (CSP/X-Frame-Options مفقودة = XSS/clickjacking). الموقع صار محمي على طبقة الـ edge.
+  - الـ cloudflare beacon block ما هو regression — كان ممنوع قبل التغيير (الـ `<meta>` كانت تمنعه). غيّرت HTTP header عشان أسمح فيه بس الـ `<meta>` ما سمحت (intersection).
+  - **تحذير أمني (متكرر من تقرير سابق)**: المستخدم نشر Cloudflare + Render API tokens في نص الطلب. لازم تُدوَّر فورًا.
 
 ### 2026-07-29 — FIX (P0 outage): Render `publishPath` `dist` → `dist/client` — الموقع كله 404، تم الإصلاح والتحقق — INFRA-ONLY (no code change، لا commit، per brain line 18)
 
@@ -6608,6 +6634,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | ID | Issue | Priority | Status | Since | Notes | Affected Files |
 |---|---|---|---|---|---|---|
 | KI-AUDIT-SEC-2026-07-18-001 | `target="_blank"` بدون `rel="noopener noreferrer"` على `/blog/pdpl-and-ai-saudi/` (SEC-BLANK-1 من `audit/ISSUES.csv`) | medium | **resolved** | 2026-07-18 | **RESOLVED 2026-07-18 via HEADERS-CONFIG-2026-07-18**: rel مضاف على الرابط الخارجي (sdaia.gov.sa) في source + dist. configuration test يفحص الـ source و dist ويعتبر regression fail. | `src/content/blog/pdpl-and-ai-saudi.md`, `dist/client/blog/pdpl-and-ai-saudi/index.html`, `scripts/headers-config.test.mjs` |
+| KI-BAI-SEC-HEADERS-001 | CSP مزدوج: HTTP header (Cloudflare Transform Rule) + `<meta http-equiv="Content-Security-Policy">` (مخبوزة في HTML من `injectSecurityMeta()`) → المتصفح يطبّق intersection → تحذيرات console + beacon `cloudflareinsights.com` ممنوع | medium | open | 2026-07-29 (BAI-SEC-HEADERS) | **Discovered during BAI-SEC-HEADERS verification**: بعد ما أضفت CSP كـ HTTP header عبر Cloudflare Transform Rule، بقيت الـ `<meta>` القديمة في كل HTML (مولّدة من `injectSecurityMeta()` في `astro.config.mjs:94`). المتصفح يطبّق intersection (الأشد). النتيجة: (1) تحذيرات console pre-existing (`frame-ancestors`/`report-uri`/`X-Frame-Options` مُتجاهلة في `<meta>` لأن `<meta>` ما يدعمها). (2) beacon `cloudflareinsights.com` يظل ممنوع لأن الـ `<meta>` ما عندها القاعدة (HTTP header سمحت فيه بس الـ `<meta>` ما سمحت). **التأثير**: console noise + فقدان Cloudflare Web Analytics (الـ primary analytics هو GA4 `G-8LLESL207Q`، فما في فقدان فعلي). **Fix المقترح**: تعطيل `injectSecurityMeta()` في `astro.config.mjs` (HTTP header صار المصدر الوحيد عبر Cloudflare) + rebuild + redeploy. يحتاج code change. Reversal: low (لو زالت Cloudflare Transform Rule، نرجّع `injectSecurityMeta()`). | `astro.config.mjs:94` (`injectSecurityMeta()`), `astro.config.mjs:1071` (integration registration) |
 | KI-BAI-A11Y-02-001 | 4 serious axe violations (document-title + html-has-lang) على /kernel/ و /kernel/chat/ | medium | open | 2026-07-29 (BAI-A11Y-02 diagnostic) | **Discovered by BAI-A11Y-02 axe-scan (2026-07-29)**: `/kernel/` و `/kernel/chat/` يرجعون 200 لكن: (a) `<title>` فارغ أو مو موجود. (b) `<html>` ما عنده `lang` attribute. **التأثير**: axe-scan يحسبها serious (مو critical)، يفشل GSC SEO audits (noindex implicitly). **خارج scope BAI-A11Y-02** (موضوعها focus-visible، مو SEO/i18n). **Fix المقترح** (BAI-SEO-??): تعديل `src/pages/kernel/index.astro` و `src/pages/kernel/chat.astro` (أو wrapper) لإضافة `<title>` صريح + `lang="ar"` على `<html>`. Ki مشابه لـ KI-003 (EN pages بدون source counterparts) — نفس النمط، إصلاح متماثل. | `src/pages/kernel/index.astro`, `src/pages/kernel/chat.astro` |
 | KI-BAI-A11Y-02-002 | Skip-link يعرض box-shadow بدل outline على focus (manual keyboard nav test) | low | open | 2026-07-29 (BAI-A11Y-02 diagnostic) | **Discovered by `scripts/verify-focus-visible-keyboard.mjs`**: skip-link (`.skip-link`) عند `:focus-visible { outline: none; ... }` في `src/styles/base.css:391-401` ويستخدم 2px border + box-shadow كـ focus indicator. الـ border موجود في الـ base style (مو في :focus state)، فالـ contrast بين الـ focus state و الـ non-focus state يعتمد على border-color change. **التحقق المطلوب**: (a) حساب contrast ratio بين border color في :focus vs non-focus state. (b) لازم يكون ≥ 3:1 (WCAG 1.4.11). (c) لو أقل، إضافة outline 2px solid `--interactive-primary` كـ fallback. **خارج scope BAI-A11Y-02** (skip-link قاعدة منفصلة، ما تأثرت بـ 30 override المُصلَحة). | `src/styles/base.css:391-401` |
 | KI-BAI-A11Y-02-003 | /kernel/ عنده focus-trap + custom tabindex management — manual keyboard nav ما يقدر يختبر focus indicator تلقائياً | low | open | 2026-07-29 (BAI-A11Y-02 verification) | **Discovered during BAI-A11Y-02 keyboard nav test**: عند تشغيل `node scripts/verify-focus-visible-keyboard.mjs` على /kernel/، الـ 8 tabs الأولى كلها landing على `<body>` بدل focusable elements. السبب: (a) `focus-trap.js` (shared focus trap helper) يحبس focus داخل sections. (b) `tabindex="-1"` على عناصر container (kernel page header، demo pill، إلخ). **التأثير**: ما يقدر نتحقق بـ automated test — لازم manual Playwright script مخصص يدخل الـ focus trap zones ويختبر الـ buttons داخلها. **خارج scope BAI-A11Y-02** (صفحات kernel app-like، مو marketing pages). **Out-of-scope fix المقترح** (BAI-A11Y-??): كتابة Playwright script مخصص لـ kernel pages يتفاعل مع الـ focus trap zones. | `src/scripts/focus-trap.js`, `src/pages/kernel/*.astro` |
