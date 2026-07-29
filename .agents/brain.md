@@ -1125,6 +1125,62 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-30 — BAI-REDIRECT-001: Cloudflare Single Redirects as authoritative legacy redirect layer — `scripts/setup-cloudflare-redirect-rules.mjs` (16KB) + report (BAI-PROC-12 compliant) + brain DEC جديد — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **1 جديد، 0 معدّل، 0 محذوف**.
+  - `scripts/setup-cloudflare-redirect-rules.mjs` (new, 16,179 bytes) — idempotent Cloudflare API script.
+  - `report/2026-07-30-bai-redirect-001-cloudflare-redirect-rules.md` (new, ~12KB) — BAI-PROC-12 compliant، `verified_production: no`، `verified_local: yes`، `verified_production_blocker: waiting for CLOUDFLARE_API_TOKEN + ZONE_ID`.
+  - `.agents/brain.md` (this entry + DEC جديد DEC-BAI-REDIRECT-2026-07-30-001).
+
+- **What**: BAI-REDIRECT-001 — تشخيص + حل للـ P0 "14% of v1 traffic → 404". كل الطبقات الـ 3 الموجودة ما تخدم legacy 301 redirects على Render Static Site + Cloudflare front stack:
+  1. `astro.config.mjs` `redirects:` (206 entries) — Astro 6 `output: 'static'` يولّد meta refresh في HTML files، مو 301 HTTP response.
+  2. `render.yaml` `routes:` (≈200 entries) — Render Web Service ما يدعم `routes:` directive (Static Sites فقط). الموقع الآن `static_site` بعد BAI-FIX-2026-07-29.
+  3. `public/_redirects` (134 rules) — Render static_site يطبّق trailing-slash normalize **قبل** _redirects → paths بدون trailing-slash (مثل `/report`) يطلعوا 301 → `/report/` بدل `/trust/`.
+  الدليل الحّي: `curl -sI https://brightai.site/report` → `301 → /report/` (Cloudflare + Render trailing-slash)؛ المتوقع `301 → /trust/`. نفس الشي `/blog/ai`, `/blog.html`, `/blog/Generative-artificial-intelligence`. `/frontend/` → 404 بدل 301 → /404/.
+
+  الحل: Cloudflare Single Redirects (نفس مستوى HSTS اللي شغّال في BAI-SEC-HEADERS-2026-07-29). phase `http_request_dynamic_redirect` على zone level. كل redirect = 1 rule بـ static target URL + 301. `scripts/setup-cloudflare-redirect-rules.mjs` يقرأ 207 entries من `redirects.json` (literal paths only، 0 wildcards/http variants) ويبني 207 rules. Sort longest-first لتجنب prefix-shadowing. Idempotent: يقرأ current ruleset، يحذف `BAI-REDIRECT-001:*` rules، يضيف الجديدة. يحفظ any non-BAI rules. `DRY_RUN=1` للـ safe preview. `JSON_OUT=...` للـ audit trail.
+
+- **Why**: (1) Legacy v1 traffic (14% من الزيارات) → 404 = خسارة ranking + تجربة مستخدم سيئة. (2) Google Search Console "soft 404" warnings. (3) نفس pattern الـ HSTS (BAI-SEC-11) و BAI-SEC-HEADERS-2026-07-29 — كل اللي نجح على Cloudflare edge. (4) Single Redirects execute **first** في Cloudflare's rules pipeline، قبل أي caching أو origin hit = الأداء optimal.
+
+- **Verification (حتى الآن — Phase 1، local only)**:
+  - `node --check scripts/setup-cloudflare-redirect-rules.mjs` → ✅ syntax OK
+  - Standalone node test لـ `loadAndFilter()` logic: 207 / 207 kept، 0 dropped، 0 wildcards، 0 http variants، longest-first sort confirmed (`/blog/التعلم الآلي والرؤية...html` أولاً، `/report` آخر)
+  - `pnpm run redirects:check` → ✅ exit 0 (baseline clean: 0 self/duplicate/chain/cycle)
+  - Live curl (Pre-Apply baseline):
+    - `/report` → 301 → `/report/` (Cloudflare trailing-slash، not /trust/) ❌
+    - `/blog/ai` → 301 → `/blog/ai/` ❌
+    - `/blog.html` → 404 ❌
+    - `/blog/Generative-artificial-intelligence` → 301 → `/blog/Generative-artificial-intelligence/` ❌
+    - `/client/index.html` → 404 ✅ (correct, this IS expected 404)
+    - `/frontend/` → 404 ❌ (المتوقع 301 → /404/)
+- **Verification (after Apply — pending Phase 2+3+4)**: DRY_RUN → Apply → curl 5 sample URLs → كلهم يرجعوا 301 مع الـ Location الصحيح → `pnpm run redirects:check` exit 0.
+- **Report**: `report/2026-07-30-bai-redirect-001-cloudflare-redirect-rules.md` (BAI-PROC-12 compliant، `verified_production: no`، `verified_production_blocker: waiting for credentials + Apply`).
+- **Commit**: uncommitted (per brain line 18 — المستخدم commit، الدفع عبر main فقط PR، لا branch جديد).
+- **Status**: **verified locally** (Phase 1 complete). **pending production** (Phase 2/3/4/5 — credentials + Apply + verify + cleanup).
+- **DEC جديد (DEC-BAI-REDIRECT-2026-07-30-001)**: على Render Static Site + Cloudflare front stack، **Cloudflare Single Redirects = single source of truth for legacy 301 redirects**. `astro.config.mjs` `redirects:` و `render.yaml` `routes:` و `public/_redirects` كلهم **DOCUMENTATION ONLY** (ما يخدمون في الإنتاج). الـ SoT الوحيد = `redirects.json` + Cloudflare ruleset (synced عبر السكربت). Reversal cost: low (delete BAI-REDIRECT-001 rules from Cloudflare dashboard، أو re-run السكربت بـ empty redirects.json). Do not add أي legacy redirect في Astro/Netlify format جديد بدون migrating to Cloudflare ruleset.
+- **Brain updates**: هذا الـ entry + DEC جديد في Section 4.
+- **Risks Addressed**:
+  - **R1 (14% legacy v1 traffic → 404)**: closed after Apply.
+  - **R2 (GSC soft-404 warnings)**: closed after Apply.
+  - **R3 (redirect chains/cycles)**: prevented by `redirects:check` (baseline exit 0).
+- **Risks Remaining**:
+  - **R4 (Cloudflare Pro plan rule-count limit)**: 207 rules على Pro plan يصير. user أكد Pro+. لو API رجّع HTTP 400 "rules limit exceeded" → exit 1 → need upgrade أو migrate to Bulk Redirects (out of scope لـ BAI-REDIRECT-001).
+  - **R5 (CF cache stale)**: Zone-level rules propagate ~30s. `pnpm run cloudflare:purge` available كـ safety net (ما اتنفذ بعد).
+  - **R6 (script mis-execution)**: mitigated by Phase 2 (DRY_RUN) قبل Phase 3 (Apply).
+  - **R7 (lost non-BAI rules)**: mitigated by `isBaiRule()` filter — يحفظ any rule without `BAI-REDIRECT-001:` prefix.
+  - **R8 (idempotency on manually edited rules)**: detected via `shapeMatches()`، يستبدل الـ drifted rules على next run.
+- **Out-of-Scope (backlog)**:
+  - **BAI-REDIRECT-002**: Bulk Redirects fallback لو API رجّع rule-count error.
+  - **BAI-REDIRECT-003**: `--no-bai-rules` mode لـ explicit rollback.
+  - **BAI-REDIRECT-004**: `pnpm run verify:redirects:live` — auto-curl 5-10 URLs + compare against `redirects.json`.
+  - **BAI-REDIRECT-005**: تحقق من الـ 8 `%xx`-encoded Arabic paths في `_redirects` (مثل `/docs/Governance%D9%80application`) — هل محتاجين entries منفصلة في `redirects.json`.
+- **Notes**:
+  - السكربت بـ 16KB، نفس نمط `setup-cloudflare-hsts-transform-rule.mjs` (BAI-SEC-11) — reuses `cfFetch()`, `readEntrypoint()`, `writeEntrypoint()` patterns.
+  - Single Redirects execute **first** في Cloudflare's rules pipeline (قبل caching، قبل origin hit) = أفضل أداء.
+  - الـ 207 rules تعدّت حد Free plan (10 rules). تأكدنا من Pro+ في الـ questionnaire.
+  - **credentials required**: `CLOUDFLARE_API_TOKEN` (صلاحية `Zone > Single Redirect > Edit`) + `CLOUDFLARE_ZONE_ID`. بدونهم السكربت يخرج exit 2 (FATAL).
+- **Related**: BAI-SEC-11 (HSTS transform rule، نفس الـ pattern)، BAI-SEC-HEADERS-2026-07-29 (7 security headers، على نفس `http_response_headers_transform` phase)، BAI-FIX-2026-07-29 (Render `publishPath: dist/client` — يحدد إن الموقع static_site)، DEC-BAI-IDX-22-001 (legacy redirects via `astro.config.mjs` — **superseded** بهذا الـ DEC).
+
 ### 2026-07-29 — CHAMPION-01 — Champion orchestrator run (Delta measurement)
 
 - **Files**: scripts/prompt-champion.mjs (created), reports/CHAMPION-STATE.md (created), brightai-audit-reports/prompt-reports/CHAMPION-01-2026-07-29.md (created), package.json (added prompt:champion script)
@@ -6717,6 +6773,25 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 4. Decisions Log
+
+### DEC-BAI-REDIRECT-2026-07-30-001: Cloudflare Single Redirects = single source of truth for legacy 301 redirects على brightai.site
+
+- **Date**: 2026-07-30
+- **Context**: على Render Static Site (`srv-d7m5bcjbc2fs73826v20`، type `static_site`، `publishPath: dist/client` per DEC-FIX-2026-07-29-001) + Cloudflare front stack، كل الطبقات الـ 3 الموجودة لـ legacy 301 redirects **ما تخدم في الإنتاج**:
+  1. `astro.config.mjs` `redirects:` (206 entries) — Astro 6 `output: 'static'` يولّد meta refresh في HTML files، مو 301 HTTP response.
+  2. `render.yaml` `routes:` (≈200 entries) — Render Web Service ما يدعم `routes:` directive. الآن الموقع `static_site` فما يحتمل من الأصل.
+  3. `public/_redirects` (134 rules) — Render static_site يطبّق trailing-slash normalize **قبل** _redirects → paths بدون trailing-slash يرجعوا 301 → `/path/` بدل الـ destination الصحيح.
+  الدليل الحّي: `curl -sI https://brightai.site/report` → 301 → `/report/` (trailing-slash normalize) بدل 301 → `/trust/`. نفس الشي `/blog/ai`, `/blog.html`, `/blog/Generative-artificial-intelligence`. النتيجة: 14% من الزيارات legacy v1 = 404.
+- **Decision**: **Cloudflare Single Redirects** في phase `http_request_dynamic_redirect` على zone level = الـ single source of truth. `scripts/setup-cloudflare-redirect-rules.mjs` يقرأ 207 entries من `redirects.json`، يبني 207 Single Redirect rules، يدفعها عبر `PUT /zones/{zone_id}/rulesets/phases/http_request_dynamic_redirect/entrypoint`. Idempotent (يحفظ non-BAI rules عبر `isBaiRule()` filter). `DRY_RUN=1` للـ safe preview. `JSON_OUT=...` للـ audit trail.
+- **Rationale**: (1) Single Redirects execute **first** في Cloudflare's rules pipeline (قبل caching، قبل origin hit) = أفضل أداء وأبسط debugging. (2) Same pattern اللي نجح في BAI-SEC-11 (HSTS) و BAI-SEC-HEADERS-2026-07-29 (7 security headers) — proven على نفس الـ stack. (3) Cloudflare edge tخدم على مستوى الـ request، ما يتأثر بـ Render's trailing-slash normalize. (4) `redirects.json` يبقى الـ SoT للـ data (rebuildable). (5) Sort longest-first يـ prevent prefix-shadowing (Cloudflare first-match).
+- **Reversal cost**: low. Rollback بـ: (1) Run السكربت بـ empty `redirects.json` (1 rule placeholder) → يفرض replace كل الـ BAI rules. (2) أو يدوياً: Cloudflare dashboard → Rules → Redirect Rules → حذف `BAI-REDIRECT-001:*` rules. (3) أو `DELETE /zones/{zone_id}/rulesets/phases/http_request_dynamic_redirect/entrypoint` (atomic clear). 
+- **Implication للـ future migration**: لو انتقل الموقع لـ static-only host (Render Static Site ما يدعم _redirects لـ api/* لكن يدعم للـ paths، أو Cloudflare Pages، أو Netlify)، الـ Cloudflare ruleset يبقى layer إضافي. ممكن يبقى أو يُحذف حسب الـ target host.
+- **Supersedes**: DEC-BAI-IDX-22-001 (legacy redirects via `astro.config.mjs redirects:`) — اللي ما يخدم على Render Static Site.
+- **Do not**:
+  - إضافة legacy redirect جديد في `astro.config.mjs` / `public/_redirects` / `render.yaml routes:` بدون migrate لـ `redirects.json` + Cloudflare ruleset.
+  - تعديل `redirects.json` بدون إعادة تشغيل السكربت (sync).
+  - استخدام wildcards (`*`, `:`, `?`) في `redirects.json` — Single Redirects literal paths only (الـ filter يحذف wildcards).
+  - تخطي Phase 2 (DRY_RUN) قبل Phase 3 (Apply) — Dry-run يحمي من mis-execution.
 
 ### DEC-EXEC-08-NEW-2026-07-29-001: When a re-prompted task is already executed (and proposes a regression) → ask the user, don't auto-execute
 
