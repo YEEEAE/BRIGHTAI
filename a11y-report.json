@@ -18,7 +18,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:33.959Z",
+      "timestamp": "2026-07-29T01:41:08.682Z",
       "url": "http://localhost:4321/",
       "toolOptions": {
         "runOnly": {
@@ -873,6 +873,39 @@
                 }
               ],
               "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
               "html": "<aside class=\"home-kernel-showcase\" aria-labelledby=\"kernel-demo-title\" data-astro-cid-du4vkfjw=\"\">",
               "target": [
                 ".home-kernel-showcase"
@@ -1500,9 +1533,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-h8ti9mqw\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-a8zr0pkr"
+                "#trap-focus-h8ti9mqw"
               ]
             },
             {
@@ -1767,6 +1800,39 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"home_cta-pdpl-consent-error\" id=\"home_cta-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#home_cta-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -2571,6 +2637,24 @@
               ],
               "none": [],
               "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
               "html": "<aside class=\"home-kernel-showcase\" aria-labelledby=\"kernel-demo-title\" data-astro-cid-du4vkfjw=\"\">",
               "target": [
                 ".home-kernel-showcase"
@@ -2913,9 +2997,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-h8ti9mqw\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-a8zr0pkr"
+                "#trap-focus-h8ti9mqw"
               ]
             },
             {
@@ -3060,6 +3144,24 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"home_cta-pdpl-consent-error\" id=\"home_cta-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#home_cta-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -3615,6 +3717,78 @@
                 }
               ],
               "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "deprecatedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "minor",
+                  "message": "ARIA role is not deprecated"
+                }
+              ],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(1)"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "deprecatedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "minor",
+                  "message": "ARIA role is not deprecated"
+                }
+              ],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(2)"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "deprecatedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "minor",
+                  "message": "ARIA role is not deprecated"
+                }
+              ],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(3)"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "deprecatedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "minor",
+                  "message": "ARIA role is not deprecated"
+                }
+              ],
+              "impact": null,
               "html": "<footer class=\"footer\" role=\"contentinfo\">",
               "target": [
                 "footer"
@@ -3979,7 +4153,7 @@
               "impact": null,
               "html": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\" data-astro-cid-3ef6ksr2=\"\">",
               "target": [
-                ".site-header__whatsapp > svg[height=\"18\"][width=\"18\"][fill=\"currentColor\"]"
+                ".site-header__whatsapp > svg[fill=\"currentColor\"][height=\"18\"][width=\"18\"]"
               ]
             },
             {
@@ -8299,7 +8473,7 @@
               "impact": null,
               "html": "<svg aria-hidden=\"true\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
-                ".btn--outline > svg[height=\"18\"][width=\"18\"][fill=\"currentColor\"]"
+                ".btn--outline > svg[fill=\"currentColor\"][height=\"18\"][width=\"18\"]"
               ]
             },
             {
@@ -8939,7 +9113,7 @@
               "impact": null,
               "html": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">",
               "target": [
-                ".footer__whatsapp > svg[height=\"18\"][width=\"18\"][fill=\"currentColor\"]"
+                ".footer__whatsapp > svg[fill=\"currentColor\"][height=\"18\"][width=\"18\"]"
               ]
             },
             {
@@ -8971,7 +9145,7 @@
               "impact": null,
               "html": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"> <path d=\"M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z\"></path> </svg>",
               "target": [
-                "a[href$=\"brightai_sa\"] > svg[height=\"18\"][width=\"18\"][fill=\"currentColor\"]"
+                "a[href$=\"brightai_sa\"] > svg[fill=\"currentColor\"][height=\"18\"][width=\"18\"]"
               ]
             },
             {
@@ -9003,7 +9177,7 @@
               "impact": null,
               "html": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">",
               "target": [
-                "a[aria-label=\"لينكدإن\"] > svg[height=\"18\"][width=\"18\"][fill=\"currentColor\"]"
+                "a[aria-label=\"لينكدإن\"] > svg[fill=\"currentColor\"][height=\"18\"][width=\"18\"]"
               ]
             },
             {
@@ -9035,7 +9209,7 @@
               "impact": null,
               "html": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\">",
               "target": [
-                "a[aria-label=\"جيت هب\"] > svg[height=\"18\"][width=\"18\"][fill=\"currentColor\"]"
+                "a[aria-label=\"جيت هب\"] > svg[fill=\"currentColor\"][height=\"18\"][width=\"18\"]"
               ]
             },
             {
@@ -9262,6 +9436,24 @@
               "html": "<span class=\"split-hero__chip-words\" aria-live=\"polite\" aria-atomic=\"true\" data-astro-cid-du4vkfjw=\"\">",
               "target": [
                 ".split-hero__chip-words"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
               ]
             },
             {
@@ -9583,9 +9775,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-h8ti9mqw\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-a8zr0pkr"
+                "#trap-focus-h8ti9mqw"
               ]
             },
             {
@@ -9730,6 +9922,24 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"home_cta-pdpl-consent-error\" id=\"home_cta-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#home_cta-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -10285,6 +10495,78 @@
               "all": [],
               "none": [],
               "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "All required ARIA attributes are present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(1)"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "All required ARIA attributes are present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(2)"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "All required ARIA attributes are present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(3)"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "All required ARIA attributes are present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
               "html": "<footer class=\"footer\" role=\"contentinfo\">",
               "target": [
                 "footer"
@@ -10468,6 +10750,24 @@
               "html": "<ul class=\"site-header__nav-list\" role=\"menubar\" data-astro-cid-3ef6ksr2=\"\">",
               "target": [
                 ".site-header__nav-list"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-children",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Required ARIA children are present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
               ]
             },
             {
@@ -10684,6 +10984,60 @@
               "html": "<a href=\"/pricing/\" class=\"site-header__nav-link\" role=\"menuitem\" data-astro-cid-3ef6ksr2=\"\"> الأسعار </a>",
               "target": [
                 ".site-header__nav-link[href$=\"pricing/\"][role=\"menuitem\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-parent",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Required ARIA parent role present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(1)"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-parent",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Required ARIA parent role present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(2)"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-required-parent",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Required ARIA parent role present"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(3)"
               ]
             }
           ]
@@ -11022,6 +11376,134 @@
               "html": "<a href=\"/pricing/\" class=\"site-header__nav-link\" role=\"menuitem\" data-astro-cid-3ef6ksr2=\"\"> الأسعار </a>",
               "target": [
                 ".site-header__nav-link[href$=\"pricing/\"][role=\"menuitem\"]"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "invalidrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is valid"
+                },
+                {
+                  "id": "abstractrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Abstract roles are not used"
+                },
+                {
+                  "id": "unsupportedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "invalidrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is valid"
+                },
+                {
+                  "id": "abstractrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Abstract roles are not used"
+                },
+                {
+                  "id": "unsupportedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(1)"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "invalidrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is valid"
+                },
+                {
+                  "id": "abstractrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Abstract roles are not used"
+                },
+                {
+                  "id": "unsupportedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(2)"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "invalidrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is valid"
+                },
+                {
+                  "id": "abstractrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Abstract roles are not used"
+                },
+                {
+                  "id": "unsupportedrole",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA role is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(3)"
               ]
             },
             {
@@ -11488,6 +11970,38 @@
               "html": "<span class=\"split-hero__chip-words\" aria-live=\"polite\" aria-atomic=\"true\" data-astro-cid-du4vkfjw=\"\">",
               "target": [
                 ".split-hero__chip-words"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
               ]
             },
             {
@@ -12125,9 +12639,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-h8ti9mqw\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-a8zr0pkr"
+                "#trap-focus-h8ti9mqw"
               ]
             },
             {
@@ -12384,6 +12898,38 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"home_cta-pdpl-consent-error\" id=\"home_cta-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#home_cta-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -13169,6 +13715,24 @@
               "all": [],
               "none": [],
               "impact": null,
+              "html": "<div class=\"trust-badges\" role=\"list\" aria-label=\"الالتزامات والمعايير السعودية\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                ".trust-badges"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
               "html": "<aside class=\"home-kernel-showcase\" aria-labelledby=\"kernel-demo-title\" data-astro-cid-du4vkfjw=\"\">",
               "target": [
                 ".home-kernel-showcase"
@@ -13511,9 +14075,9 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-a8zr0pkr\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-h8ti9mqw\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-a8zr0pkr"
+                "#trap-focus-h8ti9mqw"
               ]
             },
             {
@@ -13658,6 +14222,24 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"home_cta-pdpl-consent-error\" id=\"home_cta-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#home_cta-pdpl_consent"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -14684,7 +15266,7 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 ".btn--block"
               ]
@@ -18655,6 +19237,111 @@
               "html": "<img src=\"/logo-96.webp\" alt=\"\" width=\"36\" height=\"36\" class=\"site-header__logo-img\" fetchpriority=\"high\" decoding=\"async\" data-astro-cid-3ef6ksr2=\"\">",
               "target": [
                 ".site-header__logo-img"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-alt",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has an alt attribute"
+                },
+                {
+                  "id": "presentational-role",
+                  "data": {
+                    "role": "presentation"
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element's default semantics were overridden with role=\"presentation\""
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "alt-space-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has a valid alt attribute value"
+                }
+              ],
+              "impact": null,
+              "html": "<img src=\"/icons/badges/pdpl.svg\" alt=\"\" width=\"18\" height=\"18\" loading=\"lazy\" decoding=\"async\" class=\"trust-badge__icon\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                "img[src$=\"pdpl.svg\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-alt",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has an alt attribute"
+                },
+                {
+                  "id": "presentational-role",
+                  "data": {
+                    "role": "presentation"
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element's default semantics were overridden with role=\"presentation\""
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "alt-space-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has a valid alt attribute value"
+                }
+              ],
+              "impact": null,
+              "html": "<img src=\"/icons/badges/nca-ecc.svg\" alt=\"\" width=\"18\" height=\"18\" loading=\"lazy\" decoding=\"async\" class=\"trust-badge__icon\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                "img[src$=\"nca-ecc.svg\"]"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "has-alt",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has an alt attribute"
+                },
+                {
+                  "id": "presentational-role",
+                  "data": {
+                    "role": "presentation"
+                  },
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element's default semantics were overridden with role=\"presentation\""
+                }
+              ],
+              "all": [],
+              "none": [
+                {
+                  "id": "alt-space-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "Element has a valid alt attribute value"
+                }
+              ],
+              "impact": null,
+              "html": "<img src=\"/icons/badges/sdaia.svg\" alt=\"\" width=\"18\" height=\"18\" loading=\"lazy\" decoding=\"async\" class=\"trust-badge__icon\" data-astro-cid-vzryxw22=\"\">",
+              "target": [
+                "img[src$=\"sdaia.svg\"]"
               ]
             },
             {
@@ -24388,7 +25075,7 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"اطلب ديمو الآن\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 ".btn--block"
               ]
@@ -25646,6 +26333,82 @@
                 {
                   "id": "color-contrast",
                   "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+                      "target": [
+                        ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(2)"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"split-hero__vignette\" aria-hidden=\"true\" data-astro-cid-du4vkfjw=\"\"></div>",
+                      "target": [
+                        ".split-hero__vignette"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"trust-badge__label\" data-astro-cid-vzryxw22=\"\">معتمد من NCA ECC</span>",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(2) > .trust-badge__label[data-astro-cid-vzryxw22=\"\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
+                    "contrastRatio": 0,
+                    "fontSize": "9.8pt (13px)",
+                    "fontWeight": "normal",
+                    "messageKey": "bgGradient",
+                    "expectedContrastRatio": "4.5:1"
+                  },
+                  "relatedNodes": [
+                    {
+                      "html": "<span class=\"trust-badge\" role=\"listitem\" data-astro-cid-vzryxw22=\"\">",
+                      "target": [
+                        ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(3)"
+                      ]
+                    },
+                    {
+                      "html": "<div class=\"split-hero__vignette\" aria-hidden=\"true\" data-astro-cid-du4vkfjw=\"\"></div>",
+                      "target": [
+                        ".split-hero__vignette"
+                      ]
+                    }
+                  ],
+                  "impact": "serious",
+                  "message": "Element's background color could not be determined due to a background gradient"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": "serious",
+              "html": "<span class=\"trust-badge__label\" data-astro-cid-vzryxw22=\"\">مبني حسب SDAIA</span>",
+              "target": [
+                ".trust-badge[role=\"listitem\"][data-astro-cid-vzryxw22=\"\"]:nth-child(3) > .trust-badge__label[data-astro-cid-vzryxw22=\"\"]"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element's background color could not be determined due to a background gradient"
+            },
+            {
+              "any": [
+                {
+                  "id": "color-contrast",
+                  "data": {
                     "fontSize": "9.0pt (12px)",
                     "fontWeight": "normal",
                     "messageKey": "pseudoContent",
@@ -25872,7 +26635,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:35.142Z",
+      "timestamp": "2026-07-29T01:41:09.811Z",
       "url": "http://localhost:4321/en/",
       "toolOptions": {
         "runOnly": {
@@ -37571,7 +38334,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:36.109Z",
+      "timestamp": "2026-07-29T01:41:10.741Z",
       "url": "http://localhost:4321/pricing/",
       "toolOptions": {
         "runOnly": {
@@ -55004,7 +55767,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:39.024Z",
+      "timestamp": "2026-07-29T01:41:13.933Z",
       "url": "http://localhost:4321/contact/",
       "toolOptions": {
         "runOnly": {
@@ -56032,9 +56795,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-oweuqxvg\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-mts1oixk"
+                "#trap-focus-oweuqxvg"
               ]
             },
             {
@@ -56299,6 +57062,39 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"contact_main-pdpl-consent-error\" id=\"contact_main-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#contact_main-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-allowed-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attributes are used correctly for the defined role"
+                },
+                {
+                  "id": "aria-allowed-attr-elm",
+                  "data": null,
+                  "relatedNodes": [],
+                  "message": "ARIA attributes are allowed for this element",
+                  "impact": "critical"
+                }
+              ],
+              "none": [
+                {
+                  "id": "aria-unsupported-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute is supported"
+                }
+              ],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -57208,9 +58004,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-oweuqxvg\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-mts1oixk"
+                "#trap-focus-oweuqxvg"
               ]
             },
             {
@@ -57355,6 +58151,24 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"contact_main-pdpl-consent-error\" id=\"contact_main-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#contact_main-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-conditional-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -59520,9 +60334,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-oweuqxvg\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-mts1oixk"
+                "#trap-focus-oweuqxvg"
               ]
             },
             {
@@ -59667,6 +60481,24 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"contact_main-pdpl-consent-error\" id=\"contact_main-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#contact_main-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [],
+              "none": [
+                {
+                  "id": "aria-prohibited-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "serious",
+                  "message": "ARIA attribute is allowed"
+                }
+              ],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -61650,9 +62482,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-oweuqxvg\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-mts1oixk"
+                "#trap-focus-oweuqxvg"
               ]
             },
             {
@@ -61909,6 +62741,38 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"contact_main-pdpl-consent-error\" id=\"contact_main-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#contact_main-pdpl_consent"
+              ]
+            },
+            {
+              "any": [],
+              "all": [
+                {
+                  "id": "aria-valid-attr-value",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute values are valid"
+                },
+                {
+                  "id": "aria-errormessage",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-errormessage exists and references elements visible to screen readers that use a supported aria-errormessage technique"
+                },
+                {
+                  "id": "aria-level",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "aria-level values are valid"
+                }
+              ],
+              "none": [],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -62798,9 +63662,9 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-mts1oixk\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-oweuqxvg\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-mts1oixk"
+                "#trap-focus-oweuqxvg"
               ]
             },
             {
@@ -62945,6 +63809,24 @@
               "html": "<input required=\"\" aria-required=\"true\" aria-describedby=\"contact_main-pdpl-consent-error\" id=\"contact_main-pdpl_consent\" name=\"pdpl_consent\" type=\"checkbox\" class=\"form-field__checkbox\" data-field=\"pdpl_consent\" data-field-type=\"checkbox\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 "#contact_main-pdpl_consent"
+              ]
+            },
+            {
+              "any": [
+                {
+                  "id": "aria-valid-attr",
+                  "data": null,
+                  "relatedNodes": [],
+                  "impact": "critical",
+                  "message": "ARIA attribute name is valid"
+                }
+              ],
+              "all": [],
+              "none": [],
+              "impact": null,
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
+              "target": [
+                ".btn--block"
               ]
             },
             {
@@ -63637,7 +64519,7 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 ".btn--block"
               ]
@@ -69966,7 +70848,7 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
+              "html": "<button class=\"btn btn--primary btn--block inner-form__submit lead-form__submit\" type=\"submit\" aria-busy=\"false\" data-submit-button=\"\" data-default-label=\"إرسال الرسالة\" data-astro-cid-xyq5hly5=\"\">",
               "target": [
                 ".btn--block"
               ]
@@ -70827,7 +71709,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:40.068Z",
+      "timestamp": "2026-07-29T01:41:14.982Z",
       "url": "http://localhost:4321/about/",
       "toolOptions": {
         "runOnly": {
@@ -83149,7 +84031,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:41.308Z",
+      "timestamp": "2026-07-29T01:41:15.916Z",
       "url": "http://localhost:4321/trust/",
       "toolOptions": {
         "runOnly": {
@@ -98339,7 +99221,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:42.336Z",
+      "timestamp": "2026-07-29T01:41:16.806Z",
       "url": "http://localhost:4321/kernel/",
       "toolOptions": {
         "runOnly": {
@@ -99777,7 +100659,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:42.996Z",
+      "timestamp": "2026-07-29T01:41:17.488Z",
       "url": "http://localhost:4321/kernel/chat/",
       "toolOptions": {
         "runOnly": {
@@ -101132,7 +102014,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:43.899Z",
+      "timestamp": "2026-07-29T01:41:18.382Z",
       "url": "http://localhost:4321/blog/",
       "toolOptions": {
         "runOnly": {
@@ -126109,7 +126991,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:44.981Z",
+      "timestamp": "2026-07-29T01:41:19.694Z",
       "url": "http://localhost:4321/customers/bank/",
       "toolOptions": {
         "runOnly": {
@@ -138136,7 +139018,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:45.974Z",
+      "timestamp": "2026-07-29T01:41:20.722Z",
       "url": "http://localhost:4321/solutions/",
       "toolOptions": {
         "runOnly": {
@@ -156057,7 +156939,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:47.958Z",
+      "timestamp": "2026-07-29T01:41:22.134Z",
       "url": "http://localhost:4321/docs/",
       "toolOptions": {
         "runOnly": {
@@ -177940,7 +178822,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T00:53:49.426Z",
+      "timestamp": "2026-07-29T01:41:23.856Z",
       "url": "http://localhost:4321/hub/",
       "toolOptions": {
         "runOnly": {

@@ -465,7 +465,7 @@ export const sectors: SectorData[] = [
         ],
       },
     ],
-    docs:['/docs/pdpl-ai-governance/','/docs/nca-ecc-ai-controls/','/docs/nca-ecc-ai-controls-mapping/','/docs/nca-ecc-ai-governance/','/docs/nca-ecc-ai-guide/'], blog:['/blog/ai-governance-saudi-arabia/','/blog/saudi-ai-regulators-guide/','/blog/sdaia-seven-principles-practical-guide/','/blog/nca-cybersecurity-requirements-saudi/','/blog/nca-ecc-ai-controls-guide/','/blog/ecc-vs-cscc-cybersecurity-controls/','/blog/cloud-cybersecurity-controls-ccc-saudi/'],
+    docs:['/docs/pdpl-ai-governance/','/docs/nca-ecc-ai-controls/','/docs/nca-ecc-ai-controls-mapping/','/docs/nca-ecc-ai-governance/','/docs/nca-ecc-ai-guide/'], blog:['/blog/ai-governance-saudi-arabia/','/blog/saudi-ai-regulators-guide/','/blog/sdaia-seven-principles-practical-guide/','/blog/nca-cybersecurity-requirements-saudi/','/blog/nca-ecc-ai-controls-guide/','/blog/ecc-vs-cscc-cybersecurity-controls/','/blog/cloud-cybersecurity-controls-ccc-saudi/','/blog/iso-42001-nca-ecc-saudi/','/blog/sdaia-nca-pdpl-regulatory-map/'],
     regulations: regulationsBySectorSlug['government-ai-governance'],
     faqs: faqsBySectorSlug['government-ai-governance'],
     content: {

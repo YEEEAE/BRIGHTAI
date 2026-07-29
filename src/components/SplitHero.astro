@@ -680,6 +680,9 @@ import TrustBadges from './TrustBadges.astro';
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    /* BAI-DESIGN-07: explicit WCAG 2.5.5 touch target (matches --touch-min = 44px).
+       Previously relied on padding + global ::before safety-net only. */
+    min-height: var(--touch-min);
     padding: 0.75rem 1.125rem;
     border-radius: var(--radius-lg);
     font-weight: 700;

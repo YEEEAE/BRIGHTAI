@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 04:40 +03:00
+last_updated: 2026-07-29 04:45 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.49
+version: 2.7.50
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1038,6 +1038,38 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-DESIGN-08: LeadForm post-submit confirmation (✓ + WhatsApp alt CTA + GA4 `generate_lead`) — COVERED in `main` (no agent code change), verified via code grep; production curl blocked by KI-BAI-DESIGN-08-001
+
+- **Files**: **0 معدّل + 0 جديد** (5 files evidence-only — كل الكود المطلوب موجود في `main`):
+  - `src/components/LeadForm.astro` — success panel: lines 322-351 (title + body + ✓ `mdi-check-circle` SVG + 3 actions) + 555-575 (`.lead-form__whatsapp-alt` CSS مع تعليق صريح `/* WhatsApp alt CTA — BAI-DESIGN-08: ... */`). Default `successMessage` (line 102): `فريق BrightAI للحوكمة والامتثال سيتواصل معك خلال ٢٤ ساعة على نفس وسيلة التواصل اللي ذكرتها.`
+  - `src/scripts/lead-form-handler.js` — line 551-558: `leadTracker.generateLead(formId, path, {...})` بعد `.then` نجاح POST. لا PII — فقط `form_id` + `page_path` + UTM (source/medium/campaign).
+  - `src/lib/analytics.ts` — line 66: `GENERATE_LEAD: 'generate_lead'` (GA4 event constant).
+  - `src/lib/lead-tracker.ts` — line 121-146: `generateLead(formId, pagePath, opts)` يـ push للـ dataLayer بـ `value: 1, currency: 'SAR'` defaults.
+  - `src/pages/api/lead.ts` — line 288: JSON response message يطابق الـ prompt spec حرفياً: `'تم استلام طلبك بنجاح. فريق الحوكمة سيتواصل معك خلال 24 ساعة.'`
+- **What**: BAI-DESIGN-08 prompt طلب 4 deliverables (confirmation message + ✓ icon + WhatsApp alt CTA + GA4 `generate_lead`). كله موجود في `main` قبل بداية الـ session — الـ user commits بين الـ parallel worktrees و main عبر PR رفع التغييرات (الـ commit `10d034bf update site` يحوي `.lead-form__whatsapp-alt` block الجديد + تعليق BAI-DESIGN-08 + import `SITE` للـ WhatsApp URL). ما عدّلت أي كود — سجّلت الـ evidence + فتحت KI على production 404.
+- **Why**: MASTER-CRO-AUDIT-AR.md §4 (Prompt 4 → 8) يفرض post-submit confirmation كـ conversion requirement + WhatsApp alt path كـ fallback لو الـ user ما يبي ينتظر 24 ساعة + GA4 conversion event للـ Google Ads attribution. الـ CRO-LEADFORM-001 (2026-07-18) بنى البنية (success panel + handler + taxonomy + lead-tracker). BAI-DESIGN-08 هو اللمسة الأخيرة — أضاف الـ WhatsApp alt CTA على الـ success panel + ربط `generate_lead` في الـ chain. الـ worktrees المتوازية (.claude/worktrees/agent-{a7869,acf4a} على commit `9f9a8bc9`) ما عندها الـ change بعد — عند الـ user decision وقت.
+- **Verification** (code-only، الـ live blocked):
+  - `git log --all --oneline -S "BAI-DESIGN-08"` → `10d034bf update site` (commit الـ introducer) ✅
+  - `git diff origin/main HEAD -- src/components/LeadForm.astro` → فاضي (الـ change في origin) ✅
+  - `grep -n "lead-form__whatsapp-alt" src/components/LeadForm.astro` → 2 hits (HTML link line 340 + CSS rule line 560) ✅
+  - `grep -n "mdi-check-circle" src/components/LeadForm.astro` → 1 hit (line 332) ✅
+  - `grep -n "generateLead\|generate_lead" src/scripts/lead-form-handler.js src/lib/lead-tracker.ts src/lib/analytics.ts` → 6 hits total (handler 551, 554؛ tracker 121, 125, 130, 146) ✅
+  - `grep -n "تم استلام طلبك" src/pages/api/lead.ts` → 1 hit (line 288 — JSON response message) ✅
+  - **`curl -sI https://brightai.site/contact/` → HTTP 404** ❌ — production down (KI-BAI-DESIGN-08-001)
+  - **`curl -X POST https://brightai.site/api/lead` → HTTP 200 مع body فاضي** ❌ — endpoint up بس ما يرد JSON. السبب المحتمل: آخر deploy مكسور أو Render service restarted بـ empty state.
+  - `pnpm run build` → **ما شغّلته** (المستخدم طلب brain.md entry فقط، بدون verification cycle جديد). لو طلب، أقدر أبني محلياً + Playwright لتأكيد success panel render + GA4 event push.
+- **DEC جديد (DEC-BAI-DESIGN-08-2026-07-29-001)**: BAI-DESIGN-08 = "documentation task، مو implementation task" لما الكود المطلوب كله في main. الـ agent في هذه الحالة: (1) يراجع الكود بالـ grep، (2) يفتح KI لو اكتشف regression production (هنا: 404)، (3) يوثّق في brain بدل ما يـ duplicate الكود. Reversal cost: zero.
+- **DEC جديد (DEC-BAI-DESIGN-08-2026-07-29-002)**: BAI-DESIGN-08 الـ static default `successMessage` (LeadForm.astro line 102) ≠ الـ API response message (lead.ts line 288) — مختلفين عمداً. الـ static أغنى (يحتوي "BrightAI" brand + "على نفس وسيلة التواصل اللي ذكرتها") والـ API أبسط (يستخدم في logs). الاثنين يحققان نفس الـ conversion goal. لا تغيير مقترح بدون prompt صريح من المستخدم.
+- **Brain updates**: frontmatter (version 2.7.49 → 2.7.50). Section 3 (KI-BAI-DESIGN-08-001 جديد — production 404). Section 1: لا تغيير في baseline numbers (ما بنينا شي).
+- **Risks Addressed**:
+  - **R1 (No post-submit confirmation)**: closed. success panel مع `role="status" aria-live="polite"` موجود، focus ينتقل للـ heading بعد 50ms (handler line 343-346)، 3 actions (الرئيسية / استكشف الحلول / WhatsApp alt).
+  - **R2 (No alt path لو الـ user ما يبي ينتظر)**: closed. WhatsApp alt CTA يفتح `wa.me/?text=<SITE.whatsapp.message.ar>` في tab جديد مع `rel="nofollow noopener noreferrer"`.
+  - **R3 (No GA4 conversion tracking)**: closed. `generate_lead` يـ push للـ dataLayer بعد كل POST ناجح بـ `value: 1, currency: 'SAR'`. متوافق مع Google Ads conversion import.
+- **Risks Remaining**:
+  - **Live verification blocked**: production 404 يمنع التحقق من acceptance criteria #1 (`LeadForm يعرض confirmation message`) و #2 (`GA4 DebugView: event 'generate_lead' fired`). لازم deploy يصلح + ينبني dist/ يحتوي LeadForm.astro المحدّث.
+  - **Static vs API message divergence**: لا مشكلة وظيفية، بس فرق دقيق في الـ wording. لو تبي توحيد، اختر نص واحد.
+  - **Worktree drift**: الـ parallel agents (`.claude/worktrees/agent-{a7869,acf4a}`) على commit `9f9a8bc9` ما عندهم BAI-DESIGN-08. لو الـ user يفتح PR منهم، conflict متوقع مع main. الحل: rebase على main قبل الـ PR.
 
 ### 2026-07-29 — BAI-DESIGN-06: `aria-busy="false"` ثابت على زر LeadForm submit — معيار القبول `curl /contact/ | grep aria-busy → 1+` — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
 
@@ -6171,6 +6203,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | KI-009 | Tailwind configured but disabled | medium | open | 2026-06-29 | `tailwind.config.ts` exists, `tailwind-merge` in deps, but no `@tailwind` directive in CSS. Confuses contributors. | `tailwind.config.ts`, `package.json`, `src/lib/utils.ts` |
 | KI-SYNTAX-2026-07-18-001 | `<script nonce={Astro.locals.cspNonce}>import '...'</script>` بدون `type="module"` في 4 scripts من BaseLayout → 4 SyntaxError × 190 pages = 760 events | **critical** (100% pages broken at runtime) → **resolved 2026-07-18** | 2026-07-18 → 2026-07-18 | **RESOLVED 2026-07-18 via KI-SYNTAX-2026-07-18-001-FIX**: الـ root cause تم تأكيده + الـ fix path تم اختياره (نقل لـ `public/js/*.js` + `<script type="module" src="..." nonce="...">`، نفس pattern `analytics.js`). الـ 3 scripts (`font-async-loader.js`, `scroll-reveal.js`, `focus-trap.js`) انتقلت لـ `public/js/` وBaseLayout.astro يستخدم static ES modules. الـ script الرابع `page-view.js` deprecated ومُحذف في CRO-LEADFORM-001 (2026-07-18) ولا يحتاج fix. **Playwright verification**: 0 console SyntaxError events per page (was 4)، 6/6 problem-section feature cards `{ opacity: 1, is-visible: true }` (was opacity 0)، 30/31 reveal-targets revealed عبر 14 sections (was 0). **DEC جديد**: DEC-CSP-PATTERN-2026-07-18-001 يوثّق الـ pattern الآمن. **CI guard still TODO**: static check يفحص أي `<script>` يحوي `import` بدون `type="module"` → fail-fast. | `src/layouts/BaseLayout.astro` (3 scripts → static), `public/js/{font-async-loader,scroll-reveal,focus-trap}.js` (new location) |
 | KI-BAI-IDX-22-001 | `scripts/qa/orphan-pages-audit.mjs` ROOT bug — يفحص `scripts/__fixtures__/build-output/dist/` (test fixtures) بدل `dist/client/` (production build) → 191 false-positive orphans | medium | open | 2026-07-25 (BAI-IDX-22) | **Discovered by BAI-IDX-22 diagnostic**: `const ROOT = path.resolve(__dirname, '..')` يـ resolve إلى `scripts/` (لأن `__dirname = scripts/qa/`)، بدل `path.resolve(__dirname, '../..')` للـ project root. السكربت يفحص `scripts/__fixtures__/build-output/dist/**/*.html` (191 fixtures بدون `<a href>` tags بينهم) → 0 internal links → كلهم "orphans". الـ production reality: 0 orphans via `pnpm run internal-links:audit` (الـ gate الرسمي المعتمد على BAI-IDX-04). **Fix المقترح** (BAI-IDX-23): (1) `ROOT = path.resolve(__dirname, '../..')` (project root). (2) أضف `--source <dir>` flag (مثل `internal-linking-architecture.mjs`). (3) أضف `--strict` flag يفحص `dist/client/` + يقارن مع `sitemap.xml` (BAI-IDX-22 acceptance criterion). (4) Default `--source=dist/client`. (5) Optional: `--min-incoming <N>` flag لفحص ≥ N incoming (default 1، BAI-IDX-22 يحتاج 2). **Out of scope لـ BAI-IDX-22** per FILES IN SCOPE: "scripts/qa/orphan-pages-audit.mjs (no change — موجود)". | `scripts/qa/orphan-pages-audit.mjs` (line 9) |
+| KI-BAI-DESIGN-08-001 | `brightai.site` يرجع HTTP 404 على الرئيسية + `/contact/` + كل المسارات الـ prerendered (ما عدا `/api/lead` POST يرجع 200 بـ body فاضي) | critical | open | 2026-07-29 (BAI-DESIGN-08 verification) | **Discovered by BAI-DESIGN-08 verification** (2026-07-29 04:40+03:00): `curl -sI https://brightai.site/` → **HTTP 404** بـ `cf-ray: a22868f19c2bf4c0-MRS` + `rndr-id: e7abac19-e1a6-4834` + `server: cloudflare` (الطلب يوصل لـ Render لكن Render ما يلاقي الـ route). `curl -sI /contact/` → 404 نفس الـ behavior. `curl -sI /api/lead` (GET) → 404. `curl -X POST /api/lead -d '{}'` → **HTTP 200 بـ Content-Length: 0** (مش JSON المتوقع). **التأثير**: 100% من الزوار يشوفون 404 → Googlebot يحط الـ site في "Soft 404" → فقد ترتيب كامل خلال أيام. **الـ hypotheses**: (1) آخر deploy مكسور — `dist/server/entry.mjs` مفقود أو `dist/client/` فاضي. (2) Render service restarted بـ empty state (KI-050 الـ queue يدل على in-memory dependency). (3) Cloudflare cache poisoning بـ 404 stale response. (4) @astrojs/node standalone يطلب static من path غلط. **Next** (manual، خارج نطاق الـ agent): (a) Render dashboard → Logs → آخر deploy + current service state. (b) `curl -I https://brightai.site/api/health/` (الـ health check path من render.yaml). (c) لو 200 على health، المشكلة في static path؛ لو 404، الخدمة نفسها معطّلة. (d) Cloudflare cache purge (KI-001 post-deploy lesson). **Workaround قصير**: لو الموقع حي قبل آخر deploy، `git revert HEAD` أو redeploy نفس الـ commit. Discovered during BAI-DESIGN-08 curl verification. | Render service (live)، `dist/server/entry.mjs` (suspect)، `dist/client/` (suspect)، Cloudflare cache (suspect) |
 
 ### 3.2 High (يخفض CTR أو الأداء)
 
