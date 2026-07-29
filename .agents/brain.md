@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 04:05 +03:00
+last_updated: 2026-07-29 04:40 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.48
+version: 2.7.49
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -17,6 +17,7 @@ skills_ready: 7
 > اللغة: عامية سعودية في الشرح + English في الكود والـ identifiers.
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
+> هذا مشروع astro 
 
 ---
 
@@ -1037,6 +1038,22 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-DESIGN-06: `aria-busy="false"` ثابت على زر LeadForm submit — معيار القبول `curl /contact/ | grep aria-busy → 1+` — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **1 معدّل** (0 جديد، 0 محذوف، 0 protected):
+  - `src/components/LeadForm.astro` — إضافة `aria-busy="false"` كحالة ابتدائية ثابتة على زر الـ submit الخام (سطر 308، قبل `data-submit-button`). تعديل سطر واحد.
+- **What**: أغلب متطلبات الـ prompt كانت منفّذة أصلاً: `Button.astro` فيه `.is-loading` + `aria-busy` + spinner كامل؛ `TrapFocus.astro` كامل (133 سطر) ومستخدم وموصول في LeadForm؛ الـ handler يضيف `.is-loading` + `aria-busy="true"` + `disabled` على الزر عند الإرسال ويفعّل focus trap ديناميكيًا؛ `KernelAiAssistant.astro` فيه `.is-loading` + `aria-busy`. الفجوة الوحيدة: زر الـ submit الخام في LeadForm ما كان فيه `aria-busy` ثابت → `curl /contact/ | grep -c aria-busy` كان يطلع 0 (لأن السمة كانت تُضاف ديناميكيًا بالـ JS بس وقت الضغط). اعتمدنا نمط KernelAiAssistant (`aria-busy="false"` ثابت، الـ JS يبدّلها true/false).
+- **Why**: معيار القبول #1 يفشل على الموقع الحي. الـ handler ينسجم مع القيمة الجديدة (`setAttribute true` وقت الإرسال، `removeAttribute` يرجّع لـ `false` الأصلية الثابتة). ما لمست Button.astro (الحالات محفوظة — MUST NOT TOUCH) ولا KernelAiAssistant.
+- **Verification**:
+  - `npm run build` → نجح، 0 أخطاء ✅
+  - `grep -c 'aria-busy' dist/client/contact/index.html` → **1** ✅ (≥ 1)
+  - `grep -c 'data-trap-focus' dist/client/contact/index.html` → 1 ✅ (focus trap موجود)
+  - axe scan (`@axe-core/playwright`, wcag2a/2aa/21a/21aa) مركّز على `.lead-form` + كامل الصفحة عبر `astro preview` محلي → **0 violations** (critical=0, serious=0, moderate=0, minor=0) ✅
+- **Report**: `report/2026-07-29-bai-design-06-button-loading-focus-trap.md`
+- **Commit**: uncommitted (per brain line 18 — المستخدم هو الـ commit authority)
+- **Status**: verified-locally (بانتظار deploy المستخدم ليصبح verified-production)
+- **Brain updates**: هذا المدخل فقط. ما تغيّرت أرقام baseline (build pages, bundle sizes) — تعديل سطر واحد ما يضيف bytes تذكر.
 
 ### 2026-07-29 — BAI-DESIGN-03: 3 Trust Badges (PDPL / NCA ECC / SDAIA) تحت hero CTAs — B2B trust signals للبنوك السعودية — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
 
