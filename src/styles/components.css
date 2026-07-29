@@ -1969,20 +1969,27 @@ button.btn--primary {                              /* legacy single-dash alias *
 
 /* Focus state — brand border + 3px brand-tinted ring (REPORT-08 unified) */
 .input:focus,
-.input:focus-visible,
 .field:focus,
-.field:focus-visible,
 .home-form-input:focus,
-.home-form-input:focus-visible,
 .inner-form__input:focus,
-.inner-form__input:focus-visible,
 .inner-form__textarea:focus,
-.inner-form__textarea:focus-visible,
-.inner-form__select:focus,
-.inner-form__select:focus-visible {
+.inner-form__select:focus {
   outline: none;
   border-color: var(--interactive-primary);
   box-shadow: 0 0 0 3px var(--brand-soft-strong);
+}
+
+/* BAI-A11Y-02: Restore visible focus ring on keyboard focus (WCAG 2.4.7).
+   The :focus rule above strips the outline for mouse clicks (UX).
+   This :focus-visible rule restores it for keyboard navigation (a11y). */
+.input:focus-visible,
+.field:focus-visible,
+.home-form-input:focus-visible,
+.inner-form__input:focus-visible,
+.inner-form__textarea:focus-visible,
+.inner-form__select:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 2px;
 }
 
 /* Placeholder — muted tone */

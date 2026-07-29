@@ -272,6 +272,16 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 3px rgba(42,138,126,0.15);   /* DEC-SovB-001: Teal */
 }
 
+/* BAI-A11Y-02: Keyboard focus (WCAG 2.4.7) — restore visible 2px outline.
+   The :focus rule above strips the outline for mouse clicks (better UX).
+   This :focus-visible rule restores it for keyboard navigation (a11y). */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 2px;
+}
+
 input::placeholder, textarea::placeholder {
   color: var(--text-muted);
 }

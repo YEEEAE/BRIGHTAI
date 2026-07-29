@@ -18,7 +18,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:04.765Z",
+      "timestamp": "2026-07-29T02:15:56.920Z",
       "url": "http://localhost:4321/",
       "toolOptions": {
         "runOnly": {
@@ -1533,9 +1533,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-0oxu63bz\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-tjhuddap\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-0oxu63bz"
+                "#trap-focus-tjhuddap"
               ]
             },
             {
@@ -2997,9 +2997,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-0oxu63bz\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-tjhuddap\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-0oxu63bz"
+                "#trap-focus-tjhuddap"
               ]
             },
             {
@@ -9775,9 +9775,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-0oxu63bz\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-tjhuddap\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-0oxu63bz"
+                "#trap-focus-tjhuddap"
               ]
             },
             {
@@ -12639,9 +12639,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-0oxu63bz\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-tjhuddap\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-0oxu63bz"
+                "#trap-focus-tjhuddap"
               ]
             },
             {
@@ -14075,9 +14075,9 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-0oxu63bz\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-tjhuddap\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-0oxu63bz"
+                "#trap-focus-tjhuddap"
               ]
             },
             {
@@ -26635,7 +26635,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:05.891Z",
+      "timestamp": "2026-07-29T02:16:05.764Z",
       "url": "http://localhost:4321/en/",
       "toolOptions": {
         "runOnly": {
@@ -38334,7 +38334,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:06.826Z",
+      "timestamp": "2026-07-29T02:16:10.317Z",
       "url": "http://localhost:4321/pricing/",
       "toolOptions": {
         "runOnly": {
@@ -55767,7 +55767,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:10.161Z",
+      "timestamp": "2026-07-29T02:16:15.919Z",
       "url": "http://localhost:4321/contact/",
       "toolOptions": {
         "runOnly": {
@@ -56795,9 +56795,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-8vw4n3z1\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-4343z8ts\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-8vw4n3z1"
+                "#trap-focus-4343z8ts"
               ]
             },
             {
@@ -58004,9 +58004,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-8vw4n3z1\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-4343z8ts\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-8vw4n3z1"
+                "#trap-focus-4343z8ts"
               ]
             },
             {
@@ -60334,9 +60334,9 @@
                 }
               ],
               "impact": null,
-              "html": "<div id=\"trap-focus-8vw4n3z1\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-4343z8ts\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-8vw4n3z1"
+                "#trap-focus-4343z8ts"
               ]
             },
             {
@@ -62482,9 +62482,9 @@
               ],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-8vw4n3z1\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-4343z8ts\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-8vw4n3z1"
+                "#trap-focus-4343z8ts"
               ]
             },
             {
@@ -63662,9 +63662,9 @@
               "all": [],
               "none": [],
               "impact": null,
-              "html": "<div id=\"trap-focus-8vw4n3z1\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
+              "html": "<div id=\"trap-focus-4343z8ts\" class=\"trap-focus-wrapper\" data-trap-focus=\"\" data-active=\"false\" data-astro-cid-xwiqgnyg=\"\" data-trap-bound=\"1\" aria-hidden=\"undefined\">",
               "target": [
-                "#trap-focus-8vw4n3z1"
+                "#trap-focus-4343z8ts"
               ]
             },
             {
@@ -71709,7 +71709,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:11.230Z",
+      "timestamp": "2026-07-29T02:16:18.530Z",
       "url": "http://localhost:4321/about/",
       "toolOptions": {
         "runOnly": {
@@ -84031,7 +84031,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:12.240Z",
+      "timestamp": "2026-07-29T02:16:20.077Z",
       "url": "http://localhost:4321/trust/",
       "toolOptions": {
         "runOnly": {
@@ -99221,7 +99221,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:13.189Z",
+      "timestamp": "2026-07-29T02:16:21.247Z",
       "url": "http://localhost:4321/kernel/",
       "toolOptions": {
         "runOnly": {
@@ -100659,7 +100659,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:13.838Z",
+      "timestamp": "2026-07-29T02:16:21.897Z",
       "url": "http://localhost:4321/kernel/chat/",
       "toolOptions": {
         "runOnly": {
@@ -102014,7 +102014,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:14.730Z",
+      "timestamp": "2026-07-29T02:16:22.901Z",
       "url": "http://localhost:4321/blog/",
       "toolOptions": {
         "runOnly": {
@@ -126991,7 +126991,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:15.893Z",
+      "timestamp": "2026-07-29T02:16:24.414Z",
       "url": "http://localhost:4321/customers/bank/",
       "toolOptions": {
         "runOnly": {
@@ -139018,7 +139018,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:16.970Z",
+      "timestamp": "2026-07-29T02:16:25.872Z",
       "url": "http://localhost:4321/solutions/",
       "toolOptions": {
         "runOnly": {
@@ -156939,7 +156939,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:18.095Z",
+      "timestamp": "2026-07-29T02:16:27.524Z",
       "url": "http://localhost:4321/docs/",
       "toolOptions": {
         "runOnly": {
@@ -178822,7 +178822,7 @@
         "orientationAngle": 0,
         "orientationType": "landscape-primary"
       },
-      "timestamp": "2026-07-29T02:05:19.180Z",
+      "timestamp": "2026-07-29T02:16:29.688Z",
       "url": "http://localhost:4321/hub/",
       "toolOptions": {
         "runOnly": {

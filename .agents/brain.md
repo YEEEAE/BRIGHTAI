@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 04:51 +03:00
+last_updated: 2026-07-29 05:25 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.50
 agent_version: v2.3
@@ -1038,6 +1038,51 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — BAI-A11Y-02: 30 outline:none overrides restored to focus-visible (WCAG 2.4.7) — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **4 معدّل + 1 جديد + 1 تقرير**:
+  - `src/styles/base.css` — 1 rule (input/textarea/select) + :focus-visible rule
+  - `src/styles/components.css` — 1 multi-selector rule (REPORT-08 unified، 6 selectors) + :focus-visible rule
+  - `src/styles/pages.css` — 15 rules (form__input/textarea/select، blog-path، blog-featured، listing-card، article-links__grid، docs-search__input، docs-index__card، docs-quick-links، docs-recent__item، docs-related__card، docs-meta__edit، docs-helpful__btn، docs-prev-next__cell، hub-card--clean، hub-related-card)
+  - `src/styles/kernel.css` — 14 rules (threads-list__item، chat-composer__btn/textarea، chat-toolbar__btn، chat-drawer__close، audit-filters، audit-toolbar__btn، audit-table__hash-copy، audit-pagination__btn، approval-card__btn، modal__textarea/btn، evidence-item__btn، evidence-toolbar__input/select)
+  - `scripts/verify-focus-visible-keyboard.mjs` (NEW) — Playwright keyboard nav verifier (15 tabs per page، يقرأ computed style)
+  - `report/2026-07-29-bai-a11y-02-focus-visible-restore.md` (NEW، 14.7KB — BAI-PROC-12 compliant، `verified_local: yes` + `verified_production: no` + `verified_production_blocker` موثّق)
+
+- **What**: التيكت BAI-A11Y-02 طلب focus-visible outline واضح على كل interactive elements. فحص `src/styles/global.css` (الـ scope المذكور في التيكت) — لقيت الـ default شامل (lines 172-196: :focus-visible + 13 explicit selectors) من زمان. المشكلة الحقيقية: 30 override بـ specificity أعلى في kernel.css/pages.css/components.css/base.css كان يطبّق `outline: none` على `:focus-visible` (مخالف WCAG 2.4.7). عرضت على المستخدم توسعة الـ scope، وافق على "أوسّع الـ scope وأصلّح الكل". الإصلاح: 30 rule انشطرت إلى (1) :hover/:focus block بدون outline (mouse UX)، (2) :focus-visible rule منفصل بـ `outline: 2px solid var(--interactive-primary)` أو `var(--brand-500)` + `outline-offset: 2px` (keyboard a11y).
+
+- **Why**: WCAG 2.4.7 (Focus Visible) — كل keyboard focusable element يحتاج visible focus indicator. axe-scan ما يكتشف `outline: none` على `:focus-visible` تلقائياً (rule غير موجود في axe)، فلازم manual keyboard nav + فحص CSS source. الـ override كانت نتيجة طبيعية لـ pattern "combined :hover, :focus-visible" — المطورين شالوا الـ outline لتحسين mouse UX، نسوا يعيدوه للـ keyboard. pattern حلّ: split selector.
+
+- **Verification (محلي على macOS dev)**:
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → 196 صفحة، 0 errors ✅
+  - CSS bundle shrink: BaseLayout 62.5→45.1KB (-28%)، ArabicLayout 165→135KB (-18%)، KernelLayout 121.5→111.2KB (-8%)، **total -59KB (-14%)** ✅
+  - `BASE_URL=http://localhost:4321 A11Y_BASE_URL=http://localhost:4321 node scripts/axe-scan.mjs` → 0 critical، 4 serious (نفس اللي قبل: document-title + html-has-lang على /kernel/، خارج scope BAI-A11Y-02) ✅
+  - `BASE_URL=http://localhost:4321 node scripts/verify-focus-visible-keyboard.mjs` (جديد) → **45/45 focusable elements** على / و /contact/ و /pricing/ عندها focus indicator مرئي (outline 2px solid rgb(32,165,151) = #20a597 = --interactive-primary) ✅
+  - manual grep: `grep "outline: none" src/styles/` → 9 (كلهم على :focus selectors، كلهم مضاف بعدهم :focus-visible rule بديل) ✅
+
+- **DEC جديد (DEC-A11Y-002-2026-07-29-001)**: `outline: 2px solid var(--interactive-primary) + outline-offset: 2px` هو الـ canonical focus indicator pattern عبر كل ملفات CSS. أي component جديد يضيف interactive element → يستخدم `var(--interactive-primary)` للـ focus outline (token، مو raw color). Reversal cost: low (search & replace). Do not reverse بدون explicit user approval.
+
+- **DEC جديد (DEC-A11Y-003-2026-07-29-001)**: ممنوع pattern `xxx:hover, xxx:focus-visible { ... outline: none; }` بدون إضافة `:focus-visible { outline: ... }` rule منفصل بعدها. هذا يكسر WCAG 2.4.7. Reversal cost: low (search & replace). Do not introduce هذا الـ pattern في أي component جديد بدون explicit focus-visible override.
+
+- **Risks Addressed**:
+  - **R1 (30 interactive elements بدون focus indicator على keyboard nav)**: closed. كلهم الآن عندهم outline 2px teal مرئي.
+  - **R2 (form inputs في /contact/ و /demo/ بدون focus outline)**: closed. `.form__input/textarea/select` + `.inner-form__input/textarea/select` + generic `input/textarea/select` كلها لها :focus-visible rule.
+
+- **Risks Remaining**:
+  - **R1 (4 serious axe violations على /kernel/ و /kernel/chat/)**: خارج scope BAI-A11Y-02 (موضوعها SEO + i18n). تستحق تذكرة منفصلة (BAI-SEO-??). `document-title` + `html-has-lang`.
+  - **R2 (/kernel/ عنده focus-trap + custom tabindex management)**: manual keyboard nav ما يقدر يختبر focus indicator تلقائياً على /kernel/ (focus-trap يحبس focus داخل sections). يحتاج Playwright script مخصص أو manual test.
+  - **R3 (لم يُـ deploy)**: verified_local فقط. الـ user هو اللي commit + push (brain line 18). post-deploy verification: `pnpm run verify:post-deploy` + manual `node scripts/verify-focus-visible-keyboard.mjs` على brightai.site.
+
+- **Out-of-Scope (tracked as follow-ups، NOT in this commit)**:
+  - **BAI-SEO-??**: 4 serious axe violations (document-title + html-has-lang) على /kernel/ و /kernel/chat/.
+  - **BAI-A11Y-??**: skip-link box-shadow indicator — تحقق إن الـ 2px border يعطي contrast كافي 3:1.
+  - **BAI-A11Y-??**: custom focus styles في kernel pages (مثل `.kernel-threads-list__item[aria-current="true"]`) — تأكد إن ما عندها focus indicator conflicts.
+
+- **The commit (per brain line 18 — user commits، الدفع عبر main فقط PR، لا branch جديد)**:
+  - 4 files معدّلة + 1 file جديد + 1 brain.md entry + 1 report
+  - Suggested commit message: see `report/2026-07-29-bai-a11y-02-focus-visible-restore.md` Section "الـ commit"
+
+- **Related**: DEC-A11Y-001 (existing: --interactive-primary #20a597 = AA 4.96+ AAA 6.32)، BAI-CONTENT-06 (2026-07-29، closure-only)، BAI-DEPLOY-13 (2026-07-29، build-time guard).
 
 ### 2026-07-29 — BAI-CONTENT-06: SDAIA Cluster (8 articles + 1 Pillar) — CLOSED without code change (user decision). Cluster already built: 10/10 articles 1,500+ words, 2 Pillars (doc + sector), 5/10 articles linked from Pillar
 
@@ -6268,6 +6313,9 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | ID | Issue | Priority | Status | Since | Notes | Affected Files |
 |---|---|---|---|---|---|---|
 | KI-AUDIT-SEC-2026-07-18-001 | `target="_blank"` بدون `rel="noopener noreferrer"` على `/blog/pdpl-and-ai-saudi/` (SEC-BLANK-1 من `audit/ISSUES.csv`) | medium | **resolved** | 2026-07-18 | **RESOLVED 2026-07-18 via HEADERS-CONFIG-2026-07-18**: rel مضاف على الرابط الخارجي (sdaia.gov.sa) في source + dist. configuration test يفحص الـ source و dist ويعتبر regression fail. | `src/content/blog/pdpl-and-ai-saudi.md`, `dist/client/blog/pdpl-and-ai-saudi/index.html`, `scripts/headers-config.test.mjs` |
+| KI-BAI-A11Y-02-001 | 4 serious axe violations (document-title + html-has-lang) على /kernel/ و /kernel/chat/ | medium | open | 2026-07-29 (BAI-A11Y-02 diagnostic) | **Discovered by BAI-A11Y-02 axe-scan (2026-07-29)**: `/kernel/` و `/kernel/chat/` يرجعون 200 لكن: (a) `<title>` فارغ أو مو موجود. (b) `<html>` ما عنده `lang` attribute. **التأثير**: axe-scan يحسبها serious (مو critical)، يفشل GSC SEO audits (noindex implicitly). **خارج scope BAI-A11Y-02** (موضوعها focus-visible، مو SEO/i18n). **Fix المقترح** (BAI-SEO-??): تعديل `src/pages/kernel/index.astro` و `src/pages/kernel/chat.astro` (أو wrapper) لإضافة `<title>` صريح + `lang="ar"` على `<html>`. Ki مشابه لـ KI-003 (EN pages بدون source counterparts) — نفس النمط، إصلاح متماثل. | `src/pages/kernel/index.astro`, `src/pages/kernel/chat.astro` |
+| KI-BAI-A11Y-02-002 | Skip-link يعرض box-shadow بدل outline على focus (manual keyboard nav test) | low | open | 2026-07-29 (BAI-A11Y-02 diagnostic) | **Discovered by `scripts/verify-focus-visible-keyboard.mjs`**: skip-link (`.skip-link`) عند `:focus-visible { outline: none; ... }` في `src/styles/base.css:391-401` ويستخدم 2px border + box-shadow كـ focus indicator. الـ border موجود في الـ base style (مو في :focus state)، فالـ contrast بين الـ focus state و الـ non-focus state يعتمد على border-color change. **التحقق المطلوب**: (a) حساب contrast ratio بين border color في :focus vs non-focus state. (b) لازم يكون ≥ 3:1 (WCAG 1.4.11). (c) لو أقل، إضافة outline 2px solid `--interactive-primary` كـ fallback. **خارج scope BAI-A11Y-02** (skip-link قاعدة منفصلة، ما تأثرت بـ 30 override المُصلَحة). | `src/styles/base.css:391-401` |
+| KI-BAI-A11Y-02-003 | /kernel/ عنده focus-trap + custom tabindex management — manual keyboard nav ما يقدر يختبر focus indicator تلقائياً | low | open | 2026-07-29 (BAI-A11Y-02 verification) | **Discovered during BAI-A11Y-02 keyboard nav test**: عند تشغيل `node scripts/verify-focus-visible-keyboard.mjs` على /kernel/، الـ 8 tabs الأولى كلها landing على `<body>` بدل focusable elements. السبب: (a) `focus-trap.js` (shared focus trap helper) يحبس focus داخل sections. (b) `tabindex="-1"` على عناصر container (kernel page header، demo pill، إلخ). **التأثير**: ما يقدر نتحقق بـ automated test — لازم manual Playwright script مخصص يدخل الـ focus trap zones ويختبر الـ buttons داخلها. **خارج scope BAI-A11Y-02** (صفحات kernel app-like، مو marketing pages). **Out-of-scope fix المقترح** (BAI-A11Y-??): كتابة Playwright script مخصص لـ kernel pages يتفاعل مع الـ focus trap zones. | `src/scripts/focus-trap.js`, `src/pages/kernel/*.astro` |
 | KI-AUDIT-SEC-2026-07-18-002 | HSTS drift بين `render.yaml` (1 سنة) و `public/_headers` (2 سنة) | medium | **resolved** | 2026-07-18 | **RESOLVED 2026-07-18 via HEADERS-CONFIG-2026-07-18**: `render.yaml` رجع لـ `max-age=63072000; includeSubDomains; preload` (2 سنوات) ليتطابق مع استراتيجية CSP الأصلية. configuration test يفرض المساواة بين الملفين — أي drift مستقبلي يفشل الاختبار. | `render.yaml`, `public/_headers`, `scripts/headers-config.test.mjs` |
 | KI-AUDIT-SEC-2026-07-18-003 | HSTS preload submission لـ hstspreload.org (manual action) | medium | open | 2026-07-18 | الـ `preload` directive في HSTS هو hint للـ browser بس. الـ enforced entry يحتاج manual submission من المستخدم عبر https://hstspreload.org بعد deploy. الـ reversibility commitment: لازم max-age يتنزل تدريجياً لو احتجنا نقل الموقع. | `render.yaml` (deploy step) |
 | KI-AUDIT-SEC-2026-07-18-004 | Cloudflare edge layer security headers — Unknown | medium | open | 2026-07-18 | ما في Cloudflare Worker في الـ repo. لو Cloudflare CDN في front of Render يطبق Transform Rules خاصة (override/strip)، ما عندنا visibility. Production deploy + curl -I live فقط هو اللي يثبت. Configuration test يثبت القيم في الـ source of truth بس، مش في live response. | Cloudflare dashboard (out of repo scope) |
@@ -8310,6 +8358,54 @@ npm run indexnow:trigger  # notifies Bing/Yandex
 - **Related decisions**: DEC-2026-SDAIA-CLUSTER-001 (2026-07-08، الـ 4 articles الأصلية + Pillar TOC).
 - **Related reports**: `report/2026-07-29-bai-content-06-sdaia-cluster-closure.md` (8,281 bytes).
 - **Status**: ✅ CLOSED (verified locally على dist، live blocked لكن غير مطلوب للـ closure).
+
+### DEC-A11Y-002-2026-07-29-001 — Canonical focus indicator pattern: `outline: 2px solid var(--interactive-primary) + outline-offset: 2px`
+
+- **Date**: 2026-07-29
+- **Context**: BAI-A11Y-02 (P1، 3h) — طلب focus-visible واضح على كل interactive elements. قبل الإصلاح، 30 override في 4 ملفات CSS (kernel.css، pages.css، components.css، base.css) كان يطبّق `outline: none` على `:focus-visible` (مخالف WCAG 2.4.7). axe-scan ما يكتشفه تلقائياً.
+- **Decision**: Canonical focus indicator عبر كل ملفات CSS = `outline: 2px solid var(--interactive-primary) + outline-offset: 2px` على `:focus-visible`. Color token مو raw value. Offset 2px يضمن visibility على backgrounds متعددة. 30 rule في BAI-A11Y-02 استخدمت هذا الـ pattern.
+- **Rationale**:
+  - `--interactive-primary: #20a597` (DEC-A11Y-001) يجتاز WCAG AA (4.96+) و AAA (6.32) على bg-base.
+  - 2px = الحد الأدنى WCAG 2.4.7 + contrast كافي على كل الـ backgrounds.
+  - offset 2px = outline لا يلامس border العنصر (visual breathing room).
+  - Token-based = future theme/color changes affect all focus indicators atomically.
+  - البديل (var(--brand-500) = #2a8a7e) مستخدم في kernel.css components (DEC-A11Y-001 السوابق). الباترن نفسه مع token مختلف مقبول.
+- **Reversal cost**: low. Reverse = search & replace + يستثني الـ 30 rule في BAI-A11Y-02.
+- **Do not**:
+  - **لا تستخدم raw color** في focus outline (مثل `outline: 2px solid #20a597` — استخدم `var(--interactive-primary)`).
+  - **لا تستخدم `outline: 0`** أو `outline: none` على `:focus-visible` بدون إضافة focus indicator بديل (border + box-shadow مع contrast ≥ 3:1).
+  - **لا تخلط tokens** بدون سبب (استخدم إما `--interactive-primary` للـ pages/blog/docs، أو `--brand-500` للـ kernel — التزم باتفاق ملف واحد).
+- **Risks**:
+  - **LOW**: لو تغير `--interactive-primary` في tokens.css، كل الـ focus indicators تتأثر تلقائياً (intended behavior).
+  - **LOW**: لو تم إزالة focus outline من token V4، الـ 30 rule في BAI-A11Y-02 تصير بدون fallback. الـ global.css default (line 172) هو الـ safety net.
+- **Related decisions**: DEC-A11Y-001 (--interactive-primary token، 2026-06-29)، DEC-A11Y-003-2026-07-29-001 (نفس الـ date، pattern restriction).
+- **Related reports**: `report/2026-07-29-bai-a11y-02-focus-visible-restore.md` (14.7KB).
+- **Status**: ✅ ACTIVE.
+
+### DEC-A11Y-003-2026-07-29-001 — ممنوع pattern `xxx:hover, xxx:focus-visible { ... outline: none; }` بدون :focus-visible rule منفصل
+
+- **Date**: 2026-07-29
+- **Context**: BAI-A11Y-02 — الـ pattern المكسور الأكثر شيوعاً عبر الـ codebase. 25 من 30 override كان بالضبط: `xxx:hover, xxx:focus-visible { background, border, outline: none; }`. المطورين شالوا outline لتحسين mouse UX، نسوا يعيدوه للـ keyboard. النتيجة: WCAG 2.4.7 violation خفي (axe ما يكتشفه).
+- **Decision**: ممنوع استخدام الـ pattern `xxx:hover, xxx:focus-visible { ... outline: none; }` بدون إضافة `:focus-visible { outline: 2px solid var(--interactive-primary); outline-offset: 2px; }` rule منفصل بعدها. هذا rule جديد ينطبق على:
+  - components جديدة (greenfield)
+  - refactors/components معدّلة (touched files)
+  - لا ينطبق retroactively على الـ 30 override القديمة (مُعالجة في BAI-A11Y-02)
+- **Rationale**:
+  - **الـ split selector approach** (`:hover` منفصل عن `:focus-visible`) أبسط من `,`-combined مع override يدوي. أقل غلط بشري.
+  - **الـ default في global.css** (`:focus-visible { outline: 2px solid var(--interactive-primary) }`) safety net لو نسي developer يضيف override صريح.
+  - **WCAG 2.4.7** non-negotiable. الـ pattern يخالفها = bug.
+  - **axe لا يكتشفها** = الـ defense الوحيدة هي code review + lint rule (future: stylelint rule تقترح `outline-none-without-focus-visible-replacement`).
+- **Reversal cost**: low. Reverse = allow الـ pattern + relies على code review وحده.
+- **Do not**:
+  - **لا تكتب** `xxx:hover, xxx:focus-visible { ... outline: none; }` بدون `:focus-visible { outline: ... }` بعدها.
+  - **لا تفترض** الـ global.css default يكفي — specificity (0,0,1) يخسر أمام (0,1,1) للـ component override.
+  - **لا تخلط** `:focus` (mouse) و `:focus-visible` (keyboard) في نفس rule بدون تمييز النية.
+- **Risks**:
+  - **LOW**: المطور يكرر نفس الغلطة في component جديد. الـ mitigation: code review checklist + (future) stylelint rule.
+  - **LOW**: لو غيّر global.css default، الـ 30 rule المُعدّلة في BAI-A11Y-02 تستخدم tokens، تتأثر.
+- **Related decisions**: DEC-A11Y-002-2026-07-29-001 (canonical focus indicator pattern).
+- **Related reports**: `report/2026-07-29-bai-a11y-02-focus-visible-restore.md` (14.7KB).
+- **Status**: ✅ ACTIVE.
 
 ### 5.9 A11y Scripts & Modules (DEC-A11Y-001 to 005)
 
