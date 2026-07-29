@@ -55,7 +55,7 @@
   /* Text — Arabic-first hierarchy (3-stop, WCAG AA+) */
   --color-text: #f1f5f9;              /* primary — 13.6:1 on bg-base */
   --color-text-secondary: #94a3b8;   /* secondary — 9.04:1 */
-  --color-text-muted: #64748b;       /* tertiary — 5.25:1 */
+  --color-text-muted: #7a8ba5;       /* BAI-A11Y-05 (2026-07-29): upgraded from #64748b (4.05:1 ❌) to #7a8ba5 (5.56:1 ✅ AA) */
   --color-text-inverse: #0a0e1a;
 }
 

@@ -64,6 +64,15 @@ export const ANALYTICS_EVENTS = {
   CALENDAR_OPEN: 'calendar_open',
   MEETING_BOOKED: 'meeting_booked',
   GENERATE_LEAD: 'generate_lead',
+  // EXEC-10 (2026-07-29): Alias event names for GA4 reports. These fire
+  // alongside the unified events above (form_submit_attempt/success) per
+  // the alias policy. They keep the existing taxonomy intact while giving
+  // GA4 DebugView / Ads the EXEC-10 naming contract.
+  LEAD_STARTED: 'lead_started',
+  LEAD_COMPLETED: 'lead_completed',
+  CHAT_STARTED: 'chat_started',
+  CHAT_COMPLETED: 'chat_completed',
+  DEMO_OPENED: 'demo_opened',
 } as const;
 
 export type AnalyticsEventName =

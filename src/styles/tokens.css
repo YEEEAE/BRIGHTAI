@@ -48,7 +48,7 @@
 
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
-  --text-muted: #64748b;
+  --text-muted: #7a8ba5;         /* BAI-A11Y-05 (2026-07-29): upgraded from #64748b (4.05:1 ❌) to #7a8ba5 (5.56:1 ✅ AA) على --bg-base */
   --text-inverse: #0a0e1a;
 
   --border-subtle: rgba(148,163,184,0.1);

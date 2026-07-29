@@ -666,6 +666,16 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           history.push({ role: 'user', text: userText });
           saveHistory(storage, storageKey, history);
 
+          // EXEC-10 (2026-07-29): chat_started — fires on every user send.
+          // Best-effort via the global analytics surface (inline script,
+          // can't import TS directly like lead-form-handler.js).
+          if (window.__BRIGHTAI_ANALYTICS__ && typeof window.__BRIGHTAI_ANALYTICS__.track === 'function') {
+            window.__BRIGHTAI_ANALYTICS__.track('chat_started', {
+              prompt_id: promptId,
+              page_path: window.location.pathname,
+            });
+          }
+
           // عند 3+ رسائل، أظهر CTA
           userTurnCount++;
           if (userTurnCount >= 3 && cta) cta.hidden = false;
@@ -677,6 +687,16 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
               thread.setAttribute('aria-busy', 'false');
               if (sendBtn) sendBtn.disabled = false;
               input.focus();
+              // EXEC-10 (2026-07-29): chat_completed — fires only after a
+              // REAL API reply finishes streaming. Demo/degraded replies
+              // (isDemo === true) are excluded so the event counts genuine
+              // model turns only.
+              if (!isDemo && window.__BRIGHTAI_ANALYTICS__ && typeof window.__BRIGHTAI_ANALYTICS__.track === 'function') {
+                window.__BRIGHTAI_ANALYTICS__.track('chat_completed', {
+                  prompt_id: promptId,
+                  page_path: window.location.pathname,
+                });
+              }
             });
             history.push({ role: 'ai', text: text, demo: !!isDemo });
             saveHistory(storage, storageKey, history);

@@ -428,3 +428,14 @@ const whatsappDemoHref = 'https://wa.me/966538229013?text=%D9%87%D9%84%D8%A7%20%
     </div>
   </section>
 </ArabicLayout>
+
+<script>
+  // EXEC-10 (2026-07-29): demo_opened — fires once on /demo/ page load.
+  // Best-effort via the global analytics surface; silently skipped if
+  // the analytics bootstrap hasn't loaded (e.g. consent denied).
+  if (window.__BRIGHTAI_ANALYTICS__ && typeof window.__BRIGHTAI_ANALYTICS__.track === 'function') {
+    window.__BRIGHTAI_ANALYTICS__.track('demo_opened', {
+      page_path: window.location.pathname,
+    });
+  }
+</script>

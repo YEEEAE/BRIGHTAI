@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 05:38 +03:00
+last_updated: 2026-07-29 19:38 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.51
+version: 2.7.54
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -237,6 +237,92 @@ Acceptance: 5/6 perf metrics improved. 1/6 (About page LCP +54% localhost) needs
   - **Pattern list provenance**: BAI-DEPLOY-13 task spec (P0، depends on BAI-DEPLOY-12). أول 3 patterns (`/client/`, `/frontend/`, `/server/`) mirror BAI-SEC-10 runtime deny-list. آخر 5 (`/package.json`, `/render.yaml`, `/_headers`, `/_redirects`, `/CNAME`) build-time-only — ما كانت على runtime deny-list لأنها ما المفروض تكون في `dist/client/` أصلاً.
   - **Edge case — `/client/index.html` 172KB**: هذا كان أكبر leak. السبب: على Node runtime، `dist/client/` يُخدَم at `/`، فلو في `dist/client/client/index.html` (172KB — نفس homepage HTML) يطلع served at `/client/index.html`. الـ user اكتشفه بـ curl على production. الـ build-time guard يضمن ما يوصل للـ artifact. الـ runtime deny-list يضمن حتى لو في regression future، يطلع 404.
 
+
+### 2026-07-29 — EXEC-09 / BAI-CONTENT-02: /customers/ pages audit — NO ACTION (false premise — pages have real content) — UNCOMMITTED (per brain line 18)
+
+- **Files**: 0 (no code change — audit-only task).
+- **What**: فحصت `src/pages/customers/` بناءً على فرضية الـ ticket إن الصفحات "فارغة = قوالب بدون أسماء عملاء". الفرضية **خاطئة**. الصفحات فيها محتوى حقيقي:
+  - `src/pages/customers/index.astro` (hub، 919 كلمة في built HTML)
+  - `src/pages/customers/bank/index.astro` (1215 كلمة)
+  - `src/pages/customers/hospital/index.astro` (1180 كلمة)
+  - `src/pages/customers/pharma/index.astro` (1149 كلمة)
+  - كل صفحة تستخدم `CaseStudy.astro` component بـ structure كاملة: challenge + solutionPoints (3) + results (4) + metrics (3) + quote + TL;DR aside + related links
+  - SEO infrastructure مكتمل: canonical (self) + hreflang (ar-SA + x-default) + Article schema + meta robots (index, follow) + 16 JSON-LD @type nodes
+  - BAI-SEO-003-S1 (2026-07-18): قرار موثّق إن الصفحات indexable case studies (مو pre-purchase samples) — تم حذف `robots="noindex"` سابقًا
+  - 14 internal links تشير لـ `/customers/` (sitemap index, partners, sales-deck AR+EN, services, snippet-pack)
+  - 4 entries في `public/sitemap.xml`
+- **Why**: رفضت الحذف per agent.md Section 0.7.4 (Refuse Wrong Tasks — false premise). الـ ticket يقول "لو لا: احذف + أضف 301" بس الـ condition "لو لا" ما ينطبق — الصفحات فيها محتوى. الـ acceptance criteria البديلة "صفحات بمحتوى حقيقي" متحققة. حذف صفحات فيها 1100-1200 كلمة + Article schema + 14 internal links = regression للـ SEO (خسارة indexed pages + broken internal links + 404s).
+- **Verification**:
+  - `find src/pages/customers/ -name '*.astro' | wc -l` → **4** (مو 0 — acceptance alternative path: "صفحات بمحتوى حقيقي")
+  - `sed 's/<[^>]*>//g' dist/client/customers/bank/index.html | wc -w` → **1215** (bank)، **1180** (hospital)، **1149** (pharma)
+  - `grep -oE 'rel="canonical" href="[^"]*"' dist/client/customers/bank/index.html` → `rel="canonical" href="https://brightai.site/customers/bank/"` ✅
+  - `grep -oE 'hreflang="[^"]*" href="[^"]*"' dist/client/customers/bank/index.html | wc -l` → **2** (ar-SA + x-default) ✅
+  - `grep -oE '<meta name="robots" content="[^"]*"' dist/client/customers/bank/index.html` → `index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1` ✅
+  - `grep -oE '"@type":"[^"]*"' dist/client/customers/bank/index.html | sort -u | wc -l` → **16** JSON-LD @type nodes ✅
+  - `grep -rn "/customers/" src/ --include="*.astro" --include="*.ts" | grep -v "src/pages/customers/" | wc -l` → **14** internal links ✅
+  - `grep -oE '<loc>[^<]*customers[^<]*</loc>' public/sitemap.xml | wc -l` → **4** sitemap entries ✅
+  - `curl -sI https://brightai.site/customers/bank/` → **HTTP/2 404** (لكن هذا بسبب Render Static Site persistent-storage blocker per brain entry 2026-07-29 BAI-DEPLOY-12 — الموقع كله 404 الحين، مو مشكلة /customers/ خاصة)
+- **Acceptance criteria status**:
+  - ✅ `find src/pages/customers/ -name '*.astro' | wc -l` → 4 (acceptance alternative: "صفحات بمحتوى حقيقي" — متحقق)
+  - ⚠️ `curl -sI https://brightai.site/customers/bank/` → 404 (بسبب Render blocker، مو مشكلة /customers/ — بعد Render Manual Deploy بيطلع 200)
+  - ✅ `sitemap.xml` ما يحوي `/customers/` فارغة — الـ 4 entries كلها صفحات بمحتوى
+  - ⏳ GSC بعد 30 يوم: 0 thin content warnings — يحتاج deploy + انتظار (out of agent control)
+- **Decision**: NO ACTION REQUIRED. الـ ticket premise خاطئة. الصفحات فيها محتوى حقيقي 1100-1200 كلمة + SEO infrastructure كامل. حذفها = regression. توثيق الـ finding في brain.md + worklog.
+- **Report**: none (audit-only، no code change)
+- **Commit**: uncommitted (per brain line 18 — لا code change)
+- **Status**: **verified locally** (محتوى + SEO infra مكتمل)؛ production verification blocked by Render Static Site persistent-storage issue (KI-RENDER-CACHE-2026-07-28-001)
+- **Brain updates**: frontmatter (last_updated + version bump 2.7.53 → 2.7.54)؛ هذا الـ entry يـ document إن /customers/ pages تم فحصها ورفض حذفها
+- **Notes**:
+  - الـ ticket EXEC-09 premise "صفحات فارغة = قوالب بدون أسماء عملاء" خاطئة. الصفحات هي anonymized case studies كاملة (BAI-SEO-003-S1 policy).
+  - لو الـ user يبي يضيف أسماء عملاء حقيقية، هذا قرار تجاري (NDA + consent) مو technical decision.
+  - لو الـ user يبي يحولها لـ case studies داخل `/solutions/[sector]/`، هذا refactor كبير (نقل محتوى + redirects) يحتاج ticket منفصل.
+  - الـ Render blocker (KI-RENDER-CACHE-2026-07-28-001) يمنع production verification لكل التغييرات، مو بس /customers/.
+
+### 2026-07-29 — BAI-DEPLOY-12 (v2-deploy): 30 executed prompts committed + pushed + Cloudflare purged — Render Static Site persistent-storage blocker PREVENTS production verification (ALL 404)
+
+- **Files**: 17 files changed, 1374 insertions(+), 189869 deletions(-) — commit `3f49dd81`
+  - `.agents/brain.md`, `.lighthouserc.json`, `a11y-report.html`, `a11y-report.json`
+  - `brightai-audit-reports/brightai-audit-prompts-v2-execution.md` (new)
+  - `public/icons/badges/{nca-ecc,pdpl,sdaia}.svg` → `public/_archive-old-badges/` (renamed)
+  - `public/assets/images/badges/{iso,nca,sdaia}.svg` (new)
+  - `public/sitemap-images.xml`, `public/sitemap.xml`, `sitemap.xml`
+  - `report/2026-07-29-bai-a11y-04-aria-labels-icon-only-buttons.md` (new)
+  - `report/A/2026-07-25-bai-perf-04-clarity-lazy-load.md` (new)
+  - `src/components/TrustBadges.astro`
+- **What**: commit `3f49dd81 feat(v2-deploy): deploy 30 executed prompts to production` — يحوي كل التحسينات: CSP strict Phase 1 (per-file SHA-256 hashes)، hreflang /en/ bidirectional fix، BAI-PROC-12 verified-production gate، GSC weekly export workflow، Lighthouse CI gate، 6 SDAIA cluster articles، 9 extended blog articles، self-hosted IBM Plex Sans Arabic fonts، redirect fix (206 entries)، a11y scan 0 critical violations. Pushed لـ `origin/main` (`b050fb6d..3f49dd81`). Cloudflare cache purged (success: true، zone `b94b6d42e42609999ab36294e6728e21`).
+- **Why**: المالك التزم بنفسه (per brain line 18 — user is sole commit authority). الـ 30 برومبت اللي نُفّذت كودًا محبوسة في working directory، الإنتاج يخدم بناء 24-07-2026 19:43:14 UTC (4 أيام قديم). هذا الـ commit يحرّرها.
+- **Verification (production, 2026-07-29 16:22-16:24 UTC)**:
+  - `git log --oneline -1` → `3f49dd81 feat(v2-deploy)` ✅
+  - `curl -I https://brightai.site/` → **HTTP/2 404** ❌ (كل المسارات 404)
+  - `curl -s https://brightai.site/api/health/` → `Not Found` ❌
+  - `curl -I https://brightai.site/frontend/server.js` → 404 ✅ (لكن لأن كل شي 404، مو لأن deny-list يشتغل)
+  - `curl -I https://brightai.site/ | grep strict-transport` → **no header** ❌
+  - `curl -I https://brightai.site/blog` → **404** ❌ (المفروض 301)
+  - `pnpm run verify:production` → **exit 1** — 6 probe groups failed:
+    1. `x-brightai-build` header: missing ❌
+    2. `/api/health/` JSON: 404 ❌
+    3. hreflang contract: 2/2 pages failed (404) ❌
+    4. forbidden paths: `/client/index.html` → 200 (leak) ❌
+    5. canonical self-reference: 3/3 pages failed (404) ❌
+    6. security headers: `x-frame-options` + `referrer-policy` missing ❌
+- **Blocker (CRITICAL — same as 2026-07-28 entry)**: Render Static Site persistent-storage layer لا يـ refresh `dist/client/` بين deploys. الـ commit pushed + Cloudflare purged بس Render ما يخدم البناء الجديد. **الـ site كله 404 الحين** — حتى الرئيسية. هذا أسوأ من 2026-07-28 (حين الرئيسية كانت 200 بس الـ headers ناقصة). يحتاج **Manual Deploy → Clear build cache & deploy** من Render Dashboard.
+- **Acceptance criteria status**:
+  - ✅ `git log --oneline -1` → يظهر commit جديد (`3f49dd81`)
+  - ❌ `curl -I https://brightai.site/` → last-modified ما تغيّر (404، ما في header أصلاً)
+  - ❌ `curl -s https://brightai.site/api/health/` → 404 Not Found (المفروض 200 JSON)
+  - ⚠️ `curl -I https://brightai.site/frontend/server.js` → 404 (PASS بس لأن كل شي 404)
+  - ❌ `curl -I https://brightai.site/` → HSTS + CSP غير موجودة (404)
+  - ❌ `curl -I https://brightai.site/blog` → 404 (المفروض 301)
+  - ❌ `pnpm run verify:production` → exit 1 (6 probe groups failed)
+- **Definition of Done status**: NOT MET — last-modified ما تغيّر + verify:production فشل. يحتاج Render Manual Deploy (Clear build cache) + إعادة verify.
+- **Rollback**: `git revert 3f49dd81 && git push origin main` (Render auto-deploy يعيد البناء السابق)
+- **Commit**: `3f49dd81` (pushed to origin/main)
+- **Status**: **code-pushed, production-BLOCKED** (Render Static Site cache clear needed)
+- **Brain updates**: frontmatter (last_updated 2026-07-29 + version bump)؛ هذا الـ entry يـ supersede الـ 2026-07-28 entry للـ BAI-DEPLOY-12 closure (نفس الـ blocker، محاولة ثانية)
+- **Notes**:
+  - الـ site كله 404 يعني إن Render ما يخدم أي شي من `dist/client/` — لا الرئيسية، لا الـ redirects، لا الـ headers. هذا يـ confirm إن الـ persistent-storage blocker ما انحل من 2026-07-28.
+  - الـ `/client/index.html` leak (200) يـ confirm إن Render يخدم من flat-copy layer (sync-dist-flat) بس ما يخدم من `dist/client/` الأساسي — الـ flat-copy قديم ويحوي leak، الـ dist/client/ الجديد ما وصل.
+  - **الخطوة التالية للمستخدم**: Render Dashboard → `brightai-site` service → Manual Deploy → **"Clear build cache & deploy"**. هذا wipes الـ persistent storage ويعيد نشر `dist/client/` من البناء الجديد. بدون هذا، الـ deployed artifact قديم (4+ أيام) والتغييرات ما توصل للإنتاج.
 
 ### 2026-07-28 — BAI-DEPLOY-12 (HSTS) + BAI-DEPLOY-13 (architectural discovery) — DEPLOYED via 2 commits with implicit user consent — Render Static Site persistent-storage blocker remains for production verification
 
@@ -1038,6 +1124,81 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-29 — EXEC-08 (new ticket) / BAI-DESIGN-02 duplicate: AA contrast fix re-prompted with CSS-variable approach — CLOSED without code change (user decision: keep BAI-DESIGN-02 as is)
+
+- **What**: المستخدم بعت prompt EXEC-08 يطلب `rgba(255,255,255,0.4) → var(--text-secondary-aa): rgba(255,255,255,0.65)` (5.2:1 AA) في `src/styles/tokens.css` + `components.css` + `pages.css`. الاكتشاف: BAI-DESIGN-02 (2026-07-29, line 1326) عالج نفس المشكلة بالضبط (`text-white/40` Tailwind utility = نفس الـ rgba 0.4) بـ 12 instance في 7 ملفات → `text-white/65` (8.18:1 AAA، verified locally، UNCOMMITTED). المستخدم اختار "خلّ BAI-DESIGN-02 كما هو" — AAA > AA + Tailwind utility هو الـ pattern المعتمد. ما عدّلت أي كود. EXEC-09 (BAI-CONTENT-02: /customers/ pages merge or delete) وصلتني مقطوعة (العنوان بس) — أنتظر إعادة إرسالها.
+- **Why**: BAI-DESIGN-02-002 يحدد DEC: `text-white/65` (8.18:1) أفضل من `text-white/85` (16:1) أو `var(--text-secondary)` (6.8:1) لأن (1) DEC precedent في kernel.css "primary × 0.78 (≈ 9:1, AAA)" + pages.css "primary × 0.58 (≈ 5.25:1, AA)"، (2) 22 استخدام موجود مسبقاً للـ /65 Tailwind alpha، (3) safety margin فوق الحد الأدنى. تنفيذ EXEC-08 حرفياً = regression من 8.18:1 إلى 5.2:1 (AAA → AA) + إنشاء token جديد (--text-secondary-aa) خارج الـ precedent المعمول به. السؤال الاستباقي منع duplicate work + regression.
+- **Verification** (لا code change، تأكيد الحالة الراهنة):
+  - `grep -roE "text-white/40\b" src/ | wc -l` → **0** (BAI-DESIGN-02 مكتمل) ✅
+  - `grep -roE "text-white/65\b" src/ | wc -l` → **34** (كان 22 قبل BAI-DESIGN-02، +12 جديد) ✅
+  - `grep -roE "rgba\(255,255,255,0\.4\)" src/styles/ | wc -l` → **0** (نفس pattern mismatch اللي BAI-DESIGN-02 واجهها) ✅
+  - `grep -n "text-secondary-aa" src/styles/tokens.css` → **0** (الـ token الجديد ما اتطلب، EXEC-08 ما اتنفّذ) ✅
+- **DEC جديد (DEC-EXEC-08-NEW-2026-07-29-001)**: When a new prompt re-asks a task that's already been executed (verified locally, in working tree, even if uncommitted) AND proposes a regression (lower contrast) → **ask the user first** (Section 0.7.3 "Ask, don't guess"). Heuristic للـ pattern detection: literal pattern المطلوب في prompt = 0 matches + الـ BAI ID قريب (BAI-DESIGN-NN) + DEC-NN موجود في brain = duplicate واضح. الـ reversal cost صفر (proactive gate). الوثيقة: line 18 (no commits) + line 1086 (change ledger append-only) + DEC-BAI-DESIGN-02-002 (Tailwind utility > CSS var في هذا السياق).
+- **DEC جديد (DEC-EXEC-08-NEW-2026-07-29-002)**: Ticket naming convention drift بين EXEC-XX و BAI-XX. الـ brain فيه EXEC-08 قديم (kernel-chat mobile layout, line 4316) + BAI-DESIGN-02 (نفس المشكلة). المستخدم يستخدم EXEC-NN الآن (rounded numbering). التوثيق يذكر كلا الرقمين لتجنب الالتباس. Reversal cost: n/a (documentation only).
+- **DEC جديد (DEC-EXEC-08-NEW-2026-07-29-003)**: EXEC-09 (BAI-CONTENT-02: /customers/ pages merge or delete) وصلت مقطوعة (العنوان بس، بدون CONTEXT/FILES/AC). توقف + استفسار بدلاً من تخمين. BAI-CONTENT-02 موجود مسبقاً في brain line 1611 (FAQ schema + author byline للـ54 blog article، ~30 ساعة) — رقم مكرر محتمل، أحتاج تأكيد من المستخدم. Reversal cost: n/a.
+- **Risks Addressed**:
+  - **R1 (Duplicate work على BAI-DESIGN-02)**: closed. اكتشاف + سؤال استباقي منع تنفيذ EXEC-08.
+  - **R2 (Contrast regression من 8.18:1 AAA إلى 5.2:1 AA)**: closed. المستخدم وافق على إبقاء AAA.
+  - **R3 (Pattern mismatch في prompt EXEC-08)**: closed — نفس الـ mismatch اللي BAI-DESIGN-02-001 وثقها.
+- **Risks Remaining**: 
+  - **BAI-DESIGN-02 + BAI-A11Y-05 + BAI-DESIGN-09** كلهم UNCOMMITTED في working tree، يحتاجون قرار commit من المستخدم (PR واحد ولا عدة PRs).
+  - **EXEC-09 (BAI-CONTENT-02)**: ما اتنفّذ، أنتظر إعادة الإرسال.
+- **Out-of-Scope (متابعة منفصلة)**:
+  - **EXEC-09**: تنفيذ بعد إعادة إرسال الـ prompt كامل.
+  - **BAI-CONTENT-02 (القديم)**: FAQ schema + author byline للـ54 blog article، ~30 ساعة.
+- **Reports**: لا يوجد (closed without code change، أقل من threshold BAI-PROC-12). الـ entry هذا هو التوثيق.
+- **Commit**: uncommitted (per brain line 18).
+- **Status**: closed (no code change, user decision).
+- **Brain updates**: frontmatter (version 2.7.52 → 2.7.53 + last_updated 2026-07-29 19:35 +03:00). Section 1: لا تغيير. Section 5 (Inventory): لا تغيير (--text-secondary-aa مو موجود). 3 DECs جديدة في Section 4.
+
+### 2026-07-29 — BAI-DESIGN-09: Trust Badges v2 — 80x80، ISO/IEC 42001، eager loading، `/assets/images/badges/` — استبدال TrustBadges القديم (PDPL 18x18 في `/icons/badges/`) — UNCOMMITTED (per brain line 18، الدفع عبر main فقط PR، لا branch جديد)
+
+- **Files**: **1 معدّل + 3 جديد + 3 moved-to-archive** (0 محذوف direct، 0 protected):
+  - `src/components/TrustBadges.astro` (معدّل، 103 سطر) — استبدال كامل: (1) 3 badges جديدة: SDAIA / NCA ECC / ISO/IEC 42001 بدل PDPL / NCA ECC / SDAIA؛ (2) path جديد: `/assets/images/badges/` بدل `/icons/badges/`؛ (3) 80×80 + `loading="eager"` بدل 18×18 + `loading="lazy"`؛ (4) alt text كامل: "شعار سدايا" / "شعار NCA ECC" / "شعار ISO 42001" بدل alt="" (الـ label العربي القديم اتحذف لأن alt كافي لـ accessibility per WCAG 1.1.1)؛ (5) styling: `display: flex; flex-wrap: wrap; gap: var(--space-4); opacity: 0.9` (التاس حددها verbatim)؛ (6) container role="list" + each item role="listitem" + aria-label عربي مختصر "الالتزامات التنظيمية" (الـ chip color تغيّر من teal-tinted background إلى var(--text-secondary) لأن الـ badges 80x80 البصرية تكتفي بـ opacity 0.9).
+  - `public/assets/images/badges/sdaia.svg` (جديد، 787B raw) — shield + inner ring + 8-pointed Islamic star + center dot. fill+stroke `currentColor` → يلتقط لون من parent.
+  - `public/assets/images/badges/nca.svg` (جديد، 957B raw) — shield + inner ring + lock (shackle + body + keyhole).
+  - `public/assets/images/badges/iso.svg` (جديد، 708B raw) — globe (outer circle + equator + meridian + center cross) ليرمز ISO/IEC 42001 AI Management System.
+  - `public/_archive-old-badges/sdaia.svg` (مُنقَل، 408B) — من `public/icons/badges/sdaia.svg` (نقل، مو حذف — reversible).
+  - `public/_archive-old-badges/nca-ecc.svg` (مُنقَل، 371B) — من `public/icons/badges/nca-ecc.svg`.
+  - `public/_archive-old-badges/pdpl.svg` (مُنقَل، 315B) — من `public/icons/badges/pdpl.svg`.
+  - `public/icons/badges/` (فاضي الآن) — Astro ما يصدر مجلد فاضي في dist/؛ لو احتجنا نرجع، نقلب من `_archive-old-badges/`.
+  - `report/2026-07-29-bai-design-09-trust-badges-v2.md` (جديد) — BAI-PROC-12 compliant.
+- **What**: ترقية B2B trust badges في hero من 3 أيقونات صغيرة (18×18) مع labels عربية إلى 3 شعارات كبيرة (80×80) مع alt text فقط. badges: SDAIA / NCA ECC / ISO/IEC 42001 (PDPL → ISO/IEC 42001 لأن ISO معيار دولي معترف فيه في السوق السعودي + B2B trust hypothesis +6 points). النصوص المحفوظة (H1/lead/CTAs/microcopy) ما تتغيّر. TrustBadges labels العربية القديمة ("متوافق مع PDPL" / "معتمد من NCA ECC" / "مبني حسب SDAIA") اتحذفت؛ alt text يحل محلها لـ accessibility، والـ regulatory naming (SDAIA / NCA / ISO) معروف في السوق السعودي بدون ترجمة.
+- **Why**: BAI-DESIGN-03 (2026-07-29) كان P2، لكن TICKET الحالي (P1، effort 4h، impact B2B trust 6+ points، risk L) يرفع الأولوية ويطلب: (1) 80×80 بدلاً من 18×18 (signals مرئية أوضح = trust أقوى)؛ (2) ISO/IEC 42001 بدل PDPL (معيار دولي = trust أعرض جغرافياً)؛ (3) eager loading (above the fold، يخدم LCP signal)؛ (4) alt text بدلاً من icon+label (تكرار content في label + alt). السبب الإضافي: FILES IN SCOPE يحدد `public/assets/images/badges/*.svg` صراحة، فالمسار الجديد مو deviation — هو المتطلب الأصلي للـ TICKET الجديد.
+- **Verification** (كله locally على macOS dev):
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **209 index.html files** (نفس baseline 196 ± 13 من fixture/orphan routes، 0 errors) ✅
+  - `grep -c 'badges/sdaia' dist/client/index.html` → **2** (acceptance: 1+) ✅
+  - `grep -c 'badges/nca' dist/client/index.html` → **2** (acceptance: 1+) ✅
+  - `grep -c 'badges/iso' dist/client/index.html` → **2** (acceptance: 1+) ✅
+  - `grep -c 'icons/badges' dist/client/index.html` → **0** (old path removed) ✅
+  - `grep -oE '<img[^>]*badges/[^>]*>' dist/client/index.html` → 3 exact tags مع width=80 height=80 loading=eager ✅
+  - `grep -oE 'alt="(شعار سدايا|شعار NCA ECC|شعار ISO 42001)"' dist/client/index.html` → 3 exact matches ✅ (Lighthouse Accessibility: alt text present)
+  - `pnpm run performance:budget` → **PASS** (HTML 36.16KB gz، +2.18KB من baseline 33.98KB؛ CSS 19.65KB gz OK ضمن 50KB budget؛ JS 11.97KB gz OK ضمن 60KB budget) ✅
+  - `pnpm run verify:all` → 9 broken links (نفس BAI-DESIGN-03 — pre-existing في `authors/`, `blog/`, `events/` pages، **مو من BAI-DESIGN-09**، tracked منفصل BAI-IDX-23) ✅
+- **DEC جديد (DEC-BAI-DESIGN-09-2026-07-29-001)**: Trust badges path = `/public/assets/images/badges/` (TICKET المحدد). DEC-BAI-DESIGN-03-2026-07-29-003 (path = `/icons/badges/`) superseded للـ badges الجديدة. Reversal cost: low — نقل SVGs + تعديل 3 paths في TrustBadges.astro.
+- **DEC جديد (DEC-BAI-DESIGN-09-2026-07-29-002)**: badges = icon-only + alt text (مو icon+label). السبب: (1) 80×80 visual weight يكفي بدون label مُكرّر؛ (2) Lighthouse Accessibility: alt text يُحسب، label visible بدون alt = duplicate content للـ screen readers؛ (3) 80×80 في 3 columns = ~240px + gap = ~280px في row واحد، labels تحتها تضيف ~40px عمود إضافي بدون قيمة. Reversal cost: trivial (إعادة labels).
+- **DEC جديد (DEC-BAI-DESIGN-09-2026-07-29-003)**: PDPL → ISO/IEC 42001 (استبدال). السبب: (1) TICKET P1 يحدد ISO صراحة؛ (2) ISO/IEC 42001 = AI Management System (أحدث معيار دولي لـ AI governance، issued 2023)؛ (3) B2B hypothesis: banks + gov + healthcare في السعودية تتعامل مع ISO باحترام عالي (PDPL محلي، ISO دولي). Reversal cost: low (استبدال SVG).
+- **Brain updates**: frontmatter (version 2.7.51 → 2.7.52 + last_updated 2026-07-29 06:05 +03:00). State snapshot Section 1.2: HTML gz 33.98 → 36.16KB (+2.18KB). Section 5 (Inventory): `/icons/badges/{sdaia,nca-ecc,pdpl}.svg` marked deprecated، moved to `_archive-old-badges/`؛ `/assets/images/badges/{sdaia,nca,iso}.svg` canonical. DEC-BAI-DESIGN-03-2026-07-29-003 superseded.
+- **Risks Addressed**:
+  - **R1 (B2B trust insufficient — small icons)**: closed. 80×80 +3-4× visual area من baseline 18×18.
+  - **R2 (PDPL limited reach — local regulation)**: closed. ISO/IEC 42001 international standard + NCA ECC + SDAIA = 3-layer trust (local + sector + international).
+  - **R3 (Acceptance criteria 1+ per badge)**: closed. 2 hits لكل badge في dist/index.html.
+  - **R4 (Accessibility — alt text)**: closed. 3 descriptive alt texts in Arabic.
+- **Risks Remaining**:
+  - **curl production verification needed**: لازم الـ user يـ commit + push + Render deploy عشان نتحقق على brightai.site live. local: 2 hits per badge ✅.
+  - **No `/trust/` link من badges**: visual-only، نفس BAI-DESIGN-03 (BAI-DESIGN-04 follow-up).
+  - **Empty `public/icons/badges/` directory**: Astro ما يصدرها في dist/، لكن git قد يحتفظ بالمجلد الفاضي. Reversible — نقل 3 SVGs من `_archive-old-badges/` لو احتجنا نرجع.
+  - **9 broken links في `verify:all` و `seo:gate`**: pre-existing (BAI-IDX-23 منفصل).
+  - **Labels عربية قديمة في changelog السابق (BAI-DESIGN-03)**: "متوافق مع PDPL" / "معتمد من NCA ECC" / "مبني حسب SDAIA" كانت published عبر dist. اتحذفت في BAI-DESIGN-09. لو احتجنا نرجع، الـ SVGs في `_archive-old-badges/`.
+- **Out-of-Scope (متابعة منفصلة)**:
+  - **BAI-DESIGN-04**: إضافة `href="/trust/"` للـ badges (visual-only الحالي مقبول).
+  - **BAI-DESIGN-05**: badges في `/about/` و `/trust/` pages (reuse نفس component).
+  - **BAI-DESIGN-10** (suggested): حذف نهائي لـ `public/icons/badges/` و `_archive-old-badges/` لو الـ user وافق على الـ v2.
+  - **BAI-IDX-23**: fix 9 broken links (pre-existing).
+- **Reports**: `report/2026-07-29-bai-design-09-trust-badges-v2.md` (BAI-PROC-12 compliant، `verified_local: yes` + `verified_production: no` + `verified_production_blocker: needs deploy`).
+- **Commit**: uncommitted (per brain line 18، المستخدم يلتزم عبر main + PR).
+- **Status**: verified locally؛ يحتاج deploy للـ production verification (curl على brightai.site live + Lighthouse mobile + axe scan).
 
 ### 2026-07-29 — BAI-A11Y-04: ARIA labels audit — 0 icon-only buttons بدون aria-label — UNCOMMITTED (audit/verification only، ما في تغييرات code)
 
@@ -6421,6 +6582,34 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 4. Decisions Log
 
+### DEC-EXEC-08-NEW-2026-07-29-001: When a re-prompted task is already executed (and proposes a regression) → ask the user, don't auto-execute
+
+- **Date**: 2026-07-29
+- **Context**: EXEC-08 (new ticket) بعت prompt يطلب `rgba(255,255,255,0.4) → var(--text-secondary-aa): rgba(255,255,255,0.65)` (5.2:1 AA). BAI-DESIGN-02 (نفس اليوم) عالج نفس المشكلة بـ 12 instance `text-white/40 → text-white/65` (8.18:1 AAA، verified locally، UNCOMMITTED). تنفيذ EXEC-08 حرفياً = regression من AAA إلى AA + إنشاء token خارج الـ precedent المعتمد.
+- **Heuristic للـ detection** (3 شروط كلها):
+  1. الـ literal pattern في الـ prompt = 0 matches في `grep` (نفس pattern mismatch اللي BAI-DESIGN-02-001 وثقها).
+  2. BAI ID قريب (BAI-DESIGN-NN) في الـ brain + entry موجود في Change Ledger.
+  3. الـ fix الجديد يخفض الـ contrast ratio أو ينشئ token يـ duplicate token موجود.
+- **Decision**: **اسأل المستخدم** (Section 0.7.3 "Ask, don't guess"). الـ reversal cost صفر (proactive gate قبل ما نلمس الكود). الـ ask_user يعرض 3-4 خيارات: (1) خلّ القديم، (2) حوّل، (3) hybrid، (4) وضّح scope.
+- **Rationale**: Duplicate work يضيع وقت + regression (5.2:1 بدل 8.18:1) يضر الـ a11y. السؤال الاستباقي 30 ثانية، الـ rollback بعد التنفيذ = commit + revert + brain update.
+- **Reversal cost**: n/a (proactive gate).
+
+### DEC-EXEC-08-NEW-2026-07-29-002: Ticket naming convention drift (EXEC-NN vs BAI-NN) — document both IDs
+
+- **Date**: 2026-07-29
+- **Context**: الـ brain فيه EXEC-08 قديم (kernel-chat mobile layout, line 4316) + BAI-DESIGN-02 (AA contrast fix، line 1326) — كلاهما موجود قبل EXEC-08 (new) في نفس اليوم. المستخدم يستخدم EXEC-NN (rounded numbering) للـ new tickets بينما الـ brain history يستخدم BAI-DESIGN-NN / BAI-CONTENT-NN / BAI-A11Y-NN.
+- **Decision**: الـ brain entries تذكر كلا الرقمين لتجنب الالتباس. مثال: `EXEC-08 (new) / BAI-DESIGN-02 duplicate`. الـ DEC IDs تستخدم suffix `-NEW` (DEC-EXEC-08-NEW-2026-07-29-001) للتمييز من DECs القديمة.
+- **Rationale**: Agent المستقبلي يقرأ brain.md يحتاج يعرف إن EXEC-08 (new) ≠ EXEC-08 (kernel) — التوثيق يربط بينهم.
+- **Reversal cost**: trivial (rename in next entry).
+
+### DEC-EXEC-08-NEW-2026-07-29-003: Truncated prompt (title only, no CONTEXT/FILES/AC) → stop + ask, don't infer
+
+- **Date**: 2026-07-29
+- **Context**: EXEC-09 (BAI-CONTENT-02: /customers/ pages merge or delete) وصلتني بـ title فقط — بدون CONTEXT (وش المشكلة بالضبط)، بدون FILES IN SCOPE، بدون ACCEPTANCE CRITERIA. كمثال سابق: BAI-DESIGN-02-001 وثق نفس الموقف لما الـ prompt طلب `rgba(255,255,255,0.4)` = 0 matches، و BAI-CONTENT-02 موجود مسبقاً (line 1611: FAQ schema + author byline) ≠ "/customers/ pages merge or delete" = رقم مكرر محتمل.
+- **Decision**: توقف + استفسار. استخدم ask_user مع سؤالين: (1) "وش الـ scope الفعلي للـ task؟" (2) "هل BAI-CONTENT-02 هنا = نفس القديم (FAQ schema) ولا task جديد؟"
+- **Rationale**: تخمين scope من title = guess = violates Section 0.7.3 + Section 0.7.5 (don't execute when uninformed). Title بدون context ما يكفي لتحديد blast radius أو acceptance criteria.
+- **Reversal cost**: n/a (proactive gate).
+
 ### DEC-BAI-IDX-12-2026-07-25-001: Trailing-slash redirects = `@astrojs/node` `case "always"` (NOT `astro.config.mjs redirects`)
 
 - **Date**: 2026-07-25
@@ -7865,6 +8054,8 @@ npm run indexnow:trigger  # notifies Bing/Yandex
 ## 10. Maintenance Log
 
 > سجل صيانة هذا الملف.
+
+- **v2.7.53** (2026-07-29 19:35 +03:00): Added EXEC-08 (new) change ledger entry — closed without code change (user decision: keep BAI-DESIGN-02 as is). Added 3 DECs to Section 4: DEC-EXEC-08-NEW-001 (re-prompted task detection heuristic), DEC-EXEC-08-NEW-002 (ticket naming convention drift EXEC-NN vs BAI-NN), DEC-EXEC-08-NEW-003 (truncated prompt → ask don't infer). No baseline change (no code modified). EXEC-09 (BAI-CONTENT-02) pending — title only, awaiting user re-send. Updated frontmatter (version 2.7.52 → 2.7.53, last_updated).
 
 - **v2.5.0** (2026-06-30 23:25 +03:00): Added DEC-2026-039 (Pricing Page Canonical Pattern — REPORT-12). Added change ledger entry for pricing visual refresh (page-hero + 4-col cards grid + featured card + FAQ accordion + final CTA). Updated Section 1 (no baseline change — 130 pages preserved). Updated Section 4 (DEC-2026-039 added). Updated frontmatter (version 2.4.0 → 2.5.0, last_updated).
 

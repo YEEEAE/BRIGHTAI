@@ -49,6 +49,13 @@ import {
 import { rateLimit } from '../../lib/ratelimit';
 // CSRF-LEAD-001 (2026-07-15): double-submit cookie pattern
 import { verifyCsrfRequest } from '../../lib/csrf';
+// EXEC-10 (2026-07-29): GA4 Measurement Protocol server-side. Covers
+// client-side event loss (adblocker, network drop after submit, tab
+// close). Best-effort — never blocks the lead enqueue.
+import {
+  sendServerEvent,
+  parseClientIdFromCookie,
+} from '../../lib/ga4-server';
 // `drainOnce` is used inside ensureDrain() below — see the timer block.
 
 export const prerender = false;
@@ -270,6 +277,35 @@ export const POST: APIRoute = async ({ request }) => {
   // a client that lost the previous response), the row comes back with
   // status = DELIVERED — surface that as `shipped`.
   const mode: 'shipped' | 'queued' = enqueued.status === 'DELIVERED' ? 'shipped' : 'queued';
+
+  // 7.5. EXEC-10: Server-side GA4 `generate_lead` conversion (best-effort).
+  //      Covers the case where the client-side gtag event is lost
+  //      (adblocker, network drop after submit, tab closed). Stitches to
+  //      the same GA4 session via the _ga cookie when available; falls
+  //      back to a stable IP+UA hash (no raw PII leaves the server).
+  //      Never blocks or fails the lead — any throw is swallowed.
+  const cookieClientId = parseClientIdFromCookie(request.headers.get('cookie'));
+  const fallbackClientId = crypto
+    .createHash('sha256')
+    .update(`${ip}|${getUserAgentLocal(request)}`)
+    .digest('hex')
+    .slice(0, 16);
+  void sendServerEvent({
+    clientId: cookieClientId ?? fallbackClientId,
+    events: [
+      {
+        name: 'generate_lead',
+        params: {
+          source: lead.source ?? 'kernel',
+          page: lead.page ?? null,
+          mode,
+        },
+      },
+    ],
+  }).catch((e) => {
+    // eslint-disable-next-line no-console
+    console.warn('[ga4-server] generate_lead rejected (swallowed)', e);
+  });
 
   // 8. Log ONLY ID hash + timestamp + page (لا PII في stdout)
   // eslint-disable-next-line no-console
