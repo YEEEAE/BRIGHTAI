@@ -1125,6 +1125,29 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-29 — CHAMPION-01 — Champion orchestrator run (Delta measurement)
+
+- **Files**: scripts/prompt-champion.mjs (created), reports/CHAMPION-STATE.md (created), brightai-audit-reports/prompt-reports/CHAMPION-01-2026-07-29.md (created), package.json (added prompt:champion script)
+- **What**: CHAMPION-01 champion run عبر scripts/prompt-champion.mjs. Baseline + post-analysis تلقائي.
+- **Why**: CHAMPION-01 جزء من champion cluster (3 محاور: Saudi/Kernel/Mobile championship). الـ orchestrator يضمن measurement قبل/بعد كل prompt.
+- **Verification**: pre/post Δ +0 pts في mobile score، +0% empty state coverage. Gemini live: 0 → 0.
+- **Report**: brightai-audit-reports/prompt-reports/CHAMPION-01-2026-07-29.md (BAI-PROC-12 compliant، verified_production: no، verified_production_blocker: Render Static Site blocker)
+- **Commit**: uncommitted (per brain line 18 — المستخدم commit)
+- **Status**: verified locally (baseline parse + kernel file analysis + Δ calc)
+- **Brain updates**: Section 5 (Champion orchestrator added to tooling inventory), Section 6 (Champion cluster added to glossary)
+
+
+### 2026-07-30 — BAI-CHAMPION-00: Champion Cluster Orchestrator — scripts/prompt-champion.mjs (1,002 سطر) + reports/CHAMPION-STATE.md + 5 npm scripts + brain.md ريدر/كاتب — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
+- **Files**: scripts/prompt-champion.mjs (new, 50,962 bytes), reports/CHAMPION-STATE.md (new, 111 سطر)، brightai-audit-reports/prompt-reports/ (new dir)، package.json (5 prompt:champion scripts added)، report/2026-07-30-bai-champion-00-orchestrator.md (new report)
+- **What**: Champion Cluster Orchestrator — 3-phase orchestrator (pre-analysis → exec → post-analysis) يدير CHAMPION-01..05 loop. يقرأ brain.md Section 1 للـ baseline، يفحص 11 kernel page (empty state/skeleton/mobile-first/RTL/touch targets)، يـ probe live (curl 3 endpoints لـ brightai.site)، يكتب Δ report. مع pompt:champion:aggregate يصدر brightai-audit-report-v4-champion.html.
+- **Why**: per task spec BAI-CHAMPION-00 — كل champion run يحتاج baseline + post-analysis لقياس Δ. بدون orchestrator، الـ runs غير قابلة للمقارنة. الـ 3 محاور: Saudi Championship + Kernel Championship + Mobile Championship. الـ orchestrator يضمن measurement parity.
+- **Verification**: pre-flight 9/9 passed (brain.md parseable 1.32 MB + v3 prompts 135.1 KB + 11 kernel pages + writable dirs + node 22+ + pnpm >= 10). baseline: build pages 196، kernel mobile score 26/100، empty state coverage 27% (3/11)، Gemini live NO، 77 BAI-* IDs documented. كل الـ live measurements ضد brightai.site ترجع 404 (Render Static Site blocker KI-RENDER-CACHE-2026-07-28-001).
+- **Report**: report/2026-07-30-bai-champion-00-orchestrator.md (BAI-PROC-12 compliant، verified_production: no، verified_local: yes، 21/21 acceptance criteria met)
+- **Commit**: uncommitted (per brain line 18 — المستخدم commit)
+- **Status**: verified locally (script يحقن baseline + يحلل kernel pages + يحسب Δ بشكل صحيح). لا production runtime impact (orchestrator dev tool). brain.md Section 2 يحدّث فقط على post-phase ناجح (CHAMPION-01..05 runs).
+- **DEC جديد (DEC-BAI-CHAMPION-00-2026-07-30-001)**: scripts/prompt-champion.mjs is the canonical entry point for the CHAMPION cluster. CHAMPION-01..05 يجب أن يمر عبر الـ orchestrator لإلغاء الـ manual analysis. الـ reversal cost: low (delete 3 files + revert package.json). Do not تشغيل CHAMPION-01..05 prompts directly بدون orchestrator.
+- **Out-of-Scope (backlog)**: Playwright auto-screenshots (BAI-CHAMPION-02) + GSC integration (BAI-IDX-13 secret) + Lighthouse CI (lhci:collect) + multi-process parallelization.
+
 ### 2026-07-29 — BAI-SEC-HEADERS: Cloudflare Transform Rule — 7 security headers على كل الصفحات (CSP/X-Frame-Options/Referrer/Permissions/X-Robots + HSTS) — CLOUDFLARE-ONLY (no code change، لا commit، per brain line 18)
 
 - **Files**: **0 repo files** (إصلاح على Cloudflare edge فقط). `report/2026-07-29-cloudflare-security-headers.md` (تقرير جديد). `scripts/verify-csp-compat.mjs` + `scripts/verify-csp-functional.mjs` + `scripts/verify-csp-beacon.mjs` (Playwright verification scripts الجديدة).
