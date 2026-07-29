@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" role="img" aria-label="NCA ECC">
+  <!-- Shield outline -->
+  <path d="M40 6 L66 14 V40 C66 57 54 70 40 74 C26 70 14 57 14 40 V14 Z"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Inner ring -->
+  <path d="M40 12 L60 18 V40 C60 54 50 65 40 68 C30 65 20 54 20 40 V18 Z"
+        fill="none" stroke="currentColor" stroke-width="1" stroke-opacity="0.4" stroke-linejoin="round"/>
+  <!-- Lock shackle -->
+  <path d="M32 42 V34 a8 8 0 0 1 16 0 V42"
+        fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+  <!-- Lock body -->
+  <rect x="28" y="40" width="24" height="18" rx="2.5"
+        fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+  <!-- Keyhole -->
+  <circle cx="40" cy="48" r="2.2" fill="currentColor"/>
+  <rect x="38.8" y="48" width="2.4" height="6" fill="currentColor"/>
+</svg>

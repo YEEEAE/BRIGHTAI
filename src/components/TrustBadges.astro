@@ -1,71 +1,69 @@
 <!--
   TrustBadges.astro — Compliance/regulatory trust badges row.
 
-  Purpose: Surface Saudi regulatory alignment (PDPL, NCA ECC, SDAIA)
-           as B2B trust signals in the hero. Visually subtle — sits
-           below the CTAs without competing with the H1.
+  Purpose: Surface Saudi + international regulatory alignment
+           (SDAIA, NCA ECC, ISO/IEC 42001) as B2B trust signals
+           in the hero. Visually subtle — sits below the CTAs
+           without competing with the H1.
 
   Files:
-    - /public/icons/badges/pdpl.svg
-    - /public/icons/badges/nca-ecc.svg
-    - /public/icons/badges/sdaia.svg
+    - /public/assets/images/badges/sdaia.svg
+    - /public/assets/images/badges/nca.svg
+    - /public/assets/images/badges/iso.svg
 
   Design:
     - 3 shield-style badges in a single row (wraps on mobile)
-    - Subtle teal-tinted background (brand-aligned, not competing)
+    - 80x80 each — visible trust signals, not inline icon dots
     - Static, no animation, no rotation
-    - SVG icons rendered as <img> (lazy, decoded async, no layout shift)
+    - SVG icons rendered as img tags (eager above the fold, decoded async)
 
   Accessibility:
-    - `role="list"` + each badge is `role="listitem"`
-    - SVG icons have aria-hidden (the visible Arabic label carries meaning)
-    - `aria-label` on the container summarizes the list
+    - Each badge has descriptive `alt` text (carries the meaning)
+    - Container has `role="list"` + each badge `role="listitem"`
+    - `aria-label` on the container summarizes the regulatory cluster
     - Honors `prefers-reduced-motion` (nothing to disable — no animation)
+    - Touch target effectively 80x80 (the badge itself)
 
   Performance:
-    - 3 small SVG files (~400B each, ~1.2KB total) lazy-loaded
+    - 3 small SVG files (~700-960B raw each, <3KB total) eagerly loaded
     - No JS, no hydration, no client-side work
-    - width/height set explicitly → no CLS contribution
+    - explicit width/height + opacity 0.9 → no CLS contribution
+    - all 3 above the fold → loading="eager" to keep them ready for LCP
 -->
----
----
 
-<div class="trust-badges" role="list" aria-label="الالتزامات والمعايير السعودية">
+<div class="trust-badges" role="list" aria-label="الالتزامات التنظيمية: سدايا، NCA ECC، ISO 42001">
   <span class="trust-badge" role="listitem">
     <img
-      src="/icons/badges/pdpl.svg"
-      alt=""
-      width="18"
-      height="18"
-      loading="lazy"
+      src="/assets/images/badges/sdaia.svg"
+      alt="شعار سدايا"
+      width="80"
+      height="80"
+      loading="eager"
       decoding="async"
       class="trust-badge__icon"
     />
-    <span class="trust-badge__label">متوافق مع PDPL</span>
   </span>
   <span class="trust-badge" role="listitem">
     <img
-      src="/icons/badges/nca-ecc.svg"
-      alt=""
-      width="18"
-      height="18"
-      loading="lazy"
+      src="/assets/images/badges/nca.svg"
+      alt="شعار NCA ECC"
+      width="80"
+      height="80"
+      loading="eager"
       decoding="async"
       class="trust-badge__icon"
     />
-    <span class="trust-badge__label">معتمد من NCA ECC</span>
   </span>
   <span class="trust-badge" role="listitem">
     <img
-      src="/icons/badges/sdaia.svg"
-      alt=""
-      width="18"
-      height="18"
-      loading="lazy"
+      src="/assets/images/badges/iso.svg"
+      alt="شعار ISO 42001"
+      width="80"
+      height="80"
+      loading="eager"
       decoding="async"
       class="trust-badge__icon"
     />
-    <span class="trust-badge__label">مبني حسب SDAIA</span>
   </span>
 </div>
 
@@ -75,13 +73,15 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 0.625rem;
+    gap: var(--space-4);
+    opacity: 0.9;
     margin-top: 1.25rem;
+    color: var(--text-secondary);
   }
   @media (min-width: 1024px) {
     .trust-badges {
       justify-content: flex-start;
-      gap: 0.75rem;
+      gap: var(--space-4);
       margin-top: 1.5rem;
     }
   }
@@ -89,35 +89,15 @@
   .trust-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.4375rem;
-    padding: 0.4375rem 0.8125rem;
-    border-radius: 0.625rem; /* subtle rounded rect — regulatory, not pill */
-    background: rgba(34, 165, 151, 0.06);   /* brand-tinted, very subtle */
-    border: 1px solid rgba(34, 165, 151, 0.22);
-    color: var(--text-secondary);
-    font-size: 0.8125rem;       /* 13px */
-    font-weight: 600;
-    line-height: 1;
-    white-space: nowrap;
-    transition: border-color 0.2s var(--ease-out), color 0.2s var(--ease-out);
-  }
-  .trust-badge__icon {
-    color: var(--brand-400);
+    justify-content: center;
     flex: 0 0 auto;
-    width: 18px;
-    height: 18px;
-  }
-  .trust-badge__label {
-    /* inherits color from parent */
+    line-height: 0;
   }
 
-  @media (hover: hover) {
-    .trust-badge:hover {
-      border-color: rgba(34, 165, 151, 0.4);
-      color: var(--text-primary);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .trust-badge { transition: none; }
+  .trust-badge__icon {
+    width: 80px;
+    height: 80px;
+    flex: 0 0 auto;
+    display: block;
   }
 </style>

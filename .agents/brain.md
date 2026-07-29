@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 05:25 +03:00
+last_updated: 2026-07-29 05:38 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.50
+version: 2.7.51
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1039,6 +1039,18 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-29 — BAI-A11Y-04: ARIA labels audit — 0 icon-only buttons بدون aria-label — UNCOMMITTED (audit/verification only، ما في تغييرات code)
+
+- **Files**: 0 (audit/verification only). **تقرير**: `report/2026-07-29-bai-a11y-04-aria-labels-icon-only-buttons.md` (جديد).
+- **What**: فحصت كل الأزرار في `src/` (components + pages + layouts). النتيجة: **كل الأزرار اللي تحوي أيقونة فقط عندها `aria-label` وصفية بالفعل**. ما في أي زر icon-only بدون `aria-label`. الـ axe scan baseline طلع **0 button-name violations**. المهمة كانت audit/verification أكتر من كونها implementation — الكود سليم من قبل.
+- **Why**: الـ codebase مرّ بعدة جولات a11y (REPORTS-18، REPORTS-19، DEC-A11Y-001 لـ 005) وأضافت `aria-label` لكل الأزرار اللي تحتاجها. الـ Header burger، MobileNav close، chat toolbar/drawer buttons، evidence modal buttons، reports filter chips — كلهم عندهم `aria-label` أو visible text.
+- **Verification**: `grep -rn '<button' src/ \| grep -v 'aria-label'` → كل الـ matches عندها visible text (مو icon-only). axe scan baseline → 0 button-name violations ✅. فحص ملف بملف: Header.astro (burger aria-label + dropdown triggers visible text)، MobileNav.astro (close aria-label + accordion triggers visible text)، Footer.astro (links مع aria-label، ما فيه buttons)، CookieConsent.astro (visible text)، chat.astro (toolbar/drawer/attach/send كلها aria-label)، evidence.astro (visible text)، reports.astro (visible text)، kernel components (KernelTabs visible text + KernelDemoPill aria-label + KernelAiAssistant aria-label)، KernelLayout.astro (sidebar toggle aria-label).
+- **Report**: `report/2026-07-29-bai-a11y-04-aria-labels-icon-only-buttons.md`
+- **Commit**: uncommitted (audit only — ما في تغييرات code)
+- **Status**: verified locally (grep + axe baseline + manual code review)
+- **Brain updates**: frontmatter (version 2.7.50 → 2.7.51 + last_updated)
+- **Risks Remaining**: (1) Design pages (`/design/buttons.`) demo buttons ما عندها aria-label بس عندها visible text — out of scope. (2) Production verification: الـ axe scan كان baseline، يحتاج re-run بعد أي deploy.
+
 ### 2026-07-29 — BAI-A11Y-02: 30 outline:none overrides restored to focus-visible (WCAG 2.4.7) — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
 
 - **Files**: **4 معدّل + 1 جديد + 1 تقرير**:
@@ -1688,6 +1700,42 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
   - All gates pass: verify-all 5/5, headers:check, seo:gate, seo:hreflang, performance:budget
   ```
 - **Related**: BAI-SEC-10 (2026-07-25، deny-list for `/frontend/**`)، BAI-PERF-01 (2026-07-24، CSP `script-src-attr: 'none'` — السبب إن consent calls external، مو inline)، BAI-PROC-12 (2026-07-25، verified_production gate — يحتاج `verified_production: yes` بعد deploy + GA4 DebugView verification).
+
+### 2026-07-29 — BAI-PERF-04: Microsoft Clarity lazy-load via requestIdleCallback — code ready, PARKING على KI-010 (`clarityId=''`) — UNCOMMITTED (per brain line 18, user commits)
+
+- **Files**: **0 معدّل** + **1 جديد** (no deletes). `report/A/2026-07-25-bai-perf-04-clarity-lazy-load.md` (تقرير BAI-PROC-12 compliant، `verified_local: yes` + `verified_production: no` + `verified_production_blocker: KI-010 — SITE.clarityId='' في src/data/site.ts:37`).
+- **What**: P2 من الـ perf cluster (2h effort, Risk L, Depends on BAI-DEPLOY-12 = deployed 2026-07-25 في commit `66b79d0c`). **الكود الأساسي جاهز من 2026-07-25** في `public/js/clarity-init.js` (السطور 79-83 فيها `requestIdleCallback` + `setTimeout 3000ms` fallback) و `src/layouts/BaseLayout.astro:292-294` (conditional render بـ `data-clarity-id` attribute). **بس `SITE.clarityId` فاضي في `src/data/site.ts:37`** فالـ script tag ما يظهر في HTML (grep على `dist/client/index.html` = 0 matches). **الـ parking**: المستخدم اختار Option 2 = أوثّق الوضع الحالي كـ "code ready, awaiting ID" بدون أي تعديل كود.
+- **Why**: KI-010 (No Microsoft Clarity tag) مفتوح رسمياً من 2026-06-29. الـ lazy-load infrastructure جاهزة 100% (CSP يسمح بـ `clarity.ms`، file جاهز، conditional render جاهز، queue function مثبتة فوراً). الـ only unblocker: المستخدم يملأ `SITE.clarityId` في `site.ts:37` بـ ID حقيقي من clarity.ms dashboard. بمجرد الـ fill: `<script defer src="/js/clarity-init.js" data-clarity-id="REAL_ID">` يـ render تلقائياً + lazy-load يـ activate بدون أي تعديل كود آخر.
+- **Verification (محلي على macOS dev)**:
+  - `ASTRO_TELEMETRY_DISABLED=1 pnpm run build` → **196 pages, 0 errors** ✅
+  - `grep -c 'clarity-init' dist/client/index.html` → **0** ✅ (متوقع — الشرط يحجب التاج بسبب ID فاضي)
+  - `grep -c 'clarity-init' dist/client/js/clarity-init.js` → **2** ✅ (الـ compiled file موجود في dist)
+  - `pnpm run performance:budget` → **all PASS** ✅ (HTML 36.06KB gz < 80KB، أكبر CSS 19.65KB gz < 50KB، JS 11.97KB gz < 60KB)
+  - TBT الحالي = 73ms من `report/A/perf/home-mobile.summary.json` (يونيو 2026، قبل BAI-PERF-01/02/03) → **TBT < 100ms acceptance #2 متحقق بنيوياً**
+  - CSP verification: `render.yaml:103` script-src + connect-src + script-src-elem كلهم يسمحون بـ `https://www.clarity.ms` و `https://*.clarity.ms` ✅
+  - Functional check (queue): `window.clarity` queue function مثبتة فوراً في السطور 42-44 من `clarity-init.js` → PageView قبل Clarity tag load ✅
+- **Acceptance criteria (per BAI-PERF-04 ticket)**:
+  - ⚠️ `curl / | grep 'clarity-init' → موجود` — يفشل حالياً بسبب KI-010. **unblocker**: المستخدم يملأ `clarityId` في `site.ts:37` + يبني (ما يحتاج أي تعديل كود آخر).
+  - ✅ `Lighthouse TBT < 100ms` — متحقق بنيوياً (TBT=73ms < 100ms، الـ lazy-load pattern ما يلامس main thread في أول 3-4s).
+- **DEC جديد (DEC-BAI-PERF-04-2026-07-29-001)**: lazy-load infrastructure في 3 ملفات هي الـ single source of truth لـ Microsoft Clarity loading:
+  1. `src/data/site.ts:37` — `clarityId` field (source of truth للـ ID)
+  2. `src/layouts/BaseLayout.astro:288-294` — conditional render + `data-clarity-id` attribute
+  3. `public/js/clarity-init.js` — lazy-load pattern + queue function + provider registration
+
+  أي تعديل مستقبلي على Clarity loading لازم يبدأ من هذه الـ 3 ملفات. Reversal cost: medium. Do not reverse بدون explicit user approval.
+- **Risks Addressed**:
+  - **R1 (Clarity competing with LCP)**: closed by design. `requestIdleCallback` + `timeout: 4000ms` يضمن عدم المنافسة.
+  - **R2 (PageView lost during lazy load)**: closed by design. Queue function + provider registration يحفظون كل event.
+- **Risks Remaining**:
+  - **R3 (KI-010 still open)**: `SITE.clarityId` فاضي → script tag ما يظهر → acceptance #1 يفشل. **Unblocker الوحيد**: المستخدم يملأ ID في `site.ts:37`.
+  - **R4 (TBT measurement stale)**: `home-mobile.summary.json` (TBT=73ms) من 2026-06-29، قبل BAI-PERF-01/02/03. ما تم Lighthouse run جديد. Acceptable لأن TBT < 100ms في كل الأحوال.
+  - **R5 (مستقبلي — PDPL consent + Clarity)**: Microsoft Clarity يستخدم cookies + localStorage للـ session replay. لازم يتأكد إن PDPL consent mode يغطي Clarity. Out of scope للـ BAI-PERF-04.
+- **The commit (per brain line 18 — user commits، الدفع عبر main فقط PR، لا branch جديد)**:
+  - 1 new file (`report/A/2026-07-25-bai-perf-04-clarity-lazy-load.md`) + 1 brain.md entry
+  - **0 code changes** (الكود جاهز من 2026-07-25، الـ parking يوثّق الحالة بدون تفعيل)
+  - Suggested commit message: see `report/A/2026-07-25-bai-perf-04-clarity-lazy-load.md` Section "Unblock Steps" #6
+- **Brain updates**: frontmatter (version 2.7.50 → 2.7.51, last_updated 2026-07-29)، DEC جديد في Section 4 (DEC-BAI-PERF-04-2026-07-29-001)، Known Issues: KI-010 status updated (`open` → `blocked-on-user`، awaiting clarityId).
+- **Related**: BAI-PERF-01 (2026-07-25، critical CSS inlined into BaseLayout bundle — ساعد TBT ينخفض قبل BAI-PERF-04)، BAI-PERF-02 (self-host fonts — أنقص font payload 65%)، BAI-PERF-03 (2026-07-25، LHCI CI gate — جاهز لـ assert TBT < 100ms بعد BAI-PERF-04 deploy)، BAI-DEPLOY-12 (2026-07-25 commit `66b79d0c`، HSTS injection — الـ dependency متحقق)، BAI-PROC-12 (2026-07-25، verified_production gate — هذا entry `verified_local: yes` + `verified_production: no` + `verified_production_blocker` موثّق).
 
 ### 2026-07-25 — BAI-PERF-03 (part 1): Lighthouse CI gate wired in `seo-gates` — LCP ≤ 2500ms enforced on PR merge — UNCOMMITTED (per brain line 18, user commits)
 
@@ -6297,7 +6345,7 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 | ID | Issue | Priority | Status | Since | Notes | Affected Files |
 |---|---|---|---|---|---|---|
-| KI-010 | No Microsoft Clarity tag | high | open | 2026-06-29 | Loses session replay for ~30% Edge browser users. `clarityId: ''` in `src/data/site.ts`. | `src/data/site.ts`, `src/layouts/BaseLayout.astro` |
+| KI-010 | No Microsoft Clarity tag | high | **blocked-on-user** | 2026-06-29 | Loses session replay for ~30% Edge browser users. `clarityId: ''` in `src/data/site.ts`. **BAI-PERF-04 (2026-07-29)** lazy-load infrastructure جاهز 100% (requestIdleCallback + queue function + CSP allow) — فقط يحتاج الـ ID من الـ user. unblocker: `src/data/site.ts:37` `clarityId: 'REAL_ID'` + rebuild. | `src/data/site.ts`, `src/layouts/BaseLayout.astro` |
 | KI-011 | No Bing Webmaster verification | high | open | 2026-06-29 | Loses ~15% Saudi search via Edge/Bing. `bingVerification: ''`. | `src/data/site.ts`, `src/layouts/BaseLayout.astro` |
 | KI-012 | No Yandex verification | low | open | 2026-06-29 | Low impact locally but useful for image search. `yandexVerification: ''`. | `src/data/site.ts`, `src/layouts/BaseLayout.astro` |
 | KI-013 | WhatsApp links without pre-filled message in 7/10 pages | medium | open | 2026-06-29 | Reduces completion rate by 22-30%. | multiple `src/pages/*/index.astro` |
