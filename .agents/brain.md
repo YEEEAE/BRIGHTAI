@@ -1125,6 +1125,34 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-30 — BAI-SEO-30: GA4 tag detection fix — removed `requestIdleCallback` delay + removed `send_page_view: false`
+
+- **Files**: **2 معدّل، 1 جديد، 0 محذوف**.
+  - `public/js/gtag-init.js` (modified) — gtag.js يُحمَّل فوراً (async script append) بدل `requestIdleCallback(timeout: 4000)` / `setTimeout(1500)`. config call يحذف `send_page_view: false` → gtag.js يطلق page_view تلقائياً. Header comment + inline comments محدّثة.
+  - `scripts/playwright-verify-ga4-detection.mjs` (new, ~6KB) — سكربت تشخيص + تحقق. يحفظ في `scripts/` (مو `scripts/playwright/` لأنه المسار الموجود).
+  - `.agents/brain.md` (this entry).
+
+- **What**: أصلحنا "Google لا يكتشف الوسم". السبب الجذري مجموعتان:
+  1. **التأخير**: gtag.js كان يُحمَّل عبر `requestIdleCallback` (timeout 4s) أو fallback `setTimeout(1500)`. Tag Assistant يراقب ~2 ثانية. الـ config call كان يوصل بعد ما Tag Assistant يقرر "Tag Not Detected".
+  2. **`send_page_view: false`**: الـ config call كان يقول لـ gtag.js "ما تطلق page_view تلقائي". الاعتماد كان على `analytics.js` يطلق `page_view` بعد ما يضغط المستخدم "قبول الكوكيز". تحت Consent Mode v2 default `denied`، الـ `analytics_storage: denied` يخلي GA4 يحفظ hit مع `pscdl=denied` فقط بعد ما gtag.js يبعت الـ hit. لكن `analytics.js` ما كان يبعت hit لأن `CONSENT === 'unknown'` → queue بس ما تنطلق بدون setConsent('granted').
+  الحل: gtag.js يحمَّل فوراً + `send_page_view` محذوف (default true). الـ LCP ما يتأثر لأن `<h1>` يُرسم من HTML+CSS inline، مو من gtag.js. `async` على script tag يخلي المتصفح يحمّل الـ 182KB بالـ background parallel مع LCP resource.
+
+- **Why**: المستخدم أبلغ إن GA4 ما يكتشف الوسم. التشخيص بـ Playwright كشف إن gtag.js كان يحمّل بنجاح (`window.google_tag_data` فيه 6 مفاتيح: `tidr`, `xcd`, `uach_promise`, `ics`, `uach`, `gl`) لكن **ما فيه أي طلب لـ `google-analytics.com/g/collect`** — يعني GA4 ما يستقبل أي hit. Tag Assistant detection window كان يضيع من التأخير، و page_view ما كان ينطلق تحت consent denied.
+
+- **Verification**:
+  - `node scripts/playwright-verify-ga4-detection.mjs` → **PASS** (gtag.js loaded + google_tag_data populated + config call in dataLayer + 204 من `google-analytics.com/g/collect?v=2&tid=G-8LLESL207Q`)
+  - الـ hit URL: `https://www.google-analytics.com/g/collect?v=2&tid=G-8LLESL207Q&dl=http%3A%2F%2Flocalhost%2F&dt=...&en=page_view&ep.anonymize_ip=true&pscdl=denied` — يعني GA4 يستقبل page_view مع consent denied signal (`pscdl=denied`) عشان conversion modeling.
+  - `npm run build` → نجح، dist/client/index.html يحتوي `<script defer src="/js/gtag-init.js" data-gtag-id="G-8LLESL207Q">` بدون تغيير.
+  - `npm run performance:budget` → **PASS** (HTML 36.16KB / CSS 19.65KB / JS 12KB، كلها ضمن الميزانية).
+  - `npm run verify:all` → 9 broken links pre-existing (في blog/authors/events) — **مو بسبب التغيير**، تتحل في commit منفصل.
+
+- **Risks المتبقية**:
+  - ⚠️ 9 broken links pre-existing في blog/authors/events pages (تتحل في commit منفصل).
+  - ⚠️ الـ Gemini API key leak في 6 ملفات tracked HEAD (مذكور في plan، يحتاج rotation + scrubbing commit منفصل).
+  - ⚠️ Screenshots `‏لقطة الشاشة ...` ما هي في `.gitignore` (تتحل في commit منفصل).
+
+- **Brain updates**: Section 5 (token/component inventory) → لا تغيير. Section 3 (known issues) → KI-005 جديد: "GA4 hit delivery confirmed locally, requires production verification via GA4 DebugView after deploy". Section 4 → لا تغيير معماري.
+
 ### 2026-07-30 — BAI-REDIRECT-001: Cloudflare Single Redirects as authoritative legacy redirect layer — `scripts/setup-cloudflare-redirect-rules.mjs` (16KB) + report (BAI-PROC-12 compliant) + brain DEC جديد — UNCOMMITTED (per brain line 18: user commits، الدفع عبر main فقط PR، لا branch جديد)
 
 - **Files**: **1 جديد، 0 معدّل، 0 محذوف**.
