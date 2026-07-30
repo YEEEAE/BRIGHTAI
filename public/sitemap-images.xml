@@ -44,6 +44,13 @@
     </image:image>
   </url>
   <url>
+    <loc>https://brightai.site/assets/images/badges/sama.svg</loc>
+    <image:image>
+      <image:loc>https://brightai.site/assets/images/badges/sama.svg</image:loc>
+      <image:title>sama</image:title>
+    </image:image>
+  </url>
+  <url>
     <loc>https://brightai.site/assets/images/badges/sdaia.svg</loc>
     <image:image>
       <image:loc>https://brightai.site/assets/images/badges/sdaia.svg</image:loc>
