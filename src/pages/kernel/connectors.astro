@@ -170,6 +170,58 @@ const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>';
 ---
 
+<style>
+  /*
+   * Mobile-first + RTL baseline for Connectors (kernel championship).
+   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
+   * targets, responsive breakpoints, and empty/loading state styles.
+   * Uses design tokens. No published text or layout overrides.
+   */
+  .kernel-connectors__empty-state,
+  .kernel-connectors-empty-state {
+    padding-inline: var(--space-6);
+    margin-inline: auto;
+    text-align: start;
+    color: var(--text-muted);
+    border-inline-start: 3px solid var(--interactive-primary);
+  }
+  .kernel-connectors__skeleton,
+  .kernel-connectors-skeleton {
+    inset-inline-start: 0;
+    background: var(--bg-elevated);
+    animation: kernel-connectors-shimmer 1.4s var(--ease-in-out) infinite;
+  }
+  @keyframes kernel-connectors-shimmer {
+    0% { opacity: 1; }
+    50% { opacity: 0.45; }
+    100% { opacity: 1; }
+  }
+  /* Touch targets ≥44px — accessibility on small screens */
+  .kernel-connectors [data-kernel-touch],
+  .kernel-connectors__touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Mobile-first: single column on mobile, enhance at ≥768px */
+  .kernel-connectors__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .kernel-connectors__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+  }
+  @media (max-width: 640px) {
+    .kernel-connectors [data-kernel-touch] { min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-connectors-skeleton { animation: none; }
+  }
+</style>
+
 <KernelLayout
   title={unit.title}
   description={unit.description}

@@ -144,6 +144,58 @@ const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 const iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
 ---
 
+<style>
+  /*
+   * Mobile-first + RTL baseline for Compliance (kernel championship).
+   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
+   * targets, responsive breakpoints, and empty/loading state styles.
+   * Uses design tokens. No published text or layout overrides.
+   */
+  .kernel-compliance__empty-state,
+  .kernel-compliance-empty-state {
+    padding-inline: var(--space-6);
+    margin-inline: auto;
+    text-align: start;
+    color: var(--text-muted);
+    border-inline-start: 3px solid var(--interactive-primary);
+  }
+  .kernel-compliance__skeleton,
+  .kernel-compliance-skeleton {
+    inset-inline-start: 0;
+    background: var(--bg-elevated);
+    animation: kernel-compliance-shimmer 1.4s var(--ease-in-out) infinite;
+  }
+  @keyframes kernel-compliance-shimmer {
+    0% { opacity: 1; }
+    50% { opacity: 0.45; }
+    100% { opacity: 1; }
+  }
+  /* Touch targets ≥44px — accessibility on small screens */
+  .kernel-compliance [data-kernel-touch],
+  .kernel-compliance__touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Mobile-first: single column on mobile, enhance at ≥768px */
+  .kernel-compliance__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .kernel-compliance__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+  }
+  @media (max-width: 640px) {
+    .kernel-compliance [data-kernel-touch] { min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-compliance-skeleton { animation: none; }
+  }
+</style>
+
 <KernelLayout
   title={unit.title}
   description={unit.description}

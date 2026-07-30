@@ -179,6 +179,58 @@ const COUNT_PENDING = PENDING.length + 3; // 5 listed + 2 in queue
 const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
 ---
 
+<style>
+  /*
+   * Mobile-first + RTL baseline for Approvals (kernel championship).
+   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
+   * targets, responsive breakpoints, and empty/loading state styles.
+   * Uses design tokens. No published text or layout overrides.
+   */
+  .kernel-approvals__empty-state,
+  .kernel-approvals-empty-state {
+    padding-inline: var(--space-6);
+    margin-inline: auto;
+    text-align: start;
+    color: var(--text-muted);
+    border-inline-start: 3px solid var(--interactive-primary);
+  }
+  .kernel-approvals__skeleton,
+  .kernel-approvals-skeleton {
+    inset-inline-start: 0;
+    background: var(--bg-elevated);
+    animation: kernel-approvals-shimmer 1.4s var(--ease-in-out) infinite;
+  }
+  @keyframes kernel-approvals-shimmer {
+    0% { opacity: 1; }
+    50% { opacity: 0.45; }
+    100% { opacity: 1; }
+  }
+  /* Touch targets ≥44px — accessibility on small screens */
+  .kernel-approvals [data-kernel-touch],
+  .kernel-approvals__touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Mobile-first: single column on mobile, enhance at ≥768px */
+  .kernel-approvals__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .kernel-approvals__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+  }
+  @media (max-width: 640px) {
+    .kernel-approvals [data-kernel-touch] { min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-approvals-skeleton { animation: none; }
+  }
+</style>
+
 <KernelLayout
   title={unit.title}
   description={unit.description}

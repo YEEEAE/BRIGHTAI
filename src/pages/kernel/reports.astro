@@ -145,6 +145,58 @@ const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
 ---
 
+<style>
+  /*
+   * Mobile-first + RTL baseline for Reports (kernel championship).
+   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
+   * targets, responsive breakpoints, and empty/loading state styles.
+   * Uses design tokens. No published text or layout overrides.
+   */
+  .kernel-reports__empty-state,
+  .kernel-reports-empty-state {
+    padding-inline: var(--space-6);
+    margin-inline: auto;
+    text-align: start;
+    color: var(--text-muted);
+    border-inline-start: 3px solid var(--interactive-primary);
+  }
+  .kernel-reports__skeleton,
+  .kernel-reports-skeleton {
+    inset-inline-start: 0;
+    background: var(--bg-elevated);
+    animation: kernel-reports-shimmer 1.4s var(--ease-in-out) infinite;
+  }
+  @keyframes kernel-reports-shimmer {
+    0% { opacity: 1; }
+    50% { opacity: 0.45; }
+    100% { opacity: 1; }
+  }
+  /* Touch targets ≥44px — accessibility on small screens */
+  .kernel-reports [data-kernel-touch],
+  .kernel-reports__touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Mobile-first: single column on mobile, enhance at ≥768px */
+  .kernel-reports__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .kernel-reports__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+  }
+  @media (max-width: 640px) {
+    .kernel-reports [data-kernel-touch] { min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-reports-skeleton { animation: none; }
+  }
+</style>
+
 <KernelLayout
   title={unit.title}
   description={unit.description}
