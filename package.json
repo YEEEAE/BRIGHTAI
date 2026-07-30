@@ -99,6 +99,7 @@
     "prompt:champion:00": "node scripts/prompt-champion.mjs --id=CHAMPION-00",
     "prompt:champion:help": "node scripts/prompt-champion.mjs --help",
     "prompt:champion:aggregate": "node scripts/prompt-champion.mjs --aggregate",
+    "audit:v4": "node scripts/generate-audit-report-v4.mjs",
     "//_reproducible_prisma": "CRITICAL — clean-checkout guard. Runs `prisma generate` from packages/db/prisma/schema.prisma before any typecheck/test/verify that depends on @prisma/client types. Without this step, downstream type errors would look like missing exports (models, LeadQueueStatus) or implicit-any fallbacks in packages/db/src/client.ts. Idempotent: regenerating from an unchanged schema is a no-op on the file system.",
     "//_note": "Legacy Astro scripts below — DO NOT REMOVE until apps/marketing/ refactor lands.",
     "//_bai_sec_10": "BAI-SEC-10 (2026-07-25) — patch dist/server/entry.mjs to wrap the Astro handler with the deployment-surface deny-list. Runs as the last step of the build so all dist/server/* files exist before the wrapper is injected.",

@@ -67,6 +67,12 @@
       "skillPath": "skills/soft-skill/SKILL.md",
       "computedHash": "7db385e4c5370e5a7fca9704a1361b056e4504ea6a03924bb86f33a4f00b5c73"
     },
+    "i-have-adhd": {
+      "source": "ayghri/i-have-adhd",
+      "sourceType": "github",
+      "skillPath": "skills/i-have-adhd/SKILL.md",
+      "computedHash": "b7a01828f58910ed69a5cad45a79fd618c68a339715df0d09a329eead19ef829"
+    },
     "image-to-code": {
       "source": "Leonxlnx/taste-skill",
       "sourceType": "github",

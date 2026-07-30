@@ -958,6 +958,12 @@ services:
         source: /blog/sdaia-generative-ai-guidelines.html
         destination: /blog/sdaia-generative-ai-guidelines-practical-compliance/
       - type: redirect
+        source: /blog.html
+        destination: /blog/
+      - type: redirect
+        source: /client/index.html
+        destination: /404/
+      - type: redirect
         source: /frontend
         destination: /404/
       - type: redirect

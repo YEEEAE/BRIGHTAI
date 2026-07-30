@@ -1,0 +1,34 @@
+{
+  "_comment": "BrightAI Organization entity facts — single source for E-E-A-T signals (CHAMPION-03). Consumed by schema generators / llms.txt. taxID = Saudi Commercial Registration number.",
+  "organization": {
+    "name": "BrightAI",
+    "alternateName": "برايت أيه آي",
+    "legalName": "BrightAI",
+    "url": "https://brightai.site",
+    "description": "Saudi AI Safety OS — منصة سعودية لحوكمة وأمان وامتثال الذكاء الاصطناعي للمؤسسات.",
+    "taxID": "7038771197",
+    "identifier": "7038771197",
+    "foundingDate": "2025",
+    "areaServed": "SA",
+    "knowsLanguage": ["ar-SA", "en-SA"],
+    "address": {
+      "addressCountry": "SA",
+      "addressRegion": "Riyadh Province",
+      "addressLocality": "Riyadh",
+      "streetAddress": "6913 Al-Mubarak bin Fadalah, Al-Fayha district, Riyadh 14254"
+    },
+    "contactPoint": {
+      "contactType": "sales",
+      "telephone": "+966538229013",
+      "availableLanguage": ["Arabic", "English"]
+    },
+    "founder": {
+      "name": "يزيد البديوي",
+      "givenName": "يزيد",
+      "familyName": "البديوي",
+      "nameEn": "Yazeed Albadawy",
+      "jobTitle": "Founder & CEO",
+      "linkedin": "https://www.linkedin.com/in/yazeed-brightai"
+    }
+  }
+}

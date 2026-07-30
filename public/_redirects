@@ -213,4 +213,6 @@ https://www.brightai.site/*    https://brightai.site/:splat  301
 /blog/sdaia-generative-ai-guidelines /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
 /blog/sdaia-generative-ai-guidelines/ /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
 /blog/sdaia-generative-ai-guidelines.html /blog/sdaia-generative-ai-guidelines-practical-compliance/ 301
+/blog.html /blog/ 301
+/client/index.html /404/ 301
 /frontend/* /404/ 301

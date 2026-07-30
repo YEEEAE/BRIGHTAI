@@ -239,7 +239,7 @@ export default defineConfig({
     // regression that taught us this). Wildcards and :placeholders are also
     // excluded (Astro's redirects config only accepts literal paths; the full
     // wildcard set lives in public/_redirects for Netlify/Cloudflare Pages).
-    // 206 entries (out of 207 in redirects.json).
+    // 208 entries (out of 209 in redirects.json).
     '/blog/التعلم الآلي والرؤية الحاسوبية_ مستقبل الذكاء الاصطناعي في معالجة اللغة الطبيعية والتعرف على الصور.html': {
       status: 301,
       destination: '/blog/computer-vision-saudi-factories/',
@@ -972,6 +972,10 @@ export default defineConfig({
       status: 301,
       destination: '/docs/',
     },
+    '/client/index.html': {
+      status: 301,
+      destination: '/404/',
+    },
     '/blog/agint-bblog': {
       status: 301,
       destination: '/404/',
@@ -1051,6 +1055,10 @@ export default defineConfig({
     '/docs.html': {
       status: 301,
       destination: '/docs/',
+    },
+    '/blog.html': {
+      status: 301,
+      destination: '/blog/',
     },
     '/blog/gov': {
       status: 301,

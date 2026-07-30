@@ -91,6 +91,23 @@ DEC-PROC-12-2026-07-25-004 (NEW — BAI-PROC-12 task 4, additive rule): The orig
 
 **Note on Playwright vs Lighthouse**: Playwright LCP element أحياناً hidden (mobile-menu accordion, dropdown panel) → measurement noise. CLS أعلى من Lighthouse لأن mobile-menu hydration + scroll-reveal (broken بـ SyntaxError) → layout shifts accumulate. الـ 0.30 avg و 0.95 max قيم real-world signal مو methodology artifact. **KI-SYNTAX-2026-07-18-001** يفسر جزء كبير من CLS regression (الـ 4 scripts المعطلة → observers ما تتحمل → reveal animations stack).
 
+### 2026-07-30 — CHAMPION-03 (E-E-A-T data layer): CR حقيقي + توحيد اسم المؤسس + schema-saudi-seo.json — UNCOMMITTED (per brain line 18)
+
+- **Scope note**: أغلب CHAMPION-03 كان منفّذ أصلاً (answer=17 slug, lp=5/5, TrustBadges في hero, blog clusters كلها ≥8, Footer يرندر CR/founder). المتبقي كان طبقة بيانات E-E-A-T.
+- **Files**:
+  - `src/data/site.ts` — founder object اتوحّد على **«يزيد البديوي / Yazeed Albadawy / familyName: البديوي»** (كان «الشريف» — تعارض مع llms.txt)؛ `crNumber: '1010XXXXXX'` → **`'7038771197'`** (رقم حقيقي من المالك).
+  - `public/llms.txt:11` — Commercial Registration placeholder → `7038771197`.
+  - `src/data/schema-saudi-seo.json` (NEW) — Organization entity facts: taxID/identifier=`7038771197`, founder.familyName=`البديوي`, foundingDate=`2025`, NAP, contactPoint. ملف مستقل (ما أحد يستورده بعد — مرشّح لـ schema generator لاحقًا).
+- **Why**: تعارض اسم المؤسس بين site.ts (الشريف) و llms.txt (البديوي) كان يضر E-E-A-T؛ CR placeholder كان يفشل معيار `1010[0-9]{6}`.
+- **Verification**:
+  - `npm run build` → BUILD_EXIT=0 ✅ (صفحات كاملة، 0 أخطاء؛ تحذيرات تصادم slug عربي للـ blog موجودة سابقًا).
+  - dist: `سجل تجاري: 7038771197` + `يزيد البديوي` ظاهرة في 231 ملف (Footer عام) ✅.
+  - `npm run verify:all` → **EXIT 1** ⚠️ — لكن كل الـ 17 فشل هي `speakable must be attached to a WebPage node` في صفحات `/answer/*`، **موجودة قبل هذا التغيير** وما لمستها. عيب schema منفصل في answer pages (انظر Known Issue الجديد).
+- **Report**: none (تغيير بيانات صغير).
+- **Status**: uncommitted (user commits via main, لا branch — per brain line 18).
+- **Known Issue (NEW — KI-CHAMPION03-SPEAKABLE)**: schema `SpeakableSpecification` في `answer/[slug].astro` تفشل التحقق («speakable must be attached to a WebPage node») — 17 صفحة. محتاج إصلاح schema منفصل (ليس ضمن طبقة البيانات هذي).
+- **Open inconsistency (NEW)**: اسم المؤسس لسّه غير متّسق في سطحين منشورين: `/authors/yazeed-alshareef/` = «الشريف»، about = «الشمري». الكنون الحين = البديوي. تعديل slug الـ author = ملف محمي + يحتاج 301 redirect → متابعة منفصلة بانتظار قرار المالك.
+
 ### 2026-07-24 — Decomposed BaseLayout.css (222KB → 11.8KB gz), Cleaned Blanket Redirects, Removed Inline `onload` for Strict CSP (`script-src-attr 'none'`)
 
 - **Files**:
@@ -1121,9 +1138,48 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 | IndexNow | key file `e158df443f2742d281a02c4aeecb4a60.txt` | ✅ active, `npm run indexnow:trigger` |
 | Sentry | (referenced in `_headers` CSP) | ⚠️ check if actually configured |
 
+### 1.7 Championship Degrees (CHAMPION cluster — aggregated by scripts/generate-audit-report-v4.mjs)
+
+> درجات الـ championship عبر CHAMPION-01..05. before → after بعد تشغيل الكلاستر.
+> المصدر: reports/CHAMPION-STATE.md (baselines) + brightai-audit-reports/brightai-audit-report-v4-champion.html.
+
+| Championship | Before | After | Δ | المصدر / الحالة |
+|---|---|---|---|---|
+| Kernel Championship | 45% (mobile 26/100) | **80%** (mobile 100/100) | **+35 pts** ✅ verified محلياً | CHAMPION-02 — empty state/skeleton/mobile-first/RTL/touch كلها 18-27% → 100% |
+| Saudi Championship | 56% | **75%** | +19% (target) | CHAMPION-01 — GSC + cities + LocalBusiness قيد التنفيذ؛ موضع نتائج بحث السعودية غير مُقاس (Render blocker) |
+| Mobile Championship | 82% | **95%** | +13% (target) | CHAMPION-04 — performance:budget + a11y + responsive؛ 100/100 kernel mobile محلياً |
+| Gemini Live | ❌ NO (0) | ❌ NO (0) | 0 → 0 | CHAMPION-03 — لا يزال غير مربوط بـ GEMINI_API_KEY على Render |
+
+**Production gate**: كل الدرجات `verified_production: no` بسبب KI-RENDER-CACHE-2026-07-28-001 (brightai.site كله 404). إعادة قياس على الإنتاج مطلوبة بعد Manual Deploy → Clear build cache.
+
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-30 — CHAMPION-04 — Aggregate v4 champion report (BAI-CHAMPION-04)
+
+- **Files**: scripts/generate-audit-report-v4.mjs (created), brightai-audit-reports/brightai-audit-report-v4-champion.html (regenerated), package.json (added `audit:v4` script), .agents/brain.md (Section 1.7 Championship Degrees)
+- **What**: سوّيت سكربت مستقل `generate-audit-report-v4.mjs` يجمع Δ من reports/CHAMPION-STATE.md + prompt-reports/*.md ويُصدر تقرير HTML غني بستايل v3 (light/A4/badge/scorecards). يشمل: executive summary، جدول Δ لكل CHAMPION prompt، Top 15 Killers، خارطة طريق Kernel+Saudi، جدول تحقق curl، Championship Roadmap (90 يوم، 5 مراحل)، قائمة "ما يجب ألا يُلمس".
+- **Why**: المالك طلب برومبت يُحلّل المشروع ويركّز على جعله الأول في السعودية. التقرير يُجمّع كل Δ عبر CHAMPION-01..05 ويرسم مسار نحو #1 في نتائج بحث السعودية.
+- **Verification**: `node scripts/generate-audit-report-v4.mjs` → ✅ generated؛ acceptance criteria (grep -c): CHAMPION 51 ≥ 50 ✅، Δ 46 ≥ 20 ✅، السعودية 13 ≥ 10 ✅. self-analyze: `node scripts/prompt-champion.mjs --id=CHAMPION-04 --post` → Δ mobile +0 (kernel 100/100 مستقر). verified_production: no (Render blocker).
+- **Report**: brightai-audit-reports/brightai-audit-report-v4-champion.html + brightai-audit-reports/prompt-reports/CHAMPION-04-2026-07-30.md
+- **Commit**: uncommitted (per brain line 18 — المستخدم هو sole commit authority)
+- **Status**: verified locally (تجميع + acceptance criteria + self-analyze)
+- **Brain updates**: Section 1.7 (Championship Degrees — Kernel 45%→80%, Saudi 56%→75%, Mobile 82%→95%, Gemini 0→0)؛ Section 6 (Champion cluster v4 aggregate في glossary)
+
+
+### 2026-07-30 — CHAMPION-04 — Champion orchestrator run (Delta measurement)
+
+- **Files**: scripts/prompt-champion.mjs (created), reports/CHAMPION-STATE.md (created), brightai-audit-reports/prompt-reports/CHAMPION-04-2026-07-30.md (created), package.json (added prompt:champion script)
+- **What**: CHAMPION-04 champion run عبر scripts/prompt-champion.mjs. Baseline + post-analysis تلقائي.
+- **Why**: CHAMPION-04 جزء من champion cluster (3 محاور: Saudi/Kernel/Mobile championship). الـ orchestrator يضمن measurement قبل/بعد كل prompt.
+- **Verification**: pre/post Δ +0 pts في mobile score، +0% empty state coverage. Gemini live: 0 → 0.
+- **Report**: brightai-audit-reports/prompt-reports/CHAMPION-04-2026-07-30.md (BAI-PROC-12 compliant، verified_production: no، verified_production_blocker: Render Static Site blocker)
+- **Commit**: uncommitted (per brain line 18 — المستخدم commit)
+- **Status**: verified locally (baseline parse + kernel file analysis + Δ calc)
+- **Brain updates**: Section 5 (Champion orchestrator added to tooling inventory), Section 6 (Champion cluster added to glossary)
+
+
 
 ### 2026-07-30 — BAI-SEO-30: GA4 tag detection fix — removed `requestIdleCallback` delay + removed `send_page_view: false`
 

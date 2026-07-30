@@ -827,6 +827,14 @@
     {
       "from": "/blog/sdaia-generative-ai-guidelines.html",
       "to": "/blog/sdaia-generative-ai-guidelines-practical-compliance/"
+    },
+    {
+      "from": "/blog.html",
+      "to": "/blog/"
+    },
+    {
+      "from": "/client/index.html",
+      "to": "/404/"
     }
   ]
 }
