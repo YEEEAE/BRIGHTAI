@@ -2,16 +2,17 @@
 /**
  * KernelSkeleton — Shimmer placeholder (loading state).
  * Variants: text | text-sm | text-md | heading | avatar | icon | card
+ *
+ * CHAMPION-01: added `count` (multiple instances), `aria-busy`, `role="status"`.
  */
 interface Props {
   variant?: 'text' | 'text-sm' | 'text-md' | 'heading' | 'avatar' | 'icon' | 'card';
-  /** Override the inline size (e.g. "60%"). Default: from variant. */
   width?: string;
-  /** Override the block size (e.g. "100px"). Default: from variant. */
   height?: string;
+  count?: number;
 }
 
-const { variant = 'text', width, height } = Astro.props;
+const { variant = 'text', width, height, count = 1 } = Astro.props;
 
 const variantClass = {
   'text': 'kernel-skeleton--text',
@@ -29,4 +30,8 @@ if (height) styleParts.push(`block-size: ${height}`);
 const style = styleParts.join('; ');
 ---
 
-<span class:list={['kernel-skeleton', variantClass]} style={style} aria-hidden="true"></span>
+<div class="kernel-skeleton-group" role="status" aria-busy="true" aria-live="polite">
+  {Array.from({ length: count }).map(() => (
+    <span class:list={['kernel-skeleton', variantClass]} style={style} aria-hidden="true"></span>
+  ))}
+</div>

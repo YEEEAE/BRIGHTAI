@@ -1,13 +1,25 @@
 ---
 /**
- * KernelEmptyState — Illustrated empty state with optional CTA.
+ * KernelEmptyState — Illustrated empty state with optional CTA + onboarding tour.
+ *
+ * CHAMPION-01: extended with `onboardingSteps` (3-step inline tour),
+ * `align` (center|start), `compact` (smaller illustration).
  */
+interface OnboardingStep {
+  id: string;
+  label: string;
+  targetSelector: string;
+}
+
 interface Props {
   title: string;
   message?: string;
   ctaLabel?: string;
   ctaHref?: string;
   iconSvg?: string;
+  align?: 'center' | 'start';
+  compact?: boolean;
+  onboardingSteps?: OnboardingStep[];
 }
 
 const {
@@ -16,10 +28,13 @@ const {
   ctaLabel = '',
   ctaHref = '',
   iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
+  align = 'center',
+  compact = false,
+  onboardingSteps = [],
 } = Astro.props;
 ---
 
-<div class="kernel-empty">
+<div class:list={['kernel-empty', `kernel-empty--${align}`, compact && 'kernel-empty--compact']}>
   <div class="kernel-empty__illustration" aria-hidden="true">
     <Fragment set:html={iconSvg} />
   </div>
@@ -29,5 +44,25 @@ const {
     <a href={ctaHref} class="kernel-empty__cta">
       {ctaLabel}
     </a>
+  )}
+  {onboardingSteps.length > 0 && (
+    <details class="kernel-empty__onboarding" name="kernel-tour" open>
+      <summary class="kernel-empty__onboarding-summary">جولة سريعة (3 خطوات)</summary>
+      <ol class="kernel-empty__onboarding-list">
+        {onboardingSteps.map((step, i) => (
+          <li>
+            <button
+              type="button"
+              class="kernel-empty__onboarding-step"
+              data-tour-step={step.id}
+              data-tour-target={step.targetSelector}
+              data-tour-index={i}
+            >
+              {i + 1}. {step.label}
+            </button>
+          </li>
+        ))}
+      </ol>
+    </details>
   )}
 </div>

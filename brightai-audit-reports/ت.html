@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CHAMPION SUITE — حلقة التحليل الذاتي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#12141c;
+    --bg-elev:#181b26;
+    --bg-elev2:#1e2230;
+    --card-border:rgba(255,255,255,0.07);
+    --text:#edeef2;
+    --text-dim:#9aa0b4;
+    --text-faint:#656b80;
+    --amber:#e8a33d;
+    --amber-dim:rgba(232,163,61,0.14);
+    --cyan:#52d1c0;
+    --cyan-dim:rgba(82,209,192,0.14);
+    --red:#e2596b;
+    --red-dim:rgba(226,89,107,0.14);
+    --blue:#6e9bf5;
+    --blue-dim:rgba(110,155,245,0.14);
+    --mono:'IBM Plex Mono',monospace;
+    --sans:'IBM Plex Sans Arabic',sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(232,163,61,0.08), transparent 60%),
+      radial-gradient(900px 500px at 0% 20%, rgba(82,209,192,0.06), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber);color:#12141c;}
+  a{color:var(--cyan);}
+
+  /* ===== Layout shell ===== */
+  .shell{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 24px 120px;
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    padding:72px 0 48px;
+    border-bottom:1px solid var(--card-border);
+    margin-bottom:40px;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.06em;
+    color:var(--amber);
+    background:var(--amber-dim);
+    border:1px solid rgba(232,163,61,0.35);
+    padding:5px 12px;
+    border-radius:100px;
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--amber);}
+  h1.title{
+    font-size:clamp(32px,5vw,54px);
+    font-weight:700;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+  h1.title span{color:var(--amber);}
+  .subtitle{
+    font-size:17px;
+    color:var(--text-dim);
+    max-width:760px;
+    margin:0 0 32px;
+  }
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text-faint);
+  }
+  .meta-row span{
+    background:var(--bg-elev);
+    border:1px solid var(--card-border);
+    padding:6px 12px;
+    border-radius:8px;
+  }
+
+  /* loop diagram */
+  .loop-diagram{
+    display:flex;
+    align-items:center;
+    gap:0;
+    margin-top:44px;
+    flex-wrap:wrap;
+  }
+  .loop-node{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    width:150px;
+  }
+  .loop-node .ring{
+    width:64px;height:64px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:13px;
+    margin-bottom:12px;
+    border:1.5px solid;
+  }
+  .loop-node.n1 .ring{border-color:var(--blue);color:var(--blue);background:var(--blue-dim);}
+  .loop-node.n2 .ring{border-color:var(--amber);color:var(--amber);background:var(--amber-dim);}
+  .loop-node.n3 .ring{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-dim);}
+  .loop-node b{font-size:13.5px;display:block;margin-bottom:3px;}
+  .loop-node small{color:var(--text-faint);font-size:12px;}
+  .loop-arrow{
+    color:var(--text-faint);
+    font-family:var(--mono);
+    font-size:20px;
+    padding:0 6px;
+    margin-top:-30px;
+  }
+  .loop-cycle{
+    color:var(--text-faint);
+    font-family:var(--mono);
+    font-size:11.5px;
+    margin-top:14px;
+    letter-spacing:0.03em;
+  }
+
+  /* ===== TOC / schedule ===== */
+  .section-label{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--text-faint);
+    text-transform:uppercase;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-label::after{content:'';flex:1;height:1px;background:var(--card-border);}
+
+  .toc{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+    gap:10px;
+    margin-bottom:56px;
+  }
+  .toc a{
+    text-decoration:none;
+    color:var(--text);
+    background:var(--bg-elev);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transition:border-color .15s, transform .15s;
+    font-size:14px;
+  }
+  .toc a:hover{border-color:var(--amber);transform:translateY(-1px);}
+  .toc .id-chip{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--amber);
+    background:var(--amber-dim);
+    border-radius:6px;
+    padding:3px 7px;
+    flex-shrink:0;
+  }
+  .toc .toc-title{color:var(--text-dim);font-size:13px;}
+
+  /* schedule table */
+  .schedule-wrap{margin-bottom:56px;overflow-x:auto;}
+  table.schedule{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+    background:var(--bg-elev);
+    border-radius:12px;
+    overflow:hidden;
+  }
+  table.schedule th{
+    text-align:right;
+    font-family:var(--mono);
+    font-size:11.5px;
+    letter-spacing:0.04em;
+    color:var(--text-faint);
+    text-transform:uppercase;
+    padding:14px 16px;
+    background:var(--bg-elev2);
+    border-bottom:1px solid var(--card-border);
+  }
+  table.schedule td{
+    padding:14px 16px;
+    border-bottom:1px solid var(--card-border);
+    color:var(--text-dim);
+  }
+  table.schedule tr:last-child td{border-bottom:none;}
+  table.schedule td.run-num{
+    font-family:var(--mono);
+    color:var(--amber);
+    font-weight:600;
+  }
+  table.schedule td.impact{color:var(--cyan);font-family:var(--mono);}
+
+  /* ===== Prompt cards ===== */
+  .prompts{position:relative;}
+  .prompts::before{
+    content:'';
+    position:absolute;
+    top:8px;bottom:8px;
+    right:27px;
+    width:2px;
+    background:linear-gradient(var(--amber-dim),var(--card-border) 6%, var(--card-border) 94%, transparent);
+  }
+  .prompt-card{
+    position:relative;
+    padding-right:70px;
+    margin-bottom:28px;
+    scroll-margin-top:24px;
+  }
+  .rail-node{
+    position:absolute;
+    right:14px;top:28px;
+    width:28px;height:28px;
+    border-radius:50%;
+    background:var(--bg-elev2);
+    border:2px solid var(--amber);
+    z-index:2;
+  }
+  .card-body{
+    background:var(--bg-elev);
+    border:1px solid var(--card-border);
+    border-radius:16px;
+    padding:28px 30px;
+  }
+  .card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:14px;
+  }
+  .card-head-left{flex:1;min-width:260px;}
+  .id-badge{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--amber);
+    background:var(--amber-dim);
+    border:1px solid rgba(232,163,61,0.3);
+    padding:4px 10px;
+    border-radius:6px;
+    display:inline-block;
+    margin-bottom:10px;
+  }
+  .card-title{
+    font-size:20px;
+    font-weight:600;
+    margin:0;
+    line-height:1.4;
+  }
+  .copy-btn{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--text);
+    background:var(--bg-elev2);
+    border:1px solid var(--card-border);
+    border-radius:9px;
+    padding:9px 15px;
+    cursor:pointer;
+    white-space:nowrap;
+    transition:border-color .15s, background .15s, color .15s;
+    flex-shrink:0;
+  }
+  .copy-btn:hover{border-color:var(--cyan);color:var(--cyan);}
+  .copy-btn.copied{border-color:var(--cyan);background:var(--cyan-dim);color:var(--cyan);}
+  .copy-btn svg{width:14px;height:14px;flex-shrink:0;}
+
+  .chip-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:20px;
+  }
+  .chip{
+    font-family:var(--mono);
+    font-size:11.5px;
+    padding:5px 10px;
+    border-radius:7px;
+    border:1px solid var(--card-border);
+    color:var(--text-faint);
+  }
+  .chip.p0{color:var(--red);background:var(--red-dim);border-color:rgba(226,89,107,0.3);}
+  .chip.p1{color:var(--blue);background:var(--blue-dim);border-color:rgba(110,155,245,0.3);}
+  .chip.risk-high{color:var(--red);}
+  .chip.risk-medium{color:var(--amber);}
+  .chip.risk-low{color:var(--cyan);}
+
+  .context-text{
+    color:var(--text-dim);
+    font-size:14.5px;
+    margin-bottom:20px;
+  }
+
+  details{
+    border-top:1px solid var(--card-border);
+    padding:14px 0;
+  }
+  details:last-of-type{padding-bottom:0;}
+  summary{
+    cursor:pointer;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    list-style:none;
+  }
+  summary::-webkit-details-marker{display:none;}
+  summary::before{
+    content:'›';
+    font-family:var(--mono);
+    color:var(--amber);
+    font-size:16px;
+    transition:transform .15s;
+    display:inline-block;
+  }
+  details[open] summary::before{transform:rotate(90deg);}
+  .detail-body{
+    padding:14px 4px 4px 4px;
+    color:var(--text-dim);
+    font-size:14px;
+  }
+  .detail-body ul{margin:0;padding-inline-start:20px;}
+  .detail-body li{margin-bottom:7px;}
+  .detail-body li:last-child{margin-bottom:0;}
+  .mono-block{
+    font-family:var(--mono);
+    font-size:12.5px;
+    background:#0d0f16;
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:14px 16px;
+    color:var(--cyan);
+    overflow-x:auto;
+    white-space:pre-wrap;
+    direction:ltr;
+    text-align:left;
+    line-height:1.8;
+  }
+  .note-strip{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    background:var(--red-dim);
+    border:1px solid rgba(226,89,107,0.25);
+    color:#f2a3ad;
+    border-radius:9px;
+    padding:11px 14px;
+    font-size:13px;
+    margin-top:6px;
+  }
+
+  footer{
+    margin-top:60px;
+    padding-top:28px;
+    border-top:1px solid var(--card-border);
+    color:var(--text-faint);
+    font-size:13px;
+    font-family:var(--mono);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  @media (max-width:720px){
+    .prompts::before{right:20px;}
+    .prompt-card{padding-right:52px;}
+    .rail-node{right:8px;width:22px;height:22px;top:26px;}
+    .card-body{padding:22px 18px;}
+    .loop-diagram{justify-content:center;}
+    .loop-arrow{display:none;}
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="hero">
+    <div class="eyebrow"><span class="dot"></span>BRIGHTAI · WORKSPACE AGENT · CHAMPION CATEGORY</div>
+    <h1 class="title">CHAMPION SUITE<span>.</span></h1>
+    <p class="subtitle">حلقة التحليل الذاتي: المشروع يحلّل نفسه بعد كل برومبت، ويعيد التحليل والتقرير — بتركيز على جعل BrightAI الأول في السعودية، وKernel أفضل تجربة موبايل في العالم العربي، وربط Gemini حقيقي عبر Render.</p>
+    <div class="meta-row">
+      <span>Generated: 2026-07-30</span>
+      <span>7 Prompts (Orchestrator + 6)</span>
+      <span>Depends on: DEC-PROC-12</span>
+      <span>Mode: Mid</span>
+    </div>
+
+    <div class="loop-diagram">
+      <div class="loop-node n1">
+        <div class="ring">01</div>
+        <b>SELF-ANALYZE</b>
+        <small>قراءة brain.md + التقارير + حالة kernel</small>
+      </div>
+      <div class="loop-arrow">←</div>
+      <div class="loop-node n2">
+        <div class="ring">02</div>
+        <b>EXECUTE</b>
+        <small>تنفيذ المهمة ضمن DEC-PROC-12</small>
+      </div>
+      <div class="loop-arrow">←</div>
+      <div class="loop-node n3">
+        <div class="ring">03</div>
+        <b>RE-ANALYZE</b>
+        <small>تحديث brain.md + Δ report</small>
+      </div>
+    </div>
+    <div class="loop-cycle">↻ الحلقة تتكرر بعد كل برومبت منفَّذ — npm run prompt:champion -- --id=CHAMPION-NN</div>
+  </div>
+
+  <div class="section-label">الفهرس</div>
+  <div class="toc" id="toc"></div>
+
+  <div class="section-label">جدول الحلقة (ترتيب التنفيذ الفعلي)</div>
+  <div class="schedule-wrap">
+    <table class="schedule">
+      <thead>
+        <tr><th>Run</th><th>الإطار</th><th>Prompt</th><th>الأثر المتوقع</th></tr>
+      </thead>
+      <tbody id="schedule-body"></tbody>
+    </table>
+  </div>
+
+  <div class="section-label">البرومبتات</div>
+  <div class="prompts" id="prompts"></div>
+
+  <footer>
+    <span>DEC-PROC-12 verified_production gate يُطبَّق على كل تقرير جديد بدءاً من 2026-07-25</span>
+    <span>brightai.site</span>
+  </footer>
+
+</div>
+
+<script>
+const CopyIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+const CheckIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+const schedule = [
+  {run:1, frame:'48h', id:'CHAMPION-02', title:'ربط Gemini live', impact:'+30 Kernel'},
+  {run:2, frame:'48h', id:'CHAMPION-01', title:'Kernel mobile-first hero', impact:'+25 Kernel + Mobile'},
+  {run:3, frame:'أسبوع', id:'CHAMPION-03', title:'Saudi #1 Authority Pack', impact:'+20 Saudi'},
+  {run:4, frame:'أسبوع', id:'CHAMPION-06', title:'Mobile-first UX polish', impact:'+18 Mobile'},
+  {run:5, frame:'أسبوع', id:'CHAMPION-05', title:'Conversion + Telemetry', impact:'+12 Conversion'},
+  {run:6, frame:'نصف شهر', id:'CHAMPION-04', title:'v4 Aggregate report', impact:'+15 Measurement'},
+];
+
+const prompts = [
+{
+  id:'CHAMPION-00',
+  title:'Champion Loop Orchestrator (البرومبت الأم)',
+  priority:'P0', effort:'1h (ساكافولد) +∞ (loop)', impact:'∞ (يُفعّل كل تحسين)', risk:'low',
+  depends:'BAI-DEPLOY-13', blocks:'CHAMPION-01..05',
+  context:`المطلوب: برومبت يحلل المشروع نفسه بعد كل برومبت منفذ، ويعيد التقرير بالتركيز على (أ) جعل BrightAI المنتج الأول في السعودية في حوكمة AI، (ب) جعل /src/pages/kernel أفضل تجربة منتجات في العالم العربي على الموبايل والديكسك، (ج) ربط Kernel بـ Gemini API عبر GEMINI_API_KEY على Render. هذا البرومبت هو الـ orchestrator الذي يستدعي CHAMPION-01..05 ويعيد التحليل بعد كل واحد.`,
+  files:[
+    'scripts/prompt-champion.mjs (NEW — orchestrator)',
+    'brightai-audit-reports/prompt-reports/ (NEW directory — store per-prompt Δ reports)',
+    'package.json (add prompt:champion script)',
+    '.agents/brain.md (read + write per loop)',
+    'reports/CHAMPION-STATE.md (NEW — running state machine)'
+  ],
+  mustNot:[
+    'كل قواعد DEC-PROC-12 (verified_production gate، commit format، post-deploy gate)',
+    'كل ما في protected list من brain.md (نصّ عربي منشور، redirects، site.ts، astro.config.mjs trailingSlash)',
+    'frontend/** (backend منفصل)'
+  ],
+  task:`أنشئ scripts/prompt-champion.mjs — orchestrator يأخذ --id=<CHAMPION-NN> ويقوم بـ:
+
+Pre-Phase (SELF-ANALYZE):
+- يقرأ /.agents/brain.md ويستخرج baseline للأرقام: build page count, JS/CSS bundle size, LCP, CLS, INP, Lighthouse (mobile).
+- حالة src/pages/kernel/* (demo vs live).
+- نتيجة curl -sI https://brightai.site/api/ai/chat/ (هل Gemini ميت؟).
+- يقرأ brightai-audit-report-v3.html ويستخرج Top 15 killers + 11 درجة.
+- يقرأ brightai-audit-prompts-v3.md ويستخرج IDs المنفذة (مسجلة في brain.md).
+- يقرأ src/pages/kernel/{chat,audit,approvals,evidence,policies,scenarios,stats,connectors,compliance,reports}.astro ويقيّم: empty state حاضر؟ skeleton مشحون؟ mobile-first؟ touch ≥44px؟ RTL logical properties؟
+- يكتب baseline JSON في reports/CHAMPION-STATE.md تحت ## BASELINE — <timestamp>.
+
+Run-Phase (EXECUTE):
+- يستدعي الـ prompt المحدد (CHAMPION-0N).
+- يلتقط stdout/stderr + diff + verification results.
+- يلتقط screenshots/ عبر Playwright قبل/بعد (mobile 360×640 + desktop 1440×900).
+
+Post-Phase (RE-ANALYZE & REPORT):
+- يعيد قياس baseline (نفس القياسات).
+- يحسب Δ (قبل/بعد) لكل metric.
+- يكتب brightai-audit-reports/prompt-reports/CHAMPION-NN-YYYY-MM-DD.md بالقالب:
+
+# CHAMPION-NN — <title> — <date>
+## What Changed
+- Files modified:
+- New files:
+- Deleted files:
+- LOC delta: +X / -Y
+## Self-Analysis (Before)
+- Kernel pages: 13 (demo: 11, real: 0)
+- Mobile score: 0-10
+- Empty state coverage: 1/11
+- Gemini live: 0
+- Bundle size: X KB
+- LCP: X.Xs
+- CLS: X.XX
+- Saudi SERP position: <keyword>: <num>
+## Execution Summary
+- Verifications run: <list>
+- Pass/fail per verification
+- Screenshots: <list>
+## Re-Analysis (After)
+- Kernel pages: 13 (demo: X, real: X)
+- Mobile score: 0-10
+- Empty state coverage: X/11
+- Gemini live: 1
+- Bundle size: Y KB
+- LCP: Y.Ys
+- CLS: Y.YY
+- Saudi SERP position: <keyword>: <num>
+## Δ (Diff)
+- Kernel championship: +X pts
+- Mobile championship: +X pts
+- Saudi championship: +X pts
+- Overall: X% → Y%
+## Risks Remaining
+- <list>
+## Next Champion
+- <CHAMPION-0(N+1)>
+
+- يحدّث brain.md تحت ## 2. Change Ledger: entry جديد بفروقات Δ.
+- يحدّث reports/CHAMPION-STATE.md تحت ## RUNS — <id>.
+- يقترح commit message [BAI-CHAMPION-NN] <title>.
+
+Schedule loop:
+- المؤقت الأول: كل prompt يُنفَّذ ثم يمر بـ loop كامل.
+- الـ aggregate: بعد تنفيذ CHAMPION-01..05 → run نهائي يجمع كل Δ ويصدر brightai-audit-report-v4-champion.html.`,
+  acceptance:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-00 → يكتب reports/CHAMPION-STATE.md + يفحص التبعيات (Brain file، v3 report، v3 prompts، kernel pages)',
+    'node scripts/prompt-champion.mjs --id=CHAMPION-01 → ينفّذ + يكتب prompt-report + يحدّث brain.md',
+    'node scripts/prompt-champion.mjs --aggregate → يصدر brightai-audit-report-v4-champion.html بدرجات Δ مجمّعة'
+  ],
+  verify:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-00',
+    'node scripts/prompt-champion.mjs --id=CHAMPION-01',
+    'node scripts/prompt-champion.mjs --aggregate',
+    'ls brightai-audit-reports/prompt-reports/',
+    'cat reports/CHAMPION-STATE.md'
+  ],
+  rollback:'احذف scripts/prompt-champion.mjs + reports/CHAMPION-STATE.md + brightai-audit-reports/prompt-reports/. brain.md يستخدم git revert على commit الإضافة.',
+  dod:'Orchestrator يعمل + Self-Analysis (Pre/Post) + Re-Report يكتب Δ + brain.md يحدّث + verification commands exit 0.'
+},
+{
+  id:'CHAMPION-01',
+  title:'Self-Analysis (Kernel + Saudi) ثم تنفيذ Kernel Mobile-First Hero',
+  priority:'P0', effort:'24h', impact:'25 (Kernel: +15, Mobile: +10)', risk:'high',
+  depends:'CHAMPION-00, BAI-DEPLOY-13', blocks:'CHAMPION-02',
+  context:`/src/pages/kernel/chat.astro (1720 سطر) هو قلب المنتج. حالياً: seed data + 3-pane desktop تنطوي على drawers تحت 1024px + no empty state + no skeleton + no voice. المطلوب: أفضل تجربة منتجات في العالم العربي على mobile 360×640 + desktop. التحليل الذاتي يجب أن يطابق تقرير v3 (chat = 8.0/10، connectors = 5.0/10، لا voice، لا RTL audit per page). الـ output: chat.astro + 6 صفحات kernel (audit/approvals/evidence/policies/scenarios/stats) → first-class mobile + empty/skeleton + voice (ar-SA) + screenshot diff.`,
+  files:[
+    'src/pages/kernel/chat.astro (hero rewrite)',
+    'src/pages/kernel/audit.astro, approvals.astro, evidence.astro, policies.astro, scenarios.astro, stats.astro, reports.astro, compliance.astro, connectors.astro (mobile-first)',
+    'src/components/kernel/KernelEmptyState.astro, KernelSkeleton.astro, KernelSeoSection.astro (تحديث)',
+    'src/components/kernel/KernelVoiceInput.astro (NEW — Web Speech API ar-SA)',
+    'src/styles/kernel.css (mobile-first rethink)',
+    'scripts/prompt-champion.mjs (run loop)'
+  ],
+  mustNot:[
+    'النص العربي المنشور (Saudi dialect — لا تبدّله)',
+    'src/components/kernel/KernelDemoPill.astro (شفاف، حافظ على contract)',
+    'src/data/kernel-system-prompts.ts (نظام prompts الخادم)',
+    'src/pages/api/ai/chat.ts (backend logic — لا تعدل)',
+    'src/lib/quota.ts, src/lib/redis.ts (security/cost layer)',
+    'trailingSlash + 16 sections في homepage'
+  ],
+  preAnalysis:[
+    'src/pages/kernel/chat.astro lines = 1720',
+    'empty state components usage: index.astro فقط (1/11)',
+    'skeleton components usage: index.astro فقط (1/11)',
+    'touch targets <44px: 4.4% (في mobile-menu__header)',
+    'voice input: 0',
+    'mobile screenshots: قبل (baseline)',
+    'curl -sI https://brightai.site/api/ai/chat/ (هل Gemini ميت؟)'
+  ],
+  task:`1) Kernel Mobile-First Hero (chat.astro)
+- 3-pane → 1-pane مع bottom-sheet drawers (ليس panes منزلق).
+- Compose box: position: sticky; bottom: 0; safe-area-inset-bottom: 8px; z-index: 100.
+- Empty state عند أول زيارة: "ابدأ محادثة — اسأل عن PDPL/ECC/AI governance" بدل seed data.
+- Skeleton loading على البيانات (threads list).
+- Voice input button (mic) في compose box: Web Speech API: webkitSpeechRecognition + lang="ar-SA". Fallback: اعرض inline hint "المتصفح ما يدعم الإدخال الصوتي".
+- Onboarding tour (3 خطوات): highlight compose + highlight scenarios + highlight sessions.
+- إزالة seedMessages (data:73-84) من SSR.
+- Streaming SSE يحترم visualViewport (keyboard مفتوح).
+
+2) Empty + Skeleton لكل صفحات kernel (10/11)
+- لكل audit/approvals/evidence/policies/scenarios/stats/reports/compliance/connectors: إضافة <KernelSkeleton /> فوق components + <KernelEmptyState /> كـ fallback + إزالة setTimeout dummy في ${'${name}'}.astro (الـ 7 demo states).
+
+3) Mobile-First CSS Rethink (kernel.css)
+- mobile-first (default) → @media (min-width: 768px) → @media (min-width: 1366px).
+- تستبدل القياسات الثابتة بـ tokens.
+- الحفاظ على RTL عبر logical properties فقط.
+- safe-area-inset-bottom/top.
+- touch targets ≥44px (force عبر CSS min-height: 44px على buttons).
+
+4) A11y Polish
+- skip-link على KernelLayout.
+- aria-label على كل icon-only buttons.
+- focus-visible outline 2px solid brand-400.
+- reduced-motion respect.
+
+5) Voice Input Component (KernelVoiceInput.astro)
+- SSR-safe (الـ API client-side فقط).
+- اعرض transcript live.
+- تأكد RTL/Ara (خط TheYearofTheCamel أو IBM Plex Sans Arabic).`,
+  acceptance:[
+    'curl -s https://brightai.site/kernel/chat/ | grep -c "ابدأ محادثة" → ≥ 1',
+    'curl -s https://brightai.site/kernel/chat/ | grep -c "تصدير قائمة عملاء" → 0',
+    'Playwright على 360×640: compose box يظهر sticky + empty state أول زيارة + voice button visible',
+    'Playwright: 0 touch targets <44px على 11/11 kernel pages',
+    'Mobile Lighthouse (Chromium, Slow 4G) score: ≥ 90'
+  ],
+  verify:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-01',
+    'node scripts/playwright/mobile-audit-kernel.mjs --device=mobile-360',
+    'node scripts/playwright/screenshot.mjs --url=https://brightai.site/kernel/chat/ --viewport=360x640 --output=qa-screenshots/kernel-chat-after.png',
+    'diff qa-screenshots/kernel-chat-before.png qa-screenshots/kernel-chat-after.png',
+    'curl -s https://brightai.site/kernel/chat/ | grep -c "KernelSkeleton\\|KernelEmptyState"',
+    'pnpm run verify:all'
+  ],
+  rollback:'git revert على commit CHAMPION-01. لا rollback لـ backend (chat.ts unchanged).',
+  dod:'chat.astro mobile-first + empty/skeleton universal + voice input + Lighthouse mobile ≥ 90 + 0 touch targets <44px + brain.md updated.'
+},
+{
+  id:'CHAMPION-02',
+  title:'ربط Kernel بـ Gemini API عبر Render env GEMINI_API_KEY',
+  priority:'P0', effort:'3h', impact:'30 (Kernel: real vs demo)', risk:'medium',
+  depends:'BAI-DEPLOY-13, CHAMPION-01', blocks:'CHAMPION-03',
+  context:`src/pages/api/ai/chat.ts:369 يقرأ process.env.GEMINI_API_KEY في runtime (ARCH-2 fix). الـ render.yaml:11-15 يصف runtime: node + startCommand: node ./dist/server/entry.mjs + healthCheckPath: /api/health/. لكن الإنتاج فعلياً يخدم static (حسب v3 audit). المطلوب: تأكيد أن GEMINI_API_KEY في Render env متاح + chat يرجع رد حقيقي + لا يخدم FAKE_RESPONSES الثابتة.`,
+  files:[
+    'render.yaml (تأكيد env vars)',
+    'Render dashboard (إضافة env vars: GEMINI_API_KEY, GROQ_API_KEY, REDIS_URL, DATABASE_URL, BRIGHTAI_CHAT_KEY, CHAT_STREAMING_ENABLED)',
+    'src/pages/api/ai/chat.ts (تأكيد انه يقرأ env runtime فقط)',
+    'src/lib/quota.ts (Redis quota)',
+    'src/lib/redis.ts (Redis session)'
+  ],
+  mustNot:[
+    'كل الـ runtime logic (chat.ts صحيح من ناحية الكود)',
+    'dist/server/entry.mjs (built artifact)',
+    'لا commit لأي قيمة key'
+  ],
+  preAnalysis:[
+    'curl -sI https://brightai.site/api/health/ → هل هو JSON أم HTML 404',
+    'curl -sI -X POST https://brightai.site/api/ai/chat/ → Content-Length: 0 (ميت) أو reply',
+    'grep -n "GEMINI_API_KEY" src/pages/api/ai/chat.ts → موقع الـ reads',
+    'node scripts/prompt-champion.mjs --id=CHAMPION-02 يكتب baseline'
+  ],
+  task:`1) تأكيد Render env vars (يدوي، المالك ينفّذ من Dashboard)
+- GEMINI_API_KEY=<value> (المفتاح الجديد المُدوَّر — خارج الريبو)
+- GROQ_API_KEY=<value> (fallback provider)
+- REDIS_URL=rediss://... (Redis Cloud / Upstash / Render KV)
+- DATABASE_URL=postgresql://... (إن وُجد)
+- BRIGHTAI_CHAT_KEY=<32-byte hex> (Origin whitelist bypass — openssl rand -hex 32)
+- CHAT_STREAMING_ENABLED=true
+- GEMINI_MODEL=gemini-2.5-flash
+- TRUSTED_PROXY_COUNT=1
+- NODE_ENV=production
+
+2) تأكيد chat.ts يقرأ env runtime
+- grep -n "process.env.GEMINI_API_KEY" src/pages/api/ai/chat.ts → 4 مواضع (369, 373, 416, fallback).
+- تأكد import.meta.env غير مستخدم (كان ARCH-2 fix لتجنب التسريب).
+
+3) تأكيد deployment type = web service (ليس static)
+- Render dashboard: type = web, runtime = node.
+
+4) Deploy + verify
+- pnpm run verify:post-deploy (يضمّ drift probe + content probe).
+- curl -i https://brightai.site/api/health/ → JSON + x-brightai-build header.
+- curl -i -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Content-Type: application/json" -d '{"message":"مرحبا، ما هي BrightAI؟"}' → 200 + JSON {"reply":"...","provider":"gemini"}.
+
+5) Brain.md update
+- تسجيل: GEMINI_API_KEY live في Section 1 Project State.
+- تسجيل: Kernel live: 1/11 (chat يرتبط بـ Gemini، باقي demo).`,
+  acceptance:[
+    'curl -i https://brightai.site/api/health/ → 200 + JSON + x-brightai-build: <sha> header',
+    'curl -i -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Content-Type: application/json" -d \'{"message":"ما حوكمة الذكاء الاصطناعي؟"}\' → 200 + JSON {"reply":"حوكمة الذكاء الاصطناعي تعني...","provider":"gemini"}',
+    'curl -i -N -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Accept: text/event-stream" -H "Content-Type: application/json" -d \'{"message":"اشرح PDPL"}\' → SSE stream يبدأ بـ event: token',
+    'curl -s https://brightai.site/kernel/chat/ | grep -o "KernelDemoPill" → حاضر (شفاف)'
+  ],
+  verify:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-02',
+    'curl -sI https://brightai.site/api/health/ | grep -iE "http|x-brightai-build"',
+    'curl -s -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Content-Type: application/json" -d \'{"message":"test"}\' | head -c 200',
+    'curl -N -X POST https://brightai.site/api/ai/chat/ -H "Origin: https://brightai.site" -H "Accept: text/event-stream" -H "Content-Type: application/json" -d \'{"message":"explain PDPL"}\' | head -c 400',
+    'pnpm run verify:post-deploy'
+  ],
+  rollback:'لا rollback لأن المفتاح في Render env فقط (لا في الريبو). لو فشلت، أزل env vars و ارجع للـ deploy السابق.',
+  dod:'GEMINI_API_KEY في Render env + /api/ai/chat/ يرجع رد حقيقي + رد ليس empty 200 + SSE streaming يشتغل + brain.md updated.'
+},
+{
+  id:'CHAMPION-03',
+  title:'Saudi #1 Authority Pack (E-E-A-T + Local SEO + AEO)',
+  priority:'P0', effort:'16h', impact:'20 (Saudi: +15, Trust: +5)', risk:'low',
+  depends:'BAI-SAID-01/02/03/04', blocks:'CHAMPION-04',
+  context:`حسب v3 audit: BrightAI يتصدر كلمتين ناشئتين ("حوكمة الذكاء الاصطناعي السعودية"، "AI Firewall السعودية") لكن غائب عن PDPL/ECC/البنوك. E-E-A-T ضعيف: اسم المؤسس "يزيد" فقط + لا CR + لا عملاء مسمّين + لا badges بصرية. المطلوب: حزمة Authority ترفع BrightAI إلى SERP top 3 لـ 5 كلمات سعودية + SERP top 1 لـ "حوكمة AI للبنوك" + SERP top 1 لـ "AI governance Saudi Arabia" (EN).`,
+  files:[
+    'src/components/Footer.astro (CR + founder complete)',
+    'src/data/site.ts (crNumber, founder full name, foundedYear)',
+    'src/data/schema-saudi-seo.json (taxID, identifier, founder familyName)',
+    'public/llms.txt, llms-full.txt, ai.txt (Entity Facts تفصيل)',
+    'src/pages/answer/[slug].astro (NEW — 10 FAQ pages)',
+    'src/pages/lp/[slug].astro (NEW — 5 landing pages)',
+    'src/content/blog/{pdpl,ecc,iso-42001,sama,sdaia}-*.md (8 cluster per topic)',
+    'src/components/TrustBadges.astro (NEW — SAMA/SDAIA/NCA/ISO 42001)',
+    'src/pages/index.astro (Trust badges في hero)'
+  ],
+  mustNot:[
+    'النص العربي المنشور (Saudi dialect — لا تبدّله)',
+    'src/data/i18n-pairs.ts (5 legal pairs موجودة)',
+    'public/_redirects (protected)'
+  ],
+  preAnalysis:[
+    'grep -rn "تاكيد الكيان" src/data/site.ts → هل CR number حاضر',
+    'grep -rn "founder" src/data/schema-saudi-seo.json → هل full name',
+    'curl -s https://brightai.site/ | grep -oE "سجل تجاري" → 0',
+    'curl -s https://brightai.site/ | grep -c "answer/" → 0',
+    'wc -l src/content/blog/pdpl-*.md → هل 8 cluster',
+    'node scripts/prompt-champion.mjs --id=CHAMPION-03 يكتب baseline'
+  ],
+  task:`1) E-E-A-T (الكيان القانوني)
+- المالك يؤكد: CR + اسم المؤسس الكامل + سنة التأسيس + LinkedIn URL.
+- site.ts يحدّث: crNumber: '1010XXXXXX' / founder: { name: 'يزيد', familyName: 'الشريف', linkedIn: 'https://...', bio: '...' }
+- schema-saudi-seo.json يضيف: taxID / identifier / founder.familyName / foundingDate: '2026-01-01'
+- Footer.astro يضيف سطر "سجل تجاري: 1010XXXXXX" + "المؤسس: يزيد الشريف" + LinkedIn icon.
+- llms.txt يضيف Commercial Registration + Founder (since 2026).
+
+2) AEO / Answer Pages (10)
+- src/pages/answer/[slug].astro: 10 FAQ pages لكلمات: ai-firewall, pdpl-compliance, ecc-controls, ai-banking, ai-healthcare, ai-governance-framework, nca-compliance, sama-ai, sdaia-guidelines, iso-42001.
+- FAQPage + SpeakableSpecification schema. 150-300 كلمة لكل إجابة، Saudi dialect. internal links من pillar pages. في sitemap + llms.txt.
+
+3) Landing Pages (5) — /lp/*
+- src/pages/lp/[slug].astro: 5 keywords: pdpl, ecc, banking, healthcare, government.
+- 800-1200 كلمة كل واحدة. Hero + Trust signals + CTA + FAQ + internal links. Service + FAQPage schema. في sitemap + llms.txt.
+
+4) Trust Badges (Hero)
+- TrustBadges.astro: 4 logos: SAMA, SDAIA, NCA, ISO 42001. label: "متوافق مع" (لا "معتمد من"). hover tooltip "امتثال لاشتراطات X". ضع تحت CTA في hero. Responsive: scrollable على mobile.
+
+5) Content Cluster (8 مقالات × 4 عنقود = 32)
+- PDPL cluster (8): pdpl-for-banks, pdpl-for-healthcare, pdpl-cross-border, dpo-role, dpia, pdpl-breach, pdpl-consent, pdpl-ai.
+- ECC cluster (8): ecc-2-2024, ecc-assess, ecc-ai-mapping, ecc-vs-iso27001, ecc-incident, ecc-audit, ecc-supply-chain, ecc-mobile.
+- ISO 42001 cluster (8): iso-42001-intro, iso-42001-clauses, iso-42001-audit, iso-42001-vs-iso27001, iso-42001-ai-policy, iso-42001-risk, iso-42001-control, iso-42001-saudi.
+- SAMA cluster (8): sama-ai, sama-banking, sama-cyber, sama-cloud, sama-open, sama-ai-risk, sama-ai-governance, sama-ai-implementation.
+- كل مقال: 1500+ كلمة + intra-cluster links + schema.
+
+6) GBP + Local SEO
+- Google Business Profile (يدوي المالك). NAP موحّد: JSON-LD + Footer + GBP + llms.txt.`,
+  acceptance:[
+    'curl -s https://brightai.site/ | grep -oE "سجل تجاري|1010[0-9]{6}" → ≥ 1',
+    'curl -s https://brightai.site/ | grep -oE \'"founder":\\{[^}]*"name":"[^"]*"\'',
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/answer/ai-firewall/ → 200',
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/lp/pdpl/ → 200',
+    'curl -s https://brightai.site/ | grep -ci "trust-badge" → ≥ 1',
+    'grep -l "pdpl" src/content/blog/*.md | wc -l → ≥ 8 (وكذلك ecc / iso-42001 / sama)'
+  ],
+  verify:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-03',
+    'curl -s https://brightai.site/ | grep -oE "سجل تجاري|فاوندر|founder" | sort -u',
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/answer/ai-firewall/',
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/lp/pdpl/',
+    'curl -s https://brightai.site/sitemap.xml | grep -ciE "answer|lp"',
+    'curl -s https://brightai.site/llms.txt | grep -i "commercial registration"',
+    'grep -l "pdpl" src/content/blog/*.md | wc -l'
+  ],
+  rollback:'git revert على commit. لا تأثير على قاعدة البيانات.',
+  dod:'CR + founder كامل + 10 answer pages + 5 lp pages + 32 blog posts + trust badges + GBP + brain.md updated.'
+},
+{
+  id:'CHAMPION-04',
+  title:'Champion Re-Analysis Loop (يُعيد تشغيل التحليل + التقرير v4)',
+  priority:'P0', effort:'8h', impact:'15 (الكشف عن الفجوات)', risk:'low',
+  depends:'CHAMPION-01..03', blocks:'CHAMPION-05',
+  context:`المطلوب من المالك: "برومبت يقوم بتحليل المشروع نفسه... ويعيد التحليل والتقرير ويركز على جعل المشروع يكون الأول في السعودية". هذا البرومبت يلبّي ذلك: بعد كل CHAMPION prompt، يجمع Δ ويُصدر brightai-audit-report-v4-champion.html. الـ v4 يكون شامل بعد CHAMPION-01..03 + يركز على kernel + Saudi #1.`,
+  files:[
+    'scripts/generate-audit-report-v4.mjs (NEW — يقرأ prompt-reports/* + ينشئ HTML)',
+    'scripts/brightai-audit-report-v4-champion.html (NEW)',
+    'brightai-audit-reports/prompt-reports/*.md (المدخلات)',
+    'package.json (add audit:v4 script)'
+  ],
+  mustNot:[
+    'brightai-audit-report-v3.html (محفوظ للتاريخ)',
+    'brightai-audit-prompts-v3.md (محفوظ)',
+    'brain.md + state baseline'
+  ],
+  preAnalysis:[
+    'اقرأ كل brightai-audit-reports/prompt-reports/CHAMPION-*.md',
+    'استخرج Δ metrics',
+    'قارن بـ v3 baseline'
+  ],
+  task:`1) اكتب scripts/generate-audit-report-v4.mjs
+- يقرأ prompt-reports/*.md.
+- يستخرج لكل prompt: baseline → execution → after → Δ.
+- ينشئ brightai-audit-report-v4-champion.html بنفس ستايل v3: Cover مع Championship badge / Executive Summary (3 paragraphs Saudi dialect) / جدول Δ per CHAMPION prompt / Top 15 Killers (مُحدّث) / خارطة طريق kernel + Saudi (P0/P1/P2/P3) / جدول تحقق curl لكل prompt / "ما يجب ألا يُلمس" (نفس قائمة v3).
+
+2) خارطة Championship Roadmap (90 يوم)
+- Phase 1 (48h): CHAMPION-02 (Gemini live) + CHAMPION-01 (mobile-first kernel).
+- Phase 2 (أسبوعان): CHAMPION-03 (Authority Pack) + CHAMPION-05 (Conversion) + CHAMPION-04 متابعة.
+- Phase 3 (شهر): kernel real-data integration + Saudi SERP catch-up.
+- Phase 4 (3 أشهر): #1 SERP + backlinks + press.
+- Phase 5 (6 أشهر): regional #1 + real-time collab.
+
+3) Compile + commit + reopen
+- node scripts/generate-audit-report-v4.mjs → يكتب HTML.
+- git add scripts/generate-audit-report-v4.mjs brightai-audit-report-v4-champion.html.
+- commit: [BAI-CHAMPION-04] aggregate v4 champion report.
+
+4) Brain.md update
+- Section 1 Project State: degrees (Kernel: 45% → 80%, Saudi: 56% → 75%, Mobile: 82% → 95%).
+- Section 2 Change Ledger: entry لكل CHAMPION prompt.`,
+  acceptance:[
+    'node scripts/generate-audit-report-v4.mjs → ينشئ brightai-audit-report-v4-champion.html',
+    'grep -c "CHAMPION" brightai-audit-report-v4-champion.html → ≥ 50',
+    'grep -c "Δ" brightai-audit-report-v4-champion.html → ≥ 20',
+    'grep -c "السعودية" brightai-audit-report-v4-champion.html → ≥ 10'
+  ],
+  verify:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-04',
+    'node scripts/generate-audit-report-v4.mjs',
+    'ls -la brightai-audit-report-v4-champion.html',
+    'grep -c "CHAMPION" brightai-audit-report-v4-champion.html',
+    'wc -l brightai-audit-report-v4-champion.html'
+  ],
+  rollback:'احذف brightai-audit-report-v4-champion.html + scripts/generate-audit-report-v4.mjs. الـ v3 يبقى.',
+  dod:'v4 champion report يصدر + كل Δ مُجمّع + Roadmap محدّث + brain.md updated.'
+},
+{
+  id:'CHAMPION-05',
+  title:'Conversion + Telemetry Pack (يحول kernel لاستخدام منتجي)',
+  priority:'P1', effort:'12h', impact:'12 (Conversion: +7, Measurement: +5)', risk:'low',
+  depends:'CHAMPION-01, CHAMPION-02, BAI-MEAS-01..03', blocks:'none',
+  context:`يحوّل kernel من demo إلى منتج: rate limit metrics + cost + circuit breaker visibility + GA4 events + conversion funnel. هذا يكمل CHAMPION-01 (UX) + CHAMPION-02 (Gemini) بمنتج قابل للقياس.`,
+  files:[
+    'src/pages/kernel/admin/quota.astro (NEW — quota dashboard)',
+    'src/pages/api/kernel/quota-stats.ts (NEW — reads Redis counters)',
+    'src/lib/analytics.ts (NEW — GA4 measurement protocol server-side)',
+    'src/pages/api/ai/chat.ts (emit event on success)',
+    'src/pages/api/lead.ts (emit event on success)',
+    'src/lib/observability/sentry.ts (activate Sentry)'
+  ],
+  mustNot:[
+    'النص العربي',
+    'quota logic الأصلي',
+    'chat logic'
+  ],
+  preAnalysis:[
+    'grep -n "ga4\\|mixpanel\\|gtag" src/pages/api/ai/chat.ts → لا server-side events',
+    'grep -rn "sentry" src/lib/observability/ → Sentry no-op',
+    'curl -s https://brightai.site/api/kernel/quota-stats/ → 404 (لا يوجد)'
+  ],
+  task:`1) Quota Dashboard
+- src/pages/api/kernel/quota-stats.ts (NEW): GET → { usage, cost, circuit: { provider: 'open' | 'closed' }, ts }. Reads from src/lib/quota.ts counters. Auth: admin-only (BRIGHTAI_ADMIN_KEY env).
+- src/pages/kernel/admin/quota.astro (NEW): Charts: usage/day, cost/day, circuit state. Date-range filter. Auth gate.
+
+2) GA4 Server-Side Events
+- src/lib/analytics.ts (NEW): GA4 Measurement Protocol (server-side). Functions: trackChatStart, trackChatCompleted, trackLeadSubmitted, trackScenarioTriggered.
+- في chat.ts: بعد success → trackChatCompleted({ sessionId, provider, tokens, latencyMs }).
+- في lead.ts: بعد success → trackLeadSubmitted({ email, source }).
+
+3) Sentry Activation
+- SENTRY_DSN يضاف لـ Render env.
+- src/lib/observability/sentry.ts يهيّأ Sentry عند وجود DSN.
+- Captures: API errors + frontend errors + chat failures.
+
+4) Conversion Funnel
+- GA4 funnel: page_view → kernel_land → chat_started → chat_completed → lead_form_view → lead_submitted.
+- Track via track* functions.`,
+  acceptance:[
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/api/kernel/quota-stats/ → 200 (with admin key)',
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/kernel/admin/quota/ → 200',
+    'GA4 Realtime يعرض events بعد chat',
+    'Sentry dashboard يعرض errors'
+  ],
+  verify:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-05',
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/api/kernel/quota-stats/ -H "x-brightai-admin-key: $ADMIN_KEY"',
+    'curl -s -o /dev/null -w "%{http_code}" https://brightai.site/kernel/admin/quota/',
+    '# تحقق يدوي في GA4 Realtime + Sentry'
+  ],
+  rollback:'git revert + حذف env vars.',
+  dod:'quota dashboard live + GA4 events streaming + Sentry active + conversion funnel measurable.'
+},
+{
+  id:'CHAMPION-06',
+  title:'Mobile-First UX Polish (الهاتف أولاً، ثم الديسك)',
+  priority:'P0', effort:'16h', impact:'18 (Mobile: +10, UX: +8)', risk:'medium',
+  depends:'CHAMPION-01', blocks:'CHAMPION-04',
+  context:`src/styles/kernel.css (475 سطر) يستخدم desktop-first implicit + يحتوي 4.4% touch targets <44px. المطلوب: mobile-first CSS rewrite + touch targets ≥44px + safe-area-inset + tap-delay elimination + app-like bottom tab bar + onboarding tour.`,
+  files:[
+    'src/styles/kernel.css (mobile-first rewrite)',
+    'src/layouts/KernelLayout.astro (tab bar + safe-area)',
+    'src/pages/kernel/chat.astro (onboarding flow)',
+    'src/components/kernel/KernelOnboarding.astro (NEW — 3-step tour)'
+  ],
+  mustNot:[
+    'النص العربي',
+    'v3 tokens (في tokens.css)',
+    'chat SSE logic'
+  ],
+  preAnalysis:[
+    'grep -n "min-height\\|min-height: 44px" src/styles/kernel.css → 0',
+    'grep -n "touch-action" src/styles/kernel.css → 0',
+    'grep -n "safe-area" src/styles/kernel.css → 0',
+    'Playwright mobile audit baseline (<44px count)'
+  ],
+  task:`1) CSS Mobile-First
+- mobile-first (default 360px) → @media (min-width: 768px) → @media (min-width: 1366px).
+- يحل محل كل @media (max-width: ...) بـ mobile-first.
+- استخدام clamp() للـ typography fluid.
+
+2) Touch Targets ≥44px
+- button, a, [role="button"] { min-height: 44px; min-width: 44px; } كقاعدة. استثناءات موثّقة inline.
+
+3) Safe Area Insets
+- bottom nav: padding-bottom: env(safe-area-inset-bottom);
+- topbar: padding-top: env(safe-area-inset-top);
+
+4) Tap Delay Elimination
+- body { touch-action: manipulation; }
+- * { -webkit-tap-highlight-color: transparent; } (اختياري).
+
+5) App-Like Bottom Tab Bar
+- 4 tabs: Chat / Audit / Reports / Profile. icons + active state. safe-area-inset-bottom. visible على mobile فقط (< 768px).
+
+6) Onboarding Tour (KernelOnboarding.astro)
+- 3-step tour: Step 1 highlight compose box / Step 2 highlight scenarios في sidebar / Step 3 highlight sessions.
+- Skip button. localStorage يحفظ "tour done".
+
+7) Voice Input Polish (CHAMPION-01 extension)
+- تأكد ar-SA + transcript + fallback.`,
+  acceptance:[
+    'Playwright mobile 360×640: 0 touch targets <44px على 11/11 kernel pages',
+    'Playwright: bottom tab bar visible + safe-area respected',
+    'Playwright: onboarding tour يظهر مرة واحدة على first visit',
+    'grep -c "safe-area\\|touch-action" src/styles/kernel.css → ≥ 3'
+  ],
+  verify:[
+    'node scripts/prompt-champion.mjs --id=CHAMPION-06',
+    'node scripts/playwright/mobile-audit-kernel.mjs --device=mobile-360',
+    'node scripts/playwright/screenshot.mjs --url=https://brightai.site/kernel/chat/ --viewport=360x640 --output=qa-screenshots/kernel-chat-mobile.png',
+    'grep -c "safe-area\\|touch-action\\|min-height: 44px" src/styles/kernel.css'
+  ],
+  rollback:'git revert. CSS-only، تأثير محدود.',
+  dod:'mobile-first CSS + touch targets ≥44px + safe-area + tap-delay + bottom tab bar + onboarding tour + brain.md updated.'
+}
+];
+
+function chipClass(kind, val){
+  if(kind==='priority') return val==='P0' ? 'chip p0' : 'chip p1';
+  if(kind==='risk') return 'chip risk-'+val.toLowerCase();
+  return 'chip';
+}
+
+function buildPlainText(p){
+  let out = `PROMPT [ID: ${p.id}] — ${p.title}\n`;
+  out += `Priority: ${p.priority} · Effort: ${p.effort} · Impact: ${p.impact} · Risk: ${p.risk} · Depends: ${p.depends} · Blocks: ${p.blocks}\n\n`;
+  out += `CONTEXT\n${p.context}\n\n`;
+  out += `FILES IN SCOPE\n${p.files.map(f=>'- '+f).join('\n')}\n\n`;
+  out += `MUST NOT TOUCH / PRESERVE\n${p.mustNot.map(f=>'- '+f).join('\n')}\n\n`;
+  if(p.preAnalysis){
+    out += `SELF-ANALYZE (PRE)\n${p.preAnalysis.map(f=>'- '+f).join('\n')}\n\n`;
+  }
+  out += `TASK\n${p.task}\n\n`;
+  out += `ACCEPTANCE CRITERIA\n${p.acceptance.map(f=>'- '+f).join('\n')}\n\n`;
+  out += `VERIFICATION COMMANDS\n${p.verify.map(f=>f).join('\n')}\n\n`;
+  out += `ROLLBACK\n${p.rollback}\n\n`;
+  out += `DEFINITION OF DONE\n${p.dod}\n`;
+  return out;
+}
+
+function esc(str){
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderCard(p){
+  const rawText = buildPlainText(p);
+  const card = document.createElement('div');
+  card.className = 'prompt-card';
+  card.id = p.id;
+  card.innerHTML = `
+    <div class="rail-node"></div>
+    <div class="card-body">
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="id-badge">${p.id}</div>
+          <h3 class="card-title">${esc(p.title)}</h3>
+        </div>
+        <button class="copy-btn" type="button">${CopyIcon}<span class="copy-label">نسخ البرومبت كاملاً</span></button>
+      </div>
+      <div class="chip-row">
+        <span class="${chipClass('priority',p.priority)}">${p.priority}</span>
+        <span class="chip">Effort: ${esc(p.effort)}</span>
+        <span class="chip">Impact: ${esc(p.impact)}</span>
+        <span class="${chipClass('risk',p.risk)}">Risk: ${p.risk}</span>
+        <span class="chip">Depends: ${esc(p.depends)}</span>
+        <span class="chip">Blocks: ${esc(p.blocks)}</span>
+      </div>
+      <p class="context-text">${esc(p.context)}</p>
+
+      <details>
+        <summary>الملفات ضمن النطاق</summary>
+        <div class="detail-body"><ul>${p.files.map(f=>'<li>'+esc(f)+'</li>').join('')}</ul></div>
+      </details>
+
+      <details>
+        <summary>ما يجب ألا يُلمس</summary>
+        <div class="detail-body"><ul>${p.mustNot.map(f=>'<li>'+esc(f)+'</li>').join('')}</ul>
+          <div class="note-strip">⚠ هذه العناصر محمية — أي تعديل عليها يخالف DEC-PROC-12.</div>
+        </div>
+      </details>
+
+      ${p.preAnalysis ? `
+      <details>
+        <summary>التحليل الذاتي (قبل التنفيذ)</summary>
+        <div class="detail-body"><ul>${p.preAnalysis.map(f=>'<li>'+esc(f)+'</li>').join('')}</ul></div>
+      </details>` : ''}
+
+      <details open>
+        <summary>المهمة (TASK)</summary>
+        <div class="detail-body"><div class="mono-block" dir="rtl" style="text-align:right;font-family:var(--sans);color:var(--text-dim);">${esc(p.task)}</div></div>
+      </details>
+
+      <details>
+        <summary>معايير القبول (Acceptance Criteria)</summary>
+        <div class="detail-body"><ul>${p.acceptance.map(f=>'<li>'+esc(f)+'</li>').join('')}</ul></div>
+      </details>
+
+      <details>
+        <summary>أوامر التحقق (Verification Commands)</summary>
+        <div class="detail-body"><div class="mono-block">${p.verify.map(esc).join('\n')}</div></div>
+      </details>
+
+      <details>
+        <summary>خطة التراجع (Rollback)</summary>
+        <div class="detail-body">${esc(p.rollback)}</div>
+      </details>
+
+      <details>
+        <summary>تعريف الاكتمال (Definition of Done)</summary>
+        <div class="detail-body">${esc(p.dod)}</div>
+      </details>
+    </div>
+  `;
+
+  const btn = card.querySelector('.copy-btn');
+  btn.addEventListener('click', async ()=>{
+    try{
+      await navigator.clipboard.writeText(rawText);
+    }catch(e){
+      const ta = document.createElement('textarea');
+      ta.value = rawText;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+    btn.classList.add('copied');
+    btn.innerHTML = `${CheckIcon}<span class="copy-label">تم النسخ ✓</span>`;
+    setTimeout(()=>{
+      btn.classList.remove('copied');
+      btn.innerHTML = `${CopyIcon}<span class="copy-label">نسخ البرومبت كاملاً</span>`;
+    },1800);
+  });
+
+  return card;
+}
+
+// render TOC
+const tocEl = document.getElementById('toc');
+prompts.forEach(p=>{
+  const a = document.createElement('a');
+  a.href = '#'+p.id;
+  a.innerHTML = `<span class="id-chip">${p.id}</span><span class="toc-title">${esc(p.title)}</span>`;
+  tocEl.appendChild(a);
+});
+
+// render schedule
+const schedBody = document.getElementById('schedule-body');
+schedule.forEach(s=>{
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td class="run-num">#${s.run}</td><td>${esc(s.frame)}</td><td>${s.id} — ${esc(s.title)}</td><td class="impact">${esc(s.impact)}</td>`;
+  schedBody.appendChild(tr);
+});
+
+// render prompts
+const promptsEl = document.getElementById('prompts');
+prompts.forEach(p=> promptsEl.appendChild(renderCard(p)));
+</script>
+</body>
+</html>
