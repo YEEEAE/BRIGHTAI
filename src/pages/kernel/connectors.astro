@@ -19,6 +19,8 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
+import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 
 const unit = getKernelUnit('connectors')!;
 const cross = getCrossLinks(unit);
@@ -220,6 +222,17 @@ const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
   @media (prefers-reduced-motion: reduce) {
     .kernel-connectors-skeleton { animation: none; }
   }
+
+  /* Loading state: hide content while skeleton is visible */
+  [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
+    display: none;
+  }
+  .kernel-loading-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+  }
 </style>
 
 <KernelLayout
@@ -254,7 +267,14 @@ const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in">
+  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={connectors.length}>
+    <div data-kernel-skeleton class="kernel-loading-skeleton">
+      <KernelSkeleton variant="card" count={4} />
+      <KernelSkeleton variant="text" count={6} />
+    </div>
+    <div data-kernel-empty hidden>
+      <KernelEmptyState title="ما في موصلات الحين" message="الموصلات تظهر فور توفرها." />
+    </div>
 
     {/* KPI cards */}
     <section class="kernel-metric-grid kernel-stagger" aria-label="مؤشرات الموصلات">
@@ -442,4 +462,5 @@ const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
     blogLabel={unit.blogLabel}
     relatedSlugs={unit.relatedSlugs}
   />
+  <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>

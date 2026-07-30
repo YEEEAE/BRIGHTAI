@@ -18,6 +18,8 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
+import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 
 const unit = getKernelUnit('reports')!;
 const cross = getCrossLinks(unit);
@@ -212,6 +214,17 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
     background: transparent; color: var(--interactive-primary); cursor: pointer;
   }
   .kernel-reports-empty-state__reset:hover { background: var(--bg-elevated); }
+
+  /* Loading state: hide content while skeleton is visible */
+  [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
+    display: none;
+  }
+  .kernel-loading-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+  }
 </style>
 
 <KernelLayout
@@ -246,7 +259,14 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in">
+  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={reports.length}>
+    <div data-kernel-skeleton class="kernel-loading-skeleton">
+      <KernelSkeleton variant="card" count={3} />
+      <KernelSkeleton variant="text" count={5} />
+    </div>
+    <div data-kernel-empty hidden>
+      <KernelEmptyState title="ما في تقارير الحين" message="مكتبة التقارير تظهر فور توفرها." />
+    </div>
 
     {/* KPI cards */}
     <section class="kernel-metric-grid kernel-stagger" aria-label="مؤشرات التقارير">
@@ -687,4 +707,5 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
     blogLabel={unit.blogLabel}
     relatedSlugs={unit.relatedSlugs}
   />
+  <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>

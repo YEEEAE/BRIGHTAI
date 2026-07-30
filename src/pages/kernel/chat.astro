@@ -22,6 +22,8 @@ import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 // CHAMPION-06 (2026-07-30): first-visit onboarding tour (compose / threads / context).
 // CSP-safe module script; does not touch the chat SSE logic below.
 import KernelOnboarding from '../../components/kernel/KernelOnboarding.astro';
+import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
+import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 // K1 (2026-07-18): kernel journey — read scenario from URL.
 import {
   getScenarioMeta,
@@ -129,7 +131,14 @@ const policyBanner = {
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in">
+  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={threads.length}>
+    <div data-kernel-skeleton class="kernel-loading-skeleton">
+      <KernelSkeleton variant="card" count={3} />
+      <KernelSkeleton variant="text" count={6} />
+    </div>
+    <div data-kernel-empty hidden>
+      <KernelEmptyState title="ما في محادثات الحين" message="المحادثات تظهر فور توفرها." />
+    </div>
     {/* K1 (2026-07-18): scenario context banner.
        Server-rendered with a fallback empty state — the JS in chat.astro
        reads ?scenario=... at runtime and fills in the metadata.
@@ -640,6 +649,19 @@ const policyBanner = {
       اختصارات: <kbd>C</kbd> محادثة جديدة · <kbd>Enter</kbd> إرسال · <kbd>Shift+Enter</kbd> سطر جديد · <kbd>Esc</kbd> لإغلاق الـ banner
     </p>
   </div>
+  <style>
+    /* Loading state: hide content while skeleton is visible */
+    [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
+      display: none;
+    }
+    .kernel-loading-skeleton {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      padding-block: var(--space-4);
+    }
+  </style>
+  <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>
 
 <script is:inline>

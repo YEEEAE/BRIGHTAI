@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-29 23:20 +03:00
+last_updated: 2026-07-30 22:05 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.58
+version: 2.7.59
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1191,6 +1191,17 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-30 — Kernel loading states: KernelSkeleton + KernelEmptyState على 10 صفحات kernel
+- **Files**: public/js/kernel-loading-state.js (new), src/pages/kernel/{chat,audit,compliance,policies,reports,evidence,connectors,approvals,scenarios,stats}.astro (10 معدّل)
+- **What**: أضفت loading state لكل صفحات kernel العشر. كل صفحة الحين تعرض KernelSkeleton (shimmer placeholder) في أول 1.5 ثانية، بعدها يطلع المحتوى الفعلي. لو البيانات فاضية (count=0) يطلع KernelEmptyState بدل المحتوى. كله يتم عبر external module CSP-safe (kernel-loading-state.js) — لا inline scripts جديدة.
+- **Why**: المستخدم على موبايل كان يشوف white screen محتوى يطيّح (CLS) لأن الصفحات ما عندها loading state. KernelSkeleton و KernelEmptyState موجودين وعملاني بس ما كانوا مستخدمين.
+- **Verification**: npm run build → exit 0 ✅ (257 HTML، 0 أخطاء). node scripts/verify-all.mjs → 5/5 فحص ناجح ✅ (روابط داخلية + canonicals + sitemap 236 URLs + noindex + بنية أساسية). grep data-kernel-loading على 10 صفحات kernel → كلهم يحوون الـ attribute ✅. grep kernel-loading-state.js → 10/10 صفحات تحوي الـ script reference ✅. الـ speakable schema audit failure (17 صفحة /answer/*) = pre-existing KI-CHAMPION03-SPEAKABLE، ما يخص هذا التغيير.
+- **Report**: none (تغيير UI صغير، 10 ملفات + 1 سكربت جديد)
+- **Commit**: uncommitted (per brain line 18 — user commits via main)
+- **Status**: verified locally
+- **Brain updates**: frontmatter (last_updated + version bump 2.7.58 → 2.7.59)؛ هذا الـ entry يـ document إن كل صفحات kernel العشر صار عندها loading state + empty state
+- **Decisions (NEW — DEC-KERNEL-LOADING-001)**: (1) loading state يتم عبر external module `public/js/kernel-loading-state.js` بدل inline script — CSP-safe تحت `script-src 'self'` (نفس نمط BAI-SEC-18). (2) الـ skeleton يظهر 1.5s ثم يطلع المحتوى — قيمة ثابتة ما تحتاج tuning لكل صفحة. (3) `data-kernel-count` attribute يحدد لو البيانات فاضية (count=0 → KernelEmptyState). (4) CSS rule `[data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) { display: none; }` تخفي المحتوى أثناء التحميل — ما يحتاج JS per-page. (5) ما غيّرت أي CSS token أو layout أو published text — فقط أضفت skeleton + empty state + script reference.
 
 ### 2026-07-30 — CHAMPION-04 — Aggregate v4 champion report (BAI-CHAMPION-04)
 

@@ -18,6 +18,8 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
+import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 // KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
 const unit = getKernelUnit('evidence')!;
@@ -358,6 +360,17 @@ const SECTOR_LABEL: Record<string, string> = {
     background: transparent; color: var(--interactive-primary); cursor: pointer;
   }
   .kernel-evidence-empty-state__reset:hover { background: var(--bg-elevated); }
+
+  /* Loading state: hide content while skeleton is visible */
+  [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
+    display: none;
+  }
+  .kernel-loading-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+  }
 </style>
 
 <KernelLayout
@@ -392,7 +405,14 @@ const SECTOR_LABEL: Record<string, string> = {
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in">
+  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={ITEMS.length}>
+    <div data-kernel-skeleton class="kernel-loading-skeleton">
+      <KernelSkeleton variant="card" count={4} />
+      <KernelSkeleton variant="text" count={6} />
+    </div>
+    <div data-kernel-empty hidden>
+      <KernelEmptyState title="ما في ملفات أدلة الحين" message="ملفات الأدلة تظهر فور توفرها." />
+    </div>
 
     <!-- Toolbar -->
     <div class="kernel-evidence-toolbar" role="search" aria-label="فلاتر الأدلة">
@@ -585,6 +605,7 @@ const SECTOR_LABEL: Record<string, string> = {
     blogLabel={unit.blogLabel}
     relatedSlugs={unit.relatedSlugs}
   />
+  <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>
 
 <script is:inline>

@@ -24,6 +24,8 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
+import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 
 const unit = getKernelUnit('stats')!;
 const cross = getCrossLinks(unit);
@@ -92,6 +94,17 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
   @media (prefers-reduced-motion: reduce) {
     .kernel-stats-skeleton { animation: none; }
   }
+
+  /* Loading state: hide content while skeleton is visible */
+  [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
+    display: none;
+  }
+  .kernel-loading-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+  }
 </style>
 
 <KernelLayout
@@ -126,7 +139,14 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in">
+  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={1}>
+    <div data-kernel-skeleton class="kernel-loading-skeleton">
+      <KernelSkeleton variant="card" count={4} />
+      <KernelSkeleton variant="text" count={8} />
+    </div>
+    <div data-kernel-empty hidden>
+      <KernelEmptyState title="ما في إحصائيات الحين" message="الإحصائيات تظهر فور توفرها." />
+    </div>
 
     {/* Time Range Selector */}
     <nav class="kernel-stats-range" aria-label="نطاق زمني">
@@ -612,4 +632,5 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
     blogLabel={unit.blogLabel}
     relatedSlugs={unit.relatedSlugs}
   />
+  <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>
