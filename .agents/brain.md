@@ -1202,6 +1202,17 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 
 ## 2. Change Ledger (newest first)
 
+### 2026-07-30 — KRN-021: 360px breakpoint لـ kernel.css (very small viewports)
+- **Files**: src/styles/kernel.css (معدّل — أضفت @media (max-width: 360px) block بعد الـ 480px الموجود)
+- **What**: أضفت breakpoint جديد لـ 360px viewport. الـ 480px الموجود كان بس يحوّل metric-grid لـ 1 column بدون ما يقلل padding أو font-size. الـ 360px block الجديد: (1) يقلل padding cards من --space-6/--space-5 لـ --space-4 (kernel-metric, kernel-stat-card, kernel-audit-drawer__panel, kernel-modal__dialog, kernel-modal__body, kernel-card__body, kernel-metric-card). (2) يstack الـ metric-grid لـ 1 column. (3) يقلل font-size للمحتوى الثانوي لـ --text-xs (kernel-metric__label, kernel-stat-card__title, kernel-card__subtitle, kernel-alert__message, kernel-code__lang). (4) يخلي الـ mobile sidebar drawer full-width (100vw) بدل min(85vw, 320px) عشان ما يصير gap على 360px.
+- **Why**: هواتف 320px width أوسع من 480px breakpoint الموجود، والـ 480px ما فيه تغييرات جوهرية على padding/font-size. على 360px viewport الـ padding الافتراضي (--space-6 = 24px) يخلي content width ضيق جدًا ويخاطر horizontal overflow.
+- **Verification**: npm run build → exit 0 ✅ (258 HTML في dist/client، 0 أخطاء). grep "min-block-size: 44px\|min-height: 44px" kernel.css → 15 عنصر interactive كله عنده touch target ≥ 44px ✅. الـ sidebar drawer صار 100vw على 360px (inline-size: 100vw + max-inline-size: 100vw) ✅. ما في عناصر ثابتة بـ inline-size أكبر من viewport على 360px (كل الـ fixed widths صغيرة: 36px icons, 20px badges, 14px svg) ✅.
+- **Report**: none (تغيير CSS صغير، ملف واحد)
+- **Commit**: uncommitted (per brain line 18 — user commits via main)
+- **Status**: verified locally
+- **Brain updates**: هذا الـ entry يـ document إن kernel.css صار عنده breakpoint 360px للـ very small viewports
+- **Decisions (NEW — DEC-KRN-021)**: (1) 360px breakpoint بدل 320px عشان يغطي أوسع range من الهواتف الصغيرة (iPhone SE = 375px، Galaxy Fold cover = 360px). (2) تقليل padding لـ --space-4 (16px) بدل --space-3 (12px) عشان يبقى المحتوى readable بدون ما يصير cramped. (3) sidebar drawer full-width على 360px بدل 85vw عشان ما يصير gap بين الـ drawer والـ viewport edge. (4) ما غيّرت أي touch target — كل الـ interactive elements عندها min-block-size: 44px من قبل (KRN-019).
+
 ### 2026-07-30 — Kernel loading states: KernelSkeleton + KernelEmptyState على 10 صفحات kernel
 - **Files**: public/js/kernel-loading-state.js (new), src/pages/kernel/{chat,audit,compliance,policies,reports,evidence,connectors,approvals,scenarios,stats}.astro (10 معدّل)
 - **What**: أضفت loading state لكل صفحات kernel العشر. كل صفحة الحين تعرض KernelSkeleton (shimmer placeholder) في أول 1.5 ثانية، بعدها يطلع المحتوى الفعلي. لو البيانات فاضية (count=0) يطلع KernelEmptyState بدل المحتوى. كله يتم عبر external module CSP-safe (kernel-loading-state.js) — لا inline scripts جديدة.

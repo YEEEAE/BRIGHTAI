@@ -1409,6 +1409,53 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   .kernel-metric-grid { grid-template-columns: 1fr; }
 }
 
+/* KRN-021 (2026-07-30): 360px breakpoint for very small viewports.
+   480px breakpoint above only stacks the metric grid; it does not reduce
+   card padding or secondary font sizes. On 360px (and narrower) viewports,
+   the default --space-6 / --space-5 card padding leaves too little content
+   width and risks horizontal overflow. This block:
+   - Reduces card padding from --space-6 / --space-5 to --space-4
+   - Stacks the 2-column metric grid to 1 column
+   - Shrinks secondary content font-size by one step
+   - Forces the mobile sidebar drawer to full viewport width
+   Touch targets remain ≥44px (unchanged — they use min-block-size: 44px). */
+@media (max-width: 360px) {
+  /* Stack 2-column metric grid to single column */
+  .kernel-metric-grid { grid-template-columns: 1fr; }
+
+  /* Reduce card padding from --space-6 to --space-4 */
+  .kernel-metric,
+  .kernel-stat-card,
+  .kernel-audit-drawer__panel,
+  .kernel-modal__dialog,
+  .kernel-modal__body {
+    padding: var(--space-4);
+  }
+
+  /* Reduce card body / metric-card padding from --space-5 to --space-4 */
+  .kernel-card__body,
+  .kernel-metric-card {
+    padding: var(--space-4);
+  }
+
+  /* Reduce secondary content font-size by one step */
+  .kernel-metric__label,
+  .kernel-stat-card__title,
+  .kernel-card__subtitle,
+  .kernel-alert__message,
+  .kernel-code__lang {
+    font-size: var(--text-xs);
+  }
+
+  /* Mobile sidebar drawer: full viewport width on very small screens.
+     Default is min(85vw, 320px) which is narrower than 360px viewport;
+     forcing 100vw ensures no gap and no horizontal scroll from drawer. */
+  body.kernel-shell .kernel-sidebar {
+    inline-size: 100vw;
+    max-inline-size: 100vw;
+  }
+}
+
 /* ── 9. Dashboard grid (12-col) ──────────────────────────────────────── */
 
 .kernel-dashboard-grid {

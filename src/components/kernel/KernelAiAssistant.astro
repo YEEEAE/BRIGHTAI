@@ -595,8 +595,10 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     }
 
     function streamInto(bubble, text, onDone) {
-      // عرض النص كاملاً (بدون streaming فعلي لأن chat.ts يرجع النص دفعة واحدة)
-      // مع تأثير "ظهور تدريجي" يحترم prefers-reduced-motion
+      // تأثير "ظهور تدريجي" للنص الكامل — يُستخدم فقط في مسار fallback
+      // (JSON response أو demo/degraded). المسار الأساسي يستخدم SSE streaming
+      // حقيقي من chat.ts (CHAT-STREAM-2026-07-15): event: token / data: {"delta":"..."}
+      // يحدّث الـ DOM مباشرة في handleStream() فوق. يحترم prefers-reduced-motion.
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduce) {
         bubble.textContent = text;
