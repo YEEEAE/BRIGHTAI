@@ -195,6 +195,23 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   @media (prefers-reduced-motion: reduce) {
     .kernel-reports-skeleton { animation: none; }
   }
+
+  /* Empty-state presentation (shown when filters yield no reports) */
+  .kernel-reports-empty-state[hidden] { display: none; }
+  .kernel-reports-empty-state {
+    display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3);
+    padding-block: var(--space-8); padding-inline: var(--space-6);
+    background: var(--bg-surface); border-radius: var(--radius-lg);
+  }
+  .kernel-reports-empty-state__title { margin: 0; font-size: var(--text-lg); color: var(--text-primary); }
+  .kernel-reports-empty-state__hint { margin: 0; color: var(--text-secondary); }
+  .kernel-reports-empty-state__reset {
+    min-height: 44px; min-width: 44px;
+    padding-inline: var(--space-5); padding-block: var(--space-2);
+    border: 1px solid var(--interactive-primary); border-radius: var(--radius-md);
+    background: transparent; color: var(--interactive-primary); cursor: pointer;
+  }
+  .kernel-reports-empty-state__reset:hover { background: var(--bg-elevated); }
 </style>
 
 <KernelLayout
@@ -313,6 +330,15 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                 </div>
               </article>
             ))}
+
+          <!-- Empty state: shown when filters yield no reports -->
+          <div class="kernel-reports-empty-state" data-kernel-reports-empty hidden role="status" aria-live="polite">
+            <p class="kernel-reports-empty-state__title">لا توجد تقارير مطابقة للفلاتر</p>
+            <p class="kernel-reports-empty-state__hint">غيّر نوع التقرير أو حالته، أو أنشئ تقرير جديد من المعالج.</p>
+            <button type="button" class="kernel-reports-empty-state__reset" data-kernel-reports-empty-reset data-kernel-touch>
+              إعادة ضبط الفلاتر
+            </button>
+          </div>
           </div>
         </div>
       </KernelCard>
@@ -519,6 +545,8 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
           row.hidden = !(matchType && matchStatus);
           if (matchType && matchStatus) visible++;
         });
+        const emptyEl = document.querySelector('[data-kernel-reports-empty]');
+        if (emptyEl) emptyEl.hidden = visible !== 0;
       }
 
       filterTypeButtons.forEach((btn) => {
@@ -534,6 +562,16 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
           applyFilters();
         });
       });
+
+      // Reset button inside the empty state — clears type + status filters.
+      const reportsResetBtn = document.querySelector('[data-kernel-reports-empty-reset]');
+      if (reportsResetBtn) {
+        reportsResetBtn.addEventListener('click', () => {
+          filterTypeButtons.forEach((b) => b.classList.toggle('active', b.dataset.filterType === 'all'));
+          filterStatusButtons.forEach((b) => b.classList.toggle('active', b.dataset.filterStatus === 'all'));
+          applyFilters();
+        });
+      }
 
       // ─── Download buttons (visual feedback) ───
       document.querySelectorAll('[data-download-report]').forEach((btn) => {

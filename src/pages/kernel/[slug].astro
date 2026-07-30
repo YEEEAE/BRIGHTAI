@@ -93,6 +93,58 @@ const isEvidence = unit.slug === 'evidence';
 const isCompliance = unit.slug === 'compliance';
 ---
 
+<style>
+  /*
+   * Mobile-first + RTL baseline for Slug (kernel championship).
+   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
+   * targets, responsive breakpoints, and empty/loading state styles.
+   * Uses design tokens. No published text or layout overrides.
+   */
+  .kernel-slug__empty-state,
+  .kernel-slug-empty-state {
+    padding-inline: var(--space-6);
+    margin-inline: auto;
+    text-align: start;
+    color: var(--text-muted);
+    border-inline-start: 3px solid var(--interactive-primary);
+  }
+  .kernel-slug__skeleton,
+  .kernel-slug-skeleton {
+    inset-inline-start: 0;
+    background: var(--bg-elevated);
+    animation: kernel-slug-shimmer 1.4s var(--ease-in-out) infinite;
+  }
+  @keyframes kernel-slug-shimmer {
+    0% { opacity: 1; }
+    50% { opacity: 0.45; }
+    100% { opacity: 1; }
+  }
+  /* Touch targets ≥44px — accessibility on small screens */
+  .kernel-slug [data-kernel-touch],
+  .kernel-slug__touch {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Mobile-first: single column on mobile, enhance at ≥768px */
+  .kernel-slug__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+  @media (min-width: 768px) {
+    .kernel-slug__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+  }
+  @media (max-width: 640px) {
+    .kernel-slug [data-kernel-touch] { min-height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-slug-skeleton { animation: none; }
+  }
+</style>
+
 <KernelLayout
   title={migratedPage?.title ?? unit.title}
   description={migratedPage?.description ?? unit.description}

@@ -336,6 +336,28 @@ const SECTOR_LABEL: Record<string, string> = {
   @media (prefers-reduced-motion: reduce) {
     .kernel-evidence-skeleton { animation: none; }
   }
+
+  /* Empty-state presentation (shown when filters yield no items) */
+  .kernel-evidence-empty-state[hidden] { display: none; }
+  .kernel-evidence-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding-block: var(--space-8);
+    padding-inline: var(--space-6);
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+  }
+  .kernel-evidence-empty-state__title { margin: 0; font-size: var(--text-lg); color: var(--text-primary); }
+  .kernel-evidence-empty-state__hint { margin: 0; color: var(--text-secondary); }
+  .kernel-evidence-empty-state__reset {
+    min-height: 44px; min-width: 44px;
+    padding-inline: var(--space-5); padding-block: var(--space-2);
+    border: 1px solid var(--interactive-primary); border-radius: var(--radius-md);
+    background: transparent; color: var(--interactive-primary); cursor: pointer;
+  }
+  .kernel-evidence-empty-state__reset:hover { background: var(--bg-elevated); }
 </style>
 
 <KernelLayout
@@ -468,6 +490,21 @@ const SECTOR_LABEL: Record<string, string> = {
           </footer>
         </article>
       ))}
+
+      <!-- Empty state: shown when filters yield no evidence items -->
+      <div
+        class="kernel-evidence__empty-state kernel-evidence-empty-state"
+        data-kernel-evidence-empty
+        hidden
+        role="status"
+        aria-live="polite"
+      >
+        <p class="kernel-evidence-empty-state__title">لا توجد ملفات أدلة مطابقة للفلاتر</p>
+        <p class="kernel-evidence-empty-state__hint">وسّع نطاق القطاع أو حزمة الامتثال لعرض المزيد من الملفات.</p>
+        <button type="button" class="kernel-evidence-empty-state__reset" data-kernel-evidence-empty-reset data-kernel-touch>
+          إعادة ضبط الفلاتر
+        </button>
+      </div>
     </section>
   </div>
 
@@ -700,6 +737,10 @@ const SECTOR_LABEL: Record<string, string> = {
           ' · ' + (totalSize ? Math.round(totalSize) + 'KB' : '—') + ' إجمالي' +
           ' · ' + packs.size + ' حزم امتثال';
       }
+
+      // Toggle the empty state when no items match the active filters.
+      var emptyEl = el('[data-kernel-evidence-empty]');
+      if (emptyEl) emptyEl.hidden = shown !== 0;
     }
 
     function generateNew() {
@@ -808,6 +849,16 @@ const SECTOR_LABEL: Record<string, string> = {
         sel.dataset.bound = '1';
         sel.addEventListener('change', applyFilters);
       });
+
+      // Reset button inside the empty state — clears every filter + re-applies.
+      var resetBtn = el('[data-kernel-evidence-empty-reset]');
+      if (resetBtn && resetBtn.dataset.bound !== '1') {
+        resetBtn.dataset.bound = '1';
+        resetBtn.addEventListener('click', function () {
+          elAll('[data-kernel-evidence-filter]').forEach(function (sel) { sel.value = ''; });
+          applyFilters();
+        });
+      }
       applyFilters();
     }
 

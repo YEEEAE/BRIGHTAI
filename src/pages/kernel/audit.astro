@@ -161,6 +161,40 @@ const TOTAL_RECORDS = 12483;
   @media (prefers-reduced-motion: reduce) {
     .kernel-audit-skeleton { animation: none; }
   }
+
+  /* Empty-state presentation (shown when filters yield no rows) */
+  .kernel-audit-empty-state[hidden] { display: none; }
+  .kernel-audit-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding-block: var(--space-8);
+    padding-inline: var(--space-6);
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+  }
+  .kernel-audit-empty-state__title {
+    margin: 0;
+    font-size: var(--text-lg);
+    color: var(--text-primary);
+  }
+  .kernel-audit-empty-state__hint {
+    margin: 0;
+    color: var(--text-secondary);
+  }
+  .kernel-audit-empty-state__reset {
+    min-height: 44px;
+    min-width: 44px;
+    padding-inline: var(--space-5);
+    padding-block: var(--space-2);
+    border: 1px solid var(--interactive-primary);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--interactive-primary);
+    cursor: pointer;
+  }
+  .kernel-audit-empty-state__reset:hover { background: var(--bg-elevated); }
 </style>
 
 <KernelLayout
@@ -312,6 +346,21 @@ const TOTAL_RECORDS = 12483;
           ))}
         </tbody>
       </table>
+
+      <!-- Empty state: shown when filters yield no rows (progressive enhancement) -->
+      <div
+        class="kernel-audit__empty-state kernel-audit-empty-state"
+        data-kernel-audit-empty
+        hidden
+        role="status"
+        aria-live="polite"
+      >
+        <p class="kernel-audit-empty-state__title">لا توجد سجلات مطابقة للفلاتر</p>
+        <p class="kernel-audit-empty-state__hint">جرّب توسيع نطاق التاريخ أو إعادة ضبط درجة المخاطر / الحالة / المستخدم.</p>
+        <button type="button" class="kernel-audit-empty-state__reset" data-kernel-audit-empty-reset data-kernel-touch>
+          إعادة ضبط الفلاتر
+        </button>
+      </div>
     </div>
 
     <!-- Pagination -->
@@ -547,6 +596,10 @@ const TOTAL_RECORDS = 12483;
 
       var counter = el('[data-kernel-audit-count]');
       if (counter) counter.textContent = '١٢٬٤٨٣ سجل إجمالي · تعرض ' + shown;
+
+      // Toggle the empty state when no rows match the active filters.
+      var emptyEl = el('[data-kernel-audit-empty]');
+      if (emptyEl) emptyEl.hidden = shown !== 0;
     }
 
     function exportRows(format) {
@@ -587,6 +640,16 @@ const TOTAL_RECORDS = 12483;
         sel.dataset.bound = '1';
         sel.addEventListener('change', applyFilters);
       });
+
+      // Reset button inside the empty state — clears every filter + re-applies.
+      var resetBtn = el('[data-kernel-audit-empty-reset]');
+      if (resetBtn && resetBtn.dataset.bound !== '1') {
+        resetBtn.dataset.bound = '1';
+        resetBtn.addEventListener('click', function () {
+          elAll('[data-kernel-audit-filter]').forEach(function (sel) { sel.value = ''; });
+          applyFilters();
+        });
+      }
 
       // Trigger initial filter pass (in case the user reloaded with prefilled values)
       applyFilters();

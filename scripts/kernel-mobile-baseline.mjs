@@ -21,12 +21,12 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const KERNEL_DIR = join(__dirname, '..', 'src', 'pages', 'kernel');
 
-const PAGES = ['audit', 'approvals', 'evidence', 'policies', 'stats', 'connectors', 'compliance', 'reports'];
+const PAGES = ['audit', 'approvals', 'evidence', 'policies', 'stats', 'connectors', 'compliance', 'reports', '[slug]'];
 const MARKER = 'kernel-mobile-baseline.mjs';
 
 function block(page) {
-  const p = page;
-  const P = page.charAt(0).toUpperCase() + page.slice(1);
+  const p = page.replace(/[^a-z0-9-]/gi, '').replace(/^-|-$/g, '') || 'page';
+  const P = p.charAt(0).toUpperCase() + p.slice(1);
   return `<style>
   /*
    * Mobile-first + RTL baseline for ${P} (kernel championship).

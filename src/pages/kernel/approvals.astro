@@ -229,6 +229,22 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
   @media (prefers-reduced-motion: reduce) {
     .kernel-approvals-skeleton { animation: none; }
   }
+
+  /* Empty-state presentation (shown when a tab panel has no items) */
+  .kernel-approvals-empty-state[hidden] { display: none; }
+  .kernel-approvals-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding-block: var(--space-8);
+    padding-inline: var(--space-6);
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    border-inline-start: 3px solid var(--interactive-primary);
+  }
+  .kernel-approvals-empty-state__title { margin: 0; font-size: var(--text-lg); color: var(--text-primary); }
+  .kernel-approvals-empty-state__hint { margin: 0; color: var(--text-secondary); }
 </style>
 
 <KernelLayout
@@ -286,6 +302,10 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
 
     <!-- PENDING panel (KRN-015: aria-labelledby + tabindex="0" for focus) -->
     <section class="kernel-tabs-panel" id="tabpanel-pending" role="tabpanel" aria-labelledby="kernel-tab-pending" tabindex="0" data-kernel-panel="pending">
+      <div class="kernel-approvals-empty-state" data-kernel-approvals-empty hidden role="status" aria-live="polite">
+        <p class="kernel-approvals-empty-state__title">ما في طلبات قيد الانتظار الحين</p>
+        <p class="kernel-approvals-empty-state__hint">كل الطلبات الحالية تمّت معالجتها. تقدر ترجع لاحقًا أو تتواصل مع فريق الحوكمة.</p>
+      </div>
       <div class="kernel-approvals-list" data-kernel-approval-list="pending">
         {PENDING.map(item => (
           <article
@@ -360,6 +380,10 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
 
     <!-- APPROVED panel (KRN-015: aria-labelledby + tabindex="0") -->
     <section class="kernel-tabs-panel" id="tabpanel-approved" role="tabpanel" aria-labelledby="kernel-tab-approved" tabindex="0" data-kernel-panel="approved" hidden>
+      <div class="kernel-approvals-empty-state" data-kernel-approvals-empty hidden role="status" aria-live="polite">
+        <p class="kernel-approvals-empty-state__title">لا توجد طلبات موافق عليها بعد</p>
+        <p class="kernel-approvals-empty-state__hint">الطلبات اللي توافق عليها تظهر هنا مع كامل التفاصيل والتوقيع.</p>
+      </div>
       <div class="kernel-approvals-list" data-kernel-approval-list="approved">
         {APPROVED.map(item => (
           <article
@@ -394,6 +418,10 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
 
     <!-- REJECTED panel (KRN-015: aria-labelledby + tabindex="0") -->
     <section class="kernel-tabs-panel" id="tabpanel-rejected" role="tabpanel" aria-labelledby="kernel-tab-rejected" tabindex="0" data-kernel-panel="rejected" hidden>
+      <div class="kernel-approvals-empty-state" data-kernel-approvals-empty hidden role="status" aria-live="polite">
+        <p class="kernel-approvals-empty-state__title">لا توجد طلبات مرفوضة بعد</p>
+        <p class="kernel-approvals-empty-state__hint">الطلبات المرفوضة مع سبب الرفض تُحفظ هنا لأغراض التدقيق.</p>
+      </div>
       <div class="kernel-approvals-list" data-kernel-approval-list="rejected">
         {REJECTED.map(item => (
           <article class:list={['kernel-approval-card', riskClass(item.risk)]}>
@@ -552,6 +580,17 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
       modal.setAttribute('aria-hidden', 'true');
     }
 
+    // Toggle each panel's empty state: show when the visible panel has no items.
+    function refreshEmpty(id) {
+      elAll('[data-kernel-panel]').forEach(function (p) {
+        var emptyEl = p.querySelector('[data-kernel-approvals-empty]');
+        if (!emptyEl) return;
+        var isActive = p.getAttribute('data-kernel-panel') === id;
+        var hasItems = p.querySelectorAll('[data-kernel-approval-item]').length > 0;
+        emptyEl.hidden = !(isActive && !hasItems);
+      });
+    }
+
     function moveItemAfterDecision(id, action) {
       // Remove from pending list UI + update counts
       var item = el('[data-kernel-approval-item="' + id + '"]');
@@ -559,7 +598,7 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
       item.style.transition = 'opacity 350ms, transform 350ms';
       item.style.opacity = '0';
       item.style.transform = 'translateX(-12px)';
-      setTimeout(function () { item.remove(); updateCounts(action); }, 360);
+      setTimeout(function () { item.remove(); updateCounts(action); refreshEmpty('pending'); }, 360);
     }
 
     function updateCounts(action) {
@@ -600,6 +639,7 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
         elAll('[data-kernel-panel]').forEach(function (p) {
           p.hidden = p.getAttribute('data-kernel-panel') !== id;
         });
+        refreshEmpty(id);
       }
 
       tabButtons.forEach(function (btn) {
@@ -724,6 +764,7 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
       bindTabs();
       bindActions();
       bindModal();
+      refreshEmpty('pending');
     }
 
     document.addEventListener('astro:page-load', init);
