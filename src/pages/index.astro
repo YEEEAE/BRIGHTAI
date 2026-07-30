@@ -7,6 +7,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SplitHero from '../components/SplitHero.astro';
+import TrustBadges from '../components/TrustBadges.astro';
 import {
   appendLd,
 } from '../data/schema-helpers';
@@ -191,6 +192,11 @@ const enhancedJsonLd = appendLd(jsonLd, [
     </p>
   </div>
 </section>
+
+{/* CHAMPION-03 (2026-07-30): Trust badges row — SAMA, SDAIA, NCA ECC, ISO 42001.
+    Placed under the hero CTAs as B2B trust signals. Label is "متوافق مع"
+    (aligned with), NOT "معتمد من" (certified by). CSS-only hover tooltips. */}
+<TrustBadges />
 
 {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
    Answer-first, self-contained, ≤60 words, formal Arabic. Visual

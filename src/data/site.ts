@@ -30,7 +30,18 @@ export const SITE = {
   },
   // Verification/tracking IDs — empty until real verified values are provided.
   // Conditional rendering in BaseLayout ensures empty values are never emitted.
-  crNumber: '',
+  // CHAMPION-03 (2026-07-30): CR number + founder object for E-E-A-T.
+  // CR placeholder '1010XXXXXX' — replace with real Commercial Registration
+  // number from the owner. Footer renders it conditionally (empty = hidden).
+  crNumber: '1010XXXXXX',
+  foundedYear: '2025',
+  founder: {
+    name: 'يزيد الشريف',
+    nameEn: 'Yazeed AlShareef',
+    familyName: 'الشريف',
+    linkedIn: 'https://www.linkedin.com/in/yazeed-brightai',
+    bio: 'المؤسس والرئيس التنفيذي لـ BrightAI — المنصة السعودية لحوكمة وأمان وامتثال الذكاء الاصطناعي.',
+  },
   bingVerification: '',
   yandexVerification: '',
   googleVerification: '',

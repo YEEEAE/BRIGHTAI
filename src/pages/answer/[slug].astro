@@ -1,0 +1,195 @@
+---
+/**
+ * /answer/[slug]/ — AEO answer pages for Saudi SERP.
+ * Each page answers one target query from llms.txt (BAI-SAID-03).
+ * Schema: FAQPage + WebPage + FAQPage-embedded SpeakableSpecification.
+ *
+ * Design intent: Perplexity / ChatGPT / Google Featured Snippet answer
+   box targeting with Saudi dialect answers (150-300 words).
+ *
+ * Architecture:
+ *   - Dynamic route reads src/data/answers.ts (source of truth).
+ *   - FAQPage JSON-LD inline in SEOHead.
+ *   - Mobile-first scoped style block (mirrors chat.astro + audit.astro baseline).
+ *   - Logical properties for RTL. min-height: 44px touch targets.
+ *
+ * Performance:
+ *   - No client-side JS (static HTML). Zero client hydrations.
+ *   - Scoped <style> block — no render-blocking external CSS.
+ *
+ * Accessibility:
+ *   - <main> landmark, <h1> unique, heading hierarchy preserved.
+ *   - prefers-reduced-motion respected.
+ *
+ * Content Preservation Rule:
+ *   Answers are original content written for BrightAI — no published
+ *   Arabic text from the live site is touched or preserved here.
+ */
+import { getFaqLd } from '../../data/schema-helpers';
+import type { FaqItem } from '../../data/schema-helpers';
+import { answers, type AnswerUnit } from '../../data/answers';
+import SEOHead from '../../components/SEOHead.astro';
+
+export function getStaticPaths() {
+  return answers.map((a) => ({
+    params: { slug: a.slug },
+    props: { answer: a },
+  }));
+}
+
+const { answer } = Astro.props as { answer: AnswerUnit };
+const canonical = `https://brightai.site/answer/${answer.slug}/`;
+
+const faqItems: FaqItem[] = [{ q: answer.question, a: answer.answer }];
+const faqLd = getFaqLd(faqItems);
+const speakableLd =
+  faqLd && {
+    ...faqLd,
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.answer-hero-text', '.answer-body p'],
+    },
+  };
+
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'WebPage', url: canonical, name: answer.query },
+  speakableLd ?? faqLd,
+];
+---
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{answer.query} — BrightAI</title>
+    <meta name="description" content={answer.answer.slice(0, 155)} />
+    <link rel="canonical" href={canonical} />
+    {speakableLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(speakableLd)} />
+    )}
+    {faqLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+    )}
+  </head>
+  <body>
+    <main id="main-content" class="answer-page">
+      <section class="answer-hero" aria-label="Answer">
+        <h1 class="answer-hero__q">{answer.query}</h1>
+        <p class="answer-hero-text answer-hero__summary">
+          {answer.answer.slice(0, 200)}
+          {answer.answer.length > 200 ? '…' : ''}
+        </p>
+      </section>
+
+      <section class="answer-body" aria-label="Full Answer">
+        <h2 class="answer-body__heading">التفاصيل الكاملة</h2>
+        <p class="answer-body__text">{answer.answer}</p>
+      </section>
+
+      <section class="answer-actions" aria-label="Related">
+        <p>
+          <a href="/kernel/chat/" dir="ltr">جرّب BrightAI Kernel →</a>
+        </p>
+      </section>
+    </main>
+
+    <style>
+      /* Mobile-first + RTL baseline for /answer/* pages (BAI-SAID-03). */
+      .answer-hero__empty-state,
+      .answer-page__empty-state {
+        padding-inline: var(--space-6);
+        margin-inline: auto;
+        text-align: start;
+        color: var(--text-muted);
+        border-inline-start: 3px solid var(--interactive-primary);
+      }
+      .answer-page__skeleton,
+      .answer-hero__skeleton {
+        background: var(--bg-elevated);
+        animation: answer-shimmer 1.4s var(--ease-in-out) infinite;
+      }
+      @keyframes answer-shimmer {
+        0% { opacity: 1; }
+        50% { opacity: 0.45; }
+        100% { opacity: 1; }
+      }
+      /* Touch targets ≥44px */
+      .answer-page [data-kernel-touch],
+      .answer-page__touch {
+        min-height: 44px;
+        min-width: 44px;
+      }
+      /* Mobile-first: single column, enhance at ≥768px */
+      .answer-page__grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+      }
+      @media (min-width: 768px) {
+        .answer-page__grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: var(--space-6);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .answer-page__skeleton,
+        .answer-hero__skeleton { animation: none; }
+      }
+
+      /* Page-specific layout */
+      .answer-page {
+        max-inline-size: 72ch;
+        margin-inline: auto;
+        padding-block: var(--space-8);
+        padding-inline: var(--space-4);
+      }
+      .answer-hero {
+        padding-block: var(--space-8);
+        padding-inline: var(--space-6);
+        background: var(--bg-surface);
+        border-radius: var(--radius-lg);
+        margin-block-end: var(--space-6);
+      }
+      .answer-hero__q {
+        margin: 0 0 var(--space-3);
+        font-size: var(--text-2xl);
+        color: var(--text-primary);
+      }
+      .answer-hero__summary {
+        margin: 0;
+        color: var(--text-secondary);
+        line-height: 1.7;
+      }
+      .answer-body {
+        padding-block: var(--space-6);
+        padding-inline: var(--space-4);
+      }
+      .answer-body__heading {
+        margin: 0 0 var(--space-4);
+        font-size: var(--text-xl);
+        color: var(--text-primary);
+      }
+      .answer-body__text {
+        margin: 0;
+        color: var(--text-primary);
+        line-height: 1.8;
+      }
+      .answer-actions {
+        padding-block: var(--space-6);
+        text-align: center;
+      }
+      .answer-actions a {
+        display: inline-block;
+        min-height: 44px;
+        min-width: 44px;
+        padding-inline: var(--space-5);
+        padding-block: var(--space-2);
+        border: 1px solid var(--interactive-primary);
+        border-radius: var(--radius-md);
+        color: var(--interactive-primary);
+        text-decoration: none;
+      }
+      .answer-actions a:hover { background: var(--bg-elevated); }
+    </style>
+  </body>
+</html>

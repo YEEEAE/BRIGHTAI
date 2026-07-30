@@ -418,6 +418,7 @@ function groupRelPath(relPath) {
     normalized === "index.html" ||
     normalized === "about/index.html" ||
     normalized === "contact/index.html" ||
+    normalized.startsWith("answer/") && normalized.endsWith("/index.html") ||
     normalized === "pricing/index.html" ||
     normalized === "services/index.html" ||
     normalized === "demo/index.html" ||

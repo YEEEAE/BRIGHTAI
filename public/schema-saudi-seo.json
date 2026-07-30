@@ -17,10 +17,14 @@
       },
       "description": "BrightAI شركة سعودية متخصصة في حوكمة وأمان وتشغيل الذكاء الاصطناعي للمؤسسات في السعودية — Saudi AI Safety OS.",
       "foundingDate": "2025",
+      "taxID": "1010XXXXXX",
+      "identifier": "1010XXXXXX",
       "founder": {
         "@type": "Person",
         "@id": "https://brightai.site/#founder",
-        "name": "يزيد",
+        "name": "يزيد الشريف",
+        "givenName": "يزيد",
+        "familyName": "الشريف",
         "jobTitle": "المؤسس والمدير التنفيذي",
         "worksFor": { "@id": "https://brightai.site/#organization" },
         "address": {
