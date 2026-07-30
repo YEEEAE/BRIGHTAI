@@ -479,6 +479,28 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
     .kernel-ai-assistant__send-spinner { animation: none; }
   }
 
+  .kernel-ai-assistant__retry-btn {
+    background: transparent;
+    color: var(--interactive-primary);
+    border: 1px solid var(--interactive-primary);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    cursor: pointer;
+    margin-block-start: var(--space-2);
+    transition: background var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out);
+  }
+  .kernel-ai-assistant__retry-btn:hover,
+  .kernel-ai-assistant__retry-btn:focus-visible {
+    background: var(--interactive-primary);
+    color: var(--text-inverse);
+  }
+  .kernel-ai-assistant__retry-btn:focus-visible {
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
+  }
+
   @media (max-width: 640px) {
     .kernel-ai-assistant__cta {
       flex-direction: column;
@@ -595,7 +617,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
       }, 14);
     }
 
-    function showError(slot, type, retryAfterSec) {
+    function showError(slot, type, retryAfterSec, onRetry) {
       slot.innerHTML = '';
       var banner = document.createElement('div');
       banner.className = 'kernel-chat-policy-banner kernel-chat-policy-banner--' + (type === 'rate_limit' || type === 'network' || type === 'timeout' ? 'warning' : type === 'unavailable' ? 'info' : 'danger');
@@ -613,8 +635,8 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           msg = 'نقطة الاتصال /api/ai/chat غير متاحة في هذه البيئة. سترى ردوداً توضيحية. للتفعيل الكامل، تواصل مع فريق BrightAI.';
           break;
         case 'provider_failed':
-          title = 'المزود الذكي غير متاح مؤقتاً';
-          msg = 'حاول مرة ثانية خلال دقيقة.';
+          title = 'الخدمة مؤقتاً غير متاحة';
+          msg = 'حاول مرة أخرى لاحقاً.';
           break;
         case 'network':
           title = 'تعذّر الاتصال';
@@ -629,18 +651,40 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           msg = 'حاول مرة ثانية.';
       }
 
+      var bodyHtml =
+        '<div class="kernel-chat-policy-banner__body">' +
+          '<p class="kernel-chat-policy-banner__title">' + title + '</p>' +
+          '<p class="kernel-chat-policy-banner__msg">' + msg + '</p>';
+
+      // Add retry button for provider_failed when a retry callback is provided
+      if (type === 'provider_failed' && typeof onRetry === 'function') {
+        bodyHtml +=
+          '<button type="button" class="kernel-ai-assistant__retry-btn" data-kai-retry>' +
+            'إعادة المحاولة' +
+          '</button>';
+      }
+
+      bodyHtml += '</div>';
+
       banner.innerHTML =
         '<span class="kernel-chat-policy-banner__icon" aria-hidden="true">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>' +
         '</span>' +
-        '<div class="kernel-chat-policy-banner__body">' +
-          '<p class="kernel-chat-policy-banner__title">' + title + '</p>' +
-          '<p class="kernel-chat-policy-banner__msg">' + msg + '</p>' +
-        '</div>';
+        bodyHtml;
 
       slot.appendChild(banner);
-    }
 
+      // Bind retry click
+      if (type === 'provider_failed' && typeof onRetry === 'function') {
+        var retryBtn = banner.querySelector('[data-kai-retry]');
+        if (retryBtn) {
+          retryBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            onRetry();
+          });
+        }
+      }
+    }
     function hideError(slot) {
       slot.innerHTML = '';
     }
@@ -670,6 +714,7 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
         var apiAvailability = null; // null = untested, true = ok, false = 404
         var userTurnCount = 0;
         var currentController = null;
+        var lastUserText = ''; // stores last sent text for retry
 
         // استرجاع المحادثة من sessionStorage
         var history = loadHistory(storage, storageKey);
@@ -713,12 +758,13 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
           });
         }
 
-        function send() {
-          var raw = input.value;
+        function send(retryText) {
+          var raw = retryText || input.value;
           if (!raw || !raw.trim()) return;
 
           var userText = raw.trim();
-          input.value = '';
+          lastUserText = userText;
+          if (!retryText) input.value = '';
           if (sendBtn) sendBtn.disabled = true;
           hideError(errorSlot);
           typing.hidden = false;
@@ -846,7 +892,9 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                   history.push({ role: 'ai', text: fullReplyText, demo: false });
                   saveHistory(storage, storageKey, history);
                 } else if (event === 'error') {
-                  showError(errorSlot, 'provider_failed');
+                  showError(errorSlot, 'provider_failed', undefined, function () {
+                    send(lastUserText);
+                  });
                   if (!bubble) {
                     typing.hidden = true;
                     if (skeleton) skeleton.hidden = true;
@@ -917,7 +965,9 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
                 return null;
               }
               if (res.status === 502) {
-                showError(errorSlot, 'provider_failed');
+                showError(errorSlot, 'provider_failed', undefined, function () {
+                  send(lastUserText);
+                });
                 return null;
               }
               if (res.status === 504) {
@@ -930,6 +980,18 @@ const iconAi = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
               }
 
               var contentType = res.headers.get('content-type') || '';
+              // Check for X-Stream-Status header on non-SSE responses
+              var streamStatus = res.headers.get('X-Stream-Status');
+              if (streamStatus === 'all_providers_failed') {
+                showError(errorSlot, 'provider_failed', undefined, function () {
+                  send(lastUserText);
+                });
+                typing.hidden = true;
+                if (skeleton) skeleton.hidden = true;
+                thread.setAttribute('aria-busy', 'false');
+                if (sendBtn) sendBtn.disabled = false;
+                return null;
+              }
               if (contentType.indexOf('text/event-stream') > -1) {
                 apiAvailability = true;
                 return handleStream(res);

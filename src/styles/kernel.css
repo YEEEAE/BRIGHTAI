@@ -258,7 +258,7 @@
 
 .kernel-stat-card__icon {
   width: 40px;
-  height: 40px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -327,7 +327,7 @@
 }
 
 .kernel-loading__skeleton {
-  height: 24px;
+  min-height: 44px;
   background: linear-gradient(
     90deg,
     var(--bg-elevated) 0%,
@@ -340,7 +340,7 @@
 }
 
 .kernel-loading__skeleton--title {
-  height: 36px;
+  min-height: 44px;
   width: 40%;
 }
 
@@ -450,7 +450,7 @@
 
 .kernel-alert__icon {
   width: 24px;
-  height: 24px;
+  min-height: 44px;
   flex-shrink: 0;
 }
 

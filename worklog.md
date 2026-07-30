@@ -2453,3 +2453,34 @@ Files Changed:
 
 Commit: لا commit (Cloudflare edge only، per brain line 18)
 Status: ✅ DEPLOYED + VERIFIED in production (7/7 security headers, 0 functional errors)
+
+---
+Task ID: 2026-07-30-KRN-DEL-01
+Agent: BrightAI Workspace Agent v2.3
+Task: KRN-DEL-01 — حذف [slug].astro لأنه dead code (كل slugs الكيرنل مغطّاة بصفحات ثابتة)
+Started: 2026-07-30T22:19:18+03:00
+Mode: Mid
+
+Work Log:
+- 22:19: قرأت `src/pages/kernel/[slug].astro` (235 سطر، 7987 بايت) — dynamic route للـ kernel sub-pages
+- 22:19: قرأت `src/data/kernel.ts` (1001+ سطر) — لـ kernelNavItems
+- 22:19: فحصت `src/pages/kernel/` — 10 صفحات ثابتة (approvals, audit, chat, compliance, connectors, evidence, policies, reports, scenarios, stats) + index.astro + offline.astro + admin/
+- 22:20: قارنت slugs بين kernelNavItems والصفحات الثابتة — كل slugs الـ 11 مغطّاة 100%
+- 22:22: المستخدم اختار (أ) حذف
+- 22:22: حذفت `src/pages/kernel/[slug].astro`
+- 22:22: تحققت: ما في أي references للـ [slug].astro في الكود
+- 22:23: بنيت: `npm run build` → exit 0 ✅
+- 22:26: تحققت: 13 صفحة كيرنل في dist/client/kernel/ ✅
+
+Stage Summary:
+- **السبب**: [slug].astro كان dynamic route يولد صفحات kernel من kernelNavItems. لكن الآن كل slugs الـ 11 عندها صفحات ثابتة (أكبرها chat.astro بـ 83KB). الـ [slug].astro ما يشتغل أبدًا لأن Astro يعطي priority للصفحات الثابتة.
+- **الحل**: حذف الملف مباشرة. ما في أي اعتماديات عليه.
+- **النتيجة**: البناء نجح (exit 0)، 13 صفحة كيرنل في dist (approvals, audit, chat, compliance, connectors, evidence, offline, policies, reports, scenarios, stats, admin/quota, index).
+- **المخاطر المتبقية**: لا يوجد. كل routes الكيرنل موجودة كصفحات ثابتة.
+- **لا redirects مطلوبة**: [slug].astro ما كان له URL خارجي، هو مجرد catch-all داخلي.
+
+Files Changed:
+  - src/pages/kernel/[slug].astro (DELETED — 235 سطر، 7.9KB)
+
+Commit: قيد الانتظار
+Status: ✅ BUILD PASSED (13 kernel pages, exit 0)

@@ -291,10 +291,12 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
       Note: file is the official unminified UMD from the npm tarball (file name kept as
       chart.umd.min.js for path stability; the previous esbuild-minified build was replaced
       because its SHA-256 did not match the official distribution). */}
-  <script is:inline defer src="/vendor/chart.umd.min.js"></script>
   <script is:inline>
-    (function () {
+    (async function () {
       'use strict';
+
+      // ─── Dynamic import: Chart.js loads only on the stats page ───
+      const { Chart } = await import('/vendor/chart.umd.min.js');
 
       // ─── Color tokens from CSS variables ───
       const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
@@ -365,7 +367,7 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
       // ─── 1. Line chart: requests over time ───
       function renderLineChart() {
         const canvas = document.getElementById('requests-line-chart');
-        if (!canvas || !window.Chart) return;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
         new Chart(ctx, {
           type: 'line',
@@ -399,7 +401,7 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
       // ─── 2. Pie chart: risk distribution ───
       function renderPieChart() {
         const canvas = document.getElementById('risk-pie-chart');
-        if (!canvas || !window.Chart) return;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
         new Chart(ctx, {
           type: 'doughnut',
@@ -427,7 +429,7 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
       // ─── 3. Bar chart: top departments ───
       function renderBarChart() {
         const canvas = document.getElementById('department-bar-chart');
-        if (!canvas || !window.Chart) return;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
         new Chart(ctx, {
           type: 'bar',
@@ -457,7 +459,7 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
       // ─── 4. Gauge: compliance ring (built as doughnut) ───
       function renderGaugeChart() {
         const canvas = document.getElementById('compliance-gauge-chart');
-        if (!canvas || !window.Chart) return;
+        if (!canvas) return;
         const ctx = canvas.getContext('2d');
         new Chart(ctx, {
           type: 'doughnut',
@@ -580,10 +582,6 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 
       // ─── Init ───
       function init() {
-        if (!window.Chart) {
-          console.warn('Chart.js not loaded — charts unavailable');
-          return;
-        }
         // RTL: make tooltips respect direction
         Chart.defaults.rtl = true;
         Chart.defaults.font.family = chartFont.family;
@@ -597,9 +595,8 @@ const iconExport = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
         setupExport();
       }
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
+      document.addEventListener('astro:page-load', init);
+      if (document.readyState !== 'loading') {
         init();
       }
     })();

@@ -91,6 +91,16 @@ DEC-PROC-12-2026-07-25-004 (NEW — BAI-PROC-12 task 4, additive rule): The orig
 
 **Note on Playwright vs Lighthouse**: Playwright LCP element أحياناً hidden (mobile-menu accordion, dropdown panel) → measurement noise. CLS أعلى من Lighthouse لأن mobile-menu hydration + scroll-reveal (broken بـ SyntaxError) → layout shifts accumulate. الـ 0.30 avg و 0.95 max قيم real-world signal مو methodology artifact. **KI-SYNTAX-2026-07-18-001** يفسر جزء كبير من CLS regression (الـ 4 scripts المعطلة → observers ما تتحمل → reveal animations stack).
 
+### 2026-07-30 — KRN-DEL-01: حذف `[slug].astro` (dead code — 10 صفحات ثابتة تظلّله) — UNCOMMITTED
+
+- **Files**: `src/pages/kernel/[slug].astro` (DELETED — 235 سطر، 7.9KB)
+- **What**: حذفت dynamic route `[slug].astro` لأنه dead code. كل slugs الـ 11 في `kernelNavItems` (`kernel.ts`) عندها صفحات ثابتة في `src/pages/kernel/` (approvals, audit, chat, compliance, connectors, evidence, policies, reports, scenarios, stats + index). Astro يعطي priority للصفحات الثابتة، فالـ `[slug].astro` ما يشتغل أبدًا.
+- **Why**: تنظيف dead code. `[slug].astro` كان يولد صفحات kernel من `kernelNavItems`، لكن الصفحات الثابتة تظلّله بالكامل. الملف كان 7.9KB بحاجة صيانة بدون فائدة.
+- **Verification**: `npm run build` → exit 0 ✅. 13 صفحة كيرنل في `dist/client/kernel/` (approvals, audit, chat, compliance, connectors, evidence, offline, policies, reports, scenarios, stats, admin/quota, index) ✅. ما في references للـ `[slug].astro` في باقي الكود ✅.
+- **Report**: none (trivial)
+- **Status**: uncommitted (user commits via main).
+- **Brain updates**: Section 5 (Token & Component Inventory) — no change (المكونات المستخدمة في `[slug].astro` كلها موجودة في الصفحات الثابتة).
+
 ### 2026-07-30 — CHAMPION-06 (Mobile UX Polish): tap-delay elimination + KernelOnboarding tour — UNCOMMITTED (per brain line 18)
 
 - **Scope note (premise was stale)**: نص CHAMPION-06 افترض `kernel.css` = 475 سطر + 4.4% touch targets <44px + لا safe-area + لا bottom tab bar، وطلب mobile-first rewrite لـ 16h. Discovery أثبت: `kernel.css` = **5070 سطر**، touch ≥44px **منفّذ** (KRN-019)، safe-area **موجود**، `.k-bottomnav` **موجود كامل**، mobile-first **مطبّق** (أول `@media` = `min-width:768px`). brain 1.7: CHAMPION-02 رفع kernel mobile 26→100/100. سوينا **الناقص الفعلي فقط** عشان ما نكسر كيرنل شغّال (قاعدة 2.1). نفس نمط CHAMPION-05/03.

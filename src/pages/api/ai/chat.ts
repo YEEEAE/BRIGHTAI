@@ -859,6 +859,28 @@ export const POST: APIRoute = async ({ request }) => {
     const _providerMessages = providerMessages;
     const _systemPrompt = systemPrompt;
 
+    // K4 circuit breaker: check BEFORE creating the SSE stream so we can
+    // short-circuit with a 200 JSON response + X-Stream-Status header when
+    // both providers are known to be unavailable (avoids loading forever
+    // on the client side).
+    const _groqOpen = await isProviderOpen('groq');
+    const _geminiOpen = await isProviderOpen('gemini');
+
+    // If both circuits are open in auto mode, return 200 with header
+    // instead of starting an SSE stream that will immediately error.
+    if (_groqOpen && _geminiOpen && _requestedProvider === 'auto') {
+      return new Response(
+        JSON.stringify({ error: 'all_providers_failed' }),
+        {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Stream-Status': 'all_providers_failed',
+          },
+        },
+      );
+    }
+
     const encoder = new TextEncoder();
 
     const stream = new ReadableStream<Uint8Array>({
@@ -907,9 +929,9 @@ export const POST: APIRoute = async ({ request }) => {
         try {
           let outcome: 'ok' | 'pre-first-token-error' | 'mid-stream-error' = 'pre-first-token-error';
 
-          // K4 circuit breaker: if a provider is OPEN, skip it entirely.
-          const groqOpen = await isProviderOpen('groq');
-          const geminiOpen = await isProviderOpen('gemini');
+          // Use pre-checked circuit breaker status (from outside the stream)
+          const groqOpen = _groqOpen;
+          const geminiOpen = _geminiOpen;
 
           if (_requestedProvider === 'groq') {
             if (groqOpen) {
