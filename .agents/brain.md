@@ -91,6 +91,26 @@ DEC-PROC-12-2026-07-25-004 (NEW — BAI-PROC-12 task 4, additive rule): The orig
 
 **Note on Playwright vs Lighthouse**: Playwright LCP element أحياناً hidden (mobile-menu accordion, dropdown panel) → measurement noise. CLS أعلى من Lighthouse لأن mobile-menu hydration + scroll-reveal (broken بـ SyntaxError) → layout shifts accumulate. الـ 0.30 avg و 0.95 max قيم real-world signal مو methodology artifact. **KI-SYNTAX-2026-07-18-001** يفسر جزء كبير من CLS regression (الـ 4 scripts المعطلة → observers ما تتحمل → reveal animations stack).
 
+### 2026-07-30 — CHAMPION-05 (Conversion + Telemetry): quota dashboard + chat_completed GA4 server event — UNCOMMITTED (per brain line 18)
+
+- **Scope note (premise was stale)**: نص CHAMPION-05 يفترض ملفاته «NEW»، بس الـ repo فعلاً hybrid (output:'static' + @astrojs/node، فيه SSR API routes) والـ backend انتقل داخل Astro (ما فيه frontend/). `analytics.ts` (27KB) + `ga4-server.ts` + `observability/sentry.ts` (مُفعّل — initSentry في middleware.ts:66) + `lead.ts` (يطلق generate_lead) كلها موجودة. سوينا **الباقي الفعلي فقط** عشان ما ندمّر كود شغّال (قاعدة 2.1).
+- **Files**:
+  - `src/pages/api/kernel/quota-stats.ts` (NEW) — Admin-only GET. Auth `x-brightai-admin-key` (timingSafeEqual). يقرأ circuit عبر `isProviderOpen` + SCAN/sum read-only لمفاتيح `quota:day:req:ip:*` و `quota:day:cost:ip:*` من Redis منفصل (quota.ts ما يُلمس — preserve logic). 503 لو env مو مضبوط / 401 لو المفتاح غلط / 200 + JSON. degraded:true بدون REDIS_URL.
+  - `src/pages/kernel/admin/quota.astro` (NEW) — لوحة admin. client gate (مفتاح → localStorage → header). noindex,nofollow. مُستثناة من sitemap.
+  - `src/pages/api/ai/chat.ts` — استيراد `sendServerEvent` + إطلاق best-effort `chat_completed` بعد recordUsageAsync عند success (يكمّل القمع: page_view → chat_started → chat_completed → generate_lead).
+- **Why**: تحويل kernel لمنتج قابل للقياس. chat_completed server-side = مستقل عن تسليم gtag (tab close/adblocker).
+- **Verification**:
+  - `npm run build` → EXIT 0 ✅.
+  - Endpoint auth matrix (local preview): لا key→401، غلط→401، صح→200 + JSON `{usage,cost,circuit,rateLimit,degraded,ts}` ✅.
+  - `chat_completed` + `quota-stats` في server chunk ✅.
+  - `npm run verify:all` → EXIT 1 ⚠️ — **pre-existing 100%** (اثبت بـ git stash على شجرة نظيفة = نفس EXIT 1): فشل `seo:schema` على `/answer/*` (speakable) = KI-CHAMPION03-SPEAKABLE. ما يخص هذا التغيير.
+  - **قيود preview**: كل `/kernel/*` ترجع 404 على astro preview بسبب deny-list (`^/kernel(/|$)`) — يشمل كل صفحات kernel المنشورة. الإنتاج يخدم static قبل الـ handler. التحقق الحقيقي = curl الإنتاج بعد الديبوي.
+- **Report**: report/2026-07-30-champion-05-conversion-telemetry.md
+- **Status**: uncommitted (user commits via main).
+- **Deploy-only (تخص المالك)**: لازم env vars في Render وإلا الـ telemetry ما تشتغل فعلاً — `BRIGHTAI_ADMIN_KEY` (بدونه endpoint 503)، `SENTRY_DSN`، `GA4_API_SECRET` + `GA4_MEASUREMENT_SECRET` (بدونها server events no-op)، `REDIS_URL` (بدونه dashboard degraded + أصفار).
+- **Residue (flagged — ما حذفت)**: `src/lib/quota 2.ts` (نسخة مكررة 24805 bytes) + `src/lib/.DS_Store`.
+- **Decisions (NEW — DEC-CHAMPION05)**: (1) admin auth self-contained في الـ endpoint نفسه (timingSafeEqual) لأنه ما فيه admin middleware مسبق في المشروع. (2) aggregate الـ usage/cost يقرأ quota.ts keys من Redis منفصل بدل تعديل quota.ts (preserve logic). (3) kernel_land/lead_form_view من الـ prompt ما أُنشئت كأحداث — page_view بـ page_type يكفي.
+
 ### 2026-07-30 — CHAMPION-03 (E-E-A-T data layer): CR حقيقي + توحيد اسم المؤسس + schema-saudi-seo.json — UNCOMMITTED (per brain line 18)
 
 - **Scope note**: أغلب CHAMPION-03 كان منفّذ أصلاً (answer=17 slug, lp=5/5, TrustBadges في hero, blog clusters كلها ≥8, Footer يرندر CR/founder). المتبقي كان طبقة بيانات E-E-A-T.

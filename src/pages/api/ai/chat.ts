@@ -100,6 +100,10 @@ import {
 } from '../../../lib/quota';
 // USAGE-001 (2026-07-15): token usage tracking for billing + analytics.
 import { recordUsageAsync } from '../../../lib/usagetracker';
+// CHAMPION-05 (2026-07-30): server-side GA4 event so `chat_completed` reaches
+// GA4 even when the client gtag event is lost (tab close, adblocker, network
+// drop). Best-effort — mirrors the EXEC-10 generate_lead pattern in lead.ts.
+import { sendServerEvent } from '../../../lib/ga4-server';
 // K3 (2026-07-18): AI Firewall — PII detection + redaction + policy decision
 // that runs BEFORE the request reaches Groq/Gemini. Blocked payloads never
 // leave this function; only redacted text + safe findings reach the provider.
@@ -1136,6 +1140,28 @@ export const POST: APIRoute = async ({ request }) => {
     promptId: typeof b.promptId === 'string' ? b.promptId : undefined,
     organizationId: null, // marketing site anon (dashboard passes via Clerk)
     sessionId: sessionId ?? undefined,
+  });
+
+  // CHAMPION-05 (2026-07-30): fire `chat_completed` server-side so the
+  // conversion funnel (page_view → chat_started → chat_completed →
+  // generate_lead) is measurable regardless of client gtag delivery. Best-effort
+  // fire-and-forget — sendServerEvent swallows all errors internally and never
+  // rejects, so this can never fail the reply. Params are PII-free (the ga4-server
+  // stripper is a second line of defense).
+  void sendServerEvent({
+    events: [
+      {
+        name: 'chat_completed',
+        params: {
+          provider: usedProvider,
+          prompt_tokens: usage.promptTokens,
+          completion_tokens: usage.completionTokens,
+          latency_ms: Date.now() - providerStartTs,
+        },
+      },
+    ],
+  }).catch(() => {
+    /* best-effort — never log; never fail the chat reply */
   });
 
   // 11. CHAT-SESSION-2026-07-15: persist the current turn (user + assistant)
