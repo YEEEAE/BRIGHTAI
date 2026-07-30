@@ -1,10 +1,16 @@
 ---
 /**
- * KernelSidebar — Persistent sidebar (desktop ≥1024px).
- * - On mobile (<1024px): hidden; kernel-mobile.js drawer handles nav.
- * - Collapsible: data-sidebar="collapsed" on <body> → 72px width.
+ * KernelSidebar — Persistent sidebar (desktop ≥1024px) + mobile drawer (<1024px).
+ *
+ * Desktop (≥1024px): fixed sidebar on inline-end edge, collapsible to 72px.
+ * Mobile (<1024px): hidden off-canvas; hamburger button toggles a drawer
+ *   overlay with the same content (brand + nav groups + footer). Backdrop
+ *   tap + Escape key close the drawer. role="dialog" + aria-modal.
+ *
+ * - Collapsible (desktop): data-sidebar="collapsed" on <body> → 72px width.
  * - State persisted to localStorage('brightai-kernel-sidebar').
- * - ARIA: navigation landmark, current page indicator, focus-trap-friendly.
+ * - Mobile open state: data-sidebar-open="true" on <body> (not persisted).
+ * - ARIA: navigation landmark, current page indicator, dialog semantics on mobile.
  * - Reads nav items from `kernelUnits` (excluding /kernel/ index).
  * - Active route via Astro.url.pathname.
  */
@@ -56,7 +62,24 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
   .filter((x): x is NavItem => x !== null);
 ---
 
-<aside class="kernel-sidebar" aria-label="القائمة الرئيسية لـ Kernel">
+{/* Mobile hamburger button — fixed, appears only on <1024px.
+    Touch target ≥ 44×44px (WCAG SC 2.5.5). aria-expanded reflects open state. */}
+<button
+  class="kernel-sidebar__hamburger"
+  type="button"
+  aria-label="فتح قائمة Kernel"
+  aria-expanded="false"
+  aria-controls="kernel-sidebar"
+  data-kernel-sidebar-toggle
+>
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+</button>
+
+{/* Mobile overlay backdrop — tap outside closes the drawer. */}
+<div class="kernel-sidebar__overlay" data-kernel-sidebar-overlay aria-hidden="true"></div>
+
+<aside class="kernel-sidebar" id="kernel-sidebar" aria-label="القائمة الرئيسية لـ Kernel" role="dialog" aria-modal="true" aria-labelledby="kernel-sidebar-title">
+  <span id="kernel-sidebar-title" class="kernel-sidebar__sr-only">القائمة الرئيسية لـ Kernel</span>
   <header class="kernel-sidebar__brand">
     <span class="kernel-sidebar__logo" aria-hidden="true">ي</span>
     <div class="kernel-sidebar__brand-text">
@@ -112,9 +135,15 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
         <span class="kernel-sidebar__user-role">مدير النظام</span>
       </div>
     </div>
+    {/* Desktop collapse button (hidden on mobile — drawer has its own close). */}
     <button class="kernel-sidebar__collapse" type="button" aria-label="طي القائمة الجانبية" data-kernel-sidebar-collapse>
       <span class="kernel-sidebar__collapse-icon" aria-hidden="true">⇤</span>
       <span class="kernel-sidebar__collapse-label">طي القائمة</span>
+    </button>
+    {/* Mobile close button (hidden on desktop — appears only inside the drawer). */}
+    <button class="kernel-sidebar__close" type="button" aria-label="إغلاق القائمة" data-kernel-sidebar-close>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      <span class="kernel-sidebar__close-label">إغلاق</span>
     </button>
   </footer>
 </aside>
