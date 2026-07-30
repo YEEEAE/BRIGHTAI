@@ -12,8 +12,8 @@ NVM_VERSION="v0.40.3"
 CLAUDE_PACKAGE="@anthropic-ai/claude-code"
 CONFIG_DIR="$HOME/.claude"
 CONFIG_FILE="$CONFIG_DIR/settings.json"
-API_BASE_URL="https://api.z.ai/api/anthropic"
-API_KEY_URL="https://z.ai/manage-apikey/apikey-list"
+API_BASE_URL="https://openrouter.ai/api"
+API_KEY_URL="https://openrouter.ai/settings/keys"
 API_TIMEOUT_MS=3000000
 
 # ========================
@@ -142,7 +142,7 @@ configure_claude_json(){
 configure_claude() {
     log_info "Configuring Claude Code..."
     echo "   You can get your API key from: $API_KEY_URL"
-    read -s -p "🔑 Please enter your Z.AI API key: " api_key
+    read -s -p "🔑 Please enter your OpenRouter API key: " api_key
     echo
 
     if [ -z "$api_key" ]; then
