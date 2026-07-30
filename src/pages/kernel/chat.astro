@@ -19,6 +19,9 @@ import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/ker
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import KernelContactCta from '../../components/kernel/KernelContactCta.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
+// CHAMPION-06 (2026-07-30): first-visit onboarding tour (compose / threads / context).
+// CSP-safe module script; does not touch the chat SSE logic below.
+import KernelOnboarding from '../../components/kernel/KernelOnboarding.astro';
 // K1 (2026-07-18): kernel journey — read scenario from URL.
 import {
   getScenarioMeta,
@@ -259,6 +262,10 @@ const policyBanner = {
         if (document.readyState !== 'loading') upgrade();
       })();
     </script>
+
+    <!-- CHAMPION-06 (2026-07-30): first-visit tour overlay. Position:fixed;
+         self-contained, shows once until finished/skipped (localStorage). -->
+    <KernelOnboarding />
 
     <!-- 3-pane chat layout -->
     <div class="kernel-chat-layout">

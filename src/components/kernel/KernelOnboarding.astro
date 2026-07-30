@@ -1,0 +1,539 @@
+---
+/**
+ * KernelOnboarding — 3-step first-visit tour for /kernel/chat/.
+ *
+ * CHAMPION-06 (2026-07-30): app-like onboarding overlay.
+ *
+ * Design intent:
+ *   - Spotlight (box-shadow hole) + floating tooltip card.
+ *   - Targets REAL elements on the chat page (compose box, threads/sessions,
+ *     context panel). The originating prompt assumed a "scenarios sidebar"
+ *     that does not exist in chat.astro — adapted to the actual IA.
+ *   - Mobile-aware: each step has a candidate selector list; the first
+ *     VISIBLE candidate is highlighted. On mobile the hidden panes fall back
+ *     to their toolbar toggle buttons.
+ *
+ * Persistence:
+ *   - localStorage `kernel-onboarding-v1` = 'done'. Tour never repeats once
+ *     finished or skipped. Bumping the key version re-shows it.
+ *
+ * Constraints:
+ *   - Normal Astro <script> (bundled ES module) — CSP-safe under script-src
+ *     'self'. Does NOT use is:inline (avoids coupling to the chat SSE script).
+ *   - Does NOT touch chat SSE logic. Read-only DOM queries only.
+ *   - Respects prefers-reduced-motion.
+ *   - RTL via logical properties. Touch targets ≥44px.
+ *   - Uses V2/V3 design tokens only.
+ *
+ * Content rule: the Arabic strings below are NEW copy (not published text),
+ * added by CHAMPION-06. Saudi dialect — do not "correct" to MSA.
+ */
+interface Props {
+  /** Bump to force the tour to re-run for existing users. */
+  version?: string;
+}
+const { version = 'v1' } = Astro.props;
+const storageKey = `kernel-onboarding-${version}`;
+---
+
+<div
+  class="k-onb"
+  data-kernel-onboarding
+  data-onb-key={storageKey}
+  hidden
+  aria-hidden="true"
+>
+  {/* Spotlight hole — sized/positioned by JS to frame the active target */}
+  <div class="k-onb__spotlight" data-kernel-onb-spotlight aria-hidden="true"></div>
+
+  {/* Tooltip card — repositioned by JS per step */}
+  <div
+    class="k-onb__card"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="k-onb-title"
+    aria-describedby="k-onb-body"
+    data-kernel-onb-card
+  >
+    <div class="k-onb__head">
+      <span class="k-onb__step" data-kernel-onb-step>١ / ٣</span>
+      <button type="button" class="k-onb__skip" data-kernel-onb-skip aria-label="تخطّي الجولة">
+        تخطّي
+      </button>
+    </div>
+
+    <h3 class="k-onb__title" id="k-onb-title" data-kernel-onb-title>ابدأ هنا</h3>
+    <p class="k-onb__body" id="k-onb-body" data-kernel-onb-body></p>
+
+    <div class="k-onb__dots" data-kernel-onb-dots aria-hidden="true">
+      <span class="k-onb__dot k-onb__dot--active"></span>
+      <span class="k-onb__dot"></span>
+      <span class="k-onb__dot"></span>
+    </div>
+
+    <div class="k-onb__actions">
+      <button type="button" class="k-onb__btn k-onb__btn--ghost" data-kernel-onb-prev hidden>
+        السابق
+      </button>
+      <button type="button" class="k-onb__btn k-onb__btn--primary" data-kernel-onb-next>
+        التالي
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .k-onb {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    /* The backdrop is painted by the spotlight's huge box-shadow. The wrapper
+       itself is click-through except on the card. */
+  }
+
+  .k-onb__spotlight {
+    position: fixed;
+    inset: auto;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 0;
+    block-size: 0;
+    margin: 0;
+    border-radius: var(--radius-lg);
+    /* 100vmax hole → covers the whole viewport in a semi-opaque layer with a
+       transparent "window" over the target. */
+    box-shadow: 0 0 0 100vmax rgba(5, 8, 15, 0.72);
+    border: 2px solid var(--brand-500);
+    pointer-events: none;
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .k-onb__card {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: min(88vw, 22rem);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2xl);
+    padding: var(--space-4) var(--space-4) var(--space-3);
+    color: var(--text-primary);
+    /* Card is the only interactive surface; rest of overlay is pointer-events:none */
+    pointer-events: auto;
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .k-onb__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-block-end: var(--space-2);
+  }
+  .k-onb__step {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    font-weight: var(--font-semibold);
+    letter-spacing: 0.02em;
+  }
+  .k-onb__skip {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: var(--text-xs);
+    cursor: pointer;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-md);
+    min-block-size: 44px;
+    min-inline-size: 44px;
+    display: inline-flex;
+    align-items: center;
+    transition: color var(--duration-fast) var(--ease-out),
+                background var(--duration-fast) var(--ease-out);
+  }
+  .k-onb__skip:hover,
+  .k-onb__skip:focus-visible {
+    color: var(--text-primary);
+    background: var(--brand-soft);
+    outline: none;
+  }
+  .k-onb__skip:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+  }
+
+  .k-onb__title {
+    font-size: var(--text-lg);
+    font-weight: var(--font-bold);
+    margin: 0 0 var(--space-1);
+    color: var(--text-primary);
+  }
+  .k-onb__body {
+    font-size: var(--text-sm);
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0 0 var(--space-3);
+  }
+
+  .k-onb__dots {
+    display: flex;
+    gap: var(--space-1);
+    margin-block-end: var(--space-3);
+  }
+  .k-onb__dot {
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: var(--radius-full);
+    background: var(--border);
+    transition: background var(--duration-fast) var(--ease-out);
+  }
+  .k-onb__dot--active {
+    background: var(--interactive-primary);
+    inline-size: 18px;
+  }
+
+  .k-onb__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+  }
+  .k-onb__btn {
+    min-block-size: 44px;
+    min-inline-size: 44px;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out),
+                color var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
+  }
+  .k-onb__btn:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+  }
+  .k-onb__btn--ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+  }
+  .k-onb__btn--ghost:hover {
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+  }
+  .k-onb__btn--primary {
+    background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-700) 100%);
+    border: none;
+    color: var(--text-inverse, #fff);
+    margin-inline-start: auto;
+  }
+  .k-onb__btn--primary:hover {
+    transform: translateY(-1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .k-onb__spotlight,
+    .k-onb__card,
+    .k-onb__btn,
+    .k-onb__skip,
+    .k-onb__dot {
+      transition: none !important;
+    }
+    .k-onb__btn--primary:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // KRN-ONB (CHAMPION-06): first-visit onboarding tour. CSP-safe module script.
+  // Read-only DOM queries — does not touch the chat SSE logic.
+  type Step = {
+    title: string;
+    body: string;
+    // Ordered candidate selectors; first VISIBLE element wins (mobile fallback).
+    selectors: string[];
+    // Preferred placement when space allows.
+    place: 'block-start' | 'block-end';
+  };
+
+  const STEPS: Step[] = [
+    {
+      title: 'اكتب سؤالك هنا',
+      body: 'هنا تكتب رسالتك. كل رسالة تمر عبر فلتر PII، وتقييم مخاطر، وفحص سياسات قبل ما توصل للنموذج.',
+      selectors: ['#kernel-chat-input', '.kernel-chat-composer'],
+      place: 'block-end',
+    },
+    {
+      title: 'محادثاتك',
+      body: 'هنا تلاقي كل محادثاتك السابقة وتقدر تفتح أي وحدة أو تبدأ محادثة جديدة. على الجوال، افتحها من زر «الرسائل».',
+      selectors: ['[data-kernel-threads]', '[data-kernel-chat-threads-toggle]'],
+      place: 'block-end',
+    },
+    {
+      title: 'لوحة السياق',
+      body: 'هنا تشوف حالة الجلسة، تنبيهات السياسات، ومزوّد النموذج — كل شي يخص سياق المحادثة الحالية. على الجوال من زر «السياق».',
+      selectors: [
+        '.kernel-chat-context-card',
+        '[data-kernel-chat-context-toggle]',
+        '#ctx-session-title',
+      ],
+      place: 'block-start',
+    },
+  ];
+
+  const AR_DIGITS = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+  const toArDigits = (n: number) =>
+    String(n).split('').map((d) => AR_DIGITS[Number(d)] ?? d).join('');
+
+  function isVisible(el: Element | null): el is HTMLElement {
+    if (!el || !(el instanceof HTMLElement)) return false;
+    // offsetParent is null for display:none / position:fixed. Fixed elements
+    // (none of our targets are fixed) get a rect check instead.
+    if (el.offsetParent === null) {
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    }
+    return true;
+  }
+
+  function resolveTarget(selectors: string[]): HTMLElement | null {
+    for (const sel of selectors) {
+      const el = document.querySelector<HTMLElement>(sel);
+      if (isVisible(el)) return el;
+    }
+    return null;
+  }
+
+  type TourState = {
+    root: HTMLElement;
+    spotlight: HTMLElement;
+    card: HTMLElement;
+    titleEl: HTMLElement;
+    bodyEl: HTMLElement;
+    stepEl: HTMLElement;
+    dotsWrap: HTMLElement;
+    nextBtn: HTMLButtonElement;
+    prevBtn: HTMLButtonElement;
+    skipBtn: HTMLButtonElement;
+    key: string;
+    i: number;
+    onScroll: () => void;
+    onKey: (e: KeyboardEvent) => void;
+    cleanup: (() => void) | null;
+  };
+
+  let state: TourState | null = null;
+
+  function positionForTarget(state: TourState, target: HTMLElement, step: Step) {
+    const r = target.getBoundingClientRect();
+    const pad = 6;
+    const sp = state.spotlight;
+    sp.style.inlineSize = `${Math.max(0, r.width + pad * 2)}px`;
+    sp.style.blockSize = `${Math.max(0, r.height + pad * 2)}px`;
+    sp.style.transform = `translate(${r.left - pad}px, ${r.top - pad}px)`;
+
+    // Place the card below by default; flip above when no room (and preferred).
+    const cardRect = state.card.getBoundingClientRect();
+    const cardW = cardRect.width || Math.min(window.innerWidth * 0.88, 352);
+    const cardH = cardRect.height || 240;
+    const gap = 14;
+
+    let top: number;
+    const belowEnd = r.bottom + gap + cardH;
+    const aboveStart = r.top - gap - cardH;
+    const preferBelow = step.place === 'block-end';
+    if (preferBelow && belowEnd <= window.innerHeight - 8) {
+      top = r.bottom + gap;
+    } else if (aboveStart >= 8) {
+      top = aboveStart;
+    } else {
+      // Neither fits cleanly — clamp into viewport with a small margin.
+      top = Math.max(8, Math.min(r.bottom + gap, window.innerHeight - cardH - 8));
+    }
+
+    // Horizontally center on the target, clamped to viewport.
+    const targetCenter = r.left + r.width / 2;
+    let left = targetCenter - cardW / 2;
+    left = Math.max(8, Math.min(left, window.innerWidth - cardW - 8));
+
+    state.card.style.transform = `translate(${left}px, ${top}px)`;
+  }
+
+  function renderStep(state: TourState) {
+    const total = STEPS.length;
+    // Skip steps whose target is not present/visible (keeps the tour honest).
+    while (state.i < total && !resolveTarget(STEPS[state.i].selectors)) {
+      state.i++;
+    }
+    if (state.i >= total) {
+      finish(state);
+      return;
+    }
+    const step = STEPS[state.i];
+    const target = resolveTarget(step.selectors)!;
+
+    state.titleEl.textContent = step.title;
+    state.bodyEl.textContent = step.body;
+    state.stepEl.textContent = `${toArDigits(state.i + 1)} / ${toArDigits(total)}`;
+
+    // Dots
+    const dots = state.dotsWrap.querySelectorAll('.k-onb__dot');
+    dots.forEach((d, idx) => {
+      d.classList.toggle('k-onb__dot--active', idx === state.i);
+    });
+
+    // Buttons
+    state.prevBtn.hidden = state.i === 0;
+    state.nextBtn.textContent = state.i === total - 1 ? 'يلا، نبدأ' : 'التالي';
+
+    positionForTarget(state, target, step);
+    target.setAttribute('data-onb-active', '');
+  }
+
+  function clearActive(state: TourState) {
+    document.querySelectorAll('[data-onb-active]').forEach((el) => {
+      el.removeAttribute('data-onb-active');
+    });
+  }
+
+  function close(state: TourState, markDone: boolean) {
+    clearActive(state);
+    if (markDone) {
+      try {
+        localStorage.setItem(state.key, 'done');
+      } catch {
+        /* private mode / disabled storage — ignore, tour just won't persist */
+      }
+    }
+    state.root.hidden = true;
+    state.root.setAttribute('aria-hidden', 'true');
+    window.removeEventListener('scroll', state.onScroll, true);
+    window.removeEventListener('resize', state.onScroll);
+    window.removeEventListener('keydown', state.onKey);
+    if (state.cleanup) state.cleanup();
+  }
+
+  function finish(state: TourState) {
+    close(state, true);
+  }
+
+  function next(state: TourState) {
+    clearActive(state);
+    state.i++;
+    if (state.i >= STEPS.length) {
+      finish(state);
+      return;
+    }
+    renderStep(state);
+  }
+
+  function prev(state: TourState) {
+    clearActive(state);
+    state.i = Math.max(0, state.i - 1);
+    renderStep(state);
+  }
+
+  function start(root: HTMLElement) {
+    const key = root.dataset.onbKey || 'kernel-onboarding-v1';
+
+    // Never repeat once finished/skipped.
+    try {
+      if (localStorage.getItem(key) === 'done') return;
+    } catch {
+      /* storage unavailable — allow tour but it won't persist */
+    }
+
+    // Need at least the first target to be worth starting.
+    if (!resolveTarget(STEPS[0].selectors)) return;
+
+    const spotlight = root.querySelector<HTMLElement>('[data-kernel-onb-spotlight]');
+    const card = root.querySelector<HTMLElement>('[data-kernel-onb-card]');
+    const titleEl = root.querySelector<HTMLElement>('[data-kernel-onb-title]');
+    const bodyEl = root.querySelector<HTMLElement>('[data-kernel-onb-body]');
+    const stepEl = root.querySelector<HTMLElement>('[data-kernel-onb-step]');
+    const dotsWrap = root.querySelector<HTMLElement>('[data-kernel-onb-dots]');
+    const nextBtn = root.querySelector<HTMLButtonElement>('[data-kernel-onb-next]');
+    const prevBtn = root.querySelector<HTMLButtonElement>('[data-kernel-onb-prev]');
+    const skipBtn = root.querySelector<HTMLButtonElement>('[data-kernel-onb-skip]');
+    if (
+      !spotlight || !card || !titleEl || !bodyEl || !stepEl ||
+      !dotsWrap || !nextBtn || !prevBtn || !skipBtn
+    ) {
+      return;
+    }
+
+    // Tear down any prior tour instance (view-transition re-entry safety).
+    if (state) close(state, false);
+
+    const onScroll = () => {
+      if (!state) return;
+      const step = STEPS[state.i];
+      const target = resolveTarget(step.selectors);
+      if (target) positionForTarget(state, target, step);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (!state) return;
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        close(state, true);
+      } else if (e.key === 'ArrowLeft') {
+        // RTL: ArrowLeft = forward
+        e.preventDefault();
+        next(state);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        prev(state);
+      }
+    };
+
+    state = {
+      root, spotlight, card, titleEl, bodyEl, stepEl, dotsWrap,
+      nextBtn, prevBtn, skipBtn, key, i: 0, onScroll, onKey, cleanup: null,
+    };
+
+    nextBtn.addEventListener('click', () => state && next(state));
+    prevBtn.addEventListener('click', () => state && prev(state));
+    skipBtn.addEventListener('click', () => state && close(state, true));
+
+    root.hidden = false;
+    root.setAttribute('aria-hidden', 'false');
+
+    // Defer first paint so layout settles (images/fonts), then position.
+    requestAnimationFrame(() => {
+      if (!state) return;
+      renderStep(state);
+      try {
+        nextBtn.focus({ preventScroll: true });
+      } catch {
+        /* focus not critical */
+      }
+    });
+
+    // Reposition on scroll/resize (capture so nested scrollers are caught).
+    window.addEventListener('scroll', onScroll, true);
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('keydown', onKey);
+
+    state.cleanup = () => {
+      nextBtn.removeEventListener('click', () => state && next(state));
+      prevBtn.removeEventListener('click', () => state && prev(state));
+      skipBtn.removeEventListener('click', () => state && close(state, true));
+    };
+  }
+
+  function init() {
+    const root = document.querySelector<HTMLElement>('[data-kernel-onboarding]');
+    if (!root) return;
+    // Small delay lets the chat layout (panes/drawers) settle before measuring.
+    window.setTimeout(() => start(root), 400);
+  }
+
+  document.addEventListener('astro:page-load', init);
+  if (document.readyState !== 'loading') init();
+  document.addEventListener('astro:before-swap', () => {
+    if (state) close(state, false);
+  });
+</script>

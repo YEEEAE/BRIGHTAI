@@ -91,6 +91,22 @@ DEC-PROC-12-2026-07-25-004 (NEW — BAI-PROC-12 task 4, additive rule): The orig
 
 **Note on Playwright vs Lighthouse**: Playwright LCP element أحياناً hidden (mobile-menu accordion, dropdown panel) → measurement noise. CLS أعلى من Lighthouse لأن mobile-menu hydration + scroll-reveal (broken بـ SyntaxError) → layout shifts accumulate. الـ 0.30 avg و 0.95 max قيم real-world signal مو methodology artifact. **KI-SYNTAX-2026-07-18-001** يفسر جزء كبير من CLS regression (الـ 4 scripts المعطلة → observers ما تتحمل → reveal animations stack).
 
+### 2026-07-30 — CHAMPION-06 (Mobile UX Polish): tap-delay elimination + KernelOnboarding tour — UNCOMMITTED (per brain line 18)
+
+- **Scope note (premise was stale)**: نص CHAMPION-06 افترض `kernel.css` = 475 سطر + 4.4% touch targets <44px + لا safe-area + لا bottom tab bar، وطلب mobile-first rewrite لـ 16h. Discovery أثبت: `kernel.css` = **5070 سطر**، touch ≥44px **منفّذ** (KRN-019)، safe-area **موجود**، `.k-bottomnav` **موجود كامل**، mobile-first **مطبّق** (أول `@media` = `min-width:768px`). brain 1.7: CHAMPION-02 رفع kernel mobile 26→100/100. سوينا **الناقص الفعلي فقط** عشان ما نكسر كيرنل شغّال (قاعدة 2.1). نفس نمط CHAMPION-05/03.
+- **Files**:
+  - `src/styles/kernel.css` — KRN-020: `touch-action: manipulation` على shell + interactive primitives + `-webkit-tap-highlight-color: transparent`. (هي المادة الوحيدة الناقصة فعليًا من متطلبات الأداء.)
+  - `src/components/kernel/KernelOnboarding.astro` (NEW) — جولة 3 خطوات: spotlight (box-shadow hole) + tooltip card + dots + skip/next/prev + localStorage `kernel-onboarding-v1` + reduced-motion + RTL. تكييف IA: ما فيه scenarios sidebar في chat.astro فالخطوات تستهدف compose box / threads(sessions) / context مع fallback أزرار التولبار للجوال.
+  - `src/pages/kernel/chat.astro` — import + mount `<KernelOnboarding />` **خارج** كتلة SSE (`<script is:inline>` 638–1550 ما لُمست). المكوّن يستخدم `<script>` عادي (module) = CSP-safe تحت 'self'.
+- **Why**: إزالة tap-delay المتبقي + onboarding أول زيارة (app-like). ما سوّينا rewrite كامل عشان نحافظ على kernel mobile 100/100.
+- **Preserved**: النص العربي المنشور (نصوص الجولة copy جديد)، v3 tokens، chat SSE logic، بنية KernelLayout/bottom-nav/safe-area.
+- **Verification**: `npm run build` → EXIT 0 ✅ (257 HTML). touch-action + tap-highlight في `KernelLayout.x52ys2kY.css` ✅. onboarding script صدر كـ module منفصل (CSP-safe، مو inline) ✅. marker في `dist/client/kernel/chat/index.html` ✅. `verify:all` → EXIT 1 ⚠️ **pre-existing 100%** = KI-CHAMPION03-SPEAKABLE (`seo:schema`/`check-speakable-schema.mjs` على `/answer/*`)؛ `verify-all.mjs` + `headers:check` + `test:chat-session` + `lint:tokens` + `sitemap:generate` كلها ✅.
+- **قيود preview**: كل `/kernel/*` ترجع 404 على astro preview (deny-list) → Playwright mobile 360×640 على 11 صفحة ما يقدر محليًا. التحقق البصري الحقيقي = curl/screenshot الإنتاج بعد الديبوي.
+- **Report**: report/2026-07-30-champion-06-mobile-ux-onboarding.md
+- **Status**: uncommitted (user commits via main).
+- **Decisions (NEW — DEC-CHAMPION06)**: (1) تكييف خطوات الـ tour لعناصر حقيقية بدل «scenarios sidebar» الوهمية (compose / threads / context + fallback للجوال). (2) spotlight عبر `box-shadow: 100vmax` بدل backdrop-filter (أخف). (3) Voice input (CHAMPION-01 extension) ما دخلناه — feature منفصل، `chat.astro` ما فيه `SpeechRecognition` أصلاً.
+- **Not done (follow-up)**: voice input (feature منفصل ~2-3h)؛ إصلاح KI-CHAMPION03-SPEAKABLE عشان `verify:all` يرجع EXIT 0.
+
 ### 2026-07-30 — CHAMPION-05 (Conversion + Telemetry): quota dashboard + chat_completed GA4 server event — UNCOMMITTED (per brain line 18)
 
 - **Scope note (premise was stale)**: نص CHAMPION-05 يفترض ملفاته «NEW»، بس الـ repo فعلاً hybrid (output:'static' + @astrojs/node، فيه SSR API routes) والـ backend انتقل داخل Astro (ما فيه frontend/). `analytics.ts` (27KB) + `ga4-server.ts` + `observability/sentry.ts` (مُفعّل — initSentry في middleware.ts:66) + `lead.ts` (يطلق generate_lead) كلها موجودة. سوينا **الباقي الفعلي فقط** عشان ما ندمّر كود شغّال (قاعدة 2.1).

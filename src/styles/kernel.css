@@ -3,6 +3,33 @@
    أنماط مكونات Kernel
    ======================================== */
 
+/* KRN-020 (CHAMPION-06): tap-delay elimination.
+   touch-action: manipulation removes the legacy 300ms double-tap-zoom delay on
+   touch devices without breaking intentional pinch-zoom on the document.
+   -webkit-tap-highlight-color: transparent kills the iOS gray flash on tap.
+   Scope: shell + interactive primitives only (keeps pinch-zoom on body for a11y). */
+.k-topnav,
+.k-bottomnav,
+.k-drawer,
+.k-drawer__panel,
+.kernel-chat-composer,
+.kernel-chat-composer__btn,
+.kernel-threads-list__item,
+.k-scenario-banner,
+.k-bottomnav__link,
+.k-topnav__link,
+.k-drawer__link {
+  touch-action: manipulation;
+}
+.k-topnav *,
+.k-bottomnav *,
+.k-drawer *,
+.kernel-chat-composer *,
+.kernel-threads-list *,
+.k-scenario-banner * {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* 1. Kernel Page Layout */
 .kernel-page {
   min-height: 100vh;
