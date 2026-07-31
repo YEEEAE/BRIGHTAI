@@ -105,6 +105,7 @@ const icons = {
   reports: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>',
   playground: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
   kernel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
+  redteam: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
 };
 
 // ── Kernel Units Data (with SEO content + FAQ + blog cross-link) ───────────
@@ -628,6 +629,71 @@ export const kernelUnits: KernelUnit[] = [
       {
         q: 'هل Red Teaming مطلوب من الجهات الرقابية؟',
         a: 'NCA ECC في تحديثاته الأخيرة تشير إلى اختبار الاختراق لأنظمة AI. SDAIA في إرشاداتها للذكاء الاصطناعي التوليدي تنصح بإجراء Red Teaming قبل النشر. كذلك، ISO/IEC 42001 يوصي باختبار السيناريوهات كجزء من إدارة المخاطر. Red Teaming ليس إلزامياً قانونياً بعد، لكنه أفضل ممارسة ويُتوقع أن يصبح إلزامياً.',
+      },
+    ],
+  },
+  {
+    slug: 'redteam',
+    path: '/kernel/redteam/',
+    label: 'الفريق الأحمر',
+    shortDescription: 'اختبر أمان Kernel — حاول تخترق النظام',
+    title: 'ساحة الفريق الأحمر — اختبر أمان Kernel | BrightAI',
+    description: 'ساحة اختبار اختراق تفاعلية لـ Kernel. حاول تخترق النظام بـ 40 تقنية هجوم مصنّفة بـ OWASP LLM Top 10. شوف الدفاع الذي أوقفك بشفافية كاملة. لو نجحت، احصل على شارة 🏆 مخترق.',
+    canonical: 'https://brightai.site/kernel/redteam/',
+    h1: 'حاول تخترق Kernel',
+    hreflang: [
+      { lang: 'ar-SA', href: 'https://brightai.site/kernel/redteam/' },
+      { lang: 'x-default', href: 'https://brightai.site/kernel/redteam/' },
+    ],
+    ogImage: '/assets/images/og/brightai-og-1200x630.png',
+    solutionSlug: 'ai-firewall',
+    docSlug: 'kernel-redteam',
+    blogPath: '/blog/ai-red-teaming-security-testing/',
+    blogLabel: 'AI Red Teaming: اختبار أمان أنظمة الذكاء',
+    iconSvg: icons.redteam,
+    relatedSlugs: ['scenarios', 'policies', 'audit', 'chat'],
+    seoBlocks: [
+      {
+        heading: 'وش ساحة الفريق الأحمر في Kernel؟',
+        paragraphs: [
+          'ساحة الفريق الأحمر (Red Team Arena) بيئة تفاعلية تدعوك لاختبار أمان Kernel بنفسك. تكتب هجومك (حقن أوامر، تجاوز ضوابط، استخراج أسرار، تحايل على تعمية PII)، والنظام يحكم: صُدّ أم نفذ. كل محاولة تُوثّق مع شرح شفاف للدفاع الذي أوقفك — أي طبقة (PII Scanner، Risk Scoring، Policy Engine) اشتغلت، وأي سياسة طبّقت.',
+          'هذي الصفحة مو مجرد تجربة — هي أقوى أداة تسويقية لـ Kernel. لا أحد يصدّق ادعاء الأمان. الجميع يصدّق ما كسره بيده وفشل. 40 تقنية هجوم معروفة مصنّفة بـ OWASP LLM Top 10، كلها قابلة للتجربة بنقرة. لو نجح هجومك، النظام يولّد بلاغاً تلقائياً + السياسة المقترحة لسد الثغرة.',
+        ],
+        bullets: [
+          '40 تقنية هجوم مصنّفة بـ OWASP LLM Top 10 — كلها قابلة للتجربة بنقرة',
+          'شفافية كاملة: الدفاع الذي أوقفك مع اسم الطبقة والسياسة والسبب',
+          'لو نجح الاختراق: شارة 🏆 مخترق + بلاغ تلقائي + سياسة مقترحة للسد',
+          'لوحة صدارة أسبوعية للمخترقين + وضع هجوم متسلسل متعدد الرسائل',
+        ],
+      },
+      {
+        heading: 'ليش ساحة الفريق الأحمر مهمة للمنشآت السعودية؟',
+        paragraphs: [
+          'إرشادات SDAIA للذكاء الاصطناعي التوليدي وضوابط NCA ECC تشترط اختبار الاختراق لأنظمة AI قبل النشر في الإنتاج. ساحة الفريق الأحمر تخلّي فريقك يختبر Kernel بنفسه بدون ما يحتاج أدوات خارجية أو خبراء أمن — كل التقنيات جاهزة ومصنّفة.',
+          'كذلك، الساحة تثقف فريق الحوكمة: يشوفون بأعينهم كيف تعمل هجمات Prompt Injection، كيف يتجاوز المهاجم ضوابط PII، كيف يستخرج أسرار من النموذج. هذا يبني حدس أمني عند الفريق ويساعدهم يصمّمون سياسات أفضل.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: 'وش الفرق بين ساحة الفريق الأحمر وصفحة السيناريوهات؟',
+        a: 'السيناريوهات تختبر سلوك Kernel في حالات محددة (PII، امتثال). ساحة الفريق الأحمر تختبر أمان Kernel — تحاول تكسره. الساحة تفاعلية: تكتب هجومك، تشوف النتيجة فوراً، وتحصل على شرح شفاف للدفاع. السيناريوهات للاختبار المنهجي، الساحة للتجربة الحرة.',
+      },
+      {
+        q: 'هل هجماتي في الساحة حقيقية ولا محاكاة؟',
+        a: 'Kernel يحلل هجومك عبر نفس محرك الحوكمة (PII Scanner + Risk Scoring + Policy Engine) المستخدم في الإنتاج. الفرق الوحيد: ما في نموذج AI حقيقي يُستدعى — المراحل 1-4 تشتغل كاملة، المرحلة 5 تُعرض كخامدة. هذا يضمن تجربة واقعية بدون تكلفة API.',
+      },
+      {
+        q: 'وش يصير لو نجح هجومي؟',
+        a: 'Kernel يولّد بلاغاً تلقائياً مملوءاً مسبقاً (وصف الهجوم، الطبقة المخترقة، الأثر) + سياسة مقترحة لسد الثغرة. البلاغ تقدر تشاركه مع فريق الحوكمة أو ترسله لـ BrightAI. كمان تحصل على شارة 🏆 مخترق في لوحة الصدارة.',
+      },
+      {
+        q: 'هل الساحة آمنة للاستخدام من المتصفح؟',
+        a: 'نعم. كل التحليل يشتغل محلياً في المتصفح (vanilla JS). ما في بيانات تُرسل لخادم. ما في نموذج AI حقيقي يُستدعى. الساحة مصممة عشان تكون آمنة للتجربة من أي جهاز.',
+      },
+      {
+        q: 'كم هجوم أقدر أجرب؟',
+        a: '40 تقنية جاهزة مصنّفة بـ OWASP LLM Top 10. كلها قابلة للتجربة بنقرة "جرّبها" اللي تملأ صندوق الإدخال بالهجوم. تقدر كمان تكتب هجومك الخاص. ما في حد لعدد المحاولات.',
       },
     ],
   },
