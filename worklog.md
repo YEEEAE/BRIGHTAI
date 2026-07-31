@@ -2511,3 +2511,44 @@ Stage Summary:
 - الـ seo:gate كان يحجب 44 خطأ hreflang سابقة على answer/lp — صلحتهم بعد ما انكشفوا
 - النتيجة: verify:all → exit 0 بالكامل
 - المخاطر: الصفحات الجديدة (authors/events/docs) تحتاج sitemap:generate + indexnow بعد الـ deploy
+
+---
+Task ID: 2026-07-31-KRN-JOURNEY-PAUSE-NARRATIVE
+Agent: BrightAI Workspace Agent v2.3
+Task: إصلاح زر الإيقاف المؤقت المعطل + اللوحة السردية المخالفة للمواصفة في صفحة /kernel/ (M4)
+Started: 2026-07-31T14:40:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت brain.md كاملاً (protocol 0.6)
+- تحققت من صفحة `/kernel/` في `src/pages/kernel/index.astro`: أزرار التحكم (إيقاف/إيقاف مؤقت/تخطي/إعادة) موجودة في HTML والـ CSS، لكن زر الإيقاف المؤقت (`#kernel-journey-pause`) غير مربوط في JS نهائياً — `journeyPaused` لا يصبح true أبداً، والنقر عليه لا يفعل شيئاً
+- اكتشفت انحرافاً ثانياً: اللوحة السردية `.kernel-journey__narrative` تعرض سطراً واحداً فقط بدل 7 أسطر — مخالفة للمواصفة (تصميم-صفحات-kernel §1: "سطر لكل مشهد، النشط يُضاء والبقية text-low")
+- عدّلت `src/pages/kernel/index.astro`:
+  - أضفت `pauseBtn` لمراجع الـ DOM (سطر 670)
+  - `renderScene()`: تستدعي `updateNarrative()`، تضبط `--journey-progress`، وتطبّق transform انزلاقي (يُتجاوز تحت reduced-motion)
+  - `renderNarrative()`: تنشئ 7 أسطر `<p class="kernel-journey__narrative-line">` فارغة عند التشغيل/الإعادة
+  - `updateNarrative()`: تملأ نصوص المشاهد المبلغ عنها وتبدل `--past` (السابقة) / `--active` (الحالي)
+  - `startJourney()`/`stopJourney()`/`replayJourney()`: إعادة ضبط `journeyPaused`/`journeyPausedAt` + `setPauseBtnState(false)` + `renderNarrative()`
+  - `setPauseBtnState(paused)`: يحدّث `aria-pressed` والنص (إيقاف مؤقت/استئناف)
+  - `togglePause()`: إيقاف = `clearTimeout` + تسجيل `journeyPausedAt`؛ استئناف = إضافة `journeyPausedElapsed` + `scheduleNextScene()`
+  - ربط `pauseBtn` بـ `click`
+- عدّلت `src/styles/kernel.css`:
+  - `.kernel-journey__stage`: transition تشمل `transform 400ms var(--ease-out)`
+  - `.kernel-journey__narrative`: إلى `flex-direction: column` + نمطا `--past` (opacity .55) و`--active` (opacity 1، bright-400، بدون italic)
+  - بلوك reduced-motion: أضفت `.kernel-journey__narrative-line`
+- أنشأت `scripts/playwright/verify-kernel-journey.mjs` (منفذ 4422، `python3 -m http.server` على `dist/client`، SCENE_DURATION=13000ms، نقرات عبر `el.evaluate((el) => el.click())` لأن `<main>` يعترض أحداث Playwright)
+- npm run build → ✅ exit 0
+- npm run verify:all → ✅ (269 HTML، 0 errors)
+- npm run performance:budget → ✅
+- Playwright: 14/14 فحص ناجح (7 أسطر سرد، المشهد 1 نشط، إيقاف مؤقت يجمد + aria-pressed=true + label استئناف، استئناف يستكمل للمشهد 2، نمو السرد active=1/past=1/texts=2، stop يعيد الضبط، لا console errors بعد فلترة تحذيرات CSP meta المعروفة)
+- اكتشاف حرج: `src/server/deny-list.mjs` سطر 88 `'^/kernel(/|$)'` يصد `/kernel/*` بـ 404 في خادم Node الفعلي (`node dist/server/entry.mjs` — نفس startCommand في render.yaml). تحقق محلي: `/kernel/` → 404، `/kernel/playground/` → 404، `/about/` → 200، `/frontend/server.js` → 404
+- السبب: تعليق القاعدة يدّعي "kernel/ public marketing handled by prerender" — فرضية خاطئة، الـ prerender لا يتجاوز الـ wrapper، والـ self-check ما يختبر `/kernel/` في SHOULD_ALLOW
+- تحقق حي: `/kernel/` و `/kernel/chat/` → 200 بـ `cf-cache-status: DYNAMIC` (أصل الخادم، مو كاش) → الإنتاج الحالي يعمل لأن البناء المنشور أقدم من تفعيل الـ deny-list، لكن **أول deploy من build نظيف جديد يكسر كل صفحات الكيرنل فوراً**
+- تحققت أن `npm run build` يشمل `build:patch-entry` (يغلف entry.mjs بالـ deny-list) وأن `dist/client/kernel/` كله HTML عام (index, chat, playground, models, admin, api/index.html...) — لا يوجد ملف حساس تحت `/kernel/`
+
+Stage Summary:
+- زر الإيقاف المؤقت يشتغل الحين (إيقاف/استئناف مع aria-pressed + عداد مراكم) ✅
+- اللوحة السردية تطابق المواصفة: 7 أسطر، النشط يُضاء والبقية text-low ✅
+- التحقق الوظيفي 14/14 عبر Playwright ✅
+- **قضية حمراء حُلّت (KRN-DENY-01)**: الـ deny-list `'^/kernel(/|$)'` كان سيكسر كل صفحات الكيرنل عند أول deploy من build جديد. المستخدم وافق على الإصلاح فوراً. أزلت القاعدة من `src/server/deny-list.mjs` + أضفت `/kernel/` وصفحاتها لـ SHOULD_ALLOW. تحققت: `node src/server/deny-list.mjs` → exit 0، `node dist/server/entry.mjs` (منفذ 4399) → `/kernel/`=200، `/kernel/playground/`=200، `/kernel/chat/`=200، `/about/`=200، `/frontend/server.js`=404 ✅، `npm run verify:all` → exit 0
+- المخاطر المتبقية: لا يوجد في الكود — يبقى `operating_Environment/prompts-تنفيذ-kernel.md` معدّل خارجياً (حذف 50 سطراً من Prompt 06 — لم ألمسه)

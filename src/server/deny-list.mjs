@@ -85,7 +85,16 @@ export const DENY_LIST_PATTERNS = [
   // /report/2026-06-29-some-file.md. The bare /report and /report/ paths
   // fall through to the legacy-redirect middleware and get a 301.
   '^/report/.+',
-  '^/kernel(/|$)',          // block /kernel/* source-style access (kernel/ public marketing handled by prerender, this blocks /kernel/foo.js if any)
+  // KRN-DENY-01 (2026-07-31): REMOVED '^/kernel(/|$)' — it blocked ALL
+  // /kernel/* public marketing pages (index, chat, playground, ...) at the
+  // Node layer before the handler could serve them. The old comment claimed
+  // "kernel/ public marketing handled by prerender" — that is false: the
+  // deny wrapper runs BEFORE any fs.read, and prerender does not bypass it.
+  // dist/client/kernel/ contains ONLY prerendered HTML (verified: 18 files,
+  // 0 non-HTML) and the kernel _astro assets live under /_astro/ (allowed).
+  // Nothing sensitive exists under the /kernel/ URL, so the rule only 404'd
+  // real pages. Kernel public paths are now asserted in selfCheck
+  // SHOULD_ALLOW below to prevent regression.
 
   // ─── C. Sensitive config files at the root ───
   '^/\\.env(\\.[a-z0-9]+)?$',
@@ -241,6 +250,12 @@ export function selfCheck() {
   ];
   const SHOULD_ALLOW = [
     '/',
+    // KRN-DENY-01: kernel public marketing pages MUST be allowed (prerendered HTML).
+    '/kernel/',
+    '/kernel/chat/',
+    '/kernel/playground/',
+    '/kernel/scenarios/',
+    '/kernel/admin/quota/',
     '/about/',
     '/services/',
     '/pricing/',

@@ -667,6 +667,7 @@ const complianceRows = [
     const narrativeEl = document.getElementById('kernel-journey-narrative');
     const dotsEl = document.getElementById('kernel-journey-dots');
     const stopBtn = document.getElementById('kernel-journey-stop');
+    const pauseBtn = document.getElementById('kernel-journey-pause');
     const skipBtn = document.getElementById('kernel-journey-skip');
     const replayBtn = document.getElementById('kernel-journey-replay');
     const pills = document.querySelectorAll('.kernel-journey__pill');
@@ -691,19 +692,40 @@ const complianceRows = [
     function renderScene() {
       const scene = journeyScenes[currentScene];
       const scenarioText = scenarioTextForScene(scene);
-      /* Cross-fade transition */
+      /* Cross-fade transition + slight slide (skipped under reduced motion) */
       stageEl.style.opacity = '0';
-      narrativeEl.style.opacity = '0';
+      stageEl.style.transform = getReducedMotion() ? 'none' : 'translateY(8px)';
       setTimeout(() => {
         stageEl.innerHTML = '<div class="kernel-journey__scene-title">' + (currentScene + 1) + '. ' + scene.title + '</div><div class="kernel-journey__scene-body">' + scenarioText + '</div>';
-        narrativeEl.innerHTML = '<p class="kernel-journey__narrative-line">' + scene.narrative + '</p>';
         stageEl.style.opacity = '1';
-        narrativeEl.style.opacity = '1';
+        stageEl.style.transform = 'none';
       }, 400);
+      updateNarrative();
       renderDots();
       /* Update progress */
       const progress = ((currentScene + 1) / TOTAL_SCENES) * 100;
       journeyEl.style.setProperty('--journey-progress', progress + '%');
+    }
+
+    /* لوحة سردية: سطر لكل مشهد، النشط يُضاء والبقية text-low (تصميم §1) */
+    function renderNarrative() {
+      narrativeEl.innerHTML = '';
+      for (let i = 0; i < TOTAL_SCENES; i++) {
+        const line = document.createElement('p');
+        line.className = 'kernel-journey__narrative-line';
+        narrativeEl.appendChild(line);
+      }
+    }
+
+    function updateNarrative() {
+      const lines = narrativeEl.querySelectorAll('.kernel-journey__narrative-line');
+      lines.forEach((line, i) => {
+        const isReached = i <= currentScene;
+        const isActive = i === currentScene;
+        line.textContent = isReached ? journeyScenes[i].narrative : '';
+        line.classList.toggle('kernel-journey__narrative-line--past', isReached && !isActive);
+        line.classList.toggle('kernel-journey__narrative-line--active', isActive);
+      });
     }
 
     function scenarioTextForScene(scene) {
@@ -720,10 +742,14 @@ const complianceRows = [
       journeyActive = true;
       currentScene = 0;
       currentScenario = 'pii';
+      journeyPaused = false;
+      journeyPausedAt = 0;
       journeyPausedElapsed = 0;
       journeyStartTime = Date.now();
+      setPauseBtnState(false);
       journeyEl.hidden = false;
       journeyEl.scrollIntoView({ behavior: getReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+      renderNarrative();
       renderScene();
       scheduleNextScene();
     }
@@ -745,6 +771,9 @@ const complianceRows = [
 
     function stopJourney() {
       journeyActive = false;
+      journeyPaused = false;
+      journeyPausedAt = 0;
+      setPauseBtnState(false);
       clearTimeout(journeyTimer);
     }
 
@@ -762,10 +791,14 @@ const complianceRows = [
       clearTimeout(journeyTimer);
       journeyActive = false;
       currentScene = 0;
+      journeyPaused = false;
+      journeyPausedAt = 0;
       journeyPausedElapsed = 0;
       journeyStartTime = Date.now();
+      setPauseBtnState(false);
       journeyEl.hidden = false;
       journeyEl.scrollIntoView({ behavior: 'auto', block: 'center' });
+      renderNarrative();
       renderScene();
       startJourney();
     }
@@ -791,8 +824,32 @@ const complianceRows = [
       });
     }
 
+    /* Pause / resume */
+    function setPauseBtnState(paused) {
+      if (!pauseBtn) return;
+      pauseBtn.setAttribute('aria-pressed', String(paused));
+      pauseBtn.textContent = paused ? 'استئناف' : 'إيقاف مؤقت';
+    }
+
+    function togglePause() {
+      if (!journeyActive) return;
+      if (journeyPaused) {
+        journeyPaused = false;
+        journeyPausedElapsed += Date.now() - journeyPausedAt;
+        journeyPausedAt = 0;
+        setPauseBtnState(false);
+        scheduleNextScene();
+      } else {
+        journeyPaused = true;
+        journeyPausedAt = Date.now();
+        clearTimeout(journeyTimer);
+        setPauseBtnState(true);
+      }
+    }
+
     /* Controls */
     if (stopBtn) stopBtn.addEventListener('click', stopJourney);
+    if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
     if (skipBtn) skipBtn.addEventListener('click', skipScene);
     if (replayBtn) replayBtn.addEventListener('click', replayJourney);
 

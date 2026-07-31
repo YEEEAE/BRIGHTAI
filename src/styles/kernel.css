@@ -6225,7 +6225,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   justify-content: center;
   gap: var(--space-3);
   opacity: 1;
-  transition: opacity 400ms var(--ease-out);
+  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
 }
 .kernel-journey__scene-title {
   font-size: var(--text-xl);
@@ -6245,7 +6245,9 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-lg);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
   opacity: 1;
   transition: opacity 400ms var(--ease-out);
 }
@@ -6255,6 +6257,17 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   line-height: var(--leading-relaxed);
   color: var(--text-mid, #a7b4cc);
   font-style: italic;
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+.kernel-journey__narrative-line--past {
+  opacity: 0.55;
+}
+.kernel-journey__narrative-line--active {
+  opacity: 1;
+  color: var(--bright-400, #5be8c0);
+  font-style: normal;
 }
 
 /* ── التحكم: dots + actions + scenarios ─────────────────────────────────── */
@@ -6562,7 +6575,8 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   .kernel-hero-btn-glow,
   .kernel-unit-grid__card::after,
   .kernel-journey__stage,
-  .kernel-journey__narrative {
+  .kernel-journey__narrative,
+  .kernel-journey__narrative-line {
     animation: none !important;
     transition: none !important;
   }
