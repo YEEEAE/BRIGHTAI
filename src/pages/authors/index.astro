@@ -1,0 +1,104 @@
+---
+/**
+ * Authors index — /authors/
+ *
+ * Lists every registered author from src/data/blog.ts (author registry).
+ * Fixes the broken breadcrumb link on every /authors/<slug>/ page, which
+ * pointed to /authors/ while no index page existed (seo:gate broken-links).
+ *
+ * SEO: emits only a page-specific CollectionPage node. Organization and
+ * BreadcrumbList come from the foundation Schema.astro (BAI-SEO-003-S3 —
+ * do not re-add duplicates).
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import { authors } from '../../data/blog';
+import { SITE } from '../../data/site';
+
+const authorEntries = Object.values(authors);
+
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'مؤلفو BrightAI',
+  description: 'فريق BrightAI: مستشارون ومهندسون وخبراء حوكمة الذكاء الاصطناعي في السعودية — يكتبون عن PDPL وNCA ECC وسدايا وISO 42001.',
+  url: `${SITE.url}/authors/`,
+  inLanguage: 'ar-SA',
+  isPartOf: { '@id': 'https://brightai.site/#website' },
+  publisher: { '@id': 'https://brightai.site/#organization' },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [collectionLd],
+};
+---
+
+<ArabicLayout
+  title="مؤلفو BrightAI | فريق حوكمة الذكاء الاصطناعي"
+  description="تعرف على مؤلفي BrightAI — المستشارون والمهندسون وخبراء الامتثال السعوديون الذين يكتبون عن حوكمة AI وPDPL وNCA ECC وسدايا."
+  canonical="https://brightai.site/authors/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/authors/' }, { lang: 'x-default', href: 'https://brightai.site/authors/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/authors/"
+  breadcrumbs={[{ name: 'المؤلفون', href: '/authors/' }]}
+>
+
+  <div class="author-shell">
+    <header class="author-header">
+      <div>
+        <p class="author-title">صفحة المؤلفين</p>
+        <h1>فريق BrightAI</h1>
+        <p class="author-bio">المستشارون والمهندسون وخبراء الامتثال الذين يكتبون محتوى BrightAI التنفيذي عن حوكمة الذكاء الاصطناعي في السعودية.</p>
+      </div>
+    </header>
+
+    <div class="author-posts">
+      {authorEntries.map(author => (
+        <a href={`/authors/${author.slug}/`} class="author-post-card">
+          <span class="author-post-card__cat">{author.title}</span>
+          <h3>{author.name}</h3>
+          <p>{author.bio}</p>
+        </a>
+      ))}
+    </div>
+  </div>
+</ArabicLayout>
+
+<style>
+  .author-title {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-2);
+  }
+  .author-posts {
+    display: grid;
+    gap: var(--space-3);
+  }
+  .author-post-card {
+    display: block;
+    padding: var(--space-4);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: border-color var(--duration-fast) var(--ease-out);
+  }
+  .author-post-card:hover,
+  .author-post-card:focus-visible {
+    border-color: var(--brand-400);
+  }
+  .author-post-card__cat {
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+  .author-post-card h3 {
+    margin: var(--space-2) 0;
+    font-size: var(--text-xl);
+    color: var(--text-primary);
+  }
+  .author-post-card p {
+    color: var(--text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+</style>

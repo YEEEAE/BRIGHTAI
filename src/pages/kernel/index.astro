@@ -584,16 +584,12 @@ const complianceRows = [
       <div class="kernel-unit-grid__role">
         <h3 class="kernel-unit-grid__role-title">البنية</h3>
         <div class="kernel-unit-grid__list">
-          {kernelUnits.filter(u => ['models','connectors'].includes(u.slug)).map((item) => (
+          {kernelUnits.filter(u => ['models','connectors','api'].includes(u.slug)).map((item) => (
             <a href={item.path} class="kernel-unit-grid__card">
               <span class="kernel-unit-grid__card-label">{item.label}</span>
               <span class="kernel-unit-grid__card-desc">{item.shortDescription}</span>
             </a>
           ))}
-          <a href="/kernel/api/" class="kernel-unit-grid__card">
-            <span class="kernel-unit-grid__card-label">API</span>
-            <span class="kernel-unit-grid__card-desc">وثائق المطوّر ونقاط الربط</span>
-          </a>
         </div>
       </div>
     </section>

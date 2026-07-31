@@ -26,6 +26,7 @@
 import { landingPages, type LandingPage } from '../../data/landing-pages';
 import { getFaqLd } from '../../data/schema-helpers';
 import type { FaqItem } from '../../data/schema-helpers';
+import { getHreflangLinks } from '../../data/hreflang-pairs';
 
 export function getStaticPaths() {
   return landingPages.map((lp) => ({
@@ -36,6 +37,7 @@ export function getStaticPaths() {
 
 const { lp } = Astro.props as { lp: LandingPage };
 const canonical = `https://brightai.site/lp/${lp.slug}/`;
+const hreflangLinks = getHreflangLinks(canonical);
 
 const faqItems: FaqItem[] = lp.faq.map((f) => ({ q: f.q, a: f.a }));
 const faqLd = getFaqLd(faqItems);
@@ -62,6 +64,9 @@ const jsonLd = [serviceLd, faqLd].filter(Boolean);
     <meta name="description" content={lp.description} />
     <link rel="canonical" href={canonical} />
     <meta name="robots" content="index, follow" />
+    {hreflangLinks.map(({ lang, href }) => (
+      <link rel="alternate" hreflang={lang} href={href} />
+    ))}
     {jsonLd.map((node) => (
       <script type="application/ld+json" set:html={JSON.stringify(node)} />
     ))}

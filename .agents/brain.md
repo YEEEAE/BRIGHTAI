@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-31 12:30 +03:00
+last_updated: 2026-07-31 13:30 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.62
 agent_version: v2.3
@@ -16,6 +16,36 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-07-31 — إصلاح 20 خطأ روابط مكسورة + 44 خطأ hreflang مخفية
+
+- **Files**:
+  - `src/pages/authors/index.astro` (NEW — فهرس المؤلفين + CollectionPage schema)
+  - `src/pages/events/index.astro` (NEW — فهرس الفعاليات + CollectionPage schema)
+  - `src/content/docs/kernel-playground.md`, `kernel-replay.md`, `kernel-redteam.md`, `kernel-models.md` (NEW — مستندات kernel docs ناقصة)
+  - `src/content/blog/ai-implementation-cost-saudi.md` (EDIT — رابط → `/solutions/ai-governance-platform/`)
+  - `src/content/blog/big-data-analytics-saudi-companies.md` (EDIT — رابط → `/solutions/ai-use-case-discovery/`)
+  - `src/data/kernel.ts` (EDIT — إصلاح blogPath للـ playground)
+  - `src/pages/kernel/redteam.astro`, `replay.astro` (EDIT — استيراد CSS بدل `<link>`)
+  - `src/pages/kernel/admin/quota.astro` (EDIT — إضافة canonical)
+  - `src/pages/answer/[slug].astro`, `src/pages/lp/[slug].astro` (EDIT — hreflang ar-SA self + x-default عبر `getHreflangLinks()`)
+- **What**: صلّحت الـ 20 خطأ اللي كانت تخلي seo:gate يفشل (4 صفحات authors/events بلا فهرس، رابطا مدونة لحلول محذوفة، 4 مستندات kernel docs ناقصة، blogPath مكسور، CSS links، canonical ناقص). وبعد ما نجح seo:gate، انكشفت طبقة مخفية من 44 خطأ hreflang على 22 صفحة مفهرسة من `/answer/*` و `/lp/*` (ما كانت تصدّر أي hreflang) — صلحتها أيضًا.
+- **Why**: verify:all كان يفشل والـ seo:gate كان يحجب اكتشاف أخطاء hreflang لأنها كانت تظهر بعده. كل صفحة مفهرسة لازم يكون عندها hreflang self-reference + x-default (قاعدة BAI-IDX-14).
+- **قرارات**:
+  - الحلول البديلة للمدونة: `agile-ai-governance` → `ai-governance-platform`، و`big-data-analytics` → `ai-use-case-discovery` (حلول موجودة قريبة الدلالة بدل اللي محذوفة).
+  - صفحتا الفهارس الجديدة بلا noindex، بمحتوى قصير لكن CollectionPage schema تبررها (نمط BAI-SEO-003-S3).
+  - صفحات answer/lp تستخدم `getHreflangLinks(canonical)` — يرجع لـ AR-only: `ar-SA=self` + `x-default=self` بدون en-SA مخترع (يتماشى مع invariant الـ checkArOnlyPageNoEnAlternate).
+- **Verification**:
+  - `npm run build` → ✅ (sitemap 245 URLs)
+  - `npm run seo:gate` → ✅ 0 أخطاء، Broken links: 0
+  - `npm run seo:hreflang` → ✅ 0 أخطاء (253 sets)
+  - `npm run verify:all` → ✅ exit 0 (pass 16, fail 0)
+- **Report**: report/2026-07-31-broken-links-hreflang-fix.md (أُنشئ)
+- **Commit**: uncommitted (user commits via main — per brain line 18)
+- **Status**: verified locally
+- **Brain updates**: Known issues: أخطاء hreflang المخفية على answer/lp — resolved 2026-07-31؛ Pages inventory: أضفت pages `authors/index` + `events/index` + 4 docs kernel.
 
 ---
 

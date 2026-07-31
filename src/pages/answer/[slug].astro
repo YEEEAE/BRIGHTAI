@@ -28,7 +28,7 @@
 import { getFaqLd } from '../../data/schema-helpers';
 import type { FaqItem } from '../../data/schema-helpers';
 import { answers, type AnswerUnit } from '../../data/answers';
-import SEOHead from '../../components/SEOHead.astro';
+import { getHreflangLinks } from '../../data/hreflang-pairs';
 
 export function getStaticPaths() {
   return answers.map((a) => ({
@@ -39,22 +39,27 @@ export function getStaticPaths() {
 
 const { answer } = Astro.props as { answer: AnswerUnit };
 const canonical = `https://brightai.site/answer/${answer.slug}/`;
+const hreflangLinks = getHreflangLinks(canonical);
 
 const faqItems: FaqItem[] = [{ q: answer.question, a: answer.answer }];
 const faqLd = getFaqLd(faqItems);
-const speakableLd =
-  faqLd && {
-    ...faqLd,
-    speakable: {
-      '@type': 'SpeakableSpecification',
-      cssSelector: ['.answer-hero-text', '.answer-body p'],
-    },
-  };
+const speakableSpec = {
+  '@type': 'SpeakableSpecification',
+  cssSelector: ['.answer-hero-text', '.answer-body p'],
+};
 
-const jsonLd = [
-  { '@context': 'https://schema.org', '@type': 'WebPage', url: canonical, name: answer.query },
-  speakableLd ?? faqLd,
-];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      url: canonical,
+      name: answer.query,
+      speakable: speakableSpec,
+    },
+    faqLd,
+  ],
+};
 ---
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -64,12 +69,10 @@ const jsonLd = [
     <title>{answer.query} — BrightAI</title>
     <meta name="description" content={answer.answer.slice(0, 155)} />
     <link rel="canonical" href={canonical} />
-    {speakableLd && (
-      <script type="application/ld+json" set:html={JSON.stringify(speakableLd)} />
-    )}
-    {faqLd && (
-      <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
-    )}
+    {hreflangLinks.map(({ lang, href }) => (
+      <link rel="alternate" hreflang={lang} href={href} />
+    ))}
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <main id="main-content" class="answer-page">

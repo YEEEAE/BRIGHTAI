@@ -2484,3 +2484,30 @@ Files Changed:
 
 Commit: قيد الانتظار
 Status: ✅ BUILD PASSED (13 kernel pages, exit 0)
+
+---
+Task ID: 2026-07-31-BROKEN-LINKS-HREFLANG
+Agent: BrightAI Workspace Agent v2.3
+Task: إصلاح 20 خطأ روابط مكسورة من verify3.log + 44 خطأ hreflang مخفية
+Started: 2026-07-31T10:30:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت brain.md كاملاً (protocol 0.6)
+- حلّلت 20 خطأ من verify3.log: 4 authors/* بلا فهرس، 3 events/* بلا فهرس، رابطا مدونة لحلول غير موجودة، 4 kernel docs ناقصة، blogPath playground، CSS links، canonical quota
+- أنشأت `src/pages/authors/index.astro` + `src/pages/events/index.astro` (CollectionPage schema)
+- أصلحت رابطَي المدونة: agile-ai-governance → ai-governance-platform، big-data-analytics → ai-use-case-discovery
+- أنشأت 4 مستندات: kernel-playground.md, kernel-replay.md, kernel-redteam.md, kernel-models.md
+- أصلحت blogPath للـplayground في kernel.ts + استيراد CSS في redteam/replay + canonical في quota
+- اكتشفت بعد نجاح seo:gate: 44 خطأ hreflang مخفية على 22 صفحة /answer/* و /lp/* (ما عندها hreflang أصلاً) — أضفت getHreflangLinks() للصفحتين
+- لاحظت أن author-post-card و author-title مو معرّفة في pages.css — أضفت أنماط scoped في authors/index.astro
+- npm run build → ✅ sitemap 245 URLs
+- npm run seo:gate → ✅ 0 أخطاء
+- npm run seo:hreflang → ✅ 0 أخطاء (253 sets)
+- npm run verify:all → ✅ exit 0 (pass 16, fail 0)
+
+Stage Summary:
+- الـ 20 خطأ الأصليين صلحتهم كلهم
+- الـ seo:gate كان يحجب 44 خطأ hreflang سابقة على answer/lp — صلحتهم بعد ما انكشفوا
+- النتيجة: verify:all → exit 0 بالكامل
+- المخاطر: الصفحات الجديدة (authors/events/docs) تحتاج sitemap:generate + indexnow بعد الـ deploy

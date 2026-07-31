@@ -51,7 +51,7 @@ const GROUPS: Group[] = [
   { id: 'operations', label: 'التشغيل', slugs: ['index', 'chat', 'scenarios', 'redteam'] },
   { id: 'oversight', label: 'الرقابة', slugs: ['policies', 'audit', 'approvals'] },
   { id: 'proof', label: 'الإثبات', slugs: ['compliance', 'evidence', 'reports', 'stats'] },
-  { id: 'infra', label: 'البنية', slugs: ['connectors'] },
+  { id: 'infra', label: 'البنية', slugs: ['models', 'connectors', 'api'] },
 ];
 
 // صحة كل وحدة (بيانات تجريبية موسومة Demo).
@@ -68,6 +68,8 @@ const HEALTH: Record<string, Health> = {
   reports: 'ok',
   stats: 'ok',
   connectors: 'err',   // موصل فاشل
+  models: 'ok',
+  api: 'ok',
 };
 
 function buildItem(slug: string): SidebarItem | null {

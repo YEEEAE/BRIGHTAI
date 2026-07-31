@@ -106,6 +106,12 @@
     <lastmod>2026-07-29</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/authors/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/authors/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/authors/" />
+    <lastmod>2026-07-25</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/authors/brightai-team/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/authors/brightai-team/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/authors/brightai-team/" />
@@ -936,6 +942,12 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/docs/kernel-models/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-models/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-models/" />
+    <lastmod>2026-07-18</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/docs/kernel-nvidia-proxy/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-nvidia-proxy/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-nvidia-proxy/" />
@@ -954,6 +966,12 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/docs/kernel-playground/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-playground/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-playground/" />
+    <lastmod>2026-07-18</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/docs/kernel-policies/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-policies/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-policies/" />
@@ -964,6 +982,18 @@
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-production-vs-demo/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-production-vs-demo/" />
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/kernel-redteam/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-redteam/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-redteam/" />
+    <lastmod>2026-07-18</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/docs/kernel-replay/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-replay/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-replay/" />
+    <lastmod>2026-07-18</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/docs/kernel-reports/</loc>

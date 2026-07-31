@@ -1,0 +1,120 @@
+---
+/**
+ * Events index — /events/
+ *
+ * Lists every event landing page under /events/. Fixes the broken
+ * breadcrumb link on each event page, which pointed to /events/ while
+ * no index page existed (seo:gate broken-links).
+ *
+ * SEO: emits only a page-specific CollectionPage node. Organization and
+ * BreadcrumbList come from the foundation Schema.astro (BAI-SEO-003-S3 —
+ * do not re-add duplicates).
+ */
+import ArabicLayout from '../../layouts/ArabicLayout.astro';
+import BackgroundGrid from '../../components/BackgroundGrid.astro';
+import { SITE } from '../../data/site';
+
+const events = [
+  {
+    href: '/events/ai-governance-day/',
+    title: 'AI Governance Day — الرياض',
+    icon: 'mdi-calendar-star',
+    badge: 'حدث BrightAI الخاص',
+    desc: 'يوم كامل عن حوكمة الذكاء الاصطناعي في السعودية: جلسات تقنية، طاولة نقاش مع خبراء القطاع، وورشة تطبيقية تبني فيها سجل تدقيق خلال ٩٠ دقيقة.',
+  },
+  {
+    href: '/events/leap-2026/',
+    title: 'BrightAI في LEAP 2026',
+    icon: 'mdi-rocket-launch',
+    badge: 'مؤتمر LEAP الرياض',
+    desc: 'زور جناحنا في أكبر مؤتمر تقني في الشرق الأوسط: demo حي لحوكمة AI مع PDPL وNCA وجلسة عن الامتثال بالسعودية.',
+  },
+  {
+    href: '/events/webinar/',
+    title: 'ويبنار شهري — حوكمة AI',
+    icon: 'mdi-video',
+    badge: 'مجاني — بالعربية',
+    desc: 'جلسة حية كل شهر عن حوكمة الذكاء الاصطناعي في السعودية: من النظرية للتنفيذ، مع demo حي وأسئلة مباشرة.',
+  },
+];
+
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'فعاليات BrightAI',
+  description: 'فعاليات BrightAI: يوم حوكمة AI الرياض، جناح LEAP 2026، والويبنار الشهري عن حوكمة الذكاء الاصطناعي والامتثال في السعودية.',
+  url: `${SITE.url}/events/`,
+  inLanguage: 'ar-SA',
+  isPartOf: { '@id': 'https://brightai.site/#website' },
+  publisher: { '@id': 'https://brightai.site/#organization' },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [collectionLd],
+};
+---
+
+<ArabicLayout
+  title="فعاليات BrightAI | لقاءات وويبنارات حوكمة AI"
+  description="تعرف على فعاليات BrightAI: يوم حوكمة AI الرياض، جناح LEAP 2026، والويبنار الشهري عن حوكمة الذكاء الاصطناعي والامتثال في السعودية."
+  canonical="https://brightai.site/events/"
+  hreflang={[{ lang: 'ar-SA', href: 'https://brightai.site/events/' }, { lang: 'x-default', href: 'https://brightai.site/events/' }]}
+  jsonLd={jsonLd as any}
+  currentPath="/events/"
+  breadcrumbs={[{ name: 'الفعاليات', href: '/events/' }]}
+>
+
+  <section class="page-hero" aria-label="فعاليات BrightAI">
+    <BackgroundGrid />
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <div class="inner-hero__badge">
+        <svg aria-hidden="true" width="1em" height="1em"><use href="/icons.svg#mdi-calendar-star"></use></svg>
+        فعاليات BrightAI
+      </div>
+      <h1 class="page-hero__title"><span class="gradient-text">لقاءات وويبنارات</span> حوكمة AI</h1>
+      <p class="page-hero__description">فعاليات مباشرة عن حوكمة الذكاء الاصطناعي والامتثال بالسعودية: يوم حوكمة AI الرياض، جناحنا في LEAP 2026، والويبنار الشهري.</p>
+    </div>
+  </section>
+
+  <section class="inner-section" aria-labelledby="events-list">
+    <div class="max-w-7xl mx-auto px-5 lg:px-8">
+      <h2 id="events-list" class="inner-section__title">الفعاليات</h2>
+      <div class="grid grid--3">
+        {
+          events.map((e) => (
+            <a href={e.href} class="card card--feature event-card">
+              <div class="avatar-tile avatar-tile--sm avatar-tile--gradient" aria-hidden="true">
+                <svg class="avatar-tile__icon avatar-tile__icon--white" aria-hidden="true" width="1.5rem" height="1.5rem"><use href={`/icons.svg#${e.icon}`} /></svg>
+              </div>
+              <span class="assessment-tag">{e.badge}</span>
+              <h3 class="inner-card__title mt-3">{e.title}</h3>
+              <p class="inner-card__text">{e.desc}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</ArabicLayout>
+
+<style>
+  .assessment-tag {
+    font-size: var(--text-xs);
+    padding: var(--space-0-5) var(--space-2-5);
+    border-radius: var(--radius-lg);
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    color: var(--assessment-tag-color);
+    display: inline-block;
+  }
+  .mt-3 {
+    margin-block-start: var(--space-3);
+  }
+  .event-card {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+</style>

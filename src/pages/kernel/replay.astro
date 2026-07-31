@@ -23,6 +23,7 @@ import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import '../../../kernel/assets/css/pages/replay.css';
 
 const unit = getKernelUnit('replay')!;
 const cross = getCrossLinks(unit);
@@ -85,8 +86,6 @@ const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
   currentPath={unit.path}
   breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: 'آلة الزمن', href: unit.path }]}
 >
-  <link rel="stylesheet" href="/kernel/assets/css/pages/replay.css" />
-
   <div class="rp-page">
     <!-- ═══════════════ رأس الصفحة ═══════════════ -->
     <header class="rp-hero">
