@@ -1168,12 +1168,239 @@
     .voice-wave span:nth-child(3) { animation-delay: 0.2s; height: 6px; }
     @keyframes voiceWave { 0%, 100% { height: 4px; } 50% { height: 12px; } }
 
+    /* ── M14: Governance Strip (PII · Risk · Decision · Trace) ── */
+    .kernel-governance-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      margin-top: var(--space-2);
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.6875rem;
+      line-height: 1.4;
+    }
+    .kernel-governance-strip__item {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+    .kernel-governance-strip__item svg {
+      flex-shrink: 0;
+      color: var(--text-tertiary);
+    }
+    .kernel-governance-strip__item--decision {
+      font-weight: 700;
+    }
+    .kernel-governance-strip__item--decision[data-decision="blocked"] { color: var(--danger); }
+    .kernel-governance-strip__item--decision[data-decision="allowed"] { color: var(--success); }
+    .kernel-governance-strip__item--decision[data-decision="pending_approval"] { color: var(--warning); }
+    .kernel-governance-strip__item--decision[data-decision="masked"] { color: var(--brand); }
+    .kernel-governance-strip__item--trace {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      direction: ltr;
+      unicode-bidi: isolate;
+      color: var(--text-tertiary);
+    }
+
+    /* ── M14: Message Actions (Playground + Evaluation) ── */
+    .kernel-chat-message__actions {
+      display: flex;
+      gap: var(--space-2);
+      margin-top: var(--space-2);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .kernel-chat-message:hover .kernel-chat-message__actions { opacity: 1; }
+    .kernel-chat-message__action {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-tertiary);
+      font-size: 0.6875rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      min-height: 28px;
+      text-decoration: none;
+    }
+    .kernel-chat-message__action:hover {
+      color: var(--brand);
+      border-color: var(--brand);
+      background: rgba(0, 212, 255, 0.06);
+    }
+    .kernel-chat-message__action svg { flex-shrink: 0; }
+
+    /* ── M14: Masked Text Toggle ── */
+    .kernel-chat-message__mask-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-tertiary);
+      font-size: 0.6875rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      margin-top: var(--space-2);
+    }
+    .kernel-chat-message__mask-toggle:hover {
+      color: var(--brand);
+      border-color: var(--brand);
+    }
+    .kernel-chat-message__masked-view {
+      margin-top: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: rgba(0, 212, 255, 0.05);
+      border: 1px solid rgba(0, 212, 255, 0.15);
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+    .kernel-chat-message__masked-label {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-1);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── M14: Safe Phrasing Suggestion ── */
+    .kernel-chat-suggestion {
+      margin-top: var(--space-3);
+      padding: var(--space-3);
+      background: rgba(0, 212, 255, 0.06);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      border-radius: var(--radius-md);
+    }
+    .kernel-chat-suggestion__head {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--brand);
+      margin-bottom: var(--space-2);
+    }
+    .kernel-chat-suggestion__body {
+      margin-bottom: var(--space-2);
+    }
+    .kernel-chat-suggestion__body textarea {
+      width: 100%;
+      background: var(--ink-900);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2) var(--space-3);
+      color: var(--text-primary);
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      resize: vertical;
+      font-family: inherit;
+      direction: rtl;
+    }
+    .kernel-chat-suggestion__actions {
+      display: flex;
+      gap: var(--space-2);
+    }
+    .kernel-chat-suggestion__btn {
+      padding: var(--space-1) var(--space-3);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      min-height: 36px;
+    }
+    .kernel-chat-suggestion__btn:hover {
+      color: var(--text-primary);
+      border-color: var(--text-secondary);
+    }
+    .kernel-chat-suggestion__btn--primary {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: rgba(0, 212, 255, 0.3);
+      color: var(--brand);
+    }
+    .kernel-chat-suggestion__btn--primary:hover {
+      background: rgba(0, 212, 255, 0.2);
+      border-color: var(--brand);
+    }
+    .kernel-chat-suggestion__reason {
+      margin-top: var(--space-2);
+      padding-top: var(--space-2);
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── M14: Attachments ── */
+    .kernel-chat-attachments {
+      margin-top: var(--space-2);
+      padding: var(--space-2) var(--space-3);
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+    }
+    .kernel-chat-attachments__label {
+      font-weight: 600;
+      color: var(--text-tertiary);
+      margin-bottom: var(--space-1);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .kernel-chat-attachment {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 2px 0;
+      color: var(--text-secondary);
+    }
+    .kernel-chat-attachment svg { flex-shrink: 0; color: var(--text-tertiary); }
+    .kernel-chat-attachment__size {
+      font-size: 0.6875rem;
+      color: var(--text-tertiary);
+    }
+    .kernel-chat-attachment__warn {
+      font-size: 0.6875rem;
+      color: var(--warning);
+      font-weight: 600;
+    }
+    .kernel-chat-attachment__status {
+      font-size: 0.6875rem;
+      font-weight: 600;
+    }
+    .kernel-chat-attachment--safe .kernel-chat-attachment__status { color: var(--success); }
+    .kernel-chat-attachment--unsafe .kernel-chat-attachment__status { color: var(--danger); }
+
+    /* ── M14: Evaluation Case Badge ── */
+    .kernel-chat-message[data-evaluation-ready="true"] .kernel-chat-message__meta::after {
+      content: ' · قابل للتحويل لتقييم';
+      color: var(--brand);
+      font-size: 0.625rem;
+    }
+
     /* ── Streaming cursor ── */
     .stream-cursor { display: inline-block; width: 2px; height: 1em; background: var(--brand); margin-inline-start: 2px; animation: blink 0.8s infinite; vertical-align: text-bottom; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
     /* ── Mobile improvements ── */
     @media (max-width: 768px) {
-      .msg-actions { opacity: 1; }
-      .thinking-step-time { display: none; }
+      .kernel-chat-message__actions { opacity: 1; }
+      .kernel-governance-strip { gap: var(--space-1); font-size: 0.625rem; }
+      .kernel-chat-suggestion__actions { flex-direction: column; }
     }

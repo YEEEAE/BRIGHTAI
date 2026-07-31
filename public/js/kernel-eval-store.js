@@ -31,6 +31,10 @@
   var PREFIX_TRACE = 'AI';
   var PREFIX_CERT = 'CERT';
 
+  // إصدار runtime المُعلَن — يُختم على كل Run للـ provenance (Prompt 12).
+  // يُحدَّث يدويًا مع كل تغيير جوهري في محرّك التقييم.
+  var RUNTIME_VERSION = 'kernel-eval-1.0.0';
+
   /* ── أدوات مساعدة ────────────────────────────────────────────────── */
   function pad(num, len) {
     return String(num).padStart(len, '0');
@@ -51,14 +55,30 @@
 
   function nowIso() { return new Date().toISOString(); }
 
-  /** Hash بسيط للبيانات التجريبية (تتطلب SHA-256 من المتصفح أو تعويض). */
+  /**
+   * Hash بسيط (FNV-1a) — يُستعمل كـ fallback لو KernelHash ما تحمّل بعد.
+   * عادي إنه ما يستعمله أحد فعليًا بعد ربط createRun بـ KernelHash: كل الهاشات
+   * الحتمية تمر عبر window.KernelHash.{inputHash,outputHash,runHash}.
+   */
   function simpleHash(str) {
+    var s = String(str == null ? '' : str);
     var h = 2166136261;
-    for (var i = 0; i < str.length; i += 1) {
-      h ^= str.charCodeAt(i);
+    for (var i = 0; i < s.length; i += 1) {
+      h ^= s.charCodeAt(i);
       h = Math.imul(h, 16777619);
     }
     return '0x' + (h >>> 0).toString(16).padStart(8, '0');
+  }
+
+  /** يرجّع KernelHash إن تحمّل، وإلا fallback. يحدّث في init(). */
+  function H() {
+    return (window.KernelHash) || {
+      fnv1a: simpleHash,
+      inputHash: function (t) { return simpleHash('INPUT' + t); },
+      outputHash: function (r) { return simpleHash('OUTPUT' + JSON.stringify(r)); },
+      runHash: function (i, o) { return simpleHash('RUN' + i + o); },
+      canonicalizeSetup: function () { return ''; },
+    };
   }
 
   /* ── الحالة ──────────────────────────────────────────────────────── */
@@ -138,34 +158,53 @@
     return state.runs.find(function (r) { return r.id === id; }) || null;
   }
 
-  /** ينشئ Run جديد (version 1، draft، غير منشور). */
+  /**
+   * ينشئ Run جديد (version 1، draft، غير منشور).
+   *
+   * الهاشات حتمية 100% عبر window.KernelHash (لا now، لا Math.random).
+   * لازم draft يمرّر: inputText (النص الخام) و result (ناتج analyze) عشان
+   * نحسب الهاشات صح. الـ caller (kernel-playground) يمرّرهم دائمًا.
+   */
   function createRun(draft) {
     assertSetup(draft && draft.setup);
+    var hash = H();
     var now = nowIso();
+    var setup = {
+      dataset: Object.assign({}, draft.setup.dataset),
+      model: Object.assign({}, draft.setup.model),
+      prompt: Object.assign({}, draft.setup.prompt),
+      policy: Object.assign({}, draft.setup.policy),
+      scorers: draft.setup.scorers.map(function (s) { return Object.assign({}, s); }),
+      environment: draft.setup.environment,
+      provider: draft.setup.provider,
+      seed: draft.setup.seed,
+      temperature: draft.setup.temperature,
+      topP: draft.setup.topP,
+    };
+    var inputText = draft.inputText != null ? String(draft.inputText) : '';
+    // الهاشات الحتمية — لو الـ caller مرّرها مسبقًا نحترمها (مفيد للاختبارات)
+    var inputH = draft.inputHash || hash.inputHash(inputText, setup);
+    var outputH = draft.outputHash || (draft.result ? hash.outputHash(draft.result) : '');
+    var runH = draft.runHash || hash.runHash(inputH, outputH, setup);
     var run = {
       id: makeId(PREFIX_RUN),
       evaluationId: draft.evaluationId || makeId('EVALID'),
       name: draft.name || 'تقييم جديد',
       status: draft.status || 'review',
-      setup: {
-        dataset: Object.assign({}, draft.setup.dataset),
-        model: Object.assign({}, draft.setup.model),
-        prompt: Object.assign({}, draft.setup.prompt),
-        policy: Object.assign({}, draft.setup.policy),
-        scorers: draft.setup.scorers.map(function (s) { return Object.assign({}, s); }),
-        environment: draft.setup.environment,
-        provider: draft.setup.provider,
-        seed: draft.setup.seed,
-        temperature: draft.setup.temperature,
-        topP: draft.setup.topP,
-      },
+      setup: setup,
       published: false,
       version: 1,
       startedAt: draft.startedAt || now,
       finishedAt: draft.finishedAt,
-      inputHash: draft.inputHash || simpleHash((draft.inputText || '') + now),
-      outputHash: draft.outputHash || '',
-      runHash: draft.runHash || simpleHash(now + Math.random()),
+      inputHash: inputH,
+      outputHash: outputH,
+      runHash: runH,
+      // Provenance كامل (Prompt 12) — runtime + prompt hash.
+      runtimeVersion: draft.runtimeVersion || RUNTIME_VERSION,
+      promptVersionHash: draft.promptVersionHash || hash.fnv1a(setup.prompt && setup.prompt.id || ''),
+      // ربط Replay: parentRunId + reproducibility تنسخ من draft فقط (لا تخمين).
+      parentRunId: draft.parentRunId,
+      reproducibility: draft.reproducibility,
       cost: draft.cost || { inputTokens: 0, outputTokens: 0, providerCostSar: 0, scorerCostSar: 0, toolCostSar: 0, totalCostSar: 0 },
       timing: draft.timing || { piiScanMs: 0, riskScoreMs: 0, policyMs: 0, providerMs: 0, scoringMs: 0, totalMs: 0, p50Ms: 0, p95Ms: 0, p99Ms: 0 },
       traces: draft.traces || [],
@@ -204,9 +243,13 @@
   function publishRun(id) {
     var idx = state.runs.findIndex(function (r) { return r.id === id; });
     if (idx === -1) throw new Error('kernel-eval-store: Run غير موجود (' + id + ')');
+    var hash = H();
     var run = state.runs[idx];
     if (run.published) return run;
-    run.runHash = run.runHash || simpleHash(JSON.stringify(run.setup) + nowIso());
+    // runHash حتمي بدل simpleHash(now + random) القديم.
+    if (!run.runHash) {
+      run.runHash = hash.runHash(run.inputHash, run.outputHash, run.setup);
+    }
     var published = Object.assign({}, run, { published: true, updatedAt: nowIso() });
     state.runs[idx] = published;
     persist();
@@ -216,10 +259,14 @@
   /**
    * ينشئ نسخة جديدة (version + 1) من Run منشور — الأصل يبقى كما هو.
    * النسخة الجديدة draft قابلة للتعديل.
+   *
+   * ملاحظة: cloneRun ليست Replay. هذي نسخة عادية للتعديل، ما تحمل parentRunId.
+   * للإعادة التشغيلية استعمل replayRun().
    */
   function cloneRun(id) {
     var run = findRun(id);
     if (!run) throw new Error('kernel-eval-store: Run غير موجود (' + id + ')');
+    var hash = H();
     var now = nowIso();
     var clone = Object.assign({}, run, {
       id: makeId(PREFIX_RUN),
@@ -229,7 +276,11 @@
       startedAt: now,
       finishedAt: undefined,
       runHash: '',
+      outputHash: '',
       certificateId: undefined,
+      // نسخة عادية، ليست Replay — ما فيها parent ولا reproducibility.
+      parentRunId: undefined,
+      reproducibility: undefined,
       createdAt: now,
       updatedAt: now,
     });
@@ -237,6 +288,116 @@
     persist();
     return clone;
   }
+
+  /* ── Replay (M11 — Prompt 12) ────────────────────────────────────── */
+
+  /**
+   * يجهّز draft لإعادة تشغيل Run موجود. ما يعدّل الأصل إطلاقًا (Prompt 12:
+   * «لا تعدل Run قديم»). الـ caller (kernel-playground / kernel-replay)
+   * يأخذ draft يُعيد تنفيذه ثم يستدعي finalizeReplay.
+   *
+   * mode:
+   *   - 'full'         : إعادة تشغيل كامل بنفس setup (expected → exact-match
+   *                      أو stochastic-variance).
+   *   - 'failed'       : إعادة الحالة الفاشلة فقط (يحتفظ بنفس setup؛ المعنى
+   *                      هنا تشغيلي — ما في محرك دفعي بعد، فـ failed ≈ full).
+   *   - 'config'       : إعادة بإعداد مختلف — overrides تُدمج فوق setup الأصل.
+   *
+   * overrides (اختياري): patch فوق setup — مثلاً { seed, temperature, model }.
+   *   أي override يُسجّل تلقائيًا كسبب اختلاف في diffReason عند المقارنة.
+   */
+  function replayRun(id, opts) {
+    var run = findRun(id);
+    if (!run) throw new Error('kernel-eval-store: Run غير موجود (' + id + ')');
+    var mode = (opts && opts.mode) || 'full';
+    if (['full', 'failed', 'config'].indexOf(mode) === -1) {
+      throw new Error('kernel-eval-store: mode غير صالح (' + mode + ')');
+    }
+    var overrides = (opts && opts.overrides) || {};
+    // ننسخ setup الأصل ثم نطبّق overrides فوقه (shallow + scorers deep copy).
+    var baseSetup = run.setup;
+    var mergedSetup = {
+      dataset: Object.assign({}, baseSetup.dataset, overrides.dataset || {}),
+      model: Object.assign({}, baseSetup.model, overrides.model || {}),
+      prompt: Object.assign({}, baseSetup.prompt, overrides.prompt || {}),
+      policy: Object.assign({}, baseSetup.policy, overrides.policy || {}),
+      scorers: Array.isArray(overrides.scorers)
+        ? overrides.scorers.map(function (s) { return Object.assign({}, s); })
+        : baseSetup.scorers.map(function (s) { return Object.assign({}, s); }),
+      environment: overrides.environment || baseSetup.environment,
+      provider: overrides.provider || baseSetup.provider,
+      seed: overrides.seed != null ? overrides.seed : baseSetup.seed,
+      temperature: overrides.temperature != null ? overrides.temperature : baseSetup.temperature,
+      topP: overrides.topP != null ? overrides.topP : baseSetup.topP,
+    };
+    // نرجّع draft مُجمّع — الـ caller يكمل التنفيذ وينادي finalizeReplay.
+    return {
+      _isReplayDraft: true,
+      parentRunId: run.id,
+      mode: mode,
+      parentSetup: baseSetup,
+      setup: mergedSetup,
+      name: 'إعادة تشغيل ← ' + (run.name || run.id),
+      // يُملأ لاحقًا بـ createRun: inputText + result + هاشات.
+    };
+  }
+
+  /**
+   * يختم نتيجة Replay: ينشئ Run جديد بـ parentRunId، يحفظه، ويربط نتيجة
+   * المقارنة (reproducibility). ما يلمس الأصل.
+   *
+   * reproducibility (اختياري): إن مرّرها الـ caller (محسوبة من kernel-replay
+   * classify) نحفظها؛ وإلا نتركها فاردة (يحسبها لاحقًا من يعرضها).
+   */
+  function finalizeReplay(draft, reproducibility) {
+    if (!draft || !draft._isReplayDraft) {
+      throw new Error('kernel-eval-store: finalizeReplay يتطلب draft من replayRun()');
+    }
+    var created = createRun({
+      name: draft.name,
+      setup: draft.setup,
+      status: 'review',
+      inputText: draft.inputText,
+      result: draft.result,
+      // هاشات تُحسب داخل createRun حتميًا.
+      parentRunId: draft.parentRunId,
+      reproducibility: reproducibility || undefined,
+    });
+    return created;
+  }
+
+  /**
+   * يرجّع Runs قابلة لإعادة التشغيل: مكتملة أو منشورة (ما في فايدة نعيد
+   * تشغيل شيء ناقص ما اكتمل أصلاً).
+   */
+  function listReplayableRuns() {
+    return state.runs.filter(function (r) {
+      return r.status === 'complete' || r.published;
+    }).slice();
+  }
+
+  /**
+   * يبني سلسلة النسب (lineage): من Run الحالي لأبعد أب عبر parentRunId.
+   * مفيد للعرض («هذا Replay من EVAL-…0005 اللي هو Replay من EVAL-…0001»).
+   */
+  function getRunLineage(id) {
+    var lineage = [];
+    var seen = Object.create(null);
+    var curId = id;
+    var guard = 0;
+    while (curId && !seen[curId] && guard < 32) {
+      seen[curId] = true;
+      var r = findRun(curId);
+      if (!r) break;
+      lineage.push({ id: r.id, name: r.name, status: r.status, published: r.published, createdAt: r.createdAt });
+      curId = r.parentRunId;
+      guard += 1;
+    }
+    return lineage;
+  }
+
+  /** يرجّع إصدار runtime المُعلَن (للعرض + الاختبارات). */
+  function getRuntimeVersion() { return RUNTIME_VERSION; }
 
   /* ── Datasets ────────────────────────────────────────────────────── */
   function listDatasets() {
@@ -287,13 +448,19 @@
       updateRun: updateRun,
       publishRun: publishRun,
       cloneRun: cloneRun,
+      // M11 — Replay & Reproducibility
+      replayRun: replayRun,
+      finalizeReplay: finalizeReplay,
+      listReplayableRuns: listReplayableRuns,
+      getRunLineage: getRunLineage,
+      getRuntimeVersion: getRuntimeVersion,
       listDatasets: listDatasets,
       getDataset: getDataset,
       addDataset: addDataset,
       getTrace: getTrace,
       getCertificate: getCertificate,
       addCertificate: addCertificate,
-      _debug: function () { return { state: state, persist: persist }; },
+      _debug: function () { return { state: state, persist: persist, runtime: RUNTIME_VERSION }; },
     };
   }
 

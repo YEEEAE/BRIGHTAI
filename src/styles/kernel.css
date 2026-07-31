@@ -3252,6 +3252,22 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   line-height: 1.5;
 }
 
+.kernel-chat-policy-banner__close {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+.kernel-chat-policy-banner__close:hover { color: var(--text-primary); }
+.kernel-chat-policy-banner__close svg { width: 16px; height: 16px; }
+
 /* RIGHT — Context panel */
 .kernel-chat-context-card {
   background: linear-gradient(135deg, rgba(45,212,167,0.1) 0%, rgba(19,28,48,0.6) 100%);

@@ -993,6 +993,147 @@ html[dir='rtl'] .pg-toggle[aria-checked='true']::after { transform: translateX(-
 .pg-recipe-card__title { font-size: var(--text-xs); font-weight: var(--font-semibold); color: var(--text); }
 .pg-recipe-card__meta { font-size: 10px; color: var(--text-soft); }
 
+/* ═══ M10: لوحة المقارنة A/B ═══ */
+.pg-compare-fab {
+  position: fixed;
+  inset-block-end: var(--space-6);
+  inset-inline-start: var(--space-6);
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-full);
+  background: var(--indigo-400, #818cf8);
+  color: #04121a;
+  border: none;
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.pg-compare-fab:hover,
+.pg-compare-fab:focus-visible { background: var(--brand); outline: none; }
+
+.pg-compare-panel {
+  position: fixed;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 96;
+  width: min(720px, 94vw);
+  max-height: 86vh;
+  overflow-y: auto;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.pg-compare-panel[hidden] { display: none; }
+.pg-compare-head { display: flex; align-items: center; justify-content: space-between; }
+.pg-compare-title { margin: 0; font-size: var(--text-md); }
+.pg-compare-close {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-soft);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.pg-compare-close:hover { color: var(--brand); border-color: var(--brand); }
+.pg-compare-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 18, 26, 0.6);
+  z-index: 95;
+}
+.pg-compare-backdrop[hidden] { display: none; }
+
+/* إعدادات المقارنة */
+.pg-cmp-config { display: flex; flex-direction: column; gap: var(--space-2); }
+.pg-cmp-field { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--text-xs); color: var(--text); }
+.pg-cmp-field[hidden] { display: none; }
+.pg-cmp-field select,
+.pg-cmp-field textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-elevated, var(--bg-surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  font-size: var(--text-xs);
+  min-height: 44px;
+}
+.pg-cmp-field textarea { min-height: 80px; resize: vertical; }
+
+/* نتائج المقارنة */
+.pg-cmp-results { display: flex; flex-direction: column; gap: var(--space-3); }
+.pg-cmp-head { display: flex; align-items: center; justify-content: space-between; }
+.pg-cmp-title { margin: 0; font-size: var(--text-md); }
+.pg-cmp-overall {
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  border: 1px solid var(--border);
+}
+.pg-cmp-overall--a { background: rgba(34, 197, 94, 0.15); border-color: var(--status-success); color: var(--status-success); }
+.pg-cmp-overall--b { background: rgba(129, 140, 248, 0.15); border-color: var(--indigo-400, #818cf8); color: var(--indigo-400, #818cf8); }
+.pg-cmp-overall--none { background: rgba(148, 163, 184, 0.1); border-color: var(--border); color: var(--text-soft); }
+
+.pg-cmp-fairness {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  font-size: var(--text-xs);
+  color: var(--status-warning);
+}
+.pg-cmp-fairness--ok { background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3); color: var(--status-success); }
+.pg-cmp-fairness__title { font-weight: var(--font-bold); margin-bottom: var(--space-1); }
+.pg-cmp-fairness__item { font-size: var(--text-xs); }
+
+.pg-cmp-side { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+.pg-cmp-side__col { border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-2); font-size: var(--text-xs); }
+.pg-cmp-side__title { font-size: var(--text-xs); font-weight: var(--font-semibold); color: var(--text-soft); margin-bottom: var(--space-2); }
+
+.pg-cmp-table { width: 100%; border-collapse: collapse; font-size: var(--text-xs); }
+.pg-cmp-table th,
+.pg-cmp-table td { text-align: start; padding: var(--space-2); border-bottom: 1px solid var(--border); }
+.pg-cmp-table th { color: var(--text-soft); font-weight: var(--font-semibold); }
+.pg-cmp-metric { color: var(--text-soft); }
+.pg-cmp-win { background: rgba(34, 197, 94, 0.12); font-weight: var(--font-bold); }
+.pg-cmp-badge { color: var(--status-success); }
+
+.pg-cmp-critical {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-size: var(--text-xs);
+  color: var(--status-danger);
+}
+.pg-cmp-changed {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  font-size: var(--text-xs);
+  color: var(--indigo-400, #818cf8);
+}
+.pg-cmp-tradeoffs { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--text-xs); }
+.pg-cmp-tradeoffs__title { font-weight: var(--font-bold); color: var(--text-soft); }
+.pg-cmp-tradeoffs__item { color: var(--text); }
+.pg-cmp-traces { display: flex; gap: var(--space-3); font-size: var(--text-xs); color: var(--text-soft); flex-wrap: wrap; }
+.pg-cmp-trace { font-family: var(--font-mono, ui-monospace, monospace); color: var(--brand); text-decoration: none; }
+.pg-cmp-trace:hover { text-decoration: underline; }
+.pg-cmp-actions { display: flex; gap: var(--space-2); }
+
 /* ═══ التعليمي ═══ */
 .pg-tour-backdrop {
   position: fixed;

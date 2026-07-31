@@ -936,6 +936,12 @@
     <lastmod>2026-07-15</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/docs/kernel-eval/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-eval/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-eval/" />
+    <lastmod>2026-07-18</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/docs/kernel-evidence/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-evidence/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-evidence/" />
@@ -1017,7 +1023,7 @@
     <loc>https://brightai.site/docs/kernel-scorers/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-scorers/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-scorers/" />
-    <lastmod>2026-07-18</lastmod>
+    <lastmod>2026-07-31</lastmod>
   </url>
   <url>
     <loc>https://brightai.site/docs/kernel-security-model/</loc>
@@ -1234,6 +1240,12 @@
     <loc>https://brightai.site/kernel/datasets/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/datasets/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/datasets/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/kernel/eval/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/eval/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/eval/" />
     <lastmod>2026-07-30</lastmod>
   </url>
   <url>

@@ -400,7 +400,9 @@ function groupRelPath(relPath) {
        normalized === "kernel/datasets.html" ||
        normalized === "kernel/datasets/index.html" ||
        normalized === "kernel/scorers.html" ||
-       normalized === "kernel/scorers/index.html"
+       normalized === "kernel/scorers/index.html" ||
+       normalized === "kernel/eval.html" ||
+       normalized === "kernel/eval/index.html"
      ) {
       return "kernel";
     }

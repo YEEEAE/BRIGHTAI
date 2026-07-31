@@ -394,3 +394,68 @@ export const PLAYGROUND_LIMITS = {
   /** Maximum requests per session (polite limit). */
   maxRequests: 25,
 } as const;
+
+// ── M10: أنواع المقارنة A/B ──────────────────────────────────────────────────
+
+export interface ComparisonType {
+  id: string;
+  /** Arabic label (Saudi dialect). */
+  label: string;
+  /** Short description. */
+  description: string;
+}
+
+export const COMPARISON_TYPES: ComparisonType[] = [
+  { id: 'model',       label: 'Model A vs Model B',       description: 'نفس الطلب على نموذجين مختلفين.' },
+  { id: 'prompt',      label: 'Prompt A vs Prompt B',     description: 'نصّان مختلفان على نفس الإعدادات.' },
+  { id: 'policy',      label: 'Policy A vs Policy B',     description: 'مجموعتا سياسات مختلفتان على نفس النص.' },
+  { id: 'deployment',  label: 'Cloud vs Local',           description: 'نفس النص على سحابي مقابل محلي.' },
+  { id: 'redaction',   label: 'Before/After Redaction',   description: 'النص الأصلي مقابل النص بعد التعمية.' },
+  { id: 'version',     label: 'Previous vs Current',      description: 'الإصدار السابق مقابل الحالي من السياسات.' },
+];
+
+// ── M10: مقاييس المقارنة ─────────────────────────────────────────────────────
+
+export interface ComparisonMetric {
+  id: string;
+  /** Arabic label (Saudi dialect). */
+  label: string;
+  /** Category: core / quality / security / cost / perf. */
+  category: string;
+  /** Lower is better? (e.g. cost, latency, failures). */
+  lowerIsBetter: boolean;
+}
+
+export const COMPARISON_METRICS: ComparisonMetric[] = [
+  { id: 'overall',      label: 'Overall',        category: 'core',     lowerIsBetter: false },
+  { id: 'quality',      label: 'Quality',        category: 'quality',  lowerIsBetter: false },
+  { id: 'hallucination',label: 'Hallucination',  category: 'quality',  lowerIsBetter: true },
+  { id: 'security',     label: 'Security',       category: 'security', lowerIsBetter: false },
+  { id: 'pii',          label: 'PII',            category: 'security', lowerIsBetter: false },
+  { id: 'compliance',   label: 'Compliance',     category: 'security', lowerIsBetter: false },
+  { id: 'cost',         label: 'Cost',           category: 'cost',     lowerIsBetter: true },
+  { id: 'latency',      label: 'Latency',        category: 'perf',     lowerIsBetter: true },
+  { id: 'p50',          label: 'P50',            category: 'perf',     lowerIsBetter: true },
+  { id: 'p95',          label: 'P95',            category: 'perf',     lowerIsBetter: true },
+  { id: 'failures',     label: 'Failures',       category: 'core',     lowerIsBetter: true },
+];
+
+// ── M10: عناصر العدالة (للمقارنة العادلة) ────────────────────────────────────
+
+export interface FairnessField {
+  id: string;
+  /** Arabic label (Saudi dialect). */
+  label: string;
+  /** Whether a mismatch between A and B is a warning. */
+  critical: boolean;
+}
+
+export const COMPARISON_FAIRNESS_FIELDS: FairnessField[] = [
+  { id: 'dataset',      label: 'Dataset version',  critical: true },
+  { id: 'caseOrder',    label: 'Case order',       critical: true },
+  { id: 'scorers',      label: 'Scorers',          critical: true },
+  { id: 'context',      label: 'Context',          critical: true },
+  { id: 'privacy',      label: 'Privacy settings', critical: true },
+  { id: 'temperature',  label: 'Temperature',      critical: true },
+  { id: 'attempts',     label: 'Number of attempts', critical: true },
+];

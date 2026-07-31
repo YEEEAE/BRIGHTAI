@@ -1043,6 +1043,76 @@
     const diffBtn = $('#pg-diff-toggle');
     if (diffBtn) diffBtn.addEventListener('click', () => toggleDiff(root));
 
+    // ═══ M10: ربط لوحة المقارنة A/B ═══
+    const cmpPanel = $('#pg-compare-panel');
+    const cmpOpenBtn = $('#pg-compare-open');
+    const cmpRunBtn = $('#pg-compare-run');
+    const cmpTypeSel = $('#pg-compare-type');
+    const cmpModelASel = $('#pg-compare-model-a');
+    const cmpModelBSel = $('#pg-compare-model-b');
+    const cmpPromptB = $('#pg-compare-prompt-b');
+    const cmpPolicyB = $('#pg-compare-policy-b');
+    const cmpDeployBSel = $('#pg-compare-deploy-b');
+    const cmpVersionBSel = $('#pg-compare-version-b');
+
+    // فتح/إغلاق لوحة المقارنة
+    const cmpCloseBtn = $('#pg-compare-close');
+    const cmpBackdrop = $('#pg-compare-backdrop');
+    if (cmpOpenBtn && cmpPanel) {
+      cmpOpenBtn.addEventListener('click', () => { cmpPanel.hidden = !cmpPanel.hidden; });
+    }
+    if (cmpCloseBtn && cmpPanel) {
+      cmpCloseBtn.addEventListener('click', () => { cmpPanel.hidden = true; });
+    }
+    if (cmpBackdrop && cmpPanel) {
+      cmpBackdrop.addEventListener('click', () => { cmpPanel.hidden = true; });
+    }
+
+    // تعبئة قوائم النماذج في لوحة المقارنة
+    if (cmpModelASel && cmpModelBSel && CFG.models) {
+      const opts = CFG.models.map((m) => `<option value="${m.id}">${m.name}</option>`).join('');
+      cmpModelASel.innerHTML = opts;
+      cmpModelBSel.innerHTML = opts;
+      cmpModelASel.value = 'jais';
+      cmpModelBSel.value = 'gpt-4o';
+    }
+
+    // تعبئة قائمة السياسات في لوحة المقارنة (Policy B)
+    if (cmpPolicyB && CFG.policies) {
+      cmpPolicyB.innerHTML = CFG.policies.map((p) => `<option value="${p.id}">${p.name}</option>`).join('');
+    }
+
+    // إظهار/إخفاء الحقول حسب نوع المقارنة
+    function updateCompareFields() {
+      const type = cmpTypeSel ? cmpTypeSel.value : 'model';
+      const modelFields = cmpModelASel && cmpModelBSel ? cmpModelASel.closest('.pg-cmp-field') : null;
+      const promptField = cmpPromptB ? cmpPromptB.closest('.pg-cmp-field') : null;
+      const policyField = cmpPolicyB ? cmpPolicyB.closest('.pg-cmp-field') : null;
+      const deployField = cmpDeployBSel ? cmpDeployBSel.closest('.pg-cmp-field') : null;
+      const versionField = cmpVersionBSel ? cmpVersionBSel.closest('.pg-cmp-field') : null;
+      if (modelFields) modelFields.hidden = !['model', 'deployment'].includes(type);
+      if (promptField) promptField.hidden = type !== 'prompt';
+      if (policyField) policyField.hidden = type !== 'policy';
+      if (deployField) deployField.hidden = type !== 'deployment';
+      if (versionField) versionField.hidden = type !== 'version';
+    }
+    if (cmpTypeSel) cmpTypeSel.addEventListener('change', updateCompareFields);
+    updateCompareFields();
+
+    // تشغيل المقارنة
+    if (cmpRunBtn) cmpRunBtn.addEventListener('click', () => {
+      const type = cmpTypeSel ? cmpTypeSel.value : 'model';
+      const settings = {
+        modelA: cmpModelASel ? cmpModelASel.value : 'jais',
+        modelB: cmpModelBSel ? cmpModelBSel.value : 'gpt-4o',
+        promptB: cmpPromptB ? cmpPromptB.value : '',
+        policyB: cmpPolicyB ? Array.from(cmpPolicyB.selectedOptions).map((o) => o.value) : [],
+        deploymentB: cmpDeployBSel ? cmpDeployBSel.value : 'محلي',
+        versionB: cmpVersionBSel ? cmpVersionBSel.value : 'previous',
+      };
+      runComparison(type, settings);
+    });
+
     // كتاب الوصفات
     const fab = $('#pg-recipe-fab'), panel = $('#pg-recipe-panel');
     if (fab && panel) {
@@ -1125,6 +1195,386 @@
     // اعرض/أخفِ المقارنة فورًا حسب آخر نتيجة (وإلا تظهر مع أول تشغيل بعد التفعيل).
     if (lastResult) renderDiffSummary(lastResult.r, lastResult.ctx);
     announce(on ? 'إيقاف وضع الفرق.' : 'تفعيل وضع الفرق — شغّل وشوف A مقابل B.');
+  }
+
+  // ═══════════════════ M10: محرك المقارنة A/B الشامل ═══════════════════
+
+  // ── بناء إعدادات A و B حسب نوع المقارنة ──────────────────────────────────
+  function buildComparisonConfig(ctx, cmpType, cmpSettings) {
+    const base = { ...ctx };
+    const A = { ...base };
+    const B = { ...base };
+
+    // إعدادات المقارنة من لوحة M10 (إن وُجدت)
+    const s = cmpSettings || {};
+    const modelA = s.modelA || 'jais';
+    const modelB = s.modelB || 'gpt-4o';
+    const promptB = s.promptB || '';
+    const policyB = s.policyB || [];
+    const deploymentB = s.deploymentB || 'محلي';
+    const versionB = s.versionB || 'previous';
+
+    switch (cmpType) {
+      case 'model':
+        A.model = modelA;
+        B.model = modelB;
+        break;
+      case 'prompt':
+        // A = النص الحالي، B = نص بديل (من لوحة M10)
+        B.text = promptB || ctx.text;
+        B.conversation = promptB || ctx.conversation;
+        break;
+      case 'policy':
+        // A = السياسات الحالية، B = مجموعة سياسات بديلة
+        B.activePolicies = policyB.length ? policyB : ctx.activePolicies;
+        break;
+      case 'deployment':
+        A.deployment = 'سحابي';
+        B.deployment = deploymentB;
+        // في المقارنة السحابي/المحلي نختار نموذجين: سحابي ومحلي
+        A.model = modelA;
+        B.model = modelB;
+        break;
+      case 'redaction':
+        // A = النص الأصلي (بدون تعمية)، B = النص بعد التعمية
+        // نعطّل كل سياسات التعمية في A عشان نشوف النص الخام
+        A.activePolicies = [];
+        B.activePolicies = ctx.activePolicies;
+        break;
+      case 'version':
+        // A = الإصدار الحالي، B = الإصدار السابق (سياسات أقل صرامة)
+        if (versionB === 'previous') {
+          // الإصدار السابق: نعطّل السياسات الأحدث (SDAIA, ISO42001, passport)
+          B.activePolicies = ctx.activePolicies.filter((id) => !['pr_sdaia_draft', 'pr_iso42001_transparency', 'pr_passport_mask'].includes(id));
+        }
+        break;
+      default:
+        break;
+    }
+    return { A, B };
+  }
+
+  // ── التحقق من العدالة (نفس dataset, case order, scorers, context, privacy, temperature, attempts) ──
+  function checkFairness(ctxA, ctxB, cmpType) {
+    const warnings = [];
+    const fields = (CFG.fairnessFields || []);
+
+    // Dataset version
+    if (ctxA.dataset !== ctxB.dataset) {
+      warnings.push({ id: 'dataset', label: 'Dataset version', detail: `${ctxA.dataset} ≠ ${ctxB.dataset}`, critical: true });
+    }
+    // Case order — نفس النص = نفس الترتيب
+    if (ctxA.conversation !== ctxB.conversation) {
+      warnings.push({ id: 'caseOrder', label: 'Case order', detail: 'النص يختلف بين A و B', critical: true });
+    }
+    // Scorers — نفس المقيمين (ثابت في المحرك)
+    // Context
+    const ctxKeys = ['sector', 'department', 'role', 'sensitivity', 'pack'];
+    ctxKeys.forEach((k) => {
+      if (ctxA[k] !== ctxB[k]) {
+        warnings.push({ id: 'context', label: 'Context', detail: `${k}: ${ctxA[k]} ≠ ${ctxB[k]}`, critical: true });
+      }
+    });
+    // Privacy settings — نفس إعدادات الخصوصية (ثابتة في المحرك)
+    // Temperature — من الإعدادات
+    const tempA = readSettings().temperature;
+    const tempB = readSettings().temperature;
+    if (tempA !== tempB) {
+      warnings.push({ id: 'temperature', label: 'Temperature', detail: `${tempA} ≠ ${tempB}`, critical: true });
+    }
+    // Number of attempts — نفس عدد المحاولات (ثابت = 1)
+    // Privacy — نفس إعدادات الخصوصية (ثابتة)
+
+    // ملاحظة: في أنواع معينة الاختلاف مقصود (prompt, policy, deployment, redaction, version)
+    // فلا نعتبرها warning بل نذكرها كـ "اختلاف مقصود"
+    const intentional = ['prompt', 'policy', 'deployment', 'redaction', 'version'].includes(cmpType);
+    if (intentional) {
+      // نزيل warnings المتعلقة بالاختلاف المقصود
+      const intentionalIds = {
+        prompt: ['caseOrder'],
+        policy: ['context'],
+        deployment: ['context'],
+        redaction: ['caseOrder'],
+        version: ['context'],
+      }[cmpType] || [];
+      return warnings.filter((w) => !intentionalIds.includes(w.id));
+    }
+    return warnings;
+  }
+
+  // ── حساب المقاييس الكاملة ─────────────────────────────────────────────────
+  function computeMetrics(r) {
+    const metrics = {};
+    const out = r.outputScore || [];
+    const outAvg = out.length ? Math.round(out.reduce((s, o) => s + o.score * (o.weight || 1), 0) / Math.max(1, out.reduce((s, o) => s + (o.weight || 1), 0))) : 0;
+
+    // Overall — درجة الأمان
+    metrics.overall = r.certificate.score;
+
+    // Quality — متوسط مقيمات الجودة (accuracy + hallucination)
+    const qualityScores = out.filter((o) => ['accuracy', 'hallucination'].includes(o.category));
+    metrics.quality = qualityScores.length ? Math.round(qualityScores.reduce((s, o) => s + o.score, 0) / qualityScores.length) : outAvg;
+
+    // Hallucination — من مقيم الهلوسة (كلما قل أفضل)
+    const hall = out.find((o) => o.id === 'sc_hallucination');
+    metrics.hallucination = hall ? hall.score : 100 - ((r.trace ? parseInt(r.trace.slice(3), 10) : 0) % 6);
+
+    // Security — من مقيم PII + درجة المخاطر
+    const piiSc = out.find((o) => o.id === 'sc_pii_leak');
+    metrics.security = piiSc ? piiSc.score : (r.verdict === 'block' ? 40 : 100);
+    metrics.pii = piiSc ? piiSc.score : metrics.security;
+
+    // Compliance — من مقيم الامتثال
+    const comp = out.find((o) => o.id === 'sc_compliance');
+    metrics.compliance = comp ? comp.score : (r.verdict === 'allow' ? 100 : 60);
+
+    // Cost — بالهللة
+    metrics.cost = r.cost;
+
+    // Latency — بالمللي
+    metrics.latency = r.totalMs;
+
+    // P50/P95 — تقدير حتمي من الزمن الكلي
+    metrics.p50 = Math.round(r.totalMs * 0.92);
+    metrics.p95 = Math.round(r.totalMs * 1.35);
+
+    // Failures — عدد المراحل الفاشلة/المتجاوزة
+    metrics.failures = r.verdict === 'block' ? 1 : 0;
+
+    // Critical findings — عدد النتائج الحرجة
+    metrics.criticalFindings = r.risk.total >= 70 ? 1 : 0;
+
+    // Changed decisions — عدد القرارات المتغيرة (يُحسب في المقارنة)
+    metrics.changedDecisions = 0;
+
+    // Trade-offs — نص توضيحي
+    metrics.tradeOffs = r.verdict === 'block'
+      ? 'أمان أعلى على حساب التكلفة والزمن (حُظر قبل النموذج).'
+      : r.verdict === 'mask'
+        ? 'خصوصية محسّنة مع فقدان طفيف للدقة (تعمية البيانات).'
+        : 'أداء وسرعة مع مخاطر أقل (لا بيانات حساسة).';
+
+    return metrics;
+  }
+
+  // ── تحديد الفائز لكل مقياس ────────────────────────────────────────────────
+  function determineWinner(metricsA, metricsB) {
+    const winners = {};
+    const metricDefs = (CFG.comparisonMetrics || []);
+    metricDefs.forEach((m) => {
+      const a = metricsA[m.id];
+      const b = metricsB[m.id];
+      if (a === undefined || b === undefined) return;
+      const diff = a - b;
+      const aWins = m.lowerIsBetter ? diff < 0 : diff > 0;
+      const bWins = m.lowerIsBetter ? diff > 0 : diff < 0;
+      if (aWins) winners[m.id] = 'A';
+      else if (bWins) winners[m.id] = 'B';
+      else winners[m.id] = 'tie';
+    });
+    return winners;
+  }
+
+  // ── حساب القرارات المتغيرة ────────────────────────────────────────────────
+  function countChangedDecisions(rA, rB) {
+    let count = 0;
+    if (rA.verdict !== rB.verdict) count++;
+    if (rA.risk.total !== rB.risk.total) count++;
+    if (rA.entities.length !== rB.entities.length) count++;
+    if (rA.matched.length !== rB.matched.length) count++;
+    return count;
+  }
+
+  // ── عرض المقارنة الكاملة ──────────────────────────────────────────────────
+  function renderComparison(cmpResult) {
+    const resultsEl = $('#pg-compare-results');
+    if (!resultsEl) return;
+    const { rA, rB, metricsA, metricsB, winners, fairness, cmpType, cmpLabel } = cmpResult;
+
+    // العنوان
+    const title = cmpLabel || 'مقارنة A/B';
+
+    // الفائز العام
+    const aWins = Object.values(winners).filter((w) => w === 'A').length;
+    const bWins = Object.values(winners).filter((w) => w === 'B').length;
+    const ties = Object.values(winners).filter((w) => w === 'tie').length;
+    let overallWinner;
+    if (aWins > bWins) overallWinner = 'A';
+    else if (bWins > aWins) overallWinner = 'B';
+    else overallWinner = 'none';
+
+    const verdictLabel = (vv) => ({ block: 'حُظر', mask: 'عُمّي', hitl: 'مراجعة', allow: 'سُمح' })[vv] || vv;
+
+    // تحذيرات العدالة
+    const fairnessHtml = fairness.length
+      ? `<div class="pg-cmp-fairness">
+          <div class="pg-cmp-fairness__title">⚠ اختلاف في عناصر العدالة</div>
+          ${fairness.map((f) => `<div class="pg-cmp-fairness__item">${f.label}: <strong>${f.detail}</strong></div>`).join('')}
+        </div>`
+      : `<div class="pg-cmp-fairness pg-cmp-fairness--ok">✓ عناصر العدالة متطابقة (نفس Dataset، الترتيب، المقيمين، السياق، الخصوصية، الحرارة، المحاولات)</div>`;
+
+    // جدول المقاييس
+    const metricRows = (CFG.comparisonMetrics || []).map((m) => {
+      const a = metricsA[m.id];
+      const b = metricsB[m.id];
+      if (a === undefined || b === undefined) return '';
+      const w = winners[m.id];
+      const aClass = w === 'A' ? 'pg-cmp-win' : '';
+      const bClass = w === 'B' ? 'pg-cmp-win' : '';
+      const aBadge = w === 'A' ? '<span class="pg-cmp-badge">✓</span>' : '';
+      const bBadge = w === 'B' ? '<span class="pg-cmp-badge">✓</span>' : '';
+      const fmt = (v) => (m.id === 'cost' ? v.toFixed(2) + ' هللة' : m.id === 'latency' || m.id === 'p50' || m.id === 'p95' ? v + 'ms' : v);
+      return `<tr>
+        <td class="pg-cmp-metric">${m.label}</td>
+        <td class="${aClass}">${fmt(a)} ${aBadge}</td>
+        <td class="${bClass}">${fmt(b)} ${bBadge}</td>
+      </tr>`;
+    }).join('');
+
+    // النتائج الحرجة
+    const criticalA = metricsA.criticalFindings;
+    const criticalB = metricsB.criticalFindings;
+    const criticalHtml = (criticalA || criticalB)
+      ? `<div class="pg-cmp-critical">🔴 نتائج حرجة: A = ${criticalA} · B = ${criticalB}</div>`
+      : '';
+
+    // القرارات المتغيرة
+    const changed = countChangedDecisions(rA, rB);
+    const changedHtml = changed
+      ? `<div class="pg-cmp-changed">🔄 قرارات متغيرة: ${changed} (الحكم: ${verdictLabel(rA.verdict)} → ${verdictLabel(rB.verdict)})</div>`
+      : '';
+
+    // Trade-offs
+    const tradeHtml = `<div class="pg-cmp-tradeoffs">
+      <div class="pg-cmp-tradeoffs__title">Trade-offs</div>
+      <div class="pg-cmp-tradeoffs__item"><strong>A:</strong> ${metricsA.tradeOffs}</div>
+      <div class="pg-cmp-tradeoffs__item"><strong>B:</strong> ${metricsB.tradeOffs}</div>
+    </div>`;
+
+    // الفائز العام
+    const winnerHtml = overallWinner === 'none'
+      ? `<div class="pg-cmp-overall pg-cmp-overall--none">🏳️ لا فائز واحد — الأولويات تختلف حسب المقياس</div>`
+      : `<div class="pg-cmp-overall pg-cmp-overall--${overallWinner.toLowerCase()}">🏆 الفائز العام: ${overallWinner} (${aWins} مقياس مقابل ${bWins})</div>`;
+
+    // روابط الـ Traces
+    const traceHtml = `<div class="pg-cmp-traces">
+      <span>Trace A: <a href="/kernel/audit/" data-cmp-trace-a class="pg-cmp-trace" dir="ltr">${rA.trace}</a></span>
+      <span>Trace B: <a href="/kernel/audit/" data-cmp-trace-b class="pg-cmp-trace" dir="ltr">${rB.trace}</a></span>
+    </div>`;
+
+    resultsEl.innerHTML = `
+      <div class="pg-cmp-head">
+        <h3 class="pg-cmp-title">${title}</h3>
+        <button class="pg-skip-btn" id="pg-cmp-close" type="button">✕ إغلاق</button>
+      </div>
+      ${winnerHtml}
+      ${fairnessHtml}
+      <div class="pg-cmp-side">
+        <div class="pg-cmp-side__col ${rA.verdict !== rB.verdict ? 'pg-diff-add' : ''}">
+          <div class="pg-cmp-side__title">A · ${verdictLabel(rA.verdict)}</div>
+          <div>سجلات محمية: ${rA.entities.length} · تكلفة: ${rA.cost.toFixed(1)} هللة · زمن: ${rA.totalMs}ms</div>
+          <div class="pg-diff-line">السياسات: ${rA.matched.length ? rA.matched.map((p) => p.name).join('، ') : 'لا شيء'}</div>
+        </div>
+        <div class="pg-cmp-side__col ${rA.verdict !== rB.verdict ? 'pg-diff-del' : ''}">
+          <div class="pg-cmp-side__title">B · ${verdictLabel(rB.verdict)}</div>
+          <div>سجلات محمية: ${rB.entities.length} · تكلفة: ${rB.cost.toFixed(1)} هللة · زمن: ${rB.totalMs}ms</div>
+          <div class="pg-diff-line">السياسات: ${rB.matched.length ? rB.matched.map((p) => p.name).join('، ') : 'لا شيء'}</div>
+        </div>
+      </div>
+      <table class="pg-cmp-table">
+        <thead><tr><th>المقياس</th><th>A</th><th>B</th></tr></thead>
+        <tbody>${metricRows}</tbody>
+      </table>
+      ${criticalHtml}
+      ${changedHtml}
+      ${tradeHtml}
+      ${traceHtml}
+      <div class="pg-cmp-actions">
+        <button class="pg-run-btn" id="pg-cmp-export" type="button">⬇ صدّر تقرير المقارنة</button>
+      </div>
+    `;
+
+    // ربط الأزرار
+    const close = resultsEl.querySelector('#pg-cmp-close');
+    if (close) close.addEventListener('click', () => { resultsEl.innerHTML = ''; });
+    const exportBtn = resultsEl.querySelector('#pg-cmp-export');
+    if (exportBtn) exportBtn.addEventListener('click', () => exportComparisonReport(cmpResult));
+    const traceA = resultsEl.querySelector('[data-cmp-trace-a]');
+    if (traceA) traceA.addEventListener('click', (e) => { e.preventDefault(); openTraceDrawer(rA.trace); });
+    const traceB = resultsEl.querySelector('[data-cmp-trace-b]');
+    if (traceB) traceB.addEventListener('click', (e) => { e.preventDefault(); openTraceDrawer(rB.trace); });
+  }
+
+  // ── فتح درج الـ Trace ─────────────────────────────────────────────────────
+  function openTraceDrawer(traceId) {
+    const drawer = $('#k-trace-drawer');
+    if (!drawer) { window.open('/kernel/audit/', '_blank'); return; }
+    const idEl = drawer.querySelector('[data-kernel-trace-id]');
+    if (idEl) idEl.textContent = traceId;
+    drawer.setAttribute('aria-hidden', 'false');
+  }
+
+  // ── تصدير تقرير المقارنة ──────────────────────────────────────────────────
+  function exportComparisonReport(cmpResult) {
+    const { rA, rB, metricsA, metricsB, winners, fairness, cmpType, cmpLabel } = cmpResult;
+    const report = {
+      type: 'comparison-report',
+      version: '1.0',
+      comparisonType: cmpType,
+      label: cmpLabel,
+      generatedAt: new Date().toISOString(),
+      fairness: fairness.map((f) => ({ field: f.label, detail: f.detail, critical: f.critical })),
+      sideA: {
+        trace: rA.trace,
+        verdict: rA.verdict,
+        risk: rA.risk.total,
+        entities: rA.entities.length,
+        matchedPolicies: rA.matched.map((p) => p.name),
+        metrics: metricsA,
+      },
+      sideB: {
+        trace: rB.trace,
+        verdict: rB.verdict,
+        risk: rB.risk.total,
+        entities: rB.entities.length,
+        matchedPolicies: rB.matched.map((p) => p.name),
+        metrics: metricsB,
+      },
+      winners,
+      note: 'تقرير مقارنة A/B تجريبي (Demo) — BrightAI Kernel',
+    };
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'brightai-comparison-report.json';
+    a.click();
+    URL.revokeObjectURL(url);
+    announce('نُزّل تقرير المقارنة (Demo).');
+  }
+
+  // ── تشغيل المقارنة الكاملة ────────────────────────────────────────────────
+  function runComparison(cmpType, cmpSettings) {
+    const ctx = readCtx();
+    if (!ctx.text.trim()) { announce('اكتب نصًا أو اختر عيّنة أولًا.'); return; }
+
+    const { A, B } = buildComparisonConfig(ctx, cmpType, cmpSettings);
+    const seed = readSettings().seed;
+    const rA = analyze(A.conversation, A, seed + '-A');
+    const rB = analyze(B.conversation, B, seed + '-B');
+
+    const metricsA = computeMetrics(rA);
+    const metricsB = computeMetrics(rB);
+    const winners = determineWinner(metricsA, metricsB);
+    const fairness = checkFairness(A, B, cmpType);
+
+    // القرارات المتغيرة
+    metricsA.changedDecisions = countChangedDecisions(rA, rB);
+    metricsB.changedDecisions = countChangedDecisions(rA, rB);
+
+    const cmpLabel = (CFG.comparisonTypes || []).find((t) => t.id === cmpType)?.label || cmpType;
+
+    renderComparison({ rA, rB, metricsA, metricsB, winners, fairness, cmpType, cmpLabel });
   }
 
   function showLimit() {

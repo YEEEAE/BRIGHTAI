@@ -1,0 +1,455 @@
+---
+/**
+ * /kernel/eval/ — محرك التقييم Evaluation Engine (M6+M9).
+ *
+ * المحرك اللي يشغّل التقييمات على Datasets وScorers: أنواع التشغيل السبعة
+ * (single / dataset / subset / sample / multi-turn / agent / rerun-failed)،
+ * ضوابط التشغيل (pause / cancel / resume / partial saving / bounded
+ * concurrency / retry / timeouts / budget)، وخط تشغيل من 15 مرحلة.
+ *
+ * القواعد (Prompt 10 / M6+M9 + Evaluation-environment.md §المرحلة 3):
+ *   - لا تُفقد النتائج عند توقف المزوّد — كل حالة تُحفظ فور اكتمالها
+ *     في localStorage ويمكن استئناف التشغيل.
+ *   - لا Passed لشغل ناقص — أي تشغيل متوقف/ملغي = Incomplete، لا شهادة.
+ *   - budget limit يوقف التشغيل تلقائياً عند تجاوز الحد.
+ *   - Live / Demo / Simulated واضح دائماً — المزوّد هنا Simulated حتمي
+ *     بالبذرة، والفحوصات الحتمية (regex) تُنفَّذ فعلاً.
+ *
+ * المحرّك في /js/kernel-eval-engine.js (vanilla، CSP-safe، لا inline).
+ * البيانات من src/data/kernel-eval-engine.ts + kernel-datasets.ts +
+ * kernel-scorers.ts + kernel-policies.ts تُحقن كـ JSON blob (#eval-config).
+ * التنسيق من kernel/assets/css/pages/eval.css (side-effect import).
+ */
+import KernelLayout from '../../layouts/KernelLayout.astro';
+import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
+import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
+import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import {
+  EVAL_RUN_TYPE_LABELS,
+  EVAL_RUN_TYPE_DESCRIPTIONS,
+  EVAL_ENGINE_STAGES,
+  EVAL_ENGINE_DEFAULT_CONFIG,
+  EVAL_ENGINE_STATS,
+  EVAL_GATE_LABELS,
+  EVAL_GATE_COLORS,
+  EVAL_CASE_STATUS_LABELS,
+  EVAL_DEMO_MULTITURN,
+  EVAL_DEMO_AGENT_TOOLS,
+} from '../../data/kernel-eval-engine';
+import { KERNEL_DATASETS_DEMO } from '../../data/kernel-datasets';
+import { PII_PATTERNS, SCORER_REGISTRY } from '../../data/kernel-scorers';
+import { INJECTION_PATTERNS } from '../../data/kernel-policies';
+import { EVAL_DEMO_POLICIES } from '../../data/kernel-evaluation';
+import { DATASET_RISK_LABELS } from '../../data/kernel-datasets';
+
+// تنسيق الصفحة (side-effect import).
+import '../../../kernel/assets/css/pages/eval.css';
+
+const unit = getKernelUnit('eval')!;
+const cross = getCrossLinks(unit);
+const jsonLd = [...getKernelSubPageJsonLd(unit), getKernelFaqJsonLd(unit)] as Array<Record<string, unknown> | null | undefined>;
+const pageJsonLd = jsonLd as unknown as Record<string, unknown>;
+
+const st = EVAL_ENGINE_STATS;
+const runTypeIds = Object.keys(EVAL_RUN_TYPE_LABELS);
+
+// Scorers المركّز عليها في المحرك (حتمية قابلة للتنفيذ فعلاً في المتصفح).
+const CORE_SCORER_IDS = [
+  'sc-pii-detection', 'sc-pii-leakage',
+  'sc-inj-prompt', 'sc-inj-sysprompt', 'sc-inj-secret',
+  'sc-acc-exact', 'sc-acc-instruction',
+  'sc-hal-fabricated-reg', 'sc-hal-medlegal',
+  'sc-comp-pdpl',
+];
+const engineScorers = SCORER_REGISTRY.filter((s) => CORE_SCORER_IDS.includes(s.id))
+  .map((s) => ({ id: s.id, name: s.name, category: s.category, severity: s.severity, threshold: s.threshold }));
+
+// Datasets للاختيار (مع تعيين caseId موحّد للمحرك).
+const engineDatasets = KERNEL_DATASETS_DEMO.map((d) => ({
+  id: d.id,
+  name: d.name,
+  status: d.status,
+  caseCount: d.cases.length,
+  cases: d.cases.map((c) => ({
+    caseId: c.id,
+    title: c.title,
+    input: c.input,
+    expected: c.expected,
+    verdict: c.verdict,
+    risk: c.risk,
+    sector: c.sector,
+  })),
+}));
+
+// إعدادات تُحقن للـ JS (لا استيراد TS في المتصفح).
+const evalConfig = {
+  runTypes: EVAL_RUN_TYPE_LABELS,
+  runTypeDesc: EVAL_RUN_TYPE_DESCRIPTIONS,
+  stages: EVAL_ENGINE_STAGES,
+  gateLabels: EVAL_GATE_LABELS,
+  gateColors: EVAL_GATE_COLORS,
+  caseStatus: EVAL_CASE_STATUS_LABELS,
+  risks: DATASET_RISK_LABELS,
+  piiPatterns: PII_PATTERNS,
+  injectionPatterns: INJECTION_PATTERNS,
+  models: [
+    { id: 'groq-llama-3.3-70b', name: 'Llama 3.3 70B', version: 1, provider: 'groq' },
+    { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', version: 1, provider: 'vertex' },
+    { id: 'azure-gpt-4o-mini', name: 'GPT-4o mini', version: 1, provider: 'azure' },
+  ],
+  policies: EVAL_DEMO_POLICIES,
+  scorers: engineScorers,
+  defaults: EVAL_ENGINE_DEFAULT_CONFIG,
+  datasets: engineDatasets,
+  multiturn: EVAL_DEMO_MULTITURN,
+  agentTools: EVAL_DEMO_AGENT_TOOLS,
+  stats: {
+    runTypes: st.runTypes,
+    stages: st.stages,
+    concurrencyMax: st.concurrencyMax,
+  },
+};
+---
+
+<KernelLayout
+  title={unit.title}
+  description={unit.description}
+  canonical={unit.canonical}
+  hreflang={unit.hreflang}
+  jsonLd={pageJsonLd}
+  currentPath={unit.path}
+  breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: unit.label, href: unit.path }]}
+>
+  {/* ── إعدادات للـ JS ── */}
+  <script type="application/json" id="eval-config" set:html={JSON.stringify(evalConfig)} />
+
+  <div class="kernel-main kernel-page-fade-in" data-eval-root data-kernel-loading data-kernel-count="1">
+    {/* skeleton */}
+    <div data-kernel-skeleton>
+      <KernelSkeleton variant="heading" />
+      <KernelSkeleton variant="card" count={3} />
+    </div>
+
+    {/* المحتوى الفعلي */}
+    <div data-eval-content>
+      <header class="ev-header">
+        <div>
+          <nav class="kernel-breadcrumb" aria-label="مسار التنقل">
+            <ol>
+              <li><a href="/">BrightAI</a></li>
+              <li><a href="/kernel/">Kernel</a></li>
+              <li aria-current="page">{unit.label}</li>
+            </ol>
+          </nav>
+          <h1 class="ev-header__title">{unit.h1}</h1>
+          <p class="ev-header__sub">{unit.shortDescription}</p>
+        </div>
+        <div class="ev-header__badges">
+          <span class="ev-env-badge ev-env-badge--demo">بيانات توضيحية · Demo</span>
+          <span class="ev-env-badge ev-env-badge--sim">{st.runTypes} أنواع تشغيل · {st.stages} مرحلة</span>
+          <span class="ev-env-badge">المزوّد Simulated</span>
+        </div>
+      </header>
+
+      {/* ═════════ القواعد الحاكمة ═════════ */}
+      <section class="ev-rules" aria-label="القواعد الحاكمة للمحرك">
+        <div class="ev-rule ev-rule--critical"><span class="ev-rule__icon" aria-hidden="true">⛔</span><span><strong>لا Passed لشغل ناقص.</strong> أي تشغيل متوقف أو ملغي أو متجاوز الميزانية = Incomplete، لا شهادة مهما كانت الدرجات.</span></div>
+        <div class="ev-rule"><span class="ev-rule__icon" aria-hidden="true">💾</span><span><strong>لا تفقد النتائج عند توقف المزوّد.</strong> كل حالة تُحفظ فور اكتمالها في localStorage، ويمكن استئناف التشغيل من آخر حالة مكتملة.</span></div>
+        <div class="ev-rule"><span class="ev-rule__icon" aria-hidden="true">🪙</span><span><strong>Budget limit يوقف التشغيل.</strong> عند تجاوز الحد بالريال السعودي يتوقف المحرك تلقائياً ويُحفظ الجزئي.</span></div>
+        <div class="ev-rule"><span class="ev-rule__icon" aria-hidden="true">⏱️</span><span><strong>Provider/Scorer timeout + retry.</strong> استدعاء المزوّد يُعاد بمحاولات محدودة مع backoff، والفحص بـ Scorer مهلة محددة.</span></div>
+        <div class="ev-rule"><span class="ev-rule__icon" aria-hidden="true">🟢</span><span><strong>Live / Demo / Simulated واضح دائماً.</strong> المزوّد Simulated حتمي بالبذرة، والفحوصات الحتمية (regex) تُنفَّذ فعلاً.</span></div>
+      </section>
+
+      {/* ═════════ إحصاءات المحرك (SSR) ═════════ */}
+      <section class="ev-stats" aria-label="إحصاءات محرك التقييم">
+        <div class="ev-stats__head">
+          <h2 class="ev-section-title">محرك التقييم — {st.stages} مرحلة · {st.runTypes} أنواع تشغيل</h2>
+          <span class="ev-stats__foot">concurrency 1–{st.concurrencyMax} · retry · timeouts · budget · partial saving</span>
+        </div>
+        <div class="ev-kpi-grid">
+          <div class="ev-kpi">
+            <span class="ev-kpi__label">أنواع التشغيل</span>
+            <strong class="ev-kpi__value" dir="ltr">{st.runTypes}</strong>
+            <span class="ev-kpi__foot">single · dataset · subset · sample · multi-turn · agent · rerun-failed</span>
+          </div>
+          <div class="ev-kpi">
+            <span class="ev-kpi__label">مراحل خط التشغيل</span>
+            <strong class="ev-kpi__value" dir="ltr">{st.stages}</strong>
+            <span class="ev-kpi__foot">من تحميل Dataset إلى تجهيز الشهادة</span>
+          </div>
+          <div class="ev-kpi">
+            <span class="ev-kpi__label">حالات المعيار السعودي</span>
+            <strong class="ev-kpi__value" dir="ltr">100</strong>
+            <span class="ev-kpi__foot">Saudi Governance Benchmark v1.0</span>
+          </div>
+          <div class="ev-kpi ev-kpi--warn">
+            <span class="ev-kpi__label">المزوّد</span>
+            <strong class="ev-kpi__value">Simulated</strong>
+            <span class="ev-kpi__foot">حتمي بالبذرة — Live يتطلب backend + credential</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ═════════ لوحة الإعداد والتشغيل ═════════ */}
+      <section class="ev-setup" id="ev-setup" aria-label="إعداد التقييم">
+        <div class="ev-setup__head">
+          <div>
+            <h2 class="ev-section-title">إعداد التقييم</h2>
+            <p class="ev-setup__hint">اختر نوع التشغيل، ثم حدد الـ Dataset والنموذج والسياسات والـ Scorers وضوابط المحرك. التقدير يظهر قبل التشغيل.</p>
+          </div>
+          <span class="ev-env-badge ev-env-badge--demo">Demo · محلي بالكامل</span>
+        </div>
+
+        {/* نوع التشغيل */}
+        <div class="ev-field" role="group" aria-label="نوع التشغيل">
+          <span class="ev-field__label">نوع التشغيل</span>
+          <div class="ev-chips" data-eval-run-type-chips>
+            {runTypeIds.map((t) => (
+              <button class="ev-chip" type="button" data-eval-run-type={t} aria-pressed={t === 'single'}>{EVAL_RUN_TYPE_LABELS[t]}</button>
+            ))}
+          </div>
+          <p class="ev-field__desc" data-eval-run-type-desc>{EVAL_RUN_TYPE_DESCRIPTIONS.single}</p>
+        </div>
+
+        {/* الحقول الديناميكية */}
+        <div class="ev-dynamic" data-eval-dynamic>
+          {/* dataset + case (single) */}
+          <div class="ev-field" data-eval-block="dataset">
+            <label class="ev-field__label" for="ev-dataset">Dataset</label>
+            <select id="ev-dataset" data-eval-input="dataset">
+              {engineDatasets.map((d) => (
+                <option value={d.id}>{d.name} ({d.caseCount} حالة)</option>
+              ))}
+            </select>
+          </div>
+          <div class="ev-field" data-eval-block="case" hidden>
+            <label class="ev-field__label" for="ev-case">الحالة</label>
+            <select id="ev-case" data-eval-input="caseId"></select>
+          </div>
+          <div class="ev-field ev-field--grow" data-eval-block="custom-input" hidden>
+            <label class="ev-field__label" for="ev-custom-input">النص (حالة مخصصة)</label>
+            <textarea id="ev-custom-input" data-eval-input="customInput" rows="3" dir="auto" placeholder="اكتب الطلب اللي تبي تقيّمه…"></textarea>
+          </div>
+          {/* subset filters */}
+          <div class="ev-field" data-eval-block="subset" hidden>
+            <label class="ev-field__label" for="ev-subset-sector">القطاع</label>
+            <select id="ev-subset-sector" data-eval-input="sector">
+              <option value="">كل القطاعات</option>
+              <option value="pdpl">PDPL / خصوصية</option>
+              <option value="nca">NCA / حقن</option>
+              <option value="sama">SAMA / مالية</option>
+              <option value="sfda">SFDA / صحية</option>
+              <option value="sdaia">SDAIA / شفافية</option>
+              <option value="hr">موارد بشرية</option>
+              <option value="gov">حكومي</option>
+              <option value="lang">لغة</option>
+            </select>
+          </div>
+          <div class="ev-field" data-eval-block="subset" hidden>
+            <label class="ev-field__label" for="ev-subset-risk">الخطورة</label>
+            <select id="ev-subset-risk" data-eval-input="risk">
+              <option value="">كل الخطورة</option>
+              <option value="low">منخفضة</option>
+              <option value="medium">متوسطة</option>
+              <option value="high">عالية</option>
+              <option value="critical">حرجة</option>
+            </select>
+          </div>
+          {/* sample size */}
+          <div class="ev-field" data-eval-block="sample" hidden>
+            <label class="ev-field__label" for="ev-sample-size">عدد العينة</label>
+            <input id="ev-sample-size" type="number" min="1" max="30" value={EVAL_ENGINE_DEFAULT_CONFIG.sampleSize} data-eval-input="sampleSize" dir="ltr" />
+          </div>
+          {/* multi-turn */}
+          <div class="ev-field ev-field--grow" data-eval-block="multiturn" hidden>
+            <label class="ev-field__label" for="ev-turns">اللفات (كل سطر لفة: role|النص)</label>
+            <textarea id="ev-turns" data-eval-input="turns" rows="4" dir="auto"></textarea>
+          </div>
+          {/* agent tools */}
+          <div class="ev-field" data-eval-block="agent" hidden>
+            <span class="ev-field__label">الأدوات المسموحة</span>
+            <div class="ev-check-list">
+              {EVAL_DEMO_AGENT_TOOLS.map((t) => (
+                <label class="ev-check"><input type="checkbox" value={t.id} data-eval-agent-tool /> {t.label}</label>
+              ))}
+            </div>
+          </div>
+          <div class="ev-field ev-field--grow" data-eval-block="agent" hidden>
+            <label class="ev-field__label" for="ev-agent-input">مدخل الـ Agent</label>
+            <textarea id="ev-agent-input" data-eval-input="agentInput" rows="3" dir="auto"></textarea>
+          </div>
+          {/* rerun-failed */}
+          <div class="ev-field" data-eval-block="rerun" hidden>
+            <label class="ev-field__label" for="ev-rerun-run">Run سابق</label>
+            <select id="ev-rerun-run" data-eval-input="sourceRunId">
+              <option value="">— لا توجد Runs محفوظة —</option>
+            </select>
+          </div>
+        </div>
+
+        {/* النموذج والسياسة */}
+        <div class="ev-grid2">
+          <div class="ev-field">
+            <label class="ev-field__label" for="ev-model">النموذج</label>
+            <select id="ev-model" data-eval-input="model">
+              {evalConfig.models.map((m) => (
+                <option value={m.id}>{m.name} — {m.provider}</option>
+              ))}
+            </select>
+          </div>
+          <div class="ev-field">
+            <label class="ev-field__label" for="ev-policy">السياسة</label>
+            <select id="ev-policy" data-eval-input="policy">
+              {EVAL_DEMO_POLICIES.map((p) => (
+                <option value={p.id}>{p.name} (v{p.version})</option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* الـ Scorers */}
+        <div class="ev-field">
+          <span class="ev-field__label">الـ Scorers ({engineScorers.length})</span>
+          <div class="ev-check-list ev-check-list--grid">
+            {engineScorers.map((s) => (
+              <label class="ev-check"><input type="checkbox" value={s.id} data-eval-scorer checked /> {s.name}</label>
+            ))}
+          </div>
+        </div>
+
+        {/* ضوابط المحرك */}
+        <div class="ev-engine" aria-label="ضوابط المحرك">
+          <span class="ev-field__label">ضوابط المحرك</span>
+          <div class="ev-grid4">
+            <div class="ev-field">
+              <label class="ev-field__label" for="ev-concurrency">Concurrency</label>
+              <input id="ev-concurrency" type="number" min="1" max={EVAL_ENGINE_STATS.concurrencyMax} value={EVAL_ENGINE_DEFAULT_CONFIG.concurrency} data-eval-input="concurrency" dir="ltr" />
+            </div>
+            <div class="ev-field">
+              <label class="ev-field__label" for="ev-retries">Max retries</label>
+              <input id="ev-retries" type="number" min="0" max="5" value={EVAL_ENGINE_DEFAULT_CONFIG.maxRetries} data-eval-input="maxRetries" dir="ltr" />
+            </div>
+            <div class="ev-field">
+              <label class="ev-field__label" for="ev-provider-timeout">Provider timeout (ms)</label>
+              <input id="ev-provider-timeout" type="number" min="200" max="15000" value={EVAL_ENGINE_DEFAULT_CONFIG.providerTimeoutMs} data-eval-input="providerTimeoutMs" dir="ltr" />
+            </div>
+            <div class="ev-field">
+              <label class="ev-field__label" for="ev-scorer-timeout">Scorer timeout (ms)</label>
+              <input id="ev-scorer-timeout" type="number" min="200" max="15000" value={EVAL_ENGINE_DEFAULT_CONFIG.scorerTimeoutMs} data-eval-input="scorerTimeoutMs" dir="ltr" />
+              <span class="ev-field__desc">demo: المقيّمون الحتميون متزامنون — يُحفظ كإعداد مرجعي في سجل الـ Run</span>
+            </div>
+            <div class="ev-field">
+              <label class="ev-field__label" for="ev-budget">Budget (SAR)</label>
+              <input id="ev-budget" type="number" min="0.001" step="0.001" value={EVAL_ENGINE_DEFAULT_CONFIG.budgetLimitSar} data-eval-input="budgetLimitSar" dir="ltr" />
+            </div>
+            <div class="ev-field">
+              <label class="ev-field__label" for="ev-seed">Seed</label>
+              <input id="ev-seed" type="number" value={EVAL_ENGINE_DEFAULT_CONFIG.seed} data-eval-input="seed" dir="ltr" />
+            </div>
+          </div>
+          <label class="ev-check ev-check--outage"><input type="checkbox" data-eval-input="simulateProviderOutage" /> جرّب انقطاع المزوّد (يختبر «لا تفقد النتائج» — يتجاوز timeout ويعيد المحاولة)</label>
+        </div>
+
+        {/* التقدير + الأزرار */}
+        <div class="ev-setup__actions">
+          <button class="ev-btn ev-btn--primary" type="button" id="ev-start-btn" data-eval-start>شغّل التقييم ▶</button>
+          <button class="ev-btn ev-btn--ghost" type="button" id="ev-resume-btn" data-eval-resume-last hidden>استئناف آخر تشغيل ↺</button>
+          <span class="ev-estimate" id="ev-estimate" role="status" aria-live="polite">التقدير…</span>
+        </div>
+      </section>
+
+      {/* ═════════ وحدة التشغيل الحية ═════════ */}
+      <section class="ev-console" id="ev-console" aria-label="وحدة التشغيل الحية" hidden>
+        <div class="ev-console__head">
+          <div>
+            <h2 class="ev-section-title">وحدة التشغيل</h2>
+            <span class="ev-console__phase" data-eval-phase>idle</span>
+          </div>
+          <div class="ev-console__controls" data-eval-controls>
+            <button class="ev-btn ev-btn--small" type="button" data-eval-pause>إيقاف مؤقت ⏸</button>
+            <button class="ev-btn ev-btn--small" type="button" data-eval-cancel>إلغاء ✕</button>
+            <button class="ev-btn ev-btn--small ev-btn--primary" type="button" data-eval-resume hidden>استئناف ▶</button>
+          </div>
+        </div>
+
+        {/* شريط التقدم */}
+        <div class="ev-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="تقدم التشغيل">
+          <div class="ev-progress__bar" data-eval-progress-bar></div>
+        </div>
+        <p class="ev-progress__label" data-eval-progress-label>0 / 0</p>
+
+        {/* KPIs */}
+        <div class="ev-live-grid" aria-label="مؤشرات حية">
+          <div class="ev-live ev-live--ok"><span>مكتملة</span><strong data-eval-kpi-completed dir="ltr">0</strong></div>
+          <div class="ev-live ev-live--err"><span>فاشلة</span><strong data-eval-kpi-failed dir="ltr">0</strong></div>
+          <div class="ev-live ev-live--crit"><span>حرجة</span><strong data-eval-kpi-critical dir="ltr">0</strong></div>
+          <div class="ev-live"><span>الحالة الجارية</span><strong class="ev-live--case" data-eval-kpi-current>—</strong></div>
+          <div class="ev-live"><span>التكلفة التراكمية</span><strong data-eval-kpi-cost dir="ltr">0.0000 SAR</strong></div>
+          <div class="ev-live"><span>متوسط الزمن</span><strong data-eval-kpi-avg dir="ltr">0ms</strong></div>
+          <div class="ev-live"><span>P50 / P95</span><strong data-eval-kpi-p dir="ltr">0 / 0 ms</strong></div>
+          <div class="ev-live ev-live--warn"><span>الأخطاء</span><strong data-eval-kpi-errors dir="ltr">0</strong></div>
+        </div>
+
+        {/* خط التشغيل — 15 مرحلة */}
+        <div class="ev-pipeline" aria-label="مراحل خط التشغيل">
+          <h3 class="ev-pipeline__title">مراحل خط التشغيل (الحالة الجارية)</h3>
+          <ol class="ev-pipeline__list" data-eval-pipeline></ol>
+        </div>
+
+        {/* النتائج */}
+        <div class="ev-results" aria-label="نتائج الحالات">
+          <h3 class="ev-pipeline__title">النتائج</h3>
+          <div class="ev-table-wrap" role="region" tabindex="0">
+            <table class="ev-table">
+              <thead>
+                <tr>
+                  <th scope="col">الحالة</th>
+                  <th scope="col">العنوان</th>
+                  <th scope="col">الحكم</th>
+                  <th scope="col">الإجراء</th>
+                  <th scope="col">المخاطر</th>
+                  <th scope="col">التكلفة</th>
+                  <th scope="col">الزمن</th>
+                  <th scope="col">Trace</th>
+                </tr>
+              </thead>
+              <tbody data-eval-results-body></tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* بوابة القرار */}
+        <div class="ev-gate" data-eval-gate hidden></div>
+      </section>
+
+      {/* SEO نصّي قابل للزحف */}
+      <KernelSeoSection blocks={unit.seoBlocks} faq={unit.faq} faqHeading="أسئلة شائعة عن محرك التقييم" />
+
+      <KernelContextLinks
+        currentPath={unit.path}
+        solutionPath={cross.solutionPath}
+        docPath={cross.docPath ?? ''}
+        blogPath={unit.blogPath}
+        blogLabel={unit.blogLabel}
+        relatedSlugs={unit.relatedSlugs}
+      />
+    </div>
+  </div>
+
+  {/* ═══════ توست ═══════ */}
+  <div class="ev-toast" id="ev-toast" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="ev-toast__msg" id="ev-toast-msg">تم.</span>
+    <button class="ev-toast__close" type="button" id="ev-toast-close" aria-label="إغلاق">×</button>
+  </div>
+
+  <script type="module" src="/js/kernel-loading-state.js"></script>
+  <script type="module" src="/js/kernel-eval-engine.js"></script>
+
+  <style>
+    /* مساعدة: الحاويات التفاعلية تبدأ مخفية حتى يحمّل JS. */
+    .ev-console[hidden] { display: none; }
+    .ev-toast[hidden] { display: none; }
+  </style>
+</KernelLayout>

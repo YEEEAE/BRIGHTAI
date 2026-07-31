@@ -110,6 +110,7 @@ const icons = {
   models: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/><line x1="10" y1="7" x2="14" y2="7"/><line x1="7" y1="10" x2="7" y2="14"/><line x1="17" y1="10" x2="17" y2="14"/><line x1="10" y1="17" x2="14" y2="17"/></svg>',
   datasets: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>',
   scorers: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6 5.4-5.6"/></svg>',
+  eval: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="8 16 11 19 16 13"/></svg>',
 };
 
 // ── Kernel Units Data (with SEO content + FAQ + blog cross-link) ───────────
@@ -1272,6 +1273,68 @@ export const kernelUnits: KernelUnit[] = [
       {
         q: 'هل الدرجة 90 تعني أن النتيجة ممتازة؟',
         a: 'لا بالضرورة. الدرجة وحدها ليست دليلاً — كل نتيجة تعرض الأدلة الفعلية: المقتطفات من المخرجات، الضوابط المرقّمة، والـ Trace. المدقق يقرأ الدليل ويحكم، والدرجة أداة مقارنة فقط. لهذا كل صف في النتائج يعرض عمود «الدليل» بجانب عمود «الدرجة».',
+      },
+    ],
+  },
+  {
+    slug: 'eval',
+    path: '/kernel/eval/',
+    label: 'محرك التقييم',
+    shortDescription: 'شغّل التقييمات على Datasets وScorers — 7 أنواع تشغيل و15 مرحلة وضوابط كاملة',
+    title: 'محرك التقييم — Evaluation Engine | BrightAI Kernel',
+    description: 'محرك تقييم Kernel: شغّل التقييمات على Datasets وScorers بسبعة أنواع تشغيل (حالة واحدة، Dataset كامل، مجموعة فرعية، عينة، محادثة متعددة الأدوار، Agent محدود، إعادة الفاشل)، مع ضوابط pause/cancel/resume وحفظ جزئي للمرونة، و15 مرحلة خط تشغيل، وحدود concurrency وretry وtimeout وbudget. لا Passed لشغل ناقص.',
+    canonical: 'https://brightai.site/kernel/eval/',
+    h1: 'محرك التقييم — شغّل، راقب، قِس، واحكم بقرار موثّق',
+    hreflang: [
+      { lang: 'ar-SA', href: 'https://brightai.site/kernel/eval/' },
+      { lang: 'x-default', href: 'https://brightai.site/kernel/eval/' },
+    ],
+    ogImage: '/assets/images/og/brightai-og-1200x630.png',
+    solutionSlug: 'ai-governance-platform',
+    docSlug: 'kernel-eval',
+    blogPath: '/blog/ai-red-teaming-security-testing/',
+    blogLabel: 'AI Red Teaming: اختبار أمان أنظمة الذكاء',
+    iconSvg: icons.eval,
+    relatedSlugs: ['datasets', 'scorers', 'scenarios', 'playground'],
+    seoBlocks: [
+      {
+        heading: 'وش محرك التقييم (Evaluation Engine) في Kernel؟',
+        paragraphs: [
+          'محرك التقييم هو الطبقة اللي تشغّل الـ Datasets على الـ Scorers وتنتج قرار بوابة موثّق. يدعم سبعة أنواع تشغيل: حالة واحدة (single)، Dataset كامل (dataset)، مجموعة فرعية بفلتر قطاع/خطورة (subset)، عينة حتمية بالبذرة (sample)، محادثة متعددة الأدوار (multi-turn)، Agent بصلاحيات محدودة (agent)، وإعادة تشغيل الحالات الفاشلة فقط من Run سابق (rerun-failed).',
+          'كل حالة تمر بـ 15 مرحلة موثقة بـ Trace: تحميل Dataset، التحقق من صحة الحالات، إنشاء Evaluation Run، توليد Trace، فحص PII قبل الإرسال، فحص الحقن، تقييم المخاطر، تقييم السياسات، استدعاء النموذج، تقييم المخرجات، حساب التكلفة والزمن، توليد الدليل، تجميع النتائج، قرار البوابة، وتجهيز الشهادة.',
+        ],
+        bullets: [
+          '7 أنواع تشغيل تغطي كل سيناريو اختبار: فردي، جماعي، فرعي، عيّنة، محادثة، وكيل، إعادة الفاشل',
+          '15 مرحلة خط تشغيل موثقة لكل حالة مع Trace ID فريد',
+          'ضوابط كاملة: pause · cancel · resume · partial saving · concurrency · retry · timeouts · budget',
+          'لا Passed لشغل ناقص — التشغيل المتوقف أو الملغي أو المتجاوز الميزانية = Incomplete بلا شهادة',
+          'لا تُفقد النتائج عند توقف المزوّد — كل حالة تُحفظ فور اكتمالها',
+        ],
+      },
+      {
+        heading: 'ليش محرك التقييم مهم قبل اعتماد أي نموذج؟',
+        paragraphs: [
+          'قبل ما تضع نموذجاً في الإنتاج، تحتاج إجابة موثقة: هل النموذج يسرّب بيانات شخصية؟ هل يختلق مواد تنظيمية سعودية؟ هل يتبع السياسات؟ محرك التقييم يجيب على هذا بأرقام وأدلة: يشغّل Dataset المعيار السعودي (Saudi Governance Benchmark) على الـ Scorers الحتمية، يحسب التكلفة والزمن، ويخرج بقرار بوابة (Passed / Passed-with-findings / Review-required / Blocked / Incomplete) مع Trace قابل للمراجعة.',
+          'القواعد صارمة: تسريب PII حرج في المخرجات = Blocked (يمنع الإنتاج)، فشل Scorer حرج = Incomplete (لا شهادة)، وأي تشغيل متوقف أو ملغي أو متجاوز الميزانية = Incomplete — لا يوجد أي مسار يصدر Passed من شغل ناقص مهما كانت الدرجات. هذا يضمن أن الشهادة تعني فعلاً أن كل الحالات اكتملت ونُجحت بالحدود المطلوبة.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: 'وش الفرق بين محرك التقييم والـ Scorers؟',
+        a: 'الـ Scorers هي المقاييس (33 مقيّماً على 5 فئات) تحكم على مخرج واحد. محرك التقييم يشغّل Dataset كامل (مئات الحالات) عبر الـ Scorers بضوابط تشغيل (توقف، استئناف، ميزانية) ويجمّع النتائج في قرار بوابة موثّق. السكوررز تجيب «هل هذا المخرج زين؟» والمحرك يجيب «هل هذا النموذج جاهز للاعتماد؟».',
+      },
+      {
+        q: 'ليش لا يُصدر Passed لتشغيل ناقص؟',
+        a: 'لأن الشهادة تعني اكتمالاً. لو توقف التشغيل أو أُلغي أو تجاوز الميزانية، فهناك حالات لم تُقيَّم — فلا يمكن الادعاء بأن النموذج اجتاز كل الحالات. أي تشغيل ناقص يخرج بحالة Incomplete ولا تُصدر شهادة، مهما كانت درجات الحالات المكتملة.',
+      },
+      {
+        q: 'وش يصير لو توقف المزوّد أثناء التشغيل؟',
+        a: 'لا تُفقد النتائج. كل حالة تُحفظ فور اكتمالها في التخزين المحلي (partial saving)، ويمكن استئناف التشغيل من آخر حالة مكتملة عبر زر الاستئناف. سياسة إعادة المحاولة (retry مع backoff) تعيد استدعاء المزوّد، وإذا فشل نهائياً تُحتسب الحالة خطأً ويُحفظ كل ما اكتمل.',
+      },
+      {
+        q: 'وش يعني قرار البوابة Blocked؟',
+        a: 'Blocked يعني اكتشاف تسريب PII حرج في مخرجات الحالات — النموذج سرّب هوية وطنية أو جوالاً أو آيباناً في مخرجاته. هذا يمنع الجاهزية للإنتاج نهائياً حتى تُصلح السياسة أو تُعاد المعالجة، وتظهر التوصية بإعادة التشغيل بعد الإصلاح.',
       },
     ],
   },

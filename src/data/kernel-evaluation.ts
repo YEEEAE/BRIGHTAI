@@ -99,6 +99,61 @@ export const CERTIFICATE_STATUS_LABELS: Record<CertificateStatus, string> = {
   incomplete: 'غير مكتملة',
 };
 
+/**
+ * أسباب الاختلاف بين Run أصلي و Replay (Prompt 12 / Evaluation-environment §5).
+ * تُعرض للمستخدم لي فهم ليش نتيجة Replay اختلفت عن الأصل. أي اختلاف في الـ setup
+ * ينتج سببًا محددًا؛ وإن تطابقت كل حقول الـ setup + اختلف الـ output = stochastic.
+ */
+export type DiffReason =
+  | 'provider-changed'
+  | 'model-changed'
+  | 'policy-changed'
+  | 'dataset-changed'
+  | 'scorer-changed'
+  | 'environment-changed'
+  | 'stochastic-variance';
+
+export const DIFF_REASON_LABELS: Record<DiffReason, string> = {
+  'provider-changed': 'تغيّر المزوّد',
+  'model-changed': 'تغيّر النموذج',
+  'policy-changed': 'تغيّر السياسة',
+  'dataset-changed': 'تغيّر مجموعة البيانات',
+  'scorer-changed': 'تغيّر المقاييس',
+  'environment-changed': 'تغيّر البيئة',
+  'stochastic-variance': 'تباين عشوائي',
+};
+
+/**
+ * تصنيف مطابقة إعادة التشغيل (Evaluation-environment §المرحلة 5 — حالات المطابقة).
+ *   - exact-match: النتيجة والنص متطابقان (outputHash متطابق).
+ *   - acceptable: النص اختلف، لكن الحكم والدرجة ثابتان.
+ *   - material: تغيّر الحكم أو مستوى الخطر (قرار اختلف فعليًا).
+ *   - non-reproducible: تغيّرت البيئة أو لم تعد البيانات متاحة.
+ */
+export type MatchStatus = 'exact-match' | 'acceptable' | 'material' | 'non-reproducible';
+
+export const MATCH_STATUS_LABELS: Record<MatchStatus, string> = {
+  'exact-match': 'تطابق كامل',
+  'acceptable': 'اختلاف مقبول',
+  'material': 'اختلاف جوهري',
+  'non-reproducible': 'غير قابل للإعادة',
+};
+
+/**
+ * نتيجة قابلية إعادة الإنتاج لـ Run واحد (تُحسب عند Replay).
+ * comparedRunId = الأصل اللي اتعمل مقارنة بيه (parentRunId عادةً).
+ */
+export interface ReproducibilityResult {
+  matchStatus: MatchStatus;
+  diffReason: DiffReason[];
+  comparedRunId?: string;
+  comparedAt?: string;
+  /** الهاش القديم (parent) — للتدقيق السريع. */
+  parentOutputHash?: string;
+  /** الهاش الجديد (replay). */
+  replayOutputHash?: string;
+}
+
 /** مستوى الخطورة. */
 export type RiskLevel = 'low' | 'medium' | 'high' | 'critical';
 
@@ -303,6 +358,27 @@ export interface EvaluationRun {
   timing: EvalTiming;
   traces: EvaluationTrace[];
   scorerResults: ScorerResult[];
+  /**
+   * المعرّف الأصلي إن كان هذا Run ناتجًا من Replay (Prompt 12).
+   * Run أصلي (وليس Replay) ما يكون عنده parentRunId.
+   * الـ parent ما يعدّل إطلاقًا — Replay ينشئ Run جديد دائمًا.
+   */
+  parentRunId?: string;
+  /**
+   * إصدار runtime (محرّك Kernel) وقت التشغيل — أساس الـ provenance الكامل
+   * (Prompt 12: runtime version).
+   */
+  runtimeVersion?: string;
+  /**
+   * هاش نسخة الـ Prompt — للمقارنة عند Replay وتعذّر إعادة الإنتاج لو تغيّرت
+   * نصيًا. (RunSetup.prompt يحمل version رقمي فقط؛ هذي بصمة المحتوى.)
+   */
+  promptVersionHash?: string;
+  /**
+   * نتيجة قابلية إعادة الإنتاج — تُحسب عند Replay ومقارنة بالـ parent.
+   * Run أصلي ما يكون عنده reproducibility.
+   */
+  reproducibility?: ReproducibilityResult;
   /** ملخص نتائج الحالات. */
   summary?: {
     totalCases: number;
@@ -382,6 +458,21 @@ export interface EvaluationCertificate {
   };
   /** قاعدة حرجة: تسريب PII حرج يمنع حالة "جاهز للإنتاج". */
   blockedByCriticalPii: boolean;
+  /**
+   * تفاصيل قابلية إعادة الإنتاج (Prompt 12: «أضف reproducibility details
+   * إلى الشهادة»). تُعبأ من setup الـ Run + نتيجة آخر Replay إن وُجدت،
+   * عشان المدقق الخارجي يعرف هل الشهادة قابلة للتحقق بالنسخ أم لا.
+   */
+  reproducibility?: {
+    seed?: number;
+    temperature?: number;
+    topP?: number;
+    /** الأصل اللي اتعمل منه هذا التشغيل إن كان Replay. */
+    parentRunId?: string;
+    /** نتيجة آخر مقارنة مع الأصل. */
+    matchStatus?: MatchStatus;
+    diffReason?: DiffReason[];
+  };
 }
 
 // ── Fixtures: Demo (منفصلة تماماً عن Live) ──────────────────────────────────

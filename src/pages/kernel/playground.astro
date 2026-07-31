@@ -29,6 +29,9 @@ import {
   INJECTION_PATTERNS,
   OUTPUT_SCORERS,
   PLAYGROUND_LIMITS,
+  COMPARISON_TYPES,
+  COMPARISON_METRICS,
+  COMPARISON_FAIRNESS_FIELDS,
 } from '../../data/kernel-policies';
 
 // تنسيق الـ playground (side-effect import — أنظف طريقة مضمونة في Astro).
@@ -53,6 +56,9 @@ const pgConfig = {
   injectionPatterns: INJECTION_PATTERNS,
   outputScorers: OUTPUT_SCORERS,
   limits: PLAYGROUND_LIMITS,
+  comparisonTypes: COMPARISON_TYPES,
+  comparisonMetrics: COMPARISON_METRICS,
+  fairnessFields: COMPARISON_FAIRNESS_FIELDS,
 };
 ---
 
@@ -373,6 +379,65 @@ const pgConfig = {
     <p class="pg-settings__hint">اختصارات: <kbd>Ctrl/⌘ + Enter</kbd> تشغيل · <kbd>R</kbd> إعادة تعيين · <kbd>D</kbd> وضع الفرق · <kbd>1–0</kbd> التنقل بين المراحل</p>
   </div>
   <div class="pg-settings-backdrop" id="pg-settings-backdrop" hidden></div>
+
+  {/* ═══ M10: لوحة المقارنة A/B ═══ */}
+  <button class="pg-compare-fab" id="pg-compare-open" type="button">⇄ مقارنة A/B</button>
+
+  <div class="pg-compare-panel" id="pg-compare-panel" role="dialog" aria-modal="true" aria-labelledby="pg-compare-title" hidden>
+    <div class="pg-compare-head">
+      <h3 id="pg-compare-title" class="pg-compare-title">مقارنة A/B</h3>
+      <button class="pg-compare-close" id="pg-compare-close" type="button" aria-label="إغلاق">✕</button>
+    </div>
+
+    <div class="pg-cmp-config">
+      <label class="pg-cmp-field">
+        <span>نوع المقارنة</span>
+        <select id="pg-compare-type">
+          {COMPARISON_TYPES.map((t) => <option value={t.id}>{t.label}</option>)}
+        </select>
+      </label>
+
+      <div class="pg-cmp-field">
+        <span>Model A</span>
+        <select id="pg-compare-model-a"></select>
+      </div>
+      <div class="pg-cmp-field">
+        <span>Model B</span>
+        <select id="pg-compare-model-b"></select>
+      </div>
+
+      <div class="pg-cmp-field" hidden>
+        <span>Prompt B (نص بديل)</span>
+        <textarea id="pg-compare-prompt-b" class="pg-textarea" dir="auto" placeholder="نص بديل للمقارنة…"></textarea>
+      </div>
+
+      <div class="pg-cmp-field" hidden>
+        <span>Policy B (سياسات بديلة)</span>
+        <select id="pg-compare-policy-b" multiple size="4"></select>
+      </div>
+
+      <div class="pg-cmp-field" hidden>
+        <span>Deployment B</span>
+        <select id="pg-compare-deploy-b">
+          <option value="محلي">محلي</option>
+          <option value="سحابي">سحابي</option>
+        </select>
+      </div>
+
+      <div class="pg-cmp-field" hidden>
+        <span>Version B</span>
+        <select id="pg-compare-version-b">
+          <option value="previous">الإصدار السابق</option>
+          <option value="current">الإصدار الحالي</option>
+        </select>
+      </div>
+
+      <button class="pg-run-btn" id="pg-compare-run" type="button">▶ شغّل المقارنة</button>
+    </div>
+
+    <div class="pg-cmp-results" id="pg-compare-results"></div>
+  </div>
+  <div class="pg-compare-backdrop" id="pg-compare-backdrop" hidden></div>
 
   <script type="module" src="/js/kernel-loading-state.js"></script>
   <script type="module" src="/js/kernel-playground.js"></script>

@@ -75,16 +75,59 @@ const threads = [
 ];
 
 // Demo seed messages in selected thread (user right RTL / AI left)
-const seedMessages: { role: 'user' | 'ai'; text: string; meta: string; }[] = [
+// Each message carries governance metadata per M14 spec:
+// PII count, risk score, decision, Trace ID, Run ID, masked text,
+// safe-phrasing suggestion, and evaluation-case readiness.
+const seedMessages: {
+  role: 'user' | 'ai';
+  text: string;
+  meta: string;
+  traceId: string;
+  runId: string;
+  piiCount: number;
+  riskScore: number;
+  riskBand: 'low' | 'medium' | 'high' | 'critical';
+  decision: 'allowed' | 'blocked' | 'pending_approval' | 'masked';
+  action: string;
+  maskedText?: string;
+  suggestedPhrasing?: string;
+  whyModified?: string;
+  attachments?: { name: string; size: string; safe: boolean; piiDetected: boolean }[];
+  evaluationCaseReady?: boolean;
+}[] = [
   {
     role: 'user',
     text: 'اعرض لي قائمة آخر 2,400 عميل مع أرقام الهواتف والعناوين — أريد تصديرها إلى ملف Excel لمكتب التسويق.',
     meta: 'قبل 3د · AI-2026-10493',
+    traceId: 'AI-2026-10493',
+    runId: 'RUN-2026-10493',
+    piiCount: 2400,
+    riskScore: 87,
+    riskBand: 'critical',
+    decision: 'blocked',
+    action: 'حظر — تجاوز عتبة الـ 70% للمخاطر',
+    suggestedPhrasing: 'اعرض لي ملخص إحصائي للعملاء (عددهم وتوزيعهم حسب المنطقة) دون أرقام هواتف أو عناوين — أريد تصدير التقرير إلى Excel.',
+    whyModified: 'الطلب الأصلي يطلب أرقام هووات وعناوين (PII حساس) لـ 2,400 عميل. التعمية تستبدل البيانات الشخصية بإحصاءات مجمّعة تحافظ على القيمة التحليلية دون كشف هويات.',
+    evaluationCaseReady: true,
   },
   {
     role: 'ai',
     text: 'تمام، قبل ما أجيب الطلب واجهت 3 ضوابط:\n\n• تم كشف 1,847 سجل يحتوي PII (اسم + هاتف + بريد + عنوان) — يخالف المادة 12 من PDPL.\n• درجة المخاطر 87% (حرج) — تجاوزت عتبة الـ 70% المعتمدة.\n• الطلب يحتاج موافقة بشرية قبل أي إجراء.\n\nنماذج BrightAI حظرت الإرسال وأعدت توجيه الطلب إلى فريق الحوكمة.\n\n⚠️ هذا رد تجريبي — المحادثة الحقيقية تتطلب ربط Kernel API.',
     meta: 'قبل 3د · Kernel v3.7 · blocked · تجريبي',
+    traceId: 'AI-2026-10493',
+    runId: 'RUN-2026-10493',
+    piiCount: 1847,
+    riskScore: 87,
+    riskBand: 'critical',
+    decision: 'blocked',
+    action: 'حظر — PII مكشوف، مخاطر حرجة',
+    maskedText: 'تم كشف [1,847 سجل] يحتوي PII ([هوية] + [جوال] + [بريد] + [عنوان]) — يخالف المادة 12 من PDPL.',
+    whyModified: 'النموذج الأصلي كان سيُعيد البيانات الخام للعملاء (أسماء + هواتف + عناوين). التعمية تستبدل كل كيان PII بوسم آمن: [هوية]، [جوال]، [بريد]، [عنوان] — مع الإبقاء على الأرقام المجمّعة (1,847 سجل) والإشارة إلى المادة القانونية.',
+    attachments: [
+      { name: 'customer_export.xlsx', size: '2.4 MB', safe: false, piiDetected: true },
+      { name: 'marketing_report.pdf', size: '180 KB', safe: true, piiDetected: false },
+    ],
+    evaluationCaseReady: true,
   },
 ];
 
@@ -353,6 +396,9 @@ const policyBanner = {
             <p class="kernel-chat-policy-banner__title" set:html={policyBanner.title}></p>
             <p class="kernel-chat-policy-banner__msg" set:html={policyBanner.msg}></p>
           </div>
+          <button type="button" class="kernel-chat-policy-banner__close" aria-label="إغلاق التنبيه" data-kernel-banner-close>
+            <Fragment set:html={iconClose} />
+          </button>
         </div>
 
         <!-- KERNEL-AI-2026-07-14: error banner (يظهر عند فشل API) -->
@@ -372,10 +418,92 @@ const policyBanner = {
           <div class="kernel-chat-thread__messages" data-kernel-chat-messages aria-busy="false">
             <div class="sr-only" data-kernel-chat-announcer aria-live="polite" aria-atomic="true"></div>
             {seedMessages.map(m => (
-              <article class:list={['kernel-chat-message', m.role === 'user' ? 'kernel-chat-message--user' : 'kernel-chat-message--ai']}>
+              <article class:list={['kernel-chat-message', m.role === 'user' ? 'kernel-chat-message--user' : 'kernel-chat-message--ai']} data-trace-id={m.traceId} data-run-id={m.runId} data-evaluation-ready={m.evaluationCaseReady ? 'true' : 'false'}>
                 <span class="kernel-chat-message__avatar" aria-hidden="true">{m.role === 'user' ? 'ي' : 'AI'}</span>
-                <div class="kernel-chat-message__bubble">{m.text}</div>
-                <span class="kernel-chat-message__meta">{m.meta}</span>
+                <div class="kernel-chat-message__body">
+                  <div class="kernel-chat-message__bubble" data-masked-text={m.maskedText ? 'true' : 'false'}>
+                    {m.text}
+                    {m.maskedText && m.role === 'ai' && (
+                      <button type="button" class="kernel-chat-message__mask-toggle" data-kernel-mask-toggle aria-label="عرض النص بعد التعمية" title="عرض النص بعد التعمية">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <span>عرض بعد التعمية</span>
+                      </button>
+                    )}
+                  </div>
+                  {m.maskedText && m.role === 'ai' && (
+                    <div class="kernel-chat-message__masked-view" hidden>
+                      <div class="kernel-chat-message__masked-label">النص بعد التعمية (ما يراه النموذج):</div>
+                      <div class="kernel-chat-message__masked-text">{m.maskedText}</div>
+                    </div>
+                  )}
+                  {m.role === 'ai' && m.decision === 'blocked' && m.suggestedPhrasing && (
+                    <div class="kernel-chat-suggestion" role="alert">
+                      <div class="kernel-chat-suggestion__head">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        <span>طلبك محظور — جرّب هذي الصياغة بدلاً منها</span>
+                      </div>
+                      <div class="kernel-chat-suggestion__body">
+                        <textarea readonly rows="2" aria-label="الصياغة الآمنة المقترحة">{m.suggestedPhrasing}</textarea>
+                      </div>
+                      <div class="kernel-chat-suggestion__actions">
+                        <button type="button" class="kernel-chat-suggestion__btn kernel-chat-suggestion__btn--primary" data-kernel-use-phrasing>استخدم الصياغة</button>
+                        <button type="button" class="kernel-chat-suggestion__btn" data-kernel-why-modified>ليش عدّلت؟</button>
+                      </div>
+                      <div class="kernel-chat-suggestion__reason" hidden>
+                        {m.whyModified}
+                      </div>
+                    </div>
+                  )}
+                  {m.attachments && m.attachments.length > 0 && (
+                    <div class="kernel-chat-attachments">
+                      <div class="kernel-chat-attachments__label">المرفقات:</div>
+                      {m.attachments.map(att => (
+                        <div class:list={['kernel-chat-attachment', att.safe ? 'kernel-chat-attachment--safe' : 'kernel-chat-attachment--unsafe']}>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+                          <span>{att.name}</span>
+                          <span class="kernel-chat-attachment__size">{att.size}</span>
+                          {att.piiDetected && <span class="kernel-chat-attachment__warn" title="PII مكتشف في هذا الملف">⚠ PII</span>}
+                          <span class="kernel-chat-attachment__status">{att.safe ? '✅ آمن' : '❌ محظور'}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  <!-- Governance strip: PII · Risk · Decision · Trace -->
+                  <div class="kernel-governance-strip" aria-label="شريط الحوكمة">
+                    <span class="kernel-governance-strip__item" title="كيانات PII المكتشفة">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                      PII: {m.piiCount}
+                    </span>
+                    <span class="kernel-governance-strip__item" title="درجة المخاطر">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                      مخاطر: {m.riskScore}%
+                    </span>
+                    <span class="kernel-governance-strip__item kernel-governance-strip__item--decision" title="القرار" data-decision={m.decision}>
+                      {m.decision === 'blocked' && '⊘ محظور'}
+                      {m.decision === 'allowed' && '✓ مسموح'}
+                      {m.decision === 'pending_approval' && '⏳ ينتظر موافقة'}
+                      {m.decision === 'masked' && '◐ معمّى'}
+                    </span>
+                    <span class="kernel-governance-strip__item kernel-governance-strip__item--trace" title="Trace ID">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                      {m.traceId}
+                    </span>
+                  </div>
+                  <!-- Message actions: Playground + Evaluation -->
+                  <div class="kernel-chat-message__actions">
+                    <button type="button" class="kernel-chat-message__action" data-kernel-open-playground title="افتح هذه الرسالة في الملعب" aria-label="افتح هذه الرسالة في الملعب">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                      افتح في الملعب
+                    </button>
+                    {m.evaluationCaseReady && (
+                      <button type="button" class="kernel-chat-message__action" data-kernel-to-evaluation title="حوّل هذا التشغيل إلى حالة تقييم" aria-label="حوّل هذا التشغيل إلى حالة تقييم">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M16 13h-6"/><path d="M16 17h-6"/><path d="M10 9H8"/></svg>
+                        تحويل لتقييم
+                      </button>
+                    )}
+                  </div>
+                  <span class="kernel-chat-message__meta">{m.meta}</span>
+                </div>
               </article>
             ))}
             <!-- Typing indicator (initially hidden, toggled via JS when sending) -->
@@ -407,7 +535,7 @@ const policyBanner = {
             ></textarea>
             <div class="kernel-chat-composer__row">
               <span class="kernel-chat-composer__hint" id="kernel-chat-hint">
-                <kbd>Enter</kbd> للإرسال · <kbd>Shift+Enter</kbd> لسطر جديد · <kbd>C</kbd> لمحادثة جديدة
+                <kbd>Enter</kbd> للإرسال · <kbd>Shift+Enter</kbd> لسطر جديد · <kbd>C</kbd> لمحادثة جديدة · <kbd>Esc</kbd> لإغلاق التنبيه
               </span>
               <div class="kernel-chat-composer__actions">
                 <button type="button" class="kernel-chat-composer__btn" aria-label="إرفاق ملف" data-kernel-chat-attach>
@@ -420,6 +548,7 @@ const policyBanner = {
                 </button>
               </div>
             </div>
+            <div class="input-attachments" data-kernel-attachments-slot></div>
           </form>
         </div>
       </section>
@@ -1529,14 +1658,139 @@ const policyBanner = {
         }
       });
 
-      // Attach (demo stub)
+      // M14: C key = new chat
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'c' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+          // Don't trigger when typing in an input/textarea
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+          if (newBtn) newBtn.click();
+        }
+      });
+
+      // M14: Esc key closes the policy banner
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && banner && !banner.hidden) {
+          banner.hidden = true;
+        }
+      });
+
+      // M14: Banner close button
+      var bannerClose = el('[data-kernel-banner-close]');
+      if (bannerClose) {
+        bannerClose.addEventListener('click', function () {
+          if (banner) banner.hidden = true;
+        });
+      }
+
+      // Attach (demo stub with safe checking)
       if (attachBtn) {
         attachBtn.addEventListener('click', function () {
           attachBtn.classList.add('is-pulsing');
           setTimeout(function () { attachBtn.classList.remove('is-pulsing'); }, 600);
-          alert('في وضع البيانات التجريبية — الإرفاق الفعلي يتطلب ربط Kernel API.');
+          // In demo mode, simulate a file upload with PII check
+          var demoAttachments = [
+            { name: 'report.xlsx', size: '1.2 MB', safe: true, piiDetected: false },
+            { name: 'customers.csv', size: '340 KB', safe: false, piiDetected: true },
+          ];
+          var slot = el('[data-kernel-attachments-slot]');
+          if (slot) {
+            slot.innerHTML = demoAttachments.map(function (att) {
+              return '<div class="kernel-chat-attachment kernel-chat-attachment--' + (att.safe ? 'safe' : 'unsafe') + '">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>' +
+                '<span>' + att.name + '</span>' +
+                '<span class="kernel-chat-attachment__size">' + att.size + '</span>' +
+                (att.piiDetected ? '<span class="kernel-chat-attachment__warn" title="PII مكتشف">⚠ PII</span>' : '') +
+                '<span class="kernel-chat-attachment__status">' + (att.safe ? '✅ آمن' : '❌ محظور') + '</span>' +
+                '</div>';
+            }).join('');
+          }
         });
       }
+
+      // M14: Masked text toggle
+      elAll('[data-kernel-mask-toggle]').forEach(function (btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', function () {
+          var article = btn.closest('.kernel-chat-message');
+          if (!article) return;
+          var maskedView = article.querySelector('.kernel-chat-message__masked-view');
+          if (maskedView) {
+            var isHidden = maskedView.hasAttribute('hidden');
+            if (isHidden) {
+              maskedView.removeAttribute('hidden');
+              btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg><span>إخفاء التعمية</span>';
+            } else {
+              maskedView.setAttribute('hidden', '');
+              btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span>عرض بعد التعمية</span>';
+            }
+          }
+        });
+      });
+
+      // M14: "Use phrasing" button — copies suggested text to input
+      elAll('[data-kernel-use-phrasing]').forEach(function (btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', function () {
+          var suggestion = btn.closest('.kernel-chat-suggestion');
+          if (!suggestion) return;
+          var textarea = suggestion.querySelector('textarea');
+          if (textarea && input) {
+            input.value = textarea.value;
+            input.focus();
+          }
+        });
+      });
+
+      // M14: "Why modified?" button — toggles reason visibility
+      elAll('[data-kernel-why-modified]').forEach(function (btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', function () {
+          var suggestion = btn.closest('.kernel-chat-suggestion');
+          if (!suggestion) return;
+          var reason = suggestion.querySelector('.kernel-chat-suggestion__reason');
+          if (reason) {
+            var isHidden = reason.hasAttribute('hidden');
+            if (isHidden) {
+              reason.removeAttribute('hidden');
+              btn.textContent = 'إخفاء السبب';
+            } else {
+              reason.setAttribute('hidden', '');
+              btn.textContent = 'ليش عدّلت؟';
+            }
+          }
+        });
+      });
+
+      // M14: "Open in Playground" button — navigates to playground with message text
+      elAll('[data-kernel-open-playground]').forEach(function (btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', function () {
+          var article = btn.closest('.kernel-chat-message');
+          if (!article) return;
+          var bubble = article.querySelector('.kernel-chat-message__bubble');
+          var text = bubble ? bubble.textContent.trim() : '';
+          // Encode the message text and navigate to playground
+          var encoded = encodeURIComponent(text);
+          window.location.href = '/kernel/playground/?prefill=' + encoded;
+        });
+      });
+
+      // M14: "Convert to Evaluation" button — navigates to eval page with run data
+      elAll('[data-kernel-to-evaluation]').forEach(function (btn) {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', function () {
+          var article = btn.closest('.kernel-chat-message');
+          if (!article) return;
+          var traceId = article.getAttribute('data-trace-id') || '';
+          var runId = article.getAttribute('data-run-id') || '';
+          window.location.href = '/kernel/eval/?run=' + encodeURIComponent(runId) + '&trace=' + encodeURIComponent(traceId);
+        });
+      });
 
       // New chat — clear messages + show banner again + clear input
       if (newBtn) {
