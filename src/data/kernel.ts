@@ -27,21 +27,31 @@ export type ActivityEvent = {
 };
 
 export type ComplianceFramework = {
-  id: string;
+  id?: string;
   name: string;
   nameAr: string;
   description: string;
-  controls: number;
-  status: 'covered' | 'partial' | 'gap';
+  controls?: number;
+  status: 'covered' | 'partial' | 'gap' | 'active';
+  score: number;
+  maxScore: number;
+  demo?: boolean;
 };
 
 export type EvidenceRecord = {
   id: string;
-  type: string;
-  title: string;
+  traceId?: string;
+  type?: string;
+  title?: string;
+  query?: string;
+  status?: string;
+  riskLevel?: string;
+  riskScore?: number;
+  createdAt?: string;
   hash: string;
-  timestamp: string;
-  verified: boolean;
+  timestamp?: string;
+  verified?: boolean;
+  demo?: boolean;
 };
 
 import type { FaqItem } from './schema-helpers';
@@ -93,6 +103,7 @@ const icons = {
   evidence: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
   compliance: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
   reports: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 118 2.83"/><path d="M22 12A10 10 0 0012 2v10z"/></svg>',
+  playground: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
   kernel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>',
 };
 
@@ -161,6 +172,72 @@ export const kernelUnits: KernelUnit[] = [
       {
         q: 'وش تكلفة Kernel؟',
         a: 'التسعير حسب حجم الاستخدام (عدد الطلبات شهرياً) وعدد المستخدمين، يبدأ من باقة المؤسسات الصغيرة وينتهي بخطط On-Premise مخصصة. تواصل معنا عبر /contact/ للحصول على عرض مفصل يناسب حجم منشأتك.',
+      },
+    ],
+  },
+  {
+    slug: 'playground',
+    path: '/kernel/playground/',
+    label: 'الملعب',
+    shortDescription: 'أداة حكومة تفاعلية — شغّل سياسات Kernel على طلباتك',
+    title: 'أداة الحوكمة التفاعلية — ملعب Kernel | BrightAI',
+    description: 'ملعب حوكمة ذكاء اصطناعي تفاعلي. اكتب طلب وجرّب 6 مراحل خط الأنابيب: استلام، فحص PII، تقييم مخاطر، مطابقة سياسات، استدعاء النموذج، توليد دليل. شوف الحكم مع وبدون Kernel. أداة وليست صفحة تسويقية.',
+    canonical: 'https://brightai.site/kernel/playground/',
+    h1: 'ملعب الحوكمة — النواة مكشوفة',
+    hreflang: [
+      { lang: 'ar-SA', href: 'https://brightai.site/kernel/playground/' },
+      { lang: 'x-default', href: 'https://brightai.site/kernel/playground/' },
+    ],
+    ogImage: '/assets/images/og/brightai-og-1200x630.png',
+    solutionSlug: 'ai-firewall',
+    docSlug: 'kernel-playground',
+    blogPath: '/blog/ai-governance-playground/',
+    blogLabel: 'ملعب الحوكمة: جرّب Kernel على طلبك',
+    iconSvg: icons.playground,
+    relatedSlugs: ['chat', 'audit', 'policies', 'scenarios'],
+    seoBlocks: [
+      {
+        heading: 'وش الملعب (Playground) في Kernel؟',
+        paragraphs: [
+          'الملعب أداة تفاعلية داخل Kernel تقدر تجرب حوكمة الذكاء الاصطناعي على طلباتك الخاصة. تكتب نص، تختار السياسات، وتشوف 6 مراحل خط الأنابيب عملياً: استلام الطلب، فحص PII، تقييم المخاطر، مطابقة السياسات، استدعاء النموذج، توليد الدليل. النتيجة تظهر فوراً — بدون ما ترسل الطلب لنموذج خارجي.',
+          'الملعب مو صفحة تسويقية. هو بيئة تدريب وفهم لفريق الحوكمة: يقدر يختبر كيف تتصرف السياسات المختلفة، يشوف إيه بيتفعل مع بيانات حساسة، ويفهم درجة المخاطر بناءً على نوع المحتوى والسياق.',
+        ],
+        bullets: [
+          '6 مراحل خط أنابيب حية مع تظليل PII وقت التشغيل',
+          '11 سياسة قابلة للتفعيل/الإطفاء حسب قطاعك',
+          'وضع الفرق (A/B): شوف الطلب مع Kernel وبدونه',
+          'كتاب 20 وصفات جاهزة (مالية، صحية، موارد بشرية، قانونية، حكومية، تعليمية)',
+          'آلة زمن تعيد التشغيل من أي مرحلة',
+        ],
+      },
+      {
+        heading: 'ليش الملعب مهم لمنشأتك؟',
+        paragraphs: [
+          'قبل ما تشتري حل حوكمة، تبي تفهم كيف بيشتغل على بياناتك. الملعب يخلّيك تجرّب: ارفع نص يحتوي هوية وطنية وشوف هل بتتعَمّى ولا بتنحظر. ضع سياق مالي وشوف تقييم المخاطر يتغير. شوف كيف Policy Engine يطبّق قواعدك بدون ما تكتب كود.',
+          'هذا يوفّر عليك جلسة تدريب لفريق الحوكمة — مو حاجة تقرأ وثائق وتتوقع، بل تشغّل بنفسك وتبني الحدس.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: 'هل الملعب يشتغل بدون إنترنت؟',
+        a: 'نعم. كل منطق الكشف والتقييم يشتغل محلياً في المتصفح. ما يحتاج API call أو اتصال بالسحابة. النص اللي تكتبه ما يروح لخادم — التحليل حتمي ومحلي.',
+      },
+      {
+        q: 'هل البيانات اللي أكتبها تتسجّل أو تُرسل؟',
+        a: 'لا. ما فينا تسجيل ولا إرسال. كل شيء يشتغل في ذاكرة المتصفح. ما فين سيرفر يستقبل النص. لو تبي تفكر، اكتب نص تجريبي فيه بيانات وهمية بس.',
+      },
+      {
+        q: 'وش الفرق بين الملعب وصفحة Szenarios؟',
+        a: 'السيناريوهات تختبر نماذج AI فعلية بـ 50+ حالة. الملعب يشتغل على النص اللي تكتبه أنت، يطبّق سياسات Kernel المحلية، ويورّك خط الأنابيب 6 مراحل. الاثنين يكمّل بعض: السيناريوات للاختبار الجماعي، الملعب للتجربة الفردية الفورية.',
+      },
+      {
+        q: 'أقدر أصدّر النتائج من الملعب؟',
+        a: 'نعم. زر صدّر الكود يولّد cURL / Python / TypeScript يمثّل الطلب مع نفس السياسات والسياق. زر شارك يولّد رابط دائم يشفّر إعداداتك (بذرة، وضع الفرق، السياسات المفعّلة). كذلك تقدر تحمّل الدليل EVD بصيغة JSON.',
+      },
+      {
+        q: 'هل الملعب مجاني؟',
+        a: 'نعم. الملعب جزء من Kernel ولا يتطلب اشتراك. شغّل على أي نص وجرب كل السياسات والخيارات. لو تبي API حقيقي يربط Kernel بمنشأتك، ابدأ من /contact/ أو من صفحة الحلول.',
       },
     ],
   },
@@ -878,7 +955,7 @@ export const activityEvents: ActivityEvent[] = [
     type: 'evidence_generated',
     label: 'توليد الدليل',
     description: 'تم إنشاء ملف دليل AI-2026-00042 — يشمل السجل والموافقات والسياسات',
-    riskLevel: 'minimal',
+    riskLevel: 'low',
     timestamp: '٢٠٢٦/٠٦/١١ ١٨:١٠',
     demo: true,
   },
@@ -900,7 +977,7 @@ export const complianceFrameworks: ComplianceFramework[] = [
     nameAr: 'نظام حماية البيانات الشخصية',
     score: 78,
     maxScore: 100,
-    status: 'active',
+    status: 'covered',
     description: 'يدعم مواءمة ضوابط حماية البيانات الشخصية وفق نظام PDPL السعودي',
     demo: true,
   },
@@ -909,7 +986,7 @@ export const complianceFrameworks: ComplianceFramework[] = [
     nameAr: 'ضوابط الأمن السيبراني',
     score: 65,
     maxScore: 100,
-    status: 'active',
+    status: 'covered',
     description: 'يدعم مواءمة متطلبات الضوابط الأساسية للأمن السيبراني من الهيئة الوطنية للأمن السيبراني',
     demo: true,
   },
@@ -918,7 +995,7 @@ export const complianceFrameworks: ComplianceFramework[] = [
     nameAr: 'إرشادات الذكاء الاصطناعي التوليدي',
     score: 72,
     maxScore: 100,
-    status: 'active',
+    status: 'covered',
     description: 'يدعم مواءمة إرشادات هيئة البيانات والذكاء الاصطناعي لاستخدام الذكاء الاصطناعي التوليدي',
     demo: true,
   },

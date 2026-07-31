@@ -1,0 +1,302 @@
+---
+/**
+ * /kernel/playground/ — ملعب الحوكمة التفاعلي (REPORTS-16 §2 ⭐).
+ *
+ * نواة المنتج مكشوفة: الزائر يكتب نصًا، يشوف خط الأنابيب الحي (6 مراحل)
+ * ويقرأ الحكم + تبويب «بدون Kernel». أداة، لا صفحة تسويقية.
+ *
+ * المحرّك في /js/kernel-playground.js (vanilla، حتمي، يعمل محليًا).
+ * البيانات من src/data/kernel-policies.ts (مصدر playground فقط).
+ * التنسيق من kernel/assets/css/pages/playground.css (side-effect import).
+ * النصوص بالعامية السعودية. يحترم prefers-reduced-motion. الجزر التقنية dir="ltr".
+ */
+import KernelLayout from '../../layouts/KernelLayout.astro';
+import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
+import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
+import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import {
+  POLICIES,
+  PII_TYPES,
+  COMPLIANCE_PACKS,
+  RISK_FACTORS,
+  PLAYGROUND_SAMPLES,
+  RECIPE_BOOK,
+  CONTEXT_OPTIONS,
+  PLAYGROUND_LIMITS,
+} from '../../data/kernel-policies';
+
+// تنسيق الـ playground (side-effect import — أنظف طريقة مضمونة في Astro).
+import '../../../kernel/assets/css/pages/playground.css';
+
+const unit = getKernelUnit('playground')!;
+const cross = getCrossLinks(unit);
+const jsonLd = [...getKernelSubPageJsonLd(unit), getKernelFaqJsonLd(unit)];
+
+// إعدادات تُحقن للـ JS عبر JSON blob (لا استيراد TS في المتصفح).
+const pgConfig = {
+  policies: POLICIES.map((p) => ({ id: p.id, name: p.name, piiType: p.piiType, compliancePack: p.compliancePack, action: p.action, condition: p.condition, isActiveDefault: p.isActiveDefault })),
+  piiTypes: PII_TYPES.map((t) => ({ id: t.id, label: t.label, color: t.color, maskToken: t.maskToken })),
+  packs: COMPLIANCE_PACKS.map((p) => ({ id: p.id, label: p.label, nameAr: p.nameAr, matter: p.matter })),
+  factorWeights: Object.fromEntries(RISK_FACTORS.map((f) => [f.id, f.weight])),
+  factorLabels: Object.fromEntries(RISK_FACTORS.map((f) => [f.id, f.label])),
+  samples: PLAYGROUND_SAMPLES,
+  recipes: RECIPE_BOOK,
+  limits: PLAYGROUND_LIMITS,
+};
+---
+
+<KernelLayout
+  title={unit.title}
+  description={unit.description}
+  canonical={unit.canonical}
+  hreflang={unit.hreflang}
+  jsonLd={jsonLd}
+  currentPath={unit.path}
+  breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: unit.label, href: unit.path }]}
+>
+  {/* ── إعدادات للـ JS ── */}
+  <script type="application/json" id="pg-config" set:html={JSON.stringify(pgConfig)} />
+
+  <div class="kernel-main kernel-page-fade-in" data-pg-root data-kernel-loading data-kernel-count="1">
+    {/* skeleton */}
+    <div data-kernel-skeleton>
+      <KernelSkeleton variant="heading" />
+      <KernelSkeleton variant="card" count={3} />
+    </div>
+
+    {/* المحتوى الفعلي */}
+    <div data-pg-content>
+      <header class="pg-header">
+        <div>
+          <nav class="kernel-breadcrumb" aria-label="مسار التنقل">
+            <ol>
+              <li><a href="/">BrightAI</a></li>
+              <li><a href="/kernel/">Kernel</a></li>
+              <li aria-current="page">{unit.label}</li>
+            </ol>
+          </nav>
+          <h1 class="pg-header__title">{unit.h1}</h1>
+        </div>
+        <div class="pg-header__meta">
+          <span class="pg-local-badge" id="pg-local-badge" hidden>المحرك اللغوي غير متاح — الحوكمة تمت محليًا</span>
+          <span class="pg-embed-badge">⚗️ الملعب التفاعلي</span>
+          <span class="pg-counter-row" id="pg-remaining" hidden></span>
+        </div>
+      </header>
+
+      {/* ═════════ الشبكة ثلاثية الأعمدة ═════════ */}
+      <div class="pg-grid" id="pg-grid">
+
+        {/* ── العمود الأيمن: الإدخال ── */}
+        <section class="pg-col pg-col--input" aria-label="إدخال الطلب">
+          <button class="pg-col__toggle" type="button" aria-expanded="true">
+            <svg class="pg-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            الإدخال
+          </button>
+
+          <div>
+            <label class="pg-section-label" for="pg-input">اكتب طلبك</label>
+            <textarea id="pg-input" class="pg-textarea" dir="auto" maxlength={PLAYGROUND_LIMITS.maxChars}
+              placeholder="مثال: ابعت لي بيانات الموظف صاحب الهوية 1098765432…"></textarea>
+            <div class="pg-counter-row">
+              <span class="pg-warn">⚠ لا ترفع بيانات إنتاج حقيقية</span>
+              <span id="pg-counter">0 / {PLAYGROUND_LIMITS.maxChars}</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="pg-section-label">عيّنات جاهزة</span>
+            <div class="pg-samples">
+              {PLAYGROUND_SAMPLES.map((s) => (
+                <button class="pg-sample" type="button" data-sample={s.id} style={`--pg-c:${PII_TYPES[0].color}`}>
+                  <span class="pg-sample__icon">{s.icon}</span>{s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <span class="pg-section-label">السياق</span>
+            <div class="pg-context">
+              <select data-context="sector" aria-label="القسم">
+                {CONTEXT_OPTIONS.sector.map((v) => <option value={v}>{v}</option>)}
+              </select>
+              <select data-context="role" aria-label="الدور">
+                {CONTEXT_OPTIONS.role.map((v) => <option value={v}>{v}</option>)}
+              </select>
+              <select data-context="sensitivity" aria-label="الحساسية">
+                {CONTEXT_OPTIONS.sensitivity.map((v) => <option value={v}>{v}</option>)}
+              </select>
+              <select data-context="deployment" aria-label="مكان التنفيذ">
+                {CONTEXT_OPTIONS.deployment.map((v) => <option value={v}>{v}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <div class="pg-policies__head">
+              <span class="pg-section-label" style="margin:0">السياسات (11)</span>
+              <button class="pg-policies__all" id="pg-all-policies" type="button">إطفاء الكل</button>
+            </div>
+            {POLICIES.map((p) => (
+              <div class="pg-policy-row" data-policy={p.id}>
+                <button class="pg-toggle" type="button" role="switch" aria-checked={String(p.isActiveDefault)} data-pid={p.id} aria-label={p.name}></button>
+                <span class="pg-policy-row__name">{p.name}</span>
+                <span class="pg-policy-row__pack">{(COMPLIANCE_PACKS.find((c) => c.id === p.compliancePack) || {}).label || p.compliancePack}</span>
+              </div>
+            ))}
+          </div>
+
+          <div class="pg-runbar pg-runbar-sticky">
+            <button class="pg-run-btn" id="pg-run" type="button">▶ شغّل</button>
+            <button class="pg-settings-btn" id="pg-settings" type="button" aria-label="إعدادات (بذرة، وضع الفرق)" title="إعدادات">⚙</button>
+          </div>
+        </section>
+
+        {/* ── العمود الأوسط: خط الأنابيب ── */}
+        <section class="pg-col pg-col--pipe" aria-label="خط الأنابيب الحي">
+          <button class="pg-col__toggle" type="button" aria-expanded="true">
+            <svg class="pg-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            خط الأنابيب
+          </button>
+
+          <div class="pg-timeline">
+            <label class="pg-time-machine">
+              <span class="pg-section-label" style="margin:0">آلة الزمن</span>
+              <input id="pg-timemachine" type="range" min="1" max="6" step="1" value="1" aria-label="الانتقال بين المراحل" />
+            </label>
+            <div class="pg-speed">
+              <button type="button" data-speed="1" aria-pressed="true">1×</button>
+              <button type="button" data-speed="0.5" aria-pressed="false">0.5×</button>
+            </div>
+            <button class="pg-skip-btn" id="pg-skip" type="button">تخطّي التحريك</button>
+          </div>
+
+          <div class="pg-cards">
+            {[
+              { n: 1, t: 'الاستلام', d: 'استلام الطلب وتوليد Trace.' },
+              { n: 2, t: 'فحص PII', d: 'كشف البيانات الشخصية وتظليلها.' },
+              { n: 3, t: 'تقييم المخاطر', d: 'احتساب درجة المخاطر من 12 عامل.' },
+              { n: 4, t: 'مطابقة السياسات', d: 'أي سياسة اشتعلت ولماذا.' },
+              { n: 5, t: 'استدعاء النموذج', d: 'النص بعد التعمية + الاستجابة.' },
+              { n: 6, t: 'توليد الدليل', d: 'بطاقة EVD + تحميل.' },
+            ].map((s, i) => (
+              <>
+                <article class="pg-card" data-stage={s.n} data-state="idle" data-expanded={String(s.n === 1)}>
+                  <div class="pg-card__header">
+                    <span class="pg-card__step">{s.n}</span>
+                    <span class="pg-card__title">{s.t}</span>
+                    <span class="pg-card__time" data-time></span>
+                  </div>
+                  <div class="pg-card__body"><p>{s.d}</p></div>
+                  <span class="pg-sr-only" data-live aria-hidden="true"></span>
+                </article>
+                {i < 5 && (
+                  <div class="pg-connector" data-idx={s.n} aria-hidden="true">
+                    <span class="pg-connector__line" data-decision="wait"></span>
+                    <span class="pg-decision" data-decision="wait"></span>
+                  </div>
+                )}
+              </>
+            ))}
+          </div>
+
+          <button class="pg-skip-btn" id="pg-diff-toggle" type="button" style="width:100%">⇄ وضع الفرق (A/B)</button>
+        </section>
+
+        {/* ── العمود الأيسر: النتيجة ── */}
+        <section class="pg-col pg-col--result" aria-label="النتيجة والحكم">
+          <button class="pg-col__toggle" type="button" aria-expanded="true">
+            <svg class="pg-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            النتيجة
+          </button>
+
+          <div class="pg-verdict" id="pg-verdict">
+            <p class="pg-verdict__reason">اكتب نصًا واضغط «شغّل» عشان تشوف الحكم.</p>
+          </div>
+
+          <div role="tablist" aria-label="مقارنة الحوكمة">
+            <div class="pg-result-tabs">
+              <button id="pg-tab-with" role="tab" aria-selected="true">مع Kernel</button>
+              <button id="pg-tab-without" role="tab" aria-selected="false">بدون Kernel</button>
+            </div>
+            <div class="pg-result-pane" id="pg-pane-with" data-pane="with" role="tabpanel">—</div>
+            <div class="pg-result-pane" id="pg-pane-without" data-pane="without" role="tabpanel" hidden>—</div>
+          </div>
+
+          <div>
+            <span class="pg-section-label">خريطة الامتثال</span>
+            <div class="pg-compliance-map" id="pg-compliance-map">
+              <span class="pg-factor__name">تشغّل بعد التحليل.</span>
+            </div>
+          </div>
+
+          <div>
+            <span class="pg-section-label">الأثر</span>
+            <div class="pg-impact" id="pg-impact">
+              <div class="pg-impact__cell"><div class="pg-impact__num">0</div><div class="pg-impact__label">سجلات محمية</div></div>
+              <div class="pg-impact__cell"><div class="pg-impact__num">0</div><div class="pg-impact__label">هللة</div></div>
+              <div class="pg-impact__cell"><div class="pg-impact__num">0</div><div class="pg-impact__label">مللي</div></div>
+            </div>
+          </div>
+
+          <div class="pg-actions">
+            <button type="button" onclick="window.open('/kernel/audit/','_blank')">افتح الرحلة</button>
+            <button type="button" id="pg-download-evd">حمّل الدليل</button>
+            <button type="button" onclick="alert('أضيف كسيناريو (تجريبي)')">أضفه كسيناريو</button>
+            <button type="button" id="pg-share">شارك 🔗</button>
+          </div>
+
+          <div class="pg-export">
+            <button class="pg-export__head" id="pg-export-head" type="button">صدّر كود ⌄</button>
+            <div class="pg-export__panel" id="pg-export-panel" hidden>
+              <div class="pg-export__langs">
+                <button type="button" data-lang="curl" aria-selected="true">cURL</button>
+                <button type="button" data-lang="py" aria-selected="false">Python</button>
+                <button type="button" data-lang="ts" aria-selected="false">TypeScript</button>
+              </div>
+              <div class="pg-export__code">
+                <pre class="pg-export__pre"><code></code></pre>
+                <button class="pg-export__copy" type="button">نسخ</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      {/* SEO نصّي قابل للزحف */}
+      <KernelSeoSection blocks={unit.seoBlocks} faq={unit.faq} faqHeading="أسئلة شائعة عن الملعب" />
+
+      <KernelContextLinks
+        currentPath={unit.path}
+        solutionPath={cross.solutionPath}
+        docPath={cross.docPath ?? ''}
+        blogPath={unit.blogPath}
+        blogLabel={unit.blogLabel}
+        relatedSlugs={unit.relatedSlugs}
+      />
+    </div>
+  </div>
+
+  {/* كتاب الوصفات */}
+  <button class="pg-recipe-fab" id="pg-recipe-fab" type="button">📖 كتاب الوصفات</button>
+  <div class="pg-recipe-panel" id="pg-recipe-panel" hidden></div>
+
+  <script type="module" src="/js/kernel-loading-state.js"></script>
+  <script type="module" src="/js/kernel-playground.js"></script>
+
+  <style>
+    /* ربط زر صدّر الكود (إظهار/إخفاء اللوحة) */
+    .pg-export__panel[hidden] { display: none; }
+    .pg-sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    /* مساعدة قراءة تظليل PII */
+    .pg-receipt { display: grid; gap: var(--space-1); font-size: var(--text-xs); color: var(--text-soft); }
+    .pg-receipt code { font-family: var(--font-mono, ui-monospace, monospace); color: var(--brand); }
+  </style>
+</KernelLayout>

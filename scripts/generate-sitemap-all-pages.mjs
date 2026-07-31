@@ -388,7 +388,9 @@ function groupRelPath(relPath) {
       normalized === "kernel/reports.html" ||
       normalized === "kernel/reports/index.html" ||
       normalized === "kernel/evidence.html" ||
-      normalized === "kernel/evidence/index.html"
+      normalized === "kernel/evidence/index.html" ||
+      normalized === "kernel/playground.html" ||
+      normalized === "kernel/playground/index.html"
     ) {
       return "kernel";
     }

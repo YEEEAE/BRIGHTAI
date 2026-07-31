@@ -16,6 +16,12 @@ API_BASE_URL="https://openrouter.ai/api"
 API_KEY_URL="https://openrouter.ai/settings/keys"
 API_TIMEOUT_MS=3000000
 
+# OpenRouter model defaults (inclusionai/ling-3.0-flash:free)
+DEFAULT_HAIKU_MODEL="inclusionai/ling-3.0-flash:free"
+DEFAULT_SONNET_MODEL="inclusionai/ling-3.0-flash:free"
+DEFAULT_OPUS_MODEL="inclusionai/ling-3.0-flash:free"
+SUBAGENT_MODEL="inclusionai/ling-3.0-flash:free"
+
 # ========================
 #       Functions
 # ========================
@@ -140,7 +146,7 @@ configure_claude_json(){
 # ========================
 
 configure_claude() {
-    log_info "Configuring Claude Code..."
+    log_info "Configuring Claude Code with OpenRouter..."
     echo "   You can get your API key from: $API_KEY_URL"
     read -s -p "🔑 Please enter your OpenRouter API key: " api_key
     echo
@@ -169,8 +175,14 @@ configure_claude() {
         fs.writeFileSync(filePath, JSON.stringify({
             ...content,
             env: {
+                OPENROUTER_API_KEY: apiKey,
                 ANTHROPIC_AUTH_TOKEN: apiKey,
                 ANTHROPIC_BASE_URL: "'"$API_BASE_URL"'",
+                ANTHROPIC_API_KEY: "",
+                ANTHROPIC_DEFAULT_HAIKU_MODEL: "'"$DEFAULT_HAIKU_MODEL"'",
+                ANTHROPIC_DEFAULT_SONNET_MODEL: "'"$DEFAULT_SONNET_MODEL"'",
+                ANTHROPIC_DEFAULT_OPUS_MODEL: "'"$DEFAULT_OPUS_MODEL"'",
+                CLAUDE_CODE_SUBAGENT_MODEL: "'"$SUBAGENT_MODEL"'",
                 API_TIMEOUT_MS: "'"$API_TIMEOUT_MS"'",
                 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: 1
             }
@@ -180,7 +192,7 @@ configure_claude() {
         exit 1
     }
 
-    log_success "Claude Code configured successfully"
+    log_success "Claude Code configured successfully with OpenRouter"
 }
 
 # ========================

@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-07-30 22:05 +03:00
+last_updated: 2026-07-31 05:51 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.59
+version: 2.7.60
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -1201,6 +1201,17 @@ Outliers: `/solutions/` desktop 88 (CLS 0.239), `/kernel/chat/` desktop 83 (CLS 
 ---
 
 ## 2. Change Ledger (newest first)
+
+### 2026-07-31 — KRN-PLAYGROUND-001: إنشاء src/data/kernel-policies.ts + إصلاح sitemap لإدراج /kernel/playground/
+- **Files**: src/data/kernel-policies.ts (new), scripts/generate-sitemap-all-pages.mjs (معدّل — أضفت kernel/playground.html + kernel/playground/index.html لقائمة groupRelPath)
+- **What**: أنشأت ملف البيانات الناقص `src/data/kernel-policies.ts` اللي يستورده `playground.astro`. الملف يحوي: 9 أنواع PII (saudi_id/phone/iban/email/medical/patient_id/credit_card/passport/api_secret) بألوانها وتوكنز تعميتها، 7 حزم امتثال (PDPL/NCA/SDAIA/SFDA/SAMA/ISO27001/ISO42001)، 11 سياسة (تعمية الهوية PDPL، حظر الهوية طبياً SFDA، تعمية الجوال، حظر IBAN محلي+دولي، تعمية البريد، حظر ملفات المرضى، بطاقات Luhn، تعمية الجواز، SDAIA شفافية، ISO 42001 مخاطر عالية)، 12 عامل مخاطر بأوزانها، 6 عينات جاهزة (هوية/IBAN/سجل طبي/رواتب/حقن أوامر/طلب بريء)، 20 وصفة بالقطاع، خيارات السياق (7 قطاعات/5 أدوار/4 حساسية/2 deployment)، وحدود الملعب (2000 حرف/25 طلب). كذلك أصلحت سكربت sitemap لإدراج `/kernel/playground/` اللي كان متستثنى من القائمة الـ hardcoded.
+- **Why**: صفحة playground.astro (302 سطر) + playground.css (854 سطر) + kernel-playground.js (747 سطر) + تسجيل kernel.ts كلها موجودة بس البناء كان مكسور لأن ملف البيانات `kernel-policies.ts` مفقود. بعد إنشائه، الصفحة اتنشأت في `dist/client/kernel/playground/index.html` بس ما كانت في sitemap لأن سكربت sitemap فيه قائمة hardcoded لصفحات kernel وما فيها playground.
+- **Verification**: npm run build → exit 0 ✅ (dist/client/kernel/playground/index.html اتنشأت + playground.bCz9R9qS.css). npm run sitemap:generate → 237 URL (was 236، +1 playground) ✅. grep "playground" public/sitemap.xml → موجود ✅. grep "playground" dist/client/sitemap.xml → موجود ✅.
+- **Report**: none (تغيير بيانات + سكربت، ملفين)
+- **Commit**: uncommitted (per brain line 18 — user commits via main)
+- **Status**: verified locally
+- **Brain updates**: frontmatter (last_updated + version bump 2.7.59 → 2.7.60)؛ هذا الـ entry يـ document إن playground.astro صار عملاني بعد إنشاء ملف البيانات الناقص + إصلاح sitemap
+- **Decisions (NEW — DEC-KRN-PLAYGROUND-001)**: (1) ملف `kernel-policies.ts` منفصل عن `kernel.ts` عشان بيانات playground ديناميكية وتجريبية بينما kernel.ts بيانات SEO منشورة. (2) السياسات الـ11 طابقت التقرير (تقرير-صفحات-kernel.md سطر 109) بالضبط: تعمية الهوية PDPL، حظر الهوية طبياً SFDA، تعمية الجوال، حظر SA-IBAN ×2، تعمية البريد، حظر ملفات المرضى، بطاقات Luhn، جوازات، SDAIA مسودة، ISO 42001 مسودة. (3) الـ JS engine (`kernel-playground.js`) يستهلك البيانات عبر JSON blob (`#pg-config`) — لا استيراد TS في المتصفح. (4) سكربت sitemap فيه قائمة hardcoded لصفحات kernel — لازم نضيف كل صفحة kernel جديدة يدوياً. (5) ما غيّرت أي نص منشور أو CSS أو JS — فقط أنشأت ملف بيانات + أضفت سطرين لسكربت sitemap.
 
 ### 2026-07-30 — KRN-021: 360px breakpoint لـ kernel.css (very small viewports)
 - **Files**: src/styles/kernel.css (معدّل — أضفت @media (max-width: 360px) block بعد الـ 480px الموجود)
