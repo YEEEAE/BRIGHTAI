@@ -348,23 +348,21 @@ const securityLeaderboard = [
   </main>
 
   <!-- ═══ سكربت التبويبات والميزات التفاعلية ═══ -->
-  <script>
-    window.__kernelModelsPageData = {
-      models: ${JSON.stringify(models)},
-      arenaModels: ${JSON.stringify(arenaModels)},
-      routingNodes: ${JSON.stringify(routingNodes)},
-      routingLinks: ${JSON.stringify(routingLinks)},
-      alerts: ${JSON.stringify(alerts)},
-      securityLeaderboard: ${JSON.stringify(securityLeaderboard)},
-    };
-
+  <script is:inline define:vars={{ models, arenaModels, routingNodes, routingLinks, alerts, securityLeaderboard }}>
     // Vanilla JS, no external dependencies.
     // Handles: tab switching, table sorting, arena simulation, SVG flow chart.
 
     (function () {
       'use strict';
 
-      var pageData = window.__kernelModelsPageData || {};
+      var pageData = {
+        models: models,
+        arenaModels: arenaModels,
+        routingNodes: routingNodes,
+        routingLinks: routingLinks,
+        alerts: alerts,
+        securityLeaderboard: securityLeaderboard
+      };
       var models = pageData.models || [];
       var arenaModels = pageData.arenaModels || [];
       var routingNodes = pageData.routingNodes || [];

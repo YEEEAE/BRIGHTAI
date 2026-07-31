@@ -131,8 +131,8 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
-  background: rgba(42,138,126,0.1);   /* DEC-SovB-001: Teal */
-  border: 1px solid rgba(42,138,126,0.2);
+  background: rgba(45,212,167,0.1);   /* DEC-SovB-001 → KRN-DS-2026-07-31: Mint */
+  border: 1px solid rgba(45,212,167,0.2);
   border-radius: var(--radius-full);
   font-size: var(--text-xs);
   font-weight: var(--font-medium);
@@ -198,7 +198,7 @@
 }
 
 .kernel-table tr:hover td {
-  background: rgba(42,138,126,0.05);   /* DEC-SovB-001: Teal */
+  background: rgba(45,212,167,0.05);   /* DEC-SovB-001 → KRN-DS-2026-07-31: Mint */
 }
 
 .kernel-table__status {
@@ -262,7 +262,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(42,138,126,0.1);   /* DEC-SovB-001: Teal */
+  background: rgba(45,212,167,0.1);   /* DEC-SovB-001 → KRN-DS-2026-07-31: Mint */
   border-radius: var(--radius-md);
   color: var(--interactive-primary);
 }
@@ -404,7 +404,7 @@
 }
 
 .kernel-sidebar__link--active {
-  background: rgba(42,138,126,0.1);
+  background: rgba(45,212,167,0.1);
   color: var(--interactive-primary);
   font-weight: var(--font-medium);
 }
@@ -530,13 +530,53 @@
    - Mobile: drawer من kernel-mobile.js (existing) + bottom nav (existing)
    - Dashboard widgets: metric cards, status strip, activity stream, risk chart,
      tabs, breadcrumb, empty states, skeleton shimmer, demo pill
-   - Teal tokens (DEC-SovB-001): يستخدم brand-500 #2a8a7e بدل cyan قديم
+    - KRN-DS-2026-07-31: توحيد الكيرنل على تصميم-صفحات-kernel §1 (منت mint).
+      التوكنز القديمة تُحوَّل لقيم المنت/الداكن الحرفية ضمن نطاق kernel-shell فقط.
+      باقي الموقع (الرئيسية، بلوق...) يبقى على نظام التيل — لا يتأثر.
    - Compatible مع KernelLayout.astro الموجود
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── 1. Shell layout — fixed sidebar (desktop) ────────────────────────── */
+/* ── 0. KRN-DS-2026-07-31 — Design-system unification (kernel scope only).
+   يحوّل التوكنز V3 القديمة (تيل) إلى قيم تصميم-صفحات-kernel §1 الحرفية.
+   القيم معتمدة مع المستخدم:
+     - ink-950 / surface-800 / surface-700 (داكن جديد)
+     - text-hi / text-mid / text-low (KRN-A11Y-01: قيمة الوثيقة يفشل AA
+       فَرُفعت لـ text-low المحسّن)
+     - bright-500 mint / bright-400 hover / bright-900 خلفية نشطة
+   ملاحظة: brand-600/700 ليسا في الوثيقة — قيم وسيطة داكنة من نفس العائلة
+   للحفاظ على الجراديانت (brand-500 → brand-700) وسلوك hover.
+
+   ترتيب الطبقات (cascade layers): نعلن kernel كأحدث طبقة حتى يتجاوز override
+   قيم layer(tokens) على صفحات الكيرنل — مع بقاء النطاق محصوراً في
+   body.kernel-shell (باقي الموقع لا يتأثر). */
+
+@layer tokens, base, utilities, color, animations, kernel;
 
 body.kernel-shell {
+  /* الأساس (داكن) */
+  --bg-base: #080d16;          /* ink-950 */
+  --bg-surface: #131c30;       /* surface-800 — البطاقات */
+  --bg-elevated: #1b2740;      /* surface-700 — المرتفعة/hover */
+
+  /* النص */
+  --text-primary: #f2f6ff;     /* text-hi */
+  --text-secondary: #a7b4cc;   /* text-mid */
+  --text-muted: #7a8ba5;       /* text-low (KRN-A11Y-01) */
+
+  /* العلامة المنت */
+  --interactive-primary: #2dd4a7;  /* bright-500 */
+  --interactive-hover: #5be8c0;    /* bright-400 */
+  --interactive-active: #0e3d33;   /* bright-900 */
+  --brand-300: #5be8c0;            /* منت فاتح — نصوص/رموز على brand */
+  --brand-400: #5be8c0;            /* bright-400 — أفتح */
+  --brand-500: #2dd4a7;            /* bright-500 — أساسي */
+  --brand-600: #22b593;            /* منت وسيط — hover الأزرار */
+  --brand-700: #1b9e80;            /* KRN-A11Y-02: bright-900 مع
+                                      text-inverse داكن يفشل AA في 12
+                                      جراديانت + أفاتار المستخدم. هذه القيمة
+                                      تبقى منت داكن وتحافظ على AA مع النص
+                                      الداكن — النهاية الآمنة للجراديانت */
+
   background: var(--bg-base);
   min-block-size: 100vh;
   min-block-size: 100dvh;
@@ -580,7 +620,7 @@ body.kernel-shell {
   flex-direction: column;
   gap: var(--space-3);
   padding: var(--space-4);
-  background: linear-gradient(180deg, rgba(15,21,37,0.96) 0%, rgba(10,14,26,0.98) 100%);
+  background: linear-gradient(180deg, rgba(19,28,48,0.96) 0%, rgba(8,13,22,0.98) 100%);
   border-inline-end: 1px solid var(--border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
@@ -686,7 +726,7 @@ body.kernel-shell {
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: rgba(15,21,37,0.5);
+  background: rgba(19,28,48,0.5);
   color: var(--text-secondary);
   font-size: var(--text-xs);
   font-weight: var(--font-medium);
@@ -841,7 +881,7 @@ body.kernel-shell {
   inline-size: 3px;
   border-radius: var(--radius-full);
   background: var(--brand-500);
-  box-shadow: 0 0 12px rgba(42,138,126,0.4);
+  box-shadow: 0 0 12px rgba(45,212,167,0.4);
 }
 
 .kernel-sidebar__icon {
@@ -901,7 +941,7 @@ body.kernel-shell {
   gap: var(--space-3);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-sm);
-  background: rgba(15,21,37,0.5);
+  background: rgba(19,28,48,0.5);
 }
 
 .kernel-sidebar__avatar {
@@ -950,7 +990,7 @@ body.kernel-shell {
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: rgba(15,21,37,0.5);
+  background: rgba(19,28,48,0.5);
   color: var(--text-secondary);
   font-size: var(--text-xs);
   font-weight: var(--font-medium);
@@ -1823,7 +1863,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   flex-direction: column;
   background: linear-gradient(
     135deg,
-    rgba(15,21,37,0.85) 0%,
+    rgba(19,28,48,0.85) 0%,
     rgba(21,28,48,0.7) 100%
   );
   border: 1px solid var(--border);
@@ -1959,7 +1999,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   padding: var(--space-5);
   background: linear-gradient(
     135deg,
-    rgba(15,21,37,0.85) 0%,
+    rgba(19,28,48,0.85) 0%,
     rgba(21,28,48,0.7) 100%
   );
   border: 1px solid var(--border);
@@ -1979,7 +2019,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   inset: 0;
   background: radial-gradient(
     ellipse at top right,
-    rgba(42,138,126,0.08) 0%,
+    rgba(45,212,167,0.08) 0%,
     transparent 65%
   );
   pointer-events: none;
@@ -2170,7 +2210,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   padding: var(--space-4) var(--space-5);
   background: linear-gradient(
     135deg,
-    rgba(15,21,37,0.85) 0%,
+    rgba(19,28,48,0.85) 0%,
     rgba(21,28,48,0.65) 100%
   );
   border: 1px solid var(--border);
@@ -2187,7 +2227,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   inset-block: -40px;
   inline-size: 200px;
   block-size: 200px;
-  background: radial-gradient(circle, rgba(42,138,126,0.06) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(45,212,167,0.06) 0%, transparent 65%);
   pointer-events: none;
   z-index: 0;
 }
@@ -2291,7 +2331,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   gap: var(--space-3);
   padding: var(--space-3);
   border-radius: var(--radius-sm);
-  background: rgba(15,21,37,0.4);
+  background: rgba(19,28,48,0.4);
   border: 1px solid transparent;
   transition: border-color var(--duration-fast) var(--ease-out),
               background var(--duration-fast) var(--ease-out);
@@ -2299,7 +2339,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 .kernel-activity-item:hover {
   border-color: var(--border-strong);
-  background: rgba(15,21,37,0.6);
+  background: rgba(19,28,48,0.6);
 }
 
 .kernel-activity-item__icon {
@@ -2538,7 +2578,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   inline-size: 96px;
   block-size: 96px;
   border-radius: var(--radius-xl);
-  background: linear-gradient(135deg, rgba(42,138,126,0.06) 0%, rgba(42,138,126,0.03) 100%);
+  background: linear-gradient(135deg, rgba(45,212,167,0.06) 0%, rgba(45,212,167,0.03) 100%);
   border: 1px dashed var(--brand-soft-border);
   color: var(--interactive-primary);
   flex: 0 0 auto;
@@ -2781,7 +2821,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
    REPORTS-15 — Kernel Interactive Pages
    Chat (3-pane) / Audit (table + drawer) / Approvals (cards + modal) /
    Evidence (grid + preview). Pure CSS, no JS-in-CSS. RTL-aware.
-   Uses V3 tokens (Teal brand, surface bg, status semantic colors).
+   Uses Kernel DS tokens (Mint brand #2DD4A7 — KRN-DS-2026-07-31, surface bg, status semantic colors).
    ════════════════════════════════════════════════════════════════════════ */
 
 /* ── 22. CHAT — 3-pane layout (threads | thread | context) ────────────── */
@@ -2816,7 +2856,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 }
 
 .kernel-chat-layout__pane {
-  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(15,21,37,0.85) 100%);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(19,28,48,0.85) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: var(--space-4);
@@ -2848,7 +2888,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   gap: 2px;
   padding: var(--space-3);
   border-radius: var(--radius-md);
-  background: rgba(15,21,37,0.4);
+  background: rgba(19,28,48,0.4);
   border: 1px solid transparent;
   color: var(--text-secondary);
   cursor: pointer;
@@ -3005,7 +3045,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 .kernel-chat-message--ai .kernel-chat-message__avatar {
   background: linear-gradient(135deg, var(--indigo-500) 0%, var(--indigo-700) 100%);
-  color: var(--text-inverse);
+  color: var(--text-hi);
 }
 
 @keyframes kernelChatMsgIn {
@@ -3214,7 +3254,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 /* RIGHT — Context panel */
 .kernel-chat-context-card {
-  background: linear-gradient(135deg, rgba(42,138,126,0.1) 0%, rgba(15,21,37,0.6) 100%);
+  background: linear-gradient(135deg, rgba(45,212,167,0.1) 0%, rgba(19,28,48,0.6) 100%);
   border: 1px solid var(--brand-soft-border);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
@@ -3284,7 +3324,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 /* Side panel reusable card (used in evidence/audit etc.) */
 .kernel-sidecard {
-  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(15,21,37,0.85) 100%);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(19,28,48,0.85) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: var(--space-3);
@@ -3533,7 +3573,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   flex-wrap: wrap;
   gap: var(--space-2);
   padding: var(--space-3);
-  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(15,21,37,0.85) 100%);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(19,28,48,0.85) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   align-items: center;
@@ -3953,7 +3993,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   flex-direction: column;
   gap: var(--space-3);
   padding: var(--space-4);
-  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(15,21,37,0.85) 100%);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(19,28,48,0.85) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm), var(--highlight-inner);
@@ -4286,7 +4326,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(15,21,37,0.85) 100%);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(19,28,48,0.85) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm), var(--highlight-inner);
@@ -4418,7 +4458,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   align-items: center;
   justify-content: space-between;
   padding: var(--space-3);
-  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(15,21,37,0.85) 100%);
+  background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(19,28,48,0.85) 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   margin-block-end: var(--space-4);
@@ -4726,8 +4766,8 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 }
 .kernel-heatmap__cell:hover { transform: scale(1.1); }
 .kernel-heatmap__cell[data-level="0"] { background: rgba(148, 163, 184, 0.06); }
-.kernel-heatmap__cell[data-level="1"] { background: rgba(42, 138, 126, 0.18); }
-.kernel-heatmap__cell[data-level="2"] { background: rgba(42, 138, 126, 0.38); }
+.kernel-heatmap__cell[data-level="1"] { background: rgba(45, 212, 167, 0.18); }
+.kernel-heatmap__cell[data-level="2"] { background: rgba(45, 212, 167, 0.38); }
 .kernel-heatmap__cell[data-level="3"] { background: rgba(245, 158, 11, 0.62); }
 .kernel-heatmap__cell[data-level="4"] { background: rgba(239, 68, 68, 0.82); }
 .kernel-heatmap__x-axis {
@@ -4758,8 +4798,8 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   border-radius: 2px;
 }
 .kernel-heatmap__legend-scale span[data-level="0"] { background: rgba(148, 163, 184, 0.06); }
-.kernel-heatmap__legend-scale span[data-level="1"] { background: rgba(42, 138, 126, 0.18); }
-.kernel-heatmap__legend-scale span[data-level="2"] { background: rgba(42, 138, 126, 0.38); }
+.kernel-heatmap__legend-scale span[data-level="1"] { background: rgba(45, 212, 167, 0.18); }
+.kernel-heatmap__legend-scale span[data-level="2"] { background: rgba(45, 212, 167, 0.38); }
 .kernel-heatmap__legend-scale span[data-level="3"] { background: rgba(245, 158, 11, 0.62); }
 .kernel-heatmap__legend-scale span[data-level="4"] { background: rgba(239, 68, 68, 0.82); }
 
@@ -4898,7 +4938,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 .kernel-badge--danger { background: var(--status-critical-bg); color: var(--status-critical-fg); }
 .kernel-badge--success { background: var(--status-low-bg); color: var(--status-low-fg); }
 .kernel-badge--warning { background: var(--status-medium-bg); color: var(--status-medium-fg); }
-.kernel-badge--brand { background: rgba(42, 138, 126, 0.18); color: var(--brand-300, #5eead4); }
+.kernel-badge--brand { background: rgba(45, 212, 167, 0.18); color: var(--brand-300, #5be8c0); }
 .kernel-badge--neutral { background: var(--bg-elevated); color: var(--text-secondary); }
 .kernel-badge--pack { background: var(--status-pack-bg); color: var(--status-pack-fg); }
 
@@ -5228,7 +5268,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   max-block-size: 480px;
 }
 .kernel-compliance-map__shape {
-  filter: drop-shadow(0 4px 12px rgba(42, 138, 126, 0.18));
+  filter: drop-shadow(0 4px 12px rgba(45, 212, 167, 0.18));
 }
 .kernel-compliance-map__pulse {
   transform-origin: center;
@@ -5465,7 +5505,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   font-weight: var(--font-bold);
   border-radius: var(--radius-sm);
 }
-.kernel-rulebuilder__keyword--if { background: rgba(42, 138, 126, 0.2); color: var(--brand-300); }
+.kernel-rulebuilder__keyword--if { background: rgba(45, 212, 167, 0.2); color: var(--brand-300); }
 .kernel-rulebuilder__keyword--and { background: var(--status-rulebuilder-and-bg); color: var(--status-rulebuilder-and-fg); }
 .kernel-rulebuilder__keyword--then { background: var(--status-rulebuilder-then-bg); color: var(--status-rulebuilder-then-fg); }
 .kernel-rulebuilder__select {
@@ -5895,7 +5935,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 .kernel-wizard__period-option input:checked + .kernel-wizard__period-card,
 .kernel-wizard__format-option input:checked + .kernel-wizard__format-card {
   border-color: var(--interactive-primary);
-  background: rgba(42, 138, 126, 0.1);
+  background: rgba(45, 212, 167, 0.1);
 }
 .kernel-wizard__type-card strong,
 .kernel-wizard__period-card strong,
@@ -5935,7 +5975,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 .kernel-wizard__recipient-card:hover { background: var(--bg-surface); }
 .kernel-wizard__recipient-option input:checked + .kernel-wizard__recipient-card {
   border-color: var(--interactive-primary);
-  background: rgba(42, 138, 126, 0.1);
+  background: rgba(45, 212, 167, 0.1);
 }
 .kernel-wizard__recipient-card strong { font-size: var(--text-sm); color: var(--text-primary); }
 .kernel-wizard__recipient-card small { font-size: var(--text-xs); color: var(--text-muted); }

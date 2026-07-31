@@ -10,6 +10,8 @@ declare namespace App {
   interface Locals {
     /** Request ID propagated by middleware (UUID v4 or upstream X-Request-Id). */
     requestId: string;
+    /** CSP nonce injected by middleware (KRN-DS-2026-07-31 — moved from BaseLayout frontmatter). */
+    cspNonce?: string;
   }
 }
 

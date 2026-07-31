@@ -42,15 +42,8 @@ import { SITE } from '../data/site';
 import type { SEOProps } from '../data/site';
 import { ClientRouter } from 'astro:transitions';
 
-// Astro middleware injects the per-request CSP nonce into App.Locals.
-// Declare the shape here so Astro's typings recognize `Astro.locals.cspNonce`.
-declare global {
-  namespace App {
-    interface Locals {
-      cspNonce?: string;
-    }
-  }
-}
+// CSP nonce augmentation is in src/env.d.ts (App.Locals.cspNonce) — declaring
+// `namespace App` here breaks the Astro frontmatter esbuild pass.
 
 // BAI-PERF-01 (2026-07-25) — Astro-native critical CSS delivery.
 // Was: inline <style is:inline> block in <head> (required style-src 'unsafe-inline'
