@@ -66,6 +66,11 @@ const jsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {/* Google tag (gtag.js) — same centralized loader as BaseLayout (REPORTS-20
+        deferred pattern). These standalone static pages have no Layout, so
+        without this line the 17 /answer/* pages would carry no GA4 tag.
+        gtag-init.js handles Consent Mode v2 default-denied + async load. */}
+    <script defer src="/js/gtag-init.js" data-gtag-id="G-8LLESL207Q"></script>
     <title>{answer.query} — BrightAI</title>
     <meta name="description" content={answer.answer.slice(0, 155)} />
     <link rel="canonical" href={canonical} />

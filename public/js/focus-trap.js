@@ -196,9 +196,14 @@ function autoApply() {
       },
     });
 
-    // Watch the `hidden` attribute and toggle the trap
+    // Watch the `hidden` attribute and toggle the trap.
+    // aria-hidden="true" is the ARIA closed state for a dialog: a modal can be
+    // visually shown (display:flex) while a11y-closed (e.g. the kernel sidebar
+    // on desktop), so the trap must NOT open — otherwise `inert` sticks on all
+    // siblings forever and the whole page becomes non-interactive (2026-07-31).
     const isVisible = () => {
       if (modal.hasAttribute('hidden')) return false;
+      if (modal.getAttribute('aria-hidden') === 'true') return false;
       if (getComputedStyle(modal).display === 'none') return false;
       if (getComputedStyle(modal).visibility === 'hidden') return false;
       return true;

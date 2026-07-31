@@ -301,7 +301,90 @@ export const CONTEXT_OPTIONS = {
   role: ['موظف', 'مطوّر', 'مدير', 'DPO', 'CISO'],
   sensitivity: ['منخفضة', 'متوسطة', 'عالية', 'حرجة'],
   deployment: ['سحابي', 'محلي'],
+  department: ['عام', 'تقنية معلومات', 'موارد بشرية', 'المالية', 'العمليات', 'القانونية', 'الصحية'],
 } as const;
+
+// ── النماذج (للاختيار في عمود الإدخال) ────────────────────────────────────────
+
+export interface PlaygroundModel {
+  id: string;
+  /** Model name. */
+  name: string;
+  /** Provider name. */
+  provider: string;
+  /** Where it runs. */
+  deployment: string;
+  /** Cost in halala per 1K tokens (estimate). */
+  costPer1k: number;
+  /** Base latency in ms (deterministic seed offset). */
+  latencyBase: number;
+  /** Whether the provider is reachable in this playground. */
+  available: boolean;
+}
+
+export const PLAYGROUND_MODELS: PlaygroundModel[] = [
+  { id: 'jais', name: 'JAIS 30B', provider: 'Core42 (سعودي)', deployment: 'سحابي', costPer1k: 9, latencyBase: 420, available: true },
+  { id: 'allam', name: 'ALLaM', provider: 'SDAIA (سعودي)', deployment: 'سحابي', costPer1k: 7, latencyBase: 460, available: true },
+  { id: 'gpt-4o', name: 'GPT-4o', provider: 'OpenAI', deployment: 'سحابي', costPer1k: 22, latencyBase: 380, available: true },
+  { id: 'claude', name: 'Claude Sonnet', provider: 'Anthropic', deployment: 'سحابي', costPer1k: 18, latencyBase: 420, available: true },
+  { id: 'local-llm', name: 'Llama 3.1 (محلي)', provider: 'مزوّدك الداخلي', deployment: 'محلي', costPer1k: 3, latencyBase: 540, available: false },
+];
+
+// ── مجموعات البيانات (للاختيار) ───────────────────────────────────────────────
+
+export interface PlaygroundDataset {
+  id: string;
+  name: string;
+  /** Short description (Saudi dialect). */
+  description: string;
+}
+
+export const PLAYGROUND_DATASETS: PlaygroundDataset[] = [
+  { id: 'free', name: 'نص حر (بدون Dataset)', description: 'تكتب النص مباشرة.' },
+  { id: 'sbg-v1', name: 'Saudi Benchmark v1.0', description: 'مجموعة الحوكمة السعودية — 100 حالة (Demo).' },
+  { id: 'hr', name: 'حالات موارد بشرية', description: 'رواتب، سير ذاتية، عقود (Demo).' },
+  { id: 'medical', name: 'حالات صحية', description: 'ملفات مرضى ووصفات (Demo).' },
+];
+
+// ── أنماط الحقن (مرحلة فحص الحقن) ─────────────────────────────────────────────
+
+export interface InjectionPattern {
+  id: string;
+  label: string;
+  /** Severity class: حرجة / عالية / متوسطة. */
+  severity: string;
+  /** Regex source (unescaped in JS). */
+  source: string;
+}
+
+export const INJECTION_PATTERNS: InjectionPattern[] = [
+  { id: 'inj_jailbreak', label: 'تجاهل التعليمات', severity: 'حرجة', source: '(?:تجاهل|اسئل|تخطّ?ي).*(?:تعليمات|أوامر|السابقة)' },
+  { id: 'inj_devmode', label: 'وضع المطور', severity: 'عالية', source: 'وضع\\s*المطور|developer\\s*mode' },
+  { id: 'inj_sysprompt', label: 'كشف system prompt', severity: 'عالية', source: 'system\\s*prompt|النظام\\s*الكامل' },
+  { id: 'inj_ignore_en', label: 'تجاهل سابق (English)', severity: 'حرجة', source: 'ignore\\s+(?:all|previous|prior)|disregard.*(instructions|rules)' },
+  { id: 'inj_secret', label: 'استخراج أسرار', severity: 'حرجة', source: 'الأسرار\\s*المخزنة|secret(?:s)?\\s*(?:stored|hidden)|api\\s*key' },
+  { id: 'inj_policy_bypass', label: 'تجاوز السياسات', severity: 'عالية', source: 'تجاوز\\s*السياسات|bypass\\s*policy|تخطّي\\s*السياسات' },
+  { id: 'inj_exfil', label: 'تصدير خارجي', severity: 'عالية', source: '(?:أرسل|ابعث|صدّ?ر|external|outside|خارج(?:ية|ي))' },
+];
+
+// ── مقيمو الإخراج (مرحلة تسجيل الإخراج) ──────────────────────────────────────
+
+export interface OutputScorer {
+  id: string;
+  /** Arabic name (Saudi dialect). */
+  name: string;
+  /** Category: accuracy / hallucination / pii / compliance. */
+  category: string;
+  /** Relative weight (percent). */
+  weight: number;
+}
+
+export const OUTPUT_SCORERS: OutputScorer[] = [
+  { id: 'sc_acc', name: 'الدقة', category: 'accuracy', weight: 30 },
+  { id: 'sc_hallucination', name: 'هلوسة', category: 'hallucination', weight: 20 },
+  { id: 'sc_pii_leak', name: 'تسريب PII', category: 'pii', weight: 25 },
+  { id: 'sc_compliance', name: 'الامتثال', category: 'compliance', weight: 25 },
+];
 
 // ── حدود الملعب ──────────────────────────────────────────────────────────────
 

@@ -2,7 +2,7 @@
 /**
  * /kernel/playground/ — ملعب الحوكمة التفاعلي (REPORTS-16 §2 ⭐).
  *
- * نواة المنتج مكشوفة: الزائر يكتب نصًا، يشوف خط الأنابيب الحي (6 مراحل)
+ * نواة المنتج مكشوفة: الزائر يكتب نصًا، يشوف خط الأنابيب الحي (10 مراحل M5)
  * ويقرأ الحكم + تبويب «بدون Kernel». أداة، لا صفحة تسويقية.
  *
  * المحرّك في /js/kernel-playground.js (vanilla، حتمي، يعمل محليًا).
@@ -24,6 +24,10 @@ import {
   PLAYGROUND_SAMPLES,
   RECIPE_BOOK,
   CONTEXT_OPTIONS,
+  PLAYGROUND_MODELS,
+  PLAYGROUND_DATASETS,
+  INJECTION_PATTERNS,
+  OUTPUT_SCORERS,
   PLAYGROUND_LIMITS,
 } from '../../data/kernel-policies';
 
@@ -32,7 +36,8 @@ import '../../../kernel/assets/css/pages/playground.css';
 
 const unit = getKernelUnit('playground')!;
 const cross = getCrossLinks(unit);
-const jsonLd = [...getKernelSubPageJsonLd(unit), getKernelFaqJsonLd(unit)];
+const jsonLd = [...getKernelSubPageJsonLd(unit), getKernelFaqJsonLd(unit)] as Array<Record<string, unknown> | null | undefined>;
+const pageJsonLd = jsonLd as unknown as Record<string, unknown>;
 
 // إعدادات تُحقن للـ JS عبر JSON blob (لا استيراد TS في المتصفح).
 const pgConfig = {
@@ -43,6 +48,10 @@ const pgConfig = {
   factorLabels: Object.fromEntries(RISK_FACTORS.map((f) => [f.id, f.label])),
   samples: PLAYGROUND_SAMPLES,
   recipes: RECIPE_BOOK,
+  models: PLAYGROUND_MODELS,
+  datasets: PLAYGROUND_DATASETS,
+  injectionPatterns: INJECTION_PATTERNS,
+  outputScorers: OUTPUT_SCORERS,
   limits: PLAYGROUND_LIMITS,
 };
 ---
@@ -52,7 +61,7 @@ const pgConfig = {
   description={unit.description}
   canonical={unit.canonical}
   hreflang={unit.hreflang}
-  jsonLd={jsonLd}
+  jsonLd={pageJsonLd}
   currentPath={unit.path}
   breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: unit.label, href: unit.path }]}
 >
@@ -107,10 +116,26 @@ const pgConfig = {
           </div>
 
           <div>
+            <span class="pg-section-label">محادثة متعددة اللفات (تجريبي)</span>
+            <div class="pg-turns" id="pg-turns">
+              <div class="pg-turn" data-turn="1">
+                <select data-turn-role aria-label="دور اللفة 1">
+                  <option value="user">مستخدم</option>
+                  <option value="assistant">مساعد</option>
+                </select>
+                <textarea class="pg-textarea pg-turn__text" data-turn-text maxlength={PLAYGROUND_LIMITS.maxChars}
+                  placeholder="لفة إضافية من المحادثة…" dir="auto"></textarea>
+              </div>
+            </div>
+            <button class="pg-skip-btn" id="pg-add-turn" type="button">+ أضف لفة</button>
+            <span class="pg-demo-tag">Demo</span>
+          </div>
+
+          <div>
             <span class="pg-section-label">عيّنات جاهزة</span>
             <div class="pg-samples">
               {PLAYGROUND_SAMPLES.map((s) => (
-                <button class="pg-sample" type="button" data-sample={s.id} style={`--pg-c:${PII_TYPES[0].color}`}>
+                <button class="pg-sample" type="button" data-sample={s.id}>
                   <span class="pg-sample__icon">{s.icon}</span>{s.label}
                 </button>
               ))}
@@ -118,10 +143,29 @@ const pgConfig = {
           </div>
 
           <div>
+            <span class="pg-section-label">الموديل + البيانات</span>
+            <div class="pg-context">
+              <select data-context="model" aria-label="النموذج">
+                {PLAYGROUND_MODELS.map((m) => <option value={m.id}>{m.name}</option>)}
+              </select>
+              <select data-context="dataset" aria-label="مجموعة البيانات">
+                {PLAYGROUND_DATASETS.map((d) => <option value={d.id}>{d.name}</option>)}
+              </select>
+            </div>
+            <div class="pg-est" id="pg-est" aria-live="polite">
+              <span>التكلفة المقدرة: <strong data-est-cost dir="ltr">~0</strong> هللة</span>
+              <span>الزمن المقدر: <strong data-est-latency dir="ltr">~0</strong> مللي</span>
+            </div>
+          </div>
+
+          <div>
             <span class="pg-section-label">السياق</span>
             <div class="pg-context">
-              <select data-context="sector" aria-label="القسم">
+              <select data-context="sector" aria-label="القطاع">
                 {CONTEXT_OPTIONS.sector.map((v) => <option value={v}>{v}</option>)}
+              </select>
+              <select data-context="department" aria-label="القسم">
+                {CONTEXT_OPTIONS.department.map((v) => <option value={v}>{v}</option>)}
               </select>
               <select data-context="role" aria-label="الدور">
                 {CONTEXT_OPTIONS.role.map((v) => <option value={v}>{v}</option>)}
@@ -132,17 +176,21 @@ const pgConfig = {
               <select data-context="deployment" aria-label="مكان التنفيذ">
                 {CONTEXT_OPTIONS.deployment.map((v) => <option value={v}>{v}</option>)}
               </select>
+              <select data-context="pack" aria-label="حزمة الامتثال">
+                <option value="">كل الحزم</option>
+                {COMPLIANCE_PACKS.map((c) => <option value={c.id}>{c.label}</option>)}
+              </select>
             </div>
           </div>
 
           <div>
             <div class="pg-policies__head">
-              <span class="pg-section-label" style="margin:0">السياسات (11)</span>
+              <span class="pg-section-label pg-section-label--flush">السياسات (11)</span>
               <button class="pg-policies__all" id="pg-all-policies" type="button">إطفاء الكل</button>
             </div>
             {POLICIES.map((p) => (
               <div class="pg-policy-row" data-policy={p.id}>
-                <button class="pg-toggle" type="button" role="switch" aria-checked={String(p.isActiveDefault)} data-pid={p.id} aria-label={p.name}></button>
+                <button class="pg-toggle" type="button" role="switch" aria-checked={p.isActiveDefault ? "true" : "false"} data-pid={p.id} aria-label={p.name}></button>
                 <span class="pg-policy-row__name">{p.name}</span>
                 <span class="pg-policy-row__pack">{(COMPLIANCE_PACKS.find((c) => c.id === p.compliancePack) || {}).label || p.compliancePack}</span>
               </div>
@@ -151,7 +199,7 @@ const pgConfig = {
 
           <div class="pg-runbar pg-runbar-sticky">
             <button class="pg-run-btn" id="pg-run" type="button">▶ شغّل</button>
-            <button class="pg-settings-btn" id="pg-settings" type="button" aria-label="إعدادات (بذرة، وضع الفرق)" title="إعدادات">⚙</button>
+            <button class="pg-settings-btn" id="pg-settings" type="button" aria-label="إعدادات (بذرة، حرارة، فرق)" title="إعدادات">⚙</button>
           </div>
         </section>
 
@@ -163,10 +211,11 @@ const pgConfig = {
           </button>
 
           <div class="pg-timeline">
-            <label class="pg-time-machine">
-              <span class="pg-section-label" style="margin:0">آلة الزمن</span>
-              <input id="pg-timemachine" type="range" min="1" max="6" step="1" value="1" aria-label="الانتقال بين المراحل" />
-            </label>
+            <div class="pg-mini-timeline" id="pg-mini-timeline" role="list" aria-label="الخط الزمني للمراحل">
+              {[1,2,3,4,5,6,7,8,9,10].map((n) => (
+                <button class="pg-mini" type="button" data-mini={n} aria-label={`المرحلة ${n}`}>{n}</button>
+              ))}
+            </div>
             <div class="pg-speed">
               <button type="button" data-speed="1" aria-pressed="true">1×</button>
               <button type="button" data-speed="0.5" aria-pressed="false">0.5×</button>
@@ -178,10 +227,14 @@ const pgConfig = {
             {[
               { n: 1, t: 'الاستلام', d: 'استلام الطلب وتوليد Trace.' },
               { n: 2, t: 'فحص PII', d: 'كشف البيانات الشخصية وتظليلها.' },
-              { n: 3, t: 'تقييم المخاطر', d: 'احتساب درجة المخاطر من 12 عامل.' },
-              { n: 4, t: 'مطابقة السياسات', d: 'أي سياسة اشتعلت ولماذا.' },
-              { n: 5, t: 'استدعاء النموذج', d: 'النص بعد التعمية + الاستجابة.' },
-              { n: 6, t: 'توليد الدليل', d: 'بطاقة EVD + تحميل.' },
+              { n: 3, t: 'فحص الحقن', d: 'كشف محاولات الحقن وتجاهل التعليمات.' },
+              { n: 4, t: 'تقييم المخاطر', d: 'احتساب درجة المخاطر من 12 عامل.' },
+              { n: 5, t: 'مطابقة السياسات', d: 'أي سياسة اشتعلت ولماذا.' },
+              { n: 6, t: 'استدعاء النموذج', d: 'النص بعد التعمية + الاستجابة.' },
+              { n: 7, t: 'تسجيل الإخراج', d: 'قياس جودة وأمان الإجابة.' },
+              { n: 8, t: 'التكلفة والزمن', d: 'احتساب التكلفة والزمن لكل مرحلة.' },
+              { n: 9, t: 'توليد الدليل', d: 'بطاقة EVD + تحميل.' },
+              { n: 10, t: 'إعداد الشهادة', d: 'شهادة تقييم جاهزة (Demo).' },
             ].map((s, i) => (
               <>
                 <article class="pg-card" data-stage={s.n} data-state="idle" data-expanded={String(s.n === 1)}>
@@ -193,7 +246,7 @@ const pgConfig = {
                   <div class="pg-card__body"><p>{s.d}</p></div>
                   <span class="pg-sr-only" data-live aria-hidden="true"></span>
                 </article>
-                {i < 5 && (
+                {i < 9 && (
                   <div class="pg-connector" data-idx={s.n} aria-hidden="true">
                     <span class="pg-connector__line" data-decision="wait"></span>
                     <span class="pg-decision" data-decision="wait"></span>
@@ -203,7 +256,7 @@ const pgConfig = {
             ))}
           </div>
 
-          <button class="pg-skip-btn" id="pg-diff-toggle" type="button" style="width:100%">⇄ وضع الفرق (A/B)</button>
+          <button class="pg-skip-btn pg-btn-block" id="pg-diff-toggle" type="button">⇄ وضع الفرق (A/B)</button>
         </section>
 
         {/* ── العمود الأيسر: النتيجة ── */}
@@ -215,6 +268,11 @@ const pgConfig = {
 
           <div class="pg-verdict" id="pg-verdict">
             <p class="pg-verdict__reason">اكتب نصًا واضغط «شغّل» عشان تشوف الحكم.</p>
+          </div>
+
+          <div class="pg-diff-summary" id="pg-diff-summary" hidden>
+            <span class="pg-section-label pg-section-label--flush">A/B Diff</span>
+            <div class="pg-diff-panes" id="pg-diff-panes"></div>
           </div>
 
           <div role="tablist" aria-label="مقارنة الحوكمة">
@@ -234,18 +292,25 @@ const pgConfig = {
           </div>
 
           <div>
-            <span class="pg-section-label">الأثر</span>
-            <div class="pg-impact" id="pg-impact">
-              <div class="pg-impact__cell"><div class="pg-impact__num">0</div><div class="pg-impact__label">سجلات محمية</div></div>
-              <div class="pg-impact__cell"><div class="pg-impact__num">0</div><div class="pg-impact__label">هللة</div></div>
-              <div class="pg-impact__cell"><div class="pg-impact__num">0</div><div class="pg-impact__label">مللي</div></div>
+            <span class="pg-section-label">الحكم + الأثر</span>
+            <div class="pg-scorecard" id="pg-scorecard">
+              <div class="pg-impact__cell"><div class="pg-impact__num" data-score>—</div><div class="pg-impact__label">درجة الأمان</div></div>
+              <div class="pg-impact__cell"><div class="pg-impact__num" data-severity>—</div><div class="pg-impact__label">الخطورة</div></div>
+              <div class="pg-impact__cell"><div class="pg-impact__num" data-human>—</div><div class="pg-impact__label">قرار بشري</div></div>
+              <div class="pg-impact__cell"><div class="pg-impact__num" data-protected>0</div><div class="pg-impact__label">سجلات محمية</div></div>
+              <div class="pg-impact__cell"><div class="pg-impact__num" data-cost>0</div><div class="pg-impact__label">هللة</div></div>
+              <div class="pg-impact__cell"><div class="pg-impact__num" data-latency>0</div><div class="pg-impact__label">مللي</div></div>
             </div>
           </div>
 
           <div class="pg-actions">
-            <button type="button" onclick="window.open('/kernel/audit/','_blank')">افتح الرحلة</button>
+            <button type="button" id="pg-replay">↻ أعد التشغيل</button>
+            <button type="button" id="pg-open-trace">افتح Trace</button>
+            <button type="button" data-open-journey>افتح الرحلة</button>
             <button type="button" id="pg-download-evd">حمّل الدليل</button>
-            <button type="button" onclick="alert('أضيف كسيناريو (تجريبي)')">أضفه كسيناريو</button>
+            <button type="button" id="pg-add-dataset">أضفه لـ Dataset</button>
+            <button type="button" id="pg-add-scenario">حوّله لسيناريو</button>
+            <button type="button" data-open-evidence>افتح الدليل</button>
             <button type="button" id="pg-share">شارك 🔗</button>
           </div>
 
@@ -284,6 +349,30 @@ const pgConfig = {
   {/* كتاب الوصفات */}
   <button class="pg-recipe-fab" id="pg-recipe-fab" type="button">📖 كتاب الوصفات</button>
   <div class="pg-recipe-panel" id="pg-recipe-panel" hidden></div>
+
+  {/* نافذة الإعدادات */}
+  <div class="pg-settings" id="pg-settings-panel" role="dialog" aria-modal="true" aria-labelledby="pg-settings-title" hidden>
+    <div class="pg-settings__head">
+      <h3 id="pg-settings-title" class="pg-settings__title">إعدادات الجلسة</h3>
+      <button class="pg-settings__close" id="pg-settings-close" type="button" aria-label="إغلاق">✕</button>
+    </div>
+    <label class="pg-settings__field">
+      <span>البذرة (Seed)</span>
+      <input id="pg-seed" type="text" value="brightai-demo" dir="ltr" autocomplete="off" spellcheck="false" />
+    </label>
+    <label class="pg-settings__field">
+      <span>الحرارة (Temperature)</span>
+      <input id="pg-temp" type="range" min="0" max="1" step="0.1" value="0.2" />
+      <output id="pg-temp-out" for="pg-temp">0.2</output>
+    </label>
+    <label class="pg-settings__field">
+      <span>Top P</span>
+      <input id="pg-topp" type="range" min="0.1" max="1" step="0.05" value="0.9" />
+      <output id="pg-topp-out" for="pg-topp">0.9</output>
+    </label>
+    <p class="pg-settings__hint">اختصارات: <kbd>Ctrl/⌘ + Enter</kbd> تشغيل · <kbd>R</kbd> إعادة تعيين · <kbd>D</kbd> وضع الفرق · <kbd>1–0</kbd> التنقل بين المراحل</p>
+  </div>
+  <div class="pg-settings-backdrop" id="pg-settings-backdrop" hidden></div>
 
   <script type="module" src="/js/kernel-loading-state.js"></script>
   <script type="module" src="/js/kernel-playground.js"></script>
