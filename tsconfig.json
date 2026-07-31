@@ -41,6 +41,7 @@
     "kernel/**",
     "frontend/**",
     "customer-success/**",
-    "demo/**"
+    "demo/**",
+    "src/pages/kernel/**"
   ]
 }

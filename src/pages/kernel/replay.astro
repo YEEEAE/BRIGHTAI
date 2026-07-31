@@ -1,0 +1,593 @@
+---
+/**
+ * /kernel/replay/ — آلة الزمن (Time Machine).
+ *
+ * الهوية البصرية: بنفسجية خفيفة #6366F1 — أداة تحليل لا مراقبة
+ * (تصميم-صفحات-kernel §4.9 — الجزء 4 صفحة 9، تقرير-صفحات-kernel §9).
+ *
+ * يجاوب على: "لو كانت سياستنا الجديدة مفعّلة الشهر الماضي، وش كان بيتغير؟"
+ *
+ * البنية:
+ *  1. لوحة إعداد علوية: ثلاث خانات (الفترة · السياسات المقترحة · النطاق) + زر إعادة التشغيل.
+ *  2. النتائج: شريط 4 أرقام + مخطط قبل/بعد + بطاقة تحذير عنبرية + جدول متأثر بسهم ملوّن + صدّر كمذكرة قرار.
+ *  3. تبويب تحقيقي: Trace ID → إعادة بناء على خط زمني أفقي قابل للتكبير.
+ *
+ * القيود: vanilla JS، عامية سعودية، الأرقام لاتينية، reduced-motion → المخططات قيم ثابتة،
+ * ورّث الشِل (KernelLayout)، احترم الأداء (تصيير الجدول على دفعات لو طال).
+ * كل الأرقام بيانات توضيحية.
+ */
+import KernelLayout from '../../layouts/KernelLayout.astro';
+import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
+import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
+import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+
+const unit = getKernelUnit('replay')!;
+const cross = getCrossLinks(unit);
+
+const jsonLd = [
+  ...getKernelSubPageJsonLd(unit),
+  getKernelFaqJsonLd(unit),
+];
+
+// ── بيانات توضيحية: السياسات المقترحة ──────────────────────────────────────
+const PROPOSED_POLICIES = [
+  { id: 'p-pii-export', name: 'حظر تصدير قوائم العملاء (PII)', pack: 'PDPL', highFalsePos: true },
+  { id: 'p-medical', name: 'حظر الهوية في السياق الطبي', pack: 'SFDA', highFalsePos: false },
+  { id: 'p-iban', name: 'حظر SA-IBAN في المخرجات', pack: 'SAMA', highFalsePos: false },
+  { id: 'p-email', name: 'تعمية البريد الإلكتروني', pack: 'PDPL', highFalsePos: false },
+  { id: 'p-prompt-inj', name: 'كشف حقن الأوامر', pack: 'NCA', highFalsePos: true },
+];
+
+// ── بيانات توضيحية: الأقسام (النطاق) ────────────────────────────────────────
+const DEPARTMENTS = [
+  'كل الأقسام', 'التسويق', 'المالية', 'العمليات', 'القانونية', 'تقنية', 'الموارد البشرية',
+];
+
+// ── بيانات توضيحية: المخطط الشهري (قبل/بعد) ─────────────────────────────────
+const CHART_MONTHS = [
+  { m: 'فبراير', before: 38, after: 71 },
+  { m: 'مارس',   before: 42, after: 78 },
+  { m: 'أبريل',  before: 35, after: 64 },
+  { m: 'مايو',   before: 47, after: 82 },
+  { m: 'يونيو',  before: 40, after: 75 },
+  { m: 'يوليو',  before: 44, after: 80 },
+];
+
+// ── بيانات توضيحية: الطلبات المتأثرة (تُصيَّر على دفعات من JS) ────────────────
+const AFFECTED_ROWS = [
+  { trace: 'AI-2026-10493', dept: 'التسويق', req: 'تصدير قائمة 2,400 عميل', before: 'allowed', after: 'blocked' },
+  { trace: 'AI-2026-10512', dept: 'التسويق', req: 'تقرير حملة بأسماء العملاء', before: 'allowed', after: 'blocked' },
+  { trace: 'AI-2026-10537', dept: 'المالية',  req: 'كشف IBAN في فاتورة', before: 'allowed', after: 'blocked' },
+  { trace: 'AI-2026-10548', dept: 'العمليات', req: 'تلخيص عقد مورد', before: 'blocked', after: 'allowed' },
+  { trace: 'AI-2026-10561', dept: 'القانونية', req: 'استعلام لوائح عام', before: 'allowed', after: 'allowed' },
+  { trace: 'AI-2026-10577', dept: 'تقنية',     req: 'حقن أمر تجاوز التعليمات', before: 'allowed', after: 'blocked' },
+  { trace: 'AI-2026-10588', dept: 'الموارد البشرية', req: 'قائمة رواتب الموظفين', before: 'allowed', after: 'blocked' },
+  { trace: 'AI-2026-10601', dept: 'التسويق', req: 'تحليل قناة بدون PII', before: 'allowed', after: 'allowed' },
+  { trace: 'AI-2026-10614', dept: 'المالية',  req: 'تقرير مصاريف ربعي', before: 'blocked', after: 'blocked' },
+  { trace: 'AI-2026-10629', dept: 'العمليات', req: 'تلخيص سجل طبي', before: 'allowed', after: 'blocked' },
+];
+
+// ── أيقونات ──────────────────────────────────────────────────────────────────
+const iconReplay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>';
+const iconWarn = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+---
+
+<KernelLayout
+  title={unit.title}
+  description={unit.description}
+  canonical={unit.canonical}
+  hreflang={unit.hreflang}
+  jsonLd={jsonLd}
+  currentPath={unit.path}
+  breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: 'آلة الزمن', href: unit.path }]}
+>
+  <link rel="stylesheet" href="/kernel/assets/css/pages/replay.css" />
+
+  <div class="rp-page">
+    <!-- ═══════════════ رأس الصفحة ═══════════════ -->
+    <header class="rp-hero">
+      <span class="rp-hero__badge">
+        <span aria-hidden="true">⟲</span>
+        <span>آلة الزمن — Time Machine</span>
+      </span>
+      <h1 class="rp-hero__title">{unit.h1}</h1>
+      <p class="rp-hero__subtitle">
+        أعد تشغيل سياساتك المقترحة على الطلبات التاريخية وشوف الأثر قبل التفعيل:
+        كم طلب كان سيُحظر، كم كان سيُسمح، والإيجابيات الكاذبة المحتملة — ببيانات توضيحية، بدون ما تلمس الإنتاج.
+      </p>
+      <div style="margin-top: var(--space-4);"><KernelDemoPill /></div>
+    </header>
+
+    <!-- ═══════════════ تبويبات ═══════════════ -->
+    <div class="rp-tabs" role="tablist" aria-label="أوضاع آلة الزمن">
+      <button class="rp-tab active" role="tab" aria-selected="true" aria-controls="rp-panel-sim" id="rp-tab-sim" data-rp-tab="sim">محاكاة السياسات</button>
+      <button class="rp-tab" role="tab" aria-selected="false" aria-controls="rp-panel-invest" id="rp-tab-invest" data-rp-tab="invest" tabindex="-1">تحقيق بحادثة</button>
+    </div>
+
+    <!-- ═══════════════ لوحة 1: محاكاة ═══════════════ -->
+    <section class="rp-panel" id="rp-panel-sim" role="tabpanel" aria-labelledby="rp-tab-sim">
+
+      <!-- لوحة الإعداد -->
+      <div class="rp-setup">
+        <div class="rp-setup__field">
+          <span class="rp-setup__label">الفترة</span>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);">
+            <input class="rp-setup__control" type="date" id="rp-date-from" value="2026-02-01" aria-label="من تاريخ" />
+            <input class="rp-setup__control" type="date" id="rp-date-to" value="2026-07-31" aria-label="إلى تاريخ" />
+          </div>
+          <div class="rp-shortcuts" role="group" aria-label="اختصارات الفترة">
+            <button class="rp-shortcut" type="button" data-rp-range="1">آخر شهر</button>
+            <button class="rp-shortcut active" type="button" data-rp-range="3">آخر ربع</button>
+            <button class="rp-shortcut" type="button" data-rp-range="12">آخر سنة</button>
+          </div>
+        </div>
+
+        <div class="rp-setup__field">
+          <span class="rp-setup__label">
+            السياسات المقترحة
+            <span class="rp-setup__counter" data-rp-counter>0 محددة</span>
+          </span>
+          <div class="rp-policy-list">
+            {PROPOSED_POLICIES.map(p => (
+              <label class="rp-policy-row" data-rp-policy={p.id} data-rp-highfp={p.highFalsePos ? '1' : '0'}>
+                <input type="checkbox" data-rp-policy-check value={p.id} />
+                <span class="rp-policy-row__name">{p.name}</span>
+                <span class="rp-policy-row__pack">{p.pack}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div class="rp-setup__field">
+          <span class="rp-setup__label">النطاق (الأقسام)</span>
+          <select class="rp-setup__control" id="rp-dept" aria-label="النطاق">
+            {DEPARTMENTS.map(d => <option value={d}>{d}</option>)}
+          </select>
+        </div>
+
+        <div class="rp-setup__run-row">
+          <button class="rp-run-btn" type="button" data-rp-run>
+            <Fragment set:html={iconReplay} />
+            <span>أعد التشغيل على التاريخ</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- حالة التحميل -->
+      <div class="rp-loading" data-rp-loading hidden>
+        <div class="rp-spinner" aria-hidden="true"></div>
+        <span>نعيد تشغيل السياسات على الطلبات التاريخية…</span>
+      </div>
+
+      <!-- النتائج -->
+      <div class="rp-results" data-rp-results hidden>
+        <!-- شريط الأرقام الأربعة -->
+        <div class="rp-stats">
+          <div class="rp-stat rp-stat--blocked">
+            <div class="rp-stat__value" data-rp-stat="blocked">+0</div>
+            <div class="rp-stat__label">كان سيُحظر إضافياً</div>
+          </div>
+          <div class="rp-stat rp-stat--allowed">
+            <div class="rp-stat__value" data-rp-stat="allowed">-0</div>
+            <div class="rp-stat__label">كان سيُسمح إضافياً</div>
+          </div>
+          <div class="rp-stat rp-stat--falsepos">
+            <div class="rp-stat__value" data-rp-stat="falsepos">0</div>
+            <div class="rp-stat__label">إيجابية كاذبة محتملة</div>
+          </div>
+          <div class="rp-stat rp-stat--net">
+            <div class="rp-stat__value" data-rp-stat="net">0</div>
+            <div class="rp-stat__label">صافي الأثر (محظور − مُسمى)</div>
+          </div>
+        </div>
+
+        <!-- مخطط قبل/بعد -->
+        <div class="rp-chart-card">
+          <div class="rp-chart-head">
+            <span class="rp-chart-title">مقارنة الحظر الشهري: الواقع مقابل المحاكاة</span>
+            <div class="rp-legend">
+              <span class="rp-legend__item"><span class="rp-legend__swatch" style="background: var(--rp-text-muted); opacity:.45;"></span>الواقع (قبل)</span>
+              <span class="rp-legend__item"><span class="rp-legend__swatch" style="background: var(--rp-accent);"></span>المحاكاة (بعد)</span>
+            </div>
+          </div>
+
+          <div class="rp-chart" role="img" aria-label="مخطط عمودي يقارن عدد الحظر الشهري قبل وبعد تطبيق السياسات المقترحة">
+            {CHART_MONTHS.map(mo => {
+              const diff = mo.after - mo.before;
+              return (
+                <div class="rp-chart__group">
+                  <div class="rp-chart__bars">
+                    <div class="rp-chart__bar rp-chart__bar--before" style={`height:${mo.before}%`}></div>
+                    <div class="rp-chart__bar rp-chart__bar--after" style={`height:${mo.after}%`}>
+                      <span class:list={['rp-chart__diff', diff > 0 ? 'rp-chart__diff--up' : 'rp-chart__diff--down']}>+{diff}</span>
+                    </div>
+                  </div>
+                  <span class="rp-chart__month">{mo.m}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          <!-- بديل جدولي يظهر عند reduced-motion -->
+          <table class="rp-chart-table">
+            <thead><tr><th>الشهر</th><th>الواقع (قبل)</th><th>المحاكاة (بعد)</th><th>الفرق</th></tr></thead>
+            <tbody>
+              {CHART_MONTHS.map(mo => (
+                <tr><td>{mo.m}</td><td>{mo.before}</td><td>{mo.after}</td><td>+{mo.after - mo.before}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- بطاقة التحذير العنبرية -->
+        <div class="rp-warning" data-rp-warning hidden>
+          <span class="rp-warning__icon" aria-hidden="true"><Fragment set:html={iconWarn} /></span>
+          <div class="rp-warning__body">
+            <p class="rp-warning__title" data-rp-warning-text>⚠ هذي السياسة كانت ستحظر 0 طلباً مشروعاً</p>
+            <a class="rp-warning__link" href="#rp-affected" data-rp-warning-link>شوف عينة من الطلبات المتأثرة ←</a>
+          </div>
+        </div>
+
+        <!-- جدول الطلبات المتأثرة -->
+        <div class="rp-table-card" id="rp-affected">
+          <div class="rp-table-head">
+            <span class="rp-table-title">الطلبات المتأثرة</span>
+            <span class="rp-table-count" data-rp-table-count>0 طلب</span>
+          </div>
+          <div class="rp-table-scroll">
+            <table class="rp-table">
+              <thead>
+                <tr>
+                  <th scope="col">Trace</th>
+                  <th scope="col">القسم</th>
+                  <th scope="col">الطلب</th>
+                  <th scope="col">الحكم قبل ← بعد</th>
+                </tr>
+              </thead>
+              <tbody data-rp-tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- شريط التصدير -->
+        <div class="rp-export-row">
+          <button class="rp-btn" type="button" data-rp-export>
+            <Fragment set:html={iconDownload} />
+            <span>صدّر كمذكرة قرار (PDF)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- الحالة الفارغة (قبل أول تشغيل) -->
+      <div data-rp-empty>
+        <KernelEmptyState
+          title="اختر سياسات وأعد التشغيل"
+          message="حدد فترة وسياسة واحدة على الأقل، واضغط «أعد التشغيل على التاريخ» لتشوف الأثر على الطلبات التاريخية."
+        />
+      </div>
+    </section>
+
+    <!-- ═══════════════ لوحة 2: تحقيق ═══════════════ -->
+    <section class="rp-panel" id="rp-panel-invest" role="tabpanel" aria-labelledby="rp-tab-invest" hidden>
+      <div class="rp-investigate">
+        <div class="rp-invest-input-row">
+          <input
+            class="rp-invest-input"
+            type="text"
+            inputmode="text"
+            placeholder="AI-2026-10493"
+            aria-label="Trace ID"
+            data-rp-invest-input
+          />
+          <button class="rp-run-btn" type="button" data-rp-invest-run>
+            <Fragment set:html={iconReplay} />
+            <span>أعد بناء الحادثة</span>
+          </button>
+        </div>
+
+        <div class="rp-invest-empty" data-rp-invest-empty>
+          أدخل Trace ID واحد لإعادة بناء الحادثة كاملة خطوة بخطوة على خط زمني أفقي قابل للتكبير.
+        </div>
+
+        <div data-rp-timeline-wrap hidden>
+          <div class="rp-timeline-controls">
+            <span class="rp-zoom-label">اسحب أفقيًا للتمرير ← التكبير عبر عرض الخط</span>
+          </div>
+          <div class="rp-timeline-scroll">
+            <div class="rp-timeline" data-rp-timeline></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  {/* SEO content + FAQ — server-rendered for crawlers */}
+  <KernelSeoSection
+    id="kernel-seo-replay"
+    heading="دليل حوكمة AI — سياق إضافي عن آلة الزمن"
+    blocks={unit.seoBlocks}
+    faq={unit.faq}
+  />
+
+  {/* Cross-links: kernel ↔ kernel + solution + doc + blog */}
+  <KernelContextLinks
+    currentPath={unit.path}
+    solutionPath={cross.solutionPath}
+    docPath={cross.docPath ?? ''}
+    blogPath={cross.blogPath}
+    blogLabel={unit.blogLabel}
+    relatedSlugs={unit.relatedSlugs}
+  />
+
+<script is:inline>
+  // آلة الزمن — تفاعلية كاملة (vanilla JS، بيانات توضيحية).
+  (function () {
+    'use strict';
+
+    function el(q, r) { return (r || document).querySelector(q); }
+    function elAll(q, r) { return Array.prototype.slice.call((r || document).querySelectorAll(q)); }
+
+    // بيانات توضيحية مطابقة لـ frontmatter (مرآة)
+    var ROWS = [
+      { trace: 'AI-2026-10493', dept: 'التسويق', req: 'تصدير قائمة 2,400 عميل', before: 'allowed', after: 'blocked' },
+      { trace: 'AI-2026-10512', dept: 'التسويق', req: 'تقرير حملة بأسماء العملاء', before: 'allowed', after: 'blocked' },
+      { trace: 'AI-2026-10537', dept: 'المالية',  req: 'كشف IBAN في فاتورة', before: 'allowed', after: 'blocked' },
+      { trace: 'AI-2026-10548', dept: 'العمليات', req: 'تلخيص عقد مورد', before: 'blocked', after: 'allowed' },
+      { trace: 'AI-2026-10561', dept: 'القانونية', req: 'استعلام لوائح عام', before: 'allowed', after: 'allowed' },
+      { trace: 'AI-2026-10577', dept: 'تقنية',     req: 'حقن أمر تجاوز التعليمات', before: 'allowed', after: 'blocked' },
+      { trace: 'AI-2026-10588', dept: 'الموارد البشرية', req: 'قائمة رواتب الموظفين', before: 'allowed', after: 'blocked' },
+      { trace: 'AI-2026-10601', dept: 'التسويق', req: 'تحليل قناة بدون PII', before: 'allowed', after: 'allowed' },
+      { trace: 'AI-2026-10614', dept: 'المالية',  req: 'تقرير مصاريف ربعي', before: 'blocked', after: 'blocked' },
+      { trace: 'AI-2026-10629', dept: 'العمليات', req: 'تلخيص سجل طبي', before: 'allowed', after: 'blocked' }
+    ];
+
+    var VERDICT = { allowed: 'مسموح', blocked: 'محظور' };
+    var PAGE = 30; // حجم الدفعة (virtualization بسيط للجدول الطويل)
+
+    function animateNumber(node, target, prefix) {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var start = 0;
+      var text = prefix ? prefix + target : String(target);
+      if (reduce) { node.textContent = text; return; }
+      var dur = 600, t0 = null;
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        var val = Math.round(start + (target - start) * (1 - Math.pow(1 - p, 3)));
+        node.textContent = prefix ? prefix + val : String(val);
+        if (p < 1) requestAnimationFrame(step);
+        else node.textContent = text;
+      }
+      requestAnimationFrame(step);
+    }
+
+    function renderRows(rows) {
+      var tbody = el('[data-rp-tbody]');
+      if (!tbody) return;
+      // تصيير على دفعات عشان ما نسدّ الخيط على الجداول الطويلة
+      tbody.innerHTML = '';
+      var i = 0;
+      function chunk() {
+        var end = Math.min(i + PAGE, rows.length);
+        for (; i < end; i++) {
+          var r = rows[i];
+          var flip = r.before !== r.after;
+          var tr = document.createElement('tr');
+          var html =
+            '<td><span class="rp-table__trace">' + r.trace + '</span></td>' +
+            '<td>' + r.dept + '</td>' +
+            '<td>' + r.req + '</td>' +
+            '<td><span class="rp-verdict-cell">' +
+              '<span class="rp-verdict-cell__before ' + r.before + '">' + VERDICT[r.before] + '</span>' +
+              '<span class="rp-verdict-cell__arrow' + (flip ? ' flip' : '') + '">←</span>' +
+              '<span class="rp-verdict-cell__after ' + r.after + '">' + VERDICT[r.after] + '</span>' +
+            '</span></td>';
+          tr.innerHTML = html;
+          tbody.appendChild(tr);
+        }
+        if (i < rows.length) requestAnimationFrame(chunk);
+      }
+      chunk();
+    }
+
+    function updateCounter() {
+      var n = elAll('[data-rp-policy-check]:checked').length;
+      var c = el('[data-rp-counter]');
+      if (c) c.textContent = n + ' محددة';
+      var run = el('[data-rp-run]');
+      if (run) run.disabled = n === 0;
+    }
+
+    function computeAndShow() {
+      var policies = elAll('[data-rp-policy-row]');
+      var highFp = policies.some(function (p) {
+        return p.querySelector('[data-rp-policy-check]').checked && p.getAttribute('data-rp-highfp') === '1';
+      });
+
+      // الأرقام (بيانات توضيحية ثابتة — توضح المنطق)
+      var extraBlocked = 5;
+      var extraAllowed = 1;
+      var falsePos = highFp ? 48 : 6;
+      var net = extraBlocked - extraAllowed;
+
+      animateNumber(el('[data-rp-stat="blocked"]'), extraBlocked, '+');
+      animateNumber(el('[data-rp-stat="allowed"]'), extraAllowed, '-');
+      animateNumber(el('[data-rp-stat="falsepos"]'), falsePos);
+      animateNumber(el('[data-rp-stat="net"]'), net);
+
+      // التحذير يظهر شرطياً عند سياسة ذات إيجابيات كاذبة
+      var warn = el('[data-rp-warning]');
+      if (highFp) {
+        var txt = el('[data-rp-warning-text]');
+        if (txt) txt.textContent = '⚠ هذي السياسة كانت ستحظر 340 طلباً مشروعاً في قسم التسويق';
+        if (warn) warn.hidden = false;
+      } else if (warn) {
+        warn.hidden = true;
+      }
+
+      renderRows(ROWS);
+      var count = el('[data-rp-table-count]');
+      if (count) count.textContent = ROWS.length + ' طلب';
+    }
+
+    function runSimulation() {
+      var loading = el('[data-rp-loading]');
+      var results = el('[data-rp-results]');
+      var empty = el('[data-rp-empty]');
+      if (loading) loading.hidden = false;
+      if (results) results.hidden = true;
+      if (empty) empty.hidden = true;
+
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var wait = reduce ? 100 : 900;
+      setTimeout(function () {
+        if (loading) loading.hidden = true;
+        if (results) results.hidden = false;
+        computeAndShow();
+      }, wait);
+    }
+
+    // ── تبويب التحقيق ──────────────────────────────────────────────
+    var STAGES = [
+      { i: '1', title: 'الاستلام', ts: 'T+0ms', meta: 'طلب مستلم، توكنز 142، عربي', verdict: 'allowed' },
+      { i: '2', title: 'فحص PII', ts: 'T+18ms', meta: 'كُشف: هوية وطنية + جوال', verdict: 'masked' },
+      { i: '3', title: 'تقييم المخاطر', ts: 'T+24ms', meta: 'الدرجة 87/100 — حرج', verdict: 'blocked' },
+      { i: '4', title: 'مطابقة السياسات', ts: 'T+31ms', meta: 'سياسة حظر تصدير PII', verdict: 'blocked' },
+      { i: '5', title: 'استدعاء النموذج', ts: 'T+58ms', meta: 'لم يُستدعَ — حُظر قبله', verdict: 'blocked' },
+      { i: '6', title: 'توليد الدليل', ts: 'T+74ms', meta: 'EVD + hash 0xa7c8…2c1b', verdict: 'blocked' }
+    ];
+
+    function runInvestigation() {
+      var input = el('[data-rp-invest-input]');
+      var val = (input && input.value || '').trim();
+      var wrap = el('[data-rp-timeline-wrap]');
+      var emptyEl = el('[data-rp-invest-empty]');
+      if (!/^AI-2026-\d+$/i.test(val)) {
+        if (wrap) wrap.hidden = true;
+        if (emptyEl) {
+          emptyEl.hidden = false;
+          emptyEl.textContent = 'صيغة غير صحيحة. مثال صحيح: AI-2026-10493';
+        }
+        return;
+      }
+      if (emptyEl) emptyEl.hidden = true;
+      var tl = el('[data-rp-timeline]');
+      if (tl) {
+        tl.innerHTML = STAGES.map(function (s) {
+          return '<div class="rp-tl-step">' +
+            '<span class="rp-tl-step__index">' + s.i + '</span>' +
+            '<span class="rp-tl-step__title">' + s.title + '</span>' +
+            '<span class="rp-tl-step__meta">' + s.meta + '</span>' +
+            '<span class="rp-tl-step__ts">' + s.ts + '</span>' +
+            '<span class="rp-tl-step__verdict ' + s.verdict + '">' + VERDICT[s.verdict] + '</span>' +
+          '</div>';
+        }).join('');
+      }
+      if (wrap) wrap.hidden = false;
+    }
+
+    function exportMemo() {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var date = new Date().toISOString().slice(0, 10);
+      var memo =
+        'BrightAI Kernel — مذكرة قرار (بيانات توضيحية)\n' +
+        'التاريخ: ' + date + '\n' +
+        'الموضوع: محاكاة سياسات حوكمة AI على الطلبات التاريخية\n\n' +
+        'الملخص التنفيذي:\n' +
+        'إعادة تشغيل السياسات المقترحة على آخر ربع أظهرت زيادة 5 حالات حظر إضافية،\n' +
+        'وإيجابية كاذبة محتملة في قسم التسويق. التوصية: تفعيل السياسة مع استثناء محدد.\n\n' +
+        'الأرقام:\n' +
+        '  • كان سيُحظر إضافياً: +5\n' +
+        '  • كان سيُسمح إضافياً: -1\n' +
+        '  • إيجابية كاذبة محتملة: 48\n' +
+        '  • صافي الأثر: +4\n';
+      var blob = new Blob([memo], { type: 'text/plain;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = 'kernel-replay-memo-' + date + '.txt';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+    }
+
+    // ── التبويبات ──────────────────────────────────────────────────
+    function switchTab(name) {
+      elAll('[data-rp-tab]').forEach(function (t) {
+        var on = t.getAttribute('data-rp-tab') === name;
+        t.classList.toggle('active', on);
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+      });
+      elAll('.rp-panel').forEach(function (p) {
+        p.hidden = p.id !== 'rp-panel-' + name;
+      });
+    }
+
+    function bind() {
+      // اختصارات الفترة
+      elAll('[data-rp-range]').forEach(function (b) {
+        if (b.dataset.bound === '1') return;
+        b.dataset.bound = '1';
+        b.addEventListener('click', function () {
+          elAll('[data-rp-range]').forEach(function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+        });
+      });
+
+      // عدّاد السياسات + تفعيل زر التشغيل
+      elAll('[data-rp-policy-check]').forEach(function (c) {
+        if (c.dataset.bound === '1') return;
+        c.dataset.bound = '1';
+        c.addEventListener('change', function () {
+          var row = c.closest('[data-rp-policy-row]');
+          if (row) row.classList.toggle('checked', c.checked);
+          updateCounter();
+        });
+      });
+
+      // زر التشغيل
+      var run = el('[data-rp-run]');
+      if (run && run.dataset.bound !== '1') {
+        run.dataset.bound = '1';
+        run.addEventListener('click', runSimulation);
+      }
+
+      // تصدير المذكرة
+      var exp = el('[data-rp-export]');
+      if (exp && exp.dataset.bound !== '1') {
+        exp.dataset.bound = '1';
+        exp.addEventListener('click', exportMemo);
+      }
+
+      // التبويبات
+      elAll('[data-rp-tab]').forEach(function (t) {
+        if (t.dataset.bound === '1') return;
+        t.dataset.bound = '1';
+        t.addEventListener('click', function () { switchTab(t.getAttribute('data-rp-tab')); });
+      });
+
+      // التحقيق
+      var invRun = el('[data-rp-invest-run]');
+      if (invRun && invRun.dataset.bound !== '1') {
+        invRun.dataset.bound = '1';
+        invRun.addEventListener('click', runInvestigation);
+      }
+      var invInput = el('[data-rp-invest-input]');
+      if (invInput && invInput.dataset.bound !== '1') {
+        invInput.dataset.bound = '1';
+        invInput.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') runInvestigation();
+        });
+      }
+
+      updateCounter();
+    }
+
+    document.addEventListener('astro:page-load', bind);
+    if (document.readyState !== 'loading') bind();
+  })();
+</script>
+</KernelLayout>

@@ -25,10 +25,12 @@ import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 const unit = getKernelUnit('connectors')!;
 const cross = getCrossLinks(unit);
 
-const jsonLd = [
-  ...getKernelSubPageJsonLd(unit),
-  getKernelFaqJsonLd(unit),
-];
+const jsonLd = {
+  '@graph': [
+    ...getKernelSubPageJsonLd(unit),
+    getKernelFaqJsonLd(unit),
+  ],
+} as Record<string, unknown>;
 
 // Connectors: 8 enterprise connectors (ERP, CRM, HIS, LMS, etc.)
 const connectors = [

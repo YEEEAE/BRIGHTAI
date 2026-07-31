@@ -26,10 +26,15 @@ import DOMPurify from 'isomorphic-dompurify';
 import '../scripts/kernel-drawer.js';
 import '../scripts/kernel-shell.js';
 
-interface Props extends import('../data/site').SEOProps {
+type SEOProps = import('../data/site').SEOProps;
+
+type BreadcrumbItem = { name: string; href: string };
+
+interface Props extends SEOProps {
   currentPath?: string;
   extraSpeakableSelectors?: string[];
   breadcrumbs?: Array<{ name: string; href?: string }>;
+  robots?: string;
 }
 
 const {
@@ -44,6 +49,11 @@ const {
   extraSpeakableSelectors = [],
   breadcrumbs = [],
 } = Astro.props;
+
+const normalizedBreadcrumbs: BreadcrumbItem[] = breadcrumbs.map((crumb) => ({
+  ...crumb,
+  href: crumb.href ?? currentPath,
+}));
 
 const omitLocalBusiness = true;
 
@@ -64,7 +74,7 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
   robots={robots}
   omitLocalBusiness={omitLocalBusiness}
   extraSpeakableSelectors={extraSpeakableSelectors}
-  breadcrumbs={breadcrumbs}
+  breadcrumbs={normalizedBreadcrumbs}
 >
   <style is:global>
     @import '../styles/kernel.css' layer(kernel);
