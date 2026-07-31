@@ -48,7 +48,7 @@ interface Group {
 
 // المجموعات الأربع — صفحات موجودة فقط (لا روابط لصفحات مفقودة).
 const GROUPS: Group[] = [
-  { id: 'operations', label: 'التشغيل', slugs: ['index', 'chat', 'scenarios', 'redteam', 'datasets'] },
+  { id: 'operations', label: 'التشغيل', slugs: ['index', 'chat', 'scenarios', 'redteam', 'datasets', 'scorers'] },
   { id: 'oversight', label: 'الرقابة', slugs: ['policies', 'audit', 'approvals'] },
   { id: 'proof', label: 'الإثبات', slugs: ['compliance', 'evidence', 'reports', 'stats'] },
   { id: 'infra', label: 'البنية', slugs: ['models', 'connectors', 'api'] },
@@ -61,6 +61,7 @@ const HEALTH: Record<string, Health> = {
   scenarios: 'ok',
   redteam: 'ok',
   datasets: 'ok',
+  scorers: 'ok',
   policies: 'ok',
   audit: 'ok',
   approvals: 'warn',   // 7 معلقة
