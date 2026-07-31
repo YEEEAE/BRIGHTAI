@@ -924,6 +924,12 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://brightai.site/docs/kernel-datasets/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-datasets/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-datasets/" />
+    <lastmod>2026-07-18</lastmod>
+  </url>
+  <url>
     <loc>https://brightai.site/docs/kernel-developer-onboarding/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/docs/kernel-developer-onboarding/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/docs/kernel-developer-onboarding/" />
@@ -1216,6 +1222,12 @@
     <loc>https://brightai.site/kernel/connectors/</loc>
     <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/connectors/" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/connectors/" />
+    <lastmod>2026-07-30</lastmod>
+  </url>
+  <url>
+    <loc>https://brightai.site/kernel/datasets/</loc>
+    <xhtml:link rel="alternate" hreflang="ar-SA" href="https://brightai.site/kernel/datasets/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://brightai.site/kernel/datasets/" />
     <lastmod>2026-07-30</lastmod>
   </url>
   <url>

@@ -108,6 +108,7 @@ const icons = {
   redteam: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
   replay: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>',
   models: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/><line x1="10" y1="7" x2="14" y2="7"/><line x1="7" y1="10" x2="7" y2="14"/><line x1="17" y1="10" x2="17" y2="14"/><line x1="10" y1="17" x2="14" y2="17"/></svg>',
+  datasets: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>',
 };
 
 // ── Kernel Units Data (with SEO content + FAQ + blog cross-link) ───────────
@@ -1147,8 +1148,70 @@ export const kernelUnits: KernelUnit[] = [
         a: 'نعم. Kernel يدعم النشر على السحابة السعودية أو On-Premise للقطاعات الحساسة، فكل الطلبات والحمولات تبقى داخل حدود المملكة. مكان معالجة البيانات واضح في استجابة كل طلب (المرحلة الخامسة: استدعاء النموذج).',
       },
     ],
-  }
+  },
 
+  {
+    slug: 'datasets',
+    path: '/kernel/datasets/',
+    label: 'الـ Datasets',
+    shortDescription: 'أدر مجموعات بيانات التقييم والإصدارات والهاش والاستيراد',
+    title: 'Dataset Manager — إدارة مجموعات بيانات التقييم | BrightAI Kernel',
+    description: 'أدر مجموعات بيانات تقييم الذكاء الاصطناعي في Kernel: Saudi Governance Benchmark بثمانية قطاعات سعودية، إصدارات بهاش حتمي، استيراد CSV وJSON وJSONL، تقسيم train/validation/test، وكشف التكرار والنقص. أداة وليست صفحة تسويقية.',
+    canonical: 'https://brightai.site/kernel/datasets/',
+    h1: 'Dataset Manager — مجموعة التقييم تحكم جودة الشهادة',
+    hreflang: [
+      { lang: 'ar-SA', href: 'https://brightai.site/kernel/datasets/' },
+      { lang: 'x-default', href: 'https://brightai.site/kernel/datasets/' },
+    ],
+    ogImage: '/assets/images/og/brightai-og-1200x630.png',
+    solutionSlug: 'ai-governance-platform',
+    docSlug: 'kernel-datasets',
+    blogPath: '/blog/ai-governance-framework-saudi-model/',
+    blogLabel: 'إطار حوكمة AI للمنشآت السعودية — مكونات وأمثلة',
+    iconSvg: icons.datasets,
+    relatedSlugs: ['playground', 'scenarios', 'stats', 'policies'],
+    seoBlocks: [
+      {
+        heading: 'وش Dataset Manager في Kernel؟',
+        paragraphs: [
+          'Dataset Manager هو المكان اللي تدير منه مجموعات بيانات التقييم اللي تختبر عليها سياساتك ونماذجك. كل Dataset عبارة عن مجموعة حالات، وكل حالة فيها: المدخل (Prompt)، السلوك المتوقع، الحكم (سماح/تعمية/حظر/موافقة مطلوبة)، الخطورة، القطاع، أطر الامتثال، اللغة، وأنواع PII. جودة هذه الحالات هي اللي تحدد مصداقية أي شهادة تقييم تخرج من Kernel.',
+          'المعيار المدمج Saudi Governance Benchmark v1.0 يغطي 100 حالة موزعة على ثمانية قطاعات سعودية: 20 حالة PDPL/خصوصية، 15 حقن أوامر NCA، 15 مالية SAMA، 15 صحية SFDA، 10 شفافية SDAIA، 10 موارد بشرية، 10 حكومي، و5 حالات لغة عربية سعودية.',
+        ],
+        bullets: [
+          '100 حالة في المعيار السعودي — كل حالة تحمل حكماً وخطورة وقطاعاً وأطر امتثال',
+          'إصدارات بهاش حتمي لكل version — لا تعديل على منشور، وأي تعديل ينشئ نسخة جديدة',
+          'استيراد CSV / JSON / JSONL / لصق جدول + إضافة حالة يدوية',
+          'تقسيم train/validation/test ومجموعات فرعية حسب القطاع والحكم والبذرة',
+          'كشف التكرار ونقص السلوك المتوقع تلقائياً مع تحذيرات ظاهرة',
+        ],
+      },
+      {
+        heading: 'ليش إدارة الـ Datasets مهمة قبل التقييم؟',
+        paragraphs: [
+          'شهادة تقييم بلا Dataset موثوق مساوية لأي كلام. لو حالاتك مكررة أو ناقصة السلوك المتوقع، أو لو عدّلت Dataset منشوراً بعد تشغيل تقييم عليه، تنهار مصداقية النتيجة أمام الجهة الرقابية. لذلك Kernel يطبّق قاعدة صارمة: الإصدار المنشور immutable، وأي تعديل يرفض على الأصل وينشئ version جديداً بهاش يُعاد حسابه — والهاش نفسه يظهر في الشهادة عشان يقدر المدقق يتحقق أن البيانات ما اتغيّرت.',
+          'كذلك، فصل بيئات التطوير إلزامي: بيانات Demo وTest وLive لا تختلط أبداً. Dataset مستخدَم في Run لا يُحذف حتى لو أُرشف — لأن حذفه يكسّر إمكانية التحقق من التشغيل التاريخي.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        q: 'وش الفرق بين الـ Datasets في Kernel وPlayground؟',
+        a: 'الـ Playground يشتغل على نص تكتبه أنت مباشرة. الـ Datasets مخزن منظم لحالات الاختبار اللي تشغّلها على دفعات في التقييم: لكل حالة حكم متوقع وخطورة وقطاع وأطر امتثال. الـ Playground للتجربة الفردية، والـ Datasets للاختبار المنهجي القابل للتكرار.',
+      },
+      {
+        q: 'ليش أي تعديل ينشئ إصداراً جديداً؟',
+        a: 'عشان الشهادة اللي صدرت على نسخة معينة تبقى قابلة للتحقق: هاش الإصدار يوثّق في الشهادة، ولو عدّلت البيانات بعد التقييم يصير مستحيل إثبات إن النتيجة كانت على نفس البيانات. النسخة المنشورة immutable، والتعديل يخلق نسخة مسودة جديدة بلا ما يمس الأصل.',
+      },
+      {
+        q: 'ليش ما أقدر أحذف Dataset مستخدَماً في Run؟',
+        a: 'لأن حذفه يكسّر إمكانية إعادة بناء التشغيل التاريخي والتحقق منه. الحل: أرشفة الـ Dataset بدل الحذف — يختفي من القائمة النشطة لكن مرجعه يبقى محفوظاً للـ Runs القديمة والشهادات.',
+      },
+      {
+        q: 'كيف أتأكد أن حالات الـ Dataset نظيفة؟',
+        a: 'Kernel يكشف تلقائياً حالتين: الحالات المكررة (نفس المدخل بعد التطبيع) والحالات الناقصة السلوك المتوقع. كل تكرار أو نقص يظهر كتحذير في أعلى الصفحة وفي صف الحالة نفسه، مع عداد في الإحصاءات.',
+      },
+    ],
+  },
 ];
 
 // ── Navigation items (all units except index) ───────────────────────────────
