@@ -14,7 +14,10 @@
  * ما تغيّر: <slot/> محتوى الصفحات محمي، skip-link، KernelJourney، kernel.css layer.
  *
  * PERF: kernel.css يُحمّل هنا فقط (KernelLayout.*.css bundle للـ /kernel/*).
- * CSP: kernel-drawer.js + kernel-shell.js مُستوردة كـ ES modules (لا unsafe-inline).
+ * CSP: kernel-drawer.js + kernel-shell.js + kernel-eval-store.js تُحمَّل
+ * كـ static ES modules من /js/ (لا unsafe-inline). استيراد frontmatter لا
+ * يصل للمتصفح (server-side فقط) — لهذا هي في public/js/ تُحمَّل عبر
+ * <script type="module" src="/js/..."> بنمط kernel-sidebar.js.
  * RTL-aware، touch ≥44px، aria + keyboard nav.
  */
 import BaseLayout from './BaseLayout.astro';
@@ -23,8 +26,6 @@ import KernelJourneyProgress from '../components/kernel/KernelJourneyProgress.as
 import KernelJourneyContext from '../components/kernel/KernelJourneyContext.astro';
 import { kernelUnits } from '../data/kernel';
 import DOMPurify from 'isomorphic-dompurify';
-import '../scripts/kernel-drawer.js';
-import '../scripts/kernel-shell.js';
 
 type SEOProps = import('../data/site').SEOProps;
 
@@ -394,4 +395,12 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
     <button class="k-toast__undo" type="button" data-kernel-toast-undo hidden>تراجع</button>
     <button class="k-toast__close" type="button" data-kernel-toast-close aria-label="إغلاق">×</button>
   </div>
+
+  {/* CSP-FIX-2026-07-31: كانت الثلاثة مستوردة من frontmatter (server-side فقط،
+      لا تصل للمتصفح). نُقلت إلى public/js/ وتُحمَّل كـ static ES modules هنا —
+      بنمط kernel-sidebar.js. الترتيب: eval-store أولاً (بيانات)، ثم shell
+      (⌘K + دور + demo)، ثم drawer (درج الرحلة). */}
+  <script type="module" src="/js/kernel-eval-store.js"></script>
+  <script type="module" src="/js/kernel-shell.js"></script>
+  <script type="module" src="/js/kernel-drawer.js"></script>
 </BaseLayout>

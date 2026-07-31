@@ -98,16 +98,29 @@ const complianceRows = [
 >
 
   <!-- Page header -->
-  <header class="kernel-page-header">
-    <div class="kernel-page-header__lead">
+  <header class="kernel-page-header kernel-hero">
+    {/* خلفية شبكية خافتة متحركة ببطء — تصميم-صفحات-kernel §1 (فوق الطية) */}
+    <div class="kernel-hero__grid-bg" aria-hidden="true"></div>
+    <div class="kernel-page-header__lead kernel-hero__inner">
       <nav class="kernel-breadcrumb" aria-label="مسار التنقل">
         <ol>
           <li><a href="/">BrightAI</a></li>
           <li aria-current="page">Kernel · لوحة الحوكمة</li>
         </ol>
       </nav>
-      <h1 class="kernel-page-header__title">{unit.h1}</h1>
-      <p class="kernel-page-header__subtitle">
+      {/* حبة الحالة: Demo · Live — توضيح مصدر البيانات فوق الطية */}
+      <div class="kernel-hero__mode" role="status" aria-live="polite">
+        <span class="kernel-hero__mode-pill kernel-hero__mode-pill--demo">
+          <span class="kernel-hero__mode-dot" aria-hidden="true"></span>
+          Mode: Demo
+        </span>
+        <span class="kernel-hero__mode-pill kernel-hero__mode-pill--live">
+          <span class="kernel-hero__mode-dot kernel-hero__mode-dot--live" aria-hidden="true"></span>
+          Live
+        </span>
+      </div>
+      <h1 class="kernel-page-header__title kernel-hero__title">{unit.h1}</h1>
+      <p class="kernel-page-header__subtitle kernel-hero__subtitle">
         نظرة تشغيلية سريعة على طلبات الذكاء الاصطناعي، الموافقات المعلقة، توزيع المخاطر، وحالة النظام.
       </p>
       {/* BAI-SEO-003-S7 (2026-07-18): P0 snippet pack — TL;DR / الخلاصة.
@@ -215,6 +228,7 @@ const complianceRows = [
         </div>
         <div class="kernel-journey__actions">
           <button class="kernel-journey__btn" id="kernel-journey-stop" aria-label="إيقاف الجولة">إيقاف</button>
+          <button class="kernel-journey__btn" id="kernel-journey-pause" aria-label="إيقاف مؤقت للجولة" aria-pressed="false">إيقاف مؤقت</button>
           <button class="kernel-journey__btn" id="kernel-journey-skip" aria-label="تخطي المشهد الحالي">تخطي</button>
           <button class="kernel-journey__btn" id="kernel-journey-replay" aria-label="إعادة تشغيل الجولة">إعادة</button>
         </div>
@@ -227,14 +241,14 @@ const complianceRows = [
       </div>
     </section>
 
-    <!-- Status strip -->
+    <!-- Status strip — توافق مع topbar: الوضع Demo (بيانات تجريبية) -->
     <KernelStatusStrip
       kicker="Kernel Provider"
       title="NVIDIA · Connected"
       dot="ok"
       items={[
         { label: 'قاعدة البيانات', value: 'Connected' },
-        { label: 'الوضع', value: 'Production' },
+        { label: 'الوضع', value: 'Demo' },
         { label: 'آخر تحديث', value: 'قبل 12 ثانية' },
       ]}
     />
