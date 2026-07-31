@@ -491,6 +491,47 @@
 }
 
 /* ════════════════════════════════════════════════════════════════════════════
+   Kernel Shell tokens (2026-07-31) — aliases to existing V3 tokens.
+   مطابقة لتصميم-صفحات-kernel §1 (الجزء 1: نظام التصميم).
+   كلها aliases — ما نضيف قيم خام جديدة تتعارض مع النظام الحالي.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+  /* الأساس (Console Dark) */
+  --ink-950: var(--bg-base);
+  --ink-900: var(--bg-surface);
+  --surface-800: var(--bg-elevated);
+  --surface-700: #1b2740;                 /* بطاقة مرتفعة/hover — توكن جديد ضمن نطاق الشِل فقط */
+  --line: rgba(255,255,255,.08);
+  --line-strong: rgba(255,255,255,.16);
+
+  /* النص */
+  --text-hi: var(--text-primary);
+  --text-mid: var(--text-secondary);
+  --text-low: var(--text-muted);
+
+  /* العلامة (mint) — نفس منظومة interactive-primary */
+  --bright-500: var(--interactive-primary);
+  --bright-400: #2dc4a0;                  /* hover أفتح قليلًا */
+  --bright-900: rgba(45, 196, 160, 0.14); /* خلفية العنصر النشط (شفافة) */
+
+  /* مقياس القرار (مقدّس — لون + شكل + نص) */
+  --k-allow: #22c55e;
+  --k-mask: #f59e0b;
+  --k-wait: #6366f1;
+  --k-block: #ef4444;
+  --k-critical: #b91c1c;
+  --k-syserr: #94a3b8;
+
+  /* حركة الشِل */
+  --k-motion-micro: 120ms;
+  --k-motion-panel: 240ms;
+  --k-motion-drawer: 320ms;
+  --k-ease: cubic-bezier(.2,.8,.2,1);
+
+  /* ظل الدرج/المودال (الوحيد المسموح) */
+  --k-shadow-overlay: 0 24px 48px rgba(0,0,0,.45);
+
+/* ════════════════════════════════════════════════════════════════════════════
    BAI-PERF-02 (2026-07-25): Self-hosted Google Fonts replacement.
    Font files stored at public/fonts/ for zero external requests.
    IBM Plex Sans Arabic + Inter — both open-source, OFL-licensed.

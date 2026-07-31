@@ -1,69 +1,99 @@
 ---
 /**
- * KernelSidebar — Persistent sidebar (desktop ≥1024px) + mobile drawer (<1024px).
+ * KernelSidebar — الشِل الجانبي المشترك لكل صفحات /kernel/*.
  *
- * Desktop (≥1024px): fixed sidebar on inline-end edge, collapsible to 72px.
- * Mobile (<1024px): hidden off-canvas; hamburger button toggles a drawer
- *   overlay with the same content (brand + nav groups + footer). Backdrop
- *   tap + Escape key close the drawer. role="dialog" + aria-modal.
+ * مطابقة لتصميم-صفحات-kernel §2.2 (الشريط الجانبي 264px · مطوي 72px).
  *
- * - Collapsible (desktop): data-sidebar="collapsed" on <body> → 72px width.
- * - State persisted to localStorage('brightai-kernel-sidebar').
- * - Mobile open state: data-sidebar-open="true" on <body> (not persisted).
- * - ARIA: navigation landmark, current page indicator, dialog semantics on mobile.
- * - Reads nav items from `kernelUnits` (excluding /kernel/ index).
- * - Active route via Astro.url.pathname.
+ * التحديث 2026-07-31 (رفع الشِل المشترك):
+ *  - أربع مجموعات بدل ثلاث: التشغيل · الرقابة · الإثبات · البنية (صفحات موجودة فقط).
+ *  - نقطة حالة ملوّنة لكل وحدة (ok/warn/err) عبر data-health.
+ *  - مبدّل دور صغير (DPO ▾) أعلى البراند، يُحفظ في localStorage عبر kernel-shell.js.
+ *  - شارات عددية: approvals=7 (محايد)، connectors=1 (حمراء).
+ *  - CTA «احجز عرضاً» مثبّت أسفل + سطر خصوصية.
+ *  - العنصر النشط: bright-900 + شريط منت 3px + text-hi (أنماط kernel.css الموجودة).
+ *
+ * Mobile (<1024px): درج الموبايل القائم (kernel-sidebar.js) — ما تغيّر.
+ * Desktop (≥1024px): sidebar ثابت، قابل للطي 264↔72 (kernel-sidebar.js + data-sidebar).
+ *
+ * ARIA: navigation landmark + current page. CSP: لا inline script.
  */
-
 import { kernelUnits } from '../../data/kernel';
 import DOMPurify from 'isomorphic-dompurify';
 
 interface Props {
-  /** Optional override for active page detection (e.g. /kernel/chat/). */
   currentPath?: string;
 }
 
 const { currentPath = Astro.url.pathname } = Astro.props;
 
-interface NavItem {
-  id: string;
+type Health = 'ok' | 'warn' | 'err';
+
+interface SidebarItem {
+  slug: string;
   path: string;
   label: string;
   iconSvg: string;
-  isNew?: boolean;
-  group: 'operations' | 'evidence' | 'admin';
-  pendingCount?: number;
+  health: Health;
+  /** شارة عددية محايدة (مثل الموافقات). */
+  countBadge?: number;
+  /** شارة عددية حمراء (مثل الموصل الفاشل). */
+  alertBadge?: number;
 }
 
-// Sidebar groups (visual order). Pending count is 7 (canonical demo).
-const OPERATIONS = ['chat', 'stats', 'approvals', 'audit'];
-const EVIDENCE = ['evidence', 'reports'];
-const ADMIN = ['scenarios', 'compliance', 'policies', 'connectors'];
+interface Group {
+  id: string;
+  label: string;
+  slugs: string[];
+}
 
-function pickNav(slug: string): NavItem | null {
+// المجموعات الأربع — صفحات موجودة فقط (لا روابط لصفحات مفقودة).
+const GROUPS: Group[] = [
+  { id: 'operations', label: 'التشغيل', slugs: ['index', 'chat', 'scenarios'] },
+  { id: 'oversight', label: 'الرقابة', slugs: ['policies', 'audit', 'approvals'] },
+  { id: 'proof', label: 'الإثبات', slugs: ['compliance', 'evidence', 'reports', 'stats'] },
+  { id: 'infra', label: 'البنية', slugs: ['connectors'] },
+];
+
+// صحة كل وحدة (بيانات تجريبية موسومة Demo).
+const HEALTH: Record<string, Health> = {
+  index: 'ok',
+  chat: 'ok',
+  scenarios: 'ok',
+  policies: 'ok',
+  audit: 'ok',
+  approvals: 'warn',   // 7 معلقة
+  compliance: 'ok',
+  evidence: 'ok',
+  reports: 'ok',
+  stats: 'ok',
+  connectors: 'err',   // موصل فاشل
+};
+
+function buildItem(slug: string): SidebarItem | null {
   const unit = kernelUnits.find(u => u.slug === slug);
   if (!unit) return null;
-  let group: NavItem['group'] = 'admin';
-  if (OPERATIONS.includes(slug)) group = 'operations';
-  else if (EVIDENCE.includes(slug)) group = 'evidence';
-  return {
-    id: slug,
+  const item: SidebarItem = {
+    slug,
     path: unit.path,
-    label: unit.label === 'الفهرس' ? 'لوحة الحوكمة' : unit.label,
+    label: slug === 'index' ? 'لوحة الحوكمة' : unit.label,
     iconSvg: unit.iconSvg,
-    isNew: unit.slug === 'evidence' || unit.slug === 'reports',
-    group,
-    pendingCount: slug === 'approvals' ? 7 : undefined,
+    health: HEALTH[slug] ?? 'ok',
   };
+  if (slug === 'approvals') item.countBadge = 7;
+  if (slug === 'connectors') item.alertBadge = 1;
+  return item;
 }
 
-const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
-  .map(pickNav)
-  .filter((x): x is NavItem => x !== null);
+const grouped = GROUPS.map(g => ({
+  ...g,
+  items: g.slugs.map(buildItem).filter((x): x is SidebarItem => x !== null),
+}));
+
+const isActive = (path: string) =>
+  currentPath === path || currentPath === path.replace(/\/$/, '');
 ---
 
-{/* Mobile hamburger button — fixed, appears only on <1024px.
-    Touch target ≥ 44×44px (WCAG SC 2.5.5). aria-expanded reflects open state. */}
+{/* Mobile hamburger — يفتح درج الموبايل (<1024px). */}
 <button
   class="kernel-sidebar__hamburger"
   type="button"
@@ -75,11 +105,29 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
 </button>
 
-{/* Mobile overlay backdrop — tap outside closes the drawer. */}
+{/* خلفية الدرج على الموبايل. */}
 <div class="kernel-sidebar__overlay" data-kernel-sidebar-overlay aria-hidden="true"></div>
 
 <aside class="kernel-sidebar" id="kernel-sidebar" aria-label="القائمة الرئيسية لـ Kernel" role="dialog" aria-modal="true" aria-labelledby="kernel-sidebar-title">
   <span id="kernel-sidebar-title" class="kernel-sidebar__sr-only">القائمة الرئيسية لـ Kernel</span>
+
+  {/* مبدّل الدور (DPO ▾) — select أصلي يُحفظ في localStorage عبر kernel-shell.js */}
+  <div class="kernel-sidebar__role">
+    <label for="kernel-role-select" class="kernel-sidebar__role-label">الدور</label>
+    <div class="kernel-sidebar__role-select-wrap">
+      <span class="kernel-sidebar__role-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </span>
+      <select id="kernel-role-select" class="kernel-sidebar__role-select" data-kernel-role aria-label="اختيار الدور">
+        <option value="dpo" selected>DPO</option>
+        <option value="ciso">CISO</option>
+        <option value="compliance">مدير امتثال</option>
+        <option value="developer">مطوّر</option>
+      </select>
+      <span class="kernel-sidebar__role-caret" aria-hidden="true">▾</span>
+    </div>
+  </div>
+
   <header class="kernel-sidebar__brand">
     <span class="kernel-sidebar__logo" aria-hidden="true">ي</span>
     <div class="kernel-sidebar__brand-text">
@@ -88,66 +136,51 @@ const items: NavItem[] = OPERATIONS.concat(EVIDENCE, ADMIN)
     </div>
   </header>
 
-  <span class="kernel-sidebar__section-label">العمليات</span>
   <nav class="kernel-sidebar__nav" aria-label="التنقل الرئيسي لـ Kernel">
-    <a href="/kernel/" class="kernel-sidebar__item" data-kernel-nav-id="home" aria-current={currentPath === '/kernel/' ? 'page' : undefined}>
-      <span class="kernel-sidebar__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-      </span>
-      <span class="kernel-sidebar__label">لوحة الحوكمة</span>
-    </a>
-
-    {items.filter(i => i.group === 'operations').map(item => (
-      <>
-        <a href={item.path} class="kernel-sidebar__item" data-kernel-nav-id={item.id} aria-current={currentPath === item.path || currentPath === item.path.replace(/\/$/, '') ? 'page' : undefined}>
-          <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={DOMPurify.sanitize(item.iconSvg)} /></span>
-          <span class="kernel-sidebar__label">{item.label}</span>
-          {item.pendingCount !== undefined && (
-            <span class="kernel-sidebar__badge" aria-label={`${item.pendingCount} طلبات موافقة معلقة`}>{item.pendingCount}</span>
-          )}
-        </a>
-      </>
-    ))}
-
-    <span class="kernel-sidebar__section-label">الأدلة والقرارات</span>
-    {items.filter(i => i.group === 'evidence').map(item => (
-      <a href={item.path} class="kernel-sidebar__item" data-kernel-nav-id={item.id} aria-current={currentPath === item.path || currentPath === item.path.replace(/\/$/, '') ? 'page' : undefined}>
-        <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={DOMPurify.sanitize(item.iconSvg)} /></span>
-        <span class="kernel-sidebar__label">{item.label}</span>
-        {item.isNew && <span class="kernel-sidebar__badge kernel-sidebar__badge--new">جديد</span>}
-      </a>
-    ))}
-
-    <span class="kernel-sidebar__section-label">الإدارة</span>
-    {items.filter(i => i.group === 'admin').map(item => (
-      <a href={item.path} class="kernel-sidebar__item" data-kernel-nav-id={item.id} aria-current={currentPath === item.path || currentPath === item.path.replace(/\/$/, '') ? 'page' : undefined}>
-        <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={DOMPurify.sanitize(item.iconSvg)} /></span>
-        <span class="kernel-sidebar__label">{item.label}</span>
-      </a>
+    {grouped.map(group => (
+      <section class="kernel-sidebar__group" data-kernel-group={group.id}>
+        <span class="kernel-sidebar__section-label">{group.label}</span>
+        {group.items.map(item => (
+          <a
+            href={item.path}
+            class="kernel-sidebar__item"
+            data-kernel-nav-id={item.slug}
+            data-health={item.health}
+            aria-current={isActive(item.path) ? 'page' : undefined}
+          >
+            <span class="kernel-sidebar__icon" aria-hidden="true"><Fragment set:html={DOMPurify.sanitize(item.iconSvg)} /></span>
+            <span class="kernel-sidebar__label">{item.label}</span>
+            {item.countBadge !== undefined && (
+              <span class="kernel-sidebar__badge kernel-sidebar__badge--count" aria-label={`${item.countBadge} معلقة`}>{item.countBadge}</span>
+            )}
+            {item.alertBadge !== undefined && (
+              <span class="kernel-sidebar__badge" aria-label={`${item.alertBadge} موصل متعطّل`}>{item.alertBadge}</span>
+            )}
+            {/* نقطة حالة الوحدة (لون + شكل). */}
+            <span class:list={['kernel-sidebar__dot', `kernel-sidebar__dot--${item.health}`]} aria-label={`صحة الوحدة: ${item.health}`} title={`صحة الوحدة: ${item.health}`}></span>
+          </a>
+        ))}
+      </section>
     ))}
   </nav>
 
   <footer class="kernel-sidebar__footer">
-    <div class="kernel-sidebar__user">
-      <span class="kernel-sidebar__avatar" aria-hidden="true">ي</span>
-      <div class="kernel-sidebar__user-meta">
-        <span class="kernel-sidebar__user-name">يزيد</span>
-        <span class="kernel-sidebar__user-role">مدير النظام</span>
-      </div>
+    <p class="kernel-sidebar__privacy">بيانات تجريبية — لا تخزين، لا تدريب، الجلسة تُمسح.</p>
+    <a class="kernel-sidebar__cta" href="/contact/" data-kernel-cta>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span>احجز عرضاً</span>
+    </a>
+    <div class="kernel-sidebar__footer-controls">
+      <button class="kernel-sidebar__collapse" type="button" aria-label="طي القائمة الجانبية" data-kernel-sidebar-collapse>
+        <span class="kernel-sidebar__collapse-icon" aria-hidden="true">⇤</span>
+        <span class="kernel-sidebar__collapse-label">طي القائمة</span>
+      </button>
+      <button class="kernel-sidebar__close" type="button" aria-label="إغلاق القائمة" data-kernel-sidebar-close>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        <span class="kernel-sidebar__close-label">إغلاق</span>
+      </button>
     </div>
-    {/* Desktop collapse button (hidden on mobile — drawer has its own close). */}
-    <button class="kernel-sidebar__collapse" type="button" aria-label="طي القائمة الجانبية" data-kernel-sidebar-collapse>
-      <span class="kernel-sidebar__collapse-icon" aria-hidden="true">⇤</span>
-      <span class="kernel-sidebar__collapse-label">طي القائمة</span>
-    </button>
-    {/* Mobile close button (hidden on desktop — appears only inside the drawer). */}
-    <button class="kernel-sidebar__close" type="button" aria-label="إغلاق القائمة" data-kernel-sidebar-close>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      <span class="kernel-sidebar__close-label">إغلاق</span>
-    </button>
   </footer>
 </aside>
 
-<!-- BAI-SEC-18 (2026-07-25): inline script moved to public/js/kernel-sidebar.js
-     to enable strict-CSP (no 'unsafe-inline' on script-src). Loaded as ES module. -->
 <script type="module" src="/js/kernel-sidebar.js"></script>

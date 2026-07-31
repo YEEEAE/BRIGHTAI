@@ -1,50 +1,34 @@
 ---
 /**
- * KernelLayout — Layout for /kernel/* pages.
+ * KernelLayout — الشِل المشترك لكل صفحات /kernel/*.
  *
- * REPORTS-14 update:
- * - Now uses persistent desktop sidebar (KernelSidebar) instead of inline drawer
- * - Mobile (<1024px): kernel-mobile.js drawer + bottom nav still take over
- * - body class: `kernel-shell` enables the CSS grid layout
- * - data-sidebar attribute on body controls collapse state (72px expanded / 260px)
- * - All existing behavior preserved: skip-link, top-nav, focus visibility, etc.
+ * تحديث 2026-07-31 — رفع الشِل المشترك (مطابقة تصميم-صفحات-kernel §2):
+ *  - حذف المتنافي: k-topnav (روابط أفقية) + k-drawer (legacy) + k-bottomnav.
+ *    التنقّل صار: KernelSidebar (desktop + درج موبايل) + شريط علوي صادق واحد.
+ *  - شريط علوي 56px: بحث Trace ID (320px) + شارات صادقة (Demo عنبري دائم ·
+ *    Inference · DB · Latency) + زر ⌘K.
+ *  - درج الرحلة (Trace Drawer): ينزلق من اليمين، 6 مراحل + سلسلة هاش + 5 بطاقات.
+ *  - لوحة الأوامر ⌘K: مودال 640px بنتائج مجمّعة.
+ *  - مبدّل الدور + نظام العرض التوضيحي في KernelSidebar + kernel-shell.js.
  *
- * PERF(bloat-3-fixes-2026-07-07):
- * - kernel.css (128KB raw) loaded ONLY here, not in BaseLayout.
- *   Astro will emit a separate KernelLayout.*.css bundle for kernel pages
- *   only — homepage and other pages no longer pay for it.
- * - The CSS layer remains in the same slot (kernel) so cascade order
- *   is preserved when this file IS loaded.
+ * ما تغيّر: <slot/> محتوى الصفحات محمي، skip-link، KernelJourney، kernel.css layer.
  *
- * RTL-aware, touch ≥44px, aria + keyboard nav.
- * Uses V2/V3 design tokens exclusively.
+ * PERF: kernel.css يُحمّل هنا فقط (KernelLayout.*.css bundle للـ /kernel/*).
+ * CSP: kernel-drawer.js + kernel-shell.js مُستوردة كـ ES modules (لا unsafe-inline).
+ * RTL-aware، touch ≥44px، aria + keyboard nav.
  */
 import BaseLayout from './BaseLayout.astro';
 import KernelSidebar from '../components/kernel/KernelSidebar.astro';
-// K1 (2026-07-18): Kernel Journey — 5-stage IA progress.
 import KernelJourneyProgress from '../components/kernel/KernelJourneyProgress.astro';
 import KernelJourneyContext from '../components/kernel/KernelJourneyContext.astro';
-import { kernelNavItems } from '../data/kernel';
-import { getStageForPath } from '../data/kernel-journey';
-import type { SEOProps } from '../data/site';
+import { kernelUnits } from '../data/kernel';
 import DOMPurify from 'isomorphic-dompurify';
-// REPORTS-CSP-01 (2026-07-15): kernel-drawer and kernel-shell were previously
-// inline <script is:inline> blocks (CSP required 'unsafe-inline' on script-src).
-// Side-effect imports here get hoisted as external ES modules by Astro, which
-// is allowed by script-src 'self' alone.
 import '../scripts/kernel-drawer.js';
 import '../scripts/kernel-shell.js';
 
-interface Props extends SEOProps {
+interface Props extends import('../data/site').SEOProps {
   currentPath?: string;
-  /**
-   * BAI-VOC-001-B (2026-07-18): forwarded to BaseLayout → FoundationSchema
-   * to extend the WebPage `speakable.cssSelector` array. See Schema.astro.
-   */
   extraSpeakableSelectors?: string[];
-  /**
-   * Page-level breadcrumbs (without the home crumb — added by FoundationSchema).
-   */
   breadcrumbs?: Array<{ name: string; href?: string }>;
 }
 
@@ -61,15 +45,10 @@ const {
   breadcrumbs = [],
 } = Astro.props;
 
-// SEMRUSH-FIX-2026-07-08 (#45): kernel pages are product-style (SoftwareApplication
-// primary entity) — omit the foundation LocalBusiness node so schema validators
-// don't see a confusing sibling LocalBusiness/ProfessionalService.
 const omitLocalBusiness = true;
 
-const allItems = [
-  { path: '/kernel/', label: 'الفهرس' },
-  ...kernelNavItems.map(item => ({ path: item.path, label: item.label })),
-];
+// وحدات للوحة الأوامر (صفحات موجودة فقط).
+const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
 ---
 
 <BaseLayout
@@ -87,22 +66,16 @@ const allItems = [
   extraSpeakableSelectors={extraSpeakableSelectors}
   breadcrumbs={breadcrumbs}
 >
-  {/* perf(bloat-3-fixes-2026-07-07): Kernel-only styles.
-      Was: BaseLayout @import kernel.css (128KB raw) for every page.
-      Now: loaded here only. Astro emits a separate KernelLayout.*.css
-      bundle that ships only to /kernel/* pages.
-      Layer 'kernel' is declared identically so cascade order is preserved
-      when this bundle is present. */}
   <style is:global>
     @import '../styles/kernel.css' layer(kernel);
   </style>
   <style>
-    /* Skip-link */
+    /* Skip-link فقط هنا؛ باقي أنماط الشِل في kernel.css (global، layer kernel). */
     .k-skip-link {
       position: absolute;
       top: -100%;
       inset-inline-start: var(--space-2);
-      z-index: 100;
+      z-index: 200;
       padding: var(--space-3) var(--space-5);
       background: linear-gradient(135deg, var(--brand-500) 0%, var(--brand-700) 100%);
       color: var(--text-inverse);
@@ -112,366 +85,303 @@ const allItems = [
       text-decoration: none;
       transition: top var(--duration-fast) var(--ease-out);
     }
-    .k-skip-link:focus {
-      top: 0;
-    }
-
-    /* Focus visibility */
-    .k-topnav__link:focus-visible,
-    .k-bottomnav__link:focus-visible,
-    .k-drawer__link:focus-visible,
-    .k-drawer-toggle:focus-visible,
-    .k-drawer__close:focus-visible,
-    .k-topnav__brand:focus-visible {
-      outline: 2px solid var(--brand-500);
-      outline-offset: 2px;
-    }
-
-    .k-topnav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      background: var(--bg-base);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: var(--glass-blur);
-      -webkit-backdrop-filter: var(--glass-blur);
-      padding: 0 var(--space-4);
-    }
-    .k-topnav__inner {
-      max-width: 80rem;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      overflow-x: auto;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-    }
-    .k-topnav__inner::-webkit-scrollbar { display: none; }
-    .k-topnav__brand {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      font-weight: var(--font-bold);
-      color: var(--text-primary);
-      text-decoration: none;
-      white-space: nowrap;
-      padding: var(--space-3) 0;
-      font-size: var(--text-sm);
-    }
-    .k-topnav__brand svg { flex-shrink: 0; }
-    .k-topnav__links {
-      display: flex;
-      align-items: center;
-      gap: var(--space-1);
-      margin-inline-end: auto;
-    }
-    .k-topnav__link {
-      display: inline-flex;
-      align-items: center;
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-lg);
-      font-size: var(--text-xs);
-      color: var(--text-secondary);
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background var(--duration-fast) var(--ease-out),
-                  color var(--duration-fast) var(--ease-out);
-      min-height: 44px;
-    }
-    .k-topnav__link:hover,
-    .k-topnav__link:focus-visible {
-      background: var(--brand-soft);
-      color: var(--text-primary);
-    }
-    .k-topnav__link[aria-current="page"] {
-      background: var(--brand-soft-strong);
-      color: var(--interactive-primary);
-      font-weight: var(--font-semibold);
-    }
-
-    /* Mobile bottom nav */
-    .k-bottomnav {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      z-index: 50;
-      background: var(--bg-base);
-      border-top: 1px solid var(--border);
-      padding: var(--space-1) 0;
-      padding-bottom: env(safe-area-inset-bottom, var(--space-1));
-    }
-    .k-bottomnav__list {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .k-bottomnav__list::-webkit-scrollbar { display: none; }
-    .k-bottomnav__item {
-      flex-shrink: 0;
-    }
-    .k-bottomnav__link {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-1);
-      padding: var(--space-1-5) var(--space-2);
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.625rem;
-      min-width: 52px;
-      min-height: 44px;
-      justify-content: center;
-      border-radius: var(--radius-lg);
-      transition: color var(--duration-fast) var(--ease-out);
-    }
-    .k-bottomnav__link[aria-current="page"] {
-      color: var(--interactive-primary);
-    }
-    .k-bottomnav__link svg {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
-
-    /* Mobile drawer toggle */
-    .k-drawer-toggle {
-      display: none;
-      align-items: center;
-      justify-content: center;
-      width: 44px;
-      height: 44px;
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      color: var(--text-primary);
-      cursor: pointer;
-    }
-
-    /* Mobile drawer */
-    .k-drawer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 60;
-    }
-    .k-drawer__backdrop {
-      position: absolute;
-      inset: 0;
-      background: var(--bg-overlay);
-    }
-    .k-drawer__panel {
-      position: absolute;
-      top: 0;
-      inset-inline-start: 0;
-      inset-inline-end: 0;
-      bottom: 0;
-      width: min(85vw, 320px);
-      background: var(--bg-base);
-      border-inline-start: 1px solid var(--border);
-      padding: var(--space-6) var(--space-4);
-      overflow-y: auto;
-    }
-    .k-drawer__panel h3 {
-      color: var(--text-primary);
-      font-size: var(--text-base);
-      margin-bottom: var(--space-4);
-    }
-    .k-drawer__link {
-      display: block;
-      padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-lg);
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: var(--text-sm);
-      min-height: 44px;
-      transition: background var(--duration-fast) var(--ease-out),
-                  color var(--duration-fast) var(--ease-out);
-    }
-    .k-drawer__link:hover,
-    .k-drawer__link:focus-visible {
-      background: var(--brand-soft);
-      color: var(--text-primary);
-    }
-    .k-drawer__link[aria-current="page"] {
-      background: var(--brand-soft-strong);
-      color: var(--interactive-primary);
-      font-weight: var(--font-semibold);
-    }
-    .k-drawer__close {
-      position: absolute;
-      top: var(--space-4);
-      inset-inline-start: var(--space-4);
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      color: var(--text-primary);
-      cursor: pointer;
-    }
-
-    /* Content area spacing */
-    .k-content {
-      max-width: 100%;
-      margin: 0 auto;
-      padding: var(--space-6) var(--space-4) var(--space-20);
-    }
-
-    @media (max-width: 768px) {
-      .k-topnav__links { display: none; }
-      .k-drawer-toggle { display: inline-flex; }
-      .k-bottomnav { display: block; }
-      .k-content { padding-bottom: var(--space-24); }
-    }
-
-    /* Reduced motion */
-    @media (prefers-reduced-motion: reduce) {
-      .k-topnav__link,
-      .k-bottomnav__link,
-      .k-drawer__link,
-      .k-skip-link { transition: none; }
-    }
+    .k-skip-link:focus { top: 0; }
   </style>
 
   <!-- Skip-link -->
   <a href="#k-content" class="k-skip-link">تخطّى إلى المحتوى</a>
 
-  <!-- REPORTS-14: Persistent sidebar (desktop ≥1024px) -->
+  <!-- السايدبار (desktop + درج موبايل) -->
   <KernelSidebar currentPath={currentPath} />
 
-  <!-- Kernel Top Nav -->
-  <nav class="k-topnav" aria-label="تنقل Kernel">
-    <div class="k-topnav__inner">
-      <a href="/kernel/" class="k-topnav__brand" aria-label="BrightAI Kernel">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        <span>Kernel</span>
+  <!-- ═══ الشريط العلوي الصادق (56px) ═══ -->
+  <header class="k-topbar" role="banner">
+    <div class="k-topbar__inner">
+      <a class="k-topbar__brand" href="/kernel/" aria-label="BrightAI Kernel">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span class="k-topbar__brand-text">Kernel</span>
       </a>
 
-      <div class="k-topnav__links">
-        {allItems.map(item => (
-          <a
-            href={item.path}
-            class="k-topnav__link"
-            aria-current={currentPath === item.path ? 'page' : undefined}
-          >
-            {item.label}
-          </a>
-        ))}
+      <!-- بحث Trace ID — يفتح الدرج فورًا -->
+      <form class="k-topbar__search" role="search" data-kernel-trace-search>
+        <svg class="k-topbar__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input
+          type="text"
+          class="k-topbar__search-input"
+          dir="ltr"
+          inputmode="text"
+          placeholder="AI-2026-…"
+          aria-label="بحث برقم Trace ID"
+          autocomplete="off"
+          data-kernel-trace-input
+        />
+        <kbd class="k-topbar__search-kbd" aria-hidden="true">Enter</kbd>
+      </form>
+
+      <div class="k-topbar__status" aria-live="polite">
+        <!-- Demo Data: عنبري دائم، لا يُخفى -->
+        <span class="k-status-chip k-status-chip--demo" title="بيانات تجريبية">
+          <span class="k-status-chip__dot k-status-chip__dot--amber" aria-hidden="true"></span>
+          <span>Mode: Demo</span>
+        </span>
+        <span class="k-status-chip" title="محرّك الاستدلال">
+          <span class="k-status-chip__label">Inference:</span>
+          <strong>محرّك تجريبي</strong>
+          <span class="k-status-chip__dot k-status-chip__dot--ok" aria-hidden="true"></span>
+        </span>
+        <span class="k-status-chip" title="قاعدة البيانات">
+          <span class="k-status-chip__label">DB</span>
+          <strong dir="ltr">12ms</strong>
+          <span class="k-status-chip__dot k-status-chip__dot--ok" aria-hidden="true"></span>
+        </span>
+        <span class="k-status-chip k-status-chip--lat" title="زمن الاستجابة">
+          <span class="k-status-chip__label">Latency</span>
+          <strong dir="ltr">86ms</strong>
+        </span>
+
+        <!-- مبدّل العرض التوضيحي: بيانات تجريبية / بياناتي -->
+        <button class="k-status-chip k-demo-toggle" type="button" data-kernel-demo-toggle aria-pressed="true" title="تبديل مصدر البيانات">
+          <span class="k-demo-toggle__state" data-kernel-demo-label>بيانات تجريبية</span>
+        </button>
+
+        <!-- زر لوحة الأوامر -->
+        <button class="k-topbar__cmdk" type="button" data-kernel-cmdk-open aria-label="فتح لوحة الأوامر">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 4l-2 2M18 20l2-2M4 6v12M20 6v12M6 4h12M6 20h12"/></svg>
+          <kbd aria-hidden="true">⌘K</kbd>
+        </button>
       </div>
-
-      <button
-        class="k-drawer-toggle"
-        aria-label="فتح قائمة Kernel"
-        aria-expanded="false"
-        aria-controls="k-drawer"
-        data-kernel-drawer-toggle
-      >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-      </button>
     </div>
-  </nav>
+  </header>
 
-  <!-- Mobile Drawer -->
-  <!-- KRN-010 fix: aria-modal="true" + aria-labelledby engages focus-trap.js auto-applied in BaseLayout -->
-  <div class="k-drawer" id="k-drawer" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="k-drawer-title">
-    <div class="k-drawer__backdrop" data-kernel-drawer-close></div>
-    <div class="k-drawer__panel">
-      <button class="k-drawer__close" data-kernel-drawer-close aria-label="إغلاق القائمة">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-      <h3 id="k-drawer-title">وحدات Kernel</h3>
-      {allItems.map(item => (
-        <a
-          href={item.path}
-          class="k-drawer__link"
-          aria-current={currentPath === item.path ? 'page' : undefined}
-          data-kernel-drawer-close
-        >
-          {item.label}
-        </a>
-      ))}
-    </div>
-  </div>
-
-  {/* K1 (2026-07-18): Kernel Journey — 5-stage progress bar.
-      Sits between topnav and main content. Sticky on scroll. */}
+  <!-- شريط رحلة Kernel (ثابت) -->
   <KernelJourneyProgress
     currentPath={currentPath}
     variant={currentPath === '/kernel/scenarios/' || currentPath === '/kernel/' ? 'full' : 'compact'}
   />
 
-  <!-- REPORTS-14: Status bar (provider/db/mode) — visible to grid layout -->
-  <section class="kernel-status-bar" role="status" aria-live="polite">
-    <div class="kernel-status-bar-inner">
-      <div class="kernel-status-provider">
-        <span class="kernel-status-dot connected" aria-hidden="true"></span>
-        <span class="kernel-status-label">Kernel Provider</span>
-        <strong id="kernel-status-provider-text">NVIDIA · Connected</strong>
-      </div>
-      <div class="kernel-status-meta">
-        <span class="kernel-status-pill"><span>DB</span><strong>Connected</strong></span>
-        <span class="kernel-status-pill"><span>Mode</span><strong>Production</strong></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- No-JS drawer fallback -->
-  <noscript>
-    <style>
-      .k-drawer { display: block; position: static; background: var(--bg-base); border-bottom: 1px solid var(--border); padding: var(--space-4); }
-      .k-drawer__backdrop { display: none; }
-      .k-drawer__panel { position: static; width: 100%; background: transparent; border: none; padding: 0; }
-      .k-drawer__close { display: none; }
-      .k-drawer__link { display: block; padding: var(--space-3) var(--space-4); color: var(--text-secondary); text-decoration: none; border-radius: var(--radius-lg); }
-      .k-drawer__link:hover, .k-drawer__link:focus-visible { background: var(--brand-soft); color: var(--text-primary); }
-      .k-drawer__link[aria-current="page"] { background: var(--brand-soft-strong); color: var(--interactive-primary); font-weight: var(--font-semibold); }
-    </style>
-    <div class="k-drawer" id="k-drawer-noscript">
-      <h3>وحدات Kernel</h3>
-      {allItems.map(item => (
-        <a href={item.path} class="k-drawer__link" aria-current={currentPath === item.path ? 'page' : undefined}>
-          {item.label}
-        </a>
-      ))}
-    </div>
-  </noscript>
-
-  <!-- Main content -->
+  <!-- المحتوى -->
   <div class="k-content" id="k-content" tabindex="-1">
     <slot />
-    {/* K1 (2026-07-18): kernel journey context store (invisible). */}
     <KernelJourneyContext />
   </div>
 
-  <!-- Mobile Bottom Nav (5 key items) -->
-  <nav class="k-bottomnav" aria-label="تنقل Kernel السريع">
-    <ul class="k-bottomnav__list">
-      {kernelNavItems.slice(0, 5).map(item => (
-        <li class="k-bottomnav__item">
-          <a
-            href={item.path}
-            class="k-bottomnav__link"
-            aria-current={currentPath === item.path ? 'page' : undefined}
-            aria-label={item.label}
-          >
-            <Fragment set:html={DOMPurify.sanitize(item.iconSvg)} />
-            <span>{item.label}</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </nav>
+  <!-- ═══ درج الرحلة (Trace Drawer) ═══ -->
+  <!-- بيانات تجريبية موسومة Demo. يفتح فوق أي صفحة بلا تنقل. -->
+  <div
+    class="k-trace-drawer"
+    id="k-trace-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="k-trace-title"
+    aria-hidden="true"
+  >
+    <div class="k-trace-drawer__backdrop" data-kernel-trace-close></div>
+    <div class="k-trace-drawer__panel" role="document">
+      <header class="k-trace-drawer__head">
+        <div class="k-trace-drawer__head-id">
+          <h2 id="k-trace-title" class="k-trace-drawer__title">
+            <span class="sr-only">رحلة الطلب</span>
+            <span class="k-mono" dir="ltr" data-kernel-trace-id>AI-2026-10493</span>
+          </h2>
+          <span class="k-verdict k-verdict--block" data-kernel-trace-verdict>
+            <span class="k-verdict__icon" aria-hidden="true">⊘</span>
+            <span>محظور</span>
+          </span>
+        </div>
+        <div class="k-trace-drawer__head-actions">
+          <button class="k-icon-btn" type="button" data-kernel-trace-copy aria-label="نسخ Trace ID">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+          <button class="k-icon-btn" type="button" data-kernel-trace-close aria-label="إغلاق الدرج">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </header>
 
-  <!-- Drawer JS — REPORTS-CSP-01 (2026-07-15): moved to src/scripts/kernel-drawer.js
-     (imported as ES module in frontmatter, no inline script). -->
+      <!-- شريط ملخص 4 خانات -->
+      <div class="k-trace-drawer__summary">
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">المستخدم</span><strong>نورة العتيبي</strong></div>
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">القسم</span><strong>التسويق</strong></div>
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">النموذج</span><strong dir="ltr">gpt-4o</strong></div>
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">الزمن الكلي</span><strong dir="ltr">412ms</strong></div>
+      </div>
+
+      <!-- الخط الزمني — 6 مراحل -->
+      <ol class="k-timeline" aria-label="مراحل الطلب">
+        <li class="k-timeline__item k-timeline__item--done">
+          <span class="k-timeline__node" aria-hidden="true"></span>
+          <details class="k-timeline__card" open>
+            <summary class="k-timeline__head">
+              <span class="k-timeline__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3"/></svg></span>
+              <span class="k-timeline__name">١. الاستلام</span>
+              <span class="k-timeline__time" dir="ltr">8ms</span>
+              <span class="k-timeline__result k-timeline__result--ok">مرّ</span>
+            </summary>
+            <p class="k-timeline__detail">طلب جديد — 142 توكن، لغة: عربي.</p>
+          </details>
+        </li>
+        <li class="k-timeline__item k-timeline__item--done">
+          <span class="k-timeline__node k-timeline__node--mask" aria-hidden="true"></span>
+          <details class="k-timeline__card">
+            <summary class="k-timeline__head">
+              <span class="k-timeline__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></span>
+              <span class="k-timeline__name">٢. فحص PII</span>
+              <span class="k-timeline__time" dir="ltr">34ms</span>
+              <span class="k-timeline__result k-timeline__result--mask">عُمّي</span>
+            </summary>
+            <p class="k-timeline__detail">اكتُشف 3 كيانات: هوية · جوال · IBAN — عُمّيت قبل الإرسال.</p>
+          </details>
+        </li>
+        <li class="k-timeline__item k-timeline__item--done">
+          <span class="k-timeline__node k-timeline__node--critical" aria-hidden="true"></span>
+          <details class="k-timeline__card">
+            <summary class="k-timeline__head">
+              <span class="k-timeline__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+              <span class="k-timeline__name">٣. تقييم المخاطر</span>
+              <span class="k-timeline__time" dir="ltr">61ms</span>
+              <span class="k-timeline__result k-timeline__result--critical">حرج · 87</span>
+            </summary>
+            <p class="k-timeline__detail">النقاط: +28 كيانات حساسة، +22 قسم تسويق، +18 ساعات الذروة… المجموع 87/100.</p>
+          </details>
+        </li>
+        <li class="k-timeline__item k-timeline__item--done">
+          <span class="k-timeline__node k-timeline__node--block" aria-hidden="true"></span>
+          <details class="k-timeline__card">
+            <summary class="k-timeline__head">
+              <span class="k-timeline__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21ZM16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11H16Z"/></svg></span>
+              <span class="k-timeline__name">٤. مطابقة السياسات</span>
+              <span class="k-timeline__time" dir="ltr">22ms</span>
+              <span class="k-timeline__result k-timeline__result--block">حُظر</span>
+            </summary>
+            <p class="k-timeline__detail">اشتعلت: «تعمية الهوية PDPL» — تجاوز عتبة الحظر (70).</p>
+          </details>
+        </li>
+        <li class="k-timeline__item k-timeline__item--skipped">
+          <span class="k-timeline__node k-timeline__node--skip" aria-hidden="true"></span>
+          <details class="k-timeline__card">
+            <summary class="k-timeline__head">
+              <span class="k-timeline__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/><path d="M9 12l2 2 4-4"/></svg></span>
+              <span class="k-timeline__name">٥. استدعاء النموذج</span>
+              <span class="k-timeline__time" dir="ltr">—</span>
+              <span class="k-timeline__result k-timeline__result--skip">لن يُستدعى</span>
+            </summary>
+            <p class="k-timeline__detail">الطلب حُظر قبل وصوله للنموذج — لا استدعاء.</p>
+          </details>
+        </li>
+        <li class="k-timeline__item k-timeline__item--done">
+          <span class="k-timeline__node" aria-hidden="true"></span>
+          <details class="k-timeline__card">
+            <summary class="k-timeline__head">
+              <span class="k-timeline__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+              <span class="k-timeline__name">٦. توليد الدليل</span>
+              <span class="k-timeline__time" dir="ltr">19ms</span>
+              <span class="k-timeline__result k-timeline__result--ok">EVD-10493</span>
+            </summary>
+            <p class="k-timeline__detail">وُلّد ملف دليل موقّع رقميًا (EVD-10493) للحظر.</p>
+          </details>
+        </li>
+      </ol>
+
+      <!-- سلسلة الهاش -->
+      <section class="k-hash-chain" aria-label="سلسلة الهاش">
+        <h3 class="k-hash-chain__title">سلسلة الهاش</h3>
+        <div class="k-hash-chain__boxes">
+          <div class="k-hash-box">
+            <span class="k-hash-box__label">السابق</span>
+            <span class="k-mono k-hash-box__val" dir="ltr">0x9f2a…c1d4</span>
+          </div>
+          <span class="k-hash-chain__arrow" aria-hidden="true">←</span>
+          <div class="k-hash-box k-hash-box--current">
+            <span class="k-hash-box__label">الحالي</span>
+            <span class="k-mono k-hash-box__val" dir="ltr">0xa7c8…2c1b</span>
+            <span class="k-hash-box__ok" aria-label="سليم">✅</span>
+          </div>
+          <span class="k-hash-chain__arrow" aria-hidden="true">←</span>
+          <div class="k-hash-box">
+            <span class="k-hash-box__label">التالي</span>
+            <span class="k-mono k-hash-box__val" dir="ltr">0x3e0b…77fa</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- بطاقات الوحدات المصغّرة -->
+      <section class="k-trace-units" aria-label="وحدات لمست هذا الطلب">
+        <a class="k-trace-unit" href="/kernel/chat/"><span>المحادثة</span></a>
+        <a class="k-trace-unit" href="/kernel/audit/"><span>السجل</span></a>
+        <a class="k-trace-unit" href="/kernel/approvals/"><span>الموافقة</span></a>
+        <a class="k-trace-unit" href="/kernel/evidence/"><span>الدليل</span></a>
+        <a class="k-trace-unit" href="/kernel/reports/"><span>التقرير</span></a>
+      </section>
+    </div>
+  </div>
+
+  <!-- ═══ لوحة الأوامر ⌘K ═══ -->
+  <div
+    class="k-cmdk"
+    id="k-cmdk"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="k-cmdk-title"
+    aria-hidden="true"
+  >
+    <div class="k-cmdk__backdrop" data-kernel-cmdk-close></div>
+    <div class="k-cmdk__panel" role="document">
+      <h2 id="k-cmdk-title" class="sr-only">لوحة الأوامر</h2>
+      <div class="k-cmdk__input-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input
+          type="text"
+          class="k-cmdk__input"
+          placeholder="اكتب أمر أو صفحة…"
+          aria-label="بحث لوحة الأوامر"
+          autocomplete="off"
+          data-kernel-cmdk-input
+        />
+        <kbd class="k-cmdk__esc" aria-hidden="true">Esc</kbd>
+      </div>
+
+      <div class="k-cmdk__results" data-kernel-cmdk-results>
+        <div class="k-cmdk__group" data-group="commands">
+          <span class="k-cmdk__group-label">أوامر سريعة</span>
+          <button class="k-cmdk__item" type="button" data-cmd="run-scenario"><span class="k-cmdk__item-name">شغّل سيناريو</span><kbd>↵</kbd></button>
+          <button class="k-cmdk__item" type="button" data-cmd="open-trace"><span class="k-cmdk__item-name">افتح Trace</span><kbd>↵</kbd></button>
+          <button class="k-cmdk__item" type="button" data-cmd="gen-report"><span class="k-cmdk__item-name">ولّد تقرير</span><kbd>↵</kbd></button>
+          <button class="k-cmdk__item" type="button" data-cmd="toggle-mode"><span class="k-cmdk__item-name">بدّل الوضع (تجريبي / بياناتي)</span><kbd>↵</kbd></button>
+        </div>
+        <div class="k-cmdk__group" data-group="pages">
+          <span class="k-cmdk__group-label">صفحات</span>
+          {cmdkPages.map(item => (
+            <a class="k-cmdk__item" href={item.path} data-kernel-cmdk-target>
+              <span class="k-cmdk__item-name">{item.label}</span>
+            </a>
+          ))}
+        </div>
+        <div class="k-cmdk__group" data-group="policies">
+          <span class="k-cmdk__group-label">سياسات</span>
+          <a class="k-cmdk__item" href="/kernel/policies/"><span class="k-cmdk__item-name">تعمية الهوية (PDPL م.12)</span></a>
+          <a class="k-cmdk__item" href="/kernel/policies/"><span class="k-cmdk__item-name">حظر SA-IBAN</span></a>
+          <a class="k-cmdk__item" href="/kernel/policies/"><span class="k-cmdk__item-name">حظر الهوية طبيًا (SFDA)</span></a>
+        </div>
+        <div class="k-cmdk__group" data-group="scenarios">
+          <span class="k-cmdk__group-label">سيناريوهات</span>
+          <a class="k-cmdk__item" href="/kernel/scenarios/"><span class="k-cmdk__item-name">هوية وطنية</span></a>
+          <a class="k-cmdk__item" href="/kernel/scenarios/"><span class="k-cmdk__item-name">حقن أوامر</span></a>
+          <a class="k-cmdk__item" href="/kernel/scenarios/"><span class="k-cmdk__item-name">SA-IBAN</span></a>
+        </div>
+        <div class="k-cmdk__group" data-group="reports">
+          <span class="k-cmdk__group-label">تقارير</span>
+          <a class="k-cmdk__item" href="/kernel/reports/"><span class="k-cmdk__item-name">PDPL — الربع الثاني</span></a>
+          <a class="k-cmdk__item" href="/kernel/reports/"><span class="k-cmdk__item-name">مخاطر يونيو</span></a>
+        </div>
+        <p class="k-cmdk__empty" hidden data-kernel-cmdk-empty>ما فيه نتائج مطابقة.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- توست النجاح المشترك -->
+  <div class="k-toast" id="k-toast" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <span class="k-toast__msg" data-kernel-toast-msg>تم.</span>
+    <button class="k-toast__undo" type="button" data-kernel-toast-undo hidden>تراجع</button>
+    <button class="k-toast__close" type="button" data-kernel-toast-close aria-label="إغلاق">×</button>
+  </div>
 </BaseLayout>
