@@ -11,10 +11,9 @@ NODE_INSTALL_VERSION=22
 NVM_VERSION="v0.40.3"
 CLAUDE_PACKAGE="@anthropic-ai/claude-code"
 CONFIG_DIR="$HOME/.claude"
-CONFIG_FILE="$CONFIG_DIR/settings.json"
+CONFIG_FILE="$CONFIG_DIR/settings.local.json"
 API_BASE_URL="https://openrouter.ai/api"
 API_KEY_URL="https://openrouter.ai/settings/keys"
-API_TIMEOUT_MS=3000000
 
 # ========================
 #       Functions
@@ -152,14 +151,14 @@ configure_claude() {
 
     ensure_dir_exists "$CONFIG_DIR"
 
-    # Write settings.json
+    # Write settings.local.json
     node --eval '
         const os = require("os");
         const fs = require("fs");
         const path = require("path");
 
         const homeDir = os.homedir();
-        const filePath = path.join(homeDir, ".claude", "settings.json");
+        const filePath = path.join(homeDir, ".claude", "settings.local.json");
         const apiKey = "'"$api_key"'";
 
         const content = fs.existsSync(filePath)
@@ -169,14 +168,13 @@ configure_claude() {
         fs.writeFileSync(filePath, JSON.stringify({
             ...content,
             env: {
-                ANTHROPIC_AUTH_TOKEN: apiKey,
                 ANTHROPIC_BASE_URL: "'"$API_BASE_URL"'",
-                API_TIMEOUT_MS: "'"$API_TIMEOUT_MS"'",
-                CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC: 1
+                ANTHROPIC_AUTH_TOKEN: apiKey,
+                ANTHROPIC_API_KEY: ""
             }
         }, null, 2), "utf-8");
     ' || {
-        log_error "Failed to write settings.json"
+        log_error "Failed to write settings.local.json"
         exit 1
     }
 

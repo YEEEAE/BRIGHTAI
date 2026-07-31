@@ -32,7 +32,7 @@ import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import DOMPurify from 'isomorphic-dompurify';
-import { kernelNavItems, getCrossLinks, getKernelUnit, getKernelFaqJsonLd } from '../../data/kernel';
+import { kernelUnits, kernelNavItems, getCrossLinks, getKernelUnit, getKernelFaqJsonLd } from '../../data/kernel';
 import { KERNEL_PRODUCT, getFaqLd } from '../../data/schema-helpers';
 
 const unit = getKernelUnit('index')!;
@@ -116,10 +116,26 @@ const complianceRows = [
       <aside data-snippet="tl-dr" aria-label="الخلاصة" class="answer-first-summary">
         <p>نواة برايت أيه آي هي نظام تشغيل حوكمة الذكاء الاصطناعي يركّب تحت أي نموذج داخل المنشأة. تشمل جدار حماية للذكاء الاصطناعي وسجل تدقيق غير قابل للتعديل وموافقات بشرية للقرارات عالية الأثر وملفات أدلة قابلة للمراجعة. تدعم المنشآت السعودية في تطبيق ضوابط حماية البيانات والأمن السيبراني وإرشادات سدايا. أداة تشغيلية لا تعد استشارة قانونية.</p>
       </aside>
-    </div>
-    <div class="kernel-page-header__actions">
-      <KernelDemoPill />
-      <a class="kernel-card__footer-link" href="/kernel/chat/">فتح محادثة جديدة <Fragment set:html={iconArrow} /></a>
+
+      <!-- Journey trigger + counter -->
+      <div class="kernel-hero-actions">
+        <div class="kernel-hero__journey">
+          <button class="kernel-hero__journey-btn" id="kernel-journey-trigger" aria-label="شغّل جولة حادثة 90 ثانية">
+            <span class="kernel-hero__journey-btn-icon" aria-hidden="true">▶</span>
+            شغّل حادثة · 90 ثانية
+          </button>
+          <button class="kernel-hero__journey-btn kernel-hero__journey-btn--ghost" id="kernel-playground-trigger" onclick="window.location.href='/kernel/playground/'" aria-label="ابدأ بنصك أنت في الملعب">
+            ابدأ بنصك أنت ←
+          </button>
+        </div>
+        <div class="kernel-hero__counter" aria-live="polite" aria-atomic="true">
+          <span class="kernel-hero__counter-label">ما مُنع اليوم</span>
+          <span class="kernel-hero__counter-value" id="kernel-counter-pii">0</span>
+          <span class="kernel-hero__counter-unit">سجل PII محجوب</span>
+          <span class="kernel-hero__counter-value" id="kernel-counter-risk">0</span>
+          <span class="kernel-hero__counter-unit">ريال متفادى</span>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -179,6 +195,36 @@ const complianceRows = [
       <p class="kernel-onboarding__disclaimer" id="kernel-onboarding-more">
         <strong>تنبيه تشغيلي:</strong> البيانات الظاهرة في هذه اللوحة تجريبية (محددة بوسم «بيانات تجريبية» في الأعلى). المكوّنات لا تستهلك بيانات حقيقية إلا بعد ربط Kernel بمنشأتك. لا يستخدم هذا الموقع لأغراض قانونية أو استشارية — للمراجعة القانونية المتخصصة تواصل مع مستشار مرخّص.
       </p>
+    </section>
+
+    <!-- Journey Theater (hidden by default, toggled by JS) -->
+    <section class="kernel-journey" id="kernel-journey" aria-label="جولة حادثة" hidden>
+      <div class="kernel-journey__platform">
+        <div class="kernel-journey__stage" id="kernel-journey-stage">
+          <!-- Scene content rendered by JS -->
+        </div>
+        <aside class="kernel-journey__narrative" id="kernel-journey-narrative" aria-live="polite">
+          <!-- Narrative lines rendered by JS -->
+        </aside>
+      </div>
+
+      <!-- Progress dots + controls -->
+      <div class="kernel-journey__controls">
+        <div class="kernel-journey__dots" id="kernel-journey-dots" role="tablist" aria-label="مشاهد الجولة">
+          <!-- 7 dots rendered by JS -->
+        </div>
+        <div class="kernel-journey__actions">
+          <button class="kernel-journey__btn" id="kernel-journey-stop" aria-label="إيقاف الجولة">إيقاف</button>
+          <button class="kernel-journey__btn" id="kernel-journey-skip" aria-label="تخطي المشهد الحالي">تخطي</button>
+          <button class="kernel-journey__btn" id="kernel-journey-replay" aria-label="إعادة تشغيل الجولة">إعادة</button>
+        </div>
+        <div class="kernel-journey__scenarios" aria-label="مبدّل السيناريو">
+          <button class="kernel-journey__pill kernel-journey__pill--active" data-scenario="pii" aria-pressed="true">PII</button>
+          <button class="kernel-journey__pill" data-scenario="injection" aria-pressed="false">حقن أوامر</button>
+          <button class="kernel-journey__pill" data-scenario="medical" aria-pressed="false">تصدير طبي</button>
+          <button class="kernel-journey__pill" data-scenario="ibanc" aria-pressed="false">SA-IBAN</button>
+        </div>
+      </div>
     </section>
 
     <!-- Status strip -->
@@ -430,6 +476,126 @@ const complianceRows = [
           );
         })}
       </div>
+     </section>
+
+    <!-- Live KPIs -->
+    <section class="kernel-live-kpis" aria-labelledby="kernel-live-kpis-title">
+      <h2 id="kernel-live-kpis-title" class="k-section-title">مؤشرات حية</h2>
+      <p class="k-section-intro">أرقام تتزايد أمامك. كل سجل محجوب وكل ريال متفادى يظهر هنا لحظياً.</p>
+      <div class="kernel-live-kpis__grid">
+        <div class="kernel-live-kpi">
+          <span class="kernel-live-kpi__num" id="kpi-pii-masked">0</span>
+          <span class="kernel-live-kpi__label">سجل PII محجوب</span>
+          <span class="kernel-live-kpi__trend" aria-hidden="true">↑</span>
+        </div>
+        <div class="kernel-live-kpi">
+          <span class="kernel-live-kpi__num" id="kpi-risk-avoided">0</span>
+          <span class="kernel-live-kpi__label">ريال مخاطرة متفاداة</span>
+          <span class="kernel-live-kpi__trend" aria-hidden="true">↑</span>
+        </div>
+        <div class="kernel-live-kpi">
+          <span class="kernel-live-kpi__num" id="kpi-requests-today">0</span>
+          <span class="kernel-live-kpi__label">طلبات اليوم</span>
+          <span class="kernel-live-kpi__trend" aria-hidden="true">↑</span>
+        </div>
+        <div class="kernel-live-kpi">
+          <span class="kernel-live-kpi__num" id="kpi-blocked">0</span>
+          <span class="kernel-live-kpi__label">طلب محظور</span>
+          <span class="kernel-live-kpi__trend" aria-hidden="true">↑</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Six compliance bars -->
+    <section class="kernel-compliance-bars" aria-labelledby="kernel-compliance-title">
+      <h2 id="kernel-compliance-title" class="k-section-title">شريط الامتثال الستة</h2>
+      <p class="k-section-intro">كل إطار له حالته الحية. الدرج ينتقل من أخضر (منخفض) لأحمر (حرج).</p>
+      <div class="kernel-compliance-bars__list">
+        <div class="kernel-compliance-bar">
+          <span class="kernel-compliance-bar__label">PDPL</span>
+          <div class="kernel-compliance-bar__track"><div class="kernel-compliance-bar__fill" style="width:92%"></div></div>
+          <span class="kernel-compliance-bar__value">92%</span>
+        </div>
+        <div class="kernel-compliance-bar">
+          <span class="kernel-compliance-bar__label">NCA ECC</span>
+          <div class="kernel-compliance-bar__track"><div class="kernel-compliance-bar__fill" style="width:87%"></div></div>
+          <span class="kernel-compliance-bar__value">87%</span>
+        </div>
+        <div class="kernel-compliance-bar">
+          <span class="kernel-compliance-bar__label">ISO 42001</span>
+          <div class="kernel-compliance-bar__track"><div class="kernel-compliance-bar__fill" style="width:81%"></div></div>
+          <span class="kernel-compliance-bar__value">81%</span>
+        </div>
+        <div class="kernel-compliance-bar">
+          <span class="kernel-compliance-bar__label">SDAIA</span>
+          <div class="kernel-compliance-bar__track"><div class="kernel-compliance-bar__fill" style="width:73%"></div></div>
+          <span class="kernel-compliance-bar__value">73%</span>
+        </div>
+        <div class="kernel-compliance-bar">
+          <span class="kernel-compliance-bar__label">SFDA</span>
+          <div class="kernel-compliance-bar__track"><div class="kernel-compliance-bar__fill" style="width:64%"></div></div>
+          <span class="kernel-compliance-bar__value">64%</span>
+        </div>
+        <div class="kernel-compliance-bar">
+          <span class="kernel-compliance-bar__label">SAMA</span>
+          <div class="kernel-compliance-bar__track"><div class="kernel-compliance-bar__fill" style="width:58%"></div></div>
+          <span class="kernel-compliance-bar__value">58%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Unit grid sorted by role (all kernel pages) -->
+    <section class="kernel-unit-grid" aria-labelledby="kernel-units-grid-title">
+      <h2 id="kernel-units-grid-title" class="k-section-title">وحدات Kernel — مرتّبة حسب الدور</h2>
+      <p class="k-section-intro">كل وحدة تختص بجانب من الحوكمة. افتح الوحدة المناسبة لمهمتك.</p>
+      <div class="kernel-unit-grid__role">
+        <h3 class="kernel-unit-grid__role-title">التشغيل</h3>
+        <div class="kernel-unit-grid__list">
+          {kernelUnits.filter(u => ['index','playground','chat','scenarios'].includes(u.slug)).map((item) => (
+            <a href={item.path} class="kernel-unit-grid__card">
+              <span class="kernel-unit-grid__card-label">{item.label}</span>
+              <span class="kernel-unit-grid__card-desc">{item.shortDescription}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <div class="kernel-unit-grid__role">
+        <h3 class="kernel-unit-grid__role-title">الرقابة</h3>
+        <div class="kernel-unit-grid__list">
+          {kernelUnits.filter(u => ['policies','audit','approvals','replay'].includes(u.slug)).map((item) => (
+            <a href={item.path} class="kernel-unit-grid__card">
+              <span class="kernel-unit-grid__card-label">{item.label}</span>
+              <span class="kernel-unit-grid__card-desc">{item.shortDescription}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <div class="kernel-unit-grid__role">
+        <h3 class="kernel-unit-grid__role-title">الإثبات</h3>
+        <div class="kernel-unit-grid__list">
+          {kernelUnits.filter(u => ['compliance','evidence','reports','stats'].includes(u.slug)).map((item) => (
+            <a href={item.path} class="kernel-unit-grid__card">
+              <span class="kernel-unit-grid__card-label">{item.label}</span>
+              <span class="kernel-unit-grid__card-desc">{item.shortDescription}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+      <div class="kernel-unit-grid__role">
+        <h3 class="kernel-unit-grid__role-title">البنية</h3>
+        <div class="kernel-unit-grid__list">
+          {kernelUnits.filter(u => ['models','connectors'].includes(u.slug)).map((item) => (
+            <a href={item.path} class="kernel-unit-grid__card">
+              <span class="kernel-unit-grid__card-label">{item.label}</span>
+              <span class="kernel-unit-grid__card-desc">{item.shortDescription}</span>
+            </a>
+          ))}
+          <a href="/kernel/api/" class="kernel-unit-grid__card">
+            <span class="kernel-unit-grid__card-label">API</span>
+            <span class="kernel-unit-grid__card-desc">وثائق المطوّر ونقاط الربط</span>
+          </a>
+        </div>
+      </div>
     </section>
 
     <!-- Documentation links (preserved) -->
@@ -461,72 +627,235 @@ const complianceRows = [
 
   <!-- Lightweight IntersectionObserver reveal (no GSAP) + keyboard shortcut overlay -->
   <script>
-    let revealObserver: IntersectionObserver | null = null;
+    /* ── Journey Theater ── */
+    const journeyScenes = [
+      { title: 'كتابة الطلب', narrative: 'يكتب المستخدم طلبه للنموذج — شيء يبدو عادي على السطح.', scenarioPii: 'يطلب تصدير بيانات عملاء مرفقة برقم الهوية والسجل التجاري.', scenarioInjection: 'يُرفق أمر system يطلب من النموذج تجاوز الضوابط وإرجاع بيانات داخلية.', scenarioMedical: 'يسأل عن تلخيص سجلات مرضى كاملة يشمل التشخيص والعلاج.', scenarioIbanc: 'يطلب تحويل مبلغ عبر IBAN سعودي مع تفاصيل الحساب والبيانات الشخصية.' },
+      { title: 'اشتعال الـ Firewall', narrative: 'جدار الحماية يُشعل نفسه ويفحص الطلب أثناء مروره.', scenarioPii: 'يرصد 1,847 كيان هوية + جوال + بريد مدمجة في الطلب.', scenarioInjection: 'يكشف حزمة payload ضارة مخبّأة في حقل السياق.', scenarioMedical: 'يصنّف البيانات كصحية حساسة تحت مظلة SFDA ويعلّمها.', scenarioIbanc: 'يكتشف رقم IBAN + بيانات بنكية في الجسم — علامة خطر مباشرة.' },
+      { title: 'صعود المخاطر لـ 87', narrative: 'نقاط المخاطر تتسلق من 0 إلى 87 — فوق عتبة الحظر في الصف.', scenarioPii: 'تتسارع بسبب كثرة PII — هوية + جوال + بريد معاً.', scenarioInjection: 'الـ payload الخبيث يرفع المخاطر تلقائياً لأنه محاولة تجاوز.', scenarioMedical: 'البيانات الطبية تحمل وزناً عالياً بموجب SFDA — الخطر 87.', scenarioIbanc: 'التحويل المالي غير المصرّح يُصنَّف كخطر مالي حرِج.' },
+      { title: 'مطابقة السياسة', narrative: 'Kernel يقارن الطلب بالسياسات الـ11 الفعّالة.', scenarioPii: 'سياسة حماية الهوية والجوال تمنع التصدير — الإجراء: حظر.', scenarioInjection: 'سياسة أمن النموذج تمنع أي طلب يحتوي أوامر نظام — الإجراء: حظر.', scenarioMedical: 'سياسة SFDA تمنع إرسال بيانات طبية للنموذج — الإجراء: حظر.', scenarioIbanc: 'سياسة حماية IBAN تمنع إرسال أرقام حساسة — الإجراء: تعمية.' },
+      { title: 'حقن قيد السجل', narrative: 'كل شيء يُسجَّل في سلسلة الهاش غير القابلة للتعديل.', scenarioPii: 'يُسجَّل: 1,847 كيان PII محجوب — الهاش يتشكّل.', scenarioInjection: 'يُسجَّل: payload خبيث مُكتشف — الهاش يتشكّل.', scenarioMedical: 'يُسجَّل: بيانات طبية محظورة — الهاش يتشكّل.', scenarioIbanc: 'يُسجَّل: رقم IBAN معمّى — الهاش يتشكّل.' },
+      { title: 'هبوط الطلب في الموافقات', narrative: 'الطلب يهبط في طابور الموافقات البشرية — بانتظار قرار.', scenarioPii: 'يحتاج موافقة مدير حماية البيانات قبل أي إجراء.', scenarioInjection: 'يحتاج مراجعة أمنية من فريق الاستجابة للحوادث.', scenarioMedical: 'يحتاج موافقة مسؤول الامتثال الطبي.', scenarioIbanc: 'يحتاج موافقة فريق مكافحة غسل الأموال.' },
+      { title: 'توليد ملف الدليل', narrative: 'النظام يولّد ملف دليل كامل — كل شيء موثّق وجاهز للتدقيق.', scenarioPii: 'دليل PDF يعرض: ماذا حُظر، لماذا، وأي سياسات تدخّلت.', scenarioInjection: 'دليل PDF يعرض: الهجوم الذي كُشف، السياسة التي أوقفته، والنتيجة.', scenarioMedical: 'دليل PDF يعرض: سبب الحظر (SFDA)، البيانات التي تمت معالجتها، الأثر المتوقع.', scenarioIbanc: 'دليل PDF يعرض: البيانات المعمّاة، سبب التعمية، والأثر المُقدَّر بالريال.' }
+    ];
 
-    function handleKernelShortcuts(event: KeyboardEvent) {
-      const target = event.target as HTMLElement | null;
-      if (target?.matches('input, textarea, select, [contenteditable="true"]')) return;
+    const scenarioLabels = { pii: 'PII', injection: 'حقن أوامر', medical: 'تصدير طبي', ibanc: 'SA-IBAN' };
 
-      const overlay = document.getElementById('shortcut-overlay');
-      if (event.key === '?' && !event.ctrlKey && !event.metaKey) {
-        const isOpen = overlay?.classList.toggle('open') ?? false;
-        overlay?.setAttribute('aria-hidden', String(!isOpen));
-        return;
+    let journeyActive = false;
+    let journeyTimer = null;
+    let currentScene = 0;
+    let currentScenario = 'pii';
+    let journeyStartTime = 0;
+    let journeyPaused = false;
+    let journeyPausedAt = 0;
+    let journeyPausedElapsed = 0;
+    const TOTAL_SCENES = 7;
+    const SCENE_DURATION = 13000; // ~13 seconds per scene, 7 scenes × 13 = 91 ≈ 90 seconds
+
+    const journeyEl = document.getElementById('kernel-journey');
+    const journeyTrigger = document.getElementById('kernel-journey-trigger');
+    const stageEl = document.getElementById('kernel-journey-stage');
+    const narrativeEl = document.getElementById('kernel-journey-narrative');
+    const dotsEl = document.getElementById('kernel-journey-dots');
+    const stopBtn = document.getElementById('kernel-journey-stop');
+    const skipBtn = document.getElementById('kernel-journey-skip');
+    const replayBtn = document.getElementById('kernel-journey-replay');
+    const pills = document.querySelectorAll('.kernel-journey__pill');
+
+    function getReducedMotion() {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    function renderDots() {
+      dotsEl.innerHTML = '';
+      for (let i = 0; i < TOTAL_SCENES; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'kernel-journey__dot' + (i === currentScene ? ' kernel-journey__dot--active' : '');
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'مشهد ' + (i + 1) + ': ' + journeyScenes[i].title);
+        dot.setAttribute('aria-selected', String(i === currentScene));
+        dot.addEventListener('click', () => { currentScene = i; renderScene(); });
+        dotsEl.appendChild(dot);
       }
-      if (event.key === 'Escape') {
-        overlay?.classList.remove('open');
-        overlay?.setAttribute('aria-hidden', 'true');
-        return;
+    }
+
+    function renderScene() {
+      const scene = journeyScenes[currentScene];
+      const scenarioText = scenarioTextForScene(scene);
+      /* Cross-fade transition */
+      stageEl.style.opacity = '0';
+      narrativeEl.style.opacity = '0';
+      setTimeout(() => {
+        stageEl.innerHTML = '<div class="kernel-journey__scene-title">' + (currentScene + 1) + '. ' + scene.title + '</div><div class="kernel-journey__scene-body">' + scenarioText + '</div>';
+        narrativeEl.innerHTML = '<p class="kernel-journey__narrative-line">' + scene.narrative + '</p>';
+        stageEl.style.opacity = '1';
+        narrativeEl.style.opacity = '1';
+      }, 400);
+      renderDots();
+      /* Update progress */
+      const progress = ((currentScene + 1) / TOTAL_SCENES) * 100;
+      journeyEl.style.setProperty('--journey-progress', progress + '%');
+    }
+
+    function scenarioTextForScene(scene) {
+      const key = currentScenario;
+      if (key === 'pii') return scene.scenarioPii;
+      if (key === 'injection') return scene.scenarioInjection;
+      if (key === 'medical') return scene.scenarioMedical;
+      if (key === 'ibanc') return scene.scenarioIbanc;
+      return scene.scenarioPii;
+    }
+
+    function startJourney() {
+      if (journeyActive) return;
+      journeyActive = true;
+      currentScene = 0;
+      currentScenario = 'pii';
+      journeyPausedElapsed = 0;
+      journeyStartTime = Date.now();
+      journeyEl.hidden = false;
+      journeyEl.scrollIntoView({ behavior: getReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+      renderScene();
+      scheduleNextScene();
+    }
+
+    function scheduleNextScene() {
+      if (!journeyActive || journeyPaused) return;
+      journeyTimer = setTimeout(() => {
+        if (!journeyActive) return;
+        if (currentScene < TOTAL_SCENES - 1) {
+          currentScene++;
+          renderScene();
+          scheduleNextScene();
+        } else {
+          /* Journey complete */
+          journeyActive = false;
+        }
+      }, SCENE_DURATION);
+    }
+
+    function stopJourney() {
+      journeyActive = false;
+      clearTimeout(journeyTimer);
+    }
+
+    function skipScene() {
+      if (!journeyActive) return;
+      clearTimeout(journeyTimer);
+      if (currentScene < TOTAL_SCENES - 1) {
+        currentScene++;
+        renderScene();
+        scheduleNextScene();
       }
     }
 
-    function handleShortcutBackdrop(event: MouseEvent) {
-      const overlay = document.getElementById('shortcut-overlay');
-      if (!overlay || event.target !== overlay) return;
-      overlay.classList.remove('open');
-      overlay.setAttribute('aria-hidden', 'true');
+    function replayJourney() {
+      clearTimeout(journeyTimer);
+      journeyActive = false;
+      currentScene = 0;
+      journeyPausedElapsed = 0;
+      journeyStartTime = Date.now();
+      journeyEl.hidden = false;
+      journeyEl.scrollIntoView({ behavior: 'auto', block: 'center' });
+      renderScene();
+      startJourney();
     }
 
-    function initKernelShortcuts() {
-      const overlay = document.getElementById('shortcut-overlay');
-      overlay?.removeEventListener('click', handleShortcutBackdrop);
-      overlay?.addEventListener('click', handleShortcutBackdrop);
+    function switchScenario(scenario) {
+      currentScenario = scenario;
+      pills.forEach((pill) => {
+        const isActive = pill.dataset.scenario === scenario;
+        pill.classList.toggle('kernel-journey__pill--active', isActive);
+        pill.setAttribute('aria-pressed', String(isActive));
+      });
+      if (journeyActive) renderScene();
     }
 
-    function initReveal() {
-      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (mq.matches) {
-        document.querySelectorAll('.gsap-fade').forEach(el => el.setAttribute('data-revealed', ''));
-        return;
-      }
-      const cards = document.querySelectorAll('.gsap-fade');
-      if (!cards.length) return;
-      if (revealObserver) revealObserver.disconnect();
-      revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const delay = parseInt((entry.target as HTMLElement).dataset.gsapDelay || '0', 10);
-            window.setTimeout(() => {
-              entry.target.setAttribute('data-revealed', '');
-            }, delay);
-            revealObserver?.unobserve(entry.target);
-          }
-        });
-      }, { rootMargin: '0px 0px -15% 0px', threshold: 0.1 });
-      cards.forEach((el) => revealObserver!.observe(el));
+    /* Journey trigger */
+    if (journeyTrigger) {
+      journeyTrigger.addEventListener('click', () => {
+        if (journeyEl.hidden) {
+          startJourney();
+        } else {
+          journeyEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
     }
 
-    document.addEventListener('astro:page-load', () => {
-      initReveal();
-      initKernelShortcuts();
+    /* Controls */
+    if (stopBtn) stopBtn.addEventListener('click', stopJourney);
+    if (skipBtn) skipBtn.addEventListener('click', skipScene);
+    if (replayBtn) replayBtn.addEventListener('click', replayJourney);
+
+    /* Scenario pills */
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        switchScenario(pill.dataset.scenario);
+      });
     });
 
-    document.addEventListener('astro:before-swap', () => {
-      if (revealObserver) {
-        revealObserver.disconnect();
-        revealObserver = null;
+    /* Keyboard: Escape to close journey */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && journeyEl && !journeyEl.hidden) {
+        stopJourney();
       }
-      document.getElementById('shortcut-overlay')?.removeEventListener('click', handleShortcutBackdrop);
+    });
+
+    /* ── Live Counter ── */
+    let counterPII = 1247;
+    let counterRisk = 8400000;
+    let counterRequests = 3842;
+    let counterBlocked = 29;
+
+    function animateCounter(element, target, duration) {
+      if (!element) return;
+      const start = parseInt(element.textContent.replace(/,/g, ''), 10) || 0;
+      const diff = target - start;
+      if (diff === 0) return;
+      const startTime = performance.now();
+      function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + diff * eased);
+        element.textContent = current.toLocaleString('en-US');
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+
+    function updateCounters() {
+      counterPII += Math.floor(Math.random() * 3) + 1;
+      counterRisk += Math.floor(Math.random() * 5000) + 200;
+      counterRequests += Math.floor(Math.random() * 5) + 1;
+      counterBlocked += Math.random() > 0.7 ? 1 : 0;
+      const piiEl = document.getElementById('kernel-counter-pii');
+      const riskEl = document.getElementById('kernel-counter-risk');
+      if (piiEl) piiEl.textContent = counterPII.toLocaleString('en-US');
+      if (riskEl) riskEl.textContent = counterRisk.toLocaleString('en-US');
+      const kpiPii = document.getElementById('kpi-pii-masked');
+      const kpiRisk = document.getElementById('kpi-risk-avoided');
+      const kpiReq = document.getElementById('kpi-requests-today');
+      const kpiBlock = document.getElementById('kpi-blocked');
+      if (kpiPii) kpiPii.textContent = counterPII.toLocaleString('en-US');
+      if (kpiRisk) kpiRisk.textContent = counterRisk.toLocaleString('en-US');
+      if (kpiReq) kpiReq.textContent = counterRequests.toLocaleString('en-US');
+      if (kpiBlock) kpiBlock.textContent = counterBlocked.toLocaleString('en-US');
+    }
+
+    /* ── Init ── */
+    document.addEventListener('astro:page-load', () => {
+      /* Counter initial render */
+      const piiEl = document.getElementById('kernel-counter-pii');
+      const riskEl = document.getElementById('kernel-counter-risk');
+      if (piiEl) piiEl.textContent = counterPII.toLocaleString('en-US');
+      if (riskEl) riskEl.textContent = counterRisk.toLocaleString('en-US');
+      /* Start counter interval */
+      setInterval(updateCounters, 4000);
+      /* Reduced motion: make journey manual */
+      if (getReducedMotion() && journeyEl) {
+        journeyEl.removeAttribute('hidden');
+        journeyEl.style.position = 'relative';
+      }
     });
   </script>
 

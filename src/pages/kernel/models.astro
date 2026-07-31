@@ -1,0 +1,851 @@
+---
+/**
+ * /kernel/models/ — سجل النماذج والحلبة وقواعد التوجيه.
+ *
+ * ثلاث تبويبات:
+ *   1. السجل — جدول مقارنة للنماذج (مرتّب، أفضل صف بنجمة)
+ *   2. الحلبة — محاكاة بثّ متوازي لثلاثة نماذج مع مؤقت ولوحة صدارة
+ *   3. قواعد التوجيه — مخطط تدفق SVG تفاعلي + تجاوز يدوي + تنبيهات
+ *
+ * vanilla JS فقط (لا مكتبات خارجية). مخطط التدفق بـ SVG يدوي.
+ * عامية سعودية، أرقام لاتينية، KernelTabs للتبويبات، ورثة الشِل.
+ * prefers-reduced-motion محترم.
+ */
+import KernelLayout from '../../layouts/KernelLayout.astro';
+import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
+import KernelTabs from '../../components/kernel/KernelTabs.astro';
+import '../../../kernel/assets/css/pages/models.css';
+
+const unit = getKernelUnit('models')!;
+const cross = getCrossLinks(unit);
+
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    ...getKernelSubPageJsonLd(unit),
+    ...(getKernelFaqJsonLd(unit) ? [getKernelFaqJsonLd(unit)] : []),
+  ].filter(Boolean) as Record<string, unknown>[],
+};
+
+// ── Demo data: model registry ──────────────────────────────────────
+const models = [
+  {
+    name: 'GPT-4o',
+    version: 'gpt-4o-2024-11-20',
+    logo: '🤖',
+    dataLocation: 'cloud',
+    locationLabel: '☁️ سحابي',
+    medianLatency: 420,
+    costPer1k: 2.5,
+    successRate: 94,
+    hallucinationRate: 8,
+    status: 'active',
+    statusLabel: 'نشط',
+  },
+  {
+    name: 'Claude 3.5 Sonnet',
+    version: 'claude-3-5-sonnet-20241022',
+    logo: '🧠',
+    dataLocation: 'cloud',
+    locationLabel: '☁️ سحابي',
+    medianLatency: 380,
+    costPer1k: 3.0,
+    successRate: 96,
+    hallucinationRate: 5,
+    status: 'active',
+    statusLabel: 'نشط',
+  },
+  {
+    name: 'Gemini 2.0 Flash',
+    version: 'gemini-2.0-flash-exp',
+    logo: '💎',
+    dataLocation: 'cloud',
+    locationLabel: '☁️ سحابي',
+    medianLatency: 350,
+    costPer1k: 1.5,
+    successRate: 91,
+    hallucinationRate: 12,
+    status: 'active',
+    statusLabel: 'نشط',
+  },
+  {
+    name: 'ArabiLLM 4B',
+    version: 'arabillm-4b-v1',
+    logo: '🇸🇦',
+    dataLocation: 'saudi',
+    locationLabel: '🇸🇦 سعودي',
+    medianLatency: 680,
+    costPer1k: 0.8,
+    successRate: 78,
+    hallucinationRate: 18,
+    status: 'active',
+    statusLabel: 'نشط',
+  },
+  {
+    name: 'Jais 13B',
+    version: 'jais-13b-chat-v1',
+    logo: '🏠',
+    dataLocation: 'local',
+    locationLabel: '🏠 محلي',
+    medianLatency: 1200,
+    costPer1k: 0.3,
+    successRate: 72,
+    hallucinationRate: 22,
+    status: 'degraded',
+    statusLabel: 'تدهور',
+  },
+  {
+    name: 'Llama 3.1 70B',
+    version: 'llama-3.1-70b-instruct',
+    logo: '🦙',
+    dataLocation: 'cloud',
+    locationLabel: '☁️ سحابي',
+    medianLatency: 950,
+    costPer1k: 4.0,
+    successRate: 93,
+    hallucinationRate: 6,
+    status: 'active',
+    statusLabel: 'نشط',
+  },
+];
+
+// ── Demo data: arena results ───────────────────────────────────────
+const arenaModels = ['GPT-4o', 'Claude 3.5 Sonnet', 'Gemini 2.0 Flash'];
+
+// ── Demo data: routing nodes ───────────────────────────────────────
+const routingNodes = [
+  { id: 'start', label: 'بداية الطلب', type: 'start', x: 80, y: 200 },
+  { id: 'pii', label: 'بيانات حساسة؟', type: 'decision', x: 280, y: 80 },
+  { id: 'sensitive', label: 'حساسية عالية؟', type: 'decision', x: 280, y: 200 },
+  { id: 'section', label: 'قسم حكومي؟', type: 'decision', x: 280, y: 320 },
+  { id: 'local', label: 'نموذج محلي', type: 'model', x: 520, y: 50 },
+  { id: 'saudi', label: 'نموذج سعودي', type: 'model', x: 520, y: 170 },
+  { id: 'cloud', label: 'نموذج سحابي', type: 'model', x: 520, y: 290 },
+  { id: 'local_fallback', label: 'نموذج محلي', type: 'model', x: 520, y: 410 },
+  { id: 'end', label: 'النموذج المختار', type: 'end', x: 720, y: 200 },
+];
+
+const routingLinks = [
+  { from: 'start', to: 'pii' },
+  { from: 'start', to: 'sensitive' },
+  { from: 'start', to: 'section' },
+  { from: 'pii', to: 'local' },
+  { from: 'sensitive', to: 'saudi' },
+  { from: 'sensitive', to: 'cloud' },
+  { from: 'section', to: 'local_fallback' },
+  { from: 'section', to: 'cloud' },
+  { from: 'local', to: 'end' },
+  { from: 'saudi', to: 'end' },
+  { from: 'cloud', to: 'end' },
+  { from: 'local_fallback', to: 'end' },
+];
+
+// ── Demo data: alerts ──────────────────────────────────────────────
+const alerts = [
+  { level: 'warning', title: 'تدهور أداء Jais 13B', time: 'منذ 3 ساعات', desc: 'معدل الهلوسة ارتفع من 18% إلى 22%. يُنقل الطلبات مؤقتاً لـ Llama 3.1.' },
+  { level: 'danger', title: 'توكن ArabiLLM 4B منتهي قريباً', time: 'بعد 48 ساعة', desc: 'الرصيد المتبقي 15% من الحصة الشهرية. جدّد قبل نفاد لتجنّب انقطاع.' },
+  { level: 'info', title: 'تحديث GPT-4o v2 متاح', time: 'أمس', desc: 'الإصدار الجديد يخفّض الهلوسة بنسبة 2% ويحسّن الزمن بنسبة 10%.' },
+];
+
+// ── Demo data: security leaderboard ────────────────────────────────
+const securityLeaderboard = [
+  { name: 'Claude 3.5 Sonnet', score: 97, label: 'نتيجة الأسبوع' },
+  { name: 'GPT-4o', score: 94, label: 'نتيجة الأسبوع' },
+  { name: 'ArabiLLM 4B', score: 88, label: 'نتيجة الأسبوع' },
+  { name: 'Llama 3.1 70B', score: 85, label: 'نتيجة الأسبوع' },
+  { name: 'Gemini 2.0 Flash', score: 82, label: 'نتيجة الأسبوع' },
+  { name: 'Jais 13B', score: 71, label: 'نتيجة الأسبوع' },
+];
+
+---
+<KernelLayout
+  title={unit.title}
+  description={unit.description}
+  canonical={unit.canonical}
+  hreflang={unit.hreflang}
+  ogImage={unit.ogImage}
+  jsonLd={jsonLd}
+  currentPath="/kernel/models/"
+  breadcrumbs={[
+    { name: 'Kernel', href: '/kernel/' },
+    { name: 'النماذج والتوجيه', href: '/kernel/models/' },
+  ]}
+>
+  <style>
+    /* Page-specific styles live in kernel/assets/css/pages/models.css.
+       The import at the top of this file handles the CSS bundle. */
+  </style>
+
+  <main class="models-page" id="models-page">
+    <!-- ═══ الرأس ═══ -->
+    <header class="models-page__header">
+      <h1 class="models-page__title">{unit.h1}</h1>
+      <p class="models-page__subtitle">{unit.shortDescription}</p>
+    </header>
+
+    <!-- ═══ التبويبات ═══ -->
+    <KernelTabs
+      tabs={[
+        { id: 'registry', label: 'السجل', count: models.length, selected: true },
+        { id: 'arena', label: 'الحلبة' },
+        { id: 'routing', label: 'قواعد التوجيه' },
+      ]}
+      panelIdBase="models-tabpanel"
+      tabIdBase="models-tab"
+    />
+
+    <!-- ═══ تبويب ١: السجل ═══ -->
+    <section id="models-tabpanel-registry" role="tabpanel" aria-labelledby="models-tab-registry" tabindex="0">
+      <div class="models-table-wrap">
+        <table class="models-table" id="models-table" aria-label="جدول مقارنة النماذج">
+          <thead>
+            <tr>
+              <th data-col="logo" data-sort-dir="none" aria-label="الشعار">الشعار</th>
+              <th data-col="name" data-sort-dir="none" aria-label="الاسم">الاسم والإصدار</th>
+              <th data-col="location" data-sort-dir="none" aria-label="مكان البيانات">مكان البيانات</th>
+              <th data-col="latency" data-sort-dir="none" aria-label="الزمن الوسيط">الزمن الوسيط</th>
+              <th data-col="cost" data-sort-dir="none" aria-label="التكلفة">التكلفة / 1K توكن</th>
+              <th data-col="success" data-sort-dir="none" aria-label="معدل النجاح">معدل النجاح</th>
+              <th data-col="hallucination" data-sort-dir="none" aria-label="معدل الهلوسة">معدل الهلوسة</th>
+              <th data-col="status" data-sort-dir="none" aria-label="الحالة">الحالة</th>
+            </tr>
+          </thead>
+          <tbody id="models-tbody">
+          </tbody>
+        </table>
+      </div>
+      <p class="models-note" dir="ltr" style="margin-top: var(--space-3); font-size: var(--text-xs); color: var(--text-muted);">
+        ⭐ الصف الأفضل في كل عمود · البيانات توضيحية تُحدَّث أسبوعياً
+      </p>
+    </section>
+
+    <!-- ═══ تبويب ٢: الحلبة ═══ -->
+    <section id="models-tabpanel-arena" role="tabpanel" aria-labelledby="models-tab-arena" tabindex="0" hidden>
+      <div class="arena">
+        <div class="arena__prompt">
+          <label for="arena-input" class="sr-only">اكتب الطلب</label>
+          <input type="text" id="arena-input" placeholder="اكتب الطلب هنا لتشغيل الحلبة..." dir="rtl" aria-label="طلب للمقارنة بين النماذج" />
+          <button type="button" id="arena-run" data-arena-run>شغّل الحلبة</button>
+        </div>
+
+        <div class="arena__countdown" id="arena-countdown" data-active="false"></div>
+
+        <div class="arena__columns" id="arena-columns">
+          {arenaModels.map((m) => (
+            <div class="arena__column" data-model={m}>
+              <div class="arena__column-header">
+                <span class="arena__column-name">{m}</span>
+                <span class="arena__column-timer" data-timer></span>
+              </div>
+              <div class="arena__stream" data-stream aria-live="polite"></div>
+              <div class="arena__result" data-result hidden>
+                <div class="arena__result-row">
+                  <span class="arena__result-label">الزمن</span>
+                  <span class="arena__result-value" data-field="time">—</span>
+                </div>
+                <div class="arena__result-row">
+                  <span class="arena__result-label">التكلفة</span>
+                  <span class="arena__result-value" data-field="cost">—</span>
+                </div>
+                <div class="arena__result-row">
+                  <span class="arena__result-label">درجة الحوكمة</span>
+                  <span class="arena__result-value" data-field="governance">—</span>
+                </div>
+                <div class="arena__winner" data-winner hidden></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button type="button" class="arena__vote-btn" data-arena-vote>صوّت للأفضل</button>
+
+        <div class="arena__leaderboard" id="arena-leaderboard">
+          <h3>لوحة الصدارة</h3>
+          <div id="arena-leaderboard-rows"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ تبويب ٣: قواعد التوجيه ═══ -->
+    <section id="models-tabpanel-routing" role="tabpanel" aria-labelledby="models-tab-routing" tabindex="0" hidden>
+      <div class="routing">
+        <div class="routing__chart" id="routing-chart" role="img" aria-label="مخطط تدفق قواعد التوجيه — عقدة البداية تتفرع لقرارات تحدد نوع البيانات والحساسية والقسم وتنتهي بالنموذج المختار">
+          <!-- SVG rendered by JS -->
+        </div>
+
+        <div class="routing__legend">
+          <span class="routing__legend-item"><span class="routing__legend-dot routing__legend-dot--start"></span> عقدة بداية</span>
+          <span class="routing__legend-item"><span class="routing__legend-dot routing__legend-dot--decision"></span> عقدة شرطية</span>
+          <span class="routing__legend-item"><span class="routing__legend-dot routing__legend-dot--model"></span> عقدة نموذج</span>
+          <span class="routing__legend-item"><span class="routing__legend-dot routing__legend-dot--active"></span> القاعدة النشطة</span>
+        </div>
+
+        <!-- لوحة التجاوز اليدوي -->
+        <div class="routing__override">
+          <h3>جدول التجاوز اليدوي</h3>
+          <table class="routing__override-table">
+            <thead>
+              <tr>
+                <th>القاعدة</th>
+                <th>النموذج الأصلي</th>
+                <th>النموذج المُتجاوز</th>
+                <th>التعليق</th>
+                <th>&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>بيانات حساسة → نموذج محلي</td>
+                <td>GPT-4o</td>
+                <td>
+                  <select class="routing__override-select" aria-label="اختر النموذج المتجاوز">
+                    <option>ArabiLLM 4B</option>
+                    <option>Jais 13B</option>
+                  </select>
+                </td>
+                <td>مؤقت — صيانة النموذج السعودي</td>
+                <td><button class="routing__override-btn" type="button">طبّق</button></td>
+              </tr>
+              <tr>
+                <td>قسم حكومي → نموذج محلي</td>
+                <td>Claude 3.5 Sonnet</td>
+                <td>
+                  <select class="routing__override-select" aria-label="اختر النموذج المتجاوز">
+                    <option>ArabiLLM 4B</option>
+                    <option>Jais 13B</option>
+                  </select>
+                </td>
+                <td>متطلب امتثال SFDA</td>
+                <td><button class="routing__override-btn" type="button">طبّق</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- تنبيهات تدهور الأداء -->
+        <div class="routing__alerts" id="routing-alerts">
+          {alerts.map((a) => (
+            <div class={`routing__alert routing__alert--${a.level}`} role="alert">
+              <span class="routing__alert-icon" aria-hidden="true">{a.level === 'warning' ? '⚠️' : a.level === 'danger' ? '🔴' : 'ℹ️'}</span>
+              <div class="routing__alert-body">
+                <div class="routing__alert-title">{a.title}</div>
+                <div>{a.desc}</div>
+                <div class="routing__alert-time">{a.time}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- لوحة صدارة أمان النماذج -->
+        <div class="routing__leaderboard">
+          <h3>لوحة صدارة أمان النماذج — أسبوع {new Date().toISOString().slice(0, 10)}</h3>
+          <div class="routing__leaderboard-grid" id="security-lb-grid">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ سكربت التبويبات والميزات التفاعلية ═══ -->
+  <script>
+    window.__kernelModelsPageData = {
+      models: ${JSON.stringify(models)},
+      arenaModels: ${JSON.stringify(arenaModels)},
+      routingNodes: ${JSON.stringify(routingNodes)},
+      routingLinks: ${JSON.stringify(routingLinks)},
+      alerts: ${JSON.stringify(alerts)},
+      securityLeaderboard: ${JSON.stringify(securityLeaderboard)},
+    };
+
+    // Vanilla JS, no external dependencies.
+    // Handles: tab switching, table sorting, arena simulation, SVG flow chart.
+
+    (function () {
+      'use strict';
+
+      var pageData = window.__kernelModelsPageData || {};
+      var models = pageData.models || [];
+      var arenaModels = pageData.arenaModels || [];
+      var routingNodes = pageData.routingNodes || [];
+      var routingLinks = pageData.routingLinks || [];
+      var alerts = pageData.alerts || [];
+      var securityLeaderboard = pageData.securityLeaderboard || [];
+
+      // ── Tab switching (delegated) ──
+      var tablist = document.querySelector('[role="tablist"]');
+      if (!tablist) return;
+
+      tablist.addEventListener('click', function (e) {
+        if (!e.target || !(e.target instanceof Element)) return;
+        if (!tablist) return;
+
+        var tab = e.target.closest('[role="tab"]') as HTMLElement | null;
+        if (!tab) return;
+        var tabId = tab.dataset.tabId;
+        if (!tabId) return;
+
+        // Deactivate all tabs and panels
+        var allTabs = tablist.querySelectorAll('[role="tab"]');
+        allTabs.forEach(function (t) {
+          t.setAttribute('aria-selected', 'false');
+          t.setAttribute('tabindex', '-1');
+        });
+        tab.setAttribute('aria-selected', 'true');
+        tab.setAttribute('tabindex', '0');
+        tab.focus();
+
+        // Hide all panels, show target
+        var panels = document.querySelectorAll('[role="tabpanel"]');
+        panels.forEach(function (p) {
+          (p as HTMLElement).hidden = true;
+        });
+        var targetPanel = document.getElementById('models-tabpanel-' + tabId);
+        if (targetPanel) {
+          targetPanel.hidden = false;
+          // Initialize tab-specific content
+          if (tabId === 'registry') initRegistry();
+          if (tabId === 'arena') initArena();
+          if (tabId === 'routing') initRouting();
+        }
+      });
+
+      // ── Registry: sortable table ──
+      var registryInitialized = false;
+
+      function initRegistry() {
+        if (registryInitialized) return;
+        registryInitialized = true;
+
+        var table = document.getElementById('models-table');
+        if (!table) return;
+
+        var tbody = document.getElementById('models-tbody');
+        if (!tbody) return;
+
+        // Calculate best values per column
+        var best = {
+          latency: Infinity,
+          cost: Infinity,
+          success: 0,
+          hallucination: Infinity,
+        };
+
+        models.forEach(function (m) {
+          if (m.medianLatency < best.latency) best.latency = m.medianLatency;
+          if (m.costPer1k < best.cost) best.cost = m.costPer1k;
+          if (m.successRate > best.success) best.success = m.successRate;
+          if (m.hallucinationRate < best.hallucination) best.hallucination = m.hallucinationRate;
+        });
+
+        // Build rows
+        var html = '';
+        models.forEach(function (m) {
+          var isBest =
+            m.medianLatency === best.latency ||
+            m.costPer1k === best.cost ||
+            m.successRate === best.success ||
+            m.hallucinationRate === best.hallucination;
+
+          var barLevel = m.successRate >= 90 ? 'low' : m.successRate >= 75 ? 'mid' : 'high';
+          var hallucLevel = m.hallucinationRate <= 10 ? 'low' : m.hallucinationRate <= 20 ? 'mid' : 'high';
+
+          html += '<tr data-best="' + isBest + '">';
+          html += '<td>' + m.logo + '</td>';
+          html += '<td><strong>' + m.name + '</strong><br><span style="color:var(--text-muted);font-size:var(--text-xs);">' + m.version + '</span></td>';
+          html += '<td><span class="models-badge models-badge--' + m.dataLocation + '">' + m.locationLabel + '</span></td>';
+          html += '<td dir="ltr" style="font-variant-numeric:tabular-nums;">' + m.medianLatency + 'ms ' + (m.medianLatency === best.latency ? '⭐' : '') + '</td>';
+          html += '<td dir="ltr" style="font-variant-numeric:tabular-nums;">$' + m.costPer1k + '</td>';
+          html += '<td><div class="models-bar"><div class="models-bar__track"><div class="models-bar__fill" style="width:' + m.successRate + '%" data-level="' + barLevel + '"></div></div><span class="models-bar__value">' + m.successRate + '%</span></div></td>';
+          html += '<td><span class="models-hallucination" data-level="' + hallucLevel + '">' + m.hallucinationRate + '%</span></td>';
+          html += '<td>' + m.statusLabel + '</td>';
+          html += '</tr>';
+        });
+
+        tbody.innerHTML = html;
+
+        // Sortable headers
+        var headers = table.querySelectorAll('th[data-col]');
+        var sortDir = {};
+        headers.forEach(function (th) {
+          sortDir[th.dataset.col] = 'none';
+          th.addEventListener('click', function () {
+            var col = th.dataset.col;
+            // Cycle: none -> asc -> desc -> none
+            if (sortDir[col] === 'none') sortDir[col] = 'asc';
+            else if (sortDir[col] === 'asc') sortDir[col] = 'desc';
+            else sortDir[col] = 'none';
+
+            // Update header indicators
+            headers.forEach(function (h) { h.dataset.sortDir = 'none'; });
+            th.dataset.sortDir = sortDir[col];
+
+            if (sortDir[col] === 'none') {
+              tbody.innerHTML = buildTableRows(models, best);
+              return;
+            }
+
+            var sorted = models.slice().sort(function (a, b) {
+              var va, vb;
+              switch (col) {
+                case 'latency': va = a.medianLatency; vb = b.medianLatency; break;
+                case 'cost': va = a.costPer1k; vb = b.costPer1k; break;
+                case 'success': va = a.successRate; vb = b.successRate; break;
+                case 'hallucination': va = a.hallucinationRate; vb = b.hallucinationRate; break;
+                default: return 0;
+              }
+              return sortDir[col] === 'asc' ? va - vb : vb - va;
+            });
+
+            tbody.innerHTML = buildTableRows(sorted, best);
+          });
+        });
+      }
+
+      function buildTableRows(list, best) {
+        var html = '';
+        list.forEach(function (m) {
+          var isBest =
+            m.medianLatency === best.latency ||
+            m.costPer1k === best.cost ||
+            m.successRate === best.success ||
+            m.hallucinationRate === best.hallucination;
+
+          var barLevel = m.successRate >= 90 ? 'low' : m.successRate >= 75 ? 'mid' : 'high';
+          var hallucLevel = m.hallucinationRate <= 10 ? 'low' : m.hallucinationRate <= 20 ? 'mid' : 'high';
+
+          html += '<tr data-best="' + isBest + '">';
+          html += '<td>' + m.logo + '</td>';
+          html += '<td><strong>' + m.name + '</strong><br><span style="color:var(--text-muted);font-size:var(--text-xs);">' + m.version + '</span></td>';
+          html += '<td><span class="models-badge models-badge--' + m.dataLocation + '">' + m.locationLabel + '</span></td>';
+          html += '<td dir="ltr" style="font-variant-numeric:tabular-nums;">' + m.medianLatency + 'ms ' + (m.medianLatency === best.latency ? '⭐' : '') + '</td>';
+          html += '<td dir="ltr" style="font-variant-numeric:tabular-nums;">$' + m.costPer1k + '</td>';
+          html += '<td><div class="models-bar"><div class="models-bar__track"><div class="models-bar__fill" style="width:' + m.successRate + '%" data-level="' + barLevel + '"></div></div><span class="models-bar__value">' + m.successRate + '%</span></div></td>';
+          html += '<td><span class="models-hallucination" data-level="' + hallucLevel + '">' + m.hallucinationRate + '%</span></td>';
+          html += '<td>' + m.statusLabel + '</td>';
+          html += '</tr>';
+        });
+        return html;
+      }
+
+      // ── Arena: live parallel simulation ──
+      var arenaInitialized = false;
+      var arenaInterval = null;
+
+      function initArena() {
+        if (arenaInitialized) return;
+        arenaInitialized = true;
+
+        var runBtn = document.getElementById('arena-run');
+        var countdownEl = document.getElementById('arena-countdown');
+        var columns = document.querySelectorAll('.arena__column');
+        var leaderboardRows = document.getElementById('arena-leaderboard-rows');
+
+        if (!runBtn || !countdownEl || !columns.length) return;
+
+        var leaderboard = {};
+        arenaModels.forEach(function (m) { leaderboard[m] = 0; });
+
+        function renderLeaderboard() {
+          if (!leaderboardRows) return;
+          var sorted = Object.entries(leaderboard).sort(function (a, b) { return b[1] - a[1]; });
+          leaderboardRows.innerHTML = sorted.map(function (entry, i) {
+            return '<div class="arena__leaderboard-row">' +
+              '<span class="arena__leaderboard-rank">' + (i + 1) + '</span>' +
+              '<span class="arena__leaderboard-name">' + entry[0] + '</span>' +
+              '<span class="arena__leaderboard-votes">' + entry[1] + '</span>' +
+              '</div>';
+          }).join('');
+        }
+
+        runBtn.addEventListener('click', function () {
+          if (arenaInterval) return; // already running
+
+          var input = document.getElementById('arena-input');
+          var prompt = input ? input.value.trim() : 'مثال: حلل وثيقة العقد التالية';
+
+          if (!prompt) {
+            if (input) input.focus();
+            return;
+          }
+
+          runBtn.disabled = true;
+          var elapsed = 0;
+          var maxDuration = 3000; // 3 seconds simulated
+          var step = 100;
+
+          countdownEl.textContent = '⏳ جارية...';
+          countdownEl.dataset.active = 'true';
+
+          // Reset streams and results
+          columns.forEach(function (col) {
+            var stream = col.querySelector('[data-stream]');
+            var result = col.querySelector('[data-result]');
+            if (stream) { stream.textContent = ''; stream.dataset.live = 'true'; }
+            if (result) result.hidden = true;
+          });
+
+          arenaInterval = setInterval(function () {
+            elapsed += step;
+            var remaining = Math.max(0, Math.ceil((maxDuration - elapsed) / 1000));
+            countdownEl.textContent = remaining > 0 ? remaining + 's' : '✅ انتهى';
+            countdownEl.dataset.active = remaining > 0 ? 'true' : 'false';
+
+            // Simulate streaming in each column
+            columns.forEach(function (col) {
+              var modelName = col.dataset.model;
+              var stream = col.querySelector('[data-stream]');
+              var result = col.querySelector('[data-result]');
+              if (!stream || !result) return;
+
+              if (elapsed >= maxDuration) {
+                stream.dataset.live = 'false';
+                stream.textContent = 'النموذج ' + modelName + ' أنهى المعالجة. ' + prompt;
+                result.hidden = false;
+
+                // Demo result values
+                var times = [420, 380, 350];
+                var idx = arenaModels.indexOf(modelName);
+                var time = times[idx] || (200 + Math.floor(Math.random() * 300));
+                var cost = (0.5 + Math.random() * 3).toFixed(2);
+                var gov = (85 + Math.floor(Math.random() * 15));
+
+                result.querySelector('[data-field="time"]').textContent = time + 'ms';
+                result.querySelector('[data-field="cost"]').textContent = '$' + cost + '/1K';
+                result.querySelector('[data-field="governance"]').textContent = gov + '/100';
+
+                // Winner badge for the fastest
+                var minTime = Math.min.apply(null, times);
+                if (time === minTime) {
+                  result.querySelector('[data-winner]').hidden = false;
+                  result.querySelector('[data-winner]').textContent = '🏆 الأسرع';
+                }
+              } else {
+                // Streaming partial response
+                stream.textContent = stream.textContent + '.';
+              }
+            });
+
+            if (elapsed >= maxDuration) {
+              clearInterval(arenaInterval);
+              arenaInterval = null;
+              runBtn.disabled = false;
+              countdownEl.textContent = 'اكتب طلب جديد وشغّل من جديد';
+              countdownEl.dataset.active = 'false';
+            }
+          }, step);
+        });
+
+        // Vote button
+        var voteBtn = document.getElementById('arena-vote');
+        if (voteBtn) {
+          voteBtn.addEventListener('click', function () {
+            // Simple round-robin for demo
+            var keys = Object.keys(leaderboard);
+            var winner = keys[Math.floor(Math.random() * keys.length)];
+            leaderboard[winner]++;
+            renderLeaderboard();
+          });
+        }
+
+        renderLeaderboard();
+      }
+
+      // ── Routing: SVG flow chart ──
+      var routingInitialized = false;
+
+      function initRouting() {
+        if (routingInitialized) return;
+        routingInitialized = true;
+
+        var chart = document.getElementById('routing-chart');
+        if (!chart) return;
+
+        // Build SVG flow chart
+        var svgNS = 'http://www.w3.org/2000/svg';
+        var svg = document.createElementNS(svgNS, 'svg');
+        svg.setAttribute('viewBox', '0 0 800 400');
+        svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        svg.setAttribute('aria-hidden', 'true');
+
+        // Draw links (edges)
+        routingLinks.forEach(function (link) {
+          var fromNode = routingNodes.find(function (n) { return n.id === link.from; });
+          var toNode = routingNodes.find(function (n) { return n.id === link.to; });
+          if (!fromNode || !toNode) return;
+
+          var line = document.createElementNS(svgNS, 'line');
+          line.setAttribute('x1', fromNode.x);
+          line.setAttribute('y1', fromNode.y);
+          line.setAttribute('x2', toNode.x);
+          line.setAttribute('y2', toNode.y);
+          line.setAttribute('stroke', 'rgba(255,255,255,.12)');
+          line.setAttribute('stroke-width', '2');
+          line.classList.add('routing__link', 'link');
+          line.dataset.from = link.from;
+          line.dataset.to = link.to;
+          svg.appendChild(line);
+        });
+
+        // Draw nodes
+        routingNodes.forEach(function (node) {
+          var g = document.createElementNS(svgNS, 'g');
+          g.classList.add('routing__node', 'node');
+          g.setAttribute('data-node-id', node.id);
+          g.setAttribute('tabindex', '0');
+          g.setAttribute('role', 'button');
+          g.setAttribute('aria-label', node.label);
+
+          var bgColor, borderColor, textColor;
+          switch (node.type) {
+            case 'start':
+              bgColor = 'rgba(6,182,212,.15)';
+              borderColor = 'rgba(6,182,212,.5)';
+              textColor = '#2DD4A7';
+              break;
+            case 'decision':
+              bgColor = 'rgba(245,158,11,.15)';
+              borderColor = 'rgba(245,158,11,.5)';
+              textColor = '#F59E0B';
+              break;
+            case 'model':
+              bgColor = 'rgba(34,211,238,.15)';
+              borderColor = 'rgba(34,211,238,.5)';
+              textColor = '#22D3EE';
+              break;
+            case 'end':
+              bgColor = 'rgba(6,182,212,.2)';
+              borderColor = 'rgba(6,182,212,.6)';
+              textColor = '#2DD4A7';
+              break;
+            default:
+              bgColor = 'rgba(255,255,255,.05)';
+              borderColor = 'rgba(255,255,255,.1)';
+              textColor = '#A7B4CC';
+          }
+
+          // Rounded rect background
+          var rect = document.createElementNS(svgNS, 'rect');
+          rect.setAttribute('x', node.x - 60);
+          rect.setAttribute('y', node.y - 18);
+          rect.setAttribute('width', '120');
+          rect.setAttribute('height', '36');
+          rect.setAttribute('rx', '8');
+          rect.setAttribute('ry', '8');
+          rect.setAttribute('fill', bgColor);
+          rect.setAttribute('stroke', borderColor);
+          rect.setAttribute('stroke-width', '1');
+          g.appendChild(rect);
+
+          // Label text
+          var text = document.createElementNS(svgNS, 'text');
+          text.setAttribute('x', node.x);
+          text.setAttribute('y', node.y + 1);
+          text.setAttribute('text-anchor', 'middle');
+          text.setAttribute('dominant-baseline', 'middle');
+          text.setAttribute('fill', textColor);
+          text.setAttribute('font-size', '11');
+          text.setAttribute('font-family', 'inherit');
+          text.setAttribute('dir', 'rtl');
+          text.textContent = node.label;
+          g.appendChild(text);
+
+          // Click handler to highlight path
+          g.addEventListener('click', function () {
+            highlightPath(node.id);
+          });
+          g.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              highlightPath(node.id);
+            }
+          });
+
+          svg.appendChild(g);
+        });
+
+        chart.appendChild(svg);
+
+        // Path highlight on click
+        function highlightPath(nodeId) {
+          // Find all links connected to this node
+          var connectedLinks = routingLinks.filter(function (l) {
+            return l.from === nodeId || l.to === nodeId;
+          });
+
+          // Clear all highlights
+          svg.querySelectorAll('.link').forEach(function (l) {
+            l.classList.remove('link--active', 'link--glow');
+            l.setAttribute('stroke', 'rgba(255,255,255,.12)');
+            l.setAttribute('stroke-width', '2');
+          });
+          svg.querySelectorAll('.node').forEach(function (n) {
+            n.classList.remove('node--active');
+          });
+
+          // Highlight connected
+          connectedLinks.forEach(function (link) {
+            var line = svg.querySelector('.link[data-from="' + link.from + '"][data-to="' + link.to + '"]');
+            if (line) {
+              line.classList.add('link--active');
+              line.setAttribute('stroke', '#2DD4A7');
+              line.setAttribute('stroke-width', '3');
+            }
+          });
+
+          // Highlight the clicked node and its neighbors
+          var node = routingNodes.find(function (n) { return n.id === nodeId; });
+          if (node) {
+            var nodeEl = svg.querySelector('.node[data-node-id="' + nodeId + '"]');
+            if (nodeEl) nodeEl.classList.add('node--active');
+          }
+        }
+
+        // Simulate live request cycling through routes
+        var liveInterval = null;
+        var liveIndex = 0;
+
+        function simulateLiveRequest() {
+          // Pick a random path
+          var startNode = routingNodes.find(function (n) { return n.id === 'start'; });
+          highlightPath(startNode.id);
+
+          // Clear after 3 seconds
+          setTimeout(function () {
+            svg.querySelectorAll('.link').forEach(function (l) {
+              l.classList.remove('link--active', 'link--glow');
+              l.setAttribute('stroke', 'rgba(255,255,255,.12)');
+              l.setAttribute('stroke-width', '2');
+            });
+            svg.querySelectorAll('.node').forEach(function (n) {
+              n.classList.remove('node--active');
+            });
+          }, 3000);
+        }
+
+        // Start the live simulation cycling
+        liveInterval = setInterval(function () {
+          simulateLiveRequest();
+          liveIndex++;
+        }, 8000);
+
+        // Simulate initial highlight
+        setTimeout(simulateLiveRequest, 1000);
+      }
+
+      // ── Security leaderboard ──
+      var lbGrid = document.getElementById('security-lb-grid');
+      if (lbGrid) {
+        var sortedLB = securityLeaderboard.slice().sort(function (a, b) { return b.score - a.score; });
+        lbGrid.innerHTML = sortedLB.map(function (entry, i) {
+          return '<div class="routing__lb-card">' +
+            '<div class="routing__lb-card-name">' + entry.name + '</div>' +
+            '<div class="routing__lb-card-score">' + entry.score + '</div>' +
+            '<div class="routing__lb-card-label">نتيجة الأسبوع ' + (i + 1) + '</div>' +
+            '<div class="routing__lb-card-bar"><div class="routing__lb-card-bar-fill" style="width:' + entry.score + '%"></div></div>' +
+            '</div>';
+        }).join('');
+      }
+    })();
+  </script>
+</KernelLayout>
