@@ -9,42 +9,6 @@
 
 ---
 
-
----
-
-# Prompt 17: صفحة Red Team
-
-```text
-نفّذ M16 على /kernel/redteam/.
-
-أنشئ:
-- Red Team input.
-- attack result.
-- blocked/succeeded decision.
-- defense explanation.
-- linked policy.
-- linked scorer.
-- Trace.
-- automatic report on successful attack.
-- proposed mitigation policy.
-- OWASP LLM categorization.
-- 40 attack technique library.
-- sequential multi-turn attack.
-- leaderboard only for safe demo aliases.
-- rate limits.
-- no attacks against external systems.
-- no production target by default.
-- explicit Demo/Sandbox boundary.
-
-إذا نجح الهجوم:
-- لا تخفِ النتيجة.
-- اعرض سبب النجاح.
-- أنشئ finding.
-- اقترح policy.
-- اربط الحالة بـScenario.
-- لا تنفذ أي action خطر خارج Sandbox.
-```
-
 ---
 
 # Prompt 18: صفحة السياسات

@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-01 10:30 +03:00
+last_updated: 2026-08-01 12:58 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.65
+version: 2.7.66
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,34 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-01 — KRN-SC-M16: إعادة بناء /kernel/redteam/ كساحة فريق أحمر بمحرك حتمي (لا Math.random)
+
+- **Files**:
+  - `src/data/kernel-redteam-lab.ts` (NEW — مكتبة 40 تقنية OWASP LLM Top 10 (34 موروثة حرفياً من الصفحة السابقة + 6 جديدة لسدّ وعد الـ 40) + 5 اختراقات مقصودة (Stage 5 خامد) + `RT_LAYER_LABELS` (5 طبقات) + لوحة صدارة + `countAttacksByOwasp()` + `buildRedteamConfig()`)
+  - `public/js/kernel-redteam.js` (NEW — محرك vanilla مستقل حتمي 100%: مطابقة trigger للمكتبة + أنماط PII/حقن فعلية (من kernel-scorers/kernel-scenarios-lab) + تقييم مخاطر + Rate Limiter 10/دقيقة + تسجيل Run/Trace عبر KernelEvalStore + `window.KernelRedteam` = `launchAttack/chainMessage/analyze/suggestPolicy/snapshot/onEvent/reset`)
+  - `src/pages/kernel/redteam.astro` (REBUILT — `data-rt-root` + `data-rt-*` attributes + JSON blob `#redteam-config` + `<script type="module" src="/js/kernel-redteam.js">` بدل سكربت inline القديم (كان 34 هجمة + `Math.random()<0.1` بدون traces/rate limit/سياسات))
+  - `kernel/assets/css/pages/redteam.css` (EDITED — `.rt-policy-draft` (مسودة سياسة LTR أحادية) + `.rt-verdict__breach-note` + `.rt-chain__msg--breach`)
+  - `scripts/playwright/verify-redteam.mjs` (NEW — 35 فحص وظيفي)
+- **What**: نفّذت M16 بالكامل: ساحة الفريق الأحمر صارت محرك حتمي حقيقي — الحكم يُشتق من مطابقة المدخل الحر مع مكتبة الـ 40 (عبر trigger) + فحوصات PII/حقن فعلية + تقييم مخاطر حتمي + Rate Limiter تجريبي (10/دقيقة). المراحل 1-4 تشتغل فعلياً، المرحلة 5 (model_guard) خامدة — الاختراقات الخمسة المقصودة (ioh-02/ioh-03/mt-02/mi-01/mi-03) تطلّع بطاقة "🏆 مخترق" + بلاغ + سياسة مقترحة تلقائية. كل هجوم يُسجَّل Trace (`AI-RT-…`) في KernelEvalStore (Run `EVAL-…` واحد للجلسة).
+- **Why**: M16 من Prompt 08 — ساحة الفريق الأحمر هي أداة اختبار الدفاع ضد هجمات الـ LLM قبل الاعتماد، والنسخة القديمة كانت heuristics عشوائية (`Math.random`) ما تمثل محرك الحوكمة.
+- **Verification**:
+  - `npm run build` → 0 أخطاء ✅ (redteam تُبنى مع `/js/kernel-redteam.js` + `#redteam-config`؛ سايت ماب 251 URL / 273 HTML بلا فقدان صفحات)
+  - Playwright `verify-redteam.mjs` → **35/35 ✅** على dev server (4877) **و** `astro preview` (4878) — engine mounted، blob 40 هجمة، 40 بطاقة مكتبة، pi-01 → blocked/policy_engine، ioh-02 → breached/model_guard + بلاغ + سياسة مقترحة، PII حر → pii_scanner (جوال 055…)، benign → حتمي، determinism (نفس المدخل = نفس السبب)، chain attack، Store run+traces، Rate Limiter (11 هجوم → الحادي عشر rate_limited)، لا console errors (بعد تجاهل ضجيج Vite dev-toolbar + تحذيرات CSP meta العالمية — نفسها على M15)
+  - لا `Math.random` في `public/js/kernel-redteam.js` (0 matches — verified)
+  - `dist/client/kernel/redteam/index.html` → 0 inline scripts + config blob + module خارجي + `data-rt-root` + نصوص منشورة موجودة
+- **قرارات موثقة**:
+  - **حتمية تامة**: حذف `Math.random()` نهائياً من الـ analyze — الحكم = مكتبة trigger + regex PII/حقن + مخاطر. نفس المدخل = نفس الحكم دائماً (قابل للاختبار).
+  - **سدّ فجوة الـ 40**: الصفحة المنشورة تعد "40 تقنية" بينما كانت المكتبة 34 — أضفت 6 (`pi-06`, `sc-03`, `ea-04`, `or-04`, `uc-05`, + variant) لحفظ وعد النص المنشور (حتى لو إضافة هجمة جديدة منشورة).
+  - **الاختراقات المقصودة = Stage 5 خامد**: يطابق FAQ المنشور («المراحل 1-4 تشتغل كاملة، المرحلة 5 تُعرض كخامدة») — اختراق يعني هجوم يستهدف طبقة المخرجات الخامدة.
+  - **Rate Limiter تجريبي**: 10 هجمات/دقيقة (timestamps في localStorage) — يظهر كطبقة `rate_limiter` في بطاقة الحكم.
+  - **محرك مستقل** `kernel-redteam.js` — نفس مبررات M15 (لا يمس `kernel-eval-engine.js` المرتبط بـ eval).
+- **Report**: none (يُتوقع من المستخدم كتابة تقرير إذا رغب)
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 5 (kernel-redteam-lab.ts + kernel-redteam.js + verify-redteam.mjs كـ canonical؛ kernel-eval-engine.js يبقى لصفحة eval فقط)
 
 ---
 

@@ -325,6 +325,33 @@
   border: 1px solid var(--rt-border-strong);
 }
 
+.rt-verdict__breach-note {
+  font-size: var(--text-sm);
+  color: var(--rt-text-muted);
+  margin: var(--space-3) 0;
+  line-height: 1.5;
+}
+
+.rt-policy-draft {
+  margin: var(--space-4) 0;
+  padding: var(--space-4);
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border-strong);
+  border-left: 3px solid var(--rt-accent);
+  border-radius: var(--radius-md);
+  color: var(--rt-text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 220px;
+  overflow-y: auto;
+  direction: ltr;
+  text-align: left;
+  unicode-bidi: isolate;
+}
+
 .rt-verdict__actions {
   display: flex;
   gap: var(--space-3);
@@ -609,6 +636,16 @@
   align-self: flex-start;
   background: var(--rt-surface-elevated);
   border: 1px solid var(--rt-border);
+}
+
+.rt-chain__msg--breach {
+  background: var(--rt-accent-soft);
+  border-color: var(--rt-border-strong);
+}
+
+.rt-chain__msg--breach .rt-chain__msg-text {
+  color: var(--rt-accent);
+  font-weight: var(--font-semibold);
 }
 
 .rt-chain__msg-text {
