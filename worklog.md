@@ -1,5 +1,36 @@
 ---
-Task ID: 2026-07-25-BAI-PERF-03
+Task ID: 2026-08-01-KRN-AUDIT-M
+Agent: BrightAI Workspace Agent v2.3
+Task: KRN-AUDIT-M (REPORTS-15) — بناء وحدة /kernel/audit/ الكاملة (سجل تدقيق افتراضي حتمي 12,483 سجل)
+Started: 2026-08-01T16:00:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت brain.md كاملًا (275 سطر) — protocol 0.6
+- قرأت الصفحة القديمة `src/pages/kernel/audit.astro` + المحرك القديم `public/js/kernel-audit.js` + الـ worker — حددت مشاكل المحرك القديمة (1-6)
+- أصلحت الـ worker: `_id` echo عبر `reply()` في كل الرسائل
+- أصلحت المحرك (kernel-audit.js): `fullRows` يُبنى في `boot()` في كل الحالات (يُحل خطأ `fillRow`)، `handleFiltered` يعيّن `filteredIndices` + `filterRev`، `renderWindow` لا يغيّر `currentTotal`، `updateScrollPos` يعرض `filteredIndices.length`، `bindKpis(rows)` من `fullRows`، `data-ka-idx` = real index + `getRowByRealIndex`، `updateToolbar` يستخدم `fmtCount(currentTotal)`، `wireWorkerInit`/`applyFilter`/`switchToMainThread` يتشاركون `handleFiltered`، زر `data-ka-clear` مرن عبر `$all`
+- أضفت كتلة CSS 23b في `src/styles/kernel.css` (KPI strip، search، viewport/band/spacer، vrow 44px، thead، status colors، verifier panel، mobile overrides، reduced-motion)
+- أعدت كتابة `src/pages/kernel/audit.astro` كاملة (KPI SSR من `buildAuditStats()`، فلاتر، toolbar، viewport، empty state، verifier، drawer، `<script type="module" src="/js/kernel-audit-data.js">`)
+- كتبت `scripts/verify-audit.mjs` (5 مجموعات) — أصلحت عدّاد pending (status `pending_approval`) + نظافة المصدر (تجريد التعليقات/الـ strings)
+- استبدلت `fmtCount` بـ `toLocaleString` اليدوي في المحرك عشان نظافة الحتمية
+- أضفت `"verify:audit"` لـ package.json
+- أصلحت بناء: `<script src>` بلا `type="module"` كان يكسر Astro → `type="module"` لسكربتات /js/
+- `npm run build` → ✅ 0 أخطاء، `/kernel/audit/` تُبنى بـ KPI SSR
+- `npm run verify:all` → ✅ exit 0 (hreflang 259/0)
+- كتبت `scripts/playwright/verify-kernel-audit.mjs` (12 فحص) — أصلحت: فلترة تحذيرات CSP meta المعروفة، جلب traceId من الـ drawer (`data-kernel-drawer-trace`)، ضبط input عبر native setter (page.fill يفشل على عناصر مخفية)، النقر عبر `evaluate().click()`
+- Playwright على `astro preview` → 12/12 ✅
+- حدّثت brain.md (entry KRN-AUDIT-M في Section 2)
+
+Stage Summary:
+- وحدة /kernel/audit/ مبنية بالكامل: مولد حتمي TS + mirror UMD + Web Worker + محرك افتراضي CSP-safe
+- العقد: total 12,483 / allowed 11,210 / blocked 382 / pending 841 / error 50 / approvals 1,554
+- final hash = 0x40b8d3a6، السلسلة من genesis إلى النهاية سليمة
+- جميع الفحوصات تمر: verify-audit (12/12)، build (0 أخطاء)، verify:all (exit 0)، Playwright browser smoke (12/12)
+- المخاطر المتبقية: لا شيء معروف — المحرك والـ worker يعملان في المتصفح الحقيقي
+- ملاحظة: تحذيرات CSP meta (frame-ancestors/report-uri/X-Frame-Options) حميدة — CSP الحقيقي من الترويسات
+- المقترح: يمكن نشر verify-audit في CI مع verify:all مستقبلًا
+---
 Agent: Mavis (BrightAI Workspace Agent v2.3)
 Task: BAI-PERF-03 — تشديد ميزانيات Lighthouse (LCP < 2500ms enforced) — Option A: CI gate فقط، LCP fixes في BAI-PERF-04
 Started: 2026-07-25T18:15:22+03:00

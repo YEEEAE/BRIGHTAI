@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-01 16:26 +03:00
+last_updated: 2026-08-01 17:40 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.67
+version: 2.7.68
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,39 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-01 — KRN-AUDIT-M: بناء وحدة /kernel/audit/ الكاملة (REPORTS-15) — سجل تدقيق افتراضي حتمي 12,483 سجل
+
+- **Files**:
+  - `src/data/kernel-audit.ts` (NEW — مولّد حتمي 100%: `AUDIT_SEED` + `fnv1a()` (FNV-1a 32-bit) + `buildAuditRows()` → **12,483 صف** (allowed 11,210 = 10,497 آلي + 713 بموافقة بشرية / blocked 382 / pending_approval 841 / error 50؛ approvals 1,554) + `buildAuditStats()` لـ SSR KPI + `formatTsLabel`/`auditCanonical`/constants)
+  - `public/js/kernel-audit-data.js` (NEW — UMD mirror byte-for-byte للمولّد: browser main thread → `window.KernelAuditData`، Web Worker → `importScripts`، Node → `module.exports` — يخدم المحرك و الـ worker بدون إعادة كتابة منطق)
+  - `public/js/kernel-audit-worker.js` (NEW — Web Worker: يبني الصفوف عبر `importScripts('/js/kernel-audit-data.js')`، يعالج `filter` (status/query) و`verify` (تحقق سلسلة هاش FNV-1a حقيقي حول index) و`tamper-check` (محاكاة العبث)، يرجع `_id` عبر `reply()`، يتوافق مع CSP `worker-src 'self' blob:`)
+  - `public/js/kernel-audit.js` (NEW — محرك vanilla مستقل CSP-safe: **Virtual scrolling** (`data-ka-viewport`/`-band`/`-spacer`، `ROW_H=44`، `updateScrollPos` يعرض `filteredIndices.length`) + فلاتر status/search (worker أو main-thread fallback) + `data-ka-idx` = real index + `getRowByRealIndex`/`openDrawer(realIndex)` + `bindKpis(rows)` من `fullRows` + verifier (`runVerify`/`runTamperDemo` بشرط `res.type==='verify'|'tamper-check'`) + تصدير CSV/JSON/PDF + نسخ trace + `fmtCount` يدوي بدون `toLocaleString` (حتمية كاملة)
+  - `src/pages/kernel/audit.astro` (REWRITTEN — KPI SSR من `buildAuditStats()` (12٬483/11٬210/382/1٬554) + filter bar + toolbar (بحث/مسح/تصدير) + thead ثابت + viewport/band/spacer + empty state + verifier + drawer + `<script type="module" src="/js/kernel-audit-data.js">` قبل المحرك + استيراد `KernelEmptyState`)
+  - `src/styles/kernel.css` (EDITED — كتلة `/* ── 23b ... */`: `.kernel-audit-*` KPI strip + جدول افتراضي (vrow ثابت 44px) + thead + status colors + verifier panel + mobile overrides + reduced-motion)
+  - `scripts/verify-audit.mjs` (NEW — 5 مجموعات تحقق: determinism (بناءان متطابقان)، count matrix (12,483/11,210/382/841/50/1,554)، TS↔JS parity (كل الصفوف + prevHash/hash/traceId/status، final hash `0x40b8d3a6`)، chain validity (genesis → end)، source hygiene (لا Math.random/Date.now/toLocaleString/fetch بعد تجريد التعليقات والـ strings))
+  - `scripts/playwright/verify-kernel-audit.mjs` (NEW — 12 فحص runtime على `astro preview`: console نظيف، loading يُزال، صفوف افتراضية تُعرض، counter 12,483، فلتر status، search + empty state، verifier ✓ بترميز trace حقيقي من الـ drawer، tamper ✗، drawer يفتح)
+  - `package.json` (EDITED — أضفت `"verify:audit": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/verify-audit.mjs"`)
+- **What**: بنيت وحدة `/kernel/audit/` بالكامل حسب REPORTS-15: سجل تدقيق افتراضي حتمي بـ 12,483 سجل (شبكة 44px ثابتة + band/spacer للتمرير بدون DOM ضخم)، كل سجل له سلسلة هاش FNV-1a حتمية من genesis `0x00000000`، فلترة status/search تعمل عبر Web Worker (fallback main-thread)، محقق سلسلة حقيقي (يعيد حساب hash ويتحقق من المخزّن) + محاكاة عبث تكشف أي تعديل فورًا، تصدير CSV/JSON/PDF، درج تفاصيل، وإحصاءات KPI تُعرض من الـ SSR.
+- **Why**: REPORTS-15 من Prompt 08 — سجل التدقيق هو الدليل المحاسبي الأصلي: سجل غير قابل للكذب (سلسلة هاش) لحوكمة الـ AI. الصفحة السابقة كانت تعرض كسجل صغير غير قابل للتوسع ولا يحوي سلسلة تحقق فعلية.
+- **Verification**:
+  - `npm run verify:audit` → **12/12 ✅** (determinism، count matrix، TS↔JS parity كاملة، chain من genesis للنهاية، hygiene نظيفة بعد تجريد التعليقات/الـ strings)
+  - `npm run build` → ✅ 0 أخطاء (`/kernel/audit/` تُبنى، KPI SSR: 12٬483/11٬210/٣٨٢/١٬٥٥٤؛ ملفات `/js/kernel-audit-*.js` تُنسخ لـ dist؛ `type="module"` مطلوب لسكربتات public/js عشان Astro ما يحاول bundling)
+  - `npm run verify:all` → ✅ exit 0 (hreflang 259/0)
+  - Playwright `verify-kernel-audit.mjs` على `astro preview` → **12/12 ✅** (لا console errors، loading يُزال، 19 صف افتراضي، counter 12,483، فلتر/search/empty، verifier ✓، tamper ✗، drawer مفتوح)
+- **قرارات موثقة**:
+  - **عقد الحتمية**: total 12,483 / allowed 11,210 (713 human-approved) / blocked 382 / pending 841 / error 50 / approvals 1,554 — يُتحقق منه في `verify-audit.mjs` ولا يسمح بالانحراف. نفس seed = نفس الصفوف في كل بيئة.
+  - **الجدول الافتراضي**: صفوف ثابتة 44px (يطابق `ROW_H`) + viewport/band/spacer — تقريبًا DOM ثابت بغض النظر عن 12,483 سجل. على الجوال أبقينا صفوفاً جدولية عادية (أُلغيت فكرة البطاقات الجوالية) عشان يبقى حساب النافذة سليمًا.
+  - **CSP-safe**: الـ worker عبر `importScripts('/js/kernel-audit-data.js')` (متوافق مع `worker-src 'self' blob:` في الترويسات الفعلية من `astro.config.mjs` + `src/middleware.ts` + `scripts/security-headers.mjs`؛ `_headers` توثيقي فقط).
+  - **لا `toLocaleString`** في أي مولد بيانات (حتمية) — `fmtCount` في المحرك يدوي.
+  - **سكربتات public/js = `type="module"`**: لو حذفتها أو استخدمت `<script src>` بلا type، Astro يفشل البناء بخطأ "add the is:inline directive" — لازم تحافظ على `type="module"` لسكربتات `/js/` اللي في الصفحة.
+  - **`page.fill` لا يعمل على العناصر داخل panel مخفي** في Playwright — ضبط قيمة input عبر native setter + input/change event (النقر عبر `evaluate().click()` بدل `page.click(force)`).
+- **Report**: none (يُتوقع من المستخدم كتابة تقرير إذا رغب)
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 5 (kernel-audit.ts + kernel-audit-data.js + kernel-audit-worker.js + kernel-audit.js + verify-audit.mjs + verify-kernel-audit.mjs كـ canonical)
 
 ---
 

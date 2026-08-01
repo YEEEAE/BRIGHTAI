@@ -1,16 +1,27 @@
 ---
 /**
- * /kernel/audit/ — Audit log + hash chain verification (REPORTS-15).
+ * /kernel/audit/ — Audit log + hash chain verification (REPORTS-15 full build).
  *
- * REPORTS-15 update — Enterprise audit dashboard:
- * 1. Filters bar: date range + risk level + status + user.
- * 2. Toolbar: record count + export (CSV / JSON / PDF — stubbed in demo).
- * 3. Sticky-header table: timestamp + user + action + risk + hash + view.
- * 4. Risk score badges: green/amber/red color-coded.
- * 5. Hash cell: monospace + truncate + copy button (writes hash to clipboard).
- * 6. Detail drawer: slides from right (start) — full event context + trace JSON.
- * 7. Pagination + export buttons (paginate client-side; export downloads CSV in demo).
- * 8. RTL-aware, V3 tokens, mobile responsive (table → cards on <1024px).
+ * REPORTS-15 — Enterprise audit dashboard, deterministic + virtualized:
+ * 1. KPI strip: 4 baseline cards (total / allowed / blocked / approvals) SSR'd
+ *    from the deterministic dataset (src/data/kernel-audit.ts).
+ * 2. Filters bar: date range + risk level + status + user + department.
+ * 3. Toolbar: record count + text search + clear + export (CSV / JSON / PDF).
+ * 4. VIRTUALIZED table: 12,483 rows → ~40 DOM nodes. Only the visible window
+ *    renders; scroll delta-re-renders via the engine (ROW_H = 44px).
+ * 5. Hash chain verifier: paste a Trace ID → engine recomputes FNV-1a and
+ *    compares prev/current/next. Tamper button = labelled demo (mutates a COPY).
+ * 6. Detail drawer: full context + trace JSON + DevTools snippet + timeline.
+ * 7. RTL-aware, V3 tokens, fixed 44px rows on mobile (virtualization math safe).
+ *
+ * Determinism contract (verified by scripts/verify-audit.mjs):
+ *   total = 12,483 · allowed = 11,210 · blocked = 382 · pending = 841
+ *   error = 50 · approvals = 1,554 · chain genesis 0x00000000.
+ *
+ * Scripts (CSP-safe, external only):
+ *   /js/kernel-audit-data.js  → classic UMD, exposes window.KernelAuditData
+ *   /js/kernel-audit.js       → ES module engine (worker + virtualization)
+ *   /js/kernel-loading-state.js → skeleton/loading transition
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
@@ -18,30 +29,31 @@ import KernelAiAssistant from '../../components/kernel/KernelAiAssistant.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
-import { getKernelUnit, getCrossLinks } from '../../data/kernel';
-import { getKernelSubPageJsonLd, getFaqLd } from '../../data/schema-helpers';
-import { getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
+import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import { buildAuditStats } from '../../data/kernel-audit';
 // KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
 const unit = getKernelUnit('audit')!;
 const cross = getCrossLinks(unit);
 
+// Deterministic baseline — computed at build time, byte-identical to the
+// client dataset (kernel-audit-data.js). SSR'd into the KPI strip.
+const stats = buildAuditStats();
+
 // SCHEMA-ENHANCEMENT (2026-07-14): add SoftwareApplication + BreadcrumbList + FAQPage
-// so every kernel page emits 3+ schema types (was 1 before: SoftwareApplication only).
-const jsonLd = [
+const jsonLd: Record<string, unknown>[] = [
   ...getKernelSubPageJsonLd(unit),
   getKernelFaqJsonLd(unit),
-];
+].filter((item): item is Record<string, unknown> => Boolean(item));
 
-const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
+const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
 const iconCopy = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
 const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-const iconArrowLeft = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
-const iconArrowRight = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>';
 const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
 
 // Filters risk levels
 const RISK_LEVELS = [
@@ -61,7 +73,7 @@ const STATUSES = [
   { value: 'error', label: 'خطأ' },
 ];
 
-// USERS (used for filter dropdown + rendered in rows)
+// Users (filter dropdown)
 const USERS = [
   { id: '', label: 'كل المستخدمين' },
   { id: 'm.alharbi', label: 'محمد الحربي — التسويق' },
@@ -71,54 +83,26 @@ const USERS = [
   { id: 'k.alghamdi', label: 'خالد الغامدي — تقنية' },
 ];
 
-// Audit rows (seeded)
-type AuditRow = {
-  ts: string;
-  user: string;
-  userRole: string;
-  action: string;
-  risk: number;
-  status: 'allowed' | 'blocked' | 'pending_approval' | 'error';
-  hash: string;
-  traceId: string;
-};
-
-const ROWS: AuditRow[] = [
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:٤٢', user: 'م. الحربي', userRole: 'تسويق', action: 'طلب تصدير قائمة 2,400 عميل (PII)', risk: 87, status: 'blocked', hash: '0xa7c8f2e9d41b9c3a8e5f2c1b', traceId: 'AI-2026-10493' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:٣٨', user: 'م. الحربي', userRole: 'تسويق', action: 'استعلام تلخيصي عن سياسة الإجازات', risk: 12, status: 'allowed', hash: '0xb1d9e4f2c6a87e3b1d4f9c8a', traceId: 'AI-2026-10492' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:٣٥', user: 'س. الفيصل', userRole: 'مالية', action: 'تشغيل نموذج توليدي على سجلات طبية', risk: 72, status: 'pending_approval', hash: '0xc4e8a1d7b3f5a9c2e6b8d4f1', traceId: 'AI-2026-10491' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:٢٤', user: 'أ. القحطاني', userRole: 'عمليات', action: 'تحليل عقد مورد', risk: 28, status: 'allowed', hash: '0xd2f5b3a9c1e7b4f8d3a6c5e9', traceId: 'AI-2026-10490' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:٢٠', user: 'ن. الشهراني', userRole: 'قانونية', action: 'استعلام لوائح البنك المركزي', risk: 18, status: 'allowed', hash: '0xe3c6b4d8a1f5b7c2e4a9d6f3', traceId: 'AI-2026-10489' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:١٤', user: 'خ. الغامدي', userRole: 'تقنية', action: 'دمج نموذج ثالث + كشف PII جديد', risk: 64, status: 'pending_approval', hash: '0xf4d7c5e9b2a6f8c3e7b1a4d5', traceId: 'AI-2026-10488' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:٠٨', user: 'م. الحربي', userRole: 'تسويق', action: 'تصدير تقرير خفيف لقائمة 320 عميل', risk: 45, status: 'allowed', hash: '0xa5e8d6c1f3b9a7d4f6c2b8e5', traceId: 'AI-2026-10487' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٧:٠١', user: 'س. الفيصل', userRole: 'مالية', action: 'فشل اتصال بـ ERP (timeout)', risk: 36, status: 'error', hash: '0xb6f9e7d2c4a1e5b8d9c3a7f4', traceId: 'AI-2026-10486' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٦:٥٦', user: 'أ. القحطاني', userRole: 'عمليات', action: 'اختبار سيناريو تلخيصي', risk: 22, status: 'allowed', hash: '0xc7a1e8d3f5b2c6e9a4d7f1b8', traceId: 'AI-2026-10485' },
-  { ts: '٢٠٢٦/٠٧/٠٦ ١٦:٤٨', user: 'م. الحربي', userRole: 'تسويق', action: 'استعلام عادي (لا PII)', risk: 8, status: 'allowed', hash: '0xd8b2f9e4a6c3f7b1d5a8e2c9', traceId: 'AI-2026-10484' },
+// Departments (filter dropdown — matches row.role)
+const DEPTS = [
+  { id: '', label: 'كل الأقسام' },
+  { id: 'تسويق', label: 'التسويق' },
+  { id: 'مالية', label: 'المالية' },
+  { id: 'عمليات', label: 'العمليات' },
+  { id: 'قانونية', label: 'القانونية' },
+  { id: 'تقنية', label: 'تقنية المعلومات' },
 ];
 
-const STATUS_LABEL: Record<AuditRow['status'], string> = {
-  allowed: 'مسموح',
-  blocked: 'محظور',
-  pending_approval: 'بانتظار الموافقة',
-  error: 'خطأ',
-};
-
-function riskClass(score: number): string {
-  if (score > 85) return 'kernel-risk-badge--critical';
-  if (score >= 60) return 'kernel-risk-badge--high';
-  if (score >= 30) return 'kernel-risk-badge--medium';
-  return 'kernel-risk-badge--low';
-}
-
-const TOTAL_RECORDS = 12483;
+const fmtCount = (n: number) => n.toLocaleString('ar-SA');
 ---
 
 <style>
   /*
    * Mobile-first + RTL baseline for Audit (kernel championship).
-   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
-   * targets, responsive breakpoints, and empty/loading state styles.
-   * Uses design tokens. No published text or layout overrides.
+   * Logical properties (RTL-safe), ≥44px touch targets, responsive breakpoints,
+   * and empty/loading state styles. Uses design tokens.
+   * NOTE: the virtualized-table + KPI + verifier styles live in src/styles/kernel.css
+   * (block 23b) so they stay consistent with the rest of the kernel pages.
    */
   .kernel-audit__empty-state,
   .kernel-audit-empty-state {
@@ -139,13 +123,11 @@ const TOTAL_RECORDS = 12483;
     50% { opacity: 0.45; }
     100% { opacity: 1; }
   }
-  /* Touch targets ≥44px — accessibility on small screens */
   .kernel-audit [data-kernel-touch],
   .kernel-audit__touch {
     min-height: 44px;
     min-width: 44px;
   }
-  /* Mobile-first: single column on mobile, enhance at ≥768px */
   .kernel-audit__grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -164,7 +146,6 @@ const TOTAL_RECORDS = 12483;
     .kernel-audit-skeleton { animation: none; }
   }
 
-  /* Empty-state presentation (shown when filters yield no rows) */
   .kernel-audit-empty-state[hidden] { display: none; }
   .kernel-audit-empty-state {
     display: flex;
@@ -239,14 +220,10 @@ const TOTAL_RECORDS = 12483;
     </div>
     <div class="kernel-page-header__actions">
       <KernelDemoPill />
-      <button class="kernel-audit-toolbar__btn" type="button" data-kernel-audit-copy-trace aria-label="نسخ Trace ID">
-        <Fragment set:html={iconCopy} />
-        <span>نسخ Trace ID</span>
-      </button>
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={ROWS.length}>
+  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={stats.total}>
     <div data-kernel-skeleton class="kernel-loading-skeleton">
       <KernelSkeleton variant="card" count={3} />
       <KernelSkeleton variant="text" count={5} />
@@ -255,15 +232,35 @@ const TOTAL_RECORDS = 12483;
       <KernelEmptyState title="ما في سجلات تدقيق الحين" message="سجل التدقيق يعرض القرارات فور توفرها." />
     </div>
 
+    <!-- KPI strip — deterministic baseline (SSR) -->
+    <section class="kernel-audit-kpis" aria-label="مؤشرات سجل التدقيق">
+      <div class="kernel-audit-kpi">
+        <span class="kernel-audit-kpi__value" data-ka-kpi-total>{fmtCount(stats.total)}</span>
+        <span class="kernel-audit-kpi__label">سجل إجمالي</span>
+      </div>
+      <div class="kernel-audit-kpi kernel-audit-kpi--success">
+        <span class="kernel-audit-kpi__value" data-ka-kpi-allowed>{fmtCount(stats.allowed)}</span>
+        <span class="kernel-audit-kpi__label">مسموح</span>
+      </div>
+      <div class="kernel-audit-kpi kernel-audit-kpi--danger">
+        <span class="kernel-audit-kpi__value" data-ka-kpi-blocked>{fmtCount(stats.blocked)}</span>
+        <span class="kernel-audit-kpi__label">محظور</span>
+      </div>
+      <div class="kernel-audit-kpi kernel-audit-kpi--accent">
+        <span class="kernel-audit-kpi__value" data-ka-kpi-approvals>{fmtCount(stats.approvals)}</span>
+        <span class="kernel-audit-kpi__label">موافقات بشرية</span>
+      </div>
+    </section>
+
     <!-- Filters bar -->
     <section class="kernel-audit-filters" aria-label="فلاتر سجل التدقيق">
       <div class="kernel-audit-filters__field">
         <label for="audit-date-from" class="kernel-audit-filters__label">من تاريخ</label>
-        <input id="audit-date-from" type="date" class="kernel-audit-filters__input" value="2026-06-01" />
+        <input id="audit-date-from" type="date" class="kernel-audit-filters__input" data-kernel-audit-filter="dateFrom" />
       </div>
       <div class="kernel-audit-filters__field">
         <label for="audit-date-to" class="kernel-audit-filters__label">إلى تاريخ</label>
-        <input id="audit-date-to" type="date" class="kernel-audit-filters__input" value="2026-07-06" />
+        <input id="audit-date-to" type="date" class="kernel-audit-filters__input" data-kernel-audit-filter="dateTo" />
       </div>
       <div class="kernel-audit-filters__field">
         <label for="audit-risk" class="kernel-audit-filters__label">درجة المخاطر</label>
@@ -283,14 +280,33 @@ const TOTAL_RECORDS = 12483;
           {USERS.map(u => <option value={u.id}>{u.label}</option>)}
         </select>
       </div>
+      <div class="kernel-audit-filters__field">
+        <label for="audit-dept" class="kernel-audit-filters__label">القسم</label>
+        <select id="audit-dept" class="kernel-audit-filters__select" data-kernel-audit-filter="dept">
+          {DEPTS.map(d => <option value={d.id}>{d.label}</option>)}
+        </select>
+      </div>
     </section>
 
     <!-- Toolbar -->
     <div class="kernel-audit-toolbar">
       <span class="kernel-audit-toolbar__count" data-kernel-audit-count>
-        {TOTAL_RECORDS.toLocaleString('ar-SA')} سجل إجمالي · تعرض {ROWS.length}
+        {fmtCount(stats.total)} سجل إجمالي · تعرض {fmtCount(stats.total)}
       </span>
       <div class="kernel-audit-toolbar__actions">
+        <div class="kernel-audit-toolbar__search">
+          <input
+            type="search"
+            class="kernel-audit-toolbar__search-input"
+            data-ka-search
+            placeholder="بحث بالإجراء، Trace ID، المستخدم…"
+            aria-label="بحث في سجل التدقيق"
+          />
+          <button type="button" class="kernel-audit-toolbar__btn" data-ka-clear aria-label="إعادة ضبط الفلاتر">
+            <Fragment set:html={iconClose} />
+            <span>مسح</span>
+          </button>
+        </div>
         <button type="button" class="kernel-audit-toolbar__btn" data-kernel-audit-export="csv" aria-label="تصدير CSV">
           <Fragment set:html={iconDownload} />
           <span>CSV</span>
@@ -306,101 +322,78 @@ const TOTAL_RECORDS = 12483;
       </div>
     </div>
 
-    <!-- Audit table -->
-    <div class="kernel-table-wrapper" style="overflow-x:auto;">
-      <table class="kernel-audit-table" aria-label="سجل التدقيق">
-        <thead>
-          <tr>
-            <th scope="col">الوقت</th>
-            <th scope="col">المستخدم</th>
-            <th scope="col">الإجراء</th>
-            <th scope="col">المخاطر</th>
-            <th scope="col">Hash</th>
-            <th scope="col">عرض</th>
-          </tr>
-        </thead>
-        <tbody data-kernel-audit-tbody>
-          {ROWS.map((r, idx) => (
-            <tr
-              tabindex="0"
-              data-row-idx={idx}
-              data-kernel-audit-row
-              data-risk={r.risk}
-              data-status={r.status}
-              data-user={r.user}
-              data-hash={r.hash}
-              data-trace={r.traceId}
-              data-ts={r.ts}
-              data-action={r.action}
-            >
-              <td>{r.ts}</td>
-              <td>
-                <span style="display:flex; flex-direction:column; gap:2px;">
-                  <strong style="color:var(--text-primary);">{r.user}</strong>
-                  <span style="font-size:var(--text-xs); color:var(--text-secondary); opacity:var(--text-tertiary-opacity);">{r.userRole}</span>
-                </span>
-              </td>
-              <td>{r.action}</td>
-              <td>
-                <span class:list={['kernel-risk-badge', riskClass(r.risk)]} aria-label={`درجة المخاطر ${r.risk}`}>{r.risk}</span>
-              </td>
-              <td>
-                <span class="kernel-audit-table__hash" aria-label="Hash">
-                  <span class="kernel-audit-table__hash-text">{r.hash.slice(0, 12)}…{r.hash.slice(-4)}</span>
-                  <button
-                    type="button"
-                    class="kernel-audit-table__hash-copy"
-                    aria-label={`نسخ الهاش ${r.hash}`}
-                    data-kernel-audit-copy={r.hash}
-                  >
-                    <Fragment set:html={iconCopy} />
-                  </button>
-                </span>
-              </td>
-              <td>
-                <button type="button" class="kernel-audit-table__view-btn" data-kernel-audit-view={idx} aria-label={`عرض تفاصيل ${r.traceId}`}>
-                  عرض
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <!-- Virtualized table -->
+    <div class="kernel-audit-thead" aria-hidden="true">
+      <span>الوقت</span>
+      <span>المستخدم</span>
+      <span>الإجراء</span>
+      <span>المخاطر</span>
+      <span>الحالة</span>
+      <span>Hash</span>
+      <span>عرض</span>
+    </div>
+    <div
+      class="kernel-audit-viewport"
+      data-ka-viewport
+      role="table"
+      aria-label="سجل التدقيق"
+      aria-rowcount={stats.total}
+      aria-describedby="ka-audit-hint"
+      tabindex="0"
+    >
+      <div class="kernel-audit-vspacer" data-ka-spacer></div>
+      <div class="kernel-audit-vband" data-ka-band role="rowgroup"></div>
+    </div>
+    <p class="kernel-audit-scrollpos" data-ka-scrollpos aria-live="polite">{fmtCount(stats.total)}</p>
 
-      <!-- Empty state: shown when filters yield no rows (progressive enhancement) -->
-      <div
-        class="kernel-audit__empty-state kernel-audit-empty-state"
-        data-kernel-audit-empty
-        hidden
-        role="status"
-        aria-live="polite"
-      >
-        <p class="kernel-audit-empty-state__title">لا توجد سجلات مطابقة للفلاتر</p>
-        <p class="kernel-audit-empty-state__hint">جرّب توسيع نطاق التاريخ أو إعادة ضبط درجة المخاطر / الحالة / المستخدم.</p>
-        <button type="button" class="kernel-audit-empty-state__reset" data-kernel-audit-empty-reset data-kernel-touch>
-          إعادة ضبط الفلاتر
-        </button>
-      </div>
+    <!-- Empty state (engine toggles via data-ka-empty) -->
+    <div
+      class="kernel-audit-empty-state"
+      data-ka-empty
+      hidden
+      role="status"
+      aria-live="polite"
+    >
+      <p class="kernel-audit-empty-state__title">لا توجد سجلات مطابقة للفلاتر</p>
+      <p class="kernel-audit-empty-state__hint">جرّب توسيع نطاق التاريخ أو إعادة ضبط درجة المخاطر / الحالة / المستخدم.</p>
+      <button type="button" class="kernel-audit-empty-state__reset" data-ka-clear data-kernel-touch>
+        إعادة ضبط الفلاتر
+      </button>
     </div>
 
-    <!-- Pagination -->
-    <nav class="kernel-audit-pagination" aria-label="تصفح الصفحات">
-      <button type="button" class="kernel-audit-pagination__btn kernel-audit-pagination__btn--first" aria-label="الأولى" disabled>
-        <Fragment set:html={iconArrowLeft} />
-      </button>
-      <button type="button" class="kernel-audit-pagination__btn" aria-label="السابقة" disabled>
-        <Fragment set:html={iconArrowLeft} />
-      </button>
-      <button type="button" class="kernel-audit-pagination__btn" aria-current="page" aria-label="صفحة 1">1</button>
-      <button type="button" class="kernel-audit-pagination__btn" aria-label="صفحة 2">2</button>
-      <button type="button" class="kernel-audit-pagination__btn" aria-label="صفحة 3">3</button>
-      <button type="button" class="kernel-audit-pagination__btn" aria-label="التالية">
-        <Fragment set:html={iconArrowRight} />
-      </button>
-      <button type="button" class="kernel-audit-pagination__btn kernel-audit-pagination__btn--last" aria-label="الأخيرة">
-        <Fragment set:html={iconArrowRight} />
-      </button>
-    </nav>
+    <!-- Hash chain verifier -->
+    <section class="kernel-audit-verifier" aria-labelledby="ka-verifier-title">
+      <h2 class="kernel-audit-verifier__title" id="ka-verifier-title">التحقق من سلسلة الهاش (Hash Chain)</h2>
+      <p class="kernel-audit-verifier__desc" id="ka-audit-hint">
+        انسخ Trace ID من أي سجل أعلى (أو من جدول التدقيق) واضغط «تحقق». المحرك يعيد حساب FNV-1a محليًا ويقارن
+        الهاش المخزّن مع السجل السابق والتالي. لو أي حقل في السجل عُدّل، يطلع الكسر فورًا.
+      </p>
+      <div class="kernel-audit-verifier__row">
+        <input
+          type="text"
+          class="kernel-audit-verifier__input"
+          data-ka-verify-trace
+          placeholder="مثال: AI-2026-12503"
+          aria-label="Trace ID للتحقق"
+        />
+        <button type="button" class="kernel-audit-verifier__btn" data-ka-verify-btn>
+          <Fragment set:html={iconShield} />
+          <span>تحقق</span>
+        </button>
+        <button type="button" class="kernel-audit-verifier__btn kernel-audit-verifier__btn--ghost" data-ka-tamper-btn>
+          <span>محاكاة عبث (Demo)</span>
+        </button>
+      </div>
+      <div class="ka-verify-out" data-ka-verify-out role="status" aria-live="polite"></div>
+      <dl class="kernel-audit-verifier__chain">
+        <dt>السجل السابق (prev hash)</dt>
+        <dd data-ka-verify-prev>—</dd>
+        <dt>السجل الحالي (current hash)</dt>
+        <dd data-ka-verify-current>—</dd>
+        <dt>السجل التالي (next hash)</dt>
+        <dd data-ka-verify-next>—</dd>
+      </dl>
+    </section>
   </div>
 
   <!-- Detail drawer -->
@@ -423,8 +416,14 @@ const TOTAL_RECORDS = 12483;
           <dd class="kernel-audit-drawer__val" data-kernel-drawer-ts>—</dd>
           <dt class="kernel-audit-drawer__key">المستخدم</dt>
           <dd class="kernel-audit-drawer__val" data-kernel-drawer-user>—</dd>
+          <dt class="kernel-audit-drawer__key">القسم</dt>
+          <dd class="kernel-audit-drawer__val" data-kernel-drawer-dept>—</dd>
           <dt class="kernel-audit-drawer__key">الحالة</dt>
           <dd class="kernel-audit-drawer__val" data-kernel-drawer-status>—</dd>
+          <dt class="kernel-audit-drawer__key">موافقة بشرية</dt>
+          <dd class="kernel-audit-drawer__val" data-kernel-drawer-approval>—</dd>
+          <dt class="kernel-audit-drawer__key">شذوذ (Anomaly)</dt>
+          <dd class="kernel-audit-drawer__val" data-kernel-drawer-anomaly>—</dd>
         </dl>
       </section>
 
@@ -434,8 +433,19 @@ const TOTAL_RECORDS = 12483;
       </section>
 
       <section class="kernel-audit-drawer__section">
-        <h3 class="kernel-audit-drawer__section-title">Trace Timeline (6 مراحل)</h3>
-        <div class="kernel-audit-drawer__trace" data-kernel-drawer-timeline>—</div>
+        <h3 class="kernel-audit-drawer__section-title">Trace JSON</h3>
+        <div class="kernel-audit-drawer__trace" data-kernel-drawer-json>—</div>
+      </section>
+
+      <section class="kernel-audit-drawer__section">
+        <h3 class="kernel-audit-drawer__section-title">DevTools snippet</h3>
+        <div class="kernel-audit-drawer__trace" data-kernel-drawer-snippet>—</div>
+        <div style="margin-block-start: var(--space-2);">
+          <button type="button" class="kernel-modal__btn" data-kernel-drawer-copy-snippet>
+            <Fragment set:html={iconCopy} />
+            <span>نسخ الـ snippet</span>
+          </button>
+        </div>
       </section>
 
       <section class="kernel-audit-drawer__section">
@@ -496,280 +506,7 @@ const TOTAL_RECORDS = 12483;
     blogLabel="سجل تدقيق AI: من استخدمه وماذا حدث؟"
     relatedSlugs={unit.relatedSlugs}
   />
+  <script type="module" src="/js/kernel-audit-data.js"></script>
+  <script type="module" src="/js/kernel-audit.js"></script>
   <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>
-
-<script is:inline>
-  // REPORTS-15 — Audit interactivity (filters, hash copy, drawer, exports).
-  (function () {
-    'use strict';
-
-    function el(q, root) { return (root || document).querySelector(q); }
-    function elAll(q, root) { return Array.prototype.slice.call((root || document).querySelectorAll(q)); }
-
-    function flashCopy(btn) {
-      btn.setAttribute('data-copied', 'true');
-      setTimeout(function () { btn.removeAttribute('data-copied'); }, 1500);
-    }
-
-    function safeCopy(text) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        return navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); });
-      }
-      return Promise.resolve(fallbackCopy(text));
-    }
-    function fallbackCopy(text) {
-      var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); } catch (e) {}
-      document.body.removeChild(ta);
-    }
-
-    function downloadFile(name, mime, content) {
-      var blob = (content instanceof Blob) ? content : new Blob([content], { type: mime });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement('a');
-      a.href = url; a.download = name;
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
-    }
-
-    function buildTimeline(row) {
-      var status = row.getAttribute('data-status') || 'allowed';
-      var risk = parseInt(row.getAttribute('data-risk') || '0', 10);
-      var stages = [
-        { stage: 'REQUEST_RECEIVED', ts: 'T+0ms', detail: 'مستخدم: ' + (row.getAttribute('data-user') || '—') },
-        { stage: 'PII_SCANNED',      ts: 'T+18ms', detail: 'كاشف PII: لم يُكشف في هذا السجل.' },
-        { stage: 'RISK_SCORED',      ts: 'T+24ms', detail: 'درجة المخاطر: ' + risk + '/100' },
-        { stage: 'POLICY_MATCHED',   ts: 'T+31ms', detail: 'سياسة: ' + (risk > 70 ? 'تجميد + مراجعة بشرية' : 'مسموح') },
-        { stage: 'MODEL_CALLED',     ts: 'T+58ms', detail: status === 'blocked' ? 'لم يُستدعى النموذج — تم الحظر قبل الإرسال.' : 'استدعاء مزود النموذج: NVIDIA NIM' },
-        { stage: 'EVIDENCE_GENERATED', ts: 'T+74ms', detail: 'Hash: ' + (row.getAttribute('data-hash') || '—') },
-      ];
-      return stages.map(function (s) {
-        return '[' + s.ts + '] ' + s.stage + ' — ' + s.detail;
-      }).join('\n');
-    }
-
-    function openDrawer(row) {
-      var drawer = el('[data-kernel-audit-drawer]');
-      if (!drawer) return;
-      drawer.setAttribute('data-open', 'true');
-      drawer.setAttribute('aria-hidden', 'false');
-
-      // Populate fields
-      var trace = row.getAttribute('data-trace') || '';
-      var hash  = row.getAttribute('data-hash')  || '';
-      var ts    = row.getAttribute('data-ts')    || '';
-      var user  = row.getAttribute('data-user')  || '';
-      var status = row.getAttribute('data-status') || '';
-      var action = row.getAttribute('data-action') || '';
-
-      var setText = function (sel, val) {
-        var node = el(sel);
-        if (node) node.textContent = val;
-      };
-      setText('[data-kernel-drawer-trace]', trace);
-      setText('[data-kernel-drawer-hash]', hash);
-      setText('[data-kernel-drawer-ts]', ts);
-      setText('[data-kernel-drawer-user]', user);
-      setText('[data-kernel-drawer-status]', status);
-      setText('[data-kernel-drawer-action]', action);
-
-      var tlEl = el('[data-kernel-drawer-timeline]');
-      if (tlEl) tlEl.textContent = buildTimeline(row);
-
-      // Focus the close button + trap initial focus
-      setTimeout(function () {
-        var close = el('.kernel-audit-drawer__close');
-        if (close) close.focus();
-      }, 60);
-    }
-
-    function closeDrawer() {
-      var drawer = el('[data-kernel-audit-drawer]');
-      if (!drawer) return;
-      drawer.setAttribute('data-open', 'false');
-      drawer.setAttribute('aria-hidden', 'true');
-    }
-
-    function applyFilters() {
-      var risk = el('[data-kernel-audit-filter="risk"]').value;
-      var status = el('[data-kernel-audit-filter="status"]').value;
-      var user = el('[data-kernel-audit-filter="user"]').value;
-
-      var rows = elAll('[data-kernel-audit-row]');
-      var shown = 0;
-      rows.forEach(function (row) {
-        var r = parseInt(row.getAttribute('data-risk') || '0', 10);
-        var s = row.getAttribute('data-status') || '';
-        var u = row.getAttribute('data-user') || '';
-        var visible =
-          (risk === '' || (risk === 'critical' ? r > 85 : risk === 'high' ? (r >= 60 && r <= 85) : risk === 'medium' ? (r >= 30 && r <= 60) : r <= 30)) &&
-          (status === '' || s === status) &&
-          (user === '' || u === user);
-        row.hidden = !visible;
-        if (visible) shown++;
-      });
-
-      var counter = el('[data-kernel-audit-count]');
-      if (counter) counter.textContent = '١٢٬٤٨٣ سجل إجمالي · تعرض ' + shown;
-
-      // Toggle the empty state when no rows match the active filters.
-      var emptyEl = el('[data-kernel-audit-empty]');
-      if (emptyEl) emptyEl.hidden = shown !== 0;
-    }
-
-    function exportRows(format) {
-      var rows = elAll('[data-kernel-audit-row]:not([hidden])');
-      var data = rows.map(function (r) {
-        return {
-          ts: r.getAttribute('data-ts'),
-          user: r.getAttribute('data-user'),
-          action: r.getAttribute('data-action'),
-          risk: r.getAttribute('data-risk'),
-          status: r.getAttribute('data-status'),
-          hash: r.getAttribute('data-hash'),
-          trace: r.getAttribute('data-trace'),
-        };
-      });
-      if (format === 'csv') {
-        var header = 'ts,user,action,risk,status,hash,trace\n';
-        var body = data.map(function (d) {
-          return [d.ts, d.user, d.action, d.risk, d.status, d.hash, d.trace]
-            .map(function (c) { return '"' + String(c || '').replace(/"/g, '""') + '"'; })
-            .join(',');
-        }).join('\n');
-        downloadFile('audit-' + Date.now() + '.csv', 'text/csv;charset=utf-8', header + body);
-      } else if (format === 'json') {
-        downloadFile('audit-' + Date.now() + '.json', 'application/json', JSON.stringify(data, null, 2));
-      } else if (format === 'pdf') {
-        // Demo: produce a minimal printable summary
-        var summary = 'BrightAI Kernel · Audit Summary\n' +
-          'Generated: ' + new Date().toISOString() + '\n\n' +
-          data.map(function (d) { return '• ' + d.ts + ' · ' + d.user + ' · ' + d.action + ' · risk=' + d.risk + ' · ' + d.status; }).join('\n');
-        downloadFile('audit-' + Date.now() + '.txt', 'text/plain;charset=utf-8', summary);
-      }
-    }
-
-    function bindFilters() {
-      elAll('[data-kernel-audit-filter]').forEach(function (sel) {
-        if (sel.dataset.bound === '1') return;
-        sel.dataset.bound = '1';
-        sel.addEventListener('change', applyFilters);
-      });
-
-      // Reset button inside the empty state — clears every filter + re-applies.
-      var resetBtn = el('[data-kernel-audit-empty-reset]');
-      if (resetBtn && resetBtn.dataset.bound !== '1') {
-        resetBtn.dataset.bound = '1';
-        resetBtn.addEventListener('click', function () {
-          elAll('[data-kernel-audit-filter]').forEach(function (sel) { sel.value = ''; });
-          applyFilters();
-        });
-      }
-
-      // Trigger initial filter pass (in case the user reloaded with prefilled values)
-      applyFilters();
-    }
-
-    function bindHashCopy() {
-      elAll('[data-kernel-audit-copy]').forEach(function (btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function (e) {
-          e.stopPropagation(); // don't open drawer
-          var hash = btn.getAttribute('data-kernel-audit-copy') || '';
-          safeCopy(hash).then(function () { flashCopy(btn); });
-        });
-      });
-    }
-
-    function bindViewButtons() {
-      elAll('[data-kernel-audit-view]').forEach(function (btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var row = btn.closest('[data-kernel-audit-row]');
-          if (row) openDrawer(row);
-        });
-      });
-
-      // Row click / keyboard activation
-      elAll('[data-kernel-audit-row]').forEach(function (row) {
-        if (row.dataset.bound === '1') return;
-        row.dataset.bound = '1';
-        row.addEventListener('click', function () { openDrawer(row); });
-        row.addEventListener('keydown', function (e) {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDrawer(row); }
-        });
-      });
-    }
-
-    function bindDrawer() {
-      var drawer = el('[data-kernel-audit-drawer]');
-      if (!drawer || drawer.dataset.bound === '1') return;
-      drawer.dataset.bound = '1';
-      elAll('[data-kernel-audit-drawer-close]', drawer).forEach(function (n) {
-        n.addEventListener('click', closeDrawer);
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && drawer.getAttribute('data-open') === 'true') closeDrawer();
-      });
-
-      // Drawer-local actions
-      var exportPdf = el('[data-kernel-drawer-export-pdf]');
-      if (exportPdf) exportPdf.addEventListener('click', function () { exportRows('pdf'); });
-      var copyHash = el('[data-kernel-drawer-copy-hash]');
-      if (copyHash) copyHash.addEventListener('click', function () {
-        var hash = el('[data-kernel-drawer-hash]');
-        if (hash) safeCopy(hash.textContent || '').then(function () {
-          copyHash.setAttribute('data-copied', 'true');
-          setTimeout(function () { copyHash.removeAttribute('data-copied'); }, 1500);
-        });
-      });
-    }
-
-    function bindExports() {
-      elAll('[data-kernel-audit-export]').forEach(function (btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function () {
-          var fmt = btn.getAttribute('data-kernel-audit-export') || 'json';
-          exportRows(fmt);
-        });
-      });
-    }
-
-    function bindTraceIdCopy() {
-      var btn = el('[data-kernel-audit-copy-trace]');
-      if (!btn || btn.dataset.bound === '1') return;
-      btn.dataset.bound = '1';
-      btn.addEventListener('click', function () {
-        var trace = el('[data-kernel-drawer-trace]');
-        var first = el('[data-kernel-audit-row]:not([hidden])');
-        var val = (trace && trace.textContent) || (first && first.getAttribute('data-trace')) || '';
-        safeCopy(val).then(function () {
-          btn.setAttribute('data-copied', 'true');
-          setTimeout(function () { btn.removeAttribute('data-copied'); }, 1500);
-        });
-      });
-    }
-
-    function init() {
-      bindFilters();
-      bindHashCopy();
-      bindViewButtons();
-      bindDrawer();
-      bindExports();
-      bindTraceIdCopy();
-    }
-
-    document.addEventListener('astro:page-load', init);
-    if (document.readyState !== 'loading') init();
-  })();
-</script>
