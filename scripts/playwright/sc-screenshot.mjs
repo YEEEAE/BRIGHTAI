@@ -1,0 +1,22 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 });
+const errs = [];
+p.on('pageerror', e => errs.push('PAGEERROR: ' + e.message));
+p.on('console', m => { if (m.type() === 'error' && !/preload|CSP|X-Frame-Options|frame-ancestors|report-uri/.test(m.text())) errs.push('CONSOLE: ' + m.text()); });
+await p.goto('http://localhost:4877/kernel/scenarios/', { waitUntil: 'networkidle' });
+await p.evaluate(() => { const c=document.querySelector('.cookie-consent'); if(c)c.remove(); const s=document.querySelector('.kernel-sidebar'); if(s)s.remove(); });
+await p.waitForTimeout(1900);
+// run all, then screenshot grid + matrix
+await p.evaluate(() => window.KernelScenarios.runAll());
+await p.waitForFunction(() => window.KernelScenarios.snapshot().phase === 'complete', { timeout: 15000 });
+await p.waitForTimeout(400);
+await p.locator('[data-sc-root]').screenshot({ path: 'download/qa/scenarios-grid.png' });
+await p.locator('[data-sc-tab="matrix"]').click();
+await p.waitForTimeout(300);
+await p.locator('[data-sc-matrix-body]').screenshot({ path: 'download/qa/scenarios-matrix.png' });
+await p.locator('[data-sc-tab="report"]').click();
+await p.waitForTimeout(300);
+await p.locator('[data-sc-report-body]').screenshot({ path: 'download/qa/scenarios-report.png' });
+console.log('screenshots saved. errs:', errs.length ? errs.join('\n') : 'NONE');
+await b.close();
