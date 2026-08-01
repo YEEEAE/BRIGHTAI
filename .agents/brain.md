@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-01 18:30 +03:00
+last_updated: 2026-08-01 21:15 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.69
 agent_version: v2.3
@@ -20,7 +20,30 @@ skills_ready: 7
 ---
 
 
-### 2026-08-01 — KRN-APPROVALS-M19.1: ترقية /kernel/approvals/ — full Trace + تفويض بمستهدف حقيقي + اقتراح بمراجعة بشرية + ربط Audit/Evidence/Certificate
+### 2026-08-01 — KRN-REPLAY-M20: بناء /kernel/replay/ (آلة الزمن) كامل — محاكاة السياسات على الطلبات التاريخية + بوابة الموافقة الإلزامية للـ external
+
+- **Files**:
+  - `src/pages/kernel/replay.astro` (REWRITTEN — صفحة M20: تبويبان محاكاة/تحقيق، لوحة إعداد (فترة/سياسات/نطاق/وضع معالجة)، نتائج (شارة مصدر + 4 أرقام + مخطط قبل/بعد + تحذير عنبري + أقسام متأثرة + جدول بأعلام FP + تصدير)، بوابة موافقة `rp-consent`، SEO section + cross-links، سكربتات `/js/kernel-time-machine-*.js`)
+  - `src/data/kernel-replay.ts` (NEW — مولّد حتمي: 520 صف، seed `0x5c0ffee0`، mulberry32 + FNV-1a chain (genesis `0x00000000` → final `0x3951eca0`)، `simulateReplay` + `buildTimeline` + بوابات consent، types + REPLAY_MONTHS/POLICIES/DEPTS/TS_START/TS_END)
+  - `public/js/kernel-time-machine-data.js` (NEW — UMD mirror بايت-بايت للمولّد)
+  - `public/js/kernel-time-machine-worker.js` (NEW — worker: init/simulate/investigate/export/verify/tamper-check + buildMemo)
+  - `public/js/kernel-time-machine.js` (NEW — محرّك الصفحة: tabs، shortcuts، multi-select، mode radio، consent flow، مخطط، أقسام، جدول، تصدير، خط زمني)
+  - `kernel/assets/css/pages/replay.css` (EDITED — كتل المودال + mode switcher + شارة المصدر + ترتيب الأقسام + FP chip + مخطط fallback جدولي)
+  - `scripts/verify-replay.mjs` (NEW — بوابة تحقق 27 فحص)
+  - `package.json` (EDITED — `verify:replay`)
+- **What**: بنيت صفحة آلة الزمن كاملة بمستوى M19: تعيد تشغيل السياسات المقترحة على 520 طلبًا تاريخيًا (حتمي، لا Math.random) وتُظهر الأثر (+340 حظر/ −12 إطلاق/ 48 FP/ net 328) في شريط + مخطط شهري + أقسام متأثرة + جدول + تصدير كمذكرة قرار، وتبويب تحقيق يعيد بناء حادثة خطوة بخطوة على خط زمني قابل للتكبير. الشرط الأمني الإلزامي (Prompt 20): external mode يتطلب موافقة صريحة عبر مودال مفصّل قبل أي إرسال، والوحدة نفسها ترد `consentRequired=true` بصفر بيانات بدون موافقة — مفروض في الطبقتين.
+- **Why**: صفحة replay كانت القديمة (محرك M11) — مطلوب إعادة بناء بجودة M19 مع بوابة الأمان الإلزامية.
+- **Verification**:
+  - `npm run verify:replay` → 27/27 ✅ (determinism، count matrix 340/12/48/168/328، TS↔JS parity، chain validity، simulation contract، consent gate (external بلا موافقة → 0 بيانات)، timeline determinism، hygiene)
+  - `npm run build` → 0 أخطاء ✅ (صفحة `/kernel/replay/` تُبنى، الملفات تُنسخ إلى `dist/client/js/`)
+  - `npm run verify:all` → 16 pass / 0 fail ✅ (ملاحظات raw hex في kernel.css مسبقة)
+  - `npm run performance:budget` → ✅ كل البنود ضمن الميزانية
+- **Report**: report/2026-08-01-krn-replay-m20.md
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 5 (kernel-time-machine-* = canonical for replay)، ملاحظة: أسماء `kernel-replay.js` محجوزة لمحرك M11 عبر `window.n`.
+
+---
 
 - **Files**:
   - `public/js/kernel-approvals.js` (REBUILT — M19.1: full Trace (أي Trace ID في التفاصيل يفتح درج الرحلة `k-trace-drawer`)، تفويض حقيقي (select بمستهدفي `APPROVAL_REVIEWERS` داخل المودال عند action=transfer + مستهدف إلزامي + تسجيل المستلم في السجل)، اقتراح آلي يعرض شارة «اقتراح آلي — راجعه قبل التأكيد» (مراجعة بشرية)، ledger يعرض مراجع ملموسة: Audit event id · Trace · Evidence hash (FNV-1a) · Certificate id — append-only لا حذف)

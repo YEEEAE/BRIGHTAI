@@ -11,46 +11,6 @@
 
 ---
 
-# Prompt 20: الموافقات
-
-```text
-نفّذ M19 على /kernel/approvals/.
-
-أضف:
-- pending.
-- critical.
-- review.
-- approved.
-- rejected.
-- SLA timer.
-- risk score.
-- PII findings.
-- triggered policies.
-- full Trace.
-- what happens if approved.
-- approve.
-- reject.
-- delegate.
-- mandatory rejection reason.
-- suggested reason مع مراجعة بشرية.
-- keyboard navigation:
-  J/K.
-  A.
-  R.
-  F.
-  Space.
-  ?.
-
-كل قرار:
-- ينشئ Audit event.
-- يرتبط بـTrace.
-- يظهر في Evidence.
-- ينعكس في Certificate.
-- لا يمكن حذفه من السجل.
-```
-
----
-
 # Prompt 21: Replay
 
 ```text

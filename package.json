@@ -82,6 +82,7 @@
     "verify:set-html": "node scripts/verify-set-html-sanitized.mjs",
     "verify:audit": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/verify-audit.mjs",
     "verify:approvals": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/verify-approvals.mjs",
+    "verify:replay": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types scripts/verify-replay.mjs",
     "test:chat-session": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types --test scripts/test-chat-session.mjs",
     "test:csrf": "node --import ./scripts/test-ts-loader.mjs --experimental-strip-types --test scripts/test-csrf.mjs",
     "test": "pnpm test:chat-session && pnpm test:csrf",
