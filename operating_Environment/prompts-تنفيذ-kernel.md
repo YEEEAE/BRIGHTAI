@@ -12,50 +12,6 @@
 
 ---
 
-# Prompt 22: Compliance وEvidence
-
-```text
-نفّذ M21 وM22.
-
-Compliance:
-- PDPL.
-- NCA ECC.
-- SDAIA.
-- SFDA.
-- SAMA.
-- ISO 27001.
-- ISO 42001.
-- score per framework.
-- trend.
-- control mapping.
-- evidence links.
-- gap analysis.
-- impact/effort matrix.
-- high impact/low effort first.
-- estimate.
-- add as task.
-- Saudi city heatmap.
-- accessible city list alternative.
-- no claim of full legal compliance.
-
-Evidence:
-- Evidence files.
-- PDF preview.
-- JSON verification.
-- signed hash.
-- sector filter.
-- package filter.
-- tags.
-- batch generation.
-- Trace link.
-- Certificate link.
-- third-party verification upload.
-- tampering detection.
-- retention information.
-```
-
----
-
 # Prompt 23: Reports وStats
 
 ```text

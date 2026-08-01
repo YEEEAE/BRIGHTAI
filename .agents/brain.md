@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-01 21:15 +03:00
+last_updated: 2026-08-01 23:43 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.69
+version: 2.7.70
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -19,6 +19,45 @@ skills_ready: 7
 
 ---
 
+
+### 2026-08-01 — KRN-REPORTS-STATS-M23-M24: بناء /kernel/reports/ + /kernel/stats/ كامل — تقارير حتمية + مؤشرات حية
+
+- **Files**:
+  - `src/data/kernel-reports.ts` (NEW — مولّد حتمي: 42 تقرير + 4 scheduled + 5 template versions، seed `0x7e3a1c50`، mulberry32 + FNV-1a chain (genesis `0x00000000`)، 7 أنواع (governance/compliance/audit/risk/custom/pii/connectors) + 4 صيغ (PDF/JSON/CSV/XLSX) + 5 لغات (ar/en/fr/es/de) + Trace coverage + Certificate coverage + executive summary مولّد آليًا + role recipients)
+  - `public/js/kernel-reports-data.js` (NEW — UMD mirror بايت-بايت للمولّد)
+  - `public/js/kernel-reports.js` (NEW — محرك vanilla JS: filters (type+status+language) + report library + wizard 4 خطوات + **report builder (drag & drop widgets)** + **preview drawer** + **5 languages switcher** + **template versions tab** + Trace/Certificate coverage display + scheduled reports + role recipients)
+  - `src/pages/kernel/reports.astro` (REBUILT — 3 تبويبات: Library | Builder | Versions + KPIs SSR + filters + library + scheduled + builder (palette + canvas + properties) + preview drawer + wizard modal + SEO + cross-links)
+  - `kernel/assets/css/pages/reports.css` (REBUILT — tabs + filters + report list + scheduled + builder (palette + canvas + widgets) + preview drawer + versions + wizard + language switcher + responsive + reduced-motion)
+  - `src/data/kernel-stats.ts` (NEW — مولّد حتمي: 12,483 طلب + time series + risk distribution + top users (10) + top departments (7) + top models by cost (5) + live events (20) + alerts (4) + quotas (7) + cost + latency (P50/P95/P99) + period comparison، seed `0x5c0ffee0`)
+  - `public/js/kernel-stats-data.js` (NEW — UMD mirror بايت-بايت)
+  - `public/js/kernel-stats.js` (NEW — محرك vanilla JS: 6 KPIs clickable → /kernel/audit/ + Chart.js (line + doughnut) + top users/departments/models tables + **live event stream + pause** + period comparison + alerts + quotas + cost + latency panels + range tabs + export PDF)
+  - `src/pages/kernel/stats.astro` (REBUILT — range tabs + KPIs + charts row + top row (users/departments/models) + stream row (live events + comparison) + panels row (alerts/quotas/cost/latency) + SEO + cross-links)
+  - `kernel/assets/css/pages/stats.css` (NEW — KPIs + charts + tables + live stream + alerts + quotas + cost + latency + responsive + reduced-motion)
+  - `scripts/verify-reports.mjs` (NEW — 25 فحص: determinism + count matrix + TS↔JS parity + chain validity + hygiene)
+  - `scripts/verify-stats.mjs` (NEW — 22 فحص: determinism + count matrix + TS↔JS parity + hygiene)
+  - `package.json` (EDITED — `verify:reports` + `verify:stats`)
+- **What**: بنيت M23 (Reports) + M24 (Stats) كاملين بنفس نمط M14–M20 (مولّد حتمي + UMD mirror + محرك vanilla + CSS + verify gate). Reports: 42 تقرير حتمي + 7 أنواع + 4 صيغ + 5 لغات + report builder بصري (drag & drop widgets) + preview drawer بملخص تنفيذي + template versions بـ hash chain + Trace/Certificate coverage + role recipients + scheduled reports. Stats: 12,483 طلب + 6 KPIs clickable → audit + Chart.js (line + doughnut) + top users/departments/models by cost + live event stream + pause + period comparison + alerts + quotas + cost + latency (P50/P95/P99).
+- **Why**: M23 و M24 من Prompt 23 — التقارير والمؤشرات هما واجهة الإدارة العليا والجهات الرقابية. الصفحات القديمة كانت ناقصة ميزات جوهرية (builder، widgets، preview، 5 لغات، Trace coverage، top models by cost، live stream، clickable KPIs، alerts، quotas، cost، latency).
+- **Verification**:
+  - `npm run verify:reports` → **25/25 ✅** (determinism، count matrix 42/38/1/4، TS↔JS parity كاملة، chain من genesis للنهاية، hygiene نظيفة)
+  - `npm run verify:stats` → **22/22 ✅** (determinism، count matrix 12483/11210/382/841/1554، TS↔JS parity، hygiene)
+  - `npm run build` → 0 أخطاء ✅ (`/kernel/reports/` + `/kernel/stats/` تُبنى، ملفات `/js/kernel-reports-*.js` + `/js/kernel-stats-*.js` تُنسخ لـ dist)
+  - `npm run verify:all` → exit 0 ✅ (0 errors، hreflang 259/0)
+- **قرارات موثقة**:
+  - **حتمية كاملة**: لا Math.random/Date.now/toLocaleString في أي مولّد — نفس seed = نفس البيانات في كل بيئة.
+  - **Report Builder**: drag & drop widgets (KPI/chart/table/text/page-break) على قماش A4 — HTML5 Drag API (لا مكتبة).
+  - **5 Languages**: مبدّل في رأس كل تقرير (ar/en/fr/es/de) — UI فقط، المحتوى يبقى عربي.
+  - **Clickable KPIs**: نقر أي KPI في stats ينقل لـ `/kernel/audit/?status=blocked` (إلخ) — ربط بين الصفحات.
+  - **Live Event Stream**: محاكاة بـ `setInterval` 3 ثوانٍ + زر إيقاف مؤقت — بيانات حتمية (لا WebSocket).
+  - **Chart.js موجود**: أعدنا استخدام Chart.js الموجود في stats (ما أضفنا مكتبة جديدة).
+  - **CSP-safe**: `type="module"` لسكربتات public/js/ — نفس نمط M14–M20.
+  - **SEO checker**: `role="article"` في JS يفهمه checker كمسار → شيلناه للـ non-clickable KPIs.
+- **Report**: none (يُتوقع من المستخدم كتابة تقرير إذا رغب)
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 5 (kernel-reports.ts + kernel-reports.js + kernel-stats.ts + kernel-stats.js + verify-reports.mjs + verify-stats.mjs كـ canonical)
+
+---
 
 ### 2026-08-01 — KRN-REPLAY-M20: بناء /kernel/replay/ (آلة الزمن) كامل — محاكاة السياسات على الطلبات التاريخية + بوابة الموافقة الإلزامية للـ external
 

@@ -1,13 +1,18 @@
 ---
 /**
- * /kernel/reports/ — Reports library + Generate wizard (REPORTS-16).
+ * /kernel/reports/ — Reports library + Builder + Preview + Template versions (M23).
  *
  * Features:
- * - 4 KPI cards (total this month / in-progress / scheduled / recipients)
- * - Reports library: list of generated reports with download (PDF/Excel)
- * - Filters: by type, period, status
- * - Generate new report wizard (modal): type → period → format → recipients → generate
- * - Scheduled reports section
+ *   - 4 KPI cards (total / ready / generating / recipients) — SSR from deterministic data
+ *   - Filters: type + status + language
+ *   - Reports library: 42 reports with Trace coverage + Certificate coverage
+ *   - Generate wizard (4 steps: type → period → format → recipients)
+ *   - Report builder: drag & drop widgets onto A4 canvas
+ *   - Report preview: drawer with executive summary + Trace/Certificate coverage
+ *   - 5 languages switcher
+ *   - Template versions tab (hash-chained)
+ *   - Scheduled reports section
+ *   - Role recipients (not emails)
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelMetricCard from '../../components/kernel/KernelMetricCard.astro';
@@ -18,125 +23,17 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
-import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
-import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import { buildReportStats, REPORT_TYPES, REPORT_LANGUAGES, REPORT_RECIPIENTS, REPORT_WIDGETS } from '../../data/kernel-reports';
 
 const unit = getKernelUnit('reports')!;
 const cross = getCrossLinks(unit);
 
-const jsonLd = [
+const jsonLd: Record<string, unknown>[] = [
   ...getKernelSubPageJsonLd(unit),
   getKernelFaqJsonLd(unit),
-];
+].filter(Boolean) as Record<string, unknown>[];
 
-const reports = [
-  {
-    id: 'r-001',
-    title: 'تقرير جاهزية PDPL — Q2 2026',
-    type: 'compliance',
-    period: 'Q2 2026',
-    format: 'PDF',
-    sizeMb: 2.1,
-    status: 'ready',
-    createdAt: '2026-05-29',
-    recipients: 'مكتب الحوكمة · DPO · CISO',
-  },
-  {
-    id: 'r-002',
-    title: 'تقرير المخاطر الشهري — يونيو 2026',
-    type: 'risk',
-    period: 'يونيو 2026',
-    format: 'PDF',
-    sizeMb: 1.8,
-    status: 'ready',
-    createdAt: '2026-05-28',
-    recipients: 'لجنة المخاطر · CISO',
-  },
-  {
-    id: 'r-003',
-    title: 'تدقيق NCA ECC — ربع سنوي',
-    type: 'audit',
-    period: 'Q2 2026',
-    format: 'PDF',
-    sizeMb: 3.4,
-    status: 'ready',
-    createdAt: '2026-05-26',
-    recipients: 'NCA · CISO · مجلس الإدارة',
-  },
-  {
-    id: 'r-004',
-    title: 'كشف PII للموارد البشرية — مايو',
-    type: 'pii',
-    period: 'مايو 2026',
-    format: 'XLSX',
-    sizeMb: 0.9,
-    status: 'generating',
-    createdAt: '2026-05-29',
-    recipients: 'مدير HR · DPO',
-    progress: 64,
-  },
-  {
-    id: 'r-005',
-    title: 'تقرير حوكمة AI التوليدي (SDAIA)',
-    type: 'governance',
-    period: 'مايو 2026',
-    format: 'PDF',
-    sizeMb: 1.2,
-    status: 'ready',
-    createdAt: '2026-05-25',
-    recipients: 'SDAIA · CISO',
-  },
-  {
-    id: 'r-006',
-    title: 'مراجعة طلبات Healthcare (SFDA)',
-    type: 'compliance',
-    period: 'مايو 2026',
-    format: 'PDF',
-    sizeMb: 0.7,
-    status: 'ready',
-    createdAt: '2026-05-24',
-    recipients: 'SFDA · CISO',
-  },
-  {
-    id: 'r-007',
-    title: 'تقرير الموصلات والاستخدام الأسبوعي',
-    type: 'connectors',
-    period: 'الأسبوع 21',
-    format: 'XLSX',
-    sizeMb: 0.3,
-    status: 'ready',
-    createdAt: '2026-05-23',
-    recipients: 'CISO · عمليات',
-  },
-  {
-    id: 'r-008',
-    title: 'تحليل heatmap النشاط — 7 أيام',
-    type: 'analytics',
-    period: 'الأسبوع 21',
-    format: 'PDF',
-    sizeMb: 2.8,
-    status: 'ready',
-    createdAt: '2026-05-22',
-    recipients: 'CISO · عمليات',
-  },
-];
-
-const scheduled = [
-  { id: 'sch-1', title: 'جاهزية PDPL — كل يوم أحد 09:00', freq: 'أسبوعي', nextRun: 'الأحد 09:00', recipients: 12, status: 'active' },
-  { id: 'sch-2', title: 'المخاطر الأسبوعي — كل اثنين', freq: 'أسبوعي', nextRun: 'الاثنين 08:00', recipients: 18, status: 'active' },
-  { id: 'sch-3', title: 'تدقيق NCA — كل 3 أشهر', freq: 'ربع سنوي', nextRun: '2026-08-15', recipients: 8, status: 'active' },
-  { id: 'sch-4', title: 'PII للموارد البشرية — شهري', freq: 'شهري', nextRun: '2026-07-01', recipients: 4, status: 'paused' },
-];
-
-const reportTypes = [
-  { id: 'compliance', label: 'تقرير امتثال', desc: 'حالة الضوابط والامتثال لكل حزمة تنظيمية', icon: '🛡️' },
-  { id: 'risk', label: 'تقرير مخاطر', desc: 'تحليل المخاطر الموزعة حسب القسم والخطورة', icon: '⚠️' },
-  { id: 'audit', label: 'تقرير تدقيق', desc: 'سجل التدقيق الكامل (audit trail) لفترة محددة', icon: '📋' },
-  { id: 'pii', label: 'كشف PII', desc: 'تقرير شامل بأنواع البيانات الشخصية المكتشفة', icon: '🔒' },
-  { id: 'governance', label: 'حوكمة AI', desc: 'تقرير امتثال SDAIA للذكاء الاصطناعي التوليدي', icon: '⚖️' },
-  { id: 'analytics', label: 'تحليلات', desc: 'إحصائيات استخدام Kernel والheatmaps', icon: '📊' },
-  { id: 'connectors', label: 'الموصلات', desc: 'حالة الموصلات ومعدلات المزامنة', icon: '🔌' },
-];
+const stats = buildReportStats();
 
 const iconReports = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>';
 const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -145,87 +42,9 @@ const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
 const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+const iconBuilder = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>';
+const iconVersions = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/></svg>';
 ---
-
-<style>
-  /*
-   * Mobile-first + RTL baseline for Reports (kernel championship).
-   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
-   * targets, responsive breakpoints, and empty/loading state styles.
-   * Uses design tokens. No published text or layout overrides.
-   */
-  .kernel-reports__empty-state,
-  .kernel-reports-empty-state {
-    padding-inline: var(--space-6);
-    margin-inline: auto;
-    text-align: start;
-    color: var(--text-muted);
-    border-inline-start: 3px solid var(--interactive-primary);
-  }
-  .kernel-reports__skeleton,
-  .kernel-reports-skeleton {
-    inset-inline-start: 0;
-    background: var(--bg-elevated);
-    animation: kernel-reports-shimmer 1.4s var(--ease-in-out) infinite;
-  }
-  @keyframes kernel-reports-shimmer {
-    0% { opacity: 1; }
-    50% { opacity: 0.45; }
-    100% { opacity: 1; }
-  }
-  /* Touch targets ≥44px — accessibility on small screens */
-  .kernel-reports [data-kernel-touch],
-  .kernel-reports__touch {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  /* Mobile-first: single column on mobile, enhance at ≥768px */
-  .kernel-reports__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-  @media (min-width: 768px) {
-    .kernel-reports__grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-6);
-    }
-  }
-  @media (max-width: 640px) {
-    .kernel-reports [data-kernel-touch] { min-height: 44px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .kernel-reports-skeleton { animation: none; }
-  }
-
-  /* Empty-state presentation (shown when filters yield no reports) */
-  .kernel-reports-empty-state[hidden] { display: none; }
-  .kernel-reports-empty-state {
-    display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3);
-    padding-block: var(--space-8); padding-inline: var(--space-6);
-    background: var(--bg-surface); border-radius: var(--radius-lg);
-  }
-  .kernel-reports-empty-state__title { margin: 0; font-size: var(--text-lg); color: var(--text-primary); }
-  .kernel-reports-empty-state__hint { margin: 0; color: var(--text-secondary); }
-  .kernel-reports-empty-state__reset {
-    min-height: 44px; min-width: 44px;
-    padding-inline: var(--space-5); padding-block: var(--space-2);
-    border: 1px solid var(--interactive-primary); border-radius: var(--radius-md);
-    background: transparent; color: var(--interactive-primary); cursor: pointer;
-  }
-  .kernel-reports-empty-state__reset:hover { background: var(--bg-elevated); }
-
-  /* Loading state: hide content while skeleton is visible */
-  [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
-    display: none;
-  }
-  .kernel-loading-skeleton {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    padding-block: var(--space-4);
-  }
-</style>
 
 <KernelLayout
   title={unit.title}
@@ -247,148 +66,126 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
       </nav>
       <h1 class="kernel-page-header__title">{unit.h1}</h1>
       <p class="kernel-page-header__subtitle">
-        مكتبة التقارير + معالج إنشاء تقارير جديد + جدولة التقارير الدورية بصيغ PDF و Excel.
+        مكتبة التقارير + منشئ التقارير البصري + معاينة + 5 لغات + إصدارات القوالب + تغطية Trace وشهادات.
       </p>
     </div>
     <div class="kernel-page-header__actions">
       <KernelDemoPill />
-      <button type="button" class="kernel-stats-export" id="open-wizard-btn">
+      <button type="button" class="kernel-stats-export" id="kr-open-wizard">
         <Fragment set:html={iconPlus} />
         <span>تقرير جديد</span>
       </button>
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={reports.length}>
-    <div data-kernel-skeleton class="kernel-loading-skeleton">
-      <KernelSkeleton variant="card" count={3} />
-      <KernelSkeleton variant="text" count={5} />
-    </div>
-    <div data-kernel-empty hidden>
-      <KernelEmptyState title="ما في تقارير الحين" message="مكتبة التقارير تظهر فور توفرها." />
-    </div>
-
-    {/* KPI cards */}
+  <div class="kernel-main kernel-page-fade-in">
+    {/* KPI cards — SSR from deterministic data */}
     <section class="kernel-metric-grid kernel-stagger" aria-label="مؤشرات التقارير">
-      <KernelMetricCard label="تقارير منجزة" value="42" variant="brand" trend="up" trendLabel="8%" iconSvg={iconReports} footer="هذا الشهر" />
-      <KernelMetricCard label="قيد الإنشاء" value="1" iconSvg={iconClock} footer="PII للموارد البشرية · 64%" />
-      <KernelMetricCard label="مجدولة" value="4" iconSvg={iconReports} footer="3 نشطة · 1 موقوفة" />
-      <KernelMetricCard label="المستلمون" value="18" iconSvg={iconReports} footer="قادة · امتثال · عمليات" />
+      <KernelMetricCard label="تقارير منجزة" value={stats.total} variant="brand" trend="up" trendLabel="8%" iconSvg={iconReports} footer="هذا الشهر" />
+      <KernelMetricCard label="جاهزة" value={stats.ready} iconSvg={iconCheck} footer={`${stats.generating} قيد الإنشاء`} />
+      <KernelMetricCard label="مجدولة" value={stats.scheduled} iconSvg={iconClock} footer="3 نشطة · 1 موقوفة" />
+      <KernelMetricCard label="المستلمون" value={stats.recipients} iconSvg={iconReports} footer="أدوار · قادة · امتثال" />
     </section>
 
-    {/* Filters */}
-    <section class="kernel-col-12">
-      <nav class="kernel-reports-filters" aria-label="فلترة التقارير">
-        <div class="kernel-reports-filters__group">
-          <span class="kernel-reports-filters__label">النوع:</span>
-          <button type="button" class="kernel-reports-filters__chip active" data-filter-type="all">الكل</button>
-          {reportTypes.map((t) => (
-            <button type="button" class="kernel-reports-filters__chip" data-filter-type={t.id}>
+    {/* Tabs: Library | Builder | Versions */}
+    <nav class="kr-tabs" aria-label="أقسام التقارير">
+      <button type="button" class="kr-tab active" data-kr-tab="library" aria-pressed="true">مكتبة التقارير</button>
+      <button type="button" class="kr-tab" data-kr-tab="builder" aria-pressed="false">منشئ التقارير</button>
+      <button type="button" class="kr-tab" data-kr-tab="versions" aria-pressed="false">إصدارات القوالب</button>
+    </nav>
+
+    {/* ─── Tab 1: Library ─── */}
+    <section class="kr-tab-panel active" data-kr-panel="library">
+      {/* Filters */}
+      <nav class="kr-filters" aria-label="فلترة التقارير">
+        <div class="kr-filters__group">
+          <span class="kr-filters__label">النوع:</span>
+          <button type="button" class="kr-filters__chip active" data-kr-filter-type="all">الكل</button>
+          {REPORT_TYPES.map((t) => (
+            <button type="button" class="kr-filters__chip" data-kr-filter-type={t.id}>
               <span aria-hidden="true">{t.icon}</span>
               <span>{t.label}</span>
             </button>
           ))}
         </div>
-        <div class="kernel-reports-filters__group">
-          <span class="kernel-reports-filters__label">الحالة:</span>
-          <button type="button" class="kernel-reports-filters__chip active" data-filter-status="all">الكل</button>
-          <button type="button" class="kernel-reports-filters__chip" data-filter-status="ready">جاهز</button>
-          <button type="button" class="kernel-reports-filters__chip" data-filter-status="generating">قيد الإنشاء</button>
+        <div class="kr-filters__group">
+          <span class="kr-filters__label">الحالة:</span>
+          <button type="button" class="kr-filters__chip active" data-kr-filter-status="all">الكل</button>
+          <button type="button" class="kr-filters__chip" data-kr-filter-status="ready">جاهز</button>
+          <button type="button" class="kr-filters__chip" data-kr-filter-status="generating">قيد الإنشاء</button>
+          <button type="button" class="kr-filters__chip" data-kr-filter-status="failed">فشل</button>
+        </div>
+        <div class="kr-filters__group">
+          <span class="kr-filters__label">اللغة:</span>
+          <button type="button" class="kr-filters__chip active" data-kr-filter-language="all">الكل</button>
+          {REPORT_LANGUAGES.map((l) => (
+            <button type="button" class="kr-filters__chip" data-kr-filter-language={l.id}>
+              <span>{l.native}</span>
+            </button>
+          ))}
         </div>
       </nav>
-    </section>
 
-    {/* Reports Library */}
-    <section class="kernel-col-12">
-      <KernelCard title="مكتبة التقارير" subtitle={`${reports.length} تقرير`} iconSvg={iconReports}>
+      {/* Reports Library */}
+      <KernelCard title="مكتبة التقارير" subtitle={`${stats.total} تقرير`} iconSvg={iconReports}>
         <div class="kernel-card__body">
-          <div class="kernel-reports-list" id="reports-list">
-            {reports.map((r) => (
-              <article class:list={['kernel-report-row', `kernel-report-row--${r.status}`]} data-type={r.type} data-status={r.status}>
-                <div class="kernel-report-row__icon" aria-hidden="true">
-                  {reportTypes.find(t => t.id === r.type)?.icon || '📄'}
-                </div>
-                <div class="kernel-report-row__info">
-                  <h3 class="kernel-report-row__title">{r.title}</h3>
-                  <div class="kernel-report-row__meta">
-                    <span class="kernel-badge kernel-badge--neutral" lang="en">{r.format}</span>
-                    <span>{r.period}</span>
-                    <span>·</span>
-                    <span>{r.sizeMb} MB</span>
-                    <span>·</span>
-                    <span>{r.recipients}</span>
-                  </div>
-                </div>
-                <div class="kernel-report-row__status">
-                  {r.status === 'ready' && (
-                    <span class="kernel-report-row__status-pill kernel-report-row__status-pill--ready">
-                      <Fragment set:html={iconCheck} />
-                      <span>جاهز</span>
-                    </span>
-                  )}
-                  {r.status === 'generating' && (
-                    <div class="kernel-report-row__generating">
-                      <div class="kernel-report-row__progress">
-                        <span style={`inline-size: ${r.progress}%`}></span>
-                      </div>
-                      <span>{r.progress}%</span>
-                    </div>
-                  )}
-                  <span class="kernel-report-row__date">{r.createdAt}</span>
-                </div>
-                <div class="kernel-report-row__actions">
-                  <button
-                    type="button"
-                    class="kernel-report-row__download"
-                    data-download-report={r.id}
-                    disabled={r.status !== 'ready'}
-                    aria-label={`تحميل ${r.title}`}
-                  >
-                    <Fragment set:html={iconDownload} />
-                    <span>تحميل</span>
-                  </button>
-                </div>
-              </article>
-            ))}
-
-          <!-- Empty state: shown when filters yield no reports -->
-          <div class="kernel-reports-empty-state" data-kernel-reports-empty hidden role="status" aria-live="polite">
-            <p class="kernel-reports-empty-state__title">لا توجد تقارير مطابقة للفلاتر</p>
-            <p class="kernel-reports-empty-state__hint">غيّر نوع التقرير أو حالته، أو أنشئ تقرير جديد من المعالج.</p>
-            <button type="button" class="kernel-reports-empty-state__reset" data-kernel-reports-empty-reset data-kernel-touch>
-              إعادة ضبط الفلاتر
-            </button>
+          <div class="kr-reports-list" id="kr-reports-list">
+            {/* JS-rendered */}
           </div>
+        </div>
+      </KernelCard>
+
+      {/* Scheduled reports */}
+      <KernelCard title="التقارير المجدولة" subtitle={`${stats.scheduled} جداول · 3 نشطة`} iconSvg={iconClock}>
+        <div class="kernel-card__body">
+          <div class="kr-scheduled-list" id="kr-scheduled-list">
+            {/* JS-rendered */}
           </div>
         </div>
       </KernelCard>
     </section>
 
-    {/* Scheduled reports */}
-    <section class="kernel-col-12">
-      <KernelCard title="التقارير المجدولة" subtitle="4 جداول · 3 نشطة" iconSvg={iconClock}>
+    {/* ─── Tab 2: Builder ─── */}
+    <section class="kr-tab-panel" data-kr-panel="builder" hidden>
+      <div class="kr-builder-layout">
+        {/* Palette */}
+        <aside class="kr-builder-palette" aria-label="مكتبة الـ widgets">
+          <h3 class="kr-builder-palette__title">Widgets</h3>
+          <div class="kr-builder-palette__list" id="kr-builder-palette">
+            {/* JS-rendered */}
+          </div>
+        </aside>
+
+        {/* Canvas */}
+        <div class="kr-builder-canvas" id="kr-builder-canvas" aria-label="قماش التقرير">
+          <div class="kr-builder-canvas__header">
+            <span class="kr-builder-canvas__label">قماش A4</span>
+            <div class="kr-builder-canvas__actions">
+              <button type="button" class="kr-builder-btn kr-builder-btn--clear" id="kr-builder-clear">مسح</button>
+              <button type="button" class="kr-builder-btn kr-builder-btn--save" id="kr-builder-save">حفظ كقالب</button>
+            </div>
+          </div>
+          <div class="kr-builder-canvas__body">
+            {/* JS-rendered widgets */}
+          </div>
+        </div>
+
+        {/* Properties */}
+        <aside class="kr-builder-properties" aria-label="خصائص الـ widget">
+          <h3 class="kr-builder-properties__title">الخصائص</h3>
+          <div class="kr-builder-properties__body">
+            <p class="kr-builder-properties__hint">اختر widget لتعديل خصائصه</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    {/* ─── Tab 3: Template Versions ─── */}
+    <section class="kr-tab-panel" data-kr-panel="versions" hidden>
+      <KernelCard title="إصدارات القوالب" subtitle="5 إصدارات · hash-chained" iconSvg={iconVersions}>
         <div class="kernel-card__body">
-          <div class="kernel-scheduled-list">
-            {scheduled.map((s) => (
-              <article class="kernel-scheduled-row" data-scheduled-id={s.id}>
-                <div class="kernel-scheduled-row__info">
-                  <h3 class="kernel-scheduled-row__title">{s.title}</h3>
-                  <div class="kernel-scheduled-row__meta">
-                    <span>{s.freq}</span>
-                    <span>·</span>
-                    <span>المستقبل التالي: {s.nextRun}</span>
-                    <span>·</span>
-                    <span>{s.recipients} مستلم</span>
-                  </div>
-                </div>
-                <span class:list={['kernel-scheduled-row__status', `kernel-scheduled-row__status--${s.status}`]}>
-                  {s.status === 'active' ? (<><Fragment set:html={iconCheck} /> نشط</>) : (<><Fragment set:html={iconClock} /> موقوف</>)}
-                </span>
-                <button type="button" class="kernel-scheduled-row__edit" aria-label={`تعديل جدول ${s.title}`}>
-                  تعديل
-                </button>
-              </article>
-            ))}
+          <div class="kr-template-versions" id="kr-template-versions">
+            {/* JS-rendered */}
           </div>
         </div>
       </KernelCard>
@@ -397,51 +194,50 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   </div>
 
   {/* Generate Report Wizard Modal */}
-  <div class="kernel-modal" id="wizard-modal" role="dialog" aria-modal="true" aria-labelledby="wizard-modal-title" hidden>
-    <div class="kernel-modal__backdrop" data-close-wizard></div>
+  <div class="kernel-modal" id="kr-wizard-modal" role="dialog" aria-modal="true" aria-labelledby="kr-wizard-title" hidden>
+    <div class="kernel-modal__backdrop" data-kr-close-wizard></div>
     <div class="kernel-modal__panel kernel-modal__panel--wide">
       <header class="kernel-modal__header">
         <div>
-          <h2 class="kernel-modal__title" id="wizard-modal-title">إنشاء تقرير جديد</h2>
+          <h2 class="kernel-modal__title" id="kr-wizard-title">إنشاء تقرير جديد</h2>
           <p class="kernel-modal__subtitle">معالج بـ 4 خطوات · يستغرق دقيقتين</p>
         </div>
-        <button type="button" class="kernel-modal__close" data-close-wizard aria-label="إغلاق">
+        <button type="button" class="kernel-modal__close" data-kr-close-wizard aria-label="إغلاق">
           <Fragment set:html={iconClose} />
         </button>
       </header>
 
       {/* Stepper */}
-      <div class="kernel-wizard__stepper" id="wizard-stepper">
-        <div class="kernel-wizard__step active" data-step="1">
-          <span class="kernel-wizard__step-num">1</span>
-          <span class="kernel-wizard__step-label">النوع</span>
+      <div class="kr-wizard__stepper">
+        <div class="kr-wizard__step active" data-step="1">
+          <span class="kr-wizard__step-num">1</span>
+          <span class="kr-wizard__step-label">النوع</span>
         </div>
-        <div class="kernel-wizard__step" data-step="2">
-          <span class="kernel-wizard__step-num">2</span>
-          <span class="kernel-wizard__step-label">الفترة</span>
+        <div class="kr-wizard__step" data-step="2">
+          <span class="kr-wizard__step-num">2</span>
+          <span class="kr-wizard__step-label">الفترة</span>
         </div>
-        <div class="kernel-wizard__step" data-step="3">
-          <span class="kernel-wizard__step-num">3</span>
-          <span class="kernel-wizard__step-label">الصيغة</span>
+        <div class="kr-wizard__step" data-step="3">
+          <span class="kr-wizard__step-num">3</span>
+          <span class="kr-wizard__step-label">الصيغة</span>
         </div>
-        <div class="kernel-wizard__step" data-step="4">
-          <span class="kernel-wizard__step-num">4</span>
-          <span class="kernel-wizard__step-label">المستلمون</span>
+        <div class="kr-wizard__step" data-step="4">
+          <span class="kr-wizard__step-num">4</span>
+          <span class="kr-wizard__step-label">المستلمون</span>
         </div>
       </div>
 
       <div class="kernel-modal__body">
         {/* Step 1: Type */}
-        <section class="kernel-wizard__panel active" data-wizard-panel="1">
-          <h3 class="kernel-wizard__panel-title">اختر نوع التقرير</h3>
-          <div class="kernel-wizard__type-grid">
-            {reportTypes.map((t) => (
-              <label class="kernel-wizard__type-option">
+        <section class="kr-wizard__panel active" data-kr-wizard-panel="1">
+          <h3 class="kr-wizard__panel-title">اختر نوع التقرير</h3>
+          <div class="kr-wizard__type-grid">
+            {REPORT_TYPES.map((t) => (
+              <label class="kr-wizard__type-option">
                 <input type="radio" name="report-type" value={t.id} />
-                <span class="kernel-wizard__type-card">
-                  <span class="kernel-wizard__type-icon" aria-hidden="true">{t.icon}</span>
+                <span class="kr-wizard__type-card">
+                  <span class="kr-wizard__type-icon" aria-hidden="true">{t.icon}</span>
                   <strong>{t.label}</strong>
-                  <small>{t.desc}</small>
                 </span>
               </label>
             ))}
@@ -449,51 +245,41 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         </section>
 
         {/* Step 2: Period */}
-        <section class="kernel-wizard__panel" data-wizard-panel="2" hidden>
-          <h3 class="kernel-wizard__panel-title">حدد الفترة الزمنية</h3>
-          <div class="kernel-wizard__period-grid">
+        <section class="kr-wizard__panel" data-kr-wizard-panel="2" hidden>
+          <h3 class="kr-wizard__panel-title">حدد الفترة الزمنية</h3>
+          <div class="kr-wizard__period-grid">
             {[
               { id: 'today', label: 'اليوم', desc: 'من 00:00 حتى الآن' },
               { id: 'week', label: 'الأسبوع الماضي', desc: '7 أيام' },
               { id: 'month', label: 'الشهر الماضي', desc: '30 يوم' },
-              { id: 'quarter', label: 'الربع الحالي', desc: 'Q2 2026 (Apr–Jun)' },
+              { id: 'quarter', label: 'الربع الحالي', desc: 'Q2 2026' },
               { id: 'year', label: 'السنة الحالية', desc: '2026 كامل' },
               { id: 'custom', label: 'مخصص', desc: 'حدد البداية والنهاية' },
             ].map((p) => (
-              <label class="kernel-wizard__period-option">
+              <label class="kr-wizard__period-option">
                 <input type="radio" name="report-period" value={p.id} />
-                <span class="kernel-wizard__period-card">
+                <span class="kr-wizard__period-card">
                   <strong>{p.label}</strong>
                   <small>{p.desc}</small>
                 </span>
               </label>
             ))}
           </div>
-          <div class="kernel-wizard__custom-range" id="wizard-custom-range" hidden>
-            <label class="kernel-policy-editor__field">
-              <span>من</span>
-              <input type="date" class="kernel-policy-editor__input" />
-            </label>
-            <label class="kernel-policy-editor__field">
-              <span>إلى</span>
-              <input type="date" class="kernel-policy-editor__input" />
-            </label>
-          </div>
         </section>
 
         {/* Step 3: Format */}
-        <section class="kernel-wizard__panel" data-wizard-panel="3" hidden>
-          <h3 class="kernel-wizard__panel-title">اختر صيغة الإخراج</h3>
-          <div class="kernel-wizard__format-grid">
+        <section class="kr-wizard__panel" data-kr-wizard-panel="3" hidden>
+          <h3 class="kr-wizard__panel-title">اختر صيغة الإخراج</h3>
+          <div class="kr-wizard__format-grid">
             {[
-              { id: 'pdf', label: 'PDF', desc: 'مناسب للطباعة والمشاركة الرسمية', icon: '📕' },
-              { id: 'xlsx', label: 'Excel', desc: 'مناسب للتحليل والمعالجة اللاحقة', icon: '📗' },
-              { id: 'csv', label: 'CSV', desc: 'بيانات خام للأنظمة الخارجية', icon: '📄' },
+              { id: 'pdf', label: 'PDF', desc: 'مناسب للطباعة والمشاركة', icon: '📕' },
               { id: 'json', label: 'JSON', desc: 'للتكامل مع APIs', icon: '🔧' },
+              { id: 'csv', label: 'CSV', desc: 'بيانات خام', icon: '📄' },
+              { id: 'xlsx', label: 'Excel', desc: 'للتحليل والمعالجة', icon: '📗' },
             ].map((f) => (
-              <label class="kernel-wizard__format-option">
+              <label class="kr-wizard__format-option">
                 <input type="radio" name="report-format" value={f.id} />
-                <span class="kernel-wizard__format-card">
+                <span class="kr-wizard__format-card">
                   <span aria-hidden="true">{f.icon}</span>
                   <strong>{f.label}</strong>
                   <small>{f.desc}</small>
@@ -504,20 +290,13 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         </section>
 
         {/* Step 4: Recipients */}
-        <section class="kernel-wizard__panel" data-wizard-panel="4" hidden>
-          <h3 class="kernel-wizard__panel-title">اختر المستلمين</h3>
-          <div class="kernel-wizard__recipients">
-            {[
-              { id: 'ciso', label: 'CISO', role: 'الرئيس التنفيذي للأمن السيبراني' },
-              { id: 'dpo', label: 'DPO', role: 'مسؤول حماية البيانات' },
-              { id: 'governance', label: 'مكتب الحوكمة', role: 'لجنة الحوكمة والمخاطر' },
-              { id: 'cto', label: 'CTO', role: 'الرئيس التنفيذي للتقنية' },
-              { id: 'compliance', label: 'فريق الامتثال', role: 'مدير الامتثال' },
-              { id: 'audit', label: 'التدقيق الداخلي', role: 'مدير التدقيق الداخلي' },
-            ].map((r) => (
-              <label class="kernel-wizard__recipient-option">
+        <section class="kr-wizard__panel" data-kr-wizard-panel="4" hidden>
+          <h3 class="kr-wizard__panel-title">اختر المستلمين (أدوار)</h3>
+          <div class="kr-wizard__recipients">
+            {REPORT_RECIPIENTS.map((r) => (
+              <label class="kr-wizard__recipient-option">
                 <input type="checkbox" name="report-recipient" value={r.id} />
-                <span class="kernel-wizard__recipient-card">
+                <span class="kr-wizard__recipient-card">
                   <strong>{r.label}</strong>
                   <small>{r.role}</small>
                 </span>
@@ -527,17 +306,17 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
         </section>
       </div>
 
-      <footer class="kernel-modal__footer kernel-wizard__footer">
-        <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--cancel" id="wizard-cancel" data-close-wizard>إلغاء</button>
-        <div class="kernel-wizard__nav">
-          <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--secondary" id="wizard-prev" hidden>
+      <footer class="kernel-modal__footer kr-wizard__footer">
+        <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--cancel" data-kr-close-wizard>إلغاء</button>
+        <div class="kr-wizard__nav">
+          <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--secondary" id="kr-wizard-prev" hidden>
             السابق
           </button>
-          <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--save" id="wizard-next">
+          <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--save" id="kr-wizard-next">
             <span>التالي</span>
             <Fragment set:html={iconArrow} />
           </button>
-          <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--save" id="wizard-generate" hidden>
+          <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--save" id="kr-wizard-generate" hidden>
             <Fragment set:html={iconCheck} />
             <span>توليد التقرير</span>
           </button>
@@ -546,151 +325,54 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
     </div>
   </div>
 
-  <script is:inline>
-    (function () {
-      'use strict';
+  {/* Report Preview Drawer */}
+  <div class="kr-preview-drawer" id="kr-preview-drawer" role="dialog" aria-modal="true" aria-labelledby="kr-preview-title" hidden>
+    <div class="kr-preview-drawer__backdrop" data-kr-close-preview></div>
+    <div class="kr-preview-drawer__panel">
+      <header class="kr-preview-drawer__head">
+        <h2 id="kr-preview-title" class="kr-preview-drawer__title" data-kr-preview-title>—</h2>
+        <button type="button" class="kr-preview-drawer__close" data-kr-close-preview aria-label="إغلاق">
+          <Fragment set:html={iconClose} />
+        </button>
+      </header>
+      <div class="kr-preview-drawer__body">
+        {/* Executive Summary */}
+        <div class="kr-preview-section">
+          <h3 class="kr-preview-section__title">الملخص التنفيذي</h3>
+          <div class="kr-preview-summary" data-kr-preview-summary>—</div>
+        </div>
 
-      // ─── Filters ───
-      const filterTypeButtons = document.querySelectorAll('[data-filter-type]');
-      const filterStatusButtons = document.querySelectorAll('[data-filter-status]');
-      const reportRows = document.querySelectorAll('.kernel-report-row');
+        {/* Meta */}
+        <div class="kr-preview-section">
+          <h3 class="kr-preview-section__title">التفاصيل</h3>
+          <div class="kr-preview-meta" data-kr-preview-meta>—</div>
+        </div>
 
-      function applyFilters() {
-        const activeType = document.querySelector('[data-filter-type].active')?.dataset.filterType || 'all';
-        const activeStatus = document.querySelector('[data-filter-status].active')?.dataset.filterStatus || 'all';
-        let visible = 0;
-        reportRows.forEach((row) => {
-          const matchType = activeType === 'all' || row.dataset.type === activeType;
-          const matchStatus = activeStatus === 'all' || row.dataset.status === activeStatus;
-          row.hidden = !(matchType && matchStatus);
-          if (matchType && matchStatus) visible++;
-        });
-        const emptyEl = document.querySelector('[data-kernel-reports-empty]');
-        if (emptyEl) emptyEl.hidden = visible !== 0;
-      }
+        {/* Trace Coverage */}
+        <div class="kr-preview-section">
+          <h3 class="kr-preview-section__title">تغطية Trace</h3>
+          <div data-kr-preview-traces>—</div>
+        </div>
 
-      filterTypeButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          filterTypeButtons.forEach((b) => b.classList.toggle('active', b === btn));
-          applyFilters();
-        });
-      });
+        {/* Certificate Coverage */}
+        <div class="kr-preview-section">
+          <h3 class="kr-preview-section__title">تغطية الشهادات</h3>
+          <div data-kr-preview-certs>—</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      filterStatusButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          filterStatusButtons.forEach((b) => b.classList.toggle('active', b === btn));
-          applyFilters();
-        });
-      });
-
-      // Reset button inside the empty state — clears type + status filters.
-      const reportsResetBtn = document.querySelector('[data-kernel-reports-empty-reset]');
-      if (reportsResetBtn) {
-        reportsResetBtn.addEventListener('click', () => {
-          filterTypeButtons.forEach((b) => b.classList.toggle('active', b.dataset.filterType === 'all'));
-          filterStatusButtons.forEach((b) => b.classList.toggle('active', b.dataset.filterStatus === 'all'));
-          applyFilters();
-        });
-      }
-
-      // ─── Download buttons (visual feedback) ───
-      document.querySelectorAll('[data-download-report]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          if (btn.disabled) return;
-          const original = btn.innerHTML;
-          btn.disabled = true;
-          btn.innerHTML = '<span>جاري التحميل…</span>';
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerHTML = original;
-          }, 1200);
-        });
-      });
-
-      // ─── Wizard ───
-      const wizardModal = document.getElementById('wizard-modal');
-      const wizardStepper = document.querySelectorAll('.kernel-wizard__step');
-      const wizardPanels = document.querySelectorAll('[data-wizard-panel]');
-      const prevBtn = document.getElementById('wizard-prev');
-      const nextBtn = document.getElementById('wizard-next');
-      const generateBtn = document.getElementById('wizard-generate');
-      const customRange = document.getElementById('wizard-custom-range');
-      let currentStep = 1;
-
-      function openWizard() {
-        currentStep = 1;
-        updateWizardUI();
-        wizardModal.hidden = false;
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeWizard() {
-        wizardModal.hidden = true;
-        document.body.style.overflow = '';
-      }
-
-      function updateWizardUI() {
-        wizardStepper.forEach((s) => s.classList.toggle('active', parseInt(s.dataset.step, 10) <= currentStep));
-        wizardPanels.forEach((p) => {
-          p.hidden = parseInt(p.dataset.wizardPanel, 10) !== currentStep;
-        });
-        prevBtn.hidden = currentStep === 1;
-        nextBtn.hidden = currentStep === 4;
-        generateBtn.hidden = currentStep !== 4;
-      }
-
-      document.getElementById('open-wizard-btn').addEventListener('click', openWizard);
-      document.querySelectorAll('[data-close-wizard]').forEach((el) => {
-        el.addEventListener('click', closeWizard);
-      });
-
-      nextBtn.addEventListener('click', () => {
-        if (currentStep < 4) {
-          currentStep++;
-          updateWizardUI();
-        }
-      });
-
-      prevBtn.addEventListener('click', () => {
-        if (currentStep > 1) {
-          currentStep--;
-          updateWizardUI();
-        }
-      });
-
-      generateBtn.addEventListener('click', () => {
-        generateBtn.disabled = true;
-        generateBtn.innerHTML = '<span>جاري التوليد…</span>';
-        setTimeout(() => {
-          generateBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><polyline points="20 6 9 17 4 12"/></svg><span>تم إنشاء التقرير</span>';
-          setTimeout(closeWizard, 1200);
-        }, 1500);
-      });
-
-      // Custom range toggle in step 2
-      document.querySelectorAll('input[name="report-period"]').forEach((r) => {
-        r.addEventListener('change', () => {
-          customRange.hidden = r.value !== 'custom';
-        });
-      });
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !wizardModal.hidden) closeWizard();
-      });
-    })();
-  </script>
-
-  {/* ═══════════ KERNEL-AI-2026-07-14: Lead Capture ═══════════ */}
-
+  {/* Lead Capture */}
   <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-reports">
     <div class="max-w-3xl mx-auto px-5">
       <h2 id="lead-form-h2-reports" class="inner-section__title inner-section__title--centered">تبي تقارير تنفيذية جاهزة لمجلس الإدارة؟</h2>
-      <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يوضح لك كيف تولّد Kernel تقارير جاهزة بـ 5 لغات.</p>
+      <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يوضح لك كيف تولّد Kernel تقارير بـ 5 لغات.</p>
       <KernelLeadForm id="kernel-lead-form-reports" page="/kernel/reports/" />
     </div>
   </section>
 
-  {/* SEO content + FAQ — server-rendered for crawlers (2026-07-14) */}
+  {/* SEO content + FAQ */}
   <KernelSeoSection
     id="kernel-seo-reports"
     heading="دليل حوكمة AI — سياق إضافي عن وحدة التقارير"
@@ -698,7 +380,7 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
     faq={unit.faq}
   />
 
-  {/* Cross-links: kernel ↔ kernel + solution + doc + blog */}
+  {/* Cross-links */}
   <KernelContextLinks
     currentPath={unit.path}
     solutionPath={cross.solutionPath}
@@ -707,5 +389,9 @@ const iconArrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
     blogLabel={unit.blogLabel}
     relatedSlugs={unit.relatedSlugs}
   />
+
+  {/* Data + Engine — type="module" required for public/js/ */}
+  <script type="module" src="/js/kernel-reports-data.js"></script>
+  <script type="module" src="/js/kernel-reports.js"></script>
   <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>
