@@ -1,242 +1,37 @@
 ---
 /**
- * /kernel/connectors/ — Enterprise connectors dashboard (REPORTS-16).
+ * /kernel/connectors/ — Enterprise connectors dashboard (M26).
  *
  * Features:
- * - 4 KPI cards (total / active / requests today / avg latency)
- * - Connector cards: ERP, CRM, HIS, SharePoint, etc.
- * - Status indicators (connected/disconnected/error/syncing)
- * - Configure button + last sync time + records flowed
- * - Sync history log per connector
- * - Configure modal: endpoint, auth method, sync frequency
+ *   - 4 KPI cards (total / active / requests today / avg latency)
+ *   - 8 connector cards: SAP, Oracle, Dynamics, Epic, Moodle, SharePoint, Salesforce, Okta
+ *   - read-only default + OAuth/SAML + health + sync + latency + failure state
+ *   - token renewal (Salesforce) + OAuth setup (Moodle)
+ *   - drawer: data flow diagram + live test (safe mock) + sync log + queue
+ *   - custom connector guide (4 steps)
+ *
+ * vanilla JS فقط. حتمية كاملة (لا Math.random). prefers-reduced-motion محترم.
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
-import KernelMetricCard from '../../components/kernel/KernelMetricCard.astro';
-import KernelCard from '../../components/kernel/KernelCard.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
-import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
-import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import { buildConnectorsData } from '../../data/kernel-connectors';
+import '../../../kernel/assets/css/pages/connectors.css';
 
 const unit = getKernelUnit('connectors')!;
 const cross = getCrossLinks(unit);
 
-const jsonLd = {
-  '@graph': [
-    ...getKernelSubPageJsonLd(unit),
-    getKernelFaqJsonLd(unit),
-  ],
-} as Record<string, unknown>;
+const jsonLd: Record<string, unknown>[] = [
+  ...getKernelSubPageJsonLd(unit),
+  ...(getKernelFaqJsonLd(unit) ? [getKernelFaqJsonLd(unit)] : []),
+].filter(Boolean) as Record<string, unknown>[];
 
-// Connectors: 8 enterprise connectors (ERP, CRM, HIS, LMS, etc.)
-const connectors = [
-  {
-    id: 'sap',
-    name: 'SAP S/4HANA',
-    category: 'ERP',
-    description: 'وحدة المالية والمشتريات في SAP. قراءة فقط — بدون وصول كتابة.',
-    icon: '🏢',
-    status: 'connected',
-    lastSync: 'قبل 3 دقائق',
-    recordsToday: 1420,
-    totalRecords: 184293,
-    avgLatencyMs: 145,
-    uptime: '99.8%',
-    authMethod: 'OAuth 2.0',
-    endpoint: 'sap-prod.saudi-company.com:8443',
-    syncFreq: 'كل 5 دقائق',
-  },
-  {
-    id: 'oracle-ebs',
-    name: 'Oracle E-Business Suite',
-    category: 'ERP',
-    description: 'الموارد البشرية وكشوف الرواتب في Oracle EBS. قراءة فقط.',
-    icon: '🏛️',
-    status: 'connected',
-    lastSync: 'قبل 8 دقائق',
-    recordsToday: 218,
-    totalRecords: 42891,
-    avgLatencyMs: 198,
-    uptime: '99.5%',
-    authMethod: 'OAuth 2.0',
-    endpoint: 'oracle-ebs.saudi-company.com',
-    syncFreq: 'كل 15 دقيقة',
-  },
-  {
-    id: 'dynamics365',
-    name: 'Microsoft Dynamics 365',
-    category: 'CRM',
-    description: 'إدارة العملاء والفرص في Dynamics 365. قراءة فقط.',
-    icon: '💼',
-    status: 'connected',
-    lastSync: 'قبل 12 دقيقة',
-    recordsToday: 86,
-    totalRecords: 12450,
-    avgLatencyMs: 165,
-    uptime: '99.9%',
-    authMethod: 'Azure AD',
-    endpoint: 'saudi-company.crm.dynamics.com',
-    syncFreq: 'كل 10 دقائق',
-  },
-  {
-    id: 'epic-his',
-    name: 'Epic HIS',
-    category: 'Healthcare',
-    description: 'سجلات المرضى الإلكترونية في Epic. حساسة — تخضع لـ SFDA + HIPAA.',
-    icon: '⚕️',
-    status: 'connected',
-    lastSync: 'قبل 5 دقائق',
-    recordsToday: 312,
-    totalRecords: 58234,
-    avgLatencyMs: 220,
-    uptime: '99.7%',
-    authMethod: 'SAML 2.0',
-    endpoint: 'epic-prod.health.saudi-company.com',
-    syncFreq: 'كل 5 دقائق',
-  },
-  {
-    id: 'moodle',
-    name: 'Moodle LMS',
-    category: 'Education',
-    description: 'سجلات الطلاب في Moodle. يتطلب OAuth Setup.',
-    icon: '🎓',
-    status: 'pending',
-    lastSync: 'لم تتم المزامنة',
-    recordsToday: 0,
-    totalRecords: 0,
-    avgLatencyMs: 0,
-    uptime: '—',
-    authMethod: 'OAuth (مطلوب)',
-    endpoint: 'lms.saudi-company.com',
-    syncFreq: '—',
-  },
-  {
-    id: 'sharepoint',
-    name: 'Microsoft SharePoint',
-    category: 'Documents',
-    description: 'مستندات المؤسسة في SharePoint. فهرسة الوثائق الحساسة.',
-    icon: '📁',
-    status: 'connected',
-    lastSync: 'قبل 15 دقيقة',
-    recordsToday: 184,
-    totalRecords: 24189,
-    avgLatencyMs: 132,
-    uptime: '99.6%',
-    authMethod: 'Azure AD',
-    endpoint: 'saudi-company.sharepoint.com',
-    syncFreq: 'كل 30 دقيقة',
-  },
-  {
-    id: 'salesforce',
-    name: 'Salesforce',
-    category: 'CRM',
-    description: 'بيانات العملاء المحتملين في Salesforce.',
-    icon: '☁️',
-    status: 'error',
-    lastSync: 'فشل قبل ساعتين',
-    recordsToday: 0,
-    totalRecords: 18420,
-    avgLatencyMs: 0,
-    uptime: '94.2%',
-    authMethod: 'OAuth 2.0',
-    endpoint: 'saudi-company.my.salesforce.com',
-    syncFreq: 'كل 10 دقائق',
-    errorMsg: 'انتهت صلاحية Access Token — يحتاج تجديد',
-  },
-  {
-    id: 'okta',
-    name: 'Okta SSO',
-    category: 'Identity',
-    description: 'تسجيل الدخول الموحد وأدوار المستخدمين.',
-    icon: '🔐',
-    status: 'connected',
-    lastSync: 'قبل 30 ثانية',
-    recordsToday: 92,
-    totalRecords: 8420,
-    avgLatencyMs: 88,
-    uptime: '99.95%',
-    authMethod: 'API Token',
-    endpoint: 'saudi-company.okta.com',
-    syncFreq: 'real-time',
-  },
-];
-
-const iconConnectors = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>';
-const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
-const iconAlert = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-const iconSettings = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>';
-const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>';
+const connectorsData = buildConnectorsData();
 ---
-
-<style>
-  /*
-   * Mobile-first + RTL baseline for Connectors (kernel championship).
-   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
-   * targets, responsive breakpoints, and empty/loading state styles.
-   * Uses design tokens. No published text or layout overrides.
-   */
-  .kernel-connectors__empty-state,
-  .kernel-connectors-empty-state {
-    padding-inline: var(--space-6);
-    margin-inline: auto;
-    text-align: start;
-    color: var(--text-muted);
-    border-inline-start: 3px solid var(--interactive-primary);
-  }
-  .kernel-connectors__skeleton,
-  .kernel-connectors-skeleton {
-    inset-inline-start: 0;
-    background: var(--bg-elevated);
-    animation: kernel-connectors-shimmer 1.4s var(--ease-in-out) infinite;
-  }
-  @keyframes kernel-connectors-shimmer {
-    0% { opacity: 1; }
-    50% { opacity: 0.45; }
-    100% { opacity: 1; }
-  }
-  /* Touch targets ≥44px — accessibility on small screens */
-  .kernel-connectors [data-kernel-touch],
-  .kernel-connectors__touch {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  /* Mobile-first: single column on mobile, enhance at ≥768px */
-  .kernel-connectors__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-  @media (min-width: 768px) {
-    .kernel-connectors__grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-6);
-    }
-  }
-  @media (max-width: 640px) {
-    .kernel-connectors [data-kernel-touch] { min-height: 44px; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .kernel-connectors-skeleton { animation: none; }
-  }
-
-  /* Loading state: hide content while skeleton is visible */
-  [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
-    display: none;
-  }
-  .kernel-loading-skeleton {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    padding-block: var(--space-4);
-  }
-</style>
-
 <KernelLayout
   title={unit.title}
   description={unit.description}
@@ -245,224 +40,127 @@ const iconRefresh = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
   jsonLd={jsonLd}
   currentPath={unit.path}
   breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: 'الموصلات', href: unit.path }]}
-  extraSpeakableSelectors={['.answer-first-summary']}
 >
-  <header class="kernel-page-header">
-    <div class="kernel-page-header__lead">
-      <nav class="kernel-breadcrumb" aria-label="مسار التنقل">
-        <ol>
-          <li><a href="/">BrightAI</a></li>
-          <li><a href="/kernel/">Kernel</a></li>
-          <li aria-current="page">{unit.label}</li>
-        </ol>
-      </nav>
-      <h1 class="kernel-page-header__title">{unit.h1}</h1>
-      {/* BAI-VOC-001-B (2026-07-18): answer-first summary — wired as the
-          second cssSelector for WebPage SpeakableSpecification. */}
-      <p class="answer-first-summary" data-speakable-target="answer-first">موصلات جاهزة لأنظمة المؤسسة (ERP, CRM, HIS, LMS) ونماذج AI (OpenAI, Azure, Anthropic, Llama, نماذج On-Premise) — قراءة فقط افتراضياً مع مزامنة دورية ومراقبة حالة. يحمي بياناتك من vendor lock-in ويبقي الحوكمة موحدة.</p>
-      <p class="kernel-page-header__subtitle">
-        8 موصلات لأنظمة المؤسسة (ERP, CRM, HIS, LMS) — قراءة فقط مع مزامنة دورية ومراقبة حالة.
-      </p>
-    </div>
-    <div class="kernel-page-header__actions">
-      <KernelDemoPill />
-    </div>
-  </header>
-
-  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={connectors.length}>
-    <div data-kernel-skeleton class="kernel-loading-skeleton">
-      <KernelSkeleton variant="card" count={4} />
-      <KernelSkeleton variant="text" count={6} />
-    </div>
-    <div data-kernel-empty hidden>
-      <KernelEmptyState title="ما في موصلات الحين" message="الموصلات تظهر فور توفرها." />
-    </div>
-
-    {/* KPI cards */}
-    <section class="kernel-metric-grid kernel-stagger" aria-label="مؤشرات الموصلات">
-      <KernelMetricCard label="إجمالي الموصلات" value="8" variant="brand" iconSvg={iconConnectors} footer="6 نشطة · 1 معلقة · 1 خطأ" />
-      <KernelMetricCard label="قراءة فقط" value="8" iconSvg={iconCheck} footer="بدون وصول كتابة" />
-      <KernelMetricCard label="طلبات اليوم" value="2,148" trend="up" trendLabel="12%" iconSvg={iconConnectors} footer="عبر جميع الموصلات" />
-      <KernelMetricCard label="متوسط زمن الاستجابة" value="128" unit="ms" iconSvg={iconClock} footer="P95: 240ms" />
-    </section>
-
-    {/* Connectors grid */}
-    <section class="kernel-col-12">
-      <KernelCard title="الموصلات" subtitle="حالة الاتصال + آخر مزامنة + السجلات المتدفقة" iconSvg={iconConnectors}>
-        <div class="kernel-card__body">
-          <div class="kernel-connectors-grid">
-            {connectors.map((c) => (
-              <article class:list={['kernel-connector-card', `kernel-connector-card--${c.status}`]} data-connector-id={c.id}>
-                <header class="kernel-connector-card__header">
-                  <div class="kernel-connector-card__icon-block">
-                    <span class="kernel-connector-card__icon" aria-hidden="true">{c.icon}</span>
-                    <span class:list={['kernel-connector-card__status-dot', `kernel-connector-card__status-dot--${c.status}`]} aria-label={`الحالة: ${c.status}`}></span>
-                  </div>
-                  <div class="kernel-connector-card__title-block">
-                    <h3 class="kernel-connector-card__name">{c.name}</h3>
-                    <p class="kernel-connector-card__category">{c.category} · {c.authMethod}</p>
-                  </div>
-                </header>
-
-                <p class="kernel-connector-card__description">{c.description}</p>
-
-                <div class="kernel-connector-card__status-row">
-                  <span class:list={['kernel-connector-card__status-pill', `kernel-connector-card__status-pill--${c.status}`]}>
-                    {c.status === 'connected' && (<><Fragment set:html={iconCheck} /> متصل</>)}
-                    {c.status === 'pending' && (<><Fragment set:html={iconClock} /> معلق</>)}
-                    {c.status === 'error' && (<><Fragment set:html={iconAlert} /> خطأ</>)}
-                    {c.status === 'syncing' && (<><Fragment set:html={iconRefresh} /> مزامنة…</>)}
-                  </span>
-                  <span class="kernel-connector-card__uptime">{c.uptime}</span>
-                </div>
-
-                {c.status === 'error' && c.errorMsg && (
-                  <div class="kernel-connector-card__error">
-                    <Fragment set:html={iconAlert} />
-                    <span>{c.errorMsg}</span>
-                  </div>
-                )}
-
-                <div class="kernel-connector-card__metrics">
-                  <div class="kernel-connector-card__metric">
-                    <span class="kernel-connector-card__metric-label">آخر مزامنة</span>
-                    <span class="kernel-connector-card__metric-value">{c.lastSync}</span>
-                  </div>
-                  <div class="kernel-connector-card__metric">
-                    <span class="kernel-connector-card__metric-label">اليوم</span>
-                    <span class="kernel-connector-card__metric-value">{c.recordsToday.toLocaleString('ar-SA')}</span>
-                  </div>
-                  <div class="kernel-connector-card__metric">
-                    <span class="kernel-connector-card__metric-label">زمن الاستجابة</span>
-                    <span class="kernel-connector-card__metric-value">{c.avgLatencyMs ? `${c.avgLatencyMs} ms` : '—'}</span>
-                  </div>
-                </div>
-
-                <footer class="kernel-connector-card__footer">
-                  <button
-                    type="button"
-                    class="kernel-connector-card__btn kernel-connector-card__btn--secondary"
-                    data-configure-connector={c.id}
-                    aria-label={`إعدادات ${c.name}`}
-                  >
-                    <Fragment set:html={iconSettings} />
-                    <span>إعدادات</span>
-                  </button>
-                  <button
-                    type="button"
-                    class="kernel-connector-card__btn kernel-connector-card__btn--primary"
-                    data-sync-connector={c.id}
-                    aria-label={`مزامنة الآن ${c.name}`}
-                    disabled={c.status === 'pending'}
-                  >
-                    <Fragment set:html={iconRefresh} />
-                    <span>مزامنة الآن</span>
-                  </button>
-                </footer>
-              </article>
-            ))}
-          </div>
-        </div>
-      </KernelCard>
-    </section>
-
-  </div>
-
-  {/* Configure Modal */}
-  <div class="kernel-modal" id="connector-modal" role="dialog" aria-modal="true" aria-labelledby="connector-modal-title" hidden>
-    <div class="kernel-modal__backdrop" data-close-connector-modal></div>
-    <div class="kernel-modal__panel">
-      <header class="kernel-modal__header">
-        <div>
-          <h2 class="kernel-modal__title" id="connector-modal-title">إعدادات الموصل</h2>
-          <p class="kernel-modal__subtitle" id="connector-modal-subtitle"></p>
-        </div>
-        <button type="button" class="kernel-modal__close" data-close-connector-modal aria-label="إغلاق">
-          <Fragment set:html={iconClose} />
-        </button>
-      </header>
-
-      <div class="kernel-modal__body">
-        <section class="kernel-modal__section">
-          <h3 class="kernel-modal__section-title">معلومات الاتصال</h3>
-          <div class="kernel-connector-config">
-            <label class="kernel-policy-editor__field">
-              <span>Endpoint URL</span>
-              <input type="text" id="connector-endpoint" class="kernel-policy-editor__input" readonly />
-            </label>
-            <label class="kernel-policy-editor__field">
-              <span>طريقة المصادقة</span>
-              <input type="text" id="connector-auth" class="kernel-policy-editor__input" readonly />
-            </label>
-            <label class="kernel-policy-editor__field">
-              <span>تكرار المزامنة</span>
-              <select id="connector-freq" class="kernel-policy-editor__input">
-                <option value="realtime">real-time</option>
-                <option value="5min">كل 5 دقائق</option>
-                <option value="15min">كل 15 دقيقة</option>
-                <option value="30min">كل 30 دقيقة</option>
-                <option value="hourly">كل ساعة</option>
-                <option value="daily">يومي</option>
-              </select>
-            </label>
-          </div>
-        </section>
-
-        <section class="kernel-modal__section">
-          <h3 class="kernel-modal__section-title">سجل المزامنة الأخير</h3>
-          <ol class="kernel-connector-sync-log" id="connector-sync-log"></ol>
-        </section>
-
-        <section class="kernel-modal__section">
-          <h3 class="kernel-modal__section-title">إحصائيات</h3>
-          <div class="kernel-connector-stats" id="connector-stats"></div>
-        </section>
+  <main class="connectors-page" id="connectors-page">
+    <header class="kernel-page-header">
+      <div class="kernel-page-header__lead">
+        <nav class="kernel-breadcrumb" aria-label="مسار التنقل">
+          <ol>
+            <li><a href="/">BrightAI</a></li>
+            <li><a href="/kernel/">Kernel</a></li>
+            <li aria-current="page">{unit.label}</li>
+          </ol>
+        </nav>
+        <h1 class="kernel-page-header__title">{unit.h1}</h1>
+        <p class="kernel-page-header__subtitle">{unit.shortDescription}</p>
       </div>
+      <div class="kernel-page-header__actions">
+        <KernelDemoPill />
+      </div>
+    </header>
 
-      <footer class="kernel-modal__footer">
-        <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--cancel" data-close-connector-modal>إغلاق</button>
-        <button type="button" class="kernel-policy-editor__btn kernel-policy-editor__btn--save" id="save-connector-btn">
-          <Fragment set:html={iconCheck} />
-          <span>حفظ التغييرات</span>
-        </button>
-      </footer>
+    <div class="kernel-main kernel-page-fade-in">
+      {/* KPIs */}
+      <section class="kc-kpis" aria-label="مؤشرات الموصلات">
+        <div class="kc-kpi">
+          <div class="kc-kpi__label">إجمالي الموصلات</div>
+          <div class="kc-kpi__value" id="kc-kpi-total">{connectorsData.kpis.total}</div>
+          <div class="kc-kpi__footer">6 نشطة · 1 معلقة · 1 خطأ</div>
+        </div>
+        <div class="kc-kpi">
+          <div class="kc-kpi__label">نشطة</div>
+          <div class="kc-kpi__value" id="kc-kpi-active">{connectorsData.kpis.active}</div>
+          <div class="kc-kpi__footer">قراءة فقط</div>
+        </div>
+        <div class="kc-kpi">
+          <div class="kc-kpi__label">طلبات اليوم</div>
+          <div class="kc-kpi__value" id="kc-kpi-requests">—</div>
+          <div class="kc-kpi__footer">عبر جميع الموصلات</div>
+        </div>
+        <div class="kc-kpi">
+          <div class="kc-kpi__label">متوسط زمن الاستجابة</div>
+          <div class="kc-kpi__value" id="kc-kpi-latency">—</div>
+          <div class="kc-kpi__footer">P95: 240ms</div>
+        </div>
+      </section>
+
+      {/* Connector grid */}
+      <section aria-label="الموصلات">
+        <div class="kc-grid" id="kc-grid"></div>
+      </section>
+
+      {/* Custom connector guide */}
+      <section id="kc-custom-guide-section" class="kernel-col-12" aria-labelledby="kc-guide-title">
+        <h2 id="kc-guide-title" class="kernel-section-title">بناء موصل مخصص</h2>
+        <p class="kernel-section-subtitle">4 خطوات لربط نظامك الخاص بـ Kernel.</p>
+        <div class="kc-guide" id="kc-custom-guide"></div>
+      </section>
     </div>
-  </div>
 
-  <!-- BAI-SEC-18 (2026-07-25): define:vars converted to JSON data block
-       + external ES module. The `connectors` array is serialised into a
-       sibling <script type="application/json"> block; the external JS
-       reads it via JSON.parse. This enables strict-CSP (no 'unsafe-inline'
-       on script-src). -->
-  <script type="application/json" id="kernel-connectors-data" set:html={JSON.stringify(connectors)}></script>
-  <script type="module" src="/js/kernel-connectors.js"></script>
-
-  {/* ═══════════ KERNEL-AI-2026-07-14: Lead Capture ═══════════ */}
-
-  <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-connectors">
-    <div class="max-w-3xl mx-auto px-5">
-      <h2 id="lead-form-h2-connectors" class="inner-section__title inner-section__title--centered">تبي تربط Kernel بأنظمتك الحالية؟</h2>
-      <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يوضح لك الموصلات الجاهزة والموصلات المخصصة لأنظمتك.</p>
-      <KernelLeadForm id="kernel-lead-form-connectors" page="/kernel/connectors/" />
+    {/* Drawer */}
+    <div class="kc-drawer" id="kc-drawer" role="dialog" aria-modal="true" aria-labelledby="kc-drawer-title" hidden>
+      <div class="kc-drawer__backdrop" data-drawer-backdrop></div>
+      <div class="kc-drawer__panel">
+        <header class="kc-drawer__header">
+          <div>
+            <h2 class="kc-drawer__title" id="kc-drawer-title" data-drawer-title>—</h2>
+            <p class="kc-drawer__subtitle" data-drawer-subtitle>—</p>
+          </div>
+          <button type="button" class="kc-drawer__close" data-drawer-close aria-label="إغلاق">×</button>
+        </header>
+        <div class="kc-drawer__body">
+          <section class="kc-drawer__section">
+            <h3>مخطط تدفق البيانات</h3>
+            <div id="kc-drawer-flow"></div>
+          </section>
+          <section class="kc-drawer__section">
+            <h3>الاختبار الحي</h3>
+            <div id="kc-drawer-test"></div>
+          </section>
+          <section class="kc-drawer__section">
+            <h3>سجل المزامنة</h3>
+            <div id="kc-drawer-sync"></div>
+          </section>
+          <section class="kc-drawer__section" id="kc-drawer-queue-section">
+            <div id="kc-drawer-queue"></div>
+          </section>
+        </div>
+      </div>
     </div>
-  </section>
 
-  {/* SEO content + FAQ — server-rendered for crawlers (2026-07-14) */}
-  <KernelSeoSection
-    id="kernel-seo-connectors"
-    heading="دليل حوكمة AI — سياق إضافي عن وحدة الموصلات"
-    blocks={unit.seoBlocks}
-    faq={unit.faq}
-  />
+    {/* Toast */}
+    <div class="kc-toast" id="kc-toast" hidden></div>
 
-  {/* Cross-links: kernel ↔ kernel + solution + doc + blog */}
-  <KernelContextLinks
-    currentPath={unit.path}
-    solutionPath={cross.solutionPath}
-    docPath={cross.docPath ?? ''}
-    blogPath={cross.blogPath}
-    blogLabel={unit.blogLabel}
-    relatedSlugs={unit.relatedSlugs}
-  />
-  <script type="module" src="/js/kernel-loading-state.js"></script>
+    {/* Lead Capture */}
+    <section class="kernel-lead-section inner-section inner-section--alt" aria-labelledby="lead-form-h2-connectors">
+      <div class="max-w-3xl mx-auto px-5">
+        <h2 id="lead-form-h2-connectors" class="inner-section__title inner-section__title--centered">تبي تربط Kernel بأنظمتك الحالية؟</h2>
+        <p class="inner-section__lead inner-section__lead--centered">فريق الحوكمة يوضح لك الموصلات الجاهزة والموصلات المخصصة لأنظمتك.</p>
+        <KernelLeadForm id="kernel-lead-form-connectors" page="/kernel/connectors/" />
+      </div>
+    </section>
+
+    {/* SEO content + FAQ */}
+    <KernelSeoSection
+      id="kernel-seo-connectors"
+      heading="دليل حوكمة AI — سياق إضافي عن وحدة الموصلات"
+      blocks={unit.seoBlocks}
+      faq={unit.faq}
+    />
+
+    {/* Cross-links */}
+    <KernelContextLinks
+      currentPath={unit.path}
+      solutionPath={cross.solutionPath}
+      docPath={cross.docPath ?? ''}
+      blogPath={cross.blogPath}
+      blogLabel={unit.blogLabel}
+      relatedSlugs={unit.relatedSlugs}
+    />
+
+    {/* Data + Engine — type="module" required for public/js/ */}
+    <script type="module" src="/js/kernel-connectors-data.js"></script>
+    <script type="module" src="/js/kernel-connectors.js"></script>
+    <script type="module" src="/js/kernel-loading-state.js"></script>
+  </main>
 </KernelLayout>
