@@ -11,51 +11,6 @@
 
 ---
 
-# Prompt 18: صفحة السياسات
-
-```text
-نفّذ M17 على /kernel/policies/.
-
-أضف:
-- 11 policies.
-- active/draft/archived states.
-- PII type.
-- compliance package.
-- action.
-- application count.
-- last modified.
-- edit.
-- test in Playground.
-- simulation mode.
-- version history.
-- Git-like diff.
-- rollback.
-- conflict detection.
-- import/export.
-- AI policy generator with explicit Demo/Live badge.
-- no-code condition builder.
-- AND/OR.
-- exceptions.
-- action:
-  block.
-  redact.
-  warn.
-  approve.
-  local-model-only.
-
-Simulation:
-- replay last 1000 requests.
-- extra blocks.
-- false positives.
-- affected departments.
-- affected compliance controls.
-- before activation warning.
-
-لا تسمح بتعديل Policy version مستخدمة في Certificate قديم.
-```
-
----
-
 # Prompt 19: Audit وHash Verification
 
 ```text
