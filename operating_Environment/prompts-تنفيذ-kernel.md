@@ -9,31 +9,6 @@
 
 ---
 
----
-
-# Prompt 21: Replay
-
-```text
-نفّذ M20 على /kernel/replay/.
-
-أضف:
-- historical period selector.
-- policy selector.
-- department scope.
-- replay historical requests.
-- before/after comparison.
-- extra blocks.
-- extra allows.
-- false positives.
-- affected departments.
-- sample affected cases.
-- side-effect warning.
-- investigation mode by Trace ID.
-- timeline reconstruction.
-- decision memo export.
-
-لا ترسل البيانات التاريخية إلى Provider خارجي أثناء Replay إلا بعد إظهار ذلك والحصول على موافقة.
-```
 
 ---
 
