@@ -11,48 +11,6 @@
 
 ---
 
-# Prompt 19: Audit وHash Verification
-
-```text
-نفّذ M18 على /kernel/audit/.
-
-أضف:
-- date filters.
-- risk filters.
-- status filters.
-- user filters.
-- department filters.
-- Trace search.
-- semantic search إذا كانت البنية تدعمها.
-- CSV/JSON/PDF export.
-- virtualized table.
-- risk bar.
-- status pill.
-- hash badge.
-- Trace Drawer.
-
-Hash verifier:
-- paste hash.
-- verify chain.
-- show previous/current/next hash.
-- success state.
-- failure state.
-- tampering demonstration في Demo mode فقط.
-- لا تعدل بيانات حقيقية.
-- explain which link broke.
-- export verification result.
-
-Anomaly:
-- unusual activity badge.
-- explanation.
-- related user and baseline.
-- link إلى Trace.
-
-لا تستخدم "immutable" إلا إذا كان التحقق فعلياً أو اكتب "Demo verification".
-```
-
----
-
 # Prompt 20: الموافقات
 
 ```text

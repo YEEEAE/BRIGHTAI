@@ -1,14 +1,33 @@
 ---
 /**
- * /kernel/approvals/ — Human-in-the-loop approvals queue (REPORTS-15).
+ * /kernel/approvals/ — Human-in-the-loop approvals queue (M19 build).
  *
- * REPORTS-15 update:
- * - Tabs: Pending / Approved / Rejected (with counts + notification badge on Pending).
- * - Approval cards: snippet + risk score + requester avatar + 3 actions.
- * - Approval modal (opened on Approve/Reject): full request context +
- *   signature/comment textarea + decision confirmation.
- * - Demo mode: all actions are stubbed locally (status updates + UI feedback).
- * - Mobile responsive + RTL preserved.
+ * M19 (2026-08-01) — replaces the old REPORTS-15 tabs/cards/demo page with the
+ * queue list/detail design from تصميم-صفحات-kernel.md §8:
+ *   - Five status filter cards (7 معلقة · 3 حرجة · 2 مراجعة · 142 موافقة · 8 رفض),
+ *     clickable as filters; the active one gets a colored border.
+ *   - List/detail: right column (380px) = request cards, left = detail panel.
+ *   - Request card: 3px risk border · 40px mini risk counter · 2-line title ·
+ *     requester + dept · thin decreasing SLA bar (red under 20%) · trace badge.
+ *   - Detail panel: full request · colorized PII findings · triggered policies ·
+ *     "ماذا لو وافقت" impact card (3 points) · mandatory reason on reject with
+ *     auto-suggest · three big buttons: وافق / ارفض / حوّل.
+ *   - Keyboard batch: J/K move, A approve, R reject, F transfer, Space preview,
+ *     ? toggles the shortcuts hint.
+ *
+ * Immutable rule (Prompt 20): every decision appends a NEW Audit event to the
+ * on-page decision ledger ([data-kap-ledger]) that links Audit · Trace ·
+ * Evidence · Certificate. The sealed hash chain in kernel-approvals-data.js is
+ * never mutated.
+ *
+ * Determinism contract (verified by scripts/verify-approvals.mjs):
+ *   total = 162 · pending = 7 · critical = 3 · review = 2 · approved = 142
+ *   rejected = 8 · chain genesis 0x00000000 · final hash 0x90e4c4c8.
+ *
+ * Scripts (CSP-safe, external only):
+ *   /js/kernel-approvals-data.js  → classic UMD, exposes window.KernelApprovalsData
+ *   /js/kernel-approvals.js       → ES module engine (worker + main-thread fallback)
+ *   /js/kernel-loading-state.js   → skeleton/loading transition
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
@@ -19,234 +38,182 @@ import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/ker
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import { buildApprovalStats } from '../../data/kernel-approvals';
 
 const unit = getKernelUnit('approvals')!;
 const cross = getCrossLinks(unit);
 
-const jsonLd = [
+// Deterministic baseline — computed at build time, byte-identical to the
+// client dataset (kernel-approvals-data.js). SSR'd into the filter cards.
+const stats = buildApprovalStats();
+
+const jsonLd: Record<string, unknown>[] = [
   ...getKernelSubPageJsonLd(unit),
   getKernelFaqJsonLd(unit),
-];
+].filter((item): item is Record<string, unknown> => Boolean(item));
 
-const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-const iconX = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-const iconComment = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>';
-const iconWarning = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
-const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
 const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+const iconSearch = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+const iconKeyboard = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01"/><path d="M9 14h6"/></svg>';
 
-// Tabs (with notification badge on Pending)
-const tabs = [
-  { id: 'pending',   label: 'قيد الانتظار', count: 7, selected: true,  alert: true },
-  { id: 'critical',  label: 'حرجة',         count: 3 },
-  { id: 'in_progress', label: 'قيد المراجعة', count: 2 },
-  { id: 'approved',  label: 'موافق عليها',  count: 142 },
-  { id: 'rejected',  label: 'مرفوضة',        count: 8 },
+// Status filter cards — engine reads data-kap-filter + data-kap-filter-count.
+// The status class (--pending/--critical/…) selects the active border color.
+const FILTERS = [
+  { id: 'pending',   label: 'معلقة',       count: stats.pending },
+  { id: 'critical',  label: 'حرجة',        count: stats.critical },
+  { id: 'review',    label: 'قيد المراجعة', count: stats.review },
+  { id: 'approved',  label: 'موافقة',      count: stats.approved },
+  { id: 'rejected',  label: 'رفض',         count: stats.rejected },
 ];
 
-type ApprovalItem = {
-  id: string;
-  title: string;
-  context: string;
-  traceId: string;
-  risk: number;
-  requester: string;
-  requesterRole: string;
-  initials: string;
-  age: string;
-  category: 'pending' | 'approved' | 'rejected';
-};
-
-// Pending approvals (default tab)
-const PENDING: ApprovalItem[] = [
-  {
-    id: 'a-1',
-    title: 'وصول بيانات عملاء — القسم 5 PDPL',
-    context: 'طلب تصدير قائمة 2,400 عميل تحتوي اسم + هاتف + بريد + عنوان. النظام رصد 87% مخاطرة وأوقف التنفيذ.',
-    traceId: 'AI-2026-10493',
-    risk: 87,
-    requester: 'محمد الحربي',
-    requesterRole: 'تسويق',
-    initials: 'م',
-    age: 'قبل 3د',
-    category: 'pending',
-  },
-  {
-    id: 'a-2',
-    title: 'تشغيل نموذج توليدي على سجلات طبية',
-    context: 'محاولة استخدام نموذج توليدي لتحليل 580 سجل طبي مع PII. النظام رصد PII متعدد الحقول وطلب مراجعة SFDA.',
-    traceId: 'AI-2026-10491',
-    risk: 72,
-    requester: 'سارة الفيصل',
-    requesterRole: 'مالية',
-    initials: 'س',
-    age: 'قبل 8د',
-    category: 'pending',
-  },
-  {
-    id: 'a-3',
-    title: 'تصدير تقرير مالي خارجي',
-    context: 'إنشاء تقرير مالي ربع سنوي يحتوي أرقاماً تشغيلية. النظام رصد مشاركة مع طرف خارجي وطلب مراجعة.',
-    traceId: 'AI-2026-10488',
-    risk: 68,
-    requester: 'سارة الفيصل',
-    requesterRole: 'مالية',
-    initials: 'س',
-    age: 'قبل 14د',
-    category: 'pending',
-  },
-  {
-    id: 'a-4',
-    title: 'دمج نموذج ثالث + PII',
-    context: 'جرّب دمج نموذج خارجي (Cohere) مع كشف PII. النظام رصد مخاطرة مرتفعة وطلب مراجعة من قسم تقنية.',
-    traceId: 'AI-2026-10485',
-    risk: 64,
-    requester: 'خالد الغامدي',
-    requesterRole: 'تقنية',
-    initials: 'خ',
-    age: 'قبل 22د',
-    category: 'pending',
-  },
-  {
-    id: 'a-5',
-    title: 'استعلام بنكي بمعلومات حساسة',
-    context: 'استعلام توليدي يستهدف حساب عميل بعينه. النظام رصد PII مالي وأوقف التنفيذ.',
-    traceId: 'AI-2026-10481',
-    risk: 61,
-    requester: 'محمد الحربي',
-    requesterRole: 'تسويق',
-    initials: 'م',
-    age: 'قبل 31د',
-    category: 'pending',
-  },
-];
-
-const APPROVED: ApprovalItem[] = [
-  {
-    id: 'a-6',
-    title: 'تلخيص سياسة الإجازات',
-    context: 'استعلام تلخيصي عن لوائح الإجازات. موافقة تلقائية (مخاطر 12/100).',
-    traceId: 'AI-2026-10492',
-    risk: 12,
-    requester: 'أحمد القحطاني',
-    requesterRole: 'عمليات',
-    initials: 'أ',
-    age: 'قبل 18د',
-    category: 'approved',
-  },
-  {
-    id: 'a-7',
-    title: 'تحليل عقد مورد',
-    context: 'تحليل عقد شراء مورّد مع إخفاء PII تلقائي. مخاطر 28/100.',
-    traceId: 'AI-2026-10490',
-    risk: 28,
-    requester: 'نورة الشهراني',
-    requesterRole: 'قانونية',
-    initials: 'ن',
-    age: 'قبل 24د',
-    category: 'approved',
-  },
-];
-
-const REJECTED: ApprovalItem[] = [
-  {
-    id: 'a-8',
-    title: 'استعلام مع رقم هوية عميل',
-    context: 'محاولة الوصول لبيانات عميل برقم هوية وطني مباشرة. مخاطر 94/100 — مرفوضة.',
-    traceId: 'AI-2026-10470',
-    risk: 94,
-    requester: 'محمد الحربي',
-    requesterRole: 'تسويق',
-    initials: 'م',
-    age: 'قبل 2س',
-    category: 'rejected',
-  },
-];
-
-function riskClass(score: number): string {
-  if (score >= 80) return 'kernel-approval-card--critical';
-  if (score >= 60) return 'kernel-approval-card--high';
-  return 'kernel-approval-card--medium';
-}
-
-function riskBadgeClass(score: number): string {
-  if (score > 85) return 'kernel-risk-badge--critical';
-  if (score >= 60) return 'kernel-risk-badge--high';
-  if (score >= 30) return 'kernel-risk-badge--medium';
-  return 'kernel-risk-badge--low';
-}
-
-// Counts
-const COUNT_PENDING = PENDING.length + 3; // 5 listed + 2 in queue
-const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
+const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 ---
 
 <style>
   /*
    * Mobile-first + RTL baseline for Approvals (kernel championship).
-   * Injected by kernel-mobile-baseline.mjs. Logical properties (RTL-safe), ≥44px touch
-   * targets, responsive breakpoints, and empty/loading state styles.
-   * Uses design tokens. No published text or layout overrides.
+   * Logical properties (RTL-safe), ≥44px touch targets, responsive breakpoints,
+   * and empty/loading state styles. Uses design tokens.
+   * NOTE: the queue/list + detail + filter-card + ledger styles live in
+   * src/styles/kernel.css (block 24) so they stay consistent with the kernel pages.
    */
-  .kernel-approvals__empty-state,
-  .kernel-approvals-empty-state {
+  .kernel-ap__empty-state,
+  .kernel-ap-empty-state {
     padding-inline: var(--space-6);
     margin-inline: auto;
     text-align: start;
     color: var(--text-muted);
     border-inline-start: 3px solid var(--interactive-primary);
   }
-  .kernel-approvals__skeleton,
-  .kernel-approvals-skeleton {
+  .kernel-ap__skeleton,
+  .kernel-ap-skeleton {
     inset-inline-start: 0;
     background: var(--bg-elevated);
-    animation: kernel-approvals-shimmer 1.4s var(--ease-in-out) infinite;
+    animation: kernel-ap-shimmer 1.4s var(--ease-in-out) infinite;
   }
-  @keyframes kernel-approvals-shimmer {
+  @keyframes kernel-ap-shimmer {
     0% { opacity: 1; }
     50% { opacity: 0.45; }
     100% { opacity: 1; }
   }
-  /* Touch targets ≥44px — accessibility on small screens */
-  .kernel-approvals [data-kernel-touch],
-  .kernel-approvals__touch {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  /* Mobile-first: single column on mobile, enhance at ≥768px */
-  .kernel-approvals__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-  @media (min-width: 768px) {
-    .kernel-approvals__grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-6);
-    }
-  }
-  @media (max-width: 640px) {
-    .kernel-approvals [data-kernel-touch] { min-height: 44px; }
-  }
   @media (prefers-reduced-motion: reduce) {
-    .kernel-approvals-skeleton { animation: none; }
+    .kernel-ap-skeleton { animation: none; }
   }
 
-  /* Empty-state presentation (shown when a tab panel has no items) */
-  .kernel-approvals-empty-state[hidden] { display: none; }
-  .kernel-approvals-empty-state {
+  /* Empty state (engine toggles via data-kap-empty) */
+  .kernel-ap-empty-state[hidden] { display: none; }
+  .kernel-ap-empty-state {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: var(--space-2);
+    gap: var(--space-3);
     padding-block: var(--space-8);
     padding-inline: var(--space-6);
     background: var(--bg-surface);
     border-radius: var(--radius-lg);
     border-inline-start: 3px solid var(--interactive-primary);
   }
-  .kernel-approvals-empty-state__title { margin: 0; font-size: var(--text-lg); color: var(--text-primary); }
-  .kernel-approvals-empty-state__hint { margin: 0; color: var(--text-secondary); }
+  .kernel-ap-empty-state__title { margin: 0; font-size: var(--text-lg); color: var(--text-primary); }
+  .kernel-ap-empty-state__hint { margin: 0; color: var(--text-secondary); }
+  .kernel-ap-empty-state__reset {
+    min-block-size: 44px;
+    min-inline-size: 44px;
+    padding-inline: var(--space-5);
+    padding-block: var(--space-2);
+    border: 1px solid var(--interactive-primary);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--interactive-primary);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+  }
+  .kernel-ap-empty-state__reset:hover { background: var(--bg-elevated); }
+
+  /* Toolbar: search */
+  .kernel-ap-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-block-end: var(--space-4);
+  }
+  .kernel-ap-toolbar__search {
+    position: relative;
+    flex: 1;
+    min-inline-size: 0;
+  }
+  .kernel-ap-toolbar__search-icon {
+    position: absolute;
+    inset-inline-start: var(--space-3);
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    inline-size: 18px;
+    block-size: 18px;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .kernel-ap-toolbar__input {
+    inline-size: 100%;
+    min-block-size: 44px;
+    padding-inline-start: var(--space-10);
+    padding-inline-end: var(--space-4);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: var(--text-sm);
+  }
+  .kernel-ap-toolbar__input:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 1px;
+  }
+  .kernel-ap-toolbar__total {
+    flex-shrink: 0;
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  /* Shortcuts hint button */
+  .kernel-ap-shortcuts-btn {
+    flex-shrink: 0;
+    min-block-size: 44px;
+    min-inline-size: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding-inline: var(--space-3);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-family: inherit;
+    font-size: var(--text-sm);
+    cursor: pointer;
+  }
+  .kernel-ap-shortcuts-btn:hover { background: var(--bg-elevated); color: var(--text-primary); }
+  .kernel-ap-shortcuts-btn:focus-visible {
+    outline: 2px solid var(--brand-500);
+    outline-offset: 2px;
+  }
+
+  /* Ledger heading */
+  .kernel-ap-ledger-wrap {
+    margin-block-start: var(--space-6);
+  }
+  .kernel-ap-ledger-title {
+    margin: 0;
+    font-size: var(--text-lg);
+    color: var(--text-primary);
+  }
+  .kernel-ap-ledger-desc {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+  }
 
   /* Loading state: hide content while skeleton is visible */
   [data-kernel-loading] > *:not([data-kernel-skeleton]):not([data-kernel-empty]) {
@@ -284,7 +251,7 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
           second cssSelector for WebPage SpeakableSpecification. */}
       <p class="answer-first-summary" data-speakable-target="answer-first">موافقات بشرية منظمة على قرارات AI عالية المخاطر: ترتيب حسب درجة المخاطرة، تحديد جماعي، رفض جماعي بسبب واضح، وتصعيد تلقائي عند انتهاء المهلة. كل قرار يُسجَّل في سجل تدقيق غير قابل للتعديل.</p>
       <p class="kernel-page-header__subtitle">
-        لوحة مراجعة تشغيلية للطلبات التي تحتاج موافقة بشرية قبل التنفيذ، مع ترتيب حسب المخاطر، تحديد جماعي، ورفض جماعي بسبب واضح.
+        قائمة طلبات حية تعرض درجة المخاطرة ومهلة SLA، مع لوحة تفاصيل كاملة: فحص PII، السياسات المشتعلة، أثر الموافقة، وتعليل إلزامي عند الرفض.
       </p>
     </div>
     <div class="kernel-page-header__actions">
@@ -292,232 +259,133 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
     </div>
   </header>
 
-  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={PENDING.length + APPROVED.length + REJECTED.length}>
+  <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={stats.total}>
     <div data-kernel-skeleton class="kernel-loading-skeleton">
       <KernelSkeleton variant="card" count={3} />
-      <KernelSkeleton variant="text" count={6} />
+      <KernelSkeleton variant="text" count={5} />
     </div>
     <div data-kernel-empty hidden>
       <KernelEmptyState title="ما في طلبات موافقات الحين" message="طلبات الموافقات تظهر فور توفرها." />
     </div>
 
-    <!-- Tabs with notification badge (KRN-015: full WAI-ARIA tabs pattern) -->
-    <div class="kernel-tabs" role="tablist" aria-label="حالات الموافقات" data-kernel-tabs>
-      {tabs.map(tab => (
+    <!-- Status filter cards (five) — clickable filters, active gets colored border -->
+    <div class="kernel-ap-filters" data-kap-filters role="group" aria-label="حالات الموافقات">
+      {FILTERS.map((f, i) => (
         <button
-          id={`kernel-tab-${tab.id}`}
-          class="kernel-tabs__item"
-          role="tab"
           type="button"
-          data-tab-id={tab.id}
-          aria-selected={tab.selected ? 'true' : 'false'}
-          aria-controls={`tabpanel-${tab.id}`}
-          tabindex={tab.selected ? 0 : -1}
+          class:list={[
+            'kernel-ap-filter',
+            `kernel-ap-filter--${f.id}`,
+            i === 0 && 'kernel-ap-filter--active',
+          ]}
+          data-kap-filter={f.id}
+          aria-pressed={i === 0 ? 'true' : 'false'}
+          aria-label={`${f.label}: ${fmtCount(f.count)} طلب`}
         >
-          <span>{tab.label}</span>
-          <span class:list={['kernel-approvals-tabs-count', tab.alert && 'kernel-approvals-tabs-count--alert']}>{tab.count}</span>
+          <span>{f.label}</span>
+          <span class="kernel-ap-filter__count" data-kap-filter-count={f.id}>{fmtCount(f.count)}</span>
         </button>
       ))}
     </div>
 
-    <!-- PENDING panel (KRN-015: aria-labelledby + tabindex="0" for focus) -->
-    <section class="kernel-tabs-panel" id="tabpanel-pending" role="tabpanel" aria-labelledby="kernel-tab-pending" tabindex="0" data-kernel-panel="pending">
-      <div class="kernel-approvals-empty-state" data-kernel-approvals-empty hidden role="status" aria-live="polite">
-        <p class="kernel-approvals-empty-state__title">ما في طلبات قيد الانتظار الحين</p>
-        <p class="kernel-approvals-empty-state__hint">كل الطلبات الحالية تمّت معالجتها. تقدر ترجع لاحقًا أو تتواصل مع فريق الحوكمة.</p>
+    <!-- Toolbar: search + total + shortcuts hint -->
+    <div class="kernel-ap-toolbar">
+      <div class="kernel-ap-toolbar__search">
+        <span class="kernel-ap-toolbar__search-icon" aria-hidden="true"><Fragment set:html={iconSearch} /></span>
+        <input
+          type="search"
+          class="kernel-ap-toolbar__input"
+          data-kap-search
+          placeholder="بحث بالعنوان، Trace ID، المستخدم…"
+          aria-label="بحث في طلبات الموافقات"
+        />
       </div>
-      <div class="kernel-approvals-list" data-kernel-approval-list="pending">
-        {PENDING.map(item => (
-          <article
-            class:list={['kernel-approval-card', riskClass(item.risk)]}
-            data-kernel-approval-item={item.id}
-            data-decision=""
-          >
-            <header class="kernel-approval-card__head">
-              <div class="kernel-approval-card__snippet">
-                <h3 class="kernel-approval-card__title">{item.title}</h3>
-                <div class="kernel-approval-card__meta">
-                  <span class:list={['kernel-risk-badge', riskBadgeClass(item.risk)]} aria-label={`درجة المخاطر ${item.risk}`}>{item.risk}</span>
-                  <span>·</span>
-                  <span class="kernel-approval-card__meta-trace">{item.traceId}</span>
-                  <span>·</span>
-                  <span>{item.age}</span>
-                </div>
-              </div>
-              <div class="kernel-approval-card__requester" aria-label={`مقدّم الطلب: ${item.requester}`}>
-                <span class="kernel-approval-card__avatar" aria-hidden="true">{item.initials}</span>
-                <span>
-                  <span style="display:block; font-weight:var(--font-semibold); color:var(--text-primary);">{item.requester}</span>
-                  <span style="display:block; font-size:0.7rem; color:var(--text-secondary);">{item.requesterRole}</span>
-                </span>
-              </div>
-            </header>
-            <p class="kernel-approval-card__body">{item.context}</p>
-            <footer class="kernel-approval-card__actions">
-              <button
-                type="button"
-                class="kernel-approval-card__btn"
-                data-kernel-approval-action="discuss"
-                data-id={item.id}
-                aria-label={`نقاش ${item.title}`}
-              >
-                <span aria-hidden="true"><Fragment set:html={iconComment} /></span>
-                <span>نقاش</span>
-              </button>
-              <button
-                type="button"
-                class="kernel-approval-card__btn kernel-approval-card__btn--reject"
-                data-kernel-approval-action="reject"
-                data-id={item.id}
-                data-approval-title={item.title}
-                data-approval-context={item.context}
-                data-approval-trace={item.traceId}
-                data-approval-risk={item.risk}
-                aria-label={`رفض ${item.title}`}
-              >
-                <span aria-hidden="true"><Fragment set:html={iconX} /></span>
-                <span>رفض</span>
-              </button>
-              <button
-                type="button"
-                class="kernel-approval-card__btn kernel-approval-card__btn--approve"
-                data-kernel-approval-action="approve"
-                data-id={item.id}
-                data-approval-title={item.title}
-                data-approval-context={item.context}
-                data-approval-trace={item.traceId}
-                data-approval-risk={item.risk}
-                aria-label={`موافقة على ${item.title}`}
-              >
-                <span aria-hidden="true"><Fragment set:html={iconCheck} /></span>
-                <span>موافقة</span>
-              </button>
-            </footer>
-          </article>
-        ))}
-      </div>
-    </section>
+      <span class="kernel-ap-toolbar__total">{fmtCount(stats.total)} طلب إجمالي</span>
+      <button type="button" class="kernel-ap-shortcuts-btn" data-kap-shortcuts-btn aria-label="عرض اختصارات الكيبورد">
+        <span aria-hidden="true"><Fragment set:html={iconKeyboard} /></span>
+        <span>اختصارات</span>
+      </button>
+    </div>
 
-    <!-- APPROVED panel (KRN-015: aria-labelledby + tabindex="0") -->
-    <section class="kernel-tabs-panel" id="tabpanel-approved" role="tabpanel" aria-labelledby="kernel-tab-approved" tabindex="0" data-kernel-panel="approved" hidden>
-      <div class="kernel-approvals-empty-state" data-kernel-approvals-empty hidden role="status" aria-live="polite">
-        <p class="kernel-approvals-empty-state__title">لا توجد طلبات موافق عليها بعد</p>
-        <p class="kernel-approvals-empty-state__hint">الطلبات اللي توافق عليها تظهر هنا مع كامل التفاصيل والتوقيع.</p>
-      </div>
-      <div class="kernel-approvals-list" data-kernel-approval-list="approved">
-        {APPROVED.map(item => (
-          <article
-            class:list={['kernel-approval-card', riskClass(item.risk)]}
-            data-kernel-approval-item={item.id}
-            data-decision="approved"
-          >
-            <header class="kernel-approval-card__head">
-              <div class="kernel-approval-card__snippet">
-                <h3 class="kernel-approval-card__title">{item.title}</h3>
-                <div class="kernel-approval-card__meta">
-                  <span class:list={['kernel-risk-badge', riskBadgeClass(item.risk)]} aria-label={`درجة المخاطر ${item.risk}`}>{item.risk}</span>
-                  <span>·</span>
-                  <span>{item.traceId}</span>
-                  <span>·</span>
-                  <span>{item.age}</span>
-                </div>
-              </div>
-              <div class="kernel-approval-card__requester">
-                <span class="kernel-approval-card__avatar" aria-hidden="true">{item.initials}</span>
-                <span>
-                  <span style="display:block; font-weight:var(--font-semibold); color:var(--text-primary);">{item.requester}</span>
-                  <span style="display:block; font-size:0.7rem; color:var(--text-secondary);">{item.requesterRole}</span>
-                </span>
-              </div>
-            </header>
-            <p class="kernel-approval-card__body">{item.context}</p>
-          </article>
-        ))}
-      </div>
-    </section>
+    <!-- List/detail layout: right 380px queue, left detail panel (RTL) -->
+    <div class="kernel-ap-layout">
+      <section class="kernel-ap-queue" aria-label="قائمة طلبات الموافقات">
+        <div data-kap-list></div>
+      </section>
+      <section class="kernel-ap-detail-col" aria-label="تفاصيل الطلب">
+        <div data-kap-detail></div>
+      </section>
+    </div>
 
-    <!-- REJECTED panel (KRN-015: aria-labelledby + tabindex="0") -->
-    <section class="kernel-tabs-panel" id="tabpanel-rejected" role="tabpanel" aria-labelledby="kernel-tab-rejected" tabindex="0" data-kernel-panel="rejected" hidden>
-      <div class="kernel-approvals-empty-state" data-kernel-approvals-empty hidden role="status" aria-live="polite">
-        <p class="kernel-approvals-empty-state__title">لا توجد طلبات مرفوضة بعد</p>
-        <p class="kernel-approvals-empty-state__hint">الطلبات المرفوضة مع سبب الرفض تُحفظ هنا لأغراض التدقيق.</p>
-      </div>
-      <div class="kernel-approvals-list" data-kernel-approval-list="rejected">
-        {REJECTED.map(item => (
-          <article class:list={['kernel-approval-card', riskClass(item.risk)]}>
-            <header class="kernel-approval-card__head">
-              <div class="kernel-approval-card__snippet">
-                <h3 class="kernel-approval-card__title">{item.title}</h3>
-                <div class="kernel-approval-card__meta">
-                  <span class:list={['kernel-risk-badge', riskBadgeClass(item.risk)]} aria-label={`درجة المخاطر ${item.risk}`}>{item.risk}</span>
-                  <span>·</span>
-                  <span>{item.traceId}</span>
-                  <span>·</span>
-                  <span>{item.age}</span>
-                </div>
-              </div>
-              <div class="kernel-approval-card__requester">
-                <span class="kernel-approval-card__avatar" aria-hidden="true">{item.initials}</span>
-                <span>
-                  <span style="display:block; font-weight:var(--font-semibold); color:var(--text-primary);">{item.requester}</span>
-                  <span style="display:block; font-size:0.7rem; color:var(--text-secondary);">{item.requesterRole}</span>
-                </span>
-              </div>
-            </header>
-            <p class="kernel-approval-card__body">{item.context}</p>
-          </article>
-        ))}
-      </div>
+    <!-- Empty state (engine toggles via data-kap-empty) -->
+    <div
+      class="kernel-ap-empty-state"
+      data-kap-empty
+      hidden
+      role="status"
+      aria-live="polite"
+    >
+      <p class="kernel-ap-empty-state__title">لا توجد طلبات مطابقة</p>
+      <p class="kernel-ap-empty-state__hint">جرّب توسيع البحث أو اختيار حالة أخرى.</p>
+      <button type="button" class="kernel-ap-empty-state__reset" data-kap-reset>
+        إعادة ضبط الفلاتر
+      </button>
+    </div>
+
+    <!-- Decision ledger (Prompt 20: every decision → Audit event) -->
+    <section class="kernel-ap-ledger-wrap" aria-labelledby="kap-ledger-title">
+      <h2 class="kernel-ap-ledger-title" id="kap-ledger-title">سجل قرارات الجلسة</h2>
+      <p class="kernel-ap-ledger-desc">
+        كل قرار هنا يُسجَّل كحدث تدقيق (Audit) يربط Trace → Evidence → Certificate ولا يمكن تعديله.
+      </p>
+      <ol class="kernel-ap-ledger" data-kap-ledger></ol>
     </section>
   </div>
 
-  <!-- Approval modal (reused for approve/reject with appropriate tone) -->
-  <div class="kernel-modal" data-kernel-approval-modal data-open="false" role="dialog" aria-modal="true" aria-labelledby="approval-modal-title" aria-hidden="true">
-    <div class="kernel-modal__backdrop" data-kernel-approval-modal-close></div>
+  <!-- Decision modal (approve / reject / transfer) -->
+  <div class="kernel-modal" data-kap-modal data-open="false" role="dialog" aria-modal="true" aria-labelledby="kap-modal-title" aria-hidden="true">
+    <div class="kernel-modal__backdrop" data-kap-modal-close></div>
     <div class="kernel-modal__dialog" tabindex="-1">
       <header class="kernel-modal__head">
-        <h2 class="kernel-modal__title" id="approval-modal-title" data-kernel-approval-modal-title>تأكيد القرار</h2>
-        <button type="button" class="kernel-modal__close" aria-label="إغلاق" data-kernel-approval-modal-close>
+        <h2 class="kernel-modal__title" id="kap-modal-title" data-kap-modal-title>تأكيد القرار</h2>
+        <button type="button" class="kernel-modal__close" aria-label="إغلاق" data-kap-modal-close>
           <Fragment set:html={iconClose} />
         </button>
       </header>
 
-      <div class="kernel-modal__context" data-kernel-approval-modal-context>—</div>
+      <div class="kernel-modal__context" data-kap-modal-context>—</div>
 
       <div class="kernel-modal__field">
-        <label for="approval-comment" class="kernel-modal__label">
-          <span data-kernel-approval-modal-action-label>ملاحظاتك / توقيعك الإلكتروني</span>
+        <label for="kap-modal-reason" class="kernel-modal__label" data-kap-modal-label>
+          ملاحظاتك (اختياري)
         </label>
         <textarea
-          id="approval-comment"
+          id="kap-modal-reason"
           class="kernel-modal__textarea"
-          placeholder="اكتب سبب القرار أو تعليقاً… (مطلوب للرفض — اختياري للموافقة)"
-          data-kernel-approval-modal-comment
+          data-kap-modal-reason
+          placeholder="اكتب سبب القرار…"
         ></textarea>
+        <button type="button" class="kernel-modal__btn" data-kap-modal-suggest>اقتراح آلي</button>
       </div>
 
       <div class="kernel-modal__actions">
-        <button type="button" class="kernel-modal__btn" data-kernel-approval-modal-close>إلغاء</button>
-        <button
-          type="button"
-          class="kernel-modal__btn kernel-modal__btn--reject"
-          data-kernel-approval-modal-decide="reject"
-          hidden
-        >
-          <span aria-hidden="true"><Fragment set:html={iconX} /></span>
-          <span>تأكيد الرفض</span>
-        </button>
-        <button
-          type="button"
-          class="kernel-modal__btn kernel-modal__btn--primary"
-          data-kernel-approval-modal-decide="approve"
-          hidden
-        >
-          <span aria-hidden="true"><Fragment set:html={iconCheck} /></span>
-          <span>تأكيد الموافقة</span>
-        </button>
+        <button type="button" class="kernel-modal__btn" data-kap-modal-close>إلغاء</button>
+        <button type="button" class="kernel-modal__btn" data-kap-modal-confirm>تأكيد القرار</button>
       </div>
     </div>
+  </div>
+
+  <!-- Shortcuts hint (toggled by ? key or the toolbar button) -->
+  <div class="kernel-shortcuts" data-kap-shortcuts hidden role="region" aria-label="اختصارات الكيبورد">
+    <h3 class="kernel-shortcuts__title">اختصارات الكيبورد</h3>
+    <ul class="kernel-shortcuts__list">
+      <li><kbd>J</kbd> / <kbd>K</kbd> — تنقّل بين الطلبات</li>
+      <li><kbd>A</kbd> — موافقة</li>
+      <li><kbd>R</kbd> — رفض</li>
+      <li><kbd>F</kbd> — تحويل</li>
+      <li><kbd>Space</kbd> — معاينة / تفعيل</li>
+      <li><kbd>?</kbd> — إظهار/إخفاء هذه اللوحة</li>
+    </ul>
   </div>
 
   {/* ═══════════ KERNEL-AI-2026-07-14: Lead Capture ═══════════ */}
@@ -547,248 +415,7 @@ const COUNT_CRITICAL = PENDING.filter(p => p.risk >= 80).length + 1;
     blogLabel={unit.blogLabel}
     relatedSlugs={unit.relatedSlugs}
   />
+  <script type="module" src="/js/kernel-approvals-data.js"></script>
+  <script type="module" src="/js/kernel-approvals.js"></script>
   <script type="module" src="/js/kernel-loading-state.js"></script>
 </KernelLayout>
-
-<script is:inline>
-  // REPORTS-15 — Approvals interactivity (tabs + modal + decision stub).
-  (function () {
-    'use strict';
-
-    function el(q, root) { return (root || document).querySelector(q); }
-    function elAll(q, root) { return Array.prototype.slice.call((root || document).querySelectorAll(q)); }
-
-    function openModal(action, btn) {
-      var modal = el('[data-kernel-approval-modal]');
-      if (!modal) return;
-      var title   = btn.getAttribute('data-approval-title')   || '';
-      var context = btn.getAttribute('data-approval-context') || '';
-      var trace   = btn.getAttribute('data-approval-trace')   || '';
-      var risk    = btn.getAttribute('data-approval-risk')    || '';
-      var id      = btn.getAttribute('data-id')               || '';
-
-      modal.setAttribute('data-open', 'true');
-      modal.setAttribute('aria-hidden', 'false');
-      modal.dataset.decisionAction = action;
-      modal.dataset.targetId = id;
-
-      el('[data-kernel-approval-modal-title]').textContent = action === 'approve' ? 'تأكيد الموافقة' : 'تأكيد الرفض';
-      el('[data-kernel-approval-modal-context]').innerHTML =
-        '<strong style="color:var(--text-primary);">' + title + '</strong><br><br>' +
-        '<span style="font-family:var(--font-mono); font-size:0.85rem;">Trace: ' + trace + ' · Risk: ' + risk + '</span><br><br>' +
-        '<span style="color:var(--text-secondary);">' + context + '</span>';
-
-      el('[data-kernel-approval-modal-action-label]').textContent = action === 'approve'
-        ? 'ملاحظاتك (اختياري)'
-        : 'سبب الرفض (مطلوب)';
-
-      var rejectBtn = el('[data-kernel-approval-modal-decide="reject"]');
-      var approveBtn = el('[data-kernel-approval-modal-decide="approve"]');
-      if (rejectBtn) rejectBtn.hidden = action !== 'reject';
-      if (approveBtn) approveBtn.hidden = action !== 'approve';
-
-      var ta = el('[data-kernel-approval-modal-comment]');
-      if (ta) {
-        ta.value = '';
-        setTimeout(function () { ta.focus(); }, 50);
-      }
-    }
-
-    function closeModal() {
-      var modal = el('[data-kernel-approval-modal]');
-      if (!modal) return;
-      modal.setAttribute('data-open', 'false');
-      modal.setAttribute('aria-hidden', 'true');
-    }
-
-    // Toggle each panel's empty state: show when the visible panel has no items.
-    function refreshEmpty(id) {
-      elAll('[data-kernel-panel]').forEach(function (p) {
-        var emptyEl = p.querySelector('[data-kernel-approvals-empty]');
-        if (!emptyEl) return;
-        var isActive = p.getAttribute('data-kernel-panel') === id;
-        var hasItems = p.querySelectorAll('[data-kernel-approval-item]').length > 0;
-        emptyEl.hidden = !(isActive && !hasItems);
-      });
-    }
-
-    function moveItemAfterDecision(id, action) {
-      // Remove from pending list UI + update counts
-      var item = el('[data-kernel-approval-item="' + id + '"]');
-      if (!item) return;
-      item.style.transition = 'opacity 350ms, transform 350ms';
-      item.style.opacity = '0';
-      item.style.transform = 'translateX(-12px)';
-      setTimeout(function () { item.remove(); updateCounts(action); refreshEmpty('pending'); }, 360);
-    }
-
-    function updateCounts(action) {
-      // Update the "pending" tab count badge
-      var pendingTab = el('[data-tab-id="pending"]');
-      if (pendingTab) {
-        var badge = pendingTab.querySelector('.kernel-approvals-tabs-count');
-        if (badge) {
-          var current = parseInt(badge.textContent.replace(/[^\d]/g, ''), 10) || 0;
-          badge.textContent = Math.max(0, current - 1);
-        }
-      }
-      // Update approved/rejected counts
-      var counterId = action === 'approve' ? 'approved' : 'rejected';
-      var targetTab = el('[data-tab-id="' + counterId + '"]');
-      if (targetTab) {
-        var b = targetTab.querySelector('.kernel-approvals-tabs-count');
-        if (b) {
-          var n = parseInt(b.textContent.replace(/[^\d]/g, ''), 10) || 0;
-          b.textContent = n + 1;
-        }
-      }
-    }
-
-    function bindTabs() {
-      var tabButtons = elAll('[data-tab-id]');
-      var tablist = el('[role="tablist"]');
-      if (!tablist) return;
-      if (tablist.dataset.keyboardBound === '1') return;
-      tablist.dataset.keyboardBound = '1';
-
-      function selectTab(id) {
-        tabButtons.forEach(function (b) {
-          var isSel = b.getAttribute('data-tab-id') === id;
-          b.setAttribute('aria-selected', isSel ? 'true' : 'false');
-          b.setAttribute('tabindex', isSel ? '0' : '-1');
-        });
-        elAll('[data-kernel-panel]').forEach(function (p) {
-          p.hidden = p.getAttribute('data-kernel-panel') !== id;
-        });
-        refreshEmpty(id);
-      }
-
-      tabButtons.forEach(function (btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function () {
-          selectTab(btn.getAttribute('data-tab-id'));
-        });
-      });
-
-      // KRN-015: full WAI-ARIA tabs keyboard pattern (Arrow L/R + Home/End).
-      // Arrow keys INVERT in RTL: visually Left = next, Right = previous.
-      function isRtl() {
-        var dir = (document.documentElement.getAttribute('dir') || '').toLowerCase();
-        if (dir === 'rtl') return true;
-        return getComputedStyle(tablist).direction === 'rtl';
-      }
-      function currentIndex() {
-        var active = document.activeElement;
-        for (var i = 0; i < tabButtons.length; i++) {
-          if (tabButtons[i] === active) return i;
-        }
-        return -1;
-      }
-      tablist.addEventListener('keydown', function (e) {
-        var cur = currentIndex();
-        if (cur === -1) return;
-        var rtl = isRtl();
-        var PREV = rtl ? 'ArrowRight' : 'ArrowLeft';
-        var NEXT = rtl ? 'ArrowLeft' : 'ArrowRight';
-        if (e.key === PREV) {
-          e.preventDefault();
-          if (cur > 0) {
-            tabButtons[cur - 1].focus();
-            selectTab(tabButtons[cur - 1].getAttribute('data-tab-id'));
-          }
-        } else if (e.key === NEXT) {
-          e.preventDefault();
-          if (cur < tabButtons.length - 1) {
-            tabButtons[cur + 1].focus();
-            selectTab(tabButtons[cur + 1].getAttribute('data-tab-id'));
-          }
-        } else if (e.key === 'Home') {
-          e.preventDefault();
-          tabButtons[0].focus();
-          selectTab(tabButtons[0].getAttribute('data-tab-id'));
-        } else if (e.key === 'End') {
-          e.preventDefault();
-          var last = tabButtons[tabButtons.length - 1];
-          last.focus();
-          selectTab(last.getAttribute('data-tab-id'));
-        }
-      });
-    }
-
-    function bindActions() {
-      elAll('[data-kernel-approval-action]').forEach(function (btn) {
-        if (btn.dataset.bound === '1') return;
-        btn.dataset.bound = '1';
-        btn.addEventListener('click', function () {
-          var action = btn.getAttribute('data-kernel-approval-action');
-          if (action === 'discuss') {
-            // Discuss opens same modal in a comment-only state (no decision buttons).
-            var modal = el('[data-kernel-approval-modal]');
-            if (modal) {
-              modal.setAttribute('data-open', 'true');
-              modal.setAttribute('aria-hidden', 'false');
-              el('[data-kernel-approval-modal-title]').textContent = 'فتح نقاش';
-              el('[data-kernel-approval-modal-context]').textContent = btn.getAttribute('data-approval-context') || btn.closest('[data-kernel-approval-item]').textContent;
-              el('[data-kernel-approval-modal-action-label]').textContent = 'تعليقك';
-              var rejectBtn = el('[data-kernel-approval-modal-decide="reject"]');
-              var approveBtn = el('[data-kernel-approval-modal-decide="approve"]');
-              if (rejectBtn) rejectBtn.hidden = true;
-              if (approveBtn) approveBtn.hidden = true;
-              setTimeout(function () {
-                var ta = el('[data-kernel-approval-modal-comment]');
-                if (ta) ta.focus();
-              }, 50);
-            }
-          } else {
-            openModal(action, btn);
-          }
-        });
-      });
-    }
-
-    function bindModal() {
-      var modal = el('[data-kernel-approval-modal]');
-      if (!modal || modal.dataset.bound === '1') return;
-      modal.dataset.bound = '1';
-
-      elAll('[data-kernel-approval-modal-close]', modal).forEach(function (n) {
-        n.addEventListener('click', closeModal);
-      });
-
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && modal.getAttribute('data-open') === 'true') closeModal();
-      });
-
-      // Decision confirmations
-      elAll('[data-kernel-approval-modal-decide]', modal).forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          var action = btn.getAttribute('data-kernel-approval-modal-decide');
-          var commentEl = el('[data-kernel-approval-modal-comment]');
-          var comment = commentEl ? commentEl.value : '';
-          if (action === 'reject' && !comment.trim()) {
-            if (commentEl) {
-              commentEl.focus();
-              commentEl.style.borderColor = 'var(--status-danger)';
-              setTimeout(function () { commentEl.style.borderColor = ''; }, 1500);
-            }
-            return;
-          }
-          var id = modal.dataset.targetId;
-          if (id) moveItemAfterDecision(id, action);
-          closeModal();
-        });
-      });
-    }
-
-    function init() {
-      bindTabs();
-      bindActions();
-      bindModal();
-      refreshEmpty('pending');
-    }
-
-    document.addEventListener('astro:page-load', init);
-    if (document.readyState !== 'loading') init();
-  })();
-</script>

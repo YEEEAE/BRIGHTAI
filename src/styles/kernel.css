@@ -4293,67 +4293,158 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   }
 }
 
-/* ── 24. APPROVALS — cards + modal + tabs badge ─────────────────────── */
+/* ── 24. APPROVALS — queue list/detail (M19, تصميم-صفحات-kernel.md §8) ── */
+/* M19 (2026-08-01): replaced the REPORTS-15 tabs/cards/demo page with the
+ * queue list/detail design. DOM contract (kernel-approvals.js):
+ *   [data-kap-filters] five status filter cards (active gets colored border)
+ *   [data-kap-list]    right column — 380px queue of request cards
+ *   [data-kap-detail]  left column — detail panel
+ *   [data-kap-ledger]  decision ledger (Audit · Trace · Evidence · Certificate)
+ * Request card: 3px risk border · 40px mini risk counter · 2-line title ·
+ * requester + dept · thin decreasing SLA bar (red under 20%) · trace badge.
+ */
 
-.kernel-approvals-tabs-count {
+/* ── Status filter cards ─────────────────────────────────────────────── */
+.kernel-ap-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-2);
+  margin-block-end: var(--space-4);
+}
+
+.kernel-ap-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  min-block-size: 48px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              background var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.kernel-ap-filter:hover {
+  background: var(--bg-elevated);
+  border-color: var(--border-strong);
+}
+.kernel-ap-filter:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+
+.kernel-ap-filter--active.kernel-ap-filter--active { background: var(--bg-elevated); }
+.kernel-ap-filter--active.kernel-ap-filter--pending   { border-color: var(--status-warning); }
+.kernel-ap-filter--active.kernel-ap-filter--critical  { border-color: var(--status-danger); }
+.kernel-ap-filter--active.kernel-ap-filter--review    { border-color: var(--status-info); }
+.kernel-ap-filter--active.kernel-ap-filter--approved  { border-color: var(--status-success); }
+.kernel-ap-filter--active.kernel-ap-filter--rejected  { border-color: var(--text-muted); }
+
+.kernel-ap-filter__count {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-inline-size: 22px;
-  block-size: 22px;
+  min-inline-size: 28px;
+  block-size: 28px;
   padding-inline: 6px;
   border-radius: var(--radius-full);
   background: var(--bg-elevated);
   color: var(--text-secondary);
   font-size: var(--text-xs);
   font-weight: var(--font-bold);
-  margin-inline-start: 6px;
+  font-variant-numeric: tabular-nums;
+}
+.kernel-ap-filter--active .kernel-ap-filter__count { color: var(--text-primary); }
+
+/* ── List/detail layout (RTL: first column renders on the right) ─────── */
+.kernel-ap-layout {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
 }
 
-.kernel-tabs__item[aria-selected="true"] .kernel-approvals-tabs-count {
-  background: var(--brand-500);
-  color: var(--text-inverse);
+.kernel-ap-queue {
+  position: sticky;
+  top: var(--space-4);
+  max-block-size: calc(100vh - var(--space-12));
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-inline-end: var(--space-1);
+  scrollbar-width: thin;
 }
 
-.kernel-approvals-tabs-count--alert {
-  background: var(--status-danger);
-  color: #fff;
-  box-shadow: 0 0 0 0 var(--status-danger);
-  animation: kernelAlertPulse 2s var(--ease-in-out) infinite;
-}
+.kernel-ap-detail-col { min-inline-size: 0; }
 
-@keyframes kernelAlertPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); }
-  50%       { box-shadow: 0 0 0 4px rgba(239,68,68,0.35); }
-}
-
-.kernel-approval-card {
+/* ── Request card (right queue) ──────────────────────────────────────── */
+.kernel-ap-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
   padding: var(--space-4);
   background: linear-gradient(180deg, var(--bg-surface) 0%, rgba(19,28,48,0.85) 100%);
   border: 1px solid var(--border);
+  border-inline-start: 3px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm), var(--highlight-inner);
+  cursor: pointer;
   transition: border-color var(--duration-fast) var(--ease-out),
               box-shadow var(--duration-fast) var(--ease-out);
+  text-align: start;
 }
 
-.kernel-approval-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); }
+.kernel-ap-card:hover { border-color: var(--border-strong); box-shadow: var(--shadow-md); }
+.kernel-ap-card:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+}
+.kernel-ap-card[aria-pressed="true"] {
+  border-color: var(--brand-400);
+  box-shadow: var(--shadow-glow-sm, var(--shadow-glow));
+}
 
-.kernel-approval-card--critical { border-inline-start: 4px solid var(--status-danger); }
-.kernel-approval-card--high     { border-inline-start: 4px solid var(--status-warning); }
-.kernel-approval-card--medium   { border-inline-start: 4px solid var(--status-info); }
+.kernel-ap-card--critical { border-inline-start-color: var(--status-danger); }
+.kernel-ap-card--high     { border-inline-start-color: var(--status-warning); }
+.kernel-ap-card--medium   { border-inline-start-color: var(--status-info); }
 
-.kernel-approval-card__head {
+.kernel-ap-card__top {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
-  flex-wrap: wrap;
 }
 
-.kernel-approval-card__snippet {
+.kernel-ap-card__risk {
+  flex-shrink: 0;
+  inline-size: 40px;
+  block-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  font-variant-numeric: tabular-nums;
+}
+.kernel-ap-card--critical .kernel-ap-card__risk { color: var(--status-danger); border-color: rgba(239,68,68,0.4); }
+.kernel-ap-card--high     .kernel-ap-card__risk { color: var(--status-warning); border-color: rgba(245,158,11,0.4); }
+.kernel-ap-card--medium   .kernel-ap-card__risk { color: var(--status-info); border-color: rgba(99,102,241,0.4); }
+
+.kernel-ap-card__snippet {
   flex: 1;
   min-inline-size: 0;
   display: flex;
@@ -4361,29 +4452,128 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   gap: var(--space-1);
 }
 
-.kernel-approval-card__title {
-  font-size: var(--text-base);
+.kernel-ap-card__title {
+  margin: 0;
+  font-size: var(--text-sm);
   font-weight: var(--font-semibold);
   color: var(--text-primary);
-  margin: 0;
   line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.kernel-approval-card__meta {
+.kernel-ap-card__meta {
   display: flex;
-  gap: var(--space-2);
   flex-wrap: wrap;
-  align-items: center;
+  gap: var(--space-1) var(--space-2);
   font-size: var(--text-xs);
   color: var(--text-secondary);
-  opacity: var(--text-tertiary-opacity);
 }
+.kernel-ap-card__requester { color: var(--text-secondary); }
+.kernel-ap-card__dept { color: var(--text-muted); }
 
-.kernel-approval-card__requester {
+.kernel-ap-card__sla { margin-block-start: var(--space-1); }
+.kernel-ap-card__sla--none { font-size: var(--text-xs); color: var(--text-muted); }
+
+.kernel-ap-sla {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.kernel-ap-sla__track {
+  display: block;
+  inline-size: 100%;
+  block-size: 4px;
+  border-radius: var(--radius-full);
+  background: var(--bg-elevated);
+  overflow: hidden;
+}
+.kernel-ap-sla__fill {
+  display: block;
+  block-size: 100%;
+  border-radius: var(--radius-full);
+  background: var(--status-success);
+  transition: inline-size var(--duration-base) var(--ease-out);
+}
+.kernel-ap-sla__fill.kernel-ap-sla--danger { background: var(--status-danger); }
+.kernel-ap-sla__label { font-size: var(--text-xs); color: var(--text-muted); }
+
+.kernel-ap-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+.kernel-ap-card__trace {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  padding: 2px 8px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+}
+.kernel-ap-card__status { font-size: var(--text-xs); color: var(--text-muted); }
+
+/* ── Detail panel (left column) ──────────────────────────────────────── */
+.kernel-ap-detail {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm), var(--highlight-inner);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.kernel-ap-detail__placeholder {
+  margin: 0;
+  color: var(--text-muted);
+  text-align: center;
+  padding-block: var(--space-10);
+}
+.kernel-ap-detail__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.kernel-ap-detail__title {
+  margin: 0;
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.kernel-ap-detail__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  margin-block-start: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+.kernel-ap-detail__trace { font-family: var(--font-mono); }
+.kernel-ap-detail__status {
+  flex-shrink: 0;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+}
+.kernel-ap-detail__status--pending   { background: rgba(245,158,11,0.15); color: var(--status-warning); }
+.kernel-ap-detail__status--critical  { background: var(--status-danger); color: #fff; }
+.kernel-ap-detail__status--review    { background: rgba(99,102,241,0.15); color: var(--status-info); }
+.kernel-ap-detail__status--approved  { background: rgba(34,197,94,0.15); color: var(--status-success); }
+.kernel-ap-detail__status--rejected  { background: rgba(100,116,139,0.2); color: var(--text-secondary); }
+
+.kernel-ap-detail__requester {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: var(--text-xs);
+  font-size: var(--text-sm);
   color: var(--text-secondary);
 }
 
@@ -4401,86 +4591,271 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   flex-shrink: 0;
 }
 
-.kernel-approval-card__body {
+.kernel-ap-detail__context {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.7;
   background: var(--bg-base);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  padding: var(--space-3);
+  padding: var(--space-4);
+}
+
+.kernel-ap-detail__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.kernel-ap-detail__h4 {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+}
+.kernel-ap-detail__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.kernel-ap-pii {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  border: 1px solid transparent;
+}
+.kernel-ap-pii--none       { background: var(--bg-elevated); color: var(--text-muted); }
+.kernel-ap-pii--name       { background: rgba(34,197,94,0.15); color: #4ade80; border-color: rgba(34,197,94,0.3); }
+.kernel-ap-pii--phone      { background: rgba(6,182,212,0.15); color: #22d3ee; border-color: rgba(6,182,212,0.3); }
+.kernel-ap-pii--email      { background: rgba(99,102,241,0.15); color: #818cf8; border-color: rgba(99,102,241,0.3); }
+.kernel-ap-pii--id         { background: rgba(245,158,11,0.15); color: #fbbf24; border-color: rgba(245,158,11,0.3); }
+.kernel-ap-pii--financial  { background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.3); }
+.kernel-ap-pii--medical    { background: rgba(236,72,153,0.15); color: #f472b6; border-color: rgba(236,72,153,0.3); }
+.kernel-ap-pii--address    { background: rgba(148,163,184,0.15); color: #cbd5e1; border-color: rgba(148,163,184,0.3); }
+
+.kernel-ap-policy {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  border: 1px solid var(--border-subtle);
+}
+.kernel-ap-policy--none { font-family: inherit; }
+
+.kernel-ap-whatif {
+  background: rgba(6,182,212,0.07);
+  border: 1px solid rgba(6,182,212,0.18);
+  border-inline-start: 3px solid var(--interactive-primary);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.kernel-ap-whatif .kernel-ap-detail__h4 { color: var(--brand-400); }
+.kernel-ap-whatif__list {
+  margin: 0;
+  padding-inline-start: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
   font-size: var(--text-sm);
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
-.kernel-approval-card__actions {
+.kernel-ap-detail__decision {
+  background: var(--bg-base);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.kernel-ap-detail__decision-reason { margin: 0; font-size: var(--text-sm); color: var(--text-muted); }
+
+.kernel-ap-detail__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  border-block-start: 1px solid var(--border-subtle);
+  padding-block-start: var(--space-4);
+}
+.kernel-ap-detail__reason-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+.kernel-ap-detail__reason-required {
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--status-danger);
+}
+.kernel-ap-detail__reason-row {
   display: flex;
   gap: var(--space-2);
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  align-items: flex-start;
 }
-
-.kernel-approval-card__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  background: var(--bg-elevated);
+.kernel-ap-detail__reason {
+  flex: 1;
+  min-block-size: 72px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-base);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   color: var(--text-primary);
-  font-size: var(--text-sm);
-  font-weight: var(--font-medium);
-  cursor: pointer;
   font-family: inherit;
-  min-block-size: 40px;
-  transition: background var(--duration-fast) var(--ease-out),
-              border-color var(--duration-fast) var(--ease-out),
-              color var(--duration-fast) var(--ease-out);
+  font-size: var(--text-sm);
+  resize: vertical;
+}
+.kernel-ap-detail__reason:focus {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 1px;
+}
+.kernel-ap-detail__decide-row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-block-start: var(--space-2);
 }
 
-.kernel-approval-card__btn:hover,
-.kernel-approval-card__btn:focus-visible {
-  background: var(--brand-soft);
-  border-color: var(--brand-soft-border);
+.kernel-ap-decide {
+  flex: 1;
+  min-inline-size: 120px;
+  min-block-size: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--font-bold);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
 }
-.kernel-approval-card__btn:focus-visible {
+.kernel-ap-decide:focus-visible {
   outline: 2px solid var(--brand-500);
   outline-offset: 2px;
 }
-
-.kernel-approval-card__btn--approve {
+.kernel-ap-decide--approve {
   background: linear-gradient(135deg, var(--status-success) 0%, var(--accent-600) 100%);
-  border-color: transparent;
+  border: 1px solid transparent;
   color: #fff;
 }
-
-.kernel-approval-card__btn--approve:hover,
-.kernel-approval-card__btn--approve:focus-visible {
+.kernel-ap-decide--approve:hover {
   background: linear-gradient(135deg, var(--accent-400) 0%, var(--status-success) 100%);
   border-color: transparent;
   color: #fff;
 }
-
-.kernel-approval-card__btn--reject {
-  border-color: rgba(239,68,68,0.4);
-  color: var(--status-danger);
-}
-
-.kernel-approval-card__btn--reject:hover,
-.kernel-approval-card__btn--reject:focus-visible {
+.kernel-ap-decide--reject {
   background: rgba(239,68,68,0.12);
-  border-color: var(--status-danger);
+  border: 1px solid rgba(239,68,68,0.4);
   color: var(--status-danger);
 }
+.kernel-ap-decide--reject:hover {
+  background: rgba(239,68,68,0.2);
+  border-color: var(--status-danger);
+}
+.kernel-ap-decide--transfer {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+.kernel-ap-decide--transfer:hover {
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
 
-.kernel-approvals-list {
+/* ── Decision ledger (Prompt 20: Audit · Trace · Evidence · Certificate) ── */
+.kernel-ap-ledger {
+  margin-block-start: var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
+}
+.kernel-ap-ledger__empty {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  padding: var(--space-3);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  list-style: none;
+}
+.kernel-ap-ledger__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  list-style: none;
+}
+.kernel-ap-ledger__badge {
+  align-self: flex-start;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
+}
+.kernel-ap-ledger__badge--approve  { background: rgba(34,197,94,0.15); color: var(--status-success); }
+.kernel-ap-ledger__badge--reject   { background: rgba(239,68,68,0.15); color: var(--status-danger); }
+.kernel-ap-ledger__badge--transfer { background: rgba(99,102,241,0.15); color: var(--status-info); }
+.kernel-ap-ledger__trace { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-secondary); }
+.kernel-ap-ledger__meta { font-size: var(--text-xs); color: var(--text-muted); }
+.kernel-ap-ledger__reason { margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; }
+.kernel-ap-ledger__links {
+  font-size: var(--text-xs);
+  color: var(--brand-400);
+  font-family: var(--font-mono);
 }
 
-/* Tabs panel container — show/hide via JS */
-.kernel-tabs-panel[hidden] { display: none !important; }
-.kernel-tabs-panel { margin-block-start: var(--space-4); }
+/* ── Shortcuts hint overlay (? key) ───────────────────────────────────── */
+[data-kap-shortcuts] {
+  position: fixed;
+  inset-inline-end: var(--space-5);
+  inset-block-end: var(--space-5);
+  z-index: 95;
+  inline-size: min(320px, calc(100vw - var(--space-6)));
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2xl);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+}
+[data-kap-shortcuts][hidden] { display: none; }
+
+/* Approve variant of the shared modal confirm button (engine sets it). */
+.kernel-modal__btn--approve {
+  background: linear-gradient(135deg, var(--status-success) 0%, var(--accent-600) 100%);
+  border-color: transparent;
+  color: #fff;
+}
+.kernel-modal__btn--approve:hover,
+.kernel-modal__btn--approve:focus-visible {
+  background: linear-gradient(135deg, var(--accent-400) 0%, var(--status-success) 100%);
+  border-color: transparent;
+  color: #fff;
+}
 
 /* Approval modal (full context + signature/comment) */
 .kernel-modal {
@@ -4494,6 +4869,12 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 }
 
 .kernel-modal[data-open="true"] { display: flex; }
+/* KRN-APR-001 (2026-08-01): the later ".kernel-modal { display:flex }" block
+   (line ~5661) overrides this rule's base display:none, leaving data-open
+   modals (evidence preview, approvals decision) visible when closed. Explicit
+   [data-open="false"] wins on specificity without touching the hidden-based
+   modals used by connectors/reports/scenarios. */
+.kernel-modal[data-open="false"] { display: none; }
 
 .kernel-modal__backdrop {
   position: absolute;
@@ -4932,8 +5313,9 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   .kernel-audit-table__hash-text { max-inline-size: 100%; }
   .kernel-audit-table__view-btn { grid-column: 2; justify-self: end; }
 
-  .kernel-approval-card__actions { justify-content: stretch; }
-  .kernel-approval-card__actions .kernel-approval-card__btn { flex: 1; justify-content: center; }
+  .kernel-ap-layout { grid-template-columns: minmax(0, 1fr); }
+  .kernel-ap-queue { position: static; max-block-size: none; overflow-y: visible; }
+  .kernel-ap-detail__decide-row .kernel-ap-decide { min-inline-size: 0; }
 
   .kernel-evidence-toolbar__generate { inline-size: 100%; justify-content: center; }
 }
@@ -4960,8 +5342,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
     transition: none !important;
   }
 
-  .kernel-chat-typing__dot,
-  .kernel-approvals-tabs-count--alert {
+  .kernel-chat-typing__dot {
     animation: none !important;
   }
 
@@ -4973,7 +5354,9 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 .kernel-chat-message:focus-visible,
 .kernel-threads-list__item:focus-visible,
 .kernel-audit-toolbar__btn:focus-visible,
-.kernel-approval-card__btn:focus-visible,
+.kernel-ap-card:focus-visible,
+.kernel-ap-filter:focus-visible,
+.kernel-ap-decide:focus-visible,
 .kernel-evidence-item__btn:focus-visible {
   outline: 2px solid var(--brand-500);
   outline-offset: 2px;
