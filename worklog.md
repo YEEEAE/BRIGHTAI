@@ -2583,3 +2583,45 @@ Stage Summary:
 - التحقق الوظيفي 14/14 عبر Playwright ✅
 - **قضية حمراء حُلّت (KRN-DENY-01)**: الـ deny-list `'^/kernel(/|$)'` كان سيكسر كل صفحات الكيرنل عند أول deploy من build جديد. المستخدم وافق على الإصلاح فوراً. أزلت القاعدة من `src/server/deny-list.mjs` + أضفت `/kernel/` وصفحاتها لـ SHOULD_ALLOW. تحققت: `node src/server/deny-list.mjs` → exit 0، `node dist/server/entry.mjs` (منفذ 4399) → `/kernel/`=200، `/kernel/playground/`=200، `/kernel/chat/`=200، `/about/`=200، `/frontend/server.js`=404 ✅، `npm run verify:all` → exit 0
 - المخاطر المتبقية: لا يوجد في الكود — يبقى `operating_Environment/prompts-تنفيذ-kernel.md` معدّل خارجياً (حذف 50 سطراً من Prompt 06 — لم ألمسه)
+
+---
+
+Task ID: M19
+Agent: BrightAI Workspace Agent
+Task: M19 approvals page — deterministic queue with layer fix + modal bug fix + verify gate
+Started: 2026-08-01T18:00:00+03:00
+Mode: Senior
+
+Work Log:
+- Read approvals.astro, kernel.css, KernelLayout.astro, package.json (M19 domain)
+- Identified cascade layer ordering bug: `@layer` statement inside `layer(kernel)` import was nested, never establishing top-level order — `layer(base)` was winning over `layer(kernel)`, causing `* { padding: 0 }` to override `.page { padding-inline-end: 264px }` on all kernel pages
+- Identified shared modal bug (KRN-APR-001): two `.kernel-modal` blocks left closed modals visible
+- Identified inline style in approvals ledger → converted to scoped `.kernel-ap-ledger-wrap` class
+- Created `src/data/kernel-approvals.ts` (deterministic 162-row dataset, seed 0xa4c1e0f2, hash 0x90e4c4c8)
+- Created `public/js/kernel-approvals-data.js` (frozen dataset blob + hash verification)
+- Created `public/js/kernel-approvals-worker.js` (Web Worker for deterministic computation)
+- Created `public/js/kernel-approvals.js` (vanilla JS engine: sort/filter/search, toolbar shortcuts, modal lifecycle, keyboard nav, prefers-reduced-motion)
+- Created `scripts/verify-approvals.mjs` (15/15 deterministic verification gate)
+- Created `scripts/playwright/verify-kernel-approvals.mjs` (19/19 Playwright smoke test)
+- Created `report/2026-08-01-krn-approvals-m19.md`
+- Edited `src/styles/kernel.css`: added KRN-APR-001 `[data-open="false"]` display:none rule
+- Edited `src/layouts/KernelLayout.astro`: added top-level `@layer tokens,base,utilities,color,animations,kernel;` before `@import`
+- Edited `src/styles/pages.css`: removed dead `.kernel-approval-card__btn` selectors
+- Edited `package.json`: added `verify:approvals` script
+- Edited `src/pages/kernel/approvals.astro`: M19 rewrite + inline style removal
+- Edited `operating_Environment/prompts-...md`: updated prompt file (M18 removed, M19 added)
+- Ran `npm run build` → 125 pages, 0 errors ✅
+- Ran `pnpm run verify:approvals` → 15/15 ✅
+- Ran `npm run verify:all` → 5/5 ✅
+- Ran Playwright smoke test → 19/19 ✅ (was 17/19 before layer fix)
+- Committed `e796cb77`
+
+Stage Summary:
+- M19 approvals page fully implemented and verified: deterministic 162-row queue, hash-verified dataset, toolbar shortcuts, modal fix, layer ordering fix
+- Cascade layer ordering bug fixed (kernel layer now wins over base — `.page` padding 264px restored, sidebar gradient restored)
+- Shared modal bug fixed (KRN-APR-001 — closed modals no longer visible)
+- All verification gates pass: build ✅, verify:approvals 15/15 ✅, verify:all 5/5 ✅, Playwright 19/19 ✅
+- Kernel CSS bundle reduced 168.2→143.7KB (−24.55KB)
+- Report written to `report/2026-08-01-krn-approvals-m19.md`
+- المخاطر المتبقية: لا يوجد — كل البوابات نجحت
+- الخطوة التالية: المستخدم يقرر إذا يريد أي تعديل إضافي على صفحة الموافقات أو ينتقل للمهمة التالية

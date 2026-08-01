@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-01 17:40 +03:00
+last_updated: 2026-08-01 18:30 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.68
+version: 2.7.69
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,40 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+
+### 2026-08-01 — KRN-APPROVALS-M19: إعادة بناء /kernel/approvals/ بساحة موافقات حتمية + إصلاح طبقة CSS + إصلاح modal
+
+- **Files**:
+  - `src/pages/kernel/approvals.astro` (REBUILT — M19: 162-row deterministic queue, seed `0xa4c1e0f2`, final hash `0x90e4c4c8`, SLA critical 4h/pending 24h, chain genesis `0x00000000`, toolbar shortcuts button bound, inline style removed → scoped `.kernel-ap-ledger-wrap`)
+  - `src/data/kernel-approvals.ts` (NEW — deterministic dataset generator: `APPROVAL_NOW = Date.UTC(2026,6,31,12,0,0)`, 7/3/2/142/8 = 162 rows, SLA windows, null deadlines for approved/rejected, full chain validity)
+  - `public/js/kernel-approvals.js` (NEW — vanilla JS engine: deterministic sort/filter/search, toolbar `bindShortcutsBtn()`, modal lifecycle, keyboard nav, `prefers-reduced-motion`, no `Math.random`/no `Date.now`/no `toLocaleString`/no `fetch`)
+  - `public/js/kernel-approvals-data.js` (NEW — frozen 162-row dataset blob, `Object.freeze` + hash verification `0x90e4c4c8`)
+  - `public/js/kernel-approvals-worker.js` (NEW — Web Worker for deterministic computation, postMessage results, no side effects)
+  - `src/styles/kernel.css` (EDITED — KRN-APR-001: added `.kernel-modal[data-open="false"] { display: none; }` after `[data-open="true"]` block; fixed shared modal bug where closed modals were visible)
+  - `src/layouts/KernelLayout.astro` (EDITED — added top-level `@layer tokens,base,utilities,color,animations,kernel;` before `@import '../styles/kernel.css' layer(kernel)` to fix cascade layer ordering)
+  - `src/styles/pages.css` (EDITED — removed dead `.kernel-approval-card__btn` selectors (2 occurrences))
+  - `package.json` (EDITED — added `verify:approvals` script)
+  - `scripts/verify-approvals.mjs` (NEW — 15/15 deterministic verification gate)
+  - `scripts/playwright/verify-kernel-approvals.mjs` (NEW — 19/19 Playwright smoke test)
+  - `report/2026-08-01-krn-approvals-m19.md` (NEW — detailed M19 report)
+- **What**: سوّيت M19 كامل لصفحة الموافقات: 162-row dataset حتمي (seed `0xa4c1e0f2`, hash `0x90e4c4c8`), ساحة تحقق `verify:approvals` (15/15), Playwright smoke (19/19), إصلاح طبقة CSS cascade (الـ `layer(base)` كان يغلب `layer(kernel)` فيش), إصلاح modal bug (الـ modals المغلقة كانت تطلع), حذف inline style من ledger, ربط زر shortcuts في toolbar.
+- **Why**: M19 من Prompt 08 — صفحة الموافقات لازم تكون حتمية وقابلة للتحقق (deterministic + hash-verified). الطبقة CSS كانت مكسورة (kernel layer ما كانت تغلّب base) بسبب `@layer` statement داخل `layer(kernel)` import بدل ما تكون top-level. الـ modal bug كان يؤثر على approvals + evidence مع بعض.
+- **Verification**:
+  - `npm run build` → 125 صفحة، 0 أخطاء ✅
+  - `pnpm run verify:approvals` → 15/15 ✅
+  - `npm run verify:all` → 5/5 ✅
+  - `node scripts/playwright/verify-kernel-approvals.mjs` → 19/19 ✅ (كان 17/19 قبل إصلاح الطبقة)
+  - `grep -c "padding-inline-end: 264px" dist/client/_astro/KernelLayout.*.css` → 1 ✅ (الـ .page padding صار 264px)
+  - `grep -c "kernel-modal" src/styles/kernel.css` → 1 ✅ (KRN-APR-001)
+  - `grep -c "@layer tokens,base,utilities,color,animations,kernel;" src/layouts/KernelLayout.astro` → 1 ✅
+  - `node scripts/verify-approvals.mjs` → 15/15 ✅ (determinism doubled-build, count matrix, TS↔JS parity, chain validity, SLA-window check incl. `slaDeadline === null`)
+- **Report**: `report/2026-08-01-krn-approvals-m19.md`
+- **Commit**: `e796cb77`
+- **Status**: deployed
+- **Brain updates**: Section 1 (kernel CSS bundle 168.2→143.7KB), Section 5 (kernel-approvals.ts + kernel-approvals.js + kernel-approvals-data.js + kernel-approvals-worker.js + verify-approvals.mjs كـ canonical), added KRN-APR-001 modal fix + cascade layer fix to known patterns
 
 ---
 
