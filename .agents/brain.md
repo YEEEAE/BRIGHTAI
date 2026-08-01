@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-01 12:58 +03:00
+last_updated: 2026-08-01 16:26 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.66
+version: 2.7.67
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,33 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+### 2026-08-01 — KRN-SC-M17: ترقية /kernel/policies/ لمحرر سياسات حوكمة كامل (11 سياسة + إصدارات immutable + شهادات + محاكاة)
+
+- **Files**:
+  - `src/data/kernel-policy-editor.ts` (NEW — 11 سياسة (9 active/2 draft) بأسماء/أوصاف منشورة حرفياً + `PolicyVersion` (version/note/createdAt/hash/certifiedBy) + `fnv1a()`/`ruleHash()` حتمية + `POLICY_EDITOR_PII_TYPES` (9) + `POLICY_EDITOR_PACKS` (7: pdpl/nca_ecc/sdaia/sfda/sama/iso_27001/iso_42001) + `POLICY_EDITOR_ACTIONS` (8: allow/mask/block/redact/warn/approve/local_model_only/log/hitl) + `POLICY_EDITOR_OPERATORS` (3) + `POLICY_CERTIFICATES` (CERT-2026-001/002) + `POLICY_EDITOR_DEPARTMENTS` (10) + `POLICY_EDITOR_SECTORS` (7) + `SIM_TEMPLATES` (20، منها 7 بريئة) + `buildSimulationRequests()` → 1000 طلب حتمي (10 أقسام × 100) + `buildPolicyEditorConfig()` + `buildPolicyEditorStats()`)
+  - `public/js/kernel-policies.js` (NEW — محرك vanilla مستقل حتمي 100%: `scanPii` (أنماط فعلية من kernel-scorers + passport/api_secret) + `detectConflicts` (block vs soft عالي / إجراءان مختلفان متوسط) + `createVersion` (يرفض لو الإصدار الحالي مثبّت بشهادة — مطلب المستخدم) + `rollback` (نسخة جديدة تستنسخ القديمة؛ مرفوض لو الحالي مثبّت) + `diff` Git-like (added/removed) + استثناءات (تُنشئ إصداراً جديداً) + `simulate` (1000 طلب × سياسات نشطة، ترتيب إجراء صارم allow→block، عتبة FP>5% + byDept/byPolicy + حتمية) + `suggest` (مولّد Demo بقواعد GENERATOR_RULES — لا نموذج خارجي، mode:'demo') + `importConfig`/`exportConfig`/`snapshot`/`onEvent`/`reset` + UI كامل (جدول 9 أعمدة، محرر modal + معاينة JSON/hash، modal إصدارات بفرق/rollback/قفل شهادة، modal استثناءات، زر محاكاة، toast، Escape) + `window.KernelPolicies`)
+  - `src/pages/kernel/policies.astro` (REBUILT — `data-po-root` + إحصاءات SSR (7 عناصر) + جدول `[data-po-tbody]` + قسم محاكاة `data-po-sim-*` + مولّد `data-po-gen-*` + 3 modals + `#policies-config` blob + `<script type="module" src="/js/kernel-policies.js">` + side-effect import للـ CSS + KernelSeoSection + KernelContextLinks)
+  - `kernel/assets/css/pages/policies.css` (REBUILT بالكامل — أنماط po-* كلها منطقية RTL، touch ≥44px، شبكة جدول تُعاد على ≤1100px، `prefers-reduced-motion`)
+  - `scripts/playwright/verify-policies.mjs` (NEW — 41 فحص وظيفي)
+- **What**: رقّيت محرر السياسات من نسخة واجهة ثابتة (تعديل سطر واحد + خيارين إجراء) إلى أداة حوكمة كاملة: 11 سياسة بـ 2-3 إصدارات immutable لكل واحدة (hash FNV-1a حتمي مطابق لـ M7)، إصدارات مثبّتة بشهادات امتثال (CERT-2026-001 لـ pr_saudi_id_pdpl v1، CERT-2026-002 لـ pr_patient_sfda v1) **مجمّدة تماماً** — التعديل أو الـ rollback عليها مرفوض برسالة واضحة (مطلب المستخدم: "لا تسمح بتعديل Policy version مستخدمة في Certificate قديم")، سجل إصدارات بفرق Git-like + rollback عبر نسخة جديدة، كشف تعارض بين الإجراءات، محاكاة حتمية لآخر 1000 طلب مع إيجابيات كاذبة، استيراد/تصدير JSON مع تحقق، مولّد سياسة Demo بشارة واضحة، استثناءات أقسام/تطبيقات، وباني شروط no-code بـ IF/AND/THEN.
+- **Why**: M17 من Prompt 08 — محرر السياسات هو قلب الحوكمة (ماذا يحدث لكل طلب AI حسب النوع/الحزمة/القسم)، والنسخة القديمة لم تحمِ الشهادات ولم تحاكي الطلبات ولم تحتفظ بسجل إصدارات.
+- **Verification**:
+  - `npm run build` → 0 أخطاء ✅ (`/kernel/policies/` تُبنى، blob 11 سياسة + 1000 simRequest + 12 نمط PII + `aiBadge.mode='demo'`، JS module خارجي `dist/client/js/kernel-policies.js` 58KB)
+  - Playwright `verify-policies.mjs` → **41/41 ✅** — engine mounted، blob صحيح، 6 بطاقات SSR (11 سياسة)، 11 صف جدول، createVersion v2→v3 + hash يتغيّر + صيغة حتمية، **حماية الشهادة** (createVersion على pr_patient_sfda → blocked:true + رسالة /شهادة/) ، diff added/removed، rollback v4، محاكاة 1000/450 affected/fp=0/10 أقسام + حتمية (نفس النتيجة مرتين)، مولّد Demo (mobile→mask + addSuggested)، export/import (رفض malformed + قبول own export)، snapshot (active=9 + certified≥2)، زر simulate-all يحدّث KPI، modals (editor/versions/استثناءات) تفتح وتقفل، certified row موسومة، لا console errors (0)
+- **قرارات موثقة**:
+  - **حماية الشهادة = القاعدة الذهبية**: أي إصدار حالي مثبّت بـ `certifiedBy` يُجمَّد — `createVersion` و `rollback` يرجعان `{ok:false, blocked:true, certifiedBy}` بدون أي تعديل على الـ versions. v1 من pr_saudi_id_pdpl يبقى مثبّتاً و v2 (الذي أضاف حزم nca_ecc) غير مثبّت — هذا سيناريو واقعي: السياسة لها نسخة غير مثبتة قابلة للتعديل + نسخة معتمدة مجمّدة.
+  - **rollback = نسخة جديدة**: لا يعيد كتابة التاريخ؛ ينشئ إصداراً جديداً يستنسخ قاعدة الهدف (`note: Rollback إلى vN`). يرفض لو الهدف هو الأحدث أو لو الحالي مثبّت.
+  - **محرك مستقل** `kernel-policies.js` — نفس مبررات M15/M16 (لا يمس `kernel-eval-engine.js` المرتبط بـ eval؛ `kernel-policies.ts` القديمة تبقى لـ playground).
+  - **المولّد Demo صريح**: `GENERATOR_RULES` keyword-matching فقط (لا API خارجي، لا حوكمة حقيقية) — `aiBadge.mode='demo'` + "مسودة مراجعة بشرية" يمنعان المبالغة في الوعود.
+  - **المحاكاة حتمية**: 1000 طلب مولّدة من 10 أقسام × 100 قالب (SIM_TEMPLATES، 7 منها بريئة) — لا `Math.random`؛ الترتيب أخذ أقصى إجراء صارم (allow=0…block=8).
+  - **استثناءات تُسجَّل كإصدار**: إضافة/تبديل استثناء يُنشئ إصداراً جديداً (يظل التاريخ كاملاً) — لا يحذف الاستثناء القديم من السجل.
+- **Report**: none (يُتوقع من المستخدم كتابة تقرير إذا رغب)
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 5 (kernel-policy-editor.ts + kernel-policies.js + verify-policies.mjs كـ canonical؛ kernel-policies.ts القديمة تبقى لـ playground فقط)
 
 ---
 
