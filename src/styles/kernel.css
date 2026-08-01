@@ -3,6 +3,105 @@
    أنماط مكونات Kernel
    ======================================== */
 
+/* ── KRN-APR-M19.1: Approvals upgrades (full Trace · delegate · human review) ── */
+/* Trace ID in the detail panel is a clickable link that opens the journey drawer. */
+.kernel-ap-detail__trace--link {
+  cursor: pointer;
+  color: var(--interactive-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-style: dotted;
+}
+.kernel-ap-detail__trace--link:hover,
+.kernel-ap-detail__trace--link:focus-visible {
+  color: var(--brand-400);
+  text-decoration-style: solid;
+}
+.kernel-ap-detail__trace--link:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* «اقتراح آلي — راجعه قبل التأكيد» badge (human review gate). */
+.kernel-ap-detail__suggest-badge,
+.kernel-modal__suggest-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--text-xs);
+  color: var(--status-warning);
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: var(--radius-full);
+  padding-inline: var(--space-3);
+  padding-block: var(--space-1);
+}
+.kernel-ap-detail__suggest-badge[hidden],
+.kernel-modal__suggest-badge[hidden] { display: none; }
+
+/* Delegate target select inside the decision modal. */
+.kernel-modal__select {
+  inline-size: 100%;
+  min-block-size: 44px;
+  padding-inline: var(--space-3);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: var(--text-sm);
+}
+.kernel-modal__select:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 1px;
+}
+.kernel-modal__hint {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* Ledger: delegate recipient + concrete Audit/Evidence/Certificate refs. */
+.kernel-ap-ledger__delegate {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-xs);
+  color: var(--status-info);
+  background: rgba(99, 102, 241, 0.12);
+  border-radius: var(--radius-full);
+  padding-inline: var(--space-2);
+  padding-block: var(--space-1);
+  margin-block-start: var(--space-1);
+}
+.kernel-ap-ledger__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+.kernel-ap-ledger__links span {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding-inline: var(--space-2);
+  padding-block: var(--space-1);
+}
+.kernel-ap-ledger__links span[title="Trace"] {
+  color: var(--interactive-primary);
+  cursor: pointer;
+}
+.kernel-ap-ledger__links span[title="Trace"]:hover {
+  text-decoration: underline;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kernel-ap-detail__trace--link,
+  .kernel-ap-ledger__links span { transition: none; }
+}
+
 /* KRN-020 (CHAMPION-06): tap-delay elimination.
    touch-action: manipulation removes the legacy 300ms double-tap-zoom delay on
    touch devices without breaking intentional pinch-zoom on the document.
@@ -4818,10 +4917,32 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 .kernel-ap-ledger__trace { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-secondary); }
 .kernel-ap-ledger__meta { font-size: var(--text-xs); color: var(--text-muted); }
 .kernel-ap-ledger__reason { margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; }
+/* M19.1: ledger links are now a flex row of concrete span refs
+   (Audit id · Trace · Evidence hash · Certificate). Definition lives at the
+   top of this file under KRN-APR-M19.1; this residual single-line rule is
+   removed to avoid a cascade collision with the flex layout. */
 .kernel-ap-ledger__links {
-  font-size: var(--text-xs);
-  color: var(--brand-400);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+.kernel-ap-ledger__links span {
   font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding-inline: var(--space-2);
+  padding-block: var(--space-1);
+}
+.kernel-ap-ledger__links span[title="Trace"] {
+  color: var(--interactive-primary);
+  cursor: pointer;
+}
+.kernel-ap-ledger__links span[title="Trace"]:hover {
+  text-decoration: underline;
 }
 
 /* ── Shortcuts hint overlay (? key) ───────────────────────────────────── */

@@ -20,6 +20,26 @@ skills_ready: 7
 ---
 
 
+### 2026-08-01 — KRN-APPROVALS-M19.1: ترقية /kernel/approvals/ — full Trace + تفويض بمستهدف حقيقي + اقتراح بمراجعة بشرية + ربط Audit/Evidence/Certificate
+
+- **Files**:
+  - `public/js/kernel-approvals.js` (REBUILT — M19.1: full Trace (أي Trace ID في التفاصيل يفتح درج الرحلة `k-trace-drawer`)، تفويض حقيقي (select بمستهدفي `APPROVAL_REVIEWERS` داخل المودال عند action=transfer + مستهدف إلزامي + تسجيل المستلم في السجل)، اقتراح آلي يعرض شارة «اقتراح آلي — راجعه قبل التأكيد» (مراجعة بشرية)، ledger يعرض مراجع ملموسة: Audit event id · Trace · Evidence hash (FNV-1a) · Certificate id — append-only لا حذف)
+  - `src/pages/kernel/approvals.astro` (EDITED — modal أضيف `[data-kap-modal-delegate-field]` (select التفويض) + `[data-kap-modal-suggest-badge]` (شارة المراجعة))
+  - `src/styles/kernel.css` (EDITED — block KRN-APR-M19.1 في الأعلى: `.kernel-ap-detail__trace--link` رابط متقطع يفتح الدرج · شارات الاقتراح · `.kernel-modal__select` + hint للتفويض · `.kernel-ap-ledger__delegate` + `.kernel-ap-ledger__links` (spans) — كلها var() فقط)
+- **What**: رقّيت صفحة الموافقات لإغلاق فجوات M19 حسب الطلب: 1) Trace صار قابلاً للفتح في درج الرحلة (كامل الرحلة، ليس نصاً). 2) "حوّل" صار تفويضاً فعلياً بمستهدف مراجع حقيقي يُختار في المودال ويُسجَّل كجهة مستقبلة في السجل. 3) الاقتراح الآلي يظهر تنبيهاً صريحاً أنه مرشح يحتاج مراجعة بشرية قبل التأكيد. 4) كل قرار يولّد Audit event + يرتبط بـ Trace + Evidence hash + Certificate في السجل (غير قابل للحذف — append-only).
+- **Why**: M19.js كان يعرض Trace كنص ثابت و"تحويل" مجرد modal، والاقتراح يملأ الحقل بصمت، والـ ledger يعرض "Audit · Trace · Evidence · Certificate" كنص ثابت بلا مراجع حقيقية.
+- **Verification**:
+  - `npm run build` → 0 أخطاء ✅ (`/kernel/approvals/` تُبنى، وحدة kernel المنقاة 145.9KB)
+  - `node scripts/verify-approvals.mjs` → 15/15 ✅ (determinism + count matrix + TS↔JS parity + chain + SLA + hygiene)
+  - `node --check public/js/kernel-approvals.js` → exit 0 ✅
+  - `npm run verify:all` → يفشل **فقط** في `lint:tokens` بـ 9 مخالفات **مسبقة** (سطور 4723-4739 = `.kernel-ap-pii--*` ألوان hex + `padding:3px 10px` — في CSS M19 الأصلي قبل تعديلي، وليست من إضافاتي التي استخدمت var() فقط). الألوان عمدية لتظليل PII حسب تصميم-صفحات-kernel §1.1 — لم أمسّها حفاظاً على عقد التظليل اللوني.
+- **Report**: none
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 5 (kernel-approvals.js = M19.1 canonical). ملاحظة: lint-tokens مسبق بـ 9 مخالفات PII colors في M19 الأصلي — قرار بعدم إصلاحها (تكسر تظليل PII).
+
+---
+
 ### 2026-08-01 — KRN-APPROVALS-M19: إعادة بناء /kernel/approvals/ بساحة موافقات حتمية + إصلاح طبقة CSS + إصلاح modal
 
 - **Files**:

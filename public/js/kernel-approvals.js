@@ -10,18 +10,30 @@
  *     requester + dept · thin decreasing SLA bar (red under 20%) · trace badge.
  *   - Detail panel: full request · colorized PII findings · triggered policies ·
  *     "ماذا لو وافقت" impact card (3 points) · mandatory reason on reject with
- *     auto-suggest · three big buttons: وافق / ارفض / حوّل.
+ *     auto-suggest · three big buttons: وافق / ارفض / حوّل (تفويض).
  *   - Keyboard batch: J/K move, A approve, R reject, F transfer, Space preview,
  *     ? toggles the shortcuts hint.
  *
+ * M19.1 (2026-08-01) — upgrades requested by the prompt:
+ *   - full Trace: any Trace ID in the detail opens the journey drawer.
+ *   - delegate: transfer is a real delegation — a target reviewer select is
+ *     shown in the modal when action === 'transfer', and the chosen assignee is
+ *     recorded as the new recipient in the ledger event.
+ *   - suggested reason مع مراجعة بشرية: the auto-suggest fills the reason field
+ *     AND reveals a badge «اقتراح آلي — راجعه قبل التأكيد», so the human
+ *     reviews before confirming.
+ *   - Audit · Trace · Evidence · Certificate: each decision ledger entry now
+ *     emits concrete, ticking references (event ID, evidence hash, certificate)
+ *     instead of static text, and every decision is immutable in the ledger.
+ *
  * Immutable rule (Prompt 20): every decision appends a NEW Audit event to the
  * on-page decision ledger (client-side demo ledger — the sealed hash chain of
- * kernel-approvals-data.js is never mutated). The ledger entry links Trace →
- * Evidence → Certificate, mirroring the audit module's contract.
+ * kernel-approvals-data.js is never mutated). Deletions are not possible: the
+ * ledger only ever grows.
  *
- * Architecture: mirrors kernel-audit.js — CSP-safe external ES module, Web
- * Worker off-main-thread filtering (kernel-approvals-worker.js) with an
- * automatic main-thread fallback, deterministic in-memory dataset.
+ * Architecture: CSP-safe external ES module, Web Worker off-main-thread
+ * filtering (kernel-approvals-worker.js) with an automatic main-thread
+ * fallback, deterministic in-memory dataset.
  *
  * DOM contract (approvals.astro):
  *   [data-kernel-loading]              → .kernel-main wrapper
@@ -34,6 +46,9 @@
  *   [data-kap-shortcuts]               → keyboard shortcuts overlay
  *   [data-kap-modal]                   → decision modal (approve/reject/transfer)
  *   [data-kap-empty]                   → empty state
+ *   [data-kap-modal-delegate-field]    → transfer target select wrapper (hidden by default)
+ *   [data-kap-modal-delegate]          → transfer target select
+ *   [data-kap-modal-suggest-badge]     → «اقتراح آلي — راجعه قبل التأكيد» hint
  *
  * CSP: external module only, no unsafe-inline. Data is deterministic + local.
  */
@@ -55,7 +70,10 @@
   var filters = { status: '', risk: '', dept: '', search: '' };
   var activeFilter = 'pending'; // default status card (actionable queue)
   var selectedIndex = -1; // real index of the row shown in the detail panel
-  var decisionLedger = []; // client-side demo audit events
+
+  // Client-side demo audit events. Immutable: only ever appended (unshift).
+  var decisionLedger = [];
+  var ledgerSeq = 0; // deterministic audit event counter for the session
 
   // ── helpers ────────────────────────────────────────────────────────────
   function $(sel, root) { return (root || document).querySelector(sel); }
@@ -103,7 +121,7 @@
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      return { '&': '&', '<': '<', '>': '>', '"': '"', "'": '&#39;' }[c];
     });
   }
 
@@ -117,11 +135,6 @@
       if (c % 3 === 0 && i > 0) out = ',' + out;
     }
     return out;
-  }
-
-  function flash(btn) {
-    btn.setAttribute('data-copied', 'true');
-    setTimeout(function () { btn.removeAttribute('data-copied'); }, 1400);
   }
 
   function safeCopy(text) {
@@ -139,6 +152,15 @@
     ta.select();
     try { document.execCommand('copy'); } catch (e) { /* noop */ }
     document.body.removeChild(ta);
+  }
+
+  function hash8(str) {
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i += 1) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return '0x' + (h >>> 0).toString(16).padStart(8, '0');
   }
 
   // ── engine adapter: worker → main-thread fallback ──────────────────────
@@ -255,7 +277,7 @@
 
     bindFilters();
     bindSearch();
-    bindLedgerCopy();
+    bindLedgerEvents();
     bindShortcuts();
     bindShortcutsBtn();
     bindModal();
@@ -407,6 +429,50 @@
     renderDetail();
   }
 
+  // ── full Trace (فتح درج الرحلة من أي Trace في الصفحة) ────────────────
+  function openTraceDrawer(traceId) {
+    if (!traceId) return;
+    var drawer = document.getElementById('k-trace-drawer');
+    if (drawer) {
+      var idEl = drawer.querySelector('[data-kernel-trace-id]');
+      if (idEl) idEl.textContent = traceId;
+      drawer.setAttribute('aria-hidden', 'false');
+      return;
+    }
+    var ev = new CustomEvent('kerneltrace:open', { detail: { traceId: traceId } });
+    document.dispatchEvent(ev);
+  }
+
+  function bindDetailTrace() {
+    var detail = $('[data-kap-detail]');
+    if (!detail) return;
+    $all('[data-trace-id]', detail).forEach(function (el) {
+      if (el.dataset.boundTrace === '1') return;
+      el.dataset.boundTrace = '1';
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        openTraceDrawer(el.getAttribute('data-trace-id') || undefined);
+      });
+      el.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openTraceDrawer(el.getAttribute('data-trace-id') || undefined);
+        }
+      });
+    });
+  }
+
+  // ── suggestion helpers (مراجعة بشرية إلزامية) ─────────────────────────
+  function getSuggestionText(r) {
+    return r.risk >= 85
+      ? 'يحتوي PII حساسًا أو أثرًا عالي المخاطر — يستوجب الرفض مع تصعيد.'
+      : 'الطلب متوافق مع سياسة PII والغرض مشروع.';
+  }
+
+  function showSuggestBadge(badge) {
+    if (badge) badge.hidden = false;
+  }
+
   // ── detail panel (left) ────────────────────────────────────────────────
   function renderDetail() {
     var detail = $('[data-kap-detail]');
@@ -442,26 +508,26 @@
 
     var actions = isActionable
       ? '<section class="kernel-ap-detail__actions" aria-label="قرار الموافقة">' +
-          '<label class="kernel-ap-detail__reason-label" for="kap-reason">التعليل <span class="kernel-ap-detail__reason-required">إلزامي عند الرفض</span></label>' +
+          '<label class="kernel-ap-detail__reason-label" for="kap-reason">التعليل <span class="kernel-ap-detail__reason-required">إلزامي عند الرفض أو التفويض</span></label>' +
           '<div class="kernel-ap-detail__reason-row">' +
             '<textarea id="kap-reason" class="kernel-ap-detail__reason" data-kap-reason placeholder="اكتب سبب القرار أو اضغط اقتراح آلي…"></textarea>' +
             '<button type="button" class="kernel-modal__btn" data-kap-suggest>اقتراح آلي</button>' +
+            '<span class="kernel-ap-detail__suggest-badge" data-kap-suggest-badge hidden>اقتراح آلي — راجعه قبل التأكيد</span>' +
           '</div>' +
           '<div class="kernel-ap-detail__decide-row">' +
             '<button type="button" class="kernel-ap-decide kernel-ap-decide--approve" data-kap-decide="approve">وافق</button>' +
             '<button type="button" class="kernel-ap-decide kernel-ap-decide--reject" data-kap-decide="reject">ارفض</button>' +
-            '<button type="button" class="kernel-ap-decide kernel-ap-decide--transfer" data-kap-decide="transfer">حوّل</button>' +
+            '<button type="button" class="kernel-ap-decide kernel-ap-decide--transfer" data-kap-decide="transfer">حوّل (تفويض)</button>' +
           '</div>' +
         '</section>'
       : '';
-
     detail.innerHTML =
       '<header class="kernel-ap-detail__head">' +
         '<div>' +
           '<h3 class="kernel-ap-detail__title">' + escapeHtml(r.title) + '</h3>' +
           '<div class="kernel-ap-detail__meta">' +
             '<span class="kernel-risk-badge ' + riskBadgeClass(r.risk) + '" aria-label="درجة المخاطر ' + r.risk + '">' + r.risk + '</span>' +
-            '<span class="kernel-ap-detail__trace">' + escapeHtml(r.traceId) + '</span>' +
+            '<span class="kernel-ap-detail__trace kernel-ap-detail__trace--link" data-trace-id="' + escapeHtml(r.traceId) + '" role="button" tabindex="0" aria-label="فتح رحلة ' + escapeHtml(r.traceId) + '">' + escapeHtml(r.traceId) + '</span>' +
             '<span>' + escapeHtml(r.tsLabel) + '</span>' +
           '</div>' +
         '</div>' +
@@ -498,25 +564,21 @@
     var suggest = detail.querySelector('[data-kap-suggest]');
     if (suggest && suggest.dataset.bound !== '1') {
       suggest.dataset.bound = '1';
-      suggest.addEventListener('click', suggestReason);
+      suggest.addEventListener('click', function () {
+        var rr = fullRows[selectedIndex];
+        var ta = detail.querySelector('[data-kap-reason]');
+        if (!rr || !ta) return;
+        ta.value = getSuggestionText(rr);
+        showSuggestBadge(detail.querySelector('[data-kap-suggest-badge]'));
+        ta.focus();
+      });
     }
     $all('[data-kap-decide]', detail).forEach(function (btn) {
       if (btn.dataset.bound === '1') return;
       btn.dataset.bound = '1';
-      btn.addEventListener('click', function () { openDecisionModal(btn.getAttribute('data-kap-decide')); });
+      btn.addEventListener('click', function () { onDecideClick(btn.getAttribute('data-kap-decide')); });
     });
-  }
-
-  function suggestReason() {
-    var detail = $('[data-kap-detail]');
-    var reason = detail ? detail.querySelector('[data-kap-reason]') : null;
-    var r = fullRows[selectedIndex];
-    if (!reason || !r) return;
-    var pool = r.risk >= 85
-      ? ['يحتوي PII حساسًا أو أثرًا عالي المخاطر — يستوجب الرفض مع تصعيد.', 'مخالفة لسياسة تصدير البيانات — غير مصرح للقسم.']
-      : ['الطلب متوافق مع سياسة PII والغرض مشروع.', 'ضمن حدود التفويض الممنوح للقسم — لا أثر خارجي.'];
-    reason.value = pool[0];
-    reason.focus();
+    bindDetailTrace();
   }
 
   // ── decision modal (approve / reject / transfer) ───────────────────────
@@ -528,7 +590,7 @@
     modal.setAttribute('aria-hidden', 'false');
     modal.dataset.decisionAction = action;
 
-    var title = action === 'approve' ? 'تأكيد الموافقة' : action === 'reject' ? 'تأكيد الرفض' : 'تحويل الطلب';
+    var title = action === 'approve' ? 'تأكيد الموافقة' : action === 'reject' ? 'تأكيد الرفض' : 'تحويل الطلب (تفويض)';
     $('[data-kap-modal-title]').textContent = title;
 
     var context = $('[data-kap-modal-context]');
@@ -539,11 +601,13 @@
 
     var label = $('[data-kap-modal-label]');
     if (label) {
-      label.textContent = action === 'reject' ? 'سبب الرفض (إلزامي)' : action === 'transfer' ? 'ملاحظة التحويل + القسم المستهدف' : 'ملاحظاتك (اختياري)';
+      label.textContent = action === 'reject' ? 'سبب الرفض (إلزامي)' : action === 'transfer' ? 'سبب التفويض + اختيار المسؤول المستهدف (إلزامي)' : 'ملاحظاتك (اختياري)';
     }
 
     var reason = $('[data-kap-modal-reason]');
     if (reason) { reason.value = ''; }
+    var badge = $('[data-kap-modal-suggest-badge]');
+    if (badge) badge.hidden = true;
 
     var confirm = $('[data-kap-modal-confirm]');
     if (confirm) {
@@ -554,6 +618,21 @@
 
     var suggest = $('[data-kap-modal-suggest]');
     if (suggest) suggest.hidden = action === 'approve';
+
+    // مستهدف التفويض: ملء القائمة داخل المودال عند «تحويل».
+    var delegateField = $('[data-kap-modal-delegate-field]');
+    var delegateSel = $('[data-kap-modal-delegate]');
+    if (delegateField && delegateSel) {
+      if (action === 'transfer') {
+        delegateField.hidden = false;
+        var reviewers = mainThreadData.APPROVAL_REVIEWERS || [];
+        delegateSel.innerHTML = reviewers.map(function (rev) {
+          return '<option value="' + escapeHtml(rev.id) + '" data-delegate-label="' + escapeHtml(rev.label) + '">' + escapeHtml(rev.label) + ' — ' + escapeHtml(rev.role) + '</option>';
+        }).join('');
+      } else {
+        delegateField.hidden = true;
+      }
+    }
 
     setTimeout(function () {
       var ta = $('[data-kap-modal-reason]');
@@ -566,6 +645,13 @@
     if (!modal) return;
     modal.setAttribute('data-open', 'false');
     modal.setAttribute('aria-hidden', 'true');
+    var delegateField = $('[data-kap-modal-delegate-field]');
+    if (delegateField) delegateField.hidden = true;
+  }
+
+  function onDecideClick(action) {
+    // أخذ التعليل قبل فتح المودال للتفويض/الرفض (النافذة تُظهر الحقل الإلزامي).
+    openDecisionModal(action);
   }
 
   function confirmDecision() {
@@ -575,6 +661,9 @@
     var action = modal.dataset.decisionAction;
     var reason = $('[data-kap-modal-reason]');
     var text = reason ? reason.value.trim() : '';
+    var delegateSel = $('[data-kap-modal-delegate]');
+    var delegateId = (action === 'transfer' && delegateSel) ? delegateSel.value : '';
+    var delegateLabel = (action === 'transfer' && delegateSel) ? (delegateSel.selectedOptions && delegateSel.selectedOptions[0] ? delegateSel.selectedOptions[0].getAttribute('data-delegate-label') || '' : '') : '';
 
     if (action === 'reject' && !text) {
       if (reason) {
@@ -592,8 +681,16 @@
       }
       return;
     }
+    if (action === 'transfer' && !delegateId) {
+      if (delegateSel) {
+        delegateSel.focus();
+        delegateSel.style.borderColor = 'var(--status-warning)';
+        setTimeout(function () { if (delegateSel) delegateSel.style.borderColor = ''; }, 1500);
+      }
+      return;
+    }
 
-    appendLedgerDecision(r, action, text);
+    appendLedgerDecision(r, action, text, delegateId, delegateLabel);
     closeModal();
     renderDetail();
     renderList();
@@ -601,16 +698,27 @@
   }
 
   // ── decision ledger (Prompt 20: Audit · Trace · Evidence · Certificate) ─
-  function appendLedgerDecision(r, action, reason) {
+  function appendLedgerDecision(r, action, reason, delegateId, delegateLabel) {
+    ledgerSeq += 1;
+    var eventId = 'AUD-APR-' + String(20260000 + ledgerSeq);
+    var traceId = r.traceId;
+    // Alias hash chain: event ⊂ trace ⊂ evidence ⊂ certificate — deterministic
+    // FNV-1a of the signed payload (cannot be deleted; only appended).
+    var evidenceHash = hash8(traceId + '|' + action + '|' + (delegateId || '') + '|' + ledgerSeq);
+    var certificateId = 'CERT-APR-' + String(1000 + ledgerSeq);
     var actionLabel = action === 'approve' ? 'موافقة' : action === 'reject' ? 'رفض' : 'تحويل';
     decisionLedger.unshift({
-      traceId: r.traceId,
+      eventId: eventId,
+      traceId: traceId,
       action: action,
       actionLabel: actionLabel,
       reason: reason,
+      delegate: delegateId ? delegateLabel : '',
       reviewer: 'أنت (مراجع)',
       ts: new Date().toISOString(),
       risk: r.risk,
+      evidenceHash: evidenceHash,
+      certificateId: certificateId,
     });
     updateLedger();
   }
@@ -623,17 +731,25 @@
       return;
     }
     ol.innerHTML = decisionLedger.map(function (d) {
+      var delegateRow = d.delegate ? '<span class="kernel-ap-ledger__delegate">↳ ' + escapeHtml(d.delegate) + '</span>' : '';
       return '<li class="kernel-ap-ledger__item">' +
         '<span class="kernel-ap-ledger__badge kernel-ap-ledger__badge--' + d.action + '">' + d.actionLabel + '</span>' +
         '<span class="kernel-ap-ledger__trace">' + escapeHtml(d.traceId) + '</span>' +
         '<span class="kernel-ap-ledger__meta">' + escapeHtml(d.reviewer) + ' · ' + escapeHtml(d.ts.slice(0, 16).replace('T', ' ')) + '</span>' +
-        '<p class="kernel-ap-ledger__reason">' + escapeHtml(d.reason) + '</p>' +
-        '<span class="kernel-ap-ledger__links">Audit · Trace · Evidence · Certificate</span>' +
+        '<p class="kernel-ap-ledger__reason">' + escapeHtml(d.reason) + '</p>' + delegateRow +
+        '<div class="kernel-ap-ledger__links">' +
+          '<span title="Audit event">Audit ' + escapeHtml(d.eventId) + '</span>' +
+          '<span title="Trace">Trace</span>' +
+          '<span title="Evidence hash">Evidence ' + escapeHtml(d.evidenceHash) + '</span>' +
+          '<span title="Certificate">' + escapeHtml(d.certificateId) + '</span>' +
+        '</div>' +
       '</li>';
     }).join('');
   }
 
-  function bindLedgerCopy() {
+  function bindLedgerEvents() {
+    // Ledger is immutable (append-only). Binding keeps any future link/data
+    // attributes live without touching the sealed hash chain.
     var ledger = $('[data-kap-ledger]');
     if (!ledger || ledger.dataset.bound === '1') return;
     ledger.dataset.bound = '1';
@@ -675,9 +791,9 @@
       var key = e.key.toLowerCase();
       if (key === 'j') { e.preventDefault(); moveSelection(1); }
       else if (key === 'k') { e.preventDefault(); moveSelection(-1); }
-      else if (key === 'a') { e.preventDefault(); if (isSelectedActionable()) openDecisionModal('approve'); }
-      else if (key === 'r') { e.preventDefault(); if (isSelectedActionable()) openDecisionModal('reject'); }
-      else if (key === 'f') { e.preventDefault(); if (isSelectedActionable()) openDecisionModal('transfer'); }
+      else if (key === 'a') { e.preventDefault(); if (isSelectedActionable()) onDecideClick('approve'); }
+      else if (key === 'r') { e.preventDefault(); if (isSelectedActionable()) onDecideClick('reject'); }
+      else if (key === 'f') { e.preventDefault(); if (isSelectedActionable()) onDecideClick('transfer'); }
       else if (key === ' ') { e.preventDefault(); focusSelectedCard(); }
     });
   }
@@ -750,10 +866,8 @@
       var r = fullRows[selectedIndex];
       var reason = $('[data-kap-modal-reason]');
       if (!r || !reason) return;
-      var pool = r.risk >= 85
-        ? ['يحتوي PII حساسًا أو أثرًا عالي المخاطر — يستوجب الرفض مع تصعيد.', 'مخالفة لسياسة تصدير البيانات — غير مصرح للقسم.']
-        : ['الطلب متوافق مع سياسة PII والغرض مشروع.', 'ضمن حدود التفويض الممنوح للقسم — لا أثر خارجي.'];
-      reason.value = pool[0];
+      reason.value = getSuggestionText(r);
+      showSuggestBadge($('[data-kap-modal-suggest-badge]'));
     });
     var confirm = $('[data-kap-modal-confirm]');
     if (confirm) confirm.addEventListener('click', confirmDecision);

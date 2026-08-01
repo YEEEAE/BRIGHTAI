@@ -355,6 +355,12 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
       <div class="kernel-modal__context" data-kap-modal-context>—</div>
 
+      <div class="kernel-modal__field" data-kap-modal-delegate-field hidden>
+        <label for="kap-modal-delegate" class="kernel-modal__label">حوّل إلى</label>
+        <select id="kap-modal-delegate" class="kernel-modal__select" data-kap-modal-delegate></select>
+        <p class="kernel-modal__hint">اختر المسؤول المستهدف للتفويض. التفويض مسجّل كجهة مستقبلة جديدة في السجل.</p>
+      </div>
+
       <div class="kernel-modal__field">
         <label for="kap-modal-reason" class="kernel-modal__label" data-kap-modal-label>
           ملاحظاتك (اختياري)
@@ -366,6 +372,7 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
           placeholder="اكتب سبب القرار…"
         ></textarea>
         <button type="button" class="kernel-modal__btn" data-kap-modal-suggest>اقتراح آلي</button>
+        <span class="kernel-modal__suggest-badge" data-kap-modal-suggest-badge hidden>اقتراح آلي — راجعه قبل التأكيد</span>
       </div>
 
       <div class="kernel-modal__actions">
