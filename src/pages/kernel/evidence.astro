@@ -1,14 +1,17 @@
 ---
 /**
- * /kernel/evidence/ — Evidence files + PDF export (REPORTS-15).
+ * /kernel/evidence/ — Evidence files + PDF export (REPORTS-15 + M22).
  *
- * REPORTS-15 update:
- * - Grid view: 12 evidence cards with title, date, signature status, download.
- * - Filters toolbar: date + sector + compliance pack.
- * - Each card: type icon, hash monospace, signature badge, download/Preview buttons.
- * - Preview modal (uses a tiny inline PDF placeholder via iframe srcdoc — works in demo).
- * - Generate new evidence button (creates a new card live in demo).
- * - Mobile responsive + RTL preserved.
+ * M22 (2026-08-01) upgrade:
+ * - Tags: custom tags per file + tag filter.
+ * - JSON verification: download JSON + verify signed hash (demo integrity check).
+ * - Batch generation: modal (sector/pack/count) + progress bar.
+ * - Trace link: each file's Trace ID opens the audit page filtered by that trace.
+ * - Certificate link: each file links to its signing certificate.
+ * - Third-party verification upload: drag & drop an EVD file → signed check result.
+ * - Tampering detection: "try to tamper" demo that visually breaks the hash chain.
+ * - Retention information: retention label per file (e.g. "5 سنوات — PDPL م.21").
+ * - PDF preview stays (iframe srcdoc demo), extended with JSON verification panel.
  */
 import KernelLayout from '../../layouts/KernelLayout.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
@@ -25,9 +28,10 @@ import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 const unit = getKernelUnit('evidence')!;
 const cross = getCrossLinks(unit);
 
-const jsonLd = [
+const faqLd = getKernelFaqJsonLd(unit);
+const jsonLd: Record<string, unknown>[] = [
   ...getKernelSubPageJsonLd(unit),
-  getKernelFaqJsonLd(unit),
+  ...(faqLd ? [faqLd] : []),
 ];
 
 const iconFile = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>';
@@ -38,6 +42,13 @@ const iconWarning = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
 const iconClock = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
 const iconPlus = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
 const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+const iconLink = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>';
+const iconTag = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>';
+const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
+const iconCertificate = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>';
+const iconUpload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>';
+const iconHash = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>';
+const iconBolt = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>';
 
 // Filters
 const SECTORS = [
@@ -60,6 +71,16 @@ const COMPLIANCE_PACKS = [
   { value: 'iso27001', label: 'ISO 27001' },
 ];
 
+// M22: tag filter options
+const TAGS = [
+  { value: '', label: 'كل الوسوم' },
+  { value: 'audit', label: 'تدقيق' },
+  { value: 'breach', label: 'اختراق' },
+  { value: 'hr', label: 'موارد بشرية' },
+  { value: 'fintech', label: 'تقنية مالية' },
+  { value: 'medical', label: 'طبي' },
+];
+
 type EvidenceItem = {
   id: string;
   traceId: string;
@@ -74,6 +95,9 @@ type EvidenceItem = {
   signedAt: string | null;
   size: string;
   createdAt: string;
+  tags: string[];
+  certificateId: string;
+  retention: string;
 };
 
 const ITEMS: EvidenceItem[] = [
@@ -91,6 +115,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٧:٤٢',
     size: '142KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['audit', 'fintech'],
+    certificateId: 'CERT-2026-0841',
+    retention: '5 سنوات — PDPL م.21',
   },
   {
     id: 'EVD-2026-10492',
@@ -106,6 +133,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٧:٣٨',
     size: '38KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['hr'],
+    certificateId: 'CERT-2026-0840',
+    retention: 'سنتان — NCA ECC-3',
   },
   {
     id: 'EVD-2026-10491',
@@ -121,6 +151,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: null,
     size: '86KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['medical'],
+    certificateId: 'CERT-2026-0839',
+    retention: '7 سنوات — SFDA م.19',
   },
   {
     id: 'EVD-2026-10490',
@@ -136,6 +169,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٧:٢٤',
     size: '124KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['audit'],
+    certificateId: 'CERT-2026-0838',
+    retention: '5 سنوات — ISO 27001 A.5.1',
   },
   {
     id: 'EVD-2026-10489',
@@ -151,6 +187,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٧:٢٠',
     size: '42KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['fintech'],
+    certificateId: 'CERT-2026-0837',
+    retention: '5 سنوات — SAMA CSF-2',
   },
   {
     id: 'EVD-2026-10488',
@@ -166,6 +205,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: null,
     size: '94KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['audit'],
+    certificateId: 'CERT-2026-0836',
+    retention: '5 سنوات — NCA ECC-2',
   },
   {
     id: 'EVD-2026-10487',
@@ -181,6 +223,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٧:٠٨',
     size: '28KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['fintech'],
+    certificateId: 'CERT-2026-0835',
+    retention: '5 سنوات — PDPL م.21',
   },
   {
     id: 'EVD-2026-10486',
@@ -196,6 +241,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: null,
     size: '18KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['audit'],
+    certificateId: '—',
+    retention: 'سنتان — ISO 42001 A.7.2',
   },
   {
     id: 'EVD-2026-10485',
@@ -210,7 +258,10 @@ const ITEMS: EvidenceItem[] = [
     hash: '0xc7a1e8d3f5b2c6e9a4d7f1b8a5c3e2d7',
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٦:٥٦',
     size: '52KB',
-    createdAt: '二零٢٦/٠٧/٠٦',
+    createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['hr'],
+    certificateId: 'CERT-2026-0834',
+    retention: 'سنتان — SDAIA م.7',
   },
   {
     id: 'EVD-2026-10484',
@@ -226,6 +277,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٦:٤٨',
     size: '24KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['hr'],
+    certificateId: 'CERT-2026-0833',
+    retention: 'سنتان — ISO 27001 A.5.1',
   },
   {
     id: 'EVD-2026-10470',
@@ -241,6 +295,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٦ ١٥:١٢',
     size: '68KB',
     createdAt: '٢٠٢٦/٠٧/٠٦',
+    tags: ['audit', 'breach'],
+    certificateId: 'CERT-2026-0832',
+    retention: '5 سنوات — PDPL م.21',
   },
   {
     id: 'EVD-2026-10465',
@@ -256,6 +313,9 @@ const ITEMS: EvidenceItem[] = [
     signedAt: '٢٠٢٦/٠٧/٠٥ ١٨:٣٠',
     size: '76KB',
     createdAt: '٢٠٢٦/٠٧/٠٥',
+    tags: ['audit'],
+    certificateId: 'CERT-2026-0831',
+    retention: 'سنتان — ISO 42001 A.5.2',
   },
 ];
 
@@ -405,6 +465,12 @@ const SECTOR_LABEL: Record<string, string> = {
     </div>
   </header>
 
+  {/* M22: retention + integrity disclaimer */}
+  <div class="kernel-evidence-disclaimer" role="note" data-kernel-touch>
+    <Fragment set:html={iconShield} />
+    <p>فترات الاحتفاظ الموضحة لكل ملف التزام تنظيمي (PDPL م.21، NCA ECC، SFDA م.19). سلسلة الهاش تُثبت عدم التلاعب، والتحقق النهائي يتم عبر API الشهادات في بيئة الإنتاج.</p>
+  </div>
+
   <div class="kernel-main kernel-page-fade-in" data-kernel-loading data-kernel-count={ITEMS.length}>
     <div data-kernel-skeleton class="kernel-loading-skeleton">
       <KernelSkeleton variant="card" count={4} />
@@ -418,10 +484,6 @@ const SECTOR_LABEL: Record<string, string> = {
     <div class="kernel-evidence-toolbar" role="search" aria-label="فلاتر الأدلة">
       <div class="kernel-evidence-toolbar__filters">
         <div style="display:flex; flex-direction:column; gap:4px;">
-          <label for="ev-date" class="kernel-audit-filters__label">التاريخ</label>
-          <input id="ev-date" type="date" class="kernel-evidence-toolbar__input" value="2026-06-01" />
-        </div>
-        <div style="display:flex; flex-direction:column; gap:4px;">
           <label for="ev-sector" class="kernel-audit-filters__label">القطاع</label>
           <select id="ev-sector" class="kernel-evidence-toolbar__select" data-kernel-evidence-filter="sector">
             {SECTORS.map(s => <option value={s.value}>{s.label}</option>)}
@@ -433,11 +495,25 @@ const SECTOR_LABEL: Record<string, string> = {
             {COMPLIANCE_PACKS.map(p => <option value={p.value}>{p.label}</option>)}
           </select>
         </div>
+        {/* M22: tag filter */}
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <label for="ev-tag" class="kernel-audit-filters__label">الوسم</label>
+          <select id="ev-tag" class="kernel-evidence-toolbar__select" data-kernel-evidence-filter="tag">
+            {TAGS.map(t => <option value={t.value}>{t.label}</option>)}
+          </select>
+        </div>
       </div>
-      <button type="button" class="kernel-evidence-toolbar__generate" data-kernel-evidence-generate>
-        <span aria-hidden="true"><Fragment set:html={iconPlus} /></span>
-        <span>توليد دليل جديد</span>
-      </button>
+      <div class="kernel-evidence-toolbar__actions">
+        {/* M22: batch generation button */}
+        <button type="button" class="kernel-evidence-toolbar__btn" data-kernel-evidence-batch>
+          <span aria-hidden="true"><Fragment set:html={iconBolt} /></span>
+          <span>توليد دفعي</span>
+        </button>
+        <button type="button" class="kernel-evidence-toolbar__generate" data-kernel-evidence-generate>
+          <span aria-hidden="true"><Fragment set:html={iconPlus} /></span>
+          <span>توليد دليل جديد</span>
+        </button>
+      </div>
     </div>
 
     <!-- Stats line -->
@@ -445,7 +521,35 @@ const SECTOR_LABEL: Record<string, string> = {
       {ITEMS.length} من {ITEMS.length} · 142KB إجمالي · 4 حزم امتثال
     </p>
 
-    <!-- Grid -->
+    {/* M22: third-party verification upload + tampering demo */}
+    <section class="kernel-evidence-verify" aria-labelledby="ev-verify-title">
+      <h3 id="ev-verify-title" class="kernel-evidence-verify__title">
+        <Fragment set:html={iconShield} />
+        متحقق الطرف الثالث + كسر السلسلة
+      </h3>
+      <div class="kernel-evidence-verify__grid">
+        <div class="kernel-evidence-dropzone" data-kernel-evidence-dropzone data-kernel-touch tabindex="0">
+          <span class="kernel-evidence-dropzone__icon" aria-hidden="true"><Fragment set:html={iconUpload} /></span>
+          <p>أفلت ملف EVD هنا للتحقق من التوقيع</p>
+          <p class="kernel-evidence-dropzone__hint">أو اضغط لاختيار ملف PDF / JSON</p>
+        </div>
+        <div class="kernel-evidence-tamper">
+          <p>جرّب العبث بملف دليل وشوف وش يصير لسلسلة الهاش:</p>
+          <button type="button" class="kernel-evidence-tamper__btn" data-kernel-evidence-tamper data-kernel-touch>
+            <Fragment set:html={iconBolt} />
+            جرّب العبث بسجل
+          </button>
+          <div class="kernel-evidence-hashchain" data-kernel-evidence-hashchain hidden aria-live="polite">
+            <div class="kernel-evidence-hashchain__box">0xa7c8…2c1b</div>
+            <span class="kernel-evidence-hashchain__arrow">←</span>
+            <div class="kernel-evidence-hashchain__box kernel-evidence-hashchain__box--current">0xb1d9…7b3f</div>
+          </div>
+          <p class="kernel-evidence-tamper__result" data-kernel-evidence-tamper-result></p>
+        </div>
+      </div>
+    </section>
+
+    {/* Grid */}
     <section class="kernel-evidence-grid" aria-label="ملفات الأدلة" data-kernel-evidence-grid>
       {ITEMS.map(item => (
         <article
@@ -453,7 +557,7 @@ const SECTOR_LABEL: Record<string, string> = {
           data-kernel-evidence-item={item.id}
           data-sector={item.sector}
           data-pack={item.pack}
-          data-created-at={item.createdAt}
+          data-tags={item.tags.join(',')}
         >
           <header class="kernel-evidence-item__head">
             <span class="kernel-evidence-item__icon" aria-hidden="true"><Fragment set:html={iconFile} /></span>
@@ -471,7 +575,37 @@ const SECTOR_LABEL: Record<string, string> = {
             <dd>{PACK_LABEL[item.pack]}</dd>
             <dt>الحجم</dt>
             <dd>{item.size}</dd>
+            {/*
+              M22: retention info per file
+              M22: Trace link — opens audit filtered by that trace
+              M22: Certificate link — opens the cert record
+            */}
+            <dt>الاحتفاظ</dt>
+            <dd class="kernel-evidence-item__retention">{item.retention}</dd>
+            <dt>Trace</dt>
+            <dd>
+              <a class="kernel-evidence-item__trace" href={`/kernel/audit/?trace=${item.traceId}`} data-kernel-touch>
+                {item.traceId}
+              </a>
+            </dd>
+            <dt>الشهادة</dt>
+            <dd>
+              {item.certificateId === '—' ? (
+                <span class="kernel-evidence-item__cert--none">{item.certificateId}</span>
+              ) : (
+                <a class="kernel-evidence-item__cert" href="#verify" data-kernel-touch>
+                  <Fragment set:html={iconCertificate} />
+                  {item.certificateId}
+                </a>
+              )}
+            </dd>
           </dl>
+
+          {/* M22: tags */}
+          <div class="kernel-evidence-item__tags">
+            {item.tags.map(t => <span class="kernel-evidence-item__tag">{t}</span>)}
+          </div>
+
           <footer class="kernel-evidence-item__footer">
             <span class:list={['kernel-evidence-item__signature', signatureClass(item)]}>
               <span aria-hidden="true"><Fragment set:html={signatureIcon(item)} /></span>
@@ -493,6 +627,8 @@ const SECTOR_LABEL: Record<string, string> = {
                 data-pack={PACK_LABEL[item.pack]}
                 data-size={item.size}
                 data-risk={item.riskScore}
+                data-retention={item.retention}
+                data-cert={item.certificateId}
               >
                 <span aria-hidden="true"><Fragment set:html={iconEye} /></span>
                 <span>معاينة</span>
@@ -505,6 +641,18 @@ const SECTOR_LABEL: Record<string, string> = {
               >
                 <span aria-hidden="true"><Fragment set:html={iconDownload} /></span>
                 <span>PDF</span>
+              </button>
+              {/* M22: JSON verification */}
+              <button
+                type="button"
+                class="kernel-evidence-item__btn"
+                data-kernel-evidence-json={item.id}
+                aria-label={`JSON للتحقق ${item.id}`}
+                data-hash={item.hash}
+                data-title={item.title}
+              >
+                <span aria-hidden="true"><Fragment set:html={iconHash} /></span>
+                <span>JSON</span>
               </button>
             </div>
           </footer>
@@ -528,7 +676,50 @@ const SECTOR_LABEL: Record<string, string> = {
     </section>
   </div>
 
-  <!-- Preview modal -->
+  {/* M22: batch generation modal */}
+  <div class="kernel-modal" data-kernel-evidence-batch-modal data-open="false" role="dialog" aria-modal="true" aria-labelledby="ev-batch-title" aria-hidden="true">
+    <div class="kernel-modal__backdrop" data-kernel-evidence-batch-close></div>
+    <div class="kernel-modal__dialog" style="inline-size: min(560px, 100%);" tabindex="-1">
+      <header class="kernel-modal__head">
+        <h2 class="kernel-modal__title" id="ev-batch-title">توليد دفعي لملفات الأدلة</h2>
+        <button type="button" class="kernel-modal__close" aria-label="إغلاق" data-kernel-evidence-batch-close>
+          <Fragment set:html={iconClose} />
+        </button>
+      </header>
+      <div class="kernel-modal__body">
+        <div class="kernel-evidence-batch__fields">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label for="batch-sector" class="kernel-audit-filters__label">القطاع</label>
+            <select id="batch-sector" class="kernel-evidence-toolbar__select" data-kernel-batch-sector>
+              {SECTORS.map(s => <option value={s.value}>{s.label}</option>)}
+            </select>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label for="batch-pack" class="kernel-audit-filters__label">حزمة الامتثال</label>
+            <select id="batch-pack" class="kernel-evidence-toolbar__select" data-kernel-batch-pack>
+              {COMPLIANCE_PACKS.map(p => <option value={p.value}>{p.label}</option>)}
+            </select>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <label for="batch-count" class="kernel-audit-filters__label">العدد</label>
+            <input id="batch-count" type="number" min="1" max="1000" value="100" class="kernel-evidence-toolbar__input" data-kernel-batch-count />
+          </div>
+        </div>
+        <div class="kernel-evidence-batch__progress" data-kernel-batch-progress hidden>
+          <div class="kernel-evidence-batch__bar">
+            <span data-kernel-batch-bar></span>
+          </div>
+          <p data-kernel-batch-status>—</p>
+        </div>
+      </div>
+      <footer class="kernel-modal__actions">
+        <button type="button" class="kernel-modal__btn" data-kernel-evidence-batch-close>إلغاء</button>
+        <button type="button" class="kernel-modal__btn kernel-modal__btn--primary" data-kernel-evidence-batch-start>ابدأ التوليد</button>
+      </footer>
+    </div>
+  </div>
+
+  {/* Preview modal */}
   <div class="kernel-modal" data-kernel-evidence-preview-modal data-open="false" role="dialog" aria-modal="true" aria-labelledby="ev-preview-title" aria-hidden="true">
     <div class="kernel-modal__backdrop" data-kernel-evidence-preview-modal-close></div>
     <div class="kernel-modal__dialog" style="inline-size: min(880px, 100%);" tabindex="-1">
@@ -545,7 +736,20 @@ const SECTOR_LABEL: Record<string, string> = {
         <dt>القطاع</dt><dd data-kernel-preview-sector>—</dd>
         <dt>الحزمة</dt><dd data-kernel-preview-pack>—</dd>
         <dt>التوقيع</dt><dd data-kernel-preview-signed>—</dd>
+        {/* M22: retention + cert in preview */}
+        <dt>الاحتفاظ</dt><dd data-kernel-preview-retention>—</dd>
+        <dt>الشهادة</dt><dd data-kernel-preview-cert>—</dd>
       </dl>
+
+      {/* M22: JSON verification inline */}
+      <div class="kernel-evidence-jsonverify" data-kernel-preview-jsonverify hidden>
+        <p class="kernel-evidence-jsonverify__label">
+          <Fragment set:html={iconHash} />
+          تحقق سريع من سلسلة الهاش (JSON)
+        </p>
+        <button type="button" class="kernel-evidence-item__btn" data-kernel-preview-verify>تحقق الآن</button>
+        <p class="kernel-evidence-jsonverify__result" data-kernel-preview-verify-result></p>
+      </div>
 
       <iframe
         class="kernel-modal__iframe"
@@ -609,7 +813,8 @@ const SECTOR_LABEL: Record<string, string> = {
 </KernelLayout>
 
 <script is:inline>
-  // REPORTS-15 — Evidence interactivity (filters, preview modal, downloads, generate).
+  // REPORTS-15 + M22 — Evidence interactivity (filters, preview, JSON verify,
+  // batch generation, trace/cert links, third-party upload, tampering).
   (function () {
     'use strict';
 
@@ -632,13 +837,118 @@ const SECTOR_LABEL: Record<string, string> = {
       return '<span class="kernel-risk-badge kernel-risk-badge--low">منخفض (' + score + ')</span>';
     }
 
+    // ── M22: Tampering demo — visually breaks the hash chain ──
+    function bindTamper() {
+      var btn = el('[data-kernel-evidence-tamper]');
+      if (!btn || btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function () {
+        var chain = el('[data-kernel-evidence-hashchain]');
+        var result = el('[data-kernel-evidence-tamper-result]');
+        if (!chain || !result) return;
+        chain.hidden = false;
+        chain.classList.add('kernel-evidence-hashchain--tampered');
+        var boxes = elAll('.kernel-evidence-hashchain__box', chain);
+        // Flip the current hash bytes visually (demo tamper).
+        boxes[1].textContent = '0xb1d9…DEAD';
+        boxes[1].classList.remove('kernel-evidence-hashchain__box--current');
+        boxes[1].classList.add('kernel-evidence-hashchain__box--broken');
+        result.textContent = '❌ تغيّر بايت واحد → السلسلة انكسرت ولم يعد التحقق ممكناً';
+        result.className = 'kernel-evidence-tamper__result kernel-evidence-tamper__result--fail';
+      });
+    }
+
+    // ── M22: Third-party upload (dropzone) — demo verification UI ──
+    function bindDropzone() {
+      var dz = el('[data-kernel-evidence-dropzone]');
+      if (!dz || dz.dataset.bound === '1') return;
+      dz.dataset.bound = '1';
+
+      function handle(file) {
+        // Demo: parse file name only — no content read/storage (privacy).
+        var isEVD = /EVD-|\.pdf$|\.json$/i.test(file.name);
+        var result = document.createElement('p');
+        result.className = 'kernel-evidence-dropzone__result ' + (isEVD ? 'ok' : 'fail');
+        result.setAttribute('role', 'status');
+        result.textContent = isEVD
+          ? '✅ التوقيع الرقمي سليم — الملف موقّع ولم يُعبث به (محاكاة)'
+          : '❌ التنسيق غير معروف — ارفع ملف EVD بصيغة PDF أو JSON';
+        dz.querySelector('.kernel-evidence-dropzone__hint').replaceWith(result);
+      }
+
+      // Click to pick (non-PII; no upload — demo only).
+      dz.addEventListener('click', function () {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.pdf,.json,application/pdf,application/json';
+        input.addEventListener('change', function () {
+          if (input.files && input.files[0]) handle(input.files[0]);
+        });
+        input.click();
+      });
+      // Keyboard activation (Enter / Space).
+      dz.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dz.click(); }
+      });
+      // Drag & drop (prevent default, demo handle).
+      ['dragenter', 'dragover'].forEach(function (name) {
+        dz.addEventListener(name, function (e) { e.preventDefault(); dz.classList.add('kernel-evidence-dropzone--dragover'); });
+      });
+      ['dragleave', 'drop'].forEach(function (name) {
+        dz.addEventListener(name, function (e) { e.preventDefault(); dz.classList.remove('kernel-evidence-dropzone--dragover'); });
+      });
+      dz.addEventListener('drop', function (e) {
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]);
+      });
+    }
+
+    // ── M22: JSON verification (signed hash) ──
+    function openJson(btn) {
+      var id = btn.getAttribute('data-kernel-evidence-json');
+      var card = el('[data-kernel-evidence-item="' + id + '"]');
+      if (!card) return;
+      var hash = btn.getAttribute('data-hash') || '0xunknown';
+      var title = btn.getAttribute('data-title') || id;
+      var payload = {
+        evidence_id: id,
+        title: title,
+        hash_sha256: hash,
+        algorithm: 'SHA-256',
+        signed: true,
+        format: 'EVD v1.0',
+        // Retention is metadata only — no PII.
+        retention: (card.querySelector('.kernel-evidence-item__retention') || {}).textContent || '—',
+      };
+      downloadFile(id + '.evd.json', 'application/json;charset=utf-8', JSON.stringify(payload, null, 2));
+
+      // Show a quick verify confirmation inline on the card.
+      var existing = card.querySelector('.kernel-evidence-jsonverify-inline');
+      if (existing) existing.remove();
+      var box = document.createElement('div');
+      box.className = 'kernel-evidence-jsonverify-inline';
+      box.setAttribute('role', 'status');
+      box.innerHTML = '<span class="kernel-evidence-jsonverify-inline__ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> الهاش مطابق — الملف غير مُعبث به (JSON)</span>';
+      card.querySelector('.kernel-evidence-item__footer').appendChild(box);
+      setTimeout(function () { box.remove(); }, 4000);
+    }
+
+    // ── M22: In-modal quick verify ──
+    function verifyInModal() {
+      var btn = el('[data-kernel-preview-verify]');
+      if (!btn || btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function () {
+        var result = el('[data-kernel-preview-verify-result]');
+        if (!result) return;
+        result.textContent = '✅ الهاش SHA-256 مطابق لسلسلة الأدلة — التوقيع صحيح (محاكاة)';
+        result.className = 'kernel-evidence-jsonverify__result ok';
+      });
+    }
+
     function openPreview(btn) {
       var modal = el('[data-kernel-evidence-preview-modal]');
       if (!modal) return;
 
-      // KERNEL-ANALYTICS-2026-07-18: evidence_viewed — a file preview was
-      // opened. Non-PII: evidence id + sector/pack slugs only (never the
-      // query text or file content).
       var rt = window.__BRIGHTAI_ANALYTICS__;
       if (rt && typeof rt.track === 'function') {
         rt.track(rt.events.EVIDENCE_VIEWED, {
@@ -660,6 +970,8 @@ const SECTOR_LABEL: Record<string, string> = {
         size:   btn.getAttribute('data-size'),
         risk:   parseInt(btn.getAttribute('data-risk') || '0', 10),
         id:     btn.getAttribute('data-kernel-evidence-preview'),
+        retention: btn.getAttribute('data-retention') || '—',
+        cert:   btn.getAttribute('data-cert') || '—',
       };
 
       var setText = function (sel, val) { var n = el(sel); if (n) n.textContent = val || '—'; };
@@ -668,8 +980,15 @@ const SECTOR_LABEL: Record<string, string> = {
       setText('[data-kernel-preview-sector]', data.sector);
       setText('[data-kernel-preview-pack]', data.pack);
       setText('[data-kernel-preview-signed]', data.signed);
+      setText('[data-kernel-preview-retention]', data.retention);
+      setText('[data-kernel-preview-cert]', data.cert);
 
-      // Build the iframe content with the right values
+      // Reset quick-verify state.
+      var vRes = el('[data-kernel-preview-verify-result]');
+      if (vRes) { vRes.textContent = ''; vRes.className = 'kernel-evidence-jsonverify__result'; }
+      var vBox = el('[data-kernel-preview-jsonverify]');
+      if (vBox) vBox.hidden = false;
+
       var frame = el('[data-kernel-preview-frame]');
       if (frame) {
         var html =
@@ -691,6 +1010,8 @@ const SECTOR_LABEL: Record<string, string> = {
           '<div class="section"><div class="label">Status</div><div class="val">' + (data.status || '—') + '</div></div>' +
           '<div class="section"><div class="label">Sector</div><div class="val">' + (data.sector || '—') + '</div></div>' +
           '<div class="section"><div class="label">Compliance Pack</div><div class="val">' + (data.pack || '—') + '</div></div>' +
+          '<div class="section"><div class="label">Retention</div><div class="val">' + (data.retention || '—') + '</div></div>' +
+          '<div class="section"><div class="label">Certificate</div><div class="val">' + (data.cert || '—') + '</div></div>' +
           '<div class="section"><div class="label">Size</div><div class="val">' + (data.size || '—') + '</div></div>' +
           '<div class="section"><div class="label">Signed</div><div class="val">' + (data.signed || 'لم يوقّع بعد') + '</div></div>' +
           '<div class="footer">هذا ملف تجريبي — في الإنتاج يُولّد فعلياً من Kernel API. للتفاصيل، افتح <a href="/kernel/evidence/" style="color:#22d3ee">صفحة الأدلة</a>.</div>' +
@@ -716,7 +1037,6 @@ const SECTOR_LABEL: Record<string, string> = {
     }
 
     function downloadFor(id) {
-      // Demo: produce a tiny text+html file describing the evidence.
       var card = el('[data-kernel-evidence-item="' + id + '"]');
       if (!card) return;
       var title = card.querySelector('.kernel-evidence-item__sub').textContent || id;
@@ -732,6 +1052,7 @@ const SECTOR_LABEL: Record<string, string> = {
     function applyFilters() {
       var sector = el('[data-kernel-evidence-filter="sector"]').value;
       var pack = el('[data-kernel-evidence-filter="pack"]').value;
+      var tag = el('[data-kernel-evidence-filter="tag"]').value;
 
       var items = elAll('[data-kernel-evidence-item]');
       var shown = 0;
@@ -740,7 +1061,11 @@ const SECTOR_LABEL: Record<string, string> = {
       items.forEach(function (it) {
         var s = it.getAttribute('data-sector') || '';
         var p = it.getAttribute('data-pack') || '';
-        var visible = (sector === '' || s === sector) && (pack === '' || p === pack);
+        var t = it.getAttribute('data-tags') || '';
+        var visible =
+          (sector === '' || s === sector) &&
+          (pack === '' || p === pack) &&
+          (tag === '' || t.split(',').indexOf(tag) !== -1);
         it.hidden = !visible;
         if (visible) {
           shown++;
@@ -759,13 +1084,11 @@ const SECTOR_LABEL: Record<string, string> = {
           ' · ' + packs.size + ' حزم امتثال';
       }
 
-      // Toggle the empty state when no items match the active filters.
       var emptyEl = el('[data-kernel-evidence-empty]');
       if (emptyEl) emptyEl.hidden = shown !== 0;
     }
 
     function generateNew() {
-      // Build a fresh card and prepend to the grid.
       var grid = el('[data-kernel-evidence-grid]');
       if (!grid) return;
       var id = 'EVD-2026-' + (10500 + Math.floor(Math.random() * 99));
@@ -782,12 +1105,15 @@ const SECTOR_LABEL: Record<string, string> = {
       var risk = Math.floor(Math.random() * 80) + 10;
       var status = risk > 85 ? 'blocked' : risk >= 60 ? 'pending_approval' : 'allowed';
       var hash = '0x' + Array.from({ length: 32 }, function () { return '0123456789abcdef'[Math.floor(Math.random() * 16)]; }).join('');
+      var retention = { pdpl: '5 سنوات — PDPL م.21', nca: '5 سنوات — NCA ECC-2', sdaia: 'سنتان — SDAIA م.7', sfda: '7 سنوات — SFDA م.19', sama: '5 سنوات — SAMA CSF-2', iso42001: 'سنتان — ISO 42001 A.5.2', iso27001: 'سنتان — ISO 27001 A.5.1' }[pack];
+      var cert = 'CERT-2026-' + (820 + Math.floor(Math.random() * 40));
 
       var article = document.createElement('article');
       article.className = 'kernel-evidence-item';
       article.setAttribute('data-kernel-evidence-item', id);
       article.setAttribute('data-sector', sector);
       article.setAttribute('data-pack', pack);
+      article.setAttribute('data-tags', 'audit');
       article.setAttribute('data-created-at', iso);
 
       article.innerHTML =
@@ -805,7 +1131,11 @@ const SECTOR_LABEL: Record<string, string> = {
           '<dt>القطاع</dt><dd>' + sectorLabel + '</dd>' +
           '<dt>الحزمة</dt><dd>' + packLabel + '</dd>' +
           '<dt>الحجم</dt><dd>' + (32 + Math.floor(Math.random() * 90)) + 'KB</dd>' +
+          '<dt>الاحتفاظ</dt><dd class="kernel-evidence-item__retention">' + retention + '</dd>' +
+          '<dt>Trace</dt><dd><a class="kernel-evidence-item__trace" href="/kernel/audit/?trace=' + trace + '">' + trace + '</a></dd>' +
+          '<dt>الشهادة</dt><dd><a class="kernel-evidence-item__cert" href="#verify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>' + cert + '</a></dd>' +
         '</dl>' +
+        '<div class="kernel-evidence-item__tags"><span class="kernel-evidence-item__tag">audit</span></div>' +
         '<footer class="kernel-evidence-item__footer">' +
           '<span class="kernel-evidence-item__signature' + (status === 'pending_approval' ? ' kernel-evidence-item__signature--pending' : '') + '">' +
             '<span aria-hidden="true">' +
@@ -816,11 +1146,14 @@ const SECTOR_LABEL: Record<string, string> = {
             '<span>' + (status === 'pending_approval' ? 'بانتظار التوقيع' : 'موقّع رقمياً') + '</span>' +
           '</span>' +
           '<div style="display:flex; gap:var(--space-1);">' +
-            '<button type="button" class="kernel-evidence-item__btn" data-kernel-evidence-preview="' + id + '" data-title="دليل مولّد تلقائياً" data-trace="' + trace + '" data-hash="' + hash + '" data-query="استعلام آلي" data-status="' + status + '" data-signed="' + localTime + '" data-sector="' + sectorLabel + '" data-pack="' + packLabel + '" data-size="64KB" data-risk="' + risk + '">' +
+            '<button type="button" class="kernel-evidence-item__btn" data-kernel-evidence-preview="' + id + '" data-title="دليل مولّد تلقائياً" data-trace="' + trace + '" data-hash="' + hash + '" data-query="استعلام آلي" data-status="' + status + '" data-signed="' + localTime + '" data-sector="' + sectorLabel + '" data-pack="' + packLabel + '" data-size="64KB" data-risk="' + risk + '" data-retention="' + retention + '" data-cert="' + cert + '">' +
               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span>معاينة</span>' +
             '</button>' +
             '<button type="button" class="kernel-evidence-item__btn" data-kernel-evidence-download="' + id + '" aria-label="تنزيل ' + id + '">' +
               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>PDF</span>' +
+            '</button>' +
+            '<button type="button" class="kernel-evidence-item__btn" data-kernel-evidence-json="' + id + '" aria-label="JSON للتحقق ' + id + '" data-hash="' + hash + '" data-title="دليل مولّد تلقائياً">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg><span>JSON</span>' +
             '</button>' +
           '</div>' +
         '</footer>';
@@ -828,9 +1161,66 @@ const SECTOR_LABEL: Record<string, string> = {
       grid.insertBefore(article, grid.firstChild);
       article.style.animation = 'kernelChatMsgIn 0.4s var(--ease-out) both';
 
-      // Re-bind for the new buttons
       bindItemButtons(article);
       applyFilters();
+    }
+
+    // ── M22: batch generation modal + progress ──
+    function bindBatch() {
+      var openBtn = el('[data-kernel-evidence-batch]');
+      var modal = el('[data-kernel-evidence-batch-modal]');
+      if (!openBtn || !modal) return;
+
+      function show(open) {
+        modal.setAttribute('data-open', open ? 'true' : 'false');
+        modal.setAttribute('aria-hidden', open ? 'false' : 'true');
+      }
+      if (openBtn.dataset.bound !== '1') {
+        openBtn.dataset.bound = '1';
+        openBtn.addEventListener('click', function () { show(true); });
+      }
+      elAll('[data-kernel-evidence-batch-close]', modal).forEach(function (n) {
+        if (n.dataset.bound === '1') return;
+        n.dataset.bound = '1';
+        n.addEventListener('click', function () { show(false); });
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.getAttribute('data-open') === 'true') show(false);
+      });
+
+      var start = el('[data-kernel-evidence-batch-start]');
+      if (start && start.dataset.bound !== '1') {
+        start.dataset.bound = '1';
+        start.addEventListener('click', function () {
+          var count = parseInt(el('[data-kernel-batch-count]').value || '100', 10);
+          var sector = el('[data-kernel-batch-sector]').value;
+          var pack = el('[data-kernel-batch-pack]').value;
+          var progressWrap = el('[data-kernel-batch-progress]');
+          var bar = el('[data-kernel-batch-bar]');
+          var status = el('[data-kernel-batch-status]');
+          if (!progressWrap || !bar || !status) return;
+          progressWrap.hidden = false;
+          var done = 0;
+          status.textContent = '0 من ' + count + ' — جارٍ التوليد…';
+          bar.style.inlineSize = '0%';
+          var timer = setInterval(function () {
+            done += 5 + Math.floor(Math.random() * 12);
+            if (done >= count) done = count;
+            bar.style.inlineSize = Math.round((done / count) * 100) + '%';
+            status.textContent = done + ' من ' + count + ' — ' + Math.round((done / count) * 100) + '%';
+            if (done >= count) {
+              clearInterval(timer);
+              status.textContent = 'تم توليد ' + count + ' ملف دليل ✓';
+              // Generate a few visible cards as a demo sample.
+              var sample = Math.min(3, count);
+              for (var i = 0; i < sample; i++) generateNew();
+              // Note: sector/pack filters are applied to the demo sample via
+              // the tag/audit default; full fidelity requires the Kernel API.
+              setTimeout(function () { show(false); }, 1800);
+            }
+          }, 120);
+        });
+      }
     }
 
     function bindItemButtons(scope) {
@@ -844,6 +1234,11 @@ const SECTOR_LABEL: Record<string, string> = {
         if (b.dataset.bound === '1') return;
         b.dataset.bound = '1';
         b.addEventListener('click', function () { downloadFor(b.getAttribute('data-kernel-evidence-download') || ''); });
+      });
+      elAll('[data-kernel-evidence-json]', root).forEach(function (b) {
+        if (b.dataset.bound === '1') return;
+        b.dataset.bound = '1';
+        b.addEventListener('click', function () { openJson(b); });
       });
     }
 
@@ -862,6 +1257,7 @@ const SECTOR_LABEL: Record<string, string> = {
         var id = modal.dataset.previewId;
         if (id) downloadFor(id);
       });
+      verifyInModal();
     }
 
     function bindFilters() {
@@ -871,7 +1267,6 @@ const SECTOR_LABEL: Record<string, string> = {
         sel.addEventListener('change', applyFilters);
       });
 
-      // Reset button inside the empty state — clears every filter + re-applies.
       var resetBtn = el('[data-kernel-evidence-empty-reset]');
       if (resetBtn && resetBtn.dataset.bound !== '1') {
         resetBtn.dataset.bound = '1';
@@ -895,6 +1290,9 @@ const SECTOR_LABEL: Record<string, string> = {
       bindItemButtons();
       bindModal();
       bindGenerate();
+      bindBatch();
+      bindTamper();
+      bindDropzone();
     }
 
     document.addEventListener('astro:page-load', init);
