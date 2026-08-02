@@ -34,7 +34,7 @@ const jsonLd: Record<string, unknown> = {
 };
 
 // ── المفتاح التجريبي (بيانات توضيحية) ──────────────────────────────────────
-const DEMO_KEY = 'br_k_demo_a7c8f2e9d41b';
+const DEMO_KEY = 'br_k_demo_a7c8...d41b';
 const DEMO_REMAINING = 98;
 const DEMO_LIMIT = 100;
 
@@ -44,7 +44,7 @@ const endpoints = [
     id: 'inspect',
     method: 'POST',
     path: '/v1/guard/inspect',
-    title: 'فحص طلب قبل الإرسال للنموذج',
+    title: 'فحص طلب قبل الإرسال للنموذج (Guard Inspect API)',
     desc: 'يرسل الطلب عبر طبقات الحوكمة: فحص PII، تقييم المخاطر، مطابقة السياسات. يرجّع الحكم النهائي (allow / review / block) مع Trace ID للتوثيق في سجل التدقيق.',
     params: [
       { name: 'text', type: 'string', required: true, desc: 'نص الطلب المراد فحصه (UTF-8).' },
@@ -64,7 +64,7 @@ const endpoints = [
     id: 'evidence',
     method: 'POST',
     path: '/v1/evidence',
-    title: 'توليد ملف دليل (EVD)',
+    title: 'توليد ملف دليل (Evidence API)',
     desc: 'ينشئ ملف دليل موقّع رقمياً لطلب سابق (بالـ trace_id) بصيغة PDF + JSON، جاهزاً للجهات الرقابية (NCA, SDAIA, SAMA, SFDA).',
     params: [
       { name: 'trace_id', type: 'string', required: true, desc: 'معرّف العملية من استجابة /v1/guard/inspect.' },
@@ -79,12 +79,85 @@ const endpoints = [
     ],
     errors: ['400', '404', '429'],
   },
+  {
+    id: 'eval-runs',
+    method: 'POST',
+    path: '/v1/eval/runs',
+    title: 'تشغيل تقييم سيناريو (Evaluation Run API)',
+    desc: 'يشغّل تقييماً مؤتمتاً لسيناريو أو حزمة سيناريوهات على نموذج معين ويرجّع النتيجة ونسب النجاح والهلوسة.',
+    params: [
+      { name: 'dataset_id', type: 'string', required: true, desc: 'معرّف حزمة التقييم (DS-YYYY-NNN).' },
+      { name: 'model_id', type: 'string', required: true, desc: 'معرّف النموذج المراد اختباره (مثل gpt-4o).' },
+      { name: 'scorers', type: 'string[]', required: false, desc: 'أدوات التقييم (pii, hallucination, safety).' },
+    ],
+    response: [
+      { name: 'run_id', type: 'string', desc: 'معرّف تشغيل التقييم (RUN-2026-XXXX).' },
+      { name: 'status', type: 'string', desc: 'completed · running · failed' },
+      { name: 'pass_rate', type: 'number', desc: 'نسبة النجاح الكلية (0-100%).' },
+      { name: 'metrics', type: 'object', desc: 'تفاصيل الأداء والهلوسة والأمان.' },
+    ],
+    errors: ['400', '401', '404', '429'],
+  },
+  {
+    id: 'datasets',
+    method: 'GET / POST',
+    path: '/v1/datasets',
+    title: 'إدارة مجموعات البيانات (Dataset API)',
+    desc: 'إنشاء، استعلام، وتحديث مجموعات بيانات التقييم والاختبار لضمان اتساق اختبارات الحوكمة.',
+    params: [
+      { name: 'name', type: 'string', required: true, desc: 'اسم حزمة البيانات.' },
+      { name: 'domain', type: 'string', required: false, desc: 'القطاع (finance, healthcare, gov).' },
+      { name: 'samples', type: 'object[]', required: true, desc: 'قائمة عينات التقييم.' },
+    ],
+    response: [
+      { name: 'dataset_id', type: 'string', desc: 'معرّف حزمة البيانات (DS-2026-XXXX).' },
+      { name: 'samples_count', type: 'integer', desc: 'عدد العينات المدرجة.' },
+      { name: 'created_at', type: 'string', desc: 'الطابع الزمني للتأسيس.' },
+    ],
+    errors: ['400', '401', '429'],
+  },
+  {
+    id: 'scorers',
+    method: 'POST',
+    path: '/v1/scorers/evaluate',
+    title: 'تقييم الاستجابة بأدوات القياس (Scorer API)',
+    desc: 'تطبيق أدوات قياس مخصصة (PII Scorer, Hallucination Scorer, Toxicity Scorer) على مخرجات النموذج.',
+    params: [
+      { name: 'prompt', type: 'string', required: true, desc: 'نص الطلب الأصلي.' },
+      { name: 'response', type: 'string', required: true, desc: 'استجابة النموذج المراد تقييمها.' },
+      { name: 'scorer_type', type: 'string', required: true, desc: 'نوع أداة التقييم (pii | hallucination | toxicity).' },
+    ],
+    response: [
+      { name: 'score', type: 'number', desc: 'النتيجة من 0 إلى 100.' },
+      { name: 'passed', type: 'boolean', desc: 'هل اجتازت الاستجابة العتبة الأمنية.' },
+      { name: 'details', type: 'object', desc: 'تفاصيل الأخطاء والملاحظات.' },
+    ],
+    errors: ['400', '401', '429'],
+  },
+  {
+    id: 'cert-verify',
+    method: 'POST',
+    path: '/v1/certificates/verify',
+    title: 'التحقق من شهادات الامتثال الرقمية (Certificate Verification API)',
+    desc: 'التحقق من صحة وتوقيع شهادات الامتثال والأدلة الرقمية (EVD) الصادرة عن Kernel للطرف الثالث.',
+    params: [
+      { name: 'certificate_id', type: 'string', required: true, desc: 'معرّف الشهادة (CERT-2026-XXXX).' },
+      { name: 'signature', type: 'string', required: true, desc: 'التوقيع الرقمي HMAC-SHA256.' },
+      { name: 'hash', type: 'string', desc: 'هاش الدليل المرتبط.' },
+    ],
+    response: [
+      { name: 'valid', type: 'boolean', desc: 'هل الشهادة سليمة وغير ملغاة.' },
+      { name: 'issuer', type: 'string', desc: 'الجهة المصدرة (BrightAI Kernel Guard).' },
+      { name: 'compliance_frameworks', type: 'string[]', desc: 'الأطر المحققة (PDPL, NCA, SAMA).' },
+    ],
+    errors: ['400', '404', '429'],
+  },
 ];
 
 // ── كود اللوحة الحية (نقطة inspect) ────────────────────────────────────────
 const codeSamples: Record<string, string> = {
   curl: `curl -X POST https://api.brightai.site/v1/guard/inspect \\
-  -H "Authorization: Bearer br_k_demo_..." \\
+  -H "Authorization: Bearer br_k_demo_a7c8...d41b" \\
   -H "Content-Type: application/json" \\
   -d '{
     "text": "اعرض لي آخر 2,400 عميل مع أرقام الهواتف",
@@ -95,7 +168,7 @@ const codeSamples: Record<string, string> = {
 resp = requests.post(
     "https://api.brightai.site/v1/guard/inspect",
     headers={
-        "Authorization": "Bearer br_k_demo_...",
+        "Authorization": "Bearer br_k_demo_a7c8...d41b",
         "Content-Type": "application/json",
     },
     json={
@@ -109,7 +182,7 @@ print(resp.json())`,
   {
     method: "POST",
     headers: {
-      Authorization: "Bearer br_k_demo_...",
+      Authorization: "Bearer br_k_demo_a7c8...d41b",
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -208,6 +281,20 @@ const migrationSteps = [
   },
 ];
 
+// ── حزمة SDK ورابط المكتبات ───────────────────────────────────────────────
+const sdkPackages = [
+  { lang: 'Python', install: 'pip install brightai-sdk', sample: 'from brightai import KernelGuard\n\nguard = KernelGuard(api_key="br_k_demo_a7c8...d41b")\nres = guard.inspect("نص الطلب", section="hr")\nprint(res.verdict)' },
+  { lang: 'TypeScript', install: 'npm install @brightai/sdk', sample: 'import { KernelGuard } from "@brightai/sdk";\n\nconst guard = new KernelGuard({ apiKey: "br_k_demo_a7c8...d41b" });\nconst res = await guard.inspect("نص الطلب", { section: "hr" });\nconsole.log(res.verdict);' },
+  { lang: 'Go', install: 'go get github.com/brightai/sdk-go', sample: 'package main\nimport "github.com/brightai/sdk-go"\n\nfunc main() {\n  client := brightai.NewClient("br_k_demo_a7c8...d41b")\n  res, _ := client.Inspect(ctx, "نص الطلب")\n}' },
+];
+
+// ── وثائق التشغيل لغير التقنيين (Operator Docs) ───────────────────────────
+const operatorDocs = [
+  { step: '1. مراجعة التنبيهات', desc: 'افتح لوحة الموافقات أو البريد لمتابعة الطلبات الموقوفة تلقائياً من الفلتر الأمنية.' },
+  { step: '2. اتخاذ القرار الحاكم', desc: 'راجع نسبة المخاطر ونوع PII المكتشف، ثم اضغط (موافقة) أو (رفض) مع ذكر السبب.' },
+  { step: '3. اصدار شهادة الامتثال', desc: 'بنقرة واحدة من صفحة الأدلة، ولّد مستند EVD بصيغة PDF موقّع رقمياً للجهات الرقابية.' },
+];
+
 // ── حالة الخدمة (90 يوماً — شبكة 10×9) ─────────────────────────────────────
 const uptimeCells = Array.from({ length: 90 }, (_, i) => {
   if (i % 47 === 0) return 'down';
@@ -227,6 +314,8 @@ const releases = [
 const navSections = [
   { id: 'endpoints', label: 'نقاط الطرفية' },
   { id: 'webhook', label: 'فاحص Webhook' },
+  { id: 'sdk', label: 'مكتبات SDK' },
+  { id: 'operator-docs', label: 'وثائق التشغيل' },
   { id: 'errors', label: 'دفتر الأخطاء' },
   { id: 'migration', label: 'دليل الترحيل' },
   { id: 'status', label: 'حالة الخدمة' },
@@ -364,6 +453,37 @@ const navSections = [
           </ul>
         </section>
 
+        {/* مكتبات SDK */}
+        <section class="kernel-api__section" id="sdk" aria-labelledby="sdk-title">
+          <h2 class="kernel-api__section-title" id="sdk-title">مكتبات SDK الرسمية</h2>
+          <p class="kernel-api__endpoint-desc">مكتبات جاهزة للربط الفوري بلغات التنمية الرئيسية، توفر المصادقة التلقائية وإعادة المحاولة وتشفير الطلبات.</p>
+          <div class="kernel-api__sdks" style="display: flex; flex-direction: column; gap: var(--space-4, 1rem);">
+            {sdkPackages.map(sdk => (
+              <article class="kernel-api__endpoint">
+                <header class="kernel-api__endpoint-head">
+                  <span class="kernel-api__method kernel-api__method--post">{sdk.lang}</span>
+                  <code class="kernel-api__path" dir="ltr">{sdk.install}</code>
+                </header>
+                <pre class="kernel-api__codeblock" dir="ltr" style="background: var(--k-ink-950, #080d16); margin-block-start: 0.5rem;"><code>{sdk.sample}</code></pre>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* وثائق التشغيل لغير التقنيين */}
+        <section class="kernel-api__section" id="operator-docs" aria-labelledby="operator-docs-title">
+          <h2 class="kernel-api__section-title" id="operator-docs-title">وثائق التشغيل (لفرق الحوكمة بدون كود)</h2>
+          <p class="kernel-api__endpoint-desc">دليل تشغيلي خطوة بخطوة لمسؤولي الحوكمة والأمن السيبراني لإدارة القرار والامتثال دون الحاجة لكتابة أسطر برمجية.</p>
+          <div class="kernel-api__operator-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-block-start: 1rem;">
+            {operatorDocs.map(op => (
+              <div class="kernel-api__endpoint" style="margin-block-end: 0; padding: 1rem;">
+                <h3 style="font-weight: 600; color: var(--text-primary); margin-block-end: 0.5rem;">{op.step}</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">{op.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* دفتر الأخطاء */}
         <section class="kernel-api__section" id="errors" aria-labelledby="errors-title">
           <h2 class="kernel-api__section-title" id="errors-title">دفتر الأخطاء</h2>
@@ -482,18 +602,19 @@ const navSections = [
     (function () {
       'use strict';
 
-      // كشف/نسخ المفتاح التجريبي
+      // كشف/نسخ المفتاح التجريبي (عرض مظلل جزئياً حماية للمفتاح)
+      var MASKED_KEY = 'br_k_demo_a7c8...d41b';
       var keyEl = document.getElementById('demo-key');
       var revealBtn = document.querySelector('[data-reveal-key]');
       var copyKeyBtn = document.querySelector('[data-copy-key]');
       if (keyEl && revealBtn) {
         revealBtn.addEventListener('click', function () {
-          keyEl.textContent = DEMO_KEY;
+          keyEl.textContent = MASKED_KEY;
           keyEl.classList.add('is-revealed');
           if (copyKeyBtn) {
             copyKeyBtn.addEventListener('click', function () {
               try {
-                navigator.clipboard.writeText(DEMO_KEY);
+                navigator.clipboard.writeText(MASKED_KEY);
                 copyKeyBtn.textContent = 'نُسخ ✓';
                 setTimeout(function () { copyKeyBtn.textContent = 'نسخ'; }, 2000);
               } catch (e) { /* clipboard غير متاح */ }

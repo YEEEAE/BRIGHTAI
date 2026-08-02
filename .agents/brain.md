@@ -20,6 +20,23 @@ skills_ready: 7
 ---
 
 
+### 2026-08-02 — KRN-MODELS-CONNECTORS-API-M25-M26-M27: التحقق واكمال ميزات N25 و M26 و M27 في /kernel/
+
+- **Files**:
+  - `src/pages/kernel/models.astro` (VERIFIED — السجل، الحلبة، قواعد التوجيه، مكان البيانات، التكلفة، معدل النجاح، الهلوسة، الأمان، التجاوز اليدوي، تدهور الأداء، التصدير CSV)
+  - `src/pages/kernel/connectors.astro` (VERIFIED — الموصلات الـ8 SAP, Oracle, Dynamics, Epic, Moodle, SharePoint, Salesforce, Okta، قراءة فقط، OAuth/SAML، الصحة، المزامنة، التكلفة/الزمن، تجديد التوكن، إعداد OAuth، مخطط تدفق البيانات، الاختبار الحي، طابور الانقطاع، دليل الموصل المخصص)
+  - `src/pages/kernel/api.astro` (UPDATED — إضافة 4 نقاط طرفية جديدة: Evaluation Run API, Dataset API, Scorer API, Certificate Verification API + إضافة قسم مكتبات SDK لـ Python/TS/Go + إضافة قسم وثائق التشغيل لغير التقنيين + تطبيق التظليل الصارم للمفاتيح "لا تعرض أي مفتاح كامل" `br_k_demo_a7c8...d41b`)
+  - `scripts/verify-models.mjs` (VERIFIED — 25 فحص: determinism + count matrix + TS↔JS parity + hygiene)
+  - `scripts/verify-connectors.mjs` (VERIFIED — 22 فحص: determinism + count matrix + TS↔JS parity + hygiene)
+- **What**: استكمال ومراجعة جميع المتطلبات الخاصة بـ M25 (النماذج والتوجيه) و M26 (الموصلات) و M27 (وحدة المطوّر والـ APIs). إضافة جميع نقاط REST المطلوبة (Inspect, Evidence, Eval Runs, Datasets, Scorers, Cert Verification)، توثيق SDKs ووثائق التشغيل لغير التقنيين، وضمان إخفاء المفتايح بالكامل (`br_k_demo_a7c8...d41b`).
+- **Why**: تلبية متطلبات تنفيذ وحوكمة النماذج والموصلات والـ APIs في نظام Kernel وفق المواصفات السعودية واستجابة لطلب المستخدم.
+- **Verification**:
+  - `npm run verify:models` → **25/25 ✅**
+  - `npm run verify:connectors` → **22/22 ✅**
+- **Status**: verified locally
+
+---
+
 ### 2026-08-01 — KRN-REPORTS-STATS-M23-M24: بناء /kernel/reports/ + /kernel/stats/ كامل — تقارير حتمية + مؤشرات حية
 
 - **Files**:
