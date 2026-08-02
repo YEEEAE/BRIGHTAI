@@ -333,6 +333,12 @@ html[dir='rtl'] .pg-col[data-collapsed='true'] .pg-chevron { transform: rotate(-
   background: var(--text);
   transition: transform var(--duration-fast) var(--ease-out);
 }
+/* M29: كبر مساحة النقر لتتجاوز 24×24 (WCAG 2.5.8) مع إبقاء المقبض 36×20 */
+.pg-toggle::before {
+  content: '';
+  position: absolute;
+  inset: -6px -4px;
+}
 .pg-toggle[aria-checked='true'] { background: var(--brand); }
 .pg-toggle[aria-checked='true']::after { transform: translateX(16px); }
 html[dir='rtl'] .pg-toggle[aria-checked='true']::after { transform: translateX(-16px); }
@@ -455,7 +461,14 @@ html[dir='rtl'] .pg-toggle[aria-checked='true']::after { transform: translateX(-
 .pg-skip-btn:hover { color: var(--brand); border-color: var(--brand); }
 
 /* البطاقات الست */
-.pg-cards { display: flex; flex-direction: column; gap: 0; }
+.pg-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  /* M29: يسمح لكاروسيل الجوال بالتمرير داخلياً بدل دفع العمود خارج الشاشة
+     (flex item min-width:auto كان يمنع الانكماش). */
+  min-inline-size: 0;
+}
 .pg-card {
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -498,9 +511,10 @@ html[dir='rtl'] .pg-toggle[aria-checked='true']::after { transform: translateX(-
 .pg-card:not([data-expanded='true']) .pg-card__body { display: none; }
 
 /* حالات البطاقة */
+/* M29: خطوة بطاقة idle — 4.12:1 كانت تفشل AA على خلفية الدائرة، رُفعت للـ --text-hi */
 .pg-card[data-state='idle'] { opacity: 1; }
 .pg-card[data-state='idle'] .pg-card__title,
-.pg-card[data-state='idle'] .pg-card__step { color: var(--text-soft); }
+.pg-card[data-state='idle'] .pg-card__step { color: var(--text-hi); }
 .pg-card[data-state='running'] {
   border-color: var(--brand);
   box-shadow: 0 0 0 1px var(--brand), 0 0 24px rgba(32, 165, 151, 0.2);
@@ -1196,8 +1210,14 @@ html[dir='rtl'] .pg-toggle[aria-checked='true']::after { transform: translateX(-
 
 /* 768–1023: أكورديون عمودي */
 @media (max-width: 1023px) {
-  .pg-grid { display: flex; flex-direction: column; }
-  .pg-col { max-height: none; }
+  .pg-grid {
+    display: flex;
+    flex-direction: column;
+    /* M29: align-items:start (موروثة من الـgrid) كانت تمنع الأعمدة من التمدد
+       لعرض الحاوية في وضع الـflex، فينفجر عمود خط الأنابيب بعرض محتواه. */
+    align-items: stretch;
+  }
+  .pg-col { max-height: none; min-inline-size: 0; }
 }
 
 /* الجوال: خط أنابيب شريط أفقي بالسحب + زر تشغيل مثبّت */

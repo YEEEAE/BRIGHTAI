@@ -2625,3 +2625,39 @@ Stage Summary:
 - Report written to `report/2026-08-01-krn-approvals-m19.md`
 - المخاطر المتبقية: لا يوجد — كل البوابات نجحت
 - الخطوة التالية: المستخدم يقرر إذا يريد أي تعديل إضافي على صفحة الموافقات أو ينتقل للمهمة التالية
+
+---
+
+Task ID: M29
+Agent: BrightAI Workspace Agent
+Task: M29 kernel QA — WCAG 2.2 AA (axe) + responsive overflow + report
+Started: 2026-08-02T06:00:00+03:00
+Mode: Senior
+
+Work Log:
+- Probe baseline on preview 4322 (dist/client): صفحة كل kernel وراءها `main.overflow-x-auto` + زر الموبايل مفقود + فجوة كبيرة تحت الفوتر التسويقي (unstyled footer)
+- اكتشاف جوهري: `KernelLayout` لا يحمّل `components.css` → `footer.footer` التسويقي يظهر بلا أنماطه على كل صفحات kernel
+- أصلحت `src/styles/kernel.css`: `body.kernel-shell footer.footer { display: none }` (M29)
+- أصلحت التباين عبر 7 ملفات CSS: kernel.css (FOUC + navs + روابط السايدبار 9:1)، eval.css، datasets.css، scorers.css، policies.css، redteam.css، playground.css (M29)
+- أصلحت `kernel-audit.js`/`kernel-policies.js`/`playground.astro`/`api.astro`/`models.astro`: roles (cell/row/rowgroup/list/tablist) + scrollable-region-focusable + tabindex
+- أصلحت `nested-interactive` في `kernel-connectors.js`: أزرار الحالة خرجت من منطقة نقر البطاقة (`.kc-card__main`)
+- كتبت `scripts/playwright/axe-kernel.mjs` (21 route) → **C:0 S:0 M:0 m:0 على كل الصفحات**
+- كتبت `scripts/playwright/m29-responsive-qa.mjs` (16 صفحة × 5 viewports) → **0 failing combos + 0 أخطاء console/page**
+- اكتشاف M26: صفحة connectors — قسم الموصلات كامل بدون CSS (`.connectors-*` legacy ميت، الصفحة تستخدم `kc-*`)
+- كتبت `kernel/assets/css/pages/connectors.css` من الصفر بنظام `kc-*` كامل (KPIs، بطاقات، guide، drawer، flow، test، sync، queue، toast، reduced-motion، responsive) — بموافقة المستخدم (الخيار 1)
+- تحققت بالـ probe: بطاقات connectors مصفّفة (bg #131c30، border 1px، radius 12px، 365×320)، الدرج يفتح/يقفل، no console errors
+- حذفت لقطات qa: `rm -f qa-screenshots/m29/*.png && rmdir qa-screenshots/m29`
+- `npm run verify:all` فشل → broken-links من `public/js/kernel-api 2.js`/`kernel-api-data 2.js` (مكررات macOS، بموافقة المستخدم `git rm` للملفين)
+- `dist/` يحتفظ بنسخ قديمة → `npm run build` → exit 0
+- `npm run verify:all` → **exit 0** (TOTAL ERRORS: 0، hreflang bidirectional pass)
+- كتبت `report/2026-08-02-krn-m29-qa.md`
+- لم ألتزم أي commit — المستخدم يلتزم (brain.md rule)
+
+Stage Summary:
+- **axe 21 صفحة kernel: 0 مخالفات** (كانت سابقًا 3 critical + 22 serious قبل إصلاحات M-series)
+- **responsive: 80 حالة / 0 failing** + 0 أخطاء console
+- **verify:all الآن exit 0** — حل مشكلة معلّقة من M28 (ملفا "kernel-api 2" المكرران)
+- **M26 حُلّت**: صفحة connectors كانت بلا CSS — نظام `kc-*` كامل مكتوب ومُتحقق
+- الفوتر التسويقي غير المصمم أخفيناه على kernel (موجه) — لو المستخدم يبيه مصفّف، الحل تحميل components.css في الكيرنل
+- المخاطر المتبقية: LSP errors قديمة في policies.astro:53 / models.astro:41 (لا تُفشل البناء)؛ ملفات kernel-api الميتة الباقية (kernel-api، kernel-api.js، kernel-api-data.js 55B) تحتاج تنظيف لاحق؛ فوتر السايدبار روابطه صغيرة (target-size خارج النطاق)
+- الخطوة التالية: المستخدم يلتزم التغييرات (build + verify:all يمران)، ثم مراجعة المقترحات المتبقية

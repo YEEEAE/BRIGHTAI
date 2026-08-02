@@ -128,7 +128,7 @@
 }
 .sc-kpi--warn { border-color: color-mix(in srgb, var(--status-warning) 40%, transparent); }
 .sc-kpi--danger { border-color: color-mix(in srgb, var(--status-danger) 40%, transparent); }
-.sc-kpi__label { font-size: var(--text-xs); color: var(--text-muted); }
+.sc-kpi__label { font-size: var(--text-xs); color: var(--text-secondary); }
 .sc-kpi__value { font-size: var(--text-2xl, 1.5rem); color: var(--text-primary); font-weight: 700; font-variant-numeric: tabular-nums; }
 .sc-kpi__foot { font-size: var(--text-xs); color: var(--text-secondary); }
 
@@ -150,7 +150,7 @@
 .sc-cat__name { font-size: var(--text-sm); font-weight: 600; color: var(--text-primary); }
 .sc-cat__num { font-size: var(--text-xl, 1.25rem); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 .sc-cat__num em { color: var(--brand-400, #22d3ee); font-style: normal; }
-.sc-cat__foot { font-size: var(--text-xs); color: var(--text-muted); }
+.sc-cat__foot { font-size: var(--text-xs); color: var(--text-secondary); }
 
 /* ═══════ السجل (جدول) ═══════ */
 .sc-registry {
@@ -262,7 +262,7 @@
   vertical-align: middle;
 }
 .sc-table tr:hover td { background: color-mix(in srgb, var(--text-muted) 5%, transparent); }
-.sc-row-id { font-family: var(--font-mono, ui-monospace, monospace); font-size: var(--text-xs); color: var(--text-muted); direction: ltr; unicode-bidi: isolate; }
+.sc-row-id { font-family: var(--font-mono, ui-monospace, monospace); font-size: var(--text-xs); color: var(--text-secondary); direction: ltr; unicode-bidi: isolate; }
 .sc-row-name {
   background: none;
   border: 0;
@@ -435,7 +435,7 @@
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
 }
-.sc-runner__card-label { font-size: var(--text-xs); color: var(--text-muted); display: block; margin-block-end: var(--space-2); }
+.sc-runner__card-label { font-size: var(--text-xs); color: var(--text-secondary); display: block; margin-block-end: var(--space-2); }
 .sc-runner__card textarea {
   width: 100%;
   background: var(--bg-base);

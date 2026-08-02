@@ -497,6 +497,7 @@
     cells.forEach(function (c) {
       var cell = document.createElement('div');
       cell.className = 'kernel-audit-vrow__cell ' + c.cls;
+      cell.setAttribute('role', 'cell'); // M29: axe aria-required-children (table)
       row.appendChild(cell);
     });
 

@@ -1,0 +1,29 @@
+════════════════════════════════════════════════════════════
+  A11y Kernel Scan (WCAG 2.2 AA) — http://localhost:4322
+════════════════════════════════════════════════════════════
+  Pages: 21   Critical: 0   Serious: 0   Moderate: 0   Minor: 0
+
+  [ ok ] /kernel/                       C:0 S:0 M:0 m:0
+  [ ok ] /kernel/admin/                 C:0 S:0 M:0 m:0
+  [ ok ] /kernel/api/                   C:0 S:0 M:0 m:0
+  [ ok ] /kernel/approvals/             C:0 S:0 M:0 m:0
+  [ ok ] /kernel/audit/                 C:0 S:0 M:0 m:0
+  [ ok ] /kernel/chat/                  C:0 S:0 M:0 m:0
+  [ ok ] /kernel/compliance/            C:0 S:0 M:0 m:0
+  [ ok ] /kernel/connectors/            C:0 S:0 M:0 m:0
+  [ ok ] /kernel/datasets/              C:0 S:0 M:0 m:0
+  [ ok ] /kernel/eval/                  C:0 S:0 M:0 m:0
+  [ ok ] /kernel/evidence/              C:0 S:0 M:0 m:0
+  [ ok ] /kernel/models/                C:0 S:0 M:0 m:0
+  [ ok ] /kernel/offline/               C:0 S:0 M:0 m:0
+  [ ok ] /kernel/playground/            C:0 S:0 M:0 m:0
+  [ ok ] /kernel/policies/              C:0 S:0 M:0 m:0
+  [ ok ] /kernel/redteam/               C:0 S:0 M:0 m:0
+  [ ok ] /kernel/replay/                C:0 S:0 M:0 m:0
+  [ ok ] /kernel/reports/               C:0 S:0 M:0 m:0
+  [ ok ] /kernel/scenarios/             C:0 S:0 M:0 m:0
+  [ ok ] /kernel/scorers/               C:0 S:0 M:0 m:0
+  [ ok ] /kernel/stats/                 C:0 S:0 M:0 m:0
+════════════════════════════════════════════════════════════
+  مخالفات Critical/Serious متكررة عبر الصفحات:
+════════════════════════════════════════════════════════════

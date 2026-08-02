@@ -69,7 +69,8 @@
       var statusClass = 'kc-card--' + c.status;
       var healthColor = c.healthPercent >= 99 ? 'var(--status-success)' : c.healthPercent >= 95 ? 'var(--status-warning)' : 'var(--status-danger)';
 
-      html += '<article class="kc-card ' + statusClass + '" data-connector-id="' + c.id + '" tabindex="0" role="button" aria-label="' + c.name + ' — افتح التفاصيل">';
+      html += '<article class="kc-card ' + statusClass + '" data-connector-id="' + c.id + '">';
+      html += '<div class="kc-card__main" role="button" tabindex="0" aria-label="' + c.name + ' — افتح التفاصيل">';
       html += '<header class="kc-card__header">';
       html += '<div class="kc-card__icon-block">';
       html += '<span class="kc-card__icon" aria-hidden="true">' + c.icon + '</span>';
@@ -88,6 +89,21 @@
       html += '<span class="kc-card__uptime">' + c.uptime + '</span>';
       html += '</div>';
 
+      html += '<div class="kc-card__metrics">';
+      html += '<div class="kc-card__metric"><span class="kc-card__metric-label">آخر مزامنة</span><span class="kc-card__metric-value">' + c.lastSync + '</span></div>';
+      html += '<div class="kc-card__metric"><span class="kc-card__metric-label">اليوم</span><span class="kc-card__metric-value">' + fmtCount(c.recordsToday) + '</span></div>';
+      html += '<div class="kc-card__metric"><span class="kc-card__metric-label">زمن الاستجابة</span><span class="kc-card__metric-value">' + (c.avgLatencyMs > 0 ? c.avgLatencyMs + ' ms' : '—') + '</span></div>';
+      html += '</div>';
+
+      html += '<div class="kc-card__health">';
+      html += '<div class="kc-card__health-bar"><div class="kc-card__health-fill" style="width:' + c.healthPercent + '%; background:' + healthColor + '"></div></div>';
+      html += '<span class="kc-card__health-label">الصحة ' + c.healthPercent + '%</span>';
+      html += '</div>';
+
+      html += '<div class="kc-card__readonly"><span class="kc-card__readonly-badge">🔒 قراءة فقط</span></div>';
+      html += '</div>';
+
+      // M29: زر الحالة خارج منطقة النقر حتى لا تتداخل الـ interactive controls
       if (c.status === 'error' && c.errorMsg) {
         html += '<div class="kc-card__error">';
         html += '<span class="kc-card__error-icon">⚠️</span>';
@@ -103,19 +119,6 @@
         html += '<button type="button" class="kc-card__setup-btn" data-setup-oauth="' + c.id + '">أكمل إعداد OAuth</button>';
         html += '</div>';
       }
-
-      html += '<div class="kc-card__metrics">';
-      html += '<div class="kc-card__metric"><span class="kc-card__metric-label">آخر مزامنة</span><span class="kc-card__metric-value">' + c.lastSync + '</span></div>';
-      html += '<div class="kc-card__metric"><span class="kc-card__metric-label">اليوم</span><span class="kc-card__metric-value">' + fmtCount(c.recordsToday) + '</span></div>';
-      html += '<div class="kc-card__metric"><span class="kc-card__metric-label">زمن الاستجابة</span><span class="kc-card__metric-value">' + (c.avgLatencyMs > 0 ? c.avgLatencyMs + ' ms' : '—') + '</span></div>';
-      html += '</div>';
-
-      html += '<div class="kc-card__health">';
-      html += '<div class="kc-card__health-bar"><div class="kc-card__health-fill" style="width:' + c.healthPercent + '%; background:' + healthColor + '"></div></div>';
-      html += '<span class="kc-card__health-label">الصحة ' + c.healthPercent + '%</span>';
-      html += '</div>';
-
-      html += '<div class="kc-card__readonly"><span class="kc-card__readonly-badge">🔒 قراءة فقط</span></div>';
 
       html += '</article>';
     });
@@ -167,6 +170,7 @@
     grid.addEventListener('keydown', function (e) {
       var card = e.target.closest('[data-connector-id]');
       if (!card) return;
+      if (e.target.closest('button')) return; // M29: لا تفتح الـ drawer من الأزرار الداخلية
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         openDrawer(card.dataset.connectorId);

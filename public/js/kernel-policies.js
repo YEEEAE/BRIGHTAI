@@ -840,6 +840,10 @@
       row.appendChild(cellVersion);
       row.appendChild(cellDate);
       row.appendChild(cellActions);
+      row.setAttribute('role', 'row'); // M29: axe aria-required-children (table)
+      Array.prototype.forEach.call(row.children, function (c) {
+        c.setAttribute('role', 'cell');
+      });
       tbody.appendChild(row);
     });
   }

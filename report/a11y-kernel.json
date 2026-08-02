@@ -1,0 +1,107 @@
+[
+  {
+    "path": "/kernel/",
+    "url": "http://localhost:4322/kernel/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/admin/",
+    "url": "http://localhost:4322/kernel/admin/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/api/",
+    "url": "http://localhost:4322/kernel/api/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/approvals/",
+    "url": "http://localhost:4322/kernel/approvals/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/audit/",
+    "url": "http://localhost:4322/kernel/audit/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/chat/",
+    "url": "http://localhost:4322/kernel/chat/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/compliance/",
+    "url": "http://localhost:4322/kernel/compliance/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/connectors/",
+    "url": "http://localhost:4322/kernel/connectors/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/datasets/",
+    "url": "http://localhost:4322/kernel/datasets/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/eval/",
+    "url": "http://localhost:4322/kernel/eval/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/evidence/",
+    "url": "http://localhost:4322/kernel/evidence/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/models/",
+    "url": "http://localhost:4322/kernel/models/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/offline/",
+    "url": "http://localhost:4322/kernel/offline/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/playground/",
+    "url": "http://localhost:4322/kernel/playground/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/policies/",
+    "url": "http://localhost:4322/kernel/policies/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/redteam/",
+    "url": "http://localhost:4322/kernel/redteam/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/replay/",
+    "url": "http://localhost:4322/kernel/replay/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/reports/",
+    "url": "http://localhost:4322/kernel/reports/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/scenarios/",
+    "url": "http://localhost:4322/kernel/scenarios/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/scorers/",
+    "url": "http://localhost:4322/kernel/scorers/",
+    "violations": []
+  },
+  {
+    "path": "/kernel/stats/",
+    "url": "http://localhost:4322/kernel/stats/",
+    "violations": []
+  }
+]

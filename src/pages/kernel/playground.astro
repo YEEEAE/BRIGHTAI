@@ -218,7 +218,7 @@ const pgConfig = {
           </button>
 
           <div class="pg-timeline">
-            <div class="pg-mini-timeline" id="pg-mini-timeline" role="list" aria-label="الخط الزمني للمراحل">
+            <div class="pg-mini-timeline" id="pg-mini-timeline" role="group" aria-label="الخط الزمني للمراحل">
               {[1,2,3,4,5,6,7,8,9,10].map((n) => (
                 <button class="pg-mini" type="button" data-mini={n} aria-label={`المرحلة ${n}`}>{n}</button>
               ))}
@@ -287,8 +287,10 @@ const pgConfig = {
               <button id="pg-tab-with" role="tab" aria-selected="true">مع Kernel</button>
               <button id="pg-tab-without" role="tab" aria-selected="false">بدون Kernel</button>
             </div>
-            <div class="pg-result-pane" id="pg-pane-with" data-pane="with" role="tabpanel">—</div>
-            <div class="pg-result-pane" id="pg-pane-without" data-pane="without" role="tabpanel" hidden>—</div>
+          </div>
+          <div>
+            <div class="pg-result-pane" id="pg-pane-with" data-pane="with" role="tabpanel" aria-labelledby="pg-tab-with">—</div>
+            <div class="pg-result-pane" id="pg-pane-without" data-pane="without" role="tabpanel" aria-labelledby="pg-tab-without" hidden>—</div>
           </div>
 
           <div>

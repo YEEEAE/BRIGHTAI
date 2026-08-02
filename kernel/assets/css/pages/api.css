@@ -383,6 +383,9 @@
 }
 .kernel-api__payload-list {
   display: grid;
+  /* M29: العمود الضمني auto كان يتسع لـ max-content (498px) بسبب nowrap
+     في summary فينفجر خارج الصندوق. minmax(0,1fr) يفرض الانكماش. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-2);
   margin: 0;
   padding: 0;
@@ -520,10 +523,30 @@
 
 /* ── الجوال: الترتيب (المحتوى أولاً ثم الشجرة ثم اللوحة) ────────────────── */
 @media (max-width: 1023px) {
-  .kernel-api__layout { display: flex; flex-direction: column; }
+  .kernel-api__layout {
+    display: flex;
+    flex-direction: column;
+    /* M29: align-items:start (الموروثة من الـgrid) كانت تمنع تمدد الأعمدة
+       لعرض الحاوية في وضع الـflex، فتأخذ الأعمدة عرض محتواها وتنفجر أفقيًا. */
+    align-items: stretch;
+  }
+  .kernel-api__content,
+  .kernel-api__nav,
+  .kernel-api__panel { min-inline-size: 0; }
+  /* M29: الأقسام grid items — min-width:auto كان يمنعها من الانكماش لأقل من
+     عرض الجداول العريضة فتنفجر الصفحة أفقيًا. */
+  .kernel-api__section { min-inline-size: 0; }
   .kernel-api__content { order: 1; }
   .kernel-api__nav { order: 2; position: static; }
   .kernel-api__panel { order: 3; position: static; }
+}
+/* الجداول العريضة تتمرر أفقيًا داخل الحاوية بدل دفع الصفحة (M29) */
+@media (max-width: 767px) {
+  .kernel-api__table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .kernel-api__payload.is-new { animation: none; }

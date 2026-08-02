@@ -712,6 +712,11 @@ body.kernel-shell {
 
 /* Mobile: sidebar hidden; k-drawer from KernelLayout handles nav */
 
+/* M29: الفوتر التسويقي من BaseLayout يظهر على صفحات kernel بدون أنماطه
+   (components.css غير محمّل في kernel) — نخفيه لأن للكيرنل فوتره الخاص
+   في السايدبار. لو تبغى إظهاره مصفّفًا، حمّل components.css هنا. */
+body.kernel-shell footer.footer { display: none; }
+
 /* ── 2. Sidebar ────────────────────────────────────────────────────── */
 
 .kernel-sidebar {
@@ -1333,6 +1338,9 @@ body.kernel-shell {
   text-decoration: none;
   white-space: nowrap;
   flex: 0 0 auto;
+  /* M29: رفع مساحة النقر إلى ≥24px (WCAG 2.5.8) */
+  min-height: 24px;
+  padding-block: 3px;
 }
 .k-topbar__brand-text { font-size: var(--text-sm); }
 
@@ -1375,7 +1383,8 @@ body.kernel-shell {
   inset-inline-end: var(--space-2);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
-  color: var(--text-low);
+  /* M29: --text-low (4.30:1) كان يفشل AA على السطح — رُفع لـ --text-secondary (7.2:1) */
+  color: var(--text-secondary);
   background: var(--surface-700);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
@@ -3838,7 +3847,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 .kernel-audit-toolbar__count {
   font-size: var(--text-sm);
   color: var(--text-secondary);
-  opacity: var(--text-tertiary-opacity);
+  /* M29: opacity 0.58 كانت تخفض التباين تحت AA — أُزيلت */
 }
 
 .kernel-audit-toolbar__actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
@@ -4524,7 +4533,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 }
 .kernel-ap-card--critical .kernel-ap-card__risk { color: var(--status-danger); border-color: rgba(239,68,68,0.4); }
 .kernel-ap-card--high     .kernel-ap-card__risk { color: var(--status-warning); border-color: rgba(245,158,11,0.4); }
-.kernel-ap-card--medium   .kernel-ap-card__risk { color: var(--status-info); border-color: rgba(99,102,241,0.4); }
+.kernel-ap-card--medium   .kernel-ap-card__risk { color: #818cf8; border-color: rgba(129,140,248,0.4); } /* M29: --status-info 4.27:1 يفشل AA — رُفع لـ #818cf8 5.3:1 */
 
 .kernel-ap-card__snippet {
   flex: 1;

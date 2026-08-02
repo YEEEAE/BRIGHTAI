@@ -82,7 +82,7 @@
   font-size: var(--text-xs);
   color: var(--text-muted);
 }
-.ds-stats__hash code { font-family: var(--font-mono, ui-monospace, monospace); }
+.ds-stats__hash code { font-family: var(--font-mono, ui-monospace, monospace); color: var(--text-secondary); }
 
 .ds-kpi-grid {
   display: grid;
@@ -134,7 +134,7 @@
   overflow: hidden;
 }
 .ds-bar__fill { display: block; height: 100%; border-radius: var(--radius-full); transition: width var(--duration-slow, 400ms) var(--ease-out); }
-.ds-bar__num { color: var(--text-muted); text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ds-bar__num { color: var(--text-secondary); text-align: end; font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 /* ألوان أشرطة الأحكام */
 .ds-bar__fill--ok { background: var(--status-success); }
@@ -164,7 +164,7 @@
 .ds-sector__name { color: var(--text-secondary); }
 .ds-sector__bar { height: 6px; background: color-mix(in srgb, var(--text-muted) 18%, transparent); border-radius: var(--radius-full); overflow: hidden; }
 .ds-sector__fill { display: block; height: 100%; background: var(--brand-500); border-radius: var(--radius-full); }
-.ds-sector__num { color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.ds-sector__num { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
 
 /* تحذيرات */
 .ds-warnings { display: grid; gap: var(--space-2); margin-block-start: var(--space-4); }
@@ -295,7 +295,7 @@
 }
 .ds-status--draft { color: var(--text-secondary); background: color-mix(in srgb, var(--text-secondary) 14%, transparent); }
 .ds-status--published { color: var(--status-success); background: color-mix(in srgb, var(--status-success) 12%, transparent); }
-.ds-status--archived { color: var(--text-muted); background: color-mix(in srgb, var(--text-muted) 16%, transparent); }
+.ds-status--archived { color: var(--text-secondary); background: color-mix(in srgb, var(--text-secondary) 16%, transparent); }
 .ds-version { font-weight: 700; color: var(--text-primary); margin-inline-end: var(--space-2); }
 .ds-hash {
   font-family: var(--font-mono, ui-monospace, monospace);
@@ -350,7 +350,7 @@
 .ds-version-block__head { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
 .ds-version-block__name { font-weight: 700; color: var(--text-primary); }
 .ds-version-block__note { color: var(--text-secondary); font-size: var(--text-sm); margin: var(--space-2) 0 0; }
-.ds-version-block__meta { display: flex; gap: var(--space-3); flex-wrap: wrap; font-size: var(--text-xs); color: var(--text-muted); margin-block-start: var(--space-2); }
+.ds-version-block__meta { display: flex; gap: var(--space-3); flex-wrap: wrap; font-size: var(--text-xs); color: var(--text-secondary); margin-block-start: var(--space-2); }
 .ds-version-block__actions { margin-block-start: var(--space-2); }
 .ds-diffchips { display: inline-flex; gap: var(--space-1); }
 .ds-diffchip {

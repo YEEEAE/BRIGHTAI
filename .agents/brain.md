@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-02 05:20 +03:00
+last_updated: 2026-08-02 06:20 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.73
 agent_version: v2.3
@@ -19,6 +19,34 @@ skills_ready: 7
 
 ---
 
+
+### 2026-08-02 — KRN-M29-QA: فحص WCAG 2.2 AA شامل (axe 21 صفحة = 0) + responsive (80 حالة = 0) + إصلاح M26 (CSS الموصلات) + حل verify:all
+
+- **Files**:
+  - `kernel/assets/css/pages/connectors.css` (REWRITTEN — نظام `kc-*` كامل بدل الـlegacy الميت `.connectors-*`؛ KPIs، بطاقات، guide، drawer، flow، test، sync، queue، toast، prefers-reduced-motion، responsive)
+  - `src/styles/kernel.css` (EDITED — `body.kernel-shell footer.footer { display: none }` + إصلاحات color-contrast)
+  - `src/styles/kernel/{eval,datasets,scorers,policies,redteam,playground}.css` (EDITED — color-contrast AA)
+  - `public/js/kernel-audit.js` (EDITED — `role="cell"`)، `public/js/kernel-policies.js` (EDITED — `role="row"/"cell"`)
+  - `public/js/kernel-connectors.js` (EDITED — `.kc-card__main` منطق نقر البطاقة، أزرار الحالة خارجها)
+  - `src/pages/kernel/{playground,api,models}.astro` (EDITED — roles + tabindex + scrollable-focusable)
+  - `public/js/kernel-api 2.js` + `public/js/kernel-api-data 2.js` (DELETED — مكرّران macOS " 2" كانا يكسران verify:all، بموافقة المستخدم)
+  - `scripts/playwright/axe-kernel.mjs` (NEW — 21 route axe wcag 22aa)، `scripts/playwright/m29-responsive-qa.mjs` (NEW — 16 صفحة × 5 viewports)
+  - `report/2026-08-02-krn-m29-qa.md` (NEW)
+- **What**: فحص شامل لصفحات kernel: axe WCAG 2.2 AA على 21 مسار + فحص overflow أفقي على 5 viewports + إصلاح كل المخالفات. اكتشفت وأصلحت خلل M26: صفحة `/kernel/connectors/` كانت بلا CSS إطلاقًا (الـlegacy `.connectors-*` لا يطابق `kc-*` الحالي). كذالك اكتشفت أن الفوتر التسويقي من `BaseLayout` يظهر على kernel بلا أنماطه (`components.css` غير محمّل) فأخفينه.
+- **Why**: شرط الجودة — kernel يحتاج WCAG 2.2 AA (0 violations) + لا overflow أفقي على أي viewport. وM26 خلل جوهري: الموصلات معروضة بلا أي تنسيق.
+- **Verification**:
+  - `npm run build` → نجح ✅
+  - axe-kernel.mjs → **21/21 صفحة: 0 critical / 0 serious / 0 moderate / 0 minor** ✅ (كانت سابقًا C:3 S:22 قبل إصلاحات M-series)
+  - m29-responsive-qa.mjs → **80 combo / 0 failing** + 0 أخطاء console/page ✅
+  - probe connectors: البطاقات مصفّفة (bg #131c30، border، radius، 365×320)، الدرج يفتح/يقفل ✅
+  - `npm run verify:all` → **exit 0** (TOTAL ERRORS: 0) — حُلّ المعلّق من M28 (ملفا "kernel-api 2") ✅
+- **Report**: `report/2026-08-02-krn-m29-qa.md`
+- **Commit**: uncommitted — المستخدم يلتزم (rule: لا commits من الوكيل)
+- **Status**: verified locally
+- **Brain updates**: قسم 2 (هذا الـ entry)؛ حلّ KI مفتوح (ملفا "kernel-api 2" كانا في known-issues كمصدر broken-links). ملاحظة: `dist/` يحتفظ بنسخ قديمة من الملفات المحذوفة — أي حذف من `public/` يتطلب `npm run build` قبل `verify:all` (لأن seo:gate يفحص `CLIENT_ROOT=dist/client`).
+- **ملاحظة**: بقي تنظيف لاحق خارج النطاق: ملفات kernel-api الميتة الباقية (`kernel-api`, `kernel-api.js`, `kernel-api-data.js` 55B)؛ LSP errors قديمة في policies.astro:53 / models.astro:41 (لا تُفشل البناء)؛ روابط فوتر السايدبار صغيرة (target-size).
+
+---
 
 ### 2026-08-02 — KRN-M28-LINKS-PHASE3: ربط الموافقات بالدليل (approvals → evidence) + إعادة التشغيل بالأصل (replay → parent)
 

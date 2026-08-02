@@ -536,7 +536,7 @@
   padding: 2px 8px;
   border-radius: var(--radius-full);
   background: var(--rt-accent-soft);
-  color: var(--rt-accent);
+  color: #f87171; /* M29: --rt-accent 3.58:1 يفشل AA على الـsoft bg — رُفع لـ #f87171 4.9:1 */
   font-size: 10px;
   font-weight: var(--font-bold);
   letter-spacing: 0.02em;
