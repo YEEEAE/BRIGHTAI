@@ -1643,6 +1643,65 @@ html[dir="rtl"] .k-trace-drawer__panel { transform: translateX(-100%); }
 .k-trace-unit:hover { border-color: var(--line-strong); color: var(--text-hi); }
 .k-trace-unit:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
 
+/* أقسام التفاصيل الموسّعة (M28 — دمج درج التدقيق في الدرج المشترك) */
+.k-trace-drawer__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background: var(--surface-800);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+}
+.k-trace-drawer__detail[hidden] { display: none; }
+.k-trace-drawer__kv {
+  display: grid;
+  grid-template-columns: minmax(110px, 35%) 1fr;
+  gap: var(--space-1-5) var(--space-3);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+.k-trace-drawer__kv > div { display: contents; }
+.k-trace-drawer__kv dt { color: var(--text-low); }
+.k-trace-drawer__kv dd { color: var(--text-hi); margin: 0; word-break: break-word; }
+.k-trace-drawer__action { margin: 0; font-size: var(--text-sm); color: var(--text-mid); line-height: 1.7; }
+.k-trace-drawer__trace {
+  margin: 0;
+  background: var(--ink-900);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-block-size: 280px;
+  overflow-y: auto;
+  direction: ltr;
+  text-align: start;
+}
+.k-trace-drawer__action-row { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.k-trace-drawer__action-btn {
+  min-block-size: 44px;
+  padding-inline: var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1-5);
+  background: var(--surface-700);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-md);
+  color: var(--text-hi);
+  font-size: var(--text-sm);
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--k-motion-micro) var(--ease-out), background var(--k-motion-micro) var(--ease-out);
+}
+.k-trace-drawer__action-btn:hover { background: var(--surface-600); border-color: var(--brand-500); }
+.k-trace-drawer__action-btn:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
+
 /* ── لوحة الأوامر ⌘K ───────────────────────────────────────────────── */
 .k-cmdk[aria-hidden="true"] { display: none; }
 .k-cmdk {
@@ -2246,7 +2305,6 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   /* Reduce card padding from --space-6 to --space-4 */
   .kernel-metric,
   .kernel-stat-card,
-  .kernel-audit-drawer__panel,
   .kernel-modal__dialog,
   .kernel-modal__body {
     padding: var(--space-4);
@@ -3955,118 +4013,6 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 .kernel-audit-pagination__btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
-}
-
-/* Detail drawer (slides from right) */
-.kernel-audit-drawer {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  pointer-events: none;
-}
-
-.kernel-audit-drawer[data-open="true"] {
-  pointer-events: auto;
-}
-
-.kernel-audit-drawer__backdrop {
-  position: absolute;
-  inset: 0;
-  background: var(--bg-overlay);
-  opacity: 0;
-  transition: opacity var(--duration-base) var(--ease-out);
-}
-
-.kernel-audit-drawer[data-open="true"] .kernel-audit-drawer__backdrop {
-  opacity: 1;
-}
-
-.kernel-audit-drawer__panel {
-  position: absolute;
-  inset-block: 0;
-  inset-inline-end: 0;
-  inline-size: min(560px, 92vw);
-  background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-base) 100%);
-  border-inline-start: 1px solid var(--border);
-  padding: var(--space-6);
-  overflow-y: auto;
-  transform: translateX(100%);
-  transition: transform var(--duration-base) var(--ease-out);
-}
-
-[dir="rtl"] .kernel-audit-drawer__panel {
-  transform: translateX(-100%);
-}
-
-.kernel-audit-drawer[data-open="true"] .kernel-audit-drawer__panel {
-  transform: translateX(0);
-}
-
-.kernel-audit-drawer__close {
-  position: absolute;
-  inset-inline-end: var(--space-4);
-  inset-block-start: var(--space-4);
-  inline-size: 44px;
-  block-size: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  color: var(--text-secondary);
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.kernel-audit-drawer__close:hover { color: var(--text-primary); background: var(--brand-soft); }
-.kernel-audit-drawer__close:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
-
-.kernel-audit-drawer__title {
-  font-size: var(--text-lg);
-  font-weight: var(--font-bold);
-  color: var(--text-primary);
-  margin: 0 0 var(--space-2);
-}
-
-.kernel-audit-drawer__section {
-  padding-block: var(--space-4);
-  border-block-end: 1px solid var(--border-subtle);
-}
-
-.kernel-audit-drawer__section:last-of-type { border-block-end: 0; }
-
-.kernel-audit-drawer__section-title {
-  font-size: var(--text-xs);
-  color: var(--text-secondary);
-  opacity: var(--text-tertiary-opacity);
-  font-weight: var(--font-bold);
-  margin: 0 0 var(--space-2);
-}
-
-.kernel-audit-drawer__kv {
-  display: grid;
-  grid-template-columns: minmax(120px, 35%) 1fr;
-  gap: var(--space-2) var(--space-3);
-  font-size: var(--text-sm);
-}
-
-.kernel-audit-drawer__key { color: var(--text-secondary); }
-.kernel-audit-drawer__val { color: var(--text-primary); word-break: break-word; }
-.kernel-audit-drawer__val--mono { font-family: var(--font-mono); font-size: 0.78rem; }
-
-.kernel-audit-drawer__trace {
-  background: var(--bg-base);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  white-space: pre-wrap;
-  word-break: break-word;
-  max-block-size: 280px;
-  overflow-y: auto;
 }
 
 /* ── 23b. AUDIT virtualized table + KPI strip + verifier ─────────────── */
@@ -5842,7 +5788,6 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 }
 
 @media (max-width: 767px) {
-  .kernel-audit-drawer__panel { inline-size: 100vw; }
   .kernel-modal__dialog { inline-size: 100%; }
   /* KRN-018 fix: dvh handles iOS Safari URL-bar collapse */
   .kernel-modal__iframe { block-size: 60vh; block-size: 60dvh; }
@@ -5856,9 +5801,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 
 @media (prefers-reduced-motion: reduce) {
   .kernel-chat-message,
-  .kernel-modal__dialog,
-  .kernel-audit-drawer__panel,
-  .kernel-audit-drawer__backdrop {
+  .kernel-modal__dialog {
     animation: none !important;
     transition: none !important;
   }

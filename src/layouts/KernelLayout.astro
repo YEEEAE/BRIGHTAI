@@ -210,16 +210,16 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
         </div>
       </header>
 
-      <!-- شريط ملخص 4 خانات -->
+      <!-- شريط ملخص 4 خانات — القيم تعبَّأ من KernelEvalStore عبر kernel-drawer.js -->
       <div class="k-trace-drawer__summary">
-        <div class="k-trace-drawer__cell"><span class="k-cell-label">المستخدم</span><strong>نورة العتيبي</strong></div>
-        <div class="k-trace-drawer__cell"><span class="k-cell-label">القسم</span><strong>التسويق</strong></div>
-        <div class="k-trace-drawer__cell"><span class="k-cell-label">النموذج</span><strong dir="ltr">gpt-4o</strong></div>
-        <div class="k-trace-drawer__cell"><span class="k-cell-label">الزمن الكلي</span><strong dir="ltr">412ms</strong></div>
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">المستخدم</span><strong data-kernel-drawer-user data-label="المستخدم">نورة العتيبي</strong></div>
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">القسم</span><strong data-kernel-drawer-dept data-label="القسم">التسويق</strong></div>
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">النموذج</span><strong dir="ltr" data-kernel-drawer-model data-label="النموذج">gpt-4o</strong></div>
+        <div class="k-trace-drawer__cell"><span class="k-cell-label">الزمن الكلي</span><strong dir="ltr" data-kernel-drawer-time data-label="الزمن الكلي">412ms</strong></div>
       </div>
 
-      <!-- الخط الزمني — 6 مراحل -->
-      <ol class="k-timeline" aria-label="مراحل الطلب">
+      <!-- الخط الزمني — 6 مراحل. يعبَّأ من trace.stages عبر kernel-drawer.js -->
+      <ol class="k-timeline" aria-label="مراحل الطلب" data-kernel-timeline>
         <li class="k-timeline__item k-timeline__item--done">
           <span class="k-timeline__node" aria-hidden="true"></span>
           <details class="k-timeline__card" open>
@@ -294,30 +294,63 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
         </li>
       </ol>
 
-      <!-- سلسلة الهاش -->
-      <section class="k-hash-chain" aria-label="سلسلة الهاش">
+      <!-- سلسلة الهاش — تعبَّأ من run hashes عبر kernel-drawer.js -->
+      <section class="k-hash-chain" aria-label="سلسلة الهاش" data-kernel-hash-chain>
         <h3 class="k-hash-chain__title">سلسلة الهاش</h3>
         <div class="k-hash-chain__boxes">
           <div class="k-hash-box">
             <span class="k-hash-box__label">السابق</span>
-            <span class="k-mono k-hash-box__val" dir="ltr">0x9f2a…c1d4</span>
+            <span class="k-mono k-hash-box__val" dir="ltr" data-kernel-hash-prev>0x9f2a…c1d4</span>
           </div>
           <span class="k-hash-chain__arrow" aria-hidden="true">←</span>
           <div class="k-hash-box k-hash-box--current">
             <span class="k-hash-box__label">الحالي</span>
-            <span class="k-mono k-hash-box__val" dir="ltr">0xa7c8…2c1b</span>
+            <span class="k-mono k-hash-box__val" dir="ltr" data-kernel-hash-curr>0xa7c8…2c1b</span>
             <span class="k-hash-box__ok" aria-label="سليم">✅</span>
           </div>
           <span class="k-hash-chain__arrow" aria-hidden="true">←</span>
           <div class="k-hash-box">
             <span class="k-hash-box__label">التالي</span>
-            <span class="k-mono k-hash-box__val" dir="ltr">0x3e0b…77fa</span>
+            <span class="k-mono k-hash-box__val" dir="ltr" data-kernel-hash-next>0x3e0b…77fa</span>
           </div>
         </div>
       </section>
 
+      <!-- ═══ تفاصيل موسّعة (M28 — دمج درج التدقيق) ═══
+           تُعرض عندما يفتح الدرج من سياق تدقيق (seed) — JSON + snippet + إجراءات.
+           تختبئ افتراضيًا؛ kernel-drawer.js يبدّلها حسب المصدر. -->
+      <section class="k-trace-drawer__detail" hidden data-kernel-drawer-detail>
+        <h3 class="k-hash-chain__title">الحالة والإجراء</h3>
+        <dl class="k-trace-drawer__kv">
+          <div><dt>الحالة</dt><dd data-kernel-drawer-status>—</dd></div>
+          <div><dt>موافقة بشرية</dt><dd data-kernel-drawer-approval>—</dd></div>
+          <div><dt>شذوذ</dt><dd data-kernel-drawer-anomaly>—</dd></div>
+        </dl>
+        <p class="k-trace-drawer__action" data-kernel-drawer-action>—</p>
+      </section>
+
+      <section class="k-trace-drawer__detail" hidden data-kernel-drawer-json>
+        <h3 class="k-hash-chain__title">Trace JSON</h3>
+        <pre class="k-trace-drawer__trace" data-kernel-drawer-json-body>—</pre>
+      </section>
+
+      <section class="k-trace-drawer__detail" hidden data-kernel-drawer-snippet>
+        <h3 class="k-hash-chain__title">DevTools snippet</h3>
+        <pre class="k-trace-drawer__trace" data-kernel-drawer-snippet-body>—</pre>
+        <button class="k-trace-drawer__action-btn" type="button" data-kernel-drawer-copy-snippet aria-label="نسخ snippet التدقيق">نسخ الـ snippet</button>
+      </section>
+
+      <section class="k-trace-drawer__detail" hidden data-kernel-drawer-actions>
+        <h3 class="k-hash-chain__title">إجراءات</h3>
+        <div class="k-trace-drawer__action-row">
+          <button class="k-trace-drawer__action-btn" type="button" data-kernel-drawer-copy-hash aria-label="نسخ الهاش">نسخ الهاش</button>
+          <button class="k-trace-drawer__action-btn" type="button" data-kernel-drawer-export-pdf aria-label="تصدير PDF">تصدير PDF</button>
+          <a class="k-trace-drawer__action-btn" href="/kernel/evidence/" data-kernel-drawer-link-evidence>افتح ملف الدليل</a>
+        </div>
+      </section>
+
       <!-- بطاقات الوحدات المصغّرة -->
-      <section class="k-trace-units" aria-label="وحدات لمست هذا الطلب">
+      <section class="k-trace-units" aria-label="وحدات لمست هذا الطلب" data-kernel-trace-units>
         <a class="k-trace-unit" href="/kernel/chat/"><span>المحادثة</span></a>
         <a class="k-trace-unit" href="/kernel/audit/"><span>السجل</span></a>
         <a class="k-trace-unit" href="/kernel/approvals/"><span>الموافقة</span></a>

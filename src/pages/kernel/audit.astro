@@ -44,13 +44,13 @@ const cross = getCrossLinks(unit);
 const stats = buildAuditStats();
 
 // SCHEMA-ENHANCEMENT (2026-07-14): add SoftwareApplication + BreadcrumbList + FAQPage
-const jsonLd: Record<string, unknown>[] = [
+const jsonLd = [
   ...getKernelSubPageJsonLd(unit),
   getKernelFaqJsonLd(unit),
-].filter((item): item is Record<string, unknown> => Boolean(item));
+] as Array<Record<string, unknown> | null | undefined>;
+const pageJsonLd = jsonLd as unknown as Record<string, unknown>;
 
 const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-const iconCopy = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
 const iconCheck = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 const iconClose = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>';
@@ -196,7 +196,7 @@ const fmtCount = (n: number) => n.toLocaleString('ar-SA');
   description={unit.description}
   canonical={unit.canonical}
   hreflang={unit.hreflang}
-  jsonLd={jsonLd}
+  jsonLd={pageJsonLd}
   currentPath={unit.path}
   breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: 'التدقيق', href: unit.path }]}
   extraSpeakableSelectors={['.answer-first-summary']}
@@ -396,74 +396,9 @@ const fmtCount = (n: number) => n.toLocaleString('ar-SA');
     </section>
   </div>
 
-  <!-- Detail drawer -->
-  <div class="kernel-audit-drawer" data-kernel-audit-drawer data-open="false" role="dialog" aria-modal="true" aria-labelledby="audit-drawer-title" aria-hidden="true">
-    <div class="kernel-audit-drawer__backdrop" data-kernel-audit-drawer-close></div>
-    <div class="kernel-audit-drawer__panel" tabindex="-1">
-      <button type="button" class="kernel-audit-drawer__close" aria-label="إغلاق" data-kernel-audit-drawer-close>
-        <Fragment set:html={iconClose} />
-      </button>
-      <h2 class="kernel-audit-drawer__title" id="audit-drawer-title" data-kernel-drawer-title>تفاصيل السجل</h2>
-
-      <section class="kernel-audit-drawer__section">
-        <h3 class="kernel-audit-drawer__section-title">المعلومات الأساسية</h3>
-        <dl class="kernel-audit-drawer__kv">
-          <dt class="kernel-audit-drawer__key">Trace ID</dt>
-          <dd class="kernel-audit-drawer__val kernel-audit-drawer__val--mono" data-kernel-drawer-trace>—</dd>
-          <dt class="kernel-audit-drawer__key">Hash</dt>
-          <dd class="kernel-audit-drawer__val kernel-audit-drawer__val--mono" data-kernel-drawer-hash>—</dd>
-          <dt class="kernel-audit-drawer__key">الوقت</dt>
-          <dd class="kernel-audit-drawer__val" data-kernel-drawer-ts>—</dd>
-          <dt class="kernel-audit-drawer__key">المستخدم</dt>
-          <dd class="kernel-audit-drawer__val" data-kernel-drawer-user>—</dd>
-          <dt class="kernel-audit-drawer__key">القسم</dt>
-          <dd class="kernel-audit-drawer__val" data-kernel-drawer-dept>—</dd>
-          <dt class="kernel-audit-drawer__key">الحالة</dt>
-          <dd class="kernel-audit-drawer__val" data-kernel-drawer-status>—</dd>
-          <dt class="kernel-audit-drawer__key">موافقة بشرية</dt>
-          <dd class="kernel-audit-drawer__val" data-kernel-drawer-approval>—</dd>
-          <dt class="kernel-audit-drawer__key">شذوذ (Anomaly)</dt>
-          <dd class="kernel-audit-drawer__val" data-kernel-drawer-anomaly>—</dd>
-        </dl>
-      </section>
-
-      <section class="kernel-audit-drawer__section">
-        <h3 class="kernel-audit-drawer__section-title">تفاصيل الإجراء</h3>
-        <p style="color:var(--text-primary); line-height:1.6;" data-kernel-drawer-action>—</p>
-      </section>
-
-      <section class="kernel-audit-drawer__section">
-        <h3 class="kernel-audit-drawer__section-title">Trace JSON</h3>
-        <div class="kernel-audit-drawer__trace" data-kernel-drawer-json>—</div>
-      </section>
-
-      <section class="kernel-audit-drawer__section">
-        <h3 class="kernel-audit-drawer__section-title">DevTools snippet</h3>
-        <div class="kernel-audit-drawer__trace" data-kernel-drawer-snippet>—</div>
-        <div style="margin-block-start: var(--space-2);">
-          <button type="button" class="kernel-modal__btn" data-kernel-drawer-copy-snippet>
-            <Fragment set:html={iconCopy} />
-            <span>نسخ الـ snippet</span>
-          </button>
-        </div>
-      </section>
-
-      <section class="kernel-audit-drawer__section">
-        <h3 class="kernel-audit-drawer__section-title">إجراءات</h3>
-        <div style="display:flex; gap:var(--space-2); flex-wrap:wrap;">
-          <button type="button" class="kernel-modal__btn" data-kernel-drawer-export-pdf>
-            <Fragment set:html={iconDownload} />
-            <span>تصدير PDF</span>
-          </button>
-          <button type="button" class="kernel-modal__btn" data-kernel-drawer-copy-hash>
-            <Fragment set:html={iconCopy} />
-            <span>نسخ الهاش</span>
-          </button>
-          <a href="/kernel/evidence/" class="kernel-modal__btn" data-kernel-drawer-link-evidence>افتح ملف الدليل</a>
-        </div>
-      </section>
-    </div>
-  </div>
+  {/* ═══════════ M28 — حُذف درج التدقيق الخاص: الفتح موحّد عبر الدرج المشترك
+       (#k-trace-drawer في KernelLayout) عبر window.KernelTraceDrawer.open،
+       مع كل الميزات (JSON/snippet/PDF/نسخ هاش/رابط دليل). ═══════════ */}
 
   {/* ═══════════ KERNEL-AI-2026-07-14: AI Assistant + Lead Capture ═══════════ */}
 

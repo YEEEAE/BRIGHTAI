@@ -26,7 +26,9 @@
  *   [data-kernel-audit-export="csv|json|pdf"]
  *   [data-ka-verify-trace] [data-ka-verify-btn] [data-ka-tamper-btn]
  *   [data-ka-verify-out] [data-ka-verify-prev/current/next]
- *   [data-kernel-audit-drawer] …      → existing drawer (populated here)
+ *   (M28) Row detail opens the SHARED #k-trace-drawer via
+ *   window.KernelTraceDrawer.open(traceId, seed) — audit.astro no longer
+ *   ships its own drawer; the private [data-kernel-audit-drawer] was removed.
  *
  * CSP: external module only, no unsafe-inline. Data is deterministic + local —
  * no fetch (Prompt 19 immutable rule). Hash verify is REAL (recompute), the
@@ -604,36 +606,26 @@
   }
 
   // ── drawer ─────────────────────────────────────────────────────────────
+  // M28 — دمج كامل: صفحة التدقيق تفتح الدرج المشترك (#k-trace-drawer) عبر
+  // window.KernelTraceDrawer.open(traceId, seed). حُذف الدرج الخاص بها.
   function openDrawer(realIndex) {
-    var drawer = $('[data-kernel-audit-drawer]');
-    if (!drawer) return;
     var r = getRowByRealIndex(realIndex);
     if (!r) return;
+    if (!window.KernelTraceDrawer) return; // kernel-drawer.js (الشِل) لازم يحمّل أولًا
 
-    drawer.setAttribute('data-open', 'true');
-    drawer.setAttribute('aria-hidden', 'false');
-
-    function setText(sel, val) {
-      var el = $(sel);
-      if (el) el.textContent = val;
-    }
-
-    setText('[data-kernel-drawer-trace]', r.traceId);
-    setText('[data-kernel-drawer-hash]', r.hash);
-    setText('[data-kernel-drawer-ts]', r.tsLabel);
-    setText('[data-kernel-drawer-user]', r.userLabel + ' — ' + r.role);
-    setText('[data-kernel-drawer-status]', statusLabel(r.status));
-    setText('[data-kernel-drawer-action]', r.action);
-
-    // Context rows: department + approval flow + anomaly.
-    setText('[data-kernel-drawer-dept]', r.role);
-    setText('[data-kernel-drawer-approval]', r.humanApproved ? 'نعم — موافقة بشرية' : (r.status === 'pending_approval' ? 'بانتظار الموافقة' : 'لا — آلي'));
-    setText('[data-kernel-drawer-anomaly]', r.anomaly ? 'نعم — أعلى من نمط المستخدم' : 'لا');
-
-    // Trace JSON (full row, minus prev/current hash noise kept).
-    var jsonEl = $('[data-kernel-drawer-json]');
-    if (jsonEl) {
-      jsonEl.textContent = JSON.stringify({
+    var seed = {
+      user: r.userLabel,
+      dept: r.role,
+      model: 'NVIDIA NIM',
+      time: r.tsLabel,
+      verdict: r.status, // allowed/blocked/pending_approval/error → يترجم للشارة
+      hashes: { prev: r.prevHash, curr: r.hash, next: undefined },
+      hash: r.hash,
+      status: statusLabel(r.status),
+      approval: r.humanApproved ? 'نعم — موافقة بشرية' : (r.status === 'pending_approval' ? 'بانتظار الموافقة' : 'لا — آلي'),
+      anomaly: r.anomaly ? 'نعم — أعلى من نمط المستخدم' : 'لا',
+      action: r.action,
+      json: JSON.stringify({
         traceId: r.traceId,
         timestamp: r.tsLabel,
         user: r.userLabel,
@@ -642,77 +634,36 @@
         riskScore: r.risk,
         status: r.status,
         humanApproved: r.humanApproved,
+        anomaly: r.anomaly,
         prevHash: r.prevHash,
         hash: r.hash,
-      }, null, 2);
-    }
-
-    // DevTools snippet: ready-to-paste console statement.
-    var snippet = $('[data-kernel-drawer-snippet]');
-    if (snippet) {
-      snippet.textContent = 'window.__kernelAudit && window.__kernelAudit.trace("' + r.traceId + '")';
-      snippet.setAttribute('data-copy-snippet', snippet.textContent);
-    }
-
-    // Timeline (6 stages).
-    var tl = buildTimeline(r);
-    var tlEl = $('[data-kernel-drawer-timeline]');
-    if (tlEl) tlEl.textContent = tl;
-
-    setTimeout(function () {
-      var close = $('.kernel-audit-drawer__close');
-      if (close) close.focus();
-    }, 60);
+      }, null, 2),
+      snippet: 'window.__kernelAudit && window.__kernelAudit.trace("' + r.traceId + '")',
+      stages: buildTimeline(r),
+    };
+    window.KernelTraceDrawer.open(r.traceId, seed);
   }
 
+  /** المراحل الست بصيغة seed (بما يتوافق مع buildStages في kernel-drawer.js). */
   function buildTimeline(r) {
-    var stages = [
-      { stage: 'REQUEST_RECEIVED', ts: 'T+0ms', detail: 'مستخدم: ' + r.userLabel },
-      { stage: 'PII_SCANNED', ts: 'T+18ms', detail: 'كاشف PII: ' + (r.status === 'blocked' ? 'تم كشف بيانات حساسة (PII)' : 'لم يُكشف في هذا السجل.') },
-      { stage: 'RISK_SCORED', ts: 'T+24ms', detail: 'درجة المخاطر: ' + r.risk + '/100' },
-      { stage: 'POLICY_MATCHED', ts: 'T+31ms', detail: 'سياسة: ' + (r.risk > 70 ? 'تجميد + مراجعة بشرية' : 'مسموح') },
-      { stage: 'MODEL_CALLED', ts: 'T+58ms', detail: r.status === 'blocked' ? 'لم يُستدعى النموذج — تم الحظر قبل الإرسال.' : (r.status === 'error' ? 'فشل استدعاء المزوّد (timeout).' : 'استدعاء مزود النموذج: NVIDIA NIM') },
-      { stage: 'EVIDENCE_GENERATED', ts: 'T+74ms', detail: 'Hash: ' + r.hash },
+    var blocked = r.status === 'blocked';
+    var risk = r.risk;
+    return [
+      { name: 'الاستلام', time: 'T+0ms', resultClass: 'k-timeline__result--ok', resultText: 'مرّ', nodeClass: '', detail: 'مستخدم: ' + r.userLabel, skipped: false },
+      { name: 'فحص PII', time: 'T+18ms', resultClass: blocked ? 'k-timeline__result--mask' : 'k-timeline__result--ok', resultText: blocked ? 'عُمّي' : 'سليم', nodeClass: blocked ? '--mask' : '', detail: 'كاشف PII: ' + (blocked ? 'تم كشف بيانات حساسة (PII)' : 'لم يُكشف في هذا السجل.'), skipped: false },
+      { name: 'تقييم المخاطر', time: 'T+24ms', resultClass: risk > 85 ? 'k-timeline__result--critical' : 'k-timeline__result--ok', resultText: 'درجة ' + risk + '/100', nodeClass: risk > 85 ? '--critical' : '', detail: 'درجة المخاطر: ' + risk + '/100', skipped: false },
+      { name: 'مطابقة السياسات', time: 'T+31ms', resultClass: blocked ? 'k-timeline__result--block' : 'k-timeline__result--ok', resultText: blocked ? 'حُظر' : 'مرّ', nodeClass: blocked ? '--block' : '', detail: 'سياسة: ' + (risk > 70 ? 'تجميد + مراجعة بشرية' : 'مسموح'), skipped: false },
+      { name: 'استدعاء النموذج', time: 'T+58ms', resultClass: blocked ? 'k-timeline__result--skip' : 'k-timeline__result--ok', resultText: blocked ? 'لن يُستدعى' : 'اكتمل', nodeClass: blocked ? '--skip' : '', detail: blocked ? 'لم يُستدعى النموذج — تم الحظر قبل الإرسال.' : 'استدعاء مزود النموذج: NVIDIA NIM', skipped: blocked },
+      { name: 'توليد الدليل', time: 'T+74ms', resultClass: 'k-timeline__result--ok', resultText: r.status === 'error' ? 'فشل' : 'EVD', nodeClass: '', detail: 'Hash: ' + r.hash, skipped: false },
     ];
-    return stages.map(function (s) { return '[' + s.ts + '] ' + s.stage + ' — ' + s.detail; }).join('\n');
   }
 
   function closeDrawer() {
-    var drawer = $('[data-kernel-audit-drawer]');
-    if (!drawer) return;
-    drawer.setAttribute('data-open', 'false');
-    drawer.setAttribute('aria-hidden', 'true');
+    if (window.KernelTraceDrawer) window.KernelTraceDrawer.close();
   }
 
   function bindDrawer() {
-    var drawer = $('[data-kernel-audit-drawer]');
-    if (!drawer || drawer.dataset.bound === '1') return;
-    drawer.dataset.bound = '1';
-    $all('[data-kernel-audit-drawer-close]', drawer).forEach(function (n) {
-      n.addEventListener('click', closeDrawer);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && drawer.getAttribute('data-open') === 'true') closeDrawer();
-    });
-
-    var copySnippet = $('[data-kernel-drawer-copy-snippet]');
-    if (copySnippet) {
-      copySnippet.addEventListener('click', function () {
-        var snippet = $('[data-kernel-drawer-snippet]');
-        if (snippet && snippet.getAttribute('data-copy-snippet')) {
-          safeCopy(snippet.getAttribute('data-copy-snippet')).then(function () { flash(copySnippet); });
-        }
-      });
-    }
-
-    var exportPdf = $('[data-kernel-drawer-export-pdf]');
-    if (exportPdf) exportPdf.addEventListener('click', function () { exportRows('pdf'); });
-
-    var copyHash = $('[data-kernel-drawer-copy-hash]');
-    if (copyHash) copyHash.addEventListener('click', function () {
-      var h = $('[data-kernel-drawer-hash]');
-      if (h) safeCopy(h.textContent || '').then(function () { flash(copyHash); });
-    });
+    // لا درج خاص بعد (M28) — لا شيء يُربَط هنا. الفتح موحّد عبر الشِل.
   }
 
   // ── exports ────────────────────────────────────────────────────────────

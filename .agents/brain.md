@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-01 23:43 +03:00
+last_updated: 2026-08-02 04:05 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.70
+version: 2.7.71
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,27 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+
+### 2026-08-02 — KRN-M28-DRAWER-MERGE: دمج درج التدقيق في الدرج المشترك + تنظيف بقاياه
+
+- **Files**:
+  - `src/layouts/KernelLayout.astro` (EDITED — أقسام تفاصيل جديدة بعد سلسلة الهاش: `[data-kernel-drawer-detail|json|snippet|actions]` + `data-label` للخانات الأربع الملخص → تستخدمها دالة تصدير PDF)
+  - `src/styles/kernel.css` (EDITED — كلاسات `.k-trace-drawer__detail/*` الجديدة + حذف بقايا `.kernel-audit-drawer*` كلها (الكتلة الكاملة + 3 media queries))
+  - `public/js/kernel-drawer.js` (EDITED — fillFromStore/fillFromSeed موسّعان يملآن status/approval/anomaly/action/JSON/snippet + `statusAr()` + `toggleSection()` + ربط أزرار نسخ الهاش/نسخ snippet/تصدير PDF + `exportDrawerPdf()` + openDrawer يعيد ضبط الأقسام عند كل فتح)
+  - `public/js/kernel-audit.js` (EDITED — استبدال نظام الدرج الخاص: `openDrawer(realIndex)` → `window.KernelTraceDrawer.open(r.traceId, seed)` بseed غني + `buildTimeline(r)` بصيغة seed الجديدة + `closeDrawer()` توكل للشِل + `bindDrawer()` فارغة + تحديث رأس DOM contract)
+  - `src/pages/kernel/audit.astro` (EDITED — حذف درج `[data-kernel-audit-drawer]` الخاص كاملًا + حذف `iconCopy` الميت + إصلاح نوع `jsonLd` عبر `as unknown as Record<string, unknown>`)
+  - `scripts/playwright/verify-kernel-audit.mjs` (EDITED — التحديث للدرج المشترك: traceId من `[data-kernel-trace-id]`، حالة الفتح من `aria-hidden="false"`)
+- **What**: نفّذت "دمج كامل — درج واحد" (خيار المستخدم): ميزات درج التدقيق (JSON، DevTools snippet، تصدير PDF، نسخ هاش، رابط دليل) انتقلت للدرج المشترك `#k-trace-drawer`، وحذفت الدرج الخاص نهائيًا.
+- **Why**: توحيد الفتح عبر `window.KernelTraceDrawer.open(traceId, seed)` يزيل ازدواجية الكود ويوحّد التجربة في كل صفحات /kernel/* (شرط M28).
+- **Verification**:
+  - `npm run build` → نجح ✅ (chunk `audit_6LMTMIRk.mjs` مبني، 0 بقايا `kernel-audit-drawer` في dist)
+  - Playwright `verify-kernel-audit.mjs` → الصفوف (12,483) ✅ · البحث ✅ · verifier ✅ · tamper ✅ · **shared drawer opened ✅** (باقي فحص console واحد: 504 Outdated Optimize Dep — من Vite dev-toolbar، لا علاقة لنا)
+  - `rg "kernel-audit-drawer" src/ public/` → فقط تعليق توثيقي في kernel-audit.js ✅
+- **Status**: verified locally
+- **Brain updates**: أُضيف entry (Section 2). ملاحظة: مشكلة نوع `jsonLd` موجودة مسبقًا في صفحات kernel القديمة (models/evidence/connectors/reports/approvals) — الصفحات الأحدث (playground/scorers/datasets/eval/replay) تستخدم الـ cast.
 
 ---
 

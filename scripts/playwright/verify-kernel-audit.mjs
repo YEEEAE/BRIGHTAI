@@ -114,6 +114,9 @@ if (hasSearch) {
 
 // 6+7. Verifier & tamper — open a row's drawer to grab a real traceId,
 //      fill the trace input, then run verify and the tamper simulation.
+//      (M28) The audit drawer was merged into the SHARED #k-trace-drawer,
+//      so traceId is read from [data-kernel-trace-id] and drawer-open state
+//      from aria-hidden="false".
 const traceId = await page.evaluate(() => {
   const row = document.querySelector('.kernel-audit-vrow');
   if (!row) return null;
@@ -122,7 +125,7 @@ const traceId = await page.evaluate(() => {
 }).then(async () => {
   await page.waitForTimeout(800);
   return page.evaluate(() => {
-    const cell = document.querySelector('[data-kernel-drawer-trace]');
+    const cell = document.querySelector('#k-trace-drawer [data-kernel-trace-id]');
     return cell ? cell.textContent.trim() : null;
   });
 });
@@ -173,13 +176,14 @@ if (hasTamper) {
   }
 }
 
-// 8. Drawer is open (opened in step 6 to grab the traceId)
+// 8. Shared drawer is open (opened in step 6 to grab the traceId).
+//      (M28) drawer-open state = #k-trace-drawer[aria-hidden="false"].
 const drawerOpen = await page.evaluate(() => {
-  const el = document.querySelector('[data-kernel-audit-drawer]');
+  const el = document.querySelector('#k-trace-drawer');
   if (!el) return false;
-  return el.getAttribute('data-open') === 'true';
+  return el.getAttribute('aria-hidden') === 'false';
 });
-ok(drawerOpen ? 'drawer opened' : 'drawer did not open');
+ok(drawerOpen ? 'shared drawer opened' : 'shared drawer did not open');
 if (!drawerOpen) fail('drawer', 'not open');
 
 // Screenshot for the record
