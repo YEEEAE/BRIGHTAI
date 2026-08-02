@@ -176,6 +176,8 @@
     bindExport();
     bindInvest();
     bindConsent();
+    bindAffectedTraceLinks();
+    bindInvestDrawer();
 
     setupWorker();
     if (useWorker) {
@@ -448,7 +450,7 @@
         var flip = r.before !== r.after;
         var tr = document.createElement('tr');
         tr.innerHTML =
-          '<td><span class="rp-table__trace">' + escapeHtml(r.trace) + '</span></td>' +
+          '<td><button type="button" class="rp-table__trace" data-rp-trace-open="' + escapeHtml(r.trace) + '" aria-label="فتح رحلة ' + escapeHtml(r.trace) + '">' + escapeHtml(r.trace) + '</button></td>' +
           '<td>' + escapeHtml(r.dept) + '</td>' +
           '<td>' + escapeHtml(r.req) + (r.falsePos ? ' <span class="rp-fp-chip">FP</span>' : '') + '</td>' +
           '<td><span class="rp-verdict-cell">' +
@@ -461,6 +463,53 @@
       if (i < rows.length) requestAnimationFrame(chunk);
     }
     chunk();
+  }
+
+  // M28 — replay→parent: كل trace في جدول الطلبات المتأثرة يفتح الدرج المشترك
+  // (KernelTraceDrawer) بسياق الصف نفسه — مصدر الحقيقة أولًا، ثم الـ seed.
+  function bindAffectedTraceLinks() {
+    var tbody = $('[data-rp-tbody]');
+    if (!tbody || tbody.dataset.boundTrace === '1') return;
+    tbody.dataset.boundTrace = '1';
+    tbody.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-rp-trace-open]');
+      if (!btn) return;
+      var trace = btn.getAttribute('data-rp-trace-open');
+      if (!trace) return;
+      var tr = btn.closest('tr');
+      var dept = tr ? tr.children[1].textContent : '—';
+      var req = tr ? tr.children[2].textContent.replace(/\s*FP$/, '') : '—';
+      var afterCell = tr ? tr.querySelector('.rp-verdict-cell__after') : null;
+      var after = afterCell ? (afterCell.textContent === 'مسموح' ? 'allowed' : 'blocked') : 'blocked';
+      var seed = {
+        user: req,
+        dept: dept,
+        model: 'NVIDIA NIM',
+        time: '—',
+        verdict: after,
+        hashes: { prev: undefined, curr: undefined, next: undefined },
+        status: after === 'allowed' ? 'مسموح' : 'محظور',
+        action: 'محاكاة السياسة المقترحة',
+      };
+      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
+        window.KernelTraceDrawer.open(trace, seed);
+      } else {
+        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(trace);
+      }
+    });
+    tbody.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var btn = e.target.closest('[data-rp-trace-open]');
+      if (!btn) return;
+      e.preventDefault();
+      var trace = btn.getAttribute('data-rp-trace-open');
+      if (!trace) return;
+      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
+        window.KernelTraceDrawer.open(trace);
+      } else {
+        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(trace);
+      }
+    });
   }
 
   // ── consent modal (M20 security gate) ──────────────────────────────────
@@ -612,6 +661,32 @@
         }).join('');
       }
       if (wrap) wrap.hidden = false;
+      // M28 — replay→parent: زر يفتح الرحلة المحقّقة في الدرج المشترك.
+      var dl = $('[data-rp-invest-drawer]');
+      if (dl) {
+        if (res.found) {
+          dl.hidden = false;
+          dl.dataset.traceId = val;
+        } else {
+          dl.hidden = true;
+        }
+      }
+    });
+  }
+
+  // M28 — replay→parent: زر «افتح الرحلة في الدرج المشترك» في تبويب التحقيق.
+  function bindInvestDrawer() {
+    var btn = $('[data-rp-invest-drawer]');
+    if (!btn || btn.dataset.bound === '1') return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', function () {
+      var traceId = btn.getAttribute('data-trace-id');
+      if (!traceId) return;
+      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
+        window.KernelTraceDrawer.open(traceId);
+      } else {
+        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(traceId);
+      }
     });
   }
 

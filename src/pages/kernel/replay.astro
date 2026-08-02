@@ -54,6 +54,7 @@ const iconReplay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const iconWarn = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
 const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
 const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+const iconExternal = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
 ---
 
 <KernelLayout
@@ -94,8 +95,8 @@ const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
         <div class="rp-setup__field">
           <span class="rp-setup__label">الفترة</span>
           <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);">
-            <input class="rp-setup__control" type="date" id="rp-date-from" value={FROM_DEFAULT} aria-label="من تاريخ" />
-            <input class="rp-setup__control" type="date" id="rp-date-to" value={TO_DEFAULT} aria-label="إلى تاريخ" />
+            <input class="rp-setup__control" type="date" id="rp-date-from" data-rp-date-from value={FROM_DEFAULT} aria-label="من تاريخ" />
+            <input class="rp-setup__control" type="date" id="rp-date-to" data-rp-date-to value={TO_DEFAULT} aria-label="إلى تاريخ" />
           </div>
           <div class="rp-shortcuts" role="group" aria-label="اختصارات الفترة">
             <button class="rp-shortcut" type="button" data-rp-shortcut data-rp-range="1">آخر شهر</button>
@@ -122,7 +123,7 @@ const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 
         <div class="rp-setup__field">
           <span class="rp-setup__label">النطاق (الأقسام)</span>
-          <select class="rp-setup__control" id="rp-dept" aria-label="النطاق">
+          <select class="rp-setup__control" id="rp-dept" data-rp-dept aria-label="النطاق">
             <option value="">كل الأقسام</option>
             {REPLAY_DEPTS.map(d => <option value={d}>{d}</option>)}
           </select>
@@ -279,6 +280,16 @@ const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
           <button class="rp-run-btn" type="button" data-rp-invest-run>
             <Fragment set:html={iconReplay} />
             <span>أعد بناء الحادثة</span>
+          </button>
+          <button
+            class="rp-btn rp-invest-drawer"
+            type="button"
+            data-rp-invest-drawer
+            data-trace-id=""
+            hidden
+          >
+            <Fragment set:html={iconExternal} />
+            <span>افتح الرحلة في الدرج المشترك</span>
           </button>
         </div>
 

@@ -1702,6 +1702,43 @@ html[dir="rtl"] .k-trace-drawer__panel { transform: translateX(-100%); }
 .k-trace-drawer__action-btn:hover { background: var(--surface-600); border-color: var(--brand-500); }
 .k-trace-drawer__action-btn:focus-visible { outline: 2px solid var(--brand-500); outline-offset: 2px; }
 
+/* M28 — replay→parent: سطر النسب في الدرج المشترك (↻ إعادة تشغيل من الأصل). */
+.k-trace-drawer__lineage {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-block-start: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface-800);
+  border: 1px solid var(--line-strong);
+  border-inline-start: 3px solid var(--brand-500);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--text-mid);
+}
+.k-trace-drawer__lineage[hidden] { display: none; }
+.k-trace-drawer__lineage-mark {
+  color: var(--brand-400);
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1;
+}
+.k-trace-drawer__lineage .k-mono {
+  color: var(--text-hi);
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.k-trace-drawer__lineage .k-trace-drawer__action-btn {
+  margin-inline-start: auto;
+  min-block-size: 36px;
+  padding-inline: var(--space-3);
+  font-size: var(--text-xs);
+}
+@media (prefers-reduced-motion: reduce) {
+  .k-trace-drawer__lineage .k-trace-drawer__action-btn { transition: none; }
+}
+
 /* ── لوحة الأوامر ⌘K ───────────────────────────────────────────────── */
 .k-cmdk[aria-hidden="true"] { display: none; }
 .k-cmdk {
@@ -4891,6 +4928,39 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   text-decoration: underline;
 }
 
+/* M28 — الربط 4 (approvals→evidence): الـ spans السابقة صارت روابط/أزرار
+   حقيقية بنفس لغة الـ chips مع لمسة رابط (لون + hover). */
+.kernel-ap-ledger__link {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--interactive-primary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding-inline: var(--space-2);
+  padding-block: var(--space-1);
+  text-decoration: none;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.kernel-ap-ledger__link:hover,
+.kernel-ap-ledger__link:focus-visible {
+  color: var(--brand-400);
+  border-color: var(--interactive-primary);
+  text-decoration: underline;
+}
+.kernel-ap-ledger__link:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 2px;
+}
+button.kernel-ap-ledger__link {
+  font-family: var(--font-mono);
+}
+@media (prefers-reduced-motion: reduce) {
+  .kernel-ap-ledger__link { transition: none; }
+}
+
 /* ── Shortcuts hint overlay (? key) ───────────────────────────────────── */
 [data-kap-shortcuts] {
   position: fixed;
@@ -5126,6 +5196,28 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   border-color: var(--brand-soft-border);
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
+}
+
+/* M28 — الربط 4: توهج مؤقت عند الوصول عبر ?trace= (نطاق الأنماط في kernel.css). */
+.kernel-evidence-item--linktarget {
+  border-color: var(--interactive-primary) !important;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.25), var(--shadow-md) !important;
+}
+.kernel-evidence-linknote {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-elevated);
+  border: 1px solid var(--interactive-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+.kernel-evidence-linknote:focus-visible {
+  outline: 2px solid var(--interactive-primary);
+  outline-offset: 2px;
 }
 
 .kernel-evidence-item__head {

@@ -732,16 +732,18 @@
     }
     ol.innerHTML = decisionLedger.map(function (d) {
       var delegateRow = d.delegate ? '<span class="kernel-ap-ledger__delegate">↳ ' + escapeHtml(d.delegate) + '</span>' : '';
+      var traceUrl = '/kernel/audit/?trace=' + encodeURIComponent(d.traceId);
+      var evidenceUrl = '/kernel/evidence/?trace=' + encodeURIComponent(d.traceId) + '&evd=' + encodeURIComponent(d.evidenceHash);
       return '<li class="kernel-ap-ledger__item">' +
         '<span class="kernel-ap-ledger__badge kernel-ap-ledger__badge--' + d.action + '">' + d.actionLabel + '</span>' +
         '<span class="kernel-ap-ledger__trace">' + escapeHtml(d.traceId) + '</span>' +
         '<span class="kernel-ap-ledger__meta">' + escapeHtml(d.reviewer) + ' · ' + escapeHtml(d.ts.slice(0, 16).replace('T', ' ')) + '</span>' +
         '<p class="kernel-ap-ledger__reason">' + escapeHtml(d.reason) + '</p>' + delegateRow +
         '<div class="kernel-ap-ledger__links">' +
-          '<span title="Audit event">Audit ' + escapeHtml(d.eventId) + '</span>' +
-          '<span title="Trace">Trace</span>' +
-          '<span title="Evidence hash">Evidence ' + escapeHtml(d.evidenceHash) + '</span>' +
-          '<span title="Certificate">' + escapeHtml(d.certificateId) + '</span>' +
+          '<a class="kernel-ap-ledger__link" href="' + traceUrl + '" title="Audit event">Audit ' + escapeHtml(d.eventId) + '</a>' +
+          '<button type="button" class="kernel-ap-ledger__link kernel-ap-ledger__link--trace" data-kap-ledger-trace="' + escapeHtml(d.traceId) + '" title="Trace">Trace</button>' +
+          '<a class="kernel-ap-ledger__link" href="' + evidenceUrl + '" title="Evidence hash">Evidence ' + escapeHtml(d.evidenceHash) + '</a>' +
+          '<a class="kernel-ap-ledger__link" href="' + evidenceUrl + '" title="Certificate">' + escapeHtml(d.certificateId) + '</a>' +
         '</div>' +
       '</li>';
     }).join('');
@@ -753,6 +755,33 @@
     var ledger = $('[data-kap-ledger]');
     if (!ledger || ledger.dataset.bound === '1') return;
     ledger.dataset.bound = '1';
+    // M28 — Trace button: opens the shared drawer (unified trace navigation).
+    ledger.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-kap-ledger-trace]');
+      if (!btn) return;
+      var traceId = btn.getAttribute('data-kap-ledger-trace');
+      if (!traceId) return;
+      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
+        e.preventDefault();
+        window.KernelTraceDrawer.open(traceId);
+      } else {
+        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(traceId);
+      }
+    });
+    // Keyboard activation for the trace button (Enter/Space).
+    ledger.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      var btn = e.target.closest('[data-kap-ledger-trace]');
+      if (!btn) return;
+      e.preventDefault();
+      var traceId = btn.getAttribute('data-kap-ledger-trace');
+      if (!traceId) return;
+      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
+        window.KernelTraceDrawer.open(traceId);
+      } else {
+        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(traceId);
+      }
+    });
   }
 
   // ── search ─────────────────────────────────────────────────────────────

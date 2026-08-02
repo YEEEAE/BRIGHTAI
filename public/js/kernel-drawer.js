@@ -215,6 +215,10 @@
     setText(drawer, '[data-kernel-hash-next]', shortHash(run.outputHash));
     drawer.dataset.currentHash = run.runHash || '';
 
+    // M28 — replay→parent: إن كان هذا الـ run إعادة تشغيل (له parentRunId)،
+    // نُظهر سطر النسب مع زر يفتح الأصل في نفس الدرج.
+    showLineage(drawer, run);
+
     // حقول الحالة/الإجراء من الـ trace (إن وُجدت) — تظهر في قسم التفاصيل.
     var hasDetail = false;
     if (trace.status) { setText(drawer, '[data-kernel-drawer-status]', statusAr(trace.status)); hasDetail = true; }
@@ -224,6 +228,19 @@
     toggleSection(drawer, '[data-kernel-drawer-snippet]', false);
     toggleSection(drawer, '[data-kernel-drawer-actions]', true);
     return true;
+  }
+
+  /* M28 — replay→parent: يعرض سطر النسب لو كان الـ run إعادة تشغيل. */
+  function showLineage(drawer, run) {
+    var section = drawer.querySelector('[data-kernel-drawer-lineage]');
+    if (!section) return;
+    if (!run || !run.parentRunId) {
+      section.hidden = true;
+      return;
+    }
+    setText(drawer, '[data-kernel-drawer-parent]', run.parentRunId);
+    drawer.dataset.parentRunId = run.parentRunId || '';
+    section.hidden = false;
   }
 
   function statusAr(s) {
@@ -457,6 +474,17 @@
     if (exportPdfBtn && exportPdfBtn.dataset.bound !== '1') {
       exportPdfBtn.dataset.bound = '1';
       exportPdfBtn.addEventListener('click', function () { exportDrawerPdf(drawer); });
+    }
+
+    // M28 — replay→parent: زر «افتح الأصل» يعيد فتح الدرج على الـ run الأب.
+    var openParentBtn = drawer.querySelector('[data-kernel-drawer-open-parent]');
+    if (openParentBtn && openParentBtn.dataset.bound !== '1') {
+      openParentBtn.dataset.bound = '1';
+      openParentBtn.addEventListener('click', function () {
+        var parentId = drawer.dataset.parentRunId;
+        if (!parentId) return;
+        openDrawer(parentId);
+      });
     }
 
     // عناصر [data-trace-id] في أي صفحة — تفتح الدرج.

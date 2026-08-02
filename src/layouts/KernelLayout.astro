@@ -316,6 +316,14 @@ const cmdkPages = kernelUnits.filter(u => u.slug !== 'index');
         </div>
       </section>
 
+      <!-- M28 — replay→parent: تُظهر حين يكون هذا الـ run إعادة تشغيل
+           (parentRunId في KernelEvalStore) وتفتح الأصل في نفس الدرج. -->
+      <section class="k-trace-drawer__lineage" data-kernel-drawer-lineage hidden>
+        <span class="k-trace-drawer__lineage-mark" aria-hidden="true">↻</span>
+        <span>هذا التشغيل إعادة تشغيل من <span class="k-mono" data-kernel-drawer-parent>—</span></span>
+        <button class="k-trace-drawer__action-btn" type="button" data-kernel-drawer-open-parent>افتح الأصل</button>
+      </section>
+
       <!-- ═══ تفاصيل موسّعة (M28 — دمج درج التدقيق) ═══
            تُعرض عندما يفتح الدرج من سياق تدقيق (seed) — JSON + snippet + إجراءات.
            تختبئ افتراضيًا؛ kernel-drawer.js يبدّلها حسب المصدر. -->

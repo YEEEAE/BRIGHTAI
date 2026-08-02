@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-02 04:45 +03:00
+last_updated: 2026-08-02 05:20 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.72
+version: 2.7.73
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -19,6 +19,31 @@ skills_ready: 7
 
 ---
 
+
+### 2026-08-02 — KRN-M28-LINKS-PHASE3: ربط الموافقات بالدليل (approvals → evidence) + إعادة التشغيل بالأصل (replay → parent)
+
+- **Files**:
+  - `public/js/kernel-approvals.js` (EDITED — `updateLedger()`: الـ spans السابقة صارت روابط/أزرار حقيقية — `Audit {eventId}` → `<a>` لـ `/kernel/audit/?trace=...`، `Trace` → `<button data-kap-ledger-trace>` يفتح الدرج المشترك، `Evidence {evidenceHash}` و`{certificateId}` → `<a>` لـ `/kernel/evidence/?trace=&evd=`؛ `bindLedgerEvents()`: delegation click/keydown على `[data-kap-ledger-trace]` → `KernelTraceDrawer.open(traceId)` مع fallback لـ audit)
+  - `src/pages/kernel/evidence.astro` (EDITED — articles الثابتة صارت تحمل `data-trace={item.traceId}`؛ دالة `applyLinkParams()` جديدة تقرأ `?trace=` (+`?evd=`)، تعيد ضبط الفلاتر، تُبرز العنصر المطابق بـ `.kernel-evidence-item--linktarget` + scroll + focus، تحدّث عدّاد `[data-kernel-evidence-count]`، وتُظهر `.kernel-evidence-linknote` عند عدم التطابق؛ استُدعيت في `init()`)
+  - `public/js/kernel-time-machine.js` (EDITED — `renderRows()`: خلية الـ trace صارت `<button class="rp-table__trace" data-rp-trace-open>`؛ `bindAffectedTraceLinks()` جديدة: delegation على tbody يفتح الدرج المشترك بسياق الصف (user/dept/verdict seed) مع fallback؛ `runInvestigation()` + `bindInvestDrawer()`: زر `[data-rp-invest-drawer]` يفتح الرحلة المحقّقة في الدرج)
+  - `src/pages/kernel/replay.astro` (EDITED — أُضيف زر `[data-rp-invest-drawer]` بجانب زر إعادة البناء + أيقونة `iconExternal`؛ **وصلاح خطأ جوهري**: الـ inputs كان لها `id="rp-date-from/to"` و`id="rp-dept"` بينما المحرّك يبحث عن `data-rp-date-from/to/dept` → زر التشغيل كان يكسر بخطأ `Cannot read properties of null` — أُضيفت الـ data-attributes فصار يشتغل)
+  - `public/js/kernel-drawer.js` (EDITED — `showLineage(drawer, run)` جديدة داخل `fillFromStore`: لو الـ run له `parentRunId` تظهر سطر «↻ إعادة تشغيل من» + زر «افتح الأصل» `[data-kernel-drawer-open-parent]` يعيد فتح الدرج على الأصل)
+  - `src/layouts/KernelLayout.astro` (EDITED — قسم `.k-trace-drawer__lineage` + بيانات `data-kernel-drawer-lineage/parent/open-parent`)
+  - `src/styles/kernel.css` (EDITED — `.kernel-ap-ledger__link` (+ hover/focus/reduced-motion)، `.kernel-evidence-item--linktarget`، `.kernel-evidence-linknote`، `.k-trace-drawer__lineage`)
+  - `kernel/assets/css/pages/replay.css` (EDITED — `.rp-table__trace` صار زرًا فعليًا + `.rp-invest-drawer`)
+  - `scripts/playwright/verify-kernel-approvals-evidence.mjs` (NEW — 4 مراحل: ledger links حقيقية، نقر Trace يفتح الدرج، `?trace=` يبرز ملف الدليل، صفوف replay أزرار تفتح الدرج)
+- **What**: نفّذت آخر ربطَين من M28: (4) من سجل قرارات الموافقات كل رابط Trace/Evidence/Certificate يفتح الدرج المشترك أو صفحة الدليل المعنية بمعرّف مطابق؛ (3) من آلة الزمن كل trace في الطلبات المتأثرة وزر التحقيق يفتح الدرج المشترك، والدرج يعرض نسب «إعادة تشغيل من الأصل» مع زر فتح الأصل.
+- **Why**: شرط M28 — تنقّل موحّد بمعرّفات مشتركة بين كل صفحات kernel. كذلك انكشف خطأ جوهري كان يكسر زر التشغيل في `/kernel/replay/` (selector mismatch بين HTML وJS) فصُحّح.
+- **Verification**:
+  - `npm run build` → نجح ✅
+  - Playwright `verify-kernel-approvals-evidence.mjs` → **كل المراحل نجحت ✅** (A: ledger 4 روابط صحيحة ✅، B: نقر Trace فتح الدرج ✅، C: `?trace=` أبرز العنصر + عدّاد «1 من 12» ✅، D: 200 زر trace + فتح الدرج بسياق الصف ✅)
+  - `verify:all` → exit 1 فقط بسبب 6 broken-links من `public/js/kernel-api-data 2.js` (ملف قديم مكرر — غير مرتبط)
+  - `npm run performance:budget` → ✅ جميع البنود ضمن الميزانية
+- **Status**: verified locally
+- **Brain updates**: أُضيف entry (Section 2). **بكتمال هذا الـ entry اكتمل M28 Links Phase 2 بالكامل** (4 روابط: stats→Store، policies→playground، approvals→evidence، replay→parent).
+- **ملاحظة**: بقي معلّقًا خارج النطاق: إزالة/إصلاح `public/js/kernel-api-data 2.js` (مصدر أخطاء verify:all الستة) — يُفضَّل في مرحلة تنظيف منفصلة.
+
+---
 
 ### 2026-08-02 — KRN-M28-LINKS-PHASE2: ربط محرر السياسات بالملعب (policies → playground) بمعرّفات مطابقة
 

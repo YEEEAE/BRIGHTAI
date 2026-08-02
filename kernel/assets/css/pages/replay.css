@@ -608,6 +608,21 @@
   color: var(--rp-accent-400);
   direction: ltr;
   unicode-bidi: isolate;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: var(--radius-xs);
+}
+.rp-table__trace:hover,
+.rp-table__trace:focus-visible {
+  color: var(--rp-accent);
+  text-decoration: underline;
+}
+.rp-table__trace:focus-visible {
+  outline: 2px solid var(--rp-accent-400);
+  outline-offset: 2px;
 }
 
 .rp-verdict-cell {
@@ -635,6 +650,40 @@
 .rp-verdict-cell__arrow { color: var(--rp-text-muted); }
 
 .rp-verdict-cell__arrow.flip { color: var(--rp-amber); }
+
+/* ═══════════════ زر فتح الرحلة في الدرج المشترك (M28) ═══════════════ */
+
+.rp-invest-drawer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: 1px dashed var(--rp-accent-border);
+  border-radius: var(--radius-md);
+  color: var(--rp-accent-400);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.rp-invest-drawer:hover,
+.rp-invest-drawer:focus-visible {
+  background: var(--rp-accent-soft);
+  border-color: var(--rp-accent);
+  color: var(--rp-accent);
+}
+.rp-invest-drawer:focus-visible {
+  outline: 2px solid var(--rp-accent-400);
+  outline-offset: 2px;
+}
+.rp-invest-drawer svg { width: 16px; height: 16px; }
+@media (prefers-reduced-motion: reduce) {
+  .rp-invest-drawer { transition: none; }
+}
 
 /* ═══════════════ شريط التصدير السفلي ═══════════════ */
 

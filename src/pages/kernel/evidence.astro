@@ -555,6 +555,7 @@ const SECTOR_LABEL: Record<string, string> = {
         <article
           class="kernel-evidence-item"
           data-kernel-evidence-item={item.id}
+          data-trace={item.traceId}
           data-sector={item.sector}
           data-pack={item.pack}
           data-tags={item.tags.join(',')}
@@ -1285,6 +1286,48 @@ const SECTOR_LABEL: Record<string, string> = {
       btn.addEventListener('click', generateNew);
     }
 
+    // M28 — approvals→evidence: يقرأ ?trace= (و ?evd= اختياري) من الرابط
+    // القادم من سجل قرارات الموافقة، فيُبرز ملف الدليل المطابق للـ trace.
+    // لا يغيّر أي نص منشور — يُظهر/يبرز عنصرًا موجودًا فقط.
+    function applyLinkParams() {
+      var sp;
+      try { sp = new URLSearchParams(window.location.search); } catch (e) { return; }
+      var trace = sp.get('trace');
+      if (!trace) return;
+      var items = elAll('[data-kernel-evidence-item]');
+      var target = null;
+      for (var i = 0; i < items.length; i += 1) {
+        if (items[i].getAttribute('data-trace') === trace) { target = items[i]; break; }
+      }
+      if (!target) {
+        // لا ملف مطابق للـ trace — نظهر شارة لطيفة (المحتوى نفسه ما يتغيّر).
+        var grid = el('[data-kernel-evidence-grid]');
+        if (grid) {
+          var note = document.createElement('div');
+          note.className = 'kernel-evidence-linknote';
+          note.setAttribute('role', 'status');
+          note.textContent = 'لا ملف دليل مطابق للـ trace ' + trace + ' — تولّد الملفات تجريبيًا في هذه الصفحة.';
+          grid.insertBefore(note, grid.firstChild);
+        }
+        return;
+      }
+      // تصفية الفلاتر لعرض العنصر المطابق فقط.
+      elAll('[data-kernel-evidence-filter]').forEach(function (sel) { sel.value = ''; });
+      items.forEach(function (it) { it.hidden = it !== target; });
+      var counter = el('[data-kernel-evidence-count]');
+      if (counter) counter.textContent = '1 من ' + items.length + ' — ملف مطابق للـ trace';
+      var emptyEl = el('[data-kernel-evidence-empty]');
+      if (emptyEl) emptyEl.hidden = false;
+      // تمرير المعرّفات إلى زر المعاينة حتى يفتح المودال الصحيح.
+      target.scrollIntoView({ block: 'center' });
+      target.classList.add('kernel-evidence-item--linktarget');
+      setTimeout(function () {
+        if (target) target.classList.remove('kernel-evidence-item--linktarget');
+      }, 2200);
+      var focusBtn = target.querySelector('[data-kernel-evidence-preview]');
+      if (focusBtn) focusBtn.focus({ preventScroll: true });
+    }
+
     function init() {
       bindFilters();
       bindItemButtons();
@@ -1293,6 +1336,7 @@ const SECTOR_LABEL: Record<string, string> = {
       bindBatch();
       bindTamper();
       bindDropzone();
+      applyLinkParams();
     }
 
     document.addEventListener('astro:page-load', init);
