@@ -160,6 +160,52 @@
     return id;
   }
 
+  /* ── ربط 2: السياسة → الملعب (M28) ────────────────────────────────── */
+  // خريطة piiType من المحرر إلى الملعب (الأسماء غير المتطابقة بين النظامين).
+  var PG_PII_MAP = {
+    saudi_id: 'saudi_id',
+    mobile: 'phone',
+    iban: 'iban',
+    email: 'email',
+    patient_file: 'patient_id',
+    credit_card: 'credit_card',
+    passport: 'passport',
+    medical_record: 'medical',
+  };
+  // خريطة pack من المحرر إلى الملعب.
+  var PG_PACK_MAP = {
+    pdpl: 'pdpl',
+    nca_ecc: 'nca',
+    sdaia: 'sdaia',
+    sfda: 'sfda',
+    sama: 'sama',
+    iso_27001: 'iso27001',
+    iso_42001: 'iso42001',
+  };
+  // خريطة action من المحرر إلى الملعب (لا يوجد warn/local_model_only فيه).
+  var PG_ACTION_MAP = {
+    mask: 'mask',
+    block: 'block',
+    redact: 'redact',
+    warn: 'log',
+    approve: 'hitl',
+    local_model_only: 'block',
+    hitl: 'hitl',
+    log: 'log',
+  };
+  function playgroundLinkFor(p) {
+    var pii = PG_PII_MAP[p.piiType];
+    if (!pii) return null;
+    var pack = (p.compliancePacks || []).map(function (x) { return PG_PACK_MAP[x]; }).filter(Boolean)[0] || '';
+    var action = PG_ACTION_MAP[p.action] || p.action;
+    var params = new URLSearchParams();
+    params.set('pii', pii);
+    params.set('action', action);
+    if (pack) params.set('pack', pack);
+    params.set('name', p.name);
+    return '/kernel/playground/?' + params.toString();
+  }
+
   /* ── كشف التعارض ───────────────────────────────────────────────── */
   /**
    * يكتشف تعارضات بين السياسات النشطة على نفس piiType.
@@ -766,10 +812,24 @@
       btnExceptions.textContent = 'استثناءات' + (p.exceptions && p.exceptions.length ? ' (' + p.exceptions.length + ')' : '');
       btnExceptions.setAttribute('aria-label', 'استثناءات ' + p.name);
 
+      var btnPlayground = document.createElement('a');
+      btnPlayground.className = 'po-btn po-btn--ghost';
+      btnPlayground.textContent = 'جرّبها';
+      btnPlayground.setAttribute('aria-label', 'جرّب ' + p.name + ' في الملعب');
+      var pgLink = playgroundLinkFor(p);
+      if (pgLink) {
+        btnPlayground.setAttribute('href', pgLink);
+        btnPlayground.setAttribute('data-po-playground', p.id);
+      } else {
+        btnPlayground.setAttribute('aria-disabled', 'true');
+        btnPlayground.setAttribute('data-po-playground-disabled', 'true');
+      }
+
       cellActions.appendChild(btnEdit);
       cellActions.appendChild(btnVersions);
       cellActions.appendChild(btnSim);
       cellActions.appendChild(btnExceptions);
+      cellActions.appendChild(btnPlayground);
 
       row.appendChild(cellName);
       row.appendChild(cellPii);

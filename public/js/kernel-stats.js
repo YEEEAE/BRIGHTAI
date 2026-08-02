@@ -25,17 +25,23 @@
   var streamPaused = false;
   var streamInterval = null;
   var streamIndex = 0;
+  var inited = false;
 
   // ── Init ───────────────────────────────────────────────────────────────────
 
   function init() {
+    // Idempotent: يُستدعى من DOMContentLoaded و astro:page-load معًا.
+    if (inited) return;
     if (!data) {
       console.error('KernelStatsData not loaded');
       return;
     }
+    inited = true;
     statsData = data.buildStatsData();
 
     renderKpis();
+    renderStoreRuns();
+    bindStoreOpen();
     renderTopUsers();
     renderTopDepartments();
     renderTopModels();
@@ -314,6 +320,76 @@
     container.innerHTML = html;
   }
 
+  // ── Store runs (Prompt 25: every Eval Run appears in Stats) ──────────────
+
+  function renderStoreRuns() {
+    var container = document.getElementById('ks-store-runs');
+    if (!container) return;
+
+    var store = (typeof window !== 'undefined' && window.KernelEvalStore) || null;
+    if (!store) {
+      container.innerHTML = '<p class="ks-store-empty">المتجر الموحد غير محمّل.</p>';
+      return;
+    }
+    var runs = store.listRuns();
+    if (!runs || runs.length === 0) {
+      container.innerHTML = '<p class="ks-store-empty">لا تشغيلات تقييم بعد — شغّل تقييمًا من الملعب أو السيناريوهات وستظهر هنا.</p>';
+      return;
+    }
+
+    var published = 0;
+    var replays = 0;
+    var completed = 0;
+    for (var i = 0; i < runs.length; i += 1) {
+      if (runs[i].published) published += 1;
+      if (runs[i].parentRunId) replays += 1;
+      if (runs[i].status === 'complete') completed += 1;
+    }
+
+    var html = '<div class="ks-store-summary">'
+      + '<div class="ks-store-metric"><span class="ks-store-metric__label">إجمالي التشغيلات</span><span class="ks-store-metric__value">' + runs.length + '</span></div>'
+      + '<div class="ks-store-metric"><span class="ks-store-metric__label">مكتملة</span><span class="ks-store-metric__value">' + completed + '</span></div>'
+      + '<div class="ks-store-metric"><span class="ks-store-metric__label">منشورة</span><span class="ks-store-metric__value">' + published + '</span></div>'
+      + '<div class="ks-store-metric"><span class="ks-store-metric__label">إعادة تشغيل</span><span class="ks-store-metric__value">' + replays + '</span></div>'
+      + '</div>';
+
+    html += '<table class="ks-table ks-store-table"><thead><tr><th>المعرّف</th><th>الاسم</th><th>الحالة</th><th>الإصدار</th><th>الإجراء</th></tr></thead><tbody>';
+    var maxShow = Math.min(runs.length, 8);
+    for (var j = 0; j < maxShow; j += 1) {
+      var r = runs[j];
+      var statusText = r.status === 'complete' ? 'مكتمل' : r.status === 'published' ? 'منشور' : r.status === 'review' ? 'مراجعة' : r.status === 'blocked' ? 'محظور' : escapeHtml(r.status || '');
+      var replayMark = r.parentRunId ? ' <span class="ks-store-replay">↻</span>' : '';
+      html += '<tr>'
+        + '<td dir="ltr">' + escapeHtml(r.id) + replayMark + '</td>'
+        + '<td>' + escapeHtml(r.name) + '</td>'
+        + '<td>' + statusText + '</td>'
+        + '<td>v' + r.version + '</td>'
+        + '<td><button type="button" class="ks-store-open" data-ks-open-run="' + escapeHtml(r.id) + '">افتح Trace</button></td>'
+        + '</tr>';
+    }
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  function bindStoreOpen() {
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-ks-open-run]');
+      if (!btn) return;
+      var id = btn.getAttribute('data-ks-open-run');
+      var store = (typeof window !== 'undefined' && window.KernelEvalStore) || null;
+      if (!store) return;
+      var run = store.getRun(id);
+      if (!run) return;
+      var traceId = (run.traces && run.traces.length) ? run.traces[0].id : run.id;
+      var seed = (run.setup && run.setup.seed) || 'brightai-demo';
+      if (window.KernelTraceDrawer && window.KernelTraceDrawer.open) {
+        window.KernelTraceDrawer.open(traceId, seed);
+      } else {
+        window.location.href = '/kernel/audit/?trace=' + encodeURIComponent(traceId);
+      }
+    });
+  }
+
   // ── Charts (Chart.js) ──────────────────────────────────────────────────────
 
   async function renderCharts() {
@@ -322,7 +398,9 @@
 
     try {
       var mod = await import('/vendor/chart.umd.min.js');
-      var Chart = mod.Chart || mod.default;
+      // Chart.js UMD يسند window.Chart (وليس module.Chart/default) عند تحميله
+      // كـ dynamic import — نسند له الأولوية ثم نرجع للـ export العادي.
+      var Chart = (typeof window !== 'undefined' && window.Chart) || mod.Chart || mod.default;
       var cssVar = function (name) {
         return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
       };
@@ -490,5 +568,11 @@
   } else {
     init();
   }
-  document.addEventListener('astro:page-load', init);
+  // astro:page-load يُطلق بعد اكتمال كل الـ module scripts (بما فيها
+  // kernel-eval-store.js) — نعيد رسم شريحة المتجر هنا حتى لو init()
+  // نفّذ قبل توفر KernelEvalStore.
+  document.addEventListener('astro:page-load', function () {
+    init();
+    renderStoreRuns();
+  });
 })();

@@ -8047,6 +8047,87 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   .kernel-unit-grid__list { grid-template-columns: 1fr; }
 }
 
+/* ── شريحة تشغيلات التقييم (Store runs → Stats, Prompt 25) ──────────────── */
+.ks-store-row {
+  margin-block-start: var(--space-6);
+}
+
+.ks-store-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-3);
+  margin-block-end: var(--space-4);
+}
+
+.ks-store-metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--bg-elevated, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-md, 8px);
+}
+
+.ks-store-metric__label {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--text-secondary, #94a3b8);
+}
+
+.ks-store-metric__value {
+  font-size: var(--text-3xl, 1.875rem);
+  font-weight: 700;
+  color: var(--text-primary, #f1f5f9);
+}
+
+.ks-store-table th {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--text-secondary, #94a3b8);
+  padding-block: var(--space-2);
+  text-align: start;
+  border-block-end: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+}
+
+.ks-store-table td {
+  padding-block: var(--space-2);
+  border-block-end: 1px solid var(--line-weak, rgba(255, 255, 255, 0.05));
+}
+
+.ks-store-replay {
+  color: var(--interactive-primary, #06b6d4);
+  margin-inline-start: var(--space-1);
+  font-size: var(--text-sm, 0.875rem);
+}
+
+.ks-store-open {
+  min-block-size: 36px;
+  padding-inline: var(--space-3);
+  background: transparent;
+  border: 1px solid var(--interactive-primary, #06b6d4);
+  border-radius: var(--radius-md, 8px);
+  color: var(--interactive-primary, #06b6d4);
+  font-size: var(--text-xs, 0.75rem);
+  cursor: pointer;
+}
+
+.ks-store-open:hover,
+.ks-store-open:focus-visible {
+  background: var(--interactive-primary, #06b6d4);
+  color: var(--bg-base, #0a0e1a);
+  outline: 2px solid var(--interactive-primary, #06b6d4);
+  outline-offset: 2px;
+}
+
+.ks-store-empty {
+  margin: 0;
+  padding: var(--space-4);
+  color: var(--text-secondary, #94a3b8);
+  font-size: var(--text-sm, 0.875rem);
+  background: var(--bg-elevated, rgba(255, 255, 255, 0.04));
+  border: 1px dashed var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: var(--radius-md, 8px);
+}
+
 /* ── Reduced motion: أوقف كل الحركات ─────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .kernel-hero__grid-bg,

@@ -2,9 +2,9 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-02 04:05 +03:00
+last_updated: 2026-08-02 04:45 +03:00
 maintained_by: BrightAI Workspace Agent
-version: 2.7.71
+version: 2.7.72
 agent_version: v2.3
 skills_ready: 7
 ---
@@ -16,6 +16,26 @@ skills_ready: 7
 > لاتنشئ اي commits جديده اجعل المستخدم هو من يقوم بذلك
 > لا تنشئ  branch جديد نهائيا الدفع يكون عبر main الحالي فقط PR
 > هذا مشروع astro 
+
+---
+
+
+### 2026-08-02 — KRN-M28-LINKS-PHASE2: ربط محرر السياسات بالملعب (policies → playground) بمعرّفات مطابقة
+
+- **Files**:
+  - `public/js/kernel-policies.js` (EDITED — أُضيفت بعد `actionLabel()`: خرائط `PG_PII_MAP`/`PG_PACK_MAP`/`PG_ACTION_MAP` + دالة `playgroundLinkFor(p)` تُرجع رابط `/kernel/playground/?pii=...&action=...&pack=...` أو null لـ piiType بلا نظير (مثل salary)؛ أُضيف زر «جرّبها» `<a class="po-btn po-btn--ghost">` بعد زر الاستثناءات في `renderPoliciesTable()` — `data-po-playground` عند توفر الرابط وإلا `data-po-playground-disabled` + `aria-disabled`)
+  - `public/js/kernel-playground.js` (EDITED — أُضيفت `applyLinkParams(root)` بعد `applyHash` تقرأ `?pii/action/pack/name`، تفعّل كل `.pg-toggle[data-pid]` المطابقة (piiType+action)، تضبط `[data-context=pack]`، تُظهر `#pg-link-note`، وتعلن عبر `announce()`؛ استُدعيت في `init()` بجانب `applyHash`)
+  - `src/pages/kernel/playground.astro` (EDITED — `<span class="pg-link-note" id="pg-link-note" hidden>سياسة من محرر السياسات — طُبّقت هنا</span>` بجانب `pg-local-badge/pg-embed-badge`)
+  - `kernel/assets/css/pages/playground.css` (EDITED — نمط `.pg-link-note` + `[hidden]` بعد `.pg-local-badge`)
+  - `scripts/playwright/verify-kernel-policies-playground.mjs` (NEW — 4 مراحل: 10 روابط «جرّبها» بالصيغة الصحيحة + action param، `pr_iban_block_cross` OFF افتراضيًا، `?pii=iban&action=block&pack=sama` → ON + note ظاهر + pack=sama + لا أخطاء console، `?pii=salary` (بلا نظير) → الافتراضي محفوظ + note مخفي)
+- **What**: نفّذت المرحلة 2 من الربط المشترك M28: من محرر السياسات تقدر تجرّب أي سياسة في الملعب مباشرة — الرابط يبني معرّفات مطابقة تلقائيًا (piiType/action/pack) ويطبقها على كل مفتاح الملعب المطابق مع شارة إعلامية.
+- **Why**: شرط M28 (تنقّل موحّد بين صفحات /kernel/* بمعرّفات مشتركة). السياسات والمفتاح كانا معزولين — الـ editor يستخدم piiTypes مختلفة (mobile/patient_file/medical_record/salary + packs nca_ecc/iso_27001/iso_42001) عن playground (phone/patient_id/medical + nca/iso27001/iso42001)، فتطلّب خرائط تحويل.
+- **Verification**:
+  - `npm run build` → نجح ✅ (dist مبني بدون أخطاء)
+  - Playwright `verify-kernel-policies-playground.mjs` → **كل المراحل نجحت ✅** (روابط Phase A ✅، OFF الافتراضي Phase B ✅، التطبيق الكامل Phase C ✅، حالة salary Phase D ✅)
+  - `verify:all` → exit 1 بسبب 6 broken-links من ملف قديم مكرر `public/js/kernel-api-data 2.js` فقط (غير مرتبط بهذا التغيير؛ كل أخطاء الـ verify:all منه)
+- **Status**: verified locally
+- **Brain updates**: أُضيف entry (Section 2). ملاحظة لاحقة: الربطان المتبقيان من M28 (approvals→evidence عبر `evidenceHash`، وreplay←parent) لم يُنفذا بعد.
 
 ---
 

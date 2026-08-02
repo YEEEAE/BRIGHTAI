@@ -28,6 +28,7 @@ const jsonLd = [
   ...getKernelSubPageJsonLd(unit),
   getKernelFaqJsonLd(unit),
 ].filter(Boolean) as Record<string, unknown>[];
+const pageJsonLd = jsonLd as unknown as Record<string, unknown>;
 
 const statsData = buildStatsData();
 
@@ -46,7 +47,7 @@ const iconQuota = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   description={unit.description}
   canonical={unit.canonical}
   hreflang={unit.hreflang}
-  jsonLd={jsonLd}
+  jsonLd={pageJsonLd}
   currentPath={unit.path}
   breadcrumbs={[{ name: 'Kernel', href: '/kernel/' }, { name: 'الإحصائيات', href: unit.path }]}
 >
@@ -171,6 +172,15 @@ const iconQuota = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
       <KernelCard title="زمن الاستجابة" subtitle="P50 / P95 / P99" iconSvg={iconLatency}>
         <div class="kernel-card__body">
           <div id="ks-latency" class="ks-latency">{/* JS-rendered */}</div>
+        </div>
+      </KernelCard>
+    </section>
+
+    {/* Eval runs from the shared store — Prompt 25: كل Evaluation Run يظهر في Stats */}
+    <section class="ks-store-row" aria-label="تشغيلات التقييم من المتجر الموحد">
+      <KernelCard title="تشغيلات التقييم" subtitle="من KernelEvalStore — Runs فعلية من كل صفحات /kernel/" iconSvg={iconActivity}>
+        <div class="kernel-card__body">
+          <div id="ks-store-runs">{/* JS-rendered */}</div>
         </div>
       </KernelCard>
     </section>

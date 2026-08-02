@@ -1159,6 +1159,9 @@
     applyHash(root);
     window.addEventListener('hashchange', () => applyHash(root));
 
+    // ربط 2 (M28): سياسة من محرر السياسات تُطبَّق هنا (policies → playground)
+    applyLinkParams(root);
+
     // لو في نص محمّل مسبقًا (من الرئيسية ?text=) شغّله تلقائيًا
     const preloaded = new URLSearchParams(location.search).get('text');
     if (preloaded && ta) { ta.value = preloaded; updateCounter(); }
@@ -1618,6 +1621,35 @@
       if (cfg.diff) toggleDiff(root);
       if (cfg.model) { const sel = $('[data-context="model"]'); if (sel) sel.value = cfg.model; }
     } catch (e) { /* hash مش إعدادات — تجاهل */ }
+  }
+
+  // ربط 2 (M28): سياسة من محرر السياسات تُطبَّق هنا (policies → playground).
+  // القراءة: ?pii=<piiType>&action=<action>&pack=<pack>&name=<encoded>.
+  function applyLinkParams(root) {
+    const params = new URLSearchParams(location.search);
+    const wantPii = params.get('pii');
+    const wantAction = params.get('action');
+    const wantPack = params.get('pack');
+    const wantName = params.get('name');
+    if (!wantPii) return;
+    let matched = 0;
+    $$('.pg-toggle[data-pid]').forEach((t) => {
+      const pol = (CFG.policies || []).find((p) => p.id === t.dataset.pid);
+      if (!pol || pol.piiType !== wantPii) return;
+      if (wantAction && pol.action !== wantAction) return;
+      t.setAttribute('aria-checked', 'true');
+      matched += 1;
+    });
+    if (wantPack) {
+      const packSel = $('[data-context="pack"]');
+      if (packSel && (CFG.packs || []).some((p) => p.id === wantPack)) packSel.value = wantPack;
+    }
+    if (matched > 0) {
+      const label = (CFG.piiTypes || []).find((t) => t.id === wantPii);
+      announce(`جرّبت سياسة «${wantName || ''}» من محرر السياسات — فعّلت ${matched} سياسة على ${label ? label.label : wantPii} هنا.`);
+      const note = $('#pg-link-note');
+      if (note) note.hidden = false;
+    }
   }
 
   // ── ربط دوري ────────────────────────────────────────────────────────────────
