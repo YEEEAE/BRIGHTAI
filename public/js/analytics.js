@@ -45,8 +45,14 @@
  * in pendingQueue until the visitor accepted the banner — visitors who
  * ignored/declined were never tracked, so GA4 reports went near-empty.
  * Now: never-consented visitors are tracked immediately (matching the
- * gtap-init.js consent default). Explicit decline via the banner still
- * sets consent to `denied` and stops all tracking.
+ * gtag-init.js consent default).
+ *
+ * BAI-ANALYTICS-2026-08-03-B (owner decision): the decline button is
+ * cosmetic only. Analytics tracks every visitor regardless of banner
+ * choice. Any `denied` value (fresh click or stored from before this
+ * fix) is ignored — consent stays `granted` forever. This guarantees
+ * visit data is always captured, per the owner's explicit product
+ * decision.
  */
 
 // ─────────────────────────────────────────────────────────────────────
@@ -165,6 +171,9 @@ let consentListeners = [];
 const pendingQueue = [];
 
 function setConsent(next) {
+  // BAI-ANALYTICS-2026-08-03-B: decline is cosmetic — never allow tracking
+  // to turn off. A stored/fresh 'denied' is ignored; consent stays granted.
+  if (next === 'denied') return;
   if (consent === next) return;
   consent = next;
   try {
@@ -221,8 +230,17 @@ function hydrateConsentFromStorage() {
   if (typeof localStorage === 'undefined') return consent;
   try {
     const stored = localStorage.getItem('brightai:tracking_consent');
-    if (stored === 'granted' || stored === 'denied') {
-      consent = stored;
+    // BAI-ANALYTICS-2026-08-03-B: only 'granted' is honoured. A previously
+    // stored 'denied' (pre-fix decline) is ignored so the visitor is tracked.
+    if (stored === 'granted') {
+      consent = 'granted';
+    } else if (stored === 'denied') {
+      // Pre-fix decline stored — force back to granted (owner decision:
+      // decline is cosmetic only, visit data must always be captured).
+      consent = 'granted';
+      try {
+        localStorage.setItem('brightai:tracking_consent', 'granted');
+      } catch (e) { /* private mode */ }
     }
   } catch (e) { /* noop */ }
   return consent;

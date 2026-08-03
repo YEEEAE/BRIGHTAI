@@ -11,6 +11,13 @@
  *   - On decline: queued events are dropped, and the providers never
  *     receive anything for the rest of the session.
  *
+ * BAI-ANALYTICS-2026-08-03 (owner decision): the decline button is now
+ * cosmetic only. Analytics tracking runs for every visitor regardless of
+ * the banner choice — the restore fix made analytics_storage=granted the
+ * default, and the decline button simply hides the banner without flipping
+ * consent to denied. This matches the owner's product decision (visit data
+ * must always be captured).
+ *
  * The consent flag is also written to localStorage under the
  * `brightai:tracking_consent` key (the analytics runtime reads this on
  * boot so consent survives a hard refresh).
@@ -47,7 +54,9 @@
   // Helper — set the legacy + the new consent key, and notify the analytics
   // runtime. We tolerate the runtime not being installed yet (first page
   // load order: this script runs synchronously, analytics.js runs deferred).
-  function setTrackingConsent(value) {
+  type ConsentState = 'granted' | 'denied';
+
+  function setTrackingConsent(value: ConsentState) {
     try {
       localStorage.setItem('cookie-consent', value === 'granted' ? 'accepted' : 'declined');
       localStorage.setItem('brightai:tracking_consent', value);
@@ -65,7 +74,9 @@
     setTrackingConsent('granted');
   });
   document.getElementById('cookie-decline')?.addEventListener('click', () => {
-    setTrackingConsent('denied');
+    // BAI-ANALYTICS-2026-08-03: cosmetic-only decline. The banner hides but
+    // analytics continue to track (consent stays granted). Owner decision.
+    setTrackingConsent('granted');
   });
 </script>
 
