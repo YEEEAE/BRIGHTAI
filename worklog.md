@@ -2694,3 +2694,32 @@ Stage Summary:
 - أخطاء حقيقية متبقية (pre-existing، خارج نطاق الفحص): deployment-surface 500، lint dashboard، set-html، orphan pages، redirects orphans، word-count
 - التعديلات الثلاثة (kernel-scorers.js + سكربتان) لا تزال uncommitted — المستخدم يلتزم
 - الخطوة التالية: حل `verify:deployment-surface` (أعلى أولوية قبل أي deploy) + commit الإصلاحات بعد موافقة المستخدم
+
+---
+Task ID: 2026-08-03-EVAL-CERT
+Agent: BrightAI Workspace Agent v2.3
+Task: بنية شهادات تقييم kernel (Evaluation Certificate) — libs + API + Ed25519 + Postgres + اختبارات
+Started: 2026-08-03T22:00:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت brain.md كاملًا (Section 2 — KRN-series) — أكدت لا يوجد تغطية سابقة لشهادات التقييم
+- بنيت libs: `src/lib/kernel-certs/{admin-auth,canonical,sha256,signing,env,libClient}.ts`
+- بنيت خدمات + مخازن: `eval-service.ts`, `cert-service.ts`, `in-memory-store.ts`, `prisma-store.ts`, `facade.ts`
+- بنيت API routes (8، كلها `prerender=false`): evaluations index/[id]/{cases,complete,resume,rerun} + certificates/{issue,verify,revoke}
+- أصلحت TS narrowing: `res.ok === false` (السالبة لا تحدد النوع)، و`AdminAuthResult` interface بسيط بدل union
+- أصلحت Ed25519: `createSign('sha256')` يرمي ERR_CRYPTO_INVALID_DIGEST → one-shot `sign(null, buf, key)`/`verify(null, ...)`
+- أصلحت in-memory `updateRun` optimistic lock: يرفع version تلقائيًا، المستدعي يمرر المقروء
+- كتبت `kernel/tests/eval-certificate.test.js` (10 unit) + `.db.integration.test.js` (سيناريو Postgres كامل)
+- **اكتشفت bug صريح**: `PrismaCertStore.fromDbCert` يعيد بناء payload بأصفار → التحقق من شهادة سليمة يطلع digest-mismatch. السبب: الـ payload الموقّع ما يُحفظ في DB.
+- أصلحت: عمود `payload Json` في schema + migration `20260803010000` + prisma generate + `fromDbCert` يعيد payload من DB
+- كتبت `scripts/generate-eval-cert-key.mjs` (Ed25519 + env lines) و`scripts/seed-eval-cert-key.mjs` (upsert `signing_keys`) — seed ناجح: `v1 | Ed25519`
+- حدّثت `.env.example` (BRIGHTAI_ADMIN_KEY + EVAL_CERT_*)
+- التحقق: tsc kernel-certs = 0 أخطاء، vitest unit 10/10، vitest DB integration 2/2 = **12/12**
+- كتبت التقرير `_reports/2026-08-03-evaluation-certificate.md` + حدّثت brain.md (Section 2 entry)
+
+Stage Summary:
+- نظام الشهادات يعمل end-to-end: createRun → addCase → complete (تجميد) → issue (توقيع Ed25519) → verify (valid/tampered/revoked) — عبر in-memory و Postgres
+- bug الـ payload (digest-mismatch على شهادة سليمة) حُلّ بحفظ payload JSON في DB — كشفه اختبار التكامل الحقيقي
+- المخاطر المتبقية: BRIGHTAI_ADMIN_KEY + EVAL_CERT_* غير مضبوطة في `.env` الحقيقي (503 حتى تضبط)؛ LSP editor يعرض stale errors على prisma-store.ts (tsc المستقل يمر بلا أخطاء)
+- الخطوة التالية: ضبط env + تحديث واجهة `src/pages/kernel/eval.astro` + build end-to-end

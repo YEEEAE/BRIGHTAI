@@ -1206,3 +1206,185 @@ model SamlConnection {
   @@index([enabled])
   @@map("saml_connections")
 }
+
+// ─────────────────────────────────────────────────────────────────────────
+// Evaluation Certificates (EVAL-CERT-001 — 2026-08-03)
+//
+// Server-side evaluation runs + digitally-signed certificates.
+// Non-tenant (public marketing kernel feature), NOT organization-scoped —
+// like LeadQueue, these bypass RLS via dbServiceRole (BYPASSRLS).
+//
+// Rules enforced at the service layer (src/lib/kernel-certs/):
+//   - No edit/delete of a completed (immutable) run.
+//   - No duplicate caseId within an evaluation.
+//   - Optimistic locking via `version`.
+//   - Certificate signed via Ed25519 (node:crypto) — signature over a fixed
+//     canonical payload. signedBy = «يزيد البديوي». Key rotation via
+//     signing_keys.publicKeyId.
+// ─────────────────────────────────────────────────────────────────────────
+
+enum EvalEnvironment {
+  demo
+  test
+  live
+}
+
+enum EvalRunStatus {
+  running
+  partial
+  complete
+  failed
+  review
+}
+
+enum EvalGate {
+  passed
+  passed_with_findings
+  review_required
+  blocked
+  incomplete
+}
+
+/// حالة بيت المفتاح العام المستخدم في التحقق من الشهادة (rotation).
+model SigningKey {
+  id           String   @id @default(cuid())
+  publicKeyId  String   @unique        // e.g. "v1", "v2" — يُشار إليها في cert
+  algorithm    String   @default("Ed25519")
+  publicKeyPem String   @db.Text
+  signedBy     String   @default("يزيد البديوي")
+  createdAt    DateTime @default(now())
+  revokedAt    DateTime?
+
+  @@index([publicKeyId])
+  @@map("signing_keys")
+}
+
+/// الحالة المحفوظة لـ run (partial saving / resume / replay).
+model EvaluationRun {
+  id                 String          @id @default(cuid())
+  evaluationId       String          @unique
+  parentEvaluationId String?         // عند إعادة تشغيل/نسخة للـ replay
+  name               String
+  status             EvalRunStatus   @default(running)
+  gate               EvalGate        @default(incomplete)
+  environment        EvalEnvironment @default(demo)
+  provider           String          @default("simulated")
+
+  // Refs (denormalized snapshot of the setup at run time)
+  datasetId          String
+  datasetVersion     Int
+  datasetHash        String
+  policyId           String
+  policyVersion      Int
+  policyHash         String
+  modelId            String
+  modelName          String
+  modelVersion       Int
+  modelProvider      String
+  promptId           String
+  promptVersion      Int
+
+  // Progress
+  totalCases         Int     @default(0)
+  completedCases     Int     @default(0)
+  failedCases        Int     @default(0)
+  criticalCount      Int     @default(0)
+  humanReviewCount   Int     @default(0)
+  costSar            Decimal @db.Decimal(10, 4) @default(0)
+
+  // Timing percentiles (ms)
+  p50Ms              Int     @default(0)
+  p95Ms              Int     @default(0)
+  p99Ms              Int     @default(0)
+
+  // Digests
+  inputHash          String
+  outputHash         String
+  runHash            String
+
+  // Optimistic lock + immutability
+  version            Int     @default(1)
+  immutable          Boolean @default(false) // frozen once complete
+
+  // Timestamps
+  startedAt          DateTime
+  finishedAt         DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  cases      EvaluationCase[]
+  certificates EvaluationCertificate[]
+
+  @@index([environment, createdAt])
+  @@index([status])
+  @@map("evaluation_runs")
+}
+
+/// نتيجة case واحدة ضمن run (caseId تنفرد داخل الـ run وأي تعديل يُعنف).
+model EvaluationCase {
+  id            String   @id @default(cuid())
+  runId         String
+  caseId        String
+  traceId       String
+  state         String   // pass/fail/partial/na/human-review/blocked
+  expected      String   @db.Text
+  actual        String   @db.Text
+  riskLevel     String   // low/medium/high/critical
+  piiTypes      String[] @default([])
+  injectionDetected Boolean @default(false)
+  scorerResults Json     @default("{}")
+  costSar       Decimal  @db.Decimal(10, 4) @default(0)
+  latencyMs     Int      @default(0)
+  inputHash     String
+  outputHash    String
+  createdAt     DateTime @default(now())
+
+  run EvaluationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, caseId])
+  @@index([runId])
+  @@map("evaluation_cases")
+}
+
+/// الشهادة الموقّعة (قابلة للتحقق؛ سحب لا حذف).
+model EvaluationCertificate {
+  id              String          @id @default(cuid())
+  certificateId   String          @unique
+  runId           String
+  signedBy        String          @default("يزيد البديوي")
+  environment      EvalEnvironment @default(demo)
+  gate            EvalGate
+  signedAt        DateTime        @default(now())
+  signedByKeyId   String          @default("v1")
+  signature       String          @db.Text         // base64 DER / key value
+  payloadDigest   String          // sha256Hex(canonicalJson(payload))
+  payload         Json            // signed payload (exact) for verification
+  verifyUrl       String
+  revokedAt       DateTime?
+  revokedBy       String?
+  revocationReason String?
+  createdAt       DateTime        @default(now())
+
+  run EvaluationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+  @@map("evaluation_certificates")
+}
+
+/// سجل أحداث غير قابل للتعديل لكل دورة حياة شهادة/run (audit).
+model EvaluationAuditEvent {
+  id            String   @id @default(cuid())
+  evaluationId  String
+  certificateId String?
+  action        String // create/resume/rerun/issue/revoke/verify_fail/verify_ok
+  actor         String   @default("system")
+  metadata      Json     @default("{}")
+  prevHash      String?
+  hash          String   // hash chain (tamper-evidence)
+  createdAt     DateTime @default(now())
+
+  @@index([evaluationId])
+  @@index([certificateId])
+  @@index([createdAt])
+  @@map("evaluation_audit_events")
+}

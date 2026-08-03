@@ -3,6 +3,18 @@
 
  مشغل عبر render و مستودع github . 
 
+# قواعد البيانات
+postgresql://brightai:brightai@localhost:5432/brightai_dev
+
+# (أ) توليد مفتاح دايم — مرة وحدة
+node scripts/generate-eval-cert-key.mjs   
+
+node scripts/generate-eval-cert-key.mjs --key-id v2      # لو حبيت يدور المفتاح بعدين
+
+أو عبر psql للتجربة المباشرة إن القاعدة مخزّنة:
+psql "postgresql://brightai:brightai@localhost:5432/brightai_dev" -c 'SELECT "keyId","algorithm","active" FROM signing_keys;'
+
+
 Render Static Site يجب ضبطه على Node 22 LTS:
 
 - في Environment أضف `NODE_VERSION=22.22.2`

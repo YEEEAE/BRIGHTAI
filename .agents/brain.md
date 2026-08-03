@@ -20,6 +20,17 @@ skills_ready: 7
 ---
 
 
+### 2026-08-03 — Evaluation Certificate side-server: libs + API + Ed25519 + Postgres + اختبارات (12/12)
+
+- **Files**: `src/lib/kernel-certs/*` (admin-auth, canonical, sha256, signing, env, libClient, eval-service, cert-service, in-memory-store, prisma-store, facade), `src/pages/api/kernel/evaluations/*` (index + [id]/cases/complete/resume/rerun), `src/pages/api/kernel/certificates/*` (issue/verify/revoke), `packages/db/prisma/schema.prisma` + migrations `20260803*`, `scripts/generate-eval-cert-key.mjs`, `scripts/seed-eval-cert-key.mjs`, `.env.example`, `kernel/tests/eval-certificate.test.js` + `.db.integration.test.js`
+- **What**: بنينا نظام شهادات تقييم للـ kernel — يوقّع بروتوكول من بيانات التقييم لكل جولة مكتملة، وأي جهة خارجية تتطلب منه عبر `/api/kernel/certificates/verify?id=…`. تضمن: بوابة admin (x-brightai-admin-key)، canonical JSON digest، توقيع Ed25519، مخازن in-memory + Postgres (Prisma)، جداول run/certificate/signing_key/audit.
+- **Why**: شرط الحوكمة — تقييمات kernel لازم تنفع إثبات سلامة دائم قابل للتحقق المستقل. وأصّلنا bug صريح كشفه اختبار التكامل: `fromDbCert` كان يعيد بناء payload فارغ/أصفار، فتحقق أي شهادة سليمة يطلع digest-mismatch؛ الحل حفظ الـ payload JSON في DB.
+- **Verification**: `npx tsc --noEmit --moduleResolution bundler ... src/lib/kernel-certs/*` ✅ 0؛ vitest: unit 10 + DB integration 2 = **12/12** ✅؛ `scripts/seed-eval-cert-key.mjs` ✅ `v1 | Ed25519` seeded (psql تأكد)؛ migration payload طُبّق على dev.
+- **Report**: `_reports/2026-08-03-evaluation-certificate.md`
+- **Commit**: uncommitted — المستخدم يلتزم (rule: لا commits من الوكيل)
+- **Status**: verified (local, dev DB)
+- **Brain updates**: معرّفة новых libs فقط، لا تغيير tokens/components.
+
 ### 2026-08-02 — KRN-M29-QA: فحص WCAG 2.2 AA شامل (axe 21 صفحة = 0) + responsive (80 حالة = 0) + إصلاح M26 (CSS الموصلات) + حل verify:all
 
 - **Files**:
