@@ -8,9 +8,11 @@
  *
  * Behavior contract:
  *   1. Initialize window.dataLayer + gtag() shim immediately.
- *   2. Fire `consent: default` (denied for all 4 Consent Mode v2 signals)
- *      BEFORE `js` + `config` so the dataLayer carries the default state
- *      when gtag.js boots. Required by Google Consent Mode v2.
+ *   2. Fire `consent: default` BEFORE `js` + `config` so the dataLayer
+ *      carries the default state when gtag.js boots. Required by Google
+ *      Consent Mode v2. BAI-ANALYTICS-2026-08-03: analytics_storage is
+ *      `granted` by default (visitor analytics restored); ad_storage stays
+ *      `denied` for PDPL (no personalized ads).
  *   3. Fire the `js` + `config` events (config: anonymize_ip=true, default
  *      send_page_view=true so gtag.js auto-fires the initial page_view).
  *   4. Load gtag.js itself via an `async` <script> appended to <head>. The
@@ -25,14 +27,13 @@
  * (accept/decline) are pushed by analytics.js setConsent() via
  * gtag('consent', 'update', {...}).
  *
- * BAI-SEC-17 (Consent Mode v2): default is `denied` for all 4 signals
- * (ad_storage, analytics_storage, ad_user_data, ad_personalization). The
- * update from analytics.js setConsent() flips ad_storage + analytics_storage
- * to `granted` on accept and keeps ad_user_data + ad_personalization at
- * `denied` (we don't run Google Ads or personalized ads). When storage is
- * denied, Google applies consent modeling so analytics are still recovered
- * from the cookied population, but no raw hits are recorded for denied
- * users until they grant consent via the banner.
+ * BAI-SEC-17 (Consent Mode v2) + BAI-ANALYTICS-2026-08-03:
+ * Default is `analytics_storage: granted` so GA4 receives hits from all
+ * visitors on first load (restores previously-missing visit data).
+ * `ad_storage`, `ad_user_data`, `ad_personalization` stay `denied` (we don't
+ * run Google Ads or personalized ads → PDPL-friendly). The update from
+ * analytics.js setConsent() flips analytics_storage to `denied` when the
+ * visitor explicitly declines via the banner.
  *
  * BAI-SEO-2026-07-30: removed `requestIdleCallback` (4s) / `setTimeout`
  * (1.5s) delay before loading gtag.js. The delay made Google Tag Assistant
@@ -55,11 +56,14 @@
   }
   window.dataLayer = window.dataLayer || [];
   function gtag() { dataLayer.push(arguments); }
-  // BAI-SEC-17 — Google Consent Mode v2 default. MUST run before `js` and
-  // `config` so gtag.js boots with the default consent state in dataLayer.
+  // BAI-SEC-17 + BAI-ANALYTICS-2026-08-03 — Consent Mode v2 default. MUST run
+  // before `js` and `config` so gtag.js boots with the default consent state.
+  // analytics_storage is granted by default so GA4 captures all visitors;
+  // ad_storage stays denied (no personalized ads, PDPL-friendly). The banner
+  // (analytics.js setConsent) can flip analytics_storage to denied on decline.
   gtag('consent', 'default', {
     ad_storage: 'denied',
-    analytics_storage: 'denied',
+    analytics_storage: 'granted',
     ad_user_data: 'denied',
     ad_personalization: 'denied',
   });

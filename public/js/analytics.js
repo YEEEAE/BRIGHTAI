@@ -39,6 +39,14 @@
  * No-provider mode: when no provider has registered (current default —
  * HubSpot/Bing/Mixpanel IDs are empty), calls are silent. No console
  * errors, no broken dashboards, no network requests.
+ *
+ * BAI-ANALYTICS-2026-08-03 (GA4 data restore): default consent is now
+ * `granted` instead of `unknown`. Previously `unknown` queued every event
+ * in pendingQueue until the visitor accepted the banner — visitors who
+ * ignored/declined were never tracked, so GA4 reports went near-empty.
+ * Now: never-consented visitors are tracked immediately (matching the
+ * gtap-init.js consent default). Explicit decline via the banner still
+ * sets consent to `denied` and stops all tracking.
  */
 
 // ─────────────────────────────────────────────────────────────────────
@@ -152,7 +160,7 @@ function isDuplicate(name, payload) {
 // Consent
 // ─────────────────────────────────────────────────────────────────────
 
-let consent = 'unknown';
+let consent = 'granted';
 let consentListeners = [];
 const pendingQueue = [];
 
