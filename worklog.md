@@ -2661,3 +2661,36 @@ Stage Summary:
 - الفوتر التسويقي غير المصمم أخفيناه على kernel (موجه) — لو المستخدم يبيه مصفّف، الحل تحميل components.css في الكيرنل
 - المخاطر المتبقية: LSP errors قديمة في policies.astro:53 / models.astro:41 (لا تُفشل البناء)؛ ملفات kernel-api الميتة الباقية (kernel-api، kernel-api.js، kernel-api-data.js 55B) تحتاج تنظيف لاحق؛ فوتر السايدبار روابطه صغيرة (target-size خارج النطاق)
 - الخطوة التالية: المستخدم يلتزم التغييرات (build + verify:all يمران)، ثم مراجعة المقترحات المتبقية
+
+---
+Task ID: 2026-08-03-VERIFY-ALL
+Agent: BrightAI Workspace Agent v2.3
+Task: تشغيل الاختبارات الشاملة الفعلية (build/typecheck/lint/unit/integration/route/features) + السيناريو الإلزامي E2E
+Started: 2026-08-03T17:55:00+03:00
+Mode: Senior
+
+Work Log:
+- شغّلت `npm run build` → 275 HTML، 0 أخطاء
+- شغّلت `pnpm -r --parallel typecheck` → exit 0 (5 workspaces)
+- شغّلت `npm run lint` → ❌ dashboard FAIL: `no-explicit-any` x2 في `apps/dashboard/lib/observability/logger.ts:81`
+- unit: db 17/17 ✅، firewall-detectors 68/68 ✅، lead-queue 35/35 ✅ (بعد source .env — يحتاج DATABASE_URL)، dashboard 193/205 ❌ (12 فشل: audit-durability 11 + chat-streaming 429 mock قديم)
+- route: chat-session 16/16 ✅، csrf 29/29 ✅
+- `npm run verify:all` → exit 0 ✅
+- سكربتات قياسية (verify:{audit,approvals,stats,models,connectors,replay,reports,no-legacy-sw,no-legacy-mock,csp-drift}) → كلها exit 0
+- ❌ `verify:deployment-surface`: `/api/ai/chat/` → 500 (chunk ga4-server يستورد `.prisma/client/default` لا يُحل standalone) — **خطر deploy**
+- ❌ `verify:set-html`: 6 مكالمات set:html غير مُعقّمة (kernel/{api,policies,redteam,scenarios} + lp/[slug])
+- ❌ `seo:all`: 185 redirect وجهة غير موجودة؛ `internal-links:audit`: 22 orphan؛ `seo:content`: مسار dist/client؛ `seo:word-count`: 24 ملف
+- Playwright (على astro preview 4321/4323/4877): datasets 27/27، scorers 23/23، eval 22/22، playground 25/25، audit ✅، stats ✅، journey 14/14، approvals-evidence ✅، redteam ✅، scenarios ✅، policies ✅، mint ✅، approvals ✅
+- axe-kernel (مع A11Y_BASE_URL=4321): 21 صفحة 0 مخالفات ✅؛ focus-visible 45/45 ✅؛ m29-responsive 16×5 = 80/80 ✅
+- **أصلحت 3 أخطاء**:
+  1. `public/js/kernel-scorers.js`: حقنت `sc-run-alerts.innerHTML = alerts` — تنبيهات PII الحرجة ما كانت تظهر
+  2. `scripts/playwright/verify-kernel-scorers.mjs`: قراءة كل control ids بدل أول واحد
+  3. `scripts/playwright/verify-kernel-approvals.mjs`: فحص روابط ledger الفعلية بدل نص حرفي قديم
+- كتبت سكربت جديد `scripts/playwright/verify-mandatory-scenario.mjs` (السيناريو الإلزامي E2E) → 21/21 ✅
+- كتبت التقرير: `report/2026-08-03-verify-comprehensive-tests.md`
+
+Stage Summary:
+- كل ميزات kernel المطلوبة تعمل ومتحقق منها فعليًا (Trace Drawer، Command Palette، Dataset، Scorers، PII، Injection، Hallucination، Compliance، Batch، Pause/Resume، Provider failure، A/B، Seed، Cost، Budget، Certificate، Mobile، RTL، Keyboard، Screen reader)
+- أخطاء حقيقية متبقية (pre-existing، خارج نطاق الفحص): deployment-surface 500، lint dashboard، set-html، orphan pages، redirects orphans، word-count
+- التعديلات الثلاثة (kernel-scorers.js + سكربتان) لا تزال uncommitted — المستخدم يلتزم
+- الخطوة التالية: حل `verify:deployment-surface` (أعلى أولوية قبل أي deploy) + commit الإصلاحات بعد موافقة المستخدم

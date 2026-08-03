@@ -146,7 +146,9 @@ await page.waitForTimeout(600);
 const ledgerItems = await page.evaluate(() => document.querySelectorAll('[data-kap-ledger] .kernel-ap-ledger__item').length);
 const ledgerHasLinks = await page.evaluate(() => {
   const item = document.querySelector('[data-kap-ledger] .kernel-ap-ledger__item');
-  return item ? item.textContent.includes('Audit · Trace · Evidence · Certificate') : false;
+  if (!item) return false;
+  const links = Array.from(item.querySelectorAll('.kernel-ap-ledger__link')).map((a) => a.textContent.trim());
+  return links.some((t) => t.startsWith('Audit')) && links.some((t) => t === 'Trace') && links.some((t) => t.startsWith('Evidence')) && links.some((t) => t.startsWith('CERT-'));
 });
 ok(ledgerItems >= 1 ? `ledger entries: ${ledgerItems}` : 'no ledger entries');
 if (!(ledgerItems >= 1)) fail('ledger', `${ledgerItems} entries`);

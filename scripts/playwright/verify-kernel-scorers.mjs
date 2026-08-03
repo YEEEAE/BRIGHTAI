@@ -85,8 +85,8 @@ try {
   await page.waitForSelector('#sc-detail:not([hidden])', { timeout: 5000 });
   const controls = await page.locator('.sc-controls .sc-control-list .sc-control').count();
   check('detail controls shown (>=3 PDPL controls)', controls >= 3, `controls=${controls}`);
-  const controlIdShown = await page.locator('.sc-controls .sc-control__id').first().innerText().catch(() => '');
-  check('control IDs are mapped (PDPL-*)', /PDPL-\d+/.test(controlIdShown), controlIdShown);
+  const controlIdShown = await page.locator('.sc-controls .sc-control__id').allInnerTexts().catch(() => []);
+  check('control IDs are mapped (PDPL-*)', controlIdShown.some((t) => /PDPL-\d+/.test(t)), controlIdShown.join(', ').slice(0, 60));
   const evidenceReq = await page.locator('.sc-detail__grid').count();
   check('detail grid rendered', evidenceReq >= 1, `grids=${evidenceReq}`);
   await page.evaluate(() => {

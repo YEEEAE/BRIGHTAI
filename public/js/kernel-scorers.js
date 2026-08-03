@@ -503,6 +503,8 @@
         '<span>البيئة: <strong>' + esc((L.envs[summary.environment] || summary.environment)) + '</strong></span>';
     }
     tbody.innerHTML = summary.results.map(resultsRow).join('');
+    var alertsBox = document.getElementById('sc-run-alerts');
+    if (alertsBox) alertsBox.innerHTML = alerts;
     box.hidden = false;
   }
 

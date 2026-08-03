@@ -12,51 +12,6 @@
 
 ---
 
-# Prompt 27: الوصولية والتجاوب
-
-```text
-نفّذ M29.
-
-اختبر كل الصفحات الـ16 على:
-- 1440px.
-- 1100px.
-- 1024px.
-- 768px.
-- 390px.
-
-أصلح:
-- horizontal overflow.
-- clipped dropdowns.
-- broken drawers.
-- broken tables.
-- fixed bottom controls.
-- mobile pipeline.
-- sidebar collapse.
-- keyboard traps.
-- focus loss.
-- small tap targets.
-
-الوصولية:
-- WCAG AA قدر الإمكان.
-- contrast >= 4.5:1.
-- color plus icon plus text.
-- keyboard navigation.
-- visible focus.
-- focus trap في modal/drawer.
-- Escape.
-- aria-live للمراحل.
-- screen-reader alternative لتظليل PII.
-- table alternative للمخططات.
-- list alternative للـheatmap.
-- prefers-reduced-motion.
-- lang=ar وdir=rtl.
-- LTR isolation للبيانات التقنية.
-
-اكتب تقرير accessibility وresponsive QA.
-```
-
----
-
 # Prompt 28: الاختبارات النهائية
 
 ```text

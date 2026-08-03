@@ -1,5 +1,5 @@
 ════════════════════════════════════════════════════════════
-  A11y Kernel Scan (WCAG 2.2 AA) — http://localhost:4322
+  A11y Kernel Scan (WCAG 2.2 AA) — http://localhost:4321
 ════════════════════════════════════════════════════════════
   Pages: 21   Critical: 0   Serious: 0   Moderate: 0   Minor: 0
 
