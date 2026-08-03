@@ -6,6 +6,16 @@
 # قواعد البيانات
 DATABASE_URL=postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
 psql postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
+{
+  "ssh": "Disabled",
+  "previewLimit": 50,
+  "server": "localhost",
+  "port": 5432,
+  "driver": "PostgreSQL",
+  "name": "brightai_dev",
+  "database": "brightai_dev",
+  "username": "brightai_admin"
+}
 
 # EVAL-CERT signing key (Ed25519) — keyId=v1
 # Add this to .env (or the hosting dashboard). Keep private key secret.
