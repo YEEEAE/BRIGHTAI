@@ -10,8 +10,6 @@
  * للـ cases — الحقول الحساسة لا تُسرب في الرابط العام).
  */
 
-import { canonicalJson } from './canonical';
-import { sha256Hex } from './sha256';
 import {
   type SignBundle,
   type SigningKeyPair,
@@ -21,7 +19,6 @@ import {
 import {
   type Gate,
   type RunEnvironment,
-  type StoredCase,
   type StoredEvaluationRun,
   latencies,
 } from './eval-service';

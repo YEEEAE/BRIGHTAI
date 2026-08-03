@@ -7,17 +7,9 @@
  */
 
 import { resolveSigningKey, type SigningKeyPair } from './signing';
-import { PrismaCertStore, PrismaEvalStore, appendAuditEvent } from './prisma-store';
-import {
-  type CertServiceDeps,
-  issueCertificate,
-  verifyCertificate,
-  revokeCertificate,
-} from './cert-service';
-import {
-  type EvalStore,
-  type StoredEvaluationRun,
-} from './eval-service';
+import { PrismaCertStore, PrismaEvalStore } from './prisma-store';
+import { type CertServiceDeps } from './cert-service';
+import { type EvalStore } from './eval-service';
 
 export interface KernelCertsContext {
   store: EvalStore;
