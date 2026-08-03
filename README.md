@@ -4,7 +4,20 @@
  مشغل عبر render و مستودع github . 
 
 # قواعد البيانات
-postgresql://brightai:brightai@localhost:5432/brightai_dev
+DATABASE_URL=postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
+psql postgresql://brightai_admin:brightai_admin@localhost:5432/brightai_dev
+
+# EVAL-CERT signing key (Ed25519) — keyId=v1
+# Add this to .env (or the hosting dashboard). Keep private key secret.
+# To support rotation, include prior { keyId, publicKey } entries (no privateKey).
+EVAL_CERT_SIGNING_KEY_RING=[{"keyId":"v1","privateKey":"-----BEGIN PRIVATE KEY-----\nMC4CAQAwBQYDK2VwBCIEIHioxL2b3D8deycBhPpOqALAuurqwLJF0CaudpNF4r88\n-----END PRIVATE KEY-----\n","publicKey":"-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAkiByuRoOmNSsm2kb5vznjyD8WqJn89jnUyLg+i9VoWA=\n-----END PUBLIC KEY-----\n"}]
+
+# Or flat env (single key):
+EVAL_CERT_KEY_ID=v1
+EVAL_CERT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAkiByuRoOmNSsm2kb5vznjyD8WqJn89jnUyLg+i9VoWA=\n-----END PUBLIC KEY-----\n
+# EVAL_CERT_PRIVATE_KEY=<private PEM — keep secret>
+
+
 
 # (أ) توليد مفتاح دايم — مرة وحدة
 node scripts/generate-eval-cert-key.mjs   
