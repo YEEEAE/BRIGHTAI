@@ -156,6 +156,66 @@
     try { return localStorage.getItem(ACTIVE_KEY) || null; } catch (e) { return null; }
   }
 
+  /* ── API client bridge ────────────────────────────────────── */
+  var _apiClient = null;
+  function setApiClient(client) { _apiClient = client; }
+  function getApiClient() { return _apiClient; }
+  function isApiAvailable() { return _apiClient !== null && typeof _apiClient.listEvaluations === 'function'; }
+  function isOffline() { return typeof navigator !== 'undefined' && !navigator.onLine; }
+
+  /** يُخزّن الـ run محليًا كـ fallback ويُزامن مع الـ API إن توفر. */
+  function saveRuns() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify({ runs: state._runs || [] })); } catch (e) {}
+    if (isApiAvailable() && state._runs && state._runs.length > 0) {
+      var latest = state._runs[0];
+      _apiClient.createEvaluation({
+        name: latest.name || 'Run ' + latest.id,
+        setup: latest.setup || {},
+        status: latest.status || 'review',
+        environment: (latest.setup && latest.setup.environment) || 'demo',
+        provider: (latest.setup && latest.setup.provider) || 'simulated',
+      }).catch(function () { /* silent — fallback to localStorage */ });
+    }
+  }
+
+  /** يقرأ من الـ API إن توفر، وإلا من localStorage. */
+  function loadRuns() {
+    if (isApiAvailable()) {
+      _apiClient.listEvaluations({ limit: 50 }).then(function (res) {
+        if (res.ok && res.data) {
+          state._runs = res.data;
+          saveRuns(); // sync back to localStorage
+        }
+      }).catch(function () {
+        // fallback to localStorage
+        try {
+          var raw = localStorage.getItem(STORE_KEY);
+          if (raw) return JSON.parse(raw).runs || [];
+        } catch (e) {}
+        return [];
+      });
+    }
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (raw) return JSON.parse(raw).runs || [];
+    } catch (e) {}
+    return [];
+  }
+
+  function saveActive() {
+    try {
+      if (state.runId && (state.phase === 'running' || state.phase === 'paused')) {
+        localStorage.setItem(ACTIVE_KEY, state.runId);
+      } else {
+        localStorage.removeItem(ACTIVE_KEY);
+      }
+    } catch (e) {}
+  }
+
+  function getActive() {
+    try { return localStorage.getItem(ACTIVE_KEY) || null; } catch (e) { return null; }
+  }
+
   /** يلتقط snapshot للتشغيل الحالي ويحفظه (بعد كل حالة). */
   function persistRunSnapshot() {
     if (!state.runId) return;

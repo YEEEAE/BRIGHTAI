@@ -431,6 +431,108 @@ const SECTOR_LABEL: Record<string, string> = {
     gap: var(--space-4);
     padding-block: var(--space-4);
   }
+
+  /* ── PROMPT-11: PDF.js viewer (replaces slow iframe preview) ── */
+  .kernel-evidence-pdf[hidden] { display: none; }
+  .kernel-evidence-pdf {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-block-start: var(--space-4);
+  }
+  .kernel-evidence-pdf__loading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding-block: var(--space-6);
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+  }
+  .kernel-evidence-pdf__spinner {
+    inline-size: 20px;
+    block-size: 20px;
+    border: 2px solid var(--border-subtle, rgba(255,255,255,.12));
+    border-block-start-color: var(--interactive-primary);
+    border-radius: 50%;
+    animation: kernel-evidence-pdf-spin 0.8s linear infinite;
+  }
+  @keyframes kernel-evidence-pdf-spin {
+    to { transform: rotate(360deg); }
+  }
+  .kernel-evidence-pdf__error {
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--status-danger);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--status-danger) 10%, transparent);
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+  }
+  .kernel-evidence-pdf__stage {
+    max-block-size: 60vh;
+    overflow: auto;
+    border: 1px solid var(--border-subtle, rgba(255,255,255,.12));
+    border-radius: var(--radius-md);
+    background: var(--bg-base);
+    padding: var(--space-3);
+    display: flex;
+    justify-content: center;
+  }
+  .kernel-evidence-pdf__canvas {
+    max-inline-size: 100%;
+    height: auto;
+    box-shadow: 0 4px 16px rgba(0,0,0,.35);
+    background: #fff;
+  }
+  .kernel-evidence-pdf__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .kernel-evidence-pdf__btn {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-subtle, rgba(255,255,255,.16));
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: var(--text-lg);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+  }
+  .kernel-evidence-pdf__btn:hover:not(:disabled) {
+    background: var(--bg-elevated);
+    border-color: var(--interactive-primary);
+  }
+  .kernel-evidence-pdf__btn:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+  }
+  .kernel-evidence-pdf__btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .kernel-evidence-pdf__page {
+    font-family: var(--font-mono, 'IBM Plex Mono', monospace);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    min-inline-size: 3.5rem;
+    text-align: center;
+  }
+  .kernel-evidence-pdf__sep {
+    inline-size: 1px;
+    block-size: 24px;
+    background: var(--border-subtle, rgba(255,255,255,.16));
+    margin-inline: var(--space-1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-evidence-pdf__spinner { animation: none; }
+  }
 </style>
 
 <KernelLayout
@@ -758,12 +860,34 @@ const SECTOR_LABEL: Record<string, string> = {
         <p class="kernel-evidence-jsonverify__result" data-kernel-preview-verify-result></p>
       </div>
 
-      <iframe
-        class="kernel-modal__iframe"
-        title="معاينة ملف الدليل"
-        data-kernel-preview-frame
-        srcdoc="<html lang='ar' dir='rtl'><head><meta charset='UTF-8'><style>body{margin:0;padding:32px;background:#0a0e1a;color:#f1f5f9;font-family:'IBM Plex Sans Arabic',sans-serif;line-height:1.7}.h{font-size:24px;color:#22d3ee;border-bottom:1px solid rgba(148,163,184,0.2);padding-bottom:8px;margin-bottom:24px}.label{font-size:11px;text-transform:uppercase;color:#94a3b8;letter-spacing:.05em;font-weight:bold}.val{font-family:'IBM Plex Mono',monospace;font-size:13px;color:#f1f5f9;margin-bottom:16px;word-break:break-all}.section{margin-bottom:24px}.badge{display:inline-block;padding:4px 10px;border-radius:9999px;font-size:11px;font-weight:bold;margin-left:8px}.b-good{background:rgba(34,197,94,.15);color:#22c55e}.b-warn{background:rgba(245,158,11,.15);color:#f59e0b}.b-bad{background:rgba(239,68,68,.15);color:#ef4444}.footer{margin-top:32px;padding-top:16px;border-top:1px solid rgba(148,163,184,0.2);font-size:11px;color:#64748b;text-align:center}</style></head><body><div class='h'>BrightAI Kernel — Evidence File</div><div class='section'><div class='label'>Title</div><div class='val' id='t'>—</div></div><div class='section'><div class='label'>Query</div><div class='val' id='q'>—</div></div><div class='section'><div class='label'>Hash</div><div class='val' id='h'>—</div></div><div class='section'><div class='label'>Risk Score</div><div class='val'><span id='r'>—</span> <span id='rb' class='badge'>—</span></div></div><div class='section'><div class='label'>Status</div><div class='val' id='s'>—</div></div><div class='footer'>هذا ملف تجريبي — في الإنتاج يُولّد فعلياً من Kernel API. للتفاصيل، افتح <a href='/kernel/evidence/' style='color:#22d3ee'>صفحة الأدلة</a>.</div></body></html>"
-      ></iframe>
+      {/* PROMPT-11: PDF.js viewer — replaces the slow iframe srcdoc preview.
+          Lazy-loads pdfjs-dist + pdf-lib only when the modal opens. */}
+      <div class="kernel-evidence-pdf" data-kernel-evidence-pdf-viewer hidden>
+        <div class="kernel-evidence-pdf__loading" data-kernel-evidence-pdf-loading role="status" aria-live="polite">
+          <span class="kernel-evidence-pdf__spinner" aria-hidden="true"></span>
+          <span>جارٍ تحميل ملف الدليل…</span>
+        </div>
+        <p class="kernel-evidence-pdf__error" data-kernel-evidence-pdf-error hidden role="alert"></p>
+        <div class="kernel-evidence-pdf__stage">
+          <canvas class="kernel-evidence-pdf__canvas" data-kernel-evidence-pdf-canvas aria-label="معاينة ملف الدليل"></canvas>
+        </div>
+        <div class="kernel-evidence-pdf__controls" role="toolbar" aria-label="أدوات معاينة PDF">
+          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-prev aria-label="الصفحة السابقة" data-kernel-touch>
+            <span aria-hidden="true">→</span>
+          </button>
+          <span class="kernel-evidence-pdf__page" data-kernel-evidence-pdf-page aria-live="polite">1 / 1</span>
+          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-next aria-label="الصفحة التالية" data-kernel-touch>
+            <span aria-hidden="true">←</span>
+          </button>
+          <span class="kernel-evidence-pdf__sep" aria-hidden="true"></span>
+          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-zoom-out aria-label="تصغير" data-kernel-touch>
+            <span aria-hidden="true">−</span>
+          </button>
+          <button type="button" class="kernel-evidence-pdf__btn" data-kernel-evidence-pdf-zoom-in aria-label="تكبير" data-kernel-touch>
+            <span aria-hidden="true">+</span>
+          </button>
+        </div>
+      </div>
 
       <div class="kernel-modal__actions">
         <button type="button" class="kernel-modal__btn" data-kernel-evidence-preview-modal-close>إغلاق</button>
@@ -817,6 +941,16 @@ const SECTOR_LABEL: Record<string, string> = {
     relatedSlugs={unit.relatedSlugs}
   />
   <script type="module" src="/js/kernel-loading-state.js"></script>
+  {/* PROMPT-11: lazy-load the PDF.js viewer module. Astro bundles the npm
+      deps (pdfjs-dist + pdf-lib) here; the worker is served from
+      /js/pdf.worker.mjs (same-origin, CSP-safe). The inline script above
+      calls window.__kernelEvidencePdfInit when the preview modal opens. */}
+  <script>
+    import { initPdfViewer } from '../../scripts/kernel-evidence-pdf';
+    window.__kernelEvidencePdfInit = (data, root) => {
+      initPdfViewer(data, root);
+    };
+  </script>
 </KernelLayout>
 
 <script is:inline>
@@ -996,39 +1130,15 @@ const SECTOR_LABEL: Record<string, string> = {
       var vBox = el('[data-kernel-preview-jsonverify]');
       if (vBox) vBox.hidden = false;
 
-      var frame = el('[data-kernel-preview-frame]');
-      if (frame) {
-        var html =
-          '<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><style>' +
-          'body{margin:0;padding:32px;background:#0a0e1a;color:#f1f5f9;font-family:"IBM Plex Sans Arabic",sans-serif;line-height:1.7}' +
-          '.h{font-size:24px;color:#22d3ee;border-bottom:1px solid rgba(148,163,184,.2);padding-bottom:8px;margin-bottom:24px}' +
-          '.label{font-size:11px;text-transform:uppercase;color:#94a3b8;letter-spacing:.05em;font-weight:bold}' +
-          '.val{font-family:"IBM Plex Mono",monospace;font-size:13px;color:#f1f5f9;margin-bottom:16px;word-break:break-all}' +
-          '.section{margin-bottom:24px}' +
-          '.footer{margin-top:32px;padding-top:16px;border-top:1px solid rgba(148,163,184,.2);font-size:11px;color:#64748b;text-align:center}' +
-          '</style></head><body>' +
-          '<div class="h">BrightAI Kernel — Evidence File</div>' +
-          '<div class="section"><div class="label">Evidence ID</div><div class="val">' + (data.id || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Title</div><div class="val">' + (data.title || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Query</div><div class="val">' + (data.query || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Trace ID</div><div class="val">' + (data.trace || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Hash (SHA-256)</div><div class="val">' + (data.hash || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Risk Score</div><div class="val">' + riskBadgeFor(data.risk) + '</div></div>' +
-          '<div class="section"><div class="label">Status</div><div class="val">' + (data.status || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Sector</div><div class="val">' + (data.sector || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Compliance Pack</div><div class="val">' + (data.pack || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Retention</div><div class="val">' + (data.retention || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Certificate</div><div class="val">' + (data.cert || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Size</div><div class="val">' + (data.size || '—') + '</div></div>' +
-          '<div class="section"><div class="label">Signed</div><div class="val">' + (data.signed || 'لم يوقّع بعد') + '</div></div>' +
-          '<div class="footer">هذا ملف تجريبي — في الإنتاج يُولّد فعلياً من Kernel API. للتفاصيل، افتح <a href="/kernel/evidence/" style="color:#22d3ee">صفحة الأدلة</a>.</div>' +
-          '</body></html>';
-        frame.srcdoc = html;
-      }
-
       modal.setAttribute('data-open', 'true');
       modal.setAttribute('aria-hidden', 'false');
       modal.dataset.previewId = data.id || '';
+
+      // PROMPT-11: render the PDF via the lazy-loaded PDF.js viewer module.
+      // The module is attached to window by the <script type="module"> below.
+      if (window.__kernelEvidencePdfInit) {
+        window.__kernelEvidencePdfInit(data, modal);
+      }
 
       setTimeout(function () {
         var close = el('.kernel-modal__close');
