@@ -17,6 +17,7 @@
 import ArabicLayout from './ArabicLayout.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import DocsRelatedLinks from '../components/DocsRelatedLinks.astro';
+import SpeakableSchema from '../components/SpeakableSchema.astro';
 
 
 interface Heading {
@@ -128,16 +129,17 @@ const editUrl = `https://github.com/YEEEAE/BRIGHTAI/edit/main/src/content/docs/$
   hreflang={[{ lang: 'ar-SA', href: canonical }]}
   jsonLd={jsonLd}
   currentPath={currentPath}
-  extraSpeakableSelectors={['[data-speakable]']}
+  extraSpeakableSelectors={['.speakable-summary', '[data-speakable]']}
   breadcrumbs={breadcrumbs}
 >
+  <SpeakableSchema canonical={canonical} selectors={['h1', '.speakable-summary', '[data-speakable]']} />
   <div class="docs-page-shell docs-page-shell--with-sidebar">
     <main class="docs-page-shell__main">
 
       <header class="article-hero" data-speakable>
         <span class="chip chip--brand article-hero__category">{category}</span>
         <h1>{title}</h1>
-        <p class="article-hero__desc">{description}</p>
+        <p class="article-hero__desc speakable-summary">{description}</p>
 
         <div class="docs-meta">
           <span class="docs-meta__updated">
@@ -157,7 +159,7 @@ const editUrl = `https://github.com/YEEEAE/BRIGHTAI/edit/main/src/content/docs/$
         </div>
         <div>
           <h2 id="docs-tldr-title">الخلاصة السريعة</h2>
-          <p>{tldr}</p>
+          <p class="speakable-summary">{tldr}</p>
         </div>
       </section>
 

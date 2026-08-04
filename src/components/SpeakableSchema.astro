@@ -11,11 +11,8 @@ interface Props {
 }
 
 const {
-  selectors = ['article h1', '.speakable-summary'],
+  selectors = ['h1', '.speakable-summary'],
 } = Astro.props;
-
-// Export selectors list for Astro parent layouts to consume or reference
-export const DEFAULT_SPEAKABLE_SELECTORS = selectors;
 ---
 
 <!-- Speakable AEO Schema metadata marker -->

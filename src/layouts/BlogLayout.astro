@@ -187,10 +187,10 @@ const visualCrumbs = hasHeaderBreadcrumbs
   ogImage={post.ogImage}
   jsonLd={jsonLd}
   currentPath={`/blog/${post.slug}/`}
-  extraSpeakableSelectors={['article h1', '.speakable-summary']}
+  extraSpeakableSelectors={['.speakable-summary']}
   breadcrumbs={breadcrumbs}
 >
-  <SpeakableSchema canonical={post.canonical} selectors={['article h1', '.speakable-summary']} />
+  <SpeakableSchema canonical={post.canonical} selectors={['h1', '.speakable-summary']} />
   <div class="reading-progress" hidden aria-hidden="true"></div>
 
   <div class="article-shell">
