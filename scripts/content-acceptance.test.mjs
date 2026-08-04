@@ -18,6 +18,8 @@ function resolvePagePath(relPath) {
   if (fs.existsSync(rootPath)) return rootPath;
   const distPath = path.join(ROOT, "dist", relPath);
   if (fs.existsSync(distPath)) return distPath;
+  const distClientPath = path.join(ROOT, "dist", "client", relPath);
+  if (fs.existsSync(distClientPath)) return distClientPath;
   throw new Error(`Page not found in source or dist: ${relPath}`);
 }
 

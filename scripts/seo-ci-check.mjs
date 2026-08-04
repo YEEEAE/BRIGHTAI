@@ -395,7 +395,9 @@ async function checkBrokenLinks() {
     root: CLIENT_ROOT,
     ignorePatterns: [
       "**/node_modules/**",
-      "**/.git/**"
+      "**/.git/**",
+      "**/js/pdf.worker*",
+      "**/_astro/pdf*"
     ]
   });
   result.summary = {

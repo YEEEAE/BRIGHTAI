@@ -4,7 +4,7 @@
  * PURPOSE:
  * - يخدم Storybook للـ Astro components في الـ root (kernel + ui + brand).
  * - يستخدم @storybook/astro-vite الرسمي (الـ official Astro Vite framework).
- * - يكتشف stories عبر glob patterns: src/components/**/*.stories.astro|ts.
+ * - يكتشف stories عبر glob patterns: src/components (kernel + ui + brand).
  *
  * SCOPE:
  * - Astro components (.astro) عبر @storybook/astro-vite.

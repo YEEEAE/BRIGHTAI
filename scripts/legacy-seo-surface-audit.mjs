@@ -14,6 +14,8 @@ const SITE_ORIGIN = "https://brightai.site";
 const IGNORED_DIRS = new Set([
   ".git",
   ".agents",
+  ".claude",
+  ".gemini",
   ".kilo",
   ".render-static",
   "node_modules",
@@ -134,13 +136,13 @@ function extractBrightAiUrls(content) {
 export async function auditLegacySeoSurface({ root = DEFAULT_ROOT } = {}) {
   const sourceFiles = await walkFiles(root);
   // Also include dist output for route existence checks (Astro generates pages there)
-  const distDir = path.join(root, "dist");
+  const distDir = path.join(root, "dist", "client");
   let distFiles = [];
   try {
-    // When walking dist, only ignore node_modules and .git, not directory names like "reports"
+    // When walking dist/client, only ignore node_modules and .git
     distFiles = await walkFiles(distDir, "", [], new Set(["node_modules", ".git"]));
   } catch {
-    // dist may not exist yet
+    // dist/client may not exist yet
   }
   const allFiles = [...sourceFiles, ...distFiles];
   const fileSet = new Set(allFiles);
