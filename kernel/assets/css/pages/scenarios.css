@@ -481,8 +481,58 @@
   gap: var(--space-2);
 }
 
+/* ═══════ Heat Map — Mobile Enhancement (P2-PROMPT-9) ═══════ */
+@media (max-width: 768px) {
+  /* Expand cells to meet 44px touch target */
+  .sc-matrix__cell {
+    inline-size: 44px;
+    block-size: 44px;
+    min-inline-size: 44px;
+    min-block-size: 44px;
+    transition: transform var(--duration-fast, 150ms) var(--ease-out, ease-out);
+    cursor: pointer;
+  }
+  /* Active/tap state — zoom in for readability */
+  .sc-matrix__cell:active {
+    transform: scale(1.5);
+    z-index: 10;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+    border-radius: var(--radius-sm, 4px);
+  }
+  /* Make arrow indicators bigger on mobile */
+  .sc-matrix__arrow {
+    font-size: 11px;
+    inset-block-start: 3px;
+    inset-inline-start: 3px;
+  }
+  /* Scenario name column — allow wrapping on small screens */
+  .sc-matrix__scenario {
+    max-width: 160px;
+    white-space: normal;
+    word-break: break-word;
+    font-size: var(--text-2xs, 0.65rem);
+    padding: var(--space-2);
+  }
+  /* Model header — tighter on mobile */
+  .sc-matrix__model {
+    min-width: 52px;
+    font-size: 0.6rem;
+    padding: var(--space-1);
+  }
+  /* Give the matrix wrapper a hint to scroll */
+  .sc-matrix__wrap {
+    -webkit-overflow-scrolling: touch;
+  }
+  /* Hint text slightly smaller */
+  .sc-matrix__hint {
+    font-size: 0.7rem;
+    line-height: 1.5;
+  }
+}
+
 /* ═══════ تقليل الحركة ═══════ */
 @media (prefers-reduced-motion: reduce) {
   .sc-btn, .sc-chip, .sc-tab { transition: none; }
   .sc-progress__bar { transition: none; }
+  .sc-matrix__cell { transition: none; }
 }

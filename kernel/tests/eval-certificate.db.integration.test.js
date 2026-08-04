@@ -164,6 +164,63 @@ describeDb('kernel certs — Postgres + signing (integration)', () => {
     expect(typeof pub).toBe('string');
     expect(pub.length).toBeGreaterThan(0);
   });
+
+  it('listCerts + listAuditEvents — قراءة السجلين من DB', async () => {
+    const ctx = new PrismaEvalStore();
+    const evalId = `EVAL-LIST-${randomUUID().slice(0, 8)}`;
+    const run = await ctx.createRun(makeRun(evalId));
+    const c = makeCase(`C-${randomUUID().slice(0, 8)}`);
+    await ctx.addCase(evalId, c);
+
+    const cases = await ctx.getCases(evalId);
+    const digests = computeRunDigests({
+      evaluationId: evalId,
+      version: 2,
+      cases,
+      inputHash: run.inputHash,
+    });
+    const done = await ctx.updateRun({
+      ...run,
+      ...digests,
+      status: 'complete',
+      gate: deriveGate(cases),
+      completedCases: 1,
+      cases,
+      costSar: costOf(cases),
+      p50Ms: latencies(cases).p50,
+      p95Ms: latencies(cases).p95,
+      p99Ms: latencies(cases).p99,
+      version: 1,
+      immutable: true,
+      updatedAt: new Date().toISOString(),
+    });
+
+    const { appendAuditEvent, listAuditEvents } = await import(
+      '@/src/lib/kernel-certs/prisma-store'
+    );
+    await appendAuditEvent({ evaluationId: evalId, action: 'create' });
+    await appendAuditEvent({ evaluationId: evalId, action: 'issue', certificateId: 'none' });
+
+    const issued = await issueCertificate(done, { store: certStore, signingKey });
+    expect(issued.ok).toBe(true);
+    if (issued.ok === false) return;
+
+    const certs = await certStore.listCerts(50);
+    const mine = certs.filter((x) => x.evaluationId === evalId);
+    expect(mine.length).toBeGreaterThanOrEqual(1);
+
+    const events = await listAuditEvents({ evaluationId: evalId });
+    const actions = events.map((e) => e.action);
+    expect(actions).toContain('create');
+    expect(actions).toContain('issue');
+    // hash chain — كل حدث يحمل prevHash يصل الحدث الذي قبله
+    const chained = events.slice().reverse();
+    for (let i = 1; i < chained.length; i++) {
+      expect(chained[i].prevHash).toBe(chained[i - 1].hash);
+    }
+
+    await cleanupEval(evalId, issued.cert.certificateId);
+  });
 });
 
 // tamper — يعدّل المخزون الفعلي في DB عبر Prisma مباشرة (يتجاوز clone).

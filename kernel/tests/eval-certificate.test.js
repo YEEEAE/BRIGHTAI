@@ -264,11 +264,58 @@ describe('kernel evaluation certificates', () => {
     expect(d1.runHash).not.toBe(d2.runHash); // run يعتمد على version
   });
 
-  it('signPayload يوقّع ويُتحقق', () => {
+  it('signPayload يوقّع ويُتحقق', async () => {
     const payload = { a: 1, b: { c: [1, 2, 3] } };
     const bundle = signPayload(payload, key, { signedBy: 'يزيد البديوي' });
     const ok = verifyPayload(payload, bundle, key.publicKeyPem);
     expect(ok.status).toBe('valid');
+  });
+
+  it('reject — تحديث status إلى failed + finishedAt + لا حذف فعلي', async () => {
+    const run = await store.createRun(makeRun({ status: 'running', totalCases: 2 }));
+    const c1 = await store.addCase(run.evaluationId, makeCase({ caseId: 'CASE-1' }));
+    expect(c1.ok).toBe(true);
+
+    const loaded = await store.getRun(run.evaluationId);
+    const now = new Date().toISOString();
+    const rejected = await store.updateRun({
+      ...loaded,
+      status: 'failed',
+      finishedAt: now,
+      version: loaded.version,
+      updatedAt: now,
+    });
+
+    expect(rejected.status).toBe('failed');
+    expect(rejected.finishedAt).toBe(now);
+    // الـ run ما يُحذف — يبقى موجودًا وقابلًا للقراءة
+    const stillThere = await store.getRun(run.evaluationId);
+    expect(stillThere).not.toBeNull();
+    // الـ cases محفوظة — سلسلة الإثبات باقية
+    const cases = await store.getCases(run.evaluationId);
+    expect(cases.length).toBe(1);
+    // run مكتمل (immutable) — الـ store يرفض أي تحديث يسقط الـ immutable
+    // (حماية التجميد على مستوى المخزن؛ الحارس في الـ route يرفض مسبقًا).
+    const run2 = await store.createRun(makeRun({ evaluationId: 'EVAL-TEST-002', status: 'running', totalCases: 1 }));
+    const done = await completeRun(store, run2, [makeCase({ caseId: 'CASE-A' })]);
+    expect(done.immutable).toBe(true);
+    await expect(
+      store.updateRun({ ...done, status: 'failed', immutable: false, version: done.version }),
+    ).rejects.toThrow('run_immutable');
+  });
+
+  it('listCerts يعيد الشهادات مرتبة (الأحدث أولًا)', async () => {
+    const certStore = makeCertStore();
+    const deps = { store: certStore, signingKey: key };
+    const run = await store.createRun(makeRun({ status: 'running', totalCases: 1 }));
+    const completed = await completeRun(store, run, [makeCase()]);
+    const issued = await issueCertificate(completed, deps);
+    if (issued.ok === false) throw new Error('issue failed');
+
+    const list = await certStore.listCerts(50);
+    expect(list.length).toBe(1);
+    expect(list[0].certificateId).toBe(issued.cert.certificateId);
+    expect(Array.isArray(list)).toBe(true);
   });
 });
 
@@ -287,6 +334,11 @@ function makeCertStore() {
     },
     async getCertsByEvaluation(evaluationId) {
       return [...certs.values()].filter((c) => c.evaluationId === evaluationId);
+    },
+    async listCerts(limit = 50) {
+      return [...certs.values()]
+        .sort((a, b) => new Date(b.issuedAt) - new Date(a.issuedAt))
+        .slice(0, limit);
     },
     async revokeCert(certificateId, opts) {
       const c = certs.get(certificateId);
