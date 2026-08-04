@@ -1,95 +1,75 @@
-/**
- * kernel-audit.js — /kernel/audit/ interactive engine (REPORTS-15 full build).
- *
- * Replaces the old inline script with a CSP-safe external ES module that:
- *   - Dispatches filtering/slicing/exports to a Web Worker (off-main-thread),
- *     with an automatic main-thread fallback when Worker is unavailable.
- *   - Renders a VIRTUALIZED table: only the rows in the visible viewport exist
- *     in the DOM (12,483 rows → ~40 nodes). Scroll updates the window via
- *     delta re-rendering — no full rebuild.
- *   - Applies incremental filters (date binary-search, risk/status/user/dept
- *     ranges, type-ahead search with debounce) without mutating the DOM until
- *     a result actually changes.
- *   - Verifies the FNV-1a hash chain locally (re-compute + compare) and offers
- *     a tamper demo that mutates a COPY and shows the link breaking.
- *   - Exports CSV / JSON / printable PDF from the full filtered set.
- *
- * DOM contract (audit.astro):
- *   [data-kernel-loading]             → .kernel-main wrapper
- *   [data-ka-viewport]                → scroll container (fixed height)
- *   [data-ka-spacer]                  → height = total * ROW_H
- *   [data-ka-band]                    → absolutely-positioned visible rows
- *   [data-kernel-audit-count]         → "N سجل · تعرض M"
- *   [data-ka-kpi-total/allowed/blocked/approvals]
- *   [data-kernel-audit-filter="risk|status|user|dept"]  → selects
- *   [data-ka-search] / [data-ka-clear]                  → text search
- *   [data-kernel-audit-export="csv|json|pdf"]
- *   [data-ka-verify-trace] [data-ka-verify-btn] [data-ka-tamper-btn]
- *   [data-ka-verify-out] [data-ka-verify-prev/current/next]
- *   (M28) Row detail opens the SHARED #k-trace-drawer via
- *   window.KernelTraceDrawer.open(traceId, seed) — audit.astro no longer
- *   ships its own drawer; the private [data-kernel-audit-drawer] was removed.
- *
- * CSP: external module only, no unsafe-inline. Data is deterministic + local —
- * no fetch (Prompt 19 immutable rule). Hash verify is REAL (recompute), the
- * tamper button is an explicitly-labelled Demo verification.
- *
- * ROW_H is a fixed 44px (see .kernel-audit-vrow in kernel.css). If the CSS
- * changes, update this constant.
- */
+declare global {
+  interface Window {
+    KernelAuditData?: {
+      buildAuditRows: () => any[];
+      buildAuditStats: (rows: any[]) => any;
+      fnv1a: (str: string) => string;
+      auditCanonical: (row: any) => string;
+    };
+    KernelTraceDrawer?: {
+      open: (id: string, seed: any) => void;
+      close: () => void;
+    };
+    __kernelAudit?: {
+      trace: (id: string) => any;
+      dataset: () => number;
+    };
+  }
+}
+
 (function () {
   'use strict';
 
-  var ROW_H = 44;
-  var ROW_GAP = 0; // borders are drawn with box-shadow; no layout gap
-  var OVERSCAN = 6; // rows to render beyond the viewport edge
-  var SEARCH_DEBOUNCE = 200;
-  var INIT_TIMEOUT = 3000; // worker init fallback watchdog
+  const ROW_H = 44;
+  const ROW_GAP = 0; // borders are drawn with box-shadow; no layout gap
+  const OVERSCAN = 6; // rows to render beyond the viewport edge
+  const SEARCH_DEBOUNCE = 200;
+  const INIT_TIMEOUT = 3000; // worker init fallback watchdog
 
-  var worker = null;
-  var workerReady = false;
-  var mainThreadData = null; // KernelAuditData (fallback)
-  var useWorker = false;
+  let worker: Worker | null = null;
+  let workerReady = false;
+  let mainThreadData: any = null; // KernelAuditData (fallback)
+  let useWorker = false;
 
   // Client-side state (mirrors the worker's dataset for fallback + verify).
-  var fullRows = null;
-  var filteredIndices = [];
+  let fullRows: any[] | null = null;
+  let filteredIndices: number[] = [];
 
   // Render state.
-  var viewport = null;
-  var spacer = null;
-  var band = null;
-  var rowPool = [];
-  var rowCache = new Map(); // index → {node, row}
-  var lastStart = -1;
-  var lastEnd = -1;
-  var filterRev = 0; // incremented on every filter apply → forces re-render
-  var lastFilterRev = -1; // filterRev at last render → guards the delta no-op
-  var currentTotal = 0;
+  let viewport: HTMLElement | null = null;
+  let spacer: HTMLElement | null = null;
+  let band: HTMLElement | null = null;
+  const rowPool: HTMLDivElement[] = [];
+  const rowCache = new Map<number, HTMLDivElement>(); // index → node
+  let lastStart = -1;
+  let lastEnd = -1;
+  let filterRev = 0; // incremented on every filter apply → forces re-render
+  let lastFilterRev = -1; // filterRev at last render → guards the delta no-op
+  let currentTotal = 0;
 
-  var filters = { dateFrom: '', dateTo: '', risk: '', status: '', user: '', dept: '', search: '' };
-  var searchTimer = null;
-  var pendingFilterReq = 0;
+  const filters = { dateFrom: '', dateTo: '', risk: '', status: '', user: '', dept: '', search: '' };
+  let searchTimer: any = null;
+  let pendingFilterReq = 0;
 
   // ── helpers ────────────────────────────────────────────────────────────
-  function $(sel, root) { return (root || document).querySelector(sel); }
-  function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+  const $ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document): T | null => root.querySelector<T>(sel);
+  const $all = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document): T[] => Array.from(root.querySelectorAll<T>(sel));
 
-  function statusLabel(s) {
+  function statusLabel(s: string) {
     if (s === 'allowed') return 'مسموح';
     if (s === 'blocked') return 'محظور';
     if (s === 'pending_approval') return 'بانتظار الموافقة';
     return 'خطأ';
   }
 
-  function statusClass(s) {
+  function statusClass(s: string) {
     if (s === 'allowed') return 'ka-status--allowed';
     if (s === 'blocked') return 'ka-status--blocked';
     if (s === 'pending_approval') return 'ka-status--pending';
     return 'ka-status--error';
   }
 
-  function riskClass(score) {
+  function riskClass(score: number) {
     if (score > 85) return 'kernel-risk-badge--critical';
     if (score >= 60) return 'kernel-risk-badge--high';
     if (score >= 30) return 'kernel-risk-badge--medium';
@@ -97,11 +77,11 @@
   }
 
   // Manual thousands separator (deterministic, no locale dependence).
-  function fmtCount(n) {
-    var s = String(n);
-    var out = '';
-    var c = 0;
-    for (var i = s.length - 1; i >= 0; i -= 1) {
+  function fmtCount(n: number): string {
+    const s = String(n);
+    let out = '';
+    let c = 0;
+    for (let i = s.length - 1; i >= 0; i -= 1) {
       out = s[i] + out;
       c += 1;
       if (c % 3 === 0 && i > 0) out = ',' + out;
@@ -109,19 +89,19 @@
     return out;
   }
 
-  function flash(btn) {
+  function flash(btn: HTMLElement) {
     btn.setAttribute('data-copied', 'true');
     setTimeout(function () { btn.removeAttribute('data-copied'); }, 1400);
   }
 
-  function safeCopy(text) {
+  function safeCopy(text: string): Promise<any> {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       return navigator.clipboard.writeText(text).catch(function () { return fallbackCopy(text); });
     }
     return Promise.resolve(fallbackCopy(text));
   }
-  function fallbackCopy(text) {
-    var ta = document.createElement('textarea');
+  function fallbackCopy(text: string) {
+    const ta = document.createElement('textarea');
     ta.value = text;
     ta.style.position = 'fixed';
     ta.style.opacity = '0';
@@ -131,10 +111,10 @@
     document.body.removeChild(ta);
   }
 
-  function downloadFile(name, mime, content) {
-    var blob = content instanceof Blob ? content : new Blob([content], { type: mime });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
+  function downloadFile(name: string, mime: string, content: string | Blob) {
+    const blob = content instanceof Blob ? content : new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
     a.href = url;
     a.download = name;
     document.body.appendChild(a);
@@ -144,27 +124,27 @@
   }
 
   // ── engine adapter: worker → main-thread fallback ──────────────────────
-  function request(msg) {
-    if (useWorker && workerReady) {
+  function request(msg: any): Promise<any> {
+    if (useWorker && workerReady && worker) {
       return new Promise(function (resolve) {
-        var id = 'r' + (++pendingFilterReq);
+        const id = 'r' + (++pendingFilterReq);
         msg._id = id;
-        var onMsg = function (ev) {
+        const onMsg = function (ev: MessageEvent) {
           if (ev.data && ev.data._id === id) {
-            worker.removeEventListener('message', onMsg);
+            worker?.removeEventListener('message', onMsg);
             resolve(ev.data);
           }
         };
-        worker.addEventListener('message', onMsg);
-        worker.postMessage(msg);
+        worker?.addEventListener('message', onMsg);
+        worker?.postMessage(msg);
       });
     }
     return mainThreadHandle(msg);
   }
 
-  function mainThreadHandle(msg) {
-    var all = fullRows;
-    var type = msg.type;
+  function mainThreadHandle(msg: any): Promise<any> {
+    const all = fullRows || [];
+    const type = msg.type;
     if (type === 'init') {
       return Promise.resolve({ type: 'init', stats: mainThreadData.buildAuditStats(all), total: all.length });
     }
@@ -178,20 +158,20 @@
       });
     }
     if (type === 'slice') {
-      var out = [];
-      for (var s = msg.start; s < Math.min(msg.end, filteredIndices.length); s += 1) {
+      const out = [];
+      for (let s = msg.start; s < Math.min(msg.end, filteredIndices.length); s += 1) {
         out.push(all[filteredIndices[s]]);
       }
       return Promise.resolve({ type: 'slice', rows: out, start: msg.start, total: filteredIndices.length });
     }
     if (type === 'export') {
-      var exp = [];
-      for (var e = 0; e < filteredIndices.length; e += 1) exp.push(all[filteredIndices[e]]);
+      const exp = [];
+      for (let e = 0; e < filteredIndices.length; e += 1) exp.push(all[filteredIndices[e]]);
       return Promise.resolve({ type: 'export', format: msg.format, rows: exp, total: exp.length });
     }
     if (type === 'verify') {
-      var idx = msg.index | 0;
-      var chk = verifyRowLocal(all, idx);
+      const idx = msg.index | 0;
+      const chk = verifyRowLocal(all, idx);
       return Promise.resolve({
         type: 'verify',
         result: chk,
@@ -202,9 +182,9 @@
       });
     }
     if (type === 'tamper-check') {
-      var t = msg.index | 0;
-      var o = all[t];
-      var broken = mainThreadData.fnv1a(o.prevHash + '|' + mainThreadData.auditCanonical({
+      const t = msg.index | 0;
+      const o = all[t];
+      const broken = mainThreadData.fnv1a(o.prevHash + '|' + mainThreadData.auditCanonical({
         ts: o.ts, userId: o.userId, role: o.role, action: o.action,
         risk: Math.min(99, o.risk + 13), status: o.status, traceId: o.traceId,
       })) === o.hash;
@@ -213,21 +193,21 @@
     return Promise.resolve({ type: 'error', error: 'unknown message type: ' + type });
   }
 
-  function mainThreadFilter(all, f) {
-    var risk = f.risk || '', status = f.status || '', user = f.user || '', dept = f.dept || '';
-    var from = f.dateFrom ? Date.parse(f.dateFrom + 'T00:00:00Z') : -Infinity;
-    var to = f.dateTo ? Date.parse(f.dateTo + 'T23:59:59.999Z') : Infinity;
-    var search = String(f.search || '').toLowerCase();
-    var lo = lowerBound(all, from), hi = upperBound(all, to);
-    var indices = [];
-    for (var i = lo; i < hi; i += 1) {
-      var r = all[i];
+  function mainThreadFilter(all: any[], f: any) {
+    const risk = f.risk || '', status = f.status || '', user = f.user || '', dept = f.dept || '';
+    const from = f.dateFrom ? Date.parse(f.dateFrom + 'T00:00:00Z') : -Infinity;
+    const to = f.dateTo ? Date.parse(f.dateTo + 'T23:59:59.999Z') : Infinity;
+    const search = String(f.search || '').toLowerCase();
+    const lo = lowerBound(all, from), hi = upperBound(all, to);
+    const indices: number[] = [];
+    for (let i = lo; i < hi; i += 1) {
+      const r = all[i];
       if (risk !== '' && riskLevel(r.risk) !== risk) continue;
       if (status !== '' && r.status !== status) continue;
       if (user !== '' && r.userId !== user) continue;
       if (dept !== '' && r.role !== dept) continue;
       if (search !== '') {
-        var hay = (r.action + ' ' + r.traceId + ' ' + r.userLabel + ' ' + r.hash).toLowerCase();
+        const hay = (r.action + ' ' + r.traceId + ' ' + r.userLabel + ' ' + r.hash).toLowerCase();
         if (hay.indexOf(search) === -1) continue;
       }
       indices.push(i);
@@ -235,25 +215,37 @@
     indices.reverse();
     return indices;
   }
-  function riskLevel(risk) {
+
+  function riskLevel(risk: number) {
     if (risk <= 30) return 'low';
     if (risk <= 60) return 'medium';
     if (risk <= 85) return 'high';
     return 'critical';
   }
-  function lowerBound(all, ts) {
-    var lo = 0, hi = all.length;
-    while (lo < hi) { var m = (lo + hi) >>> 1; if (all[m].ts < ts) lo = m + 1; else hi = m; }
+
+  function lowerBound(all: any[], ts: number) {
+    let lo = 0, hi = all.length;
+    while (lo < hi) {
+      const m = (lo + hi) >>> 1;
+      if (all[m].ts < ts) lo = m + 1;
+      else hi = m;
+    }
     return lo;
   }
-  function upperBound(all, ts) {
-    var lo = 0, hi = all.length;
-    while (lo < hi) { var m = (lo + hi) >>> 1; if (all[m].ts <= ts) lo = m + 1; else hi = m; }
+
+  function upperBound(all: any[], ts: number) {
+    let lo = 0, hi = all.length;
+    while (lo < hi) {
+      const m = (lo + hi) >>> 1;
+      if (all[m].ts <= ts) lo = m + 1;
+      else hi = m;
+    }
     return lo;
   }
-  function verifyRowLocal(all, index) {
-    var r = all[index];
-    var expected = mainThreadData.fnv1a(r.prevHash + '|' + mainThreadData.auditCanonical(r));
+
+  function verifyRowLocal(all: any[], index: number) {
+    const r = all[index];
+    const expected = mainThreadData.fnv1a(r.prevHash + '|' + mainThreadData.auditCanonical(r));
     return { ok: expected === r.hash, expected: expected, stored: r.hash };
   }
 
@@ -281,14 +273,17 @@
     if (!useWorker) return;
     useWorker = false;
     workerReady = false;
-    if (worker) { try { worker.terminate(); } catch (e) { /* noop */ } worker = null; }
+    if (worker) {
+      try { worker.terminate(); } catch (e) { /* noop */ }
+      worker = null;
+    }
     // fullRows is always built in boot(); re-run the filter on the main thread.
     if (fullRows) initAfterData();
   }
 
   // ── boot ───────────────────────────────────────────────────────────────
   function boot() {
-    var main = $('[data-kernel-loading]');
+    const main = $<HTMLElement>('[data-kernel-loading]');
     if (!main) return;
     if (main.getAttribute('data-audit-bound') === '1') return;
     main.setAttribute('data-audit-bound', '1');
@@ -316,7 +311,7 @@
 
     setupWorker();
 
-    if (useWorker) {
+    if (useWorker && worker) {
       // Worker owns its own copy; our init message drives the first filter
       // inside wireWorkerInit().
       worker.postMessage({ type: 'init' });
@@ -325,7 +320,7 @@
     }
   }
 
-  function handleFiltered(res) {
+  function handleFiltered(res: any) {
     if (!res || res.type !== 'filtered') return;
     if (Array.isArray(res.indices)) filteredIndices = res.indices;
     filterRev += 1;
@@ -335,17 +330,17 @@
   }
 
   function checkDemoMode() {
-    var pill = $('[data-kernel-demo-pill]');
-    var isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
-    var emptyState = $('[data-kernel-empty]');
-    var viewport = $('[data-ka-viewport]');
-    var verifier = $('.kernel-audit-verifier');
-    var filtersBar = $('.kernel-audit-filters');
-    var toolbar = $('.kernel-audit-toolbar');
-    var kpis = $('.kernel-audit-kpis');
+    const pill = $('[data-kernel-demo-pill]');
+    const isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
+    const emptyState = $('[data-kernel-empty]');
+    const vport = $('[data-ka-viewport]');
+    const verifier = $('.kernel-audit-verifier');
+    const filtersBar = $('.kernel-audit-filters');
+    const toolbar = $('.kernel-audit-toolbar');
+    const kpis = $('.kernel-audit-kpis');
 
     if (emptyState) emptyState.hidden = isDemo;
-    if (viewport) viewport.hidden = !isDemo;
+    if (vport) vport.hidden = !isDemo;
     if (verifier) verifier.hidden = !isDemo;
     if (filtersBar) filtersBar.hidden = !isDemo;
     if (toolbar) toolbar.hidden = !isDemo;
@@ -353,9 +348,9 @@
   }
 
   function reveal() {
-    var main = $('[data-kernel-loading]');
+    const main = $('[data-kernel-loading]');
     if (!main || !main.hasAttribute('data-kernel-loading')) return;
-    var skel = main.querySelector('[data-kernel-skeleton]');
+    const skel = main.querySelector<HTMLElement>('[data-kernel-skeleton]');
     if (skel) skel.hidden = true;
     main.removeAttribute('data-kernel-loading');
     checkDemoMode();
@@ -372,19 +367,19 @@
   }
 
   // ── KPI strip ──────────────────────────────────────────────────────────
-  function bindKpis(rows) {
+  function bindKpis(rows: any[]) {
     // SSR renders the exact build-time stats; the engine re-syncs from the
     // deterministic baseline (not the filtered set). Toolbar shows the live
     // filtered count.
     if (!rows) return;
-    var s = mainThreadData.buildAuditStats(rows);
+    const s = mainThreadData.buildAuditStats(rows);
     setKpi('[data-ka-kpi-total]', s.total);
     setKpi('[data-ka-kpi-allowed]', s.allowed);
     setKpi('[data-ka-kpi-blocked]', s.blocked);
     setKpi('[data-ka-kpi-approvals]', s.approvals);
   }
-  function setKpi(sel, val) {
-    var el = $(sel);
+  function setKpi(sel: string, val: number) {
+    const el = $(sel);
     if (el) el.textContent = fmtCount(val);
   }
 
@@ -394,8 +389,8 @@
       if (sel.dataset.bound === '1') return;
       sel.dataset.bound = '1';
       sel.addEventListener('change', function () {
-        filters[sel.getAttribute('data-kernel-audit-filter')] = sel.value;
-        applyFilter(false);
+        (filters as any)[sel.getAttribute('data-kernel-audit-filter') || ''] = (sel as HTMLSelectElement).value;
+        applyFilter();
       });
     });
 
@@ -403,52 +398,52 @@
       if (clear.dataset.bound === '1') return;
       clear.dataset.bound = '1';
       clear.addEventListener('click', function () {
-        $all('[data-kernel-audit-filter]').forEach(function (s) { s.value = ''; });
-        filters = { dateFrom: '', dateTo: '', risk: '', status: '', user: '', dept: '', search: '' };
-        var searchEl = $('[data-ka-search]');
+        $all('[data-kernel-audit-filter]').forEach(function (s) { (s as HTMLSelectElement).value = ''; });
+        Object.assign(filters, { dateFrom: '', dateTo: '', risk: '', status: '', user: '', dept: '', search: '' });
+        const searchEl = $('[data-ka-search]') as HTMLInputElement;
         if (searchEl) searchEl.value = '';
         // Re-apply with cleared filters (default date range, all rows).
-        applyFilter(false);
+        applyFilter();
       });
     });
   }
 
   function bindSearch() {
-    var input = $('[data-ka-search]');
+    const input = $('[data-ka-search]') as HTMLInputElement;
     if (!input) return;
     input.addEventListener('input', function () {
       clearTimeout(searchTimer);
-      var v = input.value;
+      const v = input.value;
       searchTimer = setTimeout(function () {
         filters.search = v;
-        applyFilter(false);
+        applyFilter();
       }, SEARCH_DEBOUNCE);
     });
   }
 
-  function applyFilter(initial) {
+  function applyFilter() {
     request({ type: 'filter', filters: filters }).then(handleFiltered);
   }
 
   function updateToolbar() {
-    var counter = $('[data-kernel-audit-count]');
+    const counter = $('[data-kernel-audit-count]');
     if (counter) {
       counter.textContent = fmtCount(currentTotal) + ' سجل إجمالي · تعرض ' + fmtCount(filteredIndices.length);
     }
-    var empty = $('[data-ka-empty]');
+    const empty = $('[data-ka-empty]') as HTMLElement;
     if (empty) empty.hidden = filteredIndices.length !== 0;
   }
 
   // ── virtualized rendering ──────────────────────────────────────────────
   function renderWindow() {
     if (!viewport || !spacer || !band) return;
-    var total = filteredIndices.length;
+    const total = filteredIndices.length;
     spacer.style.height = total * (ROW_H + ROW_GAP) + 'px';
 
-    var st = viewport.scrollTop || 0;
-    var vh = viewport.clientHeight || 0;
-    var start = Math.max(0, Math.floor(st / (ROW_H + ROW_GAP)) - OVERSCAN);
-    var end = Math.min(total, Math.ceil((st + vh) / (ROW_H + ROW_GAP)) + OVERSCAN);
+    const st = viewport.scrollTop || 0;
+    const vh = viewport.clientHeight || 0;
+    const start = Math.max(0, Math.floor(st / (ROW_H + ROW_GAP)) - OVERSCAN);
+    const end = Math.min(total, Math.ceil((st + vh) / (ROW_H + ROW_GAP)) + OVERSCAN);
 
     if (start === lastStart && end === lastEnd && filterRev === lastFilterRev) {
       return; // delta no-op: window + filters unchanged
@@ -458,20 +453,20 @@
     lastFilterRev = filterRev;
 
     // Reuse pooled nodes; build a keyed map for the visible window.
-    var visible = {};
-    for (var i = start; i < end; i += 1) {
+    const visible: Record<number, boolean> = {};
+    for (let i = start; i < end; i += 1) {
       visible[i] = true;
       if (rowCache.has(i)) continue;
-      rowCache.set(i, acquireNode(i));
+      rowCache.set(i, acquireNode());
     }
 
     // Remove rows that left the window.
-    var stale = [];
+    const stale: number[] = [];
     rowCache.forEach(function (v, key) {
       if (!visible[key]) stale.push(key);
     });
-    for (var s = 0; s < stale.length; s += 1) {
-      var node = rowCache.get(stale[s]);
+    for (let s = 0; s < stale.length; s += 1) {
+      const node = rowCache.get(stale[s]);
       if (node) releaseNode(node);
       rowCache.delete(stale[s]);
     }
@@ -487,27 +482,27 @@
     updateScrollPos();
   }
 
-  function acquireNode(index) {
-    var node = rowPool.pop();
+  function acquireNode(): HTMLDivElement {
+    let node = rowPool.pop();
     if (!node) {
       node = buildRowNode();
-      band.appendChild(node);
+      band?.appendChild(node);
     }
     node.style.display = '';
     return node;
   }
-  function releaseNode(node) {
+  function releaseNode(node: HTMLDivElement) {
     node.style.display = 'none';
     rowPool.push(node);
   }
 
-  function buildRowNode() {
-    var row = document.createElement('div');
+  function buildRowNode(): HTMLDivElement {
+    const row = document.createElement('div');
     row.className = 'kernel-audit-vrow';
     row.setAttribute('role', 'row');
     row.setAttribute('tabindex', '0');
 
-    var cells = [
+    const cells = [
       { cls: 'ka-cell--ts', key: 'ts' },
       { cls: 'ka-cell--user', key: 'user' },
       { cls: 'ka-cell--action', key: 'action' },
@@ -518,49 +513,53 @@
     ];
 
     cells.forEach(function (c) {
-      var cell = document.createElement('div');
+      const cell = document.createElement('div');
       cell.className = 'kernel-audit-vrow__cell ' + c.cls;
       cell.setAttribute('role', 'cell'); // M29: axe aria-required-children (table)
       row.appendChild(cell);
     });
 
     // hash copy button + view button are built once per pooled node.
-    var hashCell = row.querySelector('.ka-cell--hash');
-    var copyBtn = document.createElement('button');
-    copyBtn.type = 'button';
-    copyBtn.className = 'kernel-audit-table__hash-copy';
-    copyBtn.setAttribute('aria-label', 'نسخ الهاش');
-    copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
-    copyBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var idx = row.getAttribute('data-ka-idx');
-      if (idx == null) return;
-      var r = getRowByRealIndex(parseInt(idx, 10));
-      if (r) safeCopy(r.hash).then(function () { flash(copyBtn); });
-    });
-    hashCell.appendChild(copyBtn);
+    const hashCell = row.querySelector('.ka-cell--hash');
+    if (hashCell) {
+      const copyBtn = document.createElement('button');
+      copyBtn.type = 'button';
+      copyBtn.className = 'kernel-audit-table__hash-copy';
+      copyBtn.setAttribute('aria-label', 'نسخ الهاش');
+      copyBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
+      copyBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const idx = row.getAttribute('data-ka-idx');
+        if (idx == null) return;
+        const r = getRowByRealIndex(parseInt(idx, 10));
+        if (r) safeCopy(r.hash).then(function () { flash(copyBtn); });
+      });
+      hashCell.appendChild(copyBtn);
+    }
 
-    var viewCell = row.querySelector('.ka-cell--view');
-    var viewBtn = document.createElement('button');
-    viewBtn.type = 'button';
-    viewBtn.className = 'kernel-audit-table__view-btn';
-    viewBtn.textContent = 'عرض';
-    viewBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var idx = row.getAttribute('data-ka-idx');
-      if (idx == null) return;
-      openDrawer(parseInt(idx, 10));
-    });
-    viewCell.appendChild(viewBtn);
+    const viewCell = row.querySelector('.ka-cell--view');
+    if (viewCell) {
+      const viewBtn = document.createElement('button');
+      viewBtn.type = 'button';
+      viewBtn.className = 'kernel-audit-table__view-btn';
+      viewBtn.textContent = 'عرض';
+      viewBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const idx = row.getAttribute('data-ka-idx');
+        if (idx == null) return;
+        openDrawer(parseInt(idx, 10));
+      });
+      viewCell.appendChild(viewBtn);
+    }
 
     row.addEventListener('click', function () {
-      var idx = row.getAttribute('data-ka-idx');
+      const idx = row.getAttribute('data-ka-idx');
       if (idx != null) openDrawer(parseInt(idx, 10));
     });
     row.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        var idx = row.getAttribute('data-ka-idx');
+        const idx = row.getAttribute('data-ka-idx');
         if (idx != null) openDrawer(parseInt(idx, 10));
       }
     });
@@ -568,24 +567,20 @@
     return row;
   }
 
-  function getRowByRealIndex(idx) {
+  function getRowByRealIndex(idx: number) {
     return fullRows ? fullRows[idx] : null;
   }
 
-  function getRowByFilteredIndex(fi) {
-    var idx = filteredIndices[fi];
-    return fullRows ? fullRows[idx] : null;
-  }
-
-  function fillRow(node, realIndex) {
-    var r = fullRows[realIndex];
+  function fillRow(node: HTMLDivElement, realIndex: number) {
+    if (!fullRows) return;
+    const r = fullRows[realIndex];
     if (!r) return;
     node.setAttribute('data-ka-idx', String(realIndex));
     node.setAttribute('data-status', r.status);
     node.setAttribute('data-risk', String(r.risk));
     node.classList.toggle('kernel-audit-vrow--anomaly', !!r.anomaly);
 
-    var cells = node.children;
+    const cells = node.children;
     cells[0].textContent = r.tsLabel;
     cells[1].innerHTML = '<strong>' + escapeHtml(r.userLabel) + '</strong><span class="ka-cell--user-role">' + escapeHtml(r.role) + '</span>';
     cells[2].textContent = r.action;
@@ -593,51 +588,47 @@
     cells[4].textContent = statusLabel(r.status);
     cells[4].className = 'kernel-audit-vrow__cell ka-cell--status ' + statusClass(r.status);
 
-    var hashCell = cells[5];
-    var hashText = hashCell.querySelector('.ka-hash-text');
+    const hashCell = cells[5];
+    let hashText = hashCell.querySelector('.ka-hash-text');
     if (!hashText) {
       hashText = document.createElement('span');
       hashText.className = 'ka-hash-text';
       hashCell.insertBefore(hashText, hashCell.firstChild);
     }
     hashText.textContent = r.hash.slice(0, 12) + '…' + r.hash.slice(-4);
-    var copyBtn = hashCell.querySelector('.kernel-audit-table__hash-copy');
+    const copyBtn = hashCell.querySelector('.kernel-audit-table__hash-copy');
     if (copyBtn) copyBtn.setAttribute('data-kernel-audit-copy', r.hash);
   }
 
-  function escapeHtml(s) {
+  function escapeHtml(s: string): string {
     return String(s).replace(/[&<>"']/g, function (c) {
-      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' } as any)[c] || c;
     });
   }
 
   function updateScrollPos() {
-    var pos = $('[data-ka-scrollpos]');
+    const pos = $('[data-ka-scrollpos]');
     if (pos) pos.textContent = fmtCount(filteredIndices.length);
   }
 
   function bindRowEvents() {
-    // Scroll → re-render window (delta). The band is a proxy: we listen on
-    // the viewport and re-run renderWindow (it no-ops when the window is unchanged).
     if (viewport) {
       viewport.addEventListener('scroll', function () {
         requestAnimationFrame(function () { renderWindow(); });
       });
-    }
-    if (window.ResizeObserver) {
-      new ResizeObserver(function () { renderWindow(); }).observe(viewport);
+      if ((window as any).ResizeObserver) {
+        new (window as any).ResizeObserver(function () { renderWindow(); }).observe(viewport);
+      }
     }
   }
 
   // ── drawer ─────────────────────────────────────────────────────────────
-  // M28 — دمج كامل: صفحة التدقيق تفتح الدرج المشترك (#k-trace-drawer) عبر
-  // window.KernelTraceDrawer.open(traceId, seed). حُذف الدرج الخاص بها.
-  function openDrawer(realIndex) {
-    var r = getRowByRealIndex(realIndex);
+  function openDrawer(realIndex: number) {
+    const r = getRowByRealIndex(realIndex);
     if (!r) return;
     if (!window.KernelTraceDrawer) return; // kernel-drawer.js (الشِل) لازم يحمّل أولًا
 
-    var seed = {
+    const seed = {
       user: r.userLabel,
       dept: r.role,
       model: 'NVIDIA NIM',
@@ -669,9 +660,9 @@
   }
 
   /** المراحل الست بصيغة seed (بما يتوافق مع buildStages في kernel-drawer.js). */
-  function buildTimeline(r) {
-    var blocked = r.status === 'blocked';
-    var risk = r.risk;
+  function buildTimeline(r: any) {
+    const blocked = r.status === 'blocked';
+    const risk = r.risk;
     return [
       { name: 'الاستلام', time: 'T+0ms', resultClass: 'k-timeline__result--ok', resultText: 'مرّ', nodeClass: '', detail: 'مستخدم: ' + r.userLabel, skipped: false },
       { name: 'فحص PII', time: 'T+18ms', resultClass: blocked ? 'k-timeline__result--mask' : 'k-timeline__result--ok', resultText: blocked ? 'عُمّي' : 'سليم', nodeClass: blocked ? '--mask' : '', detail: 'كاشف PII: ' + (blocked ? 'تم كشف بيانات حساسة (PII)' : 'لم يُكشف في هذا السجل.'), skipped: false },
@@ -680,10 +671,6 @@
       { name: 'استدعاء النموذج', time: 'T+58ms', resultClass: blocked ? 'k-timeline__result--skip' : 'k-timeline__result--ok', resultText: blocked ? 'لن يُستدعى' : 'اكتمل', nodeClass: blocked ? '--skip' : '', detail: blocked ? 'لم يُستدعى النموذج — تم الحظر قبل الإرسال.' : 'استدعاء مزود النموذج: NVIDIA NIM', skipped: blocked },
       { name: 'توليد الدليل', time: 'T+74ms', resultClass: 'k-timeline__result--ok', resultText: r.status === 'error' ? 'فشل' : 'EVD', nodeClass: '', detail: 'Hash: ' + r.hash, skipped: false },
     ];
-  }
-
-  function closeDrawer() {
-    if (window.KernelTraceDrawer) window.KernelTraceDrawer.close();
   }
 
   function bindDrawer() {
@@ -701,15 +688,15 @@
     });
   }
 
-  function exportRows(format) {
+  function exportRows(format: string) {
     request({ type: 'export', format: format }).then(function (res) {
       if (!res || res.type !== 'export') return;
-      var rows = res.rows || [];
-      var stamp = new Date().toISOString().slice(0, 10);
+      const rows = res.rows || [];
+      const stamp = new Date().toISOString().slice(0, 10);
 
       if (format === 'csv') {
-        var header = 'ts,user,department,action,risk,status,traceId,hash,approved\n';
-        var body = rows.map(function (d) {
+        const header = 'ts,user,department,action,risk,status,traceId,hash,approved\n';
+        const body = rows.map(function (d: any) {
           return [d.tsLabel, d.userLabel, d.role, d.action, d.risk, d.status, d.traceId, d.hash, d.humanApproved ? 'yes' : 'no']
             .map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(',');
         }).join('\n');
@@ -722,15 +709,15 @@
     });
   }
 
-  function printPdf(rows, stamp) {
-    var w = window.open('', '_blank', 'width=900,height=700');
+  function printPdf(rows: any[], stamp: string) {
+    const w = window.open('', '_blank', 'width=900,height=700');
     if (!w) return;
-    var thead = '<tr><th>الوقت</th><th>المستخدم</th><th>القسم</th><th>الإجراء</th><th>المخاطر</th><th>الحالة</th><th>Trace</th></tr>';
-    var body = rows.map(function (r) {
+    const thead = '<tr><th>الوقت</th><th>المستخدم</th><th>القسم</th><th>الإجراء</th><th>المخاطر</th><th>الحالة</th><th>Trace</th></tr>';
+    const body = rows.map(function (r) {
       return '<tr><td>' + r.tsLabel + '</td><td>' + r.userLabel + '</td><td>' + r.role + '</td><td>' + r.action +
         '</td><td>' + r.risk + '</td><td>' + statusLabel(r.status) + '</td><td>' + r.traceId + '</td></tr>';
     }).join('');
-    var html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>سجل تدقيق Kernel — ' + stamp + '</title>' +
+    const html = '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>سجل تدقيق Kernel — ' + stamp + '</title>' +
       '<style>body{font-family:system-ui;padding:20px;color:#0f172a}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #cbd5e1;padding:4px 6px;text-align:start}th{background:#f1f5f9}h1{font-size:16px}</style></head><body>' +
       '<h1>BrightAI Kernel — سجل تدقيق (تصدير طباعة)</h1><p>عدد السجلات: ' + rows.length + ' — بتاريخ ' + stamp + '</p>' +
       '<table><thead>' + thead + '</thead><tbody>' + body + '</tbody></table>' +
@@ -741,43 +728,43 @@
 
   // ── hash chain verifier ────────────────────────────────────────────────
   function bindVerifier() {
-    var btn = $('[data-ka-verify-btn]');
+    const btn = $('[data-ka-verify-btn]');
     if (btn) {
       btn.addEventListener('click', function () {
-        var traceInput = $('[data-ka-verify-trace]');
-        var trace = (traceInput ? traceInput.value : '').trim();
+        const traceInput = $('[data-ka-verify-trace]') as HTMLInputElement;
+        const trace = (traceInput ? traceInput.value : '').trim();
         runVerify(trace);
       });
     }
-    var tamper = $('[data-ka-tamper-btn]');
+    const tamper = $('[data-ka-tamper-btn]');
     if (tamper) {
       tamper.addEventListener('click', function () {
-        var traceInput = $('[data-ka-verify-trace]');
-        var trace = (traceInput ? traceInput.value : '').trim();
+        const traceInput = $('[data-ka-verify-trace]') as HTMLInputElement;
+        const trace = (traceInput ? traceInput.value : '').trim();
         runTamperDemo(trace);
       });
     }
     // Enter key in the trace input triggers verify.
-    var input = $('[data-ka-verify-trace]');
+    const input = $('[data-ka-verify-trace]') as HTMLInputElement;
     if (input) {
       input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') btn && btn.click();
+        if (e.key === 'Enter') btn && (btn as HTMLButtonElement).click();
       });
     }
   }
 
-  function findIndexByTrace(trace) {
+  function findIndexByTrace(trace: string) {
     if (!trace || !fullRows) return -1;
-    for (var i = 0; i < fullRows.length; i += 1) {
+    for (let i = 0; i < fullRows.length; i += 1) {
       if (fullRows[i].traceId === trace) return i;
     }
     return -1;
   }
 
-  function runVerify(trace) {
-    var out = $('[data-ka-verify-out]');
+  function runVerify(trace: string) {
+    const out = $('[data-ka-verify-out]');
     if (!fullRows) return;
-    var idx = findIndexByTrace(trace);
+    const idx = findIndexByTrace(trace);
     if (idx === -1) {
       if (out) {
         out.className = 'ka-verify-out ka-verify-out--fail';
@@ -787,9 +774,9 @@
     }
     request({ type: 'verify', index: idx }).then(function (res) {
       if (!res || res.type !== 'verify') return;
-      var prevEl = $('[data-ka-verify-prev]');
-      var curEl = $('[data-ka-verify-current]');
-      var nextEl = $('[data-ka-verify-next]');
+      const prevEl = $('[data-ka-verify-prev]');
+      const curEl = $('[data-ka-verify-current]');
+      const nextEl = $('[data-ka-verify-next]');
       if (prevEl) prevEl.textContent = res.prev ? res.prev.traceId + ' · ' + res.prev.hash : '— (بداية السلسلة)';
       if (curEl) curEl.textContent = res.current.traceId + ' · ' + res.current.hash;
       if (nextEl) nextEl.textContent = res.next ? res.next.traceId + ' · ' + res.next.hash : '— (نهاية السلسلة)';
@@ -805,10 +792,10 @@
     });
   }
 
-  function runTamperDemo(trace) {
-    var out = $('[data-ka-verify-out]');
+  function runTamperDemo(trace: string) {
+    const out = $('[data-ka-verify-out]');
     if (!fullRows) return;
-    var idx = findIndexByTrace(trace);
+    const idx = findIndexByTrace(trace);
     if (idx === -1) {
       if (out) {
         out.className = 'ka-verify-out ka-verify-out--fail';
@@ -835,9 +822,9 @@
   window.__kernelAudit = {
     trace: function (id) {
       if (!fullRows) return { error: 'dataset not ready' };
-      var idx = findIndexByTrace(id);
+      const idx = findIndexByTrace(id);
       if (idx === -1) return { error: 'trace not found: ' + id };
-      var r = fullRows[idx];
+      const r = fullRows[idx];
       return {
         traceId: r.traceId,
         timestamp: r.tsLabel,
@@ -865,7 +852,7 @@
   function wireWorkerInit() {
     if (!worker) return;
     worker.addEventListener('message', function (ev) {
-      var d = ev.data;
+      const d = ev.data;
       if (d && d.type === 'init') {
         workerReady = true;
         // Ask the worker to compute + cache the first filtered set.
@@ -876,7 +863,7 @@
   }
 
   // Override boot to wire worker-init once the worker exists.
-  var _boot = boot;
+  const _boot = boot;
   boot = function () {
     _boot();
     wireWorkerInit();

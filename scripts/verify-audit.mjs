@@ -30,7 +30,7 @@ const rootDir = path.resolve(__dirname, '..');
 
 const dataMirrorPath = path.join(rootDir, 'public', 'js', 'kernel-audit-data.js');
 const tsSourcePath = path.join(rootDir, 'src', 'data', 'kernel-audit.ts');
-const enginePath = path.join(rootDir, 'public', 'js', 'kernel-audit.js');
+const enginePath = path.join(rootDir, 'public', 'js', 'audit.js');
 const workerPath = path.join(rootDir, 'public', 'js', 'kernel-audit-worker.js');
 
 const failures = [];
