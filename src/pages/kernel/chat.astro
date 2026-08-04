@@ -24,6 +24,7 @@ import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelOnboarding from '../../components/kernel/KernelOnboarding.astro';
 import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import KernelTabs from '../../components/kernel/KernelTabs.astro';
 // K1 (2026-07-18): kernel journey — read scenario from URL.
 import {
   getScenarioMeta,
@@ -322,8 +323,36 @@ const policyBanner = {
     <!-- 3-pane chat layout -->
     <div class="kernel-chat-layout">
 
+      {/*
+        PROMPT-2 (2026-08-04): Mobile-first chat redesign.
+        - On <768px: 3 tabs (المحادثات | المحادثة | التفاصيل) replace the
+          drawers. Each pane carries data-tab-active so CSS shows only the
+          active tab's pane. KernelTabs provides the WAI-ARIA tabs pattern
+          (roving tabindex + Arrow L/R RTL-inverted + Home/End).
+        - On 768-1023px: 2 panes (threads + chat) — context hidden.
+        - On ≥1024px: 3-pane layout unchanged.
+        - The tabs bar is hidden on ≥768px via .kernel-chat-mobile-tabs.
+      */}
+      <KernelTabs
+        class="kernel-chat-mobile-tabs"
+        tabs={[
+          { id: 'threads', label: 'المحادثات' },
+          { id: 'chat', label: 'المحادثة', selected: true },
+          { id: 'context', label: 'التفاصيل' },
+        ]}
+        ariaLabel="تبويبات المحادثة"
+        panelIdBase="kernel-chat-tabpanel"
+        tabIdBase="kernel-chat-tab"
+      />
+
       <!-- LEFT — Threads list -->
-      <aside class="kernel-chat-layout__pane kernel-chat-layout__pane--left" aria-label="قائمة المحادثات">
+      <aside
+        class="kernel-chat-layout__pane kernel-chat-layout__pane--left"
+        aria-label="قائمة المحادثات"
+        role="tabpanel"
+        id="kernel-chat-tabpanel-threads"
+        aria-labelledby="kernel-chat-tab-threads"
+      >
         <button type="button" class="kernel-threads-list__new-btn" data-kernel-chat-new>
           <span aria-hidden="true"><Fragment set:html={iconPlus} /></span>
           <span>محادثة جديدة</span>
@@ -347,7 +376,14 @@ const policyBanner = {
       </aside>
 
       <!-- CENTER — Chat thread + composer -->
-      <section class="kernel-chat-layout__pane kernel-chat-layout__pane--center" aria-label="محادثة نشطة">
+      <section
+        class="kernel-chat-layout__pane kernel-chat-layout__pane--center"
+        aria-label="محادثة نشطة"
+        role="tabpanel"
+        id="kernel-chat-tabpanel-chat"
+        aria-labelledby="kernel-chat-tab-chat"
+        data-tab-active="chat"
+      >
         {/*
           KRN-008 / EXEC-08: Mobile toolbar — appears only on <1024px.
           Toggles the threads drawer (الرسائل) and context drawer (السياق)
@@ -554,7 +590,13 @@ const policyBanner = {
       </section>
 
       <!-- RIGHT — Context panel (live provider status + policy feed + session meta) -->
-      <aside class="kernel-chat-layout__pane kernel-chat-layout__pane--right" aria-label="لوحة السياق">
+      <aside
+        class="kernel-chat-layout__pane kernel-chat-layout__pane--right"
+        aria-label="لوحة السياق"
+        role="tabpanel"
+        id="kernel-chat-tabpanel-context"
+        aria-labelledby="kernel-chat-tab-context"
+      >
         <!-- Live provider card (K2 2026-07-18): name reflects the actual
              provider returned by /api/ai/chat metadata — never hard-coded.
              Starts as "—" until the first live reply; shows a DEMO badge
@@ -1991,11 +2033,111 @@ const policyBanner = {
       }
     }
 
+    /*
+     * PROMPT-2 (2026-08-04): Mobile-first chat tabs.
+     * - On <768px: 3 tabs (المحادثات | المحادثة | التفاصيل) switch which
+     *   pane is visible via data-tab-active. KernelTabs handles the ARIA
+     *   roving-tabindex + keyboard nav; this controller wires the click →
+     *   pane visibility + swipe gestures + auto-scroll + state preservation.
+     * - State preservation: switching tabs never removes messages/threads
+     *   from the DOM — we only toggle display. The chat thread keeps its
+     *   scroll position and messages intact.
+     * - Swipe: horizontal swipe (|Δx| > 50px) on the layout cycles tabs.
+     * - Auto-scroll: when returning to the chat tab, scroll to the latest
+     *   message so the user sees the newest content.
+     * - Re-bind-safe across Astro view transitions.
+     */
+    var MOBILE_TAB_IDS = ['threads', 'chat', 'context'];
+
+    function initMobileTabs() {
+      var layout = el('.kernel-chat-layout');
+      if (!layout) return;
+      if (layout.dataset.mobileTabsBound === '1') return;
+      layout.dataset.mobileTabsBound = '1';
+
+      var panes = {};
+      MOBILE_TAB_IDS.forEach(function (id) {
+        panes[id] = document.getElementById('kernel-chat-tabpanel-' + id);
+      });
+
+      function setActiveTab(id) {
+        if (MOBILE_TAB_IDS.indexOf(id) === -1) return;
+        // Update pane visibility
+        MOBILE_TAB_IDS.forEach(function (pid) {
+          var pane = panes[pid];
+          if (!pane) return;
+          if (pid === id) {
+            pane.setAttribute('data-tab-active', id);
+          } else {
+            pane.removeAttribute('data-tab-active');
+          }
+        });
+        // Update tab aria-selected + tabindex (KernelTabs roving pattern)
+        elAll('[role="tab"]', layout).forEach(function (tab) {
+          var tid = tab.getAttribute('data-tab-id');
+          var sel = tid === id;
+          tab.setAttribute('aria-selected', sel ? 'true' : 'false');
+          tab.setAttribute('tabindex', sel ? '0' : '-1');
+        });
+        // Auto-scroll to latest message when returning to chat tab
+        if (id === 'chat') {
+          var thread = el('[data-kernel-chat-thread]');
+          if (thread) scrollThreadToEnd(thread);
+        }
+      }
+
+      // Click handler on the tablist (delegation — works with KernelTabs)
+      var tablist = layout.querySelector('[role="tablist"]');
+      if (tablist) {
+        tablist.addEventListener('click', function (e) {
+          var tab = e.target.closest('[role="tab"]');
+          if (!tab) return;
+          var id = tab.getAttribute('data-tab-id');
+          if (id) setActiveTab(id);
+        });
+      }
+
+      // Swipe gestures (horizontal) — only on touch devices
+      var touchStartX = 0;
+      var touchStartY = 0;
+      var swiping = false;
+      layout.addEventListener('touchstart', function (e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        swiping = true;
+      }, { passive: true });
+      layout.addEventListener('touchend', function (e) {
+        if (!swiping) return;
+        swiping = false;
+        var deltaX = e.changedTouches[0].clientX - touchStartX;
+        var deltaY = e.changedTouches[0].clientY - touchStartY;
+        // Only horizontal swipes (ignore vertical scroll)
+        if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+        var current = MOBILE_TAB_IDS.find(function (id) {
+          return panes[id] && panes[id].hasAttribute('data-tab-active');
+        }) || 'chat';
+        var idx = MOBILE_TAB_IDS.indexOf(current);
+        // RTL: swipe left (negative deltaX) = next tab, swipe right = previous
+        var isRtl = (document.documentElement.getAttribute('dir') || 'rtl') === 'rtl';
+        var next;
+        if (isRtl) {
+          next = deltaX < 0 ? idx + 1 : idx - 1;
+        } else {
+          next = deltaX > 0 ? idx + 1 : idx - 1;
+        }
+        if (next >= 0 && next < MOBILE_TAB_IDS.length) {
+          setActiveTab(MOBILE_TAB_IDS[next]);
+        }
+      }, { passive: true });
+    }
+
     document.addEventListener('astro:page-load', init);
     document.addEventListener('astro:page-load', initDrawers);
+    document.addEventListener('astro:page-load', initMobileTabs);
     if (document.readyState !== 'loading') {
       init();
       initDrawers();
+      initMobileTabs();
     }
   })();
 </script>

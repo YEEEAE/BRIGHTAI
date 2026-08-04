@@ -20,6 +20,30 @@ skills_ready: 7
 ---
 
 
+### 2026-08-04 — PROMPT-2: Mobile-First Chat Redesign لـ /kernel/chat/ (3 تبويبات بدل الـ drawers)
+
+- **Files**:
+  - `src/pages/kernel/chat.astro` (EDITED — أضفت `KernelTabs` import + component بثلاثة تبويبات (المحادثات | المحادثة | التفاصيل) داخل `.kernel-chat-layout`، وأضفت `role="tabpanel"` + `id="kernel-chat-tabpanel-*"` + `aria-labelledby` للـ panes الثلاثة، و`data-tab-active="chat"` للـ center pane (الافتراضي)، وأضفت `initMobileTabs()` — ربط النقرات على الـ tablist + swipe gestures (RTL-aware) + auto-scroll للرسائل عند الرجوع لتبويب المحادثة + state preservation (تبديل display فقط، لا حذف DOM))
+  - `src/components/kernel/KernelTabs.astro` (EDITED — أضفت دعم `class` prop عبر `class:list` للـ consumer)
+  - `src/styles/kernel.css` (EDITED — كتلة `22.c CHAT — Mobile-first tabs`: `.kernel-chat-mobile-tabs` يظهر فقط على <768px؛ فقط الـ pane النشط يظهر؛ composer `position:fixed` مع `env(safe-area-inset-bottom)`؛ toolbar القديم مخفي على <768px؛ على 768-1023px شبكة بعمودين والـ context مخفي)
+- **What**: حللت انهيار الـ 3-pane layout على الجوال — استبدلت الـ drawers بنظام 3 تبويبات (المحادثات | المحادثة | التفاصيل) باستخدام KernelTabs (WAI-ARIA كامل). التبويب الافتراضي = المحادثة. الـ composer ثابت بالأسفل. Swipe أفقي (RTL-aware). State preservation بالتبديل display فقط.
+- **Why**: PROMPT-2 — الـ 3-pane كان ينهار على الجوال (<768px) و40%+ من الزوار على الجوال.
+- **Verification**:
+  - `npm run build` → exit 0 ✅
+  - `grep kernel-chat-mobile-tabs dist/client/kernel/chat/index.html` → 1 ✅
+  - `grep data-tab-active="chat" dist/client/kernel/chat/index.html` → 1 ✅
+  - `grep "max-width:767px" dist/client/_astro/KernelLayout*.css` → 1 ✅
+- **قرارات موثقة**:
+  - **التبويب الافتراضي = المحادثة** — المستخدم يرى المحادثة مباشرة.
+  - **الـ drawers القديمة بقيت** كـ fallback للـ tablet (768-1023px) — لا تحذفها.
+  - **KernelTabs.astro دعم class prop** — كان لا يقرأ `class` من `Astro.props`.
+- **Report**: none
+- **Commit**: uncommitted (user commits via main — per brain line 17)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry).
+
+---
+
 ### 2026-08-03 — Evaluation Certificate side-server: libs + API + Ed25519 + Postgres + اختبارات (12/12)
 
 - **Files**: `src/lib/kernel-certs/*` (admin-auth, canonical, sha256, signing, env, libClient, eval-service, cert-service, in-memory-store, prisma-store, facade), `src/pages/api/kernel/evaluations/*` (index + [id]/cases/complete/resume/rerun), `src/pages/api/kernel/certificates/*` (issue/verify/revoke), `packages/db/prisma/schema.prisma` + migrations `20260803*`, `scripts/generate-eval-cert-key.mjs`, `scripts/seed-eval-cert-key.mjs`, `.env.example`, `kernel/tests/eval-certificate.test.js` + `.db.integration.test.js`

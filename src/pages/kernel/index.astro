@@ -254,45 +254,55 @@ const complianceRows = [
     />
 
     <!-- KPI grid -->
-    <section class="kernel-metric-grid kernel-stagger" aria-label="المؤشرات الرئيسية">
-      <KernelMetricCard
-        label="إجمالي الطلبات"
-        value="12,483"
-        unit="طلب"
-        variant="brand"
-        trend="up"
-        trendLabel="8%"
-        iconSvg={iconActivity}
-        footer="آخر 24 ساعة"
-      />
-      <KernelMetricCard
-        label="بانتظار الموافقة"
-        value="7"
-        unit="طلب"
-        trend="up"
-        trendLabel="3"
-        iconSvg={iconClock}
-        footer="3 حرجة · 4 عالية"
-      />
-      <KernelMetricCard
-        label="متوسط المخاطر"
-        value="23"
-        unit="%"
-        variant="gold"
-        trend="flat"
-        trendLabel="مستقر"
-        iconSvg={iconWarning}
-        footer="عينة 12,483 طلب"
-      />
-      <KernelMetricCard
-        label="كشف PII"
-        value="12.4"
-        unit="%"
-        trend="down"
-        trendLabel="4%"
-        iconSvg={iconPii}
-        footer="1,554 طلب يحتوي PII"
-      />
+    <section class="kernel-metric-section" aria-label="المؤشرات الرئيسية">
+      {/* KRN-P1 (2026-08-04): honesty badge — كل KPI أدناه بيانات تجريبية */}
+      <div class="kernel-metric-section__bar">
+        <KernelDemoPill />
+      </div>
+      <div class="kernel-metric-grid kernel-stagger">
+        <KernelMetricCard
+          label="إجمالي الطلبات"
+          value="12,483"
+          unit="طلب"
+          variant="brand"
+          trend="up"
+          trendLabel="8%"
+          iconSvg={iconActivity}
+          footer="آخر 24 ساعة"
+          demo
+        />
+        <KernelMetricCard
+          label="بانتظار الموافقة"
+          value="7"
+          unit="طلب"
+          trend="up"
+          trendLabel="3"
+          iconSvg={iconClock}
+          footer="3 حرجة · 4 عالية"
+          demo
+        />
+        <KernelMetricCard
+          label="متوسط المخاطر"
+          value="23"
+          unit="%"
+          variant="gold"
+          trend="flat"
+          trendLabel="مستقر"
+          iconSvg={iconWarning}
+          footer="عينة 12,483 طلب"
+          demo
+        />
+        <KernelMetricCard
+          label="كشف PII"
+          value="12.4"
+          unit="%"
+          trend="down"
+          trendLabel="4%"
+          iconSvg={iconPii}
+          footer="1,554 طلب يحتوي PII"
+          demo
+        />
+      </div>
     </section>
 
     <!-- Dashboard grid -->
@@ -495,7 +505,11 @@ const complianceRows = [
     <!-- Live KPIs -->
     <section class="kernel-live-kpis" aria-labelledby="kernel-live-kpis-title">
       <h2 id="kernel-live-kpis-title" class="k-section-title">مؤشرات حية</h2>
-      <p class="k-section-intro">أرقام تتزايد أمامك. كل سجل محجوب وكل ريال متفادى يظهر هنا لحظياً.</p>
+      {/* KRN-P1 (2026-08-04): remove "أرقام تتزايد أمامك" (deception), استبداله بنص صدق + CTA */}
+      <div class="kernel-live-kpis__head">
+        <p class="k-section-intro">أمثلة على المؤشرات الحية في بيئة الإنتاج</p>
+        <a class="kernel-live-kpis__cta" href="/kernel/scenarios/">شغّل سيناريو لرؤية أرقام حقيقية</a>
+      </div>
       <div class="kernel-live-kpis__grid">
         <div class="kernel-live-kpi">
           <span class="kernel-live-kpi__num" id="kpi-pii-masked">0</span>

@@ -49,6 +49,11 @@ interface Props {
    * tabpanels. Defaults to `kernel-tab`.
    */
   tabIdBase?: string;
+  /**
+   * Extra CSS class(es) applied to the tablist container.
+   * PROMPT-2 (2026-08-04): lets consumers scope the tabs (e.g. mobile-only).
+   */
+  class?: string;
 }
 
 const {
@@ -56,10 +61,11 @@ const {
   ariaLabel = 'tabs',
   panelIdBase = 'kernel-tabpanel',
   tabIdBase = 'kernel-tab',
+  class: extraClass = '',
 } = Astro.props;
 ---
 
-<div class="kernel-tabs" role="tablist" aria-label={ariaLabel}>
+<div class:list={['kernel-tabs', extraClass]} role="tablist" aria-label={ariaLabel}>
   {tabs.map((tab) => (
     <button
       id={`${tabIdBase}-${tab.id}`}

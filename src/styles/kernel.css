@@ -2318,7 +2318,64 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   gap: var(--space-2);
 }
 
+/* KRN-P1 (2026-08-04): demo-data honesty badge (amber) inside metric cards */
+.kernel-metric-card__meta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.kernel-metric-card__value-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.kernel-metric-card__demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(192, 138, 90, 0.1);
+  border: 1px solid rgba(192, 138, 90, 0.32);
+  color: var(--accent-warm);
+  font-size: var(--text-xs);
+  font-weight: var(--font-bold);
+  white-space: nowrap;
+  cursor: help;
+}
+
+.kernel-metric-card__demo-dot {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: var(--radius-full);
+  background: currentColor;
+  animation: kernel-demo-pulse 1.5s ease-in-out infinite;
+}
+
+.kernel-metric-card__demo-warn {
+  display: inline-flex;
+  inline-size: 16px;
+  block-size: 16px;
+  color: var(--accent-warm);
+  flex: none;
+}
+
+.kernel-metric-card__demo-warn svg {
+  inline-size: 16px;
+  block-size: 16px;
+}
+
 /* ── 8. Metric grid (4 KPI row) ─────────────────────────────────────── */
+
+.kernel-metric-section__bar {
+  display: flex;
+  justify-content: flex-start;
+  margin-block-end: var(--space-3);
+}
 
 .kernel-metric-grid {
   display: grid;
@@ -2994,6 +3051,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
   .kernel-page-fade-in,
   .kernel-stagger > * { animation: none; }
   .kernel-demo-pill__dot { animation: none; }
+  .kernel-metric-card__demo-dot { animation: none; }
   .kernel-risk-row__fill { transition: none; }
   .kernel-sidebar__collapse,
   .kernel-sidebar__item,
@@ -3782,6 +3840,73 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
     background: var(--bg-base);
     border: 1px solid var(--border);
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* ── 22.c CHAT — Mobile-first tabs (PROMPT-2, 2026-08-04) ────────────────
+   Replaces the drawer-based mobile navigation with 3 tabs on <768px:
+   المحادثات | المحادثة | التفاصيل. Each pane carries data-tab-active;
+   CSS shows only the active tab's pane. On 768-1023px we show 2 panes
+   (threads + chat) and hide context. On ≥1024px the 3-pane layout is
+   unchanged. The tabs bar (.kernel-chat-mobile-tabs) is hidden on ≥768px.
+   Composer stays fixed at the bottom on mobile (always visible).
+*/
+
+/* Tabs bar — visible only on <768px */
+.kernel-chat-mobile-tabs {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .kernel-chat-mobile-tabs {
+    display: block;
+    margin-block-end: var(--space-2);
+  }
+
+  /* Only the active tab's pane is visible on mobile */
+  .kernel-chat-layout__pane[data-tab-active] {
+    display: flex;
+  }
+  .kernel-chat-layout__pane:not([data-tab-active]) {
+    display: none;
+  }
+
+  /* Composer fixed at the bottom — always visible */
+  .kernel-chat-composer {
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    inset-block-end: calc(var(--bottomnav-height) + env(safe-area-inset-bottom, 0px));
+    z-index: 10;
+    background: var(--bg-base);
+    border: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+    padding-block-end: calc(var(--space-3) + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Give the chat thread bottom padding so the fixed composer doesn't
+     cover the last message */
+  .kernel-chat-thread {
+    padding-block-end: calc(var(--space-20) + var(--bottomnav-height) + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Hide the old toolbar (drawer toggles) — tabs replace it on mobile */
+  .kernel-chat-toolbar {
+    display: none;
+  }
+}
+
+/* Tablet (768-1023px): 2 panes (threads + chat) — context hidden */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .kernel-chat-layout {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+  .kernel-chat-layout__pane--right {
+    display: none;
+  }
+  .kernel-chat-mobile-tabs {
+    display: none;
   }
 }
 
@@ -7954,6 +8079,39 @@ button.kernel-ap-ledger__link {
 }
 
 /* ── مؤشرات حية (Live KPIs) ─────────────────────────────────────────────── */
+/* KRN-P1 (2026-08-04): head row — corrected honesty text + scenario CTA */
+.kernel-live-kpis__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-block-end: var(--space-4);
+}
+
+.kernel-live-kpis__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(45, 212, 167, 0.4);
+  background: rgba(45, 212, 167, 0.08);
+  color: var(--brand-400, #22d3ee);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.kernel-live-kpis__cta:hover,
+.kernel-live-kpis__cta:focus-visible {
+  background: rgba(45, 212, 167, 0.14);
+  border-color: rgba(45, 212, 167, 0.6);
+}
+
 .kernel-live-kpis__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
