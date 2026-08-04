@@ -134,6 +134,8 @@
     "glob": "^13.0.6",
     "ioredis": "^5.4.1",
     "isomorphic-dompurify": "^2.16.0",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.2.108",
     "pino": "^9.5.0",
     "postcss": "^8.5.15",
     "zod": "^3.24.1"
