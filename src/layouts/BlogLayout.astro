@@ -28,6 +28,7 @@ import ArabicLayout from './ArabicLayout.astro';
 import RelatedPosts from '../components/RelatedPosts.astro';
 import BlogToc from '../components/BlogToc.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
+import SpeakableSchema from '../components/SpeakableSchema.astro';
 import { SITE } from '../data/site';
 import type { BlogPost } from '../data/blog';
 
@@ -186,9 +187,10 @@ const visualCrumbs = hasHeaderBreadcrumbs
   ogImage={post.ogImage}
   jsonLd={jsonLd}
   currentPath={`/blog/${post.slug}/`}
-  extraSpeakableSelectors={['.article-hero__desc']}
+  extraSpeakableSelectors={['article h1', '.speakable-summary']}
   breadcrumbs={breadcrumbs}
 >
+  <SpeakableSchema canonical={post.canonical} selectors={['article h1', '.speakable-summary']} />
   <div class="reading-progress" hidden aria-hidden="true"></div>
 
   <div class="article-shell">
@@ -199,7 +201,7 @@ const visualCrumbs = hasHeaderBreadcrumbs
         {post.category}
       </a>
       <h1>{post.title}</h1>
-      <p class="article-hero__desc">{post.description}</p>
+      <p class="article-hero__desc speakable-summary">{post.description}</p>
       <div class="article-hero__meta" aria-label="معلومات المقال">
         <span>
           <svg aria-hidden="true" width="16" height="16"><use href="/icons.svg#mdi-account"></use></svg>

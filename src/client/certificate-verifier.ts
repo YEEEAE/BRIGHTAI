@@ -535,3 +535,29 @@ function buildMinimalPdf(lines: string[]): Blob {
 
   return new Blob([pdf], { type: 'application/pdf' });
 }
+
+/* ── Browser global (للـ engine scripts في public/js) ────────────────
+ * الـ TS compile يطلّع ESM exports، بس الـ engine scripts في src/scripts
+ * تستخدم window.CertificateVerifier. هذا الـ assignment يضمن توفر الواجهة
+ * بعد تحميل الموديول عبر <script type="module">. */
+if (typeof window !== 'undefined') {
+  (window as unknown as {
+    CertificateVerifier: {
+      fetchCertificates: typeof fetchCertificates;
+      verifyCertificate: typeof verifyCertificate;
+      downloadCertificatePdf: typeof downloadCertificatePdf;
+      downloadCertificateJson: typeof downloadCertificateJson;
+      verifyEd25519ClientSide: typeof verifyEd25519ClientSide;
+      canonicalJson: typeof canonicalJson;
+      hasWebCryptoEd25519: typeof hasWebCryptoEd25519;
+    };
+  }).CertificateVerifier = {
+    fetchCertificates,
+    verifyCertificate,
+    downloadCertificatePdf,
+    downloadCertificateJson,
+    verifyEd25519ClientSide,
+    canonicalJson,
+    hasWebCryptoEd25519,
+  };
+}

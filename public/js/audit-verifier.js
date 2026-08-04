@@ -450,3 +450,20 @@ export function exportAuditJson(events) {
         events,
     }, null, 2);
 }
+/* ── Browser global (للـ engine scripts في public/js) ────────────────
+ * نفس نمط certificate-verifier: الـ TS compile يطلّع ESM exports، والـ
+ * engine scripts في src/scripts تستخدم window.AuditVerifier. */
+if (typeof window !== 'undefined') {
+    window.AuditVerifier = {
+        verifyHashChain,
+        verifyHashChainSync,
+        recomputeEventHash,
+        recomputeEventHashSync,
+        fetchAuditEvents,
+        exportAuditCsv,
+        exportAuditJson,
+        canonicalJson,
+        sha256Hex,
+        hasWebCryptoSha256,
+    };
+}

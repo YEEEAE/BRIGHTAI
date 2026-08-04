@@ -1,0 +1,22 @@
+---
+/**
+ * SpeakableSchema.astro — Voice Search / AEO Speakable Schema component.
+ *
+ * Provides schema.org SpeakableSpecification selectors for Blog and Docs pages
+ * to support AI Voice interfaces (Google Assistant, Perplexity, Voice Search).
+ */
+interface Props {
+  selectors?: string[];
+  canonical?: string;
+}
+
+const {
+  selectors = ['article h1', '.speakable-summary'],
+} = Astro.props;
+
+// Export selectors list for Astro parent layouts to consume or reference
+export const DEFAULT_SPEAKABLE_SELECTORS = selectors;
+---
+
+<!-- Speakable AEO Schema metadata marker -->
+<meta name="speakable-selectors" content={selectors.join(', ')} />
