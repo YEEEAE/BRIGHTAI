@@ -30,6 +30,7 @@ import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 import KernelDateRangePicker from '../../components/kernel/KernelDateRangePicker.astro';
+import KernelConsentModal from '../../components/kernel/KernelConsentModal.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import { REPLAY_POLICIES, REPLAY_DEPTS, REPLAY_TS_START, REPLAY_TS_END } from '../../data/kernel-replay';
@@ -54,7 +55,6 @@ const TO_DEFAULT = isoDate(REPLAY_TS_END);
 const iconReplay = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/></svg>';
 const iconWarn = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
 const iconDownload = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
-const iconShield = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
 const iconExternal = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
 ---
 
@@ -316,26 +316,8 @@ const iconExternal = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
     </section>
   </div>
 
-  <!-- ═══════════════ بوابة الموافقة (M20 security gate) ═══════════════ -->
-  <div class="rp-consent" data-rp-consent role="dialog" aria-modal="true" aria-labelledby="rp-consent-title" aria-hidden="true" hidden>
-    <div class="rp-consent__box">
-      <div class="rp-consent__head">
-        <h2 id="rp-consent-title" class="rp-consent__title">تأكيد الإرسال لمزوّد خارجي</h2>
-      </div>
-      <div class="rp-consent__body">
-        <p class="rp-consent__text" data-rp-consent-text></p>
-        <div class="rp-consent__note">
-          <span aria-hidden="true"><Fragment set:html={iconShield} /></span>
-          <span>قاعدة أمان إلزامية: ما يُرسَل أي طلب تاريخي لمزوّد خارجي إلا بعد هذه الموافقة الصريحة. بديلك الآمن دائمًا: «شغّل محلياً» — نفس النتيجة بدون أي إرسال.</span>
-        </div>
-      </div>
-      <div class="rp-consent__actions">
-        <button class="rp-consent__btn rp-consent__btn--local" type="button" data-rp-consent-local>شغّل محلياً (لا إرسال)</button>
-        <button class="rp-consent__btn rp-consent__btn--approve" type="button" data-rp-consent-approve>أوافق وأرسل (محاكاة)</button>
-        <button class="rp-consent__btn rp-consent__btn--cancel" type="button" data-rp-consent-cancel>إلغاء</button>
-      </div>
-    </div>
-  </div>
+  <!-- ═══════════════ بوابة الموافقة (M20 security gate) — Prompt 12: نص بسيط ═══════════════ -->
+  <KernelConsentModal />
 
   {/* SEO content + FAQ — server-rendered for crawlers */}
   <KernelSeoSection

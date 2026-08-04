@@ -512,16 +512,17 @@
     });
   }
 
-  // ── consent modal (M20 security gate) ──────────────────────────────────
+  // ── consent modal (M20 security gate) — Prompt 12: plain Arabic text ───
   function openConsent(params) {
     var modal = $('[data-rp-consent]');
     if (!modal) return;
     var text = $('[data-rp-consent-text]');
     if (text) {
-      text.textContent = 'هذا التشغيل خارجي: سيعيد تقييم ' +
-        fmtCount(params.policyIds.length > 0 ? estimatedScope(params) : 0) +
-        ' طلباً تاريخياً عبر مزوّد خارجي، وبعض هذه الطلبات تحتوي PII (أسماء، هويات، بيانات طبية/مالية). ' +
-        'لا يُرسَل شيء قبل موافقتك الصريحة — وأنت تقدر دائماً التشغيل محلياً بدون إرسال.';
+      // Plain Arabic: "عشان نقارن السياسة الجديدة بالقديمة، نحتاج نرسل
+      // <strong>N طلب قديم</strong> للنموذج." — the count is injected here.
+      text.innerHTML = 'عشان نقارن السياسة الجديدة بالقديمة، نحتاج نرسل ' +
+        '<strong>' + fmtCount(params.policyIds.length > 0 ? estimatedScope(params) : 0) +
+        ' طلب قديم</strong> للنموذج.';
     }
     modal.hidden = false;
     modal.setAttribute('aria-hidden', 'false');

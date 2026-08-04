@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-02 06:20 +03:00
+last_updated: 2026-08-04 04:30 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.73
 agent_version: v2.3
@@ -20,7 +20,18 @@ skills_ready: 7
 ---
 
 
-### 2026-08-04 — PROMPT-2: Mobile-First Chat Redesign لـ /kernel/chat/ (3 تبويبات بدل الـ drawers)
+### 2026-08-04 — Created KernelPdfViewer.astro with proper TypeScript types
+
+- **Files**: `src/components/kernel/KernelPdfViewer.astro` (new)
+- **What**: أنشأت مكون PDF viewer قابل لإعادة الاستخدام لصفحات Kernel — يستخدم pdfjs-dist مع lazy loading، zoom controls، prev/next navigation، RTL-aware layout، و TypeScript types صحيحة (بدون `pdfDoc` implicit `any`).
+- **Why**: الملف الأصلي (الذي لم يكن موجودًا) كان فيه خطأ TypeScript: `pdfDoc` implicitly has type `any` — الحل كان باستخدام type annotation صريحة + data attributes لتمرير القيم الأولية من Astro frontmatter للـ client script.
+- **Verification**: `npm run build` → 125 pages, 0 errors ✅, `npm run verify:all` → exit 0 ✅ (pre-existing token violations in eval.astro unrelated)
+- **Report**: none
+- **Commit**: uncommitted (user commits via main — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry), Section 5 (KernelPdfViewer.astro added to component inventory).
+
+---
 
 - **Files**:
   - `src/pages/kernel/chat.astro` (EDITED — أضفت `KernelTabs` import + component بثلاثة تبويبات (المحادثات | المحادثة | التفاصيل) داخل `.kernel-chat-layout`، وأضفت `role="tabpanel"` + `id="kernel-chat-tabpanel-*"` + `aria-labelledby` للـ panes الثلاثة، و`data-tab-active="chat"` للـ center pane (الافتراضي)، وأضفت `initMobileTabs()` — ربط النقرات على الـ tablist + swipe gestures (RTL-aware) + auto-scroll للرسائل عند الرجوع لتبويب المحادثة + state preservation (تبديل display فقط، لا حذف DOM))

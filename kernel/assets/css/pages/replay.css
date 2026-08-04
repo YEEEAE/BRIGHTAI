@@ -917,6 +917,103 @@
 
 .rp-consent__btn--cancel:hover { color: var(--rp-text); }
 
+/* ═══════════════ بوابة الموافقة — Prompt 12: نص بسيط + مؤشرات بصرية ═══════════════ */
+
+/* فقرة الإفصاح البسيطة */
+.rp-consent__simple {
+  font-size: var(--text-base);
+  color: var(--rp-text);
+  line-height: 1.8;
+  margin: 0;
+}
+
+.rp-consent__simple strong {
+  color: var(--rp-accent-400);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* أقسام التفاصيل (وش بنرسل؟ / كيف بنحمي بياناتك؟) */
+.rp-consent__details {
+  padding: var(--space-3) var(--space-4);
+  background: var(--rp-accent-softer);
+  border: 1px solid var(--rp-accent-border);
+  border-radius: var(--radius-md);
+}
+
+.rp-consent__details-title {
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--rp-text);
+  margin: 0 0 var(--space-2);
+  line-height: 1.5;
+}
+
+.rp-consent__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.rp-consent__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--rp-text);
+}
+
+.rp-consent__mark {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* ✅ أخضر للـ safe items */
+.rp-consent__item--ok .rp-consent__mark {
+  background: var(--rp-green-soft);
+  color: var(--rp-green);
+}
+
+/* ❌ أحمر للـ excluded items */
+.rp-consent__item--no .rp-consent__mark {
+  background: var(--rp-red-soft);
+  color: var(--rp-red);
+}
+
+/* ملاحظة الأمان — أيقونة درع */
+.rp-consent__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--rp-text-muted);
+  line-height: 1.6;
+  padding: var(--space-3);
+  background: var(--rp-accent-softer);
+  border: 1px dashed var(--rp-accent-border);
+  border-radius: var(--radius-md);
+}
+
+.rp-consent__note > span:first-child {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 1;
+  margin-block-start: 1px;
+}
+
 /* ═══════════════ الأقسام المتأثرة ═══════════════ */
 
 .rp-depts-card {
