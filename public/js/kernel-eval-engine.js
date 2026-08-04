@@ -1307,8 +1307,12 @@
   }
 
   /* ── ربط الأحداث ────────────────────────────────────────────────── */
-  function init() {
-    // chips
+function init() {
+     // ربط الـ API client إن توفر (eval-api.ts)
+     if (typeof window.EvalApiClient !== 'undefined') {
+       setApiClient(window.EvalApiClient);
+     }
+     // chips
     $$('.ev-chip[data-eval-run-type]', ui.chipsWrap).forEach(function (chip) {
       chip.addEventListener('click', function () {
         setRunType(chip.getAttribute('data-eval-run-type'));
@@ -1353,18 +1357,92 @@
 
     refreshRerunSelect();
     setRunType('single');
+    setupEnvToggle();
+    setupOfflineDetection();
     render(window.KernelEvalEngine.snapshot());
-  }
+   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
+   /* ── Environment toggle ────────────────────────────────────── */
+   function setupEnvToggle() {
+     var toggle = document.querySelector('[data-eval-env]');
+     if (!toggle) return;
+     var buttons = document.querySelectorAll('.ev-env-btn[data-eval-env]');
+     buttons.forEach(function (btn) {
+       btn.addEventListener('click', function () {
+         var env = btn.getAttribute('data-eval-env');
+         buttons.forEach(function (b) {
+           b.classList.remove('ev-env-btn--active');
+           b.setAttribute('aria-pressed', 'false');
+         });
+         btn.classList.add('ev-env-btn--active');
+         btn.setAttribute('aria-pressed', 'true');
+         /* Update the demo/live badge in the header */
+         var badge = document.querySelector('.ev-env-badge--demo');
+         if (badge) {
+           badge.textContent = env === 'live' ? 'بيئة Live · Live' : 'بيانات توضيحية · Demo';
+           badge.className = env === 'live' ? 'ev-env-badge ev-env-badge--live' : 'ev-env-badge ev-env-badge--demo';
+         }
+         /* Dispatch event for other listeners */
+         document.dispatchEvent(new CustomEvent('kernel-env-toggle', { detail: { environment: env } }));
+       });
+     });
+   }
 
-  document.addEventListener('astro:page-load', function () {
-    if (!state._runs) state._runs = loadRuns();
-    refreshRerunSelect();
-    if (ui.resumeLastBtn) ui.resumeLastBtn.hidden = !window.KernelEvalEngine.hasActive();
-  });
+   /* ── Offline mode detection ────────────────────────────────── */
+   function setupOfflineDetection() {
+     var offlineBadge = document.getElementById('ev-offline-badge');
+     var offlineBanner = document.querySelector('[data-eval-offline]');
+
+     function updateOfflineState() {
+       var offline = isOffline();
+       if (offlineBadge) offlineBadge.hidden = !offline;
+       if (offlineBanner) offlineBanner.hidden = !offline;
+       /* Also update the API client cache to force localStorage fallback */
+       if (offline && getApiClient()) {
+         getApiClient()._forceOffline = true;
+       }
+     }
+
+     window.addEventListener('online', updateOfflineState);
+     window.addEventListener('offline', updateOfflineState);
+     updateOfflineState();
+   }
+
+   /* ── Loading state helper ──────────────────────────────────── */
+   function showLoading() {
+     var el = document.querySelector('[data-eval-loading]');
+     if (el) el.hidden = false;
+   }
+   function hideLoading() {
+     var el = document.querySelector('[data-eval-loading]');
+     if (el) el.hidden = true;
+   }
+   function showError(msg) {
+     var el = document.querySelector('[data-eval-error]');
+     var msgEl = document.querySelector('[data-eval-error-msg]');
+     if (el) el.hidden = false;
+     if (msgEl && msg) msgEl.textContent = msg;
+   }
+   function hideError() {
+     var el = document.querySelector('[data-eval-error]');
+     if (el) el.hidden = true;
+   }
+
+   if (document.readyState === 'loading') {
+     document.addEventListener('DOMContentLoaded', init);
+   } else {
+     init();
+   }
+
+document.addEventListener('astro:page-load', function () {
+      // ربط الـ API client إن توفر
+      if (typeof window.EvalApiClient !== 'undefined') {
+        setApiClient(window.EvalApiClient);
+      }
+      setupEnvToggle();
+      setupOfflineDetection();
+      if (!state._runs) state._runs = loadRuns();
+      refreshRerunSelect();
+      if (ui.resumeLastBtn) ui.resumeLastBtn.hidden = !window.KernelEvalEngine.hasActive();
+    });
 })();

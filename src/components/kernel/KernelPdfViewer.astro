@@ -1,0 +1,433 @@
+---
+/**
+ * KernelPdfViewer — PDF.js-based evidence preview with zoom + page navigation.
+ *
+ * Replaces the slow iframe srcdoc preview in /kernel/evidence/ (PROMPT 11).
+ *
+ * Architecture:
+ *   - Lazy-loads pdfjs-dist + pdf-lib only when the preview modal opens
+ *     (dynamic import → Astro code-splits them into a separate chunk).
+ *   - Generates a real PDF blob from the evidence metadata via pdf-lib
+ *     (demo data → real PDF bytes, no network fetch).
+ *   - Renders pages to a <canvas> via pdfjs-dist with zoom + prev/next controls.
+ *   - RTL-aware: prev/next buttons are logical (inline-start/end).
+ *
+ * Performance:
+ *   - pdfjs-dist (~1MB) + pdf-lib (~50KB) are dynamic-imported on demand.
+ *   - Worker served from /js/pdf.worker.min.mjs (CSP: worker-src 'self' blob:).
+ *   - Canvas is sized to the container; DPR capped at 2.
+ *
+ * Accessibility:
+ *   - Controls are <button> with aria-labels.
+ *   - Page counter uses aria-live="polite".
+ *   - Keyboard: ArrowLeft/ArrowRight navigate pages (RTL-aware).
+ *   - prefers-reduced-motion respected (no animation).
+ *
+ * Content Preservation Rule:
+ *   This component renders the SAME metadata as the old iframe preview.
+ *   No published text is changed — only the rendering engine.
+ */
+interface Props {
+  id: string;
+  title: string;
+  query: string;
+  trace: string;
+  hash: string;
+  risk: number;
+  status: string;
+  sector: string;
+  pack: string;
+  retention: string;
+  cert: string;
+  size: string;
+  signed: string;
+}
+const {
+  id,
+  title,
+  query,
+  trace,
+  hash,
+  risk,
+  status,
+  sector,
+  pack,
+  retention,
+  cert,
+  size,
+  signed,
+} = Astro.props;
+---
+
+<div class="kernel-pdf-viewer" data-kernel-pdf-viewer>
+  <div class="kernel-pdf-viewer__toolbar" role="toolbar" aria-label="أدوات معاينة PDF">
+    <button
+      type="button"
+      class="kernel-pdf-viewer__btn"
+      data-kernel-pdf-prev
+      aria-label="الصفحة السابقة"
+      disabled
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="kernel-pdf-viewer__page" data-kernel-pdf-page aria-live="polite">— / —</span>
+    <button
+      type="button"
+      class="kernel-pdf-viewer__btn"
+      data-kernel-pdf-next
+      aria-label="الصفحة التالية"
+      disabled
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <span class="kernel-pdf-viewer__sep" aria-hidden="true"></span>
+    <button
+      type="button"
+      class="kernel-pdf-viewer__btn"
+      data-kernel-pdf-zoom-out
+      aria-label="تصغير"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </button>
+    <span class="kernel-pdf-viewer__zoom" data-kernel-pdf-zoom aria-live="polite">100%</span>
+    <button
+      type="button"
+      class="kernel-pdf-viewer__btn"
+      data-kernel-pdf-zoom-in
+      aria-label="تكبير"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+    </button>
+  </div>
+
+  <div class="kernel-pdf-viewer__stage" data-kernel-pdf-stage>
+    <div class="kernel-pdf-viewer__loading" data-kernel-pdf-loading role="status" aria-live="polite">
+      <span class="kernel-pdf-viewer__spinner" aria-hidden="true"></span>
+      <span>جارٍ تحميل المعاينة…</span>
+    </div>
+    <canvas class="kernel-pdf-viewer__canvas" data-kernel-pdf-canvas aria-label="معاينة ملف الدليل"></canvas>
+    <p class="kernel-pdf-viewer__error" data-kernel-pdf-error hidden role="alert"></p>
+  </div>
+</div>
+
+<style>
+  .kernel-pdf-viewer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    inline-size: 100%;
+  }
+  .kernel-pdf-viewer__toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    padding: var(--space-2);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-subtle, rgba(255,255,255,.08));
+    border-radius: var(--radius-md);
+  }
+  .kernel-pdf-viewer__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 44px;
+    min-block-size: 44px;
+    padding: var(--space-2);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+  }
+  .kernel-pdf-viewer__btn:hover:not(:disabled) {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+  }
+  .kernel-pdf-viewer__btn:focus-visible {
+    outline: 2px solid var(--interactive-primary);
+    outline-offset: 2px;
+  }
+  .kernel-pdf-viewer__btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+  .kernel-pdf-viewer__btn svg {
+    inline-size: 20px;
+    block-size: 20px;
+  }
+  .kernel-pdf-viewer__page,
+  .kernel-pdf-viewer__zoom {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+    min-inline-size: 3.5em;
+    text-align: center;
+  }
+  .kernel-pdf-viewer__sep {
+    inline-size: 1px;
+    block-size: 24px;
+    background: var(--border-subtle, rgba(255,255,255,.08));
+    margin-inline: var(--space-1);
+  }
+  .kernel-pdf-viewer__stage {
+    position: relative;
+    inline-size: 100%;
+    min-block-size: 320px;
+    max-block-size: 70vh;
+    overflow: auto;
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle, rgba(255,255,255,.08));
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--space-4);
+  }
+  .kernel-pdf-viewer__canvas {
+    max-inline-size: 100%;
+    block-size: auto;
+    box-shadow: 0 24px 48px rgba(0,0,0,.45);
+    border-radius: 2px;
+  }
+  .kernel-pdf-viewer__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    padding-block: var(--space-8);
+  }
+  .kernel-pdf-viewer__spinner {
+    inline-size: 28px;
+    block-size: 28px;
+    border: 3px solid var(--bg-elevated);
+    border-top-color: var(--interactive-primary);
+    border-radius: 50%;
+    animation: kernel-pdf-spin .8s linear infinite;
+  }
+  @keyframes kernel-pdf-spin {
+    to { transform: rotate(360deg); }
+  }
+  .kernel-pdf-viewer__error {
+    color: var(--status-danger);
+    font-size: var(--text-sm);
+    padding: var(--space-4);
+    text-align: center;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kernel-pdf-viewer__spinner { animation: none; }
+  }
+  @media (max-width: 640px) {
+    .kernel-pdf-viewer__toolbar { gap: var(--space-1); }
+    .kernel-pdf-viewer__btn { min-inline-size: 40px; min-block-size: 40px; }
+  }
+</style>
+
+<script>
+  // Lazy-loads pdfjs-dist + pdf-lib only when the preview opens.
+  // Renders a real PDF from the evidence metadata (demo data → PDF bytes).
+  (function () {
+    'use strict';
+
+    var viewer = document.querySelector('[data-kernel-pdf-viewer]');
+    if (!viewer) return;
+
+    var canvas = viewer.querySelector('[data-kernel-pdf-canvas]');
+    var loading = viewer.querySelector('[data-kernel-pdf-loading]');
+    var errorEl = viewer.querySelector('[data-kernel-pdf-error]');
+    var pageLabel = viewer.querySelector('[data-kernel-pdf-page]');
+    var zoomLabel = viewer.querySelector('[data-kernel-pdf-zoom]');
+    var prevBtn = viewer.querySelector('[data-kernel-pdf-prev]');
+    var nextBtn = viewer.querySelector('[data-kernel-pdf-next]');
+    var zoomInBtn = viewer.querySelector('[data-kernel-pdf-zoom-in]');
+    var zoomOutBtn = viewer.querySelector('[data-kernel-pdf-zoom-out]');
+
+    var pdfDoc = null;
+    var currentPage = 1;
+    var scale = 1.5;
+    var renderTask = null;
+
+    var META = {
+      id: { id },
+      title: { title },
+      query: { query },
+      trace: { trace },
+      hash: { hash },
+      risk: { risk },
+      status: { status },
+      sector: { sector },
+      pack: { pack },
+      retention: { retention },
+      cert: { cert },
+      size: { size },
+      signed: { signed },
+    };
+
+    function riskLabel(score) {
+      if (score > 85) return 'حرج';
+      if (score >= 60) return 'مرتفع';
+      if (score >= 30) return 'متوسط';
+      return 'منخفض';
+    }
+
+    function statusLabel(s) {
+      var map = {
+        allowed: 'مسموح',
+        blocked: 'محظور',
+        pending_approval: 'بانتظار الموافقة',
+        approved: 'موافق عليه',
+        draft: 'مسودة',
+      };
+      return map[s] || s;
+    }
+
+    // ── Generate a real PDF blob from the metadata (pdf-lib) ──
+    async function buildPdfBlob() {
+      var pdfLib = await import('pdf-lib');
+      var { PDFDocument, StandardFonts, rgb } = pdfLib;
+      var doc = await PDFDocument.create();
+      var font = await doc.embedFont(StandardFonts.Helvetica);
+      var bold = await doc.embedFont(StandardFonts.HelveticaBold);
+
+      var page = doc.addPage([595, 842]); // A4
+      var w = page.getWidth();
+      var margin = 48;
+      var y = 800;
+
+      page.drawText('BrightAI Kernel — Evidence File', {
+        x: margin, y: y, size: 18, font: bold, color: rgb(0.13, 0.83, 0.91),
+      });
+      y -= 24;
+      page.drawLine({
+        start: { x: margin, y: y }, end: { x: w - margin, y: y },
+        thickness: 1, color: rgb(0.6, 0.6, 0.6),
+      });
+      y -= 28;
+
+      function field(label, value) {
+        page.drawText(label, { x: margin, y: y, size: 9, font: bold, color: rgb(0.58, 0.65, 0.75) });
+        y -= 14;
+        page.drawText(String(value), { x: margin, y: y, size: 11, font: font, color: rgb(0.95, 0.96, 1) });
+        y -= 24;
+      }
+
+      field('Evidence ID', META.id);
+      field('Title', META.title);
+      field('Query', META.query);
+      field('Trace ID', META.trace);
+      field('Hash (SHA-256)', META.hash);
+      field('Risk Score', META.risk + ' — ' + riskLabel(META.risk));
+      field('Status', statusLabel(META.status));
+      field('Sector', META.sector);
+      field('Compliance Pack', META.pack);
+      field('Retention', META.retention);
+      field('Certificate', META.cert);
+      field('Size', META.size);
+      field('Signed', META.signed);
+
+      y -= 12;
+      page.drawText('هذا ملف تجريبي — في الإنتاج يُولّد فعلياً من Kernel API.', {
+        x: margin, y: y, size: 9, font: font, color: rgb(0.4, 0.45, 0.55),
+      });
+
+      var bytes = await doc.save();
+      return new Blob([bytes], { type: 'application/pdf' });
+    }
+
+    // ── Render the current page to the canvas ──
+    async function renderPage() {
+      if (!pdfDoc) return;
+      if (renderTask) { renderTask.cancel(); renderTask = null; }
+
+      var page = await pdfDoc.getPage(currentPage);
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var viewport = page.getViewport({ scale: scale * dpr });
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      canvas.style.width = (viewport.width / dpr) + 'px';
+      canvas.style.height = (viewport.height / dpr) + 'px';
+
+      var ctx = canvas.getContext('2d');
+      renderTask = page.render({ canvasContext: ctx, viewport: viewport });
+      await renderTask.promise;
+      renderTask = null;
+    }
+
+    function updateControls() {
+      if (!pdfDoc) return;
+      pageLabel.textContent = currentPage + ' / ' + pdfDoc.numPages;
+      zoomLabel.textContent = Math.round(scale * 100) + '%';
+      prevBtn.disabled = currentPage <= 1;
+      nextBtn.disabled = currentPage >= pdfDoc.numPages;
+    }
+
+    // ── Init: dynamic-import pdfjs-dist, set worker, load the PDF ──
+    async function init() {
+      if (loading) loading.hidden = false;
+      if (errorEl) errorEl.hidden = true;
+
+      try {
+        // Dynamic import — pdfjs-dist only loads when the preview opens.
+        var pdfjs = await import('pdfjs-dist');
+        // Worker from same-origin static copy (CSP: worker-src 'self' blob:).
+        pdfjs.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.mjs';
+
+        // Polyfill for Promise.withResolvers (pdfjs-dist v6 needs it).
+        if (typeof Promise.withResolvers !== 'function') {
+          Promise.withResolvers = function withResolvers() {
+            var resolve, reject;
+            var promise = new Promise(function (res, rej) { resolve = res; reject = rej; });
+            return { promise: promise, resolve: resolve, reject: reject };
+          };
+        }
+
+        var blob = await buildPdfBlob();
+        var url = URL.createObjectURL(blob);
+        pdfDoc = await pdfjs.getDocument({ url: url }).promise;
+        currentPage = 1;
+        scale = 1.5;
+        if (loading) loading.hidden = true;
+        await renderPage();
+        updateControls();
+      } catch (err) {
+        if (loading) loading.hidden = true;
+        if (errorEl) {
+          errorEl.hidden = false;
+          errorEl.textContent = 'تعذّر عرض ملف الدليل. جرّب التنزيل بدلاً من ذلك.';
+        }
+        // eslint-disable-next-line no-console
+        console.error('[kernel-pdf-viewer] render failed:', err);
+      }
+    }
+
+    // ── Controls (RTL-aware: prev/next follow reading direction) ──
+    prevBtn.addEventListener('click', function () {
+      if (currentPage > 1) { currentPage -= 1; renderPage(); updateControls(); }
+    });
+    nextBtn.addEventListener('click', function () {
+      if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage += 1; renderPage(); updateControls(); }
+    });
+    zoomInBtn.addEventListener('click', function () {
+      scale = Math.min(scale + 0.25, 4); renderPage(); updateControls();
+    });
+    zoomOutBtn.addEventListener('click', function () {
+      scale = Math.max(scale - 0.25, 0.5); renderPage(); updateControls();
+    });
+
+    // Keyboard: ArrowLeft/ArrowRight follow RTL (right = previous, left = next).
+    viewer.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { if (currentPage > 1) { currentPage -= 1; renderPage(); updateControls(); } }
+      else if (e.key === 'ArrowLeft') { if (pdfDoc && currentPage < pdfDoc.numPages) { currentPage += 1; renderPage(); updateControls(); } }
+      else if (e.key === '+' || e.key === '=') { scale = Math.min(scale + 0.25, 4); renderPage(); updateControls(); }
+      else if (e.key === '-') { scale = Math.max(scale - 0.25, 0.5); renderPage(); updateControls(); }
+    });
+
+    // Start rendering when the component mounts.
+    init();
+  })();
+</script>

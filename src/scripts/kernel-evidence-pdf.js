@@ -9,7 +9,7 @@
  *   - Controls: prev/next page, zoom in/out, RTL-aware page navigation.
  *   - Mobile-friendly: controls wrap, canvas scales to container width.
  *
- * CSP: worker-src 'self' blob: allows the worker from /js/pdf.worker.mjs
+ * CSP: worker-src 'self' blob: allows the worker from /js/pdf.worker.min.mjs
  * (same origin). script-src 'self' allows the Astro-bundled module.
  *
  * Architecture (per brain.md CSP-FIX rule): this file lives in src/scripts/
@@ -20,11 +20,10 @@
  * Determinism: no Math.random/Date.now in the PDF generation — the PDF
  * content is derived purely from the evidence metadata passed in.
  */
-import * as pdfjsLib from 'pdfjs-dist';
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
-
-// Set the worker source to the same-origin static copy (CSP-safe).
-pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.mjs';
+// NOTE: pdfjs-dist + pdf-lib are NOT statically imported here. They are
+// dynamic-imported inside initPdfViewer() so Astro code-splits them into a
+// separate chunk that only loads when the preview modal opens (lazy load).
+// This keeps the evidence page's initial JS payload small.
 
 // ── Small polyfill for Promise.withResolvers (pdfjs-dist v6 needs it) ──
 if (typeof Promise.withResolvers !== 'function') {
@@ -44,6 +43,8 @@ if (typeof Promise.withResolvers !== 'function') {
  * @returns {Promise<Uint8Array>} PDF bytes.
  */
 async function buildEvidencePdf(data) {
+  // Dynamic import — pdf-lib only loads when the preview opens.
+  const { PDFDocument, StandardFonts, rgb } = await import('pdf-lib');
   const doc = await PDFDocument.create();
   const font = await doc.embedFont(StandardFonts.Helvetica);
   const bold = await doc.embedFont(StandardFonts.HelveticaBold);
@@ -176,6 +177,11 @@ export async function initPdfViewer(data, root) {
   };
 
   try {
+    // Dynamic import — pdfjs-dist only loads when the preview opens.
+    const pdfjsLib = await import('pdfjs-dist');
+    // Set the worker source to the same-origin static copy (CSP-safe).
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/js/pdf.worker.min.mjs';
+
     // Build the PDF bytes from evidence metadata (deterministic).
     const bytes = await buildEvidencePdf(data);
     // Load into pdfjs-dist.

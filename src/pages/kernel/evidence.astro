@@ -1151,6 +1151,9 @@ const SECTOR_LABEL: Record<string, string> = {
       if (!modal) return;
       modal.setAttribute('data-open', 'false');
       modal.setAttribute('aria-hidden', 'true');
+      // PROMPT-11: notify the PDF viewer to clean up its listeners + destroy
+      // the loaded PDF document (avoids memory leaks on repeated opens).
+      modal.dispatchEvent(new CustomEvent('kernel:evidence-pdf-close'));
     }
 
     function downloadFor(id) {
