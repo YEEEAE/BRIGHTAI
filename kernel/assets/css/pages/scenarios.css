@@ -481,6 +481,7 @@
   gap: var(--space-2);
 }
 
+/* purgecss start ignore */
 /* ═══════ Heat Map — Mobile Enhancement (P2-PROMPT-9) ═══════ */
 @media (max-width: 768px) {
   /* Expand cells to meet 44px touch target */
@@ -529,6 +530,7 @@
     line-height: 1.5;
   }
 }
+/* purgecss end ignore */
 
 /* ═══════ تقليل الحركة ═══════ */
 @media (prefers-reduced-motion: reduce) {

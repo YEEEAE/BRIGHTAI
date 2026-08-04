@@ -33,6 +33,7 @@ import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/ker
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import KernelSkeleton from '../../components/kernel/KernelSkeleton.astro';
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import KernelDateRangePicker from '../../components/kernel/KernelDateRangePicker.astro';
 import { buildAuditStats } from '../../data/kernel-audit';
 // KRN-001/002 / EXEC-02: no longer import KERNEL_SYSTEM_PROMPTS — server uses promptId allowlist
 
@@ -260,14 +261,19 @@ const fmtCount = (n: number) => n.toLocaleString('ar-SA');
 
     <!-- Filters bar -->
     <section class="kernel-audit-filters" aria-label="فلاتر سجل التدقيق">
-      <div class="kernel-audit-filters__field">
-        <label for="audit-date-from" class="kernel-audit-filters__label">من تاريخ</label>
-        <input id="audit-date-from" type="date" class="kernel-audit-filters__input" data-kernel-audit-filter="dateFrom" />
-      </div>
-      <div class="kernel-audit-filters__field">
-        <label for="audit-date-to" class="kernel-audit-filters__label">إلى تاريخ</label>
-        <input id="audit-date-to" type="date" class="kernel-audit-filters__input" data-kernel-audit-filter="dateTo" />
-      </div>
+      {/* PROMPT-10 (2026-08-04): Preset-driven date range picker with keyboard
+          shortcuts (t/w/m/q/c). Replaces the two manual date inputs while
+          preserving data-kernel-audit-filter="dateFrom"/"dateTo" so the
+          audit engine (audit.js) keeps reacting to date changes. */}
+      <KernelDateRangePicker
+        id="audit-daterange"
+        fromId="audit-date-from"
+        toId="audit-date-to"
+        fromDataAttr="dateFrom"
+        toDataAttr="dateTo"
+        defaultPreset="custom"
+        ariaLabel="مدى تاريخ سجل التدقيق"
+      />
       <div class="kernel-audit-filters__field">
         <label for="audit-risk" class="kernel-audit-filters__label">درجة المخاطر</label>
         <select id="audit-risk" class="kernel-audit-filters__select" data-kernel-audit-filter="risk">

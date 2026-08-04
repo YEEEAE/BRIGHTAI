@@ -44,6 +44,17 @@ skills_ready: 7
 
 ---
 
+### 2026-08-04 — Phase 2 API routes: evaluations/[id], certificates/index, certificates/[id]/verify, audit/index
+
+- **Files**: src/pages/api/kernel/evaluations/[id].ts (new), src/pages/api/kernel/certificates/index.ts (new), src/pages/api/kernel/certificates/[id]/verify.ts (new), src/pages/api/kernel/audit/index.ts (new), src/lib/kernel-certs/cert-service.ts (modified — added listCerts to CertStore interface), src/lib/kernel-certs/prisma-store.ts (modified — added listCerts + listAuditEvents + StoredAuditEvent), kernel/tests/eval-certificate.test.js (modified — added reject + listCerts tests), kernel/tests/eval-certificate.db.integration.test.js (modified — added listCerts + listAuditEvents integration test)
+- **What**: أكملنا الـ 4 routes المتبقية من Phase 2 spec: GET/PATCH/DELETE على evaluations/[id]، GET/POST على certificates/index، POST verify على certificates/[id]/verify، GET list على audit/index. أضفنا listCerts() و listAuditEvents() للمخازن. أضفنا 3 اختبارات وحدوية جديدة (reject + listCerts) واختبار تكاملي للـ list methods.
+- **Why**: الـ spec الأصلي طلب 5 routes — الأولى (evaluations/index) كانت موجودة. الباقي 4 كانوا ناقصين. الـ store methods الجديدة مطلوبة للـ list endpoints.
+- **Verification**: npm run build:client ✅ 0 errors, npx astro build ✅ 125 pages 0 errors, npx vitest run kernel/tests/eval-certificate.test.js ✅ 12/12, grep للـ routes الجديدة في dist/server/ ✅ كل الـ handlers مدمجة, tsc --noEmit ✅ 0 errors من ملفاتنا (4 أخطاء مسبقة في ملفات أخرى).
+- **Report**: report/2026-08-04-kernel-api-routes.md
+- **Commit**: 636ea0e1 (المستخدم التزم — per brain.md rule)
+- **Status**: verified locally
+- **Brain updates**: Updated Section 2 (هذا الـ entry), Section 5 (cert-service interface + prisma-store methods added).
+
 ### 2026-08-03 — Evaluation Certificate side-server: libs + API + Ed25519 + Postgres + اختبارات (12/12)
 
 - **Files**: `src/lib/kernel-certs/*` (admin-auth, canonical, sha256, signing, env, libClient, eval-service, cert-service, in-memory-store, prisma-store, facade), `src/pages/api/kernel/evaluations/*` (index + [id]/cases/complete/resume/rerun), `src/pages/api/kernel/certificates/*` (issue/verify/revoke), `packages/db/prisma/schema.prisma` + migrations `20260803*`, `scripts/generate-eval-cert-key.mjs`, `scripts/seed-eval-cert-key.mjs`, `.env.example`, `kernel/tests/eval-certificate.test.js` + `.db.integration.test.js`

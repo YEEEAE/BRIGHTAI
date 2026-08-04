@@ -2723,3 +2723,37 @@ Stage Summary:
 - bug الـ payload (digest-mismatch على شهادة سليمة) حُلّ بحفظ payload JSON في DB — كشفه اختبار التكامل الحقيقي
 - المخاطر المتبقية: BRIGHTAI_ADMIN_KEY + EVAL_CERT_* غير مضبوطة في `.env` الحقيقي (503 حتى تضبط)؛ LSP editor يعرض stale errors على prisma-store.ts (tsc المستقل يمر بلا أخطاء)
 - الخطوة التالية: ضبط env + تحديث واجهة `src/pages/kernel/eval.astro` + build end-to-end
+
+---
+Task ID: 2026-08-04-001
+Agent: BrightAI Workspace Agent
+Task: بناء 4 API routes ناقصة لمنصة شهادات التقييم (Phase 2 spec)
+Started: 2026-08-04T05:55:00+03:00
+Mode: Senior
+
+Work Log:
+- اكتشاف إن evaluations/index.ts موجود مسبقًا (2026-08-03)
+- اكتشاف إن evaluations/[id].ts ناقص — مجلد [id]/ فيه فرع بس ما فيه route تفاصيل
+- اكتشاف إن certificates/index.ts ناقص — issue.ts موجود بس ما فيه list
+- اكتشاف إن certificates/[id]/verify.ts ناقص — verify.ts موجود بس كـ GET ?id=
+- اكتشاف إن audit/index.ts ناقص — مجلد فاضي
+- أضفت listCerts() لـ CertStore interface + PrismaCertStore
+- أضفت listAuditEvents() + StoredAuditEvent لـ prisma-store.ts
+- أنشئ evaluations/[id].ts — GET details + PATCH update + DELETE reject
+- أنشئ certificates/index.ts — GET list + POST issue
+- أنشئ certificates/[id]/verify.ts — POST verify
+- أنشئ audit/index.ts — GET list audit events
+- أضفت اختبارات وحدوية: reject flow + listCerts (12/12 ✅)
+- أضفت اختبار تكاملي: listCerts + listAuditEvents (مش متاح بدون DB)
+- npm run build:client ✅ 0 errors
+- npx astro build ✅ 125 pages, 0 errors
+- npx vitest run kernel/tests/eval-certificate.test.js ✅ 12/12
+- tsc --noEmit ✅ 0 errors من ملفاتي
+
+Stage Summary:
+- الـ 4 routes الجديدة مكتوبة ومرفوعة في HEAD (commit 636ea0e1)
+- الـ store methods الجديدة مضافة (listCerts, listAuditEvents)
+- الاختبارات الوحدوية 12/12 ✅
+- البناء ناجح ✅
+- المخاطر المتبقية: الاختبارات التكاملية لا تشتغل بسبب صيغة .env المشوهة (مشكلة موجودة مسبقًا)
+- الـ verifyUrl في buildPayload يشير لا يزال للـ GET route القديم (اختياري — تحديث لاحق)

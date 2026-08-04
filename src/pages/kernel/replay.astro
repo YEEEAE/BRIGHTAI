@@ -29,6 +29,7 @@ import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
+import KernelDateRangePicker from '../../components/kernel/KernelDateRangePicker.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import { REPLAY_POLICIES, REPLAY_DEPTS, REPLAY_TS_START, REPLAY_TS_END } from '../../data/kernel-replay';
@@ -94,15 +95,21 @@ const iconExternal = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
       <div class="rp-setup">
         <div class="rp-setup__field">
           <span class="rp-setup__label">الفترة</span>
-          <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-2);">
-            <input class="rp-setup__control" type="date" id="rp-date-from" data-rp-date-from value={FROM_DEFAULT} aria-label="من تاريخ" />
-            <input class="rp-setup__control" type="date" id="rp-date-to" data-rp-date-to value={TO_DEFAULT} aria-label="إلى تاريخ" />
-          </div>
-          <div class="rp-shortcuts" role="group" aria-label="اختصارات الفترة">
-            <button class="rp-shortcut" type="button" data-rp-shortcut data-rp-range="1">آخر شهر</button>
-            <button class="rp-shortcut active" type="button" data-rp-shortcut data-rp-range="3">آخر ربع</button>
-            <button class="rp-shortcut" type="button" data-rp-shortcut data-rp-range="12">آخر سنة</button>
-          </div>
+          {/* PROMPT-10 (2026-08-04): Preset-driven date range picker with keyboard
+              shortcuts (t/w/m/q/c). Replaces the manual date inputs + old month-based
+              shortcuts. Preserves data-rp-date-from/to so the replay engine
+              (kernel-time-machine.js) keeps reading the date range. The old
+              [data-rp-shortcut] handler in the engine finds no buttons and is
+              harmless — the picker handles presets via data-kernel-daterange-days. */}
+          <KernelDateRangePicker
+            id="rp-daterange"
+            fromId="rp-date-from"
+            toId="rp-date-to"
+            defaultPreset="custom"
+            defaultFrom={FROM_DEFAULT}
+            defaultTo={TO_DEFAULT}
+            ariaLabel="مدى تاريخ آلة الزمن"
+          />
         </div>
 
         <div class="rp-setup__field">
