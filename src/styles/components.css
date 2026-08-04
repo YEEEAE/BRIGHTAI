@@ -402,7 +402,7 @@
   text-align: center;
   background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-base) 100%);
   position: relative;
-  isolation: isolate;
+  isolation: isolate; contain: layout style paint;
   overflow: hidden;
 }
 
@@ -988,7 +988,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 /* Base card — uses v3.1 surface scale (DEC-2026-033) */
 .card {
   position: relative;
-  isolation: isolate;
+  isolation: isolate; contain: layout style paint;
   display: flex;
   flex-direction: column;
   background: var(--surface-2);                /* aliased to --bg-surface */
@@ -1064,7 +1064,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 .home-cta-card,
 .inner-cta-final__card {
   position: relative;
-  isolation: isolate;
+  isolation: isolate; contain: layout style paint;
   box-shadow:
     var(--shadow-md),
     var(--highlight-inner);
@@ -1550,7 +1550,7 @@ button.btn--primary {                              /* legacy single-dash alias *
   background: var(--surface-2);
   border: 0;
   padding: 0;
-  isolation: isolate;
+  isolation: isolate; contain: layout style paint;
   transition:
     transform var(--duration-base) var(--ease-emphasized),
     box-shadow var(--duration-base) var(--ease-emphasized);
@@ -2703,7 +2703,7 @@ button.btn--primary {                              /* legacy single-dash alias *
     linear-gradient(180deg, rgba(6, 9, 20, 0.95), rgba(4, 6, 12, 0.99));
   margin-top: auto;
   padding-block: var(--space-12) var(--space-8);
-  isolation: isolate;
+  isolation: isolate; contain: layout style paint;
 }
 
 /* Desktop: 80px top padding (DEC: premium spacing) */
@@ -3230,10 +3230,13 @@ button.btn--primary {                              /* legacy single-dash alias *
    Hero/Trust/Final CTA keep their own custom spacing (more compact for visual density). */
 .home-section--padded {
   padding-block: 4rem; /* 64px mobile default */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
 }
 @media (min-width: 1024px) {
   .home-section--padded {
     padding-block: 8rem; /* 128px desktop */
+    contain-intrinsic-size: auto 800px;
   }
 }
 
@@ -3429,7 +3432,6 @@ button {
 .related { margin-block-start: 16px; }
 
 /* AEO Speakable Specification summary element target */
-.speakable-summary {
-  /* Semantic marker class for schema.org SpeakableSpecification target elements */
-}
+/* Semantic marker class for schema.org SpeakableSpecification target elements.
+   Intentionally left unstyled; it serves as a semantic hook for structured data. */
 

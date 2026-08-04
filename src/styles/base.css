@@ -250,6 +250,24 @@ img {
   border-style: none;
 }
 
+/* BAI-CWV-01 (2026-08-04): CLS prevention safety net.
+   Modern browsers auto-derive aspect-ratio from width/height attributes,
+   but this explicit rule ensures any future <img>/<video> without explicit
+   dimensions still reserves space. Prevents layout shift (CLS) when
+   images/videos load. */
+img, video {
+  aspect-ratio: auto;
+}
+
+/* BAI-CWV-02 (2026-08-04): content-visibility for below-the-fold sections.
+   Skips rendering work for off-screen content → faster TBT/INP.
+   Applied via .cv-auto utility class (see pages.css for section-level rules).
+   contain-intrinsic-size prevents scrollbar jumping. */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}
+
 /* 5. Forms */
 input, button, textarea, select {
   font: inherit;

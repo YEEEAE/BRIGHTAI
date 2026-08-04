@@ -19,6 +19,18 @@ skills_ready: 7
 
 ---
 
+### 2026-08-04 — Core Web Vitals Optimization (content-visibility + contain + aspect-ratio)
+
+- **Files**: `src/styles/base.css`, `src/styles/components.css`
+- **What**: أضفت 3 تحسينات CSS للـ Core Web Vitals: (1) `content-visibility: auto` على `.home-section--padded` لأقسام تحت الطية، (2) `contain: layout style paint` على card components، (3) defensive `aspect-ratio: auto` على `img, video`.
+- **Why**: المشروع كان محسّن مسبقًا (fonts preloaded, font-display: swap, scripts deferred). الـ `content-visibility` أكبر فرصة لتحسين الـ rendering (يخلي المتصفح يتخطى rendering المحتوى خارج الشاشة → TBT/INP أحسن).
+- **Verification**: `pnpm build` → 0 errors ✅, `pnpm performance:budget` → CSS+HTML ✅, JS ❌ (مسبق — pdf.js 125KB + index.js 175KB)
+- **Report**: `report/2026-08-04-cwv-optimization.md`
+- **Status**: verified locally
+- **Brain updates**: State snapshot (CSS sizes updated), Known issues (JS budget failure confirmed pre-existing)
+
+---
+
 ### 2026-08-04 — Added RSS Feeds for Docs and Solutions (AEO Enhancement)
 
 - **Files**: `src/pages/docs/feed.xml.ts` (new), `src/pages/solutions/feed.xml.ts` (new)
