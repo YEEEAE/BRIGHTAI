@@ -59,6 +59,9 @@ const result = await new PurgeCSS().purge({
                // Astro adds these scope IDs; keep them
                'astro-',
                'data-astro-cid-'],
+    // Greedy: keep entire rule if ANY selector in it matches the pattern.
+    // Needed for JS-generated DOM (heat map cells, matrix, etc.)
+    greedy: [/sc-matrix/],
     keepAtRules: true,
     keyframes: true,
   },
