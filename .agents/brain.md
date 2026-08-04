@@ -19,6 +19,16 @@ skills_ready: 7
 
 ---
 
+### 2026-08-04 — Added RSS Feeds for Docs and Solutions (AEO Enhancement)
+
+- **Files**: `src/pages/docs/feed.xml.ts` (new), `src/pages/solutions/feed.xml.ts` (new)
+- **What**: إضافة موجزات RSS جديدة لكل من الوثائق (/docs/feed.xml) والحلول والقطاعات (/solutions/feed.xml) لتعزيز الفهرسة واكتشاف المحتوى التقني والخدمي بواسطة محركات الذكاء الاصطناعي (Perplexity, SGE, ChatGPT Search).
+- **Why**: زيادة التغطية ورفع كفاءة الـ AEO (AI Engine Optimization) بجانب الموجز الرئيسي للمدونة /rss.xml.
+- **Verification**: `pnpm build` → 251 URLs / 275 HTML files, 0 errors ✅, `pnpm seo:all` → exit 0 ✅, `pnpm lint:tokens` → 0 violations ✅
+- **Status**: verified locally
+
+---
+
 
 ### 2026-08-04 — Implemented Kernel Product Tour (Onboarding)
 

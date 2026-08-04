@@ -59,6 +59,15 @@ const JS_FILE_REGEX = /\.(?:m?js)$/i;
 
 function matchesIgnorePattern(relPath, ignorePatterns) {
   return ignorePatterns.some((pattern) => {
+    if (pattern.includes("*")) {
+      const regexStr = "^" + pattern
+        .replace(/^\*\*\//, "(?:.*/)?")
+        .replace(/\*\*/g, ".*")
+        .replace(/(?<!\.)\*/g, "[^/]*") + "$";
+      try {
+        if (new RegExp(regexStr).test(relPath)) return true;
+      } catch {}
+    }
     const matchesAnywhere = pattern.startsWith("**/");
     const normalizedPattern = normalizeRelativePath(pattern.replace(/^\*\*\//, "").replace(/\/\*\*$/, ""));
     if (!normalizedPattern) return false;

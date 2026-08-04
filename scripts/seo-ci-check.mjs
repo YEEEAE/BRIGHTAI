@@ -396,9 +396,8 @@ async function checkBrokenLinks() {
     ignorePatterns: [
       "**/node_modules/**",
       "**/.git/**",
-      "_astro",
-      "js/pdf.worker.min.mjs",
-      "js/pdf.worker.mjs"
+      "**/js/pdf.worker*",
+      "**/_astro/pdf*"
     ]
   });
   result.summary = {
