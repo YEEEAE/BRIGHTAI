@@ -18,7 +18,7 @@
  * - الـ toolbar titles بالعربي والإنجليزي (حسب اللغة المختارة).
  */
 
-import type { Preview } from '@storybook/astro';
+import type { Preview } from '@storybook-astro/framework';
 import '../src/styles/tokens.css';
 import '../src/styles/global.css';
 

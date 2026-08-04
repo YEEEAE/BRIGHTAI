@@ -20,13 +20,15 @@
  * - src/styles/global.css: نفس الشي — الـ canonical facade.
  */
 
-import type { StorybookConfig } from '@storybook/astro-vite';
+import type { StorybookConfig } from '@storybook-astro/framework';
 
 const config: StorybookConfig = {
   // ─── Framework ───────────────────────────────────────────────
-  // @storybook/astro-vite = official Astro Vite integration (Storybook 10).
+  // @storybook-astro/framework = community Astro integration (Storybook 10).
+  // NOTE: @storybook/astro-vite does NOT exist on npm (404). The community
+  // framework @storybook-astro/framework (lukemcd) supports Astro 5/6/7.
   framework: {
-    name: '@storybook/astro-vite',
+    name: '@storybook-astro/framework',
     options: {},
   },
 
