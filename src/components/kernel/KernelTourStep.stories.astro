@@ -1,0 +1,56 @@
+---
+/**
+ * KernelTourStep.stories.astro — Storybook stories for KernelTourStep.
+ *
+ * خطوة واحدة في جولة المنتج (KernelProductTour). تُغذّي driver.js.
+ * العنصر مخفي افتراضياً — يُستخدم كتعريف للخطوات.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelTourStep from './KernelTourStep.astro';
+
+const meta = {
+  title: 'Kernel/TourStep',
+  component: KernelTourStep,
+  tags: ['autodocs'],
+  argTypes: {
+    element: { control: 'text', description: 'CSS selector للعنصر المراد تمييزه' },
+    title: { control: 'text', description: 'عنوان الخطوة (عربي)' },
+    description: { control: 'text', description: 'وصف الخطوة (عربي)' },
+    position: {
+      control: 'select',
+      options: ['top', 'bottom', 'left', 'right'],
+      description: 'موضع التلميح',
+    },
+    className: { control: 'text', description: 'كلاسات CSS إضافية' },
+  },
+  args: {
+    element: '.kernel-sidebar',
+    title: 'الشريط الجانبي',
+    description: 'هنا تجد كل وحدات Kernel مرتّبة حسب الدور.',
+    position: 'right',
+  },
+} satisfies Meta<typeof KernelTourStep>;
+
+export default meta;
+type Story = StoryObj<typeof KernelTourStep>;
+
+export const Default: Story = {};
+
+export const Bottom: Story = {
+  args: {
+    element: '.kernel-metric-grid',
+    title: 'المؤشرات الحية',
+    description: 'تابع حالة الحوكمة لحظياً.',
+    position: 'bottom',
+  },
+};
+
+export const Top: Story = {
+  args: {
+    element: '.kernel-hero',
+    title: 'لوحة الحوكمة',
+    description: 'نظرة تشغيلية سريعة على الطلبات والمخاطر.',
+    position: 'top',
+  },
+};
+---

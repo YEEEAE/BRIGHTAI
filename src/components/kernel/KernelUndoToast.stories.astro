@@ -1,0 +1,33 @@
+---
+/**
+ * KernelUndoToast.stories.astro — Storybook stories for KernelUndoToast.
+ *
+ * توست نجاح مشترك مع زر «تراجع» لمدة 10 ثوانٍ (كل صفحات /kernel/*).
+ * Static markup only — behavior wired by public/js/kernel-feedback.js.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelUndoToast from './KernelUndoToast.astro';
+
+const meta = {
+  title: 'Kernel/UndoToast',
+  component: KernelUndoToast,
+  tags: ['autodocs'],
+  argTypes: {
+    message: { control: 'text', description: 'رسالة النجاح' },
+  },
+  args: {
+    message: 'تمت الموافقة على الطلب',
+  },
+} satisfies Meta<typeof KernelUndoToast>;
+
+export default meta;
+type Story = StoryObj<typeof KernelUndoToast>;
+
+export const Default: Story = {};
+
+export const CustomMessage: Story = {
+  args: {
+    message: 'تم حذف السياسة بنجاح',
+  },
+};
+---

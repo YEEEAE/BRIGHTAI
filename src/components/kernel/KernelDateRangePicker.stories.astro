@@ -1,0 +1,61 @@
+---
+/**
+ * KernelDateRangePicker.stories.astro — Storybook stories for KernelDateRangePicker.
+ *
+ * Preset-driven date range picker (اليوم / 7 أيام / 30 يوم / ربع / مخصص)
+ * مع اختصارات كيبورد (t/w/m/q/c). يحافظ على custom range.
+ */
+import type { Meta, StoryObj } from '@storybook/astro-vite';
+import KernelDateRangePicker from './KernelDateRangePicker.astro';
+
+const meta = {
+  title: 'Kernel/DateRangePicker',
+  component: KernelDateRangePicker,
+  tags: ['autodocs'],
+  argTypes: {
+    id: { control: 'text', description: 'معرّف فريد (يُستخدم لـ scope الاختصارات)' },
+    fromId: { control: 'text', description: 'id لحقل "من تاريخ"' },
+    toId: { control: 'text', description: 'id لحقل "إلى تاريخ"' },
+    fromDataAttr: { control: 'text', description: 'data attribute يقرأه محرك الصفحة (audit)' },
+    toDataAttr: { control: 'text', description: 'data attribute يقرأه محرك الصفحة (audit)' },
+    shortcutDataAttr: { control: 'text', description: 'data attribute للـ preset النشط (replay)' },
+    defaultPreset: {
+      control: 'select',
+      options: ['today', 'week', 'month', 'quarter', 'custom'],
+      description: 'الـ preset النشط عند التحميل',
+    },
+    defaultFrom: { control: 'text', description: 'قيمة "من تاريخ" الأولية (ISO yyyy-mm-dd)' },
+    defaultTo: { control: 'text', description: 'قيمة "إلى تاريخ" الأولية (ISO yyyy-mm-dd)' },
+    ariaLabel: { control: 'text', description: 'تسمية المجموعة' },
+  },
+  args: {
+    id: 'audit-daterange',
+    defaultPreset: 'week',
+    ariaLabel: 'مدى التاريخ',
+  },
+} satisfies Meta<typeof KernelDateRangePicker>;
+
+export default meta;
+type Story = StoryObj<typeof KernelDateRangePicker>;
+
+export const Default: Story = {};
+
+export const CustomRange: Story = {
+  args: {
+    id: 'audit-daterange-custom',
+    defaultPreset: 'custom',
+    defaultFrom: '2026-07-01',
+    defaultTo: '2026-07-31',
+  },
+};
+
+export const ReplayMode: Story = {
+  args: {
+    id: 'rp-daterange',
+    fromId: 'rp-date-from',
+    toId: 'rp-date-to',
+    shortcutDataAttr: 'data-rp-range',
+    defaultPreset: 'quarter',
+  },
+};
+---

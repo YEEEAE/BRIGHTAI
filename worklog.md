@@ -51,6 +51,38 @@ Stage Summary:
 - ملاحظة: تحذيرات CSP meta (frame-ancestors/report-uri/X-Frame-Options) حميدة — CSP الحقيقي من الترويسات
 - المقترح: يمكن نشر verify-audit في CI مع verify:all مستقبلًا
 ---
+Task ID: 2026-08-04-KERNEL-PRODUCT-TOUR
+Agent: BrightAI Workspace Agent v2.3
+Task: إضافة جولة منتج (Product Tour) موجهة للمستخدمين الجدد على صفحة /kernel/ باستخدام driver.js
+Started: 2026-08-04T10:00:00+03:00
+Mode: Senior
+
+Work Log:
+- قرأت brain.md — وجدت entry موجود للـ product tour (Status: verified locally)
+- اقترحت `driver.js` (CSP-safe، lazy-loaded ES module) بدل حل مخصص — مطلوب من agent.md Section 2.1 (no GSAP/Three.js/Spline)
+- أنشأت `src/components/kernel/KernelTourStep.astro` — تعريف خطوة جولة واحدة (element/title/description/position)
+- أنشأت `src/components/kernel/KernelProductTour.astro` — المكوّن الرئيسي:
+  - lazy-import لـ driver.js عبر dynamic import
+  - 7 خطوات (sidebar→governance→KPI→5-stage→dashboards→modules→start-btn)
+  - localStorage key: `kernel-product-tour-v1` (ظهور مرة واحدة فقط)
+  - CSS: prefers-reduced-motion، RTL-aware، mobile-responsive
+  - CSP-safe: lazy dynamic import لا يستخدم is:inline
+- عدّلت `src/pages/kernel/index.astro` — إضافة import + `<KernelProductTour />` بعد الـ onboarding القائم
+- `pnpm build` → 125+ pages، 0 errors ✅
+- `pnpm seo:check` → exit 0 ✅
+- حجم الـ bundle: KernelProductTour = 1.71KB gzipped ✅، driver.js = 7.14KB gzipped ✅
+- driver.js NOT في forbidden list (GSAP/Three.js/Spline) — ملتزم ✅
+- brain.md: entry محدث ✅
+- report.md: `report/2026-08-04-kernel-product-tour.md` مكتوب بالعامية السعودية ✅
+
+Stage Summary:
+- جولة منتج مكتملة ومدمجة في /kernel/
+- 7 خطوات، قابلة للتخطي، RTL-aware، mobile-friendly، persists first-visit state
+- CSP-safe عبر lazy dynamic import (no is:inline)
+- حجم JS إضافي: 1.71KB (well within budget)
+- المخاطر المتبقية: تأكد أن driver.js يعمل على جميع متصفحات الدعم (حُمل كـ ES module)
+- المقترح: جلب التقييم باستخدام Playwright (measure-vitals.mjs) لتأكيد لا يوجد Console errors بعد التشغيل
+---
 Agent: Mavis (BrightAI Workspace Agent v2.3)
 Task: BAI-PERF-03 — تشديد ميزانيات Lighthouse (LCP < 2500ms enforced) — Option A: CI gate فقط، LCP fixes في BAI-PERF-04
 Started: 2026-07-25T18:15:22+03:00

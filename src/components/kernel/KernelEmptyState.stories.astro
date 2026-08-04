@@ -46,3 +46,38 @@ export const LongMessage: Story = {
     message: 'حاول مرة أخرى أو تواصل مع الدعم إذا استمرت المشكلة. السبب المحتمل: انقطاع الاتصال أو انتهاء الجلسة.',
   },
 };
+
+export const DemoHint: Story = {
+  args: {
+    title: 'لا توجد سجلات تدقيق بعد',
+    message: 'شغّل سيناريو لرؤية السجلات',
+    ctaLabel: 'شغّل سيناريو',
+    ctaHref: '/kernel/scenarios/',
+    demoHint: true,
+  },
+};
+
+export const CompactStart: Story = {
+  args: {
+    title: 'لا توجد طلبات معلقة',
+    message: 'راجع السياسات',
+    ctaLabel: 'راجع السياسات',
+    ctaHref: '/kernel/policies/',
+    align: 'start',
+    compact: true,
+  },
+};
+
+export const WithOnboarding: Story = {
+  args: {
+    title: 'ابدأ رحلتك',
+    message: 'اتبع الخطوات الثلاث للبدء',
+    ctaLabel: 'ابدأ الآن',
+    ctaHref: '/kernel/playground/',
+    onboardingSteps: [
+      { id: 'step-1', label: 'اختر سيناريو', targetSelector: '.kernel-scenarios' },
+      { id: 'step-2', label: 'شغّل المحادثة', targetSelector: '.kernel-chat' },
+      { id: 'step-3', label: 'افهم السياسات', targetSelector: '.kernel-policies' },
+    ],
+  },
+};

@@ -2,7 +2,8 @@
 /**
  * KernelMetricCard.stories.astro — Storybook stories for KernelMetricCard.
  *
- * Extended metric card (مع chart/sparkline محتمل).
+ * KPI tile (مع شارة Demo للصدق + اتجاه + وحدة + أيقونة + تذييل).
+ * Variants: brand (gradient) | gold | plain. Trend: up | down | flat | null.
  */
 import type { Meta, StoryObj } from '@storybook/astro-vite';
 import KernelMetricCard from './KernelMetricCard.astro';
@@ -12,16 +13,34 @@ const meta = {
   component: KernelMetricCard,
   tags: ['autodocs'],
   argTypes: {
-    label: { control: 'text' },
-    value: { control: 'text' },
-    change: { control: 'text' },
-    period: { control: 'text' },
+    label: { control: 'text', description: 'تسمية المؤشر' },
+    value: { control: 'text', description: 'قيمة المؤشر' },
+    unit: { control: 'text', description: 'وحدة القيمة (اختياري)' },
+    trend: {
+      control: 'select',
+      options: ['up', 'down', 'flat', null],
+      description: 'اتجاه المؤشر',
+    },
+    trendLabel: { control: 'text', description: 'نص الاتجاه (مثال: +12%)' },
+    variant: {
+      control: 'select',
+      options: ['brand', 'gold', 'plain'],
+      description: 'نمط المؤشر',
+    },
+    iconSvg: { control: 'text', description: 'أيقونة SVG (اختياري)' },
+    footer: { control: 'text', description: 'نص التذييل (اختياري)' },
+    demo: { control: 'boolean', description: 'يعرض شارة "بيانات توضيحية" + tooltip' },
   },
   args: {
-    label: 'معدل الامتثال',
-    value: '94%',
-    change: '+2.4%',
-    period: 'آخر 7 أيام',
+    label: 'إجمالي الطلبات',
+    value: '1,247',
+    unit: '',
+    trend: 'up',
+    trendLabel: '+12%',
+    variant: 'plain',
+    iconSvg: '',
+    footer: '',
+    demo: false,
   },
 } satisfies Meta<typeof KernelMetricCard>;
 
@@ -29,5 +48,45 @@ export default meta;
 type Story = StoryObj<typeof KernelMetricCard>;
 
 export const Default: Story = {};
-export const Negative: Story = { args: { value: '76%', change: '-8%' } };
-export const Stable: Story = { args: { value: '100%', change: '0%' } };
+
+export const Demo: Story = {
+  args: {
+    label: 'سجلات PII محجوبة',
+    value: '0',
+    trend: 'flat',
+    trendLabel: 'ثابت',
+    demo: true,
+  },
+};
+
+export const Brand: Story = {
+  args: {
+    label: 'معدل الامتثال',
+    value: '94%',
+    trend: 'up',
+    trendLabel: '+2.4%',
+    variant: 'brand',
+    footer: 'آخر 7 أيام',
+  },
+};
+
+export const Gold: Story = {
+  args: {
+    label: 'التكلفة الموفّرة',
+    value: '12,483',
+    unit: 'ر.س',
+    trend: 'up',
+    trendLabel: '+8%',
+    variant: 'gold',
+  },
+};
+
+export const Down: Story = {
+  args: {
+    label: 'الطلبات المحظورة',
+    value: '382',
+    trend: 'down',
+    trendLabel: '-5%',
+  },
+};
+---
