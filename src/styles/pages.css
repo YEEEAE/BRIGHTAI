@@ -1118,7 +1118,7 @@
 .form__input:focus-visible,
 .form__textarea:focus-visible,
 .form__select:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -2557,7 +2557,7 @@ svg.icon {
 }
 
 .sector-card:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -3850,7 +3850,7 @@ svg.icon {
   box-shadow: var(--shadow-lg);
 }
 .blog-path:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -3918,7 +3918,7 @@ svg.icon {
     var(--shadow-glow-brand);
 }
 .blog-featured a:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4016,7 +4016,7 @@ svg.icon {
 }
 
 .blog-filters__btn:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4058,7 +4058,7 @@ svg.icon {
   box-shadow: var(--shadow-lg), var(--shadow-glow-brand);
 }
 .listing-card:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4235,7 +4235,7 @@ svg.icon {
 }
 
 .blog-pagination__btn:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4329,7 +4329,7 @@ svg.icon {
   transform: translateX(0.25em);
 }
 .article-links__grid a:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4433,7 +4433,7 @@ svg.icon {
 }
 
 .docs-search__input:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
   border-color: var(--interactive-primary);
   box-shadow: 0 0 0 4px rgba(42, 138, 126, 0.15);
@@ -4534,7 +4534,7 @@ svg.icon {
   box-shadow: var(--shadow-lg), var(--shadow-glow-brand);
 }
 .docs-index__card:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4681,7 +4681,7 @@ svg.icon {
   background: var(--brand-soft);
 }
 .docs-quick-links__list a:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4731,7 +4731,7 @@ svg.icon {
   background: var(--brand-soft);
 }
 .docs-recent__item:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5016,7 +5016,7 @@ svg.icon {
   box-shadow: var(--shadow-lg), var(--shadow-glow-brand);
 }
 .docs-related__card:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5089,7 +5089,7 @@ svg.icon {
   color: var(--brand-300);
 }
 .docs-meta__edit:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5185,7 +5185,7 @@ svg.icon {
   transform: translateY(-1px);
 }
 .docs-helpful__btn:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5240,7 +5240,7 @@ svg.icon {
   transform: translateY(-1px);
 }
 .docs-prev-next__cell:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5369,7 +5369,7 @@ svg.icon {
   box-shadow: var(--shadow-xl), var(--shadow-glow-brand);
 }
 .hub-card--clean:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5480,7 +5480,7 @@ svg.icon {
   transform: translateY(-2px);
 }
 .hub-related-card:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 

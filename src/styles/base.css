@@ -183,9 +183,9 @@ a.btn--secondary {
 }
 
 a:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
 }
 
 /* WCAG 1.4.1 Use of Color (REPORTS-18): inline links inside body text
@@ -301,8 +301,9 @@ input:focus, textarea:focus, select:focus {
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 input::placeholder, textarea::placeholder {
@@ -372,11 +373,15 @@ pre code {
   color: var(--text-primary);
 }
 
-/* 9. Focus Visible (WCAG 2.4.7) */
+/* 9. Focus Visible (WCAG 2.4.7)
+   Enhanced RTL-friendly focus indicator — 3px high-contrast outline using
+   --interactive-primary (passes AA on all surfaces, AAA on bg-base).
+   Note: --color-primary is NOT a defined token; --interactive-primary is
+   the canonical brand surface color (see DEC-SovB-001/A11Y-001). */
 :focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
 }
 
 :focus:not(:focus-visible) {

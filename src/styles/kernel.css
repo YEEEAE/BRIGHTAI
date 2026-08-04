@@ -3424,7 +3424,7 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 
 .kernel-chat-composer__textarea:focus { outline: none; }
 .kernel-chat-composer__textarea:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 .kernel-chat-composer__textarea::placeholder { color: var(--text-secondary); opacity: 0.7; }
@@ -4003,7 +4003,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
 }
 .kernel-audit-filters__input:focus-visible,
 .kernel-audit-filters__select:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -4295,7 +4295,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   box-shadow: 0 0 0 3px var(--brand-soft);
 }
 .kernel-audit-toolbar__search-input:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5132,7 +5132,7 @@ html[dir="ltr"] .kernel-chat-drawer__panel {
   text-decoration: underline;
 }
 .kernel-ap-ledger__link:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 button.kernel-ap-ledger__link {
@@ -5290,7 +5290,7 @@ button.kernel-ap-ledger__link {
   box-shadow: 0 0 0 3px var(--brand-soft);
 }
 .kernel-modal__textarea:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5426,7 +5426,7 @@ button.kernel-ap-ledger__link {
   color: var(--text-secondary);
 }
 .kernel-evidence-linknote:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -5581,7 +5581,7 @@ button.kernel-ap-ledger__link {
 }
 .kernel-evidence-toolbar__input:focus-visible,
 .kernel-evidence-toolbar__select:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 

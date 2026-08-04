@@ -166,13 +166,13 @@
    نضمنه هنا لأي صفحة تستورد global.css فقط. */
 html[dir="rtl"] body { overflow-x: hidden; }
 
-/* Focus-visible baseline — outline 2px لكل interactive elements.
+/* Focus-visible baseline — outline 3px لكل interactive elements.
    لو مكوّن جديد لا يحدد focus، يظهر افتراضياً بشكل مرئي. WCAG 2.4.7.
    الألوان تستخدم --interactive-primary (Teal) — نفس نظام التوكنز. */
 :focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
 }
 
 /* Explicit coverage for every interactive element type — تضمن outline واضح
@@ -191,7 +191,7 @@ textarea:focus-visible,
 [role="radio"]:focus-visible,
 [role="checkbox"]:focus-visible,
 details summary:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 

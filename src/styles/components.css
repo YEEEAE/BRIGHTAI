@@ -511,7 +511,7 @@
 /* Focus ring — 2px brand color, 2px offset (REPORT-08 unified across all variants).
    Works for any .btn variant. Brand color = Deep Teal per DEC-SovB-001. */
 .btn:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -1040,7 +1040,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 .card--feature:focus-visible,
 .feature-card:focus-visible,
 .inner-card:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
   border-color: var(--border-brand);           /* Teal accent ring */
 }
@@ -1622,7 +1622,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 .card--interactive:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -1988,7 +1988,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 .inner-form__input:focus-visible,
 .inner-form__textarea:focus-visible,
 .inner-form__select:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -2869,7 +2869,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 .footer__lang:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
@@ -2924,7 +2924,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 .footer__link:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
   border-radius: var(--radius-sm);
   color: var(--interactive-primary);
@@ -3023,7 +3023,7 @@ button.btn--primary {                              /* legacy single-dash alias *
 }
 
 .footer__social-link:focus-visible {
-  outline: 2px solid var(--interactive-primary);
+  outline: 3px solid var(--interactive-primary);
   outline-offset: 2px;
 }
 
