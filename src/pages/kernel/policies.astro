@@ -28,6 +28,7 @@ import KernelStatusStrip from '../../components/kernel/KernelStatusStrip.astro';
 import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import KernelConditionBuilder from '../../components/kernel/KernelConditionBuilder.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import { buildPolicyEditorConfig, buildPolicyEditorStats } from '../../data/kernel-policy-editor';
@@ -251,56 +252,63 @@ const stats = buildPolicyEditorStats();
         </div>
 
         <h3 class="po-editor__section-title">قاعدة السياسة (IF…THEN)</h3>
-        <div class="po-rule">
-          <span class="po-rule__kw po-rule__kw--if">IF</span>
-          <label class="po-field po-field--inline">
-            <span class="po-field__label">نوع البيانات</span>
-            <select class="po-field__input" data-po-field-pii>
-              {editorConfig.piiTypes.map((t) => (
-                <option value={t.id}>{t.icon} {t.label}</option>
-              ))}
-            </select>
-          </label>
-          <label class="po-field po-field--inline">
-            <span class="po-field__label">المطابقة</span>
-            <select class="po-field__input" data-po-field-operator>
-              {editorConfig.operators.map((o) => (
-                <option value={o.id}>{o.label}</option>
-              ))}
-            </select>
-          </label>
-          <label class="po-field po-field--inline po-field--grow">
-            <span class="po-field__label">نمط Regex (اختياري)</span>
-            <input type="text" class="po-field__input" placeholder='مثلاً: ^1[0-9]{9}$' data-po-field-pattern />
-          </label>
-        </div>
 
-        <div class="po-rule">
-          <span class="po-rule__kw po-rule__kw--and">AND</span>
-          <label class="po-field po-field--inline">
-            <span class="po-field__label">حزمة الامتثال</span>
-            <select class="po-field__input" data-po-field-pack>
-              {editorConfig.packs.map((c) => (
-                <option value={c.id}>{c.label}</option>
-              ))}
-            </select>
-          </label>
-        </div>
+        {/* باني الشروط البصري الجديد (Visual Condition Builder) */}
+        <KernelConditionBuilder />
 
-        <div class="po-rule">
-          <span class="po-rule__kw po-rule__kw--then">THEN</span>
-          <label class="po-field po-field--inline">
-            <span class="po-field__label">الإجراء</span>
-            <select class="po-field__input" data-po-field-action>
-              {editorConfig.actions.map((a) => (
-                <option value={a.id}>{a.label} — {a.desc}</option>
-              ))}
-            </select>
-          </label>
-          <label class="po-field po-field--inline">
-            <span class="po-field__label">مُعدِّل الخطورة</span>
-            <input type="number" class="po-field__input" data-po-field-risk min="0" max="50" />
-          </label>
+        {/* المحرر النصي التقليدي — يتم إظهاره/إخفاؤه حسب النمط المختار */}
+        <div class="po-classic-rules-wrap" data-po-classic-rules-wrap hidden>
+          <div class="po-rule">
+            <span class="po-rule__kw po-rule__kw--if">IF</span>
+            <label class="po-field po-field--inline">
+              <span class="po-field__label">نوع البيانات</span>
+              <select class="po-field__input" data-po-field-pii>
+                {editorConfig.piiTypes.map((t) => (
+                  <option value={t.id}>{t.icon} {t.label}</option>
+                ))}
+              </select>
+            </label>
+            <label class="po-field po-field--inline">
+              <span class="po-field__label">المطابقة</span>
+              <select class="po-field__input" data-po-field-operator>
+                {editorConfig.operators.map((o) => (
+                  <option value={o.id}>{o.label}</option>
+                ))}
+              </select>
+            </label>
+            <label class="po-field po-field--inline po-field--grow">
+              <span class="po-field__label">نمط Regex (اختياري)</span>
+              <input type="text" class="po-field__input" placeholder='مثلاً: ^1[0-9]{9}$' data-po-field-pattern />
+            </label>
+          </div>
+
+          <div class="po-rule">
+            <span class="po-rule__kw po-rule__kw--and">AND</span>
+            <label class="po-field po-field--inline">
+              <span class="po-field__label">حزمة الامتثال</span>
+              <select class="po-field__input" data-po-field-pack>
+                {editorConfig.packs.map((c) => (
+                  <option value={c.id}>{c.label}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div class="po-rule">
+            <span class="po-rule__kw po-rule__kw--then">THEN</span>
+            <label class="po-field po-field--inline">
+              <span class="po-field__label">الإجراء</span>
+              <select class="po-field__input" data-po-field-action>
+                {editorConfig.actions.map((a) => (
+                  <option value={a.id}>{a.label} — {a.desc}</option>
+                ))}
+              </select>
+            </label>
+            <label class="po-field po-field--inline">
+              <span class="po-field__label">مُعدِّل الخطورة</span>
+              <input type="number" class="po-field__input" data-po-field-risk min="0" max="50" />
+            </label>
+          </div>
         </div>
 
         <div class="po-field">

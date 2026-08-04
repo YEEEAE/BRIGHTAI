@@ -289,6 +289,14 @@ export class PrismaCertStore implements CertStore {
     return rows.map((r) => this.fromDbCert(r as unknown as Record<string, unknown>));
   }
 
+  async listCerts(limit = 50): Promise<StoredCertificate[]> {
+    const rows = await dbServiceRole.evaluationCertificate.findMany({
+      orderBy: { signedAt: 'desc' },
+      take: limit,
+    });
+    return rows.map((r) => this.fromDbCert(r as unknown as Record<string, unknown>));
+  }
+
   async revokeCert(
     certificateId: string,
     opts: { revokedBy: string; reason: string },
@@ -376,4 +384,47 @@ export async function appendAuditEvent(input: AuditEventInput): Promise<string> 
     },
   });
   return hash;
+}
+
+/** سجل حدث audit جاهز للعرض (نسخة عامة من الصف). */
+export interface StoredAuditEvent {
+  id: string;
+  evaluationId: string;
+  certificateId: string | null;
+  action: string;
+  actor: string;
+  metadata: Record<string, unknown>;
+  prevHash: string | null;
+  hash: string;
+  createdAt: string;
+}
+
+/**
+ * قائمة أحداث audit — الأحدث أولًا. فلترة اختيارية بالـ evaluationId
+ * أو الـ action. الحجم محدود (الافتراضي 50) لتفادي حمولة مفرطة.
+ */
+export async function listAuditEvents(opts: {
+  evaluationId?: string;
+  action?: string;
+  limit?: number;
+} = {}): Promise<StoredAuditEvent[]> {
+  const rows = await dbServiceRole.evaluationAuditEvent.findMany({
+    where: {
+      ...(opts.evaluationId ? { evaluationId: opts.evaluationId } : {}),
+      ...(opts.action ? { action: opts.action } : {}),
+    },
+    orderBy: { createdAt: 'desc' },
+    take: opts.limit ?? 50,
+  });
+  return rows.map((r) => ({
+    id: r.id,
+    evaluationId: r.evaluationId,
+    certificateId: r.certificateId,
+    action: r.action,
+    actor: r.actor,
+    metadata: (r.metadata as Record<string, unknown>) ?? {},
+    prevHash: r.prevHash,
+    hash: r.hash,
+    createdAt: r.createdAt.toISOString(),
+  }));
 }

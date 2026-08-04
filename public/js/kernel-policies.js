@@ -910,6 +910,333 @@
     policyId: null,
     fields: {},
   };
+
+  /* ── Visual Condition Builder Logic (Flowchart + Plain Arabic + Drag-and-Drop) ── */
+  var builderState = {
+    mode: 'visual',
+    conditions: [],
+    draggedIndex: null,
+    eventsInitialized: false,
+  };
+
+  function toArabicString(rule) {
+    if (!rule) {
+      var f = editor.fields;
+      if (!f || !f.pii) return '';
+      rule = {
+        if: { piiType: f.pii.value, operator: f.operator ? f.operator.value : 'contains', pattern: f.pattern ? f.pattern.value : null },
+        and: { compliancePack: f.pack ? f.pack.value : 'pdpl', orPacks: [] },
+        then: { action: f.action ? f.action.value : 'mask', riskModifier: f.risk ? parseInt(f.risk.value, 10) || 0 : 0 },
+      };
+    }
+    var lines = [];
+    var mainPii = piiLabel(rule.if.piiType);
+    var mainPack = packLabel(rule.and.compliancePack);
+    var mainAction = actionLabel(rule.then.action);
+
+    lines.push('إذا كانت الرسالة تحتوي على ' + mainPii);
+
+    if (builderState.conditions && builderState.conditions.length > 1) {
+      for (var i = 1; i < builderState.conditions.length; i += 1) {
+        var cond = builderState.conditions[i];
+        if (cond.isOr) {
+          lines.push('  أو تحتوي على ' + piiLabel(cond.piiType));
+        } else {
+          lines.push('  والحزمة المطبقة هي ' + packLabel(cond.pack));
+        }
+      }
+    } else if (mainPack) {
+      lines.push('  والحزمة المطبقة هي ' + mainPack);
+    }
+
+    if (rule.then.action === 'block') {
+      lines.push('  ثم احظر الطلب فوراً ⊘');
+    } else if (rule.then.action === 'mask') {
+      lines.push('  ثم قُم بتعمية البيانات الحساسة ◐');
+    } else if (rule.then.action === 'redact') {
+      lines.push('  ثم احذف النص الحساس ✂️');
+    } else if (rule.then.action === 'approve' || rule.then.action === 'hitl') {
+      lines.push('  ثم احِل الطلب للموافقة البشرية ⏱');
+    } else if (rule.then.action === 'warn' || rule.then.action === 'log') {
+      lines.push('  ثم سجّل تنبيهاً في السجل ⚠️');
+    } else {
+      lines.push('  ثم نفّذ الإجراء (' + mainAction + ')');
+    }
+
+    return lines.join('\n');
+  }
+
+  function updateArabicPreview() {
+    var previewEl = $('[data-po-builder-arabic-preview]');
+    if (!previewEl) return;
+    previewEl.textContent = toArabicString();
+  }
+
+  function renderBuilderFromRule(rule) {
+    var container = $('[data-po-conditions-container]');
+    if (!container) return;
+
+    if (!builderState.conditions.length) {
+      builderState.conditions = [
+        { id: 'c1', piiType: rule.if.piiType, operator: rule.if.operator, pattern: rule.if.pattern || '', pack: rule.and.compliancePack, isOr: false }
+      ];
+    }
+
+    var actionSel = $('[data-po-builder-action]');
+    if (actionSel) actionSel.value = rule.then.action;
+    var riskIn = $('[data-po-builder-risk]');
+    if (riskIn) riskIn.value = rule.then.riskModifier;
+
+    container.innerHTML = '';
+
+    builderState.conditions.forEach(function (cond, idx) {
+      if (idx > 0) {
+        var conn = document.createElement('div');
+        conn.className = 'po-connector';
+        conn.setAttribute('aria-hidden', 'true');
+        conn.innerHTML = '<div class="po-connector__line"></div><div class="po-connector__arrow">' + (cond.isOr ? 'OR ▼' : 'AND ▼') + '</div>';
+        container.appendChild(conn);
+      }
+
+      var card = document.createElement('div');
+      card.className = 'po-condition-card po-node--condition' + (cond.isOr ? ' po-or-group' : '');
+      card.setAttribute('draggable', 'true');
+      card.setAttribute('data-condition-index', idx);
+
+      var topRow = document.createElement('div');
+      topRow.className = 'po-condition-card__top';
+
+      var badgeRow = document.createElement('div');
+      badgeRow.className = 'po-condition-card__badge-row';
+      badgeRow.innerHTML = '<span class="po-condition-card__drag-handle" title="اسحب لترتيب العقدة">⋮⋮</span>' +
+        '<span class="po-node__badge">' + (idx === 0 ? 'الشرط الأساسي (IF)' : (cond.isOr ? 'شرط بديل (OR)' : 'شرط إضافي (AND)')) + '</span>';
+
+      var controls = document.createElement('div');
+      controls.className = 'po-condition-card__controls';
+
+      if (idx > 0) {
+        var btnUp = document.createElement('button');
+        btnUp.type = 'button';
+        btnUp.className = 'po-btn-icon';
+        btnUp.title = 'تحريك للأعلى';
+        btnUp.textContent = '▲';
+        btnUp.addEventListener('click', function () { moveCondition(idx, idx - 1); });
+        controls.appendChild(btnUp);
+      }
+
+      if (idx < builderState.conditions.length - 1) {
+        var btnDown = document.createElement('button');
+        btnDown.type = 'button';
+        btnDown.className = 'po-btn-icon';
+        btnDown.title = 'تحريك للأسفل';
+        btnDown.textContent = '▼';
+        btnDown.addEventListener('click', function () { moveCondition(idx, idx + 1); });
+        controls.appendChild(btnDown);
+      }
+
+      if (builderState.conditions.length > 1) {
+        var btnDel = document.createElement('button');
+        btnDel.type = 'button';
+        btnDel.className = 'po-btn-icon po-btn-icon--danger';
+        btnDel.title = 'حذف الشرط';
+        btnDel.textContent = '🗑️';
+        btnDel.addEventListener('click', function () { removeCondition(idx); });
+        controls.appendChild(btnDel);
+      }
+
+      topRow.appendChild(badgeRow);
+      topRow.appendChild(controls);
+      card.appendChild(topRow);
+
+      var fieldsGrid = document.createElement('div');
+      fieldsGrid.className = 'po-condition-fields';
+
+      var piiField = document.createElement('div');
+      piiField.className = 'po-node__field';
+      piiField.innerHTML = '<label class="po-node__label">نوع البيانات (PII)</label>';
+      var piiSel = document.createElement('select');
+      piiSel.className = 'po-node__select';
+      PII_TYPES.forEach(function (t) {
+        var opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = t.icon + ' ' + t.label;
+        if (t.id === cond.piiType) opt.selected = true;
+        piiSel.appendChild(opt);
+      });
+      piiSel.addEventListener('change', function (e) {
+        cond.piiType = e.target.value;
+        if (idx === 0 && editor.fields.pii) editor.fields.pii.value = cond.piiType;
+        syncBuilderToClassicFields();
+      });
+      piiField.appendChild(piiSel);
+      fieldsGrid.appendChild(piiField);
+
+      var opField = document.createElement('div');
+      opField.className = 'po-node__field';
+      opField.innerHTML = '<label class="po-node__label">نوع المطابقة</label>';
+      var opSel = document.createElement('select');
+      opSel.className = 'po-node__select';
+      OPERATORS.forEach(function (o) {
+        var opt = document.createElement('option');
+        opt.value = o.id;
+        opt.textContent = o.label;
+        if (o.id === cond.operator) opt.selected = true;
+        opSel.appendChild(opt);
+      });
+      opSel.addEventListener('change', function (e) {
+        cond.operator = e.target.value;
+        if (idx === 0 && editor.fields.operator) editor.fields.operator.value = cond.operator;
+        syncBuilderToClassicFields();
+      });
+      opField.appendChild(opSel);
+      fieldsGrid.appendChild(opField);
+
+      var packField = document.createElement('div');
+      packField.className = 'po-node__field';
+      packField.innerHTML = '<label class="po-node__label">حزمة الامتثال</label>';
+      var packSel = document.createElement('select');
+      packSel.className = 'po-node__select';
+      PACKS.forEach(function (pk) {
+        var opt = document.createElement('option');
+        opt.value = pk.id;
+        opt.textContent = pk.label;
+        if (pk.id === cond.pack) opt.selected = true;
+        packSel.appendChild(opt);
+      });
+      packSel.addEventListener('change', function (e) {
+        cond.pack = e.target.value;
+        if (idx === 0 && editor.fields.pack) editor.fields.pack.value = cond.pack;
+        syncBuilderToClassicFields();
+      });
+      packField.appendChild(packSel);
+      fieldsGrid.appendChild(packField);
+
+      card.appendChild(fieldsGrid);
+
+      card.addEventListener('dragstart', function (e) {
+        builderState.draggedIndex = idx;
+        if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+      });
+      card.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+      });
+      card.addEventListener('drop', function (e) {
+        e.preventDefault();
+        if (builderState.draggedIndex !== null && builderState.draggedIndex !== idx) {
+          moveCondition(builderState.draggedIndex, idx);
+        }
+      });
+
+      container.appendChild(card);
+    });
+
+    updateArabicPreview();
+  }
+
+  function moveCondition(from, to) {
+    if (from < 0 || from >= builderState.conditions.length || to < 0 || to >= builderState.conditions.length) return;
+    var item = builderState.conditions.splice(from, 1)[0];
+    builderState.conditions.splice(to, 0, item);
+    syncBuilderToClassicFields();
+    var last = findPolicy(editor.policyId) ? lastVersion(findPolicy(editor.policyId)) : null;
+    renderBuilderFromRule(last ? last.rule : defaultRule({ piiType: 'saudi_id' }));
+  }
+
+  function removeCondition(idx) {
+    if (builderState.conditions.length <= 1) return;
+    builderState.conditions.splice(idx, 1);
+    syncBuilderToClassicFields();
+    var last = findPolicy(editor.policyId) ? lastVersion(findPolicy(editor.policyId)) : null;
+    renderBuilderFromRule(last ? last.rule : defaultRule({ piiType: 'saudi_id' }));
+  }
+
+  function addConditionNode(isOr) {
+    var newCond = {
+      id: 'c' + (builderState.conditions.length + 1),
+      piiType: 'mobile',
+      operator: 'contains',
+      pattern: '',
+      pack: 'pdpl',
+      isOr: !!isOr
+    };
+    builderState.conditions.push(newCond);
+    syncBuilderToClassicFields();
+    var last = findPolicy(editor.policyId) ? lastVersion(findPolicy(editor.policyId)) : null;
+    renderBuilderFromRule(last ? last.rule : defaultRule({ piiType: 'saudi_id' }));
+  }
+
+  function syncBuilderToClassicFields() {
+    if (!builderState.conditions.length) return;
+    var first = builderState.conditions[0];
+    if (editor.fields.pii) editor.fields.pii.value = first.piiType;
+    if (editor.fields.operator) editor.fields.operator.value = first.operator;
+    if (editor.fields.pack) editor.fields.pack.value = first.pack;
+
+    var actionSel = $('[data-po-builder-action]');
+    if (actionSel && editor.fields.action) editor.fields.action.value = actionSel.value;
+    var riskIn = $('[data-po-builder-risk]');
+    if (riskIn && editor.fields.risk) editor.fields.risk.value = riskIn.value;
+
+    updateEditorPreview();
+    updateArabicPreview();
+  }
+
+  function initBuilderEvents() {
+    if (builderState.eventsInitialized) return;
+    builderState.eventsInitialized = true;
+
+    var actionSel = $('[data-po-builder-action]');
+    if (actionSel) {
+      actionSel.addEventListener('change', function (e) {
+        if (editor.fields.action) editor.fields.action.value = e.target.value;
+        syncBuilderToClassicFields();
+      });
+    }
+    var riskIn = $('[data-po-builder-risk]');
+    if (riskIn) {
+      riskIn.addEventListener('input', function (e) {
+        if (editor.fields.risk) editor.fields.risk.value = e.target.value;
+        syncBuilderToClassicFields();
+      });
+    }
+
+    var addCondBtn = $('[data-po-add-condition-btn]');
+    if (addCondBtn) {
+      addCondBtn.addEventListener('click', function () { addConditionNode(false); });
+    }
+    var addOrBtn = $('[data-po-add-or-group-btn]');
+    if (addOrBtn) {
+      addOrBtn.addEventListener('click', function () { addConditionNode(true); });
+    }
+
+    var modeVisualBtn = $('[data-po-builder-mode="visual"]');
+    var modeClassicBtn = $('[data-po-builder-mode="classic"]');
+    var visualOnlyElements = $$('[data-po-builder-visual-only]');
+    var classicWrap = $('[data-po-classic-rules-wrap]');
+
+    function setMode(mode) {
+      builderState.mode = mode;
+      if (modeVisualBtn) {
+        modeVisualBtn.classList.toggle('po-builder-mode-btn--active', mode === 'visual');
+        modeVisualBtn.setAttribute('aria-checked', mode === 'visual' ? 'true' : 'false');
+      }
+      if (modeClassicBtn) {
+        modeClassicBtn.classList.toggle('po-builder-mode-btn--active', mode === 'classic');
+        modeClassicBtn.setAttribute('aria-checked', mode === 'classic' ? 'true' : 'false');
+      }
+      visualOnlyElements.forEach(function (el) {
+        el.hidden = (mode !== 'visual');
+      });
+      if (classicWrap) {
+        classicWrap.hidden = (mode === 'visual');
+      }
+    }
+
+    if (modeVisualBtn) modeVisualBtn.addEventListener('click', function () { setMode('visual'); });
+    if (modeClassicBtn) modeClassicBtn.addEventListener('click', function () { setMode('classic'); });
+  }
+
   function openEditor(policyId) {
     var p = findPolicy(policyId);
     if (!p) return;
@@ -936,6 +1263,12 @@
     editor.fields.action.value = rule.then.action;
     editor.fields.risk.value = rule.then.riskModifier;
     editor.fields.note.value = '';
+
+    builderState.conditions = [
+      { id: 'c1', piiType: rule.if.piiType, operator: rule.if.operator, pattern: rule.if.pattern || '', pack: rule.and.compliancePack, isOr: false }
+    ];
+    initBuilderEvents();
+    renderBuilderFromRule(rule);
 
     var certified = last && isCertified(p, last.version);
     var certId = certified ? certifiedFor(p, last.version) : null;

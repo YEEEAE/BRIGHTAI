@@ -107,6 +107,14 @@ import { sendServerEvent } from '../../../lib/ga4-server';
 // K3 (2026-07-18): AI Firewall — PII detection + redaction + policy decision
 // that runs BEFORE the request reaches Groq/Gemini. Blocked payloads never
 // leave this function; only redacted text + safe findings reach the provider.
+//
+// K3-DRY (2026-08-04): The regex patterns in @brightai/firewall-detectors are
+// the single source of truth for server-side PII detection. The client-side
+// shared library src/client/pii-detector.ts uses IDENTICAL patterns so the
+// playground (client) and this API (server) produce consistent results.
+// If you update a pattern, update it in both places:
+//   - packages/firewall-detectors/src/regex.ts  (server, full 14-type enum)
+//   - src/client/pii-detector.ts                 (client, 5-type subset)
 import {
   detectAndRedact,
   hasHighRiskPII,

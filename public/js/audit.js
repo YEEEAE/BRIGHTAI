@@ -1,4 +1,3 @@
-"use strict";
 (function () {
     'use strict';
     const ROW_H = 44;
@@ -276,7 +275,7 @@
             initAfterData();
     }
     // ── boot ───────────────────────────────────────────────────────────────
-    function boot() {
+    let boot = function boot_impl() {
         const main = $('[data-kernel-loading]');
         if (!main)
             return;
@@ -312,7 +311,7 @@
         else {
             initAfterData();
         }
-    }
+    };
     function handleFiltered(res) {
         if (!res || res.type !== 'filtered')
             return;
@@ -355,6 +354,7 @@
         main.removeAttribute('data-kernel-loading');
         checkDemoMode();
     }
+    ;
     document.addEventListener('kernel:demo-toggle', function () {
         checkDemoMode();
     });
@@ -869,3 +869,4 @@
     if (document.readyState !== 'loading')
         init();
 })();
+export {};

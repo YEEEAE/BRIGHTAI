@@ -1,3 +1,5 @@
+import { detectPII as _detectPIIShared, type PIIFinding } from './pii-detector';
+
 interface PlaygroundConfig {
   policies: any[];
   piiTypes: any[];
@@ -76,6 +78,32 @@ interface PlaygroundConfig {
   const $$ = <T extends HTMLElement = HTMLElement>(sel: string, root: ParentNode = document): T[] => Array.from(root.querySelectorAll<T>(sel));
 
   // ── ② الكشف عن كيانات PII ─────────────────────────────────────────────────
+  // K3-DRY (2026-08-04): PII detection moved to the shared library
+  // src/client/pii-detector.ts so the playground, the chat API, and
+  // any future client surface use IDENTICAL regex patterns. The old
+  // inline PII_PATTERNS array is removed — patterns now live in one
+  // place and are kept in sync with packages/firewall-detectors/src/regex.ts.
+  //
+  // The playground still needs a few entity types that the shared
+  // library doesn't cover (patient_id, passport, api_secret, medical)
+  // because those are demo-specific and not in the client-side PIIType
+  // enum. We keep them here as a small supplemental set that runs
+  // AFTER the shared library, and we map the shared library's
+  // PIIType (SAUDI_ID, SAUDI_PHONE, SAUDI_IBAN, EMAIL, CREDIT_CARD)
+  // to the playground's lowercase type names so the rest of the
+  // pipeline (policies, risk scoring, UI) keeps working unchanged.
+
+  // Map shared-library PIIType → playground entity type id.
+  // The playground's policy data uses lowercase ids (iban, saudi_id,
+  // phone, email, credit_card) so we translate here.
+  const SHARED_TYPE_MAP: Record<string, string> = {
+    SAUDI_ID: 'saudi_id',
+    SAUDI_PHONE: 'phone',
+    SAUDI_IBAN: 'iban',
+    EMAIL: 'email',
+    CREDIT_CARD: 'credit_card',
+  };
+
   interface PiiPattern {
     type: string;
     re: RegExp;
@@ -83,13 +111,11 @@ interface PlaygroundConfig {
     validate?: (val: string) => boolean;
   }
 
-  const PII_PATTERNS: PiiPattern[] = [
-    { type: 'iban', re: /\bSA\d{22}\b/g, conf: 0.99 },
-    { type: 'saudi_id', re: /\b1\d{9}\b/g, conf: 0.95 },
-    { type: 'phone', re: /\b0?5\d{8}\b/g, conf: 0.92 },
-    { type: 'email', re: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g, conf: 0.96 },
+  // Supplemental demo-only patterns (not in the shared library).
+  // These cover entity types the playground's policy engine expects
+  // but that are out of scope for the shared client-side PIIType enum.
+  const DEMO_PATTERNS: PiiPattern[] = [
     { type: 'patient_id', re: /\b(?:MR|ملف(?:\s*مريض)?(?:\s*رقم)?)[-\s]*(\d{4,})\b/gi, conf: 0.9 },
-    { type: 'credit_card', re: /\b(?:\d[ -]?){13,18}\b/g, conf: 0.85, validate: luhn },
     { type: 'passport', re: /\b[A-Z]{1,2}\d{7,8}\b/g, conf: 0.8 },
     { type: 'api_secret', re: /\b(?:sk-[A-Za-z0-9]{12,}|(?:OPENAI_)?API[_-]?KEY|api[_-]?secret|token)[=:]\s*[\w.-]+/gi, conf: 0.97 },
     { type: 'medical', re: /\b(?:ورم|خبيث|تشخيص|سرطان|مرض\s*مزمن|علاج\s*كيميائي|وصفة|أدوية|مريض)\b/g, conf: 0.75 },
@@ -105,8 +131,18 @@ interface PlaygroundConfig {
   }
 
   function detectEntities(text: string): DetectedEntity[] {
-    const found: DetectedEntity[] = [];
-    for (const p of PII_PATTERNS) {
+    // 1) Run the shared library for the 5 canonical PII types.
+    const sharedFindings: PIIFinding[] = _detectPIIShared(text);
+    const found: DetectedEntity[] = sharedFindings.map((f) => ({
+      type: SHARED_TYPE_MAP[f.type] || f.type,
+      value: f.value,
+      start: f.start,
+      end: f.end,
+      confidence: f.confidence,
+    }));
+
+    // 2) Run the supplemental demo-only patterns.
+    for (const p of DEMO_PATTERNS) {
       p.re.lastIndex = 0;
       let m;
       while ((m = p.re.exec(text)) !== null) {
@@ -328,7 +364,7 @@ interface PlaygroundConfig {
     return frag;
   }
   function piiLabel(id: string) { return (CFG.piiTypes.find((t) => t.id === id) || {}).label || id; }
-  function actionLabel(a: string) { return ({ mask: 'تعمية', block: 'حظر', redact: 'حذف', log: 'تسجيل', hitl: 'مراجعة بشرية' })[a] || a || 'تسجيل'; }
+  function actionLabel(a: string) { return (({ mask: 'تعمية', block: 'حظر', redact: 'حذف', log: 'تسجيل', hitl: 'مراجعة بشرية' }) as Record<string, string>)[a] || a || 'تسجيل'; }
 
   // ═══════════════════ العرض (UI) ═══════════════════
 
@@ -484,9 +520,16 @@ interface PlaygroundConfig {
   }
   function fillStage5(body: HTMLElement, r: any) {
     if (!r.matched.length) { body.innerHTML = '<p>ما اشتعلت أي سياسة. الطلب متوافق.</p>'; return; }
+    const actionLabels: Record<string, string> = {
+      mask: 'تعمية',
+      block: 'حظر',
+      redact: 'حذف',
+      log: 'تسجيل',
+      hitl: 'مراجعة بشرية',
+    };
     body.innerHTML = r.matched.map((p: any) => {
       const pack = (CFG.packs.find((x) => x.id === p.compliancePack) || {}).label || p.compliancePack;
-      const act = ({ mask: 'تعمية', block: 'حظر', redact: 'حذف', log: 'تسجيل', hitl: 'مراجعة بشرية' })[p.action] || p.action;
+      const act = actionLabels[p.action] || p.action;
       return `<div class="pg-pmatch__item"><strong>${p.name}</strong> <span class="pg-pack-chip">${pack}</span><code class="pg-pmatch__cond">${p.condition}</code><div>الإجراء: ${act} · <a class="pg-pmatch__link" href="/kernel/policies/">↗ السياسة</a></div></div>`;
     }).join('');
   }
@@ -523,7 +566,7 @@ interface PlaygroundConfig {
       <div class="pg-score-item" data-status="${s.status}">
         <div class="pg-score-item__head"><strong>${s.name}</strong><span class="pg-score-item__val">${s.score}%</span></div>
         <div class="pg-score-item__bar"><span style="width:${s.score}%"></span></div>
-        <span class="pg-score-item__status">${({ pass: 'ممتاز', warn: 'إنذار', fail: 'فشل' })[s.status] || s.status}</span>
+        <span class="pg-score-item__status">${({ pass: 'ممتاز', warn: 'إنذار', fail: 'فشل' } as Record<string, string>)[s.status] || s.status}</span>
       </div>`).join('');
   }
   function fillStage8(body: HTMLElement, r: any) {
@@ -584,7 +627,7 @@ interface PlaygroundConfig {
   }
 
   function escapeHtml(s: string): string {
-    return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c as any] || c);
+    return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' } as Record<string, string>)[c] || c);
   }
 
   // ── تعبئة عمود النتيجة ────────────────────────────────────────────────────
@@ -862,6 +905,16 @@ interface PlaygroundConfig {
     return { text, conversation, sector, department, role, sensitivity, deployment, model, dataset, pack, activePolicies };
   }
 
+  // ── قراءة إعدادات المحاكاة ─────────────────────────────────────────────────
+  function readSettings() {
+    const pgRoot = $<HTMLElement>('[data-pg-root]');
+    return {
+      seed: (($('#pg-seed') as HTMLInputElement) || {} as any).value || (pgRoot ? pgRoot.dataset.seed : '') || 'brightai-demo',
+      temperature: parseFloat((($('#pg-temp') as HTMLInputElement) || {} as any).value || '0.2'),
+      topP: parseFloat((($('#pg-topp') as HTMLInputElement) || {} as any).value || '0.9'),
+    };
+  }
+
   // ── تقدير التكلفة والزمن (مباشر أثناء الكتابة) ─────────────────────────────
   function updateEstimate() {
     const est = $('#pg-est');
@@ -882,8 +935,9 @@ interface PlaygroundConfig {
   // ── التهيئة + ربط الأحداث ──────────────────────────────────────────────────
   function init() {
     loadCfg();
-    const root = $<HTMLElement>('[data-pg-root]');
-    if (!root || root.dataset.bound === '1') return;
+    const _root = $<HTMLElement>('[data-pg-root]');
+    if (!_root || _root.dataset.bound === '1') return;
+    const root: HTMLElement = _root;
     root.dataset.bound = '1';
 
     // عدّاد الأحرف
@@ -1110,13 +1164,8 @@ interface PlaygroundConfig {
     if (settingsClose) settingsClose.addEventListener('click', closeSettings);
     if (settingsBackdrop) settingsBackdrop.addEventListener('click', closeSettings);
 
-    function readSettings() {
-      return {
-        seed: (($('#pg-seed') as HTMLInputElement) || {}).value || root.dataset.seed || 'brightai-demo',
-        temperature: parseFloat((($('#pg-temp') as HTMLInputElement) || {}).value || '0.2'),
-        topP: parseFloat((($('#pg-topp') as HTMLInputElement) || {}).value || '0.9'),
-      };
-    }
+    // readSettings() is now at IIFE scope (above init) so it's
+    // accessible from runComparison() and comparison validators.
 
     // تبويبات النتيجة
     const tabWith = $('#pg-tab-with'), tabWithout = $('#pg-tab-without');

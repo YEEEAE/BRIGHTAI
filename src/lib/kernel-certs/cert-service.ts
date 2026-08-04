@@ -82,6 +82,7 @@ export interface CertStore {
   saveCert(cert: StoredCertificate): Promise<StoredCertificate>;
   getCert(certificateId: string): Promise<StoredCertificate | null>;
   getCertsByEvaluation(evaluationId: string): Promise<StoredCertificate[]>;
+  listCerts(limit?: number): Promise<StoredCertificate[]>;
   revokeCert(
     certificateId: string,
     opts: { revokedBy: string; reason: string },

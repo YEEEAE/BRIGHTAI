@@ -1,3 +1,4 @@
+export {};
 declare global {
   interface Window {
     KernelAuditData?: {
@@ -282,7 +283,7 @@ declare global {
   }
 
   // ── boot ───────────────────────────────────────────────────────────────
-  function boot() {
+  let boot = function boot_impl() {
     const main = $<HTMLElement>('[data-kernel-loading]');
     if (!main) return;
     if (main.getAttribute('data-audit-bound') === '1') return;
@@ -301,7 +302,7 @@ declare global {
     if (!mainThreadData) return; // data script missing → keep skeleton
     fullRows = mainThreadData.buildAuditRows();
 
-    bindKpis(fullRows);
+    bindKpis(fullRows!);
     bindFilters();
     bindSearch();
     bindExports();
@@ -354,7 +355,7 @@ declare global {
     if (skel) skel.hidden = true;
     main.removeAttribute('data-kernel-loading');
     checkDemoMode();
-  }
+  };
 
   document.addEventListener('kernel:demo-toggle', function () {
     checkDemoMode();
@@ -820,7 +821,7 @@ declare global {
 
   // ── devtools window helper (no console.log in production) ──────────────
   window.__kernelAudit = {
-    trace: function (id) {
+    trace: function (id: string) {
       if (!fullRows) return { error: 'dataset not ready' };
       const idx = findIndexByTrace(id);
       if (idx === -1) return { error: 'trace not found: ' + id };

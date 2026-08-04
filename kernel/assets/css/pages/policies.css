@@ -533,8 +533,352 @@
 .po-toast--visible { opacity: 1; transform: translateX(-50%) translateY(-4px); }
 .po-toast--error { border-color: color-mix(in srgb, var(--status-danger) 45%, transparent); }
 
+/* ═══════ باني الشروط البصري (Visual Condition Builder) ═══════ */
+.po-builder-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-block-end: var(--space-4);
+}
+
+.po-builder-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-base);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 20%, transparent);
+  border-radius: var(--radius-md);
+}
+
+.po-builder-modes {
+  display: inline-flex;
+  gap: var(--space-1);
+  background: var(--bg-elevated);
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+.po-builder-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  min-height: 36px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+
+.po-builder-mode-btn--active {
+  background: var(--interactive-primary);
+  color: #06121a;
+}
+
+.po-builder-quick-actions {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.po-btn--sm {
+  min-height: 36px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-xs);
+}
+
+/* قماش المخطط الانسيابي (Flowchart Canvas) */
+.po-flowchart-canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--bg-base) 80%, var(--bg-surface));
+  border: 1px dashed color-mix(in srgb, var(--interactive-primary) 30%, transparent);
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+
+/* العقد الشجرية (Flowchart Nodes) */
+.po-node {
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-surface);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 25%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-md);
+  transition: border-color var(--duration-fast), transform var(--duration-fast);
+}
+
+.po-node:hover {
+  border-color: var(--interactive-primary);
+}
+
+.po-node--trigger {
+  border-inline-start: 4px solid var(--brand-500);
+}
+
+.po-node--condition {
+  border-inline-start: 4px solid var(--indigo-400);
+}
+
+.po-node--action {
+  border-inline-start: 4px solid var(--status-success);
+}
+
+.po-node__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-block-end: var(--space-2);
+}
+
+.po-node__badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--brand-500) 15%, transparent);
+  color: var(--brand-400);
+}
+
+.po-node__badge--action {
+  background: color-mix(in srgb, var(--status-success) 15%, transparent);
+  color: var(--status-success);
+}
+
+.po-node__title {
+  font-size: var(--text-sm);
+  color: var(--text-primary);
+  display: block;
+}
+
+.po-node__desc {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin: var(--space-1) 0 0;
+}
+
+/* موصلات الأسهم البصرية (Connectors) */
+.po-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 32px;
+  justify-content: center;
+  position: relative;
+}
+
+.po-connector__line {
+  width: 2px;
+  height: 100%;
+  background: color-mix(in srgb, var(--interactive-primary) 50%, transparent);
+}
+
+.po-connector__arrow {
+  position: absolute;
+  bottom: -4px;
+  font-size: 10px;
+  color: var(--interactive-primary);
+  line-height: 1;
+}
+
+/* شجرة الشروط المتعددة والتجميع البصري (AND / OR Groups) */
+.po-conditions-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+}
+
+.po-condition-card {
+  width: 100%;
+  max-width: 520px;
+  background: var(--bg-surface);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 25%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  position: relative;
+}
+
+.po-condition-card[draggable="true"] {
+  cursor: grab;
+}
+
+.po-condition-card[draggable="true"]:active {
+  cursor: grabbing;
+  opacity: 0.8;
+}
+
+.po-condition-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-block-end: var(--space-2);
+}
+
+.po-condition-card__badge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.po-condition-card__drag-handle {
+  cursor: grab;
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  padding: 0 var(--space-1);
+  user-select: none;
+}
+
+.po-condition-card__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.po-btn-icon {
+  width: 28px;
+  height: 28px;
+  min-height: 28px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 20%, transparent);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.po-btn-icon:hover {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.po-btn-icon--danger:hover {
+  border-color: var(--status-danger);
+  color: var(--status-danger);
+}
+
+.po-condition-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-2);
+}
+
+.po-node__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.po-node__label {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.po-node__select,
+.po-node__input {
+  min-height: 38px;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 30%, transparent);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-size: var(--text-xs);
+}
+
+/* مجموعة OR البصرية (Visual Group) */
+.po-or-group {
+  width: 100%;
+  max-width: 540px;
+  background: color-mix(in srgb, var(--indigo-400) 5%, var(--bg-base));
+  border: 1px dashed color-mix(in srgb, var(--indigo-400) 40%, transparent);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  margin-block: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.po-or-group__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.po-or-group__title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--indigo-400);
+}
+
+/* لوحة المعاينة الحية بالنص العربي */
+.po-builder-preview-box {
+  background: var(--bg-surface);
+  border: 1px solid color-mix(in srgb, var(--interactive-primary) 30%, transparent);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.po-builder-preview-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-end: var(--space-2);
+}
+
+.po-builder-preview-icon {
+  font-size: var(--text-md);
+}
+
+.po-builder-preview-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.po-builder-preview-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--interactive-primary) 15%, transparent);
+  color: var(--interactive-primary);
+  margin-inline-start: auto;
+}
+
+.po-builder-preview-content {
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  color: var(--brand-400);
+  background: var(--bg-base);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 15%, transparent);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  white-space: pre-line;
+  font-weight: 500;
+}
+
 /* ═══════ reduced motion ═══════ */
 @media (prefers-reduced-motion: reduce) {
-  .po-btn, .po-toast { transition: none; }
+  .po-btn, .po-toast, .po-node, .po-builder-mode-btn { transition: none; }
   .po-sim-row__bar { background: var(--interactive-primary); }
 }
+
