@@ -477,7 +477,13 @@ const SECTOR_LABEL: Record<string, string> = {
       <KernelSkeleton variant="text" count={6} />
     </div>
     <div data-kernel-empty hidden>
-      <KernelEmptyState title="ما في ملفات أدلة الحين" message="ملفات الأدلة تظهر فور توفرها." />
+      <KernelEmptyState
+        title="لا توجد أدلة مولّدة"
+        message="قم بتشغيل التقييم لتوليد أدلة وإثباتات امتثال موقّعة."
+        ctaLabel="شغّل تقييمًا لتوليد الأدلة"
+        ctaHref="/kernel/eval/"
+        demoHint={true}
+      />
     </div>
 
     <!-- Toolbar -->
@@ -1328,6 +1334,26 @@ const SECTOR_LABEL: Record<string, string> = {
       if (focusBtn) focusBtn.focus({ preventScroll: true });
     }
 
+    function checkDemoMode() {
+      var pill = el('[data-kernel-demo-pill]');
+      var isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
+      var emptyState = el('[data-kernel-empty]');
+      var toolbar = el('.kernel-evidence-toolbar');
+      var verifySec = el('.kernel-evidence-verify');
+      var grid = el('[data-kernel-evidence-grid]');
+      var count = el('[data-kernel-evidence-count]');
+
+      if (emptyState) emptyState.hidden = isDemo;
+      if (toolbar) toolbar.hidden = !isDemo;
+      if (verifySec) verifySec.hidden = !isDemo;
+      if (grid) grid.hidden = !isDemo;
+      if (count) count.hidden = !isDemo;
+    }
+
+    document.addEventListener('kernel:demo-toggle', function () {
+      checkDemoMode();
+    });
+
     function init() {
       bindFilters();
       bindItemButtons();
@@ -1337,6 +1363,7 @@ const SECTOR_LABEL: Record<string, string> = {
       bindTamper();
       bindDropzone();
       applyLinkParams();
+      checkDemoMode();
     }
 
     document.addEventListener('astro:page-load', init);

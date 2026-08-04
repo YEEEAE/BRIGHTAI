@@ -31,6 +31,8 @@ import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
+import KernelRoleSelector from '../../components/kernel/KernelRoleSelector.astro';
+import KernelRecommendedJourney from '../../components/kernel/KernelRecommendedJourney.astro';
 import DOMPurify from 'isomorphic-dompurify';
 import { kernelUnits, kernelNavItems, getCrossLinks, getKernelUnit, getKernelFaqJsonLd } from '../../data/kernel';
 import { KERNEL_PRODUCT, getFaqLd } from '../../data/schema-helpers';
@@ -209,6 +211,11 @@ const complianceRows = [
         <strong>تنبيه تشغيلي:</strong> البيانات الظاهرة في هذه اللوحة تجريبية (محددة بوسم «بيانات تجريبية» في الأعلى). المكوّنات لا تستهلك بيانات حقيقية إلا بعد ربط Kernel بمنشأتك. لا يستخدم هذا الموقع لأغراض قانونية أو استشارية — للمراجعة القانونية المتخصصة تواصل مع مستشار مرخّص.
       </p>
     </section>
+
+    {/* P1 (2026-08-04): Role-Based Personalized Journey — اختياري،
+       يظهر للزائر الجديد عشان يختار دوره ويشوف رحلة موصى بها. */}
+    <KernelRoleSelector />
+    <KernelRecommendedJourney />
 
     <!-- Journey Theater (hidden by default, toggled by JS) -->
     <section class="kernel-journey" id="kernel-journey" aria-label="جولة حادثة" hidden>

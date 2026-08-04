@@ -21,6 +21,7 @@ import KernelDemoPill from '../../components/kernel/KernelDemoPill.astro';
 import KernelLeadForm from '../../components/kernel/KernelLeadForm.astro';
 import KernelSeoSection from '../../components/kernel/KernelSeoSection.astro';
 import KernelContextLinks from '../../components/kernel/KernelContextLinks.astro';
+import KernelEmptyState from '../../components/kernel/KernelEmptyState.astro';
 import { getKernelUnit, getCrossLinks, getKernelFaqJsonLd } from '../../data/kernel';
 import { getKernelSubPageJsonLd } from '../../data/schema-helpers';
 import { buildReportStats, REPORT_TYPES, REPORT_LANGUAGES, REPORT_RECIPIENTS, REPORT_WIDGETS } from '../../data/kernel-reports';
@@ -79,6 +80,16 @@ const iconVersions = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
   </header>
 
   <div class="kernel-main kernel-page-fade-in">
+    <div data-kernel-empty hidden>
+      <KernelEmptyState
+        title="لا توجد تقارير"
+        message="لم يتم إنشاء أي تقرير حوكمة بعد. يمكنك إنشاء تقرير حوكمة جديد من منشئ التقارير."
+        ctaLabel="أنشئ تقريرك الأول"
+        ctaHref="/kernel/reports/#builder"
+        demoHint={true}
+      />
+    </div>
+
     {/* KPI cards — SSR from deterministic data */}
     <section class="kernel-metric-grid kernel-stagger" aria-label="مؤشرات التقارير">
       <KernelMetricCard label="تقارير منجزة" value={stats.total} variant="brand" trend="up" trendLabel="8%" iconSvg={iconReports} footer="هذا الشهر" />

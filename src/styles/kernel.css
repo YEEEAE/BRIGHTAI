@@ -1239,6 +1239,37 @@ body.kernel-shell footer.footer { display: none; }
   pointer-events: none;
 }
 
+/* P1 (2026-08-04): Change Role link — ينقل للفهرس حيث الـ Role Selector الكامل. */
+.kernel-sidebar__role-change {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-block-start: var(--space-2);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  color: var(--interactive-primary);
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  text-decoration: none;
+  min-block-size: 28px;
+  transition: background var(--duration-fast) var(--ease-out),
+              color var(--duration-fast) var(--ease-out);
+}
+.kernel-sidebar__role-change svg {
+  inline-size: 14px;
+  block-size: 14px;
+  flex-shrink: 0;
+}
+.kernel-sidebar__role-change:hover,
+.kernel-sidebar__role-change:focus-visible {
+  background: var(--brand-soft);
+  color: var(--brand-400);
+  outline: none;
+}
+.kernel-sidebar__role-change:focus-visible {
+  box-shadow: 0 0 0 2px var(--brand-500);
+}
+
 /* CTA مثبّت + سطر خصوصية. */
 .kernel-sidebar__privacy {
   font-size: var(--text-xs);
@@ -2900,6 +2931,22 @@ html[dir="rtl"] .kernel-breadcrumb li:not(:last-child)::after { content: '‹'; 
 .kernel-empty__cta svg {
   inline-size: 16px;
   block-size: 16px;
+}
+
+.kernel-empty__demo-hint {
+  margin-block-start: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.kernel-empty__demo-hint a {
+  color: var(--brand-400);
+  text-decoration: underline;
+}
+
+.kernel-empty__icon-emoji {
+  font-size: 2.25rem;
+  line-height: 1;
 }
 
 /* ── 15. Skeleton shimmer ─────────────────────────────────────────────── */
@@ -5302,6 +5349,35 @@ button.kernel-ap-ledger__link {
 .kernel-modal__btn--reject:focus-visible {
   background: rgba(239,68,68,0.12);
   border-color: var(--status-danger);
+}
+
+/* ── KernelConfirmDialog: أزرار التأكيد حسب الخطورة ──────────────────── */
+.kernel-modal__btn--danger {
+  border-color: rgba(239,68,68,0.4);
+  color: var(--status-danger);
+}
+.kernel-modal__btn--danger:hover,
+.kernel-modal__btn--danger:focus-visible {
+  background: rgba(239,68,68,0.12);
+  border-color: var(--status-danger);
+}
+.kernel-modal__btn--warning {
+  border-color: rgba(245,158,11,0.4);
+  color: var(--status-warning);
+}
+.kernel-modal__btn--warning:hover,
+.kernel-modal__btn--warning:focus-visible {
+  background: rgba(245,158,11,0.12);
+  border-color: var(--status-warning);
+}
+.kernel-modal__btn--info {
+  border-color: var(--brand-soft-border, var(--interactive-primary));
+  color: var(--interactive-primary);
+}
+.kernel-modal__btn--info:hover,
+.kernel-modal__btn--info:focus-visible {
+  background: var(--brand-soft);
+  border-color: var(--interactive-primary);
 }
 
 /* ── 25. EVIDENCE — grid + filters + preview modal + generate ────────── */

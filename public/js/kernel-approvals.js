@@ -28,8 +28,11 @@
  *
  * Immutable rule (Prompt 20): every decision appends a NEW Audit event to the
  * on-page decision ledger (client-side demo ledger — the sealed hash chain of
- * kernel-approvals-data.js is never mutated). Deletions are not possible: the
- * ledger only ever grows.
+ * kernel-approvals-data.js is never mutated). The ledger only ever grows.
+ * M-A14 undo (2026-08-04): within the 10s undo window, the LAST session entry
+ * may be rolled back (removed from the on-page session list) via the shared
+ * #k-toast — the sealed chain is never touched, and no entry older than the
+ * most recent decision can be undone.
  *
  * Architecture: CSP-safe external ES module, Web Worker off-main-thread
  * filtering (kernel-approvals-worker.js) with an automatic main-thread
@@ -306,13 +309,34 @@
     updateLedger();
   }
 
+  function checkDemoMode() {
+    var pill = $('[data-kernel-demo-pill]');
+    var isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
+    var emptyState = $('[data-kernel-empty]');
+    var filtersBar = $('[data-kap-filters]');
+    var toolbar = $('.kernel-ap-toolbar');
+    var layout = $('.kernel-ap-layout');
+    var ledger = $('.kernel-ap-ledger-wrap');
+
+    if (emptyState) emptyState.hidden = isDemo;
+    if (filtersBar) filtersBar.hidden = !isDemo;
+    if (toolbar) toolbar.hidden = !isDemo;
+    if (layout) layout.hidden = !isDemo;
+    if (ledger) ledger.hidden = !isDemo;
+  }
+
   function reveal() {
     var main = $('[data-kernel-loading]');
     if (!main || !main.hasAttribute('data-kernel-loading')) return;
     var skel = main.querySelector('[data-kernel-skeleton]');
     if (skel) skel.hidden = true;
     main.removeAttribute('data-kernel-loading');
+    checkDemoMode();
   }
+
+  document.addEventListener('kernel:demo-toggle', function () {
+    checkDemoMode();
+  });
 
   // ── status filter cards ────────────────────────────────────────────────
   function bindFilters() {
@@ -690,11 +714,12 @@
       return;
     }
 
-    appendLedgerDecision(r, action, text, delegateId, delegateLabel);
+    var entry = appendLedgerDecision(r, action, text, delegateId, delegateLabel);
     closeModal();
     renderDetail();
     renderList();
     updateFilterCounts();
+    offerDecisionUndo(entry);
   }
 
   // ── decision ledger (Prompt 20: Audit · Trace · Evidence · Certificate) ─
@@ -721,6 +746,27 @@
       certificateId: certificateId,
     });
     updateLedger();
+    return decisionLedger[0];
+  }
+
+  /**
+   * يقدّم «تراجع» للقرار الأخير عبر التوست المشترك (#k-toast + KernelUndoToast).
+   * الـ undo يزيل فقط آخر قرار من ledger الجلسة الحالية (في الذاكرة — لا يمسّ
+   * سلسلة الهاش المختومة في kernel-approvals-data.js). بعد نافذة الـ undo
+   * (10 ثوانٍ) يُهجر الـ handler تلقائياً — لا undo متأخر.
+   */
+  function offerDecisionUndo(entry) {
+    if (!entry || !window.KernelFeedback || !window.KernelFeedback.toast) return;
+    window.KernelFeedback.toast.show({
+      message: 'تم تسجيل قرار ' + entry.actionLabel + ' — ' + entry.eventId,
+      onUndo: function () {
+        var idx = decisionLedger.indexOf(entry);
+        if (idx !== -1) {
+          decisionLedger.splice(idx, 1);
+          updateLedger();
+        }
+      },
+    });
   }
 
   function updateLedger() {

@@ -265,7 +265,13 @@ const fmtCount = (n: number) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
       <KernelSkeleton variant="text" count={5} />
     </div>
     <div data-kernel-empty hidden>
-      <KernelEmptyState title="ما في طلبات موافقات الحين" message="طلبات الموافقات تظهر فور توفرها." />
+      <KernelEmptyState
+        title="لا توجد طلبات معلقة"
+        message="جميع الطلبات تمت مراجعتها وإدارتها، أو لا توجد موافقات بانتظار القرار في وضع البث الحي."
+        ctaLabel="راجع السياسات"
+        ctaHref="/kernel/policies/"
+        demoHint={true}
+      />
     </div>
 
     <!-- Status filter cards (five) — clickable filters, active gets colored border -->

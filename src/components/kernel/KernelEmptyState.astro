@@ -1,9 +1,6 @@
 ---
 /**
- * KernelEmptyState — Illustrated empty state with optional CTA + onboarding tour.
- *
- * CHAMPION-01: extended with `onboardingSteps` (3-step inline tour),
- * `align` (center|start), `compact` (smaller illustration).
+ * KernelEmptyState — Illustrated empty state with optional CTA, demo hint, and onboarding tour.
  */
 interface OnboardingStep {
   id: string;
@@ -16,9 +13,11 @@ interface Props {
   message?: string;
   ctaLabel?: string;
   ctaHref?: string;
+  icon?: string;
   iconSvg?: string;
   align?: 'center' | 'start';
   compact?: boolean;
+  demoHint?: boolean;
   onboardingSteps?: OnboardingStep[];
 }
 
@@ -27,16 +26,28 @@ const {
   message = '',
   ctaLabel = '',
   ctaHref = '',
-  iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
+  icon,
+  iconSvg = icon || '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>',
   align = 'center',
   compact = false,
+  demoHint = false,
   onboardingSteps = [],
 } = Astro.props;
+
+const isEmoji = icon && !icon.includes('<svg') && icon.length <= 4;
 ---
 
-<div class:list={['kernel-empty', `kernel-empty--${align}`, compact && 'kernel-empty--compact']}>
+<div
+  class:list={['kernel-empty', `kernel-empty--${align}`, compact && 'kernel-empty--compact']}
+  role="status"
+  aria-live="polite"
+>
   <div class="kernel-empty__illustration" aria-hidden="true">
-    <Fragment set:html={iconSvg} />
+    {isEmoji ? (
+      <span class="kernel-empty__icon-emoji">{icon}</span>
+    ) : (
+      <Fragment set:html={iconSvg} />
+    )}
   </div>
   <h3 class="kernel-empty__title">{title}</h3>
   {message && <p class="kernel-empty__message">{message}</p>}
@@ -44,6 +55,11 @@ const {
     <a href={ctaHref} class="kernel-empty__cta">
       {ctaLabel}
     </a>
+  )}
+  {demoHint && (
+    <p class="kernel-empty__demo-hint">
+      💡 هذه بيئة تجريبية. <a href="/kernel/playground/">جرب الملعب</a>
+    </p>
   )}
   {onboardingSteps.length > 0 && (
     <details class="kernel-empty__onboarding" name="kernel-tour" open>
@@ -66,3 +82,4 @@ const {
     </details>
   )}
 </div>
+

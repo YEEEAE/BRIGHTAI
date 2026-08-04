@@ -334,13 +334,36 @@
     renderWindow();
   }
 
+  function checkDemoMode() {
+    var pill = $('[data-kernel-demo-pill]');
+    var isDemo = pill ? pill.getAttribute('aria-pressed') !== 'false' : true;
+    var emptyState = $('[data-kernel-empty]');
+    var viewport = $('[data-ka-viewport]');
+    var verifier = $('.kernel-audit-verifier');
+    var filtersBar = $('.kernel-audit-filters');
+    var toolbar = $('.kernel-audit-toolbar');
+    var kpis = $('.kernel-audit-kpis');
+
+    if (emptyState) emptyState.hidden = isDemo;
+    if (viewport) viewport.hidden = !isDemo;
+    if (verifier) verifier.hidden = !isDemo;
+    if (filtersBar) filtersBar.hidden = !isDemo;
+    if (toolbar) toolbar.hidden = !isDemo;
+    if (kpis) kpis.hidden = !isDemo;
+  }
+
   function reveal() {
     var main = $('[data-kernel-loading]');
     if (!main || !main.hasAttribute('data-kernel-loading')) return;
     var skel = main.querySelector('[data-kernel-skeleton]');
     if (skel) skel.hidden = true;
     main.removeAttribute('data-kernel-loading');
+    checkDemoMode();
   }
+
+  document.addEventListener('kernel:demo-toggle', function () {
+    checkDemoMode();
+  });
 
   function initAfterData() {
     if (!fullRows) return;

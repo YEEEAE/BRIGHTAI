@@ -229,7 +229,13 @@ const fmtCount = (n: number) => n.toLocaleString('ar-SA');
       <KernelSkeleton variant="text" count={5} />
     </div>
     <div data-kernel-empty hidden>
-      <KernelEmptyState title="ما في سجلات تدقيق الحين" message="سجل التدقيق يعرض القرارات فور توفرها." />
+      <KernelEmptyState
+        title="لا توجد سجلات تدقيق بعد"
+        message="سجل التدقيق يعرض قرارات الذكاء الاصطناعي ومراحل التدقيق فور توفرها."
+        ctaLabel="شغّل سيناريو لرؤية السجلات"
+        ctaHref="/kernel/playground/"
+        demoHint={true}
+      />
     </div>
 
     <!-- KPI strip — deterministic baseline (SSR) -->

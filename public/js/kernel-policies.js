@@ -33,6 +33,14 @@
  *   diff, conflicts, exceptions, simulate, importConfig, exportConfig,
  *   suggest, snapshot, onEvent, reset, _debug }.
  * طبقة UI ترتبط بـ data-po-* attributes في الصفحة.
+ *
+ * M-A14 (2026-08-04) — ربط المكوّنات المشتركة (KernelFeedback):
+ *   - toast: data-po-toast غير موجود في الصفحة → showToast يوجّه للتوست
+ *     المشترك #k-toast (لا فشل صامت بعد الآن).
+ *   - importConfig: تحقق مسبق + مودال تأكيد (KernelConfirmDialog) قبل
+ *     استبدال السياسات + undo لمدة 10 ثوانٍ (استرجاع لقطة قبل التغيير).
+ *   - reset: undo عبر التوست المشترك بنفس الـ snapshot mechanism.
+ *   - يبقى عدم استخدام Math.random الحتمي — لا تغيير على المحرك.
  */
 (function () {
   'use strict';
@@ -583,6 +591,28 @@
     return { ok: true, message: 'استُورد ' + cleaned.length + ' سياسة', count: cleaned.length };
   }
 
+  /**
+   * تحقق مسبق (قبل التأكيد) — نفس شروط importConfig لكن بدون تغيير الحالة.
+   * يستخدم لمعاينة رسالة التأكيد (عدد السياسات) قبل الاستبدال.
+   * @param {string} jsonText
+   * @returns {{ ok, message, count? }}
+   */
+  function previewImport(jsonText) {
+    try {
+      var data = JSON.parse(String(jsonText || ''));
+    } catch (e) {
+      return { ok: false, message: 'الملف مو JSON صالح' };
+    }
+    if (data.app !== 'brightai-kernel-policies' || !Array.isArray(data.policies)) {
+      return { ok: false, message: 'الملف مو تصدير Kernel policies (app/version مفقود)' };
+    }
+    var cleaned = data.policies.filter(function (p) {
+      return p && typeof p.id === 'string' && typeof p.name === 'string' && Array.isArray(p.versions);
+    });
+    if (!cleaned.length) return { ok: false, message: 'ما في سياسات صالحة في الملف' };
+    return { ok: true, count: cleaned.length };
+  }
+
   /* ── snapshot / أحداث ───────────────────────────────────────────── */
   function snapshot() {
     return {
@@ -638,6 +668,12 @@
   /* ── toast ─────────────────────────────────────────────────────── */
   var toastTimer = null;
   function showToast(msg, ok) {
+    // M-A14: الصفحة ما فيها data-po-toast → نوجّه للتوست المشترك #k-toast
+    // (لا فشل صامت). لو النمط المحلي موجود نستعمله مع تلوين الخطأ.
+    if ((!ui.toast || !ui.toastMsg) && window.KernelFeedback && window.KernelFeedback.toast) {
+      window.KernelFeedback.toast.show({ message: msg });
+      return;
+    }
     if (!ui.toast || !ui.toastMsg) return;
     ui.toastMsg.textContent = msg;
     ui.toast.classList.toggle('po-toast--error', ok === false);
@@ -646,6 +682,26 @@
     toastTimer = setTimeout(function () {
       ui.toast.classList.remove('po-toast--visible');
     }, 3500);
+  }
+
+  /**
+   * يقدّم «تراجع» عن استبدال config (import/reset) عبر التوست المشترك #k-toast.
+   * @param {{ policies: Array, certificates: Array }} before لقطة قبل التغيير.
+   * @param {string} [msg] رسالة الحالة (اختياري — تظهر في التوست).
+   */
+  function offerConfigUndo(before, msg) {
+    if (!window.KernelFeedback || !window.KernelFeedback.toast) return;
+    window.KernelFeedback.toast.show({
+      message: msg || 'تم استبدال السياسات',
+      onUndo: function () {
+        state.policies = clone(before.policies);
+        state.certificates = clone(before.certificates);
+        saveState();
+        renderPoliciesTable();
+        updateStats();
+        emit();
+      },
+    });
   }
 
   /* ── التحديث الإحصائي ──────────────────────────────────────────── */
@@ -1204,9 +1260,41 @@
         var file = ui.importInput.files[0];
         var reader = new FileReader();
         reader.onload = function () {
-          var res = importConfig(String(reader.result));
-          showToast(res.message, res.ok);
-          if (res.ok) { renderPoliciesTable(); updateStats(); emit(); }
+          var jsonText = String(reader.result);
+          // M-A14: تحقق مسبق (بدون تغيير) → تأكيد → استيراد مع undo snapshot.
+          var preview = previewImport(jsonText);
+          if (!preview.ok) { showToast(preview.message, false); return; }
+          var before = null;
+          var apply = function () {
+            before = { policies: clone(state.policies), certificates: clone(state.certificates) };
+            var res = importConfig(jsonText);
+            if (res.ok) {
+              renderPoliciesTable(); updateStats(); emit();
+              // توست واحد مع undo (بعد عرض نتيجة importConfig داخل offerConfigUndo).
+              if (window.KernelFeedback && window.KernelFeedback.toast) {
+                offerConfigUndo(before, res.message);
+              } else {
+                showToast(res.message, res.ok);
+              }
+            } else {
+              showToast(res.message, res.ok);
+            }
+            return res;
+          };
+          if (window.KernelFeedback && window.KernelFeedback.confirm) {
+            window.KernelFeedback.confirm.open({
+              title: 'تأكيد الاستيراد',
+              message: 'سيستبدل هذا السياسات الحالية بملف فيه ' + preview.count + ' سياسة. متابعة؟',
+              confirmLabel: 'استيراد',
+              cancelLabel: 'إلغاء',
+              variant: 'warning',
+              onConfirm: function () {
+                apply();
+              },
+            });
+          } else {
+            apply();
+          }
         };
         reader.readAsText(file);
       });
@@ -1328,6 +1416,7 @@
     snapshot: snapshot,
     onEvent: function (fn) { listeners.push(fn); },
     reset: function () {
+      var before = { policies: clone(state.policies), certificates: clone(state.certificates) };
       try { localStorage.removeItem(STATE_KEY); } catch (e) {}
       state.policies = clone(SEED_POLICIES);
       state.certificates = clone(CERTIFICATES);
@@ -1335,6 +1424,7 @@
       renderPoliciesTable();
       updateStats();
       emit();
+      offerConfigUndo(before);
     },
     _debug: function () {
       return { configParsed: !!cfgEl, seedPolicies: SEED_POLICIES.length, simRequests: SIM_REQUESTS.length, piiPatterns: Object.keys(PII_PATTERNS).length, rate: 'n/a', maxVersions: LIMITS.maxVersions };
