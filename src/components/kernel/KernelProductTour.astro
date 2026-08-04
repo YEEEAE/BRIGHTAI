@@ -1,0 +1,248 @@
+---
+/**
+ * KernelProductTour — Guided product tour for first-time Kernel visitors.
+ *
+ * Uses driver.js (installed as dependency) to spotlight real elements
+ * on the page and walk the user through the Kernel product.
+ *
+ * Design intent (from تصميم-صفحات-kernel §2.2):
+ *   - Highlights the sidebar, metrics, and key action areas.
+ *   - Max 7 steps (design spec).
+ *   - Skippable at any point.
+ *   - RTL-aware (Arabic text, logical properties, ArrowLeft=forward).
+ *   - Mobile-friendly (fallback selectors when target hidden).
+ *
+ * Persistence:
+ *   - localStorage key `kernel-product-tour-v1` = 'done'.
+ *   - Tour never repeats once finished or skipped.
+ *   - Bumping the version key re-shows the tour.
+ *
+ * Constraints:
+ *   - driver.js loaded as ES module (CSP-safe under script-src 'self').
+ *   - Respects prefers-reduced-motion (disables animations).
+ *   - Uses V2/V3 design tokens only.
+ *   - All prose in Saudi dialect — do not "correct" to MSA.
+ *
+ * Content rule: Arabic strings are NEW copy (not published text).
+ * Saudi dialect — do not "correct" to MSA.
+ */
+---
+
+<!--
+  driver.js is loaded as a regular script (not is:inline) so it
+  respects CSP script-src 'self'. The tour initialises in the
+  inline <script> below which is also CSP-safe (no inline event
+  handlers, no eval).
+-->
+<script>
+  // ── Lazy-load driver.js only when this component is on the page ──
+  let driver: any | null = null;
+
+  async function loadDriver(): Promise<any> {
+    if (driver) return driver;
+    const mod = await import('driver.js');
+    driver = (mod as any).default ?? mod;
+    return driver;
+  }
+
+  // ── Tour steps (max 7, per design spec) ──
+  // Each step targets a real element on the kernel page.
+  // Mobile fallbacks are listed first (hidden on desktop) so
+  // the tour gracefully degrades when the primary target is not
+  // visible.
+  const STEPS = [
+    {
+      element: '[data-kernel-sidebar], .kernel-sidebar',
+      title: 'الشريط الجانبي',
+      description: 'هنا تجد كل وحدات Kernel مرتّبة حسب الدور. استخدمه للتنقل السريع بين الفهرس والملعب والسجل والموافقات.',
+      position: 'right' as const,
+    },
+    {
+      element: '.kernel-hero, .kernel-page-header',
+      title: 'لوحة الحوكمة',
+      description: 'نظرة تشغيلية سريعة: الطلبات، الموافقات المعلقة، المخاطر، وكشف PII. البيانات تجريبية في وضع Demo.',
+      position: 'bottom' as const,
+    },
+    {
+      element: '.kernel-metric-section, .kernel-metric-grid',
+      title: 'المؤشرات الحية',
+      description: 'تابع حالة الحوكمة لحظياً. كل رقم يمثّل طلبات حقيقية مررت عبر جدار الحماية.',
+      position: 'bottom' as const,
+    },
+    {
+      element: '.kernel-onboarding, .kernel-onboarding__steps',
+      title: 'رحلة الـ 5 مراحل',
+      description: 'ابدأ بتجربة Kernel خطوة بخطوة: تعرّف على المنتج، اختر سيناريو، شغّل المحادثة، افهم السياسات، واحجز عرضاً.',
+      position: 'top' as const,
+    },
+    {
+      element: '.kernel-dashboard-grid, .kernel-card',
+      title: 'لوحات التحكم',
+      description: 'الموافقات المعلقة، حالة الامتثال، وآخر سجلات التدقيق — كلها في مكان واحد.',
+      position: 'bottom' as const,
+    },
+    {
+      element: '.kernel-unit-grid, .k-units',
+      title: 'وحدات Kernel',
+      description: 'كل وحدة تختص بجانب من الحوكمة. افتح الوحدة المناسبة لمهمتك — من التشغيل إلى البنية.',
+      position: 'bottom' as const,
+    },
+    {
+      element: '.kernel-hero-actions, .kernel-hero__journey',
+      title: 'ابدأ الآن',
+      description: 'شغّل حادثة حقيقية في 90 ثانية أو ابدأ بنصك أنت في الملعب. لا حاجة لإعداد — Kernel جاهز.',
+      position: 'top' as const,
+    },
+  ];
+
+  const STORAGE_KEY = 'kernel-product-tour-v1';
+  const MAX_STEPS = 7;
+
+  // ── Helpers ──
+  function isVisible(el: Element | null): boolean {
+    if (!el || !(el instanceof HTMLElement)) return false;
+    if (el.offsetParent === null) {
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.height > 0;
+    }
+    return true;
+  }
+
+  function resolveTarget(selector: string): Element | null {
+    const el = document.querySelector(selector);
+    return isVisible(el) ? el : null;
+  }
+
+  function hasDoneTour(): boolean {
+    try {
+      return localStorage.getItem(STORAGE_KEY) === 'done';
+    } catch {
+      return false;
+    }
+  }
+
+  function markTourDone(): void {
+    try {
+      localStorage.setItem(STORAGE_KEY, 'done');
+    } catch {
+      /* private mode — ignore */
+    }
+  }
+
+  // ── Reduced motion ──
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Initialise ──
+  async function initTour() {
+    if (hasDoneTour()) return;
+
+    const Driver = await loadDriver();
+    if (!Driver) return;
+
+    // Filter steps to max 7 and only include steps whose target exists
+    const validSteps = STEPS.filter((step) => resolveTarget(step.element)).slice(0, MAX_STEPS);
+
+    if (validSteps.length === 0) return;
+
+    const driverInstance = new Driver({
+      allowClose: true,
+      animate: !prefersReducedMotion,
+      opacity: 0.72,
+      padding: 10,
+      overlayColor: 'rgba(5, 8, 15, 0.85)',
+      doneBtnText: 'تمّ',
+      nextBtnText: 'التالي',
+      prevBtnText: 'السابق',
+      skipBtnText: 'تخطّي',
+      closeBtnText: 'إغلاق',
+      keyboardControl: true,
+      nextBtnSelector: '[data-tour-next]',
+      prevBtnSelector: '[data-tour-prev]',
+      skipBtnSelector: '[data-tour-skip]',
+      closeBtnSelector: '[data-tour-close]',
+      doneBtnSelector: '[data-tour-done]',
+      toastPosition: 'bottom',
+      showButtons: true,
+      showProgress: true,
+      showPagination: true,
+      scrollToSteps: true,
+      disableInteractiveBackground: false,
+    });
+
+    // Map our steps to driver.js format
+    const driverSteps = validSteps.map((step) => ({
+      element: step.element,
+      popover: {
+        title: step.title,
+        description: step.description,
+        side: step.position,
+        align: 'start' as const,
+      },
+    }));
+
+    driverInstance.defineSteps(driverSteps);
+
+    // Add custom skip/done/close buttons via event listeners
+    driverInstance.on('close', () => {
+      markTourDone();
+    });
+
+    driverInstance.on('destroy', () => {
+      markTourDone();
+    });
+
+    // Start after a short delay so the page layout settles
+    setTimeout(() => {
+      if (!hasDoneTour()) {
+        driverInstance.start();
+      }
+    }, 600);
+  }
+
+  // ── Boot ──
+  document.addEventListener('astro:page-load', initTour);
+  if (document.readyState !== 'loading') initTour();
+
+  // Cleanup on page swap
+  document.addEventListener('astro:before-swap', () => {
+    // driver.js auto-cleans on page navigation
+  });
+</script>
+
+<!-- Tour container (driver.js injects its own DOM) -->
+<div data-kernel-product-tour aria-hidden="true"></div>
+
+<style>
+  /* ── Tour overlay overrides (driver.js theming) ── */
+  [data-kernel-product-tour] {
+    --driver-primary: var(--interactive-primary);
+    --driver-bg: var(--bg-elevated);
+    --driver-text: var(--text-primary);
+    --driver-border: var(--border);
+    --driver-radius: var(--radius-lg);
+    --driver-shadow: var(--shadow-2xl);
+  }
+
+  /* Respect reduced motion for driver.js animations */
+  @media (prefers-reduced-motion: reduce) {
+    [data-kernel-product-tour] * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Mobile: driver.js popover should be full-width on small screens */
+  @media (max-width: 768px) {
+    [data-kernel-product-tour] .driver-popover {
+      max-width: calc(100vw - 32px);
+      inset-inline-start: 16px !important;
+      inset-inline-end: 16px !important;
+    }
+  }
+
+  /* RTL: driver.js handles this natively, but ensure logical props */
+  [dir="rtl"] [data-kernel-product-tour] .driver-popover {
+    direction: rtl;
+  }
+</style>

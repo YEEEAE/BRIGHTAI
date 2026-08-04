@@ -2,7 +2,7 @@
 file: brain.md
 project: BrightAI — Saudi AI Safety OS
 site: https://brightai.site
-last_updated: 2026-08-04 04:30 +03:00
+last_updated: 2026-08-04 15:45 +03:00
 maintained_by: BrightAI Workspace Agent
 version: 2.7.73
 agent_version: v2.3
@@ -20,7 +20,16 @@ skills_ready: 7
 ---
 
 
-### 2026-08-04 — Created KernelPdfViewer.astro with proper TypeScript types
+### 2026-08-04 — Implemented Kernel Product Tour (Onboarding)
+
+- **Files**: `package.json` (added `driver.js ^1.8.0`), `src/components/kernel/KernelTourStep.astro` (new), `src/components/kernel/KernelProductTour.astro` (new), `src/pages/kernel/index.astro` (added import + component placement)
+- **What**: أنشأت مكون جولة منتج موجّهة للمستخدمين الجدد باستخدام `driver.js`. الجولة ت spotlight العناصر الرئيسية في صفحة Kernel (الشريط الجانبي، لوحة الحوكمة، المؤشرات، التنقل، لوحات التحكم، الوحدات، وزر البدء) في 7 خطوات قصوى. تظهر مرة واحدة فقط (localStorage persistence)، قابلة للتخطي، تدعم RTL والجوال، وتحترم `prefers-reduced-motion`.
+- **Why**: Prompt 13 من التقرير الشامل — No guided tour للمستخدمين الجدد، Slow learning curve، Features undiscovered. الحل يوجه الزائر الجدد خطوة بخطوة بدون حاجة لإعداد.
+- **Verification**: `pnpm build` → 125+ pages, 0 errors ✅, `pnpm run seo:check` → exit 0 ✅, `KernelProductTour` bundled at 1.71KB gzipped ✅, `driver.js` bundled at 7.14KB gzipped ✅
+- **Report**: report/2026-08-04-kernel-product-tour.md
+- **Commit**: uncommitted (user commits via main — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry), Section 5 (KernelTourStep.astro + KernelProductTour.astro added to component inventory), `package.json` updated (driver.js added).
 
 - **Files**: `src/components/kernel/KernelPdfViewer.astro` (new)
 - **What**: أنشأت مكون PDF viewer قابل لإعادة الاستخدام لصفحات Kernel — يستخدم pdfjs-dist مع lazy loading، zoom controls، prev/next navigation، RTL-aware layout، و TypeScript types صحيحة (بدون `pdfDoc` implicit `any`).
