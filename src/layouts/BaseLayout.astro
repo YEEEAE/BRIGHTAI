@@ -371,7 +371,7 @@ const graphExtras: Array<Record<string, unknown>> = flattenGraphNodes([
        Lower layers win when specificity is equal (override-by-layer).
        Order (low → high priority): tokens < base < components < pages < animations < kernel < utilities -->
   <style is:global>
-    @layer tokens, base, utilities, color, animations;
+    @layer tokens, base, components, pages, utilities, color, animations;
 
     @import '../styles/tokens.css' layer(tokens);
     @import '../styles/base.css' layer(base);

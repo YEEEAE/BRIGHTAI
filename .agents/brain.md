@@ -19,6 +19,19 @@ skills_ready: 7
 
 ---
 
+### 2026-08-04 — CSS Cleanup: ترتيب layers + تأكيد purgecss (CSS < 25KB)
+
+- **Files**: `src/layouts/BaseLayout.astro`, `src/layouts/ArabicLayout.astro`, `src/layouts/KernelLayout.astro`
+- **What**: رتّبت الـ CSS layers حسب المطلوب (variables → reset → components → utilities): أضفت `components, pages` للـ layer declaration في BaseLayout و KernelLayout، وحوّلت استيرادات components.css + pages.css في ArabicLayout من unlayered إلى `layer(components)` + `layer(pages)`. أكدت إن purgecss configured صح ومدمج في build chain.
+- **Why**: components.css + pages.css كانت unlayered (أعلى أولوية من utilities) — مخالف لترتيب المهمة. الآن utilities يغلّبهم (نفس السلوك السابق لأنهم كانوا أعلى، والآن صاروا layer قبل utilities).
+- **Verification**: `pnpm build` → exit 0 (251 URLs / 275 HTML) ✅, `pnpm performance:budget` → CSS 19.91KB gz (حد 50KB) ✅, HTML 36.41KB ✅, JS 329.55KB ❌ (مسبق — خارج نطاق CSS), `pnpm purge:css` → 735.6KB → 627.5KB (-108.15KB = 14.7%) ✅
+- **Report**: `report/2026-08-04-css-cleanup.md`
+- **Commit**: uncommitted (user commits via main — per brain rule)
+- **Status**: verified locally
+- **Brain updates**: Section 2 (هذا الـ entry). ملاحظة: أكبر ملف CSS gzipped = 19.91KB < 25KB — شرط التنظيف اليدوي ما تحقق لأن CSS تحت الهدف.
+
+---
+
 ### 2026-08-04 — Core Web Vitals Optimization (content-visibility + contain + aspect-ratio)
 
 - **Files**: `src/styles/base.css`, `src/styles/components.css`
