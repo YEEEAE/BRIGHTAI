@@ -17,8 +17,9 @@ interface Props extends SEOProps {
   extraSpeakableSelectors?: string[];
   /**
    * Page-level breadcrumbs (without the home crumb — added by FoundationSchema).
+   * Each breadcrumb should include a concrete href for schema and navigation output.
    */
-  breadcrumbs?: Array<{ name: string; href?: string }>;
+  breadcrumbs?: Array<{ name: string; href: string }>;
 }
 
 const {
